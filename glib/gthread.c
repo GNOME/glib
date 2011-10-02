@@ -44,8 +44,7 @@
 #include "gthreadprivate.h"
 #include "deprecated/gthread.h"
 
-#include "gslice.h"
-#include "gmain.h"
+#include <string.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -58,13 +57,11 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
-#include <string.h>
-
 #include "garray.h"
 #include "gbitlock.h"
+#include "gslice.h"
 #include "gslist.h"
 #include "gtestutils.h"
-#include "gtimer.h"
 
 /**
  * SECTION:threads
