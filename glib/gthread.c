@@ -635,31 +635,24 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  /* Bit 0 protects private_data. To avoid deadlocks,
-   * do not block while holding this (particularly on
-   * the g_thread lock).
-   */
-  volatile gint private_data_lock;
   GArray *private_data;
   GRealThread *next;
   gpointer retval;
   GSystemThread system_thread;
 };
 
-#define LOCK_PRIVATE_DATA(self)   g_bit_lock (&(self)->private_data_lock, 0)
-#define UNLOCK_PRIVATE_DATA(self) g_bit_unlock (&(self)->private_data_lock, 0)
-
 /* Local Data {{{1 -------------------------------------------------------- */
 
 gboolean         g_threads_got_initialized = FALSE;
 GSystemThread    zero_thread; /* This is initialized to all zero */
-GMutex           g_once_mutex = G_MUTEX_INIT;
 
+GMutex           g_once_mutex = G_MUTEX_INIT;
 static GCond     g_once_cond = G_COND_INIT;
-static GPrivate  g_thread_specific_private;
-static GRealThread *g_thread_all_threads = NULL;
-static GSList   *g_thread_free_indices = NULL;
 static GSList*   g_once_init_list = NULL;
+
+static GPrivate     g_thread_specific_private;
+static GRealThread *g_thread_all_threads = NULL;
+static GSList      *g_thread_free_indices = NULL;
 
 G_LOCK_DEFINE_STATIC (g_thread);
 
@@ -923,8 +916,9 @@ g_once_init_leave (volatile gsize *value_location,
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 struct _GStaticPrivateNode
 {
-  gpointer       data;
-  GDestroyNotify destroy;
+  gpointer        data;
+  GDestroyNotify  destroy;
+  GStaticPrivate *owner;
 };
 
 /**
@@ -1002,15 +996,25 @@ g_static_private_get (GStaticPrivate *private_key)
   GArray *array;
   gpointer ret = NULL;
 
-  LOCK_PRIVATE_DATA (self);
-
   array = self->private_data;
 
   if (array && private_key->index != 0 && private_key->index <= array->len)
-    ret = g_array_index (array, GStaticPrivateNode,
-                         private_key->index - 1).data;
+    {
+      GStaticPrivateNode *node;
 
-  UNLOCK_PRIVATE_DATA (self);
+      node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
+      if (G_UNLIKELY (node->owner != private_key))
+        {
+          if (node->destroy)
+            node->destroy (node->data);
+          node->destroy = NULL;
+          node->data = NULL;
+          node->owner = NULL;
+        }
+
+      ret = node->data;
+    }
+
   return ret;
 }
 
@@ -1036,38 +1040,32 @@ g_static_private_get (GStaticPrivate *private_key)
  */
 void
 g_static_private_set (GStaticPrivate *private_key,
-		      gpointer        data,
-		      GDestroyNotify  notify)
+                      gpointer        data,
+                      GDestroyNotify  notify)
 {
   GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
   static guint next_index = 0;
   GStaticPrivateNode *node;
-  gpointer ddata = NULL;
-  GDestroyNotify ddestroy = NULL;
 
   if (!private_key->index)
     {
       G_LOCK (g_thread);
 
       if (!private_key->index)
-	{
-	  if (g_thread_free_indices)
-	    {
-	      private_key->index =
-		GPOINTER_TO_UINT (g_thread_free_indices->data);
-	      g_thread_free_indices =
-		g_slist_delete_link (g_thread_free_indices,
-				     g_thread_free_indices);
-	    }
-	  else
-	    private_key->index = ++next_index;
-	}
+        {
+          if (g_thread_free_indices)
+            {
+              private_key->index = GPOINTER_TO_UINT (g_thread_free_indices->data);
+              g_thread_free_indices = g_slist_delete_link (g_thread_free_indices,
+                                                           g_thread_free_indices);
+            }
+          else
+            private_key->index = ++next_index;
+        }
 
       G_UNLOCK (g_thread);
     }
-
-  LOCK_PRIVATE_DATA (self);
 
   array = self->private_data;
   if (!array)
@@ -1081,16 +1079,12 @@ g_static_private_set (GStaticPrivate *private_key,
 
   node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
 
-  ddata = node->data;
-  ddestroy = node->destroy;
+  if (node->destroy)
+    node->destroy (node->data);
 
   node->data = data;
   node->destroy = notify;
-
-  UNLOCK_PRIVATE_DATA (self);
-
-  if (ddestroy)
-    ddestroy (ddata);
+  node->owner = private_key;
 }
 
 /**
@@ -1108,8 +1102,6 @@ void
 g_static_private_free (GStaticPrivate *private_key)
 {
   guint idx = private_key->index;
-  GRealThread *thread, *next;
-  GArray *garbage = NULL;
 
   if (!idx)
     return;
@@ -1117,67 +1109,9 @@ g_static_private_free (GStaticPrivate *private_key)
   private_key->index = 0;
 
   G_LOCK (g_thread);
-
-  thread = g_thread_all_threads;
-
-  for (thread = g_thread_all_threads; thread; thread = next)
-    {
-      GArray *array;
-
-      next = thread->next;
-
-      LOCK_PRIVATE_DATA (thread);
-
-      array = thread->private_data;
-
-      if (array && idx <= array->len)
-	{
-	  GStaticPrivateNode *node = &g_array_index (array,
-						     GStaticPrivateNode,
-						     idx - 1);
-	  gpointer ddata = node->data;
-	  GDestroyNotify ddestroy = node->destroy;
-
-	  node->data = NULL;
-	  node->destroy = NULL;
-
-          if (ddestroy)
-            {
-              /* defer non-trivial destruction til after we've finished
-               * iterating, since we must continue to hold the lock */
-              if (garbage == NULL)
-                garbage = g_array_new (FALSE, TRUE,
-                                       sizeof (GStaticPrivateNode));
-
-              g_array_set_size (garbage, garbage->len + 1);
-
-              node = &g_array_index (garbage, GStaticPrivateNode,
-                                     garbage->len - 1);
-              node->data = ddata;
-              node->destroy = ddestroy;
-            }
-	}
-
-      UNLOCK_PRIVATE_DATA (thread);
-    }
   g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
-					   GUINT_TO_POINTER (idx));
+                                           GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
-
-  if (garbage)
-    {
-      guint i;
-
-      for (i = 0; i < garbage->len; i++)
-        {
-          GStaticPrivateNode *node;
-
-          node = &g_array_index (garbage, GStaticPrivateNode, i);
-          node->destroy (node->data);
-        }
-
-      g_array_free (garbage, TRUE);
-    }
 }
 
 /* GThread {{{1 -------------------------------------------------------- */
@@ -1190,24 +1124,21 @@ g_thread_cleanup (gpointer data)
       GRealThread* thread = data;
       GArray *array;
 
-      LOCK_PRIVATE_DATA (thread);
       array = thread->private_data;
       thread->private_data = NULL;
-      UNLOCK_PRIVATE_DATA (thread);
 
       if (array)
-	{
-	  guint i;
+        {
+          guint i;
 
-	  for (i = 0; i < array->len; i++ )
-	    {
-	      GStaticPrivateNode *node =
-		&g_array_index (array, GStaticPrivateNode, i);
-	      if (node->destroy)
-		node->destroy (node->data);
-	    }
-	  g_array_free (array, TRUE);
-	}
+          for (i = 0; i < array->len; i++ )
+            {
+              GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
+              if (node->destroy)
+                node->destroy (node->data);
+            }
+          g_array_free (array, TRUE);
+        }
 
       /* We only free the thread structure if it isn't joinable.
        * If it is, the structure is freed in g_thread_join()
