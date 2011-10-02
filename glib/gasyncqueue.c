@@ -404,14 +404,14 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
 
 static gpointer
 g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
-                                   gboolean     try,
+                                   gboolean     wait,
                                    GTimeVal    *end_time)
 {
   gpointer retval;
 
   if (!g_queue_peek_tail_link (&queue->queue))
     {
-      if (try)
+      if (!wait)
         return NULL;
 
       if (!end_time)
@@ -457,7 +457,7 @@ g_async_queue_pop (GAsyncQueue *queue)
   g_return_val_if_fail (queue, NULL);
 
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
+  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -479,7 +479,7 @@ g_async_queue_pop_unlocked (GAsyncQueue *queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
+  return g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
 }
 
 /**
@@ -500,7 +500,7 @@ g_async_queue_try_pop (GAsyncQueue *queue)
   g_return_val_if_fail (queue, NULL);
 
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
+  retval = g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -523,7 +523,7 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
+  return g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
 }
 
 /**
@@ -551,7 +551,7 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
   g_return_val_if_fail (queue, NULL);
 
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
+  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -581,7 +581,7 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
 {
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
+  return g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
 }
 
 /**
