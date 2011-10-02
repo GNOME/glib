@@ -206,6 +206,9 @@ once_LDADD       = $(progs_ldadd)
 TEST_PROGS      += cond
 cond_LDADD       = $(progs_ldadd)
 
+TEST_PROGS      += private
+private_LDADD    = $(progs_ldadd)
+
 if OS_UNIX
 
 TEST_PROGS    += unix
