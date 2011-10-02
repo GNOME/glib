@@ -94,7 +94,7 @@
 struct _GAsyncQueue
 {
   GMutex mutex;
-  GCond *cond;
+  GCond cond;
   GQueue queue;
   GDestroyNotify item_free_func;
   guint waiting_threads;
@@ -139,7 +139,7 @@ g_async_queue_new_full (GDestroyNotify item_free_func)
 
   queue = g_new (GAsyncQueue, 1);
   g_mutex_init (&queue->mutex);
-  queue->cond = NULL;
+  g_cond_init (&queue->cond);
   g_queue_init (&queue->queue);
   queue->waiting_threads = 0;
   queue->ref_count = 1;
@@ -227,8 +227,7 @@ g_async_queue_unref (GAsyncQueue *queue)
     {
       g_return_if_fail (queue->waiting_threads == 0);
       g_mutex_clear (&queue->mutex);
-      if (queue->cond)
-        g_cond_free (queue->cond);
+      g_cond_clear (&queue->cond);
       if (queue->item_free_func)
         g_queue_foreach (&queue->queue, (GFunc) queue->item_free_func, NULL);
       g_queue_clear (&queue->queue);
@@ -313,7 +312,7 @@ g_async_queue_push_unlocked (GAsyncQueue *queue,
 
   g_queue_push_head (&queue->queue, data);
   if (queue->waiting_threads > 0)
-    g_cond_signal (queue->cond);
+    g_cond_signal (&queue->cond);
 }
 
 /**
@@ -400,7 +399,7 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
                          (GCompareDataFunc)g_async_queue_invert_compare,
                          &sd);
   if (queue->waiting_threads > 0)
-    g_cond_signal (queue->cond);
+    g_cond_signal (&queue->cond);
 }
 
 static gpointer
@@ -415,21 +414,18 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
       if (try)
         return NULL;
 
-      if (!queue->cond)
-        queue->cond = g_cond_new ();
-
       if (!end_time)
         {
           queue->waiting_threads++;
           while (!g_queue_peek_tail_link (&queue->queue))
-            g_cond_wait (queue->cond, &queue->mutex);
+            g_cond_wait (&queue->cond, &queue->mutex);
           queue->waiting_threads--;
         }
       else
         {
           queue->waiting_threads++;
           while (!g_queue_peek_tail_link (&queue->queue))
-            if (!g_cond_timed_wait (queue->cond, &queue->mutex, end_time))
+            if (!g_cond_timed_wait (&queue->cond, &queue->mutex, end_time))
               break;
           queue->waiting_threads--;
           if (!g_queue_peek_tail_link (&queue->queue))
