@@ -391,6 +391,35 @@ g_string_chunk_insert_len (GStringChunk *chunk,
 
 /* Strings.
  */
+
+/**
+ * SECTION:strings
+ * @title: Strings
+ * @short_description: text buffers which grow automatically
+ *     as text is added
+ *
+ * A #GString is an object that handles the memory management
+ * of a C string for you. You can think of it as similar to a
+ * Java StringBuffer. In addition to the string itself, GString
+ * stores the length of the string, so can be used for binary
+ * data with embedded nul bytes. To access the C string managed
+ * by the GString @string, simply use @string->str.
+ */
+
+/**
+ * GString:
+ * @str: points to the character data. It may move as text is added.
+ *   The @str field is null-terminated and so
+ *   can be used as an ordinary C string.
+ * @len: contains the length of the string, not including the
+ *   terminating nul byte.
+ * @allocated_len: the number of bytes that can be stored in the
+ *   string before it needs to be reallocated. May be larger than @len.
+ *
+ * The GString struct contains the public fields of a GString.
+ */
+
+
 static void
 g_string_maybe_expand (GString *string,
                        gsize    len)

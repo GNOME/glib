@@ -41,6 +41,7 @@ relations.sgml
 sequence.sgml
 shell.sgml
 spawn.sgml
+strings.sgml
 string_chunks.sgml
 string_utils.sgml
 testing.sgml
