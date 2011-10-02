@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-16 16:15+0000\n"
-"PO-Revision-Date: 2011-10-02 11:08+1100\n"
+"PO-Revision-Date: 2011-10-02 11:21+1100\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -484,39 +484,39 @@ msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 
 #: ../glib/gfileutils.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f KB"
+msgstr "%.1f KiB"
 
 #: ../glib/gfileutils.c:2010
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MiB"
-msgstr "%.1f MB"
+msgstr "%.1f MiB"
 
 #: ../glib/gfileutils.c:2013
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GiB"
-msgstr "%.1f GB"
+msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:2016
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TiB"
-msgstr "%.1f TB"
+msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:2019
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PiB"
-msgstr "%.1f PB"
+msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:2022
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EiB"
-msgstr "%.1f EB"
+msgstr "%.1f EiB"
 
 #: ../glib/gfileutils.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f kB"
-msgstr "%.1f KB"
+msgstr "%.1f kB"
 
 #: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
@@ -545,10 +545,10 @@ msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2087
-#, fuzzy, c-format
+#, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] "%u byte"
+msgstr[0] "%s byte"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -1863,7 +1863,7 @@ msgstr ""
 "DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
 msgstr[0] "Muốn đọc %lu byte nhưng nhận được EOF"
@@ -1894,7 +1894,7 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
@@ -1939,7 +1939,7 @@ msgstr ""
 "Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ (cho phần thân)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
@@ -1957,11 +1957,12 @@ msgid ""
 msgstr "Lỗi tuần tự hoá GVariant với kiểu chuỗi `%s' sang định dạng D-Bus"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Thông điệp có %d fd nhưng header chỉ ra %d fd"
+msgstr ""
+"Thông điệp có %d bộ mô tả tập tin nhưng header chỉ ra %d bộ mô tả tập tin"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2043,7 +2044,7 @@ msgid "COMMAND"
 msgstr "LỆNH"
 
 #: ../gio/gdbus-tool.c:93
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -2059,6 +2060,7 @@ msgstr ""
 "  introspect   Xem xét đối tượng từ xa\n"
 "  monitor      Theo dõi đối tượng từ xa\n"
 "  call         Gọi hàm trên đối tượng từ xa\n"
+"  emit         Phát tín hiệu\n"
 "\n"
 "Dùng \"%s LỆNH --help\" để có trợ giúp của từng lệnh.\n"
 
@@ -2121,21 +2123,19 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "Đích tuỳ chọn cho tín hiệu (tên duy nhất)"
 
 #: ../gio/gdbus-tool.c:535
-#, fuzzy
 msgid "Object path to emit signal on"
-msgstr "Đường dẫn đối tượng cần theo dõi"
+msgstr "Đường dẫn để phát tín hiệu"
 
 #: ../gio/gdbus-tool.c:536
-#, fuzzy
 msgid "Signal and interface name"
 msgstr "Tên phương thức vào giao diện"
 
 #: ../gio/gdbus-tool.c:568
 msgid "Emit a signal."
-msgstr ""
+msgstr "Phát tín hiệu."
 
 #: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1549
 #: ../gio/gdbus-tool.c:1781
@@ -2144,9 +2144,9 @@ msgid "Error connecting: %s\n"
 msgstr "Lỗi kết nối: %s\n"
 
 #: ../gio/gdbus-tool.c:614
-#, fuzzy, c-format
+#, c-format
 msgid "Error: object path not specified.\n"
-msgstr "Lỗi: chưa xác định đường dẫn đối tượng\n"
+msgstr "Lỗi: chưa xác định đường dẫn đối tượng.\n"
 
 #: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1607
 #: ../gio/gdbus-tool.c:1840
@@ -2155,24 +2155,24 @@ msgid "Error: %s is not a valid object path\n"
 msgstr "Lỗi: '%s' không phải là đường dẫn đối tượng hợp lệ\n"
 
 #: ../gio/gdbus-tool.c:625
-#, fuzzy, c-format
+#, c-format
 msgid "Error: signal not specified.\n"
-msgstr "Lỗi: chưa xác định đích\n"
+msgstr "Lỗi: chưa xác định tín hiệu.\n"
 
 #: ../gio/gdbus-tool.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr "Lỗi: '%s' không phải là đường dẫn đối tượng hợp lệ\n"
+msgstr "Lỗi: %s không phải là tên giao tiếp hợp lệ\n"
 
 #: ../gio/gdbus-tool.c:640
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid member name\n"
-msgstr "Lỗi: '%s' không phải là đường dẫn đối tượng hợp lệ\n"
+msgstr "Lỗi: %s không phải là tên thành viên hợp lệ\n"
 
 #: ../gio/gdbus-tool.c:646
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr "Lỗi: '%s' không phải là đường dẫn đối tượng hợp lệ\n"
+msgstr "Lỗi: %s không phải là tên tuyến duy nhất hợp lệ\n"
 
 #: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
@@ -2180,9 +2180,9 @@ msgid "Error parsing parameter %d: %s\n"
 msgstr "Lỗi phân tích tham số %d: %s\n"
 
 #: ../gio/gdbus-tool.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Error flushing connection: %s\n"
-msgstr "Lỗi chấp nhận kết nối: %s"
+msgstr "Lỗi tống kết nối: %s\n"
 
 #: ../gio/gdbus-tool.c:725
 msgid "Destination name to invoke method on"
@@ -2197,9 +2197,8 @@ msgid "Method and interface name"
 msgstr "Tên phương thức vào giao diện"
 
 #: ../gio/gdbus-tool.c:728
-#, fuzzy
 msgid "Timeout in seconds"
-msgstr "Quá hạn"
+msgstr "Thời hạn theo giây"
 
 #: ../gio/gdbus-tool.c:767
 msgid "Invoke a method on a remote object."
@@ -2244,11 +2243,11 @@ msgstr "In XML"
 
 #: ../gio/gdbus-tool.c:1409
 msgid "Introspect children"
-msgstr ""
+msgstr "Xem xét con"
 
 #: ../gio/gdbus-tool.c:1410
 msgid "Only print properties"
-msgstr ""
+msgstr "Chỉ in thuộc tính"
 
 #: ../gio/gdbus-tool.c:1501
 msgid "Introspect a remote object."
@@ -2290,7 +2289,7 @@ msgstr "Không thể tạo thư mục cấu hình MIME người dùng %s: %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Thông tin ứng dụng thiếu định danh"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2524,11 +2523,11 @@ msgstr "Luồng có thao tác còn chạy"
 #: ../gio/ginetsocketaddress.c:181 ../gio/ginetsocketaddress.c:198
 #: ../gio/gunixsocketaddress.c:221
 msgid "Not enough space for socket address"
-msgstr "Không đủ không gian cho địa chỉ ổ cắm"
+msgstr "Không đủ không gian cho địa chỉ socket"
 
 #: ../gio/ginetsocketaddress.c:211
 msgid "Unsupported socket address"
-msgstr "Địa chỉ ổ cắm không hỗ trợ"
+msgstr "Địa chỉ socket không hỗ trợ"
 
 #: ../gio/glib-compile-schemas.c:741
 msgid "empty names are not permitted"
@@ -2560,9 +2559,9 @@ msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "tên không hợp lệ '%s': ký tự cuối không thể là gạch ngang ('-')."
 
 #: ../gio/glib-compile-schemas.c:789
-#, fuzzy, c-format
+#, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "tên không hợp lệ '%s': độ dài tối đa là 32"
+msgstr "tên không hợp lệ '%s': độ dài tối đa là 1024"
 
 #: ../gio/glib-compile-schemas.c:858
 #, c-format
@@ -2838,9 +2837,8 @@ msgid "Error renaming file: %s"
 msgstr "Gặp lỗi khi thay đổi tên của tập tin: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
-msgstr "Không thể thay đổi tên của tập tin, vì tên tập tin đã có"
+msgstr "Không thể đổi tên tập tin, tên tập tin đã có"
 
 #: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
 #: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
@@ -3296,16 +3294,16 @@ msgid "List the children of SCHEMA"
 msgstr "Liệt kê con của SCHEMA"
 
 #: ../gio/gsettings-tool.c:563
-#, fuzzy
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
-msgstr "Danh sách khoá và giá trị, đệ quy"
+msgstr ""
+"Danh sách khoá và giá trị, đệ quy\n"
+"Nếu không cho SCHEMA, liệt kê mọi khoá\n"
 
 #: ../gio/gsettings-tool.c:565
-#, fuzzy
 msgid "[SCHEMA[:PATH]]"
-msgstr "SCHEMA[:ĐƯỜNG DẪN]"
+msgstr "[SCHEMA[:ĐƯỜNG DẪN]]"
 
 #: ../gio/gsettings-tool.c:570
 msgid "Get the value of KEY"
@@ -3334,7 +3332,7 @@ msgstr "Phục hồi giá trị mặc định cho KHOÁ"
 
 #: ../gio/gsettings-tool.c:594
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "Phục hồi mọi khoá trong SCHEMA về mặc định"
 
 #: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
@@ -3364,7 +3362,6 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:621
-#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3401,6 +3398,7 @@ msgstr ""
 "  get                       Lấy giá trị khoá\n"
 "  set                       Đặt giá trị khoá\n"
 "  reset                     Phục hồi giá trị khoá\n"
+"  reset-recursively         Phục hồi mọi giá trị khoá trong schema\n"
 "  writable                  Kiểm tra khoá có ghi được không\n"
 "  monitor                   Theo dõi thay đổi\n"
 "\n"
@@ -3451,22 +3449,22 @@ msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     Giá trị cần đặt\n"
 
 #: ../gio/gsettings-tool.c:766
-#, fuzzy, c-format
+#, c-format
 msgid "Empty schema name given\n"
-msgstr "Tên schema rỗng"
+msgstr "Tên schema rỗng\n"
 
 #: ../gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
-msgstr "Ổ cắm không hợp lệ, chưa được sơ khởi"
+msgstr "Socket không hợp lệ, chưa được sơ khởi"
 
 #: ../gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "Ổ cắm không hợp lệ, khởi động thất bại vì: %s"
+msgstr "Socket không hợp lệ, khởi động thất bại vì: %s"
 
 #: ../gio/gsocket.c:290
 msgid "Socket is already closed"
-msgstr "Ổ cắm đã được đóng"
+msgstr "Socket đã được đóng"
 
 #: ../gio/gsocket.c:298 ../gio/gsocket.c:2798 ../gio/gsocket.c:2842
 msgid "Socket I/O timed out"
@@ -3480,7 +3478,7 @@ msgstr "tạo GSocket từ fd: %s"
 #: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
 msgid "Unable to create socket: %s"
-msgstr "Không thể tạo ổ cắm: %s"
+msgstr "Không thể tạo socket: %s"
 
 #: ../gio/gsocket.c:498
 msgid "Unknown protocol was specified"
@@ -3540,19 +3538,19 @@ msgid "Error sending data: %s"
 msgstr "Lỗi gửi dữ liệu: %s"
 
 #: ../gio/gsocket.c:2163
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "Không thể tạo ổ cắm: %s"
+msgstr "Không thể tắt socket: %s"
 
 #: ../gio/gsocket.c:2242
 #, c-format
 msgid "Error closing socket: %s"
-msgstr "Lỗi đóng ổ cắm: %s"
+msgstr "Lỗi đóng socket: %s"
 
 #: ../gio/gsocket.c:2791
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr "Đang chờ ổ cắm: %s"
+msgstr "Đang chờ socket: %s"
 
 #: ../gio/gsocket.c:3056 ../gio/gsocket.c:3137
 #, c-format
@@ -3591,7 +3589,7 @@ msgstr "Bên lắng nghe đã đóng"
 
 #: ../gio/gsocketlistener.c:232
 msgid "Added socket is closed"
-msgstr "Ổ cắm được thêm đã đóng"
+msgstr "Socket được thêm đã đóng"
 
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
@@ -3650,9 +3648,8 @@ msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr "Tên máy '%s' quá dài đối với đặc tả giao thức SOCKSv5 (tối đa %i byte)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr "Máy chủ uỷ nhiệm SOCKSv5 dùng kiểu địa chỉ lại."
+msgstr "Máy chủ uỷ nhiệm SOCKSv5 dùng kiểu địa chỉ lạ."
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
@@ -3692,9 +3689,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GThemedIcon"
 
 #: ../gio/gtlscertificate.c:226
-#, fuzzy
 msgid "No PEM-encoded private key found"
-msgstr "Không tìm thấy chứng nhận mã hoá dạng PEM"
+msgstr "Không tìm thấy khoá riêng mã hoá dạng PEM"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
@@ -3712,17 +3708,19 @@ msgstr "Không thể phân tích chứng nhận mã hoá dạng PEM"
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
-msgstr ""
+msgstr "Đây là cơ hội cuối để nhập đúng mật khẩu trước khi truy cập bị khoá."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Mật khẩu nhập sai đã vài lần, truy cập của bạn sẽ bị khoá để ngăn lỗi có thể "
+"xảy ra."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "Mật khẩu nhập sai."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3772,9 +3770,9 @@ msgstr ""
 "Cần đọc một byte duy nhất để nhận giấy uỷ nhiệm nhưng không đọc được byte nào"
 
 #: ../gio/gunixconnection.c:545
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "Chờ 1 thông điệp điều khiển, nhận được %d"
+msgstr "Chờ thông điệp điều khiển, nhận được %d"
 
 #: ../gio/gunixconnection.c:571
 #, c-format
@@ -3805,7 +3803,7 @@ msgstr "Gặp lỗi khi ghi vào UNIX: %s"
 
 #: ../gio/gunixsocketaddress.c:244
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr "Địa chỉ ổ cắm UNIX trừu tượng không được hỗ trợ trên hệ thống này"
+msgstr "Địa chỉ socket UNIX trừu tượng không được hỗ trợ trên hệ thống này"
 
 #: ../gio/gvolume.c:408
 msgid "volume doesn't implement eject"
