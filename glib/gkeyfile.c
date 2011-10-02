@@ -67,8 +67,367 @@
 #include "gutils.h"
 
 
+/**
+ * SECTION:keyfile
+ * @title: Key-value file parser
+ * @short_description: parses .ini-like config files
+ *
+ * #GKeyFile lets you parse, edit or create files containing groups of
+ * key-value pairs, which we call <firstterm>key files</firstterm> for
+ * lack of a better name. Several freedesktop.org specifications use
+ * key files now, e.g the
+ * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+ * Entry Specification</ulink> and the
+ * <ulink url="http://freedesktop.org/Standards/icon-theme-spec">Icon
+ * Theme Specification</ulink>.
+ *
+ * The syntax of key files is described in detail in the
+ * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+ * Entry Specification</ulink>, here is a quick summary: Key files
+ * consists of groups of key-value pairs, interspersed with comments.
+ *
+ * |[
+ * # this is just an example
+ * # there can be comments before the first group
+ *
+ * [First Group]
+ *
+ * Name=Key File Example\tthis value shows\nescaping
+ *
+ * # localized strings are stored in multiple key-value pairs
+ * Welcome=Hello
+ * Welcome[de]=Hallo
+ * Welcome[fr_FR]=Bonjour
+ * Welcome[it]=Ciao
+ * Welcome[be@latin]=Hello
+ *
+ * [Another Group]
+ *
+ * Numbers=2;20;-200;0
+ *
+ * Booleans=true;false;true;true
+ * ]|
+ *
+ * Lines beginning with a '#' and blank lines are considered comments.
+ *
+ * Groups are started by a header line containing the group name enclosed
+ * in '[' and ']', and ended implicitly by the start of the next group or
+ * the end of the file. Each key-value pair must be contained in a group.
+ *
+ * Key-value pairs generally have the form <literal>key=value</literal>,
+ * with the exception of localized strings, which have the form
+ * <literal>key[locale]=value</literal>, with a locale identifier of the
+ * form <literal>lang_COUNTRY@MODIFIER</literal> where
+ * <literal>COUNTRY</literal> and <literal>MODIFIER</literal> are optional.
+ * Space before and after the '=' character are ignored. Newline, tab,
+ * carriage return and backslash characters in value are escaped as \n,
+ * \t, \r, and \\, respectively. To preserve leading spaces in values,
+ * these can also be escaped as \s.
+ *
+ * Key files can store strings (possibly with localized variants), integers,
+ * booleans and lists of these. Lists are separated by a separator character,
+ * typically ';' or ','. To use the list separator character in a value in
+ * a list, it has to be escaped by prefixing it with a backslash.
+ *
+ * This syntax is obviously inspired by the .ini files commonly met
+ * on Windows, but there are some important differences:
+ * <itemizedlist>
+ *   <listitem>.ini files use the ';' character to begin comments,
+ *     key files use the '#' character.</listitem>
+ *   <listitem>Key files do not allow for ungrouped keys meaning only
+ *     comments can precede the first group.</listitem>
+ *   <listitem>Key files are always encoded in UTF-8.</listitem>
+ *   <listitem>Key and Group names are case-sensitive. For example, a
+ *     group called <literal>[GROUP]</literal> is a different from
+ *     <literal>[group]</literal>.</listitem>
+ *   <listitem>.ini files don't have a strongly typed boolean entry type,
+ *     they only have GetProfileInt(). In key files, only
+ *     <literal>true</literal> and <literal>false</literal> (in lower case)
+ *     are allowed.</listitem>
+ *  </itemizedlist>
+ *
+ * Note that in contrast to the
+ * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+ * Entry Specification</ulink>, groups in key files may contain the same
+ * key multiple times; the last entry wins. Key files may also contain
+ * multiple groups with the same name; they are merged together.
+ * Another difference is that keys and group names in key files are not
+ * restricted to ASCII characters.
+ */
+
+/**
+ * G_KEY_FILE_ERROR:
+ *
+ * Error domain for key file parsing. Errors in this domain will
+ * be from the #GKeyFileError enumeration.
+ *
+ * See #GError for information on error domains.
+ */
+
+/**
+ * GKeyFileError:
+ * @G_KEY_FILE_ERROR_UNKNOWN_ENCODING: the text being parsed was in
+ *     an unknown encoding
+ * @G_KEY_FILE_ERROR_PARSE: document was ill-formed
+ * @G_KEY_FILE_ERROR_NOT_FOUND: the file was not found
+ * @G_KEY_FILE_ERROR_KEY_NOT_FOUND: a requested key was not found
+ * @G_KEY_FILE_ERROR_GROUP_NOT_FOUND: a requested group was not found
+ * @G_KEY_FILE_ERROR_INVALID_VALUE: a value could not be parsed
+ *
+ * Error codes returned by key file parsing.
+ */
+
+/**
+ * GKeyFileFlags:
+ * @G_KEY_FILE_NONE: No flags, default behaviour
+ * @G_KEY_FILE_KEEP_COMMENTS: Use this flag if you plan to write the
+ *     (possibly modified) contents of the key file back to a file;
+ *     otherwise all comments will be lost when the key file is
+ *     written back.
+ * @G_KEY_FILE_KEEP_TRANSLATIONS: Use this flag if you plan to write the
+ *     (possibly modified) contents of the key file back to a file;
+ *     otherwise only the translations for the current language will be
+ *     written back.
+ *
+ * Flags which influence the parsing.
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_GROUP:
+ *
+ * The name of the main group of a desktop entry file, as defined in the
+ * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
+ * Entry Specification</ulink>. Consult the specification for more
+ * details about the meanings of the keys below.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_TYPE:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the type of the desktop entry. Usually
+ * #G_KEY_FILE_DESKTOP_TYPE_APPLICATION,
+ * #G_KEY_FILE_DESKTOP_TYPE_LINK, or
+ * #G_KEY_FILE_DESKTOP_TYPE_DIRECTORY.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_VERSION:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the version of the Desktop Entry Specification used for
+ * the desktop entry file.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_NAME:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * string giving the specific name of the desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * string giving the generic name of the desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * stating whether the desktop entry should be shown in menus.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_COMMENT:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * string giving the tooltip for the desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_ICON:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
+ * string giving the name of the icon to be displayed for the desktop
+ * entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_HIDDEN:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * stating whether the desktop entry has been deleted by the user.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
+ * strings identifying the environments that should display the
+ * desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list of
+ * strings identifying the environments that should not display the
+ * desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_TRY_EXEC:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the file name of a binary on disk used to determine if the
+ * program is actually installed. It is only valid for desktop entries
+ * with the <literal>Application</literal> type.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_EXEC:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the command line to execute. It is only valid for desktop
+ * entries with the <literal>Application</literal> type.
+ *
+ * Since: 2.14
+ */
+
+ /**
+  * G_KEY_FILE_DESKTOP_KEY_PATH:
+  *
+  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+  * containing the working directory to run the program in. It is only
+  * valid for desktop entries with the <literal>Application</literal> type.
+  *
+  * Since: 2.14
+  */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_TERMINAL:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * stating whether the program should be run in a terminal window.
+ * It is only valid for desktop entries with the
+ * <literal>Application</literal> type.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_MIME_TYPE:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list
+ * of strings giving the MIME types supported by this desktop entry.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_CATEGORIES:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a list
+ * of strings giving the categories in which the desktop entry
+ * should be shown in a menu.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
+ * stating whether the application supports the <ulink
+ * url="http://www.freedesktop.org/Standards/startup-notification-spec">Startup
+ * Notification Protocol Specification</ulink>.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is string
+ * identifying the WM class or name hint of a window that the application
+ * will create, which can be used to emulate Startup Notification with
+ * older applications.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_URL :
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
+ * giving the URL to access. It is only valid for desktop entries
+ * with the <literal>Link</literal> type.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_TYPE_APPLICATION:
+ *
+ * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * entries representing applications.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_TYPE_LINK:
+ *
+ * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * entries representing links to documents.
+ *
+ * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_TYPE_DIRECTORY:
+ *
+ * The value of the #G_KEY_FILE_DESKTOP_KEY_TYPE, key for desktop
+ * entries representing directories.
+ *
+ * Since: 2.14
+ */
+
 typedef struct _GKeyFileGroup GKeyFileGroup;
 
+/**
+ * GKeyFile:
+ *
+ * The GKeyFile struct contains only private data
+ * and should not be accessed directly.
+ */
 struct _GKeyFile
 {
   GList *groups;
@@ -79,8 +438,7 @@ struct _GKeyFile
 
   GString *parse_buffer; /* Holds up to one line of not-yet-parsed data */
 
-  /* Used for sizing the output buffer during serialization
-   */
+  /* Used for sizing the output buffer during serialization */
   gsize approximate_size;
 
   gchar list_separator;
@@ -99,7 +457,7 @@ struct _GKeyFileGroup
   GKeyFileKeyValuePair *comment; /* Special comment that is stuck to the top of a group */
   gboolean has_trailing_blank_line;
 
-  GList *key_value_pairs; 
+  GList *key_value_pairs;
 
   /* Used in parallel with key_value_pairs for
    * increased lookup performance
