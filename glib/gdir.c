@@ -48,6 +48,12 @@
 #include "../build/win32/dirent/wdirent.c"
 #endif
 
+/**
+ * GDir:
+ *
+ * An opaque structure representing an opened directory.
+ */
+
 struct _GDir
 {
 #ifdef G_OS_WIN32

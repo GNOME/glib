@@ -14,6 +14,7 @@ datasets.sgml
 datalist.sgml
 date-time.sgml
 error_reporting.sgml
+fileutils.sgml
 ghostutils.sgml
 gregex.sgml
 gurifuncs.sgml

@@ -69,7 +69,15 @@
 #define MAP_FAILED ((void *) -1)
 #endif
 
-struct _GMappedFile 
+/**
+ * GMappedFile:
+ *
+ * The #GMappedFile represents a file mapping created with
+ * g_mapped_file_new(). It has only private members and should
+ * not be accessed directly.
+ */
+
+struct _GMappedFile
 {
   gchar *contents;
   gsize  length;
