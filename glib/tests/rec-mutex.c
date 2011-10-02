@@ -22,6 +22,8 @@
 
 #include <glib.h>
 
+#include <stdio.h>
+
 static void
 test_rec_mutex1 (void)
 {
@@ -150,6 +152,71 @@ test_rec_mutex4 (void)
     g_assert (owners[i] == NULL);
 }
 
+#define COUNT_TO 100000000
+
+static gint depth;
+
+static gboolean
+do_addition (gint *value)
+{
+  static GRecMutex lock;
+  gboolean more;
+  gint i;
+
+  /* test performance of "good" cases (ie: short critical sections) */
+  for (i = 0; i < depth; i++)
+    g_rec_mutex_lock (&lock);
+
+  if ((more = *value != COUNT_TO))
+    if (*value != -1)
+      (*value)++;
+
+  for (i = 0; i < depth; i++)
+    g_rec_mutex_unlock (&lock);
+
+  return more;
+}
+
+static gpointer
+addition_thread (gpointer value)
+{
+  while (do_addition (value));
+
+  return NULL;
+}
+
+static void
+test_mutex_perf (gconstpointer data)
+{
+  gint c = GPOINTER_TO_INT (data);
+  GThread *threads[THREADS];
+  gint64 start_time;
+  gint n_threads;
+  gdouble rate;
+  gint x = -1;
+  gint i;
+
+  n_threads = c / 256;
+  depth = c % 256;
+
+  for (i = 0; i < n_threads - 1; i++)
+    threads[i] = g_thread_create (addition_thread, &x, TRUE, NULL);
+
+  /* avoid measuring thread setup/teardown time */
+  start_time = g_get_monotonic_time ();
+  g_atomic_int_set (&x, 0);
+  addition_thread (&x);
+  g_assert_cmpint (g_atomic_int_get (&x), ==, COUNT_TO);
+  rate = g_get_monotonic_time () - start_time;
+  rate = x / rate;
+
+  for (i = 0; i < n_threads - 1; i++)
+    g_thread_join (threads[i]);
+
+  g_test_maximized_result (rate, "%f mips", rate);
+}
+
+
 int
 main (int argc, char *argv[])
 {
@@ -159,6 +226,27 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/rec-mutex2", test_rec_mutex2);
   g_test_add_func ("/thread/rec-mutex3", test_rec_mutex3);
   g_test_add_func ("/thread/rec-mutex4", test_rec_mutex4);
+
+  if (g_test_perf ())
+    {
+      gint i, j;
+
+      for (i = 0; i < 5; i++)
+        for (j = 1; j <= 5; j++)
+          {
+            gchar name[80];
+            guint c;
+
+            c = i * 256 + j;
+
+            if (i)
+              sprintf (name, "/thread/rec-mutex/perf/contended%d/depth%d", i, j);
+            else
+              sprintf (name, "/thread/rec-mutex/perf/uncontended/depth%d", j);
+
+            g_test_add_data_func (name, GINT_TO_POINTER (c), test_mutex_perf);
+          }
+    }
 
   return g_test_run ();
 }
