@@ -51,10 +51,377 @@
 #include "gslice.h"
 
 
+/**
+ * SECTION:testing
+ * @title: Testing
+ * @short_description: a test framework
+ * @see_also: <link linkend="gtester">gtester</link>,
+ *            <link linkend="gtester-report">gtester-report</link>
+ *
+ * GLib provides a framework for writing and maintaining unit tests
+ * in parallel to the code they are testing. The API is designed according
+ * to established concepts found in the other test frameworks (JUnit, NUnit,
+ * RUnit), which in turn is based on smalltalk unit testing concepts.
+ *
+ * <variablelist>
+ *   <varlistentry>
+ *     <term>Test case</term>
+ *     <listitem>Tests (test methods) are grouped together with their
+ *       fixture into test cases.</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>Fixture</term>
+ *     <listitem>A test fixture consists of fixture data and setup and
+ *       teardown methods to establish the environment for the test
+ *       functions. We use fresh fixtures, i.e. fixtures are newly set
+ *       up and torn down around each test invocation to avoid dependencies
+ *       between tests.</listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>Test suite</term>
+ *     <listitem>Test cases can be grouped into test suites, to allow
+ *       subsets of the available tests to be run. Test suites can be
+ *       grouped into other test suites as well.</listitem>
+ *   </varlistentry>
+ * </variablelist>
+ * The API is designed to handle creation and registration of test suites
+ * and test cases implicitly. A simple call like
+ * |[
+ *   g_test_add_func ("/misc/assertions", test_assertions);
+ * ]|
+ * creates a test suite called "misc" with a single test case named
+ * "assertions", which consists of running the test_assertions function.
+ *
+ * In addition to the traditional g_assert(), the test framework provides
+ * an extended set of assertions for string and numerical comparisons:
+ * g_assert_cmpfloat(), g_assert_cmpint(), g_assert_cmpuint(),
+ * g_assert_cmphex(), g_assert_cmpstr(). The advantage of these variants
+ * over plain g_assert() is that the assertion messages can be more
+ * elaborate, and include the values of the compared entities.
+ *
+ * GLib ships with two utilities called gtester and gtester-report to
+ * facilitate running tests and producing nicely formatted test reports.
+ */
+
+/**
+ * g_test_quick:
+ *
+ * Returns %TRUE if tests are run in quick mode.
+ *
+ * Returns: %TRUE if in quick mode
+ */
+
+/**
+ * g_test_slow:
+ *
+ * Returns %TRUE if tests are run in slow mode.
+ *
+ * Returns: %TRUE if in slow mode
+ */
+
+/**
+ * g_test_thorough:
+ *
+ * Returns %TRUE if tests are run in thorough mode.
+ *
+ * Returns: %TRUE if in thorough mode
+ */
+
+/**
+ * g_test_perf:
+ *
+ * Returns %TRUE if tests are run in performance mode.
+ *
+ * Returns: %TRUE if in performance mode
+ */
+
+/**
+ * g_test_verbose:
+ *
+ * Returns %TRUE if tests are run in verbose mode.
+ *
+ * Returns: %TRUE if in verbose mode
+ */
+
+/**
+ * g_test_quiet:
+ *
+ * Returns %TRUE if tests are run in quiet mode.
+ *
+ * Returns: %TRUE if in quied mode
+ */
+
+/**
+ * g_test_queue_unref:
+ * @gobject: the object to unref
+ *
+ * Enqueue an object to be released with g_object_unref() during
+ * the next teardown phase. This is equivalent to calling
+ * g_test_queue_destroy() with a destroy callback of g_object_unref().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * GTestTrapFlags:
+ * @G_TEST_TRAP_SILENCE_STDOUT: Redirect stdout of the test child to
+ *     <filename>/dev/null</filename> so it cannot be observed on the
+ *     console during test runs. The actual output is still captured
+ *     though to allow later tests with g_test_trap_assert_stdout().
+ * @G_TEST_TRAP_SILENCE_STDERR: Redirect stderr of the test child to
+ *     <filename>/dev/null</filename> so it cannot be observed on the
+ *     console during test runs. The actual output is still captured
+ *     though to allow later tests with g_test_trap_assert_stderr().
+ * @G_TEST_TRAP_INHERIT_STDIN: If this flag is given, stdin of the
+ *     forked child process is shared with stdin of its parent process.
+ *     It is redirected to <filename>/dev/null</filename> otherwise.
+ *
+ * Test traps are guards around forked tests.
+ * These flags determine what traps to set.
+ */
+
+/**
+ * g_test_trap_assert_passed:
+ *
+ * Assert that the last forked test passed.
+ * See g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_trap_assert_failed:
+ *
+ * Assert that the last forked test failed.
+ * See g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_trap_assert_stdout:
+ * @soutpattern: a glob-style
+ *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ *
+ * Assert that the stdout output of the last forked test matches
+ * @soutpattern. See g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_trap_assert_stdout_unmatched:
+ * @soutpattern: a glob-style
+ *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ *
+ * Assert that the stdout output of the last forked test
+ * does not match @soutpattern. See g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_trap_assert_stderr:
+ * @serrpattern: a glob-style
+ *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ *
+ * Assert that the stderr output of the last forked test
+ * matches @serrpattern. See  g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_trap_assert_stderr_unmatched:
+ * @serrpattern: a glob-style
+ *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ *
+ * Assert that the stderr output of the last forked test
+ * does not match @serrpattern. See g_test_trap_fork().
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_test_rand_bit:
+ *
+ * Get a reproducible random bit (0 or 1), see g_test_rand_int()
+ * for details on test case random numbers.
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert:
+ * @expr: the expression to check
+ *
+ * Debugging macro to terminate the application if the assertion
+ * fails. If the assertion fails (i.e. the expression is not true),
+ * an error message is logged and the application is terminated.
+ *
+ * The macro can be turned off in final releases of code by defining
+ * #G_DISABLE_ASSERT when compiling the application.
+ */
+
+/**
+ * g_assert_not_reached:
+ *
+ * Debugging macro to terminate the application if it is ever
+ * reached. If it is reached, an error message is logged and the
+ * application is terminated.
+ *
+ * The macro can be turned off in final releases of code by defining
+ * #G_DISABLE_ASSERT when compiling the application.
+ */
+
+/**
+ * g_assert_cmpstr:
+ * @s1: a string (may be %NULL)
+ * @cmp: The comparison operator to use.
+ *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ * @s2: another string (may be %NULL)
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if a string comparison fails. The strings are compared
+ * using g_strcmp0().
+ *
+ * The effect of <literal>g_assert_cmpstr (s1, op, s2)</literal> is
+ * the same as <literal>g_assert (g_strcmp0 (s1, s2) op 0)</literal>.
+ * The advantage of this macro is that it can produce a message that
+ * includes the actual values of @s1 and @s2.
+ *
+ * |[
+ *   g_assert_cmpstr (mystring, ==, "fubar");
+ * ]|
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert_cmpint:
+ * @n1: an integer
+ * @cmp: The comparison operator to use.
+ *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ * @n2: another integer
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if an integer comparison fails.
+ *
+ * The effect of <literal>g_assert_cmpint (n1, op, n2)</literal> is
+ * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * of this macro is that it can produce a message that includes the
+ * actual values of @n1 and @n2.
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert_cmpuint:
+ * @n1: an unsigned integer
+ * @cmp: The comparison operator to use.
+ *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ * @n2: another unsigned integer
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if an unsigned integer comparison fails.
+ *
+ * The effect of <literal>g_assert_cmpuint (n1, op, n2)</literal> is
+ * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * of this macro is that it can produce a message that includes the
+ * actual values of @n1 and @n2.
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert_cmphex:
+ * @n1: an unsigned integer
+ * @cmp: The comparison operator to use.
+ *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ * @n2: another unsigned integer
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if an unsigned integer comparison fails.
+ *
+ * This is a variant of g_assert_cmpuint() that displays the numbers
+ * in hexadecimal notation in the message.
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert_cmpfloat:
+ * @n1: an floating point number
+ * @cmp: The comparison operator to use.
+ *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ * @n2: another floating point number
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if a floating point number comparison fails.
+ *
+ * The effect of <literal>g_assert_cmpfloat (n1, op, n2)</literal> is
+ * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * of this macro is that it can produce a message that includes the
+ * actual values of @n1 and @n2.
+ *
+ * Since: 2.16
+ */
+
+/**
+ * g_assert_no_error:
+ * @err: a #GError, possibly %NULL
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if a method has returned a #GError.
+ *
+ * The effect of <literal>g_assert_no_error (err)</literal> is
+ * the same as <literal>g_assert (err == NULL)</literal>. The advantage
+ * of this macro is that it can produce a message that includes
+ * the error message and code.
+ *
+ * Since: 2.20
+ */
+
+/**
+ * g_assert_error:
+ * @err: a #GError, possibly %NULL
+ * @dom: the expected error domain (a #GQuark)
+ * @c: the expected error code
+ *
+ * Debugging macro to terminate the application with a warning
+ * message if a method has not returned the correct #GError.
+ *
+ * The effect of <literal>g_assert_error (err, dom, c)</literal> is
+ * the same as <literal>g_assert (err != NULL &amp;&amp; err->domain
+ * == dom &amp;&amp; err->code == c)</literal>. The advantage of this
+ * macro is that it can produce a message that includes the incorrect
+ * error message and code.
+ *
+ * This can only be used to test for a specific error. If you want to
+ * test that @err is set, but don't care what it's set to, just use
+ * <literal>g_assert (err != NULL)</literal>
+ *
+ * Since: 2.20
+ */
+
+/**
+ * GTestCase:
+ *
+ * An opaque structure representing a test case.
+ */
+
+/**
+ * GTestSuite:
+ *
+ * An opaque structure representing a test suite.
+ */
+
+
 /* Global variable for storing assertion messages; this is the counterpart to
  * glibc's (private) __abort_msg variable, and allows developers and crash
  * analysis systems like Apport and ABRT to fish out assertion messages from
- * core dumps, instead of having to catch them on screen output. */
+ * core dumps, instead of having to catch them on screen output.
+ */
 char *__glib_assert_msg = NULL;
 
 /* --- structures --- */

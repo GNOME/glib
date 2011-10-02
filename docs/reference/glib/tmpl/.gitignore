@@ -23,6 +23,7 @@ gvariant.sgml
 gwakeup.sgml
 hash_tables.sgml
 iochannels.sgml
+keyfile.sgml
 linked_lists_double.sgml
 linked_lists_single.sgml
 main.sgml
@@ -40,6 +41,7 @@ sequence.sgml
 shell.sgml
 spawn.sgml
 string_chunks.sgml
+testing.sgml
 thread_pools.sgml
 threads.sgml
 trees-binary.sgml
