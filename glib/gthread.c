@@ -1213,27 +1213,27 @@ g_thread_cleanup (gpointer data)
        * If it is, the structure is freed in g_thread_join()
        */
       if (!thread->thread.joinable)
-	{
-	  GRealThread *t, *p;
+        {
+          GRealThread *t, *p;
 
-	  G_LOCK (g_thread);
-	  for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
-	    {
-	      if (t == thread)
-		{
-		  if (p)
-		    p->next = t->next;
-		  else
-		    g_thread_all_threads = t->next;
-		  break;
-		}
-	    }
-	  G_UNLOCK (g_thread);
+          G_LOCK (g_thread);
+          for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
+            {
+              if (t == thread)
+                {
+                  if (p)
+                    p->next = t->next;
+                  else
+                    g_thread_all_threads = t->next;
+                  break;
+                }
+            }
+          G_UNLOCK (g_thread);
 
-	  /* Just to make sure, this isn't used any more */
-	  g_system_thread_assign (thread->system_thread, zero_thread);
+          /* Just to make sure, this isn't used any more */
+          g_system_thread_assign (thread->system_thread, zero_thread);
           g_free (thread);
-	}
+        }
     }
 }
 
@@ -1420,13 +1420,13 @@ g_thread_join (GThread* thread)
   for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
     {
       if (t == (GRealThread*) thread)
-	{
-	  if (p)
-	    p->next = t->next;
-	  else
-	    g_thread_all_threads = t->next;
-	  break;
-	}
+        {
+          if (p)
+            p->next = t->next;
+          else
+            g_thread_all_threads = t->next;
+          break;
+        }
     }
   G_UNLOCK (g_thread);
 
