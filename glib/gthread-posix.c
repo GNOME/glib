@@ -63,7 +63,9 @@
 #ifdef HAVE_SCHED_H
 #include <sched.h>
 #endif
-
+#ifdef HAVE_SYS_PRCTL_H
+#include <sys/prctl.h>
+#endif
 
 static void
 g_thread_abort (gint         status,
@@ -1045,6 +1047,14 @@ g_system_thread_equal (gpointer thread1,
                        gpointer thread2)
 {
   return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
+}
+
+void
+g_system_thread_set_name (const gchar *name)
+{
+#ifdef HAVE_SYS_PRCTL_H
+  prctl (PR_SET_NAME, name, 0, 0, 0, 0);
+#endif
 }
 
 /* {{{1 Epilogue */

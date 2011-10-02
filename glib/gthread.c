@@ -1131,6 +1131,9 @@ g_thread_create_proxy (gpointer data)
 
   g_assert (data);
 
+  if (thread->name)
+    g_system_thread_set_name (thread->name);
+
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
 

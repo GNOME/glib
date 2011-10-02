@@ -621,6 +621,12 @@ g_system_thread_equal (gpointer thread1,
    return ((GSystemThread*)thread1)->dummy_pointer == ((GSystemThread*)thread2)->dummy_pointer;
 }
 
+void
+g_system_thread_set_name (const gchar *name)
+{
+  /* FIXME: implement */
+}
+
 /* {{{1 SRWLock and CONDITION_VARIABLE emulation (for Windows XP) */
 
 static CRITICAL_SECTION g_thread_xp_lock;
