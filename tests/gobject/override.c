@@ -94,7 +94,7 @@ struct _TestAClass {
 static void
 test_a_foo (TestI *self)
 {
-  GValue args[1] = { { 0, } };
+  GValue args[1] = { G_VALUE_INIT };
 
   record ("TestA::foo");
 
@@ -179,7 +179,7 @@ struct _TestBClass {
 static void
 test_b_foo (TestI *self)
 {
-  GValue args[1] = { { 0, } };
+  GValue args[1] = { G_VALUE_INIT };
 
   record ("TestB::foo");
 
@@ -195,7 +195,7 @@ test_b_foo (TestI *self)
 static void
 test_b_bar (TestA *self)
 {
-  GValue args[1] = { { 0, } };
+  GValue args[1] = { G_VALUE_INIT };
 
   record ("TestB::bar");
 
@@ -267,7 +267,7 @@ struct _TestCClass {
 static void
 test_c_foo (TestI *self)
 {
-  GValue args[1] = { { 0, } };
+  GValue args[1] = { G_VALUE_INIT };
 
   record ("TestC::foo");
 
@@ -283,7 +283,7 @@ test_c_foo (TestI *self)
 static void
 test_c_bar (TestA *self)
 {
-  GValue args[1] = { { 0, } };
+  GValue args[1] = { G_VALUE_INIT };
 
   record ("TestC::bar");
 
