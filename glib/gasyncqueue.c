@@ -409,33 +409,20 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
 {
   gpointer retval;
 
-  if (!g_queue_peek_tail_link (&queue->queue))
+  if (!g_queue_peek_tail_link (&queue->queue) && wait)
     {
-      if (!wait)
-        return NULL;
-
-      if (!end_time)
+      queue->waiting_threads++;
+      while (!g_queue_peek_tail_link (&queue->queue))
         {
-          queue->waiting_threads++;
-          while (!g_queue_peek_tail_link (&queue->queue))
-            g_cond_wait (&queue->cond, &queue->mutex);
-          queue->waiting_threads--;
+          if (!g_cond_timed_wait (&queue->cond, &queue->mutex, end_time))
+            break;
         }
-      else
-        {
-          queue->waiting_threads++;
-          while (!g_queue_peek_tail_link (&queue->queue))
-            if (!g_cond_timed_wait (&queue->cond, &queue->mutex, end_time))
-              break;
-          queue->waiting_threads--;
-          if (!g_queue_peek_tail_link (&queue->queue))
-            return NULL;
-        }
+      queue->waiting_threads--;
     }
 
   retval = g_queue_pop_tail (&queue->queue);
 
-  g_assert (retval);
+  g_assert (retval || !wait || end_time);
 
   return retval;
 }
