@@ -866,17 +866,15 @@ g_cond_timedwait (GCond  *cond,
  * GPrivate:
  *
  * The #GPrivate struct is an opaque data structure to represent a
- * thread-local data key.  It is approximately equivalent to the
- * <function>pthread_setspecific()</function>/<function>pthread_getspecific()</function>
- * APIs on POSIX and to
- * <function>TlsSetValue()</function>/<function>TlsGetValue<()/function> on
- * Windows.
+ * thread-local data key. It is approximately equivalent to the
+ * pthread_setspecific()/pthread_getspecific() APIs on POSIX and to
+ * TlsSetValue()/TlsGetValue() on Windows.
  *
- * If you don't already know why you might want this functionality, then
- * you probably don't need it.
+ * If you don't already know why you might want this functionality,
+ * then you probably don't need it.
  *
  * #GPrivate is a very limited resource (as far as 128 per program,
- * shared between all libraries).  It is also not possible to destroy a
+ * shared between all libraries). It is also not possible to destroy a
  * #GPrivate after it has been used. As such, it is only ever acceptable
  * to use #GPrivate in static scope, and even then sparingly so.
  *
