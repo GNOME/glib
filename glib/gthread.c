@@ -88,7 +88,7 @@
  * Finally there are primitives to create and manage threads (#GThread).
  *
  * The threading system is initialized with g_thread_init().
- * You may call any other glib functions in the main thread before
+ * You may call any other GLib functions in the main thread before
  * g_thread_init() as long as g_thread_init() is not called from
  * a GLib callback, or with any locks held. However, many libraries
  * above GLib do not support late initialization of threads, so
@@ -97,7 +97,7 @@
  * Please note that since version 2.24 the GObject initialization
  * function g_type_init() initializes threads. Since 2.32, creating
  * a mainloop will do so too. As a consequence, most applications,
- * including those using GTK+ will run with threads enabled.
+ * including those using GTK+, will run with threads enabled.
  *
  * After calling g_thread_init(), GLib is completely thread safe
  * (all global data is automatically locked), but individual data
@@ -582,7 +582,7 @@ void
 g_thread_init_glib (void)
 {
   static gboolean already_done;
-  GRealThread* main_thread;
+  GRealThread *main_thread;
 
   if (already_done)
     return;
@@ -948,7 +948,8 @@ g_thread_new_internal (const gchar  *name,
 {
   GRealThread *result;
   GError *local_error = NULL;
-  g_return_val_if_fail (func, NULL);
+
+  g_return_val_if_fail (func != NULL, NULL);
 
   result = g_new0 (GRealThread, 1);
 
