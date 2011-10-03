@@ -584,23 +584,25 @@ G_THREAD_ERROR
 GThreadError
 
 <SUBSECTION>
-GThreadFunctions
 g_thread_init
 g_thread_supported
 g_thread_get_initialized
 
 <SUBSECTION>
 GThreadFunc
-GThreadPriority
 GThread
-g_thread_create
-g_thread_create_with_stack_size
-g_thread_create_full
+g_thread_new
+g_thread_new_full
 g_thread_self
 g_thread_join
-g_thread_set_priority
 g_thread_yield
 g_thread_exit
+
+<SUBSECTION Deprecated>
+g_thread_create
+g_thread_create_full
+GThreadPriority
+g_thread_set_priority
 g_thread_foreach
 
 <SUBSECTION>
@@ -612,6 +614,14 @@ g_mutex_free
 g_mutex_lock
 g_mutex_trylock
 g_mutex_unlock
+
+<SUBSECTION>
+G_LOCK_DEFINE
+G_LOCK_DEFINE_STATIC
+G_LOCK_EXTERN
+G_LOCK
+G_TRYLOCK
+G_UNLOCK
 
 <SUBSECTION>
 GRecMutex
@@ -633,47 +643,6 @@ g_rw_lock_reader_trylock
 g_rw_lock_reader_unlock
 
 <SUBSECTION>
-GStaticMutex
-G_STATIC_MUTEX_INIT
-g_static_mutex_init
-g_static_mutex_lock
-g_static_mutex_trylock
-g_static_mutex_unlock
-g_static_mutex_get_mutex
-g_static_mutex_free
-
-<SUBSECTION>
-G_LOCK_DEFINE
-G_LOCK_DEFINE_STATIC
-G_LOCK_EXTERN
-G_LOCK
-G_TRYLOCK
-G_UNLOCK
-
-<SUBSECTION>
-GStaticRecMutex
-G_STATIC_REC_MUTEX_INIT
-g_static_rec_mutex_init
-g_static_rec_mutex_lock
-g_static_rec_mutex_trylock
-g_static_rec_mutex_unlock
-g_static_rec_mutex_lock_full
-g_static_rec_mutex_unlock_full
-g_static_rec_mutex_free
-
-<SUBSECTION>
-GStaticRWLock
-G_STATIC_RW_LOCK_INIT
-g_static_rw_lock_init
-g_static_rw_lock_reader_lock
-g_static_rw_lock_reader_trylock
-g_static_rw_lock_reader_unlock
-g_static_rw_lock_writer_lock
-g_static_rw_lock_writer_trylock
-g_static_rw_lock_writer_unlock
-g_static_rw_lock_free
-
-<SUBSECTION>
 GCond
 g_cond_new
 g_cond_free
@@ -692,16 +661,8 @@ g_private_get
 g_private_set
 g_private_replace
 
-<SUBSECTION>
+<SUBSECTION Deprecated>
 g_private_new
-
-<SUBSECTION>
-GStaticPrivate
-G_STATIC_PRIVATE_INIT
-g_static_private_init
-g_static_private_get
-g_static_private_set
-g_static_private_free
 
 <SUBSECTION>
 GOnce
@@ -719,7 +680,49 @@ g_pointer_bit_lock
 g_pointer_bit_trylock
 g_pointer_bit_unlock
 
+<SUBSECTION Deprecated>
+GStaticMutex
+G_STATIC_MUTEX_INIT
+g_static_mutex_init
+g_static_mutex_lock
+g_static_mutex_trylock
+g_static_mutex_unlock
+g_static_mutex_get_mutex
+g_static_mutex_free
+
+<SUBSECTION Deprecated>
+GStaticRecMutex
+G_STATIC_REC_MUTEX_INIT
+g_static_rec_mutex_init
+g_static_rec_mutex_lock
+g_static_rec_mutex_trylock
+g_static_rec_mutex_unlock
+g_static_rec_mutex_lock_full
+g_static_rec_mutex_unlock_full
+g_static_rec_mutex_free
+
+<SUBSECTION Deprecated>
+GStaticRWLock
+G_STATIC_RW_LOCK_INIT
+g_static_rw_lock_init
+g_static_rw_lock_reader_lock
+g_static_rw_lock_reader_trylock
+g_static_rw_lock_reader_unlock
+g_static_rw_lock_writer_lock
+g_static_rw_lock_writer_trylock
+g_static_rw_lock_writer_unlock
+g_static_rw_lock_free
+
+<SUBSECTION Deprecated>
+GStaticPrivate
+G_STATIC_PRIVATE_INIT
+g_static_private_init
+g_static_private_get
+g_static_private_set
+g_static_private_free
+
 <SUBSECTION Private>
+GThreadFunctions
 G_THREADS_ENABLED
 g_static_mutex_get_mutex_impl
 g_static_mutex_get_mutex_impl_shortcut

@@ -39,7 +39,7 @@
  * @G_THREAD_PRIORITY_HIGH: a priority higher than normal
  * @G_THREAD_PRIORITY_URGENT: the highest priority
  *
- * Deprecated:2.32: thread priorities no longer have any effect.
+ * Deprecated:2.32: Thread priorities no longer have any effect.
  */
 
 /**
@@ -213,10 +213,9 @@ g_thread_create_full (GThreadFunc       func,
  *
  * Since: 2.10
  *
- * Deprecated:2.32: There are not very many interesting things you can
- *     do with a #GThread, except comparing it with one that was returned
- *     from g_thread_create(). There are better ways to find out if your
- *     thread is still alive.
+ * Deprecated:2.32: There aren't many things you can do with a #GThread,
+ *     except comparing it with one that was returned from g_thread_create().
+ *     There are better ways to find out if your thread is still alive.
  */
 void
 g_thread_foreach (GFunc    thread_func,

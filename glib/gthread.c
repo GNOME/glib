@@ -83,7 +83,7 @@
  * individual bits for locks (g_bit_lock()). There are primitives
  * for condition variables to allow synchronization of threads (#GCond).
  * There are primitives for thread-private data - data that every thread
- * has a private instance of (#GPrivate, #GStaticPrivate). There are
+ * has a private instance of (#GPrivate). There are
  * facilities for one-time initialization (#GOnce, g_once_init_enter()).
  * Finally there are primitives to create and manage threads (#GThread).
  *
@@ -91,7 +91,7 @@
  * You may call any other glib functions in the main thread before
  * g_thread_init() as long as g_thread_init() is not called from
  * a GLib callback, or with any locks held. However, many libraries
- * above GLib does not support late initialization of threads, so
+ * above GLib do not support late initialization of threads, so
  * doing this should be avoided if possible.
  *
  * Please note that since version 2.24 the GObject initialization
@@ -125,17 +125,15 @@
 
 /**
  * G_LOCK_DEFINE:
- * @name: the name of the lock.
+ * @name: the name of the lock
  *
- * The %G_LOCK_* macros provide a convenient interface to #GMutex
- * with the advantage that they will expand to nothing in programs
- * compiled against a thread-disabled GLib, saving code and memory
- * there. #G_LOCK_DEFINE defines a lock. It can appear anywhere
+ * The %G_LOCK_* macros provide a convenient interface to #GMutex.
+ * #G_LOCK_DEFINE defines a lock. It can appear in any place where
  * variable definitions may appear in programs, i.e. in the first block
  * of a function or outside of functions. The @name parameter will be
  * mangled to get the name of the #GMutex. This means that you
  * can use names of existing variables as the parameter - e.g. the name
- * of the variable you intent to protect with the lock. Look at our
+ * of the variable you intend to protect with the lock. Look at our
  * <function>give_me_next_number()</function> example using the
  * %G_LOCK_* macros:
  *
@@ -162,14 +160,14 @@
 
 /**
  * G_LOCK_DEFINE_STATIC:
- * @name: the name of the lock.
+ * @name: the name of the lock
  *
  * This works like #G_LOCK_DEFINE, but it creates a static object.
  */
 
 /**
  * G_LOCK_EXTERN:
- * @name: the name of the lock.
+ * @name: the name of the lock
  *
  * This declares a lock, that is defined with #G_LOCK_DEFINE in another
  * module.
@@ -177,7 +175,7 @@
 
 /**
  * G_LOCK:
- * @name: the name of the lock.
+ * @name: the name of the lock
  *
  * Works like g_mutex_lock(), but for a lock defined with
  * #G_LOCK_DEFINE.
@@ -185,7 +183,7 @@
 
 /**
  * G_TRYLOCK:
- * @name: the name of the lock.
+ * @name: the name of the lock
  * @Returns: %TRUE, if the lock could be locked.
  *
  * Works like g_mutex_trylock(), but for a lock defined with
@@ -194,7 +192,7 @@
 
 /**
  * G_UNLOCK:
- * @name: the name of the lock.
+ * @name: the name of the lock
  *
  * Works like g_mutex_unlock(), but for a lock defined with
  * #G_LOCK_DEFINE.
@@ -486,20 +484,24 @@
 /**
  * GThread:
  *
- * The #GThread struct represents a running thread.
- *
- * Resources for a joinable thread are not fully released
- * until g_thread_join() is called for that thread.
+ * The #GThread struct represents a running thread. This struct
+ * is returned by g_thread_new() or g_thread_new_full(). You can
+ * obtain the #GThread struct representing the current thead by
+ * calling g_thread_self().
  */
 
 /**
  * GThreadFunc:
  * @data: data passed to the thread
- * @Returns: the return value of the thread, which will be returned by
- *     g_thread_join()
  *
  * Specifies the type of the @func functions passed to
- * g_thread_create() or g_thread_create_full().
+ * g_thread_new() or g_thread_new_full().
+ *
+ * If the thread is joinable, the return value of this function
+ * is returned by a g_thread_join() call waiting for the thread.
+ * If the thread is not joinable, the return value is ignored.
+ *
+ * Returns: the return value of the thread
  */
 
 /**
@@ -840,7 +842,7 @@ g_thread_create_proxy (gpointer data)
   g_private_set (&g_thread_specific_private, data);
 
   /* The lock makes sure that thread->system_thread is written,
-   * before thread->thread.func is called. See g_thread_create().
+   * before thread->thread.func is called. See g_thread_new_internal().
    */
   G_LOCK (g_thread_new);
   G_UNLOCK (g_thread_new);
@@ -858,23 +860,23 @@ g_thread_create_proxy (gpointer data)
  * @joinable: should this thread be joinable?
  * @error: return location for error
  *
- * This function creates a new thread.
+ * This function creates a new thread. The new thread starts by
+ * invoking @func with the argument data. The thread will run
+ * until @func returns or until g_thread_exit() is called.
  *
  * The @name can be useful for discriminating threads in
  * a debugger. Some systems restrict the length of @name to
  * 16 bytes.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
- * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates.
- *
- * The new thread executes the function @func with the argument @data.
- * If the thread was created successfully, it is returned.
+ * calling g_thread_join(). Resources for a joinable thread are not
+ * fully released until g_thread_join() is called for that thread.
+ * Otherwise the thread will just disappear when it terminates.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
- * Returns: the new #GThread on success
+ * Returns: the new #GThread, or %NULL if an error occurred
  *
  * Since: 2.32
  */
@@ -897,7 +899,9 @@ g_thread_new (const gchar  *name,
  * @stack_size: a stack size for the new thread
  * @error: return location for error
  *
- * This function creates a new thread.
+ * This function creates a new thread. The new thread starts by
+ * invoking @func with the argument data. The thread will run
+ * until @func returns or until g_thread_exit() is called.
  *
  * The @name can be useful for discriminating threads in
  * a debugger. Some systems restrict the length of @name to
@@ -905,24 +909,20 @@ g_thread_new (const gchar  *name,
  *
  * If the underlying thread implementation supports it, the thread
  * gets a stack size of @stack_size or the default value for the
- * current platform, if @stack_size is 0.
+ * current platform, if @stack_size is 0. Note that you should only
+ * use a non-zero @stack_size if you really can't use the default.
+ * In most cases, using g_thread_new() (which doesn't take a
+ * @stack_size) is better.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
- * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates.
- *
- * The new thread executes the function @func with the argument @data.
- * If the thread was created successfully, it is returned.
+ * calling g_thread_join(). Resources for a joinable thread are not
+ * fully released until g_thread_join() is called for that thread.
+ * Otherwise the thread will just disappear when it terminates.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
- * <note><para>Only use a non-zero @stack_size if you
- * really can't use the default instead. g_thread_new()
- * does not take @stack_size, as it should only be used in cases
- * in which it is unavoidable.</para></note>
- *
- * Returns: the new #GThread on success
+ * Returns: the new #GThread, or %NULL if an error occurred
  *
  * Since: 2.32
  */
@@ -980,18 +980,15 @@ g_thread_new_internal (const gchar  *name,
  * g_thread_exit:
  * @retval: the return value of this thread
  *
- * Exits the current thread. If another thread is waiting for that
- * thread using g_thread_join() and the current thread is joinable, the
- * waiting thread will be woken up and get @retval as the return value
- * of g_thread_join(). If the current thread is not joinable, @retval
- * is ignored. Calling
+ * Terminates the current thread.
  *
- * |[
- *   g_thread_exit (retval);
- * ]|
+ * If another thread is waiting for that thread using g_thread_join()
+ * and the current thread is joinable, the waiting thread will be woken
+ * up and get @retval as the return value of g_thread_join(). If the
+ * current thread is not joinable, @retval is ignored.
  *
- * is equivalent to returning @retval from the function @func, as given
- * to g_thread_create().
+ * Calling <literal>g_thread_exit (retval)</literal> is equivalent to
+ * returning @retval from the function @func, as given to g_thread_new().
  *
  * <note><para>Never call g_thread_exit() from within a thread of a
  * #GThreadPool, as that will mess up the bookkeeping and lead to funny
@@ -1008,14 +1005,23 @@ g_thread_exit (gpointer retval)
 
 /**
  * g_thread_join:
- * @thread: a #GThread to be waited for
+ * @thread: a joinable #GThread
  *
- * Waits until @thread finishes, i.e. the function @func, as given to
- * g_thread_create(), returns or g_thread_exit() is called by @thread.
- * All resources of @thread including the #GThread struct are released.
- * @thread must have been created with @joinable=%TRUE in
- * g_thread_create(). The value returned by @func or given to
- * g_thread_exit() by @thread is returned by this function.
+ * Waits until @thread finishes, i.e. the function @func, as
+ * given to g_thread_new(), returns or g_thread_exit() is called.
+ * If @thread has already terminated, then g_thread_join()
+ * returns immediately. @thread must be joinable.
+ *
+ * Any thread can wait for any other (joinable) thread by calling
+ * g_thread_join(), not just its 'creator'. Calling g_thread_join()
+ * from multiple threads for the same @thread leads to undefined
+ * behaviour.
+ *
+ * The value returned by @func or given to g_thread_exit() is
+ * returned by this function.
+ *
+ * All resources of @thread including the #GThread struct are
+ * released before g_thread_join() returns.
  *
  * Returns: the return value of the thread
  */
@@ -1052,10 +1058,10 @@ g_thread_join (GThread *thread)
 /**
  * g_thread_self:
  *
- * This functions returns the #GThread corresponding to the calling
- * thread.
+ * This functions returns the #GThread corresponding to the
+ * current thread.
  *
- * Returns: the current thread
+ * Returns: the #GThread representing the current thread
  */
 GThread*
 g_thread_self (void)
@@ -1088,7 +1094,7 @@ g_thread_self (void)
 /**
  * g_mutex_new:
  *
- * Allocated and initializes a new #GMutex.
+ * Allocates and initializes a new #GMutex.
  *
  * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
  */
@@ -1144,6 +1150,9 @@ g_cond_new (void)
  * @cond: a #GCond
  *
  * Destroys a #GCond that has been created with g_cond_new().
+ *
+ * Calling g_cond_free() for a #GCond on which threads are
+ * blocking leads to undefined behaviour.
  */
 void
 g_cond_free (GCond *cond)
