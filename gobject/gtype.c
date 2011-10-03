@@ -2667,6 +2667,12 @@ g_type_register_static_simple (GType             parent_type,
 {
   GTypeInfo info;
 
+  /* Instances are not allowed to be larger than this. If you have a big
+   * fixed-length array or something, point to it instead.
+   */
+  g_return_val_if_fail (class_size <= G_MAXUINT16, G_TYPE_INVALID);
+  g_return_val_if_fail (instance_size <= G_MAXUINT16, G_TYPE_INVALID);
+
   info.class_size = class_size;
   info.base_init = NULL;
   info.base_finalize = NULL;
