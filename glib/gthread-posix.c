@@ -78,6 +78,58 @@ g_thread_abort (gint         status,
 
 /* {{{1 GMutex */
 
+static pthread_mutex_t *
+g_mutex_impl_new (void)
+{
+  pthread_mutexattr_t *pattr = NULL;
+  pthread_mutex_t *mutex;
+  gint status;
+
+  mutex = malloc (sizeof (pthread_mutex_t));
+  if G_UNLIKELY (mutex == NULL)
+    g_thread_abort (errno, "malloc");
+
+#ifdef PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
+  pthread_mutexattr_t attr;
+  pthread_mutexattr_init (&attr);
+  pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_ADAPTIVE_NP);
+  pattr = &attr;
+#endif
+
+  if G_UNLIKELY ((status = pthread_mutex_init (mutex, pattr)) != 0)
+    g_thread_abort (status, "pthread_mutex_init");
+
+#ifdef PTHREAD_ADAPTIVE_MUTEX_NP
+  pthread_mutexattr_destroy (&attr);
+#endif
+
+  return mutex;
+}
+
+static void
+g_mutex_impl_free (pthread_mutex_t *mutex)
+{
+  pthread_mutex_destroy (mutex);
+  free (mutex);
+}
+
+static pthread_mutex_t *
+g_mutex_get_impl (GMutex *mutex)
+{
+  pthread_mutex_t *impl = mutex->impl;
+
+  if G_UNLIKELY (impl == NULL)
+    {
+      impl = g_mutex_impl_new ();
+      if (!g_atomic_pointer_compare_and_exchange (&mutex->impl, NULL, impl))
+        g_mutex_impl_free (impl);
+      impl = mutex->impl;
+    }
+
+  return impl;
+}
+
+
 /**
  * g_mutex_init:
  * @mutex: an uninitialized #GMutex
@@ -113,21 +165,7 @@ g_thread_abort (gint         status,
 void
 g_mutex_init (GMutex *mutex)
 {
-  gint status;
-  pthread_mutexattr_t *pattr = NULL;
-#ifdef PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
-  pthread_mutexattr_t attr;
-  pthread_mutexattr_init (&attr);
-  pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_ADAPTIVE_NP);
-  pattr = &attr;
-#endif
-
-  if G_UNLIKELY ((status = pthread_mutex_init (&mutex->impl, pattr)) != 0)
-    g_thread_abort (status, "pthread_mutex_init");
-
-#ifdef PTHREAD_ADAPTIVE_MUTEX_NP
-  pthread_mutexattr_destroy (&attr);
-#endif
+  mutex->impl = g_mutex_impl_new ();
 }
 
 /**
@@ -147,10 +185,7 @@ g_mutex_init (GMutex *mutex)
 void
 g_mutex_clear (GMutex *mutex)
 {
-  gint status;
-
-  if G_UNLIKELY ((status = pthread_mutex_destroy (&mutex->impl)) != 0)
-    g_thread_abort (status, "pthread_mutex_destroy");
+  g_mutex_impl_free (mutex->impl);
 }
 
 /**
@@ -174,7 +209,7 @@ g_mutex_lock (GMutex *mutex)
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_mutex_lock (&mutex->impl)) != 0)
+  if G_UNLIKELY ((status = pthread_mutex_lock (g_mutex_get_impl (mutex))) != 0)
     g_thread_abort (status, "pthread_mutex_lock");
 }
 
@@ -196,7 +231,7 @@ g_mutex_unlock (GMutex *mutex)
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_mutex_unlock (&mutex->impl)) != 0)
+  if G_UNLIKELY ((status = pthread_mutex_unlock (g_mutex_get_impl (mutex))) != 0)
     g_thread_abort (status, "pthread_mutex_lock");
 }
 
@@ -223,7 +258,7 @@ g_mutex_trylock (GMutex *mutex)
 {
   gint status;
 
-  if G_LIKELY ((status = pthread_mutex_trylock (&mutex->impl)) == 0)
+  if G_LIKELY ((status = pthread_mutex_trylock (g_mutex_get_impl (mutex))) == 0)
     return TRUE;
 
   if G_UNLIKELY (status != EBUSY)
@@ -261,7 +296,7 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
 {
   pthread_mutex_t *impl = rec_mutex->impl;
 
-  if G_UNLIKELY (rec_mutex->impl == NULL)
+  if G_UNLIKELY (impl == NULL)
     {
       impl = g_rec_mutex_impl_new ();
       if (!g_atomic_pointer_compare_and_exchange (&rec_mutex->impl, NULL, impl))
@@ -330,8 +365,7 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
 void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
 {
-  if (rec_mutex->impl)
-    g_rec_mutex_impl_free (rec_mutex->impl);
+  g_rec_mutex_impl_free (rec_mutex->impl);
 }
 
 /**
@@ -395,6 +429,45 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
 
 /* {{{1 GRWLock */
 
+static pthread_rwlock_t *
+g_rw_lock_impl_new (void)
+{
+  pthread_rwlock_t *rwlock;
+  gint status;
+
+  rwlock = malloc (sizeof (pthread_rwlock_t));
+  if G_UNLIKELY (rwlock == NULL)
+    g_thread_abort (errno, "malloc");
+
+  if G_UNLIKELY ((status = pthread_rwlock_init (rwlock, NULL)) != 0)
+    g_thread_abort (status, "pthread_rwlock_init");
+
+  return rwlock;
+}
+
+static void
+g_rw_lock_impl_free (pthread_rwlock_t *rwlock)
+{
+  pthread_rwlock_destroy (rwlock);
+  free (rwlock);
+}
+
+static pthread_rwlock_t *
+g_rw_lock_get_impl (GRWLock *lock)
+{
+  pthread_rwlock_t *impl = lock->impl;
+
+  if G_UNLIKELY (impl == NULL)
+    {
+      impl = g_rw_lock_impl_new ();
+      if (!g_atomic_pointer_compare_and_exchange (&lock->impl, NULL, impl))
+        g_rw_lock_impl_free (impl);
+      impl = lock->impl;
+    }
+
+  return impl;
+}
+
 /**
  * g_rw_lock_init:
  * @rw_lock: an uninitialized #GRWLock
@@ -429,7 +502,7 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
 void
 g_rw_lock_init (GRWLock *rw_lock)
 {
-  pthread_rwlock_init (&rw_lock->impl, NULL);
+  rw_lock->impl = g_rw_lock_impl_new ();
 }
 
 /**
@@ -446,7 +519,7 @@ g_rw_lock_init (GRWLock *rw_lock)
 void
 g_rw_lock_clear (GRWLock *rw_lock)
 {
-  pthread_rwlock_destroy (&rw_lock->impl);
+  g_rw_lock_impl_free (rw_lock->impl);
 }
 
 /**
@@ -462,7 +535,7 @@ g_rw_lock_clear (GRWLock *rw_lock)
 void
 g_rw_lock_writer_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_wrlock (&rw_lock->impl);
+  pthread_rwlock_wrlock (g_rw_lock_get_impl (rw_lock));
 }
 
 /**
@@ -480,7 +553,7 @@ g_rw_lock_writer_lock (GRWLock *rw_lock)
 gboolean
 g_rw_lock_writer_trylock (GRWLock *rw_lock)
 {
-  if (pthread_rwlock_trywrlock (&rw_lock->impl) != 0)
+  if (pthread_rwlock_trywrlock (g_rw_lock_get_impl (rw_lock)) != 0)
     return FALSE;
 
   return TRUE;
@@ -500,7 +573,7 @@ g_rw_lock_writer_trylock (GRWLock *rw_lock)
 void
 g_rw_lock_writer_unlock (GRWLock *rw_lock)
 {
-  pthread_rwlock_unlock (&rw_lock->impl);
+  pthread_rwlock_unlock (g_rw_lock_get_impl (rw_lock));
 }
 
 /**
@@ -519,7 +592,7 @@ g_rw_lock_writer_unlock (GRWLock *rw_lock)
 void
 g_rw_lock_reader_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_rdlock (&rw_lock->impl);
+  pthread_rwlock_rdlock (g_rw_lock_get_impl (rw_lock));
 }
 
 /**
@@ -537,7 +610,7 @@ g_rw_lock_reader_lock (GRWLock *rw_lock)
 gboolean
 g_rw_lock_reader_trylock (GRWLock *rw_lock)
 {
-  if (pthread_rwlock_tryrdlock (&rw_lock->impl) != 0)
+  if (pthread_rwlock_tryrdlock (g_rw_lock_get_impl (rw_lock)) != 0)
     return FALSE;
 
   return TRUE;
@@ -557,10 +630,49 @@ g_rw_lock_reader_trylock (GRWLock *rw_lock)
 void
 g_rw_lock_reader_unlock (GRWLock *rw_lock)
 {
-  pthread_rwlock_unlock (&rw_lock->impl);
+  pthread_rwlock_unlock (g_rw_lock_get_impl (rw_lock));
 }
 
 /* {{{1 GCond */
+
+static pthread_cond_t *
+g_cond_impl_new (void)
+{
+  pthread_cond_t *cond;
+  gint status;
+
+  cond = malloc (sizeof (pthread_cond_t));
+  if G_UNLIKELY (cond == NULL)
+    g_thread_abort (errno, "malloc");
+
+  if G_UNLIKELY ((status = pthread_cond_init (cond, NULL)) != 0)
+    g_thread_abort (status, "pthread_cond_init");
+
+  return cond;
+}
+
+static void
+g_cond_impl_free (pthread_cond_t *cond)
+{
+  pthread_cond_destroy (cond);
+  free (cond);
+}
+
+static pthread_cond_t *
+g_cond_get_impl (GCond *cond)
+{
+  pthread_cond_t *impl = cond->impl;
+
+  if G_UNLIKELY (impl == NULL)
+    {
+      impl = g_cond_impl_new ();
+      if (!g_atomic_pointer_compare_and_exchange (&cond->impl, NULL, impl))
+        g_cond_impl_free (impl);
+      impl = cond->impl;
+    }
+
+  return impl;
+}
 
 /**
  * g_cond_init:
@@ -585,10 +697,7 @@ g_rw_lock_reader_unlock (GRWLock *rw_lock)
 void
 g_cond_init (GCond *cond)
 {
-  gint status;
-
-  if G_UNLIKELY ((status = pthread_cond_init (&cond->impl, NULL)) != 0)
-    g_thread_abort (status, "pthread_cond_init");
+  cond->impl = g_cond_impl_new ();
 }
 
 /**
@@ -608,10 +717,7 @@ g_cond_init (GCond *cond)
 void
 g_cond_clear (GCond *cond)
 {
-  gint status;
-
-  if G_UNLIKELY ((status = pthread_cond_destroy (&cond->impl)) != 0)
-    g_thread_abort (status, "pthread_cond_destroy");
+  g_cond_impl_free (cond->impl);
 }
 
 /**
@@ -631,7 +737,7 @@ g_cond_wait (GCond  *cond,
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_cond_wait (&cond->impl, &mutex->impl)) != 0)
+  if G_UNLIKELY ((status = pthread_cond_wait (g_cond_get_impl (cond), g_mutex_get_impl (mutex))) != 0)
     g_thread_abort (status, "pthread_cond_wait");
 }
 
@@ -652,7 +758,7 @@ g_cond_signal (GCond *cond)
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_cond_signal (&cond->impl)) != 0)
+  if G_UNLIKELY ((status = pthread_cond_signal (g_cond_get_impl (cond))) != 0)
     g_thread_abort (status, "pthread_cond_signal");
 }
 
@@ -673,7 +779,7 @@ g_cond_broadcast (GCond *cond)
 {
   gint status;
 
-  if G_UNLIKELY ((status = pthread_cond_broadcast (&cond->impl)) != 0)
+  if G_UNLIKELY ((status = pthread_cond_broadcast (g_cond_get_impl (cond))) != 0)
     g_thread_abort (status, "pthread_cond_broadcast");
 }
 
@@ -714,7 +820,7 @@ g_cond_timed_wait (GCond    *cond,
   end_time.tv_sec = abs_time->tv_sec;
   end_time.tv_nsec = abs_time->tv_usec * 1000;
 
-  if ((status = pthread_cond_timedwait (&cond->impl, &mutex->impl, &end_time)) == 0)
+  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &end_time)) == 0)
     return TRUE;
 
   if G_UNLIKELY (status != ETIMEDOUT)
@@ -748,7 +854,7 @@ g_cond_timedwait (GCond  *cond,
   end_time.tv_sec = abs_time / 1000000;
   end_time.tv_nsec = (abs_time % 1000000) * 1000;
 
-  if ((status = pthread_cond_timedwait (&cond->impl, &mutex->impl, &end_time)) == 0)
+  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &end_time)) == 0)
     return TRUE;
 
   if G_UNLIKELY (status != ETIMEDOUT)

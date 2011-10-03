@@ -59,8 +59,6 @@ typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GStaticPrivate  GStaticPrivate;
 
-#ifdef G_OS_WIN32
-
 #define G_MUTEX_INIT { NULL }
 struct _GMutex
 {
@@ -78,33 +76,6 @@ struct _GCond
 {
   gpointer impl;
 };
-#else
-
-#include <pthread.h>
-
-#ifdef PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
-#define G_MUTEX_INIT { PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP }
-#else
-#define G_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
-#endif
-struct _GMutex
-{
-  pthread_mutex_t impl;
-};
-
-#define G_RW_LOCK_INIT { PTHREAD_RWLOCK_INITIALIZER }
-struct _GRWLock
-{
-  pthread_rwlock_t impl;
-};
-
-#define G_COND_INIT { PTHREAD_COND_INITIALIZER }
-struct _GCond
-{
-  pthread_cond_t impl;
-};
-
-#endif
 
 #define G_REC_MUTEX_INIT { NULL }
 struct _GRecMutex
