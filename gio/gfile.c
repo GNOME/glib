@@ -3373,7 +3373,9 @@ g_file_make_directory (GFile         *file,
  *
  * Creates a directory and any parent directories that may not exist similar to
  * 'mkdir -p'. If the file system does not support creating directories, this
- * function will fail, setting @error to %G_IO_ERROR_NOT_SUPPORTED.
+ * function will fail, setting @error to %G_IO_ERROR_NOT_SUPPORTED. If the
+ * directory itself already exists, this function will fail setting @error
+ * to %G_IO_ERROR_EXISTS, unlike the similar g_mkdir_with_parents().
  * 
  * For a local #GFile the newly created directories will have the default
  * (current) ownership and permissions of the current process.
