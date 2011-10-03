@@ -71,13 +71,8 @@ g_thread_abort (gint         status,
  * that only get the kernel involved in cases of contention (similar
  * to how futex()-based mutexes work on Linux).  The biggest advantage
  * of these new types is that they can be statically initialised to
- * zero.  This allows us to use them directly and still support:
- *
- *   GMutex mutex = G_MUTEX_INIT;
- *
- * and
- *
- *   GCond cond = G_COND_INIT;
+ * zero.  That means that they are completely ABI compatible with our
+ * GMutex and GCond APIs.
  *
  * Unfortunately, Windows XP lacks these facilities and GLib still
  * needs to support Windows XP.  Our approach here is as follows:

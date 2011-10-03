@@ -709,7 +709,7 @@ g_variant_type_info_member_info (GVariantTypeInfo *info,
 }
 
 /* == new/ref/unref == */
-static GRecMutex g_variant_type_info_lock = G_REC_MUTEX_INIT;
+static GRecMutex g_variant_type_info_lock;
 static GHashTable *g_variant_type_info_table;
 
 /* < private >

@@ -22,8 +22,8 @@
 
 #include <glib.h>
 
-static GCond cond = G_COND_INIT;
-static GMutex mutex = G_MUTEX_INIT;
+static GCond cond;
+static GMutex mutex;
 static volatile gint next;
 
 static void

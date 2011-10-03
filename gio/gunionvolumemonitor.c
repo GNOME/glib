@@ -52,7 +52,7 @@ static void g_union_volume_monitor_remove_monitor (GUnionVolumeMonitor *union_mo
 #define g_union_volume_monitor_get_type _g_union_volume_monitor_get_type
 G_DEFINE_TYPE (GUnionVolumeMonitor, g_union_volume_monitor, G_TYPE_VOLUME_MONITOR);
 
-static GRecMutex the_volume_monitor_mutex = G_REC_MUTEX_INIT;
+static GRecMutex the_volume_monitor_mutex;
 
 static GUnionVolumeMonitor *the_volume_monitor = NULL;
 

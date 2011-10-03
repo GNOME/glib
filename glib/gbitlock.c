@@ -36,7 +36,7 @@
 #endif
 
 #ifndef HAVE_FUTEX
-static GMutex g_futex_mutex = G_MUTEX_INIT;
+static GMutex g_futex_mutex;
 static GSList *g_futex_address_list = NULL;
 #endif
 

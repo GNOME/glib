@@ -139,8 +139,7 @@ g_mutex_get_impl (GMutex *mutex)
  * This function is useful to initialize a mutex that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a mutex that has been
- * created with g_mutex_new(). Also see #G_MUTEX_INIT for an
- * alternative way to initialize statically allocated mutexes.
+ * created with g_mutex_new() or that has been statically allocated.
  *
  * |[
  *   typedef struct {
@@ -317,9 +316,8 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
  * that has been allocated on the stack, or as part of a larger
  * structure.
  * It is not necessary to initialize a recursive mutex that has
- * been created with g_rec_mutex_new(). Also see #G_REC_MUTEX_INIT
- * for an alternative way to initialize statically allocated
- * recursive mutexes.
+ * been created with g_rec_mutex_new(). It is not necessary to
+ * initialise a recursive mutex that has been statically allocated.
  *
  * |[
  *   typedef struct {
@@ -475,9 +473,9 @@ g_rw_lock_get_impl (GRWLock *lock)
  * Initializes a #GRWLock so that it can be used.
  *
  * This function is useful to initialize a lock that has been
- * allocated on the stack, or as part of a larger structure.
- * Also see #G_RW_LOCK_INIT for an alternative way to initialize
- * statically allocated locks.
+ * allocated on the stack, or as part of a larger structure.  It is not
+ * necessary to initialise a reader-writer lock that has been statically
+ * allocated.
  *
  * |[
  *   typedef struct {
@@ -683,8 +681,7 @@ g_cond_get_impl (GCond *cond)
  * This function is useful to initialize a #GCond that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a #GCond that has been
- * created with g_cond_new(). Also see #G_COND_INIT for an
- * alternative way to initialize statically allocated #GConds.
+ * created with g_cond_new() or that has been statically allocated.
  *
  * To undo the effect of g_cond_init() when a #GCond is no longer
  * needed, use g_cond_clear().

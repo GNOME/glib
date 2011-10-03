@@ -368,8 +368,8 @@ typedef struct {
 
 
 /* --- variables --- */
-static GRWLock         type_rw_lock = G_RW_LOCK_INIT;
-static GRecMutex       class_init_rec_mutex = G_REC_MUTEX_INIT;
+static GRWLock         type_rw_lock;
+static GRecMutex       class_init_rec_mutex;
 static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
 static guint           static_n_iface_check_funcs = 0;

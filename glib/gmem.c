@@ -623,7 +623,7 @@ static guint *profile_data = NULL;
 static gsize profile_allocs = 0;
 static gsize profile_zinit = 0;
 static gsize profile_frees = 0;
-static GMutex gmem_profile_mutex = G_MUTEX_INIT;
+static GMutex gmem_profile_mutex;
 #ifdef  G_ENABLE_DEBUG
 static volatile gsize g_trap_free_size = 0;
 static volatile gsize g_trap_realloc_size = 0;

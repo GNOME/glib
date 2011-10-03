@@ -40,13 +40,12 @@ test_mutex1 (void)
 static void
 test_mutex2 (void)
 {
-  GMutex mutex = G_MUTEX_INIT;
+  static GMutex mutex;
 
   g_mutex_lock (&mutex);
   g_mutex_unlock (&mutex);
   g_mutex_lock (&mutex);
   g_mutex_unlock (&mutex);
-  g_mutex_clear (&mutex);
 }
 
 static void
@@ -65,7 +64,7 @@ test_mutex3 (void)
 static void
 test_mutex4 (void)
 {
-  GMutex mutex = G_MUTEX_INIT;
+  static GMutex mutex;
   gboolean ret;
 
   ret = g_mutex_trylock (&mutex);
@@ -76,7 +75,6 @@ test_mutex4 (void)
     g_mutex_unlock (&mutex);
 
   g_mutex_unlock (&mutex);
-  g_mutex_clear (&mutex);
 }
 
 #define LOCKS      48
@@ -159,7 +157,7 @@ test_mutex5 (void)
 static gboolean
 do_addition (gint *value)
 {
-  static GMutex lock = G_MUTEX_INIT;
+  static GMutex lock;
   gboolean more;
 
   /* test performance of "good" cases (ie: short critical sections) */

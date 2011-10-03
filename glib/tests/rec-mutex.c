@@ -38,19 +38,18 @@ test_rec_mutex1 (void)
 static void
 test_rec_mutex2 (void)
 {
-  GRecMutex mutex = G_REC_MUTEX_INIT;
+  static GRecMutex mutex;
 
   g_rec_mutex_lock (&mutex);
   g_rec_mutex_unlock (&mutex);
   g_rec_mutex_lock (&mutex);
   g_rec_mutex_unlock (&mutex);
-  g_rec_mutex_clear (&mutex);
 }
 
 static void
 test_rec_mutex3 (void)
 {
-  GRecMutex mutex = G_REC_MUTEX_INIT;
+  static GRecMutex mutex;
   gboolean ret;
 
   ret = g_rec_mutex_trylock (&mutex);
@@ -61,7 +60,6 @@ test_rec_mutex3 (void)
 
   g_rec_mutex_unlock (&mutex);
   g_rec_mutex_unlock (&mutex);
-  g_rec_mutex_clear (&mutex);
 }
 
 #define LOCKS      48

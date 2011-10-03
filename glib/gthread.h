@@ -59,25 +59,21 @@ typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GStaticPrivate  GStaticPrivate;
 
-#define G_MUTEX_INIT { NULL }
 struct _GMutex
 {
   gpointer impl;
 };
 
-#define G_RW_LOCK_INIT { NULL }
 struct _GRWLock
 {
   gpointer impl;
 };
 
-#define G_COND_INIT { NULL }
 struct _GCond
 {
   gpointer impl;
 };
 
-#define G_REC_MUTEX_INIT { NULL }
 struct _GRecMutex
 {
   gpointer impl;
@@ -168,8 +164,7 @@ g_once_init_enter (volatile gsize *value_location)
 
 #define G_LOCK_NAME(name)               g__ ## name ## _lock
 #define G_LOCK_DEFINE_STATIC(name)    static G_LOCK_DEFINE (name)
-#define G_LOCK_DEFINE(name)           \
-  GMutex G_LOCK_NAME (name) = G_MUTEX_INIT
+#define G_LOCK_DEFINE(name)           GMutex G_LOCK_NAME (name)
 #define G_LOCK_EXTERN(name)           extern GMutex G_LOCK_NAME (name)
 
 #ifdef G_DEBUG_LOCKS

@@ -7,7 +7,7 @@
 #else
 /* could be vastly improved... */
 #define GLIB_CTOR(func) \
-  static GMutex   g__##func##_mutex = G_MUTEX_INIT;   \
+  static GMutex   g__##func##_mutex;                  \
   static gboolean g__##func##_initialised;            \
   static void func (void)
 #define GLIB_ENSURE_CTOR(func) \

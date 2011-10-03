@@ -212,7 +212,7 @@ static SliceConfig slice_config = {
   15 * 1000,    /* working_set_msecs */
   1,            /* color increment, alt: 0x7fffffff */
 };
-static GMutex      smc_tree_mutex = G_MUTEX_INIT; /* mutex for G_SLICE=debug-blocks */
+static GMutex      smc_tree_mutex; /* mutex for G_SLICE=debug-blocks */
 
 /* --- auxiliary funcitons --- */
 void

@@ -126,7 +126,7 @@ typedef struct {
   struct _GMutex *unused;
   GMutex mutex;
 } GStaticMutex;
-#define G_STATIC_MUTEX_INIT { NULL, G_MUTEX_INIT }
+#define G_STATIC_MUTEX_INIT { NULL, { NULL } }
 #define g_static_mutex_get_mutex(s) (&(s)->mutex)
 #endif /* G_OS_WIN32 */
 

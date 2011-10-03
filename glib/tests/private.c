@@ -253,9 +253,9 @@ test_static_private4 (void)
 }
 
 static GStaticPrivate sp5 = G_STATIC_PRIVATE_INIT;
-static GMutex m5 = G_MUTEX_INIT;
-static GCond c5a = G_COND_INIT;
-static GCond c5b = G_COND_INIT;
+static GMutex m5;
+static GCond c5a;
+static GCond c5b;
 static gint count5;
 
 static gpointer

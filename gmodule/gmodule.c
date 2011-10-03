@@ -326,7 +326,7 @@ _g_module_debug_init (void)
   module_debug_initialized = TRUE;
 }
 
-static GRecMutex g_module_global_lock = G_REC_MUTEX_INIT;
+static GRecMutex g_module_global_lock;
 
 GModule*
 g_module_open (const gchar    *file_name,

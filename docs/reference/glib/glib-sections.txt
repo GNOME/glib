@@ -605,7 +605,6 @@ g_thread_foreach
 
 <SUBSECTION>
 GMutex
-G_MUTEX_INIT
 g_mutex_init
 g_mutex_clear
 g_mutex_new
@@ -616,7 +615,6 @@ g_mutex_unlock
 
 <SUBSECTION>
 GRecMutex
-G_REC_MUTEX_INIT
 g_rec_mutex_init
 g_rec_mutex_clear
 g_rec_mutex_lock
@@ -625,7 +623,6 @@ g_rec_mutex_unlock
 
 <SUBSECTION>
 GRWLock
-G_RW_LOCK_INIT
 g_rw_lock_init
 g_rw_lock_clear
 g_rw_lock_writer_lock
@@ -678,7 +675,6 @@ g_static_rw_lock_free
 
 <SUBSECTION>
 GCond
-G_COND_INIT
 g_cond_new
 g_cond_free
 g_cond_init

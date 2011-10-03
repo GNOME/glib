@@ -891,7 +891,7 @@ param_spec_pool_equals (gconstpointer key_spec_1,
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
 {
-  static GMutex init_mutex = G_MUTEX_INIT;
+  static GMutex init_mutex;
   GParamSpecPool *pool = g_new (GParamSpecPool, 1);
 
   memcpy (&pool->mutex, &init_mutex, sizeof (init_mutex));

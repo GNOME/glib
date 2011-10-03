@@ -110,7 +110,7 @@ test_g_static_rec_mutex (void)
 
 static GStaticPrivate test_g_static_private_private1 = G_STATIC_PRIVATE_INIT;
 static GStaticPrivate test_g_static_private_private2 = G_STATIC_PRIVATE_INIT;
-static GMutex test_g_static_private_mutex = G_MUTEX_INIT;
+static GMutex test_g_static_private_mutex;
 static guint test_g_static_private_counter = 0;
 static guint test_g_static_private_ready = 0;
 

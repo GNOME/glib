@@ -298,7 +298,7 @@
  *   int
  *   give_me_next_number (void)
  *   {
- *     static GMutex mutex = G_MUTEX_INIT;
+ *     static GMutex mutex;
  *     static int current_number = 0;
  *     int ret_val;
  *
@@ -315,19 +315,6 @@
  * functions.
  */
 
-/**
- * G_MUTEX_INIT:
- *
- * Initializer for statically allocated #GMutexes.
- * Alternatively, g_mutex_init() can be used.
- *
- * |[
- *   GMutex mutex = G_MUTEX_INIT;
- * ]|
- *
- * Since: 2.32
- */
-
 /* GRecMutex Documentation {{{1 -------------------------------------- */
 
 /**
@@ -340,22 +327,7 @@
  * unlock the recursive mutex as often as it has been locked.
  *
  * A GRecMutex should only be accessed with the
- * <function>g_rec_mutex_</function> functions. Before a GRecMutex
- * can be used, it has to be initialized with #G_REC_MUTEX_INIT or
- * g_rec_mutex_init().
- *
- * Since: 2.32
- */
-
-/**
- * G_REC_MUTEX_INIT:
- *
- * Initializer for statically allocated #GRecMutexes.
- * Alternatively, g_rec_mutex_init() can be used.
- *
- * |[
- *   GRecMutex mutex = G_REC_MUTEX_INIT;
- * ]|
+ * <function>g_rec_mutex_</function> functions.
  *
  * Since: 2.32
  */
@@ -379,7 +351,7 @@
  * <example>
  *  <title>An array with access functions</title>
  *  <programlisting>
- *   GRWLock lock = G_RW_LOCK_INIT;
+ *   GRWLock lock;
  *   GPtrArray *array;
  *
  *   gpointer
@@ -425,21 +397,7 @@
  * </example>
  *
  * A GRWLock should only be accessed with the
- * <function>g_rw_lock_</function> functions. Before it can be used,
- * it has to be initialized with #G_RW_LOCK_INIT or g_rw_lock_init().
- *
- * Since: 2.32
- */
-
-/**
- * G_RW_LOCK_INIT:
- *
- * Initializer for statically allocated #GRWLocks.
- * Alternatively, g_rw_lock_init_init() can be used.
- *
- * |[
- *   GRWLock lock = G_RW_LOCK_INIT;
- * ]|
+ * <function>g_rw_lock_</function> functions.
  *
  * Since: 2.32
  */
@@ -507,19 +465,6 @@
  * functions.
  */
 
-/**
- * G_COND_INIT:
- *
- * Initializer for statically allocated #GConds.
- * Alternatively, g_cond_init() can be used.
- *
- * |[
- *   GCond cond = G_COND_INIT;
- * ]|
- *
- * Since: 2.32
- */
-
 /* GThread Documentation {{{1 ---------------------------------------- */
 
 /**
@@ -578,8 +523,8 @@ g_thread_error_quark (void)
 gboolean         g_threads_got_initialized = FALSE;
 GSystemThread    zero_thread; /* This is initialized to all zero */
 
-GMutex           g_once_mutex = G_MUTEX_INIT;
-static GCond     g_once_cond = G_COND_INIT;
+GMutex           g_once_mutex;
+static GCond     g_once_cond;
 static GSList   *g_once_init_list = NULL;
 
 static void g_thread_cleanup (gpointer data);
