@@ -819,6 +819,16 @@ g_variant_get_size (GVariant *value)
  * serialisation occurs implicitly and is approximately O(n) in the size
  * of the result.
  *
+ * To deserialise the data returned by this function, in addition to the
+ * serialised data, you must know the type of the #GVariant, and (if the
+ * machine might be different) the endianness of the machine that stored
+ * it. As a result, file formats or network messages that incorporate
+ * serialised #GVariant<!---->s must include this information either
+ * implicitly (for instance "the file always contains a
+ * %G_VARIANT_TYPE_VARIANT and it is always in little-endian order") or
+ * explicitly (by storing the type and/or endianness in addition to the
+ * serialised data).
+ *
  * Since: 2.24
  **/
 gconstpointer
@@ -956,6 +966,10 @@ g_variant_get_child_value (GVariant *value,
  * The stored data is in machine native byte order but may not be in
  * fully-normalised form if read from an untrusted source.  See
  * g_variant_get_normal_form() for a solution.
+ *
+ * As with g_variant_get_data(), to be able to deserialise the
+ * serialised variant successfully, its type and (if the destination
+ * machine might be different) its endianness must also be available.
  *
  * This function is approximately O(n) in the size of @data.
  *
