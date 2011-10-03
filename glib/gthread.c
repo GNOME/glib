@@ -753,8 +753,9 @@ g_once_impl (GOnce       *once,
  * Since: 2.14
  */
 gboolean
-g_once_init_enter_impl (volatile gsize *value_location)
+(g_once_init_enter) (volatile void *pointer)
 {
+  volatile gsize *value_location = pointer;
   gboolean need_init = FALSE;
   g_mutex_lock (&g_once_mutex);
   if (g_atomic_pointer_get (value_location) == NULL)
@@ -777,7 +778,7 @@ g_once_init_enter_impl (volatile gsize *value_location)
  * g_once_init_leave:
  * @value_location: location of a static initializable variable
  *     containing 0
- * @initialization_value: new non-0 value for *@value_location
+ * @result: new non-0 value for *@value_location
  *
  * Counterpart to g_once_init_enter(). Expects a location of a static
  * 0-initialized initialization variable, and an initialization value
@@ -788,14 +789,16 @@ g_once_init_enter_impl (volatile gsize *value_location)
  * Since: 2.14
  */
 void
-g_once_init_leave (volatile gsize *value_location,
-                   gsize           initialization_value)
+(g_once_init_leave) (volatile void *pointer,
+                     gsize          result)
 {
+  volatile gsize *value_location = pointer;
+
   g_return_if_fail (g_atomic_pointer_get (value_location) == NULL);
-  g_return_if_fail (initialization_value != 0);
+  g_return_if_fail (result != 0);
   g_return_if_fail (g_once_init_list != NULL);
 
-  g_atomic_pointer_set (value_location, initialization_value);
+  g_atomic_pointer_set (value_location, result);
   g_mutex_lock (&g_once_mutex);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
   g_cond_broadcast (&g_once_cond);

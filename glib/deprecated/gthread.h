@@ -198,6 +198,8 @@ void     g_static_private_set            (GStaticPrivate   *private_key,
                                           GDestroyNotify    notify);
 void     g_static_private_free           (GStaticPrivate   *private_key);
 
+gboolean g_once_init_enter_impl          (volatile gsize   *location);
+
 G_END_DECLS
 
 #endif /* __G_DEPRECATED_THREAD_H__ */

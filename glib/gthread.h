@@ -154,21 +154,31 @@ gpointer g_once_impl (GOnce *once, GThreadFunc func, gpointer arg);
    g_once_impl ((once), (func), (arg)))
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
-/* initialize-once guards, keyed by value_location */
-G_INLINE_FUNC gboolean  g_once_init_enter       (volatile gsize *value_location);
-gboolean                g_once_init_enter_impl  (volatile gsize *value_location);
-void                    g_once_init_leave       (volatile gsize *value_location,
-                                                 gsize           initialization_value);
-#if defined (G_CAN_INLINE) || defined (__G_THREAD_C__)
-G_INLINE_FUNC gboolean
-g_once_init_enter (volatile gsize *value_location)
-{
-  if G_LIKELY ((gpointer) g_atomic_pointer_get (value_location) != NULL)
-    return FALSE;
-  else
-    return g_once_init_enter_impl (value_location);
-}
-#endif /* G_CAN_INLINE || __G_THREAD_C__ */
+/* initialize-once guards, keyed by location */
+gboolean        g_once_init_enter       (volatile void *location);
+void            g_once_init_leave       (volatile void *location,
+                                         gsize          result);
+
+#ifdef __GNUC__
+# define g_once_init_enter(location) \
+  (G_GNUC_EXTENSION ({                                               \
+    G_STATIC_ASSERT (sizeof *(location) == sizeof (gpointer));       \
+    (void) (0 ? (gpointer) *(location) : 0);                         \
+    (!g_atomic_pointer_get (location) &&                             \
+     g_once_init_enter (location));                                  \
+  }))
+# define g_once_init_leave(location, result) \
+  (G_GNUC_EXTENSION ({                                               \
+    G_STATIC_ASSERT (sizeof *(location) == sizeof (gpointer));       \
+    (void) (0 ? *(location) = (result) : 0);                         \
+    g_once_init_leave ((location), (gsize) (result));                \
+  }))
+#else
+# define g_once_init_enter(location) \
+  (g_once_init_enter((location)))
+# define g_once_init_leave(location, result) \
+  (g_once_init_leave((location), (gsize) (result)))
+#endif
 
 #define G_LOCK_NAME(name)               g__ ## name ## _lock
 #define G_LOCK_DEFINE_STATIC(name)    static G_LOCK_DEFINE (name)

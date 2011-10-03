@@ -112,6 +112,17 @@ test_once3 (void)
   g_assert_cmpint (shared, ==, 42);
 }
 
+static void
+test_once4 (void)
+{
+  static const gchar *val;
+
+  if (g_once_init_enter (&val))
+    g_once_init_leave (&val, "foo");
+
+  g_assert_cmpstr (val, ==, "foo");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -120,6 +131,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/once1", test_once1);
   g_test_add_func ("/thread/once2", test_once2);
   g_test_add_func ("/thread/once3", test_once3);
+  g_test_add_func ("/thread/once4", test_once4);
 
   return g_test_run ();
 }

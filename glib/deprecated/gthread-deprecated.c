@@ -275,6 +275,13 @@ g_enumerable_thread_remove (GRealThread *thread)
   G_UNLOCK (g_thread);
 }
 
+/* GOnce {{{1 ------------------------------------------------------------- */
+gboolean
+g_once_init_enter_impl (volatile gsize *location)
+{
+  return (g_once_init_enter) (location);
+}
+
 /* GStaticMutex {{{1 ------------------------------------------------------ */
 
 /**
