@@ -436,7 +436,7 @@ g_private_replace (GPrivate *key,
   DWORD impl = g_private_get_impl (key);
   gpointer old;
 
-  old = TlsGetValue (impl, value);
+  old = TlsGetValue (impl);
   if (old && key->notify)
     key->notify (old);
   TlsSetValue (impl, value);
