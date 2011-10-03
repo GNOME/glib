@@ -255,16 +255,16 @@ g_rec_mutex_impl_free (pthread_mutex_t *mutex)
 }
 
 static pthread_mutex_t *
-g_rec_mutex_get_impl (GRecMutex *mutex)
+g_rec_mutex_get_impl (GRecMutex *rec_mutex)
 {
-  pthread_mutex_t *impl = mutex->impl;
+  pthread_mutex_t *impl = rec_mutex->impl;
 
-  if G_UNLIKELY (mutex->impl == NULL)
+  if G_UNLIKELY (rec_mutex->impl == NULL)
     {
       impl = g_rec_mutex_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&mutex->impl, NULL, impl))
+      if (!g_atomic_pointer_compare_and_exchange (&rec_mutex->impl, NULL, impl))
         g_rec_mutex_impl_free (impl);
-      impl = mutex->impl;
+      impl = rec_mutex->impl;
     }
 
   return impl;
@@ -395,7 +395,7 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
 
 /**
  * g_rw_lock_init:
- * @lock: an uninitialized #GRWLock
+ * @rw_lock: an uninitialized #GRWLock
  *
  * Initializes a #GRWLock so that it can be used.
  *
@@ -425,14 +425,14 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
  * Since: 2.32
  */
 void
-g_rw_lock_init (GRWLock *lock)
+g_rw_lock_init (GRWLock *rw_lock)
 {
-  pthread_rwlock_init (&lock->impl, NULL);
+  pthread_rwlock_init (&rw_lock->impl, NULL);
 }
 
 /**
  * g_rw_lock_clear:
- * @lock: an initialized #GRWLock
+ * @rw_lock: an initialized #GRWLock
  *
  * Frees the resources allocated to a lock with g_rw_lock_init().
  *
@@ -442,43 +442,43 @@ g_rw_lock_init (GRWLock *lock)
  * Sine: 2.32
  */
 void
-g_rw_lock_clear (GRWLock *lock)
+g_rw_lock_clear (GRWLock *rw_lock)
 {
-  pthread_rwlock_destroy (&lock->impl);
+  pthread_rwlock_destroy (&rw_lock->impl);
 }
 
 /**
  * g_rw_lock_writer_lock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Obtain a write lock on @lock. If any thread already holds
- * a read or write lock on @lock, the current thread will block
- * until all other threads have dropped their locks on @lock.
+ * Obtain a write lock on @rw_lock. If any thread already holds
+ * a read or write lock on @rw_lock, the current thread will block
+ * until all other threads have dropped their locks on @rw_lock.
  *
  * Since: 2.32
  */
 void
-g_rw_lock_writer_lock (GRWLock *lock)
+g_rw_lock_writer_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_wrlock (&lock->impl);
+  pthread_rwlock_wrlock (&rw_lock->impl);
 }
 
 /**
  * g_rw_lock_writer_trylock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Tries to obtain a write lock on @lock. If any other thread holds
- * a read or write lock on @lock, it immediately returns %FALSE.
- * Otherwise it locks @lock and returns %TRUE.
+ * Tries to obtain a write lock on @rw_lock. If any other thread holds
+ * a read or write lock on @rw_lock, it immediately returns %FALSE.
+ * Otherwise it locks @rw_lock and returns %TRUE.
  *
- * Returns: %TRUE if @lock could be locked
+ * Returns: %TRUE if @rw_lock could be locked
  *
  * Since: 2.32
  */
 gboolean
-g_rw_lock_writer_trylock (GRWLock *lock)
+g_rw_lock_writer_trylock (GRWLock *rw_lock)
 {
-  if (pthread_rwlock_trywrlock (&lock->impl) != 0)
+  if (pthread_rwlock_trywrlock (&rw_lock->impl) != 0)
     return FALSE;
 
   return TRUE;
@@ -486,9 +486,9 @@ g_rw_lock_writer_trylock (GRWLock *lock)
 
 /**
  * g_rw_lock_writer_unlock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Release a write lock on @lock.
+ * Release a write lock on @rw_lock.
  *
  * Calling g_rw_lock_writer_unlock() on a lock that is not held
  * by the current thread leads to undefined behaviour.
@@ -496,17 +496,17 @@ g_rw_lock_writer_trylock (GRWLock *lock)
  * Since: 2.32
  */
 void
-g_rw_lock_writer_unlock (GRWLock *lock)
+g_rw_lock_writer_unlock (GRWLock *rw_lock)
 {
-  pthread_rwlock_unlock (&lock->impl);
+  pthread_rwlock_unlock (&rw_lock->impl);
 }
 
 /**
  * g_rw_lock_reader_lock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Obtain a read lock on @lock. If another thread currently holds
- * the write lock on @lock or blocks waiting for it, the current
+ * Obtain a read lock on @rw_lock. If another thread currently holds
+ * the write lock on @rw_lock or blocks waiting for it, the current
  * thread will block. Read locks can be taken recursively.
  *
  * It is implementation-defined how many threads are allowed to
@@ -515,27 +515,27 @@ g_rw_lock_writer_unlock (GRWLock *lock)
  * Since: 2.32
  */
 void
-g_rw_lock_reader_lock (GRWLock *lock)
+g_rw_lock_reader_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_rdlock (&lock->impl);
+  pthread_rwlock_rdlock (&rw_lock->impl);
 }
 
 /**
  * g_rw_lock_reader_trylock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Tries to obtain a read lock on @lock and returns %TRUE if
+ * Tries to obtain a read lock on @rw_lock and returns %TRUE if
  * the read lock was successfully obtained. Otherwise it
  * returns %FALSE.
  *
- * Returns: %TRUE if @lock could be locked
+ * Returns: %TRUE if @rw_lock could be locked
  *
  * Since: 2.32
  */
 gboolean
-g_rw_lock_reader_trylock (GRWLock *lock)
+g_rw_lock_reader_trylock (GRWLock *rw_lock)
 {
-  if (pthread_rwlock_tryrdlock (&lock->impl) != 0)
+  if (pthread_rwlock_tryrdlock (&rw_lock->impl) != 0)
     return FALSE;
 
   return TRUE;
@@ -543,9 +543,9 @@ g_rw_lock_reader_trylock (GRWLock *lock)
 
 /**
  * g_rw_lock_reader_unlock:
- * @lock: a #GRWLock
+ * @rw_lock: a #GRWLock
  *
- * Release a read lock on @lock.
+ * Release a read lock on @rw_lock.
  *
  * Calling g_rw_lock_reader_unlock() on a lock that is not held
  * by the current thread leads to undefined behaviour.
@@ -553,9 +553,9 @@ g_rw_lock_reader_trylock (GRWLock *lock)
  * Since: 2.32
  */
 void
-g_rw_lock_reader_unlock (GRWLock *lock)
+g_rw_lock_reader_unlock (GRWLock *rw_lock)
 {
-  pthread_rwlock_unlock (&lock->impl);
+  pthread_rwlock_unlock (&rw_lock->impl);
 }
 
 /* {{{1 GCond */

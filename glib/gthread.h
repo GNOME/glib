@@ -251,14 +251,14 @@ void                    g_mutex_lock                                    (GMutex 
 void                    g_mutex_unlock                                  (GMutex         *mutex);
 gboolean                g_mutex_trylock                                 (GMutex         *mutex);
 
-void                    g_rw_lock_init                                  (GRWLock        *lock);
-void                    g_rw_lock_clear                                 (GRWLock        *lock);
-void                    g_rw_lock_writer_lock                           (GRWLock        *lock);
-gboolean                g_rw_lock_writer_trylock                        (GRWLock        *lock);
-void                    g_rw_lock_writer_unlock                         (GRWLock        *lock);
-void                    g_rw_lock_reader_lock                           (GRWLock        *lock);
-gboolean                g_rw_lock_reader_trylock                        (GRWLock        *lock);
-void                    g_rw_lock_reader_unlock                         (GRWLock        *lock);
+void                    g_rw_lock_init                                  (GRWLock        *rw_lock);
+void                    g_rw_lock_clear                                 (GRWLock        *rw_lock);
+void                    g_rw_lock_writer_lock                           (GRWLock        *rw_lock);
+gboolean                g_rw_lock_writer_trylock                        (GRWLock        *rw_lock);
+void                    g_rw_lock_writer_unlock                         (GRWLock        *rw_lock);
+void                    g_rw_lock_reader_lock                           (GRWLock        *rw_lock);
+gboolean                g_rw_lock_reader_trylock                        (GRWLock        *rw_lock);
+void                    g_rw_lock_reader_unlock                         (GRWLock        *rw_lock);
 
 void                    g_rec_mutex_init                                (GRecMutex      *rec_mutex);
 void                    g_rec_mutex_clear                               (GRecMutex      *rec_mutex);
