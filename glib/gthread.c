@@ -289,6 +289,10 @@
  *  </programlisting>
  * </example>
  *
+ * If a #GMutex is allocated in static storage then it can be used
+ * without initialisation.  Otherwise, you should call g_mutex_init() on
+ * it and g_mutex_clear() when done.
+ *
  * A statically initialized #GMutex provides an even simpler and safer
  * way of doing this:
  *
@@ -325,6 +329,10 @@
  * that it is possible to lock a GRecMutex multiple times in the same
  * thread without deadlock. When doing so, care has to be taken to
  * unlock the recursive mutex as often as it has been locked.
+ *
+ * If a #GRecMutex is allocated in static storage then it can be used
+ * without initialisation.  Otherwise, you should call
+ * g_rec_mutex_init() on it and g_rec_mutex_clear() when done.
  *
  * A GRecMutex should only be accessed with the
  * <function>g_rec_mutex_</function> functions.
@@ -396,6 +404,10 @@
  *  </para>
  * </example>
  *
+ * If a #GRWLock is allocated in static storage then it can be used
+ * without initialisation.  Otherwise, you should call
+ * g_rw_lock_init() on it and g_rw_lock_clear() when done.
+ *
  * A GRWLock should only be accessed with the
  * <function>g_rw_lock_</function> functions.
  *
@@ -460,6 +472,10 @@
  * have altered the condition before the waiting thread got the chance
  * to be woken up, even if the condition itself is protected by a
  * #GMutex, like above.</para></note>
+ *
+ * If a #GCond is allocated in static storage then it can be used
+ * without initialisation.  Otherwise, you should call g_cond_init() on
+ * it and g_cond_clear() when done.
  *
  * A #GCond should only be accessed via the <function>g_cond_</function>
  * functions.
