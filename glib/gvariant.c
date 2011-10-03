@@ -4992,6 +4992,10 @@ g_variant_byteswap (GVariant *value)
  * should set trusted to %FALSE if @data is read from the network, a
  * file in the user's home directory, etc.
  *
+ * If @data was not stored in this machine's native endianness, any multi-byte
+ * numeric values in the returned variant will also be in non-native
+ * endianness. g_variant_byteswap() can be used to recover the original values.
+ *
  * @notify will be called with @user_data when @data is no longer
  * needed.  The exact time of this call is unspecified and might even be
  * before this function returns.
