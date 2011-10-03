@@ -614,6 +614,8 @@ g_variant_is_trusted (GVariant *value)
 void
 g_variant_unref (GVariant *value)
 {
+  g_return_if_fail (value != NULL);
+
   if (g_atomic_int_dec_and_test (&value->ref_count))
     {
       if G_UNLIKELY (value->state & STATE_LOCKED)
