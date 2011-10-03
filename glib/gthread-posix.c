@@ -116,14 +116,14 @@ g_mutex_impl_free (pthread_mutex_t *mutex)
 static pthread_mutex_t *
 g_mutex_get_impl (GMutex *mutex)
 {
-  pthread_mutex_t *impl = mutex->impl;
+  pthread_mutex_t *impl = mutex->p;
 
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_mutex_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&mutex->impl, NULL, impl))
+      if (!g_atomic_pointer_compare_and_exchange (&mutex->p, NULL, impl))
         g_mutex_impl_free (impl);
-      impl = mutex->impl;
+      impl = mutex->p;
     }
 
   return impl;
@@ -164,7 +164,7 @@ g_mutex_get_impl (GMutex *mutex)
 void
 g_mutex_init (GMutex *mutex)
 {
-  mutex->impl = g_mutex_impl_new ();
+  mutex->p = g_mutex_impl_new ();
 }
 
 /**
@@ -184,7 +184,7 @@ g_mutex_init (GMutex *mutex)
 void
 g_mutex_clear (GMutex *mutex)
 {
-  g_mutex_impl_free (mutex->impl);
+  g_mutex_impl_free (mutex->p);
 }
 
 /**
@@ -293,14 +293,14 @@ g_rec_mutex_impl_free (pthread_mutex_t *mutex)
 static pthread_mutex_t *
 g_rec_mutex_get_impl (GRecMutex *rec_mutex)
 {
-  pthread_mutex_t *impl = rec_mutex->impl;
+  pthread_mutex_t *impl = rec_mutex->p;
 
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_rec_mutex_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&rec_mutex->impl, NULL, impl))
+      if (!g_atomic_pointer_compare_and_exchange (&rec_mutex->p, NULL, impl))
         g_rec_mutex_impl_free (impl);
-      impl = rec_mutex->impl;
+      impl = rec_mutex->p;
     }
 
   return impl;
@@ -342,7 +342,7 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
 void
 g_rec_mutex_init (GRecMutex *rec_mutex)
 {
-  rec_mutex->impl = g_rec_mutex_impl_new ();
+  rec_mutex->p = g_rec_mutex_impl_new ();
 }
 
 /**
@@ -363,7 +363,7 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
 void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
 {
-  g_rec_mutex_impl_free (rec_mutex->impl);
+  g_rec_mutex_impl_free (rec_mutex->p);
 }
 
 /**
@@ -401,7 +401,7 @@ g_rec_mutex_lock (GRecMutex *mutex)
 void
 g_rec_mutex_unlock (GRecMutex *rec_mutex)
 {
-  pthread_mutex_unlock (rec_mutex->impl);
+  pthread_mutex_unlock (rec_mutex->p);
 }
 
 /**
@@ -453,14 +453,14 @@ g_rw_lock_impl_free (pthread_rwlock_t *rwlock)
 static pthread_rwlock_t *
 g_rw_lock_get_impl (GRWLock *lock)
 {
-  pthread_rwlock_t *impl = lock->impl;
+  pthread_rwlock_t *impl = lock->p;
 
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_rw_lock_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&lock->impl, NULL, impl))
+      if (!g_atomic_pointer_compare_and_exchange (&lock->p, NULL, impl))
         g_rw_lock_impl_free (impl);
-      impl = lock->impl;
+      impl = lock->p;
     }
 
   return impl;
@@ -500,7 +500,7 @@ g_rw_lock_get_impl (GRWLock *lock)
 void
 g_rw_lock_init (GRWLock *rw_lock)
 {
-  rw_lock->impl = g_rw_lock_impl_new ();
+  rw_lock->p = g_rw_lock_impl_new ();
 }
 
 /**
@@ -517,7 +517,7 @@ g_rw_lock_init (GRWLock *rw_lock)
 void
 g_rw_lock_clear (GRWLock *rw_lock)
 {
-  g_rw_lock_impl_free (rw_lock->impl);
+  g_rw_lock_impl_free (rw_lock->p);
 }
 
 /**
@@ -659,14 +659,14 @@ g_cond_impl_free (pthread_cond_t *cond)
 static pthread_cond_t *
 g_cond_get_impl (GCond *cond)
 {
-  pthread_cond_t *impl = cond->impl;
+  pthread_cond_t *impl = cond->p;
 
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_cond_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&cond->impl, NULL, impl))
+      if (!g_atomic_pointer_compare_and_exchange (&cond->p, NULL, impl))
         g_cond_impl_free (impl);
-      impl = cond->impl;
+      impl = cond->p;
     }
 
   return impl;
@@ -694,7 +694,7 @@ g_cond_get_impl (GCond *cond)
 void
 g_cond_init (GCond *cond)
 {
-  cond->impl = g_cond_impl_new ();
+  cond->p = g_cond_impl_new ();
 }
 
 /**
@@ -714,7 +714,7 @@ g_cond_init (GCond *cond)
 void
 g_cond_clear (GCond *cond)
 {
-  g_cond_impl_free (cond->impl);
+  g_cond_impl_free (cond->p);
 }
 
 /**

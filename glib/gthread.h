@@ -52,31 +52,39 @@ typedef gpointer (*GThreadFunc) (gpointer data);
 
 typedef struct _GThread         GThread;
 
-typedef struct _GMutex          GMutex;
+typedef union  _GMutex          GMutex;
 typedef struct _GRecMutex       GRecMutex;
 typedef struct _GRWLock         GRWLock;
 typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GStaticPrivate  GStaticPrivate;
 
-struct _GMutex
+union _GMutex
 {
-  gpointer impl;
+  /*< private >*/
+  gpointer p;
+  guint i[2];
 };
 
 struct _GRWLock
 {
-  gpointer impl;
+  /*< private >*/
+  gpointer p;
+  guint i[2];
 };
 
 struct _GCond
 {
-  gpointer impl;
+  /*< private >*/
+  gpointer p;
+  guint i[2];
 };
 
 struct _GRecMutex
 {
-  gpointer impl;
+  /*< private >*/
+  gpointer p;
+  guint i[2];
 };
 
 #define G_PRIVATE_INIT(notify) { NULL, (notify), { NULL, NULL } }
