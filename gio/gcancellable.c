@@ -57,7 +57,7 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (GCancellable, g_cancellable, G_TYPE_OBJECT);
 
-static GStaticPrivate current_cancellable = G_STATIC_PRIVATE_INIT;
+static GPrivate current_cancellable;
 G_LOCK_DEFINE_STATIC(cancellable);
 static GCond *cancellable_cond = NULL;
 
@@ -201,9 +201,9 @@ g_cancellable_push_current (GCancellable *cancellable)
 
   g_return_if_fail (cancellable != NULL);
 
-  l = g_static_private_get (&current_cancellable);
+  l = g_private_get (&current_cancellable);
   l = g_slist_prepend (l, cancellable);
-  g_static_private_set (&current_cancellable, l, NULL);
+  g_private_set (&current_cancellable, l);
 }
 
 /**
@@ -218,13 +218,13 @@ g_cancellable_pop_current (GCancellable *cancellable)
 {
   GSList *l;
 
-  l = g_static_private_get (&current_cancellable);
+  l = g_private_get (&current_cancellable);
 
   g_return_if_fail (l != NULL);
   g_return_if_fail (l->data == cancellable);
 
   l = g_slist_delete_link (l, l);
-  g_static_private_set (&current_cancellable, l, NULL);
+  g_private_set (&current_cancellable, l);
 }
 
 /**
@@ -240,7 +240,7 @@ g_cancellable_get_current  (void)
 {
   GSList *l;
 
-  l = g_static_private_get (&current_cancellable);
+  l = g_private_get (&current_cancellable);
   if (l == NULL)
     return NULL;
 

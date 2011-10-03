@@ -91,7 +91,7 @@ static inline GModule*	g_module_find_by_name	(const gchar	*name);
 /* --- variables --- */
 static GModule	     *modules = NULL;
 static GModule	     *main_module = NULL;
-static GStaticPrivate module_error_private = G_STATIC_PRIVATE_INIT;
+static GPrivate       module_error_private = G_PRIVATE_INIT (g_free);
 static gboolean	      module_debug_initialized = FALSE;
 static guint	      module_debug_flags = 0;
 
@@ -135,7 +135,7 @@ g_module_find_by_name (const gchar *name)
 static inline void
 g_module_set_error_unduped (gchar *error)
 {
-  g_static_private_set (&module_error_private, error, g_free);
+  g_private_replace (&module_error_private, error);
   errno = 0;
 }
 
@@ -600,7 +600,7 @@ g_module_make_resident (GModule *module)
 const gchar *
 g_module_error (void)
 {
-  return g_static_private_get (&module_error_private);
+  return g_private_get (&module_error_private);
 }
 
 gboolean

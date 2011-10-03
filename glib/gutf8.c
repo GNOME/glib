@@ -581,20 +581,20 @@ charset_cache_free (gpointer data)
  *
  * The string returned in @charset is not allocated, and should not be
  * freed.
- * 
+ *
  * Return value: %TRUE if the returned charset is UTF-8
  **/
 gboolean
-g_get_charset (const char **charset) 
+g_get_charset (const char **charset)
 {
-  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
-  GCharsetCache *cache = g_static_private_get (&cache_private);
+  static GPrivate cache_private = G_PRIVATE_INIT (charset_cache_free);
+  GCharsetCache *cache = g_private_get (&cache_private);
   const gchar *raw;
 
   if (!cache)
     {
       cache = g_new0 (GCharsetCache, 1);
-      g_static_private_set (&cache_private, cache, charset_cache_free);
+      g_private_set (&cache_private, cache);
     }
 
   G_LOCK (aliases);
