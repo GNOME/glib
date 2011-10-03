@@ -71,6 +71,14 @@
  * as the serialisation format of a D-Bus message body: use #GDBusMessage,
  * in the gio library, for those.)
  *
+ * For space-efficiency, the #GVariant serialisation format does not
+ * automatically include the variant's type or endianness, which must
+ * either be implied from context (such as knowledge that a particular
+ * file format always contains a little-endian %G_VARIANT_TYPE_VARIANT)
+ * or supplied out-of-band (for instance, a type and/or endianness
+ * indicator could be placed at the beginning of a file, network message
+ * or network stream).
+ *
  * For convenience to C programmers, #GVariant features powerful
  * varargs-based value construction and destruction.  This feature is
  * designed to be embedded in other libraries.
