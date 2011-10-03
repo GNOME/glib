@@ -1887,31 +1887,6 @@ test_get_range (void)
   g_object_unref (settings);
 }
 
-static gboolean
-ignore_criticals (const gchar    *log_domain,
-                  GLogLevelFlags  log_level,
-                  const gchar    *message,
-                  gpointer        user_data)
-{
-  return (log_level & G_LOG_LEVEL_MASK) != G_LOG_LEVEL_CRITICAL;
-}
-
-static void
-test_missing_schema (void)
-{
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings;
-
-      g_test_log_set_fatal_handler (ignore_criticals, NULL);
-      settings = g_settings_new ("schema.does.not.exist");
-      g_settings_get_value (settings, "some-key");
-      g_error ("i'm doing science and i'm still alive");
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*still alive*");
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -1996,7 +1971,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
   g_test_add_func ("/gsettings/get-range", test_get_range);
-  g_test_add_func ("/gsettings/missing-schema", test_missing_schema);
 
   result = g_test_run ();
 
