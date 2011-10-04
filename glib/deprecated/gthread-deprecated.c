@@ -1406,5 +1406,89 @@ g_static_private_cleanup (GRealThread *thread)
     }
 }
 
+/* GMutex {{{1 ------------------------------------------------------ */
+
+/**
+ * g_mutex_new:
+ *
+ * Allocates and initializes a new #GMutex.
+ *
+ * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
+ *
+ * Deprecated:3.32:GMutex can now be statically allocated, or embedded
+ * in structures and initialised with g_mutex_init().
+ */
+GMutex *
+g_mutex_new (void)
+{
+  GMutex *mutex;
+
+  mutex = g_slice_new (GMutex);
+  g_mutex_init (mutex);
+
+  return mutex;
+}
+
+/**
+ * g_mutex_free:
+ * @mutex: a #GMutex
+ *
+ * Destroys a @mutex that has been created with g_mutex_new().
+ *
+ * Calling g_mutex_free() on a locked mutex may result
+ * in undefined behaviour.
+ *
+ * Deprecated:3.32:GMutex can now be statically allocated, or embedded
+ * in structures and initialised with g_mutex_init().
+ */
+void
+g_mutex_free (GMutex *mutex)
+{
+  g_mutex_clear (mutex);
+  g_slice_free (GMutex, mutex);
+}
+
+/* GCond {{{1 ------------------------------------------------------ */
+
+/**
+ * g_cond_new:
+ *
+ * Allocates and initializes a new #GCond.
+ *
+ * Returns: a newly allocated #GCond. Free with g_cond_free()
+ *
+ * Deprecated:3.32:GCond can now be statically allocated, or embedded
+ * in structures and initialised with g_cond_init().
+ */
+GCond *
+g_cond_new (void)
+{
+  GCond *cond;
+
+  cond = g_slice_new (GCond);
+  g_cond_init (cond);
+
+  return cond;
+}
+
+/**
+ * g_cond_free:
+ * @cond: a #GCond
+ *
+ * Destroys a #GCond that has been created with g_cond_new().
+ *
+ * Calling g_cond_free() for a #GCond on which threads are
+ * blocking leads to undefined behaviour.
+ *
+ * Deprecated:3.32:GCond can now be statically allocated, or embedded
+ * in structures and initialised with g_cond_init().
+ */
+void
+g_cond_free (GCond *cond)
+{
+  g_cond_clear (cond);
+  g_slice_free (GCond, cond);
+}
+
 /* {{{1 Epilogue */
 /* vim: set foldmethod=marker: */

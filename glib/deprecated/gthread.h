@@ -214,6 +214,10 @@ GLIB_VAR gboolean g_threads_got_initialized;
 
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
+GMutex *                g_mutex_new                                     (void);
+void                    g_mutex_free                                    (GMutex         *mutex);
+GCond *                 g_cond_new                                      (void);
+void                    g_cond_free                                     (GCond          *cond);
 
 G_END_DECLS
 
