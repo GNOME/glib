@@ -1084,7 +1084,7 @@ g_variant_lookup_value (GVariant           *dictionary,
  * For example, if calling this function for an array of 32 bit integers,
  * you might say <code>sizeof (gint32)</code>.  This value isn't used
  * except for the purpose of a double-check that the form of the
- * seralised data matches the caller's expectation.
+ * serialised data matches the caller's expectation.
  *
  * @n_elements, which must be non-%NULL is set equal to the number of
  * items in the array.
@@ -1157,7 +1157,7 @@ g_variant_get_fixed_array (GVariant *value,
  * example, if calling this function for an array of 32 bit integers,
  * you might say <code>sizeof (gint32)</code>.  This value isn't used
  * except for the purpose of a double-check that the form of the
- * seralised data matches the caller's expectation.
+ * serialised data matches the caller's expectation.
  *
  * @n_elements, which must be non-%NULL is set equal to the number of
  * items in the array.
