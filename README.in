@@ -24,6 +24,18 @@ Installation
 
 See the file 'INSTALL'
 
+Notes about GLib 2.32
+=====================
+
+* It is no longer necessary to use g_thread_init() or to link against
+  libgthread.  libglib is now always thread-enabled.
+
+* The g_once_init_enter()/_leave() functions have been replaced with
+  macros that allow for a pointer to any gsize-sized object, not just a
+  gsize*.  The assertions to ensure that a pointer to a correctly-sized
+  object is being used will not work with generic pointers (ie: (void*)
+  and (gpointer) casts) which would have worked with the old version.
+
 Notes about GLib 2.30
 =====================
 
