@@ -19,6 +19,7 @@ gvariant
 hash
 hmac
 hostutils
+include
 keyfile
 list
 logging
@@ -34,6 +35,7 @@ once
 option-argv0
 option-context
 pattern
+private
 protocol
 queue
 rand
@@ -44,11 +46,12 @@ scannerapi
 sequence
 shell
 slist
+sort
 strfuncs
 string
-sort
-test-printf
 testing
+test-printf
+thread
 timeout
 tmpsample.xml
 tree
