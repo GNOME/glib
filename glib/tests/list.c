@@ -185,6 +185,15 @@ test_list_concat (void)
       g_assert (*((gint*) st->data) == i);
     }
 
+  list2 = g_list_concat (NULL, list1);
+  g_assert_cmpint (g_list_length (list2), ==, 10);
+
+  list2 = g_list_concat (list1, NULL);
+  g_assert_cmpint (g_list_length (list2), ==, 10);
+
+  list2 = g_list_concat (NULL, NULL);
+  g_assert (list2 == NULL);
+
   g_list_free (list1);
 }
 
@@ -235,9 +244,10 @@ test_list_remove_all (void)
 
   g_assert_cmpint (g_list_length (list), ==, 20);
 
-  for (i = 0; i < 10; i++)
+  for (i = 0; i < 5; i++)
     {
-      list = g_list_remove_all (list, &nums[i]);
+      list = g_list_remove_all (list, &nums[2 * i + 1]);
+      list = g_list_remove_all (list, &nums[8 - 2 * i]);
     }
 
   g_assert_cmpint (g_list_length (list), ==, 0);
@@ -397,6 +407,59 @@ test_delete_link (void)
   g_list_free (l);
 }
 
+static void
+test_prepend (void)
+{
+  GList *l, *l2;
+
+  l = NULL;
+  l = g_list_prepend (l, "c");
+  l = g_list_prepend (l, "a");
+
+  g_assert (l->data == (gpointer)"a");
+  g_assert (l->next->data == (gpointer)"c");
+  g_assert (l->next->next == NULL);
+
+  l2 = l->next;
+  l2 = g_list_prepend (l2, "b");
+  g_assert (l2->prev == l);
+
+  g_assert (l->data == (gpointer)"a");
+  g_assert (l->next->data == (gpointer)"b");
+  g_assert (l->next->next->data == (gpointer)"c");
+  g_assert (l->next->next->next == NULL);
+
+  g_list_free (l);
+}
+
+static void
+test_position (void)
+{
+  GList *l, *ll;
+
+  l = NULL;
+  l = g_list_append (l, "a");
+  l = g_list_append (l, "b");
+  l = g_list_append (l, "c");
+
+  ll = g_list_find (l, "a");
+  g_assert_cmpint (g_list_position (l, ll), ==, 0);
+  g_assert_cmpint (g_list_index (l, "a"), ==, 0);
+  ll = g_list_find (l, "b");
+  g_assert_cmpint (g_list_position (l, ll), ==, 1);
+  g_assert_cmpint (g_list_index (l, "b"), ==, 1);
+  ll = g_list_find (l, "c");
+  g_assert_cmpint (g_list_position (l, ll), ==, 2);
+  g_assert_cmpint (g_list_index (l, "c"), ==, 2);
+
+  ll = g_list_append (NULL, "d");
+  g_assert_cmpint (g_list_position (l, ll), ==, -1);
+  g_assert_cmpint (g_list_index (l, "d"), ==, -1);
+
+  g_list_free (l);
+  g_list_free (ll);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -422,6 +485,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/free-full", test_free_full);
   g_test_add_func ("/list/copy", test_list_copy);
   g_test_add_func ("/list/delete-link", test_delete_link);
+  g_test_add_func ("/list/prepend", test_prepend);
+  g_test_add_func ("/list/position", test_position);
 
   return g_test_run ();
 }

@@ -206,7 +206,8 @@ test_slist_remove_all (void)
 
   for (i = 0; i < 10; i++)
     {
-      slist = g_slist_remove_all (slist, &nums[i]);
+      slist = g_slist_remove_all (slist, &nums[2 * i + 1]);
+      slist = g_slist_remove_all (slist, &nums[8 - 2 * i]);
     }
 
   g_assert_cmpint (g_slist_length (slist), ==, 0);
@@ -240,6 +241,26 @@ test_slist_insert (void)
     }
 
   g_slist_free (slist);
+
+  slist = g_slist_insert (NULL, "a", 1);
+  g_assert (slist->data == (gpointer)"a");
+  g_assert (slist->next == NULL);
+  g_slist_free (slist);
+
+  slist = g_slist_append (NULL, "a");
+  slist = g_slist_append (slist, "b");
+  slist = g_slist_insert (slist, "c", 5);
+
+  g_assert (slist->next->next->data == (gpointer)"c");
+  g_assert (slist->next->next->next == NULL);
+  g_slist_free (slist);
+
+  slist = g_slist_append (NULL, "a");
+  slist = g_slist_insert_before (slist, slist, "b");
+  g_assert (slist->data == (gpointer)"b");
+  g_assert (slist->next->data == (gpointer)"a");
+  g_assert (slist->next->next == NULL);
+  g_slist_free (slist);
 }
 
 static gint
@@ -272,7 +293,36 @@ test_slist_position (void)
       g_assert_cmpint (g_slist_position (slist, st), ==, i);
     }
 
+  st = g_slist_find_custom (slist, GINT_TO_POINTER (1000), find_num);
+  g_assert (st == NULL);
+
   g_slist_free (slist);
+}
+
+static void
+test_slist_concat (void)
+{
+  GSList *s1, *s2, *s;
+
+  s1 = g_slist_append (NULL, "a");
+  s2 = g_slist_append (NULL, "b");
+  s = g_slist_concat (s1, s2);
+  g_assert (s->data == (gpointer)"a");
+  g_assert (s->next->data == (gpointer)"b");
+  g_assert (s->next->next == NULL);
+  g_slist_free (s);
+
+  s1 = g_slist_append (NULL, "a");
+
+  s = g_slist_concat (NULL, s1);
+  g_assert_cmpint (g_slist_length (s), ==, 1);
+  s = g_slist_concat (s1, NULL);
+  g_assert_cmpint (g_slist_length (s), ==, 1);
+
+  g_slist_free (s);
+
+  s = g_slist_concat (NULL, NULL);
+  g_assert (s == NULL);
 }
 
 int
@@ -296,6 +346,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/slist/remove-all", test_slist_remove_all);
   g_test_add_func ("/slist/insert", test_slist_insert);
   g_test_add_func ("/slist/position", test_slist_position);
+  g_test_add_func ("/slist/concat", test_slist_concat);
 
   return g_test_run ();
 }
