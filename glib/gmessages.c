@@ -74,10 +74,8 @@
 #ifdef G_OS_WIN32
 #include <process.h>		/* For getpid() */
 #include <io.h>
-#  define STRICT		/* Strict typing, please */
 #  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
-#  undef STRICT
 #endif
 
 
@@ -114,9 +112,7 @@ static gpointer          fatal_log_data;
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
-#  define STRICT
 #  include <windows.h>
-#  undef STRICT
 static gboolean win32_keep_fatal_message = FALSE;
 
 /* This default message will usually be overwritten. */

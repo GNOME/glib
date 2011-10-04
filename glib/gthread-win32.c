@@ -1071,7 +1071,7 @@ g_thread_lookup_native_funcs (void)
 }
 
 G_GNUC_INTERNAL void
-g_thread_DllMain (void)
+g_thread_win32_init (void)
 {
   if (g_thread_lookup_native_funcs ())
     fprintf (stderr, "(debug) GThread using native mode\n");

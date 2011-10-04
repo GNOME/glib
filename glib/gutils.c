@@ -99,6 +99,7 @@
 #define	__G_UTILS_C__
 #include "gutils.h"
 
+#include "glib-init.h"
 #include "gfileutils.h"
 #include "ghash.h"
 #include "gslist.h"
@@ -137,9 +138,7 @@
 #endif
 
 #ifdef G_PLATFORM_WIN32
-#  define STRICT		/* Strict typing, please */
 #  include <windows.h>
-#  undef STRICT
 #  ifndef GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
 #    define GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT 2
 #    define GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS 4
@@ -190,26 +189,6 @@ const guint glib_interface_age = GLIB_INTERFACE_AGE;
 const guint glib_binary_age = GLIB_BINARY_AGE;
 
 #ifdef G_PLATFORM_WIN32
-
-static HMODULE glib_dll = NULL;
-
-#ifdef DLL_EXPORT
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-	 DWORD     fdwReason,
-	 LPVOID    lpvReserved)
-{
-  if (fdwReason == DLL_PROCESS_ATTACH)
-    {
-      glib_dll = hinstDLL;
-      g_thread_DllMain ();
-    }
-
-  return TRUE;
-}
-
-#endif
 
 gchar *
 _glib_get_dll_directory (void)
