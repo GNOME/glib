@@ -51,7 +51,6 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
-#include "glib-ctor.h"
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
@@ -297,7 +296,8 @@ slice_config_init (SliceConfig *config)
     config->debug_blocks = TRUE;
 }
 
-GLIB_CTOR (g_slice_init_nomessage)
+static void
+g_slice_init_nomessage (void)
 {
   /* we may not use g_error() or friends here */
   mem_assert (sys_page_size == 0);
@@ -361,8 +361,6 @@ GLIB_CTOR (g_slice_init_nomessage)
 static inline guint
 allocator_categorize (gsize aligned_chunk_size)
 {
-  GLIB_ENSURE_CTOR (g_slice_init_nomessage);
-
   /* speed up the likely path */
   if (G_LIKELY (aligned_chunk_size && aligned_chunk_size <= allocator->max_slab_chunk_size_for_magazine_cache))
     return 1;           /* use magazine cache */
@@ -414,7 +412,15 @@ thread_memory_from_self (void)
   ThreadMemory *tmem = g_private_get (&private_thread_memory);
   if (G_UNLIKELY (!tmem))
     {
-      const guint n_magazines = MAX_SLAB_INDEX (allocator);
+      static GMutex init_mutex;
+      guint n_magazines;
+
+      g_mutex_lock (&init_mutex);
+      if G_UNLIKELY (sys_page_size == 0)
+        g_slice_init_nomessage ();
+      g_mutex_unlock (&init_mutex);
+
+      n_magazines = MAX_SLAB_INDEX (allocator);
       tmem = g_malloc0 (sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines);
       tmem->magazine1 = (Magazine*) (tmem + 1);
       tmem->magazine2 = &tmem->magazine1[n_magazines];
@@ -761,14 +767,23 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
 gpointer
 g_slice_alloc (gsize mem_size)
 {
+  ThreadMemory *tmem;
   gsize chunk_size;
   gpointer mem;
   guint acat;
+
+  /* This gets the private structure for this thread.  If the private
+   * structure does not yet exist, it is created.
+   *
+   * This has a side effect of causing GSlice to be initialised, so it
+   * must come first.
+   */
+  tmem = thread_memory_from_self ();
+
   chunk_size = P2ALIGN (mem_size);
   acat = allocator_categorize (chunk_size);
   if (G_LIKELY (acat == 1))     /* allocate through magazine layer */
     {
-      ThreadMemory *tmem = thread_memory_from_self();
       guint ix = SLAB_INDEX (allocator, chunk_size);
       if (G_UNLIKELY (thread_memory_magazine1_is_empty (tmem, ix)))
         {
