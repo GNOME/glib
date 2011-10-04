@@ -1609,7 +1609,8 @@ g_hash_table_get_values (GHashTable *hash_table)
  *
  * Compares two strings for byte-by-byte equality and returns %TRUE
  * if they are equal. It can be passed to g_hash_table_new() as the
- * @key_equal_func parameter, when using strings as keys in a #GHashTable.
+ * @key_equal_func parameter, when using non-%NULL strings as keys in a
+ * #GHashTable.
  *
  * Note that this function is primarily meant as a hash table comparison
  * function. For a general-purpose, %NULL-safe string comparison function,
@@ -1640,7 +1641,7 @@ g_str_equal (gconstpointer v1,
  * function uses the signed value of each byte.
  *
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using strings as keys in a #GHashTable.
+ * when using non-%NULL strings as keys in a #GHashTable.
  *
  * Returns: a hash value corresponding to the key
  */
@@ -1706,7 +1707,8 @@ g_direct_equal (gconstpointer v1,
  * Compares the two #gint values being pointed to and returns
  * %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using pointers to integers as keys in a #HashTable.
+ * parameter, when using non-%NULL pointers to integers as keys in a
+ * #GHashTable.
  *
  * Note that this function acts on pointers to #gint, not on #gint directly:
  * if your hash table's keys are of the form
@@ -1727,7 +1729,7 @@ g_int_equal (gconstpointer v1,
  *
  * Converts a pointer to a #gint to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using pointers to integers values as keys in a #GHashTable.
+ * when using non-%NULL pointers to integer values as keys in a #GHashTable.
  *
  * Note that this function acts on pointers to #gint, not on #gint directly:
  * if your hash table's keys are of the form
@@ -1749,7 +1751,8 @@ g_int_hash (gconstpointer v)
  * Compares the two #gint64 values being pointed to and returns
  * %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using pointers to 64-bit integers as keys in a #GHashTable.
+ * parameter, when using non-%NULL pointers to 64-bit integers as keys in a
+ * #GHashTable.
  *
  * Returns: %TRUE if the two keys match.
  *
@@ -1767,8 +1770,10 @@ g_int64_equal (gconstpointer v1,
  * @v: a pointer to a #gint64 key
  *
  * Converts a pointer to a #gint64 to a hash value.
+ *
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using pointers to 64-bit integers values as keys in a #GHashTable.
+ * when using non-%NULL pointers to 64-bit integer values as keys in a
+ * #GHashTable.
  *
  * Returns: a hash value corresponding to the key.
  *
@@ -1788,7 +1793,8 @@ g_int64_hash (gconstpointer v)
  * Compares the two #gdouble values being pointed to and returns
  * %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using pointers to doubles as keys in a #GHashTable.
+ * parameter, when using non-%NULL pointers to doubles as keys in a
+ * #GHashTable.
  *
  * Returns: %TRUE if the two keys match.
  *
@@ -1807,7 +1813,8 @@ g_double_equal (gconstpointer v1,
  *
  * Converts a pointer to a #gdouble to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using pointers to doubles as keys in a #GHashTable.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter,
+ * when using non-%NULL pointers to doubles as keys in a #GHashTable.
  *
  * Returns: a hash value corresponding to the key.
  *
