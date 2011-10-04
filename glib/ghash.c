@@ -1658,11 +1658,15 @@ g_str_hash (gconstpointer v)
 
 /**
  * g_direct_hash:
- * @v: a #gpointer key
+ * @v: (allow-none): a #gpointer key
  *
  * Converts a gpointer to a hash value.
- * It can be passed to g_hash_table_new() as the @hash_func parameter, 
- * when using pointers as keys in a #GHashTable.
+ * It can be passed to g_hash_table_new() as the @hash_func parameter,
+ * when using opaque pointers compared by pointer value as keys in a
+ * #GHashTable.
+ *
+ * This hash function is also appropriate for keys that are integers stored
+ * in pointers, such as <literal>GINT_TO_POINTER (n)</literal>.
  *
  * Returns: a hash value corresponding to the key.
  */
@@ -1674,12 +1678,16 @@ g_direct_hash (gconstpointer v)
 
 /**
  * g_direct_equal:
- * @v1: a key
- * @v2: a key to compare with @v1
+ * @v1: (allow-none): a key
+ * @v2: (allow-none): a key to compare with @v1
  *
  * Compares two #gpointer arguments and returns %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using pointers as keys in a #GHashTable.
+ * parameter, when using opaque pointers compared by pointer value as keys
+ * in a #GHashTable.
+ *
+ * This equality function is also appropriate for keys that are integers stored
+ * in pointers, such as <literal>GINT_TO_POINTER (n)</literal>.
  *
  * Returns: %TRUE if the two keys match.
  */
