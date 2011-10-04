@@ -142,8 +142,11 @@
  *
  * The function is passed a key and should return a #guint hash value.
  * The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
- * hash functions which can be used when the key is a #gpointer, #gint,
+ * hash functions which can be used when the key is a #gpointer, #gint*,
  * and #gchar* respectively.
+ *
+ * g_direct_hash() is also the appropriate hash function for keys
+ * of the form <literal>GINT_TO_POINTER (n)</literal> (or similar macros).
  *
  * <!-- FIXME: Need more here. --> The hash values should be evenly
  * distributed over a fairly large range? The modulus is taken with the
@@ -1697,6 +1700,10 @@ g_direct_equal (gconstpointer v1,
  * It can be passed to g_hash_table_new() as the @key_equal_func
  * parameter, when using pointers to integers as keys in a #HashTable.
  *
+ * Note that this function acts on pointers to #gint, not on #gint directly:
+ * if your hash table's keys are of the form
+ * <literal>GINT_TO_POINTER (n)</literal>, use g_direct_equal() instead.
+ *
  * Returns: %TRUE if the two keys match.
  */
 gboolean
@@ -1713,6 +1720,10 @@ g_int_equal (gconstpointer v1,
  * Converts a pointer to a #gint to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
  * when using pointers to integers values as keys in a #GHashTable.
+ *
+ * Note that this function acts on pointers to #gint, not on #gint directly:
+ * if your hash table's keys are of the form
+ * <literal>GINT_TO_POINTER (n)</literal>, use g_direct_hash() instead.
  *
  * Returns: a hash value corresponding to the key.
  */
