@@ -40,8 +40,10 @@ static GOptionEntry cmd_entries[] = {
 #include "socket-common.c"
 
 static gboolean
-accept_certificate (GTlsClientConnection *conn, GTlsCertificate *cert,
-		    GTlsCertificateFlags errors, gpointer user_data)
+accept_certificate (GTlsClientConnection *conn,
+		    GTlsCertificate      *cert,
+		    GTlsCertificateFlags  errors,
+		    gpointer              user_data)
 {
   g_print ("Certificate would have been rejected ( ");
   if (errors & G_TLS_CERTIFICATE_UNKNOWN_CA)
@@ -62,7 +64,8 @@ accept_certificate (GTlsClientConnection *conn, GTlsCertificate *cert,
 }
 
 static GTlsCertificate *
-lookup_client_certificate (GTlsClientConnection *conn, GError **error)
+lookup_client_certificate (GTlsClientConnection  *conn,
+			   GError               **error)
 {
   GList *l, *accepted;
   GList *c, *certificates;
@@ -101,9 +104,15 @@ lookup_client_certificate (GTlsClientConnection *conn, GError **error)
 }
 
 static gboolean
-make_connection (const char *argument, GTlsCertificate *certificate, GCancellable *cancellable,
-                 GSocket **socket, GSocketAddress **address, GIOStream **connection,
-                 GInputStream **istream, GOutputStream **ostream, GError **error)
+make_connection (const char       *argument,
+		 GTlsCertificate  *certificate,
+		 GCancellable     *cancellable,
+		 GSocket         **socket,
+		 GSocketAddress  **address,
+		 GIOStream       **connection,
+		 GInputStream    **istream,
+		 GOutputStream   **ostream,
+		 GError          **error)
 {
   GSocketType socket_type;
   GSocketFamily socket_family;
@@ -156,7 +165,7 @@ make_connection (const char *argument, GTlsCertificate *certificate, GCancellabl
       *address = g_socket_address_enumerator_next (enumerator, cancellable, error);
       if (*address == NULL)
         {
-          if (error == NULL)
+          if (error != NULL && *error == NULL)
             g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                  "No more addresses to try");
           return FALSE;
