@@ -360,10 +360,33 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * GDBusProxy:g-interface-info:
    *
    * Ensure that interactions with this proxy conform to the given
-   * interface.  For example, when completing a method call, if the
-   * type signature of the message isn't what's expected, the given
-   * #GError is set.  Signals that have a type signature mismatch are
-   * simply dropped.
+   * interface. This is mainly to ensure that malformed data received
+   * from the other peer is ignored. The given #GDBusInterfaceInfo is
+   * said to be the <emphasis>expected interface</emphasis>.
+   *
+   * The checks performed are:
+   * <itemizedlist>
+   *   <listitem><para>
+   *     When completing a method call, if the type signature of
+   *     the reply message isn't what's expected, the reply is
+   *     discarded and the #GError is set to %G_IO_ERROR_INVALID_ARGUMENT.
+   *   </para></listitem>
+   *   <listitem><para>
+   *     Received signals that have a type signature mismatch are dropped and
+   *     a warning is logged via g_warning().
+   *   </para></listitem>
+   *   <listitem><para>
+   *     Properties received via the initial <literal>GetAll()</literal> call
+   *     or via the <literal>::PropertiesChanged</literal> signal (on the
+   *     <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties</ulink> interface) or
+   *     set using g_dbus_proxy_set_cached_property() with a type signature
+   *     mismatch are ignored and a warning is logged via g_warning().
+   *   </para></listitem>
+   * </itemizedlist>
+   * Note that these checks are never done on methods, signals and
+   * properties that are not referenced in the given
+   * #GDBusInterfaceInfo, since extending a D-Bus interface on the
+   * service-side is not considered an ABI break.
    *
    * Since: 2.26
    */
@@ -678,22 +701,17 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy)
  * returned value
  */
 static const GDBusPropertyInfo *
-lookup_property_info_or_warn (GDBusProxy  *proxy,
-                              const gchar *property_name)
+lookup_property_info (GDBusProxy  *proxy,
+                      const gchar *property_name)
 {
-  const GDBusPropertyInfo *info;
+  const GDBusPropertyInfo *info = NULL;
 
   if (proxy->priv->expected_interface == NULL)
-    return NULL;
+    goto out;
 
   info = g_dbus_interface_info_lookup_property (proxy->priv->expected_interface, property_name);
-  if (info == NULL)
-    {
-      g_warning ("Trying to lookup property %s which isn't in expected interface %s",
-                 property_name,
-                 proxy->priv->expected_interface->name);
-    }
 
+ out:
   return info;
 }
 
@@ -706,8 +724,8 @@ lookup_property_info_or_warn (GDBusProxy  *proxy,
  * blocking IO.
  *
  * If @proxy has an expected interface (see
- * #GDBusProxy:g-interface-info), then @property_name (for existence)
- * is checked against it.
+ * #GDBusProxy:g-interface-info) and @property_name is referenced by
+ * it, then @value is checked against the type of the property.
  *
  * Returns: A reference to the #GVariant instance that holds the value
  * for @property_name or %NULL if the value is not in the cache. The
@@ -719,6 +737,7 @@ GVariant *
 g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
                                   const gchar  *property_name)
 {
+  const GDBusPropertyInfo *info;
   GVariant *value;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
@@ -728,10 +747,22 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
 
   value = g_hash_table_lookup (proxy->priv->properties, property_name);
   if (value == NULL)
+    goto out;
+
+  info = lookup_property_info (proxy, property_name);
+  if (info != NULL)
     {
-      lookup_property_info_or_warn (proxy, property_name);
-      /* no difference */
-      goto out;
+      const gchar *type_string = g_variant_get_type_string (value);
+      if (g_strcmp0 (type_string, info->signature) != 0)
+        {
+          g_warning ("Trying to get property %s with type %s but according to the expected "
+                     "interface the type is %s",
+                     property_name,
+                     type_string,
+                     info->signature);
+          value = NULL;
+          goto out;
+        }
     }
 
   g_variant_ref (value);
@@ -754,8 +785,8 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
  * property cache.
  *
  * If @proxy has an expected interface (see
- * #GDBusProxy:g-interface-info), then @property_name (for existence)
- * and @value (for the type) is checked against it.
+ * #GDBusProxy:g-interface-info) and @property_name is referenced by
+ * it, then @value is checked against the type of the property.
  *
  * If the @value #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.
@@ -798,7 +829,7 @@ g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
 
   if (value != NULL)
     {
-      info = lookup_property_info_or_warn (proxy, property_name);
+      info = lookup_property_info (proxy, property_name);
       if (info != NULL)
         {
           if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
@@ -865,22 +896,25 @@ on_signal_received (GDBusConnection *connection,
   if (proxy->priv->expected_interface != NULL)
     {
       const GDBusSignalInfo *info;
-      GVariantType *expected_type;
       info = g_dbus_interface_info_lookup_signal (proxy->priv->expected_interface, signal_name);
-      if (info == NULL)
+      if (info != NULL)
         {
-          G_UNLOCK (properties_lock);
-          goto out;
-        }
-
-      expected_type = _g_dbus_compute_complete_signature (info->args);
-      if (!g_variant_type_equal (expected_type, g_variant_get_type (parameters)))
-        {
+          GVariantType *expected_type;
+          expected_type = _g_dbus_compute_complete_signature (info->args);
+          if (!g_variant_type_equal (expected_type, g_variant_get_type (parameters)))
+            {
+              gchar *expected_type_string = g_variant_type_dup_string (expected_type);
+              g_warning ("Dropping signal %s of type %s since the type from the expected interface is %s",
+                         info->name,
+                         g_variant_get_type_string (parameters),
+                         expected_type_string);
+              g_free (expected_type_string);
+              g_variant_type_free (expected_type);
+              G_UNLOCK (properties_lock);
+              goto out;
+            }
           g_variant_type_free (expected_type);
-          G_UNLOCK (properties_lock);
-          goto out;
         }
-      g_variant_type_free (expected_type);
     }
 
   G_UNLOCK (properties_lock);
@@ -908,15 +942,21 @@ insert_property_checked (GDBusProxy  *proxy,
   if (proxy->priv->expected_interface != NULL)
     {
       const GDBusPropertyInfo *info;
-
       info = g_dbus_interface_info_lookup_property (proxy->priv->expected_interface, property_name);
-      /* Ignore unknown properties */
-      if (info == NULL)
-	goto invalid;
-
-      /* Ignore properties with the wrong type */
-      if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
-	goto invalid;
+      /* Only check known properties */
+      if (info != NULL)
+        {
+          /* Warn about properties with the wrong type */
+          if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
+            {
+              g_warning ("Received property %s with type %s does not match expected type "
+                         "%s in the expected interface",
+                         property_name,
+                         g_variant_get_type_string (value),
+                         info->signature);
+              goto invalid;
+            }
+        }
     }
 
   g_hash_table_insert (proxy->priv->properties,
@@ -2328,10 +2368,9 @@ g_dbus_proxy_set_default_timeout (GDBusProxy *proxy,
  * g_dbus_proxy_get_interface_info:
  * @proxy: A #GDBusProxy
  *
- * Returns the #GDBusInterfaceInfo, if any, specifying the minimal
- * interface that @proxy conforms to.
- *
- * See the #GDBusProxy:g-interface-info property for more details.
+ * Returns the #GDBusInterfaceInfo, if any, specifying the interface
+ * that @proxy conforms to. See the #GDBusProxy:g-interface-info
+ * property for more details.
  *
  * Returns: A #GDBusInterfaceInfo or %NULL. Do not unref the returned
  * object, it is owned by @proxy.
@@ -2360,12 +2399,8 @@ g_dbus_proxy_get_interface_info (GDBusProxy *proxy)
  * @info: (allow-none): Minimum interface this proxy conforms to or %NULL to unset.
  *
  * Ensure that interactions with @proxy conform to the given
- * interface.  For example, when completing a method call, if the type
- * signature of the message isn't what's expected, the given #GError
- * is set.  Signals that have a type signature mismatch are simply
- * dropped.
- *
- * See the #GDBusProxy:g-interface-info property for more details.
+ * interface. See the #GDBusProxy:g-interface-info property for more
+ * details.
  *
  * Since: 2.26
  */
@@ -2487,21 +2522,17 @@ reply_cb (GDBusConnection *connection,
  * returned value
  */
 static const GDBusMethodInfo *
-lookup_method_info_or_warn (GDBusProxy  *proxy,
-                            const gchar *method_name)
+lookup_method_info (GDBusProxy  *proxy,
+                    const gchar *method_name)
 {
-  const GDBusMethodInfo *info;
+  const GDBusMethodInfo *info = NULL;
 
   if (proxy->priv->expected_interface == NULL)
-    return NULL;
+    goto out;
 
   info = g_dbus_interface_info_lookup_method (proxy->priv->expected_interface, method_name);
-  if (info == NULL)
-    {
-      g_warning ("Trying to invoke method %s which isn't in expected interface %s",
-                 method_name, proxy->priv->expected_interface->name);
-    }
 
+out:
   return info;
 }
 
@@ -2583,7 +2614,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
   if (!was_split)
     {
       const GDBusMethodInfo *expected_method_info;
-      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      expected_method_info = lookup_method_info (proxy, target_method_name);
       if (expected_method_info != NULL)
         reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
     }
@@ -2717,7 +2748,7 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
   if (!was_split)
     {
       const GDBusMethodInfo *expected_method_info;
-      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      expected_method_info = lookup_method_info (proxy, target_method_name);
       if (expected_method_info != NULL)
         reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
     }
@@ -2821,6 +2852,10 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  *                     &amp;data);
  * ]|
  *
+ * If @proxy has an expected interface (see
+ * #GDBusProxy:g-interface-info) and @method_name is referenced by it,
+ * then the return value is checked against the return type.
+ *
  * This is an asynchronous method. When the operation is finished,
  * @callback will be invoked in the
  * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
@@ -2907,6 +2942,10 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * The calling thread is blocked until a reply is received. See
  * g_dbus_proxy_call() for the asynchronous version of this
  * method.
+ *
+ * If @proxy has an expected interface (see
+ * #GDBusProxy:g-interface-info) and @method_name is referenced by it,
+ * then the return value is checked against the return type.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  * return values. Free with g_variant_unref().
