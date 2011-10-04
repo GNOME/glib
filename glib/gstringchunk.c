@@ -38,6 +38,8 @@
 #include "gslist.h"
 #include "gmessages.h"
 
+#include "gutils.h"
+
 /**
  * SECTION:string_chunks
  * @title: String Chunks
