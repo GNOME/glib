@@ -38,8 +38,10 @@ test_thread1 (void)
 {
   gpointer result;
   GThread *thread;
+  GError *error = NULL;
 
-  thread = g_thread_new ("test", thread1_func, NULL, TRUE, NULL);
+  thread = g_thread_new ("test", thread1_func, NULL, TRUE, &error);
+  g_assert_no_error (error);
 
   result = g_thread_join (thread);
 
@@ -95,9 +97,9 @@ test_thread3 (void)
   gpointer result;
   GThread *thread1, *thread2, *thread3;
 
-  thread1 = g_thread_new ("a", thread3_func, NULL, TRUE, NULL);
-  thread2 = g_thread_new ("b", thread3_func, thread1, TRUE, NULL);
-  thread3 = g_thread_new ("c", thread3_func, thread2, TRUE, NULL);
+  thread1 = g_thread_new_full ("a", thread3_func, NULL, TRUE, 0, NULL);
+  thread2 = g_thread_new_full ("b", thread3_func, thread1, TRUE, 100, NULL);
+  thread3 = g_thread_new_full ("c", thread3_func, thread2, TRUE, 100000, NULL);
 
   result = g_thread_join (thread3);
 
