@@ -1234,39 +1234,6 @@ if test "$ac_cv_func_memmove" != "yes"; then
   fi
 fi
 
-# Check for sys_errlist
-AC_MSG_CHECKING(for sys_errlist)
-AC_TRY_LINK(, [
-extern char *sys_errlist[];
-extern int sys_nerr;
-sys_errlist[sys_nerr-1][0] = 0;
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test "$glib_ok" = "no"; then
-    AC_DEFINE(NO_SYS_ERRLIST,1,[global 'sys_errlist' not found])
-fi
-
-# Check for sys_siglist
-AC_MSG_CHECKING(for sys_siglist)
-AC_TRY_LINK(, [
-extern char *sys_siglist[];
-exit (sys_siglist[0]);
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test "$glib_ok" = "no"; then
-    AC_DEFINE(NO_SYS_SIGLIST,1,[global 'sys_siglist' not found])
-fi
-
-# Check for sys_siglist decl (see Tue Jan 19 00:44:24 1999 in changelog)
-AC_MSG_CHECKING(for sys_siglist declaration)
-AC_TRY_COMPILE([#include <signal.h>], [
-strlen (sys_siglist[0]);
-], glib_ok=yes, glib_ok=no)
-AC_MSG_RESULT($glib_ok)
-if test "$glib_ok" = "no"; then
-    AC_DEFINE(NO_SYS_SIGLIST_DECL,1,[global 'sys_siglist' not declared])
-fi
-
 # Check if <sys/select.h> needs to be included for fd_set
 AC_MSG_CHECKING([for fd_set])
 AC_TRY_COMPILE([#include <sys/types.h>],
