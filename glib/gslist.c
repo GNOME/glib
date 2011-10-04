@@ -316,16 +316,8 @@ g_slist_insert (GSList   *list,
       tmp_list = tmp_list->next;
     }
 
-  if (prev_list)
-    {
-      new_list->next = prev_list->next;
-      prev_list->next = new_list;
-    }
-  else
-    {
-      new_list->next = list;
-      list = new_list;
-    }
+  new_list->next = prev_list->next;
+  prev_list->next = new_list;
 
   return list;
 }

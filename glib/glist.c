@@ -310,28 +310,24 @@ g_list_insert (GList	*list,
 {
   GList *new_list;
   GList *tmp_list;
-  
+
   if (position < 0)
     return g_list_append (list, data);
   else if (position == 0)
     return g_list_prepend (list, data);
-  
+
   tmp_list = g_list_nth (list, position);
   if (!tmp_list)
     return g_list_append (list, data);
-  
+
   new_list = _g_list_alloc ();
   new_list->data = data;
   new_list->prev = tmp_list->prev;
-  if (tmp_list->prev)
-    tmp_list->prev->next = new_list;
+  tmp_list->prev->next = new_list;
   new_list->next = tmp_list;
   tmp_list->prev = new_list;
-  
-  if (tmp_list == list)
-    return new_list;
-  else
-    return list;
+
+  return list;
 }
 
 /**
