@@ -218,6 +218,18 @@ class TestService(dbus.service.Object):
 
     # ----------------------------------------------------------------------------------------------------
 
+    @dbus.service.signal("com.example.Frob",
+                         signature="i")
+    def TestSignal2(self, int1):
+        pass
+
+    @dbus.service.method("com.example.Frob",
+                          in_signature='', out_signature='')
+    def EmitSignal2(self):
+        self.TestSignal2 (42)
+
+    # ----------------------------------------------------------------------------------------------------
+
     @dbus.service.method("com.example.Frob", in_signature='i', out_signature='',
                          async_callbacks=('return_cb', 'raise_cb'))
     def Sleep(self, msec, return_cb, raise_cb):
