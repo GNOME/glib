@@ -62,7 +62,6 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	unicode-normalize 	\
 	unicode-collate 	\
 	$(timeloop) 		\
-	errorcheck-mutex-test	\
 	assert-msg-test		\
 	datetime
 

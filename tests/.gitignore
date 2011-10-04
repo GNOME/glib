@@ -16,7 +16,6 @@ datetime
 deftype
 dirname-test
 env-test
-errorcheck-mutex-test
 file-test
 file-test-get-contents
 gio-test
