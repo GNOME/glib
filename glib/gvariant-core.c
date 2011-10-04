@@ -899,6 +899,9 @@ g_variant_n_children (GVariant *value)
  * It is an error if @index_ is greater than the number of child items
  * in the container.  See g_variant_n_children().
  *
+ * The returned value is never floating.  You should free it with
+ * g_variant_unref() when you're done with it.
+ *
  * This function is O(1).
  *
  * Since: 2.24
