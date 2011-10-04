@@ -225,6 +225,10 @@ DllMain (HINSTANCE hinstDLL,
       glib_init ();
       break;
 
+    case DLL_THREAD_DETACH:
+      g_thread_win32_thread_detach ();
+      break;
+
     default:
       /* do nothing */
       ;

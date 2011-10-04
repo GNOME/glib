@@ -489,51 +489,6 @@ g_system_thread_self (gpointer thread)
 void
 g_system_thread_exit (void)
 {
-  GThreadData *self = TlsGetValue (g_thread_self_tls);
-  gboolean dtors_called;
-
-  do
-    {
-      GPrivateDestructor *dtor;
-
-      /* We go by the POSIX book on this one.
-       *
-       * If we call a destructor then there is a chance that some new
-       * TLS variables got set by code called in that destructor.
-       *
-       * Loop until nothing is left.
-       */
-      dtors_called = FALSE;
-
-      for (dtor = g_private_destructors; dtor; dtor = dtor->next)
-        {
-          gpointer value;
-
-          value = TlsGetValue (dtor->index);
-          if (value != NULL && dtor->notify != NULL)
-            {
-              /* POSIX says to clear this before the call */
-              TlsSetValue (dtor->index, NULL);
-              dtor->notify (value);
-              dtors_called = TRUE;
-            }
-        }
-    }
-  while (dtors_called);
-
-  if (self)
-    {
-      if (!self->joinable)
-	{
-	  win32_check_for_error (CloseHandle (self->thread));
-	  g_free (self);
-	}
-      win32_check_for_error (TlsSetValue (g_thread_self_tls, NULL));
-    }
-
-  if (g_thread_impl_vtable.CallThisOnThreadExit)
-    g_thread_impl_vtable.CallThisOnThreadExit ();
-
   _endthreadex (0);
 }
 
@@ -1085,5 +1040,53 @@ g_thread_win32_init (void)
   InitializeCriticalSection (&g_private_lock);
 }
 
-/* vim:set foldmethod=marker: */
+G_GNUC_INTERNAL void
+g_thread_win32_thread_detach (void)
+{
+  GThreadData *self = TlsGetValue (g_thread_self_tls);
+  gboolean dtors_called;
 
+  do
+    {
+      GPrivateDestructor *dtor;
+
+      /* We go by the POSIX book on this one.
+       *
+       * If we call a destructor then there is a chance that some new
+       * TLS variables got set by code called in that destructor.
+       *
+       * Loop until nothing is left.
+       */
+      dtors_called = FALSE;
+
+      for (dtor = g_private_destructors; dtor; dtor = dtor->next)
+        {
+          gpointer value;
+
+          value = TlsGetValue (dtor->index);
+          if (value != NULL && dtor->notify != NULL)
+            {
+              /* POSIX says to clear this before the call */
+              TlsSetValue (dtor->index, NULL);
+              dtor->notify (value);
+              dtors_called = TRUE;
+            }
+        }
+    }
+  while (dtors_called);
+
+  if (self)
+    {
+      if (!self->joinable)
+        {
+          win32_check_for_error (CloseHandle (self->thread));
+          g_free (self);
+        }
+      win32_check_for_error (TlsSetValue (g_thread_self_tls, NULL));
+    }
+
+  if (g_thread_impl_vtable.CallThisOnThreadExit)
+    g_thread_impl_vtable.CallThisOnThreadExit ();
+}
+
+/* vim:set foldmethod=marker: */
