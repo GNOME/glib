@@ -33,28 +33,15 @@
 
 #include "glib.h"
 
-#include "gthreadprivate.h"
-
 void
 g_thread_init (gpointer init)
 {
-  static gboolean already_done;
-
   if (init != NULL)
     g_warning ("GThread system no longer supports custom thread implementations.");
-
-  if (already_done)
-    return;
-
-  already_done = TRUE;
-
-  g_thread_init_glib ();
 }
 
 void
 g_thread_init_with_errorcheck_mutexes (gpointer vtable)
 {
   g_assert (vtable == NULL);
-
-  g_thread_init (NULL);
 }

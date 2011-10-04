@@ -477,7 +477,6 @@ g_thread_pool_new (GFunc      func,
   g_return_val_if_fail (func, NULL);
   g_return_val_if_fail (!exclusive || max_threads != -1, NULL);
   g_return_val_if_fail (max_threads >= -1, NULL);
-  g_return_val_if_fail (g_thread_supported (), NULL);
 
   retval = g_new (GRealThreadPool, 1);
 

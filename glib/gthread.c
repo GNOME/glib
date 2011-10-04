@@ -538,9 +538,6 @@ g_thread_error_quark (void)
 
 /* Local Data {{{1 -------------------------------------------------------- */
 
-gboolean         g_threads_got_initialized = FALSE;
-GSystemThread    zero_thread; /* This is initialized to all zero */
-
 GMutex           g_once_mutex;
 static GCond     g_once_cond;
 static GSList   *g_once_init_list = NULL;
@@ -549,74 +546,6 @@ static void g_thread_cleanup (gpointer data);
 static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup);
 
 G_LOCK_DEFINE_STATIC (g_thread_new);
-
-/* Initialisation {{{1 ---------------------------------------------------- */
-
-/**
- * g_thread_init:
- * @vtable: a function table of type #GThreadFunctions, that provides
- *     the entry points to the thread system to be used. Since 2.32,
- *     this parameter is ignored and should always be %NULL
- *
- * If you use GLib from more than one thread, you must initialize the
- * thread system by calling g_thread_init().
- *
- * Since version 2.24, calling g_thread_init() multiple times is allowed,
- * but nothing happens except for the first call.
- *
- * Since version 2.32, GLib does not support custom thread implementations
- * anymore and the @vtable parameter is ignored and you should pass %NULL.
- *
- * <note><para>g_thread_init() must not be called directly or indirectly
- * in a callback from GLib. Also no mutexes may be currently locked while
- * calling g_thread_init().</para></note>
- *
- * <note><para>To use g_thread_init() in your program, you have to link
- * with the libraries that the command <command>pkg-config --libs
- * gthread-2.0</command> outputs. This is not the case for all the
- * other thread-related functions of GLib. Those can be used without
- * having to link with the thread libraries.</para></note>
- */
-
-void
-g_thread_init_glib (void)
-{
-  static gboolean already_done;
-  GRealThread *main_thread;
-
-  if (already_done)
-    return;
-
-  already_done = TRUE;
-
-  /* We let the main thread (the one that calls g_thread_init) inherit
-   * the static_private data set before calling g_thread_init
-   */
-  main_thread = (GRealThread*) g_thread_self ();
-
-  /* setup the basic threading system */
-  g_threads_got_initialized = TRUE;
-  g_private_set (&g_thread_specific_private, main_thread);
-  g_system_thread_self (&main_thread->system_thread);
-
-  /* accomplish log system initialization to enable messaging */
-  _g_messages_thread_init_nomessage ();
-}
-
-/**
- * g_thread_get_initialized:
- *
- * Indicates if g_thread_init() has been called.
- *
- * Returns: %TRUE if threads have been initialized.
- *
- * Since: 2.20
- */
-gboolean
-g_thread_get_initialized (void)
-{
-  return g_thread_supported ();
-}
 
 /* GOnce {{{1 ------------------------------------------------------------- */
 

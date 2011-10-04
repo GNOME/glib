@@ -200,6 +200,21 @@ void     g_static_private_free           (GStaticPrivate   *private_key);
 
 gboolean g_once_init_enter_impl          (volatile gsize   *location);
 
+void     g_thread_init   (gpointer vtable);
+
+gboolean g_thread_get_initialized (void);
+
+GLIB_VAR gboolean g_threads_got_initialized;
+
+#if defined(G_THREADS_MANDATORY)
+#define g_thread_supported()     1
+#else
+#define g_thread_supported()    (g_threads_got_initialized)
+#endif
+
+GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
+
+
 G_END_DECLS
 
 #endif /* __G_DEPRECATED_THREAD_H__ */

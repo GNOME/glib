@@ -150,6 +150,8 @@ libglib_2_0_la_SOURCES = 	\
 	glibintl.h		\
 	glib_trace.h		\
 	glib-ctor.h		\
+	glib-init.h		\
+	glib-init.c		\
 	glib-private.h		\
 	glib-private.c		\
 	glist.c			\

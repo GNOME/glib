@@ -356,9 +356,6 @@ GLIB_CTOR (g_slice_init_nomessage)
   allocator->max_slab_chunk_size_for_magazine_cache = MAX_SLAB_CHUNK_SIZE (allocator);
   if (allocator->config.always_malloc || allocator->config.bypass_magazines)
     allocator->max_slab_chunk_size_for_magazine_cache = 0;      /* non-optimized cases */
-  /* at this point, g_mem_gc_friendly() should be initialized, this
-   * should have been accomplished by the above g_malloc/g_new calls
-   */
 }
 
 static inline guint

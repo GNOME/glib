@@ -522,8 +522,6 @@ g_main_context_new (void)
   static gsize initialised;
   GMainContext *context;
 
-  g_thread_init_glib ();
-
   if (g_once_init_enter (&initialised))
     {
 #ifdef G_MAIN_POLL_DEBUG
@@ -4741,8 +4739,6 @@ GMainContext *
 g_get_worker_context (void)
 {
   static gsize initialised;
-
-  g_thread_init_glib ();
 
   if (g_once_init_enter (&initialised))
     {

@@ -661,99 +661,6 @@ g_find_program_in_path (const gchar *program)
   return NULL;
 }
 
-static gboolean
-debug_key_matches (const gchar *key,
-		   const gchar *token,
-		   guint        length)
-{
-  /* may not call GLib functions: see note in g_parse_debug_string() */
-  for (; length; length--, key++, token++)
-    {
-      char k = (*key   == '_') ? '-' : tolower (*key  );
-      char t = (*token == '_') ? '-' : tolower (*token);
-
-      if (k != t)
-        return FALSE;
-    }
-
-  return *key == '\0';
-}
-
-/**
- * g_parse_debug_string:
- * @string: (allow-none): a list of debug options separated by colons, spaces, or
- * commas, or %NULL.
- * @keys: (array length=nkeys): pointer to an array of #GDebugKey which associate 
- *     strings with bit flags.
- * @nkeys: the number of #GDebugKey<!-- -->s in the array.
- *
- * Parses a string containing debugging options
- * into a %guint containing bit flags. This is used 
- * within GDK and GTK+ to parse the debug options passed on the
- * command line or through environment variables.
- *
- * If @string is equal to "all", all flags are set.  If @string
- * is equal to "help", all the available keys in @keys are printed
- * out to standard error.
- *
- * Returns: the combined set of bit flags.
- */
-guint	     
-g_parse_debug_string  (const gchar     *string, 
-		       const GDebugKey *keys, 
-		       guint	        nkeys)
-{
-  guint i;
-  guint result = 0;
-  
-  if (string == NULL)
-    return 0;
-
-  /* this function is used during the initialisation of gmessages, gmem
-   * and gslice, so it may not do anything that causes memory to be
-   * allocated or risks messages being emitted.
-   *
-   * this means, more or less, that this code may not call anything
-   * inside GLib.
-   */
-
-  if (!strcasecmp (string, "all"))
-    {
-      for (i=0; i<nkeys; i++)
-	result |= keys[i].value;
-    }
-  else if (!strcasecmp (string, "help"))
-    {
-      /* using stdio directly for the reason stated above */
-      fprintf (stderr, "Supported debug values: ");
-      for (i=0; i<nkeys; i++)
-	fprintf (stderr, " %s", keys[i].key);
-      fprintf (stderr, "\n");
-    }
-  else
-    {
-      const gchar *p = string;
-      const gchar *q;
-      
-      while (*p)
-	{
-	  q = strpbrk (p, ":;, \t");
-	  if (!q)
-	    q = p + strlen(p);
-	  
-	  for (i = 0; i < nkeys; i++)
-	    if (debug_key_matches (keys[i].key, p, q - p))
-	      result |= keys[i].value;
-	  
-	  p = q;
-	  if (*p)
-	    p++;
-	}
-    }
-  
-  return result;
-}
-
 /**
  * g_basename:
  * @file_name: the name of the file.
@@ -3579,8 +3486,6 @@ static void
 ensure_gettext_initialized (void)
 {
   static gsize initialised;
-
-  g_thread_init_glib ();
 
   if (g_once_init_enter (&initialised))
     {

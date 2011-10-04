@@ -109,6 +109,55 @@ gettime (void)
 
 guint64 (*g_thread_gettime) (void) = gettime;
 
+/* Initialisation {{{1 ---------------------------------------------------- */
+gboolean         g_threads_got_initialized = TRUE;
+GSystemThread    zero_thread; /* This is initialized to all zero */
+
+
+/**
+ * g_thread_init:
+ * @vtable: a function table of type #GThreadFunctions, that provides
+ *     the entry points to the thread system to be used. Since 2.32,
+ *     this parameter is ignored and should always be %NULL
+ *
+ * If you use GLib from more than one thread, you must initialize the
+ * thread system by calling g_thread_init().
+ *
+ * Since version 2.24, calling g_thread_init() multiple times is allowed,
+ * but nothing happens except for the first call.
+ *
+ * Since version 2.32, GLib does not support custom thread implementations
+ * anymore and the @vtable parameter is ignored and you should pass %NULL.
+ *
+ * <note><para>g_thread_init() must not be called directly or indirectly
+ * in a callback from GLib. Also no mutexes may be currently locked while
+ * calling g_thread_init().</para></note>
+ *
+ * <note><para>To use g_thread_init() in your program, you have to link
+ * with the libraries that the command <command>pkg-config --libs
+ * gthread-2.0</command> outputs. This is not the case for all the
+ * other thread-related functions of GLib. Those can be used without
+ * having to link with the thread libraries.</para></note>
+ */
+
+/**
+ * g_thread_get_initialized:
+ *
+ * Indicates if g_thread_init() has been called.
+ *
+ * Returns: %TRUE if threads have been initialized.
+ *
+ * Since: 2.20
+ */
+gboolean
+g_thread_get_initialized (void)
+{
+  return g_thread_supported ();
+}
+
+/* We need this for ABI compatibility */
+void g_thread_init_glib (void) { }
+
 /* Internal variables {{{1 */
 
 static GRealThread *g_thread_all_threads = NULL;

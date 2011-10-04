@@ -323,8 +323,6 @@ get_C_locale (void)
   static gsize initialized = FALSE;
   static locale_t C_locale = NULL;
 
-  g_thread_init_glib ();
-
   if (g_once_init_enter (&initialized))
     {
       C_locale = newlocale (LC_ALL_MASK, "C", NULL);

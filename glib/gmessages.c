@@ -60,6 +60,7 @@
 #include <errno.h>
 
 #include "gmessages.h"
+#include "glib-init.h"
 
 #include "gbacktrace.h"
 #include "gconvert.h"
@@ -103,17 +104,13 @@ struct _GLogHandler
 /* --- variables --- */
 static GMutex         g_messages_lock;
 static GLogDomain    *g_log_domains = NULL;
-static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
 static GPrivate       g_log_depth;
-static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
 static GTestLogFatalFunc fatal_log_func = NULL;
 static gpointer          fatal_log_data;
-static gboolean       g_debug_initialized = FALSE;
-
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
@@ -156,74 +153,6 @@ write_string (int          fd,
 	      const gchar *string)
 {
   write (fd, string, strlen (string));
-}
-
-static void
-g_messages_prefixed_init (void)
-{
-  static gboolean initialized = FALSE;
-
-  if (!initialized)
-    {
-      const gchar *val;
-
-      initialized = TRUE;
-      val = g_getenv ("G_MESSAGES_PREFIXED");
-      
-      if (val)
-	{
-	  const GDebugKey keys[] = {
-	    { "error", G_LOG_LEVEL_ERROR },
-	    { "critical", G_LOG_LEVEL_CRITICAL },
-	    { "warning", G_LOG_LEVEL_WARNING },
-	    { "message", G_LOG_LEVEL_MESSAGE },
-	    { "info", G_LOG_LEVEL_INFO },
-	    { "debug", G_LOG_LEVEL_DEBUG }
-	  };
-	  
-	  g_log_msg_prefix = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
-	}
-    }
-}
-
-static guint
-g_parse_debug_envvar (const gchar     *envvar,
-                      const GDebugKey *keys,
-                      gint             n_keys)
-{
-  const gchar *value;
-
-#ifdef OS_WIN32
-  /* "fatal-warnings,fatal-criticals,all,help" is pretty short */
-  gchar buffer[80];
-
-  if (GetEnvironmentVariable (envvar, buffer, 100) < 100)
-    value = buffer;
-  else
-    return 0;
-#else
-  value = getenv (envvar);
-#endif
-
-  return g_parse_debug_string (value, keys, n_keys);
-}
-
-static void
-g_debug_init (void)
-{
-  const GDebugKey keys[] = {
-    {"fatal-warnings",  G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL },
-    {"fatal-criticals", G_LOG_LEVEL_CRITICAL }
-  };
-  GLogLevelFlags flags;
-
-  flags = g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys));
-
-  g_mutex_lock (&g_messages_lock);
-  g_log_always_fatal |= flags;
-  g_mutex_unlock (&g_messages_lock);
-
-  g_debug_initialized = TRUE;
 }
 
 static GLogDomain*
@@ -497,9 +426,6 @@ g_logv (const gchar   *log_domain,
   gboolean was_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   gint i;
-
-  if (!g_debug_initialized)
-    g_debug_init ();
 
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
@@ -973,8 +899,6 @@ g_log_default_handler (const gchar   *log_domain,
       return;
     }
 
-  g_messages_prefixed_init ();
-
   fd = mklevel_prefix (level_prefix, log_level);
 
   gstring = g_string_new (NULL);
@@ -1203,12 +1127,3 @@ g_printf_string_upper_bound (const gchar *format,
   gchar c;
   return _g_vsnprintf (&c, 1, format, args) + 1;
 }
-
-void
-_g_messages_thread_init_nomessage (void)
-{
-  g_messages_prefixed_init ();
-  g_debug_init ();
-}
-
-

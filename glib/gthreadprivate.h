@@ -79,9 +79,6 @@ G_GNUC_INTERNAL void g_static_private_cleanup   (GRealThread *thread);
 G_GNUC_INTERNAL void g_enumerable_thread_add    (GRealThread *thread);
 G_GNUC_INTERNAL void g_enumerable_thread_remove (GRealThread *thread);
 
-/* Is called from gthread/gthread-impl.c */
-void g_thread_init_glib (void);
-
 /* initializers that may also use g_private_new() */
 G_GNUC_INTERNAL void _g_messages_thread_init_nomessage      (void);
 

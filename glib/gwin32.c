@@ -515,8 +515,6 @@ g_win32_get_windows_version (void)
 {
   static gsize windows_version;
 
-  g_thread_init_glib ();
-
   if (g_once_init_enter (&windows_version))
     g_once_init_leave (&windows_version, GetVersion ());
 
