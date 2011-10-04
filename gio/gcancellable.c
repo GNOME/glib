@@ -58,8 +58,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (GCancellable, g_cancellable, G_TYPE_OBJECT);
 
 static GPrivate current_cancellable;
-G_LOCK_DEFINE_STATIC(cancellable);
-static GCond *cancellable_cond = NULL;
+static GMutex cancellable_mutex;
+static GCond cancellable_cond;
 
 static void
 g_cancellable_finalize (GObject *object)
@@ -79,9 +79,6 @@ g_cancellable_class_init (GCancellableClass *klass)
 
   g_type_class_add_private (klass, sizeof (GCancellablePrivate));
 
-  if (cancellable_cond == NULL)
-    cancellable_cond = g_cond_new ();
-  
   gobject_class->finalize = g_cancellable_finalize;
 
   /**
@@ -263,14 +260,14 @@ g_cancellable_reset (GCancellable *cancellable)
 
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
 
-  G_LOCK(cancellable);
+  g_mutex_lock (&cancellable_mutex);
 
   priv = cancellable->priv;
-  
+
   while (priv->cancelled_running)
     {
       priv->cancelled_running_waiting = TRUE;
-      g_cond_wait (cancellable_cond, &G_LOCK_NAME (cancellable));
+      g_cond_wait (&cancellable_cond, &cancellable_mutex);
     }
 
   if (priv->cancelled)
@@ -280,7 +277,8 @@ g_cancellable_reset (GCancellable *cancellable)
 
       priv->cancelled = FALSE;
     }
-  G_UNLOCK(cancellable);
+
+  g_mutex_unlock (&cancellable_mutex);
 }
 
 /**
@@ -399,7 +397,7 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
     return FALSE;
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), FALSE);
 
-  G_LOCK(cancellable);
+  g_mutex_lock (&cancellable_mutex);
 
   cancellable->priv->fd_refcount++;
 
@@ -413,7 +411,7 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 
   GLIB_PRIVATE_CALL (g_wakeup_get_pollfd) (cancellable->priv->wakeup, pollfd);
 
-  G_UNLOCK(cancellable);
+  g_mutex_unlock (&cancellable_mutex);
 
   return TRUE;
 }
@@ -447,14 +445,16 @@ g_cancellable_release_fd (GCancellable *cancellable)
 
   priv = cancellable->priv;
 
-  G_LOCK (cancellable);
+  g_mutex_lock (&cancellable_mutex);
+
   priv->fd_refcount--;
   if (priv->fd_refcount == 0)
     {
       GLIB_PRIVATE_CALL (g_wakeup_free) (priv->wakeup);
       priv->wakeup = NULL;
     }
-  G_UNLOCK (cancellable);
+
+  g_mutex_unlock (&cancellable_mutex);
 }
 
 /**
@@ -487,10 +487,11 @@ g_cancellable_cancel (GCancellable *cancellable)
 
   priv = cancellable->priv;
 
-  G_LOCK(cancellable);
+  g_mutex_lock (&cancellable_mutex);
+
   if (priv->cancelled)
     {
-      G_UNLOCK (cancellable);
+      g_mutex_unlock (&cancellable_mutex);
       return;
     }
 
@@ -500,19 +501,19 @@ g_cancellable_cancel (GCancellable *cancellable)
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
-  G_UNLOCK(cancellable);
+  g_mutex_unlock (&cancellable_mutex);
 
   g_object_ref (cancellable);
   g_signal_emit (cancellable, signals[CANCELLED], 0);
 
-  G_LOCK(cancellable);
+  g_mutex_lock (&cancellable_mutex);
 
   priv->cancelled_running = FALSE;
   if (priv->cancelled_running_waiting)
-    g_cond_broadcast (cancellable_cond);
+    g_cond_broadcast (&cancellable_cond);
   priv->cancelled_running_waiting = FALSE;
 
-  G_UNLOCK(cancellable);
+  g_mutex_unlock (&cancellable_mutex);
 
   g_object_unref (cancellable);
 }
@@ -553,7 +554,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
 
-  G_LOCK (cancellable);
+  g_mutex_lock (&cancellable_mutex);
 
   if (cancellable->priv->cancelled)
     {
@@ -575,7 +576,8 @@ g_cancellable_connect (GCancellable   *cancellable,
                                   (GClosureNotify) data_destroy_func,
                                   0);
     }
-  G_UNLOCK (cancellable);
+
+  g_mutex_unlock (&cancellable_mutex);
 
   return id;
 }
@@ -611,18 +613,19 @@ g_cancellable_disconnect (GCancellable  *cancellable,
   if (handler_id == 0 ||  cancellable == NULL)
     return;
 
-  G_LOCK (cancellable);
+  g_mutex_lock (&cancellable_mutex);
 
   priv = cancellable->priv;
 
   while (priv->cancelled_running)
     {
       priv->cancelled_running_waiting = TRUE;
-      g_cond_wait (cancellable_cond, &G_LOCK_NAME (cancellable));
+      g_cond_wait (&cancellable_cond, &cancellable_mutex);
     }
 
   g_signal_handler_disconnect (cancellable, handler_id);
-  G_UNLOCK (cancellable);
+
+  g_mutex_unlock (&cancellable_mutex);
 }
 
 typedef struct {
