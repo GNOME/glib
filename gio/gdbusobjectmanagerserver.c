@@ -81,7 +81,7 @@ static gboolean g_dbus_object_manager_server_unexport_unlocked (GDBusObjectManag
 
 struct _GDBusObjectManagerServerPrivate
 {
-  GMutex *lock;
+  GMutex lock;
   GDBusConnection *connection;
   gchar *object_path;
   gchar *object_path_ending_in_slash;
@@ -117,7 +117,7 @@ g_dbus_object_manager_server_finalize (GObject *object)
   g_free (manager->priv->object_path);
   g_free (manager->priv->object_path_ending_in_slash);
 
-  g_mutex_free (manager->priv->lock);
+  g_mutex_clear (&manager->priv->lock);
 
   if (G_OBJECT_CLASS (g_dbus_object_manager_server_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_dbus_object_manager_server_parent_class)->finalize (object);
@@ -134,9 +134,9 @@ g_dbus_object_manager_server_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_CONNECTION:
-      g_mutex_lock (manager->priv->lock);
+      g_mutex_lock (&manager->priv->lock);
       g_value_set_object (value, manager->priv->connection);
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       break;
 
     case PROP_OBJECT_PATH:
@@ -230,7 +230,7 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
   manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager,
                                                G_TYPE_DBUS_OBJECT_MANAGER_SERVER,
                                                GDBusObjectManagerServerPrivate);
-  manager->priv->lock = g_mutex_new ();
+  g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_data = g_hash_table_new_full (g_str_hash,
                                                                   g_str_equal,
                                                                   g_free,
@@ -277,11 +277,11 @@ g_dbus_object_manager_server_set_connection (GDBusObjectManagerServer  *manager,
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (connection == NULL || G_IS_DBUS_CONNECTION (connection));
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   if (manager->priv->connection == connection)
     {
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       goto out;
     }
 
@@ -296,7 +296,7 @@ g_dbus_object_manager_server_set_connection (GDBusObjectManagerServer  *manager,
   if (manager->priv->connection != NULL)
     export_all (manager);
 
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   g_object_notify (G_OBJECT (manager), "connection");
  out:
@@ -320,9 +320,9 @@ g_dbus_object_manager_server_get_connection (GDBusObjectManagerServer *manager)
 {
   GDBusConnection *ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), NULL);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = manager->priv->connection != NULL ? g_object_ref (manager->priv->connection) : NULL;
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -406,10 +406,10 @@ on_interface_added (GDBusObject    *object,
 {
   RegistrationData *data = user_data;
   const gchar *object_path;
-  g_mutex_lock (data->manager->priv->lock);
+  g_mutex_lock (&data->manager->priv->lock);
   object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
   registration_data_export_interface (data, G_DBUS_INTERFACE_SKELETON (interface), object_path);
-  g_mutex_unlock (data->manager->priv->lock);
+  g_mutex_unlock (&data->manager->priv->lock);
 }
 
 static void
@@ -418,9 +418,9 @@ on_interface_removed (GDBusObject    *object,
                       gpointer        user_data)
 {
   RegistrationData *data = user_data;
-  g_mutex_lock (data->manager->priv->lock);
+  g_mutex_lock (&data->manager->priv->lock);
   registration_data_unexport_interface (data, G_DBUS_INTERFACE_SKELETON (interface));
-  g_mutex_unlock (data->manager->priv->lock);
+  g_mutex_unlock (&data->manager->priv->lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -535,10 +535,10 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
                                      GDBusObjectSkeleton       *object)
 {
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   g_dbus_object_manager_server_export_unlocked (manager, object,
                                                 g_dbus_object_get_object_path (G_DBUS_OBJECT (object)));
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 }
 
 /**
@@ -569,7 +569,7 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
   g_return_if_fail (g_str_has_prefix (orig_object_path, manager->priv->object_path_ending_in_slash));
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   object_path = g_strdup (orig_object_path);
   count = 1;
@@ -589,7 +589,7 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
 
   g_dbus_object_manager_server_export_unlocked (manager, object, object_path);
 
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   if (modified)
     g_dbus_object_skeleton_set_object_path (G_DBUS_OBJECT_SKELETON (object), object_path);
@@ -658,9 +658,9 @@ g_dbus_object_manager_server_unexport (GDBusObjectManagerServer  *manager,
 {
   gboolean ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), FALSE);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = g_dbus_object_manager_server_unexport_unlocked (manager, object_path);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -798,7 +798,7 @@ manager_method_call (GDBusConnection       *connection,
   GHashTableIter object_iter;
   RegistrationData *data;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   if (g_strcmp0 (method_name, "GetManagedObjects") == 0)
     {
@@ -840,7 +840,7 @@ manager_method_call (GDBusConnection       *connection,
                                              "Unknown method %s - only GetManagedObjects() is supported",
                                              method_name);
     }
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 }
 
 static const GDBusInterfaceVTable manager_interface_vtable =
@@ -948,7 +948,7 @@ g_dbus_object_manager_server_get_objects (GDBusObjectManager  *_manager)
   GHashTableIter iter;
   RegistrationData *data;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   ret = NULL;
   g_hash_table_iter_init (&iter, manager->priv->map_object_path_to_data);
@@ -957,7 +957,7 @@ g_dbus_object_manager_server_get_objects (GDBusObjectManager  *_manager)
       ret = g_list_prepend (ret, g_object_ref (data->object));
     }
 
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   return ret;
 }
@@ -979,11 +979,11 @@ g_dbus_object_manager_server_get_object (GDBusObjectManager *_manager,
 
   ret = NULL;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   data = g_hash_table_lookup (manager->priv->map_object_path_to_data, object_path);
   if (data != NULL)
     ret = g_object_ref (data->object);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   return ret;
 }

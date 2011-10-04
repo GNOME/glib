@@ -363,7 +363,7 @@ struct GDBusWorker
   GSocket *socket;
 
   /* used for reading */
-  GMutex                             *read_lock;
+  GMutex                              read_lock;
   gchar                              *read_buffer;
   gsize                               read_buffer_allocated_size;
   gsize                               read_buffer_cur_size;
@@ -379,7 +379,7 @@ struct GDBusWorker
    */
   gboolean                            output_pending;
   /* used for writing */
-  GMutex                             *write_lock;
+  GMutex                              write_lock;
   /* queue of MessageToWriteData, protected by write_lock */
   GQueue                             *write_queue;
   /* protected by write_lock */
@@ -396,8 +396,8 @@ static void _g_dbus_worker_unref (GDBusWorker *worker);
 
 typedef struct
 {
-  GMutex *mutex;
-  GCond *cond;
+  GMutex  mutex;
+  GCond   cond;
   guint64 number_to_wait_for;
   GError *error;
 } FlushData;
@@ -451,7 +451,7 @@ _g_dbus_worker_unref (GDBusWorker *worker)
 
       g_object_unref (worker->stream);
 
-      g_mutex_free (worker->read_lock);
+      g_mutex_clear (&worker->read_lock);
       g_object_unref (worker->cancellable);
       if (worker->read_fd_list != NULL)
         g_object_unref (worker->read_fd_list);
@@ -459,7 +459,7 @@ _g_dbus_worker_unref (GDBusWorker *worker)
       g_queue_foreach (worker->received_messages_while_frozen, (GFunc) g_object_unref, NULL);
       g_queue_free (worker->received_messages_while_frozen);
 
-      g_mutex_free (worker->write_lock);
+      g_mutex_clear (&worker->write_lock);
       g_queue_foreach (worker->write_queue, (GFunc) message_to_write_data_free, NULL);
       g_queue_free (worker->write_queue);
 
@@ -523,7 +523,7 @@ unfreeze_in_idle_cb (gpointer user_data)
   GDBusWorker *worker = user_data;
   GDBusMessage *message;
 
-  g_mutex_lock (worker->read_lock);
+  g_mutex_lock (&worker->read_lock);
   if (worker->frozen)
     {
       while ((message = g_queue_pop_head (worker->received_messages_while_frozen)) != NULL)
@@ -537,7 +537,7 @@ unfreeze_in_idle_cb (gpointer user_data)
     {
       g_assert (g_queue_get_length (worker->received_messages_while_frozen) == 0);
     }
-  g_mutex_unlock (worker->read_lock);
+  g_mutex_unlock (&worker->read_lock);
   return FALSE;
 }
 
@@ -570,7 +570,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
   GError *error;
   gssize bytes_read;
 
-  g_mutex_lock (worker->read_lock);
+  g_mutex_lock (&worker->read_lock);
 
   /* If already stopped, don't even process the reply */
   if (g_atomic_int_get (&worker->stopped))
@@ -777,7 +777,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
     }
 
  out:
-  g_mutex_unlock (worker->read_lock);
+  g_mutex_unlock (&worker->read_lock);
 
   /* gives up the reference acquired when calling g_input_stream_read_async() */
   _g_dbus_worker_unref (worker);
@@ -831,9 +831,9 @@ static gboolean
 _g_dbus_worker_do_initial_read (gpointer data)
 {
   GDBusWorker *worker = data;
-  g_mutex_lock (worker->read_lock);
+  g_mutex_lock (&worker->read_lock);
   _g_dbus_worker_do_read_unlocked (worker);
-  g_mutex_unlock (worker->read_lock);
+  g_mutex_unlock (&worker->read_lock);
   return FALSE;
 }
 
@@ -1119,9 +1119,9 @@ flush_data_list_complete (const GList  *flushers,
 
       f->error = error != NULL ? g_error_copy (error) : NULL;
 
-      g_mutex_lock (f->mutex);
-      g_cond_signal (f->cond);
-      g_mutex_unlock (f->mutex);
+      g_mutex_lock (&f->mutex);
+      g_cond_signal (&f->cond);
+      g_mutex_unlock (&f->mutex);
     }
 }
 
@@ -1165,10 +1165,10 @@ ostream_flush_cb (GObject      *source_object,
 
   /* Make sure we tell folks that we don't have additional
      flushes pending */
-  g_mutex_lock (data->worker->write_lock);
+  g_mutex_lock (&data->worker->write_lock);
   g_assert (data->worker->output_pending);
   data->worker->output_pending = FALSE;
-  g_mutex_unlock (data->worker->write_lock);
+  g_mutex_unlock (&data->worker->write_lock);
 
   /* OK, cool, finally kick off the next write */
   maybe_write_next_message (data->worker);
@@ -1213,7 +1213,7 @@ message_written (GDBusWorker *worker,
 
   /* then first wake up pending flushes and, if needed, flush the stream */
   flushers = NULL;
-  g_mutex_lock (worker->write_lock);
+  g_mutex_lock (&worker->write_lock);
   worker->write_num_messages_written += 1;
   for (l = worker->write_pending_flushes; l != NULL; l = ll)
     {
@@ -1231,7 +1231,7 @@ message_written (GDBusWorker *worker,
       g_assert (!worker->output_pending);
       worker->output_pending = TRUE;
     }
-  g_mutex_unlock (worker->write_lock);
+  g_mutex_unlock (&worker->write_lock);
 
   if (flushers != NULL)
     {
@@ -1266,10 +1266,10 @@ write_message_cb (GObject       *source_object,
   MessageToWriteData *data = user_data;
   GError *error;
 
-  g_mutex_lock (data->worker->write_lock);
+  g_mutex_lock (&data->worker->write_lock);
   g_assert (data->worker->output_pending);
   data->worker->output_pending = FALSE;
-  g_mutex_unlock (data->worker->write_lock);
+  g_mutex_unlock (&data->worker->write_lock);
 
   error = NULL;
   if (!write_message_finish (res, &error))
@@ -1305,7 +1305,7 @@ iostream_close_cb (GObject      *source_object,
 
   g_io_stream_close_finish (worker->stream, res, &error);
 
-  g_mutex_lock (worker->write_lock);
+  g_mutex_lock (&worker->write_lock);
 
   pending_close_attempts = worker->pending_close_attempts;
   worker->pending_close_attempts = NULL;
@@ -1319,7 +1319,7 @@ iostream_close_cb (GObject      *source_object,
   g_assert (worker->output_pending);
   worker->output_pending = FALSE;
 
-  g_mutex_unlock (worker->write_lock);
+  g_mutex_unlock (&worker->write_lock);
 
   while (pending_close_attempts != NULL)
     {
@@ -1372,7 +1372,7 @@ maybe_write_next_message (GDBusWorker *worker)
   /* we mustn't try to write two things at once */
   g_assert (!worker->output_pending);
 
-  g_mutex_lock (worker->write_lock);
+  g_mutex_lock (&worker->write_lock);
 
   /* if we want to close the connection, that takes precedence */
   if (worker->pending_close_attempts != NULL)
@@ -1392,7 +1392,7 @@ maybe_write_next_message (GDBusWorker *worker)
         worker->output_pending = TRUE;
     }
 
-  g_mutex_unlock (worker->write_lock);
+  g_mutex_unlock (&worker->write_lock);
 
   /* Note that write_lock is only used for protecting the @write_queue
    * and @output_pending fields of the GDBusWorker struct ... which we
@@ -1418,9 +1418,9 @@ maybe_write_next_message (GDBusWorker *worker)
       else if (data->message == NULL)
         {
           /* filters dropped message */
-          g_mutex_lock (worker->write_lock);
+          g_mutex_lock (&worker->write_lock);
           worker->output_pending = FALSE;
-          g_mutex_unlock (worker->write_lock);
+          g_mutex_unlock (&worker->write_lock);
           message_to_write_data_free (data);
           goto write_next;
         }
@@ -1490,7 +1490,7 @@ schedule_write_in_worker_thread (GDBusWorker        *worker,
                                  MessageToWriteData *write_data,
                                  CloseData          *close_data)
 {
-  g_mutex_lock (worker->write_lock);
+  g_mutex_lock (&worker->write_lock);
 
   if (write_data != NULL)
     g_queue_push_tail (worker->write_queue, write_data);
@@ -1512,7 +1512,7 @@ schedule_write_in_worker_thread (GDBusWorker        *worker,
       g_source_unref (idle_source);
     }
 
-  g_mutex_unlock (worker->write_lock);
+  g_mutex_unlock (&worker->write_lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1565,7 +1565,7 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker = g_new0 (GDBusWorker, 1);
   worker->ref_count = 1;
 
-  worker->read_lock = g_mutex_new ();
+  g_mutex_init (&worker->read_lock);
   worker->message_received_callback = message_received_callback;
   worker->message_about_to_be_sent_callback = message_about_to_be_sent_callback;
   worker->disconnected_callback = disconnected_callback;
@@ -1578,7 +1578,7 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker->frozen = initially_frozen;
   worker->received_messages_while_frozen = g_queue_new ();
 
-  worker->write_lock = g_mutex_new ();
+  g_mutex_init (&worker->write_lock);
   worker->write_queue = g_queue_new ();
 
   if (G_IS_SOCKET_CONNECTION (worker->stream))
@@ -1668,26 +1668,26 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
   ret = TRUE;
 
   /* if the queue is empty, there's nothing to wait for */
-  g_mutex_lock (worker->write_lock);
+  g_mutex_lock (&worker->write_lock);
   if (g_queue_get_length (worker->write_queue) > 0)
     {
       data = g_new0 (FlushData, 1);
-      data->mutex = g_mutex_new ();
-      data->cond = g_cond_new ();
+      g_mutex_init (&data->mutex);
+      g_cond_init (&data->cond);
       data->number_to_wait_for = worker->write_num_messages_written + g_queue_get_length (worker->write_queue);
-      g_mutex_lock (data->mutex);
+      g_mutex_lock (&data->mutex);
       worker->write_pending_flushes = g_list_prepend (worker->write_pending_flushes, data);
     }
-  g_mutex_unlock (worker->write_lock);
+  g_mutex_unlock (&worker->write_lock);
 
   if (data != NULL)
     {
-      g_cond_wait (data->cond, data->mutex);
-      g_mutex_unlock (data->mutex);
+      g_cond_wait (&data->cond, &data->mutex);
+      g_mutex_unlock (&data->mutex);
 
       /* note:the element is removed from worker->write_pending_flushes in flush_cb() above */
-      g_cond_free (data->cond);
-      g_mutex_free (data->mutex);
+      g_cond_clear (&data->cond);
+      g_mutex_free (&data->mutex);
       if (data->error != NULL)
         {
           ret = FALSE;

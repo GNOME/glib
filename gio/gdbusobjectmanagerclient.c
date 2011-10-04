@@ -125,7 +125,7 @@
 
 struct _GDBusObjectManagerClientPrivate
 {
-  GMutex *lock;
+  GMutex lock;
 
   GBusType bus_type;
   GDBusConnection *connection;
@@ -214,7 +214,7 @@ g_dbus_object_manager_client_finalize (GObject *object)
   if (manager->priv->get_proxy_type_destroy_notify != NULL)
     manager->priv->get_proxy_type_destroy_notify (manager->priv->get_proxy_type_user_data);
 
-  g_mutex_free (manager->priv->lock);
+  g_mutex_clear (&manager->priv->lock);
 
   if (G_OBJECT_CLASS (g_dbus_object_manager_client_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_dbus_object_manager_client_parent_class)->finalize (object);
@@ -572,7 +572,7 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
   manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager,
                                                G_TYPE_DBUS_OBJECT_MANAGER_CLIENT,
                                                GDBusObjectManagerClientPrivate);
-  manager->priv->lock = g_mutex_new ();
+  g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_object_proxy = g_hash_table_new_full (g_str_hash,
                                                                           g_str_equal,
                                                                           g_free,
@@ -901,9 +901,9 @@ g_dbus_object_manager_client_get_connection (GDBusObjectManagerClient *manager)
 {
   GDBusConnection *ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager), NULL);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = manager->priv->connection;
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -923,9 +923,9 @@ g_dbus_object_manager_client_get_name (GDBusObjectManagerClient *manager)
 {
   const gchar *ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager), NULL);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = manager->priv->name;
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -945,9 +945,9 @@ g_dbus_object_manager_client_get_flags (GDBusObjectManagerClient *manager)
 {
   GDBusObjectManagerClientFlags ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager), G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = manager->priv->flags;
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -970,9 +970,9 @@ g_dbus_object_manager_client_get_name_owner (GDBusObjectManagerClient *manager)
 {
   gchar *ret;
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager), NULL);
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = g_strdup (manager->priv->name_owner);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -994,15 +994,15 @@ signal_cb (GDBusConnection *connection,
   GDBusObjectProxy *object_proxy;
   GDBusInterface *interface;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   object_proxy = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (object_proxy == NULL)
     {
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       goto out;
     }
   g_object_ref (object_proxy);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   //g_debug ("yay, signal_cb %s %s: %s\n", signal_name, object_path, g_variant_print (parameters, TRUE));
 
@@ -1224,7 +1224,7 @@ on_notify_g_name_owner (GObject    *object,
   gchar *old_name_owner;
   gchar *new_name_owner;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   old_name_owner = manager->priv->name_owner;
   new_name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
   manager->priv->name_owner = NULL;
@@ -1239,7 +1239,7 @@ on_notify_g_name_owner (GObject    *object,
       g_list_foreach (proxies, (GFunc) g_object_ref, NULL);
       g_hash_table_remove_all (manager->priv->map_object_path_to_object_proxy);
 
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
 
       /* do the :name-owner notify with a NULL name - this way the user knows
        * the ::object-proxy-removed following is because the name owner went
@@ -1260,7 +1260,7 @@ on_notify_g_name_owner (GObject    *object,
     }
   else
     {
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
     }
 
   if (new_name_owner != NULL)
@@ -1299,9 +1299,9 @@ on_notify_g_name_owner (GObject    *object,
       /* do the :name-owner notify *AFTER* emitting ::object-proxy-added signals - this
        * way the user knows that the signals were emitted because the name owner came back
        */
-      g_mutex_lock (manager->priv->lock);
+      g_mutex_lock (&manager->priv->lock);
       manager->priv->name_owner = new_name_owner;
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       g_object_notify (G_OBJECT (manager), "name-owner");
 
     }
@@ -1422,7 +1422,7 @@ add_interfaces (GDBusObjectManagerClient *manager,
 
   g_return_if_fail (g_dbus_is_unique_name (name_owner));
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   interface_added_signals = NULL;
   added = FALSE;
@@ -1526,7 +1526,7 @@ add_interfaces (GDBusObjectManagerClient *manager,
       g_variant_unref (properties);
     }
 
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   /* now that we don't hold the lock any more, emit signals */
   for (l = interface_added_signals; l != NULL; l = l->next)
@@ -1559,7 +1559,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
   guint num_interfaces;
   guint num_interfaces_to_remove;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
 
   op = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (op == NULL)
@@ -1567,7 +1567,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
       g_warning ("%s: Processing InterfaceRemoved signal for path %s but no object proxy exists",
                  G_STRLOC,
                  object_path);
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       goto out;
     }
 
@@ -1583,14 +1583,14 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
     {
       g_object_ref (op);
       g_warn_if_fail (g_hash_table_remove (manager->priv->map_object_path_to_object_proxy, object_path));
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       g_signal_emit_by_name (manager, "object-removed", op);
       g_object_unref (op);
     }
   else
     {
       g_object_ref (op);
-      g_mutex_unlock (manager->priv->lock);
+      g_mutex_unlock (&manager->priv->lock);
       for (n = 0; interface_names != NULL && interface_names[n] != NULL; n++)
         {
           GDBusInterface *interface;
@@ -1683,11 +1683,11 @@ g_dbus_object_manager_client_get_object (GDBusObjectManager *_manager,
   GDBusObjectManagerClient *manager = G_DBUS_OBJECT_MANAGER_CLIENT (_manager);
   GDBusObject *ret;
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (ret != NULL)
     g_object_ref (ret);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
   return ret;
 }
 
@@ -1720,10 +1720,10 @@ g_dbus_object_manager_client_get_objects (GDBusObjectManager *_manager)
 
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager), NULL);
 
-  g_mutex_lock (manager->priv->lock);
+  g_mutex_lock (&manager->priv->lock);
   ret = g_hash_table_get_values (manager->priv->map_object_path_to_object_proxy);
   g_list_foreach (ret, (GFunc) g_object_ref, NULL);
-  g_mutex_unlock (manager->priv->lock);
+  g_mutex_unlock (&manager->priv->lock);
 
   return ret;
 }

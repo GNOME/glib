@@ -280,7 +280,7 @@ _g_strv_has_string (const gchar* const *haystack,
 #else
 // TODO: for some reason this doesn't work on Windows
 #define CONNECTION_ENSURE_LOCK(obj) do {                                \
-    if (G_UNLIKELY (g_mutex_trylock((obj)->lock)))                      \
+    if (G_UNLIKELY (g_mutex_trylock(&(obj)->lock)))                     \
       {                                                                 \
         g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                              "CONNECTION_ENSURE_LOCK: GDBusConnection object lock is not locked"); \
@@ -289,11 +289,11 @@ _g_strv_has_string (const gchar* const *haystack,
 #endif
 
 #define CONNECTION_LOCK(obj) do {                                       \
-    g_mutex_lock ((obj)->lock);                                         \
+    g_mutex_lock (&(obj)->lock);                                        \
   } while (FALSE)
 
 #define CONNECTION_UNLOCK(obj) do {                                     \
-    g_mutex_unlock ((obj)->lock);                                       \
+    g_mutex_unlock (&(obj)->lock);                                      \
   } while (FALSE)
 
 /**
@@ -314,12 +314,12 @@ struct _GDBusConnection
   /* ------------------------------------------------------------------------ */
 
   /* object-wide lock */
-  GMutex *lock;
+  GMutex lock;
 
   /* A lock used in the init() method of the GInitable interface - see comments
    * in initable_init() for why a separate lock is needed
    */
-  GMutex *init_lock;
+  GMutex init_lock;
 
   /* Set (by loading the contents of /var/lib/dbus/machine-id) the first time
    * someone calls org.freedesktop.DBus.GetMachineId()
@@ -541,8 +541,8 @@ g_dbus_connection_finalize (GObject *object)
 
   g_free (connection->machine_id);
 
-  g_mutex_free (connection->init_lock);
-  g_mutex_free (connection->lock);
+  g_mutex_clear (&connection->init_lock);
+  g_mutex_clear (&connection->lock);
 
   G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize (object);
 }
@@ -903,8 +903,8 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
 static void
 g_dbus_connection_init (GDBusConnection *connection)
 {
-  connection->lock = g_mutex_new ();
-  connection->init_lock = g_mutex_new ();
+  g_mutex_init (&connection->lock);
+  g_mutex_init (&connection->init_lock);
 
   connection->map_method_serial_to_send_message_data = g_hash_table_new (g_direct_hash, g_direct_equal);
 
@@ -2271,7 +2271,7 @@ initable_init (GInitable     *initable,
    * callbacks above needs the lock during initialization (for message
    * bus connections we do a synchronous Hello() call on the bus).
    */
-  g_mutex_lock (connection->init_lock);
+  g_mutex_lock (&connection->init_lock);
 
   ret = FALSE;
 
@@ -2438,7 +2438,7 @@ initable_init (GInitable     *initable,
       g_propagate_error (error, g_error_copy (connection->initialization_error));
     }
 
-  g_mutex_unlock (connection->init_lock);
+  g_mutex_unlock (&connection->init_lock);
 
   return ret;
 }
