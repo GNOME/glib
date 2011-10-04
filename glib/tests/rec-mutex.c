@@ -77,13 +77,13 @@ acquire (gint nr)
 
   self = g_thread_self ();
 
-  if (owners[nr] != NULL && owners[nr] != self)
+  if (!g_rec_mutex_trylock (&locks[nr]))
     {
       if (g_test_verbose ())
         g_print ("thread %p going to block on lock %d\n", self, nr);
-    }
 
-  g_rec_mutex_lock (&locks[nr]);
+      g_rec_mutex_lock (&locks[nr]);
+    }
 
   g_assert (owners[nr] == NULL);   /* hopefully nobody else is here */
   owners[nr] = self;
