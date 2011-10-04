@@ -278,6 +278,7 @@ typedef struct {
 
   GMutex ack_lock;
   GCond ack_condition;
+  gboolean ack;
 } MainLoopProxy;
 
 static gboolean
@@ -291,6 +292,7 @@ mainloop_proxy_func (gpointer data)
     proxy->notify (proxy->data);
 
   g_mutex_lock (&proxy->ack_lock);
+  proxy->ack = TRUE;
   g_cond_signal (&proxy->ack_condition);
   g_mutex_unlock (&proxy->ack_lock);
 
@@ -347,7 +349,8 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   g_source_attach (source, job->context);
   g_source_unref (source);
 
-  g_cond_wait (&proxy->ack_condition, &proxy->ack_lock);
+  while (!proxy->ack)
+    g_cond_wait (&proxy->ack_condition, &proxy->ack_lock);
   g_mutex_unlock (&proxy->ack_lock);
 
   ret_val = proxy->ret_val;
