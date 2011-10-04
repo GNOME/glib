@@ -65,6 +65,13 @@
  * structure and a #GTypeFundamentalInfo structure but it is seldom used
  * since most fundamental types are predefined rather than user-defined.
  *
+ * Type instance and class structs are limited to a total of 64 KiB,
+ * including all parent types. Similarly, type instances' private data
+ * (as created by g_type_class_add_private()) are limited to a total of
+ * 64 KiB. If a type instance needs a large static buffer, allocate it
+ * separately (typically by using #GArray or #GPtrArray) and put a pointer
+ * to the buffer in the structure.
+ *
  * A final word about type names.
  * Such an identifier needs to be at least three characters long. There is no
  * upper length limit. The first character needs to be a letter (a-z or A-Z)
@@ -4391,7 +4398,7 @@ g_type_init (void)
  * structures.
  *
  * Note that the accumulated size of the private structures of
- * a type and all its parent types cannot excced 64kB.
+ * a type and all its parent types cannot excced 64 KiB.
  *
  * This function should be called in the type's class_init() function.
  * The private structure can be retrieved using the
