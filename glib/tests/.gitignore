@@ -45,6 +45,7 @@ rwlock
 scannerapi
 sequence
 shell
+slice
 slist
 sort
 strfuncs
