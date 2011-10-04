@@ -221,7 +221,7 @@ struct _GMainContext
    * and the list of poll records
    */
   GMutex mutex;
-  GCond *cond;
+  GCond cond;
   GThread *owner;
   guint owner_count;
   GSList *waiters;
@@ -496,9 +496,7 @@ g_main_context_unref (GMainContext *context)
   poll_rec_list_free (context, context->poll_records);
 
   g_wakeup_free (context->wakeup);
-
-  if (context->cond != NULL)
-    g_cond_free (context->cond);
+  g_cond_clear (&context->cond);
 
   g_free (context);
 }
@@ -543,6 +541,7 @@ g_main_context_new (void)
   context = g_new0 (GMainContext, 1);
 
   g_mutex_init (&context->mutex);
+  g_cond_init (&context->cond);
 
   context->owner = NULL;
   context->waiters = NULL;
@@ -2952,12 +2951,9 @@ g_main_context_iterate (GMainContext *context,
       if (!block)
 	return FALSE;
 
-      if (!context->cond)
-	context->cond = g_cond_new ();
-
       got_ownership = g_main_context_wait (context,
-					   context->cond,
-					   &context->mutex);
+                                           &context->cond,
+                                           &context->mutex);
 
       if (!got_ownership)
 	return FALSE;
@@ -3162,13 +3158,10 @@ g_main_loop_run (GMainLoop *loop)
       if (!loop->is_running)
 	loop->is_running = TRUE;
 
-      if (!loop->context->cond)
-	loop->context->cond = g_cond_new ();
-          
       while (loop->is_running && !got_ownership)
 	got_ownership = g_main_context_wait (loop->context,
-					     loop->context->cond,
-					     &loop->context->mutex);
+                                             &loop->context->cond,
+                                             &loop->context->mutex);
       
       if (!loop->is_running)
 	{
@@ -3223,8 +3216,7 @@ g_main_loop_quit (GMainLoop *loop)
   loop->is_running = FALSE;
   g_wakeup_signal (loop->context->wakeup);
 
-  if (loop->context->cond)
-    g_cond_broadcast (loop->context->cond);
+  g_cond_broadcast (&loop->context->cond);
 
   UNLOCK_CONTEXT (loop->context);
 }

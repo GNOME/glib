@@ -90,7 +90,7 @@ struct _GRealThreadPool
 {
   GThreadPool pool;
   GAsyncQueue *queue;
-  GCond *cond;
+  GCond cond;
   gint max_threads;
   gint num_threads;
   gboolean running;
@@ -362,7 +362,7 @@ g_thread_pool_thread_proxy (gpointer data)
                    * immediately, inform the waiting thread of a change
                    * of the thread pool state.
                    */
-                  g_cond_broadcast (pool->cond);
+                  g_cond_broadcast (&pool->cond);
                 }
             }
 
@@ -485,7 +485,7 @@ g_thread_pool_new (GFunc      func,
   retval->pool.user_data = user_data;
   retval->pool.exclusive = exclusive;
   retval->queue = g_async_queue_new ();
-  retval->cond = NULL;
+  g_cond_init (&retval->cond);
   retval->max_threads = max_threads;
   retval->num_threads = 0;
   retval->running = TRUE;
@@ -776,11 +776,9 @@ g_thread_pool_free (GThreadPool *pool,
 
   if (wait_)
     {
-      real->cond = g_cond_new ();
-
       while (g_async_queue_length_unlocked (real->queue) != -real->num_threads &&
              !(immediate && real->num_threads == 0))
-        g_cond_wait (real->cond, _g_async_queue_get_mutex (real->queue));
+        g_cond_wait (&real->cond, _g_async_queue_get_mutex (real->queue));
     }
 
   if (immediate || g_async_queue_length_unlocked (real->queue) == -real->num_threads)
@@ -812,9 +810,7 @@ g_thread_pool_free_internal (GRealThreadPool* pool)
   g_return_if_fail (pool->num_threads == 0);
 
   g_async_queue_unref (pool->queue);
-
-  if (pool->cond)
-    g_cond_free (pool->cond);
+  g_cond_clear (&pool->cond);
 
   g_free (pool);
 }
