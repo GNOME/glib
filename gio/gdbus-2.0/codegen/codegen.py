@@ -2062,7 +2062,7 @@ class CodeGenerator:
                      '  GList *changed_properties;\n'
                      '  GSource *changed_properties_idle_source;\n'
                      '  GMainContext *context;\n'
-                     '  GMutex *lock;\n'
+                     '  GMutex lock;\n'
                      '};\n'
                      '\n'%i.camel_name)
 
@@ -2284,14 +2284,14 @@ class CodeGenerator:
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (_skeleton);\n'
                          '  gboolean emit_changed = FALSE;\n'
                          '\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  if (skeleton->priv->changed_properties_idle_source != NULL)\n'
                          '    {\n'
                          '      g_source_destroy (skeleton->priv->changed_properties_idle_source);\n'
                          '      skeleton->priv->changed_properties_idle_source = NULL;\n'
                          '      emit_changed = TRUE;\n'
                          '    }\n'
-                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          '\n'
                          '  if (emit_changed)\n'
                          '    _%s_emit_changed (skeleton);\n'
@@ -2344,7 +2344,7 @@ class CodeGenerator:
         self.c.write('    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n')
         self.c.write('  if (skeleton->priv->context != NULL)\n')
         self.c.write('    g_main_context_unref (skeleton->priv->context);\n')
-        self.c.write('  g_mutex_free (skeleton->priv->lock);\n')
+        self.c.write('  g_mutex_clear (&skeleton->priv->lock);\n')
         self.c.write('  G_OBJECT_CLASS (%s_skeleton_parent_class)->finalize (object);\n'
                      '}\n'
                      '\n'%(i.name_lower))
@@ -2359,9 +2359,9 @@ class CodeGenerator:
                          '{\n'%(i.name_lower))
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                          '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);\n'
-                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties)))
             self.c.write('}\n'
                          '\n')
@@ -2388,7 +2388,7 @@ class CodeGenerator:
                          '  GVariantBuilder invalidated_builder;\n'
                          '  guint num_changes;\n'
                          '\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
                          '  g_variant_builder_init (&invalidated_builder, G_VARIANT_TYPE ("as"));\n'
                          '  for (l = skeleton->priv->changed_properties, num_changes = 0; l != NULL; l = l->next)\n'
@@ -2427,7 +2427,7 @@ class CodeGenerator:
             self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
             self.c.write('  skeleton->priv->changed_properties = NULL;\n')
             self.c.write('  skeleton->priv->changed_properties_idle_source = NULL;\n')
-            self.c.write('  g_mutex_unlock (skeleton->priv->lock);\n')
+            self.c.write('  g_mutex_unlock (&skeleton->priv->lock);\n')
             self.c.write('  return FALSE;\n'
                          '}\n'
                          '\n')
@@ -2470,7 +2470,7 @@ class CodeGenerator:
                          '  GParamSpec *pspec)\n'
                          '{\n'
                          '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  if (skeleton->priv->changed_properties != NULL &&\n'
                          '      skeleton->priv->changed_properties_idle_source == NULL)\n'
                          '    {\n'
@@ -2480,7 +2480,7 @@ class CodeGenerator:
                          '      g_source_attach (skeleton->priv->changed_properties_idle_source, skeleton->priv->context);\n'
                          '      g_source_unref (skeleton->priv->changed_properties_idle_source);\n'
                          '    }\n'
-                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          '}\n'
                          '\n'
                          %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.name_lower))
@@ -2493,7 +2493,7 @@ class CodeGenerator:
                          '{\n'%(i.name_lower))
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                          '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  g_object_freeze_notify (object);\n'
                          '  if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))\n'
                          '    {\n'
@@ -2502,7 +2502,7 @@ class CodeGenerator:
                          '      g_value_copy (value, &skeleton->priv->properties->values[prop_id - 1]);\n'
                          '      g_object_notify_by_pspec (object, pspec);\n'
                          '    }\n'
-                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          '  g_object_thaw_notify (object);\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower))
             self.c.write('}\n'
@@ -2513,7 +2513,7 @@ class CodeGenerator:
                      '{\n'
                      '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.camel_name))
-        self.c.write('  skeleton->priv->lock = g_mutex_new ();\n')
+        self.c.write('  g_mutex_init (&skeleton->priv->lock);\n')
         self.c.write('  skeleton->priv->context = g_main_context_get_thread_default ();\n')
         self.c.write('  if (skeleton->priv->context != NULL)\n')
         self.c.write('    g_main_context_ref (skeleton->priv->context);\n')
@@ -2536,9 +2536,9 @@ class CodeGenerator:
                          %(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
             self.c.write('  %svalue;\n'
-                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_mutex_lock (&skeleton->priv->lock);\n'
                          '  value = %s (&(skeleton->priv->properties->values[%d]));\n'
-                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          %(p.arg.ctype_in_g, p.arg.gvalue_get, n))
             self.c.write('  return value;\n')
             self.c.write('}\n')
