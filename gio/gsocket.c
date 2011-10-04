@@ -217,13 +217,15 @@ socket_strerror (int err)
 #ifndef G_OS_WIN32
   return g_strerror (err);
 #else
-  static GStaticPrivate last_msg = G_STATIC_PRIVATE_INIT;
+  const char *msg_ret;
   char *msg;
 
   msg = g_win32_error_message (err);
-  g_static_private_set (&last_msg, msg, g_free);
 
-  return msg;
+  msg_ret = g_intern_string (msg);
+  g_free (msg);
+
+  return msg_ret;
 #endif
 }
 
