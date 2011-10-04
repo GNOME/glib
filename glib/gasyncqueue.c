@@ -143,7 +143,7 @@ g_async_queue_new_full (GDestroyNotify item_free_func)
   g_queue_init (&queue->queue);
   queue->waiting_threads = 0;
   queue->ref_count = 1;
-  queue->item_free_func = NULL;
+  queue->item_free_func = item_free_func;
 
   return queue;
 }
