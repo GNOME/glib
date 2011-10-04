@@ -100,6 +100,57 @@ test_private2 (void)
   g_assert_cmpint (private2_destroy_count, ==, 10);
 }
 
+static gboolean private3_freed;
+
+static void
+private3_free (gpointer data)
+{
+  g_assert (data == (void*) 0x1234);
+  private3_freed = TRUE;
+}
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+
+static guint __stdcall
+#else
+#include <pthread.h>
+
+static gpointer
+#endif
+private3_func (gpointer data)
+{
+  static GPrivate key = G_PRIVATE_INIT (private3_free);
+
+  g_private_set (&key, (void *) 0x1234);
+
+  return 0;
+}
+
+static void
+test_private3 (void)
+{
+  g_assert (!private3_freed);
+
+#ifdef G_OS_WIN32
+  {
+    HANDLE thread;
+    guint ignore;
+    thread = _beginthreadex (NULL, 0, private3_func, NULL, 0, &ignore);
+    WaitForSingleObject (thread, INFINITE);
+    CloseHandle (thread);
+  }
+#else
+  {
+    pthread_t thread;
+
+    pthread_create (&thread, NULL, private3_func, NULL);
+    pthread_join (thread, NULL);
+  }
+#endif
+  g_assert (private3_freed);
+}
+
 /* test basics:
  * - static initialization works
  * - initial value is NULL
@@ -327,6 +378,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/thread/private1", test_private1);
   g_test_add_func ("/thread/private2", test_private2);
+  g_test_add_func ("/thread/private3", test_private3);
   g_test_add_func ("/thread/staticprivate1", test_static_private1);
   g_test_add_func ("/thread/staticprivate2", test_static_private2);
   g_test_add_func ("/thread/staticprivate3", test_static_private3);
