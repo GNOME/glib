@@ -29,7 +29,6 @@ static guint    number_of_repetitions = 10000;     /* number of alloc+free repet
 static gboolean want_corruption = FALSE;
 
 /* --- old memchunk prototypes (memchunks.c) --- */
-void            old_mem_chunks_init     (void);
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
                                          gint          atom_size,
                                          gulong        area_size,
@@ -285,7 +284,6 @@ main (int   argc,
         threads[i] = g_thread_create (test_sliced_mem_thread, seedp, TRUE, NULL);
     else
       {
-        old_mem_chunks_init();
         for (i = 0; i < n_threads; i++)
           threads[i] = g_thread_create (test_memchunk_thread, seedp, TRUE, NULL);
       }

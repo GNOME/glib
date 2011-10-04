@@ -50,7 +50,6 @@ static guint mem_chunk_recursion = 0;
 #  define LEAVE_MEM_CHUNK_ROUTINE()	(mem_chunk_recursion = MEM_CHUNK_ROUTINE_COUNT () - 1)
 
 /* --- old memchunk prototypes --- */
-void            old_mem_chunks_init     (void);
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
                                          gint          atom_size,
                                          gulong        area_size,
@@ -127,14 +126,8 @@ static gint   old_mem_chunk_area_search  (GMemArea *a,
 /* here we can't use StaticMutexes, as they depend upon a working
  * g_malloc, the same holds true for StaticPrivate
  */
-static GMutex        *mem_chunks_lock = NULL;
+static GMutex         mem_chunks_lock;
 static GMemChunk     *mem_chunks = NULL;
-
-void
-old_mem_chunks_init (void)
-{
-  mem_chunks_lock = g_mutex_new ();
-}
 
 GMemChunk*
 old_mem_chunk_new (const gchar  *name,
@@ -175,13 +168,13 @@ old_mem_chunk_new (const gchar  *name,
   rarea_size = old_mem_chunk_compute_size (rarea_size, atom_size + sizeof (GMemArea) - MEM_AREA_SIZE);
   mem_chunk->area_size = rarea_size - (sizeof (GMemArea) - MEM_AREA_SIZE);
   
-  g_mutex_lock (mem_chunks_lock);
+  g_mutex_lock (&mem_chunks_lock);
   mem_chunk->next = mem_chunks;
   mem_chunk->prev = NULL;
   if (mem_chunks)
     mem_chunks->prev = mem_chunk;
   mem_chunks = mem_chunk;
-  g_mutex_unlock (mem_chunks_lock);
+  g_mutex_unlock (&mem_chunks_lock);
   
   LEAVE_MEM_CHUNK_ROUTINE ();
   
@@ -206,7 +199,7 @@ old_mem_chunk_destroy (GMemChunk *mem_chunk)
       g_free (temp_area);
     }
   
-  g_mutex_lock (mem_chunks_lock);
+  g_mutex_lock (&mem_chunks_lock);
   if (mem_chunk->next)
     mem_chunk->next->prev = mem_chunk->prev;
   if (mem_chunk->prev)
@@ -214,7 +207,7 @@ old_mem_chunk_destroy (GMemChunk *mem_chunk)
   
   if (mem_chunk == mem_chunks)
     mem_chunks = mem_chunks->next;
-  g_mutex_unlock (mem_chunks_lock);
+  g_mutex_unlock (&mem_chunks_lock);
   
   if (mem_chunk->type == G_ALLOC_AND_FREE)
     g_tree_destroy (mem_chunk->mem_tree);  
@@ -545,20 +538,20 @@ old_mem_chunk_info (void)
   gint count;
   
   count = 0;
-  g_mutex_lock (mem_chunks_lock);
+  g_mutex_lock (&mem_chunks_lock);
   mem_chunk = mem_chunks;
   while (mem_chunk)
     {
       count += 1;
       mem_chunk = mem_chunk->next;
     }
-  g_mutex_unlock (mem_chunks_lock);
+  g_mutex_unlock (&mem_chunks_lock);
   
   g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "%d mem chunks", count);
   
-  g_mutex_lock (mem_chunks_lock);
+  g_mutex_lock (&mem_chunks_lock);
   mem_chunk = mem_chunks;
-  g_mutex_unlock (mem_chunks_lock);
+  g_mutex_unlock (&mem_chunks_lock);
   
   while (mem_chunk)
     {

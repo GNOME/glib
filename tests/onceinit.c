@@ -23,8 +23,8 @@
 
 #define N_THREADS               (13)
 
-static GMutex      *tmutex = NULL;
-static GCond       *tcond = NULL;
+static GMutex       tmutex;
+static GCond        tcond;
 static volatile int thread_call_count = 0;
 static char         dummy_value = 'x';
 
@@ -96,9 +96,9 @@ initializer3 (void)
 static gpointer
 tmain_call_initializer3 (gpointer user_data)
 {
-  g_mutex_lock (tmutex);
-  g_cond_wait (tcond, tmutex);
-  g_mutex_unlock (tmutex);
+  g_mutex_lock (&tmutex);
+  g_cond_wait (&tcond, &tmutex);
+  g_mutex_unlock (&tmutex);
   //g_printf ("[");
   initializer3();
   //g_printf ("]\n");
@@ -124,15 +124,13 @@ main (int   argc,
   g_assert (p == &dummy_value);
   /* setup threads */
   g_thread_init (NULL);
-  tmutex = g_mutex_new ();
-  tcond = g_cond_new ();
   /* start multiple threads for initializer3() */
-  g_mutex_lock (tmutex);
+  g_mutex_lock (&tmutex);
   for (i = 0; i < N_THREADS; i++)
     threads[i] = g_thread_create (tmain_call_initializer3, 0, FALSE, NULL);
-  g_mutex_unlock (tmutex);
+  g_mutex_unlock (&tmutex);
   /* concurrently call initializer3() */
-  g_cond_broadcast (tcond);
+  g_cond_broadcast (&tcond);
   /* loop until all threads passed the call to initializer3() */
   while (g_atomic_int_get (&thread_call_count) < i)
     {
@@ -140,14 +138,14 @@ main (int   argc,
         g_thread_yield();   /* concurrent shuffling for single core */
       else
         g_usleep (1000);    /* concurrent shuffling for multi core */
-      g_cond_broadcast (tcond);
+      g_cond_broadcast (&tcond);
     }
   /* call multiple (unoptimized) initializers from multiple threads */
-  g_mutex_lock (tmutex);
+  g_mutex_lock (&tmutex);
   g_atomic_int_set (&thread_call_count, 0);
   for (i = 0; i < N_THREADS; i++)
     g_thread_create (stress_concurrent_initializers, 0, FALSE, NULL);
-  g_mutex_unlock (tmutex);
+  g_mutex_unlock (&tmutex);
   while (g_atomic_int_get (&thread_call_count) < 256 * 4 * N_THREADS)
     g_usleep (50 * 1000);       /* wait for all 5 threads to complete */
   return 0;
@@ -157,7 +155,8 @@ main (int   argc,
  * to uncover possible races in the g_once_init_enter_impl()/
  * g_once_init_leave() implementations
  */
-#define g_once_init_enter       g_once_init_enter_impl
+#undef g_once_init_enter
+#undef g_once_init_leave
 
 /* define 16 * 16 simple initializers */
 #define DEFINE_TEST_INITIALIZER(N)                      \
@@ -262,8 +261,8 @@ stress_concurrent_initializers (void *user_data)
   };
   int i;
   /* sync to main thread */
-  g_mutex_lock (tmutex);
-  g_mutex_unlock (tmutex);
+  g_mutex_lock (&tmutex);
+  g_mutex_unlock (&tmutex);
   /* initialize concurrently */
   for (i = 0; i < G_N_ELEMENTS (initializers); i++)
     {

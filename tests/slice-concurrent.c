@@ -30,7 +30,7 @@ struct ThreadData
   int	   thread_id;
   GThread* gthread;
 
-  GMutex*  to_free_mutex;
+  GMutex   to_free_mutex;
   void*    to_free [N_THREADS * N_ALLOCS];
   int      bytes_to_free [N_THREADS * N_ALLOCS];
   int      n_to_free;
@@ -57,11 +57,11 @@ thread_func (void *arg)
 
       /* associate block with random thread */
       int t = rand() % N_THREADS;
-      g_mutex_lock (tdata[t].to_free_mutex);
+      g_mutex_lock (&tdata[t].to_free_mutex);
       tdata[t].to_free[tdata[t].n_to_free] = mem;
       tdata[t].bytes_to_free[tdata[t].n_to_free] = bytes;
       tdata[t].n_to_free++;
-      g_mutex_unlock (tdata[t].to_free_mutex);
+      g_mutex_unlock (&tdata[t].to_free_mutex);
 
       /* shuffle thread execution order every once in a while */
       if (rand() % 97 == 0)
@@ -73,14 +73,14 @@ thread_func (void *arg)
         }
 
       /* free a block associated with this thread */
-      g_mutex_lock (td->to_free_mutex);
+      g_mutex_lock (&td->to_free_mutex);
       if (td->n_to_free > 0)
 	{
 	  td->n_to_free--;
 	  g_slice_free1 (td->bytes_to_free[td->n_to_free], td->to_free[td->n_to_free]);
 	  td->n_freed++;
 	}
-      g_mutex_unlock (td->to_free_mutex);
+      g_mutex_unlock (&td->to_free_mutex);
     }
 
   return NULL;
@@ -91,14 +91,11 @@ main()
 {
   int t;
 
-  g_thread_init (NULL);
-
   for (t = 0; t < N_THREADS; t++)
     {
       tdata[t].thread_id = t + 1;
       tdata[t].n_to_free = 0;
       tdata[t].n_freed = 0;
-      tdata[t].to_free_mutex = g_mutex_new();
     }
   g_print ("Starting %d threads for concurrent GSlice usage...\n", N_THREADS);
   for (t = 0; t < N_THREADS; t++)

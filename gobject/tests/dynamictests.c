@@ -25,7 +25,7 @@
 /* This test tests the macros for defining dynamic types.
  */
 
-static GMutex *sync_mutex = NULL;
+static GMutex sync_mutex;
 static gboolean loaded = FALSE;
 
 /* MODULE */
@@ -169,8 +169,8 @@ ref_unref_thread (gpointer data)
    */
   if (g_test_verbose())
     g_print ("WAITING!\n");
-  g_mutex_lock (sync_mutex);
-  g_mutex_unlock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
+  g_mutex_unlock (&sync_mutex);
   if (g_test_verbose ())
     g_print ("STARTING\n");
 
@@ -206,7 +206,7 @@ test_multithreaded_dynamic_type_init (void)
   g_assert (!loaded);
 
   /* pause newly created threads */
-  g_mutex_lock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
 
   /* create threads */
   for (i = 0; i < N_THREADS; i++) {
@@ -214,7 +214,7 @@ test_multithreaded_dynamic_type_init (void)
   }
 
   /* execute threads */
-  g_mutex_unlock (sync_mutex);
+  g_mutex_unlock (&sync_mutex);
 
   for (i = 0; i < N_THREADS; i++) {
     g_thread_join (threads[i]);
@@ -355,8 +355,6 @@ main (int   argc,
   g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
   g_type_init ();
-
-  sync_mutex = g_mutex_new();
 
   g_test_add_func ("/GObject/threaded-dynamic-ref-unref-init", test_multithreaded_dynamic_type_init);
   g_test_add_func ("/GObject/dynamic-interface-properties", test_dynamic_interface_properties);

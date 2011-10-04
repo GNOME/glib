@@ -79,8 +79,8 @@ G_DEFINE_TYPE_WITH_CODE (MyTester2, my_tester2, G_TYPE_OBJECT,
 static void my_tester2_init (MyTester2*t) {}
 static void my_tester2_class_init (MyTester2Class*c) { call_counter_init (c); }
 
-static GCond *sync_cond = NULL;
-static GMutex *sync_mutex = NULL;
+static GCond sync_cond;
+static GMutex sync_mutex;
 
 static gpointer
 tester_init_thread (gpointer data)
@@ -91,8 +91,8 @@ tester_init_thread (gpointer data)
    * then run interface and class initializers,
    * using unsafe_call_counter concurrently
    */
-  g_mutex_lock (sync_mutex);
-  g_mutex_unlock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
+  g_mutex_unlock (&sync_mutex);
   /* test default interface initialization for face0 */
   g_type_default_interface_unref (g_type_default_interface_ref (my_face0_get_type()));
   /* test class initialization, face0 per-class initializer, face1 default and per-class initializer */
@@ -108,13 +108,13 @@ static void
 test_threaded_class_init (void)
 {
   /* pause newly created threads */
-  g_mutex_lock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
   /* create threads */
   g_thread_create (tester_init_thread, (gpointer) my_tester0_get_type(), TRUE, NULL);
   g_thread_create (tester_init_thread, (gpointer) my_tester1_get_type(), TRUE, NULL);
   g_thread_create (tester_init_thread, (gpointer) my_tester2_get_type(), TRUE, NULL);
   /* execute threads */
-  g_mutex_unlock (sync_mutex);
+  g_mutex_unlock (&sync_mutex);
   while (g_atomic_int_get (&mtsafe_call_counter) < (3 + 3 + 3 * 3) * NUM_COUNTER_INCREMENTS)
     {
       if (g_test_verbose())
@@ -155,9 +155,9 @@ prop_tester_class_init (PropTesterClass *c)
 
   gobject_class->set_property = prop_tester_set_property; /* silence GObject checks */
 
-  g_mutex_lock (sync_mutex);
-  g_cond_signal (sync_cond);
-  g_mutex_unlock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
+  g_cond_signal (&sync_cond);
+  g_mutex_unlock (&sync_mutex);
 
   for (i = 0; i < 100; i++) /* wait a bit. */
     g_thread_yield();
@@ -184,14 +184,14 @@ static void
 test_threaded_object_init (void)
 {
   GThread *creator;
-  g_mutex_lock (sync_mutex);
+  g_mutex_lock (&sync_mutex);
 
   creator = g_thread_create (object_create, NULL, TRUE, NULL);
   /* really provoke the race */
-  g_cond_wait (sync_cond, sync_mutex);
+  g_cond_wait (&sync_cond, &sync_mutex);
 
   object_create (NULL);
-  g_mutex_unlock (sync_mutex);
+  g_mutex_unlock (&sync_mutex);
 
   g_thread_join (creator);
 }
@@ -203,9 +203,6 @@ main (int   argc,
   g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
   g_type_init ();
-
-  sync_cond = g_cond_new();
-  sync_mutex = g_mutex_new();
 
   g_test_add_func ("/GObject/threaded-class-init", test_threaded_class_init);
   g_test_add_func ("/GObject/threaded-object-init", test_threaded_object_init);

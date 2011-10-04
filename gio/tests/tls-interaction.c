@@ -391,8 +391,9 @@ teardown_without_loop (Test            *test,
 }
 
 typedef struct {
-  GMutex *loop_mutex;
-  GCond *loop_started;
+  GMutex loop_mutex;
+  GCond loop_started;
+  gboolean started;
   Test *test;
 } ThreadLoop;
 
@@ -403,15 +404,16 @@ thread_loop (gpointer user_data)
   ThreadLoop *closure = user_data;
   Test *test = closure->test;
 
-  g_mutex_lock (closure->loop_mutex);
+  g_mutex_lock (&closure->loop_mutex);
 
   g_assert (test->loop_thread == g_thread_self ());
   g_assert (test->loop == NULL);
   test->loop = g_main_loop_new (context, TRUE);
 
   g_main_context_acquire (context);
-  g_cond_signal (closure->loop_started);
-  g_mutex_unlock (closure->loop_mutex);
+  closure->started = TRUE;
+  g_cond_signal (&closure->loop_started);
+  g_mutex_unlock (&closure->loop_mutex);
 
   while (g_main_loop_is_running (test->loop))
     g_main_context_iteration (context, TRUE);
@@ -429,14 +431,16 @@ setup_with_thread_loop (Test            *test,
 
   setup_without_loop (test, user_data);
 
-  closure.loop_mutex = g_mutex_new ();
-  closure.loop_started = g_cond_new ();
+  g_mutex_init (&closure.loop_mutex);
+  g_cond_init (&closure.loop_started);
+  closure.started = FALSE;
   closure.test = test;
 
-  g_mutex_lock (closure.loop_mutex);
+  g_mutex_lock (&closure.loop_mutex);
   test->loop_thread = g_thread_create (thread_loop, &closure, TRUE, &error);
-  g_cond_wait (closure.loop_started, closure.loop_mutex);
-  g_mutex_unlock (closure.loop_mutex);
+  while (!closure.started)
+    g_cond_wait (&closure.loop_started, &closure.loop_mutex);
+  g_mutex_unlock (&closure.loop_mutex);
 
   /*
    * When a loop is running then interaction should always occur in the main
@@ -444,8 +448,8 @@ setup_with_thread_loop (Test            *test,
    */
   test->interaction_thread = test->loop_thread;
 
-  g_mutex_free (closure.loop_mutex);
-  g_cond_free (closure.loop_started);
+  g_mutex_clear (&closure.loop_mutex);
+  g_cond_clear (&closure.loop_started);
 }
 
 static void

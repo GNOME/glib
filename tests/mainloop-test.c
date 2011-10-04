@@ -27,8 +27,8 @@
  * be locked while the context array mutex is locked
  */
 GPtrArray *context_array;
-GMutex *context_array_mutex;
-GCond *context_array_cond;
+GMutex context_array_mutex;
+GCond context_array_cond;
 
 GMainLoop *main_loop;
 
@@ -144,14 +144,14 @@ adder_thread (gpointer data)
 
   context = g_main_context_new ();
 
-  g_mutex_lock (context_array_mutex);
+  g_mutex_lock (&context_array_mutex);
   
   g_ptr_array_add (context_array, context);
 
   if (context_array->len == NTHREADS)
-    g_cond_broadcast (context_array_cond);
+    g_cond_broadcast (&context_array_cond);
   
-  g_mutex_unlock (context_array_mutex);
+  g_mutex_unlock (&context_array_mutex);
 
   addr_data.dest = channels[1];
   addr_data.loop = g_main_loop_new (context, FALSE);
@@ -183,11 +183,11 @@ adder_thread (gpointer data)
   g_print ("Timeout run %d times\n", addr_data.count);
 #endif
 
-  g_mutex_lock (context_array_mutex);
+  g_mutex_lock (&context_array_mutex);
   g_ptr_array_remove (context_array, context);
   if (context_array->len == 0)
     g_main_loop_quit (main_loop);
-  g_mutex_unlock (context_array_mutex);
+  g_mutex_unlock (&context_array_mutex);
 
   cleanup_crawlers (context);
 
@@ -343,10 +343,10 @@ create_crawler (void)
   G_LOCK (crawler_array_lock);
   g_ptr_array_add (crawler_array, source);
   
-  g_mutex_lock (context_array_mutex);
+  g_mutex_lock (&context_array_mutex);
   g_source_attach (source, context_array->pdata[g_random_int_range (0, context_array->len)]);
   g_source_unref (source);
-  g_mutex_unlock (context_array_mutex);
+  g_mutex_unlock (&context_array_mutex);
 
   G_UNLOCK (crawler_array_lock);
 }
@@ -386,14 +386,14 @@ recurser_start (gpointer data)
   GMainContext *context;
   GSource *source;
   
-  g_mutex_lock (context_array_mutex);
+  g_mutex_lock (&context_array_mutex);
   context = context_array->pdata[g_random_int_range (0, context_array->len)];
   source = g_idle_source_new ();
   g_source_set_name (source, "Recursing idle source");
   g_source_set_callback (source, recurser_idle, context, NULL);
   g_source_attach (source, context);
   g_source_unref (source);
-  g_mutex_unlock (context_array_mutex);
+  g_mutex_unlock (&context_array_mutex);
 
   return TRUE;
 }
@@ -407,8 +407,6 @@ main (int   argc,
   g_thread_init (NULL);
 
   context_array = g_ptr_array_new ();
-  context_array_mutex = g_mutex_new ();
-  context_array_cond = g_cond_new (); 
 
   crawler_array = g_ptr_array_new ();
 
@@ -419,12 +417,12 @@ main (int   argc,
 
   /* Wait for all threads to start
    */
-  g_mutex_lock (context_array_mutex);
+  g_mutex_lock (&context_array_mutex);
   
   if (context_array->len < NTHREADS)
-    g_cond_wait (context_array_cond, context_array_mutex);
+    g_cond_wait (&context_array_cond, &context_array_mutex);
   
-  g_mutex_unlock (context_array_mutex);
+  g_mutex_unlock (&context_array_mutex);
   
   for (i = 0; i < NCRAWLERS; i++)
     create_crawler ();
