@@ -106,7 +106,7 @@ struct _GTlsInteractionPrivate {
 G_DEFINE_TYPE (GTlsInteraction, g_tls_interaction, G_TYPE_OBJECT);
 
 typedef struct {
-  GMutex *mutex;
+  GMutex mutex;
 
   /* Input arguments */
   GTlsInteraction *interaction;
@@ -121,7 +121,7 @@ typedef struct {
   GTlsInteractionResult result;
   GError *error;
   gboolean complete;
-  GCond *cond;
+  GCond cond;
 } InvokeClosure;
 
 static void
@@ -132,8 +132,8 @@ invoke_closure_free (gpointer data)
   g_object_unref (closure->interaction);
   g_clear_object (&closure->argument);
   g_clear_object (&closure->cancellable);
-  g_cond_free (closure->cond);
-  g_mutex_free (closure->mutex);
+  g_cond_clear (&closure->cond);
+  g_mutex_clear (&closure->mutex);
   g_clear_error (&closure->error);
 
   /* Insurance that we've actually used these before freeing */
@@ -152,8 +152,8 @@ invoke_closure_new (GTlsInteraction *interaction,
   closure->interaction = g_object_ref (interaction);
   closure->argument = argument ? g_object_ref (argument) : NULL;
   closure->cancellable = cancellable ? g_object_ref (cancellable) : NULL;
-  closure->mutex = g_mutex_new ();
-  closure->cond = g_cond_new ();
+  g_mutex_init (&closure->mutex);
+  g_cond_init (&closure->cond);
   closure->result = G_TLS_INTERACTION_UNHANDLED;
   return closure;
 }
@@ -164,12 +164,12 @@ invoke_closure_wait_and_free (InvokeClosure *closure,
 {
   GTlsInteractionResult result;
 
-  g_mutex_lock (closure->mutex);
+  g_mutex_lock (&closure->mutex);
 
   while (!closure->complete)
-      g_cond_wait (closure->cond, closure->mutex);
+    g_cond_wait (&closure->cond, &closure->mutex);
 
-  g_mutex_unlock (closure->mutex);
+  g_mutex_unlock (&closure->mutex);
 
   if (closure->error)
     {
@@ -219,7 +219,7 @@ on_invoke_ask_password_sync (gpointer user_data)
   InvokeClosure *closure = user_data;
   GTlsInteractionClass *klass;
 
-  g_mutex_lock (closure->mutex);
+  g_mutex_lock (&closure->mutex);
 
   klass = G_TLS_INTERACTION_GET_CLASS (closure->interaction);
   g_assert (klass->ask_password);
@@ -230,8 +230,8 @@ on_invoke_ask_password_sync (gpointer user_data)
                                          &closure->error);
 
   closure->complete = TRUE;
-  g_cond_signal (closure->cond);
-  g_mutex_unlock (closure->mutex);
+  g_cond_signal (&closure->cond);
+  g_mutex_unlock (&closure->mutex);
 
   return FALSE; /* don't call again */
 }
@@ -244,7 +244,7 @@ on_async_as_sync_complete (GObject      *source,
   InvokeClosure *closure = user_data;
   GTlsInteractionClass *klass;
 
-  g_mutex_lock (closure->mutex);
+  g_mutex_lock (&closure->mutex);
 
   klass = G_TLS_INTERACTION_GET_CLASS (closure->interaction);
   g_assert (klass->ask_password_finish);
@@ -254,8 +254,8 @@ on_async_as_sync_complete (GObject      *source,
                                                 &closure->error);
 
   closure->complete = TRUE;
-  g_cond_signal (closure->cond);
-  g_mutex_unlock (closure->mutex);
+  g_cond_signal (&closure->cond);
+  g_mutex_unlock (&closure->mutex);
 }
 
 static gboolean
@@ -264,7 +264,7 @@ on_invoke_ask_password_async_as_sync (gpointer user_data)
   InvokeClosure *closure = user_data;
   GTlsInteractionClass *klass;
 
-  g_mutex_lock (closure->mutex);
+  g_mutex_lock (&closure->mutex);
 
   klass = G_TLS_INTERACTION_GET_CLASS (closure->interaction);
   g_assert (klass->ask_password_async);
@@ -279,7 +279,7 @@ on_invoke_ask_password_async_as_sync (gpointer user_data)
   closure->callback = NULL;
   closure->user_data = NULL;
 
-  g_mutex_unlock (closure->mutex);
+  g_mutex_unlock (&closure->mutex);
 
   return FALSE; /* don't call again */
 }
@@ -353,9 +353,9 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
         {
           while (!closure->complete)
             {
-              g_mutex_unlock (closure->mutex);
+              g_mutex_unlock (&closure->mutex);
               g_main_context_iteration (interaction->priv->context, TRUE);
-              g_mutex_lock (closure->mutex);
+              g_mutex_lock (&closure->mutex);
             }
           g_main_context_release (interaction->priv->context);
 

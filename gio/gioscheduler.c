@@ -276,8 +276,8 @@ typedef struct {
   gpointer data;
   GDestroyNotify notify;
 
-  GMutex *ack_lock;
-  GCond *ack_condition;
+  GMutex ack_lock;
+  GCond ack_condition;
 } MainLoopProxy;
 
 static gboolean
@@ -289,26 +289,19 @@ mainloop_proxy_func (gpointer data)
 
   if (proxy->notify)
     proxy->notify (proxy->data);
-  
-  if (proxy->ack_lock)
-    {
-      g_mutex_lock (proxy->ack_lock);
-      g_cond_signal (proxy->ack_condition);
-      g_mutex_unlock (proxy->ack_lock);
-    }
-  
+
+  g_mutex_lock (&proxy->ack_lock);
+  g_cond_signal (&proxy->ack_condition);
+  g_mutex_unlock (&proxy->ack_lock);
+
   return FALSE;
 }
 
 static void
 mainloop_proxy_free (MainLoopProxy *proxy)
 {
-  if (proxy->ack_lock)
-    {
-      g_mutex_free (proxy->ack_lock);
-      g_cond_free (proxy->ack_condition);
-    }
-  
+  g_mutex_clear (&proxy->ack_lock);
+  g_cond_clear (&proxy->ack_condition);
   g_free (proxy);
 }
 
@@ -342,10 +335,10 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   proxy->func = func;
   proxy->data = user_data;
   proxy->notify = notify;
-  proxy->ack_lock = g_mutex_new ();
-  proxy->ack_condition = g_cond_new ();
-  g_mutex_lock (proxy->ack_lock);
-  
+  g_mutex_init (&proxy->ack_lock);
+  g_cond_init (&proxy->ack_condition);
+  g_mutex_lock (&proxy->ack_lock);
+
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
@@ -354,8 +347,8 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   g_source_attach (source, job->context);
   g_source_unref (source);
 
-  g_cond_wait (proxy->ack_condition, proxy->ack_lock);
-  g_mutex_unlock (proxy->ack_lock);
+  g_cond_wait (&proxy->ack_condition, &proxy->ack_lock);
+  g_mutex_unlock (&proxy->ack_lock);
 
   ret_val = proxy->ret_val;
   mainloop_proxy_free (proxy);
@@ -396,7 +389,9 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
   proxy->func = func;
   proxy->data = user_data;
   proxy->notify = notify;
-  
+  g_mutex_init (&proxy->ack_lock);
+  g_cond_init (&proxy->ack_condition);
+
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
