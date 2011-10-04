@@ -239,6 +239,10 @@ msgstr ""
 	      [CATOBJEXT=.mo
                DATADIRNAME=lib])
 	    ;;
+	    *-*-openbsd*)
+	    CATOBJEXT=.mo
+            DATADIRNAME=share
+	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib
