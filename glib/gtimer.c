@@ -213,11 +213,6 @@ g_timer_continue (GTimer *timer)
  * stopped. The return value is the number of seconds elapsed,
  * including any fractional part. The @microseconds out parameter is
  * essentially useless.
- *
- * <warning><para>
- *  Calling initialization functions, in particular g_thread_init(), while a
- *  timer is running will cause invalid return values from this function.
- * </para></warning>
  **/
 gdouble
 g_timer_elapsed (GTimer *timer,
