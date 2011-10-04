@@ -43,8 +43,6 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
-#include "glib-ctor.h"
-
 
 #define MEM_PROFILE_TABLE_SIZE 4096
 
