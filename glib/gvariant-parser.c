@@ -2486,7 +2486,7 @@ g_variant_new_parsed_va (const gchar *format,
  *
  * You may not use this function to return, unmodified, a single
  * #GVariant pointer from the argument list.  ie: @format may not solely
- * be anything along the lines of "%*", "%?", "%r", or anything starting
+ * be anything along the lines of "%*", "%?", "\%r", or anything starting
  * with "%@".
  **/
 GVariant *
