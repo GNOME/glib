@@ -723,7 +723,7 @@ g_main_context_pop_thread_default (GMainContext *context)
  * add their #GSource<!-- -->s to. (Note that even in single-threaded
  * programs applications may sometimes want to temporarily push a
  * non-default context, so it is not safe to assume that this will
- * always return %NULL if threads are not initialized.)
+ * always return %NULL if you are running in the default thread.)
  *
  * Returns: (transfer none): the thread-default #GMainContext, or
  * %NULL if the thread-default context is the global default context.

@@ -196,7 +196,7 @@ typedef struct _GTcpWrapperConnection                       GTcpWrapperConnectio
 /**
  * GThreadedSocketService:
  *
- * A helper class for handling accepting incomming connections in the
+ * A helper class for handling accepting incoming connections in the
  * glib mainloop and handling them in a thread.
  *
  * Since: 2.22
@@ -285,10 +285,6 @@ typedef gboolean (* GFileReadMoreCallback) (const char *file_contents,
  * @user_data: the data to pass to callback function
  *
  * I/O Job function.
- *
- * Note that depending on whether threads are available, the
- * #GIOScheduler may run jobs in separate threads or in an idle
- * in the mainloop.
  *
  * Long-running jobs should periodically check the @cancellable
  * to see if they have been cancelled.

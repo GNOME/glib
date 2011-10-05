@@ -194,7 +194,7 @@ io_job_thread (gpointer data,
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
- * Schedules the I/O job to run. 
+ * Schedules the I/O job to run in another thread.
  *
  * @notify will be called on @user_data after @job_func has returned,
  * regardless whether the job was cancelled or has run to completion.

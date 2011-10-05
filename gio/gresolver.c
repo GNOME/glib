@@ -139,8 +139,7 @@ static GResolver *default_resolver;
  *
  * Gets the default #GResolver. You should unref it when you are done
  * with it. #GResolver may use its reference count as a hint about how
- * many threads/processes, etc it should allocate for concurrent DNS
- * resolutions.
+ * many threads it should allocate for concurrent DNS resolutions.
  *
  * Return value: (transfer full): the default #GResolver.
  *

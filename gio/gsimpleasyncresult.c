@@ -88,7 +88,7 @@
  * cause a leak if cancelled before being run).
  *
  * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop,
- * or it can use #GThread<!-- -->s if available.
+ * or it can use #GThread<!-- -->s.
  * g_simple_async_result_complete() will finish an I/O task directly
  * from the point where it is called. g_simple_async_result_complete_in_idle()
  * will finish it from an idle handler in the <link

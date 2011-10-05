@@ -102,12 +102,6 @@
  * The callback for an asynchronous operation is called only once, and is
  * always called, even in the case of a cancelled operation. On cancellation
  * the result is a %G_IO_ERROR_CANCELLED error.
- *
- * Some asynchronous operations are implemented using synchronous calls.
- * These are run in a separate thread, if #GThread has been initialized, but
- * otherwise they are sent to the Main Event Loop and processed in an idle
- * function. So, if you truly need asynchronous operations, make sure to
- * initialize #GThread.
  **/
 
 typedef GAsyncResultIface GAsyncResultInterface;

@@ -200,12 +200,6 @@ g_unix_set_fd_nonblocking (gint       fd,
  * The interaction of this source when combined with native UNIX
  * functions like sigprocmask() is not defined.
  *
- * <note>For reliable behavior, if your program links to gthread
- * (either directly or indirectly via GObject, GIO, or a higher level
- * library), you should ensure g_thread_init() is called before using
- * this function.  For example, if your program uses GObject, call
- * g_type_init().</note>
- *
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
  * executed.

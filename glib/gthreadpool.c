@@ -1,7 +1,7 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GAsyncQueue: thread pool implementation.
+ * GThreadPool: thread pool implementation.
  * Copyright (C) 2000 Sebastian Wilhelmi; University of Karlsruhe
  *
  * This library is free software; you can redistribute it and/or
