@@ -96,6 +96,7 @@ socket
 socket-client
 socket-server
 srvtarget
+task
 test.mo
 test.gresource
 test_resources.c

@@ -62,6 +62,7 @@ TEST_PROGS +=	 		\
 	proxy-test		\
 	inet-address		\
 	permission		\
+	task			\
 	$(NULL)
 
 if HAVE_DBUS_DAEMON
@@ -468,6 +469,9 @@ inet_address_LDADD   = $(progs_ldadd)
 
 permission_SOURCES = permission.c
 permission_LDADD   = $(progs_ldadd)
+
+task_SOURCES = task.c
+task_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\

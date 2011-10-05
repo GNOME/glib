@@ -199,6 +199,7 @@ typedef struct _GSocketAddress                GSocketAddress;
 typedef struct _GSocketAddressEnumerator      GSocketAddressEnumerator;
 typedef struct _GSocketConnectable            GSocketConnectable;
 typedef struct _GSrvTarget                    GSrvTarget;
+typedef struct _GTask                         GTask;
 /**
  * GTcpConnection:
  *
