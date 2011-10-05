@@ -57,7 +57,6 @@ typedef struct _GRecMutex       GRecMutex;
 typedef struct _GRWLock         GRWLock;
 typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
-typedef struct _GStaticPrivate  GStaticPrivate;
 
 union _GMutex
 {

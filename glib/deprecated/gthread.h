@@ -184,6 +184,7 @@ void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
 GPrivate *      g_private_new             (GDestroyNotify  notify);
 
+typedef struct _GStaticPrivate  GStaticPrivate;
 struct _GStaticPrivate
 {
   /*< private >*/
