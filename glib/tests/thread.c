@@ -20,6 +20,13 @@
  * if advised of the possibility of such damage.
  */
 
+#include <config.h>
+
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 #include <glib.h>
 
 static gpointer
@@ -106,6 +113,34 @@ test_thread3 (void)
   g_assert_cmpint (GPOINTER_TO_INT(result), ==, 9);
 }
 
+/* test that thread creation fails as expected,
+ * by setting RLIMIT_NPROC ridiculously low
+ */
+static void
+test_thread4 (void)
+{
+#ifdef HAVE_PRLIMIT
+  struct rlimit ol, nl;
+  GThread *thread;
+  GError *error;
+  gint ret;
+
+  nl.rlim_cur = 1;
+  nl.rlim_max = 1;
+
+  if ((ret = prlimit (getpid(), RLIMIT_NPROC, &nl, &ol)) != 0)
+    g_error ("prlimit failed: %s\n", g_strerror (ret));
+
+  error = NULL;
+  thread = g_thread_new ("a", thread1_func, NULL, FALSE, &error);
+  g_assert (thread == NULL);
+  g_assert_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN);
+  g_error_free (error);
+
+  prlimit (getpid (), RLIMIT_NPROC, &ol, NULL);
+#endif
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -116,6 +151,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/thread1", test_thread1);
   g_test_add_func ("/thread/thread2", test_thread2);
   g_test_add_func ("/thread/thread3", test_thread3);
+  g_test_add_func ("/thread/thread4", test_thread4);
 
   return g_test_run ();
 }
