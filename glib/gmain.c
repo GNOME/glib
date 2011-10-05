@@ -719,11 +719,15 @@ g_main_context_pop_thread_default (GMainContext *context)
  *
  * Gets the thread-default #GMainContext for this thread. Asynchronous
  * operations that want to be able to be run in contexts other than
- * the default one should call this method to get a #GMainContext to
- * add their #GSource<!-- -->s to. (Note that even in single-threaded
+ * the default one should call this method or
+ * g_main_context_ref_thread_default() to get a #GMainContext to add
+ * their #GSource<!-- -->s to. (Note that even in single-threaded
  * programs applications may sometimes want to temporarily push a
  * non-default context, so it is not safe to assume that this will
  * always return %NULL if you are running in the default thread.)
+ *
+ * If you need to hold a reference on the context, use
+ * g_main_context_ref_thread_default() instead.
  *
  * Returns: (transfer none): the thread-default #GMainContext, or
  * %NULL if the thread-default context is the global default context.
@@ -740,6 +744,32 @@ g_main_context_get_thread_default (void)
     return g_queue_peek_head (stack);
   else
     return NULL;
+}
+
+/**
+ * g_main_context_ref_thread_default:
+ *
+ * Gets the thread-default #GMainContext for this thread, as with
+ * g_main_context_get_thread_default(), but also adds a reference to
+ * it with g_main_context_ref(). In addition, unlike
+ * g_main_context_get_thread_default(), if the thread-default context
+ * is the global default context, this will return that #GMainContext
+ * (with a ref added to it) rather than returning %NULL.
+ *
+ * Returns: (transfer full): the thread-default #GMainContext. Unref
+ *     with g_main_context_unref() when you are done with it.
+ *
+ * Since: 2.32
+ */
+GMainContext *
+g_main_context_ref_thread_default (void)
+{
+  GMainContext *context;
+
+  context = g_main_context_get_thread_default ();
+  if (!context)
+    context = g_main_context_default ();
+  return g_main_context_ref (context);
 }
 
 /* Hooks for adding to the main loop */

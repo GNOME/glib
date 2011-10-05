@@ -485,6 +485,7 @@ g_main_context_invoke_full
 
 <SUBSECTION>
 g_main_context_get_thread_default
+g_main_context_ref_thread_default
 g_main_context_push_thread_default
 g_main_context_pop_thread_default
 

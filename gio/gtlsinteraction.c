@@ -187,9 +187,7 @@ g_tls_interaction_init (GTlsInteraction *interaction)
 {
   interaction->priv = G_TYPE_INSTANCE_GET_PRIVATE (interaction, G_TYPE_TLS_INTERACTION,
                                                    GTlsInteractionPrivate);
-  interaction->priv->context = g_main_context_get_thread_default ();
-  if (interaction->priv->context)
-    g_main_context_ref (interaction->priv->context);
+  interaction->priv->context = g_main_context_ref_thread_default ();
 }
 
 static void
@@ -197,8 +195,7 @@ g_tls_interaction_finalize (GObject *object)
 {
   GTlsInteraction *interaction = G_TLS_INTERACTION (object);
 
-  if (interaction->priv->context)
-    g_main_context_unref (interaction->priv->context);
+  g_main_context_unref (interaction->priv->context);
 
   G_OBJECT_CLASS (g_tls_interaction_parent_class)->finalize (object);
 }

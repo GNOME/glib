@@ -581,6 +581,7 @@ g_main_context_prepare
 g_main_context_push_thread_default
 g_main_context_query
 g_main_context_ref
+g_main_context_ref_thread_default
 g_main_context_release
 g_main_context_remove_poll
 g_main_context_set_poll_func

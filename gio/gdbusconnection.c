@@ -224,10 +224,14 @@ call_destroy_notify (GMainContext  *context,
                      GDestroyNotify callback,
                      gpointer       user_data)
 {
+  GMainContext *current_context;
+
   if (callback == NULL)
     goto out;
 
-  if (context == g_main_context_get_thread_default ())
+  current_context = g_main_context_get_thread_default ();
+  if ((context == current_context) ||
+      (current_context == NULL && context == g_main_context_default ()))
     {
       callback (user_data);
     }
@@ -357,7 +361,7 @@ struct _GDBusConnection
   /* If the connection could not be established during initable_init(), this GError will set */
   GError *initialization_error;
 
-  /* The result of g_main_context_get_thread_default() when the object
+  /* The result of g_main_context_ref_thread_default() when the object
    * was created (the GObject _init() function) - this is used for delivery
    * of the :closed GObject signal.
    */
@@ -536,8 +540,7 @@ g_dbus_connection_finalize (GObject *object)
   g_hash_table_unref (connection->map_id_to_es);
   g_hash_table_unref (connection->map_object_path_to_es);
 
-  if (connection->main_context_at_construction != NULL)
-    g_main_context_unref (connection->main_context_at_construction);
+  g_main_context_unref (connection->main_context_at_construction);
 
   g_free (connection->machine_id);
 
@@ -933,9 +936,7 @@ g_dbus_connection_init (GDBusConnection *connection)
   connection->map_id_to_es = g_hash_table_new (g_direct_hash,
                                                g_direct_equal);
 
-  connection->main_context_at_construction = g_main_context_get_thread_default ();
-  if (connection->main_context_at_construction != NULL)
-    g_main_context_ref (connection->main_context_at_construction);
+  connection->main_context_at_construction = g_main_context_ref_thread_default ();
 
   connection->filters = g_ptr_array_new ();
 }
@@ -1570,8 +1571,7 @@ send_message_data_unref (SendMessageData *data)
       g_object_unref (data->connection);
       if (data->cancellable != NULL)
         g_object_unref (data->cancellable);
-      if (data->main_context != NULL)
-        g_main_context_unref (data->main_context);
+      g_main_context_unref (data->main_context);
       g_free (data);
     }
 }
@@ -1763,9 +1763,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
   data->connection = g_object_ref (connection);
   data->simple = simple;
   data->serial = *out_serial;
-  data->main_context = g_main_context_get_thread_default ();
-  if (data->main_context != NULL)
-    g_main_context_ref (data->main_context);
+  data->main_context = g_main_context_ref_thread_default ();
 
   if (cancellable != NULL)
     {
@@ -3195,9 +3193,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   subscriber.user_data = user_data;
   subscriber.user_data_free_func = user_data_free_func;
   subscriber.id = _global_subscriber_id++; /* TODO: overflow etc. */
-  subscriber.context = g_main_context_get_thread_default ();
-  if (subscriber.context != NULL)
-    g_main_context_ref (subscriber.context);
+  subscriber.context = g_main_context_ref_thread_default ();
 
   /* see if we've already have this rule */
   signal_data = g_hash_table_lookup (connection->map_rule_to_signal_data, rule);
@@ -3359,8 +3355,7 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
       call_destroy_notify (subscriber->context,
                            subscriber->user_data_free_func,
                            subscriber->user_data);
-      if (subscriber->context != NULL)
-        g_main_context_unref (subscriber->context);
+      g_main_context_unref (subscriber->context);
     }
 
   g_array_free (subscribers, TRUE);
@@ -3606,8 +3601,7 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
       call_destroy_notify (subscriber->context,
                            subscriber->user_data_free_func,
                            subscriber->user_data);
-      if (subscriber->context != NULL)
-        g_main_context_unref (subscriber->context);
+      g_main_context_unref (subscriber->context);
     }
 
   g_array_free (subscribers, TRUE);
@@ -3692,8 +3686,7 @@ exported_interface_free (ExportedInterface *ei)
                        ei->user_data_free_func,
                        ei->user_data);
 
-  if (ei->context != NULL)
-    g_main_context_unref (ei->context);
+  g_main_context_unref (ei->context);
 
   g_free (ei->interface_name);
   _g_dbus_interface_vtable_free (ei->vtable);
@@ -4752,9 +4745,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->interface_info = g_dbus_interface_info_ref (interface_info);
   g_dbus_interface_info_cache_build (ei->interface_info);
   ei->interface_name = g_strdup (interface_info->name);
-  ei->context = g_main_context_get_thread_default ();
-  if (ei->context != NULL)
-    g_main_context_ref (ei->context);
+  ei->context = g_main_context_ref_thread_default ();
 
   g_hash_table_insert (eo->map_if_name_to_ei,
                        (gpointer) ei->interface_name,
@@ -5594,8 +5585,7 @@ exported_subtree_free (ExportedSubtree *es)
                        es->user_data_free_func,
                        es->user_data);
 
-  if (es->context != NULL)
-    g_main_context_unref (es->context);
+  g_main_context_unref (es->context);
 
   _g_dbus_subtree_vtable_free (es->vtable);
   g_free (es->object_path);
@@ -6099,9 +6089,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
   es->id = _global_subtree_registration_id++; /* TODO: overflow etc. */
   es->user_data = user_data;
   es->user_data_free_func = user_data_free_func;
-  es->context = g_main_context_get_thread_default ();
-  if (es->context != NULL)
-    g_main_context_ref (es->context);
+  es->context = g_main_context_ref_thread_default ();
 
   g_hash_table_insert (connection->map_object_path_to_es, es->object_path, es);
   g_hash_table_insert (connection->map_id_to_es,

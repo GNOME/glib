@@ -547,12 +547,7 @@ g_settings_init (GSettings *settings)
                                                 G_TYPE_SETTINGS,
                                                 GSettingsPrivate);
 
-  settings->priv->main_context = g_main_context_get_thread_default ();
-
-  if (settings->priv->main_context == NULL)
-    settings->priv->main_context = g_main_context_default ();
-
-  g_main_context_ref (settings->priv->main_context);
+  settings->priv->main_context = g_main_context_ref_thread_default ();
 }
 
 static void

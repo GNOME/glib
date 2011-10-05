@@ -99,7 +99,7 @@ struct _GDBusServer
   gboolean is_using_listener;
   gulong run_signal_handler_id;
 
-  /* The result of g_main_context_get_thread_default() when the object
+  /* The result of g_main_context_ref_thread_default() when the object
    * was created (the GObject _init() function) - this is used for delivery
    * of the :new-connection GObject signal.
    */
@@ -183,8 +183,7 @@ g_dbus_server_finalize (GObject *object)
    */
   g_free (server->nonce_file);
 
-  if (server->main_context_at_construction != NULL)
-    g_main_context_unref (server->main_context_at_construction);
+  g_main_context_unref (server->main_context_at_construction);
 
   G_OBJECT_CLASS (g_dbus_server_parent_class)->finalize (object);
 }
@@ -434,9 +433,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
 static void
 g_dbus_server_init (GDBusServer *server)
 {
-  server->main_context_at_construction = g_main_context_get_thread_default ();
-  if (server->main_context_at_construction != NULL)
-    g_main_context_ref (server->main_context_at_construction);
+  server->main_context_at_construction = g_main_context_ref_thread_default ();
 }
 
 static gboolean

@@ -105,8 +105,7 @@ client_unref (Client *client)
             g_dbus_connection_signal_unsubscribe (client->connection, client->name_lost_subscription_id);
           g_object_unref (client->connection);
         }
-      if (client->main_context != NULL)
-        g_main_context_unref (client->main_context);
+      g_main_context_unref (client->main_context);
       g_free (client->name);
       if (client->user_data_free_func != NULL)
         client->user_data_free_func (client->user_data);
@@ -206,11 +205,15 @@ schedule_call_in_idle (Client *client, CallType  call_type)
 static void
 do_call (Client *client, CallType call_type)
 {
+  GMainContext *current_context;
+
   /* only schedule in idle if we're not in the right thread */
-  if (g_main_context_get_thread_default () != client->main_context)
+  current_context = g_main_context_ref_thread_default ();
+  if (current_context != client->main_context)
     schedule_call_in_idle (client, call_type);
   else
     actually_do_call (client, client->connection, call_type);
+  g_main_context_unref (current_context);
 }
 
 static void
@@ -492,9 +495,7 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
   client->name_lost_handler = name_lost_handler;
   client->user_data = user_data;
   client->user_data_free_func = user_data_free_func;
-  client->main_context = g_main_context_get_thread_default ();
-  if (client->main_context != NULL)
-    g_main_context_ref (client->main_context);
+  client->main_context = g_main_context_ref_thread_default ();
 
   client->connection = g_object_ref (connection);
 
@@ -606,9 +607,7 @@ g_bus_own_name (GBusType                  bus_type,
   client->name_lost_handler = name_lost_handler;
   client->user_data = user_data;
   client->user_data_free_func = user_data_free_func;
-  client->main_context = g_main_context_get_thread_default ();
-  if (client->main_context != NULL)
-    g_main_context_ref (client->main_context);
+  client->main_context = g_main_context_ref_thread_default ();
 
   if (map_id_to_client == NULL)
     {

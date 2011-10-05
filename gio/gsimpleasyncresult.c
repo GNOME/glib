@@ -268,8 +268,7 @@ g_simple_async_result_finalize (GObject *object)
   if (simple->source_object)
     g_object_unref (simple->source_object);
 
-  if (simple->context)
-    g_main_context_unref (simple->context);
+  g_main_context_unref (simple->context);
 
   clear_op_res (simple);
 
@@ -292,9 +291,7 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
 {
   simple->handle_cancellation = TRUE;
 
-  simple->context = g_main_context_get_thread_default ();
-  if (simple->context)
-    g_main_context_ref (simple->context);
+  simple->context = g_main_context_ref_thread_default ();
 }
 
 /**
@@ -736,8 +733,6 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
   if (current_source && !g_source_is_destroyed (current_source))
     {
       current_context = g_source_get_context (current_source);
-      if (current_context == g_main_context_default ())
-	current_context = NULL;
       if (simple->context != current_context)
 	g_warning ("g_simple_async_result_complete() called from wrong context!");
     }

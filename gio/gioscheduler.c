@@ -69,8 +69,7 @@ g_io_job_free (GIOSchedulerJob *job)
 {
   if (job->cancellable)
     g_object_unref (job->cancellable);
-  if (job->context)
-    g_main_context_unref (job->context);
+  g_main_context_unref (job->context);
   g_free (job);
 }
 
@@ -224,9 +223,7 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   if (cancellable)
     job->cancellable = g_object_ref (cancellable);
 
-  job->context = g_main_context_get_thread_default ();
-  if (job->context)
-    g_main_context_ref (job->context);
+  job->context = g_main_context_ref_thread_default ();
 
   G_LOCK (active_jobs);
   active_jobs = g_slist_prepend (active_jobs, job);

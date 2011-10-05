@@ -175,8 +175,7 @@ g_file_monitor_finalize (GObject *object)
 
   g_hash_table_destroy (monitor->priv->rate_limiter);
 
-  if (monitor->priv->context)
-    g_main_context_unref (monitor->priv->context);
+  g_main_context_unref (monitor->priv->context);
 
   G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize (object);
 }
@@ -273,7 +272,7 @@ g_file_monitor_init (GFileMonitor *monitor)
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);
-  monitor->priv->context = g_main_context_get_thread_default ();
+  monitor->priv->context = g_main_context_ref_thread_default ();
 }
 
 /**

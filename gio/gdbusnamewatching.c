@@ -103,8 +103,7 @@ client_unref (Client *client)
         }
       g_free (client->name);
       g_free (client->name_owner);
-      if (client->main_context != NULL)
-        g_main_context_unref (client->main_context);
+      g_main_context_unref (client->main_context);
       if (client->user_data_free_func != NULL)
         client->user_data_free_func (client->user_data);
       g_free (client);
@@ -207,11 +206,15 @@ schedule_call_in_idle (Client *client, CallType call_type)
 static void
 do_call (Client *client, CallType call_type)
 {
+  GMainContext *current_context;
+
   /* only schedule in idle if we're not in the right thread */
-  if (g_main_context_get_thread_default () != client->main_context)
+  current_context = g_main_context_ref_thread_default ();
+  if (current_context != client->main_context)
     schedule_call_in_idle (client, call_type);
   else
     actually_do_call (client, client->connection, client->name_owner, call_type);
+  g_main_context_unref (current_context);
 }
 
 static void
@@ -566,9 +569,7 @@ g_bus_watch_name (GBusType                  bus_type,
   client->name_vanished_handler = name_vanished_handler;
   client->user_data = user_data;
   client->user_data_free_func = user_data_free_func;
-  client->main_context = g_main_context_get_thread_default ();
-  if (client->main_context != NULL)
-    g_main_context_ref (client->main_context);
+  client->main_context = g_main_context_ref_thread_default ();
 
   if (map_id_to_client == NULL)
     {
@@ -630,9 +631,7 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
   client->name_vanished_handler = name_vanished_handler;
   client->user_data = user_data;
   client->user_data_free_func = user_data_free_func;
-  client->main_context = g_main_context_get_thread_default ();
-  if (client->main_context != NULL)
-    g_main_context_ref (client->main_context);
+  client->main_context = g_main_context_ref_thread_default ();
 
   if (map_id_to_client == NULL)
     map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);

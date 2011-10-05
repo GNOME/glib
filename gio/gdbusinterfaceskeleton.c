@@ -425,8 +425,7 @@ dispatch_data_unref (DispatchData *data)
 {
   if (g_atomic_int_dec_and_test (&data->ref_count))
     {
-      if (data->context != NULL)
-        g_main_context_unref (data->context);
+      g_main_context_unref (data->context);
       g_free (data);
     }
 }
@@ -587,10 +586,8 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
       data->interface = interface;
       data->method_call_func = method_call_func;
       data->invocation = invocation;
-      data->context = g_main_context_get_thread_default ();
+      data->context = g_main_context_ref_thread_default ();
       data->ref_count = 1;
-      if (data->context != NULL)
-        g_main_context_ref (data->context);
       g_io_scheduler_push_job (dispatch_in_thread_func,
                                data,
                                (GDestroyNotify) dispatch_data_unref,

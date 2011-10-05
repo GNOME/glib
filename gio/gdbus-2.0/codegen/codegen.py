@@ -2342,8 +2342,7 @@ class CodeGenerator:
         self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
         self.c.write('  if (skeleton->priv->changed_properties_idle_source != NULL)\n')
         self.c.write('    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n')
-        self.c.write('  if (skeleton->priv->context != NULL)\n')
-        self.c.write('    g_main_context_unref (skeleton->priv->context);\n')
+        self.c.write('  g_main_context_unref (skeleton->priv->context);\n')
         self.c.write('  g_mutex_clear (&skeleton->priv->lock);\n')
         self.c.write('  G_OBJECT_CLASS (%s_skeleton_parent_class)->finalize (object);\n'
                      '}\n'
@@ -2514,9 +2513,7 @@ class CodeGenerator:
                      '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.camel_name))
         self.c.write('  g_mutex_init (&skeleton->priv->lock);\n')
-        self.c.write('  skeleton->priv->context = g_main_context_get_thread_default ();\n')
-        self.c.write('  if (skeleton->priv->context != NULL)\n')
-        self.c.write('    g_main_context_ref (skeleton->priv->context);\n')
+        self.c.write('  skeleton->priv->context = g_main_context_ref_thread_default ();\n')
         if len(i.properties) > 0:
             self.c.write('  skeleton->priv->properties = g_value_array_new (%d);\n'%(len(i.properties)))
             n = 0
