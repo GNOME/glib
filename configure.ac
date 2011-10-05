@@ -999,6 +999,7 @@ AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(splice)
+AC_CHECK_FUNCS(prlimit)
 
 # To avoid finding a compatibility unusable statfs, which typically
 # successfully compiles, but warns to use the newer statvfs interface:
