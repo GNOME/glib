@@ -21,7 +21,7 @@ GDBUS_GENERATED = 										\
 	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml 	\
 	$(NULL)
 
-$(GDBUS_GENERATED) : gdbus-example-objectmanager.xml
+$(GDBUS_GENERATED) : gdbus-example-objectmanager.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
