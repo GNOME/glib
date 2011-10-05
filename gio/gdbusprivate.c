@@ -1687,7 +1687,7 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 
       /* note:the element is removed from worker->write_pending_flushes in flush_cb() above */
       g_cond_clear (&data->cond);
-      g_mutex_free (&data->mutex);
+      g_mutex_clear (&data->mutex);
       if (data->error != NULL)
         {
           ret = FALSE;
