@@ -69,6 +69,35 @@ g_constant_info_get_type (GIConstantInfo *info)
         memcpy((dest_addr), (src_addr), sizeof(type))
 
 /**
+ * g_constant_info_free_value: (skip)
+ * @info: a #GIConstantInfo
+ * @value: the argument
+ *
+ * Free the value returned from g_constant_info_get_value().
+ *
+ * Since: 1.30.1
+ */
+void
+g_constant_info_free_value (GIConstantInfo *info,
+                            GIArgument     *value)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ConstantBlob *blob;
+
+  g_return_if_fail (info != NULL);
+  g_return_if_fail (GI_IS_CONSTANT_INFO (info));
+
+  blob = (ConstantBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  /* FIXME non-basic types ? */
+  if (blob->type.flags.reserved == 0 && blob->type.flags.reserved2 == 0)
+    {
+      if (blob->type.flags.pointer)
+        g_free (value->v_pointer);
+    }
+}
+
+/**
  * g_constant_info_get_value: (skip)
  * @info: a #GIConstantInfo
  * @value: (out): an argument
@@ -76,6 +105,7 @@ g_constant_info_get_type (GIConstantInfo *info)
  * Obtain the value associated with the #GIConstantInfo and store it in the
  * @value parameter. @argument needs to be allocated before passing it in.
  * The size of the constant value stored in @argument will be returned.
+ * Free the value with g_constant_info_free_value().
  *
  * Returns: size of the constant
  */

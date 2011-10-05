@@ -34,6 +34,8 @@ G_BEGIN_DECLS
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_CONSTANT)
 
 GITypeInfo * g_constant_info_get_type (GIConstantInfo *info);
+void         g_constant_info_free_value(GIConstantInfo *info,
+                                        GIArgument      *value);
 gint         g_constant_info_get_value(GIConstantInfo *info,
 				       GIArgument      *value);
 G_END_DECLS
