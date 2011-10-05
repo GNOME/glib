@@ -71,6 +71,7 @@
 #include "gtypes.h"
 #include "gmain.h"
 #include "gprintfint.h"
+#include "gutils.h"
 
 
 #ifndef NO_FD_SET
