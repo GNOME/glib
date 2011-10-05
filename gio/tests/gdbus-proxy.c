@@ -441,6 +441,7 @@ test_bogus_method_return (GDBusProxy *proxy)
   g_assert (result == NULL);
 }
 
+#if 0 /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999 */
 static void
 test_bogus_signal (GDBusProxy *proxy)
 {
@@ -516,6 +517,7 @@ test_bogus_property (GDBusProxy *proxy)
   _g_assert_signal_received (proxy, "g-properties-changed");
   g_dbus_proxy_set_interface_info (proxy, old_iface_info);
 }
+#endif /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999 */
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -565,8 +567,10 @@ test_expected_interface (GDBusProxy *proxy)
 
   /* And also where we deliberately set the expected interface definition incorrectly */
   test_bogus_method_return (proxy);
+  /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999
   test_bogus_signal (proxy);
   test_bogus_property (proxy);
+  */
 
   /* Also check that we complain if setting a cached property of the wrong type */
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
