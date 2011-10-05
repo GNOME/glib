@@ -267,7 +267,7 @@ gdbus_close_pending_SOURCES = gdbus-close-pending.c gdbus-sessionbus.c gdbus-ses
 gdbus_close_pending_LDADD = $(progs_ldadd)
 
 if OS_UNIX
-gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
+gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \

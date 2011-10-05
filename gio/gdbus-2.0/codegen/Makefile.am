@@ -22,7 +22,7 @@ bin_SCRIPTS += gdbus-codegen
 CLEANFILES += gdbus-codegen
 EXTRA_DIST += gdbus-codegen.in
 
-gdbus-codegen: gdbus-codegen.in Makefile
+gdbus-codegen: gdbus-codegen.in Makefile $(codegen_PYTHON)
 	$(AM_V_GEN) sed -e 's,@libdir\@,$(libdir),' $< > $@.tmp && mv $@.tmp $@
 	@chmod a+x $@
 
