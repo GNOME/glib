@@ -276,6 +276,8 @@ test_strconcat (void)
   g_assert (str != NULL);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING GLIB_TEST_STRING GLIB_TEST_STRING);
   g_free (str);
+
+  g_assert (g_strconcat (NULL, "bla", NULL) == NULL);
 }
 
 static void

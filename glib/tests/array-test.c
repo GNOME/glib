@@ -396,6 +396,8 @@ pointer_array_free_func (void)
   s = g_strdup ("frob");
   g_ptr_array_add (gparray, s);
   g_assert (g_ptr_array_remove (gparray, s));
+  g_assert (!g_ptr_array_remove (gparray, "nuun"));
+  g_assert (!g_ptr_array_remove_fast (gparray, "mlo"));
   g_assert_cmpint (num_free_func_invocations, ==, 2);
   g_ptr_array_set_size (gparray, 1);
   g_assert_cmpint (num_free_func_invocations, ==, 3);
@@ -406,10 +408,11 @@ pointer_array_free_func (void)
   g_assert_cmpint (num_free_func_invocations, ==, 4);
 
   num_free_func_invocations = 0;
-  gparray = g_ptr_array_new_with_free_func (my_free_func);
+  gparray = g_ptr_array_new_full (10, my_free_func);
   g_ptr_array_add (gparray, g_strdup ("foo"));
   g_ptr_array_add (gparray, g_strdup ("bar"));
   g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_set_size (gparray, 20);
   g_ptr_array_add (gparray, NULL);
   gparray2 = g_ptr_array_ref (gparray);
   strv = (gchar **) g_ptr_array_free (gparray, FALSE);
@@ -423,6 +426,7 @@ pointer_array_free_func (void)
   g_ptr_array_add (gparray, g_strdup ("foo"));
   g_ptr_array_add (gparray, g_strdup ("bar"));
   g_ptr_array_add (gparray, g_strdup ("baz"));
+  g_ptr_array_remove_range (gparray, 1, 1);
   g_ptr_array_unref (gparray);
   g_assert_cmpint (num_free_func_invocations, ==, 3);
 

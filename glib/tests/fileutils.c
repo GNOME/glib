@@ -478,6 +478,9 @@ test_mkdir_with_parents (void)
     g_print ("checking g_mkdir_with_parents() in cwd: %s", cwd);
   test_mkdir_with_parents_1 (cwd);
   g_free (cwd);
+
+  g_assert (g_mkdir_with_parents (NULL, 0) == -1);
+  g_assert (errno == EINVAL);
 }
 
 static void
