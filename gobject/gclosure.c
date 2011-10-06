@@ -1032,7 +1032,7 @@ value_to_ffi_type (const GValue *gvalue,
 static void
 value_from_ffi_type (GValue *gvalue, gpointer *value)
 {
-  ffi_arg *int_val = value;
+  ffi_arg *int_val = (ffi_arg *)value;
 
   switch (g_type_fundamental (G_VALUE_TYPE (gvalue)))
     {
