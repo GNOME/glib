@@ -88,6 +88,17 @@ key_foreach (gpointer valuep, gpointer keyp, gpointer data)
 }
 
 static void
+value_foreach (gpointer keyp, gpointer nodep, gpointer data)
+{
+  gint *count = data;
+  gint *key = keyp;
+
+  (*count)++;
+
+  g_assert_cmpint (*key, ==, 2);
+}
+
+static void
 test_cache_basic (void)
 {
   GCache *c;
@@ -112,6 +123,10 @@ test_cache_basic (void)
 
   count = 0;
   g_cache_key_foreach (c, key_foreach, &count);
+  g_assert_cmpint (count, ==, 1);
+
+  count = 0;
+  g_cache_value_foreach (c, value_foreach, &count);
   g_assert_cmpint (count, ==, 1);
 
   value = g_cache_insert (c, key);
