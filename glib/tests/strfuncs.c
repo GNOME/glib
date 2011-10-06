@@ -1241,6 +1241,34 @@ test_strip_context (void)
   g_assert (s == msgval + 7);
 }
 
+static void
+test_strerror (void)
+{
+  gint i;
+  const gchar *str;
+
+  for (i = 1; i < 100; i++)
+    {
+      str = g_strerror (i);
+      g_assert (str != NULL);
+      g_assert (g_utf8_validate (str, -1, NULL));
+    }
+}
+
+static void
+test_strsignal (void)
+{
+  gint i;
+  const gchar *str;
+
+  for (i = 1; i < 20; i++)
+    {
+      str = g_strsignal (i);
+      g_assert (str != NULL);
+      g_assert (g_utf8_validate (str, -1, NULL));
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1271,6 +1299,8 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strtoull-strtoll", test_strtoll);
   g_test_add_func ("/strfuncs/bounds-check", test_bounds);
   g_test_add_func ("/strfuncs/strip-context", test_strip_context);
+  g_test_add_func ("/strfuncs/strerror", test_strerror);
+  g_test_add_func ("/strfuncs/strsignal", test_strsignal);
 
   return g_test_run();
 }
