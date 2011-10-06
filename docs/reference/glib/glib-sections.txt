@@ -572,48 +572,23 @@ g_child_watch_funcs
 GSourcePrivate
 </SECTION>
 
+
 <SECTION>
 <TITLE>Threads</TITLE>
 <FILE>threads</FILE>
-<SUBSECTION>
-G_THREADS_IMPL_POSIX
-G_THREADS_IMPL_WIN32
-
 <SUBSECTION>
 G_THREAD_ERROR
 GThreadError
 
 <SUBSECTION>
-g_thread_init
-g_thread_supported
-g_thread_get_initialized
-
-<SUBSECTION>
-GThreadFunc
 GThread
+GThreadFunc
 g_thread_new
 g_thread_new_full
 g_thread_self
 g_thread_join
 g_thread_yield
 g_thread_exit
-
-<SUBSECTION Deprecated>
-g_thread_create
-g_thread_create_full
-GThreadPriority
-g_thread_set_priority
-g_thread_foreach
-
-<SUBSECTION>
-GMutex
-g_mutex_init
-g_mutex_clear
-g_mutex_new
-g_mutex_free
-g_mutex_lock
-g_mutex_trylock
-g_mutex_unlock
 
 <SUBSECTION>
 G_LOCK_DEFINE
@@ -622,6 +597,14 @@ G_LOCK_EXTERN
 G_LOCK
 G_TRYLOCK
 G_UNLOCK
+
+<SUBSECTION>
+GMutex
+g_mutex_init
+g_mutex_clear
+g_mutex_lock
+g_mutex_trylock
+g_mutex_unlock
 
 <SUBSECTION>
 GRecMutex
@@ -644,8 +627,6 @@ g_rw_lock_reader_unlock
 
 <SUBSECTION>
 GCond
-g_cond_new
-g_cond_free
 g_cond_init
 g_cond_clear
 g_cond_wait
@@ -660,9 +641,6 @@ G_PRIVATE_INIT
 g_private_get
 g_private_set
 g_private_replace
-
-<SUBSECTION Deprecated>
-g_private_new
 
 <SUBSECTION>
 GOnce
@@ -680,7 +658,41 @@ g_pointer_bit_lock
 g_pointer_bit_trylock
 g_pointer_bit_unlock
 
-<SUBSECTION Deprecated>
+<SUBSECTION Private>
+G_LOCK_NAME
+atexit
+g_thread_error_quark
+g_once_impl
+</SECTION>
+
+<SECTION>
+<TITLE>Deprecated Thread APIs</TITLE>
+<FILE>threads-deprecated</FILE>
+
+<SUBSECTION>
+G_THREADS_IMPL_POSIX
+G_THREADS_IMPL_WIN32
+
+<SUBSECTION>
+g_thread_init
+g_thread_supported
+g_thread_get_initialized
+
+<SUBSECTION>
+g_thread_create
+g_thread_create_full
+GThreadPriority
+g_thread_set_priority
+g_thread_foreach
+
+<SUBSECTION>
+g_mutex_new
+g_mutex_free
+g_cond_new
+g_cond_free
+g_private_new
+
+<SUBSECTION>
 GStaticMutex
 G_STATIC_MUTEX_INIT
 g_static_mutex_init
@@ -690,7 +702,7 @@ g_static_mutex_unlock
 g_static_mutex_get_mutex
 g_static_mutex_free
 
-<SUBSECTION Deprecated>
+<SUBSECTION>
 GStaticRecMutex
 G_STATIC_REC_MUTEX_INIT
 g_static_rec_mutex_init
@@ -701,7 +713,7 @@ g_static_rec_mutex_lock_full
 g_static_rec_mutex_unlock_full
 g_static_rec_mutex_free
 
-<SUBSECTION Deprecated>
+<SUBSECTION>
 GStaticRWLock
 G_STATIC_RW_LOCK_INIT
 g_static_rw_lock_init
@@ -713,7 +725,7 @@ g_static_rw_lock_writer_trylock
 g_static_rw_lock_writer_unlock
 g_static_rw_lock_free
 
-<SUBSECTION Deprecated>
+<SUBSECTION>
 GStaticPrivate
 G_STATIC_PRIVATE_INIT
 g_static_private_init
@@ -725,22 +737,12 @@ g_static_private_free
 GThreadFunctions
 G_THREADS_ENABLED
 g_static_mutex_get_mutex_impl
-g_static_mutex_get_mutex_impl_shortcut
-G_LOCK_NAME
-glib_dummy_decl
 GSystemThread
 g_thread_use_default_impl
 g_threads_got_initialized
 g_thread_functions_for_glib_use
 g_thread_gettime
-g_thread_init_glib
-g_thread_error_quark
-g_once_impl
 g_once_init_enter_impl
-atexit
-g_system_thread_assign
-g_system_thread_equal
-g_system_thread_equal_simple
 </SECTION>
 
 <SECTION>

@@ -83,7 +83,6 @@ synchronize their operation.
       <xi:include href="xml/hooks.xml" />
       <xi:include href="xml/misc_utils.xml" />
       <xi:include href="xml/scanner.xml" />
-      <xi:include href="xml/completion.xml" />
       <xi:include href="xml/timers.xml" />
       <xi:include href="xml/spawn.xml" />
       <xi:include href="xml/fileutils.xml" />
@@ -120,12 +119,18 @@ synchronize their operation.
       <xi:include href="xml/quarks.xml" />
       <xi:include href="xml/datalist.xml" />
       <xi:include href="xml/datasets.xml" />
-      <xi:include href="xml/relations.xml" />
       <xi:include href="xml/caches.xml" />
       <xi:include href="xml/gvarianttype.xml"/>
       <xi:include href="xml/gvariant.xml"/>
       <xi:include href="gvariant-varargs.xml"/>
       <xi:include href="gvariant-text.xml"/>
+  </chapter>
+
+  <chapter id="deprecated">
+      <title>Deprecated APIs</title>
+      <xi:include href="xml/threads-deprecated.xml"/>
+      <xi:include href="xml/relations.xml" />
+      <xi:include href="xml/completion.xml" />
   </chapter>
 
   <chapter id="tools">

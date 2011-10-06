@@ -139,7 +139,7 @@ g_mutex_get_impl (GMutex *mutex)
  * This function is useful to initialize a mutex that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a mutex that has been
- * created with g_mutex_new() or that has been statically allocated.
+ * created that has been statically allocated.
  *
  * |[
  *   typedef struct {
@@ -173,8 +173,8 @@ g_mutex_init (GMutex *mutex)
  *
  * Frees the resources allocated to a mutex with g_mutex_init().
  *
- * #GMutexes that have have been created with g_mutex_new() should
- * be freed with g_mutex_free() instead.
+ * This function should not be used with a #GMutex that has been
+ * statically allocated.
  *
  * Calling g_mutex_clear() on a locked mutex leads to undefined
  * behaviour.
@@ -199,9 +199,9 @@ g_mutex_clear (GMutex *mutex)
  * called, and, in that case, will do nothing.
  *
  * <note>#GMutex is neither guaranteed to be recursive nor to be
- * non-recursive, i.e. a thread could deadlock while calling
- * g_mutex_lock(), if it already has locked @mutex. Use
- * #GRecMutex if you need recursive mutexes.</note>
+ * non-recursive.  As such, calling g_mutex_lock() on a #GMutex that has
+ * already been locked by the same thread results in undefined behaviour
+ * (including but not limited to deadlocks).</note>
  */
 void
 g_mutex_lock (GMutex *mutex)
@@ -246,9 +246,10 @@ g_mutex_unlock (GMutex *mutex)
  * called, and, in that case, will immediately return %TRUE.
  *
  * <note>#GMutex is neither guaranteed to be recursive nor to be
- * non-recursive, i.e. the return value of g_mutex_trylock() could be
- * both %FALSE or %TRUE, if the current thread already has locked
- * @mutex. Use #GRecMutex if you need recursive mutexes.</note>
+ * non-recursive.  As such, calling g_mutex_lock() on a #GMutex that has
+ * already been locked by the same thread results in undefined behaviour
+ * (including but not limited to deadlocks or arbitrary return values).
+ * </note>
 
  * Returns: %TRUE if @mutex could be locked
  */
@@ -315,9 +316,9 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
  * This function is useful to initialize a recursive mutex
  * that has been allocated on the stack, or as part of a larger
  * structure.
- * It is not necessary to initialize a recursive mutex that has
- * been created with g_rec_mutex_new(). It is not necessary to
- * initialise a recursive mutex that has been statically allocated.
+ *
+ * It is not necessary to initialise a recursive mutex that has been
+ * statically allocated.
  *
  * |[
  *   typedef struct {
@@ -352,8 +353,8 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
  * Frees the resources allocated to a recursive mutex with
  * g_rec_mutex_init().
  *
- * #GRecMutexes that have have been created with g_rec_mutex_new()
- * should be freed with g_rec_mutex_free() instead.
+ * This function should not be used with a #GRecMutex that has been
+ * statically allocated.
  *
  * Calling g_rec_mutex_clear() on a locked recursive mutex leads
  * to undefined behaviour.
@@ -508,6 +509,9 @@ g_rw_lock_init (GRWLock *rw_lock)
  * @rw_lock: an initialized #GRWLock
  *
  * Frees the resources allocated to a lock with g_rw_lock_init().
+ *
+ * This function should not be used with a #GRWLock that has been
+ * statically allocated.
  *
  * Calling g_rw_lock_clear() when any thread holds the lock
  * leads to undefined behaviour.
@@ -681,7 +685,7 @@ g_cond_get_impl (GCond *cond)
  * This function is useful to initialize a #GCond that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a #GCond that has been
- * created with g_cond_new() or that has been statically allocated.
+ * statically allocated.
  *
  * To undo the effect of g_cond_init() when a #GCond is no longer
  * needed, use g_cond_clear().
@@ -703,8 +707,8 @@ g_cond_init (GCond *cond)
  *
  * Frees the resources allocated to a #GCond with g_cond_init().
  *
- * #GConds that have been created with g_cond_new() should
- * be freed with g_cond_free() instead.
+ * This function should not be used with a #GCond that has been
+ * statically allocated.
  *
  * Calling g_cond_clear() for a #GCond on which threads are
  * blocking leads to undefined behaviour.
@@ -1116,8 +1120,6 @@ g_system_thread_create (GThreadFunc       thread_func,
  * that other threads can run.
  *
  * This function is often used as a method to make busy wait less evil.
- * But in most cases you will encounter, there are better methods to do
- * that. So in general you shouldn't use this function.
  */
 void
 g_thread_yield (void)

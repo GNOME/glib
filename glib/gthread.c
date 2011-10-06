@@ -106,18 +106,6 @@
  * are also thread-safe.
  */
 
-/**
- * G_THREADS_IMPL_POSIX:
- *
- * This macro is defined if POSIX style threads are used.
- */
-
-/**
- * G_THREADS_IMPL_WIN32:
- *
- * This macro is defined if Windows style threads are used.
- */
-
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */
 
 /**
@@ -224,75 +212,10 @@
  *
  * It is easy to see that this won't work in a multi-threaded
  * application. There current_number must be protected against shared
- * access. A first naive implementation would be:
+ * access. A #GMutex can be used as a solution to this problem:
  *
  * <example>
- *  <title>The wrong way to write a thread-safe function</title>
- *  <programlisting>
- *   int
- *   give_me_next_number (void)
- *   {
- *     static int current_number = 0;
- *     int ret_val;
- *     static GMutex * mutex = NULL;
- *
- *     if (!mutex) mutex = g_mutex_new (<!-- -->);
- *
- *     g_mutex_lock (mutex);
- *     ret_val = current_number = calc_next_number (current_number);
- *     g_mutex_unlock (mutex);
- *
- *     return ret_val;
- *   }
- *  </programlisting>
- * </example>
- *
- * This looks like it would work, but there is a race condition while
- * constructing the mutex and this code cannot work reliable. Please do
- * not use such constructs in your own programs! One working solution
- * is:
- *
- * <example>
- *  <title>A correct thread-safe function</title>
- *  <programlisting>
- *   static GMutex *give_me_next_number_mutex = NULL;
- *
- *   /<!-- -->* this function must be called before any call to
- *    * give_me_next_number(<!-- -->)
- *    *
- *    * it must be called exactly once.
- *    *<!-- -->/
- *   void
- *   init_give_me_next_number (void)
- *   {
- *     g_assert (give_me_next_number_mutex == NULL);
- *     give_me_next_number_mutex = g_mutex_new (<!-- -->);
- *   }
- *
- *   int
- *   give_me_next_number (void)
- *   {
- *     static int current_number = 0;
- *     int ret_val;
- *
- *     g_mutex_lock (give_me_next_number_mutex);
- *     ret_val = current_number = calc_next_number (current_number);
- *     g_mutex_unlock (give_me_next_number_mutex);
- *
- *     return ret_val;
- *   }
- *  </programlisting>
- * </example>
- *
- * If a #GMutex is allocated in static storage then it can be used
- * without initialisation.  Otherwise, you should call g_mutex_init() on
- * it and g_mutex_clear() when done.
- *
- * A statically initialized #GMutex provides an even simpler and safer
- * way of doing this:
- *
- * <example>
- *  <title>Using a statically allocated mutex</title>
+ *  <title>Using GMutex to protected a shared variable</title>
  *  <programlisting>
  *   int
  *   give_me_next_number (void)
@@ -309,6 +232,13 @@
  *   }
  *  </programlisting>
  * </example>
+ *
+ * Notice that the #GMutex is not initialised to any particular value.
+ * Its placement in static storage ensures that it will be initialised
+ * to all-zeros, which is appropriate.
+ *
+ * If a #GMutex is placed in other contexts (eg: embedded in a struct)
+ * then it must be explicitly initialised using g_mutex_init().
  *
  * A #GMutex should only be accessed via <function>g_mutex_</function>
  * functions.
@@ -485,6 +415,9 @@
  * is returned by g_thread_new() or g_thread_new_full(). You can
  * obtain the #GThread struct representing the current thead by
  * calling g_thread_self().
+ *
+ * The structure is opaque -- none of its fields may be directly
+ * accessed.
  */
 
 /**
@@ -789,15 +722,15 @@ g_thread_create_proxy (gpointer data)
  * @joinable: should this thread be joinable?
  * @error: return location for error
  *
- * This function creates a new thread. The new thread starts by
- * invoking @func with the argument data. The thread will run
- * until @func returns or until g_thread_exit() is called.
+ * This function creates a new thread. The new thread starts by invoking
+ * @func with the argument data. The thread will run until @func returns
+ * or until g_thread_exit() is called from the new thread.
  *
  * The @name can be useful for discriminating threads in
  * a debugger. Some systems restrict the length of @name to
  * 16 bytes.
  *
- * If @joinable is %TRUE, you can wait for this threads termination
+ * If @joinable is %TRUE, you can wait for this thread's termination
  * calling g_thread_join(). Resources for a joinable thread are not
  * fully released until g_thread_join() is called for that thread.
  * Otherwise the thread will just disappear when it terminates.
@@ -843,7 +776,7 @@ g_thread_new (const gchar  *name,
  * In most cases, using g_thread_new() (which doesn't take a
  * @stack_size) is better.
  *
- * If @joinable is %TRUE, you can wait for this threads termination
+ * If @joinable is %TRUE, you can wait for this thread's termination
  * calling g_thread_join(). Resources for a joinable thread are not
  * fully released until g_thread_join() is called for that thread.
  * Otherwise the thread will just disappear when it terminates.

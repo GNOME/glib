@@ -24,10 +24,13 @@ CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Ignore some private headers
 IGNORE_HFILES = \
+	gallocator.h		\
 	gdatasetprivate.h	\
 	glibintl.h		\
 	gbsearcharray.h		\
+	glib-private.h		\
 	gmoduleconf.h		\
+	gthreadprivate.h	\
 	gunibreak.h		\
 	gunicomp.h		\
 	gunidecomp.h		\

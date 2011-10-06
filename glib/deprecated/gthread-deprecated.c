@@ -74,6 +74,24 @@
  * to initialize the thread system.
  */
 
+/**
+ * G_THREADS_IMPL_POSIX:
+ *
+ * This macro is defined if POSIX style threads are used.
+ *
+ * Deprecated:2.32:POSIX threads are in use on all non-Windows systems.
+ *                 Use G_OS_WIN32 to detect Windows.
+ */
+
+/**
+ * G_THREADS_IMPL_WIN32:
+ *
+ * This macro is defined if Windows style threads are used.
+ *
+ * Deprecated:2.32:Use G_OS_WIN32 to detect Windows.
+ */
+
+
 /* {{{1 Exported Variables */
 
 gboolean g_thread_use_default_impl = TRUE;
