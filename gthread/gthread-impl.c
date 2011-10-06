@@ -44,4 +44,5 @@ void
 g_thread_init_with_errorcheck_mutexes (gpointer vtable)
 {
   g_assert (vtable == NULL);
+  g_warning ("GThread system no longer supports errorcheck mutexes.");
 }
