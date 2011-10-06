@@ -30,6 +30,8 @@
 #include "gthreadprivate.h"
 #include "deprecated/gthread.h"
 
+#include "gutils.h"
+
 /* {{{1 Documentation */
 
 /**
