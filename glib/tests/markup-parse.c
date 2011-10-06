@@ -1,6 +1,7 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+#include <locale.h>
 #include <string.h>
 #include <stdio.h>
 #include <glib.h>
@@ -260,6 +261,8 @@ main (int argc, char *argv[])
   GError *error;
   const gchar *name;
   gchar *path;
+
+  setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
 
