@@ -239,6 +239,53 @@ test_hmac_ref_unref (void)
   g_hmac_unref (hmac);
 }
 
+static void
+test_hmac_copy (void)
+{
+  GHmac *hmac, *check;
+
+  hmac = g_hmac_new (G_CHECKSUM_SHA256, (guchar*)"aaa", 3);
+  check = g_hmac_copy (hmac);
+  g_assert (check != hmac);
+  g_assert_cmpstr (g_hmac_get_string (hmac), ==, g_hmac_get_string (check));
+  g_hmac_unref (check);
+  g_hmac_unref (hmac);
+}
+
+static void
+test_hmac_for_data (void)
+{
+  gchar *string;
+  GHmac *hmac;
+
+  string = g_compute_hmac_for_data (G_CHECKSUM_SHA1,
+                                    (guchar*)"aaa", 3,
+                                    (guchar*)"bcdef", 5);
+
+  hmac = g_hmac_new (G_CHECKSUM_SHA1, (guchar*)"aaa", 3);
+  g_hmac_update (hmac, (guchar*)"bcdef", 5);
+  g_assert_cmpstr (string, ==, g_hmac_get_string (hmac));
+  g_hmac_unref (hmac);
+  g_free (string);
+}
+
+static void
+test_hmac_for_string (void)
+{
+  gchar *string;
+  GHmac *hmac;
+
+  string = g_compute_hmac_for_string (G_CHECKSUM_SHA1,
+                                      (guchar*)"aaa", 3,
+                                      "bcdef", -1);
+
+  hmac = g_hmac_new (G_CHECKSUM_SHA1, (guchar*)"aaa", 3);
+  g_hmac_update (hmac, (guchar*)"bcdef", 5);
+  g_assert_cmpstr (string, ==, g_hmac_get_string (hmac));
+  g_hmac_unref (hmac);
+  g_free (string);
+}
+
 int
 main (int argc,
     char **argv)
@@ -263,6 +310,9 @@ main (int argc,
     }
 
   g_test_add_func ("/hmac/ref-unref", test_hmac_ref_unref);
+  g_test_add_func ("/hmac/copy", test_hmac_copy);
+  g_test_add_func ("/hmac/for-data", test_hmac_for_data);
+  g_test_add_func ("/hmac/for-string", test_hmac_for_string);
 
   return g_test_run ();
 }
