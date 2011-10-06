@@ -591,20 +591,20 @@ g_thread_yield
 g_thread_exit
 
 <SUBSECTION>
-G_LOCK_DEFINE
-G_LOCK_DEFINE_STATIC
-G_LOCK_EXTERN
-G_LOCK
-G_TRYLOCK
-G_UNLOCK
-
-<SUBSECTION>
 GMutex
 g_mutex_init
 g_mutex_clear
 g_mutex_lock
 g_mutex_trylock
 g_mutex_unlock
+
+<SUBSECTION>
+G_LOCK_DEFINE
+G_LOCK_DEFINE_STATIC
+G_LOCK_EXTERN
+G_LOCK
+G_TRYLOCK
+G_UNLOCK
 
 <SUBSECTION>
 GRecMutex
