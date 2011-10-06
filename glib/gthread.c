@@ -87,26 +87,23 @@
  * facilities for one-time initialization (#GOnce, g_once_init_enter()).
  * Finally there are primitives to create and manage threads (#GThread).
  *
- * The threading system is initialized with g_thread_init().
- * You may call any other GLib functions in the main thread before
- * g_thread_init() as long as g_thread_init() is not called from
- * a GLib callback, or with any locks held. However, many libraries
- * above GLib do not support late initialization of threads, so
- * doing this should be avoided if possible.
+ * The GLib threading system used to be initialized with g_thread_init().
+ * This is no longer necessary. Since version 2.32, the GLib threading
+ * system is automatically initialized at the start of your program,
+ * and all thread-creation functions and synchronization primitives
+ * are available right away. It is still possible to do thread-unsafe
+ * initialization and setup at the beginning of your program, before
+ * creating the first threads.
  *
- * Please note that since version 2.24 the GObject initialization
- * function g_type_init() initializes threads. Since 2.32, creating
- * a mainloop will do so too. As a consequence, most applications,
- * including those using GTK+, will run with threads enabled.
- *
- * After calling g_thread_init(), GLib is completely thread safe
- * (all global data is automatically locked), but individual data
- * structure instances are not automatically locked for performance
- * reasons. So, for example you must coordinate accesses to the same
- * #GHashTable from multiple threads. The two notable exceptions from
- * this rule are #GMainLoop and #GAsyncQueue, which <emphasis>are</emphasis>
- * threadsafe and need no further application-level locking to be
- * accessed from multiple threads.
+ * GLib is internally completely thread-safe (all global data is
+ * automatically locked), but individual data structure instances are
+ * not automatically locked for performance reasons. For example,
+ * you must coordinate accesses to the same #GHashTable from multiple
+ * threads. The two notable exceptions from this rule are #GMainLoop
+ * and #GAsyncQueue, which <emphasis>are</emphasis> thread-safe and
+ * need no further application-level locking to be accessed from
+ * multiple threads. Most refcounting functions such as g_object_ref()
+ * are also thread-safe.
  */
 
 /**
