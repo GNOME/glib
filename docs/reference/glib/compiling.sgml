@@ -20,7 +20,7 @@ How to compile your GLib application
 <title>Compiling GLib Applications on UNIX</title>
 
 <para>
-To compile a GLib application, you need to tell the compiler where to 
+To compile a GLib application, you need to tell the compiler where to
 find the GLib header files and libraries. This is done with the
 <application>pkg-config</application> utility.
 </para>
@@ -30,36 +30,41 @@ The following interactive shell session demonstrates how
 your system may be different):
 <programlisting>
 $ pkg-config --cflags glib-2.0
- -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include 
+ -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
 $ pkg-config --libs glib-2.0
- -L/usr/lib -lm -lglib-2.0  
+ -L/usr/lib -lm -lglib-2.0
 </programlisting>
 </para>
 <para>
-If your application uses threads or <structname>GObject</structname>
-features, it must be compiled and linked with the options returned by the 
-following <application>pkg-config</application> invocations: 
+See the <ulink url="http://www.freedesktop.org/wiki/Software/pkg-config">pkg-config website</ulink>
+for more information about <application>pkg-config</application>.
+</para>
+<para>
+If your application uses or <structname>GObject</structname>
+features, it must be compiled and linked with the options returned
+by the following <application>pkg-config</application> invocation:
 <programlisting>
-$ pkg-config --cflags --libs gthread-2.0
 $ pkg-config --cflags --libs gobject-2.0
 </programlisting>
 </para>
 <para>
-If your application uses modules, it must be compiled and linked with the options 
-returned by one of the following <application>pkg-config</application> invocations: 
+If your application uses modules, it must be compiled and linked
+with the options returned by one of the following
+<application>pkg-config</application> invocations:
 <programlisting>
-$ pkg-config --cflags --libs gmodule-no-export-2.0 
-$ pkg-config --cflags --libs gmodule-2.0 
+$ pkg-config --cflags --libs gmodule-no-export-2.0
+$ pkg-config --cflags --libs gmodule-2.0
 </programlisting>
-The difference between the two is that gmodule-2.0 adds <option>--export-dynamic</option> 
-to the linker flags, which is often not needed.
+The difference between the two is that gmodule-2.0 adds
+<option>--export-dynamic</option> to the linker flags,
+which is often not needed.
 </para>
 <para>
 The simplest way to compile a program is to use the "backticks"
 feature of the shell. If you enclose a command in backticks
-(<emphasis>not single quotes</emphasis>), then its output will be
-substituted into the command line before execution. So to compile 
-a GLib Hello, World, you would type the following:
+(<emphasis>not single quotes</emphasis>), then its output will
+be substituted into the command line before execution. So to
+compile a GLib Hello, World, you would type the following:
 <programlisting>
 $ cc `pkg-config --cflags --libs glib-2.0` hello.c -o hello
 </programlisting>
@@ -72,21 +77,25 @@ by using the command line option <literal>-DG_DISABLE_DEPRECATED=1</literal>.
 </para>
 
 <para>
-The recommended way of using GLib has always been to only include the 
-toplevel headers <filename>glib.h</filename>, 
+The recommended way of using GLib has always been to only include the
+toplevel headers <filename>glib.h</filename>,
 <filename>glib-object.h</filename>, <filename>gio.h</filename>.
-Still, there are some exceptions; these headers have to be included separately:
+Still, there are some exceptions; these headers have to be included
+separately:
 <filename>gmodule.h</filename>,
-<filename>glib/gi18n-lib.h</filename> or <filename>glib/gi18n.h</filename> (see
+<filename>glib-unix.h</filename>,
+<filename>glib/gi18n-lib.h</filename> or
+<filename>glib/gi18n.h</filename> (see
 the <link linkend="glib-I18N">Internationalization section</link>),
-<filename>glib/gprintf.h</filename> and <filename>glib/gstdio.h</filename>
+<filename>glib/gprintf.h</filename> and
+<filename>glib/gstdio.h</filename>
 (we don't want to pull in all of stdio).
 </para>
 
 <para>
 Starting with 2.17, GLib enforces this by generating an error
-when individual headers are directly included. To help with the 
-transition, the enforcement is not turned on by default for GLib 
+when individual headers are directly included. To help with the
+transition, the enforcement is not turned on by default for GLib
 headers (it <emphasis>is</emphasis> turned on for GObject and GIO).
 To turn it on, define the preprocessor symbol G_DISABLE_SINGLE_INCLUDES
 by using the command line option <literal>-DG_DISABLE_SINGLE_INCLUDES</literal>.
