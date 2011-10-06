@@ -902,6 +902,7 @@ g_io_channel_win32_make_pollfd
 g_io_channel_win32_get_fd
 g_io_channel_error_quark
 g_io_watch_funcs
+G_IO_FLAG_IS_WRITEABLE
 </SECTION>
 
 <SECTION>
@@ -1220,6 +1221,7 @@ g_dir_close
 <SUBSECTION>
 GMappedFile
 g_mapped_file_new
+g_mapped_file_new_from_fd
 g_mapped_file_ref
 g_mapped_file_unref
 g_mapped_file_free
@@ -1362,6 +1364,7 @@ g_strsignal
 
 <SUBSECTION Private>
 GAsciiType
+g_ascii_table
 </SECTION>
 
 <SECTION>
@@ -2738,6 +2741,9 @@ g_utf16_to_utf8
 g_ucs4_to_utf16
 g_ucs4_to_utf8
 g_unichar_to_utf8
+
+<SUBSECTION Private>
+g_utf8_skip
 </SECTION>
 
 <SECTION>
@@ -2900,6 +2906,8 @@ g_assertion_message_expr
 g_assertion_message_cmpstr
 g_assertion_message_cmpnum
 g_assertion_message_error
+
+g_test_config_vars
 
 g_test_add_vtable
 GTestConfig

@@ -86,6 +86,7 @@ struct _GRecMutex
 #define G_PRIVATE_INIT(notify) { NULL, (notify), { NULL, NULL } }
 struct _GPrivate
 {
+  /*< private >*/
   gpointer       p;
   GDestroyNotify notify;
   gpointer future[2];

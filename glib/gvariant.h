@@ -93,7 +93,7 @@ GVariant *                      g_variant_new_bytestring_array          (const g
                                                                          gssize                length);
 GVariant *                      g_variant_new_fixed_array               (const GVariantType   *element_type,
                                                                          gconstpointer         elements,
-                                                                         gsize                 num_elements,
+                                                                         gsize                 n_elements,
                                                                          gsize                 element_size);
 gboolean                        g_variant_get_boolean                   (GVariant             *value);
 guchar                          g_variant_get_byte                      (GVariant             *value);
