@@ -458,11 +458,13 @@
 /* #undef HAVE_STPCPY */
 
 /* Define to 1 if you have the `strcasecmp' function. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
+#if defined(_MSC_VER)
+#define strcasecmp _stricmp
+#endif /* _MSC_VER uses _stricmp, which is identical to strcasecmp */
+
+#if !defined(__DMC__)
 #define HAVE_STRCASECMP 1
-#else /* _MSC_VER or __DMC__ */
-/* #undef HAVE_STRCASECMP */
-#endif /* _MSC_VER or __DMC__ */
+#endif /* _MSC_VER or __gcc__ */
 
 /* Define to 1 if you have the `strerror' function. */
 #define HAVE_STRERROR 1
