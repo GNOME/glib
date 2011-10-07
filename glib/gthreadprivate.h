@@ -72,8 +72,8 @@ struct  _GRealThread
   GSystemThread system_thread;
 };
 
-G_GNUC_INTERNAL GSystemThread zero_thread;
-G_GNUC_INTERNAL GMutex g_once_mutex;
+G_GNUC_INTERNAL extern GSystemThread zero_thread;
+G_GNUC_INTERNAL extern GMutex g_once_mutex;
 
 G_GNUC_INTERNAL void g_static_private_cleanup   (GRealThread *thread);
 G_GNUC_INTERNAL void g_enumerable_thread_add    (GRealThread *thread);
