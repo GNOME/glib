@@ -61,6 +61,7 @@ if OS_UNIX
 TEST_PROGS +=			\
 	gdbus-close-pending	\
 	gdbus-connection	\
+	gdbus-connection-loss	\
 	gdbus-connection-slow	\
 	gdbus-names		\
 	gdbus-proxy		\
@@ -294,6 +295,9 @@ endif # OS_UNIX
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
+
+gdbus_connection_loss_SOURCES = gdbus-connection-loss.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_connection_loss_LDADD = $(progs_ldadd)
 
 gdbus_connection_slow_SOURCES = gdbus-connection-slow.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_slow_LDADD = $(progs_ldadd)

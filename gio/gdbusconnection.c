@@ -1580,7 +1580,7 @@ send_message_data_unref (SendMessageData *data)
 
 /* can be called from any thread with lock held - caller must have prepared GSimpleAsyncResult already */
 static void
-send_message_with_reply_deliver (SendMessageData *data)
+send_message_with_reply_deliver (SendMessageData *data, gboolean remove)
 {
   CONNECTION_ENSURE_LOCK (data->connection);
 
@@ -1603,8 +1603,11 @@ send_message_with_reply_deliver (SendMessageData *data)
       data->cancellable_handler_id = 0;
     }
 
-  g_warn_if_fail (g_hash_table_remove (data->connection->map_method_serial_to_send_message_data,
-                                       GUINT_TO_POINTER (data->serial)));
+  if (remove)
+    {
+      g_warn_if_fail (g_hash_table_remove (data->connection->map_method_serial_to_send_message_data,
+                                           GUINT_TO_POINTER (data->serial)));
+    }
 
   send_message_data_unref (data);
 }
@@ -1623,7 +1626,7 @@ send_message_data_deliver_reply_unlocked (SendMessageData *data,
                                              g_object_ref (reply),
                                              g_object_unref);
 
-  send_message_with_reply_deliver (data);
+  send_message_with_reply_deliver (data, TRUE);
 
  out:
   ;
@@ -1645,7 +1648,7 @@ send_message_with_reply_cancelled_idle_cb (gpointer user_data)
                                    G_IO_ERROR_CANCELLED,
                                    _("Operation was cancelled"));
 
-  send_message_with_reply_deliver (data);
+  send_message_with_reply_deliver (data, TRUE);
 
  out:
   CONNECTION_UNLOCK (data->connection);
@@ -1689,7 +1692,7 @@ send_message_with_reply_timeout_cb (gpointer user_data)
                                    G_IO_ERROR_TIMED_OUT,
                                    _("Timeout was reached"));
 
-  send_message_with_reply_deliver (data);
+  send_message_with_reply_deliver (data, TRUE);
 
  out:
   CONNECTION_UNLOCK (data->connection);
@@ -2209,6 +2212,28 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   return message;
 }
 
+/* called with connection lock held */
+static gboolean
+cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
+{
+  SendMessageData *data = value;
+
+  if (data->delivered)
+    return FALSE;
+
+  g_simple_async_result_set_error (data->simple,
+                                   G_IO_ERROR,
+                                   G_IO_ERROR_CLOSED,
+                                   _("The connection is closed"));
+
+  /* Ask send_message_with_reply_deliver not to remove the element from the
+   * hash table - we're in the middle of a foreach; that would be unsafe.
+   * Instead, return TRUE from this function so that it gets removed safely.
+   */
+  send_message_with_reply_deliver (data, FALSE);
+  return TRUE;
+}
+
 /* Called in worker's thread - we must not block */
 static void
 on_worker_closed (GDBusWorker *worker,
@@ -2234,7 +2259,10 @@ on_worker_closed (GDBusWorker *worker,
 
   CONNECTION_LOCK (connection);
   if (!connection->closed)
-    set_closed_unlocked (connection, remote_peer_vanished, error);
+    {
+      g_hash_table_foreach_remove (connection->map_method_serial_to_send_message_data, cancel_method_on_close, NULL);
+      set_closed_unlocked (connection, remote_peer_vanished, error);
+    }
   CONNECTION_UNLOCK (connection);
 
   g_object_unref (connection);
