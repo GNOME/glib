@@ -96,9 +96,6 @@ GLIB_VAR gboolean               g_thread_use_default_impl;
 
 GLIB_VAR guint64   (*g_thread_gettime) (void);
 
-/* internal function for fallback static mutex implementation */
-GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
-
 GThread* g_thread_create       (GThreadFunc            func,
                                 gpointer               data,
                                 gboolean               joinable,
