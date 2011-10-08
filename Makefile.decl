@@ -20,7 +20,7 @@ if OS_UNIX
 
 # test-nonrecursive: run tests only in cwd
 test-nonrecursive: ${TEST_PROGS}
-	@test -z "${TEST_PROGS}" || MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
+	@test -z "${TEST_PROGS}" || G_DEBUG=gc-friendly MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
 else
 test-nonrecursive:
 endif
