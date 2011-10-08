@@ -215,6 +215,9 @@ thread_LDADD     = $(progs_ldadd)
 TEST_PROGS      += slice
 slice_LDADD      = $(progs_ldadd)
 
+TEST_PROGS      += hook
+hook_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 TEST_PROGS    += unix
