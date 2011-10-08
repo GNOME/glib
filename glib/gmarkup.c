@@ -1041,9 +1041,6 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
   context->iter = context->current_text;
   context->start = context->iter;
 
-  if (context->current_text_len == 0)
-    goto finished;
-
   while (context->iter != context->current_text_end)
     {
       switch (context->state)
