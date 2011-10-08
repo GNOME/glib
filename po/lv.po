@@ -6,17 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 15:07+0000\n"
-"PO-Revision-Date: 2011-09-07 02:38+0300\n"
-"Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latvian <ll10nt@os.lv>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-10-03 15:12+0000\n"
+"PO-Revision-Date: 2011-10-04 14:23+0300\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: lv\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
@@ -102,60 +102,60 @@ msgstr "Konversija no rakstzīmju kopas '%s' uz '%s' nav atbalstīta"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nevarēja atvērt pārveidotāju no '%s' uz '%s'"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/gconvert.c:767 ../glib/gconvert.c:1159 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
 #: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
 #: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nepareiza baitu secība konversijas ievadē"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/gconvert.c:775 ../glib/gconvert.c:1084 ../glib/giochannel.c:1583
 #: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Kļūda konversējot: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gconvert.c:806 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
 #: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "Daļēja simbolu secība ievades beigās"
 
-#: ../glib/gconvert.c:1059
+#: ../glib/gconvert.c:1056
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nevar pārveidot atkritienu '%s' uz rakstzīmju kopu '%s'"
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1883
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' nav absolūtais URI, lietojot \"file\" shēmu"
 
-#: ../glib/gconvert.c:1896
+#: ../glib/gconvert.c:1893
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokālā faila URI '%s' nedrīkst saturēt '#'"
 
-#: ../glib/gconvert.c:1913
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ir nepareizs"
 
-#: ../glib/gconvert.c:1925
+#: ../glib/gconvert.c:1922
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Hostdatora nosaukuma URI '%s' ir nepareizs"
 
-#: ../glib/gconvert.c:1941
+#: ../glib/gconvert.c:1938
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' satur nepareizi izvairīgas rakstzīmes"
 
-#: ../glib/gconvert.c:2036
+#: ../glib/gconvert.c:2033
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Ceļvārds '%s' nav absolutais ceļš"
 
-#: ../glib/gconvert.c:2046
+#: ../glib/gconvert.c:2043
 msgid "Invalid hostname"
 msgstr "Nepareizs hostdatora nosaukums"
 
@@ -181,7 +181,7 @@ msgstr "%A, %Y. gada %e. %B, plkst. %H un %M"
 #: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr "%d.%m.%Y"
+msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:213
@@ -415,7 +415,7 @@ msgstr "Nespēju nolasīt no faila '%s': %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Nevarēju atvērt failu '%s': %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:182
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Nevarēju dabūt faila '%s' atribūtus: fstat() neizdevās: %s"
@@ -589,12 +589,12 @@ msgstr "Kanāls pārtrūkst daļējā rakstzīmē"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nevaru izpildīt jēllasīšanu iekš g_io_channel_read_to_end"
 
-#: ../glib/gmappedfile.c:150
+#: ../glib/gmappedfile.c:163
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Neizdevās atvērt failu '%s': open() neizdevās: %s"
 
-#: ../glib/gmappedfile.c:229
+#: ../glib/gmappedfile.c:246
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Neizdevās kartēt failu '%s': mmap() neizdevās: %s"
@@ -1424,20 +1424,21 @@ msgstr "Vērtību '%s' nevar interpretēt kā būla vērtību."
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:732
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:750
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Pārāk liela vērtība tika padota %s"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1206
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1224
 msgid "Stream is already closed"
 msgstr "Plūsma jau ir aizvērta"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
-#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
-#: ../gio/gsimpleasyncresult.c:840
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
+#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
+#: ../gio/gsimpleasyncresult.c:815 ../gio/gsimpleasyncresult.c:841
+#, c-format
 msgid "Operation was cancelled"
 msgstr "Darbība tika atcelta"
 
@@ -1616,7 +1617,7 @@ msgstr "Komandrinda `%s' izgāja ar nenulles iziešanas statusu %d: %s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nevar noteikt sesijas kopnes adresi (nav implementēts šai OS)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1625,7 +1626,7 @@ msgstr ""
 "Nevar noteikt kopnes adresi no DBUS_STARTER_BUS_TYPE vides mainīgā - "
 "nezināma vērtība `%s'"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1736,89 +1737,89 @@ msgstr "Kļūda, atverot atslēgu saišķi `%s' rakstīšanai: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Un vēl, `%s' slēguma atbrīvošana neizdevās: %s) "
 
-#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
-#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
+#: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
 msgid "The connection is closed"
 msgstr "Savienojums pārtrūka"
 
-#: ../gio/gdbusconnection.c:1684
+#: ../gio/gdbusconnection.c:1690
 msgid "Timeout was reached"
 msgstr "Iestājās noildze"
 
-#: ../gio/gdbusconnection.c:2306
+#: ../gio/gdbusconnection.c:2312
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Sastapās ar neatbalstītiem slēdžiem (flag), veidojot klienta puses "
 "savienojumu"
 
-#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Nav tādas saskarnes `org.freedesktop.DBus.Properties' uz objekta ceļa %s"
 
-#: ../gio/gdbusconnection.c:3841
+#: ../gio/gdbusconnection.c:3847
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Kļūda, iestatot īpašību `%s': Gaidīja tipu `%s', bet saņēma `%s'"
 
-#: ../gio/gdbusconnection.c:3936
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "No such property `%s'"
 msgstr "Nav tādas īpašības `%s'"
 
-#: ../gio/gdbusconnection.c:3948
+#: ../gio/gdbusconnection.c:3954
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Īpašība `%s' nav lasāma"
 
-#: ../gio/gdbusconnection.c:3959
+#: ../gio/gdbusconnection.c:3965
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Īpašība `%s' nav rakstāma"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
+#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Nav tādas saskarnes `%s'"
 
-#: ../gio/gdbusconnection.c:4213
+#: ../gio/gdbusconnection.c:4219
 msgid "No such interface"
 msgstr "Nav tādas saskarnes"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
+#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Nav tādas saskarnes `%s' uz objekta ceļa %s"
 
-#: ../gio/gdbusconnection.c:4484
+#: ../gio/gdbusconnection.c:4490
 #, c-format
 msgid "No such method `%s'"
 msgstr "Nav tādas metodes `%s'"
 
-#: ../gio/gdbusconnection.c:4515
+#: ../gio/gdbusconnection.c:4521
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Ziņojuma tips `%s neatbilda gaidītajam tipam `%s'"
 
-#: ../gio/gdbusconnection.c:4734
+#: ../gio/gdbusconnection.c:4740
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Objekts jau ir eksportēts saskarnei %s pie %s"
 
-#: ../gio/gdbusconnection.c:4932
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metode `%s' atgrieza tipu `%s', bet gaidīja `%s'"
 
-#: ../gio/gdbusconnection.c:5964
+#: ../gio/gdbusconnection.c:5970
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metode `%s' uz saskarnes `%s' ar parakstu `%s' neeksistē"
 
-#: ../gio/gdbusconnection.c:6082
+#: ../gio/gdbusconnection.c:6088
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "%s apakškoks jau ir eksportēts "
@@ -2006,7 +2007,7 @@ msgstr "Kļūdas atgriešana ar pamattekstu ar tipu `%s'"
 msgid "Error return with empty body"
 msgstr "Kļūdas atgriešana ar tukšu pamattekstu"
 
-#: ../gio/gdbusprivate.c:1736
+#: ../gio/gdbusprivate.c:1953
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Nevarēja ielādēt /var/lib/dbus/machine-id: "
 
@@ -2300,16 +2301,16 @@ msgstr "Nevar izveidot lietotāja lietotnes konfigurācijas mapi %s: %s"
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nevar izveidot lietotāja MIME konfigurācijas mapi %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+#: ../gio/gdesktopappinfo.c:1756 ../gio/gdesktopappinfo.c:1780
 msgid "Application information lacks an identifier"
 msgstr "Lietotnes informācijai trūkst identifikatora"
 
-#: ../gio/gdesktopappinfo.c:2033
+#: ../gio/gdesktopappinfo.c:2004
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nevar izveidot lietotāja darbvirsmas failu %s"
 
-#: ../gio/gdesktopappinfo.c:2149
+#: ../gio/gdesktopappinfo.c:2120
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Pielāgotas %s definīcijas"
@@ -2528,7 +2529,7 @@ msgstr "Ievades plūsma neatbalsta lasīšanu"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1216
+#: ../gio/goutputstream.c:1234
 msgid "Stream has outstanding operation"
 msgstr "Plūsmai ir neizpildīta darbība"
 
@@ -3196,11 +3197,11 @@ msgstr "montējums neatbalsta sinhrono satura tipa minēšanu"
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Datora nosaukums '%s' satur '[' bet ne ']'"
 
-#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:411
+#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:414
 msgid "Output stream doesn't implement write"
 msgstr "Izvades plūsma neatbalsta rakstīšanu"
 
-#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:855
+#: ../gio/goutputstream.c:375 ../gio/goutputstream.c:873
 msgid "Source stream is already closed"
 msgstr "Avota plūsma jau ir aizvērta"
 
@@ -3724,8 +3725,7 @@ msgid ""
 "out after further failures."
 msgstr ""
 "Vairākas ievadītās paroles ir bijušas nepareizas, un jūs tiksiet izslēgts "
-"pēc "
-"turpmākām neveiksmēm."
+"pēc turpmākām neveiksmēm."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
@@ -3801,7 +3801,7 @@ msgstr "Kļūda, lasot no unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Kļūda, aizverot unix: %s"
 
-#: ../gio/gunixmounts.c:1900 ../gio/gunixmounts.c:1937
+#: ../gio/gunixmounts.c:1903 ../gio/gunixmounts.c:1940
 msgid "Filesystem root"
 msgstr "Failu sistēmas sakne"
 
