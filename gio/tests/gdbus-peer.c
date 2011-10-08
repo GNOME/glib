@@ -795,6 +795,18 @@ test_peer (void)
       g_assert (native_creds->pid == getpid ());
     }
     g_object_unref (credentials);
+#elif defined (__OpenBSD__)
+    {
+      struct sockpeercred *native_creds;
+      g_assert_no_error (error);
+      g_assert (G_IS_CREDENTIALS (credentials));
+      native_creds = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED);
+      g_assert (native_creds != NULL);
+      g_assert (native_creds->uid == getuid ());
+      g_assert (native_creds->gid == getgid ());
+      g_assert (native_creds->pid == getpid ());
+    }
+    g_object_unref (credentials);
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
     g_assert (credentials == NULL);
