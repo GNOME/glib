@@ -44,7 +44,7 @@ GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
 void         g_mapped_file_unref        (GMappedFile  *file);
 
 #ifndef G_DISABLE_DEPRECATED
-void         g_mapped_file_free         (GMappedFile  *file);
+void         g_mapped_file_free         (GMappedFile  *file) G_GNUC_DEPRECATED_FOR(g_mapped_file_unref);
 #endif
 
 G_END_DECLS

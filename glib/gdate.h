@@ -176,7 +176,7 @@ void         g_date_set_time_val          (GDate       *date,
 					   GTimeVal    *timeval);
 #ifndef G_DISABLE_DEPRECATED
 void         g_date_set_time              (GDate       *date,
-                                           GTime        time_);
+                                           GTime        time_) G_GNUC_DEPRECATED_FOR(g_date_set_time_t);
 #endif
 void         g_date_set_month             (GDate       *date,
                                            GDateMonth   month);

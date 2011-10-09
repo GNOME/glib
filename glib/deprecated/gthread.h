@@ -99,20 +99,20 @@ GLIB_VAR guint64   (*g_thread_gettime) (void);
 GThread* g_thread_create       (GThreadFunc            func,
                                 gpointer               data,
                                 gboolean               joinable,
-                                GError               **error);
+                                GError               **error) G_GNUC_DEPRECATED_FOR(g_thread_new);
 GThread* g_thread_create_full  (GThreadFunc            func,
                                 gpointer               data,
                                 gulong                 stack_size,
                                 gboolean               joinable,
                                 gboolean               bound,
                                 GThreadPriority        priority,
-                                GError               **error);
+                                GError               **error) G_GNUC_DEPRECATED_FOR(g_thread_new_full);
 
 void g_thread_set_priority     (GThread         *thread,
-                                GThreadPriority  priority);
+                                GThreadPriority  priority) G_GNUC_DEPRECATED;
 
 void     g_thread_foreach      (GFunc         thread_func,
-                                gpointer      user_data);
+                                gpointer      user_data) G_GNUC_DEPRECATED;
 
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;
@@ -133,8 +133,8 @@ typedef struct {
     g_mutex_trylock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_unlock(mutex) \
     g_mutex_unlock (g_static_mutex_get_mutex (mutex))
-void g_static_mutex_init (GStaticMutex *mutex);
-void g_static_mutex_free (GStaticMutex *mutex);
+void g_static_mutex_init (GStaticMutex *mutex) G_GNUC_DEPRECATED_FOR(g_mutex_init);
+void g_static_mutex_free (GStaticMutex *mutex) G_GNUC_DEPRECATED_FOR(g_mutex_free);
 
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
@@ -146,14 +146,14 @@ struct _GStaticRecMutex
 };
 
 #define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, {{0, 0, 0, 0}} }
-void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
-void     g_static_rec_mutex_lock        (GStaticRecMutex *mutex);
-gboolean g_static_rec_mutex_trylock     (GStaticRecMutex *mutex);
-void     g_static_rec_mutex_unlock      (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_init        (GStaticRecMutex *mutex) G_GNUC_DEPRECATED_FOR(g_rec_mutex_init);
+void     g_static_rec_mutex_lock        (GStaticRecMutex *mutex) G_GNUC_DEPRECATED_FOR(g_rec_mutex_lock);
+gboolean g_static_rec_mutex_trylock     (GStaticRecMutex *mutex) G_GNUC_DEPRECATED_FOR(g_rec_mutex_try_lock);
+void     g_static_rec_mutex_unlock      (GStaticRecMutex *mutex) G_GNUC_DEPRECATED_FOR(g_rec_mutex_unlock);
 void     g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
-                                         guint            depth);
-guint    g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex);
-void     g_static_rec_mutex_free        (GStaticRecMutex *mutex);
+                                         guint            depth) G_GNUC_DEPRECATED;
+guint    g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex) G_GNUC_DEPRECATED;
+void     g_static_rec_mutex_free        (GStaticRecMutex *mutex) G_GNUC_DEPRECATED_FOR(g_rec_mutex_free);
 
 typedef struct _GStaticRWLock GStaticRWLock;
 struct _GStaticRWLock
@@ -170,16 +170,16 @@ struct _GStaticRWLock
 
 #define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, 0, 0 }
 
-void      g_static_rw_lock_init           (GStaticRWLock* lock);
-void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock);
-gboolean  g_static_rw_lock_reader_trylock (GStaticRWLock* lock);
-void      g_static_rw_lock_reader_unlock  (GStaticRWLock* lock);
-void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock);
-gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
-void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
-void      g_static_rw_lock_free           (GStaticRWLock* lock);
+void      g_static_rw_lock_init           (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_init);
+void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_reader_lock);
+gboolean  g_static_rw_lock_reader_trylock (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_reader_trylock);
+void      g_static_rw_lock_reader_unlock  (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_reader_unlock);
+void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_writer_lock);
+gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_writer_trylock);
+void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_writer_unlock);
+void      g_static_rw_lock_free           (GStaticRWLock* lock) G_GNUC_DEPRECATED_FOR(g_rw_lock_free);
 
-GPrivate *      g_private_new             (GDestroyNotify  notify);
+GPrivate *      g_private_new             (GDestroyNotify  notify) G_GNUC_DEPRECATED;
 
 typedef struct _GStaticPrivate  GStaticPrivate;
 struct _GStaticPrivate
@@ -189,18 +189,18 @@ struct _GStaticPrivate
 };
 
 #define G_STATIC_PRIVATE_INIT { 0 }
-void     g_static_private_init           (GStaticPrivate   *private_key);
-gpointer g_static_private_get            (GStaticPrivate   *private_key);
+void     g_static_private_init           (GStaticPrivate   *private_key) G_GNUC_DEPRECATED;
+gpointer g_static_private_get            (GStaticPrivate   *private_key) G_GNUC_DEPRECATED_FOR(g_private_get);
 void     g_static_private_set            (GStaticPrivate   *private_key,
                                           gpointer          data,
-                                          GDestroyNotify    notify);
-void     g_static_private_free           (GStaticPrivate   *private_key);
+                                          GDestroyNotify    notify) G_GNUC_DEPRECATED_FOR(g_private_set);
+void     g_static_private_free           (GStaticPrivate   *private_key) G_GNUC_DEPRECATED;
 
-gboolean g_once_init_enter_impl          (volatile gsize   *location);
+gboolean g_once_init_enter_impl          (volatile gsize   *location) G_GNUC_DEPRECATED;
 
-void     g_thread_init   (gpointer vtable);
+void     g_thread_init   (gpointer vtable) G_GNUC_DEPRECATED;
 
-gboolean g_thread_get_initialized (void);
+gboolean g_thread_get_initialized (void) G_GNUC_DEPRECATED;
 
 GLIB_VAR gboolean g_threads_got_initialized;
 
@@ -212,10 +212,10 @@ GLIB_VAR gboolean g_threads_got_initialized;
 
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
-GMutex *                g_mutex_new                                     (void);
-void                    g_mutex_free                                    (GMutex         *mutex);
-GCond *                 g_cond_new                                      (void);
-void                    g_cond_free                                     (GCond          *cond);
+GMutex *                g_mutex_new                                     (void) G_GNUC_DEPRECATED;
+void                    g_mutex_free                                    (GMutex         *mutex) G_GNUC_DEPRECATED;
+GCond *                 g_cond_new                                      (void) G_GNUC_DEPRECATED;
+void                    g_cond_free                                     (GCond          *cond) G_GNUC_DEPRECATED;
 
 G_END_DECLS
 

@@ -77,7 +77,7 @@ void     g_tree_foreach         (GTree            *tree,
 void     g_tree_traverse        (GTree            *tree,
                                  GTraverseFunc     traverse_func,
                                  GTraverseType     traverse_type,
-                                 gpointer          user_data);
+                                 gpointer          user_data) G_GNUC_DEPRECATED;
 #endif /* G_DISABLE_DEPRECATED */
 
 gpointer g_tree_search          (GTree            *tree,

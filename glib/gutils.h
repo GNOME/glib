@@ -234,7 +234,7 @@ const gchar *         g_path_skip_root     (const gchar *file_name);
 
 #ifndef G_DISABLE_DEPRECATED
 
-const gchar *         g_basename           (const gchar *file_name);
+const gchar *         g_basename           (const gchar *file_name) G_GNUC_DEPRECATED_FOR(g_path_get_basename);
 #define g_dirname g_path_get_dirname
 
 #endif /* G_DISABLE_DEPRECATED */

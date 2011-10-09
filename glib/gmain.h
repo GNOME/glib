@@ -409,7 +409,7 @@ void     g_source_remove_child_source (GSource        *source,
 
 #ifndef G_DISABLE_DEPRECATED
 void     g_source_get_current_time (GSource        *source,
-                                    GTimeVal       *timeval);
+                                    GTimeVal       *timeval) G_GNUC_DEPRECATED_FOR(g_source_get_time);
 #endif
 gint64   g_source_get_time         (GSource        *source);
 

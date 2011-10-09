@@ -569,7 +569,7 @@ void g_unicode_canonical_ordering (gunichar *string,
 #ifndef G_DISABLE_DEPRECATED
 /* Deprecated.  Use g_unichar_fully_decompose() */
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
-                                             gsize    *result_len) G_GNUC_MALLOC;
+                                             gsize    *result_len) G_GNUC_MALLOC G_GNUC_DEPRECATED;
 #endif
 
 /* Array of skip-bytes-per-initial character.

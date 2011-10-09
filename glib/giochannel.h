@@ -174,18 +174,18 @@ GIOChannel *g_io_channel_ref    (GIOChannel    *channel);
 void        g_io_channel_unref  (GIOChannel    *channel);
 
 #ifndef G_DISABLE_DEPRECATED
-GIOError    g_io_channel_read   (GIOChannel    *channel, 
-			         gchar         *buf, 
-			         gsize          count,
-			         gsize         *bytes_read);
-GIOError  g_io_channel_write    (GIOChannel    *channel, 
-			         const gchar   *buf, 
-			         gsize          count,
-			         gsize         *bytes_written);
+GIOError    g_io_channel_read   (GIOChannel    *channel,
+                                 gchar         *buf,
+                                 gsize          count,
+                                 gsize         *bytes_read) G_GNUC_DEPRECATED_FOR(g_io_channel_read_for);
+GIOError  g_io_channel_write    (GIOChannel    *channel,
+                                 const gchar   *buf,
+                                 gsize          count,
+                                 gsize         *bytes_written) G_GNUC_DEPRECATED_FOR(g_io_channel_write_chars);
 GIOError  g_io_channel_seek     (GIOChannel    *channel,
-			         gint64         offset, 
-			         GSeekType      type);
-void      g_io_channel_close    (GIOChannel    *channel);
+                                 gint64         offset,
+                                 GSeekType      type) G_GNUC_DEPRECATED_FOR(g_io_channel_seek_position);
+void      g_io_channel_close    (GIOChannel    *channel) G_GNUC_DEPRECATED_FOR(g_io_channel_shutdown);
 #endif /* G_DISABLE_DEPRECATED */
 
 GIOStatus g_io_channel_shutdown (GIOChannel      *channel,

@@ -45,8 +45,8 @@ GAsyncQueue *g_async_queue_ref                  (GAsyncQueue      *queue);
 void         g_async_queue_unref                (GAsyncQueue      *queue);
 
 #ifndef G_DISABLE_DEPRECATED
-void         g_async_queue_ref_unlocked         (GAsyncQueue      *queue);
-void         g_async_queue_unref_and_unlock     (GAsyncQueue      *queue);
+void         g_async_queue_ref_unlocked         (GAsyncQueue      *queue) G_GNUC_DEPRECATED_FOR(g_async_queue_ref);
+void         g_async_queue_unref_and_unlock     (GAsyncQueue      *queue) G_GNUC_DEPRECATED_FOR(g_async_queue_unref);
 #endif /* !G_DISABLE_DEPRECATED */
 
 void         g_async_queue_push                 (GAsyncQueue      *queue,

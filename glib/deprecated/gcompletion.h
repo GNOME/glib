@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -43,8 +43,8 @@ typedef gchar*          (*GCompletionFunc)      (gpointer);
  */
 
 typedef gint (*GCompletionStrncmpFunc) (const gchar *s1,
-					const gchar *s2,
-					gsize        n);
+                                        const gchar *s2,
+                                        gsize        n);
 
 struct _GCompletion
 {
@@ -56,21 +56,21 @@ struct _GCompletion
   GCompletionStrncmpFunc strncmp_func;
 };
 
-GCompletion* g_completion_new           (GCompletionFunc func);
+GCompletion* g_completion_new           (GCompletionFunc func) G_GNUC_DEPRECATED;
 void         g_completion_add_items     (GCompletion*    cmp,
-                                         GList*          items);
+                                         GList*          items) G_GNUC_DEPRECATED;
 void         g_completion_remove_items  (GCompletion*    cmp,
-                                         GList*          items);
+                                         GList*          items) G_GNUC_DEPRECATED;
 void         g_completion_clear_items   (GCompletion*    cmp);
 GList*       g_completion_complete      (GCompletion*    cmp,
                                          const gchar*    prefix,
-                                         gchar**         new_prefix);
+                                         gchar**         new_prefix) G_GNUC_DEPRECATED;
 GList*       g_completion_complete_utf8 (GCompletion  *cmp,
                                          const gchar*    prefix,
-                                         gchar**         new_prefix);
+                                         gchar**         new_prefix) G_GNUC_DEPRECATED;
 void         g_completion_set_compare   (GCompletion *cmp,
-				         GCompletionStrncmpFunc strncmp_func);
-void         g_completion_free          (GCompletion*    cmp);
+                                         GCompletionStrncmpFunc strncmp_func) G_GNUC_DEPRECATED;
+void         g_completion_free          (GCompletion*    cmp) G_GNUC_DEPRECATED;
 
 G_END_DECLS
 

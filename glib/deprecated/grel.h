@@ -66,31 +66,31 @@ struct _GTuples
  * g_relation_count() counts ...
  */
 
-GRelation* g_relation_new     (gint         fields);
-void       g_relation_destroy (GRelation   *relation);
+GRelation* g_relation_new     (gint         fields) G_GNUC_DEPRECATED;
+void       g_relation_destroy (GRelation   *relation) G_GNUC_DEPRECATED;
 void       g_relation_index   (GRelation   *relation,
                                gint         field,
                                GHashFunc    hash_func,
-                               GEqualFunc   key_equal_func);
+                               GEqualFunc   key_equal_func) G_GNUC_DEPRECATED;
 void       g_relation_insert  (GRelation   *relation,
-                               ...);
+                               ...) G_GNUC_DEPRECATED;
 gint       g_relation_delete  (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field);
+                               gint         field) G_GNUC_DEPRECATED;
 GTuples*   g_relation_select  (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field);
+                               gint         field) G_GNUC_DEPRECATED;
 gint       g_relation_count   (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field);
+                               gint         field) G_GNUC_DEPRECATED;
 gboolean   g_relation_exists  (GRelation   *relation,
                                ...);
-void       g_relation_print   (GRelation   *relation);
+void       g_relation_print   (GRelation   *relation) G_GNUC_DEPRECATED;
 
-void       g_tuples_destroy   (GTuples     *tuples);
+void       g_tuples_destroy   (GTuples     *tuples) G_GNUC_DEPRECATED;
 gpointer   g_tuples_index     (GTuples     *tuples,
                                gint         index_,
-                               gint         field);
+                               gint         field) G_GNUC_DEPRECATED;
 
 G_END_DECLS
 
