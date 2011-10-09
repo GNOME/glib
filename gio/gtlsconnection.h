@@ -85,8 +85,8 @@ GType                 g_tls_connection_get_type                    (void) G_GNUC
 
 #ifndef G_DISABLE_DEPRECATED
 void                  g_tls_connection_set_use_system_certdb       (GTlsConnection       *conn,
-								    gboolean              use_system_certdb);
-gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn);
+                                                                    gboolean              use_system_certdb) G_GNUC_DEPRECATED;
+gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn) G_GNUC_DEPRECATED;
 #endif /* G_DISABLE_DEPRECATED */
 
 void                  g_tls_connection_set_database                (GTlsConnection       *conn,

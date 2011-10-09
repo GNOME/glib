@@ -871,13 +871,13 @@ GFile *                 g_file_mount_mountable_finish     (GFile                
 							   GError                    **error);
 #ifndef G_DISABLE_DEPRECATED
 void                    g_file_unmount_mountable          (GFile                      *file,
-							   GMountUnmountFlags          flags,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountUnmountFlags          flags,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data) G_GNUC_DEPRECATED_FOR(g_file_unmount_mountable_with_operation);
 gboolean                g_file_unmount_mountable_finish   (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error) G_GNUC_DEPRECATED_FOR(g_file_unmount_mountable_with_operation_finish);
 #endif
 void                    g_file_unmount_mountable_with_operation (GFile                *file,
 							   GMountUnmountFlags          flags,
@@ -890,13 +890,13 @@ gboolean                g_file_unmount_mountable_with_operation_finish (GFile   
 							   GError                    **error);
 #ifndef G_DISABLE_DEPRECATED
 void                    g_file_eject_mountable            (GFile                      *file,
-							   GMountUnmountFlags          flags,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountUnmountFlags          flags,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data) G_GNUC_DEPRECATED_FOR(g_file_eject_mountable_with_operation);
 gboolean                g_file_eject_mountable_finish     (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error) G_GNUC_DEPRECATED_FOR(g_file_eject_mountable_with_operation_finish);
 #endif
 void                    g_file_eject_mountable_with_operation (GFile                  *file,
 							   GMountUnmountFlags          flags,

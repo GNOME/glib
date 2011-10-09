@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DRIVE           (g_drive_get_type ())
 #define G_DRIVE(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_DRIVE, GDrive))
-#define G_IS_DRIVE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DRIVE))
+#define G_IS_DRIVE(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DRIVE))
 #define G_DRIVE_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_DRIVE, GDriveIface))
 
 /**
@@ -166,13 +166,13 @@ gboolean g_drive_can_poll_for_media       (GDrive               *drive);
 gboolean g_drive_can_eject                (GDrive               *drive);
 #ifndef G_DISABLE_DEPRECATED
 void     g_drive_eject                    (GDrive               *drive,
-					   GMountUnmountFlags    flags,
+                                           GMountUnmountFlags    flags,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
-                                           gpointer              user_data);
+                                           gpointer              user_data) G_GNUC_DEPRECATED_FOR(g_drive_eject_with_operation);
 gboolean g_drive_eject_finish             (GDrive               *drive,
                                            GAsyncResult         *result,
-                                           GError              **error);
+                                           GError              **error) G_GNUC_DEPRECATED_FOR(g_drive_eject_with_operation_finish);
 #endif
 void     g_drive_poll_for_media           (GDrive               *drive,
                                            GCancellable         *cancellable,
@@ -182,7 +182,7 @@ gboolean g_drive_poll_for_media_finish    (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
 char *   g_drive_get_identifier           (GDrive              *drive,
-					   const char          *kind);
+                                           const char          *kind);
 char **  g_drive_enumerate_identifiers    (GDrive              *drive);
 
 GDriveStartStopType g_drive_get_start_stop_type (GDrive        *drive);
@@ -201,7 +201,7 @@ gboolean g_drive_start_finish             (GDrive               *drive,
 
 gboolean g_drive_can_stop                 (GDrive               *drive);
 void     g_drive_stop                     (GDrive               *drive,
-					   GMountUnmountFlags    flags,
+                                           GMountUnmountFlags    flags,
                                            GMountOperation      *mount_operation,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,

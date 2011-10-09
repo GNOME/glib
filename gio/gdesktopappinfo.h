@@ -99,6 +99,8 @@ GType     g_desktop_app_info_lookup_get_type                   (void) G_GNUC_CON
 GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
                                                                 const char            *uri_scheme);
 
+#endif /* G_DISABLE_DEPRECATED */
+
 /**
  * GDesktopAppLaunchCallback:
  * @appinfo: a #GDesktopAppInfo
@@ -123,7 +125,6 @@ gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo          
 						       gpointer                    pid_callback_data,
 						       GError                    **error);
 
-#endif /* G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

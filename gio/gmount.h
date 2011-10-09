@@ -175,19 +175,19 @@ void        g_mount_unmount                   (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
-                                               gpointer             user_data);
+                                               gpointer             user_data) G_GNUC_DEPRECATED_FOR(g_mount_unmount_with_operation);
 gboolean    g_mount_unmount_finish            (GMount              *mount,
                                                GAsyncResult        *result,
-                                               GError             **error);
+                                               GError             **error) G_GNUC_DEPRECATED_FOR(g_mount_unmount_with_operation_finish);
 
 void        g_mount_eject                     (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
-                                               gpointer             user_data);
+                                               gpointer             user_data) G_GNUC_DEPRECATED_FOR(g_mount_eject_with_operation);
 gboolean    g_mount_eject_finish              (GMount              *mount,
                                                GAsyncResult        *result,
-                                               GError             **error);
+                                               GError             **error) G_GNUC_DEPRECATED_FOR(g_mount_eject_with_operation_finish);
 #endif
 
 void        g_mount_remount                   (GMount              *mount,
