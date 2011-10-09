@@ -314,7 +314,7 @@ void           g_value_take_param               (GValue        *value,
 					         GParamSpec    *param);
 #ifndef G_DISABLE_DEPRECATED
 void           g_value_set_param_take_ownership (GValue        *value,
-					         GParamSpec    *param);
+                                                 GParamSpec    *param) G_GNUC_DEPRECATED_FOR(g_value_take_param);
 #endif
 
 /* --- convenience functions --- */
