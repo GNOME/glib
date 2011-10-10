@@ -75,7 +75,7 @@ idle_start_test1_thread (gpointer loop)
   gboolean io_completed;
 
   g_mutex_lock (&test1_mutex);
-  thread = g_thread_create (test1_thread, NULL, TRUE, NULL);
+  thread = g_thread_new ("test1", test1_thread, NULL, TRUE, NULL);
 
   g_get_current_time (&time);
   time.tv_sec += 2;
@@ -179,7 +179,6 @@ main (int argc, char **argv)
 {
   GError *error = NULL;
 
-  g_thread_init (NULL);
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 

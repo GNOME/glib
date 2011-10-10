@@ -147,7 +147,6 @@ main (int argc, char *argv[])
   GError *error = NULL;
 
   g_type_init ();
-  g_thread_init (NULL);
 
   context = g_option_context_new ("<http root dir> - Simple HTTP server");
   g_option_context_add_main_entries (context, cmd_entries, NULL);

@@ -261,8 +261,6 @@ main (int argc,
   GTlsCertificate *certificate = NULL;
   gint i;
 
-  g_thread_init (NULL);
-
   g_type_init ();
 
   address = NULL;
@@ -291,7 +289,7 @@ main (int argc,
   if (cancel_timeout)
     {
       cancellable = g_cancellable_new ();
-      g_thread_create (cancel_thread, cancellable, FALSE, NULL);
+      g_thread_new ("cancel", cancel_thread, cancellable, FALSE, NULL);
     }
   else
     {

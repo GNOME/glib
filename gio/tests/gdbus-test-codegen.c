@@ -565,10 +565,11 @@ on_name_acquired (GDBusConnection *connection,
 {
   GMainLoop *loop = user_data;
 
-  g_thread_create (check_proxies_in_thread,
-                   loop,
-                   TRUE,
-                   NULL);
+  g_thread_new ("check-proxies",
+                check_proxies_in_thread,
+                loop,
+                TRUE,
+                NULL);
 }
 
 static void

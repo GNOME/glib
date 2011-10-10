@@ -70,7 +70,6 @@ main (int argc, char *argv[])
   char buffer[1000];
 
   g_type_init ();
-  g_thread_init (NULL);
 
   context = g_option_context_new (" <hostname>[:port] - send data to tcp host");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
@@ -92,7 +91,7 @@ main (int argc, char *argv[])
   if (cancel_timeout)
     {
       cancellable = g_cancellable_new ();
-      g_thread_create (cancel_thread, cancellable, FALSE, NULL);
+      g_thread_new ("cancel", cancel_thread, cancellable, FALSE, NULL);
     }
   else
     {

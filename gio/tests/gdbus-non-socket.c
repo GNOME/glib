@@ -341,7 +341,6 @@ main (int   argc,
   gint ret;
 
   g_type_init ();
-  g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */

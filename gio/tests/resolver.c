@@ -201,7 +201,7 @@ start_sync_lookups (char **argv, int argc)
   int i;
 
   for (i = 0; i < argc; i++)
-    g_thread_create (lookup_thread, argv[i], FALSE, NULL);
+    g_thread_new ("lookup", lookup_thread, argv[i], FALSE, NULL);
 }
 
 static void

@@ -43,7 +43,6 @@ main (int argc, char *argv[])
   GError *error = NULL;
 
   g_type_init ();
-  g_thread_init (NULL);
 
   context = g_option_context_new (" - Test GSocket server stuff");
   g_option_context_add_main_entries (context, cmd_entries, NULL);

@@ -248,7 +248,6 @@ main (int   argc,
   SetupData *data;
 
   g_type_init ();
-  g_thread_init (NULL);
 
   g_test_init (&argc, &argv, NULL);
 

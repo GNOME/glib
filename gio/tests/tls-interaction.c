@@ -437,7 +437,7 @@ setup_with_thread_loop (Test            *test,
   closure.test = test;
 
   g_mutex_lock (&closure.loop_mutex);
-  test->loop_thread = g_thread_create (thread_loop, &closure, TRUE, &error);
+  test->loop_thread = g_thread_new ("loop", thread_loop, &closure, TRUE, &error);
   while (!closure.started)
     g_cond_wait (&closure.loop_started, &closure.loop_mutex);
   g_mutex_unlock (&closure.loop_mutex);
@@ -606,7 +606,6 @@ main (int   argc,
   gint ret;
 
   g_type_init ();
-  g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
 
   fixtures = g_ptr_array_new_with_free_func (g_free);

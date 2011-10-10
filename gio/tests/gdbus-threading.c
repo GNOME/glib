@@ -233,10 +233,11 @@ test_delivery_in_thread (void)
   GThread *thread;
 
   error = NULL;
-  thread = g_thread_create (test_delivery_in_thread_func,
-                            NULL,
-                            TRUE,
-                            &error);
+  thread = g_thread_new ("deliver",
+                         test_delivery_in_thread_func,
+                         NULL,
+                         TRUE,
+                         &error);
   g_assert_no_error (error);
   g_assert (thread != NULL);
 
@@ -394,10 +395,11 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data1.num = 100;
       data1.async = do_async;
       data1.done = FALSE;
-      thread1 = g_thread_create (test_sleep_in_thread_func,
-                                 &data1,
-                                 TRUE,
-                                 &error);
+      thread1 = g_thread_new ("sleep",
+                              test_sleep_in_thread_func,
+                              &data1,
+                              TRUE,
+                              &error);
       g_assert_no_error (error);
       g_assert (thread1 != NULL);
 
@@ -406,10 +408,11 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data2.num = 200;
       data2.async = do_async;
       data2.done = FALSE;
-      thread2 = g_thread_create (test_sleep_in_thread_func,
-                                 &data2,
-                                 TRUE,
-                                 &error);
+      thread2 = g_thread_new ("sleep2",
+                              test_sleep_in_thread_func,
+                              &data2,
+                              TRUE,
+                              &error);
       g_assert_no_error (error);
       g_assert (thread2 != NULL);
 
@@ -418,10 +421,11 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data3.num = 40;
       data3.async = do_async;
       data3.done = FALSE;
-      thread3 = g_thread_create (test_sleep_in_thread_func,
-                                 &data3,
-                                 TRUE,
-                                 &error);
+      thread3 = g_thread_new ("sleep3",
+                              test_sleep_in_thread_func,
+                              &data3,
+                              TRUE,
+                              &error);
       g_assert_no_error (error);
       g_assert (thread3 != NULL);
 
@@ -494,7 +498,6 @@ main (int   argc,
   gint ret;
 
   g_type_init ();
-  g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */

@@ -216,8 +216,8 @@ test_pipe_io (void)
   reader_cancel = g_cancellable_new ();
   main_cancel = g_cancellable_new ();
 
-  writer = g_thread_create (writer_thread, NULL, TRUE, NULL);
-  reader = g_thread_create (reader_thread, NULL, TRUE, NULL);
+  writer = g_thread_new ("writer", writer_thread, NULL, TRUE, NULL);
+  reader = g_thread_new ("reader", reader_thread, NULL, TRUE, NULL);
 
   in = g_unix_input_stream_new (writer_pipe[0], TRUE);
   out = g_unix_output_stream_new (reader_pipe[1], TRUE);
@@ -246,7 +246,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_thread_init (NULL);
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
