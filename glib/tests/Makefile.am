@@ -206,9 +206,6 @@ once_LDADD       = $(progs_ldadd)
 TEST_PROGS      += cond
 cond_LDADD       = $(progs_ldadd)
 
-TEST_PROGS      += private
-private_LDADD    = $(progs_ldadd)
-
 TEST_PROGS      += thread
 thread_LDADD     = $(progs_ldadd)
 
@@ -218,7 +215,12 @@ slice_LDADD      = $(progs_ldadd)
 TEST_PROGS      += hook
 hook_LDADD       = $(progs_ldadd)
 
+TEST_PROGS      += private
+private_LDADD    = $(progs_ldadd)
+
 if OS_UNIX
+
+private_LDFLAGS = -pthread
 
 TEST_PROGS    += unix
 unix_LDADD  = $(progs_ldadd)
