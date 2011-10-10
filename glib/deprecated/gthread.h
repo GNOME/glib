@@ -114,18 +114,20 @@ void g_thread_set_priority     (GThread         *thread,
 void     g_thread_foreach      (GFunc         thread_func,
                                 gpointer      user_data) G_GNUC_DEPRECATED;
 
-#ifdef G_OS_WIN32
-typedef GMutex * GStaticMutex;
-#define G_STATIC_MUTEX_INIT NULL
+#ifndef G_OS_WIN32
+#include <pthread.h>
+#endif
+
 #define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
-#else /* G_OS_WIN32 */
-typedef struct {
-  GMutex *unused;
-  GMutex mutex;
+#define G_STATIC_MUTEX_INIT { NULL }
+typedef struct
+{
+  GMutex *mutex;
+#ifndef G_OS_WIN32
+  /* only for ABI compatibility reasons */
+  pthread_mutex_t unused;
+#endif
 } GStaticMutex;
-#define G_STATIC_MUTEX_INIT { NULL, { NULL } }
-#define g_static_mutex_get_mutex(s) (&(s)->mutex)
-#endif /* G_OS_WIN32 */
 
 #define g_static_mutex_lock(mutex) \
     g_mutex_lock (g_static_mutex_get_mutex (mutex))
@@ -135,6 +137,7 @@ typedef struct {
     g_mutex_unlock (g_static_mutex_get_mutex (mutex))
 void g_static_mutex_init (GStaticMutex *mutex) G_GNUC_DEPRECATED_FOR(g_mutex_init);
 void g_static_mutex_free (GStaticMutex *mutex) G_GNUC_DEPRECATED_FOR(g_mutex_free);
+GMutex* g_static_mutex_get_mutex_impl   (GStaticMutex *mutex);
 
 typedef struct _GStaticRecMutex GStaticRecMutex;
 struct _GStaticRecMutex
@@ -209,8 +212,6 @@ GLIB_VAR gboolean g_threads_got_initialized;
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
-
-GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
 GMutex *                g_mutex_new                                     (void) G_GNUC_DEPRECATED;
 void                    g_mutex_free                                    (GMutex         *mutex) G_GNUC_DEPRECATED;

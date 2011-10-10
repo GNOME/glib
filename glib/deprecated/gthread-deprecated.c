@@ -113,7 +113,10 @@
 
 /* {{{1 Exported Variables */
 
-gboolean g_thread_use_default_impl = TRUE;
+/* Set this FALSE to have previously-compiled GStaticMutex code use the
+ * slow path (ie: call into us) to avoid compatibility problems.
+ */
+gboolean g_thread_use_default_impl = FALSE;
 
 GThreadFunctions g_thread_functions_for_glib_use =
 {
@@ -492,24 +495,24 @@ g_static_mutex_init (GStaticMutex *mutex)
  * Deprecated: 2.32: Just use a #GMutex
  */
 GMutex *
-g_static_mutex_get_mutex_impl (GMutex** mutex)
+g_static_mutex_get_mutex_impl (GStaticMutex* mutex)
 {
   GMutex *result;
 
   if (!g_thread_supported ())
     return NULL;
 
-  result = g_atomic_pointer_get (mutex);
+  result = g_atomic_pointer_get (&mutex->mutex);
 
   if (!result)
     {
       g_mutex_lock (&g_once_mutex);
 
-      result = *mutex;
+      result = mutex->mutex;
       if (!result)
         {
           result = g_mutex_new ();
-          g_atomic_pointer_set (mutex, result);
+          g_atomic_pointer_set (&mutex->mutex, result);
         }
 
       g_mutex_unlock (&g_once_mutex);
