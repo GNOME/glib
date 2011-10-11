@@ -63,7 +63,6 @@ copy ..\..\..\glib\gbitlock.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x
 copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gcache.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
-copy ..\..\..\glib\gcompletion.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdataset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdate.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
@@ -97,7 +96,6 @@ copy ..\..\..\glib\gquark.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
 copy ..\..\..\glib\gqueue.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\grand.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gregex.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
-copy ..\..\..\glib\grel.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gscanner.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gsequence.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gshell.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
@@ -120,6 +118,12 @@ copy ..\..\..\glib\gutils.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
 copy ..\..\..\glib\gvariant.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gvarianttype.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+
+mkdir $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
+copy ..\..\..\glib\deprecated\gallocator.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
+copy ..\..\..\glib\deprecated\gcompletion.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
+copy ..\..\..\glib\deprecated\grel.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
+copy ..\..\..\glib\deprecated\gthread.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 
 copy ..\..\..\gmodule\gmodule.h $(OutDir)\include\glib-$(ApiVersion)&#x0D;&#x0A;
 

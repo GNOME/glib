@@ -47,8 +47,6 @@ copy ..\..\..\glib\gcache.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gchecksum.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
-copy ..\..\..\glib\gcompletion.h $(CopyDir)\include\glib-$(ApiVersion)\glib
-
 copy ..\..\..\glib\gconvert.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gdataset.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -115,8 +113,6 @@ copy ..\..\..\glib\grand.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gregex.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
-copy ..\..\..\glib\grel.h $(CopyDir)\include\glib-$(ApiVersion)\glib
-
 copy ..\..\..\glib\gscanner.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gsequence.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -160,6 +156,17 @@ copy ..\..\..\glib\gvariant.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 copy ..\..\..\glib\gvarianttype.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gwin32.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
+
+mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
+copy ..\..\..\glib\deprecated\gallocator.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
+copy ..\..\..\glib\deprecated\gcompletion.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
+copy ..\..\..\glib\deprecated\grel.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
+copy ..\..\..\glib\deprecated\gthread.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
 
 copy ..\..\..\gmodule\gmodule.h $(CopyDir)\include\glib-$(ApiVersion)
