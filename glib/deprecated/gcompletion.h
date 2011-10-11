@@ -56,21 +56,29 @@ struct _GCompletion
   GCompletionStrncmpFunc strncmp_func;
 };
 
-GCompletion* g_completion_new           (GCompletionFunc func) G_GNUC_DEPRECATED;
+GLIB_DEPRECATED
+GCompletion* g_completion_new           (GCompletionFunc func);
+GLIB_DEPRECATED
 void         g_completion_add_items     (GCompletion*    cmp,
-                                         GList*          items) G_GNUC_DEPRECATED;
+                                         GList*          items);
+GLIB_DEPRECATED
 void         g_completion_remove_items  (GCompletion*    cmp,
-                                         GList*          items) G_GNUC_DEPRECATED;
+                                         GList*          items);
+GLIB_DEPRECATED
 void         g_completion_clear_items   (GCompletion*    cmp);
+GLIB_DEPRECATED
 GList*       g_completion_complete      (GCompletion*    cmp,
                                          const gchar*    prefix,
-                                         gchar**         new_prefix) G_GNUC_DEPRECATED;
+                                         gchar**         new_prefix);
+GLIB_DEPRECATED
 GList*       g_completion_complete_utf8 (GCompletion  *cmp,
                                          const gchar*    prefix,
-                                         gchar**         new_prefix) G_GNUC_DEPRECATED;
+                                         gchar**         new_prefix);
+GLIB_DEPRECATED
 void         g_completion_set_compare   (GCompletion *cmp,
-                                         GCompletionStrncmpFunc strncmp_func) G_GNUC_DEPRECATED;
-void         g_completion_free          (GCompletion*    cmp) G_GNUC_DEPRECATED;
+                                         GCompletionStrncmpFunc strncmp_func);
+GLIB_DEPRECATED
+void         g_completion_free          (GCompletion*    cmp);
 
 G_END_DECLS
 

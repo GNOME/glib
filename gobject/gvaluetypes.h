@@ -178,9 +178,10 @@ G_BEGIN_DECLS
 
 /* --- prototypes --- */
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED
 void                  g_value_set_char          (GValue       *value,
-                                                 gchar         v_char) G_GNUC_DEPRECATED;
-gchar                 g_value_get_char          (const GValue *value) G_GNUC_DEPRECATED;
+                                                 gchar         v_char);
+GLIB_DEPRECATED gchar                 g_value_get_char          (const GValue *value);
 #endif
 void		      g_value_set_schar		(GValue	      *value,
 						 gint8	       v_char);
@@ -246,8 +247,9 @@ gchar*                g_strdup_value_contents   (const GValue *value);
 void g_value_take_string		        (GValue		   *value,
 						 gchar		   *v_string);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_value_take_string)
 void g_value_set_string_take_ownership          (GValue            *value,
-                                                 gchar             *v_string) G_GNUC_DEPRECATED_FOR(g_value_take_string);
+                                                 gchar             *v_string);
 #endif
 
 

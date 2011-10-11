@@ -527,8 +527,9 @@ void        g_object_run_dispose	      (GObject	      *object);
 void        g_value_take_object               (GValue         *value,
 					       gpointer        v_object);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_value_take_object)
 void        g_value_set_object_take_ownership (GValue         *value,
-                                               gpointer        v_object) G_GNUC_DEPRECATED_FOR(g_value_take_object);
+                                               gpointer        v_object);
 #endif
 
 #if !defined(G_DISABLE_DEPRECATED) || defined(GTK_COMPILATION)

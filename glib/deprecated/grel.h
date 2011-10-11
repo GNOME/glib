@@ -66,31 +66,41 @@ struct _GTuples
  * g_relation_count() counts ...
  */
 
-GRelation* g_relation_new     (gint         fields) G_GNUC_DEPRECATED;
-void       g_relation_destroy (GRelation   *relation) G_GNUC_DEPRECATED;
+GLIB_DEPRECATED
+GRelation* g_relation_new     (gint         fields);
+GLIB_DEPRECATED
+void       g_relation_destroy (GRelation   *relation);
+GLIB_DEPRECATED
 void       g_relation_index   (GRelation   *relation,
                                gint         field,
                                GHashFunc    hash_func,
-                               GEqualFunc   key_equal_func) G_GNUC_DEPRECATED;
+                               GEqualFunc   key_equal_func);
+GLIB_DEPRECATED
 void       g_relation_insert  (GRelation   *relation,
-                               ...) G_GNUC_DEPRECATED;
+                               ...);
+GLIB_DEPRECATED
 gint       g_relation_delete  (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field) G_GNUC_DEPRECATED;
+                               gint         field);
+GLIB_DEPRECATED
 GTuples*   g_relation_select  (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field) G_GNUC_DEPRECATED;
+                               gint         field);
+GLIB_DEPRECATED
 gint       g_relation_count   (GRelation   *relation,
                                gconstpointer  key,
-                               gint         field) G_GNUC_DEPRECATED;
+                               gint         field);
+GLIB_DEPRECATED
 gboolean   g_relation_exists  (GRelation   *relation,
                                ...);
-void       g_relation_print   (GRelation   *relation) G_GNUC_DEPRECATED;
-
-void       g_tuples_destroy   (GTuples     *tuples) G_GNUC_DEPRECATED;
+GLIB_DEPRECATED
+void       g_relation_print   (GRelation   *relation);
+GLIB_DEPRECATED
+void       g_tuples_destroy   (GTuples     *tuples);
+GLIB_DEPRECATED
 gpointer   g_tuples_index     (GTuples     *tuples,
                                gint         index_,
-                               gint         field) G_GNUC_DEPRECATED;
+                               gint         field);
 
 G_END_DECLS
 

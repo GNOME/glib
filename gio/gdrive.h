@@ -165,14 +165,17 @@ gboolean g_drive_is_media_check_automatic (GDrive               *drive);
 gboolean g_drive_can_poll_for_media       (GDrive               *drive);
 gboolean g_drive_can_eject                (GDrive               *drive);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_drive_eject_with_operation)
 void     g_drive_eject                    (GDrive               *drive,
                                            GMountUnmountFlags    flags,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
-                                           gpointer              user_data) G_GNUC_DEPRECATED_FOR(g_drive_eject_with_operation);
+                                           gpointer              user_data);
+
+GLIB_DEPRECATED_FOR(g_drive_eject_with_operation_finish)
 gboolean g_drive_eject_finish             (GDrive               *drive,
                                            GAsyncResult         *result,
-                                           GError              **error) G_GNUC_DEPRECATED_FOR(g_drive_eject_with_operation_finish);
+                                           GError              **error);
 #endif
 void     g_drive_poll_for_media           (GDrive               *drive,
                                            GCancellable         *cancellable,

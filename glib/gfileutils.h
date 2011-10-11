@@ -129,7 +129,8 @@ gchar * g_format_size_full   (guint64          size,
 gchar * g_format_size        (guint64          size);
 
 #ifndef G_DISABLE_DEPRECATED
-char *g_format_size_for_display (goffset size) G_GNUC_DEPRECATED_FOR(g_format_size);
+GLIB_DEPRECATED_FOR(g_format_size)
+char *g_format_size_for_display (goffset size);
 #endif
 
 gchar *g_build_path     (const gchar *separator,

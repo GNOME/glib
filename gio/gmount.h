@@ -171,23 +171,29 @@ gboolean    g_mount_can_unmount               (GMount              *mount);
 gboolean    g_mount_can_eject                 (GMount              *mount);
 
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_mount_unmount_with_operation)
 void        g_mount_unmount                   (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
-                                               gpointer             user_data) G_GNUC_DEPRECATED_FOR(g_mount_unmount_with_operation);
+                                               gpointer             user_data);
+
+GLIB_DEPRECATED_FOR(g_mount_unmount_with_operation_finish)
 gboolean    g_mount_unmount_finish            (GMount              *mount,
                                                GAsyncResult        *result,
-                                               GError             **error) G_GNUC_DEPRECATED_FOR(g_mount_unmount_with_operation_finish);
+                                               GError             **error);
 
+GLIB_DEPRECATED_FOR(g_mount_eject_with_operation)
 void        g_mount_eject                     (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
-                                               gpointer             user_data) G_GNUC_DEPRECATED_FOR(g_mount_eject_with_operation);
+                                               gpointer             user_data);
+
+GLIB_DEPRECATED_FOR(g_mount_eject_with_operation_finish)
 gboolean    g_mount_eject_finish              (GMount              *mount,
                                                GAsyncResult        *result,
-                                               GError             **error) G_GNUC_DEPRECATED_FOR(g_mount_eject_with_operation_finish);
+                                               GError             **error);
 #endif
 
 void        g_mount_remount                   (GMount              *mount,

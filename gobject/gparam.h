@@ -313,8 +313,9 @@ GParamSpec*     g_value_dup_param               (const GValue  *value);
 void           g_value_take_param               (GValue        *value,
 					         GParamSpec    *param);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_value_take_param)
 void           g_value_set_param_take_ownership (GValue        *value,
-                                                 GParamSpec    *param) G_GNUC_DEPRECATED_FOR(g_value_take_param);
+                                                 GParamSpec    *param);
 #endif
 
 /* --- convenience functions --- */

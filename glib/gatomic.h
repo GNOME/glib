@@ -63,8 +63,9 @@ gsize                   g_atomic_pointer_xor                  (volatile void  *a
                                                                gsize           val);
 
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_atomic_add)
 gint                    g_atomic_int_exchange_and_add         (volatile gint  *atomic,
-                                                               gint            val) G_GNUC_DEPRECATED_FOR(g_atomic_add);
+                                                               gint            val);
 #endif
 
 G_END_DECLS

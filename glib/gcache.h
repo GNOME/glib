@@ -59,9 +59,10 @@ void     g_cache_key_foreach   (GCache            *cache,
                                 GHFunc             func,
                                 gpointer           user_data);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_cache_key_foreach)
 void     g_cache_value_foreach (GCache            *cache,
                                 GHFunc             func,
-                                gpointer           user_data) G_GNUC_DEPRECATED_FOR(g_cache_key_foreach);
+                                gpointer           user_data);
 #endif
 
 G_END_DECLS

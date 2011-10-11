@@ -174,13 +174,18 @@ gchar*                g_ascii_strup       (const gchar *str,
  * toupper, which is almost never the right thing.
  */
 
+GLIB_DEPRECATED
 gint                  g_strcasecmp     (const gchar *s1,
-                                        const gchar *s2) G_GNUC_DEPRECATED;
+                                        const gchar *s2);
+
+GLIB_DEPRECATED
 gint                  g_strncasecmp    (const gchar *s1,
                                         const gchar *s2,
-                                        guint        n) G_GNUC_DEPRECATED;
-gchar*                g_strdown        (gchar       *string) G_GNUC_DEPRECATED;
-gchar*                g_strup          (gchar       *string) G_GNUC_DEPRECATED;
+                                        guint        n);
+GLIB_DEPRECATED
+gchar*                g_strdown        (gchar       *string);
+GLIB_DEPRECATED
+gchar*                g_strup          (gchar       *string);
 
 #endif /* G_DISABLE_DEPRECATED */
 

@@ -181,14 +181,17 @@ gboolean g_volume_mount_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
 #ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED_FOR(g_volume_eject_with_operation)
 void     g_volume_eject                 (GVolume              *volume,
                                          GMountUnmountFlags    flags,
                                          GCancellable         *cancellable,
                                          GAsyncReadyCallback   callback,
-                                         gpointer              user_data) G_GNUC_DEPRECATED_FOR(g_volume_eject_with_operation);
+                                         gpointer              user_data);
+
+GLIB_DEPRECATED_FOR(g_volume_eject_with_operation_finish)
 gboolean g_volume_eject_finish          (GVolume              *volume,
                                          GAsyncResult         *result,
-                                         GError              **error) G_GNUC_DEPRECATED_FOR(g_volume_eject_with_operation_finish);
+                                         GError              **error);
 #endif
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
