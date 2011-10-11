@@ -328,6 +328,11 @@ mktime_utc (struct tm *tm)
  * Converts a string containing an ISO 8601 encoded date and time
  * to a #GTimeVal and puts it into @time_.
  *
+ * @iso_date must include year, month, day, hours, minutes, and
+ * seconds. It can optionally include fractions of a second and a time
+ * zone indicator. (In the absence of any time zone indication, the
+ * timestamp is assumed to be in local time.)
+ *
  * Return value: %TRUE if the conversion was successful.
  *
  * Since: 2.12
