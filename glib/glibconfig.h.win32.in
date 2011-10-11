@@ -206,8 +206,6 @@ typedef unsigned __int64 guintptr;
 
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_WIN32
-typedef union _GMutex* GStaticMutex;
-#define G_STATIC_MUTEX_INIT NULL
 /* This represents a system thread as used by the implementation. An
  * alien implementaion, as loaded by g_thread_init can only count on
  * "sizeof (gpointer)" bytes to store their info. We however need more
