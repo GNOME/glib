@@ -639,6 +639,34 @@ g_static_rec_mutex_init (GStaticRecMutex *mutex)
   *mutex = init_mutex;
 }
 
+GRecMutex *
+g_static_rec_mutex_get_rec_mutex_impl (GStaticRecMutex* mutex)
+{
+  GRecMutex *result;
+
+  if (!g_thread_supported ())
+    return NULL;
+
+  result = g_atomic_pointer_get (&mutex->mutex.mutex);
+
+  if (!result)
+    {
+      g_mutex_lock (&g_once_mutex);
+
+      result = (GRecMutex *) mutex->mutex.mutex;
+      if (!result)
+        {
+          result = g_slice_new (GRecMutex);
+          g_rec_mutex_init (result);
+          g_atomic_pointer_set (&mutex->mutex.mutex, result);
+        }
+
+      g_mutex_unlock (&g_once_mutex);
+    }
+
+  return result;
+}
+
 /**
  * g_static_rec_mutex_lock:
  * @mutex: a #GStaticRecMutex to lock.
@@ -653,23 +681,10 @@ g_static_rec_mutex_init (GStaticRecMutex *mutex)
 void
 g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 {
-  GSystemThread self;
-
-  g_return_if_fail (mutex);
-
-  if (!g_thread_supported ())
-    return;
-
-  g_system_thread_self (&self);
-
-  if (g_system_thread_equal (&self, &mutex->owner))
-    {
-      mutex->depth++;
-      return;
-    }
-  g_static_mutex_lock (&mutex->mutex);
-  g_system_thread_assign (mutex->owner, self);
-  mutex->depth = 1;
+  GRecMutex *rm;
+  rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
+  g_rec_mutex_lock (rm);
+  mutex->depth++;
 }
 
 /**
@@ -688,27 +703,16 @@ g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 gboolean
 g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
 {
-  GSystemThread self;
+  GRecMutex *rm;
+  rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
 
-  g_return_val_if_fail (mutex, FALSE);
-
-  if (!g_thread_supported ())
-    return TRUE;
-
-  g_system_thread_self (&self);
-
-  if (g_system_thread_equal (&self, &mutex->owner))
+  if (g_rec_mutex_trylock (rm))
     {
       mutex->depth++;
       return TRUE;
     }
-
-  if (!g_static_mutex_trylock (&mutex->mutex))
+  else
     return FALSE;
-
-  g_system_thread_assign (mutex->owner, self);
-  mutex->depth = 1;
-  return TRUE;
 }
 
 /**
@@ -726,18 +730,10 @@ g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
 void
 g_static_rec_mutex_unlock (GStaticRecMutex* mutex)
 {
-  g_return_if_fail (mutex);
-
-  if (!g_thread_supported ())
-    return;
-
-  if (mutex->depth > 1)
-    {
-      mutex->depth--;
-      return;
-    }
-  g_system_thread_assign (mutex->owner, zero_thread);
-  g_static_mutex_unlock (&mutex->mutex);
+  GRecMutex *rm;
+  rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
+  mutex->depth--;
+  g_rec_mutex_unlock (rm);
 }
 
 /**
@@ -754,25 +750,14 @@ void
 g_static_rec_mutex_lock_full (GStaticRecMutex *mutex,
                               guint            depth)
 {
-  GSystemThread self;
-  g_return_if_fail (mutex);
+  GRecMutex *rm;
 
-  if (!g_thread_supported ())
-    return;
-
-  if (depth == 0)
-    return;
-
-  g_system_thread_self (&self);
-
-  if (g_system_thread_equal (&self, &mutex->owner))
+  rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
+  while (depth--)
     {
-      mutex->depth += depth;
-      return;
+      g_rec_mutex_lock (rm);
+      mutex->depth++;
     }
-  g_static_mutex_lock (&mutex->mutex);
-  g_system_thread_assign (mutex->owner, self);
-  mutex->depth = depth;
 }
 
 /**
@@ -794,18 +779,13 @@ g_static_rec_mutex_lock_full (GStaticRecMutex *mutex,
 guint
 g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
-  guint depth;
+  GRecMutex *rm;
+  gint depth;
 
-  g_return_val_if_fail (mutex, 0);
-
-  if (!g_thread_supported ())
-    return 1;
-
+  rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
   depth = mutex->depth;
-
-  g_system_thread_assign (mutex->owner, zero_thread);
-  mutex->depth = 0;
-  g_static_mutex_unlock (&mutex->mutex);
+  while (mutex->depth--)
+    g_rec_mutex_unlock (rm);
 
   return depth;
 }
@@ -828,7 +808,13 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
 {
   g_return_if_fail (mutex);
 
-  g_static_mutex_free (&mutex->mutex);
+  if (mutex->mutex.mutex)
+    {
+      GRecMutex *rm = (GRecMutex *) mutex->mutex.mutex;
+
+      g_rec_mutex_clear (rm);
+      g_slice_free (GRecMutex, rm);
+    }
 }
 
 /* GStaticRWLock {{{1 ----------------------------------------------------- */
