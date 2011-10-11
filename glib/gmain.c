@@ -87,7 +87,6 @@
 #include "gqueue.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
-#include "gthreadprivate.h"
 
 #ifdef G_OS_WIN32
 #include "gwin32.h"
@@ -607,8 +606,6 @@ g_main_context_default (void)
   return default_main_context;
 }
 
-static GStaticPrivate thread_context_stack = G_STATIC_PRIVATE_INIT;
-
 static void
 free_context_stack (gpointer data)
 {
@@ -620,10 +617,12 @@ free_context_stack (gpointer data)
       context = g_queue_pop_head (stack);
       g_main_context_release (context);
       if (context)
-	g_main_context_unref (context);
+        g_main_context_unref (context);
     }
   g_queue_free (stack);
 }
+
+static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
 
 /**
  * g_main_context_push_thread_default:
@@ -674,12 +673,11 @@ g_main_context_push_thread_default (GMainContext *context)
   else if (context)
     g_main_context_ref (context);
 
-  stack = g_static_private_get (&thread_context_stack);
+  stack = g_private_get (&thread_context_stack);
   if (!stack)
     {
       stack = g_queue_new ();
-      g_static_private_set (&thread_context_stack, stack,
-			    free_context_stack);
+      g_private_set (&thread_context_stack, stack);
     }
 
   g_queue_push_head (stack, context);
@@ -702,7 +700,7 @@ g_main_context_pop_thread_default (GMainContext *context)
   if (context == g_main_context_default ())
     context = NULL;
 
-  stack = g_static_private_get (&thread_context_stack);
+  stack = g_private_get (&thread_context_stack);
 
   g_return_if_fail (stack != NULL);
   g_return_if_fail (g_queue_peek_head (stack) == context);
@@ -739,7 +737,7 @@ g_main_context_get_thread_default (void)
 {
   GQueue *stack;
 
-  stack = g_static_private_get (&thread_context_stack);
+  stack = g_private_get (&thread_context_stack);
   if (stack)
     return g_queue_peek_head (stack);
   else
@@ -2089,12 +2087,15 @@ g_main_dispatch_free (gpointer dispatch)
 static GMainDispatch *
 get_dispatch (void)
 {
-  static GStaticPrivate depth_private = G_STATIC_PRIVATE_INIT;
-  GMainDispatch *dispatch = g_static_private_get (&depth_private);
+  static GPrivate depth_private = G_PRIVATE_INIT (g_main_dispatch_free);
+  GMainDispatch *dispatch;
+
+  dispatch = g_private_get (&depth_private);
+
   if (!dispatch)
     {
       dispatch = g_slice_new0 (GMainDispatch);
-      g_static_private_set (&depth_private, dispatch, g_main_dispatch_free);
+      g_private_set (&depth_private, dispatch);
     }
 
   return dispatch;
