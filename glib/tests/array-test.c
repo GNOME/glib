@@ -204,11 +204,10 @@ static gpointer
 array_large_size_remalloc_impl (gpointer mem,
 				gsize n_bytes)
 {
-  /* We only care that g_array_set_size() doesn't hang; we'll never
-   * actually use any of the 2G of memory that it requests, so it's
-   * OK that we don't actually allocate the whole thing.
+  /* We only care that g_array_set_size() doesn't hang before
+   * calling g_realloc(). So if we got here, we already won.
    */
-  return realloc (mem, MIN (n_bytes, 1024 * 1024));
+  exit (0);
 }
 
 static GMemVTable array_large_size_mem_vtable = {
@@ -229,7 +228,7 @@ array_large_size (void)
     {
       g_mem_set_vtable (&array_large_size_mem_vtable);
       g_array_set_size (array, 1073750016);
-      exit (0); /* success */
+      g_assert_not_reached ();
     }
   g_test_trap_assert_passed ();
 
