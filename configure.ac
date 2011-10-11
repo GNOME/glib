@@ -2402,21 +2402,6 @@ AC_CHECK_FUNCS(clock_gettime, [], [
 ])
 AC_SUBST(GLIB_RT_LIBS)
 
-AC_CACHE_CHECK(for monotonic clocks,
-    glib_cv_monotonic_clock,AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-#include <time.h>
-#include <unistd.h>
-int main() {
-#if !(defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 && defined(CLOCK_MONOTONIC))
-        #error No monotonic clock
-#endif
-	return 0;
-}
-]])],glib_cv_monotonic_clock=yes,glib_cv_monotonic_clock=no))
-if test "$glib_cv_monotonic_clock" = "yes"; then
-  AC_DEFINE(HAVE_MONOTONIC_CLOCK,1,[Have a monotonic clock])
-fi
-
 
 dnl ************************
 dnl *** g_atomic_* tests ***
