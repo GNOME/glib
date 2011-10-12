@@ -290,7 +290,7 @@
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
 #define G_DEPRECATED __attribute__((__deprecated__))
 #elif defined(_MSC_VER) && (_MSC_VER >= 1300)
-#define G_GNUC_DEPRECATED __declspec(deprecated)
+#define G_DEPRECATED __declspec(deprecated)
 #else
 #define G_DEPRECATED
 #endif
