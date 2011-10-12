@@ -1317,14 +1317,14 @@ filename_charset_cache_free (gpointer data)
 gboolean
 g_get_filename_charsets (const gchar ***filename_charsets)
 {
-  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
-  GFilenameCharsetCache *cache = g_static_private_get (&cache_private);
+  static GPrivate cache_private = G_PRIVATE_INIT (filename_charset_cache_free);
+  GFilenameCharsetCache *cache = g_private_get (&cache_private);
   const gchar *charset;
 
   if (!cache)
     {
       cache = g_new0 (GFilenameCharsetCache, 1);
-      g_static_private_set (&cache_private, cache, filename_charset_cache_free);
+      g_private_set (&cache_private, cache);
     }
 
   g_get_charset (&charset);

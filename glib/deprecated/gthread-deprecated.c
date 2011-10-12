@@ -637,7 +637,7 @@ g_static_rec_mutex_init (GStaticRecMutex *mutex)
   *mutex = init_mutex;
 }
 
-GRecMutex *
+static GRecMutex *
 g_static_rec_mutex_get_rec_mutex_impl (GStaticRecMutex* mutex)
 {
   GRecMutex *result;
