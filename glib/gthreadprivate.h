@@ -74,9 +74,6 @@ struct  _GRealThread
 
 G_GNUC_INTERNAL extern GMutex g_once_mutex;
 
-/* initializers that may also use g_private_new() */
-G_GNUC_INTERNAL void _g_messages_thread_init_nomessage      (void);
-
 #ifdef G_OS_WIN32
 G_GNUC_INTERNAL void g_thread_DllMain (void);
 #endif
