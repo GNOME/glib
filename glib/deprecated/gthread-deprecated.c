@@ -23,13 +23,8 @@
 
 #include "config.h"
 
-#include "gmacros.h"
-
 /* we know we are deprecated here, no need for warnings */
-#undef G_GNUC_DEPRECATED
-#define G_GNUC_DEPRECATED
-#undef G_GNUC_DEPRECATED_FOR
-#define G_GNUC_DEPRECATED_FOR(f)
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 
 #include "gmessages.h"
 #include "gslice.h"

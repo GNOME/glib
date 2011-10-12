@@ -15,6 +15,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
+/* we know we are deprecated here, no need for warnings */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "gallocator.h"
 
 #include <glib/gmessages.h>
