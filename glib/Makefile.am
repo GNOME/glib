@@ -113,6 +113,7 @@ uninstall-ms-lib:
 
 deprecated_sources = \
 	deprecated/gallocator.c		\
+	deprecated/gcache.c		\
 	deprecated/gcompletion.c	\
 	deprecated/grel.c		\
 	deprecated/gthread-deprecated.c
@@ -131,7 +132,6 @@ libglib_2_0_la_SOURCES = 	\
 	gbsearcharray.h		\
 	gbuffer.c		\
 	gbufferprivate.h	\
-	gcache.c		\
 	gchecksum.c		\
 	gconvert.c		\
 	gdataset.c		\
@@ -241,6 +241,7 @@ glibinclude_HEADERS =   \
 deprecatedincludedir=$(includedir)/glib-2.0/glib/deprecated
 deprecatedinclude_HEADERS = \
 	deprecated/gallocator.h		\
+	deprecated/gcache.h		\
 	deprecated/gcompletion.h	\
 	deprecated/grel.h		\
 	deprecated/gthread.h
@@ -255,7 +256,6 @@ glibsubinclude_HEADERS =   \
 	gbase64.h	\
 	gbitlock.h	\
 	gbookmarkfile.h \
-	gcache.h	\
 	gchecksum.h	\
 	gconvert.h	\
 	gdataset.h	\

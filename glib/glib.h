@@ -37,7 +37,6 @@
 #include <glib/gbase64.h>
 #include <glib/gbitlock.h>
 #include <glib/gbookmarkfile.h>
-#include <glib/gcache.h>
 #include <glib/gchecksum.h>
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>
@@ -96,6 +95,7 @@
 
 #ifndef G_DISABLE_DEPRECATED
 #include <glib/deprecated/gallocator.h>
+#include <glib/deprecated/gcache.h>
 #include <glib/deprecated/gcompletion.h>
 #include <glib/deprecated/grel.h>
 #include <glib/deprecated/gthread.h>

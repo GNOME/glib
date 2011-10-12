@@ -119,7 +119,6 @@ synchronize their operation.
       <xi:include href="xml/quarks.xml" />
       <xi:include href="xml/datalist.xml" />
       <xi:include href="xml/datasets.xml" />
-      <xi:include href="xml/caches.xml" />
       <xi:include href="xml/gvarianttype.xml"/>
       <xi:include href="xml/gvariant.xml"/>
       <xi:include href="gvariant-varargs.xml"/>
@@ -129,6 +128,7 @@ synchronize their operation.
   <chapter id="deprecated">
       <title>Deprecated APIs</title>
       <xi:include href="xml/threads-deprecated.xml"/>
+      <xi:include href="xml/caches.xml" />
       <xi:include href="xml/relations.xml" />
       <xi:include href="xml/completion.xml" />
   </chapter>
