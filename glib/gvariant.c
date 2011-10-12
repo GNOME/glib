@@ -80,7 +80,7 @@
  * indicator could be placed at the beginning of a file, network message
  * or network stream).
  *
- * A #GVariant's size is limited mainly by any lowever level operating
+ * A #GVariant's size is limited mainly by any lower level operating
  * system constraints, such as the number of bits in #gsize.  For
  * example, it is reasonable to have a 2GB file mapped into memory
  * with #GMappedFile, and call g_variant_new_from_data() on it.
