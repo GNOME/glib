@@ -1221,6 +1221,24 @@ struct _GStaticPrivateNode
   GStaticPrivate *owner;
 };
 
+void
+g_static_private_cleanup (gpointer data)
+{
+  GArray *array = data;
+  guint i;
+
+  for (i = 0; i < array->len; i++ )
+    {
+      GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
+      if (node->destroy)
+        node->destroy (node->data);
+    }
+
+  g_array_free (array, TRUE);
+}
+
+GPrivate static_private_private = G_PRIVATE_INIT (g_static_private_cleanup);
+
 /**
  * GStaticPrivate:
  *
@@ -1292,10 +1310,10 @@ g_static_private_init (GStaticPrivate *private_key)
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
 {
-  GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
   gpointer ret = NULL;
-  array = self->private_data;
+
+  array = g_private_get (&static_private_private);
 
   if (array && private_key->index != 0 && private_key->index <= array->len)
     {
@@ -1347,7 +1365,6 @@ g_static_private_set (GStaticPrivate *private_key,
                       gpointer        data,
                       GDestroyNotify  notify)
 {
-  GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
   static guint next_index = 0;
   GStaticPrivateNode *node;
@@ -1371,11 +1388,11 @@ g_static_private_set (GStaticPrivate *private_key,
       G_UNLOCK (g_thread);
     }
 
-  array = self->private_data;
+  array = g_private_get (&static_private_private);
   if (!array)
     {
       array = g_array_new (FALSE, TRUE, sizeof (GStaticPrivateNode));
-      self->private_data = array;
+      g_private_set (&static_private_private, array);
     }
   if (private_key->index > array->len)
     g_array_set_size (array, private_key->index);
@@ -1419,28 +1436,6 @@ g_static_private_free (GStaticPrivate *private_key)
   g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
                                            GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
-}
-
-void
-g_static_private_cleanup (GRealThread *thread)
-{
-  GArray *array;
-
-  array = thread->private_data;
-  thread->private_data = NULL;
-
-  if (array)
-    {
-      guint i;
-
-      for (i = 0; i < array->len; i++ )
-        {
-          GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
-          if (node->destroy)
-            node->destroy (node->data);
-        }
-      g_array_free (array, TRUE);
-    }
 }
 
 /* GMutex {{{1 ------------------------------------------------------ */

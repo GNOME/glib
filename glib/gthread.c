@@ -673,8 +673,6 @@ g_thread_cleanup (gpointer data)
     {
       GRealThread* thread = data;
 
-      g_static_private_cleanup (thread);
-
       /* We only free the thread structure if it isn't joinable.
        * If it is, the structure is freed in g_thread_join()
        */
@@ -818,7 +816,6 @@ g_thread_new_internal (const gchar  *name,
   result->thread.joinable = joinable;
   result->thread.func = func;
   result->thread.data = data;
-  result->private_data = NULL;
   result->enumerable = enumerable;
   result->name = name;
   G_LOCK (g_thread_new);
@@ -941,7 +938,6 @@ g_thread_self (void)
       thread->thread.joinable = FALSE; /* This is a safe guess */
       thread->thread.func = NULL;
       thread->thread.data = NULL;
-      thread->private_data = NULL;
       thread->enumerable = FALSE;
 
       g_system_thread_self (&thread->system_thread);

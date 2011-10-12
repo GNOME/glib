@@ -64,7 +64,6 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  GArray *private_data;
   GRealThread *next;
   const gchar *name;
   gboolean enumerable;
@@ -75,7 +74,6 @@ struct  _GRealThread
 G_GNUC_INTERNAL extern GSystemThread zero_thread;
 G_GNUC_INTERNAL extern GMutex g_once_mutex;
 
-G_GNUC_INTERNAL void g_static_private_cleanup   (GRealThread *thread);
 G_GNUC_INTERNAL void g_enumerable_thread_add    (GRealThread *thread);
 G_GNUC_INTERNAL void g_enumerable_thread_remove (GRealThread *thread);
 
