@@ -698,8 +698,8 @@ g_thread_create_proxy (gpointer data)
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
 
-  if (thread->enumerable)
-    g_enumerable_thread_add (thread);
+  if (thread->setup_func)
+    thread->setup_func (thread);
 
   /* The lock makes sure that thread->system_thread is written,
    * before thread->thread.func is called. See g_thread_new_internal().
@@ -798,13 +798,13 @@ g_thread_new_full (const gchar  *name,
 }
 
 GThread *
-g_thread_new_internal (const gchar  *name,
-                       GThreadFunc   func,
-                       gpointer      data,
-                       gboolean      joinable,
-                       gsize         stack_size,
-                       gboolean      enumerable,
-                       GError      **error)
+g_thread_new_internal (const gchar   *name,
+                       GThreadFunc    func,
+                       gpointer       data,
+                       gboolean       joinable,
+                       gsize          stack_size,
+                       GThreadSetup   setup_func,
+                       GError       **error)
 {
   GRealThread *result;
   GError *local_error = NULL;
@@ -816,7 +816,7 @@ g_thread_new_internal (const gchar  *name,
   result->thread.joinable = joinable;
   result->thread.func = func;
   result->thread.data = data;
-  result->enumerable = enumerable;
+  result->setup_func = setup_func;
   result->name = name;
   G_LOCK (g_thread_new);
   g_system_thread_create (g_thread_create_proxy, result,
@@ -933,7 +933,6 @@ g_thread_self (void)
       thread->thread.joinable = FALSE; /* This is a safe guess */
       thread->thread.func = NULL;
       thread->thread.data = NULL;
-      thread->enumerable = FALSE;
 
       g_system_thread_self (&thread->system_thread);
 

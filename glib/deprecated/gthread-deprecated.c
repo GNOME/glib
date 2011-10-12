@@ -221,66 +221,6 @@ g_thread_set_priority (GThread         *thread,
 }
 
 /**
- * g_thread_create:
- * @func: a function to execute in the new thread
- * @data: an argument to supply to the new thread
- * @joinable: should this thread be joinable?
- * @error: return location for error, or %NULL
- *
- * This function creates a new thread.
- *
- * If @joinable is %TRUE, you can wait for this threads termination
- * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates.
- *
- * The new thread executes the function @func with the argument @data.
- * If the thread was created successfully, it is returned.
- *
- * @error can be %NULL to ignore errors, or non-%NULL to report errors.
- * The error is set, if and only if the function returns %NULL.
- *
- * Returns: the new #GThread on success
- *
- * Deprecated:2.32: Use g_thread_new() instead
- */
-GThread *
-g_thread_create (GThreadFunc   func,
-                 gpointer      data,
-                 gboolean      joinable,
-                 GError      **error)
-{
-  return g_thread_new_internal (NULL, func, data, joinable, 0, TRUE, error);
-}
-
-/**
- * g_thread_create_full:
- * @func: a function to execute in the new thread.
- * @data: an argument to supply to the new thread.
- * @stack_size: a stack size for the new thread.
- * @joinable: should this thread be joinable?
- * @bound: ignored
- * @priority: ignored
- * @error: return location for error.
- * @Returns: the new #GThread on success.
- *
- * This function creates a new thread.
- *
- * Deprecated:2.32: The @bound and @priority arguments are now ignored.
- * Use g_thread_new() or g_thread_new_full() instead.
- */
-GThread *
-g_thread_create_full (GThreadFunc       func,
-                      gpointer          data,
-                      gulong            stack_size,
-                      gboolean          joinable,
-                      gboolean          bound,
-                      GThreadPriority   priority,
-                      GError          **error)
-{
-  return g_thread_new_internal (NULL, func, data, joinable, stack_size, TRUE, error);
-}
-
-/**
  * g_thread_foreach:
  * @thread_func: function to call for all #GThread structures
  * @user_data: second argument to @thread_func
@@ -355,7 +295,7 @@ g_enumerable_thread_remove (gpointer data)
 
 GPrivate enumerable_thread_private = G_PRIVATE_INIT (g_enumerable_thread_remove);
 
-void
+static void
 g_enumerable_thread_add (GRealThread *thread)
 {
   G_LOCK (g_thread);
@@ -365,6 +305,67 @@ g_enumerable_thread_add (GRealThread *thread)
 
   g_private_set (&enumerable_thread_private, thread);
 }
+/**
+ * g_thread_create:
+ * @func: a function to execute in the new thread
+ * @data: an argument to supply to the new thread
+ * @joinable: should this thread be joinable?
+ * @error: return location for error, or %NULL
+ *
+ * This function creates a new thread.
+ *
+ * If @joinable is %TRUE, you can wait for this threads termination
+ * calling g_thread_join(). Otherwise the thread will just disappear
+ * when it terminates.
+ *
+ * The new thread executes the function @func with the argument @data.
+ * If the thread was created successfully, it is returned.
+ *
+ * @error can be %NULL to ignore errors, or non-%NULL to report errors.
+ * The error is set, if and only if the function returns %NULL.
+ *
+ * Returns: the new #GThread on success
+ *
+ * Deprecated:2.32: Use g_thread_new() instead
+ */
+GThread *
+g_thread_create (GThreadFunc   func,
+                 gpointer      data,
+                 gboolean      joinable,
+                 GError      **error)
+{
+  return g_thread_new_internal (NULL, func, data, joinable, 0, g_enumerable_thread_add, error);
+}
+
+/**
+ * g_thread_create_full:
+ * @func: a function to execute in the new thread.
+ * @data: an argument to supply to the new thread.
+ * @stack_size: a stack size for the new thread.
+ * @joinable: should this thread be joinable?
+ * @bound: ignored
+ * @priority: ignored
+ * @error: return location for error.
+ * @Returns: the new #GThread on success.
+ *
+ * This function creates a new thread.
+ *
+ * Deprecated:2.32: The @bound and @priority arguments are now ignored.
+ * Use g_thread_new() or g_thread_new_full() instead.
+ */
+GThread *
+g_thread_create_full (GThreadFunc       func,
+                      gpointer          data,
+                      gulong            stack_size,
+                      gboolean          joinable,
+                      gboolean          bound,
+                      GThreadPriority   priority,
+                      GError          **error)
+{
+  return g_thread_new_internal (NULL, func, data, joinable, stack_size, g_enumerable_thread_add, error);
+}
+
+
 
 /* GOnce {{{1 ------------------------------------------------------------- */
 gboolean
