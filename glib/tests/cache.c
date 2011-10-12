@@ -16,6 +16,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* We are testing some deprecated APIs here */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 
 static gint value_create_count = 0;

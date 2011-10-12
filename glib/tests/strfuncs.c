@@ -1077,8 +1077,8 @@ test_bounds (void)
 
   file = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
   after = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
-  g_mapped_file_free (before);
-  g_mapped_file_free (after);
+  g_mapped_file_unref (before);
+  g_mapped_file_unref (after);
 
   g_assert (file != NULL);
   g_assert_cmpint (g_mapped_file_get_length (file), ==, 4096);
@@ -1212,7 +1212,7 @@ test_bounds (void)
   g_free (tmp2);
   g_free (tmp);
 
-  g_mapped_file_free (file);
+  g_mapped_file_unref (file);
 }
 
 static void

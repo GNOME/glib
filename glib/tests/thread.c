@@ -146,8 +146,6 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_assert (g_thread_get_initialized ());
-
   g_test_add_func ("/thread/thread1", test_thread1);
   g_test_add_func ("/thread/thread2", test_thread2);
   g_test_add_func ("/thread/thread3", test_thread3);

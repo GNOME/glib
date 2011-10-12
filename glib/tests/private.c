@@ -20,6 +20,9 @@
  * if advised of the possibility of such damage.
  */
 
+/* We are testing some deprecated APIs here */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 
 /* test basics:
@@ -373,8 +376,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_assert (g_thread_get_initialized ());
 
   g_test_add_func ("/thread/private1", test_private1);
   g_test_add_func ("/thread/private2", test_private2);

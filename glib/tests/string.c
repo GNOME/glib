@@ -19,6 +19,9 @@
  * if advised of the possibility of such damage.
  */
 
+/* We are testing some deprecated APIs here */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <stdio.h>
 #include <string.h>
 #include "glib.h"

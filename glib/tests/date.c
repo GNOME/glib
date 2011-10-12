@@ -1,6 +1,9 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+/* We are testing some deprecated APIs here */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "glib.h"
 
 #include <stdio.h>
