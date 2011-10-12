@@ -127,6 +127,8 @@ copy ..\..\..\glib\gspawn.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gstdio.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\gstringchunk.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gstrfuncs.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gstring.h $(CopyDir)\include\glib-$(ApiVersion)\glib

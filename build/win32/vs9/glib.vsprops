@@ -103,6 +103,7 @@ copy ..\..\..\glib\gslice.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
 copy ..\..\..\glib\gslist.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gspawn.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gstdio.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gstringchunk.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gstrfuncs.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gstring.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtestutils.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
