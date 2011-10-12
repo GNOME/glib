@@ -71,9 +71,20 @@ $ cc `pkg-config --cflags --libs glib-2.0` hello.c -o hello
 </para>
 
 <para>
-If you want to make sure that your program doesn't use any deprecated
-functions, you can define the preprocessor symbol G_DISABLE_DEPRECATED
-by using the command line option <literal>-DG_DISABLE_DEPRECATED=1</literal>.
+Deprecated GLib functions are annotated to make the compiler
+emit warnings when they are used (e.g. with gcc, you need to use
+the -Wdeprecated-declarations option). If these warnings are
+problematic, they can be turned off by defining the preprocessor
+symbol GLIB_DISABLE_DEPRECATION_WARNINGS by using the commandline
+option <literal>-DGLIB_DISABLE_DEPRECATION_WARNINGS</literal>
+</para>
+<para>
+If you want to make <emphasis>really</emphasis> sure that your program
+doesn't use any deprecated functions, you can define the preprocessor
+symbol G_DISABLE_DEPRECATED by using the commandline option
+<literal>-DG_DISABLE_DEPRECATED</literal>. This will hide deprecated
+API from the compiler entirely, most likely causing your program's
+build to fail.
 </para>
 
 <para>
