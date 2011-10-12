@@ -197,7 +197,7 @@ void g_thread_init_glib (void) { }
 
 /* Internal variables {{{1 */
 
-static GRealThread *g_thread_all_threads = NULL;
+static GSList      *g_thread_all_threads = NULL;
 static GSList      *g_thread_free_indices = NULL;
 
 /* Protects g_thread_all_threads and g_thread_free_indices */
@@ -252,8 +252,7 @@ g_thread_foreach (GFunc    thread_func,
   g_return_if_fail (thread_func != NULL);
   /* snapshot the list of threads for iteration */
   G_LOCK (g_thread);
-  for (thread = g_thread_all_threads; thread; thread = thread->next)
-    slist = g_slist_prepend (slist, thread);
+  slist = g_slist_copy (g_thread_all_threads);
   G_UNLOCK (g_thread);
   /* walk the list, skipping non-existent threads */
   while (slist)
@@ -262,9 +261,10 @@ g_thread_foreach (GFunc    thread_func,
       slist = node->next;
       /* check whether the current thread still exists */
       G_LOCK (g_thread);
-      for (thread = g_thread_all_threads; thread; thread = thread->next)
-        if (thread == node->data)
-          break;
+      if (g_slist_find (g_thread_all_threads, node->data))
+        thread = node->data;
+      else
+        thread = NULL;
       G_UNLOCK (g_thread);
       if (thread)
         thread_func (thread, user_data);
@@ -276,20 +276,9 @@ static void
 g_enumerable_thread_remove (gpointer data)
 {
   GRealThread *thread = data;
-  GRealThread *t, *p;
 
   G_LOCK (g_thread);
-  for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
-    {
-      if (t == thread)
-        {
-          if (p)
-            p->next = t->next;
-          else
-            g_thread_all_threads = t->next;
-          break;
-        }
-    }
+  g_thread_all_threads = g_slist_remove (g_thread_all_threads, thread);
   G_UNLOCK (g_thread);
 }
 
@@ -299,8 +288,7 @@ static void
 g_enumerable_thread_add (GRealThread *thread)
 {
   G_LOCK (g_thread);
-  thread->next = g_thread_all_threads;
-  g_thread_all_threads = thread;
+  g_thread_all_threads = g_slist_prepend (g_thread_all_threads, thread);
   G_UNLOCK (g_thread);
 
   g_private_set (&enumerable_thread_private, thread);

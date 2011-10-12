@@ -66,7 +66,6 @@ G_GNUC_INTERNAL GThread *g_thread_new_internal (const gchar   *name,
 struct  _GRealThread
 {
   GThread thread;
-  GRealThread *next;
   const gchar *name;
   GThreadSetup setup_func;
   gpointer retval;
