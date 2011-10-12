@@ -1221,7 +1221,7 @@ struct _GStaticPrivateNode
   GStaticPrivate *owner;
 };
 
-void
+static void
 g_static_private_cleanup (gpointer data)
 {
   GArray *array = data;
