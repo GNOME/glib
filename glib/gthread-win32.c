@@ -563,13 +563,6 @@ g_system_thread_join (gpointer thread)
   g_free (target);
 }
 
-gboolean
-g_system_thread_equal (gpointer thread1,
-                       gpointer thread2)
-{
-   return ((GSystemThread*)thread1)->dummy_pointer == ((GSystemThread*)thread2)->dummy_pointer;
-}
-
 void
 g_system_thread_set_name (const gchar *name)
 {

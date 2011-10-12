@@ -29,15 +29,6 @@
 
 G_BEGIN_DECLS
 
-/* System thread identifier comparison and assignment */
-#if GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P
-# define g_system_thread_assign(dest, src)				\
-   ((dest).dummy_pointer = (src).dummy_pointer)
-#else /* GLIB_SIZEOF_SYSTEM_THREAD != SIZEOF_VOID_P */
-# define g_system_thread_assign(dest, src)				\
-   (memcpy (&(dest), &(src), GLIB_SIZEOF_SYSTEM_THREAD))
-#endif /* GLIB_SIZEOF_SYSTEM_THREAD == SIZEOF_VOID_P */
-
 typedef struct _GRealThread GRealThread;
 typedef void (*GThreadSetup) (GRealThread *thread);
 

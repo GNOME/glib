@@ -1146,13 +1146,6 @@ g_system_thread_self (gpointer thread)
   *(pthread_t*)thread = pthread_self();
 }
 
-gboolean
-g_system_thread_equal (gpointer thread1,
-                       gpointer thread2)
-{
-  return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
-}
-
 void
 g_system_thread_set_name (const gchar *name)
 {
