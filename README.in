@@ -36,6 +36,9 @@ Notes about GLib 2.32
   object is being used will not work with generic pointers (ie: (void*)
   and (gpointer) casts) which would have worked with the old version.
 
+* It is now mandatory to include glib.h instead of individual headers.
+
+
 Notes about GLib 2.30
 =====================
 

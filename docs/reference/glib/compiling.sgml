@@ -104,12 +104,8 @@ the <link linkend="glib-I18N">Internationalization section</link>),
 </para>
 
 <para>
-Starting with 2.17, GLib enforces this by generating an error
-when individual headers are directly included. To help with the
-transition, the enforcement is not turned on by default for GLib
-headers (it <emphasis>is</emphasis> turned on for GObject and GIO).
-To turn it on, define the preprocessor symbol G_DISABLE_SINGLE_INCLUDES
-by using the command line option <literal>-DG_DISABLE_SINGLE_INCLUDES</literal>.
+Starting with 2.32, GLib enforces this by generating an error
+when individual headers are directly included.
 </para>
 
 </refsect1>
