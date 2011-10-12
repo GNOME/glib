@@ -630,7 +630,7 @@ g_io_modules_load_all_in_directory (const char *dirname)
   return g_io_modules_load_all_in_directory_with_scope (dirname, NULL);
 }
 
-G_LOCK_DEFINE_STATIC (default_modules);
+GRecMutex default_modules_lock;
 GHashTable *default_modules;
 
 static gpointer
@@ -692,7 +692,7 @@ _g_io_module_get_default (const gchar         *extension_point,
   GIOExtension *extension, *preferred;
   gpointer impl;
 
-  G_LOCK (default_modules);
+  g_rec_mutex_lock (&default_modules_lock);
   if (default_modules)
     {
       gpointer key;
@@ -700,7 +700,7 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (g_hash_table_lookup_extended (default_modules, extension_point,
 					&key, &impl))
 	{
-	  G_UNLOCK (default_modules);
+	  g_rec_mutex_unlock (&default_modules_lock);
 	  return impl;
 	}
     }
@@ -715,7 +715,7 @@ _g_io_module_get_default (const gchar         *extension_point,
   if (!ep)
     {
       g_warn_if_reached ();
-      G_UNLOCK (default_modules);
+      g_rec_mutex_unlock (&default_modules_lock);
       return NULL;
     }
 
@@ -752,7 +752,7 @@ _g_io_module_get_default (const gchar         *extension_point,
   g_hash_table_insert (default_modules,
 		       g_strdup (extension_point),
 		       impl ? g_object_ref (impl) : NULL);
-  G_UNLOCK (default_modules);
+  g_rec_mutex_unlock (&default_modules_lock);
 
   return impl;
 }
