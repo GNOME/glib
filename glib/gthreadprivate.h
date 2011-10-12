@@ -72,7 +72,6 @@ struct  _GRealThread
   GSystemThread system_thread;
 };
 
-G_GNUC_INTERNAL extern GSystemThread zero_thread;
 G_GNUC_INTERNAL extern GMutex g_once_mutex;
 
 /* initializers that may also use g_private_new() */

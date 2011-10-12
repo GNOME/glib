@@ -677,11 +677,7 @@ g_thread_cleanup (gpointer data)
        * If it is, the structure is freed in g_thread_join()
        */
       if (!thread->thread.joinable)
-        {
-          /* Just to make sure, this isn't used any more */
-          g_system_thread_assign (thread->system_thread, zero_thread);
-          g_free (thread);
-        }
+        g_free (thread);
     }
 }
 
@@ -891,7 +887,6 @@ g_thread_join (GThread *thread)
 
   g_return_val_if_fail (thread, NULL);
   g_return_val_if_fail (thread->joinable, NULL);
-  g_return_val_if_fail (!g_system_thread_equal (&real->system_thread, &zero_thread), NULL);
 
   g_system_thread_join (&real->system_thread);
 
@@ -899,7 +894,6 @@ g_thread_join (GThread *thread)
 
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
-  g_system_thread_assign (real->system_thread, zero_thread);
 
   /* the thread structure for non-joinable threads is freed upon
    * thread end. We free the memory here. This will leave a loose end,

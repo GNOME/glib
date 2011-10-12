@@ -148,8 +148,6 @@ guint64 (*g_thread_gettime) (void) = gettime;
 
 /* Initialisation {{{1 ---------------------------------------------------- */
 gboolean         g_threads_got_initialized = TRUE;
-GSystemThread    zero_thread; /* This is initialized to all zero */
-
 
 /**
  * g_thread_init:
