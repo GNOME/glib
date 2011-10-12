@@ -210,7 +210,7 @@ test_multithreaded_dynamic_type_init (void)
 
   /* create threads */
   for (i = 0; i < N_THREADS; i++) {
-    threads[i] = g_thread_create (ref_unref_thread, (gpointer) DYNAMIC_OBJECT_TYPE, TRUE, NULL);
+    threads[i] = g_thread_new ("test", ref_unref_thread, (gpointer) DYNAMIC_OBJECT_TYPE, TRUE, NULL);
   }
 
   /* execute threads */
@@ -352,7 +352,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
   g_type_init ();
 

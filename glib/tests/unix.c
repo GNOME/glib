@@ -147,10 +147,6 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-#ifdef TEST_THREADED
-  g_thread_init (NULL);
-#endif
-
   g_test_add_func ("/glib-unix/pipe", test_pipe);
   g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/sighup", test_sighup);

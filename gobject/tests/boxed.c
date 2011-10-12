@@ -1,3 +1,5 @@
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib-object.h>
 
 typedef struct _MyBoxed MyBoxed;

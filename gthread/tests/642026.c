@@ -10,6 +10,8 @@
  * See the included COPYING file for more information.
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib.h>
 
 /* On smcv's laptop, 1e4 iterations didn't always exhibit the bug, but 1e5
@@ -49,8 +51,6 @@ testcase (void)
 {
   g_test_bug ("642026");
 
-  g_thread_init (NULL);
-
   mutex = g_mutex_new ();
   cond = g_cond_new ();
 
@@ -85,11 +85,7 @@ main (int argc,
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
-#ifdef G_ERRORCHECK_MUTEXES
-  g_test_add_func ("/glib/642026-ec", testcase);
-#else
   g_test_add_func ("/glib/642026", testcase);
-#endif
 
   return g_test_run ();
 }

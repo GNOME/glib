@@ -229,7 +229,7 @@ test_threaded (void)
   for (i = 0; i < NUM_THREADS; i++)
     {
       context_init (&contexts[i]);
-      threads[i] = g_thread_create (thread_func, &contexts[i], TRUE, NULL);
+      threads[i] = g_thread_new ("test", thread_func, &contexts[i], TRUE, NULL);
     }
 
   /* dispatch tokens */
@@ -256,8 +256,6 @@ test_threaded (void)
 int
 main (int argc, char **argv)
 {
-  g_thread_init (NULL);
-
   g_test_init (&argc, &argv, NULL);
 
 #ifdef TEST_EVENTFD_FALLBACK

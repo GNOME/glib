@@ -41,8 +41,8 @@ multithreaded_test_run (GThreadFunc function)
     {
       GThread *thread;
 
-      thread = g_thread_create (function,
-				GINT_TO_POINTER (i), TRUE, &error);
+      thread = g_thread_new ("test", function,
+                             GINT_TO_POINTER (i), TRUE, &error);
       g_assert_no_error (error);
       g_ptr_array_add (threads, thread);
     }
@@ -220,8 +220,6 @@ main (int   argc,
   char *dirname;
 
   g_test_init (&argc, &argv, NULL);
-
-  g_thread_init (NULL);
 
   dirname = g_path_get_dirname (argv[0]);
   echo_prog_path = g_build_filename (dirname, "test-spawn-echo", NULL);

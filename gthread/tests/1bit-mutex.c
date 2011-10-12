@@ -117,8 +117,6 @@ testcase (gconstpointer data)
   GThread *threads[THREADS];
   int i;
 
-  g_thread_init (NULL);
-
 #ifdef TEST_EMULATED_FUTEX
   #define SUFFIX "-emufutex"
 
@@ -134,7 +132,7 @@ testcase (gconstpointer data)
     bits[i] = g_random_int () % 32;
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_create (thread_func,
+    threads[i] = g_thread_new ("foo", thread_func,
                                   GINT_TO_POINTER (use_pointers),
                                   TRUE, NULL);
 

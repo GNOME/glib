@@ -19,6 +19,7 @@
  * otherwise) arising in any way out of the use of this software, even
  * if advised of the possibility of such damage.
  */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include <glib.h>
 #include <glib-object.h>
 
@@ -200,7 +201,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
   g_type_init ();
 
