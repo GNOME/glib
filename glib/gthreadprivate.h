@@ -32,7 +32,6 @@ G_BEGIN_DECLS
 typedef struct _GRealThread GRealThread;
 typedef void (*GThreadSetup) (GRealThread *thread);
 
-G_GNUC_INTERNAL void     g_system_thread_self  (gpointer thread);
 G_GNUC_INTERNAL void     g_system_thread_join  (gpointer thread);
 G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
                                                  gpointer          data,

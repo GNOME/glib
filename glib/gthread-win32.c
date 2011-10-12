@@ -464,29 +464,6 @@ struct _GThreadData
 };
 
 void
-g_system_thread_self (gpointer thread)
-{
-  GThreadData *self = TlsGetValue (g_thread_self_tls);
-
-  if (!self)
-    {
-      /* This should only happen for the main thread! */
-      HANDLE handle = GetCurrentThread ();
-      HANDLE process = GetCurrentProcess ();
-      self = g_new (GThreadData, 1);
-      win32_check_for_error (DuplicateHandle (process, handle, process,
-					      &self->thread, 0, FALSE,
-					      DUPLICATE_SAME_ACCESS));
-      win32_check_for_error (TlsSetValue (g_thread_self_tls, self));
-      self->func = NULL;
-      self->data = NULL;
-      self->joinable = FALSE;
-    }
-
-  *(GThreadData **)thread = self;
-}
-
-void
 g_system_thread_exit (void)
 {
   _endthreadex (0);

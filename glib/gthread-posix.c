@@ -1141,12 +1141,6 @@ g_system_thread_exit (void)
 }
 
 void
-g_system_thread_self (gpointer thread)
-{
-  *(pthread_t*)thread = pthread_self();
-}
-
-void
 g_system_thread_set_name (const gchar *name)
 {
 #ifdef HAVE_SYS_PRCTL_H
