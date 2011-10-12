@@ -332,18 +332,10 @@ g_thread_foreach (GFunc    thread_func,
     }
 }
 
-void
-g_enumerable_thread_add (GRealThread *thread)
+static void
+g_enumerable_thread_remove (gpointer data)
 {
-  G_LOCK (g_thread);
-  thread->next = g_thread_all_threads;
-  g_thread_all_threads = thread;
-  G_UNLOCK (g_thread);
-}
-
-void
-g_enumerable_thread_remove (GRealThread *thread)
-{
+  GRealThread *thread = data;
   GRealThread *t, *p;
 
   G_LOCK (g_thread);
@@ -359,6 +351,19 @@ g_enumerable_thread_remove (GRealThread *thread)
         }
     }
   G_UNLOCK (g_thread);
+}
+
+GPrivate enumerable_thread_private = G_PRIVATE_INIT (g_enumerable_thread_remove);
+
+void
+g_enumerable_thread_add (GRealThread *thread)
+{
+  G_LOCK (g_thread);
+  thread->next = g_thread_all_threads;
+  g_thread_all_threads = thread;
+  G_UNLOCK (g_thread);
+
+  g_private_set (&enumerable_thread_private, thread);
 }
 
 /* GOnce {{{1 ------------------------------------------------------------- */

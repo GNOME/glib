@@ -678,9 +678,6 @@ g_thread_cleanup (gpointer data)
        */
       if (!thread->thread.joinable)
         {
-          if (thread->enumerable)
-            g_enumerable_thread_remove (thread);
-
           /* Just to make sure, this isn't used any more */
           g_system_thread_assign (thread->system_thread, zero_thread);
           g_free (thread);
@@ -700,6 +697,9 @@ g_thread_create_proxy (gpointer data)
 
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
+
+  if (thread->enumerable)
+    g_enumerable_thread_add (thread);
 
   /* The lock makes sure that thread->system_thread is written,
    * before thread->thread.func is called. See g_thread_new_internal().
@@ -822,8 +822,6 @@ g_thread_new_internal (const gchar  *name,
   g_system_thread_create (g_thread_create_proxy, result,
                           stack_size, joinable,
                           &result->system_thread, &local_error);
-  if (enumerable && !local_error)
-    g_enumerable_thread_add (result);
   G_UNLOCK (g_thread_new);
 
   if (local_error)
@@ -898,9 +896,6 @@ g_thread_join (GThread *thread)
   g_system_thread_join (&real->system_thread);
 
   retval = real->retval;
-
-  if (real->enumerable)
-    g_enumerable_thread_remove (real);
 
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;

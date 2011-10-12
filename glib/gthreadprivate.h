@@ -75,7 +75,6 @@ G_GNUC_INTERNAL extern GSystemThread zero_thread;
 G_GNUC_INTERNAL extern GMutex g_once_mutex;
 
 G_GNUC_INTERNAL void g_enumerable_thread_add    (GRealThread *thread);
-G_GNUC_INTERNAL void g_enumerable_thread_remove (GRealThread *thread);
 
 /* initializers that may also use g_private_new() */
 G_GNUC_INTERNAL void _g_messages_thread_init_nomessage      (void);
