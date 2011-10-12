@@ -40,8 +40,6 @@ G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
                                                  gboolean          joinable,
                                                  gpointer          thread,
                                                  GError          **error);
-G_GNUC_INTERNAL gboolean g_system_thread_equal (gpointer thread1,
-                                                gpointer thread2);
 
 G_GNUC_INTERNAL void     g_system_thread_exit  (void);
 G_GNUC_INTERNAL void     g_system_thread_set_name (const gchar *name);
