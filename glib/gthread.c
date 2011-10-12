@@ -928,8 +928,6 @@ g_thread_self (void)
       thread->thread.func = NULL;
       thread->thread.data = NULL;
 
-      g_system_thread_self (&thread->system_thread);
-
       g_private_set (&g_thread_specific_private, thread);
     }
 
