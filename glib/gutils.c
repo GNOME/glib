@@ -3342,14 +3342,14 @@ language_names_cache_free (gpointer data)
 const gchar * const * 
 g_get_language_names (void)
 {
-  static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
-  GLanguageNamesCache *cache = g_static_private_get (&cache_private);
+  static GPrivate cache_private = G_PRIVATE_INIT (language_names_cache_free);
+  GLanguageNamesCache *cache = g_private_get (&cache_private);
   const gchar *value;
 
   if (!cache)
     {
       cache = g_new0 (GLanguageNamesCache, 1);
-      g_static_private_set (&cache_private, cache, language_names_cache_free);
+      g_private_set (&cache_private, cache);
     }
 
   value = guess_category_value ("LC_MESSAGES");
