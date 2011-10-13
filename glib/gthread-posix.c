@@ -1111,8 +1111,9 @@ g_system_thread_new (GThreadFunc   thread_func,
   if (ret == EAGAIN)
     {
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
-		   "Error creating thread: %s", g_strerror (ret));
-      return thread;
+                   "Error creating thread: %s", g_strerror (ret));
+      g_slice_free (GRealThread, thread);
+      return NULL;
     }
 
   posix_check_err (ret, "pthread_create");

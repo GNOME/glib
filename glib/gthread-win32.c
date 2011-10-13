@@ -518,7 +518,8 @@ g_system_thread_new (GThreadFunc   func,
                    "Error creating thread: %s", win_error);
       g_free (retval);
       g_free (win_error);
-      return thread;
+      g_slice_free (GRealThread, thread);
+      return NULL;
     }
 
   *(GThreadData **) &(thread->system_thread) = retval;

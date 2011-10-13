@@ -799,27 +799,22 @@ g_thread_new_internal (const gchar   *name,
                        gsize          stack_size,
                        GError       **error)
 {
-  GRealThread *result;
-  GError *local_error = NULL;
+  GRealThread *thread;
 
   g_return_val_if_fail (func != NULL, NULL);
 
   G_LOCK (g_thread_new);
-  result = g_system_thread_new (proxy, stack_size, joinable, &local_error);
-  result->thread.joinable = joinable;
-  result->thread.func = func;
-  result->thread.data = data;
-  result->name = name;
+  thread = g_system_thread_new (proxy, stack_size, joinable, error);
+  if (thread)
+    {
+      thread->thread.joinable = joinable;
+      thread->thread.func = func;
+      thread->thread.data = data;
+      thread->name = name;
+    }
   G_UNLOCK (g_thread_new);
 
-  if (local_error)
-    {
-      g_propagate_error (error, local_error);
-      g_system_thread_free (result);
-      return NULL;
-    }
-
-  return (GThread*) result;
+  return (GThread*) thread;
 }
 
 /**
