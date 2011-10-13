@@ -681,8 +681,8 @@ g_thread_cleanup (gpointer data)
     }
 }
 
-static gpointer
-g_thread_create_proxy (gpointer data)
+gpointer
+g_thread_proxy (gpointer data)
 {
   GRealThread* thread = data;
 
@@ -693,9 +693,6 @@ g_thread_create_proxy (gpointer data)
 
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
-
-  if (thread->setup_func)
-    thread->setup_func (thread);
 
   /* The lock makes sure that thread->system_thread is written,
    * before thread->thread.func is called. See g_thread_new_internal().
@@ -743,7 +740,7 @@ g_thread_new (const gchar  *name,
               gboolean      joinable,
               GError      **error)
 {
-  return g_thread_new_internal (name, func, data, joinable, 0, FALSE, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, joinable, 0, error);
 }
 
 /**
@@ -790,16 +787,16 @@ g_thread_new_full (const gchar  *name,
                    gsize         stack_size,
                    GError      **error)
 {
-  return g_thread_new_internal (name, func, data, joinable, stack_size, FALSE, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, joinable, stack_size, error);
 }
 
 GThread *
 g_thread_new_internal (const gchar   *name,
+                       GThreadFunc    proxy,
                        GThreadFunc    func,
                        gpointer       data,
                        gboolean       joinable,
                        gsize          stack_size,
-                       GThreadSetup   setup_func,
                        GError       **error)
 {
   GRealThread *result;
@@ -812,11 +809,9 @@ g_thread_new_internal (const gchar   *name,
   result->thread.joinable = joinable;
   result->thread.func = func;
   result->thread.data = data;
-  result->setup_func = setup_func;
   result->name = name;
   G_LOCK (g_thread_new);
-  g_system_thread_create (g_thread_create_proxy, result,
-                          stack_size, joinable,
+  g_system_thread_create (proxy, result, stack_size, joinable,
                           &result->system_thread, &local_error);
   G_UNLOCK (g_thread_new);
 

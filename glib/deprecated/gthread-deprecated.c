@@ -291,6 +291,17 @@ g_enumerable_thread_add (GRealThread *thread)
 
   g_private_set (&enumerable_thread_private, thread);
 }
+
+static gpointer
+g_deprecated_thread_proxy (gpointer data)
+{
+  GRealThread *real = data;
+
+  g_enumerable_thread_add (real);
+
+  return g_thread_proxy (data);
+}
+
 /**
  * g_thread_create:
  * @func: a function to execute in the new thread
@@ -320,7 +331,7 @@ g_thread_create (GThreadFunc   func,
                  gboolean      joinable,
                  GError      **error)
 {
-  return g_thread_new_internal (NULL, func, data, joinable, 0, g_enumerable_thread_add, error);
+  return g_thread_new_internal (NULL, g_deprecated_thread_proxy, func, data, joinable, 0, error);
 }
 
 /**
@@ -348,7 +359,7 @@ g_thread_create_full (GThreadFunc       func,
                       GThreadPriority   priority,
                       GError          **error)
 {
-  return g_thread_new_internal (NULL, func, data, joinable, stack_size, g_enumerable_thread_add, error);
+  return g_thread_new_internal (NULL, g_deprecated_thread_proxy, func, data, joinable, stack_size, error);
 }
 
 
