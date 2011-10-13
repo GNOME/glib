@@ -40,7 +40,7 @@ G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
                                                  gpointer          data,
                                                  gulong            stack_size,
                                                  gboolean          joinable,
-                                                 gpointer          thread,
+                                                 GRealThread      *thread,
                                                  GError          **error);
 G_GNUC_INTERNAL
 void            g_system_thread_free            (GRealThread  *thread);

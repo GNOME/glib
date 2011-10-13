@@ -812,7 +812,7 @@ g_thread_new_internal (const gchar   *name,
   result->name = name;
   G_LOCK (g_thread_new);
   g_system_thread_create (proxy, result, stack_size, joinable,
-                          &result->system_thread, &local_error);
+                          result, &local_error);
   G_UNLOCK (g_thread_new);
 
   if (local_error)

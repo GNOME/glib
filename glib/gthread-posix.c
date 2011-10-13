@@ -1086,7 +1086,7 @@ g_system_thread_create (GThreadFunc       thread_func,
                         gpointer          arg,
                         gulong            stack_size,
                         gboolean          joinable,
-                        gpointer          thread,
+                        GRealThread      *thread,
                         GError          **error)
 {
   pthread_attr_t attr;
@@ -1111,7 +1111,7 @@ g_system_thread_create (GThreadFunc       thread_func,
   posix_check_cmd (pthread_attr_setdetachstate (&attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 
-  ret = pthread_create (thread, &attr, (void* (*)(void*))thread_func, arg);
+  ret = pthread_create ((pthread_t *) &(thread->system_thread), &attr, (void* (*)(void*))thread_func, arg);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
 

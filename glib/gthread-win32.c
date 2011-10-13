@@ -502,7 +502,7 @@ g_system_thread_create (GThreadFunc       func,
                         gpointer          data,
                         gulong            stack_size,
                         gboolean          joinable,
-                        gpointer          thread,
+                        GRealThread      *thread,
                         GError          **error)
 {
   guint ignore;
@@ -529,7 +529,7 @@ g_system_thread_create (GThreadFunc       func,
       return;
     }
 
-  *(GThreadData **)thread = retval;
+  *(GThreadData **) &(thread->system_thread) = retval;
 }
 
 void
