@@ -47,7 +47,7 @@ test_atomic (void)
     bucket[i] = 0;
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_new ("atomic", thread_func, GINT_TO_POINTER (i), TRUE, NULL);
+    threads[i] = g_thread_new ("atomic", thread_func, GINT_TO_POINTER (i), NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);

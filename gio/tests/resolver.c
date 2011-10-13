@@ -201,7 +201,13 @@ start_sync_lookups (char **argv, int argc)
   int i;
 
   for (i = 0; i < argc; i++)
-    g_thread_new ("lookup", lookup_thread, argv[i], FALSE, NULL);
+    {
+      GThread *thread;
+
+      thread = g_thread_new ("lookup", lookup_thread, argv[i], NULL);
+      g_assert (thread != NULL);
+      g_thread_unref (thread);
+    }
 }
 
 static void

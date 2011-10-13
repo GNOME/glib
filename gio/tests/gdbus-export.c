@@ -943,7 +943,6 @@ test_dispatch (const gchar *object_path)
   thread = g_thread_new ("test_dispatch",
                          test_dispatch_thread_func,
                          (gpointer) object_path,
-                         TRUE,
                          &error);
   g_assert_no_error (error);
   g_assert (thread != NULL);

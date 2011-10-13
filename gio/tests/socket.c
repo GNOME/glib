@@ -128,7 +128,7 @@ create_server (GSocketFamily family,
   g_socket_listen (server, &error);
   g_assert_no_error (error);
 
-  data->thread = g_thread_new ("server", server_thread, data, TRUE, &error);
+  data->thread = g_thread_new ("server", server_thread, data, &error);
   g_assert_no_error (error);
 
   return data;

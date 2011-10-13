@@ -305,7 +305,6 @@ _g_dbus_shared_thread_ref (void)
       data->thread = g_thread_new ("gdbus",
                                    gdbus_shared_thread_func,
                                    data,
-                                   TRUE,
                                    &error);
       g_assert_no_error (error);
       /* We can cast between gsize and gpointer safely */

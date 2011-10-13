@@ -437,7 +437,7 @@ setup_with_thread_loop (Test            *test,
   closure.test = test;
 
   g_mutex_lock (&closure.loop_mutex);
-  test->loop_thread = g_thread_new ("loop", thread_loop, &closure, TRUE, &error);
+  test->loop_thread = g_thread_new ("loop", thread_loop, &closure, &error);
   while (!closure.started)
     g_cond_wait (&closure.loop_started, &closure.loop_mutex);
   g_mutex_unlock (&closure.loop_mutex);

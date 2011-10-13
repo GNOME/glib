@@ -44,13 +44,13 @@ void            g_system_thread_free            (GRealThread  *thread);
 G_GNUC_INTERNAL void     g_system_thread_exit  (void);
 G_GNUC_INTERNAL void     g_system_thread_set_name (const gchar *name);
 
-G_GNUC_INTERNAL GThread *g_thread_new_internal (const gchar   *name,
-                                                GThreadFunc    proxy,
-                                                GThreadFunc    func,
-                                                gpointer       data,
-                                                gboolean       joinable,
-                                                gsize          stack_size,
-                                                GError       **error);
+G_GNUC_INTERNAL
+GThread *       g_thread_new_internal           (const gchar  *name,
+                                                 GThreadFunc   proxy,
+                                                 GThreadFunc   func,
+                                                 gpointer      data,
+                                                 gsize         stack_size,
+                                                 GError      **error);
 
 G_GNUC_INTERNAL
 gpointer        g_thread_proxy                  (gpointer     thread);

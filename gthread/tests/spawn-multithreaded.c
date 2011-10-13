@@ -41,8 +41,7 @@ multithreaded_test_run (GThreadFunc function)
     {
       GThread *thread;
 
-      thread = g_thread_new ("test", function,
-                             GINT_TO_POINTER (i), TRUE, &error);
+      thread = g_thread_new ("test", function, GINT_TO_POINTER (i), &error);
       g_assert_no_error (error);
       g_ptr_array_add (threads, thread);
     }

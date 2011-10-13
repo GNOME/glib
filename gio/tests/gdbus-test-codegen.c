@@ -568,7 +568,6 @@ on_name_acquired (GDBusConnection *connection,
   g_thread_new ("check-proxies",
                 check_proxies_in_thread,
                 loop,
-                TRUE,
                 NULL);
 }
 

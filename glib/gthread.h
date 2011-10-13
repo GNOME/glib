@@ -142,12 +142,10 @@ void            g_thread_unref                  (GThread        *thread);
 GThread *       g_thread_new                    (const gchar    *name,
                                                  GThreadFunc     func,
                                                  gpointer        data,
-                                                 gboolean        joinable,
                                                  GError        **error);
 GThread *       g_thread_new_full               (const gchar    *name,
                                                  GThreadFunc     func,
                                                  gpointer        data,
-                                                 gboolean        joinable,
                                                  gsize           stack_size,
                                                  GError        **error);
 GThread *       g_thread_self                   (void);

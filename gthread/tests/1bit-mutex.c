@@ -133,8 +133,8 @@ testcase (gconstpointer data)
 
   for (i = 0; i < THREADS; i++)
     threads[i] = g_thread_new ("foo", thread_func,
-                                  GINT_TO_POINTER (use_pointers),
-                                  TRUE, NULL);
+                               GINT_TO_POINTER (use_pointers),
+                               NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);

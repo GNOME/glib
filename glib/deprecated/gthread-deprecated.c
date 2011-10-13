@@ -312,15 +312,16 @@ g_deprecated_thread_proxy (gpointer data)
  *
  * This function creates a new thread.
  *
- * If @joinable is %TRUE, you can wait for this threads termination
- * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates.
- *
  * The new thread executes the function @func with the argument @data.
  * If the thread was created successfully, it is returned.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
+ *
+ * This function returns a reference to the created thread only if
+ * @joinable is %TRUE.  In that case, you must free this reference by
+ * calling g_thread_unref() or g_thread_join().  If @joinable is %FALSE
+ * then you should probably not touch the return value.
  *
  * Returns: the new #GThread on success
  *
@@ -332,7 +333,7 @@ g_thread_create (GThreadFunc   func,
                  gboolean      joinable,
                  GError      **error)
 {
-  return g_thread_new_internal (NULL, g_deprecated_thread_proxy, func, data, joinable, 0, error);
+  return g_thread_create_full (func, data, 0, joinable, 0, 0, error);
 }
 
 /**
@@ -360,10 +361,19 @@ g_thread_create_full (GThreadFunc       func,
                       GThreadPriority   priority,
                       GError          **error)
 {
-  return g_thread_new_internal (NULL, g_deprecated_thread_proxy, func, data, joinable, stack_size, error);
+  GThread *thread;
+
+  thread = g_thread_new_internal (NULL, g_deprecated_thread_proxy,
+                                  func, data, stack_size, error);
+
+  if (!joinable)
+    {
+      thread->joinable = FALSE;
+      g_thread_unref (thread);
+    }
+
+  return thread;
 }
-
-
 
 /* GOnce {{{1 ------------------------------------------------------------- */
 gboolean

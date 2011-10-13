@@ -222,7 +222,7 @@ test_proxy (void)
   for (i = 0; i < n_threads; i++)
     {
       proxy_threads[i] = g_thread_new ("run-proxy",
-                                       run_proxy_thread, connection, TRUE,
+                                       run_proxy_thread, connection,
                                        &error);
       g_assert_no_error (error);
     }

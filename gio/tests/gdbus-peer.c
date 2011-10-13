@@ -605,7 +605,6 @@ test_peer (void)
   service_thread = g_thread_new ("test_peer",
                                  service_thread_func,
                                  &data,
-                                 TRUE,
                                  &error);
   while (service_loop == NULL)
     g_thread_yield ();
@@ -1055,7 +1054,6 @@ delayed_message_processing (void)
   service_thread = g_thread_new ("dmp",
                                  dmp_thread_func,
                                  data,
-                                 TRUE,
                                  &error);
   while (data->server == NULL || !g_dbus_server_is_active (data->server))
     g_thread_yield ();
@@ -1204,7 +1202,6 @@ test_nonce_tcp (void)
   service_thread = g_thread_new ("nonce-tcp-service",
                                  nonce_tcp_service_thread_func,
                                  &data,
-                                 TRUE,
                                  &error);
   while (service_loop == NULL)
     g_thread_yield ();
@@ -1514,7 +1511,6 @@ test_tcp_anonymous (void)
   service_thread = g_thread_new ("tcp-anon-service",
                                  tcp_anonymous_service_thread_func,
                                  &seen_connection, /* user_data */
-                                 TRUE, /* joinable */
                                  &error);
   while (service_loop == NULL)
     g_thread_yield ();

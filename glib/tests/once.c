@@ -104,7 +104,7 @@ test_once3 (void)
   shared = 0;
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_new ("once3", thread_func, NULL, TRUE, NULL);
+    threads[i] = g_thread_new ("once3", thread_func, NULL, NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);

@@ -50,7 +50,7 @@ test_thread1 (void)
   GThread *thread;
   GError *error = NULL;
 
-  thread = g_thread_new ("test", thread1_func, NULL, TRUE, &error);
+  thread = g_thread_new ("test", thread1_func, NULL, &error);
   g_assert_no_error (error);
 
   result = g_thread_join (thread);
@@ -71,7 +71,7 @@ test_thread2 (void)
   gpointer result;
   GThread *thread;
 
-  thread = g_thread_new ("test", thread2_func, NULL, TRUE, NULL);
+  thread = g_thread_new ("test", thread2_func, NULL, NULL);
 
   g_assert (g_thread_self () != thread);
 
@@ -107,9 +107,9 @@ test_thread3 (void)
   gpointer result;
   GThread *thread1, *thread2, *thread3;
 
-  thread1 = g_thread_new_full ("a", thread3_func, NULL, TRUE, 0, NULL);
-  thread2 = g_thread_new_full ("b", thread3_func, thread1, TRUE, 100, NULL);
-  thread3 = g_thread_new_full ("c", thread3_func, thread2, TRUE, 100000, NULL);
+  thread1 = g_thread_new_full ("a", thread3_func, NULL, 0, NULL);
+  thread2 = g_thread_new_full ("b", thread3_func, thread1, 100, NULL);
+  thread3 = g_thread_new_full ("c", thread3_func, thread2, 100000, NULL);
 
   result = g_thread_join (thread3);
 
@@ -135,7 +135,7 @@ test_thread4 (void)
     g_error ("prlimit failed: %s\n", g_strerror (ret));
 
   error = NULL;
-  thread = g_thread_new ("a", thread1_func, NULL, FALSE, &error);
+  thread = g_thread_new ("a", thread1_func, NULL, &error);
   g_assert (thread == NULL);
   g_assert_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN);
   g_error_free (error);

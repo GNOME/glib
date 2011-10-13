@@ -427,10 +427,6 @@
  * Specifies the type of the @func functions passed to
  * g_thread_new() or g_thread_new_full().
  *
- * If the thread is joinable, the return value of this function
- * is returned by a g_thread_join() call waiting for the thread.
- * If the thread is not joinable, the return value is ignored.
- *
  * Returns: the return value of the thread
  */
 
@@ -725,7 +721,6 @@ g_thread_proxy (gpointer data)
  * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
- * @joinable: should this thread be joinable?
  * @error: return location for error
  *
  * This function creates a new thread. The new thread starts by invoking
@@ -736,13 +731,10 @@ g_thread_proxy (gpointer data)
  * a debugger. Some systems restrict the length of @name to
  * 16 bytes.
  *
- * If @joinable is %TRUE, you can wait for this thread's termination
- * calling g_thread_join(). Resources for a joinable thread are not
- * fully released until g_thread_join() is called for that thread.
- * Otherwise the thread will just disappear when it terminates.
- *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
+ *
+ * You must 
  *
  * Returns: the new #GThread, or %NULL if an error occurred
  *
@@ -752,10 +744,9 @@ GThread *
 g_thread_new (const gchar  *name,
               GThreadFunc   func,
               gpointer      data,
-              gboolean      joinable,
               GError      **error)
 {
-  return g_thread_new_internal (name, g_thread_proxy, func, data, joinable, 0, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
 }
 
 /**
@@ -763,7 +754,6 @@ g_thread_new (const gchar  *name,
  * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
- * @joinable: should this thread be joinable?
  * @stack_size: a stack size for the new thread
  * @error: return location for error
  *
@@ -782,11 +772,6 @@ g_thread_new (const gchar  *name,
  * In most cases, using g_thread_new() (which doesn't take a
  * @stack_size) is better.
  *
- * If @joinable is %TRUE, you can wait for this thread's termination
- * calling g_thread_join(). Resources for a joinable thread are not
- * fully released until g_thread_join() is called for that thread.
- * Otherwise the thread will just disappear when it terminates.
- *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
@@ -798,11 +783,10 @@ GThread *
 g_thread_new_full (const gchar  *name,
                    GThreadFunc   func,
                    gpointer      data,
-                   gboolean      joinable,
                    gsize         stack_size,
                    GError      **error)
 {
-  return g_thread_new_internal (name, g_thread_proxy, func, data, joinable, stack_size, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, stack_size, error);
 }
 
 GThread *
@@ -810,7 +794,6 @@ g_thread_new_internal (const gchar   *name,
                        GThreadFunc    proxy,
                        GThreadFunc    func,
                        gpointer       data,
-                       gboolean       joinable,
                        gsize          stack_size,
                        GError       **error)
 {
@@ -822,9 +805,9 @@ g_thread_new_internal (const gchar   *name,
   thread = g_system_thread_new (proxy, stack_size, error);
   if (thread)
     {
-      thread->ref_count = joinable ? 2 : 1;
+      thread->ref_count = 2;
       thread->ours = TRUE;
-      thread->thread.joinable = joinable;
+      thread->thread.joinable = TRUE;
       thread->thread.func = func;
       thread->thread.data = data;
       thread->name = name;
@@ -840,10 +823,9 @@ g_thread_new_internal (const gchar   *name,
  *
  * Terminates the current thread.
  *
- * If another thread is waiting for that thread using g_thread_join()
- * and the current thread is joinable, the waiting thread will be woken
- * up and get @retval as the return value of g_thread_join(). If the
- * current thread is not joinable, @retval is ignored.
+ * If another thread is waiting for us using g_thread_join() then the
+ * waiting thread will be woken up and get @retval as the return value
+ * of g_thread_join().
  *
  * Calling <literal>g_thread_exit (retval)</literal> is equivalent to
  * returning @retval from the function @func, as given to g_thread_new().
@@ -863,17 +845,16 @@ g_thread_exit (gpointer retval)
 
 /**
  * g_thread_join:
- * @thread: a joinable #GThread
+ * @thread: a #GThread
  *
  * Waits until @thread finishes, i.e. the function @func, as
  * given to g_thread_new(), returns or g_thread_exit() is called.
  * If @thread has already terminated, then g_thread_join()
- * returns immediately. @thread must be joinable.
+ * returns immediately.
  *
- * Any thread can wait for any other (joinable) thread by calling
- * g_thread_join(), not just its 'creator'. Calling g_thread_join()
- * from multiple threads for the same @thread leads to undefined
- * behaviour.
+ * Any thread can wait for any other thread by calling g_thread_join(),
+ * not just its 'creator'. Calling g_thread_join() from multiple threads
+ * for the same @thread leads to undefined behaviour.
  *
  * The value returned by @func or given to g_thread_exit() is
  * returned by this function.
@@ -890,7 +871,6 @@ g_thread_join (GThread *thread)
   gpointer retval;
 
   g_return_val_if_fail (thread, NULL);
-  g_return_val_if_fail (thread->joinable, NULL);
 
   g_system_thread_wait (real);
 

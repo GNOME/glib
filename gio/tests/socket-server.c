@@ -81,8 +81,12 @@ main (int argc,
 
   if (cancel_timeout)
     {
+      GThread *thread;
+
       cancellable = g_cancellable_new ();
-      g_thread_new ("cancel", cancel_thread, cancellable, FALSE, NULL);
+      thread = g_thread_new ("cancel", cancel_thread, cancellable, NULL);
+      g_assert (thread != NULL);
+      g_thread_unref (thread);
     }
   else
     {
