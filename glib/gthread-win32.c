@@ -450,24 +450,14 @@ g_private_replace (GPrivate *key,
 
 #define G_MUTEX_SIZE (sizeof (gpointer))
 
-static DWORD g_thread_self_tls;
-
 typedef BOOL (__stdcall *GTryEnterCriticalSectionFunc) (CRITICAL_SECTION *);
-
-typedef struct _GThreadData GThreadData;
-struct _GThreadData
-{
-  GThreadFunc func;
-  gpointer data;
-  HANDLE thread;
-  gboolean joinable;
-};
 
 typedef struct
 {
   GRealThread thread;
 
-  GThreadData *data;
+  GThreadFunc proxy;
+  HANDLE      handle;
 } GThreadWin32;
 
 void
@@ -475,6 +465,7 @@ g_system_thread_free (GRealThread *thread)
 {
   GThreadWin32 *wt = (GThreadWin32 *) thread;
 
+  win32_check_for_error (CloseHandle (wt->handle));
   g_slice_free (GThreadWin32, wt);
 }
 
@@ -487,11 +478,9 @@ g_system_thread_exit (void)
 static guint __stdcall
 g_thread_win32_proxy (gpointer data)
 {
-  GThreadData *self = (GThreadData*) data;
+  GThreadWin32 *self = data;
 
-  win32_check_for_error (TlsSetValue (g_thread_self_tls, self));
-
-  self->func (self->data);
+  self->proxy (self);
 
   g_system_thread_exit ();
 
@@ -508,30 +497,21 @@ g_system_thread_new (GThreadFunc   func,
 {
   GThreadWin32 *thread;
   guint ignore;
-  GThreadData *retval;
 
   thread = g_slice_new0 (GThreadWin32);
-  retval = g_new(GThreadData, 1);
-  retval->func = func;
-  retval->data = thread;
+  thread->proxy = func;
 
-  retval->joinable = joinable;
+  thread->handle = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy, thread, 0, &ignore);
 
-  retval->thread = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy,
-					    retval, 0, &ignore);
-
-  if (retval->thread == NULL)
+  if (thread->handle == NULL)
     {
       gchar *win_error = g_win32_error_message (GetLastError ());
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN,
                    "Error creating thread: %s", win_error);
-      g_free (retval);
       g_free (win_error);
       g_slice_free (GThreadWin32, thread);
       return NULL;
     }
-
-  thread->data = retval;
 
   return (GRealThread *) thread;
 }
@@ -546,15 +526,8 @@ void
 g_system_thread_wait (GRealThread *thread)
 {
   GThreadWin32 *wt = (GThreadWin32 *) thread;
-  GThreadData *target = wt->data;
 
-  g_return_if_fail (target->joinable);
-
-  win32_check_for_error (WAIT_FAILED !=
-			 WaitForSingleObject (target->thread, INFINITE));
-
-  win32_check_for_error (CloseHandle (target->thread));
-  g_free (target);
+  win32_check_for_error (WAIT_FAILED != WaitForSingleObject (wt->handle, INFINITE));
 }
 
 void
@@ -1023,14 +996,12 @@ g_thread_win32_init (void)
       g_thread_xp_init ();
     }
 
-  win32_check_for_error (TLS_OUT_OF_INDEXES != (g_thread_self_tls = TlsAlloc ()));
   InitializeCriticalSection (&g_private_lock);
 }
 
 G_GNUC_INTERNAL void
 g_thread_win32_thread_detach (void)
 {
-  GThreadData *self = TlsGetValue (g_thread_self_tls);
   gboolean dtors_called;
 
   do
@@ -1061,16 +1032,6 @@ g_thread_win32_thread_detach (void)
         }
     }
   while (dtors_called);
-
-  if (self)
-    {
-      if (!self->joinable)
-        {
-          win32_check_for_error (CloseHandle (self->thread));
-          g_free (self);
-        }
-      win32_check_for_error (TlsSetValue (g_thread_self_tls, NULL));
-    }
 
   if (g_thread_impl_vtable.CallThisOnThreadExit)
     g_thread_impl_vtable.CallThisOnThreadExit ();
