@@ -43,15 +43,6 @@ typedef enum
   G_THREAD_PRIORITY_URGENT
 } GThreadPriority;
 
-struct  _GThread
-{
-  /*< private >*/
-  GThreadFunc func;
-  gpointer data;
-  gboolean joinable;
-  GThreadPriority priority;
-};
-
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
 {
