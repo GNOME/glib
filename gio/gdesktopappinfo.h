@@ -52,6 +52,7 @@ const char *     g_desktop_app_info_get_filename      (GDesktopAppInfo *info);
 
 const char *     g_desktop_app_info_get_generic_name  (GDesktopAppInfo *info);
 const char *     g_desktop_app_info_get_categories    (GDesktopAppInfo *info);
+const char * const *g_desktop_app_info_get_keywords   (GDesktopAppInfo *info);
 gboolean         g_desktop_app_info_get_nodisplay     (GDesktopAppInfo *info);
 gboolean         g_desktop_app_info_get_show_in       (GDesktopAppInfo *info,
                                                        const gchar     *desktop_env);

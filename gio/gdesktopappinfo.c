@@ -66,6 +66,7 @@
 #define MIME_CACHE_GROUP            "MIME Cache"
 #define GENERIC_NAME_KEY            "GenericName"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
+#define KEYWORDS_KEY                "X-GNOME-Keywords"
 
 enum {
   PROP_0,
@@ -99,6 +100,7 @@ struct _GDesktopAppInfo
   char *comment;
   char *icon_name;
   GIcon *icon;
+  char **keywords;
   char **only_show_in;
   char **not_show_in;
   char *try_exec;
@@ -177,6 +179,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->icon_name);
   if (info->icon)
     g_object_unref (info->icon);
+  g_strfreev (info->keywords);
   g_strfreev (info->only_show_in);
   g_strfreev (info->not_show_in);
   g_free (info->try_exec);
@@ -315,6 +318,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
   info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
+  info->keywords = g_key_file_get_locale_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, KEYWORDS_KEY, NULL, NULL, NULL);
   info->comment = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
   info->nodisplay = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) != FALSE;
   info->icon_name =  g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL, NULL);
@@ -523,6 +527,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->name = g_strdup (info->name);
   new_info->generic_name = g_strdup (info->generic_name);
   new_info->fullname = g_strdup (info->fullname);
+  new_info->keywords = g_strdupv (info->keywords);
   new_info->comment = g_strdup (info->comment);
   new_info->nodisplay = info->nodisplay;
   new_info->icon_name = g_strdup (info->icon_name);
@@ -660,6 +665,22 @@ const char *
 g_desktop_app_info_get_categories (GDesktopAppInfo *info)
 {
   return info->categories;
+}
+
+/**
+ * g_desktop_app_info_get_keywords:
+ * @info: a #GDesktopAppInfo
+ *
+ * Gets the keywords from the desktop file.
+ *
+ * Returns: The value of the X-GNOME-Keywords key
+ *
+ * Since: 2.32
+ */
+const char * const *
+g_desktop_app_info_get_keywords (GDesktopAppInfo *info)
+{
+  return (const char * const *)info->keywords;
 }
 
 /**
