@@ -2,6 +2,7 @@ include $(top_srcdir)/Makefile.decl
 
 INCLUDES =					\
 	$(gmodule_INCLUDES)			\
+	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
 	$(GLIB_DEBUG_FLAGS)
 
 libglib = $(top_builddir)/glib/libglib-2.0.la

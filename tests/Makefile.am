@@ -2,8 +2,9 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS=gobject refcount
 
-AM_CPPFLAGS = 				\
-	$(gmodule_INCLUDES) 		\
+AM_CPPFLAGS = \
+	$(gmodule_INCLUDES)			\
+	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
 	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = -g
