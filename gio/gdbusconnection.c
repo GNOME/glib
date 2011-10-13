@@ -671,6 +671,10 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * If this is passed on construction and is a #GSocketConnection,
    * then the corresponding #GSocket will be put into non-blocking mode.
    *
+   * While the #GDBusConnection is active, it will interact with this
+   * stream from a worker thread, so it is not safe to interact with
+   * the stream directly.
+   *
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
@@ -945,6 +949,10 @@ g_dbus_connection_init (GDBusConnection *connection)
  * @connection: a #GDBusConnection
  *
  * Gets the underlying stream used for IO.
+ *
+ * While the #GDBusConnection is active, it will interact with this
+ * stream from a worker thread, so it is not safe to interact with
+ * the stream directly.
  *
  * Returns: (transfer none): the stream used for IO
  *
@@ -2503,6 +2511,10 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * If @stream is a #GSocketConnection, then the corresponding #GSocket
  * will be put into non-blocking mode.
  *
+ * The D-Bus connection will interact with @stream from a worker thread.
+ * As a result, the caller should not interact with @stream after this
+ * method has been called, except by calling g_object_unref() on it.
+ *
  * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
@@ -2585,6 +2597,10 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  *
  * If @stream is a #GSocketConnection, then the corresponding #GSocket
  * will be put into non-blocking mode.
+ *
+ * The D-Bus connection will interact with @stream from a worker thread.
+ * As a result, the caller should not interact with @stream after this
+ * method has been called, except by calling g_object_unref() on it.
  *
  * If @observer is not %NULL it may be used to control the
  * authentication process.
