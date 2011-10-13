@@ -1012,3 +1012,28 @@ g_mount_unshadow (GMount *mount)
     g_warning ("Shadow ref count on GMount is negative");
   G_UNLOCK (priv_lock);
 }
+
+/**
+ * g_mount_get_sort_key:
+ * @mount: A #GMount.
+ *
+ * Gets the sort key for @mount, if any.
+ *
+ * Returns: Sorting key for @mount or %NULL if no such key is available.
+ *
+ * Since: 2.32
+ */
+const gchar *
+g_mount_get_sort_key (GMount  *mount)
+{
+  const gchar *ret = NULL;
+  GMountIface *iface;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+  if (iface->get_sort_key != NULL)
+    ret = iface->get_sort_key (mount);
+
+  return ret;
+}

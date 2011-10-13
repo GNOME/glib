@@ -71,6 +71,7 @@ G_BEGIN_DECLS
  * @stop_button: Signal emitted when the physical stop button (if any) of a drive have been pressed. Since 2.22.
  * @eject_with_operation: Starts ejecting a #GDrive using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
+ * @get_sort_key: Gets a key used for sorting #GDrive instances or %NULL if no such key exists. Since 2.32.
  *
  * Interface for creating #GDrive implementations.
  */
@@ -151,6 +152,8 @@ struct _GDriveIface
   gboolean    (* eject_with_operation_finish) (GDrive            *drive,
                                              GAsyncResult        *result,
                                              GError             **error);
+
+  const gchar * (* get_sort_key)        (GDrive              *drive);
 };
 
 GType    g_drive_get_type                 (void) G_GNUC_CONST;
@@ -222,6 +225,8 @@ void        g_drive_eject_with_operation      (GDrive              *drive,
 gboolean    g_drive_eject_with_operation_finish (GDrive            *drive,
                                                GAsyncResult        *result,
                                                GError             **error);
+
+const gchar *g_drive_get_sort_key         (GDrive               *drive);
 
 G_END_DECLS
 

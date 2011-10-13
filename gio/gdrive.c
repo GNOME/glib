@@ -869,3 +869,28 @@ g_drive_stop_finish (GDrive        *drive,
 
   return (* iface->stop_finish) (drive, result, error);
 }
+
+/**
+ * g_drive_get_sort_key:
+ * @drive: A #GDrive.
+ *
+ * Gets the sort key for @drive, if any.
+ *
+ * Returns: Sorting key for @drive or %NULL if no such key is available.
+ *
+ * Since: 2.32
+ */
+const gchar *
+g_drive_get_sort_key (GDrive  *drive)
+{
+  const gchar *ret = NULL;
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), NULL);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+  if (iface->get_sort_key != NULL)
+    ret = iface->get_sort_key (drive);
+
+  return ret;
+}

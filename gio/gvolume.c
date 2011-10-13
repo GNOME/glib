@@ -640,3 +640,28 @@ g_volume_get_activation_root (GVolume *volume)
 
   return (* iface->get_activation_root) (volume);
 }
+
+/**
+ * g_volume_get_sort_key:
+ * @volume: A #GVolume.
+ *
+ * Gets the sort key for @volume, if any.
+ *
+ * Returns: Sorting key for @volume or %NULL if no such key is available.
+ *
+ * Since: 2.32
+ */
+const gchar *
+g_volume_get_sort_key (GVolume  *volume)
+{
+  const gchar *ret = NULL;
+  GVolumeIface *iface;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+  if (iface->get_sort_key != NULL)
+    ret = iface->get_sort_key (volume);
+
+  return ret;
+}

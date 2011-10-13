@@ -69,6 +69,7 @@ typedef struct _GMountIface    GMountIface;
  * @eject_with_operation: Starts ejecting a #GMount using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  * @get_default_location: Gets a #GFile indication a start location that can be use as the entry point for this mount. Since 2.24.
+ * @get_sort_key: Gets a key used for sorting #GMount instance or %NULL if no such key exists. Since 2.32.
  *
  * Interface for implementing operations for mounts.
  **/
@@ -156,6 +157,8 @@ struct _GMountIface
                                              GAsyncResult        *result,
                                              GError             **error);
   GFile     * (* get_default_location)      (GMount              *mount);
+
+  const gchar * (* get_sort_key)            (GMount              *mount);
 };
 
 GType       g_mount_get_type                  (void) G_GNUC_CONST;
@@ -242,6 +245,8 @@ void        g_mount_eject_with_operation      (GMount              *mount,
 gboolean    g_mount_eject_with_operation_finish (GMount            *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
+
+const gchar *g_mount_get_sort_key             (GMount              *mount);
 
 G_END_DECLS
 

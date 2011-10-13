@@ -233,6 +233,7 @@ g_drive_stop
 g_drive_stop_finish
 g_drive_eject
 g_drive_eject_finish
+g_drive_get_sort_key
 g_file_attribute_info_list_new
 g_file_attribute_info_list_ref
 g_file_attribute_info_list_unref
@@ -704,6 +705,7 @@ g_mount_unmount
 g_mount_unmount_finish
 g_mount_eject
 g_mount_eject_finish
+g_mount_get_sort_key
 g_volume_get_type
 g_volume_get_name
 g_volume_get_icon
@@ -722,6 +724,7 @@ g_volume_enumerate_identifiers
 g_volume_get_activation_root
 g_volume_eject
 g_volume_eject_finish
+g_volume_get_sort_key
 g_volume_monitor_get_type
 g_volume_monitor_get_connected_drives
 g_volume_monitor_get_volume_for_uuid

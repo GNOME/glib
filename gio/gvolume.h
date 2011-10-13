@@ -101,6 +101,7 @@ G_BEGIN_DECLS
  *   it is not known.
  * @eject_with_operation: Starts ejecting a #GVolume using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
+ * @get_sort_key: Gets a key used for sorting #GVolume instance or %NULL if no such key exists. Since 2.32.
  *
  * Interface for implementing operations for mountable volumes.
  **/
@@ -159,6 +160,8 @@ struct _GVolumeIface
   gboolean    (* eject_with_operation_finish) (GVolume           *volume,
                                              GAsyncResult        *result,
                                              GError             **error);
+
+  const gchar * (* get_sort_key)        (GVolume             *volume);
 };
 
 GType    g_volume_get_type              (void) G_GNUC_CONST;
@@ -208,6 +211,8 @@ void        g_volume_eject_with_operation     (GVolume             *volume,
 gboolean    g_volume_eject_with_operation_finish (GVolume          *volume,
                                                GAsyncResult        *result,
                                                GError             **error);
+
+const gchar *g_volume_get_sort_key            (GVolume              *volume);
 
 G_END_DECLS
 
