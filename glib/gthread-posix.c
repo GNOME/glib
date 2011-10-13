@@ -1069,6 +1069,18 @@ g_private_replace (GPrivate *key,
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
+GRealThread *
+g_system_thread_new (void)
+{
+  return g_slice_new0 (GRealThread);
+}
+
+void
+g_system_thread_free (GRealThread *thread)
+{
+  g_slice_free (GRealThread, thread);
+}
+
 void
 g_system_thread_create (GThreadFunc       thread_func,
                         gpointer          arg,

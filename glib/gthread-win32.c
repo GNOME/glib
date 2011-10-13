@@ -463,6 +463,18 @@ struct _GThreadData
   gboolean joinable;
 };
 
+GRealThread *
+g_system_thread_new (void)
+{
+  return g_slice_new0 (GRealThread);
+}
+
+void
+g_system_thread_free (GRealThread *thread)
+{
+  g_slice_free (GRealThread, thread);
+}
+
 void
 g_system_thread_exit (void)
 {

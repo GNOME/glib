@@ -677,7 +677,7 @@ g_thread_cleanup (gpointer data)
        * If it is, the structure is freed in g_thread_join()
        */
       if (!thread->thread.joinable)
-        g_free (thread);
+        g_system_thread_free (thread);
     }
 }
 
@@ -804,7 +804,7 @@ g_thread_new_internal (const gchar   *name,
 
   g_return_val_if_fail (func != NULL, NULL);
 
-  result = g_new0 (GRealThread, 1);
+  result = g_system_thread_new ();
 
   result->thread.joinable = joinable;
   result->thread.func = func;
@@ -818,7 +818,7 @@ g_thread_new_internal (const gchar   *name,
   if (local_error)
     {
       g_propagate_error (error, local_error);
-      g_free (result);
+      g_system_thread_free (result);
       return NULL;
     }
 
@@ -894,7 +894,7 @@ g_thread_join (GThread *thread)
    * thread end. We free the memory here. This will leave a loose end,
    * if a joinable thread is not joined.
    */
-  g_free (thread);
+  g_system_thread_free (real);
 
   return retval;
 }
