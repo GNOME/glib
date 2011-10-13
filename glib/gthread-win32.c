@@ -476,7 +476,7 @@ g_system_thread_exit (void)
 }
 
 static guint __stdcall
-g_thread_proxy (gpointer data)
+g_thread_win32_proxy (gpointer data)
 {
   GThreadData *self = (GThreadData*) data;
 
@@ -508,7 +508,7 @@ g_system_thread_new (GThreadFunc   func,
 
   retval->joinable = joinable;
 
-  retval->thread = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_proxy,
+  retval->thread = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy,
 					    retval, 0, &ignore);
 
   if (retval->thread == NULL)
