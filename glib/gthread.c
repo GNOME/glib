@@ -809,7 +809,7 @@ g_thread_new_internal (const gchar   *name,
   g_return_val_if_fail (func != NULL, NULL);
 
   G_LOCK (g_thread_new);
-  thread = g_system_thread_new (proxy, stack_size, joinable, error);
+  thread = g_system_thread_new (proxy, stack_size, error);
   if (thread)
     {
       thread->ours = TRUE;

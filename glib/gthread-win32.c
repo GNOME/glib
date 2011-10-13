@@ -492,7 +492,6 @@ g_thread_win32_proxy (gpointer data)
 GRealThread *
 g_system_thread_new (GThreadFunc   func,
                      gulong        stack_size,
-                     gboolean      joinable,
                      GError      **error)
 {
   GThreadWin32 *thread;
