@@ -25,15 +25,6 @@
 
 #include "deprecated/gthread.h"
 
-struct  _GThread
-{
-  /*< private >*/
-  GThreadFunc func;
-  gpointer data;
-  gboolean joinable;
-  GThreadPriority priority;
-};
-
 typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
