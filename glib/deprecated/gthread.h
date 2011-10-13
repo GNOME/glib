@@ -153,10 +153,19 @@ struct _GStaticRecMutex
   /*< private >*/
   GStaticMutex mutex;
   guint depth;
-  GSystemThread owner;
+
+  /* ABI compat only */
+  union {
+#ifdef G_OS_WIN32
+    void *owner;
+#else
+    pthread_t owner;
+#endif
+    gdouble dummy;
+  };
 };
 
-#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, {{0, 0, 0, 0}} }
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
 GLIB_DEPRECATED_FOR(g_rec_mutex_init)
 void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
 

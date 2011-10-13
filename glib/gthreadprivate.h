@@ -61,7 +61,6 @@ struct  _GRealThread
   GThread thread;
   const gchar *name;
   gpointer retval;
-  GSystemThread system_thread;
 };
 
 #ifdef G_OS_WIN32

@@ -3091,20 +3091,6 @@ _______EOF
 #define G_THREADS_IMPL_$g_threads_impl_def
 _______EOF
 
-	cat >>$outfile <<_______EOF
-/* This represents a system thread as used by the implementation. An
- * alien implementaion, as loaded by g_thread_init can only count on
- * "sizeof (gpointer)" bytes to store their info. We however need more
- * for some of our native implementations. */
-typedef union _GSystemThread GSystemThread;
-union _GSystemThread
-{
-  char   data[[$g_system_thread_sizeof]];
-  double dummy_double;
-  void  *dummy_pointer;
-  long   dummy_long;
-};
-_______EOF
 	if test x"$g_memory_barrier_needed" != xno; then
 	  echo >>$outfile
 	  echo "#define G_ATOMIC_OP_MEMORY_BARRIER_NEEDED 1" >>$outfile
