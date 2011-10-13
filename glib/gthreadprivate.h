@@ -59,6 +59,8 @@ gpointer        g_thread_proxy                  (gpointer     thread);
 struct  _GRealThread
 {
   GThread thread;
+
+  gboolean ours;
   const gchar *name;
   gpointer retval;
 };

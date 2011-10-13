@@ -677,7 +677,12 @@ g_thread_cleanup (gpointer data)
        * If it is, the structure is freed in g_thread_join()
        */
       if (!thread->thread.joinable)
-        g_system_thread_free (thread);
+        {
+          if (thread->ours)
+            g_system_thread_free (thread);
+          else
+            g_slice_free (GRealThread, thread);
+        }
     }
 }
 
@@ -807,6 +812,7 @@ g_thread_new_internal (const gchar   *name,
   thread = g_system_thread_new (proxy, stack_size, joinable, error);
   if (thread)
     {
+      thread->ours = TRUE;
       thread->thread.joinable = joinable;
       thread->thread.func = func;
       thread->thread.data = data;
@@ -886,7 +892,10 @@ g_thread_join (GThread *thread)
    * thread end. We free the memory here. This will leave a loose end,
    * if a joinable thread is not joined.
    */
-  g_system_thread_free (real);
+  if (real->ours)
+    g_system_thread_free (real);
+  else
+    g_slice_free (GRealThread, real);
 
   return retval;
 }
@@ -910,15 +919,11 @@ g_thread_self (void)
        * This can happen for the main thread and for threads
        * that are not created by GLib.
        */
-      thread = g_new0 (GRealThread, 1);
-      thread->thread.joinable = FALSE; /* This is a safe guess */
-      thread->thread.func = NULL;
-      thread->thread.data = NULL;
-
+      thread = g_slice_new0 (GRealThread);
       g_private_set (&g_thread_specific_private, thread);
     }
 
-  return (GThread*)thread;
+  return (GThread*) thread;
 }
 
 /* Epilogue {{{1 */
