@@ -1069,10 +1069,19 @@ g_private_replace (GPrivate *key,
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
+typedef struct
+{
+  GRealThread thread;
+
+  pthread_t system_thread;
+} GThreadPosix;
+
 void
 g_system_thread_free (GRealThread *thread)
 {
-  g_slice_free (GRealThread, thread);
+  GThreadPosix *pt = (GThreadPosix *) thread;
+
+  g_slice_free (GThreadPosix, pt);
 }
 
 GRealThread *
@@ -1081,11 +1090,11 @@ g_system_thread_new (GThreadFunc   thread_func,
                      gboolean      joinable,
                      GError      **error)
 {
-  GRealThread *thread;
+  GThreadPosix *thread;
   pthread_attr_t attr;
   gint ret;
 
-  thread = g_slice_new0 (GRealThread);
+  thread = g_slice_new0 (GThreadPosix);
 
   posix_check_cmd (pthread_attr_init (&attr));
 
@@ -1104,7 +1113,7 @@ g_system_thread_new (GThreadFunc   thread_func,
   posix_check_cmd (pthread_attr_setdetachstate (&attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 
-  ret = pthread_create ((pthread_t *) &(thread->system_thread), &attr, (void* (*)(void*))thread_func, thread);
+  ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))thread_func, thread);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
 
@@ -1112,13 +1121,13 @@ g_system_thread_new (GThreadFunc   thread_func,
     {
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
                    "Error creating thread: %s", g_strerror (ret));
-      g_slice_free (GRealThread, thread);
+      g_slice_free (GThreadPosix, thread);
       return NULL;
     }
 
   posix_check_err (ret, "pthread_create");
 
-  return thread;
+  return (GRealThread *) thread;
 }
 
 /**
@@ -1138,8 +1147,9 @@ g_thread_yield (void)
 void
 g_system_thread_wait (GRealThread *thread)
 {
+  GThreadPosix *pt = (GThreadPosix *) thread;
   gpointer ignore;
-  posix_check_cmd (pthread_join (*(pthread_t*)&(thread->system_thread), &ignore));
+  posix_check_cmd (pthread_join (pt->system_thread, &ignore));
 }
 
 void
