@@ -199,6 +199,7 @@ static GSList      *g_thread_all_threads = NULL;
 static GSList      *g_thread_free_indices = NULL;
 
 /* Protects g_thread_all_threads and g_thread_free_indices */
+G_LOCK_DEFINE_STATIC (g_static_mutex);
 G_LOCK_DEFINE_STATIC (g_thread);
 
 /* Misc. GThread functions {{{1 */
@@ -504,7 +505,7 @@ g_static_mutex_get_mutex_impl (GStaticMutex* mutex)
 
   if (!result)
     {
-      g_mutex_lock (&g_once_mutex);
+      G_LOCK (g_static_mutex);
 
       result = mutex->mutex;
       if (!result)
@@ -513,7 +514,7 @@ g_static_mutex_get_mutex_impl (GStaticMutex* mutex)
           g_atomic_pointer_set (&mutex->mutex, result);
         }
 
-      g_mutex_unlock (&g_once_mutex);
+      G_UNLOCK (g_static_mutex);
     }
 
   return result;
@@ -660,7 +661,7 @@ g_static_rec_mutex_get_rec_mutex_impl (GStaticRecMutex* mutex)
 
   if (!result)
     {
-      g_mutex_lock (&g_once_mutex);
+      G_LOCK (g_static_mutex);
 
       result = (GRecMutex *) mutex->mutex.mutex;
       if (!result)
@@ -670,7 +671,7 @@ g_static_rec_mutex_get_rec_mutex_impl (GStaticRecMutex* mutex)
           g_atomic_pointer_set (&mutex->mutex.mutex, result);
         }
 
-      g_mutex_unlock (&g_once_mutex);
+      G_UNLOCK (g_static_mutex);
     }
 
   return result;

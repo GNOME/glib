@@ -61,8 +61,6 @@ struct  _GRealThread
   GSystemThread system_thread;
 };
 
-G_GNUC_INTERNAL extern GMutex g_once_mutex;
-
 #ifdef G_OS_WIN32
 G_GNUC_INTERNAL void g_thread_DllMain (void);
 #endif

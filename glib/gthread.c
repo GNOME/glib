@@ -468,7 +468,7 @@ g_thread_error_quark (void)
 
 /* Local Data {{{1 -------------------------------------------------------- */
 
-GMutex           g_once_mutex;
+static GMutex    g_once_mutex;
 static GCond     g_once_cond;
 static GSList   *g_once_init_list = NULL;
 
