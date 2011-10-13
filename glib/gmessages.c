@@ -79,6 +79,136 @@
 #endif
 
 
+/**
+ * SECTION:messages
+ * @title: Message Logging
+ * @short_description: versatile support for logging messages
+ *     with different levels of importance
+ *
+ * These functions provide support for logging error messages
+ * or messages used for debugging.
+ *
+ * There are several built-in levels of messages, defined in
+ * #GLogLevelFlags. These can be extended with user-defined levels.
+ */
+
+/**
+ * G_LOG_DOMAIN:
+ *
+ * Defines the log domain.
+ *
+ * For applications, this is typically left as the default %NULL
+ * (or "") domain. Libraries should define this so that any messages
+ * which they log can be differentiated from messages from other
+ * libraries and application code. But be careful not to define
+ * it in any public header files.
+ *
+ * For example, GTK+ uses this in its Makefile.am:
+ * |[
+ * INCLUDES = -DG_LOG_DOMAIN=\"Gtk\"
+ * ]|
+ */
+
+/**
+ * G_LOG_FATAL_MASK:
+ *
+ * GLib log levels that are considered fatal by default.
+ */
+
+/**
+ * GLogFunc:
+ * @log_domain: the log domain of the message
+ * @log_level: the log level of the message (including the
+ *     fatal and recursion flags)
+ * @message: the message to process
+ * @user_data: user data, set in g_log_set_handler()
+ *
+ * Specifies the prototype of log handler functions.
+ */
+
+/**
+ * GLogLevelFlags:
+ * @G_LOG_FLAG_RECURSION: internal flag
+ * @G_LOG_FLAG_FATAL: internal flag
+ * @G_LOG_LEVEL_ERROR: log level for errors, see g_error().
+ *     This level is also used for messages produced by g_assert().
+ * @G_LOG_LEVEL_CRITICAL: log level for critical messages, see g_critical().
+ *     This level is also used for messages produced by g_return_if_fail()
+ *     and g_return_val_if_fail().
+ * @G_LOG_LEVEL_WARNING: log level for warnings, see g_warning()
+ * @G_LOG_LEVEL_MESSAGE: log level for messages, see g_message()
+ * @G_LOG_LEVEL_INFO: log level for informational messages
+ * @G_LOG_LEVEL_DEBUG: log level for debug messages, see g_debug()
+ * @G_LOG_LEVEL_MASK: a mask including all log levels
+ *
+ * Flags specifying the level of log messages.
+ *
+ * It is possible to change how GLib treats messages of the various
+ * levels using g_log_set_handler() and g_log_set_fatal_mask().
+ */
+
+/**
+ * g_message:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * A convenience function/macro to log a normal message.
+ */
+
+/**
+ * g_warning:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * A convenience function/macro to log a warning message.
+ *
+ * You can make warnings fatal at runtime by setting the
+ * %G_DEBUG environment variable (see
+ * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ */
+
+/**
+ * g_critical:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * Logs a "critical warning" (#G_LOG_LEVEL_CRITICAL).
+ * It's more or less application-defined what constitutes
+ * a critical vs. a regular warning. You could call
+ * g_log_set_always_fatal() to make critical warnings exit
+ * the program, then use g_critical() for fatal errors, for
+ * example.
+ *
+ * You can also make critical warnings fatal at runtime by
+ * setting the %G_DEBUG environment variable (see
+ * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ */
+
+/**
+ * g_error:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * A convenience function/macro to log an error message.
+ *
+ * Error messages are always fatal, resulting in a call to
+ * abort() to terminate the application. This function will
+ * result in a core dump; don't use it for errors you expect.
+ * Using this function indicates a bug in your program, i.e.
+ * an assertion failure.
+ *
+ */
+
+/**
+ * g_debug:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * A convenience function/macro to log a debug message.
+ *
+ * Since: 2.6
+ */
+
 /* --- structures --- */
 typedef struct _GLogDomain	GLogDomain;
 typedef struct _GLogHandler	GLogHandler;
@@ -236,6 +366,22 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
   return default_log_func;
 }
 
+/**
+ * g_log_set_always_fatal:
+ * @fatal_mask: the mask containing bits set for each level
+ *     of error which is to be fatal
+ *
+ * Sets the message levels which are always fatal, in any log domain.
+ * When a message with any of these levels is logged the program terminates.
+ * You can only set the levels defined by GLib to be fatal.
+ * %G_LOG_LEVEL_ERROR is always fatal.
+ *
+ * You can also make some message levels fatal at runtime by setting
+ * the %G_DEBUG environment variable (see
+ * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ *
+ * Returns: the old fatal mask
+ */
 GLogLevelFlags
 g_log_set_always_fatal (GLogLevelFlags fatal_mask)
 {
@@ -258,6 +404,16 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
   return old_mask;
 }
 
+/**
+ * g_log_set_fatal_mask:
+ * @log_domain: the log domain
+ * @fatal_mask: the new fatal mask
+ *
+ * Sets the log levels which are fatal in the given domain.
+ * %G_LOG_LEVEL_ERROR is always fatal.
+ *
+ * Returns: the old fatal mask for the log domain
+ */
 GLogLevelFlags
 g_log_set_fatal_mask (const gchar   *log_domain,
 		      GLogLevelFlags fatal_mask)
@@ -288,6 +444,54 @@ g_log_set_fatal_mask (const gchar   *log_domain,
   return old_flags;
 }
 
+/**
+ * g_log_set_handler:
+ * @log_domain: the log domain, or %NULL for the default ""
+ *     application domain
+ * @log_levels: the log levels to apply the log handler for.
+ *     To handle fatal and recursive messages as well, combine
+ *     the log levels with the #G_LOG_FLAG_FATAL and
+ *     #G_LOG_FLAG_RECURSION bit flags.
+ * @log_func: the log handler function
+ * @user_data: data passed to the log handler
+ *
+ * Sets the log handler for a domain and a set of log levels.
+ * To handle fatal and recursive messages the @log_levels parameter
+ * must be combined with the #G_LOG_FLAG_FATAL and #G_LOG_FLAG_RECURSION
+ * bit flags.
+ *
+ * Note that since the #G_LOG_LEVEL_ERROR log level is always fatal, if
+ * you want to set a handler for this log level you must combine it with
+ * #G_LOG_FLAG_FATAL.
+ *
+ * <example>
+ * <title>Adding a log handler for all warning messages in the default
+ * (application) domain</title>
+ * <programlisting>
+ * g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
+ *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+ * </programlisting>
+ * </example>
+ *
+ * <example>
+ * <title>Adding a log handler for all critical messages from GTK+</title>
+ * <programlisting>
+ * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
+ *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+ * </programlisting>
+ * </example>
+ *
+ * <example>
+ * <title>Adding a log handler for <emphasis>all</emphasis> messages from
+ * GLib</title>
+ * <programlisting>
+ * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
+ *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+ * </programlisting>
+ * </example>
+ *
+ * Returns: the id of the new handler
+ */
 guint
 g_log_set_handler (const gchar	 *log_domain,
 		   GLogLevelFlags log_levels,
@@ -324,6 +528,20 @@ g_log_set_handler (const gchar	 *log_domain,
   return handler_id;
 }
 
+/**
+ * g_log_set_default_handler:
+ * log_func: the log handler function
+ * @user_data: data passed to the log handler
+ *
+ * Installs a default log handler which is used if no
+ * log handler has been set for the particular log domain
+ * and log level combination. By default, GLib uses
+ * g_log_default_handler() as default log handler.
+ *
+ * Returns: the previous default log handler
+ *
+ * Since: 2.6
+ */
 GLogFunc
 g_log_set_default_handler (GLogFunc log_func,
 			   gpointer user_data)
@@ -372,6 +590,14 @@ g_test_log_set_fatal_handler (GTestLogFatalFunc log_func,
   g_mutex_unlock (&g_messages_lock);
 }
 
+/**
+ * g_log_remove_handler:
+ * @log_domain: the log domain
+ * @handler_id: the id of the handler, which was returned
+ *     in g_log_set_handler()
+ *
+ * Removes the log handler.
+ */
 void
 g_log_remove_handler (const gchar *log_domain,
 		      guint	   handler_id)
@@ -413,6 +639,18 @@ g_log_remove_handler (const gchar *log_domain,
 	     G_STRLOC, handler_id, log_domain);
 }
 
+/**
+ * g_logv:
+ * @log_domain: the log domain
+ * @log_level: the log level
+ * @format: the message format. See the printf() documentation
+ * @args: the parameters to insert into the format string
+ *
+ * Logs an error or debugging message.
+ *
+ * If the log level has been set as fatal, the abort()
+ * function is called to terminate the program.
+ */
 void
 g_logv (const gchar   *log_domain,
 	GLogLevelFlags log_level,
@@ -527,6 +765,19 @@ g_logv (const gchar   *log_domain,
     }
 }
 
+/**
+ * g_log:
+ * @log_domain: the log domain, usually #G_LOG_DOMAIN
+ * @log_level: the log level, either from #GLogLevelFlags
+ *     or a user-defined level
+ * @format: the message format. See the printf() documentation
+ * @...: the parameters to insert into the format string
+ *
+ * Logs an error or debugging message.
+ *
+ * If the log level has been set as fatal, the abort()
+ * function is called to terminate the program.
+ */
 void
 g_log (const gchar   *log_domain,
        GLogLevelFlags log_level,
@@ -878,6 +1129,23 @@ escape_string (GString *string)
     }
 }
 
+/**
+ * g_log_default_handler:
+ * @log_domain: the log domain of the message
+ * @log_level: the level of the message
+ * @message: the message
+ * @unused_data: data passed from g_log() which is unused
+ *
+ * The default log handler set up by GLib; g_log_set_default_handler()
+ * allows to install an alternate default log handler.
+ * This is used if no log handler has been set for the particular log
+ * domain and log level combination. It outputs the message to stderr
+ * or stdout and if the log level is fatal it calls abort().
+ *
+ * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
+ * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
+ * the rest.
+ */
 void
 g_log_default_handler (const gchar   *log_domain,
 		       GLogLevelFlags log_level,
