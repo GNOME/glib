@@ -1074,12 +1074,19 @@ typedef struct
   GRealThread thread;
 
   pthread_t system_thread;
+  gboolean  joined;
+  GMutex    lock;
 } GThreadPosix;
 
 void
 g_system_thread_free (GRealThread *thread)
 {
   GThreadPosix *pt = (GThreadPosix *) thread;
+
+  if (!pt->joined)
+    pthread_detach (pt->system_thread);
+
+  g_mutex_clear (&pt->lock);
 
   g_slice_free (GThreadPosix, pt);
 }
@@ -1110,9 +1117,6 @@ g_system_thread_new (GThreadFunc   thread_func,
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
-  posix_check_cmd (pthread_attr_setdetachstate (&attr,
-          joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
-
   ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))thread_func, thread);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
@@ -1126,6 +1130,8 @@ g_system_thread_new (GThreadFunc   thread_func,
     }
 
   posix_check_err (ret, "pthread_create");
+
+  g_mutex_init (&thread->lock);
 
   return (GRealThread *) thread;
 }
@@ -1148,8 +1154,16 @@ void
 g_system_thread_wait (GRealThread *thread)
 {
   GThreadPosix *pt = (GThreadPosix *) thread;
-  gpointer ignore;
-  posix_check_cmd (pthread_join (pt->system_thread, &ignore));
+
+  g_mutex_lock (&pt->lock);
+
+  if (!pt->joined)
+    {
+      posix_check_cmd (pthread_join (pt->system_thread, NULL));
+      pt->joined = TRUE;
+    }
+
+  g_mutex_unlock (&pt->lock);
 }
 
 void
