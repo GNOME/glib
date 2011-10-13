@@ -666,7 +666,17 @@ void
 
 /* GThread {{{1 -------------------------------------------------------- */
 
-static void
+GThread *
+g_thread_ref (GThread *thread)
+{
+  GRealThread *real = (GRealThread *) thread;
+
+  g_atomic_int_inc (&real->ref_count);
+
+  return thread;
+}
+
+void
 g_thread_unref (GThread *thread)
 {
   GRealThread *real = (GRealThread *) thread;

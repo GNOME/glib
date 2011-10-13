@@ -137,6 +137,8 @@ struct _GOnce
 #  define G_TRYLOCK(name) g_mutex_trylock (&G_LOCK_NAME (name))
 #endif /* !G_DEBUG_LOCKS */
 
+GThread *       g_thread_ref                    (GThread        *thread);
+void            g_thread_unref                  (GThread        *thread);
 GThread *       g_thread_new                    (const gchar    *name,
                                                  GThreadFunc     func,
                                                  gpointer        data,
