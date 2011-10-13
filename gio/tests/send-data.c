@@ -91,10 +91,8 @@ main (int argc, char *argv[])
   if (cancel_timeout)
     {
       GThread *thread;
-
       cancellable = g_cancellable_new ();
-      thread = g_thread_new ("cancel", cancel_thread, cancellable, NULL);
-      g_assert (thread != NULL);
+      thread = g_thread_new ("cancel", cancel_thread, cancellable);
       g_thread_unref (thread);
     }
   else

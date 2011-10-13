@@ -731,23 +731,55 @@ g_thread_proxy (gpointer data)
  * a debugger. Some systems restrict the length of @name to
  * 16 bytes.
  *
- * @error can be %NULL to ignore errors, or non-%NULL to report errors.
- * The error is set, if and only if the function returns %NULL.
+ * If the thread can not be created the program aborts.  See
+ * g_thread_try() if you want to attempt to deal with failures.
  *
- * You must 
+ * Returns: the new #GThread
+ *
+ * Since: 2.32
+ */
+GThread *
+g_thread_new (const gchar *name,
+              GThreadFunc  func,
+              gpointer     data)
+{
+  GError *error = NULL;
+  GThread *thread;
+
+  thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, &error);
+
+  if G_UNLIKELY (thread == NULL)
+    g_error ("creating thread '%s': %s", name ? name : "", error->message);
+
+  return thread;
+}
+
+/**
+ * g_thread_try:
+ * @name: a name for the new thread
+ * @func: a function to execute in the new thread
+ * @data: an argument to supply to the new thread
+ * @error: return location for error
+ *
+ * This function is the same as g_thread_new() except that it allows for
+ * the possibility of failure.
+ *
+ * If a thread can not be created (due to resource limits), @error is
+ * set and %NULL is returned.
  *
  * Returns: the new #GThread, or %NULL if an error occurred
  *
  * Since: 2.32
  */
 GThread *
-g_thread_new (const gchar  *name,
+g_thread_try (const gchar  *name,
               GThreadFunc   func,
               gpointer      data,
               GError      **error)
 {
   return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
 }
+
 
 /**
  * g_thread_new_full:

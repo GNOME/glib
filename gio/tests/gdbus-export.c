@@ -936,16 +936,11 @@ static void
 test_dispatch (const gchar *object_path)
 {
   GThread *thread;
-  GError *error;
 
   /* run this in a thread to avoid deadlocks */
-  error = NULL;
   thread = g_thread_new ("test_dispatch",
                          test_dispatch_thread_func,
-                         (gpointer) object_path,
-                         &error);
-  g_assert_no_error (error);
-  g_assert (thread != NULL);
+                         (gpointer) object_path);
   g_main_loop_run (loop);
   g_thread_join (thread);
 }

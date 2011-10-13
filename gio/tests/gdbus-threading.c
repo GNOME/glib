@@ -229,16 +229,11 @@ test_delivery_in_thread_func (gpointer _data)
 static void
 test_delivery_in_thread (void)
 {
-  GError *error;
   GThread *thread;
 
-  error = NULL;
   thread = g_thread_new ("deliver",
                          test_delivery_in_thread_func,
-                         NULL,
-                         &error);
-  g_assert_no_error (error);
-  g_assert (thread != NULL);
+                         NULL);
 
   /* run the event loop - it is needed to dispatch D-Bus messages */
   g_main_loop_run (loop);
@@ -379,12 +374,10 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       SyncThreadData data1;
       SyncThreadData data2;
       SyncThreadData data3;
-      GError *error;
       GTimeVal start_time;
       GTimeVal end_time;
       guint elapsed_msec;
 
-      error = NULL;
       do_async = (n == 0);
 
       g_get_current_time (&start_time);
@@ -396,10 +389,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data1.done = FALSE;
       thread1 = g_thread_new ("sleep",
                               test_sleep_in_thread_func,
-                              &data1,
-                              &error);
-      g_assert_no_error (error);
-      g_assert (thread1 != NULL);
+                              &data1);
 
       data2.proxy = proxy;
       data2.msec = 20;
@@ -408,10 +398,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data2.done = FALSE;
       thread2 = g_thread_new ("sleep2",
                               test_sleep_in_thread_func,
-                              &data2,
-                              &error);
-      g_assert_no_error (error);
-      g_assert (thread2 != NULL);
+                              &data2);
 
       data3.proxy = proxy;
       data3.msec = 100;
@@ -420,10 +407,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data3.done = FALSE;
       thread3 = g_thread_new ("sleep3",
                               test_sleep_in_thread_func,
-                              &data3,
-                              &error);
-      g_assert_no_error (error);
-      g_assert (thread3 != NULL);
+                              &data3);
 
       /* we handle messages in the main loop - threads will quit it when they are done */
       while (!(data1.done && data2.done && data3.done))

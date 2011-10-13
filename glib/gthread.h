@@ -141,6 +141,9 @@ GThread *       g_thread_ref                    (GThread        *thread);
 void            g_thread_unref                  (GThread        *thread);
 GThread *       g_thread_new                    (const gchar    *name,
                                                  GThreadFunc     func,
+                                                 gpointer        data);
+GThread *       g_thread_try                    (const gchar    *name,
+                                                 GThreadFunc     func,
                                                  gpointer        data,
                                                  GError        **error);
 GThread *       g_thread_new_full               (const gchar    *name,

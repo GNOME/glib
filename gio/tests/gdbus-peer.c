@@ -601,11 +601,9 @@ test_peer (void)
   g_assert (c == NULL);
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
-  error = NULL;
   service_thread = g_thread_new ("test_peer",
                                  service_thread_func,
-                                 &data,
-                                 &error);
+                                 &data);
   while (service_loop == NULL)
     g_thread_yield ();
   g_assert (server != NULL);
@@ -1050,11 +1048,9 @@ delayed_message_processing (void)
 
   data = g_new0 (DmpData, 1);
 
-  error = NULL;
   service_thread = g_thread_new ("dmp",
                                  dmp_thread_func,
-                                 data,
-                                 &error);
+                                 data);
   while (data->server == NULL || !g_dbus_server_is_active (data->server))
     g_thread_yield ();
 
@@ -1201,8 +1197,7 @@ test_nonce_tcp (void)
   service_loop = NULL;
   service_thread = g_thread_new ("nonce-tcp-service",
                                  nonce_tcp_service_thread_func,
-                                 &data,
-                                 &error);
+                                 &data);
   while (service_loop == NULL)
     g_thread_yield ();
   g_assert (server != NULL);
@@ -1510,8 +1505,7 @@ test_tcp_anonymous (void)
   service_loop = NULL;
   service_thread = g_thread_new ("tcp-anon-service",
                                  tcp_anonymous_service_thread_func,
-                                 &seen_connection, /* user_data */
-                                 &error);
+                                 &seen_connection);
   while (service_loop == NULL)
     g_thread_yield ();
   g_assert (server != NULL);

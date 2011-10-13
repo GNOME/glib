@@ -75,7 +75,7 @@ idle_start_test1_thread (gpointer loop)
   gboolean io_completed;
 
   g_mutex_lock (&test1_mutex);
-  thread = g_thread_new ("test1", test1_thread, NULL, NULL);
+  thread = g_thread_new ("test1", test1_thread, NULL);
 
   g_get_current_time (&time);
   time.tv_sec += 2;

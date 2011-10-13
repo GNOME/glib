@@ -229,7 +229,7 @@ test_threaded (void)
   for (i = 0; i < NUM_THREADS; i++)
     {
       context_init (&contexts[i]);
-      threads[i] = g_thread_new ("test", thread_func, &contexts[i], NULL);
+      threads[i] = g_thread_new ("test", thread_func, &contexts[i]);
     }
 
   /* dispatch tokens */

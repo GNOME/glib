@@ -34,18 +34,16 @@ static void
 multithreaded_test_run (GThreadFunc function)
 {
   int i;
-  GError *error = NULL;
   GPtrArray *threads = g_ptr_array_new ();
 
   for (i = 0; i < N_THREADS; i++)
     {
       GThread *thread;
 
-      thread = g_thread_new ("test", function, GINT_TO_POINTER (i), &error);
-      g_assert_no_error (error);
+      thread = g_thread_new ("test", function, GINT_TO_POINTER (i));
       g_ptr_array_add (threads, thread);
     }
-  
+
   for (i = 0; i < N_THREADS; i++)
     {
       gpointer ret;

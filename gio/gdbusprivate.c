@@ -287,7 +287,6 @@ static SharedThreadData *
 _g_dbus_shared_thread_ref (void)
 {
   static gsize shared_thread_data = 0;
-  GError *error = NULL;
   SharedThreadData *ret;
 
   if (g_once_init_enter (&shared_thread_data))
@@ -304,9 +303,7 @@ _g_dbus_shared_thread_ref (void)
       data->loop = g_main_loop_new (data->context, FALSE);
       data->thread = g_thread_new ("gdbus",
                                    gdbus_shared_thread_func,
-                                   data,
-                                   &error);
-      g_assert_no_error (error);
+                                   data);
       /* We can cast between gsize and gpointer safely */
       g_once_init_leave (&shared_thread_data, (gsize) data);
     }
