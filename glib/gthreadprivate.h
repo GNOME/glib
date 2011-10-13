@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 typedef struct _GRealThread GRealThread;
 
 G_GNUC_INTERNAL
-void            g_system_thread_join            (GRealThread      *thread);
+void            g_system_thread_wait            (GRealThread      *thread);
 
 G_GNUC_INTERNAL
 GRealThread *   g_system_thread_new             (void);

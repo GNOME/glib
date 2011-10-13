@@ -883,7 +883,7 @@ g_thread_join (GThread *thread)
   g_return_val_if_fail (thread, NULL);
   g_return_val_if_fail (thread->joinable, NULL);
 
-  g_system_thread_join (real);
+  g_system_thread_wait (real);
 
   retval = real->retval;
 

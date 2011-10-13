@@ -1140,7 +1140,7 @@ g_thread_yield (void)
 }
 
 void
-g_system_thread_join (GRealThread *thread)
+g_system_thread_wait (GRealThread *thread)
 {
   gpointer ignore;
   posix_check_cmd (pthread_join (*(pthread_t*)&(thread->system_thread), &ignore));

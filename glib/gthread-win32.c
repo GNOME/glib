@@ -539,7 +539,7 @@ g_thread_yield (void)
 }
 
 void
-g_system_thread_join (GRealThread *thread)
+g_system_thread_wait (GRealThread *thread)
 {
   GThreadData *target = *(GThreadData **)&(thread->system_thread);
 
