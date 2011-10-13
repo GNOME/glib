@@ -463,10 +463,19 @@ struct _GThreadData
   gboolean joinable;
 };
 
+typedef struct
+{
+  GRealThread thread;
+
+  GThreadData *data;
+} GThreadWin32;
+
 void
 g_system_thread_free (GRealThread *thread)
 {
-  g_slice_free (GRealThread, thread);
+  GThreadWin32 *wt = (GThreadWin32 *) thread;
+
+  g_slice_free (GThreadWin32, wt);
 }
 
 void
@@ -497,11 +506,11 @@ g_system_thread_new (GThreadFunc   func,
                      gboolean      joinable,
                      GError      **error)
 {
-  GRealThread *thread;
+  GThreadWin32 *thread;
   guint ignore;
   GThreadData *retval;
 
-  thread = g_slice_new0 (GRealThread);
+  thread = g_slice_new0 (GThreadWin32);
   retval = g_new(GThreadData, 1);
   retval->func = func;
   retval->data = thread;
@@ -518,13 +527,13 @@ g_system_thread_new (GThreadFunc   func,
                    "Error creating thread: %s", win_error);
       g_free (retval);
       g_free (win_error);
-      g_slice_free (GRealThread, thread);
+      g_slice_free (GThreadWin32, thread);
       return NULL;
     }
 
-  *(GThreadData **) &(thread->system_thread) = retval;
+  thread->data = retval;
 
-  return thread;
+  return (GRealThread *) thread;
 }
 
 void
@@ -536,7 +545,8 @@ g_thread_yield (void)
 void
 g_system_thread_wait (GRealThread *thread)
 {
-  GThreadData *target = *(GThreadData **)&(thread->system_thread);
+  GThreadWin32 *wt = (GThreadWin32 *) thread;
+  GThreadData *target = wt->data;
 
   g_return_if_fail (target->joinable);
 
