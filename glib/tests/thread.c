@@ -23,11 +23,14 @@
 #include <config.h>
 
 #include <sys/time.h>
-#include <sys/resource.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 #include <glib.h>
+
+#ifndef G_OS_WIN32
+#include <sys/resource.h>
+#endif
 
 static gpointer
 thread1_func (gpointer data)
