@@ -59,6 +59,7 @@ struct  _GRealThread
 {
   GThread thread;
 
+  gint ref_count;
   gboolean ours;
   const gchar *name;
   gpointer retval;

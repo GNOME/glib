@@ -667,23 +667,23 @@ void
 /* GThread {{{1 -------------------------------------------------------- */
 
 static void
+g_thread_unref (GThread *thread)
+{
+  GRealThread *real = (GRealThread *) thread;
+
+  if (g_atomic_int_dec_and_test (&real->ref_count))
+    {
+      if (real->ours)
+        g_system_thread_free (real);
+      else
+        g_slice_free (GRealThread, real);
+    }
+}
+
+static void
 g_thread_cleanup (gpointer data)
 {
-  if (data)
-    {
-      GRealThread* thread = data;
-
-      /* We only free the thread structure if it isn't joinable.
-       * If it is, the structure is freed in g_thread_join()
-       */
-      if (!thread->thread.joinable)
-        {
-          if (thread->ours)
-            g_system_thread_free (thread);
-          else
-            g_slice_free (GRealThread, thread);
-        }
-    }
+  g_thread_unref (data);
 }
 
 gpointer
@@ -812,6 +812,7 @@ g_thread_new_internal (const gchar   *name,
   thread = g_system_thread_new (proxy, stack_size, error);
   if (thread)
     {
+      thread->ref_count = joinable ? 2 : 1;
       thread->ours = TRUE;
       thread->thread.joinable = joinable;
       thread->thread.func = func;
@@ -888,14 +889,7 @@ g_thread_join (GThread *thread)
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
 
-  /* the thread structure for non-joinable threads is freed upon
-   * thread end. We free the memory here. This will leave a loose end,
-   * if a joinable thread is not joined.
-   */
-  if (real->ours)
-    g_system_thread_free (real);
-  else
-    g_slice_free (GRealThread, real);
+  g_thread_unref (thread);
 
   return retval;
 }
@@ -920,6 +914,8 @@ g_thread_self (void)
        * that are not created by GLib.
        */
       thread = g_slice_new0 (GRealThread);
+      thread->ref_count = 1;
+
       g_private_set (&g_thread_specific_private, thread);
     }
 
