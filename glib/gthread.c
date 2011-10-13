@@ -412,9 +412,9 @@
  * GThread:
  *
  * The #GThread struct represents a running thread. This struct
- * is returned by g_thread_new() or g_thread_new_full(). You can
- * obtain the #GThread struct representing the current thead by
- * calling g_thread_self().
+ * is returned by g_thread_new() or g_thread_try(). You can obtain the
+ * #GThread struct representing the current thead by calling
+ * g_thread_self().
  *
  * The structure is opaque -- none of its fields may be directly
  * accessed.
@@ -424,8 +424,8 @@
  * GThreadFunc:
  * @data: data passed to the thread
  *
- * Specifies the type of the @func functions passed to
- * g_thread_new() or g_thread_new_full().
+ * Specifies the type of the @func functions passed to g_thread_new() or
+ * g_thread_try().
  *
  * Returns: the return value of the thread
  */
@@ -778,47 +778,6 @@ g_thread_try (const gchar  *name,
               GError      **error)
 {
   return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
-}
-
-
-/**
- * g_thread_new_full:
- * @name: a name for the new thread
- * @func: a function to execute in the new thread
- * @data: an argument to supply to the new thread
- * @stack_size: a stack size for the new thread
- * @error: return location for error
- *
- * This function creates a new thread. The new thread starts by
- * invoking @func with the argument data. The thread will run
- * until @func returns or until g_thread_exit() is called.
- *
- * The @name can be useful for discriminating threads in
- * a debugger. Some systems restrict the length of @name to
- * 16 bytes.
- *
- * If the underlying thread implementation supports it, the thread
- * gets a stack size of @stack_size or the default value for the
- * current platform, if @stack_size is 0. Note that you should only
- * use a non-zero @stack_size if you really can't use the default.
- * In most cases, using g_thread_new() (which doesn't take a
- * @stack_size) is better.
- *
- * @error can be %NULL to ignore errors, or non-%NULL to report errors.
- * The error is set, if and only if the function returns %NULL.
- *
- * Returns: the new #GThread, or %NULL if an error occurred
- *
- * Since: 2.32
- */
-GThread *
-g_thread_new_full (const gchar  *name,
-                   GThreadFunc   func,
-                   gpointer      data,
-                   gsize         stack_size,
-                   GError      **error)
-{
-  return g_thread_new_internal (name, g_thread_proxy, func, data, stack_size, error);
 }
 
 GThread *

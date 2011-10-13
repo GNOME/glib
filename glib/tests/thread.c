@@ -107,9 +107,9 @@ test_thread3 (void)
   gpointer result;
   GThread *thread1, *thread2, *thread3;
 
-  thread1 = g_thread_new_full ("a", thread3_func, NULL, 0, NULL);
-  thread2 = g_thread_new_full ("b", thread3_func, thread1, 100, NULL);
-  thread3 = g_thread_new_full ("c", thread3_func, thread2, 100000, NULL);
+  thread1 = g_thread_new ("a", thread3_func, NULL);
+  thread2 = g_thread_new ("b", thread3_func, thread1);
+  thread3 = g_thread_new ("c", thread3_func, thread2);
 
   result = g_thread_join (thread3);
 

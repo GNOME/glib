@@ -146,11 +146,6 @@ GThread *       g_thread_try                    (const gchar    *name,
                                                  GThreadFunc     func,
                                                  gpointer        data,
                                                  GError        **error);
-GThread *       g_thread_new_full               (const gchar    *name,
-                                                 GThreadFunc     func,
-                                                 gpointer        data,
-                                                 gsize           stack_size,
-                                                 GError        **error);
 GThread *       g_thread_self                   (void);
 void            g_thread_exit                   (gpointer        retval);
 gpointer        g_thread_join                   (GThread        *thread);

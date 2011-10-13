@@ -350,7 +350,7 @@ g_thread_create (GThreadFunc   func,
  * This function creates a new thread.
  *
  * Deprecated:2.32: The @bound and @priority arguments are now ignored.
- * Use g_thread_new() or g_thread_new_full() instead.
+ * Use g_thread_new().
  */
 GThread *
 g_thread_create_full (GThreadFunc       func,

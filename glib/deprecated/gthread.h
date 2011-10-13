@@ -102,7 +102,7 @@ GThread *g_thread_create       (GThreadFunc       func,
                                 gboolean          joinable,
                                 GError          **error);
 
-GLIB_DEPRECATED_FOR(g_thread_new_full)
+GLIB_DEPRECATED_FOR(g_thread_new)
 GThread *g_thread_create_full  (GThreadFunc       func,
                                 gpointer          data,
                                 gulong            stack_size,
