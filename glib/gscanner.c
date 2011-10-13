@@ -53,6 +53,198 @@
 #include <io.h> /* For _read() */
 #endif
 
+
+/**
+ * SECTION:scanner
+ * @title: Lexical Scanner
+ * @short_description: a general purpose lexical scanner
+ *
+ * The #GScanner and its associated functions provide a
+ * general purpose lexical scanner.
+ */
+
+/**
+ * GScannerMsgFunc:
+ * @scanner: a #GScanner
+ * @message: the message
+ * @error: %TRUE if the message signals an error,
+ *     %FALSE if it signals a warning.
+ *
+ * Specifies the type of the message handler function.
+ */
+
+/**
+ * G_CSET_a_2_z:
+ *
+ * The set of lowercase ASCII alphabet characters.
+ * Used for specifying valid identifier characters
+ * in #GScannerConfig.
+ */
+
+/**
+ * G_CSET_A_2_Z:
+ *
+ * The set of uppercase ASCII alphabet characters.
+ * Used for specifying valid identifier characters
+ * in #GScannerConfig.
+ */
+
+/**
+ * G_CSET_LATINC:
+ *
+ * The set of uppercase ISO 8859-1 alphabet characters
+ * which are not ASCII characters.
+ * Used for specifying valid identifier characters
+ * in #GScannerConfig.
+ */
+
+/**
+ * G_CSET_LATINS:
+ *
+ * The set of lowercase ISO 8859-1 alphabet characters
+ * which are not ASCII characters.
+ * Used for specifying valid identifier characters
+ * in #GScannerConfig.
+ */
+
+/**
+ * GTokenType:
+ * @G_TOKEN_EOF: the end of the file
+ * @G_TOKEN_LEFT_PAREN: a '(' character
+ * @G_TOKEN_LEFT_CURLY: a '{' character
+ * @G_TOKEN_RIGHT_CURLY: a '}' character
+ *
+ * The possible types of token returned from each
+ * g_scanner_get_next_token() call.
+ */
+
+/**
+ * GTokenValue:
+ *
+ * A union holding the value of the token.
+ */
+
+/**
+ * GErrorType:
+ * @G_ERR_UNKNOWN: unknown error
+ * @G_ERR_UNEXP_EOF: unexpected end of file
+ * @G_ERR_UNEXP_EOF_IN_STRING: unterminated string constant
+ * @G_ERR_UNEXP_EOF_IN_COMMENT: unterminated comment
+ * @G_ERR_NON_DIGIT_IN_CONST: non-digit character in a number
+ * @G_ERR_DIGIT_RADIX: digit beyond radix in a number
+ * @G_ERR_FLOAT_RADIX: non-decimal floating point number
+ * @G_ERR_FLOAT_MALFORMED: malformed floating point number
+ *
+ * The possible errors, used in the @v_error field
+ * of #GTokenValue, when the token is a #G_TOKEN_ERROR.
+ */
+
+/**
+ * GScanner:
+ * @user_data:
+ * @max_parse_errors:
+ * @parse_errors:
+ * @input_name:
+ * @qdata:
+ * @config:
+ * @token: token parsed by the last g_scanner_get_next_token()
+ * @value: value of the last token from g_scanner_get_next_token()
+ * @line: line number of the last token from g_scanner_get_next_token()
+ * @position: char number of the last token from g_scanner_get_next_token()
+ * @next_token: token parsed by the last g_scanner_peek_next_token()
+ * @next_value: value of the last token from g_scanner_peek_next_token()
+ * @next_line: line number of the last token from g_scanner_peek_next_token()
+ * @next_position: char number of the last token from g_scanner_peek_next_token()
+ * @symbol_table:
+ * @input_fd:
+ * @text:
+ * @text_end:
+ * @buffer:
+ * @scope_id:
+ *
+ * The data structure representing a lexical scanner.
+ *
+ * You should set @input_name after creating the scanner, since
+ * it is used by the default message handler when displaying
+ * warnings and errors. If you are scanning a file, the filename
+ * would be a good choice.
+ *
+ * The @user_data and @max_parse_errors fields are not used.
+ * If you need to associate extra data with the scanner you
+ * can place them here.
+ *
+ * If you want to use your own message handler you can set the
+ * @msg_handler field. The type of the message handler function
+ * is declared by #GScannerMsgFunc.
+ */
+
+/**
+ * GScannerConfig:
+ *
+ * Specifies the #GScanner parser configuration. Most settings can
+ * be changed during the parsing phase and will affect the lexical
+ * parsing of the next unpeeked token.
+ *
+ * @cset_skip_characters: specifies which characters should be skipped
+ *     by the scanner (the default is the whitespace characters: space,
+ *     tab, carriage-return and line-feed).
+ * @cset_identifier_first: specifies the characters which can start
+ *     identifiers (the default is #G_CSET_a_2_z, "_", and #G_CSET_A_2_Z).
+ * @cset_identifier_nth: specifies the characters which can be used
+ *     in identifiers, after the first character (the default is
+ *     #G_CSET_a_2_z, "_0123456789", #G_CSET_A_2_Z, #G_CSET_LATINS,
+ *     #G_CSET_LATINC).
+ * @cpair_comment_single: specifies the characters at the start and
+ *     end of single-line comments. The default is "#\n" which means
+ *     that single-line comments start with a '#' and continue until
+ *     a '\n' (end of line).
+ * @case_sensitive: specifies if symbols are case sensitive (the
+ *     default is %FALSE).
+ * @skip_comment_multi: specifies if multi-line comments are skipped
+ *     and not returned as tokens (the default is %TRUE).
+ * @skip_comment_single: specifies if single-line comments are skipped
+ *     and not returned as tokens (the default is %TRUE).
+ * @scan_comment_multi: specifies if multi-line comments are recognized
+ *     (the default is %TRUE).
+ * @scan_identifier: specifies if identifiers are recognized (the
+ *     default is %TRUE).
+ * @scan_identifier_1char: specifies if single-character
+ *     identifiers are recognized (the default is %FALSE).
+ * @scan_identifier_NULL: specifies if %NULL is reported as
+ *     #G_TOKEN_IDENTIFIER_NULL (the default is %FALSE).
+ * @scan_symbols: specifies if symbols are recognized (the default
+ *     is %TRUE).
+ * @scan_binary: specifies if binary numbers are recognized (the
+ *     default is %FALSE).
+ * @scan_octal: specifies if octal numbers are recognized (the
+ *     default is %TRUE).
+ * @scan_float: specifies if floating point numbers are recognized
+ *     (the default is %TRUE).
+ * @scan_hex: specifies if hexadecimal numbers are recognized (the
+ *     default is %TRUE).
+ * @scan_hex_dollar: specifies if '$' is recognized as a prefix for
+ *     hexadecimal numbers (the default is %FALSE).
+ * @scan_string_sq: specifies if strings can be enclosed in single
+ *     quotes (the default is %TRUE).
+ * @scan_string_dq: specifies if strings can be enclosed in double
+ *     quotes (the default is %TRUE).
+ * @numbers_2_int: specifies if binary, octal and hexadecimal numbers
+ *     are reported as #G_TOKEN_INT (the default is %TRUE).
+ * @int_2_float: specifies if all numbers are reported as #G_TOKEN_FLOAT
+ *     (the default is %FALSE).
+ * @identifier_2_string: specifies if identifiers are reported as strings
+ *     (the default is %FALSE).
+ * @char_2_token: specifies if characters are reported by setting
+ *     <literal>token = ch</literal> or as #G_TOKEN_CHAR (the default
+ *     is %TRUE).
+ * @symbol_2_token: specifies if symbols are reported by setting
+ *     <literal>token = v_symbol</literal> or as #G_TOKEN_SYMBOL (the
+ *     default is %FALSE).
+ * @scope_0_fallback: specifies if a symbol is searched for in the
+ *     default scope in addition to the current scope (the default is %FALSE).
+ * @store_int64:
+ */
+
 /* --- defines --- */
 #define	to_lower(c)				( \
 	(guchar) (							\
@@ -171,7 +363,20 @@ g_scanner_char_2_num (guchar	c,
   return -1;
 }
 
-GScanner*
+/**
+ * g_scanner_new:
+ * @config_templ: the initial scanner settings
+ *
+ * Creates a new #GScanner.
+ *
+ * The @config_templ structure specifies the initial settings
+ * of the scanner, which are copied into the #GScanner
+ * @config field. If you pass %NULL then the default settings
+ * are used.
+ *
+ * Returns: the new #GScanner
+ */
+GScanner *
 g_scanner_new (const GScannerConfig *config_templ)
 {
   GScanner *scanner;
@@ -272,8 +477,14 @@ g_scanner_destroy_symbol_table_entry (gpointer _key,
   g_free (key);
 }
 
+/**
+ * g_scanner_destroy:
+ * @scanner: a #GScanner
+ *
+ * Frees all memory used by the #GScanner.
+ */
 void
-g_scanner_destroy (GScanner	*scanner)
+g_scanner_destroy (GScanner *scanner)
 {
   g_return_if_fail (scanner != NULL);
   
@@ -303,6 +514,14 @@ g_scanner_msg_handler (GScanner		*scanner,
   _g_fprintf (stderr, "%s\n", message);
 }
 
+/**
+ * g_scanner_error:
+ * @scanner: a #GScanner
+ * @format: the message format. See the printf() documentation
+ * @...: the parameters to insert into the format string
+ *
+ * Outputs an error message, via the #GScanner message handler.
+ */
 void
 g_scanner_error (GScanner	*scanner,
 		 const gchar	*format,
@@ -328,6 +547,14 @@ g_scanner_error (GScanner	*scanner,
     }
 }
 
+/**
+ * g_scanner_warn:
+ * @scanner: a #GScanner
+ * @format: the message format. See the printf() documentation
+ * @...: the parameters to insert into the format string
+ *
+ * Outputs a warning message, via the #GScanner message handler.
+ */
 void
 g_scanner_warn (GScanner       *scanner,
 		const gchar    *format,
@@ -406,6 +633,26 @@ g_scanner_lookup_internal (GScanner	*scanner,
   return key_p;
 }
 
+/**
+ * g_scanner_add_symbol
+ * @scanner: a #GScanner
+ * @symbol: the symbol to add
+ * @value: the value of the symbol
+ *
+ * Adds a symbol to the default scope.
+ *
+ * Deprecated: 2.2: Use g_scanner_scope_add_symbol() instead.
+ */
+
+/**
+ * g_scanner_scope_add_symbol:
+ * @scanner: a #GScanner
+ * @scope_id: the scope id
+ * @symbol: the symbol to add
+ * @value: the value of the symbol
+ *
+ * Adds a symbol to the given scope.
+ */
 void
 g_scanner_scope_add_symbol (GScanner	*scanner,
 			    guint	 scope_id,
@@ -442,6 +689,24 @@ g_scanner_scope_add_symbol (GScanner	*scanner,
     key->value = value;
 }
 
+/**
+ * g_scanner_remove_symbol:
+ * @scanner: a #GScanner
+ * @symbol: the symbol to remove
+ *
+ * Removes a symbol from the default scope.
+ *
+ * Deprecated: 2.2: Use g_scanner_scope_remove_symbol() instead.
+ */
+
+/**
+ * g_scanner_scope_remove_symbol:
+ * @scanner: a #GScanner
+ * @scope_id: the scope id
+ * @symbol: the symbol to remove
+ *
+ * Removes a symbol from a scope.
+ */
 void
 g_scanner_scope_remove_symbol (GScanner	   *scanner,
 			       guint	    scope_id,
@@ -462,6 +727,36 @@ g_scanner_scope_remove_symbol (GScanner	   *scanner,
     }
 }
 
+/**
+ * g_scanner_freeze_symbol_table:
+ * @scanner: a #GScanner
+ *
+ * There is no reason to use this macro, since it does nothing.
+ *
+ * Deprecated: 2.2: This macro does nothing.
+ */
+
+/**
+ * g_scanner_thaw_symbol_table:
+ * @scanner: a #GScanner
+ *
+ * There is no reason to use this macro, since it does nothing.
+ *
+ * Deprecated: 2.2: This macro does nothing.
+ */
+
+/**
+ * g_scanner_lookup_symbol:
+ * @scanner: a #GScanner
+ * @symbol: the symbol to look up
+ *
+ * Looks up a symbol in the current scope and return its value.
+ * If the symbol is not bound in the current scope, %NULL is
+ * returned.
+ *
+ * Returns: the value of @symbol in the current scope, or %NULL
+ *     if @symbol is not bound in the current scope
+ */
 gpointer
 g_scanner_lookup_symbol (GScanner	*scanner,
 			 const gchar	*symbol)
@@ -485,6 +780,19 @@ g_scanner_lookup_symbol (GScanner	*scanner,
     return NULL;
 }
 
+/**
+ * g_scanner_scope_lookup_symbol:
+ * @scanner: a #GScanner
+ * @scope_id: the scope id
+ * @symbol: the symbol to look up
+ *
+ * Looks up a symbol in a scope and return its value. If the
+ * symbol is not bound in the scope, %NULL is returned.
+ *
+ * Returns: the value of @symbol in the given scope, or %NULL
+ *     if @symbol is not bound in the given scope.
+ *
+ */
 gpointer
 g_scanner_scope_lookup_symbol (GScanner	      *scanner,
 			       guint	       scope_id,
@@ -505,6 +813,15 @@ g_scanner_scope_lookup_symbol (GScanner	      *scanner,
     return NULL;
 }
 
+/**
+ * g_scanner_set_scope:
+ * @scanner: a #GScanner
+ * @scope_id: the new scope id
+ *
+ * Sets the current scope.
+ *
+ * Returns: the old scope id
+ */
 guint
 g_scanner_set_scope (GScanner	    *scanner,
 		     guint	     scope_id)
@@ -540,6 +857,29 @@ g_scanner_foreach_internal (gpointer  _key,
     func (key->symbol, key->value, user_data);
 }
 
+/**
+ * g_scanner_foreach_symbol:
+ * @scanner: a #GScanner
+ * @func: the function to call with each symbol
+ * @data: data to pass to the function
+ *
+ * Calls a function for each symbol in the default scope.
+ *
+ * Deprecated: 2.2: Use g_scanner_scope_foreach_symbol() instead.
+ */
+
+/**
+ * g_scanner_scope_foreach_symbol:
+ * @scanner: a #GScanner
+ * @scope_id: the scope id
+ * @func: the function to call for each symbol/value pair
+ * @user_data: user data to pass to the function
+ *
+ * Calls the given function for each of the symbol/value pairs
+ * in the given scope of the #GScanner. The function is passed
+ * the symbol and value of each pair, and the given @user_data
+ * parameter.
+ */
 void
 g_scanner_scope_foreach_symbol (GScanner       *scanner,
 				guint		scope_id,
@@ -557,6 +897,24 @@ g_scanner_scope_foreach_symbol (GScanner       *scanner,
   g_hash_table_foreach (scanner->symbol_table, g_scanner_foreach_internal, d);
 }
 
+/**
+ * g_scanner_peek_next_token:
+ * @scanner: a #GScanner
+ *
+ * Parses the next token, without removing it from the input stream.
+ * The token data is placed in the @next_token, @next_value, @next_line,
+ * and @next_position fields of the #GScanner structure.
+ *
+ * Note that, while the token is not removed from the input stream
+ * (i.e. the next call to g_scanner_get_next_token() will return the
+ * same token), it will not be reevaluated. This can lead to surprising
+ * results when changing scope or the scanner configuration after peeking
+ * the next token. Getting the next token after switching the scope or
+ * configuration will return whatever was peeked before, regardless of
+ * any symbols that may have been added or removed in the new scope.
+ *
+ * Returns: the type of the token
+ */
 GTokenType
 g_scanner_peek_next_token (GScanner	*scanner)
 {
@@ -576,6 +934,17 @@ g_scanner_peek_next_token (GScanner	*scanner)
   return scanner->next_token;
 }
 
+/**
+ * g_scanner_get_next_token:
+ * @scanner: a #GScanner
+ *
+ * Parses the next token just like g_scanner_peek_next_token()
+ * and also removes it from the input stream. The token data is
+ * placed in the @token, @value, @line, and @position fields of
+ * the #GScanner structure.
+ *
+ * Returns: the type of the token
+ */
 GTokenType
 g_scanner_get_next_token (GScanner	*scanner)
 {
@@ -601,6 +970,15 @@ g_scanner_get_next_token (GScanner	*scanner)
   return scanner->token;
 }
 
+/**
+ * g_scanner_cur_token:
+ * @scanner: a #GScanner
+ *
+ * Gets the current token type. This is simply the @token
+ * field in the #GScanner structure.
+ *
+ * Returns: the current token type
+ */
 GTokenType
 g_scanner_cur_token (GScanner *scanner)
 {
@@ -609,6 +987,15 @@ g_scanner_cur_token (GScanner *scanner)
   return scanner->token;
 }
 
+/**
+ * g_scanner_cur_value:
+ * @scanner: a #GScanner
+ *
+ * Gets the current token value. This is simply the @value
+ * field in the #GScanner structure.
+ *
+ * Returns: the current token value
+ */
 GTokenValue
 g_scanner_cur_value (GScanner *scanner)
 {
@@ -625,6 +1012,16 @@ g_scanner_cur_value (GScanner *scanner)
   return v;
 }
 
+/**
+ * g_scanner_cur_line:
+ * @scanner: a #GScanner
+ *
+ * Returns the current line in the input stream (counting
+ * from 1). This is the line of the last token parsed via
+ * g_scanner_get_next_token().
+ *
+ * Returns: the current line
+ */
 guint
 g_scanner_cur_line (GScanner *scanner)
 {
@@ -633,6 +1030,16 @@ g_scanner_cur_line (GScanner *scanner)
   return scanner->line;
 }
 
+/**
+ * g_scanner_cur_position:
+ * @scanner: a #GScanner
+ *
+ * Returns the current position in the current line (counting
+ * from 0). This is the position of the last token parsed via
+ * g_scanner_get_next_token().
+ *
+ * Returns: the current position on the line
+ */
 guint
 g_scanner_cur_position (GScanner *scanner)
 {
@@ -641,6 +1048,16 @@ g_scanner_cur_position (GScanner *scanner)
   return scanner->position;
 }
 
+/**
+ * g_scanner_eof:
+ * @scanner: a #GScanner
+ *
+ * Returns %TRUE if the scanner has reached the end of
+ * the file or text buffer.
+ *
+ * Returns: %TRUE if the scanner has reached the end of
+ *     the file or text buffer
+ */
 gboolean
 g_scanner_eof (GScanner	*scanner)
 {
@@ -649,6 +1066,13 @@ g_scanner_eof (GScanner	*scanner)
   return scanner->token == G_TOKEN_EOF || scanner->token == G_TOKEN_ERROR;
 }
 
+/**
+ * g_scanner_input_file:
+ * @scanner: a #GScanner
+ * @input_fd: a file descriptor
+ *
+ * Prepares to scan a file.
+ */
 void
 g_scanner_input_file (GScanner *scanner,
 		      gint	input_fd)
@@ -673,6 +1097,14 @@ g_scanner_input_file (GScanner *scanner,
     scanner->buffer = g_new (gchar, READ_BUFFER_SIZE + 1);
 }
 
+/**
+ * g_scanner_input_text:
+ * @scanner: a #GScanner
+ * @text: the text buffer to scan
+ * @text_len: the length of the text buffer
+ *
+ * Prepares to scan a text buffer.
+ */
 void
 g_scanner_input_text (GScanner	  *scanner,
 		      const gchar *text,
@@ -741,6 +1173,15 @@ g_scanner_peek_next_char (GScanner *scanner)
     return 0;
 }
 
+/**
+ * g_scanner_sync_file_offset:
+ * @scanner: a #GScanner
+ *
+ * Rewinds the filedescriptor to the current buffer position
+ * and blows the file read ahead buffer. This is useful for
+ * third party uses of the scanners filedescriptor, which hooks
+ * onto the current scanning position.
+ */
 void
 g_scanner_sync_file_offset (GScanner *scanner)
 {
@@ -823,6 +1264,33 @@ g_scanner_get_char (GScanner	*scanner,
   return fchar;
 }
 
+/**
+ * g_scanner_unexp_token:
+ * @scanner: a #GScanner
+ * @expected_token: the expected token
+ * @identifier_spec: a string describing how the scanner's user
+ *     refers to identifiers (%NULL defaults to "identifier").
+ *     This is used if @expected_token is #G_TOKEN_IDENTIFIER or
+ *     #G_TOKEN_IDENTIFIER_NULL.
+ * @symbol_spec: a string describing how the scanner's user refers
+ *     to symbols (%NULL defaults to "symbol"). This is used if
+ *     @expected_token is #G_TOKEN_SYMBOL or any token value greater
+ *     than #G_TOKEN_LAST.
+ * @symbol_name: the name of the symbol, if the scanner's current
+ *     token is a symbol.
+ * @message: a message string to output at the end of the
+ *     warning/error, or %NULL.
+ * @is_error: if %TRUE it is output as an error. If %FALSE it is
+ *     output as a warning.
+ *
+ * Outputs a message through the scanner's msg_handler,
+ * resulting from an unexpected token in the input stream.
+ * Note that you should not call g_scanner_peek_next_token()
+ * followed by g_scanner_unexp_token() without an intermediate
+ * call to g_scanner_get_next_token(), as g_scanner_unexp_token()
+ * evaluates the scanner's current token (not the peeked token)
+ * to construct part of the message.
+ */
 void
 g_scanner_unexp_token (GScanner		*scanner,
 		       GTokenType	 expected_token,
