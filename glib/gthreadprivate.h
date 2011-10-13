@@ -32,15 +32,13 @@ G_BEGIN_DECLS
 typedef struct _GRealThread GRealThread;
 
 G_GNUC_INTERNAL
-void            g_system_thread_wait            (GRealThread      *thread);
+void            g_system_thread_wait            (GRealThread  *thread);
 
 G_GNUC_INTERNAL
-GRealThread *   g_system_thread_new             (void);
-G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
-                                                 gulong            stack_size,
-                                                 gboolean          joinable,
-                                                 GRealThread      *thread,
-                                                 GError          **error);
+GRealThread *   g_system_thread_new             (GThreadFunc   func,
+                                                 gulong        stack_size,
+                                                 gboolean      joinable,
+                                                 GError      **error);
 G_GNUC_INTERNAL
 void            g_system_thread_free            (GRealThread  *thread);
 

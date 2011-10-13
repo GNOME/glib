@@ -1069,29 +1069,23 @@ g_private_replace (GPrivate *key,
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
-GRealThread *
-g_system_thread_new (void)
-{
-  return g_slice_new0 (GRealThread);
-}
-
 void
 g_system_thread_free (GRealThread *thread)
 {
   g_slice_free (GRealThread, thread);
 }
 
-void
-g_system_thread_create (GThreadFunc       thread_func,
-                        gulong            stack_size,
-                        gboolean          joinable,
-                        GRealThread      *thread,
-                        GError          **error)
+GRealThread *
+g_system_thread_new (GThreadFunc   thread_func,
+                     gulong        stack_size,
+                     gboolean      joinable,
+                     GError      **error)
 {
+  GRealThread *thread;
   pthread_attr_t attr;
   gint ret;
 
-  g_return_if_fail (thread_func);
+  thread = g_slice_new0 (GRealThread);
 
   posix_check_cmd (pthread_attr_init (&attr));
 
@@ -1118,10 +1112,12 @@ g_system_thread_create (GThreadFunc       thread_func,
     {
       g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN, 
 		   "Error creating thread: %s", g_strerror (ret));
-      return;
+      return thread;
     }
 
   posix_check_err (ret, "pthread_create");
+
+  return thread;
 }
 
 /**

@@ -694,8 +694,8 @@ g_thread_proxy (gpointer data)
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
 
-  /* The lock makes sure that thread->system_thread is written,
-   * before thread->thread.func is called. See g_thread_new_internal().
+  /* The lock makes sure that g_thread_new_internal() has a chance to
+   * setup 'func' and 'data' before we make the call.
    */
   G_LOCK (g_thread_new);
   G_UNLOCK (g_thread_new);
@@ -804,15 +804,12 @@ g_thread_new_internal (const gchar   *name,
 
   g_return_val_if_fail (func != NULL, NULL);
 
-  result = g_system_thread_new ();
-
+  G_LOCK (g_thread_new);
+  result = g_system_thread_new (proxy, stack_size, joinable, &local_error);
   result->thread.joinable = joinable;
   result->thread.func = func;
   result->thread.data = data;
   result->name = name;
-  G_LOCK (g_thread_new);
-  g_system_thread_create (proxy, stack_size, joinable,
-                          result, &local_error);
   G_UNLOCK (g_thread_new);
 
   if (local_error)
