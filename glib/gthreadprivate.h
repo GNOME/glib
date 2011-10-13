@@ -24,37 +24,8 @@
 #define __G_THREADPRIVATE_H__
 
 #include "deprecated/gthread.h"
-#include "garray.h"
-#include "gslist.h"
-
-G_BEGIN_DECLS
 
 typedef struct _GRealThread GRealThread;
-
-G_GNUC_INTERNAL
-void            g_system_thread_wait            (GRealThread  *thread);
-
-G_GNUC_INTERNAL
-GRealThread *   g_system_thread_new             (GThreadFunc   func,
-                                                 gulong        stack_size,
-                                                 GError      **error);
-G_GNUC_INTERNAL
-void            g_system_thread_free            (GRealThread  *thread);
-
-G_GNUC_INTERNAL void     g_system_thread_exit  (void);
-G_GNUC_INTERNAL void     g_system_thread_set_name (const gchar *name);
-
-G_GNUC_INTERNAL
-GThread *       g_thread_new_internal           (const gchar  *name,
-                                                 GThreadFunc   proxy,
-                                                 GThreadFunc   func,
-                                                 gpointer      data,
-                                                 gsize         stack_size,
-                                                 GError      **error);
-
-G_GNUC_INTERNAL
-gpointer        g_thread_proxy                  (gpointer     thread);
-
 struct  _GRealThread
 {
   GThread thread;
@@ -65,10 +36,33 @@ struct  _GRealThread
   gpointer retval;
 };
 
-#ifdef G_OS_WIN32
-G_GNUC_INTERNAL void g_thread_DllMain (void);
-#endif
+/* system thread implementation (gthread-posix.c, gthread-win32.c) */
+G_GNUC_INTERNAL
+void            g_system_thread_wait            (GRealThread  *thread);
 
-G_END_DECLS
+G_GNUC_INTERNAL
+GRealThread *   g_system_thread_new             (GThreadFunc   func,
+                                                 gulong        stack_size,
+                                                 GError      **error);
+G_GNUC_INTERNAL
+void            g_system_thread_free            (GRealThread  *thread);
+
+G_GNUC_INTERNAL
+void            g_system_thread_exit            (void);
+G_GNUC_INTERNAL
+void            g_system_thread_set_name        (const gchar  *name);
+
+
+/* gthread.c */
+G_GNUC_INTERNAL
+GThread *       g_thread_new_internal           (const gchar  *name,
+                                                 GThreadFunc   proxy,
+                                                 GThreadFunc   func,
+                                                 gpointer      data,
+                                                 gsize         stack_size,
+                                                 GError      **error);
+
+G_GNUC_INTERNAL
+gpointer        g_thread_proxy                  (gpointer      thread);
 
 #endif /* __G_THREADPRIVATE_H__ */

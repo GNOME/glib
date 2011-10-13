@@ -32,6 +32,7 @@
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "deprecated/gthread.h"
+#include "garray.h"
 
 #include "gutils.h"
 
