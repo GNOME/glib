@@ -539,9 +539,9 @@ g_thread_yield (void)
 }
 
 void
-g_system_thread_join (gpointer thread)
+g_system_thread_join (GRealThread *thread)
 {
-  GThreadData *target = *(GThreadData **)thread;
+  GThreadData *target = *(GThreadData **)&(thread->system_thread);
 
   g_return_if_fail (target->joinable);
 
