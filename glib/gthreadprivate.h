@@ -37,7 +37,6 @@ void            g_system_thread_wait            (GRealThread      *thread);
 G_GNUC_INTERNAL
 GRealThread *   g_system_thread_new             (void);
 G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
-                                                 gpointer          data,
                                                  gulong            stack_size,
                                                  gboolean          joinable,
                                                  GRealThread      *thread,

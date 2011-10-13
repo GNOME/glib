@@ -499,7 +499,6 @@ g_thread_proxy (gpointer data)
 
 void
 g_system_thread_create (GThreadFunc       func,
-                        gpointer          data,
                         gulong            stack_size,
                         gboolean          joinable,
                         GRealThread      *thread,
@@ -512,7 +511,7 @@ g_system_thread_create (GThreadFunc       func,
 
   retval = g_new(GThreadData, 1);
   retval->func = func;
-  retval->data = data;
+  retval->data = thread;
 
   retval->joinable = joinable;
 
