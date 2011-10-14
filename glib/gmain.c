@@ -378,7 +378,6 @@ static gboolean g_idle_dispatch    (GSource     *source,
 				    gpointer     user_data);
 
 static GMainContext *glib_worker_context;
-static gboolean      g_main_context_fork_detected;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
@@ -500,14 +499,6 @@ g_main_context_unref (GMainContext *context)
   g_free (context);
 }
 
-#ifdef G_OS_UNIX
-static void
-g_main_context_forked (void)
-{
-  g_main_context_fork_detected = TRUE;
-}
-#endif
-
 /**
  * g_main_context_new:
  * 
@@ -526,10 +517,6 @@ g_main_context_new (void)
 #ifdef G_MAIN_POLL_DEBUG
       if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
         _g_main_poll_debug = TRUE;
-#endif
-
-#ifdef G_OS_UNIX
-      pthread_atfork (NULL, NULL, g_main_context_forked);
 #endif
 
       g_once_init_leave (&initialised, TRUE);
@@ -3000,7 +2987,6 @@ g_main_context_iterate (GMainContext *context,
   if (!block)
     timeout = 0;
   
-  g_assert (!g_main_context_fork_detected);
   g_main_context_poll (context, timeout, max_priority, fds, nfds);
   
   some_ready = g_main_context_check (context, max_priority, fds, nfds);
