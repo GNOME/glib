@@ -1551,6 +1551,12 @@ g_cond_timed_wait (GCond    *cond,
 {
   gint64 end_time;
 
+  if (abs_time == NULL)
+    {
+      g_cond_wait (cond, mutex);
+      return TRUE;
+    }
+
   end_time = abs_time->tv_sec;
   end_time *= 1000000;
   end_time += abs_time->tv_usec;
