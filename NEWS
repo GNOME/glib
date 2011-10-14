@@ -2,18 +2,19 @@ Overview of changes from GLib 2.30.0 to 2.30.1
 ==============================================
 
 * Bugs fixed:
-632049 docs: not immediately clear what g_variant_get_fixed_ar...
-660147 tracker causes g_critical in "gsettings list-recursively"
-660413 Make G_ASSERT_STATIC work with clang
-660498 Generated test code fails when the codegen changes
-660637 Pending dbus method calls not canceled on connection loss
-660791 [gio] Improve doc for g_file_make_directory_with_parents()
-660886 GDBusProxy: don't drop or complain about unknown proper...
-661421 Applications fail to initialize on GNU Hurd - commit
+ 632049 docs: not immediately clear what g_variant_get_fixed_ar...
+ 660147 tracker causes g_critical in "gsettings list-recursively"
+ 660413 Make G_ASSERT_STATIC work with clang
+ 660498 Generated test code fails when the codegen changes
+ 660637 Pending dbus method calls not canceled on connection loss
+ 660791 [gio] Improve doc for g_file_make_directory_with_parents()
+ 660886 GDBusProxy: don't drop or complain about unknown proper...
+ 661421 Applications fail to initialize on GNU Hurd - commit
 
 * Translation updates
  Latvian
  Vietnamese
+
 
 Overview of changes from GLib 2.29.92 to 2.30.0
 ===============================================
