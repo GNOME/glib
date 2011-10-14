@@ -467,6 +467,21 @@ Since: 2.14
 
 
 
+<!-- ##### MACRO G_DEPRECATED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO G_DEPRECATED_FOR ##### -->
+<para>
+
+</para>
+
+@f: 
+
+
 <!-- ##### MACRO G_LIKELY ##### -->
 <para>
 Hints the compiler that the expression is likely to evaluate to a true
