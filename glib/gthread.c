@@ -350,22 +350,27 @@
  * condition they signal the #GCond, and that causes the waiting
  * threads to be woken up.
  *
+ * Consider the following example of a shared variable.  One or more
+ * threads can wait for data to be published to the variable and when
+ * another thread publishes the data, it can signal one of the waiting
+ * threads to wake up to collect the data.
+ *
  * <example>
  *  <title>
  *   Using GCond to block a thread until a condition is satisfied
  *  </title>
  *  <programlisting>
- *   GCond* data_cond = NULL; /<!-- -->* Must be initialized somewhere *<!-- -->/
- *   GMutex* data_mutex = NULL; /<!-- -->* Must be initialized somewhere *<!-- -->/
  *   gpointer current_data = NULL;
+ *   GMutex data_mutex;
+ *   GCond data_cond;
  *
  *   void
  *   push_data (gpointer data)
  *   {
- *     g_mutex_lock (data_mutex);
+ *     g_mutex_lock (&data_mutex);
  *     current_data = data;
- *     g_cond_signal (data_cond);
- *     g_mutex_unlock (data_mutex);
+ *     g_cond_signal (&data_cond);
+ *     g_mutex_unlock (&data_mutex);
  *   }
  *
  *   gpointer
@@ -373,12 +378,12 @@
  *   {
  *     gpointer data;
  *
- *     g_mutex_lock (data_mutex);
+ *     g_mutex_lock (&data_mutex);
  *     while (!current_data)
- *       g_cond_wait (data_cond, data_mutex);
+ *       g_cond_wait (&data_cond, &data_mutex);
  *     data = current_data;
  *     current_data = NULL;
- *     g_mutex_unlock (data_mutex);
+ *     g_mutex_unlock (&data_mutex);
  *
  *     return data;
  *   }
@@ -389,14 +394,19 @@
  * current_data is non-%NULL, i.e. until some other thread
  * has called push_data().
  *
- * <note><para>It is important to use the g_cond_wait() and
- * g_cond_timed_wait() functions only inside a loop which checks for the
- * condition to be true.  It is not guaranteed that the waiting thread
- * will find the condition fulfilled after it wakes up, even if the
- * signaling thread left the condition in that state: another thread may
- * have altered the condition before the waiting thread got the chance
- * to be woken up, even if the condition itself is protected by a
- * #GMutex, like above.</para></note>
+ * The example shows that use of a condition variable must always be
+ * paired with a mutex.  Without the use of a mutex, there would be a
+ * race between the check of <varname>current_data</varname> by the
+ * while loop in <function>pop_data</function> and waiting.
+ * Specifically, another thread could set <varname>pop_data</varname>
+ * after the check, and signal the cond (with nobody waiting on it)
+ * before the first thread goes to sleep.  #GCond is specifically useful
+ * for its ability to release the mutex and go to sleep atomically.
+ *
+ * It is also important to use the g_cond_wait() and g_cond_wait_until()
+ * functions only inside a loop which checks for the condition to be
+ * true.  See g_cond_wait() for an explanation of why the condition may
+ * not be true even after it returns.
  *
  * If a #GCond is allocated in static storage then it can be used
  * without initialisation.  Otherwise, you should call g_cond_init() on

@@ -638,7 +638,7 @@ g_cond_init
 g_cond_clear
 g_cond_wait
 g_cond_timed_wait
-g_cond_timedwait
+g_cond_wait_until
 g_cond_signal
 g_cond_broadcast
 

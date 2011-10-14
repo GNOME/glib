@@ -640,15 +640,23 @@ g_rw_lock_reader_unlock (GRWLock *rw_lock)
 static pthread_cond_t *
 g_cond_impl_new (void)
 {
+  pthread_condattr_t attr;
   pthread_cond_t *cond;
   gint status;
+
+  pthread_condattr_init (&attr);
+#ifdef CLOCK_MONOTONIC
+  pthread_condattr_setclock (&attr, CLOCK_MONOTONIC);
+#endif
 
   cond = malloc (sizeof (pthread_cond_t));
   if G_UNLIKELY (cond == NULL)
     g_thread_abort (errno, "malloc");
 
-  if G_UNLIKELY ((status = pthread_cond_init (cond, NULL)) != 0)
+  if G_UNLIKELY ((status = pthread_cond_init (cond, &attr)) != 0)
     g_thread_abort (status, "pthread_cond_init");
+
+  pthread_condattr_destroy (&attr);
 
   return cond;
 }
@@ -680,17 +688,16 @@ g_cond_get_impl (GCond *cond)
  * g_cond_init:
  * @cond: an uninitialized #GCond
  *
- * Initialized a #GCond so that it can be used.
+ * Initialises a #GCond so that it can be used.
  *
- * This function is useful to initialize a #GCond that has been
- * allocated on the stack, or as part of a larger structure.
- * It is not necessary to initialize a #GCond that has been
- * statically allocated.
+ * This function is useful to initialise a #GCond that has been
+ * allocated as part of a larger structure.  It is not necessary to
+ * initialise a #GCond that has been statically allocated.
  *
  * To undo the effect of g_cond_init() when a #GCond is no longer
  * needed, use g_cond_clear().
  *
- * Calling g_cond_init() on an already initialized #GCond leads
+ * Calling g_cond_init() on an already-initialised #GCond leads
  * to undefined behaviour.
  *
  * Since: 2.32
@@ -703,7 +710,7 @@ g_cond_init (GCond *cond)
 
 /**
  * g_cond_clear:
- * @cond: an initialized #GCond
+ * @cond: an initialised #GCond
  *
  * Frees the resources allocated to a #GCond with g_cond_init().
  *
@@ -726,12 +733,19 @@ g_cond_clear (GCond *cond)
  * @cond: a #GCond
  * @mutex: a #GMutex that is currently locked
  *
- * Waits until this thread is woken up on @cond. The @mutex is unlocked
- * before falling asleep and locked again before resuming.
+ * Atomically releases @mutex and waits until @cond is signalled.
  *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return.
- */
+ * When using condition variables, it is possible that a spurious wakeup
+ * may occur (ie: g_cond_wait() returns even though g_cond_signal() was
+ * not called).  It's also possible that a stolen wakeup may occur.
+ * This is when g_cond_signal() is called, but another thread acquires
+ * @mutex before this thread and modifies the state of the program in
+ * such a way that when g_cond_wait() is able to return, the expected
+ * condition is no longer met.
+ *
+ * For this reason, g_cond_wait() must always be used in a loop.  See
+ * the documentation for #GCond for a complete example.
+ **/
 void
 g_cond_wait (GCond  *cond,
              GMutex *mutex)
@@ -785,77 +799,75 @@ g_cond_broadcast (GCond *cond)
 }
 
 /**
- * g_cond_timed_wait:
+ * g_cond_wait_until:
  * @cond: a #GCond
  * @mutex: a #GMutex that is currently locked
- * @abs_time: a #GTimeVal, determining the final time
+ * @end_time: the monotonic time to wait until
  *
- * Waits until this thread is woken up on @cond, but not longer than
- * until the time specified by @abs_time. The @mutex is unlocked before
- * falling asleep and locked again before resuming.
+ * Waits until either @cond is signalled or @end_time has passed.
  *
- * If @abs_time is %NULL, g_cond_timed_wait() acts like g_cond_wait().
+ * As with g_cond_wait() it is possible that a spurious or stolen wakeup
+ * could occur.  For that reason, waiting on a condition variable should
+ * always be in a loop, based on an explicitly-checked predicate.
  *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return %TRUE.
+ * %TRUE is returned if the condition variable was signalled (or in the
+ * case of a spurious wakeup).  %FALSE is returned if @end_time has
+ * passed.
  *
- * To easily calculate @abs_time a combination of g_get_current_time()
- * and g_time_val_add() can be used.
+ * The following code shows how to correctly perform a timed wait on a
+ * condition variable (extended the example presented in the
+ * documentation for #GCond):
  *
- * Returns: %TRUE if @cond was signalled, or %FALSE on timeout
- */
-gboolean
-g_cond_timed_wait (GCond    *cond,
-                   GMutex   *mutex,
-                   GTimeVal *abs_time)
-{
-  struct timespec end_time;
-  gint status;
-
-  if (abs_time == NULL)
-    {
-      g_cond_wait (cond, mutex);
-      return TRUE;
-    }
-
-  end_time.tv_sec = abs_time->tv_sec;
-  end_time.tv_nsec = abs_time->tv_usec * 1000;
-
-  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &end_time)) == 0)
-    return TRUE;
-
-  if G_UNLIKELY (status != ETIMEDOUT)
-    g_thread_abort (status, "pthread_cond_timedwait");
-
-  return FALSE;
-}
-
-/**
- * g_cond_timedwait:
- * @cond: a #GCond
- * @mutex: a #GMutex that is currently locked
- * @abs_time: the final time, in microseconds
+ * |[
+ * gpointer
+ * pop_data_timed (void)
+ * {
+ *   gint64 end_time;
+ *   gpointer data;
  *
- * A variant of g_cond_timed_wait() that takes @abs_time
- * as a #gint64 instead of a #GTimeVal.
- * See g_cond_timed_wait() for details.
+ *   g_mutex_lock (&data_mutex);
  *
- * Returns: %TRUE if @cond was signalled, or %FALSE on timeout
+ *   end_time = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+ *   while (!current_data)
+ *     if (!g_cond_wait_until (&data_cond, &data_mutex, end_time))
+ *       {
+ *         // timeout has passed.
+ *         g_mutex_unlock (&data_mutex);
+ *         return NULL;
+ *       }
  *
+ *   // there is data for us
+ *   data = current_data;
+ *   current_data = NULL;
+ *
+ *   g_mutex_unlock (&data_mutex);
+ *
+ *   return data;
+ * }
+ * ]|
+ *
+ * Notice that the end time is calculated once, before entering the
+ * loop and reused.  This is the motivation behind the use of absolute
+ * time on this API -- if a relative time of 5 seconds were passed
+ * directly to the call and a spurious wakeup occured, the program would
+ * have to start over waiting again (which would lead to a total wait
+ * time of more than 5 seconds).
+ *
+ * Returns: %TRUE on a signal, %FALSE on a timeout
  * Since: 2.32
- */
+ **/
 gboolean
-g_cond_timedwait (GCond  *cond,
-                  GMutex *mutex,
-                  gint64  abs_time)
+g_cond_wait_until (GCond  *cond,
+                   GMutex *mutex,
+                   gint64  end_time)
 {
-  struct timespec end_time;
+  struct timespec ts;
   gint status;
 
-  end_time.tv_sec = abs_time / 1000000;
-  end_time.tv_nsec = (abs_time % 1000000) * 1000;
+  ts.tv_sec = end_time / 1000000;
+  ts.tv_nsec = (end_time % 1000000) * 1000;
 
-  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &end_time)) == 0)
+  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
     return TRUE;
 
   if G_UNLIKELY (status != ETIMEDOUT)

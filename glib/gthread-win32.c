@@ -301,9 +301,9 @@ g_cond_wait (GCond  *cond,
 }
 
 gboolean
-g_cond_timedwait (GCond  *cond,
-                  GMutex *entered_mutex,
-                  gint64  abs_time)
+g_cond_wait_until (GCond  *cond,
+                   GMutex *entered_mutex,
+                   gint64  end_time)
 {
   gint64 span;
   FILETIME ft;
@@ -315,7 +315,7 @@ g_cond_timedwait (GCond  *cond,
   now -= G_GINT64_CONSTANT (116444736000000000);
   now /= 10;
 
-  span = abs_time - now;
+  span = end_time - now;
 
   if G_UNLIKELY (span < 0)
     span = 0;
@@ -324,28 +324,6 @@ g_cond_timedwait (GCond  *cond,
     span = INFINITE;
 
   return g_thread_impl_vtable.SleepConditionVariableSRW (cond, entered_mutex, span / 1000, 0);
-}
-
-gboolean
-g_cond_timed_wait (GCond    *cond,
-                   GMutex   *entered_mutex,
-                   GTimeVal *abs_time)
-{
-  if (abs_time)
-    {
-      gint64 micros;
-
-      micros = abs_time->tv_sec;
-      micros *= 1000000;
-      micros += abs_time->tv_usec;
-
-      return g_cond_timedwait (cond, entered_mutex, micros);
-    }
-  else
-    {
-      g_cond_wait (cond, entered_mutex);
-      return TRUE;
-    }
 }
 
 /* {{{1 GPrivate */

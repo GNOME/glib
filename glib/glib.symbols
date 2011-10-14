@@ -1609,9 +1609,9 @@ g_cond_free
 g_cond_init
 g_cond_new
 g_cond_signal
-g_cond_timedwait
 g_cond_timed_wait
 g_cond_wait
+g_cond_wait_until
 g_mutex_clear
 g_mutex_free
 g_mutex_init

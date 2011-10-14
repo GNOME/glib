@@ -1523,5 +1523,51 @@ g_cond_free (GCond *cond)
   g_slice_free (GCond, cond);
 }
 
+/**
+ * g_cond_timed_wait:
+ * @cond: a #GCond
+ * @mutex: a #GMutex that is currently locked
+ * @abs_time: a #GTimeVal, determining the final time
+ *
+ * Waits until this thread is woken up on @cond, but not longer than
+ * until the time specified by @abs_time. The @mutex is unlocked before
+ * falling asleep and locked again before resuming.
+ *
+ * If @abs_time is %NULL, g_cond_timed_wait() acts like g_cond_wait().
+ *
+ * This function can be used even if g_thread_init() has not yet been
+ * called, and, in that case, will immediately return %TRUE.
+ *
+ * To easily calculate @abs_time a combination of g_get_current_time()
+ * and g_time_val_add() can be used.
+ *
+ * Returns: %TRUE if @cond was signalled, or %FALSE on timeout
+ * Deprecated:2.32: Use g_cond_wait_until() instead.
+ */
+gboolean
+g_cond_timed_wait (GCond    *cond,
+                   GMutex   *mutex,
+                   GTimeVal *abs_time)
+{
+  gint64 end_time;
+
+  end_time = abs_time->tv_sec;
+  end_time *= 1000000;
+  end_time += abs_time->tv_usec;
+
+#ifdef CLOCK_MONOTONIC
+  /* would be nice if we had clock_rtoffset, but that didn't seem to
+   * make it into the kernel yet...
+   */
+  end_time += g_get_monotonic_time () - g_get_real_time ();
+#else
+  /* if CLOCK_MONOTONIC is not defined then g_get_montonic_time() and
+   * g_get_real_time() are returning the same clock, so don't bother...
+   */
+#endif
+
+  return g_cond_wait_until (cond, mutex, end_time);
+}
+
 /* {{{1 Epilogue */
 /* vim: set foldmethod=marker: */

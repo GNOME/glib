@@ -270,13 +270,17 @@ GLIB_VAR gboolean g_threads_got_initialized;
 #endif
 
 GLIB_DEPRECATED
-GMutex *                g_mutex_new  (void);
+GMutex *        g_mutex_new             (void);
 GLIB_DEPRECATED
-void                    g_mutex_free (GMutex *mutex) ;
+void            g_mutex_free            (GMutex *mutex);
 GLIB_DEPRECATED
-GCond *                 g_cond_new   (void);
+GCond *         g_cond_new              (void);
 GLIB_DEPRECATED
-void                    g_cond_free  (GCond  *cond);
+void            g_cond_free             (GCond  *cond);
+GLIB_DEPRECATED
+gboolean        g_cond_timed_wait       (GCond          *cond,
+                                         GMutex         *mutex,
+                                         GTimeVal       *timeval);
 
 G_END_DECLS
 

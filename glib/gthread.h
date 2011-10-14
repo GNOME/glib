@@ -179,10 +179,7 @@ void            g_cond_wait                     (GCond          *cond,
                                                  GMutex         *mutex);
 void            g_cond_signal                   (GCond          *cond);
 void            g_cond_broadcast                (GCond          *cond);
-gboolean        g_cond_timed_wait               (GCond          *cond,
-                                                 GMutex         *mutex,
-                                                 GTimeVal       *timeval);
-gboolean        g_cond_timedwait                (GCond          *cond,
+gboolean        g_cond_wait_until               (GCond          *cond,
                                                  GMutex         *mutex,
                                                  gint64          abs_time);
 
