@@ -379,7 +379,7 @@ while (<>) {
 	    $enumshort =~ s/^[A-Z][A-Z0-9]*_//;
 
 	    $enumname_prefix = $enumlong;
-	    $enumname_prefix =~ s/$enumshort$//;
+	    $enumname_prefix =~ s/_$enumshort$//;
 	} else {
 	    # enumname is e.g. GMatchType
 	    $enspace = $enumname;
