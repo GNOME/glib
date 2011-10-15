@@ -500,9 +500,13 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * no way to detect this.
  *
  * Some URIs can be changed when passed through a GFile (for instance
- * unsupported uris with strange formats like mailto:), so if you have
- * a textual uri you want to pass in as argument, consider using
+ * unsupported URIs with strange formats like mailto:), so if you have
+ * a textual URI you want to pass in as argument, consider using
  * g_app_info_launch_uris() instead.
+ *
+ * The launched application inherits the environment of the launching
+ * process, but it can be modified with g_app_launch_context_setenv() and
+ * g_app_launch_context_unsetenv().
  *
  * On UNIX, this function sets the <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>
  * environment variable with the path of the launched desktop file and
@@ -733,6 +737,10 @@ g_app_info_delete (GAppInfo *appinfo)
 
 G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 
+struct _GAppLaunchContextPrivate {
+  char **envp;
+};
+
 /**
  * g_app_launch_context_new:
  * 
@@ -748,13 +756,96 @@ g_app_launch_context_new (void)
 }
 
 static void
-g_app_launch_context_class_init (GAppLaunchContextClass *klass)
+g_app_launch_context_finalize (GObject *object)
 {
+  GAppLaunchContext *context = G_APP_LAUNCH_CONTEXT (object);
+
+  g_strfreev (context->priv->envp);
+
+  G_OBJECT_CLASS (g_app_launch_context_parent_class)->finalize (object);
 }
 
 static void
-g_app_launch_context_init (GAppLaunchContext *launch_context)
+g_app_launch_context_class_init (GAppLaunchContextClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  g_type_class_add_private (klass, sizeof (GAppLaunchContextPrivate));
+
+  object_class->finalize = g_app_launch_context_finalize;
+}
+
+static void
+g_app_launch_context_init (GAppLaunchContext *context)
+{
+  context->priv = G_TYPE_INSTANCE_GET_PRIVATE (context, G_TYPE_APP_LAUNCH_CONTEXT, GAppLaunchContextPrivate);
+}
+
+/**
+ * g_app_launch_context_setenv:
+ * @context: a #GAppLaunchContext
+ * @variable: the environment variable to set
+ * @value: the value for to set the variable to.
+ *
+ * Arranges for @variable to be set to @value in the child's
+ * environment when @context is used to launch an application.
+ *
+ * Since: 2.32
+ */
+void
+g_app_launch_context_setenv (GAppLaunchContext *context,
+                             const char        *variable,
+                             const char        *value)
+{
+  if (!context->priv->envp)
+    context->priv->envp = g_get_environ ();
+
+  context->priv->envp =
+    g_environ_setenv (context->priv->envp, variable, value, TRUE);
+}
+
+/**
+ * g_app_launch_context_unsetenv:
+ * @context: a #GAppLaunchContext
+ * @variable: the environment variable to remove
+ *
+ * Arranges for @variable to be unset in the child's environment
+ * when @context is used to launch an application.
+ *
+ * Since: 2.32
+ */
+void
+g_app_launch_context_unsetenv (GAppLaunchContext *context,
+                               const char        *variable)
+{
+  if (!context->priv->envp)
+    context->priv->envp = g_get_environ ();
+
+  context->priv->envp =
+    g_environ_unsetenv (context->priv->envp, variable);
+}
+
+/**
+ * g_app_launch_context_get_environment:
+ * @context: a #GAppLaunchContext
+ *
+ * Gets the complete environment variable list to be passed to
+ * the child process when @context is used to launch an application.
+ * This is a %NULL-terminated array of strings, where each string has
+ * the form <literal>KEY=VALUE</literal>.
+ *
+ * Return value: (array zero-terminated=1) (transfer full): the
+ *     child's environment
+ *
+ * Since: 2.32
+ */
+char **
+g_app_launch_context_get_environment (GAppLaunchContext *context)
+{
+  if (!context->priv->envp)
+    context->priv->envp = g_get_environ ();
+
+  return g_strdupv (context->priv->envp);
 }
 
 /**
@@ -768,7 +859,7 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * application, by setting the <envar>DISPLAY</envar> environment variable.
  *
  * Returns: a display string for the display.
- **/
+ */
 char *
 g_app_launch_context_get_display (GAppLaunchContext *context,
 				  GAppInfo          *info,

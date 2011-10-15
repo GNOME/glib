@@ -1126,9 +1126,8 @@ typedef struct
 {
   GSpawnChildSetupFunc user_setup;
   gpointer user_setup_data;
-  char *display;
-  char *sn_id;
-  char *desktop_file;
+
+  char *pid_envvar;
 } ChildSetupData;
 
 static void
@@ -1136,20 +1135,22 @@ child_setup (gpointer user_data)
 {
   ChildSetupData *data = user_data;
 
-  if (data->display)
-    g_setenv ("DISPLAY", data->display, TRUE);
-
-  if (data->sn_id)
-    g_setenv ("DESKTOP_STARTUP_ID", data->sn_id, TRUE);
-
-  if (data->desktop_file)
+  if (data->pid_envvar)
     {
-      gchar pid[20];
+      pid_t pid = getpid ();
+      char buf[20];
+      int i;
 
-      g_setenv ("GIO_LAUNCHED_DESKTOP_FILE", data->desktop_file, TRUE);
-
-      g_snprintf (pid, 20, "%ld", (long)getpid ());
-      g_setenv ("GIO_LAUNCHED_DESKTOP_FILE_PID", pid, TRUE);
+      /* Write the pid into the space already reserved for it in the
+       * environment array. We can't use sprintf because it might
+       * malloc, so we do it by hand. It's simplest to write the pid
+       * out backwards first, then copy it over.
+       */
+      for (i = 0; pid; i++, pid /= 10)
+        buf[i] = (pid % 10) + '0';
+      for (i--; i >= 0; i--)
+        *(data->pid_envvar++) = buf[i];
+      *data->pid_envvar = '\0';
     }
 
   if (data->user_setup)
@@ -1238,7 +1239,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   GDBusConnection *session_bus;
   gboolean completed = FALSE;
   GList *old_uris;
-  char **argv;
+  char **argv, **envp;
   int argc;
   ChildSetupData data;
 
@@ -1248,66 +1249,89 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
+  if (launch_context)
+    envp = g_app_launch_context_get_environment (launch_context);
+  else
+    envp = g_get_environ ();
+
   do
     {
       GPid pid;
       GList *launched_uris;
       GList *iter;
+      char *display, *sn_id;
 
       old_uris = uris;
       if (!expand_application_parameters (info, &uris,
-					  &argc, &argv, error))
-	goto out;
+                                          &argc, &argv, error))
+        goto out;
 
       /* Get the subset of URIs we're launching with this process */
       launched_uris = NULL;
       for (iter = old_uris; iter != NULL && iter != uris; iter = iter->next)
-	launched_uris = g_list_prepend (launched_uris, iter->data);
+        launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
-      
+
       if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
-	{
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unable to find terminal required for application"));
-	  goto out;
-	}
+          goto out;
+        }
 
       data.user_setup = user_setup;
       data.user_setup_data = user_setup_data;
-      data.display = NULL;
-      data.sn_id = NULL;
-      data.desktop_file = info->filename;
 
+      if (info->filename)
+        {
+          envp = g_environ_setenv (envp,
+                                   "GIO_LAUNCHED_DESKTOP_FILE",
+                                   info->filename,
+                                   TRUE);
+          envp = g_environ_setenv (envp,
+                                   "GIO_LAUNCHED_DESKTOP_FILE_PID",
+                                   "XXXXXXXXXXXXXXXXXXXX", /* filled in child_setup */
+                                   TRUE);
+          data.pid_envvar = (char *)g_environ_getenv (envp, "GIO_LAUNCHED_DESKTOP_FILE_PID");
+        }
+
+      display = NULL;
+      sn_id = NULL;
       if (launch_context)
-	{
-	  GList *launched_files = create_files_for_uris (launched_uris);
+        {
+          GList *launched_files = create_files_for_uris (launched_uris);
 
-	  data.display = g_app_launch_context_get_display (launch_context,
-						           appinfo,
-						           launched_files);
+          display = g_app_launch_context_get_display (launch_context,
+                                                      appinfo,
+                                                      launched_files);
+          envp = g_environ_setenv (envp, "DISPLAY", display, TRUE);
 
-	  if (info->startup_notify)
-	    data.sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
-								     appinfo,
-								     launched_files);
-	  g_list_foreach (launched_files, (GFunc)g_object_unref, NULL);
-	  g_list_free (launched_files);
-	}
+          if (info->startup_notify)
+            {
+              sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                  appinfo,
+                                                                  launched_files);
+              envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
+            }
+
+          g_list_foreach (launched_files, (GFunc)g_object_unref, NULL);
+          g_list_free (launched_files);
+        }
 
       if (!g_spawn_async (info->path,
-			  argv,
-			  NULL,
-			  spawn_flags,
-			  child_setup,
-			  &data,
-			  &pid,
-			  error))
-	{
-	  if (data.sn_id)
-	    g_app_launch_context_launch_failed (launch_context, data.sn_id);
+                          argv,
+                          envp,
+                          spawn_flags,
+                          child_setup,
+                          &data,
+                          &pid,
+                          error))
+        {
+	  if (sn_id)
+	    g_app_launch_context_launch_failed (launch_context, sn_id);
 
-	  g_free (data.sn_id);
-	  g_free (data.display);
+	  g_free (display);
+	  g_free (sn_id);
 	  g_list_free (launched_uris);
 
 	  goto out;
@@ -1319,12 +1343,12 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
       notify_desktop_launch (session_bus,
 			     info,
 			     pid,
-			     data.display,
-			     data.sn_id,
+			     display,
+			     sn_id,
 			     launched_uris);
 
-      g_free (data.sn_id);
-      g_free (data.display);
+      g_free (display);
+      g_free (sn_id);
       g_list_free (launched_uris);
 
       g_strfreev (argv);
@@ -1349,6 +1373,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
 
  out:
   g_strfreev (argv);
+  g_strfreev (envp);
 
   return completed;
 }
@@ -1438,9 +1463,9 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  *
  * This guarantee allows additional control over the exact environment
  * of the child processes, which is provided via a setup function
- * @setup, as well as the process identifier of each child process via
- * @pid_callback.  See g_spawn_async() for more information about the
- * semantics of the @setup function.
+ * @user_setup, as well as the process identifier of each child process
+ * via @pid_callback. See g_spawn_async() for more information about the
+ * semantics of the @user_setup function.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  */

@@ -278,6 +278,15 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
     }
 #endif
 
+  /* FIXME: Need to do something with
+   * g_app_launch_context_get_environment()... ShellExecuteExW()
+   * doesn't have any way to pass an environment though. We need to
+   * either (a) update environment, ShellExecuteExW(), revert
+   * environment; or (b) find an API to figure out what app
+   * ShellExecuteExW() would launch, and then use g_spawn_async()
+   * instead.
+   */
+
   for (l = files; l != NULL; l = l->next)
     {
       char *path = g_file_get_path (l->data);
