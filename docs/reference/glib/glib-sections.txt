@@ -591,6 +591,7 @@ GThreadError
 GThread
 GThreadFunc
 g_thread_new
+g_thread_try
 g_thread_ref
 g_thread_unref
 g_thread_join
