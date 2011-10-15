@@ -880,7 +880,7 @@ _g_io_modules_ensure_loaded (void)
 	  gchar **paths;
 	  int i;
 
-	  paths = g_strsplit (module_path, ":", 0);
+	  paths = g_strsplit (module_path, G_SEARCHPATH_SEPARATOR_S, 0);
 
 	  for (i = 0; paths[i] != NULL; i++)
 	    {
