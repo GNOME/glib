@@ -1195,6 +1195,8 @@ g_static_rw_lock_free (GStaticRWLock* lock)
  * g_private_new:
  * @notify: a #GDestroyNotify
  *
+ * Creates a new #GPrivate.
+ *
  * Deprecated:2.32: dynamic allocation of #GPrivate is a bad idea.  Use
  *                  static storage and G_PRIVATE_INIT() instead.
  *
