@@ -672,6 +672,15 @@ void
 
 /* GThread {{{1 -------------------------------------------------------- */
 
+/**
+ * g_thread_ref:
+ * @thread: a #GThread
+ *
+ * Increase the reference count on @thread.
+ *
+ * Returns: a new reference to @thread
+ * Since: 2.32
+ **/
 GThread *
 g_thread_ref (GThread *thread)
 {
@@ -682,6 +691,15 @@ g_thread_ref (GThread *thread)
   return thread;
 }
 
+/**
+ * g_thread_unref:
+ * @thread: a #GThread
+ *
+ * Decrease the reference count on @thread, possibly freeing all
+ * resources associated with it.
+ *
+ * Since: 2.32
+ **/
 void
 g_thread_unref (GThread *thread)
 {
