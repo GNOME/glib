@@ -91,11 +91,44 @@
  * This is no longer necessary. Since version 2.32, the GLib threading
  * system is automatically initialized at the start of your program,
  * and all thread-creation functions and synchronization primitives
- * are available right away. It is still possible to do thread-unsafe
- * initialization and setup at the beginning of your program, before
- * creating the first threads.
+ * are available right away.
  *
- * GLib is internally completely thread-safe (all global data is
+ * Note that it is not safe to assume that your program has no threads
+ * even if you don't call g_thread_new() yourself. GLib and GIO can
+ * and will create threads for their own purposes in some cases, such
+ * as when using g_unix_signal_source_new() or when using #GDBus.
+ *
+ * Originally, UNIX did not have threads, and therefore some traditional
+ * UNIX APIs are problematic in threaded programs. Some notable examples
+ * are
+ * <itemizedlist>
+ *   <listitem>
+ *     C library functions that return data in statically allocated
+ *     buffers, such as strtok() or strerror(). For many of these,
+ *     there are thread-safe variants with a _r suffix, or you can
+ *     look at corresponding GLib APIs (like g_strsplit() or g_strerror()).
+ *   </listitem>
+ *   <listitem>
+ *     setenv() and unsetenv() manipulate the process environment in
+ *     a not thread-safe way, and may interfere with getenv() calls
+ *     in other threads. Note that getenv() calls may be
+ *     <quote>hidden</quote> behind other APIs. For example, GNU gettext()
+ *     calls getenv() under the covers. In general, it is best to treat
+ *     the environment as readonly. If you absolutely have to modify the
+ *     environment, do it early in main(), when no other threads are around yet.
+ *   </listitem>
+ *   <listitem>
+ *     setlocale() changes the locale for the entire process, affecting
+ *     all threads. Temporary changes to the locale are often made to
+ *     change the behavior of string scanning or formatting functions
+ *     like scanf() or printf(). GLib offers a number of string APIs
+ *     (like g_ascii_formatd() or g_ascii_strtod()) that can often be
+ *     used as an alternative. Or you can use the uselocale() function
+ *     to change the locale only for the current thread.
+ *   </listitem>
+ * </itemizedlist>
+ *
+ * GLib itself is internally completely thread-safe (all global data is
  * automatically locked), but individual data structure instances are
  * not automatically locked for performance reasons. For example,
  * you must coordinate accesses to the same #GHashTable from multiple
