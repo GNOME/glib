@@ -126,6 +126,18 @@
  *     used as an alternative. Or you can use the uselocale() function
  *     to change the locale only for the current thread.
  *   </listitem>
+ *   <listitem>
+ *     fork() only takes the calling thread into the child's copy of the
+ *     process image.  If other threads were executing in critical
+ *     sections they could have left mutexes locked which could easily
+ *     cause deadlocks in the new child.  For this reason, you should
+ *     call exit() or exec() as soon as possible in the child and only
+ *     make signal-safe library calls before that.
+ *   </listitem>
+ *   <listitem>
+ *     daemon() uses fork() in a way contrary to what is described
+ *     above.  It should not be used with GLib programs.
+ *   </listitem>
  * </itemizedlist>
  *
  * GLib itself is internally completely thread-safe (all global data is
