@@ -254,38 +254,6 @@ gchar*                g_path_get_dirname   (const gchar *file_name) G_GNUC_MALLO
 /* Set the pointer at the specified location to NULL */
 void                  g_nullify_pointer    (gpointer    *nullify_location);
 
-/* return the environment string for the variable. The returned memory
- * must not be freed. */
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_getenv g_getenv_utf8
-#define g_setenv g_setenv_utf8
-#define g_unsetenv g_unsetenv_utf8
-#define g_find_program_in_path g_find_program_in_path_utf8
-#endif
-#endif
-
-const gchar *         g_getenv             (const gchar  *variable);
-gboolean              g_setenv             (const gchar  *variable,
-					    const gchar  *value,
-					    gboolean      overwrite);
-void                  g_unsetenv           (const gchar  *variable);
-gchar **              g_listenv            (void);
-
-gchar **              g_get_environ        (void);
-const gchar *         g_environ_getenv     (gchar       **envp,
-					    const gchar  *variable);
-gchar **              g_environ_setenv     (gchar       **envp,
-					    const gchar  *variable,
-					    const gchar  *value,
-					    gboolean      overwrite) G_GNUC_WARN_UNUSED_RESULT;
-gchar **              g_environ_unsetenv   (gchar       **envp,
-					    const gchar  *variable) G_GNUC_WARN_UNUSED_RESULT;
-
-/* private */
-const gchar*	     _g_getenv_nomalloc	   (const gchar	 *variable,
-					    gchar         buffer[1024]);
-
 /**
  * GVoidFunc:
  *
@@ -317,6 +285,12 @@ void	g_atexit		(GVoidFunc    func);
 int atexit (void (*)(void));
 #endif
 #define g_atexit(func) atexit(func)
+#endif
+
+#ifndef __GTK_DOC_IGNORE__
+#ifdef G_OS_WIN32
+#define g_find_program_in_path g_find_program_in_path_utf8
+#endif
 #endif
 
 /* Look for an executable in PATH, following execvp() rules */

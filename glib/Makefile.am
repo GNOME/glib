@@ -139,6 +139,7 @@ libglib_2_0_la_SOURCES = 	\
 	gdate.c	 		\
 	gdatetime.c	 	\
 	gdir.c			\
+	genviron.c		\
 	gerror.c		\
 	gfileutils.c		\
 	ghash.c			\
@@ -260,8 +261,9 @@ glibsubinclude_HEADERS =   \
 	gconvert.h	\
 	gdataset.h	\
 	gdate.h		\
-	gdatetime.h     \
+	gdatetime.h	\
 	gdir.h		\
+	genviron.h	\
 	gerror.h	\
 	gfileutils.h	\
 	ghash.h		\
