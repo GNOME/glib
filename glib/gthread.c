@@ -82,10 +82,10 @@
  * (#GMutex, #GRecMutex and #GRWLock). There is a facility to use
  * individual bits for locks (g_bit_lock()). There are primitives
  * for condition variables to allow synchronization of threads (#GCond).
- * There are primitives for thread-private data - data that every thread
- * has a private instance of (#GPrivate). There are
- * facilities for one-time initialization (#GOnce, g_once_init_enter()).
- * Finally there are primitives to create and manage threads (#GThread).
+ * There are primitives for thread-private data - data that every
+ * thread has a private instance of (#GPrivate). There are facilities
+ * for one-time initialization (#GOnce, g_once_init_enter()). Finally,
+ * there are primitives to create and manage threads (#GThread).
  *
  * The GLib threading system used to be initialized with g_thread_init().
  * This is no longer necessary. Since version 2.32, the GLib threading
@@ -422,9 +422,15 @@
  * GThread:
  *
  * The #GThread struct represents a running thread. This struct
- * is returned by g_thread_new() or g_thread_try_new(). You can obtain
- * the #GThread struct representing the current thead by calling
- * g_thread_self().
+ * is returned by g_thread_new() or g_thread_try_new(). You can
+ * obtain the #GThread struct representing the current thead by
+ * calling g_thread_self().
+ *
+ * GThread is refcounted, see g_thread_ref() and g_thread_unref().
+ * The thread represented by it holds a reference while it is running,
+ * and g_thread_join() consumes the reference that it is given, so
+ * it is normally not necessary to manage GThread references
+ * explicitly.
  *
  * The structure is opaque -- none of its fields may be directly
  * accessed.
@@ -434,8 +440,8 @@
  * GThreadFunc:
  * @data: data passed to the thread
  *
- * Specifies the type of the @func functions passed to g_thread_new() or
- * g_thread_try_new().
+ * Specifies the type of the @func functions passed to g_thread_new()
+ * or g_thread_try_new().
  *
  * Returns: the return value of the thread
  */
@@ -679,8 +685,9 @@ void
  * Increase the reference count on @thread.
  *
  * Returns: a new reference to @thread
+ *
  * Since: 2.32
- **/
+ */
 GThread *
 g_thread_ref (GThread *thread)
 {
@@ -698,8 +705,12 @@ g_thread_ref (GThread *thread)
  * Decrease the reference count on @thread, possibly freeing all
  * resources associated with it.
  *
+ * Note that each thread holds a reference to its #GThread while
+ * it is running, so it is safe to drop your own reference to it
+ * if you don't need it anymore.
+ *
  * Since: 2.32
- **/
+ */
 void
 g_thread_unref (GThread *thread)
 {
@@ -749,18 +760,21 @@ g_thread_proxy (gpointer data)
  * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
- * @error: return location for error
  *
  * This function creates a new thread. The new thread starts by invoking
  * @func with the argument data. The thread will run until @func returns
- * or until g_thread_exit() is called from the new thread.
+ * or until g_thread_exit() is called from the new thread. The return value
+ * of @func becomes the return value of the thread, which can be obtained
+ * with g_thread_join().
  *
- * The @name can be useful for discriminating threads in
- * a debugger. Some systems restrict the length of @name to
- * 16 bytes.
+ * The @name can be useful for discriminating threads in a debugger.
+ * Some systems restrict the length of @name to 16 bytes.
  *
- * If the thread can not be created the program aborts.  See
+ * If the thread can not be created the program aborts. See
  * g_thread_try_new() if you want to attempt to deal with failures.
+ *
+ * To free the struct returned by this function, use g_thread_unref().
+ * Note that g_thread_join() implicitly unrefs the #GThread as well.
  *
  * Returns: the new #GThread
  *
@@ -885,8 +899,10 @@ g_thread_exit (gpointer retval)
  * The value returned by @func or given to g_thread_exit() is
  * returned by this function.
  *
- * All resources of @thread including the #GThread struct are
- * released before g_thread_join() returns.
+ * g_thread_join() consumes the reference to the passed-in @thread.
+ * This will usually cause the #GThread struct and associated resources
+ * to be freed. Use g_thread_ref() to obtain an extra reference if you
+ * want to keep the GThread alive beyond the g_thread_join() call.
  *
  * Returns: the return value of the thread
  */
@@ -916,13 +932,13 @@ g_thread_join (GThread *thread)
  *
  * This functions returns the #GThread corresponding to the
  * current thread. Note that this function does not increase
- * the reference count of the returned object.
+ * the reference count of the returned struct.
  *
- * This function will return a #GThread even for threads that were not
- * created by GLib (ie: those created by other threading APIs).  This
- * may be useful for thread identification purposes (ie: comparisons)
- * but you must not use GLib functions (such as g_thread_join()) on
- * these threads.
+ * This function will return a #GThread even for threads that
+ * were not created by GLib (i.e. those created by other threading
+ * APIs). This may be useful for thread identification purposes
+ * (i.e. comparisons) but you must not use GLib functions (such
+ * as g_thread_join()) on these threads.
  *
  * Returns: the #GThread representing the current thread
  */
