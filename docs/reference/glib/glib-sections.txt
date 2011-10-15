@@ -591,11 +591,12 @@ GThreadError
 GThread
 GThreadFunc
 g_thread_new
-g_thread_new_full
-g_thread_self
+g_thread_ref
+g_thread_unref
 g_thread_join
 g_thread_yield
 g_thread_exit
+g_thread_self
 
 <SUBSECTION>
 GMutex
