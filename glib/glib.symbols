@@ -1102,7 +1102,7 @@ g_thread_new
 g_thread_ref
 g_thread_self
 g_thread_set_priority
-g_thread_try
+g_thread_try_new
 g_thread_use_default_impl
 g_thread_unref
 g_thread_yield

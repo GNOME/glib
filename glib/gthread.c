@@ -422,8 +422,8 @@
  * GThread:
  *
  * The #GThread struct represents a running thread. This struct
- * is returned by g_thread_new() or g_thread_try(). You can obtain the
- * #GThread struct representing the current thead by calling
+ * is returned by g_thread_new() or g_thread_try_new(). You can obtain
+ * the #GThread struct representing the current thead by calling
  * g_thread_self().
  *
  * The structure is opaque -- none of its fields may be directly
@@ -435,7 +435,7 @@
  * @data: data passed to the thread
  *
  * Specifies the type of the @func functions passed to g_thread_new() or
- * g_thread_try().
+ * g_thread_try_new().
  *
  * Returns: the return value of the thread
  */
@@ -742,7 +742,7 @@ g_thread_proxy (gpointer data)
  * 16 bytes.
  *
  * If the thread can not be created the program aborts.  See
- * g_thread_try() if you want to attempt to deal with failures.
+ * g_thread_try_new() if you want to attempt to deal with failures.
  *
  * Returns: the new #GThread
  *
@@ -765,7 +765,7 @@ g_thread_new (const gchar *name,
 }
 
 /**
- * g_thread_try:
+ * g_thread_try_new:
  * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
@@ -782,10 +782,10 @@ g_thread_new (const gchar *name,
  * Since: 2.32
  */
 GThread *
-g_thread_try (const gchar  *name,
-              GThreadFunc   func,
-              gpointer      data,
-              GError      **error)
+g_thread_try_new (const gchar  *name,
+                  GThreadFunc   func,
+                  gpointer      data,
+                  GError      **error)
 {
   return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
 }

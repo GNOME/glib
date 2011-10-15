@@ -50,7 +50,7 @@ test_thread1 (void)
   GThread *thread;
   GError *error = NULL;
 
-  thread = g_thread_try ("test", thread1_func, NULL, &error);
+  thread = g_thread_try_new ("test", thread1_func, NULL, &error);
   g_assert_no_error (error);
 
   result = g_thread_join (thread);
@@ -135,7 +135,7 @@ test_thread4 (void)
     g_error ("prlimit failed: %s\n", g_strerror (ret));
 
   error = NULL;
-  thread = g_thread_try ("a", thread1_func, NULL, &error);
+  thread = g_thread_try_new ("a", thread1_func, NULL, &error);
   g_assert (thread == NULL);
   g_assert_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN);
   g_error_free (error);

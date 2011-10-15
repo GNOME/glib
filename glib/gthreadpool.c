@@ -414,7 +414,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
       GThread *thread;
 
       /* No thread was found, we have to start a new one */
-      thread = g_thread_try ("pool", g_thread_pool_thread_proxy, pool, error);
+      thread = g_thread_try_new ("pool", g_thread_pool_thread_proxy, pool, error);
 
       if (thread == NULL)
         return FALSE;
