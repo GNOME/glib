@@ -58,4 +58,6 @@ gchar **      g_environ_setenv   (gchar       **envp,
 gchar **      g_environ_unsetenv (gchar       **envp,
                                   const gchar  *variable) G_GNUC_WARN_UNUSED_RESULT;
 
+G_END_DECLS
+
 #endif /* __G_ENVIRON_H__ */
