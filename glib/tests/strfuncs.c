@@ -19,6 +19,8 @@
  * if advised of the possibility of such damage.
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <ctype.h>
 #include <errno.h>
 #include <locale.h>
@@ -1269,6 +1271,18 @@ test_strsignal (void)
     }
 }
 
+static void
+test_strup (void)
+{
+  gchar *s;
+
+  s = g_strdup ("lower");
+  g_assert_cmpstr (g_strup (s), ==, "LOWER");
+  g_assert_cmpstr (g_strdown (s), ==, "lower");
+  g_assert (g_strcasecmp ("lower", "LOWER") == 0);
+  g_free (s);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1301,6 +1315,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strip-context", test_strip_context);
   g_test_add_func ("/strfuncs/strerror", test_strerror);
   g_test_add_func ("/strfuncs/strsignal", test_strsignal);
+  g_test_add_func ("/strfuncs/strup", test_strup);
 
   return g_test_run();
 }

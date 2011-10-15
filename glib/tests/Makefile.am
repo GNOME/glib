@@ -215,6 +215,9 @@ slice_LDADD      = $(progs_ldadd)
 TEST_PROGS      += hook
 hook_LDADD       = $(progs_ldadd)
 
+TEST_PROGS      += mainloop
+mainloop_LDADD   = $(progs_ldadd)
+
 TEST_PROGS      += private
 private_LDADD    = $(progs_ldadd)
 
