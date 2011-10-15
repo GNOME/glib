@@ -27,6 +27,7 @@ g_regex_get_type
 g_match_info_get_type
 g_variant_builder_get_type
 g_variant_type_get_gtype
+g_key_file_get_type
 g_main_loop_get_type
 g_main_context_get_type
 g_source_get_type
