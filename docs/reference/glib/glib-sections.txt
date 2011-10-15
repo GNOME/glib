@@ -746,7 +746,6 @@ g_static_private_free
 GThreadFunctions
 G_THREADS_ENABLED
 g_static_mutex_get_mutex_impl
-GSystemThread
 g_thread_use_default_impl
 g_threads_got_initialized
 g_thread_functions_for_glib_use

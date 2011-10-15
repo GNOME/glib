@@ -637,11 +637,10 @@ g_once_impl (GOnce       *once,
 
 /**
  * g_once_init_enter:
- * @value_location: location of a static initializable variable
- *     containing 0
+ * @location: location of a static initializable variable containing 0
  *
  * Function to be called when starting a critical initialization
- * section. The argument @value_location must point to a static
+ * section. The argument @location must point to a static
  * 0-initialized variable that will be set to a value other than 0 at
  * the end of the initialization section. In combination with
  * g_once_init_leave() and the unique address @value_location, it can
@@ -669,9 +668,9 @@ g_once_impl (GOnce       *once,
  * Since: 2.14
  */
 gboolean
-(g_once_init_enter) (volatile void *pointer)
+(g_once_init_enter) (volatile void *location)
 {
-  volatile gsize *value_location = pointer;
+  volatile gsize *value_location = location;
   gboolean need_init = FALSE;
   g_mutex_lock (&g_once_mutex);
   if (g_atomic_pointer_get (value_location) == NULL)
@@ -692,8 +691,7 @@ gboolean
 
 /**
  * g_once_init_leave:
- * @value_location: location of a static initializable variable
- *     containing 0
+ * @location: location of a static initializable variable containing 0
  * @result: new non-0 value for *@value_location
  *
  * Counterpart to g_once_init_enter(). Expects a location of a static
@@ -705,10 +703,10 @@ gboolean
  * Since: 2.14
  */
 void
-(g_once_init_leave) (volatile void *pointer,
+(g_once_init_leave) (volatile void *location,
                      gsize          result)
 {
-  volatile gsize *value_location = pointer;
+  volatile gsize *value_location = location;
 
   g_return_if_fail (g_atomic_pointer_get (value_location) == NULL);
   g_return_if_fail (result != 0);

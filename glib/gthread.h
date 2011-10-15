@@ -181,7 +181,7 @@ void            g_cond_signal                   (GCond          *cond);
 void            g_cond_broadcast                (GCond          *cond);
 gboolean        g_cond_wait_until               (GCond          *cond,
                                                  GMutex         *mutex,
-                                                 gint64          abs_time);
+                                                 gint64          end_time);
 
 gpointer        g_private_get                   (GPrivate       *key);
 void            g_private_set                   (GPrivate       *key,

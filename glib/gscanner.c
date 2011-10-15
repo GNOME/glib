@@ -180,11 +180,6 @@
 
 /**
  * GScannerConfig:
- *
- * Specifies the #GScanner parser configuration. Most settings can
- * be changed during the parsing phase and will affect the lexical
- * parsing of the next unpeeked token.
- *
  * @cset_skip_characters: specifies which characters should be skipped
  *     by the scanner (the default is the whitespace characters: space,
  *     tab, carriage-return and line-feed).
@@ -243,6 +238,10 @@
  * @scope_0_fallback: specifies if a symbol is searched for in the
  *     default scope in addition to the current scope (the default is %FALSE).
  * @store_int64:
+ *
+ * Specifies the #GScanner parser configuration. Most settings can
+ * be changed during the parsing phase and will affect the lexical
+ * parsing of the next unpeeked token.
  */
 
 /* --- defines --- */
