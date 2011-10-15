@@ -28,7 +28,17 @@ Notes about GLib 2.32
 =====================
 
 * It is no longer necessary to use g_thread_init() or to link against
-  libgthread.  libglib is now always thread-enabled.
+  libgthread.  libglib is now always thread-enabled.  Custom thread
+  system implementations are no longer supported (including errorcheck
+  mutexes).
+
+* The thread and synchronisation APIs have been updated.
+  GMutex and GCond can be statically allocated without explicit
+  initialisation, as can new types GRWLock and GRecMutex.  The
+  GStatic_______ variants of these types have been deprecated.  GPrivate
+  can also be statically allocated and has a nicer API (deprecating
+  GStaticPrivate).  Finally, g_thread_create() has been replaced with a
+  substantially simplified g_thread_new().
 
 * The g_once_init_enter()/_leave() functions have been replaced with
   macros that allow for a pointer to any gsize-sized object, not just a
@@ -37,7 +47,6 @@ Notes about GLib 2.32
   and (gpointer) casts) which would have worked with the old version.
 
 * It is now mandatory to include glib.h instead of individual headers.
-
 
 Notes about GLib 2.30
 =====================
