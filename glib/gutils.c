@@ -1215,13 +1215,13 @@ _g_getenv_nomalloc (const gchar *variable,
  *
  * Sets an environment variable. Both the variable's name and value
  * should be in the GLib file name encoding. On UNIX, this means that
- * they can be any sequence of bytes. On Windows, they should be in
+ * they can be arbitrary byte strings. On Windows, they should be in
  * UTF-8.
  *
- * Note that on some systems, when variables are overwritten, the memory 
+ * Note that on some systems, when variables are overwritten, the memory
  * used for the previous variables and its value isn't reclaimed.
  *
- * <warning><para>
+ * <warning>
  * Environment variable handling in UNIX is not thread-safe, and your
  * program may crash if one thread calls g_setenv() while another
  * thread is calling getenv(). (And note that many functions, such as
@@ -1229,7 +1229,12 @@ _g_getenv_nomalloc (const gchar *variable,
  * use at the very start of your program, before creating any other
  * threads (or creating objects that create worker threads of their
  * own).
- * </para></warning>
+ *
+ * If you need to set up the environment for a child process, you can
+ * use g_get_environ() to get an environment array, modify that with
+ * g_environ_setenv() and g_environ_unsetenv(), and then pass that
+ * array directly to execvpe(), g_spawn_async(), or the like.
+ * </warning>
  *
  * Returns: %FALSE if the environment variable couldn't be set.
  *
@@ -1331,7 +1336,7 @@ extern char **environ;
  * Note that on some systems, when variables are overwritten, the memory 
  * used for the previous variables and its value isn't reclaimed.
  *
- * <warning><para>
+ * <warning>
  * Environment variable handling in UNIX is not thread-safe, and your
  * program may crash if one thread calls g_unsetenv() while another
  * thread is calling getenv(). (And note that many functions, such as
@@ -1339,7 +1344,12 @@ extern char **environ;
  * use at the very start of your program, before creating any other
  * threads (or creating objects that create worker threads of their
  * own).
- * </para></warning>
+ *
+ * If you need to set up the environment for a child process, you can
+ * use g_get_environ() to get an environment array, modify that with
+ * g_environ_setenv() and g_environ_unsetenv(), and then pass that
+ * array directly to execvpe(), g_spawn_async(), or the like.
+ * </warning>
  *
  * Since: 2.4 
  **/
@@ -1354,31 +1364,13 @@ g_unsetenv (const gchar *variable)
 
   unsetenv (variable);
 #else /* !HAVE_UNSETENV */
-  int len;
-  gchar **e, **f;
-
   g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
 
-  len = strlen (variable);
-  
   /* Mess directly with the environ array.
    * This seems to be the only portable way to do this.
-   *
-   * Note that we remove *all* environment entries for
-   * the variable name, not just the first.
    */
-  e = f = environ;
-  while (*e != NULL) 
-    {
-      if (strncmp (*e, variable, len) != 0 || (*e)[len] != '=') 
-	{
-	  *f = *e;
-	  f++;
-	}
-      e++;
-    }
-  *f = NULL;
+  g_environ_unsetenv (environ, variable);
 #endif /* !HAVE_UNSETENV */
 
 #else  /* G_OS_WIN32 */
@@ -1487,7 +1479,7 @@ g_listenv (void)
 
 /**
  * g_get_environ:
- * 
+ *
  * Gets the list of environment variables for the current process.  The
  * list is %NULL terminated and each item in the list is of the form
  * 'NAME=VALUE'.
@@ -1498,7 +1490,8 @@ g_listenv (void)
  * The return value is freshly allocated and it should be freed with
  * g_strfreev() when it is no longer needed.
  *
- * Returns: (array zero-terminated=1) (transfer full): the list of environment variables
+ * Returns: (array zero-terminated=1) (transfer full): the list of
+ *     environment variables
  *
  * Since: 2.28
  */
@@ -1522,6 +1515,163 @@ g_get_environ (void)
 
   return result;
 #endif
+}
+
+static gint
+g_environ_find (gchar       **envp,
+                const gchar  *variable)
+{
+  gint len, i;
+
+  len = strlen (variable);
+
+  for (i = 0; envp[i]; i++)
+    {
+      if (strncmp (envp[i], variable, len) == 0 &&
+          envp[i][len] == '=')
+        return i;
+    }
+
+  return -1;
+}
+
+/**
+ * g_environ_getenv:
+ * @envp: (array zero-terminated=1) (transfer none): an environment
+ *     list (eg, as returned from g_get_environ())
+ * @variable: the environment variable to get, in the GLib file name
+ *     encoding
+ *
+ * Returns the value of the environment variable @variable in the
+ * provided list @envp.
+ *
+ * The name and value are in the GLib file name encoding.
+ * On UNIX, this means the actual bytes which might or might not
+ * be in some consistent character set and encoding. On Windows,
+ * it is in UTF-8. On Windows, in case the environment variable's
+ * value contains references to other environment variables, they
+ * are expanded.
+ *
+ * Return value: the value of the environment variable, or %NULL if
+ *     the environment variable is not set in @envp. The returned
+ *     string is owned by @envp, and will be freed if @variable is
+ *     set or unset again.
+ *
+ * Since: 2.32
+ */
+const gchar *
+g_environ_getenv (gchar       **envp,
+                  const gchar  *variable)
+{
+  gint index;
+
+  g_return_val_if_fail (envp != NULL, NULL);
+  g_return_val_if_fail (variable != NULL, NULL);
+
+  index = g_environ_find (envp, variable);
+  if (index != -1)
+    return envp[index] + strlen (variable) + 1;
+  else
+    return NULL;
+}
+
+/**
+ * g_environ_setenv:
+ * @envp: (array zero-terminated=1) (transfer full): an environment
+ *     list (eg, as returned from g_get_environ())
+ * @variable: the environment variable to set, must not contain '='
+ * @value: the value for to set the variable to
+ * @overwrite: whether to change the variable if it already exists
+ *
+ * Sets the environment variable @variable in the provided list
+ * @envp to @value.
+ *
+ * Both the variable's name and value should be in the GLib
+ * file name encoding. On UNIX, this means that they can be
+ * arbitrary byte strings. On Windows, they should be in UTF-8.
+ *
+ * Return value: (array zero-terminated=1) (transfer full): the
+ *     updated environment
+ *
+ * Since: 2.32
+ */
+gchar **
+g_environ_setenv (gchar       **envp,
+                  const gchar  *variable,
+                  const gchar  *value,
+                  gboolean      overwrite)
+{
+  gint index;
+
+  g_return_val_if_fail (envp != NULL, NULL);
+  g_return_val_if_fail (variable != NULL, NULL);
+  g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
+
+  index = g_environ_find (envp, variable);
+  if (index != -1)
+    {
+      if (overwrite)
+        {
+          g_free (envp[index]);
+          envp[index] = g_strdup_printf ("%s=%s", variable, value);
+        }
+    }
+  else
+    {
+      gint length;
+
+      length = g_strv_length (envp);
+      envp = g_renew (gchar *, envp, length + 2);
+      envp[length] = g_strdup_printf ("%s=%s", variable, value);
+      envp[length + 1] = NULL;
+    }
+
+  return envp;
+}
+
+/**
+ * g_environ_unsetenv:
+ * @envp: (array zero-terminated=1) (transfer full): an environment
+ *     list (eg, as returned from g_get_environ())
+ * @variable: the environment variable to remove, must not contain '='
+ *
+ * Removes the environment variable @variable from the provided
+ * environment @envp.
+ *
+ * Return value: (array zero-terminated=1) (transfer full): the
+ *     updated environment
+ *
+ * Since: 2.32
+ */
+gchar **
+g_environ_unsetenv (gchar       **envp,
+                    const gchar  *variable)
+{
+  gint len;
+  gchar **e, **f;
+
+  g_return_val_if_fail (envp != NULL, NULL);
+  g_return_val_if_fail (variable != NULL, NULL);
+  g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
+
+  len = strlen (variable);
+
+  /* Note that we remove *all* environment entries for
+   * the variable name, not just the first.
+   */
+  e = f = envp;
+  while (*e != NULL)
+    {
+      if (strncmp (*e, variable, len) != 0 || (*e)[len] != '=')
+        {
+          *f = *e;
+          f++;
+        }
+      e++;
+    }
+  *f = NULL;
+
+  return envp;
 }
 
 G_LOCK_DEFINE_STATIC (g_utils_global);
