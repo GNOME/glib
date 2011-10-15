@@ -849,14 +849,21 @@ g_thread_new_internal (const gchar   *name,
  * Calling <literal>g_thread_exit (retval)</literal> is equivalent to
  * returning @retval from the function @func, as given to g_thread_new().
  *
- * <note><para>Never call g_thread_exit() from within a thread of a
- * #GThreadPool, as that will mess up the bookkeeping and lead to funny
- * and unwanted results.</para></note>
+ * <note><para>
+ *   You must only call g_thread_exit() from a thread that you created
+ *   yourself with g_thread_new() or related APIs.  You must not call
+ *   this function from a thread created with another threading library
+ *   or or from within a #GThreadPool.
+ * </para></note>
  */
 void
 g_thread_exit (gpointer retval)
 {
   GRealThread* real = (GRealThread*) g_thread_self ();
+
+  if G_UNLIKELY (!real->ours)
+    g_error ("attempt to g_thread_exit() a thread not created by GLib");
+
   real->retval = retval;
 
   g_system_thread_exit ();
@@ -890,6 +897,7 @@ g_thread_join (GThread *thread)
   gpointer retval;
 
   g_return_val_if_fail (thread, NULL);
+  g_return_val_if_fail (real->ours, NULL);
 
   g_system_thread_wait (real);
 
@@ -909,6 +917,12 @@ g_thread_join (GThread *thread)
  * This functions returns the #GThread corresponding to the
  * current thread. Note that this function does not increase
  * the reference count of the returned object.
+ *
+ * This function will return a #GThread even for threads that were not
+ * created by GLib (ie: those created by other threading APIs).  This
+ * may be useful for thread identification purposes (ie: comparisons)
+ * but you must not use GLib functions (such as g_thread_join()) on
+ * these threads.
  *
  * Returns: the #GThread representing the current thread
  */
