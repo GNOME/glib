@@ -622,7 +622,7 @@ g_key_file_clear (GKeyFile *key_file)
  * g_key_file_load_from_dirs() or g_key_file_load_from_data_dirs() to
  * read an existing key file.
  *
- * Return value: an empty #GKeyFile.
+ * Return value: (transfer full): an empty #GKeyFile.
  *
  * Since: 2.6
  **/
@@ -825,7 +825,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_file:
  * @key_file: an empty #GKeyFile struct
- * @file: the path of a filename to load, in the GLib filename encoding
+ * @file: (type filename): the path of a filename to load, in the GLib filename encoding
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
  *
@@ -874,7 +874,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_data:
  * @key_file: an empty #GKeyFile struct
- * @data: key file loaded in memory
+ * @data: (array length=length): key file loaded in memory
  * @length: the length of @data in bytes
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
@@ -931,9 +931,9 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_dirs:
  * @key_file: an empty #GKeyFile struct
- * @file: a relative path to a filename to open and parse
- * @search_dirs: %NULL-terminated array of directories to search
- * @full_path: return location for a string containing the full path
+ * @file: (type filename): a relative path to a filename to open and parse
+ * @search_dirs: (array zero-terminated=1) (element-type filename): %NULL-terminated array of directories to search
+ * @full_path: (out) (type filename): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
@@ -1005,8 +1005,8 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_data_dirs:
  * @key_file: an empty #GKeyFile struct
- * @file: a relative path to a filename to open and parse
- * @full_path: return location for a string containing the full path
+ * @file: (type filename): a relative path to a filename to open and parse
+ * @full_path: (out) (type filename): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags 
  * @error: return location for a #GError, or %NULL
@@ -1061,7 +1061,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
 }
 
 /**
- * g_key_file_ref:
+ * g_key_file_ref: (skip)
  * @key_file: a #GKeyFile
  *
  * Increases the reference count of @key_file.
@@ -1081,7 +1081,7 @@ g_key_file_ref (GKeyFile *key_file)
 }
 
 /**
- * g_key_file_free:
+ * g_key_file_free: (skip)
  * @key_file: a #GKeyFile
  *
  * Clears all keys and groups from @key_file, and decreases the
@@ -1448,7 +1448,7 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
 /**
  * g_key_file_to_data:
  * @key_file: a #GKeyFile
- * @length: return location for the length of the 
+ * @length: (out) (allow-none): return location for the length of the
  *   returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
@@ -1519,7 +1519,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * g_key_file_get_keys:
  * @key_file: a #GKeyFile
  * @group_name: a group name
- * @length: return location for the number of keys returned, or %NULL
+ * @length: (out): return location for the number of keys returned, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns all keys for the group name @group_name.  The array of
@@ -1528,7 +1528,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * be found, %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a newly-allocated %NULL-terminated array of strings. 
+ * Return value: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *     Use g_strfreev() to free it.
  *
  * Since: 2.6
@@ -1617,13 +1617,13 @@ g_key_file_get_start_group (GKeyFile *key_file)
 /**
  * g_key_file_get_groups:
  * @key_file: a #GKeyFile
- * @length: return location for the number of returned groups, or %NULL
+ * @length: (out) (allow-none): return location for the number of returned groups, or %NULL
  *
  * Returns all groups in the key file loaded with @key_file.  
  * The array of returned groups will be %NULL-terminated, so 
  * @length may optionally be %NULL.
  *
- * Return value: a newly-allocated %NULL-terminated array of strings. 
+ * Return value: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *   Use g_strfreev() to free it.
  * Since: 2.6
  **/
@@ -1902,7 +1902,7 @@ g_key_file_set_string (GKeyFile    *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @length: return location for the number of returned strings, or %NULL
+ * @length: (out) (allow-none): return location for the number of returned strings, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the values associated with @key under @group_name.
@@ -2159,13 +2159,13 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
   return translated_value;
 }
 
-/** 
- * g_key_file_get_locale_string_list: 
+/**
+ * g_key_file_get_locale_string_list:
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
  * @locale: (allow-none): a locale identifier or %NULL
- * @length: (out): return location for the number of returned strings or %NULL
+ * @length: (out) (allow-none): return location for the number of returned strings or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Returns the values associated with @key under @group_name
@@ -2240,7 +2240,7 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
  * @group_name: a group name
  * @key: a key
  * @locale: a locale identifier
- * @list: a %NULL-terminated array of locale string values
+ * @list: (array zero-terminated=1 length=length): a %NULL-terminated array of locale string values
  * @length: the length of @list
  *
  * Associates a list of string values for @key and @locale under
@@ -2382,7 +2382,7 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @length: the number of booleans returned
+ * @length: (out): the number of booleans returned
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
@@ -2460,7 +2460,7 @@ g_key_file_get_boolean_list (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @list: an array of boolean values
+ * @list: (array length=length): an array of boolean values
  * @length: length of @list
  *
  * Associates a list of boolean values with @key under @group_name.  
@@ -2751,7 +2751,7 @@ g_key_file_set_uint64 (GKeyFile    *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @length: the number of integers returned
+ * @length: (out): the number of integers returned
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
@@ -2827,7 +2827,7 @@ g_key_file_get_integer_list (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @list: an array of integer values
+ * @list: (array length=length): an array of integer values
  * @length: number of integer values in @list
  *
  * Associates a list of integer values with @key under @group_name.  
@@ -2964,7 +2964,7 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @length: the number of doubles returned
+ * @length: (out): the number of doubles returned
  * @error: return location for a #GError
  *
  * Returns the values associated with @key under @group_name as
@@ -3040,7 +3040,7 @@ g_key_file_get_double_list  (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @list: an array of double values
+ * @list: (array length=length): an array of double values
  * @length: number of double values in @list
  *
  * Associates a list of double values with @key under
@@ -3229,8 +3229,8 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
 /**
  * g_key_file_set_comment:
  * @key_file: a #GKeyFile
- * @group_name: a group name, or %NULL
- * @key: a key
+ * @group_name: (allow-none): a group name, or %NULL
+ * @key: (allow-none): a key
  * @comment: a comment
  * @error: return location for a #GError
  *
@@ -3494,8 +3494,8 @@ g_key_file_get_comment (GKeyFile     *key_file,
 /**
  * g_key_file_remove_comment:
  * @key_file: a #GKeyFile
- * @group_name: a group name, or %NULL
- * @key: a key
+ * @group_name: (allow-none): a group name, or %NULL
+ * @key: (allow-none): a key
  * @error: return location for a #GError
  *
  * Removes a comment above @key from @group_name.
