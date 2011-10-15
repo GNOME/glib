@@ -769,13 +769,13 @@ g_thread_new (const gchar *name,
  * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
- * @error: return location for error
+ * @error: return location for error, or %NULL
  *
- * This function is the same as g_thread_new() except that it allows for
- * the possibility of failure.
+ * This function is the same as g_thread_new() except that
+ * it allows for the possibility of failure.
  *
- * If a thread can not be created (due to resource limits), @error is
- * set and %NULL is returned.
+ * If a thread can not be created (due to resource limits),
+ * @error is set and %NULL is returned.
  *
  * Returns: the new #GThread, or %NULL if an error occurred
  *
@@ -889,7 +889,8 @@ g_thread_join (GThread *thread)
  * g_thread_self:
  *
  * This functions returns the #GThread corresponding to the
- * current thread.
+ * current thread. Note that this function does not increase
+ * the reference count of the returned object.
  *
  * Returns: the #GThread representing the current thread
  */
