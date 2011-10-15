@@ -181,8 +181,8 @@ dataset_LDADD  = $(progs_ldadd)
 TEST_PROGS    += sort
 sort_LDADD     = $(progs_ldadd)
 
-noinst_PROGRAMS += atomic
-atomic_CFLAGS = $(INCLUDES)
+TEST_PROGS    += atomic
+atomic_CFLAGS  = $(INCLUDES)
 if HAVE_GCC
 atomic_CFLAGS += -Wstrict-aliasing=2
 endif
