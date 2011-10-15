@@ -1,3 +1,204 @@
+Overview of changes from GLib 2.29/2.30 to 2.31.0
+=================================================
+
+This release contains a huge number of changes (500 commits worth).  The
+list below attempts to summarise, but not every change is listed.
+
+* Major changes to threading and synchronisation
+ - threading is now always enabled in GLib
+ - support for custom thread implementations (including our own internal
+   support for errorcheck mutexes) has been removed
+ - a whole lot of dead code (to deal with the non-threaded case) has
+   been ripped out.  This includes the racy path of GMainContext that
+   caused deadlocks with respect to child process exits in
+   single-threaded programs (such as gtester).
+ - libgthread is now an empty shell and g_thread_init() is no longer
+   required (and has been deprecated)
+ - GMutex and GCond can now be statically allocated without explicit
+   initialisation.  Dynamic allocation for these types is deprecated.
+ - new types GRecMutex and GRWLock can also be statically allocated
+   without explicit initialisation.
+ - GPrivate can now be statically allocated and has an improved API.
+   Dynamic allocation of GPrivate is deprecated.
+ - GStaticMutex, GStaticRecMutex, GStaticRwLock, GStaticPrivate are
+   deprecated.
+ - GCond now uses monotonic time internally and a new API takes
+   monotonic time for timed waits, deprecating the wallclock API
+ - removal of the insane macro indirection used in the previous
+   implementation of threading and synchronisation APIs
+ - use SRWLock and CONDITION_VARIABLE APIs when available on Windows
+   (Vista and later) and emulate them on XP
+ - leaks of G(Static)Private-allocated data on some cases of thread exit
+   have been fixed
+ - simplified new thread creation API with the old API deprecated.  The
+   concept of joinability has disappeared (all threads are joinable) as
+   have priority levels, 'bound'ness (ie: kernel vs. userspace threads)
+   and ability to manipulate the stack size.
+ - GThread is now a refcounted type
+ - other implementation details changed
+
+* Move headers for some deprecated functionality to a separate
+  deprecated/ directory.
+
+* New support for attribute-based deprecations to issue compiler
+  warnings instead of breaking the build and/or giving warnings about
+  implicit declarations (and possibly miscompiling).
+
+* GCache has been deprecated (after its last use was removed from our
+  platform over a year ago).
+
+* It is no longer possible to include individual headers (like
+  "ghash.h") -- you must #include <glib.h>.
+
+* The misguided experiment of allowing the program to stumble along with
+  missing GSettings schemas is now over -- the abort is back.
+
+* Clarify that fork() is not valid while using GMainContext.  This is
+  because the internal resources of the GMainContext end up being shared
+  by both processes.  We had an assert here but it was breaking existing
+  (valid) use cases as well, so it has been removed for now.
+
+* GApplication
+  - add ::shutdown signal as logical dual to ::startup
+  - don't use a GMainLoop: iterate the GMainContext directly (improves
+    quit logic)
+
+* Several portability fixes for Windows, OpenBSD, Solaris
+
+* Add new GValue API to specifically deal in signed chars (in case the
+  platform defines 'char' as unsigned)
+
+* Use CLOCK_MONOTONIC unconditionally if the libc has support at compile
+  time (ie: stop checking for kernel support at runtime).
+
+* SOCKS proxy and resolver improvements
+
+* Fix the spelling of G_IO_FLAG_IS_WRITABLE (was WRITEABLE) and
+  introduce a macro for backwards compatibility.
+
+* GDBus: many code generation updates and improvements
+
+* GVariant:
+  - new g_variant_new_from_fixed_array() API
+  - substantial docs improvements/clarifications
+
+* mount monitoring is now based on /proc/mounts (where available)
+  instead of mtab
+
+* new macros G_SOURCE_CONTINUE and G_SOURCE_REMOVE for returning from
+  GSourceFunc (so you don't have to remember what TRUE and FALSE mean)
+
+* use xlocale functions where available to avoid too much heavy lifting
+  in functions like g_ascii_strtod()
+
+* GMappedFile can now be created from an fd
+
+* error message strings grammar/i18n fixes
+
+* many docs updates
+
+* Partial list of bugs closed:
+ 70598  Unify GStaticMutex and GMutex.
+ 320888 optimization for g_main_context_wakeup
+ 398418 GChildWatch race condition?
+ 527214 g_timer_elapsed() returns random values
+ 580505 add a way to set/get name for a thread
+ 583511 race condition means g_main_loop_quit() does not work
+ 592715 Document that g_str_hash() and g_int_hash() are not NULL safe
+ 631413 Add macros for GSourceFunc return values
+ 632049 not immediately clear what g_variant_get_fixed_array expects
+ 640212 "Error stating file" is not a friendly message
+ 640293 Use xlocale functions to implement g_ascii_strtod()
+ 640975 Check that error exists before trying to set it
+ 643934 GApplication lacking a logical dual for the ::startup signal
+ 651268 assertion failed in GDBus worker thread
+ 653987 g_key_file_get_integer cannot interpret trailing spaces
+ 654412 Documentation for g_variant_get_child_value unclear
+ 654563 info capplet: Failed to calculate disk space
+ 655366 missing GSettings schemas lead to obscure crashes
+ 657992 Add glib__private__() API to share between glib,gio
+ 658188 _set_as_last_used_for_type generates a broken mimeapps.list
+ 658206 gsocks5proxy.c has invalid gettext use
+ 658207 glib-compile-schemas says "can not"
+ 658558 simpleaction: Fix documentation of :enabled
+ 658683 clean up charset/language threading issues
+ 658692 add introspection annotations to g_time_val_from_iso8601()
+ 658715 Duplicite strings
+ 658769 Invalid reuse of GError in GThreadedResolver
+ 658806 sign error in string hash implementation
+ 658976 gdbus-codegen's C namespace option needs to support Ugly_Case
+ 659070 gdbus-codegen generated code segfaults when property changes
+ 659082 gdbus-codegen: Single letter namespaces get dropped from names
+ 659212 GMappedFile should fail on non-regular files
+ 659324 _SPLICE_CLOSE_TARGET doesn't mark the output stream as closed
+ 659423 Use adaptive mutexes when available
+ 659427 Move deprecated code to a separate directory
+ 659646 gdbus-codegen produce code that warnings at build
+ 659690 Possible build warning in code generated by gdbus-codegen
+ 659699 property name collision when generating code for "Connection"
+ 659754 Add API to GMappedFile that allows to pass FD
+ 659838 incorrect types in introspection for g_object_bind_property
+ 659866 pthread_rwlock_t requires defined __USE_UNIX98
+ 659870 gvalue: Fix signedness of g_value_get_char()
+ 659889 glib-2.29.92/gio-2.0.pc.in has a wrong line.
+ 659920 Missing setter for read/write property 'closed' of GIOStream
+ 659923 Add g_variant_new_fixed_array() function
+ 660013 Remove old g_atomic configure cruft
+ 660096 glib/rwlock tests failure (tests asserted)
+ 660130 Possible loss of user data when updating mimeapps.list
+ 660147 tracker causes g_critical in "gsettings list-recursively"
+ 660413 Make G_ASSERT_STATIC work with clang
+ 660498 Generated test code fails when the codegen changes
+ 660511 Use /proc/mounts for monitoring mounts, not /etc/mtab
+ 660536 Expose options for /etc/fstab entries
+ 660635 Deprecate g_thread_foreach
+ 660637 Pending dbus method calls not canceled on connection loss
+ 660739 kill off g_{mutex,cond}_{new,free}()
+ 660740 make GThread more standard
+ 660741 g_cond_timedwait is a disaster
+ 660743 macro wrappers for g_once_init_enter/leave
+ 660744 finish killing g_thread_init()
+ 660745 GPrivate leaks on Windows
+ 660791 [gio] Improve doc for g_file_make_directory_with_parents()
+ 660843 asyncqueue-test is broken
+ 660849 Remove cruft from g_strerror and g_strsignal
+ 660886 GDBusProxy: don't drop/complain about unknown props/signals
+ 660887 g_slice_set_config() is broken
+ 660994 Add g_main_context_ref_thread_default()
+ 661255 gio: enable test_peer regression test for OpenBSD
+ 661318 tests use pthread without appropriate compiler/linker flags
+ 661421 Applications fail to initialize on GNU Hurd - commit
+ 661438 Implement G_GNUC_DEPRECATED/G_GNUC_DEPRECATED_FOR on Visual C++
+ 661763 desktop-app-info: Add support for X-GNOME-Keywords
+
+* Translations updates:
+ Belarusian 
+ Brazilian Portuguese
+ British English 
+ Bulgarian 
+ Catalan 
+ Catalan (Valencian)
+ Czech 
+ Danish 
+ Esperanto
+ French 
+ Gujarati
+ Hebrew 
+ Hungarian 
+ Italian 
+ Lithuanian
+ Norwegian bokmål
+ Oriya
+ Polish 
+ Russian 
+ Serbian
+ Simplified Chinese
+ Slovak 
+ Slovenian
+ Spanish 
+ Tamil
+ Vietnamese
+
 Overview of changes from GLib 2.29.18 to 2.29.90
 ================================================
 
