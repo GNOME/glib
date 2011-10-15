@@ -128,8 +128,8 @@ test_thread4 (void)
   GError *error;
   gint ret;
 
+  getrlimit (RLIMIT_NPROC, &nl);
   nl.rlim_cur = 1;
-  nl.rlim_max = 1;
 
   if ((ret = prlimit (getpid(), RLIMIT_NPROC, &nl, &ol)) != 0)
     g_error ("prlimit failed: %s\n", g_strerror (ret));
@@ -140,8 +140,20 @@ test_thread4 (void)
   g_assert_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN);
   g_error_free (error);
 
-  prlimit (getpid (), RLIMIT_NPROC, &ol, NULL);
+  if ((ret = prlimit (getpid (), RLIMIT_NPROC, &ol, NULL)) != 0)
+    g_error ("resetting RLIMIT_NPROC failed: %s\n", g_strerror (ret));
 #endif
+}
+
+static void
+test_thread5 (void)
+{
+  GThread *thread;
+
+  thread = g_thread_new ("a", thread3_func, NULL);
+  g_thread_ref (thread);
+  g_thread_join (thread);
+  g_thread_unref (thread);
 }
 
 int
@@ -153,6 +165,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/thread2", test_thread2);
   g_test_add_func ("/thread/thread3", test_thread3);
   g_test_add_func ("/thread/thread4", test_thread4);
+  g_test_add_func ("/thread/thread5", test_thread5);
 
   return g_test_run ();
 }
