@@ -52,9 +52,10 @@ TEST_PROGS +=	 		\
 	gdbus-message		\
 	socket			\
 	pollable		\
-	tls-certificate         \
-	tls-interaction         \
+	tls-certificate		\
+	tls-interaction		\
 	cancellable		\
+	vfs			\
 	$(NULL)
 
 if OS_UNIX
@@ -488,6 +489,8 @@ tls_certificate_LDADD   = $(progs_ldadd)
 tls_interaction_LDADD = $(progs_ldadd)
 
 cancellable_LDADD = $(progs_ldadd)
+
+vfs_LDADD = $(progs_ldadd)
 
 # -----------------------------------------------------------------------------
 
