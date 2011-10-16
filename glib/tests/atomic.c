@@ -1,7 +1,7 @@
 #include <glib.h>
 
-int
-main (void)
+static void
+test_types (void)
 {
   guint u, u2;
   gint s, s2;
@@ -186,4 +186,14 @@ main (void)
   g_assert (gs == 8);
 
   return 0;
+}
+
+int
+main (int argc, char **argv)
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/atomic/types", test_types);
+
+  return g_test_run ();
 }
