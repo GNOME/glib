@@ -43,6 +43,7 @@
 
 #include "gconvert.h"
 
+#include "gcharset.h"
 #include "gprintfint.h"
 #include "gslist.h"
 #include "gstrfuncs.h"

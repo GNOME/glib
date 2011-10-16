@@ -60,9 +60,10 @@
 #include <errno.h>
 
 #include "gmessages.h"
-#include "glib-init.h"
 
+#include "glib-init.h"
 #include "gbacktrace.h"
+#include "gcharset.h"
 #include "gconvert.h"
 #include "gmem.h"
 #include "gprintfint.h"
