@@ -1439,7 +1439,10 @@ _g_local_file_info_get (const char             *basename,
 
   /* Avoid stat in trivial case */
   if (attribute_matcher == NULL)
-    return info;
+    {
+      g_file_info_unset_attribute_mask (info);
+      return info;
+    }
 
 #ifndef G_OS_WIN32
   res = g_lstat (path, &statbuf);

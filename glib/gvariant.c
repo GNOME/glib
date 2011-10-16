@@ -4778,7 +4778,7 @@ g_variant_iter_next (GVariantIter *iter,
  * @iter: a #GVariantIter
  * @format_string: a GVariant format string
  * @...: the arguments to unpack the value into
- * @returns: %TRUE if a value was unpacked, or %FALSE if there as no
+ * @returns: %TRUE if a value was unpacked, or %FALSE if there was no
  *           value
  *
  * Gets the next item in the container and unpacks it into the variable
@@ -4799,7 +4799,7 @@ g_variant_iter_next (GVariantIter *iter,
  * function with a string constant for the format string and the same
  * string constant must be used each time.  Mixing calls to this
  * function and g_variant_iter_next() or g_variant_iter_next_value() on
- * the same iterator is not recommended.
+ * the same iterator causes undefined behavior.
  *
  * See the section on <link linkend='gvariant-format-strings'>GVariant
  * Format Strings</link>.
