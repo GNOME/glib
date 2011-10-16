@@ -221,6 +221,9 @@ mainloop_LDADD   = $(progs_ldadd)
 TEST_PROGS      += private
 private_LDADD    = $(progs_ldadd)
 
+TEST_PROGS       += asyncqueue
+asyncqueue_LDADD  = $(progs_ldadd)
+
 if OS_UNIX
 
 private_LDFLAGS = -pthread
