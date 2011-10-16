@@ -50,6 +50,19 @@ Notes about GLib 2.32
 
 * The -uninstalled variants of the pkg-config files have been dropped.
 
+* For a long time, gobject-2.0.pc mistakenly declared a public
+  dependency on gthread-2.0.pc (when the dependency should have been
+  private).  This means that programs got away with calling
+  g_thread_init() without explicitly listing gthread-2.0.pc among their
+  dependencies.
+
+  gthread has now been removed as a gobject dependency, which will cause
+  such programs to break.
+
+  The fix for this problem is either to declare an explicit dependency
+  on gthread-2.0.pc (if you care about compatibility with older GLib
+  versions) or to stop calling g_thread_init().
+
 Notes about GLib 2.30
 =====================
 
