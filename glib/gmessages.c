@@ -734,7 +734,7 @@ g_logv (const gchar   *log_domain,
                 && !(test_level & G_LOG_LEVEL_ERROR))
                 {
                   masquerade_fatal = fatal_log_func
-                    && !fatal_log_func (log_domain, test_level, msg, data);
+                    && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
                 }
 
 	      g_free (msg);

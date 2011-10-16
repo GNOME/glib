@@ -169,10 +169,67 @@ test_printerr_handler (void)
   g_set_printerr_handler (NULL);
 }
 
+static char *fail_str = "foo";
+static char *log_str = "bar";
+
+gboolean
+good_failure_handler (const gchar    *log_domain,
+                      GLogLevelFlags  log_level,
+                      const gchar    *msg,
+                      gpointer        user_data)
+{
+  g_test_message ("The Good Fail Message Handler\n");
+  g_assert ((char *)user_data != log_str);
+  g_assert ((char *)user_data == fail_str);
+
+  return FALSE;
+}
+
+gboolean
+bad_failure_handler (const gchar    *log_domain,
+                     GLogLevelFlags  log_level,
+                     const gchar    *msg,
+                     gpointer        user_data)
+{
+  g_test_message ("The Bad Fail Message Handler\n");
+  g_assert ((char *)user_data == log_str);
+  g_assert ((char *)user_data != fail_str);
+
+  return FALSE;
+}
+
+void
+test_handler (const gchar    *log_domain,
+              GLogLevelFlags  log_level,
+              const gchar    *msg,
+              gpointer        user_data)
+{
+  g_test_message ("The Log Message Handler\n");
+  g_assert ((char *)user_data != fail_str);
+  g_assert ((char *)user_data == log_str);
+}
+
+void
+bug653052 (void)
+{
+  g_test_bug ("653052");
+
+  g_test_log_set_fatal_handler (good_failure_handler, fail_str);
+  g_log_set_default_handler (test_handler, log_str);
+
+  g_return_if_fail (0);
+
+  g_test_log_set_fatal_handler (bad_failure_handler, fail_str);
+  g_log_set_default_handler (test_handler, log_str);
+
+  g_return_if_fail (0);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/logging/default-handler", test_default_handler);
   g_test_add_func ("/logging/warnings", test_warnings);
@@ -180,6 +237,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/set-handler", test_set_handler);
   g_test_add_func ("/logging/print-handler", test_print_handler);
   g_test_add_func ("/logging/printerr-handler", test_printerr_handler);
+  g_test_add_func ("/logging/653052", bug653052);
 
   return g_test_run ();
 }
