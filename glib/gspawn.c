@@ -43,6 +43,7 @@
 
 #include "gspawn.h"
 
+#include "genviron.h"
 #include "gmem.h"
 #include "gshell.h"
 #include "gstring.h"

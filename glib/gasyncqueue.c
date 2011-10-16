@@ -33,6 +33,7 @@
 #include "gqueue.h"
 #include "gtestutils.h"
 #include "gthread.h"
+#include "deprecated/gthread.h"
 
 
 /**
