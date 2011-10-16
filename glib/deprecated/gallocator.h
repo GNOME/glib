@@ -41,30 +41,48 @@ typedef struct _GMemChunk  GMemChunk;
 #define g_mem_chunk_create(type, x, y)  (g_mem_chunk_new (NULL, sizeof (type), 0, 0))
 
 
+GLIB_DEPRECATED
 GMemChunk *     g_mem_chunk_new         (const gchar  *name,
                                          gint          atom_size,
                                          gsize         area_size,
                                          gint          type);
+GLIB_DEPRECATED
 void            g_mem_chunk_destroy     (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 gpointer        g_mem_chunk_alloc       (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 gpointer        g_mem_chunk_alloc0      (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 void            g_mem_chunk_free        (GMemChunk    *mem_chunk,
                                          gpointer      mem);
+GLIB_DEPRECATED
 void            g_mem_chunk_clean       (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 void            g_mem_chunk_reset       (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 void            g_mem_chunk_print       (GMemChunk    *mem_chunk);
+GLIB_DEPRECATED
 void            g_mem_chunk_info        (void);
+GLIB_DEPRECATED
 void            g_blow_chunks           (void);
 
 
+GLIB_DEPRECATED
 GAllocator *    g_allocator_new         (const gchar  *name,
                                          guint         n_preallocs);
+GLIB_DEPRECATED
 void            g_allocator_free        (GAllocator   *allocator);
+GLIB_DEPRECATED
 void            g_list_push_allocator   (GAllocator   *allocator);
+GLIB_DEPRECATED
 void            g_list_pop_allocator    (void);
+GLIB_DEPRECATED
 void            g_slist_push_allocator  (GAllocator   *allocator);
+GLIB_DEPRECATED
 void            g_slist_pop_allocator   (void);
+GLIB_DEPRECATED
 void            g_node_push_allocator   (GAllocator   *allocator);
+GLIB_DEPRECATED
 void            g_node_pop_allocator    (void);
 
 G_END_DECLS
