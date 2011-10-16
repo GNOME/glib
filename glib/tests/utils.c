@@ -21,6 +21,8 @@
  * Author: Matthias Clasen
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "glib.h"
 
 #include <stdlib.h>
@@ -272,6 +274,31 @@ test_debug (void)
   g_test_trap_assert_stderr ("*Supported debug values:  key1 key2 key3*");
 }
 
+static void
+test_codeset (void)
+{
+  gchar *c;
+  const gchar *c2;
+
+  c = g_get_codeset ();
+  g_get_charset (&c2);
+
+  g_assert_cmpstr (c, ==, c2);
+
+  g_free (c);
+}
+
+static void
+test_basename (void)
+{
+  const gchar *path = "/path/to/a/file/deep/down.sh";
+  const gchar *b;
+
+  b = g_basename (path);
+
+  g_assert_cmpstr (b, ==, "down.sh");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -294,6 +321,8 @@ main (int   argc,
   g_test_add_func ("/utils/bits", test_bits);
   g_test_add_func ("/utils/find-program", test_find_program);
   g_test_add_func ("/utils/debug", test_debug);
+  g_test_add_func ("/utils/codeset", test_codeset);
+  g_test_add_func ("/utils/basename", test_basename);
 
   return g_test_run();
 }
