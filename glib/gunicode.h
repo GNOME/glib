@@ -486,16 +486,11 @@ typedef enum
   G_UNICODE_SCRIPT_MANDAIC                 /* Mand */
 } GUnicodeScript;
 
-guint32 g_unicode_script_to_iso15924 (GUnicodeScript script);
-GUnicodeScript g_unicode_script_from_iso15924 (guint32 iso15924);
+guint32        g_unicode_script_to_iso15924   (GUnicodeScript script);
+GUnicodeScript g_unicode_script_from_iso15924 (guint32        iso15924);
 
-/* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
- * not null, sets *CHARSET to the name of the current locale's
- * charset.  This value is statically allocated, and should be copied
- * in case the locale's charset will be changed later using setlocale()
- * or in some other way.
- */
 gboolean g_get_charset (const char **charset);
+gchar *  g_get_codeset (void);
 
 /* These are all analogs of the <ctype.h> functions.
  */

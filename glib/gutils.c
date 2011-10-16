@@ -2955,24 +2955,6 @@ g_nullify_pointer (gpointer *nullify_location)
   *nullify_location = NULL;
 }
 
-/**
- * g_get_codeset:
- *
- * Get the codeset for the current locale.
- *
- * Return value: a newly allocated string containing the name
- * of the codeset. This string must be freed with g_free().
- **/
-gchar *
-g_get_codeset (void)
-{
-  const gchar *charset;
-
-  g_get_charset (&charset);
-
-  return g_strdup (charset);
-}
-
 #ifdef G_OS_WIN32
 
 /**

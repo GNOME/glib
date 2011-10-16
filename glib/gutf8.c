@@ -563,7 +563,7 @@ charset_cache_free (gpointer data)
 /**
  * g_get_charset:
  * @charset: return location for character set name
- * 
+ *
  * Obtains the character set for the <link linkend="setlocale">current 
  * locale</link>; you might use this character set as an argument to 
  * g_convert(), to convert from the current locale's encoding to some 
@@ -583,7 +583,7 @@ charset_cache_free (gpointer data)
  * freed.
  *
  * Return value: %TRUE if the returned charset is UTF-8
- **/
+ */
 gboolean
 g_get_charset (const char **charset)
 {
@@ -600,11 +600,11 @@ g_get_charset (const char **charset)
   G_LOCK (aliases);
   raw = _g_locale_charset_raw ();
   G_UNLOCK (aliases);
-  
+
   if (!(cache->raw && strcmp (cache->raw, raw) == 0))
     {
       const gchar *new_charset;
-	    
+
       g_free (cache->raw);
       g_free (cache->charset);
       cache->raw = g_strdup (raw);
@@ -614,8 +614,26 @@ g_get_charset (const char **charset)
 
   if (charset)
     *charset = cache->charset;
-  
+
   return cache->is_utf8;
+}
+
+/**
+ * g_get_codeset:
+ *
+ * Gets the character set for the current locale.
+ *
+ * Return value: a newly allocated string containing the name
+ *     of the character set. This string must be freed with g_free().
+ */
+gchar *
+g_get_codeset (void)
+{
+  const gchar *charset;
+
+  g_get_charset (&charset);
+
+  return g_strdup (charset);
 }
 
 /* unicode_strchr */
