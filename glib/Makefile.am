@@ -187,6 +187,7 @@ libglib_2_0_la_SOURCES = 	\
 	gthreadpool.c		\
 	gtimer.c		\
 	gtimezone.c	 	\
+	gtrashstack.c		\
 	gtree.c			\
 	guniprop.c		\
 	gutf8.c			\
@@ -306,6 +307,7 @@ glibsubinclude_HEADERS =   \
 	gthreadpool.h	\
 	gtimer.h	\
 	gtimezone.h	\
+	gtrashstack.h	\
 	gtree.h		\
 	gtypes.h	\
 	gunicode.h	\

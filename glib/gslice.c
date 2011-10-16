@@ -48,6 +48,7 @@
 #include "gmem.h"               /* gslice.h */
 #include "gstrfuncs.h"
 #include "gutils.h"
+#include "gtrashstack.h"
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
