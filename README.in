@@ -48,6 +48,8 @@ Notes about GLib 2.32
 
 * It is now mandatory to include glib.h instead of individual headers.
 
+* The -uninstalled variants of the pkg-config files have been dropped.
+
 Notes about GLib 2.30
 =====================
 

@@ -54,14 +54,7 @@ EXTRA_DIST += 			\
 	gthread-2.0.pc.in	\
 	gio-2.0.pc.in		\
 	gio-unix-2.0.pc.in	\
-	gio-windows-2.0.pc.in	\
-	glib-2.0-uninstalled.pc.in 	\
-	gobject-2.0-uninstalled.pc.in 	\
-	gmodule-2.0-uninstalled.pc.in	\
-	gthread-2.0-uninstalled.pc.in	\
-	gmodule-no-export-2.0-uninstalled.pc.in \
-	gio-2.0-uninstalled.pc.in		\
-	gio-unix-2.0-uninstalled.pc.in
+	gio-windows-2.0.pc.in
 
 
 # These may be in the builddir too
