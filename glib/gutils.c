@@ -28,46 +28,6 @@
  * MT safe for the unix part, FIXME: make the win32 part MT safe as well.
  */
 
-/**
- * SECTION:version
- * @Title: Version Information
- * @Short_description: Variables and functions to check the GLib version
- *
- * GLib provides version information, primarily useful in configure
- * checks for builds that have a configure script. Applications will
- * not typically use the features described here.
- */
-
-/**
- * GLIB_MAJOR_VERSION:
- *
- * The major version number of the GLib library.
- *
- * Like #glib_major_version, but from the headers used at
- * application compile time, rather than from the library
- * linked against at application run time.
- */
-
-/**
- * GLIB_MINOR_VERSION:
- *
- * The minor version number of the GLib library.
- *
- * Like #gtk_minor_version, but from the headers used at
- * application compile time, rather than from the library
- * linked against at application run time.
- */
-
-/**
- * GLIB_MICRO_VERSION:
- *
- * The micro version number of the GLib library.
- *
- * Like #gtk_micro_version, but from the headers used at
- * application compile time, rather than from the library
- * linked against at application run time.
- */
-
 #include "config.h"
 
 #ifdef HAVE_UNISTD_H
@@ -183,12 +143,6 @@
 #include <langinfo.h>
 #endif
 
-const guint glib_major_version = GLIB_MAJOR_VERSION;
-const guint glib_minor_version = GLIB_MINOR_VERSION;
-const guint glib_micro_version = GLIB_MICRO_VERSION;
-const guint glib_interface_age = GLIB_INTERFACE_AGE;
-const guint glib_binary_age = GLIB_BINARY_AGE;
-
 #ifdef G_PLATFORM_WIN32
 
 gchar *
@@ -229,53 +183,6 @@ _glib_get_dll_directory (void)
 }
 
 #endif
-
-/**
- * glib_check_version:
- * @required_major: the required major version.
- * @required_minor: the required minor version.
- * @required_micro: the required micro version.
- *
- * Checks that the GLib library in use is compatible with the
- * given version. Generally you would pass in the constants
- * #GLIB_MAJOR_VERSION, #GLIB_MINOR_VERSION, #GLIB_MICRO_VERSION
- * as the three arguments to this function; that produces
- * a check that the library in use is compatible with
- * the version of GLib the application or module was compiled
- * against.
- *
- * Compatibility is defined by two things: first the version
- * of the running library is newer than the version
- * @required_major.required_minor.@required_micro. Second
- * the running library must be binary compatible with the
- * version @required_major.required_minor.@required_micro
- * (same major version.)
- *
- * Return value: %NULL if the GLib library is compatible with the
- *   given version, or a string describing the version mismatch.
- *   The returned string is owned by GLib and must not be modified
- *   or freed.
- *
- * Since: 2.6
- **/
-const gchar *
-glib_check_version (guint required_major,
-                    guint required_minor,
-                    guint required_micro)
-{
-  gint glib_effective_micro = 100 * GLIB_MINOR_VERSION + GLIB_MICRO_VERSION;
-  gint required_effective_micro = 100 * required_minor + required_micro;
-
-  if (required_major > GLIB_MAJOR_VERSION)
-    return "GLib version too old (major mismatch)";
-  if (required_major < GLIB_MAJOR_VERSION)
-    return "GLib version too new (major mismatch)";
-  if (required_effective_micro < glib_effective_micro - GLIB_BINARY_AGE)
-    return "GLib version too new (micro mismatch)";
-  if (required_effective_micro > glib_effective_micro)
-    return "GLib version too old (micro mismatch)";
-  return NULL;
-}
 
 #if !defined (HAVE_MEMMOVE) && !defined (HAVE_WORKING_BCOPY)
 /**

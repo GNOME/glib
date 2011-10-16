@@ -91,6 +91,7 @@
 #include <glib/gutils.h>
 #include <glib/gvarianttype.h>
 #include <glib/gvariant.h>
+#include <glib/gversion.h>
 #ifdef G_PLATFORM_WIN32
 #include <glib/gwin32.h>
 #endif

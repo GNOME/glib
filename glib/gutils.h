@@ -355,48 +355,6 @@ g_bit_storage (gulong number)
 }
 #endif  /* G_CAN_INLINE || __G_UTILS_C__ */
 
-/* Glib version.
- * we prefix variable declarations so they can
- * properly get exported in windows dlls.
- */
-GLIB_VAR const guint glib_major_version;
-GLIB_VAR const guint glib_minor_version;
-GLIB_VAR const guint glib_micro_version;
-GLIB_VAR const guint glib_interface_age;
-GLIB_VAR const guint glib_binary_age;
-
-const gchar * glib_check_version (guint required_major,
-                                  guint required_minor,
-                                  guint required_micro);
-
-/**
- * GLIB_CHECK_VERSION:
- * @major: the major version to check for
- * @minor: the minor version to check for
- * @micro: the micro version to check for
- *
- * Checks the version of the GLib library that is being compiled
- * against.
- *
- * <example>
- * <title>Checking the version of the GLib library</title>
- * <programlisting>
- *   if (!GLIB_CHECK_VERSION (1, 2, 0))
- *     g_error ("GLib version 1.2.0 or above is needed");
- * </programlisting>
- * </example>
- *
- * See glib_check_version() for a runtime check.
- *
- * Returns: %TRUE if the version of the GLib header files
- * is the same as or newer than the passed-in version.
- */
-#define GLIB_CHECK_VERSION(major,minor,micro)    \
-    (GLIB_MAJOR_VERSION > (major) || \
-     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION > (minor)) || \
-     (GLIB_MAJOR_VERSION == (major) && GLIB_MINOR_VERSION == (minor) && \
-      GLIB_MICRO_VERSION >= (micro)))
-
 G_END_DECLS
 
 #ifndef G_DISABLE_DEPRECATED
