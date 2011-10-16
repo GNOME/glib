@@ -3609,7 +3609,6 @@ gobject/gobject.stp
 gobject/glib-mkenums
 gobject/tests/Makefile
 gthread/Makefile
-gthread/tests/Makefile
 gio/Makefile
 gio/gdbus-2.0/codegen/Makefile
 gio/gdbus-2.0/codegen/config.py
