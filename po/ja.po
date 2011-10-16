@@ -6,6 +6,7 @@
 # Ryoichi INAGAKI <ryo1@bc.wakwak.com>, 2004.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2010.
 # OKANO Takayoshi <kano@na.rim.or.jp>, 2011.
+# Jiro Matsuzawa <jmatsuzawa@src.gnome.org>, 2011.
 #
 # 訳語:
 #   be malformed: 不正です
@@ -27,8 +28,8 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-16 16:15+0000\n"
-"PO-Revision-Date: 2011-09-11 00:28+0900\n"
+"POT-Creation-Date: 2011-10-14 14:18+0000\n"
+"PO-Revision-Date: 2011-10-16 15:26+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -121,60 +122,60 @@ msgstr "'%s' から '%s' という文字集合への変換はサポートして�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' から '%s' への変換処理を開けませんでした"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/gconvert.c:767 ../glib/gconvert.c:1159 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
 #: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
 #: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "変換する入力に無効なバイトの並びがあります"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/gconvert.c:775 ../glib/gconvert.c:1084 ../glib/giochannel.c:1583
 #: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "変換中にエラー: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gconvert.c:806 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
 #: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "入力の最後に不完全な文字シーケンスがあります"
 
-#: ../glib/gconvert.c:1059
+#: ../glib/gconvert.c:1056
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "フォールバック '%s' を '%s' という文字集合に変換できません"
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1883
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' は \"file\" スキームの絶対 URI ではありません"
 
-#: ../glib/gconvert.c:1896
+#: ../glib/gconvert.c:1893
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "'#' を含んだ '%s' はローカルファイルの URI としては正しくありません"
 
-#: ../glib/gconvert.c:1913
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' という URI は正しくありません"
 
-#: ../glib/gconvert.c:1925
+#: ../glib/gconvert.c:1922
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI に含まれる '%s' というホスト名は間違っています"
 
-#: ../glib/gconvert.c:1941
+#: ../glib/gconvert.c:1938
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' という URI に無効なエスケープ文字が含まれています"
 
-#: ../glib/gconvert.c:2036
+#: ../glib/gconvert.c:2033
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' は絶対パスではありません"
 
-#: ../glib/gconvert.c:2046
+#: ../glib/gconvert.c:2043
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
@@ -434,7 +435,7 @@ msgstr "'%s' が読めません: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' を開けません: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:182
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' の属性の取得できません: fstat() に失敗しました: %s"
@@ -607,12 +608,12 @@ msgstr "チャンネルが不完全な文字で終わっています"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end では raw モードで読めません"
 
-#: ../glib/gmappedfile.c:150
+#: ../glib/gmappedfile.c:163
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "ファイル '%s' を開けません: open() が失敗: %s"
 
-#: ../glib/gmappedfile.c:229
+#: ../glib/gmappedfile.c:246
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "ファイル '%s' のマップに失敗しました: mmap() が失敗: %s"
@@ -1441,20 +1442,20 @@ msgstr "値 '%s' を論理値として解釈できません"
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:732
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:750
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s に引き渡した値が大きすぎます"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1206
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1224
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
-#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1649
+#: ../gio/gdbusconnection.c:1738 ../gio/gdbusconnection.c:1925
 #: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
-#: ../gio/gsimpleasyncresult.c:814 ../gio/gsimpleasyncresult.c:840
+#: ../gio/gsimpleasyncresult.c:815 ../gio/gsimpleasyncresult.c:841
 #, c-format
 msgid "Operation was cancelled"
 msgstr "操作がキャンセルされました"
@@ -1638,7 +1639,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "セッションバスのアドレスを決定できません (このOSでは実装されていません)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6443
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1647,7 +1648,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%"
 "s'"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6452
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1758,22 +1759,23 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(さらに、'%s' のロックの解放も失敗しました: %s) "
 
 #: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
-#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1749
+#: ../gio/gdbusconnection.c:2227
 msgid "The connection is closed"
 msgstr "接続が閉じています"
 
-#: ../gio/gdbusconnection.c:1690
+#: ../gio/gdbusconnection.c:1693
 msgid "Timeout was reached"
 msgstr "タイムアウトしました"
 
-#: ../gio/gdbusconnection.c:2312
+#: ../gio/gdbusconnection.c:2340
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭"
 "遇しました"
 
-#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
+#: ../gio/gdbusconnection.c:3804 ../gio/gdbusconnection.c:4120
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1781,69 +1783,69 @@ msgstr ""
 "パス %s のオブジェクト上にインターフェイス 'org.freedesktop.DBus.Properties' "
 "がありません"
 
-#: ../gio/gdbusconnection.c:3847
+#: ../gio/gdbusconnection.c:3875
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "プロパティ '%s' の設定時にエラー: 期待した型は '%s' ですが '%s' でした"
 
-#: ../gio/gdbusconnection.c:3942
+#: ../gio/gdbusconnection.c:3970
 #, c-format
 msgid "No such property `%s'"
 msgstr "'%s' というプロパティが存在しません"
 
-#: ../gio/gdbusconnection.c:3954
+#: ../gio/gdbusconnection.c:3982
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "プロパティ '%s' が読み込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:3965
+#: ../gio/gdbusconnection.c:3993
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "プロパティ '%s' が書き込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
+#: ../gio/gdbusconnection.c:4063 ../gio/gdbusconnection.c:5887
 #, c-format
 msgid "No such interface `%s'"
 msgstr "'%s' というインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4219
+#: ../gio/gdbusconnection.c:4247
 msgid "No such interface"
 msgstr "そのようなインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
+#: ../gio/gdbusconnection.c:4466 ../gio/gdbusconnection.c:6393
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "パス %2$s のオブジェクト上にインターフェイス '%1$s' がありません"
 
-#: ../gio/gdbusconnection.c:4490
+#: ../gio/gdbusconnection.c:4518
 #, c-format
 msgid "No such method `%s'"
 msgstr "'%s' というメソッドがありません"
 
-#: ../gio/gdbusconnection.c:4521
+#: ../gio/gdbusconnection.c:4549
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "メッセージの型 '%s' は期待した型 '%s' に一致しません"
 
-#: ../gio/gdbusconnection.c:4740
+#: ../gio/gdbusconnection.c:4768
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 "%2$s のインターフェイス %1$s にオブジェクトは既にエクスポートされています"
 
-#: ../gio/gdbusconnection.c:4938
+#: ../gio/gdbusconnection.c:4966
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "メソッド '%s' は '%s' 型を返しましたが、'%s' を期待していました"
 
-#: ../gio/gdbusconnection.c:5970
+#: ../gio/gdbusconnection.c:5998
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 "シグネチャ '%3$s' を持ったインターフェイス '%2$s' にメソッド '%1$s' が存在し"
 "ません"
 
-#: ../gio/gdbusconnection.c:6088
+#: ../gio/gdbusconnection.c:6116
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "サブツリーは既に %s に export されています"
@@ -2040,22 +2042,22 @@ msgstr "空のボディでエラーが返りました"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "/var/lib/dbus/machine-id を読みこめません: "
 
-#: ../gio/gdbusproxy.c:1489
+#: ../gio/gdbusproxy.c:1529
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "%s を StartServiceByName で呼び出そうとしてエラー: "
 
-#: ../gio/gdbusproxy.c:1510
+#: ../gio/gdbusproxy.c:1550
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "StartServiceByName(\"%2$s\") メソッドから期待してない応答 %1$d"
 
-#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
+#: ../gio/gdbusproxy.c:2631 ../gio/gdbusproxy.c:2765
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"メソッドを起動できません: proxy がオーナの無い既知の名前で、"
+"メソッドを起動できません: proxy がオーナーの無い既知の名前で、"
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START フラグで proxy が作成されていました"
 
 #: ../gio/gdbusserver.c:711
@@ -2323,26 +2325,26 @@ msgstr "デスクトップ・ファイルで Exec 項目を指定してません
 msgid "Unable to find terminal required for application"
 msgstr "アプリケーションで必要な端末が見つかりませんでした"
 
-#: ../gio/gdesktopappinfo.c:1515
+#: ../gio/gdesktopappinfo.c:1517
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ユーザーのアプリケーション設定フォルダー %s を生成できません: %s"
 
-#: ../gio/gdesktopappinfo.c:1519
+#: ../gio/gdesktopappinfo.c:1521
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ユーザーの MIME 型設定フォルダー %s を生成できません: %s"
 
-#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+#: ../gio/gdesktopappinfo.c:1758 ../gio/gdesktopappinfo.c:1782
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:2033
+#: ../gio/gdesktopappinfo.c:2006
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ユーザーのデスクトップ・ファイル %s を生成できません"
 
-#: ../gio/gdesktopappinfo.c:2149
+#: ../gio/gdesktopappinfo.c:2122
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s に対する独自の設定"
@@ -2405,11 +2407,11 @@ msgstr "GEmblemedIcon に対する GEmblem を想定していました"
 #: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
 #: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
 #: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3864
-#: ../gio/gfile.c:4266 ../gio/gfile.c:4352 ../gio/gfile.c:4441
-#: ../gio/gfile.c:4539 ../gio/gfile.c:4626 ../gio/gfile.c:4720
-#: ../gio/gfile.c:5041 ../gio/gfile.c:5308 ../gio/gfile.c:5373
-#: ../gio/gfile.c:6947 ../gio/gfile.c:7037 ../gio/gfile.c:7123
+#: ../gio/gfile.c:3495 ../gio/gfile.c:3536 ../gio/gfile.c:3866
+#: ../gio/gfile.c:4268 ../gio/gfile.c:4354 ../gio/gfile.c:4443
+#: ../gio/gfile.c:4541 ../gio/gfile.c:4628 ../gio/gfile.c:4722
+#: ../gio/gfile.c:5043 ../gio/gfile.c:5310 ../gio/gfile.c:5375
+#: ../gio/gfile.c:6949 ../gio/gfile.c:7039 ../gio/gfile.c:7125
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
@@ -2456,24 +2458,24 @@ msgstr "ファイルを splice する際にエラー: %s"
 msgid "Can't copy special file"
 msgstr "特別なファイルはコピーできません"
 
-#: ../gio/gfile.c:3483
+#: ../gio/gfile.c:3485
 msgid "Invalid symlink value given"
 msgstr "指定したシンボリックリンクは間違っています"
 
-#: ../gio/gfile.c:3577
+#: ../gio/gfile.c:3579
 msgid "Trash not supported"
 msgstr "ゴミ箱はサポートしていません"
 
-#: ../gio/gfile.c:3626
+#: ../gio/gfile.c:3628
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ファイル名に '%c' を含めることはできません"
 
-#: ../gio/gfile.c:6006 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6008 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "ボリュームはマウントを実装していません"
 
-#: ../gio/gfile.c:6117
+#: ../gio/gfile.c:6119
 msgid "No application is registered as handling this file"
 msgstr "このファイルを扱うアプリケーションが登録されていません"
 
@@ -2564,7 +2566,7 @@ msgstr "入力ストリームで読み込みを実装していません"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1216
+#: ../gio/goutputstream.c:1234
 msgid "Stream has outstanding operation"
 msgstr "Stream has outstanding operation"
 
@@ -3225,11 +3227,11 @@ msgstr "mount には同期させてメディアの種類を推測するような
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "ホスト名 '%s' に '[' が含まれていますが ']' がありません"
 
-#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:411
+#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:414
 msgid "Output stream doesn't implement write"
 msgstr "出力ストリームは書き込みを実装していません"
 
-#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:855
+#: ../gio/goutputstream.c:375 ../gio/goutputstream.c:873
 msgid "Source stream is already closed"
 msgstr "ソース・ストリームは既に閉じています"
 
@@ -3308,77 +3310,74 @@ msgid "The provided value is outside of the valid range\n"
 msgstr ""
 
 #: ../gio/gsettings-tool.c:533
-#, fuzzy
 msgid "Print help"
-msgstr "XML を表示"
+msgstr "ヘルプを表示する"
 
 #: ../gio/gsettings-tool.c:539
 msgid "List the installed (non-relocatable) schemas"
-msgstr ""
+msgstr "インストール済みの (再配置不可能な) スキーマの一覧を表示する"
 
 #: ../gio/gsettings-tool.c:545
 msgid "List the installed relocatable schemas"
-msgstr ""
+msgstr "インストール済みの再配置可能なスキーマの一覧を表示する"
 
 #: ../gio/gsettings-tool.c:551
 msgid "List the keys in SCHEMA"
-msgstr ""
+msgstr "SCHEMA 内のキーの一覧を表示する"
 
 #: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
 #: ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH]"
-msgstr ""
+msgstr "SCHEMA[:PATH]"
 
 #: ../gio/gsettings-tool.c:557
 msgid "List the children of SCHEMA"
-msgstr ""
+msgstr "SCHEMA のサブスキーマの一覧を表示する"
 
 #: ../gio/gsettings-tool.c:563
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
+"キーと値の一覧を再帰的に表示する\n"
+"SCHEMA を指定しない場合、すべてのキーにたいして一覧を表示する\n"
 
 #: ../gio/gsettings-tool.c:565
-#, fuzzy
 msgid "[SCHEMA[:PATH]]"
-msgstr "SCHEMA KYE"
+msgstr "[SCHEMA[:PATH]]"
 
 #: ../gio/gsettings-tool.c:570
 msgid "Get the value of KEY"
-msgstr "KEY の値を取得"
+msgstr "KEY の値を取得する"
 
 #: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
 #: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
-#, fuzzy
 msgid "SCHEMA[:PATH] KEY"
-msgstr "SCHEMA KYE"
+msgstr "SCHEMA[:PATH] KEY"
 
 #: ../gio/gsettings-tool.c:576
 msgid "Query the range of valid values for KEY"
-msgstr ""
+msgstr "KEY の値の有効な範囲を確認する"
 
 #: ../gio/gsettings-tool.c:582
-#, fuzzy
 msgid "Set the value of KEY to VALUE"
-msgstr "KEY の値を設定"
+msgstr "KEY の値を VALUE に設定する"
 
 #: ../gio/gsettings-tool.c:583
-#, fuzzy
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "SCHEMA KEY VALUE"
+msgstr "SCHEMA[:PATH] KEY VALUE"
 
 #: ../gio/gsettings-tool.c:588
 msgid "Reset KEY to its default value"
-msgstr ""
+msgstr "KEY をデフォルト値にリセットする"
 
 #: ../gio/gsettings-tool.c:594
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "SCHEMA 内のすべてのキーをデフォルト値にリセットする"
 
 #: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
-msgstr ""
+msgstr "KEY が書き込み可能か確認する"
 
 #: ../gio/gsettings-tool.c:606
 msgid ""
@@ -3386,18 +3385,22 @@ msgid ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"KEY の値が変更されるのを監視する。\n"
+"KEY を指定しない場合、SCHEMA 内のすべてのキーを監視する。\n"
+"^C で監視を止める。\n"
 
 #: ../gio/gsettings-tool.c:609
-#, fuzzy
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "SCHEMA KYE"
+msgstr "SCHEMA[:PATH] [KEY]"
 
 #: ../gio/gsettings-tool.c:613
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "不明なコマンド: %s\n"
+msgstr ""
+"不明なコマンド: %s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:621
 msgid ""
@@ -3422,6 +3425,26 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"用法:\n"
+"  gsettings COMMAND [ARGS...]\n"
+"\n"
+"コマンド:\n"
+"  help                      この情報を表示する\n"
+"  list-schemas              インストール済みのスキーマの一覧を表示する\n"
+"  list-relocatable-schemas  再配置可能なスキーマの一覧を表示する\n"
+"  list-keys                 スキーマ内のキーの一覧を表示する\n"
+"  list-children             指定したスキーマのサブスキーマの一覧を表示する\n"
+"  list-recursively          キーと値の一覧を再帰的に表示する\n"
+"  range                     キーの値の有効な範囲を確認する\n"
+"  get                       キーの値を取得する\n"
+"  set                       キーの値を設定する\n"
+"  reset                     キーの値をリセットする\n"
+"  reset-recursively         指定したスキーマのすべての値をリセットする\n"
+"  writable                  キーが書き込み可能か確認する\n"
+"  monitor                   変更を監視する\n"
+"\n"
+"詳細なヘルプを参照するには 'gsettings help COMMAND' を実行します。\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:643
 #, c-format
@@ -3432,36 +3455,39 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"用法:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:648
 msgid "Arguments:\n"
-msgstr ""
+msgstr "引数:\n"
 
 #: ../gio/gsettings-tool.c:652
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr ""
+msgstr "  COMMAND   対象のコマンド (任意)\n"
 
 #: ../gio/gsettings-tool.c:656
-#, fuzzy
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
-"引数:\n"
-"  SCHEMA      スキーマのID\n"
-"  KEY         キーの名前\n"
+"  SCHEMA    スキーマ名\n"
+"  PATH      再配置可能なスキーマの場合、そのパス\n"
 
 #: ../gio/gsettings-tool.c:661
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  KEY       スキーマ内のキー (任意)\n"
 
 #: ../gio/gsettings-tool.c:665
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  KEY       スキーマ内のキー\n"
 
 #: ../gio/gsettings-tool.c:669
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  VALUE     設定する値\n"
 
 #: ../gio/gsettings-tool.c:766
 #, c-format
@@ -3797,7 +3823,7 @@ msgstr "unix から読み込む際にエラー: %s"
 msgid "Error closing unix: %s"
 msgstr "unix を閉じる際にエラー: %s"
 
-#: ../gio/gunixmounts.c:1900 ../gio/gunixmounts.c:1937
+#: ../gio/gunixmounts.c:1903 ../gio/gunixmounts.c:1940
 msgid "Filesystem root"
 msgstr "ファイルシステムのルート"
 
