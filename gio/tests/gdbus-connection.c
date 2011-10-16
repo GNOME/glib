@@ -264,8 +264,7 @@ test_connection_life_cycle (void)
   g_assert (!g_dbus_connection_is_closed (c));
   g_dbus_connection_set_exit_on_close (c, FALSE);
   session_bus_down ();
-  if (!g_dbus_connection_is_closed (c))
-    _g_assert_signal_received (c, "closed");
+  _g_assert_signal_received (c, "closed");
   g_assert (g_dbus_connection_is_closed (c));
 
   _g_object_wait_for_single_ref (c);
