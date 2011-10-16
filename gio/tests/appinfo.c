@@ -243,6 +243,36 @@ test_associations (void)
   g_object_unref (appinfo);
 }
 
+static void
+test_environment (void)
+{
+  GAppLaunchContext *ctx;
+  gchar **env;
+
+  ctx = g_app_launch_context_new ();
+  g_app_launch_context_setenv (ctx, "FOO", "bar");
+  g_app_launch_context_setenv (ctx, "BLA", "bla");
+
+  env = g_app_launch_context_get_environment (ctx);
+
+  g_assert_cmpstr (g_environ_getenv (env, "FOO"), ==, "bar");
+  g_assert_cmpstr (g_environ_getenv (env, "BLA"), ==, "bla");
+
+  g_strfreev (env);
+
+  g_app_launch_context_setenv (ctx, "FOO", "baz");
+  g_app_launch_context_unsetenv (ctx, "BLA");
+
+  env = g_app_launch_context_get_environment (ctx);
+
+  g_assert_cmpstr (g_environ_getenv (env, "FOO"), ==, "baz");
+  g_assert (g_environ_getenv (env, "BLA") == NULL);
+
+  g_strfreev (env);
+
+  g_object_unref (ctx);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -257,6 +287,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/launch-context", test_launch_context);
   g_test_add_func ("/appinfo/tryexec", test_tryexec);
   g_test_add_func ("/appinfo/associations", test_associations);
+  g_test_add_func ("/appinfo/environment", test_environment);
 
   return g_test_run ();
 }
