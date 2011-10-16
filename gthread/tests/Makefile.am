@@ -32,10 +32,6 @@ unix_multithreaded_CFLAGS   = -DTEST_THREADED
 unix_multithreaded_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
 endif
 
-TEST_PROGS += atomic
-atomic_SOURCES = atomic.c
-atomic_LDADD = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
-
 TEST_PROGS += spawn-multithreaded
 spawn_multithreaded_SOURCES = spawn-multithreaded.c
 spawn_multithreaded_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
