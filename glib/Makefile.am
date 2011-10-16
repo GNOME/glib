@@ -132,6 +132,7 @@ libglib_2_0_la_SOURCES = 	\
 	gbsearcharray.h		\
 	gbuffer.c		\
 	gbufferprivate.h	\
+	gcharset.c		\
 	gchecksum.c		\
 	gconvert.c		\
 	gdataset.c		\
@@ -250,7 +251,7 @@ deprecatedinclude_HEADERS = \
 	deprecated/gthread.h
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
-glibsubinclude_HEADERS =   \
+glibsubinclude_HEADERS = \
 	galloca.h	\
 	garray.h	\
 	gasyncqueue.h	\
@@ -258,7 +259,8 @@ glibsubinclude_HEADERS =   \
 	gbacktrace.h	\
 	gbase64.h	\
 	gbitlock.h	\
-	gbookmarkfile.h \
+	gbookmarkfile.h	\
+	gcharset.h	\
 	gchecksum.h	\
 	gconvert.h	\
 	gdataset.h	\

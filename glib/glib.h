@@ -37,6 +37,7 @@
 #include <glib/gbase64.h>
 #include <glib/gbitlock.h>
 #include <glib/gbookmarkfile.h>
+#include <glib/gcharset.h>
 #include <glib/gchecksum.h>
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>
