@@ -31,6 +31,8 @@
 #ifndef __G_ENVIRON_H__
 #define __G_ENVIRON_H__
 
+#include <glib/gtypes.h>
+
 G_BEGIN_DECLS
 
 #ifndef __GTK_DOC_IGNORE__

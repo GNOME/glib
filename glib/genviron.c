@@ -26,6 +26,8 @@
 
 #include "config.h"
 
+#include "genviron.h"
+
 #include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_UNISTD_H
