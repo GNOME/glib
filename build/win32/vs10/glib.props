@@ -43,8 +43,6 @@ copy ..\..\..\glib\gbitlock.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gbookmarkfile.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
-copy ..\..\..\glib\gcache.h $(CopyDir)\include\glib-$(ApiVersion)\glib
-
 copy ..\..\..\glib\gchecksum.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gconvert.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -163,6 +161,8 @@ copy ..\..\..\glib\gwin32.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
 copy ..\..\..\glib\deprecated\gallocator.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
+copy ..\..\..\glib\deprecated\gcache.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
 copy ..\..\..\glib\deprecated\gcompletion.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
