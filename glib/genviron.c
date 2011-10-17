@@ -36,10 +36,16 @@
 #ifdef HAVE_CRT_EXTERNS_H
 #include <crt_externs.h> /* for _NSGetEnviron */
 #endif
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 #include "gmem.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
+#include "gunicode.h"
+#include "gconvert.h"
+#include "gquark.h"
 
 /* Environ array functions {{{1 */
 static gint

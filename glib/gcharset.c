@@ -28,6 +28,9 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
+#ifdef G_OS_WIN32
+#include "gwin32.h"
+#endif
 
 #include "libcharset/libcharset.h"
 
