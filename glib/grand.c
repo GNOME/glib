@@ -54,7 +54,6 @@
 #include "gmem.h"
 #include "gtestutils.h"
 #include "gthread.h"
-#include "gthreadprivate.h"
 
 #ifdef G_OS_WIN32
 #include <process.h>		/* For getpid() */

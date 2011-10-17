@@ -50,7 +50,6 @@
 #include "gprintf.h"
 #include "gprintfint.h"
 #include "glibintl.h"
-#include "gthreadprivate.h"
 
 
 /**

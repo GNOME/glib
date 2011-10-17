@@ -44,12 +44,10 @@
 #include "gconvert.h"
 
 #include "gcharset.h"
-#include "gprintfint.h"
 #include "gslist.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
-#include "gthreadprivate.h"
 #include "gunicode.h"
 #include "gfileutils.h"
 

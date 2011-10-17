@@ -42,6 +42,7 @@
 
 #include "config.h"
 
+#include "glib.h"
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "gslice.h"
@@ -415,9 +416,6 @@ g_private_replace (GPrivate *key,
 }
 
 /* {{{1 GThread */
-
-#include "glib.h"
-#include "gthreadprivate.h"
 
 #define win32_check_for_error(what) G_STMT_START{			\
   if (!(what))								\
