@@ -61,14 +61,17 @@ copy ..\..\..\glib\gbacktrace.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&
 copy ..\..\..\glib\gbase64.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbitlock.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gcharset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
 copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdataset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdate.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdatetime.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdir.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\genviron.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gerror.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gfileutils.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\ggettext.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\ghash.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\ghmac.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\ghook.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
@@ -110,6 +113,7 @@ copy ..\..\..\glib\gthread.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0
 copy ..\..\..\glib\gthreadpool.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtimer.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtimezone.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtrashstack.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtree.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtypes.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gunicode.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
@@ -117,6 +121,7 @@ copy ..\..\..\glib\gurifuncs.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#
 copy ..\..\..\glib\gutils.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gvariant.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gvarianttype.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gversion.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 
 mkdir $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;

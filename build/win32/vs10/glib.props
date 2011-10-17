@@ -43,6 +43,8 @@ copy ..\..\..\glib\gbitlock.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gbookmarkfile.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\gcharset.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gchecksum.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gconvert.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -55,9 +57,13 @@ copy ..\..\..\glib\gdatetime.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gdir.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\genviron.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gerror.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gfileutils.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
+copy ..\..\..\glib\ggettext.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\ghash.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
@@ -141,6 +147,8 @@ copy ..\..\..\glib\gtimer.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gtimezone.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\gtrashstack.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gtree.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gtypes.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -154,6 +162,8 @@ copy ..\..\..\glib\gutils.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 copy ..\..\..\glib\gvariant.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gvarianttype.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
+copy ..\..\..\glib\gversion.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gwin32.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
