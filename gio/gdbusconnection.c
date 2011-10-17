@@ -642,6 +642,7 @@ g_dbus_connection_finalize (GObject *object)
   G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize (object);
 }
 
+/* called in any user thread, with the connection's lock not held */
 static void
 g_dbus_connection_get_property (GObject    *object,
                                 guint       prop_id,
@@ -682,6 +683,7 @@ g_dbus_connection_get_property (GObject    *object,
     }
 }
 
+/* called in any user thread, with the connection's lock not held */
 static void
 g_dbus_connection_set_property (GObject      *object,
                                 guint         prop_id,
@@ -722,6 +724,11 @@ g_dbus_connection_set_property (GObject      *object,
     }
 }
 
+/* Base-class implementation of GDBusConnection::closed.
+ *
+ * Called in a user thread, by the main context that was thread-default when
+ * the object was constructed.
+ */
 static void
 g_dbus_connection_real_closed (GDBusConnection *connection,
                                gboolean         remote_peer_vanished,
@@ -1135,6 +1142,7 @@ g_dbus_connection_get_capabilities (GDBusConnection *connection)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called in a temporary thread without holding locks. */
 static void
 flush_in_thread_func (GSimpleAsyncResult *res,
                       GObject            *object,
@@ -1301,6 +1309,9 @@ emit_closed_data_free (EmitClosedData *data)
   g_free (data);
 }
 
+/* Called in a user thread that has acquired the main context that was
+ * thread-default when the object was constructed
+ */
 static gboolean
 emit_closed_in_idle (gpointer user_data)
 {
@@ -1450,6 +1461,7 @@ typedef struct {
     GAsyncResult *result;
 } SyncCloseData;
 
+/* Can be called by any thread, without the connection lock */
 static void
 sync_close_cb (GObject *source_object,
                GAsyncResult *res,
@@ -1524,6 +1536,7 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Can be called by any thread, with the connection lock held */
 static gboolean
 g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
                                          GDBusMessage      *message,
@@ -1700,6 +1713,7 @@ typedef struct
   gboolean delivered;
 } SendMessageData;
 
+/* Can be called from any thread with or without lock held */
 static SendMessageData *
 send_message_data_ref (SendMessageData *data)
 {
@@ -1707,6 +1721,7 @@ send_message_data_ref (SendMessageData *data)
   return data;
 }
 
+/* Can be called from any thread with or without lock held */
 static void
 send_message_data_unref (SendMessageData *data)
 {
@@ -1761,7 +1776,7 @@ send_message_with_reply_deliver (SendMessageData *data, gboolean remove)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* must hold lock */
+/* Can be called from any thread with lock held */
 static void
 send_message_data_deliver_reply_unlocked (SendMessageData *data,
                                           GDBusMessage    *reply)
@@ -1781,6 +1796,7 @@ send_message_data_deliver_reply_unlocked (SendMessageData *data,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called from a user thread, lock is not held */
 static gboolean
 send_message_with_reply_cancelled_idle_cb (gpointer user_data)
 {
@@ -1825,6 +1841,7 @@ send_message_with_reply_cancelled_cb (GCancellable *cancellable,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called from a user thread, lock is not held */
 static gboolean
 send_message_with_reply_timeout_cb (gpointer user_data)
 {
@@ -1849,6 +1866,7 @@ send_message_with_reply_timeout_cb (gpointer user_data)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called from a user thread, connection's lock is held */
 static void
 g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connection,
                                                     GDBusMessage        *message,
@@ -2082,6 +2100,7 @@ typedef struct
   GMainLoop *loop;
 } SendMessageSyncData;
 
+/* Called from a user thread, lock is not held */
 static void
 send_message_with_reply_sync_cb (GDBusConnection *connection,
                                  GAsyncResult    *res,
@@ -2200,7 +2219,7 @@ typedef struct
   GDestroyNotify              user_data_free_func;
 } FilterData;
 
-/* Called in worker's thread - we must not block */
+/* Called in GDBusWorker's thread - we must not block - with no lock held */
 static void
 on_worker_message_received (GDBusWorker  *worker,
                             GDBusMessage *message,
@@ -2302,7 +2321,7 @@ on_worker_message_received (GDBusWorker  *worker,
   g_free (filters);
 }
 
-/* Called in worker's thread */
+/* Called in GDBusWorker's thread, lock is not held */
 static GDBusMessage *
 on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     GDBusMessage *message,
@@ -2357,7 +2376,7 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   return message;
 }
 
-/* called with connection lock held */
+/* called with connection lock held, in GDBusWorker thread */
 static gboolean
 cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
 {
@@ -2379,7 +2398,7 @@ cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
   return TRUE;
 }
 
-/* Called in worker's thread - we must not block */
+/* Called in GDBusWorker's thread - we must not block - without lock held */
 static void
 on_worker_closed (GDBusWorker *worker,
                   gboolean     remote_peer_vanished,
@@ -2415,7 +2434,11 @@ on_worker_closed (GDBusWorker *worker,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Determines the biggest set of capabilities we can support on this connection */
+/* Determines the biggest set of capabilities we can support on this
+ * connection.
+ *
+ * Called with the init_lock held.
+ */
 static GDBusCapabilityFlags
 get_offered_capabilities_max (GDBusConnection *connection)
 {
@@ -2428,6 +2451,7 @@ get_offered_capabilities_max (GDBusConnection *connection)
       return ret;
 }
 
+/* Called in a user thread, lock is not held */
 static gboolean
 initable_init (GInitable     *initable,
                GCancellable  *cancellable,
@@ -3215,7 +3239,7 @@ static guint _global_subtree_registration_id = 1;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* must hold lock when calling */
+/* Called in a user thread, lock is held */
 static void
 add_match_rule (GDBusConnection *connection,
                 const gchar     *match_rule)
@@ -3246,7 +3270,7 @@ add_match_rule (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* must hold lock when calling */
+/* Called in a user thread, lock is held */
 static void
 remove_match_rule (GDBusConnection *connection,
                    const gchar     *match_rule)
@@ -3445,6 +3469,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* called in any thread */
 /* must hold lock when calling this (except if connection->finalizing is TRUE) */
 static void
 unsubscribe_id_internal (GDBusConnection *connection,
@@ -3630,7 +3655,7 @@ signal_instance_free (SignalInstance *signal_instance)
   g_free (signal_instance);
 }
 
-/* called in message handler thread WITH lock held */
+/* called in GDBusWorker thread WITH lock held */
 static void
 schedule_callbacks (GDBusConnection *connection,
                     GPtrArray       *signal_data_array,
@@ -3717,7 +3742,7 @@ schedule_callbacks (GDBusConnection *connection,
     }
 }
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with lock held */
 static void
 distribute_signals (GDBusConnection *connection,
                     GDBusMessage    *message)
@@ -3892,7 +3917,7 @@ exported_interface_free (ExportedInterface *ei)
  * @subtree_registration_id (if not zero) has been unregistered. If
  * so, returns %TRUE.
  *
- * Caller must *not* hold lock.
+ * May be called by any thread. Caller must *not* hold lock.
  */
 static gboolean
 has_object_been_unregistered (GDBusConnection  *connection,
@@ -4069,7 +4094,7 @@ invoke_set_property_in_idle_cb (gpointer _data)
   return FALSE;
 }
 
-/* called with lock held */
+/* called in any thread with connection's lock held */
 static gboolean
 validate_and_maybe_schedule_property_getset (GDBusConnection            *connection,
                                              GDBusMessage               *message,
@@ -4183,7 +4208,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   return handled;
 }
 
-/* called with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 handle_getset_property (GDBusConnection *connection,
                         ExportedObject  *eo,
@@ -4327,7 +4352,7 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
   return FALSE;
 }
 
-/* called with lock held */
+/* called in any thread with connection's lock held */
 static gboolean
 validate_and_maybe_schedule_property_get_all (GDBusConnection            *connection,
                                               GDBusMessage               *message,
@@ -4377,7 +4402,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
   return handled;
 }
 
-/* called with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 handle_get_all_properties (GDBusConnection *connection,
                            ExportedObject  *eo,
@@ -4499,6 +4524,7 @@ maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHa
 }
 
 /* TODO: we want a nicer public interface for this */
+/* called in any thread with connection's lock held */
 static gchar **
 g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
                                             const gchar     *path)
@@ -4540,6 +4566,7 @@ g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
   return ret;
 }
 
+/* called in any thread with connection's lock not held */
 static gchar **
 g_dbus_connection_list_registered (GDBusConnection *connection,
                                    const gchar     *path)
@@ -4551,7 +4578,7 @@ g_dbus_connection_list_registered (GDBusConnection *connection,
   return ret;
 }
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 handle_introspect (GDBusConnection *connection,
                    ExportedObject  *eo,
@@ -4642,7 +4669,7 @@ call_in_idle_cb (gpointer user_data)
   return FALSE;
 }
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                          GDBusMessage               *message,
@@ -4752,7 +4779,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 obj_message_func (GDBusConnection *connection,
                   ExportedObject  *eo,
@@ -5180,6 +5207,7 @@ call_state_free (CallState *state)
   g_slice_free (CallState, state);
 }
 
+/* called in any thread, with the connection's lock not held */
 static void
 g_dbus_connection_call_done (GObject      *source,
                              GAsyncResult *result,
@@ -5236,6 +5264,7 @@ g_dbus_connection_call_done (GObject      *source,
   g_object_unref (simple);
 }
 
+/* called in any thread, with the connection's lock not held */
 static void
 g_dbus_connection_call_internal (GDBusConnection        *connection,
                                  const gchar            *bus_name,
@@ -5321,6 +5350,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
     g_object_unref (message);
 }
 
+/* called in any thread, with the connection's lock not held */
 static GVariant *
 g_dbus_connection_call_finish_internal (GDBusConnection  *connection,
                                         GUnixFDList     **out_fd_list,
@@ -5346,6 +5376,7 @@ g_dbus_connection_call_finish_internal (GDBusConnection  *connection,
   return g_variant_ref (state->value);
 }
 
+/* called in any user thread, with the connection's lock not held */
 static GVariant *
 g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
                                       const gchar             *bus_name,
@@ -5800,7 +5831,9 @@ exported_subtree_free (ExportedSubtree *es)
   g_free (es);
 }
 
-/* called without lock held */
+/* called without lock held in the thread where the caller registered
+ * the subtree
+ */
 static gboolean
 handle_subtree_introspect (GDBusConnection *connection,
                            ExportedSubtree *es,
@@ -5909,7 +5942,9 @@ handle_subtree_introspect (GDBusConnection *connection,
   return handled;
 }
 
-/* called without lock held */
+/* called without lock held in the thread where the caller registered
+ * the subtree
+ */
 static gboolean
 handle_subtree_method_invocation (GDBusConnection *connection,
                                   ExportedSubtree *es,
@@ -6176,7 +6211,7 @@ process_subtree_vtable_message_in_idle_cb (gpointer _data)
   return FALSE;
 }
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 subtree_message_func (GDBusConnection *connection,
                       ExportedSubtree *es,
@@ -6358,7 +6393,7 @@ g_dbus_connection_unregister_subtree (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* must be called with lock held */
+/* may be called in any thread, with connection's lock held */
 static void
 handle_generic_ping_unlocked (GDBusConnection *connection,
                               const gchar     *object_path,
@@ -6370,7 +6405,7 @@ handle_generic_ping_unlocked (GDBusConnection *connection,
   g_object_unref (reply);
 }
 
-/* must be called with lock held */
+/* may be called in any thread, with connection's lock held */
 static void
 handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
                                         const gchar     *object_path,
@@ -6403,7 +6438,7 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
   g_object_unref (reply);
 }
 
-/* must be called with lock held */
+/* may be called in any thread, with connection's lock held */
 static void
 handle_generic_introspect_unlocked (GDBusConnection *connection,
                                     const gchar     *object_path,
@@ -6431,7 +6466,7 @@ handle_generic_introspect_unlocked (GDBusConnection *connection,
   g_string_free (s, TRUE);
 }
 
-/* must be called with lock held */
+/* may be called in any thread, with connection's lock held */
 static gboolean
 handle_generic_unlocked (GDBusConnection *connection,
                          GDBusMessage    *message)
@@ -6478,7 +6513,7 @@ handle_generic_unlocked (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* called in message handler thread with lock held */
+/* called in GDBusWorker thread with connection's lock held */
 static void
 distribute_method_call (GDBusConnection *connection,
                         GDBusMessage    *message)
@@ -6572,6 +6607,7 @@ distribute_method_call (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called in any user thread, with the message_bus_lock held. */
 static GDBusConnection **
 message_bus_get_singleton (GBusType   bus_type,
                            GError   **error)
@@ -6634,6 +6670,7 @@ message_bus_get_singleton (GBusType   bus_type,
   return ret;
 }
 
+/* Called in any user thread, without holding locks. */
 static GDBusConnection *
 get_uninitialized_connection (GBusType       bus_type,
                               GCancellable  *cancellable,
