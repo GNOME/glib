@@ -13,8 +13,6 @@ AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
 	$(gthread_INCLUDES) 			\
 	$(GLIB_DEBUG_FLAGS)			\
-	-DG_THREADS_MANDATORY			\
-	-DG_DISABLE_DEPRECATED			\
 	-DGOBJECT_COMPILATION
 
 gobject.def: gobject.symbols

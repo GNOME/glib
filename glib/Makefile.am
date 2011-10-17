@@ -51,7 +51,6 @@ AM_CPPFLAGS = 				\
 	$(pcre_inc) 			\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
 	$(GLIB_DEBUG_FLAGS) 		\
-	-DG_DISABLE_DEPRECATED 		\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 

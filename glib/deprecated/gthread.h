@@ -265,11 +265,7 @@ gboolean g_thread_get_initialized        (void);
 
 GLIB_VAR gboolean g_threads_got_initialized;
 
-#if defined(G_THREADS_MANDATORY)
-#define g_thread_supported()     1
-#else
-#define g_thread_supported()    (g_threads_got_initialized)
-#endif
+#define g_thread_supported()     (1)
 
 GLIB_DEPRECATED
 GMutex *        g_mutex_new             (void);
