@@ -236,8 +236,8 @@ test_pipe_io (void)
   reader_cancel = g_cancellable_new ();
   main_cancel = g_cancellable_new ();
 
-  writer = g_thread_new ("writer", writer_thread, NULL, TRUE, NULL);
-  reader = g_thread_new ("reader", reader_thread, NULL, TRUE, NULL);
+  writer = g_thread_new ("writer", writer_thread, NULL);
+  reader = g_thread_new ("reader", reader_thread, NULL);
 
   g_assert (DuplicateHandle (GetCurrentProcess (),
 			     (HANDLE) (gintptr) _get_osfhandle (writer_pipe[0]),
