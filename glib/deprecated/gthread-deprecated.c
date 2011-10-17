@@ -192,6 +192,7 @@ g_thread_get_initialized (void)
 }
 
 /* We need this for ABI compatibility */
+void g_thread_init_glib (void);
 void g_thread_init_glib (void) { }
 
 /* Internal variables {{{1 */
