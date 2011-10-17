@@ -28,6 +28,7 @@
 #include "gvalue.h"
 #include "gvaluecollector.h"
 #include "gbsearcharray.h"
+#include "gtype-private.h"
 
 
 /**

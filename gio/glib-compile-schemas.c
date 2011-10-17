@@ -53,7 +53,7 @@ enum_state_free (gpointer data)
   g_slice_free (EnumState, state);
 }
 
-EnumState *
+static EnumState *
 enum_state_new (gboolean is_flags)
 {
   EnumState *state;

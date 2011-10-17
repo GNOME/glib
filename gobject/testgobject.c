@@ -320,7 +320,7 @@ struct _DerivedObjectPrivate
 };
 static void derived_object_class_init (DerivedObjectClass *class);
 static void derived_object_init       (DerivedObject      *dobject);
-GType
+static GType
 derived_object_get_type (void)
 {
   static GType derived_object_type = 0;
