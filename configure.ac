@@ -2433,19 +2433,9 @@ if test x"$GCC" = xyes; then
 
   AC_MSG_RESULT($glib_cv_gcc_has_builtin_atomic_operations)
 fi
+
 AM_CONDITIONAL(HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS,
 	       [test $glib_cv_gcc_has_builtin_atomic_operations = yes])
-
-AC_MSG_CHECKING([for Win32 atomic intrinsics])
-glib_cv_has_win32_atomic_operations=no
-AC_TRY_LINK([],
-	[int i; _InterlockedExchangeAdd (&i, 0);],
-	[glib_cv_has_win32_atomic_operations=yes],
-	[glib_cv_has_win32_atomic_operations=no])
-AC_MSG_RESULT($glib_cv_has_win32_atomic_operations)
-if test "x$glib_cv_has_win32_atomic_operations" = xyes; then
-	AC_DEFINE(HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS,1,[Have Win32 atomic intrinsics])
-fi
 
 dnl ************************
 dnl ** Check for futex(2) **
