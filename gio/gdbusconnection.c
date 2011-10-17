@@ -329,7 +329,8 @@ _g_strv_has_string (const gchar* const *haystack,
 
 /* Flags in connection->atomic_flags */
 enum {
-    FLAG_INITIALIZED = 1 << 0
+    FLAG_INITIALIZED = 1 << 0,
+    FLAG_EXIT_ON_CLOSE = 1 << 1
 };
 
 /**
@@ -402,6 +403,8 @@ struct _GDBusConnection
 
   /* FLAG_INITIALIZED is set exactly when initable_init() has finished running.
    * Inspect @initialization_error to see whether it succeeded or failed.
+   *
+   * FLAG_EXIT_ON_CLOSE is the exit-on-close property.
    */
   volatile gint atomic_flags;
 
@@ -438,9 +441,6 @@ struct _GDBusConnection
 
   /* Structure used for message filters */
   GPtrArray *filters;
-
-  /* Whether to exit on close */
-  gboolean exit_on_close;
 
   /* Capabilities negotiated during authentication
    * Read-only after initable_init(), so it may be read without holding a
@@ -739,7 +739,8 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
   /* Because atomic int access is a memory barrier, we can safely read
    * initialization_error without a lock, as long as we do it afterwards.
    */
-  if (remote_peer_vanished && connection->exit_on_close &&
+  if (remote_peer_vanished &&
+      (flags & FLAG_EXIT_ON_CLOSE) != 0 &&
       (flags & FLAG_INITIALIZED) != 0 &&
       connection->initialization_error == NULL)
     {
@@ -2948,7 +2949,12 @@ g_dbus_connection_set_exit_on_close (GDBusConnection *connection,
                                      gboolean         exit_on_close)
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
-  connection->exit_on_close = exit_on_close;
+
+  if (exit_on_close)
+    g_atomic_int_or (&connection->atomic_flags, FLAG_EXIT_ON_CLOSE);
+  else
+    g_atomic_int_and (&connection->atomic_flags, ~FLAG_EXIT_ON_CLOSE);
+
 }
 
 /**
@@ -2968,7 +2974,11 @@ gboolean
 g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
-  return connection->exit_on_close;
+
+  if (g_atomic_int_get (&connection->atomic_flags) & FLAG_EXIT_ON_CLOSE)
+    return TRUE;
+  else
+    return FALSE;
 }
 
 /**
