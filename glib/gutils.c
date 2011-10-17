@@ -2330,56 +2330,6 @@ g_format_size_for_display (goffset size)
     }
 }
 
-#ifdef G_OS_WIN32
-
-/**
- * _glib_get_locale_dir:
- *
- * Return the path to the share\locale or lib\locale subfolder of the
- * GLib installation folder. The path is in the system codepage. We
- * have to use system codepage as bindtextdomain() doesn't have a
- * UTF-8 interface.
- */
-gchar *
-_glib_get_locale_dir (void)
-{
-  gchar *install_dir = NULL, *locale_dir;
-  gchar *retval = NULL;
-
-  if (glib_dll != NULL)
-    install_dir = g_win32_get_package_installation_directory_of_module (glib_dll);
-
-  if (install_dir)
-    {
-      /*
-       * Append "/share/locale" or "/lib/locale" depending on whether
-       * autoconfigury detected GNU gettext or not.
-       */
-      const char *p = GLIB_LOCALE_DIR + strlen (GLIB_LOCALE_DIR);
-      while (*--p != '/')
-	;
-      while (*--p != '/')
-	;
-
-      locale_dir = g_build_filename (install_dir, p, NULL);
-
-      retval = g_win32_locale_filename_from_utf8 (locale_dir);
-
-      g_free (install_dir);
-      g_free (locale_dir);
-    }
-
-  if (retval)
-    return retval;
-  else
-    return g_strdup ("");
-}
-
-#undef GLIB_LOCALE_DIR
-
-#endif /* G_OS_WIN32 */
-
-
 #if defined (G_OS_WIN32) && !defined (_WIN64)
 
 /* Binary compatibility versions. Not for newly compiled code. */
