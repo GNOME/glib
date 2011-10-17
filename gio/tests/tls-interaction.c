@@ -56,6 +56,7 @@ typedef struct {
   GTlsInteractionClass parent;
 } TestInteractionClass;
 
+static GType test_interaction_get_type (void);
 G_DEFINE_TYPE (TestInteraction, test_interaction, G_TYPE_TLS_INTERACTION);
 
 #define TEST_TYPE_INTERACTION         (test_interaction_get_type ())

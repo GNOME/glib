@@ -100,7 +100,7 @@ ask_password_with_getpass (GSimpleAsyncResult    *res,
     g_simple_async_result_take_error (res, error);
 }
 
-void
+static void
 g_tls_console_interaction_ask_password_async (GTlsInteraction    *interaction,
                                               GTlsPassword       *password,
                                               GCancellable       *cancellable,
@@ -117,7 +117,7 @@ g_tls_console_interaction_ask_password_async (GTlsInteraction    *interaction,
   g_object_unref (res);
 }
 
-GTlsInteractionResult
+static GTlsInteractionResult
 g_tls_console_interaction_ask_password_finish (GTlsInteraction    *interaction,
                                                GAsyncResult       *result,
                                                GError            **error)

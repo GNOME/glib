@@ -104,7 +104,7 @@ test_unknown_key (void)
 /* Check that we get an error when the schema
  * has not been installed
  */
-void
+static void
 test_no_schema (void)
 {
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
@@ -355,7 +355,7 @@ changed_cb (GSettings   *settings,
 
 /* Test that basic change notification with the changed signal works.
  */
-void
+static void
 test_changes (void)
 {
   GSettings *settings;
@@ -401,7 +401,7 @@ changed_cb2 (GSettings   *settings,
  * Also test that the has-unapplied property is properly
  * maintained.
  */
-void
+static void
 test_delay_apply (void)
 {
   GSettings *settings;
@@ -738,6 +738,7 @@ typedef struct
   GObjectClass parent_class;
 } TestObjectClass;
 
+static GType test_object_get_type (void);
 G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
 
 static void

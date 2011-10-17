@@ -17,6 +17,7 @@ enum { PROP_0, PROP_FOO, PROP_BAR, PROP_BAZ, N_PROPERTIES };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL, };
 
+static GType test_object_get_type (void);
 G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT);
 
 static void

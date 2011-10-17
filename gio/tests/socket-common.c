@@ -39,7 +39,7 @@ socket_address_to_string (GSocketAddress *address)
   return res;
 }
 
-GSocketAddress *
+static GSocketAddress *
 socket_address_from_string (const char *name)
 {
 #ifdef G_OS_UNIX

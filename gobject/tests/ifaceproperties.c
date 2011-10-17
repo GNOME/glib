@@ -34,9 +34,9 @@
  * prop3: Defined in TestIface, Implemented in BaseObject, Overridden in DerivedObject
  * prop4: Defined in BaseObject, Overridden in DerivedObject
  */
-   
-static GType base_object_get_type ();
-static GType derived_object_get_type ();
+
+static GType base_object_get_type (void);
+static GType derived_object_get_type (void);
 
 enum {
   BASE_PROP_0,
@@ -552,6 +552,7 @@ struct _Base2ObjectClass
   GObjectClass parent_class;
 };
 
+static GType base2_object_get_type (void);
 G_DEFINE_TYPE_WITH_CODE (Base2Object, base2_object, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE,
                                                 base2_object_test_iface_init))

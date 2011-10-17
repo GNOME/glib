@@ -101,7 +101,7 @@ static GType test_module_get_type (void)
 }
 
 
-GTypeModule *
+static GTypeModule *
 test_module_new (TestModuleRegisterFunc register_func)
 {
   TestModule *test_module = g_object_new (TEST_TYPE_MODULE, NULL);
@@ -129,6 +129,7 @@ struct _DynamicObjectClass
   guint val;
 };
 
+static GType dynamic_object_get_type (void);
 G_DEFINE_DYNAMIC_TYPE(DynamicObject, dynamic_object, G_TYPE_OBJECT);
 
 static void
@@ -250,8 +251,10 @@ struct _DynIfaceInterface
 
 static void dyn_obj_iface_init (DynIfaceInterface *iface);
 
+static GType dyn_iface_get_type (void);
 G_DEFINE_INTERFACE (DynIface, dyn_iface, G_TYPE_OBJECT)
 
+static GType dyn_obj_get_type (void);
 G_DEFINE_DYNAMIC_TYPE_EXTENDED(DynObj, dyn_obj, G_TYPE_OBJECT, 0,
                       G_IMPLEMENT_INTERFACE_DYNAMIC(dyn_iface_get_type (), dyn_obj_iface_init))
 

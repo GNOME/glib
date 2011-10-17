@@ -12,7 +12,7 @@ typedef enum {
   TEST_UNSIGNED_ENUM_BAR = 0x80000000
 } TestUnsignedEnum;
 
-GType
+static GType
 test_enum_get_type (void)
 {
   static volatile gsize g_define_type_id__volatile = 0;
@@ -34,7 +34,7 @@ test_enum_get_type (void)
   return g_define_type_id__volatile;
 }
 
-GType
+static GType
 test_unsigned_enum_get_type (void)
 {
   static volatile gsize g_define_type_id__volatile = 0;

@@ -37,6 +37,7 @@ typedef struct
   GIOStreamClass parent_class;
 } GTestIOStreamClass;
 
+static GType g_test_io_stream_get_type (void);
 G_DEFINE_TYPE (GTestIOStream, g_test_io_stream, G_TYPE_IO_STREAM);
 
 

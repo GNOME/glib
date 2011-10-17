@@ -36,6 +36,7 @@ my_boxed_free (gpointer orig)
   my_boxed_free_count++;
 }
 
+static GType my_boxed_get_type (void);
 #define MY_TYPE_BOXED (my_boxed_get_type ())
 
 G_DEFINE_BOXED_TYPE (MyBoxed, my_boxed, my_boxed_copy, my_boxed_free)

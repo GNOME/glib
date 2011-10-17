@@ -27,6 +27,7 @@ enum
   PROP_NAME
 };
 
+static GType my_object_get_type (void);
 G_DEFINE_TYPE (MyObject, my_object, G_TYPE_OBJECT);
 
 static void
@@ -120,7 +121,7 @@ my_object_class_init (MyObjectClass *class)
 }
 
 /* A method that we want to export */
-void
+static void
 my_object_change_count (MyObject *myobj,
                         gint      change)
 {

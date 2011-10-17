@@ -55,6 +55,7 @@ test_local_cmdline (GApplication   *application,
 typedef GApplication TestApplication;
 typedef GApplicationClass TestApplicationClass;
 
+static GType test_application_get_type (void);
 G_DEFINE_TYPE (TestApplication, test_application, G_TYPE_APPLICATION)
 
 static void
@@ -75,7 +76,7 @@ test_application_class_init (TestApplicationClass *class)
   G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
 }
 
-GApplication *
+static GApplication *
 test_application_new (const gchar       *application_id,
                       GApplicationFlags  flags)
 {

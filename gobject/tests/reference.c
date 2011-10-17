@@ -74,6 +74,7 @@ struct _MyObjectClassPrivate
   gint secret_class_count;
 };
 
+static GType my_object_get_type (void);
 G_DEFINE_TYPE_WITH_CODE (MyObject, my_object, G_TYPE_OBJECT,
                          g_type_add_class_private (g_define_type_id, sizeof (MyObjectClassPrivate)) );
 
