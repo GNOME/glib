@@ -616,9 +616,8 @@ g_get_environ (void)
   return result;
 }
 
+/* Win32 binary compatibility versions {{{1 */
 #ifndef _WIN64
-
-/* Binary compatibility versions. Not for newly compiled code. */
 
 #undef g_getenv
 
