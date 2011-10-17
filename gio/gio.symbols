@@ -1397,7 +1397,6 @@ g_simple_action_group_insert
 g_simple_action_group_lookup
 g_simple_action_group_new
 g_simple_action_group_remove
-g_simple_action_get_parameter_type
 g_simple_action_get_type
 g_simple_action_new
 g_simple_action_new_stateful
