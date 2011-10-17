@@ -51,6 +51,7 @@
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "gunicode.h"
+#include "gfileutils.h"
 
 #ifdef NEED_ICONV_CACHE
 #include "glist.h"
