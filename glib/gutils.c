@@ -2644,55 +2644,6 @@ g_get_current_dir (void)
   return dir;
 }
 
-#undef g_getenv
-
-const gchar *
-g_getenv (const gchar *variable)
-{
-  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
-  const gchar *utf8_value = g_getenv_utf8 (utf8_variable);
-  gchar *value;
-  GQuark quark;
-
-  g_free (utf8_variable);
-  if (!utf8_value)
-    return NULL;
-  value = g_locale_from_utf8 (utf8_value, -1, NULL, NULL, NULL);
-  quark = g_quark_from_string (value);
-  g_free (value);
-
-  return g_quark_to_string (quark);
-}
-
-#undef g_setenv
-
-gboolean
-g_setenv (const gchar *variable, 
-	  const gchar *value, 
-	  gboolean     overwrite)
-{
-  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
-  gchar *utf8_value = g_locale_to_utf8 (value, -1, NULL, NULL, NULL);
-  gboolean retval = g_setenv_utf8 (utf8_variable, utf8_value, overwrite);
-
-  g_free (utf8_variable);
-  g_free (utf8_value);
-
-  return retval;
-}
-
-#undef g_unsetenv
-
-void
-g_unsetenv (const gchar *variable)
-{
-  gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
-
-  g_unsetenv_utf8 (utf8_variable);
-
-  g_free (utf8_variable);
-}
-
 #undef g_get_user_name
 
 const gchar *
