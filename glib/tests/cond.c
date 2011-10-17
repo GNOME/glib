@@ -173,7 +173,7 @@ barrier_wait (Barrier *barrier)
 static Barrier b;
 static gint check;
 
-gpointer
+static gpointer
 cond2_func (gpointer data)
 {
   gint value = GPOINTER_TO_INT (data);

@@ -106,7 +106,7 @@ test_string_new (void)
   g_string_free (string2, TRUE);
 }
 
-void
+static void
 my_string_printf (GString     *string,
                   const gchar *format,
                   ...)

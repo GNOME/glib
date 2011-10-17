@@ -1,6 +1,6 @@
 #include <glib.h>
 
-void
+static void
 test_slice_config (void)
 {
   if (g_test_trap_fork (1000000, G_TEST_TRAP_SILENCE_STDERR))

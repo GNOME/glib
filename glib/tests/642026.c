@@ -46,7 +46,7 @@ static gpointer thread_func (gpointer nil)
   return nil;
 }
 
-void
+static void
 testcase (void)
 {
   g_test_bug ("642026");

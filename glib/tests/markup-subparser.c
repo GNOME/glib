@@ -275,7 +275,7 @@ typedef struct
   const char *error_message;
 } TestCase;
 
-void
+static void
 test (gconstpointer user_data)
 {
   const TestCase *tc = user_data;

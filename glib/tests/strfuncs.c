@@ -854,7 +854,7 @@ test_strv_length (void)
 
 static char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};
 
-void
+static void
 check_strtod_string (gchar    *number,
 		     double    res,
 		     gboolean  check_end,

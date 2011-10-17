@@ -172,7 +172,7 @@ test_printerr_handler (void)
 static char *fail_str = "foo";
 static char *log_str = "bar";
 
-gboolean
+static gboolean
 good_failure_handler (const gchar    *log_domain,
                       GLogLevelFlags  log_level,
                       const gchar    *msg,
@@ -185,7 +185,7 @@ good_failure_handler (const gchar    *log_domain,
   return FALSE;
 }
 
-gboolean
+static gboolean
 bad_failure_handler (const gchar    *log_domain,
                      GLogLevelFlags  log_level,
                      const gchar    *msg,
@@ -198,7 +198,7 @@ bad_failure_handler (const gchar    *log_domain,
   return FALSE;
 }
 
-void
+static void
 test_handler (const gchar    *log_domain,
               GLogLevelFlags  log_level,
               const gchar    *msg,
@@ -209,7 +209,7 @@ test_handler (const gchar    *log_domain,
   g_assert ((char *)user_data == log_str);
 }
 
-void
+static void
 bug653052 (void)
 {
   g_test_bug ("653052");

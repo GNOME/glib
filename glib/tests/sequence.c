@@ -55,7 +55,7 @@ check_node (GSequenceNode *node)
     }
 }
 
-void
+static void
 g_sequence_check (GSequence *seq)
 {
   GSequenceNode *node = seq->end_node;

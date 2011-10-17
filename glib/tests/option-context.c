@@ -188,7 +188,7 @@ gboolean ignore_test1_boolean;
 gboolean ignore_test2_boolean;
 gchar *ignore_test3_string;
 
-gchar **
+static gchar **
 split_string (const char *str, int *argc)
 {
   gchar **argv;
@@ -204,7 +204,7 @@ split_string (const char *str, int *argc)
   return argv;
 }
 
-gchar *
+static gchar *
 join_stringv (int argc, char **argv)
 {
   int i;
@@ -224,7 +224,7 @@ join_stringv (int argc, char **argv)
 }
 
 /* Performs a shallow copy */
-char **
+static char **
 copy_stringv (char **argv, int argc)
 {
   return g_memdup (argv, sizeof (char *) * (argc + 1));
@@ -256,7 +256,7 @@ error_test1_post_parse (GOptionContext *context,
   return FALSE;
 }
 
-void
+static void
 error_test1 (void)
 {
   GOptionContext *context;
@@ -317,7 +317,7 @@ error_test2_post_parse (GOptionContext *context,
   return FALSE;
 }
 
-void
+static void
 error_test2 (void)
 {
   GOptionContext *context;
@@ -378,7 +378,7 @@ error_test3_post_parse (GOptionContext *context,
   return FALSE;
 }
 
-void
+static void
 error_test3 (void)
 {
   GOptionContext *context;
@@ -414,7 +414,7 @@ error_test3 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 arg_test1 (void)
 {
   GOptionContext *context;
@@ -443,7 +443,7 @@ arg_test1 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 arg_test2 (void)
 {
   GOptionContext *context;
@@ -474,7 +474,7 @@ arg_test2 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 arg_test3 (void)
 {
   GOptionContext *context;
@@ -506,7 +506,7 @@ arg_test3 (void)
 }
 
 
-void
+static void
 arg_test4 (void)
 {
   GOptionContext *context;
@@ -535,7 +535,7 @@ arg_test4 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 arg_test5 (void)
 {
   GOptionContext *context;
@@ -580,7 +580,7 @@ arg_test5 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 arg_test6 (void)
 {
   GOptionContext *context;
@@ -619,7 +619,7 @@ callback_parse1 (const gchar *option_name, const gchar *value,
 	return TRUE;
 }
 
-void
+static void
 callback_test1 (void)
 {
   GOptionContext *context;
@@ -657,7 +657,7 @@ callback_parse2 (const gchar *option_name, const gchar *value,
 	return TRUE;
 }
 
-void
+static void
 callback_test2 (void)
 {
   GOptionContext *context;
@@ -697,7 +697,7 @@ callback_parse_optional (const gchar *option_name, const gchar *value,
 	return TRUE;
 }
 
-void
+static void
 callback_test_optional_1 (void)
 {
   GOptionContext *context;
@@ -730,7 +730,7 @@ callback_test_optional_1 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_2 (void)
 {
   GOptionContext *context;
@@ -763,7 +763,7 @@ callback_test_optional_2 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_3 (void)
 {
   GOptionContext *context;
@@ -797,7 +797,7 @@ callback_test_optional_3 (void)
 }
 
 
-void
+static void
 callback_test_optional_4 (void)
 {
   GOptionContext *context;
@@ -830,7 +830,7 @@ callback_test_optional_4 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_5 (void)
 {
   GOptionContext *context;
@@ -865,7 +865,7 @@ callback_test_optional_5 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_6 (void)
 {
   GOptionContext *context;
@@ -900,7 +900,7 @@ callback_test_optional_6 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_7 (void)
 {
   GOptionContext *context;
@@ -935,7 +935,7 @@ callback_test_optional_7 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_8 (void)
 {
   GOptionContext *context;
@@ -970,7 +970,7 @@ callback_test_optional_8 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_9 (void)
 {
   GOptionContext *context;
@@ -1000,7 +1000,7 @@ callback_test_optional_9 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 callback_test_optional_10 (void)
 {
   GOptionContext *context;
@@ -1039,7 +1039,7 @@ callback_remaining_test1_callback (const gchar *option_name, const gchar *value,
 	return TRUE;
 }
 
-void
+static void
 callback_remaining_test1 (void)
 {
   GOptionContext *context;
@@ -1149,7 +1149,7 @@ callback_returns_false (void)
 }
 
 
-void
+static void
 ignore_test1 (void)
 {
   GOptionContext *context;
@@ -1184,7 +1184,7 @@ ignore_test1 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 ignore_test2 (void)
 {
   GOptionContext *context;
@@ -1217,7 +1217,7 @@ ignore_test2 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 ignore_test3 (void)
 {
   GOptionContext *context;
@@ -1256,7 +1256,7 @@ ignore_test3 (void)
 }
 
 void
-array_test1 (void)
+static array_test1 (void)
 {
   GOptionContext *context;
   gboolean retval;
@@ -1288,7 +1288,7 @@ array_test1 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 add_test1 (void)
 {
   GOptionContext *context;
@@ -1307,7 +1307,7 @@ add_test1 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 empty_test2 (void)
 {
   GOptionContext *context;
@@ -1318,7 +1318,7 @@ empty_test2 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 empty_test3 (void)
 {
   GOptionContext *context;
@@ -1335,7 +1335,7 @@ empty_test3 (void)
 }
 
 /* check that non-option arguments are left in argv by default */
-void
+static void
 rest_test1 (void)
 {
   GOptionContext *context;
@@ -1370,7 +1370,7 @@ rest_test1 (void)
 }
 
 /* check that -- works */
-void
+static void
 rest_test2 (void)
 {
   GOptionContext *context;
@@ -1406,7 +1406,7 @@ rest_test2 (void)
 }
 
 /* check that -- stripping works */
-void
+static void
 rest_test2a (void)
 {
   GOptionContext *context;
@@ -1440,7 +1440,7 @@ rest_test2a (void)
   g_option_context_free (context);
 }
 
-void
+static void
 rest_test2b (void)
 {
   GOptionContext *context;
@@ -1475,7 +1475,7 @@ rest_test2b (void)
   g_option_context_free (context);
 }
 
-void
+static void
 rest_test2c (void)
 {
   GOptionContext *context;
@@ -1509,7 +1509,7 @@ rest_test2c (void)
   g_option_context_free (context);
 }
 
-void
+static void
 rest_test2d (void)
 {
   GOptionContext *context;
@@ -1545,7 +1545,7 @@ rest_test2d (void)
 
 
 /* check that G_OPTION_REMAINING collects non-option arguments */
-void
+static void
 rest_test3 (void)
 {
   GOptionContext *context;
@@ -1583,7 +1583,7 @@ rest_test3 (void)
 
 
 /* check that G_OPTION_REMAINING and -- work together */
-void
+static void
 rest_test4 (void)
 {
   GOptionContext *context;
@@ -1620,7 +1620,7 @@ rest_test4 (void)
 }
 
 /* test that G_OPTION_REMAINING works with G_OPTION_ARG_FILENAME_ARRAY */
-void
+static void
 rest_test5 (void)
 {
   GOptionContext *context;
@@ -1656,7 +1656,7 @@ rest_test5 (void)
   g_option_context_free (context);
 }
 
-void
+static void
 unknown_short_test (void)
 {
   GOptionContext *context;
@@ -1682,7 +1682,8 @@ unknown_short_test (void)
 }
 
 /* test that lone dashes are treated as non-options */
-void lonely_dash_test (void)
+static void
+lonely_dash_test (void)
 {
   GOptionContext *context;
   gboolean retval;
@@ -1707,7 +1708,7 @@ void lonely_dash_test (void)
   g_option_context_free (context);
 }
 
-void
+static void
 missing_arg_test (void)
 {
   GOptionContext *context;
@@ -1755,7 +1756,7 @@ static gboolean cb (const gchar  *option_name,
   return TRUE;
 }
 
-void
+static void
 dash_arg_test (void)
 {
   GOptionContext *context;
