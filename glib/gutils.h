@@ -36,30 +36,6 @@
 
 G_BEGIN_DECLS
 
-#ifdef G_OS_WIN32
-
-/* On Win32, the canonical directory separator is the backslash, and
- * the search path separator is the semicolon. Note that also the
- * (forward) slash works as directory separator.
- */
-#define G_DIR_SEPARATOR '\\'
-#define G_DIR_SEPARATOR_S "\\"
-#define G_IS_DIR_SEPARATOR(c) ((c) == G_DIR_SEPARATOR || (c) == '/')
-#define G_SEARCHPATH_SEPARATOR ';'
-#define G_SEARCHPATH_SEPARATOR_S ";"
-
-#else  /* !G_OS_WIN32 */
-
-/* Unix */
-
-#define G_DIR_SEPARATOR '/'
-#define G_DIR_SEPARATOR_S "/"
-#define G_IS_DIR_SEPARATOR(c) ((c) == G_DIR_SEPARATOR)
-#define G_SEARCHPATH_SEPARATOR ':'
-#define G_SEARCHPATH_SEPARATOR_S ":"
-
-#endif /* !G_OS_WIN32 */
-
 /* Define G_VA_COPY() to do the right thing for copying va_list variables.
  * glibconfig.h may have already defined G_VA_COPY as va_copy or __va_copy.
  */
@@ -222,33 +198,23 @@ gint                  g_vsnprintf          (gchar       *string,
 					    gchar const *format,
 					    va_list      args);
 
-/* Check if a file name is an absolute path */
-gboolean              g_path_is_absolute   (const gchar *file_name);
+void                  g_nullify_pointer    (gpointer    *nullify_location);
 
-/* In case of absolute paths, skip the root part */
-const gchar *         g_path_skip_root     (const gchar *file_name);
+typedef enum
+{
+  G_FORMAT_SIZE_DEFAULT     = 0,
+  G_FORMAT_SIZE_LONG_FORMAT = 1 << 0,
+  G_FORMAT_SIZE_IEC_UNITS   = 1 << 1
+} GFormatSizeFlags;
+
+gchar *g_format_size_full   (guint64          size,
+                             GFormatSizeFlags flags);
+gchar *g_format_size        (guint64          size);
 
 #ifndef G_DISABLE_DEPRECATED
-
-GLIB_DEPRECATED_FOR(g_path_get_basename)
-const gchar *         g_basename           (const gchar *file_name);
-#define g_dirname g_path_get_dirname
-
-#endif /* G_DISABLE_DEPRECATED */
-
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_get_current_dir g_get_current_dir_utf8
+GLIB_DEPRECATED_FOR(g_format_size)
+gchar *g_format_size_for_display (goffset size);
 #endif
-#endif
-
-/* The returned strings are newly allocated with g_malloc() */
-gchar*                g_get_current_dir    (void);
-gchar*                g_path_get_basename  (const gchar *file_name) G_GNUC_MALLOC;
-gchar*                g_path_get_dirname   (const gchar *file_name) G_GNUC_MALLOC;
-
-/* Set the pointer at the specified location to NULL */
-void                  g_nullify_pointer    (gpointer    *nullify_location);
 
 /**
  * GVoidFunc:
