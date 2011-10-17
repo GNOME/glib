@@ -62,6 +62,7 @@
 #include "glib-init.h"
 #include "genviron.h"
 #include "gfileutils.h"
+#include "ggettext.h"
 #include "ghash.h"
 #include "gslist.h"
 #include "gprintfint.h"
@@ -2382,68 +2383,6 @@ _glib_get_locale_dir (void)
 
 #endif /* G_OS_WIN32 */
 
-static void
-ensure_gettext_initialized (void)
-{
-  static gsize initialised;
-
-  if (g_once_init_enter (&initialised))
-    {
-#ifdef G_OS_WIN32
-      gchar *tmp = _glib_get_locale_dir ();
-      bindtextdomain (GETTEXT_PACKAGE, tmp);
-      g_free (tmp);
-#else
-      bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
-#endif
-#    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
-      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-#    endif
-      g_once_init_leave (&initialised, TRUE);
-    }
-}
-
-/**
- * glib_gettext:
- * @str: The string to be translated
- *
- * Returns the translated string from the glib translations.
- * This is an internal function and should only be used by
- * the internals of glib (such as libgio).
- *
- * Returns: the transation of @str to the current locale
- */
-const gchar *
-glib_gettext (const gchar *str)
-{
-  ensure_gettext_initialized();
-
-  return g_dgettext (GETTEXT_PACKAGE, str);
-}
-
-/**
- * glib_pgettext:
- * @msgctxtid: a combined message context and message id, separated
- *   by a \004 character
- * @msgidoffset: the offset of the message id in @msgctxid
- *
- * This function is a variant of glib_gettext() which supports
- * a disambiguating message context. See g_dpgettext() for full
- * details.
- *
- * This is an internal function and should only be used by
- * the internals of glib (such as libgio).
- *
- * Returns: the transation of @str to the current locale
- */
-const gchar *
-glib_pgettext(const gchar *msgctxtid,
-              gsize        msgidoffset)
-{
-  ensure_gettext_initialized();
-
-  return g_dpgettext (GETTEXT_PACKAGE, msgctxtid, msgidoffset);
-}
 
 #if defined (G_OS_WIN32) && !defined (_WIN64)
 
