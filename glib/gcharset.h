@@ -22,7 +22,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#ifndef __G_CHARSET_H___
+#ifndef __G_CHARSET_H__
 #define __G_CHARSET_H__
 
 #include <glib/gtypes.h>
