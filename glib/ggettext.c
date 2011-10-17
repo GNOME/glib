@@ -1,0 +1,402 @@
+/* GLIB - Library of useful routines for C programming
+ * Copyright (C) 1995-1998  Peter Mattis, Spencer Kimball and Josh MacDonald
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+/*
+ * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the GLib Team.  See the ChangeLog
+ * files for a list of changes.  These files are distributed with
+ * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ */
+
+#include "config.h"
+
+#include "ggettext.h"
+
+#include "galloca.h"
+#include "gthread.h"
+
+#include <string.h>
+#include <locale.h>
+#include <libintl.h>
+
+
+static void
+ensure_gettext_initialized (void)
+{
+  static gsize initialised;
+
+  if (g_once_init_enter (&initialised))
+    {
+#ifdef G_OS_WIN32
+      gchar *tmp = _glib_get_locale_dir ();
+      bindtextdomain (GETTEXT_PACKAGE, tmp);
+      g_free (tmp);
+#else
+      bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#endif
+#    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#    endif
+      g_once_init_leave (&initialised, TRUE);
+    }
+}
+
+/**
+ * glib_gettext:
+ * @str: The string to be translated
+ *
+ * Returns the translated string from the glib translations.
+ * This is an internal function and should only be used by
+ * the internals of glib (such as libgio).
+ *
+ * Returns: the transation of @str to the current locale
+ */
+const gchar *
+glib_gettext (const gchar *str)
+{
+  ensure_gettext_initialized ();
+
+  return g_dgettext (GETTEXT_PACKAGE, str);
+}
+
+/**
+ * glib_pgettext:
+ * @msgctxtid: a combined message context and message id, separated
+ *   by a \004 character
+ * @msgidoffset: the offset of the message id in @msgctxid
+ *
+ * This function is a variant of glib_gettext() which supports
+ * a disambiguating message context. See g_dpgettext() for full
+ * details.
+ *
+ * This is an internal function and should only be used by
+ * the internals of glib (such as libgio).
+ *
+ * Returns: the transation of @str to the current locale
+ */
+const gchar *
+glib_pgettext (const gchar *msgctxtid,
+               gsize        msgidoffset)
+{
+  ensure_gettext_initialized ();
+
+  return g_dpgettext (GETTEXT_PACKAGE, msgctxtid, msgidoffset);
+}
+
+/**
+ * g_strip_context:
+ * @msgid: a string
+ * @msgval: another string
+ *
+ * An auxiliary function for gettext() support (see Q_()).
+ *
+ * Return value: @msgval, unless @msgval is identical to @msgid
+ *     and contains a '|' character, in which case a pointer to
+ *     the substring of msgid after the first '|' character is returned.
+ *
+ * Since: 2.4
+ */
+const gchar *
+g_strip_context (const gchar *msgid,
+                 const gchar *msgval)
+{
+  if (msgval == msgid)
+    {
+      const char *c = strchr (msgid, '|');
+      if (c != NULL)
+        return c + 1;
+    }
+
+  return msgval;
+}
+
+/**
+ * g_dpgettext:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgctxtid: a combined message context and message id, separated
+ *   by a \004 character
+ * @msgidoffset: the offset of the message id in @msgctxid
+ *
+ * This function is a variant of g_dgettext() which supports
+ * a disambiguating message context. GNU gettext uses the
+ * '\004' character to separate the message context and
+ * message id in @msgctxtid.
+ * If 0 is passed as @msgidoffset, this function will fall back to
+ * trying to use the deprecated convention of using "|" as a separation
+ * character.
+ *
+ * This uses g_dgettext() internally. See that functions for differences
+ * with dgettext() proper.
+ *
+ * Applications should normally not use this function directly,
+ * but use the C_() macro for translations with context.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.16
+ */
+const gchar *
+g_dpgettext (const gchar *domain,
+             const gchar *msgctxtid,
+             gsize        msgidoffset)
+{
+  const gchar *translation;
+  gchar *sep;
+
+  translation = g_dgettext (domain, msgctxtid);
+
+  if (translation == msgctxtid)
+    {
+      if (msgidoffset > 0)
+        return msgctxtid + msgidoffset;
+      sep = strchr (msgctxtid, '|');
+
+      if (sep)
+        {
+          /* try with '\004' instead of '|', in case
+           * xgettext -kQ_:1g was used
+           */
+          gchar *tmp = g_alloca (strlen (msgctxtid) + 1);
+          strcpy (tmp, msgctxtid);
+          tmp[sep - msgctxtid] = '\004';
+
+          translation = g_dgettext (domain, tmp);
+
+          if (translation == tmp)
+            return sep + 1;
+        }
+    }
+
+  return translation;
+}
+
+/* This function is taken from gettext.h
+ * GNU gettext uses '\004' to separate context and msgid in .mo files.
+ */
+/**
+ * g_dpgettext2:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @context: the message context
+ * @msgid: the message
+ *
+ * This function is a variant of g_dgettext() which supports
+ * a disambiguating message context. GNU gettext uses the
+ * '\004' character to separate the message context and
+ * message id in @msgctxtid.
+ *
+ * This uses g_dgettext() internally. See that functions for differences
+ * with dgettext() proper.
+ *
+ * This function differs from C_() in that it is not a macro and
+ * thus you may use non-string-literals as context and msgid arguments.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.18
+ */
+const gchar *
+g_dpgettext2 (const gchar *domain,
+              const gchar *msgctxt,
+              const gchar *msgid)
+{
+  size_t msgctxt_len = strlen (msgctxt) + 1;
+  size_t msgid_len = strlen (msgid) + 1;
+  const char *translation;
+  char* msg_ctxt_id;
+
+  msg_ctxt_id = g_alloca (msgctxt_len + msgid_len);
+
+  memcpy (msg_ctxt_id, msgctxt, msgctxt_len - 1);
+  msg_ctxt_id[msgctxt_len - 1] = '\004';
+  memcpy (msg_ctxt_id + msgctxt_len, msgid, msgid_len);
+
+  translation = g_dgettext (domain, msg_ctxt_id);
+
+  if (translation == msg_ctxt_id)
+    {
+      /* try the old way of doing message contexts, too */
+      msg_ctxt_id[msgctxt_len - 1] = '|';
+      translation = g_dgettext (domain, msg_ctxt_id);
+
+      if (translation == msg_ctxt_id)
+        return msgid;
+    }
+
+  return translation;
+}
+
+static gboolean
+_g_dgettext_should_translate (void)
+{
+  static gsize translate = 0;
+  enum {
+    SHOULD_TRANSLATE = 1,
+    SHOULD_NOT_TRANSLATE = 2
+  };
+
+  if (G_UNLIKELY (g_once_init_enter (&translate)))
+    {
+      gboolean should_translate = TRUE;
+
+      const char *default_domain     = textdomain (NULL);
+      const char *translator_comment = gettext ("");
+#ifndef G_OS_WIN32
+      const char *translate_locale   = setlocale (LC_MESSAGES, NULL);
+#else
+      const char *translate_locale   = g_win32_getlocale ();
+#endif
+      /* We should NOT translate only if all the following hold:
+       *   - user has called textdomain() and set textdomain to non-default
+       *   - default domain has no translations
+       *   - locale does not start with "en_" and is not "C"
+       *
+       * Rationale:
+       *   - If text domain is still the default domain, maybe user calls
+       *     it later. Continue with old behavior of translating.
+       *   - If locale starts with "en_", we can continue using the
+       *     translations even if the app doesn't have translations for
+       *     this locale.  That is, en_UK and en_CA for example.
+       *   - If locale is "C", maybe user calls setlocale(LC_ALL,"") later.
+       *     Continue with old behavior of translating.
+       */
+      if (0 != strcmp (default_domain, "messages") &&
+          '\0' == *translator_comment &&
+          0 != strncmp (translate_locale, "en_", 3) &&
+          0 != strcmp (translate_locale, "C"))
+        should_translate = FALSE;
+
+      g_once_init_leave (&translate,
+                         should_translate ?
+                         SHOULD_TRANSLATE :
+                         SHOULD_NOT_TRANSLATE);
+    }
+
+  return translate == SHOULD_TRANSLATE;
+}
+
+/**
+ * g_dgettext:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgid: message to translate
+ *
+ * This function is a wrapper of dgettext() which does not translate
+ * the message if the default domain as set with textdomain() has no
+ * translations for the current locale.
+ *
+ * The advantage of using this function over dgettext() proper is that
+ * libraries using this function (like GTK+) will not use translations
+ * if the application using the library does not have translations for
+ * the current locale.  This results in a consistent English-only
+ * interface instead of one having partial translations.  For this
+ * feature to work, the call to textdomain() and setlocale() should
+ * precede any g_dgettext() invocations.  For GTK+, it means calling
+ * textdomain() before gtk_init or its variants.
+ *
+ * This function disables translations if and only if upon its first
+ * call all the following conditions hold:
+ * <itemizedlist>
+ * <listitem>@domain is not %NULL</listitem>
+ * <listitem>textdomain() has been called to set a default text domain</listitem>
+ * <listitem>there is no translations available for the default text domain
+ *           and the current locale</listitem>
+ * <listitem>current locale is not "C" or any English locales (those
+ *           starting with "en_")</listitem>
+ * </itemizedlist>
+ *
+ * Note that this behavior may not be desired for example if an application
+ * has its untranslated messages in a language other than English.  In those
+ * cases the application should call textdomain() after initializing GTK+.
+ *
+ * Applications should normally not use this function directly,
+ * but use the _() macro for translations.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.18
+ */
+const gchar *
+g_dgettext (const gchar *domain,
+            const gchar *msgid)
+{
+  if (domain && G_UNLIKELY (!_g_dgettext_should_translate ()))
+    return msgid;
+
+  return dgettext (domain, msgid);
+}
+
+/**
+ * g_dcgettext:
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgid: message to translate
+ * @category: a locale category
+ *
+ * This is a variant of g_dgettext() that allows specifying a locale
+ * category instead of always using %LC_MESSAGES. See g_dgettext() for
+ * more information about how this functions differs from calling
+ * dcgettext() directly.
+ *
+ * Returns: the translated string for the given locale category
+ *
+ * Since: 2.26
+ */
+const gchar *
+g_dcgettext (const gchar *domain,
+             const gchar *msgid,
+             gint         category)
+{
+  if (domain && G_UNLIKELY (!_g_dgettext_should_translate ()))
+    return msgid;
+
+  return dcgettext (domain, msgid, category);
+}
+
+/**
+ * g_dngettext:
+ * @domain: the translation domain to use, or %NULL to use
+ *   the domain set with textdomain()
+ * @msgid: message to translate
+ * @msgid_plural: plural form of the message
+ * @n: the quantity for which translation is needed
+ *
+ * This function is a wrapper of dngettext() which does not translate
+ * the message if the default domain as set with textdomain() has no
+ * translations for the current locale.
+ *
+ * See g_dgettext() for details of how this differs from dngettext()
+ * proper.
+ *
+ * Returns: The translated string
+ *
+ * Since: 2.18
+ */
+const gchar *
+g_dngettext (const gchar *domain,
+             const gchar *msgid,
+             const gchar *msgid_plural,
+             gulong       n)
+{
+  if (domain && G_UNLIKELY (!_g_dgettext_should_translate ()))
+    return n == 1 ? msgid : msgid_plural;
+
+  return dngettext (domain, msgid, msgid_plural, n);
+}
