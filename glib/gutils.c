@@ -64,10 +64,7 @@
 #include "gfileutils.h"
 #include "ggettext.h"
 #include "ghash.h"
-#include "gslist.h"
-#include "gprintfint.h"
 #include "gthread.h"
-#include "gthreadprivate.h"
 #include "gtestutils.h"
 #include "gunicode.h"
 #include "gstrfuncs.h"
@@ -75,7 +72,6 @@
 #include "glibintl.h"
 
 #ifdef G_PLATFORM_WIN32
-#include "garray.h"
 #include "gconvert.h"
 #include "gwin32.h"
 #endif
