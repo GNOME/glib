@@ -315,6 +315,7 @@ typedef struct {
 
 } GSocketAddressAddressEnumeratorClass;
 
+static GType _g_socket_address_address_enumerator_get_type (void);
 G_DEFINE_TYPE (GSocketAddressAddressEnumerator, _g_socket_address_address_enumerator, G_TYPE_SOCKET_ADDRESS_ENUMERATOR)
 
 static void

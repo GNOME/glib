@@ -80,7 +80,7 @@ g_simple_action_get_name (GAction *action)
   return simple->name;
 }
 
-const GVariantType *
+static const GVariantType *
 g_simple_action_get_parameter_type (GAction *action)
 {
   GSimpleAction *simple = G_SIMPLE_ACTION (action);

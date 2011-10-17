@@ -168,7 +168,7 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
   return TRUE;
 }
 
-gboolean
+static gboolean
 path_is_valid (GKeyfileSettingsBackend *kfsb,
                const gchar             *path)
 {

@@ -209,7 +209,7 @@ g_tls_certificate_new_internal (const gchar  *certificate_pem,
 #define PEM_PRIVKEY_HEADER     "-----BEGIN RSA PRIVATE KEY-----"
 #define PEM_PRIVKEY_FOOTER     "-----END RSA PRIVATE KEY-----"
 
-gchar *
+static gchar *
 parse_private_key (const gchar *data,
 		   gsize data_len,
 		   gboolean required,
@@ -243,7 +243,7 @@ parse_private_key (const gchar *data,
 }
 
 
-gchar *
+static gchar *
 parse_next_pem_certificate (const gchar **data,
 			    const gchar  *data_end,
 			    gboolean      required,

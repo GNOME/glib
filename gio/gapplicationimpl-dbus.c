@@ -434,7 +434,7 @@ unwrap_fake_maybe (GVariant **value)
   *value = tmp;
 }
 
-RemoteActionInfo *
+static RemoteActionInfo *
 remote_action_info_new_from_iter (GVariantIter *iter)
 {
   RemoteActionInfo *info;

@@ -794,6 +794,7 @@ typedef struct {
 
 } GNetworkAddressAddressEnumeratorClass;
 
+static GType _g_network_address_address_enumerator_get_type (void);
 G_DEFINE_TYPE (GNetworkAddressAddressEnumerator, _g_network_address_address_enumerator, G_TYPE_SOCKET_ADDRESS_ENUMERATOR)
 
 static void

@@ -20,6 +20,8 @@
 #include "config.h"
 
 #include "gsettingsschema.h"
+#include "gsettings.h"
+
 #include "gvdb/gvdb-reader.h"
 
 #include <glibintl.h>

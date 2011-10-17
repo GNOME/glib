@@ -203,7 +203,7 @@ g_srv_target_get_weight (GSrvTarget *target)
   return target->weight;
 }
 
-gint
+static gint
 compare_target (gconstpointer a, gconstpointer b)
 {
   GSrvTarget *ta = (GSrvTarget *)a;

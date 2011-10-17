@@ -1028,7 +1028,7 @@ g_io_extension_point_get_required_type (GIOExtensionPoint *extension_point)
   return extension_point->required_type;
 }
 
-void
+static void
 lazy_load_modules (GIOExtensionPoint *extension_point)
 {
   GIOModule *module;

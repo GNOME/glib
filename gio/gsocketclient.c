@@ -138,7 +138,7 @@ create_socket (GSocketClient  *client,
   return socket;
 }
 
-gboolean
+static gboolean
 can_use_proxy (GSocketClient *client)
 {
   GSocketClientPrivate *priv = client->priv;
