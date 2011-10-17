@@ -70,18 +70,17 @@ test_thread_independence (void)
 static gboolean
 idle_start_test1_thread (gpointer loop)
 {
-  GTimeVal time;
+  gint64 time;
   GThread *thread;
   gboolean io_completed;
 
   g_mutex_lock (&test1_mutex);
   thread = g_thread_new ("test1", test1_thread, NULL);
 
-  g_get_current_time (&time);
-  time.tv_sec += 2;
+  time = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
   while (!test1_done)
     {
-      io_completed = g_cond_timed_wait (&test1_cond, &test1_mutex, &time);
+      io_completed = g_cond_wait_until (&test1_cond, &test1_mutex, time);
       g_assert (io_completed);
     }
   g_thread_join (thread);
