@@ -28,9 +28,9 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-14 14:18+0000\n"
-"PO-Revision-Date: 2011-10-16 15:26+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
+"POT-Creation-Date: 2011-10-16 16:55+0000\n"
+"PO-Revision-Date: 2011-10-17 03:29+0900\n"
+"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -762,7 +762,7 @@ msgstr "要素 '%s' は閉じています。要素は何も開かれてません
 #: ../glib/gmarkup.c:1544
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "要素'%s' が閉ました。しかし現在開いている要素は '%s' です"
+msgstr "要素'%s' が閉じました。しかし現在開いている要素は '%s' です"
 
 #: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
@@ -1866,8 +1866,8 @@ msgstr "METHOD_RETURN メッセージ: REPLY_SERIAL ヘッダーフィールド�
 #: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr ""
-"エラー: METHOD_CALL メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダーフィー"
-"ルドがありません"
+"ERROR メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダーフィールドがありませ"
+"ん"
 
 #: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
