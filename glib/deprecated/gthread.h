@@ -257,6 +257,8 @@ gboolean g_once_init_enter_impl          (volatile gsize *location);
 
 GLIB_DEPRECATED
 void     g_thread_init                   (gpointer vtable);
+GLIB_DEPRECATED
+void    g_thread_init_with_errorcheck_mutexes (gpointer vtable);
 
 GLIB_DEPRECATED
 gboolean g_thread_get_initialized        (void);

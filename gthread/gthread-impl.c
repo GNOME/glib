@@ -31,7 +31,7 @@
  * MT safe
  */
 
-#include "glib.h"
+#include <glib.h>
 
 void
 g_thread_init (gpointer init)
