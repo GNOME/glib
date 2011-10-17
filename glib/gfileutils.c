@@ -1380,7 +1380,7 @@ get_tmp_file (gchar            *tmpl,
   return -1;
 }
 
-gint
+static gint
 wrap_mkdir (gchar *tmpl,
             int    flags G_GNUC_UNUSED,
             int    mode)

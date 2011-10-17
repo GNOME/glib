@@ -97,7 +97,7 @@
 #endif
 
 #include "gwakeup.h"
-
+#include "gmain-internal.h"
 #include "glib-private.h"
 
 /**

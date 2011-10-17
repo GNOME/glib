@@ -381,7 +381,7 @@ token_stream_end_ref (TokenStream *stream,
   ref->end = stream->stream - stream->start;
 }
 
-void
+static void
 pattern_copy (gchar       **out,
               const gchar **in)
 {
