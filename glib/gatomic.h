@@ -188,11 +188,11 @@ G_END_DECLS
 #define g_atomic_int_add(atomic, val) \
   (g_atomic_int_add ((gint *) (atomic), (val)))
 #define g_atomic_int_and(atomic, val) \
-  (g_atomic_int_and ((gint *) (atomic), (val)))
+  (g_atomic_int_and ((guint *) (atomic), (val)))
 #define g_atomic_int_or(atomic, val) \
-  (g_atomic_int_or ((gint *) (atomic), (val)))
+  (g_atomic_int_or ((guint *) (atomic), (val)))
 #define g_atomic_int_xor(atomic, val) \
-  (g_atomic_int_xor ((gint *) (atomic), (val)))
+  (g_atomic_int_xor ((guint *) (atomic), (val)))
 #define g_atomic_int_inc(atomic) \
   (g_atomic_int_inc ((gint *) (atomic)))
 #define g_atomic_int_dec_and_test(atomic) \
