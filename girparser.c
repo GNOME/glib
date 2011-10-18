@@ -3502,6 +3502,11 @@ _g_ir_parser_parse_string (GIrParser           *parser,
 
   if (ctx.modules)
     return ctx.modules->data;
+
+  g_set_error (error,
+               G_MARKUP_ERROR,
+               G_MARKUP_ERROR_INVALID_CONTENT,
+               "Expected namespace element in the gir file");
   return NULL;
 }
 
