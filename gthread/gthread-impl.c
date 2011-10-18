@@ -36,9 +36,13 @@
 void
 g_thread_init (gpointer init)
 {
+  if (init != NULL)
+    g_warning ("GThread system no longer supports custom thread implementations.");
 }
 
 void
 g_thread_init_with_errorcheck_mutexes (gpointer vtable)
 {
+  g_assert (vtable == NULL);
+  g_warning ("GThread system no longer supports errorcheck mutexes.");
 }
