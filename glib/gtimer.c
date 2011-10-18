@@ -475,8 +475,26 @@ g_time_val_from_iso8601 (const gchar *iso_date,
  * g_time_val_to_iso8601:
  * @time_: a #GTimeVal
  * 
- * Converts @time_ into an ISO 8601 encoded string, relative to the
- * Coordinated Universal Time (UTC).
+ * Converts @time_ into an RFC 3339 encoded string, relative to the
+ * Coordinated Universal Time (UTC). This is one of the many formats
+ * allowed by ISO 8601.
+ *
+ * ISO 8601 allows a large number of date/time formats, with or without
+ * punctuation and optional elements. The format returned by this function
+ * is a complete date and time, with optional punctuation included, the
+ * UTC time zone represented as "Z", and the @tv_usec part included if
+ * and only if it is nonzero, i.e. either
+ * "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
+ *
+ * This corresponds to the Internet date/time format defined by
+ * <ulink url="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</ulink>, and
+ * to either of the two most-precise formats defined by
+ * <ulink url="http://www.w3.org/TR/NOTE-datetime-19980827">the W3C Note
+ * "Date and Time Formats"</ulink>. Both of these documents are profiles of
+ * ISO 8601.
+ *
+ * Use g_date_time_format() or g_strdup_printf() if a different
+ * variation of ISO 8601 format is required.
  *
  * Return value: a newly allocated string containing an ISO 8601 date
  *
