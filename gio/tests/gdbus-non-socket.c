@@ -204,6 +204,16 @@ static const GDBusInterfaceVTable pokee_vtable = {
   NULL  /* set_property */
 };
 
+/* Processes:
+ *
+ * parent
+ * \- first child (via fork()) is the pokee
+ * \- second child (via g_test_trap_fork()) is the poker
+ *
+ * The second child only exists to avoid sharing a main context between several
+ * second-children if we run a test resembling this one multiple times.
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=658999 for why that's bad.
+ */
 static void
 test_non_socket (void)
 {
@@ -213,7 +223,7 @@ test_non_socket (void)
   GDBusConnection *connection;
   GError *error;
   gchar *guid;
-  pid_t child;
+  pid_t first_child;
   gint read_fd;
   gint write_fd;
   GVariant *ret;
@@ -222,14 +232,20 @@ test_non_socket (void)
   g_assert_cmpint (pipe (in_pipes), ==, 0);
   g_assert_cmpint (pipe (out_pipes), ==, 0);
 
-  switch ((child = fork ()))
+  switch ((first_child = fork ()))
     {
     case -1:
       g_assert_not_reached ();
       break;
 
     case 0:
-      /* child */
+      /* first child */
+
+      /* we shouldn't do this in the parent, because we shouldn't use a
+       * GMainContext both before and after fork
+       */
+      loop = g_main_loop_new (NULL, FALSE);
+
       read_fd  =  in_pipes[0];
       write_fd = out_pipes[1];
       g_assert_cmpint (close ( in_pipes[1]), ==, 0); /* close unused write end */
@@ -245,7 +261,7 @@ test_non_socket (void)
        * This is because (early) dispatching is done on the IO thread
        * (method_call() isn't called until we're in the right thread
        * though) so in rare cases the parent sends the message before
-       * we (the child) register the object
+       * we (the first child) register the object
        */
       connection = g_dbus_connection_new_sync (stream,
                                                guid,
@@ -284,7 +300,21 @@ test_non_socket (void)
       break;
     }
 
-  /* parent */
+  if (!g_test_trap_fork (0, 0))
+    {
+      /* parent */
+      g_test_trap_assert_passed ();
+      g_assert_cmpint (kill (first_child, SIGTERM), ==, 0);
+      return;
+    }
+
+  /* second child */
+
+  /* we shouldn't do this in the parent, because we shouldn't use a
+   * GMainContext both before and after fork
+   */
+  loop = g_main_loop_new (NULL, FALSE);
+
   read_fd  = out_pipes[0];
   write_fd =  in_pipes[1];
   g_assert_cmpint (close (out_pipes[1]), ==, 0); /* close unused write end */
@@ -300,7 +330,7 @@ test_non_socket (void)
   g_assert_no_error (error);
   g_object_unref (stream);
 
-  /* poke the child */
+  /* poke the first child */
   error = NULL;
   ret = g_dbus_connection_call_sync (connection,
                                      NULL, /* name */
@@ -319,8 +349,8 @@ test_non_socket (void)
   g_variant_unref (ret);
 
   g_object_unref (connection);
-
-  g_assert_cmpint (kill (child, SIGTERM), ==, 0);
+  g_main_loop_unref (loop);
+  exit (0);
 }
 
 #else /* G_OS_UNIX */
@@ -343,14 +373,9 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
-  /* all the tests rely on a shared main loop */
-  loop = g_main_loop_new (NULL, FALSE);
-
   g_test_add_func ("/gdbus/non-socket", test_non_socket);
 
   ret = g_test_run();
-
-  g_main_loop_unref (loop);
 
   return ret;
 }
