@@ -207,6 +207,8 @@ typedef unsigned __int64 guintptr;
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_WIN32
 
+#define G_ATOMIC_LOCK_FREE
+
 #define GINT16_TO_LE(val)	((gint16) (val))
 #define GUINT16_TO_LE(val)	((guint16) (val))
 #define GINT16_TO_BE(val)	((gint16) GUINT16_SWAP_LE_BE (val))

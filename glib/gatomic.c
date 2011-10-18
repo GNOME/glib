@@ -50,22 +50,6 @@
  * hardware memory barrier.  Acquire and release or producer and
  * consumer barrier semantics are not available through this API.
  *
- * On GCC, these macros are implemented using GCC intrinsic operations.
- * On non-GCC compilers they will evaluate to function calls to
- * functions implemented by GLib.
- *
- * If GLib itself was compiled with GCC then these functions will again
- * be implemented by the GCC intrinsics.  On Windows without GCC, the
- * interlocked API is used to implement the functions.
- *
- * With non-GCC compilers on non-Windows systems, the functions are
- * currently incapable of implementing true atomic operations --
- * instead, they fallback to holding a global lock while performing the
- * operation.  This provides atomicity between the threads of one
- * process, but not between separate processes.  For this reason, one
- * should exercise caution when attempting to use these options on
- * shared memory regions.
- *
  * It is very important that all accesses to a particular integer or
  * pointer be performed using only this API and that different sizes of
  * operation are not mixed or used on overlapping memory regions.  Never
@@ -82,6 +66,19 @@
  * perform the operations normally and then release the lock.
  **/
 
+/**
+ * G_ATOMIC_LOCK_FREE:
+ *
+ * This macro is defined if the atomic operations of GLib are
+ * implemented using real hardware atomic operations.  This means that
+ * the GLib atomic API can be used between processes and safely mixed
+ * with other (hardware) atomic APIs.
+ *
+ * If this macro is not defined, the atomic operations may be
+ * emulated using a mutex.  In that case, the GLib atomic operations are
+ * only atomic relative to themselves and within a single process.
+ **/
+
 /* NOTE CAREFULLY:
  *
  * This file is the lowest-level part of GLib.
@@ -93,12 +90,13 @@
  * without risking recursion.
  */
 
-#ifdef G_ATOMIC_OP_USE_GCC_BUILTINS
+#ifdef G_ATOMIC_LOCK_FREE
 
-#ifndef __GNUC__
-#error Using GCC builtin atomic ops, but not compiling with GCC?
-#endif
+/* if G_ATOMIC_LOCK_FREE was defined by ./configure then we MUST
+ * implement the atomic operations in a lock-free manner.
+ */
 
+#if defined (__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4)
 /**
  * g_atomic_int_get:
  * @atomic: a pointer to a #gint or #guint
@@ -612,8 +610,16 @@ gsize
   return InterlockedXor (atomic, val);
 #endif
 }
-
 #else
+
+/* This error occurs when ./configure decided that we should be capable
+ * of lock-free atomics but we find at compile-time that we are not.
+ */
+#error G_ATOMIC_LOCK_FREE defined, but incapable of lock-free atomics.
+
+#endif /* defined (__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) */
+
+#else /* G_ATOMIC_LOCK_FREE */
 
 /* We are not permitted to call into any GLib functions from here, so we
  * can not use GMutex.

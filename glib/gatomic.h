@@ -70,7 +70,7 @@ gint                    g_atomic_int_exchange_and_add         (volatile gint  *a
 
 G_END_DECLS
 
-#if defined(__GNUC__) && defined(G_ATOMIC_OP_USE_GCC_BUILTINS)
+#if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4)
 
 #define g_atomic_int_get(atomic) \
   (G_GNUC_EXTENSION ({                                                          \
@@ -177,7 +177,7 @@ G_END_DECLS
     (gsize) __sync_fetch_and_xor ((atomic), (val));                          \
   }))
 
-#else /* defined(__GNUC__) && defined(G_ATOMIC_OP_USE_GCC_BUILTINS) */
+#else /* defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) */
 
 #define g_atomic_int_get(atomic) \
   (g_atomic_int_get ((gint *) (atomic)))

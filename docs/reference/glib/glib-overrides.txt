@@ -1,6 +1,11 @@
 # This file makes most of the thread related macros look like
 # functions, which they really were, if possible easy.
 
+<MACRO>
+<NAME>G_ATOMIC_LOCK_FREE</NAME>
+#define G_ATOMIC_LOCK_FREE
+</MACRO>
+
 # default thread implementation
 
 <MACRO>

@@ -2407,35 +2407,58 @@ dnl ************************
 dnl *** g_atomic_* tests ***
 dnl ************************
 
-    case $host_cpu in
-      i?86|x86_64|s390|s390x|arm*|crisv32*|etrax*)
-        glib_memory_barrier_needed=no
-        ;;
-      sparc*|alpha*|powerpc*|ia64)
-        glib_memory_barrier_needed=yes
-        ;;
-      *)
-        glib_memory_barrier_needed=yes
-        ;;
-    esac
+dnl We need to decide at configure time if GLib will use real atomic
+dnl operations ("lock free") or emulated ones with a mutex.  This is
+dnl because we must put this information in glibconfig.h so we know if
+dnl it is safe or not to inline using compiler intrinsics directly from
+dnl the header.
+dnl
+dnl We also publish the information via G_ATOMIC_LOCK_FREE in case the
+dnl user is interested in knowing if they can use the atomic ops across
+dnl processes.
+dnl
+dnl We can currently support the atomic ops natively when building GLib
+dnl with recent versions of GCC or MSVC.  MSVC doesn't run ./configure,
+dnl so we skip that case here and define G_ATOMIC_LOCK_FREE exactly when
+dnl we are using GCC.
+dnl
+dnl Note that the atomic ops are only available with GCC on x86 when
+dnl using -march=i486 or higher.  If we detect that the atomic ops are
+dnl not available but would be available given the right flags, we want
+dnl to abort and advise the user to fix their CFLAGS.  It's better to do
+dnl that then to silently fall back on emulated atomic ops just because
+dnl the user had the wrong build environment.
 
-glib_cv_gcc_has_builtin_atomic_operations=no
-if test x"$GCC" = xyes; then
-  AC_MSG_CHECKING([whether GCC supports built-in atomic intrinsics])
-  AC_TRY_LINK([],
-	      [int i;
-	       __sync_synchronize ();
-	       __sync_bool_compare_and_swap (&i, 0, 1);
-	       __sync_fetch_and_add (&i, 1);
-	      ],
-	      [glib_cv_gcc_has_builtin_atomic_operations=yes],
-	      [glib_cv_gcc_has_builtin_atomic_operations=no])
+dnl We may add other compilers here in the future...
+AC_MSG_CHECKING([for lock-free atomic intrinsics])
+AC_TRY_COMPILE([],
+               [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+               [g_atomic_lock_free=yes],
+               [g_atomic_lock_free=no])
+AC_MSG_RESULT($g_atomic_lock_free)
 
-  AC_MSG_RESULT($glib_cv_gcc_has_builtin_atomic_operations)
+if test "$g_atomic_lock_free" = "no"; then
+  SAVE_CFLAGS="${CFLAGS}"
+  CFLAGS="-march=i486"
+  AC_TRY_COMPILE([],
+                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                 [AC_MSG_ERROR([GLib must be build with -march=i486 or later.])],
+                 [])
+  CFLAGS="${SAVE_CFLAGS}"
 fi
 
-AM_CONDITIONAL(HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS,
-	       [test $glib_cv_gcc_has_builtin_atomic_operations = yes])
+dnl We need a more robust approach here...
+case $host_cpu in
+  i?86|x86_64|s390|s390x|arm*|crisv32*|etrax*)
+    glib_memory_barrier_needed=no
+    ;;
+  sparc*|alpha*|powerpc*|ia64)
+    glib_memory_barrier_needed=yes
+    ;;
+  *)
+    glib_memory_barrier_needed=yes
+    ;;
+esac
 
 dnl ************************
 dnl ** Check for futex(2) **
@@ -3085,9 +3108,9 @@ _______EOF
 	  echo >>$outfile
 	  echo "#define G_ATOMIC_OP_MEMORY_BARRIER_NEEDED 1" >>$outfile
 	fi
-	if test x"$g_gcc_atomic_ops" != xno; then
+	if test x"$g_atomic_lock_free" = xyes; then
           echo >>$outfile
-          echo "#define G_ATOMIC_OP_USE_GCC_BUILTINS 1" >>$outfile
+          echo "#define G_ATOMIC_LOCK_FREE" >>$outfile
         fi
 	echo >>$outfile
 	g_bit_sizes="16 32 64"
