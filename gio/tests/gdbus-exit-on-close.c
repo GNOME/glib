@@ -77,7 +77,6 @@ main (int   argc,
   g_unsetenv ("DISPLAY");
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
-  /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999
-   * g_test_add_func ("/gdbus/exit-on-close", test_exit_on_close); */
+  g_test_add_func ("/gdbus/exit-on-close", test_exit_on_close);
   return g_test_run();
 }
