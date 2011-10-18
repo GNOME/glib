@@ -673,7 +673,7 @@ g_desktop_app_info_get_categories (GDesktopAppInfo *info)
  *
  * Gets the keywords from the desktop file.
  *
- * Returns: The value of the X-GNOME-Keywords key
+ * Returns: (transfer none): The value of the X-GNOME-Keywords key
  *
  * Since: 2.32
  */
