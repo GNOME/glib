@@ -3071,6 +3071,7 @@ g_dbus_connection_add_filter (GDBusConnection            *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (filter_function != NULL, 0);
+  g_return_val_if_fail (check_initialized (connection), 0);
 
   CONNECTION_LOCK (connection);
   data = g_new0 (FilterData, 1);
@@ -3115,6 +3116,7 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
   FilterData *to_destroy;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+  g_return_if_fail (check_initialized (connection));
 
   CONNECTION_LOCK (connection);
   to_destroy = NULL;
@@ -3359,6 +3361,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   g_return_val_if_fail (member == NULL || g_dbus_is_member_name (member), 0);
   g_return_val_if_fail (object_path == NULL || g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (callback != NULL, 0);
+  g_return_val_if_fail (check_initialized (connection), 0);
 
   CONNECTION_LOCK (connection);
 
@@ -3524,6 +3527,7 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
   guint n;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+  g_return_if_fail (check_initialized (connection));
 
   subscribers = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
 
@@ -4895,6 +4899,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   g_return_val_if_fail (interface_info != NULL, 0);
   g_return_val_if_fail (g_dbus_is_interface_name (interface_info->name), 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
+  g_return_val_if_fail (check_initialized (connection), 0);
 
   ret = 0;
 
@@ -4971,6 +4976,7 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
   gboolean ret;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (check_initialized (connection), FALSE);
 
   ret = FALSE;
 
@@ -5043,6 +5049,7 @@ g_dbus_connection_emit_signal (GDBusConnection  *connection,
   g_return_val_if_fail (interface_name != NULL && g_dbus_is_interface_name (interface_name), FALSE);
   g_return_val_if_fail (signal_name != NULL && g_dbus_is_member_name (signal_name), FALSE);
   g_return_val_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), FALSE);
+  g_return_val_if_fail (check_initialized (connection), FALSE);
 
   if (G_UNLIKELY (_g_dbus_debug_emission ()))
     {
@@ -5254,6 +5261,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
   g_return_if_fail (method_name != NULL && g_dbus_is_member_name (method_name));
   g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
+  g_return_if_fail (check_initialized (connection));
 #ifdef G_OS_UNIX
   g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
 #else
@@ -5376,6 +5384,9 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
   g_return_val_if_fail (fd_list == NULL, NULL);
 #endif
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (!(flags & CALL_FLAGS_INITIALIZING))
+    g_return_val_if_fail (check_initialized (connection), FALSE);
 
   if (reply_type == NULL)
     reply_type = G_VARIANT_TYPE_ANY;
@@ -6261,6 +6272,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
   g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (vtable != NULL, 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
+  g_return_val_if_fail (check_initialized (connection), 0);
 
   ret = 0;
 
@@ -6322,6 +6334,7 @@ g_dbus_connection_unregister_subtree (GDBusConnection *connection,
   gboolean ret;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (check_initialized (connection), FALSE);
 
   ret = FALSE;
 
