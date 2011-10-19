@@ -68,19 +68,34 @@ list below attempts to summarise, but not every change is listed.
 * Add new GValue API to specifically deal in signed chars (in case the
   platform defines 'char' as unsigned)
 
+* some new API to mitigate the problems associated with calling setenv()
+  in a multi-threaded program
+
 * Use CLOCK_MONOTONIC unconditionally if the libc has support at compile
   time (ie: stop checking for kernel support at runtime).
+
+* pkg-config files:
+  - drop -uninstalled variants
+  - remove gobject dependency on gthread
+
+* New macro G_ATOMIC_LOCK_FREE is defined if the atomic operations are
+  implemented without use of a mutex.  Cleaned up atomic-related
+  compilation issues with mingw compilers on win32 systems.
 
 * SOCKS proxy and resolver improvements
 
 * Fix the spelling of G_IO_FLAG_IS_WRITABLE (was WRITEABLE) and
   introduce a macro for backwards compatibility.
 
-* GDBus: many code generation updates and improvements
+* GDBus:
+  - many code generation updates and improvements
+  - some race condition fixes, including testcase hangs
 
 * GVariant:
   - new g_variant_new_from_fixed_array() API
   - substantial docs improvements/clarifications
+
+* GKeyFile is now refcounted and boxed
 
 * mount monitoring is now based on /proc/mounts (where available)
   instead of mtab
@@ -104,6 +119,7 @@ list below attempts to summarise, but not every change is listed.
  527214 g_timer_elapsed() returns random values
  580505 add a way to set/get name for a thread
  583511 race condition means g_main_loop_quit() does not work
+ 590808 GKeyFile should have a refcount and a boxed type in GObject
  592715 Document that g_str_hash() and g_int_hash() are not NULL safe
  631413 Add macros for GSourceFunc return values
  632049 not immediately clear what g_variant_get_fixed_array expects
@@ -116,6 +132,8 @@ list below attempts to summarise, but not every change is listed.
  654412 Documentation for g_variant_get_child_value unclear
  654563 info capplet: Failed to calculate disk space
  655366 missing GSettings schemas lead to obscure crashes
+ 656621 g_spawn_*() calls executables in current directory
+ 656679 [gi] Add two annotations to gio
  657992 Add glib__private__() API to share between glib,gio
  658188 _set_as_last_used_for_type generates a broken mimeapps.list
  658206 gsocks5proxy.c has invalid gettext use
@@ -141,6 +159,7 @@ list below attempts to summarise, but not every change is listed.
  659866 pthread_rwlock_t requires defined __USE_UNIX98
  659870 gvalue: Fix signedness of g_value_get_char()
  659889 glib-2.29.92/gio-2.0.pc.in has a wrong line.
+ 659916 GObject size of 64K is not actively enforced
  659920 Missing setter for read/write property 'closed' of GIOStream
  659923 Add g_variant_new_fixed_array() function
  660013 Remove old g_atomic configure cruft
@@ -166,10 +185,15 @@ list below attempts to summarise, but not every change is listed.
  660887 g_slice_set_config() is broken
  660994 Add g_main_context_ref_thread_default()
  661255 gio: enable test_peer regression test for OpenBSD
+ 661257 giomodules.c uses ":" instead of G_SEARCHPATH_SEPARATOR_S
  661318 tests use pthread without appropriate compiler/linker flags
  661421 Applications fail to initialize on GNU Hurd - commit
  661438 Implement G_GNUC_DEPRECATED/G_GNUC_DEPRECATED_FOR on Visual C++
+ 661711 Sorting keys for GDrive, GVolume and GMount instances
  661763 desktop-app-info: Add support for X-GNOME-Keywords
+ 661896 /gdbus/connection/life-cycle is racy
+ 661914 Gstreamer/Totem locks up
+ 662100 regression: g_dbus_connection_close() triggers exit-on-close logic
 
 * Translations updates:
  Belarusian 
@@ -186,6 +210,7 @@ list below attempts to summarise, but not every change is listed.
  Hebrew 
  Hungarian 
  Italian 
+ Japanese
  Lithuanian
  Norwegian bokmål
  Oriya
