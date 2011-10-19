@@ -2041,50 +2041,66 @@ g_get_monotonic_time (void)
 {
 #ifdef HAVE_CLOCK_GETTIME
   /* librt clock_gettime() is our first choice */
-  struct timespec ts;
-
-#ifdef CLOCK_MONOTONIC
-  clock_gettime (CLOCK_MONOTONIC, &ts);
+  {
+#ifdef HAVE_MONOTONIC_CLOCK
+    static volatile gsize clockid = 0;
 #else
-  clock_gettime (CLOCK_REALTIME, &ts);
+    static clockid_t clockid = CLOCK_REALTIME;
+#endif
+    struct timespec ts;
+
+#ifdef HAVE_MONOTONIC_CLOCK
+    if (g_once_init_enter (&clockid))
+      {
+	clockid_t best_clockid;
+
+	if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
+	  best_clockid = CLOCK_MONOTONIC;
+	else
+	  best_clockid = CLOCK_REALTIME;
+	g_once_init_leave (&clockid, (gsize)best_clockid);
+      }
 #endif
 
-  /* In theory monotonic time can have any epoch.
-   *
-   * glib presently assumes the following:
-   *
-   *   1) The epoch comes some time after the birth of Jesus of Nazareth, but
-   *      not more than 10000 years later.
-   *
-   *   2) The current time also falls sometime within this range.
-   *
-   * These two reasonable assumptions leave us with a maximum deviation from
-   * the epoch of 10000 years, or 315569520000000000 seconds.
-   *
-   * If we restrict ourselves to this range then the number of microseconds
-   * will always fit well inside the constraints of a int64 (by a factor of
-   * about 29).
-   *
-   * If you actually hit the following assertion, probably you should file a
-   * bug against your operating system for being excessively silly.
-   **/
-  g_assert (G_GINT64_CONSTANT (-315569520000000000) < ts.tv_sec &&
-            ts.tv_sec < G_GINT64_CONSTANT (315569520000000000));
+    clock_gettime (clockid, &ts);
 
-  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+    /* In theory monotonic time can have any epoch.
+     *
+     * glib presently assumes the following:
+     *
+     *   1) The epoch comes some time after the birth of Jesus of Nazareth, but
+     *      not more than 10000 years later.
+     *
+     *   2) The current time also falls sometime within this range.
+     *
+     * These two reasonable assumptions leave us with a maximum deviation from
+     * the epoch of 10000 years, or 315569520000000000 seconds.
+     *
+     * If we restrict ourselves to this range then the number of microseconds
+     * will always fit well inside the constraints of a int64 (by a factor of
+     * about 29).
+     *
+     * If you actually hit the following assertion, probably you should file a
+     * bug against your operating system for being excessively silly.
+     **/
+    g_assert (G_GINT64_CONSTANT (-315569520000000000) < ts.tv_sec &&
+              ts.tv_sec < G_GINT64_CONSTANT (315569520000000000));
 
-#else /* !HAVE_CLOCK_GETTIME */
-
+    return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+  }
+#else
   /* It may look like we are discarding accuracy on Windows (since its
    * current time is expressed in 100s of nanoseconds) but according to
    * many sources, the time is only updated 64 times per second, so
    * microsecond accuracy is more than enough.
    */
-  GTimeVal tv;
+  {
+    GTimeVal tv;
 
-  g_get_current_time (&tv);
+    g_get_current_time (&tv);
 
-  return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
+    return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
+  }
 #endif
 }
 
