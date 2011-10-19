@@ -2433,11 +2433,11 @@ dnl We may add other compilers here in the future...
 AC_MSG_CHECKING([for lock-free atomic intrinsics])
 AC_TRY_COMPILE([],
                [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
-               [g_atomic_lock_free=yes],
-               [g_atomic_lock_free=no])
-AC_MSG_RESULT($g_atomic_lock_free)
+               [glib_cv_g_atomic_lock_free=yes],
+               [glib_cv_g_atomic_lock_free=no])
+AC_MSG_RESULT($glib_cv_g_atomic_lock_free)
 
-if test "$g_atomic_lock_free" = "no"; then
+if test "$glib_cv_g_atomic_lock_free" = "no"; then
   SAVE_CFLAGS="${CFLAGS}"
   CFLAGS="-march=i486"
   AC_TRY_COMPILE([],
@@ -3479,6 +3479,7 @@ g_threads_impl_def=$g_threads_impl
 
 g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 
+g_atomic_lock_free="$glib_cv_g_atomic_lock_free"
 g_memory_barrier_needed="$glib_memory_barrier_needed"
 g_gcc_atomic_ops="$glib_cv_gcc_has_builtin_atomic_operations"
 
