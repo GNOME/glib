@@ -806,8 +806,11 @@ g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 
   rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
   depth = mutex->depth;
-  while (mutex->depth--)
-    g_rec_mutex_unlock (rm);
+  while (mutex->depth)
+    {
+      mutex->depth--;
+      g_rec_mutex_unlock (rm);
+    }
 
   return depth;
 }
