@@ -744,6 +744,7 @@ g_static_private_free
 
 <SUBSECTION Private>
 GThreadFunctions
+g_thread_init_with_errorcheck_mutexes
 G_THREADS_ENABLED
 g_static_mutex_get_mutex_impl
 g_thread_use_default_impl
@@ -830,9 +831,6 @@ g_atomic_pointer_xor
 
 <SUBSECTION>
 g_atomic_int_exchange_and_add
-
-<SUBSECTION Private>
-G_ATOMIC_OP_USE_GCC_BUILTINS
 </SECTION>
 
 <SECTION>

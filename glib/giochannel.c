@@ -955,7 +955,6 @@ g_io_channel_get_line_term (GIOChannel *channel,
  *                         This flag cannot be changed.
  * @G_IO_FLAG_IS_WRITABLE: indicates that the io channel is writable.
  *                          This flag cannot be changed.
- * @G_IO_FLAG_IS_WRITEABLE: misspelled alternate to @G_IO_FLAG_IS_WRITABLE.
  * @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable,
  *                         i.e. that g_io_channel_seek_position() can
  *                         be used on it.  This flag cannot be changed.
@@ -968,6 +967,15 @@ g_io_channel_get_line_term (GIOChannel *channel,
  * Specifies properties of a #GIOChannel. Some of the flags can only be
  * read with g_io_channel_get_flags(), but not changed with
  * g_io_channel_set_flags().
+ **/
+/**
+ * G_IO_FLAG_IS_WRITEABLE:
+ *
+ * This is a misspelled version of G_IO_FLAG_IS_WRITABLE that existed
+ * before the spelling was fixed in GLib 2.30.  It is kept here for
+ * compatibility reasons.
+ *
+ * Deprecated:2.30:Use G_IO_FLAG_IS_WRITABLE instead.
  **/
 GIOStatus
 g_io_channel_set_flags (GIOChannel  *channel,

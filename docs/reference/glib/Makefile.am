@@ -35,6 +35,7 @@ IGNORE_HFILES = \
 	gunicomp.h		\
 	gunidecomp.h		\
 	gunichartables.h	\
+	glib_probes.h		\
 	glib_trace.h		\
 	libcharset.h		\
 	gdebug.h		\

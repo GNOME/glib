@@ -531,7 +531,7 @@ g_log_set_handler (const gchar	 *log_domain,
 
 /**
  * g_log_set_default_handler:
- * log_func: the log handler function
+ * @log_func: the log handler function
  * @user_data: data passed to the log handler
  *
  * Installs a default log handler which is used if no

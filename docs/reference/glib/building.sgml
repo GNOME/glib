@@ -517,7 +517,7 @@ How to compile GLib itself
           flag to avoid intra-library PLT jumps. A side-effect
           of this is that it is no longer possible to override
           internal uses of GLib functions with
-          <envvar>LD_PRELOAD</envvar>. Therefore, it may make
+          <envar>LD_PRELOAD</envar>. Therefore, it may make
           sense to turn this feature off in some situations.
           The <option>--disable-Bsymbolic</option> option allows
           to do that.
