@@ -61,7 +61,7 @@ copy ..\..\..\glib\gbacktrace.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&
 copy ..\..\..\glib\gbase64.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbitlock.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
-copy ..\..\..\glib\gcharset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
+copy ..\..\..\glib\gcharset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdataset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
