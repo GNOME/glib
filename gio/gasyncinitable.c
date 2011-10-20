@@ -187,9 +187,11 @@ g_async_initable_default_init (GAsyncInitableInterface *iface)
  * the object doesn't support cancellable initialization, the error
  * %G_IO_ERROR_NOT_SUPPORTED will be returned.
  *
- * If this function is not called, or returns with an error, then all
- * operations on the object should fail, generally returning the
- * error %G_IO_ERROR_NOT_INITIALIZED.
+ * As with #GInitable, if the object is not initialized, or initialization
+ * returns with an error, then all operations on the object except
+ * g_object_ref() and g_object_unref() are considered to be invalid, and
+ * have undefined behaviour. They will often fail with g_critical() or
+ * g_warning(), but this must not be relied on.
  *
  * Implementations of this method must be idempotent: i.e. multiple calls
  * to this function with the same argument should return the same results.
