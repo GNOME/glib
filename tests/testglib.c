@@ -509,10 +509,11 @@ find_first_that(gpointer key,
 static void
 test_g_parse_debug_string (void)
 {
-  GDebugKey keys[3] = { 
+  GDebugKey keys[] = { 
     { "foo", 1 },
     { "bar", 2 },
-    { "baz", 4 }
+    { "baz", 4 },
+    { "weird", 8 },
   };
   guint n_keys = G_N_ELEMENTS (keys);
   guint result;
@@ -531,6 +532,19 @@ test_g_parse_debug_string (void)
 
   result = g_parse_debug_string ("all", keys, n_keys);
   g_assert_cmpuint (result, ==, (1 << n_keys) - 1);
+
+  /* Test subtracting debug flags from "all" */
+  result = g_parse_debug_string ("all:foo", keys, n_keys);
+  g_assert_cmpuint (result, ==, 2 | 4 | 8);
+
+  result = g_parse_debug_string ("foo baz,all", keys, n_keys);
+  g_assert_cmpuint (result, ==, 2 | 8);
+
+  result = g_parse_debug_string ("all,fooo,baz", keys, n_keys);
+  g_assert_cmpuint (result, ==, 1 | 2 | 8);
+
+  result = g_parse_debug_string ("all:weird", keys, n_keys);
+  g_assert_cmpuint (result, ==, 1 | 2 | 4);
 }
 
 static void

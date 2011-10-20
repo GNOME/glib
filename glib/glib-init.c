@@ -76,9 +76,13 @@ debug_key_matches (const gchar *key,
  * within GDK and GTK+ to parse the debug options passed on the
  * command line or through environment variables.
  *
- * If @string is equal to "all", all flags are set.  If @string
- * is equal to "help", all the available keys in @keys are printed
- * out to standard error.
+ * If @string is equal to <code>"all"</code>, all flags are set. Any flags
+ * specified along with <code>"all"</code> in @string are inverted; thus,
+ * <code>"all,foo,bar"</code> or <code>"foo,bar,all"</code> sets all flags
+ * except those corresponding to <code>"foo"</code> and <code>"bar"</code>.
+ *
+ * If @string is equal to <code>"help"</code>, all the available keys in @keys
+ * are printed out to standard error.
  *
  * Returns: the combined set of bit flags.
  */
@@ -101,12 +105,7 @@ g_parse_debug_string  (const gchar     *string,
    * inside GLib.
    */
 
-  if (!strcasecmp (string, "all"))
-    {
-      for (i = 0; i < nkeys; i++)
-       result |= keys[i].value;
-    }
-  else if (!strcasecmp (string, "help"))
+  if (!strcasecmp (string, "help"))
     {
       /* using stdio directly for the reason stated above */
       fprintf (stderr, "Supported debug values: ");
@@ -118,6 +117,7 @@ g_parse_debug_string  (const gchar     *string,
     {
       const gchar *p = string;
       const gchar *q;
+      gboolean invert = FALSE;
 
       while (*p)
        {
@@ -125,14 +125,31 @@ g_parse_debug_string  (const gchar     *string,
          if (!q)
            q = p + strlen(p);
 
-         for (i = 0; i < nkeys; i++)
-           if (debug_key_matches (keys[i].key, p, q - p))
-             result |= keys[i].value;
+         if (debug_key_matches ("all", p, q - p))
+           {
+             invert = TRUE;
+           }
+         else
+           {
+             for (i = 0; i < nkeys; i++)
+               if (debug_key_matches (keys[i].key, p, q - p))
+                 result |= keys[i].value;
+           }
 
          p = q;
          if (*p)
            p++;
        }
+
+      if (invert)
+        {
+          guint all_flags = 0;
+
+          for (i = 0; i < nkeys; i++)
+            all_flags |= keys[i].value;
+
+          result = all_flags & (~result);
+        }
     }
 
   return result;
