@@ -214,7 +214,6 @@ gchar *g_format_size        (guint64          size);
 #ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_format_size)
 gchar *g_format_size_for_display (goffset size);
-#endif
 
 /**
  * GVoidFunc:
@@ -234,6 +233,7 @@ typedef void (*GVoidFunc) (void);
  * (if there is any in the implementation) and doesn't encounter
  * missing include files.
  */
+GLIB_DEPRECATED
 void	g_atexit		(GVoidFunc    func);
 
 #ifdef G_OS_WIN32
@@ -248,6 +248,8 @@ int atexit (void (*)(void));
 #endif
 #define g_atexit(func) atexit(func)
 #endif
+
+#endif  /* G_DISABLE_DEPRECATED */
 
 #ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
