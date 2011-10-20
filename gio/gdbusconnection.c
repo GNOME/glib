@@ -186,6 +186,17 @@ G_LOCK_DEFINE_STATIC (message_bus_lock);
 static GDBusConnection *the_session_bus = NULL;
 static GDBusConnection *the_system_bus = NULL;
 
+/* Extra pseudo-member of GDBusSendMessageFlags.
+ * Set by initable_init() to indicate that despite not being initialized yet,
+ * enough of the only-valid-after-init members are set that we can send a
+ * message, and we're being called from its thread, so no memory barrier is
+ * required before accessing them.
+ */
+#define SEND_MESSAGE_FLAGS_INITIALIZING (1<<31)
+
+/* Same as SEND_MESSAGE_FLAGS_INITIALIZING, but in GDBusCallFlags */
+#define CALL_FLAGS_INITIALIZING (1<<31)
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 typedef struct
@@ -335,10 +346,16 @@ struct _GDBusConnection
    */
   gchar *machine_id;
 
-  /* The underlying stream used for communication */
+  /* The underlying stream used for communication
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
+   */
   GIOStream *stream;
 
-  /* The object used for authentication (if any) */
+  /* The object used for authentication (if any).
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
+   */
   GDBusAuth *auth;
 
   /* Set to TRUE if the connection has been closed */
@@ -347,16 +364,23 @@ struct _GDBusConnection
   /* Last serial used */
   guint32 last_serial;
 
-  /* The object used to send/receive message */
+  /* The object used to send/receive messages.
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
+   */
   GDBusWorker *worker;
 
   /* If connected to a message bus, this contains the unique name assigned to
-   * us by the bus (e.g. ":1.42")
+   * us by the bus (e.g. ":1.42").
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
    */
   gchar *bus_unique_name;
 
   /* The GUID returned by the other side if we authenticed as a client or
-   * the GUID to use if authenticating as a server
+   * the GUID to use if authenticating as a server.
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
    */
   gchar *guid;
 
@@ -402,10 +426,17 @@ struct _GDBusConnection
   /* Whether to exit on close */
   gboolean exit_on_close;
 
-  /* Capabilities negotiated during authentication */
+  /* Capabilities negotiated during authentication
+   * Read-only after initable_init(), so it may be read without holding a
+   * lock, if you check for initialization first.
+   */
   GDBusCapabilityFlags capabilities;
 
   GDBusAuthObserver *authentication_observer;
+
+  /* Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
+   */
   GCredentials *credentials;
 
   /* set to TRUE when finalizing */
@@ -468,6 +499,40 @@ G_DEFINE_TYPE_WITH_CODE (GDBusConnection, g_dbus_connection, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
                          );
+
+/*
+ * Check that all members of @connection that can only be accessed after
+ * the connection is initialized can safely be accessed. If not,
+ * log a critical warning. This function is a memory barrier.
+ *
+ * Returns: %TRUE if initialized
+ */
+static gboolean
+check_initialized (GDBusConnection *connection)
+{
+  /* The access to @atomic_flags isn't conditional, so that this function
+   * provides a memory barrier for thread-safety even if checks are disabled.
+   * (If you don't want this stricter guarantee, you can call
+   * g_return_if_fail (check_initialized (c)).)
+   *
+   * This isn't strictly necessary now that we've decided use of an
+   * uninitialized GDBusConnection is undefined behaviour, but it seems
+   * better to be as deterministic as is feasible.
+   *
+   * (Anything that could suffer a crash from seeing undefined values
+   * must have a race condition - thread A initializes the connection while
+   * thread B calls a method without initialization, hoping that thread A will
+   * win the race - so its behaviour is undefined anyway.)
+   */
+  gint flags = g_atomic_int_get (&connection->atomic_flags);
+
+  g_return_val_if_fail (flags & FLAG_INITIALIZED, FALSE);
+
+  /* We can safely access this, due to the memory barrier above */
+  g_return_val_if_fail (connection->initialization_error == NULL, FALSE);
+
+  return TRUE;
+}
 
 static GHashTable *alive_connections = NULL;
 
@@ -981,6 +1046,11 @@ GIOStream *
 g_dbus_connection_get_stream (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return NULL;
+
   return connection->stream;
 }
 
@@ -999,6 +1069,12 @@ void
 g_dbus_connection_start_message_processing (GDBusConnection *connection)
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return;
+
+  g_assert (connection->worker != NULL);
   _g_dbus_worker_unfreeze (connection->worker);
 }
 
@@ -1033,6 +1109,11 @@ GDBusCapabilityFlags
 g_dbus_connection_get_capabilities (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), G_DBUS_CAPABILITY_FLAGS_NONE);
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return G_DBUS_CAPABILITY_FLAGS_NONE;
+
   return connection->capabilities;
 }
 
@@ -1163,6 +1244,12 @@ g_dbus_connection_flush_sync (GDBusConnection  *connection,
 
   ret = FALSE;
 
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    goto out;
+
+  g_assert (connection->worker != NULL);
+
   if (connection->closed)
     {
       g_set_error_literal (error,
@@ -1290,6 +1377,12 @@ g_dbus_connection_close (GDBusConnection     *connection,
   GSimpleAsyncResult *simple;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return;
+
+  g_assert (connection->worker != NULL);
 
   simple = g_simple_async_result_new (G_OBJECT (connection),
                                       callback,
@@ -1439,6 +1532,18 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
   if (out_serial != NULL)
     *out_serial = 0;
+
+  /* If we're in initable_init(), don't check for being initialized, to avoid
+   * chicken-and-egg problems. initable_init() is responsible for setting up
+   * our prerequisites (mainly connection->worker), and only calling us
+   * from its own thread (so no memory barrier is needed).
+   *
+   * In the case where we're not initializing, do not use
+   * g_return_val_if_fail() - we want the memory barrier.
+   */
+  if ((flags & SEND_MESSAGE_FLAGS_INITIALIZING) == 0 &&
+      !check_initialized (connection))
+    goto out;
 
   if (connection->closed)
     {
@@ -2465,7 +2570,7 @@ initable_init (GInitable     *initable,
                                                   "Hello",
                                                   NULL, /* parameters */
                                                   G_VARIANT_TYPE ("(s)"),
-                                                  G_DBUS_CALL_FLAGS_NONE,
+                                                  CALL_FLAGS_INITIALIZING,
                                                   -1,
                                                   NULL, /* TODO: cancellable */
                                                   &connection->initialization_error);
@@ -2863,6 +2968,11 @@ const gchar *
 g_dbus_connection_get_unique_name (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return NULL;
+
   return connection->bus_unique_name;
 }
 
@@ -2889,6 +2999,11 @@ GCredentials *
 g_dbus_connection_get_peer_credentials (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return NULL;
+
   return connection->credentials;
 }
 
@@ -5226,6 +5341,7 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
   GDBusMessage *reply;
   GVariant *result;
   GError *local_error;
+  GDBusSendMessageFlags send_flags;
 
   message = NULL;
   reply = NULL;
@@ -5277,9 +5393,16 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
     }
 
   local_error = NULL;
+
+  send_flags = G_DBUS_SEND_MESSAGE_FLAGS_NONE;
+
+  /* translate from one flavour of flags to another... */
+  if (flags & CALL_FLAGS_INITIALIZING)
+    send_flags |= SEND_MESSAGE_FLAGS_INITIALIZING;
+
   reply = g_dbus_connection_send_message_with_reply_sync (connection,
                                                           message,
-							  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                                          send_flags,
                                                           timeout_msec,
                                                           NULL, /* volatile guint32 *out_serial */
                                                           cancellable,

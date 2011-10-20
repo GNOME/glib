@@ -1053,6 +1053,7 @@ typedef enum {
   G_DBUS_CALL_FLAGS_NONE = 0,
   G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0)
 } GDBusCallFlags;
+/* (1<<31) is reserved for internal use by GDBusConnection, do not use it. */
 
 /**
  * GDBusMessageType:
@@ -1208,6 +1209,7 @@ typedef enum
   G_DBUS_SEND_MESSAGE_FLAGS_NONE = 0,
   G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL = (1<<0)
 } GDBusSendMessageFlags;
+/* (1<<31) is reserved for internal use by GDBusConnection, do not use it. */
 
 /**
  * GCredentialsType:
