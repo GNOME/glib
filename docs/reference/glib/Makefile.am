@@ -10,7 +10,7 @@ DOC_MODULE=glib
 DOC_MAIN_SGML_FILE=glib-docs.sgml
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=../../../glib ../../../gmodule
+DOC_SOURCE_DIR=$(top_srcdir)/glib $(top_srcdir)/gmodule
 
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" --ignore-decorators="GLIB_VAR"
