@@ -673,12 +673,16 @@ g_strtod (const gchar *nptr,
  * you can reliably detect overflow and underflow.
  *
  * Return value: the #gdouble value.
- **/
+ */
 gdouble
 g_ascii_strtod (const gchar *nptr,
                 gchar      **endptr)
 {
+  g_return_val_if_fail (nptr != NULL, 0);
+
 #ifdef HAVE_STRTOD_L
+  errno = 0;
+
   return strtod_l (nptr, endptr, get_C_locale ());
 #else
   gchar *fail_pos;
@@ -689,8 +693,6 @@ g_ascii_strtod (const gchar *nptr,
   const char *p, *decimal_point_pos;
   const char *end = NULL; /* Silence gcc */
   int strtod_errno;
-
-  g_return_val_if_fail (nptr != NULL, 0);
 
   fail_pos = NULL;
 
