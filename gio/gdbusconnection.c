@@ -350,16 +350,18 @@ struct _GDBusConnection
   /* -- General object state ------------------------------------------------ */
   /* ------------------------------------------------------------------------ */
 
-  /* object-wide lock */
+  /* General-purpose lock for most fields */
   GMutex lock;
 
   /* A lock used in the init() method of the GInitable interface - see comments
-   * in initable_init() for why a separate lock is needed
+   * in initable_init() for why a separate lock is needed.
+   *
+   * If you need both @lock and @init_lock, you must take @init_lock first.
    */
   GMutex init_lock;
 
   /* Set (by loading the contents of /var/lib/dbus/machine-id) the first time
-   * someone calls org.freedesktop.DBus.GetMachineId()
+   * someone calls org.freedesktop.DBus.GetMachineId(). Protected by @lock.
    */
   gchar *machine_id;
 
@@ -378,7 +380,7 @@ struct _GDBusConnection
   /* Set to TRUE if the connection has been closed */
   gboolean closed;
 
-  /* Last serial used */
+  /* Last serial used. Protected by @lock. */
   guint32 last_serial;
 
   /* The object used to send/receive messages.
@@ -418,28 +420,32 @@ struct _GDBusConnection
   /* The result of g_main_context_ref_thread_default() when the object
    * was created (the GObject _init() function) - this is used for delivery
    * of the :closed GObject signal.
+   *
+   * Only set in the GObject init function, so no locks are needed.
    */
   GMainContext *main_context_at_construction;
 
-  /* construct properties */
+  /* Read-only construct properties, no locks needed */
   gchar *address;
   GDBusConnectionFlags flags;
 
-  /* Map used for managing method replies */
+  /* Map used for managing method replies, protected by @lock */
   GHashTable *map_method_serial_to_send_message_data;  /* guint32 -> SendMessageData* */
 
-  /* Maps used for managing signal subscription */
+  /* Maps used for managing signal subscription, protected by @lock */
   GHashTable *map_rule_to_signal_data;                      /* match rule (gchar*)    -> SignalData */
   GHashTable *map_id_to_signal_data;                        /* id (guint)             -> SignalData */
   GHashTable *map_sender_unique_name_to_signal_data_array;  /* unique sender (gchar*) -> GPtrArray* of SignalData */
 
-  /* Maps used for managing exported objects and subtrees */
+  /* Maps used for managing exported objects and subtrees,
+   * protected by @lock
+   */
   GHashTable *map_object_path_to_eo;  /* gchar* -> ExportedObject* */
   GHashTable *map_id_to_ei;           /* guint  -> ExportedInterface* */
   GHashTable *map_object_path_to_es;  /* gchar* -> ExportedSubtree* */
   GHashTable *map_id_to_es;           /* guint  -> ExportedSubtree* */
 
-  /* Structure used for message filters */
+  /* Structure used for message filters, protected by @lock */
   GPtrArray *filters;
 
   /* Capabilities negotiated during authentication
@@ -448,6 +454,7 @@ struct _GDBusConnection
    */
   GDBusCapabilityFlags capabilities;
 
+  /* Protected by @init_lock */
   GDBusAuthObserver *authentication_observer;
 
   /* Read-only after initable_init(), so it may be read if you either
