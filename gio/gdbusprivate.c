@@ -1141,7 +1141,7 @@ write_message_finish (GAsyncResult   *res,
 }
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void maybe_write_next_message (GDBusWorker *worker);
+static void continue_writing (GDBusWorker *worker);
 
 typedef struct
 {
@@ -1213,7 +1213,7 @@ ostream_flush_cb (GObject      *source_object,
   g_mutex_unlock (&data->worker->write_lock);
 
   /* OK, cool, finally kick off the next write */
-  maybe_write_next_message (data->worker);
+  continue_writing (data->worker);
 
   _g_dbus_worker_unref (data->worker);
   g_free (data);
@@ -1291,7 +1291,7 @@ message_written (GDBusWorker *worker,
   else
     {
       /* kick off the next write! */
-      maybe_write_next_message (worker);
+      continue_writing (worker);
     }
 }
 
@@ -1406,7 +1406,7 @@ iostream_close_cb (GObject      *source_object,
  * output_pending must be PENDING_NONE on entry
  */
 static void
-maybe_write_next_message (GDBusWorker *worker)
+continue_writing (GDBusWorker *worker)
 {
   MessageToWriteData *data;
 
@@ -1506,7 +1506,7 @@ maybe_write_next_message (GDBusWorker *worker)
  * output_pending may be anything
  */
 static gboolean
-write_message_in_idle_cb (gpointer user_data)
+continue_writing_in_idle_cb (gpointer user_data)
 {
   GDBusWorker *worker = user_data;
 
@@ -1514,7 +1514,7 @@ write_message_in_idle_cb (gpointer user_data)
    * without holding the lock: no other thread ever modifies it.
    */
   if (worker->output_pending == PENDING_NONE)
-    maybe_write_next_message (worker);
+    continue_writing (worker);
 
   return FALSE;
 }
@@ -1548,7 +1548,7 @@ schedule_write_in_worker_thread (GDBusWorker        *worker,
       idle_source = g_idle_source_new ();
       g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
       g_source_set_callback (idle_source,
-                             write_message_in_idle_cb,
+                             continue_writing_in_idle_cb,
                              _g_dbus_worker_ref (worker),
                              (GDestroyNotify) _g_dbus_worker_unref);
       g_source_attach (idle_source, worker->shared_thread_data->context);
