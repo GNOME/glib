@@ -300,6 +300,11 @@ _g_strv_has_string (const gchar* const *haystack,
     g_mutex_unlock (&(obj)->lock);                                      \
   } while (FALSE)
 
+/* Flags in connection->atomic_flags */
+enum {
+    FLAG_INITIALIZED = 1 << 0
+};
+
 /**
  * GDBusConnection:
  *
@@ -355,10 +360,16 @@ struct _GDBusConnection
    */
   gchar *guid;
 
-  /* set to TRUE exactly when initable_init() has finished running */
-  gboolean is_initialized;
+  /* FLAG_INITIALIZED is set exactly when initable_init() has finished running.
+   * Inspect @initialization_error to see whether it succeeded or failed.
+   */
+  volatile gint atomic_flags;
 
-  /* If the connection could not be established during initable_init(), this GError will set */
+  /* If the connection could not be established during initable_init(),
+   * this GError will be set.
+   * Read-only after initable_init(), so it may be read if you either
+   * hold @init_lock or check for initialization first.
+   */
   GError *initialization_error;
 
   /* The result of g_main_context_ref_thread_default() when the object
@@ -635,7 +646,14 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
                                gboolean         remote_peer_vanished,
                                GError          *error)
 {
-  if (remote_peer_vanished && connection->exit_on_close && connection->is_initialized)
+  gint flags = g_atomic_int_get (&connection->atomic_flags);
+
+  /* Because atomic int access is a memory barrier, we can safely read
+   * initialization_error without a lock, as long as we do it afterwards.
+   */
+  if (remote_peer_vanished && connection->exit_on_close &&
+      (flags & FLAG_INITIALIZED) != 0 &&
+      connection->initialization_error == NULL)
     {
       if (error != NULL)
         {
@@ -2309,20 +2327,17 @@ initable_init (GInitable     *initable,
 
   ret = FALSE;
 
-  /* First, handle the case where the connection already has an
-   * initialization error set.
+  /* Make this a no-op if we're already initialized (successfully or
+   * unsuccessfully)
    */
-  if (connection->initialization_error != NULL)
-    goto out;
-
-  /* Also make this a no-op if we're already initialized fine */
-  if (connection->is_initialized)
+  if ((g_atomic_int_get (&connection->atomic_flags) & FLAG_INITIALIZED))
     {
-      ret = TRUE;
+      ret = (connection->initialization_error == NULL);
       goto out;
     }
 
-  g_assert (connection->initialization_error == NULL && !connection->is_initialized);
+  /* Because of init_lock, we can't get here twice in different threads */
+  g_assert (connection->initialization_error == NULL);
 
   /* The user can pass multiple (but mutally exclusive) construct
    * properties:
@@ -2462,8 +2477,6 @@ initable_init (GInitable     *initable,
       //g_debug ("unique name is `%s'", connection->bus_unique_name);
     }
 
-  connection->is_initialized = TRUE;
-
   ret = TRUE;
  out:
   if (!ret)
@@ -2472,6 +2485,7 @@ initable_init (GInitable     *initable,
       g_propagate_error (error, g_error_copy (connection->initialization_error));
     }
 
+  g_atomic_int_or (&connection->atomic_flags, FLAG_INITIALIZED);
   g_mutex_unlock (&connection->init_lock);
 
   return ret;
