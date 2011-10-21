@@ -671,11 +671,12 @@ g_variant_unref (value);]]></programlisting></informalexample>
    </para>
 
    <para>
-    The first way is used with format strings starting with '<literal>s</literal>', '<literal>o</literal>',
-    '<literal>g</literal>', '<literal>v</literal>', '<literal>@</literal>', '<literal>*</literal>',
-    '<literal>?</literal>', '<literal>r</literal>', '<literal>&amp;</literal>', or '<literal>^</literal>'.  In all of
-    these cases, for non-maybe types, <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes
-    a pointer to a non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> value and
+    The first way is used with format strings starting with '<literal>a</literal>', '<literal>s</literal>',
+    '<literal>o</literal>', '<literal>g</literal>', '<literal>v</literal>', '<literal>@</literal>',
+    '<literal>*</literal>', '<literal>?</literal>', '<literal>r</literal>', '<literal>&amp;</literal>', or
+    '<literal>^</literal>'.  In all of these cases, for non-maybe types,
+    <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes a pointer to a
+    non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> value and
     <link linkend='g-variant-get'><function>g_variant_get()</function></link> returns (by reference) a
     non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> pointer.  When any of these format strings are
     prefixed with an '<literal>m</literal>', the type of arguments that are collected does not change in any way, but
