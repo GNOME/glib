@@ -1340,7 +1340,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                           element_type,
                                           TRUE,
                                           indent + 2,
-                                          &local_error);
+                                          NULL);
             g_assert (item == NULL);
           }
         else
