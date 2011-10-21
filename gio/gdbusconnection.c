@@ -330,7 +330,8 @@ _g_strv_has_string (const gchar* const *haystack,
 /* Flags in connection->atomic_flags */
 enum {
     FLAG_INITIALIZED = 1 << 0,
-    FLAG_EXIT_ON_CLOSE = 1 << 1
+    FLAG_EXIT_ON_CLOSE = 1 << 1,
+    FLAG_CLOSED = 1 << 2
 };
 
 /**
@@ -377,9 +378,6 @@ struct _GDBusConnection
    */
   GDBusAuth *auth;
 
-  /* Set to TRUE if the connection has been closed */
-  gboolean closed;
-
   /* Last serial used. Protected by @lock. */
   guint32 last_serial;
 
@@ -407,6 +405,9 @@ struct _GDBusConnection
    * Inspect @initialization_error to see whether it succeeded or failed.
    *
    * FLAG_EXIT_ON_CLOSE is the exit-on-close property.
+   *
+   * FLAG_CLOSED is the closed property. It may be read at any time, but
+   * may only be written while holding @lock.
    */
   volatile gint atomic_flags;
 
@@ -553,6 +554,48 @@ check_initialized (GDBusConnection *connection)
 
   /* We can safely access this, due to the memory barrier above */
   g_return_val_if_fail (connection->initialization_error == NULL, FALSE);
+
+  return TRUE;
+}
+
+typedef enum {
+    MAY_BE_UNINITIALIZED = (1<<1)
+} CheckUnclosedFlags;
+
+/*
+ * Check the same thing as check_initialized(), and also that the
+ * connection is not closed. If the connection is uninitialized,
+ * raise a critical warning (it's programmer error); if it's closed,
+ * raise a recoverable GError (it's a runtime error).
+ *
+ * This function is a memory barrier.
+ *
+ * Returns: %TRUE if initialized and not closed
+ */
+static gboolean
+check_unclosed (GDBusConnection     *connection,
+                CheckUnclosedFlags   check,
+                GError             **error)
+{
+  /* check_initialized() is effectively inlined, so we don't waste time
+   * doing two memory barriers
+   */
+  gint flags = g_atomic_int_get (&connection->atomic_flags);
+
+  if (!(check & MAY_BE_UNINITIALIZED))
+    {
+      g_return_val_if_fail (flags & FLAG_INITIALIZED, FALSE);
+      g_return_val_if_fail (connection->initialization_error == NULL, FALSE);
+    }
+
+  if (flags & FLAG_CLOSED)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_CLOSED,
+                           _("The connection is closed"));
+      return FALSE;
+    }
 
   return TRUE;
 }
@@ -1122,8 +1165,13 @@ g_dbus_connection_start_message_processing (GDBusConnection *connection)
 gboolean
 g_dbus_connection_is_closed (GDBusConnection *connection)
 {
+  gint flags;
+
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
-  return connection->closed;
+
+  flags = g_atomic_int_get (&connection->atomic_flags);
+
+  return (flags & FLAG_CLOSED) ? TRUE : FALSE;
 }
 
 /**
@@ -1276,20 +1324,17 @@ g_dbus_connection_flush_sync (GDBusConnection  *connection,
 
   ret = FALSE;
 
-  /* do not use g_return_val_if_fail(), we want the memory barrier */
-  if (!check_initialized (connection))
+  /* This is only a best-effort attempt to see whether the connection is
+   * closed, so it doesn't need the lock. If the connection closes just
+   * after this check, but before scheduling the flush operation, the
+   * result will be more or less the same as if the connection closed while
+   * the flush operation was pending - it'll fail with either CLOSED or
+   * CANCELLED.
+   */
+  if (!check_unclosed (connection, 0, error))
     goto out;
 
   g_assert (connection->worker != NULL);
-
-  if (connection->closed)
-    {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CLOSED,
-                           _("The connection is closed"));
-      goto out;
-    }
 
   ret = _g_dbus_worker_flush_sync (connection->worker,
                                    cancellable,
@@ -1336,20 +1381,18 @@ emit_closed_in_idle (gpointer user_data)
   return FALSE;
 }
 
-/* Can be called from any thread, must hold lock */
+/* Can be called from any thread, must hold lock.
+ * FLAG_CLOSED must already have been set.
+ */
 static void
-set_closed_unlocked (GDBusConnection *connection,
-                     gboolean         remote_peer_vanished,
-                     GError          *error)
+schedule_closed_unlocked (GDBusConnection *connection,
+                          gboolean         remote_peer_vanished,
+                          GError          *error)
 {
   GSource *idle_source;
   EmitClosedData *data;
 
   CONNECTION_ENSURE_LOCK (connection);
-
-  g_assert (!connection->closed);
-
-  connection->closed = TRUE;
 
   data = g_new0 (EmitClosedData, 1);
   data->connection = g_object_ref (connection);
@@ -1508,8 +1551,7 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
 
   ret = FALSE;
 
-  CONNECTION_LOCK (connection);
-  if (!connection->closed)
+  if (check_unclosed (connection, 0, error))
     {
       GMainContext *context;
       SyncCloseData data;
@@ -1519,25 +1561,15 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
       data.loop = g_main_loop_new (context, TRUE);
       data.result = NULL;
 
-      CONNECTION_UNLOCK (connection);
       g_dbus_connection_close (connection, cancellable, sync_close_cb, &data);
       g_main_loop_run (data.loop);
       ret = g_dbus_connection_close_finish (connection, data.result, error);
-      CONNECTION_LOCK (connection);
 
       g_object_unref (data.result);
       g_main_loop_unref (data.loop);
       g_main_context_pop_thread_default (context);
       g_main_context_unref (context);
     }
-  else
-    {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CLOSED,
-                           _("The connection is closed"));
-    }
-  CONNECTION_UNLOCK (connection);
 
   return ret;
 }
@@ -1574,22 +1606,11 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
    * chicken-and-egg problems. initable_init() is responsible for setting up
    * our prerequisites (mainly connection->worker), and only calling us
    * from its own thread (so no memory barrier is needed).
-   *
-   * In the case where we're not initializing, do not use
-   * g_return_val_if_fail() - we want the memory barrier.
    */
-  if ((flags & SEND_MESSAGE_FLAGS_INITIALIZING) == 0 &&
-      !check_initialized (connection))
+  if (!check_unclosed (connection,
+                       (flags & SEND_MESSAGE_FLAGS_INITIALIZING) ? MAY_BE_UNINITIALIZED : 0,
+                       error))
     goto out;
-
-  if (connection->closed)
-    {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CLOSED,
-                           _("The connection is closed"));
-      goto out;
-    }
 
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
@@ -1909,17 +1930,6 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
                                        G_IO_ERROR,
                                        G_IO_ERROR_CANCELLED,
                                        _("Operation was cancelled"));
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
-      goto out;
-    }
-
-  if (connection->closed)
-    {
-      g_simple_async_result_set_error (simple,
-                                       G_IO_ERROR,
-                                       G_IO_ERROR_CLOSED,
-                                       _("The connection is closed"));
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
       goto out;
@@ -2415,6 +2425,7 @@ on_worker_closed (GDBusWorker *worker,
 {
   GDBusConnection *connection;
   gboolean alive;
+  guint old_atomic_flags;
 
   G_LOCK (message_bus_lock);
   alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
@@ -2430,10 +2441,16 @@ on_worker_closed (GDBusWorker *worker,
   //g_debug ("in on_worker_closed: %s", error->message);
 
   CONNECTION_LOCK (connection);
-  if (!connection->closed)
+  /* Even though this is atomic, we do it inside the lock to avoid breaking
+   * assumptions in remove_match_rule(). We'd need the lock in a moment
+   * anyway, so, no loss.
+   */
+  old_atomic_flags = g_atomic_int_or (&connection->atomic_flags, FLAG_CLOSED);
+
+  if (!(old_atomic_flags & FLAG_CLOSED))
     {
       g_hash_table_foreach_remove (connection->map_method_serial_to_send_message_data, cancel_method_on_close, NULL);
-      set_closed_unlocked (connection, remote_peer_vanished, error);
+      schedule_closed_unlocked (connection, remote_peer_vanished, error);
     }
   CONNECTION_UNLOCK (connection);
 
@@ -3311,6 +3328,10 @@ remove_match_rule (GDBusConnection *connection,
                                                 NULL,
                                                 &error))
     {
+      /* If we could get G_IO_ERROR_CLOSED here, it wouldn't be reasonable to
+       * critical; but we're holding the lock, and our caller checked whether
+       * we were already closed, so we can't get that error.
+       */
       g_critical ("Error while sending RemoveMatch() message: %s", error->message);
       g_error_free (error);
     }
@@ -3534,12 +3555,20 @@ unsubscribe_id_internal (GDBusConnection *connection,
             }
 
           /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
-          if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
+          if ((connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION) &&
+              !is_signal_data_for_name_lost_or_acquired (signal_data) &&
+              !g_dbus_connection_is_closed (connection) &&
+              !connection->finalizing)
             {
-              if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-                if (!connection->closed && !connection->finalizing)
-                  remove_match_rule (connection, signal_data->rule);
+              /* The check for g_dbus_connection_is_closed() means that
+               * sending the RemoveMatch message can't fail with
+               * G_IO_ERROR_CLOSED, because we're holding the lock,
+               * so on_worker_closed() can't happen between the check we just
+               * did, and releasing the lock later.
+               */
+              remove_match_rule (connection, signal_data->rule);
             }
+
           signal_data_free (signal_data);
         }
 
