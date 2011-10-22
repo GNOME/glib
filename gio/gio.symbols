@@ -1663,3 +1663,5 @@ g_menu_prepend_item
 g_menu_prepend_section
 g_menu_prepend_submenu
 g_menu_remove
+g_menu_proxy_get_type
+g_menu_proxy_get

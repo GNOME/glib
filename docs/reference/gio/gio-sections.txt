@@ -3549,6 +3549,20 @@ g_menu_exporter_query
 </SECTION>
 
 <SECTION>
+<FILE>gmenuproxy</FILE>
+GMenuProxy
+g_menu_proxy_get
+
+<SUBSECTION Standard>
+G_TYPE_MENU_PROXY
+G_MENU_PROXY
+G_IS_MENU_PROXY
+
+<SUBSECTION Private>
+g_menu_proxy_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gmenu</FILE>
 GMenu
 g_menu_new
