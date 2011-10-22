@@ -58,6 +58,7 @@ TEST_PROGS +=	 		\
 	vfs			\
 	network-monitor		\
 	fileattributematcher	\
+	gmenumodel		\
 	$(NULL)
 
 if OS_UNIX
@@ -425,6 +426,8 @@ gapplication_example_cmdline3_LDADD   = $(progs_ldadd)
 
 gapplication_example_actions_SOURCES = gapplication-example-actions.c
 gapplication_example_actions_LDADD   = $(progs_ldadd)
+
+gmenumodel_LDADD = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
