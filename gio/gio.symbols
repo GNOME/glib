@@ -14,6 +14,7 @@ g_application_get_type
 g_application_activate
 g_application_flags_get_type
 g_application_get_application_id
+g_application_get_default
 g_application_get_flags
 g_application_get_inactivity_timeout
 g_application_get_is_registered
@@ -27,6 +28,7 @@ g_application_release
 g_application_run
 g_application_set_action_group
 g_application_set_application_id
+g_application_set_default
 g_application_set_flags
 g_application_set_inactivity_timeout
 g_application_command_line_get_arguments
