@@ -1098,6 +1098,52 @@ test_internal_consistency (void)
   g_hash_table_unref (h);
 }
 
+static void
+my_key_free (gpointer v)
+{
+  gchar *s = v;
+  g_assert (s[0] != 'x');
+  s[0] = 'x';
+  g_free (v);
+}
+
+static void
+my_value_free (gpointer v)
+{
+  gchar *s = v;
+  g_assert (s[0] != 'y');
+  s[0] = 'y';
+  g_free (v);
+}
+
+static void
+test_iter_replace (void)
+{
+  GHashTable *h;
+  GHashTableIter iter;
+  gpointer k, v;
+  gchar *s;
+
+  g_test_bug ("662544");
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, my_key_free, my_value_free);
+
+  g_hash_table_insert (h, g_strdup ("A"), g_strdup ("a"));
+  g_hash_table_insert (h, g_strdup ("B"), g_strdup ("b"));
+  g_hash_table_insert (h, g_strdup ("C"), g_strdup ("c"));
+
+  g_hash_table_iter_init (&iter, h);
+
+  while (g_hash_table_iter_next (&iter, &k, &v))
+    {
+       s = (gchar*)v;
+       g_assert (g_ascii_islower (s[0]));
+       g_hash_table_iter_replace (&iter, g_strdup (k));
+    }
+
+  g_hash_table_unref (h);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1123,6 +1169,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
   g_test_add_func ("/hash/destroy-modify", test_destroy_modify);
   g_test_add_func ("/hash/consistency", test_internal_consistency);
+  g_test_add_func ("/hash/iter-replace", test_iter_replace);
 
   return g_test_run ();
 

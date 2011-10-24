@@ -810,10 +810,16 @@ g_hash_table_iter_remove (GHashTableIter *iter)
  * @hash_table: our #GHashTable
  * @node_index: pointer to node to insert/replace
  * @key_hash: key hash
- * @key: key to replace with
+ * @key: key to replace with, or %NULL
  * @value: value to replace with
+ * @keep_new_key: whether to replace the key in the node with @key
+ * @reusing_key: whether @key was taken out of the existing node
  *
  * Inserts a value at @node_index in the hash table and updates it.
+ *
+ * If @key has been taken out of the existing node (ie it is not
+ * passed in via a g_hash_table_insert/replace) call, then @reusing_key
+ * should be %TRUE.
  */
 static void
 g_hash_table_insert_node (GHashTable *hash_table,
@@ -821,7 +827,8 @@ g_hash_table_insert_node (GHashTable *hash_table,
                           guint       key_hash,
                           gpointer    key,
                           gpointer    value,
-                          gboolean    keep_new_key)
+                          gboolean    keep_new_key,
+                          gboolean    reusing_key)
 {
   guint old_hash;
   gpointer old_key;
@@ -862,7 +869,7 @@ g_hash_table_insert_node (GHashTable *hash_table,
 
   if (HASH_IS_REAL (old_hash))
     {
-      if (hash_table->key_destroy_func)
+      if (hash_table->key_destroy_func && !reusing_key)
         hash_table->key_destroy_func (keep_new_key ? old_key : key);
       if (hash_table->value_destroy_func)
         hash_table->value_destroy_func (old_value);
@@ -903,7 +910,7 @@ g_hash_table_iter_replace (GHashTableIter *iter,
   node_hash = ri->hash_table->hashes[ri->position];
   key = ri->hash_table->keys[ri->position];
 
-  g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE);
+  g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE, TRUE);
 
 #ifndef G_DISABLE_ASSERT
   ri->version++;
@@ -1098,7 +1105,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key);
+  g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE);
 }
 
 /**
