@@ -1,6 +1,7 @@
 # for all subdirectories
 Makefile.in
 Makefile
+TAGS
 .libs
 .deps
 *.o
