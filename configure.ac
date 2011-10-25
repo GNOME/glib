@@ -901,11 +901,17 @@ fi
 AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h grp.h sys/param.h sys/poll.h sys/resource.h])
 AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h])
 AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h inttypes.h sched.h malloc.h])
-AC_CHECK_HEADERS([sys/vfs.h sys/mount.h sys/vmount.h sys/statfs.h sys/statvfs.h])
-AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h sys/sysctl.h fstab.h])
+AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h])
+AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([sys/uio.h sys/mkdev.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([sys/prctl.h])
+
+AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
+[#if HAVE_SYS_PARAM_H
+ #include <sys/param.h>
+ #endif
+])
 
 # check for structure fields
 AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
@@ -2382,8 +2388,11 @@ case $host in
   *-*-freebsd*|*-*-linux*)
     G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
     ;;
-  *) 	 
-    G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS" 	 
+  *-*-openbsd*)
+    LDFLAGS="$LDFLAGS -pthread"
+    ;;
+  *)
+    G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS"
     ;;
 esac
 
