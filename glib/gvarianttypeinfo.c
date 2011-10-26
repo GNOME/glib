@@ -30,6 +30,8 @@
 #include <glib/ghash.h>
 #include <glib/grefcount.h>
 
+#include "glib_trace.h"
+
 /* < private >
  * GVariantTypeInfo:
  *
@@ -793,6 +795,8 @@ g_variant_type_info_get (const GVariantType *type)
           container->type_string = type_string;
           g_atomic_ref_count_init (&container->ref_count);
 
+          TRACE(GLIB_VARIANT_TYPE_INFO_NEW(info, container->type_string));
+
           g_hash_table_insert (g_variant_type_info_table, type_string, info);
           type_string = NULL;
         }
@@ -817,6 +821,8 @@ g_variant_type_info_get (const GVariantType *type)
 
       info = g_variant_type_info_basic_table + index;
       g_variant_type_info_check (info, 0);
+
+      TRACE(GLIB_VARIANT_TYPE_INFO_NEW(info, g_variant_type_info_basic_chars[index]));
 
       return (GVariantTypeInfo *) info;
     }
@@ -862,6 +868,9 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
       g_rec_mutex_lock (&g_variant_type_info_lock);
       if (g_atomic_ref_count_dec (&container->ref_count))
         {
+
+          TRACE(GLIB_VARIANT_TYPE_INFO_FREE(info));
+
           g_hash_table_remove (g_variant_type_info_table,
                                container->type_string);
           if (g_hash_table_size (g_variant_type_info_table) == 0)

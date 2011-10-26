@@ -47,4 +47,15 @@ provider glib {
         probe rcbox__acquire(void*, unsigned int);
         probe rcbox__release(void*, unsigned int);
         probe rcbox__free(void*);
+	probe variant__type_info_new(void*, const char*);
+	probe variant__type_info_free(void*);
+	probe variant__start_serialise(void*, const char*);
+	probe variant__end_serialise(void*, const char*);
+	probe variant__from_buffer(void*, const char*, int, int);
+	probe variant__from_children(void*, const char*, int, int);
+	probe variant__unref(void*, const char*, int, int);
+	probe variant__ref(void*, const char*, int, int);
+	probe variant__ref_sink(void*, const char*, int, int, int);
+	probe variant__take_ref(void*, const char*, int, int, int);
+	probe variant__from_parent(void*, const char*, int, int, void*);
 };
