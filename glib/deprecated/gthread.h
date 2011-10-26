@@ -124,7 +124,15 @@ void     g_thread_foreach      (GFunc             thread_func,
 #endif
 
 #define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
+
+#ifndef G_OS_WIN32
+/* The use of PTHREAD_MUTEX_INITIALIZER is arbitrary.
+ * but that struct field is unused anyway. */
+#define G_STATIC_MUTEX_INIT { NULL, PTHREAD_MUTEX_INITIALIZER }
+#else
 #define G_STATIC_MUTEX_INIT { NULL }
+#endif
+
 typedef struct
 {
   GMutex *mutex;
