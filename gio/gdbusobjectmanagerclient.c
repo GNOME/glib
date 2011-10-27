@@ -201,9 +201,9 @@ g_dbus_object_manager_client_finalize (GObject *object)
 
   if (manager->priv->control_proxy != NULL)
     {
-      g_warn_if_fail (g_signal_handlers_disconnect_by_func (manager->priv->control_proxy,
-                                                            on_control_proxy_g_signal,
-                                                            manager) == 1);
+      g_signal_handlers_disconnect_by_func (manager->priv->control_proxy,
+                                            on_control_proxy_g_signal,
+                                            manager);
       g_object_unref (manager->priv->control_proxy);
     }
   g_object_unref (manager->priv->connection);
