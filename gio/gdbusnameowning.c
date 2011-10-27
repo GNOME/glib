@@ -74,7 +74,7 @@ typedef struct
   guint                     name_acquired_subscription_id;
   guint                     name_lost_subscription_id;
 
-  gboolean                  cancelled;
+  volatile gboolean         cancelled; /* must hold lock when reading or modifying */
 
   gboolean                  needs_release;
 } Client;
@@ -216,27 +216,39 @@ do_call (Client *client, CallType call_type)
 static void
 call_acquired_handler (Client *client)
 {
+  G_LOCK (lock);
   if (client->previous_call != PREVIOUS_CALL_ACQUIRED)
     {
       client->previous_call = PREVIOUS_CALL_ACQUIRED;
       if (!client->cancelled)
         {
+          G_UNLOCK (lock);
           do_call (client, CALL_TYPE_NAME_ACQUIRED);
+          goto out;
         }
     }
+  G_UNLOCK (lock);
+ out:
+  ;
 }
 
 static void
 call_lost_handler (Client  *client)
 {
+  G_LOCK (lock);
   if (client->previous_call != PREVIOUS_CALL_LOST)
     {
       client->previous_call = PREVIOUS_CALL_LOST;
       if (!client->cancelled)
         {
+          G_UNLOCK (lock);
           do_call (client, CALL_TYPE_NAME_LOST);
+          goto out;
         }
     }
+  G_UNLOCK (lock);
+ out:
+  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -293,7 +305,8 @@ request_name_cb (GObject      *source_object,
   request_name_reply = 0;
   result = NULL;
 
-  result = g_dbus_connection_call_finish (client->connection,
+  /* don't use client->connection - it may be NULL already */
+  result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
                                           res,
                                           NULL);
   if (result != NULL)
@@ -329,31 +342,47 @@ request_name_cb (GObject      *source_object,
       break;
     }
 
+
   if (subscribe)
     {
+      GDBusConnection *connection = NULL;
+
+      /* if cancelled, there is no point in subscribing to signals - if not, make sure
+       * we use a known good Connection object since it may be set to NULL at any point
+       * after being cancelled
+       */
+      G_LOCK (lock);
+      if (!client->cancelled)
+        connection = g_object_ref (client->connection);
+      G_UNLOCK (lock);
+
       /* start listening to NameLost and NameAcquired messages */
-      client->name_lost_subscription_id =
-        g_dbus_connection_signal_subscribe (client->connection,
-                                            "org.freedesktop.DBus",
-                                            "org.freedesktop.DBus",
-                                            "NameLost",
-                                            "/org/freedesktop/DBus",
-                                            client->name,
-                                            G_DBUS_SIGNAL_FLAGS_NONE,
-                                            on_name_lost_or_acquired,
-                                            client,
-                                            NULL);
-      client->name_acquired_subscription_id =
-        g_dbus_connection_signal_subscribe (client->connection,
-                                            "org.freedesktop.DBus",
-                                            "org.freedesktop.DBus",
-                                            "NameAcquired",
-                                            "/org/freedesktop/DBus",
-                                            client->name,
-                                            G_DBUS_SIGNAL_FLAGS_NONE,
-                                            on_name_lost_or_acquired,
-                                            client,
-                                            NULL);
+      if (connection != NULL)
+        {
+          client->name_lost_subscription_id =
+            g_dbus_connection_signal_subscribe (connection,
+                                                "org.freedesktop.DBus",
+                                                "org.freedesktop.DBus",
+                                                "NameLost",
+                                                "/org/freedesktop/DBus",
+                                                client->name,
+                                                G_DBUS_SIGNAL_FLAGS_NONE,
+                                                on_name_lost_or_acquired,
+                                                client,
+                                                NULL);
+          client->name_acquired_subscription_id =
+            g_dbus_connection_signal_subscribe (connection,
+                                                "org.freedesktop.DBus",
+                                                "org.freedesktop.DBus",
+                                                "NameAcquired",
+                                                "/org/freedesktop/DBus",
+                                                client->name,
+                                                G_DBUS_SIGNAL_FLAGS_NONE,
+                                                on_name_lost_or_acquired,
+                                                client,
+                                                NULL);
+          g_object_unref (connection);
+        }
     }
 
   client_unref (client);
@@ -419,6 +448,15 @@ connection_get_cb (GObject      *source_object,
                    gpointer      user_data)
 {
   Client *client = user_data;
+
+  /* must not do anything if already cancelled */
+  G_LOCK (lock);
+  if (client->cancelled)
+    {
+      G_UNLOCK (lock);
+      goto out;
+    }
+  G_UNLOCK (lock);
 
   client->connection = g_bus_get_finish (res, NULL);
   if (client->connection == NULL)
