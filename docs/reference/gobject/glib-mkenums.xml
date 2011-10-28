@@ -118,6 +118,30 @@ where section may be <literal>file-header</literal>,
 </varlistentry>
 
 <varlistentry>
+<term><option>--identifier-prefix</option> <replaceable>prefix</replaceable></term>
+<listitem><para>
+Indicates what portion of the enum name should be intepreted as the
+prefix (eg, the "<literal>Gtk</literal>" in
+"<literal>GtkDirectionType</literal>"). Normally this will be figured
+out automatically, but you may need to override the default if your
+namespace is capitalized oddly.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--symbol-prefix</option> <replaceable>prefix</replaceable></term>
+<listitem><para>
+Indicates what prefix should be used to correspond to the identifier
+prefix in related C function names (eg, the "<literal>gtk</literal>"
+in "<literal>gtk_direction_type_get_type</literal>". Equivalently,
+this is the lowercase version of the prefix component of the enum
+value names (eg, the "<literal>GTK</literal>" in
+"<literal>GTK_DIR_UP</literal>". The default value is the identifier
+prefix, converted to lowercase.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--help</option></term>
 <listitem><para>
 Print brief help and exit.

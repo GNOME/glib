@@ -143,16 +143,18 @@ sub usage {
     print "Help Options:\n";
     print "  -h, --help            Show this help message\n\n";
     print "Utility Options:\n";
-    print "  --fhead <text>        Output file header\n";
-    print "  --fprod <text>        Per input file production\n";
-    print "  --ftail <text>        Output file trailer\n";
-    print "  --eprod <text>        Per enum text (produced prior to value itarations)\n";
-    print "  --vhead <text>        Value header, produced before iterating over enum values\n";
-    print "  --vprod <text>        Value text, produced for each enum value\n";
-    print "  --vtail <text>        Value tail, produced after iterating over enum values\n";
-    print "  --comments <text>     Comment structure\n";
-    print "  --template file       Template file\n";
-    print "  -v, --version         Print version informations\n\n";
+    print "  --identifier-prefix <text>   Identifier prefix\n";
+    print "  --symbol-prefix <text>       Symbol prefix\n";
+    print "  --fhead <text>               Output file header\n";
+    print "  --fprod <text>               Per input file production\n";
+    print "  --ftail <text>               Output file trailer\n";
+    print "  --eprod <text>               Per enum text (produced prior to value itarations)\n";
+    print "  --vhead <text>               Value header, produced before iterating over enum values\n";
+    print "  --vprod <text>               Value text, produced for each enum value\n";
+    print "  --vtail <text>               Value tail, produced after iterating over enum values\n";
+    print "  --comments <text>            Comment structure\n";
+    print "  --template file              Template file\n";
+    print "  -v, --version                Print version informations\n\n";
     print "Production text substitutions:\n";
     print "  \@EnumName\@            PrefixTheXEnum\n";
     print "  \@enum_name\@           prefix_the_xenum\n";
@@ -171,6 +173,8 @@ sub usage {
 }
 
 # production variables:
+my $idprefix = "";    # "G", "Gtk", etc
+my $symprefix = "";   # "g", "gtk", etc, if not just lc($idprefix)
 my $fhead = "";   # output file header
 my $fprod = "";   # per input file production
 my $ftail = "";   # output file trailer
@@ -233,6 +237,8 @@ while ($_=$ARGV[0],/^-/) {
     shift;
     last if /^--$/;
     if (/^--template$/)                      { read_template_file (shift); }
+    elsif (/^--identifier-prefix$/)          { $idprefix = shift }
+    elsif (/^--symbol-prefix$/)              { $symprefix = shift }
     elsif (/^--fhead$/)                      { $fhead = $fhead . shift }
     elsif (/^--fprod$/)                      { $fprod = $fprod . shift }
     elsif (/^--ftail$/)                      { $ftail = $ftail . shift }
@@ -380,7 +386,7 @@ while (<>) {
 
 	    $enumname_prefix = $enumlong;
 	    $enumname_prefix =~ s/_$enumshort$//;
-	} else {
+	} elsif (!$symprefix && !$idprefix) {
 	    # enumname is e.g. GMatchType
 	    $enspace = $enumname;
 	    $enspace =~ s/^([A-Z][a-z]*).*$/$1/;
@@ -401,6 +407,21 @@ while (<>) {
 	    if (defined($option_lowercase_name)) {
 		$enumsym = $option_lowercase_name;
 	    }
+	} else {
+	    $enumshort = $enumname;
+	    if ($idprefix) {
+		$enumshort =~ s/^${idprefix}//;
+	    } else {
+		$enumshort =~ s/^[A-Z][a-z]*//;
+	    }
+	    $enumshort =~ s/([^A-Z])([A-Z])/$1_$2/g;
+	    $enumshort =~ s/([A-Z][A-Z])([A-Z][0-9a-z])/$1_$2/g;
+	    $enumshort = uc($enumshort);
+
+	    $enumname_prefix = $symprefix && uc($symprefix) || uc($idprefix);
+
+	    $enumlong = $enumname_prefix . "_" . $enumshort;
+	    $enumsym = lc($enumlong);
 	}
 
 	if ($firstenum) {
