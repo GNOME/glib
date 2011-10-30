@@ -271,14 +271,14 @@ g_function_info_invoke (GIFunctionInfo *info,
     && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
   throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
 
-  return _g_callable_info_invoke ((GICallableInfo*) info,
-                                  func,
-                                  in_args,
-                                  n_in_args,
-                                  out_args,
-                                  n_out_args,
-                                  return_value,
-                                  is_method,
-                                  throws,
-                                  error);
+  return g_callable_info_invoke ((GICallableInfo*) info,
+                                 func,
+                                 in_args,
+                                 n_in_args,
+                                 out_args,
+                                 n_out_args,
+                                 return_value,
+                                 is_method,
+                                 throws,
+                                 error);
 }

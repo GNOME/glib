@@ -108,17 +108,6 @@ GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 				       gint          n_vfuncs,
 				       const gchar  *name);
 
-gboolean _g_callable_info_invoke (GICallableInfo   *info,
-                                  gpointer          function,
-                                  const GIArgument *in_args,
-                                  int               n_in_args,
-                                  const GIArgument *out_args,
-                                  int               n_out_args,
-                                  GIArgument       *return_value,
-                                  gboolean          is_method,
-                                  gboolean          throws,
-                                  GError          **error);
-
 extern ffi_status ffi_prep_closure_loc (ffi_closure *,
                                         ffi_cif *,
                                         void (*fun)(ffi_cif *, void *, void **, void *),

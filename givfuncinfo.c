@@ -308,14 +308,14 @@ g_vfunc_info_invoke (GIVFuncInfo      *info,
   if (*error != NULL)
     return FALSE;
 
-  return _g_callable_info_invoke ((GICallableInfo*) info,
-                                  func,
-                                  in_args,
-                                  n_in_args,
-                                  out_args,
-                                  n_out_args,
-                                  return_value,
-                                  TRUE,
-                                  FALSE,
-                                  error);
+  return g_callable_info_invoke ((GICallableInfo*) info,
+                                 func,
+                                 in_args,
+                                 n_in_args,
+                                 out_args,
+                                 n_out_args,
+                                 return_value,
+                                 TRUE,
+                                 FALSE,
+                                 error);
 }

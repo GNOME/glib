@@ -55,6 +55,16 @@ GIArgInfo *            g_callable_info_get_arg         (GICallableInfo *info,
 void                   g_callable_info_load_arg        (GICallableInfo *info,
                                                         gint            n,
                                                         GIArgInfo      *arg);
+gboolean               g_callable_info_invoke          (GICallableInfo   *info,
+                                                        gpointer          function,
+                                                        const GIArgument *in_args,
+                                                        int               n_in_args,
+                                                        const GIArgument *out_args,
+                                                        int               n_out_args,
+                                                        GIArgument       *return_value,
+                                                        gboolean          is_method,
+                                                        gboolean          throws,
+                                                        GError          **error);
 G_END_DECLS
 
 

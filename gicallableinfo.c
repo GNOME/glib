@@ -432,16 +432,16 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
 }
 
 gboolean
-_g_callable_info_invoke (GIFunctionInfo *info,
-                         gpointer          function,
-                         const GIArgument  *in_args,
-                         int               n_in_args,
-                         const GIArgument  *out_args,
-                         int               n_out_args,
-                         GIArgument        *return_value,
-                         gboolean          is_method,
-                         gboolean          throws,
-                         GError          **error)
+g_callable_info_invoke (GIFunctionInfo *info,
+                        gpointer          function,
+                        const GIArgument  *in_args,
+                        int               n_in_args,
+                        const GIArgument  *out_args,
+                        int               n_out_args,
+                        GIArgument        *return_value,
+                        gboolean          is_method,
+                        gboolean          throws,
+                        GError          **error)
 {
   ffi_cif cif;
   ffi_type *rtype;
