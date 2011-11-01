@@ -2102,36 +2102,79 @@ struct _GFileAttributeMatcher {
   gint iterator_pos;
 };
 
-static void
-matcher_add (GFileAttributeMatcher *matcher,
-	     guint                  id,
-             guint                  mask)
-{
-  SubMatcher *sub_matchers;
-  int i;
-  SubMatcher s;
-
-  if (matcher->sub_matchers == NULL)
-    matcher->sub_matchers = g_array_new (FALSE, FALSE, sizeof (SubMatcher));
-
-  sub_matchers = (SubMatcher *)matcher->sub_matchers->data;
-  for (i = 0; i < matcher->sub_matchers->len; i++)
-    {
-      /* Already added */
-      if (sub_matchers[i].id == id &&
-	  sub_matchers[i].mask == mask)
-	return;
-    }
-
-  s.id = id;
-  s.mask = mask;
-
-  g_array_append_val (matcher->sub_matchers, s);
-}
-
 G_DEFINE_BOXED_TYPE (GFileAttributeMatcher, g_file_attribute_matcher,
                      g_file_attribute_matcher_ref,
                      g_file_attribute_matcher_unref)
+
+static gint
+compare_sub_matchers (gconstpointer a,
+                      gconstpointer b)
+{
+  const SubMatcher *suba = a;
+  const SubMatcher *subb = b;
+  int diff;
+
+  diff = suba->id - subb->id;
+
+  if (diff)
+    return diff;
+
+  return suba->mask - subb->mask;
+}
+
+static gboolean
+sub_matcher_matches (SubMatcher *matcher,
+                     SubMatcher *submatcher)
+{
+  if ((matcher->mask & submatcher->mask) != matcher->mask)
+    return FALSE;
+  
+  return matcher->id == (submatcher->id & matcher->mask);
+}
+
+/* Call this function after modifying a matcher.
+ * It will ensure all the invariants other functions rely on.
+ */
+static void
+matcher_optimize (GFileAttributeMatcher *matcher)
+{
+  SubMatcher *submatcher, *compare;
+  guint i, j;
+
+  /* remove sub_matchers if we match everything anyway */
+  if (matcher->all)
+    {
+      if (matcher->sub_matchers)
+        {
+          g_array_free (matcher->sub_matchers, TRUE);
+          matcher->sub_matchers = NULL;
+        }
+      return matcher;
+    }
+
+  /* sort sub_matchers by id (and then mask), so we can bsearch
+   * and compare matchers in O(N) instead of O(N²) */
+  g_array_sort (matcher->sub_matchers, compare_sub_matchers);
+
+  /* remove duplicates and specific matches when we match the whole namespace */
+  j = 0;
+  compare = &g_array_index (matcher->sub_matchers, SubMatcher, j);
+
+  for (i = 1; i < matcher->sub_matchers->len; i++)
+    {
+      submatcher = &g_array_index (matcher->sub_matchers, SubMatcher, i);
+      if (sub_matcher_matches (compare, submatcher))
+        continue;
+
+      j++;
+      compare++;
+
+      if (j < i)
+        *compare = *submatcher;
+    }
+
+  g_array_set_size (matcher->sub_matchers, j + 1);
+}
 
 /**
  * g_file_attribute_matcher_new:
@@ -2177,6 +2220,7 @@ g_file_attribute_matcher_new (const char *attributes)
 
   matcher = g_malloc0 (sizeof (GFileAttributeMatcher));
   matcher->ref = 1;
+  matcher->sub_matchers = g_array_new (FALSE, FALSE, sizeof (SubMatcher));
 
   split = g_strsplit (attributes, ",", -1);
 
@@ -2186,7 +2230,7 @@ g_file_attribute_matcher_new (const char *attributes)
 	matcher->all = TRUE;
       else
 	{
-	  guint32 id, mask;
+          SubMatcher s;
 
 	  colon = strstr (split[i], "::");
 	  if (colon != NULL &&
@@ -2194,23 +2238,25 @@ g_file_attribute_matcher_new (const char *attributes)
 		(colon[2] == '*' &&
 		 colon[3] == 0)))
 	    {
-	      id = lookup_attribute (split[i]);
-	      mask = 0xffffffff;
+	      s.id = lookup_attribute (split[i]);
+	      s.mask = 0xffffffff;
 	    }
 	  else
 	    {
 	      if (colon)
 		*colon = 0;
 
-	      id = lookup_namespace (split[i]) << NS_POS;
-	      mask = NS_MASK << NS_POS;
+	      s.id = lookup_namespace (split[i]) << NS_POS;
+	      s.mask = NS_MASK << NS_POS;
 	    }
 
-	  matcher_add (matcher, id, mask);
+          g_array_append_val (matcher->sub_matchers, s);
 	}
     }
 
   g_strfreev (split);
+
+  matcher_optimize (matcher);
 
   return matcher;
 }
