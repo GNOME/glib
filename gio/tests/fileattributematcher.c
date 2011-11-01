@@ -74,6 +74,95 @@ test_equality (void)
     }
 }
 
+static void
+test_subtract (void)
+{
+  struct {
+    char *attributes;
+    char *subtract;
+    char *result;
+  } subtractions[] = {
+    /* * subtracts everything */
+    { "*", "*", NULL },
+    { "a::*", "*", NULL },
+    { "a::b", "*", NULL },
+    { "a::b,a::c", "*", NULL },
+    { "a::*,b::*", "*", NULL },
+    { "a::*,b::c", "*", NULL },
+    { "a::b,b::*", "*", NULL },
+    { "a::b,b::c", "*", NULL },
+    { "a::b,a::c,b::*", "*", NULL },
+    { "a::b,a::c,b::c", "*", NULL },
+    /* a::* subtracts all a's */
+    { "*", "a::*", "*" },
+    { "a::*", "a::*", NULL },
+    { "a::b", "a::*", NULL },
+    { "a::b,a::c", "a::*", NULL },
+    { "a::*,b::*", "a::*", "b::*" },
+    { "a::*,b::c", "a::*", "b::c" },
+    { "a::b,b::*", "a::*", "b::*" },
+    { "a::b,b::c", "a::*", "b::c" },
+    { "a::b,a::c,b::*", "a::*", "b::*" },
+    { "a::b,a::c,b::c", "a::*", "b::c" },
+    /* a::b subtracts exactly that */
+    { "*", "a::b", "*" },
+    { "a::*", "a::b", "a::*" },
+    { "a::b", "a::b", NULL },
+    { "a::b,a::c", "a::b", "a::c" },
+    { "a::*,b::*", "a::b", "a::*,b::*" },
+    { "a::*,b::c", "a::b", "a::*,b::c" },
+    { "a::b,b::*", "a::b", "b::*" },
+    { "a::b,b::c", "a::b", "b::c" },
+    { "a::b,a::c,b::*", "a::b", "a::c,b::*" },
+    { "a::b,a::c,b::c", "a::b", "a::c,b::c" },
+    /* a::b,b::* subtracts both of those */
+    { "*", "a::b,b::*", "*" },
+    { "a::*", "a::b,b::*", "a::*" },
+    { "a::b", "a::b,b::*", NULL },
+    { "a::b,a::c", "a::b,b::*", "a::c" },
+    { "a::*,b::*", "a::b,b::*", "a::*" },
+    { "a::*,b::c", "a::b,b::*", "a::*" },
+    { "a::b,b::*", "a::b,b::*", NULL },
+    { "a::b,b::c", "a::b,b::*", NULL },
+    { "a::b,a::c,b::*", "a::b,b::*", "a::c" },
+    { "a::b,a::c,b::c", "a::b,b::*", "a::c" },
+    /* a::b,b::c should work, too */
+    { "*", "a::b,b::c", "*" },
+    { "a::*", "a::b,b::c", "a::*" },
+    { "a::b", "a::b,b::c", NULL },
+    { "a::b,a::c", "a::b,b::c", "a::c" },
+    { "a::*,b::*", "a::b,b::c", "a::*,b::*" },
+    { "a::*,b::c", "a::b,b::c", "a::*" },
+    { "a::b,b::*", "a::b,b::c", "b::*" },
+    { "a::b,b::c", "a::b,b::c", NULL },
+    { "a::b,a::c,b::*", "a::b,b::c", "a::c,b::*" },
+    { "a::b,a::c,b::c", "a::b,b::c", "a::c" },
+  };
+
+  GFileAttributeMatcher *matcher, *subtract, *result;
+  char *s;
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (subtractions); i++)
+    {
+      matcher = g_file_attribute_matcher_new (subtractions[i].attributes);
+      subtract = g_file_attribute_matcher_new (subtractions[i].subtract);
+      result = g_file_attribute_matcher_subtract (matcher, subtract);
+      s = g_file_attribute_matcher_to_string (result);
+      if (g_strcmp0 (subtractions[i].result, s))
+        {
+          g_test_fail ();
+          g_test_message ("matcher for %s - %s should be %s, but is %s", 
+                          subtractions[i].attributes, subtractions[i].subtract,
+                          subtractions[i].result, s);
+        }
+      g_free (s);
+      g_file_attribute_matcher_unref (matcher);
+      g_file_attribute_matcher_unref (subtract);
+      g_file_attribute_matcher_unref (result);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -83,6 +172,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/fileattributematcher/exact", test_exact);
   g_test_add_func ("/fileattributematcher/equality", test_equality);
+  g_test_add_func ("/fileattributematcher/subtract", test_subtract);
 
   return g_test_run ();
 }
