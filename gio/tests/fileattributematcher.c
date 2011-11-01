@@ -1,0 +1,88 @@
+#include <gio/gio.h>
+
+static void
+test_exact (void)
+{
+  char *exact_matches[] = {
+    "*",
+    "a::*",
+    "a::*,b::*",
+    "a::a,a::b",
+    "a::a,a::b,b::*"
+  };
+
+  GFileAttributeMatcher *matcher;
+  char *s;
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (exact_matches); i++)
+    {
+      matcher = g_file_attribute_matcher_new (exact_matches[i]);
+      s = g_file_attribute_matcher_to_string (matcher);
+      if (! g_str_equal (exact_matches[i], s))
+        {
+          g_test_fail ();
+          g_test_message ("matcher should be %s, but is %s", exact_matches[i], s);
+        }
+      g_free (s);
+      g_file_attribute_matcher_unref (matcher);
+    }
+}
+
+static void
+test_equality (void)
+{
+  struct {
+    char *expected;
+    char *actual;
+  } equals[] = {
+    /* star makes everything else go away */
+    { "*", "*,*" },
+    { "*", "*,a::*" },
+    { "*", "*,a::b" },
+    { "*", "a::*,*" },
+    { "*", "a::b,*" },
+    { "*", "a::b,*,a::*" },
+    /* a::* makes a::<anything> go away */
+    { "a::*", "a::*,a::*" },
+    { "a::*", "a::*,a::b" },
+    { "a::*", "a::b,a::*" },
+    { "a::*", "a::b,a::*,a::c" },
+    /* a::b does not allow duplicates */
+    { "a::b", "a::b,a::b" },
+    { "a::b,a::c", "a::b,a::c,a::b" },
+    /* stuff gets ordered in registration order */
+    { "a::b,a::c", "a::c,a::b" },
+    { "a::*,b::*", "b::*,a::*" },
+  };
+
+  GFileAttributeMatcher *matcher;
+  char *s;
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (equals); i++)
+    {
+      matcher = g_file_attribute_matcher_new (equals[i].actual);
+      s = g_file_attribute_matcher_to_string (matcher);
+      if (! g_str_equal (equals[i].expected, s))
+        {
+          g_test_fail ();
+          g_test_message ("matcher for %s should be %s, but is %s", equals[i].actual, equals[i].expected, s);
+        }
+      g_free (s);
+      g_file_attribute_matcher_unref (matcher);
+    }
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_type_init ();
+
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/fileattributematcher/exact", test_exact);
+  g_test_add_func ("/fileattributematcher/equality", test_equality);
+
+  return g_test_run ();
+}

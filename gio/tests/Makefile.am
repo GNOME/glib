@@ -57,6 +57,7 @@ TEST_PROGS +=	 		\
 	cancellable		\
 	vfs			\
 	network-monitor		\
+	fileattributematcher	\
 	$(NULL)
 
 if OS_UNIX
@@ -386,6 +387,9 @@ mimeapps_LDADD   = $(progs_ldadd)
 
 file_SOURCES = file.c
 file_LDADD   = $(progs_ldadd)
+
+fileattributematcher_SOURCES = fileattributematcher.c
+fileattributematcher_LDADD   = $(progs_ldadd)
 
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
 gapplication_LDADD = $(progs_ldadd)
