@@ -337,7 +337,15 @@ gdbus_error_LDADD = $(progs_ldadd)
 gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
 gdbus_peer_LDADD = $(progs_ldadd)
 
-gdbus_non_socket_SOURCES = gdbus-non-socket.c gdbus-tests.h gdbus-tests.c
+gdbus_non_socket_SOURCES = \
+	gdbus-non-socket.c \
+	gdbus-tests.c \
+	gdbus-tests.h \
+	test-io-stream.c \
+	test-io-stream.h \
+	test-pipe-unix.c \
+	test-pipe-unix.h \
+	$(NULL)
 gdbus_non_socket_LDADD = $(progs_ldadd)
 
 gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c

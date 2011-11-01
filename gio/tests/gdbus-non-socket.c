@@ -39,95 +39,8 @@ static GMainLoop *loop = NULL;
 /* ---------------------------------------------------------------------------------------------------- */
 #ifdef G_OS_UNIX
 
-#define MY_TYPE_IO_STREAM  (my_io_stream_get_type ())
-#define MY_IO_STREAM(o)    (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_IO_STREAM, MyIOStream))
-#define MY_IS_IO_STREAM(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_IO_STREAM))
-
-typedef struct
-{
-  GIOStream parent_instance;
-  GInputStream *input_stream;
-  GOutputStream *output_stream;
-} MyIOStream;
-
-typedef struct
-{
-  GIOStreamClass parent_class;
-} MyIOStreamClass;
-
-static GType my_io_stream_get_type (void) G_GNUC_CONST;
-
-G_DEFINE_TYPE (MyIOStream, my_io_stream, G_TYPE_IO_STREAM);
-
-static void
-my_io_stream_finalize (GObject *object)
-{
-  MyIOStream *stream = MY_IO_STREAM (object);
-  g_object_unref (stream->input_stream);
-  g_object_unref (stream->output_stream);
-  G_OBJECT_CLASS (my_io_stream_parent_class)->finalize (object);
-}
-
-static void
-my_io_stream_init (MyIOStream *stream)
-{
-}
-
-static GInputStream *
-my_io_stream_get_input_stream (GIOStream *_stream)
-{
-  MyIOStream *stream = MY_IO_STREAM (_stream);
-  return stream->input_stream;
-}
-
-static GOutputStream *
-my_io_stream_get_output_stream (GIOStream *_stream)
-{
-  MyIOStream *stream = MY_IO_STREAM (_stream);
-  return stream->output_stream;
-}
-
-static void
-my_io_stream_class_init (MyIOStreamClass *klass)
-{
-  GObjectClass *gobject_class;
-  GIOStreamClass *giostream_class;
-
-  gobject_class = G_OBJECT_CLASS (klass);
-  gobject_class->finalize = my_io_stream_finalize;
-
-  giostream_class = G_IO_STREAM_CLASS (klass);
-  giostream_class->get_input_stream  = my_io_stream_get_input_stream;
-  giostream_class->get_output_stream = my_io_stream_get_output_stream;
-}
-
-static GIOStream *
-my_io_stream_new (GInputStream  *input_stream,
-                  GOutputStream *output_stream)
-{
-  MyIOStream *stream;
-  g_return_val_if_fail (G_IS_INPUT_STREAM (input_stream), NULL);
-  g_return_val_if_fail (G_IS_OUTPUT_STREAM (output_stream), NULL);
-  stream = MY_IO_STREAM (g_object_new (MY_TYPE_IO_STREAM, NULL));
-  stream->input_stream = g_object_ref (input_stream);
-  stream->output_stream = g_object_ref (output_stream);
-  return G_IO_STREAM (stream);
-}
-
-static GIOStream *
-my_io_stream_new_for_fds (gint fd_in, gint fd_out)
-{
-  GIOStream *stream;
-  GInputStream  *input_stream;
-  GOutputStream *output_stream;
-
-  input_stream = g_unix_input_stream_new (fd_in, TRUE);
-  output_stream = g_unix_output_stream_new (fd_out, TRUE);
-  stream = my_io_stream_new (input_stream, output_stream);
-  g_object_unref (input_stream);
-  g_object_unref (output_stream);
-  return stream;
-}
+#include "test-pipe-unix.h"
+#include "test-io-stream.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -217,20 +130,26 @@ static const GDBusInterfaceVTable pokee_vtable = {
 static void
 test_non_socket (void)
 {
-  gint in_pipes[2];
-  gint out_pipes[2];
-  GIOStream *stream;
+  GIOStream *streams[2];
   GDBusConnection *connection;
   GError *error;
   gchar *guid;
   pid_t first_child;
-  gint read_fd;
-  gint write_fd;
   GVariant *ret;
   const gchar *str;
+  gboolean ok;
 
-  g_assert_cmpint (pipe (in_pipes), ==, 0);
-  g_assert_cmpint (pipe (out_pipes), ==, 0);
+  error = NULL;
+
+  ok = test_bidi_pipe (&streams[0], &streams[1], &error);
+  g_assert_no_error (error);
+  g_assert (ok);
+  g_assert (G_IS_IO_STREAM (streams[0]));
+  g_assert (G_IS_INPUT_STREAM (g_io_stream_get_input_stream (streams[0])));
+  g_assert (G_IS_OUTPUT_STREAM (g_io_stream_get_output_stream (streams[0])));
+  g_assert (G_IS_IO_STREAM (streams[1]));
+  g_assert (G_IS_INPUT_STREAM (g_io_stream_get_input_stream (streams[1])));
+  g_assert (G_IS_OUTPUT_STREAM (g_io_stream_get_output_stream (streams[1])));
 
   switch ((first_child = fork ()))
     {
@@ -246,11 +165,11 @@ test_non_socket (void)
        */
       loop = g_main_loop_new (NULL, FALSE);
 
-      read_fd  =  in_pipes[0];
-      write_fd = out_pipes[1];
-      g_assert_cmpint (close ( in_pipes[1]), ==, 0); /* close unused write end */
-      g_assert_cmpint (close (out_pipes[0]), ==, 0); /* close unused read end */
-      stream = my_io_stream_new_for_fds (read_fd, write_fd);
+      ok = g_io_stream_close (streams[1], NULL, &error);
+      g_assert_no_error (error);
+      g_assert (ok);
+      g_object_unref (streams[1]);
+
       guid = g_dbus_generate_guid ();
       error = NULL;
       /* We need to delay message processing to avoid the race
@@ -263,7 +182,7 @@ test_non_socket (void)
        * though) so in rare cases the parent sends the message before
        * we (the first child) register the object
        */
-      connection = g_dbus_connection_new_sync (stream,
+      connection = g_dbus_connection_new_sync (streams[0],
                                                guid,
                                                G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER |
                                                G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
@@ -272,7 +191,7 @@ test_non_socket (void)
                                                &error);
       g_free (guid);
       g_assert_no_error (error);
-      g_object_unref (stream);
+      g_object_unref (streams[0]);
 
       /* make sure we exit along with the parent */
       g_dbus_connection_set_exit_on_close (connection, TRUE);
@@ -303,6 +222,9 @@ test_non_socket (void)
   if (!g_test_trap_fork (0, 0))
     {
       /* parent */
+      g_object_unref (streams[0]);
+      g_object_unref (streams[1]);
+
       g_test_trap_assert_passed ();
       g_assert_cmpint (kill (first_child, SIGTERM), ==, 0);
       return;
@@ -315,20 +237,19 @@ test_non_socket (void)
    */
   loop = g_main_loop_new (NULL, FALSE);
 
-  read_fd  = out_pipes[0];
-  write_fd =  in_pipes[1];
-  g_assert_cmpint (close (out_pipes[1]), ==, 0); /* close unused write end */
-  g_assert_cmpint (close ( in_pipes[0]), ==, 0); /* close unused read end */
-  stream = my_io_stream_new_for_fds (read_fd, write_fd);
-  error = NULL;
-  connection = g_dbus_connection_new_sync (stream,
+  ok = g_io_stream_close (streams[0], NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ok);
+  g_object_unref (streams[0]);
+
+  connection = g_dbus_connection_new_sync (streams[1],
                                            NULL, /* guid */
                                            G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
                                            NULL, /* GDBusAuthObserver */
                                            NULL,
                                            &error);
   g_assert_no_error (error);
-  g_object_unref (stream);
+  g_object_unref (streams[1]);
 
   /* poke the first child */
   error = NULL;
