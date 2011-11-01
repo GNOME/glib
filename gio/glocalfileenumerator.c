@@ -254,7 +254,8 @@ _g_local_file_enumerator_new (GLocalFile *file,
   local->matcher = g_file_attribute_matcher_new (attributes);
 #ifndef USE_GDIR
   local->reduced_matcher = g_file_attribute_matcher_subtract_attributes (local->matcher,
-                                                                         "standard::type,standard::name");
+                                                                         G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES","
+                                                                         "standard::type");
 #endif
   local->flags = flags;
   
@@ -408,7 +409,7 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
                                      &my_error); 
       if (info)
         {
-          g_file_info_set_name (info, filename);
+          _g_local_file_info_get_nostat (info, filename, path, local->matcher);
           g_file_info_set_file_type (info, file_type);
           if (file_type == G_FILE_TYPE_SYMBOLIC_LINK)
             g_file_info_set_is_symlink (info, TRUE);
