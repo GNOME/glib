@@ -50,12 +50,22 @@ typedef struct
 #define GLocalFileStat struct stat
 #endif
 
+#define G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES \
+    G_FILE_ATTRIBUTE_STANDARD_NAME "," \
+    G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," \
+    G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME "," \
+    G_FILE_ATTRIBUTE_STANDARD_COPY_NAME
+
 gboolean   _g_local_file_has_trash_dir        (const char             *dirname,
                                                dev_t                   dir_dev);
 void       _g_local_file_info_get_parent_info (const char             *dir,
                                                GFileAttributeMatcher  *attribute_matcher,
                                                GLocalParentFileInfo   *parent_info);
 void       _g_local_file_info_free_parent_info (GLocalParentFileInfo   *parent_info);
+void       _g_local_file_info_get_nostat      (GFileInfo              *info,
+                                               const char             *basename,
+                                               const char             *path,
+                                               GFileAttributeMatcher  *attribute_matcher);
 GFileInfo *_g_local_file_info_get             (const char             *basename,
                                                const char             *path,
                                                GFileAttributeMatcher  *attribute_matcher,

@@ -1406,6 +1406,49 @@ win32_get_file_user_info (const gchar  *filename,
 }
 #endif /* G_OS_WIN32 */
 
+void
+_g_local_file_info_get_nostat (GFileInfo              *info,
+                               const char             *basename,
+			       const char             *path,
+                               GFileAttributeMatcher  *attribute_matcher)
+{
+  g_file_info_set_name (info, basename);
+
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+					    G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
+    {
+      char *display_name = g_filename_display_basename (path);
+     
+      /* look for U+FFFD REPLACEMENT CHARACTER */ 
+      if (strstr (display_name, "\357\277\275") != NULL)
+	{
+	  char *p = display_name;
+	  display_name = g_strconcat (display_name, _(" (invalid encoding)"), NULL);
+	  g_free (p);
+	}
+      g_file_info_set_display_name (info, display_name);
+      g_free (display_name);
+    }
+  
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+					    G_FILE_ATTRIBUTE_ID_STANDARD_EDIT_NAME))
+    {
+      char *edit_name = g_filename_display_basename (path);
+      g_file_info_set_edit_name (info, edit_name);
+      g_free (edit_name);
+    }
+
+  
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+					    G_FILE_ATTRIBUTE_ID_STANDARD_COPY_NAME))
+    {
+      char *copy_name = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
+      if (copy_name)
+	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_COPY_NAME, copy_name);
+      g_free (copy_name);
+    }
+}
+
 GFileInfo *
 _g_local_file_info_get (const char             *basename,
 			const char             *path,
@@ -1435,9 +1478,8 @@ _g_local_file_info_get (const char             *basename,
   /* Make sure we don't set any unwanted attributes */
   g_file_info_set_attribute_mask (info, attribute_matcher);
   
-  g_file_info_set_name (info, basename);
+  _g_local_file_info_get_nostat (info, basename, path, attribute_matcher);
 
-  /* Avoid stat in trivial case */
   if (attribute_matcher == NULL)
     {
       g_file_info_unset_attribute_mask (info);
@@ -1557,40 +1599,6 @@ _g_local_file_info_get (const char             *basename,
         g_file_info_set_symlink_target (info, symlink_target);
     }
 #endif
-  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
-    {
-      char *display_name = g_filename_display_basename (path);
-     
-      /* look for U+FFFD REPLACEMENT CHARACTER */ 
-      if (strstr (display_name, "\357\277\275") != NULL)
-	{
-	  char *p = display_name;
-	  display_name = g_strconcat (display_name, _(" (invalid encoding)"), NULL);
-	  g_free (p);
-	}
-      g_file_info_set_display_name (info, display_name);
-      g_free (display_name);
-    }
-  
-  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_EDIT_NAME))
-    {
-      char *edit_name = g_filename_display_basename (path);
-      g_file_info_set_edit_name (info, edit_name);
-      g_free (edit_name);
-    }
-
-  
-  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_COPY_NAME))
-    {
-      char *copy_name = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
-      if (copy_name)
-	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_COPY_NAME, copy_name);
-      g_free (copy_name);
-    }
-
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
       _g_file_attribute_matcher_matches_id (attribute_matcher,
