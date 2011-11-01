@@ -132,7 +132,8 @@ _lookup_namespace (const char *namespace)
       ns_info->id = ++namespace_id_counter;
       g_hash_table_insert (ns_hash, g_strdup (namespace), ns_info);
       attributes = g_realloc (attributes, (ns_info->id + 1) * sizeof (char **));
-      attributes[ns_info->id] = NULL;
+      attributes[ns_info->id] = g_new (char *, 1);
+      attributes[ns_info->id][0] = g_strconcat (namespace, "::*", NULL);
     }
   return ns_info;
 }
