@@ -2086,8 +2086,6 @@ g_file_info_set_sort_order (GFileInfo *info,
 }
 
 
-#define ON_STACK_MATCHERS 5
-
 typedef struct {
   guint32 id;
   guint32 mask;
@@ -2095,10 +2093,9 @@ typedef struct {
 
 struct _GFileAttributeMatcher {
   gboolean all;
-  SubMatcher sub_matchers[ON_STACK_MATCHERS];
   gint ref;
 
-  GArray *more_sub_matchers;
+  GArray *sub_matchers;
 
   /* Interator */
   guint32 iterator_ns;
@@ -2114,27 +2111,11 @@ matcher_add (GFileAttributeMatcher *matcher,
   int i;
   SubMatcher s;
 
-  for (i = 0; i < ON_STACK_MATCHERS; i++)
-    {
-      /* First empty spot, not found, use this */
-      if (matcher->sub_matchers[i].id == 0)
-	{
-	  matcher->sub_matchers[i].id = id;
-	  matcher->sub_matchers[i].mask = mask;
-	  return;
-	}
+  if (matcher->sub_matchers == NULL)
+    matcher->sub_matchers = g_array_new (FALSE, FALSE, sizeof (SubMatcher));
 
-      /* Already added */
-      if (matcher->sub_matchers[i].id == id &&
-	  matcher->sub_matchers[i].mask == mask)
-	return;
-    }
-
-  if (matcher->more_sub_matchers == NULL)
-    matcher->more_sub_matchers = g_array_new (FALSE, FALSE, sizeof (SubMatcher));
-
-  sub_matchers = (SubMatcher *)matcher->more_sub_matchers->data;
-  for (i = 0; i < matcher->more_sub_matchers->len; i++)
+  sub_matchers = (SubMatcher *)matcher->sub_matchers->data;
+  for (i = 0; i < matcher->sub_matchers->len; i++)
     {
       /* Already added */
       if (sub_matchers[i].id == id &&
@@ -2145,7 +2126,7 @@ matcher_add (GFileAttributeMatcher *matcher,
   s.id = id;
   s.mask = mask;
 
-  g_array_append_val (matcher->more_sub_matchers, s);
+  g_array_append_val (matcher->sub_matchers, s);
 }
 
 G_DEFINE_BOXED_TYPE (GFileAttributeMatcher, g_file_attribute_matcher,
@@ -2270,8 +2251,8 @@ g_file_attribute_matcher_unref (GFileAttributeMatcher *matcher)
 
       if (g_atomic_int_dec_and_test (&matcher->ref))
 	{
-	  if (matcher->more_sub_matchers)
-	    g_array_free (matcher->more_sub_matchers, TRUE);
+	  if (matcher->sub_matchers)
+	    g_array_free (matcher->sub_matchers, TRUE);
 
 	  g_free (matcher);
 	}
@@ -2292,6 +2273,7 @@ gboolean
 g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher,
 				       const char            *attribute)
 {
+  SubMatcher *sub_matcher;
   guint32 id;
 
   g_return_val_if_fail (attribute != NULL && *attribute != '\0', FALSE);
@@ -2300,15 +2282,15 @@ g_file_attribute_matcher_matches_only (GFileAttributeMatcher *matcher,
       matcher->all)
     return FALSE;
 
+  if (matcher->sub_matchers->len != 1)
+    return FALSE;
+  
   id = lookup_attribute (attribute);
-
-  if (matcher->sub_matchers[0].id != 0 &&
-      matcher->sub_matchers[1].id == 0 &&
-      matcher->sub_matchers[0].mask == 0xffffffff &&
-      matcher->sub_matchers[0].id == id)
-    return TRUE;
-
-  return FALSE;
+  
+  sub_matcher = &g_array_index (matcher->sub_matchers, SubMatcher, 0);
+  
+  return sub_matcher->id == id &&
+         sub_matcher->mask == 0xffffffff;
 }
 
 static gboolean
@@ -2318,19 +2300,10 @@ matcher_matches_id (GFileAttributeMatcher *matcher,
   SubMatcher *sub_matchers;
   int i;
 
-  for (i = 0; i < ON_STACK_MATCHERS; i++)
+  if (matcher->sub_matchers)
     {
-      if (matcher->sub_matchers[i].id == 0)
-	return FALSE;
-
-      if (matcher->sub_matchers[i].id == (id & matcher->sub_matchers[i].mask))
-	return TRUE;
-    }
-
-  if (matcher->more_sub_matchers)
-    {
-      sub_matchers = (SubMatcher *)matcher->more_sub_matchers->data;
-      for (i = 0; i < matcher->more_sub_matchers->len; i++)
+      sub_matchers = (SubMatcher *)matcher->sub_matchers->data;
+      for (i = 0; i < matcher->sub_matchers->len; i++)
 	{
 	  if (sub_matchers[i].id == (id & sub_matchers[i].mask))
 	    return TRUE;
@@ -2416,16 +2389,10 @@ g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
 
   ns_id = lookup_namespace (ns) << NS_POS;
 
-  for (i = 0; i < ON_STACK_MATCHERS; i++)
+  if (matcher->sub_matchers)
     {
-      if (matcher->sub_matchers[i].id == ns_id)
-	return TRUE;
-    }
-
-  if (matcher->more_sub_matchers)
-    {
-      sub_matchers = (SubMatcher *)matcher->more_sub_matchers->data;
-      for (i = 0; i < matcher->more_sub_matchers->len; i++)
+      sub_matchers = (SubMatcher *)matcher->sub_matchers->data;
+      for (i = 0; i < matcher->sub_matchers->len; i++)
 	{
 	  if (sub_matchers[i].id == ns_id)
 	    return TRUE;
@@ -2461,24 +2428,13 @@ g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)
     {
       i = matcher->iterator_pos++;
 
-      if (i < ON_STACK_MATCHERS)
-	{
-	  if (matcher->sub_matchers[i].id == 0)
-	    return NULL;
+      if (matcher->sub_matchers == NULL)
+        return NULL;
 
-	  sub_matcher = &matcher->sub_matchers[i];
-	}
+      if (i < matcher->sub_matchers->len)
+        sub_matcher = &g_array_index (matcher->sub_matchers, SubMatcher, i);
       else
-	{
-	  if (matcher->more_sub_matchers == NULL)
-	    return NULL;
-
-	  i -= ON_STACK_MATCHERS;
-	  if (i < matcher->more_sub_matchers->len)
-	    sub_matcher = &g_array_index (matcher->more_sub_matchers, SubMatcher, i);
-	  else
-	    return NULL;
-	}
+        return NULL;
 
       if (sub_matcher->mask == 0xffffffff &&
 	  (sub_matcher->id & (NS_MASK << NS_POS)) == matcher->iterator_ns)
