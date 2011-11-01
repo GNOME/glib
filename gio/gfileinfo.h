@@ -946,6 +946,7 @@ gboolean               g_file_attribute_matcher_matches_only   (GFileAttributeMa
 gboolean               g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
 								     const char            *ns);
 const char *           g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher);
+char *                 g_file_attribute_matcher_to_string      (GFileAttributeMatcher *matcher);
 
 G_END_DECLS
 

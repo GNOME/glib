@@ -370,6 +370,7 @@ g_file_attribute_matcher_matches
 g_file_attribute_matcher_matches_only
 g_file_attribute_matcher_enumerate_namespace
 g_file_attribute_matcher_enumerate_next
+g_file_attribute_matcher_to_string
 <SUBSECTION Standard>
 GFileInfoClass
 G_FILE_INFO

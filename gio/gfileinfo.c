@@ -2488,3 +2488,43 @@ g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)
 	return get_attribute_for_id (sub_matcher->id);
     }
 }
+
+/**
+ * g_file_attribute_matcher_to_string:
+ * @matcher: (allow-none): a #GFileAttributeMatcher.
+ *
+ * Prints what the matcher is matching against. The format will be 
+ * equal to the format passed to g_file_attribute_matcher_new().
+ * The output however, might not be identical, as the matcher may
+ * decide to use a different order or omit needless parts.
+ *
+ * Returns: a string describing the attributes the matcher matches
+ *   against or %NULL if @matcher was %NULL.
+ *
+ * Since: 2.32
+ **/
+char *
+g_file_attribute_matcher_to_string (GFileAttributeMatcher *matcher)
+{
+  GString *string;
+  guint i;
+
+  if (matcher == NULL)
+    return NULL;
+
+  if (matcher->all)
+    return g_strdup ("*");
+
+  string = g_string_new ("");
+  for (i = 0; i < matcher->sub_matchers->len; i++)
+    {
+      SubMatcher *submatcher = &g_array_index (matcher->sub_matchers, SubMatcher, i);
+
+      if (i > 0)
+        g_string_append_c (string, ',');
+
+      g_string_append (string, get_attribute_for_id (submatcher->id));
+    }
+
+  return g_string_free (string, FALSE);
+}
