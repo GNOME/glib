@@ -934,6 +934,8 @@ AC_CHECK_MEMBERS([struct statvfs.f_basetype],,, [#include <sys/statvfs.h>])
 AC_CHECK_MEMBERS([struct statvfs.f_fstypename],,, [#include <sys/statvfs.h>])
 AC_CHECK_MEMBERS([struct tm.tm_gmtoff, struct tm.__tm_gmtoff],,,[#include <time.h>])
 
+AC_STRUCT_DIRENT_D_TYPE
+
 # Checks for libcharset
 AM_LANGINFO_CODESET
 AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
