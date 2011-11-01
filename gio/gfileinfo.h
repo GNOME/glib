@@ -939,6 +939,8 @@ GType                  g_file_attribute_matcher_get_type       (void) G_GNUC_CON
 GFileAttributeMatcher *g_file_attribute_matcher_new            (const char            *attributes);
 GFileAttributeMatcher *g_file_attribute_matcher_ref            (GFileAttributeMatcher *matcher);
 void                   g_file_attribute_matcher_unref          (GFileAttributeMatcher *matcher);
+GFileAttributeMatcher *g_file_attribute_matcher_subtract       (GFileAttributeMatcher *matcher,
+                                                                GFileAttributeMatcher *subtract);
 gboolean               g_file_attribute_matcher_matches        (GFileAttributeMatcher *matcher,
 								const char            *attribute);
 gboolean               g_file_attribute_matcher_matches_only   (GFileAttributeMatcher *matcher,

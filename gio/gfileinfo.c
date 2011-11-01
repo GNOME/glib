@@ -2136,7 +2136,7 @@ sub_matcher_matches (SubMatcher *matcher,
 /* Call this function after modifying a matcher.
  * It will ensure all the invariants other functions rely on.
  */
-static void
+static GFileAttributeMatcher *
 matcher_optimize (GFileAttributeMatcher *matcher)
 {
   SubMatcher *submatcher, *compare;
@@ -2151,6 +2151,12 @@ matcher_optimize (GFileAttributeMatcher *matcher)
           matcher->sub_matchers = NULL;
         }
       return matcher;
+    }
+
+  if (matcher->sub_matchers->len == 0)
+    {
+      g_file_attribute_matcher_unref (matcher);
+      return NULL;
     }
 
   /* sort sub_matchers by id (and then mask), so we can bsearch
@@ -2175,6 +2181,8 @@ matcher_optimize (GFileAttributeMatcher *matcher)
     }
 
   g_array_set_size (matcher->sub_matchers, j + 1);
+
+  return matcher;
 }
 
 /**
@@ -2257,9 +2265,80 @@ g_file_attribute_matcher_new (const char *attributes)
 
   g_strfreev (split);
 
-  matcher_optimize (matcher);
+  matcher = matcher_optimize (matcher);
 
   return matcher;
+}
+
+/**
+ * g_file_attribute_matcher_subtract:
+ * @matcher: Matcher to subtract from 
+ * @subtract: The matcher to subtract
+ *
+ * Subtracts all attributes of @subtract from @matcher and returns
+ * a matcher that supports those attributes.
+ *
+ * Note that currently it is not possible to remove a single
+ * attribute when the @matcher matches the whole namespace - or remove
+ * a namespace or attribute when the matcher matches everything. This
+ * is a limitation of the current implementation, but may be fixed
+ * in the future.
+ *
+ * Returns: A file attribute matcher matching all attributes of
+ *     @matcher that are not matched by @subtract
+ **/
+GFileAttributeMatcher *
+g_file_attribute_matcher_subtract (GFileAttributeMatcher *matcher,
+                                   GFileAttributeMatcher *subtract)
+{
+  GFileAttributeMatcher *result;
+  guint mi, si;
+  SubMatcher *msub, *ssub;
+
+  if (matcher == NULL)
+    return NULL;
+  if (subtract == NULL)
+    return g_file_attribute_matcher_ref (matcher);
+  if (subtract->all)
+    return NULL;
+  if (matcher->all)
+    return g_file_attribute_matcher_ref (matcher);
+
+  result = g_malloc0 (sizeof (GFileAttributeMatcher));
+  result->ref = 1;
+  result->sub_matchers = g_array_new (FALSE, FALSE, sizeof (SubMatcher));
+
+  si = 0;
+  g_assert (subtract->sub_matchers->len > 0);
+  ssub = &g_array_index (subtract->sub_matchers, SubMatcher, si);
+
+  for (mi = 0; mi < matcher->sub_matchers->len; mi++)
+    {
+      msub = &g_array_index (matcher->sub_matchers, SubMatcher, mi);
+
+retry:
+      if (sub_matcher_matches (ssub, msub))
+        continue;
+
+      si++;
+      if (si >= subtract->sub_matchers->len)
+        break;
+
+      ssub = &g_array_index (subtract->sub_matchers, SubMatcher, si);
+      if (ssub->id <= msub->id)
+        goto retry;
+
+      g_array_append_val (result->sub_matchers, *msub);
+    }
+
+  if (mi < matcher->sub_matchers->len)
+    g_array_append_vals (result->sub_matchers,
+                         &g_array_index (matcher->sub_matchers, SubMatcher, mi),
+                         matcher->sub_matchers->len - mi);
+
+  result = matcher_optimize (result);
+
+  return result;
 }
 
 /**
