@@ -238,9 +238,8 @@ GType   g_main_loop_get_type       (void) G_GNUC_CONST;
 GType   g_main_context_get_type    (void) G_GNUC_CONST;
 GType   g_source_get_type          (void) G_GNUC_CONST;
 
-#if !defined(G_DISABLE_DEPRECATED) || defined(__GI_SCANNER__)
+GLIB_DEPRECATED_FOR(G_TYPE_VARIANT)
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
-#endif
 
 /**
  * GStrv:

@@ -78,11 +78,9 @@ void     g_value_set_static_boxed         (GValue        *value,
                                            gconstpointer  v_boxed);
 void     g_value_take_boxed               (GValue        *value,
                                            gconstpointer  v_boxed);
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_value_take_boxed)
 void     g_value_set_boxed_take_ownership (GValue        *value,
                                            gconstpointer  v_boxed);
-#endif
 gpointer g_value_get_boxed                (const GValue  *value);
 gpointer g_value_dup_boxed                (const GValue  *value);
 
