@@ -79,18 +79,22 @@ symbol GLIB_DISABLE_DEPRECATION_WARNINGS by using the commandline
 option <literal>-DGLIB_DISABLE_DEPRECATION_WARNINGS</literal>
 </para>
 <para>
-If you want to make <emphasis>really</emphasis> sure that your program
-doesn't use any deprecated functions, you can define the preprocessor
-symbol G_DISABLE_DEPRECATED by using the commandline option
-<literal>-DG_DISABLE_DEPRECATED</literal>. This will hide deprecated
-API from the compiler entirely, most likely causing your program's
-build to fail.
+The older deprecation mechanism of hiding deprecated interfaces
+entirely from the compiler by using the preprocessor symbol
+G_DISABLE_DEPRECATED is still used for deprecated macros,
+enumeration values, etc. To detect uses of these in your code,
+use the commandline option <literal>-DG_DISABLE_DEPRECATED</literal>.
 </para>
 
 <para>
 The recommended way of using GLib has always been to only include the
 toplevel headers <filename>glib.h</filename>,
 <filename>glib-object.h</filename>, <filename>gio.h</filename>.
+Starting with 2.32, GLib enforces this by generating an error
+when individual headers are directly included.
+</para>
+
+<para>
 Still, there are some exceptions; these headers have to be included
 separately:
 <filename>gmodule.h</filename>,
@@ -101,11 +105,6 @@ the <link linkend="glib-I18N">Internationalization section</link>),
 <filename>glib/gprintf.h</filename> and
 <filename>glib/gstdio.h</filename>
 (we don't want to pull in all of stdio).
-</para>
-
-<para>
-Starting with 2.32, GLib enforces this by generating an error
-when individual headers are directly included.
 </para>
 
 </refsect1>
