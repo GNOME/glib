@@ -73,13 +73,11 @@ void     g_tree_foreach         (GTree            *tree,
                                  GTraverseFunc	   func,
                                  gpointer	   user_data);
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED
 void     g_tree_traverse        (GTree            *tree,
                                  GTraverseFunc     traverse_func,
                                  GTraverseType     traverse_type,
                                  gpointer          user_data);
-#endif /* G_DISABLE_DEPRECATED */
 
 gpointer g_tree_search          (GTree            *tree,
                                  GCompareFunc      search_func,

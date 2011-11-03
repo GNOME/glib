@@ -173,7 +173,6 @@ void        g_io_channel_init   (GIOChannel    *channel);
 GIOChannel *g_io_channel_ref    (GIOChannel    *channel);
 void        g_io_channel_unref  (GIOChannel    *channel);
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_io_channel_read_for)
 GIOError    g_io_channel_read   (GIOChannel    *channel,
                                  gchar         *buf,
@@ -193,7 +192,6 @@ GIOError  g_io_channel_seek     (GIOChannel    *channel,
 
 GLIB_DEPRECATED_FOR(g_io_channel_shutdown)
 void      g_io_channel_close    (GIOChannel    *channel);
-#endif /* G_DISABLE_DEPRECATED */
 
 GIOStatus g_io_channel_shutdown (GIOChannel      *channel,
 				 gboolean         flush,

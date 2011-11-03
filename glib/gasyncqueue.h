@@ -44,13 +44,11 @@ void         g_async_queue_unlock               (GAsyncQueue      *queue);
 GAsyncQueue *g_async_queue_ref                  (GAsyncQueue      *queue);
 void         g_async_queue_unref                (GAsyncQueue      *queue);
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_async_queue_ref)
 void         g_async_queue_ref_unlocked         (GAsyncQueue      *queue);
 
 GLIB_DEPRECATED_FOR(g_async_queue_unref)
 void         g_async_queue_unref_and_unlock     (GAsyncQueue      *queue);
-#endif /* !G_DISABLE_DEPRECATED */
 
 void         g_async_queue_push                 (GAsyncQueue      *queue,
                                                  gpointer          data);

@@ -121,13 +121,12 @@ void g_warn_message           (const char     *domain,
                                int             line,
                                const char     *func,
                                const char     *warnexpr);
-#ifndef G_DISABLE_DEPRECATED
+GLIB_DEPRECATED
 void g_assert_warning         (const char *log_domain,
 			       const char *file,
 			       const int   line,
 		               const char *pretty_function,
 		               const char *expression) G_GNUC_NORETURN;
-#endif /* !G_DISABLE_DEPRECATED */
 
 
 #ifndef G_LOG_DOMAIN

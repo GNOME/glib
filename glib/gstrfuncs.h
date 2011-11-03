@@ -167,17 +167,10 @@ gchar*                g_ascii_strdown     (const gchar *str,
 gchar*                g_ascii_strup       (const gchar *str,
 					   gssize       len) G_GNUC_MALLOC;
 
-#ifndef G_DISABLE_DEPRECATED
-
-/* The following four functions are deprecated and will be removed in
- * the next major release. They use the locale-specific tolower and
- * toupper, which is almost never the right thing.
- */
 
 GLIB_DEPRECATED
 gint                  g_strcasecmp     (const gchar *s1,
                                         const gchar *s2);
-
 GLIB_DEPRECATED
 gint                  g_strncasecmp    (const gchar *s1,
                                         const gchar *s2,
@@ -187,7 +180,6 @@ gchar*                g_strdown        (gchar       *string);
 GLIB_DEPRECATED
 gchar*                g_strup          (gchar       *string);
 
-#endif /* G_DISABLE_DEPRECATED */
 
 /* String utility functions that return a newly allocated string which
  * ought to be freed with g_free from the caller at some point.

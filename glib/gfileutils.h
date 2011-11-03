@@ -155,13 +155,11 @@ gint     g_mkdir_with_parents (const gchar *pathname,
 gboolean     g_path_is_absolute (const gchar *file_name);
 const gchar *g_path_skip_root   (const gchar *file_name);
 
-#ifndef G_DISABLE_DEPRECATED
-
 GLIB_DEPRECATED_FOR(g_path_get_basename)
 const gchar *g_basename         (const gchar *file_name);
+#ifndef G_DISABLE_DEPRECATED
 #define g_dirname g_path_get_dirname
-
-#endif /* G_DISABLE_DEPRECATED */
+#endif
 
 #ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32

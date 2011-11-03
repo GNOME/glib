@@ -40,8 +40,6 @@
 #include <unistd.h>
 #endif
 
-#undef G_DISABLE_DEPRECATED
-
 #include "giochannel.h"
 
 #include "gstrfuncs.h"

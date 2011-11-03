@@ -211,10 +211,10 @@ gchar *g_format_size_full   (guint64          size,
                              GFormatSizeFlags flags);
 gchar *g_format_size        (guint64          size);
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_format_size)
 gchar *g_format_size_for_display (goffset size);
 
+#ifndef G_DISABLE_DEPRECATED
 /**
  * GVoidFunc:
  *

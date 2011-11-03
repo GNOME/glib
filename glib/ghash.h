@@ -111,11 +111,9 @@ GHashTable* g_hash_table_ref               (GHashTable     *hash_table);
 void        g_hash_table_unref             (GHashTable     *hash_table);
 
 #ifndef G_DISABLE_DEPRECATED
-
 #define g_hash_table_freeze(hash_table) ((void)0)
 #define g_hash_table_thaw(hash_table) ((void)0)
-
-#endif /* G_DISABLE_DEPRECATED */
+#endif
 
 /* Hash Functions
  */

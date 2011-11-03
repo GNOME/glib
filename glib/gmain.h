@@ -407,11 +407,10 @@ void     g_source_add_child_source    (GSource        *source,
 void     g_source_remove_child_source (GSource        *source,
 				       GSource        *child_source);
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_source_get_time)
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
-#endif
+
 gint64   g_source_get_time         (GSource        *source);
 
  /* void g_source_connect_closure (GSource        *source,
