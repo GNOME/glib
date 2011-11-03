@@ -65,6 +65,7 @@
 #include "gbacktrace.h"
 #include "gcharset.h"
 #include "gconvert.h"
+#include "genviron.h"
 #include "gmem.h"
 #include "gprintfint.h"
 #include "gtestutils.h"
@@ -969,6 +970,11 @@ format_unsigned (gchar  *buf,
 
 #define	ALERT_LEVELS		(G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING)
 
+/* these are emitted by the default log handler */
+#define DEFAULT_LEVELS (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_MESSAGE)
+/* these are filtered by G_MESSAGES_DEBUG by the default log handler */
+#define INFO_LEVELS (G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG)
+
 static int
 mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
 		GLogLevelFlags log_level)
@@ -1143,6 +1149,26 @@ escape_string (GString *string)
  * domain and log level combination. It outputs the message to stderr
  * or stdout and if the log level is fatal it calls abort().
  *
+ * The behavior of this log handler can be influenced by a number of
+ * environment variables:
+ * <variablelist>
+ *   <varlistentry>
+ *     <term><envar>G_MESSAGES_PREFIXED</envar></term>
+ *     <listitem>
+ *       A :-separated list of log levels for which messages should
+ *       be prefixed by the program name and PID of the aplication.
+ *     </listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term><envar>G_MESSAGES_DEBUG</envar></term>
+ *     <listitem>
+ *       A space-separated list of log domains for which debug and
+ *       informational messages are printed. By default these
+ *       messages are not printed.
+ *     </listitem>
+ *   </varlistentry>
+ * </variablelist>
+ *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
  * the rest.
@@ -1156,7 +1182,18 @@ g_log_default_handler (const gchar   *log_domain,
   gchar level_prefix[STRING_BUFFER_SIZE], *string;
   GString *gstring;
   int fd;
+  const gchar *domains;
 
+  if ((log_level & DEFAULT_LEVELS) || (log_level >> G_LOG_LEVEL_USER_SHIFT))
+    goto emit;
+
+  domains = g_getenv ("G_MESSAGES_DEBUG");
+  if (((log_level & INFO_LEVELS) == 0) ||
+      domains == NULL ||
+      (strcmp (domains, "all") != 0 && !strstr (domains, log_domain)))
+    return;
+
+ emit:
   /* we can be called externally with recursion for whatever reason */
   if (log_level & G_LOG_FLAG_RECURSION)
     {

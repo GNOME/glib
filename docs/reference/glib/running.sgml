@@ -54,7 +54,39 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   <para>
     A list of log levels for which messages should be prefixed by the 
     program name and PID of the application. The default is to prefix
-    everything except <literal>G_LOG_LEVEL_MESSAGE</literal> and <literal>G_LOG_LEVEL_INFO</literal>. 
+    everything except <literal>G_LOG_LEVEL_MESSAGE</literal> and
+    <literal>G_LOG_LEVEL_INFO</literal>.
+    The possible values are
+    <literal>error</literal>,
+    <literal>warning</literal>,
+    <literal>critical</literal>,
+    <literal>message</literal>,
+    <literal>info</literal> and
+    <literal>debug</literal>.
+    You can also use the special values
+    <literal>all</literal> and
+    <literal>help</literal>.
+  </para>
+  <para>
+    This environment variable only affects the GLib log handler,
+    g_log_default_handler().
+  </para>
+</formalpara>
+
+<formalpara id="G_MESSAGES_DEBUG">
+  <title><envar>G_MESSAGES_DEBUG</envar></title>
+
+  <para>
+    A space-separated list of log domains for which informational
+    and debug messages should be printed. By default, these
+    messages are not printed.
+  </para>
+  <para>
+    You can also use the special value <literal>all</literal>.
+  </para>
+  <para>
+    This environment variable only affects the GLib log handler,
+    g_log_default_handler().
   </para>
 </formalpara>
 

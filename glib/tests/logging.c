@@ -100,16 +100,37 @@ test_default_handler (void)
       exit (0);
     }
   g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout_unmatched ("*INFO*message5*");
+
+  g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      g_log ("bar", G_LOG_LEVEL_INFO, "message5");
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*INFO*message5*");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
-      g_debug ("message6");
+      g_log ("baz", G_LOG_LEVEL_DEBUG, "message6");
       exit (0);
     }
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*message6*");
 
+  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
+      g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
+      g_log ("baz", G_LOG_LEVEL_DEBUG, "6");
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*DEBUG*6*6*6*");
+
+  g_unsetenv ("G_MESSAGES_DEBUG");
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
       g_log (G_LOG_DOMAIN, 1<<10, "message7");
