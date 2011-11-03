@@ -42,8 +42,6 @@
 #endif
 #include <glib/gstdio.h>
 
-#undef G_DISABLE_DEPRECATED
-
 #ifdef G_OS_UNIX
 #include "gdesktopappinfo.h"
 #endif

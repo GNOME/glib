@@ -869,7 +869,6 @@ void                    g_file_mount_mountable            (GFile                
 GFile *                 g_file_mount_mountable_finish     (GFile                      *file,
 							   GAsyncResult               *result,
 							   GError                    **error);
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_file_unmount_mountable_with_operation)
 void                    g_file_unmount_mountable          (GFile                      *file,
                                                            GMountUnmountFlags          flags,
@@ -881,7 +880,6 @@ GLIB_DEPRECATED_FOR(g_file_unmount_mountable_with_operation_finish)
 gboolean                g_file_unmount_mountable_finish   (GFile                      *file,
                                                            GAsyncResult               *result,
                                                            GError                    **error);
-#endif
 void                    g_file_unmount_mountable_with_operation (GFile                *file,
 							   GMountUnmountFlags          flags,
 							   GMountOperation            *mount_operation,
@@ -891,7 +889,6 @@ void                    g_file_unmount_mountable_with_operation (GFile          
 gboolean                g_file_unmount_mountable_with_operation_finish (GFile         *file,
 							   GAsyncResult               *result,
 							   GError                    **error);
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_file_eject_mountable_with_operation)
 void                    g_file_eject_mountable            (GFile                      *file,
                                                            GMountUnmountFlags          flags,
@@ -903,7 +900,6 @@ GLIB_DEPRECATED_FOR(g_file_eject_mountable_with_operation_finish)
 gboolean                g_file_eject_mountable_finish     (GFile                      *file,
                                                            GAsyncResult               *result,
                                                            GError                    **error);
-#endif
 void                    g_file_eject_mountable_with_operation (GFile                  *file,
 							   GMountUnmountFlags          flags,
 							   GMountOperation            *mount_operation,

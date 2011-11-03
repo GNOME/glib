@@ -32,8 +32,6 @@
 #include <crt_externs.h>
 #endif
 
-#undef G_DISABLE_DEPRECATED
-
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
 #include "gfile.h"

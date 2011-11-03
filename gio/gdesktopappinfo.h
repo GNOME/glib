@@ -78,6 +78,8 @@ void             g_desktop_app_info_set_desktop_env   (const char      *desktop_
  */
 #define G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME "gio-desktop-app-info-lookup"
 
+#endif /* G_DISABLE_DEPRECATED */
+
 /**
  * GDesktopAppInfoLookup:
  *
@@ -95,12 +97,12 @@ struct _GDesktopAppInfoLookupIface
                                              const char            *uri_scheme);
 };
 
+GLIB_DEPRECATED
 GType     g_desktop_app_info_lookup_get_type                   (void) G_GNUC_CONST;
 
+GLIB_DEPRECATED
 GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
                                                                 const char            *uri_scheme);
-
-#endif /* G_DISABLE_DEPRECATED */
 
 /**
  * GDesktopAppLaunchCallback:

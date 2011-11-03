@@ -183,7 +183,6 @@ void     g_volume_mount                 (GVolume              *volume,
 gboolean g_volume_mount_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
-#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_volume_eject_with_operation)
 void     g_volume_eject                 (GVolume              *volume,
                                          GMountUnmountFlags    flags,
@@ -195,7 +194,6 @@ GLIB_DEPRECATED_FOR(g_volume_eject_with_operation_finish)
 gboolean g_volume_eject_finish          (GVolume              *volume,
                                          GAsyncResult         *result,
                                          GError              **error);
-#endif
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
