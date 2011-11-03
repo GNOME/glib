@@ -72,6 +72,12 @@ closed_cb (GDBusConnection  *c G_GNUC_UNUSED,
 {
   const TestData *td = test_data;
 
+  if (error == NULL)
+    g_debug ("closed (%d, no error)", remote_peer_vanished);
+  else
+    g_debug ("closed (%d, %s %d \"%s\")", remote_peer_vanished,
+             g_quark_to_string (error->domain), error->code, error->message);
+
   g_assert_cmpint (remote_peer_vanished, ==, (td->who_closes == REMOTE));
   g_assert_cmpint ((error == NULL), ==, (td->who_closes == LOCAL));
 
@@ -86,12 +92,27 @@ close_async_cb (GObject *source G_GNUC_UNUSED,
                 GAsyncResult *res G_GNUC_UNUSED,
                 gpointer nil G_GNUC_UNUSED)
 {
+  GError *error = NULL;
+
+  if (g_dbus_connection_close_finish (G_DBUS_CONNECTION (source),
+                                      res,
+                                      &error))
+    {
+      g_debug ("closed connection");
+    }
+  else
+    {
+      g_warning ("failed to close connection: %s (%s #%d)",
+                 error->message, g_quark_to_string (error->domain),
+                 error->code);
+    }
 }
 
 static void
 test_exit_on_close (gconstpointer test_data)
 {
   const TestData *td = test_data;
+  GTestTrapFlags silence;
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
@@ -102,7 +123,12 @@ test_exit_on_close (gconstpointer test_data)
   g_unsetenv ("DISPLAY");
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_verbose ())
+    silence = 0;
+  else
+    silence = G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR;
+
+  if (g_test_trap_fork (0, silence))
     {
       GDBusConnection *c;
 
