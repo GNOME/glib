@@ -247,6 +247,7 @@ deprecatedinclude_HEADERS = \
 	deprecated/gallocator.h		\
 	deprecated/gcache.h		\
 	deprecated/gcompletion.h	\
+	deprecated/gmain.h		\
 	deprecated/grel.h		\
 	deprecated/gthread.h
 

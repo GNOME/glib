@@ -101,6 +101,7 @@
 #include <glib/deprecated/gallocator.h>
 #include <glib/deprecated/gcache.h>
 #include <glib/deprecated/gcompletion.h>
+#include <glib/deprecated/gmain.h>
 #include <glib/deprecated/grel.h>
 #include <glib/deprecated/gthread.h>
 
