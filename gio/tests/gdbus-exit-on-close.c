@@ -167,6 +167,7 @@ test_exit_on_close (gconstpointer test_data)
                                            &error);
           g_assert_no_error (error);
           g_assert (v != NULL);
+          g_variant_unref (v);
 
           g_dbus_connection_close (c, NULL, close_async_cb, NULL);
         }
