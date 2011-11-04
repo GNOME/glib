@@ -766,14 +766,6 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
       return FALSE;
     }
 
-  if (stat_buf.st_size == 0)
-    {
-      g_set_error_literal (error, G_KEY_FILE_ERROR,
-                           G_KEY_FILE_ERROR_PARSE,
-                           _("File is empty"));
-      return FALSE;
-    }
-
   if (key_file->approximate_size > 0)
     {
       g_key_file_clear (key_file);
