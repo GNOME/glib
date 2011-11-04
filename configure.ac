@@ -2652,7 +2652,7 @@ case $host in
 	G_LIBS_EXTRA="-luser32 -lkernel32"
     ;;
   *-*-mingw*)
-	G_LIBS_EXTRA="-lws2_32 -lole32"
+	G_LIBS_EXTRA="-lws2_32 -lole32 -lwinmm"
     ;;
   *)
 	G_LIBS_EXTRA=""
