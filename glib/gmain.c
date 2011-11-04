@@ -1974,10 +1974,9 @@ g_get_real_time (void)
 }
 
 #ifdef G_OS_WIN32
-G_LOCK_DEFINE_STATIC (g_win32_clock);
 static ULONGLONG (*g_GetTickCount64) (void) = NULL;
-static guint32 g_win32_last_ticks32 = 0;
 static guint32 g_win32_tick_epoch = 0;
+
 G_GNUC_INTERNAL void
 g_clock_win32_init (void)
 {
@@ -1987,7 +1986,7 @@ g_clock_win32_init (void)
   kernel32 = GetModuleHandle ("KERNEL32.DLL");
   if (kernel32 != NULL)
     g_GetTickCount64 = (void *) GetProcAddress (kernel32, "GetTickCount64");
-  g_win32_last_ticks32 = GetTickCount();
+  g_win32_tick_epoch = ((guint32)GetTickCount()) >> 31;
 }
 #endif
 
@@ -2126,26 +2125,35 @@ g_get_monotonic_time (void)
     }
   else
     {
-      G_LOCK (g_win32_clock);
+      guint32 epoch;
 
+      epoch = g_atomic_int_get (&g_win32_tick_epoch);
+
+      /* Must read ticks after the epoch, then we're guaranteed
+	 that the ticks value we read is higher or equal to any
+	 previous ones that lead to the writing of the epoch. */
       ticks32 = timeGetTime();
 
-      /* We have wrapped the 32bit counter, increase the epoch.
+      /* We store the msb of the current time as the lsb
+       * of the epoch. Comparing these bits lets us detect when
+       * the 32bit counter has wrapped so we can increase the
+       * epoch.
        * This will work as long as this function is called at
-       * least once every ~50 days, which is the wrap time of 
-       * a 32bit msec counter. I think this is pretty likely.
+       * least once every ~24 days, which is half the wrap time
+       * of a 32bit msec counter. I think this is pretty likely.
        *
        * Note that g_win32_tick_epoch is a process local state,
        * so the monotonic clock will not be the same between
        * processes.
        */
-      if (ticks32 < g_win32_last_ticks32)
-	g_win32_tick_epoch++;
+      if ((ticks32 >> 31) != (epoch & 1))
+	{
+	  epoch++;
+	  g_atomic_int_set (&g_win32_tick_epoch, epoch);
+	}
 
-      ticks = (guint64)ticks32 | ((guint64)g_win32_tick_epoch) << 32;
-      g_win32_last_ticks32 = ticks32;
 
-      G_UNLOCK (g_win32_clock);
+      ticks = (guint64)ticks32 | ((guint64)epoch) << 31;
     }
 
   return ticks * 1000;
