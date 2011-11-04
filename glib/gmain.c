@@ -1973,6 +1973,24 @@ g_get_real_time (void)
   return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
 }
 
+#ifdef G_OS_WIN32
+G_LOCK_DEFINE_STATIC (g_win32_clock);
+static ULONGLONG (*g_GetTickCount64) (void) = NULL;
+static guint32 g_win32_last_ticks32 = 0;
+static guint32 g_win32_tick_epoch = 0;
+G_GNUC_INTERNAL void
+g_clock_win32_init (void)
+{
+  HMODULE kernel32;
+
+  g_GetTickCount64 = NULL;
+  kernel32 = GetModuleHandle ("KERNEL32.DLL");
+  if (kernel32 != NULL)
+    g_GetTickCount64 = (void *) GetProcAddress (kernel32, "GetTickCount64");
+  g_win32_last_ticks32 = GetTickCount();
+}
+#endif
+
 /**
  * g_get_monotonic_time:
  *
@@ -1989,7 +2007,9 @@ g_get_real_time (void)
  * On Windows, "limitations of the OS kernel" is a rather substantial
  * statement.  Depending on the configuration of the system, the wall
  * clock time is updated as infrequently as 64 times a second (which
- * is approximately every 16ms).
+ * is approximately every 16ms). Also, the on XP (not on Vista or later)
+ * the monitonic clock is locally monotonic, but may differ in exact
+ * value between processes due to timer wrap handling.
  *
  * Returns: the monotonic time, in microseconds
  *
@@ -2032,7 +2052,42 @@ g_get_monotonic_time (void)
 
   return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
 
-#else /* !HAVE_CLOCK_GETTIME */
+#elif defined (G_OS_WIN32)
+  guint64 ticks;
+
+  if (g_GetTickCount64 != NULL)
+    {
+      ticks = g_GetTickCount64 ();
+    }
+  else
+    {
+      guint32 ticks32;
+
+      G_LOCK (g_win32_clock);
+
+      ticks32 = GetTickCount();
+
+      /* We have wrapped the 32bit counter, increase the epoch.
+       * This will work as long as this function is called at
+       * least once every ~50 days, which is the wrap time of 
+       * a 32bit msec counter. I think this is pretty likely.
+       *
+       * Note that g_win32_tick_epoch is a process local state,
+       * so the monotonic clock will not be the same between
+       * processes.
+       */
+      if (ticks32 < g_win32_last_ticks32)
+	g_win32_tick_epoch++;
+
+      ticks = (guint64)ticks32 | ((guint64)g_win32_tick_epoch) << 32;
+      g_win32_last_ticks32 = ticks32;
+
+      G_UNLOCK (g_win32_clock);
+    }
+
+  return ticks * 1000;
+
+#else /* !HAVE_CLOCK_GETTIME && ! G_OS_WIN32*/
 
   /* It may look like we are discarding accuracy on Windows (since its
    * current time is expressed in 100s of nanoseconds) but according to

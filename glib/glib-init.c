@@ -229,6 +229,7 @@ DllMain (HINSTANCE hinstDLL,
     {
     case DLL_PROCESS_ATTACH:
       glib_dll = hinstDLL;
+      g_clock_win32_init ();
       g_thread_win32_init ();
       glib_init ();
       break;

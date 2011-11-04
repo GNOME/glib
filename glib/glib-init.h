@@ -33,6 +33,7 @@ GLIB_VAR gboolean g_mem_gc_friendly;
 
 G_GNUC_INTERNAL void g_thread_win32_thread_detach (void);
 G_GNUC_INTERNAL void g_thread_win32_init (void);
+G_GNUC_INTERNAL void g_clock_win32_init (void);
 G_GNUC_INTERNAL extern HMODULE glib_dll;
 #endif
 
