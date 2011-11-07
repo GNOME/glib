@@ -1667,6 +1667,7 @@ parse_gschema_files (gchar    **files,
         }
 
       context = g_markup_parse_context_new (&parser,
+                                            G_MARKUP_TREAT_CDATA_AS_TEXT |
                                             G_MARKUP_PREFIX_ERROR_POSITION,
                                             &state, NULL);
 
