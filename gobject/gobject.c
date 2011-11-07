@@ -1171,7 +1171,7 @@ object_set_property (GObject             *object,
   if (enable_diagnostic[0] == '1')
     {
       if (pspec->flags & G_PARAM_DEPRECATED)
-        g_warning ("The property %s::%s is deprecated and shouldn't be used "
+        g_warning ("The property %s:%s is deprecated and shouldn't be used "
                    "anymore. It will be removed in a future version.",
                    G_OBJECT_TYPE_NAME (object), pspec->name);
     }

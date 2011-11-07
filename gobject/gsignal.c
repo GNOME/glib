@@ -180,6 +180,7 @@ static	      gboolean		signal_emit_unlocked_R	(SignalNode	 *node,
 							 GValue		 *return_value,
 							 const GValue	 *instance_and_params);
 static const gchar *            type_debug_name         (GType            type);
+static void                     node_check_deprecated   (const SignalNode *node);
 
 
 /* --- structures --- */
@@ -205,7 +206,7 @@ struct _SignalNode
   
   /* reinitializable portion */
   guint		     test_class_offset : 12;
-  guint              flags : 8;
+  guint              flags : 9;
   guint              n_params : 8;
   GType		    *param_types; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
   GType		     return_type; /* mangled with G_SIGNAL_TYPE_STATIC_SCOPE flag */
@@ -929,6 +930,9 @@ g_signal_add_emission_hook (guint               signal_id,
       g_hook_list_init (node->emission_hooks, sizeof (SignalHook));
       node->emission_hooks->finalize_hook = signal_finalize_hook;
     }
+
+  node_check_deprecated (node);
+
   hook = g_hook_alloc (node->emission_hooks);
   hook->data = hook_data;
   hook->func = (gpointer) hook_func;
@@ -1804,6 +1808,7 @@ g_signal_override_class_closure (guint     signal_id,
   
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
+  node_check_deprecated (node);
   if (!g_type_is_a (instance_type, node->itype))
     g_warning ("%s: type `%s' cannot be overridden for signal id `%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
   else
@@ -2229,6 +2234,29 @@ g_signal_connect_closure (gpointer     instance,
   return handler_seq_no;
 }
 
+static void
+node_check_deprecated (const SignalNode *node)
+{
+  static const gchar * g_enable_diagnostic = NULL;
+
+  if (G_UNLIKELY (!g_enable_diagnostic))
+    {
+      g_enable_diagnostic = g_getenv ("G_ENABLE_DIAGNOSTIC");
+      if (!g_enable_diagnostic)
+        g_enable_diagnostic = "0";
+    }
+
+  if (g_enable_diagnostic[0] == '1')
+    {
+      if (node->flags & G_SIGNAL_DEPRECATED)
+        {
+          g_warning ("The signal %s::%s is deprecated and shouldn't be used "
+                     "anymore. It will be removed in a future version.",
+                     type_debug_name (node->itype), node->name);
+        }
+    }
+}
+
 /**
  * g_signal_connect_data:
  * @instance: the instance to connect to.
@@ -2273,6 +2301,8 @@ g_signal_connect_data (gpointer       instance,
   if (signal_id)
     {
       SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
+
+      node_check_deprecated (node);
 
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
 	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
