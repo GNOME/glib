@@ -119,7 +119,8 @@ static const SchemaTest tests[] = {
   { "flags-with-enum-attr",         NULL, "*<enum id='flags'> not (yet) defined*"               },
   { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              },
   { "inherit-gettext-domain",       NULL, NULL                                                  },
-  { "range-type-test",              NULL, NULL                                                  }
+  { "range-type-test",              NULL, NULL                                                  },
+  { "cdata",                        NULL, NULL                                                  }
 };
 
 
