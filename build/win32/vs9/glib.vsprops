@@ -128,6 +128,7 @@ mkdir $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\..\glib\deprecated\gallocator.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\..\glib\deprecated\gcache.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\..\glib\deprecated\gcompletion.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
+copy ..\..\..\glib\deprecated\gmain.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\..\glib\deprecated\grel.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\..\glib\deprecated\gthread.h $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 

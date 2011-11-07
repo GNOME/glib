@@ -176,6 +176,8 @@ copy ..\..\..\glib\deprecated\gcache.h $(CopyDir)\include\glib-$(ApiVersion)\gli
 
 copy ..\..\..\glib\deprecated\gcompletion.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
+copy ..\..\..\glib\deprecated\gmain.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
+
 copy ..\..\..\glib\deprecated\grel.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 
 copy ..\..\..\glib\deprecated\gthread.h $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
