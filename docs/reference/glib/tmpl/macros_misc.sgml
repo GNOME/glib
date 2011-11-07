@@ -284,6 +284,13 @@ new enough to support custom deprecation messages.
 See the GNU C documentation for details.
 </para>
 
+<para>
+Note that if <literal>f</literal> is a macro, it will be expanded in
+the warning message. You can enclose it in quotes to prevent this.
+(The quotes will show up in the warning, but it's better than showing
+the macro expansion.)
+</para>
+
 @f: the intended replacement for the deprecated symbol, such as the name of a
     function
 @Since: 2.26
