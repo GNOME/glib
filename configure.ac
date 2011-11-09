@@ -913,6 +913,8 @@ AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
  #endif
 ])
 
+AC_CHECK_HEADERS([xlocale.h])
+
 # check for structure fields
 AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
 AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename, struct statfs.f_bavail],,, [#include <sys/types.h>

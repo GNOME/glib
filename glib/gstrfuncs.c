@@ -39,6 +39,11 @@
 #include <errno.h>
 #include <ctype.h>              /* For tolower() */
 
+#ifdef HAVE_XLOCALE_H
+/* Needed on BSD/OS X for e.g. strtod_l */
+#include <xlocale.h>
+#endif
+
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
