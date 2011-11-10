@@ -704,6 +704,19 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 
   if (bytes_read == -1)
     {
+      if (G_UNLIKELY (_g_dbus_debug_transport ()))
+        {
+          _g_dbus_debug_print_lock ();
+          g_print ("========================================================================\n"
+                   "GDBus-debug:Transport:\n"
+                   "  ---- READ ERROR on stream of type %s:\n"
+                   "  ---- %s %d: %s\n",
+                   g_type_name (G_TYPE_FROM_INSTANCE (g_io_stream_get_input_stream (worker->stream))),
+                   g_quark_to_string (error->domain), error->code,
+                   error->message);
+          _g_dbus_debug_print_unlock ();
+        }
+
       /* Every async read that uses this callback uses worker->cancellable
        * as its GCancellable. worker->cancellable gets cancelled if and only
        * if the GDBusConnection tells us to close (either via
