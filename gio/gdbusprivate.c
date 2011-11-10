@@ -704,6 +704,12 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 
   if (bytes_read == -1)
     {
+      /* Every async read that uses this callback uses worker->cancellable
+       * as its GCancellable. worker->cancellable gets cancelled if and only
+       * if the GDBusConnection tells us to close (either via
+       * _g_dbus_worker_stop, which is called on last-unref, or directly),
+       * so a cancelled read must mean our connection was closed locally.
+       */
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         _g_dbus_worker_emit_disconnected (worker, FALSE, NULL);
       else
