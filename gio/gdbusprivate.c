@@ -387,6 +387,8 @@ struct GDBusWorker
   GList                              *write_pending_flushes;
   /* list of CloseData, protected by write_lock */
   GList                              *pending_close_attempts;
+  /* no lock - only used from the worker thread */
+  gboolean                            close_expected;
 };
 
 static void _g_dbus_worker_unref (GDBusWorker *worker);
@@ -668,8 +670,18 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
        * if the GDBusConnection tells us to close (either via
        * _g_dbus_worker_stop, which is called on last-unref, or directly),
        * so a cancelled read must mean our connection was closed locally.
+       *
+       * If we're closing, other errors are possible - notably,
+       * G_IO_ERROR_CLOSED can be seen if we close the stream with an async
+       * read in-flight. It seems sensible to treat all read errors during
+       * closing as an expected thing that doesn't trip exit-on-close.
+       *
+       * Because close_expected can't be set until we get into the worker
+       * thread, but the cancellable is signalled sooner (from another
+       * thread), we do still need to check the error.
        */
-      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+      if (worker->close_expected ||
+          g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         _g_dbus_worker_emit_disconnected (worker, FALSE, NULL);
       else
         _g_dbus_worker_emit_disconnected (worker, TRUE, error);
@@ -809,6 +821,10 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 static void
 _g_dbus_worker_do_read_unlocked (GDBusWorker *worker)
 {
+  /* Note that we do need to keep trying to read even if close_expected is
+   * true, because only failing a read causes us to signal 'closed'.
+   */
+
   /* if bytes_wanted is zero, it means start reading a message */
   if (worker->read_buffer_bytes_wanted == 0)
     {
@@ -1399,6 +1415,7 @@ maybe_write_next_message (GDBusWorker *worker)
   /* if we want to close the connection, that takes precedence */
   if (worker->pending_close_attempts != NULL)
     {
+      worker->close_expected = TRUE;
       worker->output_pending = TRUE;
 
       g_io_stream_close_async (worker->stream, G_PRIORITY_DEFAULT,
@@ -1641,6 +1658,9 @@ _g_dbus_worker_close (GDBusWorker         *worker,
       (cancellable == NULL ? NULL : g_object_ref (cancellable));
   close_data->result = (result == NULL ? NULL : g_object_ref (result));
 
+  /* Don't set worker->close_expected here - we're in the wrong thread.
+   * It'll be set before the actual close happens.
+   */
   g_cancellable_cancel (worker->cancellable);
   schedule_write_in_worker_thread (worker, NULL, close_data);
 }
