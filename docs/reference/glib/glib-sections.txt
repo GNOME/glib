@@ -2382,8 +2382,10 @@ g_ptr_array_foreach
 <SECTION>
 <TITLE>Byte Arrays</TITLE>
 <FILE>arrays_byte</FILE>
+<SUBSECTION>
 GByteArray
 g_byte_array_new
+g_byte_array_new_take
 g_byte_array_sized_new
 g_byte_array_ref
 g_byte_array_unref
@@ -2396,7 +2398,24 @@ g_byte_array_sort
 g_byte_array_sort_with_data
 g_byte_array_set_size
 g_byte_array_free
+g_byte_array_free_to_bytes
 
+<SUBSECTION>
+GBytes
+g_bytes_new
+g_bytes_new_take
+g_bytes_new_static
+g_bytes_new_with_free_func
+g_bytes_new_from_bytes
+g_bytes_get_data
+g_bytes_get_size
+g_bytes_hash
+g_bytes_equal
+g_bytes_compare
+g_bytes_ref
+g_bytes_unref
+g_bytes_unref_to_data
+g_bytes_unref_to_array
 </SECTION>
 
 <SECTION>

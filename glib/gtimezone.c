@@ -33,7 +33,7 @@
 #include "gstrfuncs.h"
 #include "ghash.h"
 #include "gthread.h"
-#include "gbufferprivate.h"
+#include "gbytes.h"
 #include "gslice.h"
 
 /**
@@ -118,7 +118,7 @@ struct _GTimeZone
 {
   gchar   *name;
 
-  GBuffer *zoneinfo;
+  GBytes *zoneinfo;
 
   const struct tzhead *header;
   const struct ttinfo *infos;
@@ -169,7 +169,7 @@ again:
         }
 
       if (tz->zoneinfo)
-        g_buffer_unref (tz->zoneinfo);
+        g_bytes_unref (tz->zoneinfo);
 
       g_free (tz->name);
 
@@ -269,7 +269,7 @@ parse_constant_offset (const gchar *name,
     }
 }
 
-static GBuffer *
+static GBytes *
 zone_for_constant_offset (const gchar *name)
 {
   const gchar fake_zoneinfo_headers[] =
@@ -296,7 +296,7 @@ zone_for_constant_offset (const gchar *name)
   fake->info.tt_abbrind = 0;
   strcpy (fake->abbr, name);
 
-  return g_buffer_new_take_data (fake, sizeof *fake);
+  return g_bytes_new_take (fake, sizeof *fake);
 }
 
 /* Construction {{{1 */
@@ -345,6 +345,7 @@ GTimeZone *
 g_time_zone_new (const gchar *identifier)
 {
   GTimeZone *tz;
+  GMappedFile *file;
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
@@ -380,19 +381,27 @@ g_time_zone_new (const gchar *identifier)
           else
             filename = g_strdup ("/etc/localtime");
 
-          tz->zoneinfo = (GBuffer *) g_mapped_file_new (filename, FALSE, NULL);
+          file = g_mapped_file_new (filename, FALSE, NULL);
+          if (file != NULL)
+            {
+              tz->zoneinfo = g_bytes_new_with_free_func (g_mapped_file_get_contents (file),
+                                                         g_mapped_file_get_length (file),
+                                                         (GDestroyNotify)g_mapped_file_unref,
+                                                         g_mapped_file_ref (file));
+              g_mapped_file_unref (file);
+            }
           g_free (filename);
         }
 
       if (tz->zoneinfo != NULL)
         {
-          const struct tzhead *header = tz->zoneinfo->data;
-          gsize size = tz->zoneinfo->size;
+          const struct tzhead *header = g_bytes_get_data (tz->zoneinfo);
+          gsize size = g_bytes_get_size (tz->zoneinfo);
 
           /* we only bother to support version 2 */
           if (size < sizeof (struct tzhead) || memcmp (header, "TZif2", 5))
             {
-              g_buffer_unref (tz->zoneinfo);
+              g_bytes_unref (tz->zoneinfo);
               tz->zoneinfo = NULL;
             }
           else

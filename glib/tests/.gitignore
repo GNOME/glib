@@ -8,6 +8,7 @@ atomic
 base64
 bitlock
 bookmarkfile
+bytes
 cache
 checksum
 collate

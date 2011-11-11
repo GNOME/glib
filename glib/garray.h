@@ -35,6 +35,7 @@
 
 G_BEGIN_DECLS
 
+typedef struct _GBytes          GBytes;
 typedef struct _GArray		GArray;
 typedef struct _GByteArray	GByteArray;
 typedef struct _GPtrArray	GPtrArray;
@@ -150,9 +151,12 @@ void       g_ptr_array_foreach            (GPtrArray        *array,
  */
 
 GByteArray* g_byte_array_new               (void);
+GByteArray* g_byte_array_new_take          (guint8           *data,
+                                            gsize             len);
 GByteArray* g_byte_array_sized_new         (guint             reserved_size);
 guint8*     g_byte_array_free              (GByteArray       *array,
 					    gboolean          free_segment);
+GBytes*     g_byte_array_free_to_bytes     (GByteArray       *array);
 GByteArray *g_byte_array_ref               (GByteArray       *array);
 void        g_byte_array_unref             (GByteArray       *array);
 GByteArray* g_byte_array_append            (GByteArray       *array,

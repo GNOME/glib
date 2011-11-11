@@ -24,7 +24,7 @@
 #include <glib/gtestutils.h>
 #include <glib/gbitlock.h>
 #include <glib/gatomic.h>
-#include <glib/gbufferprivate.h>
+#include <glib/gbytes.h>
 #include <glib/gslice.h>
 #include <glib/gmem.h>
 #include <string.h>
@@ -61,7 +61,7 @@ struct _GVariant
   {
     struct
     {
-      GBuffer *buffer;
+      GBytes *bytes;
       gconstpointer data;
     } serialised;
 
@@ -133,16 +133,16 @@ struct _GVariant
  *                never be changed.  It is therefore valid to access
  *                them without holding a lock.
  *
- *     .buffer: the #GBuffer that contains the memory pointed to by
+ *     .bytes:  the #GBytes that contains the memory pointed to by
  *              .data, or %NULL if .data is %NULL.  In the event that
  *              the instance was deserialised from another instance,
- *              then the buffer will be shared by both of them.  When
+ *              then the bytes will be shared by both of them.  When
  *              the instance is freed, this reference must be released
- *              with g_buffer_unref().
+ *              with g_bytes_unref().
  *
  *     .data: the serialised data (of size 'size') of the instance.
  *            This pointer should not be freed or modified in any way.
- *            #GBuffer is responsible for memory management.
+ *            #GBytes is responsible for memory management.
  *
  *            This pointer may be %NULL in two cases:
  *
@@ -438,7 +438,7 @@ g_variant_ensure_serialised (GVariant *value)
 
   if (~value->state & STATE_SERIALISED)
     {
-      GBuffer *buffer;
+      GBytes *bytes;
       gpointer data;
 
       g_variant_ensure_size (value);
@@ -447,9 +447,9 @@ g_variant_ensure_serialised (GVariant *value)
 
       g_variant_release_children (value);
 
-      buffer = g_buffer_new_take_data (data, value->size);
-      value->contents.serialised.data = buffer->data;
-      value->contents.serialised.buffer = buffer;
+      bytes = g_bytes_new_take (data, value->size);
+      value->contents.serialised.data = g_bytes_get_data (bytes);
+      value->contents.serialised.bytes = bytes;
       value->state |= STATE_SERIALISED;
     }
 }
@@ -486,23 +486,23 @@ g_variant_alloc (const GVariantType *type,
 
 /* -- internal -- */
 /* < internal >
- * g_variant_new_from_buffer:
+ * g_variant_new_from_bytes:
  * @type: a #GVariantType
- * @buffer: a #GBuffer
- * @trusted: if the contents of @buffer are trusted
+ * @bytes: a #GBytes
+ * @trusted: if the contents of @bytes are trusted
  *
  * Constructs a new serialised-mode #GVariant instance.  This is the
  * inner interface for creation of new serialised values that gets
  * called from various functions in gvariant.c.
  *
- * A reference is taken on @buffer.
+ * A reference is taken on @bytes.
  *
  * Returns: a new #GVariant with a floating reference
  */
 GVariant *
-g_variant_new_from_buffer (const GVariantType *type,
-                           GBuffer            *buffer,
-                           gboolean            trusted)
+g_variant_new_from_bytes (const GVariantType *type,
+                          GBytes             *bytes,
+                          gboolean            trusted)
 {
   GVariant *value;
   guint alignment;
@@ -510,14 +510,14 @@ g_variant_new_from_buffer (const GVariantType *type,
 
   value = g_variant_alloc (type, TRUE, trusted);
 
-  value->contents.serialised.buffer = g_buffer_ref (buffer);
+  value->contents.serialised.bytes = g_bytes_ref (bytes);
 
   g_variant_type_info_query (value->type_info,
                              &alignment, &size);
 
-  if (size && buffer->size != size)
+  if (size && g_bytes_get_size (bytes) != size)
     {
-      /* Creating a fixed-sized GVariant with a buffer of the wrong
+      /* Creating a fixed-sized GVariant with a bytes of the wrong
        * size.
        *
        * We should do the equivalent of pulling a fixed-sized child out
@@ -529,8 +529,8 @@ g_variant_new_from_buffer (const GVariantType *type,
     }
   else
     {
-      value->contents.serialised.data = buffer->data;
-      value->size = buffer->size;
+      value->contents.serialised.data = g_bytes_get_data (bytes);
+      value->size = g_bytes_get_size (bytes);
     }
 
   return value;
@@ -630,7 +630,7 @@ g_variant_unref (GVariant *value)
       g_variant_type_info_unref (value->type_info);
 
       if (value->state & STATE_SERIALISED)
-        g_buffer_unref (value->contents.serialised.buffer);
+        g_bytes_unref (value->contents.serialised.bytes);
       else
         g_variant_release_children (value);
 
@@ -963,8 +963,8 @@ g_variant_get_child_value (GVariant *value,
                    STATE_SERIALISED;
     child->size = s_child.size;
     child->ref_count = 1;
-    child->contents.serialised.buffer =
-      g_buffer_ref (value->contents.serialised.buffer);
+    child->contents.serialised.bytes =
+      g_bytes_ref (value->contents.serialised.bytes);
     child->contents.serialised.data = s_child.data;
 
     return child;

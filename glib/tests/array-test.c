@@ -762,6 +762,37 @@ byte_array_sort_with_data (void)
   g_byte_array_free (gbarray, TRUE);
 }
 
+static void
+byte_array_new_take (void)
+{
+  GByteArray *gbarray;
+  guint8 *data;
+
+  data = g_memdup ("woooweeewow", 11);
+  gbarray = g_byte_array_new_take (data, 11);
+  g_assert (gbarray->data == data);
+  g_assert_cmpuint (gbarray->len, ==, 11);
+  g_byte_array_free (gbarray, TRUE);
+}
+
+static void
+byte_array_free_to_bytes (void)
+{
+  GByteArray *gbarray;
+  gpointer memory;
+  GBytes *bytes;
+
+  gbarray = g_byte_array_new ();
+  g_byte_array_append (gbarray, (guint8 *)"woooweeewow", 11);
+  memory = gbarray->data;
+
+  bytes = g_byte_array_free_to_bytes (gbarray);
+  g_assert (bytes != NULL);
+  g_assert_cmpuint (g_bytes_get_size (bytes), ==, 11);
+  g_assert (g_bytes_get_data (bytes) == memory);
+
+  g_bytes_unref (bytes);
+}
 int
 main (int argc, char *argv[])
 {
@@ -796,6 +827,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytearray/ref-count", byte_array_ref_count);
   g_test_add_func ("/bytearray/sort", byte_array_sort);
   g_test_add_func ("/bytearray/sort-with-data", byte_array_sort_with_data);
+  g_test_add_func ("/bytearray/new-take", byte_array_new_take);
+  g_test_add_func ("/bytearray/free-to-bytes", byte_array_free_to_bytes);
 
   return g_test_run ();
 }

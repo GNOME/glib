@@ -130,8 +130,8 @@ libglib_2_0_la_SOURCES = 	\
 	gbitlock.c		\
 	gbookmarkfile.c 	\
 	gbsearcharray.h		\
-	gbuffer.c		\
-	gbufferprivate.h	\
+	gbytes.c		\
+	gbytes.h		\
 	gcharset.c		\
 	gchecksum.c		\
 	gconvert.c		\
@@ -262,6 +262,7 @@ glibsubinclude_HEADERS = \
 	gbase64.h	\
 	gbitlock.h	\
 	gbookmarkfile.h	\
+	gbytes.h	\
 	gcharset.h	\
 	gchecksum.h	\
 	gconvert.h	\

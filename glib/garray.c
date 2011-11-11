@@ -35,8 +35,10 @@
 
 #include "garray.h"
 
+#include "gbytes.h"
 #include "gslice.h"
 #include "gmem.h"
+#include "gtestutils.h"
 #include "gthread.h"
 #include "gmessages.h"
 #include "gqsort.h"
@@ -1344,16 +1346,13 @@ g_ptr_array_foreach (GPtrArray *array,
 /**
  * SECTION:arrays_byte
  * @title: Byte Arrays
- * @short_description: arrays of bytes, which grow automatically as
- *                     elements are added
+ * @short_description: arrays of bytes
  *
- * #GByteArray is based on #GArray, to provide arrays of bytes which
- * grow automatically as elements are added.
+ * #GByteArray is a mutable array of bytes based on #GArray, to provide arrays
+ * of bytes which grow automatically as elements are added.
  *
- * To create a new #GByteArray use g_byte_array_new().
- *
- * To add elements to a #GByteArray, use g_byte_array_append(), and
- * g_byte_array_prepend().
+ * To create a new #GByteArray use g_byte_array_new(). To add elements to a
+ * #GByteArray, use g_byte_array_append(), and g_byte_array_prepend().
  *
  * To set the size of a #GByteArray, use g_byte_array_set_size().
  *
@@ -1380,6 +1379,9 @@ g_ptr_array_foreach (GPtrArray *array,
  *   g_byte_array_free (gbarray, TRUE);
  *  </programlisting>
  * </example>
+ *
+ * See #GBytes if you are interested in an immutable object representing a
+ * sequence of bytes.
  **/
 
 /**
@@ -1401,6 +1403,36 @@ g_ptr_array_foreach (GPtrArray *array,
 GByteArray* g_byte_array_new (void)
 {
   return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, 0);
+}
+
+/**
+ * g_byte_array_new_take:
+ * @data: (array length=len): byte data for the array
+ * @len: length of @data
+ *
+ * Create byte array containing the data. The data will be owned by the array
+ * and will be freed with g_free(), i.e. it could be allocated using g_strdup().
+ *
+ * Since: 2.32
+ *
+ * Returns: (transfer full): a new #GByteArray
+ */
+GByteArray *
+g_byte_array_new_take (guint8 *data,
+                       gsize   len)
+{
+  GByteArray *array;
+  GRealArray *real;
+
+  array = g_byte_array_new ();
+  real = (GRealArray *)array;
+  g_assert (real->data == NULL);
+  g_assert (real->len == 0);
+
+  real->data = data;
+  real->len = len;
+
+  return array;
 }
 
 /**
@@ -1434,6 +1466,35 @@ guint8*	    g_byte_array_free     (GByteArray *array,
 			           gboolean    free_segment)
 {
   return (guint8*) g_array_free ((GArray*) array, free_segment);
+}
+
+/**
+ * g_byte_array_free_to_bytes:
+ * @array: (transfer full): a #GByteArray
+ *
+ * Transfers the data from the #GByteArray into a new immutable #GBytes.
+ *
+ * The #GByteArray is freed unless the reference count of @array is greater
+ * than one, the #GByteArray wrapper is preserved but the size of @array
+ * will be set to zero.
+ *
+ * This is identical to using g_bytes_new_take() and g_byte_array_free()
+ * together.
+ *
+ * Since: 2.32
+ *
+ * Returns: (transfer full): a new immutable #GBytes representing same byte
+ *          data that was in the array
+ */
+GBytes *
+g_byte_array_free_to_bytes (GByteArray *array)
+{
+  gsize length;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  length = array->len;
+  return g_bytes_new_take (g_byte_array_free (array, FALSE), length);
 }
 
 /**

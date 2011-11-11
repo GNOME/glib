@@ -133,6 +133,15 @@ typedef gsize GType;
 #define G_TYPE_PTR_ARRAY (g_ptr_array_get_type ())
 
 /**
+ * G_TYPE_BYTES:
+ *
+ * The #GType for #GBytes.
+ *
+ * Since: 2.32
+ */
+#define G_TYPE_BYTES (g_bytes_get_type ())
+
+/**
  * G_TYPE_VARIANT_TYPE:
  *
  * The #GType for a boxed type holding a #GVariantType.
@@ -225,6 +234,7 @@ GType   g_hash_table_get_type      (void) G_GNUC_CONST;
 GType   g_array_get_type           (void) G_GNUC_CONST;
 GType   g_byte_array_get_type      (void) G_GNUC_CONST;
 GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
+GType   g_bytes_get_type           (void) G_GNUC_CONST;
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
 GType   g_regex_get_type           (void) G_GNUC_CONST;
 GType   g_match_info_get_type      (void) G_GNUC_CONST;

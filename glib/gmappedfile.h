@@ -26,6 +26,7 @@
 #ifndef __G_MAPPED_FILE_H__
 #define __G_MAPPED_FILE_H__
 
+#include <glib/gbytes.h>
 #include <glib/gerror.h>
 
 G_BEGIN_DECLS

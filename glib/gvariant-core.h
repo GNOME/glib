@@ -23,12 +23,12 @@
 
 #include <glib/gvarianttypeinfo.h>
 #include <glib/gvariant.h>
-#include <glib/gbufferprivate.h>
+#include <glib/gbytes.h>
 
 /* gvariant-core.c */
 G_GNUC_INTERNAL
-GVariant *              g_variant_new_from_buffer                       (const GVariantType *type,
-                                                                         GBuffer            *buffer,
+GVariant *              g_variant_new_from_bytes                        (const GVariantType *type,
+                                                                         GBytes             *bytes,
                                                                          gboolean            trusted);
 
 G_GNUC_INTERNAL

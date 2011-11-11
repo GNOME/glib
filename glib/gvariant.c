@@ -321,11 +321,11 @@ g_variant_new_from_trusted (const GVariantType *type,
                             gsize               size)
 {
   GVariant *value;
-  GBuffer *buffer;
+  GBytes *bytes;
 
-  buffer = g_buffer_new_from_data (data, size);
-  value = g_variant_new_from_buffer (type, buffer, TRUE);
-  g_buffer_unref (buffer);
+  bytes = g_bytes_new (data, size);
+  value = g_variant_new_from_bytes (type, bytes, TRUE);
+  g_bytes_unref (bytes);
 
   return value;
 }
@@ -5098,7 +5098,7 @@ g_variant_byteswap (GVariant *value)
     {
       GVariantSerialised serialised;
       GVariant *trusted;
-      GBuffer *buffer;
+      GBytes *bytes;
 
       trusted = g_variant_get_normal_form (value);
       serialised.type_info = g_variant_get_type_info (trusted);
@@ -5109,9 +5109,9 @@ g_variant_byteswap (GVariant *value)
 
       g_variant_serialised_byteswap (serialised);
 
-      buffer = g_buffer_new_take_data (serialised.data, serialised.size);
-      new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
-      g_buffer_unref (buffer);
+      bytes = g_bytes_new (serialised.data, serialised.size);
+      new = g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE);
+      g_bytes_unref (bytes);
     }
   else
     /* contains no multi-byte data */
@@ -5167,18 +5167,18 @@ g_variant_new_from_data (const GVariantType *type,
                          gpointer            user_data)
 {
   GVariant *value;
-  GBuffer *buffer;
+  GBytes *bytes;
 
   g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
   if (notify)
-    buffer = g_buffer_new_from_pointer (data, size, notify, user_data);
+    bytes = g_bytes_new_with_free_func (data, size, notify, user_data);
   else
-    buffer = g_buffer_new_from_static_data (data, size);
+    bytes = g_bytes_new_static (data, size);
 
-  value = g_variant_new_from_buffer (type, buffer, trusted);
-  g_buffer_unref (buffer);
+  value = g_variant_new_from_bytes (type, bytes, trusted);
+  g_bytes_unref (bytes);
 
   return value;
 }

@@ -56,7 +56,6 @@
 #include "gstdio.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
-#include "gbufferprivate.h"
 
 #include "glibintl.h"
 
@@ -87,16 +86,6 @@ struct _GMappedFile
   HANDLE mapping;
 #endif
 };
-
-/* Make sure the layout of GMappedFile is the same as GBuffer's */
-G_STATIC_ASSERT (G_STRUCT_OFFSET (GMappedFile, contents) ==
-                 G_STRUCT_OFFSET (GBuffer, data));
-G_STATIC_ASSERT (G_STRUCT_OFFSET (GMappedFile, length) ==
-                 G_STRUCT_OFFSET (GBuffer, size));
-G_STATIC_ASSERT (G_STRUCT_OFFSET (GMappedFile, ref_count) ==
-                 G_STRUCT_OFFSET (GBuffer, ref_count));
-G_STATIC_ASSERT (G_STRUCT_OFFSET (GMappedFile, free_func) ==
-                 G_STRUCT_OFFSET (GBuffer, free_func));
 
 static void
 g_mapped_file_destroy (GMappedFile *file)

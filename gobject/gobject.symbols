@@ -21,6 +21,7 @@ g_strv_get_type
 g_hash_table_get_type
 g_array_get_type
 g_byte_array_get_type
+g_bytes_get_type
 g_error_get_type
 g_ptr_array_get_type
 g_regex_get_type

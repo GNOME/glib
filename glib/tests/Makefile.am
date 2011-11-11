@@ -67,6 +67,9 @@ markup_subparser_LDADD    = $(progs_ldadd)
 TEST_PROGS         += array-test
 array_test_LDADD    = $(progs_ldadd)
 
+TEST_PROGS         += bytes
+bytes_LDADD         = $(progs_ldadd)
+
 TEST_PROGS         += hostutils
 hostutils_LDADD     = $(progs_ldadd)
 
