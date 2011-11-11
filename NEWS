@@ -1,3 +1,33 @@
+Overview of changes from GLib 2.30.1 to 2.30.2
+==============================================
+
+* glib-compile-schemas now accepts CDATA marked sections
+  in gschema.xml files
+
+* Bugs fixed
+ 653052 gmessages.c: fatal_log_func gets wrong data
+ 656621 g_spawn_*() calls executables in current directory...
+ 656679 [gi] Add two annotations to gio
+ 659916 GObject size of 64K is not actively enforced
+ 661257 giomodules.c uses ":" instead of G_SEARCHPATH_SEPARATOR_S
+ 661386 fix configure running on OpenBSD
+ 661679 g_dbus_connection_get_stream etc. are inherently dangerous
+ 661689 GDBusConnection methods assume that init has succeeded
+ 661797 glib-mkenums.in: fix @ENUMPREFIX@ with /*< underscore_na...
+ 661896 /gdbus/connection/life-cycle is racy
+ 662100 g_dbus_connection_close() triggers exit-on-close logic
+ 662208 failure to initialize a GInitable should be considered...
+ 662390 gtk-doc is broken when build out of tree
+ 662411 GDBusMessage: fix leak of GError
+ 662544 Invalid key destroy by "g_hash_table_iter_replace"
+ 662808 Race condition in dbus name owning
+ 662858 Avoid warning when finalizing an GDBusObjectManagerClient...
+ 661992 GDBusConnection should be thread-safe, and documented as such
+
+* Translation updates
+ Japanese
+
+
 Overview of changes from GLib 2.30.0 to 2.30.1
 ==============================================
 
