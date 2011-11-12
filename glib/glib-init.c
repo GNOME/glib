@@ -196,6 +196,7 @@ static void
 g_debug_init (void)
 {
   const GDebugKey keys[] = {
+    { "gc-friendly", 1 },
     {"fatal-warnings",  G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL },
     {"fatal-criticals", G_LOG_LEVEL_CRITICAL }
   };
@@ -203,18 +204,9 @@ g_debug_init (void)
 
   flags = g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys));
 
-  g_log_always_fatal |= flags;
-}
+  g_log_always_fatal |= flags & G_LOG_LEVEL_MASK;
 
-static void
-g_mem_init (void)
-{
-  const GDebugKey keys[] = {
-    { "gc-friendly", 1 },
-  };
-
-  if (g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys)))
-    g_mem_gc_friendly = TRUE;
+  g_mem_gc_friendly = flags & 1;
 }
 
 static void
@@ -222,7 +214,6 @@ glib_init (void)
 {
   g_messages_prefixed_init ();
   g_debug_init ();
-  g_mem_init ();
 }
 
 #if defined (G_OS_WIN32)
