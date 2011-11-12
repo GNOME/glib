@@ -38,6 +38,8 @@
 #error "This header may only be used on UNIX"
 #endif
 
+G_BEGIN_DECLS
+
 /**
  * G_UNIX_ERROR:
  *
@@ -77,4 +79,6 @@ guint    g_unix_signal_add         (gint        signum,
                                     GSourceFunc handler,
                                     gpointer    user_data);
 
-#endif
+G_END_DECLS
+
+#endif  /* __G_UNIX_H__ */
