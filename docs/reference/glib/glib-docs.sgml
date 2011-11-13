@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
 <!ENTITY version SYSTEM "version.xml">
@@ -17,17 +17,17 @@
   <chapter id="glib">
     <title>GLib Overview</title>
     <para>
-GLib is a general-purpose utility library, which provides many useful data 
-types, macros, type conversions, string utilities, file utilities, a main 
-loop abstraction, and so on. It works on many UNIX-like platforms, Windows,
-OS/2 and BeOS. GLib is released under the GNU Library General Public License 
-(GNU LGPL). 
+      GLib is a general-purpose utility library, which provides many useful
+      data types, macros, type conversions, string utilities, file utilities,
+      a mainloop abstraction, and so on. It works on many UNIX-like platforms,
+      Windows, OS/2 and BeOS. GLib is released under the GNU Library General
+      Public License (GNU LGPL).
     </para>
     <para>
-The general policy of GLib is that all functions are invisibly threadsafe with the 
-exception of data structure manipulation functions, where, if you have two threads
-manipulating the <emphasis>same</emphasis> data structure, they must use a lock to
-synchronize their operation.
+      The general policy of GLib is that all functions are invisibly threadsafe
+      with the exception of data structure manipulation functions, where, if
+      you have two threads manipulating the <emphasis>same</emphasis> data
+      structure, they must use a lock to synchronize their operation.
     </para>
 
     <xi:include href="building.sgml" />
@@ -60,6 +60,7 @@ synchronize their operation.
     <xi:include href="xml/async_queues.xml" />
     <xi:include href="xml/modules.xml" />
     <xi:include href="xml/memory.xml" />
+    <xi:include href="xml/memory_slices.xml" />
     <xi:include href="xml/iochannels.xml" />
     <xi:include href="xml/error_reporting.xml" />
     <xi:include href="xml/warnings.xml" />
@@ -68,69 +69,68 @@ synchronize their operation.
 
   <chapter id="glib-utilities">
     <title>GLib Utilities</title>
-      <xi:include href="xml/string_utils.xml" />
-      <xi:include href="xml/conversions.xml" />
-      <xi:include href="xml/unicode.xml" />
-      <xi:include href="xml/base64.xml" />
-      <xi:include href="xml/checksum.xml" />
-      <xi:include href="xml/hmac.xml" />
-      <xi:include href="xml/i18n.xml" />
-      <xi:include href="xml/date.xml" />
-      <xi:include href="xml/timezone.xml" />
-      <xi:include href="xml/date-time.xml" />
-      <xi:include href="xml/random_numbers.xml" />
-      <xi:include href="xml/hooks.xml" />
-      <xi:include href="xml/misc_utils.xml" />
-      <xi:include href="xml/scanner.xml" />
-      <xi:include href="xml/timers.xml" />
-      <xi:include href="xml/spawn.xml" />
-      <xi:include href="xml/fileutils.xml" />
-      <xi:include href="xml/gurifuncs.xml" />
-      <xi:include href="xml/ghostutils.xml" />
-      <xi:include href="xml/shell.xml" />
-      <xi:include href="xml/option.xml" />
-      <xi:include href="xml/patterns.xml" />
-      <xi:include href="xml/gregex.xml" />
-      <xi:include href="regex-syntax.sgml" />
-      <xi:include href="xml/markup.xml" />
-      <xi:include href="xml/keyfile.xml" />
-      <xi:include href="xml/bookmarkfile.xml" />
-      <xi:include href="xml/testing.xml" />
-      <xi:include href="xml/gunix.xml" />
-      <xi:include href="xml/windows.xml" />
+    <xi:include href="xml/string_utils.xml" />
+    <xi:include href="xml/conversions.xml" />
+    <xi:include href="xml/unicode.xml" />
+    <xi:include href="xml/base64.xml" />
+    <xi:include href="xml/checksum.xml" />
+    <xi:include href="xml/hmac.xml" />
+    <xi:include href="xml/i18n.xml" />
+    <xi:include href="xml/date.xml" />
+    <xi:include href="xml/timezone.xml" />
+    <xi:include href="xml/date-time.xml" />
+    <xi:include href="xml/random_numbers.xml" />
+    <xi:include href="xml/hooks.xml" />
+    <xi:include href="xml/misc_utils.xml" />
+    <xi:include href="xml/scanner.xml" />
+    <xi:include href="xml/timers.xml" />
+    <xi:include href="xml/spawn.xml" />
+    <xi:include href="xml/fileutils.xml" />
+    <xi:include href="xml/gurifuncs.xml" />
+    <xi:include href="xml/ghostutils.xml" />
+    <xi:include href="xml/shell.xml" />
+    <xi:include href="xml/option.xml" />
+    <xi:include href="xml/patterns.xml" />
+    <xi:include href="xml/gregex.xml" />
+    <xi:include href="regex-syntax.sgml" />
+    <xi:include href="xml/markup.xml" />
+    <xi:include href="xml/keyfile.xml" />
+    <xi:include href="xml/bookmarkfile.xml" />
+    <xi:include href="xml/testing.xml" />
+    <xi:include href="xml/gunix.xml" />
+    <xi:include href="xml/windows.xml" />
   </chapter>
 
   <chapter id="glib-data-types">
     <title>GLib Data Types</title>
-      <xi:include href="xml/memory_slices.xml" />
-      <xi:include href="xml/linked_lists_double.xml" />
-      <xi:include href="xml/linked_lists_single.xml" />
-      <xi:include href="xml/queue.xml" />
-      <xi:include href="xml/sequence.xml" />
-      <xi:include href="xml/trash_stack.xml" />
-      <xi:include href="xml/hash_tables.xml" />
-      <xi:include href="xml/strings.xml" />
-      <xi:include href="xml/string_chunks.xml" />
-      <xi:include href="xml/arrays.xml" />
-      <xi:include href="xml/arrays_pointer.xml" />
-      <xi:include href="xml/arrays_byte.xml" />
-      <xi:include href="xml/trees-binary.xml" />
-      <xi:include href="xml/trees-nary.xml" />
-      <xi:include href="xml/quarks.xml" />
-      <xi:include href="xml/datalist.xml" />
-      <xi:include href="xml/datasets.xml" />
-      <xi:include href="xml/gvarianttype.xml"/>
-      <xi:include href="xml/gvariant.xml"/>
-      <xi:include href="gvariant-varargs.xml"/>
-      <xi:include href="gvariant-text.xml"/>
+    <xi:include href="xml/linked_lists_double.xml" />
+    <xi:include href="xml/linked_lists_single.xml" />
+    <xi:include href="xml/queue.xml" />
+    <xi:include href="xml/sequence.xml" />
+    <xi:include href="xml/trash_stack.xml" />
+    <xi:include href="xml/hash_tables.xml" />
+    <xi:include href="xml/strings.xml" />
+    <xi:include href="xml/string_chunks.xml" />
+    <xi:include href="xml/arrays.xml" />
+    <xi:include href="xml/arrays_pointer.xml" />
+    <xi:include href="xml/arrays_byte.xml" />
+    <xi:include href="xml/trees-binary.xml" />
+    <xi:include href="xml/trees-nary.xml" />
+    <xi:include href="xml/quarks.xml" />
+    <xi:include href="xml/datalist.xml" />
+    <xi:include href="xml/datasets.xml" />
+    <xi:include href="xml/gvarianttype.xml"/>
+    <xi:include href="xml/gvariant.xml"/>
+    <xi:include href="gvariant-varargs.xml"/>
+    <xi:include href="gvariant-text.xml"/>
   </chapter>
 
   <chapter id="deprecated">
-      <title>Deprecated APIs</title>
-      <xi:include href="xml/threads-deprecated.xml"/>
-      <xi:include href="xml/caches.xml" />
-      <xi:include href="xml/relations.xml" />
-      <xi:include href="xml/completion.xml" />
+    <title>Deprecated APIs</title>
+    <xi:include href="xml/threads-deprecated.xml"/>
+    <xi:include href="xml/caches.xml" />
+    <xi:include href="xml/relations.xml" />
+    <xi:include href="xml/completion.xml" />
   </chapter>
 
   <chapter id="tools">
