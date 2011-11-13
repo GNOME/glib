@@ -58,6 +58,204 @@
 #include "garray.h"
 #endif
 
+/**
+ * SECTION:date
+ * @title: Date and Time Functions
+ * @short_description: calendrical calculations and miscellaneous time stuff
+ *
+ * The #GDate data structure represents a day between January 1, Year 1,
+ * and sometime a few thousand years in the future (right now it will go
+ * to the year 65535 or so, but g_date_set_parse() only parses up to the
+ * year 8000 or so - just count on "a few thousand"). #GDate is meant to
+ * represent everyday dates, not astronomical dates or historical dates
+ * or ISO timestamps or the like. It extrapolates the current Gregorian
+ * calendar forward and backward in time; there is no attempt to change
+ * the calendar to match time periods or locations. #GDate does not store
+ * time information; it represents a <emphasis>day</emphasis>.
+ *
+ * The #GDate implementation has several nice features; it is only a
+ * 64-bit struct, so storing large numbers of dates is very efficient. It
+ * can keep both a Julian and day-month-year representation of the date,
+ * since some calculations are much easier with one representation or the
+ * other. A Julian representation is simply a count of days since some
+ * fixed day in the past; for #GDate the fixed day is January 1, 1 AD.
+ * ("Julian" dates in the #GDate API aren't really Julian dates in the
+ * technical sense; technically, Julian dates count from the start of the
+ * Julian period, Jan 1, 4713 BC).
+ *
+ * #GDate is simple to use. First you need a "blank" date; you can get a
+ * dynamically allocated date from g_date_new(), or you can declare an
+ * automatic variable or array and initialize it to a sane state by
+ * calling g_date_clear(). A cleared date is sane; it's safe to call
+ * g_date_set_dmy() and the other mutator functions to initialize the
+ * value of a cleared date. However, a cleared date is initially
+ * <emphasis>invalid</emphasis>, meaning that it doesn't represent a day
+ * that exists. It is undefined to call any of the date calculation
+ * routines on an invalid date. If you obtain a date from a user or other
+ * unpredictable source, you should check its validity with the
+ * g_date_valid() predicate. g_date_valid() is also used to check for
+ * errors with g_date_set_parse() and other functions that can
+ * fail. Dates can be invalidated by calling g_date_clear() again.
+ *
+ * <emphasis>It is very important to use the API to access the #GDate
+ * struct.</emphasis> Often only the day-month-year or only the Julian
+ * representation is valid. Sometimes neither is valid. Use the API.
+ *
+ * GLib also features #GDateTime which represents a precise time.
+ */
+
+/**
+ * G_USEC_PER_SEC:
+ *
+ * Number of microseconds in one second (1 million).
+ * This macro is provided for code readability.
+ */
+
+/**
+ * GTimeVal:
+ * @tv_sec: seconds
+ * @tv_usec: microseconds
+ *
+ * Represents a precise time, with seconds and microseconds.
+ * Similar to the <structname>struct timeval</structname> returned by
+ * the gettimeofday() UNIX system call.
+ *
+ * GLib is attempting to unify around the use of 64bit integers to
+ * represent microsecond-precision time. As such, this type will be
+ * removed from a future version of GLib.
+ */
+
+/**
+ * GDate:
+ * @julian_days: the Julian representation of the date
+ * @julian: this bit is set if @julian_days is valid
+ * @dmy: this is set if @day, @month and @year are valid
+ * @day: the day of the day-month-year representation of the date,
+ *     as a number between 1 and 31
+ * @month: the day of the day-month-year representation of the date,
+ *     as a number between 1 and 12
+ * @year: the day of the day-month-year representation of the date
+ *
+ * Represents a day between January 1, Year 1 and a few thousand years in
+ * the future. None of its members should be accessed directly. If the
+ * <structname>GDate</structname> is obtained from g_date_new(), it will
+ * be safe to mutate but invalid and thus not safe for calendrical
+ * computations. If it's declared on the stack, it will contain garbage
+ * so must be initialized with g_date_clear(). g_date_clear() makes the
+ * date invalid but sane. An invalid date doesn't represent a day, it's
+ * "empty." A date becomes valid after you set it to a Julian day or you
+ * set a day, month, and year.
+ */
+
+/**
+ * GTime:
+ * Simply a replacement for <type>time_t</type>. It has been deprecated
+ * since it is <emphasis>not</emphasis> equivalent to <type>time_t</type>
+ * on 64-bit platforms with a 64-bit <type>time_t</type>.
+ * Unrelated to #GTimer.
+ *
+ * Note that <type>GTime</type> is defined to always be a 32bit integer,
+ * unlike <type>time_t</type> which may be 64bit on some systems.
+ * Therefore, <type>GTime</type> will overflow in the year 2038, and
+ * you cannot use the address of a <type>GTime</type> variable as argument
+ * to the UNIX time() function. Instead, do the following:
+ * |[
+ * time_t ttime;
+ * GTime gtime;
+ *
+ * time (&amp;ttime);
+ * gtime = (GTime)ttime;
+ * ]|
+ */
+
+/**
+ * GDateDMY:
+ * @G_DATE_DAY: a day
+ * @G_DATE_MONTH: a month
+ * @G_DATE_YEAR: a year
+ *
+ * This enumeration isn't used in the API, but may be useful if you need
+ * to mark a number as a day, month, or year.
+ */
+
+/**
+ * GDateDay:
+ *
+ * Integer representing a day of the month; between 1 and
+ * 31. #G_DATE_BAD_DAY represents an invalid day of the month.
+ */
+
+/**
+ * GDateMonth:
+ * @G_DATE_BAD_MONTH: invalid value
+ * @G_DATE_JANUARY: January
+ * @G_DATE_FEBRUARY: February
+ * @G_DATE_MARCH: March
+ * @G_DATE_APRIL: April
+ * @G_DATE_MAY: May
+ * @G_DATE_JUNE: June
+ * @G_DATE_JULY: July
+ * @G_DATE_AUGUST: August
+ * @G_DATE_SEPTEMBER: September
+ * @G_DATE_OCTOBER: October
+ * @G_DATE_NOVEMBER: November
+ * @G_DATE_DECEMBER: December
+ *
+ * Enumeration representing a month; values are #G_DATE_JANUARY,
+ * #G_DATE_FEBRUARY, etc. #G_DATE_BAD_MONTH is the invalid value.
+ */
+
+/**
+ * GDateYear:
+ *
+ * Integer representing a year; #G_DATE_BAD_YEAR is the invalid
+ * value. The year must be 1 or higher; negative (BC) years are not
+ * allowed. The year is represented with four digits.
+ */
+
+/**
+ * GDateWeekday:
+ * @G_DATE_BAD_WEEKDAY: invalid value
+ * @G_DATE_MONDAY: Monday
+ * @G_DATE_TUESDAY: Tuesday
+ * @G_DATE_WEDNESDAY: Wednesday
+ * @G_DATE_THURSDAY: Thursday
+ * @G_DATE_FRIDAY: Friday
+ * @G_DATE_SATURDAY: Saturday
+ * @G_DATE_SUNDAY: Sunday
+ *
+ * Enumeration representing a day of the week; #G_DATE_MONDAY,
+ * #G_DATE_TUESDAY, etc. #G_DATE_BAD_WEEKDAY is an invalid weekday.
+ */
+
+/**
+ * G_DATE_BAD_DAY:
+ *
+ * Represents an invalid #GDateDay.
+ */
+
+/**
+ * G_DATE_BAD_JULIAN:
+ *
+ * Represents an invalid Julian day number.
+ */
+
+/**
+ * G_DATE_BAD_YEAR:
+ *
+ * Represents an invalid year.
+ */
+
+/**
+ * g_date_new:
+ *
+ * Allocates a #GDate and initializes
+ * it to a sane state. The new date will
+ * be cleared (as if you'd called g_date_clear()) but invalid (it won't
+ * represent an existing day). Free the return value with g_date_free().
+ *
+ * Returns: a newly-allocated #GDate
+ */
 GDate*
 g_date_new (void)
 {
@@ -66,6 +264,18 @@ g_date_new (void)
   return d;
 }
 
+/**
+ * g_date_new_dmy:
+ * @day: day of the month
+ * @month: month of the year
+ * @year: year
+ *
+ * Like g_date_new(), but also sets the value of the date. Assuming the
+ * day-month-year triplet you pass in represents an existing day, the
+ * returned date will be valid.
+ *
+ * Returns: a newly-allocated #GDate initialized with @day, @month, and @year
+ */
 GDate*
 g_date_new_dmy (GDateDay   day, 
                 GDateMonth m, 
@@ -88,6 +298,16 @@ g_date_new_dmy (GDateDay   day,
   return d;
 }
 
+/**
+ * g_date_new_julian:
+ * julian_day: days since January 1, Year 1
+ *
+ * Like g_date_new(), but also sets the value of the date. Assuming the
+ * Julian day number you pass in is valid (greater than 0, less than an
+ * unreasonably large number), the returned date will be valid.
+ *
+ * Returns: a newly-allocated #GDate initialized with @julian_day
+ */
 GDate*
 g_date_new_julian (guint32 j)
 {
@@ -106,6 +326,11 @@ g_date_new_julian (guint32 j)
   return d;
 }
 
+/**
+ * g_date_free:
+ *
+ * Frees a #GDate returned from g_date_new().
+ */
 void
 g_date_free (GDate *d)
 {
@@ -114,6 +339,16 @@ g_date_free (GDate *d)
   g_free (d);
 }
 
+/**
+ * g_date_valid:
+ * @date: a #GDate to check
+ *
+ * Returns %TRUE if the #GDate represents an existing day. The date must not
+ * contain garbage; it should have been initialized with g_date_clear()
+ * if it wasn't allocated by one of the g_date_new() variants.
+ *
+ * Returns: Whether the date is valid
+ */
 gboolean     
 g_date_valid (const GDate *d)
 {
@@ -134,17 +369,45 @@ static const guint16 days_in_year[2][14] =
   {  0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
 };
 
+/**
+ * g_date_valid_month:
+ * @month: month
+ *
+ * Returns %TRUE if the month value is valid. The 12 #GDateMonth
+ * enumeration values are the only valid months.
+ *
+ * Returns: %TRUE if the month is valid
+ */
 gboolean     
 g_date_valid_month (GDateMonth m)
 { 
   return ( (m > G_DATE_BAD_MONTH) && (m < 13) );
 }
 
+/**
+ * g_date_valid_year:
+ * @year: year
+ *
+ * Returns %TRUE if the year is valid. Any year greater than 0 is valid,
+ * though there is a 16-bit limit to what #GDate will understand.
+ *
+ * Returns: %TRUE if the year is valid
+ */
 gboolean     
 g_date_valid_year (GDateYear y)
 {
   return ( y > G_DATE_BAD_YEAR );
 }
+
+/**
+ * g_date_valid_day:
+ * @day: day to check
+ *
+ * Returns %TRUE if the day of the month is valid (a day is valid if it's
+ * between 1 and 31 inclusive).
+ *
+ * Returns: %TRUE if the day is valid
+ */
 
 gboolean     
 g_date_valid_day (GDateDay d)
@@ -152,18 +415,48 @@ g_date_valid_day (GDateDay d)
   return ( (d > G_DATE_BAD_DAY) && (d < 32) );
 }
 
+/**
+ * g_date_valid_weekday:
+ * @weekday: weekday
+ *
+ * Returns %TRUE if the weekday is valid. The seven #GDateWeekday enumeration
+ * values are the only valid weekdays.
+ *
+ * Returns: %TRUE if the weekday is valid
+ */
 gboolean     
 g_date_valid_weekday (GDateWeekday w)
 {
   return ( (w > G_DATE_BAD_WEEKDAY) && (w < 8) );
 }
 
+/**
+ * g_date_valid_julian:
+ * @julian_date: Julian day to check
+ *
+ * Returns %TRUE if the Julian day is valid. Anything greater than zero
+ * is basically a valid Julian, though there is a 32-bit limit.
+ *
+ * Returns: %TRUE if the Julian day is valid
+ */
 gboolean     
 g_date_valid_julian (guint32 j)
 {
   return (j > G_DATE_BAD_JULIAN);
 }
 
+/**
+ * g_date_valid_dmy:
+ * @day: day
+ * @month: month
+ * @year: year
+ *
+ * Returns %TRUE if the day-month-year triplet forms a valid, existing day
+ * in the range of days #GDate understands (Year 1 or later, no more than
+ * a few thousand years in the future).
+ *
+ * Returns: %TRUE if the date is a valid one
+ */
 gboolean     
 g_date_valid_dmy (GDateDay   d, 
                   GDateMonth m, 
@@ -263,6 +556,14 @@ g_date_update_dmy (const GDate *const_d)
   d->dmy = TRUE;
 }
 
+/**
+ * g_date_get_weekday:
+ * @date: a #GDate
+ *
+ * Returns the day of the week for a #GDate. The date must be valid.
+ *
+ * Returns: day of the week as a #GDateWeekday.
+ */
 GDateWeekday 
 g_date_get_weekday (const GDate *d)
 {
@@ -276,6 +577,14 @@ g_date_get_weekday (const GDate *d)
   return ((d->julian_days - 1) % 7) + 1;
 }
 
+/**
+ * g_date_get_month:
+ * @date: a #GDate to get the month from
+ *
+ * Returns the month of the year. The date must be valid.
+ *
+ * Returns: month of the year as a #GDateMonth
+ */
 GDateMonth   
 g_date_get_month (const GDate *d)
 {
@@ -289,6 +598,14 @@ g_date_get_month (const GDate *d)
   return d->month;
 }
 
+/**
+ * g_date_get_year:
+ * @date: a #GDate
+ *
+ * Returns the year of a #GDate. The date must be valid.
+ *
+ * Returns: year in which the date falls
+ */
 GDateYear    
 g_date_get_year (const GDate *d)
 {
@@ -302,6 +619,14 @@ g_date_get_year (const GDate *d)
   return d->year;
 }
 
+/**
+ * g_date_get_day:
+ * @date: a #GDate to extract the day of the month from
+ *
+ * Returns the day of the month. The date must be valid.
+ *
+ * Returns: day of the month
+ */
 GDateDay     
 g_date_get_day (const GDate *d)
 {
@@ -315,6 +640,17 @@ g_date_get_day (const GDate *d)
   return d->day;
 }
 
+/**
+ * g_date_get_julian:
+ * @date: a #GDate to extract the Julian day from
+ *
+ * Returns the Julian day or "serial number" of the #GDate. The
+ * Julian day is simply the number of days since January 1, Year 1; i.e.,
+ * January 1, Year 1 is Julian day 1; January 2, Year 1 is Julian day 2,
+ * etc. The date must be valid.
+ *
+ * Returns: Julian day
+ */
 guint32      
 g_date_get_julian (const GDate *d)
 {
@@ -328,6 +664,15 @@ g_date_get_julian (const GDate *d)
   return d->julian_days;
 }
 
+/**
+ * g_date_get_day_of_year:
+ * @date: a #GDate to extract day of year from
+ *
+ * Returns the day of the year, where Jan 1 is the first day of the
+ * year. The date must be valid.
+ *
+ * Returns: day of the year
+ */
 guint        
 g_date_get_day_of_year (const GDate *d)
 {
@@ -345,6 +690,16 @@ g_date_get_day_of_year (const GDate *d)
   return (days_in_year[idx][d->month] + d->day);
 }
 
+/**
+ * g_date_get_monday_week_of_year:
+ * @date: a #GDate
+ *
+ * Returns the week of the year, where weeks are understood to start on
+ * Monday. If the date is before the first Monday of the year, return
+ * 0. The date must be valid.
+ *
+ * Returns: week of the year
+ */
 guint        
 g_date_get_monday_week_of_year (const GDate *d)
 {
@@ -369,6 +724,16 @@ g_date_get_monday_week_of_year (const GDate *d)
   return ((day + wd)/7U + (wd == 0 ? 1 : 0));
 }
 
+/**
+ * g_date_get_sunday_week_of_year:
+ * @date: a #GDate
+ *
+ * Returns the week of the year during which this date falls, if weeks
+ * are understood to being on Sunday. The date must be valid. Can return
+ * 0 if the day is before the first Sunday of the year.
+ *
+ * Returns: week number
+ */
 guint        
 g_date_get_sunday_week_of_year (const GDate *d)
 {
@@ -430,6 +795,17 @@ g_date_get_iso8601_week_of_year (const GDate *d)
   return w;
 }
 
+/**
+ * g_date_days_between:
+ * @date1: the first date
+ * @date2: the second date
+ *
+ * Computes the number of days between two dates.
+ * If @date2 is prior to @date1, the returned value is negative.
+ * Both dates must be valid.
+ *
+ * Returns: the number of days between @date1 and @date2
+ */
 gint
 g_date_days_between (const GDate *d1,
 		     const GDate *d2)
@@ -440,6 +816,16 @@ g_date_days_between (const GDate *d1,
   return (gint)g_date_get_julian (d2) - (gint)g_date_get_julian (d1);
 }
 
+/**
+ * g_date_clear:
+ * @date: pointer to one or more dates to clear
+ * @n_dates: number of dates to clear
+ *
+ * Initializes one or more #GDate structs to a sane but invalid
+ * state. The cleared dates will not represent an existing date, but will
+ * not contain garbage. Useful to init a date declared on the stack.
+ * Validity can be tested with g_date_valid().
+ */
 void         
 g_date_clear (GDate *d, guint ndates)
 {
@@ -716,6 +1102,23 @@ g_date_prepare_to_parse (const gchar      *str,
   g_date_fill_parse_tokens (str, pt);
 }
 
+/**
+ * g_date_set_parse:
+ * @date: a #GDate to fill in
+ * @str: string to parse
+ *
+ * Parses a user-inputted string @str, and try to figure out what date it
+ * represents, taking the <link linkend="setlocale">current locale</link>
+ * into account. If the string is successfully parsed, the date will be
+ * valid after the call. Otherwise, it will be invalid. You should check
+ * using g_date_valid() to see whether the parsing succeeded.
+ *
+ * This function is not appropriate for file formats and the like; it
+ * isn't very precise, and its exact behavior varies with the locale.
+ * It's intended to be a heuristic routine that guesses what the user
+ * means by a given string (and it does work pretty well in that
+ * capacity).
+ */
 void         
 g_date_set_parse (GDate       *d, 
                   const gchar *str)
@@ -967,6 +1370,14 @@ g_date_set_time_val (GDate    *date,
   g_date_set_time_t (date, (time_t) timeval->tv_sec);
 }
 
+/**
+ * g_date_set_month:
+ * @date: a #GDate
+ * @month: month to set
+ *
+ * Sets the month of the year for a #GDate.  If the resulting
+ * day-month-year triplet is invalid, the date will be invalid.
+ */
 void         
 g_date_set_month (GDate     *d, 
                   GDateMonth m)
@@ -985,6 +1396,14 @@ g_date_set_month (GDate     *d,
     d->dmy = FALSE;
 }
 
+/**
+ * g_date_set_day:
+ * @date: a #GDate
+ * @day: day to set
+ *
+ * Sets the day of the month for a #GDate. If the resulting
+ * day-month-year triplet is invalid, the date will be invalid.
+ */
 void         
 g_date_set_day (GDate    *d, 
                 GDateDay  day)
@@ -1003,6 +1422,14 @@ g_date_set_day (GDate    *d,
     d->dmy = FALSE;
 }
 
+/**
+ * g_date_set_year:
+ * @date: a #GDate
+ * @year: year to set
+ *
+ * Sets the year for a #GDate. If the resulting day-month-year
+ * triplet is invalid, the date will be invalid.
+ */
 void         
 g_date_set_year (GDate     *d, 
                  GDateYear  y)
@@ -1021,6 +1448,18 @@ g_date_set_year (GDate     *d,
     d->dmy = FALSE;
 }
 
+/**
+ * g_date_set_dmy:
+ * @date: a #GDate
+ * @day: day
+ * @month: month
+ * @y: year
+ *
+ * Sets the value of a #GDate from a day, month, and year.
+ * The day-month-year triplet must be valid; if you aren't
+ * sure it is, call g_date_valid_dmy() to check before you
+ * set it.
+ */
 void         
 g_date_set_dmy (GDate      *d, 
                 GDateDay    day, 
@@ -1039,6 +1478,13 @@ g_date_set_dmy (GDate      *d,
   d->dmy = TRUE;
 }
 
+/**
+ * g_date_set_julian:
+ * @date: a #GDate
+ * @julian_date: Julian day number (days since January 1, Year 1)
+ *
+ * Sets the value of a #GDate from a Julian day number.
+ */
 void         
 g_date_set_julian (GDate   *d, 
                    guint32  j)
@@ -1051,7 +1497,15 @@ g_date_set_julian (GDate   *d,
   d->dmy = FALSE;
 }
 
-
+/**
+ * g_date_is_first_of_month:
+ * @date: a #GDate to check
+ *
+ * Returns %TRUE if the date is on the first of a month.
+ * The date must be valid.
+ *
+ * Returns: %TRUE if the date is the first of the month
+ */
 gboolean     
 g_date_is_first_of_month (const GDate *d)
 {
@@ -1066,6 +1520,15 @@ g_date_is_first_of_month (const GDate *d)
   else return FALSE;
 }
 
+/**
+ * g_date_is_last_of_month:
+ * @date: a #GDate to check
+ *
+ * Returns %TRUE if the date is the last day of the month.
+ * The date must be valid.
+ *
+ * Returns: %TRUE if the date is the last day of the month
+ */
 gboolean     
 g_date_is_last_of_month (const GDate *d)
 {
@@ -1084,6 +1547,15 @@ g_date_is_last_of_month (const GDate *d)
   else return FALSE;
 }
 
+/**
+ * g_date_add_days:
+ * @date: a #GDate to increment
+ * @n_days: number of days to move the date forward
+ *
+ * Increments a date some number of days.
+ * To move forward by weeks, add weeks*7 days.
+ * The date must be valid.
+ */
 void         
 g_date_add_days (GDate *d, 
                  guint  ndays)
@@ -1099,6 +1571,15 @@ g_date_add_days (GDate *d,
   d->dmy = FALSE;
 }
 
+/**
+ * g_date_subtract_days:
+ * @date: a #GDate to decrement
+ * @n_days: number of days to move
+ *
+ * Moves a date some number of days into the past.
+ * To move by weeks, just move by weeks*7 days.
+ * The date must be valid.
+ */
 void         
 g_date_subtract_days (GDate *d, 
                       guint  ndays)
@@ -1115,6 +1596,17 @@ g_date_subtract_days (GDate *d,
   d->dmy = FALSE;
 }
 
+/**
+ * g_date_add_months:
+ * @date: a #GDate to increment
+ * @n_months: number of months to move forward
+ *
+ * Increments a date by some number of months.
+ * If the day of the month is greater than 28,
+ * this routine may change the day of the month
+ * (because the destination month may not have
+ * the current day in it). The date must be valid.
+ */
 void         
 g_date_add_months (GDate *d, 
                    guint  nmonths)
@@ -1147,6 +1639,16 @@ g_date_add_months (GDate *d,
   g_return_if_fail (g_date_valid (d));
 }
 
+/**
+ * g_date_subtract_months:
+ * @date: a #GDate to decrement
+ * @n_months: number of months to move
+ *
+ * Moves a date some number of months into the past.
+ * If the current day of the month doesn't exist in
+ * the destination month, the day of the month
+ * may change. The date must be valid.
+ */
 void         
 g_date_subtract_months (GDate *d, 
                         guint  nmonths)
@@ -1186,6 +1688,16 @@ g_date_subtract_months (GDate *d,
   g_return_if_fail (g_date_valid (d));
 }
 
+/**
+ * g_date_add_years:
+ * @date: a #GDate to increment
+ * @n_years: number of years to move forward
+ *
+ * Increments a date by some number of years.
+ * If the date is February 29, and the destination
+ * year is not a leap year, the date will be changed
+ * to February 28. The date must be valid.
+ */
 void         
 g_date_add_years (GDate *d, 
                   guint  nyears)
@@ -1208,6 +1720,17 @@ g_date_add_years (GDate *d,
   d->julian = FALSE;
 }
 
+/**
+ * g_date_subtract_years:
+ * @date: a #GDate to decrement
+ * @n_years: number of years to move
+ *
+ * Moves a date some number of years into the past.
+ * If the current day doesn't exist in the destination
+ * year (i.e. it's February 29 and you move to a non-leap-year)
+ * then the day is changed to February 29. The date
+ * must be valid.
+ */
 void         
 g_date_subtract_years (GDate *d, 
                        guint  nyears)
@@ -1231,6 +1754,19 @@ g_date_subtract_years (GDate *d,
   d->julian = FALSE;
 }
 
+/**
+ * g_date_is_leap_year:
+ * @year: year to check
+ *
+ * Returns %TRUE if the year is a leap year.
+ * <footnote><para>For the purposes of this function,
+ * leap year is every year divisible by 4 unless that year
+ * is divisible by 100. If it is divisible by 100 it would
+ * be a leap year only if that year is also divisible
+ * by 400.</para></footnote>
+ *
+ * Returns: %TRUE if the year is a leap year
+ */
 gboolean     
 g_date_is_leap_year (GDateYear year)
 {
@@ -1240,6 +1776,16 @@ g_date_is_leap_year (GDateYear year)
            (year % 400) == 0 );
 }
 
+/**
+ * g_date_get_days_in_month:
+ * @month: month
+ * @year: year
+ *
+ * Returns the number of days in a month, taking leap
+ * years into account.
+ *
+ * Returns: number of days in @month during the @year
+ */
 guint8         
 g_date_get_days_in_month (GDateMonth month, 
                           GDateYear  year)
@@ -1254,6 +1800,20 @@ g_date_get_days_in_month (GDateMonth month,
   return days_in_months[idx][month];
 }
 
+/**
+ * g_date_get_monday_weeks_in_year:
+ * @year: a year
+ *
+ * Returns the number of weeks in the year, where weeks
+ * are taken to start on Monday. Will be 52 or 53. The
+ * date must be valid. (Years always have 52 7-day periods,
+ * plus 1 or 2 extra days depending on whether it's a leap
+ * year. This function is basically telling you how many
+ * Mondays are in the year, i.e. there are 53 Mondays if
+ * one of the extra days happens to be a Monday.)
+ *
+ * Returns: number of Mondays in the year
+ */
 guint8       
 g_date_get_monday_weeks_in_year (GDateYear year)
 {
@@ -1276,6 +1836,18 @@ g_date_get_monday_weeks_in_year (GDateYear year)
   return 52;
 }
 
+/**
+ * g_date_get_sunday_weeks_in_year:
+ * @year: year to count weeks in
+ *
+ * Returns the number of weeks in the year, where weeks
+ * are taken to start on Sunday. Will be 52 or 53. The
+ * date must be valid. (Years always have 52 7-day periods,
+ * plus 1 or 2 extra days depending on whether it's a leap
+ * year. This function is basically telling you how many
+ * Sundays are in the year, i.e. there are 53 Sundays if
+ * one of the extra days happens to be a Sunday.)
+ */
 guint8       
 g_date_get_sunday_weeks_in_year (GDateYear year)
 {
@@ -1298,6 +1870,17 @@ g_date_get_sunday_weeks_in_year (GDateYear year)
   return 52;
 }
 
+/**
+ * g_date_compare:
+ * @lhs: first date to compare
+ * @rhs: second date to compare
+ *
+ * qsort()-style comparsion function for dates.
+ * Both dates must be valid.
+ *
+ * Returns: 0 for equal, less than zero if @lhs is less than @rhs,
+ *     greater than zero if @lhs is greater than @rhs
+ */
 gint         
 g_date_compare (const GDate *lhs, 
                 const GDate *rhs)
@@ -1347,7 +1930,15 @@ g_date_compare (const GDate *lhs,
   return 0; /* warnings */
 }
 
-
+/**
+ * g_date_to_struct_tm:
+ * @date: a #GDate to set the <structname>struct tm</structname> from
+ * @tm: <structname>struct tm</structname> to fill
+ *
+ * Fills in the date-related bits of a <structname>struct tm</structname>
+ * using the @date value. Initializes the non-date parts with something
+ * sane but meaningless.
+ */
 void        
 g_date_to_struct_tm (const GDate *d, 
                      struct tm   *tm)
@@ -1385,6 +1976,18 @@ g_date_to_struct_tm (const GDate *d,
   tm->tm_isdst = -1; /* -1 means "information not available" */
 }
 
+/**
+ * g_date_clamp:
+ * @date: a #GDate to clamp
+ * @min_date: minimum accepted value for @date
+ * @max_date: maximum accepted value for @date
+ *
+ * If @date is prior to @min_date, sets @date equal to @min_date.
+ * If @date falls after @max_date, sets @date equal to @max_date.
+ * Otherwise, @date is unchanged.
+ * Either of @min_date and @max_date may be %NULL.
+ * All non-%NULL dates must be valid.
+ */
 void
 g_date_clamp (GDate       *date,
 	      const GDate *min_date,
@@ -1408,6 +2011,14 @@ g_date_clamp (GDate       *date,
     *date = *max_date;
 }
 
+/**
+ * g_date_order:
+ * @date1: the first date
+ * @date2: the second date
+ *
+ * Checks if @date1 is less than or equal to @date2,
+ * and swap the values if this is not the case.
+ */
 void
 g_date_order (GDate *date1,
               GDate *date2)
@@ -1801,6 +2412,29 @@ win32_strftime_helper (const GDate     *d,
 
 #endif
 
+/**
+ * g_date_strftime:
+ * @s: destination buffer
+ * @slen: buffer size
+ * @format: format string
+ * @date: valid #GDate
+ *
+ * Generates a printed representation of the date, in a
+ * <link linkend="setlocale">locale</link>-specific way.
+ * Works just like the platform's C library strftime() function,
+ * but only accepts date-related formats; time-related formats
+ * give undefined results. Date must be valid. Unlike strftime()
+ * (which uses the locale encoding), works on a UTF-8 format
+ * string and stores a UTF-8 result.
+ *
+ * This function does not provide any conversion specifiers in
+ * addition to those implemented by the platform's C library.
+ * For example, don't expect that using g_date_strftime() would
+ * make the \%F provided by the C99 strftime() work on Windows
+ * where the C library only complies to C89.
+ *
+ * Returns: number of characters written to the buffer, or 0 the buffer was too small
+ */
 gsize     
 g_date_strftime (gchar       *s, 
                  gsize        slen, 
