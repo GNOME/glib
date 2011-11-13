@@ -533,7 +533,7 @@ g_settings_finalize (GObject *object)
                                   settings->priv->path);
   g_main_context_unref (settings->priv->main_context);
   g_object_unref (settings->priv->backend);
-  g_object_unref (settings->priv->schema);
+  g_settings_schema_unref (settings->priv->schema);
   g_free (settings->priv->schema_name);
   g_free (settings->priv->path);
 

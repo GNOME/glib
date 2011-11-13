@@ -26,9 +26,7 @@
 
 #include <glibintl.h>
 
-G_DEFINE_TYPE (GSettingsSchema, g_settings_schema, G_TYPE_OBJECT)
-
-struct _GSettingsSchemaPrivate
+struct _GSettingsSchema
 {
   const gchar *gettext_domain;
   const gchar *path;
@@ -36,6 +34,8 @@ struct _GSettingsSchemaPrivate
   gint n_items;
   GvdbTable *table;
   gchar *name;
+
+  gint ref_count;
 };
 
 static GSList *schema_sources;
@@ -216,34 +216,25 @@ g_settings_list_relocatable_schemas (void)
   return relocatable_schema_list;
 }
 
-static void
-g_settings_schema_finalize (GObject *object)
+GSettingsSchema *
+g_settings_schema_ref (GSettingsSchema *schema)
 {
-  GSettingsSchema *schema = G_SETTINGS_SCHEMA (object);
+  g_atomic_int_inc (&schema->ref_count);
 
-  gvdb_table_unref (schema->priv->table);
-  g_free (schema->priv->items);
-  g_free (schema->priv->name);
-
-  G_OBJECT_CLASS (g_settings_schema_parent_class)
-    ->finalize (object);
+  return schema;
 }
 
-static void
-g_settings_schema_init (GSettingsSchema *schema)
+void
+g_settings_schema_unref (GSettingsSchema *schema)
 {
-  schema->priv = G_TYPE_INSTANCE_GET_PRIVATE (schema, G_TYPE_SETTINGS_SCHEMA,
-                                              GSettingsSchemaPrivate);
-}
+  if (g_atomic_int_dec_and_test (&schema->ref_count))
+    {
+      gvdb_table_unref (schema->table);
+      g_free (schema->items);
+      g_free (schema->name);
 
-static void
-g_settings_schema_class_init (GSettingsSchemaClass *class)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  object_class->finalize = g_settings_schema_finalize;
-
-  g_type_class_add_private (class, sizeof (GSettingsSchemaPrivate));
+      g_slice_free (GSettingsSchema, schema);
+    }
 }
 
 const gchar *
@@ -253,7 +244,7 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   const gchar *result = NULL;
   GVariant *value;
 
-  if ((value = gvdb_table_get_raw_value (schema->priv->table, key)))
+  if ((value = gvdb_table_get_raw_value (schema->table, key)))
     {
       result = g_variant_get_string (value, NULL);
       g_variant_unref (value);
@@ -284,16 +275,17 @@ g_settings_schema_new (const gchar *name)
   if (table == NULL)
     g_error ("Settings schema '%s' is not installed\n", name);
 
-  schema = g_object_new (G_TYPE_SETTINGS_SCHEMA, NULL);
-  schema->priv->name = g_strdup (name);
-  schema->priv->table = table;
-  schema->priv->path =
+  schema = g_slice_new0 (GSettingsSchema);
+  schema->ref_count = 1;
+  schema->name = g_strdup (name);
+  schema->table = table;
+  schema->path =
     g_settings_schema_get_string (schema, ".path");
-  schema->priv->gettext_domain =
+  schema->gettext_domain =
     g_settings_schema_get_string (schema, ".gettext-domain");
 
-  if (schema->priv->gettext_domain)
-    bind_textdomain_codeset (schema->priv->gettext_domain, "UTF-8");
+  if (schema->gettext_domain)
+    bind_textdomain_codeset (schema->gettext_domain, "UTF-8");
 
   return schema;
 }
@@ -305,11 +297,11 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   GVariantIter *iter;
   GVariant *value;
 
-  value = gvdb_table_get_raw_value (schema->priv->table, key);
+  value = gvdb_table_get_raw_value (schema->table, key);
 
   if G_UNLIKELY (value == NULL)
     g_error ("Settings schema '%s' does not contain a key named '%s'",
-             schema->priv->name, key);
+             schema->name, key);
 
   iter = g_variant_iter_new (value);
   g_variant_unref (value);
@@ -320,20 +312,20 @@ g_settings_schema_get_value (GSettingsSchema *schema,
 const gchar *
 g_settings_schema_get_path (GSettingsSchema *schema)
 {
-  return schema->priv->path;
+  return schema->path;
 }
 
 const gchar *
 g_settings_schema_get_gettext_domain (GSettingsSchema *schema)
 {
-  return schema->priv->gettext_domain;
+  return schema->gettext_domain;
 }
 
 gboolean
 g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)
 {
-  return gvdb_table_has_value (schema->priv->table, key);
+  return gvdb_table_has_value (schema->table, key);
 }
 
 const GQuark *
@@ -342,25 +334,25 @@ g_settings_schema_list (GSettingsSchema *schema,
 {
   gint i, j;
 
-  if (schema->priv->items == NULL)
+  if (schema->items == NULL)
     {
       gchar **list;
       gint len;
 
-      list = gvdb_table_list (schema->priv->table, "");
+      list = gvdb_table_list (schema->table, "");
       len = list ? g_strv_length (list) : 0;
 
-      schema->priv->items = g_new (GQuark, len);
+      schema->items = g_new (GQuark, len);
       j = 0;
 
       for (i = 0; i < len; i++)
         if (list[i][0] != '.')
-          schema->priv->items[j++] = g_quark_from_string (list[i]);
-      schema->priv->n_items = j;
+          schema->items[j++] = g_quark_from_string (list[i]);
+      schema->n_items = j;
 
       g_strfreev (list);
     }
 
-  *n_items = schema->priv->n_items;
-  return schema->priv->items;
+  *n_items = schema->n_items;
+  return schema->items;
 }
