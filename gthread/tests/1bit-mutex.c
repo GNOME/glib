@@ -62,7 +62,7 @@ acquire (int      nr,
 
   self = g_thread_self ();
 
-  g_assert_cmpint (((gsize) ptrs) % 8, ==, 0);
+  g_assert_cmpint (((gsize) ptrs) % sizeof(gint), ==, 0);
 
   if (!(use_pointers ?
           g_pointer_bit_trylock (&ptrs[nr], bits[nr])
