@@ -858,6 +858,9 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
 typedef struct
 {
   GSettings *settings;
+
+  const gchar *schema_name;
+  const gchar *gettext_domain;
   const gchar *key;
 
   guint is_flags : 1;
@@ -899,6 +902,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
 
   iter = g_settings_schema_get_value (settings->priv->schema, key);
 
+  info->gettext_domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
+  info->schema_name = settings->priv->schema_name;
   info->default_value = g_variant_iter_next_value (iter);
   endian_fixup (&info->default_value);
   info->type = g_variant_get_type (info->default_value);
@@ -1093,19 +1098,16 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
 {
   const gchar *translated;
   GError *error = NULL;
-  const gchar *domain;
   GVariant *value;
 
   if (info->lc_char == '\0')
     /* translation not requested for this key */
     return NULL;
 
-  domain = g_settings_schema_get_gettext_domain (info->settings->priv->schema);
-
   if (info->lc_char == 't')
-    translated = g_dcgettext (domain, info->unparsed, LC_TIME);
+    translated = g_dcgettext (info->gettext_domain, info->unparsed, LC_TIME);
   else
-    translated = g_dgettext (domain, info->unparsed);
+    translated = g_dgettext (info->gettext_domain, info->unparsed);
 
   if (translated == info->unparsed)
     /* the default value was not translated */
@@ -1118,7 +1120,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
     {
       g_warning ("Failed to parse translated string `%s' for "
                  "key `%s' in schema `%s': %s", info->unparsed, info->key,
-                 info->settings->priv->schema_name, error->message);
+                 info->schema_name, error->message);
       g_warning ("Using untranslated default instead.");
       g_error_free (error);
     }
@@ -1127,7 +1129,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
     {
       g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                  "is outside of valid range", info->unparsed, info->key,
-                 info->settings->priv->schema_name);
+                 info->schema_name);
       g_variant_unref (value);
       value = NULL;
     }
@@ -1367,7 +1369,7 @@ g_settings_set_enum (GSettings   *settings,
     {
       g_critical ("g_settings_set_enum(): invalid enum value %d for key `%s' "
                   "in schema `%s'.  Doing nothing.", value, info.key,
-                  info.settings->priv->schema_name);
+                  info.schema_name);
       g_settings_free_key_info (&info);
       return FALSE;
     }
@@ -1479,7 +1481,7 @@ g_settings_set_flags (GSettings   *settings,
     {
       g_critical ("g_settings_set_flags(): invalid flags value 0x%08x "
                   "for key `%s' in schema `%s'.  Doing nothing.",
-                  value, info.key, info.settings->priv->schema_name);
+                  value, info.key, info.schema_name);
       g_settings_free_key_info (&info);
       return FALSE;
     }
@@ -2551,7 +2553,7 @@ g_settings_binding_key_changed (GSettings   *settings,
           g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                      "was rejected by the binding mapping function",
                      binding->info.unparsed, binding->info.key,
-                     binding->info.settings->priv->schema_name);
+                     binding->info.schema_name);
           g_variant_unref (variant);
           variant = NULL;
         }
@@ -2564,7 +2566,7 @@ g_settings_binding_key_changed (GSettings   *settings,
         g_error ("The schema default value for key `%s' in schema `%s' "
                  "was rejected by the binding mapping function.",
                  binding->info.key,
-                 binding->info.settings->priv->schema_name);
+                 binding->info.schema_name);
     }
 
   g_object_set_property (binding->object, binding->property->name, &value);
@@ -2613,8 +2615,7 @@ g_settings_binding_property_changed (GObject          *object,
                       "schema-specified range for key `%s' of `%s': %s",
                       binding->property->name,
                       g_type_name (binding->property->owner_type),
-                      binding->info.key,
-                      binding->info.settings->priv->schema_name,
+                      binding->info.key, binding->info.schema_name,
                       g_variant_print (variant, TRUE));
           return;
         }
