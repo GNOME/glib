@@ -859,7 +859,7 @@ typedef struct
 {
   const gchar *schema_name;
   const gchar *gettext_domain;
-  const gchar *key;
+  const gchar *name;
 
   guint is_flags : 1;
   guint is_enum  : 1;
@@ -890,7 +890,7 @@ endian_fixup (GVariant **value)
 static void
 g_settings_get_key_info (GSettingsKeyInfo *info,
                          GSettings        *settings,
-                         const gchar      *key)
+                         const gchar      *name)
 {
   GVariantIter *iter;
   GVariant *data;
@@ -898,14 +898,14 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
 
   memset (info, 0, sizeof *info);
 
-  iter = g_settings_schema_get_value (settings->priv->schema, key);
+  iter = g_settings_schema_get_value (settings->priv->schema, name);
 
   info->gettext_domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
   info->schema_name = settings->priv->schema_name;
   info->default_value = g_variant_iter_next_value (iter);
   endian_fixup (&info->default_value);
   info->type = g_variant_get_type (info->default_value);
-  info->key = g_intern_string (key);
+  info->name = g_intern_string (name);
 
   while (g_variant_iter_next (iter, "(y*)", &code, &data))
     {
@@ -970,7 +970,7 @@ g_settings_write_to_backend (GSettings        *settings,
   gboolean success;
   gchar *path;
 
-  path = g_strconcat (settings->priv->path, info->key, NULL);
+  path = g_strconcat (settings->priv->path, info->name, NULL);
   success = g_settings_backend_write (settings->priv->backend, path, value, NULL);
   g_free (path);
 
@@ -1074,7 +1074,7 @@ g_settings_read_from_backend (GSettings        *settings,
   GVariant *fixup;
   gchar *path;
 
-  path = g_strconcat (settings->priv->path, info->key, NULL);
+  path = g_strconcat (settings->priv->path, info->name, NULL);
   value = g_settings_backend_read (settings->priv->backend, path, info->type, FALSE);
   g_free (path);
 
@@ -1115,7 +1115,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
   if (value == NULL)
     {
       g_warning ("Failed to parse translated string `%s' for "
-                 "key `%s' in schema `%s': %s", info->unparsed, info->key,
+                 "key `%s' in schema `%s': %s", info->unparsed, info->name,
                  info->schema_name, error->message);
       g_warning ("Using untranslated default instead.");
       g_error_free (error);
@@ -1124,7 +1124,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
   else if (!g_settings_key_info_range_check (info, value))
     {
       g_warning ("Translated default `%s' for key `%s' in schema `%s' "
-                 "is outside of valid range", info->unparsed, info->key,
+                 "is outside of valid range", info->unparsed, info->name,
                  info->schema_name);
       g_variant_unref (value);
       value = NULL;
@@ -1302,7 +1302,7 @@ g_settings_get_enum (GSettings   *settings,
   if (!info.is_enum)
     {
       g_critical ("g_settings_get_enum() called on key `%s' which is not "
-                  "associated with an enumerated type", info.key);
+                  "associated with an enumerated type", info.name);
       g_settings_free_key_info (&info);
       return -1;
     }
@@ -1357,14 +1357,14 @@ g_settings_set_enum (GSettings   *settings,
   if (!info.is_enum)
     {
       g_critical ("g_settings_set_enum() called on key `%s' which is not "
-                  "associated with an enumerated type", info.key);
+                  "associated with an enumerated type", info.name);
       return FALSE;
     }
 
   if (!(variant = g_settings_from_enum (&info, value)))
     {
       g_critical ("g_settings_set_enum(): invalid enum value %d for key `%s' "
-                  "in schema `%s'.  Doing nothing.", value, info.key,
+                  "in schema `%s'.  Doing nothing.", value, info.name,
                   info.schema_name);
       g_settings_free_key_info (&info);
       return FALSE;
@@ -1413,7 +1413,7 @@ g_settings_get_flags (GSettings   *settings,
   if (!info.is_flags)
     {
       g_critical ("g_settings_get_flags() called on key `%s' which is not "
-                  "associated with a flags type", info.key);
+                  "associated with a flags type", info.name);
       g_settings_free_key_info (&info);
       return -1;
     }
@@ -1469,7 +1469,7 @@ g_settings_set_flags (GSettings   *settings,
   if (!info.is_flags)
     {
       g_critical ("g_settings_set_flags() called on key `%s' which is not "
-                  "associated with a flags type", info.key);
+                  "associated with a flags type", info.name);
       return FALSE;
     }
 
@@ -1477,7 +1477,7 @@ g_settings_set_flags (GSettings   *settings,
     {
       g_critical ("g_settings_set_flags(): invalid flags value 0x%08x "
                   "for key `%s' in schema `%s'.  Doing nothing.",
-                  value, info.key, info.schema_name);
+                  value, info.name, info.schema_name);
       g_settings_free_key_info (&info);
       return FALSE;
     }
@@ -2525,7 +2525,7 @@ g_settings_binding_key_changed (GSettings   *settings,
   GVariant *variant;
 
   g_assert (settings == binding->settings);
-  g_assert (key == binding->info.key);
+  g_assert (key == binding->info.name);
 
   if (binding->running)
     return;
@@ -2551,7 +2551,7 @@ g_settings_binding_key_changed (GSettings   *settings,
           /* flag translation errors with a warning */
           g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                      "was rejected by the binding mapping function",
-                     binding->info.unparsed, binding->info.key,
+                     binding->info.unparsed, binding->info.name,
                      binding->info.schema_name);
           g_variant_unref (variant);
           variant = NULL;
@@ -2564,8 +2564,7 @@ g_settings_binding_key_changed (GSettings   *settings,
       if (!binding->get_mapping (&value, variant, binding->user_data))
         g_error ("The schema default value for key `%s' in schema `%s' "
                  "was rejected by the binding mapping function.",
-                 binding->info.key,
-                 binding->info.schema_name);
+                 binding->info.name, binding->info.schema_name);
     }
 
   g_object_set_property (binding->object, binding->property->name, &value);
@@ -2603,7 +2602,7 @@ g_settings_binding_property_changed (GObject          *object,
         {
           g_critical ("binding mapping function for key `%s' returned "
                       "GVariant of type `%s' when type `%s' was requested",
-                      binding->info.key, g_variant_get_type_string (variant),
+                      binding->info.name, g_variant_get_type_string (variant),
                       g_variant_type_dup_string (binding->info.type));
           return;
         }
@@ -2614,7 +2613,7 @@ g_settings_binding_property_changed (GObject          *object,
                       "schema-specified range for key `%s' of `%s': %s",
                       binding->property->name,
                       g_type_name (binding->property->owner_type),
-                      binding->info.key, binding->info.schema_name,
+                      binding->info.name, binding->info.schema_name,
                       g_variant_print (variant, TRUE));
           return;
         }
@@ -2836,8 +2835,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
       if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN &&
           (sensitive->flags & G_PARAM_WRITABLE))
-        g_settings_bind_writable (settings, binding->info.key,
-                                  object, "sensitive", FALSE);
+        g_settings_bind_writable (settings, binding->info.name, object, "sensitive", FALSE);
     }
 
   if (flags & G_SETTINGS_BIND_SET)
@@ -2867,7 +2865,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
           g_free (detailed_signal);
         }
 
-      g_settings_binding_key_changed (settings, binding->info.key, binding);
+      g_settings_binding_key_changed (settings, binding->info.name, binding);
     }
 
   binding_quark = g_settings_binding_quark (property);
