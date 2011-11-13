@@ -17,12 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_SETTINGS_SCHEMA_H__
-#define __G_SETTINGS_SCHEMA_H__
+#ifndef __G_SETTINGS_SCHEMA_INTERNAL_H__
+#define __G_SETTINGS_SCHEMA_INTERNAL_H__
 
 #include <glib.h>
-
-G_BEGIN_DECLS
 
 typedef struct _GSettingsSchema                             GSettingsSchema;
 
@@ -49,6 +47,4 @@ G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_string                    (GSettingsSchema  *schema,
                                                                          const gchar      *key);
 
-G_END_DECLS
-
-#endif /* __G_SETTINGS_SCHEMA_H__ */
+#endif /* __G_SETTINGS_SCHEMA_INTERNAL_H__ */

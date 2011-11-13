@@ -31,7 +31,7 @@
 #include "gdelayedsettingsbackend.h"
 #include "gsettingsbackendinternal.h"
 #include "gsettings-mapping.h"
-#include "gsettingsschema.h"
+#include "gsettingsschema-internal.h"
 
 #include <string.h>
 

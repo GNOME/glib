@@ -19,7 +19,7 @@
 
 #include "config.h"
 
-#include "gsettingsschema.h"
+#include "gsettingsschema-internal.h"
 #include "gsettings.h"
 
 #include "gvdb/gvdb-reader.h"
