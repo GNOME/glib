@@ -50,8 +50,7 @@
  * file descriptor, including asynchronous operations. (If the file
  * descriptor refers to a socket or pipe, this will use poll() to do
  * asynchronous I/O. If it refers to a regular file, it will fall back
- * to doing asynchronous I/O in another thread like
- * #GLocalFileInputStream.)
+ * to doing asynchronous I/O in another thread.)
  *
  * Note that <filename>&lt;gio/gunixinputstream.h&gt;</filename> belongs
  * to the UNIX-specific GIO interfaces, thus you have to use the
