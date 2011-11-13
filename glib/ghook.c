@@ -38,6 +38,146 @@
 #include "gtestutils.h"
 #include "gslice.h"
 
+/**
+ * SECTION:hooks
+ * @title: Hook Functions
+ * @short_description: support for manipulating lists of hook functions
+ *
+ * The #GHookList, #GHook and their related functions provide support for
+ * lists of hook functions. Functions can be added and removed from the lists,
+ * and the list of hook functions can be invoked.
+ */
+
+/**
+ * GHookList:
+ * @seq_id: the next free #GHook id
+ * @hook_size: the size of the #GHookList elements, in bytes
+ * @is_setup: 1 if the #GHookList has been initialized
+ * @hooks: the first #GHook element in the list
+ * @dummy3: unused
+ * @finalize_hook: the function to call to finalize a #GHook element.
+ *     The default behaviour is to call the hooks @destroy function
+ * @dummy: unused
+ *
+ * The <structname>GHookList</structname> struct represents a
+ * list of hook functions.
+ */
+
+/**
+ * GHookFinalizeFunc:
+ * @hook_list: a #GHookList
+ * @hook: the hook in @hook_list that gets finalized
+ *
+ * Defines the type of function to be called when a hook in a
+ * list of hooks gets finalized.
+ */
+
+/**
+ * GHookFlagMask:
+ * @G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed
+ * @G_HOOK_FLAG_IN_CALL: set if the hook is currently being run
+ * @G_HOOK_FLAG_MASK: A mask covering all bits reserved for
+ *   hook flags; see #G_HOOK_FLAGS_USER_SHIFT
+ *
+ * Flags used internally in the #GHook implementation.
+ */
+
+/**
+ * G_HOOK_FLAGS:
+ * @hook: a #GHook
+ *
+ * Returns the flags of a hook.
+ */
+
+/**
+ * G_HOOK_FLAG_USER_SHIFT:
+ *
+ * The position of the first bit which is not reserved for internal
+ * use be the #GHook implementation, i.e.
+ * <literal>1 &lt;&lt; G_HOOK_FLAG_USER_SHIFT</literal> is the first
+ * bit which can be used for application-defined flags.
+ */
+
+/**
+ * G_HOOK:
+ * @hook: a pointer
+ *
+ * Casts a pointer to a <literal>GHook*</literal>.
+ */
+
+/**
+ * G_HOOK_IS_VALID:
+ * @hook: a #GHook
+ *
+ * Returns %TRUE if the #GHook is valid, i.e. it is in a #GHookList,
+ * it is active and it has not been destroyed.
+ *
+ * Returns: %TRUE if the #GHook is valid
+ */
+
+/**
+ * G_HOOK_ACTIVE:
+ * @hook: a #GHook
+ *
+ * Returns %TRUE if the #GHook is active, which is normally the case
+ * until the #GHook is destroyed.
+ *
+ * Returns: %TRUE if the #GHook is active
+ */
+
+/**
+ * G_HOOK_IN_CALL:
+ * @hook: a #GHook
+ *
+ * Returns %TRUE if the #GHook function is currently executing.
+ *
+ * Returns: %TRUE if the #GHook function is currently executing
+ */
+
+/**
+ * G_HOOK_IS_UNLINKED:
+ * @hook: a #GHook
+ *
+ * Returns %TRUE if the #GHook is not in a #GHookList.
+ 
+ * Returns: %TRUE if the #GHook is not in a #GHookList
+ */
+
+/**
+ * GHook:
+ * @data: data which is passed to func when this hook is invoked
+ * @next: pointer to the next hook in the list
+ * @prev: pointer to the previous hook in the list
+ * @ref_count: the reference count of this hook
+ * @hook_id: the id of this hook, which is unique within its list
+ * @flags: flags which are set for this hook. See #GHookFlagMask for
+ *     predefined flags
+ * @func: the function to call when this hook is invoked. The possible
+ *     signatures for this function are #GHookFunc and #GHookCheckFunc
+ * @destroy: the default @finalize_hook function of a #GHookList calls
+ *     this member of the hook that is being finalized
+ *
+ * The <structname>GHook</structname> struct represents a single hook
+ * function in a #GHookList.
+ */
+
+/**
+ * GHookFunc:
+ * @data: the data field of the #GHook is passed to the hook function here
+ *
+ * Defines the type of a hook function that can be invoked
+ * by g_hook_list_invoke().
+ */
+
+/**
+ * GHookCheckFunc:
+ * @data: the data field of the #GHook is passed to the hook function here
+ *
+ * Defines the type of a hook function that can be invoked
+ * by g_hook_list_invoke_check().
+ *
+ * Returns: %FALSE if the #GHook should be destroyed
+ */
 
 /* --- functions --- */
 static void
@@ -53,6 +193,15 @@ default_finalize_hook (GHookList *hook_list,
     }
 }
 
+/**
+ * g_hook_list_init:
+ * @hook_list: a #GHookList
+ * @hook_size: the size of each element in the #GHookList,
+ *     typically <literal>sizeof (GHook)</literal>
+ *
+ * Initializes a #GHookList.
+ * This must be called before the #GHookList is used.
+ */
 void
 g_hook_list_init (GHookList *hook_list,
 		  guint	     hook_size)
@@ -70,6 +219,12 @@ g_hook_list_init (GHookList *hook_list,
   hook_list->dummy[1] = NULL;
 }
 
+/**
+ * g_hook_list_clear:
+ * @hook_list: a #GHookList
+ *
+ * Removes all the #GHook elements from a #GHookList.
+ */
 void
 g_hook_list_clear (GHookList *hook_list)
 {
@@ -101,6 +256,14 @@ g_hook_list_clear (GHookList *hook_list)
     }
 }
 
+/**
+ * g_hook_alloc:
+ * @hook_list: a #GHookList
+ *
+ * Allocates space for a #GHook and initializes it.
+ *
+ * Returns: a new #GHook
+ */
 GHook*
 g_hook_alloc (GHookList *hook_list)
 {
@@ -121,7 +284,14 @@ g_hook_alloc (GHookList *hook_list)
   
   return hook;
 }
-
+/**
+ * g_hook_free:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to free
+ *
+ * Calls the #GHookList @finalize_hook function if it exists,
+ * and frees the memory allocated for the #GHook.
+ */
 void
 g_hook_free (GHookList *hook_list,
 	     GHook     *hook)
@@ -137,6 +307,14 @@ g_hook_free (GHookList *hook_list,
   g_slice_free1 (hook_list->hook_size, hook);
 }
 
+/**
+ * g_hook_destroy_link:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to remove
+ *
+ * Removes one #GHook from a #GHookList, marking it
+ * inactive and calling g_hook_unref() on it.
+ */
 void
 g_hook_destroy_link (GHookList *hook_list,
 		     GHook     *hook)
@@ -152,6 +330,15 @@ g_hook_destroy_link (GHookList *hook_list,
     }
 }
 
+/**
+ * g_hook_destroy:
+ * @hook_list: a #GHookList
+ * @hook_id: a hook ID
+ *
+ * Destroys a #GHook, given its ID.
+ *
+ * Returns: %TRUE if the #GHook was found in the #GHookList and destroyed
+ */
 gboolean
 g_hook_destroy (GHookList   *hook_list,
 		gulong	     hook_id)
@@ -171,6 +358,15 @@ g_hook_destroy (GHookList   *hook_list,
   return FALSE;
 }
 
+/**
+ * g_hook_unref:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to unref
+ *
+ * Decrements the reference count of a #GHook.
+ * If the reference count falls to 0, the #GHook is removed
+ * from the #GHookList and g_hook_free() is called to free it.
+ */
 void
 g_hook_unref (GHookList *hook_list,
 	      GHook	*hook)
@@ -212,6 +408,15 @@ g_hook_unref (GHookList *hook_list,
     }
 }
 
+/**
+ * g_hook_ref:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to increment the reference count of
+ *
+ * Increments the reference count for a #GHook.
+ *
+ * Returns: the @hook that was passed in (since 2.6)
+ */
 GHook *
 g_hook_ref (GHookList *hook_list,
 	    GHook     *hook)
@@ -225,6 +430,21 @@ g_hook_ref (GHookList *hook_list,
   return hook;
 }
 
+/**
+ * g_hook_append:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to add to the end of @hook_list
+ *
+ * Appends a #GHook onto the end of a #GHookList.
+ */
+
+/**
+ * g_hook_prepend:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to add to the start of @hook_list
+ *
+ * Prepends a #GHook on the start of a #GHookList.
+ */
 void
 g_hook_prepend (GHookList *hook_list,
 		GHook	  *hook)
@@ -234,6 +454,14 @@ g_hook_prepend (GHookList *hook_list,
   g_hook_insert_before (hook_list, hook_list->hooks, hook);
 }
 
+/**
+ * g_hook_insert_before:
+ * @hook_list: a #GHookList
+ * @sibling: the #GHook to insert the new #GHook before
+ * @hook: the #GHook to insert
+ *
+ * Inserts a #GHook into a #GHookList, before a given #GHook.
+ */
 void
 g_hook_insert_before (GHookList *hook_list,
 		      GHook	*sibling,
@@ -279,6 +507,15 @@ g_hook_insert_before (GHookList *hook_list,
     }
 }
 
+/**
+ * g_hook_list_invoke:
+ * @hook_list: a #GHookList
+ * @may_recurse: %TRUE if functions which are already running
+ *     (e.g. in another thread) can be called. If set to %FALSE,
+ *     these are skipped
+ *
+ * Calls all of the #GHook functions in a #GHookList.
+ */
 void
 g_hook_list_invoke (GHookList *hook_list,
 		    gboolean   may_recurse)
@@ -306,6 +543,16 @@ g_hook_list_invoke (GHookList *hook_list,
     }
 }
 
+/**
+ * g_hook_list_invoke_check:
+ * @hook_list: a #GHookList
+ * @may_recurse: %TRUE if functions which are already running
+ *     (e.g. in another thread) can be called. If set to %FALSE,
+ *     these are skipped
+ *
+ * Calls all of the #GHook functions in a #GHookList.
+ * Any function which returns %FALSE is removed from the #GHookList.
+ */
 void
 g_hook_list_invoke_check (GHookList *hook_list,
 			  gboolean   may_recurse)
@@ -336,6 +583,28 @@ g_hook_list_invoke_check (GHookList *hook_list,
     }
 }
 
+/**
+ * GHookCheckMarshaller:
+ * @hook: a #GHook
+ * @marshal_data: user data
+ *
+ * Defines the type of function used by g_hook_list_marshal_check().
+ *
+ * Returns: %FALSE if @hook should be destroyed
+ */
+
+/**
+ * g_hook_list_marshal_check:
+ * @hook_list: a #GHookList
+ * @may_recurse: %TRUE if hooks which are currently running
+ *     (e.g. in another thread) are considered valid. If set to %FALSE,
+ *     these are skipped
+ * @marshaller: the function to call for each #GHook
+ * @marshal_data: data to pass to @marshaller
+ *
+ * Calls a function on each valid #GHook and destroys it if the
+ * function returns %FALSE.
+ */
 void
 g_hook_list_marshal_check (GHookList	       *hook_list,
 			   gboolean		may_recurse,
@@ -366,6 +635,25 @@ g_hook_list_marshal_check (GHookList	       *hook_list,
     }
 }
 
+/**
+ * GHookMarshaller:
+ * @hook: a #GHook
+ * @marshal_data: user data
+ *
+ * Defines the type of function used by g_hook_list_marshal().
+ */
+
+/**
+ * g_hook_list_marshal:
+ * @hook_list: a #GHookList
+ * @may_recurse: %TRUE if hooks which are currently running
+ *     (e.g. in another thread) are considered valid. If set to %FALSE,
+ *     these are skipped
+ * @marshaller: the function to call for each #GHook
+ * @marshal_data: data to pass to @marshaller
+ *
+ * Calls a function on each valid #GHook.
+ */
 void
 g_hook_list_marshal (GHookList		     *hook_list,
 		     gboolean		      may_recurse,
@@ -393,6 +681,20 @@ g_hook_list_marshal (GHookList		     *hook_list,
     }
 }
 
+/**
+ * g_hook_first_valid:
+ * @hook_list: a #GHookList
+ * @may_be_in_call: %TRUE if hooks which are currently running
+ *     (e.g. in another thread) are considered valid. If set to %FALSE,
+ *     these are skipped
+ *
+ * Returns the first #GHook in a #GHookList which has not been destroyed.
+ * The reference count for the #GHook is incremented, so you must call
+ * g_hook_unref() to restore it when no longer needed. (Or call
+ * g_hook_next_valid() if you are stepping through the #GHookList.)
+ *
+ * Returns: the first valid #GHook, or %NULL if none are valid
+ */
 GHook*
 g_hook_first_valid (GHookList *hook_list,
 		    gboolean   may_be_in_call)
@@ -417,6 +719,21 @@ g_hook_first_valid (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * g_hook_next_valid:
+ * @hook_list: a #GHookList
+ * @hook: the current #GHook
+ * @may_be_in_call: %TRUE if hooks which are currently running
+ *     (e.g. in another thread) are considered valid. If set to %FALSE,
+ *     these are skipped
+ *
+ * Returns the next #GHook in a #GHookList which has not been destroyed.
+ * The reference count for the #GHook is incremented, so you must call
+ * g_hook_unref() to restore it when no longer needed. (Or continue to call
+ * g_hook_next_valid() until %NULL is returned.)
+ *
+ * Returns: the next valid #GHook, or %NULL if none are valid
+ */
 GHook*
 g_hook_next_valid (GHookList *hook_list,
 		   GHook     *hook,
@@ -446,6 +763,15 @@ g_hook_next_valid (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * g_hook_get:
+ * @hook_list: a #GHookList
+ * @hook_id: a hook id
+ *
+ * Returns the #GHook with the given id, or %NULL if it is not found.
+ *
+ * Returns: the #GHook with the given id, or %NULL if it is not found
+ */
 GHook*
 g_hook_get (GHookList *hook_list,
 	    gulong     hook_id)
@@ -466,6 +792,30 @@ g_hook_get (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * GHookFindFunc:
+ * @hook: a #GHook
+ * @data: user data passed to g_hook_find_func()
+ *
+ * Defines the type of the function passed to g_hook_find().
+ *
+ * Returns: %TRUE if the required #GHook has been found
+ */
+
+/**
+ * g_hook_find:
+ * @hook_list: a #GHookList
+ * @need_valids: %TRUE if #GHook elements which have been destroyed
+ *     should be skipped
+ * @func: the function to call for each #GHook, which should return
+ *     %TRUE when the #GHook has been found
+ * @data: the data to pass to @func
+ *
+ * Finds a #GHook in a #GHookList using the given function to
+ * test for a match.
+ *
+ * Returns: the found #GHook or %NULL if no matching #GHook is found
+ */
 GHook*
 g_hook_find (GHookList	  *hook_list,
 	     gboolean	   need_valids,
@@ -506,6 +856,18 @@ g_hook_find (GHookList	  *hook_list,
   return NULL;
 }
 
+/**
+ * g_hook_find_data:
+ * @hook_list: a #GHookList
+ * @need_valids: %TRUE if #GHook elements which have been destroyed
+ *     should be skipped
+ * @data: the data to find
+ *
+ * Finds a #GHook in a #GHookList with the given data.
+ *
+ * Returns: the #GHook with the given @data or %NULL if no matching
+ *     #GHook is found
+ */
 GHook*
 g_hook_find_data (GHookList *hook_list,
 		  gboolean   need_valids,
@@ -530,6 +892,18 @@ g_hook_find_data (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * g_hook_find_func:
+ * @hook_list: a #GHookList
+ * @need_valids: %TRUE if #GHook elements which have been destroyed
+ *     should be skipped
+ * @func: the function to find
+ *
+ * Finds a #GHook in a #GHookList with the given function.
+ *
+ * Returns: the #GHook with the given @func or %NULL if no matching
+ *     #GHook is found
+ */
 GHook*
 g_hook_find_func (GHookList *hook_list,
 		  gboolean   need_valids,
@@ -555,6 +929,19 @@ g_hook_find_func (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * g_hook_find_func_data:
+ * @hook_list: a #GHookList
+ * @need_valids: %TRUE if #GHook elements which have been destroyed
+ *     should be skipped
+ * @func: the function to find
+ * @data: the data to find
+ *
+ * Finds a #GHook in a #GHookList with the given function and data.
+ *
+ * Returns: the #GHook with the given @func and @data or %NULL if
+ *     no matching #GHook is found
+ */
 GHook*
 g_hook_find_func_data (GHookList *hook_list,
 		       gboolean	  need_valids,
@@ -582,6 +969,25 @@ g_hook_find_func_data (GHookList *hook_list,
   return NULL;
 }
 
+/**
+ * GHookCompareFunc:
+ * @new_hook: the #GHook being inserted
+ * @sibling: the #GHook to compare with @new_hook
+ *
+ * Defines the type of function used to compare #GHook elements in
+ * g_hook_insert_sorted().
+ *
+ * Returns: a value &lt;= 0 if @new_hook should be before @sibling
+ */
+
+/**
+ * g_hook_insert_sorted:
+ * @hook_list: a #GHookList
+ * @hook: the #GHook to insert
+ * @func: the comparison function used to sort the #GHook elements
+ *
+ * Inserts a #GHook into a #GHookList, sorted by the given function.
+ */
 void
 g_hook_insert_sorted (GHookList	      *hook_list,
 		      GHook	      *hook,
@@ -619,11 +1025,22 @@ g_hook_insert_sorted (GHookList	      *hook_list,
 
       g_hook_unref (hook_list, sibling);
       sibling = tmp;
-    }
+   
+ }
   
   g_hook_insert_before (hook_list, sibling, hook);
 }
 
+/**
+ * g_hook_compare_ids:
+ * @new_hook: a #GHook
+ * @sibling: a #GHook to compare with @new_hook
+ *
+ * Compares the ids of two #GHook elements, returning a negative value
+ * if the second id is greater than the first.
+ *
+ * Returns: a value &lt;= 0 if the id of @sibling is >= the id of @new_hook
+ */
 gint
 g_hook_compare_ids (GHook *new_hook,
 		    GHook *sibling)

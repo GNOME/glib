@@ -24,6 +24,7 @@ gvarianttype.sgml
 gwakeup.sgml
 hash_tables.sgml
 hmac.sgml
+hooks.sgml
 iochannels.sgml
 keyfile.sgml
 linked_lists_double.sgml
@@ -31,6 +32,7 @@ linked_lists_single.sgml
 main.sgml
 markup.sgml
 memory_chunks.sgml
+memory_slices.sgml
 memory.sgml
 messages.sgml
 misc_utils.sgml
