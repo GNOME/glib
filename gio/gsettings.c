@@ -857,8 +857,6 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
 /* Internal read/write utilities, enum/flags conversion, validation {{{1 */
 typedef struct
 {
-  GSettings *settings;
-
   const gchar *schema_name;
   const gchar *gettext_domain;
   const gchar *key;
@@ -907,7 +905,6 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
   info->default_value = g_variant_iter_next_value (iter);
   endian_fixup (&info->default_value);
   info->type = g_variant_get_type (info->default_value);
-  info->settings = g_object_ref (settings);
   info->key = g_intern_string (key);
 
   while (g_variant_iter_next (iter, "(y*)", &code, &data))
@@ -963,19 +960,18 @@ g_settings_free_key_info (GSettingsKeyInfo *info)
     g_variant_unref (info->maximum);
 
   g_variant_unref (info->default_value);
-  g_object_unref (info->settings);
 }
 
 static gboolean
-g_settings_write_to_backend (GSettingsKeyInfo *info,
+g_settings_write_to_backend (GSettings        *settings,
+                             GSettingsKeyInfo *info,
                              GVariant         *value)
 {
   gboolean success;
   gchar *path;
 
-  path = g_strconcat (info->settings->priv->path, info->key, NULL);
-  success = g_settings_backend_write (info->settings->priv->backend,
-                                      path, value, NULL);
+  path = g_strconcat (settings->priv->path, info->key, NULL);
+  success = g_settings_backend_write (settings->priv->backend, path, value, NULL);
   g_free (path);
 
   return success;
@@ -1071,15 +1067,15 @@ g_settings_range_fixup (GSettingsKeyInfo *info,
 }
 
 static GVariant *
-g_settings_read_from_backend (GSettingsKeyInfo *info)
+g_settings_read_from_backend (GSettings        *settings,
+                              GSettingsKeyInfo *info)
 {
   GVariant *value;
   GVariant *fixup;
   gchar *path;
 
-  path = g_strconcat (info->settings->priv->path, info->key, NULL);
-  value = g_settings_backend_read (info->settings->priv->backend,
-                                   path, info->type, FALSE);
+  path = g_strconcat (settings->priv->path, info->key, NULL);
+  value = g_settings_backend_read (settings->priv->backend, path, info->type, FALSE);
   g_free (path);
 
   if (value != NULL)
@@ -1256,7 +1252,7 @@ g_settings_get_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, NULL);
 
   g_settings_get_key_info (&info, settings, key);
-  value = g_settings_read_from_backend (&info);
+  value = g_settings_read_from_backend (settings, &info);
 
   if (value == NULL)
     value = g_settings_get_translated_default (&info);
@@ -1311,7 +1307,7 @@ g_settings_get_enum (GSettings   *settings,
       return -1;
     }
 
-  value = g_settings_read_from_backend (&info);
+  value = g_settings_read_from_backend (settings, &info);
 
   if (value == NULL)
     value = g_settings_get_translated_default (&info);
@@ -1374,7 +1370,7 @@ g_settings_set_enum (GSettings   *settings,
       return FALSE;
     }
 
-  success = g_settings_write_to_backend (&info, variant);
+  success = g_settings_write_to_backend (settings, &info, variant);
   g_settings_free_key_info (&info);
 
   return success;
@@ -1422,7 +1418,7 @@ g_settings_get_flags (GSettings   *settings,
       return -1;
     }
 
-  value = g_settings_read_from_backend (&info);
+  value = g_settings_read_from_backend (settings, &info);
 
   if (value == NULL)
     value = g_settings_get_translated_default (&info);
@@ -1486,7 +1482,7 @@ g_settings_set_flags (GSettings   *settings,
       return FALSE;
     }
 
-  success = g_settings_write_to_backend (&info, variant);
+  success = g_settings_write_to_backend (settings, &info, variant);
   g_settings_free_key_info (&info);
 
   return success;
@@ -1545,7 +1541,7 @@ g_settings_set_value (GSettings   *settings,
 
   g_settings_free_key_info (&info);
 
-  return g_settings_write_to_backend (&info, value);
+  return g_settings_write_to_backend (settings, &info, value);
 }
 
 /**
@@ -1674,7 +1670,7 @@ g_settings_get_mapped (GSettings           *settings,
 
   g_settings_get_key_info (&info, settings, key);
 
-  if ((value = g_settings_read_from_backend (&info)))
+  if ((value = g_settings_read_from_backend (settings, &info)))
     {
       okay = mapping (value, &result, user_data);
       g_variant_unref (value);
@@ -2459,6 +2455,7 @@ g_settings_range_check (GSettings   *settings,
 typedef struct
 {
   GSettingsKeyInfo info;
+  GSettings *settings;
   GObject *object;
 
   GSettingsBindGetMapping get_mapping;
@@ -2483,11 +2480,11 @@ g_settings_binding_free (gpointer data)
   g_assert (!binding->running);
 
   if (binding->writable_handler_id)
-    g_signal_handler_disconnect (binding->info.settings,
+    g_signal_handler_disconnect (binding->settings,
                                  binding->writable_handler_id);
 
   if (binding->key_handler_id)
-    g_signal_handler_disconnect (binding->info.settings,
+    g_signal_handler_disconnect (binding->settings,
                                  binding->key_handler_id);
 
   if (g_signal_handler_is_connected (binding->object,
@@ -2499,6 +2496,8 @@ g_settings_binding_free (gpointer data)
 
   if (binding->destroy)
     binding->destroy (binding->user_data);
+
+  g_object_unref (binding->settings);
 
   g_slice_free (GSettingsBinding, binding);
 }
@@ -2525,7 +2524,7 @@ g_settings_binding_key_changed (GSettings   *settings,
   GValue value = G_VALUE_INIT;
   GVariant *variant;
 
-  g_assert (settings == binding->info.settings);
+  g_assert (settings == binding->settings);
   g_assert (key == binding->info.key);
 
   if (binding->running)
@@ -2535,7 +2534,7 @@ g_settings_binding_key_changed (GSettings   *settings,
 
   g_value_init (&value, binding->property->value_type);
 
-  variant = g_settings_read_from_backend (&binding->info);
+  variant = g_settings_read_from_backend (binding->settings, &binding->info);
   if (variant && !binding->get_mapping (&value, variant, binding->user_data))
     {
       /* silently ignore errors in the user's config database */
@@ -2620,7 +2619,7 @@ g_settings_binding_property_changed (GObject          *object,
           return;
         }
 
-      g_settings_write_to_backend (&binding->info, variant);
+      g_settings_write_to_backend (binding->settings, &binding->info, variant);
       g_variant_unref (variant);
     }
   g_value_unset (&value);
@@ -2752,6 +2751,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
   binding = g_slice_new0 (GSettingsBinding);
   g_settings_get_key_info (&binding->info, settings, key);
+  binding->settings = g_object_ref (settings);
   binding->object = object;
   binding->property = g_object_class_find_property (objectclass, property);
   binding->user_data = user_data;
