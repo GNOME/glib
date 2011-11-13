@@ -38,9 +38,7 @@
 /**
  * SECTION:linked_lists_single
  * @title: Singly-Linked Lists
- * @short_description: linked lists containing integer values or
- *                     pointers to data, limited to iterating over the
- *                     list in one direction
+ * @short_description: linked lists that can be iterated in one direction
  *
  * The #GSList structure and its associated functions provide a
  * standard singly-linked list data structure.

@@ -35,9 +35,10 @@
 
 /**
  * SECTION:gurifuncs
- * @short_description: URI Functions
- * 
- * Functions for manipulating Universal Resource Identifiers (URIs) as 
+ * @title: URI Functions
+ * @short_description: manipulating URIs
+ *
+ * Functions for manipulating Universal Resource Identifiers (URIs) as
  * defined by <ulink url="http://www.ietf.org/rfc/rfc3986.txt">
  * RFC 3986</ulink>. It is highly recommended that you have read and
  * understand RFC 3986 for understanding this API.

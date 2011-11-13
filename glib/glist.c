@@ -38,9 +38,7 @@
 /**
  * SECTION:linked_lists_double
  * @title: Doubly-Linked Lists
- * @short_description: linked lists containing integer values or
- *                     pointers to data, with the ability to iterate
- *                     over the list in both directions
+ * @short_description: linked lists that can be iterated over in both directions
  *
  * The #GList structure and its associated functions provide a standard
  * doubly-linked list data structure.

@@ -39,7 +39,7 @@
 /**
  * SECTION:timezone
  * @title: GTimeZone
- * @short_description: A structure representing a time zone
+ * @short_description: a structure representing a time zone
  * @see_also: #GDateTime
  *
  * #GTimeZone is a structure that represents a time zone, at no

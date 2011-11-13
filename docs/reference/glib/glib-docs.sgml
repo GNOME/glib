@@ -35,10 +35,9 @@ synchronize their operation.
     <xi:include href="compiling.sgml" />
     <xi:include href="running.sgml" />
     <xi:include href="changes.sgml" />
-    <xi:include href="regex-syntax.sgml" />
     <xi:include href="resources.sgml" />
- 
-  </chapter> 
+
+  </chapter>
 
   <chapter id="glib-fundamentals">
     <title>GLib Fundamentals</title>
@@ -92,6 +91,7 @@ synchronize their operation.
       <xi:include href="xml/option.xml" />
       <xi:include href="xml/patterns.xml" />
       <xi:include href="xml/gregex.xml" />
+      <xi:include href="regex-syntax.sgml" />
       <xi:include href="xml/markup.xml" />
       <xi:include href="xml/keyfile.xml" />
       <xi:include href="xml/bookmarkfile.xml" />

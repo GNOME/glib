@@ -69,7 +69,7 @@
 /**
  * SECTION:conversions
  * @title: Character Set Conversion
- * @short_description: Convert strings between different character sets
+ * @short_description: convert strings between different character sets
  *
  * The g_convert() family of function wraps the functionality of iconv(). In
  * addition to pure character set conversions, GLib has functions to deal

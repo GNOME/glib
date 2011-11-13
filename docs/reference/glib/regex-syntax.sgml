@@ -3,9 +3,10 @@
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
 <refentry id="glib-regex-syntax" revision="11 Jul 2006">
-<refmeta>
-<refentrytitle>Regular expression syntax</refentrytitle>
-</refmeta>
+ <refmeta>
+  <refentrytitle>Regular expression syntax</refentrytitle>
+ </refmeta>
+
 
 <!--
 Based on the man page for pcrepattern.
@@ -19,7 +20,7 @@ In sync with PCRE 7.0
 <refnamediv>
 <refname>Regular expression syntax</refname>
 <refpurpose>
-Syntax and semantics of the regular expressions supported by GRegex
+syntax and semantics of regular expressions supported by GRegex
 </refpurpose>
 </refnamediv>
 

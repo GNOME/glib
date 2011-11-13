@@ -31,7 +31,7 @@
 /**
  * SECTION:version
  * @Title: Version Information
- * @Short_description: Variables and functions to check the GLib version
+ * @Short_description: variables and functions to check the GLib version
  *
  * GLib provides version information, primarily useful in configure
  * checks for builds that have a configure script. Applications will

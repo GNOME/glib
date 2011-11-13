@@ -4,12 +4,17 @@
  <refmeta>
   <refentrytitle>GVariant Format Strings</refentrytitle>
  </refmeta>
+ <refnamediv>
+  <refname>GVariant Format Strings</refname>
+  <refpurpose>varargs conversion of GVariants</refpurpose>
+ </refnamediv>
 
  <refsect1>
   <title>Variable Argument Conversions</title>
 
   <para>
-   This page attempts to document how to perform variable argument conversions with GVariant.
+   This page attempts to document how to perform variable argument
+   conversions with GVariant.
   </para>
   <para>
    Conversions occur according to format strings.  A format string is a two-way mapping between a single

@@ -39,7 +39,7 @@
 /**
  * SECTION:hmac
  * @title: Secure HMAC Digests
- * @short_description: Computes the HMAC for data
+ * @short_description: computes the HMAC for data
  *
  * HMACs should be used when producing a cookie or hash based on data
  * and a key. Simple mechanisms for using SHA1 and other algorithms to

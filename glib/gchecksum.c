@@ -35,7 +35,7 @@
 /**
  * SECTION:checksum
  * @title: Data Checksums
- * @short_description: Computes the checksum for data
+ * @short_description: computes the checksum for data
  *
  * GLib provides a generic API for computing checksums (or "digests")
  * for a sequence of arbitrary bytes, using various hashing algorithms

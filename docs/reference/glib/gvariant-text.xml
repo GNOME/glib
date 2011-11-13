@@ -4,6 +4,10 @@
  <refmeta>
   <refentrytitle>GVariant Text Format</refentrytitle>
  </refmeta>
+ <refnamediv>
+  <refname>GVariant Text Format</refname>
+  <refpurpose>textual representation of GVariants</refpurpose>
+ </refnamediv>
 
  <refsect1>
   <title>GVariant Text Format</title>

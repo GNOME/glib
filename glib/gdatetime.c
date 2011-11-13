@@ -81,7 +81,7 @@
 /**
  * SECTION:date-time
  * @title: GDateTime
- * @short_description: A structure representing Date and Time
+ * @short_description: a structure representing Date and Time
  * @see_also: #GTimeZone
  *
  * #GDateTime is a structure that combines a Gregorian date and time
