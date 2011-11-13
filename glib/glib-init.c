@@ -108,10 +108,10 @@ g_parse_debug_string  (const gchar     *string,
   if (!strcasecmp (string, "help"))
     {
       /* using stdio directly for the reason stated above */
-      fprintf (stderr, "Supported debug values: ");
+      fprintf (stderr, "Supported debug values:");
       for (i = 0; i < nkeys; i++)
        fprintf (stderr, " %s", keys[i].key);
-      fprintf (stderr, "\n");
+      fprintf (stderr, " all help\n");
     }
   else
     {
@@ -123,7 +123,7 @@ g_parse_debug_string  (const gchar     *string,
        {
          q = strpbrk (p, ":;, \t");
          if (!q)
-           q = p + strlen(p);
+           q = p + strlen (p);
 
          if (debug_key_matches ("all", p, q - p))
            {

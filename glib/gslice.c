@@ -279,40 +279,28 @@ g_slice_get_config_state (GSliceConfig ckey,
     }
 }
 
-static const gchar *
-getenv_nomalloc (const gchar *variable,
-                 gchar        buffer[1024])
-{
-  const gchar *retval = getenv (variable);
-  if (retval && retval[0])
-    {
-      gint l = strlen (retval);
-      if (l < 1024)
-        {
-          strncpy (buffer, retval, l);
-          buffer[l] = 0;
-          return buffer;
-        }
-    }
-  return NULL;
-}
-
 static void
 slice_config_init (SliceConfig *config)
 {
-  /* don't use g_malloc/g_message here */
-  gchar buffer[1024];
-  const gchar *val = getenv_nomalloc ("G_SLICE", buffer);
-  const GDebugKey keys[] = {
-    { "always-malloc", 1 << 0 },
-    { "debug-blocks",  1 << 1 },
-  };
-  gint flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+  const gchar *val;
+
   *config = slice_config;
-  if (flags & (1 << 0))         /* always-malloc */
-    config->always_malloc = TRUE;
-  if (flags & (1 << 1))         /* debug-blocks */
-    config->debug_blocks = TRUE;
+
+  val = getenv ("G_SLICE");
+  if (val != NULL)
+    {
+      gint flags;
+      const GDebugKey keys[] = {
+        { "always-malloc", 1 << 0 },
+        { "debug-blocks",  1 << 1 },
+      };
+
+      flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+      if (flags & (1 << 0))
+        config->always_malloc = TRUE;
+      if (flags & (1 << 1))
+        config->debug_blocks = TRUE;
+    }
 }
 
 static void

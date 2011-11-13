@@ -4290,15 +4290,12 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   env_string = g_getenv ("GOBJECT_DEBUG");
   if (env_string != NULL)
     {
-      static GDebugKey debug_keys[] = {
-	{ "objects", G_TYPE_DEBUG_OBJECTS },
-	{ "signals", G_TYPE_DEBUG_SIGNALS },
+      GDebugKey debug_keys[] = {
+        { "objects", G_TYPE_DEBUG_OBJECTS },
+        { "signals", G_TYPE_DEBUG_SIGNALS },
       };
-      
-      _g_type_debug_flags |= g_parse_debug_string (env_string,
-						   debug_keys,
-						   sizeof (debug_keys) / sizeof (debug_keys[0]));
-      env_string = NULL;
+
+      _g_type_debug_flags |= g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
     }
   
   /* quarks */
