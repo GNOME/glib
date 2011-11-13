@@ -456,3 +456,159 @@ g_dngettext (const gchar *domain,
 
   return dngettext (domain, msgid, msgid_plural, n);
 }
+
+
+/**
+ * SECTION:i18n
+ * @title: Internationalization
+ * @short_description: gettext support macros
+ * @see_also: the gettext manual
+ *
+ * GLib doesn't force any particular localization method upon its users.
+ * But since GLib itself is localized using the gettext() mechanism, it seems
+ * natural to offer the de-facto standard gettext() support macros in an
+ * easy-to-use form.
+ *
+ * In order to use these macros in an application, you must include
+ * <filename>glib/gi18n.h</filename>. For use in a library, must include
+ * <filename>glib/gi18n-lib.h</filename> <emphasis>after</emphasis> defining
+ * the GETTEXT_PACKAGE macro suitably for your library:
+ * |[
+ * &num;define GETTEXT_PACKAGE "gtk20"
+ * &num;include &lt;glib/gi18n-lib.h&gt;
+ * ]|
+ * Note that you also have to call setlocale() and textdomain() (as well as
+ * bindtextdomain() and bind_textdomain_codeset()) early on in your main()
+ * to make gettext() work.
+ *
+ * The gettext manual covers details of how to set up message extraction
+ * with xgettext.
+ */
+
+/**
+ * _:
+ * @String: the string to be translated
+ *
+ * Marks a string for translation, gets replaced with the translated string
+ * at runtime.
+ *
+ * Since: 2.4
+ */
+
+/**
+ * Q_:
+ * @String: the string to be translated, with a '|'-separated prefix
+ *     which must not be translated
+ *
+ * Like _(), but handles context in message ids. This has the advantage
+ * that the string can be adorned with a prefix to guarantee uniqueness
+ * and provide context to the translator.
+ *
+ * One use case given in the gettext manual is GUI translation, where one
+ * could e.g. disambiguate two "Open" menu entries as "File|Open" and
+ * "Printer|Open". Another use case is the string "Russian" which may
+ * have to be translated differently depending on whether it's the name
+ * of a character set or a language. This could be solved by using
+ * "charset|Russian" and "language|Russian".
+ *
+ * See the C_() macro for a different way to mark up translatable strings
+ * with context.
+ *
+ * <note><para>If you are using the Q_() macro, you need to make sure
+ * that you pass <option>--keyword=Q_</option> to xgettext when extracting
+ * messages. If you are using GNU gettext >= 0.15, you can also use
+ * <option>--keyword=Q_:1g</option> to let xgettext split the context
+ * string off into a msgctxt line in the po file.</para></note>
+ *
+ * Returns: the translated message
+ *
+ * Since: 2.4
+ */
+
+/**
+ * C_:
+ * @Context: a message context, must be a string literal
+ * @String: a message id, must be a string literal
+ *
+ * Uses gettext to get the translation for @String. @Context is
+ * used as a context. This is mainly useful for short strings which
+ * may need different translations, depending on the context in which
+ * they are used.
+ * |[
+ * label1 = C_("Navigation", "Back");
+ * label2 = C_("Body part", "Back");
+ * ]|
+ *
+ * <note><para>If you are using the C_() macro, you need to make sure
+ * that you pass <option>--keyword=C_:1c,2</option> to xgettext when
+ * extracting messages. Note that this only works with GNU
+ * gettext >= 0.15.</para></note>
+ *
+ * Returns: the translated message
+ *
+ * Since: 2.16
+ */
+
+/**
+ * N_:
+ * @String: the string to be translated
+ *
+ * Only marks a string for translation. This is useful in situations
+ * where the translated strings can't be directly used, e.g. in string
+ * array initializers. To get the translated string, call gettext()
+ * at runtime.
+ * |[
+ * {
+ *   static const char *messages[] = {
+ *     N_("some very meaningful message"),
+ *     N_("and another one")
+ *   };
+ *   const char *string;
+ *   ...
+ *   string
+ *     = index &gt; 1 ? _("a default message") : gettext (messages[index]);
+ *
+ *   fputs (string);
+ *   ...
+ * }
+ * ]|
+ *
+ * Since: 2.4
+ */
+
+/**
+ * NC_:
+ * @Context: a message context, must be a string literal
+ * @String: a message id, must be a string literal
+ *
+ * Only marks a string for translation, with context.
+ * This is useful in situations where the translated strings can't
+ * be directly used, e.g. in string array initializers. To get the
+ * translated string, you should call g_dpgettext2() at runtime.
+ *
+ * |[
+ * {
+ *   static const char *messages[] = {
+ *     NC_("some context", "some very meaningful message"),
+ *     NC_("some context", "and another one")
+ *   };
+ *   const char *string;
+ *   ...
+ *   string
+ *     = index &gt; 1 ? g_dpgettext2 (NULL, "some context", "a default message")
+ *                    : g_dpgettext2 (NULL, "some context", messages[index]);
+ *
+ *   fputs (string);
+ *   ...
+ * }
+ * ]|
+ *
+ * <note><para>If you are using the NC_() macro, you need to make sure
+ * that you pass <option>--keyword=NC_:1c,2</option> to xgettext when
+ * extracting messages. Note that this only works with GNU gettext >= 0.15.
+ * Intltool has support for the NC_() macro since version 0.40.1.
+ * </para></note>
+ *
+ * Since: 2.18
+ */
+
