@@ -860,8 +860,6 @@ typedef struct
   GSettings *settings;
   const gchar *key;
 
-  GSettingsSchema *schema;
-
   guint is_flags : 1;
   guint is_enum  : 1;
 
