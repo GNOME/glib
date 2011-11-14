@@ -43,7 +43,6 @@
     <title>GLib Fundamentals</title>
     <xi:include href="xml/version.xml" />
     <xi:include href="xml/types.xml" />
-    <xi:include href="xml/limits.xml" />
     <xi:include href="xml/macros.xml" />
     <xi:include href="xml/type_conversion.xml" />
     <xi:include href="xml/byte_order.xml" />

@@ -85,6 +85,7 @@ EXTRA_DIST += 			\
 	gregex.h		\
 	win_iconv.c		\
 	libglib-gdb.py.in	\
+	docs.c			\
 	$(MIRRORING_TAB_SOURCE)
 
 # These may be in the builddir too

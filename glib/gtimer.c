@@ -236,6 +236,17 @@ g_timer_elapsed (GTimer *timer,
   return total;
 }
 
+/**
+ * g_usleep:
+ * @microseconds: number of microseconds to pause
+ *
+ * Pauses the current thread for the given number of microseconds.
+ *
+ * There are 1 million microseconds per second (represented by the
+ * #G_USEC_PER_SEC macro). g_usleep() may have limited precision,
+ * depending on hardware and operating system; don't rely on the exact
+ * length of the sleep.
+ */
 void
 g_usleep (gulong microseconds)
 {

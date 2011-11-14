@@ -6,6 +6,7 @@ async_queues.sgml
 atomic_operations.sgml
 base64.sgml
 bookmarkfile.sgml
+byte_order.sgml
 caches.sgml
 checksum.sgml
 completion.sgml
@@ -29,8 +30,11 @@ hooks.sgml
 iochannels.sgml
 i18n.sgml
 keyfile.sgml
+limits.sgml
 linked_lists_double.sgml
 linked_lists_single.sgml
+macros.sgml
+macros_misc.sgml
 main.sgml
 markup.sgml
 memory_chunks.sgml
@@ -39,6 +43,7 @@ memory.sgml
 messages.sgml
 misc_utils.sgml
 modules.sgml
+numerical.sgml
 option.sgml
 patterns.sgml
 quarks.sgml
@@ -61,6 +66,9 @@ timezone.sgml
 trash_stack.sgml
 trees-binary.sgml
 trees-nary.sgml
+type_conversion.sgml
+types.sgml
 unicode.sgml
 version.sgml
 warnings.sgml
+windows.sgml
