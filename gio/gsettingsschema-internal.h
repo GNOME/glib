@@ -31,6 +31,8 @@ GSettingsSchema *       g_settings_schema_ref                           (GSettin
 G_GNUC_INTERNAL
 void                    g_settings_schema_unref                         (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
+const gchar *           g_settings_schema_get_name                      (GSettingsSchema  *schema);
+G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);

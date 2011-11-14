@@ -356,3 +356,9 @@ g_settings_schema_list (GSettingsSchema *schema,
   *n_items = schema->n_items;
   return schema->items;
 }
+
+const gchar *
+g_settings_schema_get_name (GSettingsSchema *schema)
+{
+  return schema->name;
+}
