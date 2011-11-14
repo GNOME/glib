@@ -889,7 +889,7 @@ endian_fixup (GVariant **value)
 
 static void
 g_settings_schema_key_init (GSettingsSchemaKey *key,
-                            GSettings          *settings,
+                            GSettingsSchema    *schema,
                             const gchar        *name)
 {
   GVariantIter *iter;
@@ -898,10 +898,10 @@ g_settings_schema_key_init (GSettingsSchemaKey *key,
 
   memset (key, 0, sizeof *key);
 
-  iter = g_settings_schema_get_value (settings->priv->schema, name);
+  iter = g_settings_schema_get_value (schema, name);
 
-  key->gettext_domain = g_settings_schema_get_gettext_domain (settings->priv->schema);
-  key->schema_name = settings->priv->schema_name;
+  key->gettext_domain = g_settings_schema_get_gettext_domain (schema);
+  key->schema_name = g_settings_schema_get_name (schema);
   key->default_value = g_variant_iter_next_value (iter);
   endian_fixup (&key->default_value);
   key->type = g_variant_get_type (key->default_value);
@@ -1242,7 +1242,7 @@ g_settings_get_value (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
   value = g_settings_read_from_backend (settings, &skey);
 
   if (value == NULL)
@@ -1288,7 +1288,7 @@ g_settings_get_enum (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), -1);
   g_return_val_if_fail (key != NULL, -1);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!skey.is_enum)
     {
@@ -1343,7 +1343,7 @@ g_settings_set_enum (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!skey.is_enum)
     {
@@ -1399,7 +1399,7 @@ g_settings_get_flags (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), -1);
   g_return_val_if_fail (key != NULL, -1);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!skey.is_flags)
     {
@@ -1455,7 +1455,7 @@ g_settings_set_flags (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!skey.is_flags)
     {
@@ -1507,7 +1507,7 @@ g_settings_set_value (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!g_settings_schema_key_type_check (&skey, value))
     {
@@ -1659,7 +1659,7 @@ g_settings_get_mapped (GSettings           *settings,
   g_return_val_if_fail (key != NULL, NULL);
   g_return_val_if_fail (mapping != NULL, NULL);
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if ((value = g_settings_read_from_backend (settings, &skey)))
     {
@@ -2384,7 +2384,7 @@ g_settings_get_range (GSettings   *settings,
   const gchar *type;
   GVariant *range;
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (skey.minimum)
     {
@@ -2434,7 +2434,7 @@ g_settings_range_check (GSettings   *settings,
   GSettingsSchemaKey skey;
   gboolean good;
 
-  g_settings_schema_key_init (&skey, settings, key);
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
   good = g_settings_schema_key_type_check (&skey, value) &&
          g_settings_schema_key_range_check (&skey, value);
   g_settings_schema_key_clear (&skey);
@@ -2740,7 +2740,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
   objectclass = G_OBJECT_GET_CLASS (object);
 
   binding = g_slice_new0 (GSettingsBinding);
-  g_settings_schema_key_init (&binding->key, settings, key);
+  g_settings_schema_key_init (&binding->key, settings->priv->schema, key);
   binding->settings = g_object_ref (settings);
   binding->object = object;
   binding->property = g_object_class_find_property (objectclass, property);
