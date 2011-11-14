@@ -4872,6 +4872,10 @@ g_variant_iter_next (GVariantIter *iter,
  * function and g_variant_iter_next() or g_variant_iter_next_value() on
  * the same iterator causes undefined behavior.
  *
+ * If you break out of a such a while loop using g_variant_iter_loop() then
+ * you must free or unreference all the unpacked values as you would with
+ * g_variant_get(). Failure to do so will cause a memory leak.
+ *
  * See the section on <link linkend='gvariant-format-strings'>GVariant
  * Format Strings</link>.
  *
@@ -4893,6 +4897,7 @@ g_variant_iter_next (GVariantIter *iter,
  *                  g_variant_get_type_string (value));
  *
  *         /<!-- -->* no need to free 'key' and 'value' here *<!-- -->/
+ *         /<!-- -->* unless breaking out of this loop *<!-- -->/
  *       }
  *   }
  *  </programlisting>
