@@ -361,21 +361,27 @@ g_unix_input_stream_read (GInputStream  *stream,
 			  GError       **error)
 {
   GUnixInputStream *unix_stream;
-  gssize res;
+  gssize res = -1;
   GPollFD poll_fds[2];
+  int nfds;
   int poll_ret;
 
   unix_stream = G_UNIX_INPUT_STREAM (stream);
 
+  poll_fds[0].fd = unix_stream->priv->fd;
+  poll_fds[0].events = G_IO_IN;
   if (unix_stream->priv->is_pipe_or_socket &&
       g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
+    nfds = 2;
+  else
+    nfds = 1;
+
+  while (1)
     {
-      poll_fds[0].fd = unix_stream->priv->fd;
-      poll_fds[0].events = G_IO_IN;
+      poll_fds[0].revents = poll_fds[1].revents = 0;
       do
-	poll_ret = g_poll (poll_fds, 2, -1);
+	poll_ret = g_poll (poll_fds, nfds, -1);
       while (poll_ret == -1 && errno == EINTR);
-      g_cancellable_release_fd (cancellable);
 
       if (poll_ret == -1)
 	{
@@ -383,33 +389,35 @@ g_unix_input_stream_read (GInputStream  *stream,
 
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
-		       _("Error reading from unix: %s"),
+		       _("Error reading from file descriptor: %s"),
 		       g_strerror (errsv));
-	  return -1;
+	  break;
 	}
-    }
 
-  while (1)
-    {
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	return -1;
+	break;
+
+      if (!poll_fds[0].revents)
+	continue;
+
       res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
 	{
           int errsv = errno;
 
-	  if (errsv == EINTR)
+	  if (errsv == EINTR || errsv == EAGAIN)
 	    continue;
-	  
+
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
-		       _("Error reading from unix: %s"),
+		       _("Error reading from file descriptor: %s"),
 		       g_strerror (errsv));
 	}
-      
+
       break;
     }
 
+  g_cancellable_release_fd (cancellable);
   return res;
 }
 
@@ -436,7 +444,7 @@ g_unix_input_stream_close (GInputStream  *stream,
 
           g_set_error (error, G_IO_ERROR,
                        g_io_error_from_errno (errsv),
-                       _("Error closing unix: %s"),
+                       _("Error closing file descriptor: %s"),
                        g_strerror (errsv));
         }
       break;
@@ -476,12 +484,12 @@ read_async_cb (int            fd,
 	{
           int errsv = errno;
 
-	  if (errsv == EINTR)
-	    continue;
+	  if (errsv == EINTR || errsv == EAGAIN)
+	    return TRUE;
 	  
 	  g_set_error (&error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
-		       _("Error reading from unix: %s"),
+		       _("Error reading from file descriptor: %s"),
 		       g_strerror (errsv));
 	}
       break;
@@ -631,7 +639,7 @@ close_async_cb (CloseAsyncData *data)
 
           g_set_error (&error, G_IO_ERROR,
                        g_io_error_from_errno (errsv),
-                       _("Error closing unix: %s"),
+                       _("Error closing file descriptor: %s"),
                        g_strerror (errsv));
         }
       break;

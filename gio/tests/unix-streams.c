@@ -22,6 +22,7 @@
 #include <gio/gio.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
+#include <glib/glib-unix.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
@@ -194,7 +195,7 @@ timeout (gpointer cancellable)
 }
 
 static void
-test_pipe_io (void)
+test_pipe_io (gconstpointer nonblocking)
 {
   GThread *writer, *reader;
   GInputStream *in;
@@ -211,6 +212,20 @@ test_pipe_io (void)
    */
 
   g_assert (pipe (writer_pipe) == 0 && pipe (reader_pipe) == 0);
+
+  if (nonblocking)
+    {
+      GError *error = NULL;
+
+      g_unix_set_fd_nonblocking (writer_pipe[0], TRUE, &error);
+      g_assert_no_error (error);
+      g_unix_set_fd_nonblocking (writer_pipe[1], TRUE, &error);
+      g_assert_no_error (error);
+      g_unix_set_fd_nonblocking (reader_pipe[0], TRUE, &error);
+      g_assert_no_error (error);
+      g_unix_set_fd_nonblocking (reader_pipe[1], TRUE, &error);
+      g_assert_no_error (error);
+    }
 
   writer_cancel = g_cancellable_new ();
   reader_cancel = g_cancellable_new ();
@@ -249,7 +264,12 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/unix-streams/pipe-io-test", test_pipe_io);
+  g_test_add_data_func ("/unix-streams/pipe-io-test",
+			GINT_TO_POINTER (FALSE),
+			test_pipe_io);
+  g_test_add_data_func ("/unix-streams/nonblocking-io-test",
+			GINT_TO_POINTER (TRUE),
+			test_pipe_io);
 
   return g_test_run();
 }
