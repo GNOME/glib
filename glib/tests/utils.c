@@ -271,7 +271,7 @@ test_debug (void)
       exit (0);
     }
   g_test_trap_assert_passed ();
-  g_test_trap_assert_stderr ("*Supported debug values:  key1 key2 key3*");
+  g_test_trap_assert_stderr ("*Supported debug values: key1 key2 key3 all help*");
 }
 
 static void
