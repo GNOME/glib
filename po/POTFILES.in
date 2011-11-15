@@ -48,6 +48,7 @@ gio/gfilterinputstream.c
 gio/gfilteroutputstream.c
 gio/gicon.c
 gio/ginetaddress.c
+gio/ginetaddressmask.c
 gio/ginetsocketaddress.c
 gio/ginitable.c
 gio/ginputstream.c
@@ -71,6 +72,9 @@ gio/gmount.c
 gio/gmountoperation.c
 gio/gnativevolumemonitor.c
 gio/gnetworkaddress.c
+gio/gnetworkmonitorbase.c
+gio/gnetworkmonitor.c
+gio/gnetworkmonitornetlink.c
 gio/gnetworkservice.c
 gio/goutputstream.c
 gio/gpermission.c
