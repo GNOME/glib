@@ -350,25 +350,6 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   return result;
 }
 
-GSettingsSchema *
-g_settings_schema_new (const gchar *name)
-{
-  GSettingsSchemaSource *source;
-  GSettingsSchema *schema;
-
-  source = g_settings_schema_source_get_default ();
-
-  if (source == NULL)
-    g_error ("No GSettings schemas are installed on the system");
-
-  schema = g_settings_schema_source_lookup (source, name, TRUE);
-
-  if (schema == NULL)
-    g_error ("Settings schema '%s' is not installed\n", name);
-
-  return schema;
-}
-
 GVariantIter *
 g_settings_schema_get_value (GSettingsSchema *schema,
                              const gchar     *key)

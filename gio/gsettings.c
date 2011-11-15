@@ -492,9 +492,19 @@ static void
 g_settings_constructed (GObject *object)
 {
   GSettings *settings = G_SETTINGS (object);
+  GSettingsSchemaSource *default_source;
   const gchar *schema_path;
 
-  settings->priv->schema = g_settings_schema_new (settings->priv->schema_name);
+  default_source = g_settings_schema_source_get_default ();
+
+  if (default_source == NULL)
+    g_error ("No GSettings schemas are installed on the system");
+
+  settings->priv->schema = g_settings_schema_source_lookup (default_source, settings->priv->schema_name, TRUE);
+
+  if (settings->priv->schema == NULL)
+    g_error ("Settings schema '%s' is not installed\n", settings->priv->schema_name);
+
   schema_path = g_settings_schema_get_path (settings->priv->schema);
 
   if (settings->priv->path && schema_path && strcmp (settings->priv->path, schema_path) != 0)

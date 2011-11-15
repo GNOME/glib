@@ -42,8 +42,6 @@ typedef struct
 } GSettingsSchemaKey;
 
 G_GNUC_INTERNAL
-GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
-G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
 GVariantIter *          g_settings_schema_get_value                     (GSettingsSchema  *schema,
