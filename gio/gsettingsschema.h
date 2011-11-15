@@ -31,13 +31,13 @@ GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettin
 void                    g_settings_schema_source_unref                  (GSettingsSchemaSource *source);
 
 GSettingsSchema *       g_settings_schema_source_lookup                 (GSettingsSchemaSource *source,
-                                                                         const gchar           *schema_name,
+                                                                         const gchar           *schema_id,
                                                                          gboolean               recursive);
 
 GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema       *schema);
 void                    g_settings_schema_unref                         (GSettingsSchema       *schema);
 
-const gchar *           g_settings_schema_get_name                      (GSettingsSchema       *schema);
+const gchar *           g_settings_schema_get_id                        (GSettingsSchema       *schema);
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema       *schema);
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */

@@ -1104,7 +1104,7 @@ g_settings_schema_source_ref
 g_settings_schema_source_unref
 g_settings_schema_ref
 g_settings_schema_unref
-g_settings_schema_get_name
+g_settings_schema_get_id
 g_settings_schema_get_path
 g_settings_list_schemas
 g_settings_list_relocatable_schemas

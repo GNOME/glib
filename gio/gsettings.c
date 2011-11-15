@@ -239,7 +239,7 @@ struct _GSettingsPrivate
 enum
 {
   PROP_0,
-  PROP_SCHEMA_NAME,
+  PROP_SCHEMA_ID,
   PROP_BACKEND,
   PROP_PATH,
   PROP_HAS_UNAPPLIED,
@@ -427,9 +427,9 @@ g_settings_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_SCHEMA_NAME:
+    case PROP_SCHEMA_ID:
       /* we receive a set_property() call for both "schema" and
-       * "schema-name", even if they are not set.  Hopefully only one of
+       * "schema-id", even if they are not set.  Hopefully only one of
        * them is non-NULL.
        */
       if (g_value_get_string (value) != NULL)
@@ -462,7 +462,7 @@ g_settings_get_property (GObject    *object,
 
   switch (prop_id)
     {
-     case PROP_SCHEMA_NAME:
+     case PROP_SCHEMA_ID:
       g_value_set_string (value, settings->priv->schema_name);
       break;
 
@@ -703,9 +703,9 @@ g_settings_class_init (GSettingsClass *class)
    * The name of the schema that describes the types of keys
    * for this #GSettings object.
    *
-   * Deprecated:2.32:Use the 'schema-name' property instead.
+   * Deprecated:2.32:Use the 'schema-id' property instead.
    */
-  g_object_class_install_property (object_class, PROP_SCHEMA_NAME,
+  g_object_class_install_property (object_class, PROP_SCHEMA_ID,
     g_param_spec_string ("schema",
                          P_("Schema name"),
                          P_("The name of the schema for this settings object"),
@@ -714,13 +714,13 @@ g_settings_class_init (GSettingsClass *class)
                          G_PARAM_DEPRECATED | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GSettings:schema-name:
+   * GSettings:schema-id:
    *
    * The name of the schema that describes the types of keys
    * for this #GSettings object.
    */
-  g_object_class_install_property (object_class, PROP_SCHEMA_NAME,
-    g_param_spec_string ("schema-name",
+  g_object_class_install_property (object_class, PROP_SCHEMA_ID,
+    g_param_spec_string ("schema-id",
                          P_("Schema name"),
                          P_("The name of the schema for this settings object"),
                          NULL,
@@ -790,7 +790,7 @@ g_settings_new (const gchar *schema)
   g_return_val_if_fail (schema != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-name", schema,
+                       "schema-id", schema,
                        NULL);
 }
 
@@ -819,7 +819,7 @@ g_settings_new_with_path (const gchar *schema,
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-name", schema,
+                       "schema-id", schema,
                        "path", path,
                        NULL);
 }
@@ -848,7 +848,7 @@ g_settings_new_with_backend (const gchar      *schema,
   g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-name", schema,
+                       "schema-id", schema,
                        "backend", backend,
                        NULL);
 }
@@ -878,7 +878,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-name", schema,
+                       "schema-id", schema,
                        "backend", backend,
                        "path", path,
                        NULL);
@@ -1061,7 +1061,7 @@ g_settings_set_enum (GSettings   *settings,
     {
       g_critical ("g_settings_set_enum(): invalid enum value %d for key `%s' "
                   "in schema `%s'.  Doing nothing.", value, skey.name,
-                  g_settings_schema_get_name (skey.schema));
+                  g_settings_schema_get_id (skey.schema));
       g_settings_schema_key_clear (&skey);
       return FALSE;
     }
@@ -1173,7 +1173,7 @@ g_settings_set_flags (GSettings   *settings,
     {
       g_critical ("g_settings_set_flags(): invalid flags value 0x%08x "
                   "for key `%s' in schema `%s'.  Doing nothing.",
-                  value, skey.name, g_settings_schema_get_name (skey.schema));
+                  value, skey.name, g_settings_schema_get_id (skey.schema));
       g_settings_schema_key_clear (&skey);
       return FALSE;
     }
@@ -1932,7 +1932,7 @@ g_settings_get_child (GSettings   *settings,
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
-                        "schema-name", child_schema,
+                        "schema-id", child_schema,
                         "path", child_path,
                         NULL);
   g_free (child_path);
@@ -2248,7 +2248,7 @@ g_settings_binding_key_changed (GSettings   *settings,
           g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                      "was rejected by the binding mapping function",
                      binding->key.unparsed, binding->key.name,
-                     g_settings_schema_get_name (binding->key.schema));
+                     g_settings_schema_get_id (binding->key.schema));
           g_variant_unref (variant);
           variant = NULL;
         }
@@ -2260,7 +2260,7 @@ g_settings_binding_key_changed (GSettings   *settings,
       if (!binding->get_mapping (&value, variant, binding->user_data))
         g_error ("The schema default value for key `%s' in schema `%s' "
                  "was rejected by the binding mapping function.",
-                 binding->key.name, g_settings_schema_get_name (binding->key.schema));
+                 binding->key.name, g_settings_schema_get_id (binding->key.schema));
     }
 
   g_object_set_property (binding->object, binding->property->name, &value);
@@ -2308,7 +2308,7 @@ g_settings_binding_property_changed (GObject          *object,
           g_critical ("GObject property `%s' on a `%s' object is out of "
                       "schema-specified range for key `%s' of `%s': %s",
                       binding->property->name, g_type_name (binding->property->owner_type),
-                      binding->key.name, g_settings_schema_get_name (binding->key.schema),
+                      binding->key.name, g_settings_schema_get_id (binding->key.schema),
                       g_variant_print (variant, TRUE));
           return;
         }

@@ -36,7 +36,7 @@ struct _GSettingsSchema
   GQuark *items;
   gint n_items;
   GvdbTable *table;
-  gchar *name;
+  gchar *id;
 
   gint ref_count;
 };
@@ -150,20 +150,20 @@ g_settings_schema_source_get_default (void)
 
 GSettingsSchema *
 g_settings_schema_source_lookup (GSettingsSchemaSource *source,
-                                 const gchar           *schema_name,
+                                 const gchar           *schema_id,
                                  gboolean               recursive)
 {
   GSettingsSchema *schema;
   GvdbTable *table;
 
   g_return_val_if_fail (source != NULL, NULL);
-  g_return_val_if_fail (schema_name != NULL, NULL);
+  g_return_val_if_fail (schema_id != NULL, NULL);
 
-  table = gvdb_table_get_table (source->table, schema_name);
+  table = gvdb_table_get_table (source->table, schema_id);
 
   if (table == NULL && recursive)
     for (source = source->parent; source; source = source->parent)
-      if ((table = gvdb_table_get_table (source->table, schema_name)))
+      if ((table = gvdb_table_get_table (source->table, schema_id)))
         break;
 
   if (table == NULL)
@@ -171,7 +171,7 @@ g_settings_schema_source_lookup (GSettingsSchemaSource *source,
 
   schema = g_slice_new0 (GSettingsSchema);
   schema->ref_count = 1;
-  schema->name = g_strdup (schema_name);
+  schema->id = g_strdup (schema_id);
   schema->table = table;
   schema->path = g_settings_schema_get_string (schema, ".path");
   schema->gettext_domain = g_settings_schema_get_string (schema, ".gettext-domain");
@@ -328,7 +328,7 @@ g_settings_schema_unref (GSettingsSchema *schema)
     {
       gvdb_table_unref (schema->table);
       g_free (schema->items);
-      g_free (schema->name);
+      g_free (schema->id);
 
       g_slice_free (GSettingsSchema, schema);
     }
@@ -360,8 +360,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   value = gvdb_table_get_raw_value (schema->table, key);
 
   if G_UNLIKELY (value == NULL)
-    g_error ("Settings schema '%s' does not contain a key named '%s'",
-             schema->name, key);
+    g_error ("Settings schema '%s' does not contain a key named '%s'", schema->id, key);
 
   iter = g_variant_iter_new (value);
   g_variant_unref (value);
@@ -418,9 +417,9 @@ g_settings_schema_list (GSettingsSchema *schema,
 }
 
 const gchar *
-g_settings_schema_get_name (GSettingsSchema *schema)
+g_settings_schema_get_id (GSettingsSchema *schema)
 {
-  return schema->name;
+  return schema->id;
 }
 
 static inline void
@@ -628,7 +627,7 @@ g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
     {
       g_warning ("Failed to parse translated string `%s' for "
                  "key `%s' in schema `%s': %s", key->unparsed, key->name,
-                 g_settings_schema_get_name (key->schema), error->message);
+                 g_settings_schema_get_id (key->schema), error->message);
       g_warning ("Using untranslated default instead.");
       g_error_free (error);
     }
@@ -637,7 +636,7 @@ g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
     {
       g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                  "is outside of valid range", key->unparsed, key->name,
-                 g_settings_schema_get_name (key->schema));
+                 g_settings_schema_get_id (key->schema));
       g_variant_unref (value);
       value = NULL;
     }
