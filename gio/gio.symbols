@@ -1125,6 +1125,7 @@ g_settings_new
 g_settings_new_with_backend
 g_settings_new_with_backend_and_path
 g_settings_new_with_path
+g_settings_new_full
 g_settings_revert
 g_settings_reset
 g_settings_set

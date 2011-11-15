@@ -26,6 +26,7 @@
 #ifndef __G_SETTINGS_H__
 #define __G_SETTINGS_H__
 
+#include <gio/gsettingsschema.h>
 #include <gio/giotypes.h>
 
 G_BEGIN_DECLS
@@ -78,6 +79,9 @@ GSettings *             g_settings_new_with_path                        (const g
 GSettings *             g_settings_new_with_backend                     (const gchar        *schema,
                                                                          GSettingsBackend   *backend);
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
+                                                                         GSettingsBackend   *backend,
+                                                                         const gchar        *path);
+GSettings *             g_settings_new_full                             (GSettingsSchema    *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
 gchar **                g_settings_list_children                        (GSettings          *settings);

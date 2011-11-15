@@ -937,6 +937,43 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
                        NULL);
 }
 
+/**
+ * g_settings_new_full:
+ * @schema: a #GSettingsSchema
+ * @backend: a #GSettingsBackend
+ * @path: the path to use
+ * @returns: a new #GSettings object
+ *
+ * Creates a new #GSettings object with a given schema, backend and
+ * path.
+ *
+ * It should be extremely rare that you ever want to use this function.
+ * It is made available for advanced use-cases (such as plugin systems
+ * that want to provide access to schemas loaded from custom locations,
+ * etc).
+ *
+ * At the most basic level, a #GSettings object is a pure composition of
+ * 4 things: a #GSettingsSchema, a #GSettingsBackend, a path within that
+ * backend, and a #GMainContext to which signals are dispatched.
+ *
+ * This constructor therefore gives you full control over constructing
+ * #GSettings instances.  The first 4 parameters are given directly as
+ * @schema, @backend and @path, and the main context is taken from the
+ * thread-default (as per g_settings_new()).
+ *
+ * Since: 2.32
+ */
+GSettings *
+g_settings_new_full (GSettingsSchema  *schema,
+                     GSettingsBackend *backend,
+                     const gchar      *path)
+{
+  return g_object_new (G_TYPE_SETTINGS,
+                       "settings-schema", schema,
+                       "backend", backend,
+                       "path", path);
+}
+
 /* Internal read/write utilities {{{1 */
 static gboolean
 g_settings_write_to_backend (GSettings          *settings,
