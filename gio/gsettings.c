@@ -825,10 +825,11 @@ g_settings_class_init (GSettingsClass *class)
 /* Construction (new, new_with_path, etc.) {{{1 */
 /**
  * g_settings_new:
- * @schema: the name of the schema
+ * @schema_id: the id of the schema
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema.
+ * Creates a new #GSettings object with the schema specified by
+ * @schema_id.
  *
  * Signals on the newly created #GSettings object will be dispatched
  * via the thread-default #GMainContext in effect at the time of the
@@ -838,22 +839,23 @@ g_settings_class_init (GSettingsClass *class)
  * Since: 2.26
  */
 GSettings *
-g_settings_new (const gchar *schema)
+g_settings_new (const gchar *schema_id)
 {
-  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (schema_id != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-id", schema,
+                       "schema-id", schema_id,
                        NULL);
 }
 
 /**
  * g_settings_new_with_path:
- * @schema: the name of the schema
+ * @schema_id: the id of the schema
  * @path: the path to use
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema and path.
+ * Creates a new #GSettings object with the relocatable schema specified
+ * by @schema_id and a given path.
  *
  * You only need to do this if you want to directly create a settings
  * object with a schema that doesn't have a specified path of its own.
@@ -865,25 +867,26 @@ g_settings_new (const gchar *schema)
  * Since: 2.26
  */
 GSettings *
-g_settings_new_with_path (const gchar *schema,
+g_settings_new_with_path (const gchar *schema_id,
                           const gchar *path)
 {
-  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (schema_id != NULL, NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-id", schema,
+                       "schema-id", schema_id,
                        "path", path,
                        NULL);
 }
 
 /**
  * g_settings_new_with_backend:
- * @schema: the name of the schema
+ * @schema_id: the id of the schema
  * @backend: the #GSettingsBackend to use
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema and backend.
+ * Creates a new #GSettings object with the schema specified by
+ * @schema_id and a given #GSettingsBackend.
  *
  * Creating a #GSettings object with a different backend allows accessing
  * settings from a database other than the usual one. For example, it may make
@@ -894,27 +897,27 @@ g_settings_new_with_path (const gchar *schema,
  * Since: 2.26
  */
 GSettings *
-g_settings_new_with_backend (const gchar      *schema,
+g_settings_new_with_backend (const gchar      *schema_id,
                              GSettingsBackend *backend)
 {
-  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (schema_id != NULL, NULL);
   g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-id", schema,
+                       "schema-id", schema_id,
                        "backend", backend,
                        NULL);
 }
 
 /**
  * g_settings_new_with_backend_and_path:
- * @schema: the name of the schema
+ * @schema_id: the id of the schema
  * @backend: the #GSettingsBackend to use
  * @path: the path to use
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema, backend and
- * path.
+ * Creates a new #GSettings object with the schema specified by
+ * @schema_id and a given #GSettingsBackend and path.
  *
  * This is a mix of g_settings_new_with_backend() and
  * g_settings_new_with_path().
@@ -922,16 +925,16 @@ g_settings_new_with_backend (const gchar      *schema,
  * Since: 2.26
  */
 GSettings *
-g_settings_new_with_backend_and_path (const gchar      *schema,
+g_settings_new_with_backend_and_path (const gchar      *schema_id,
                                       GSettingsBackend *backend,
                                       const gchar      *path)
 {
-  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (schema_id != NULL, NULL);
   g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema-id", schema,
+                       "schema-id", schema_id,
                        "backend", backend,
                        "path", path,
                        NULL);
