@@ -47,18 +47,25 @@ initialise_schema_sources (void)
 {
   static gsize initialised;
 
+  /* need a separate variable because 'schema_sources' may legitimately
+   * be null if we have zero valid schema sources
+   */
   if G_UNLIKELY (g_once_init_enter (&initialised))
     {
-      const gchar * const *dir;
+      const gchar * const *dirs;
       const gchar *path;
+      gint i;
 
-      for (dir = g_get_system_data_dirs (); *dir; dir++)
+      /* iterate in reverse: count up, then count down */
+      dirs = g_get_system_data_dirs ();
+      for (i = 0; dirs[i]; i++);
+
+      while (i--)
         {
           gchar *filename;
           GvdbTable *table;
 
-          filename = g_build_filename (*dir, "glib-2.0", "schemas",
-                                       "gschemas.compiled", NULL);
+          filename = g_build_filename (dirs[i], "glib-2.0", "schemas", "gschemas.compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
@@ -66,8 +73,6 @@ initialise_schema_sources (void)
 
           g_free (filename);
         }
-
-      schema_sources = g_slist_reverse (schema_sources);
 
       if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
         {
