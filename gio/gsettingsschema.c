@@ -46,6 +46,8 @@ struct _GSettingsSchemaSource
 {
   GSettingsSchemaSource *parent;
   GvdbTable *table;
+
+  gint ref_count;
 };
 
 static GSettingsSchemaSource *schema_sources;
@@ -55,11 +57,36 @@ prepend_schema_table (GvdbTable *table)
 {
   GSettingsSchemaSource *source;
 
+  /* we steal the reference from 'schema_sources' for our ->parent */
   source = g_slice_new (GSettingsSchemaSource);
   source->parent = schema_sources;
   source->table = table;
+  source->ref_count = 1;
 
   schema_sources = source;
+}
+
+GSettingsSchemaSource *
+g_settings_schema_source_ref (GSettingsSchemaSource *source)
+{
+  g_atomic_int_inc (&source->ref_count);
+
+  return source;
+}
+
+void
+g_settings_schema_source_unref (GSettingsSchemaSource *source)
+{
+  if (g_atomic_int_dec_and_test (&source->ref_count))
+    {
+      if (source == schema_sources)
+        g_error ("g_settings_schema_source_unref() called too many times on the default schema source");
+
+      g_settings_schema_source_unref (source->parent);
+      gvdb_table_unref (source->table);
+
+      g_slice_free (GSettingsSchemaSource, source);
+    }
 }
 
 static void
