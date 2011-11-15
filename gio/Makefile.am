@@ -97,6 +97,7 @@ gdbus_sources = 							\
 
 settings_headers = \
 	gsettingsbackend.h		\
+	gsettingsschema.h		\
 	gsettings.h
 
 settings_sources = \

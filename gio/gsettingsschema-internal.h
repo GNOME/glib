@@ -20,9 +20,7 @@
 #ifndef __G_SETTINGS_SCHEMA_INTERNAL_H__
 #define __G_SETTINGS_SCHEMA_INTERNAL_H__
 
-#include <glib.h>
-
-typedef struct _GSettingsSchema                             GSettingsSchema;
+#include "gsettingsschema.h"
 
 typedef struct
 {
@@ -45,14 +43,6 @@ typedef struct
 
 G_GNUC_INTERNAL
 GSettingsSchema *       g_settings_schema_new                           (const gchar      *name);
-G_GNUC_INTERNAL
-GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema  *schema);
-G_GNUC_INTERNAL
-void                    g_settings_schema_unref                         (GSettingsSchema  *schema);
-G_GNUC_INTERNAL
-const gchar *           g_settings_schema_get_name                      (GSettingsSchema  *schema);
-G_GNUC_INTERNAL
-const gchar *           g_settings_schema_get_path                      (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
