@@ -683,6 +683,16 @@ gdouble
 g_ascii_strtod (const gchar *nptr,
                 gchar      **endptr)
 {
+#ifdef HAVE_STRTOD_L
+
+  g_return_val_if_fail (nptr != NULL, 0);
+
+  errno = 0;
+
+  return strtod_l (nptr, endptr, get_C_locale ());
+
+#else
+
   gchar *fail_pos;
   gdouble val;
   struct lconv *locale_data;
@@ -693,12 +703,6 @@ g_ascii_strtod (const gchar *nptr,
   int strtod_errno;
 
   g_return_val_if_fail (nptr != NULL, 0);
-
-#ifdef HAVE_STRTOD_L
-  errno = 0;
-
-  return strtod_l (nptr, endptr, get_C_locale ());
-#else
 
   fail_pos = NULL;
 
