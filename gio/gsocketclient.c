@@ -46,6 +46,7 @@
 #include <gio/gtcpwrapperconnection.h>
 #include <gio/gtlscertificate.h>
 #include <gio/gtlsclientconnection.h>
+#include <gio/ginetaddress.h>
 #include "glibintl.h"
 
 
@@ -145,6 +146,40 @@ can_use_proxy (GSocketClient *client)
 
   return priv->enable_proxy
           && priv->type == G_SOCKET_TYPE_STREAM;
+}
+
+static void
+clarify_connect_error (GError             *error,
+		       GSocketConnectable *connectable,
+		       GSocketAddress     *address)
+{
+  const char *name;
+  char *tmp_name = NULL;
+
+  if (G_IS_PROXY_ADDRESS (address))
+    {
+      name = tmp_name = g_inet_address_to_string (g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (address)));
+
+      g_prefix_error (&error, _("Could not connect to proxy server %s: "), name);
+    }
+  else
+    {
+      if (G_IS_NETWORK_ADDRESS (connectable))
+	name = g_network_address_get_hostname (G_NETWORK_ADDRESS (connectable));
+      else if (G_IS_NETWORK_SERVICE (connectable))
+	name = g_network_service_get_domain (G_NETWORK_SERVICE (connectable));
+      else if (G_IS_INET_SOCKET_ADDRESS (connectable))
+	name = tmp_name = g_inet_address_to_string (g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (connectable)));
+      else
+	name = NULL;
+
+      if (name)
+	g_prefix_error (&error, _("Could not connect to %s: "), name);
+      else
+	g_prefix_error (&error, _("Could not connect: "));
+    }
+
+  g_free (tmp_name);
 }
 
 static void
@@ -811,6 +846,8 @@ g_socket_client_connect (GSocketClient       *client,
 
       if (g_socket_connect (socket, address, cancellable, &last_error))
 	connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
+      else
+	clarify_connect_error (last_error, connectable, address);
 
       if (connection &&
 	  G_IS_PROXY_ADDRESS (address) &&
@@ -1070,6 +1107,7 @@ typedef struct
   GSocketConnectable *connectable;
   GSocketAddressEnumerator *enumerator;
   GProxyAddress *proxy_addr;
+  GSocketAddress *current_addr;
   GSocket *current_socket;
   GIOStream *connection;
 
@@ -1108,6 +1146,8 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
   g_object_unref (data->enumerator);
   if (data->cancellable)
     g_object_unref (data->cancellable);
+  if (data->current_addr)
+    g_object_unref (data->current_addr);
   if (data->current_socket)
     g_object_unref (data->current_socket);
   if (data->proxy_addr)
@@ -1310,8 +1350,8 @@ g_socket_client_socket_callback (GSocket *socket,
     {
       /* Cancelled, return done with last error being cancelled */
       g_clear_error (&data->last_error);
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
+      g_clear_object (&data->current_socket);
+      g_clear_object (&data->current_addr);
       g_cancellable_set_error_if_cancelled (data->cancellable,
 					    &data->last_error);
 
@@ -1323,9 +1363,12 @@ g_socket_client_socket_callback (GSocket *socket,
       /* socket is ready for writing means connect done, did it succeed? */
       if (!g_socket_check_connect_result (data->current_socket, &error))
 	{
+	  clarify_connect_error (error, data->connectable,
+				 data->current_addr);
+
 	  set_last_error (data, error);
-	  g_object_unref (data->current_socket);
-	  data->current_socket = NULL;
+	  g_clear_object (&data->current_socket);
+	  g_clear_object (&data->current_addr);
 
 	  /* try next one */
 	  enumerator_next_async (data);
@@ -1394,6 +1437,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 	  GSource *source;
 
 	  data->current_socket = socket;
+	  data->current_addr = address;
 	  g_error_free (tmp_error);
 
 	  source = g_socket_create_source (socket, G_IO_OUT,
@@ -1403,12 +1447,11 @@ g_socket_client_enumerator_callback (GObject      *object,
 				 data, NULL);
 	  g_source_attach (source, g_main_context_get_thread_default ());
 	  g_source_unref (source);
-
-	  g_object_unref (address);
 	  return;
 	}
       else
 	{
+	  clarify_connect_error (tmp_error, data->connectable, address);
 	  data->last_error = tmp_error;
 	  g_object_unref (socket);
 	}

@@ -1682,7 +1682,6 @@ g_socket_connect (GSocket         *socket,
 		      if (g_socket_check_connect_result (socket, error))
 			break;
 		    }
-		  g_prefix_error (error, _("Error connecting: "));
 		}
 	      else
                 {
@@ -1692,9 +1691,9 @@ g_socket_connect (GSocket         *socket,
                 }
 	    }
 	  else
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Error connecting: %s"), socket_strerror (errsv));
+	    g_set_error_literal (error, G_IO_ERROR,
+				 socket_io_error_from_errno (errsv),
+				 socket_strerror (errsv));
 
 	  return FALSE;
 	}
