@@ -238,6 +238,7 @@ struct _GSettingsPrivate
 enum
 {
   PROP_0,
+  PROP_SCHEMA,
   PROP_SCHEMA_ID,
   PROP_BACKEND,
   PROP_PATH,
@@ -426,6 +427,25 @@ g_settings_set_property (GObject      *object,
 
   switch (prop_id)
     {
+    case PROP_SCHEMA:
+      {
+        GSettingsSchema *schema;
+
+        schema = g_value_dup_boxed (value);
+
+        /* we receive a set_property() call for "settings-schema" even
+         * if it was not specified (ie: with NULL value).  ->schema
+         * could already be set at this point (ie: via "schema-id").
+         * check for NULL to avoid clobbering the existing value.
+         */
+        if (schema != NULL)
+          {
+            g_assert (settings->priv->schema == NULL);
+            settings->priv->schema = schema;
+          }
+      }
+      break;
+
     case PROP_SCHEMA_ID:
       {
         const gchar *schema_id;
@@ -477,6 +497,10 @@ g_settings_get_property (GObject    *object,
 
   switch (prop_id)
     {
+    case PROP_SCHEMA:
+      g_value_set_boxed (value, settings->priv->schema);
+      break;
+
      case PROP_SCHEMA_ID:
       g_value_set_string (value, g_settings_schema_get_id (settings->priv->schema));
       break;
@@ -700,12 +724,39 @@ g_settings_class_init (GSettingsClass *class)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
+   * GSettings:settings-schema:
+   *
+   * The #GSettingsSchema describing the types of keys for this
+   * #GSettings object.
+   *
+   * Ideally, this property would be called 'schema'.  #GSettingsSchema
+   * has only existed since version 2.32, however, and before then the
+   * 'schema' property was used to refer to the ID of the schema rather
+   * than the schema itself.  Take care.
+   */
+  g_object_class_install_property (object_class, PROP_SCHEMA,
+    g_param_spec_boxed ("settings-schema",
+                        P_("schema"),
+                        P_("The GSettingsSchema for this settings object"),
+                        G_TYPE_SETTINGS_SCHEMA,
+                        G_PARAM_CONSTRUCT_ONLY |
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
    * GSettings:schema:
    *
    * The name of the schema that describes the types of keys
    * for this #GSettings object.
    *
-   * Deprecated:2.32:Use the 'schema-id' property instead.
+   * The type of this property is *not* #GSettingsSchema.
+   * #GSettingsSchema has only existed since version 2.32 and
+   * unfortunately this name was used in previous versions to refer to
+   * the schema ID rather than the schema itself.  Take care to use the
+   * 'settings-schema' property if you wish to pass in a
+   * #GSettingsSchema.
+   *
+   * Deprecated:2.32:Use the 'schema-id' property instead.  In a future
+   * version, this property may instead refer to a #GSettingsSchema.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA_ID,
     g_param_spec_string ("schema",
