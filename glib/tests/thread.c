@@ -29,6 +29,10 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef HAVE_SYS_PRCTL_H
+#include <sys/prctl.h>
+#endif
+
 
 #include <glib.h>
 
@@ -160,6 +164,29 @@ test_thread5 (void)
   g_thread_unref (thread);
 }
 
+static gpointer
+thread6_func (gpointer data)
+{
+  const gchar name[16];
+
+#ifdef HAVE_SYS_PRCTL_H
+  prctl (PR_GET_NAME, name, 0, 0, 0, 0);
+
+  g_assert_cmpstr (name, ==, (gchar*)data);
+#endif
+
+  return NULL;
+}
+
+static void
+test_thread6 (void)
+{
+  GThread *thread;
+
+  thread = g_thread_new ("abc", thread6_func, "abc");
+  g_thread_join (thread);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -170,6 +197,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/thread3", test_thread3);
   g_test_add_func ("/thread/thread4", test_thread4);
   g_test_add_func ("/thread/thread5", test_thread5);
+  g_test_add_func ("/thread/thread6", test_thread6);
 
   return g_test_run ();
 }

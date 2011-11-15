@@ -57,6 +57,7 @@
 #endif /* G_OS_WIN32 */
 
 #include "gslice.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 
 /**
@@ -781,9 +782,6 @@ g_thread_proxy (gpointer data)
 
   g_assert (data);
 
-  if (thread->name)
-    g_system_thread_set_name (thread->name);
-
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
 
@@ -792,6 +790,13 @@ g_thread_proxy (gpointer data)
    */
   G_LOCK (g_thread_new);
   G_UNLOCK (g_thread_new);
+
+  if (thread->name)
+    {
+      g_system_thread_set_name (thread->name);
+      g_free (thread->name);
+      thread->name = NULL;
+    }
 
   thread->retval = thread->thread.func (thread->thread.data);
 
@@ -886,7 +891,7 @@ g_thread_new_internal (const gchar   *name,
       thread->thread.joinable = TRUE;
       thread->thread.func = func;
       thread->thread.data = data;
-      thread->name = name;
+      thread->name = g_strdup (name);
     }
   G_UNLOCK (g_thread_new);
 

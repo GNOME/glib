@@ -32,7 +32,7 @@ struct  _GRealThread
 
   gint ref_count;
   gboolean ours;
-  const gchar *name;
+  gchar *name;
   gpointer retval;
 };
 
