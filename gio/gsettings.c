@@ -230,7 +230,6 @@ struct _GSettingsPrivate
 
   GSettingsBackend *backend;
   GSettingsSchema *schema;
-  gchar *schema_name;
   gchar *path;
 
   GDelayedSettingsBackend *delayed;
@@ -428,15 +427,31 @@ g_settings_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SCHEMA_ID:
-      /* we receive a set_property() call for both "schema" and
-       * "schema-id", even if they are not set.  Hopefully only one of
-       * them is non-NULL.
-       */
-      if (g_value_get_string (value) != NULL)
-        {
-          g_assert (settings->priv->schema_name == NULL);
-          settings->priv->schema_name = g_value_dup_string (value);
-        }
+      {
+        const gchar *schema_id;
+
+        schema_id = g_value_get_string (value);
+
+        /* we receive a set_property() call for both "schema" and
+         * "schema-id", even if they are not set.  Hopefully only one of
+         * them is non-NULL.
+         */
+        if (schema_id != NULL)
+          {
+            GSettingsSchemaSource *default_source;
+
+            g_assert (settings->priv->schema == NULL);
+            default_source = g_settings_schema_source_get_default ();
+
+            if (default_source == NULL)
+              g_error ("No GSettings schemas are installed on the system");
+
+            settings->priv->schema = g_settings_schema_source_lookup (default_source, schema_id, TRUE);
+
+            if (settings->priv->schema == NULL)
+              g_error ("Settings schema '%s' is not installed\n", schema_id);
+          }
+      }
       break;
 
     case PROP_PATH:
@@ -463,7 +478,7 @@ g_settings_get_property (GObject    *object,
   switch (prop_id)
     {
      case PROP_SCHEMA_ID:
-      g_value_set_string (value, settings->priv->schema_name);
+      g_value_set_string (value, g_settings_schema_get_id (settings->priv->schema));
       break;
 
      case PROP_BACKEND:
@@ -499,31 +514,19 @@ static void
 g_settings_constructed (GObject *object)
 {
   GSettings *settings = G_SETTINGS (object);
-  GSettingsSchemaSource *default_source;
   const gchar *schema_path;
-
-  default_source = g_settings_schema_source_get_default ();
-
-  if (default_source == NULL)
-    g_error ("No GSettings schemas are installed on the system");
-
-  settings->priv->schema = g_settings_schema_source_lookup (default_source, settings->priv->schema_name, TRUE);
-
-  if (settings->priv->schema == NULL)
-    g_error ("Settings schema '%s' is not installed\n", settings->priv->schema_name);
 
   schema_path = g_settings_schema_get_path (settings->priv->schema);
 
   if (settings->priv->path && schema_path && strcmp (settings->priv->path, schema_path) != 0)
-    g_error ("settings object created with schema '%s' and path '%s', but "
-             "path '%s' is specified by schema",
-             settings->priv->schema_name, settings->priv->path, schema_path);
+    g_error ("settings object created with schema '%s' and path '%s', but path '%s' is specified by schema",
+             g_settings_schema_get_id (settings->priv->schema), settings->priv->path, schema_path);
 
   if (settings->priv->path == NULL)
     {
       if (schema_path == NULL)
         g_error ("attempting to create schema '%s' without a path",
-                 settings->priv->schema_name);
+                 g_settings_schema_get_id (settings->priv->schema));
 
       settings->priv->path = g_strdup (schema_path);
     }
@@ -548,7 +551,6 @@ g_settings_finalize (GObject *object)
   g_main_context_unref (settings->priv->main_context);
   g_object_unref (settings->priv->backend);
   g_settings_schema_unref (settings->priv->schema);
-  g_free (settings->priv->schema_name);
   g_free (settings->priv->path);
 
   G_OBJECT_CLASS (g_settings_parent_class)->finalize (object);
@@ -1218,7 +1220,7 @@ g_settings_set_value (GSettings   *settings,
     {
       g_critical ("g_settings_set_value: key '%s' in '%s' expects type '%s', but a GVariant of type '%s' was given",
                   key,
-                  settings->priv->schema_name,
+                  g_settings_schema_get_id (settings->priv->schema),
                   g_variant_type_peek_string (skey.type),
                   g_variant_get_type_string (value));
 
@@ -1230,7 +1232,7 @@ g_settings_set_value (GSettings   *settings,
       g_warning ("g_settings_set_value: value for key '%s' in schema '%s' "
                  "is outside of valid range",
                  key,
-                 settings->priv->schema_name);
+                 g_settings_schema_get_id (settings->priv->schema));
 
         return FALSE;
     }
@@ -1386,7 +1388,7 @@ g_settings_get_mapped (GSettings           *settings,
   if (!mapping (NULL, &result, user_data))
     g_error ("The mapping function given to g_settings_get_mapped() for key "
              "`%s' in schema `%s' returned FALSE when given a NULL value.",
-             key, settings->priv->schema_name);
+             key, g_settings_schema_get_id (settings->priv->schema));
 
  okay:
   g_settings_schema_key_clear (&skey);
@@ -1928,7 +1930,7 @@ g_settings_get_child (GSettings   *settings,
                                                child_name);
   if (child_schema == NULL)
     g_error ("Schema '%s' has no child '%s'",
-             settings->priv->schema_name, name);
+             g_settings_schema_get_id (settings->priv->schema), name);
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
@@ -2500,7 +2502,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
         {
           g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
                       "was specified, but key `%s' on schema `%s' has "
-                      "type `%s'", key, settings->priv->schema_name,
+                      "type `%s'", key, g_settings_schema_get_id (settings->priv->schema),
                       g_variant_type_dup_string (binding->key.type));
           return;
         }
@@ -2517,7 +2519,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
                   "on schema '%s'", property, G_OBJECT_TYPE_NAME (object),
                   g_type_name (binding->property->value_type),
                   g_variant_type_dup_string (binding->key.type), key,
-                  settings->priv->schema_name);
+                  g_settings_schema_get_id (settings->priv->schema));
       return;
     }
 
