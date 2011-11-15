@@ -40,7 +40,27 @@ struct _GSettingsSchema
   gint ref_count;
 };
 
-static GSList *schema_sources;
+typedef struct _GSettingsSchemaSource GSettingsSchemaSource;
+
+struct _GSettingsSchemaSource
+{
+  GSettingsSchemaSource *parent;
+  GvdbTable *table;
+};
+
+static GSettingsSchemaSource *schema_sources;
+
+static void
+prepend_schema_table (GvdbTable *table)
+{
+  GSettingsSchemaSource *source;
+
+  source = g_slice_new (GSettingsSchemaSource);
+  source->parent = schema_sources;
+  source->table = table;
+
+  schema_sources = source;
+}
 
 static void
 initialise_schema_sources (void)
@@ -69,7 +89,7 @@ initialise_schema_sources (void)
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
-            schema_sources = g_slist_prepend (schema_sources, table);
+            prepend_schema_table (table);
 
           g_free (filename);
         }
@@ -83,7 +103,7 @@ initialise_schema_sources (void)
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
-            schema_sources = g_slist_prepend (schema_sources, table);
+            prepend_schema_table (table);
 
           g_free (filename);
         }
@@ -113,9 +133,9 @@ ensure_schema_lists (void)
 {
   if (g_once_init_enter (&schema_lists_initialised))
     {
+      GSettingsSchemaSource *source;
       GHashTable *single, *reloc;
       const gchar **ptr;
-      GSList *source;
       gchar **list;
       gint i;
 
@@ -127,9 +147,9 @@ ensure_schema_lists (void)
       single = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
       reloc = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-      for (source = schema_sources; source; source = source->next)
+      for (source = schema_sources; source; source = source->parent)
         {
-          list = gvdb_table_list (source->data, "");
+          list = gvdb_table_list (source->table, "");
 
           g_assert (list != NULL);
 
@@ -140,7 +160,7 @@ ensure_schema_lists (void)
                 {
                   GvdbTable *table;
 
-                  table = gvdb_table_get_table (source->data, list[i]);
+                  table = gvdb_table_get_table (source->table, list[i]);
                   g_assert (table != NULL);
 
                   if (gvdb_table_has_value (table, ".path"))
@@ -263,21 +283,17 @@ g_settings_schema_get_string (GSettingsSchema *schema,
 GSettingsSchema *
 g_settings_schema_new (const gchar *name)
 {
+  GSettingsSchemaSource *source;
   GSettingsSchema *schema;
   GvdbTable *table = NULL;
-  GSList *source;
 
   g_return_val_if_fail (name != NULL, NULL);
 
   initialise_schema_sources ();
 
-  for (source = schema_sources; source; source = source->next)
-    {
-      GvdbTable *file = source->data;
-
-      if ((table = gvdb_table_get_table (file, name)))
-        break;
-    }
+  for (source = schema_sources; source; source = source->parent)
+    if ((table = gvdb_table_get_table (source->table, name)))
+      break;
 
   if (table == NULL)
     g_error ("Settings schema '%s' is not installed\n", name);
