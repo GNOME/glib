@@ -43,6 +43,9 @@ struct _GSettingsSchema
 
 typedef struct _GSettingsSchemaSource GSettingsSchemaSource;
 
+G_DEFINE_BOXED_TYPE (GSettingsSchemaSource, g_settings_schema_source, g_settings_schema_source_ref, g_settings_schema_source_unref)
+G_DEFINE_BOXED_TYPE (GSettingsSchema, g_settings_schema, g_settings_schema_ref, g_settings_schema_unref)
+
 struct _GSettingsSchemaSource
 {
   GSettingsSchemaSource *parent;

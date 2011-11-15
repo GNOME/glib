@@ -21,10 +21,13 @@
 #ifndef __G_SETTINGS_SCHEMA_H__
 #define __G_SETTINGS_SCHEMA_H__
 
-#include <glib.h>
+#include <glib-object.h>
 
 typedef struct _GSettingsSchemaSource                       GSettingsSchemaSource;
 typedef struct _GSettingsSchema                             GSettingsSchema;
+
+#define                 G_TYPE_SETTINGS_SCHEMA_SOURCE                   (g_settings_schema_source_get_type ())
+GType                   g_settings_schema_source_get_type               (void) G_GNUC_CONST;
 
 GSettingsSchemaSource * g_settings_schema_source_get_default            (void);
 GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettingsSchemaSource *source);
@@ -33,6 +36,9 @@ void                    g_settings_schema_source_unref                  (GSettin
 GSettingsSchema *       g_settings_schema_source_lookup                 (GSettingsSchemaSource *source,
                                                                          const gchar           *schema_id,
                                                                          gboolean               recursive);
+
+#define                 G_TYPE_SETTINGS_SCHEMA                          (g_settings_schema_get_type ())
+GType                   g_settings_schema_get_type                      (void) G_GNUC_CONST;
 
 GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema       *schema);
 void                    g_settings_schema_unref                         (GSettingsSchema       *schema);
