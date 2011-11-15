@@ -139,6 +139,48 @@ initialise_schema_sources (void)
     }
 }
 
+GSettingsSchemaSource *
+g_settings_schema_source_get_default (void)
+{
+  initialise_schema_sources ();
+
+  return schema_sources;
+}
+
+GSettingsSchema *
+g_settings_schema_source_lookup (GSettingsSchemaSource *source,
+                                 const gchar           *schema_name,
+                                 gboolean               recursive)
+{
+  GSettingsSchema *schema;
+  GvdbTable *table;
+
+  g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (schema_name != NULL, NULL);
+
+  table = gvdb_table_get_table (source->table, schema_name);
+
+  if (table == NULL && recursive)
+    for (source = source->parent; source; source = source->parent)
+      if ((table = gvdb_table_get_table (source->table, schema_name)))
+        break;
+
+  if (table == NULL)
+    return NULL;
+
+  schema = g_slice_new0 (GSettingsSchema);
+  schema->ref_count = 1;
+  schema->name = g_strdup (schema_name);
+  schema->table = table;
+  schema->path = g_settings_schema_get_string (schema, ".path");
+  schema->gettext_domain = g_settings_schema_get_string (schema, ".gettext-domain");
+
+  if (schema->gettext_domain)
+    bind_textdomain_codeset (schema->gettext_domain, "UTF-8");
+
+  return schema;
+}
+
 static gboolean
 steal_item (gpointer key,
             gpointer value,
@@ -312,30 +354,16 @@ g_settings_schema_new (const gchar *name)
 {
   GSettingsSchemaSource *source;
   GSettingsSchema *schema;
-  GvdbTable *table = NULL;
 
-  g_return_val_if_fail (name != NULL, NULL);
+  source = g_settings_schema_source_get_default ();
 
-  initialise_schema_sources ();
+  if (source == NULL)
+    g_error ("No GSettings schemas are installed on the system");
 
-  for (source = schema_sources; source; source = source->parent)
-    if ((table = gvdb_table_get_table (source->table, name)))
-      break;
+  schema = g_settings_schema_source_lookup (source, name, TRUE);
 
-  if (table == NULL)
+  if (schema == NULL)
     g_error ("Settings schema '%s' is not installed\n", name);
-
-  schema = g_slice_new0 (GSettingsSchema);
-  schema->ref_count = 1;
-  schema->name = g_strdup (name);
-  schema->table = table;
-  schema->path =
-    g_settings_schema_get_string (schema, ".path");
-  schema->gettext_domain =
-    g_settings_schema_get_string (schema, ".gettext-domain");
-
-  if (schema->gettext_domain)
-    bind_textdomain_codeset (schema->gettext_domain, "UTF-8");
 
   return schema;
 }
