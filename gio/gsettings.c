@@ -239,7 +239,7 @@ struct _GSettingsPrivate
 enum
 {
   PROP_0,
-  PROP_SCHEMA,
+  PROP_SCHEMA_NAME,
   PROP_BACKEND,
   PROP_PATH,
   PROP_HAS_UNAPPLIED,
@@ -427,9 +427,16 @@ g_settings_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_SCHEMA:
-      g_assert (settings->priv->schema_name == NULL);
-      settings->priv->schema_name = g_value_dup_string (value);
+    case PROP_SCHEMA_NAME:
+      /* we receive a set_property() call for both "schema" and
+       * "schema-name", even if they are not set.  Hopefully only one of
+       * them is non-NULL.
+       */
+      if (g_value_get_string (value) != NULL)
+        {
+          g_assert (settings->priv->schema_name == NULL);
+          settings->priv->schema_name = g_value_dup_string (value);
+        }
       break;
 
     case PROP_PATH:
@@ -455,7 +462,7 @@ g_settings_get_property (GObject    *object,
 
   switch (prop_id)
     {
-     case PROP_SCHEMA:
+     case PROP_SCHEMA_NAME:
       g_value_set_string (value, settings->priv->schema_name);
       break;
 
@@ -695,9 +702,25 @@ g_settings_class_init (GSettingsClass *class)
    *
    * The name of the schema that describes the types of keys
    * for this #GSettings object.
+   *
+   * Deprecated:2.32:Use the 'schema-name' property instead.
    */
-  g_object_class_install_property (object_class, PROP_SCHEMA,
+  g_object_class_install_property (object_class, PROP_SCHEMA_NAME,
     g_param_spec_string ("schema",
+                         P_("Schema name"),
+                         P_("The name of the schema for this settings object"),
+                         NULL,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_DEPRECATED | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSettings:schema-name:
+   *
+   * The name of the schema that describes the types of keys
+   * for this #GSettings object.
+   */
+  g_object_class_install_property (object_class, PROP_SCHEMA_NAME,
+    g_param_spec_string ("schema-name",
                          P_("Schema name"),
                          P_("The name of the schema for this settings object"),
                          NULL,
@@ -767,7 +790,7 @@ g_settings_new (const gchar *schema)
   g_return_val_if_fail (schema != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema", schema,
+                       "schema-name", schema,
                        NULL);
 }
 
@@ -796,7 +819,7 @@ g_settings_new_with_path (const gchar *schema,
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema", schema,
+                       "schema-name", schema,
                        "path", path,
                        NULL);
 }
@@ -825,7 +848,7 @@ g_settings_new_with_backend (const gchar      *schema,
   g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema", schema,
+                       "schema-name", schema,
                        "backend", backend,
                        NULL);
 }
@@ -855,7 +878,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
-                       "schema", schema,
+                       "schema-name", schema,
                        "backend", backend,
                        "path", path,
                        NULL);
@@ -1909,7 +1932,7 @@ g_settings_get_child (GSettings   *settings,
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
-                        "schema", child_schema,
+                        "schema-name", child_schema,
                         "path", child_path,
                         NULL);
   g_free (child_path);
