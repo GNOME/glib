@@ -943,8 +943,8 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
 /**
  * g_settings_new_full:
  * @schema: a #GSettingsSchema
- * @backend: a #GSettingsBackend
- * @path: the path to use
+ * @backend: (allow-none): a #GSettingsBackend
+ * @path: (allow-none): the path to use
  * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with a given schema, backend and
