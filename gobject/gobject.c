@@ -321,7 +321,6 @@ g_object_notify_queue_add (GObject            *object,
 
       g_return_if_fail (nqueue->n_pspecs < 65535);
 
-      /* we do the deduping in _thaw */
       if (g_slist_find (nqueue->pspecs, pspec) == NULL)
         {
           nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
