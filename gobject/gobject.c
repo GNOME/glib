@@ -222,7 +222,8 @@ g_object_notify_queue_free (gpointer data)
 }
 
 static inline GObjectNotifyQueue*
-g_object_notify_queue_freeze (GObject *object)
+g_object_notify_queue_freeze (GObject  *object,
+                              gboolean  conditional)
 {
   GObjectNotifyQueue *nqueue;
 
@@ -230,6 +231,12 @@ g_object_notify_queue_freeze (GObject *object)
   nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
   if (!nqueue)
     {
+      if (conditional)
+        {
+          G_UNLOCK(notify_lock);
+          return NULL;
+        }
+
       nqueue = g_slice_new0 (GObjectNotifyQueue);
       g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
                                    nqueue, g_object_notify_queue_free);
@@ -927,7 +934,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_PROPS (class))
     {
       /* freeze object's notification queue, g_object_newv() preserves pairedness */
-      g_object_notify_queue_freeze (object);
+      g_object_notify_queue_freeze (object, FALSE);
     }
 
   if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
@@ -1057,7 +1064,7 @@ g_object_freeze_notify (GObject *object)
     return;
 
   g_object_ref (object);
-  g_object_notify_queue_freeze (object);
+  g_object_notify_queue_freeze (object, FALSE);
   g_object_unref (object);
 }
 
@@ -1090,7 +1097,7 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   if (notify_pspec != NULL)
     {
-      nqueue = g_object_notify_queue_freeze (object);
+      nqueue = g_object_notify_queue_freeze (object, FALSE);
       g_object_notify_queue_add (object, nqueue, notify_pspec);
       g_object_notify_queue_thaw (object, nqueue);
     }
@@ -1221,7 +1228,7 @@ g_object_thaw_notify (GObject *object)
   /* FIXME: Freezing is the only way to get at the notify queue.
    * So we freeze once and then thaw twice.
    */
-  nqueue = g_object_notify_queue_freeze (object);
+  nqueue = g_object_notify_queue_freeze (object, FALSE);
   g_object_notify_queue_thaw (object, nqueue);
   g_object_notify_queue_thaw (object, nqueue);
 
@@ -1630,7 +1637,7 @@ g_object_newv (GType       object_type,
   if (CLASS_HAS_PROPS (class))
     {
       if (newly_constructed || n_oparams)
-	nqueue = g_object_notify_queue_freeze (object);
+	nqueue = g_object_notify_queue_freeze (object, FALSE);
       if (newly_constructed)
 	g_object_notify_queue_thaw (object, nqueue);
     }
@@ -1750,7 +1757,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object);
+      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object, FALSE);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -1797,7 +1804,7 @@ g_object_set_valist (GObject	 *object,
   g_return_if_fail (G_IS_OBJECT (object));
   
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object);
+  nqueue = g_object_notify_queue_freeze (object, FALSE);
   
   name = first_property_name;
   while (name)
@@ -2025,7 +2032,7 @@ g_object_set_property (GObject	    *object,
   g_return_if_fail (G_IS_VALUE (value));
   
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object);
+  nqueue = g_object_notify_queue_freeze (object, FALSE);
   
   pspec = g_param_spec_pool_lookup (pspec_pool,
 				    property_name,
