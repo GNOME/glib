@@ -173,13 +173,6 @@ static gchar*	g_value_object_lcopy_value		(const GValue	*value,
 static void	g_object_dispatch_properties_changed	(GObject	*object,
 							 guint		 n_pspecs,
 							 GParamSpec    **pspecs);
-static inline void         object_get_property		(GObject        *object,
-							 GParamSpec     *pspec,
-							 GValue         *value);
-static inline void	   object_set_property		(GObject        *object,
-							 GParamSpec     *pspec,
-							 const GValue   *value,
-							 GObjectNotifyQueue *nqueue);
 static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 
