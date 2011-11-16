@@ -309,26 +309,17 @@ g_object_notify_queue_add (GObject            *object,
                            GObjectNotifyQueue *nqueue,
                            GParamSpec         *pspec)
 {
-  if (pspec->flags & G_PARAM_READABLE)
+  G_LOCK(notify_lock);
+
+  g_return_if_fail (nqueue->n_pspecs < 65535);
+
+  if (g_slist_find (nqueue->pspecs, pspec) == NULL)
     {
-      GParamSpec *redirect;
-
-      redirect = g_param_spec_get_redirect_target (pspec);
-      if (redirect)
-        pspec = redirect;
-
-      G_LOCK(notify_lock);
-
-      g_return_if_fail (nqueue->n_pspecs < 65535);
-
-      if (g_slist_find (nqueue->pspecs, pspec) == NULL)
-        {
-          nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
-          nqueue->n_pspecs++;
-        }
-
-      G_UNLOCK(notify_lock);
+      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
+      nqueue->n_pspecs++;
     }
+
+  G_UNLOCK(notify_lock);
 }
 
 static void
@@ -1094,15 +1085,39 @@ g_object_freeze_notify (GObject *object)
   g_object_unref (object);
 }
 
+static GParamSpec *
+get_notify_pspec (GParamSpec *pspec)
+{
+  GParamSpec *redirected;
+
+  /* we don't notify on non-READABLE parameters */
+  if (~pspec->flags & G_PARAM_READABLE)
+    return NULL;
+
+  /* if the paramspec is redirected, notify on the target */
+  redirected = g_param_spec_get_redirect_target (pspec);
+  if (redirected != NULL)
+    return redirected;
+
+  /* else, notify normally */
+  return pspec;
+}
+
 static inline void
 g_object_notify_by_spec_internal (GObject    *object,
 				  GParamSpec *pspec)
 {
   GObjectNotifyQueue *nqueue;
+  GParamSpec *notify_pspec;
 
-  nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
-  g_object_notify_queue_add (object, nqueue, pspec);
-  g_object_notify_queue_thaw (object, nqueue);
+  notify_pspec = get_notify_pspec (pspec);
+
+  if (notify_pspec != NULL)
+    {
+      nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+      g_object_notify_queue_add (object, nqueue, notify_pspec);
+      g_object_notify_queue_thaw (object, nqueue);
+    }
 }
 
 /**
@@ -1318,8 +1333,14 @@ object_set_property (GObject             *object,
     }
   else
     {
+      GParamSpec *notify_pspec;
+
       class->set_property (object, param_id, &tmp_value, pspec);
-      g_object_notify_queue_add (object, nqueue, pspec);
+
+      notify_pspec = get_notify_pspec (pspec);
+
+      if (notify_pspec != NULL)
+        g_object_notify_queue_add (object, nqueue, notify_pspec);
     }
   g_value_unset (&tmp_value);
 }
