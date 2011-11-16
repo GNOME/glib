@@ -178,25 +178,13 @@ static void object_interface_check_properties           (gpointer        func_da
 							 gpointer        g_iface);
 
 /* --- typedefs --- */
-typedef struct _GObjectNotifyContext          GObjectNotifyContext;
 typedef struct _GObjectNotifyQueue            GObjectNotifyQueue;
-typedef void (*GObjectNotifyQueueDispatcher) (GObject     *object,
-					      guint        n_pspecs,
-					      GParamSpec **pspecs);
 
-
-/* --- structures --- */
-struct _GObjectNotifyContext
-{
-  GQuark                       quark_notify_queue;
-  GObjectNotifyQueueDispatcher dispatcher;
-};
 struct _GObjectNotifyQueue
 {
-  GObjectNotifyContext *context;
-  GSList               *pspecs;
-  guint16               n_pspecs;
-  guint16               freeze_count;
+  GSList  *pspecs;
+  guint16  n_pspecs;
+  guint16  freeze_count;
 };
 
 /* --- variables --- */
@@ -206,8 +194,8 @@ G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
+static GQuark               quark_notify_queue;
 static GParamSpecPool      *pspec_pool = NULL;
-static GObjectNotifyContext property_notify_context = { 0, };
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
 G_LOCK_DEFINE_STATIC (construction_mutex);
@@ -234,18 +222,16 @@ g_object_notify_queue_free (gpointer data)
 }
 
 static inline GObjectNotifyQueue*
-g_object_notify_queue_freeze (GObject              *object,
-                              GObjectNotifyContext *context)
+g_object_notify_queue_freeze (GObject *object)
 {
   GObjectNotifyQueue *nqueue;
 
   G_LOCK(notify_lock);
-  nqueue = g_datalist_id_get_data (&object->qdata, context->quark_notify_queue);
+  nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
   if (!nqueue)
     {
       nqueue = g_slice_new0 (GObjectNotifyQueue);
-      nqueue->context = context;
-      g_datalist_id_set_data_full (&object->qdata, context->quark_notify_queue,
+      g_datalist_id_set_data_full (&object->qdata, quark_notify_queue,
                                    nqueue, g_object_notify_queue_free);
     }
 
@@ -265,7 +251,6 @@ static inline void
 g_object_notify_queue_thaw (GObject            *object,
                             GObjectNotifyQueue *nqueue)
 {
-  GObjectNotifyContext *context = nqueue->context;
   GParamSpec *pspecs_mem[16], **pspecs, **free_me = NULL;
   GSList *slist;
   guint n_pspecs = 0;
@@ -295,12 +280,12 @@ g_object_notify_queue_thaw (GObject            *object,
     {
       pspecs[n_pspecs++] = slist->data;
     }
-  g_datalist_id_set_data (&object->qdata, context->quark_notify_queue, NULL);
+  g_datalist_id_set_data (&object->qdata, quark_notify_queue, NULL);
 
   G_UNLOCK(notify_lock);
 
   if (n_pspecs)
-    context->dispatcher (object, n_pspecs, pspecs);
+    G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
   g_free (free_me);
 }
 
@@ -437,14 +422,6 @@ g_object_base_class_finalize (GObjectClass *class)
 }
 
 static void
-g_object_notify_dispatcher (GObject     *object,
-			    guint        n_pspecs,
-			    GParamSpec **pspecs)
-{
-  G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, n_pspecs, pspecs);
-}
-
-static void
 g_object_do_class_init (GObjectClass *class)
 {
   /* read the comment about typedef struct CArray; on why not to change this quark */
@@ -452,9 +429,8 @@ g_object_do_class_init (GObjectClass *class)
 
   quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
+  quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   pspec_pool = g_param_spec_pool_new (TRUE);
-  property_notify_context.quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
-  property_notify_context.dispatcher = g_object_notify_dispatcher;
 
   class->constructor = g_object_constructor;
   class->constructed = g_object_constructed;
@@ -951,7 +927,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_PROPS (class))
     {
       /* freeze object's notification queue, g_object_newv() preserves pairedness */
-      g_object_notify_queue_freeze (object, &property_notify_context);
+      g_object_notify_queue_freeze (object);
     }
 
   if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
@@ -1081,7 +1057,7 @@ g_object_freeze_notify (GObject *object)
     return;
 
   g_object_ref (object);
-  g_object_notify_queue_freeze (object, &property_notify_context);
+  g_object_notify_queue_freeze (object);
   g_object_unref (object);
 }
 
@@ -1114,7 +1090,7 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   if (notify_pspec != NULL)
     {
-      nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+      nqueue = g_object_notify_queue_freeze (object);
       g_object_notify_queue_add (object, nqueue, notify_pspec);
       g_object_notify_queue_thaw (object, nqueue);
     }
@@ -1245,7 +1221,7 @@ g_object_thaw_notify (GObject *object)
   /* FIXME: Freezing is the only way to get at the notify queue.
    * So we freeze once and then thaw twice.
    */
-  nqueue = g_object_notify_queue_freeze (object,  &property_notify_context);
+  nqueue = g_object_notify_queue_freeze (object);
   g_object_notify_queue_thaw (object, nqueue);
   g_object_notify_queue_thaw (object, nqueue);
 
@@ -1654,7 +1630,7 @@ g_object_newv (GType       object_type,
   if (CLASS_HAS_PROPS (class))
     {
       if (newly_constructed || n_oparams)
-	nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+	nqueue = g_object_notify_queue_freeze (object);
       if (newly_constructed)
 	g_object_notify_queue_thaw (object, nqueue);
     }
@@ -1774,7 +1750,7 @@ g_object_constructor (GType                  type,
   /* set construction parameters */
   if (n_construct_properties)
     {
-      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+      GObjectNotifyQueue *nqueue = g_object_notify_queue_freeze (object);
       
       /* set construct properties */
       while (n_construct_properties--)
@@ -1821,7 +1797,7 @@ g_object_set_valist (GObject	 *object,
   g_return_if_fail (G_IS_OBJECT (object));
   
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+  nqueue = g_object_notify_queue_freeze (object);
   
   name = first_property_name;
   while (name)
@@ -2049,7 +2025,7 @@ g_object_set_property (GObject	    *object,
   g_return_if_fail (G_IS_VALUE (value));
   
   g_object_ref (object);
-  nqueue = g_object_notify_queue_freeze (object, &property_notify_context);
+  nqueue = g_object_notify_queue_freeze (object);
   
   pspec = g_param_spec_pool_lookup (pspec_pool,
 				    property_name,
