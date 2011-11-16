@@ -1888,6 +1888,87 @@ test_get_range (void)
   g_object_unref (settings);
 }
 
+static void
+test_schema_source (void)
+{
+  GSettingsSchemaSource *parent;
+  GSettingsSchemaSource *source;
+  GSettingsBackend *backend;
+  GSettingsSchema *schema;
+  GError *error = NULL;
+  GSettings *settings;
+  gboolean enabled;
+
+  backend = g_settings_backend_get_default ();
+
+  /* make sure it fails properly */
+  parent = g_settings_schema_source_get_default ();
+  source = g_settings_schema_source_new_from_directory (parent, "/path/that/does/not/exist", TRUE, &error);
+  g_assert (source == NULL);
+  g_clear_error (&error);
+
+  /* create a source with the parent */
+  source = g_settings_schema_source_new_from_directory (parent, "schema-source", TRUE, &error);
+  g_assert_no_error (error);
+  g_assert (source != NULL);
+
+  /* check recursive lookups are working */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert (schema != NULL);
+  g_settings_schema_unref (schema);
+
+  /* check recursive lookups for non-existent schemas */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", TRUE);
+  g_assert (schema == NULL);
+
+  /* check non-recursive for schema that only exists in lower layers */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert (schema == NULL);
+
+  /* check non-recursive lookup for non-existent */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.doesnotexist", FALSE);
+  g_assert (schema == NULL);
+
+  /* check non-recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert (schema != NULL);
+  g_settings_schema_unref (schema);
+
+  /* check recursive for schema that exists in toplevel */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert (schema != NULL);
+
+  /* try to use it for something */
+  settings = g_settings_new_full (schema, backend, g_settings_schema_get_path (schema));
+  g_settings_schema_unref (schema);
+  enabled = FALSE;
+  g_settings_get (settings, "enabled", "b", &enabled);
+  g_assert (enabled);
+  g_object_unref (settings);
+
+  g_settings_schema_source_unref (source);
+
+  /* try again, but with no parent */
+  source = g_settings_schema_source_new_from_directory (NULL, "schema-source", FALSE, NULL);
+  g_assert (source != NULL);
+
+  /* should not find it this time, even if recursive... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", FALSE);
+  g_assert (schema == NULL);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.test", TRUE);
+  g_assert (schema == NULL);
+
+  /* should still find our own... */
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", TRUE);
+  g_assert (schema != NULL);
+  g_settings_schema_unref (schema);
+  schema = g_settings_schema_source_lookup (source, "org.gtk.schemasourcecheck", FALSE);
+  g_assert (schema != NULL);
+  g_settings_schema_unref (schema);
+
+  g_settings_schema_source_unref (source);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1920,6 +2001,13 @@ main (int argc, char *argv[])
   g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
                                        "--schema-file=org.gtk.test.enums.xml "
                                        "--schema-file=" SRCDIR "/org.gtk.test.gschema.xml",
+                                       NULL, NULL, &result, NULL));
+  g_assert (result == 0);
+
+  g_remove ("schema-source/gschemas.compiled");
+  g_mkdir ("schema-source", 0777);
+  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=schema-source "
+                                       "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
                                        NULL, NULL, &result, NULL));
   g_assert (result == 0);
 
@@ -1972,6 +2060,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
   g_test_add_func ("/gsettings/get-range", test_get_range);
+  g_test_add_func ("/gsettings/schema-source", test_schema_source);
 
   result = g_test_run ();
 

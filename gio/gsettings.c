@@ -974,7 +974,8 @@ g_settings_new_full (GSettingsSchema  *schema,
   return g_object_new (G_TYPE_SETTINGS,
                        "settings-schema", schema,
                        "backend", backend,
-                       "path", path);
+                       "path", path,
+                       NULL);
 }
 
 /* Internal read/write utilities {{{1 */

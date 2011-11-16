@@ -86,7 +86,8 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
       if (source == schema_sources)
         g_error ("g_settings_schema_source_unref() called too many times on the default schema source");
 
-      g_settings_schema_source_unref (source->parent);
+      if (source->parent)
+        g_settings_schema_source_unref (source->parent);
       gvdb_table_unref (source->table);
 
       g_slice_free (GSettingsSchemaSource, source);
