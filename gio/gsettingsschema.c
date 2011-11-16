@@ -95,8 +95,8 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
 }
 
 GSettingsSchemaSource *
-g_settings_schema_source_new_from_directory (GSettingsSchemaSource  *parent,
-                                             const gchar            *directory,
+g_settings_schema_source_new_from_directory (const gchar            *directory,
+                                             GSettingsSchemaSource  *parent,
                                              gboolean                trusted,
                                              GError                **error)
 {

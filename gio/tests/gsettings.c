@@ -1903,12 +1903,12 @@ test_schema_source (void)
 
   /* make sure it fails properly */
   parent = g_settings_schema_source_get_default ();
-  source = g_settings_schema_source_new_from_directory (parent, "/path/that/does/not/exist", TRUE, &error);
+  source = g_settings_schema_source_new_from_directory ("/path/that/does/not/exist", parent,  TRUE, &error);
   g_assert (source == NULL);
   g_clear_error (&error);
 
   /* create a source with the parent */
-  source = g_settings_schema_source_new_from_directory (parent, "schema-source", TRUE, &error);
+  source = g_settings_schema_source_new_from_directory ("schema-source", parent, TRUE, &error);
   g_assert_no_error (error);
   g_assert (source != NULL);
 
@@ -1949,7 +1949,7 @@ test_schema_source (void)
   g_settings_schema_source_unref (source);
 
   /* try again, but with no parent */
-  source = g_settings_schema_source_new_from_directory (NULL, "schema-source", FALSE, NULL);
+  source = g_settings_schema_source_new_from_directory ("schema-source", NULL, FALSE, NULL);
   g_assert (source != NULL);
 
   /* should not find it this time, even if recursive... */

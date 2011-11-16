@@ -33,8 +33,8 @@ GSettingsSchemaSource * g_settings_schema_source_get_default            (void);
 GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettingsSchemaSource  *source);
 void                    g_settings_schema_source_unref                  (GSettingsSchemaSource  *source);
 
-GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (GSettingsSchemaSource  *parent,
-                                                                         const gchar            *directory,
+GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (const gchar            *directory,
+                                                                         GSettingsSchemaSource  *parent,
                                                                          gboolean                trusted,
                                                                          GError                **error);
 
