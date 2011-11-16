@@ -221,7 +221,7 @@ g_object_notify_queue_free (gpointer data)
   g_slice_free (GObjectNotifyQueue, nqueue);
 }
 
-static inline GObjectNotifyQueue*
+static GObjectNotifyQueue*
 g_object_notify_queue_freeze (GObject  *object,
                               gboolean  conditional)
 {
@@ -254,7 +254,7 @@ g_object_notify_queue_freeze (GObject  *object,
   return nqueue;
 }
 
-static inline void
+static void
 g_object_notify_queue_thaw (GObject            *object,
                             GObjectNotifyQueue *nqueue)
 {
@@ -296,7 +296,7 @@ g_object_notify_queue_thaw (GObject            *object,
   g_free (free_me);
 }
 
-static inline void
+static void
 g_object_notify_queue_add (GObject            *object,
                            GObjectNotifyQueue *nqueue,
                            GParamSpec         *pspec)
