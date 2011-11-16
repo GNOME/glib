@@ -93,6 +93,31 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
     }
 }
 
+GSettingsSchemaSource *
+g_settings_schema_source_new_from_directory (GSettingsSchemaSource  *parent,
+                                             const gchar            *directory,
+                                             gboolean                trusted,
+                                             GError                **error)
+{
+  GSettingsSchemaSource *source;
+  GvdbTable *table;
+  gchar *filename;
+
+  filename = g_build_filename (directory, "gschemas.compiled", NULL);
+  table = gvdb_table_new (filename, TRUE, error);
+  g_free (filename);
+
+  if (table == NULL)
+    return NULL;
+
+  source = g_slice_new (GSettingsSchemaSource);
+  source->parent = parent ? g_settings_schema_source_ref (parent) : NULL;
+  source->table = table;
+  source->ref_count = 1;
+
+  return source;
+}
+
 static void
 initialise_schema_sources (void)
 {

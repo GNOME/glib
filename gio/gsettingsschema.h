@@ -30,20 +30,25 @@ typedef struct _GSettingsSchema                             GSettingsSchema;
 GType                   g_settings_schema_source_get_type               (void) G_GNUC_CONST;
 
 GSettingsSchemaSource * g_settings_schema_source_get_default            (void);
-GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettingsSchemaSource *source);
-void                    g_settings_schema_source_unref                  (GSettingsSchemaSource *source);
+GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettingsSchemaSource  *source);
+void                    g_settings_schema_source_unref                  (GSettingsSchemaSource  *source);
 
-GSettingsSchema *       g_settings_schema_source_lookup                 (GSettingsSchemaSource *source,
-                                                                         const gchar           *schema_id,
-                                                                         gboolean               recursive);
+GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (GSettingsSchemaSource  *parent,
+                                                                         const gchar            *directory,
+                                                                         gboolean                trusted,
+                                                                         GError                **error);
+
+GSettingsSchema *       g_settings_schema_source_lookup                 (GSettingsSchemaSource  *source,
+                                                                         const gchar            *schema_id,
+                                                                         gboolean                recursive);
 
 #define                 G_TYPE_SETTINGS_SCHEMA                          (g_settings_schema_get_type ())
 GType                   g_settings_schema_get_type                      (void) G_GNUC_CONST;
 
-GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema       *schema);
-void                    g_settings_schema_unref                         (GSettingsSchema       *schema);
+GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema        *schema);
+void                    g_settings_schema_unref                         (GSettingsSchema        *schema);
 
-const gchar *           g_settings_schema_get_id                        (GSettingsSchema       *schema);
-const gchar *           g_settings_schema_get_path                      (GSettingsSchema       *schema);
+const gchar *           g_settings_schema_get_id                        (GSettingsSchema        *schema);
+const gchar *           g_settings_schema_get_path                      (GSettingsSchema        *schema);
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */
