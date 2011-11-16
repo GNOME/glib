@@ -105,7 +105,7 @@ g_settings_schema_source_new_from_directory (GSettingsSchemaSource  *parent,
   gchar *filename;
 
   filename = g_build_filename (directory, "gschemas.compiled", NULL);
-  table = gvdb_table_new (filename, TRUE, error);
+  table = gvdb_table_new (filename, trusted, error);
   g_free (filename);
 
   if (table == NULL)
