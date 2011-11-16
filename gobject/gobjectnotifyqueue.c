@@ -17,6 +17,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* WARNING:
+ *
+ *    This file is INSTALLED and other projects (outside of glib)
+ *    #include its contents.
+ */
+
 #ifndef __G_OBJECT_NOTIFY_QUEUE_H__
 #define __G_OBJECT_NOTIFY_QUEUE_H__
 
