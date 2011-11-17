@@ -60,7 +60,7 @@ IGNORE_HFILES = \
 	gregistrysettingsbackend.h	\
 	gsettingsbackendinternal.h	\
 	gsettings-mapping.h		\
-	gsettingsschema.h		\
+	gsettingsschema-internal.h	\
 	gsocketinputstream.h		\
 	gsocketoutputstream.h		\
 	gsocks4aproxy.h			\

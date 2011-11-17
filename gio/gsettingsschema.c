@@ -29,6 +29,25 @@
 #include <glibintl.h>
 #include <string.h>
 
+/**
+ * SECTION:gsettingsschema
+ * @short_description: introspecting and controlling the loading of
+ *                     #GSettings schemas
+ *
+ * The #GSettingsSchemaSource and #GSettingsSchema APIs provide a
+ * mechanism for advanced control over the loading of schemas and a
+ * mechanism for introspecting their content.
+ *
+ * Since: 2.32
+ */
+
+/**
+ * GSettingsSchema:
+ *
+ * This is an opaque structure type.  You may not access it directly.
+ *
+ * Since: 2.32
+ **/
 struct _GSettingsSchema
 {
   const gchar *gettext_domain;
@@ -43,9 +62,31 @@ struct _GSettingsSchema
 
 typedef struct _GSettingsSchemaSource GSettingsSchemaSource;
 
+/**
+ * G_TYPE_SETTINGS_SCHEMA_SOURCE:
+ *
+ * A boxed #GType corresponding to #GSettingsSchemaSource.
+ *
+ * Since: 2.32
+ **/
 G_DEFINE_BOXED_TYPE (GSettingsSchemaSource, g_settings_schema_source, g_settings_schema_source_ref, g_settings_schema_source_unref)
+
+/**
+ * G_TYPE_SETTINGS_SCHEMA:
+ *
+ * A boxed #GType corresponding to #GSettingsSchema.
+ *
+ * Since: 2.32
+ **/
 G_DEFINE_BOXED_TYPE (GSettingsSchema, g_settings_schema, g_settings_schema_ref, g_settings_schema_unref)
 
+/**
+ * GSettingsSchemaSource:
+ *
+ * This is an opaque structure type.  You may not access it directly.
+ *
+ * Since: 2.32
+ **/
 struct _GSettingsSchemaSource
 {
   GSettingsSchemaSource *parent;
@@ -70,6 +111,16 @@ prepend_schema_table (GvdbTable *table)
   schema_sources = source;
 }
 
+/**
+ * g_settings_schema_source_ref:
+ * @source: a #GSettingsSchemaSource
+ *
+ * Increase the reference count of @source, returning a new reference.
+ *
+ * Returns: a new reference to @source
+ *
+ * Since: 2.32
+ **/
 GSettingsSchemaSource *
 g_settings_schema_source_ref (GSettingsSchemaSource *source)
 {
@@ -78,6 +129,14 @@ g_settings_schema_source_ref (GSettingsSchemaSource *source)
   return source;
 }
 
+/**
+ * g_settings_schema_source_unref:
+ * @source: a #GSettingsSchemaSource
+ *
+ * Decrease the reference count of @source, possibly freeing it.
+ *
+ * Since: 2.32
+ **/
 void
 g_settings_schema_source_unref (GSettingsSchemaSource *source)
 {
@@ -94,6 +153,46 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
     }
 }
 
+/**
+ * g_settings_schema_source_new_from_directory:
+ * @directory: the filename of a directory
+ * @parent: (allow-none): a #GSettingsSchemaSource, or %NULL
+ * @trusted: %TRUE, if the directory is trusted
+ * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ *
+ * Attempts to create a new schema source corresponding to the contents
+ * of the given directory.
+ *
+ * This function is not required for normal uses of #GSettings but it
+ * may be useful to authors of plugin management systems.
+ *
+ * The directory should contain a file called
+ * <filename>gschemas.compiled</filename> as produced by
+ * <command>glib-compile-schemas</command>.
+ *
+ * If @trusted is %TRUE then <filename>gschemas.compiled</filename> is
+ * trusted not to be corrupted.  This assumption has a performance
+ * advantage, but can result in crashes or inconsistent behaviour in the
+ * case of a corrupted file.  Generally, you should set @trusted to
+ * %TRUE for files installed by the system and to %FALSE for files in
+ * the home directory.
+ *
+ * If @parent is non-%NULL then there are two effects.
+ *
+ * First, if g_settings_schema_source_lookup() is called with the
+ * @recursive flag set to %TRUE and the schema can not be found in the
+ * source, the lookup will recurse to the parent.
+ *
+ * Second, any references to other schemas specified within this
+ * source (ie: <literal>child</literal> or <literal>extents</literal>)
+ * references may be resolved from the @parent.
+ *
+ * For this second reason, except in very unusual situations, the
+ * @parent should probably be given as the default schema source, as
+ * returned by g_settings_schema_source_get_default().
+ *
+ * Since: 2.32
+ **/
 GSettingsSchemaSource *
 g_settings_schema_source_new_from_directory (const gchar            *directory,
                                              GSettingsSchemaSource  *parent,
@@ -169,7 +268,29 @@ initialise_schema_sources (void)
     }
 }
 
-GSettingsSchemaSource *
+/**
+ * g_settings_schema_source_get_default:
+ *
+ * Gets the default system schema source.
+ *
+ * This function is not required for normal uses of #GSettings but it
+ * may be useful to authors of plugin management systems or to those who
+ * want to introspect the content of schemas.
+ *
+ * If no schemas are installed, %NULL will be returned.
+ *
+ * The returned source may actually consist of multiple schema sources
+ * from different directories, depending on which directories were given
+ * in <envar>XDG_DATA_DIRS</envar> and
+ * <envar>GSETTINGS_SCHEMA_DIR</envar>.  For this reason, all lookups
+ * performed against the default source should probably be done
+ * recursively.
+ *
+ * Returns: (transfer none): the default schema source
+ *
+ * Since: 2.32
+ **/
+ GSettingsSchemaSource *
 g_settings_schema_source_get_default (void)
 {
   initialise_schema_sources ();
@@ -177,6 +298,27 @@ g_settings_schema_source_get_default (void)
   return schema_sources;
 }
 
+/**
+ * g_settings_schema_source_lookup:
+ * @source: a #GSettingsSchemaSource
+ * @schema_id: a schema ID
+ * @recursive: %TRUE if the lookup should be recursive
+ *
+ * Looks up a schema with the identifier @schema_id in @source.
+ *
+ * This function is not required for normal uses of #GSettings but it
+ * may be useful to authors of plugin management systems or to those who
+ * want to introspect the content of schemas.
+ *
+ * If the schema isn't found directly in @source and @recursive is %TRUE
+ * then the parent sources will also be checked.
+ *
+ * If the schema isn't found, %NULL is returned.
+ *
+ * Returns: (transfer full): a new #GSettingsSchema
+ *
+ * Since: 2.32
+ **/
 GSettingsSchema *
 g_settings_schema_source_lookup (GSettingsSchemaSource *source,
                                  const gchar           *schema_id,
@@ -342,6 +484,16 @@ g_settings_list_relocatable_schemas (void)
   return relocatable_schema_list;
 }
 
+/**
+ * g_settings_schema_ref:
+ * @schema: a #GSettingsSchema
+ *
+ * Increase the reference count of @schema, returning a new reference.
+ *
+ * Returns: a new reference to @schema
+ *
+ * Since: 2.32
+ **/
 GSettingsSchema *
 g_settings_schema_ref (GSettingsSchema *schema)
 {
@@ -350,6 +502,14 @@ g_settings_schema_ref (GSettingsSchema *schema)
   return schema;
 }
 
+/**
+ * g_settings_schema_unref:
+ * @schema: a #GSettingsSchema
+ *
+ * Decrease the reference count of @schema, possibly freeing it.
+ *
+ * Since: 2.32
+ **/
 void
 g_settings_schema_unref (GSettingsSchema *schema)
 {
@@ -397,6 +557,24 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   return iter;
 }
 
+/**
+ * g_settings_schema_get_path:
+ * @schema: a #GSettingsSchema
+ *
+ * Gets the path associated with @schema, or %NULL.
+ *
+ * Schemas may be single-instance or relocatable.  Single-instance
+ * schemas correspond to exactly one set of keys in the backend
+ * database: those located at the path returned by this function.
+ *
+ * Relocatable schemas can be referenced by other schemas and can
+ * threfore describe multiple sets of keys at different locations.  For
+ * relocatable schemas, this function will return %NULL.
+ *
+ * Returns: (transfer none): the path of the schema, or %NULL
+ *
+ * Since: 2.32
+ **/
 const gchar *
 g_settings_schema_get_path (GSettingsSchema *schema)
 {
@@ -445,6 +623,14 @@ g_settings_schema_list (GSettingsSchema *schema,
   return schema->items;
 }
 
+/**
+ * g_settings_schema_get_id:
+ * @schema: a #GSettingsSchema
+ *
+ * Get the ID of @schema.
+ *
+ * Returns: (transfer none): the ID
+ **/
 const gchar *
 g_settings_schema_get_id (GSettingsSchema *schema)
 {

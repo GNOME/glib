@@ -2239,6 +2239,36 @@ GSettingsBackendPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gsettingsschema</FILE>
+<TITLE>GSettingsSchema, GSettingsSchemaSource</TITLE>
+GSettingsSchemaSource
+G_TYPE_SETTINGS_SCHEMA_SOURCE
+g_settings_schema_source_get_default
+g_settings_schema_source_ref
+g_settings_schema_source_unref
+
+<SUBSECTION>
+g_settings_schema_source_new_from_directory
+
+<SUBSECTION>
+g_settings_schema_source_lookup
+
+<SUBSECTION>
+GSettingsSchema
+G_TYPE_SETTINGS_SCHEMA
+g_settings_schema_ref
+g_settings_schema_unref
+
+<SUBSECTION>
+g_settings_schema_get_id
+g_settings_schema_get_path
+
+<SUBSECTION Private>
+g_settings_schema_get_type
+g_settings_schema_source_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gsettings</FILE>
 <TITLE>GSettings</TITLE>
 GSettings
