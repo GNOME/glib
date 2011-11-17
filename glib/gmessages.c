@@ -1190,7 +1190,7 @@ g_log_default_handler (const gchar   *log_domain,
   domains = g_getenv ("G_MESSAGES_DEBUG");
   if (((log_level & INFO_LEVELS) == 0) ||
       domains == NULL ||
-      (strcmp (domains, "all") != 0 && !strstr (domains, log_domain)))
+      (strcmp (domains, "all") != 0 && (!log_domain || !strstr (domains, log_domain))))
     return;
 
  emit:
