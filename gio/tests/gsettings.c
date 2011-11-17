@@ -1905,6 +1905,7 @@ test_schema_source (void)
   parent = g_settings_schema_source_get_default ();
   source = g_settings_schema_source_new_from_directory ("/path/that/does/not/exist", parent,  TRUE, &error);
   g_assert (source == NULL);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
   /* create a source with the parent */
