@@ -81,7 +81,6 @@
  * <literal>g_quark_from_static_string ("my-module-stuff")</literal>,
  * it must ensure that it is never unloaded, by calling g_module_make_resident().
  *
- * <para>
  * <example>
  * <title>Calling a function defined in a <structname>GModule</structname></title>
  * <programlisting>
