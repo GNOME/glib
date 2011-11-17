@@ -1172,6 +1172,12 @@ set_last_error (GSocketClientAsyncConnectData *data,
 static void
 enumerator_next_async (GSocketClientAsyncConnectData *data)
 {
+  /* We need to cleanup the state */
+  g_clear_object (&data->current_socket);
+  g_clear_object (&data->current_addr);
+  g_clear_object (&data->proxy_addr);
+  g_clear_object (&data->connection);
+
   g_socket_address_enumerator_next_async (data->enumerator,
 					  data->cancellable,
 					  g_socket_client_enumerator_callback,
@@ -1197,11 +1203,6 @@ g_socket_client_tls_handshake_callback (GObject      *object,
   else
     {
       g_object_unref (object);
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
-      g_object_unref (data->connection);
-      data->connection = NULL;
-
       enumerator_next_async (data);
     }
 }
@@ -1232,11 +1233,6 @@ g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
     }
   else
     {
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
-      g_object_unref (data->connection);
-      data->connection = NULL;
-
       enumerator_next_async (data);
     }
 }
@@ -1254,9 +1250,6 @@ g_socket_client_proxy_connect_callback (GObject      *object,
 					     &data->last_error);
   if (!data->connection)
     {
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
-
       enumerator_next_async (data);
       return;
     }
@@ -1291,11 +1284,6 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
           _("Trying to proxy over non-TCP connection is not supported."));
 
-      g_object_unref (data->connection);
-      data->connection = NULL;
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
-
       enumerator_next_async (data);
     }
   else if (proxy)
@@ -1316,13 +1304,6 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
       g_set_error (&data->last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
           _("Proxy protocol '%s' is not supported."),
           protocol);
-
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
-      g_object_unref (data->connection);
-      data->connection = NULL;
-      g_object_unref (data->current_socket);
-      data->current_socket = NULL;
 
       enumerator_next_async (data);
     }
@@ -1350,8 +1331,6 @@ g_socket_client_socket_callback (GSocket *socket,
     {
       /* Cancelled, return done with last error being cancelled */
       g_clear_error (&data->last_error);
-      g_clear_object (&data->current_socket);
-      g_clear_object (&data->current_addr);
       g_cancellable_set_error_if_cancelled (data->cancellable,
 					    &data->last_error);
 
@@ -1365,10 +1344,7 @@ g_socket_client_socket_callback (GSocket *socket,
 	{
 	  clarify_connect_error (error, data->connectable,
 				 data->current_addr);
-
 	  set_last_error (data, error);
-	  g_clear_object (&data->current_socket);
-	  g_clear_object (&data->current_addr);
 
 	  /* try next one */
 	  enumerator_next_async (data);
