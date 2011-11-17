@@ -3360,8 +3360,8 @@ $ac_cv_sizeof_int)
   gintptr_modifier='""'
   gintptr_format='"i"'
   guintptr_format='"u"'
-  glib_gpi_cast='gint'
-  glib_gpui_cast='guint'
+  glib_gpi_cast='(gint)'
+  glib_gpui_cast='(guint)'
   ;;
 $ac_cv_sizeof_long)
   glib_intptr_type_define=long
