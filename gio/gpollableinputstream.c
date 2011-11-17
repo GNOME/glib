@@ -114,7 +114,7 @@ g_pollable_input_stream_is_readable (GPollableInputStream *stream)
 }
 
 /**
- * g_pollable_input_stream_create_source: (skip)
+ * g_pollable_input_stream_create_source:
  * @stream: a #GPollableInputStream.
  * @cancellable: (allow-none): a #GCancellable, or %NULL
  *
@@ -275,7 +275,7 @@ static GSourceFuncs pollable_source_funcs =
 };
 
 /**
- * g_pollable_source_new: (skip)
+ * g_pollable_source_new:
  * @pollable_stream: the stream associated with the new source
  *
  * Utility method for #GPollableInputStream and #GPollableOutputStream

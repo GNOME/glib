@@ -115,7 +115,7 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
 }
 
 /**
- * g_pollable_output_stream_create_source: (skip)
+ * g_pollable_output_stream_create_source:
  * @stream: a #GPollableOutputStream.
  * @cancellable: (allow-none): a #GCancellable, or %NULL
  *
