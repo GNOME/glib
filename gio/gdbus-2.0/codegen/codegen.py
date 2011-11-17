@@ -733,8 +733,8 @@ class CodeGenerator:
             self.c.write('static const GDBusAnnotationInfo %s_%d =\n'
                          '{\n'
                          '  -1,\n'
-                         '  "%s",\n'
-                         '  "%s",\n'%(prefix, n, a.key, a.value))
+                         '  (gchar *) "%s",\n'
+                         '  (gchar *) "%s",\n'%(prefix, n, a.key, a.value))
             if len(a.annotations) == 0:
                 self.c.write('  NULL\n')
             else:
@@ -765,8 +765,8 @@ class CodeGenerator:
                          '{\n'
                          '  {\n'
                          '    -1,\n'
-                         '    "%s",\n'
-                         '    "%s",\n'%(prefix, a.name, a.name, a.signature))
+                         '    (gchar *) "%s",\n'
+                         '    (gchar *) "%s",\n'%(prefix, a.name, a.name, a.signature))
             if num_anno == 0:
                 self.c.write('    NULL\n')
             else:
@@ -806,7 +806,7 @@ class CodeGenerator:
                                  '{\n'
                                  '  {\n'
                                  '    -1,\n'
-                                 '    "%s",\n'%(i.name_lower, m.name_lower, m.name))
+                                 '    (gchar *) "%s",\n'%(i.name_lower, m.name_lower, m.name))
                     if len(m.in_args) == 0:
                         self.c.write('    NULL,\n')
                     else:
@@ -845,7 +845,7 @@ class CodeGenerator:
                                  '{\n'
                                  '  {\n'
                                  '    -1,\n'
-                                 '    "%s",\n'%(i.name_lower, s.name_lower, s.name))
+                                 '    (gchar *) "%s",\n'%(i.name_lower, s.name_lower, s.name))
                     if len(s.args) == 0:
                         self.c.write('    NULL,\n')
                     else:
@@ -885,8 +885,8 @@ class CodeGenerator:
                                  '{\n'
                                  '  {\n'
                                  '    -1,\n'
-                                 '    "%s",\n'
-                                 '    "%s",\n'
+                                 '    (gchar *) "%s",\n'
+                                 '    (gchar *) "%s",\n'
                                  '    %s,\n'%(i.name_lower, p.name_lower, p.name, p.arg.signature, access))
                     if num_anno == 0:
                         self.c.write('    NULL\n')
@@ -915,7 +915,7 @@ class CodeGenerator:
                          '{\n'
                          '  {\n'
                          '    -1,\n'
-                         '    "%s",\n'%(i.name_lower, i.name))
+                         '    (gchar *) "%s",\n'%(i.name_lower, i.name))
             if len(i.methods) == 0:
                 self.c.write('    NULL,\n')
             else:
@@ -3101,7 +3101,7 @@ class CodeGenerator:
                      '      lookup_hash = g_hash_table_new (g_str_hash, g_str_equal);\n'
                      %(self.ns_upper))
         for i in self.ifaces:
-            self.c.write('      g_hash_table_insert (lookup_hash, "%s", GSIZE_TO_POINTER (%sTYPE_%s_PROXY));\n'
+            self.c.write('      g_hash_table_insert (lookup_hash, (gpointer) "%s", GSIZE_TO_POINTER (%sTYPE_%s_PROXY));\n'
                          %(i.name, i.ns_upper, i.name_upper))
         self.c.write('      g_once_init_leave (&once_init_value, 1);\n'
                      '    }\n')
