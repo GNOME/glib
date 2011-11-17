@@ -804,6 +804,7 @@ g_socket_client_connect (GSocketClient       *client,
   while (connection == NULL)
     {
       GSocketAddress *address = NULL;
+      gboolean application_proxy = FALSE;
       GSocket *socket;
 
       if (g_cancellable_is_cancelled (cancellable))
@@ -897,9 +898,13 @@ g_socket_client_connect (GSocketClient       *client,
 	      g_object_unref (connection);
 	      connection = NULL;
 	    }
+	  else
+	    {
+	      application_proxy = TRUE;
+	    }
 	}
 
-      if (connection && client->priv->tls)
+      if (!application_proxy && connection && client->priv->tls)
 	{
 	  GIOStream *tlsconn;
 
@@ -1306,6 +1311,12 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
           protocol);
 
       enumerator_next_async (data);
+    }
+  else
+    {
+      /* Simply complete the connection, we don't want to do TLS handshake
+       * as the application proxy handling may need proxy handshake first */
+      g_socket_client_async_connect_complete (data);
     }
 }
 
@@ -1715,6 +1726,10 @@ g_socket_client_connect_to_uri_finish (GSocketClient  *client,
  * proxy protocols that are reused between protocols. A good example
  * is HTTP. It can be used to proxy HTTP, FTP and Gopher and can also
  * be use as generic socket proxy through the HTTP CONNECT method.
+ *
+ * When the proxy is detected as being an application proxy, TLS handshake
+ * will be skipped. This is required to let the application do the proxy
+ * specific handshake.
  */
 void
 g_socket_client_add_application_proxy (GSocketClient *client,
