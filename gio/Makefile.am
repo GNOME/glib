@@ -112,6 +112,7 @@ settings_sources = \
 	gsettingsbackendinternal.h	\
 	gsettingsbackend.c		\
 	gsettingsschema.h		\
+	gsettingsschema-internal.h	\
 	gsettingsschema.c		\
 	gsettings-mapping.h		\
 	gsettings-mapping.c		\

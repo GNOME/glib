@@ -521,6 +521,7 @@ EXTRA_DIST += \
 	enums.xml.template		\
 	de.po				\
 	$(schema_tests)			\
+	org.gtk.schemasourcecheck.gschema.xml \
 	appinfo-test.desktop		\
 	appinfo-test2.desktop		\
 	appinfo-test-gnome.desktop	\
@@ -552,7 +553,8 @@ DISTCLEANFILES = \
 	de/LC_MESSAGES/test.mo		\
 	test.mo				\
 	gsettings.store			\
-	gschemas.compiled
+	gschemas.compiled 		\
+	schema-source/gschemas.compiled
 
 distclean-local:
 	rm -r xdgdatahome xdgdatadir
