@@ -1,3 +1,33 @@
+Overview of changes from GLib 2.31.0 to 2.31.2
+==============================================
+
+* Monotonic time is now properly supported on Windows
+
+* glib-mkenums: fix @ENUMPREFIX@ with /*< underscore_name=... >*/
+
+* EXPERIMENTAL: introduce new GSettingsSchema and GSettingsSchemaSource
+  APIs for the convenience of plugin system authors and those who wish
+  to introspect the contents of schemas.  This API may change.
+
+* Improve the performance of GObject property notifies.
+
+* GDBus:
+ - fix a race when unowning a name immediately after owning it
+ - thread safety improvements on GDBusConnection
+ - fixes for exit-on-close functionality
+
+* Deprecations:
+ - add G_SIGNAL_DEPRECATED
+ - don't use G_DISABLE_DEPRECATED masking for functions anymore
+
+* docs
+ - tmpl/ is finally dead for glib
+
+* GIO:
+ - GInetAddressMask: new type for internet address range matching
+ - various GIO file and stream fixes
+ - improvements to attribute and fileinfo handling
+
 Overview of changes from GLib 2.29/2.30 to 2.31.0
 =================================================
 
