@@ -147,8 +147,6 @@ struct _GSettingsSchema
   gint ref_count;
 };
 
-typedef struct _GSettingsSchemaSource GSettingsSchemaSource;
-
 /**
  * G_TYPE_SETTINGS_SCHEMA_SOURCE:
  *
