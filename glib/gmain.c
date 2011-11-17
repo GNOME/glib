@@ -889,7 +889,7 @@ g_source_attach_unlocked (GSource      *source,
 /**
  * g_source_attach:
  * @source: a #GSource
- * @context: a #GMainContext (if %NULL, the default context will be used)
+ * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used)
  * 
  * Adds a #GSource to a @context so that it will be executed within
  * that context. Remove it by calling g_source_destroy().
