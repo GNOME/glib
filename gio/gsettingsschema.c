@@ -324,7 +324,7 @@ g_settings_list_schemas (void)
  * usual to instantiate these schemas directly, but if you want to you
  * can use g_settings_new_with_path() to specify the path.
  *
- * The output of this function, tTaken together with the output of
+ * The output of this function, taken together with the output of
  * g_settings_list_schemas() represents the complete list of all
  * installed schemas.
  *
