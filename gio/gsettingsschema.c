@@ -27,6 +27,7 @@
 #include "strinfo.c"
 
 #include <glibintl.h>
+#include <locale.h>
 #include <string.h>
 
 /**

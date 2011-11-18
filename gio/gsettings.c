@@ -24,7 +24,6 @@
 
 #include <glib.h>
 #include <glibintl.h>
-#include <locale.h>
 
 #include "gsettings.h"
 
