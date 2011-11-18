@@ -134,9 +134,14 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * GTlsCertificate:private-key:
    *
    * The DER (binary) encoded representation of the certificate's
-   * private key. This property (or the
-   * #GTlsCertificate:private-key-pem property) can be set when
-   * constructing a key (eg, from a file), but cannot be read.
+   * private key, in either PKCS#1 format or unencrypted PKCS#8
+   * format. This property (or the #GTlsCertificate:private-key-pem
+   * property) can be set when constructing a key (eg, from a file),
+   * but cannot be read.
+   *
+   * PKCS#8 format is supported since 2.32; earlier releases only
+   * support PKCS#1. You can use the <literal>openssl rsa</literal>
+   * tool to convert PKCS#8 keys to PKCS#1.
    *
    * Since: 2.28
    */
@@ -152,9 +157,15 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * GTlsCertificate:private-key-pem:
    *
    * The PEM (ASCII) encoded representation of the certificate's
-   * private key. This property (or the #GTlsCertificate:private-key
-   * property) can be set when constructing a key (eg, from a file),
-   * but cannot be read.
+   * private key in either PKCS#1 format ("<literal>BEGIN RSA PRIVATE
+   * KEY</literal>") or unencrypted PKCS#8 format ("<literal>BEGIN
+   * PRIVATE KEY</literal>"). This property (or the
+   * #GTlsCertificate:private-key property) can be set when
+   * constructing a key (eg, from a file), but cannot be read.
+   *
+   * PKCS#8 format is supported since 2.32; earlier releases only
+   * support PKCS#1. You can use the <literal>openssl rsa</literal>
+   * tool to convert PKCS#8 keys to PKCS#1.
    *
    * Since: 2.28
    */
@@ -204,10 +215,14 @@ g_tls_certificate_new_internal (const gchar  *certificate_pem,
   return G_TLS_CERTIFICATE (cert);
 }
 
-#define PEM_CERTIFICATE_HEADER "-----BEGIN CERTIFICATE-----"
-#define PEM_CERTIFICATE_FOOTER "-----END CERTIFICATE-----"
-#define PEM_PRIVKEY_HEADER     "-----BEGIN RSA PRIVATE KEY-----"
-#define PEM_PRIVKEY_FOOTER     "-----END RSA PRIVATE KEY-----"
+#define PEM_CERTIFICATE_HEADER     "-----BEGIN CERTIFICATE-----"
+#define PEM_CERTIFICATE_FOOTER     "-----END CERTIFICATE-----"
+#define PEM_PKCS1_PRIVKEY_HEADER   "-----BEGIN RSA PRIVATE KEY-----"
+#define PEM_PKCS1_PRIVKEY_FOOTER   "-----END RSA PRIVATE KEY-----"
+#define PEM_PKCS8_PRIVKEY_HEADER   "-----BEGIN PRIVATE KEY-----"
+#define PEM_PKCS8_PRIVKEY_FOOTER   "-----END PRIVATE KEY-----"
+#define PEM_PKCS8_ENCRYPTED_HEADER "-----BEGIN ENCRYPTED PRIVATE KEY-----"
+#define PEM_PKCS8_ENCRYPTED_FOOTER "-----END ENCRYPTED PRIVATE KEY-----"
 
 static gchar *
 parse_private_key (const gchar *data,
@@ -215,27 +230,41 @@ parse_private_key (const gchar *data,
 		   gboolean required,
 		   GError **error)
 {
-  const gchar *start, *end;
+  const gchar *start, *end, *footer;
 
-  start = g_strstr_len (data, data_len, PEM_PRIVKEY_HEADER);
-  if (!start)
+  start = g_strstr_len (data, data_len, PEM_PKCS1_PRIVKEY_HEADER);
+  if (start)
+    footer = PEM_PKCS1_PRIVKEY_FOOTER;
+  else
     {
-      if (required)
+      start = g_strstr_len (data, data_len, PEM_PKCS8_PRIVKEY_HEADER);
+      if (start)
+	footer = PEM_PKCS8_PRIVKEY_FOOTER;
+      else
 	{
-	  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			       _("No PEM-encoded private key found"));
+	  start = g_strstr_len (data, data_len, PEM_PKCS8_ENCRYPTED_HEADER);
+	  if (start)
+	    {
+	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+				   _("Cannot decrypt PEM-encoded private key"));
+	    }
+	  else if (required)
+	    {
+	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+				   _("No PEM-encoded private key found"));
+	    }
+	  return NULL;
 	}
-      return NULL;
     }
 
-  end = g_strstr_len (start, data_len - (data - start), PEM_PRIVKEY_FOOTER);
+  end = g_strstr_len (start, data_len - (data - start), footer);
   if (!end)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
 			   _("Could not parse PEM-encoded private key"));
       return NULL;
     }
-  end += strlen (PEM_PRIVKEY_FOOTER);
+  end += strlen (footer);
   while (*end == '\r' || *end == '\n')
     end++;
 
@@ -286,7 +315,9 @@ parse_next_pem_certificate (const gchar **data,
  *
  * Creates a new #GTlsCertificate from the PEM-encoded data in @data.
  * If @data includes both a certificate and a private key, then the
- * returned certificate will include the private key data as well.
+ * returned certificate will include the private key data as well. (See
+ * the #GTlsCertificate:private-key-pem property for information about
+ * supported formats.)
  *
  * If @data includes multiple certificates, only the first one will be
  * parsed.
@@ -336,7 +367,8 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
  *
  * Creates a #GTlsCertificate from the PEM-encoded data in @file. If
  * @file cannot be read or parsed, the function will return %NULL and
- * set @error. Otherwise, this behaves like g_tls_certificate_new().
+ * set @error. Otherwise, this behaves like
+ * g_tls_certificate_new_from_pem().
  *
  * Return value: the new certificate, or %NULL on error
  *
@@ -367,7 +399,7 @@ g_tls_certificate_new_from_file (const gchar  *file,
  * Creates a #GTlsCertificate from the PEM-encoded data in @cert_file
  * and @key_file. If either file cannot be read or parsed, the
  * function will return %NULL and set @error. Otherwise, this behaves
- * like g_tls_certificate_new().
+ * like g_tls_certificate_new_from_pem().
  *
  * Return value: the new certificate, or %NULL on error
  *
