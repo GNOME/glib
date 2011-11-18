@@ -408,6 +408,17 @@ g_application_impl_destroy (GApplicationImpl *impl)
         g_dbus_connection_unregister_object (impl->session_bus,
                                              impl->object_id);
 
+      g_dbus_connection_call (impl->session_bus,
+                              "org.freedesktop.DBus",
+                              "/org/freedesktop/DBus",
+                              "org.freedesktop.DBus",
+                              "ReleaseName",
+                              g_variant_new ("(s)",
+                                             impl->bus_name),
+                              NULL,
+                              G_DBUS_CALL_FLAGS_NONE,
+                              -1, NULL, NULL, NULL);
+
       g_object_unref (impl->session_bus);
       g_free (impl->object_path);
     }
