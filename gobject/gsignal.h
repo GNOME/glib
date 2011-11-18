@@ -128,7 +128,7 @@ typedef enum
   G_SIGNAL_ACTION	= 1 << 5,
   G_SIGNAL_NO_HOOKS	= 1 << 6,
   G_SIGNAL_MUST_COLLECT = 1 << 7,
-  G_SIGNAL_DEPRECATED   = 1 << 8,
+  G_SIGNAL_DEPRECATED   = 1 << 8
 } GSignalFlags;
 /**
  * G_SIGNAL_FLAGS_MASK:
