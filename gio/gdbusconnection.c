@@ -5580,7 +5580,7 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  *                timeout or %G_MAXINT for no timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't * care about the result of the
+ *            satisfied or %NULL if you don't care about the result of the
  *            method invocation.
  * @user_data: The data to pass to @callback.
  *
