@@ -2988,8 +2988,9 @@ file_copy_fallback (GFile                  *source,
  * @source: input #GFile.
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @progress_callback: (scope call): function to callback with progress information
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @progress_callback: (allow-none) (scope call): function to callback with
+ *     progress information, or %NULL if progress information is not needed
  * @progress_callback_data: (closure): user data to pass to @progress_callback
  * @error: #GError to set on error, or %NULL
  *
@@ -3005,14 +3006,14 @@ file_copy_fallback (GFile                  *source,
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
  * If @progress_callback is not %NULL, then the operation can be monitored by
  * setting this to a #GFileProgressCallback function. @progress_callback_data
  * will be passed to this function. It is guaranteed that this callback will
  * be called after all data has been transferred with the total number of bytes
  * copied during the operation.
- * 
+ *
  * If the @source file does not exist then the G_IO_ERROR_NOT_FOUND
  * error is returned, independent on the status of the @destination.
  *
@@ -3023,9 +3024,9 @@ file_copy_fallback (GFile                  *source,
  * error is returned. If trying to overwrite a directory with a directory the
  * G_IO_ERROR_WOULD_MERGE error is returned.
  *
- * If the source is a directory and the target does not exist, or #G_FILE_COPY_OVERWRITE is
- * specified and the target is a file, then the G_IO_ERROR_WOULD_RECURSE error
- * is returned.
+ * If the source is a directory and the target does not exist, or
+ * #G_FILE_COPY_OVERWRITE is specified and the target is a file, then the
+ * G_IO_ERROR_WOULD_RECURSE error is returned.
  *
  * If you are interested in copying the #GFile object itself (not the on-disk
  * file), see g_file_dup().
@@ -3109,15 +3110,16 @@ g_file_copy (GFile                  *source,
  * @source: input #GFile.
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
- * @io_priority: the <link linkend="io-priority">I/O priority</link> 
- *     of the request. 
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @progress_callback: function to callback with progress information
- * @progress_callback_data: user data to pass to @progress_callback
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @progress_callback: (allow-none): function to callback with progress
+ *     information, or %NULL if progress information is not needed
+ * @progress_callback_data: (closure): user data to pass to @progress_callback
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
- * Copies the file @source to the location specified by @destination 
+ * Copies the file @source to the location specified by @destination
  * asynchronously. For details of the behaviour, see g_file_copy().
  *
  * If @progress_callback is not %NULL, then that function that will be called
