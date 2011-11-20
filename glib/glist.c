@@ -1075,7 +1075,8 @@ g_list_sort_real (GList    *list,
  *     first element comes before the second, or a positive value if 
  *     the first element comes after the second.
  *
- * Sorts a #GList using the given comparison function.
+ * Sorts a #GList using the given comparison function. The algorithm 
+ * used is a stable sort.
  *
  * Returns: the start of the sorted #GList
  */
