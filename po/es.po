@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-17 11:37+0000\n"
-"PO-Revision-Date: 2011-11-17 14:19+0100\n"
+"POT-Creation-Date: 2011-11-19 01:32+0000\n"
+"PO-Revision-Date: 2011-11-20 10:08+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -671,9 +671,10 @@ msgstr "Error al devolver el cuerpo de tipo «%s»"
 msgid "Error return with empty body"
 msgstr "Error al devolver un cuepro vacío"
 
-#: ../gio/gdbusprivate.c:1993
-msgid "Unable to load /var/lib/dbus/machine-id: "
-msgstr "No se puede cargar /var/lib/dbus/machine-id: "
+#: ../gio/gdbusprivate.c:2000
+#| msgid "Unable to load /var/lib/dbus/machine-id: "
+msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+msgstr "No se puede cargar /var/lib/dbus/machine-id o /etc/machine-id: "
 
 #: ../gio/gdbusproxy.c:1529
 #, c-format
@@ -1909,13 +1910,11 @@ msgstr "Equipo no alcanzable"
 
 #: ../gio/gnetworkmonitornetlink.c:94
 #, c-format
-#| msgid "Unable to create socket: %s"
 msgid "Could not create netlink socket: %s"
 msgstr "No se pudo crear el socket netkink: %s"
 
 #: ../gio/gnetworkmonitornetlink.c:106
 #, c-format
-#| msgid "Could not connect to %s: "
 msgid "Could not bind netlink socket: %s"
 msgstr "No se pudo conectar el socket netlink: %s:"
 
@@ -1925,12 +1924,10 @@ msgid "Could not set options on netlink socket: %s"
 msgstr "No se pudieron establecer las opciones del socket netlink: %s"
 
 #: ../gio/gnetworkmonitornetlink.c:126
-#| msgid "Could not connect: "
 msgid "Could not wrap netlink socket: "
 msgstr ""
 
 #: ../gio/gnetworkmonitornetlink.c:174
-#| msgid "Could not connect to %s: "
 msgid "Could not send netlink request: "
 msgstr "No se pudo enviar la solicitud netlink:"
 
@@ -2321,16 +2318,16 @@ msgstr "No se pudo conectar a %s: "
 msgid "Could not connect: "
 msgstr "No se pudo conectar: "
 
-#: ../gio/gsocketclient.c:833 ../gio/gsocketclient.c:1411
+#: ../gio/gsocketclient.c:834 ../gio/gsocketclient.c:1398
 msgid "Unknown error on connect"
 msgstr "Error desconocido al conectar"
 
-#: ../gio/gsocketclient.c:873 ../gio/gsocketclient.c:1292
+#: ../gio/gsocketclient.c:874 ../gio/gsocketclient.c:1290
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 "No se soporta intentar hacer de proxy sobre una conexión que no es TCP."
 
-#: ../gio/gsocketclient.c:895 ../gio/gsocketclient.c:1317
+#: ../gio/gsocketclient.c:896 ../gio/gsocketclient.c:1310
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "El protocolo del proxy «%s» no está soportado."
@@ -2441,19 +2438,24 @@ msgstr "Error desconocido del proxy SOCKSv5."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "No se puede manejar la versión %d de la codificación GThemedIcon"
 
-#: ../gio/gtlscertificate.c:226
+#: ../gio/gtlscertificate.c:249
+#| msgid "Could not parse PEM-encoded private key"
+msgid "Cannot decrypt PEM-encoded private key"
+msgstr "No se pudo descifrar la clave privada codificada con PEM"
+
+#: ../gio/gtlscertificate.c:254
 msgid "No PEM-encoded private key found"
 msgstr "No se encontró ninguna clave privada codificada con PEM"
 
-#: ../gio/gtlscertificate.c:235
+#: ../gio/gtlscertificate.c:264
 msgid "Could not parse PEM-encoded private key"
 msgstr "No se pudo analizar la clave privada codificada con PEM"
 
-#: ../gio/gtlscertificate.c:260
+#: ../gio/gtlscertificate.c:289
 msgid "No PEM-encoded certificate found"
 msgstr "No se encontró ningún certificado codificado con PEM"
 
-#: ../gio/gtlscertificate.c:269
+#: ../gio/gtlscertificate.c:298
 msgid "Could not parse PEM-encoded certificate"
 msgstr "No se pudo analizar el certificado codificado con PEM"
 
@@ -3101,11 +3103,7 @@ msgstr ""
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 
-#: ../glib/gkeyfile.c:773
-msgid "File is empty"
-msgstr "El archivo está vacío"
-
-#: ../glib/gkeyfile.c:1175
+#: ../glib/gkeyfile.c:1167
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -3113,45 +3111,45 @@ msgstr ""
 "El archivo de claves contiene la línea «%s» que no es un par valor-clave, "
 "grupo o comentario"
 
-#: ../glib/gkeyfile.c:1235
+#: ../glib/gkeyfile.c:1227
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nombre de grupo no válido: %s"
 
-#: ../glib/gkeyfile.c:1257
+#: ../glib/gkeyfile.c:1249
 msgid "Key file does not start with a group"
 msgstr "El archivo de claves no empieza por un grupo"
 
-#: ../glib/gkeyfile.c:1283
+#: ../glib/gkeyfile.c:1275
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nombre de clave no válida: %s"
 
-#: ../glib/gkeyfile.c:1310
+#: ../glib/gkeyfile.c:1302
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de claves contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1556 ../glib/gkeyfile.c:1718 ../glib/gkeyfile.c:3095
-#: ../glib/gkeyfile.c:3161 ../glib/gkeyfile.c:3296 ../glib/gkeyfile.c:3429
-#: ../glib/gkeyfile.c:3571 ../glib/gkeyfile.c:3803 ../glib/gkeyfile.c:3872
+#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1710 ../glib/gkeyfile.c:3087
+#: ../glib/gkeyfile.c:3153 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3421
+#: ../glib/gkeyfile.c:3563 ../glib/gkeyfile.c:3795 ../glib/gkeyfile.c:3864
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1730
+#: ../glib/gkeyfile.c:1722
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo de claves no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1837 ../glib/gkeyfile.c:1953
+#: ../glib/gkeyfile.c:1829 ../glib/gkeyfile.c:1945
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1857 ../glib/gkeyfile.c:1973 ../glib/gkeyfile.c:2341
+#: ../glib/gkeyfile.c:1849 ../glib/gkeyfile.c:1965 ../glib/gkeyfile.c:2333
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -3159,7 +3157,7 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no se "
 "puede interpretar."
 
-#: ../glib/gkeyfile.c:2558 ../glib/gkeyfile.c:2924
+#: ../glib/gkeyfile.c:2550 ../glib/gkeyfile.c:2916
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3168,43 +3166,43 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2636 ../glib/gkeyfile.c:2712
+#: ../glib/gkeyfile.c:2628 ../glib/gkeyfile.c:2704
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
 "La clave «%s» en el grupo «%s» tiene el valor «%s», pero se esperaba %s"
 
-#: ../glib/gkeyfile.c:3110 ../glib/gkeyfile.c:3311 ../glib/gkeyfile.c:3883
+#: ../glib/gkeyfile.c:3102 ../glib/gkeyfile.c:3303 ../glib/gkeyfile.c:3875
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:4117
+#: ../glib/gkeyfile.c:4109
 msgid "Key file contains escape character at end of line"
 msgstr ""
 "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:4139
+#: ../glib/gkeyfile.c:4131
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:4281
+#: ../glib/gkeyfile.c:4273
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:4295
+#: ../glib/gkeyfile.c:4287
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:4328
+#: ../glib/gkeyfile.c:4320
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:4352
+#: ../glib/gkeyfile.c:4344
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
@@ -4033,6 +4031,9 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KiB"
+
+#~ msgid "File is empty"
+#~ msgstr "El archivo está vacío"
 
 #~ msgid "Error connecting: "
 #~ msgstr "Error al conectar: "
