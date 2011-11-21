@@ -3109,7 +3109,6 @@ struct heap_builder
 /**
  * g_variant_builder_new:
  * @type: a container type
- * @returns: (transfer full): a #GVariantBuilder
  *
  * Allocates and initialises a new #GVariantBuilder.
  *
@@ -3120,6 +3119,8 @@ struct heap_builder
  * In most cases it is easier to place a #GVariantBuilder directly on
  * the stack of the calling function and initialise it with
  * g_variant_builder_init().
+ *
+ * Returns: (transfer full): a #GVariantBuilder
  *
  * Since: 2.24
  **/
@@ -3167,12 +3168,13 @@ g_variant_builder_unref (GVariantBuilder *builder)
 /**
  * g_variant_builder_ref:
  * @builder: a #GVariantBuilder allocated by g_variant_builder_new()
- * @returns: (transfer full): a new reference to @builder
  *
  * Increases the reference count on @builder.
  *
  * Don't call this on stack-allocated #GVariantBuilder instances or bad
  * things will happen.
+ *
+ * Returns: (transfer full): a new reference to @builder
  *
  * Since: 2.24
  **/
@@ -3515,7 +3517,6 @@ g_variant_make_array_type (GVariant *element)
 /**
  * g_variant_builder_end:
  * @builder: a #GVariantBuilder
- * @returns: (transfer none): a new, floating, #GVariant
  *
  * Ends the builder process and returns the constructed value.
  *
@@ -3531,6 +3532,8 @@ g_variant_make_array_type (GVariant *element)
  * was created with an indefinite array or maybe type and no children
  * have been added; in this case it is impossible to infer the type of
  * the empty array.
+ *
+ * Returns: (transfer none): a new, floating, #GVariant
  *
  * Since: 2.24
  **/
