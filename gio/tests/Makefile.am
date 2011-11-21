@@ -550,6 +550,7 @@ EXTRA_DIST += \
 	cert2.pem			\
 	cert3.pem			\
 	key.pem				\
+	key8.pem			\
 	key-cert.pem			\
 	cert-key.pem			\
 	cert-list.pem			\
