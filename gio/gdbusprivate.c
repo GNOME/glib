@@ -387,6 +387,10 @@ struct GDBusWorker
   GQueue                             *write_queue;
   /* protected by write_lock */
   guint64                             write_num_messages_written;
+  /* number of messages we'd written out last time we flushed;
+   * protected by write_lock
+   */
+  guint64                             write_num_messages_flushed;
   /* list of FlushData, protected by write_lock */
   GList                              *write_pending_flushes;
   /* list of CloseData, protected by write_lock */
@@ -1208,6 +1212,7 @@ ostream_flush_cb (GObject      *source_object,
   /* Make sure we tell folks that we don't have additional
      flushes pending */
   g_mutex_lock (&data->worker->write_lock);
+  data->worker->write_num_messages_flushed = data->worker->write_num_messages_written;
   g_assert (data->worker->output_pending == PENDING_FLUSH);
   data->worker->output_pending = PENDING_NONE;
   g_mutex_unlock (&data->worker->write_lock);
@@ -1556,6 +1561,7 @@ continue_writing_in_idle_cb (gpointer user_data)
 
 /*
  * @write_data: (transfer full) (allow-none):
+ * @flush_data: (transfer full) (allow-none):
  * @close_data: (transfer full) (allow-none):
  *
  * Can be called from any thread
@@ -1566,15 +1572,26 @@ continue_writing_in_idle_cb (gpointer user_data)
 static void
 schedule_writing_unlocked (GDBusWorker        *worker,
                            MessageToWriteData *write_data,
+                           FlushData          *flush_data,
                            CloseData          *close_data)
 {
   if (write_data != NULL)
     g_queue_push_tail (worker->write_queue, write_data);
 
+  if (flush_data != NULL)
+    worker->write_pending_flushes = g_list_prepend (worker->write_pending_flushes, flush_data);
+
   if (close_data != NULL)
     worker->pending_close_attempts = g_list_prepend (worker->pending_close_attempts,
                                                      close_data);
 
+  /* If we had output pending, the next bit of output will happen
+   * automatically when it finishes, so we only need to do this
+   * if nothing was pending.
+   *
+   * The idle callback will re-check that output_pending is still
+   * PENDING_NONE, to guard against output starting before the idle.
+   */
   if (worker->output_pending == PENDING_NONE)
     {
       GSource *idle_source;
@@ -1615,7 +1632,7 @@ _g_dbus_worker_send_message (GDBusWorker    *worker,
   data->blob_size = blob_len;
 
   g_mutex_lock (&worker->write_lock);
-  schedule_writing_unlocked (worker, data, NULL);
+  schedule_writing_unlocked (worker, data, NULL, NULL);
   g_mutex_unlock (&worker->write_lock);
 }
 
@@ -1700,7 +1717,7 @@ _g_dbus_worker_close (GDBusWorker         *worker,
    */
   g_cancellable_cancel (worker->cancellable);
   g_mutex_lock (&worker->write_lock);
-  schedule_writing_unlocked (worker, NULL, close_data);
+  schedule_writing_unlocked (worker, NULL, NULL, close_data);
   g_mutex_unlock (&worker->write_lock);
 }
 
@@ -1744,20 +1761,34 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 {
   gboolean ret;
   FlushData *data;
+  guint64 pending_writes;
 
   data = NULL;
   ret = TRUE;
 
-  /* if the queue is empty, there's nothing to wait for */
   g_mutex_lock (&worker->write_lock);
-  if (g_queue_get_length (worker->write_queue) > 0)
+
+  /* if the queue is empty, no write is in-flight and we haven't written
+   * anything since the last flush, then there's nothing to wait for
+   */
+  pending_writes = g_queue_get_length (worker->write_queue);
+
+  /* if a write is in-flight, we shouldn't be satisfied until the first
+   * flush operation that follows it
+   */
+  if (worker->output_pending == PENDING_WRITE)
+    pending_writes += 1;
+
+  if (pending_writes > 0 ||
+      worker->write_num_messages_written != worker->write_num_messages_flushed)
     {
       data = g_new0 (FlushData, 1);
       g_mutex_init (&data->mutex);
       g_cond_init (&data->cond);
-      data->number_to_wait_for = worker->write_num_messages_written + g_queue_get_length (worker->write_queue);
+      data->number_to_wait_for = worker->write_num_messages_written + pending_writes;
       g_mutex_lock (&data->mutex);
-      worker->write_pending_flushes = g_list_prepend (worker->write_pending_flushes, data);
+
+      schedule_writing_unlocked (worker, NULL, data, NULL);
     }
   g_mutex_unlock (&worker->write_lock);
 
