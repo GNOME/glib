@@ -76,7 +76,6 @@ enum  {
  * @permission: a #GPermission instance
  * @cancellable: a #GCancellable, or %NULL
  * @error: a pointer to a %NULL #GError, or %NULL
- * @returns: %TRUE if the permission was successfully acquired
  *
  * Attempts to acquire the permission represented by @permission.
  *
@@ -93,6 +92,8 @@ enum  {
  * This call is blocking, likely for a very long time (in the case that
  * user interaction is required).  See g_permission_acquire_async() for
  * the non-blocking version.
+ *
+ * Returns: %TRUE if the permission was successfully acquired
  *
  * Since: 2.26
  */
@@ -134,13 +135,14 @@ g_permission_acquire_async (GPermission         *permission,
  * @permission: a #GPermission instance
  * @result: the #GAsyncResult given to the #GAsyncReadyCallback
  * @error: a pointer to a %NULL #GError, or %NULL
- * @returns: %TRUE if the permission was successfully acquired
  *
  * Collects the result of attempting to acquire the permission
  * represented by @permission.
  *
  * This is the second half of the asynchronous version of
  * g_permission_acquire().
+ *
+ * Returns: %TRUE if the permission was successfully acquired
  *
  * Since: 2.26
  **/
@@ -158,7 +160,6 @@ g_permission_acquire_finish (GPermission   *permission,
  * @permission: a #GPermission instance
  * @cancellable: a #GCancellable, or %NULL
  * @error: a pointer to a %NULL #GError, or %NULL
- * @returns: %TRUE if the permission was successfully released
  *
  * Attempts to release the permission represented by @permission.
  *
@@ -175,6 +176,8 @@ g_permission_acquire_finish (GPermission   *permission,
  * This call is blocking, likely for a very long time (in the case that
  * user interaction is required).  See g_permission_release_async() for
  * the non-blocking version.
+ *
+ * Returns: %TRUE if the permission was successfully released
  *
  * Since: 2.26
  **/
@@ -216,13 +219,14 @@ g_permission_release_async (GPermission         *permission,
  * @permission: a #GPermission instance
  * @result: the #GAsyncResult given to the #GAsyncReadyCallback
  * @error: a pointer to a %NULL #GError, or %NULL
- * @returns: %TRUE if the permission was successfully released
  *
  * Collects the result of attempting to release the permission
  * represented by @permission.
  *
  * This is the second half of the asynchronous version of
  * g_permission_release().
+ *
+ * Returns: %TRUE if the permission was successfully released
  *
  * Since: 2.26
  **/
@@ -238,11 +242,12 @@ g_permission_release_finish (GPermission   *permission,
 /**
  * g_permission_get_allowed:
  * @permission: a #GPermission instance
- * @returns: the value of the 'allowed' property
  *
  * Gets the value of the 'allowed' property.  This property is %TRUE if
  * the caller currently has permission to perform the action that
  * @permission represents the permission to perform.
+ *
+ * Returns: the value of the 'allowed' property
  *
  * Since: 2.26
  **/
@@ -255,11 +260,12 @@ g_permission_get_allowed (GPermission *permission)
 /**
  * g_permission_get_can_acquire:
  * @permission: a #GPermission instance
- * @returns: the value of the 'can-acquire' property
  *
  * Gets the value of the 'can-acquire' property.  This property is %TRUE
  * if it is generally possible to acquire the permission by calling
  * g_permission_acquire().
+ *
+ * Returns: the value of the 'can-acquire' property
  *
  * Since: 2.26
  **/
@@ -272,11 +278,12 @@ g_permission_get_can_acquire (GPermission *permission)
 /**
  * g_permission_get_can_release:
  * @permission: a #GPermission instance
- * @returns: the value of the 'can-release' property
  *
  * Gets the value of the 'can-release' property.  This property is %TRUE
  * if it is generally possible to release the permission by calling
  * g_permission_release().
+ *
+ * Returns: the value of the 'can-release' property
  *
  * Since: 2.26
  **/
