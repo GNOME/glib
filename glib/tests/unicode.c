@@ -344,6 +344,18 @@ test_title (void)
 }
 
 static void
+test_defined (void)
+{
+  g_assert (g_unichar_isdefined (0x0903));
+  g_assert (g_unichar_isdefined (0x20DD));
+  g_assert (g_unichar_isdefined (0xA806));
+  g_assert (g_unichar_isdefined ('a'));
+  g_assert (!g_unichar_isdefined (0x10C49));
+  g_assert (!g_unichar_isdefined (0x169D));
+  g_assert (!g_unichar_isdefined (0x27CD));
+}
+
+static void
 test_wide (void)
 {
   guint i;
@@ -647,6 +659,7 @@ main (int   argc,
   g_test_add_func ("/unicode/mirror", test_mirror);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/defined", test_defined);
   g_test_add_func ("/unicode/wide", test_wide);
   g_test_add_func ("/unicode/compose", test_compose);
   g_test_add_func ("/unicode/decompose", test_decompose);
