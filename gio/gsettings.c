@@ -630,8 +630,6 @@ g_settings_class_init (GSettingsClass *class)
    * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
    *        an array of #GQuark<!-- -->s for the changed keys, or %NULL
    * @n_keys: the length of the @keys array, or 0
-   * @returns: %TRUE to stop other handlers from being invoked for the
-   *           event. FALSE to propagate the event further.
    *
    * The "change-event" signal is emitted once per change event that
    * affects this settings object.  You should connect to this signal
@@ -648,6 +646,9 @@ g_settings_class_init (GSettingsClass *class)
    * The default handler for this signal invokes the "changed" signal
    * for each affected key.  If any other connected handler returns
    * %TRUE then this default functionality will be suppressed.
+   *
+   * Returns: %TRUE to stop other handlers from being invoked for the
+   *          event. FALSE to propagate the event further.
    */
   g_settings_signals[SIGNAL_CHANGE_EVENT] =
     g_signal_new ("change-event", G_TYPE_SETTINGS,
@@ -681,8 +682,6 @@ g_settings_class_init (GSettingsClass *class)
    * GSettings::writable-change-event:
    * @settings: the object on which the signal was emitted
    * @key: the quark of the key, or 0
-   * @returns: %TRUE to stop other handlers from being invoked for the
-   *           event. FALSE to propagate the event further.
    *
    * The "writable-change-event" signal is emitted once per writability
    * change event that affects this settings object.  You should connect
@@ -702,6 +701,9 @@ g_settings_class_init (GSettingsClass *class)
    * example, a new mandatory setting is introduced).  If any other
    * connected handler returns %TRUE then this default functionality
    * will be suppressed.
+   *
+   * Returns: %TRUE to stop other handlers from being invoked for the
+   *          event. FALSE to propagate the event further.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
     g_signal_new ("writable-change-event", G_TYPE_SETTINGS,
@@ -825,7 +827,6 @@ g_settings_class_init (GSettingsClass *class)
 /**
  * g_settings_new:
  * @schema_id: the id of the schema
- * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with the schema specified by
  * @schema_id.
@@ -834,6 +835,8 @@ g_settings_class_init (GSettingsClass *class)
  * via the thread-default #GMainContext in effect at the time of the
  * call to g_settings_new().  The new #GSettings will hold a reference
  * on the context.  See g_main_context_push_thread_default().
+ *
+ * Returns: a new #GSettings object
  *
  * Since: 2.26
  */
@@ -851,7 +854,6 @@ g_settings_new (const gchar *schema_id)
  * g_settings_new_with_path:
  * @schema_id: the id of the schema
  * @path: the path to use
- * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with the relocatable schema specified
  * by @schema_id and a given path.
@@ -862,6 +864,8 @@ g_settings_new (const gchar *schema_id)
  *
  * It is a programmer error to call this function for a schema that
  * has an explicitly specified path.
+ *
+ * Returns: a new #GSettings object
  *
  * Since: 2.26
  */
@@ -882,7 +886,6 @@ g_settings_new_with_path (const gchar *schema_id,
  * g_settings_new_with_backend:
  * @schema_id: the id of the schema
  * @backend: the #GSettingsBackend to use
- * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with the schema specified by
  * @schema_id and a given #GSettingsBackend.
@@ -892,6 +895,8 @@ g_settings_new_with_path (const gchar *schema_id,
  * sense to pass a backend corresponding to the "defaults" settings database on
  * the system to get a settings object that modifies the system default
  * settings instead of the settings for this user.
+ *
+ * Returns: a new #GSettings object
  *
  * Since: 2.26
  */
@@ -913,13 +918,14 @@ g_settings_new_with_backend (const gchar      *schema_id,
  * @schema_id: the id of the schema
  * @backend: the #GSettingsBackend to use
  * @path: the path to use
- * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with the schema specified by
  * @schema_id and a given #GSettingsBackend and path.
  *
  * This is a mix of g_settings_new_with_backend() and
  * g_settings_new_with_path().
+ *
+ * Returns: a new #GSettings object
  *
  * Since: 2.26
  */
@@ -944,7 +950,6 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
  * @schema: a #GSettingsSchema
  * @backend: (allow-none): a #GSettingsBackend
  * @path: (allow-none): the path to use
- * @returns: a new #GSettings object
  *
  * Creates a new #GSettings object with a given schema, backend and
  * path.
@@ -969,6 +974,8 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
  * error f @path is %NULL and the schema has no path of its own or if
  * @path is non-%NULL and not equal to the path that the schema does
  * have.
+ *
+ * Returns: a new #GSettings object
  *
  * Since: 2.32
  */
@@ -1028,12 +1035,13 @@ g_settings_read_from_backend (GSettings          *settings,
  * g_settings_get_value:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a new #GVariant
  *
  * Gets the value that is stored in @settings for @key.
  *
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
+ *
+ * Returns: a new #GVariant
  *
  * Since: 2.26
  */
@@ -1065,7 +1073,6 @@ g_settings_get_value (GSettings   *settings,
  * g_settings_get_enum:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: the enum value
  *
  * Gets the value that is stored in @settings for @key and converts it
  * to the enum value that it represents.
@@ -1079,6 +1086,8 @@ g_settings_get_value (GSettings   *settings,
  * If the value stored in the configuration database is not a valid
  * value for the enumerated type then this function will return the
  * default value.
+ *
+ * Returns: the enum value
  *
  * Since: 2.26
  **/
@@ -1123,7 +1132,6 @@ g_settings_get_enum (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: a key, within @settings
  * @value: an enumerated value
- * @returns: %TRUE, if the set succeeds
  *
  * Looks up the enumerated type nick for @value and writes it to @key,
  * within @settings.
@@ -1135,6 +1143,8 @@ g_settings_get_enum (GSettings   *settings,
  * After performing the write, accessing @key directly with
  * g_settings_get_string() will return the 'nick' associated with
  * @value.
+ *
+ * Returns: %TRUE, if the set succeeds
  **/
 gboolean
 g_settings_set_enum (GSettings   *settings,
@@ -1176,7 +1186,6 @@ g_settings_set_enum (GSettings   *settings,
  * g_settings_get_flags:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: the flags value
  *
  * Gets the value that is stored in @settings for @key and converts it
  * to the flags value that it represents.
@@ -1190,6 +1199,8 @@ g_settings_set_enum (GSettings   *settings,
  * If the value stored in the configuration database is not a valid
  * value for the flags type then this function will return the default
  * value.
+ *
+ * Returns: the flags value
  *
  * Since: 2.26
  **/
@@ -1234,7 +1245,6 @@ g_settings_get_flags (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: a key, within @settings
  * @value: a flags value
- * @returns: %TRUE, if the set succeeds
  *
  * Looks up the flags type nicks for the bits specified by @value, puts
  * them in an array of strings and writes the array to @key, within
@@ -1247,6 +1257,8 @@ g_settings_get_flags (GSettings   *settings,
  * After performing the write, accessing @key directly with
  * g_settings_get_strv() will return an array of 'nicks'; one for each
  * bit in @value.
+ *
+ * Returns: %TRUE, if the set succeeds
  **/
 gboolean
 g_settings_set_flags (GSettings   *settings,
@@ -1289,8 +1301,6 @@ g_settings_set_flags (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: a #GVariant of the correct type
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1299,6 +1309,9 @@ g_settings_set_flags (GSettings   *settings,
  * the schema.
  *
  * If @value is floating then this function consumes the reference.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  **/
@@ -1382,8 +1395,6 @@ g_settings_get (GSettings   *settings,
  * @key: the name of the key to set
  * @format: a #GVariant format string
  * @...: arguments as per @format
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1393,6 +1404,9 @@ g_settings_get (GSettings   *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings or for the #GVariantType of @format to mismatch
  * the type given in the schema.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1419,7 +1433,6 @@ g_settings_set (GSettings   *settings,
  * @mapping: (scope call): the function to map the value in the
  *           settings database to the value used by the application
  * @user_data: user data for @mapping
- * @returns: (transfer full): the result, which may be %NULL
  *
  * Gets the value that is stored at @key in @settings, subject to
  * application-level validation/mapping.
@@ -1429,7 +1442,7 @@ g_settings_set (GSettings   *settings,
  * @mapping function performs that processing.  If the function
  * indicates that the processing was unsuccessful (due to a parse error,
  * for example) then the mapping is tried again with another value.
-
+ *
  * This allows a robust 'fall back to defaults' behaviour to be
  * implemented somewhat automatically.
  *
@@ -1448,6 +1461,8 @@ g_settings_set (GSettings   *settings,
  * to each invocation of @mapping.  The final value of that #gpointer is
  * what is returned by this function.  %NULL is valid; it is returned
  * just as any other value would be.
+ *
+ * Returns: (transfer full): the result, which may be %NULL
  **/
 gpointer
 g_settings_get_mapped (GSettings           *settings,
@@ -1499,7 +1514,6 @@ g_settings_get_mapped (GSettings           *settings,
  * g_settings_get_string:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a newly-allocated string
  *
  * Gets the value that is stored at @key in @settings.
  *
@@ -1507,6 +1521,8 @@ g_settings_get_mapped (GSettings           *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a string type in the schema for @settings.
+ *
+ * Returns: a newly-allocated string
  *
  * Since: 2.26
  */
@@ -1529,8 +1545,6 @@ g_settings_get_string (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1538,6 +1552,9 @@ g_settings_get_string (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a string type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1553,7 +1570,6 @@ g_settings_set_string (GSettings   *settings,
  * g_settings_get_int:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: an integer
  *
  * Gets the value that is stored at @key in @settings.
  *
@@ -1561,6 +1577,8 @@ g_settings_set_string (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a int32 type in the schema for @settings.
+ *
+ * Returns: an integer
  *
  * Since: 2.26
  */
@@ -1583,8 +1601,6 @@ g_settings_get_int (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1592,6 +1608,9 @@ g_settings_get_int (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a int32 type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1607,7 +1626,6 @@ g_settings_set_int (GSettings   *settings,
  * g_settings_get_uint:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: an unsigned integer
  *
  * Gets the value that is stored at @key in @settings.
  *
@@ -1616,6 +1634,8 @@ g_settings_set_int (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a uint32 type in the schema for @settings.
+ *
+ * Returns: an unsigned integer
  *
  * Since: 2.30
  */
@@ -1638,8 +1658,6 @@ g_settings_get_uint (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1648,6 +1666,9 @@ g_settings_get_uint (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a uint32 type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.30
  */
@@ -1663,7 +1684,6 @@ g_settings_set_uint (GSettings   *settings,
  * g_settings_get_double:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a double
  *
  * Gets the value that is stored at @key in @settings.
  *
@@ -1671,6 +1691,8 @@ g_settings_set_uint (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a 'double' type in the schema for @settings.
+ *
+ * Returns: a double
  *
  * Since: 2.26
  */
@@ -1693,8 +1715,6 @@ g_settings_get_double (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1702,6 +1722,9 @@ g_settings_get_double (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a 'double' type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1717,7 +1740,6 @@ g_settings_set_double (GSettings   *settings,
  * g_settings_get_boolean:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a boolean
  *
  * Gets the value that is stored at @key in @settings.
  *
@@ -1725,6 +1747,8 @@ g_settings_set_double (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a boolean type in the schema for @settings.
+ *
+ * Returns: a boolean
  *
  * Since: 2.26
  */
@@ -1747,8 +1771,6 @@ g_settings_get_boolean (GSettings  *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1756,6 +1778,9 @@ g_settings_get_boolean (GSettings  *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having a boolean type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1771,14 +1796,15 @@ g_settings_set_boolean (GSettings  *settings,
  * g_settings_get_strv:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: (array zero-terminated=1) (transfer full): a
- * newly-allocated, %NULL-terminated array of strings, the value that
- * is stored at @key in @settings.
  *
  * A convenience variant of g_settings_get() for string arrays.
  *
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
+ *
+ * Returns: (array zero-terminated=1) (transfer full): a
+ * newly-allocated, %NULL-terminated array of strings, the value that
+ * is stored at @key in @settings.
  *
  * Since: 2.26
  */
@@ -1801,8 +1827,6 @@ g_settings_get_strv (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: (allow-none) (array zero-terminated=1): the value to set it to, or %NULL
- * @returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
@@ -1811,6 +1835,9 @@ g_settings_get_strv (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
+ *
+ * Returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
  *
  * Since: 2.26
  */
@@ -1910,10 +1937,11 @@ g_settings_revert (GSettings *settings)
 /**
  * g_settings_get_has_unapplied:
  * @settings: a #GSettings object
- * @returns: %TRUE if @settings has unapplied changes
  *
  * Returns whether the #GSettings object has any unapplied
  * changes.  This can only be the case if it is in 'delayed-apply' mode.
+ *
+ * Returns: %TRUE if @settings has unapplied changes
  *
  * Since: 2.26
  */
@@ -1975,9 +2003,10 @@ g_settings_sync (void)
  * g_settings_is_writable:
  * @settings: a #GSettings object
  * @name: the name of a key
- * @returns: %TRUE if the key @name is writable
  *
  * Finds out if a key can be written or not
+ *
+ * Returns: %TRUE if the key @name is writable
  *
  * Since: 2.26
  */
@@ -2001,7 +2030,6 @@ g_settings_is_writable (GSettings   *settings,
  * g_settings_get_child:
  * @settings: a #GSettings object
  * @name: the name of the 'child' schema
- * @returns: (transfer full): a 'child' settings object
  *
  * Creates a 'child' settings object which has a base path of
  * <replaceable>base-path</replaceable>/@name, where
@@ -2009,6 +2037,8 @@ g_settings_is_writable (GSettings   *settings,
  *
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a <tag class="starttag">child</tag> element.
+ *
+ * Returns: (transfer full): a 'child' settings object
  *
  * Since: 2.26
  */
@@ -2044,7 +2074,6 @@ g_settings_get_child (GSettings   *settings,
 /**
  * g_settings_list_keys:
  * @settings: a #GSettings object
- * @returns: (transfer full) (element-type utf8): a list of the keys on @settings
  *
  * Introspects the list of keys on @settings.
  *
@@ -2054,6 +2083,8 @@ g_settings_get_child (GSettings   *settings,
  *
  * You should free the return value with g_strfreev() when you are done
  * with it.
+ *
+ * Returns: (transfer full) (element-type utf8): a list of the keys on @settings
  */
 gchar **
 g_settings_list_keys (GSettings *settings)
@@ -2080,7 +2111,6 @@ g_settings_list_keys (GSettings *settings)
 /**
  * g_settings_list_children:
  * @settings: a #GSettings object
- * @returns: (transfer full) (element-type utf8): a list of the children on @settings
  *
  * Gets the list of children on @settings.
  *
@@ -2101,6 +2131,8 @@ g_settings_list_keys (GSettings *settings)
  *
  * You should free the return value with g_strfreev() when you are done
  * with it.
+ *
+ * Returns: (transfer full) (element-type utf8): a list of the children on @settings
  */
 gchar **
 g_settings_list_children (GSettings *settings)
@@ -2134,7 +2166,6 @@ g_settings_list_children (GSettings *settings)
  * g_settings_get_range:
  * @settings: a #GSettings
  * @key: the key to query the range of
- * @returns: a #GVariant describing the range
  *
  * Queries the range of a key.
  *
@@ -2179,6 +2210,8 @@ g_settings_list_children (GSettings *settings)
  * You should free the returned value with g_variant_unref() when it is
  * no longer needed.
  *
+ * Returns: a #GVariant describing the range
+ *
  * Since: 2.28
  **/
 GVariant *
@@ -2217,7 +2250,6 @@ g_settings_get_range (GSettings   *settings,
  * @settings: a #GSettings
  * @key: the key to check
  * @value: the value to check
- * @returns: %TRUE if @value is valid for @key
  *
  * Checks if the given @value is of the correct type and within the
  * permitted range for @key.
@@ -2228,6 +2260,8 @@ g_settings_get_range (GSettings   *settings,
  *
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
+ *
+ * Returns: %TRUE if @value is valid for @key
  *
  * Since: 2.28
  **/

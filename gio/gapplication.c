@@ -674,7 +674,6 @@ get_platform_data (GApplication *application)
 /**
  * g_application_id_is_valid:
  * @application_id: a potential application identifier
- * @returns: %TRUE if @application_id is valid
  *
  * Checks if @application_id is a valid application identifier.
  *
@@ -690,6 +689,8 @@ get_platform_data (GApplication *application)
  *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
  *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
  * </itemizedlist>
+ *
+ * Returns: %TRUE if @application_id is valid
  **/
 gboolean
 g_application_id_is_valid (const gchar *application_id)
@@ -740,13 +741,14 @@ g_application_id_is_valid (const gchar *application_id)
  * g_application_new:
  * @application_id: the application id
  * @flags: the application flags
- * @returns: a new #GApplication instance
  *
  * Creates a new #GApplication instance.
  *
  * This function calls g_type_init() for you.
  *
  * The application id must be valid.  See g_application_id_is_valid().
+ *
+ * Returns: a new #GApplication instance
  **/
 GApplication *
 g_application_new (const gchar       *application_id,
@@ -766,9 +768,10 @@ g_application_new (const gchar       *application_id,
 /**
  * g_application_get_application_id:
  * @application: a #GApplication
- * @returns: the identifier for @application, owned by @application
  *
  * Gets the unique identifier for @application.
+ *
+ * Returns: the identifier for @application, owned by @application
  *
  * Since: 2.28
  **/
@@ -815,11 +818,12 @@ g_application_set_application_id (GApplication *application,
 /**
  * g_application_get_flags:
  * @application: a #GApplication
- * @returns: the flags for @application
  *
  * Gets the flags for @application.
  *
  * See #GApplicationFlags.
+ *
+ * Returns: the flags for @application
  *
  * Since: 2.28
  **/
@@ -915,12 +919,13 @@ g_application_set_inactivity_timeout (GApplication *application,
 /**
  * g_application_get_is_registered:
  * @application: a #GApplication
- * @returns: %TRUE if @application is registered
  *
  * Checks if @application is registered.
  *
  * An application is registered if g_application_register() has been
  * successfully called.
+ *
+ * Returns: %TRUE if @application is registered
  *
  * Since: 2.28
  **/
@@ -935,7 +940,6 @@ g_application_get_is_registered (GApplication *application)
 /**
  * g_application_get_is_remote:
  * @application: a #GApplication
- * @returns: %TRUE if @application is remote
  *
  * Checks if @application is remote.
  *
@@ -947,6 +951,8 @@ g_application_get_is_registered (GApplication *application)
  * The value of this property cannot be accessed before
  * g_application_register() has been called.  See
  * g_application_get_is_registered().
+ *
+ * Returns: %TRUE if @application is remote
  *
  * Since: 2.28
  **/
@@ -965,7 +971,6 @@ g_application_get_is_remote (GApplication *application)
  * @application: a #GApplication
  * @cancellable: a #GCancellable, or %NULL
  * @error: a pointer to a NULL #GError, or %NULL
- * @returns: %TRUE if registration succeeded
  *
  * Attempts registration of the application.
  *
@@ -993,6 +998,8 @@ g_application_get_is_remote (GApplication *application)
  * Note: the return value of this function is not an indicator that this
  * instance is or is not the primary instance of the application.  See
  * g_application_get_is_remote() for that.
+ *
+ * Returns: %TRUE if registration succeeded
  *
  * Since: 2.28
  **/
@@ -1172,7 +1179,6 @@ g_application_open (GApplication  *application,
  * @application: a #GApplication
  * @argc: the argc from main() (or 0 if @argv is %NULL)
  * @argv: (array length=argc) (allow-none): the argv from main(), or %NULL
- * @returns: the exit status
  *
  * Runs the application.
  *
@@ -1240,6 +1246,8 @@ g_application_open (GApplication  *application,
  * If the %G_APPLICATION_IS_SERVICE flag is set, then the exiting at
  * use count of zero is delayed for a while (ie: the instance stays
  * around to provide its <emphasis>service</emphasis> to others).
+ *
+ * Returns: the exit status
  *
  * Since: 2.28
  **/

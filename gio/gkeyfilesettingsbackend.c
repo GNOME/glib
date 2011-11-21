@@ -571,7 +571,6 @@ dir_changed (GFileMonitor       *monitor,
  * @root_path: the path under which all settings keys appear
  * @root_group: (allow-none): the group name corresponding to
  *              @root_path, or %NULL
- * @returns: (transfer full): a keyfile-backed #GSettingsBackend
  *
  * Creates a keyfile-backed #GSettingsBackend.
  *
@@ -617,6 +616,8 @@ dir_changed (GFileMonitor       *monitor,
  * syntax of the key file format.  For example, if you have '[' or ']'
  * characters in your path names or '=' in your key names you may be in
  * trouble.
+ *
+ * Returns: (transfer full): a keyfile-backed #GSettingsBackend
  **/
 GSettingsBackend *
 g_keyfile_settings_backend_new (const gchar *filename,

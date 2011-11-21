@@ -706,7 +706,6 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * @key: the key to read
  * @expected_type: a #GVariantType
  * @default_value: if the default value should be returned
- * @returns: the value that was read, or %NULL
  *
  * Reads a key. This call will never block.
  *
@@ -720,6 +719,8 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * If @default_value is %TRUE then this gets the default value from the
  * backend (ie: the one that the backend would contain if
  * g_settings_reset() were called).
+ *
+ * Returns: the value that was read, or %NULL
  */
 GVariant *
 g_settings_backend_read (GSettingsBackend   *backend,
@@ -747,7 +748,6 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * @key: the name of the key
  * @value: a #GVariant value to write to this key
  * @origin_tag: the origin tag
- * @returns: %TRUE if the write succeeded, %FALSE if the key was not writable
  *
  * Writes exactly one key.
  *
@@ -760,6 +760,8 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * to emit a second "changed" signal (either during this call, or later)
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
+ *
+ * Returns: %TRUE if the write succeeded, %FALSE if the key was not writable
  */
 gboolean
 g_settings_backend_write (GSettingsBackend *backend,
@@ -826,7 +828,6 @@ g_settings_backend_reset (GSettingsBackend *backend,
  * g_settings_backend_get_writable:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of a key
- * @returns: %TRUE if the key is writable
  *
  * Finds out if a key is available for writing to.  This is the
  * interface through which 'lockdown' is implemented.  Locked down
@@ -834,6 +835,8 @@ g_settings_backend_reset (GSettingsBackend *backend,
  *
  * You should not write to locked-down keys, but if you do, the
  * implementation will deal with it.
+ *
+ * Returns: %TRUE if the key is writable
  */
 gboolean
 g_settings_backend_get_writable (GSettingsBackend *backend,
@@ -922,11 +925,12 @@ g_settings_backend_variant_unref0 (gpointer data)
 
 /*< private >
  * g_settings_backend_create_tree:
- * @returns: a new #GTree
  *
  * This is a convenience function for creating a tree that is compatible
  * with g_settings_backend_write().  It merely calls g_tree_new_full()
  * with strcmp(), g_free() and g_variant_unref().
+ *
+ * Returns: a new #GTree
  */
 GTree *
 g_settings_backend_create_tree (void)
@@ -953,13 +957,14 @@ g_settings_backend_verify (gpointer impl)
 
 /**
  * g_settings_backend_get_default:
- * @returns: (transfer full): the default #GSettingsBackend
  *
  * Returns the default #GSettingsBackend. It is possible to override
  * the default by setting the <envar>GSETTINGS_BACKEND</envar>
  * environment variable to the name of a settings backend.
  *
  * The user gets a reference to the backend.
+ *
+ * Returns: (transfer full): the default #GSettingsBackend
  *
  * Since: 2.28
  */
@@ -978,13 +983,14 @@ g_settings_backend_get_default (void)
  * g_settings_backend_get_permission:
  * @backend: a #GSettingsBackend
  * @path: a path
- * @returns: a non-%NULL #GPermission. Free with g_object_unref()
  *
  * Gets the permission object associated with writing to keys below
  * @path on @backend.
  *
  * If this is not implemented in the backend, then a %TRUE
  * #GSimplePermission is returned.
+ *
+ * Returns: a non-%NULL #GPermission. Free with g_object_unref()
  */
 GPermission *
 g_settings_backend_get_permission (GSettingsBackend *backend,

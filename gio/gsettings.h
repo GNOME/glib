@@ -166,11 +166,12 @@ void                    g_settings_sync                                 (void);
  * @value: a #GValue containing the property value to map
  * @expected_type: the #GVariantType to create
  * @user_data: user data that was specified when the binding was created
- * @returns: a new #GVariant holding the data from @value,
- *     or %NULL in case of an error
  *
  * The type for the function that is used to convert an object property
  * value to a #GVariant for storing it in #GSettings.
+ *
+ * Returns: a new #GVariant holding the data from @value,
+ *     or %NULL in case of an error
  */
 typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
                                                                          const GVariantType *expected_type,
@@ -181,11 +182,12 @@ typedef GVariant *    (*GSettingsBindSetMapping)                        (const G
  * @value: return location for the property value
  * @variant: the #GVariant
  * @user_data: user data that was specified when the binding was created
- * @returns: %TRUE if the conversion succeeded, %FALSE in case of an error
  *
  * The type for the function that is used to convert from #GSettings to
  * an object property. The @value is already initialized to hold values
  * of the appropriate type.
+ *
+ * Returns: %TRUE if the conversion succeeded, %FALSE in case of an error
  */
 typedef gboolean      (*GSettingsBindGetMapping)                        (GValue             *value,
                                                                          GVariant           *variant,
@@ -197,7 +199,6 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
  * @result: (out): the result of the mapping
  * @user_data: (closure): the user data that was passed to
  * g_settings_get_mapped()
- * @returns: %TRUE if the conversion succeeded, %FALSE in case of an error
  *
  * The type of the function that is used to convert from a value stored
  * in a #GSettings to a value that is useful to the application.
@@ -209,6 +210,8 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
  * If @value is %NULL then it means that the mapping function is being
  * given a "last chance" to successfully return a valid value.  %TRUE
  * must be returned in this case.
+ *
+ * Returns: %TRUE if the conversion succeeded, %FALSE in case of an error
  **/
 typedef gboolean      (*GSettingsGetMapping)                            (GVariant           *value,
                                                                          gpointer           *result,
