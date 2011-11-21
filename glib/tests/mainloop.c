@@ -21,6 +21,14 @@
  */
 
 #include <glib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+static gboolean cb (gpointer data)
+{
+  return FALSE;
+}
 
 static void
 test_maincontext_basic (void)
@@ -29,6 +37,7 @@ test_maincontext_basic (void)
   GSource *source;
   GSourceFuncs funcs;
   guint id;
+  gpointer data = &funcs;
 
   ctx = g_main_context_new ();
 
@@ -58,6 +67,15 @@ test_maincontext_basic (void)
   g_assert (g_source_get_priority (source) == G_PRIORITY_HIGH);
 
   g_main_context_unref (ctx);
+
+  ctx = g_main_context_default ();
+  source = g_source_new (&funcs, sizeof (GSource));
+  g_source_set_funcs (source, &funcs);
+  g_source_set_callback (source, cb, data, NULL);
+  id = g_source_attach (source, ctx);
+  g_source_set_name_by_id (id, "e");
+  g_assert_cmpstr (g_source_get_name (source), ==, "e");
+  g_assert (g_source_remove_by_funcs_user_data (&funcs, data));
 }
 
 static void
