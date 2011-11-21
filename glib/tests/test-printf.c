@@ -914,6 +914,28 @@ test_64bit2 (void)
 #endif
 }
 
+static gsize
+upper_bound (const gchar *format, ...)
+{
+  va_list args;
+  gsize res;
+
+  va_start (args, format);
+  res = g_printf_string_upper_bound (format, args);
+  va_end (args);
+
+  return res;
+}
+
+static void
+test_upper_bound (void)
+{
+  gsize res;
+
+  res = upper_bound ("bla %s %d: %g\n", "bla", 123, 0.123);
+  g_assert_cmpint (res, ==, 20);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -940,6 +962,7 @@ main (int   argc,
   g_test_add_func ("/printf/test-64bit", test_64bit2);
 
   g_test_add_func ("/sprintf/test-positional-params", test_positional_params3);
+  g_test_add_func ("/sprintf/upper-bound", test_upper_bound);
 
   return g_test_run();
 }
