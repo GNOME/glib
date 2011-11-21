@@ -328,11 +328,27 @@ test_mark (void)
 }
 
 static void
+test_zerowidth (void)
+{
+  g_assert (!g_unichar_iszerowidth (0x00AD));
+  g_assert (!g_unichar_iszerowidth (0x00AD));
+  g_assert (!g_unichar_iszerowidth (0x115F));
+  g_assert (g_unichar_iszerowidth (0x1160));
+  g_assert (g_unichar_iszerowidth (0x11AA));
+  g_assert (g_unichar_iszerowidth (0x11FF));
+  g_assert (!g_unichar_iszerowidth (0x1200));
+  g_assert (g_unichar_iszerowidth (0x200B));
+  g_assert (g_unichar_iszerowidth (0x591));
+}
+
+static void
 test_title (void)
 {
   g_assert (g_unichar_istitle (0x01c5));
   g_assert (g_unichar_istitle (0x1f88));
   g_assert (g_unichar_istitle (0x1fcc));
+  g_assert (!g_unichar_istitle ('a'));
+  g_assert (!g_unichar_istitle ('A'));
 
   g_assert (g_unichar_totitle (0x01c6) == 0x01c5);
   g_assert (g_unichar_totitle (0x01c4) == 0x01c5);
@@ -341,6 +357,24 @@ test_title (void)
   g_assert (g_unichar_totitle (0x1f88) == 0x1f88);
   g_assert (g_unichar_totitle ('a') == 'A');
   g_assert (g_unichar_totitle ('A') == 'A');
+}
+
+static void
+test_cases (void)
+{
+  g_assert (g_unichar_toupper ('a') == 'A');
+  g_assert (g_unichar_toupper ('A') == 'A');
+  g_assert (g_unichar_toupper (0x01C5) == 0x01C4);
+  g_assert (g_unichar_toupper (0x01C6) == 0x01C4);
+  g_assert (g_unichar_tolower ('A') == 'a');
+  g_assert (g_unichar_tolower ('a') == 'a');
+  g_assert (g_unichar_tolower (0x01C4) == 0x01C6);
+  g_assert (g_unichar_tolower (0x01C5) == 0x01C6);
+  g_assert (g_unichar_tolower (0x1F8A) == 0x1F82);
+  g_assert (g_unichar_totitle (0x1F8A) == 0x1F8A);
+  g_assert (g_unichar_toupper (0x1F8A) == 0x1F8A);
+  g_assert (g_unichar_tolower (0x1FB2) == 0x1FB2);
+  g_assert (g_unichar_toupper (0x1FB2) == 0x1FB2);
 }
 
 static void
@@ -659,6 +693,7 @@ main (int   argc,
   g_test_add_func ("/unicode/mirror", test_mirror);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/zero-width", test_zerowidth);
   g_test_add_func ("/unicode/defined", test_defined);
   g_test_add_func ("/unicode/wide", test_wide);
   g_test_add_func ("/unicode/compose", test_compose);
@@ -668,6 +703,7 @@ main (int   argc,
   g_test_add_func ("/unicode/decompose-tail", test_decompose_tail);
   g_test_add_func ("/unicode/fully-decompose-len", test_fully_decompose_len);
   g_test_add_func ("/unicode/iso15924", test_iso15924);
+  g_test_add_func ("/unicode/cases", test_cases);
 
   return g_test_run();
 }
