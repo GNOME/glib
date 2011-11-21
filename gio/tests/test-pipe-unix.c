@@ -64,7 +64,7 @@ test_pipe (GInputStream  **is,
       int e = errno;
 
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (e),
-                   g_strerror (e));
+                   "%s", g_strerror (e));
       return FALSE;
     }
 
