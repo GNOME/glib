@@ -1398,6 +1398,25 @@ test_page_boundary (void)
 
 }
 
+static void
+test_ref (void)
+{
+  GKeyFile *file;
+  static const char data[] =
+"[group]\n"
+"a=1\n";
+  gboolean ok;
+
+  file = g_key_file_new ();
+
+  ok = g_key_file_load_from_data (file, data, strlen (data), 0, NULL);
+  g_assert (ok);
+  g_assert (g_key_file_has_key (file, "group", "a", NULL));
+  g_key_file_ref (file);
+  g_key_file_free (file);
+  g_key_file_unref (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1429,6 +1448,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/load", test_load);
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
   g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
+  g_test_add_func ("/keyfile/ref", test_ref);
 
   return g_test_run ();
 }
