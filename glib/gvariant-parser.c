@@ -2406,7 +2406,6 @@ g_variant_parse (const GVariantType  *type,
  * g_variant_new_parsed_va:
  * @format: a text format #GVariant
  * @app: a pointer to a #va_list
- * @returns: a new, usually floating, #GVariant
  *
  * Parses @format and returns the result.
  *
@@ -2425,6 +2424,8 @@ g_variant_parse (const GVariantType  *type,
  * At this point, the caller will have their own full reference to the
  * result.  This can also be done by adding the result to a container,
  * or by passing it to another g_variant_new() call.
+ *
+ * Returns: a new, usually floating, #GVariant
  **/
 GVariant *
 g_variant_new_parsed_va (const gchar *format,
@@ -2461,7 +2462,6 @@ g_variant_new_parsed_va (const gchar *format,
  * g_variant_new_parsed:
  * @format: a text format #GVariant
  * @...: arguments as per @format
- * @returns: a new floating #GVariant instance
  *
  * Parses @format and returns the result.
  *
@@ -2489,6 +2489,8 @@ g_variant_new_parsed_va (const gchar *format,
  * #GVariant pointer from the argument list.  ie: @format may not solely
  * be anything along the lines of "%*", "%?", "\%r", or anything starting
  * with "%@".
+ *
+ * Returns: a new floating #GVariant instance
  **/
 GVariant *
 g_variant_new_parsed (const gchar *format,

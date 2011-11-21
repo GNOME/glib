@@ -459,11 +459,12 @@ g_variant_ensure_serialised (GVariant *value)
  * @type: the type of the new instance
  * @serialised: if the instance will be in serialised form
  * @trusted: if the instance will be trusted
- * @returns: a new #GVariant with a floating reference
  *
  * Allocates a #GVariant instance and does some common work (such as
  * looking up and filling in the type info), setting the state field,
  * and setting the ref_count to 1.
+ *
+ * Returns: a new #GVariant with a floating reference
  */
 static GVariant *
 g_variant_alloc (const GVariantType *type,
@@ -489,13 +490,14 @@ g_variant_alloc (const GVariantType *type,
  * @type: a #GVariantType
  * @buffer: a #GBuffer
  * @trusted: if the contents of @buffer are trusted
- * @returns: a new #GVariant with a floating reference
  *
  * Constructs a new serialised-mode #GVariant instance.  This is the
  * inner interface for creation of new serialised values that gets
  * called from various functions in gvariant.c.
  *
  * A reference is taken on @buffer.
+ *
+ * Returns: a new #GVariant with a floating reference
  */
 GVariant *
 g_variant_new_from_buffer (const GVariantType *type,
@@ -540,7 +542,6 @@ g_variant_new_from_buffer (const GVariantType *type,
  * @children: an array of #GVariant pointers.  Consumed.
  * @n_children: the length of @children
  * @trusted: %TRUE if every child in @children in trusted
- * @returns: a new #GVariant with a floating reference
  *
  * Constructs a new tree-mode #GVariant instance.  This is the inner
  * interface for creation of new serialised values that gets called from
@@ -548,6 +549,8 @@ g_variant_new_from_buffer (const GVariantType *type,
  *
  * @children is consumed by this function.  g_free() will be called on
  * it some time later.
+ *
+ * Returns: a new #GVariant with a floating reference
  */
 GVariant *
 g_variant_new_from_children (const GVariantType  *type,
@@ -567,11 +570,12 @@ g_variant_new_from_children (const GVariantType  *type,
 /* < internal >
  * g_variant_get_type_info:
  * @value: a #GVariant
- * @returns: the #GVariantTypeInfo for @value
  *
  * Returns the #GVariantTypeInfo corresponding to the type of @value.  A
  * reference is not added, so the return value is only good for the
  * duration of the life of @value.
+ *
+ * Returns: the #GVariantTypeInfo for @value
  */
 GVariantTypeInfo *
 g_variant_get_type_info (GVariant *value)
@@ -582,7 +586,6 @@ g_variant_get_type_info (GVariant *value)
 /* < internal >
  * g_variant_is_trusted:
  * @value: a #GVariant
- * @returns: if @value is trusted
  *
  * Determines if @value is trusted by #GVariant to contain only
  * fully-valid data.  All values constructed solely via #GVariant APIs
@@ -593,6 +596,8 @@ g_variant_get_type_info (GVariant *value)
  * skipped.  For example, we don't need to check that a string is
  * properly nul-terminated or that an object path is actually a
  * properly-formatted object path.
+ *
+ * Returns: if @value is trusted
  */
 gboolean
 g_variant_is_trusted (GVariant *value)
@@ -637,9 +642,10 @@ g_variant_unref (GVariant *value)
 /**
  * g_variant_ref:
  * @value: a #GVariant
- * @returns: the same @value
  *
  * Increases the reference count of @value.
+ *
+ * Returns: the same @value
  *
  * Since: 2.24
  **/
@@ -654,7 +660,6 @@ g_variant_ref (GVariant *value)
 /**
  * g_variant_ref_sink:
  * @value: a #GVariant
- * @returns: the same @value
  *
  * #GVariant uses a floating reference count system.  All functions with
  * names starting with <literal>g_variant_new_</literal> return floating
@@ -679,6 +684,8 @@ g_variant_ref (GVariant *value)
  * maintaining normal refcounting semantics in situations where values
  * are not floating.
  *
+ * Returns: the same @value
+ *
  * Since: 2.24
  **/
 GVariant *
@@ -699,7 +706,6 @@ g_variant_ref_sink (GVariant *value)
 /**
  * g_variant_take_ref:
  * @value: a #GVariant
- * @returns: the same @value
  *
  * If @value is floating, sink it.  Otherwise, do nothing.
  *
@@ -733,6 +739,8 @@ g_variant_ref_sink (GVariant *value)
  * be that the floating reference is converted to a hard reference and
  * an additional reference on top of that one is added.  It is best to
  * avoid this situation.
+ *
+ * Returns: the same @value
  **/
 GVariant *
 g_variant_take_ref (GVariant *value)
@@ -747,7 +755,6 @@ g_variant_take_ref (GVariant *value)
 /**
  * g_variant_is_floating:
  * @value: a #GVariant
- * @returns: whether @value is floating
  *
  * Checks whether @value has a floating reference count.
  *
@@ -758,6 +765,8 @@ g_variant_take_ref (GVariant *value)
  *
  * See g_variant_ref_sink() for more information about floating reference
  * counts.
+ *
+ * Returns: whether @value is floating
  *
  * Since: 2.26
  **/
@@ -772,7 +781,6 @@ g_variant_is_floating (GVariant *value)
 /**
  * g_variant_get_size:
  * @value: a #GVariant instance
- * @returns: the serialised size of @value
  *
  * Determines the number of bytes that would be required to store @value
  * with g_variant_store().
@@ -785,6 +793,8 @@ g_variant_is_floating (GVariant *value)
  * then this function is O(1).  Otherwise, the size is calculated, an
  * operation which is approximately O(n) in the number of values
  * involved.
+ *
+ * Returns: the serialised size of @value
  *
  * Since: 2.24
  **/
@@ -801,7 +811,6 @@ g_variant_get_size (GVariant *value)
 /**
  * g_variant_get_data:
  * @value: a #GVariant instance
- * @returns: (transfer none): the serialised form of @value, or %NULL
  *
  * Returns a pointer to the serialised form of a #GVariant instance.
  * The returned data may not be in fully-normalised form if read from an
@@ -829,6 +838,8 @@ g_variant_get_size (GVariant *value)
  * explicitly (by storing the type and/or endianness in addition to the
  * serialised data).
  *
+ * Returns: (transfer none): the serialised form of @value, or %NULL
+ *
  * Since: 2.24
  **/
 gconstpointer
@@ -844,7 +855,6 @@ g_variant_get_data (GVariant *value)
 /**
  * g_variant_n_children:
  * @value: a container #GVariant
- * @returns: the number of children in the container
  *
  * Determines the number of children in a container #GVariant instance.
  * This includes variants, maybes, arrays, tuples and dictionary
@@ -857,6 +867,8 @@ g_variant_get_data (GVariant *value)
  * only on the type).  For dictionary entries, it is always 2
  *
  * This function is O(1).
+ *
+ * Returns: the number of children in the container
  *
  * Since: 2.24
  **/
@@ -889,7 +901,6 @@ g_variant_n_children (GVariant *value)
  * g_variant_get_child_value:
  * @value: a container #GVariant
  * @index_: the index of the child to fetch
- * @returns: (transfer full): the child at the specified index
  *
  * Reads a child item out of a container #GVariant instance.  This
  * includes variants, maybes, arrays, tuples and dictionary
@@ -903,6 +914,8 @@ g_variant_n_children (GVariant *value)
  * g_variant_unref() when you're done with it.
  *
  * This function is O(1).
+ *
+ * Returns: (transfer full): the child at the specified index
  *
  * Since: 2.24
  **/
@@ -1000,7 +1013,6 @@ g_variant_store (GVariant *value,
 /**
  * g_variant_is_normal_form:
  * @value: a #GVariant instance
- * @returns: %TRUE if @value is in normal form
  *
  * Checks if @value is in normal form.
  *
@@ -1012,6 +1024,8 @@ g_variant_store (GVariant *value,
  * If @value is found to be in normal form then it will be marked as
  * being trusted.  If the value was already marked as being trusted then
  * this function will immediately return %TRUE.
+ *
+ * Returns: %TRUE if @value is in normal form
  *
  * Since: 2.24
  **/

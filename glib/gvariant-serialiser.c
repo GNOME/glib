@@ -1300,11 +1300,12 @@ gvs_variant_is_normal (GVariantSerialised value)
 /* < private >
  * g_variant_serialised_n_children:
  * @serialised: a #GVariantSerialised
- * @returns: the number of children
  *
  * For serialised data that represents a container value (maybes,
  * tuples, arrays, variants), determine how many child items are inside
  * that container.
+ *
+ * Returns: the number of children
  */
 gsize
 g_variant_serialised_n_children (GVariantSerialised serialised)
@@ -1323,7 +1324,6 @@ g_variant_serialised_n_children (GVariantSerialised serialised)
  * g_variant_serialised_get_child:
  * @serialised: a #GVariantSerialised
  * @index_: the index of the child to fetch
- * @returns: a #GVariantSerialised for the child
  *
  * Extracts a child from a serialised data representing a container
  * value.
@@ -1338,6 +1338,8 @@ g_variant_serialised_n_children (GVariantSerialised serialised)
  * item of a variable-sized type is being returned.
  *
  * .data is never non-%NULL if size is 0.
+ *
+ * Returns: a #GVariantSerialised for the child
  */
 GVariantSerialised
 g_variant_serialised_get_child (GVariantSerialised serialised,
