@@ -603,7 +603,7 @@ g_unichar_toupper (gunichar c)
       for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
 	{
 	  if (title_table[i][0] == c)
-	    return title_table[i][1];
+	    return title_table[i][1] ? title_table[i][1] : c;
 	}
     }
   return c;
