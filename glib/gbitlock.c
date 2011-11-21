@@ -255,7 +255,6 @@ g_bit_lock (volatile gint *address,
  * g_bit_trylock:
  * @address: a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
- * @returns: %TRUE if the lock was acquired
  *
  * Sets the indicated @lock_bit in @address, returning %TRUE if
  * successful.  If the bit is already set, returns %FALSE immediately.
@@ -269,6 +268,8 @@ g_bit_lock (volatile gint *address,
  * This function accesses @address atomically.  All other accesses to
  * @address must be atomic in order for this function to work
  * reliably.
+ *
+ * Returns: %TRUE if the lock was acquired
  *
  * Since: 2.24
  **/
@@ -445,13 +446,14 @@ void
  * g_pointer_bit_trylock:
  * @address: a pointer to a #gpointer-sized value
  * @lock_bit: a bit value between 0 and 31
- * @returns: %TRUE if the lock was acquired
  *
  * This is equivalent to g_bit_trylock, but working on pointers (or
  * other pointer-sized values).
  *
  * For portability reasons, you may only lock on the bottom 32 bits of
  * the pointer.
+ *
+ * Returns: %TRUE if the lock was acquired
  *
  * Since: 2.30
  **/
