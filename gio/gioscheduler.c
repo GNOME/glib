@@ -24,34 +24,30 @@
 
 #include "gioscheduler.h"
 #include "gcancellable.h"
-
+#include "gtask.h"
 
 /**
  * SECTION:gioscheduler
  * @short_description: I/O Scheduler
  * @include: gio/gio.h
  * 
+ * <note><para>
+ *   As of GLib 2.36, the <literal>g_io_scheduler</literal> methods
+ *   are deprecated in favor of #GThreadPool and #GTask.
+ * </para></note>
+ *
  * Schedules asynchronous I/O operations. #GIOScheduler integrates 
  * into the main event loop (#GMainLoop) and uses threads.
- * 
- * <para id="io-priority"><indexterm><primary>I/O priority</primary></indexterm>
- * Each I/O operation has a priority, and the scheduler uses the priorities
- * to determine the order in which operations are executed. They are 
- * <emphasis>not</emphasis> used to determine system-wide I/O scheduling.
- * Priorities are integers, with lower numbers indicating higher priority. 
- * It is recommended to choose priorities between %G_PRIORITY_LOW and 
- * %G_PRIORITY_HIGH, with %G_PRIORITY_DEFAULT as a default.
- * </para>
  **/
 
 struct _GIOSchedulerJob {
   GList *active_link;
+  GTask *task;
+
   GIOSchedulerJobFunc job_func;
-  GSourceFunc cancel_func; /* Runs under job map lock */
   gpointer data;
   GDestroyNotify destroy_notify;
 
-  gint io_priority;
   GCancellable *cancellable;
   gulong cancellable_id;
   GMainContext *context;
@@ -60,98 +56,29 @@ struct _GIOSchedulerJob {
 G_LOCK_DEFINE_STATIC(active_jobs);
 static GList *active_jobs = NULL;
 
-static GThreadPool *job_thread_pool = NULL;
-
-static void io_job_thread (gpointer data,
-			   gpointer user_data);
-
 static void
 g_io_job_free (GIOSchedulerJob *job)
 {
-  if (job->cancellable)
-    {
-      if (job->cancellable_id)
-	g_cancellable_disconnect (job->cancellable, job->cancellable_id);
-      g_object_unref (job->cancellable);
-    }
-  g_main_context_unref (job->context);
-  g_free (job);
-}
-
-static gint
-g_io_job_compare (gconstpointer a,
-		  gconstpointer b,
-		  gpointer      user_data)
-{
-  const GIOSchedulerJob *aa = a;
-  const GIOSchedulerJob *bb = b;
-
-  /* Cancelled jobs are set prio == -1, so that
-     they are executed as quickly as possible */
-  
-  /* Lower value => higher priority */
-  if (aa->io_priority < bb->io_priority)
-    return -1;
-  if (aa->io_priority == bb->io_priority)
-    return 0;
-  return 1;
-}
-
-static gpointer
-init_scheduler (gpointer arg)
-{
-  if (job_thread_pool == NULL)
-    {
-      /* TODO: thread_pool_new can fail */
-      job_thread_pool = g_thread_pool_new (io_job_thread,
-					   NULL,
-					   10,
-					   FALSE,
-					   NULL);
-      if (job_thread_pool != NULL)
-	{
-	  g_thread_pool_set_sort_function (job_thread_pool,
-					   g_io_job_compare,
-					   NULL);
-	}
-    }
-  return NULL;
-}
-
-static void
-on_job_canceled (GCancellable    *cancellable,
-		 gpointer         user_data)
-{
-  GIOSchedulerJob *job = user_data;
-
-  /* This might be called more than once */
-  job->io_priority = -1;
-
-  if (job_thread_pool != NULL)
-    g_thread_pool_set_sort_function (job_thread_pool,
-				     g_io_job_compare,
-				     NULL);
-}
-
-static void
-job_destroy (gpointer data)
-{
-  GIOSchedulerJob *job = data;
-
   if (job->destroy_notify)
     job->destroy_notify (job->data);
 
   G_LOCK (active_jobs);
   active_jobs = g_list_delete_link (active_jobs, job->active_link);
   G_UNLOCK (active_jobs);
-  g_io_job_free (job);
+
+  if (job->cancellable)
+    g_object_unref (job->cancellable);
+  g_main_context_unref (job->context);
+  g_slice_free (GIOSchedulerJob, job);
 }
 
 static void
-io_job_thread (gpointer data,
-	       gpointer user_data)
+io_job_thread (GTask         *task,
+               gpointer       source_object,
+               gpointer       task_data,
+               GCancellable  *cancellable)
 {
-  GIOSchedulerJob *job = data;
+  GIOSchedulerJob *job = task_data;
   gboolean result;
 
   if (job->cancellable)
@@ -165,8 +92,6 @@ io_job_thread (gpointer data,
 
   if (job->cancellable)
     g_cancellable_pop_current (job->cancellable);
-
-  job_destroy (job);
 }
 
 /**
@@ -174,7 +99,7 @@ io_job_thread (gpointer data,
  * @job_func: a #GIOSchedulerJobFunc.
  * @user_data: data to pass to @job_func
  * @notify: (allow-none): a #GDestroyNotify for @user_data, or %NULL
- * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
@@ -186,6 +111,8 @@ io_job_thread (gpointer data,
  * If @cancellable is not %NULL, it can be used to cancel the I/O job
  * by calling g_cancellable_cancel() or by calling 
  * g_io_scheduler_cancel_all_jobs().
+ *
+ * Deprecated: use #GThreadPool or g_task_run_in_thread()
  **/
 void
 g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
@@ -194,23 +121,18 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
 			 gint                 io_priority,
 			 GCancellable        *cancellable)
 {
-  static GOnce once_init = G_ONCE_INIT;
   GIOSchedulerJob *job;
+  GTask *task;
 
   g_return_if_fail (job_func != NULL);
 
-  job = g_new0 (GIOSchedulerJob, 1);
+  job = g_slice_new0 (GIOSchedulerJob);
   job->job_func = job_func;
   job->data = user_data;
   job->destroy_notify = notify;
-  job->io_priority = io_priority;
-    
+
   if (cancellable)
-    {
-      job->cancellable = g_object_ref (cancellable);
-      job->cancellable_id = g_cancellable_connect (job->cancellable, (GCallback)on_job_canceled,
-						   job, NULL);
-    }
+    job->cancellable = g_object_ref (cancellable);
 
   job->context = g_main_context_ref_thread_default ();
 
@@ -219,8 +141,11 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   job->active_link = active_jobs;
   G_UNLOCK (active_jobs);
 
-  g_once (&once_init, init_scheduler, NULL);
-  g_thread_pool_push (job_thread_pool, job, NULL);
+  task = g_task_new (NULL, cancellable, NULL, NULL);
+  g_task_set_task_data (task, job, (GDestroyNotify)g_io_job_free);
+  g_task_set_priority (task, io_priority);
+  g_task_run_in_thread (task, io_job_thread);
+  g_object_unref (task);
 }
 
 /**
@@ -230,6 +155,10 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
  *
  * A job is cancellable if a #GCancellable was passed into
  * g_io_scheduler_push_job().
+ *
+ * Deprecated: You should never call this function, since you don't
+ * know how other libraries in your program might be making use of
+ * gioscheduler.
  **/
 void
 g_io_scheduler_cancel_all_jobs (void)
@@ -305,6 +234,8 @@ mainloop_proxy_free (MainLoopProxy *proxy)
  * blocking the I/O job).
  *
  * Returns: The return value of @func
+ *
+ * Deprecated: Use g_main_context_invoke().
  **/
 gboolean
 g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
@@ -361,6 +292,8 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
  * on to this function you have to ensure that it is not freed before
  * @func is called, either by passing %NULL as @notify to 
  * g_io_scheduler_push_job() or by using refcounting for @user_data.
+ *
+ * Deprecated: Use g_main_context_invoke().
  **/
 void
 g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,

@@ -29,7 +29,7 @@
 #include "gdbusprivate.h"
 #include "gdbusmethodinvocation.h"
 #include "gdbusconnection.h"
-#include "gioscheduler.h"
+#include "gtask.h"
 #include "gioerror.h"
 
 #include "glibintl.h"
@@ -459,17 +459,13 @@ typedef struct
   GDBusInterfaceSkeleton       *interface;
   GDBusInterfaceMethodCallFunc  method_call_func;
   GDBusMethodInvocation        *invocation;
-  GMainContext                 *context;
 } DispatchData;
 
 static void
 dispatch_data_unref (DispatchData *data)
 {
   if (g_atomic_int_dec_and_test (&data->ref_count))
-    {
-      g_main_context_unref (data->context);
-      g_free (data);
-    }
+    g_slice_free (DispatchData, data);
 }
 
 static DispatchData *
@@ -494,12 +490,13 @@ dispatch_invoke_in_context_func (gpointer user_data)
   return FALSE;
 }
 
-static gboolean
-dispatch_in_thread_func (GIOSchedulerJob *job,
-                         GCancellable    *cancellable,
-                         gpointer         user_data)
+static void
+dispatch_in_thread_func (GTask        *task,
+                         gpointer      source_object,
+                         gpointer      task_data,
+                         GCancellable *cancellable)
 {
-  DispatchData *data = user_data;
+  DispatchData *data = task_data;
   GDBusInterfaceSkeletonFlags flags;
   GDBusObject *object;
   gboolean authorized;
@@ -549,8 +546,8 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
       else
         {
           /* bah, back to original context */
-          g_main_context_invoke_full (data->context,
-                                      G_PRIORITY_DEFAULT,
+          g_main_context_invoke_full (g_task_get_context (task),
+                                      g_task_get_priority (task),
                                       dispatch_invoke_in_context_func,
                                       dispatch_data_ref (data),
                                       (GDestroyNotify) dispatch_data_unref);
@@ -563,8 +560,6 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
 
   if (object != NULL)
     g_object_unref (object);
-
-  return FALSE;
 }
 
 static void
@@ -623,18 +618,19 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
     }
   else
     {
+      GTask *task;
       DispatchData *data;
-      data = g_new0 (DispatchData, 1);
+
+      data = g_slice_new0 (DispatchData);
       data->interface = interface;
       data->method_call_func = method_call_func;
       data->invocation = invocation;
-      data->context = g_main_context_ref_thread_default ();
       data->ref_count = 1;
-      g_io_scheduler_push_job (dispatch_in_thread_func,
-                               data,
-                               (GDestroyNotify) dispatch_data_unref,
-                               G_PRIORITY_DEFAULT,
-                               NULL); /* GCancellable* */
+
+      task = g_task_new (interface, NULL, NULL, NULL);
+      g_task_set_task_data (task, data, (GDestroyNotify) dispatch_data_unref);
+      g_task_run_in_thread (task, dispatch_in_thread_func);
+      g_object_unref (task);
     }
 
   if (object != NULL)

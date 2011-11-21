@@ -64,13 +64,13 @@
  *
  *   for (l = self->priv->init_results; l != NULL; l = l->next)
  *     {
- *       GSimpleAsyncResult *simple = l->data;
+ *       GTask *task = l->data;
  *
- *       if (!self->priv->success)
- *         g_simple_async_result_set_error (simple, ...);
- *
- *       g_simple_async_result_complete (simple);
- *       g_object_unref (simple);
+ *       if (self->priv->success)
+ *         g_task_return_boolean (task, TRUE);
+ *       else
+ *         g_task_return_new_error (task, ...);
+ *       g_object_unref (task);
  *     }
  *
  *   g_list_free (self->priv->init_results);
@@ -85,31 +85,28 @@
  *                 gpointer              user_data)
  * {
  *   Foo *self = FOO (initable);
- *   GSimpleAsyncResult *simple;
+ *   GTask *task;
  *
- *   simple = g_simple_async_result_new (G_OBJECT (initable)
- *                                       callback,
- *                                       user_data,
- *                                       foo_init_async);
+ *   task = g_task_new (initable, cancellable, callback, user_data);
  *
  *   switch (self->priv->state)
  *     {
  *       case NOT_INITIALIZED:
  *         _foo_get_ready (self);
  *         self->priv->init_results = g_list_append (self->priv->init_results,
- *                                                   simple);
+ *                                                   task);
  *         self->priv->state = INITIALIZING;
  *         break;
  *       case INITIALIZING:
  *         self->priv->init_results = g_list_append (self->priv->init_results,
- *                                                   simple);
+ *                                                   task);
  *         break;
  *       case INITIALIZED:
  *         if (!self->priv->success)
- *           g_simple_async_result_set_error (simple, ...);
- *
- *         g_simple_async_result_complete_in_idle (simple);
- *         g_object_unref (simple);
+ *           g_task_return_new_error (task, ...);
+ *         else
+ *           g_task_return_boolean (task, TRUE);
+ *         g_object_unref (task);
  *         break;
  *     }
  * }
@@ -119,14 +116,9 @@
  *                  GAsyncResult         *result,
  *                  GError              **error)
  * {
- *   g_return_val_if_fail (g_simple_async_result_is_valid (result,
- *       G_OBJECT (initable), foo_init_async), FALSE);
+ *   g_return_val_if_fail (g_task_is_valid (result, initable), FALSE);
  *
- *   if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
- *           error))
- *     return FALSE;
- *
- *   return TRUE;
+ *   return g_task_propagate_boolean (G_TASK (result), error);
  * }
  *
  * static void

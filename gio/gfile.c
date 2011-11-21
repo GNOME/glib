@@ -5947,7 +5947,6 @@ typedef struct {
   GFileCopyFlags flags;
   GFileProgressCallback progress_cb;
   gpointer progress_cb_data;
-  GIOSchedulerJob *job;
 } CopyAsyncData;
 
 static void
@@ -5955,7 +5954,7 @@ copy_async_data_free (CopyAsyncData *data)
 {
   g_object_unref (data->source);
   g_object_unref (data->destination);
-  g_free (data);
+  g_slice_free (CopyAsyncData, data);
 }
 
 typedef struct {
@@ -5982,7 +5981,8 @@ copy_async_progress_callback (goffset  current_num_bytes,
                               goffset  total_num_bytes,
                               gpointer user_data)
 {
-  CopyAsyncData *data = user_data;
+  GTask *task = user_data;
+  CopyAsyncData *data = g_task_get_task_data (task);
   ProgressData *progress;
 
   progress = g_new (ProgressData, 1);
@@ -5990,41 +5990,34 @@ copy_async_progress_callback (goffset  current_num_bytes,
   progress->current_num_bytes = current_num_bytes;
   progress->total_num_bytes = total_num_bytes;
 
-  g_io_scheduler_job_send_to_mainloop_async (data->job,
-                                             copy_async_progress_in_main,
-                                             progress,
-                                             g_free);
+  g_main_context_invoke_full (g_task_get_context (task),
+                              g_task_get_priority (task),
+                              copy_async_progress_in_main,
+                              progress,
+                              g_free);
 }
 
-static gboolean
-copy_async_thread (GIOSchedulerJob *job,
-                   GCancellable    *cancellable,
-                   gpointer         user_data)
+static void
+copy_async_thread (GTask        *task,
+                   gpointer      source,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
-  GSimpleAsyncResult *res;
-  CopyAsyncData *data;
+  CopyAsyncData *data = task_data;
   gboolean result;
-  GError *error;
+  GError *error = NULL;
 
-  res = user_data;
-  data = g_simple_async_result_get_op_res_gpointer (res);
-
-  error = NULL;
-  data->job = job;
   result = g_file_copy (data->source,
                         data->destination,
                         data->flags,
                         cancellable,
                         (data->progress_cb != NULL) ? copy_async_progress_callback : NULL,
-                        data,
+                        task,
                         &error);
-
-  if (!result)
-    g_simple_async_result_take_error (res, error);
-
-  g_simple_async_result_complete_in_idle (res);
-
-  return FALSE;
+  if (result)
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
 }
 
 static void
@@ -6038,20 +6031,21 @@ g_file_real_copy_async (GFile                  *source,
                         GAsyncReadyCallback     callback,
                         gpointer                user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   CopyAsyncData *data;
 
-  data = g_new0 (CopyAsyncData, 1);
+  data = g_slice_new (CopyAsyncData);
   data->source = g_object_ref (source);
   data->destination = g_object_ref (destination);
   data->flags = flags;
   data->progress_cb = progress_callback;
   data->progress_cb_data = progress_callback_data;
 
-  res = g_simple_async_result_new (G_OBJECT (source), callback, user_data, g_file_real_copy_async);
-  g_simple_async_result_set_op_res_gpointer (res, data, (GDestroyNotify)copy_async_data_free);
-
-  g_io_scheduler_push_job (copy_async_thread, res, g_object_unref, io_priority, cancellable);
+  task = g_task_new (source, cancellable, callback, user_data);
+  g_task_set_task_data (task, data, (GDestroyNotify)copy_async_data_free);
+  g_task_set_priority (task, io_priority);
+  g_task_run_in_thread (task, copy_async_thread);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -6059,12 +6053,7 @@ g_file_real_copy_finish (GFile        *file,
                          GAsyncResult *res,
                          GError      **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (res), error);
 }
 
 

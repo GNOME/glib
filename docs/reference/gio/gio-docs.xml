@@ -40,9 +40,9 @@
         <title>Asynchronous I/O</title>
         <xi:include href="xml/gcancellable.xml"/>
         <xi:include href="xml/gasyncresult.xml"/>
+        <xi:include href="xml/gtask.xml"/>
         <xi:include href="xml/gioscheduler.xml"/>
         <xi:include href="xml/gsimpleasyncresult.xml"/>
-        <xi:include href="xml/gtask.xml"/>
     </chapter>
     <chapter id="conversion">
         <title>Data conversion</title>
