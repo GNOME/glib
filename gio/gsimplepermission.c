@@ -66,10 +66,11 @@ g_simple_permission_class_init (GSimplePermissionClass *class)
 /**
  * g_simple_permission_new:
  * @allowed: %TRUE if the action is allowed
- * @returns: the #GSimplePermission, as a #GPermission
  *
  * Creates a new #GPermission instance that represents an action that is
  * either always or never allowed.
+ *
+ * Returns: the #GSimplePermission, as a #GPermission
  *
  * Since: 2.26
  **/
