@@ -1525,16 +1525,14 @@ continue_writing_in_idle_cb (gpointer user_data)
  *
  * Can be called from any thread
  *
- * write_lock is not held on entry
+ * write_lock is held on entry
  * output_pending may be anything
  */
 static void
-schedule_write_in_worker_thread (GDBusWorker        *worker,
-                                 MessageToWriteData *write_data,
-                                 CloseData          *close_data)
+schedule_writing_unlocked (GDBusWorker        *worker,
+                           MessageToWriteData *write_data,
+                           CloseData          *close_data)
 {
-  g_mutex_lock (&worker->write_lock);
-
   if (write_data != NULL)
     g_queue_push_tail (worker->write_queue, write_data);
 
@@ -1554,8 +1552,6 @@ schedule_write_in_worker_thread (GDBusWorker        *worker,
       g_source_attach (idle_source, worker->shared_thread_data->context);
       g_source_unref (idle_source);
     }
-
-  g_mutex_unlock (&worker->write_lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1583,7 +1579,9 @@ _g_dbus_worker_send_message (GDBusWorker    *worker,
   data->blob = blob; /* steal! */
   data->blob_size = blob_len;
 
-  schedule_write_in_worker_thread (worker, data, NULL);
+  g_mutex_lock (&worker->write_lock);
+  schedule_writing_unlocked (worker, data, NULL);
+  g_mutex_unlock (&worker->write_lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1666,7 +1664,9 @@ _g_dbus_worker_close (GDBusWorker         *worker,
    * It'll be set before the actual close happens.
    */
   g_cancellable_cancel (worker->cancellable);
-  schedule_write_in_worker_thread (worker, NULL, close_data);
+  g_mutex_lock (&worker->write_lock);
+  schedule_writing_unlocked (worker, NULL, close_data);
+  g_mutex_unlock (&worker->write_lock);
 }
 
 /* This can be called from any thread - frees worker. Note that
