@@ -47,11 +47,12 @@ g_buffer_free_gfree (GBuffer *buffer)
  * g_buffer_new_from_data:
  * @data: the data to be used for the buffer
  * @size: the size of @data
- * @returns: a reference to a new #GBuffer
  *
  * Creates a new #GBuffer from @data.
  *
  * @data is copied.
+ *
+ * Returns: a reference to a new #GBuffer
  */
 
 GBuffer *
@@ -110,11 +111,12 @@ g_buffer_free (GBuffer *buffer)
  * g_buffer_new_from_static_data:
  * @data: the data to be used for the buffer
  * @size: the size of @data
- * @returns: a reference to a new #GBuffer
  *
  * Creates a new #GBuffer from static data.
  *
  * @data must be static (ie: never modified or freed).
+ *
+ * Returns: a reference to a new #GBuffer
  */
 GBuffer *
 g_buffer_new_from_static_data (gconstpointer data,
@@ -146,7 +148,6 @@ g_buffer_free_usernotify (GBuffer *buffer)
  * @size: the size of @data
  * @notify: the function to call to release the data
  * @user_data: the data to pass to @notify
- * @returns: a reference to a new #GBuffer
  *
  * Creates a #GBuffer from @data.
  *
@@ -155,6 +156,8 @@ g_buffer_free_usernotify (GBuffer *buffer)
  *
  * @data must not be modified after this call is made, until @notify has
  * been called to indicate that the buffer is no longer in use.
+ *
+ * Returns: a reference to a new #GBuffer
  */
 GBuffer *
 g_buffer_new_from_pointer (gconstpointer  data,
@@ -178,9 +181,10 @@ g_buffer_new_from_pointer (gconstpointer  data,
 /* < private >
  * g_buffer_ref:
  * @buffer: a #GBuffer
- * @returns: @buffer
  *
  * Increase the reference count on @buffer.
+ *
+ * Returns: @buffer
  */
 GBuffer *
 g_buffer_ref (GBuffer *buffer)
