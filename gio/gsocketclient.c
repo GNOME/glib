@@ -1013,7 +1013,6 @@ g_socket_client_connect_to_host (GSocketClient  *client,
  * @service: the name of the service to connect to
  * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
- * @returns: (transfer full): a #GSocketConnection if successful, or %NULL on error
  *
  * Attempts to create a TCP connection to a service.
  *
@@ -1029,6 +1028,8 @@ g_socket_client_connect_to_host (GSocketClient  *client,
  * In the event of any failure (DNS error, service not found, no hosts
  * connectable) %NULL is returned and @error (if non-%NULL) is set
  * accordingly.
+ *
+ * Returns: (transfer full): a #GSocketConnection if successful, or %NULL on error
  */
 GSocketConnection *
 g_socket_client_connect_to_service (GSocketClient  *client,
