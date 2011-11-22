@@ -43,12 +43,17 @@ static void g_socket_output_stream_file_descriptor_based_iface_init (GFileDescri
 #endif
 
 #define g_socket_output_stream_get_type _g_socket_output_stream_get_type
+
+#ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
-#ifdef G_OS_UNIX
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_output_stream_file_descriptor_based_iface_init)
+			 )
+#else
+G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
+			 )
 #endif
-);
 
 enum
 {
