@@ -2616,7 +2616,7 @@ initable_init (GInitable     *initable,
 
   connection->worker = _g_dbus_worker_new (connection->stream,
                                            connection->capabilities,
-                                           (connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING),
+                                           ((connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) != 0),
                                            on_worker_message_received,
                                            on_worker_message_about_to_be_sent,
                                            on_worker_closed,
