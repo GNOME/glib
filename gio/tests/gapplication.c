@@ -247,6 +247,42 @@ appid (void)
   g_assert (g_application_id_is_valid ("org.gnome.SessionManager"));
 }
 
+static gboolean nodbus_activated;
+
+static gboolean
+release_app (gpointer user_data)
+{
+  g_application_release (user_data);
+  return FALSE;
+}
+
+static void
+nodbus_activate (GApplication *app)
+{
+  nodbus_activated = TRUE;
+  g_application_hold (app);
+  g_idle_add (release_app, app);
+}
+
+static void
+test_nodbus (void)
+{
+  gchar *argv[] = { "./unimportant", NULL };
+  GDBusConnection *session;
+  GApplication *app;
+
+  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (session == NULL);
+
+  app = g_application_new ("org.gtk.Unimportant",
+                           G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (nodbus_activate), NULL);
+  g_application_run (app, 1, argv);
+  g_object_unref (app);
+
+  g_assert (nodbus_activated);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -261,6 +297,7 @@ main (int argc, char **argv)
   g_unsetenv ("DISPLAY");
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
+  g_test_add_func ("/gapplication/no-dbus", test_nodbus);
   g_test_add_func ("/gapplication/basic", basic);
   g_test_add_func ("/gapplication/non-unique", test_nonunique);
   g_test_add_func ("/gapplication/properties", properties);

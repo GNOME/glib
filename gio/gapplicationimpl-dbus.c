@@ -584,18 +584,20 @@ g_application_impl_register (GApplication       *application,
   GVariant *reply;
   guint32 rval;
 
-  impl = g_slice_new (GApplicationImpl);
+  impl = g_slice_new0 (GApplicationImpl);
 
   impl->app = application;
   impl->bus_name = appid;
 
-  impl->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION,
-                                      cancellable, error);
+  impl->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, NULL);
 
   if (impl->session_bus == NULL)
     {
-      g_slice_free (GApplicationImpl, impl);
-      return NULL;
+      /* If we can't connect to the session bus, proceed as a normal
+       * non-unique application.
+       */
+      *remote_actions = NULL;
+      return impl;
     }
 
   impl->object_path = application_path_from_appid (appid);
@@ -952,7 +954,8 @@ g_application_impl_activate_action (GApplicationImpl *impl,
 void
 g_application_impl_flush (GApplicationImpl *impl)
 {
-  g_dbus_connection_flush_sync (impl->session_bus, NULL, NULL);
+  if (impl->session_bus)
+    g_dbus_connection_flush_sync (impl->session_bus, NULL, NULL);
 }
 
 
