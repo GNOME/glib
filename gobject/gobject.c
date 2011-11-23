@@ -201,14 +201,6 @@ static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_ha
 G_LOCK_DEFINE_STATIC (construction_mutex);
 static GSList *construction_objects = NULL;
 
-/* --- functions --- */
-#ifdef	G_ENABLE_DEBUG
-#define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
-G_LOCK_DEFINE_STATIC     (debug_objects);
-static volatile GObject *g_trap_object_ref = NULL;
-static guint		 debug_objects_count = 0;
-static GHashTable	*debug_objects_ht = NULL;
-
 G_LOCK_DEFINE_STATIC(notify_lock);
 
 /* --- functions --- */
@@ -313,6 +305,13 @@ g_object_notify_queue_add (GObject            *object,
 
   G_UNLOCK(notify_lock);
 }
+
+#ifdef	G_ENABLE_DEBUG
+#define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
+G_LOCK_DEFINE_STATIC     (debug_objects);
+static volatile GObject *g_trap_object_ref = NULL;
+static guint		 debug_objects_count = 0;
+static GHashTable	*debug_objects_ht = NULL;
 
 static void
 debug_objects_foreach (gpointer key,
