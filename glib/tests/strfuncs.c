@@ -21,6 +21,7 @@
 
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
+#define _XOPEN_SOURCE 600
 #include <ctype.h>
 #include <errno.h>
 #include <locale.h>
