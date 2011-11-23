@@ -1441,6 +1441,9 @@ continue_writing (GDBusWorker *worker)
 
   g_mutex_lock (&worker->write_lock);
 
+  data = NULL;
+  flush_async_data = NULL;
+
   /* if we want to close the connection, that takes precedence */
   if (worker->pending_close_attempts != NULL)
     {
@@ -1450,7 +1453,6 @@ continue_writing (GDBusWorker *worker)
       g_io_stream_close_async (worker->stream, G_PRIORITY_DEFAULT,
                                NULL, iostream_close_cb,
                                _g_dbus_worker_ref (worker));
-      data = NULL;
     }
   else
     {
@@ -1462,10 +1464,6 @@ continue_writing (GDBusWorker *worker)
 
           if (data != NULL)
             worker->output_pending = PENDING_WRITE;
-        }
-      else
-        {
-          data = NULL;
         }
     }
 
