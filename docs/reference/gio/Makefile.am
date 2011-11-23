@@ -165,7 +165,7 @@ MAINTAINERCLEANFILES = $(man_MANS) $(BUILT_SOURCES)
 
 EXTRA_DIST += $(man_MANS)
 
-dist-hook-local: dist-local-check-mans-enabled gio-docs-clean all-local
+dist-hook-local: dist-local-check-mans-enabled all-local
 
 gio-docs-clean: clean
 	cd $(srcdir) && rm -rf xml html

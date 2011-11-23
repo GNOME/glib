@@ -58,7 +58,7 @@ EXTRA_DIST +=			\
 
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
 
-dist-hook-local: gdbus-object-manager-example-docs-clean all-local
+dist-hook-local: all-local
 
 gdbus-object-manager-example-docs-clean: clean
 	cd $(srcdir) && rm -rf xml html
