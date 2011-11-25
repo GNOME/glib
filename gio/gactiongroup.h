@@ -105,6 +105,15 @@ struct _GActionGroupInterface
   void                  (* action_state_changed)       (GActionGroup   *action_group,
                                                         const gchar    *action_name,
                                                         GVariant       *state);
+
+  /* more virtual functions */
+  gboolean              (* query_action)               (GActionGroup        *action_group,
+                                                        const gchar         *action_name,
+                                                        gboolean            *enabled,
+                                                        const GVariantType **parameter_type,
+                                                        const GVariantType **state_type,
+                                                        GVariant           **state_hint,
+                                                        GVariant           **state);
 };
 
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;
@@ -145,6 +154,14 @@ void                    g_action_group_action_enabled_changed           (GAction
 void                    g_action_group_action_state_changed             (GActionGroup *action_group,
                                                                          const gchar  *action_name,
                                                                          GVariant     *state);
+
+gboolean                g_action_group_query_action                     (GActionGroup        *action_group,
+                                                                         const gchar         *action_name,
+                                                                         gboolean            *enabled,
+                                                                         const GVariantType **parameter_type,
+                                                                         const GVariantType **state_type,
+                                                                         GVariant           **state_hint,
+                                                                         GVariant           **state);
 
 G_END_DECLS
 

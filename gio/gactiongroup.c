@@ -45,6 +45,12 @@
  *
  * Signals are emitted on the action group in response to state changes
  * on individual actions.
+ *
+ * Implementations of #GActionGroup should provide implementations for
+ * the virtual functions g_action_group_list_actions() and
+ * g_action_group_query_action().  The other virtual functions should
+ * not be implemented -- their "wrappers" are actually implemented with
+ * calls to g_action_group_query_action().
  **/
 
 G_DEFINE_INTERFACE (GActionGroup, g_action_group, G_TYPE_OBJECT)
@@ -60,9 +66,130 @@ enum
 
 static guint g_action_group_signals[NR_SIGNALS];
 
-static void
-g_action_group_default_init (GActionGroupInterface *class)
+static gboolean
+g_action_group_real_has_action (GActionGroup *action_group,
+                                const gchar  *action_name)
 {
+  return g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, NULL, NULL);
+}
+
+static gboolean
+g_action_group_real_get_action_enabled (GActionGroup *action_group,
+                                        const gchar  *action_name)
+{
+  gboolean enabled = FALSE;
+
+  g_action_group_query_action (action_group, action_name, &enabled, NULL, NULL, NULL, NULL);
+
+  return enabled;
+}
+
+static const GVariantType *
+g_action_group_real_get_action_parameter_type (GActionGroup *action_group,
+                                               const gchar  *action_name)
+{
+  const GVariantType *type = NULL;
+
+  g_action_group_query_action (action_group, action_name, NULL, &type, NULL, NULL, NULL);
+
+  return type;
+}
+
+static const GVariantType *
+g_action_group_real_get_action_state_type (GActionGroup *action_group,
+                                           const gchar  *action_name)
+{
+  const GVariantType *type = NULL;
+
+  g_action_group_query_action (action_group, action_name, NULL, NULL, &type, NULL, NULL);
+
+  return type;
+}
+
+static GVariant *
+g_action_group_real_get_action_state_hint (GActionGroup *action_group,
+                                           const gchar  *action_name)
+{
+  GVariant *hint = NULL;
+
+  g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, &hint, NULL);
+
+  return hint;
+}
+
+static GVariant *
+g_action_group_real_get_action_state (GActionGroup *action_group,
+                                      const gchar  *action_name)
+{
+  GVariant *state = NULL;
+
+  g_action_group_query_action (action_group, action_name, NULL, NULL, NULL, NULL, &state);
+
+  return state;
+}
+
+static gboolean
+g_action_group_real_query_action (GActionGroup        *action_group,
+                                  const gchar         *action_name,
+                                  gboolean            *enabled,
+                                  const GVariantType **parameter_type,
+                                  const GVariantType **state_type,
+                                  GVariant           **state_hint,
+                                  GVariant           **state)
+{
+  GActionGroupInterface *iface = G_ACTION_GROUP_GET_IFACE (action_group);
+
+  /* we expect implementations to override this method, but we also
+   * allow for implementations that existed before this method was
+   * introduced to override the individual accessors instead.
+   *
+   * detect the case that neither has happened and report it.
+   */
+  if G_UNLIKELY (iface->has_action == g_action_group_real_has_action ||
+                 iface->get_action_enabled == g_action_group_real_get_action_enabled ||
+                 iface->get_action_parameter_type == g_action_group_real_get_action_parameter_type ||
+                 iface->get_action_state_type == g_action_group_real_get_action_state_type ||
+                 iface->get_action_state_hint == g_action_group_real_get_action_state_hint ||
+                 iface->get_action_state == g_action_group_real_get_action_state)
+    {
+      g_critical ("Class '%s' implements GActionGroup interface without overriding "
+                  "query_action() method -- bailing out to avoid infinite recursion.",
+                  G_OBJECT_TYPE_NAME (action_group));
+      return FALSE;
+    }
+
+  if (!(* iface->has_action) (action_group, action_name))
+    return FALSE;
+
+  if (enabled != NULL)
+    *enabled = (* iface->get_action_enabled) (action_group, action_name);
+
+  if (parameter_type != NULL)
+    *parameter_type = (* iface->get_action_parameter_type) (action_group, action_name);
+
+  if (state_type != NULL)
+    *state_type = (* iface->get_action_state_type) (action_group, action_name);
+
+  if (state_hint != NULL)
+    *state_hint = (* iface->get_action_state_hint) (action_group, action_name);
+
+  if (state != NULL)
+    *state = (* iface->get_action_state) (action_group, action_name);
+
+  return TRUE;
+}
+
+static void
+g_action_group_default_init (GActionGroupInterface *iface)
+{
+  iface->has_action = g_action_group_real_has_action;
+  iface->get_action_enabled = g_action_group_real_get_action_enabled;
+  iface->get_action_parameter_type = g_action_group_real_get_action_parameter_type;
+  iface->get_action_state_type = g_action_group_real_get_action_state_type;
+  iface->get_action_state_hint = g_action_group_real_get_action_state_hint;
+  iface->get_action_state = g_action_group_real_get_action_state;
+  iface->query_action = g_action_group_real_query_action;
+
   /**
    * GActionGroup::action-added:
    * @action_group: the #GActionGroup that changed
@@ -518,4 +645,59 @@ g_action_group_action_state_changed (GActionGroup *action_group,
                  g_quark_try_string (action_name),
                  action_name,
                  state);
+}
+
+/**
+ * g_action_group_query_action:
+ * @action_group: a #GActionGroup
+ * @action_name: the name of an action in the group
+ * @enabled: (out): if the action is presently enabled
+ * @parameter_type: (out): the parameter type, or %NULL if none needed
+ * @state_type: (out): the state type, or %NULL if stateless
+ * @state_hint: (out): the state hint, or %NULL if none
+ * @state: (out): the current state, or %NULL if stateless
+ *
+ * Queries all aspects of the named action within an @action_group.
+ *
+ * This function acquires the information available from
+ * g_action_group_has_action(), g_action_group_get_action_enabled(),
+ * g_action_group_get_action_parameter_type(),
+ * g_action_group_get_action_state_type(),
+ * g_action_group_get_action_state_hint() and
+ * g_action_group_get_state() with a single function call.
+ *
+ * This provides two main benefits.
+ *
+ * The first is the improvement in efficiency that comes with not having
+ * to perform repeated lookups of the action in order to discover
+ * different things about it.  The second is that implementing
+ * #GActionGroup can now be done by only overriding this one virtual
+ * function.
+ *
+ * The interface provides a default implementation of this function that
+ * calls the individual functions, as required, to fetch the
+ * information.  The interface also provides default implementations of
+ * those functions that call this function.  All implementations,
+ * therefore, must override either this function or all of the others.
+ *
+ * If the action exists, %TRUE is returned and any of the requested
+ * fields (as indicated by having a non-%NULL reference passed in) are
+ * filled.  If the action doesn't exist, %FALSE is returned and the
+ * fields may or may not have been modified.
+ *
+ * Returns: %TRUE if the action exists, else %FALSE
+ *
+ * Since: 2.32
+ **/
+gboolean
+g_action_group_query_action (GActionGroup        *action_group,
+                             const gchar         *action_name,
+                             gboolean            *enabled,
+                             const GVariantType **parameter_type,
+                             const GVariantType **state_type,
+                             GVariant           **state_hint,
+                             GVariant           **state)
+{
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->query_action (action_group, action_name, enabled, parameter_type, state_type, state_hint, state);
 }

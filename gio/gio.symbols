@@ -1407,6 +1407,7 @@ g_action_group_get_action_state_type
 g_action_group_get_type
 g_action_group_has_action
 g_action_group_list_actions
+g_action_group_query_action
 g_action_group_change_action_state
 g_action_activate
 g_action_get_enabled

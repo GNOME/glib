@@ -2876,20 +2876,19 @@ g_application_command_line_get_type
 GActionGroup
 
 <SUBSECTION>
-g_action_group_has_action
 g_action_group_list_actions
+g_action_group_query_action
 
 <SUBSECTION>
+g_action_group_has_action
 g_action_group_get_action_enabled
 g_action_group_get_action_parameter_type
 g_action_group_get_action_state_type
 g_action_group_get_action_state_hint
-
-<SUBSECTION>
 g_action_group_get_action_state
-g_action_group_change_action_state
 
 <SUBSECTION>
+g_action_group_change_action_state
 g_action_group_activate_action
 
 <SUBSECTION>
