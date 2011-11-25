@@ -474,6 +474,7 @@ static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
+static GSList     *test_paths_skipped = NULL;
 static GTestSuite *test_suite_root = NULL;
 static int         test_trap_last_status = 0;
 static int         test_trap_last_pid = 0;
@@ -680,6 +681,18 @@ parse_args (gint    *argc_p,
             }
           argv[i] = NULL;
         }
+      else if (strcmp ("-s", argv[i]) == 0 || strncmp ("-s=", argv[i], 3) == 0)
+        {
+          gchar *equal = argv[i] + 2;
+          if (*equal == '=')
+            test_paths_skipped = g_slist_prepend (test_paths_skipped, equal + 1);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              test_paths_skipped = g_slist_prepend (test_paths_skipped, argv[i]);
+            }
+          argv[i] = NULL;
+        }
       else if (strcmp ("-m", argv[i]) == 0 || strncmp ("-m=", argv[i], 3) == 0)
         {
           gchar *equal = argv[i] + 2;
@@ -748,6 +761,7 @@ parse_args (gint    *argc_p,
                   "  --verbose                      Run tests verbosely\n"
                   "  -q, --quiet                    Run tests quietly\n"
                   "  -p TESTPATH                    execute all tests matching TESTPATH\n"
+                  "  -s TESTPATH                    skip all tests matching TESTPATH\n"
                   "  -m {perf|slow|thorough|quick}  Execute tests according modes\n"
                   "  --debug-log                    debug test logging output\n"
                   "  -k, --keep-going               gtester-specific argument\n"
@@ -1342,6 +1356,9 @@ g_test_add_vtable (const char       *testpath,
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (testpath[0] == '/');
   g_return_if_fail (fixture_test_func != NULL);
+
+  if (g_slist_find_custom (test_paths_skipped, testpath, (GCompareFunc)g_strcmp0))
+    return;
 
   suite = g_test_get_root();
   segments = g_strsplit (testpath, "/", -1);

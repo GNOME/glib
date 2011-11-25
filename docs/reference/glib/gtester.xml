@@ -82,6 +82,13 @@ only run test cases matching <replaceable>TESTPATH</replaceable>
 </varlistentry>
 
 <varlistentry>
+<term><option>-s=<replaceable>TESTPATH</replaceable></option></term>
+<listitem><para>
+skip test cases matching <replaceable>TESTPATH</replaceable>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--seed=<replaceable>SEEDSTRING</replaceable></option></term>
 <listitem><para>
 run all test cases with random number seed <replaceable>SEEDSTRING</replaceable>

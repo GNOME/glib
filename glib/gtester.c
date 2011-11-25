@@ -53,6 +53,7 @@ static gboolean     subtest_mode_quick = TRUE;
 static const gchar *subtest_seedstr = NULL;
 static gchar       *subtest_last_seed = NULL;
 static GSList      *subtest_paths = NULL;
+static GSList      *skipped_paths = NULL;
 static GSList      *subtest_args = NULL;
 static gboolean     testcase_open = FALSE;
 static guint        testcase_count = 0;
@@ -315,6 +316,8 @@ launch_test_binary (const char *binary,
     argc++;
   for (slist = subtest_paths; slist; slist = slist->next)
     argc++;
+  for (slist = skipped_paths; slist; slist = slist->next)
+    argc++;
 
   /* setup argv */
   argv = g_malloc ((argc + 2) * sizeof(gchar *));
@@ -343,6 +346,8 @@ launch_test_binary (const char *binary,
     argv[i++] = queue_gfree (&free_list, g_strdup_printf ("--GTestSkipCount=%u", skip_tests));
   for (slist = subtest_paths; slist; slist = slist->next)
     argv[i++] = queue_gfree (&free_list, g_strdup_printf ("-p=%s", (gchar*) slist->data));
+  for (slist = skipped_paths; slist; slist = slist->next)
+    argv[i++] = queue_gfree (&free_list, g_strdup_printf ("-s=%s", (gchar*) slist->data));
   argv[i++] = NULL;
 
   g_spawn_async_with_pipes (NULL, /* g_get_current_dir() */
@@ -475,6 +480,7 @@ usage (gboolean just_version)
   g_print ("  -m=perf, -m=slow, -m=quick -m=thorough\n");
   g_print ("                              run test cases in mode perf, slow/thorough or quick (default)\n");
   g_print ("  -p=TESTPATH                 only start test cases matching TESTPATH\n");
+  g_print ("  -s=TESTPATH                 skip test cases matching TESTPATH\n");
   g_print ("  --seed=SEEDSTRING           start all tests with random number seed SEEDSTRING\n");
   g_print ("  -o=LOGFILE                  write the test log to LOGFILE\n");
   g_print ("  -q, --quiet                 suppress per test binary output\n");
@@ -531,6 +537,18 @@ parse_args (gint    *argc_p,
             {
               argv[i++] = NULL;
               subtest_paths = g_slist_prepend (subtest_paths, argv[i]);
+            }
+          argv[i] = NULL;
+        }
+      else if (strcmp ("-s", argv[i]) == 0 || strncmp ("-s=", argv[i], 3) == 0)
+        {
+          gchar *equal = argv[i] + 2;
+          if (*equal == '=')
+            skipped_paths = g_slist_prepend (skipped_paths, equal + 1);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              skipped_paths = g_slist_prepend (skipped_paths, argv[i]);
             }
           argv[i] = NULL;
         }
