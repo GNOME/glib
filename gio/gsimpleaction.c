@@ -29,14 +29,14 @@
 /**
  * SECTION:gsimpleaction
  * @title: GSimpleAction
- * @short_description: A simple GSimpleAction
+ * @short_description: A simple GAction implementation
  *
  * A #GSimpleAction is the obvious simple implementation of the #GAction
- * interface.  This is the easiest way to create an action for purposes of
+ * interface. This is the easiest way to create an action for purposes of
  * adding it to a #GSimpleActionGroup.
  *
  * See also #GtkAction.
- **/
+ */
 struct _GSimpleAction
 {
   GObject       parent_instance;
