@@ -66,62 +66,13 @@ g_simple_action_group_list_actions (GActionGroup *group)
 }
 
 static gboolean
-g_simple_action_group_has_action (GActionGroup *group,
-                                  const gchar  *action_name)
-{
-  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
-
-  return g_hash_table_lookup (simple->priv->table, action_name) != NULL;
-}
-
-static const GVariantType *
-g_simple_action_group_get_parameter_type (GActionGroup *group,
-                                          const gchar  *action_name)
-{
-  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
-  GAction *action;
-
-  action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (action == NULL)
-    return NULL;
-
-  return g_action_get_parameter_type (action);
-}
-
-static const GVariantType *
-g_simple_action_group_get_state_type (GActionGroup *group,
-                                      const gchar  *action_name)
-{
-  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
-  GAction *action;
-
-  action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (action == NULL)
-    return NULL;
-
-  return g_action_get_state_type (action);
-}
-
-static GVariant *
-g_simple_action_group_get_state_hint (GActionGroup *group,
-                                       const gchar  *action_name)
-{
-  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
-  GAction *action;
-
-  action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (action == NULL)
-    return NULL;
-
-  return g_action_get_state_hint (action);
-}
-
-static gboolean
-g_simple_action_group_get_enabled (GActionGroup *group,
-                                   const gchar  *action_name)
+g_simple_action_group_query_action (GActionGroup        *group,
+                                    const gchar         *action_name,
+                                    gboolean            *enabled,
+                                    const GVariantType **parameter_type,
+                                    const GVariantType **state_type,
+                                    GVariant           **state_hint,
+                                    GVariant           **state)
 {
   GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
   GAction *action;
@@ -131,22 +82,22 @@ g_simple_action_group_get_enabled (GActionGroup *group,
   if (action == NULL)
     return FALSE;
 
-  return g_action_get_enabled (action);
-}
+  if (enabled)
+    *enabled = g_action_get_enabled (action);
 
-static GVariant *
-g_simple_action_group_get_state (GActionGroup *group,
-                                 const gchar  *action_name)
-{
-  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
-  GAction *action;
+  if (parameter_type)
+    *parameter_type = g_action_get_parameter_type (action);
 
-  action = g_hash_table_lookup (simple->priv->table, action_name);
+  if (state_type)
+    *state_type = g_action_get_state_type (action);
 
-  if (action == NULL)
-    return NULL;
+  if (state_hint)
+    *state_hint = g_action_get_state_hint (action);
 
-  return g_action_get_state (action);
+  if (state)
+    *state = g_action_get_state (action);
+
+  return TRUE;
 }
 
 static void
@@ -254,12 +205,7 @@ static void
 g_simple_action_group_iface_init (GActionGroupInterface *iface)
 {
   iface->list_actions = g_simple_action_group_list_actions;
-  iface->has_action = g_simple_action_group_has_action;
-  iface->get_action_parameter_type = g_simple_action_group_get_parameter_type;
-  iface->get_action_state_type = g_simple_action_group_get_state_type;
-  iface->get_action_state_hint = g_simple_action_group_get_state_hint;
-  iface->get_action_enabled = g_simple_action_group_get_enabled;
-  iface->get_action_state = g_simple_action_group_get_state;
+  iface->query_action = g_simple_action_group_query_action;
   iface->change_action_state = g_simple_action_group_change_state;
   iface->activate_action = g_simple_action_group_activate;
 }
