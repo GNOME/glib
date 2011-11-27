@@ -23,6 +23,7 @@
 
 #include "gactiongroup.h"
 #include "gactiongroupexporter.h"
+#include "gdbusactiongroup.h"
 #include "gapplication.h"
 #include "gfile.h"
 #include "gdbusconnection.h"
@@ -118,9 +119,6 @@ struct _GApplicationImpl
   guint            object_id;
   gboolean         actions_exported;
   gpointer         app;
-
-  GHashTable      *actions;
-  guint            signal_id;
 };
 
 
@@ -264,165 +262,18 @@ g_application_impl_destroy (GApplicationImpl *impl)
   g_slice_free (GApplicationImpl, impl);
 }
 
-static void
-remote_action_info_free (gpointer user_data)
-{
-  RemoteActionInfo *info = user_data;
-
-  g_free (info->name);
-
-  if (info->state)
-    g_variant_unref (info->state);
-
-  if (info->parameter_type)
-    g_variant_type_free (info->parameter_type);
-
-  g_slice_free (RemoteActionInfo, info);
-}
-
-static RemoteActionInfo *
-remote_action_info_new_from_iter (GVariantIter *iter)
-{
-  RemoteActionInfo *info;
-  const gchar *param_str;
-  gboolean enabled;
-  GVariant *state;
-  gchar *name;
-
-  if (!g_variant_iter_next (iter, "{&s(bg@av)}", &name,
-                            &enabled, &param_str, &state))
-    return NULL;
-
-  info = g_slice_new (RemoteActionInfo);
-  info->name = name;
-  info->enabled = enabled;
-
-  if (g_variant_n_children (state))
-    g_variant_get_child (state, 0, "v", &info->state);
-  else
-    info->state = NULL;
-  g_variant_unref (state);
-
-  if (param_str[0])
-    info->parameter_type = g_variant_type_copy ((GVariantType *) param_str);
-  else
-    info->parameter_type = NULL;
-
-  return info;
-}
-
-static void
-g_application_impl_action_signal (GDBusConnection *connection,
-                                  const gchar     *sender_name,
-                                  const gchar     *object_path,
-                                  const gchar     *interface_name,
-                                  const gchar     *signal_name,
-                                  GVariant        *parameters,
-                                  gpointer         user_data)
-{
-  GApplicationImpl *impl = user_data;
-  GActionGroup *action_group;
-
-  action_group = G_ACTION_GROUP (impl->app);
-
-  if (g_str_equal (signal_name, "Changed") &&
-      g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(asa{sb}a{sv}a{s(bgav)})")))
-    {
-      /* Removes */
-      {
-        GVariantIter *iter;
-        const gchar *name;
-
-        g_variant_get_child (parameters, 0, "as", &iter);
-        while (g_variant_iter_next (iter, "&s", &name))
-          {
-            if (g_hash_table_lookup (impl->actions, name))
-              {
-                g_hash_table_remove (impl->actions, name);
-                g_action_group_action_removed (action_group, name);
-              }
-          }
-        g_variant_iter_free (iter);
-      }
-
-      /* Enable changes */
-      {
-        GVariantIter *iter;
-        const gchar *name;
-        gboolean enabled;
-
-        g_variant_get_child (parameters, 1, "a{sb}", &iter);
-        while (g_variant_iter_next (iter, "{&sb}", &name, &enabled))
-          {
-            RemoteActionInfo *info;
-
-            info = g_hash_table_lookup (impl->actions, name);
-
-            if (info && info->enabled != enabled)
-              {
-                info->enabled = enabled;
-                g_action_group_action_enabled_changed (action_group,
-                                                       name, enabled);
-              }
-          }
-        g_variant_iter_free (iter);
-      }
-
-      /* State changes */
-      {
-        GVariantIter *iter;
-        const gchar *name;
-        GVariant *state;
-
-        g_variant_get_child (parameters, 2, "a{sv}", &iter);
-        while (g_variant_iter_next (iter, "{&sv}", &name, &state))
-          {
-            RemoteActionInfo *info;
-
-            info = g_hash_table_lookup (impl->actions, name);
-
-            if (info && info->state && !g_variant_equal (state, info->state) &&
-                g_variant_is_of_type (state, g_variant_get_type (info->state)))
-              {
-                g_variant_unref (info->state);
-                info->state = g_variant_ref (state);
-
-                g_action_group_action_state_changed (action_group, name, state);
-              }
-
-            g_variant_unref (state);
-          }
-        g_variant_iter_free (iter);
-      }
-
-      /* Additions */
-      {
-        RemoteActionInfo *info;
-        GVariantIter *iter;
-
-        g_variant_get_child (parameters, 3, "a{s(bgav)}", &iter);
-        while ((info = remote_action_info_new_from_iter (iter)))
-          {
-            if (!g_hash_table_lookup (impl->actions, info->name))
-              g_hash_table_replace (impl->actions, info->name, info);
-            else
-              remote_action_info_free (info);
-          }
-      }
-    }
-}
-
 GApplicationImpl *
 g_application_impl_register (GApplication       *application,
                              const gchar        *appid,
                              GApplicationFlags   flags,
-                             GHashTable        **remote_actions,
+                             GActionGroup      **remote_actions,
                              GCancellable       *cancellable,
                              GError            **error)
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_method_call
   };
+  GDBusActionGroup *actions;
   GApplicationImpl *impl;
   GVariant *reply;
   guint32 rval;
@@ -558,22 +409,10 @@ g_application_impl_register (GApplication       *application,
    * This also serves as a mechanism to ensure that the primary exists
    * (ie: DBus service files installed correctly, etc).
    */
-  impl->signal_id =
-    g_dbus_connection_signal_subscribe (impl->session_bus, impl->bus_name,
-                                        "org.gtk.Actions", NULL,
-                                        impl->object_path, NULL,
-                                        G_DBUS_SIGNAL_FLAGS_NONE,
-                                        g_application_impl_action_signal,
-                                        impl, NULL);
+  actions = g_dbus_action_group_new_sync (impl->session_bus, impl->bus_name, impl->object_path,
+                                          G_DBUS_ACTION_GROUP_FLAGS_NONE, NULL, error);
 
-  reply = g_dbus_connection_call_sync (impl->session_bus, impl->bus_name,
-                                       impl->object_path, "org.gtk.Actions",
-                                       "DescribeAll", NULL,
-                                       G_VARIANT_TYPE ("(a{s(bgav)})"),
-                                       G_DBUS_CALL_FLAGS_NONE, -1,
-                                       cancellable, error);
-
-  if (reply == NULL)
+  if (actions == NULL)
     {
       /* The primary appears not to exist.  Fail the registration. */
       g_object_unref (impl->session_bus);
@@ -585,24 +424,7 @@ g_application_impl_register (GApplication       *application,
       return NULL;
     }
 
-  /* Create and populate the hashtable */
-  {
-    RemoteActionInfo *info;
-    GVariant *descriptions;
-    GVariantIter iter;
-
-    impl->actions = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                           NULL, remote_action_info_free);
-    descriptions = g_variant_get_child_value (reply, 0);
-    g_variant_iter_init (&iter, descriptions);
-
-    while ((info = remote_action_info_new_from_iter (&iter)))
-      g_hash_table_replace (impl->actions, info->name, info);
-
-    g_variant_unref (descriptions);
-
-    *remote_actions = impl->actions;
-  }
+  *remote_actions = G_ACTION_GROUP (actions);
 
   return impl;
 }
@@ -751,46 +573,6 @@ g_application_impl_command_line (GApplicationImpl  *impl,
   g_main_loop_unref (data.loop);
 
   return data.status;
-}
-
-void
-g_application_impl_change_action_state (GApplicationImpl *impl,
-                                        const gchar      *action_name,
-                                        GVariant         *value,
-                                        GVariant         *platform_data)
-{
-  g_dbus_connection_call (impl->session_bus,
-                          impl->bus_name,
-                          impl->object_path,
-                          "org.gtk.Actions",
-                          "SetState",
-                          g_variant_new ("(sv@a{sv})", action_name,
-                                         value, platform_data),
-                          NULL, 0, -1, NULL, NULL, NULL);
-}
-
-void
-g_application_impl_activate_action (GApplicationImpl *impl,
-                                    const gchar      *action_name,
-                                    GVariant         *parameter,
-                                    GVariant         *platform_data)
-{
-  GVariant *param;
-
-  if (parameter)
-    parameter = g_variant_new_variant (parameter);
-
-  param = g_variant_new_array (G_VARIANT_TYPE_VARIANT,
-                               &parameter, parameter != NULL);
-
-  g_dbus_connection_call (impl->session_bus,
-                          impl->bus_name,
-                          impl->object_path,
-                          "org.gtk.Actions",
-                          "Activate",
-                          g_variant_new ("(s@av@a{sv})", action_name,
-                                         param, platform_data),
-                          NULL, 0, -1, NULL, NULL, NULL);
 }
 
 void

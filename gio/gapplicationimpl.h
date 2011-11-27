@@ -18,7 +18,7 @@ G_GNUC_INTERNAL
 GApplicationImpl *      g_application_impl_register                     (GApplication       *application,
                                                                          const gchar        *appid,
                                                                          GApplicationFlags   flags,
-                                                                         GHashTable        **remote_actions,
+                                                                         GActionGroup      **remote_actions,
                                                                          GCancellable       *cancellable,
                                                                          GError            **error);
 
@@ -36,18 +36,6 @@ void                    g_application_impl_open                         (GApplic
 G_GNUC_INTERNAL
 int                     g_application_impl_command_line                 (GApplicationImpl   *impl,
                                                                          gchar             **arguments,
-                                                                         GVariant           *platform_data);
-
-G_GNUC_INTERNAL
-void                    g_application_impl_change_action_state          (GApplicationImpl   *impl,
-                                                                         const gchar        *action_name,
-                                                                         GVariant           *value,
-                                                                         GVariant           *platform_data);
-
-G_GNUC_INTERNAL
-void                    g_application_impl_activate_action              (GApplicationImpl   *impl,
-                                                                         const gchar        *action_name,
-                                                                         GVariant           *parameter,
                                                                          GVariant           *platform_data);
 
 G_GNUC_INTERNAL
