@@ -762,6 +762,72 @@ test_attributes (void)
   g_object_unref (menu);
 }
 
+static void
+test_links (void)
+{
+  GMenu *menu;
+  GMenuModel *m;
+  GMenuModel *x;
+  GMenuItem *item;
+
+  m = G_MENU_MODEL (g_menu_new ());
+  g_menu_append (G_MENU (m), "test", NULL);
+
+  menu = g_menu_new ();
+
+  item = g_menu_item_new ("test1", NULL);
+  g_menu_item_set_link (item, "section", m);
+  g_menu_append_item (menu, item);
+
+  item = g_menu_item_new ("test2", NULL);
+  g_menu_item_set_link (item, "submenu", m);
+  g_menu_append_item (menu, item);
+
+  item = g_menu_item_new ("test3", NULL);
+  g_menu_item_set_link (item, "wallet", m);
+  g_menu_append_item (menu, item);
+
+  item = g_menu_item_new ("test4", NULL);
+  g_menu_item_set_link (item, "purse", m);
+  g_menu_item_set_link (item, "purse", NULL);
+  g_menu_append_item (menu, item);
+
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (menu)), ==, 4);
+
+  x = g_menu_model_get_item_link (G_MENU_MODEL (menu), 0, "section");
+  g_assert (x == m);
+  g_object_unref (x);
+
+  x = g_menu_model_get_item_link (G_MENU_MODEL (menu), 1, "submenu");
+  g_assert (x == m);
+  g_object_unref (x);
+
+  x = g_menu_model_get_item_link (G_MENU_MODEL (menu), 2, "wallet");
+  g_assert (x == m);
+  g_object_unref (x);
+
+  x = g_menu_model_get_item_link (G_MENU_MODEL (menu), 3, "purse");
+  g_assert (x == NULL);
+
+  g_object_unref (m);
+  g_object_unref (menu);
+}
+
+static void
+test_mutable (void)
+{
+  GMenu *menu;
+
+  menu = g_menu_new ();
+  g_menu_append (menu, "test", "test");
+
+  g_assert (g_menu_model_is_mutable (G_MENU_MODEL (menu)));
+  g_menu_freeze (menu);
+  g_assert (!g_menu_model_is_mutable (G_MENU_MODEL (menu)));
+
+  g_object_unref (menu);
+}
+
 /* Epilogue {{{1 */
 int
 main (int argc, char **argv)
@@ -775,6 +841,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/bus/roundtrip", test_dbus_roundtrip);
   g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
   g_test_add_func ("/gmenu/attributes", test_attributes);
+  g_test_add_func ("/gmenu/links", test_links);
+  g_test_add_func ("/gmenu/mutable", test_mutable);
 
   return g_test_run ();
 }
