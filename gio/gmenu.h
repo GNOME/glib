@@ -125,6 +125,7 @@ void        g_menu_item_set_action_and_target       (GMenuItem   *menu_item,
                                                      ...);
 void        g_menu_item_set_detailed_action         (GMenuItem   *menu_item,
                                                      const gchar *detailed_action);
+
 G_END_DECLS
 
 #endif /* __G_MENU_H__ */
