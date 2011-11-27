@@ -603,7 +603,8 @@ valid_attribute_name (const gchar *name)
  * ASCII characters, digits and '-'.
  *
  * If @value is non-%NULL then it is used as the new value for the
- * attribute.  If @value is %NULL then the attribute is unset.
+ * attribute.  If @value is %NULL then the attribute is unset. If
+ * the @value #GVariant is floating, it is consumed.
  *
  * See also g_menu_item_set_attribute() for a more convenient way to do
  * the same.
