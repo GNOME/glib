@@ -444,14 +444,14 @@ g_menu_clear_item (struct item *item)
  **/
 void
 g_menu_remove (GMenu *menu,
-               gint   index_)
+               gint   position)
 {
   g_return_if_fail (G_IS_MENU (menu));
-  g_return_if_fail (0 <= index_ && index_ < menu->items->len);
+  g_return_if_fail (0 <= position && position < menu->items->len);
 
-  g_menu_clear_item (&g_array_index (menu->items, struct item, index_));
-  g_array_remove_index (menu->items, index_);
-  g_menu_model_items_changed (G_MENU_MODEL (menu), index_, 1, 0);
+  g_menu_clear_item (&g_array_index (menu->items, struct item, position));
+  g_array_remove_index (menu->items, position);
+  g_menu_model_items_changed (G_MENU_MODEL (menu), position, 1, 0);
 }
 
 static void
