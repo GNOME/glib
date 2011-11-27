@@ -548,6 +548,41 @@ g_menu_item_class_init (GMenuItemClass *class)
   class->finalize = g_menu_item_finalize;
 }
 
+/* We treat attribute names the same as GSettings keys:
+ * - only lowercase ascii, digits and '-'
+ * - must start with lowercase
+ * - must not end with '-'
+ * - no consecutive '-'
+ * - not longer than 1024 chars
+ */
+static gboolean
+valid_attribute_name (const gchar *name)
+{
+  gint i;
+
+  if (!g_ascii_islower (name[0]))
+    return FALSE;
+
+  for (i = 1; name[i]; i++)
+    {
+      if (name[i] != '-' &&
+          !g_ascii_islower (name[i]) &&
+          !g_ascii_isdigit (name[i]))
+        return FALSE;
+
+      if (name[i] == '-' && name[i + 1] == '-')
+        return FALSE;
+    }
+
+  if (name[i - 1] == '-')
+    return FALSE;
+
+  if (i > 1024)
+    return FALSE;
+
+  return TRUE;
+}
+
 /**
  * g_menu_item_set_attribute_value:
  * @menu_item: a #GMenuItem
@@ -556,7 +591,16 @@ g_menu_item_class_init (GMenuItemClass *class)
  *
  * Sets or unsets an attribute on @menu_item.
  *
- * The attribute to set or unset is specified by @attribute.
+ * The attribute to set or unset is specified by @attribute. This
+ * can be one of the standard attribute names %G_MENU_ATTRIBUTE_LABEL,
+ * %G_MENU_ATTRIBUTE_ACTION, %G_MENU_ATTRIBUTE_TARGET, or a custom
+ * attribute name.
+ * Attribute names are restricted to lowercase characters, numbers
+ * and '-'. Furthermore, the names must begin with a lowercase character,
+ * must not end with a '-', and must not contain consecutive dashes.
+ *
+ * must consist only of lowercase
+ * ASCII characters, digits and '-'.
  *
  * If @value is non-%NULL then it is used as the new value for the
  * attribute.  If @value is %NULL then the attribute is unset.
@@ -571,6 +615,7 @@ g_menu_item_set_attribute_value (GMenuItem   *menu_item,
 {
   g_return_if_fail (G_IS_MENU_ITEM (menu_item));
   g_return_if_fail (attribute != NULL);
+  g_return_if_fail (valid_attribute_name (attribute));
 
   g_menu_item_clear_cow (menu_item);
 
@@ -589,7 +634,13 @@ g_menu_item_set_attribute_value (GMenuItem   *menu_item,
  *
  * Sets or unsets an attribute on @menu_item.
  *
- * The attribute to set or unset is specified by @attribute.
+ * The attribute to set or unset is specified by @attribute. This
+ * can be one of the standard attribute names %G_MENU_ATTRIBUTE_LABEL,
+ * %G_MENU_ATTRIBUTE_ACTION, %G_MENU_ATTRIBUTE_TARGET, or a custom
+ * attribute name.
+ * Attribute names are restricted to lowercase characters, numbers
+ * and '-'. Furthermore, the names must begin with a lowercase character,
+ * must not end with a '-', and must not contain consecutive dashes.
  *
  * If @format_string is non-%NULL then the proper position parameters
  * are collected to create a #GVariant instance to use as the attribute
@@ -627,11 +678,16 @@ g_menu_item_set_attribute (GMenuItem   *menu_item,
  * @link: type of link to establish or unset
  * @model: (allow-none): the #GMenuModel to link to (or %NULL to unset)
  *
- * Creates a link from @menu_item to @link if non-%NULL, or unsets it.
+ * Creates a link from @menu_item to @model if non-%NULL, or unsets it.
  *
  * Links are used to establish a relationship between a particular menu
  * item and another menu.  For example, %G_MENU_LINK_SUBMENU is used to
- * associate a submenu with a particular menu item.
+ * associate a submenu with a particular menu item, and %G_MENU_LINK_SECTION
+ * is used to create a section. Other types of link can be used, but there
+ * is no guarantee that clients will be able to make sense of them.
+ * Link types are restricted to lowercase characters, numbers
+ * and '-'. Furthermore, the names must begin with a lowercase character,
+ * must not end with a '-', and must not contain consecutive dashes.
  */
 void
 g_menu_item_set_link (GMenuItem   *menu_item,
@@ -640,6 +696,7 @@ g_menu_item_set_link (GMenuItem   *menu_item,
 {
   g_return_if_fail (G_IS_MENU_ITEM (menu_item));
   g_return_if_fail (link != NULL);
+  g_return_if_fail (valid_attribute_name (link));
 
   g_menu_item_clear_cow (menu_item);
 
