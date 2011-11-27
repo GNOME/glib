@@ -1613,6 +1613,9 @@ g_menu_attribute_iter_get_next
 g_menu_attribute_iter_get_type
 g_menu_attribute_iter_get_value
 g_menu_attribute_iter_next
+g_menu_exporter_export
+g_menu_exporter_query
+g_menu_exporter_stop
 g_menu_freeze
 g_menu_get_type
 g_menu_insert

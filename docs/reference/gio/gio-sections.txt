@@ -3542,6 +3542,13 @@ G_NETWORK_MONITOR_GET_INTERFACE
 </SECTION>
 
 <SECTION>
+<FILE>gmenuexporter</FILE>
+g_menu_exporter_export
+g_menu_exporter_stop
+g_menu_exporter_query
+</SECTION>
+
+<SECTION>
 <FILE>gmenu</FILE>
 GMenu
 g_menu_new

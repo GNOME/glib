@@ -136,6 +136,7 @@ application_headers = \
 	gmenumodel.h			\
 	gmenu.h				\
 	gmenumarkup.h			\
+	gmenuexporter.h			\
 	$(NULL)
 
 application_sources = \
@@ -152,6 +153,7 @@ application_sources = \
 	gmenumodel.c				\
 	gmenu.c					\
 	gmenumarkup.c				\
+	gmenuexporter.c				\
 	$(NULL)
 
 local_sources = \

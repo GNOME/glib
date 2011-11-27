@@ -148,6 +148,7 @@
 #include <gio/gdbusactiongroup.h>
 #include <gio/gmenumodel.h>
 #include <gio/gmenu.h>
+#include <gio/gmenuexporter.h>
 #include <gio/gmenumarkup.h>
 
 #undef __GIO_GIO_H_INSIDE__

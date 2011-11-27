@@ -203,6 +203,7 @@
         <xi:include href="xml/gmenumodel.xml"/>
         <xi:include href="xml/gmenu.xml"/>
         <xi:include href="xml/gmenumarkup.xml"/>
+        <xi:include href="xml/gmenuexporter.xml"/>
     </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
