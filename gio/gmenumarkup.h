@@ -26,21 +26,21 @@
 
 G_BEGIN_DECLS
 
-void                    g_menu_markup_parser_start                      (GMarkupParseContext  *context,
-                                                                         const gchar          *domain,
-                                                                         GHashTable           *objects);
-GHashTable *            g_menu_markup_parser_end                        (GMarkupParseContext  *context);
+void         g_menu_markup_parser_start      (GMarkupParseContext  *context,
+                                              const gchar          *domain,
+                                              GHashTable           *objects);
+GHashTable * g_menu_markup_parser_end        (GMarkupParseContext  *context);
 
-void                    g_menu_markup_parser_start_menu                 (GMarkupParseContext  *context,
-                                                                         const gchar          *domain,
-                                                                         GHashTable           *objects);
-GMenu *                 g_menu_markup_parser_end_menu                   (GMarkupParseContext  *context);
+void         g_menu_markup_parser_start_menu (GMarkupParseContext  *context,
+                                              const gchar          *domain,
+                                              GHashTable           *objects);
+GMenu *      g_menu_markup_parser_end_menu   (GMarkupParseContext  *context);
 
-void                    g_menu_markup_print_stderr                      (GMenuModel           *model);
-GString *               g_menu_markup_print_string                      (GString              *string,
-                                                                         GMenuModel           *model,
-                                                                         gint                  indent,
-                                                                         gint                  tabstop);
+void         g_menu_markup_print_stderr      (GMenuModel           *model);
+GString *    g_menu_markup_print_string      (GString              *string,
+                                              GMenuModel           *model,
+                                              gint                  indent,
+                                              gint                  tabstop);
 
 G_END_DECLS
 
