@@ -79,6 +79,99 @@ g_action_group_describe_action (GActionGroup *action_group,
   return g_variant_builder_end (&builder);
 }
 
+/* The org.gtk.Actions interface
+ * =============================
+ *
+ * This interface describes a group of actions.
+ *
+ * Each action:
+ * - has a unique string name
+ * - can be activated
+ * - optionally has a parameter type that must be given to the activation
+ * - has an enabled state that may be true or false
+ * - optionally has a state which can change value, but not type
+ *
+ * Methods
+ * -------
+ *
+ * List :: () → (as)
+ *
+ *   Lists the names of the actions exported at this object path.
+ *
+ * Describe :: (s) → (bgav)
+ *
+ *   Describes a single action, or a given name.
+ *
+ *   The return value has the following components:
+ *   b: specifies if the action is currently enabled. This is
+ *      a hint that attempting to interact with the action will
+ *      produce no effect.
+ *   g: specifies the optional parameter type. If not "",
+ *      the string specifies the type of argument that must
+ *      be passed to the activation.
+ *   av: specifies the optional state. If not empty, the array
+ *       contains the current value of the state as a variant
+ *
+ * DescribeAll :: () → (a{s(bgav)})
+ *
+ *   Describes all actions in a single round-trip.
+ *
+ *   The dictionary maps action name strings to their descriptions
+ *   (in the format discussed above).
+ *
+ * Activate :: (sava{sv}) → ()
+ *
+ *   Requests activation of the named action.
+ *
+ *   The action is named by the first parameter (s).
+ *
+ *   If the action activation requires a parameter then this parameter
+ *   must be given in the second parameter (av). If there is no parameter
+ *   to be specified, the array must be empty.
+ *
+ *   The final parameter (a{sv}) is a list of "platform data".
+ *
+ *   This method is not guaranteed to have any particular effect. The
+ *   implementation may take some action (including changing the state
+ *   of the action, if it is stateful) or it may take none at all. In
+ *   particular, callers should expect their request to be completely
+ *   ignored when the enabled flag is false (but even this is not
+ *   guaranteed).
+ *
+ * SetState :: (sva{sv}) → ()
+ *
+ *   Requests the state of an action to be changed to the given value.
+ *
+ *   The action is named by the first parameter (s).
+ *
+ *   The requested new state is given in the second parameter (v).
+ *   It must be equal in type to the existing state.
+ *
+ *   The final parameter (a{sv}) is a list of "platform data".
+ *
+ *   This method is not guaranteed to have any particular effect.
+ *   The implementation of an action can choose to ignore the requested
+ *   state change, or choose to change its state to something else or
+ *   to trigger other side effects. In particular, callers should expect
+ *   their request to be completely ignored when the enabled flag is
+ *   false (but even this is not guaranteed).
+ *
+ * Signals
+ * -------
+ *
+ * Changed :: (asa{sb}a{sv}a{s(bgav)})
+ *
+ *   Signals that some change has occured to the action group.
+ *
+ *   Four separate types of changes are possible, and the 4 parameters
+ *   of the change signal reflect these possibilities:
+ *   as: a list of removed actions
+ *   a{sb}: a list of actions that had their enabled flag changed
+ *   a{sv}: a list of actions that had their state changed
+ *   a{s(bgav)}: a list of new actions added in the same format as
+ *               the return value of the DescribeAll method
+ */
+
 /* Using XML saves us dozens of relocations vs. using the introspection
  * structure types.  We only need to burn cycles and memory if we
  * actually use the exporter -- not in every single app using GIO.
