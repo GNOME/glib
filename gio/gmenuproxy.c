@@ -33,7 +33,7 @@
  *
  * #GMenuProxy is an implementation of #GMenuModel that can be used
  * as a proxy for a menu model that is exported over D-Bus with
- * g_menu_exporter_export().
+ * g_menu_model_dbus_export_start().
  */
 
 /*

@@ -455,7 +455,7 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
 }
 
 /**
- * g_action_group_exporter_export:
+ * g_action_group_dbus_export_start:
  * @connection: a #GDBusConnection
  * @object_path: a D-Bus object path
  * @action_group: a #GActionGroup
@@ -467,22 +467,22 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
  * subject to change in the future.
  *
  * A given action group can only be exported on one object path and an
- * object_path can only have one action group exported on it.  If either
+ * object path can only have one action group exported on it. If either
  * constraint is violated, the export will fail and %FALSE will be
  * returned (with @error set accordingly).
  *
- * Use g_action_group_exporter_stop() to stop exporting @action_group,
- * or g_action_group_exporter_query() to find out if and where a given
+ * Use g_action_group_dbus_export_stop() to stop exporting @action_group,
+ * or g_action_group_dbus_export_query() to find out if and where a given
  * action group is exported.
  *
  * Returns: %TRUE if the export is successful, or %FALSE (with @error
  *          set) in the event of a failure.
  **/
 gboolean
-g_action_group_exporter_export (GDBusConnection  *connection,
-                                const gchar      *object_path,
-                                GActionGroup     *action_group,
-                                GError          **error)
+g_action_group_dbus_export_start (GDBusConnection  *connection,
+                                  const gchar      *object_path,
+                                  GActionGroup     *action_group,
+                                  GError          **error)
 {
   const GDBusInterfaceVTable vtable = {
     org_gtk_Actions_method_call
@@ -547,19 +547,19 @@ g_action_group_exporter_export (GDBusConnection  *connection,
 }
 
 /**
- * g_action_group_exporter_stop:
+ * g_action_group_dbus_export_stop:
  * @action_group: a #GActionGroup
  *
  * Stops the export of @action_group.
  *
  * This reverses the effect of a previous call to
- * g_action_group_exporter_export() for @action_group.
+ * g_action_group_dbus_export_start() for @action_group.
  *
  * Returns: %TRUE if an export was stopped or %FALSE if @action_group
  *          was not exported in the first place
  **/
 gboolean
-g_action_group_exporter_stop (GActionGroup *action_group)
+g_action_group_dbus_export_stop (GActionGroup *action_group)
 {
   GActionGroupExporter *exporter;
   gint i;
@@ -584,7 +584,7 @@ g_action_group_exporter_stop (GActionGroup *action_group)
 }
 
 /**
- * g_action_group_exporter_query:
+ * g_action_group_dbus_export_query:
  * @action_group: a #GActionGroup
  * @connection: (out): the #GDBusConnection used for exporting
  * @object_path: (out): the object path used for exporting
@@ -601,9 +601,9 @@ g_action_group_exporter_stop (GActionGroup *action_group)
  * Returns: %TRUE if @action_group was exported, else %FALSE
  **/
 gboolean
-g_action_group_exporter_query (GActionGroup     *action_group,
-                               GDBusConnection **connection,
-                               const gchar     **object_path)
+g_action_group_dbus_export_query (GActionGroup     *action_group,
+                                  GDBusConnection **connection,
+                                  const gchar     **object_path)
 {
   GActionGroupExporter *exporter;
 

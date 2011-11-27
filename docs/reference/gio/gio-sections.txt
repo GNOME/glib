@@ -2909,9 +2909,9 @@ G_ACTION_GROUP
 
 <SECTION>
 <FILE>gactiongroupexporter</FILE>
-g_action_group_exporter_export
-g_action_group_exporter_stop
-g_action_group_exporter_query
+g_action_group_dbus_export_start
+g_action_group_dbus_export_stop
+g_action_group_dbus_export_query
 </SECTION>
 
 <SECTION>
@@ -3545,9 +3545,9 @@ G_NETWORK_MONITOR_GET_INTERFACE
 
 <SECTION>
 <FILE>gmenuexporter</FILE>
-g_menu_exporter_export
-g_menu_exporter_stop
-g_menu_exporter_query
+g_menu_model_dbus_export_start
+g_menu_model_dbus_export_stop
+g_menu_model_dbus_export_query
 </SECTION>
 
 <SECTION>

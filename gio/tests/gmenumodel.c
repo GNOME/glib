@@ -590,7 +590,7 @@ test_roundtrip (void)
   state.rand = g_rand_new_with_seed (g_test_rand_int ());
 
   state.random = random_menu_new (state.rand, TOP_ORDER);
-  g_menu_exporter_export (bus, "/", G_MENU_MODEL (state.random), NULL);
+  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (state.random), NULL);
   state.proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   state.count = 0;
   state.success = 0;
@@ -602,7 +602,7 @@ test_roundtrip (void)
 
   g_main_loop_unref (state.loop);
   g_object_unref (state.proxy);
-  g_menu_exporter_stop (G_MENU_MODEL (state.random));
+  g_menu_model_dbus_export_stop (G_MENU_MODEL (state.random));
   g_object_unref (state.random);
   g_rand_free (state.rand);
   g_object_unref (bus);

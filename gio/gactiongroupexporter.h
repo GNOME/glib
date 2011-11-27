@@ -32,16 +32,16 @@
 
 G_BEGIN_DECLS
 
-gboolean                g_action_group_exporter_export                  (GDBusConnection  *connection,
-                                                                         const gchar      *object_path,
-                                                                         GActionGroup     *action_group,
-                                                                         GError          **error);
+gboolean g_action_group_dbus_export_start (GDBusConnection  *connection,
+                                           const gchar      *object_path,
+                                           GActionGroup     *action_group,
+                                           GError          **error);
 
-gboolean                g_action_group_exporter_stop                    (GActionGroup     *action_group);
+gboolean g_action_group_dbus_export_stop  (GActionGroup     *action_group);
 
-gboolean                g_action_group_exporter_query                   (GActionGroup     *action_group,
-                                                                         GDBusConnection **connection,
-                                                                         const gchar     **object_path);
+gboolean g_action_group_dbus_export_query (GActionGroup     *action_group,
+                                           GDBusConnection **connection,
+                                           const gchar     **object_path);
 
 G_END_DECLS
 

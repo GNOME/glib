@@ -239,9 +239,9 @@ g_application_impl_destroy (GApplicationImpl *impl)
         g_dbus_connection_unregister_object (impl->session_bus,
                                              impl->object_id);
       if (impl->actions_exported)
-        g_action_group_exporter_stop (impl->app);
+        g_action_group_dbus_export_stop (impl->app);
       if (impl->menu_exported)
-        g_menu_exporter_stop (g_application_get_menu (impl->app));
+        g_menu_model_dbus_export_stop (g_application_get_menu (impl->app));
 
       g_dbus_connection_call (impl->session_bus,
                               "org.freedesktop.DBus",
@@ -324,9 +324,9 @@ g_application_impl_register (GApplication       *application,
           return NULL;
         }
 
-      if (!g_action_group_exporter_export (impl->session_bus,
-                                           impl->object_path,
-                                           impl->app, error))
+      if (!g_action_group_dbus_export_start (impl->session_bus,
+                                             impl->object_path,
+                                             impl->app, error))
         {
           g_dbus_connection_unregister_object (impl->session_bus,
                                                impl->object_id);
@@ -343,12 +343,12 @@ g_application_impl_register (GApplication       *application,
 
       if (g_application_get_menu (impl->app))
         {
-          if (!g_menu_exporter_export (impl->session_bus,
-                                       impl->object_path,
-                                       g_application_get_menu (impl->app),
-                                       error))
+          if (!g_menu_model_dbus_export_start (impl->session_bus,
+                                               impl->object_path,
+                                               g_application_get_menu (impl->app),
+                                               error))
             {
-              g_action_group_exporter_stop (impl->app);
+              g_action_group_dbus_export_stop (impl->app);
               impl->actions_exported = FALSE;
 
               g_dbus_connection_unregister_object (impl->session_bus,
@@ -383,12 +383,12 @@ g_application_impl_register (GApplication       *application,
                                                impl->object_id);
           impl->object_id = 0;
 
-          g_action_group_exporter_stop (impl->app);
+          g_action_group_dbus_export_stop (impl->app);
           impl->actions_exported = FALSE;
 
           if (impl->menu_exported)
             {
-              g_menu_exporter_stop (g_application_get_menu (impl->app));
+              g_menu_model_dbus_export_stop (g_application_get_menu (impl->app));
               impl->menu_exported = FALSE;
             }
 
@@ -424,11 +424,11 @@ g_application_impl_register (GApplication       *application,
       g_dbus_connection_unregister_object (impl->session_bus,
                                            impl->object_id);
       impl->object_id = 0;
-      g_action_group_exporter_stop (impl->app);
+      g_action_group_dbus_export_stop (impl->app);
       impl->actions_exported = FALSE;
       if (impl->menu_exported)
         {
-          g_menu_exporter_stop (g_application_get_menu (impl->app));
+          g_menu_model_dbus_export_stop (g_application_get_menu (impl->app));
           impl->menu_exported = FALSE;
         }
 

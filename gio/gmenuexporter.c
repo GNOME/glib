@@ -759,7 +759,7 @@ g_menu_exporter_new (GDBusConnection  *connection,
 static GHashTable *g_menu_exporter_exported_menus;
 
 /**
- * g_menu_exporter_export:
+ * g_menu_model_dbus_export_start:
  * @connection: a #GDBusConnection
  * @object_path: a D-Bus object path
  * @menu: a #GMenuModel
@@ -771,22 +771,22 @@ static GHashTable *g_menu_exporter_exported_menus;
  * It is subject to change in the future.
  *
  * A given menu model can only be exported on one object path
- * and an object_path can only have one action group exported
- * on it.  If either constraint is violated, the export will
+ * and an object path can only have one action group exported
+ * on it. If either constraint is violated, the export will
  * fail and %FALSE will be returned (with @error set accordingly).
  *
- * Use g_menu_exporter_stop() to stop exporting @menu
- * or g_menu_exporter_query() to find out if and where a given
- * menu model is exported.
+ * Use g_menu_model_dbus_export_stop() to stop exporting @menu
+ * or g_menu_model_dbus_export_query() to find out if and where
+ * a given menu model is exported.
  *
  * Returns: %TRUE if the export is successful, or %FALSE (with
  *     @error set) in the event of a failure.
  */
 gboolean
-g_menu_exporter_export (GDBusConnection  *connection,
-                        const gchar      *object_path,
-                        GMenuModel       *menu,
-                        GError          **error)
+g_menu_model_dbus_export_start (GDBusConnection  *connection,
+                                const gchar      *object_path,
+                                GMenuModel       *menu,
+                                GError          **error)
 {
   GMenuExporter *exporter;
 
@@ -810,19 +810,19 @@ g_menu_exporter_export (GDBusConnection  *connection,
 }
 
 /**
- * g_menu_exporter_stop:
+ * g_menu_model_dbus_export_stop:
  * @menu: a #GMenuModel
  *
  * Stops the export of @menu.
  *
  * This reverses the effect of a previous call to
- * g_menu_exporter_export() for @menu.
+ * g_menu_model_dbus_export_start() for @menu.
  *
  * Returns: %TRUE if an export was stopped or %FALSE
  *     if @menu was not exported in the first place
  */
 gboolean
-g_menu_exporter_stop (GMenuModel *menu)
+g_menu_model_dbus_export_stop (GMenuModel *menu)
 {
   GMenuExporter *exporter;
 
@@ -840,7 +840,7 @@ g_menu_exporter_stop (GMenuModel *menu)
 }
 
 /**
- * g_menu_exporter_query:
+ * g_menu_model_dbus_export_query:
  * @menu: a #GMenuModel
  * @connection: (out): the #GDBusConnection used for exporting
  * @object_path: (out): the object path used for exporting
@@ -858,9 +858,9 @@ g_menu_exporter_stop (GMenuModel *menu)
  * Returns: %TRUE if @menu was exported, else %FALSE
  */
 gboolean
-g_menu_exporter_query (GMenuModel       *menu,
-                       GDBusConnection **connection,
-                       const gchar     **object_path)
+g_menu_model_dbus_export_query (GMenuModel       *menu,
+                                GDBusConnection **connection,
+                                const gchar     **object_path)
 {
   GMenuExporter *exporter;
 

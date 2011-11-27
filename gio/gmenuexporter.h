@@ -27,18 +27,16 @@
 
 G_BEGIN_DECLS
 
-gboolean        g_menu_exporter_export          (GDBusConnection  *connection,
-                                                 const gchar      *object_path,
-                                                 GMenuModel       *menu,
-                                                 GError          **error);
+gboolean g_menu_model_dbus_export_start (GDBusConnection  *connection,
+                                         const gchar      *object_path,
+                                         GMenuModel       *menu,
+                                         GError          **error);
 
-gboolean        g_menu_exporter_stop            (GMenuModel       *menu);
+gboolean g_menu_model_dbus_export_stop  (GMenuModel       *menu);
 
-
-
-gboolean        g_menu_exporter_query           (GMenuModel       *menu,
-                                                 GDBusConnection **connection,
-                                                 const gchar     **object_path);
+gboolean g_menu_model_dbus_export_query (GMenuModel       *menu,
+                                         GDBusConnection **connection,
+                                         const gchar     **object_path);
 
 G_END_DECLS
 
