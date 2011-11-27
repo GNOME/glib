@@ -132,7 +132,9 @@ application_headers = \
 	gdbusactiongroup.h		\
 	gactiongroupexporter.h		\
 	gapplicationcommandline.h	\
-	gapplication.h
+	gapplication.h			\
+	gmenumodel.h			\
+	$(NULL)
 
 application_sources = \
 	gactiongroup.c				\
@@ -144,7 +146,9 @@ application_sources = \
 	gapplicationcommandline.c		\
 	gapplicationimpl.h			\
 	gapplicationimpl-dbus.c			\
-	gapplication.c
+	gapplication.c				\
+	gmenumodel.c				\
+	$(NULL)
 
 local_sources = \
 	glocaldirectorymonitor.c 	\

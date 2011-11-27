@@ -58,6 +58,8 @@ typedef struct _GSettingsBackend              GSettingsBackend;
 typedef struct _GSettings                     GSettings;
 typedef struct _GPermission                   GPermission;
 
+typedef struct _GMenuModel                    GMenuModel;
+
 /**
  * GDrive:
  *

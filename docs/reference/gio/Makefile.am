@@ -97,7 +97,9 @@ MKDB_OPTIONS = --output-format=xml --sgml-mode --name-space=g \
 
 # Images to copy into HTML directory
 HTML_IMAGES =			\
-	gvfs-overview.png
+	gvfs-overview.png	\
+	menu-example.png	\
+	menu-model.png
 
 content_files =			\
 	version.xml		\
