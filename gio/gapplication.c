@@ -1347,22 +1347,6 @@ g_application_run (GApplication  *application,
   return status;
 }
 
-static gboolean
-g_application_has_action (GActionGroup *action_group,
-                          const gchar  *action_name)
-{
-  GApplication *application = G_APPLICATION (action_group);
-
-  g_return_val_if_fail (application->priv->is_registered, FALSE);
-
-  if (application->priv->remote_actions != NULL)
-    return g_hash_table_lookup (application->priv->remote_actions,
-                                action_name) != NULL;
-
-  return application->priv->actions &&
-         g_action_group_has_action (application->priv->actions, action_name);
-}
-
 static gchar **
 g_application_list_actions (GActionGroup *action_group)
 {
@@ -1398,108 +1382,55 @@ g_application_list_actions (GActionGroup *action_group)
 }
 
 static gboolean
-g_application_get_action_enabled (GActionGroup *action_group,
-                                  const gchar  *action_name)
+g_application_query_action (GActionGroup        *group,
+                            const gchar         *action_name,
+                            gboolean            *enabled,
+                            const GVariantType **parameter_type,
+                            const GVariantType **state_type,
+                            GVariant           **state_hint,
+                            GVariant           **state)
 {
-  GApplication *application = G_APPLICATION (action_group);
+  GApplication *application = G_APPLICATION (group);
 
-  g_return_val_if_fail (application->priv->remote_actions != NULL ||
-                        application->priv->actions != NULL, FALSE);
-  g_return_val_if_fail (application->priv->is_registered, FALSE);
-
-  if (application->priv->remote_actions)
+  if (application->priv->remote_actions != NULL)
     {
       RemoteActionInfo *info;
 
       info = g_hash_table_lookup (application->priv->remote_actions,
                                   action_name);
 
-      return info && info->enabled;
+      if (info == NULL)
+        return FALSE;
+
+      if (enabled)
+        *enabled = info->enabled;
+
+      if (parameter_type)
+        *parameter_type = info->parameter_type;
+
+      if (state_type)
+        *state_type = info->state ? g_variant_get_type (info->state) : NULL;
+
+      if (state_hint)
+        *state_hint = NULL;
+
+      if (state)
+        *state = info->state ? g_variant_ref (info->state) : NULL;
+
+      return TRUE;
     }
-
-  return g_action_group_get_action_enabled (application->priv->actions,
-                                            action_name);
-}
-
-static const GVariantType *
-g_application_get_action_parameter_type (GActionGroup *action_group,
-                                         const gchar  *action_name)
-{
-  GApplication *application = G_APPLICATION (action_group);
-
-  g_return_val_if_fail (application->priv->remote_actions != NULL ||
-                        application->priv->actions != NULL, NULL);
-  g_return_val_if_fail (application->priv->is_registered, NULL);
-
-  if (application->priv->remote_actions)
+  else if (application->priv->actions != NULL)
     {
-      RemoteActionInfo *info;
-
-      info = g_hash_table_lookup (application->priv->remote_actions,
-                                  action_name);
-
-      if (info)
-        return info->parameter_type;
-      else
-        return NULL;
+      return g_action_group_query_action (application->priv->actions,
+                                          action_name,
+                                          enabled,
+                                          parameter_type,
+                                          state_type,
+                                          state_hint,
+                                          state);
     }
 
-  return g_action_group_get_action_parameter_type (application->priv->actions,
-                                                   action_name);
-}
-
-static const GVariantType *
-g_application_get_action_state_type (GActionGroup *action_group,
-                                     const gchar  *action_name)
-{
-  GApplication *application = G_APPLICATION (action_group);
-
-  g_return_val_if_fail (application->priv->remote_actions != NULL ||
-                        application->priv->actions != NULL, NULL);
-  g_return_val_if_fail (application->priv->is_registered, NULL);
-
-  if (application->priv->remote_actions)
-    {
-      RemoteActionInfo *info;
-
-      info = g_hash_table_lookup (application->priv->remote_actions,
-                                  action_name);
-
-      if (info && info->state)
-        return g_variant_get_type (info->state);
-      else
-        return NULL;
-    }
-
-  return g_action_group_get_action_state_type (application->priv->actions,
-                                               action_name);
-}
-
-static GVariant *
-g_application_get_action_state (GActionGroup *action_group,
-                                const gchar  *action_name)
-{
-  GApplication *application = G_APPLICATION (action_group);
-
-  g_return_val_if_fail (application->priv->remote_actions != NULL ||
-                        application->priv->actions != NULL, NULL);
-  g_return_val_if_fail (application->priv->is_registered, NULL);
-
-  if (application->priv->remote_actions)
-    {
-      RemoteActionInfo *info;
-
-      info = g_hash_table_lookup (application->priv->remote_actions,
-                                  action_name);
-
-      if (info && info->state)
-        return g_variant_ref (info->state);
-      else
-        return NULL;
-    }
-
-  return g_action_group_get_action_state (application->priv->actions,
-                                          action_name);
+  return FALSE;
 }
 
 static void
@@ -1547,13 +1478,8 @@ g_application_activate_action (GActionGroup *action_group,
 static void
 g_application_action_group_iface_init (GActionGroupInterface *iface)
 {
-  iface->has_action = g_application_has_action;
   iface->list_actions = g_application_list_actions;
-
-  iface->get_action_enabled = g_application_get_action_enabled;
-  iface->get_action_parameter_type = g_application_get_action_parameter_type;
-  iface->get_action_state_type = g_application_get_action_state_type;
-  iface->get_action_state = g_application_get_action_state;
+  iface->query_action = g_application_query_action;
   iface->change_action_state = g_application_change_action_state;
   iface->activate_action = g_application_activate_action;
 }
