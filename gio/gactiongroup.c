@@ -35,12 +35,15 @@
  * method calls, except g_action_group_list_actions() take the name of
  * an action as an argument.
  *
+ * Action groups are often used together with a #GMenuModel that provides
+ * additional representation data for the actions.
+ *
  * The #GActionGroup API is meant to be the 'public' API to the action
  * group.  The calls here are exactly the interaction that 'external
  * forces' (eg: UI, incoming D-Bus messages, etc.) are supposed to have
  * with actions.  'Internal' APIs (ie: ones meant only to be accessed by
  * the action group implementation) are found on subclasses.  This is
- * why you will find -- for example -- g_action_group_get_action_enabled()
+ * why you will find - for example - g_action_group_get_action_enabled()
  * but not an equivalent <function>set()</function> call.
  *
  * Signals are emitted on the action group in response to state changes
@@ -49,7 +52,7 @@
  * Implementations of #GActionGroup should provide implementations for
  * the virtual functions g_action_group_list_actions() and
  * g_action_group_query_action().  The other virtual functions should
- * not be implemented -- their "wrappers" are actually implemented with
+ * not be implemented - their "wrappers" are actually implemented with
  * calls to g_action_group_query_action().
  **/
 
