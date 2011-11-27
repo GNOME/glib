@@ -238,7 +238,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
                   return;
                 }
 
-              state->type = typestr ? g_variant_type_new (typestr) : NULL;
+              state->type = typestr ? g_variant_type_new (typestr) : g_variant_type_copy (G_VARIANT_TYPE_STRING);
               state->string = g_string_new (NULL);
               state->attribute = g_quark_from_string (name);
               state->context = g_strdup (context);
@@ -320,7 +320,7 @@ g_menu_markup_end_element (GMarkupParseContext  *context,
       if ((value = g_variant_parse (state->type, text, NULL, NULL, error)))
         {
           /* Deal with translatable string attributes */
-          if (state->domain && state->translatable && state->type &&
+          if (state->domain && state->translatable &&
               g_variant_type_equal (state->type, G_VARIANT_TYPE_STRING))
             {
               const gchar *msgid;
@@ -343,11 +343,8 @@ g_menu_markup_end_element (GMarkupParseContext  *context,
           g_variant_unref (value);
         }
 
-      if (state->type)
-        {
-          g_variant_type_free (state->type);
-          state->type = NULL;
-        }
+      g_variant_type_free (state->type);
+      state->type = NULL;
 
       g_free (state->context);
       state->context = NULL;
@@ -634,12 +631,13 @@ g_menu_markup_print_string (GString    *string,
             {
               gchar *printed;
               gchar *str;
+              const gchar *type;
 
               printed = g_variant_print (value, TRUE);
-              str = g_markup_printf_escaped ("<attribute name='%s'>%s</attribute>\n", name, printed);
+              type = g_variant_type_peek_string (g_variant_get_type (value));
+              str = g_markup_printf_escaped ("<attribute name='%s' type='%s'>%s</attribute>\n", name, type, printed);
               indent_string (contents, indent + tabstop);
               g_string_append (contents, str);
-              g_variant_unref (value);
               g_free (printed);
               g_free (str);
             }
