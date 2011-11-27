@@ -134,6 +134,7 @@ application_headers = \
 	gapplicationcommandline.h	\
 	gapplication.h			\
 	gmenumodel.h			\
+	gmenu.h				\
 	$(NULL)
 
 application_sources = \
@@ -148,6 +149,7 @@ application_sources = \
 	gapplicationimpl-dbus.c			\
 	gapplication.c				\
 	gmenumodel.c				\
+	gmenu.c					\
 	$(NULL)
 
 local_sources = \

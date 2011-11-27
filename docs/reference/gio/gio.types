@@ -47,6 +47,7 @@ g_local_file_monitor_get_type
 g_memory_input_stream_get_type
 g_memory_output_stream_get_type
 g_menu_attribute_iter_get_type
+g_menu_get_type
 g_menu_link_iter_get_type
 g_menu_model_get_type
 g_mount_get_type
