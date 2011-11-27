@@ -29,6 +29,7 @@
 #include "gdbusconnection.h"
 #include "gdbusintrospection.h"
 #include "gdbuserror.h"
+#include "gmenuexporter.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -118,6 +119,7 @@ struct _GApplicationImpl
   gchar           *object_path;
   guint            object_id;
   gboolean         actions_exported;
+  gboolean         menu_exported;
   gpointer         app;
 };
 
@@ -238,6 +240,8 @@ g_application_impl_destroy (GApplicationImpl *impl)
                                              impl->object_id);
       if (impl->actions_exported)
         g_action_group_exporter_stop (impl->app);
+      if (impl->menu_exported)
+        g_menu_exporter_stop (g_application_get_menu (impl->app));
 
       g_dbus_connection_call (impl->session_bus,
                               "org.freedesktop.DBus",
@@ -337,6 +341,30 @@ g_application_impl_register (GApplication       *application,
         }
       impl->actions_exported = TRUE;
 
+      if (g_application_get_menu (impl->app))
+        {
+          if (!g_menu_exporter_export (impl->session_bus,
+                                       impl->object_path,
+                                       g_application_get_menu (impl->app),
+                                       error))
+            {
+              g_action_group_exporter_stop (impl->app);
+              impl->actions_exported = FALSE;
+
+              g_dbus_connection_unregister_object (impl->session_bus,
+                                                   impl->object_id);
+
+              g_object_unref (impl->session_bus);
+              g_free (impl->object_path);
+              impl->session_bus = NULL;
+              impl->object_path = NULL;
+
+              g_slice_free (GApplicationImpl, impl);
+              return NULL;
+            }
+          impl->menu_exported = TRUE;
+        }
+
       /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
       reply = g_dbus_connection_call_sync (impl->session_bus,
                                            "org.freedesktop.DBus",
@@ -357,6 +385,12 @@ g_application_impl_register (GApplication       *application,
 
           g_action_group_exporter_stop (impl->app);
           impl->actions_exported = FALSE;
+
+          if (impl->menu_exported)
+            {
+              g_menu_exporter_stop (g_application_get_menu (impl->app));
+              impl->menu_exported = FALSE;
+            }
 
           g_object_unref (impl->session_bus);
           g_free (impl->object_path);
@@ -392,6 +426,11 @@ g_application_impl_register (GApplication       *application,
       impl->object_id = 0;
       g_action_group_exporter_stop (impl->app);
       impl->actions_exported = FALSE;
+      if (impl->menu_exported)
+        {
+          g_menu_exporter_stop (g_application_get_menu (impl->app));
+          impl->menu_exported = FALSE;
+        }
 
       if (flags & G_APPLICATION_IS_SERVICE)
         {

@@ -19,6 +19,7 @@ g_application_get_flags
 g_application_get_inactivity_timeout
 g_application_get_is_registered
 g_application_get_is_remote
+g_application_get_menu
 g_application_hold
 g_application_id_is_valid
 g_application_new
@@ -27,6 +28,7 @@ g_application_register
 g_application_release
 g_application_run
 g_application_set_action_group
+g_application_set_menu
 g_application_set_application_id
 g_application_set_default
 g_application_set_flags

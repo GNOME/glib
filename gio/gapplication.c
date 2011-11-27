@@ -27,6 +27,7 @@
 #include "gapplicationcommandline.h"
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
+#include "gmenumodel.h"
 #include "gsettings.h"
 
 #include "gioenumtypes.h"
@@ -88,7 +89,11 @@
  * GApplication also implements the #GActionGroup interface and lets you
  * easily export actions by adding them with g_application_set_action_group().
  * When invoking an action by calling g_action_group_activate_action() on
- * the application, it is always invoked in the primary instance.
+ * the application, it is always invoked in the primary instance. The actions
+ * are also exported on the session bus, and GIO provides the #GDBusActionGroup
+ * wrapper to conveniently access them remotely. Additionally,
+ * g_application_set_menu() can be used to export representation data
+ * for the actions, in the form of a  #GMenuModel.
  *
  * There is a number of different entry points into a #GApplication:
  * <itemizedlist>
@@ -149,6 +154,7 @@ struct _GApplicationPrivate
   gchar             *id;
 
   GActionGroup      *actions;
+  GMenuModel        *menu;
 
   guint              inactivity_timeout_id;
   guint              inactivity_timeout;
@@ -171,7 +177,8 @@ enum
   PROP_IS_REGISTERED,
   PROP_IS_REMOTE,
   PROP_INACTIVITY_TIMEOUT,
-  PROP_ACTION_GROUP
+  PROP_ACTION_GROUP,
+  PROP_MENU
 };
 
 enum
@@ -393,6 +400,11 @@ g_application_set_property (GObject      *object,
                                       g_value_get_object (value));
       break;
 
+    case PROP_MENU:
+      g_application_set_menu (application,
+                              g_value_get_object (value));
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -405,7 +417,7 @@ g_application_set_property (GObject      *object,
  *
  * Sets or unsets the group of actions associated with the application.
  *
- * These actions are the actions that can be remotely invoked.
+ * These actions can be invoked remotely.
  *
  * It is an error to call this function after the application has been
  * registered.
@@ -426,6 +438,54 @@ g_application_set_action_group (GApplication *application,
 
   if (application->priv->actions != NULL)
     g_object_ref (application->priv->actions);
+}
+
+/**
+ * g_application_set_menu:
+ * @application: a #GApplication
+ * @menu: (allow-none): a #GMenuModel, or %NULL
+ *
+ * Sets or unsets the menu associated with the application. The menu
+ * provides representation data for the exported actions of @application.
+ *
+ * It is an error to call this function after the application has been
+ * registered.
+ *
+ * Since: 2.32
+ */
+void
+g_application_set_menu (GApplication *application,
+                        GMenuModel   *menu)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (!application->priv->is_registered);
+
+  if (application->priv->menu != NULL)
+    g_object_unref (application->priv->menu);
+
+  application->priv->menu = menu;
+
+  if (application->priv->menu != NULL)
+    g_object_ref (application->priv->menu);
+}
+
+/**
+ * g_application_get_menu:
+ * @application: a #GApplication
+ *
+ * Returns the menu model that has been set
+ * with g_application_set_menu().
+ *
+ * Returns: the #GMenuModel associated with @application
+ *
+ * Since: 2.32
+ */
+GMenuModel *
+g_application_get_menu (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
+
+  return application->priv->menu;
 }
 
 static void
@@ -561,6 +621,13 @@ g_application_class_init (GApplicationClass *class)
                          P_("Action group"),
                          P_("The group of actions that the application exports"),
                          G_TYPE_ACTION_GROUP,
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, PROP_MENU,
+    g_param_spec_object ("menu",
+                         P_("Menu model"),
+                         P_("The menu that the application exports"),
+                         G_TYPE_MENU_MODEL,
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   /**
