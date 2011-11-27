@@ -580,7 +580,7 @@ roundtrip_step (gpointer data)
 }
 
 static void
-test_roundtrip (void)
+test_dbus_roundtrip (void)
 {
   struct roundtrip_state state;
   GDBusConnection *bus;
@@ -608,6 +608,160 @@ test_roundtrip (void)
   g_object_unref (bus);
 }
 
+static void
+start_element (GMarkupParseContext *context,
+               const gchar         *element_name,
+               const gchar        **attribute_names,
+               const gchar        **attribute_values,
+               gpointer             user_data,
+               GError             **error)
+{
+  if (g_strcmp0 (element_name, "menu") == 0)
+    g_menu_markup_parser_start_menu (context, "domain", NULL);
+}
+
+static void
+end_element (GMarkupParseContext *context,
+             const gchar         *element_name,
+             gpointer             user_data,
+             GError             **error)
+{
+  GMenu **menu = user_data;
+
+  if (g_strcmp0 (element_name, "menu") == 0)
+    *menu = g_menu_markup_parser_end_menu (context);
+}
+
+static GMenuModel *
+parse_menu_string (const gchar *string, GError **error)
+{
+  const GMarkupParser parser = {
+    start_element, end_element, NULL, NULL, NULL
+  };
+  GMarkupParseContext *context;
+  GMenuModel *menu = NULL;
+
+  context = g_markup_parse_context_new (&parser, 0, &menu, NULL);
+  g_markup_parse_context_parse (context, string, -1, error);
+  g_markup_parse_context_free (context);
+
+  return menu;
+}
+
+static gchar *
+menu_to_string (GMenuModel *menu)
+{
+  GString *s;
+
+  s = g_string_new ("<menu>\n");
+  g_menu_markup_print_string (s, menu, 2, 2);
+  g_string_append (s, "</menu>\n");
+
+  return g_string_free (s, FALSE);
+}
+
+static void
+test_markup_roundtrip (void)
+{
+  const gchar data[] =
+  "<menu id='edit-menu'>\n"
+  "  <section>\n"
+  "    <item action='undo'>\n"
+  "      <attribute name='label' translatable='yes' context='Stock label'>'_Undo'</attribute>\n"
+  "    </item>\n"
+  "    <item label='Redo' action='redo'/>\n"
+  "  </section>\n"
+  "  <section></section>\n"
+  "  <section label='Copy &amp; Paste'>\n"
+  "    <item label='Cut' action='cut'/>\n"
+  "    <item label='Copy' action='copy'/>\n"
+  "    <item label='Paste' action='paste'/>\n"
+  "  </section>\n"
+  "  <section>\n"
+  "    <item label='Bold' action='bold'/>\n"
+  "    <submenu label='Language'>\n"
+  "      <item label='Latin' action='lang' target='latin'/>\n"
+  "      <item label='Greek' action='lang' target='greek'/>\n"
+  "      <item label='Urdu'  action='lang' target='urdu'/>\n"
+  "    </submenu>\n"
+  "    <item name='test unusual attributes'>\n"
+  "      <attribute name='action' type='s'>'quite-some-action'</attribute>\n"
+  "      <attribute name='target' type='i'>36</attribute>\n"
+  "      <attribute name='chocolate-thunda' type='as'>['a','b']</attribute>\n"
+  "      <attribute name='thing1' type='g'>'s(uu)'</attribute>\n"
+  "      <attribute name='icon' type='s'>'small blue thing'</attribute>\n"
+  "   </item>\n"
+  "  </section>\n"
+  "</menu>\n";
+  GError *error = NULL;
+  GMenuModel *a;
+  GMenuModel *b;
+  gchar *s;
+  gchar *s2;
+
+  a = parse_menu_string (data, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_MENU_MODEL (a));
+
+  /* normalized representation */
+  s = menu_to_string (a);
+
+  b = parse_menu_string (s, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_MENU_MODEL (b));
+
+  assert_menus_equal (G_MENU_MODEL (a), G_MENU_MODEL (b));
+
+  s2 = menu_to_string (b);
+
+  g_assert_cmpstr (s, ==, s2);
+
+  g_object_unref (a);
+  g_object_unref (b);
+  g_free (s);
+  g_free (s2);
+}
+
+static void
+test_attributes (void)
+{
+  GMenu *menu;
+  GMenuItem *item;
+  GVariant *v;
+
+  menu = g_menu_new ();
+
+  item = g_menu_item_new ("test", NULL);
+  g_menu_item_set_attribute_value (item, "boolean", g_variant_new_boolean (FALSE));
+  g_menu_item_set_attribute_value (item, "string", g_variant_new_string ("bla"));
+  g_menu_item_set_attribute_value (item, "double", g_variant_new_double (1.5));
+  v = g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
+  g_menu_item_set_attribute_value (item, "complex", v);
+  g_menu_item_set_attribute_value (item, "test-123", g_variant_new_string ("test-123"));
+
+  g_menu_append_item (menu, item);
+
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (menu)), ==, 1);
+
+  v = g_menu_model_get_item_attribute_value (G_MENU_MODEL (menu), 0, "boolean", NULL);
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_BOOLEAN));
+  g_variant_unref (v);
+
+  v = g_menu_model_get_item_attribute_value (G_MENU_MODEL (menu), 0, "string", NULL);
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_STRING));
+  g_variant_unref (v);
+
+  v = g_menu_model_get_item_attribute_value (G_MENU_MODEL (menu), 0, "double", NULL);
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_DOUBLE));
+  g_variant_unref (v);
+
+  v = g_menu_model_get_item_attribute_value (G_MENU_MODEL (menu), 0, "complex", NULL);
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE("a(si)")));
+  g_variant_unref (v);
+
+  g_object_unref (menu);
+}
+
 /* Epilogue {{{1 */
 int
 main (int argc, char **argv)
@@ -618,7 +772,9 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gmenu/equality", test_equality);
   g_test_add_func ("/gmenu/random", test_random);
-  g_test_add_func ("/gmenu/roundtrip", test_roundtrip);
+  g_test_add_func ("/gmenu/bus/roundtrip", test_dbus_roundtrip);
+  g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
+  g_test_add_func ("/gmenu/attributes", test_attributes);
 
   return g_test_run ();
 }
