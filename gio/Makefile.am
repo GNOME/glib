@@ -135,6 +135,7 @@ application_headers = \
 	gapplication.h			\
 	gmenumodel.h			\
 	gmenu.h				\
+	gmenumarkup.h			\
 	$(NULL)
 
 application_sources = \
@@ -150,6 +151,7 @@ application_sources = \
 	gapplication.c				\
 	gmenumodel.c				\
 	gmenu.c					\
+	gmenumarkup.c				\
 	$(NULL)
 
 local_sources = \
@@ -586,6 +588,9 @@ EXTRA_DIST += 			\
 	abicheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
+	menumarkup.xml		\
+	menumarkup2.xml		\
+	menumarkup.dtd		\
 	$(NULL)
 
 BUILT_EXTRA_DIST = 		\
