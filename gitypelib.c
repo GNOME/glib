@@ -645,11 +645,8 @@ validate_error_type_blob (GITypelib     *typelib,
 			  GError       **error)
 {
   ErrorTypeBlob *blob;
-  Header *header;
 
   blob = (ErrorTypeBlob*)&typelib->data[offset];
-
-  header = (Header *)typelib->data;
 
   if (!blob->pointer)
     {
@@ -850,8 +847,6 @@ validate_function_blob (ValidateContext *ctx,
 {
   GITypelib *typelib = ctx->typelib;
   FunctionBlob *blob;
-  SignatureBlob *sigblob;
-  gboolean is_method;
 
   if (typelib->len < offset + sizeof (FunctionBlob))
     {
@@ -880,19 +875,6 @@ validate_function_blob (ValidateContext *ctx,
 
   if (!validate_name (typelib, "function symbol", typelib->data, blob->symbol, error))
     return FALSE;
-
-  switch (container_type)
-    {
-    case BLOB_TYPE_BOXED:
-    case BLOB_TYPE_STRUCT:
-    case BLOB_TYPE_UNION:
-    case BLOB_TYPE_OBJECT:
-    case BLOB_TYPE_INTERFACE:
-      is_method = !(blob->constructor || blob->setter || blob->getter || blob->wraps_vfunc);
-      break;
-    default:
-      is_method = FALSE;
-    }
 
   if (blob->constructor)
     {
@@ -945,8 +927,6 @@ validate_function_blob (ValidateContext *ctx,
 
   if (!validate_signature_blob (typelib, blob->signature, error))
     return FALSE;
-
-  sigblob = (SignatureBlob*) &typelib->data[blob->signature];
 
   if (blob->constructor)
     {
