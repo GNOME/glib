@@ -854,5 +854,42 @@ g_menu_proxy_get (GDBusConnection *connection,
   return proxy;
 }
 
+static void
+dump_proxy (gpointer key, gpointer value, gpointer data)
+{
+  GMenuProxy *proxy = value;
+
+  g_print ("    menu %d refcount %d active %d\n",
+           proxy->id, G_OBJECT (proxy)->ref_count, proxy->active);
+}
+
+static void
+dump_group (gpointer key, gpointer value, gpointer data)
+{
+  GMenuProxyGroup *group = value;
+
+  g_print ("  group %d refcount %d state %d active %d\n",
+           group->id, group->ref_count, group->state, group->active);
+
+  g_hash_table_foreach (group->proxies, dump_proxy, NULL);
+}
+
+static void
+dump_path (gpointer key, gpointer value, gpointer data)
+{
+  PathIdentifier *pid = key;
+  GMenuProxyPath *path = value;
+
+  g_print ("%s active %d\n", pid->object_path, path->active);
+  g_hash_table_foreach (path->groups, dump_group, NULL);
+}
+
+void
+g_menu_proxy_dump (void)
+{
+  g_hash_table_foreach (g_menu_proxy_paths, dump_path, NULL);
+}
+
+
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */
