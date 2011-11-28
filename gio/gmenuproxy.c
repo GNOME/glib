@@ -128,9 +128,10 @@
  * proxy is inactive, the change signal is ignored.
  *
  * GMenuProxyItem is just a pair of hashtables, one for the attributes
- * and one for the links of the item (mapping strings to
- * other GMenuProxy instances). XXX reconsider this since it means the
- * submenu proxies stay around forever.....
+ * and one for the links of the item.  Both map strings to GVariant
+ * instances.  In the case of links, the GVariant has type '(uu)' and is
+ * turned into a GMenuProxy at the point that the user pulls it through
+ * the API.
  *
  * Following the "empty is the same as non-existent" rule, the hashtable
  * of GSequence of GMenuProxyItem holds NULL for empty menus.
@@ -393,8 +394,7 @@ g_menu_proxy_item_free (gpointer data)
 }
 
 static GMenuProxyItem *
-g_menu_proxy_group_create_item (GMenuProxyGroup *context,
-                                GVariant        *description)
+g_menu_proxy_group_create_item (GVariant *description)
 {
   GMenuProxyItem *item;
   GVariantIter iter;
@@ -403,34 +403,13 @@ g_menu_proxy_group_create_item (GMenuProxyGroup *context,
 
   item = g_slice_new (GMenuProxyItem);
   item->attributes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_variant_unref);
-  item->links = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_object_unref);
+  item->links = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_variant_unref);
 
   g_variant_iter_init (&iter, description);
   while (g_variant_iter_loop (&iter, "{&sv}", &key, &value))
     if (key[0] == ':')
-      {
-        if (g_variant_is_of_type (value, G_VARIANT_TYPE ("(uu)")))
-          {
-            guint group_id, menu_id;
-            GMenuProxyGroup *group;
-            GMenuProxy *proxy;
-
-            g_variant_get (value, "(uu)", &group_id, &menu_id);
-
-            /* save the hash lookup in a relatively common case */
-            if (context->id != group_id)
-              group = g_menu_proxy_group_get_from_path (context->path, group_id);
-            else
-              group = g_menu_proxy_group_ref (context);
-
-            proxy = g_menu_proxy_get_from_group (group, menu_id);
-
-            /* key + 1 to skip the ':' */
-            g_hash_table_insert (item->links, g_strdup (key + 1), proxy);
-
-            g_menu_proxy_group_unref (group);
-          }
-      }
+      /* key + 1 to skip the ':' */
+      g_hash_table_insert (item->links, g_strdup (key + 1), g_variant_ref (value));
     else
       g_hash_table_insert (item->attributes, g_strdup (key), g_variant_ref (value));
 
@@ -629,7 +608,7 @@ g_menu_proxy_group_changed (GMenuProxyGroup *group,
 
   n_added = g_variant_iter_init (&iter, added);
   while (g_variant_iter_loop (&iter, "@a{sv}", &item))
-    g_sequence_insert_before (point, g_menu_proxy_group_create_item (group, item));
+    g_sequence_insert_before (point, g_menu_proxy_group_create_item (item));
 
   if (g_sequence_get_length (items) == 0)
     {
@@ -757,7 +736,38 @@ g_menu_proxy_get_item_links (GMenuModel  *model,
   item = g_sequence_get (iter);
   g_return_if_fail (item);
 
-  *table = g_hash_table_ref (item->links);
+  *table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
+
+  {
+    GHashTableIter tmp;
+    gpointer key;
+    gpointer value;
+
+    g_hash_table_iter_init (&tmp, item->links);
+    while (g_hash_table_iter_next (&tmp, &key, &value))
+      {
+        if (g_variant_is_of_type (value, G_VARIANT_TYPE ("(uu)")))
+          {
+            guint group_id, menu_id;
+            GMenuProxyGroup *group;
+            GMenuProxy *link;
+
+            g_variant_get (value, "(uu)", &group_id, &menu_id);
+
+            /* save the hash lookup in a relatively common case */
+            if (proxy->group->id != group_id)
+              group = g_menu_proxy_group_get_from_path (proxy->group->path, group_id);
+            else
+              group = g_menu_proxy_group_ref (proxy->group);
+
+            link = g_menu_proxy_get_from_group (group, menu_id);
+
+            g_hash_table_insert (*table, g_strdup (key), link);
+
+            g_menu_proxy_group_unref (group);
+          }
+      }
+  }
 }
 
 static void
