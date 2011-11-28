@@ -2478,7 +2478,7 @@ initable_init (GInitable     *initable,
       if ((connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER) ||
           (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS))
         {
-          g_set_error_literal (error,
+          g_set_error_literal (&connection->initialization_error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
                                _("Unsupported flags encountered when constructing a client-side connection"));
