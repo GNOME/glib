@@ -664,6 +664,8 @@ g_action_group_dbus_export_stop (GActionGroup *action_group)
   if G_UNLIKELY (exporter == NULL)
     return FALSE;
 
+  g_hash_table_remove (exported_groups, action_group);
+
   g_dbus_connection_unregister_object (exporter->connection, exporter->registration_id);
   for (i = 0; i < G_N_ELEMENTS (exporter->signal_ids); i++)
     g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
