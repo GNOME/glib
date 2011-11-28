@@ -393,10 +393,13 @@ g_menu_model_real_get_item_link (GMenuModel  *model,
   else
     g_assert_not_reached ();
 
+  if (value != NULL)
+    g_object_ref (value);
+
   if (table != NULL)
     g_hash_table_unref (table);
 
-  return value ? g_object_ref (value) : NULL;
+  return value;
 }
 
 static void
