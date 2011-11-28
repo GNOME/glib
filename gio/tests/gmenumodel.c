@@ -592,6 +592,7 @@ test_dbus_roundtrip (void)
 
   state.random = random_menu_new (state.rand, TOP_ORDER);
   g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (state.random), NULL);
+  g_assert (g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
   state.proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   state.count = 0;
   state.success = 0;
@@ -640,6 +641,7 @@ test_dbus_subscriptions (void)
   GMenu *menu;
   GMenuProxy *proxy;
   GMainLoop *loop;
+  GError *error = NULL;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -647,7 +649,8 @@ test_dbus_subscriptions (void)
 
   menu = g_menu_new ();
 
-  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (menu), NULL);
+  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (menu), &error);
+  g_assert_no_error (error);
 
   proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   items_changed_count = 0;
