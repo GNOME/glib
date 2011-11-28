@@ -114,6 +114,26 @@ strv_has_string (gchar       **haystack,
 }
 
 static gboolean
+strv_strv_cmp (gchar **a, gchar **b)
+{
+  guint n;
+
+  for (n = 0; a[n] != NULL; n++)
+    {
+       if (!strv_has_string (b, a[n]))
+         return FALSE;
+    }
+
+  for (n = 0; b[n] != NULL; n++)
+    {
+       if (!strv_has_string (a, b[n]))
+         return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 strv_set_equal (gchar **strv, ...)
 {
   gint count;
@@ -362,6 +382,199 @@ test_entries (void)
   g_object_unref (actions);
 }
 
+static void
+activate_action (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+  g_print ("Action %s activated\n", g_action_get_name (G_ACTION (action)));
+}
+
+static void
+activate_toggle (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+  GVariant *old_state, *new_state;
+
+  old_state = g_action_get_state (G_ACTION (action));
+  new_state = g_variant_new_boolean (!g_variant_get_boolean (old_state));
+
+  g_print ("Toggle action %s activated, state changes from %d to %d\n",
+           g_action_get_name (G_ACTION (action)),
+           g_variant_get_boolean (old_state),
+           g_variant_get_boolean (new_state));
+
+  g_simple_action_set_state (action, new_state);
+  g_variant_unref (old_state);
+}
+
+static void
+activate_radio (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+  GVariant *old_state, *new_state;
+
+  old_state = g_action_get_state (G_ACTION (action));
+  new_state = g_variant_new_string (g_variant_get_string (parameter, NULL));
+
+  g_print ("Radio action %s activated, state changes from %s to %s\n",
+           g_action_get_name (G_ACTION (action)),
+           g_variant_get_string (old_state, NULL),
+           g_variant_get_string (new_state, NULL));
+
+  g_simple_action_set_state (action, new_state);
+  g_variant_unref (old_state);
+}
+
+static gboolean
+compare_action_groups (GActionGroup *a, GActionGroup *b)
+{
+  gchar **alist;
+  gchar **blist;
+  gint i;
+  gboolean equal;
+  gboolean ares, bres;
+  gboolean aenabled, benabled;
+  const GVariantType *aparameter_type, *bparameter_type;
+  const GVariantType *astate_type, *bstate_type;
+  GVariant *astate_hint, *bstate_hint;
+  GVariant *astate, *bstate;
+
+  alist = g_action_group_list_actions (a);
+  blist = g_action_group_list_actions (b);
+  equal = strv_strv_cmp (alist, blist);
+
+  for (i = 0; equal && alist[i]; i++)
+    {
+      ares = g_action_group_query_action (a, alist[i], &aenabled, &aparameter_type, &astate_type, &astate_hint, &astate);
+      bres = g_action_group_query_action (b, alist[i], &benabled, &bparameter_type, &bstate_type, &bstate_hint, &bstate);
+
+      if (ares && bres)
+        {
+          equal = equal && (aenabled == benabled);
+          equal = equal && ((!aparameter_type && !bparameter_type) || g_variant_type_equal (aparameter_type, bparameter_type));
+          equal = equal && ((!astate_type && !bstate_type) || g_variant_type_equal (astate_type, bstate_type));
+          equal = equal && ((!astate_hint && !bstate_hint) || g_variant_equal (astate_hint, bstate_hint));
+          equal = equal && ((!astate && !bstate) || g_variant_equal (astate, bstate));
+
+          if (astate_hint)
+            g_variant_unref (astate_hint);
+          if (bstate_hint)
+            g_variant_unref (bstate_hint);
+          if (astate)
+            g_variant_unref (astate);
+          if (bstate)
+            g_variant_unref (bstate);
+        }
+      else
+        equal = FALSE;
+    }
+
+  g_strfreev (alist);
+  g_strfreev (blist);
+
+  return equal;
+}
+
+static gboolean
+stop_loop (gpointer data)
+{
+  GMainLoop *loop = data;
+
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+GDBusActionGroup *proxy;
+
+static void
+got_proxy (GObject      *source,
+           GAsyncResult *res,
+           gpointer      user_data)
+{
+  GError *error = NULL;
+
+  proxy = g_dbus_action_group_new_finish (res, &error);
+  g_assert_no_error (error);
+}
+
+static void
+test_dbus_export (void)
+{
+  GDBusConnection *bus;
+  GSimpleActionGroup *group;
+  GSimpleAction *action;
+  GMainLoop *loop;
+  static GActionEntry entries[] = {
+    { "undo",  activate_action, NULL, NULL,      NULL },
+    { "redo",  activate_action, NULL, NULL,      NULL },
+    { "cut",   activate_action, NULL, NULL,      NULL },
+    { "copy",  activate_action, NULL, NULL,      NULL },
+    { "paste", activate_action, NULL, NULL,      NULL },
+    { "bold",  activate_toggle, NULL, "true",    NULL },
+    { "lang",  activate_radio,  "s",  "'latin'", NULL },
+  };
+  GError *error = NULL;
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  group = g_simple_action_group_new ();
+  g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
+
+  g_action_group_dbus_export_start (bus, "/", G_ACTION_GROUP (group), &error);
+  g_assert_no_error (error);
+
+  g_assert (g_action_group_dbus_export_query (G_ACTION_GROUP (group), NULL, NULL));
+  proxy = NULL;
+
+  g_dbus_action_group_new (bus, g_dbus_connection_get_unique_name (bus), "/", 0, NULL, got_proxy, NULL);
+  g_assert_no_error (error);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert (G_IS_DBUS_ACTION_GROUP (proxy));
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  action = g_simple_action_new_stateful ("italic", NULL, g_variant_new_boolean (FALSE));
+  g_simple_action_group_insert (group, G_ACTION (action));
+  g_object_unref (action);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  action = G_SIMPLE_ACTION (g_simple_action_group_lookup (group, "cut"));
+  g_simple_action_set_enabled (action, FALSE);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  action = G_SIMPLE_ACTION (g_simple_action_group_lookup (group, "bold"));
+  g_simple_action_set_state (action, g_variant_new_boolean (FALSE));
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  g_simple_action_group_remove (group, "italic");
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  g_action_group_dbus_export_stop (G_ACTION_GROUP (group));
+  g_assert (!g_action_group_dbus_export_query (G_ACTION_GROUP (group), NULL, NULL));
+
+  g_object_unref (proxy);
+  g_object_unref (group);
+  g_main_loop_unref (loop);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -372,6 +585,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
+  g_test_add_func ("/actions/dbus/export", test_dbus_export);
 
   return g_test_run ();
 }
