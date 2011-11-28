@@ -479,7 +479,7 @@ g_menu_proxy_group_create_item (GMenuProxyGroup *context,
  * We have to take care with regards to signal subscriptions (ie:
  * activation of the GMenuProxyPath).  The signal subscription is always
  * established when transitioning from OFFLINE to PENDING and taken down
- * when transitioning from to OFFLINE (from either PENDING or ONLINE).
+ * when transitioning to OFFLINE (from either PENDING or ONLINE).
  *
  * Since there are two places where we transition to OFFLINE, we split
  * that code out into a separate function.
