@@ -584,6 +584,7 @@ test_dbus_roundtrip (void)
 {
   struct roundtrip_state state;
   GDBusConnection *bus;
+  guint id;
 
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
@@ -595,14 +596,16 @@ test_dbus_roundtrip (void)
   state.count = 0;
   state.success = 0;
 
-  g_timeout_add (10, roundtrip_step, &state);
+  id = g_timeout_add (10, roundtrip_step, &state);
 
   state.loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (state.loop);
 
   g_main_loop_unref (state.loop);
+  g_source_remove (id);
   g_object_unref (state.proxy);
   g_menu_model_dbus_export_stop (G_MENU_MODEL (state.random));
+  g_assert (!g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
   g_object_unref (state.random);
   g_rand_free (state.rand);
   g_object_unref (bus);
@@ -627,7 +630,7 @@ stop_loop (gpointer data)
 
   g_main_loop_quit (loop);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -637,6 +640,8 @@ test_dbus_subscriptions (void)
   GMenu *menu;
   GMenuProxy *proxy;
   GMainLoop *loop;
+
+  loop = g_main_loop_new (NULL, FALSE);
 
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
@@ -655,7 +660,6 @@ test_dbus_subscriptions (void)
 
   g_assert_cmpint (items_changed_count, ==, 0);
 
-  loop = g_main_loop_new (NULL, FALSE);
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
 
@@ -665,7 +669,6 @@ test_dbus_subscriptions (void)
   g_main_loop_run (loop);
 
   g_assert_cmpint (items_changed_count, ==, 1);
-
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
 
   g_timeout_add (100, stop_loop, loop);
@@ -677,7 +680,7 @@ test_dbus_subscriptions (void)
   g_menu_remove (menu, 0);
   g_menu_remove (menu, 0);
 
-  g_timeout_add (100, stop_loop, loop);
+  g_timeout_add (200, stop_loop, loop);
   g_main_loop_run (loop);
 
   g_assert_cmpint (items_changed_count, ==, 6);
@@ -698,6 +701,8 @@ test_dbus_subscriptions (void)
 
   g_menu_model_dbus_export_stop (G_MENU_MODEL (menu));
   g_object_unref (menu);
+
+  g_main_loop_unref (loop);
 }
 
 static void
