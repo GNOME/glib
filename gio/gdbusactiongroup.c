@@ -184,7 +184,7 @@ g_dbus_action_group_query_action (GActionGroup        *g_group,
     *state_hint = NULL;
 
   if (state)
-    *state = g_variant_ref (info->state);
+    *state = info->state ? g_variant_ref (info->state) : NULL;
 
   return TRUE;
 }
