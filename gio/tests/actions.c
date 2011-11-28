@@ -382,10 +382,34 @@ test_entries (void)
   g_object_unref (actions);
 }
 
+
+GHashTable *activation_counts;
+
+static void
+count_activation (const gchar *action)
+{
+  gint count;
+
+  if (activation_counts == NULL)
+    activation_counts = g_hash_table_new (g_str_hash, g_str_equal);
+  count = GPOINTER_TO_INT (g_hash_table_lookup (activation_counts, action));
+  count++;
+  g_hash_table_insert (activation_counts, (gpointer)action, GINT_TO_POINTER (count));
+}
+
+static gint
+activation_count (const gchar *action)
+{
+  if (activation_counts == NULL)
+    return 0;
+
+  return GPOINTER_TO_INT (g_hash_table_lookup (activation_counts, action));
+}
+
 static void
 activate_action (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-  g_print ("Action %s activated\n", g_action_get_name (G_ACTION (action)));
+  count_activation (g_action_get_name (G_ACTION (action)));
 }
 
 static void
@@ -393,14 +417,10 @@ activate_toggle (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
   GVariant *old_state, *new_state;
 
+  count_activation (g_action_get_name (G_ACTION (action)));
+
   old_state = g_action_get_state (G_ACTION (action));
   new_state = g_variant_new_boolean (!g_variant_get_boolean (old_state));
-
-  g_print ("Toggle action %s activated, state changes from %d to %d\n",
-           g_action_get_name (G_ACTION (action)),
-           g_variant_get_boolean (old_state),
-           g_variant_get_boolean (new_state));
-
   g_simple_action_set_state (action, new_state);
   g_variant_unref (old_state);
 }
@@ -408,18 +428,12 @@ activate_toggle (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 static void
 activate_radio (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-  GVariant *old_state, *new_state;
+  GVariant *new_state;
 
-  old_state = g_action_get_state (G_ACTION (action));
+  count_activation (g_action_get_name (G_ACTION (action)));
+
   new_state = g_variant_new_string (g_variant_get_string (parameter, NULL));
-
-  g_print ("Radio action %s activated, state changes from %s to %s\n",
-           g_action_get_name (G_ACTION (action)),
-           g_variant_get_string (old_state, NULL),
-           g_variant_get_string (new_state, NULL));
-
   g_simple_action_set_state (action, new_state);
-  g_variant_unref (old_state);
 }
 
 static gboolean
@@ -512,6 +526,7 @@ test_dbus_export (void)
     { "lang",  activate_radio,  "s",  "'latin'", NULL },
   };
   GError *error = NULL;
+  GVariant *v;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -532,9 +547,11 @@ test_dbus_export (void)
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
 
+  /* test that the initial transfer works */
   g_assert (G_IS_DBUS_ACTION_GROUP (proxy));
   g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
 
+  /* test that various changes get propagated from group to proxy */
   action = g_simple_action_new_stateful ("italic", NULL, g_variant_new_boolean (FALSE));
   g_simple_action_group_insert (group, G_ACTION (action));
   g_object_unref (action);
@@ -566,6 +583,40 @@ test_dbus_export (void)
   g_main_loop_run (loop);
 
   g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  /* test that activations and state changes propagate the other way */
+
+  g_assert_cmpint (activation_count ("copy"), ==, 0);
+  g_action_group_activate_action (G_ACTION_GROUP (proxy), "copy", NULL);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (activation_count ("copy"), ==, 1);
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+
+  g_assert_cmpint (activation_count ("bold"), ==, 0);
+  g_action_group_activate_action (G_ACTION_GROUP (proxy), "bold", NULL);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (activation_count ("bold"), ==, 1);
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+  v = g_action_group_get_action_state (G_ACTION_GROUP (group), "bold");
+  g_assert (g_variant_get_boolean (v));
+  g_variant_unref (v);
+
+  g_action_group_change_action_state (G_ACTION_GROUP (proxy), "bold", g_variant_new_boolean (FALSE));
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (activation_count ("bold"), ==, 1);
+  g_assert (compare_action_groups (G_ACTION_GROUP (group), G_ACTION_GROUP (proxy)));
+  v = g_action_group_get_action_state (G_ACTION_GROUP (group), "bold");
+  g_assert (!g_variant_get_boolean (v));
+  g_variant_unref (v);
 
   g_action_group_dbus_export_stop (G_ACTION_GROUP (group));
   g_assert (!g_action_group_dbus_export_query (G_ACTION_GROUP (group), NULL, NULL));
