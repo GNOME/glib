@@ -230,13 +230,7 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
                               GError              **error)
 {
   const char *symbol;
-  ffi_type *rtype;
-  ffi_type **atypes;
-  GITypeInfo *tinfo;
-  GIArgInfo *ainfo;
-  gboolean is_method;
-  gboolean throws;
-  gint n_args, n_invoke_args, i;
+  gpointer addr;
 
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (invoker != NULL, FALSE);
@@ -244,7 +238,7 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
   symbol = g_function_info_get_symbol ((GIFunctionInfo*) info);
 
   if (!g_typelib_symbol (g_base_info_get_typelib((GIBaseInfo *) info),
-                         symbol, &(invoker->native_address)))
+                         symbol, &addr))
     {
       g_set_error (error,
                    G_INVOKE_ERROR,
@@ -254,15 +248,72 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
       return FALSE;
     }
 
-  is_method = (g_function_info_get_flags (info) & GI_FUNCTION_IS_METHOD) != 0
-    && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
-  throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
+  return g_function_invoker_new_for_address (addr, info, invoker, error);
+}
 
-  tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
+/**
+ * g_function_invoker_new_for_address:
+ * @addr: The address
+ * @info: A #GICallableInfo
+ * @invoker: Output invoker structure
+ * @error: A #GError
+ *
+ * Initialize the caller-allocated @invoker structure with a cache
+ * of information needed to invoke the C function corresponding to
+ * @info with the platform's default ABI.
+ *
+ * A primary intent of this function is that a dynamic structure allocated
+ * by a language binding could contain a #GIFunctionInvoker structure
+ * inside the binding's function mapping.
+ *
+ * Returns: %TRUE on success, %FALSE otherwise with @error set.
+ */
+gboolean
+g_function_invoker_new_for_address (gpointer           addr,
+                                    GICallableInfo    *info,
+                                    GIFunctionInvoker *invoker,
+                                    GError           **error)
+{
+  ffi_type *rtype;
+  ffi_type **atypes;
+  GITypeInfo *tinfo;
+  GIArgInfo *ainfo;
+  GIInfoType info_type;
+  gboolean is_method;
+  gboolean throws;
+  gint n_args, n_invoke_args, i;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (invoker != NULL, FALSE);
+
+  invoker->native_address = addr;
+
+  info_type = g_base_info_get_type ((GIBaseInfo *) info);
+
+  switch (info_type)
+    {
+    case GI_INFO_TYPE_FUNCTION:
+      {
+        GIFunctionInfoFlags flags;
+        flags = g_function_info_get_flags ((GIFunctionInfo *)info);
+        is_method = (flags & GI_FUNCTION_IS_METHOD) != 0;
+        throws = (flags & GI_FUNCTION_THROWS) != 0;
+      }
+      break;
+    case GI_INFO_TYPE_CALLBACK:
+    case GI_INFO_TYPE_VFUNC:
+      is_method = TRUE;
+      throws = FALSE;
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  tinfo = g_callable_info_get_return_type (info);
   rtype = g_type_info_get_ffi_type (tinfo);
   g_base_info_unref ((GIBaseInfo *)tinfo);
 
-  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
+  n_args = g_callable_info_get_n_args (info);
   if (is_method)
     n_invoke_args = n_args+1;
   else
@@ -282,7 +333,7 @@ g_function_info_prep_invoker (GIFunctionInfo       *info,
   for (i = 0; i < n_args; i++)
     {
       int offset = (is_method ? 1 : 0);
-      ainfo = g_callable_info_get_arg ((GICallableInfo *)info, i);
+      ainfo = g_callable_info_get_arg (info, i);
       switch (g_arg_info_get_direction (ainfo))
         {
           case GI_DIRECTION_IN:

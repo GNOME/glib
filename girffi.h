@@ -53,6 +53,11 @@ gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                    GIFunctionInvoker    *invoker,
                                                    GError              **error);
 
+gboolean      g_function_invoker_new_for_address  (gpointer              addr,
+                                                   GICallableInfo       *info,
+                                                   GIFunctionInvoker    *invoker,
+                                                   GError              **error);
+
 void          g_function_invoker_destroy          (GIFunctionInvoker    *invoker);
 
 
