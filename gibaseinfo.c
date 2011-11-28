@@ -254,7 +254,7 @@ g_base_info_unref (GIBaseInfo *info)
         g_object_unref (rinfo->repository);
 
       if (rinfo->type == GI_INFO_TYPE_UNRESOLVED)
-        g_slice_free (GIUnresolvedInfo, rinfo);
+        g_slice_free (GIUnresolvedInfo, (GIUnresolvedInfo *) rinfo);
       else
         g_slice_free (GIRealInfo, rinfo);
     }
