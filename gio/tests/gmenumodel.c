@@ -608,6 +608,99 @@ test_dbus_roundtrip (void)
   g_object_unref (bus);
 }
 
+static gint items_changed_count;
+
+static void
+items_changed (GMenuModel *model,
+               gint        position,
+               gint        removed,
+               gint        added,
+               gpointer    data)
+{
+  items_changed_count++;
+}
+
+static gboolean
+stop_loop (gpointer data)
+{
+  GMainLoop *loop = data;
+
+  g_main_loop_quit (loop);
+
+  return FALSE;
+}
+
+static void
+test_dbus_subscriptions (void)
+{
+  GDBusConnection *bus;
+  GMenu *menu;
+  GMenuProxy *proxy;
+  GVariant *v;
+  GMainLoop *loop;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  menu = g_menu_new ();
+
+  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (menu), NULL);
+
+  proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  items_changed_count = 0;
+  g_signal_connect (proxy, "items-changed",
+                    G_CALLBACK (items_changed), NULL);
+
+  g_menu_append (menu, "item1", NULL);
+  g_menu_append (menu, "item2", NULL);
+  g_menu_append (menu, "item3", NULL);
+
+  g_assert_cmpint (items_changed_count, ==, 0);
+
+  loop = g_main_loop_new (NULL, FALSE);
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_menu_model_get_n_items (G_MENU_MODEL (proxy));
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (items_changed_count, ==, 1);
+
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_menu_append (menu, "item4", NULL);
+  g_menu_append (menu, "item5", NULL);
+  g_menu_append (menu, "item6", NULL);
+  g_menu_remove (menu, 0);
+  g_menu_remove (menu, 0);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (items_changed_count, ==, 6);
+
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 4);
+  g_object_unref (proxy);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_menu_remove (menu, 0);
+  g_menu_remove (menu, 0);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (items_changed_count, ==, 6);
+
+  g_menu_model_dbus_export_stop (G_MENU_MODEL (menu));
+  g_object_unref (menu);
+}
+
 static void
 start_element (GMarkupParseContext *context,
                const gchar         *element_name,
@@ -828,7 +921,73 @@ test_mutable (void)
   g_object_unref (menu);
 }
 
-/* Epilogue {{{1 */
+static void
+test_misc (void)
+{
+  /* trying to use most of the GMenu api for constructing the
+   * same menu two different ways
+   */
+  GMenu *a, *m, *m2;
+  GMenuModel *b;
+  GMenuItem *item;
+  const gchar *s;
+
+  a = g_menu_new ();
+  item = g_menu_item_new ("test1", "action1::target1");
+  g_menu_prepend_item (a, item);
+  g_object_unref (item);
+
+  m = g_menu_new ();
+  g_menu_prepend (m, "test2a", "action2");
+  g_menu_append (m, "test2c", NULL);
+  g_menu_insert (m, 1, "test2b", NULL);
+
+  item = g_menu_item_new_submenu ("test2", G_MENU_MODEL (m));
+  g_menu_append_item (a, item);
+  g_object_unref (item);
+  g_object_unref (m);
+
+  m = g_menu_new ();
+
+  m2 = g_menu_new ();
+  g_menu_append (m2, "x", NULL);
+  g_menu_prepend_section (m, "test3a", G_MENU_MODEL (m2));
+  g_object_unref (m2);
+
+  item = g_menu_item_new_section ("test3", G_MENU_MODEL (m));
+  g_menu_insert_item (a, -1, item);
+  g_object_unref (item);
+  g_object_unref (m);
+
+  s = ""
+"<menu>"
+"  <item target='target1' action='action1' label='test1'/>"
+"  <item label='test2'>"
+"    <link name='submenu'>"
+"      <item action='action2' label='test2a'/>"
+"      <item label='test2b'/>"
+"      <item label='test2c'/>"
+"    </link>"
+"  </item>"
+"  <item label='test3'>"
+"    <link name='section'>"
+"      <item label='test3a'>"
+"        <link name='section'>"
+"          <item label='x'/>"
+"        </link>"
+"      </item>"
+"    </link>"
+"  </item>"
+"</menu>";
+
+  b = parse_menu_string (s, NULL);
+
+  assert_menus_equal (G_MENU_MODEL (a), G_MENU_MODEL (b));
+  g_object_unref (a);
+  g_object_unref (b);
+}
+
+ /* Epilogue {{{1 */
 int
 main (int argc, char **argv)
 {
@@ -838,11 +997,13 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gmenu/equality", test_equality);
   g_test_add_func ("/gmenu/random", test_random);
-  g_test_add_func ("/gmenu/bus/roundtrip", test_dbus_roundtrip);
+  g_test_add_func ("/gmenu/dbus/roundtrip", test_dbus_roundtrip);
+  g_test_add_func ("/gmenu/dbus/subscriptions", test_dbus_subscriptions);
   g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
+  g_test_add_func ("/gmenu/misc", test_misc);
 
   return g_test_run ();
 }
