@@ -546,6 +546,7 @@ test_random (void)
 struct roundtrip_state
 {
   RandomMenu *random;
+  MirrorMenu *proxy_mirror;
   GMenuProxy *proxy;
   GMainLoop *loop;
   GRand *rand;
@@ -558,7 +559,8 @@ roundtrip_step (gpointer data)
 {
   struct roundtrip_state *state = data;
 
-  if (check_menus_equal (G_MENU_MODEL (state->random), G_MENU_MODEL (state->proxy)))
+  if (check_menus_equal (G_MENU_MODEL (state->random), G_MENU_MODEL (state->proxy)) &&
+      check_menus_equal (G_MENU_MODEL (state->random), G_MENU_MODEL (state->proxy_mirror)))
     {
       state->success++;
       state->count = 0;
@@ -590,10 +592,11 @@ test_dbus_roundtrip (void)
 
   state.rand = g_rand_new_with_seed (g_test_rand_int ());
 
-  state.random = random_menu_new (state.rand, TOP_ORDER);
+  state.random = random_menu_new (state.rand, 2);
   g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (state.random), NULL);
   g_assert (g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
   state.proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  state.proxy_mirror = mirror_menu_new (G_MENU_MODEL (state.proxy));
   state.count = 0;
   state.success = 0;
 
@@ -608,6 +611,7 @@ test_dbus_roundtrip (void)
   g_menu_model_dbus_export_stop (G_MENU_MODEL (state.random));
   g_assert (!g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
   g_object_unref (state.random);
+  g_object_unref (state.proxy_mirror);
   g_rand_free (state.rand);
   g_object_unref (bus);
 }
