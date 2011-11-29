@@ -269,7 +269,10 @@ g_menu_exporter_menu_create_links (GMenuExporterMenu *menu,
       GMenuExporterGroup *group;
       GMenuExporterLink *tmp;
 
-      if (0) /* [magic] */
+      /* keep sections in the same group, but create new groups
+       * otherwise
+       */
+      if (!g_str_equal (name, "section"))
         group = g_menu_exporter_create_group (g_menu_exporter_group_get_exporter (menu->group));
       else
         group = menu->group;
