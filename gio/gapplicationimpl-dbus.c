@@ -41,6 +41,7 @@ get_interface (const gchar *name)
 {
   static GDBusInterfaceInfo *org_gtk_Application;
   static GDBusInterfaceInfo *org_gtk_private_CommandLine;
+  static GDBusInterfaceInfo *org_gtk_Actions;
 
   if (org_gtk_Application == NULL)
     {
@@ -73,6 +74,21 @@ get_interface (const gchar *name)
         "      <arg type='s' name='message' direction='in'/>"
         "    </method>"
         "  </interface>"
+        "  <interface name='org.gtk.Actions'>"
+        "    <method name='DescribeAll'>"
+        "      <arg type='a(savbav)' name='list' direction='out'/>"
+        "    </method>"
+        "    <method name='SetState'>"
+        "      <arg type='s' name='action_name' direction='in'/>"
+        "      <arg type='v' name='value' direction='in'/>"
+        "      <arg type='a{sv}' name='platform_data' direction='in'/>"
+        "    </method>"
+        "    <method name='Activate'>"
+        "      <arg type='s' name='action_name' direction='in'/>"
+        "      <arg type='av' name='parameter' direction='in'/>"
+        "      <arg type='a{sv}' name='platform_data' direction='in'/>"
+        "    </method>"
+        "  </interface>"
         "</node>", &error);
 
       if (info == NULL)
@@ -86,13 +102,19 @@ get_interface (const gchar *name)
       g_assert (org_gtk_private_CommandLine != NULL);
       g_dbus_interface_info_ref (org_gtk_private_CommandLine);
 
+      org_gtk_Actions = g_dbus_node_info_lookup_interface (info, "org.gtk.Actions");
+      g_assert (org_gtk_Actions != NULL);
+      g_dbus_interface_info_ref (org_gtk_Actions);
+
       g_dbus_node_info_unref (info);
     }
 
   if (strcmp (name, "org.gtk.Application") == 0)
     return org_gtk_Application;
-  else
+  else if (strcmp (name, "org.gtk.private.CommandLine") == 0)
     return org_gtk_private_CommandLine;
+  else
+    return org_gtk_Actions;
 }
 
 /* GApplication implementation {{{1 */
@@ -584,8 +606,7 @@ g_application_impl_register (GApplication       *application,
       impl->action_id =
         g_dbus_connection_register_object (impl->session_bus,
                                            impl->object_path,
-                                           (GDBusInterfaceInfo *)
-                                             &org_gtk_Actions,
+                                           get_interface ("org.gtk.Actions"),
                                            &actions_vtable,
                                            impl, NULL, error);
 
