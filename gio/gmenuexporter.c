@@ -857,7 +857,7 @@ g_menu_exporter_new (GDBusConnection  *connection,
 
 /* {{{1 Public API */
 
-static GHashTable *g_menu_exporter_exported_menus;
+static GHashTable *exported_menus;
 
 /**
  * g_menu_model_dbus_export_start:
@@ -891,12 +891,13 @@ g_menu_model_dbus_export_start (GDBusConnection  *connection,
 {
   GMenuExporter *exporter;
 
-  if G_UNLIKELY (g_menu_exporter_exported_menus == NULL)
-    g_menu_exporter_exported_menus = g_hash_table_new (NULL, NULL);
+  if G_UNLIKELY (exported_menus == NULL)
+    exported_menus = g_hash_table_new (NULL, NULL);
 
-  if G_UNLIKELY (g_hash_table_lookup (g_menu_exporter_exported_menus, menu))
+  if G_UNLIKELY (g_hash_table_lookup (exported_menus, menu))
     {
-      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FILE_EXISTS, "The given GMenuModel has already been exported");
+      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FILE_EXISTS,
+                   "The given GMenuModel has already been exported");
       return FALSE;
     }
 
@@ -905,7 +906,7 @@ g_menu_model_dbus_export_start (GDBusConnection  *connection,
   if (exporter == NULL)
     return FALSE;
 
-  g_hash_table_insert (g_menu_exporter_exported_menus, menu, exporter);
+  g_hash_table_insert (exported_menus, menu, exporter);
 
   return TRUE;
 }
@@ -927,14 +928,14 @@ g_menu_model_dbus_export_stop (GMenuModel *menu)
 {
   GMenuExporter *exporter;
 
-  if G_UNLIKELY (g_menu_exporter_exported_menus == NULL)
+  if G_UNLIKELY (exported_menus == NULL)
     return FALSE;
 
-  exporter = g_hash_table_lookup (g_menu_exporter_exported_menus, menu);
+  exporter = g_hash_table_lookup (exported_menus, menu);
   if G_UNLIKELY (exporter == NULL)
     return FALSE;
 
-  g_hash_table_remove (g_menu_exporter_exported_menus, menu);
+  g_hash_table_remove (exported_menus, menu);
   g_menu_exporter_free (exporter);
 
   return TRUE;
@@ -965,10 +966,10 @@ g_menu_model_dbus_export_query (GMenuModel       *menu,
 {
   GMenuExporter *exporter;
 
-  if (g_menu_exporter_exported_menus == NULL)
+  if (exported_menus == NULL)
     return FALSE;
 
-  exporter = g_hash_table_lookup (g_menu_exporter_exported_menus, menu);
+  exporter = g_hash_table_lookup (exported_menus, menu);
   if (exporter == NULL)
     return FALSE;
 
