@@ -3826,7 +3826,7 @@ g_file_query_writable_namespaces (GFile         *file,
  * @file: input #GFile.
  * @attribute: a string containing the attribute's name.
  * @type: The type of the attribute
- * @value_p: a pointer to the value (or the pointer itself if the type is a pointer type)
+ * @value_p: (allow-none): a pointer to the value (or the pointer itself if the type is a pointer type)
  * @flags: a set of #GFileQueryInfoFlags.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL
@@ -3834,7 +3834,7 @@ g_file_query_writable_namespaces (GFile         *file,
  * Sets an attribute in the file with attribute name @attribute to @value.
  *
  * Some attributes can be unset by setting @attribute to
- * %G_FILE_ATTRIBUTE_TYPE_INVALID and @value to %NULL.
+ * %G_FILE_ATTRIBUTE_TYPE_INVALID and @value_p to %NULL.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
