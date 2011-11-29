@@ -91,7 +91,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not create netlink socket: %s"),
+		   _("Could not create network monitor: %s"),
 		   g_strerror (errno));
       return FALSE;
     }
@@ -103,7 +103,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not bind netlink socket: %s"),
+		   _("Could not create network monitor: %s"),
 		   g_strerror (errno));
       close (sockfd);
       return FALSE;
@@ -114,7 +114,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not set options on netlink socket: %s"),
+		   _("Could not create network monitor: %s"),
 		   g_strerror (errno));
       close (sockfd);
       return FALSE;
@@ -123,7 +123,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
   nl->priv->sock = g_socket_new_from_fd (sockfd, error);
   if (error)
     {
-      g_prefix_error (error, "%s", _("Could not wrap netlink socket: "));
+      g_prefix_error (error, "%s", _("Could not create network monitor: "));
       close (sockfd);
       return FALSE;
     }
@@ -171,7 +171,7 @@ request_dump (GNetworkMonitorNetlink  *nl,
   if (g_socket_send (nl->priv->sock, buf, sizeof (buf),
 		     NULL, error) < 0)
     {
-      g_prefix_error (error, "%s", _("Could not send netlink request: "));
+      g_prefix_error (error, "%s", _("Could not get network status: "));
       return FALSE;
     }
 
