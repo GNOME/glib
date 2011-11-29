@@ -197,7 +197,7 @@ g_zlib_decompressor_constructed (GObject *object)
     }
   else if (decompressor->format == G_ZLIB_COMPRESSOR_FORMAT_RAW)
     {
-      /* Negative for gzip */
+      /* Negative for raw */
       res = inflateInit2 (&decompressor->zstream, -MAX_WBITS);
     }
   else /* ZLIB */
