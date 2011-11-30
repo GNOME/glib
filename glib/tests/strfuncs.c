@@ -874,33 +874,12 @@ check_strtod_string (gchar    *number,
 
   for (l = 0; l < G_N_ELEMENTS (locales); l++)
     {
-      gboolean ok;
       gchar *end = "(unset)";
 
       setlocale (LC_NUMERIC, locales[l]);
       d = g_ascii_strtod (number, &end);
-      ok = isnan (res) ? isnan (d) : (d == res);
-      if (!ok)
-	{
-	  g_error ("g_ascii_strtod on \"%s\" for locale %s failed\n" \
-                   "expected %f (nan %d) actual %f (nan %d)\n", 
-		   number, locales[l],
-		   res, isnan (res),
-		   d, isnan (d));
-	}
-
-      ok = (end - number) == (check_end ? correct_len : strlen (number));
-      if (!ok) {
-	if (end == NULL)
-	  g_error ("g_ascii_strtod on \"%s\" for locale %s endptr was NULL\n",
-		   number, locales[l]);
-	else if (end >= number && end <= number + strlen (number))
-	  g_error ("g_ascii_strtod on \"%s\" for locale %s endptr was wrong, leftover: \"%s\"\n",
-		   number, locales[l], end);
-	else
-	  g_error ("g_ascii_strtod on \"%s\" for locale %s endptr was REALLY wrong (number=%p, end=%p)\n",
-		   number, locales[l], number, end);
-      }
+      g_assert (isnan (res) ? isnan (d) : (d == res));
+      g_assert ((end - number) == (check_end ? correct_len : strlen (number)));
     }
 
   g_free (number);
