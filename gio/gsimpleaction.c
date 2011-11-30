@@ -208,6 +208,37 @@ g_simple_action_activate (GAction  *action,
 }
 
 static void
+g_simple_action_set_property (GObject    *object,
+                              guint       prop_id,
+                              const GValue     *value,
+                              GParamSpec *pspec)
+{
+  GSimpleAction *action = G_SIMPLE_ACTION (object);
+
+  switch (prop_id)
+    {
+    case PROP_NAME:
+      action->name = g_strdup (g_value_get_string (value));
+      break;
+      
+    case PROP_PARAMETER_TYPE:
+      action->parameter_type = g_value_dup_boxed (value);
+      break;
+
+    case PROP_ENABLED:
+      action->enabled = g_value_get_boolean (value);
+      break;
+
+    case PROP_STATE:
+      action->state = g_value_dup_variant (value);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static void
 g_simple_action_get_property (GObject    *object,
                               guint       prop_id,
                               GValue     *value,
@@ -280,6 +311,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
+  object_class->set_property = g_simple_action_set_property;
   object_class->get_property = g_simple_action_get_property;
   object_class->finalize = g_simple_action_finalize;
 
@@ -367,7 +399,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
                                                         P_("Action Name"),
                                                         P_("The name used to invoke the action"),
                                                         NULL,
-                                                        G_PARAM_READABLE |
+                                                        G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
@@ -383,7 +416,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
                                                        P_("Parameter Type"),
                                                        P_("The type of GVariant passed to activate()"),
                                                        G_TYPE_VARIANT_TYPE,
-                                                       G_PARAM_READABLE |
+                                                       G_PARAM_READWRITE |
+						       G_PARAM_CONSTRUCT_ONLY |
                                                        G_PARAM_STATIC_STRINGS));
 
   /**
@@ -401,7 +435,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
                                                          P_("Enabled"),
                                                          P_("If the action can be activated"),
                                                          TRUE,
-                                                         G_PARAM_READABLE |
+							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
@@ -433,7 +468,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
                                                          P_("The state the action is in"),
                                                          G_VARIANT_TYPE_ANY,
                                                          NULL,
-                                                         G_PARAM_READABLE |
+							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
 }
 
@@ -483,19 +519,10 @@ GSimpleAction *
 g_simple_action_new (const gchar        *name,
                      const GVariantType *parameter_type)
 {
-  GSimpleAction *simple;
-
-  g_return_val_if_fail (name != NULL, NULL);
-
-  simple = g_object_new (G_TYPE_SIMPLE_ACTION, NULL);
-  simple->name = g_strdup (name);
-
-  if (parameter_type)
-    simple->parameter_type = g_variant_type_copy (parameter_type);
-
-  simple->enabled = TRUE;
-
-  return simple;
+  return (GSimpleAction*) g_object_new (G_TYPE_SIMPLE_ACTION,
+					"name", name,
+					"parameter-type", parameter_type,
+					NULL);
 }
 
 /**
@@ -520,20 +547,9 @@ g_simple_action_new_stateful (const gchar        *name,
                               const GVariantType *parameter_type,
                               GVariant           *state)
 {
-  GSimpleAction *simple;
-
-  g_return_val_if_fail (name != NULL, NULL);
-  g_return_val_if_fail (state != NULL, NULL);
-
-  simple = g_object_new (G_TYPE_SIMPLE_ACTION, NULL);
-  simple->name = g_strdup (name);
-
-  if (parameter_type)
-    simple->parameter_type = g_variant_type_copy (parameter_type);
-
-  simple->state = g_variant_ref_sink (state);
-
-  simple->enabled = TRUE;
-
-  return simple;
+  return (GSimpleAction*) g_object_new (G_TYPE_SIMPLE_ACTION,
+					"name", name,
+					"parameter-type", parameter_type,
+					"state", state,
+					NULL);
 }
