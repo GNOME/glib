@@ -622,11 +622,11 @@ g_memory_output_stream_write_async (GOutputStream       *stream,
   GSimpleAsyncResult *simple;
   gssize nwritten;
 
-  nwritten = g_memory_output_stream_write (stream,
-                                           buffer,
-                                           count,
-                                           cancellable,
-                                           NULL);
+  nwritten = g_output_stream_write (stream,
+				    buffer,
+				    count,
+				    cancellable,
+				    NULL);
 
   simple = g_simple_async_result_new (G_OBJECT (stream),
                                       callback,

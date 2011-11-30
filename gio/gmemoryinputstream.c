@@ -347,7 +347,7 @@ g_memory_input_stream_read_async (GInputStream        *stream,
   GSimpleAsyncResult *simple;
   gssize nread;
 
-  nread = g_memory_input_stream_read (stream, buffer, count, cancellable, NULL);
+  nread = g_input_stream_read (stream, buffer, count, cancellable, NULL);
   simple = g_simple_async_result_new (G_OBJECT (stream),
 				      callback,
 				      user_data,
@@ -383,7 +383,7 @@ g_memory_input_stream_skip_async (GInputStream        *stream,
   GSimpleAsyncResult *simple;
   gssize nskipped;
 
-  nskipped = g_memory_input_stream_skip (stream, count, cancellable, NULL);
+  nskipped = g_input_stream_skip (stream, count, cancellable, NULL);
   simple = g_simple_async_result_new (G_OBJECT (stream),
                                       callback,
                                       user_data,
