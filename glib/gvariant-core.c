@@ -619,6 +619,9 @@ g_variant_is_trusted (GVariant *value)
 void
 g_variant_unref (GVariant *value)
 {
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (value->ref_count > 0);
+
   if (g_atomic_int_dec_and_test (&value->ref_count))
     {
       if G_UNLIKELY (value->state & STATE_LOCKED)
@@ -652,6 +655,9 @@ g_variant_unref (GVariant *value)
 GVariant *
 g_variant_ref (GVariant *value)
 {
+  g_return_val_if_fail (value != NULL, NULL);
+  g_return_val_if_fail (value->ref_count > 0, NULL);
+
   g_atomic_int_inc (&value->ref_count);
 
   return value;
@@ -691,6 +697,9 @@ g_variant_ref (GVariant *value)
 GVariant *
 g_variant_ref_sink (GVariant *value)
 {
+  g_return_val_if_fail (value != NULL, NULL);
+  g_return_val_if_fail (value->ref_count > 0, NULL);
+
   g_variant_lock (value);
 
   if (~value->state & STATE_FLOATING)
@@ -746,6 +755,7 @@ GVariant *
 g_variant_take_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
+  g_return_val_if_fail (value->ref_count > 0, NULL);
 
   g_atomic_int_and (&value->state, ~STATE_FLOATING);
 
