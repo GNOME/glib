@@ -22,6 +22,7 @@
 #include "gsimpleactiongroup.h"
 
 #include "gsimpleaction.h"
+#include "gactionmap.h"
 #include "gaction.h"
 
 /**
@@ -39,10 +40,13 @@ struct _GSimpleActionGroupPrivate
 };
 
 static void g_simple_action_group_iface_init (GActionGroupInterface *);
+static void g_simple_action_group_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GSimpleActionGroup,
   g_simple_action_group, G_TYPE_OBJECT,
   G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
-    g_simple_action_group_iface_init))
+    g_simple_action_group_iface_init);
+  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP,
+    g_simple_action_group_map_iface_init))
 
 static gchar **
 g_simple_action_group_list_actions (GActionGroup *group)
@@ -167,6 +171,67 @@ g_simple_action_group_disconnect (gpointer key,
                                         user_data);
 }
 
+static GAction *
+g_simple_action_group_lookup_action (GActionMap *action_map,
+                                     const gchar        *action_name)
+{
+  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (action_map);
+
+  return g_hash_table_lookup (simple->priv->table, action_name);
+}
+
+static void
+g_simple_action_group_add_action (GActionMap *action_map,
+                                  GAction    *action)
+{
+  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (action_map);
+  const gchar *action_name;
+  GAction *old_action;
+
+  action_name = g_action_get_name (action);
+  old_action = g_hash_table_lookup (simple->priv->table, action_name);
+
+  if (old_action != action)
+    {
+      if (old_action != NULL)
+        {
+          g_action_group_action_removed (G_ACTION_GROUP (simple),
+                                         action_name);
+          g_simple_action_group_disconnect (NULL, old_action, simple);
+        }
+
+      g_signal_connect (action, "notify::enabled",
+                        G_CALLBACK (action_enabled_notify), simple);
+
+      if (g_action_get_state_type (action) != NULL)
+        g_signal_connect (action, "notify::state",
+                          G_CALLBACK (action_state_notify), simple);
+
+      g_hash_table_insert (simple->priv->table,
+                           g_strdup (action_name),
+                           g_object_ref (action));
+
+      g_action_group_action_added (G_ACTION_GROUP (simple), action_name);
+    }
+}
+
+static void
+g_simple_action_group_remove_action (GActionMap  *action_map,
+                                     const gchar *action_name)
+{
+  GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (action_map);
+  GAction *action;
+
+  action = g_hash_table_lookup (simple->priv->table, action_name);
+
+  if (action != NULL)
+    {
+      g_action_group_action_removed (G_ACTION_GROUP (simple), action_name);
+      g_simple_action_group_disconnect (NULL, action, simple);
+      g_hash_table_remove (simple->priv->table, action_name);
+    }
+}
+
 static void
 g_simple_action_group_finalize (GObject *object)
 {
@@ -210,6 +275,14 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
   iface->activate_action = g_simple_action_group_activate;
 }
 
+static void
+g_simple_action_group_map_iface_init (GActionMapInterface *iface)
+{
+  iface->add_action = g_simple_action_group_add_action;
+  iface->remove_action = g_simple_action_group_remove_action;
+  iface->lookup_action = g_simple_action_group_lookup_action;
+}
+
 /**
  * g_simple_action_group_new:
  *
@@ -244,7 +317,7 @@ g_simple_action_group_lookup (GSimpleActionGroup *simple,
 {
   g_return_val_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple), NULL);
 
-  return g_hash_table_lookup (simple->priv->table, action_name);
+  return g_action_map_lookup_action (G_ACTION_MAP (simple), action_name);
 }
 
 /**
@@ -265,37 +338,9 @@ void
 g_simple_action_group_insert (GSimpleActionGroup *simple,
                               GAction            *action)
 {
-  const gchar *action_name;
-  GAction *old_action;
-
   g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple));
-  g_return_if_fail (G_IS_ACTION (action));
 
-  action_name = g_action_get_name (action);
-  old_action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (old_action != action)
-    {
-      if (old_action != NULL)
-        {
-          g_action_group_action_removed (G_ACTION_GROUP (simple),
-                                         action_name);
-          g_simple_action_group_disconnect (NULL, old_action, simple);
-        }
-
-      g_signal_connect (action, "notify::enabled",
-                        G_CALLBACK (action_enabled_notify), simple);
-
-      if (g_action_get_state_type (action) != NULL)
-        g_signal_connect (action, "notify::state",
-                          G_CALLBACK (action_state_notify), simple);
-
-      g_hash_table_insert (simple->priv->table,
-                           g_strdup (action_name),
-                           g_object_ref (action));
-
-      g_action_group_action_added (G_ACTION_GROUP (simple), action_name);
-    }
+  g_action_map_add_action (G_ACTION_MAP (simple), action);
 }
 
 /**
@@ -313,46 +358,11 @@ void
 g_simple_action_group_remove (GSimpleActionGroup *simple,
                               const gchar        *action_name)
 {
-  GAction *action;
-
   g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple));
 
-  action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (action != NULL)
-    {
-      g_action_group_action_removed (G_ACTION_GROUP (simple), action_name);
-      g_simple_action_group_disconnect (NULL, action, simple);
-      g_hash_table_remove (simple->priv->table, action_name);
-    }
+  g_action_map_remove_action (G_ACTION_MAP (simple), action_name);
 }
 
-/**
- * GActionEntry:
- * @name: the name of the action
- * @activate: the callback to connect to the "activate" signal of the
- *            action
- * @parameter_type: the type of the parameter that must be passed to the
- *                  activate function for this action, given as a single
- *                  GVariant type string (or %NULL for no parameter)
- * @state: the initial state for this action, given in GVariant text
- *         format.  The state is parsed with no extra type information,
- *         so type tags must be added to the string if they are
- *         necessary.
- * @change_state: the callback to connect to the "change-state" signal
- *                of the action
- *
- * This struct defines a single action.  It is for use with
- * g_simple_action_group_add_entries().
- *
- * The order of the items in the structure are intended to reflect
- * frequency of use.  It is permissible to use an incomplete initialiser
- * in order to leave some of the later values as %NULL.  All values
- * after @name are optional.  Additional optional fields may be added in
- * the future.
- *
- * See g_simple_action_group_add_entries() for an example.
- **/
 
 /**
  * g_simple_action_group_add_entries:
@@ -365,44 +375,6 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
  * A convenience function for creating multiple #GSimpleAction instances
  * and adding them to the action group.
  *
- * Each action is constructed as per one #GActionEntry.
- *
- * <example>
- * <title>Using g_simple_action_group_add_entries()</title>
- * <programlisting>
- * static void
- * activate_quit (GSimpleAction *simple,
- *                GVariant      *parameter,
- *                gpointer       user_data)
- * {
- *   exit (0);
- * }
- *
- * static void
- * activate_print_string (GSimpleAction *simple,
- *                        GVariant      *parameter,
- *                        gpointer       user_data)
- * {
- *   g_print ("%s\n", g_variant_get_string (parameter, NULL));
- * }
- *
- * static GActionGroup *
- * create_action_group (void)
- * {
- *   const GActionEntry entries[] = {
- *     { "quit",         activate_quit              },
- *     { "print-string", activate_print_string, "s" }
- *   };
- *   GSimpleActionGroup *group;
- *
- *   group = g_simple_action_group_new ();
- *   g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
- *
- *   return G_ACTION_GROUP (group);
- * }
- * </programlisting>
- * </example>
- *
  * Since: 2.30
  **/
 void
@@ -411,71 +383,5 @@ g_simple_action_group_add_entries (GSimpleActionGroup *simple,
                                    gint                n_entries,
                                    gpointer            user_data)
 {
-  gint i;
-
-  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple));
-  g_return_if_fail (entries != NULL || n_entries == 0);
-
-  for (i = 0; n_entries == -1 ? entries[i].name != NULL : i < n_entries; i++)
-    {
-      const GActionEntry *entry = &entries[i];
-      const GVariantType *parameter_type;
-      GSimpleAction *action;
-
-      if (entry->parameter_type)
-        {
-          if (!g_variant_type_string_is_valid (entry->parameter_type))
-            {
-              g_critical ("g_simple_action_group_add_entries: the type "
-                          "string '%s' given as the parameter type for "
-                          "action '%s' is not a valid GVariant type "
-                          "string.  This action will not be added.",
-                          entry->parameter_type, entry->name);
-              return;
-            }
-
-          parameter_type = G_VARIANT_TYPE (entry->parameter_type);
-        }
-      else
-        parameter_type = NULL;
-
-      if (entry->state)
-        {
-          GError *error = NULL;
-          GVariant *state;
-
-          state = g_variant_parse (NULL, entry->state, NULL, NULL, &error);
-          if (state == NULL)
-            {
-              g_critical ("g_simple_action_group_add_entries: GVariant could "
-                          "not parse the state value given for action '%s' "
-                          "('%s'): %s.  This action will not be added.",
-                          entry->name, entry->state, error->message);
-              g_error_free (error);
-              continue;
-            }
-
-          action = g_simple_action_new_stateful (entry->name,
-                                                 parameter_type,
-                                                 state);
-
-          g_variant_unref (state);
-        }
-      else
-        {
-          action = g_simple_action_new (entry->name,
-                                        parameter_type);
-        }
-
-      if (entry->activate != NULL)
-        g_signal_connect (action, "activate",
-                          G_CALLBACK (entry->activate), user_data);
-
-      if (entry->change_state != NULL)
-        g_signal_connect (action, "change-state",
-                          G_CALLBACK (entry->change_state), user_data);
-
-      g_simple_action_group_insert (simple, G_ACTION (action));
-      g_object_unref (action);
-    }
+  g_action_map_add_action_entries (G_ACTION_MAP (simple), entries, n_entries, user_data);
 }

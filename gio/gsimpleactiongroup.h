@@ -27,6 +27,7 @@
 #define __G_SIMPLE_ACTION_GROUP_H__
 
 #include "gactiongroup.h"
+#include "gactionmap.h"
 
 G_BEGIN_DECLS
 
@@ -44,8 +45,6 @@ G_BEGIN_DECLS
 
 typedef struct _GSimpleActionGroupPrivate                   GSimpleActionGroupPrivate;
 typedef struct _GSimpleActionGroupClass                     GSimpleActionGroupClass;
-
-typedef struct _GActionEntry                                GActionEntry;
 
 /**
  * GSimpleActionGroup:
@@ -83,26 +82,6 @@ void                    g_simple_action_group_insert                    (GSimple
 
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
-
-struct _GActionEntry
-{
-  const gchar *name;
-
-  void (* activate) (GSimpleAction *action,
-                     GVariant      *parameter,
-                     gpointer       user_data);
-
-  const gchar *parameter_type;
-
-  const gchar *state;
-
-  void (* change_state) (GSimpleAction *action,
-                         GVariant      *value,
-                         gpointer       user_data);
-
-  /*< private >*/
-  gsize padding[3];
-};
 
 void                    g_simple_action_group_add_entries               (GSimpleActionGroup *simple,
                                                                          const GActionEntry *entries,

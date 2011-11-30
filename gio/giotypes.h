@@ -49,6 +49,7 @@ typedef struct _GZlibDecompressor             GZlibDecompressor;
 
 typedef struct _GSimpleActionGroup            GSimpleActionGroup;
 typedef struct _GDBusActionGroup              GDBusActionGroup;
+typedef struct _GActionMap                    GActionMap;
 typedef struct _GActionGroup                  GActionGroup;
 typedef struct _GSimpleAction                 GSimpleAction;
 typedef struct _GAction                       GAction;

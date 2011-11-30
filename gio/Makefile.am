@@ -126,6 +126,7 @@ endif
 
 application_headers = \
 	gactiongroup.h			\
+	gactionmap.h			\
 	gsimpleactiongroup.h		\
 	gaction.h			\
 	gsimpleaction.h			\
@@ -142,6 +143,7 @@ application_headers = \
 
 application_sources = \
 	gactiongroup.c				\
+	gactionmap.c				\
 	gsimpleactiongroup.c			\
 	gaction.c				\
 	gsimpleaction.c				\

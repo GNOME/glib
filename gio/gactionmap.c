@@ -1,0 +1,211 @@
+/*
+ * Copyright © 2010 Codethink Limited
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation; either version 2 of the licence or (at
+ * your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Ryan Lortie <desrt@desrt.ca>
+ */
+
+#include "config.h"
+
+#include "gsimpleaction.h"
+#include "gactiongroup.h"
+#include "gactionmap.h"
+#include "gaction.h"
+
+G_DEFINE_INTERFACE (GActionMap, g_action_map, G_TYPE_ACTION_GROUP)
+
+static void
+g_action_map_default_init (GActionMapInterface *iface)
+{
+}
+
+GAction *
+g_action_map_lookup_action (GActionMap  *action_map,
+                            const gchar *action_name)
+{
+  return G_ACTION_MAP_GET_IFACE (action_map)
+    ->lookup_action (action_map, action_name);
+}
+
+void
+g_action_map_add_action (GActionMap  *action_map,
+                         GAction     *action)
+{
+  return G_ACTION_MAP_GET_IFACE (action_map)
+    ->add_action (action_map, action);
+}
+
+void
+g_action_map_remove_action (GActionMap  *action_map,
+                            const gchar *action_name)
+{
+  return G_ACTION_MAP_GET_IFACE (action_map)
+    ->remove_action (action_map, action_name);
+}
+
+/**
+ * GActionEntry:
+ * @name: the name of the action
+ * @activate: the callback to connect to the "activate" signal of the
+ *            action
+ * @parameter_type: the type of the parameter that must be passed to the
+ *                  activate function for this action, given as a single
+ *                  GVariant type string (or %NULL for no parameter)
+ * @state: the initial state for this action, given in GVariant text
+ *         format.  The state is parsed with no extra type information,
+ *         so type tags must be added to the string if they are
+ *         necessary.
+ * @change_state: the callback to connect to the "change-state" signal
+ *                of the action
+ *
+ * This struct defines a single action.  It is for use with
+ * g_action_map_add_action_entries().
+ *
+ * The order of the items in the structure are intended to reflect
+ * frequency of use.  It is permissible to use an incomplete initialiser
+ * in order to leave some of the later values as %NULL.  All values
+ * after @name are optional.  Additional optional fields may be added in
+ * the future.
+ *
+ * See g_action_map_add_action_entries() for an example.
+ **/
+
+/**
+ * g_action_map_add_action_entries:
+ * @simple: a #GSimpleActionGroup
+ * @entries: a pointer to the first item in an array of #GActionEntry
+ *           structs
+ * @n_entries: the length of @entries, or -1
+ * @user_data: the user data for signal connections
+ *
+ * A convenience function for creating multiple #GSimpleAction instances
+ * and adding them to a #GActionMap.
+ *
+ * Each action is constructed as per one #GActionEntry.
+ *
+ * <example>
+ * <title>Using g_action_map_add_action_entries()</title>
+ * <programlisting>
+ * static void
+ * activate_quit (GSimpleAction *simple,
+ *                GVariant      *parameter,
+ *                gpointer       user_data)
+ * {
+ *   exit (0);
+ * }
+ *
+ * static void
+ * activate_print_string (GSimpleAction *simple,
+ *                        GVariant      *parameter,
+ *                        gpointer       user_data)
+ * {
+ *   g_print ("%s\n", g_variant_get_string (parameter, NULL));
+ * }
+ *
+ * static GActionGroup *
+ * create_action_group (void)
+ * {
+ *   const GActionEntry entries[] = {
+ *     { "quit",         activate_quit              },
+ *     { "print-string", activate_print_string, "s" }
+ *   };
+ *   GSimpleActionGroup *group;
+ *
+ *   group = g_simple_action_group_new ();
+ *   g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+ *
+ *   return G_ACTION_GROUP (group);
+ * }
+ * </programlisting>
+ * </example>
+ *
+ * Since: 2.30
+ **/
+void
+g_action_map_add_action_entries (GActionMap         *action_map,
+                                 const GActionEntry *entries,
+                                 gint                n_entries,
+                                 gpointer            user_data)
+{
+  gint i;
+
+  g_return_if_fail (G_IS_ACTION_MAP (action_map));
+  g_return_if_fail (entries != NULL || n_entries == 0);
+
+  for (i = 0; n_entries == -1 ? entries[i].name != NULL : i < n_entries; i++)
+    {
+      const GActionEntry *entry = &entries[i];
+      const GVariantType *parameter_type;
+      GSimpleAction *action;
+
+      if (entry->parameter_type)
+        {
+          if (!g_variant_type_string_is_valid (entry->parameter_type))
+            {
+              g_critical ("g_simple_action_group_add_entries: the type "
+                          "string '%s' given as the parameter type for "
+                          "action '%s' is not a valid GVariant type "
+                          "string.  This action will not be added.",
+                          entry->parameter_type, entry->name);
+              return;
+            }
+
+          parameter_type = G_VARIANT_TYPE (entry->parameter_type);
+        }
+      else
+        parameter_type = NULL;
+
+      if (entry->state)
+        {
+          GError *error = NULL;
+          GVariant *state;
+
+          state = g_variant_parse (NULL, entry->state, NULL, NULL, &error);
+          if (state == NULL)
+            {
+              g_critical ("g_simple_action_group_add_entries: GVariant could "
+                          "not parse the state value given for action '%s' "
+                          "('%s'): %s.  This action will not be added.",
+                          entry->name, entry->state, error->message);
+              g_error_free (error);
+              continue;
+            }
+
+          action = g_simple_action_new_stateful (entry->name,
+                                                 parameter_type,
+                                                 state);
+
+          g_variant_unref (state);
+        }
+      else
+        {
+          action = g_simple_action_new (entry->name,
+                                        parameter_type);
+        }
+
+      if (entry->activate != NULL)
+        g_signal_connect (action, "activate",
+                          G_CALLBACK (entry->activate), user_data);
+
+      if (entry->change_state != NULL)
+        g_signal_connect (action, "change-state",
+                          G_CALLBACK (entry->change_state), user_data);
+
+      g_action_map_add_action (action_map, G_ACTION (action));
+      g_object_unref (action);
+    }
+}
