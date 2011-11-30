@@ -160,7 +160,7 @@ struct _TestObjectClass
 } G_STMT_END
 
 #define ADD_IFACE(n)  G_STMT_START {				\
-  static GInterfaceInfo iface_info = {				\
+  GInterfaceInfo iface_info = {				\
     (GInterfaceInitFunc)test_object_test_iface##n##_init,	\
     NULL, NULL };						\
 								\

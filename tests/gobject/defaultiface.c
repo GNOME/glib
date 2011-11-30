@@ -117,7 +117,7 @@ test_dynamic_iface_default_finalize (TestStaticIfaceClass *iface)
 static void
 test_dynamic_iface_register (GTypeModule *module)
 {
-  static const GTypeInfo iface_info =			
+  const GTypeInfo iface_info =			
     {								
       sizeof (TestDynamicIfaceClass),
       (GBaseInitFunc)	   NULL,

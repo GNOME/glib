@@ -95,7 +95,7 @@ g_type_plugin_get_type (void)
   
   if (!type_plugin_type)
     {
-      static const GTypeInfo type_plugin_info = {
+      const GTypeInfo type_plugin_info = {
 	sizeof (GTypePluginClass),
 	NULL,           /* base_init */
 	NULL,           /* base_finalize */

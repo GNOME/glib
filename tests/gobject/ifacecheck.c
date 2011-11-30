@@ -151,7 +151,7 @@ main (int   argc,
    */
   g_type_class_ref (TEST_TYPE_OBJECT4);
   {
-    static GInterfaceInfo const iface = {
+    GInterfaceInfo const iface = {
       NULL, NULL, NULL
     };
     

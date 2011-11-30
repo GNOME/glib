@@ -1366,7 +1366,7 @@ gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
  *                                        (GInstanceInitFunc) gtk_gadget_init,
  *                                        (GTypeFlags) flags);
  *       {
- *         static const GInterfaceInfo g_implement_interface_info = {
+ *         const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
  *         };
  *         g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);

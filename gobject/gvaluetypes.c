@@ -1424,7 +1424,7 @@ g_strdup_value_contents (const GValue *value)
 GType
 g_pointer_type_register_static (const gchar *name)
 {
-  static const GTypeInfo type_info = {
+  const GTypeInfo type_info = {
     0,			/* class_size */
     NULL,		/* base_init */
     NULL,		/* base_finalize */

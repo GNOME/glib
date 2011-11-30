@@ -21,7 +21,7 @@
 /* see http://bugzilla.gnome.org/show_bug.cgi?id=337128 for the purpose of this test */
 
 #define MY_G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
-  static const GInterfaceInfo g_implement_interface_info = { \
+  const GInterfaceInfo g_implement_interface_info = { \
       (GInterfaceInitFunc) iface_init, \
       NULL, \
       NULL \

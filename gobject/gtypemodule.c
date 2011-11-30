@@ -153,7 +153,7 @@ g_type_module_get_type (void)
 
   if (!type_module_type)
     {
-      static const GTypeInfo type_module_info = {
+      const GTypeInfo type_module_info = {
         sizeof (GTypeModuleClass),
         NULL,           /* base_init */
         NULL,           /* base_finalize */
@@ -164,7 +164,7 @@ g_type_module_get_type (void)
         0,              /* n_preallocs */
         NULL,           /* instance_init */
       };
-      static const GInterfaceInfo iface_info = {
+      const GInterfaceInfo iface_info = {
         (GInterfaceInitFunc) g_type_module_iface_init,
         NULL,               /* interface_finalize */
         NULL,               /* interface_data */

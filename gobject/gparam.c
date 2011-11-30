@@ -101,7 +101,7 @@ _g_param_type_init (void)
     "p",			/* lcopy_format */
     value_param_lcopy_value,    /* lcopy_value */
   };
-  static const GTypeInfo param_spec_info = {
+  const GTypeInfo param_spec_info = {
     sizeof (GParamSpecClass),
 
     (GBaseInitFunc) g_param_spec_class_base_init,

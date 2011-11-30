@@ -36,7 +36,7 @@ my_test_get_type (void)
   static GType test_type = 0;
 
   if (!test_type) {
-    static const GTypeInfo test_info = {
+    const GTypeInfo test_info = {
       sizeof (GTestClass),
       NULL,
       NULL,

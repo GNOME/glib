@@ -877,7 +877,7 @@ maman_ibaz_get_type (void)
   static GType iface_type = 0;
   if (iface_type == 0)
     {
-      static const GTypeInfo info = {
+      const GTypeInfo info = {
         sizeof (MamanIbazInterface),
         maman_ibaz_base_init,   /* base_init */
         NULL,   /* base_finalize */

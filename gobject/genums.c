@@ -88,7 +88,7 @@ _g_enum_types_init (void)
     "p",			    /* lcopy_format */
     value_flags_enum_lcopy_value,   /* lcopy_value */
   };
-  static GTypeInfo info = {
+  GTypeInfo info = {
     0,                          /* class_size */
     NULL,                       /* base_init */
     NULL,                       /* base_destroy */

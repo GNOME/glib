@@ -346,7 +346,7 @@ _g_object_type_init (void)
   static const GTypeFundamentalInfo finfo = {
     G_TYPE_FLAG_CLASSED | G_TYPE_FLAG_INSTANTIATABLE | G_TYPE_FLAG_DERIVABLE | G_TYPE_FLAG_DEEP_DERIVABLE,
   };
-  static GTypeInfo info = {
+  GTypeInfo info = {
     sizeof (GObjectClass),
     (GBaseInitFunc) g_object_base_class_init,
     (GBaseFinalizeFunc) g_object_base_class_finalize,

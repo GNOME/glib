@@ -309,7 +309,7 @@ GType maman_bar_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
-    static const GTypeInfo info = {
+    const GTypeInfo info = {
       /* You fill this structure. */
     };
     type = g_type_register_static (G_TYPE_OBJECT,
@@ -422,7 +422,7 @@ maman_bar_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
-    static const GTypeInfo info = {
+    const GTypeInfo info = {
       sizeof (MamanBarClass),
       NULL,           /* base_init */
       NULL,           /* base_finalize */
@@ -727,7 +727,7 @@ maman_baz_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
-    static const GTypeInfo info = {
+    const GTypeInfo info = {
       sizeof (MamanBazInterface),
       NULL,   /* base_init */
       NULL,   /* base_finalize */
@@ -738,7 +738,7 @@ maman_baz_get_type (void)
       0,      /* n_preallocs */
       NULL    /* instance_init */
     };
-    static const GInterfaceInfo ibaz_info = {
+    const GInterfaceInfo ibaz_info = {
       (GInterfaceInitFunc) baz_interface_init,    /* interface_init */
       NULL,               /* interface_finalize */
       NULL          /* interface_data */
