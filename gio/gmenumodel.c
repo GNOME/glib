@@ -633,7 +633,7 @@ g_menu_model_get_item_link (GMenuModel *model,
  * @removed: the number of items removed
  * @added: the number of items added
  *
- * Requests emission of the #GMenuMode::items-changed signal on @model.
+ * Requests emission of the #GMenuModel::items-changed signal on @model.
  *
  * This function should never be called except by #GMenuModel
  * subclasses.  Any other calls to this function will very likely lead
@@ -820,21 +820,21 @@ struct _GMenuLinkIterPrivate
 /**
  * g_menu_link_iter_get_next:
  * @iter: a #GMenuLinkIter
- * @out_name: (out) (allow-none) (transfer none): the name of the link
+ * @out_link: (out) (allow-none) (transfer none): the name of the link
  * @value: (out) (allow-none) (transfer full): the linked #GMenuModel
  *
  * This function combines g_menu_link_iter_next() with
  * g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
  *
- * First the iterator is advanced to the next (possibly first) link.  If
- * that fails, then %FALSE is returned and there are no other effects.
+ * First the iterator is advanced to the next (possibly first) link.
+ * If that fails, then %FALSE is returned and there are no other effects.
  *
- * If successful, @out_name and @value are set to the name and #GMenuModel
+ * If successful, @out_link and @value are set to the name and #GMenuModel
  * of the link that has just been advanced to.  At this point,
  * g_menu_item_get_name() and g_menu_item_get_value() will return the
  * same values again.
  *
- * The value returned in @out_name remains valid for as long as the iterator
+ * The value returned in @out_link remains valid for as long as the iterator
  * remains at the current position.  The value returned in @value must
  * be unreffed using g_object_unref() when it is no longer in use.
  *
@@ -842,7 +842,7 @@ struct _GMenuLinkIterPrivate
  **/
 gboolean
 g_menu_link_iter_get_next (GMenuLinkIter  *iter,
-                           const gchar   **out_name,
+                           const gchar   **out_link,
                            GMenuModel    **value)
 {
   const gchar *name;
@@ -861,8 +861,8 @@ g_menu_link_iter_get_next (GMenuLinkIter  *iter,
       g_assert (name != NULL);
 
       iter->priv->name = g_quark_from_string (name);
-      if (out_name)
-        *out_name = g_quark_to_string (iter->priv->name);
+      if (out_link)
+        *out_link = g_quark_to_string (iter->priv->name);
 
       if (value)
         *value = g_object_ref (iter->priv->value);

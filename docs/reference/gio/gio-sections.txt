@@ -3651,7 +3651,6 @@ G_IS_MENU_ITEM
 GMenuModel
 g_menu_model_is_mutable
 g_menu_model_get_n_items
-g_menu_model_get_item
 
 <SUBSECTION>
 G_MENU_ATTRIBUTE_ACTION

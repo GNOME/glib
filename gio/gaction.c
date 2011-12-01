@@ -28,7 +28,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 /**
  * SECTION:gaction
  * @title: GAction
- * @short_description: An action
+ * @short_description: An action interface
  *
  * #GAction represents a single named action.
  *
