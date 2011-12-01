@@ -162,7 +162,8 @@ struct _GApplicationPrivate
   gchar             *id;
 
   GActionGroup      *actions;
-  GMenuModel        *menu;
+  GMenuModel        *app_menu;
+  GMenuModel        *menubar;
 
   guint              inactivity_timeout_id;
   guint              inactivity_timeout;
@@ -186,7 +187,8 @@ enum
   PROP_IS_REMOTE,
   PROP_INACTIVITY_TIMEOUT,
   PROP_ACTION_GROUP,
-  PROP_MENU
+  PROP_APP_MENU,
+  PROP_MENUBAR
 };
 
 enum
@@ -408,9 +410,12 @@ g_application_set_property (GObject      *object,
                                       g_value_get_object (value));
       break;
 
-    case PROP_MENU:
-      g_application_set_menu (application,
-                              g_value_get_object (value));
+    case PROP_APP_MENU:
+      g_application_set_app_menu (application, g_value_get_object (value));
+      break;
+
+    case PROP_MENUBAR:
+      g_application_set_menubar (application, g_value_get_object (value));
       break;
 
     default:
@@ -449,12 +454,20 @@ g_application_set_action_group (GApplication *application,
 }
 
 /**
- * g_application_set_menu:
+ * g_application_set_app_menu:
  * @application: a #GApplication
- * @menu: (allow-none): a #GMenuModel, or %NULL
+ * @app_menu: (allow-none): a #GMenuModel, or %NULL
  *
- * Sets or unsets the menu associated with the application. The menu
- * provides representation data for the exported actions of @application.
+ * Sets or unsets the application menu for @application.
+ *
+ * The application menu is a single menu containing items that typically
+ * impact the application as a whole, rather than acting on a specific
+ * window or document.  For example, you would expect to see
+ * "Preferences" or "Quit" in an application menu, but not "Save" or
+ * "Print".
+ *
+ * If supported, the application menu will be rendered by the desktop
+ * environment.
  *
  * It is an error to call this function after the application has been
  * registered.
@@ -462,38 +475,105 @@ g_application_set_action_group (GApplication *application,
  * Since: 2.32
  */
 void
-g_application_set_menu (GApplication *application,
-                        GMenuModel   *menu)
+g_application_set_app_menu (GApplication *application,
+                            GMenuModel   *app_menu)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (!application->priv->is_registered);
 
-  if (application->priv->menu != NULL)
-    g_object_unref (application->priv->menu);
+  if (app_menu != application->priv->app_menu)
+    {
+      if (application->priv->app_menu != NULL)
+        g_object_unref (application->priv->app_menu);
 
-  application->priv->menu = menu;
+      application->priv->app_menu = app_menu;
 
-  if (application->priv->menu != NULL)
-    g_object_ref (application->priv->menu);
+      if (application->priv->app_menu != NULL)
+        g_object_ref (application->priv->app_menu);
+
+      g_object_notify (G_OBJECT (application), "app-menu");
+    }
 }
 
 /**
- * g_application_get_menu:
+ * g_application_get_app_menu:
  * @application: a #GApplication
  *
- * Returns the menu model that has been set
- * with g_application_set_menu().
+ * Returns the menu model that has been set with
+ * g_application_set_app_menu().
  *
- * Returns: the #GMenuModel associated with @application
+ * Returns: the application menu of @application
  *
  * Since: 2.32
  */
 GMenuModel *
-g_application_get_menu (GApplication *application)
+g_application_get_app_menu (GApplication *application)
 {
   g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
 
-  return application->priv->menu;
+  return application->priv->app_menu;
+}
+
+/**
+ * g_application_set_menubar:
+ * @application: a #GApplication
+ * @menubar: (allow-none): a #GMenuModel, or %NULL
+ *
+ * Sets or unsets the menubar for windows of @application.
+ *
+ * This is a menubar in the traditional sense.
+ *
+ * Depending on the desktop environment, this may appear at the top of
+ * each window, or at the top of the screen.  In some environments, if
+ * both the application menu and the menubar are set, the application
+ * menu will be presented as if it were the first item of the menubar.
+ * Other environments treat the two as completely separate -- for
+ * example, the application menu may be rendered by the desktop shell
+ * while the menubar (if set) remains in each individual window.
+ *
+ * It is an error to call this function after the application has been
+ * registered.
+ *
+ * Since: 2.32
+ */
+void
+g_application_set_menubar (GApplication *application,
+                            GMenuModel   *menubar)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (!application->priv->is_registered);
+
+  if (menubar != application->priv->menubar)
+    {
+      if (application->priv->menubar != NULL)
+        g_object_unref (application->priv->menubar);
+
+      application->priv->menubar = menubar;
+
+      if (application->priv->menubar != NULL)
+        g_object_ref (application->priv->menubar);
+
+      g_object_notify (G_OBJECT (application), "menubar");
+    }
+}
+
+/**
+ * g_application_get_menubar:
+ * @application: a #GApplication
+ *
+ * Returns the menu model that has been set with
+ * g_application_set_menubar().
+ *
+ * Returns: the menubar for windows of @application
+ *
+ * Since: 2.32
+ */
+GMenuModel *
+g_application_get_menubar (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
+
+  return application->priv->menubar;
 }
 
 static void
@@ -631,10 +711,17 @@ g_application_class_init (GApplicationClass *class)
                          G_TYPE_ACTION_GROUP,
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (object_class, PROP_MENU,
-    g_param_spec_object ("menu",
-                         P_("Menu model"),
-                         P_("The menu that the application exports"),
+  g_object_class_install_property (object_class, PROP_APP_MENU,
+    g_param_spec_object ("app-menu",
+                         P_("Application menu"),
+                         P_("The GMenuModel for the application menu"),
+                         G_TYPE_MENU_MODEL,
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, PROP_MENUBAR,
+    g_param_spec_object ("menubar",
+                         P_("Menubar"),
+                         P_("The GMenuModel for the menubar"),
                          G_TYPE_MENU_MODEL,
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 

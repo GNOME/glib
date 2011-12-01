@@ -68,7 +68,7 @@ add_menu (GApplication *app)
   g_menu_append (menu, "About Example", "about");
   g_menu_append (menu, "Quit", "quit");
 
-  g_application_set_menu (app, G_MENU_MODEL (menu));
+  g_application_set_app_menu (app, G_MENU_MODEL (menu));
 
   g_object_unref (menu);
 }
