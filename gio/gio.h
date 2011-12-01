@@ -27,12 +27,11 @@
 
 #include <gio/giotypes.h>
 
-#include <gio/gappinfo.h>
 #include <gio/gaction.h>
-#include <gio/gsimpleaction.h>
 #include <gio/gactiongroup.h>
 #include <gio/gactiongroupexporter.h>
-#include <gio/gsimpleactiongroup.h>
+#include <gio/gactionmap.h>
+#include <gio/gappinfo.h>
 #include <gio/gapplication.h>
 #include <gio/gapplicationcommandline.h>
 #include <gio/gasyncinitable.h>
@@ -107,6 +106,8 @@
 #include <gio/gseekable.h>
 #include <gio/gsettingsschema.h>
 #include <gio/gsettings.h>
+#include <gio/gsimpleaction.h>
+#include <gio/gsimpleactiongroup.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gsimplepermission.h>
 #include <gio/gsocketaddressenumerator.h>
