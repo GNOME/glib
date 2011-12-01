@@ -10,6 +10,7 @@ glib_mkenums=glib-mkenums
 Name: GLib
 Description: C Utility Library
 Version: @VERSION@
+Requires.private: @PCRE_REQUIRES@
 Libs: -L${libdir} -lglib-2.0 @INTLLIBS@
 Libs.private: @ICONV_LIBS@ @GLIB_RT_LIBS@
 Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include @GLIB_EXTRA_CFLAGS@
