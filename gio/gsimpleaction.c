@@ -291,6 +291,7 @@ g_simple_action_finalize (GObject *object)
 void
 g_simple_action_init (GSimpleAction *simple)
 {
+  simple->enabled = TRUE;
 }
 
 void
