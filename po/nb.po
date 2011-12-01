@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-19 11:58+0100\n"
-"PO-Revision-Date: 2011-11-19 12:02+0100\n"
+"POT-Creation-Date: 2011-12-01 18:00+0100\n"
+"PO-Revision-Date: 2011-12-01 18:00+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -33,7 +33,7 @@ msgstr "Strømmen er allerede lukket"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1850
 #: ../gio/gdbusconnection.c:1941 ../gio/gdbusconnection.c:2115
-#: ../gio/gdbusprivate.c:1388 ../gio/glocalfile.c:2100
+#: ../gio/gdbusprivate.c:1419 ../gio/glocalfile.c:2100
 #: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
 #, c-format
 msgid "Operation was cancelled"
@@ -620,7 +620,7 @@ msgstr "Feil retur med kropp av type «%s»"
 msgid "Error return with empty body"
 msgstr "Feil retur med tom kropp"
 
-#: ../gio/gdbusprivate.c:2000
+#: ../gio/gdbusprivate.c:2071
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Kan ikke laste /var/lib/dbus/machine-id eller /etc/machine-id: "
 
@@ -983,12 +983,12 @@ msgstr "Ventet et GEmblem for GEmblemedIcon"
 #: ../gio/gfile.c:871 ../gio/gfile.c:1102 ../gio/gfile.c:1237
 #: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
 #: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
-#: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3495 ../gio/gfile.c:3536 ../gio/gfile.c:3866
-#: ../gio/gfile.c:4268 ../gio/gfile.c:4354 ../gio/gfile.c:4443
-#: ../gio/gfile.c:4541 ../gio/gfile.c:4628 ../gio/gfile.c:4722
-#: ../gio/gfile.c:5043 ../gio/gfile.c:5310 ../gio/gfile.c:5375
-#: ../gio/gfile.c:6952 ../gio/gfile.c:7042 ../gio/gfile.c:7128
+#: ../gio/gfile.c:1837 ../gio/gfile.c:3309 ../gio/gfile.c:3363
+#: ../gio/gfile.c:3497 ../gio/gfile.c:3538 ../gio/gfile.c:3868
+#: ../gio/gfile.c:4270 ../gio/gfile.c:4356 ../gio/gfile.c:4445
+#: ../gio/gfile.c:4543 ../gio/gfile.c:4630 ../gio/gfile.c:4724
+#: ../gio/gfile.c:5045 ../gio/gfile.c:5312 ../gio/gfile.c:5377
+#: ../gio/gfile.c:6954 ../gio/gfile.c:7044 ../gio/gfile.c:7130
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
@@ -1035,24 +1035,24 @@ msgstr "Feil ved bruk av  splice(2) på fil: %s"
 msgid "Can't copy special file"
 msgstr "Kan ikke kopiere spesiell fil"
 
-#: ../gio/gfile.c:3485
+#: ../gio/gfile.c:3487
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: ../gio/gfile.c:3579
+#: ../gio/gfile.c:3581
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: ../gio/gfile.c:3628
+#: ../gio/gfile.c:3630
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: ../gio/gfile.c:6011 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6013 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: ../gio/gfile.c:6122
+#: ../gio/gfile.c:6124
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1737,15 +1737,15 @@ msgstr "Filen ble endret eksternt"
 msgid "Error removing old file: %s"
 msgstr "Feil ved fjerning av gammel fil: %s"
 
-#: ../gio/gmemoryinputstream.c:486 ../gio/gmemoryoutputstream.c:746
+#: ../gio/gmemoryinputstream.c:494 ../gio/gmemoryoutputstream.c:750
 msgid "Invalid GSeekType supplied"
 msgstr "Ugyldig GSeekType oppgitt"
 
-#: ../gio/gmemoryinputstream.c:496
+#: ../gio/gmemoryinputstream.c:504
 msgid "Invalid seek request"
 msgstr "Ugyldig søkeforespørsel"
 
-#: ../gio/gmemoryinputstream.c:520
+#: ../gio/gmemoryinputstream.c:528
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Kan ikke avkorte GMemoryInputStream"
 
@@ -1765,11 +1765,11 @@ msgstr ""
 "Mengden minne som kreves for å prosessere skriveoperasjonen er større enn "
 "tilgjengelig adresseområde"
 
-#: ../gio/gmemoryoutputstream.c:756
+#: ../gio/gmemoryoutputstream.c:760
 msgid "Requested seek before the beginning of the stream"
 msgstr "Forespurt søk før begynnelsen på strømmen"
 
-#: ../gio/gmemoryoutputstream.c:765
+#: ../gio/gmemoryoutputstream.c:769
 msgid "Requested seek beyond the end of the stream"
 msgstr "Forespurt søk forbi slutten på strømmen"
 
@@ -1835,29 +1835,19 @@ msgstr "Nettverk kan ikke nås"
 msgid "Host unreachable"
 msgstr "Kan ikke nå vert"
 
-#: ../gio/gnetworkmonitornetlink.c:94
-#, c-format
-msgid "Could not create netlink socket: %s"
-msgstr "Kunne ikke lage plugg for netlink: %s"
-
-#: ../gio/gnetworkmonitornetlink.c:106
-#, c-format
-msgid "Could not bind netlink socket: %s"
-msgstr "kunne ikke binde til netlink-plugg: %s"
-
+#: ../gio/gnetworkmonitornetlink.c:94 ../gio/gnetworkmonitornetlink.c:106
 #: ../gio/gnetworkmonitornetlink.c:117
 #, c-format
-msgid "Could not set options on netlink socket: %s"
-msgstr "Kunne ikke sette alternativer på netlink-plugg: %s"
+msgid "Could not create network monitor: %s"
+msgstr "Kunne ikke lage nettverksovervåker: %s"
 
 #: ../gio/gnetworkmonitornetlink.c:126
-#, fuzzy
-msgid "Could not wrap netlink socket: "
-msgstr "Kunne ikke "
+msgid "Could not create network monitor: "
+msgstr "Kunne ikke lage nettverksovervåker: "
 
 #: ../gio/gnetworkmonitornetlink.c:174
-msgid "Could not send netlink request: "
-msgstr "Kunne ikke sende netlink-forespørsel: "
+msgid "Could not get network status: "
+msgstr "Kunne ikke hente nettverksstatus: "
 
 #: ../gio/goutputstream.c:210 ../gio/goutputstream.c:414
 msgid "Output stream doesn't implement write"
@@ -2245,15 +2235,15 @@ msgstr "Kunne ikke koble til «%s»: "
 msgid "Could not connect: "
 msgstr "Kunne ikke koble til: "
 
-#: ../gio/gsocketclient.c:834 ../gio/gsocketclient.c:1398
+#: ../gio/gsocketclient.c:834 ../gio/gsocketclient.c:1399
 msgid "Unknown error on connect"
 msgstr "Ukjent feil ved tilkobling"
 
-#: ../gio/gsocketclient.c:874 ../gio/gsocketclient.c:1290
+#: ../gio/gsocketclient.c:874 ../gio/gsocketclient.c:1291
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr "Proxy over annet enn TCP-forbindelser er ikke støttet."
 
-#: ../gio/gsocketclient.c:896 ../gio/gsocketclient.c:1310
+#: ../gio/gsocketclient.c:896 ../gio/gsocketclient.c:1311
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokoll «%s» er er ikke støttet"
@@ -3115,17 +3105,17 @@ msgstr "Verdi «%s» kan ikke tolkes som et flyttall."
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
 
-#: ../glib/gmappedfile.c:139
+#: ../glib/gmappedfile.c:128
 #, c-format
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
 msgstr "Klarte ikke å hente attributter for fil «%s%s%s%s»: fstat() feilet: %s"
 
-#: ../glib/gmappedfile.c:205
+#: ../glib/gmappedfile.c:194
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "Kunne ikke lese fil «%s%s%s%s» inn i minnet: mmap() feilet: %s"
 
-#: ../glib/gmappedfile.c:271
+#: ../glib/gmappedfile.c:260
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Kunne ikke åpne fil «%s»: open() feilet: %s"
