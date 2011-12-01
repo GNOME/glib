@@ -195,6 +195,7 @@
         <xi:include href="xml/gapplication.xml"/>
         <xi:include href="xml/gapplicationcommandline.xml"/>
         <xi:include href="xml/gactiongroup.xml"/>
+        <xi:include href="xml/gactionmap.xml"/>
         <xi:include href="xml/gsimpleactiongroup.xml"/>
         <xi:include href="xml/gaction.xml"/>
         <xi:include href="xml/gsimpleaction.xml"/>

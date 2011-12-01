@@ -31,7 +31,7 @@
  * @short_description: A simple GActionGroup implementation
  *
  * #GSimpleActionGroup is a hash table filled with #GAction objects,
- * implementing the #GActionGroup interface.
+ * implementing the #GActionGroup and #GActionMap interfaces.
  **/
 
 struct _GSimpleActionGroupPrivate
@@ -44,9 +44,9 @@ static void g_simple_action_group_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GSimpleActionGroup,
   g_simple_action_group, G_TYPE_OBJECT,
   G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
-    g_simple_action_group_iface_init);
+                         g_simple_action_group_iface_init);
   G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP,
-    g_simple_action_group_map_iface_init))
+                         g_simple_action_group_map_iface_init))
 
 static gchar **
 g_simple_action_group_list_actions (GActionGroup *group)
@@ -310,7 +310,7 @@ g_simple_action_group_new (void)
  * Returns: (transfer none): a #GAction, or %NULL
  *
  * Since: 2.28
- **/
+ */
 GAction *
 g_simple_action_group_lookup (GSimpleActionGroup *simple,
                               const gchar        *action_name)

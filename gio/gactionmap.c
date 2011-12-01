@@ -26,6 +26,22 @@
 #include "gactionmap.h"
 #include "gaction.h"
 
+/**
+ * SECTION:gactionmap
+ * @title: GActionMap
+ * @short_description: Interface for action containers
+ *
+ * The GActionMap interface is implemented by #GActionGroup
+ * implementations that operate by containing a number of
+ * named #GAction instances, such as #GSimpleActionGroup.
+ *
+ * One useful application of this interface is to map the
+ * names of actions from various action groups to unique,
+ * prefixed names (e.g. by prepending "app." or "win.").
+ * This is the motivation for the 'Map' part of the interface
+ * name.
+ */
+
 G_DEFINE_INTERFACE (GActionMap, g_action_map, G_TYPE_ACTION_GROUP)
 
 static void
@@ -33,6 +49,19 @@ g_action_map_default_init (GActionMapInterface *iface)
 {
 }
 
+/**
+ * g_action_map_lookup_action:
+ * @action_map: a #GActionMap
+ * @action_name: the name of an action
+ *
+ * Looks up the action with the name @action_name in @action_map.
+ *
+ * If no such action exists, returns %NULL.
+ *
+ * Returns: (transfer none): a #GAction, or %NULL
+ *
+ * Since: 2.32
+ */
 GAction *
 g_action_map_lookup_action (GActionMap  *action_map,
                             const gchar *action_name)
@@ -41,14 +70,39 @@ g_action_map_lookup_action (GActionMap  *action_map,
     ->lookup_action (action_map, action_name);
 }
 
+/**
+ * g_action_map_add_action:
+ * @action_map: a #GActionMap
+ * @action: a #GAction
+ *
+ * Adds an action to the @action_map.
+ *
+ * If the action map already contains an action with the same name
+ * as @action then the old action is dropped from the action map.
+ *
+ * The action map takes its own reference on @action.
+ *
+ * Since: 2.32
+ */
 void
-g_action_map_add_action (GActionMap  *action_map,
-                         GAction     *action)
+g_action_map_add_action (GActionMap *action_map,
+                         GAction    *action)
 {
   return G_ACTION_MAP_GET_IFACE (action_map)
     ->add_action (action_map, action);
 }
 
+/**
+ * g_action_map_remove_action:
+ * @action_map: a #GActionMap
+ * @action_name: the name of the action
+ *
+ * Removes the named action from the action map.
+ *
+ * If no action of this name is in the map then nothing happens.
+ *
+ * Since: 2.32
+ */
 void
 g_action_map_remove_action (GActionMap  *action_map,
                             const gchar *action_name)
@@ -86,10 +140,10 @@ g_action_map_remove_action (GActionMap  *action_map,
 
 /**
  * g_action_map_add_action_entries:
- * @simple: a #GSimpleActionGroup
+ * @action_map: a #GActionMap
  * @entries: a pointer to the first item in an array of #GActionEntry
  *           structs
- * @n_entries: the length of @entries, or -1
+ * @n_entries: the length of @entries, or -1 if @entries is %NULL-terminated
  * @user_data: the user data for signal connections
  *
  * A convenience function for creating multiple #GSimpleAction instances
@@ -133,8 +187,8 @@ g_action_map_remove_action (GActionMap  *action_map,
  * </programlisting>
  * </example>
  *
- * Since: 2.30
- **/
+ * Since: 2.32
+ */
 void
 g_action_map_add_action_entries (GActionMap         *action_map,
                                  const GActionEntry *entries,
