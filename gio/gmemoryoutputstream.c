@@ -620,20 +620,24 @@ g_memory_output_stream_write_async (GOutputStream       *stream,
                                     gpointer             data)
 {
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
   gssize nwritten;
 
-  nwritten = g_output_stream_write (stream,
-				    buffer,
-				    count,
-				    cancellable,
-				    NULL);
+  nwritten = G_OUTPUT_STREAM_GET_CLASS (stream)->write_fn (stream,
+							   buffer,
+							   count,
+							   cancellable,
+							   &error);
 
   simple = g_simple_async_result_new (G_OBJECT (stream),
                                       callback,
                                       data,
                                       g_memory_output_stream_write_async);
 
-  g_simple_async_result_set_op_res_gssize (simple, nwritten);
+  if (error)
+    g_simple_async_result_take_error (simple, error);
+  else
+    g_simple_async_result_set_op_res_gssize (simple, nwritten);
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
 }

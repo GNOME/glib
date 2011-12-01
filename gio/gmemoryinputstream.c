@@ -345,14 +345,22 @@ g_memory_input_stream_read_async (GInputStream        *stream,
                                   gpointer             user_data)
 {
   GSimpleAsyncResult *simple;
+  GError *error = NULL;
   gssize nread;
 
-  nread = g_input_stream_read (stream, buffer, count, cancellable, NULL);
+  nread = G_INPUT_STREAM_GET_CLASS (stream)->read_fn (stream,
+						      buffer,
+						      count,
+						      cancellable,
+						      &error);
   simple = g_simple_async_result_new (G_OBJECT (stream),
 				      callback,
 				      user_data,
 				      g_memory_input_stream_read_async);
-  g_simple_async_result_set_op_res_gssize (simple, nread);
+  if (error)
+    g_simple_async_result_take_error (simple, error);
+  else
+    g_simple_async_result_set_op_res_gssize (simple, nread);
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
 }
