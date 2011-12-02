@@ -19,7 +19,8 @@ g_application_get_flags
 g_application_get_inactivity_timeout
 g_application_get_is_registered
 g_application_get_is_remote
-g_application_get_menu
+g_application_get_app_menu
+g_application_get_menubar
 g_application_hold
 g_application_id_is_valid
 g_application_new
@@ -28,7 +29,8 @@ g_application_register
 g_application_release
 g_application_run
 g_application_set_action_group
-g_application_set_menu
+g_application_set_app_menu
+g_application_set_menubar
 g_application_set_application_id
 g_application_set_default
 g_application_set_flags
@@ -1418,9 +1420,6 @@ g_action_map_get_type
 g_action_map_lookup_action
 g_action_map_remove_action
 g_action_group_change_action_state
-g_action_group_dbus_export_start
-g_action_group_dbus_export_query
-g_action_group_dbus_export_stop
 g_action_activate
 g_action_get_enabled
 g_action_get_name
@@ -1447,6 +1446,10 @@ g_dbus_action_group_inject
 g_dbus_action_group_new
 g_dbus_action_group_new_finish
 g_dbus_action_group_new_sync
+g_dbus_connection_export_action_group
+g_dbus_connection_unexport_action_group
+g_dbus_connection_export_menu_model
+g_dbus_connection_unexport_menu_model
 g_pollable_input_stream_get_type
 g_pollable_input_stream_can_poll
 g_pollable_input_stream_create_source
@@ -1620,9 +1623,6 @@ g_menu_attribute_iter_get_next
 g_menu_attribute_iter_get_type
 g_menu_attribute_iter_get_value
 g_menu_attribute_iter_next
-g_menu_model_dbus_export_start
-g_menu_model_dbus_export_query
-g_menu_model_dbus_export_stop
 g_menu_freeze
 g_menu_get_type
 g_menu_insert

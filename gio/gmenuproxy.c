@@ -864,6 +864,7 @@ g_menu_proxy_get (GDBusConnection *connection,
   return proxy;
 }
 
+#if 0
 static void
 dump_proxy (gpointer key, gpointer value, gpointer data)
 {
@@ -900,6 +901,7 @@ g_menu_proxy_dump (void)
   g_hash_table_foreach (g_menu_proxy_paths, dump_path, NULL);
 }
 
+#endif
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */
