@@ -506,6 +506,13 @@ test_equality (void)
           g_assert_cmpstr (as->str, ==, bs->str);
           g_string_free (bs, TRUE);
           g_string_free (as, TRUE);
+
+          /* we're here because randa and randb just generated equal
+           * menus.  they may do it again, so throw away randb and make
+           * a fresh one.
+           */
+          g_rand_free (randb);
+          randb = g_rand_new_with_seed (g_rand_int (randa));
         }
       else
         /* make sure we get enough unequals (ie: no GRand failure) */
