@@ -832,7 +832,7 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
 /* {{{1 Public API */
 
 /**
- * g_menu_model_dbus_export_start:
+ * g_dbus_connection_export_menu_model:
  * @connection: a #GDBusConnection
  * @object_path: a D-Bus object path
  * @menu: a #GMenuModel
@@ -843,17 +843,15 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
  * The implemented D-Bus API should be considered private.
  * It is subject to change in the future.
  *
- * A given menu model can only be exported on one object path
- * and an object path can only have one action group exported
- * on it. If either constraint is violated, the export will
- * fail and %FALSE will be returned (with @error set accordingly).
+ * An object path can only have one action group exported on it. If this
+ * constraint is violated, the export will fail and 0 will be
+ * returned (with @error set accordingly).
  *
- * Use g_menu_model_dbus_export_stop() to stop exporting @menu
- * or g_menu_model_dbus_export_query() to find out if and where
- * a given menu model is exported.
+ * You can unexport the menu model using
+ * g_dbus_connection_unexport_menu_model() with the return value of
+ * this function.
  *
- * Returns: %TRUE if the export is successful, or %FALSE (with
- *     @error set) in the event of a failure.
+ * Returns: the ID of the export (never zero), or 0 in case of failure
  */
 guint
 g_dbus_connection_export_menu_model (GDBusConnection  *connection,
@@ -887,18 +885,30 @@ g_dbus_connection_export_menu_model (GDBusConnection  *connection,
   return id;
 }
 
-gboolean
+/**
+ * g_dbus_connection_unexport_menu_model:
+ * @connection: a #GDBusConnection
+ * @export_id: the ID from g_dbus_connection_export_menu_model()
+ *
+ * Reverses the effect of a previous call to
+ * g_dbus_connection_export_menu_model().
+ *
+ * It is an error to call this function with an ID that wasn't returned
+ * from g_dbus_connection_export_menu_model() or to call it with the
+ * same ID more than once.
+ *
+ * Since: 2.32
+ **/
+void
 g_dbus_connection_unexport_menu_model (GDBusConnection *connection,
                                        guint            export_id)
 {
   if (!g_dbus_connection_unregister_object (connection, export_id))
-    return FALSE;
+    return;
 
   g_assert (g_menu_exporter_to_free != NULL);
   g_menu_exporter_actually_free (g_menu_exporter_to_free);
   g_menu_exporter_to_free = NULL;
-
-  return TRUE;
 }
 
 /* {{{1 Epilogue */

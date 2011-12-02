@@ -561,7 +561,7 @@ g_action_group_exporter_free (gpointer user_data)
 }
 
 /**
- * g_action_group_dbus_export_start:
+ * g_dbus_connection_export_action_group:
  * @connection: a #GDBusConnection
  * @object_path: a D-Bus object path
  * @action_group: a #GActionGroup
@@ -572,17 +572,17 @@ g_action_group_exporter_free (gpointer user_data)
  * The implemented D-Bus API should be considered private.  It is
  * subject to change in the future.
  *
- * A given action group can only be exported on one object path and an
- * object path can only have one action group exported on it. If either
- * constraint is violated, the export will fail and %FALSE will be
+ * A given * object path can only have one action group exported on it.
+ * If this constraint is violated, the export will fail and 0 will be
  * returned (with @error set accordingly).
  *
- * Use g_action_group_dbus_export_stop() to stop exporting @action_group,
- * or g_action_group_dbus_export_query() to find out if and where a given
- * action group is exported.
+ * You can unexport the action group using
+ * g_dbus_connection_unexport_action_group() with the return value of
+ * this function.
  *
- * Returns: %TRUE if the export is successful, or %FALSE (with @error
- *          set) in the event of a failure.
+ * Returns: the ID of the export (never zero), or 0 in case of failure
+ *
+ * Since: 2.32
  **/
 guint
 g_dbus_connection_export_action_group (GDBusConnection  *connection,
@@ -642,9 +642,23 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
   return id;
 }
 
-gboolean
+/**
+ * g_dbus_connection_unexport_action_group:
+ * @connection: a #GDBusConnection
+ * @export_id: the ID from g_dbus_connection_export_action_group()
+ *
+ * Reverses the effect of a previous call to
+ * g_dbus_connection_export_action_group().
+ *
+ * It is an error to call this function with an ID that wasn't returned
+ * from g_dbus_connection_export_action_group() or to call it with the
+ * same ID more than once.
+ *
+ * Since: 2.32
+ **/
+void
 g_dbus_connection_unexport_action_group (GDBusConnection *connection,
                                          guint            export_id)
 {
-  return g_dbus_connection_unregister_object (connection, export_id);
+  g_dbus_connection_unregister_object (connection, export_id);
 }

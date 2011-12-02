@@ -37,7 +37,7 @@ guint                   g_dbus_connection_export_action_group           (GDBusCo
                                                                          GActionGroup     *action_group,
                                                                          GError          **error);
 
-gboolean                g_dbus_connection_unexport_action_group         (GDBusConnection  *connection,
+void                    g_dbus_connection_unexport_action_group         (GDBusConnection  *connection,
                                                                          guint             export_id);
 
 G_END_DECLS
