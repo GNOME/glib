@@ -586,6 +586,7 @@ test_dbus_roundtrip (void)
 {
   struct roundtrip_state state;
   GDBusConnection *bus;
+  guint export_id;
   guint id;
 
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
@@ -593,8 +594,7 @@ test_dbus_roundtrip (void)
   state.rand = g_rand_new_with_seed (g_test_rand_int ());
 
   state.random = random_menu_new (state.rand, 2);
-  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (state.random), NULL);
-  g_assert (g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
+  export_id = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (state.random), NULL);
   state.proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   state.proxy_mirror = mirror_menu_new (G_MENU_MODEL (state.proxy));
   state.count = 0;
@@ -608,8 +608,7 @@ test_dbus_roundtrip (void)
   g_main_loop_unref (state.loop);
   g_source_remove (id);
   g_object_unref (state.proxy);
-  g_menu_model_dbus_export_stop (G_MENU_MODEL (state.random));
-  g_assert (!g_menu_model_dbus_export_query (G_MENU_MODEL (state.random), NULL, NULL));
+  g_dbus_connection_unexport_menu_model (bus, export_id);
   g_object_unref (state.random);
   g_object_unref (state.proxy_mirror);
   g_rand_free (state.rand);
@@ -646,6 +645,7 @@ test_dbus_subscriptions (void)
   GMenuProxy *proxy;
   GMainLoop *loop;
   GError *error = NULL;
+  guint export_id;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -653,7 +653,7 @@ test_dbus_subscriptions (void)
 
   menu = g_menu_new ();
 
-  g_menu_model_dbus_export_start (bus, "/", G_MENU_MODEL (menu), &error);
+  export_id = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (menu), &error);
   g_assert_no_error (error);
 
   proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
@@ -706,7 +706,7 @@ test_dbus_subscriptions (void)
 
   g_assert_cmpint (items_changed_count, ==, 6);
 
-  g_menu_model_dbus_export_stop (G_MENU_MODEL (menu));
+  g_dbus_connection_unexport_menu_model (bus, export_id);
   g_object_unref (menu);
 
   g_main_loop_unref (loop);

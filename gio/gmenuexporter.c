@@ -770,10 +770,12 @@ g_menu_exporter_create_group (GMenuExporter *exporter)
   return group;
 }
 
+
+static GMenuExporter *g_menu_exporter_to_free;
+
 static void
-g_menu_exporter_free (GMenuExporter *exporter)
+g_menu_exporter_actually_free (GMenuExporter *exporter)
 {
-  g_dbus_connection_unregister_object (exporter->connection, exporter->registration_id);
   g_menu_exporter_menu_free (exporter->root);
   g_hash_table_unref (exporter->remotes);
   g_hash_table_unref (exporter->groups);
@@ -781,6 +783,20 @@ g_menu_exporter_free (GMenuExporter *exporter)
   g_free (exporter->object_path);
 
   g_slice_free (GMenuExporter, exporter);
+}
+
+static void
+g_menu_exporter_free (gpointer user_data)
+{
+  /* XXX: hack
+   *
+   * GDBusConnection calls the destroy notify while holding its own lock
+   * which means that we get a deadlock on re-entering it.
+   *
+   * Work around this for now...
+   */
+  g_assert (g_menu_exporter_to_free == NULL);
+  g_menu_exporter_to_free = user_data;
 }
 
 static void
@@ -813,54 +829,7 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
   g_variant_unref (group_ids);
 }
 
-static GDBusConnection *
-g_menu_exporter_get_connection (GMenuExporter *exporter)
-{
-  return exporter->connection;
-}
-
-static const gchar *
-g_menu_exporter_get_object_path (GMenuExporter *exporter)
-{
-  return exporter->object_path;
-}
-
-static GMenuExporter *
-g_menu_exporter_new (GDBusConnection  *connection,
-                     const gchar      *object_path,
-                     GMenuModel       *model,
-                     GError          **error)
-{
-  const GDBusInterfaceVTable vtable = {
-    g_menu_exporter_method_call,
-  };
-  GMenuExporter *exporter;
-  guint id;
-
-  exporter = g_slice_new0 (GMenuExporter);
-
-  id = g_dbus_connection_register_object (connection, object_path, org_gtk_Menus_get_interface (),
-                                          &vtable, exporter, NULL, error);
-
-  if (id == 0)
-    {
-      g_slice_free (GMenuExporter, exporter);
-      return NULL;
-    }
-
-  exporter->connection = g_object_ref (connection);
-  exporter->object_path = g_strdup (object_path);
-  exporter->registration_id = id;
-  exporter->groups = g_hash_table_new (NULL, NULL);
-  exporter->remotes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_menu_exporter_remote_free);
-  exporter->root = g_menu_exporter_group_add_menu (g_menu_exporter_create_group (exporter), model);
-
-  return exporter;
-}
-
 /* {{{1 Public API */
-
-static GHashTable *exported_menus;
 
 /**
  * g_menu_model_dbus_export_start:
@@ -886,101 +855,48 @@ static GHashTable *exported_menus;
  * Returns: %TRUE if the export is successful, or %FALSE (with
  *     @error set) in the event of a failure.
  */
-gboolean
-g_menu_model_dbus_export_start (GDBusConnection  *connection,
-                                const gchar      *object_path,
-                                GMenuModel       *menu,
-                                GError          **error)
+guint
+g_dbus_connection_export_menu_model (GDBusConnection  *connection,
+                                     const gchar      *object_path,
+                                     GMenuModel       *menu,
+                                     GError          **error)
 {
+  const GDBusInterfaceVTable vtable = {
+    g_menu_exporter_method_call,
+  };
   GMenuExporter *exporter;
+  guint id;
 
-  if G_UNLIKELY (exported_menus == NULL)
-    exported_menus = g_hash_table_new (NULL, NULL);
+  exporter = g_slice_new0 (GMenuExporter);
 
-  if G_UNLIKELY (g_hash_table_lookup (exported_menus, menu))
+  id = g_dbus_connection_register_object (connection, object_path, org_gtk_Menus_get_interface (),
+                                          &vtable, exporter, g_menu_exporter_free, error);
+
+  if (id == 0)
     {
-      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FILE_EXISTS,
-                   "The given GMenuModel has already been exported");
-      return FALSE;
+      g_slice_free (GMenuExporter, exporter);
+      return 0;
     }
 
-  exporter = g_menu_exporter_new (connection, object_path, menu, error);
+  exporter->connection = g_object_ref (connection);
+  exporter->object_path = g_strdup (object_path);
+  exporter->groups = g_hash_table_new (NULL, NULL);
+  exporter->remotes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_menu_exporter_remote_free);
+  exporter->root = g_menu_exporter_group_add_menu (g_menu_exporter_create_group (exporter), menu);
 
-  if (exporter == NULL)
-    return FALSE;
-
-  g_hash_table_insert (exported_menus, menu, exporter);
-
-  return TRUE;
+  return id;
 }
 
-/**
- * g_menu_model_dbus_export_stop:
- * @menu: a #GMenuModel
- *
- * Stops the export of @menu.
- *
- * This reverses the effect of a previous call to
- * g_menu_model_dbus_export_start() for @menu.
- *
- * Returns: %TRUE if an export was stopped or %FALSE
- *     if @menu was not exported in the first place
- */
 gboolean
-g_menu_model_dbus_export_stop (GMenuModel *menu)
+g_dbus_connection_unexport_menu_model (GDBusConnection *connection,
+                                       guint            export_id)
 {
-  GMenuExporter *exporter;
-
-  if G_UNLIKELY (exported_menus == NULL)
+  if (!g_dbus_connection_unregister_object (connection, export_id))
     return FALSE;
 
-  exporter = g_hash_table_lookup (exported_menus, menu);
-  if G_UNLIKELY (exporter == NULL)
-    return FALSE;
-
-  g_hash_table_remove (exported_menus, menu);
-  g_menu_exporter_free (exporter);
-
-  return TRUE;
-}
-
-/**
- * g_menu_model_dbus_export_query:
- * @menu: a #GMenuModel
- * @connection: (out): the #GDBusConnection used for exporting
- * @object_path: (out): the object path used for exporting
- *
- * Queries if and where @menu is exported.
- *
- * If @menu is exported, %TRUE is returned. If @connection is
- * non-%NULL then it is set to the #GDBusConnection used for
- * the export. If @object_path is non-%NULL then it is set to
- * the object path.
- *
- * If the @menu is not exported, %FALSE is returned and
- * @connection and @object_path remain unmodified.
- *
- * Returns: %TRUE if @menu was exported, else %FALSE
- */
-gboolean
-g_menu_model_dbus_export_query (GMenuModel       *menu,
-                                GDBusConnection **connection,
-                                const gchar     **object_path)
-{
-  GMenuExporter *exporter;
-
-  if (exported_menus == NULL)
-    return FALSE;
-
-  exporter = g_hash_table_lookup (exported_menus, menu);
-  if (exporter == NULL)
-    return FALSE;
-
-  if (connection)
-    *connection = g_menu_exporter_get_connection (exporter);
-
-  if (object_path)
-    *object_path = g_menu_exporter_get_object_path (exporter);
+  g_assert (g_menu_exporter_to_free != NULL);
+  g_menu_exporter_actually_free (g_menu_exporter_to_free);
+  g_menu_exporter_to_free = NULL;
 
   return TRUE;
 }
