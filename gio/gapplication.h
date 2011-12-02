@@ -148,6 +148,7 @@ GApplicationFlags       g_application_get_flags                         (GApplic
 void                    g_application_set_flags                         (GApplication             *application,
                                                                          GApplicationFlags         flags);
 
+GLIB_DEPRECATED
 void                    g_application_set_action_group                  (GApplication             *application,
                                                                          GActionGroup             *action_group);
 

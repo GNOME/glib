@@ -25,8 +25,10 @@
 #include "gapplication.h"
 
 #include "gapplicationcommandline.h"
+#include "gsimpleactiongroup.h"
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
+#include "gactionmap.h"
 #include "gmenumodel.h"
 #include "gsettings.h"
 
@@ -205,9 +207,10 @@ enum
 static guint g_application_signals[NR_SIGNALS];
 
 static void g_application_action_group_iface_init (GActionGroupInterface *);
+static void g_application_action_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
- G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
-   g_application_action_group_iface_init))
+ G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP, g_application_action_group_iface_init)
+ G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP, g_application_action_map_iface_init))
 
 /* vfunc defaults {{{1 */
 static void
@@ -406,8 +409,8 @@ g_application_set_property (GObject      *object,
       break;
 
     case PROP_ACTION_GROUP:
-      g_application_set_action_group (application,
-                                      g_value_get_object (value));
+      g_clear_object (&application->priv->actions);
+      application->priv->actions = g_value_dup_object (value);
       break;
 
     case PROP_APP_MENU:
@@ -428,14 +431,14 @@ g_application_set_property (GObject      *object,
  * @application: a #GApplication
  * @action_group: (allow-none): a #GActionGroup, or %NULL
  *
- * Sets or unsets the group of actions associated with the application.
- *
- * These actions can be invoked remotely.
- *
- * It is an error to call this function after the application has been
- * registered.
+ * This used to be how actions were associated with a #GApplication.
+ * Now there is #GActionMap for that.
  *
  * Since: 2.28
+ *
+ * Deprecated:2.32:Use the #GActionMap interface instead.  Never ever
+ * mix use of this API with use of #GActionMap on the same @application
+ * or things will go very badly wrong.
  **/
 void
 g_application_set_action_group (GApplication *application,
@@ -645,6 +648,9 @@ g_application_finalize (GObject *object)
   if (application->priv->menubar)
     g_object_unref (application->priv->menubar);
 
+  if (application->priv->actions)
+    g_object_unref (application->priv->actions);
+
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
 }
@@ -655,6 +661,7 @@ g_application_init (GApplication *application)
   application->priv = G_TYPE_INSTANCE_GET_PRIVATE (application,
                                                    G_TYPE_APPLICATION,
                                                    GApplicationPrivate);
+  application->priv->actions = G_ACTION_GROUP (g_simple_action_group_new ());
 }
 
 static void
@@ -715,7 +722,7 @@ g_application_class_init (GApplicationClass *class)
                          P_("Action group"),
                          P_("The group of actions that the application exports"),
                          G_TYPE_ACTION_GROUP,
-                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+                         G_PARAM_DEPRECATED | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_APP_MENU,
     g_param_spec_object ("app-menu",
@@ -1611,6 +1618,39 @@ g_application_activate_action (GActionGroup *action_group,
                                     action_name, parameter);
 }
 
+static GAction *
+g_application_lookup_action (GActionMap  *action_map,
+                             const gchar *action_name)
+{
+  GApplication *application = G_APPLICATION (action_map);
+
+  g_return_val_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions), NULL);
+
+  return g_simple_action_group_lookup (G_SIMPLE_ACTION_GROUP (application->priv->actions), action_name);
+}
+
+static void
+g_application_add_action (GActionMap *action_map,
+                          GAction    *action)
+{
+  GApplication *application = G_APPLICATION (action_map);
+
+  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions));
+
+  g_simple_action_group_insert (G_SIMPLE_ACTION_GROUP (application->priv->actions), action);
+}
+
+static void
+g_application_remove_action (GActionMap  *action_map,
+                             const gchar *action_name)
+{
+  GApplication *application = G_APPLICATION (action_map);
+
+  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions));
+
+  g_simple_action_group_remove (G_SIMPLE_ACTION_GROUP (application->priv->actions), action_name);
+}
+
 static void
 g_application_action_group_iface_init (GActionGroupInterface *iface)
 {
@@ -1618,6 +1658,14 @@ g_application_action_group_iface_init (GActionGroupInterface *iface)
   iface->query_action = g_application_query_action;
   iface->change_action_state = g_application_change_action_state;
   iface->activate_action = g_application_activate_action;
+}
+
+static void
+g_application_action_map_iface_init (GActionMapInterface *iface)
+{
+  iface->lookup_action = g_application_lookup_action;
+  iface->add_action = g_application_add_action;
+  iface->remove_action = g_application_remove_action;
 }
 
 /* Default Application {{{1 */
