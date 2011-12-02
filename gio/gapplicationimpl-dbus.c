@@ -82,7 +82,7 @@ struct _GApplicationImpl
   gchar           *object_path;
   guint            object_id;
   gboolean         actions_exported;
-  gboolean         menu_exported;
+  gboolean         primary;
   gpointer         app;
 };
 
@@ -193,38 +193,125 @@ application_path_from_appid (const gchar *appid)
   return appid_path;
 }
 
+/* Attempt to become the primary instance.
+ *
+ * Returns %TRUE if everything went OK, regardless of if we became the
+ * primary instance or not.  %FALSE is reserved for when something went
+ * seriously wrong (and @error will be set too, in that case).
+ *
+ * After a %TRUE return, impl->primary will be TRUE if we were
+ * successful.
+ */
+static gboolean
+g_application_impl_attempt_primary (GApplicationImpl  *impl,
+                                    GCancellable      *cancellable,
+                                    GError           **error)
+{
+  const static GDBusInterfaceVTable vtable = {
+    g_application_impl_method_call,
+  };
+  GVariant *reply;
+  guint32 rval;
+
+  if (org_gtk_Application == NULL)
+    {
+      GError *error = NULL;
+      GDBusNodeInfo *info;
+
+      info = g_dbus_node_info_new_for_xml (org_gtk_Application_xml, &error);
+      if G_UNLIKELY (info == NULL)
+        g_error ("%s", error->message);
+      org_gtk_Application = g_dbus_node_info_lookup_interface (info, "org.gtk.Application");
+      g_assert (org_gtk_Application != NULL);
+      g_dbus_interface_info_ref (org_gtk_Application);
+      g_dbus_node_info_unref (info);
+    }
+
+  /* We could possibly have been D-Bus activated as a result of incoming
+   * requests on either the application or actiongroup interfaces.
+   * Because of how GDBus dispatches messages, we need to ensure that
+   * both of those things are registered before we attempt to request
+   * our name.
+   *
+   * The action group need not be populated yet, as long as it happens
+   * before we return to the mainloop.  The reason for that is because
+   * GDBus does the check to make sure the object exists from the worker
+   * thread but doesn't actually dispatch the action invocation until we
+   * hit the mainloop in this thread.  There is also no danger of
+   * receiving 'activate' or 'open' signals until after 'startup' runs,
+   * for the same reason.
+   */
+  impl->object_id = g_dbus_connection_register_object (impl->session_bus, impl->object_path,
+                                                       org_gtk_Application, &vtable, impl, NULL, error);
+
+  if (impl->object_id == 0)
+    return FALSE;
+
+  impl->actions_exported = g_action_group_dbus_export_start (impl->session_bus, impl->object_path, impl->app, error);
+
+  if (!impl->actions_exported)
+    return FALSE;
+
+  /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
+  reply = g_dbus_connection_call_sync (impl->session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
+                                       "org.freedesktop.DBus", "RequestName",
+                                       g_variant_new ("(su)", impl->bus_name, 0x4), G_VARIANT_TYPE ("(u)"),
+                                       0, -1, cancellable, error);
+
+  if (reply == NULL)
+    return FALSE;
+
+  g_variant_get (reply, "(u)", &rval);
+  g_variant_unref (reply);
+
+  /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
+  impl->primary = (rval != 3);
+
+  return TRUE;
+}
+
+/* Stop doing the things that the primary instance does.
+ *
+ * This should be called if attempting to become the primary instance
+ * failed (in order to clean up any partial success) and should also
+ * be called when freeing the GApplication.
+ *
+ * It is safe to call this multiple times.
+ */
+static void
+g_application_impl_stop_primary (GApplicationImpl *impl)
+{
+  if (impl->object_id)
+    {
+      g_dbus_connection_unregister_object (impl->session_bus, impl->object_id);
+      impl->object_id = 0;
+    }
+
+  if (impl->actions_exported)
+    {
+      g_action_group_dbus_export_stop (impl->app);
+      impl->actions_exported = FALSE;
+    }
+
+  if (impl->primary)
+    {
+      g_dbus_connection_call (impl->session_bus, "org.freedesktop.DBus",
+                              "/org/freedesktop/DBus", "org.freedesktop.DBus",
+                              "ReleaseName", g_variant_new ("(s)", impl->bus_name),
+                              NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+      impl->primary = FALSE;
+    }
+}
+
 void
 g_application_impl_destroy (GApplicationImpl *impl)
 {
+  g_application_impl_stop_primary (impl);
+
   if (impl->session_bus)
-    {
-      if (impl->object_id)
-        g_dbus_connection_unregister_object (impl->session_bus,
-                                             impl->object_id);
-      if (impl->actions_exported)
-        g_action_group_dbus_export_stop (impl->app);
-      if (impl->menu_exported)
-        g_menu_model_dbus_export_stop (g_application_get_app_menu (impl->app));
+    g_object_unref (impl->session_bus);
 
-      g_dbus_connection_call (impl->session_bus,
-                              "org.freedesktop.DBus",
-                              "/org/freedesktop/DBus",
-                              "org.freedesktop.DBus",
-                              "ReleaseName",
-                              g_variant_new ("(s)",
-                                             impl->bus_name),
-                              NULL,
-                              G_DBUS_CALL_FLAGS_NONE,
-                              -1, NULL, NULL, NULL);
-
-      g_object_unref (impl->session_bus);
-      g_free (impl->object_path);
-    }
-  else
-    {
-      g_assert (impl->object_path == NULL);
-      g_assert (impl->object_id == 0);
-    }
+  g_free (impl->object_path);
 
   g_slice_free (GApplicationImpl, impl);
 }
@@ -237,13 +324,8 @@ g_application_impl_register (GApplication       *application,
                              GCancellable       *cancellable,
                              GError            **error)
 {
-  const static GDBusInterfaceVTable vtable = {
-    g_application_impl_method_call
-  };
   GDBusActionGroup *actions;
   GApplicationImpl *impl;
-  GVariant *reply;
-  guint32 rval;
 
   impl = g_slice_new0 (GApplicationImpl);
 
@@ -268,154 +350,24 @@ g_application_impl_register (GApplication       *application,
    */
   if (~flags & G_APPLICATION_IS_LAUNCHER)
     {
-      if (org_gtk_Application == NULL)
+      if (!g_application_impl_attempt_primary (impl, cancellable, error))
         {
-          GError *error = NULL;
-          GDBusNodeInfo *info;
-
-          info = g_dbus_node_info_new_for_xml (org_gtk_Application_xml, &error);
-          if G_UNLIKELY (info == NULL)
-            g_error ("%s", error->message);
-          org_gtk_Application = g_dbus_node_info_lookup_interface (info, "org.gtk.Application");
-          g_assert (org_gtk_Application != NULL);
-          g_dbus_interface_info_ref (org_gtk_Application);
-          g_dbus_node_info_unref (info);
-        }
-
-      /* Attempt to become primary instance. */
-      impl->object_id =
-        g_dbus_connection_register_object (impl->session_bus,
-                                           impl->object_path,
-                                           org_gtk_Application,
-                                           &vtable, impl, NULL, error);
-
-      if (impl->object_id == 0)
-        {
-          g_object_unref (impl->session_bus);
-          g_free (impl->object_path);
-          impl->session_bus = NULL;
-          impl->object_path = NULL;
-
-          g_slice_free (GApplicationImpl, impl);
+          g_application_impl_destroy (impl);
           return NULL;
         }
 
-      if (!g_action_group_dbus_export_start (impl->session_bus,
-                                             impl->object_path,
-                                             impl->app, error))
-        {
-          g_dbus_connection_unregister_object (impl->session_bus,
-                                               impl->object_id);
-
-          g_object_unref (impl->session_bus);
-          g_free (impl->object_path);
-          impl->session_bus = NULL;
-          impl->object_path = NULL;
-
-          g_slice_free (GApplicationImpl, impl);
-          return NULL;
-        }
-      impl->actions_exported = TRUE;
-
-      if (g_application_get_app_menu (impl->app))
-        {
-          if (!g_menu_model_dbus_export_start (impl->session_bus,
-                                               impl->object_path,
-                                               g_application_get_app_menu (impl->app),
-                                               error))
-            {
-              g_action_group_dbus_export_stop (impl->app);
-              impl->actions_exported = FALSE;
-
-              g_dbus_connection_unregister_object (impl->session_bus,
-                                                   impl->object_id);
-
-              g_object_unref (impl->session_bus);
-              g_free (impl->object_path);
-              impl->session_bus = NULL;
-              impl->object_path = NULL;
-
-              g_slice_free (GApplicationImpl, impl);
-              return NULL;
-            }
-          impl->menu_exported = TRUE;
-        }
-
-      /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
-      reply = g_dbus_connection_call_sync (impl->session_bus,
-                                           "org.freedesktop.DBus",
-                                           "/org/freedesktop/DBus",
-                                           "org.freedesktop.DBus",
-                                           "RequestName",
-                                           g_variant_new ("(su)",
-                                                          impl->bus_name,
-                                                          0x4),
-                                           G_VARIANT_TYPE ("(u)"),
-                                           0, -1, cancellable, error);
-
-      if (reply == NULL)
-        {
-          g_dbus_connection_unregister_object (impl->session_bus,
-                                               impl->object_id);
-          impl->object_id = 0;
-
-          g_action_group_dbus_export_stop (impl->app);
-          impl->actions_exported = FALSE;
-
-          if (impl->menu_exported)
-            {
-              g_menu_model_dbus_export_stop (g_application_get_app_menu (impl->app));
-              impl->menu_exported = FALSE;
-            }
-
-          g_object_unref (impl->session_bus);
-          g_free (impl->object_path);
-          impl->session_bus = NULL;
-          impl->object_path = NULL;
-
-          g_slice_free (GApplicationImpl, impl);
-          return NULL;
-        }
-
-      g_variant_get (reply, "(u)", &rval);
-      g_variant_unref (reply);
-
-      /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
-      if (rval != 3)
-        {
-          /* We are the primary instance. */
-          g_dbus_connection_emit_signal (impl->session_bus,
-                                         NULL,
-                                         impl->object_path,
-                                         "org.gtk.Application",
-                                         "Hello",
-                                         g_variant_new ("(s)",
-                                                        impl->bus_name),
-                                         NULL);
-          *remote_actions = NULL;
-          return impl;
-        }
+      if (impl->primary)
+        return impl;
 
       /* We didn't make it.  Drop our service-side stuff. */
-      g_dbus_connection_unregister_object (impl->session_bus,
-                                           impl->object_id);
-      impl->object_id = 0;
-      g_action_group_dbus_export_stop (impl->app);
-      impl->actions_exported = FALSE;
-      if (impl->menu_exported)
-        {
-          g_menu_model_dbus_export_stop (g_application_get_app_menu (impl->app));
-          impl->menu_exported = FALSE;
-        }
+      g_application_impl_stop_primary (impl);
 
       if (flags & G_APPLICATION_IS_SERVICE)
         {
           g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                        "Unable to acquire bus name `%s'", appid);
-          g_object_unref (impl->session_bus);
-          g_free (impl->object_path);
+          g_application_impl_destroy (impl);
 
-          g_slice_free (GApplicationImpl, impl);
           return NULL;
         }
     }
@@ -425,17 +377,13 @@ g_application_impl_register (GApplication       *application,
    * (ie: DBus service files installed correctly, etc).
    */
   actions = g_dbus_action_group_new_sync (impl->session_bus, impl->bus_name, impl->object_path,
-                                          G_DBUS_ACTION_GROUP_FLAGS_NONE, NULL, error);
+                                          G_DBUS_ACTION_GROUP_FLAGS_NONE, cancellable, error);
 
   if (actions == NULL)
     {
       /* The primary appears not to exist.  Fail the registration. */
-      g_object_unref (impl->session_bus);
-      g_free (impl->object_path);
-      impl->session_bus = NULL;
-      impl->object_path = NULL;
+      g_application_impl_destroy (impl);
 
-      g_slice_free (GApplicationImpl, impl);
       return NULL;
     }
 
