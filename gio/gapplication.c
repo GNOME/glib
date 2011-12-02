@@ -472,9 +472,6 @@ g_application_set_action_group (GApplication *application,
  * If supported, the application menu will be rendered by the desktop
  * environment.
  *
- * It is an error to call this function after the application has been
- * registered.
- *
  * Since: 2.32
  */
 void
@@ -482,7 +479,6 @@ g_application_set_app_menu (GApplication *application,
                             GMenuModel   *app_menu)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
-  g_return_if_fail (!application->priv->is_registered);
 
   if (app_menu != application->priv->app_menu)
     {
@@ -534,9 +530,6 @@ g_application_get_app_menu (GApplication *application)
  * example, the application menu may be rendered by the desktop shell
  * while the menubar (if set) remains in each individual window.
  *
- * It is an error to call this function after the application has been
- * registered.
- *
  * Since: 2.32
  */
 void
@@ -544,7 +537,6 @@ g_application_set_menubar (GApplication *application,
                             GMenuModel   *menubar)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
-  g_return_if_fail (!application->priv->is_registered);
 
   if (menubar != application->priv->menubar)
     {
