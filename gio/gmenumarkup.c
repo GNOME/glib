@@ -117,6 +117,7 @@ g_menu_markup_pop_frame (GMenuMarkupState *state)
     {
       g_assert (prev->menu != NULL);
       g_menu_append_item (prev->menu, state->frame.item);
+      g_object_unref (state->frame.item);
     }
 
   state->frame = *prev;

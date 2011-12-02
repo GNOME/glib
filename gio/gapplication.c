@@ -639,6 +639,12 @@ g_application_finalize (GObject *object)
   if (g_application_get_default () == application)
     g_application_set_default (NULL);
 
+  if (application->priv->app_menu)
+    g_object_unref (application->priv->app_menu);
+
+  if (application->priv->menubar)
+    g_object_unref (application->priv->menubar);
+
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
 }
