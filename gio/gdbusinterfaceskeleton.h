@@ -101,7 +101,13 @@ gboolean                     g_dbus_interface_skeleton_export          (GDBusInt
                                                                         const gchar                 *object_path,
                                                                         GError                     **error);
 void                         g_dbus_interface_skeleton_unexport        (GDBusInterfaceSkeleton      *interface_);
+void                g_dbus_interface_skeleton_unexport_from_connection (GDBusInterfaceSkeleton      *interface_,
+                                                                        GDBusConnection             *connection);
+
 GDBusConnection             *g_dbus_interface_skeleton_get_connection  (GDBusInterfaceSkeleton      *interface_);
+GList                       *g_dbus_interface_skeleton_get_connections (GDBusInterfaceSkeleton      *interface_);
+gboolean                     g_dbus_interface_skeleton_has_connection  (GDBusInterfaceSkeleton      *interface_,
+                                                                        GDBusConnection             *connection);
 const gchar                 *g_dbus_interface_skeleton_get_object_path (GDBusInterfaceSkeleton      *interface_);
 
 G_END_DECLS

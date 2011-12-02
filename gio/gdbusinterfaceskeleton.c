@@ -44,16 +44,21 @@
 
 struct _GDBusInterfaceSkeletonPrivate
 {
-  GMutex lock;
+  GMutex                      lock;
 
-  GDBusObject *object;
+  GDBusObject                *object;
   GDBusInterfaceSkeletonFlags flags;
-  guint registration_id;
 
-  GDBusConnection *connection;
-  gchar *object_path;
-  GDBusInterfaceVTable *hooked_vtable;
+  GSList                     *connections;   /* List of ConnectionData */
+  gchar                      *object_path;   /* The object path for this skeleton */
+  GDBusInterfaceVTable       *hooked_vtable;
 };
+
+typedef struct
+{
+  GDBusConnection *connection;
+  guint            registration_id;
+} ConnectionData;
 
 enum
 {
@@ -69,7 +74,21 @@ enum
 
 static guint signals[LAST_SIGNAL] = {0};
 
-static void dbus_interface_interface_init (GDBusInterfaceIface *iface);
+static void     dbus_interface_interface_init                      (GDBusInterfaceIface    *iface);
+
+static void     set_object_path_locked                             (GDBusInterfaceSkeleton *interface_,
+                                                                    const gchar            *object_path);
+static void     remove_connection_locked                           (GDBusInterfaceSkeleton *interface_,
+                                                                    GDBusConnection        *connection);
+static void     skeleton_intercept_handle_method_call              (GDBusConnection        *connection,
+                                                                    const gchar            *sender,
+                                                                    const gchar            *object_path,
+                                                                    const gchar            *interface_name,
+                                                                    const gchar            *method_name,
+                                                                    GVariant               *parameters,
+                                                                    GDBusMethodInvocation  *invocation,
+                                                                    gpointer                user_data);
+
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GDBusInterfaceSkeleton, g_dbus_interface_skeleton, G_TYPE_OBJECT,
                                   G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_interface_init));
@@ -78,13 +97,22 @@ static void
 g_dbus_interface_skeleton_finalize (GObject *object)
 {
   GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (object);
-  /* unexport if already exported */
-  if (interface->priv->registration_id > 0)
-    g_dbus_interface_skeleton_unexport (interface);
 
-  g_assert (interface->priv->connection == NULL);
-  g_assert (interface->priv->object_path == NULL);
-  g_assert (interface->priv->hooked_vtable == NULL);
+  /* Hold the lock just incase any code we call verifies that the lock is held */
+  g_mutex_lock (&interface->priv->lock);
+
+  /* unexport from all connections if we're exported anywhere */
+  while (interface->priv->connections != NULL)
+    {
+      ConnectionData *data = interface->priv->connections->data;
+      remove_connection_locked (interface, data->connection);
+    }
+
+  set_object_path_locked (interface, NULL);
+
+  g_mutex_unlock (&interface->priv->lock);
+
+  g_free (interface->priv->hooked_vtable);
 
   if (interface->priv->object != NULL)
     g_object_remove_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
@@ -617,11 +645,112 @@ skeleton_intercept_handle_method_call (GDBusConnection       *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static ConnectionData *
+new_connection (GDBusConnection *connection,
+                guint            registration_id)
+{
+  ConnectionData *data;
+
+  data = g_slice_new0 (ConnectionData);
+  data->connection      = g_object_ref (connection);
+  data->registration_id = registration_id;
+
+  return data;
+}
+
+static void
+free_connection (ConnectionData *data)
+{
+  if (data != NULL)
+    {
+      g_object_unref (data->connection);
+      g_slice_free (ConnectionData, data);
+    }
+}
+
+static gboolean
+add_connection_locked (GDBusInterfaceSkeleton *interface_,
+                       GDBusConnection        *connection,
+                       GError                **error)
+{
+  ConnectionData *data;
+  guint registration_id;
+  gboolean ret = FALSE;
+
+  if (interface_->priv->hooked_vtable == NULL)
+    {
+      /* Hook the vtable since we need to intercept method calls for
+       * ::g-authorize-method and for dispatching in thread vs
+       * context
+       *
+       * We need to wait until subclasses have had time to initialize
+       * properly before building the hooked_vtable, so we create it
+       * once at the last minute.
+       */
+      interface_->priv->hooked_vtable = g_memdup (g_dbus_interface_skeleton_get_vtable (interface_), sizeof (GDBusInterfaceVTable));
+      interface_->priv->hooked_vtable->method_call = skeleton_intercept_handle_method_call;
+    }
+
+  registration_id = g_dbus_connection_register_object (connection,
+                                                       interface_->priv->object_path,
+                                                       g_dbus_interface_skeleton_get_info (interface_),
+                                                       interface_->priv->hooked_vtable,
+                                                       interface_,
+                                                       NULL, /* user_data_free_func */
+                                                       error);
+
+  if (registration_id > 0)
+    {
+      data = new_connection (connection, registration_id);
+      interface_->priv->connections = g_slist_append (interface_->priv->connections, data);
+      ret = TRUE;
+    }
+
+  return ret;
+}
+
+static void
+remove_connection_locked (GDBusInterfaceSkeleton *interface_,
+                          GDBusConnection        *connection)
+{
+  ConnectionData *data;
+  GSList *l;
+
+  /* Get the connection in the list and unregister ... */
+  for (l = interface_->priv->connections; l != NULL; l = l->next)
+    {
+      data = l->data;
+      if (data->connection == connection)
+        {
+          g_warn_if_fail (g_dbus_connection_unregister_object (data->connection, data->registration_id));
+          free_connection (data);
+          interface_->priv->connections = g_slist_delete_link (interface_->priv->connections, l);
+          /* we are guaranteed that the connection is only added once, so bail out early */
+          goto out;
+        }
+    }
+ out:
+  ;
+}
+
+static void
+set_object_path_locked (GDBusInterfaceSkeleton *interface_,
+                        const gchar            *object_path)
+{
+  if (g_strcmp0 (interface_->priv->object_path, object_path) != 0)
+    {
+      g_free (interface_->priv->object_path);
+      interface_->priv->object_path = g_strdup (object_path);
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 /**
  * g_dbus_interface_skeleton_get_connection:
  * @interface_: A #GDBusInterfaceSkeleton.
  *
- * Gets the connection that @interface_ is exported on, if any.
+ * Gets the first connection that @interface_ is exported on, if any.
  *
  * Returns: (transfer none): A #GDBusConnection or %NULL if @interface_ is
  * not exported anywhere. Do not free, the object belongs to @interface_.
@@ -631,10 +760,97 @@ skeleton_intercept_handle_method_call (GDBusConnection       *connection,
 GDBusConnection *
 g_dbus_interface_skeleton_get_connection (GDBusInterfaceSkeleton *interface_)
 {
+  ConnectionData  *data;
   GDBusConnection *ret;
+
   g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), NULL);
   g_mutex_lock (&interface_->priv->lock);
-  ret = interface_->priv->connection;
+
+  ret = NULL;
+  if (interface_->priv->connections != NULL)
+    {
+      data = interface_->priv->connections->data;
+      if (data != NULL)
+        ret = data->connection;
+    }
+
+  g_mutex_unlock (&interface_->priv->lock);
+
+  return ret;
+}
+
+/**
+ * g_dbus_interface_skeleton_get_connections:
+ * @interface_: A #GDBusInterfaceSkeleton.
+ *
+ * Gets a list of the connections that @interface_ is exported on.
+ *
+ * Returns: (element-type GDBusConnection) (transfer full): A list of
+ *   all the connections that @interface_ is exported on. The returned
+ *   list should be freed with g_list_free() after each element has
+ *   been freed with g_object_unref().
+ *
+ * Since: 2.32
+ */
+GList *
+g_dbus_interface_skeleton_get_connections (GDBusInterfaceSkeleton *interface_)
+{
+  GList           *connections;
+  GSList          *l;
+  ConnectionData  *data;
+
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), NULL);
+
+  g_mutex_lock (&interface_->priv->lock);
+  connections = NULL;
+
+  for (l = interface_->priv->connections; l != NULL; l = l->next)
+    {
+      data        = l->data;
+      connections = g_list_prepend (connections,
+                                    /* Return a reference to each connection */
+                                    g_object_ref (data->connection));
+    }
+
+  g_mutex_unlock (&interface_->priv->lock);
+
+  return g_list_reverse (connections);
+}
+
+/**
+ * g_dbus_interface_skeleton_has_connection:
+ * @interface_: A #GDBusInterfaceSkeleton.
+ * @connection: A #GDBusConnection.
+ *
+ * Checks if @interface_ is export on @connection.
+ *
+ * Returns: %TRUE if @interface_ is exported on @connection, %FALSE otherwise.
+ *
+ * Since: 2.32
+ */
+gboolean
+g_dbus_interface_skeleton_has_connection (GDBusInterfaceSkeleton     *interface_,
+                                          GDBusConnection            *connection)
+{
+  GSList *l;
+  gboolean ret = FALSE;
+
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), FALSE);
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+
+  g_mutex_lock (&interface_->priv->lock);
+
+  for (l = interface_->priv->connections; l != NULL; l = l->next)
+    {
+      ConnectionData *data = l->data;
+      if (data->connection == connection)
+        {
+          ret = TRUE;
+          goto out;
+        }
+    }
+
+ out:
   g_mutex_unlock (&interface_->priv->lock);
   return ret;
 }
@@ -670,9 +886,13 @@ g_dbus_interface_skeleton_get_object_path (GDBusInterfaceSkeleton *interface_)
  *
  * Exports @interface_ at @object_path on @connection.
  *
+ * This can be called multiple times to export the same @interface_
+ * onto multiple connections however the @object_path provided must be
+ * the same for all connections.
+ *
  * Use g_dbus_interface_skeleton_unexport() to unexport the object.
  *
- * Returns: %TRUE if the interface was exported, other %FALSE with
+ * Returns: %TRUE if the interface was exported on @connection, otherwise %FALSE with
  * @error set.
  *
  * Since: 2.30
@@ -683,51 +903,25 @@ g_dbus_interface_skeleton_export (GDBusInterfaceSkeleton  *interface_,
                                   const gchar             *object_path,
                                   GError                 **error)
 {
-  gboolean ret;
+  gboolean ret = FALSE;
 
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), 0);
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
-  g_return_val_if_fail (g_variant_is_object_path (object_path), 0);
-  g_return_val_if_fail (error == NULL || *error == NULL, 0);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), FALSE);
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (g_variant_is_object_path (object_path), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  /* Assert that the object path is the same for multiple connections here */
+  g_return_val_if_fail (interface_->priv->object_path == NULL ||
+                        g_strcmp0 (interface_->priv->object_path, object_path) == 0, FALSE);
 
   g_mutex_lock (&interface_->priv->lock);
 
-  ret = FALSE;
-  if (interface_->priv->registration_id > 0)
-    {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED, /* TODO: new error code */
-                           "The object is already exported");
-      goto out;
-    }
+  /* Set the object path */
+  set_object_path_locked (interface_, object_path);
 
-  g_assert (interface_->priv->connection == NULL);
-  g_assert (interface_->priv->object_path == NULL);
-  g_assert (interface_->priv->hooked_vtable == NULL);
+  /* Add the connection */
+  ret = add_connection_locked (interface_, connection, error);
 
-  /* Hook the vtable since we need to intercept method calls for
-   * ::g-authorize-method and for dispatching in thread vs
-   * context
-   */
-  interface_->priv->hooked_vtable = g_memdup (g_dbus_interface_skeleton_get_vtable (interface_), sizeof (GDBusInterfaceVTable));
-  interface_->priv->hooked_vtable->method_call = skeleton_intercept_handle_method_call;
-
-  interface_->priv->connection = g_object_ref (connection);
-  interface_->priv->object_path = g_strdup (object_path);
-  interface_->priv->registration_id = g_dbus_connection_register_object (connection,
-                                                                         object_path,
-                                                                         g_dbus_interface_skeleton_get_info (interface_),
-                                                                         interface_->priv->hooked_vtable,
-                                                                         interface_,
-                                                                         NULL, /* user_data_free_func */
-                                                                         error);
-  if (interface_->priv->registration_id == 0)
-    goto out;
-
-  ret = TRUE;
-
- out:
   g_mutex_unlock (&interface_->priv->lock);
   return ret;
 }
@@ -736,8 +930,10 @@ g_dbus_interface_skeleton_export (GDBusInterfaceSkeleton  *interface_,
  * g_dbus_interface_skeleton_unexport:
  * @interface_: A #GDBusInterfaceSkeleton.
  *
- * Stops exporting an interface previously exported with
- * g_dbus_interface_skeleton_export().
+ * Stops exporting @interface_ on all connections it is exported on.
+ *
+ * To unexport @interface_ from only a single connection, use
+ * g_dbus_interface_skeleton_export_from_connection()
  *
  * Since: 2.30
  */
@@ -745,23 +941,57 @@ void
 g_dbus_interface_skeleton_unexport (GDBusInterfaceSkeleton *interface_)
 {
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_));
-  g_return_if_fail (interface_->priv->registration_id > 0);
+  g_return_if_fail (interface_->priv->connections != NULL);
 
   g_mutex_lock (&interface_->priv->lock);
 
-  g_assert (interface_->priv->connection != NULL);
   g_assert (interface_->priv->object_path != NULL);
   g_assert (interface_->priv->hooked_vtable != NULL);
 
-  g_warn_if_fail (g_dbus_connection_unregister_object (interface_->priv->connection,
-                                                       interface_->priv->registration_id));
+  /* Remove all connections */
+  while (interface_->priv->connections != NULL)
+    {
+      ConnectionData *data = interface_->priv->connections->data;
+      remove_connection_locked (interface_, data->connection);
+    }
 
-  g_object_unref (interface_->priv->connection);
-  g_free (interface_->priv->object_path);
-  interface_->priv->connection = NULL;
-  interface_->priv->object_path = NULL;
-  interface_->priv->hooked_vtable = NULL;
-  interface_->priv->registration_id = 0;
+  /* Unset the object path since there are no connections left */
+  set_object_path_locked (interface_, NULL);
+
+  g_mutex_unlock (&interface_->priv->lock);
+}
+
+
+/**
+ * g_dbus_interface_skeleton_unexport_from_connection:
+ * @interface_: A #GDBusInterfaceSkeleton.
+ * @connection: A #GDBusConnection.
+ *
+ * Stops exporting @interface_ on @connection.
+ *
+ * To stop exporting on all connections the interface is exported on,
+ * use g_dbus_interface_skeleton_unexport().
+ *
+ * Since: 2.32
+ */
+void
+g_dbus_interface_skeleton_unexport_from_connection (GDBusInterfaceSkeleton *interface_,
+                                                    GDBusConnection        *connection)
+{
+  g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_));
+  g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+  g_return_if_fail (interface_->priv->connections != NULL);
+
+  g_mutex_lock (&interface_->priv->lock);
+
+  g_assert (interface_->priv->object_path != NULL);
+  g_assert (interface_->priv->hooked_vtable != NULL);
+
+  remove_connection_locked (interface_, connection);
+
+  /* Reset the object path if we removed the last connection */
+  if (interface_->priv->connections == NULL)
+    set_object_path_locked (interface_, NULL);
 
   g_mutex_unlock (&interface_->priv->lock);
 }

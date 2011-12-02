@@ -2307,21 +2307,31 @@ class CodeGenerator:
                 self.c.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
             self.c.write(')\n'
                          '{\n'
-                         '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
-                         '  GDBusConnection *connection = g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton));\n'
+                         '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n\n'
+                         '  GList      *connections, *l;\n'
+                         '  GVariant   *signal_variant;\n'
+                         '  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));\n'
                          %(i.camel_name, i.ns_upper, i.name_upper))
-            self.c.write('  if (connection == NULL)\n'
-                         '    return;\n'
-                         '  g_dbus_connection_emit_signal (connection,\n'
-                         '    NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "%s", "%s",\n'
-                         '    g_variant_new ("('
-                         %(i.name, s.name))
+            self.c.write('\n'
+                         '  signal_variant = g_variant_ref_sink (g_variant_new ("(')
             for a in s.args:
                 self.c.write('%s'%(a.format_in))
             self.c.write(')"')
             for a in s.args:
                 self.c.write(',\n                   arg_%s'%(a.name))
-            self.c.write('), NULL);\n')
+            self.c.write('));\n')
+
+            self.c.write('  for (l = connections; l != NULL; l = l->next)\n'
+                         '    {\n'
+                         '      GDBusConnection *connection = l->data;\n'
+                         '      g_dbus_connection_emit_signal (connection,\n'
+                         '        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "%s", "%s",\n'
+                         '        signal_variant, NULL);\n'
+                         '    }\n'
+                         %(i.name, s.name))
+            self.c.write('  g_variant_unref (signal_variant);\n')
+            self.c.write('  g_list_foreach (connections, (GFunc)g_object_unref, NULL);\n')
+            self.c.write('  g_list_free (connections);\n')
             self.c.write('}\n'
                          '\n')
 
@@ -2407,14 +2417,26 @@ class CodeGenerator:
                          '    }\n'
                          '  if (num_changes > 0)\n'
                          '    {\n'
-                         '      g_dbus_connection_emit_signal (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
-                         '                                     NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
-                         '                                     "org.freedesktop.DBus.Properties",\n'
-                         '                                     "PropertiesChanged",\n'
-                         '                                     g_variant_new ("(sa{sv}as)",\n'
-                         '                                                    "%s",\n'
-                         '                                                    &builder, &invalidated_builder),\n'
-                         '                                     NULL);\n'
+                         '      GList *connections, *l;\n'
+                         '      GVariant *signal_variant;'
+                         '\n'
+                         '      signal_variant = g_variant_ref_sink (g_variant_new ("(sa{sv}as)", "%s",\n'
+                         '                                           &builder, &invalidated_builder));\n'
+                         '      connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));\n'
+                         '      for (l = connections; l != NULL; l = l->next)\n'
+                         '        {\n'
+                         '          GDBusConnection *connection = l->data;\n'
+                         '\n'
+                         '          g_dbus_connection_emit_signal (connection,\n'
+                         '                                         NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
+                         '                                         "org.freedesktop.DBus.Properties",\n'
+                         '                                         "PropertiesChanged",\n'
+                         '                                         signal_variant,\n'
+                         '                                         NULL);\n'
+                         '        }\n'
+                         '      g_variant_unref (signal_variant);\n'
+                         '      g_list_foreach (connections, (GFunc)g_object_unref, NULL);\n'
+                         '      g_list_free (connections);\n'
                          '    }\n'
                          '  else\n'
                          '    {\n'

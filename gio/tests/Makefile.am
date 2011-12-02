@@ -344,9 +344,6 @@ gdbus_export_LDADD = $(progs_ldadd)
 gdbus_error_SOURCES = gdbus-error.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_error_LDADD = $(progs_ldadd)
 
-gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
-gdbus_peer_LDADD = $(progs_ldadd)
-
 gdbus_non_socket_SOURCES = \
 	gdbus-non-socket.c \
 	gdbus-tests.c \
@@ -527,6 +524,11 @@ gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-ob
 gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
 gdbus_example_objectmanager_client_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
+
+gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
+gdbus_peer_CFLAGS  = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_peer_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
+
 endif OS_UNIX
 
 # -----------------------------------------------------------------------------

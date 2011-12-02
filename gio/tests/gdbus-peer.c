@@ -47,6 +47,8 @@
 
 #include "gdbus-tests.h"
 
+#include "gdbus-example-objectmanager-generated.h"
+
 #ifdef G_OS_UNIX
 static gboolean is_unix = TRUE;
 #else
@@ -601,6 +603,7 @@ test_peer (void)
   g_assert (c == NULL);
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
+  service_loop = NULL;
   service_thread = g_thread_new ("test_peer",
                                  service_thread_func,
                                  &data);
@@ -1534,6 +1537,241 @@ test_tcp_anonymous (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static GDBusServer *codegen_server = NULL;
+
+static gboolean
+codegen_on_animal_poke (ExampleAnimal          *animal,
+                        GDBusMethodInvocation  *invocation,
+                        gboolean                make_sad,
+                        gboolean                make_happy,
+                        gpointer                user_data)
+{
+  if ((make_sad && make_happy) || (!make_sad && !make_happy))
+    {
+      g_main_loop_quit (service_loop);
+
+      g_dbus_method_invocation_return_dbus_error (invocation,
+                                                  "org.gtk.GDBus.Examples.ObjectManager.Error.Failed",
+                                                  "Exactly one of make_sad or make_happy must be TRUE");
+      goto out;
+    }
+
+  if (make_sad)
+    {
+      if (g_strcmp0 (example_animal_get_mood (animal), "Sad") == 0)
+        {
+          g_dbus_method_invocation_return_dbus_error (invocation,
+                                                      "org.gtk.GDBus.Examples.ObjectManager.Error.SadAnimalIsSad",
+                                                      "Sad animal is already sad");
+          goto out;
+        }
+
+      example_animal_set_mood (animal, "Sad");
+      example_animal_complete_poke (animal, invocation);
+      goto out;
+    }
+
+  if (make_happy)
+    {
+      if (g_strcmp0 (example_animal_get_mood (animal), "Happy") == 0)
+        {
+          g_dbus_method_invocation_return_dbus_error (invocation,
+                                                      "org.gtk.GDBus.Examples.ObjectManager.Error.HappyAnimalIsHappy",
+                                                      "Happy animal is already happy");
+          goto out;
+        }
+
+      example_animal_set_mood (animal, "Happy");
+      example_animal_complete_poke (animal, invocation);
+      goto out;
+    }
+
+  g_assert_not_reached ();
+
+ out:
+  return TRUE; /* to indicate that the method was handled */
+}
+
+/* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
+static gboolean
+codegen_on_new_connection (GDBusServer *server,
+                           GDBusConnection *connection,
+                           gpointer user_data)
+{
+  ExampleAnimal *animal = user_data;
+  GError        *error = NULL;
+
+  /* g_print ("Client connected.\n" */
+  /*          "Negotiated capabilities: unix-fd-passing=%d\n", */
+  /*          g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING); */
+
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (animal), connection,
+                                    "/Example/Animals/000", &error);
+  g_assert_no_error (error);
+
+  return TRUE;
+}
+
+static gpointer
+codegen_service_thread_func (gpointer user_data)
+{
+  GMainContext   *service_context;
+  ExampleAnimal  *animal;
+  GError         *error = NULL;
+
+  service_context = g_main_context_new ();
+  g_main_context_push_thread_default (service_context);
+
+  /* Create the animal in the right thread context */
+  animal = example_animal_skeleton_new ();
+
+  /* Handle Poke() D-Bus method invocations on the .Animal interface */
+  g_signal_connect (animal, "handle-poke",
+                    G_CALLBACK (codegen_on_animal_poke),
+                    NULL); /* user_data */
+
+  codegen_server = g_dbus_server_new_sync (tmp_address,
+                                           G_DBUS_SERVER_FLAGS_NONE,
+                                           test_guid,
+                                           NULL, /* observer */
+                                           NULL, /* cancellable */
+                                           &error);
+  g_assert_no_error (error);
+  g_dbus_server_start (codegen_server);
+
+  g_signal_connect (codegen_server, "new-connection",
+                    G_CALLBACK (codegen_on_new_connection),
+                    animal);
+
+  service_loop = g_main_loop_new (service_context, FALSE);
+  g_main_loop_run (service_loop);
+
+  g_object_unref (animal);
+
+  g_main_context_pop_thread_default (service_context);
+
+  g_main_loop_unref (service_loop);
+  g_main_context_unref (service_context);
+
+  g_dbus_server_stop (codegen_server);
+  g_object_unref (codegen_server);
+  codegen_server = NULL;
+
+  return NULL;
+}
+
+
+gboolean
+codegen_quit_mainloop_timeout (gpointer data)
+{
+  g_main_loop_quit (loop);
+  return FALSE;
+}
+
+static void
+codegen_test_peer (void)
+{
+  GDBusConnection     *connection;
+  ExampleAnimal       *animal1, *animal2;
+  GThread             *service_thread;
+  GError              *error = NULL;
+  GVariant            *value;
+
+  /* bring up a server - we run the server in a different thread to avoid deadlocks */
+  service_thread = g_thread_new ("codegen_test_peer",
+                                 codegen_service_thread_func,
+                                 NULL);
+  service_loop = NULL;
+  while (service_loop == NULL)
+    g_thread_yield ();
+  g_assert (codegen_server != NULL);
+
+  /* Get an animal 1 ...  */
+  connection = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (codegen_server),
+                                                       G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                       NULL, /* GDBusAuthObserver */
+                                                       NULL, /* cancellable */
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (connection != NULL);
+
+  animal1 = example_animal_proxy_new_sync (connection, 0, NULL,
+                                           "/Example/Animals/000", NULL, &error);
+  g_assert_no_error (error);
+  g_assert (animal1 != NULL);
+  g_object_unref (connection);
+
+  /* Get animal 2 ...  */
+  connection = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (codegen_server),
+                                                       G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                       NULL, /* GDBusAuthObserver */
+                                                       NULL, /* cancellable */
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (connection != NULL);
+
+  animal2 = example_animal_proxy_new_sync (connection, 0, NULL,
+                                           "/Example/Animals/000", NULL, &error);
+  g_assert_no_error (error);
+  g_assert (animal2 != NULL);
+  g_object_unref (connection);
+
+  /* Make animal sad via animal1  */
+  example_animal_call_poke_sync (animal1, TRUE, FALSE, NULL, &error);
+  g_assert_no_error (error);
+
+  /* Poke server and make sure animal is updated */
+  value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal1),
+                                  "org.freedesktop.DBus.Peer.Ping",
+                                  NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                                  NULL, &error);
+  g_assert_no_error (error);
+  g_assert (value != NULL);
+  g_variant_unref (value);
+
+  /* Give the proxies a chance to refresh in the defaul main loop */
+  g_timeout_add (100, codegen_quit_mainloop_timeout, NULL);
+  g_main_loop_run (loop);
+
+  /* Assert animals are sad */
+  g_assert_cmpstr (example_animal_get_mood (animal1), ==, "Sad");
+  g_assert_cmpstr (example_animal_get_mood (animal2), ==, "Sad");
+
+  /* Make animal happy via animal2  */
+  example_animal_call_poke_sync (animal2, FALSE, TRUE, NULL, &error);
+  g_assert_no_error (error);
+
+  /* Poke server and make sure animal is updated */
+  value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal2),
+                                  "org.freedesktop.DBus.Peer.Ping",
+                                  NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                                  NULL, &error);
+  g_assert_no_error (error);
+  g_assert (value != NULL);
+  g_variant_unref (value);
+
+  /* Give the proxies a chance to refresh in the defaul main loop */
+  g_timeout_add (1000, codegen_quit_mainloop_timeout, NULL);
+  g_main_loop_run (loop);
+
+  /* Assert animals are happy */
+  g_assert_cmpstr (example_animal_get_mood (animal1), ==, "Happy");
+  g_assert_cmpstr (example_animal_get_mood (animal2), ==, "Happy");
+
+  /* This final call making the animal happy and sad will cause
+   * the server to quit, when the server quits we dont get property
+   * change notifications anyway because those are done from an idle handler
+   */
+  example_animal_call_poke_sync (animal2, TRUE, TRUE, NULL, &error);
+
+  g_object_unref (animal1);
+  g_object_unref (animal2);
+  g_thread_join (service_thread);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+
 int
 main (int   argc,
       char *argv[])
@@ -1575,6 +1813,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/tcp-anonymous", test_tcp_anonymous);
   g_test_add_func ("/gdbus/credentials", test_credentials);
   g_test_add_func ("/gdbus/overflow", test_overflow);
+  g_test_add_func ("/gdbus/codegen-peer-to-peer", codegen_test_peer);
 
   ret = g_test_run();
 
