@@ -38,78 +38,41 @@
 #include "gdbusmethodinvocation.h"
 
 /* DBus Interface definition {{{1 */
-static const GDBusArgInfo platform_data_arg = { -1, (gchar *) "platform_data", (gchar *) "a{sv}" };
+static const gchar org_gtk_Application_xml[] =
+  "<node>"
+  "  <interface name='org.gtk.Application'>"
+  "    <method name='Activate'>"
+  "      <arg type='a{sv}' name='platform-data' direction='in'/>"
+  "    </method>"
+  "    <method name='Open'>"
+  "      <arg type='as' name='uris' direction='in'/>"
+  "      <arg type='s' name='hint' direction='in'/>"
+  "      <arg type='a{sv}' name='platform-data' direction='in'/>"
+  "    </method>"
+  "    <method name='CommandLine'>"
+  "      <arg type='o' name='path' direction='in'/>"
+  "      <arg type='aay' name='arguments' direction='in'/>"
+  "      <arg type='a{sv}' name='platform-data' direction='in'/>"
+  "      <arg type='i' name='exit-status' direction='out'/>"
+  "    </method>"
+  "  </interface>"
+  "</node>";
 
-static const GDBusArgInfo open_uris_arg = { -1, (gchar *) "uris", (gchar *) "as" };
-static const GDBusArgInfo open_hint_arg = { -1, (gchar *) "hint", (gchar *) "s" };
+static GDBusInterfaceInfo *org_gtk_Application;
 
-static const GDBusArgInfo invoke_action_name_arg = { -1, (gchar *) "name", (gchar *) "s" };
-static const GDBusArgInfo invoke_action_args_arg = { -1, (gchar *) "args", (gchar *) "v" };
+static const gchar org_gtk_private_CommandLine_xml[] =
+  "<node>"
+  "  <interface name='org.gtk.private.CommandLine'>"
+  "    <method name='Print'>"
+  "      <arg type='s' name='message' direction='in'/>"
+  "    </method>"
+  "    <method name='PrintError'>"
+  "      <arg type='s' name='message' direction='in'/>"
+  "    </method>"
+  "  </interface>"
+  "</node>";
 
-static const GDBusArgInfo cmdline_path_arg = { -1, (gchar *) "path", (gchar *) "o" };
-static const GDBusArgInfo cmdline_arguments_arg = { -1, (gchar *) "arguments", (gchar *) "aay" };
-static const GDBusArgInfo cmdline_exit_status_arg = { -1, (gchar *) "exit_status", (gchar *) "i" };
-
-static const GDBusArgInfo *activate_in[] = { &platform_data_arg, NULL };
-static const GDBusArgInfo *activate_out[] = { NULL };
-
-static const GDBusArgInfo *open_in[] = { &open_uris_arg, &open_hint_arg, &platform_data_arg, NULL };
-static const GDBusArgInfo *open_out[] = { NULL };
-
-static const GDBusArgInfo *cmdline_in[] = { &cmdline_path_arg, &cmdline_arguments_arg, &platform_data_arg, NULL };
-static const GDBusArgInfo *cmdline_out[] = { &cmdline_exit_status_arg, NULL };
-
-static const GDBusMethodInfo activate_method = {
-  -1, (gchar *) "Activate",
-  (GDBusArgInfo **) activate_in,
-  (GDBusArgInfo **) activate_out
-};
-
-static const GDBusMethodInfo open_method = {
-  -1, (gchar *) "Open",
-  (GDBusArgInfo **) open_in,
-  (GDBusArgInfo **) open_out
-};
-
-static const GDBusMethodInfo command_line_method = {
-  -1, (gchar *) "CommandLine",
-  (GDBusArgInfo **) cmdline_in,
-  (GDBusArgInfo **) cmdline_out
-};
-
-static const GDBusMethodInfo *application_methods[] = {
-  &activate_method, &open_method, &command_line_method, NULL
-};
-
-const GDBusInterfaceInfo org_gtk_Application = {
-  -1, (gchar *) "org.gtk.Application",
-  (GDBusMethodInfo **) application_methods
-};
-
-static const GDBusArgInfo message_arg = { -1, (gchar *) "message", (gchar *) "s" };
-static const GDBusArgInfo *print_in[] = { &message_arg, NULL };
-static const GDBusArgInfo *print_out[] = { NULL };
-
-static const GDBusMethodInfo stdout_method = {
-  -1, (gchar *) "Print",
-  (GDBusArgInfo **) print_in,
-  (GDBusArgInfo **) print_out
-};
-
-static const GDBusMethodInfo stderr_method = {
-  -1, (gchar *) "PrintError",
-  (GDBusArgInfo **) print_in,
-  (GDBusArgInfo **) print_out
-};
-
-static const GDBusMethodInfo *cmdline_methods[] = {
-  &stdout_method, &stderr_method, NULL
-};
-
-const GDBusInterfaceInfo org_gtk_private_Cmdline = {
-  -1, (gchar *) "org.gtk.private.CommandLine",
-  (GDBusMethodInfo **) cmdline_methods
-};
+static GDBusInterfaceInfo *org_gtk_private_CommandLine;
 
 /* GApplication implementation {{{1 */
 struct _GApplicationImpl
@@ -305,12 +268,25 @@ g_application_impl_register (GApplication       *application,
    */
   if (~flags & G_APPLICATION_IS_LAUNCHER)
     {
+      if (org_gtk_Application == NULL)
+        {
+          GError *error = NULL;
+          GDBusNodeInfo *info;
+
+          info = g_dbus_node_info_new_for_xml (org_gtk_Application_xml, &error);
+          if G_UNLIKELY (info == NULL)
+            g_error ("%s", error->message);
+          org_gtk_Application = g_dbus_node_info_lookup_interface (info, "org.gtk.Application");
+          g_assert (org_gtk_Application != NULL);
+          g_dbus_interface_info_ref (org_gtk_Application);
+          g_dbus_node_info_unref (info);
+        }
+
       /* Attempt to become primary instance. */
       impl->object_id =
         g_dbus_connection_register_object (impl->session_bus,
                                            impl->object_path,
-                                           (GDBusInterfaceInfo *)
-                                             &org_gtk_Application,
+                                           org_gtk_Application,
                                            &vtable, impl, NULL, error);
 
       if (impl->object_id == 0)
@@ -587,10 +563,22 @@ g_application_impl_command_line (GApplicationImpl  *impl,
   data.loop = g_main_loop_new (context, FALSE);
   g_main_context_push_thread_default (context);
 
-  object_id = g_dbus_connection_register_object (impl->session_bus,
-                                                 object_path,
-                                                 (GDBusInterfaceInfo *)
-                                                   &org_gtk_private_Cmdline,
+  if (org_gtk_private_CommandLine == NULL)
+    {
+      GError *error = NULL;
+      GDBusNodeInfo *info;
+
+      info = g_dbus_node_info_new_for_xml (org_gtk_private_CommandLine_xml, &error);
+      if G_UNLIKELY (info == NULL)
+        g_error ("%s", error->message);
+      org_gtk_private_CommandLine = g_dbus_node_info_lookup_interface (info, "org.gtk.private.CommandLine");
+      g_assert (org_gtk_private_CommandLine != NULL);
+      g_dbus_interface_info_ref (org_gtk_private_CommandLine);
+      g_dbus_node_info_unref (info);
+    }
+
+  object_id = g_dbus_connection_register_object (impl->session_bus, object_path,
+                                                 org_gtk_private_CommandLine,
                                                  &vtable, &data, NULL, NULL);
   /* In theory we should try other paths... */
   g_assert (object_id != 0);
