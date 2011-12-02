@@ -211,14 +211,12 @@ const char org_gtk_Actions_xml[] =
   "</node>";
 
 static GDBusInterfaceInfo *org_gtk_Actions;
-static GHashTable *exported_groups;
 
 typedef struct
 {
   GActionGroup    *action_group;
   GDBusConnection *connection;
   gchar           *object_path;
-  guint            registration_id;
   GHashTable      *pending_changes;
   guint            pending_id;
   gulong           signal_ids[4];
@@ -547,6 +545,21 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
   g_dbus_method_invocation_return_value (invocation, result);
 }
 
+static void
+g_action_group_exporter_free (gpointer user_data)
+{
+  GActionGroupExporter *exporter = user_data;
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (exporter->signal_ids); i++)
+    g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
+  g_object_unref (exporter->connection);
+  g_object_unref (exporter->action_group);
+  g_free (exporter->object_path);
+
+  g_slice_free (GActionGroupExporter, exporter);
+}
+
 /**
  * g_action_group_dbus_export_start:
  * @connection: a #GDBusConnection
@@ -571,19 +584,17 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
  * Returns: %TRUE if the export is successful, or %FALSE (with @error
  *          set) in the event of a failure.
  **/
-gboolean
-g_action_group_dbus_export_start (GDBusConnection  *connection,
-                                  const gchar      *object_path,
-                                  GActionGroup     *action_group,
-                                  GError          **error)
+guint
+g_dbus_connection_export_action_group (GDBusConnection  *connection,
+                                       const gchar      *object_path,
+                                       GActionGroup     *action_group,
+                                       GError          **error)
 {
   const GDBusInterfaceVTable vtable = {
     org_gtk_Actions_method_call
   };
   GActionGroupExporter *exporter;
-
-  if G_UNLIKELY (exported_groups == NULL)
-    exported_groups = g_hash_table_new (NULL, NULL);
+  guint id;
 
   if G_UNLIKELY (org_gtk_Actions == NULL)
     {
@@ -599,24 +610,16 @@ g_action_group_dbus_export_start (GDBusConnection  *connection,
       g_dbus_node_info_unref (info);
     }
 
-  if G_UNLIKELY (g_hash_table_lookup (exported_groups, action_group))
-    {
-      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FILE_EXISTS,
-                   "The given GActionGroup has already been exported");
-      return FALSE;
-    }
-
   exporter = g_slice_new (GActionGroupExporter);
-  exporter->registration_id = g_dbus_connection_register_object (connection, object_path, org_gtk_Actions,
-                                                                 &vtable, exporter, NULL, error);
+  id = g_dbus_connection_register_object (connection, object_path, org_gtk_Actions, &vtable,
+                                          exporter, g_action_group_exporter_free, error);
 
-  if (exporter->registration_id == 0)
+  if (id == 0)
     {
       g_slice_free (GActionGroupExporter, exporter);
-      return FALSE;
+      return 0;
     }
 
-  g_hash_table_insert (exported_groups, action_group, exporter);
   exporter->pending_changes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   exporter->pending_id = 0;
   exporter->action_group = g_object_ref (action_group);
@@ -636,84 +639,12 @@ g_action_group_dbus_export_start (GDBusConnection  *connection,
     g_signal_connect (action_group, "action-enabled-changed",
                       G_CALLBACK (g_action_group_exporter_action_enabled_changed), exporter);
 
-  return TRUE;
+  return id;
 }
 
-/**
- * g_action_group_dbus_export_stop:
- * @action_group: a #GActionGroup
- *
- * Stops the export of @action_group.
- *
- * This reverses the effect of a previous call to
- * g_action_group_dbus_export_start() for @action_group.
- *
- * Returns: %TRUE if an export was stopped or %FALSE if @action_group
- *          was not exported in the first place
- **/
 gboolean
-g_action_group_dbus_export_stop (GActionGroup *action_group)
+g_dbus_connection_unexport_action_group (GDBusConnection *connection,
+                                         guint            export_id)
 {
-  GActionGroupExporter *exporter;
-  gint i;
-
-  if G_UNLIKELY (exported_groups == NULL)
-    return FALSE;
-
-  exporter = g_hash_table_lookup (exported_groups, action_group);
-  if G_UNLIKELY (exporter == NULL)
-    return FALSE;
-
-  g_hash_table_remove (exported_groups, action_group);
-
-  g_dbus_connection_unregister_object (exporter->connection, exporter->registration_id);
-  for (i = 0; i < G_N_ELEMENTS (exporter->signal_ids); i++)
-    g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
-  g_object_unref (exporter->connection);
-  g_object_unref (exporter->action_group);
-  g_free (exporter->object_path);
-
-  g_slice_free (GActionGroupExporter, exporter);
-
-  return TRUE;
-}
-
-/**
- * g_action_group_dbus_export_query:
- * @action_group: a #GActionGroup
- * @connection: (out): the #GDBusConnection used for exporting
- * @object_path: (out): the object path used for exporting
- *
- * Queries if and where @action_group is exported.
- *
- * If @action_group is exported, %TRUE is returned.  If @connection is
- * non-%NULL then it is set to the #GDBusConnection used for the export.
- * If @object_path is non-%NULL then it is set to the object path.
- *
- * If the @action_group is not exported, %FALSE is returned and
- * @connection and @object_path remain unmodified.
- *
- * Returns: %TRUE if @action_group was exported, else %FALSE
- **/
-gboolean
-g_action_group_dbus_export_query (GActionGroup     *action_group,
-                                  GDBusConnection **connection,
-                                  const gchar     **object_path)
-{
-  GActionGroupExporter *exporter;
-
-  if (exported_groups == NULL)
-    return FALSE;
-
-  exporter = g_hash_table_lookup (exported_groups, action_group);
-  if (exporter == NULL)
-    return FALSE;
-
-  if (connection)
-    *connection = exporter->connection;
-
-  if (object_path)
-    *object_path = exporter->object_path;
-
-  return TRUE;
+  return g_dbus_connection_unregister_object (connection, export_id);
 }

@@ -81,7 +81,7 @@ struct _GApplicationImpl
   const gchar     *bus_name;
   gchar           *object_path;
   guint            object_id;
-  gboolean         actions_exported;
+  guint            actions_id;
   gboolean         primary;
   gpointer         app;
 };
@@ -247,9 +247,9 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (impl->object_id == 0)
     return FALSE;
 
-  impl->actions_exported = g_action_group_dbus_export_start (impl->session_bus, impl->object_path, impl->app, error);
+  impl->actions_id = g_dbus_connection_export_action_group (impl->session_bus, impl->object_path, impl->app, error);
 
-  if (!impl->actions_exported)
+  if (impl->actions_id == 0)
     return FALSE;
 
   /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
@@ -287,10 +287,10 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
       impl->object_id = 0;
     }
 
-  if (impl->actions_exported)
+  if (impl->actions_id)
     {
-      g_action_group_dbus_export_stop (impl->app);
-      impl->actions_exported = FALSE;
+      g_dbus_connection_unexport_action_group (impl->session_bus, impl->actions_id);
+      impl->actions_id = 0;
     }
 
   if (impl->primary)

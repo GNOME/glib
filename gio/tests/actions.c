@@ -527,6 +527,7 @@ test_dbus_export (void)
   };
   GError *error = NULL;
   GVariant *v;
+  guint id;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -535,11 +536,8 @@ test_dbus_export (void)
   group = g_simple_action_group_new ();
   g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
 
-  g_action_group_dbus_export_start (bus, "/", G_ACTION_GROUP (group), &error);
+  id = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &error);
   g_assert_no_error (error);
-
-  g_assert (g_action_group_dbus_export_query (G_ACTION_GROUP (group), NULL, NULL));
-  proxy = NULL;
 
   g_dbus_action_group_new (bus, g_dbus_connection_get_unique_name (bus), "/", 0, NULL, got_proxy, NULL);
   g_assert_no_error (error);
@@ -618,12 +616,12 @@ test_dbus_export (void)
   g_assert (!g_variant_get_boolean (v));
   g_variant_unref (v);
 
-  g_action_group_dbus_export_stop (G_ACTION_GROUP (group));
-  g_assert (!g_action_group_dbus_export_query (G_ACTION_GROUP (group), NULL, NULL));
+  g_dbus_connection_unexport_action_group (bus, id);
 
   g_object_unref (proxy);
   g_object_unref (group);
   g_main_loop_unref (loop);
+  g_object_unref (bus);
 }
 
 int
