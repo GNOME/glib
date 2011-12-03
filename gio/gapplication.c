@@ -721,14 +721,14 @@ g_application_class_init (GApplicationClass *class)
                          P_("Application menu"),
                          P_("The GMenuModel for the application menu"),
                          G_TYPE_MENU_MODEL,
-                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_MENUBAR,
     g_param_spec_object ("menubar",
                          P_("Menubar"),
                          P_("The GMenuModel for the menubar"),
                          G_TYPE_MENU_MODEL,
-                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication::startup:
