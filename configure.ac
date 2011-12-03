@@ -1291,9 +1291,11 @@ AS_IF([test x$glib_cv_sane_realloc = xyes], [
 ])
 
 dnl Check for nl_langinfo and CODESET
+AC_LANG_SAVE
+AC_LANG_C
 AC_CACHE_CHECK([for nl_langinfo (CODESET)],glib_cv_langinfo_codeset,[
-        AC_TRY_COMPILE([#include <langinfo.h>],
-                [char *codeset = nl_langinfo (CODESET);],
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <langinfo.h>],
+                       [char *codeset = nl_langinfo (CODESET);])],
                 [glib_cv_langinfo_codeset=yes],
                 [glib_cv_langinfo_codeset=no])])
 if test x$glib_cv_langinfo_codeset = xyes; then
@@ -1302,8 +1304,8 @@ fi
 
 dnl Check for nl_langinfo and LC_TIME parts that are needed in gdatetime.c
 AC_CACHE_CHECK([for nl_langinfo (PM_STR)],glib_cv_langinfo_time,[
-        AC_TRY_COMPILE([#include <langinfo.h>],
-                [char *str;
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <langinfo.h>],
+                 [char *str;
                  str = nl_langinfo (PM_STR);
                  str = nl_langinfo (D_T_FMT);
                  str = nl_langinfo (D_FMT);
@@ -1312,7 +1314,7 @@ AC_CACHE_CHECK([for nl_langinfo (PM_STR)],glib_cv_langinfo_time,[
                  str = nl_langinfo (MON_1);
                  str = nl_langinfo (ABMON_12);
                  str = nl_langinfo (DAY_1);
-                 str = nl_langinfo (ABDAY_7);],
+                 str = nl_langinfo (ABDAY_7);])],
                 [glib_cv_langinfo_time=yes],
                 [glib_cv_langinfo_time=no])])
 if test x$glib_cv_langinfo_time = xyes; then
@@ -1321,7 +1323,7 @@ fi
 
 dnl Check for nl_langinfo and _NL_CTYPE_OUTDIGITn_MB
 AC_CACHE_CHECK([for nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)], glib_cv_langinfo_outdigit,[
-        AC_TRY_COMPILE([#include <langinfo.h>],
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <langinfo.h>],
                 [char *str;
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT0_MB);
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT1_MB);
@@ -1332,12 +1334,13 @@ AC_CACHE_CHECK([for nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)], glib_cv_langinfo_outd
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT6_MB);
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT7_MB);
                  str = nl_langinfo (_NL_CTYPE_OUTDIGIT8_MB);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT9_MB);],
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT9_MB);])],
                 [glib_cv_langinfo_outdigit=yes],
                 [glib_cv_langinfo_outdigit=no])])
 if test x$glib_cv_langinfo_outdigit = xyes; then
   AC_DEFINE(HAVE_LANGINFO_OUTDIGIT,1,[Have nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)])
 fi
+AC_LANG_RESTORE
 
 dnl ****************************************
 dnl *** posix_memalign                   ***
