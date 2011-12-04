@@ -606,6 +606,16 @@ g_application_get_property (GObject    *object,
                         g_application_get_inactivity_timeout (application));
       break;
 
+    case PROP_APP_MENU:
+      g_value_set_object (value,
+                          g_application_get_app_menu (application));
+      break;
+
+    case PROP_MENUBAR:
+      g_value_set_object (value,
+                          g_application_get_menubar (application));
+      break;
+
     default:
       g_assert_not_reached ();
     }
