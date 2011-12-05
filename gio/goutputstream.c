@@ -296,8 +296,9 @@ g_output_stream_write_all (GOutputStream  *stream,
  * @cancellable: (allow-none): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
- * Flushed any outstanding buffers in the stream. Will block during 
- * the operation. Closing the stream will implicitly cause a flush.
+ * Forces a write of all user-space buffered data for the given
+ * @stream. Will block during the operation. Closing the stream will
+ * implicitly cause a flush.
  *
  * This function is optional for inherited classes.
  * 
@@ -939,7 +940,8 @@ g_output_stream_splice_finish (GOutputStream  *stream,
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  * 
- * Flushes a stream asynchronously.
+ * Forces an asynchronous write of all user-space buffered data for
+ * the given @stream.
  * For behaviour details see g_output_stream_flush().
  *
  * When the operation is finished @callback will be 
