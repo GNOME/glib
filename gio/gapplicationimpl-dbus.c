@@ -55,6 +55,8 @@ static const gchar org_gtk_Application_xml[] =
   "      <arg type='a{sv}' name='platform-data' direction='in'/>"
   "      <arg type='i' name='exit-status' direction='out'/>"
   "    </method>"
+  "    <property name='AppMenu' type='ao' access='read'/>"
+  "    <property name='MenuBar' type='ao' access='read'/>"
   "  </interface>"
   "</node>";
 
@@ -79,9 +81,18 @@ struct _GApplicationImpl
 {
   GDBusConnection *session_bus;
   const gchar     *bus_name;
+
   gchar           *object_path;
   guint            object_id;
   guint            actions_id;
+
+  gchar           *app_menu_path;
+  guint            app_menu_id;
+
+  gchar           *menubar_path;
+  guint            menubar_id;
+
+  gboolean         properties_live;
   gboolean         primary;
   gpointer         app;
 };
@@ -175,6 +186,44 @@ g_application_impl_method_call (GDBusConnection       *connection,
     g_assert_not_reached ();
 }
 
+static GVariant *
+g_application_impl_get_property (GDBusConnection  *connection,
+                                 const gchar      *sender,
+                                 const gchar      *object_path,
+                                 const gchar      *interface_name,
+                                 const gchar      *property_name,
+                                 GError          **error,
+                                 gpointer          user_data)
+{
+  GApplicationImpl *impl = user_data;
+  GVariantBuilder builder;
+
+  /* We use this boolean to detect if the properties have ever been
+   * queried before.  If they have not been queried, then there is no
+   * point emitting change signals since nobody is watching anyway.
+   */
+  impl->properties_live = TRUE;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_OBJECT_PATH_ARRAY);
+
+  if (g_str_equal (property_name, "AppMenu"))
+    {
+      if (impl->app_menu_path != NULL)
+        g_variant_builder_add (&builder, "o", impl->app_menu_path);
+    }
+
+  else if (g_str_equal (property_name, "MenuBar"))
+    {
+      if (impl->menubar_path != NULL)
+        g_variant_builder_add (&builder, "o", impl->menubar_path);
+    }
+
+  else
+    g_assert_not_reached ();
+
+  return g_variant_builder_end (&builder);
+}
+
 static gchar *
 application_path_from_appid (const gchar *appid)
 {
@@ -193,6 +242,79 @@ application_path_from_appid (const gchar *appid)
   return appid_path;
 }
 
+static void
+g_application_impl_publish_menu (GApplicationImpl  *impl,
+                                 const gchar       *type,
+                                 GMenuModel        *model,
+                                 guint             *id,
+                                 gchar            **path)
+{
+  gint i;
+
+  /* unexport any existing menu */
+  if (*id)
+    {
+      g_dbus_connection_unexport_menu_model (impl->session_bus, *id);
+      g_free (*path);
+      *path = NULL;
+      *id = 0;
+    }
+
+  /* export the new menu, if there is one */
+  if (model != NULL)
+    {
+      /* try getting the preferred name */
+      *path = g_strconcat (impl->object_path, "/menus/", type, NULL);
+      *id = g_dbus_connection_export_menu_model (impl->session_bus, *path, model, NULL);
+
+      /* keep trying until we get a working name... */
+      for (i = 0; *id == 0; i++)
+        {
+          g_free (*path);
+          *path = g_strdup_printf ("%s/menus/%s%d", impl->object_path, type, i);
+          *id = g_dbus_connection_export_menu_model (impl->session_bus, *path, model, NULL);
+        }
+    }
+
+  /* notify for changes, if needed */
+  if (impl->properties_live)
+    {
+      GVariantBuilder builder;
+
+      g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+      g_variant_builder_add (&builder, "{sv}", type, g_variant_new_objv ((const gchar **) path, *path != NULL));
+      g_dbus_connection_emit_signal (impl->session_bus, NULL, impl->object_path,
+                                     "org.freedesktop.DBus.Properties", "PropertiesChanged",
+                                     g_variant_new ("(sa{sv}as)", "org.gtk.Actions", &builder, NULL), NULL);
+    }
+}
+
+static void
+g_application_impl_app_menu_changed (GObject    *source,
+                                     GParamSpec *pspec,
+                                     gpointer    user_data)
+{
+  GApplicationImpl *impl = user_data;
+
+  g_assert (source == impl->app);
+
+  g_application_impl_publish_menu (impl, "AppMenu", g_application_get_app_menu (impl->app),
+                                   &impl->app_menu_id, &impl->app_menu_path);
+}
+
+static void
+g_application_impl_menubar_changed (GObject    *source,
+                                    GParamSpec *pspec,
+                                    gpointer    user_data)
+{
+  GApplicationImpl *impl = user_data;
+
+  g_assert (source == impl->app);
+
+  g_application_impl_publish_menu (impl, "MenuBar", g_application_get_menubar (impl->app),
+                                   &impl->menubar_id, &impl->menubar_path);
+}
+
 /* Attempt to become the primary instance.
  *
  * Returns %TRUE if everything went OK, regardless of if we became the
@@ -209,6 +331,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_method_call,
+    g_application_impl_get_property
   };
   GVariant *reply;
   guint32 rval;
@@ -267,6 +390,14 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
   impl->primary = (rval != 3);
 
+  if (impl->primary)
+    {
+      g_signal_connect (impl->app, "notify::app-menu", G_CALLBACK (g_application_impl_app_menu_changed), impl);
+      g_signal_connect (impl->app, "notify::menubar", G_CALLBACK (g_application_impl_menubar_changed), impl);
+      g_application_impl_app_menu_changed (impl->app, NULL, impl);
+      g_application_impl_menubar_changed (impl->app, NULL, impl);
+    }
+
   return TRUE;
 }
 
@@ -295,11 +426,30 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
 
   if (impl->primary)
     {
+      g_signal_handlers_disconnect_by_func (impl->app, g_application_impl_app_menu_changed, impl);
+      g_signal_handlers_disconnect_by_func (impl->app, g_application_impl_menubar_changed, impl);
+
       g_dbus_connection_call (impl->session_bus, "org.freedesktop.DBus",
                               "/org/freedesktop/DBus", "org.freedesktop.DBus",
                               "ReleaseName", g_variant_new ("(s)", impl->bus_name),
                               NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
       impl->primary = FALSE;
+    }
+
+  if (impl->app_menu_id)
+    {
+      g_dbus_connection_unexport_menu_model (impl->session_bus, impl->app_menu_id);
+      g_free (impl->app_menu_path);
+      impl->app_menu_path = NULL;
+      impl->app_menu_id = 0;
+    }
+
+  if (impl->menubar_id)
+    {
+      g_dbus_connection_unexport_menu_model (impl->session_bus, impl->menubar_id);
+      g_free (impl->menubar_path);
+      impl->menubar_path = NULL;
+      impl->menubar_id = 0;
     }
 }
 
