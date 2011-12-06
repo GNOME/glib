@@ -857,7 +857,7 @@ real_toupper (const gchar *str,
 		  gsize decomp_len, i;
 		  gunichar decomp[18];
 
-		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, 4);
+		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, 18);
 		  for (i=0; i < decomp_len; i++)
 		    {
 		      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
