@@ -608,7 +608,7 @@ if test x$ac_cv_func_qsort_r = xyes ; then
       return 0;
     else
       return 1;
-  }]])],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no])])
+  }]])],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no],[glib_cv_have_qsort_r=no])])
 fi
 
 if test x$glib_cv_have_qsort_r = xyes ; then
