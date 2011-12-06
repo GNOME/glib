@@ -2462,6 +2462,10 @@ weak_refs_notify (gpointer data)
  * "weak references" because they allow you to safely hold a pointer
  * to an object without calling g_object_ref() (g_object_ref() adds a
  * strong reference, that is, forces the object to stay alive).
+ *
+ * Note that the weak references created by this method are not
+ * thread-safe: they cannot safely be used in one thread if the
+ * object's last g_object_unref() might happen in another thread.
  */
 void
 g_object_weak_ref (GObject    *object,
@@ -2546,6 +2550,11 @@ g_object_weak_unref (GObject    *object,
  * the pointer located at @weak_pointer_location is only valid during
  * the lifetime of @object. When the @object is finalized,
  * @weak_pointer will be set to %NULL.
+ *
+ * Note that as with g_object_weak_ref(), the weak references created by
+ * this method are not thread-safe: they cannot safely be used in one
+ * thread if the object's last g_object_unref() might happen in another
+ * thread.
  */
 void
 g_object_add_weak_pointer (GObject  *object, 
