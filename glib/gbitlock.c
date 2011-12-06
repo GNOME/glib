@@ -366,6 +366,12 @@ g_futex_int_address (const volatile void *address)
 {
   const volatile gint *int_address = address;
 
+  /* this implementation makes these (reasonable) assumptions: */
+  G_STATIC_ASSERT (G_BYTE_ORDER == G_LITTLE_ENDIAN ||
+      (G_BYTE_ORDER == G_BIG_ENDIAN &&
+       sizeof (int) == 4 &&
+       (sizeof (gpointer) == 4 || sizeof (gpointer) == 8)));
+
 #if G_BYTE_ORDER == G_BIG_ENDIAN && GLIB_SIZEOF_VOID_P == 8
   int_address++;
 #endif
