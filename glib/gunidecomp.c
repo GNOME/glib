@@ -701,7 +701,7 @@ g_unichar_compose (gunichar  a,
  * this may change in the future (very unlikely though).
  * At any rate, Unicode does guarantee that a buffer of length
  * 18 is always enough for both compatibility and canonical
- * decompositions.
+ * decompositions, so that is the size recommended.
  *
  * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
  * for details.
