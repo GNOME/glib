@@ -341,26 +341,37 @@ maman_bar_init (MamanBar *self)
       <xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
       <link linkend="GParamSpec"><type>GParamSpec</type></link> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
       GType ensure that these properties are not set again later by malicious user code.
-<programlisting>
+<informalexample><programlisting>
+enum {
+  PROP_0,
+
+  PROP_MAMAN,
+
+  N_PROPERTIES
+};
+
+static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
+
 static void
 bar_class_init (MamanBarClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *pspec;
 
   gobject_class->set_property = bar_set_property;
   gobject_class->get_property = bar_get_property;
 
-  pspec = g_param_spec_string ("maman",
-                                          "Maman construct prop",
-                                          "Set maman's name",
-                                          "no-name-set" /* default value */,
-                                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class,
-                                   PROP_MAMAN,
-                                   pspec);
+  obj_properties[PROP_MAMAN] =
+    g_param_spec_string ("maman",
+                         "Maman construct prop",
+                         "Set maman's name",
+                         "no-name-set" /* default value */,
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class,
+                                     N_PROPERTIES,
+                                     obj_properties);
 }
-</programlisting>
+</programlisting></informalexample>
       If you need this, make sure you can build and run code similar to the code shown above. Make sure
       your construct properties can set correctly during construction, make sure you cannot set them 
       afterwards and make sure that if your users do not call <function><link linkend="g-object-new">g_object_new</link></function>
