@@ -552,7 +552,7 @@ gsize g_unichar_fully_decompose (gunichar  ch,
                                  gsize     result_len);
 
 /**
- * G_UNICHAR_MAX_COMPAT_DECOMPOSITION_LEN:
+ * G_UNICHAR_MAX_DECOMPOSITION_LENGTH:
  *
  * The maximum length (in codepoints) of a compatibility or canonical
  * decomposition of a single Unicode character.
@@ -561,7 +561,7 @@ gsize g_unichar_fully_decompose (gunichar  ch,
  *
  * Since: 2.31.3
  */
-#define G_UNICHAR_MAX_DECOMPOSITION_LEN 18 /* codepoints */
+#define G_UNICHAR_MAX_DECOMPOSITION_LENGTH 18 /* codepoints */
 
 /* Compute canonical ordering of a string in-place.  This rearranges
    decomposed characters in the string according to their combining

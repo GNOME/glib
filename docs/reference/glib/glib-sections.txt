@@ -2694,6 +2694,7 @@ g_unichar_xdigit_value
 g_unichar_compose
 g_unichar_decompose
 g_unichar_fully_decompose
+G_UNICHAR_MAX_DECOMPOSITION_LENGTH
 GUnicodeType
 G_UNICODE_COMBINING_MARK
 g_unichar_type
