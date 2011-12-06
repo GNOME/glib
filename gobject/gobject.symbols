@@ -385,3 +385,7 @@ g_param_spec_types
 g_slist_remove_all PRIVATE
 g_unichar_validate PRIVATE
 #endif
+g_weak_ref_init
+g_weak_ref_clear
+g_weak_ref_get
+g_weak_ref_set

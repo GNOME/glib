@@ -575,6 +575,18 @@ void    g_clear_object (volatile GObject **object_ptr);
       g_object_unref (_o);                                                   \
   } G_STMT_END
 
+typedef struct {
+    /*<private>*/
+    union { gpointer p; } priv;
+} GWeakRef;
+
+void     g_weak_ref_init       (GWeakRef *weak_ref,
+                                gpointer  object);
+void     g_weak_ref_clear      (GWeakRef *weak_ref);
+gpointer g_weak_ref_get        (GWeakRef *weak_ref);
+void     g_weak_ref_set        (GWeakRef *weak_ref,
+                                gpointer  object);
+
 G_END_DECLS
 
 #endif /* __G_OBJECT_H__ */

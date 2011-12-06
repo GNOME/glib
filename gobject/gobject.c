@@ -200,6 +200,9 @@ static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
 G_LOCK_DEFINE_STATIC (construction_mutex);
 static GSList *construction_objects = NULL;
+/* qdata pointing to GSList<GWeakRef *>, protected by weak_locations_lock */
+static GQuark	            quark_weak_locations = 0;
+static GRWLock              weak_locations_lock;
 
 G_LOCK_DEFINE_STATIC(notify_lock);
 
@@ -434,6 +437,7 @@ g_object_do_class_init (GObjectClass *class)
   quark_closure_array = g_quark_from_static_string ("GObject-closure-array");
 
   quark_weak_refs = g_quark_from_static_string ("GObject-weak-references");
+  quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   pspec_pool = g_param_spec_pool_new (TRUE);
@@ -2466,6 +2470,7 @@ weak_refs_notify (gpointer data)
  * Note that the weak references created by this method are not
  * thread-safe: they cannot safely be used in one thread if the
  * object's last g_object_unref() might happen in another thread.
+ * Use #GWeakRef if thread-safety is required.
  */
 void
 g_object_weak_ref (GObject    *object,
@@ -2554,7 +2559,7 @@ g_object_weak_unref (GObject    *object,
  * Note that as with g_object_weak_ref(), the weak references created by
  * this method are not thread-safe: they cannot safely be used in one
  * thread if the object's last g_object_unref() might happen in another
- * thread.
+ * thread. Use #GWeakRef if thread-safety is required.
  */
 void
 g_object_add_weak_pointer (GObject  *object, 
@@ -2919,7 +2924,49 @@ g_object_unref (gpointer _object)
     }
   else
     {
-      /* we are about tp remove the last reference */
+      GSList **weak_locations;
+
+      /* The only way that this object can live at this point is if
+       * there are outstanding weak references already established
+       * before we got here.
+       *
+       * If there were not already weak references then no more can be
+       * established at this time, because the other thread would have
+       * to hold a strong ref in order to call
+       * g_object_add_weak_pointer() and then we wouldn't be here.
+       */
+      weak_locations = g_datalist_id_get_data (&object->qdata, quark_weak_locations);
+
+      if (weak_locations != NULL)
+        {
+          g_rw_lock_writer_lock (&weak_locations_lock);
+
+          /* It is possible that one of the weak references beat us to
+           * the lock. Make sure the refcount is still what we expected
+           * it to be.
+           */
+          old_ref = g_atomic_int_get (&object->ref_count);
+          if (old_ref != 1)
+            {
+              g_rw_lock_writer_unlock (&weak_locations_lock);
+              goto retry_atomic_decrement1;
+            }
+
+          /* We got the lock first, so the object will definitely die
+           * now. Clear out all the weak references.
+           */
+          while (*weak_locations)
+            {
+              GWeakRef *weak_ref_location = (*weak_locations)->data;
+
+              weak_ref_location->priv.p = NULL;
+              *weak_locations = g_slist_delete_link (*weak_locations, *weak_locations);
+            }
+
+          g_rw_lock_writer_unlock (&weak_locations_lock);
+        }
+
+      /* we are about to remove the last reference */
       TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 1));
       G_OBJECT_GET_CLASS (object)->dispose (object);
       TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 1));
@@ -3746,4 +3793,192 @@ g_initially_unowned_init (GInitiallyUnowned *object)
 static void
 g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
 {
+}
+
+/**
+ * GWeakRef:
+ *
+ * A structure containing a weak reference to a #GObject.  It can either
+ * be empty (i.e. point to %NULL), or point to an object for as long as
+ * at least one "strong" reference to that object exists. Before the
+ * object's #GObjectClass.dispose method is called, every #GWeakRef
+ * associated with becomes empty (i.e. points to %NULL).
+ *
+ * Like #GValue, #GWeakRef can be statically allocated, stack- or
+ * heap-allocated, or embedded in larger structures.
+ *
+ * Unlike g_object_weak_ref() and g_object_add_weak_pointer(), this weak
+ * reference is thread-safe: converting a weak pointer to a reference is
+ * atomic with respect to invalidation of weak pointers to destroyed
+ * objects.
+ *
+ * If the object's #GObjectClass.dispose method results in additional
+ * references to the object being held, any #GWeakRef<!-- -->s taken
+ * before it was disposed will continue to point to %NULL.  If
+ * #GWeakRef<!-- -->s are taken after the object is disposed and
+ * re-referenced, they will continue to point to it until its refcount
+ * goes back to zero, at which point they too will be invalidated.
+ */
+
+/**
+ * g_weak_ref_init: (skip)
+ * @weak_ref_location: (inout): uninitialized or empty location for a weak
+ *  reference
+ * @object: (allow-none): a #GObject or %NULL
+ *
+ * Initialise a non-statically-allocated #GWeakRef.
+ *
+ * This function also calls g_weak_ref_set() with @object on the
+ * freshly-initialised weak reference.
+ *
+ * This function should always be matched with a call to
+ * g_weak_ref_clear().  It is not necessary to use this function for a
+ * #GWeakRef in static storage because it will already be
+ * properly initialised.  Just use g_weak_ref_set() directly.
+ *
+ * Since: 2.32
+ */
+void
+g_weak_ref_init (GWeakRef *weak_ref_location,
+                 gpointer  object)
+{
+  weak_ref_location->priv.p = NULL;
+
+  g_weak_ref_set (weak_ref_location, object);
+}
+
+/**
+ * g_weak_ref_clear: (skip)
+ * @weak_ref_location: (inout): location of a weak reference, which
+ *  may be empty
+ *
+ * Frees resources associated with a non-statically-allocated #GWeakRef.
+ * After this call, the #GWeakRef is left in an undefined state.
+ *
+ * You should only call this on a #GWeakRef that previously had
+ * g_weak_ref_init() called on it.
+ *
+ * Since: 2.32
+ */
+void
+g_weak_ref_clear (GWeakRef *weak_ref_location)
+{
+  g_weak_ref_set (weak_ref_location, NULL);
+
+  /* be unkind */
+  weak_ref_location->priv.p = (void *) 0xccccccccu;
+}
+
+/**
+ * g_weak_ref_get: (skip)
+ * @weak_ref_location: (inout): location of a weak reference to a #GObject
+ *
+ * If @weak_ref_location is not empty, atomically acquire a strong
+ * reference to the object it points to, and return that reference.
+ *
+ * This function is needed because of the potential race between taking
+ * the pointer value and g_object_ref() on it, if the object was losing
+ * its last reference at the same time in a different thread.
+ *
+ * The caller should release the resulting reference in the usual way,
+ * by using g_object_unref().
+ *
+ * Returns: (transfer full) (type GObject.Object): the object pointed to
+ *  by @weak_ref_location, or %NULL if it was empty
+ *
+ * Since: 2.32
+ */
+gpointer
+g_weak_ref_get (GWeakRef *weak_ref_location)
+{
+  gpointer object_or_null;
+
+  g_return_val_if_fail (weak_ref_location != NULL, NULL);
+
+  g_rw_lock_reader_lock (&weak_locations_lock);
+
+  object_or_null = weak_ref_location->priv.p;
+
+  if (object_or_null != NULL)
+    g_object_ref (object_or_null);
+
+  g_rw_lock_reader_unlock (&weak_locations_lock);
+
+  return object_or_null;
+}
+
+/**
+ * g_weak_ref_set: (skip)
+ * @weak_ref_location: location for a weak reference
+ * @object: (allow-none): a #GObject or %NULL
+ *
+ * Change the object to which @weak_ref_location points, or set it to
+ * %NULL.
+ *
+ * You must own a strong reference on @object while calling this
+ * function.
+ *
+ * Since: 2.32
+ */
+void
+g_weak_ref_set (GWeakRef *weak_ref_location,
+                gpointer  object)
+{
+  GSList **weak_locations;
+  GObject *new_object;
+  GObject *old_object;
+
+  g_return_if_fail (weak_ref_location != NULL);
+  g_return_if_fail (object == NULL || G_IS_OBJECT (object));
+
+  new_object = object;
+
+  g_rw_lock_writer_lock (&weak_locations_lock);
+
+  /* We use the extra level of indirection here so that if we have ever
+   * had a weak pointer installed at any point in time on this object,
+   * we can see that there is a non-NULL value associated with the
+   * weak-pointer quark and know that this value will not change at any
+   * point in the object's lifetime.
+   *
+   * Both properties are important for reducing the amount of times we
+   * need to acquire locks and for decreasing the duration of time the
+   * lock is held while avoiding some rather tricky races.
+   *
+   * Specifically: we can avoid having to do an extra unconditional lock
+   * in g_object_unref() without worrying about some extremely tricky
+   * races.
+   */
+
+  old_object = weak_ref_location->priv.p;
+  if (new_object != old_object)
+    {
+      weak_ref_location->priv.p = new_object;
+
+      /* Remove the weak ref from the old object */
+      if (old_object != NULL)
+        {
+          weak_locations = g_datalist_id_get_data (&old_object->qdata, quark_weak_locations);
+          /* for it to point to an object, the object must have had it added once */
+          g_assert (weak_locations != NULL);
+
+          *weak_locations = g_slist_remove (*weak_locations, weak_ref_location);
+        }
+
+      /* Add the weak ref to the new object */
+      if (new_object != NULL)
+        {
+          weak_locations = g_datalist_id_get_data (&new_object->qdata, quark_weak_locations);
+
+          if (weak_locations == NULL)
+            {
+              weak_locations = g_new0 (GSList *, 1);
+              g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations, weak_locations, g_free);
+            }
+
+          *weak_locations = g_slist_prepend (*weak_locations, weak_ref_location);
+        }
+    }
+
+  g_rw_lock_writer_unlock (&weak_locations_lock);
 }
