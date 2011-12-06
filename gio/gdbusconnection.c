@@ -208,8 +208,8 @@ struct _GDBusConnectionClass
 
 G_LOCK_DEFINE_STATIC (message_bus_lock);
 
-static GDBusConnection *the_session_bus = NULL;
-static GDBusConnection *the_system_bus = NULL;
+static GWeakRef the_session_bus;
+static GWeakRef the_system_bus;
 
 /* Extra pseudo-member of GDBusSendMessageFlags.
  * Set by initable_init() to indicate that despite not being initialized yet,
@@ -606,14 +606,6 @@ g_dbus_connection_dispose (GObject *object)
   GDBusConnection *connection = G_DBUS_CONNECTION (object);
 
   G_LOCK (message_bus_lock);
-  if (connection == the_session_bus)
-    {
-      the_session_bus = NULL;
-    }
-  else if (connection == the_system_bus)
-    {
-      the_system_bus = NULL;
-    }
   CONNECTION_LOCK (connection);
   if (connection->worker != NULL)
     {
@@ -6652,11 +6644,11 @@ distribute_method_call (GDBusConnection *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* Called in any user thread, with the message_bus_lock held. */
-static GDBusConnection **
+static GWeakRef *
 message_bus_get_singleton (GBusType   bus_type,
                            GError   **error)
 {
-  GDBusConnection **ret;
+  GWeakRef *ret;
   const gchar *starter_bus;
 
   ret = NULL;
@@ -6720,7 +6712,7 @@ get_uninitialized_connection (GBusType       bus_type,
                               GCancellable  *cancellable,
                               GError       **error)
 {
-  GDBusConnection **singleton;
+  GWeakRef *singleton;
   GDBusConnection *ret;
 
   ret = NULL;
@@ -6730,23 +6722,23 @@ get_uninitialized_connection (GBusType       bus_type,
   if (singleton == NULL)
     goto out;
 
-  if (*singleton == NULL)
+  ret = g_weak_ref_get (singleton);
+
+  if (ret == NULL)
     {
       gchar *address;
       address = g_dbus_address_get_for_bus_sync (bus_type, cancellable, error);
       if (address == NULL)
         goto out;
-      ret = *singleton = g_object_new (G_TYPE_DBUS_CONNECTION,
-                                       "address", address,
-                                       "flags", G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
-                                                G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
-                                       "exit-on-close", TRUE,
-                                       NULL);
+      ret = g_object_new (G_TYPE_DBUS_CONNECTION,
+                          "address", address,
+                          "flags", G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT |
+                                   G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION,
+                          "exit-on-close", TRUE,
+                          NULL);
+
+      g_weak_ref_set (singleton, ret);
       g_free (address);
-    }
-  else
-    {
-      ret = g_object_ref (*singleton);
     }
 
   g_assert (ret != NULL);
