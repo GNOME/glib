@@ -719,6 +719,75 @@ test_dbus_subscriptions (void)
   g_main_loop_unref (loop);
 }
 
+static gpointer
+do_modify (gpointer data)
+{
+  RandomMenu *menu = data;
+  GRand *rand;
+  gint i;
+
+  rand = g_rand_new_with_seed (g_test_rand_int ());
+
+  for (i = 0; i < 10000; i++)
+    {
+      random_menu_change (menu, rand);
+    }
+
+  return NULL;
+}
+
+static gpointer
+do_export (gpointer data)
+{
+  GMenuModel *menu = data;
+  gint i;
+  GDBusConnection *bus;
+  gchar *path;
+  GError *error = NULL;
+  guint id;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  path = g_strdup_printf ("/%p", data);
+
+  for (i = 0; i < 10000; i++)
+    {
+      id = g_dbus_connection_export_menu_model (bus, path, menu, &error);
+      g_assert_no_error (error);
+      g_dbus_connection_unexport_menu_model (bus, id);
+    }
+
+  g_free (path);
+
+  g_object_unref (bus);
+
+  return NULL;
+}
+
+static void
+test_dbus_threaded (void)
+{
+  RandomMenu *menu[10];
+  GThread *call[10];
+  GThread *export[10];
+  gint i;
+
+  for (i = 0; i < 10; i++)
+    {
+      menu[i] = random_menu_new (g_rand_new_with_seed (g_test_rand_int ()), 2);
+      call[i] = g_thread_new ("call", do_modify, menu[i]);
+      export[i] = g_thread_new ("export", do_export, menu[i]);
+    }
+
+  for (i = 0; i < 10; i++)
+    {
+      g_thread_join (call[i]);
+      g_thread_join (export[i]);
+    }
+
+  for (i = 0; i < 10; i++)
+    g_object_unref (menu[i]);
+}
+
 static void
 start_element (GMarkupParseContext *context,
                const gchar         *element_name,
@@ -1017,6 +1086,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/random", test_random);
   g_test_add_func ("/gmenu/dbus/roundtrip", test_dbus_roundtrip);
   g_test_add_func ("/gmenu/dbus/subscriptions", test_dbus_subscriptions);
+  g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
