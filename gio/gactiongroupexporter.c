@@ -553,6 +553,11 @@ g_action_group_exporter_free (gpointer user_data)
 
   for (i = 0; i < G_N_ELEMENTS (exporter->signal_ids); i++)
     g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
+
+  g_hash_table_unref (exporter->pending_changes);
+  if (exporter->pending_id)
+    g_source_remove (exporter->pending_id);
+
   g_object_unref (exporter->connection);
   g_object_unref (exporter->action_group);
   g_free (exporter->object_path);
