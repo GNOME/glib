@@ -770,12 +770,11 @@ g_menu_exporter_create_group (GMenuExporter *exporter)
   return group;
 }
 
-
-static GMenuExporter *g_menu_exporter_to_free;
-
 static void
-g_menu_exporter_actually_free (GMenuExporter *exporter)
+g_menu_exporter_free (gpointer user_data)
 {
+  GMenuExporter *exporter = user_data;
+
   g_menu_exporter_menu_free (exporter->root);
   g_hash_table_unref (exporter->remotes);
   g_hash_table_unref (exporter->groups);
@@ -783,20 +782,6 @@ g_menu_exporter_actually_free (GMenuExporter *exporter)
   g_free (exporter->object_path);
 
   g_slice_free (GMenuExporter, exporter);
-}
-
-static void
-g_menu_exporter_free (gpointer user_data)
-{
-  /* XXX: hack
-   *
-   * GDBusConnection calls the destroy notify while holding its own lock
-   * which means that we get a deadlock on re-entering it.
-   *
-   * Work around this for now...
-   */
-  g_assert (g_menu_exporter_to_free == NULL);
-  g_menu_exporter_to_free = user_data;
 }
 
 static void
@@ -903,12 +888,7 @@ void
 g_dbus_connection_unexport_menu_model (GDBusConnection *connection,
                                        guint            export_id)
 {
-  if (!g_dbus_connection_unregister_object (connection, export_id))
-    return;
-
-  g_assert (g_menu_exporter_to_free != NULL);
-  g_menu_exporter_actually_free (g_menu_exporter_to_free);
-  g_menu_exporter_to_free = NULL;
+  g_dbus_connection_unregister_object (connection, export_id);
 }
 
 /* {{{1 Epilogue */
