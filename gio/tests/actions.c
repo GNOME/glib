@@ -624,6 +624,79 @@ test_dbus_export (void)
   g_object_unref (bus);
 }
 
+static gpointer
+do_activate (gpointer data)
+{
+  GSimpleActionGroup *group = data;
+  gint i;
+  GAction *action;
+
+  for (i = 0; i < 1000000; i++)
+    {
+      action = g_simple_action_group_lookup (group, "a");
+      g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
+                                   !g_action_get_enabled (action));
+    }
+
+  return NULL;
+}
+
+static gpointer
+do_export (gpointer data)
+{
+  GActionGroup *group = data;
+  gint i;
+  GError *error = NULL;
+  guint id;
+  GDBusConnection *bus;
+  gchar *path;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  path = g_strdup_printf("/%p", data);
+
+  for (i = 0; i < 100000; i++)
+    {
+      id = g_dbus_connection_export_action_group (bus, path, G_ACTION_GROUP (group), &error);
+      g_assert_no_error (error);
+      g_dbus_connection_unexport_action_group (bus, id);
+    }
+
+  g_free (path);
+  g_object_unref (bus);
+
+  return NULL;
+}
+
+static void
+test_dbus_threaded (void)
+{
+  GSimpleActionGroup *group[10];
+  GThread *call[10];
+  GThread *export[10];
+  static GActionEntry entries[] = {
+    { "a",  activate_action, NULL, NULL, NULL },
+    { "b",  activate_action, NULL, NULL, NULL },
+  };
+  gint i;
+
+  for (i = 0; i < 10; i++)
+    {
+      group[i] = g_simple_action_group_new ();
+      g_simple_action_group_add_entries (group[i], entries, G_N_ELEMENTS (entries), NULL);
+      call[i] = g_thread_new ("call", do_activate, group[i]);
+      export[i] = g_thread_new ("export", do_export, group[i]);
+    }
+
+  for (i = 0; i < 10; i++)
+    {
+      g_thread_join (call[i]);
+      g_thread_join (export[i]);
+    }
+
+  for (i = 0; i < 10; i++)
+    g_object_unref (group[i]);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -635,6 +708,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
+  g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
 
   return g_test_run ();
 }
