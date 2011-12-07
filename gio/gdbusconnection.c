@@ -260,38 +260,27 @@ call_destroy_notify (GMainContext  *context,
                      GDestroyNotify callback,
                      gpointer       user_data)
 {
-  GMainContext *current_context;
+  GSource *idle_source;
+  CallDestroyNotifyData *data;
 
   if (callback == NULL)
     goto out;
 
-  current_context = g_main_context_get_thread_default ();
-  if ((context == current_context) ||
-      (current_context == NULL && context == g_main_context_default ()))
-    {
-      callback (user_data);
-    }
-  else
-    {
-      GSource *idle_source;
-      CallDestroyNotifyData *data;
+  data = g_new0 (CallDestroyNotifyData, 1);
+  data->callback = callback;
+  data->user_data = user_data;
+  data->context = context;
+  if (data->context != NULL)
+    g_main_context_ref (data->context);
 
-      data = g_new0 (CallDestroyNotifyData, 1);
-      data->callback = callback;
-      data->user_data = user_data;
-      data->context = context;
-      if (data->context != NULL)
-        g_main_context_ref (data->context);
-
-      idle_source = g_idle_source_new ();
-      g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
-      g_source_set_callback (idle_source,
-                             call_destroy_notify_data_in_idle,
-                             data,
-                             (GDestroyNotify) call_destroy_notify_data_free);
-      g_source_attach (idle_source, data->context);
-      g_source_unref (idle_source);
-    }
+  idle_source = g_idle_source_new ();
+  g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (idle_source,
+                         call_destroy_notify_data_in_idle,
+                         data,
+                         (GDestroyNotify) call_destroy_notify_data_free);
+  g_source_attach (idle_source, data->context);
+  g_source_unref (idle_source);
 
  out:
   ;

@@ -1093,6 +1093,7 @@ test_object_registration (void)
 
   /* unregister it via the id */
   g_assert (g_dbus_connection_unregister_object (c, registration_id));
+  g_main_context_iteration (NULL, FALSE);
   g_assert_cmpint (data.num_unregistered_calls, ==, 1);
   intern2_foo_reg_id = 0;
 
@@ -1148,6 +1149,7 @@ test_object_registration (void)
   /* unregister it, then register it again */
   g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 0);
   g_assert (g_dbus_connection_unregister_subtree (c, subtree_registration_id));
+  g_main_context_iteration (NULL, FALSE);
   g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 1);
   subtree_registration_id = g_dbus_connection_register_subtree (c,
                                                                 "/foo/boss/executives",
@@ -1346,6 +1348,7 @@ test_object_registration (void)
   /* check that unregistering the subtree handler works */
   g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 1);
   g_assert (g_dbus_connection_unregister_subtree (c, subtree_registration_id));
+  g_main_context_iteration (NULL, FALSE);
   g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 2);
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
@@ -1365,6 +1368,7 @@ test_object_registration (void)
   g_assert (g_dbus_connection_unregister_object (c, non_subtree_object_path_bar_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, non_subtree_object_path_foo_reg_id));
 
+  g_main_context_iteration (NULL, FALSE);
   g_assert_cmpint (data.num_unregistered_calls, ==, num_successful_registrations);
 
   /* check that we no longer export any objects - TODO: it looks like there's a bug in
