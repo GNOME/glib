@@ -204,6 +204,126 @@ test_threaded_object_init (void)
   g_thread_join (creator);
 }
 
+typedef struct {
+    MyTester0 *strong;
+    guint unref_delay;
+} UnrefInThreadData;
+
+static gpointer
+unref_in_thread (gpointer p)
+{
+  UnrefInThreadData *data = p;
+
+  g_usleep (data->unref_delay);
+  g_object_unref (data->strong);
+
+  return NULL;
+}
+
+/* undefine to see this test fail without GWeakRef */
+#define HAVE_G_WEAK_REF
+
+#define SLEEP_MIN_USEC 1
+#define SLEEP_MAX_USEC 10
+
+static void
+test_threaded_weak_ref (void)
+{
+  guint i;
+  guint get_wins = 0, unref_wins = 0;
+  guint n;
+
+  if (g_test_thorough ())
+    n = NUM_COUNTER_INCREMENTS;
+  else
+    n = NUM_COUNTER_INCREMENTS / 20;
+
+  for (i = 0; i < n; i++)
+    {
+      UnrefInThreadData data;
+#ifdef HAVE_G_WEAK_REF
+      /* GWeakRef<MyTester0> in C++ terms */
+      GWeakRef weak;
+#else
+      gpointer weak;
+#endif
+      MyTester0 *strengthened;
+      guint get_delay;
+      GThread *thread;
+      GError *error = NULL;
+
+      if (g_test_verbose () && (i % (n/20)) == 0)
+        g_print ("%u%%\n", ((i * 100) / n));
+
+      /* Have an object and a weak ref to it */
+      data.strong = g_object_new (my_tester0_get_type (), NULL);
+
+#ifdef HAVE_G_WEAK_REF
+      g_weak_ref_init (&weak, data.strong);
+#else
+      weak = data.strong;
+      g_object_add_weak_pointer ((GObject *) weak, &weak);
+#endif
+
+      /* Delay for a random time on each side of the race, to perturb the
+       * timing. Ideally, we want each side to win half the races; on
+       * smcv's laptop, these timings are about right.
+       */
+      data.unref_delay = g_random_int_range (SLEEP_MIN_USEC / 2, SLEEP_MAX_USEC / 2);
+      get_delay = g_random_int_range (SLEEP_MIN_USEC, SLEEP_MAX_USEC);
+
+      /* One half of the race is to unref the shared object */
+      thread = g_thread_create (unref_in_thread, &data, TRUE, &error);
+      g_assert_no_error (error);
+
+      /* The other half of the race is to get the object from the "global
+       * singleton"
+       */
+      g_usleep (get_delay);
+
+#ifdef HAVE_G_WEAK_REF
+      strengthened = g_weak_ref_get (&weak);
+#else
+      /* Spot the unsafe pointer access! In GDBusConnection this is rather
+       * better-hidden, but ends up with essentially the same thing, albeit
+       * cleared in dispose() rather than by a traditional weak pointer
+       */
+      strengthened = weak;
+
+      if (strengthened != NULL)
+        g_object_ref (strengthened);
+#endif
+
+      if (strengthened != NULL)
+        g_assert (G_IS_OBJECT (strengthened));
+
+      /* Wait for the thread to run */
+      g_thread_join (thread);
+
+      if (strengthened != NULL)
+        {
+          get_wins++;
+          g_assert (G_IS_OBJECT (strengthened));
+          g_object_unref (strengthened);
+        }
+      else
+        {
+          unref_wins++;
+        }
+
+#ifdef HAVE_G_WEAK_REF
+      g_weak_ref_clear (&weak);
+#else
+      if (weak != NULL)
+        g_object_remove_weak_pointer (weak, &weak);
+#endif
+    }
+
+  if (g_test_verbose ())
+    g_print ("Race won by get %u times, unref %u times\n",
+             get_wins, unref_wins);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -213,6 +333,7 @@ main (int   argc,
 
   g_test_add_func ("/GObject/threaded-class-init", test_threaded_class_init);
   g_test_add_func ("/GObject/threaded-object-init", test_threaded_object_init);
+  g_test_add_func ("/GObject/threaded-weak-ref", test_threaded_weak_ref);
 
   return g_test_run();
 }
