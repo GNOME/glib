@@ -446,6 +446,133 @@ test_method_calls_in_thread (void)
   g_object_unref (connection);
 }
 
+#define SLEEP_MIN_USEC 1
+#define SLEEP_MAX_USEC 10
+
+/* Can run in any thread */
+static void
+ensure_connection_works (GDBusConnection *conn)
+{
+  GVariant *v;
+  GError *error = NULL;
+
+  v = g_dbus_connection_call_sync (conn, "org.freedesktop.DBus",
+      "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetId", NULL, NULL, 0, -1,
+      NULL, &error);
+  g_assert_no_error (error);
+  g_assert (v != NULL);
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE ("(s)")));
+  g_variant_unref (v);
+}
+
+/*
+ * get_sync_in_thread:
+ * @data: (type guint): delay in microseconds
+ *
+ * Sleep for a short time, then get a session bus connection and call
+ * a method on it.
+ *
+ * Runs in a non-main thread.
+ *
+ * Returns: (transfer full): the connection
+ */
+static gpointer
+get_sync_in_thread (gpointer data)
+{
+  guint delay = GPOINTER_TO_UINT (data);
+  GError *error = NULL;
+  GDBusConnection *conn;
+
+  g_usleep (delay);
+
+  conn = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+
+  ensure_connection_works (conn);
+
+  return conn;
+}
+
+static void
+test_threaded_singleton (void)
+{
+  guint i, n;
+  guint unref_wins = 0;
+  guint get_wins = 0;
+
+  if (g_test_thorough ())
+    n = 100000;
+  else
+    n = 5000;
+
+  for (i = 0; i < n; i++)
+    {
+      GThread *thread;
+      guint j;
+      guint unref_delay, get_delay;
+      GDBusConnection *new_conn;
+
+      /* We want to be the last ref, so let it finish setting up */
+      for (j = 0; j < 100; j++)
+        {
+          guint r = g_atomic_int_get (&G_OBJECT (c)->ref_count);
+
+          if (r == 1)
+            break;
+
+          g_debug ("run %u: refcount is %u, sleeping", i, r);
+          g_usleep (1000);
+        }
+
+      if (j == 100)
+        g_error ("connection had too many refs");
+
+      if (g_test_verbose () && (i % (n/50)) == 0)
+        g_print ("%u%%\n", ((i * 100) / n));
+
+      /* Delay for a random time on each side of the race, to perturb the
+       * timing. Ideally, we want each side to win half the races; these
+       * timings are about right on smcv's laptop.
+       */
+      unref_delay = g_random_int_range (SLEEP_MIN_USEC, SLEEP_MAX_USEC);
+      get_delay = g_random_int_range (SLEEP_MIN_USEC / 2, SLEEP_MAX_USEC / 2);
+
+      /* One half of the race is to call g_bus_get_sync... */
+      thread = g_thread_new ("get_sync_in_thread", get_sync_in_thread,
+          GUINT_TO_POINTER (get_delay));
+
+      /* ... and the other half is to unref the shared connection, which must
+       * have exactly one ref at this point
+       */
+      g_usleep (unref_delay);
+      g_object_unref (c);
+
+      /* Wait for the thread to run; see what it got */
+      new_conn = g_thread_join (thread);
+
+      /* If the thread won the race, it will have kept the same connection,
+       * and it'll have one ref
+       */
+      if (new_conn == c)
+        {
+          get_wins++;
+        }
+      else
+        {
+          unref_wins++;
+          /* c is invalid now, but new_conn is suitable for the
+           * next round
+           */
+          c = new_conn;
+        }
+
+      ensure_connection_works (c);
+    }
+
+  if (g_test_verbose ())
+    g_print ("Unref won %u races; Get won %u races\n", unref_wins, get_wins);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -485,6 +612,7 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/delivery-in-thread", test_delivery_in_thread);
   g_test_add_func ("/gdbus/method-calls-in-thread", test_method_calls_in_thread);
+  g_test_add_func ("/gdbus/threaded-singleton", test_threaded_singleton);
 
   ret = g_test_run();
 
