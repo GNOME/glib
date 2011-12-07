@@ -81,11 +81,13 @@ struct _GApplication
  *     the calling instance
  * @add_platform_data: invoked (locally) to add 'platform data' to be sent to
  *     the primary instance when activating, opening or invoking actions
- * @quit_mainloop: invoked on the primary instance when the use count of the
- *     application drops to zero (and after any inactivity timeout, if
- *     requested)
- * @run_mainloop: invoked on the primary instance from g_application_run()
- *     if the use-count is non-zero
+ * @quit_mainloop: Used to be invoked on the primary instance when the use
+ *     count of the application drops to zero (and after any inactivity
+ *     timeout, if requested). Not used anymore since 2.32
+ * @run_mainloop: Used to be invoked on the primary instance from
+ *     g_application_run() if the use-count is non-zero. Since 2.32,
+ *     GApplication is iterating the main context directly and is not
+ *     using @run_mainloop anymore
  *
  * Since: 2.28
  */

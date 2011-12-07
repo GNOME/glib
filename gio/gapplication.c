@@ -1246,8 +1246,8 @@ g_application_open (GApplication  *application,
  *
  * If, after the above is done, the use count of the application is zero
  * then the exit status is returned immediately.  If the use count is
- * non-zero then the mainloop is run until the use count falls to zero,
- * at which point 0 is returned.
+ * non-zero then the default main context is iterated until the use count
+ * falls to zero, at which point 0 is returned.
  *
  * If the %G_APPLICATION_IS_SERVICE flag is set, then the exiting at
  * use count of zero is delayed for a while (ie: the instance stays
