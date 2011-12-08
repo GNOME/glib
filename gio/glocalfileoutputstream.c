@@ -541,6 +541,16 @@ g_local_file_output_stream_query_info (GFileOutputStream  *stream,
 }
 
 GFileOutputStream *
+_g_local_file_output_stream_new (int fd)
+{
+  GLocalFileOutputStream *stream;
+
+  stream = g_object_new (G_TYPE_LOCAL_FILE_OUTPUT_STREAM, NULL);
+  stream->priv->fd = fd;
+  return G_FILE_OUTPUT_STREAM (stream);
+}
+
+GFileOutputStream *
 _g_local_file_output_stream_open  (const char        *filename,
 				   gboolean          readable,
 				   GCancellable      *cancellable,

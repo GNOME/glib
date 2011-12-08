@@ -251,6 +251,7 @@ g_file_get_type
 g_file_new_for_path
 g_file_new_for_uri
 g_file_new_for_commandline_arg
+g_file_new_tmp
 g_file_parse_name
 g_file_dup
 g_file_hash

@@ -44,6 +44,8 @@
 #include "gappinfo.h"
 #include "gfileinputstream.h"
 #include "gfileoutputstream.h"
+#include "glocalfileoutputstream.h"
+#include "glocalfileiostream.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
 #include "gioerror.h"
@@ -67,6 +69,7 @@
  * g_file_new_for_path() if you have a path.
  * g_file_new_for_uri() if you have a URI.
  * g_file_new_for_commandline_arg() for a command line argument.
+ * g_file_new_tmp() to create a temporary file from a template.
  * g_file_parse_name() from a utf8 string gotten from g_file_get_parse_name().
  * 
  * One way to think of a #GFile is as an abstraction of a pathname. For normal
@@ -5889,7 +5892,56 @@ g_file_new_for_uri (const char *uri)
 
   return g_vfs_get_file_for_uri (g_vfs_get_default (), uri);
 }
-  
+
+/**
+ * g_file_new_tmp:
+ * @template: (type filename) (allow-none): Template for the file
+ *   name, as in g_file_open_tmp(), or %NULL for a default template.
+ * @iostream: (out): on return, a #GFileIOStream for the created file.
+ * @error: a #GError, or %NULL
+ *
+ * Opens a file in the preferred directory for temporary files (as
+ * returned by g_get_tmp_dir()) and returns a #GFile and
+ * #GFileIOStream pointing to it.
+ *
+ * @template should be a string in the GLib file name encoding
+ * containing a sequence of six 'X' characters, and containing no
+ * directory components. If it is %NULL, a default template is used.
+ *
+ * Unlike the other #GFile constructors, this will return %NULL if
+ * a temporary file could not be created.
+ *
+ * Returns: (transfer full): a new #GFile.
+ *   Free the returned object with g_object_unref().
+ **/
+GFile *
+g_file_new_tmp (const char     *template,
+                GFileIOStream **iostream,
+                GError        **error)
+{
+  gint fd;
+  gchar *path;
+  GFile *file;
+  GFileOutputStream *output;
+
+  g_return_val_if_fail (template != NULL, NULL);
+  g_return_val_if_fail (iostream != NULL, NULL);
+
+  fd = g_file_open_tmp (template, &path, error);
+  if (fd == -1)
+    return NULL;
+
+  file = g_file_new_for_path (path);
+
+  output = _g_local_file_output_stream_new (fd);
+  *iostream = _g_local_file_io_stream_new (G_LOCAL_FILE_OUTPUT_STREAM (output));
+
+  g_object_unref (output);
+  g_free (path);
+
+  return file;
+}
+
 /**
  * g_file_parse_name:
  * @parse_name: a file name or path to be parsed.

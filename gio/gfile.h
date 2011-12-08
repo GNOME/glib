@@ -550,6 +550,9 @@ GType                   g_file_get_type                   (void) G_GNUC_CONST;
 GFile *                 g_file_new_for_path               (const char                 *path);
 GFile *                 g_file_new_for_uri                (const char                 *uri);
 GFile *                 g_file_new_for_commandline_arg    (const char                 *arg);
+GFile *                 g_file_new_tmp                    (const char                 *template,
+                                                           GFileIOStream             **iostream,
+                                                           GError                    **error);
 GFile *                 g_file_parse_name                 (const char                 *parse_name);
 GFile *                 g_file_dup                        (GFile                      *file);
 guint                   g_file_hash                       (gconstpointer               file);

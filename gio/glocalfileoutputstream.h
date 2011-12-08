@@ -59,6 +59,7 @@ gboolean _g_local_file_output_stream_really_close (GLocalFileOutputStream *out,
 						   GCancellable   *cancellable,
 						   GError        **error);
 
+GFileOutputStream * _g_local_file_output_stream_new      (int               fd);
 GFileOutputStream * _g_local_file_output_stream_open     (const char       *filename,
 							  gboolean          readable,
                                                           GCancellable     *cancellable,
