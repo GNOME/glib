@@ -218,7 +218,7 @@ typedef struct
   GDBusConnection *connection;
   gchar           *object_path;
   GHashTable      *pending_changes;
-  guint            pending_id;
+  GSource         *pending_source;
   gulong           signal_ids[4];
 } GActionGroupExporter;
 
@@ -294,7 +294,7 @@ g_action_group_exporter_dispatch_events (gpointer user_data)
                                                 &state_changes, &adds),
                                  NULL);
 
-  exporter->pending_id = 0;
+  exporter->pending_source = NULL;
 
   return FALSE;
 }
@@ -320,15 +320,23 @@ g_action_group_exporter_set_events (GActionGroupExporter *exporter,
     g_hash_table_remove (exporter->pending_changes, name);
 
   have_events = g_hash_table_size (exporter->pending_changes) > 0;
-  is_queued = exporter->pending_id > 0;
+  is_queued = exporter->pending_source != NULL;
 
   if (have_events && !is_queued)
-    exporter->pending_id = g_idle_add (g_action_group_exporter_dispatch_events, exporter);
+    {
+      GSource *source;
+
+      source = g_idle_source_new ();
+      exporter->pending_source = source;
+      g_source_set_callback (source, g_action_group_exporter_dispatch_events, exporter, NULL);
+      g_source_attach (source, NULL);
+      g_source_unref (source);
+    }
 
   if (!have_events && is_queued)
     {
-      g_source_remove (exporter->pending_id);
-      exporter->pending_id = 0;
+      g_source_destroy (exporter->pending_source);
+      exporter->pending_source = NULL;
     }
 }
 
@@ -555,8 +563,8 @@ g_action_group_exporter_free (gpointer user_data)
     g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
 
   g_hash_table_unref (exporter->pending_changes);
-  if (exporter->pending_id)
-    g_source_remove (exporter->pending_id);
+  if (exporter->pending_source)
+    g_source_destroy (exporter->pending_source);
 
   g_object_unref (exporter->connection);
   g_object_unref (exporter->action_group);
@@ -626,7 +634,7 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
     }
 
   exporter->pending_changes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-  exporter->pending_id = 0;
+  exporter->pending_source = NULL;
   exporter->action_group = g_object_ref (action_group);
   exporter->connection = g_object_ref (connection);
   exporter->object_path = g_strdup (object_path);
