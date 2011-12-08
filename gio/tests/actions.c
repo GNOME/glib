@@ -496,24 +496,12 @@ stop_loop (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
-GDBusActionGroup *proxy;
-
-static void
-got_proxy (GObject      *source,
-           GAsyncResult *res,
-           gpointer      user_data)
-{
-  GError *error = NULL;
-
-  proxy = g_dbus_action_group_new_finish (res, &error);
-  g_assert_no_error (error);
-}
-
 static void
 test_dbus_export (void)
 {
   GDBusConnection *bus;
   GSimpleActionGroup *group;
+  GDBusActionGroup *proxy;
   GSimpleAction *action;
   GMainLoop *loop;
   static GActionEntry entries[] = {
@@ -539,8 +527,8 @@ test_dbus_export (void)
   id = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &error);
   g_assert_no_error (error);
 
-  g_dbus_action_group_new (bus, g_dbus_connection_get_unique_name (bus), "/", NULL, got_proxy, NULL);
-  g_assert_no_error (error);
+  proxy = g_dbus_action_group_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  g_strfreev (g_action_group_list_actions (G_ACTION_GROUP (proxy)));
 
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);

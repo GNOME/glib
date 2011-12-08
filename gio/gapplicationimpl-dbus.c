@@ -37,6 +37,12 @@
 #include "gapplicationcommandline.h"
 #include "gdbusmethodinvocation.h"
 
+G_GNUC_INTERNAL gboolean
+g_dbus_action_group_sync (GDBusActionGroup  *group,
+                          GCancellable      *cancellable,
+                          GError           **error);
+
+
 /* DBus Interface definition {{{1 */
 static const gchar org_gtk_Application_xml[] =
   "<node>"
@@ -526,12 +532,12 @@ g_application_impl_register (GApplication       *application,
    * This also serves as a mechanism to ensure that the primary exists
    * (ie: DBus service files installed correctly, etc).
    */
-  actions = g_dbus_action_group_new_sync (impl->session_bus, impl->bus_name, impl->object_path, cancellable, error);
-
-  if (actions == NULL)
+  actions = g_dbus_action_group_get (impl->session_bus, impl->bus_name, impl->object_path);
+  if (!g_dbus_action_group_sync (actions, cancellable, error))
     {
       /* The primary appears not to exist.  Fail the registration. */
       g_application_impl_destroy (impl);
+      g_object_unref (actions);
 
       return NULL;
     }

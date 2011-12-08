@@ -45,21 +45,9 @@ G_BEGIN_DECLS
 
 GType                   g_dbus_action_group_get_type                  (void) G_GNUC_CONST;
 
-void                    g_dbus_action_group_new                       (GDBusConnection        *connection,
+GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection        *connection,
                                                                        const gchar            *bus_name,
-                                                                       const gchar            *object_path,
-                                                                       GCancellable           *cancellable,
-                                                                       GAsyncReadyCallback     callback,
-                                                                       gpointer                user_data);
-
-GDBusActionGroup *      g_dbus_action_group_new_finish                (GAsyncResult           *result,
-                                                                       GError                **error);
-
-GDBusActionGroup *      g_dbus_action_group_new_sync                  (GDBusConnection        *connection,
-                                                                       const gchar            *bus_name,
-                                                                       const gchar            *object_path,
-                                                                       GCancellable           *cancellable,
-                                                                       GError                **error);
+                                                                       const gchar            *object_path);
 
 G_END_DECLS
 
