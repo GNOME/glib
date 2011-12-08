@@ -228,6 +228,106 @@ test_weak_pointer (void)
   g_assert (weak2 == obj);
 }
 
+/* See gobject/tests/threadtests.c for the threaded version */
+static void
+test_weak_ref (void)
+{
+  GObject *obj;
+  GObject *obj2;
+  GObject *tmp;
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+  GWeakRef weak2 = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+  GWeakRef weak3 = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+  GWeakRef *dynamic_weak = g_new (GWeakRef, 1);
+
+  /* you can initialize to empty like this... */
+  g_weak_ref_init (&weak2, NULL);
+  g_assert (g_weak_ref_get (&weak2) == NULL);
+
+  /* ... or via an initializer */
+  g_weak_ref_init (&weak3, NULL);
+  g_assert (g_weak_ref_get (&weak3) == NULL);
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  obj2 = g_object_new (G_TYPE_OBJECT, NULL);
+  g_assert_cmpint (obj2->ref_count, ==, 1);
+
+  /* you can init with an object (even if uninitialized) */
+  g_weak_ref_init (&weak, obj);
+  g_weak_ref_init (dynamic_weak, obj);
+  /* or set to point at an object, if initialized (maybe to 0) */
+  g_weak_ref_set (&weak2, obj);
+  g_weak_ref_set (&weak3, obj);
+  /* none of this affects its refcount */
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  /* getting the value takes a ref */
+  tmp = g_weak_ref_get (&weak);
+  g_assert (tmp == obj);
+  g_assert_cmpint (obj->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  tmp = g_weak_ref_get (&weak2);
+  g_assert (tmp == obj);
+  g_assert_cmpint (obj->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  tmp = g_weak_ref_get (&weak3);
+  g_assert (tmp == obj);
+  g_assert_cmpint (obj->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  tmp = g_weak_ref_get (dynamic_weak);
+  g_assert (tmp == obj);
+  g_assert_cmpint (obj->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  /* clearing a weak ref stops tracking */
+  g_weak_ref_clear (&weak);
+
+  /* setting a weak ref to NULL stops tracking too */
+  g_weak_ref_set (&weak2, NULL);
+  g_assert (g_weak_ref_get (&weak2) == NULL);
+  g_weak_ref_clear (&weak2);
+
+  /* setting a weak ref to a new object stops tracking the old one */
+  g_weak_ref_set (dynamic_weak, obj2);
+  tmp = g_weak_ref_get (dynamic_weak);
+  g_assert (tmp == obj2);
+  g_assert_cmpint (obj2->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj2->ref_count, ==, 1);
+
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  /* free the object: weak3 is the only one left pointing there */
+  g_object_unref (obj);
+  g_assert (g_weak_ref_get (&weak3) == NULL);
+
+  /* setting a weak ref to a new object stops tracking the old one */
+  g_weak_ref_set (dynamic_weak, obj2);
+  tmp = g_weak_ref_get (dynamic_weak);
+  g_assert (tmp == obj2);
+  g_assert_cmpint (obj2->ref_count, ==, 2);
+  g_object_unref (tmp);
+  g_assert_cmpint (obj2->ref_count, ==, 1);
+
+  g_weak_ref_clear (&weak3);
+
+  /* clear and free dynamic_weak... */
+  g_weak_ref_clear (dynamic_weak);
+
+  /* ... to prove that doing so stops this from being a use-after-free */
+  g_object_unref (obj2);
+  g_free (dynamic_weak);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -244,6 +344,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/value", test_object_value);
   g_test_add_func ("/object/initially-unowned", test_initially_unowned);
   g_test_add_func ("/object/weak-pointer", test_weak_pointer);
+  g_test_add_func ("/object/weak-ref", test_weak_ref);
 
   return g_test_run ();
 }
