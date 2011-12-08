@@ -88,14 +88,15 @@
  * The use count can be changed using g_application_hold() and
  * g_application_release(). If it drops to zero, the application exits.
  *
- * GApplication also implements the #GActionGroup interface and lets you
- * easily export actions by adding them with g_application_set_action_group().
- * When invoking an action by calling g_action_group_activate_action() on
- * the application, it is always invoked in the primary instance. The actions
- * are also exported on the session bus, and GIO provides the #GDBusActionGroup
- * wrapper to conveniently access them remotely. Additionally,
- * g_application_set_menu() can be used to export representation data
- * for the actions, in the form of a  #GMenuModel.
+ * GApplication also implements the #GActionGroup and #GActionMap
+ * interfaces and lets you easily export actions by adding them with
+ * g_action_map_add_action(). When invoking an action by calling
+ * g_action_group_activate_action() on the application, it is always
+ * invoked in the primary instance. The actions are also exported on
+ * the session bus, and GIO provides the #GDBusActionGroup wrapper to
+ * conveniently access them remotely. Additionally, g_application_set_app_menu()
+ * and g_application_set_menubar() can be used to export representation
+ * data for the actions, in the form of #GMenuModels.
  *
  * There is a number of different entry points into a #GApplication:
  * <itemizedlist>
