@@ -47,7 +47,8 @@
  * particular thing:
  *
  *   - GDBusMenuPath represents a D-Bus object path on a particular
- *     unique bus name on a particular GDBusConnection.
+ *     unique bus name on a particular GDBusConnection and in a
+ *     particular GMainContext.
  *
  *   - GDBusMenuGroup represents a particular group on a particular
  *     GDBusMenuPath.
@@ -60,10 +61,10 @@
  *  - PathIdentifier and ConstPathIdentifier
  *  - GDBusMenuModelItem
  *
- * PathIdentifier is the triplet of (GDBusConnection, unique name,
- * object path) that uniquely identifies a particular GDBusMenuPath.
- * It holds ownership on each of these things, so we have a
- * ConstPathIdentifier variant that does not.
+ * PathIdentifier is the 4-tuple of (GMainContext, GDBusConnection,
+ * unique name, object path) that uniquely identifies a particular
+ * GDBusMenuPath.  It holds ownership on each of these things, so we
+ * have a ConstPathIdentifier variant that does not.
  *
  * We have a 3-level hierarchy of hashtables:
  *
@@ -164,6 +165,7 @@ static GDBusMenuModel *         g_dbus_menu_model_get_from_group        (GDBusMe
 /* PathIdentifier {{{1 */
 typedef struct
 {
+  GMainContext *context;
   GDBusConnection *connection;
   gchar *bus_name;
   gchar *object_path;
@@ -171,6 +173,7 @@ typedef struct
 
 typedef const struct
 {
+  GMainContext *context;
   GDBusConnection *connection;
   const gchar *bus_name;
   const gchar *object_path;
@@ -199,6 +202,7 @@ path_identifier_equal (gconstpointer a,
 static void
 path_identifier_free (PathIdentifier *id)
 {
+  g_main_context_unref (id->context);
   g_object_unref (id->connection);
   g_free (id->bus_name);
   g_free (id->object_path);
@@ -212,6 +216,7 @@ path_identifier_new (ConstPathIdentifier *cid)
   PathIdentifier *id;
 
   id = g_slice_new (PathIdentifier);
+  id->context = g_main_context_ref (cid->context);
   id->connection = g_object_ref (cid->connection);
   id->bus_name = g_strdup (cid->bus_name);
   id->object_path = g_strdup (cid->object_path);
@@ -305,11 +310,12 @@ g_dbus_menu_path_deactivate (GDBusMenuPath *path)
 }
 
 static GDBusMenuPath *
-g_dbus_menu_path_get (GDBusConnection *connection,
+g_dbus_menu_path_get (GMainContext    *context,
+                      GDBusConnection *connection,
                       const gchar     *bus_name,
                       const gchar     *object_path)
 {
-  ConstPathIdentifier cid = { connection, bus_name, object_path };
+  ConstPathIdentifier cid = { context, connection, bus_name, object_path };
   GDBusMenuPath *path;
 
   if (g_dbus_menu_paths == NULL)
@@ -646,7 +652,8 @@ g_dbus_menu_group_get_from_path (GDBusMenuPath *path,
 }
 
 static GDBusMenuGroup *
-g_dbus_menu_group_get (GDBusConnection *connection,
+g_dbus_menu_group_get (GMainContext    *context,
+                       GDBusConnection *connection,
                        const gchar     *bus_name,
                        const gchar     *object_path,
                        guint            group_id)
@@ -654,7 +661,7 @@ g_dbus_menu_group_get (GDBusConnection *connection,
   GDBusMenuGroup *group;
   GDBusMenuPath *path;
 
-  path = g_dbus_menu_path_get (connection, bus_name, object_path);
+  path = g_dbus_menu_path_get (context, connection, bus_name, object_path);
   group = g_dbus_menu_group_get_from_path (path, group_id);
   g_dbus_menu_path_unref (path);
 
@@ -847,6 +854,12 @@ g_dbus_menu_model_get_from_group (GDBusMenuGroup *group,
  * Obtains a #GDBusMenuModel for the menu model which is exported
  * at the given @bus_name and @object_path.
  *
+ * The thread default main context is taken at the time of this call.
+ * All signals on the menu model (and any linked models) are reported
+ * with respect to this context.  All calls on the returned menu model
+ * (and linked models) must also originate from this same context, with
+ * the thread default main context unchanged.
+ *
  * Returns: (transfer full): a #GDBusMenuModel object. Free with g_object_unref().
  */
 GDBusMenuModel *
@@ -856,8 +869,13 @@ g_dbus_menu_model_get (GDBusConnection *connection,
 {
   GDBusMenuGroup *group;
   GDBusMenuModel *proxy;
+  GMainContext *context;
 
-  group = g_dbus_menu_group_get (connection, bus_name, object_path, 0);
+  context = g_main_context_get_thread_default ();
+  if (context == NULL)
+    context = g_main_context_default ();
+
+  group = g_dbus_menu_group_get (context, connection, bus_name, object_path, 0);
   proxy = g_dbus_menu_model_get_from_group (group, 0);
   g_dbus_menu_group_unref (group);
 
