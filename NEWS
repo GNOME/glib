@@ -1,3 +1,48 @@
+Overview of changes from GLib 2.31.2 to 2.31.4
+==============================================
+
+* Clean up Requires in pc files. Linking against GIO no
+  longer drags in gmodule. This may require dependency
+  fixes here and there.
+
+* Introduce GBytes, a data type for immutable, fixed-size
+  byte sequences. This makes the pre-existing GBuffer
+  API available outside GLib
+
+* GDBusInterfaceSkeleton can now be exported on multiple
+  connections
+
+* Bugs fixed:
+ 600161 Do not use static GTypeInfo and GInterfaceInfo
+ 640077 GFileMonitor: Always send CHANGES_DONE_HINT after a move...
+ 641720 Misleading definition for local_command_line() in GApplic...
+ 648516 Little comment error and 2 useless lines of code
+ 651997 Dummy backend for gapplication
+ 652560 Test for g_ascii_strtod is failing
+ 662208 failure to initialize a GInitable should be considered...
+ 662718 GDBusInterfaceSkeleton should be able to export on multi...
+ 663291 GBytes: Immutable, refcounted sequence of bytes
+ 664406 Need context for a proper translation
+ 664455 Build fixes for GLib GIT master (2.31.x)
+ 664558 GDBusWorker.frozen has a value > 1 in a gboolean
+ 664559 sys/wait.h not available on windows
+ 664617 gdbus segfault error 4 in libgio-2.0.so.0.3102.0
+ 664635 GMemory{Out,In}putStream _async functions break sub-class...
+ 664809 Add command line option to gtester to allow skipping tests
+ 665067 cryptic assertion failure if nonsensical flag combinations...
+ 665184 Check ref. count before reffing/unreffing
+ 665298 Add 'Requires.private: libpcre' to glib-2.0.pc
+ 665391 update documentation around mainloops
+ 665607 ./configure is there for fiddling with cross-compile enviro...
+ 665634 g_dbus_node_info_new_for_xml() errors on unknown attributes...
+ 665685 Add a #define for the max length of a Unicode decomposition
+ 665733 GDBusConnection holds lock while calling destroynotify
+
+* Translation updates:
+ Norwegian bokmål
+ Spanish
+
+
 Overview of changes from GLib 2.31.0 to 2.31.2
 ==============================================
 
