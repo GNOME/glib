@@ -402,7 +402,6 @@ g_dbus_action_group_describe_all_done (GObject      *source,
  * @connection: A #GDBusConnection
  * @bus_name: the bus name which exports the action group
  * @object_path: the object path at which the action group is exported
- * @flags: Flags used when constructing the object
  * @cancellable: A #GCancellable or %NULL
  * @callback: Callback function to invoke when the object is ready
  * @user_data: User data to pass to @callback
@@ -420,7 +419,6 @@ void
 g_dbus_action_group_new (GDBusConnection       *connection,
                          const gchar           *bus_name,
                          const gchar           *object_path,
-                         GDBusActionGroupFlags  flags,
                          GCancellable          *cancellable,
                          GAsyncReadyCallback    callback,
                          gpointer               user_data)
@@ -441,18 +439,13 @@ g_dbus_action_group_new (GDBusConnection       *connection,
   result = g_simple_async_result_new (G_OBJECT (group), callback, user_data, g_dbus_action_group_new);
   g_simple_async_result_set_op_res_gpointer (result, group, g_object_unref);
 
-  if (~flags & G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_WATCH)
-    group->subscription_id =
-      g_dbus_connection_signal_subscribe (connection, bus_name, "org.gtk.Actions", "Changed", object_path, NULL,
-                                          G_DBUS_SIGNAL_FLAGS_NONE, g_dbus_action_group_changed, group, NULL);
+  group->subscription_id =
+    g_dbus_connection_signal_subscribe (connection, bus_name, "org.gtk.Actions", "Changed", object_path, NULL,
+                                        G_DBUS_SIGNAL_FLAGS_NONE, g_dbus_action_group_changed, group, NULL);
 
-  if (~flags & G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_POPULATE)
-    g_dbus_connection_call (connection, bus_name, object_path, "org.gtk.Actions", "DescribeAll", NULL,
-                            G_VARIANT_TYPE ("(a{s(bgav)})"), G_DBUS_CALL_FLAGS_NONE, -1, cancellable,
-                            g_dbus_action_group_describe_all_done, result);
-
-  else
-    g_simple_async_result_complete_in_idle (result);
+  g_dbus_connection_call (connection, bus_name, object_path, "org.gtk.Actions", "DescribeAll", NULL,
+                          G_VARIANT_TYPE ("(a{s(bgav)})"), G_DBUS_CALL_FLAGS_NONE, -1, cancellable,
+                          g_dbus_action_group_describe_all_done, result);
 }
 
 /**
@@ -486,7 +479,6 @@ g_dbus_action_group_new_finish (GAsyncResult  *result,
  * @connection: A #GDBusConnection
  * @bus_name: the bus name which exports the action group
  * @object_path: the object path at which the action group is exported
- * @flags: Flags used when constructing the object
  * @cancellable: A #GCancellable or %NULL
  * @error: Return location for error or %NULL
  *
@@ -499,76 +491,41 @@ GDBusActionGroup *
 g_dbus_action_group_new_sync (GDBusConnection        *connection,
                               const gchar            *bus_name,
                               const gchar            *object_path,
-                              GDBusActionGroupFlags   flags,
                               GCancellable           *cancellable,
                               GError                **error)
 {
   GDBusActionGroup *group;
+  GVariant *reply;
 
   group = g_object_new (G_TYPE_DBUS_ACTION_GROUP, NULL);
   group->connection = g_object_ref (connection);
   group->bus_name = g_strdup (bus_name);
   group->object_path = g_strdup (object_path);
 
-  if (~flags & G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_WATCH)
-    group->subscription_id =
-      g_dbus_connection_signal_subscribe (connection, bus_name, "org.gtk.Actions", "Changed", object_path, NULL,
+  group->subscription_id =
+    g_dbus_connection_signal_subscribe (connection, bus_name, "org.gtk.Actions", "Changed", object_path, NULL,
                                           G_DBUS_SIGNAL_FLAGS_NONE, g_dbus_action_group_changed, group, NULL);
 
-  if (~flags & G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_POPULATE)
+  reply = g_dbus_connection_call_sync (connection, bus_name, object_path, "org.gtk.Actions",
+                                       "DescribeAll", NULL, G_VARIANT_TYPE ("(a{s(bgav)})"),
+                                       G_DBUS_CALL_FLAGS_NONE, -1, cancellable, error);
+
+  if (reply != NULL)
     {
-      GVariant *reply;
+      GVariantIter *iter;
+      ActionInfo *action;
 
-      reply = g_dbus_connection_call_sync (connection, bus_name, object_path, "org.gtk.Actions",
-                                           "DescribeAll", NULL, G_VARIANT_TYPE ("(a{s(bgav)})"),
-                                           G_DBUS_CALL_FLAGS_NONE, -1, cancellable, error);
-
-      if (reply != NULL)
-        {
-          GVariantIter *iter;
-          ActionInfo *action;
-
-          g_variant_get (reply, "(a{s(bgav)})", &iter);
-          while ((action = action_info_new_from_iter (iter)))
-            g_hash_table_insert (group->actions, action->name, action);
-          g_variant_iter_free (iter);
-          g_variant_unref (reply);
-        }
-      else
-        {
-          g_object_unref (group);
-          return NULL;
-        }
+      g_variant_get (reply, "(a{s(bgav)})", &iter);
+      while ((action = action_info_new_from_iter (iter)))
+        g_hash_table_insert (group->actions, action->name, action);
+      g_variant_iter_free (iter);
+      g_variant_unref (reply);
+    }
+  else
+    {
+      g_object_unref (group);
+      return NULL;
     }
 
   return group;
-}
-
-gboolean
-g_dbus_action_group_inject (GDBusActionGroup   *group,
-                            const gchar        *action_name,
-                            const GVariantType *parameter_type,
-                            gboolean            enabled,
-                            GVariant           *state)
-{
-  ActionInfo *action;
-
-  g_return_val_if_fail (G_IS_DBUS_ACTION_GROUP (group), FALSE);
-  g_return_val_if_fail (action_name != NULL, FALSE);
-
-  if (g_hash_table_lookup (group->actions, action_name))
-    return FALSE;
-
-  action = g_slice_new (ActionInfo);
-  action->name = g_strdup (action_name);
-  action->parameter_type = parameter_type ? g_variant_type_copy (parameter_type) : NULL;
-  action->enabled = !!enabled;
-  action->state = state ? g_variant_ref_sink (state) : NULL;
-
-  g_hash_table_insert (group->actions, action->name, action);
-
-  if (group->strict)
-    g_action_group_action_added (G_ACTION_GROUP (group), action_name);
-
-  return TRUE;
 }

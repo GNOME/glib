@@ -526,8 +526,7 @@ g_application_impl_register (GApplication       *application,
    * This also serves as a mechanism to ensure that the primary exists
    * (ie: DBus service files installed correctly, etc).
    */
-  actions = g_dbus_action_group_new_sync (impl->session_bus, impl->bus_name, impl->object_path,
-                                          G_DBUS_ACTION_GROUP_FLAGS_NONE, cancellable, error);
+  actions = g_dbus_action_group_new_sync (impl->session_bus, impl->bus_name, impl->object_path, cancellable, error);
 
   if (actions == NULL)
     {

@@ -539,7 +539,7 @@ test_dbus_export (void)
   id = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &error);
   g_assert_no_error (error);
 
-  g_dbus_action_group_new (bus, g_dbus_connection_get_unique_name (bus), "/", 0, NULL, got_proxy, NULL);
+  g_dbus_action_group_new (bus, g_dbus_connection_get_unique_name (bus), "/", NULL, got_proxy, NULL);
   g_assert_no_error (error);
 
   g_timeout_add (100, stop_loop, loop);

@@ -48,7 +48,6 @@ GType                   g_dbus_action_group_get_type                  (void) G_G
 void                    g_dbus_action_group_new                       (GDBusConnection        *connection,
                                                                        const gchar            *bus_name,
                                                                        const gchar            *object_path,
-                                                                       GDBusActionGroupFlags   flags,
                                                                        GCancellable           *cancellable,
                                                                        GAsyncReadyCallback     callback,
                                                                        gpointer                user_data);
@@ -59,15 +58,8 @@ GDBusActionGroup *      g_dbus_action_group_new_finish                (GAsyncRes
 GDBusActionGroup *      g_dbus_action_group_new_sync                  (GDBusConnection        *connection,
                                                                        const gchar            *bus_name,
                                                                        const gchar            *object_path,
-                                                                       GDBusActionGroupFlags   flags,
                                                                        GCancellable           *cancellable,
                                                                        GError                **error);
-
-gboolean                g_dbus_action_group_inject                    (GDBusActionGroup       *group,
-                                                                       const gchar            *action_name,
-                                                                       const GVariantType     *parameter_type,
-                                                                       gboolean                enabled,
-                                                                       GVariant               *state);
 
 G_END_DECLS
 
