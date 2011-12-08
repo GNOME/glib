@@ -216,6 +216,7 @@ typedef struct
 {
   GActionGroup    *action_group;
   GDBusConnection *connection;
+  GMainContext    *context;
   gchar           *object_path;
   GHashTable      *pending_changes;
   GSource         *pending_source;
@@ -329,7 +330,7 @@ g_action_group_exporter_set_events (GActionGroupExporter *exporter,
       source = g_idle_source_new ();
       exporter->pending_source = source;
       g_source_set_callback (source, g_action_group_exporter_dispatch_events, exporter, NULL);
-      g_source_attach (source, NULL);
+      g_source_attach (source, exporter->context);
       g_source_unref (source);
     }
 
@@ -566,6 +567,7 @@ g_action_group_exporter_free (gpointer user_data)
   if (exporter->pending_source)
     g_source_destroy (exporter->pending_source);
 
+  g_main_context_unref (exporter->context);
   g_object_unref (exporter->connection);
   g_object_unref (exporter->action_group);
   g_free (exporter->object_path);
@@ -585,13 +587,22 @@ g_action_group_exporter_free (gpointer user_data)
  * The implemented D-Bus API should be considered private.  It is
  * subject to change in the future.
  *
- * A given * object path can only have one action group exported on it.
+ * A given object path can only have one action group exported on it.
  * If this constraint is violated, the export will fail and 0 will be
  * returned (with @error set accordingly).
  *
  * You can unexport the action group using
  * g_dbus_connection_unexport_action_group() with the return value of
  * this function.
+ *
+ * The thread default main context is taken at the time of this call.
+ * All incoming action activations and state change requests are
+ * reported from this context.  Any changes on the action group that
+ * cause it to emit signals must also come from this same context.
+ * Since incoming action activations and state change requests are
+ * rather likely to cause changes on the action group, this effectively
+ * limits a given action group to being exported from only one main
+ * context.
  *
  * Returns: the ID of the export (never zero), or 0 in case of failure
  *
@@ -633,6 +644,7 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
       return 0;
     }
 
+  exporter->context = g_main_context_ref_thread_default ();
   exporter->pending_changes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   exporter->pending_source = NULL;
   exporter->action_group = g_object_ref (action_group);

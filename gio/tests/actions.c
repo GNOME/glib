@@ -625,31 +625,20 @@ test_dbus_export (void)
 }
 
 static gpointer
-do_activate (gpointer data)
-{
-  GSimpleActionGroup *group = data;
-  gint i;
-  GAction *action;
-
-  for (i = 0; i < 1000000; i++)
-    {
-      action = g_simple_action_group_lookup (group, "a");
-      g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-                                   !g_action_get_enabled (action));
-    }
-
-  return NULL;
-}
-
-static gpointer
 do_export (gpointer data)
 {
   GActionGroup *group = data;
+  GMainContext *ctx;
   gint i;
   GError *error = NULL;
   guint id;
   GDBusConnection *bus;
+  GAction *action;
   gchar *path;
+
+  ctx = g_main_context_new ();
+
+  g_main_context_push_thread_default (ctx);
 
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   path = g_strdup_printf("/%p", data);
@@ -658,11 +647,22 @@ do_export (gpointer data)
     {
       id = g_dbus_connection_export_action_group (bus, path, G_ACTION_GROUP (group), &error);
       g_assert_no_error (error);
+
+      action = g_simple_action_group_lookup (G_SIMPLE_ACTION_GROUP (group), "a");
+      g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
+                                   !g_action_get_enabled (action));
+
       g_dbus_connection_unexport_action_group (bus, id);
+
+      while (g_main_context_iteration (ctx, FALSE));
     }
 
   g_free (path);
   g_object_unref (bus);
+
+  g_main_context_pop_thread_default (ctx);
+
+  g_main_context_unref (ctx);
 
   return NULL;
 }
@@ -671,7 +671,6 @@ static void
 test_dbus_threaded (void)
 {
   GSimpleActionGroup *group[10];
-  GThread *call[10];
   GThread *export[10];
   static GActionEntry entries[] = {
     { "a",  activate_action, NULL, NULL, NULL },
@@ -683,15 +682,11 @@ test_dbus_threaded (void)
     {
       group[i] = g_simple_action_group_new ();
       g_simple_action_group_add_entries (group[i], entries, G_N_ELEMENTS (entries), NULL);
-      call[i] = g_thread_new ("call", do_activate, group[i]);
       export[i] = g_thread_new ("export", do_export, group[i]);
     }
 
   for (i = 0; i < 10; i++)
-    {
-      g_thread_join (call[i]);
-      g_thread_join (export[i]);
-    }
+    g_thread_join (export[i]);
 
   for (i = 0; i < 10; i++)
     g_object_unref (group[i]);
