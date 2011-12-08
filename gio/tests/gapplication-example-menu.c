@@ -44,17 +44,9 @@ static GActionEntry entries[] = {
 static void
 add_actions (GApplication *app)
 {
-  GSimpleActionGroup *actions;
-
-  actions = g_simple_action_group_new ();
-
-  g_simple_action_group_add_entries (actions,
-                                     entries, G_N_ELEMENTS (entries),
-                                     NULL);
-
-  g_application_set_action_group (app, G_ACTION_GROUP (actions));
-
-  g_object_unref (actions);
+  g_action_map_add_action_entries (G_ACTION_MAP (app),
+                                   entries, G_N_ELEMENTS (entries),
+                                   NULL);
 }
 
 static void

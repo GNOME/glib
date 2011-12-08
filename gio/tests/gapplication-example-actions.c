@@ -45,24 +45,18 @@ activate_toggle_action (GSimpleAction *action,
 static void
 add_actions (GApplication *app)
 {
-  GSimpleActionGroup *actions;
   GSimpleAction *action;
-
-  actions = g_simple_action_group_new ();
 
   action = g_simple_action_new ("simple-action", NULL);
   g_signal_connect (action, "activate", G_CALLBACK (activate_action), app);
-  g_simple_action_group_insert (actions, G_ACTION (action));
+  g_action_map_add_action (G_ACTION_MAP (app), G_ACTION (action));
   g_object_unref (action);
 
   action = g_simple_action_new_stateful ("toggle-action", NULL,
                                          g_variant_new_boolean (FALSE));
   g_signal_connect (action, "activate", G_CALLBACK (activate_toggle_action), app);
-  g_simple_action_group_insert (actions, G_ACTION (action));
+  g_action_map_add_action (G_ACTION_MAP (app), G_ACTION (action));
   g_object_unref (action);
-
-  g_application_set_action_group (app, G_ACTION_GROUP (actions));
-  g_object_unref (actions);
 }
 
 static void
