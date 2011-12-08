@@ -754,6 +754,7 @@ do_export (gpointer data)
       id = g_dbus_connection_export_menu_model (bus, path, menu, &error);
       g_assert_no_error (error);
       g_dbus_connection_unexport_menu_model (bus, id);
+      while (g_main_context_iteration (NULL, FALSE));
     }
 
   g_free (path);
