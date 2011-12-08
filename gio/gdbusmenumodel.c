@@ -19,19 +19,19 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
-#include "gmenuproxy.h"
+#include "gdbusmenumodel.h"
 
 #include "gmenumodel.h"
 
 /* Prelude {{{1 */
 
 /**
- * SECTION:gmenuproxy
- * @title: GMenuProxy
+ * SECTION:gdbusmenumodel
+ * @title: GDBusMenuModel
  * @short_description: A D-Bus GMenuModel implementation
  * @see_also: <link linkend="gio-GMenuModel-exporter">GMenuModel Exporter</link>
  *
- * #GMenuProxy is an implementation of #GMenuModel that can be used
+ * #GDBusMenuModel is an implementation of #GMenuModel that can be used
  * as a proxy for a menu model that is exported over D-Bus with
  * g_menu_model_dbus_export_start().
  */
@@ -39,126 +39,126 @@
 /*
  * There are 3 main (quasi-)classes involved here:
  *
- *   - GMenuProxyPath
- *   - GMenuProxyGroup
- *   - GMenuProxy
+ *   - GDBusMenuPath
+ *   - GDBusMenuGroup
+ *   - GDBusMenuModel
  *
  * Each of these classes exists as a parameterised singleton keyed to a
  * particular thing:
  *
- *   - GMenuProxyPath represents a D-Bus object path on a particular
+ *   - GDBusMenuPath represents a D-Bus object path on a particular
  *     unique bus name on a particular GDBusConnection.
  *
- *   - GMenuProxyGroup represents a particular group on a particular
- *     GMenuProxyPath.
+ *   - GDBusMenuGroup represents a particular group on a particular
+ *     GDBusMenuPath.
  *
- *   - GMenuProxy represents a particular menu within a particular
- *     GMenuProxyGroup.
+ *   - GDBusMenuModel represents a particular menu within a particular
+ *     GDBusMenuGroup.
  *
  * There are also two (and a half) utility structs:
  *
  *  - PathIdentifier and ConstPathIdentifier
- *  - GMenuProxyItem
+ *  - GDBusMenuModelItem
  *
  * PathIdentifier is the triplet of (GDBusConnection, unique name,
- * object path) that uniquely identifies a particular GMenuProxyPath.
+ * object path) that uniquely identifies a particular GDBusMenuPath.
  * It holds ownership on each of these things, so we have a
  * ConstPathIdentifier variant that does not.
  *
  * We have a 3-level hierarchy of hashtables:
  *
- *   - a global hashtable (g_menu_proxy_paths) maps from PathIdentifier
- *     to GMenuProxyPath
+ *   - a global hashtable (g_dbus_menu_paths) maps from PathIdentifier
+ *     to GDBusMenuPath
  *
- *   - each GMenuProxyPath has a hashtable mapping from guint (group
- *     number) to GMenuProxyGroup
+ *   - each GDBusMenuPath has a hashtable mapping from guint (group
+ *     number) to GDBusMenuGroup
  *
- *   - each GMenuProxyGroup has a hashtable mapping from guint (menu
- *     number) to GMenuProxy.
+ *   - each GDBusMenuGroup has a hashtable mapping from guint (menu
+ *     number) to GDBusMenuModel.
  *
  * In this way, each quintuplet of (connection, bus name, object path,
- * group id, menu id) maps to a single GMenuProxy instance that can be
+ * group id, menu id) maps to a single GDBusMenuModel instance that can be
  * located via 3 hashtable lookups.
  *
- * All of the 3 classes are refcounted (GMenuProxyPath and
- * GMenuProxyGroup manually, and GMenuProxy by virtue of being a
+ * All of the 3 classes are refcounted (GDBusMenuPath and
+ * GDBusMenuGroup manually, and GDBusMenuModel by virtue of being a
  * GObject).  The hashtables do not hold references -- rather, when the
  * last reference is dropped, the object is removed from the hashtable.
  *
- * The hard references go in the other direction: GMenuProxy is created
+ * The hard references go in the other direction: GDBusMenuModel is created
  * as the user requests it and only exists as long as the user holds a
- * reference on it.  GMenuProxy holds a reference on the GMenuProxyGroup
- * from which it came. GMenuProxyGroup holds a reference on
- * GMenuProxyPath.
+ * reference on it.  GDBusMenuModel holds a reference on the GDBusMenuGroup
+ * from which it came. GDBusMenuGroup holds a reference on
+ * GDBusMenuPath.
  *
  * In addition to refcounts, each object has an 'active' variable (ints
- * for GMenuProxyPath and GMenuProxyGroup, boolean for GMenuProxy).
+ * for GDBusMenuPath and GDBusMenuGroup, boolean for GDBusMenuModel).
  *
- *   - GMenuProxy is inactive when created and becomes active only when
+ *   - GDBusMenuModel is inactive when created and becomes active only when
  *     first queried for information.  This prevents extra work from
- *     happening just by someone acquiring a GMenuProxy (and not
+ *     happening just by someone acquiring a GDBusMenuModel (and not
  *     actually trying to display it yet).
  *
- *   - The active count on GMenuProxyGroup is equal to the number of
- *     GMenuProxy instances in that group that are active.  When the
+ *   - The active count on GDBusMenuGroup is equal to the number of
+ *     GDBusMenuModel instances in that group that are active.  When the
  *     active count transitions from 0 to 1, the group calls the 'Start'
  *     method on the service to begin monitoring that group.  When it
  *     drops from 1 to 0, the group calls the 'End' method to stop
  *     monitoring.
  *
- *   - The active count on GMenuProxyPath is equal to the number of
- *     GMenuProxyGroup instances on that path with a non-zero active
+ *   - The active count on GDBusMenuPath is equal to the number of
+ *     GDBusMenuGroup instances on that path with a non-zero active
  *     count.  When the active count transitions from 0 to 1, the path
  *     sets up a signal subscription to monitor any changes.  The signal
  *     subscription is taken down when the active count transitions from
  *     1 to 0.
  *
- * When active, GMenuProxyPath gets incoming signals when changes occur.
+ * When active, GDBusMenuPath gets incoming signals when changes occur.
  * If the change signal mentions a group for which we currently have an
- * active GMenuProxyGroup, the change signal is passed along to that
+ * active GDBusMenuGroup, the change signal is passed along to that
  * group.  If the group is inactive, the change signal is ignored.
  *
- * Most of the "work" occurs in GMenuProxyGroup.  In addition to the
- * hashtable of GMenuProxy instances, it keeps a hashtable of the actual
- * menu contents, each encoded as GSequence of GMenuProxyItem.  It
+ * Most of the "work" occurs in GDBusMenuGroup.  In addition to the
+ * hashtable of GDBusMenuModel instances, it keeps a hashtable of the actual
+ * menu contents, each encoded as GSequence of GDBusMenuModelItem.  It
  * initially populates this table with the results of the "Start" method
  * call and then updates it according to incoming change signals.  If
  * the change signal mentions a menu for which we current have an active
- * GMenuProxy, the change signal is passed along to that proxy.  If the
- * proxy is inactive, the change signal is ignored.
+ * GDBusMenuModel, the change signal is passed along to that model.  If the
+ * model is inactive, the change signal is ignored.
  *
- * GMenuProxyItem is just a pair of hashtables, one for the attributes
+ * GDBusMenuModelItem is just a pair of hashtables, one for the attributes
  * and one for the links of the item.  Both map strings to GVariant
  * instances.  In the case of links, the GVariant has type '(uu)' and is
- * turned into a GMenuProxy at the point that the user pulls it through
+ * turned into a GDBusMenuModel at the point that the user pulls it through
  * the API.
  *
  * Following the "empty is the same as non-existent" rule, the hashtable
- * of GSequence of GMenuProxyItem holds NULL for empty menus.
+ * of GSequence of GDBusMenuModelItem holds NULL for empty menus.
  *
- * GMenuProxy contains very little functionality of its own.  It holds a
- * (weak) reference to the GSequence of GMenuProxyItem contained in the
- * GMenuProxyGroup.  It uses this GSequence to implement the GMenuModel
+ * GDBusMenuModel contains very little functionality of its own.  It holds a
+ * (weak) reference to the GSequence of GDBusMenuModelItem contained in the
+ * GDBusMenuGroup.  It uses this GSequence to implement the GMenuModel
  * interface.  It also emits the "items-changed" signal if it is active
  * and it was told that the contents of the GSequence changed.
  */
 
-typedef struct _GMenuProxyGroup GMenuProxyGroup;
-typedef struct _GMenuProxyPath GMenuProxyPath;
+typedef struct _GDBusMenuGroup GDBusMenuGroup;
+typedef struct _GDBusMenuPath GDBusMenuPath;
 
-static void                     g_menu_proxy_group_changed              (GMenuProxyGroup *group,
+static void                     g_dbus_menu_group_changed               (GDBusMenuGroup  *group,
                                                                          guint            menu_id,
                                                                          gint             position,
                                                                          gint             removed,
                                                                          GVariant        *added);
-static void                     g_menu_proxy_changed                    (GMenuProxy      *proxy,
+static void                     g_dbus_menu_model_changed               (GDBusMenuModel  *proxy,
                                                                          GSequence       *items,
                                                                          gint             position,
                                                                          gint             removed,
                                                                          gint             added);
-static GMenuProxyGroup *        g_menu_proxy_group_get_from_path        (GMenuProxyPath  *path,
+static GDBusMenuGroup *         g_dbus_menu_group_get_from_path         (GDBusMenuPath   *path,
                                                                          guint            group_id);
-static GMenuProxy *             g_menu_proxy_get_from_group             (GMenuProxyGroup *group,
+static GDBusMenuModel *         g_dbus_menu_model_get_from_group        (GDBusMenuGroup  *group,
                                                                          guint            menu_id);
 
 /* PathIdentifier {{{1 */
@@ -219,9 +219,9 @@ path_identifier_new (ConstPathIdentifier *cid)
   return id;
 }
 
-/* GMenuProxyPath {{{1 */
+/* GDBusMenuPath {{{1 */
 
-struct _GMenuProxyPath
+struct _GDBusMenuPath
 {
   PathIdentifier *id;
   gint ref_count;
@@ -231,10 +231,10 @@ struct _GMenuProxyPath
   guint watch_id;
 };
 
-static GHashTable *g_menu_proxy_paths;
+static GHashTable *g_dbus_menu_paths;
 
-static GMenuProxyPath *
-g_menu_proxy_path_ref (GMenuProxyPath *path)
+static GDBusMenuPath *
+g_dbus_menu_path_ref (GDBusMenuPath *path)
 {
   path->ref_count++;
 
@@ -242,28 +242,28 @@ g_menu_proxy_path_ref (GMenuProxyPath *path)
 }
 
 static void
-g_menu_proxy_path_unref (GMenuProxyPath *path)
+g_dbus_menu_path_unref (GDBusMenuPath *path)
 {
   if (--path->ref_count == 0)
     {
-      g_hash_table_remove (g_menu_proxy_paths, path->id);
+      g_hash_table_remove (g_dbus_menu_paths, path->id);
       g_hash_table_unref (path->groups);
       path_identifier_free (path->id);
 
-      g_slice_free (GMenuProxyPath, path);
+      g_slice_free (GDBusMenuPath, path);
     }
 }
 
 static void
-g_menu_proxy_path_signal (GDBusConnection *connection,
-                          const gchar     *sender_name,
-                          const gchar     *object_path,
-                          const gchar     *interface_name,
-                          const gchar     *signal_name,
-                          GVariant        *parameters,
-                          gpointer         user_data)
+g_dbus_menu_path_signal (GDBusConnection *connection,
+                         const gchar     *sender_name,
+                         const gchar     *object_path,
+                         const gchar     *interface_name,
+                         const gchar     *signal_name,
+                         GVariant        *parameters,
+                         gpointer         user_data)
 {
-  GMenuProxyPath *path = user_data;
+  GDBusMenuPath *path = user_data;
   GVariantIter *iter;
   guint group_id;
   guint menu_id;
@@ -277,61 +277,61 @@ g_menu_proxy_path_signal (GDBusConnection *connection,
   g_variant_get (parameters, "(a(uuuuaa{sv}))", &iter);
   while (g_variant_iter_loop (iter, "(uuuu@aa{sv})", &group_id, &menu_id, &position, &removes, &adds))
     {
-      GMenuProxyGroup *group;
+      GDBusMenuGroup *group;
 
       group = g_hash_table_lookup (path->groups, GINT_TO_POINTER (group_id));
 
       if (group != NULL)
-        g_menu_proxy_group_changed (group, menu_id, position, removes, adds);
+        g_dbus_menu_group_changed (group, menu_id, position, removes, adds);
     }
   g_variant_iter_free (iter);
 }
 
 static void
-g_menu_proxy_path_activate (GMenuProxyPath *path)
+g_dbus_menu_path_activate (GDBusMenuPath *path)
 {
   if (path->active++ == 0)
     path->watch_id = g_dbus_connection_signal_subscribe (path->id->connection, path->id->bus_name,
                                                          "org.gtk.Menus", "Changed", path->id->object_path,
                                                          NULL, G_DBUS_SIGNAL_FLAGS_NONE,
-                                                         g_menu_proxy_path_signal, path, NULL);
+                                                         g_dbus_menu_path_signal, path, NULL);
 }
 
 static void
-g_menu_proxy_path_deactivate (GMenuProxyPath *path)
+g_dbus_menu_path_deactivate (GDBusMenuPath *path)
 {
   if (--path->active == 0)
     g_dbus_connection_signal_unsubscribe (path->id->connection, path->watch_id);
 }
 
-static GMenuProxyPath *
-g_menu_proxy_path_get (GDBusConnection *connection,
-                       const gchar     *bus_name,
-                       const gchar     *object_path)
+static GDBusMenuPath *
+g_dbus_menu_path_get (GDBusConnection *connection,
+                      const gchar     *bus_name,
+                      const gchar     *object_path)
 {
   ConstPathIdentifier cid = { connection, bus_name, object_path };
-  GMenuProxyPath *path;
+  GDBusMenuPath *path;
 
-  if (g_menu_proxy_paths == NULL)
-    g_menu_proxy_paths = g_hash_table_new (path_identifier_hash, path_identifier_equal);
+  if (g_dbus_menu_paths == NULL)
+    g_dbus_menu_paths = g_hash_table_new (path_identifier_hash, path_identifier_equal);
 
-  path = g_hash_table_lookup (g_menu_proxy_paths, &cid);
+  path = g_hash_table_lookup (g_dbus_menu_paths, &cid);
 
   if (path == NULL)
     {
-      path = g_slice_new (GMenuProxyPath);
+      path = g_slice_new (GDBusMenuPath);
       path->id = path_identifier_new (&cid);
       path->groups = g_hash_table_new (NULL, NULL);
       path->ref_count = 0;
       path->active = 0;
 
-      g_hash_table_insert (g_menu_proxy_paths, path->id, path);
+      g_hash_table_insert (g_dbus_menu_paths, path->id, path);
     }
 
-  return g_menu_proxy_path_ref (path);
+  return g_dbus_menu_path_ref (path);
 }
 
-/* GMenuProxyGroup, GMenuProxyItem {{{1 */
+/* GDBusMenuGroup, GDBusMenuModelItem {{{1 */
 typedef enum
 {
   GROUP_OFFLINE,
@@ -339,12 +339,12 @@ typedef enum
   GROUP_ONLINE
 } GroupStatus;
 
-struct _GMenuProxyGroup
+struct _GDBusMenuGroup
 {
-  GMenuProxyPath *path;
+  GDBusMenuPath *path;
   guint id;
 
-  GHashTable *proxies; /* uint -> unowned GMenuProxy */
+  GHashTable *proxies; /* uint -> unowned GDBusMenuModel */
   GHashTable *menus;   /* uint -> owned GSequence */
   gint ref_count;
   GroupStatus state;
@@ -355,10 +355,10 @@ typedef struct
 {
   GHashTable *attributes;
   GHashTable *links;
-} GMenuProxyItem;
+} GDBusMenuModelItem;
 
-static GMenuProxyGroup *
-g_menu_proxy_group_ref (GMenuProxyGroup *group)
+static GDBusMenuGroup *
+g_dbus_menu_group_ref (GDBusMenuGroup *group)
 {
   group->ref_count++;
 
@@ -366,7 +366,7 @@ g_menu_proxy_group_ref (GMenuProxyGroup *group)
 }
 
 static void
-g_menu_proxy_group_unref (GMenuProxyGroup *group)
+g_dbus_menu_group_unref (GDBusMenuGroup *group)
 {
   if (--group->ref_count == 0)
     {
@@ -376,32 +376,32 @@ g_menu_proxy_group_unref (GMenuProxyGroup *group)
       g_hash_table_remove (group->path->groups, GINT_TO_POINTER (group->id));
       g_hash_table_unref (group->proxies);
 
-      g_menu_proxy_path_unref (group->path);
+      g_dbus_menu_path_unref (group->path);
 
-      g_slice_free (GMenuProxyGroup, group);
+      g_slice_free (GDBusMenuGroup, group);
     }
 }
 
 static void
-g_menu_proxy_item_free (gpointer data)
+g_dbus_menu_model_item_free (gpointer data)
 {
-  GMenuProxyItem *item = data;
+  GDBusMenuModelItem *item = data;
 
   g_hash_table_unref (item->attributes);
   g_hash_table_unref (item->links);
 
-  g_slice_free (GMenuProxyItem, item);
+  g_slice_free (GDBusMenuModelItem, item);
 }
 
-static GMenuProxyItem *
-g_menu_proxy_group_create_item (GVariant *description)
+static GDBusMenuModelItem *
+g_dbus_menu_group_create_item (GVariant *description)
 {
-  GMenuProxyItem *item;
+  GDBusMenuModelItem *item;
   GVariantIter iter;
   const gchar *key;
   GVariant *value;
 
-  item = g_slice_new (GMenuProxyItem);
+  item = g_slice_new (GDBusMenuModelItem);
   item->attributes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_variant_unref);
   item->links = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_variant_unref);
 
@@ -417,7 +417,7 @@ g_menu_proxy_group_create_item (GVariant *description)
 }
 
 /*
- * GMenuProxyGroup can be in three states:
+ * GDBusMenuGroup can be in three states:
  *
  * OFFLINE: not subscribed to this group
  * PENDING: we made the call to subscribe to this group, but the result
@@ -456,7 +456,7 @@ g_menu_proxy_group_create_item (GVariant *description)
  *   ONLINE: this should not be possible
  *
  * We have to take care with regards to signal subscriptions (ie:
- * activation of the GMenuProxyPath).  The signal subscription is always
+ * activation of the GDBusMenuPath).  The signal subscription is always
  * established when transitioning from OFFLINE to PENDING and taken down
  * when transitioning to OFFLINE (from either PENDING or ONLINE).
  *
@@ -464,9 +464,9 @@ g_menu_proxy_group_create_item (GVariant *description)
  * that code out into a separate function.
  */
 static void
-g_menu_proxy_group_go_offline (GMenuProxyGroup *group)
+g_dbus_menu_group_go_offline (GDBusMenuGroup *group)
 {
-  g_menu_proxy_path_deactivate (group->path);
+  g_dbus_menu_path_deactivate (group->path);
   g_dbus_connection_call (group->path->id->connection,
                           group->path->id->bus_name,
                           group->path->id->object_path,
@@ -479,12 +479,12 @@ g_menu_proxy_group_go_offline (GMenuProxyGroup *group)
 
 
 static void
-g_menu_proxy_group_start_ready (GObject      *source_object,
-                                GAsyncResult *result,
-                                gpointer      user_data)
+g_dbus_menu_group_start_ready (GObject      *source_object,
+                               GAsyncResult *result,
+                               gpointer      user_data)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (source_object);
-  GMenuProxyGroup *group = user_data;
+  GDBusMenuGroup *group = user_data;
   GVariant *reply;
 
   g_assert (group->state == GROUP_PENDING);
@@ -506,21 +506,21 @@ g_menu_proxy_group_start_ready (GObject      *source_object,
           g_variant_get (reply, "(a(uuaa{sv}))", &iter);
           while (g_variant_iter_loop (iter, "(uu@aa{sv})", &group_id, &menu_id, &items))
             if (group_id == group->id)
-              g_menu_proxy_group_changed (group, menu_id, 0, 0, items);
+              g_dbus_menu_group_changed (group, menu_id, 0, 0, items);
           g_variant_iter_free (iter);
         }
     }
   else
-    g_menu_proxy_group_go_offline (group);
+    g_dbus_menu_group_go_offline (group);
 
   if (reply)
     g_variant_unref (reply);
 
-  g_menu_proxy_group_unref (group);
+  g_dbus_menu_group_unref (group);
 }
 
 static void
-g_menu_proxy_group_activate (GMenuProxyGroup *group)
+g_dbus_menu_group_activate (GDBusMenuGroup *group)
 {
   if (group->active++ == 0)
     {
@@ -528,7 +528,7 @@ g_menu_proxy_group_activate (GMenuProxyGroup *group)
 
       if (group->state == GROUP_OFFLINE)
         {
-          g_menu_proxy_path_activate (group->path);
+          g_dbus_menu_path_activate (group->path);
 
           g_dbus_connection_call (group->path->id->connection,
                                   group->path->id->bus_name,
@@ -537,15 +537,15 @@ g_menu_proxy_group_activate (GMenuProxyGroup *group)
                                   g_variant_new_parsed ("([ %u ],)", group->id),
                                   G_VARIANT_TYPE ("(a(uuaa{sv}))"),
                                   G_DBUS_CALL_FLAGS_NONE, -1, NULL,
-                                  g_menu_proxy_group_start_ready,
-                                  g_menu_proxy_group_ref (group));
+                                  g_dbus_menu_group_start_ready,
+                                  g_dbus_menu_group_ref (group));
           group->state = GROUP_PENDING;
         }
     }
 }
 
 static void
-g_menu_proxy_group_deactivate (GMenuProxyGroup *group)
+g_dbus_menu_group_deactivate (GDBusMenuGroup *group)
 {
   if (--group->active == 0)
     {
@@ -558,21 +558,21 @@ g_menu_proxy_group_deactivate (GMenuProxyGroup *group)
            */
           g_hash_table_remove_all (group->menus);
 
-          g_menu_proxy_group_go_offline (group);
+          g_dbus_menu_group_go_offline (group);
         }
     }
 }
 
 static void
-g_menu_proxy_group_changed (GMenuProxyGroup *group,
-                            guint            menu_id,
-                            gint             position,
-                            gint             removed,
-                            GVariant        *added)
+g_dbus_menu_group_changed (GDBusMenuGroup *group,
+                           guint           menu_id,
+                           gint            position,
+                           gint            removed,
+                           GVariant       *added)
 {
   GSequenceIter *point;
   GVariantIter iter;
-  GMenuProxy *proxy;
+  GDBusMenuModel *proxy;
   GSequence *items;
   GVariant *item;
   gint n_added;
@@ -590,7 +590,7 @@ g_menu_proxy_group_changed (GMenuProxyGroup *group,
 
   if (items == NULL)
     {
-      items = g_sequence_new (g_menu_proxy_item_free);
+      items = g_sequence_new (g_dbus_menu_model_item_free);
       g_hash_table_insert (group->menus, GINT_TO_POINTER (menu_id), items);
     }
 
@@ -608,7 +608,7 @@ g_menu_proxy_group_changed (GMenuProxyGroup *group,
 
   n_added = g_variant_iter_init (&iter, added);
   while (g_variant_iter_loop (&iter, "@a{sv}", &item))
-    g_sequence_insert_before (point, g_menu_proxy_group_create_item (item));
+    g_sequence_insert_before (point, g_dbus_menu_group_create_item (item));
 
   if (g_sequence_get_length (items) == 0)
     {
@@ -617,21 +617,21 @@ g_menu_proxy_group_changed (GMenuProxyGroup *group,
     }
 
   if ((proxy = g_hash_table_lookup (group->proxies, GINT_TO_POINTER (menu_id))))
-    g_menu_proxy_changed (proxy, items, position, removed, n_added);
+    g_dbus_menu_model_changed (proxy, items, position, removed, n_added);
 }
 
-static GMenuProxyGroup *
-g_menu_proxy_group_get_from_path (GMenuProxyPath *path,
-                                  guint           group_id)
+static GDBusMenuGroup *
+g_dbus_menu_group_get_from_path (GDBusMenuPath *path,
+                                 guint          group_id)
 {
-  GMenuProxyGroup *group;
+  GDBusMenuGroup *group;
 
   group = g_hash_table_lookup (path->groups, GINT_TO_POINTER (group_id));
 
   if (group == NULL)
     {
-      group = g_slice_new (GMenuProxyGroup);
-      group->path = g_menu_proxy_path_ref (path);
+      group = g_slice_new (GDBusMenuGroup);
+      group->path = g_dbus_menu_path_ref (path);
       group->id = group_id;
       group->proxies = g_hash_table_new (NULL, NULL);
       group->menus = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_sequence_free);
@@ -642,55 +642,55 @@ g_menu_proxy_group_get_from_path (GMenuProxyPath *path,
       g_hash_table_insert (path->groups, GINT_TO_POINTER (group->id), group);
     }
 
-  return g_menu_proxy_group_ref (group);
+  return g_dbus_menu_group_ref (group);
 }
 
-static GMenuProxyGroup *
-g_menu_proxy_group_get (GDBusConnection *connection,
-                        const gchar     *bus_name,
-                        const gchar     *object_path,
-                        guint            group_id)
+static GDBusMenuGroup *
+g_dbus_menu_group_get (GDBusConnection *connection,
+                       const gchar     *bus_name,
+                       const gchar     *object_path,
+                       guint            group_id)
 {
-  GMenuProxyGroup *group;
-  GMenuProxyPath *path;
+  GDBusMenuGroup *group;
+  GDBusMenuPath *path;
 
-  path = g_menu_proxy_path_get (connection, bus_name, object_path);
-  group = g_menu_proxy_group_get_from_path (path, group_id);
-  g_menu_proxy_path_unref (path);
+  path = g_dbus_menu_path_get (connection, bus_name, object_path);
+  group = g_dbus_menu_group_get_from_path (path, group_id);
+  g_dbus_menu_path_unref (path);
 
   return group;
 }
 
-/* GMenuProxy {{{1 */
+/* GDBusMenuModel {{{1 */
 
-typedef GMenuModelClass GMenuProxyClass;
-struct _GMenuProxy
+typedef GMenuModelClass GDBusMenuModelClass;
+struct _GDBusMenuModel
 {
   GMenuModel parent;
 
-  GMenuProxyGroup *group;
+  GDBusMenuGroup *group;
   guint id;
 
   GSequence *items; /* unowned */
   gboolean active;
 };
 
-G_DEFINE_TYPE (GMenuProxy, g_menu_proxy, G_TYPE_MENU_MODEL)
+G_DEFINE_TYPE (GDBusMenuModel, g_dbus_menu_model, G_TYPE_MENU_MODEL)
 
 static gboolean
-g_menu_proxy_is_mutable (GMenuModel *model)
+g_dbus_menu_model_is_mutable (GMenuModel *model)
 {
   return TRUE;
 }
 
 static gint
-g_menu_proxy_get_n_items (GMenuModel *model)
+g_dbus_menu_model_get_n_items (GMenuModel *model)
 {
-  GMenuProxy *proxy = G_MENU_PROXY (model);
+  GDBusMenuModel *proxy = G_DBUS_MENU_MODEL (model);
 
   if (!proxy->active)
     {
-      g_menu_proxy_group_activate (proxy->group);
+      g_dbus_menu_group_activate (proxy->group);
       proxy->active = TRUE;
     }
 
@@ -698,12 +698,12 @@ g_menu_proxy_get_n_items (GMenuModel *model)
 }
 
 static void
-g_menu_proxy_get_item_attributes (GMenuModel  *model,
-                                  gint         item_index,
-                                  GHashTable **table)
+g_dbus_menu_model_get_item_attributes (GMenuModel  *model,
+                                       gint         item_index,
+                                       GHashTable **table)
 {
-  GMenuProxy *proxy = G_MENU_PROXY (model);
-  GMenuProxyItem *item;
+  GDBusMenuModel *proxy = G_DBUS_MENU_MODEL (model);
+  GDBusMenuModelItem *item;
   GSequenceIter *iter;
 
   g_return_if_fail (proxy->active);
@@ -719,12 +719,12 @@ g_menu_proxy_get_item_attributes (GMenuModel  *model,
 }
 
 static void
-g_menu_proxy_get_item_links (GMenuModel  *model,
-                             gint         item_index,
-                             GHashTable **table)
+g_dbus_menu_model_get_item_links (GMenuModel  *model,
+                                  gint         item_index,
+                                  GHashTable **table)
 {
-  GMenuProxy *proxy = G_MENU_PROXY (model);
-  GMenuProxyItem *item;
+  GDBusMenuModel *proxy = G_DBUS_MENU_MODEL (model);
+  GDBusMenuModelItem *item;
   GSequenceIter *iter;
 
   g_return_if_fail (proxy->active);
@@ -749,66 +749,66 @@ g_menu_proxy_get_item_links (GMenuModel  *model,
         if (g_variant_is_of_type (value, G_VARIANT_TYPE ("(uu)")))
           {
             guint group_id, menu_id;
-            GMenuProxyGroup *group;
-            GMenuProxy *link;
+            GDBusMenuGroup *group;
+            GDBusMenuModel *link;
 
             g_variant_get (value, "(uu)", &group_id, &menu_id);
 
             /* save the hash lookup in a relatively common case */
             if (proxy->group->id != group_id)
-              group = g_menu_proxy_group_get_from_path (proxy->group->path, group_id);
+              group = g_dbus_menu_group_get_from_path (proxy->group->path, group_id);
             else
-              group = g_menu_proxy_group_ref (proxy->group);
+              group = g_dbus_menu_group_ref (proxy->group);
 
-            link = g_menu_proxy_get_from_group (group, menu_id);
+            link = g_dbus_menu_model_get_from_group (group, menu_id);
 
             g_hash_table_insert (*table, g_strdup (key), link);
 
-            g_menu_proxy_group_unref (group);
+            g_dbus_menu_group_unref (group);
           }
       }
   }
 }
 
 static void
-g_menu_proxy_finalize (GObject *object)
+g_dbus_menu_model_finalize (GObject *object)
 {
-  GMenuProxy *proxy = G_MENU_PROXY (object);
+  GDBusMenuModel *proxy = G_DBUS_MENU_MODEL (object);
 
   if (proxy->active)
-    g_menu_proxy_group_deactivate (proxy->group);
+    g_dbus_menu_group_deactivate (proxy->group);
 
   g_hash_table_remove (proxy->group->proxies, GINT_TO_POINTER (proxy->id));
-  g_menu_proxy_group_unref (proxy->group);
+  g_dbus_menu_group_unref (proxy->group);
 
-  G_OBJECT_CLASS (g_menu_proxy_parent_class)
+  G_OBJECT_CLASS (g_dbus_menu_model_parent_class)
     ->finalize (object);
 }
 
 static void
-g_menu_proxy_init (GMenuProxy *proxy)
+g_dbus_menu_model_init (GDBusMenuModel *proxy)
 {
 }
 
 static void
-g_menu_proxy_class_init (GMenuProxyClass *class)
+g_dbus_menu_model_class_init (GDBusMenuModelClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  class->is_mutable = g_menu_proxy_is_mutable;
-  class->get_n_items = g_menu_proxy_get_n_items;
-  class->get_item_attributes = g_menu_proxy_get_item_attributes;
-  class->get_item_links = g_menu_proxy_get_item_links;
+  class->is_mutable = g_dbus_menu_model_is_mutable;
+  class->get_n_items = g_dbus_menu_model_get_n_items;
+  class->get_item_attributes = g_dbus_menu_model_get_item_attributes;
+  class->get_item_links = g_dbus_menu_model_get_item_links;
 
-  object_class->finalize = g_menu_proxy_finalize;
+  object_class->finalize = g_dbus_menu_model_finalize;
 }
 
 static void
-g_menu_proxy_changed (GMenuProxy *proxy,
-                      GSequence  *items,
-                      gint        position,
-                      gint        removed,
-                      gint        added)
+g_dbus_menu_model_changed (GDBusMenuModel *proxy,
+                           GSequence      *items,
+                           gint            position,
+                           gint            removed,
+                           gint            added)
 {
   proxy->items = items;
 
@@ -816,11 +816,11 @@ g_menu_proxy_changed (GMenuProxy *proxy,
     g_menu_model_items_changed (G_MENU_MODEL (proxy), position, removed, added);
 }
 
-static GMenuProxy *
-g_menu_proxy_get_from_group (GMenuProxyGroup *group,
-                             guint            menu_id)
+static GDBusMenuModel *
+g_dbus_menu_model_get_from_group (GDBusMenuGroup *group,
+                                  guint           menu_id)
 {
-  GMenuProxy *proxy;
+  GDBusMenuModel *proxy;
 
   proxy = g_hash_table_lookup (group->proxies, GINT_TO_POINTER (menu_id));
   if (proxy)
@@ -828,10 +828,10 @@ g_menu_proxy_get_from_group (GMenuProxyGroup *group,
 
   if (proxy == NULL)
     {
-      proxy = g_object_new (G_TYPE_MENU_PROXY, NULL);
+      proxy = g_object_new (G_TYPE_DBUS_MENU_MODEL, NULL);
       proxy->items = g_hash_table_lookup (group->menus, GINT_TO_POINTER (menu_id));
       g_hash_table_insert (group->proxies, GINT_TO_POINTER (menu_id), proxy);
-      proxy->group = g_menu_proxy_group_ref (group);
+      proxy->group = g_dbus_menu_group_ref (group);
       proxy->id = menu_id;
     }
 
@@ -839,27 +839,27 @@ g_menu_proxy_get_from_group (GMenuProxyGroup *group,
 }
 
 /**
- * g_menu_proxy_get:
+ * g_dbus_menu_model_get:
  * @connection: a #GDBusConnection
  * @bus_name: the bus name which exports the menu model
  * @object_path: the object path at which the menu model is exported
  *
- * Obtains a #GMenuProxy for the menu model which is exported
+ * Obtains a #GDBusMenuModel for the menu model which is exported
  * at the given @bus_name and @object_path.
  *
- * Returns: (transfer full): a #GMenuProxy object. Free with g_object_unref().
+ * Returns: (transfer full): a #GDBusMenuModel object. Free with g_object_unref().
  */
-GMenuProxy *
-g_menu_proxy_get (GDBusConnection *connection,
-                  const gchar     *bus_name,
-                  const gchar     *object_path)
+GDBusMenuModel *
+g_dbus_menu_model_get (GDBusConnection *connection,
+                       const gchar     *bus_name,
+                       const gchar     *object_path)
 {
-  GMenuProxyGroup *group;
-  GMenuProxy *proxy;
+  GDBusMenuGroup *group;
+  GDBusMenuModel *proxy;
 
-  group = g_menu_proxy_group_get (connection, bus_name, object_path, 0);
-  proxy = g_menu_proxy_get_from_group (group, 0);
-  g_menu_proxy_group_unref (group);
+  group = g_dbus_menu_group_get (connection, bus_name, object_path, 0);
+  proxy = g_dbus_menu_model_get_from_group (group, 0);
+  g_dbus_menu_group_unref (group);
 
   return proxy;
 }
@@ -868,7 +868,7 @@ g_menu_proxy_get (GDBusConnection *connection,
 static void
 dump_proxy (gpointer key, gpointer value, gpointer data)
 {
-  GMenuProxy *proxy = value;
+  GDBusMenuModel *proxy = value;
 
   g_print ("    menu %d refcount %d active %d\n",
            proxy->id, G_OBJECT (proxy)->ref_count, proxy->active);
@@ -877,7 +877,7 @@ dump_proxy (gpointer key, gpointer value, gpointer data)
 static void
 dump_group (gpointer key, gpointer value, gpointer data)
 {
-  GMenuProxyGroup *group = value;
+  GDBusMenuGroup *group = value;
 
   g_print ("  group %d refcount %d state %d active %d\n",
            group->id, group->ref_count, group->state, group->active);
@@ -889,16 +889,16 @@ static void
 dump_path (gpointer key, gpointer value, gpointer data)
 {
   PathIdentifier *pid = key;
-  GMenuProxyPath *path = value;
+  GDBusMenuPath *path = value;
 
   g_print ("%s active %d\n", pid->object_path, path->active);
   g_hash_table_foreach (path->groups, dump_group, NULL);
 }
 
 void
-g_menu_proxy_dump (void)
+g_dbus_menu_model_dump (void)
 {
-  g_hash_table_foreach (g_menu_proxy_paths, dump_path, NULL);
+  g_hash_table_foreach (g_dbus_menu_paths, dump_path, NULL);
 }
 
 #endif

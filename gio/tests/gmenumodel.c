@@ -554,7 +554,7 @@ struct roundtrip_state
 {
   RandomMenu *random;
   MirrorMenu *proxy_mirror;
-  GMenuProxy *proxy;
+  GDBusMenuModel *proxy;
   GMainLoop *loop;
   GRand *rand;
   gint success;
@@ -602,7 +602,7 @@ test_dbus_roundtrip (void)
 
   state.random = random_menu_new (state.rand, 2);
   export_id = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (state.random), NULL);
-  state.proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  state.proxy = g_dbus_menu_model_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   state.proxy_mirror = mirror_menu_new (G_MENU_MODEL (state.proxy));
   state.count = 0;
   state.success = 0;
@@ -649,7 +649,7 @@ test_dbus_subscriptions (void)
 {
   GDBusConnection *bus;
   GMenu *menu;
-  GMenuProxy *proxy;
+  GDBusMenuModel *proxy;
   GMainLoop *loop;
   GError *error = NULL;
   guint export_id;
@@ -663,7 +663,7 @@ test_dbus_subscriptions (void)
   export_id = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (menu), &error);
   g_assert_no_error (error);
 
-  proxy = g_menu_proxy_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  proxy = g_dbus_menu_model_get (bus, g_dbus_connection_get_unique_name (bus), "/");
   items_changed_count = 0;
   g_signal_connect (proxy, "items-changed",
                     G_CALLBACK (items_changed), NULL);

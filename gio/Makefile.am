@@ -135,7 +135,7 @@ application_headers = \
 	gapplicationcommandline.h	\
 	gapplication.h			\
 	gmenumodel.h			\
-	gmenuproxy.h			\
+	gdbusmenumodel.h		\
 	gmenu.h				\
 	gmenumarkup.h			\
 	gmenuexporter.h			\
@@ -154,7 +154,7 @@ application_sources = \
 	gapplicationimpl-dbus.c			\
 	gapplication.c				\
 	gmenumodel.c				\
-	gmenuproxy.c				\
+	gdbusmenumodel.c			\
 	gmenu.c					\
 	gmenumarkup.c				\
 	gmenuexporter.c				\

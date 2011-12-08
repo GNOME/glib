@@ -19,26 +19,27 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
-#ifndef __G_MENU_PROXY_H__
-#define __G_MENU_PROXY_H__
+#ifndef __G_DBUS_MENU_MODEL_H__
+#define __G_DBUS_MENU_MODEL_H__
 
 #include <gio/gdbusconnection.h>
 
 G_BEGIN_DECLS
 
-#define G_TYPE_MENU_PROXY     (g_menu_proxy_get_type ())
-#define G_MENU_PROXY(inst)    (G_TYPE_CHECK_INSTANCE_CAST ((inst), \
-                               G_TYPE_MENU_PROXY, GMenuProxy))
-#define G_IS_MENU_PROXY(inst) (G_TYPE_CHECK_INSTANCE_TYPE ((inst), \
-                               G_TYPE_MENU_PROXY))
+#define G_TYPE_DBUS_MENU_MODEL          (g_dbus_menu_model_get_type ())
+#define G_DBUS_MENU_MODEL(inst)         (G_TYPE_CHECK_INSTANCE_CAST ((inst),   \
+                                         G_TYPE_DBUS_MENU_MODEL, GDBusMenuModel))
+#define G_IS_DBUS_MENU_MODEL(inst)      (G_TYPE_CHECK_INSTANCE_TYPE ((inst),   \
+                                         G_TYPE_DBUS_MENU_MODEL))
 
-typedef struct _GMenuProxy GMenuProxy;
+typedef struct _GDBusMenuModel GDBusMenuModel;
 
-GType        g_menu_proxy_get_type (void) G_GNUC_CONST;
-GMenuProxy * g_menu_proxy_get      (GDBusConnection *connection,
-                                    const gchar     *bus_name,
-                                    const gchar     *object_path);
+GType                   g_dbus_menu_model_get_type     (void) G_GNUC_CONST;
+
+GDBusMenuModel *        g_dbus_menu_model_get          (GDBusConnection *connection,
+                                                        const gchar     *bus_name,
+                                                        const gchar     *object_path);
 
 G_END_DECLS
 
-#endif /* __G_MENU_PROXY_H__ */
+#endif /* __G_DBUS_MENU_MODEL_H__ */
