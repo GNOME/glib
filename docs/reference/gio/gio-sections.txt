@@ -3571,17 +3571,17 @@ g_dbus_connection_unexport_menu_model
 </SECTION>
 
 <SECTION>
-<FILE>gmenuproxy</FILE>
-GMenuProxy
-g_menu_proxy_get
+<FILE>gdbusmenumodel</FILE>
+GDBusMenuModel
+g_dbus_menu_model_get
 
 <SUBSECTION Standard>
-G_TYPE_MENU_PROXY
-G_MENU_PROXY
-G_IS_MENU_PROXY
+G_TYPE_DBUS_MENU_MODEL
+G_DBUS_MENU_MODEL
+G_IS_BDUS_MENU_MODEL
 
 <SUBSECTION Private>
-g_menu_proxy_get_type
+g_dbus_menu_model_get_type
 </SECTION>
 
 <SECTION>

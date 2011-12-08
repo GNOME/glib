@@ -37,7 +37,7 @@
  *
  * #GDBusActionGroup is an implementation of the #GActionGroup
  * interface that can be used as a proxy for an action group
- * that is exported over D-Bus with g_action_group_dbus_export_start().
+ * that is exported over D-Bus with g_dbus_connection_export_action_group().
  */
 
 struct _GDBusActionGroup

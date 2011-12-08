@@ -18,6 +18,7 @@ g_converter_output_stream_get_type
 g_data_input_stream_get_type
 g_data_output_stream_get_type
 g_dbus_action_group_get_type
+g_dbus_menu_model_get_type
 g_desktop_app_info_get_type
 g_drive_get_type
 g_emblem_get_type
@@ -51,7 +52,6 @@ g_menu_attribute_iter_get_type
 g_menu_get_type
 g_menu_link_iter_get_type
 g_menu_model_get_type
-g_menu_proxy_get_type
 g_mount_get_type
 g_mount_operation_get_type
 g_native_volume_monitor_get_type
