@@ -2693,7 +2693,7 @@ class CodeGenerator:
                     ' * %sobject_peek_%s: (skip)\n'
                     ' * @object: A #%sObject.\n'
                     ' *\n'
-                    ' * Like %sobject_get_%s() but doesn\' increase the reference count on the returned object.\n'
+                    ' * Like %sobject_get_%s() but doesn\'t increase the reference count on the returned object.\n'
                     ' *\n'
                     ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
                     ' *\n'
