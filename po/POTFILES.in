@@ -68,6 +68,7 @@ gio/glocalfileoutputstream.c
 gio/glocalvfs.c
 gio/gmemoryinputstream.c
 gio/gmemoryoutputstream.c
+gio/gmenumarkup.c
 gio/gmount.c
 gio/gmountoperation.c
 gio/gnativevolumemonitor.c
