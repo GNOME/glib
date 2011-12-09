@@ -749,7 +749,7 @@ g_application_class_init (GApplicationClass *class)
    * after registration. See g_application_register().
    */
   g_application_signals[SIGNAL_STARTUP] =
-    g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GApplicationClass, startup),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
