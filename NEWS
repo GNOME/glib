@@ -1,6 +1,10 @@
 Overview of changes from GLib 2.31.2 to 2.31.4
 ==============================================
 
+* Menu support has been added to GApplication. Menus
+  are exported on the bus, alongside the actions that are
+  already there.
+
 * Clean up Requires in pc files. Linking against GIO no
   longer drags in gmodule. This may require dependency
   fixes here and there.
