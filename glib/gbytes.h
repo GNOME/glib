@@ -45,7 +45,8 @@ GBytes *        g_bytes_new_from_bytes          (GBytes         *bytes,
                                                  gsize           offset,
                                                  gsize           length);
 
-gconstpointer   g_bytes_get_data                (GBytes         *bytes);
+gconstpointer   g_bytes_get_data                (GBytes         *bytes,
+                                                 gsize          *size);
 
 gsize           g_bytes_get_size                (GBytes         *bytes);
 

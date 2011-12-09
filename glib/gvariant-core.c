@@ -448,7 +448,7 @@ g_variant_ensure_serialised (GVariant *value)
       g_variant_release_children (value);
 
       bytes = g_bytes_new_take (data, value->size);
-      value->contents.serialised.data = g_bytes_get_data (bytes);
+      value->contents.serialised.data = g_bytes_get_data (bytes, NULL);
       value->contents.serialised.bytes = bytes;
       value->state |= STATE_SERIALISED;
     }
@@ -529,8 +529,7 @@ g_variant_new_from_bytes (const GVariantType *type,
     }
   else
     {
-      value->contents.serialised.data = g_bytes_get_data (bytes);
-      value->size = g_bytes_get_size (bytes);
+      value->contents.serialised.data = g_bytes_get_data (bytes, &value->size);
     }
 
   return value;

@@ -25,13 +25,15 @@ test_new (void)
 {
   const gchar *data;
   GBytes *bytes;
+  gsize size;
 
   data = "test";
   bytes = g_bytes_new (data, 4);
   g_assert (bytes != NULL);
-  g_assert (g_bytes_get_data (bytes) != data);
+  g_assert (g_bytes_get_data (bytes, &size) != data);
+  g_assert_cmpuint (size, ==, 4);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, 4);
-  g_assert (memcmp (data, g_bytes_get_data (bytes), g_bytes_get_size (bytes)) == 0);
+  g_assert (memcmp (data, g_bytes_get_data (bytes, NULL), g_bytes_get_size (bytes)) == 0);
 
   g_bytes_unref (bytes);
 }
@@ -41,11 +43,13 @@ test_new_take (void)
 {
   gchar *data;
   GBytes *bytes;
+  gsize size;
 
   data = g_strdup ("test");
   bytes = g_bytes_new_take (data, 4);
   g_assert (bytes != NULL);
-  g_assert (g_bytes_get_data (bytes) == data);
+  g_assert (g_bytes_get_data (bytes, &size) == data);
+  g_assert_cmpuint (size, ==, 4);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, 4);
 
   g_bytes_unref (bytes);
@@ -56,11 +60,13 @@ test_new_static (void)
 {
   const gchar *data;
   GBytes *bytes;
+  gsize size;
 
   data = "test";
   bytes = g_bytes_new_static (data, 4);
   g_assert (bytes != NULL);
-  g_assert (g_bytes_get_data (bytes) == data);
+  g_assert (g_bytes_get_data (bytes, &size) == data);
+  g_assert_cmpuint (size, ==, 4);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, 4);
 
   g_bytes_unref (bytes);
@@ -77,11 +83,11 @@ test_new_from_bytes (void)
   sub = g_bytes_new_from_bytes (bytes, 10, 4);
 
   g_assert (sub != NULL);
-  g_assert (g_bytes_get_data (sub) == ((gchar *)g_bytes_get_data (bytes)) + 10);
+  g_assert (g_bytes_get_data (sub, NULL) == ((gchar *)g_bytes_get_data (bytes, NULL)) + 10);
   g_assert (g_bytes_get_size (sub) == 4);
   g_bytes_unref (bytes);
 
-  g_assert (memcmp (g_bytes_get_data (sub), "wave", 4) == 0);
+  g_assert (memcmp (g_bytes_get_data (sub, NULL), "wave", 4) == 0);
   g_bytes_unref (sub);
 }
 
@@ -99,12 +105,14 @@ test_new_with_free_func (void)
   GBytes *bytes;
   gchar *data;
   gint count = 0;
+  gsize size;
 
   data = "test";
   bytes = g_bytes_new_with_free_func (data, 4, on_destroy_increment, &count);
   g_assert (bytes != NULL);
   g_assert_cmpint (count, ==, 0);
-  g_assert (g_bytes_get_data (bytes) == data);
+  g_assert (g_bytes_get_data (bytes, &size) == data);
+  g_assert_cmpuint (size, ==, 4);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, 4);
 
   g_bytes_unref (bytes);
@@ -201,7 +209,7 @@ test_to_data_transferred (void)
 
   /* Memory transferred: one reference, and allocated with g_malloc */
   bytes = g_bytes_new (NYAN, N_NYAN);
-  memory = g_bytes_get_data (bytes);
+  memory = g_bytes_get_data (bytes, NULL);
   data = g_bytes_unref_to_data (bytes, &size);
   g_assert (data == memory);
   g_assert_cmpuint (size, ==, N_NYAN);
@@ -220,13 +228,14 @@ test_to_data_two_refs (void)
   /* Memory copied: two references */
   bytes = g_bytes_new (NYAN, N_NYAN);
   bytes = g_bytes_ref (bytes);
-  memory = g_bytes_get_data (bytes);
+  memory = g_bytes_get_data (bytes, NULL);
   data = g_bytes_unref_to_data (bytes, &size);
   g_assert (data != memory);
   g_assert_cmpuint (size, ==, N_NYAN);
   g_assert (memcmp (data, NYAN, N_NYAN) == 0);
   g_free (data);
-  g_assert (g_bytes_get_data (bytes) == memory);
+  g_assert (g_bytes_get_data (bytes, &size) == memory);
+  g_assert_cmpuint (size, ==, N_NYAN);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, N_NYAN);
   g_bytes_unref (bytes);
 }
@@ -240,7 +249,7 @@ test_to_data_non_malloc (void)
 
   /* Memory copied: non malloc memory */
   bytes = g_bytes_new_static (NYAN, N_NYAN);
-  g_assert (g_bytes_get_data (bytes) == NYAN);
+  g_assert (g_bytes_get_data (bytes, NULL) == NYAN);
   data = g_bytes_unref_to_data (bytes, &size);
   g_assert (data != (gpointer)NYAN);
   g_assert_cmpuint (size, ==, N_NYAN);
@@ -257,7 +266,7 @@ test_to_array_transferred (void)
 
   /* Memory transferred: one reference, and allocated with g_malloc */
   bytes = g_bytes_new (NYAN, N_NYAN);
-  memory = g_bytes_get_data (bytes);
+  memory = g_bytes_get_data (bytes, NULL);
   array = g_bytes_unref_to_array (bytes);
   g_assert (array != NULL);
   g_assert (array->data == memory);
@@ -272,18 +281,20 @@ test_to_array_two_refs (void)
   gconstpointer memory;
   GByteArray *array;
   GBytes *bytes;
+  gsize size;
 
   /* Memory copied: two references */
   bytes = g_bytes_new (NYAN, N_NYAN);
   bytes = g_bytes_ref (bytes);
-  memory = g_bytes_get_data (bytes);
+  memory = g_bytes_get_data (bytes, NULL);
   array = g_bytes_unref_to_array (bytes);
   g_assert (array != NULL);
   g_assert (array->data != memory);
   g_assert_cmpuint (array->len, ==, N_NYAN);
   g_assert (memcmp (array->data, NYAN, N_NYAN) == 0);
   g_byte_array_unref (array);
-  g_assert (g_bytes_get_data (bytes) == memory);
+  g_assert (g_bytes_get_data (bytes, &size) == memory);
+  g_assert_cmpuint (size, ==, N_NYAN);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, N_NYAN);
   g_bytes_unref (bytes);
 }
@@ -296,7 +307,7 @@ test_to_array_non_malloc (void)
 
   /* Memory copied: non malloc memory */
   bytes = g_bytes_new_static (NYAN, N_NYAN);
-  g_assert (g_bytes_get_data (bytes) == NYAN);
+  g_assert (g_bytes_get_data (bytes, NULL) == NYAN);
   array = g_bytes_unref_to_array (bytes);
   g_assert (array != NULL);
   g_assert (array->data != (gpointer)NYAN);

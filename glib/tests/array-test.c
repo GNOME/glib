@@ -781,6 +781,7 @@ byte_array_free_to_bytes (void)
   GByteArray *gbarray;
   gpointer memory;
   GBytes *bytes;
+  gsize size;
 
   gbarray = g_byte_array_new ();
   g_byte_array_append (gbarray, (guint8 *)"woooweeewow", 11);
@@ -789,7 +790,8 @@ byte_array_free_to_bytes (void)
   bytes = g_byte_array_free_to_bytes (gbarray);
   g_assert (bytes != NULL);
   g_assert_cmpuint (g_bytes_get_size (bytes), ==, 11);
-  g_assert (g_bytes_get_data (bytes) == memory);
+  g_assert (g_bytes_get_data (bytes, &size) == memory);
+  g_assert_cmpuint (size, ==, 11);
 
   g_bytes_unref (bytes);
 }

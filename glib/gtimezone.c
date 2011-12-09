@@ -395,8 +395,8 @@ g_time_zone_new (const gchar *identifier)
 
       if (tz->zoneinfo != NULL)
         {
-          const struct tzhead *header = g_bytes_get_data (tz->zoneinfo);
-          gsize size = g_bytes_get_size (tz->zoneinfo);
+          gsize size;
+          const struct tzhead *header = g_bytes_get_data (tz->zoneinfo, &size);
 
           /* we only bother to support version 2 */
           if (size < sizeof (struct tzhead) || memcmp (header, "TZif2", 5))

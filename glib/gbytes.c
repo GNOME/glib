@@ -212,19 +212,23 @@ g_bytes_new_from_bytes (GBytes  *bytes,
 /**
  * g_bytes_get_data:
  * @bytes: a #GBytes
+ * @size: (out) (allow-none): location to return size of byte data
  *
  * Get the byte data in the #GBytes. This data should not be modified.
  *
  * This function will always return the same pointer for a given #GBytes.
  *
- * Returns: a pointer to the byte data
+ * Returns: (array length=size) (type guint8): a pointer to the byte data
  *
  * Since: 2.32
  */
 gconstpointer
-g_bytes_get_data (GBytes *bytes)
+g_bytes_get_data (GBytes *bytes,
+                  gsize *size)
 {
   g_return_val_if_fail (bytes != NULL, NULL);
+  if (size)
+    *size = bytes->size;
   return bytes->data;
 }
 
