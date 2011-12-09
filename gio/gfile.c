@@ -5895,7 +5895,7 @@ g_file_new_for_uri (const char *uri)
 
 /**
  * g_file_new_tmp:
- * @template: (type filename) (allow-none): Template for the file
+ * @tmpl: (type filename) (allow-none): Template for the file
  *   name, as in g_file_open_tmp(), or %NULL for a default template.
  * @iostream: (out): on return, a #GFileIOStream for the created file.
  * @error: a #GError, or %NULL
@@ -5915,7 +5915,7 @@ g_file_new_for_uri (const char *uri)
  *   Free the returned object with g_object_unref().
  **/
 GFile *
-g_file_new_tmp (const char     *template,
+g_file_new_tmp (const char     *tmpl,
                 GFileIOStream **iostream,
                 GError        **error)
 {
@@ -5924,10 +5924,10 @@ g_file_new_tmp (const char     *template,
   GFile *file;
   GFileOutputStream *output;
 
-  g_return_val_if_fail (template != NULL, NULL);
+  g_return_val_if_fail (tmpl != NULL, NULL);
   g_return_val_if_fail (iostream != NULL, NULL);
 
-  fd = g_file_open_tmp (template, &path, error);
+  fd = g_file_open_tmp (tmpl, &path, error);
   if (fd == -1)
     return NULL;
 
