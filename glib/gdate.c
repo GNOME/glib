@@ -149,6 +149,7 @@
 
 /**
  * GTime:
+ *
  * Simply a replacement for <type>time_t</type>. It has been deprecated
  * since it is <emphasis>not</emphasis> equivalent to <type>time_t</type>
  * on 64-bit platforms with a 64-bit <type>time_t</type>.
@@ -300,7 +301,7 @@ g_date_new_dmy (GDateDay   day,
 
 /**
  * g_date_new_julian:
- * julian_day: days since January 1, Year 1
+ * @julian_day: days since January 1, Year 1
  *
  * Like g_date_new(), but also sets the value of the date. Assuming the
  * Julian day number you pass in is valid (greater than 0, less than an
@@ -309,17 +310,17 @@ g_date_new_dmy (GDateDay   day,
  * Returns: a newly-allocated #GDate initialized with @julian_day
  */
 GDate*
-g_date_new_julian (guint32 j)
+g_date_new_julian (guint32 julian_day)
 {
   GDate *d;
-  g_return_val_if_fail (g_date_valid_julian (j), NULL);
+  g_return_val_if_fail (g_date_valid_julian (julian_day), NULL);
   
   d = g_new (GDate, 1);
   
   d->julian = TRUE;
   d->dmy    = FALSE;
   
-  d->julian_days = j;
+  d->julian_days = julian_day;
   
   g_assert (g_date_valid (d));
   
@@ -328,15 +329,16 @@ g_date_new_julian (guint32 j)
 
 /**
  * g_date_free:
+ * @date: a #GDate to free
  *
  * Frees a #GDate returned from g_date_new().
  */
 void
-g_date_free (GDate *d)
+g_date_free (GDate *date)
 {
-  g_return_if_fail (d != NULL);
+  g_return_if_fail (date != NULL);
   
-  g_free (d);
+  g_free (date);
 }
 
 /**
@@ -1847,6 +1849,8 @@ g_date_get_monday_weeks_in_year (GDateYear year)
  * year. This function is basically telling you how many
  * Sundays are in the year, i.e. there are 53 Sundays if
  * one of the extra days happens to be a Sunday.)
+ *
+ * Returns: the number of weeks in @year
  */
 guint8       
 g_date_get_sunday_weeks_in_year (GDateYear year)
