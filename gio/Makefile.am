@@ -125,39 +125,43 @@ settings_sources += \
 endif
 
 application_headers = \
+	gapplication.h			\
+	gapplicationcommandline.h	\
+					\
 	gactiongroup.h			\
 	gactionmap.h			\
 	gsimpleactiongroup.h		\
+	gactiongroupexporter.h		\
+	gdbusactiongroup.h		\
 	gaction.h			\
 	gsimpleaction.h			\
-	gdbusactiongroup.h		\
-	gactiongroupexporter.h		\
-	gapplicationcommandline.h	\
-	gapplication.h			\
+					\
 	gmenumodel.h			\
-	gdbusmenumodel.h		\
-	gmenu.h				\
 	gmenumarkup.h			\
+	gmenu.h				\
 	gmenuexporter.h			\
+	gdbusmenumodel.h		\
 	$(NULL)
 
 application_sources = \
+	gapplication.c				\
+	gapplicationcommandline.c		\
+	gapplicationimpl-dbus.c			\
+	gapplicationimpl.h			\
+						\
 	gactiongroup.c				\
 	gactionmap.c				\
 	gsimpleactiongroup.c			\
+	gactiongroupexporter.c			\
+	gdbusactiongroup.c			\
 	gaction.c				\
 	gsimpleaction.c				\
-	gdbusactiongroup.c			\
-	gactiongroupexporter.c			\
-	gapplicationcommandline.c		\
-	gapplicationimpl.h			\
-	gapplicationimpl-dbus.c			\
-	gapplication.c				\
+						\
 	gmenumodel.c				\
-	gdbusmenumodel.c			\
-	gmenu.c					\
 	gmenumarkup.c				\
+	gmenu.c					\
 	gmenuexporter.c				\
+	gdbusmenumodel.c			\
 	$(NULL)
 
 local_sources = \

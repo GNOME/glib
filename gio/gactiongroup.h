@@ -41,26 +41,6 @@ G_BEGIN_DECLS
 
 typedef struct _GActionGroupInterface                       GActionGroupInterface;
 
-/**
- * GActionGroupInterface:
- * @has_action: the virtual function pointer for g_action_group_has_action()
- * @list_actions: the virtual function pointer for g_action_group_list_actions()
- * @get_action_parameter_type: the virtual function pointer for g_action_group_get_action_parameter_type()
- * @get_action_state_type: the virtual function pointer for g_action_group_get_action_state_type()
- * @get_action_state_hint: the virtual function pointer for g_action_group_get_action_state_hint()
- * @get_action_enabled: the virtual function pointer for g_action_group_get_action_enabled()
- * @get_action_state: the virtual function pointer for g_action_group_get_action_state()
- * @set_action_state: the virtual function pointer for g_action_group_set_action_state()
- * @activate_action: the virtual function pointer for g_action_group_activate_action()
- * @action_added: the class closure for the #GActionGroup::action-added signal
- * @action_removed: the class closure for the #GActionGroup::action-removed signal
- * @action_enabled_changed: the class closure for the #GActionGroup::action-enabled-changed signal
- * @action_state_changed: the class closure for the #GActionGroup::action-enabled-changed signal
- *
- * The virtual function table for #GActionGroup.
- *
- * Since: 2.28
- */
 struct _GActionGroupInterface
 {
   GTypeInterface g_iface;

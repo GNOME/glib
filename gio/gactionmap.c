@@ -40,7 +40,20 @@
  * prefixed names (e.g. by prepending "app." or "win.").
  * This is the motivation for the 'Map' part of the interface
  * name.
- */
+ *
+ * Since: 2.32
+ **/
+
+/**
+ * GActionMapInterface:
+ * @lookup_action: the virtual function pointer for g_action_map_lookup_action()
+ * @add_action: the virtual function pointer for g_action_map_add_action()
+ * @remove_action: the virtual function pointer for g_action_map_remove_action()
+ *
+ * The virtual function table for #GActionMap.
+ *
+ * Since: 2.32
+ **/
 
 G_DEFINE_INTERFACE (GActionMap, g_action_map, G_TYPE_ACTION_GROUP)
 

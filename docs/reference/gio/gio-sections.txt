@@ -2879,6 +2879,7 @@ g_application_command_line_get_type
 <FILE>gactiongroup</FILE>
 <TITLE>GActionGroup</TITLE>
 GActionGroup
+GActionGroupInterface
 
 <SUBSECTION>
 g_action_group_list_actions
@@ -2937,7 +2938,7 @@ g_dbus_action_group_get_type
 <FILE>gaction</FILE>
 <TITLE>GAction</TITLE>
 GAction
-
+GActionInterface
 
 <SUBSECTION>
 g_action_get_name
@@ -3013,6 +3014,7 @@ G_SIMPLE_ACTION_GROUP
 <FILE>gactionmap</FILE>
 <TITLE>GActionMap</TITLE>
 GActionMap
+GActionMapInterface
 g_action_map_lookup_action
 GActionEntry
 g_action_map_add_action_entries

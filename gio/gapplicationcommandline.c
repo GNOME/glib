@@ -119,6 +119,14 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * </example>
  **/
 
+/**
+ * GApplicationCommandLineClass:
+ *
+ * The <structname>GApplicationCommandLineClass</structname> structure
+ * contains private data only
+ *
+ * Since: 2.28
+ **/
 enum
 {
   PROP_NONE,

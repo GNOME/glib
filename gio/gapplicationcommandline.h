@@ -49,14 +49,6 @@ G_BEGIN_DECLS
 typedef struct _GApplicationCommandLinePrivate               GApplicationCommandLinePrivate;
 typedef struct _GApplicationCommandLineClass                 GApplicationCommandLineClass;
 
-/**
- * GApplicationCommandLine:
- *
- * The <structname>GApplicationCommandLine</structname> structure contains private
- * data and should only be accessed using the provided API
- *
- * Since: 2.28
- */
 struct _GApplicationCommandLine
 {
   /*< private >*/
@@ -65,14 +57,6 @@ struct _GApplicationCommandLine
   GApplicationCommandLinePrivate *priv;
 };
 
-/**
- * GApplicationCommandLineClass:
- *
- * The <structname>GApplicationCommandLineClass</structname> structure contains
- * private data only
- *
- * Since: 2.28
- */
 struct _GApplicationCommandLineClass
 {
   /*< private >*/

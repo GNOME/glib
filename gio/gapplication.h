@@ -46,9 +46,6 @@ typedef struct _GApplicationClass                           GApplicationClass;
 /**
  * GApplication:
  *
- * The <structname>GApplication</structname> structure contains private
- * data and should only be accessed using the provided API
- *
  * Since: 2.28
  */
 struct _GApplication
@@ -59,38 +56,6 @@ struct _GApplication
   GApplicationPrivate *priv;
 };
 
-/**
- * GApplicationClass:
- * @startup: invoked on the primary instance immediately after registration
- * @shutdown: invoked only on the registered primary instance immediately
- *      after the main loop terminates
- * @activate: invoked on the primary instance when an activation occurs
- * @open: invoked on the primary instance when there are files to open
- * @command_line: invoked on the primary instance when a command-line is
- *   not handled locally
- * @local_command_line: invoked (locally) when the process has been invoked
- *     via commandline execution (as opposed to, say, D-Bus activation - which
- *     is not currently supported by GApplication). The virtual function has
- *     the chance to inspect (and possibly replace) the list of command line
- *     arguments. See g_application_run() for more information.
- * @before_emit: invoked on the primary instance before 'activate', 'open',
- *     'command-line' or any action invocation, gets the 'platform data' from
- *     the calling instance
- * @after_emit: invoked on the primary instance after 'activate', 'open',
- *     'command-line' or any action invocation, gets the 'platform data' from
- *     the calling instance
- * @add_platform_data: invoked (locally) to add 'platform data' to be sent to
- *     the primary instance when activating, opening or invoking actions
- * @quit_mainloop: Used to be invoked on the primary instance when the use
- *     count of the application drops to zero (and after any inactivity
- *     timeout, if requested). Not used anymore since 2.32
- * @run_mainloop: Used to be invoked on the primary instance from
- *     g_application_run() if the use-count is non-zero. Since 2.32,
- *     GApplication is iterating the main context directly and is not
- *     using @run_mainloop anymore
- *
- * Since: 2.28
- */
 struct _GApplicationClass
 {
   /*< private >*/
