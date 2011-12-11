@@ -5913,7 +5913,9 @@ g_file_new_for_uri (const char *uri)
  *
  * Returns: (transfer full): a new #GFile.
  *   Free the returned object with g_object_unref().
- **/
+ *
+ * Since: 2.32
+ */
 GFile *
 g_file_new_tmp (const char     *tmpl,
                 GFileIOStream **iostream,
