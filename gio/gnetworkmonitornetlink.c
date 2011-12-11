@@ -41,15 +41,15 @@ static void g_network_monitor_netlink_initable_iface_init (GInitableIface *iface
 
 #define g_network_monitor_netlink_get_type _g_network_monitor_netlink_get_type
 G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorNetlink, g_network_monitor_netlink, G_TYPE_NETWORK_MONITOR_BASE,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
-						g_network_monitor_netlink_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_network_monitor_netlink_initable_iface_init)
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "netlink",
-							 20))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
+                                                g_network_monitor_netlink_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_network_monitor_netlink_initable_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "netlink",
+                                                         20))
 
 struct _GNetworkMonitorNetlinkPrivate
 {
@@ -60,24 +60,24 @@ struct _GNetworkMonitorNetlinkPrivate
 };
 
 static gboolean read_netlink_messages (GSocket             *socket,
-				       GIOCondition         condition,
-				       gpointer             user_data);
+                                       GIOCondition         condition,
+                                       gpointer             user_data);
 static gboolean request_dump (GNetworkMonitorNetlink  *nl,
-			      GError                 **error);
+                              GError                 **error);
 
 static void
 g_network_monitor_netlink_init (GNetworkMonitorNetlink *nl)
 {
   nl->priv = G_TYPE_INSTANCE_GET_PRIVATE (nl,
-					  G_TYPE_NETWORK_MONITOR_NETLINK,
-					  GNetworkMonitorNetlinkPrivate);
+                                          G_TYPE_NETWORK_MONITOR_NETLINK,
+                                          GNetworkMonitorNetlinkPrivate);
 }
 
 
 static gboolean
 g_network_monitor_netlink_initable_init (GInitable     *initable,
-					 GCancellable  *cancellable,
-					 GError       **error)
+                                         GCancellable  *cancellable,
+                                         GError       **error)
 {
   GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (initable);
   gint sockfd, val;
@@ -91,8 +91,8 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not create network monitor: %s"),
-		   g_strerror (errno));
+                   _("Could not create network monitor: %s"),
+                   g_strerror (errno));
       return FALSE;
     }
 
@@ -103,8 +103,8 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not create network monitor: %s"),
-		   g_strerror (errno));
+                   _("Could not create network monitor: %s"),
+                   g_strerror (errno));
       close (sockfd);
       return FALSE;
     }
@@ -114,8 +114,8 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     {
       int errsv = errno;
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-		   _("Could not create network monitor: %s"),
-		   g_strerror (errno));
+                   _("Could not create network monitor: %s"),
+                   g_strerror (errno));
       close (sockfd);
       return FALSE;
     }
@@ -138,22 +138,22 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
   while (nl->priv->dump_networks)
     {
       if (!read_netlink_messages (NULL, G_IO_IN, nl))
-	break;
+        break;
     }
 
   g_socket_set_blocking (nl->priv->sock, FALSE);
   nl->priv->source = g_socket_create_source (nl->priv->sock, G_IO_IN, NULL);
   g_source_set_callback (nl->priv->source,
-			 (GSourceFunc) read_netlink_messages, nl, NULL);
+                         (GSourceFunc) read_netlink_messages, nl, NULL);
   g_source_attach (nl->priv->source,
-		   g_main_context_get_thread_default ());
+                   g_main_context_get_thread_default ());
 
   return TRUE;
 }
 
 static gboolean
 request_dump (GNetworkMonitorNetlink  *nl,
-	      GError                 **error)
+              GError                 **error)
 {
   struct nlmsghdr *n;
   struct rtgenmsg *gen;
@@ -169,7 +169,7 @@ request_dump (GNetworkMonitorNetlink  *nl,
   gen->rtgen_family = AF_UNSPEC;
 
   if (g_socket_send (nl->priv->sock, buf, sizeof (buf),
-		     NULL, error) < 0)
+                     NULL, error) < 0)
     {
       g_prefix_error (error, "%s", _("Could not get network status: "));
       return FALSE;
@@ -207,17 +207,17 @@ queue_request_dump (GNetworkMonitorNetlink *nl)
 
   nl->priv->dump_source = g_timeout_source_new (1000);
   g_source_set_callback (nl->priv->dump_source,
-			 (GSourceFunc) timeout_request_dump, nl, NULL);
+                         (GSourceFunc) timeout_request_dump, nl, NULL);
   g_source_attach (nl->priv->dump_source,
-		   g_main_context_get_thread_default ());
+                   g_main_context_get_thread_default ());
 }
 
 static void
 add_network (GNetworkMonitorNetlink *nl,
-	     GSocketFamily           family,
-	     gint                    dest_len,
-	     guint8                 *dest,
-	     guint8                 *gateway)
+             GSocketFamily           family,
+             gint                    dest_len,
+             guint8                 *dest,
+             guint8                 *gateway)
 {
   GInetAddress *dest_addr;
   GInetAddressMask *network;
@@ -241,10 +241,10 @@ add_network (GNetworkMonitorNetlink *nl,
 
 static void
 remove_network (GNetworkMonitorNetlink *nl,
-		GSocketFamily           family,
-		gint                    dest_len,
-		guint8                 *dest,
-		guint8                 *gateway)
+                GSocketFamily           family,
+                gint                    dest_len,
+                guint8                 *dest,
+                guint8                 *gateway)
 {
   GInetAddress *dest_addr;
   GInetAddressMask *network;
@@ -263,14 +263,14 @@ remove_network (GNetworkMonitorNetlink *nl,
       int i;
 
       for (i = 0; i < nl->priv->dump_networks->len; i++)
-	{
-	  if (g_inet_address_mask_equal (network, dump_networks[i]))
-	    g_ptr_array_remove_index_fast (nl->priv->dump_networks, i--);
-	}
+        {
+          if (g_inet_address_mask_equal (network, dump_networks[i]))
+            g_ptr_array_remove_index_fast (nl->priv->dump_networks, i--);
+        }
       g_object_unref (network);
     }
   else
-    {	    
+    {
       g_network_monitor_base_remove_network (G_NETWORK_MONITOR_BASE (nl), network);
       g_object_unref (network);
     }
@@ -280,16 +280,16 @@ static void
 finish_dump (GNetworkMonitorNetlink *nl)
 {
   g_network_monitor_base_set_networks (G_NETWORK_MONITOR_BASE (nl),
-				       (GInetAddressMask **)nl->priv->dump_networks->pdata,
-				       nl->priv->dump_networks->len);
+                                       (GInetAddressMask **)nl->priv->dump_networks->pdata,
+                                       nl->priv->dump_networks->len);
   g_ptr_array_free (nl->priv->dump_networks, FALSE);
   nl->priv->dump_networks = NULL;
 }
 
 static gboolean
 read_netlink_messages (GSocket      *socket,
-		       GIOCondition  condition,
-		       gpointer      user_data)
+                       GIOCondition  condition,
+                       gpointer      user_data)
 {
   GNetworkMonitorNetlink *nl = user_data;
   GInputVector iv;
@@ -311,26 +311,26 @@ read_netlink_messages (GSocket      *socket,
 
   flags = MSG_PEEK | MSG_TRUNC;
   len = g_socket_receive_message (nl->priv->sock, NULL, &iv, 1,
-				  NULL, NULL, &flags, NULL, &error);
+                                  NULL, NULL, &flags, NULL, &error);
   if (len < 0)
     {
       g_warning ("Error on netlink socket: %s", error->message);
       g_error_free (error);
       if (nl->priv->dump_networks)
-	finish_dump (nl);
+        finish_dump (nl);
       return FALSE;
     }
 
   iv.buffer = g_malloc (len);
   iv.size = len;
   len = g_socket_receive_message (nl->priv->sock, NULL, &iv, 1,
-				  &cmsgs, &num_cmsgs, NULL, NULL, &error);
+                                  &cmsgs, &num_cmsgs, NULL, NULL, &error);
   if (len < 0)
     {
       g_warning ("Error on netlink socket: %s", error->message);
       g_error_free (error);
       if (nl->priv->dump_networks)
-	finish_dump (nl);
+        finish_dump (nl);
       return FALSE;
     }
 
@@ -346,63 +346,63 @@ read_netlink_messages (GSocket      *socket,
   for (; len > 0; msg = NLMSG_NEXT (msg, len))
     {
       if (!NLMSG_OK (msg, (size_t) len))
-	{
-	  g_warning ("netlink message was truncated; shouldn't happen...");
-	  retval = FALSE;
-	  goto done;
-	}
+        {
+          g_warning ("netlink message was truncated; shouldn't happen...");
+          retval = FALSE;
+          goto done;
+        }
 
       switch (msg->nlmsg_type)
-	{
-	case RTM_NEWROUTE:
-	case RTM_DELROUTE:
-	  rtmsg = NLMSG_DATA (msg);
+        {
+        case RTM_NEWROUTE:
+        case RTM_DELROUTE:
+          rtmsg = NLMSG_DATA (msg);
 
-	  if (rtmsg->rtm_family != AF_INET && rtmsg->rtm_family != AF_INET6)
-	    continue;
-	  if (rtmsg->rtm_type == RTN_UNREACHABLE)
-	    continue;
+          if (rtmsg->rtm_family != AF_INET && rtmsg->rtm_family != AF_INET6)
+            continue;
+          if (rtmsg->rtm_type == RTN_UNREACHABLE)
+            continue;
 
-	  attrlen = NLMSG_PAYLOAD (msg, sizeof (struct rtmsg));
-	  attr = RTM_RTA (rtmsg);
-	  dest = gateway = NULL;
-	  while (RTA_OK (attr, attrlen))
-	    {
-	      if (attr->rta_type == RTA_DST)
-		dest = RTA_DATA (attr);
-	      else if (attr->rta_type == RTA_GATEWAY)
-		gateway = RTA_DATA (attr);
-	      attr = RTA_NEXT (attr, attrlen);
-	    }
+          attrlen = NLMSG_PAYLOAD (msg, sizeof (struct rtmsg));
+          attr = RTM_RTA (rtmsg);
+          dest = gateway = NULL;
+          while (RTA_OK (attr, attrlen))
+            {
+              if (attr->rta_type == RTA_DST)
+                dest = RTA_DATA (attr);
+              else if (attr->rta_type == RTA_GATEWAY)
+                gateway = RTA_DATA (attr);
+              attr = RTA_NEXT (attr, attrlen);
+            }
 
-	  if (dest || gateway)
-	    {
-	      if (msg->nlmsg_type == RTM_NEWROUTE)
-		add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
-	      else
-		remove_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
-	      queue_request_dump (nl);
-	    }
-	  break;
+          if (dest || gateway)
+            {
+              if (msg->nlmsg_type == RTM_NEWROUTE)
+                add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
+              else
+                remove_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
+              queue_request_dump (nl);
+            }
+          break;
 
-	case NLMSG_DONE:
-	  finish_dump (nl);
-	  goto done;
+        case NLMSG_DONE:
+          finish_dump (nl);
+          goto done;
 
-	case NLMSG_ERROR:
-	  {
-	    struct nlmsgerr *e = NLMSG_DATA (msg);
+        case NLMSG_ERROR:
+          {
+            struct nlmsgerr *e = NLMSG_DATA (msg);
 
-	    g_warning ("netlink error: %s", g_strerror (-e->error));
-	  }
-	  retval = FALSE;
-	  goto done;
+            g_warning ("netlink error: %s", g_strerror (-e->error));
+          }
+          retval = FALSE;
+          goto done;
 
-	default:
-	  g_warning ("unexpected netlink message %d", msg->nlmsg_type);
-	  retval = FALSE;
-	  goto done;
-	}
+        default:
+          g_warning ("unexpected netlink message %d", msg->nlmsg_type);
+          retval = FALSE;
+          goto done;
+        }
     }
 
  done:

@@ -47,7 +47,7 @@
  */
 
 G_DEFINE_INTERFACE_WITH_CODE (GNetworkMonitor, g_network_monitor, G_TYPE_OBJECT,
-			      g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE);)
+                              g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE);)
 
 
 enum {
@@ -70,8 +70,8 @@ GNetworkMonitor *
 g_network_monitor_get_default (void)
 {
   return _g_io_module_get_default (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-				   "GIO_USE_NETWORK_MONITOR",
-				   NULL);
+                                   "GIO_USE_NETWORK_MONITOR",
+                                   NULL);
 }
 
 /**
@@ -127,9 +127,9 @@ g_network_monitor_get_network_available (GNetworkMonitor *monitor)
  */
 gboolean
 g_network_monitor_can_reach (GNetworkMonitor     *monitor,
-			     GSocketConnectable  *connectable,
-			     GCancellable        *cancellable,
-			     GError             **error)
+                             GSocketConnectable  *connectable,
+                             GCancellable        *cancellable,
+                             GError             **error)
 {
   GNetworkMonitorInterface *iface;
 
@@ -139,17 +139,17 @@ g_network_monitor_can_reach (GNetworkMonitor     *monitor,
 
 static void
 g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
-					GSocketConnectable  *connectable,
-					GCancellable        *cancellable,
-					GAsyncReadyCallback  callback,
-					gpointer             user_data)
+                                        GSocketConnectable  *connectable,
+                                        GCancellable        *cancellable,
+                                        GAsyncReadyCallback  callback,
+                                        gpointer             user_data)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;
 
   simple = g_simple_async_result_new (G_OBJECT (monitor),
-				      callback, user_data,
-				      g_network_monitor_real_can_reach_async);
+                                      callback, user_data,
+                                      g_network_monitor_real_can_reach_async);
   if (g_network_monitor_can_reach (monitor, connectable, cancellable, &error))
     g_simple_async_result_set_op_res_gboolean (simple, TRUE);
   else
@@ -160,10 +160,10 @@ g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
 
 void
 g_network_monitor_can_reach_async (GNetworkMonitor     *monitor,
-				   GSocketConnectable  *connectable,
-				   GCancellable        *cancellable,
-				   GAsyncReadyCallback  callback,
-				   gpointer             user_data)
+                                   GSocketConnectable  *connectable,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
   GNetworkMonitorInterface *iface;
 
@@ -173,8 +173,8 @@ g_network_monitor_can_reach_async (GNetworkMonitor     *monitor,
 
 static gboolean
 g_network_monitor_real_can_reach_finish (GNetworkMonitor  *monitor,
-					 GAsyncResult     *result,
-					 GError          **error)
+                                         GAsyncResult     *result,
+                                         GError          **error)
 {
   GSimpleAsyncResult *simple;
 
@@ -189,8 +189,8 @@ g_network_monitor_real_can_reach_finish (GNetworkMonitor  *monitor,
 
 gboolean
 g_network_monitor_can_reach_finish (GNetworkMonitor     *monitor,
-				    GAsyncResult        *result,
-				    GError             **error)
+                                    GAsyncResult        *result,
+                                    GError             **error)
 {
   GNetworkMonitorInterface *iface;
 
@@ -219,13 +219,13 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    */
   signals[NETWORK_CHANGED] =
     g_signal_new (I_("network-changed"),
-		  G_TYPE_NETWORK_MONITOR,
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GNetworkMonitorInterface, network_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__BOOLEAN,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_BOOLEAN);
+                  G_TYPE_NETWORK_MONITOR,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GNetworkMonitorInterface, network_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__BOOLEAN,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
 
   /**
    * GNetworkMonitor:network-available:
@@ -252,10 +252,10 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    * Since: 2.32
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_boolean ("network-available",
-							     P_("Network available"),
-							     P_("Whether the network is available"),
-							     FALSE,
-							     G_PARAM_READABLE |
-							     G_PARAM_STATIC_STRINGS));
+                                       g_param_spec_boolean ("network-available",
+                                                             P_("Network available"),
+                                                             P_("Whether the network is available"),
+                                                             FALSE,
+                                                             G_PARAM_READABLE |
+                                                             G_PARAM_STATIC_STRINGS));
 }

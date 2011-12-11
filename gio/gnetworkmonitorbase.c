@@ -36,15 +36,15 @@ static void g_network_monitor_base_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_base_initable_iface_init (GInitableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorBase, g_network_monitor_base, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_network_monitor_base_initable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
-						g_network_monitor_base_iface_init)
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "base",
-							 0))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_network_monitor_base_initable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
+                                                g_network_monitor_base_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "base",
+                                                         0))
 
 enum
 {
@@ -73,8 +73,8 @@ static void
 g_network_monitor_base_init (GNetworkMonitorBase *monitor)
 {
   monitor->priv = G_TYPE_INSTANCE_GET_PRIVATE (monitor,
-					       G_TYPE_NETWORK_MONITOR_BASE,
-					       GNetworkMonitorBasePrivate);
+                                               G_TYPE_NETWORK_MONITOR_BASE,
+                                               GNetworkMonitorBasePrivate);
 
   monitor->priv->networks = g_ptr_array_new_with_free_func (g_object_unref);
   monitor->priv->context = g_main_context_get_thread_default ();
@@ -109,20 +109,20 @@ g_network_monitor_base_constructed (GObject *object)
 
 static void
 g_network_monitor_base_get_property (GObject    *object,
-				     guint       prop_id,
-				     GValue     *value,
-				     GParamSpec *pspec)
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
   GNetworkMonitorBase *monitor = G_NETWORK_MONITOR_BASE (object);
 
   switch (prop_id)
     {
       case PROP_NETWORK_AVAILABLE:
-	g_value_set_boolean (value, monitor->priv->is_available);
-	break;
+        g_value_set_boolean (value, monitor->priv->is_available);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 
 }
@@ -160,9 +160,9 @@ g_network_monitor_base_class_init (GNetworkMonitorBaseClass *monitor_class)
 
 static gboolean
 g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
-				  GSocketConnectable   *connectable,
-				  GCancellable         *cancellable,
-				  GError              **error)
+                                  GSocketConnectable   *connectable,
+                                  GCancellable         *cancellable,
+                                  GError              **error)
 {
   GNetworkMonitorBasePrivate *priv = G_NETWORK_MONITOR_BASE (monitor)->priv;
   GSocketAddressEnumerator *enumerator;
@@ -175,7 +175,7 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
   if (priv->networks->len == 0)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
-			   _("Network unreachable"));
+                           _("Network unreachable"));
       return FALSE;
     }
 
@@ -191,21 +191,21 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
   while (addr)
     {
       if (G_IS_INET_SOCKET_ADDRESS (addr))
-	{
-	  GInetAddress *iaddr;
-	  int i;
+        {
+          GInetAddress *iaddr;
+          int i;
 
-	  iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
-	  for (i = 0; i < priv->networks->len; i++)
-	    {
-	      if (g_inet_address_mask_matches (priv->networks->pdata[i], iaddr))
-		{
-		  g_object_unref (addr);
-		  g_object_unref (enumerator);
-		  return TRUE;
-		}
-	    }
-	}
+          iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
+          for (i = 0; i < priv->networks->len; i++)
+            {
+              if (g_inet_address_mask_matches (priv->networks->pdata[i], iaddr))
+                {
+                  g_object_unref (addr);
+                  g_object_unref (enumerator);
+                  return TRUE;
+                }
+            }
+        }
 
       g_object_unref (addr);
       addr = g_socket_address_enumerator_next (enumerator, cancellable, error);
@@ -215,7 +215,7 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
   if (error && !*error)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
-			   _("Host unreachable"));
+                           _("Host unreachable"));
     }
   return FALSE;
 }
@@ -230,8 +230,8 @@ g_network_monitor_base_iface_init (GNetworkMonitorInterface *monitor_iface)
 
 static gboolean
 g_network_monitor_base_initable_init (GInitable     *initable,
-				      GCancellable  *cancellable,
-				      GError       **error)
+                                      GCancellable  *cancellable,
+                                      GError       **error)
 {
   return TRUE;
 }
@@ -255,12 +255,12 @@ emit_network_changed (gpointer user_data)
   else
     {
       is_available = (monitor->priv->have_ipv4_default_route ||
-		      monitor->priv->have_ipv6_default_route);
+                      monitor->priv->have_ipv6_default_route);
       if (monitor->priv->is_available != is_available)
-	{
-	  monitor->priv->is_available = is_available;
-	  g_object_notify (G_OBJECT (monitor), "network-available");
-	}
+        {
+          monitor->priv->is_available = is_available;
+          g_object_notify (G_OBJECT (monitor), "network-available");
+        }
 
       g_signal_emit (monitor, network_changed_signal, 0, is_available);
     }
@@ -298,7 +298,7 @@ queue_network_changed (GNetworkMonitorBase *monitor)
   if (monitor->priv->initializing)
     {
       monitor->priv->is_available = (monitor->priv->have_ipv4_default_route ||
-				     monitor->priv->have_ipv6_default_route);
+                                     monitor->priv->have_ipv6_default_route);
     }
 }
 
@@ -308,33 +308,35 @@ queue_network_changed (GNetworkMonitorBase *monitor)
  * @network: a #GInetAddressMask
  *
  * Adds @network to @monitor's list of available networks.
+ *
+ * Since: 2.32
  */
 void
 g_network_monitor_base_add_network (GNetworkMonitorBase *monitor,
-				    GInetAddressMask    *network)
+                                    GInetAddressMask    *network)
 {
   int i;
 
   for (i = 0; i < monitor->priv->networks->len; i++)
     {
       if (g_inet_address_mask_equal (monitor->priv->networks->pdata[i], network))
-	return;
+        return;
     }
 
   g_ptr_array_add (monitor->priv->networks, g_object_ref (network));
   if (g_inet_address_mask_get_length (network) == 0)
     {
       switch (g_inet_address_mask_get_family (network))
-	{
-	case G_SOCKET_FAMILY_IPV4:
-	  monitor->priv->have_ipv4_default_route = TRUE;
-	  break;
-	case G_SOCKET_FAMILY_IPV6:
-	  monitor->priv->have_ipv6_default_route = TRUE;
-	  break;
-	default:
-	  break;
-	}
+        {
+        case G_SOCKET_FAMILY_IPV4:
+          monitor->priv->have_ipv4_default_route = TRUE;
+          break;
+        case G_SOCKET_FAMILY_IPV6:
+          monitor->priv->have_ipv6_default_route = TRUE;
+          break;
+        default:
+          break;
+        }
     }
 
   /* Don't emit network-changed when multicast-link-local routing
@@ -353,37 +355,39 @@ g_network_monitor_base_add_network (GNetworkMonitorBase *monitor,
  * @network: a #GInetAddressMask
  *
  * Removes @network from @monitor's list of available networks.
+ *
+ * Since: 2.32
  */
 void
 g_network_monitor_base_remove_network (GNetworkMonitorBase *monitor,
-				       GInetAddressMask    *network)
+                                       GInetAddressMask    *network)
 {
   int i;
 
   for (i = 0; i < monitor->priv->networks->len; i++)
     {
       if (g_inet_address_mask_equal (monitor->priv->networks->pdata[i], network))
-	{
-	  g_ptr_array_remove_index_fast (monitor->priv->networks, i);
+        {
+          g_ptr_array_remove_index_fast (monitor->priv->networks, i);
 
-	  if (g_inet_address_mask_get_length (network) == 0)
-	    {
-	      switch (g_inet_address_mask_get_family (network))
-		{
-		case G_SOCKET_FAMILY_IPV4:
-		  monitor->priv->have_ipv4_default_route = FALSE;
-		  break;
-		case G_SOCKET_FAMILY_IPV6:
-		  monitor->priv->have_ipv6_default_route = FALSE;
-		  break;
-		default:
-		  break;
-		}
-	    }
+          if (g_inet_address_mask_get_length (network) == 0)
+            {
+              switch (g_inet_address_mask_get_family (network))
+                {
+                case G_SOCKET_FAMILY_IPV4:
+                  monitor->priv->have_ipv4_default_route = FALSE;
+                  break;
+                case G_SOCKET_FAMILY_IPV6:
+                  monitor->priv->have_ipv6_default_route = FALSE;
+                  break;
+                default:
+                  break;
+                }
+            }
 
-	  queue_network_changed (monitor);
-	  return;
-	}
+          queue_network_changed (monitor);
+          return;
+        }
     }
 }
 
@@ -398,8 +402,8 @@ g_network_monitor_base_remove_network (GNetworkMonitorBase *monitor,
  */
 void
 g_network_monitor_base_set_networks (GNetworkMonitorBase  *monitor,
-				     GInetAddressMask    **networks,
-				     gint                  length)
+                                     GInetAddressMask    **networks,
+                                     gint                  length)
 {
   int i;
 
