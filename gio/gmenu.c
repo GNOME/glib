@@ -48,14 +48,18 @@
  *
  * #GMenu is an opaque structure type.  You must access it using the
  * functions below.
- **/
+ *
+ * Since: 2.32
+ */
 
 /**
  * GMenuItem:
  *
  * #GMenuItem is an opaque structure type.  You must access it using the
  * functions below.
- **/
+ *
+ * Since: 2.32
+ */
 
 struct _GMenuItem
 {

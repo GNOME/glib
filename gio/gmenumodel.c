@@ -154,21 +154,27 @@
  *
  * #GMenuModel is an opaque structure type.  You must access it using the
  * functions below.
- **/
+ *
+ * Since: 2.32
+ */
 
 /**
  * GMenuAttributeIter:
  *
  * #GMenuAttributeIter is an opaque structure type.  You must access it
  * using the functions below.
- **/
+ *
+ * Since: 2.32
+ */
 
 /**
  * GMenuLinkIter:
  *
  * #GMenuLinkIter is an opaque structure type.  You must access it using
  * the functions below.
- **/
+ *
+ * Since: 2.32
+ */
 
 typedef struct
 {
