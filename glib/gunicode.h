@@ -559,7 +559,7 @@ gsize g_unichar_fully_decompose (gunichar  ch,
  *
  * This is as defined by Unicode 6.1.
  *
- * Since: 2.31.3
+ * Since: 2.32
  */
 #define G_UNICHAR_MAX_DECOMPOSITION_LENGTH 18 /* codepoints */
 
