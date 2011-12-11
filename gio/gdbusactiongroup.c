@@ -494,6 +494,9 @@ g_dbus_action_group_sync (GDBusActionGroup  *group,
       GVariantIter *iter;
       ActionInfo *action;
 
+      g_assert (group->actions == NULL);
+      group->actions = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, action_info_free);
+
       g_variant_get (reply, "(a{s(bgav)})", &iter);
       while ((action = action_info_new_from_iter (iter)))
         g_hash_table_insert (group->actions, action->name, action);
