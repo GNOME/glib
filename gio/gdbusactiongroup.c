@@ -454,7 +454,9 @@ g_dbus_action_group_iface_init (GActionGroupInterface *iface)
  * g_action_group_list_actions() to get the initial list.
  *
  * Returns: (transfer full): a #GDBusActionGroup
- **/
+ *
+ * Since: 2.32
+ */
 GDBusActionGroup *
 g_dbus_action_group_get (GDBusConnection *connection,
                          const gchar     *bus_name,

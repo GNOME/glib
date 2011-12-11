@@ -860,7 +860,10 @@ g_dbus_menu_model_get_from_group (GDBusMenuGroup *group,
  * (and linked models) must also originate from this same context, with
  * the thread default main context unchanged.
  *
- * Returns: (transfer full): a #GDBusMenuModel object. Free with g_object_unref().
+ * Returns: (transfer full): a #GDBusMenuModel object. Free with
+ *     g_object_unref().
+ *
+ * Since: 2.32
  */
 GDBusMenuModel *
 g_dbus_menu_model_get (GDBusConnection *connection,

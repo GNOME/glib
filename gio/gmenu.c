@@ -146,7 +146,9 @@ g_menu_get_item_links (GMenuModel  *model,
  * See g_menu_insert(), g_menu_insert_section() and
  * g_menu_insert_submenu() as well as "prepend" and "append" variants of
  * each of these functions.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_insert_item (GMenu     *menu,
                     gint       position,
@@ -176,7 +178,9 @@ g_menu_insert_item (GMenu     *menu,
  * Prepends @item to the start of @menu.
  *
  * See g_menu_insert_item() for more information.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_prepend_item (GMenu     *menu,
                      GMenuItem *item)
@@ -192,7 +196,9 @@ g_menu_prepend_item (GMenu     *menu,
  * Appends @item to the end of @menu.
  *
  * See g_menu_insert_item() for more information.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_append_item (GMenu     *menu,
                     GMenuItem *item)
@@ -212,7 +218,9 @@ g_menu_append_item (GMenu     *menu,
  *
  * This function causes g_menu_model_is_mutable() to begin returning
  * %FALSE, which has some positive performance implications.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_freeze (GMenu *menu)
 {
@@ -229,7 +237,9 @@ g_menu_freeze (GMenu *menu)
  * The new menu has no items.
  *
  * Returns: a new #GMenu
- **/
+ *
+ * Since: 2.32
+ */
 GMenu *
 g_menu_new (void)
 {
@@ -246,7 +256,9 @@ g_menu_new (void)
  * Convenience function for inserting a normal menu item into @menu.
  * Combine g_menu_new() and g_menu_insert_item() for a more flexible
  * alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_insert (GMenu       *menu,
                gint         position,
@@ -269,7 +281,9 @@ g_menu_insert (GMenu       *menu,
  * Convenience function for prepending a normal menu item to the start
  * of @menu.  Combine g_menu_new() and g_menu_insert_item() for a more
  * flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_prepend (GMenu       *menu,
                 const gchar *label,
@@ -287,7 +301,9 @@ g_menu_prepend (GMenu       *menu,
  * Convenience function for appending a normal menu item to the end of
  * @menu.  Combine g_menu_new() and g_menu_insert_item() for a more
  * flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_append (GMenu       *menu,
                const gchar *label,
@@ -306,7 +322,9 @@ g_menu_append (GMenu       *menu,
  * Convenience function for inserting a section menu item into @menu.
  * Combine g_menu_new_section() and g_menu_insert_item() for a more
  * flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_insert_section (GMenu       *menu,
                        gint         position,
@@ -330,7 +348,9 @@ g_menu_insert_section (GMenu       *menu,
  * Convenience function for prepending a section menu item to the start
  * of @menu.  Combine g_menu_new_section() and g_menu_insert_item() for
  * a more flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_prepend_section (GMenu       *menu,
                         const gchar *label,
@@ -348,7 +368,9 @@ g_menu_prepend_section (GMenu       *menu,
  * Convenience function for appending a section menu item to the end of
  * @menu.  Combine g_menu_new_section() and g_menu_insert_item() for a
  * more flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_append_section (GMenu       *menu,
                        const gchar *label,
@@ -367,7 +389,9 @@ g_menu_append_section (GMenu       *menu,
  * Convenience function for inserting a submenu menu item into @menu.
  * Combine g_menu_new_submenu() and g_menu_insert_item() for a more
  * flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_insert_submenu (GMenu       *menu,
                        gint         position,
@@ -390,7 +414,9 @@ g_menu_insert_submenu (GMenu       *menu,
  * Convenience function for prepending a submenu menu item to the start
  * of @menu.  Combine g_menu_new_submenu() and g_menu_insert_item() for
  * a more flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_prepend_submenu (GMenu       *menu,
                         const gchar *label,
@@ -408,7 +434,9 @@ g_menu_prepend_submenu (GMenu       *menu,
  * Convenience function for appending a submenu menu item to the end of
  * @menu.  Combine g_menu_new_submenu() and g_menu_insert_item() for a
  * more flexible alternative.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_append_submenu (GMenu       *menu,
                        const gchar *label,
@@ -441,7 +469,9 @@ g_menu_clear_item (struct item *item)
  * It is not possible to remove items by identity since items are added
  * to the menu simply by copying their links and attributes (ie:
  * identity of the item itself is not preserved).
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_remove (GMenu *menu,
                gint   position)
@@ -608,7 +638,9 @@ valid_attribute_name (const gchar *name)
  *
  * See also g_menu_item_set_attribute() for a more convenient way to do
  * the same.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_attribute_value (GMenuItem   *menu_item,
                                  const gchar *attribute,
@@ -650,7 +682,9 @@ g_menu_item_set_attribute_value (GMenuItem   *menu_item,
  *
  * See also g_menu_item_set_attribute_value() for an equivalent call
  * that directly accepts a #GVariant.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_attribute (GMenuItem   *menu_item,
                            const gchar *attribute,
@@ -689,6 +723,8 @@ g_menu_item_set_attribute (GMenuItem   *menu_item,
  * Link types are restricted to lowercase characters, numbers
  * and '-'. Furthermore, the names must begin with a lowercase character,
  * must not end with a '-', and must not contain consecutive dashes.
+ *
+ * Since: 2.32
  */
 void
 g_menu_item_set_link (GMenuItem   *menu_item,
@@ -716,7 +752,9 @@ g_menu_item_set_link (GMenuItem   *menu_item,
  *
  * If @label is non-%NULL it is used as the label for the menu item.  If
  * it is %NULL then the label attribute is unset.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_label (GMenuItem   *menu_item,
                        const gchar *label)
@@ -743,7 +781,9 @@ g_menu_item_set_label (GMenuItem   *menu_item,
  *
  * The effect of having one menu appear as a submenu of another is
  * exactly as it sounds.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_submenu (GMenuItem  *menu_item,
                          GMenuModel *submenu)
@@ -763,7 +803,9 @@ g_menu_item_set_submenu (GMenuItem  *menu_item,
  * the menu that @menu_item is added to.  See g_menu_item_new_section()
  * for more information about what it means for a menu item to be a
  * section.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_section (GMenuItem  *menu_item,
                          GMenuModel *section)
@@ -813,6 +855,8 @@ g_menu_item_set_section (GMenuItem  *menu_item,
  * See g_menu_item_set_action_and_target() or
  * g_menu_item_set_detailed_action() for two equivalent calls that are
  * probably more convenient for most uses.
+ *
+ * Since: 2.32
  */
 void
 g_menu_item_set_action_and_target_value (GMenuItem   *menu_item,
@@ -861,6 +905,8 @@ g_menu_item_set_action_and_target_value (GMenuItem   *menu_item,
  *
  * See also g_menu_item_set_action_and_target_value() for a
  * description of the semantics of the action and target attributes.
+ *
+ * Since: 2.32
  */
 void
 g_menu_item_set_action_and_target (GMenuItem   *menu_item,
@@ -907,7 +953,9 @@ g_menu_item_set_action_and_target (GMenuItem   *menu_item,
  *
  * See also g_menu_set_action_and_target_value() for a description of
  * the semantics of the action and target attributes.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_item_set_detailed_action (GMenuItem   *menu_item,
                                  const gchar *detailed_action)
@@ -944,7 +992,9 @@ g_menu_item_set_detailed_action (GMenuItem   *menu_item,
  * g_menu_item_set_detailed_action() for more information.
  *
  * Returns: a new #GMenuItem
- **/
+ *
+ * Since: 2.32
+ */
 GMenuItem *
 g_menu_item_new (const gchar *label,
                  const gchar *detailed_action)
@@ -973,7 +1023,9 @@ g_menu_item_new (const gchar *label,
  * g_menu_item_set_submenu().
  *
  * Returns: a new #GMenuItem
- **/
+ *
+ * Since: 2.32
+ */
 GMenuItem *
 g_menu_item_new_submenu (const gchar *label,
                          GMenuModel  *submenu)
@@ -1059,7 +1111,9 @@ g_menu_item_new_submenu (const gchar *label,
  * ]]></programlisting></informalexample>
  *
  * Returns: a new #GMenuItem
- **/
+ *
+ * Since: 2.32
+ */
 GMenuItem *
 g_menu_item_new_section (const gchar *label,
                          GMenuModel  *section)

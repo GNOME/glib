@@ -837,6 +837,8 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
  * this function.
  *
  * Returns: the ID of the export (never zero), or 0 in case of failure
+ *
+ * Since: 2.32
  */
 guint
 g_dbus_connection_export_menu_model (GDBusConnection  *connection,
@@ -883,7 +885,7 @@ g_dbus_connection_export_menu_model (GDBusConnection  *connection,
  * same ID more than once.
  *
  * Since: 2.32
- **/
+ */
 void
 g_dbus_connection_unexport_menu_model (GDBusConnection *connection,
                                        guint            export_id)

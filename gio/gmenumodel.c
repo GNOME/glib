@@ -460,8 +460,10 @@ g_menu_model_class_init (GMenuModelClass *class)
  * signal. Consumers of the model may make optimisations accordingly.
  *
  * Returns: %TRUE if the model is mutable (ie: "items-changed" may be
- *          emitted).
- **/
+ *     emitted).
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_model_is_mutable (GMenuModel *model)
 {
@@ -476,7 +478,9 @@ g_menu_model_is_mutable (GMenuModel *model)
  * Query the number of items in @model.
  *
  * Returns: the number of items
- **/
+ *
+ * Since: 2.32
+ */
 gint
 g_menu_model_get_n_items (GMenuModel *model)
 {
@@ -495,6 +499,8 @@ g_menu_model_get_n_items (GMenuModel *model)
  * You must free the iterator with g_object_unref() when you are done.
  *
  * Returns: (transfer full): a new #GMenuAttributeIter
+ *
+ * Since: 2.32
  */
 GMenuAttributeIter *
 g_menu_model_iterate_item_attributes (GMenuModel *model,
@@ -525,7 +531,9 @@ g_menu_model_iterate_item_attributes (GMenuModel *model,
  * then %NULL is returned.
  *
  * Returns: (transfer full): the value of the attribute
- **/
+ *
+ * Since: 2.32
+ */
 GVariant *
 g_menu_model_get_item_attribute_value (GMenuModel         *model,
                                        gint                item_index,
@@ -556,8 +564,10 @@ g_menu_model_get_item_attribute_value (GMenuModel         *model,
  * returned.
  *
  * Returns: %TRUE if the named attribute was found with the expected
- *          type
- **/
+ *     type
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_model_get_item_attribute (GMenuModel  *model,
                                  gint         item_index,
@@ -594,7 +604,9 @@ g_menu_model_get_item_attribute (GMenuModel  *model,
  * You must free the iterator with g_object_unref() when you are done.
  *
  * Returns: (transfer full): a new #GMenuLinkIter
- **/
+ *
+ * Since: 2.32
+ */
 GMenuLinkIter *
 g_menu_model_iterate_item_links (GMenuModel *model,
                                  gint        item_index)
@@ -616,7 +628,9 @@ g_menu_model_iterate_item_links (GMenuModel *model,
  * does not exist, %NULL is returned.
  *
  * Returns: (transfer full): the linked #GMenuModel, or %NULL
- **/
+ *
+ * Since: 2.32
+ */
 GMenuModel *
 g_menu_model_get_item_link (GMenuModel *model,
                             gint        item_index,
@@ -648,7 +662,9 @@ g_menu_model_get_item_link (GMenuModel *model,
  * entry and not in response to calls -- particularly those from the
  * #GMenuModel API.  Said another way: the menu must not change while
  * user code is running without returning to the mainloop.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_model_items_changed (GMenuModel *model,
                             gint        position,
@@ -690,8 +706,10 @@ struct _GMenuAttributeIterPrivate
  * be unreffed using g_variant_unref() when it is no longer in use.
  *
  * Returns: %TRUE on success, or %FALSE if there is no additional
- *          attribute
- **/
+ *     attribute
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_attribute_iter_get_next (GMenuAttributeIter  *iter,
                                 const gchar        **out_name,
@@ -736,7 +754,9 @@ g_menu_attribute_iter_get_next (GMenuAttributeIter  *iter,
  * attribute exists at all).
  *
  * Returns: %TRUE on success, or %FALSE when there are no more attributes
- **/
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_attribute_iter_next (GMenuAttributeIter *iter)
 {
@@ -753,7 +773,9 @@ g_menu_attribute_iter_next (GMenuAttributeIter *iter)
  * The iterator is not advanced.
  *
  * Returns: the name of the attribute
- **/
+ *
+ * Since: 2.32
+ */
 const gchar *
 g_menu_attribute_iter_get_name (GMenuAttributeIter *iter)
 {
@@ -771,7 +793,9 @@ g_menu_attribute_iter_get_name (GMenuAttributeIter *iter)
  * The iterator is not advanced.
  *
  * Returns: (transfer full): the value of the current attribute
- **/
+ *
+ * Since: 2.32
+ */
 GVariant *
 g_menu_attribute_iter_get_value (GMenuAttributeIter *iter)
 {
@@ -839,7 +863,9 @@ struct _GMenuLinkIterPrivate
  * be unreffed using g_object_unref() when it is no longer in use.
  *
  * Returns: %TRUE on success, or %FALSE if there is no additional link
- **/
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_link_iter_get_next (GMenuLinkIter  *iter,
                            const gchar   **out_link,
@@ -885,7 +911,9 @@ g_menu_link_iter_get_next (GMenuLinkIter  *iter,
  * at all).
  *
  * Returns: %TRUE on success, or %FALSE when there are no more links
- **/
+ *
+ * Since: 2.32
+ */
 gboolean
 g_menu_link_iter_next (GMenuLinkIter *iter)
 {
@@ -901,7 +929,9 @@ g_menu_link_iter_next (GMenuLinkIter *iter)
  * The iterator is not advanced.
  *
  * Returns: the type of the link
- **/
+ *
+ * Since: 2.32
+ */
 const gchar *
 g_menu_link_iter_get_name (GMenuLinkIter *iter)
 {
@@ -919,7 +949,9 @@ g_menu_link_iter_get_name (GMenuLinkIter *iter)
  * The iterator is not advanced.
  *
  * Returns: (transfer full): the #GMenuModel that is linked to
- **/
+ *
+ * Since: 2.32
+ */
 GMenuModel *
 g_menu_link_iter_get_value (GMenuLinkIter *iter)
 {

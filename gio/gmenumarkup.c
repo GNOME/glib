@@ -440,6 +440,8 @@ static GMarkupParser g_menu_subparser =
  * the element representing the group containing the menus.  In other
  * words, the content inside of this element is expected to be a list of
  * menus.
+ *
+ * Since: 2.32
  */
 void
 g_menu_markup_parser_start (GMarkupParseContext *context,
@@ -476,7 +478,9 @@ g_menu_markup_parser_start (GMarkupParseContext *context,
  * See that function for more information
  *
  * Returns: (transfer full): the #GHashTable containing the objects
- **/
+ *
+ * Since: 2.32
+ */
 GHashTable *
 g_menu_markup_parser_end (GMarkupParseContext *context)
 {
@@ -517,7 +521,9 @@ g_menu_markup_parser_end (GMarkupParseContext *context)
  * You should call g_menu_markup_parser_end_menu() from the
  * corresponding end_element function in order to collect the newly
  * parsed menu.
- **/
+ *
+ * Since: 2.32
+ */
 void
 g_menu_markup_parser_start_menu (GMarkupParseContext *context,
                                  const gchar         *domain,
@@ -549,7 +555,9 @@ g_menu_markup_parser_start_menu (GMarkupParseContext *context,
  * See that function for more information
  *
  * Returns: (transfer full): the newly-created #GMenu
- **/
+ *
+ * Since: 2.32
+ */
 GMenu *
 g_menu_markup_parser_end_menu (GMarkupParseContext *context)
 {
@@ -703,7 +711,7 @@ g_menu_markup_print_string (GString    *string,
  * Print @model to stderr for debugging purposes.
  *
  * This debugging function will be removed in the future.
- **/
+ */
 void
 g_menu_markup_print_stderr (GMenuModel *model)
 {
