@@ -3351,6 +3351,12 @@ g_key_file_remove_group_node (GKeyFile *key_file,
 
   g_warn_if_fail (group->key_value_pairs == NULL);
 
+  if (group->comment)
+    {
+      g_key_file_key_value_pair_free (group->comment);
+      group->comment = NULL;
+    }
+
   if (group->lookup_map)
     {
       g_hash_table_destroy (group->lookup_map);
