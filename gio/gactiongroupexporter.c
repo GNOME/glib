@@ -220,7 +220,6 @@ typedef struct
   gchar           *object_path;
   GHashTable      *pending_changes;
   GSource         *pending_source;
-  gulong           signal_ids[4];
 } GActionGroupExporter;
 
 #define ACTION_ADDED_EVENT             (1u<<0)
@@ -558,10 +557,15 @@ static void
 g_action_group_exporter_free (gpointer user_data)
 {
   GActionGroupExporter *exporter = user_data;
-  gint i;
 
-  for (i = 0; i < G_N_ELEMENTS (exporter->signal_ids); i++)
-    g_signal_handler_disconnect (exporter->action_group, exporter->signal_ids[i]);
+  g_signal_handlers_disconnect_by_func (exporter->action_group,
+                                        g_action_group_exporter_action_added, exporter);
+  g_signal_handlers_disconnect_by_func (exporter->action_group,
+                                        g_action_group_exporter_action_enabled_changed, exporter);
+  g_signal_handlers_disconnect_by_func (exporter->action_group,
+                                        g_action_group_exporter_action_state_changed, exporter);
+  g_signal_handlers_disconnect_by_func (exporter->action_group,
+                                        g_action_group_exporter_action_removed, exporter);
 
   g_hash_table_unref (exporter->pending_changes);
   if (exporter->pending_source)
@@ -651,18 +655,14 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
   exporter->connection = g_object_ref (connection);
   exporter->object_path = g_strdup (object_path);
 
-  exporter->signal_ids[0] =
-    g_signal_connect (action_group, "action-added",
-                      G_CALLBACK (g_action_group_exporter_action_added), exporter);
-  exporter->signal_ids[1] =
-    g_signal_connect (action_group, "action-removed",
-                      G_CALLBACK (g_action_group_exporter_action_removed), exporter);
-  exporter->signal_ids[2] =
-    g_signal_connect (action_group, "action-state-changed",
-                      G_CALLBACK (g_action_group_exporter_action_state_changed), exporter);
-  exporter->signal_ids[3] =
-    g_signal_connect (action_group, "action-enabled-changed",
-                      G_CALLBACK (g_action_group_exporter_action_enabled_changed), exporter);
+  g_signal_connect (action_group, "action-added",
+                    G_CALLBACK (g_action_group_exporter_action_added), exporter);
+  g_signal_connect (action_group, "action-removed",
+                    G_CALLBACK (g_action_group_exporter_action_removed), exporter);
+  g_signal_connect (action_group, "action-state-changed",
+                    G_CALLBACK (g_action_group_exporter_action_state_changed), exporter);
+  g_signal_connect (action_group, "action-enabled-changed",
+                    G_CALLBACK (g_action_group_exporter_action_enabled_changed), exporter);
 
   return id;
 }
