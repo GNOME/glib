@@ -488,7 +488,7 @@ g_menu_markup_parser_end (GMarkupParseContext *context)
  * those with an * id='' attribute) that are encountered while parsing
  * will be added to this table.
  *
- * If @object is %NULL then named menus will not be supported.
+ * If @objects is %NULL then named menus will not be supported.
  *
  * You should call g_menu_markup_parser_end_menu() from the
  * corresponding end_element function in order to collect the newly
