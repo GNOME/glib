@@ -22,8 +22,6 @@
 
 #include <errno.h>
 #include <unistd.h>
-#include <linux/netlink.h>
-#include <linux/rtnetlink.h>
 
 #include "gnetworkmonitornetlink.h"
 #include "gcredentials.h"
@@ -35,6 +33,11 @@
 #include "gnetworkmonitor.h"
 #include "gsocket.h"
 #include "gunixcredentialsmessage.h"
+
+/* must come at the end to pick system includes from
+ * gnetworkingprivate.h */
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
 
 static void g_network_monitor_netlink_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_netlink_initable_iface_init (GInitableIface *iface);
