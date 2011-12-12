@@ -31,9 +31,9 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Tim Janik</foaf:name>
-      <foaf:mbox rdf:resource="mailto:timj@gtk.org"/>
-      <gnome:userid>timj</gnome:userid>
+      <foaf:name>Ryan Lortie</foaf:name>
+      <foaf:mbox rdf:resource="mailto:desrt@desrt.ca"/>
+      <gnome:userid>ryanl</gnome:userid>
     </foaf:Person>
   </maintainer>
 
