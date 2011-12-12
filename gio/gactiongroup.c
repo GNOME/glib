@@ -28,15 +28,36 @@
  * SECTION:gactiongroup
  * @title: GActionGroup
  * @short_description: A group of actions
+ * @see_also: #GAction
  *
- * #GActionGroup represents a group of actions.
+ * #GActionGroup represents a group of actions. Actions can be used to
+ * expose functionality in a structured way, either from one part of a
+ * program to another, or to the outside world. Action groups are often
+ * used together with a #GMenuModel that provides additional
+ * representation data for displaying the actions to the user, e.g. in
+ * a menu.
+ *
+ * The main way to interact with the actions in a GActionGroup is to
+ * activate them with g_action_group_activate_action(). Activating an
+ * action may require a #GVariant parameter. The required type of the
+ * parameter can be inquired with g_action_group_get_action_parameter_type().
+ * Actions may be disabled, see g_action_group_get_action_enabled().
+ * Activating a disabled action has no effect.
+ *
+ * Actions may optionally have a state in the form of a #GVariant. The
+ * current state of an action can be inquired with
+ * g_action_group_get_action_state(). Activating a stateful action may
+ * change its state, but it is also possible to set the state by calling
+ * g_action_group_change_action_state().
+ *
+ * As typical example, consider a text editing application which has an
+ * option to change the current font to 'bold'. A good way to represent
+ * this would be a stateful action, with a boolean state. Activating the
+ * action would toggle the state.
  *
  * Each action in the group has a unique name (which is a string).  All
  * method calls, except g_action_group_list_actions() take the name of
  * an action as an argument.
- *
- * Action groups are often used together with a #GMenuModel that provides
- * additional representation data for the actions.
  *
  * The #GActionGroup API is meant to be the 'public' API to the action
  * group.  The calls here are exactly the interaction that 'external
@@ -54,7 +75,7 @@
  * g_action_group_query_action().  The other virtual functions should
  * not be implemented - their "wrappers" are actually implemented with
  * calls to g_action_group_query_action().
- **/
+ */
 
 /**
  * GActionGroupInterface:
