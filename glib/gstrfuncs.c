@@ -2207,8 +2207,13 @@ gchar*
 g_strcompress (const gchar *source)
 {
   const gchar *p = source, *octal;
-  gchar *dest = g_malloc (strlen (source) + 1);
-  gchar *q = dest;
+  gchar *dest;
+  gchar *q;
+
+  g_return_val_if_fail (source != NULL, NULL);
+
+  dest = g_malloc (strlen (source) + 1);
+  q = dest;
 
   while (*p)
     {
