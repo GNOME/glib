@@ -756,28 +756,30 @@ _get_func(GIObjectInfo *info,
   const char* symbol;
   GSList *parents = NULL, *l;
   GIObjectInfo *parent_info;
+  gpointer func = NULL;
 
   parent_info = info;
-  while (parent_info != NULL) {
-    parents = g_slist_prepend(parents, parent_info);
-    parent_info = g_object_info_get_parent(parent_info);
-  }
-
-  for (l = parents; l; l = l->next) {
-    GIObjectInfoRefFunction func;
-    parent_info = l->data;
-    symbol = getter(parent_info);
-    if (symbol == NULL)
-      continue;
-    if (g_typelib_symbol (((GIRealInfo *)parent_info)->typelib, symbol, (void**) &func)) {
-      g_slist_free(parents);
-      return func;
+  while (parent_info != NULL)
+    {
+      parents = g_slist_prepend (parents, parent_info);
+      parent_info = g_object_info_get_parent (parent_info);
     }
-  }
 
-  g_slist_free(parents);
-  return NULL;
+  for (l = parents; l; l = l->next)
+    {
+      GIObjectInfoRefFunction func;
+      parent_info = l->data;
+      symbol = getter (parent_info);
+      if (symbol == NULL)
+        continue;
 
+      g_typelib_symbol (((GIRealInfo *)parent_info)->typelib, symbol, (gpointer*) &func);
+      if (func)
+        break;
+    }
+
+  g_slist_free_full (parents, (GDestroyNotify) g_base_info_unref);
+  return func;
 }
 
 /**
