@@ -400,10 +400,10 @@ static GMarkupParser g_menu_subparser =
  * that are marked as translatable, using gettext().
  *
  * If @objects is specified then it must be a #GHashTable that was
- * created using g_hash_table_new_full() with g_str_hash(), g_str_equal(),
- * g_free() and g_object_unref().  Any named menus that are encountered
- * while parsing will be added to this table.  Each toplevel menu must
- * be named.
+ * created using g_hash_table_new_full() with g_str_hash(),
+ * g_str_equal(), g_free() and g_object_unref().  Any named menus (ie:
+ * those with an id='' attribute) that are encountered while parsing
+ * will be added to this table.  Each toplevel menu must be named.
  *
  * If @objects is %NULL then an empty hash table will be created.
  *
@@ -483,9 +483,10 @@ g_menu_markup_parser_end (GMarkupParseContext *context)
  * that are marked as translatable, using gettext().
  *
  * If @objects is specified then it must be a #GHashTable that was
- * created using g_hash_table_new_full() with g_str_hash(), g_str_equal(),
- * g_free() and g_object_unref().  Any named menus that are encountered
- * while parsing will be added to this table.
+ * created using g_hash_table_new_full() with g_str_hash(),
+ * g_str_equal(), g_free() and g_object_unref().  Any named menus (ie:
+ * those with an * id='' attribute) that are encountered while parsing
+ * will be added to this table.
  *
  * If @object is %NULL then named menus will not be supported.
  *
