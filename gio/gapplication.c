@@ -58,35 +58,35 @@
  * login.  When your application is launched again, its arguments
  * are passed through platform communication to the already running
  * program. The already running instance of the program is called the
- * <firstterm>primary instance</firstterm>.
- *
- * Before using GApplication, you must choose an "application identifier".
- * The expected form of an application identifier is very close to that of
- * of a <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
- * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
- * For details on valid application identifiers, see
- * g_application_id_is_valid().
- *
- * The application identifier is claimed by the application as a
- * well-known bus name on the user's session bus.  This means that the
- * uniqueness of your application is scoped to the current session.  It
- * also means that your application may provide additional services
- * (through registration of other object paths) at that bus name.
- *
- * The registration of these object paths should be done with the shared
- * GDBus session bus.  Note that due to the internal architecture of
- * GDBus, method calls can be dispatched at any time (even if a main
- * loop is not running).  For this reason, you must ensure that any
- * object paths that you wish to register are registered before
- * #GApplication attempts to acquire the bus name of your application
- * (which happens in g_application_register()).  Unfortunately, this
- * means that you cannot use g_application_get_is_remote() to decide if
- * you want to register object paths.
+ * <firstterm>primary instance</firstterm>. On Linux, the D-Bus session
+ * bus is used for communication.
  *
  * GApplication provides convenient life cycle management by maintaining
  * a <firstterm>use count</firstterm> for the primary application instance.
  * The use count can be changed using g_application_hold() and
  * g_application_release(). If it drops to zero, the application exits.
+ * Higher-level classes such as #GtkApplication employ the use count to
+ * ensure that the application stays alive as long as it has any opened
+ * windows.
+ *
+ * Before using GApplication, you must choose an "application identifier".
+ * The expected form of an application identifier is very close to that of
+ * of a <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
+ * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
+ * For details on valid application identifiers, see g_application_id_is_valid().
+ *
+ * On Linux, the application identifier is claimed as a well-known bus name
+ * on the user's session bus.  This means that the uniqueness of your
+ * application is scoped to the current session.  It also means that your
+ * application may provide additional services (through registration of other
+ * object paths) at that bus name.  The registration of these object paths
+ * should be done with the shared GDBus session bus.  Note that due to the
+ * internal architecture of GDBus, method calls can be dispatched at any time
+ * (even if a main loop is not running).  For this reason, you must ensure that
+ * any object paths that you wish to register are registered before #GApplication
+ * attempts to acquire the bus name of your application (which happens in
+ * g_application_register()).  Unfortunately, this means that you cannot use
+ * g_application_get_is_remote() to decide if you want to register object paths.
  *
  * GApplication also implements the #GActionGroup and #GActionMap
  * interfaces and lets you easily export actions by adding them with
@@ -96,9 +96,10 @@
  * the session bus, and GIO provides the #GDBusActionGroup wrapper to
  * conveniently access them remotely. Additionally, g_application_set_app_menu()
  * and g_application_set_menubar() can be used to export representation
- * data for the actions, in the form of #GMenuModels.
+ * data for the actions, in the form of #GMenuModels. GIO provides
+ * a #GDBusMenuModel wrapper for remote access to exported #GMenuModels.
  *
- * There is a number of different entry points into a #GApplication:
+ * There is a number of different entry points into a GApplication:
  * <itemizedlist>
  * <listitem>via 'Activate' (i.e. just starting the application)</listitem>
  * <listitem>via 'Open' (i.e. opening some files)</listitem>
