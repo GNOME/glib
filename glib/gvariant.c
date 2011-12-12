@@ -5109,7 +5109,7 @@ g_variant_byteswap (GVariant *value)
 
       g_variant_serialised_byteswap (serialised);
 
-      bytes = g_bytes_new (serialised.data, serialised.size);
+      bytes = g_bytes_new_take (serialised.data, serialised.size);
       new = g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE);
       g_bytes_unref (bytes);
     }
