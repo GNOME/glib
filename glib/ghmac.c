@@ -174,6 +174,7 @@ g_hmac_copy (const GHmac *hmac)
   g_return_val_if_fail (hmac != NULL, NULL);
 
   copy = g_slice_new (GHmac);
+  copy->ref_count = 1;
   copy->digest_type = hmac->digest_type;
   copy->digesti = g_checksum_copy (hmac->digesti);
   copy->digesto = g_checksum_copy (hmac->digesto);
