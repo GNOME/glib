@@ -280,9 +280,13 @@ g_hmac_get_string (GHmac *hmac)
   g_return_val_if_fail (hmac != NULL, NULL);
 
   digest_len = g_checksum_type_get_length (hmac->digest_type);
-  buffer = g_malloc (digest_len);
+  buffer = g_alloca (digest_len);
 
+  /* This is only called for its side-effect of updating hmac->digesto... */
   g_hmac_get_digest (hmac, buffer, &digest_len);
+  /* ... because we get the string from the checksum rather than
+   * stringifying buffer ourselves
+   */
   return g_checksum_get_string (hmac->digesto);
 }
 
