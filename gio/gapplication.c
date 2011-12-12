@@ -1631,7 +1631,8 @@ g_application_change_action_state (GActionGroup *action_group,
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->remote_actions)
-    return g_action_group_change_action_state (application->priv->remote_actions, action_name, value);
+    return g_action_group_change_action_state (application->priv->remote_actions,
+                                               action_name, value);
 
   else
     g_action_group_change_action_state (application->priv->actions,
@@ -1650,7 +1651,8 @@ g_application_activate_action (GActionGroup *action_group,
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->remote_actions)
-    return g_action_group_change_action_state (application->priv->remote_actions, action_name, parameter);
+    return g_action_group_activate_action (application->priv->remote_actions,
+                                           action_name, parameter);
 
   else
     g_action_group_activate_action (application->priv->actions,
