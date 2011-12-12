@@ -73,26 +73,6 @@ typedef struct
   gboolean      translatable;
 } GMenuMarkupState;
 
-static gboolean
-boolean_from_string (const gchar  *str,
-                     gboolean     *val)
-{
-  if (strcmp (str, "true") == 0 ||
-      strcmp (str, "yes") == 0 ||
-      strcmp (str, "t") == 0 ||
-      strcmp (str, "1") == 0)
-    *val = TRUE;
-  else if (strcmp (str, "false") == 0 ||
-           strcmp (str, "no") == 0 ||
-           strcmp (str, "f") == 0 ||
-           strcmp (str, "0") == 0)
-    *val = FALSE;
-  else
-    return FALSE;
-
-  return TRUE;
-}
-
 static void
 g_menu_markup_push_frame (GMenuMarkupState *state,
                           GMenu            *menu,
@@ -154,6 +134,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
                                first, __VA_ARGS__, G_MARKUP_COLLECT_INVALID)
 #define OPTIONAL   G_MARKUP_COLLECT_OPTIONAL
 #define STRDUP     G_MARKUP_COLLECT_STRDUP
+#define BOOLEAN    G_MARKUP_COLLECT_BOOLEAN
 #define STRING     G_MARKUP_COLLECT_STRING
 #define NO_ATTRS() COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
 
@@ -222,14 +203,13 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
         {
           const gchar *typestr;
           const gchar *name;
-          const gchar *translatable;
           const gchar *context;
 
-          if (COLLECT (STRING,            "name", &name,
-                       OPTIONAL | STRING, "translatable", &translatable,
-                       OPTIONAL | STRING, "context", &context,
-                       OPTIONAL | STRING, "comments", NULL, /* ignore, just for translators */
-                       OPTIONAL | STRING, "type", &typestr))
+          if (COLLECT (STRING,             "name", &name,
+                       OPTIONAL | BOOLEAN, "translatable", &state->translatable,
+                       OPTIONAL | STRING,  "context", &context,
+                       OPTIONAL | STRING,  "comments", NULL, /* ignore, just for translators */
+                       OPTIONAL | STRING,  "type", &typestr))
             {
               if (typestr && !g_variant_type_string_is_valid (typestr))
                 {
@@ -243,15 +223,6 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
               state->string = g_string_new (NULL);
               state->attribute = g_quark_from_string (name);
               state->context = g_strdup (context);
-              if (!translatable)
-                state->translatable = FALSE;
-              else if (!boolean_from_string (translatable, &state->translatable))
-                {
-                  g_set_error (error, G_MARKUP_ERROR,
-                               G_MARKUP_ERROR_INVALID_CONTENT,
-                               "Invalid boolean attribute: '%s'", translatable);
-                  return;
-                }
 
               g_menu_markup_push_frame (state, NULL, NULL);
             }
