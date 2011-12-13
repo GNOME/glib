@@ -43,6 +43,8 @@ copy ..\..\..\glib\gbitlock.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gbookmarkfile.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\gbytes.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gcharset.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gchecksum.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -233,6 +235,10 @@ copy ..\..\..\gio\gaction.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gactiongroupexporter.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gactionmap.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gappinfo.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gapplication.h $(CopyDir)\include\glib-$(ApiVersion)\gio
@@ -259,13 +265,15 @@ copy ..\..\..\gio\gconverterinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\
 
 copy ..\..\..\gio\gconverteroutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gcredentials.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gdatainputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gdataoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
-copy ..\..\..\gio\gdbusauthobserver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+copy ..\..\..\gio\gdbusactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
-copy ..\..\..\gio\gcredentials.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+copy ..\..\..\gio\gdbusauthobserver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gdbusutils.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
@@ -278,6 +286,8 @@ copy ..\..\..\gio\gdbusconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 copy ..\..\..\gio\gdbusinterface.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gdbusinterfaceskeleton.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gdbusmenumodel.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gdbusmessage.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
@@ -337,6 +347,8 @@ copy ..\..\..\gio\gfilteroutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gi
 
 copy ..\..\..\gio\gicon.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\ginetaddressmask.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\ginetaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\ginetsocketaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio
@@ -367,6 +379,14 @@ copy ..\..\..\gio\gmemoryinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gmemoryoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gmenuexporter.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gmenumarkup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gmenumodel.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gmenu.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gmount.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gmountoperation.h $(CopyDir)\include\glib-$(ApiVersion)\gio
@@ -374,6 +394,8 @@ copy ..\..\..\gio\gmountoperation.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 copy ..\..\..\gio\gnativevolumemonitor.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gnetworkaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gnetworkmonitor.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gnetworkservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
@@ -396,6 +418,8 @@ copy ..\..\..\gio\gproxyresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 copy ..\..\..\gio\gresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gseekable.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gsettingsschema.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gsettings.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 

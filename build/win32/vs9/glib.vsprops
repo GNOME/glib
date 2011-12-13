@@ -61,6 +61,7 @@ copy ..\..\..\glib\gbacktrace.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&
 copy ..\..\..\glib\gbase64.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbitlock.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gbookmarkfile.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gbytes.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gcharset.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gchecksum.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
@@ -158,6 +159,8 @@ copy ..\..\..\gobject\gvaluetypes.h $(OutDir)\include\glib-$(ApiVersion)\gobject
 mkdir $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gaction.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gactiongroup.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gactiongroupexporter.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gactionmap.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gappinfo.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gapplication.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gapplicationcommandline.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
@@ -171,16 +174,18 @@ copy ..\..\..\gio\gcontenttype.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&
 copy ..\..\..\gio\gconverter.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gconverterinputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gconverteroutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gcredentials.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdatainputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdataoutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusactiongroup.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusauthobserver.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
-copy ..\..\..\gio\gcredentials.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusutils.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbuserror.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusaddress.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusconnection.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusinterface.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusinterfaceskeleton.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusmenumodel.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusmessage.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusnameowning.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusnamewatching.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
@@ -210,6 +215,7 @@ copy ..\..\..\gio\gfileoutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#
 copy ..\..\..\gio\gfilterinputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gfilteroutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gicon.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\ginetaddressmask.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\ginetaddress.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\ginetsocketaddress.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\ginitable.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
@@ -225,10 +231,15 @@ copy ..\..\..\gio\giotypes.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A
 copy ..\..\..\gio\gloadableicon.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gmemoryinputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gmemoryoutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmenuexporter.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmenumarkup.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmenumodel.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gmenu.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gmount.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gmountoperation.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gnativevolumemonitor.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gnetworkaddress.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gnetworkmonitor.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gnetworkservice.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\goutputstream.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpermission.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
@@ -240,6 +251,7 @@ copy ..\..\..\gio\gproxyaddressenumerator.h $(OutDir)\include\glib-$(ApiVersion)
 copy ..\..\..\gio\gproxyresolver.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gresolver.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gseekable.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gsettingsschema.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsettings.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleasyncresult.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleaction.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
