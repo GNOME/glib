@@ -56,6 +56,7 @@ g_mount_get_type
 g_mount_operation_get_type
 g_native_volume_monitor_get_type
 g_network_address_get_type
+g_network_monitor_get_type
 g_network_service_get_type
 g_output_stream_get_type
 g_permission_get_type
