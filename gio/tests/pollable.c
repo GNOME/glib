@@ -221,6 +221,7 @@ test_pollable_socket (void)
   g_object_unref (server_conn);
   g_object_unref (client);
   g_object_unref (listener);
+  g_object_unref (effective_address);
 }
 
 int

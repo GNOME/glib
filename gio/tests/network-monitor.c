@@ -197,6 +197,8 @@ test_default (void)
   run_tests (monitor, unmatched, TRUE);
 
   assert_signals (monitor, FALSE, FALSE, TRUE);
+
+  g_object_unref (monitor);
 }
 
 static void
@@ -223,6 +225,8 @@ test_remove_default (void)
   run_tests (monitor, netlocal6.addresses, FALSE);
   run_tests (monitor, netfe80.addresses, FALSE);
   run_tests (monitor, unmatched, FALSE);
+
+  g_object_unref (monitor);
 }
 
 static void
@@ -294,6 +298,8 @@ test_add_networks (void)
   run_tests (monitor, netlocal6.addresses, TRUE);
   run_tests (monitor, netfe80.addresses, TRUE);
   run_tests (monitor, unmatched, FALSE);
+
+  g_object_unref (monitor);
 }
 
 static void
@@ -387,6 +393,8 @@ test_remove_networks (void)
   run_tests (monitor, netlocal6.addresses, FALSE);
   run_tests (monitor, netfe80.addresses, FALSE);
   run_tests (monitor, unmatched, FALSE);
+
+  g_object_unref (monitor);
 }
 
 

@@ -308,6 +308,7 @@ main (int   argc,
   g_free (ref.cert_pems[1]);
   g_free (ref.cert_pems[2]);
   g_free (ref.key_pem);
+  g_free (ref.key8_pem);
 
   return rtv;
 }

@@ -315,6 +315,7 @@ test_read_upto (void)
           g_assert (memchr (DATA_SEP, stop_char, DATA_SEP_LEN) != NULL);
           g_assert_no_error (error);
         }
+      g_free (data);
     }
   g_assert_no_error (error);
   g_assert_cmpint (line, ==, DATA_PARTS_NUM);

@@ -68,6 +68,7 @@ echo_server_thread (gpointer user_data)
 
   g_socket_close (sock, &error);
   g_assert_no_error (error);
+  g_object_unref (sock);
   return NULL;
 }
 
@@ -449,6 +450,7 @@ v4mapped_server_thread (gpointer user_data)
 
   g_socket_close (sock, &error);
   g_assert_no_error (error);
+  g_object_unref (sock);
   return NULL;
 }
 
@@ -491,6 +493,7 @@ test_ipv6_v4mapped (void)
 
   g_object_unref (data->server);
   g_object_unref (client);
+  g_object_unref (v4addr);
 
   g_slice_free (IPTestData, data);
 }
