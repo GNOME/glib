@@ -229,6 +229,7 @@ g_dbus_action_group_changed (GDBusConnection *connection,
             else
               action_info_free (info);
           }
+        g_variant_iter_free (iter);
       }
     }
 }
