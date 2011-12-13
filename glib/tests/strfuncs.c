@@ -841,6 +841,7 @@ test_strsplit_set (void)
 static void
 test_strv_length (void)
 {
+  gchar **strv;
   guint l;
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
@@ -849,8 +850,10 @@ test_strv_length (void)
     }
   g_test_trap_assert_failed ();
 
-  l = g_strv_length (g_strsplit ("1,2,3,4", ",", -1));
+  strv = g_strsplit ("1,2,3,4", ",", -1);
+  l = g_strv_length (strv);
   g_assert_cmpuint (l, ==, 4);
+  g_strfreev (strv);
 }
 
 static char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};

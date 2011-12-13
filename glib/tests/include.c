@@ -12,6 +12,7 @@ main (int argc, char *argv[])
   GRWLock lock;
 
   g_rw_lock_init (&lock);
+  g_rw_lock_clear (&lock);
 
   return 0;
 }

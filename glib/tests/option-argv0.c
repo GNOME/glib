@@ -45,6 +45,8 @@ test_platform_argv0 (void)
   g_assert (retval == TRUE);
   g_assert (strcmp (g_get_prgname(), "option-argv0") == 0
 	    || strcmp (g_get_prgname (), "lt-option-argv0") == 0);
+
+  g_option_context_free (context);
 }
 #endif
 

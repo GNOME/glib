@@ -124,7 +124,7 @@ context_pop_token (struct context *ctx)
 
   g_mutex_lock (&ctx->lock);
   token = ctx->pending_tokens->data;
-  ctx->pending_tokens = g_slist_remove_link (ctx->pending_tokens,
+  ctx->pending_tokens = g_slist_delete_link (ctx->pending_tokens,
                                              ctx->pending_tokens);
   g_mutex_unlock (&ctx->lock);
 

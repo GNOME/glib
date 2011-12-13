@@ -95,6 +95,7 @@ group_captions (void)
               g_setenv ("LANG", "C", TRUE);
 
               g_option_context_parse (options, &argc, &argv, &error);
+              g_option_context_free (options);
               exit(0);
             }
           else
@@ -161,6 +162,8 @@ group_captions (void)
                 g_test_trap_assert_stdout_unmatched ("*--help-test*");
             }
         }
+
+      g_option_context_free (options);
     }
 }
 

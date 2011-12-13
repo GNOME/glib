@@ -229,6 +229,8 @@ construct_test (void)
 
   for (i = 0; i < g_node_n_children (node_G); i++)
     g_assert_cmpint (g_node_child_position (node_G, g_node_nth_child (node_G, i)), ==, i);
+
+  g_node_destroy (root);
 }
 
 static void

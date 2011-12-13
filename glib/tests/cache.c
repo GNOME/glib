@@ -150,7 +150,9 @@ test_cache_basic (void)
   g_assert_cmpint (value_create_count, ==, 2);
   g_assert_cmpint (value_destroy_count, ==, 1);
 
+  g_cache_remove (c, value);
   g_cache_destroy (c);
+  g_free (key);
 }
 
 int

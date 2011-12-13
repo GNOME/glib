@@ -64,6 +64,7 @@ test_maincontext_basic (void)
   g_source_set_priority (source, G_PRIORITY_HIGH);
   g_assert (g_source_get_priority (source) == G_PRIORITY_HIGH);
 
+  g_source_destroy (source);
   g_main_context_unref (ctx);
 
   ctx = g_main_context_default ();
@@ -95,6 +96,8 @@ test_mainloop_basic (void)
   g_main_loop_unref (loop);
 
   g_assert (g_main_depth () == 0);
+
+  g_main_loop_unref (loop);
 }
 
 static gint a;

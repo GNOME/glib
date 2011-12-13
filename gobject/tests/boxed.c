@@ -56,6 +56,8 @@ test_define_boxed (void)
   g_assert_cmpstr (b->bla, ==, "bla");
 
   g_boxed_free (MY_TYPE_BOXED, b);
+
+  g_free (a.bla);
 }
 
 static void

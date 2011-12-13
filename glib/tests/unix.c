@@ -60,6 +60,7 @@ test_error (void)
   g_assert_cmpint (errno, ==, EBADF);
   g_assert (!res);
   g_assert_error (error, G_UNIX_ERROR, 0);
+  g_clear_error (&error);
 }
 
 static gboolean sig_received = FALSE;
@@ -110,6 +111,7 @@ test_signal (int signum)
   g_timeout_add (500, exit_mainloop, mainloop);
   g_main_loop_run (mainloop);
   g_assert (!sig_received);
+  g_main_loop_unref (mainloop);
 
 }
 
@@ -138,6 +140,7 @@ test_sighup_add_remove (void)
   g_source_remove (id);
   kill (getpid (), SIGHUP);
   g_assert (!sig_received);
+  g_main_loop_unref (mainloop);
 
 }
 

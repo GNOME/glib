@@ -454,6 +454,8 @@ test_string_up_down (void)
   g_string_assign (s, "Mixed Case String !?");
   g_string_up (s);
   g_assert_cmpstr (s->str, ==, "MIXED CASE STRING !?");
+
+  g_string_free (s, TRUE);
 }
 
 static void
@@ -466,6 +468,8 @@ test_string_set_size (void)
 
   g_assert_cmpstr (s->str, ==, "foo");
   g_assert_cmpint (s->len, ==, 30);
+
+  g_string_free (s, TRUE);
 }
 
 int

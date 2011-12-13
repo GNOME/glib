@@ -809,13 +809,19 @@ test_basic (void)
   g_assert (g_queue_pop_tail (q) == GINT_TO_POINTER (5));
   check_integrity (q);
   g_assert_cmpint (g_list_length (q->head), ==, 3);
-  g_assert (g_queue_pop_head_link (q)->data == GINT_TO_POINTER (2));
+
+  node = g_queue_pop_head_link (q);
+  g_assert (node->data == GINT_TO_POINTER (2));
+  g_list_free_1 (node);
+
   check_integrity (q);
   g_assert_cmpint (g_list_length (q->head), ==, 2);
   g_assert (g_queue_pop_tail (q) == GINT_TO_POINTER (4));
   check_integrity (q);
   g_assert_cmpint (g_list_length (q->head), ==, 1);
-  g_assert (g_queue_pop_head_link (q)->data == GINT_TO_POINTER (3));
+  node = g_queue_pop_head_link (q);
+  g_assert (node->data == GINT_TO_POINTER (3));
+  g_list_free_1 (node);
   check_integrity (q);
   g_assert_cmpint (g_list_length (q->head), ==, 0);
   g_assert (g_queue_pop_tail (q) == NULL);
@@ -853,6 +859,7 @@ test_basic (void)
   node = q->tail;
   g_assert (node == g_queue_pop_tail_link (q));
   check_integrity (q);
+  g_list_free_1 (node);
   g_assert_cmpint (g_list_length (q->head), ==, 3);
   data = q->head->data;
   g_assert (data == g_queue_pop_head (q));
@@ -957,6 +964,7 @@ test_off_by_one (void)
   g_assert (node == NULL);
   node = g_queue_pop_nth_link (q, g_queue_get_length (q) - 1);
   g_assert (node != NULL && node->data == GINT_TO_POINTER (1234));
+  g_list_free_1 (node);
 
   g_queue_free (q);
 }

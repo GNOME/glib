@@ -41,6 +41,7 @@ test_seconds (void)
   g_timeout_add_seconds (21475, function, NULL);
 
   g_main_loop_run (loop);
+  g_main_loop_unref (loop);
 }
 
 static gint64 last_time;
@@ -86,6 +87,7 @@ test_rounding (void)
   g_timeout_add_seconds (1, test_func, NULL);
 
   g_main_loop_run (loop);
+  g_main_loop_unref (loop);
 }
 
 int

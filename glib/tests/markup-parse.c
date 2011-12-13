@@ -176,12 +176,14 @@ test_file (const gchar *filename)
   if (!g_markup_parse_context_parse (context, contents, length, NULL))
     {
       g_markup_parse_context_free (context);
+      g_free (contents);
       return 1;
     }
 
   if (!g_markup_parse_context_end_parse (context, NULL))
     {
       g_markup_parse_context_free (context);
+      g_free (contents);
       return 1;
     }
 
@@ -189,23 +191,40 @@ test_file (const gchar *filename)
 
   /* A byte at a time */
   if (test_in_chunks (contents, length, 1) != 0)
-    return 1;
+    {
+      g_free (contents);
+      return 1;
+    }
 
   /* 2 bytes */
   if (test_in_chunks (contents, length, 2) != 0)
-    return 1;
+    {
+      g_free (contents);
+      return 1;
+    }
 
   /*5 bytes */
   if (test_in_chunks (contents, length, 5) != 0)
-    return 1;
-  
+    {
+      g_free (contents);
+      return 1;
+    }
+
   /* 12 bytes */
   if (test_in_chunks (contents, length, 12) != 0)
-    return 1;
-  
+    {
+      g_free (contents);
+      return 1;
+    }
+
   /* 1024 bytes */
   if (test_in_chunks (contents, length, 1024) != 0)
-    return 1;
+    {
+      g_free (contents);
+      return 1;
+    }
+
+  g_free (contents);
 
   return 0;
 }

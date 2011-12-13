@@ -34,6 +34,7 @@ mem_overflow (void)
   gpointer p, q;
   typedef char X[10];
 
+  /* "FAIL" here apparently means "fail to overflow"... */
 #define CHECK_PASS(P)	p = (P); g_assert (p == NULL);
 #define CHECK_FAIL(P)	p = (P); g_assert (p != NULL);
 
@@ -41,24 +42,28 @@ mem_overflow (void)
   CHECK_PASS (g_try_malloc_n (a, b));
   CHECK_PASS (g_try_malloc_n (b, a));
   CHECK_FAIL (g_try_malloc_n (b, b));
+  g_free (p);
 
   CHECK_PASS (g_try_malloc0_n (a, a));
   CHECK_PASS (g_try_malloc0_n (a, b));
   CHECK_PASS (g_try_malloc0_n (b, a));
   CHECK_FAIL (g_try_malloc0_n (b, b));
+  g_free (p);
 
   q = g_malloc (1);
   CHECK_PASS (g_try_realloc_n (q, a, a));
   CHECK_PASS (g_try_realloc_n (q, a, b));
   CHECK_PASS (g_try_realloc_n (q, b, a));
   CHECK_FAIL (g_try_realloc_n (q, b, b));
-  free (p);
+  g_free (p);
 
   CHECK_PASS (g_try_new (X, a));
   CHECK_FAIL (g_try_new (X, b));
+  g_free (p);
 
   CHECK_PASS (g_try_new0 (X, a));
   CHECK_FAIL (g_try_new0 (X, b));
+  g_free (p);
 
   q = g_try_malloc (1);
   CHECK_PASS (g_try_renew (X, q, a));
@@ -69,7 +74,17 @@ mem_overflow (void)
 #undef CHECK_PASS
 
 #define CHECK_FAIL(P)	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) { p = (P); exit (0); } g_test_trap_assert_failed();
-#define CHECK_PASS(P)	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) { p = (P); exit (0); } g_test_trap_assert_passed();
+
+#define CHECK_PASS(P)	do { \
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) \
+        { \
+          p = (P); \
+          g_free (p); \
+          exit (0); \
+        } \
+      \
+      g_test_trap_assert_passed(); \
+    } while (0)
 
   CHECK_FAIL (g_malloc_n (a, a));
   CHECK_FAIL (g_malloc_n (a, b));
@@ -86,7 +101,7 @@ mem_overflow (void)
   CHECK_FAIL (g_realloc_n (q, a, b));
   CHECK_FAIL (g_realloc_n (q, b, a));
   CHECK_PASS (g_realloc_n (q, b, b));
-  free (q);
+  g_free (q);
 
   CHECK_FAIL (g_new (X, a));
   CHECK_PASS (g_new (X, b));
@@ -97,7 +112,7 @@ mem_overflow (void)
   q = g_malloc (1);
   CHECK_FAIL (g_renew (X, q, a));
   CHECK_PASS (g_renew (X, q, b));
-  free (q);
+  g_free (q);
 }
 
 typedef struct

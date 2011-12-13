@@ -461,6 +461,10 @@ test_mkdir_with_parents_1 (const gchar *base)
   g_remove (p2);
   g_remove (p1);
   g_remove (p0);
+
+  g_free (p2);
+  g_free (p1);
+  g_free (p0);
 }
 
 static void

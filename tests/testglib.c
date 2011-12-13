@@ -448,6 +448,8 @@ binary_tree_test (void)
       g_tree_foreach (tree, my_traverse, NULL);
       g_print ("\n");
     }
+
+  g_tree_unref (tree);
 }
 
 static gboolean
@@ -943,6 +945,7 @@ test_file_functions (void)
   remove (template);
 
   error = NULL;
+  name_used = NULL;
   strcpy (template, "zap" G_DIR_SEPARATOR_S "barXXXXXX");
   fd = g_file_open_tmp (template, &name_used, &error);
   if (g_test_verbose())
@@ -955,8 +958,10 @@ test_file_functions (void)
   if (fd != -1)
     close (fd);
   g_clear_error (&error);
+  g_free (name_used);
 
 #ifdef G_OS_WIN32
+  name_used = NULL;
   strcpy (template, "zap/barXXXXXX");
   fd = g_file_open_tmp (template, &name_used, &error);
   if (g_test_verbose())
@@ -968,9 +973,11 @@ test_file_functions (void)
     }
   close (fd);
   g_clear_error (&error);
+  g_free (name_used);
 #endif
 
   strcpy (template, "zapXXXXXX");
+  name_used = NULL;
   fd = g_file_open_tmp (template, &name_used, &error);
   if (fd == -1)
     g_error ("g_file_open_tmp didn't work for template '%s': %s\n", template, error->message);
@@ -979,13 +986,16 @@ test_file_functions (void)
   close (fd);
   g_clear_error (&error);
   remove (name_used);
+  g_free (name_used);
 
+  name_used = NULL;
   fd = g_file_open_tmp (NULL, &name_used, &error);
   if (fd == -1)
     g_error ("g_file_open_tmp didn't work for a NULL template: %s\n", error->message);
   close (fd);
   g_clear_error (&error);
   remove (name_used);
+  g_free (name_used);
 }
 
 static void
@@ -1553,6 +1563,8 @@ test_mem_chunks (void)
     }
   for (i = 0; i < 10000; i++)
     g_mem_chunk_free (mem_chunk, mem[i]);
+
+  g_mem_chunk_destroy (mem_chunk);
 }
 #endif
 

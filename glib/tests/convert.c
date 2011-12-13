@@ -193,6 +193,7 @@ check_utf8_to_ucs4 (const char     *utf8,
       g_assert (result);
       for (i = 0; i <= items_written; i++)
 	g_assert (result[i] == ucs4[i]);
+      g_error_free (error3);
     }
   else if (error_pos)
     {
@@ -333,6 +334,7 @@ check_utf8_to_utf16 (const char      *utf8,
       g_assert (result);
       for (i = 0; i <= items_written; i++)
 	g_assert (result[i] == utf16[i]);
+      g_error_free (error3);
     }
   else if (error_pos)
     {
@@ -407,6 +409,7 @@ check_utf16_to_utf8 (const gunichar2 *utf16,
       g_assert (items_written == utf8_len);
       g_assert (result);
       g_assert (strcmp (result, utf8) == 0);
+      g_error_free (error3);
     }
   else if (error_pos)
     {
@@ -549,6 +552,7 @@ check_utf16_to_ucs4 (const gunichar2 *utf16,
       g_assert (result);
       for (i = 0; i <= items_written; i++)
 	g_assert (result[i] == ucs4[i]);
+      g_error_free (error3);
     }
   else if (error_pos)
     {

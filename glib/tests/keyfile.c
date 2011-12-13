@@ -1396,6 +1396,7 @@ test_page_boundary (void)
       g_assert_cmpint (val, ==, VALUE);
     }
 
+  g_key_file_free (file);
 }
 
 static void

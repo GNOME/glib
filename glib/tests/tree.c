@@ -336,6 +336,7 @@ test_tree_traverse (void)
   g_assert_cmpstr (result, ==, "02146538A9CEDB7GIHKMLJOQPSUTRNFWYXacbZegfikjhdmonqsrpuwvzyxtlV");
 
   g_tree_unref (tree);
+  g_free (result);
 }
 
 int

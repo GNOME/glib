@@ -1180,6 +1180,13 @@ run_random_tests (gconstpointer d)
 
       check_integrity (seq);
     }
+
+  for (k = 0; k < N_SEQUENCES; ++k)
+    {
+      g_queue_free (sequences[k].queue);
+      g_sequence_free (sequences[k].sequence);
+      sequences[k].n_items = 0;
+    }
 }
 
 /* Random seeds known to have failed at one point

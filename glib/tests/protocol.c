@@ -218,6 +218,9 @@ test_message (void)
 
   g_assert_cmpint (passed, ==, 3);
   g_assert_cmpint (messages, ==, 3);
+
+  g_free (argv[1]);
+  g_main_loop_unref (loop);
 }
 
 static void
@@ -317,6 +320,9 @@ test_error (void)
               g_error ("unexpected log message type: %s", g_test_log_type_name (msg->log_type));
             }
         }
+
+      g_free (argv[1]);
+      g_main_loop_unref (loop);
     }
 
   g_assert_cmpint (messages, ==, 3);

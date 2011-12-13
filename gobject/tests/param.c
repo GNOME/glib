@@ -25,6 +25,7 @@ test_param_value (void)
   g_param_spec_unref (p2);
 
   g_value_unset (&value);
+  g_param_spec_unref (pp);
 }
 
 static gint destroy_count;

@@ -184,6 +184,7 @@ run_to_uri_tests (void)
         g_assert_error (error, G_CONVERT_ERROR, to_uri_tests[i].expected_error);
 
       g_free (res);
+      g_clear_error (&error);
     }
 }
 
@@ -218,6 +219,10 @@ run_from_uri_tests (void)
       else
         g_assert_error (error, G_CONVERT_ERROR, from_uri_tests[i].expected_error);
       g_assert_cmpstr (hostname, ==, from_uri_tests[i].expected_hostname);
+
+      g_free (res);
+      g_free (hostname);
+      g_clear_error (&error);
     }
 }
 
@@ -285,6 +290,9 @@ run_roundtrip_tests (void)
 
       g_assert (safe_strcmp_filename (to_uri_tests[i].filename, res) == 0);
       g_assert (safe_strcmp_hostname (to_uri_tests[i].hostname, hostname) == 0);
+      g_free (res);
+      g_free (uri);
+      g_free (hostname);
     }
 }
 
@@ -316,12 +324,17 @@ run_uri_list_tests (void)
 
   uris = g_uri_list_extract_uris ("# just hot air\r\n# more hot air");
   g_assert_cmpint (g_strv_length (uris), ==, 0);
+  g_strfreev (uris);
 }
 
 static void
 test_uri_unescape (void)
 {
-  g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F",  NULL), ==, "+abc O");
+  gchar *s;
+
+  s = g_uri_unescape_string ("%2Babc %4F",  NULL);
+  g_assert_cmpstr (s, ==, "+abc O");
+  g_free (s);
   g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F",  "+"), ==, NULL);
   g_assert_cmpstr (g_uri_unescape_string ("%00abc %4F",  "+/"), ==, NULL);
   g_assert_cmpstr (g_uri_unescape_string ("%0",  NULL), ==, NULL);

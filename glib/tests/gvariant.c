@@ -3729,6 +3729,7 @@ test_parses (void)
         printed = g_variant_print (value, FALSE);
         g_assert_cmpstr (tests[i], ==, printed);
         g_free (printed);
+        g_variant_unref (value);
       }
   }
 

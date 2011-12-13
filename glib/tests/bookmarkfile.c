@@ -29,11 +29,9 @@ test_load (GBookmarkFile *bookmark,
   
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
   if (error && g_test_verbose ())
-    {
-      g_print ("Load error: %s\n", error->message);
-      g_error_free (error);
-    }
+    g_print ("Load error: %s\n", error->message);
 
+  g_clear_error (&error);
   return res;
 }
 
