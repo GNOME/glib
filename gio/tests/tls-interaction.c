@@ -384,10 +384,15 @@ static void
 teardown_without_loop (Test            *test,
                        gconstpointer    unused)
 {
+  gpointer weak_pointer = test->interaction;
+
+  g_object_add_weak_pointer (weak_pointer, &weak_pointer);
+
   g_object_unref (test->password);
 
   g_object_unref (test->interaction);
-  g_assert (!G_IS_OBJECT (test->interaction));
+
+  g_assert (weak_pointer == NULL);
 
 }
 
