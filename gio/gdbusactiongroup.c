@@ -100,7 +100,7 @@ action_info_new_from_iter (GVariantIter *iter)
   GVariant *state;
   gchar *name;
 
-  if (!g_variant_iter_next (iter, "{s(bg@av)}", &name,
+  if (!g_variant_iter_next (iter, "{s(b&g@av)}", &name,
                             &enabled, &param_str, &state))
     return NULL;
 
