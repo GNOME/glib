@@ -386,6 +386,10 @@ g_data_set_internal (GData	  **datalist,
 		    {
 		      G_DATALIST_SET_POINTER (datalist, NULL);
 		      g_free (d);
+		      /* datalist may be situated in dataset, so must not be
+		       * unlocked after we free it
+		       */
+		      g_datalist_unlock (datalist);
 
 		      /* the dataset destruction *must* be done
 		       * prior to invocation of the data destroy function
@@ -393,8 +397,10 @@ g_data_set_internal (GData	  **datalist,
 		      if (dataset)
 			g_dataset_destroy_internal (dataset);
 		    }
-
-		  g_datalist_unlock (datalist);
+		  else
+		    {
+		      g_datalist_unlock (datalist);
+		    }
 
 		  /* We found and removed an old value
 		   * the GData struct *must* already be unlinked
