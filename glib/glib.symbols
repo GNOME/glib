@@ -810,6 +810,7 @@ g_queue_find
 g_queue_find_custom
 g_queue_foreach
 g_queue_free
+g_queue_free_full
 g_queue_get_length
 g_queue_index
 g_queue_init

@@ -73,6 +73,8 @@ struct _GQueue
  */
 GQueue*  g_queue_new            (void);
 void     g_queue_free           (GQueue           *queue);
+void     g_queue_free_full      (GQueue           *queue,
+				GDestroyNotify    free_func);
 void     g_queue_init           (GQueue           *queue);
 void     g_queue_clear          (GQueue           *queue);
 gboolean g_queue_is_empty       (GQueue           *queue);

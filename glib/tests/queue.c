@@ -1028,6 +1028,55 @@ test_clear (void)
   g_queue_free (q);
 }
 
+typedef struct
+{
+  gboolean freed;
+  int x;
+} QueueItem;
+
+static void
+free_func (gpointer data)
+{
+  QueueItem *item = data;
+
+  item->freed = TRUE;
+}
+
+static QueueItem *
+new_item (int x)
+{
+  QueueItem *item;
+
+  item = g_slice_new (QueueItem);
+  item->freed = FALSE;
+  item->x = x;
+
+  return item;
+}
+
+static void
+test_free_full (void)
+{
+  QueueItem *one, *two, *three;
+  GQueue *queue = NULL;
+
+  queue = g_queue_new();
+  g_queue_push_tail (queue, one = new_item (1));
+  g_queue_push_tail (queue, two = new_item (2));
+  g_queue_push_tail (queue, three = new_item (3));
+  g_assert (!one->freed);
+  g_assert (!two->freed);
+  g_assert (!three->freed);
+  g_queue_free_full (queue, free_func);
+  g_assert (one->freed);
+  g_assert (two->freed);
+  g_assert (three->freed);
+  g_slice_free (QueueItem, one);
+  g_slice_free (QueueItem, two);
+  g_slice_free (QueueItem, three);
+}
+
+
 int main (int argc, char *argv[])
 {
   guint32 seed;
@@ -1041,6 +1090,7 @@ int main (int argc, char *argv[])
   g_test_add_func ("/queue/find-custom", test_find_custom);
   g_test_add_func ("/queue/static", test_static);
   g_test_add_func ("/queue/clear", test_clear);
+  g_test_add_func ("/queue/free-full", test_free_full);
 
   seed = g_test_rand_int_range (0, G_MAXINT);
   path = g_strdup_printf ("/queue/random/seed:%u", seed);
