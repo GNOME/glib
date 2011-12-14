@@ -29,9 +29,6 @@
 /* all tests rely on a global connection */
 static GDBusConnection *c = NULL;
 
-/* all tests rely on a shared mainloop */
-static GMainLoop *loop = NULL;
-
 /* ---------------------------------------------------------------------------------------------------- */
 /* Ensure that signal and method replies are delivered in the right thread */
 /* ---------------------------------------------------------------------------------------------------- */
@@ -221,8 +218,6 @@ test_delivery_in_thread_func (gpointer _data)
   g_main_loop_unref (thread_loop);
   g_main_context_unref (thread_context);
 
-  g_main_loop_quit (loop);
-
   return NULL;
 }
 
@@ -234,9 +229,6 @@ test_delivery_in_thread (void)
   thread = g_thread_new ("deliver",
                          test_delivery_in_thread_func,
                          NULL);
-
-  /* run the event loop - it is needed to dispatch D-Bus messages */
-  g_main_loop_run (loop);
 
   g_thread_join (thread);
 }
@@ -251,8 +243,6 @@ typedef struct {
 
   GMainLoop *thread_loop;
   GThread *thread;
-
-  gboolean done;
 } SyncThreadData;
 
 static void
@@ -337,9 +327,6 @@ test_sleep_in_thread_func (gpointer _data)
   g_main_loop_unref (data->thread_loop);
   g_main_context_unref (thread_context);
 
-  data->done = TRUE;
-  g_main_loop_quit (loop);
-
   return NULL;
 }
 
@@ -386,7 +373,6 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data1.msec = 40;
       data1.num = 100;
       data1.async = do_async;
-      data1.done = FALSE;
       thread1 = g_thread_new ("sleep",
                               test_sleep_in_thread_func,
                               &data1);
@@ -395,7 +381,6 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data2.msec = 20;
       data2.num = 200;
       data2.async = do_async;
-      data2.done = FALSE;
       thread2 = g_thread_new ("sleep2",
                               test_sleep_in_thread_func,
                               &data2);
@@ -404,14 +389,9 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       data3.msec = 100;
       data3.num = 40;
       data3.async = do_async;
-      data3.done = FALSE;
       thread3 = g_thread_new ("sleep3",
                               test_sleep_in_thread_func,
                               &data3);
-
-      /* we handle messages in the main loop - threads will quit it when they are done */
-      while (!(data1.done && data2.done && data3.done))
-        g_main_loop_run (loop);
 
       g_thread_join (thread1);
       g_thread_join (thread2);
@@ -430,8 +410,6 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
 
       g_print (" ");
     }
-
-  g_main_loop_quit (loop);
 }
 
 static void
@@ -479,9 +457,6 @@ main (int   argc,
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
-
-  /* all the tests rely on a shared main loop */
-  loop = g_main_loop_new (NULL, FALSE);
 
   /* all the tests use a session bus with a well-known address that we can bring up and down
    * using session_bus_up() and session_bus_down().
