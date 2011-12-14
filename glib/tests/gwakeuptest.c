@@ -31,7 +31,7 @@ test_semantics (void)
   gint i;
 
   /* prevent the test from deadlocking */
-  alarm (30);
+  alarm (60);
 
   wakeup = g_wakeup_new ();
   g_assert (!check_signaled (wakeup));
@@ -210,7 +210,7 @@ test_threaded (void)
   gint i;
 
   /* make sure we don't block forever */
-  alarm (30);
+  alarm (60);
 
   /* simple mainloop test based on GWakeup.
    *

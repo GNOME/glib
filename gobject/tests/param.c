@@ -204,8 +204,8 @@ test_value_transform (void)
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
 
-  CHECK_LONG_CONVERSION(G_TYPE_CHAR, char, -124)
-  CHECK_LONG_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_LONG_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_LONG_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_LONG_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_LONG_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_LONG_CONVERSION(G_TYPE_INT, int, -12345)
@@ -254,8 +254,8 @@ test_value_transform (void)
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
 
-  CHECK_INT64_CONVERSION(G_TYPE_CHAR, char, -124)
-  CHECK_INT64_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_INT64_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_INT64_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_INT64_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_INT64_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_INT64_CONVERSION(G_TYPE_INT, int, -12345)
@@ -279,8 +279,8 @@ test_value_transform (void)
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
 
-  CHECK_UINT64_CONVERSION(G_TYPE_CHAR, char, -124)
-  CHECK_UINT64_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_UINT64_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_UINT64_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_UINT64_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_UINT64_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_UINT64_CONVERSION(G_TYPE_INT, int, -12345)
@@ -304,8 +304,8 @@ test_value_transform (void)
   g_value_unset (&src);                                                \
   g_value_unset (&dest);
 
-  CHECK_FLOAT_CONVERSION(G_TYPE_CHAR, char, -124)
-  CHECK_FLOAT_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_FLOAT_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_FLOAT_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_FLOAT_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_FLOAT_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_FLOAT_CONVERSION(G_TYPE_INT, int, -12345)
@@ -329,8 +329,8 @@ test_value_transform (void)
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
 
-  CHECK_DOUBLE_CONVERSION(G_TYPE_CHAR, char, -124)
-  CHECK_DOUBLE_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_DOUBLE_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_DOUBLE_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_DOUBLE_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_DOUBLE_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_DOUBLE_CONVERSION(G_TYPE_INT, int, -12345)
