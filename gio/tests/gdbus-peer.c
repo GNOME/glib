@@ -1678,10 +1678,10 @@ codegen_test_peer (void)
   GVariant            *value;
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
+  service_loop = NULL;
   service_thread = g_thread_new ("codegen_test_peer",
                                  codegen_service_thread_func,
                                  NULL);
-  service_loop = NULL;
   while (service_loop == NULL)
     g_thread_yield ();
   g_assert (codegen_server != NULL);
