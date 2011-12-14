@@ -572,26 +572,32 @@ test_expected_interface (GDBusProxy *proxy)
   test_bogus_property (proxy);
   */
 
-  /* Also check that we complain if setting a cached property of the wrong type */
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+      /* Also check that we complain if setting a cached property of the wrong type */
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+        {
+          g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+        }
+      g_test_trap_assert_stderr ("*Trying to set property y of type s but according to the expected interface the type is y*");
+      g_test_trap_assert_failed();
     }
-  g_test_trap_assert_stderr ("*Trying to set property y of type s but according to the expected interface the type is y*");
-  g_test_trap_assert_failed();
 
   /* this should work, however (since the type is correct) */
   g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (42));
 
-  /* Try to get the value of a property where the type we expect is different from
-   * what we have in our cache (e.g. what the service returned)
-   */
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      value = g_dbus_proxy_get_cached_property (proxy, "i");
+      /* Try to get the value of a property where the type we expect is different from
+       * what we have in our cache (e.g. what the service returned)
+       */
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+        {
+          value = g_dbus_proxy_get_cached_property (proxy, "i");
+        }
+      g_test_trap_assert_stderr ("*Trying to get property i with type i but according to the expected interface the type is u*");
+      g_test_trap_assert_failed();
     }
-  g_test_trap_assert_stderr ("*Trying to get property i with type i but according to the expected interface the type is u*");
-  g_test_trap_assert_failed();
 
   /* Even if a property does not exist in expected_interface, looking it
    * up, or setting it, should never fail. Because it could be that the

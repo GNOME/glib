@@ -615,6 +615,9 @@ base2_object_init (Base2Object *object)
 static void
 test_not_overridden (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   g_test_bug ("637738");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT|G_TEST_TRAP_SILENCE_STDERR))

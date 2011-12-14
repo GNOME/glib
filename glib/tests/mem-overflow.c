@@ -73,7 +73,18 @@ mem_overflow (void)
 #undef CHECK_FAIL
 #undef CHECK_PASS
 
-#define CHECK_FAIL(P)	if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) { p = (P); exit (0); } g_test_trap_assert_failed();
+#define CHECK_FAIL(P)	do { \
+      if (g_test_undefined ()) \
+        { \
+          if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) \
+            { \
+              p = (P); \
+              exit (0); \
+            } \
+          \
+          g_test_trap_assert_failed(); \
+        } \
+    } while (0)
 
 #define CHECK_PASS(P)	do { \
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) \

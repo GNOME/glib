@@ -2831,6 +2831,9 @@ do_failed_test (const gchar *pattern)
 static void
 test_invalid_varargs (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (do_failed_test ("*GVariant format string*"))
     {
       g_variant_new ("z");
@@ -3871,22 +3874,25 @@ test_parse_positional (void)
   check_and_free (value, "[('one', 1), ('two', 2), ('three', 3)]");
   check_and_free (g_variant_new_parsed ("{%s:%i}", "one", 1), "{'one': 1}");
 
-  if (do_failed_test ("*GVariant format string*"))
+  if (g_test_undefined ())
     {
-      g_variant_new_parsed ("%z");
-      abort ();
-    }
+      if (do_failed_test ("*GVariant format string*"))
+        {
+          g_variant_new_parsed ("%z");
+          abort ();
+        }
 
-  if (do_failed_test ("*can not parse as*"))
-    {
-      g_variant_new_parsed ("uint32 %i", 2);
-      abort ();
-    }
+      if (do_failed_test ("*can not parse as*"))
+        {
+          g_variant_new_parsed ("uint32 %i", 2);
+          abort ();
+        }
 
-  if (do_failed_test ("*expected GVariant of type `i'*"))
-    {
-      g_variant_new_parsed ("%@i", g_variant_new_uint32 (2));
-      abort ();
+      if (do_failed_test ("*expected GVariant of type `i'*"))
+        {
+          g_variant_new_parsed ("%@i", g_variant_new_uint32 (2));
+          abort ();
+        }
     }
 }
 

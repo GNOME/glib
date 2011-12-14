@@ -53,7 +53,7 @@ test_basic (void)
   g_free (str);
   str = NULL;
 
-  if (!backend_set)
+  if (!backend_set && g_test_undefined ())
     {
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         {
@@ -85,6 +85,9 @@ test_basic (void)
 static void
 test_unknown_key (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings;
@@ -107,6 +110,9 @@ test_unknown_key (void)
 static void
 test_no_schema (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings;
@@ -126,6 +132,9 @@ test_no_schema (void)
 static void
 test_wrong_type (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings;
@@ -156,6 +165,9 @@ test_wrong_type (void)
 static void
 test_wrong_path (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings G_GNUC_UNUSED;
@@ -170,6 +182,9 @@ test_wrong_path (void)
 static void
 test_no_path (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GSettings *settings G_GNUC_UNUSED;
@@ -1233,6 +1248,9 @@ test_directional_binding (void)
 static void
 test_typesafe_binding (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       TestObject *obj;
@@ -1356,18 +1374,21 @@ test_no_change_binding (void)
 static void
 test_no_read_binding (void)
 {
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      TestObject *obj;
-      GSettings *settings;
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          TestObject *obj;
+          GSettings *settings;
 
-      settings = g_settings_new ("org.gtk.test.binding");
-      obj = test_object_new ();
+          settings = g_settings_new ("org.gtk.test.binding");
+          obj = test_object_new ();
 
-      g_settings_bind (settings, "string", obj, "no-read", 0);
+          g_settings_bind (settings, "string", obj, "no-read", 0);
+        }
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*property*is not readable*");
     }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*property*is not readable*");
 
   if (g_test_trap_fork (0, 0))
     {
@@ -1390,18 +1411,21 @@ test_no_read_binding (void)
 static void
 test_no_write_binding (void)
 {
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      TestObject *obj;
-      GSettings *settings;
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          TestObject *obj;
+          GSettings *settings;
 
-      settings = g_settings_new ("org.gtk.test.binding");
-      obj = test_object_new ();
+          settings = g_settings_new ("org.gtk.test.binding");
+          obj = test_object_new ();
 
-      g_settings_bind (settings, "string", obj, "no-write", 0);
+          g_settings_bind (settings, "string", obj, "no-write", 0);
+        }
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*property*is not writable*");
     }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*property*is not writable*");
 
   if (g_test_trap_fork (0, 0))
     {
@@ -1562,7 +1586,7 @@ test_enums (void)
   settings = g_settings_new ("org.gtk.test.enums");
   direct = g_settings_new ("org.gtk.test.enums.direct");
 
-  if (!backend_set)
+  if (g_test_undefined () && !backend_set)
     {
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_enum (direct, "test");
@@ -1620,7 +1644,7 @@ test_flags (void)
   settings = g_settings_new ("org.gtk.test.enums");
   direct = g_settings_new ("org.gtk.test.enums.direct");
 
-  if (!backend_set)
+  if (g_test_undefined () && !backend_set)
     {
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_flags (direct, "test");
@@ -1690,7 +1714,7 @@ test_range (void)
   settings = g_settings_new ("org.gtk.test.range");
   direct = g_settings_new ("org.gtk.test.range.direct");
 
-  if (!backend_set)
+  if (g_test_undefined () && !backend_set)
     {
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_int (settings, "val", 45);

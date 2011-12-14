@@ -197,6 +197,9 @@ static GMarkupParser cleanup_parser = {
 static void
 test_cleanup (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GMarkupParseContext *context;

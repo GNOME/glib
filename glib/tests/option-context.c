@@ -2077,6 +2077,9 @@ test_error_hook (void)
 static void
 flag_reverse_string (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GOptionContext *context;
@@ -2108,6 +2111,9 @@ flag_reverse_string (void)
 static void
 flag_optional_int (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       GOptionContext *context;

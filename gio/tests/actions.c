@@ -62,12 +62,15 @@ test_basic (void)
   g_action_activate (G_ACTION (action), NULL);
   g_assert (!a.did_run);
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      g_action_activate (G_ACTION (action), g_variant_new_string ("xxx"));
-      exit (0);
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          g_action_activate (G_ACTION (action), g_variant_new_string ("xxx"));
+          exit (0);
+        }
+      g_test_trap_assert_failed ();
     }
-  g_test_trap_assert_failed ();
 
   g_object_unref (action);
   g_assert (!a.did_run);
@@ -87,13 +90,16 @@ test_basic (void)
   g_variant_unref (a.params);
   a.did_run = FALSE;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      g_action_activate (G_ACTION (action), NULL);
-      exit (0);
-    }
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          g_action_activate (G_ACTION (action), NULL);
+          exit (0);
+        }
 
-  g_test_trap_assert_failed ();
+      g_test_trap_assert_failed ();
+    }
 
   g_object_unref (action);
   g_assert (!a.did_run);
@@ -250,12 +256,15 @@ test_stateful (void)
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
   g_variant_unref (state);
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      g_simple_action_set_state (action, g_variant_new_int32 (123));
-      exit (0);
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          g_simple_action_set_state (action, g_variant_new_int32 (123));
+          exit (0);
+        }
+      g_test_trap_assert_failed ();
     }
-  g_test_trap_assert_failed ();
 
   g_simple_action_set_state (action, g_variant_new_string ("hello"));
   state = g_action_get_state (G_ACTION (action));
@@ -265,12 +274,17 @@ test_stateful (void)
   g_object_unref (action);
 
   action = g_simple_action_new ("foo", NULL);
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+
+  if (g_test_undefined ())
     {
-      g_simple_action_set_state (action, g_variant_new_int32 (123));
-      exit (0);
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          g_simple_action_set_state (action, g_variant_new_int32 (123));
+          exit (0);
+        }
+      g_test_trap_assert_failed ();
     }
-  g_test_trap_assert_failed ();
+
   g_object_unref (action);
 }
 
@@ -339,27 +353,30 @@ test_entries (void)
   g_assert (bar_activated);
   g_assert (!foo_activated);
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (g_test_undefined ())
     {
-      const GActionEntry bad_type = {
-        "bad-type", NULL, "ss"
-      };
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          const GActionEntry bad_type = {
+            "bad-type", NULL, "ss"
+          };
 
-      g_simple_action_group_add_entries (actions, &bad_type, 1, NULL);
-      exit (0);
+          g_simple_action_group_add_entries (actions, &bad_type, 1, NULL);
+          exit (0);
+        }
+      g_test_trap_assert_failed ();
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          const GActionEntry bad_state = {
+            "bad-state", NULL, NULL, "flse"
+          };
+
+          g_simple_action_group_add_entries (actions, &bad_state, 1, NULL);
+          exit (0);
+        }
+      g_test_trap_assert_failed ();
     }
-  g_test_trap_assert_failed ();
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      const GActionEntry bad_state = {
-        "bad-state", NULL, NULL, "flse"
-      };
-
-      g_simple_action_group_add_entries (actions, &bad_state, 1, NULL);
-      exit (0);
-    }
-  g_test_trap_assert_failed ();
 
   state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");
   g_assert_cmpint (g_variant_get_int32 (state), ==, 0);

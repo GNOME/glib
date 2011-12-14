@@ -3,6 +3,9 @@
 static void
 test_slice_config (void)
 {
+  if (!g_test_undefined ())
+    return;
+
   if (g_test_trap_fork (1000000, G_TEST_TRAP_SILENCE_STDERR))
     g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
 
