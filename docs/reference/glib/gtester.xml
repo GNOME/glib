@@ -70,7 +70,38 @@ list paths of available test cases
 <varlistentry>
 <term><option>-m=<replaceable>MODE</replaceable></option></term>
 <listitem><para>
-run test cases in <replaceable>MODE</replaceable>, which can be perf, slow, thorough or quick. The default mode is quick.
+    run test cases in <replaceable>MODE</replaceable>, which can be one of:
+
+    <variablelist>
+      <term><option>perf</option></term>
+      <listitem><para>
+          run performance tests
+      </para></listitem>
+
+      <term><option>slow</option>, <option>thorough</option></term>
+      <listitem><para>
+          run slow tests, or repeat non-deterministic tests more often
+      </para></listitem>
+
+      <term><option>quick</option></term>
+      <listitem><para>
+          do not run slow or performance tests, or do extra repeats
+          of non-deterministic tests (default)
+      </para></listitem>
+
+      <term><option>undefined</option></term>
+      <listitem><para>
+          run test cases that deliberately provoke checks or assertion
+          failures, if implemented (default)
+      </para></listitem>
+
+      <term><option>no-undefined</option></term>
+      <listitem><para>
+          do not run test cases that deliberately provoke checks or
+          assertion failures
+      </para></listitem>
+    </variablelist>
+
 </para></listitem>
 </varlistentry>
 

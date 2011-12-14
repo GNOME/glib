@@ -50,6 +50,7 @@ static gboolean     subtest_verbose = FALSE;
 static gboolean     subtest_mode_fatal = TRUE;
 static gboolean     subtest_mode_perf = FALSE;
 static gboolean     subtest_mode_quick = TRUE;
+static gboolean     subtest_mode_undefined = TRUE;
 static const gchar *subtest_seedstr = NULL;
 static gchar       *subtest_last_seed = NULL;
 static GSList      *subtest_paths = NULL;
@@ -307,6 +308,8 @@ launch_test_binary (const char *binary,
     argc++;
   if (subtest_mode_perf)
     argc++;
+  if (!subtest_mode_undefined)
+    argc++;
   if (gtester_list_tests)
     argc++;
   if (subtest_seedstr)
@@ -337,6 +340,8 @@ launch_test_binary (const char *binary,
     argv[i++] = "-m=slow";
   if (subtest_mode_perf)
     argv[i++] = "-m=perf";
+  if (!subtest_mode_undefined)
+    argv[i++] = "-m=no-undefined";
   if (gtester_list_tests)
     argv[i++] = "-l";
   if (subtest_seedstr)
@@ -479,6 +484,7 @@ usage (gboolean just_version)
   g_print ("  -l                          list paths of available test cases\n");
   g_print ("  -m=perf, -m=slow, -m=quick -m=thorough\n");
   g_print ("                              run test cases in mode perf, slow/thorough or quick (default)\n");
+  g_print ("  -m=no-undefined             don't run test cases that provoke assertions\n");
   g_print ("  -p=TESTPATH                 only start test cases matching TESTPATH\n");
   g_print ("  -s=TESTPATH                 skip test cases matching TESTPATH\n");
   g_print ("  --seed=SEEDSTRING           start all tests with random number seed SEEDSTRING\n");
@@ -596,6 +602,10 @@ parse_args (gint    *argc_p,
               subtest_mode_quick = TRUE;
               subtest_mode_perf = FALSE;
             }
+          else if (strcmp (mode, "undefined") == 0)
+            subtest_mode_undefined = TRUE;
+          else if (strcmp (mode, "no-undefined") == 0)
+            subtest_mode_undefined = FALSE;
           else
             g_error ("unknown test mode: -m %s", mode);
           argv[i] = NULL;

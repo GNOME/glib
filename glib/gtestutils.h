@@ -98,6 +98,7 @@ void    g_test_init                     (int            *argc,
 #define g_test_perf()                   (g_test_config_vars->test_perf)
 #define g_test_verbose()                (g_test_config_vars->test_verbose)
 #define g_test_quiet()                  (g_test_config_vars->test_quiet)
+#define g_test_undefined()              (g_test_config_vars->test_undefined)
 /* run all tests under toplevel suite (path: /) */
 int     g_test_run                      (void);
 /* hook up a test functions under test path */
@@ -234,6 +235,7 @@ typedef struct {
   gboolean      test_perf;      /* run performance tests */
   gboolean      test_verbose;   /* extra info */
   gboolean      test_quiet;     /* reduce output */
+  gboolean      test_undefined; /* run tests that are meant to assert */
 } GTestConfig;
 GLIB_VAR const GTestConfig * const g_test_config_vars;
 

@@ -141,6 +141,17 @@
  */
 
 /**
+ * g_test_undefined:
+ *
+ * Returns %TRUE if tests may provoke assertions and other formally-undefined
+ * behaviour under g_test_trap_fork(), to verify that appropriate warnings
+ * are given. It can be useful to turn this off if running tests under
+ * valgrind.
+ *
+ * Returns: %TRUE if tests may provoke programming errors
+ */
+
+/**
  * g_test_verbose:
  *
  * Returns %TRUE if tests are run in verbose mode.
@@ -496,6 +507,7 @@ static GTestConfig mutable_test_config_vars = {
   FALSE,        /* test_perf */
   FALSE,        /* test_verbose */
   FALSE,        /* test_quiet */
+  TRUE,         /* test_undefined */
 };
 const GTestConfig * const g_test_config_vars = &mutable_test_config_vars;
 
@@ -722,6 +734,10 @@ parse_args (gint    *argc_p,
               mutable_test_config_vars.test_quick = TRUE;
               mutable_test_config_vars.test_perf = FALSE;
             }
+          else if (strcmp (mode, "undefined") == 0)
+            mutable_test_config_vars.test_undefined = TRUE;
+          else if (strcmp (mode, "no-undefined") == 0)
+            mutable_test_config_vars.test_undefined = FALSE;
           else
             g_error ("unknown test mode: -m %s", mode);
           argv[i] = NULL;
@@ -770,6 +786,7 @@ parse_args (gint    *argc_p,
                   "  -p TESTPATH                    execute all tests matching TESTPATH\n"
                   "  -s TESTPATH                    skip all tests matching TESTPATH\n"
                   "  -m {perf|slow|thorough|quick}  Execute tests according modes\n"
+                  "  -m {undefined|no-undefined}    Execute tests according modes\n"
                   "  --debug-log                    debug test logging output\n"
                   "  -k, --keep-going               gtester-specific argument\n"
                   "  --GTestLogFD=N                 gtester-specific argument\n"
@@ -830,7 +847,7 @@ parse_args (gint    *argc_p,
  *       </para></listitem>
  *     </varlistentry>
  *     <varlistentry>
- *       <term><option>-m {perf|slow|thorough|quick}</option></term>
+ *       <term><option>-m {perf|slow|thorough|quick|undefined|no-undefined}</option></term>
  *       <listitem><para>
  *         execute tests according to these test modes:
  *         <variablelist>
@@ -851,6 +868,20 @@ parse_args (gint    *argc_p,
  *             <term>quick</term>
  *             <listitem><para>
  *               quick tests, should run really quickly and give good coverage.
+ *             </para></listitem>
+ *           </varlistentry>
+ *           <varlistentry>
+ *             <term>undefined</term>
+ *             <listitem><para>
+ *               tests for undefined behaviour, may provoke programming errors
+ *               under g_test_trap_fork() to check that appropriate assertions
+ *               or warnings are given
+ *             </para></listitem>
+ *           </varlistentry>
+ *           <varlistentry>
+ *             <term>no-undefined</term>
+ *             <listitem><para>
+ *               avoid tests for undefined behaviour
  *             </para></listitem>
  *           </varlistentry>
  *         </variablelist>
