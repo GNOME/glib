@@ -174,6 +174,10 @@ gboolean         g_threads_got_initialized = TRUE;
  * gthread-2.0</command> outputs. This is not the case for all the
  * other thread-related functions of GLib. Those can be used without
  * having to link with the thread libraries.</para></note>
+ *
+ * Deprecated:2.32: This function is no longer necessary. The GLib
+ *     threading system is automatically initialized at the start
+ *     of your program.
  */
 
 /**
