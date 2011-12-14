@@ -244,7 +244,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
               g_menu_item_set_link (state->frame.item, name, G_MENU_MODEL (menu));
               g_menu_markup_push_frame (state, menu, NULL);
 
-              if (id != NULL && state->objects != NULL)
+              if (id != NULL)
                 g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
             }
 
