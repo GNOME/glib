@@ -226,6 +226,14 @@ g_array_ref (GArray *array)
   return array;
 }
 
+typedef enum
+{
+  FREE_SEGMENT = 1 << 0,
+  PRESERVE_WRAPPER = 1 << 1
+} ArrayFreeFlags;
+
+static gchar *array_free (GRealArray *, ArrayFreeFlags);
+
 /**
  * g_array_unref:
  * @array: A #GArray.
@@ -244,7 +252,7 @@ g_array_unref (GArray *array)
   g_return_if_fail (array);
 
   if (g_atomic_int_dec_and_test (&rarray->ref_count))
-    g_array_free (array, TRUE);
+    array_free (rarray, FREE_SEGMENT);
 }
 
 /**
@@ -290,17 +298,26 @@ g_array_free (GArray   *farray,
 	      gboolean  free_segment)
 {
   GRealArray *array = (GRealArray*) farray;
-  gchar* segment;
-  gboolean preserve_wrapper;
+  ArrayFreeFlags flags;
 
   g_return_val_if_fail (array, NULL);
 
-  /* if others are holding a reference, preserve the wrapper but do free/return the data */
-  preserve_wrapper = FALSE;
-  if (g_atomic_int_get (&array->ref_count) > 1)
-    preserve_wrapper = TRUE;
+  flags = (free_segment ? FREE_SEGMENT : 0);
 
-  if (free_segment)
+  /* if others are holding a reference, preserve the wrapper but do free/return the data */
+  if (g_atomic_int_get (&array->ref_count) > 1)
+    flags |= PRESERVE_WRAPPER;
+
+  return array_free (array, flags);
+}
+
+static gchar *
+array_free (GRealArray     *array,
+            ArrayFreeFlags  flags)
+{
+  gchar *segment;
+
+  if (flags & FREE_SEGMENT)
     {
       g_free (array->data);
       segment = NULL;
@@ -308,7 +325,7 @@ g_array_free (GArray   *farray,
   else
     segment = (gchar*) array->data;
 
-  if (preserve_wrapper)
+  if (flags & PRESERVE_WRAPPER)
     {
       array->data            = NULL;
       array->len             = 0;
@@ -912,6 +929,8 @@ g_ptr_array_ref (GPtrArray *array)
   return array;
 }
 
+static gpointer *ptr_array_free (GPtrArray *, ArrayFreeFlags);
+
 /**
  * g_ptr_array_unref:
  * @array: A #GPtrArray.
@@ -930,7 +949,7 @@ g_ptr_array_unref (GPtrArray *array)
   g_return_if_fail (array);
 
   if (g_atomic_int_dec_and_test (&rarray->ref_count))
-    g_ptr_array_free (array, TRUE);
+    ptr_array_free (array, FREE_SEGMENT);
 }
 
 /**
@@ -956,17 +975,27 @@ g_ptr_array_free (GPtrArray *farray,
 		  gboolean   free_segment)
 {
   GRealPtrArray *array = (GRealPtrArray*) farray;
-  gpointer* segment;
-  gboolean preserve_wrapper;
+  ArrayFreeFlags flags;
 
   g_return_val_if_fail (array, NULL);
 
-  /* if others are holding a reference, preserve the wrapper but do free/return the data */
-  preserve_wrapper = FALSE;
-  if (g_atomic_int_get (&array->ref_count) > 1)
-    preserve_wrapper = TRUE;
+  flags = (free_segment ? FREE_SEGMENT : 0);
 
-  if (free_segment)
+  /* if others are holding a reference, preserve the wrapper but do free/return the data */
+  if (g_atomic_int_get (&array->ref_count) > 1)
+    flags |= PRESERVE_WRAPPER;
+
+  return ptr_array_free (farray, flags);
+}
+
+static gpointer *
+ptr_array_free (GPtrArray      *farray,
+                ArrayFreeFlags  flags)
+{
+  GRealPtrArray *array = (GRealPtrArray*) farray;
+  gpointer *segment;
+
+  if (flags & FREE_SEGMENT)
     {
       if (array->element_free_func != NULL)
         g_ptr_array_foreach (farray, (GFunc) array->element_free_func, NULL);
@@ -976,7 +1005,7 @@ g_ptr_array_free (GPtrArray *farray,
   else
     segment = array->pdata;
 
-  if (preserve_wrapper)
+  if (flags & PRESERVE_WRAPPER)
     {
       array->pdata = NULL;
       array->len = 0;
