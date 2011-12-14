@@ -1442,6 +1442,7 @@ g_simple_action_new_stateful
 g_simple_action_set_enabled
 g_simple_action_set_state
 g_dbus_action_group_get_type
+g_dbus_action_group_register_platform
 g_dbus_action_group_get
 g_dbus_menu_model_get_type
 g_dbus_menu_model_get

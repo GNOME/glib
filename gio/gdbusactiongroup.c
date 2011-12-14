@@ -38,6 +38,10 @@
  * that is exported over D-Bus with g_dbus_connection_export_action_group().
  */
 
+G_GNUC_INTERNAL GDBusActionGroupSendHookFunc g_dbus_action_group_send_hook;
+G_GNUC_INTERNAL GDBusActionGroupEmitHookFunc g_dbus_action_group_before_emit_hook;
+G_GNUC_INTERNAL GDBusActionGroupEmitHookFunc g_dbus_action_group_after_emit_hook;
+
 struct _GDBusActionGroup
 {
   GObject parent_instance;
@@ -368,10 +372,15 @@ g_dbus_action_group_change_state (GActionGroup *g_group,
                                   GVariant     *value)
 {
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (g_group);
+  GVariantBuilder platform_data_builder;
+
+  g_variant_builder_init (&platform_data_builder, G_VARIANT_TYPE_VARDICT);
+  if (g_dbus_action_group_send_hook != NULL)
+    (* g_dbus_action_group_send_hook) (group, &platform_data_builder);
 
   /* Don't bother with the checks.  The other side will do it again. */
   g_dbus_connection_call (group->connection, group->bus_name, group->object_path, "org.gtk.Actions", "SetState",
-                          g_variant_new ("(sva{sv})", action_name, value, NULL),
+                          g_variant_new ("(sva{sv})", action_name, value, &platform_data_builder),
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
 }
 
@@ -381,6 +390,7 @@ g_dbus_action_group_activate (GActionGroup *g_group,
                               GVariant     *parameter)
 {
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (g_group);
+  GVariantBuilder platform_data_builder;
   GVariantBuilder builder;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
@@ -388,8 +398,12 @@ g_dbus_action_group_activate (GActionGroup *g_group,
   if (parameter)
     g_variant_builder_add (&builder, "v", parameter);
 
+  g_variant_builder_init (&platform_data_builder, G_VARIANT_TYPE_VARDICT);
+  if (g_dbus_action_group_send_hook != NULL)
+    (* g_dbus_action_group_send_hook) (group, &platform_data_builder);
+
   g_dbus_connection_call (group->connection, group->bus_name, group->object_path, "org.gtk.Actions", "Activate",
-                          g_variant_new ("(sava{sv})", action_name, &builder, NULL),
+                          g_variant_new ("(sava{sv})", action_name, &builder, &platform_data_builder),
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
 }
 
@@ -506,4 +520,18 @@ g_dbus_action_group_sync (GDBusActionGroup  *group,
     }
 
   return reply != NULL;
+}
+
+void
+g_dbus_action_group_register_platform (GDBusActionGroupSendHookFunc send,
+                                       GDBusActionGroupEmitHookFunc before,
+                                       GDBusActionGroupEmitHookFunc after)
+{
+  g_return_if_fail (g_dbus_action_group_send_hook == NULL &&
+                    g_dbus_action_group_before_emit_hook == NULL &&
+                    g_dbus_action_group_after_emit_hook == NULL);
+
+  g_dbus_action_group_send_hook = send;
+  g_dbus_action_group_before_emit_hook = before;
+  g_dbus_action_group_after_emit_hook = after;
 }
