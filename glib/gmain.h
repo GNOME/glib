@@ -88,8 +88,6 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     callback function with @user_data and whatever additional parameters
  *     are needed for this type of event source.
  * @finalize: Called when the source is finalized.
- * @closure_callback:
- * @closure_marshal:
  *
  * The <structname>GSourceFuncs</structname> struct contains a table of
  * functions used to handle event sources in a generic manner.
@@ -200,6 +198,7 @@ struct _GSourceFuncs
                         gpointer    user_data);
   void     (*finalize) (GSource    *source); /* Can be NULL */
 
+  /*< private >*/
   /* For use by g_source_set_closure */
   GSourceFunc     closure_callback;        
   GSourceDummyMarshal closure_marshal; /* Really is of type GClosureMarshal */

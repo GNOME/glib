@@ -1995,13 +1995,13 @@ g_clock_win32_init (void)
  *
  * Queries the system monotonic time, if available.
  *
- * On POSIX systems with clock_gettime() and %CLOCK_MONOTONIC this call
+ * On POSIX systems with clock_gettime() and <literal>CLOCK_MONOTONIC</literal> this call
  * is a very shallow wrapper for that.  Otherwise, we make a best effort
  * that probably involves returning the wall clock time (with at least
  * microsecond accuracy, subject to the limitations of the OS kernel).
  *
- * It's important to note that POSIX %CLOCK_MONOTONIC does not count
- * time spent while the machine is suspended.
+ * It's important to note that POSIX <literal>CLOCK_MONOTONIC</literal> does
+ * not count time spent while the machine is suspended.
  *
  * On Windows, "limitations of the OS kernel" is a rather substantial
  * statement.  Depending on the configuration of the system, the wall

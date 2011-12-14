@@ -260,7 +260,7 @@
  * an error message is logged and the application is terminated.
  *
  * The macro can be turned off in final releases of code by defining
- * #G_DISABLE_ASSERT when compiling the application.
+ * <envar>G_DISABLE_ASSERT</envar> when compiling the application.
  */
 
 /**
@@ -271,7 +271,7 @@
  * application is terminated.
  *
  * The macro can be turned off in final releases of code by defining
- * #G_DISABLE_ASSERT when compiling the application.
+ * <envar>G_DISABLE_ASSERT</envar> when compiling the application.
  */
 
 /**
@@ -1281,10 +1281,10 @@ g_test_run (void)
  * Create a new #GTestCase, named @test_name, this API is fairly
  * low level, calling g_test_add() or g_test_add_func() is preferable.
  * When this test is executed, a fixture structure of size @data_size
- * will be allocated and filled with 0s. Then data_setup() is called
+ * will be allocated and filled with 0s. Then @data_setup is called
  * to initialize the fixture. After fixture setup, the actual test
- * function data_test() is called. Once the test run completed, the
- * fixture structure is torn down  by calling data_teardown() and
+ * function @data_test is called. Once the test run completed, the
+ * fixture structure is torn down  by calling @data_teardown and
  * after that the memory is released.
  *
  * Splitting up a test run into fixture setup, test function and
@@ -1557,7 +1557,7 @@ g_test_queue_free (gpointer gfree_pointer)
  * @destroy_func:       Destroy callback for teardown phase.
  * @destroy_data:       Destroy callback data.
  *
- * This function enqueus a callback @destroy_func() to be executed
+ * This function enqueus a callback @destroy_func to be executed
  * during the next test case teardown phase. This is most useful
  * to auto destruct allocted test resources at the end of a test run.
  * Resources are released in reverse queue order, that means enqueueing

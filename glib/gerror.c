@@ -281,7 +281,7 @@
  *   If there's a "generic" or "unknown" error code for unrecoverable
  *   errors it doesn't make sense to distinguish with specific codes,
  *   it should be called <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_FAILED</literal>,
- *   for example %G_SPAWN_ERROR_FAILED or %G_THREAD_ERROR_FAILED.
+ *   for example %G_SPAWN_ERROR_FAILED.
  * </para></listitem>
  * </itemizedlist>
  *

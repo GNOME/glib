@@ -77,7 +77,7 @@
  * @G_HOOK_FLAG_ACTIVE: set if the hook has not been destroyed
  * @G_HOOK_FLAG_IN_CALL: set if the hook is currently being run
  * @G_HOOK_FLAG_MASK: A mask covering all bits reserved for
- *   hook flags; see #G_HOOK_FLAGS_USER_SHIFT
+ *   hook flags; see %G_HOOK_FLAG_USER_SHIFT
  *
  * Flags used internally in the #GHook implementation.
  */
@@ -86,7 +86,7 @@
  * G_HOOK_FLAGS:
  * @hook: a #GHook
  *
- * Returns the flags of a hook.
+ * Gets the flags of a hook.
  */
 
 /**

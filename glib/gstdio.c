@@ -744,7 +744,7 @@ g_fopen (const gchar *filename,
  * 
  * See your C library manual for more details about freopen().
  *
- * Returns: A <type>FILE</type> pointer if the file was successfully
+ * Returns: A <literal>FILE</literal> pointer if the file was successfully
  *    opened, or %NULL if an error occurred.
  * 
  * Since: 2.6

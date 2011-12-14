@@ -70,12 +70,13 @@ g_unix_set_error_from_errno (GError **error,
  * Similar to the UNIX pipe() call, but on modern systems like Linux
  * uses the pipe2() system call, which atomically creates a pipe with
  * the configured flags.  The only supported flag currently is
- * %FD_CLOEXEC.  If for example you want to configure %O_NONBLOCK,
- * that must still be done separately with fcntl().
+ * <literal>FD_CLOEXEC</literal>.  If for example you want to configure
+ * <literal>O_NONBLOCK</literal>, that must still be done separately with
+ * fcntl().
  *
- * <note>This function does *not* take %O_CLOEXEC, it takes
- * %FD_CLOEXEC as if for fcntl(); these are different on
- * Linux/glibc.</note>
+ * <note>This function does *not* take <literal>O_CLOEXEC</literal>, it takes
+ * <literal>FD_CLOEXEC</literal> as if for fcntl(); these are
+ * different on Linux/glibc.</note>
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
  *
@@ -134,8 +135,8 @@ g_unix_open_pipe (int     *fds,
  * @error: a #GError
  *
  * Control the non-blocking state of the given file descriptor,
- * according to @nonblock.  On most systems this uses %O_NONBLOCK, but
- * on some older ones may use %O_NDELAY.
+ * according to @nonblock.  On most systems this uses <literal>O_NONBLOCK</literal>, but
+ * on some older ones may use <literal>O_NDELAY</literal>.
  *
  * Returns: %TRUE if successful
  *
@@ -184,12 +185,13 @@ g_unix_set_fd_nonblocking (gint       fd,
  * @signum: A signal number
  *
  * Create a #GSource that will be dispatched upon delivery of the UNIX
- * signal @signum.  Currently only %SIGHUP, %SIGINT, and %SIGTERM can
+ * signal @signum.  Currently only <literal>SIGHUP</literal>,
+ * <literal>SIGINT</literal>, and <literal>SIGTERM</literal> can
  * be monitored.  Note that unlike the UNIX default, all sources which
  * have created a watch will be dispatched, regardless of which
  * underlying thread invoked g_unix_signal_source_new().
  *
- * For example, an effective use of this function is to handle SIGTERM
+ * For example, an effective use of this function is to handle <literal>SIGTERM</literal>
  * cleanly; flushing any outstanding files, and then calling
  * g_main_loop_quit ().  It is not safe to do any of this a regular
  * UNIX signal handler; your handler may be invoked while malloc() or

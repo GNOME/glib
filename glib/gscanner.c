@@ -113,6 +113,20 @@
  * @G_TOKEN_LEFT_PAREN: a '(' character
  * @G_TOKEN_LEFT_CURLY: a '{' character
  * @G_TOKEN_RIGHT_CURLY: a '}' character
+ * @G_TOKEN_RIGHT_PAREN: a ')' character
+ * @G_TOKEN_ERROR: an error occurred
+ * @G_TOKEN_CHAR: a character
+ * @G_TOKEN_BINARY: a binary integer
+ * @G_TOKEN_OCTAL: an octal integer
+ * @G_TOKEN_INT: an integer
+ * @G_TOKEN_HEX: a hex integer
+ * @G_TOKEN_FLOAT: a floating point number
+ * @G_TOKEN_STRING: a string
+ * @G_TOKEN_SYMBOL: a symbol
+ * @G_TOKEN_IDENTIFIER: an identifier
+ * @G_TOKEN_IDENTIFIER_NULL: a null identifier
+ * @G_TOKEN_COMMENT_SINGLE: one line comment
+ * @G_TOKEN_COMMENT_MULTI: multi line comment
  *
  * The possible types of token returned from each
  * g_scanner_get_next_token() call.
@@ -120,6 +134,18 @@
 
 /**
  * GTokenValue:
+ * @v_symbol: token symbol value
+ * @v_identifier: token identifier value
+ * @v_binary: token binary integer value
+ * @v_octal: octal integer value
+ * @v_int: integer value
+ * @v_int64: 64-bit integer value
+ * @v_float: floating point value
+ * @v_hex: hex integer value
+ * @v_string: string value
+ * @v_comment: comment value
+ * @v_char: character value
+ * @v_error: error value
  *
  * A union holding the value of the token.
  */
@@ -136,17 +162,17 @@
  * @G_ERR_FLOAT_MALFORMED: malformed floating point number
  *
  * The possible errors, used in the @v_error field
- * of #GTokenValue, when the token is a #G_TOKEN_ERROR.
+ * of #GTokenValue, when the token is a %G_TOKEN_ERROR.
  */
 
 /**
  * GScanner:
- * @user_data:
- * @max_parse_errors:
- * @parse_errors:
- * @input_name:
- * @qdata:
- * @config:
+ * @user_data: unused
+ * @max_parse_errors: unused
+ * @parse_errors: g_scanner_error() increments this field
+ * @input_name: name of input stream, featured by the default message handler
+ * @qdata: quarked data
+ * @config: link into the scanner configuration
  * @token: token parsed by the last g_scanner_get_next_token()
  * @value: value of the last token from g_scanner_get_next_token()
  * @line: line number of the last token from g_scanner_get_next_token()
@@ -155,12 +181,7 @@
  * @next_value: value of the last token from g_scanner_peek_next_token()
  * @next_line: line number of the last token from g_scanner_peek_next_token()
  * @next_position: char number of the last token from g_scanner_peek_next_token()
- * @symbol_table:
- * @input_fd:
- * @text:
- * @text_end:
- * @buffer:
- * @scope_id:
+ * @msg_handler: handler function for _warn and _error
  *
  * The data structure representing a lexical scanner.
  *
@@ -206,7 +227,7 @@
  * @scan_identifier_1char: specifies if single-character
  *     identifiers are recognized (the default is %FALSE).
  * @scan_identifier_NULL: specifies if %NULL is reported as
- *     #G_TOKEN_IDENTIFIER_NULL (the default is %FALSE).
+ *     %G_TOKEN_IDENTIFIER_NULL (the default is %FALSE).
  * @scan_symbols: specifies if symbols are recognized (the default
  *     is %TRUE).
  * @scan_binary: specifies if binary numbers are recognized (the
@@ -225,19 +246,19 @@
  *     quotes (the default is %TRUE).
  * @numbers_2_int: specifies if binary, octal and hexadecimal numbers
  *     are reported as #G_TOKEN_INT (the default is %TRUE).
- * @int_2_float: specifies if all numbers are reported as #G_TOKEN_FLOAT
+ * @int_2_float: specifies if all numbers are reported as %G_TOKEN_FLOAT
  *     (the default is %FALSE).
  * @identifier_2_string: specifies if identifiers are reported as strings
  *     (the default is %FALSE).
  * @char_2_token: specifies if characters are reported by setting
- *     <literal>token = ch</literal> or as #G_TOKEN_CHAR (the default
+ *     <literal>token = ch</literal> or as %G_TOKEN_CHAR (the default
  *     is %TRUE).
  * @symbol_2_token: specifies if symbols are reported by setting
- *     <literal>token = v_symbol</literal> or as #G_TOKEN_SYMBOL (the
+ *     <literal>token = v_symbol</literal> or as %G_TOKEN_SYMBOL (the
  *     default is %FALSE).
  * @scope_0_fallback: specifies if a symbol is searched for in the
  *     default scope in addition to the current scope (the default is %FALSE).
- * @store_int64:
+ * @store_int64: use value.v_int64 rather than v_int
  *
  * Specifies the #GScanner parser configuration. Most settings can
  * be changed during the parsing phase and will affect the lexical
@@ -1269,12 +1290,12 @@ g_scanner_get_char (GScanner	*scanner,
  * @expected_token: the expected token
  * @identifier_spec: a string describing how the scanner's user
  *     refers to identifiers (%NULL defaults to "identifier").
- *     This is used if @expected_token is #G_TOKEN_IDENTIFIER or
- *     #G_TOKEN_IDENTIFIER_NULL.
+ *     This is used if @expected_token is %G_TOKEN_IDENTIFIER or
+ *     %G_TOKEN_IDENTIFIER_NULL.
  * @symbol_spec: a string describing how the scanner's user refers
  *     to symbols (%NULL defaults to "symbol"). This is used if
- *     @expected_token is #G_TOKEN_SYMBOL or any token value greater
- *     than #G_TOKEN_LAST.
+ *     @expected_token is %G_TOKEN_SYMBOL or any token value greater
+ *     than %G_TOKEN_LAST.
  * @symbol_name: the name of the symbol, if the scanner's current
  *     token is a symbol.
  * @message: a message string to output at the end of the

@@ -97,7 +97,7 @@
  * Note that it is not safe to assume that your program has no threads
  * even if you don't call g_thread_new() yourself. GLib and GIO can
  * and will create threads for their own purposes in some cases, such
- * as when using g_unix_signal_source_new() or when using #GDBus.
+ * as when using g_unix_signal_source_new() or when using GDBus.
  *
  * Originally, UNIX did not have threads, and therefore some traditional
  * UNIX APIs are problematic in threaded programs. Some notable examples
@@ -158,7 +158,7 @@
  * G_LOCK_DEFINE:
  * @name: the name of the lock
  *
- * The %G_LOCK_* macros provide a convenient interface to #GMutex.
+ * The <literal>G_LOCK_*</literal> macros provide a convenient interface to #GMutex.
  * #G_LOCK_DEFINE defines a lock. It can appear in any place where
  * variable definitions may appear in programs, i.e. in the first block
  * of a function or outside of functions. The @name parameter will be
@@ -166,10 +166,10 @@
  * can use names of existing variables as the parameter - e.g. the name
  * of the variable you intend to protect with the lock. Look at our
  * <function>give_me_next_number()</function> example using the
- * %G_LOCK_* macros:
+ * <literal>G_LOCK_*</literal> macros:
  *
  * <example>
- *  <title>Using the %G_LOCK_* convenience macros</title>
+ *  <title>Using the <literal>G_LOCK_*</literal> convenience macros</title>
  *  <programlisting>
  *   G_LOCK_DEFINE (current_number);
  *

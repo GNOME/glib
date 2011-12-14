@@ -100,7 +100,7 @@
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII alphanumeric character
@@ -116,7 +116,7 @@
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII alphabetic character
@@ -132,7 +132,7 @@
  * recognizes standard ASCII control characters and ignores the
  * locale, returning %FALSE for all non-ASCII characters. Also,
  * unlike the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII control character.
@@ -146,7 +146,7 @@
  *
  * Unlike the standard C library isdigit() function, this takes
  * a <type>char</type>, not an <type>int</type>, so don't call it
- * on %EOF, but no need to cast to #guchar before passing a possibly
+ * on <literal>EOF</literal>, but no need to cast to #guchar before passing a possibly
  * non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII digit.
@@ -162,7 +162,7 @@
  * recognizes standard ASCII characters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
  * to cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII printing character other than space.
@@ -178,7 +178,7 @@
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
  * to worry about casting to #guchar before passing a possibly
  * non-ASCII character in.
  *
@@ -195,7 +195,7 @@
  * recognizes standard ASCII characters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
  * to cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII printing character.
@@ -211,7 +211,7 @@
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII punctuation character.
@@ -227,7 +227,7 @@
  * recognizes standard ASCII white-space and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII white-space character
@@ -243,7 +243,7 @@
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
  * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
  * worry about casting to #guchar before passing a possibly non-ASCII
  * character in.
  *
@@ -258,7 +258,7 @@
  *
  * Unlike the standard C library isxdigit() function, this takes
  * a <type>char</type>, not an <type>int</type>, so don't call it
- * on %EOF, but no need to cast to #guchar before passing a
+ * on <literal>EOF</literal>, but no need to cast to #guchar before passing a
  * possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII hexadecimal-digit character.
@@ -669,12 +669,12 @@ g_strtod (const gchar *nptr,
  * To convert from a #gdouble to a string in a locale-insensitive
  * way, use g_ascii_dtostr().
  *
- * If the correct value would cause overflow, plus or minus %HUGE_VAL
- * is returned (according to the sign of the value), and %ERANGE is
- * stored in %errno. If the correct value would cause underflow,
- * zero is returned and %ERANGE is stored in %errno.
+ * If the correct value would cause overflow, plus or minus <literal>HUGE_VAL</literal>
+ * is returned (according to the sign of the value), and <literal>ERANGE</literal> is
+ * stored in <literal>errno</literal>. If the correct value would cause underflow,
+ * zero is returned and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
  *
- * This function resets %errno before calling strtod() so that
+ * This function resets <literal>errno</literal> before calling strtod() so that
  * you can reliably detect overflow and underflow.
  *
  * Return value: the #gdouble value.
@@ -1121,10 +1121,11 @@ g_parse_long_long (const gchar  *nptr,
  * locale-sensitive system strtoull() function.
  *
  * If the correct value would cause overflow, %G_MAXUINT64
- * is returned, and %ERANGE is stored in %errno.  If the base is
- * outside the valid range, zero is returned, and %EINVAL is stored
- * in %errno.  If the string conversion fails, zero is returned, and
- * @endptr returns @nptr (if @endptr is non-%NULL).
+ * is returned, and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
+ * If the base is outside the valid range, zero is returned, and
+ * <literal>EINVAL</literal> is stored in <literal>errno</literal>.
+ * If the string conversion fails, zero is returned, and @endptr returns
+ * @nptr (if @endptr is non-%NULL).
  *
  * Return value: the #guint64 value or zero on error.
  *
@@ -1167,10 +1168,11 @@ g_ascii_strtoull (const gchar *nptr,
  * locale-sensitive system strtoll() function.
  *
  * If the correct value would cause overflow, %G_MAXINT64 or %G_MININT64
- * is returned, and %ERANGE is stored in %errno.  If the base is
- * outside the valid range, zero is returned, and %EINVAL is stored
- * in %errno.  If the string conversion fails, zero is returned, and
- * @endptr returns @nptr (if @endptr is non-%NULL).
+ * is returned, and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
+ * If the base is outside the valid range, zero is returned, and
+ * <literal>EINVAL</literal> is stored in <literal>errno</literal>. If the
+ * string conversion fails, zero is returned, and @endptr returns @nptr
+ * (if @endptr is non-%NULL).
  *
  * Return value: the #gint64 value or zero on error.
  *
@@ -1612,7 +1614,7 @@ g_strreverse (gchar *string)
  * all non-ASCII characters unchanged, even if they are lower case
  * letters in a particular character set. Also unlike the standard
  * library function, this takes and returns a char, not an int, so
- * don't call it on %EOF but no need to worry about casting to #guchar
+ * don't call it on <literal>EOF</literal> but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  *
  * Return value: the result of converting @c to lower case.
@@ -1636,7 +1638,7 @@ g_ascii_tolower (gchar c)
  * all non-ASCII characters unchanged, even if they are upper case
  * letters in a particular character set. Also unlike the standard
  * library function, this takes and returns a char, not an int, so
- * don't call it on %EOF but no need to worry about casting to #guchar
+ * don't call it on <literal>EOF</literal> but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  *
  * Return value: the result of converting @c to upper case.

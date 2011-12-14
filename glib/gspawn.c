@@ -112,7 +112,7 @@ g_spawn_error_quark (void)
  * <note><para>
  * If you are writing a GTK+ application, and the program you 
  * are spawning is a graphical application, too, then you may
- * want to use gdk_spawn_on_screen() instead to ensure that 
+ * want to use gdk_spawn_on_screen() instead to ensure that
  * the spawned program opens its windows on the right screen.
  * </para></note>
  *
@@ -484,7 +484,7 @@ g_spawn_sync (const gchar          *working_directory,
  * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
  * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag is not
  * used, then the program will be run from the current directory (or
- * %working_directory, if specified); this might be unexpected or even
+ * @working_directory, if specified); this might be unexpected or even
  * dangerous in some cases when the current directory is world-writable.
  *
  * On Windows, note that all the string or string vector arguments to
@@ -538,7 +538,7 @@ g_spawn_sync (const gchar          *working_directory,
  * call g_spawn_close_pid() on the @child_pid, in order to free
  * resources which may be associated with the child process. (On Unix,
  * using a child watch is equivalent to calling waitpid() or handling
- * the %SIGCHLD signal manually. On Windows, calling g_spawn_close_pid()
+ * the <literal>SIGCHLD</literal> signal manually. On Windows, calling g_spawn_close_pid()
  * is equivalent to calling CloseHandle() on the process handle returned
  * in @child_pid).  See g_child_watch_add().
  *
@@ -622,7 +622,7 @@ g_spawn_sync (const gchar          *working_directory,
  * <note><para>
  * If you are writing a GTK+ application, and the program you 
  * are spawning is a graphical application, too, then you may
- * want to use gdk_spawn_on_screen_with_pipes() instead to ensure that 
+ * want to use gdk_spawn_on_screen_with_pipes() instead to ensure that
  * the spawned program opens its windows on the right screen.
  * </para></note>
  * 

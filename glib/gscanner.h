@@ -105,6 +105,8 @@ typedef enum
   
   G_TOKEN_COMMENT_SINGLE,
   G_TOKEN_COMMENT_MULTI,
+
+  /*< private >*/
   G_TOKEN_LAST
 } GTokenType;
 
@@ -161,6 +163,8 @@ struct	_GScannerConfig
   guint		symbol_2_token : 1;
   guint		scope_0_fallback : 1;		/* try scope 0 on lookups? */
   guint		store_int64 : 1; 		/* use value.v_int64 rather than v_int */
+
+  /*< private >*/
   guint		padding_dummy;
 };
 
@@ -193,7 +197,8 @@ struct	_GScanner
   GTokenValue		next_value;
   guint			next_line;
   guint			next_position;
-  
+
+  /*< private >*/
   /* to be considered private */
   GHashTable		*symbol_table;
   gint			input_fd;
@@ -201,7 +206,8 @@ struct	_GScanner
   const gchar		*text_end;
   gchar			*buffer;
   guint			scope_id;
-  
+
+  /*< public >*/
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 };

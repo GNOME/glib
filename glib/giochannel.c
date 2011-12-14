@@ -752,7 +752,7 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 
 /**
  * g_io_channel_error_from_errno:
- * @en: an <literal>errno</literal> error number, e.g. %EINVAL
+ * @en: an <literal>errno</literal> error number, e.g. <literal>EINVAL</literal>
  *
  * Converts an <literal>errno</literal> error number to a #GIOChannelError.
  *
@@ -937,18 +937,18 @@ g_io_channel_get_line_term (GIOChannel *channel,
  * @flags: the flags to set on the IO channel
  * @error: A location to return an error of type #GIOChannelError
  *
- * Sets the (writeable) flags in @channel to (@flags & %G_IO_CHANNEL_SET_MASK).
+ * Sets the (writeable) flags in @channel to (@flags & %G_IO_FLAG_SET_MASK).
  *
  * Return value: the status of the operation. 
  **/
 /**
  * GIOFlags:
- * @G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND
+ * @G_IO_FLAG_APPEND: turns on append mode, corresponds to <literal>O_APPEND</literal>
  *                    (see the documentation of the UNIX open()
  *                    syscall).
  * @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to
- *                      %O_NONBLOCK/%O_NDELAY (see the documentation of
- *                      the UNIX open() syscall).
+ *                      <literal>O_NONBLOCK</literal>/<literal>O_NDELAY</literal>
+ *                      (see the documentation of the UNIX open() syscall).
  * @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable.
  *                         This flag cannot be changed.
  * @G_IO_FLAG_IS_WRITABLE: indicates that the io channel is writable.

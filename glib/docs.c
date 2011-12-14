@@ -1456,6 +1456,7 @@
 
 /**
  * GFloatIEEE754:
+ * @v_float: the double value
  *
  * The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the sign,
  * mantissa and exponent of IEEE floats and doubles. These unions are defined
@@ -1465,6 +1466,7 @@
 
 /**
  * GDoubleIEEE754:
+ * @v_double: the double value
  *
  * The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the sign,
  * mantissa and exponent of IEEE floats and doubles. These unions are defined
@@ -1694,7 +1696,7 @@
 /**
  * G_CONST_RETURN:
  *
- * If %G_DISABLE_CONST_RETURNS is defined, this macro expands
+ * If <literal>G_DISABLE_CONST_RETURNS</literal> is defined, this macro expands
  * to nothing. By default, the macro expands to <literal>const</literal>.
  * The macro should be used in place of <literal>const</literal> for
  * functions that return a value that should not be modified. The
@@ -1735,7 +1737,7 @@
  *
  * This macro is used to export function prototypes so they can be linked
  * with an external version when no inlining is performed. The file which
- * implements the functions should define %G_IMPLEMENTS_INLINES
+ * implements the functions should define <literal>G_IMPLEMENTS_INLINES</literal>
  * before including the headers which contain %G_INLINE_FUNC declarations.
  * Since inlining is very compiler-dependent using these macros correctly
  * is very difficult. Their use is strongly discouraged.

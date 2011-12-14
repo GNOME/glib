@@ -388,7 +388,7 @@ g_rec_mutex_lock (GRecMutex *mutex)
 
 /**
  * g_rec_mutex_unlock:
- * @rec_mutex: a #RecGMutex
+ * @rec_mutex: a #GRecMutex
  *
  * Unlocks @rec_mutex. If another thread is blocked in a
  * g_rec_mutex_lock() call for @rec_mutex, it will become unblocked

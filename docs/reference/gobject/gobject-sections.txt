@@ -506,6 +506,8 @@ GParamSpecChar
 g_param_spec_char
 g_value_set_char
 g_value_get_char
+g_value_get_schar
+g_value_set_schar
 
 <SUBSECTION guchar>
 G_IS_PARAM_SPEC_UCHAR

@@ -1853,6 +1853,7 @@ G_KEY_FILE_DESKTOP_TYPE_DIRECTORY
 
 <SUBSECTION Private>
 g_key_file_error_quark
+g_key_file_get_type
 </SECTION>
 
 <SECTION>
@@ -2416,6 +2417,9 @@ g_bytes_ref
 g_bytes_unref
 g_bytes_unref_to_data
 g_bytes_unref_to_array
+
+<SUBSECTION Private>
+g_bytes_get_type
 </SECTION>
 
 <SECTION>

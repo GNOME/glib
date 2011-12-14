@@ -34,7 +34,7 @@
  * g_mem_gc_friendly:
  *
  * This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
- * includes the key <link linkend="G_DEBUG">gc-friendly</link>.
+ * includes the key <literal>gc-friendly</literal>.
  */
 #ifdef ENABLE_GC_FRIENDLY_DEFAULT
 gboolean g_mem_gc_friendly = TRUE;

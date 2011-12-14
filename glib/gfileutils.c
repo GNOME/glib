@@ -109,7 +109,7 @@
  *     not correctly attached to the computer.
  * @G_FILE_ERROR_NODEV: The underlying file system of the specified file
  *     does not support memory mapping.
- * G_FILE_ERROR_ROFS: The directory containing the new link can't be
+ * @G_FILE_ERROR_ROFS: The directory containing the new link can't be
  *     modified because it's on a read-only file system.
  * @G_FILE_ERROR_TXTBSY: Text file busy.
  * @G_FILE_ERROR_FAULT: You passed in a pointer to bad memory.
@@ -310,7 +310,7 @@ g_mkdir_with_parents (const gchar *pathname,
  * %G_FILE_TEST_IS_SYMLINK will always return %FALSE. Testing for
  * %G_FILE_TEST_IS_EXECUTABLE will just check that the file exists and
  * its name indicates that it is executable, checking for well-known
- * extensions and those listed in the %PATHEXT environment variable.
+ * extensions and those listed in the <envar>PATHEXT</envar> environment variable.
  *
  * Return value: whether a test was %TRUE
  **/
@@ -469,9 +469,9 @@ g_file_error_quark (void)
  * g_file_error_from_errno:
  * @err_no: an "errno" value
  * 
- * Gets a #GFileError constant based on the passed-in @errno.
- * For example, if you pass in %EEXIST this function returns
- * #G_FILE_ERROR_EXIST. Unlike @errno values, you can portably
+ * Gets a #GFileError constant based on the passed-in @err_no.
+ * For example, if you pass in <literal>EEXIST</literal> this function returns
+ * #G_FILE_ERROR_EXIST. Unlike <literal>errno</literal> values, you can portably
  * assume that all #GFileError values will exist.
  *
  * Normally a #GFileError value goes into a #GError returned

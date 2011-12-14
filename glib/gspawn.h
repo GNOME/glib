@@ -45,22 +45,22 @@ G_BEGIN_DECLS
  * @G_SPAWN_ERROR_FORK: Fork failed due to lack of memory.
  * @G_SPAWN_ERROR_READ: Read or select on pipes failed.
  * @G_SPAWN_ERROR_CHDIR: Changing to working directory failed.
- * @G_SPAWN_ERROR_ACCES: execv() returned %EACCES.
- * @G_SPAWN_ERROR_PERM: execv() returned %EPERM.
- * @G_SPAWN_ERROR_2BIG: execv() returned %E2BIG.
- * @G_SPAWN_ERROR_NOEXEC: execv() returned %ENOEXEC.
- * @G_SPAWN_ERROR_NAMETOOLONG: execv() returned %ENAMETOOLONG.
- * @G_SPAWN_ERROR_NOENT: execv() returned %ENOENT.
- * @G_SPAWN_ERROR_NOMEM: execv() returned %ENOMEM.
- * @G_SPAWN_ERROR_NOTDIR: execv() returned %ENOTDIR.
- * @G_SPAWN_ERROR_LOOP: execv() returned %ELOOP.
- * @G_SPAWN_ERROR_TXTBUSY: execv() returned %ETXTBUSY.
- * @G_SPAWN_ERROR_IO: execv() returned %EIO.
- * @G_SPAWN_ERROR_NFILE: execv() returned %ENFILE.
- * @G_SPAWN_ERROR_MFILE: execv() returned %EMFILE.
- * @G_SPAWN_ERROR_INVAL: execv() returned %EINVAL.
- * @G_SPAWN_ERROR_ISDIR: execv() returned %EISDIR.
- * @G_SPAWN_ERROR_LIBBAD: execv() returned %ELIBBAD.
+ * @G_SPAWN_ERROR_ACCES: execv() returned <literal>EACCES</literal>
+ * @G_SPAWN_ERROR_PERM: execv() returned <literal>EPERM</literal>
+ * @G_SPAWN_ERROR_2BIG: execv() returned <literal>E2BIG</literal>
+ * @G_SPAWN_ERROR_NOEXEC: execv() returned <literal>ENOEXEC</literal>
+ * @G_SPAWN_ERROR_NAMETOOLONG: execv() returned <literal>ENAMETOOLONG</literal>
+ * @G_SPAWN_ERROR_NOENT: execv() returned <literal>ENOENT</literal>
+ * @G_SPAWN_ERROR_NOMEM: execv() returned <literal>ENOMEM</literal>
+ * @G_SPAWN_ERROR_NOTDIR: execv() returned <literal>ENOTDIR</literal>
+ * @G_SPAWN_ERROR_LOOP: execv() returned <literal>ELOOP</literal>
+ * @G_SPAWN_ERROR_TXTBUSY: execv() returned <literal>ETXTBUSY</literal>
+ * @G_SPAWN_ERROR_IO: execv() returned <literal>EIO</literal>
+ * @G_SPAWN_ERROR_NFILE: execv() returned <literal>ENFILE</literal>
+ * @G_SPAWN_ERROR_MFILE: execv() returned <literal>EMFILE</literal>
+ * @G_SPAWN_ERROR_INVAL: execv() returned <literal>EINVAL</literal>
+ * @G_SPAWN_ERROR_ISDIR: execv() returned <literal>EISDIR</literal>
+ * @G_SPAWN_ERROR_LIBBAD: execv() returned <literal>ELIBBAD</literal>
  * @G_SPAWN_ERROR_FAILED: Some other fatal failure,
  *   <literal>error-&gt;message</literal> should explain.
  *
@@ -125,7 +125,7 @@ typedef enum
  * call malloc(), which includes POSIX functions such as setenv().
  * If you need to set up the child environment differently from
  * the parent, you should use g_get_environ(), g_environ_setenv(),
- * and g_environ_unsetev(), and then pass the complete environment
+ * and g_environ_unsetenv(), and then pass the complete environment
  * list to the <literal>g_spawn...</literal> function.
  */
 typedef void (* GSpawnChildSetupFunc) (gpointer user_data);

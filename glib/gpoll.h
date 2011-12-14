@@ -86,6 +86,9 @@ typedef gint    (*GPollFunc)    (GPollFD *ufds,
  *     for writing you would use %G_IO_OUT | %G_IO_ERR.
  * @revents: a bitwise combination of flags from #GIOCondition, returned
  *     from the poll() function to indicate which events occurred.
+ *
+ * Represents a file descriptor, which events to poll for, and which events
+ * occurred.
  */
 struct _GPollFD
 {

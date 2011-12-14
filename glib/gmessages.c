@@ -165,7 +165,7 @@
  * A convenience function/macro to log a warning message.
  *
  * You can make warnings fatal at runtime by setting the
- * %G_DEBUG environment variable (see
+ * <envar>G_DEBUG</envar> environment variable (see
  * <ulink url="glib-running.html">Running GLib Applications</ulink>).
  */
 
@@ -182,7 +182,7 @@
  * example.
  *
  * You can also make critical warnings fatal at runtime by
- * setting the %G_DEBUG environment variable (see
+ * setting the <envar>G_DEBUG</envar> environment variable (see
  * <ulink url="glib-running.html">Running GLib Applications</ulink>).
  */
 
@@ -379,7 +379,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  * %G_LOG_LEVEL_ERROR is always fatal.
  *
  * You can also make some message levels fatal at runtime by setting
- * the %G_DEBUG environment variable (see
+ * the <envar>G_DEBUG</envar> environment variable (see
  * <ulink url="glib-running.html">Running GLib Applications</ulink>).
  *
  * Returns: the old fatal mask

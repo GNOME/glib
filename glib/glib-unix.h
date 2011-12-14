@@ -52,8 +52,8 @@ G_BEGIN_DECLS
  * It is expected that most code will not look at %errno from these
  * APIs. Important cases where one would want to differentiate between
  * errors are already covered by existing cross-platform GLib API,
- * such as e.g. #GFile wrapping %ENOENT.  However, it is provided for
- * completeness, at least.
+ * such as e.g. #GFile wrapping <literal>ENOENT</literal>.  However, it is
+ * provided for completeness, at least.
  */
 #define G_UNIX_ERROR (g_unix_error_quark())
 
