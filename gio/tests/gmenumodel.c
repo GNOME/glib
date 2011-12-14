@@ -789,6 +789,11 @@ test_dbus_threaded (void)
     g_object_unref (menu[i]);
 }
 
+typedef struct {
+  GMenu *menu;
+  GHashTable *objects;
+} ParserData;
+
 static void
 start_element (GMarkupParseContext *context,
                const gchar         *element_name,
@@ -797,8 +802,10 @@ start_element (GMarkupParseContext *context,
                gpointer             user_data,
                GError             **error)
 {
+  ParserData *data = user_data;
+
   if (g_strcmp0 (element_name, "menu") == 0)
-    g_menu_markup_parser_start_menu (context, "domain", NULL);
+    g_menu_markup_parser_start_menu (context, "domain", data->objects);
 }
 
 static void
@@ -807,26 +814,29 @@ end_element (GMarkupParseContext *context,
              gpointer             user_data,
              GError             **error)
 {
-  GMenu **menu = user_data;
+  ParserData *data = user_data;
 
   if (g_strcmp0 (element_name, "menu") == 0)
-    *menu = g_menu_markup_parser_end_menu (context);
+    data->menu = g_menu_markup_parser_end_menu (context);
 }
 
 static GMenuModel *
-parse_menu_string (const gchar *string, GError **error)
+parse_menu_string (const gchar *string, GHashTable *objects, GError **error)
 {
   const GMarkupParser parser = {
     start_element, end_element, NULL, NULL, NULL
   };
   GMarkupParseContext *context;
-  GMenuModel *menu = NULL;
+  ParserData data;
 
-  context = g_markup_parse_context_new (&parser, 0, &menu, NULL);
+  data.menu = NULL;
+  data.objects = objects;
+
+  context = g_markup_parse_context_new (&parser, 0, &data, NULL);
   g_markup_parse_context_parse (context, string, -1, error);
   g_markup_parse_context_free (context);
 
-  return menu;
+  return (GMenuModel*)data.menu;
 }
 
 static gchar *
@@ -841,10 +851,7 @@ menu_to_string (GMenuModel *menu)
   return g_string_free (s, FALSE);
 }
 
-static void
-test_markup_roundtrip (void)
-{
-  const gchar data[] =
+const gchar menu_data[] =
   "<menu id='edit-menu'>\n"
   "  <section>\n"
   "    <item action='undo'>\n"
@@ -858,7 +865,7 @@ test_markup_roundtrip (void)
   "    <item label='Copy' action='copy'/>\n"
   "    <item label='Paste' action='paste'/>\n"
   "  </section>\n"
-  "  <section>\n"
+  "  <item><link name='section' id='blargh'>\n"
   "    <item label='Bold' action='bold'/>\n"
   "    <submenu label='Language'>\n"
   "      <item label='Latin' action='lang' target='latin'/>\n"
@@ -872,22 +879,26 @@ test_markup_roundtrip (void)
   "      <attribute name='thing1' type='g'>'s(uu)'</attribute>\n"
   "      <attribute name='icon' type='s'>'small blue thing'</attribute>\n"
   "   </item>\n"
-  "  </section>\n"
+  "  </link></item>\n"
   "</menu>\n";
+
+static void
+test_markup_roundtrip (void)
+{
   GError *error = NULL;
   GMenuModel *a;
   GMenuModel *b;
   gchar *s;
   gchar *s2;
 
-  a = parse_menu_string (data, &error);
+  a = parse_menu_string (menu_data, NULL, &error);
   g_assert_no_error (error);
   g_assert (G_IS_MENU_MODEL (a));
 
   /* normalized representation */
   s = menu_to_string (a);
 
-  b = parse_menu_string (s, &error);
+  b = parse_menu_string (s, NULL, &error);
   g_assert_no_error (error);
   g_assert (G_IS_MENU_MODEL (b));
 
@@ -901,6 +912,24 @@ test_markup_roundtrip (void)
   g_object_unref (b);
   g_free (s);
   g_free (s2);
+}
+
+static void
+test_markup_objects (void)
+{
+  GMenuModel *a, *b;
+  GHashTable *objects;
+  GError *error = NULL;
+
+  objects = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
+  a = parse_menu_string (menu_data, objects, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_MENU_MODEL (a));
+  g_assert_cmpint (g_hash_table_size (objects), ==, 1);
+  b = g_hash_table_lookup (objects, "blargh");
+  g_assert (G_IS_MENU_MODEL (b));
+  g_object_unref (a);
+  g_hash_table_unref (objects);
 }
 
 static void
@@ -1068,7 +1097,7 @@ test_misc (void)
 "  </item>"
 "</menu>";
 
-  b = parse_menu_string (s, NULL);
+  b = parse_menu_string (s, NULL, NULL);
 
   assert_menus_equal (G_MENU_MODEL (a), G_MENU_MODEL (b));
   g_object_unref (a);
@@ -1089,6 +1118,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/dbus/subscriptions", test_dbus_subscriptions);
   g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
+  g_test_add_func ("/gmenu/markup/objects", test_markup_objects);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
