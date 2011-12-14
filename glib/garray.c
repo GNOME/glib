@@ -302,7 +302,7 @@ g_array_free (GArray   *farray,
   flags = (free_segment ? FREE_SEGMENT : 0);
 
   /* if others are holding a reference, preserve the wrapper but do free/return the data */
-  if (g_atomic_int_get (&array->ref_count) > 1)
+  if (!g_atomic_int_dec_and_test (&array->ref_count))
     flags |= PRESERVE_WRAPPER;
 
   return array_free (array, flags);
@@ -979,7 +979,7 @@ g_ptr_array_free (GPtrArray *farray,
   flags = (free_segment ? FREE_SEGMENT : 0);
 
   /* if others are holding a reference, preserve the wrapper but do free/return the data */
-  if (g_atomic_int_get (&array->ref_count) > 1)
+  if (!g_atomic_int_dec_and_test (&array->ref_count))
     flags |= PRESERVE_WRAPPER;
 
   return ptr_array_free (farray, flags);
