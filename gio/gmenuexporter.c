@@ -30,14 +30,14 @@
  * SECTION:gmenuexporter
  * @title: GMenuModel exporter
  * @short_description: Export GMenuModels on D-Bus
- * @see_also: #GMenuModel, #GMenuProxy
+ * @see_also: #GMenuModel, #GDBusMenuModel
  *
  * These functions support exporting a #GMenuModel on D-Bus.
  * The D-Bus interface that is used is a private implementation
  * detail.
  *
  * To access an exported #GMenuModel remotely, use
- * g_menu_proxy_get() to obtain a #GMenuProxy.
+ * g_dbus_menu_model_get() to obtain a #GDBusMenuModel.
  */
 
 /* {{{1 D-Bus Interface description */

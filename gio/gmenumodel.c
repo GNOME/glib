@@ -91,7 +91,7 @@
  * <link linkend="gio-GMenuModel-exporter">GMenuModel exporter</link>
  * do for #GActionGroup and #GMenuModel. The client-side counterparts
  * to make use of the exported information are #GDBusActionGroup and
- * #GMenuProxy.
+ * #GDBusMenuModel.
  *
  * The API of #GMenuModel is very generic, with iterators for the
  * attributes and links of an item, see g_menu_model_iterate_item_attributes()
