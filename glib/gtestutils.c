@@ -107,6 +107,8 @@
  * g_test_quick:
  *
  * Returns %TRUE if tests are run in quick mode.
+ * Exactly one of g_test_quick() and g_test_slow() is active in any run;
+ * there is no "medium speed".
  *
  * Returns: %TRUE if in quick mode
  */
@@ -115,16 +117,19 @@
  * g_test_slow:
  *
  * Returns %TRUE if tests are run in slow mode.
+ * Exactly one of g_test_quick() and g_test_slow() is active in any run;
+ * there is no "medium speed".
  *
- * Returns: %TRUE if in slow mode
+ * Returns: the opposite of g_test_quick()
  */
 
 /**
  * g_test_thorough:
  *
- * Returns %TRUE if tests are run in thorough mode.
+ * Returns %TRUE if tests are run in thorough mode, equivalent to
+ * g_test_slow().
  *
- * Returns: %TRUE if in thorough mode
+ * Returns: the same thing as g_test_slow()
  */
 
 /**
@@ -139,6 +144,7 @@
  * g_test_verbose:
  *
  * Returns %TRUE if tests are run in verbose mode.
+ * The default is neither g_test_verbose() nor g_test_quiet().
  *
  * Returns: %TRUE if in verbose mode
  */
@@ -147,8 +153,9 @@
  * g_test_quiet:
  *
  * Returns %TRUE if tests are run in quiet mode.
+ * The default is neither g_test_verbose() nor g_test_quiet().
  *
- * Returns: %TRUE if in quied mode
+ * Returns: %TRUE if in quiet mode
  */
 
 /**
