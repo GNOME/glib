@@ -100,7 +100,17 @@
  * %G_MENU_ATTRIBUTE_ACTION, %G_MENU_ATTRIBUTE_TARGET, %G_MENU_LINK_SECTION
  * and %G_MENU_LINK_SUBMENU.
  *
- * FIXME: explain how items are associated with actions.
+ * Items in a #GMenuModel represent active controls if they refer to
+ * an action that can get activated when the user interacts with the
+ * menu item. The reference to the action is encoded by the string id
+ * in the %G_MENU_ATTRIBUTE_ACTION attribute. An action id uniquely
+ * identifies an action in an action group. Which action group(s) provide
+ * actions depends on the context in which the menu model is used.
+ * E.g. when the model is exported as the application menu of a
+ * #GtkApplication, actions can be application-wide or window-specific
+ * (and thus come from two different action groups). By convention, the
+ * application-wide actions have names that start with "app.", while the
+ * names of window-specific actions start with "win.".
  *
  * While a wide variety of stateful actions is possible, the following
  * is the minimum that is expected to be supported by all users of exported
