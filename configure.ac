@@ -1112,7 +1112,8 @@ fi
 AC_SUBST(NETWORK_LIBS)
 
 AC_CHECK_HEADER([linux/netlink.h],
-		[AC_DEFINE(HAVE_NETLINK, 1, [We have AF_NETLINK sockets])])
+		[AC_DEFINE(HAVE_NETLINK, 1, [We have AF_NETLINK sockets])],,
+		[#include <sys/socket.h>])
 AM_CONDITIONAL(HAVE_NETLINK, [test "$ac_cv_header_linux_netlink_h" = "yes"])
 
 case $host in
