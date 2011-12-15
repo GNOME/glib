@@ -440,7 +440,7 @@ g_dbus_action_group_iface_init (GActionGroupInterface *iface)
  * @bus_name: the bus name which exports the action group
  * @object_path: the object path at which the action group is exported
  *
- * Obtains a #GDBusAcitonGroup for the action group which is exported at
+ * Obtains a #GDBusActionGroup for the action group which is exported at
  * the given @bus_name and @object_path.
  *
  * The thread default main context is taken at the time of this call.
