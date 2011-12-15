@@ -611,15 +611,20 @@ g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
     {
       EnterCriticalSection (&g_thread_xp_lock);
 
-      result = malloc (sizeof (GThreadSRWLock));
-
+      /* Check again */
+      result = *lock;
       if (result == NULL)
-        g_thread_abort (errno, "malloc");
+        {
+          result = malloc (sizeof (GThreadSRWLock));
 
-      InitializeCriticalSection (&result->writer_lock);
-      result->writer_locked = FALSE;
-      result->ever_shared = FALSE;
-      *lock = result;
+          if (result == NULL)
+            g_thread_abort (errno, "malloc");
+
+          InitializeCriticalSection (&result->writer_lock);
+          result->writer_locked = FALSE;
+          result->ever_shared = FALSE;
+          *lock = result;
+        }
 
       LeaveCriticalSection (&g_thread_xp_lock);
     }
