@@ -138,19 +138,20 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
 #define STRING     G_MARKUP_COLLECT_STRING
 #define NO_ATTRS() COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
 
-  if (!(state->frame.menu || state->frame.menu || state->string))
+  if (!(state->frame.menu || state->frame.item || state->string))
     {
       /* Can only have <menu> here. */
       if (g_str_equal (element_name, "menu"))
         {
           gchar *id;
 
-          if (COLLECT (STRDUP, "id", &id))
+          if (COLLECT (STRING, "id", &id))
             {
               GMenu *menu;
 
               menu = g_menu_new ();
-              g_hash_table_insert (state->objects, id, menu);
+              if (state->objects)
+                g_hash_table_insert (state->objects, g_strdup (id), menu);
               g_menu_markup_push_frame (state, menu, NULL);
             }
 
@@ -244,7 +245,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
               g_menu_item_set_link (state->frame.item, name, G_MENU_MODEL (menu));
               g_menu_markup_push_frame (state, menu, NULL);
 
-              if (id != NULL)
+              if (id != NULL && state->objects)
                 g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
             }
 
