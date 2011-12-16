@@ -475,7 +475,9 @@ g_application_set_property (GObject      *object,
  *
  * Deprecated:2.32:Use the #GActionMap interface instead.  Never ever
  * mix use of this API with use of #GActionMap on the same @application
- * or things will go very badly wrong.
+ * or things will go very badly wrong.  This function is known to
+ * introduce buggy behaviour (ie: signals not emitted on changes to the
+ * action group), so you should really use #GActionMap instead.
  **/
 void
 g_application_set_action_group (GApplication *application,
@@ -700,7 +702,20 @@ g_application_init (GApplication *application)
   application->priv = G_TYPE_INSTANCE_GET_PRIVATE (application,
                                                    G_TYPE_APPLICATION,
                                                    GApplicationPrivate);
+
   application->priv->actions = G_ACTION_GROUP (g_simple_action_group_new ());
+
+  /* application->priv->actions is the one and only ref on the group, so when
+   * we dispose, the action group will die, disconnecting all signals.
+   */
+  g_signal_connect_swapped (application->priv->actions, "action-added",
+                            G_CALLBACK (g_action_group_action_added), application);
+  g_signal_connect_swapped (application->priv->actions, "action-enabled-changed",
+                            G_CALLBACK (g_action_group_action_enabled_changed), application);
+  g_signal_connect_swapped (application->priv->actions, "action-state-changed",
+                            G_CALLBACK (g_action_group_action_state_changed), application);
+  g_signal_connect_swapped (application->priv->actions, "action-removed",
+                            G_CALLBACK (g_action_group_action_removed), application);
 }
 
 static void
