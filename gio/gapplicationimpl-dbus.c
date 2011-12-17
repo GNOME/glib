@@ -87,6 +87,7 @@ static GDBusInterfaceInfo *org_gtk_private_CommandLine;
 struct _GApplicationImpl
 {
   GDBusConnection *session_bus;
+  GActionGroup    *exported_actions;
   const gchar     *bus_name;
 
   gchar           *object_path;
@@ -377,7 +378,8 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (impl->object_id == 0)
     return FALSE;
 
-  impl->actions_id = g_dbus_connection_export_action_group (impl->session_bus, impl->object_path, impl->app, error);
+  impl->actions_id = g_dbus_connection_export_action_group (impl->session_bus, impl->object_path,
+                                                            impl->exported_actions, error);
 
   if (impl->actions_id == 0)
     return FALSE;
@@ -477,6 +479,7 @@ GApplicationImpl *
 g_application_impl_register (GApplication        *application,
                              const gchar         *appid,
                              GApplicationFlags    flags,
+                             GActionGroup        *exported_actions,
                              GRemoteActionGroup **remote_actions,
                              GCancellable        *cancellable,
                              GError             **error)
@@ -487,6 +490,7 @@ g_application_impl_register (GApplication        *application,
   impl = g_slice_new0 (GApplicationImpl);
 
   impl->app = application;
+  impl->exported_actions = exported_actions;
   impl->bus_name = appid;
 
   impl->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, NULL);

@@ -250,6 +250,92 @@ G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP, g_application_action_group_iface_init)
  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP, g_application_action_map_iface_init))
 
+/* GApplicationExportedActions {{{1 */
+
+/* We create a subclass of GSimpleActionGroup that implements
+ * GRemoteActionGroup and deals with the platform data using
+ * GApplication's before/after_emit vfuncs.  This is the action group we
+ * will be exporting.
+ *
+ * We could implement GRemoteActionGroup on GApplication directly, but
+ * this would be potentially extremely confusing to have exposed as part
+ * of the public API of GApplication.  We certainly don't want anyone in
+ * the same process to be calling these APIs...
+ */
+typedef GSimpleActionGroupClass GApplicationExportedActionsClass;
+typedef struct
+{
+  GSimpleActionGroup parent_instance;
+  GApplication *application;
+} GApplicationExportedActions;
+
+static GType g_application_exported_actions_get_type   (void);
+static void  g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface);
+G_DEFINE_TYPE_WITH_CODE (GApplicationExportedActions, g_application_exported_actions, G_TYPE_SIMPLE_ACTION_GROUP,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_REMOTE_ACTION_GROUP, g_application_exported_actions_iface_init))
+
+static void
+g_application_exported_actions_activate_action_full (GRemoteActionGroup *remote,
+                                                     const gchar        *action_name,
+                                                     GVariant           *parameter,
+                                                     GVariant           *platform_data)
+{
+  GApplicationExportedActions *exported = (GApplicationExportedActions *) remote;
+
+  G_APPLICATION_GET_CLASS (exported->application)
+    ->before_emit (exported->application, platform_data);
+
+  g_action_group_activate_action (G_ACTION_GROUP (exported), action_name, parameter);
+
+  G_APPLICATION_GET_CLASS (exported->application)
+    ->after_emit (exported->application, platform_data);
+}
+
+static void
+g_application_exported_actions_change_action_state_full (GRemoteActionGroup *remote,
+                                                         const gchar        *action_name,
+                                                         GVariant           *value,
+                                                         GVariant           *platform_data)
+{
+  GApplicationExportedActions *exported = (GApplicationExportedActions *) remote;
+
+  G_APPLICATION_GET_CLASS (exported->application)
+    ->before_emit (exported->application, platform_data);
+
+  g_action_group_change_action_state (G_ACTION_GROUP (exported), action_name, value);
+
+  G_APPLICATION_GET_CLASS (exported->application)
+    ->after_emit (exported->application, platform_data);
+}
+
+static void
+g_application_exported_actions_init (GApplicationExportedActions *actions)
+{
+}
+
+static void
+g_application_exported_actions_iface_init (GRemoteActionGroupInterface *iface)
+{
+  iface->activate_action_full = g_application_exported_actions_activate_action_full;
+  iface->change_action_state_full = g_application_exported_actions_change_action_state_full;
+}
+
+static void
+g_application_exported_actions_class_init (GApplicationExportedActionsClass *class)
+{
+}
+
+static GActionGroup *
+g_application_exported_actions_new (GApplication *application)
+{
+  GApplicationExportedActions *actions;
+
+  actions = g_object_new (g_application_exported_actions_get_type (), NULL);
+  actions->application = application;
+
+  return G_ACTION_GROUP (actions);
+}
+
 /* vfunc defaults {{{1 */
 static void
 g_application_real_before_emit (GApplication *application,
@@ -704,7 +790,7 @@ g_application_init (GApplication *application)
                                                    G_TYPE_APPLICATION,
                                                    GApplicationPrivate);
 
-  application->priv->actions = G_ACTION_GROUP (g_simple_action_group_new ());
+  application->priv->actions = g_application_exported_actions_new (application);
 
   /* application->priv->actions is the one and only ref on the group, so when
    * we dispose, the action group will die, disconnecting all signals.
@@ -1253,6 +1339,7 @@ g_application_register (GApplication  *application,
           application->priv->impl =
             g_application_impl_register (application, application->priv->id,
                                          application->priv->flags,
+                                         application->priv->actions,
                                          &application->priv->remote_actions,
                                          cancellable, error);
 
