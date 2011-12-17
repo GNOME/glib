@@ -45,17 +45,9 @@ G_BEGIN_DECLS
 
 GType                   g_dbus_action_group_get_type                  (void) G_GNUC_CONST;
 
-GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection              *connection,
-                                                                       const gchar                  *bus_name,
-                                                                       const gchar                  *object_path);
-
-typedef void         (* GDBusActionGroupSendHookFunc)                 (GDBusActionGroup             *group,
-                                                                       GVariantBuilder              *builder);
-typedef void         (* GDBusActionGroupEmitHookFunc)                 (GActionGroup                 *group,
-                                                                       GVariant                     *platform_data);
-void                    g_dbus_action_group_register_platform         (GDBusActionGroupSendHookFunc  send_hook,
-                                                                       GDBusActionGroupEmitHookFunc  before_hook,
-                                                                       GDBusActionGroupEmitHookFunc  after_hook);
+GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection        *connection,
+                                                                       const gchar            *bus_name,
+                                                                       const gchar            *object_path);
 
 G_END_DECLS
 

@@ -27,13 +27,9 @@
 #include "gdbusmethodinvocation.h"
 #include "gdbusintrospection.h"
 #include "gdbusconnection.h"
-#include "gdbusactiongroup.h"
 #include "gactiongroup.h"
 #include "gapplication.h"
 #include "gdbuserror.h"
-
-extern GDBusActionGroupEmitHookFunc g_dbus_action_group_before_emit_hook;
-extern GDBusActionGroupEmitHookFunc g_dbus_action_group_after_emit_hook;
 
 /**
  * SECTION:gactiongroupexporter
@@ -453,9 +449,6 @@ g_action_group_exporter_pre_emit (GActionGroupExporter *exporter,
   if (G_IS_APPLICATION (exporter->action_group))
     G_APPLICATION_GET_CLASS (exporter->action_group)
       ->before_emit (G_APPLICATION (exporter->action_group), platform_data);
-
-  else if (g_dbus_action_group_before_emit_hook != NULL)
-    (* g_dbus_action_group_before_emit_hook) (exporter->action_group, platform_data);
 }
 
 static void
@@ -465,9 +458,6 @@ g_action_group_exporter_post_emit (GActionGroupExporter *exporter,
   if (G_IS_APPLICATION (exporter->action_group))
     G_APPLICATION_GET_CLASS (exporter->action_group)
       ->after_emit (G_APPLICATION (exporter->action_group), platform_data);
-
-  else if (g_dbus_action_group_after_emit_hook != NULL)
-    (* g_dbus_action_group_after_emit_hook) (exporter->action_group, platform_data);
 }
 
 static void
