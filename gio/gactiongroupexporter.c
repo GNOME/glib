@@ -25,10 +25,10 @@
 #include "gactiongroupexporter.h"
 
 #include "gdbusmethodinvocation.h"
+#include "gremoteactiongroup.h"
 #include "gdbusintrospection.h"
 #include "gdbusconnection.h"
 #include "gactiongroup.h"
-#include "gapplication.h"
 #include "gdbuserror.h"
 
 /**
@@ -443,24 +443,6 @@ g_action_group_exporter_action_enabled_changed (GActionGroup *action_group,
 }
 
 static void
-g_action_group_exporter_pre_emit (GActionGroupExporter *exporter,
-                                  GVariant             *platform_data)
-{
-  if (G_IS_APPLICATION (exporter->action_group))
-    G_APPLICATION_GET_CLASS (exporter->action_group)
-      ->before_emit (G_APPLICATION (exporter->action_group), platform_data);
-}
-
-static void
-g_action_group_exporter_post_emit (GActionGroupExporter *exporter,
-                                   GVariant             *platform_data)
-{
-  if (G_IS_APPLICATION (exporter->action_group))
-    G_APPLICATION_GET_CLASS (exporter->action_group)
-      ->after_emit (G_APPLICATION (exporter->action_group), platform_data);
-}
-
-static void
 org_gtk_Actions_method_call (GDBusConnection       *connection,
                              const gchar           *sender,
                              const gchar           *object_path,
@@ -523,9 +505,11 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       g_variant_iter_next (iter, "v", &parameter);
       g_variant_iter_free (iter);
 
-      g_action_group_exporter_pre_emit (exporter, platform_data);
-      g_action_group_activate_action (exporter->action_group, name, parameter);
-      g_action_group_exporter_post_emit (exporter, platform_data);
+      if (G_IS_REMOTE_ACTION_GROUP (exporter->action_group))
+        g_remote_action_group_activate_action_full (G_REMOTE_ACTION_GROUP (exporter->action_group),
+                                                    name, parameter, platform_data);
+      else
+        g_action_group_activate_action (exporter->action_group, name, parameter);
 
       if (parameter)
         g_variant_unref (parameter);
@@ -540,9 +524,13 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       GVariant *state;
 
       g_variant_get (parameters, "(&sv@a{sv})", &name, &state, &platform_data);
-      g_action_group_exporter_pre_emit (exporter, platform_data);
-      g_action_group_change_action_state (exporter->action_group, name, state);
-      g_action_group_exporter_post_emit (exporter, platform_data);
+
+      if (G_IS_REMOTE_ACTION_GROUP (exporter->action_group))
+        g_remote_action_group_change_action_state_full (G_REMOTE_ACTION_GROUP (exporter->action_group),
+                                                        name, state, platform_data);
+      else
+        g_action_group_change_action_state (exporter->action_group, name, state);
+
       g_variant_unref (platform_data);
       g_variant_unref (state);
     }
