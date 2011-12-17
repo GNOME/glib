@@ -369,10 +369,7 @@ g_dbus_action_group_change_state (GActionGroup *g_group,
 {
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (g_group);
 
-  /* Don't bother with the checks.  The other side will do it again. */
-  g_dbus_connection_call (group->connection, group->bus_name, group->object_path, "org.gtk.Actions", "SetState",
-                          g_variant_new ("(sva{sv})", action_name, value, NULL),
-                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+  g_dbus_action_group_change_action_state_full (group, action_name, value, g_variant_new ("a{sv}", NULL));
 }
 
 static void
@@ -381,16 +378,8 @@ g_dbus_action_group_activate (GActionGroup *g_group,
                               GVariant     *parameter)
 {
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (g_group);
-  GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
-
-  if (parameter)
-    g_variant_builder_add (&builder, "v", parameter);
-
-  g_dbus_connection_call (group->connection, group->bus_name, group->object_path, "org.gtk.Actions", "Activate",
-                          g_variant_new ("(sava{sv})", action_name, &builder, NULL),
-                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+  g_dbus_action_group_activate_action_full (group, action_name, parameter, g_variant_new ("a{sv}", NULL));
 }
 
 static void
@@ -506,4 +495,82 @@ g_dbus_action_group_sync (GDBusActionGroup  *group,
     }
 
   return reply != NULL;
+}
+
+/**
+ * g_dbus_action_group_activate_action_full:
+ * @action_group: a #GDBusActionGroup
+ * @action_name: the name of the action to activate
+ * @parameter: (allow none): the optional parameter to the activation
+ * @platform_data: the platform data to send
+ *
+ * Activates the remote action.
+ *
+ * This is the same as g_action_group_activate_action() except that it
+ * allows for provision of "platform data" to be sent along with the
+ * activation request.  This typically contains details such as the user
+ * interaction timestamp or startup notification information.
+ *
+ * @platform_data must be non-%NULL and must have the type
+ * %G_VARIANT_TYPE_VARDICT.  If it is floating, it will be consumed.
+ *
+ * Since: 2.32
+ **/
+void
+g_dbus_action_group_activate_action_full (GDBusActionGroup *action_group,
+                                          const gchar      *action_name,
+                                          GVariant         *parameter,
+                                          GVariant         *platform_data)
+{
+  GVariantBuilder builder;
+
+  g_return_if_fail (G_IS_DBUS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+  g_return_if_fail (platform_data != NULL);
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+
+  if (parameter)
+    g_variant_builder_add (&builder, "v", parameter);
+
+  g_dbus_connection_call (action_group->connection, action_group->bus_name, action_group->object_path,
+                          "org.gtk.Actions", "Activate",
+                          g_variant_new ("(sav@a{sv})", action_name, &builder, platform_data),
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+}
+
+/**
+ * g_dbus_action_group_activate_action_full:
+ * @action_group: a #GDBusActionGroup
+ * @action_name: the name of the action to change the state of
+ * @value: the new requested value for the state
+ * @platform_data: the platform data to send
+ *
+ * Changes the state of a remote action.
+ *
+ * This is the same as g_action_group_change_action_state() except that
+ * it allows for provision of "platform data" to be sent along with the
+ * state change request.  This typically contains details such as the
+ * user interaction timestamp or startup notification information.
+ *
+ * @platform_data must be non-%NULL and must have the type
+ * %G_VARIANT_TYPE_VARDICT.  If it is floating, it will be consumed.
+ *
+ * Since: 2.32
+ **/
+void
+g_dbus_action_group_change_action_state_full (GDBusActionGroup *action_group,
+                                              const gchar      *action_name,
+                                              GVariant         *value,
+                                              GVariant         *platform_data)
+{
+  g_return_if_fail (G_IS_DBUS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (platform_data != NULL);
+
+  g_dbus_connection_call (action_group->connection, action_group->bus_name, action_group->object_path,
+                          "org.gtk.Actions", "SetState",
+                          g_variant_new ("(sv@a{sv})", action_name, value, platform_data),
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
 }
