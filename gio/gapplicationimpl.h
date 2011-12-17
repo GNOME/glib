@@ -34,6 +34,18 @@ void                    g_application_impl_open                         (GApplic
                                                                          GVariant           *platform_data);
 
 G_GNUC_INTERNAL
+void                    g_application_impl_activate_action              (GApplicationImpl   *impl,
+                                                                         const gchar        *action_name,
+                                                                         GVariant           *parameter,
+                                                                         GVariant           *platform_data);
+
+G_GNUC_INTERNAL
+void                    g_application_impl_change_action_state          (GApplicationImpl   *impl,
+                                                                         const gchar        *action_name,
+                                                                         GVariant           *value,
+                                                                         GVariant           *platform_data);
+
+G_GNUC_INTERNAL
 int                     g_application_impl_command_line                 (GApplicationImpl   *impl,
                                                                          gchar             **arguments,
                                                                          GVariant           *platform_data);

@@ -1646,12 +1646,11 @@ g_application_change_action_state (GActionGroup *action_group,
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->remote_actions)
-    return g_action_group_change_action_state (application->priv->remote_actions,
-                                               action_name, value);
+    g_application_impl_change_action_state (application->priv->impl, action_name, value,
+                                            get_platform_data (application));
 
   else
-    g_action_group_change_action_state (application->priv->actions,
-                                        action_name, value);
+    g_action_group_change_action_state (application->priv->actions, action_name, value);
 }
 
 static void
@@ -1665,13 +1664,12 @@ g_application_activate_action (GActionGroup *action_group,
                     application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
-  if (application->priv->remote_actions)
-    return g_action_group_activate_action (application->priv->remote_actions,
-                                           action_name, parameter);
+  if (application->priv->is_remote)
+    g_application_impl_activate_action (application->priv->impl, action_name, parameter,
+                                        get_platform_data (application));
 
   else
-    g_action_group_activate_action (application->priv->actions,
-                                    action_name, parameter);
+    g_action_group_activate_action (application->priv->actions, action_name, parameter);
 }
 
 static GAction *
