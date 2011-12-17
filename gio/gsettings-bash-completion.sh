@@ -5,44 +5,61 @@
 ####################################################################################################
 
 __gsettings() {
-  local choices
+  local choices coffset schemadir
 
-  case "${COMP_CWORD}" in
+  if [ ${COMP_CWORD} -gt 2 ]; then
+      if [ ${COMP_WORDS[1]} = --schemadir ]; then
+	  # this complexity is needed to perform correct tilde expansion
+	  schemadir=$(eval "echo --schemadir ${COMP_WORDS[2]}")
+	  coffset=2
+      else
+	  coffset=0
+      fi
+  else
+      coffset=0
+  fi
+
+  case "$((${COMP_CWORD}-$coffset))" in
     1)
-      choices=$'help \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nwritable \nmonitor'
+      choices=$'--schemadir\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nwritable \nmonitor'
       ;;
 
     2)
-      case "${COMP_WORDS[1]}" in
+      case "${COMP_WORDS[$(($coffset+1))]}" in
+	--schemadir)
+	  COMPREPLY=($(compgen -o dirnames -- ${COMP_WORDS[${COMP_CWORD}]}))
+	  return 0
+	  ;;
+
         help)
           choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nwritable\nmonitor'
           ;;
         list-keys|list-children|list-recursively)
-          choices="$(gsettings list-schemas)"$'\n'"$(gsettings list-relocatable-schemas | sed -e 's.$.:/.')"
+          choices="$(gsettings $schemadir list-schemas)"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
 
         get|range|set|reset|writable|monitor)
-          choices="$(gsettings list-schemas | sed -e 's.$. .')"$'\n'"$(gsettings list-relocatable-schemas | sed -e 's.$.:/.')"
+          choices="$(gsettings $schemadir list-schemas | sed -e 's.$. .')"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
       esac
       ;;
 
     3)
-      case "${COMP_WORDS[1]}" in
+      case "${COMP_WORDS[$(($coffset+1))]}" in
         set)
-          choices="$(gsettings list-keys ${COMP_WORDS[2]} 2> /dev/null | sed -e 's.$. .')"
+          choices="$(gsettings $schemadir list-keys ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null | sed -e 's.$. .')"
           ;;
 
         get|range|reset|writable|monitor)
-          choices="$(gsettings list-keys ${COMP_WORDS[2]} 2> /dev/null)"
+          choices="$(gsettings $schemadir list-keys ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null)"
           ;;
       esac
       ;;
 
     4)
-      case "${COMP_WORDS[1]}" in
+      case "${COMP_WORDS[$(($coffset+2))]}" in
         set)
-          range=($(gsettings range ${COMP_WORDS[2]} ${COMP_WORDS[3]} 2> /dev/null))
+          range=($(gsettings $schemadir range ${COMP_WORDS[$(($coffset+2))]} ${COMP_WORDS[$(($coffset+3))]} 2> /dev/null))
           case "${range[0]}" in
             enum)
               unset range[0]
@@ -59,7 +76,7 @@ __gsettings() {
   esac
 
   local IFS=$'\n'
-  COMPREPLY=($(compgen -W "${choices}" "${COMP_WORDS[$COMP_CWORD]}"))
+  COMPREPLY=($(compgen -W "${choices}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
 }
 
 ####################################################################################################
