@@ -23,6 +23,7 @@
 
 #include "gactiongroup.h"
 #include "gactiongroupexporter.h"
+#include "gremoteactiongroup.h"
 #include "gdbusactiongroup.h"
 #include "gapplication.h"
 #include "gfile.h"
@@ -86,7 +87,6 @@ static GDBusInterfaceInfo *org_gtk_private_CommandLine;
 struct _GApplicationImpl
 {
   GDBusConnection *session_bus;
-  GDBusActionGroup *remote_actions;
   const gchar     *bus_name;
 
   gchar           *object_path;
@@ -474,12 +474,12 @@ g_application_impl_destroy (GApplicationImpl *impl)
 }
 
 GApplicationImpl *
-g_application_impl_register (GApplication       *application,
-                             const gchar        *appid,
-                             GApplicationFlags   flags,
-                             GActionGroup      **remote_actions,
-                             GCancellable       *cancellable,
-                             GError            **error)
+g_application_impl_register (GApplication        *application,
+                             const gchar         *appid,
+                             GApplicationFlags    flags,
+                             GRemoteActionGroup **remote_actions,
+                             GCancellable        *cancellable,
+                             GError             **error)
 {
   GDBusActionGroup *actions;
   GApplicationImpl *impl;
@@ -543,8 +543,7 @@ g_application_impl_register (GApplication       *application,
       return NULL;
     }
 
-  *remote_actions = G_ACTION_GROUP (actions);
-  impl->remote_actions = actions;
+  *remote_actions = G_REMOTE_ACTION_GROUP (actions);
 
   return impl;
 }
@@ -591,24 +590,6 @@ g_application_impl_open (GApplicationImpl  *impl,
                           "Open",
                           g_variant_builder_end (&builder),
                           NULL, 0, -1, NULL, NULL, NULL);
-}
-
-void
-g_application_impl_activate_action (GApplicationImpl *impl,
-                                    const gchar      *action_name,
-                                    GVariant         *parameter,
-                                    GVariant         *platform_data)
-{
-  g_dbus_action_group_activate_action_full (impl->remote_actions, action_name, parameter, platform_data);
-}
-
-void
-g_application_impl_change_action_state (GApplicationImpl *impl,
-                                        const gchar      *action_name,
-                                        GVariant         *value,
-                                        GVariant         *platform_data)
-{
-  g_dbus_action_group_change_action_state_full (impl->remote_actions, action_name, value, platform_data);
 }
 
 static void

@@ -26,6 +26,7 @@
 
 #include "gapplicationcommandline.h"
 #include "gsimpleactiongroup.h"
+#include "gremoteactiongroup.h"
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
 #include "gactionmap.h"
@@ -213,8 +214,8 @@ struct _GApplicationPrivate
   guint              did_startup : 1;
   guint              did_shutdown : 1;
 
-  GActionGroup      *remote_actions;
-  GApplicationImpl  *impl;
+  GRemoteActionGroup *remote_actions;
+  GApplicationImpl   *impl;
 };
 
 enum
@@ -1590,7 +1591,7 @@ g_application_list_actions (GActionGroup *action_group)
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
   if (application->priv->remote_actions != NULL)
-    return g_action_group_list_actions (application->priv->remote_actions);
+    return g_action_group_list_actions (G_ACTION_GROUP (application->priv->remote_actions));
 
   else if (application->priv->actions != NULL)
     return g_action_group_list_actions (application->priv->actions);
@@ -1614,7 +1615,7 @@ g_application_query_action (GActionGroup        *group,
   g_return_val_if_fail (application->priv->is_registered, FALSE);
 
   if (application->priv->remote_actions != NULL)
-    return g_action_group_query_action (application->priv->remote_actions,
+    return g_action_group_query_action (G_ACTION_GROUP (application->priv->remote_actions),
                                         action_name,
                                         enabled,
                                         parameter_type,
@@ -1646,8 +1647,8 @@ g_application_change_action_state (GActionGroup *action_group,
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->remote_actions)
-    g_application_impl_change_action_state (application->priv->impl, action_name, value,
-                                            get_platform_data (application));
+    g_remote_action_group_change_action_state_full (application->priv->remote_actions,
+                                                    action_name, value, get_platform_data (application));
 
   else
     g_action_group_change_action_state (application->priv->actions, action_name, value);
@@ -1664,9 +1665,9 @@ g_application_activate_action (GActionGroup *action_group,
                     application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
-  if (application->priv->is_remote)
-    g_application_impl_activate_action (application->priv->impl, action_name, parameter,
-                                        get_platform_data (application));
+  if (application->priv->remote_actions)
+    g_remote_action_group_activate_action_full (application->priv->remote_actions,
+                                                action_name, parameter, get_platform_data (application));
 
   else
     g_action_group_activate_action (application->priv->actions, action_name, parameter);

@@ -49,15 +49,6 @@ GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConn
                                                                        const gchar            *bus_name,
                                                                        const gchar            *object_path);
 
-void                    g_dbus_action_group_activate_action_full      (GDBusActionGroup       *action_group,
-                                                                       const gchar            *action_name,
-                                                                       GVariant               *parameter,
-                                                                       GVariant               *platform_data);
-void                    g_dbus_action_group_change_action_state_full  (GDBusActionGroup       *action_group,
-                                                                       const gchar            *action_name,
-                                                                       GVariant               *value,
-                                                                       GVariant               *platform_data);
-
 G_END_DECLS
 
 #endif /* __G_DBUS_ACTION_GROUP_H__ */

@@ -131,6 +131,7 @@ application_headers = \
 	gactiongroup.h			\
 	gactionmap.h			\
 	gsimpleactiongroup.h		\
+	gremoteactiongroup.h		\
 	gactiongroupexporter.h		\
 	gdbusactiongroup.h		\
 	gaction.h			\
@@ -152,6 +153,7 @@ application_sources = \
 	gactiongroup.c				\
 	gactionmap.c				\
 	gsimpleactiongroup.c			\
+	gremoteactiongroup.c			\
 	gactiongroupexporter.c			\
 	gdbusactiongroup.c			\
 	gaction.c				\

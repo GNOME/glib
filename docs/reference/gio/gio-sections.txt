@@ -2941,6 +2941,22 @@ g_dbus_action_group_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gremoteactiongroup</FILE>
+GRemoteActionGroup
+GRemoteActionGroupInterface
+
+<SUBSECTION>
+g_remote_action_group_activate_action_full
+g_remote_action_group_change_action_state_full
+
+<SUBSECTION Standard>
+G_TYPE_REMOTE_ACTION_GROUP
+G_REMOTE_ACTION_GROUP
+G_IS_REMOTE_ACTION_GROUP
+G_REMOTE_ACTION_GROUP_GET_IFACE
+</SECTION>
+
+<SECTION>
 <FILE>gaction</FILE>
 <TITLE>GAction</TITLE>
 GAction

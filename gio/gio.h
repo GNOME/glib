@@ -147,6 +147,7 @@
 #include <gio/gdbusobjectmanagerclient.h>
 #include <gio/gdbusobjectmanagerserver.h>
 #include <gio/gdbusactiongroup.h>
+#include <gio/gremoteactiongroup.h>
 #include <gio/gmenumodel.h>
 #include <gio/gmenu.h>
 #include <gio/gmenuexporter.h>
