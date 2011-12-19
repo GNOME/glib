@@ -117,14 +117,6 @@ GLIB_DEPRECATED
 void                    g_application_set_action_group                  (GApplication             *application,
                                                                          GActionGroup             *action_group);
 
-void                    g_application_set_app_menu                      (GApplication             *application,
-                                                                         GMenuModel               *app_menu);
-GMenuModel             *g_application_get_app_menu                      (GApplication             *application);
-
-void                    g_application_set_menubar                       (GApplication             *application,
-                                                                         GMenuModel               *menubar);
-GMenuModel *            g_application_get_menubar                       (GApplication             *application);
-
 gboolean                g_application_get_is_registered                 (GApplication             *application);
 gboolean                g_application_get_is_remote                     (GApplication             *application);
 

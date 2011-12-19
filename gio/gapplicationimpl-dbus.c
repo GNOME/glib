@@ -303,11 +303,14 @@ g_application_impl_app_menu_changed (GObject    *source,
                                      gpointer    user_data)
 {
   GApplicationImpl *impl = user_data;
+  GMenuModel *app_menu;
 
   g_assert (source == impl->app);
 
-  g_application_impl_publish_menu (impl, "AppMenu", g_application_get_app_menu (impl->app),
-                                   &impl->app_menu_id, &impl->app_menu_path);
+  g_object_get (impl->app, "app-menu", &app_menu, NULL);
+
+  g_application_impl_publish_menu (impl, "AppMenu", app_menu, &impl->app_menu_id, &impl->app_menu_path);
+  g_clear_object (&app_menu);
 }
 
 static void
@@ -316,11 +319,14 @@ g_application_impl_menubar_changed (GObject    *source,
                                     gpointer    user_data)
 {
   GApplicationImpl *impl = user_data;
+  GMenuModel *menubar;
 
   g_assert (source == impl->app);
 
-  g_application_impl_publish_menu (impl, "MenuBar", g_application_get_menubar (impl->app),
-                                   &impl->menubar_id, &impl->menubar_path);
+  g_object_get (impl->app, "menubar", &menubar, NULL);
+
+  g_application_impl_publish_menu (impl, "MenuBar", menubar, &impl->menubar_id, &impl->menubar_path);
+  g_clear_object (&menubar);
 }
 
 /* Attempt to become the primary instance.

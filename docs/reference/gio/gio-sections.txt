@@ -2816,10 +2816,6 @@ g_application_get_flags
 g_application_set_flags
 <SUBSECTION>
 g_application_set_action_group
-g_application_set_app_menu
-g_application_get_app_menu
-g_application_set_menubar
-g_application_get_menubar
 <SUBSECTION>
 g_application_get_is_registered
 g_application_get_is_remote
