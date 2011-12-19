@@ -1,3 +1,47 @@
+Overview of changes from GLib 2.31.4 to 2.31.6
+==============================================
+
+* GApplication no longer has APIs for setting menus.  Those have been
+  moved to GtkApplication.
+
+* the GActionGroup import/export functionality has been decoupled from
+  GApplication by the introduction of a new interface for the purpose of
+  handling platform data: GRemoteActionGroup.  This allows Gtk to
+  properly deal with platform data (and gdk threads) on window actions.
+
+* lots of documentation improvements
+
+* bug fixes and a huge number of memory leak fixes
+
+* the test suite now passes on ARM and some of the GDBus testcase hangs
+  we've been seeing have been resolved (although others could remain)
+
+* g_bytes_get_data() API changed: now includes 'size' out parameter
+
+* new g_queue_free_full() API similar to g_[s]list_free_full()
+
+* desktop files: use standard "Keywords" now, not "X-GNOME-Keywords"
+
+* gsettings commandline tool now has --schemadir option for schemas not
+  installed in the usual place (ie: as part of plugins)
+
+* Bugs fixed:
+ 643736 GApplication doesn't emit dbus signals on action updates
+ 657433 g_queue_free_full() missing
+ 664699 glib: documentation fixes
+ 665737 acquire/release gdk threads lock on incoming dbus
+ 665879 GBytes: add a size argument to g_bytes_get_data
+ 666113 various leaks in GLib, GIO are visible in the regression tests
+ 666115 various tests leak memory, obscuring real leaks in the library
+ 666145 Doc could be more explicite that g_thread_init calls can be droped
+ 666173 Configure warning - linux/netlink.h usability... no
+ 666296 Race condition in g_thread_xp_get_srwlock
+ 666415 Settings tools should allow specifying a schema directory 
+
+* Translations updated:
+ French
+ Spanish
+
 Overview of changes from GLib 2.31.2 to 2.31.4
 ==============================================
 
