@@ -16,6 +16,7 @@ de/
 desktop-app-info
 echo-server
 file
+fileattributematcher
 filter-cat
 filter-streams
 gapplication
@@ -28,6 +29,7 @@ gdbus-addresses
 gdbus-bz627724
 gdbus-close-pending
 gdbus-connection
+gdbus-connection-flush
 gdbus-connection-flush-helper
 gdbus-connection-loss
 gdbus-connection-slow
@@ -57,10 +59,10 @@ gdbus-serialization
 gdbus-test-codegen
 gdbus-test-codegen-generated*
 gdbus-threading
-gmenumodel
 g-file
 g-file-info
 g-icon
+gmenumodel
 gschemas.compiled
 gsettings
 gsettings.store
@@ -71,8 +73,8 @@ live-g-file
 memory-input-stream
 memory-output-stream
 mimeapps
-network-monitor
 network-address
+network-monitor
 org.gtk.test.enums.xml
 pollable
 proxy
