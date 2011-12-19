@@ -296,7 +296,7 @@ read_netlink_messages (GSocket      *socket,
 {
   GNetworkMonitorNetlink *nl = user_data;
   GInputVector iv;
-  gsize len;
+  gssize len;
   GSocketControlMessage **cmsgs = NULL;
   gint num_cmsgs = 0, i, flags;
   GError *error = NULL;
