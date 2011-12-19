@@ -64,7 +64,7 @@
 #define MIME_CACHE_GROUP            "MIME Cache"
 #define GENERIC_NAME_KEY            "GenericName"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
-#define KEYWORDS_KEY                "X-GNOME-Keywords"
+#define KEYWORDS_KEY                "Keywords"
 
 enum {
   PROP_0,
