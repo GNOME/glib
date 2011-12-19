@@ -111,7 +111,6 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline2	\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
-	gapplication-example-menu	\
 	$(NULL)
 
 
@@ -427,9 +426,6 @@ gapplication_example_cmdline3_LDADD   = $(progs_ldadd)
 
 gapplication_example_actions_SOURCES = gapplication-example-actions.c
 gapplication_example_actions_LDADD   = $(progs_ldadd)
-
-gapplication_example_menu_SOURCES = gapplication-example-menu.c
-gapplication_example_menu_LDADD   = $(progs_ldadd)
 
 gmenumodel_LDADD = $(progs_ldadd)
 
