@@ -520,8 +520,9 @@ static DWORD            g_thread_xp_waiter_tls;
 typedef struct _GThreadXpWaiter GThreadXpWaiter;
 struct _GThreadXpWaiter
 {
-  HANDLE                    event;
-  volatile GThreadXpWaiter *next;
+  HANDLE                     event;
+  volatile GThreadXpWaiter  *next;
+  volatile GThreadXpWaiter **my_owner;
 };
 
 static GThreadXpWaiter *
@@ -539,6 +540,7 @@ g_thread_xp_waiter_get (void)
       waiter->event = CreateEvent (0, FALSE, FALSE, NULL);
       if (waiter->event == NULL)
         g_thread_abort (GetLastError (), "CreateEvent");
+      waiter->my_owner = NULL;
 
       TlsSetValue (g_thread_xp_waiter_tls, waiter);
     }
@@ -848,6 +850,7 @@ g_thread_xp_SleepConditionVariableSRW (gpointer cond,
   waiter->next = NULL;
 
   EnterCriticalSection (&g_thread_xp_lock);
+  waiter->my_owner = cv->last_ptr;
   *cv->last_ptr = waiter;
   cv->last_ptr = &waiter->next;
   LeaveCriticalSection (&g_thread_xp_lock);
@@ -857,8 +860,18 @@ g_thread_xp_SleepConditionVariableSRW (gpointer cond,
 
   if (status != WAIT_TIMEOUT && status != WAIT_OBJECT_0)
     g_thread_abort (GetLastError (), "WaitForSingleObject");
-
   g_mutex_lock (mutex);
+
+  if (status == WAIT_TIMEOUT)
+    {
+      EnterCriticalSection (&g_thread_xp_lock);
+      if (waiter->my_owner)
+        {
+          *waiter->my_owner = waiter->next;
+          waiter->my_owner = NULL;
+        }
+      LeaveCriticalSection (&g_thread_xp_lock);
+    }
 
   return status == WAIT_OBJECT_0;
 }
@@ -870,17 +883,21 @@ g_thread_xp_WakeConditionVariable (gpointer cond)
   volatile GThreadXpWaiter *waiter;
 
   EnterCriticalSection (&g_thread_xp_lock);
+
   waiter = cv->first;
   if (waiter != NULL)
     {
       cv->first = waiter->next;
-      if (cv->first == NULL)
+      if (cv->first != NULL)
+        cv->first->my_owner = &cv->first;
+      else
         cv->last_ptr = &cv->first;
     }
-  LeaveCriticalSection (&g_thread_xp_lock);
 
   if (waiter != NULL)
     SetEvent (waiter->event);
+
+  LeaveCriticalSection (&g_thread_xp_lock);
 }
 
 static void __stdcall
@@ -890,10 +907,10 @@ g_thread_xp_WakeAllConditionVariable (gpointer cond)
   volatile GThreadXpWaiter *waiter;
 
   EnterCriticalSection (&g_thread_xp_lock);
+
   waiter = cv->first;
   cv->first = NULL;
   cv->last_ptr = &cv->first;
-  LeaveCriticalSection (&g_thread_xp_lock);
 
   while (waiter != NULL)
     {
@@ -901,8 +918,11 @@ g_thread_xp_WakeAllConditionVariable (gpointer cond)
 
       next = waiter->next;
       SetEvent (waiter->event);
+      waiter->my_owner = NULL;
       waiter = next;
     }
+
+  LeaveCriticalSection (&g_thread_xp_lock);
 }
 
 /* {{{2 XP Setup */
