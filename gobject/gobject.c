@@ -1373,6 +1373,56 @@ object_interface_check_properties (gpointer func_data,
 	  continue;
 	}
 
+      /* We do a number of checks on the properties of an interface to
+       * make sure that all classes implementing the interface are
+       * overriding the properties in a sane way.
+       *
+       * We do the checks in order of importance so that we can give
+       * more useful error messages first.
+       *
+       * First, we check that the implementation doesn't remove the
+       * basic functionality (readability, writability) advertised by
+       * the interface.  Next, we check that it doesn't introduce
+       * additional restrictions (such as construct-only).  Finally, we
+       * make sure the types are compatible.
+       */
+
+#define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
+      /* If the property on the interface is readable then the
+       * implementation must be readable.  If the interface is writable
+       * then the implementation must be writable.
+       */
+      if (!SUBSET (pspecs[n]->flags, class_pspec->flags, G_PARAM_READABLE | G_PARAM_WRITABLE))
+        {
+          g_critical ("Flags for property '%s' on class '%s' remove functionality compared with the "
+                      "property on interface '%s'\n", pspecs[n]->name,
+                      g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
+          continue;
+        }
+
+      /* If the property on the interface is writable then we need to
+       * make sure the implementation doesn't introduce new restrictions
+       * on that writability (ie: construct-only).
+       *
+       * If the interface was not writable to begin with then we don't
+       * really have any problems here because "writable at construct
+       * type only" is still more permissive than "read only".
+       *
+       * It's questionable if we should have G_PARAM_CONSTRUCT checked
+       * here....
+       */
+      if (pspecs[n]->flags & G_PARAM_WRITABLE)
+        {
+          if (!SUBSET (class_pspec->flags, pspecs[n]->flags, G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+            {
+              g_critical ("Flags for property '%s' on class '%s' introduce additional restrictions on "
+                          "writability compared with the property on interface '%s'\n", pspecs[n]->name,
+                          g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
+              continue;
+            }
+        }
+#undef SUBSET
+
       /* If the property on the interface is readable then we are
        * effectively advertising that reading the property will return a
        * value of a specific type.  All implementations of the interface
@@ -1432,26 +1482,6 @@ object_interface_check_properties (gpointer func_data,
         default:
           g_assert_not_reached ();
         }
-
-#define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
-
-      /* CONSTRUCT and CONSTRUCT_ONLY add restrictions to writability.
-       * READABLE and WRITABLE remove restrictions. The implementation
-       * paramspec must have less restrictive flags.
-       */
-      if (pspecs[n]->flags & G_PARAM_WRITABLE)
-        {
-          if (!SUBSET (class_pspec->flags, pspecs[n]->flags, G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-            g_critical ("Flags for property '%s' on class '%s' introduce additional restrictions on "
-                        "writability compared with the property on interface '%s'\n", pspecs[n]->name,
-                        g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
-        }
-
-      if (!SUBSET (pspecs[n]->flags, class_pspec->flags, G_PARAM_READABLE | G_PARAM_WRITABLE))
-        g_critical ("Flags for property '%s' on class '%s' remove functionality compared with the "
-                    "property on interface '%s'\n", pspecs[n]->name,
-                    g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
-#undef SUBSET
     }
 
   g_free (pspecs);
