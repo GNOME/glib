@@ -94,8 +94,7 @@ g_action_default_init (GActionInterface *iface)
                                                             P_("Action Name"),
                                                             P_("The name used to invoke the action"),
                                                             NULL,
-                                                            G_PARAM_READWRITE |
-							    G_PARAM_CONSTRUCT_ONLY |
+                                                            G_PARAM_READABLE |
                                                             G_PARAM_STATIC_STRINGS));
 
   /**
@@ -111,8 +110,7 @@ g_action_default_init (GActionInterface *iface)
                                                            P_("Parameter Type"),
                                                            P_("The type of GVariant passed to activate()"),
                                                            G_TYPE_VARIANT_TYPE,
-							   G_PARAM_READWRITE |
-							   G_PARAM_CONSTRUCT_ONLY |
+                                                           G_PARAM_READABLE |
                                                            G_PARAM_STATIC_STRINGS));
 
   /**
@@ -130,8 +128,7 @@ g_action_default_init (GActionInterface *iface)
                                                              P_("Enabled"),
                                                              P_("If the action can be activated"),
                                                              TRUE,
-							     G_PARAM_READWRITE |
-							     G_PARAM_CONSTRUCT_ONLY |
+                                                             G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
 
   /**
@@ -163,8 +160,7 @@ g_action_default_init (GActionInterface *iface)
                                                              P_("The state the action is in"),
                                                              G_VARIANT_TYPE_ANY,
                                                              NULL,
-							     G_PARAM_READWRITE |
-							     G_PARAM_CONSTRUCT_ONLY |
+                                                             G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
 }
 
