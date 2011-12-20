@@ -1,5 +1,6 @@
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include <glib-object.h>
+#include <stdlib.h>
 
 static void
 test_param_value (void)
@@ -394,6 +395,383 @@ test_value_transform (void)
   g_value_unset (&dest);
 }
 
+
+/* We create some dummy objects with a simple relationship:
+ *
+ *           GObject
+ *          /       \
+ * TestObjectA     TestObjectC
+ *      |
+ * TestObjectB
+ *
+ * ie: TestObjectB is a subclass of TestObjectA and TestObjectC is
+ * related to neither.
+ */
+
+static GType test_object_a_get_type (void);
+typedef GObject TestObjectA; typedef GObjectClass TestObjectAClass;
+G_DEFINE_TYPE (TestObjectA, test_object_a, G_TYPE_OBJECT);
+static void test_object_a_class_init (TestObjectAClass *class) { }
+static void test_object_a_init (TestObjectA *a) { }
+
+static GType test_object_b_get_type (void);
+typedef GObject TestObjectB; typedef GObjectClass TestObjectBClass;
+G_DEFINE_TYPE (TestObjectB, test_object_b, test_object_a_get_type ());
+static void test_object_b_class_init (TestObjectBClass *class) { }
+static void test_object_b_init (TestObjectB *b) { }
+
+static GType test_object_c_get_type (void);
+typedef GObject TestObjectC; typedef GObjectClass TestObjectCClass;
+G_DEFINE_TYPE (TestObjectC, test_object_c, G_TYPE_OBJECT);
+static void test_object_c_class_init (TestObjectCClass *class) { }
+static void test_object_c_init (TestObjectC *c) { }
+
+/* We create an interface and programmatically populate it with
+ * properties of each of the above type, with various flag combinations.
+ *
+ * Properties are named like "type-perm" where type is 'a', 'b' or 'c'
+ * and perm is a series of characters, indicating the permissions:
+ *
+ *   - 'r': readable
+ *   - 'w': writable
+ *   - 'c': construct
+ *   - 'C': construct-only
+ *
+ * It doesn't make sense to have a property that is neither readable nor
+ * writable.  It is also not valid to have construct or construct-only
+ * on read-only params.  Finally, it is invalid to have both construct
+ * and construct-only specified, so we do not consider those cases.
+ * That gives us 7 possible permissions:
+ *
+ *     'r', 'w', 'rw', 'wc', 'rwc', 'wC', 'rwC'
+ *
+ * And 9 impossible ones:
+ *
+ *     '', 'c', 'rc', 'C', 'rC', 'cC', 'rcC', 'wcC', rwcC'
+ *
+ * For a total of 16 combinations.
+ *
+ * That gives a total of 48 (16 * 3) possible flag/type combinations, of
+ * which 27 (9 * 3) are impossible to install.
+ *
+ * That gives 21 (7 * 3) properties that will be installed.
+ */
+typedef GTypeInterface TestInterfaceInterface;
+//typedef struct _TestInterface TestInterface;
+G_DEFINE_INTERFACE (TestInterface, test_interface, G_TYPE_OBJECT)
+static void
+test_interface_default_init (TestInterfaceInterface *iface)
+{
+  const gchar *names[] = { "a", "b", "c" };
+  const gchar *perms[] = { NULL, "r",  "w",  "rw",
+                           NULL, NULL, "wc", "rwc",
+                           NULL, NULL, "wC", "rwC",
+                           NULL, NULL, NULL, NULL };
+  const GType types[] = { test_object_a_get_type (), test_object_b_get_type (), test_object_c_get_type () };
+  guint i, j;
+
+  for (i = 0; i < G_N_ELEMENTS (types); i++)
+    for (j = 0; j < G_N_ELEMENTS (perms); j++)
+      {
+        gchar prop_name[10];
+        GParamSpec *pspec;
+
+        if (perms[j] == NULL)
+          {
+            /* we think that this is impossible.  make sure. */
+            if (g_test_trap_fork (G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR))
+              {
+                GParamSpec *pspec;
+
+                pspec = g_param_spec_object ("xyz", "xyz", "xyz", types[i], j);
+                g_object_interface_install_property (iface, pspec);
+                exit (0);
+              }
+            //g_test_trap_assert_failed (); XXX g_object_interface_install_property has no checks
+            continue;
+          }
+
+        /* install the property */
+        g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[i], perms[j]);
+        pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[i], j);
+        g_object_interface_install_property (iface, pspec);
+      }
+}
+
+/* We now have 21 properties.  Each property may be correctly
+ * implemented with the following types:
+ *
+ *   Properties         Valid Types       Reason
+ *
+ *   a-r                a, b              Read only can provide subclasses
+ *   a-w, wc, wC        a, GObject        Write only can accept superclasses
+ *   a-rw, rwc, rwC     a                 Read-write must be exactly equal
+ *
+ *   b-r                b                 (as above)
+ *   b-w, wc, wC        b, a, GObject
+ *   b-rw, rwc, rwC     b
+ *
+ *   c-r                c                 (as above)
+ *   c-wo, wc, wC       c, GObject
+ *   c-rw, rwc, rwC     c
+ *
+ * We can express this in a 48-by-4 table where each row represents an
+ * installed property and each column represents a type.  The value in
+ * the table represents if it is valid to subclass the row's property
+ * with the type of the column:
+ *
+ *   - 0:   invalid because the interface property doesn't exist (invalid flags)
+ *   - 'v': valid
+ *   - '=': invalid because of the type not being exactly equal
+ *   - '<': invalid because of the type not being a subclass
+ *   - '>': invalid because of the type not being a superclass
+ *
+ * We organise the table by interface property type ('a', 'b', 'c') then
+ * by interface property flags.
+ */
+
+static gint valid_impl_types[48][4] = {
+                    /* a    b    c    GObject */
+    /* 'a-' */       { },
+    /* 'a-r' */      { 'v', 'v', '<', '<' },
+    /* 'a-w' */      { 'v', '>', '>', 'v' },
+    /* 'a-rw' */     { 'v', '=', '=', '=' },
+    /* 'a-c */       { },
+    /* 'a-rc' */     { },
+    /* 'a-wc' */     { 'v', '>', '>', 'v' },
+    /* 'a-rwc' */    { 'v', '=', '=', '=' },
+    /* 'a-C */       { },
+    /* 'a-rC' */     { },
+    /* 'a-wC' */     { 'v', '>', '>', 'v' },
+    /* 'a-rwC' */    { 'v', '=', '=', '=' },
+    /* 'a-cC */      { },
+    /* 'a-rcC' */    { },
+    /* 'a-wcC' */    { },
+    /* 'a-rwcC' */   { },
+
+    /* 'b-' */       { },
+    /* 'b-r' */      { '<', 'v', '<', '<' },
+    /* 'b-w' */      { 'v', 'v', '>', 'v' },
+    /* 'b-rw' */     { '=', 'v', '=', '=' },
+    /* 'b-c */       { },
+    /* 'b-rc' */     { },
+    /* 'b-wc' */     { 'v', 'v', '>', 'v' },
+    /* 'b-rwc' */    { '=', 'v', '=', '=' },
+    /* 'b-C */       { },
+    /* 'b-rC' */     { },
+    /* 'b-wC' */     { 'v', 'v', '>', 'v' },
+    /* 'b-rwC' */    { '=', 'v', '=', '=' },
+    /* 'b-cC */      { },
+    /* 'b-rcC' */    { },
+    /* 'b-wcC' */    { },
+    /* 'b-rwcC' */   { },
+
+    /* 'c-' */       { },
+    /* 'c-r' */      { '<', '<', 'v', '<' },
+    /* 'c-w' */      { '>', '>', 'v', 'v' },
+    /* 'c-rw' */     { '=', '=', 'v', '=' },
+    /* 'c-c */       { },
+    /* 'c-rc' */     { },
+    /* 'c-wc' */     { '>', '>', 'v', 'v' },
+    /* 'c-rwc' */    { '=', '=', 'v', '=' },
+    /* 'c-C */       { },
+    /* 'c-rC' */     { },
+    /* 'c-wC' */     { '>', '>', 'v', 'v' },
+    /* 'c-rwC' */    { '=', '=', 'v', '=' },
+    /* 'c-cC */      { },
+    /* 'c-rcC' */    { },
+    /* 'c-wcC' */    { },
+    /* 'c-rwcC' */   { }
+};
+
+/* We also try to change the flags.  We must ensure that all
+ * implementations provide all functionality promised by the interface.
+ * We must therefore never remove readability or writability (but we can
+ * add them).  Construct/construct-only are restrictions that apply to
+ * writability, so we can never add them unless writability was never
+ * present in the first place, in which case we should be able to add
+ * them.
+ *
+ *   Properties         Valid Access      Reason
+ *
+ *   *-r                r, rw, rwc, rwC   Must keep readable, but can restrict newly-added writable
+ *   *-w                w, rw             Must keep writable unrestricted
+ *   *-rw               rw                Must not add any restrictions
+ *   *-rwc              rw, rwc           Can remove 'construct' restriction
+ *   *-rwC              rw, rwC           Can remove 'construct-only' restriction
+ *   *-wc               rwc, rw, w, wc    Can add readability or remove 'construct' restriction
+ *   *-wC               rwC, rw, w, wC    Can add readability or remove 'construct only' restriction
+ *
+ * We can represent this with a 16-by-16 table.  The rows represent the
+ * flags of the property on the interface.  The columns is the flags to
+ * try to use when overriding the property.  The cell contents are:
+ *
+ *   - 0:   invalid because the interface property doesn't exist (invalid flags)
+ *   - 'v': valid
+ *   - 'i': invalid because the implementation flags are invalid
+ *   - 'f': invalid because of the removal of functionality
+ *   - 'r': invalid because of the addition of restrictions
+ *
+ * We also ensure that removal of functionality is reported before
+ * addition of restrictions, since this is a more basic problem.
+ */
+static gint valid_impl_flags[16][16] = {
+                 /* ''   r    w    rw   c    rc   wc   rwc  C    rC   wC   rwC  cC   rcC  wcC  rwcC */
+    /* '*-' */    { },
+    /* '*-r' */   { 'i', 'v', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'i', 'i' },
+    /* '*-w' */   { 'i', 'f', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'r', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-rw' */  { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'f', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-c */    { },
+    /* '*-rc' */  { },
+    /* '*-wc' */  { 'i', 'f', 'v', 'v', 'i', 'i', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-rwc' */ { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-C */    { },
+    /* '*-rC' */  { },
+    /* '*-wC' */  { 'i', 'f', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'v', 'v', 'i', 'i', 'i', 'i' },
+    /* '*-rwC' */ { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'f', 'v', 'i', 'i', 'i', 'i' },
+};
+
+static guint change_this_flag;
+static guint change_this_type;
+static guint use_this_flag;
+static guint use_this_type;
+
+typedef GObjectClass TestImplementationClass;
+typedef GObject TestImplementation;
+
+static void test_implementation_init (TestImplementation *impl) { }
+static void test_implementation_iface_init (TestInterfaceInterface *iface) { }
+
+static GType test_implementation_get_type (void);
+G_DEFINE_TYPE_WITH_CODE (TestImplementation, test_implementation, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (test_interface_get_type (), test_implementation_iface_init))
+
+static void test_implementation_class_init (TestImplementationClass *class)
+{
+  const gchar *names[] = { "a", "b", "c" };
+  const gchar *perms[] = { NULL, "r",  "w",  "rw",
+                           NULL, NULL, "wc", "rwc",
+                           NULL, NULL, "wC", "rwC",
+                           NULL, NULL, NULL, NULL };
+  const GType types[] = { test_object_a_get_type (), test_object_b_get_type (),
+                          test_object_c_get_type (), G_TYPE_OBJECT };
+  gchar prop_name[10];
+  GParamSpec *pspec;
+  guint i, j;
+
+  class->get_property = GINT_TO_POINTER (1);
+  class->set_property = GINT_TO_POINTER (1);
+
+  /* Install all of the non-modified properties or else GObject will
+   * complain about non-implemented properties.
+   */
+  for (i = 0; i < 3; i++)
+    for (j = 0; j < G_N_ELEMENTS (perms); j++)
+      {
+        if (i == change_this_type && j == change_this_flag)
+          continue;
+
+        if (perms[j] != NULL)
+          {
+            /* override the property without making changes */
+            g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[i], perms[j]);
+            g_object_class_override_property (class, 1, prop_name);
+          }
+      }
+
+  /* Now try installing our modified property */
+  if (perms[change_this_flag] == NULL)
+    g_error ("Interface property does not exist");
+
+  if (!(use_this_flag & (G_PARAM_READABLE | G_PARAM_WRITABLE)))
+    g_error ("g_object_class_install_property should probably fail here...");
+
+  g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[change_this_type], perms[change_this_flag]);
+  pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[use_this_type], use_this_flag);
+  g_object_class_install_property (class, 1, pspec);
+}
+
+static void
+test_param_implement (void)
+{
+  /* GObject oddity: GObjectClass must be initialised before we can
+   * initialise a GTypeInterface.
+   */
+  g_type_class_ref (G_TYPE_OBJECT);
+
+  /* Bring up the interface first. */
+  g_type_default_interface_ref (test_interface_get_type ());
+
+  for (change_this_flag = 0; change_this_flag < 16; change_this_flag++)
+    for (change_this_type = 0; change_this_type < 3; change_this_type++)
+      for (use_this_flag = 0; use_this_flag < 16; use_this_flag++)
+        for (use_this_type = 0; use_this_type < 4; use_this_type++)
+          {
+            if (g_test_trap_fork (G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR))
+              {
+                g_type_class_ref (test_implementation_get_type ());
+                exit (0);
+              }
+
+            /* We want to ensure that any flags mismatch problems are reported first. */
+            switch (valid_impl_flags[change_this_flag][use_this_flag])
+              {
+              case 0:
+                /* make sure the other table agrees */
+                g_assert (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type] == 0);
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*Interface property does not exist*");
+                continue;
+
+              case 'i':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*g_object_class_install_property*");
+                continue;
+
+              case 'f':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*remove functionality*");
+                continue;
+
+              case 'r':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*introduce additional restrictions*");
+                continue;
+
+              case 'v':
+                break;
+              }
+
+            /* Next, we check if there should have been a type error. */
+            switch (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type])
+              {
+              case 0:
+                /* this should have been caught above */
+                g_assert_not_reached ();
+
+              case '=':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*exactly equal*");
+                continue;
+
+              case '<':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*equal to or more restrictive*");
+                continue;
+
+              case '>':
+                g_test_trap_assert_failed ();
+                g_test_trap_assert_stderr ("*equal to or less restrictive*");
+                continue;
+
+              case 'v':
+                break;
+              }
+
+            g_test_trap_assert_passed ();
+          }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -405,6 +783,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/param/qdata", test_param_qdata);
   g_test_add_func ("/param/validate", test_param_validate);
   g_test_add_func ("/param/convert", test_param_convert);
+  g_test_add_func ("/param/implement", test_param_implement);
   g_test_add_func ("/value/transform", test_value_transform);
 
   return g_test_run ();
