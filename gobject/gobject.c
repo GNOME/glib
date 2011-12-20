@@ -1396,14 +1396,15 @@ object_interface_check_properties (gpointer func_data,
 
 #define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
 
-      /* CONSTRUCT and CONSTRUCT_ONLY add restrictions.
+      /* CONSTRUCT and CONSTRUCT_ONLY add restrictions to writability.
        * READABLE and WRITABLE remove restrictions. The implementation
        * paramspec must have less restrictive flags.
        */
       if (class_pspec &&
-	  (!SUBSET (class_pspec->flags,
-		    pspecs[n]->flags,
-		    G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY) ||
+          (((pspecs[n]->flags & G_PARAM_WRITABLE) &&
+            !SUBSET (class_pspec->flags,
+                     pspecs[n]->flags,
+                     G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) ||
 	   !SUBSET (pspecs[n]->flags,
 		    class_pspec->flags,
 		    G_PARAM_READABLE | G_PARAM_WRITABLE)))
