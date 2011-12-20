@@ -1373,22 +1373,65 @@ object_interface_check_properties (gpointer func_data,
 	  continue;
 	}
 
-      /* The implementation paramspec must have a less restrictive
-       * type than the interface parameter spec for set() and a
-       * more restrictive type for get(). We just require equality,
-       * rather than doing something more complicated checking
-       * the READABLE and WRITABLE flags. We also simplify here
-       * by only checking the value type, not the G_PARAM_SPEC_TYPE.
+      /* If the property on the interface is readable then we are
+       * effectively advertising that reading the property will return a
+       * value of a specific type.  All implementations of the interface
+       * need to return items of this type -- but may be more
+       * restrictive.  For example, it is legal to have:
+       *
+       *   GtkWidget *get_item();
+       *
+       * that is implemented by a function that always returns a
+       * GtkEntry.  In short: readability implies that the
+       * implementation  value type must be equal or more restrictive.
+       *
+       * Similarly, if the property on the interface is writable then
+       * must be able to accept the property being set to any value of
+       * that type, including subclasses.  In this case, we may also be
+       * less restrictive.  For example, it is legal to have:
+       *
+       *   set_item (GtkEntry *);
+       *
+       * that is implemented by a function that will actually work with
+       * any GtkWidget.  In short: writability implies that the
+       * implementation value type must be equal or less restrictive.
+       *
+       * In the case that the property is both readable and writable
+       * then the only way that both of the above can be satisfied is
+       * with a type that is exactly equal.
        */
-      if (!g_type_is_a (pspecs[n]->value_type, class_pspec->value_type))
-        g_critical ("Property '%s' on class '%s' has type '%s' "
-                    "which is different from the type '%s', "
-                    "of the property on interface '%s'\n",
-                    pspecs[n]->name,
-                    g_type_name (G_OBJECT_CLASS_TYPE (class)),
-                    g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
-                    g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])),
-                    g_type_name (iface_type));
+      switch (pspecs[n]->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE))
+        {
+        case G_PARAM_READABLE | G_PARAM_WRITABLE:
+          /* class pspec value type must have exact equality with interface */
+          if (pspecs[n]->value_type != class_pspec->value_type)
+            g_critical ("Read/writable property '%s' on class '%s' has type '%s' which is not exactly equal to the "
+                        "type '%s' of the property on the interface '%s'\n", pspecs[n]->name,
+                        g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
+                        g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])), g_type_name (iface_type));
+          break;
+
+        case G_PARAM_READABLE:
+          /* class pspec value type equal or more restrictive than interface */
+          if (!g_type_is_a (class_pspec->value_type, pspecs[n]->value_type))
+            g_critical ("Read-only property '%s' on class '%s' has type '%s' which is not equal to or more "
+                        "restrictive than the type '%s' of the property on the interface '%s'\n", pspecs[n]->name,
+                        g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
+                        g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])), g_type_name (iface_type));
+          break;
+
+        case G_PARAM_WRITABLE:
+          /* class pspec value type equal or less restrictive than interface */
+          if (!g_type_is_a (pspecs[n]->value_type, class_pspec->value_type))
+            g_critical ("Write-only property '%s' on class '%s' has type '%s' which is not equal to or less "
+                        "restrictive than the type '%s' of the property on the interface '%s' \n", pspecs[n]->name,
+                        g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
+                        g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])), g_type_name (iface_type));
+          break;
+
+        default:
+          g_assert_not_reached ();
+        }
 
 #define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
 
