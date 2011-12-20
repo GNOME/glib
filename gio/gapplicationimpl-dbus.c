@@ -45,6 +45,10 @@ g_dbus_action_group_sync (GDBusActionGroup  *group,
 
 
 /* DBus Interface definition {{{1 */
+
+/* For documentation of these interfaces, see
+ * http://live.gnome.org/GTK+/GApplication-dbus-apis
+ */
 static const gchar org_gtk_Application_xml[] =
   "<node>"
   "  <interface name='org.gtk.Application'>"
