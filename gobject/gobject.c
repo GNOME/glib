@@ -1380,19 +1380,15 @@ object_interface_check_properties (gpointer func_data,
        * the READABLE and WRITABLE flags. We also simplify here
        * by only checking the value type, not the G_PARAM_SPEC_TYPE.
        */
-      if (class_pspec &&
-	  !g_type_is_a (pspecs[n]->value_type,
-			class_pspec->value_type))
-	{
-	  g_critical ("Property '%s' on class '%s' has type '%s' "
-		      "which is different from the type '%s', "
-		      "of the property on interface '%s'\n",
-		      pspecs[n]->name,
-		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
-		      g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
-		      g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])),
-		      g_type_name (iface_type));
-	}
+      if (g_type_is_a (pspecs[n]->value_type, class_pspec->value_type))
+        g_critical ("Property '%s' on class '%s' has type '%s' "
+                    "which is different from the type '%s', "
+                    "of the property on interface '%s'\n",
+                    pspecs[n]->name,
+                    g_type_name (G_OBJECT_CLASS_TYPE (class)),
+                    g_type_name (G_PARAM_SPEC_VALUE_TYPE (class_pspec)),
+                    g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])),
+                    g_type_name (iface_type));
 
 #define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
 
@@ -1400,22 +1396,18 @@ object_interface_check_properties (gpointer func_data,
        * READABLE and WRITABLE remove restrictions. The implementation
        * paramspec must have less restrictive flags.
        */
-      if (class_pspec &&
-          (((pspecs[n]->flags & G_PARAM_WRITABLE) &&
-            !SUBSET (class_pspec->flags,
-                     pspecs[n]->flags,
-                     G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) ||
-	   !SUBSET (pspecs[n]->flags,
-		    class_pspec->flags,
-		    G_PARAM_READABLE | G_PARAM_WRITABLE)))
-	{
-	  g_critical ("Flags for property '%s' on class '%s' "
-		      "are not compatible with the property on"
-		      "interface '%s'\n",
-		      pspecs[n]->name,
-		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
-		      g_type_name (iface_type));
-	}
+      if (pspecs[n]->flags & G_PARAM_WRITABLE)
+        {
+          if (!SUBSET (class_pspec->flags, pspecs[n]->flags, G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+            g_critical ("Flags for property '%s' on class '%s' introduce additional restrictions on "
+                        "writability compared with the property on interface '%s'\n", pspecs[n]->name,
+                        g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
+        }
+
+      if (!SUBSET (pspecs[n]->flags, class_pspec->flags, G_PARAM_READABLE | G_PARAM_WRITABLE))
+        g_critical ("Flags for property '%s' on class '%s' remove functionality compared with the "
+                    "property on interface '%s'\n", pspecs[n]->name,
+                    g_type_name (G_OBJECT_CLASS_TYPE (class)), g_type_name (iface_type));
 #undef SUBSET
     }
 
