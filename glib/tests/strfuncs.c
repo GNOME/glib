@@ -374,9 +374,9 @@ test_strcompress_strescape (void)
       g_test_trap_assert_failed ();
     }
 
-  str = g_strcompress ("abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313\\12345z");
+  str = g_strcompress ("abc\\\\\\\"\\b\\f\\n\\r\\t\\v\\003\\177\\234\\313\\12345z");
   g_assert (str != NULL);
-  g_assert_cmpstr (str, ==, "abc\\\"\b\f\n\r\t\003\177\234\313\12345z");
+  g_assert_cmpstr (str, ==, "abc\\\"\b\f\n\r\t\v\003\177\234\313\12345z");
   g_free (str);
 
   /* test escape */
@@ -389,22 +389,22 @@ test_strcompress_strescape (void)
       g_test_trap_assert_failed ();
     }
 
-  str = g_strescape ("abc\\\"\b\f\n\r\t\003\177\234\313", NULL);
+  str = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313", NULL);
   g_assert (str != NULL);
-  g_assert_cmpstr (str, ==, "abc\\\\\\\"\\b\\f\\n\\r\\t\\003\\177\\234\\313");
+  g_assert_cmpstr (str, ==, "abc\\\\\\\"\\b\\f\\n\\r\\t\\v\\003\\177\\234\\313");
   g_free (str);
 
-  str = g_strescape ("abc\\\"\b\f\n\r\t\003\177\234\313",
+  str = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313",
 		     "\b\f\001\002\003\004");
   g_assert (str != NULL);
-  g_assert_cmpstr (str, ==, "abc\\\\\\\"\b\f\\n\\r\\t\003\\177\\234\\313");
+  g_assert_cmpstr (str, ==, "abc\\\\\\\"\b\f\\n\\r\\t\\v\003\\177\\234\\313");
   g_free (str);
 
   /* round trip */
-  tmp = g_strescape ("abc\\\"\b\f\n\r\t\003\177\234\313", NULL);
+  tmp = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313", NULL);
   str = g_strcompress (tmp);
   g_assert (str != NULL); 
-  g_assert_cmpstr (str, ==, "abc\\\"\b\f\n\r\t\003\177\234\313");
+  g_assert_cmpstr (str, ==, "abc\\\"\b\f\n\r\t\v\003\177\234\313");
   g_free (str);
   g_free (tmp);
 }

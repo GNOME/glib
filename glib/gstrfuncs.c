@@ -2022,6 +2022,9 @@ g_strcompress (const gchar *source)
             case 't':
               *q++ = '\t';
               break;
+            case 'v':
+              *q++ = '\v';
+              break;
             default:            /* Also handles \" and \\ */
               *q++ = *p;
               break;
@@ -2042,7 +2045,7 @@ out:
  * @source: a string to escape
  * @exceptions: a string of characters not to escape in @source
  *
- * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\'
+ * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\v', '\'
  * and '&quot;' in the string @source by inserting a '\' before
  * them. Additionally all characters in the range 0x01-0x1F (everything
  * below SPACE) and in the range 0x7F-0xFF (all non-ASCII chars) are
@@ -2108,6 +2111,10 @@ g_strescape (const gchar *source,
             case '\t':
               *q++ = '\\';
               *q++ = 't';
+              break;
+            case '\v':
+              *q++ = '\\';
+              *q++ = 'v';
               break;
             case '\\':
               *q++ = '\\';
