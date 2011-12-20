@@ -1380,7 +1380,7 @@ object_interface_check_properties (gpointer func_data,
        * the READABLE and WRITABLE flags. We also simplify here
        * by only checking the value type, not the G_PARAM_SPEC_TYPE.
        */
-      if (g_type_is_a (pspecs[n]->value_type, class_pspec->value_type))
+      if (!g_type_is_a (pspecs[n]->value_type, class_pspec->value_type))
         g_critical ("Property '%s' on class '%s' has type '%s' "
                     "which is different from the type '%s', "
                     "of the property on interface '%s'\n",
