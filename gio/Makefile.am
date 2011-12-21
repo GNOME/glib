@@ -642,7 +642,18 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
 
-bin_PROGRAMS = gio-querymodules glib-compile-schemas gsettings
+bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
+
+glib_compile_resources_LDADD = \
+	$(top_builddir)/glib/libglib-2.0.la \
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	libgio-2.0.la
+
+glib_compile_resources_SOURCES = \
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-builder.h		\
+	gvdb/gvdb-builder.c		\
+	glib-compile-resources.c
 
 gio_querymodules_SOURCES = gio-querymodules.c
 gio_querymodules_LDADD	 = \
