@@ -30,16 +30,10 @@
 #include "girepository.h"
 #include "girepository-private.h"
 
-/**
- * gi_type_tag_get_ffi_type:
- * @tag: A #GITypeTag
- * @is_pointer: Whether or not this is a pointer type
- *
- * Returns: A #ffi_type corresponding to the platform default C ABI for @tag and @is_pointer.
- */
-ffi_type *
-gi_type_tag_get_ffi_type (GITypeTag   tag,
-			  gboolean    is_pointer)
+static ffi_type *
+gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
+                                   gboolean    is_pointer,
+				   gboolean    is_enum)
 {
   switch (tag)
     {
@@ -77,12 +71,21 @@ gi_type_tag_get_ffi_type (GITypeTag   tag,
     case GI_TYPE_TAG_UTF8:
     case GI_TYPE_TAG_FILENAME:
     case GI_TYPE_TAG_ARRAY:
-    case GI_TYPE_TAG_INTERFACE:
     case GI_TYPE_TAG_GLIST:
     case GI_TYPE_TAG_GSLIST:
     case GI_TYPE_TAG_GHASH:
     case GI_TYPE_TAG_ERROR:
       return &ffi_type_pointer;
+    case GI_TYPE_TAG_INTERFACE:
+      {
+	/* We need to handle enums specially:
+	 * https://bugzilla.gnome.org/show_bug.cgi?id=665150
+	 */
+        if (!is_enum)
+          return &ffi_type_pointer;
+	else
+	  return &ffi_type_sint32;
+      }
     case GI_TYPE_TAG_VOID:
       if (is_pointer)
         return &ffi_type_pointer;
@@ -96,6 +99,20 @@ gi_type_tag_get_ffi_type (GITypeTag   tag,
 }
 
 /**
+ * gi_type_tag_get_ffi_type:
+ * @tag: A #GITypeTag
+ * @is_pointer: Whether or not this is a pointer type
+ *
+ * Returns: A #ffi_type corresponding to the platform default C ABI for @tag and @is_pointer.
+ */
+ffi_type *
+gi_type_tag_get_ffi_type (GITypeTag   tag,
+			  gboolean    is_pointer)
+{
+  return gi_type_tag_get_ffi_type_internal (tag, is_pointer, FALSE);
+}
+
+/**
  * g_type_info_get_ffi_type:
  * @info: A #GITypeInfo
  *
@@ -104,7 +121,26 @@ gi_type_tag_get_ffi_type (GITypeTag   tag,
 ffi_type *
 g_type_info_get_ffi_type (GITypeInfo *info)
 {
-  return gi_type_tag_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
+  gboolean is_enum;
+  GIBaseInfo *iinfo;
+
+  if (g_type_info_get_tag (info) == GI_TYPE_TAG_INTERFACE)
+    {
+      iinfo = g_type_info_get_interface (info);
+      switch (g_base_info_get_type (iinfo))
+	{
+	case GI_INFO_TYPE_ENUM:
+	case GI_INFO_TYPE_FLAGS:
+	  is_enum = TRUE;
+	  break;
+	default:
+	  is_enum = FALSE;
+	  break;
+	}
+      g_base_info_unref (iinfo);
+    }
+
+  return gi_type_tag_get_ffi_type_internal (g_type_info_get_tag (info), g_type_info_is_pointer (info), is_enum);
 }
 
 /**
