@@ -487,7 +487,7 @@ test_interface_default_init (TestInterfaceInterface *iface)
                 g_object_interface_install_property (iface, pspec);
                 exit (0);
               }
-            //g_test_trap_assert_failed (); XXX g_object_interface_install_property has no checks
+            g_test_trap_assert_failed ();
             continue;
           }
 

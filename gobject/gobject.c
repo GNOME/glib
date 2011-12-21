@@ -706,7 +706,13 @@ g_object_interface_install_property (gpointer      g_iface,
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (!G_IS_PARAM_SPEC_OVERRIDE (pspec)); /* paranoid */
   g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
-		    
+
+  g_return_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE));
+  if (pspec->flags & G_PARAM_CONSTRUCT)
+    g_return_if_fail ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) == 0);
+  if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+    g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
+
   install_property_internal (iface_class->g_type, 0, pspec);
 }
 
