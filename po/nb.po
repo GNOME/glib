@@ -1,4 +1,4 @@
-# Norwegian (bokmål) translation of glib.
+# Norwegian bokmål translation of glib.
 # Copyright (C) 2001-2003, 2005 Free Software Foundation, Inc.
 #
 # Kjartan Maraas <kmaraas@gnome.org>, 2001-2011.
@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-01 18:00+0100\n"
-"PO-Revision-Date: 2011-12-01 18:00+0100\n"
+"POT-Creation-Date: 2011-12-21 22:19+0100\n"
+"PO-Revision-Date: 2011-12-21 22:22+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,18 +21,18 @@ msgstr ""
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:750
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:751
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Tellerverdi gitt til %s er for stor"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:292 ../gio/goutputstream.c:1224
+#: ../gio/giostream.c:292 ../gio/goutputstream.c:1226
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1850
-#: ../gio/gdbusconnection.c:1941 ../gio/gdbusconnection.c:2115
+#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1839
+#: ../gio/gdbusconnection.c:1930 ../gio/gdbusconnection.c:2104
 #: ../gio/gdbusprivate.c:1419 ../gio/glocalfile.c:2100
 #: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
 #, c-format
@@ -240,7 +240,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Kan ikke bestemme adresse til øktbussen (ikke implementert på dette OSet)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6704
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6693
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -249,7 +249,7 @@ msgstr ""
 "Kan ikke bestemme adresse for buss fra miljøvariabelen DBUS_STARTER_BUS_TYPE "
 "- ukjent verdi «%s»"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6713
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6702
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -360,86 +360,86 @@ msgstr "Feil under åpning av nøkkelring «%s» for skriving: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(I tillegg feilet frislipp av lås for «%s» også: %s) "
 
-#: ../gio/gdbusconnection.c:605 ../gio/gdbusconnection.c:2418
+#: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2407
 msgid "The connection is closed"
 msgstr "Tilkoblingen er lukket"
 
-#: ../gio/gdbusconnection.c:1895
+#: ../gio/gdbusconnection.c:1884
 msgid "Timeout was reached"
 msgstr "Tidsavbrudd ble nådd"
 
-#: ../gio/gdbusconnection.c:2540
+#: ../gio/gdbusconnection.c:2529
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Ikke støttede flagg funnet ved oppretting av en klientside tilkobling"
 
-#: ../gio/gdbusconnection.c:4042 ../gio/gdbusconnection.c:4358
+#: ../gio/gdbusconnection.c:4031 ../gio/gdbusconnection.c:4347
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Grensesnitt «org.freedesktop.DBus.Properties» finnes ikke på objekt i sti %s"
 
-#: ../gio/gdbusconnection.c:4113
+#: ../gio/gdbusconnection.c:4102
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Feil ved setting av egenskap «%s»: Forventet type «%s», men fikk «%s»"
 
-#: ../gio/gdbusconnection.c:4208
+#: ../gio/gdbusconnection.c:4197
 #, c-format
 msgid "No such property `%s'"
 msgstr "Egenskap «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4220
+#: ../gio/gdbusconnection.c:4209
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Egenskap «%s» er er ikke lesbar"
 
-#: ../gio/gdbusconnection.c:4231
+#: ../gio/gdbusconnection.c:4220
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Egenskap «%s» er er ikke skrivbar"
 
-#: ../gio/gdbusconnection.c:4301 ../gio/gdbusconnection.c:6147
+#: ../gio/gdbusconnection.c:4290 ../gio/gdbusconnection.c:6136
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Grensesnitt «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4485
+#: ../gio/gdbusconnection.c:4474
 msgid "No such interface"
 msgstr "Grensesnittet finnes ikke"
 
-#: ../gio/gdbusconnection.c:4706 ../gio/gdbusconnection.c:6653
+#: ../gio/gdbusconnection.c:4695 ../gio/gdbusconnection.c:6642
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Grensesnitt «%s» finnes ikke på objektsti %s"
 
-#: ../gio/gdbusconnection.c:4758
+#: ../gio/gdbusconnection.c:4747
 #, c-format
 msgid "No such method `%s'"
 msgstr "Metoden «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4789
+#: ../gio/gdbusconnection.c:4778
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type melding, «%s», stemmer ikke overens med forventet type «%s»"
 
-#: ../gio/gdbusconnection.c:5009
+#: ../gio/gdbusconnection.c:4998
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Et objekt er allerede eksportert for grensesnitt %s ved %s"
 
-#: ../gio/gdbusconnection.c:5207
+#: ../gio/gdbusconnection.c:5196
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metode «%s» returnerte type «%s», men forventet «%s»"
 
-#: ../gio/gdbusconnection.c:6258
+#: ../gio/gdbusconnection.c:6247
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metode «%s» på grensesnitt «%s» med signatur «%s» eksisterer ikke"
 
-#: ../gio/gdbusconnection.c:6377
+#: ../gio/gdbusconnection.c:6366
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Et undertre er allerede eksportert for %s"
@@ -980,15 +980,15 @@ msgstr "Feil antall tegn (%d) i GEmblemedIcon-koding"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Ventet et GEmblem for GEmblemedIcon"
 
-#: ../gio/gfile.c:871 ../gio/gfile.c:1102 ../gio/gfile.c:1237
-#: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
-#: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
-#: ../gio/gfile.c:1837 ../gio/gfile.c:3309 ../gio/gfile.c:3363
-#: ../gio/gfile.c:3497 ../gio/gfile.c:3538 ../gio/gfile.c:3868
-#: ../gio/gfile.c:4270 ../gio/gfile.c:4356 ../gio/gfile.c:4445
-#: ../gio/gfile.c:4543 ../gio/gfile.c:4630 ../gio/gfile.c:4724
-#: ../gio/gfile.c:5045 ../gio/gfile.c:5312 ../gio/gfile.c:5377
-#: ../gio/gfile.c:6954 ../gio/gfile.c:7044 ../gio/gfile.c:7130
+#: ../gio/gfile.c:874 ../gio/gfile.c:1105 ../gio/gfile.c:1240
+#: ../gio/gfile.c:1477 ../gio/gfile.c:1531 ../gio/gfile.c:1588
+#: ../gio/gfile.c:1671 ../gio/gfile.c:1726 ../gio/gfile.c:1786
+#: ../gio/gfile.c:1840 ../gio/gfile.c:3312 ../gio/gfile.c:3366
+#: ../gio/gfile.c:3500 ../gio/gfile.c:3541 ../gio/gfile.c:3871
+#: ../gio/gfile.c:4273 ../gio/gfile.c:4359 ../gio/gfile.c:4448
+#: ../gio/gfile.c:4546 ../gio/gfile.c:4633 ../gio/gfile.c:4727
+#: ../gio/gfile.c:5048 ../gio/gfile.c:5315 ../gio/gfile.c:5380
+#: ../gio/gfile.c:7008 ../gio/gfile.c:7098 ../gio/gfile.c:7184
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
@@ -1001,58 +1001,58 @@ msgstr "Operasjonen er ikke støttet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1051 ../gio/glocalfile.c:1062
+#: ../gio/gfile.c:1361 ../gio/glocalfile.c:1051 ../gio/glocalfile.c:1062
 #: ../gio/glocalfile.c:1075
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2256
+#: ../gio/gfile.c:2414 ../gio/glocalfile.c:2256
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
-#: ../gio/gfile.c:2472
+#: ../gio/gfile.c:2475
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2265
+#: ../gio/gfile.c:2483 ../gio/glocalfile.c:2265
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
-#: ../gio/gfile.c:2498
+#: ../gio/gfile.c:2501
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: ../gio/gfile.c:2758
+#: ../gio/gfile.c:2761
 msgid "Splice not supported"
 msgstr "Splice er ikke støttet"
 
-#: ../gio/gfile.c:2762
+#: ../gio/gfile.c:2765
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Feil ved bruk av  splice(2) på fil: %s"
 
-#: ../gio/gfile.c:2909
+#: ../gio/gfile.c:2912
 msgid "Can't copy special file"
 msgstr "Kan ikke kopiere spesiell fil"
 
-#: ../gio/gfile.c:3487
+#: ../gio/gfile.c:3490
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: ../gio/gfile.c:3581
+#: ../gio/gfile.c:3584
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: ../gio/gfile.c:3630
+#: ../gio/gfile.c:3633
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: ../gio/gfile.c:6013 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6067 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: ../gio/gfile.c:6124
+#: ../gio/gfile.c:6178
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1169,7 +1169,7 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:302
-#: ../gio/goutputstream.c:1234
+#: ../gio/goutputstream.c:1236
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
@@ -1320,17 +1320,17 @@ msgstr "stien for en liste må slutte med «:/»"
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id=«%s»> er allerede spesifisert"
 
-#: ../gio/glib-compile-schemas.c:1416
+#: ../gio/glib-compile-schemas.c:1416 ../gio/gmenumarkup.c:263
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> er ikke tillatt inne i <%s>"
 
-#: ../gio/glib-compile-schemas.c:1420
+#: ../gio/glib-compile-schemas.c:1420 ../gio/gmenumarkup.c:268
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> er ikke tillatt på toppnivå"
 
-#: ../gio/glib-compile-schemas.c:1511
+#: ../gio/glib-compile-schemas.c:1511 ../gio/gmenumarkup.c:347
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
@@ -1479,9 +1479,9 @@ msgid "Can't rename file, filename already exists"
 msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
 
 #: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
-#: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
-#: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
-#: ../gio/glocalfileoutputstream.c:1157
+#: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:581
+#: ../gio/glocalfileoutputstream.c:634 ../gio/glocalfileoutputstream.c:679
+#: ../gio/glocalfileoutputstream.c:1167
 msgid "Invalid filename"
 msgstr "Ugyldig filnavn"
 
@@ -1556,9 +1556,9 @@ msgstr "Feil under flytting av fil: %s"
 msgid "Can't move directory over directory"
 msgstr "Kan ikke flytte katalog over katalog"
 
-#: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:955
-#: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
-#: ../gio/glocalfileoutputstream.c:1000 ../gio/glocalfileoutputstream.c:1014
+#: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:965
+#: ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:994
+#: ../gio/glocalfileoutputstream.c:1010 ../gio/glocalfileoutputstream.c:1024
 msgid "Backup file creation failed"
 msgstr "Oppretting av sikkerhetskopi feilet"
 
@@ -1592,7 +1592,7 @@ msgstr "Feil under setting av utvidet attributt «%s»: %s"
 msgid " (invalid encoding)"
 msgstr " (ugyldig koding)"
 
-#: ../gio/glocalfileinfo.c:1527 ../gio/glocalfileoutputstream.c:833
+#: ../gio/glocalfileinfo.c:1527 ../gio/glocalfileoutputstream.c:843
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Feil ved henting av informasjon for fil «%s»: %s"
@@ -1665,14 +1665,14 @@ msgstr "SELinux er ikke slått på på dette systemet"
 msgid "Setting attribute %s not supported"
 msgstr "Støtter ikke å sette attributt %s"
 
-#: ../gio/glocalfileinputstream.c:185 ../gio/glocalfileoutputstream.c:722
+#: ../gio/glocalfileinputstream.c:185 ../gio/glocalfileoutputstream.c:732
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Feil under lesing fra fil: %s"
 
 #: ../gio/glocalfileinputstream.c:216 ../gio/glocalfileinputstream.c:228
 #: ../gio/glocalfileinputstream.c:340 ../gio/glocalfileoutputstream.c:470
-#: ../gio/glocalfileoutputstream.c:1032
+#: ../gio/glocalfileoutputstream.c:1042
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Feil under søking i fil: %s"
@@ -1688,7 +1688,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "Kan ikke finne forvalgt lokal filovervåkingstype"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:235
-#: ../gio/glocalfileoutputstream.c:743
+#: ../gio/glocalfileoutputstream.c:753
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Feil under skriving til fil: %s"
@@ -1708,31 +1708,31 @@ msgstr "Feil under oppretting av sikkerhetskopi: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Feil ved endring av navn på midlertidig fil: %s"
 
-#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1083
+#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1093
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Feil under avkorting av fil: «%s»"
 
-#: ../gio/glocalfileoutputstream.c:577 ../gio/glocalfileoutputstream.c:630
-#: ../gio/glocalfileoutputstream.c:675 ../gio/glocalfileoutputstream.c:815
-#: ../gio/glocalfileoutputstream.c:1064 ../gio/glocalfileoutputstream.c:1163
+#: ../gio/glocalfileoutputstream.c:587 ../gio/glocalfileoutputstream.c:640
+#: ../gio/glocalfileoutputstream.c:685 ../gio/glocalfileoutputstream.c:825
+#: ../gio/glocalfileoutputstream.c:1074 ../gio/glocalfileoutputstream.c:1173
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:846
+#: ../gio/glocalfileoutputstream.c:856
 msgid "Target file is a directory"
 msgstr "Målfilen er en katalog"
 
-#: ../gio/glocalfileoutputstream.c:851
+#: ../gio/glocalfileoutputstream.c:861
 msgid "Target file is not a regular file"
 msgstr "Målfilen er ikke en vanlig fil"
 
-#: ../gio/glocalfileoutputstream.c:863
+#: ../gio/glocalfileoutputstream.c:873
 msgid "The file was externally modified"
 msgstr "Filen ble endret eksternt"
 
-#: ../gio/glocalfileoutputstream.c:1048
+#: ../gio/glocalfileoutputstream.c:1058
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Feil ved fjerning av gammel fil: %s"
@@ -1835,25 +1835,25 @@ msgstr "Nettverk kan ikke nås"
 msgid "Host unreachable"
 msgstr "Kan ikke nå vert"
 
-#: ../gio/gnetworkmonitornetlink.c:94 ../gio/gnetworkmonitornetlink.c:106
-#: ../gio/gnetworkmonitornetlink.c:117
+#: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
+#: ../gio/gnetworkmonitornetlink.c:120
 #, c-format
 msgid "Could not create network monitor: %s"
 msgstr "Kunne ikke lage nettverksovervåker: %s"
 
-#: ../gio/gnetworkmonitornetlink.c:126
+#: ../gio/gnetworkmonitornetlink.c:129
 msgid "Could not create network monitor: "
 msgstr "Kunne ikke lage nettverksovervåker: "
 
-#: ../gio/gnetworkmonitornetlink.c:174
+#: ../gio/gnetworkmonitornetlink.c:177
 msgid "Could not get network status: "
 msgstr "Kunne ikke hente nettverksstatus: "
 
-#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:414
+#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:415
 msgid "Output stream doesn't implement write"
 msgstr "Ut-strømmen implementerer ikke skriving"
 
-#: ../gio/goutputstream.c:375 ../gio/goutputstream.c:873
+#: ../gio/goutputstream.c:376 ../gio/goutputstream.c:874
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 
@@ -1882,77 +1882,77 @@ msgstr "Midlertidig ute av stand til å slå opp «%s»"
 msgid "Error resolving '%s'"
 msgstr "Feil ved oppslag av «%s»"
 
-#: ../gio/gsettings-tool.c:60
-#, c-format
-msgid "Schema '%s' is not relocatable (path must not be specified)\n"
-msgstr "Skjema «%s» er ikke omplasserbar (stien må ikke oppgis)\n"
-
-#: ../gio/gsettings-tool.c:65 ../gio/gsettings-tool.c:82
+#: ../gio/gsettings-tool.c:53 ../gio/gsettings-tool.c:74
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Skjema «%s» finnes ikke\n"
 
-#: ../gio/gsettings-tool.c:77
+#: ../gio/gsettings-tool.c:59
+#, c-format
+msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+msgstr "Skjema «%s» er ikke omplasserbar (stien må ikke oppgis)\n"
+
+#: ../gio/gsettings-tool.c:80
 #, c-format
 msgid "Schema '%s' is relocatable (path must be specified)\n"
 msgstr "Skjema «%s» er omplasserbart (sti må oppgis)\n"
 
-#: ../gio/gsettings-tool.c:92
+#: ../gio/gsettings-tool.c:94
 #, c-format
 msgid "Empty path given.\n"
 msgstr "Stien som ble oppgitt er tom.\n"
 
-#: ../gio/gsettings-tool.c:98
+#: ../gio/gsettings-tool.c:100
 #, c-format
 msgid "Path must begin with a slash (/)\n"
 msgstr "Stien må starte med en skråstrek (/)\n"
 
-#: ../gio/gsettings-tool.c:104
+#: ../gio/gsettings-tool.c:106
 #, c-format
 msgid "Path must end with a slash (/)\n"
 msgstr "Stien må slutte med skråstrek (/)\n"
 
-#: ../gio/gsettings-tool.c:110
+#: ../gio/gsettings-tool.c:112
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Sti må ikke inneholde to etterfølgende skråstreker (//)\n"
 
-#: ../gio/gsettings-tool.c:131
+#: ../gio/gsettings-tool.c:133
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Nøkkel «%s» finnes ikke\n"
 
-#: ../gio/gsettings-tool.c:504
+#: ../gio/gsettings-tool.c:500
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Oppgitt verdi er utenfor gyldig område\n"
 
-#: ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:529
 msgid "Print help"
 msgstr "Skriv ut hjelp"
 
-#: ../gio/gsettings-tool.c:539
+#: ../gio/gsettings-tool.c:535
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Vis installerte (ikke-flyttbare) schema"
 
-#: ../gio/gsettings-tool.c:545
+#: ../gio/gsettings-tool.c:541
 msgid "List the installed relocatable schemas"
 msgstr "Vis installerte flyttbare schema"
 
-#: ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:547
 msgid "List the keys in SCHEMA"
 msgstr "Vis nøklene i SCHEMA"
 
-#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
-#: ../gio/gsettings-tool.c:595
+#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:591
 msgid "SCHEMA[:PATH]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:553
 msgid "List the children of SCHEMA"
 msgstr "Vis barn av SCHEMA"
 
-#: ../gio/gsettings-tool.c:563
+#: ../gio/gsettings-tool.c:559
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -1960,44 +1960,44 @@ msgstr ""
 "Vis nøkler og verdier rekursivt\n"
 "Vis alle nøkler hvis SKJEMA ikke oppgis\n"
 
-#: ../gio/gsettings-tool.c:565
+#: ../gio/gsettings-tool.c:561
 msgid "[SCHEMA[:PATH]]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:566
 msgid "Get the value of KEY"
 msgstr "Hent verdi for NØKKEL"
 
-#: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
-#: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
+#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SKJEMA[:STI] NØKKEL"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:572
 msgid "Query the range of valid values for KEY"
 msgstr "Spør på gyldig verdiområde for NØKKEL"
 
-#: ../gio/gsettings-tool.c:582
+#: ../gio/gsettings-tool.c:578
 msgid "Set the value of KEY to VALUE"
 msgstr "Sett verdien for NØKKEL til VERDI"
 
-#: ../gio/gsettings-tool.c:583
+#: ../gio/gsettings-tool.c:579
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SKJEMA[:STI] NØKKEL VERDI"
 
-#: ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:584
 msgid "Reset KEY to its default value"
 msgstr "Nullstill NØKKEL til forvalgt verdi"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:590
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Nullstill alle nøkler i SKJEMA til sine forvalgte verdier"
 
-#: ../gio/gsettings-tool.c:600
+#: ../gio/gsettings-tool.c:596
 msgid "Check if KEY is writable"
 msgstr "Sjekk om NØKKEL er skrivbar"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:602
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2007,11 +2007,11 @@ msgstr ""
 "Hvis ingen NØKKEL oppgis overvåkes alle nøkler i SKJEMA.\n"
 "Bruk Ctrl+C for å stoppe overvåking.\n"
 
-#: ../gio/gsettings-tool.c:609
+#: ../gio/gsettings-tool.c:605
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:STI] [NØKKEL]"
 
-#: ../gio/gsettings-tool.c:613
+#: ../gio/gsettings-tool.c:609
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2020,10 +2020,10 @@ msgstr ""
 "Ukjent kommando «%s»\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:621
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Usage:\n"
-"  gsettings COMMAND [ARGS...]\n"
+"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "Commands:\n"
 "  help                      Show this information\n"
@@ -2064,30 +2064,34 @@ msgstr ""
 "Bruk «gsettings help KOMMANDO» for å få detaljert hjelp.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:639
 #, c-format
 msgid ""
 "Usage:\n"
-"  gsettings %s %s\n"
+"  gsettings [--schemadir SCHEMADIR] %s %s\n"
 "\n"
 "%s\n"
 "\n"
 msgstr ""
 "Bruk:\n"
-"  gsettings %s %s\n"
+"  gsettings [--schemadir SCHEMAKATALOG] %s %s\n"
 "\n"
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:642
 msgid "Arguments:\n"
 msgstr "Argumenter:\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:645
+msgid "  SCHEMADIR A directory to search for additional schemas\n"
+msgstr "  SCHEMAKATALOG en katalog for søk etter ekstra schemas\n"
+
+#: ../gio/gsettings-tool.c:649
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMMANDO   Valgfri kommando som skal forklares\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:653
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2096,19 +2100,19 @@ msgstr ""
 "  SCHEMA      Id for schema\n"
 "  PATH        Sti, for schema som kan relokeres\n"
 
-#: ../gio/gsettings-tool.c:661
+#: ../gio/gsettings-tool.c:658
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  NØKKEL    Valgfri nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:665
+#: ../gio/gsettings-tool.c:662
 msgid "  KEY       The key within the schema\n"
 msgstr "  NØKKEL       Nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:669
+#: ../gio/gsettings-tool.c:666
 msgid "  VALUE     The value to set\n"
 msgstr "  VERDI     Verdi som skal settes\n"
 
-#: ../gio/gsettings-tool.c:766
+#: ../gio/gsettings-tool.c:787
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Tomt navn på schema oppgitt\n"
@@ -3032,9 +3036,9 @@ msgstr "Ugyldig navn på nøkkel: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nøkkelfil inneholder ustøttet tegnkoding «%s»"
 
-#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1710 ../glib/gkeyfile.c:3087
-#: ../glib/gkeyfile.c:3153 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3421
-#: ../glib/gkeyfile.c:3563 ../glib/gkeyfile.c:3795 ../glib/gkeyfile.c:3864
+#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1710 ../glib/gkeyfile.c:3088
+#: ../glib/gkeyfile.c:3154 ../glib/gkeyfile.c:3289 ../glib/gkeyfile.c:3422
+#: ../glib/gkeyfile.c:3564 ../glib/gkeyfile.c:3802 ../glib/gkeyfile.c:3871
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nøkkelfil har ikke gruppe «%s»"
@@ -3049,7 +3053,7 @@ msgstr "Nøkkelfil har ikke nøkkelen «%s»"
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Nøkkelfilen inneholder nøkkelen «%s» med verdi «%s» som ikke er UTF-8"
 
-#: ../glib/gkeyfile.c:1849 ../glib/gkeyfile.c:1965 ../glib/gkeyfile.c:2333
+#: ../glib/gkeyfile.c:1849 ../glib/gkeyfile.c:1965 ../glib/gkeyfile.c:2334
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -3057,7 +3061,7 @@ msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli "
 "tolket."
 
-#: ../glib/gkeyfile.c:2550 ../glib/gkeyfile.c:2916
+#: ../glib/gkeyfile.c:2551 ../glib/gkeyfile.c:2917
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3066,41 +3070,41 @@ msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» i gruppen «%s» som har en verdi som "
 "ikke kan bli tolket."
 
-#: ../glib/gkeyfile.c:2628 ../glib/gkeyfile.c:2704
+#: ../glib/gkeyfile.c:2629 ../glib/gkeyfile.c:2705
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "Nøkkel «%s» i gruppe «%s» har en verdi «%s» hvor %s var forventet"
 
-#: ../glib/gkeyfile.c:3102 ../glib/gkeyfile.c:3303 ../glib/gkeyfile.c:3875
+#: ../glib/gkeyfile.c:3103 ../glib/gkeyfile.c:3304 ../glib/gkeyfile.c:3882
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nøkkelfilen har ikke nøkkelen i «%s» i gruppen «%s»"
 
-#: ../glib/gkeyfile.c:4109
+#: ../glib/gkeyfile.c:4116
 msgid "Key file contains escape character at end of line"
 msgstr "Nøkkelfilen inneholder skiftetegn ved linjeslutt"
 
-#: ../glib/gkeyfile.c:4131
+#: ../glib/gkeyfile.c:4138
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nøkkelfil inneholder ugyldig skiftesekvens «%s»"
 
-#: ../glib/gkeyfile.c:4273
+#: ../glib/gkeyfile.c:4280
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vedien «%s» kan ikke bli tolket som et tall."
 
-#: ../glib/gkeyfile.c:4287
+#: ../glib/gkeyfile.c:4294
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heltallsverdi «%s» er utenfor gyldig område"
 
-#: ../glib/gkeyfile.c:4320
+#: ../glib/gkeyfile.c:4327
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Verdi «%s» kan ikke tolkes som et flyttall."
 
-#: ../glib/gkeyfile.c:4344
+#: ../glib/gkeyfile.c:4351
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
