@@ -103,6 +103,7 @@
 #include <gio/gproxyaddressenumerator.h>
 #include <gio/gproxyresolver.h>
 #include <gio/gresolver.h>
+#include <gio/gresource.h>
 #include <gio/gseekable.h>
 #include <gio/gsettingsschema.h>
 #include <gio/gsettings.h>

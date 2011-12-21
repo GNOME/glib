@@ -135,6 +135,14 @@ typedef struct _GIOStream                     GIOStream;
 typedef struct _GPollableInputStream          GPollableInputStream; /* Dummy typedef */
 typedef struct _GPollableOutputStream         GPollableOutputStream; /* Dummy typedef */
 typedef struct _GResolver                     GResolver;
+/**
+ * GResource:
+ *
+ * A resource bundle.
+ *
+ * Since: 2.32
+ */
+typedef struct _GResource                     GResource;
 typedef struct _GSeekable                     GSeekable;
 typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
 

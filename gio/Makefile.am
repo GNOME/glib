@@ -384,6 +384,7 @@ libgio_2_0_la_SOURCES =		\
 	gpollfilemonitor.h 	\
 	gproxyresolver.c	\
 	gresolver.c		\
+	gresource.c		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
 	gsimplepermission.c 	\
@@ -556,6 +557,7 @@ gio_headers =			\
 	gproxyaddressenumerator.h \
 	gproxyresolver.h	\
 	gresolver.h		\
+	gresource.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
 	gsimplepermission.h 	\

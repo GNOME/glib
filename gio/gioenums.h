@@ -631,6 +631,44 @@ typedef enum {
 } GResolverError;
 
 /**
+ * GResourceError:
+ * @G_RESOURCE_ERROR_NOT_FOUND: no file was found at the requested path
+ * @G_RESOURCE_ERROR_INTERNAL: unknown error
+ *
+ * An error code used with %G_RESOURCE_ERROR in a #GError returned
+ * from a #GResource routine.
+ *
+ * Since: 2.32
+ */
+typedef enum {
+  G_RESOURCE_ERROR_NOT_FOUND,
+  G_RESOURCE_ERROR_INTERNAL
+} GResourceError;
+
+/**
+ * GResourceFlags:
+ * @G_RESOURCE_FLAGS_NONE: No flags set.
+ * @G_RESOURCE_FLAGS_COMPRESSED: The file is compressed.
+ *
+ * GResourceFlags give information about a particular file inside a resource
+ * bundle.
+ **/
+typedef enum {
+  G_RESOURCE_FLAGS_NONE       = 0,
+  G_RESOURCE_FLAGS_COMPRESSED = (1<<0)
+} GResourceFlags;
+
+/**
+ * GResourceLookupFlags:
+ * @G_RESOURCE_LOOKUP_FLAGS_NONE: No flags set.
+ *
+ * GResourceLookupFlags determine how resource path lookups are handled.
+ **/
+typedef enum {
+  G_RESOURCE_LOOKUP_FLAGS_NONE       = 0,
+} GResourceLookupFlags;
+
+/**
  * GSocketFamily:
  * @G_SOCKET_FAMILY_INVALID: no address family
  * @G_SOCKET_FAMILY_IPV4: the IPv4 family
