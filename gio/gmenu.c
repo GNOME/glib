@@ -324,7 +324,7 @@ g_menu_append (GMenu       *menu,
  * @section: a #GMenuModel with the items of the section
  *
  * Convenience function for inserting a section menu item into @menu.
- * Combine g_menu_new_section() and g_menu_insert_item() for a more
+ * Combine g_menu_item_new_section() and g_menu_insert_item() for a more
  * flexible alternative.
  *
  * Since: 2.32
@@ -350,7 +350,7 @@ g_menu_insert_section (GMenu       *menu,
  * @section: a #GMenuModel with the items of the section
  *
  * Convenience function for prepending a section menu item to the start
- * of @menu.  Combine g_menu_new_section() and g_menu_insert_item() for
+ * of @menu.  Combine g_menu_item_new_section() and g_menu_insert_item() for
  * a more flexible alternative.
  *
  * Since: 2.32
@@ -370,7 +370,7 @@ g_menu_prepend_section (GMenu       *menu,
  * @section: a #GMenuModel with the items of the section
  *
  * Convenience function for appending a section menu item to the end of
- * @menu.  Combine g_menu_new_section() and g_menu_insert_item() for a
+ * @menu.  Combine g_menu_item_new_section() and g_menu_insert_item() for a
  * more flexible alternative.
  *
  * Since: 2.32
