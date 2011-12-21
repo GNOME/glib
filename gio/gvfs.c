@@ -24,6 +24,7 @@
 #include <string.h>
 #include "gvfs.h"
 #include "glocalvfs.h"
+#include "gresourcefile.h"
 #include "giomodule-priv.h"
 #include "glibintl.h"
 
@@ -119,6 +120,13 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
 
   class = G_VFS_GET_CLASS (vfs);
 
+  /* This is an unfortunate placement, but we really
+     need to check this before chaining to the vfs,
+     because we want to support resource uris for
+     all vfs:es, even those that predate resources. */
+  if (g_str_has_prefix (uri, "resource:"))
+    return _g_resource_file_new (uri);
+
   return (* class->get_file_for_uri) (vfs, uri);
 }
 
@@ -166,6 +174,9 @@ g_vfs_parse_name (GVfs       *vfs,
   g_return_val_if_fail (parse_name != NULL, NULL);
 
   class = G_VFS_GET_CLASS (vfs);
+
+  if (g_str_has_prefix (parse_name, "resource:"))
+    return _g_resource_file_new (parse_name);
 
   return (* class->parse_name) (vfs, parse_name);
 }

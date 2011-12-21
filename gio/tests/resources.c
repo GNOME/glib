@@ -412,6 +412,45 @@ test_resource_module (void)
     }
 }
 
+static void
+test_uri_query_info (void)
+{
+  GResource *resource;
+  GError *error = NULL;
+  gboolean loaded_file;
+  char *content;
+  gsize content_size;
+  GBytes *data;
+  GFile *file;
+  GFileInfo *info;
+  const char *content_type;
+
+  loaded_file = g_file_get_contents ("test.gresource", &content, &content_size,
+                                     NULL);
+  g_assert (loaded_file);
+
+  data = g_bytes_new_take (content, content_size);
+  resource = g_resource_new_from_data (data, &error);
+  g_assert (resource != NULL);
+  g_assert_no_error (error);
+
+  g_resources_register (resource);
+
+  file = g_file_new_for_uri ("resource://" "/a_prefix/test2-alias.txt");
+
+  info = g_file_query_info (file, "*", 0, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (file);
+
+  content_type = g_file_info_get_content_type (info);
+  g_assert (content_type);
+  g_assert_cmpstr (content_type, ==, "text/plain");
+
+  g_object_unref (info);
+
+  g_resources_unregister (resource);
+  g_resource_unref (resource);
+}
 
 int
 main (int   argc,
@@ -431,6 +470,7 @@ main (int   argc,
   /* This only uses automatic resources too, so it tests the constructors and destructors */
   g_test_add_func ("/resource/module", test_resource_module);
 #endif
+  g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
 
   return g_test_run();
 }

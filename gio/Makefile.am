@@ -385,6 +385,8 @@ libgio_2_0_la_SOURCES =		\
 	gproxyresolver.c	\
 	gresolver.c		\
 	gresource.c		\
+	gresourcefile.c		\
+	gresourcefile.h		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
 	gsimplepermission.c 	\
