@@ -220,7 +220,7 @@ g_simple_action_set_property (GObject    *object,
     case PROP_NAME:
       action->name = g_strdup (g_value_get_string (value));
       break;
-      
+
     case PROP_PARAMETER_TYPE:
       action->parameter_type = g_value_dup_boxed (value);
       break;
@@ -518,10 +518,10 @@ GSimpleAction *
 g_simple_action_new (const gchar        *name,
                      const GVariantType *parameter_type)
 {
-  return (GSimpleAction*) g_object_new (G_TYPE_SIMPLE_ACTION,
-					"name", name,
-					"parameter-type", parameter_type,
-					NULL);
+  return g_object_new (G_TYPE_SIMPLE_ACTION,
+                       "name", name,
+                       "parameter-type", parameter_type,
+                       NULL);
 }
 
 /**
@@ -546,9 +546,9 @@ g_simple_action_new_stateful (const gchar        *name,
                               const GVariantType *parameter_type,
                               GVariant           *state)
 {
-  return (GSimpleAction*) g_object_new (G_TYPE_SIMPLE_ACTION,
-					"name", name,
-					"parameter-type", parameter_type,
-					"state", state,
-					NULL);
+  return g_object_new (G_TYPE_SIMPLE_ACTION,
+                       "name", name,
+                       "parameter-type", parameter_type,
+                       "state", state,
+                       NULL);
 }
