@@ -59,6 +59,7 @@ TEST_PROGS +=	 		\
 	network-monitor		\
 	fileattributematcher	\
 	gmenumodel		\
+	resources		\
 	$(NULL)
 
 if OS_UNIX
@@ -392,6 +393,9 @@ gdbus_connection_flush_helper_LDADD = $(progs_ldadd)
 appinfo_SOURCES = appinfo.c
 appinfo_LDADD   = $(progs_ldadd)
 
+resources_SOURCES = resources.c test_resources.c test_resources2.c test_resources2.h
+resources_LDADD   = $(progs_ldadd)
+
 appinfo_test_SOURCES = appinfo-test.c
 appinfo_test_LDADD   = $(progs_ldadd)
 
@@ -560,14 +564,38 @@ EXTRA_DIST += \
 	cert-key.pem			\
 	cert-list.pem			\
 	nothing.pem			\
+	test.gresource.xml		\
+	test2.gresource.xml		\
 	$(NULL)
 
-MISC_STUFF = test.mo
+MISC_STUFF = test.mo test.gresource
 
 test.mo: de.po
 	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
+
+BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
+test_resources.c: test2.gresource.xml test1.txt
+	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $(srcdir)/test2.gresource.xml
+
+test_resources2.c: test3.gresource.xml test1.txt
+	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
+
+test_resources2.h: test3.gresource.xml
+	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-header --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
+
+plugin_resources.c: test4.gresource.xml test1.txt
+	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $(srcdir)/test4.gresource.xml
+
+test.gresource: test.gresource.xml test1.txt test2.txt test3.txt
+	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) $(srcdir)/test.gresource.xml
+
+noinst_LTLIBRARIES = libresourceplugin.la
+
+libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
+libresourceplugin_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
+libresourceplugin_la_LIBADD = $(G_MODULE_LIBS)
 
 CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
 
@@ -576,6 +604,8 @@ DISTCLEANFILES = \
 	org.gtk.test.enums.xml		\
 	de/LC_MESSAGES/test.mo		\
 	test.mo				\
+	test.gresource			\
+	test_resources.c		\
 	gsettings.store			\
 	gschemas.compiled 		\
 	schema-source/gschemas.compiled
