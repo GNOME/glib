@@ -530,6 +530,7 @@ g_object_class_install_property (GObjectClass *class,
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
 
+  g_return_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE));
   if (pspec->flags & G_PARAM_WRITABLE)
     g_return_if_fail (class->set_property != NULL);
   if (pspec->flags & G_PARAM_READABLE)

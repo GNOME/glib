@@ -687,9 +687,6 @@ static void test_implementation_class_init (TestImplementationClass *class)
   if (perms[change_this_flag] == NULL)
     g_error ("Interface property does not exist");
 
-  if (!(use_this_flag & (G_PARAM_READABLE | G_PARAM_WRITABLE)))
-    g_error ("g_object_class_install_property should probably fail here...");
-
   g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[change_this_type], perms[change_this_flag]);
   pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[use_this_type], use_this_flag);
   g_object_class_install_property (class, 1, pspec);
