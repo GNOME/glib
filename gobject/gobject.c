@@ -1407,13 +1407,10 @@ object_interface_check_properties (gpointer func_data,
        * If the interface was not writable to begin with then we don't
        * really have any problems here because "writable at construct
        * type only" is still more permissive than "read only".
-       *
-       * It's questionable if we should have G_PARAM_CONSTRUCT checked
-       * here....
        */
       if (pspecs[n]->flags & G_PARAM_WRITABLE)
         {
-          if (!SUBSET (class_pspec->flags, pspecs[n]->flags, G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+          if (!SUBSET (class_pspec->flags, pspecs[n]->flags, G_PARAM_CONSTRUCT_ONLY))
             {
               g_critical ("Flags for property '%s' on class '%s' introduce additional restrictions on "
                           "writability compared with the property on interface '%s'\n", pspecs[n]->name,

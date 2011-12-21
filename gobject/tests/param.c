@@ -587,20 +587,24 @@ static gint valid_impl_types[48][4] = {
 /* We also try to change the flags.  We must ensure that all
  * implementations provide all functionality promised by the interface.
  * We must therefore never remove readability or writability (but we can
- * add them).  Construct/construct-only are restrictions that apply to
- * writability, so we can never add them unless writability was never
- * present in the first place, in which case we should be able to add
- * them.
+ * add them).  Construct-only is a restrictions that applies to
+ * writability, so we can never add it unless writability was never
+ * present in the first place, in which case "writable at construct
+ * only" is still better than "not writable".
+ *
+ * The 'construct' flag is of interest only to the implementation.  It
+ * may be changed at any time.
  *
  *   Properties         Valid Access      Reason
  *
  *   *-r                r, rw, rwc, rwC   Must keep readable, but can restrict newly-added writable
- *   *-w                w, rw             Must keep writable unrestricted
- *   *-rw               rw                Must not add any restrictions
- *   *-rwc              rw, rwc           Can remove 'construct' restriction
- *   *-rwC              rw, rwC           Can remove 'construct-only' restriction
- *   *-wc               rwc, rw, w, wc    Can add readability or remove 'construct' restriction
+ *   *-w                w, rw, rwc        Must keep writable unrestricted
+ *   *-rw               rw, rwc           Must not add any restrictions
+ *   *-rwc              rw, rwc           Must not add any restrictions
+ *   *-rwC              rw, rwc, rwC      Can remove 'construct-only' restriction
+ *   *-wc               rwc, rw, w, wc    Can add readability
  *   *-wC               rwC, rw, w, wC    Can add readability or remove 'construct only' restriction
+ *                        rwc, wc
  *
  * We can represent this with a 16-by-16 table.  The rows represent the
  * flags of the property on the interface.  The columns is the flags to
@@ -610,7 +614,7 @@ static gint valid_impl_types[48][4] = {
  *   - 'v': valid
  *   - 'i': invalid because the implementation flags are invalid
  *   - 'f': invalid because of the removal of functionality
- *   - 'r': invalid because of the addition of restrictions
+ *   - 'r': invalid because of the addition of restrictions (ie: construct-only)
  *
  * We also ensure that removal of functionality is reported before
  * addition of restrictions, since this is a more basic problem.
@@ -619,16 +623,16 @@ static gint valid_impl_flags[16][16] = {
                  /* ''   r    w    rw   c    rc   wc   rwc  C    rC   wC   rwC  cC   rcC  wcC  rwcC */
     /* '*-' */    { },
     /* '*-r' */   { 'i', 'v', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'i', 'i' },
-    /* '*-w' */   { 'i', 'f', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'r', 'r', 'i', 'i', 'i', 'i' },
-    /* '*-rw' */  { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'f', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-w' */   { 'i', 'f', 'v', 'v', 'i', 'i', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'i', 'i' },
+    /* '*-rw' */  { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'i', 'i' },
     /* '*-c */    { },
     /* '*-rc' */  { },
     /* '*-wc' */  { 'i', 'f', 'v', 'v', 'i', 'i', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'i', 'i' },
     /* '*-rwc' */ { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'i', 'i' },
     /* '*-C */    { },
     /* '*-rC' */  { },
-    /* '*-wC' */  { 'i', 'f', 'v', 'v', 'i', 'i', 'r', 'r', 'i', 'i', 'v', 'v', 'i', 'i', 'i', 'i' },
-    /* '*-rwC' */ { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'r', 'i', 'i', 'f', 'v', 'i', 'i', 'i', 'i' },
+    /* '*-wC' */  { 'i', 'f', 'v', 'v', 'i', 'i', 'v', 'v', 'i', 'i', 'v', 'v', 'i', 'i', 'i', 'i' },
+    /* '*-rwC' */ { 'i', 'f', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'f', 'v', 'i', 'i', 'i', 'i' },
 };
 
 static guint change_this_flag;
