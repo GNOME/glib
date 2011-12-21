@@ -114,6 +114,7 @@ private3_free (gpointer data)
 
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <process.h>
 
 static guint __stdcall
 #else
@@ -139,7 +140,7 @@ test_private3 (void)
   {
     HANDLE thread;
     guint ignore;
-    thread = _beginthreadex (NULL, 0, private3_func, NULL, 0, &ignore);
+    thread = (HANDLE) _beginthreadex (NULL, 0, private3_func, NULL, 0, &ignore);
     WaitForSingleObject (thread, INFINITE);
     CloseHandle (thread);
   }
