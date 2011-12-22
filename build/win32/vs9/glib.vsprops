@@ -249,6 +249,7 @@ copy ..\..\..\gio\gproxy.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddress.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddressenumerator.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyresolver.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gremoteactiongroup.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gresolver.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gseekable.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsettingsschema.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;

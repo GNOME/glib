@@ -415,6 +415,8 @@ copy ..\..\..\gio\gproxyaddressenumerator.h $(CopyDir)\include\glib-$(ApiVersion
 
 copy ..\..\..\gio\gproxyresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gremoteactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gseekable.h $(CopyDir)\include\glib-$(ApiVersion)\gio
