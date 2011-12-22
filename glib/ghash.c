@@ -1047,7 +1047,7 @@ g_hash_table_destroy (GHashTable *hash_table)
  * and has the value %NULL. If you need this distinction, use
  * g_hash_table_lookup_extended().
  *
- * Return value: the associated value, or %NULL if the key is not found
+ * Return value: (allow-none): the associated value, or %NULL if the key is not found
  */
 gpointer
 g_hash_table_lookup (GHashTable    *hash_table,
@@ -1069,8 +1069,8 @@ g_hash_table_lookup (GHashTable    *hash_table,
  * g_hash_table_lookup_extended:
  * @hash_table: a #GHashTable
  * @lookup_key: the key to look up
- * @orig_key: return location for the original key, or %NULL
- * @value: return location for the value associated with the key, or %NULL
+ * @orig_key: (allow-none): return location for the original key, or %NULL
+ * @value: (allow-none): return location for the value associated with the key, or %NULL
  *
  * Looks up a key in the #GHashTable, returning the original key and the
  * associated value and a #gboolean which is %TRUE if the key was found. This
@@ -1532,7 +1532,7 @@ g_hash_table_foreach (GHashTable *hash_table,
  * (keep in mind that an O(n) find/foreach operation issued for all n
  * values in a hash table ends up needing O(n*n) operations).
  *
- * Return value: The value of the first key/value pair is returned,
+ * Return value: (allow-none): The value of the first key/value pair is returned,
  *     for which @predicate evaluates to %TRUE. If no pair with the
  *     requested property is found, %NULL is returned.
  *

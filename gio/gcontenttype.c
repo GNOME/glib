@@ -1649,7 +1649,7 @@ match_match (TreeMatch    *match,
  * g_mount_guess_content_type().
  *
  * Returns: (transfer full) (array zero-terminated=1): an %NULL-terminated
- *     array of zero or more content types, or %NULL. Free with g_strfreev()
+ *     array of zero or more content types. Free with g_strfreev()
  *
  * Since: 2.18
  */

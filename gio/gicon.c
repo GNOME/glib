@@ -94,8 +94,8 @@ g_icon_hash (gconstpointer icon)
 
 /**
  * g_icon_equal:
- * @icon1: pointer to the first #GIcon.
- * @icon2: pointer to the second #GIcon.
+ * @icon1: (allow-none): pointer to the first #GIcon.
+ * @icon2: (allow-none): pointer to the second #GIcon.
  * 
  * Checks if two icons are equal.
  * 
