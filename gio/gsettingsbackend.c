@@ -733,6 +733,9 @@ g_settings_backend_read (GSettingsBackend   *backend,
   value = G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->read (backend, key, expected_type, default_value);
 
+  if (value != NULL)
+    value = g_variant_take_ref (value);
+
   if G_UNLIKELY (value && !g_variant_is_of_type (value, expected_type))
     {
       g_variant_unref (value);
