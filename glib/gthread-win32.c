@@ -867,6 +867,10 @@ g_thread_xp_SleepConditionVariableSRW (gpointer cond,
       EnterCriticalSection (&g_thread_xp_lock);
       if (waiter->my_owner)
         {
+          if (waiter->next)
+            waiter->next->my_owner = waiter->my_owner;
+          else
+            cv->last_ptr = waiter->my_owner;
           *waiter->my_owner = waiter->next;
           waiter->my_owner = NULL;
         }
@@ -887,6 +891,7 @@ g_thread_xp_WakeConditionVariable (gpointer cond)
   waiter = cv->first;
   if (waiter != NULL)
     {
+      waiter->my_owner = NULL;
       cv->first = waiter->next;
       if (cv->first != NULL)
         cv->first->my_owner = &cv->first;
