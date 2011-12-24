@@ -1606,7 +1606,7 @@ fast_validate_len (const char *str,
  * being validated otherwise).
  *
  * Note that g_utf8_validate() returns %FALSE if @max_len is 
- * positive and NUL is met before @max_len bytes have been read.
+ * positive and any of the @max_len bytes are NUL.
  *
  * Returns %TRUE if all of @str was valid. Many GLib and GTK+
  * routines <emphasis>require</emphasis> valid UTF-8 as input;
