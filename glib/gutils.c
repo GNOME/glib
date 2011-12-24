@@ -252,8 +252,7 @@ g_memmove (gpointer      dest,
  * calling g_atexit() (or atexit()) except in the main executable of a
  * program.
  *
- * Deprecated:2.32: It is best to avoid g_atexit(), for the reasons
- *     outlined above.
+ * Deprecated:2.32: It is best to avoid g_atexit().
  */
 void
 g_atexit (GVoidFunc func)
