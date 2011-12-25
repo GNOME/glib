@@ -932,6 +932,46 @@ test_markup_objects (void)
   g_hash_table_unref (objects);
 }
 
+const gchar menu_data2[] =
+  "<menu>"
+  "  <section>"
+  "    <item label='Redo' action='redo'/>"
+  "  </section>"
+  "  <section></section>\n"
+  "  <section label='Copy &amp; Paste'>"
+  "    <item label='Cut' action='cut'/>"
+  "  </section>"
+  "  <section id='section1'>"
+  "    <item label='Bold' action='bold'/>"
+  "    <submenu label='Language' id='submenu1'>"
+  "      <section id='section2'>"
+  "        <item label='Urdu'  action='lang' target='urdu'/>"
+  "      </section>"
+  "    </submenu>"
+  "  </section>"
+  "</menu>";
+static void
+test_markup_ids (void)
+{
+  GMenuModel *a, *b;
+  GHashTable *objects;
+  GError *error = NULL;
+
+  objects = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
+  a = parse_menu_string (menu_data2, objects, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_MENU_MODEL (a));
+  g_assert_cmpint (g_hash_table_size (objects), ==, 3);
+  b = g_hash_table_lookup (objects, "section1");
+  g_assert (G_IS_MENU_MODEL (b));
+  b = g_hash_table_lookup (objects, "section2");
+  g_assert (G_IS_MENU_MODEL (b));
+  b = g_hash_table_lookup (objects, "submenu1");
+  g_assert (G_IS_MENU_MODEL (b));
+  g_object_unref (a);
+  g_hash_table_unref (objects);
+}
+
 static void
 test_attributes (void)
 {
@@ -1119,6 +1159,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
   g_test_add_func ("/gmenu/markup/objects", test_markup_objects);
+  g_test_add_func ("/gmenu/markup/ids", test_markup_ids);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
