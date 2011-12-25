@@ -205,6 +205,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
               if (state->objects)
                 g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
             }
+          g_object_unref (menu);
 
           return;
         }
@@ -225,6 +226,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
               if (state->objects)
                 g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
             }
+          g_object_unref (menu);
 
           return;
         }
@@ -280,6 +282,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
 
               if (id != NULL && state->objects)
                 g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
+              g_object_unref (menu);
             }
 
           return;
