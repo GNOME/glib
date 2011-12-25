@@ -118,6 +118,25 @@ add_string_attributes (GMenuItem    *item,
     }
 }
 
+static gboolean
+find_id_attribute (const gchar **names,
+                   const gchar **values,
+                   const gchar **id)
+{
+  gint i;
+
+  for (i = 0; names[i]; i++)
+    {
+      if (strcmp (names[i], "id") == 0)
+        {
+          *id = values[i];
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static void
 g_menu_markup_start_element (GMarkupParseContext  *context,
                              const gchar          *element_name,
@@ -133,10 +152,8 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
                                attribute_names, attribute_values, error,     \
                                first, __VA_ARGS__, G_MARKUP_COLLECT_INVALID)
 #define OPTIONAL   G_MARKUP_COLLECT_OPTIONAL
-#define STRDUP     G_MARKUP_COLLECT_STRDUP
 #define BOOLEAN    G_MARKUP_COLLECT_BOOLEAN
 #define STRING     G_MARKUP_COLLECT_STRING
-#define NO_ATTRS() COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
 
   if (!(state->frame.menu || state->frame.item || state->string))
     {
@@ -176,11 +193,19 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
         {
           GMenuItem *item;
           GMenu *menu;
+          gchar *id;
 
           menu = g_menu_new ();
           item = g_menu_item_new_submenu (NULL, G_MENU_MODEL (menu));
           add_string_attributes (item, attribute_names, attribute_values);
           g_menu_markup_push_frame (state, menu, item);
+
+          if (find_id_attribute (attribute_names, attribute_values, &id))
+            {
+              if (state->objects)
+                g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
+            }
+
           return;
         }
 
@@ -188,11 +213,19 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
         {
           GMenuItem *item;
           GMenu *menu;
+          gchar *id;
 
           menu = g_menu_new ();
           item = g_menu_item_new_section (NULL, G_MENU_MODEL (menu));
           add_string_attributes (item, attribute_names, attribute_values);
           g_menu_markup_push_frame (state, menu, item);
+
+          if (find_id_attribute (attribute_names, attribute_values, &id))
+            {
+              if (state->objects)
+                g_hash_table_insert (state->objects, g_strdup (id), g_object_ref (menu));
+            }
+
           return;
         }
     }
@@ -402,9 +435,12 @@ static GMarkupParser g_menu_subparser =
  *
  * If @objects is specified then it must be a #GHashTable that was
  * created using g_hash_table_new_full() with g_str_hash(),
- * g_str_equal(), g_free() and g_object_unref().  Any named menus (ie:
- * those with an id='' attribute) that are encountered while parsing
- * will be added to this table.  Each toplevel menu must be named.
+ * g_str_equal(), g_free() and g_object_unref().
+ * Any named menus (ie: <tag class="starttag">menu</tag>,
+ * <tag class="starttag">submenu</tag>,
+ * <tag class="starttag">section</tag> or <tag class="starttag">link</tag>
+ * elements with an id='' attribute) that are encountered while parsing
+ * will be added to this table. Each toplevel menu must be named.
  *
  * If @objects is %NULL then an empty hash table will be created.
  *
@@ -485,9 +521,13 @@ g_menu_markup_parser_end (GMarkupParseContext *context)
  *
  * If @objects is specified then it must be a #GHashTable that was
  * created using g_hash_table_new_full() with g_str_hash(),
- * g_str_equal(), g_free() and g_object_unref().  Any named menus (ie:
- * those with an * id='' attribute) that are encountered while parsing
+ * g_str_equal(), g_free() and g_object_unref().
+ * Any named menus (ie: <tag class="starttag">submenu</tag>,
+ * <tag class="starttag">section</tag> or <tag class="starttag">link</tag>
+ * elements with an id='' attribute) that are encountered while parsing
  * will be added to this table.
+ * Note that toplevel <tag class="starttag">menu</tag> is not added to
+ * the hash table, even if it has an id attribute.
  *
  * If @objects is %NULL then named menus will not be supported.
  *
