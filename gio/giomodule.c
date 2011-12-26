@@ -916,6 +916,9 @@ _g_io_modules_ensure_loaded (void)
       g_win32_directory_monitor_get_type ();
       g_registry_backend_get_type ();
 #endif
+#ifdef G_OS_CARBON
+      g_nextstep_settings_backend_get_type ();
+#endif
 #ifdef G_OS_UNIX
       _g_unix_volume_monitor_get_type ();
 #endif

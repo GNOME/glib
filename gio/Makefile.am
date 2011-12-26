@@ -124,6 +124,13 @@ settings_sources += \
 	gregistrysettingsbackend.c
 endif
 
+if OS_CARBON
+AM_CPPFLAGS += -DG_OS_CARBON
+
+settings_sources += \
+	gnextstepsettingsbackend.c
+endif
+
 application_headers = \
 	gapplication.h			\
 	gapplicationcommandline.h	\
@@ -446,6 +453,10 @@ libgio_2_0_la_LIBADD = \
 	$(NULL)
 
 libgio_2_0_la_CPPFLAGS = $(ZLIB_CFLAGS) $(AM_CPPFLAGS)
+
+if OS_CARBON
+libgio_2_0_la_CFLAGS = -xobjective-c
+endif
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
