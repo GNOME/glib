@@ -291,16 +291,6 @@
         <itemizedlist>
           <listitem>
             <para>
-              <structname>GList</structname>, <structname>GSList</structname>,
-              <structname>GNode</structname>, <structname>GHash</structname>
-              allocations. The functions g_list_push_allocator(),
-              g_list_pop_allocator(), g_slist_push_allocator(),
-              g_slist_pop_allocator(), g_node_push_allocator() and
-              g_node_pop_allocator() are not available
-            </para>
-          </listitem>
-          <listitem>
-            <para>
               <structname>GMemChunk</structname>s become basically non-effective
             </para>
           </listitem>
