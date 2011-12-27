@@ -2859,8 +2859,8 @@ AC_CONFIG_COMMANDS([glib/glibconfig.h],
  * This is a generated file.  Please modify 'configure.ac'
  */
 
-#ifndef __G_LIBCONFIG_H__
-#define __G_LIBCONFIG_H__
+#ifndef __GLIBCONFIG_H__
+#define __GLIBCONFIG_H__
 
 #include <glib/gmacros.h>
 
@@ -3179,7 +3179,7 @@ typedef $g_pid_type GPid;
 
 G_END_DECLS
 
-#endif /* GLIBCONFIG_H */
+#endif /* __GLIBCONFIG_H__ */
 _______EOF
 
 
