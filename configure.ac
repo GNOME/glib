@@ -561,9 +561,6 @@ AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
     CFLAGS=$glib_save_CFLAGS
     AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
 
-# Checks for header files.
-AC_HEADER_STDC
-
 # Checks for library functions.
 AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA

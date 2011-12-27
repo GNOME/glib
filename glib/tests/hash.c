@@ -32,11 +32,9 @@
 #  include <config.h>
 #endif
 
-#if STDC_HEADERS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#endif
 
 #include <glib.h>
 
