@@ -283,7 +283,6 @@ if test "x$enable_debug" = "xyes"; then
       *) CFLAGS="$CFLAGS -g" ;;
       esac
   fi
-	
   GLIB_DEBUG_FLAGS="-DG_ENABLE_DEBUG"
 else
   GLIB_DEBUG_FLAGS="-DG_DISABLE_CAST_CHECKS"
@@ -1864,18 +1863,13 @@ dnl ***********************
 AC_ARG_WITH(threads,
            [AC_HELP_STRING([--with-threads=@<:@posix/win32@:>@],
                            [specify a thread implementation to use])],
-           [if test "x$with_threads" = x; then
-		want_threads=yes
-	    else
-		want_threads=$with_threads
-	    fi],
-	   [want_threads=yes])
+           [],
+           [with_threads=yes])
 
 dnl error and warning message
 dnl *************************
 
-THREAD_NO_IMPLEMENTATION="You do not have any known thread system on your
-                computer."
+THREAD_NO_IMPLEMENTATION="No thread implementation found."
 
 FLAG_DOES_NOT_WORK="I can't find the MACRO to enable thread safety on your
                 platform (normally it's "_REENTRANT"). I'll not use any flag on
@@ -1883,10 +1877,10 @@ FLAG_DOES_NOT_WORK="I can't find the MACRO to enable thread safety on your
                 Please provide information on how it is done on your system."
 
 LIBS_NOT_FOUND_1="I can't find the libraries for the thread implementation
-		"
+                 "
 
 LIBS_NOT_FOUND_2=". Please choose another thread implementation or
-		provide information on your thread implementation."
+                  provide information on your thread implementation."
 
 FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 		functions will not be MT-safe during their first call because
@@ -1894,16 +1888,6 @@ FUNC_NO_GETPWUID_R="the 'g_get_(user_name|real_name|home_dir|tmp_dir)'
 
 FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 		because there is no 'localtime_r' on your system."
-
-POSIX_NO_YIELD="I can not find a yield functions for your platform. A rather
-		crude surrogate will be used. If you happen to know a 
-		yield function for your system, please inform the GLib 
-		developers."
-
-POSIX_NO_PRIORITIES="I can not find the minimal and maximal priorities for 
-		threads on your system. Thus threads can only have the default 
-		priority. If you happen to know these main/max
-		priorities, please inform the GLib developers."
 
 AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
 		linking threaded applications. As GLib cannot do that 
@@ -1915,9 +1899,10 @@ AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
 dnl determination of thread implementation
 dnl ***************************************
 
+AC_MSG_CHECKING(for thread implementation)
+
 have_threads=no
-if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
-				|| test "x$want_threads" = xdce; then
+if test "x$with_threads" = xyes || test "x$with_threads" = xposix; then
 	# -D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
 	# -U_OSF_SOURCE is for Digital UNIX 4.0d
 	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
@@ -1937,21 +1922,19 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
         fi
 	CPPFLAGS="$glib_save_CPPFLAGS"
 fi
-if test "x$want_threads" = xyes || test "x$want_threads" = xwin32; then
-       	case $host in
-               	*-*-mingw*)
-		have_threads=win32
-		;;
-	esac
+if test "x$with_threads" = xyes || test "x$with_threads" = xwin32; then
+        case $host in
+                *-*-mingw*)
+                have_threads=win32
+                ;;
+        esac
 fi
 
-AC_MSG_CHECKING(for thread implementation)
-
 if test "x$have_threads" = xno; then
-	AC_MSG_RESULT(none available)
+        AC_MSG_RESULT(none available)
         AC_MSG_ERROR($THREAD_NO_IMPLEMENTATION)
 else
-	AC_MSG_RESULT($have_threads)
+        AC_MSG_RESULT($have_threads)
 fi
 
 
@@ -1975,18 +1958,6 @@ int main()
    pthread_create (&t, $1, func, 0);
    pthread_join (t, &ret);
    return (check_me != 42 || ret != &check_me);
-}])
-
-dnl
-dnl Test program for sched_get_priority_min()
-dnl
-m4_define([glib_sched_priority_test],[
-#include <sched.h>
-#include <errno.h>
-int main() {
-    errno = 0;
-    return sched_get_priority_min(SCHED_OTHER)==-1
- 	   && errno != 0;
 }])
 
 if test x"$have_threads" = xposix; then
@@ -2146,34 +2117,6 @@ case $have_threads in
             esac
           fi
 
-          glib_save_LIBS="$LIBS"
-	  for thread_lib in "" rt rte; do
-	    if test x"$thread_lib" = x; then
-	      add_thread_lib=""
-	      IN=""
-	    else
-	      add_thread_lib="-l$thread_lib"
-	      IN=" in -l$thread_lib"
-	    fi
-	    LIBS="$add_thread_lib $glib_save_LIBS"
-	    
-            AC_MSG_CHECKING(for sched_get_priority_min$IN)
-	    AC_TRY_RUN(glib_sched_priority_test,
-                       glib_result=yes,
-                       glib_result=no,
-                       [AC_LINK_IFELSE([AC_LANG_SOURCE(glib_sched_priority_test)],
-                                       glib_result=yes,
-                                       glib_result=no)])
-	    AC_MSG_RESULT($glib_result)
-
-	    if test "$glib_result" = "yes" ; then	    
- 	       G_THREAD_LIBS="$G_THREAD_LIBS $add_thread_lib"
-	       posix_priority_min="sched_get_priority_min(SCHED_OTHER)"
-	       posix_priority_max="sched_get_priority_max(SCHED_OTHER)"
-	       break
-            fi
-	  done
-	  LIBS="$glib_save_LIBS"
 	  g_threads_impl="POSIX"
 	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
           CPPFLAGS="$glib_save_CPPFLAGS"
@@ -2291,78 +2234,17 @@ int main () {
 fi
 LIBS="$G_THREAD_LIBS $LIBS"
 if test x"$have_threads" = xposix; then
-	glib_save_CPPFLAGS="$CPPFLAGS"
-	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
-	dnl we might grow sizeof(pthread_t) later on, so use a dummy name here
-	GLIB_SIZEOF([#include <pthread.h>], pthread_t, system_thread)
-	# This is not AC_CHECK_FUNC to also work with function
-	# name mangling in header files.
-	AC_MSG_CHECKING(for pthread_attr_setstacksize)
-	AC_TRY_LINK([#include <pthread.h>],
-		[pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
-		[AC_MSG_RESULT(yes)
-		AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE,1,
-			  [Have function pthread_attr_setstacksize])],
-		[AC_MSG_RESULT(no)])
-	AC_MSG_CHECKING(for minimal/maximal thread priority)
-	if test x"$posix_priority_min" = x; then
-		AC_EGREP_CPP(PX_PRIO_MIN,[#include <pthread.h>
-			PX_PRIO_MIN],,[
-			posix_priority_min=PX_PRIO_MIN
-			posix_priority_max=PX_PRIO_MAX])
-	fi
-	if test x"$posix_priority_min" = x; then
-		# AIX
-		AC_EGREP_CPP(PTHREAD_PRIO_MIN,[#include <pthread.h>
-			PTHREAD_PRIO_MIN],,[
-			posix_priority_min=PTHREAD_PRIO_MIN
-			posix_priority_max=PTHREAD_PRIO_MAX])
-	fi
-	if test x"$posix_priority_min" = x; then
-		AC_EGREP_CPP(PRI_OTHER_MIN,[#include <pthread.h>
-			PRI_OTHER_MIN],,[
-			posix_priority_min=PRI_OTHER_MIN	
-			posix_priority_max=PRI_OTHER_MAX])
-	fi
-	if test x"$posix_priority_min" = x; then
-		AC_MSG_RESULT(none found)
-		AC_MSG_WARN($POSIX_NO_PRIORITIES)
-                posix_priority_min=-1
-		posix_priority_max=-1
-	else
-		AC_MSG_RESULT($posix_priority_min/$posix_priority_max)
-		AC_MSG_CHECKING(for pthread_setschedparam)
-		AC_TRY_LINK([#include <pthread.h>],
-	          [pthread_t t; pthread_setschedparam(t, 0, NULL)],
-		  [AC_MSG_RESULT(yes)
-		AC_DEFINE_UNQUOTED(POSIX_MIN_PRIORITY,$posix_priority_min,[Minimum POSIX RT priority])
-		   AC_DEFINE_UNQUOTED(POSIX_MAX_PRIORITY,$posix_priority_max,[Maximum POSIX RT priority])],
-                  [AC_MSG_RESULT(no)
-                   AC_MSG_WARN($POSIX_NO_PRIORITIES)])
-	fi
-	posix_yield_func=none
-	AC_MSG_CHECKING(for posix yield function)
-	for yield_func in sched_yield pthread_yield_np pthread_yield \
-						thr_yield; do
-		AC_TRY_LINK([#include <pthread.h>],
-			[$yield_func()],
-			[posix_yield_func="$yield_func"
-			break])
-	done		
-	if test x"$posix_yield_func" = xnone; then
-		AC_MSG_RESULT(none found)
-		AC_MSG_WARN($POSIX_NO_YIELD)
-                posix_yield_func="g_usleep(1000)"
-	else
-		AC_MSG_RESULT($posix_yield_func)
-		posix_yield_func="$posix_yield_func()"
-	fi
-	AC_DEFINE_UNQUOTED(POSIX_YIELD_FUNC,$posix_yield_func,[The POSIX RT yield function])
-	CPPFLAGS="$glib_save_CPPFLAGS"
-   
-elif test x"$have_threads" = xwin32; then
-	# It's a pointer to a private struct
-	GLIB_SIZEOF(,struct _GThreadData *, system_thread)
+        glib_save_CPPFLAGS="$CPPFLAGS"
+        CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
+        # This is not AC_CHECK_FUNC to also work with function
+        # name mangling in header files.
+        AC_MSG_CHECKING(for pthread_attr_setstacksize)
+        AC_TRY_LINK([#include <pthread.h>],
+                    [pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
+                    [AC_MSG_RESULT(yes)
+                     AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE,1,[Have function pthread_attr_setstacksize])],
+                    [AC_MSG_RESULT(no)])
+        CPPFLAGS="$glib_save_CPPFLAGS"
 fi
 
 LIBS="$glib_save_LIBS"
@@ -2374,11 +2256,6 @@ if test "$ac_cv_func_posix_getpwuid_r" != "yes" &&
 fi
 if test "$ac_cv_func_localtime_r" != "yes"; then
 	AC_MSG_WARN($FUNC_NO_LOCALTIME_R)
-fi
-
-if test x"$glib_cv_sizeof_system_thread" = x; then
-   # use a pointer as a fallback.
-   GLIB_SIZEOF(,void *, system_thread)
 fi
 
 #
@@ -3482,8 +3359,6 @@ g_stack_grows=$glib_cv_stack_grows
 g_have_eilseq=$have_eilseq
 
 g_threads_impl_def=$g_threads_impl
-
-g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 
 g_atomic_lock_free="$glib_cv_g_atomic_lock_free"
 g_memory_barrier_needed="$glib_memory_barrier_needed"
