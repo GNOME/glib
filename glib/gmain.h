@@ -119,6 +119,9 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  *
  * On UNIX, processes are identified by a process id (an integer),
  * while Windows uses process handles (which are pointers).
+ *
+ * GPid is used in GLib only for descendant processes spawned with
+ * the g_spawn functions.
  */
 
 /**
