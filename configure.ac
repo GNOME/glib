@@ -2708,8 +2708,6 @@ if test "x$use_gcov" = "xyes"; then
     AC_MSG_ERROR([Could not find genhtml from the LTP package])
   fi
 
-  AC_DEFINE(HAVE_GCOV, 1, [Whether you have gcov])
-
   dnl Remove all optimization flags from CFLAGS
   changequote({,})
   CFLAGS=`echo "$CFLAGS" | $SED -e 's/-O[0-9]*//g'`
