@@ -243,7 +243,6 @@ if test "x$disable_mem_pools" = "xno"; then
   AC_MSG_RESULT([no])
 else
   AC_DEFINE(DISABLE_MEM_POOLS, [1], [Whether to disable memory pools])
-  AC_SUBST(DISABLE_MEM_POOLS)
   AC_MSG_RESULT([yes])
 fi
 
