@@ -667,8 +667,6 @@ elif test x$ac_cv_sizeof___int64 = x8; then
 	AC_DEFINE(HAVE_INT64_AND_I64,1,[define to support printing 64-bit integers with format I64])
 fi
 
-dnl long doubles were not used, and a portability problem
-dnl AC_C_LONG_DOUBLE
 AC_C_CONST
 
 dnl ok, here we try to check whether the systems prototypes for
