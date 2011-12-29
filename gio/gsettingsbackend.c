@@ -35,13 +35,9 @@
 
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
-typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
-
 struct _GSettingsBackendPrivate
 {
-  GSettingsBackendWatch *watches;
   gboolean has_unapplied;
-  GMutex lock;
 };
 
 enum
@@ -52,6 +48,15 @@ enum
 };
 
 static GParamSpec *g_settings_backend_pspecs[N_PROPS];
+
+enum
+{
+  SIGNAL_EVENT,
+  N_SIGNALS
+};
+
+static guint g_settings_backend_signals[N_SIGNALS];
+
 
 /* For g_settings_backend_sync_default(), we only want to actually do
  * the sync if the backend already exists.  This avoids us creating an
@@ -133,139 +138,11 @@ is_path (const gchar *path)
   return TRUE;
 }
 
-struct _GSettingsBackendWatch
-{
-  GObject               *target;
-  GSettingsEventFunc     function;
-  GSettingsBackendWatch *next;
-};
-
-static void
-g_settings_backend_watch_weak_notify (gpointer  data,
-                                      GObject  *where_the_object_was)
-{
-  GSettingsBackend *backend = data;
-  GSettingsBackendWatch **ptr;
-
-  /* search and remove */
-  g_mutex_lock (&backend->priv->lock);
-  for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
-    if ((*ptr)->target == where_the_object_was)
-      {
-        GSettingsBackendWatch *tmp = *ptr;
-
-        *ptr = tmp->next;
-        g_slice_free (GSettingsBackendWatch, tmp);
-
-        g_mutex_unlock (&backend->priv->lock);
-        return;
-      }
-
-  /* we didn't find it.  that shouldn't happen. */
-  g_assert_not_reached ();
-}
-
-/*< private >
- * g_settings_backend_watch:
- * @backend: a #GSettingsBackend
- * @target: the GObject (typically GSettings instance) to call back to
- *
- * Registers a new watch on a #GSettingsBackend.
- **/
 void
-g_settings_backend_watch (GSettingsBackend   *backend,
-                          GSettingsEventFunc  callback,
-                          GObject            *target)
+g_settings_backend_event (GSettingsBackend     *backend,
+                          const GSettingsEvent *event)
 {
-  GSettingsBackendWatch *watch;
-
-  /* For purposes of discussion, we assume that our target is a
-   * GSettings instance.
-   *
-   * Our strategy to defend against the final reference dropping on the
-   * GSettings object in a thread other than the one that is doing the
-   * dispatching is as follows:
-   *
-   *  1) hold a GObject reference on the GSettings during an outstanding
-   *     dispatch.  This ensures that the delivery is always possible.
-   *
-   *  2) hold a weak reference on the GSettings at other times.  This
-   *     allows us to receive early notification of pending destruction
-   *     of the object.  At this point, it is still safe to obtain a
-   *     reference on the GObject to keep it alive, so #1 will work up
-   *     to that point.  After that point, we'll have been able to drop
-   *     the watch from the list.
-   *
-   * Note, in particular, that it's not possible to simply have an
-   * "unwatch" function that gets called from the finalize function of
-   * the GSettings instance because, by that point it is no longer
-   * possible to keep the object alive using g_object_ref() and we would
-   * have no way of knowing this.
-   *
-   * All access to the list holds a mutex.  We have some strategies to
-   * avoid some of the pain that would be associated with that.
-   */
-
-  watch = g_slice_new (GSettingsBackendWatch);
-  watch->function = callback;
-  watch->target = target;
-  g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
-
-  /* linked list prepend */
-  g_mutex_lock (&backend->priv->lock);
-  watch->next = backend->priv->watches;
-  backend->priv->watches = watch;
-  g_mutex_unlock (&backend->priv->lock);
-}
-
-void
-g_settings_backend_unwatch (GSettingsBackend *backend,
-                            GObject          *target)
-{
-  /* Our caller surely owns a reference on 'target', so the order of
-   * these two calls is unimportant.
-   */
-  g_object_weak_unref (target, g_settings_backend_watch_weak_notify, backend);
-  g_settings_backend_watch_weak_notify (backend, target);
-}
-
-void
-g_settings_backend_report_event (GSettingsBackend     *backend,
-                                 const GSettingsEvent *event)
-{
-  GSettingsBackendWatch *suffix, *watch, *next;
-
-  /* We're in a little bit of a tricky situation here.  We need to hold
-   * a lock while traversing the list, but we don't want to hold the
-   * lock while calling back into user code.
-   *
-   * Since we're not holding the lock while we call user code, we can't
-   * render the list immutable.  We can, however, store a pointer to a
-   * given suffix of the list and render that suffix immutable.
-   *
-   * Adds will never modify the suffix since adds always come in the
-   * form of prepends.  We can also prevent removes from modifying the
-   * suffix since removes only happen in response to the last reference
-   * count dropping -- so just add a reference to everything in the
-   * suffix.
-   */
-  g_mutex_lock (&backend->priv->lock);
-  suffix = backend->priv->watches;
-  for (watch = suffix; watch; watch = watch->next)
-    g_object_ref (watch->target);
-  g_mutex_unlock (&backend->priv->lock);
-
-  /* The suffix is now immutable, so this is safe. */
-  for (watch = suffix; watch; watch = next)
-    {
-      /* we do this here because 'watch' may not live to the end of this
-       * iteration of the loop (since we unref the target below).
-       */
-      next = watch->next;
-
-      watch->function (watch->target, event);
-      g_object_unref (watch->target); /* free the ref we acquired above */
-    }
+  g_signal_emit (backend, g_settings_backend_signals[SIGNAL_EVENT], 0, event);
 }
 
 /**
@@ -315,7 +192,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
   event.keys = &null;
   event.origin_tag = origin_tag;
 
-  g_settings_backend_report_event (backend, &event);
+  g_settings_backend_event (backend, &event);
 }
 
 /**
@@ -368,7 +245,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
   event.keys = (gchar **) items;
   event.origin_tag = origin_tag;
 
-  g_settings_backend_report_event (backend, &event);
+  g_settings_backend_event (backend, &event);
 }
 
 /**
@@ -417,7 +294,7 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
   event.keys = &null;
   event.origin_tag = origin_tag;
 
-  g_settings_backend_report_event (backend, &event);
+  g_settings_backend_event (backend, &event);
 }
 
 /**
@@ -447,7 +324,7 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
   event.keys = &null;
   event.origin_tag = NULL;
 
-  g_settings_backend_report_event (backend, &event);
+  g_settings_backend_event (backend, &event);
 }
 
 /**
@@ -478,7 +355,7 @@ g_settings_backend_path_writable_changed (GSettingsBackend *backend,
   event.keys = &null;
   event.origin_tag = NULL;
 
-  g_settings_backend_report_event (backend, &event);
+  g_settings_backend_event (backend, &event);
 }
 
 typedef struct
@@ -826,17 +703,6 @@ g_settings_backend_get_property (GObject *object, guint prop_id,
 }
 
 static void
-g_settings_backend_finalize (GObject *object)
-{
-  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
-
-  g_mutex_clear (&backend->priv->lock);
-
-  G_OBJECT_CLASS (g_settings_backend_parent_class)
-    ->finalize (object);
-}
-
-static void
 ignore_subscription (GSettingsBackend *backend,
                      const gchar      *key)
 {
@@ -848,7 +714,6 @@ g_settings_backend_init (GSettingsBackend *backend)
   backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
                                                G_TYPE_SETTINGS_BACKEND,
                                                GSettingsBackendPrivate);
-  g_mutex_init (&backend->priv->lock);
 }
 
 static void
@@ -860,7 +725,10 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   class->unsubscribe = ignore_subscription;
 
   gobject_class->get_property = g_settings_backend_get_property;
-  gobject_class->finalize = g_settings_backend_finalize;
+
+  g_settings_backend_signals[SIGNAL_EVENT] =
+    g_signal_new ("event", G_TYPE_SETTINGS_BACKEND, G_SIGNAL_RUN_FIRST, 0, NULL, NULL,
+                  g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, G_TYPE_POINTER);
 
   g_settings_backend_pspecs[PROP_HAS_UNAPPLIED] =
     g_param_spec_boolean ("has-unapplied", "has unapplied", "TRUE if apply() is meaningful",

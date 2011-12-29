@@ -209,13 +209,14 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
 }
 
 static void
-g_delayed_settings_got_event (GObject              *target,
-                              const GSettingsEvent *event)
+g_delayed_settings_got_event (GSettingsBackend     *backend,
+                              const GSettingsEvent *event,
+                              gpointer              user_data)
 {
-  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
+  GDelayedSettingsBackend *delayed = user_data;
 
   if (event->origin_tag != delayed->priv)
-    g_settings_backend_report_event (G_SETTINGS_BACKEND (delayed), event);
+    g_settings_backend_event (G_SETTINGS_BACKEND (delayed), event);
 }
 
 static void
@@ -223,6 +224,7 @@ g_delayed_settings_backend_finalize (GObject *object)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
+  g_signal_handlers_disconnect_by_func (delayed->priv->backend, g_delayed_settings_got_event, delayed);
   g_mutex_clear (&delayed->priv->lock);
   g_object_unref (delayed->priv->backend);
   g_tree_unref (delayed->priv->delayed);
@@ -270,7 +272,7 @@ g_delayed_settings_backend_new (GSettingsBackend *backend)
   delayed = g_object_new (G_TYPE_DELAYED_SETTINGS_BACKEND, NULL);
   delayed->priv->backend = g_object_ref (backend);
 
-  g_settings_backend_watch (delayed->priv->backend, g_delayed_settings_got_event, G_OBJECT (delayed));
+  g_signal_connect_object (delayed->priv->backend, "event", G_CALLBACK (g_delayed_settings_got_event), delayed, 0);
 
   return delayed;
 }

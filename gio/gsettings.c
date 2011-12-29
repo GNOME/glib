@@ -372,10 +372,11 @@ g_settings_dispatch_signal (GSettings          *settings,
 }
 
 static void
-g_settings_got_event (GObject              *target,
-                      const GSettingsEvent *event)
+g_settings_got_event (GSettingsBackend     *backend,
+                      const GSettingsEvent *event,
+                      gpointer              user_data)
 {
-  GSettings *settings = G_SETTINGS (target);
+  GSettings *settings = user_data;
   const gchar *prefix;
   const gchar *path;
   gint prefix_len;
@@ -649,9 +650,8 @@ g_settings_constructed (GObject *object)
   if (settings->priv->backend == NULL)
     settings->priv->backend = g_settings_backend_get_default ();
 
-  g_settings_backend_watch (settings->priv->backend, g_settings_got_event, G_OBJECT (settings));
-  g_settings_backend_subscribe (settings->priv->backend,
-                                settings->priv->path);
+  g_signal_connect_object (settings->priv->backend, "event", G_CALLBACK (g_settings_got_event), settings, 0);
+  g_settings_backend_subscribe (settings->priv->backend, settings->priv->path);
 }
 
 static void
@@ -660,8 +660,7 @@ g_settings_finalize (GObject *object)
   GSettings *settings = G_SETTINGS (object);
 
   g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_has_unapplied_notify, settings);
-  g_settings_backend_unsubscribe (settings->priv->backend,
-                                  settings->priv->path);
+  g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_event, settings);
   g_main_context_unref (settings->priv->main_context);
   g_object_unref (settings->priv->backend);
   g_settings_schema_unref (settings->priv->schema);
@@ -1969,14 +1968,14 @@ g_settings_delay (GSettings *settings)
     return;
 
   settings->priv->delayed = g_delayed_settings_backend_new (settings->priv->backend);
-  g_settings_backend_unwatch (settings->priv->backend, G_OBJECT (settings));
+  g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_event, settings);
   g_object_unref (settings->priv->backend);
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
-  g_settings_backend_watch (settings->priv->backend, g_settings_got_event, G_OBJECT (settings));
+  g_signal_connect_object (settings->priv->backend, "event", G_CALLBACK (g_settings_got_event), settings, 0);
 
-  g_signal_connect (settings->priv->delayed, "notify::has-unapplied",
-                    G_CALLBACK (g_settings_got_has_unapplied_notify), settings);
+  g_signal_connect_object (settings->priv->delayed, "notify::has-unapplied",
+                           G_CALLBACK (g_settings_got_has_unapplied_notify), settings, 0);
   g_object_notify (G_OBJECT (settings), "delay-apply");
 }
 
