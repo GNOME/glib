@@ -32,8 +32,7 @@ typedef void         (* GSettingsEventFunc)                             (GObject
 G_GNUC_INTERNAL
 void                    g_settings_backend_watch                        (GSettingsBackend     *backend,
                                                                          GSettingsEventFunc    callback,
-                                                                         GObject              *target,
-                                                                         GMainContext         *context);
+                                                                         GObject              *target);
 G_GNUC_INTERNAL
 void                    g_settings_backend_unwatch                      (GSettingsBackend     *backend,
                                                                          GObject              *target);

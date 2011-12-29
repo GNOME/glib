@@ -315,16 +315,22 @@ g_settings_real_writable_change_event (GSettings *settings,
   return FALSE;
 }
 
-static void
-g_settings_emit_signal (GSettings          *settings,
-                        GSettingsEventType  type,
-                        const GQuark       *quarks,
-                        gint                n_items)
+typedef struct
 {
+  GSettings          *settings;
+  GSettingsEventType  type;
+  GQuark             *quarks;
+  gint                n_items;
+} GSettingsSignalData;
+
+static gboolean
+g_settings_emit_signal (gpointer user_data)
+{
+  GSettingsSignalData *data = user_data;
   gboolean ignore_this;
   guint signal_id;
 
-  switch (type)
+  switch (data->type)
     {
     case G_SETTINGS_EVENT_CHANGE:
       signal_id = g_settings_signals[SIGNAL_CHANGE_EVENT];
@@ -338,23 +344,49 @@ g_settings_emit_signal (GSettings          *settings,
       g_assert_not_reached ();
     }
 
-  /* writable-change-event signals are emitted in a different way */
+  /* this signal is presently emitted differently */
   if (signal_id == g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT])
     {
-      if (n_items > 0)
+      if (data->n_items > 0)
         {
           gint i;
 
-          for (i = 0; i < n_items; i++)
-            g_signal_emit (settings, signal_id, 0, quarks[i], &ignore_this);
+          for (i = 0; i < data->n_items; i++)
+            g_signal_emit (data->settings, signal_id, 0, data->quarks[i], &ignore_this);
         }
       else
-        g_signal_emit (settings, signal_id, 0, (GQuark) 0, &ignore_this);
+        g_signal_emit (data->settings, signal_id, 0, (GQuark) 0, &ignore_this);
 
-      return;
+      goto out;
     }
 
-  g_signal_emit (settings, signal_id, 0, quarks, n_items, &ignore_this);
+  g_signal_emit (data->settings, signal_id, 0, data->quarks, data->n_items, &ignore_this);
+
+out:
+  g_object_unref (data->settings);
+  g_free (data->quarks);
+
+  g_slice_free (GSettingsSignalData, data);
+
+  return G_SOURCE_REMOVE;
+}
+
+/* consumes 'quarks' */
+static void
+g_settings_dispatch_signal (GSettings          *settings,
+                            GSettingsEventType  type,
+                            GQuark             *quarks,
+                            gint                n_items)
+{
+  GSettingsSignalData *data;
+
+  data = g_slice_new (GSettingsSignalData);
+  data->settings = g_object_ref (settings);
+  data->type = type;
+  data->quarks = quarks;
+  data->n_items = n_items;
+
+  g_main_context_invoke (settings->priv->main_context, g_settings_emit_signal, data);
 }
 
 static void
@@ -424,7 +456,7 @@ g_settings_got_event (GObject              *target,
           GQuark quark;
 
           quark = g_quark_from_string (prefix);
-          g_settings_emit_signal (settings, event->type, &quark, 1);
+          g_settings_dispatch_signal (settings, event->type, g_memdup (&quark, sizeof quark), 1);
         }
     }
   else
@@ -442,7 +474,7 @@ g_settings_got_event (GObject              *target,
        * this case since everything has changed.
        */
       if (event->keys[0] == NULL)
-        g_settings_emit_signal (settings, event->type, NULL, 0);
+        g_settings_dispatch_signal (settings, event->type, NULL, 0);
 
       else
         {
@@ -450,11 +482,7 @@ g_settings_got_event (GObject              *target,
           gint n, i, j;
 
           n = g_strv_length (event->keys);
-
-          if (20 < n)
-            quarks = g_new (GQuark, n);
-          else
-            quarks = g_newa (GQuark, n);
+          quarks = g_new (GQuark, n);
 
           j = 0;
           for (i = 0; event->keys[i]; i++)
@@ -479,9 +507,8 @@ g_settings_got_event (GObject              *target,
 
           /* Only signal if we actually had a match. */
           if (j > 0)
-            g_settings_emit_signal (settings, event->type, quarks, j);
-
-          if (20 < n)
+            g_settings_dispatch_signal (settings, event->type, quarks, j);
+          else
             g_free (quarks);
         }
     }
@@ -621,10 +648,7 @@ g_settings_constructed (GObject *object)
   if (settings->priv->backend == NULL)
     settings->priv->backend = g_settings_backend_get_default ();
 
-  g_settings_backend_watch (settings->priv->backend,
-                            g_settings_got_event,
-                            G_OBJECT (settings),
-                            settings->priv->main_context);
+  g_settings_backend_watch (settings->priv->backend, g_settings_got_event, G_OBJECT (settings));
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
 }
@@ -1950,9 +1974,7 @@ g_settings_delay (GSettings *settings)
   g_object_unref (settings->priv->backend);
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
-  g_settings_backend_watch (settings->priv->backend,
-                            g_settings_got_event, G_OBJECT (settings),
-                            settings->priv->main_context);
+  g_settings_backend_watch (settings->priv->backend, g_settings_got_event, G_OBJECT (settings));
 
   g_object_notify (G_OBJECT (settings), "delay-apply");
 }

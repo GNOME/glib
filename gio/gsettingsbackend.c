@@ -35,7 +35,6 @@
 
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
-typedef struct _GSettingsBackendClosure GSettingsBackendClosure;
 typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
 
 struct _GSettingsBackendPrivate
@@ -128,16 +127,7 @@ struct _GSettingsBackendWatch
 {
   GObject               *target;
   GSettingsEventFunc     function;
-  GMainContext          *context;
   GSettingsBackendWatch *next;
-};
-
-struct _GSettingsBackendClosure
-{
-  GSettingsEventFunc  function;
-  GSettingsBackend   *backend;
-  GObject            *target;
-  GSettingsEvent      event;
 };
 
 static void
@@ -169,31 +159,13 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * g_settings_backend_watch:
  * @backend: a #GSettingsBackend
  * @target: the GObject (typically GSettings instance) to call back to
- * @context: (allow-none): a #GMainContext, or %NULL
- * ...: callbacks...
  *
  * Registers a new watch on a #GSettingsBackend.
- *
- * note: %NULL @context does not mean "default main context" but rather,
- * "it is okay to dispatch in any context".  If the default main context
- * is specifically desired then it must be given.
- *
- * note also: if you want to get meaningful values for the @origin_tag
- * that appears as an argument to some of the callbacks, you *must* have
- * @context as %NULL.  Otherwise, you are subject to cross-thread
- * dispatching and whatever owned @origin_tag at the time that the event
- * occurred may no longer own it.  This is a problem if you consider that
- * you may now be the new owner of that address and mistakenly think
- * that the event in question originated from yourself.
- *
- * tl;dr: If you give a non-%NULL @context then you must ignore the
- * value of @origin_tag given to any callbacks.
  **/
 void
 g_settings_backend_watch (GSettingsBackend   *backend,
                           GSettingsEventFunc  callback,
-                          GObject            *target,
-                          GMainContext       *context)
+                          GObject            *target)
 {
   GSettingsBackendWatch *watch;
 
@@ -220,19 +192,11 @@ g_settings_backend_watch (GSettingsBackend   *backend,
    * possible to keep the object alive using g_object_ref() and we would
    * have no way of knowing this.
    *
-   * Note also that we do not need to hold a reference on the main
-   * context here since the GSettings instance does that for us and we
-   * will receive the weak notify long before it is dropped.  We don't
-   * even need to hold it during dispatches because our reference on the
-   * GSettings will prevent the finalize from running and dropping the
-   * ref on the context.
-   *
    * All access to the list holds a mutex.  We have some strategies to
    * avoid some of the pain that would be associated with that.
    */
 
   watch = g_slice_new (GSettingsBackendWatch);
-  watch->context = context;
   watch->function = callback;
   watch->target = target;
   g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
@@ -253,23 +217,6 @@ g_settings_backend_unwatch (GSettingsBackend *backend,
    */
   g_object_weak_unref (target, g_settings_backend_watch_weak_notify, backend);
   g_settings_backend_watch_weak_notify (backend, target);
-}
-
-static gboolean
-g_settings_backend_invoke_closure (gpointer user_data)
-{
-  GSettingsBackendClosure *closure = user_data;
-
-  closure->function (closure->target, &closure->event);
-
-  g_object_unref (closure->backend);
-  g_object_unref (closure->target);
-  g_strfreev (closure->event.keys);
-  g_free (closure->event.prefix);
-
-  g_slice_free (GSettingsBackendClosure, closure);
-
-  return FALSE;
 }
 
 void
@@ -301,28 +248,13 @@ g_settings_backend_report_event (GSettingsBackend     *backend,
   /* The suffix is now immutable, so this is safe. */
   for (watch = suffix; watch; watch = next)
     {
-      GSettingsBackendClosure *closure;
-
-      closure = g_slice_new (GSettingsBackendClosure);
-      closure->backend = g_object_ref (backend);
-      closure->target = watch->target; /* we took our ref above */
-      closure->function = watch->function;
-      closure->event.type = event->type;
-      closure->event.prefix = g_strdup (event->prefix);
-      closure->event.keys = g_strdupv (event->keys);
-      closure->event.origin_tag = event->origin_tag;
-
       /* we do this here because 'watch' may not live to the end of this
-       * iteration of the loop (since we may unref the target below).
+       * iteration of the loop (since we unref the target below).
        */
       next = watch->next;
 
-      if (watch->context)
-        g_main_context_invoke (watch->context,
-                               g_settings_backend_invoke_closure,
-                               closure);
-      else
-        g_settings_backend_invoke_closure (closure);
+      watch->function (watch->target, event);
+      g_object_unref (watch->target); /* free the ref we acquired above */
     }
 }
 

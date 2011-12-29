@@ -347,8 +347,7 @@ g_delayed_settings_backend_new (GSettingsBackend *backend,
 
   g_object_weak_ref (owner, g_delayed_settings_backend_disown, delayed);
 
-  g_settings_backend_watch (delayed->priv->backend,
-                            g_delayed_settings_got_event, G_OBJECT (delayed), NULL);
+  g_settings_backend_watch (delayed->priv->backend, g_delayed_settings_got_event, G_OBJECT (delayed));
 
   return delayed;
 }
