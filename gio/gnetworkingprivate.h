@@ -78,40 +78,6 @@
 
 G_BEGIN_DECLS
 
-extern struct addrinfo _g_resolver_addrinfo_hints;
-
-GList *_g_resolver_addresses_from_addrinfo (const char       *hostname,
-					    struct addrinfo  *res,
-					    gint              gai_retval,
-					    GError          **error);
-
-void   _g_resolver_address_to_sockaddr     (GInetAddress            *address,
-					    struct sockaddr_storage *sa,
-					    gsize                   *len);
-char  *_g_resolver_name_from_nameinfo      (GInetAddress     *address,
-					    const gchar      *name,
-					    gint              gni_retval,
-					    GError          **error);
-
-#if defined(G_OS_UNIX)
-gint   _g_resolver_record_type_to_rrtype   (GResolverRecordType record_type);
-
-GList *_g_resolver_records_from_res_query  (const gchar      *rrname,
-					    gint              rrtype,
-					    guchar           *answer,
-					    gint              len,
-					    gint              herr,
-					    GError          **error);
-#elif defined(G_OS_WIN32)
-WORD   _g_resolver_record_type_to_dnstype  (GResolverRecordType record_type);
-
-GList *_g_resolver_records_from_DnsQuery   (const gchar      *rrname,
-					    WORD              dnstype,
-					    DNS_STATUS        status,
-					    DNS_RECORD       *results,
-					    GError          **error);
-#endif
-
 gboolean _g_uri_parse_authority            (const char       *uri,
 					    char            **host,
 					    guint16          *port,
