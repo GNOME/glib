@@ -292,14 +292,13 @@ g_settings_real_change_event (GSettings    *settings,
 }
 
 static gboolean
-g_settings_real_writable_change_event (GSettings *settings,
-                                       GQuark     key)
+g_settings_real_writable_change_event (GSettings    *settings,
+                                       const GQuark *keys,
+                                       gint          n_keys)
 {
-  const GQuark *keys = &key;
-  gint n_keys = 1;
   gint i;
 
-  if (key == 0)
+  if (keys == NULL)
     keys = g_settings_schema_list (settings->priv->schema, &n_keys);
 
   for (i = 0; i < n_keys; i++)
@@ -344,25 +343,8 @@ g_settings_emit_signal (gpointer user_data)
       g_assert_not_reached ();
     }
 
-  /* this signal is presently emitted differently */
-  if (signal_id == g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT])
-    {
-      if (data->n_items > 0)
-        {
-          gint i;
-
-          for (i = 0; i < data->n_items; i++)
-            g_signal_emit (data->settings, signal_id, 0, data->quarks[i], &ignore_this);
-        }
-      else
-        g_signal_emit (data->settings, signal_id, 0, (GQuark) 0, &ignore_this);
-
-      goto out;
-    }
-
   g_signal_emit (data->settings, signal_id, 0, data->quarks, data->n_items, &ignore_this);
 
-out:
   g_object_unref (data->settings);
   g_free (data->quarks);
 
@@ -790,7 +772,9 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::writable-change-event:
    * @settings: the object on which the signal was emitted
-   * @key: the quark of the key, or 0
+   * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
+   *        an array of #GQuark<!-- -->s for the affected keys, or %NULL
+   * @n_keys: the length of the @keys array, or 0
    *
    * The "writable-change-event" signal is emitted once per writability
    * change event that affects this settings object.  You should connect
@@ -799,17 +783,15 @@ g_settings_class_init (GSettingsClass *class)
    * "writable-changed" signal.  For most use cases it is more
    * appropriate to use the "writable-changed" signal.
    *
-   * In the event that the writability change applies only to a single
-   * key, @key will be set to the #GQuark for that key.  In the event
-   * that the writability change affects the entire settings object,
-   * @key will be 0.
+   * In the event that the change event applies to one or more specified
+   * keys, @keys will be an array of #GQuark of length @n_keys.  In the
+   * event that the change event applies to the #GSettings object as a
+   * whole (ie: potentially every key has been changed) then @keys will
+   * be %NULL and @n_keys will be 0.
    *
    * The default handler for this signal invokes the "writable-changed"
-   * and "changed" signals for each affected key.  This is done because
-   * changes in writability might also imply changes in value (if for
-   * example, a new mandatory setting is introduced).  If any other
-   * connected handler returns %TRUE then this default functionality
-   * will be suppressed.
+   * signal for each affected key.  If any other connected handler
+   * returns %TRUE then this default functionality will be suppressed.
    *
    * Returns: %TRUE to stop other handlers from being invoked for the
    *          event. FALSE to propagate the event further.
@@ -819,7 +801,7 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, writable_change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  NULL, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
+                  NULL, G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_INT);
 
   /**
    * GSettings:context:

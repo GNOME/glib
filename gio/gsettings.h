@@ -54,7 +54,8 @@ struct _GSettingsClass
   void        (*changed)               (GSettings    *settings,
                                         const gchar  *key);
   gboolean    (*writable_change_event) (GSettings    *settings,
-                                        GQuark        key);
+                                        const GQuark *keys,
+                                        gint          n_keys);
   gboolean    (*change_event)          (GSettings    *settings,
                                         const GQuark *keys,
                                         gint          n_keys);
