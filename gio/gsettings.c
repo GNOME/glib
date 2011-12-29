@@ -240,7 +240,7 @@ struct _GSettingsPrivate
   GSettingsSchema *schema;
   gchar *path;
 
-  GDelayedSettingsBackend *delayed;
+  gboolean delayed_apply;
 };
 
 enum
@@ -618,7 +618,7 @@ g_settings_get_property (GObject    *object,
       break;
 
      case PROP_DELAY_APPLY:
-      g_value_set_boolean (value, settings->priv->delayed != NULL);
+      g_value_set_boolean (value, settings->priv->delayed_apply);
       break;
 
      default:
@@ -1962,21 +1962,24 @@ g_settings_set_strv (GSettings           *settings,
 void
 g_settings_delay (GSettings *settings)
 {
+  GDelayedSettingsBackend *delayed;
+
   g_return_if_fail (G_IS_SETTINGS (settings));
 
-  if (settings->priv->delayed)
+  if (settings->priv->delayed_apply)
     return;
 
-  settings->priv->delayed = g_delayed_settings_backend_new (settings->priv->backend);
+  delayed = g_delayed_settings_backend_new (settings->priv->backend);
+
   g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_event, settings);
   g_object_unref (settings->priv->backend);
 
-  settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
-  g_signal_connect_object (settings->priv->backend, "event", G_CALLBACK (g_settings_got_event), settings, 0);
-
-  g_signal_connect_object (settings->priv->delayed, "notify::has-unapplied",
+  settings->priv->backend = G_SETTINGS_BACKEND (delayed);
+  g_signal_connect_object (delayed, "event", G_CALLBACK (g_settings_got_event), settings, 0);
+  g_signal_connect_object (delayed, "notify::has-unapplied",
                            G_CALLBACK (g_settings_got_has_unapplied_notify), settings, 0);
-  g_object_notify (G_OBJECT (settings), "delay-apply");
+
+  settings->priv->delayed_apply = TRUE;
 }
 
 /**
@@ -1991,13 +1994,7 @@ g_settings_delay (GSettings *settings)
 void
 g_settings_apply (GSettings *settings)
 {
-  if (settings->priv->delayed)
-    {
-      GDelayedSettingsBackend *delayed;
-
-      delayed = G_DELAYED_SETTINGS_BACKEND (settings->priv->backend);
-      g_delayed_settings_backend_apply (delayed);
-    }
+  g_settings_backend_apply (settings->priv->backend);
 }
 
 /**
@@ -2014,13 +2011,7 @@ g_settings_apply (GSettings *settings)
 void
 g_settings_revert (GSettings *settings)
 {
-  if (settings->priv->delayed)
-    {
-      GDelayedSettingsBackend *delayed;
-
-      delayed = G_DELAYED_SETTINGS_BACKEND (settings->priv->backend);
-      g_delayed_settings_backend_revert (delayed);
-    }
+  g_settings_backend_revert (settings->priv->backend);
 }
 
 /**

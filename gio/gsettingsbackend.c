@@ -709,6 +709,11 @@ ignore_subscription (GSettingsBackend *backend,
 }
 
 static void
+ignore_apply (GSettingsBackend *backend)
+{
+}
+
+static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
   backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
@@ -723,6 +728,8 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
 
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
+  class->apply = ignore_apply;
+  class->revert = ignore_apply;
 
   gobject_class->get_property = g_settings_backend_get_property;
 
@@ -863,4 +870,18 @@ g_settings_backend_set_has_unapplied (GSettingsBackend *backend,
 
       g_object_notify_by_pspec (G_OBJECT (backend), g_settings_backend_pspecs[PROP_HAS_UNAPPLIED]);
     }
+}
+
+void
+g_settings_backend_apply (GSettingsBackend *backend)
+{
+  G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->apply (backend);
+}
+
+void
+g_settings_backend_revert (GSettingsBackend *backend)
+{
+  G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->revert (backend);
 }

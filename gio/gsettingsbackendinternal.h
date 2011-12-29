@@ -73,6 +73,10 @@ GPermission *           g_settings_backend_get_permission               (GSettin
 G_GNUC_INTERNAL
 gboolean                g_settings_backend_get_has_unapplied            (GSettingsBackend     *backend);
 G_GNUC_INTERNAL
+void                    g_settings_backend_apply                        (GSettingsBackend     *backend);
+G_GNUC_INTERNAL
+void                    g_settings_backend_revert                       (GSettingsBackend     *backend);
+G_GNUC_INTERNAL
 void                    g_settings_backend_sync_default                 (void);
 
 G_GNUC_INTERNAL

@@ -93,7 +93,10 @@ struct _GSettingsBackendClass
   GPermission * (*get_permission)   (GSettingsBackend    *backend,
                                      const gchar         *path);
 
-  gpointer padding[24];
+  void          (*apply)            (GSettingsBackend    *backend);
+  void          (*revert)           (GSettingsBackend    *backend);
+
+  gpointer padding[22];
 };
 
 struct _GSettingsBackend

@@ -165,9 +165,11 @@ g_delayed_settings_backend_get_permission (GSettingsBackend *backend,
 
 
 /* method calls */
-void
-g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
+static void
+g_delayed_settings_backend_apply (GSettingsBackend *backend)
 {
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+
   if (g_tree_nnodes (delayed->priv->delayed) > 0)
     {
       gboolean success;
@@ -190,9 +192,11 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
     }
 }
 
-void
-g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
+static void
+g_delayed_settings_backend_revert (GSettingsBackend *backend)
 {
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+
   if (g_tree_nnodes (delayed->priv->delayed) > 0)
     {
       GTree *tmp;
@@ -249,6 +253,8 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   backend_class->subscribe = g_delayed_settings_backend_subscribe;
   backend_class->unsubscribe = g_delayed_settings_backend_unsubscribe;
   backend_class->get_permission = g_delayed_settings_backend_get_permission;
+  backend_class->apply = g_delayed_settings_backend_apply;
+  backend_class->revert = g_delayed_settings_backend_revert;
 
   object_class->finalize = g_delayed_settings_backend_finalize;
 }
