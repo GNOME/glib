@@ -59,14 +59,10 @@ struct _GDelayedSettingsBackend
 G_GNUC_INTERNAL
 GType                           g_delayed_settings_backend_get_type     (void);
 G_GNUC_INTERNAL
-GDelayedSettingsBackend *       g_delayed_settings_backend_new          (GSettingsBackend        *backend,
-                                                                         gpointer                 owner,
-                                                                         GMainContext            *owner_context);
+GDelayedSettingsBackend *       g_delayed_settings_backend_new          (GSettingsBackend        *backend);
 G_GNUC_INTERNAL
 void                            g_delayed_settings_backend_revert       (GDelayedSettingsBackend *delayed);
 G_GNUC_INTERNAL
 void                            g_delayed_settings_backend_apply        (GDelayedSettingsBackend *delayed);
-G_GNUC_INTERNAL
-gboolean                        g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed);
 
 #endif  /* __G_DELAYED_SETTINGS_BACKEND_H__ */

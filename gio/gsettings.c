@@ -514,6 +514,25 @@ g_settings_got_event (GObject              *target,
     }
 }
 
+static gboolean
+g_settings_emit_has_unapplied_notify (gpointer data)
+{
+  g_object_notify (data, "has-unapplied");
+  g_object_unref (data);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+g_settings_got_has_unapplied_notify (GSettingsBackend *backend,
+                                     GParamSpec       *pspec,
+                                     gpointer          user_data)
+{
+  GSettings *settings = G_SETTINGS (user_data);
+
+  g_main_context_invoke (settings->priv->main_context, g_settings_emit_has_unapplied_notify, g_object_ref (settings));
+}
+
 /* Properties, Construction, Destruction {{{1 */
 static void
 g_settings_set_property (GObject      *object,
@@ -658,6 +677,7 @@ g_settings_finalize (GObject *object)
 {
   GSettings *settings = G_SETTINGS (object);
 
+  g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_has_unapplied_notify, settings);
   g_settings_backend_unsubscribe (settings->priv->backend,
                                   settings->priv->path);
   g_main_context_unref (settings->priv->main_context);
@@ -1966,16 +1986,15 @@ g_settings_delay (GSettings *settings)
   if (settings->priv->delayed)
     return;
 
-  settings->priv->delayed =
-    g_delayed_settings_backend_new (settings->priv->backend,
-                                    settings,
-                                    settings->priv->main_context);
+  settings->priv->delayed = g_delayed_settings_backend_new (settings->priv->backend);
   g_settings_backend_unwatch (settings->priv->backend, G_OBJECT (settings));
   g_object_unref (settings->priv->backend);
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
   g_settings_backend_watch (settings->priv->backend, g_settings_got_event, G_OBJECT (settings));
 
+  g_signal_connect (settings->priv->delayed, "notify::has-unapplied",
+                    G_CALLBACK (g_settings_got_has_unapplied_notify), settings);
   g_object_notify (G_OBJECT (settings), "delay-apply");
 }
 
@@ -2039,9 +2058,7 @@ g_settings_get_has_unapplied (GSettings *settings)
 {
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
 
-  return settings->priv->delayed &&
-         g_delayed_settings_backend_get_has_unapplied (
-           G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
+  return g_settings_backend_get_has_unapplied (settings->priv->backend);
 }
 
 /* Extra API (reset, sync, get_child, is_writable, list_*, ranges) {{{1 */

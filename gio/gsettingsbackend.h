@@ -122,6 +122,8 @@ GType                   g_settings_backend_get_type                     (void);
 
 void                    g_settings_backend_report_event                 (GSettingsBackend     *backend,
                                                                          const GSettingsEvent *event);
+void                    g_settings_backend_set_has_unapplied            (GSettingsBackend     *backend,
+                                                                         gboolean              has_unapplied);
 void                    g_settings_backend_changed                      (GSettingsBackend     *backend,
                                                                          const gchar          *key,
                                                                          gpointer              origin_tag);

@@ -40,8 +40,18 @@ typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
 struct _GSettingsBackendPrivate
 {
   GSettingsBackendWatch *watches;
+  gboolean has_unapplied;
   GMutex lock;
 };
+
+enum
+{
+  PROP_0,
+  PROP_HAS_UNAPPLIED,
+  N_PROPS
+};
+
+static GParamSpec *g_settings_backend_pspecs[N_PROPS];
 
 /* For g_settings_backend_sync_default(), we only want to actually do
  * the sync if the backend already exists.  This avoids us creating an
@@ -808,6 +818,14 @@ g_settings_backend_subscribe (GSettingsBackend *backend,
 }
 
 static void
+g_settings_backend_get_property (GObject *object, guint prop_id,
+                                 GValue *value, GParamSpec *pspec)
+{
+  g_assert (prop_id == PROP_HAS_UNAPPLIED);
+  g_value_set_boolean (value, g_settings_backend_get_has_unapplied (G_SETTINGS_BACKEND (object)));
+}
+
+static void
 g_settings_backend_finalize (GObject *object)
 {
   GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
@@ -841,7 +859,13 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
 
+  gobject_class->get_property = g_settings_backend_get_property;
   gobject_class->finalize = g_settings_backend_finalize;
+
+  g_settings_backend_pspecs[PROP_HAS_UNAPPLIED] =
+    g_param_spec_boolean ("has-unapplied", "has unapplied", "TRUE if apply() is meaningful",
+                          FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_properties (gobject_class, N_PROPS, g_settings_backend_pspecs);
 
   g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
 }
@@ -952,5 +976,23 @@ g_settings_backend_sync_default (void)
 
       if (class->sync)
         class->sync (backend);
+    }
+}
+
+gboolean
+g_settings_backend_get_has_unapplied (GSettingsBackend *backend)
+{
+  return backend->priv->has_unapplied;
+}
+
+void
+g_settings_backend_set_has_unapplied (GSettingsBackend *backend,
+                                      gboolean          has_unapplied)
+{
+  if (has_unapplied != backend->priv->has_unapplied)
+    {
+      backend->priv->has_unapplied = has_unapplied;
+
+      g_object_notify_by_pspec (G_OBJECT (backend), g_settings_backend_pspecs[PROP_HAS_UNAPPLIED]);
     }
 }
