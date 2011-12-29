@@ -1410,7 +1410,7 @@ wrap_mkdir (gchar *tmpl,
  *     to hold the directory name. In case of errors, %NULL is
  *     returned, and %errno will be set.
  *
- * Since: 2.26
+ * Since: 2.30
  */
 gchar *
 g_mkdtemp_full (gchar *tmpl,
@@ -1442,7 +1442,7 @@ g_mkdtemp_full (gchar *tmpl,
  *     to hold the directory name.  In case of errors, %NULL is
  *     returned and %errno will be set.
  *
- * Since: 2.26
+ * Since: 2.30
  */
 gchar *
 g_mkdtemp (gchar *tmpl)
