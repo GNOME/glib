@@ -137,7 +137,9 @@ enum
   PROP_KEEPALIVE,
   PROP_LOCAL_ADDRESS,
   PROP_REMOTE_ADDRESS,
-  PROP_TIMEOUT
+  PROP_TIMEOUT,
+  PROP_MULTICAST_LOOPBACK,
+  PROP_MULTICAST_TTL
 };
 
 struct _GSocketPrivate
@@ -613,6 +615,14 @@ g_socket_get_property (GObject    *object,
 	g_value_set_uint (value, socket->priv->timeout);
 	break;
 
+      case PROP_MULTICAST_LOOPBACK:
+	g_value_set_boolean (value, g_socket_get_multicast_loopback (socket));
+	break;
+
+      case PROP_MULTICAST_TTL:
+	g_value_set_uint (value, g_socket_get_multicast_ttl (socket));
+	break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -658,6 +668,14 @@ g_socket_set_property (GObject      *object,
 
       case PROP_TIMEOUT:
 	g_socket_set_timeout (socket, g_value_get_uint (value));
+	break;
+
+      case PROP_MULTICAST_LOOPBACK:
+	g_socket_set_multicast_loopback (socket, g_value_get_boolean (value));
+	break;
+
+      case PROP_MULTICAST_TTL:
+	g_socket_set_multicast_ttl (socket, g_value_get_uint (value));
 	break;
 
       default:
@@ -815,6 +833,36 @@ g_socket_class_init (GSocketClass *klass)
 						      0,
 						      G_MAXUINT,
 						      0,
+						      G_PARAM_READWRITE |
+						      G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocket:multicast-loopback:
+   *
+   * Whether outgoing multicast packets loop back to the local host.
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_MULTICAST_LOOPBACK,
+				   g_param_spec_boolean ("multicast-loopback",
+							 P_("Multicast loopback"),
+							 P_("Whether outgoing multicast packets loop back to the local host"),
+							 TRUE,
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocket:multicast-ttl:
+   *
+   * Time-to-live out outgoing multicast packets
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_MULTICAST_TTL,
+				   g_param_spec_uint ("multicast-ttl",
+						      P_("Multicast TTL"),
+						      P_("Time-to-live of outgoing multicast packets"),
+						      0, G_MAXUINT, 1,
 						      G_PARAM_READWRITE |
 						      G_PARAM_STATIC_STRINGS));
 }
@@ -1164,6 +1212,191 @@ g_socket_set_timeout (GSocket *socket,
 }
 
 /**
+ * g_socket_get_multicast_loopback:
+ * @socket: a #GSocket.
+ *
+ * Gets the multicast loopback setting on @socket; if %TRUE (the
+ * default), outgoing multicast packets will be looped back to
+ * multicast listeners on the same host.
+ *
+ * Returns: the multicast loopback setting on @socket
+ *
+ * Since: 2.32
+ */
+gboolean
+g_socket_get_multicast_loopback (GSocket *socket)
+{
+  int result;
+  guint value = 0, optlen;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      optlen = sizeof (guchar);
+      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
+			   &value, &optlen);
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      optlen = sizeof (guint);
+      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
+			   &value, &optlen);
+    }
+  else
+    g_return_val_if_reached (FALSE);
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error getting multicast loopback: %s", socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return !!value;
+}
+
+/**
+ * g_socket_set_multicast_loopback:
+ * @socket: a #GSocket.
+ * @loopback: whether @socket should receive messages sent to its
+ *   multicast groups from the local host
+ *
+ * Sets whether outgoing multicast packets will be received by sockets
+ * listening on that multicast address on the same host. This is %TRUE
+ * by default.
+ *
+ * Since: 2.32
+ */
+void
+g_socket_set_multicast_loopback (GSocket    *socket,
+				 gboolean    loopback)
+{
+  int result;
+
+  g_return_if_fail (G_IS_SOCKET (socket));
+
+  loopback = !!loopback;
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      guchar value = (guchar)loopback;
+
+      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
+			   &value, sizeof (value));
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      guint value = (guint)loopback;
+
+      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
+			   &value, sizeof (value));
+    }
+  else
+    g_return_if_reached ();
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error setting multicast loopback: %s", socket_strerror (errsv));
+      return;
+    }
+
+  g_object_notify (G_OBJECT (socket), "multicast-loopback");
+}
+
+/**
+ * g_socket_get_multicast_ttl:
+ * @socket: a #GSocket.
+ *
+ * Gets the multicast time-to-live setting on @socket; see
+ * g_socket_set_multicast_ttl() for more details.
+ *
+ * Returns: the multicast time-to-live setting on @socket
+ *
+ * Since: 2.32
+ */
+guint
+g_socket_get_multicast_ttl (GSocket *socket)
+{
+  int result;
+  guint value, optlen;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      guchar optval;
+
+      optlen = sizeof (optval);
+      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_TTL,
+			   &optval, &optlen);
+      value = optval;
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      optlen = sizeof (value);
+      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
+			   &value, &optlen);
+    }
+  else
+    g_return_val_if_reached (FALSE);
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error getting multicast ttl: %s", socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return value;
+}
+
+/**
+ * g_socket_set_multicast_ttl:
+ * @socket: a #GSocket.
+ * @ttl: the time-to-live value for all multicast datagrams on @socket
+ *
+ * Sets the time-to-live for outgoing multicast datagrams on @socket.
+ * By default, this is 1, meaning that multicast packets will not leave
+ * the local network.
+ *
+ * Since: 2.32
+ */
+void
+g_socket_set_multicast_ttl (GSocket  *socket,
+                            guint     ttl)
+{
+  int result;
+
+  g_return_if_fail (G_IS_SOCKET (socket));
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      guchar optval = (guchar)ttl;
+
+      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_TTL,
+			   &optval, sizeof (optval));
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
+			   &ttl, sizeof (ttl));
+    }
+  else
+    g_return_if_reached ();
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error setting multicast ttl: %s", socket_strerror (errsv));
+      return;
+    }
+
+  g_object_notify (G_OBJECT (socket), "multicast-ttl");
+}
+
+/**
  * g_socket_get_family:
  * @socket: a #GSocket.
  *
@@ -1450,6 +1683,108 @@ g_socket_bind (GSocket         *socket,
     }
 
   return TRUE;
+}
+
+static gboolean
+g_socket_multicast_group_operation (GSocket       *socket,
+				    GInetAddress  *group,
+				    gboolean       join_group,
+				    GError       **error)
+{
+  const guint8 *native_addr;
+  gint optname, result;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+  g_return_val_if_fail (socket->priv->type == G_SOCKET_TYPE_DATAGRAM, FALSE);
+  g_return_val_if_fail (G_IS_INET_ADDRESS (group), FALSE);
+  g_return_val_if_fail (g_inet_address_get_family (group) == socket->priv->family, FALSE);
+
+  if (!check_socket (socket, error))
+    return FALSE;
+
+  native_addr = g_inet_address_to_bytes (group);
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      struct ip_mreq mc_req;
+
+      memcpy (&mc_req.imr_multiaddr, native_addr, sizeof (struct in_addr));
+      mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
+
+      optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
+      result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
+			   &mc_req, sizeof (mc_req));
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      struct ipv6_mreq mc_req_ipv6;
+
+      memcpy (&mc_req_ipv6.ipv6mr_multiaddr, native_addr, sizeof (struct in6_addr));
+      mc_req_ipv6.ipv6mr_interface = 0;
+
+      optname = join_group ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
+      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, optname,
+			   &mc_req_ipv6, sizeof (mc_req_ipv6));
+    }
+  else
+    g_return_val_if_reached (FALSE);
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+
+      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+		   join_group ?
+		   _("Error joining multicast group: %s") :
+		   _("Error leaving multicast group: %s"),
+		   socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+/**
+ * g_socket_join_multicast_group:
+ * @socket: a #GSocket.
+ * @group: a #GInetAddress specifying the group address to join.
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Registers @socket to receive multicast messages sent to @group.
+ * @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
+ * been bound to an appropriate interface and port with
+ * g_socket_bind().
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ *
+ * Since: 2.32
+ */
+gboolean
+g_socket_join_multicast_group (GSocket       *socket,
+			       GInetAddress  *group,
+			       GError       **error)
+{
+  return g_socket_multicast_group_operation (socket, group, TRUE, error);
+}
+
+/**
+ * g_socket_leave_multicast_group:
+ * @socket: a #GSocket.
+ * @group: a #GInetAddress specifying the group address to leave.
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Removes @socket from the multicast group @group (while still
+ * allowing it to receive unicast messages).
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ *
+ * Since: 2.32
+ */
+gboolean
+g_socket_leave_multicast_group (GSocket       *socket,
+				GInetAddress  *group,
+				GError       **error)
+{
+  return g_socket_multicast_group_operation (socket, group, FALSE, error);
 }
 
 /**

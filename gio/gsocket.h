@@ -100,17 +100,30 @@ void                   g_socket_set_listen_backlog      (GSocket                
 guint                  g_socket_get_timeout             (GSocket                 *socket);
 void                   g_socket_set_timeout             (GSocket                 *socket,
 							 guint                    timeout);
+gboolean               g_socket_get_multicast_loopback  (GSocket                 *socket);
+void                   g_socket_set_multicast_loopback  (GSocket                 *socket,
+                                                         gboolean		  loopback);
+guint                  g_socket_get_multicast_ttl       (GSocket                 *socket);
+void                   g_socket_set_multicast_ttl       (GSocket                 *socket,
+                                                         guint                    ttl);
 gboolean               g_socket_is_connected            (GSocket                 *socket);
 gboolean               g_socket_bind                    (GSocket                 *socket,
 							 GSocketAddress          *address,
 							 gboolean                 allow_reuse,
 							 GError                 **error);
+gboolean               g_socket_join_multicast_group    (GSocket                 *socket,
+                                                         GInetAddress            *group,
+                                                         GError                 **error);
+gboolean               g_socket_leave_multicast_group   (GSocket                 *socket,
+                                                         GInetAddress            *group,
+                                                         GError                 **error);
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,
 							 GCancellable            *cancellable,
 							 GError                 **error);
 gboolean               g_socket_check_connect_result    (GSocket                 *socket,
 							 GError                 **error);
+
 GIOCondition           g_socket_condition_check         (GSocket                 *socket,
 							 GIOCondition             condition);
 gboolean               g_socket_condition_wait          (GSocket                 *socket,
