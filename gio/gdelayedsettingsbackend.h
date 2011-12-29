@@ -59,6 +59,6 @@ struct _GDelayedSettingsBackend
 G_GNUC_INTERNAL
 GType                           g_delayed_settings_backend_get_type     (void);
 G_GNUC_INTERNAL
-GDelayedSettingsBackend *       g_delayed_settings_backend_new          (GSettingsBackend        *backend);
+GSettingsBackend *              g_delayed_settings_backend_new          (GSettingsBackend        *backend);
 
 #endif  /* __G_DELAYED_SETTINGS_BACKEND_H__ */

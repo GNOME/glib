@@ -270,7 +270,7 @@ g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
   g_mutex_init (&delayed->priv->lock);
 }
 
-GDelayedSettingsBackend *
+GSettingsBackend *
 g_delayed_settings_backend_new (GSettingsBackend *backend)
 {
   GDelayedSettingsBackend *delayed;
@@ -280,5 +280,5 @@ g_delayed_settings_backend_new (GSettingsBackend *backend)
 
   g_signal_connect_object (delayed->priv->backend, "event", G_CALLBACK (g_delayed_settings_got_event), delayed, 0);
 
-  return delayed;
+  return G_SETTINGS_BACKEND (delayed);
 }

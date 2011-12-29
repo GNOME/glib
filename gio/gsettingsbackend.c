@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include "gsettingsbackendinternal.h"
+#include "gdelayedsettingsbackend.h"
 #include "gsimplepermission.h"
 #include "giomodule-priv.h"
 
@@ -708,6 +709,12 @@ ignore_subscription (GSettingsBackend *backend,
 {
 }
 
+static GSettingsBackend *
+g_settings_backend_real_delay (GSettingsBackend *backend)
+{
+  return g_delayed_settings_backend_new (backend);
+}
+
 static void
 ignore_apply (GSettingsBackend *backend)
 {
@@ -728,6 +735,7 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
 
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
+  class->delay = g_settings_backend_real_delay;
   class->apply = ignore_apply;
   class->revert = ignore_apply;
 
@@ -852,6 +860,13 @@ g_settings_backend_sync_default (void)
       if (class->sync)
         class->sync (backend);
     }
+}
+
+GSettingsBackend *
+g_settings_backend_delay (GSettingsBackend *backend)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->delay (backend);
 }
 
 gboolean

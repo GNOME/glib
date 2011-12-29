@@ -65,38 +65,39 @@ struct _GSettingsBackendClass
 {
   GObjectClass parent_class;
 
-  GVariant *    (*read)             (GSettingsBackend    *backend,
-                                     const gchar         *key,
-                                     const GVariantType  *expected_type,
-                                     gboolean             default_value);
+  GVariant *         (* read)           (GSettingsBackend    *backend,
+                                         const gchar         *key,
+                                         const GVariantType  *expected_type,
+                                         gboolean             default_value);
 
-  gboolean      (*get_writable)     (GSettingsBackend    *backend,
-                                     const gchar         *key);
+  gboolean           (* get_writable)   (GSettingsBackend    *backend,
+                                         const gchar         *key);
 
-  gboolean      (*write)            (GSettingsBackend    *backend,
-                                     const gchar         *key,
-                                     GVariant            *value,
-                                     gpointer             origin_tag);
-  gboolean      (*write_tree)       (GSettingsBackend    *backend,
-                                     GTree               *tree,
-                                     gpointer             origin_tag);
-  void          (*reset)            (GSettingsBackend    *backend,
-                                     const gchar         *key,
-                                     gpointer             origin_tag);
+  gboolean           (* write)          (GSettingsBackend    *backend,
+                                         const gchar         *key,
+                                         GVariant            *value,
+                                         gpointer             origin_tag);
+  gboolean           (* write_tree)     (GSettingsBackend    *backend,
+                                         GTree               *tree,
+                                         gpointer             origin_tag);
+  void               (* reset)          (GSettingsBackend    *backend,
+                                         const gchar         *key,
+                                         gpointer             origin_tag);
 
-  void          (*subscribe)        (GSettingsBackend    *backend,
-                                     const gchar         *name);
-  void          (*unsubscribe)      (GSettingsBackend    *backend,
-                                     const gchar         *name);
-  void          (*sync)             (GSettingsBackend    *backend);
+  void               (* subscribe)      (GSettingsBackend    *backend,
+                                         const gchar         *name);
+  void               (* unsubscribe)    (GSettingsBackend    *backend,
+                                         const gchar         *name);
+  void               (* sync)           (GSettingsBackend    *backend);
 
-  GPermission * (*get_permission)   (GSettingsBackend    *backend,
-                                     const gchar         *path);
+  GPermission *      (* get_permission) (GSettingsBackend    *backend,
+                                         const gchar         *path);
 
-  void          (*apply)            (GSettingsBackend    *backend);
-  void          (*revert)           (GSettingsBackend    *backend);
+  GSettingsBackend * (* delay)          (GSettingsBackend    *backend);
+  void               (* apply)          (GSettingsBackend    *backend);
+  void               (* revert)         (GSettingsBackend    *backend);
 
-  gpointer padding[22];
+  gpointer padding[21];
 };
 
 struct _GSettingsBackend

@@ -27,7 +27,6 @@
 
 #include "gsettings.h"
 
-#include "gdelayedsettingsbackend.h"
 #include "gsettingsbackendinternal.h"
 #include "gsettings-mapping.h"
 #include "gsettingsschema-internal.h"
@@ -1962,19 +1961,18 @@ g_settings_set_strv (GSettings           *settings,
 void
 g_settings_delay (GSettings *settings)
 {
-  GDelayedSettingsBackend *delayed;
+  GSettingsBackend *delayed;
 
   g_return_if_fail (G_IS_SETTINGS (settings));
 
   if (settings->priv->delayed_apply)
     return;
 
-  delayed = g_delayed_settings_backend_new (settings->priv->backend);
-
+  delayed = g_settings_backend_delay (settings->priv->backend);
   g_signal_handlers_disconnect_by_func (settings->priv->backend, g_settings_got_event, settings);
   g_object_unref (settings->priv->backend);
 
-  settings->priv->backend = G_SETTINGS_BACKEND (delayed);
+  settings->priv->backend = delayed;
   g_signal_connect_object (delayed, "event", G_CALLBACK (g_settings_got_event), settings, 0);
   g_signal_connect_object (delayed, "notify::has-unapplied",
                            G_CALLBACK (g_settings_got_has_unapplied_notify), settings, 0);
