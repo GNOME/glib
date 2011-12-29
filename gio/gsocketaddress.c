@@ -256,7 +256,12 @@ g_socket_address_new_from_native (gpointer native,
 	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
 	}
 
-      sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin6_port));
+      sockaddr = g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
+			       "address", iaddr,
+			       "port", g_ntohs (addr->sin6_port),
+			       "flowinfo", g_ntohl (addr->sin6_flowinfo),
+			       "scope_id", g_ntohl (addr->sin6_scope_id),
+			       NULL);
       g_object_unref (iaddr);
       return sockaddr;
     }

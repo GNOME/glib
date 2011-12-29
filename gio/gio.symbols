@@ -842,7 +842,9 @@ g_inet_address_mask_get_type
 g_inet_address_mask_matches
 g_inet_address_mask_equal
 g_inet_socket_address_get_address
+g_inet_socket_address_get_flowinfo
 g_inet_socket_address_get_port
+g_inet_socket_address_get_scope_id
 g_inet_socket_address_get_type
 g_inet_socket_address_new
 #ifdef G_OS_UNIX

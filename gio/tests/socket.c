@@ -499,6 +499,45 @@ test_ipv6_v4mapped (void)
 }
 #endif
 
+static void
+test_sockaddr (void)
+{
+  struct sockaddr_in6 sin6, gsin6;
+  GSocketAddress *saddr;
+  GInetSocketAddress *isaddr;
+  GInetAddress *iaddr;
+  GError *error = NULL;
+
+  memset (&sin6, 0, sizeof (sin6));
+  sin6.sin6_family = AF_INET6;
+  sin6.sin6_addr = in6addr_loopback;
+  sin6.sin6_port = g_htons (42);
+  sin6.sin6_scope_id = g_htonl (17);
+  sin6.sin6_flowinfo = g_htonl (1729);
+
+  saddr = g_socket_address_new_from_native (&sin6, sizeof (sin6));
+  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+
+  isaddr = G_INET_SOCKET_ADDRESS (saddr);
+  iaddr = g_inet_socket_address_get_address (isaddr);
+  g_assert_cmpint (g_inet_address_get_family (iaddr), ==, G_SOCKET_FAMILY_IPV6);
+  g_assert (g_inet_address_get_is_loopback (iaddr));
+
+  g_assert_cmpint (g_inet_socket_address_get_port (isaddr), ==, 42);
+  g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, 17);
+  g_assert_cmpint (g_inet_socket_address_get_flowinfo (isaddr), ==, 1729);
+
+  g_socket_address_to_native (saddr, &gsin6, sizeof (gsin6), &error);
+  g_assert_no_error (error);
+
+  g_assert (memcmp (&sin6.sin6_addr, &gsin6.sin6_addr, sizeof (struct in6_addr)) == 0);
+  g_assert_cmpint (sin6.sin6_port, ==, gsin6.sin6_port);
+  g_assert_cmpint (sin6.sin6_scope_id, ==, gsin6.sin6_scope_id);
+  g_assert_cmpint (sin6.sin6_flowinfo, ==, gsin6.sin6_flowinfo);
+
+  g_object_unref (saddr);
+}
+
 #ifdef G_OS_UNIX
 static void
 test_unix_from_fd (void)
@@ -654,6 +693,7 @@ main (int   argc,
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   g_test_add_func ("/socket/ipv6_v4mapped", test_ipv6_v4mapped);
 #endif
+  g_test_add_func ("/socket/address", test_sockaddr);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
   g_test_add_func ("/socket/unix-connection", test_unix_connection);

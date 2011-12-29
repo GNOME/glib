@@ -1594,6 +1594,8 @@ GInetSocketAddress
 g_inet_socket_address_new
 g_inet_socket_address_get_address
 g_inet_socket_address_get_port
+g_inet_socket_address_get_flowinfo
+g_inet_socket_address_get_scope_id
 <SUBSECTION Standard>
 GInetSocketAddressClass
 GInetSocketAddressPrivate

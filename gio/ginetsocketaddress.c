@@ -51,13 +51,17 @@ G_DEFINE_TYPE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS)
 enum {
   PROP_0,
   PROP_ADDRESS,
-  PROP_PORT
+  PROP_PORT,
+  PROP_FLOWINFO,
+  PROP_SCOPE_ID
 };
 
 struct _GInetSocketAddressPrivate
 {
   GInetAddress *address;
   guint16       port;
+  guint32       flowinfo;
+  guint32       scope_id;
 };
 
 static void
@@ -98,6 +102,16 @@ g_inet_socket_address_get_property (GObject    *object,
         g_value_set_uint (value, address->priv->port);
         break;
 
+      case PROP_FLOWINFO:
+	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
+        g_value_set_uint (value, address->priv->flowinfo);
+        break;
+
+      case PROP_SCOPE_ID:
+	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
+        g_value_set_uint (value, address->priv->scope_id);
+        break;
+
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -119,6 +133,17 @@ g_inet_socket_address_set_property (GObject      *object,
 
       case PROP_PORT:
         address->priv->port = (guint16) g_value_get_uint (value);
+        break;
+
+      case PROP_FLOWINFO:
+	/* We can't test that address->priv->address is IPv6 here,
+	 * since this property might get set before PROP_ADDRESS.
+	 */
+        address->priv->flowinfo = g_value_get_uint (value);
+        break;
+
+      case PROP_SCOPE_ID:
+        address->priv->scope_id = g_value_get_uint (value);
         break;
 
       default:
@@ -202,6 +227,8 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
       memset (sock, 0, sizeof (*sock));
       sock->sin6_family = AF_INET6;
       sock->sin6_port = g_htons (addr->priv->port);
+      sock->sin6_flowinfo = g_htonl (addr->priv->flowinfo);
+      sock->sin6_scope_id = g_htonl (addr->priv->scope_id);
       memcpy (&(sock->sin6_addr.s6_addr), g_inet_address_to_bytes (addr->priv->address), sizeof (sock->sin6_addr));
       return TRUE;
     }
@@ -249,6 +276,42 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GInetSocketAddress:flowinfo:
+   *
+   * The <literal>sin6_flowinfo</literal> field, for IPv6 addresses.
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_FLOWINFO,
+                                   g_param_spec_uint ("flowinfo",
+                                                      P_("Flow info"),
+                                                      P_("IPv6 flow info"),
+                                                      0,
+                                                      G_MAXUINT32,
+                                                      0,
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GInetSocketAddress:scope_id:
+   *
+   * The <literal>sin6_scope_id</literal> field, for IPv6 addresses.
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_SCOPE_ID,
+                                   g_param_spec_uint ("scope-id",
+                                                      P_("Scope ID"),
+                                                      P_("IPv6 scope ID"),
+                                                      0,
+                                                      G_MAXUINT32,
+                                                      0,
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -257,9 +320,6 @@ g_inet_socket_address_init (GInetSocketAddress *address)
   address->priv = G_TYPE_INSTANCE_GET_PRIVATE (address,
                                                G_TYPE_INET_SOCKET_ADDRESS,
                                                GInetSocketAddressPrivate);
-
-  address->priv->address = NULL;
-  address->priv->port = 0;
 }
 
 /**
@@ -318,4 +378,45 @@ g_inet_socket_address_get_port (GInetSocketAddress *address)
   g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
 
   return address->priv->port;
+}
+
+
+/**
+ * g_inet_socket_address_get_flowinfo:
+ * @address: a %G_SOCKET_FAMILY_IPV6 #GInetSocketAddress
+ *
+ * Gets the <literal>sin6_flowinfo</literal> field from @address,
+ * which must be an IPv6 address.
+ *
+ * Return value: the flowinfo field
+ *
+ * Since: 2.32
+ */
+guint32
+g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
+{
+  g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
+  g_return_val_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6, 0);
+
+  return address->priv->flowinfo;
+}
+
+/**
+ * g_inet_address_get_scope_id:
+ * @address: a %G_SOCKET_FAMILY_IPV6 #GInetAddress
+ *
+ * Gets the <literal>sin6_scope_id</literal> field from @address,
+ * which must be an IPv6 address.
+ *
+ * Return value: the scope id field
+ *
+ * Since: 2.32
+ */
+guint32
+g_inet_socket_address_get_scope_id (GInetSocketAddress *address)
+{
+  g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
+  g_return_val_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6, 0);
+
+  return address->priv->scope_id;
 }
