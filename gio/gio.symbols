@@ -1132,6 +1132,7 @@ g_file_descriptor_based_get_type
 g_file_descriptor_based_get_fd
 #endif
 g_settings_backend_get_type
+g_settings_backend_report_event
 g_settings_backend_changed
 g_settings_backend_flatten_tree
 g_settings_backend_keys_changed

@@ -104,36 +104,52 @@ struct _GSettingsBackend
   GSettingsBackendPrivate *priv;
 };
 
+typedef enum
+{
+  G_SETTINGS_EVENT_CHANGE,
+  G_SETTINGS_EVENT_WRITABLE_CHANGE
+} GSettingsEventType;
+
+typedef struct
+{
+  GSettingsEventType   type;
+  gchar               *prefix;
+  gchar              **keys;
+  gpointer             origin_tag;
+} GSettingsEvent;
+
 GType                   g_settings_backend_get_type                     (void);
 
-void                    g_settings_backend_changed                      (GSettingsBackend    *backend,
-                                                                         const gchar         *key,
-                                                                         gpointer             origin_tag);
-void                    g_settings_backend_path_changed                 (GSettingsBackend    *backend,
-                                                                         const gchar         *path,
-                                                                         gpointer             origin_tag);
-void                    g_settings_backend_flatten_tree                 (GTree               *tree,
-                                                                         gchar              **path,
-                                                                         const gchar       ***keys,
-                                                                         GVariant          ***values);
-void                    g_settings_backend_keys_changed                 (GSettingsBackend    *backend,
-                                                                         const gchar         *path,
-                                                                         gchar const * const *items,
-                                                                         gpointer             origin_tag);
+void                    g_settings_backend_report_event                 (GSettingsBackend     *backend,
+                                                                         const GSettingsEvent *event);
+void                    g_settings_backend_changed                      (GSettingsBackend     *backend,
+                                                                         const gchar          *key,
+                                                                         gpointer              origin_tag);
+void                    g_settings_backend_path_changed                 (GSettingsBackend     *backend,
+                                                                         const gchar          *path,
+                                                                         gpointer              origin_tag);
+void                    g_settings_backend_flatten_tree                 (GTree                *tree,
+                                                                         gchar               **path,
+                                                                         const gchar        ***keys,
+                                                                         GVariant           ***values);
+void                    g_settings_backend_keys_changed                 (GSettingsBackend     *backend,
+                                                                         const gchar          *path,
+                                                                         gchar const * const  *items,
+                                                                         gpointer              origin_tag);
 
-void                    g_settings_backend_path_writable_changed        (GSettingsBackend    *backend,
-                                                                         const gchar         *path);
-void                    g_settings_backend_writable_changed             (GSettingsBackend    *backend,
-                                                                         const gchar         *key);
-void                    g_settings_backend_changed_tree                 (GSettingsBackend    *backend,
-                                                                         GTree               *tree,
-                                                                         gpointer             origin_tag);
+void                    g_settings_backend_path_writable_changed        (GSettingsBackend     *backend,
+                                                                         const gchar          *path);
+void                    g_settings_backend_writable_changed             (GSettingsBackend     *backend,
+                                                                         const gchar          *key);
+void                    g_settings_backend_changed_tree                 (GSettingsBackend     *backend,
+                                                                         GTree                *tree,
+                                                                         gpointer              origin_tag);
 
 GSettingsBackend *      g_settings_backend_get_default                  (void);
 
-GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename,
-                                                                         const gchar         *root_path,
-                                                                         const gchar         *root_group);
+GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar          *filename,
+                                                                         const gchar          *root_path,
+                                                                         const gchar          *root_group);
 
 GSettingsBackend *      g_null_settings_backend_new                     (void);
 

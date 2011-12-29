@@ -126,26 +126,18 @@ is_path (const gchar *path)
 
 struct _GSettingsBackendWatch
 {
-  GObject                       *target;
-  const GSettingsListenerVTable *vtable;
-  GMainContext                  *context;
-  GSettingsBackendWatch         *next;
+  GObject               *target;
+  GSettingsEventFunc     function;
+  GMainContext          *context;
+  GSettingsBackendWatch *next;
 };
 
 struct _GSettingsBackendClosure
 {
-  void (*function) (GObject          *target,
-                    GSettingsBackend *backend,
-                    const gchar      *name,
-                    gpointer          data1,
-                    gpointer          data2);
-
-  GSettingsBackend *backend;
-  GObject          *target;
-  gchar            *name;
-  gpointer          data1;
-  GBoxedFreeFunc    data1_free;
-  gpointer          data2;
+  GSettingsEventFunc  function;
+  GSettingsBackend   *backend;
+  GObject            *target;
+  GSettingsEvent      event;
 };
 
 static void
@@ -198,10 +190,10 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * value of @origin_tag given to any callbacks.
  **/
 void
-g_settings_backend_watch (GSettingsBackend              *backend,
-                          const GSettingsListenerVTable *vtable,
-                          GObject                       *target,
-                          GMainContext                  *context)
+g_settings_backend_watch (GSettingsBackend   *backend,
+                          GSettingsEventFunc  callback,
+                          GObject            *target,
+                          GMainContext       *context)
 {
   GSettingsBackendWatch *watch;
 
@@ -241,7 +233,7 @@ g_settings_backend_watch (GSettingsBackend              *backend,
 
   watch = g_slice_new (GSettingsBackendWatch);
   watch->context = context;
-  watch->vtable = vtable;
+  watch->function = callback;
   watch->target = target;
   g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
 
@@ -268,46 +260,23 @@ g_settings_backend_invoke_closure (gpointer user_data)
 {
   GSettingsBackendClosure *closure = user_data;
 
-  closure->function (closure->target, closure->backend, closure->name,
-                     closure->data1, closure->data2);
+  closure->function (closure->target, &closure->event);
 
-  closure->data1_free (closure->data1);
   g_object_unref (closure->backend);
   g_object_unref (closure->target);
-  g_free (closure->name);
+  g_strfreev (closure->event.keys);
+  g_free (closure->event.prefix);
 
   g_slice_free (GSettingsBackendClosure, closure);
 
   return FALSE;
 }
 
-static gpointer
-pointer_id (gpointer a)
-{
-  return a;
-}
-
-static void
-pointer_ignore (gpointer a)
-{
-}
-
-static void
-g_settings_backend_dispatch_signal (GSettingsBackend *backend,
-                                    gsize             function_offset,
-                                    const gchar      *name,
-                                    gpointer          data1,
-                                    GBoxedCopyFunc    data1_copy,
-                                    GBoxedFreeFunc    data1_free,
-                                    gpointer          data2)
+void
+g_settings_backend_report_event (GSettingsBackend     *backend,
+                                 const GSettingsEvent *event)
 {
   GSettingsBackendWatch *suffix, *watch, *next;
-
-  if (data1_copy == NULL)
-    data1_copy = pointer_id;
-
-  if (data1_free == NULL)
-    data1_free = pointer_ignore;
 
   /* We're in a little bit of a tricky situation here.  We need to hold
    * a lock while traversing the list, but we don't want to hold the
@@ -337,12 +306,11 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
       closure = g_slice_new (GSettingsBackendClosure);
       closure->backend = g_object_ref (backend);
       closure->target = watch->target; /* we took our ref above */
-      closure->function = G_STRUCT_MEMBER (void *, watch->vtable,
-                                           function_offset);
-      closure->name = g_strdup (name);
-      closure->data1 = data1_copy (data1);
-      closure->data1_free = data1_free;
-      closure->data2 = data2;
+      closure->function = watch->function;
+      closure->event.type = event->type;
+      closure->event.prefix = g_strdup (event->prefix);
+      closure->event.keys = g_strdupv (event->keys);
+      closure->event.origin_tag = event->origin_tag;
 
       /* we do this here because 'watch' may not live to the end of this
        * iteration of the loop (since we may unref the target below).
@@ -394,13 +362,18 @@ g_settings_backend_changed (GSettingsBackend *backend,
                             const gchar      *key,
                             gpointer          origin_tag)
 {
+  GSettingsEvent event;
+  gchar *null = NULL;
+
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_key (key));
 
-  g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
-                                                       changed),
-                                      key, origin_tag, NULL, NULL, NULL);
+  event.type = G_SETTINGS_EVENT_CHANGE;
+  event.prefix = (gchar *) key;
+  event.keys = &null;
+  event.origin_tag = origin_tag;
+
+  g_settings_backend_report_event (backend, &event);
 }
 
 /**
@@ -440,19 +413,20 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
                                  gchar const * const *items,
                                  gpointer             origin_tag)
 {
+  GSettingsEvent event;
+
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_path (path));
 
   /* XXX: should do stricter checking (ie: inspect each item) */
   g_return_if_fail (items != NULL);
 
-  g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
-                                                       keys_changed),
-                                      path, (gpointer) items,
-                                      (GBoxedCopyFunc) g_strdupv,
-                                      (GBoxedFreeFunc) g_strfreev,
-                                      origin_tag);
+  event.type = G_SETTINGS_EVENT_CHANGE;
+  event.prefix = (gchar *) path;
+  event.keys = (gchar **) items;
+  event.origin_tag = origin_tag;
+
+  g_settings_backend_report_event (backend, &event);
 }
 
 /**
@@ -490,13 +464,18 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
                                  const gchar      *path,
                                  gpointer          origin_tag)
 {
+  GSettingsEvent event;
+  gchar *null = NULL;
+
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_path (path));
 
-  g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
-                                                       path_changed),
-                                      path, origin_tag, NULL, NULL, NULL);
+  event.type = G_SETTINGS_EVENT_CHANGE;
+  event.prefix = (gchar *) path;
+  event.keys = &null;
+  event.origin_tag = origin_tag;
+
+  g_settings_backend_report_event (backend, &event);
 }
 
 /**
@@ -515,13 +494,18 @@ void
 g_settings_backend_writable_changed (GSettingsBackend *backend,
                                      const gchar      *key)
 {
+  GSettingsEvent event;
+  gchar *null = NULL;
+
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_key (key));
 
-  g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
-                                                       writable_changed),
-                                      key, NULL, NULL, NULL, NULL);
+  event.type = G_SETTINGS_EVENT_WRITABLE_CHANGE;
+  event.prefix = (gchar *) key;
+  event.keys = &null;
+  event.origin_tag = NULL;
+
+  g_settings_backend_report_event (backend, &event);
 }
 
 /**
@@ -541,13 +525,18 @@ void
 g_settings_backend_path_writable_changed (GSettingsBackend *backend,
                                           const gchar      *path)
 {
+  GSettingsEvent event;
+  gchar *null = NULL;
+
   g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
   g_return_if_fail (is_path (path));
 
-  g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
-                                                       path_writable_changed),
-                                      path, NULL, NULL, NULL, NULL);
+  event.type = G_SETTINGS_EVENT_WRITABLE_CHANGE;
+  event.prefix = (gchar *) path;
+  event.keys = &null;
+  event.origin_tag = NULL;
+
+  g_settings_backend_report_event (backend, &event);
 }
 
 typedef struct

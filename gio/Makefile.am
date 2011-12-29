@@ -111,7 +111,6 @@ gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(s
 		$(NULL)
 
 settings_headers = \
-	gsettingsbackend.h		\
 	gsettingsschema.h		\
 	gsettings.h
 
@@ -624,6 +623,7 @@ gio_headers =			\
 
 gioincludedir=$(includedir)/glib-2.0/gio/
 gioinclude_HEADERS = 		\
+	gsettingsbackend.h	\
 	$(gio_headers)		\
 	gioenumtypes.h
 

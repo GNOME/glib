@@ -316,124 +316,175 @@ g_settings_real_writable_change_event (GSettings *settings,
 }
 
 static void
-settings_backend_changed (GObject             *target,
-                          GSettingsBackend    *backend,
-                          const gchar         *key,
-                          gpointer             origin_tag)
+g_settings_emit_signal (GSettings          *settings,
+                        GSettingsEventType  type,
+                        const GQuark       *quarks,
+                        gint                n_items)
+{
+  gboolean ignore_this;
+  guint signal_id;
+
+  switch (type)
+    {
+    case G_SETTINGS_EVENT_CHANGE:
+      signal_id = g_settings_signals[SIGNAL_CHANGE_EVENT];
+      break;
+
+    case G_SETTINGS_EVENT_WRITABLE_CHANGE:
+      signal_id = g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT];
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+
+  /* writable-change-event signals are emitted in a different way */
+  if (signal_id == g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT])
+    {
+      if (n_items > 0)
+        {
+          gint i;
+
+          for (i = 0; i < n_items; i++)
+            g_signal_emit (settings, signal_id, 0, quarks[i], &ignore_this);
+        }
+      else
+        g_signal_emit (settings, signal_id, 0, (GQuark) 0, &ignore_this);
+
+      return;
+    }
+
+  g_signal_emit (settings, signal_id, 0, quarks, n_items, &ignore_this);
+}
+
+static void
+g_settings_got_event (GObject              *target,
+                      const GSettingsEvent *event)
 {
   GSettings *settings = G_SETTINGS (target);
-  gboolean ignore_this;
-  gint i;
+  const gchar *prefix;
+  const gchar *path;
+  gint prefix_len;
+  gint path_len;
 
-  /* We used to assert here:
+  /* The path of the GSettings always ends with '/'.
    *
-   *   settings->priv->backend == backend
+   * For path '/a/b/', consider these prefixes:
    *
-   * but it could be the case that a notification is queued for delivery
-   * while someone calls g_settings_delay() (which changes the backend).
+   *   - /x/           does not match
+   *   - /a/b/         want to match -- this is us directly
+   *   - /a/           want to match -- this may impact us
+   *   - /a/b/c        want to match -- 'c' may be a key
+   *   - /a/b/c/       does not match
    *
-   * Since the delay backend would just pass that straight through
-   * anyway, it doesn't make sense to try to detect this case.
-   * Therefore, we just accept it.
+   * We can quickly determine if we are in a 'want to match' situation
+   * by fast-forwarding the common part of the GSettings path and the
+   * event prefix.
    */
+  path = settings->priv->path;
+  prefix = event->prefix;
 
-  for (i = 0; key[i] == settings->priv->path[i]; i++);
-
-  if (settings->priv->path[i] == '\0' &&
-      g_settings_schema_has_key (settings->priv->schema, key + i))
+  while (*prefix && *prefix == *path)
     {
-      GQuark quark;
-
-      quark = g_quark_from_string (key + i);
-      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                     0, &quark, 1, &ignore_this);
+      prefix++;
+      path++;
     }
-}
+  prefix_len = strlen (prefix);
+  path_len = strlen (path);
 
-static void
-settings_backend_path_changed (GObject          *target,
-                               GSettingsBackend *backend,
-                               const gchar      *path,
-                               gpointer          origin_tag)
-{
-  GSettings *settings = G_SETTINGS (target);
-  gboolean ignore_this;
+  /* If after removing the common prefix, we are left with characters in
+   * both then it is clear that we are in a non-matching situation.
+   */
+  if (prefix_len && path_len)
+    return;
 
-  if (g_str_has_prefix (settings->priv->path, path))
-    g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                   0, NULL, 0, &ignore_this);
-}
-
-static void
-settings_backend_keys_changed (GObject             *target,
-                               GSettingsBackend    *backend,
-                               const gchar         *path,
-                               const gchar * const *items,
-                               gpointer             origin_tag)
-{
-  GSettings *settings = G_SETTINGS (target);
-  gboolean ignore_this;
-  gint i;
-
-  for (i = 0; settings->priv->path[i] &&
-              settings->priv->path[i] == path[i]; i++);
-
-  if (path[i] == '\0')
+  if (prefix_len)
     {
-      GQuark quarks[256];
-      gint j, l = 0;
+      /* If part of the prefix is remaining then the only possibility is
+       * that we are emitting a change notification for a single key
+       * belonging to this settings object.  The remainder of that
+       * prefix (after stripping our path) is exactly the name of that
+       * key.
+       *
+       * Necessarily, this key must not contain a slash in any part of
+       * it.  This is a somewhat common case, so we explicitly check
+       * that before attempting to do a lookup of the key.
+       */
+      if (strchr (prefix, '/'))
+        return;
 
-      for (j = 0; items[j]; j++)
-         {
-           const gchar *item = items[j];
-           gint k;
+      /* If the prefix doesn't end with a slash (as we just verified)
+       * then it had better be the case that the keys array is empty.
+       * We don't bother verifying that, though.
+       *
+       * We just check if the prefix is the name of one of our keys.
+       */
+      if (g_settings_schema_has_key (settings->priv->schema, prefix))
+        {
+          GQuark quark;
 
-           for (k = 0; item[k] == settings->priv->path[i + k]; k++);
-
-           if (settings->priv->path[i + k] == '\0' &&
-               g_settings_schema_has_key (settings->priv->schema, item + k))
-             quarks[l++] = g_quark_from_string (item + k);
-
-           /* "256 quarks ought to be enough for anybody!"
-            * If this bites you, I'm sorry.  Please file a bug.
-            */
-           g_assert (l < 256);
-         }
-
-      if (l > 0)
-        g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
-                       0, quarks, l, &ignore_this);
+          quark = g_quark_from_string (prefix);
+          g_settings_emit_signal (settings, event->type, &quark, 1);
+        }
     }
-}
+  else
+    {
+      /* The entire prefix is consumed.  This means that the prefix
+       * ended with a slash and matched our path.
+       *
+       * We may still have some remaining part of the path, however.  If
+       * that is true, we need to verify that each item in the keys
+       * array has this component as a prefix.
+       */
 
-static void
-settings_backend_writable_changed (GObject          *target,
-                                   GSettingsBackend *backend,
-                                   const gchar      *key)
-{
-  GSettings *settings = G_SETTINGS (target);
-  gboolean ignore_this;
-  gint i;
+      /* If the key array is empty then all items under this path have
+       * changed.  We don't care about any remaining part of our path in
+       * this case since everything has changed.
+       */
+      if (event->keys[0] == NULL)
+        g_settings_emit_signal (settings, event->type, NULL, 0);
 
-  for (i = 0; key[i] == settings->priv->path[i]; i++);
+      else
+        {
+          GQuark *quarks;
+          gint n, i, j;
 
-  if (settings->priv->path[i] == '\0' &&
-      g_settings_schema_has_key (settings->priv->schema, key + i))
-    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
-                   0, g_quark_from_string (key + i), &ignore_this);
-}
+          n = g_strv_length (event->keys);
 
-static void
-settings_backend_path_writable_changed (GObject          *target,
-                                        GSettingsBackend *backend,
-                                        const gchar      *path)
-{
-  GSettings *settings = G_SETTINGS (target);
-  gboolean ignore_this;
+          if (20 < n)
+            quarks = g_new (GQuark, n);
+          else
+            quarks = g_newa (GQuark, n);
 
-  if (g_str_has_prefix (settings->priv->path, path))
-    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
-                   0, (GQuark) 0, &ignore_this);
+          j = 0;
+          for (i = 0; event->keys[i]; i++)
+            {
+              gchar *key = event->keys[i];
+
+              /* Check the prefix */
+              if (!g_str_has_prefix (key, path))
+                continue;
+
+              /* Remove that component from the key */
+              key += path_len;
+
+              /* Do the slash check as above, and for the same reason */
+              if (strchr (key, '/'))
+                continue;
+
+              /* Check if it's actually a key */
+              if (g_settings_schema_has_key (settings->priv->schema, key))
+                quarks[j++] = g_quark_from_string (key);
+            }
+
+          /* Only signal if we actually had a match. */
+          if (j > 0)
+            g_settings_emit_signal (settings, event->type, quarks, j);
+
+          if (20 < n)
+            g_free (quarks);
+        }
+    }
 }
 
 /* Properties, Construction, Destruction {{{1 */
@@ -546,14 +597,6 @@ g_settings_get_property (GObject    *object,
     }
 }
 
-static const GSettingsListenerVTable listener_vtable = {
-  settings_backend_changed,
-  settings_backend_path_changed,
-  settings_backend_keys_changed,
-  settings_backend_writable_changed,
-  settings_backend_path_writable_changed
-};
-
 static void
 g_settings_constructed (GObject *object)
 {
@@ -579,7 +622,8 @@ g_settings_constructed (GObject *object)
     settings->priv->backend = g_settings_backend_get_default ();
 
   g_settings_backend_watch (settings->priv->backend,
-                            &listener_vtable, G_OBJECT (settings),
+                            g_settings_got_event,
+                            G_OBJECT (settings),
                             settings->priv->main_context);
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
@@ -1907,7 +1951,7 @@ g_settings_delay (GSettings *settings)
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
   g_settings_backend_watch (settings->priv->backend,
-                            &listener_vtable, G_OBJECT (settings),
+                            g_settings_got_event, G_OBJECT (settings),
                             settings->priv->main_context);
 
   g_object_notify (G_OBJECT (settings), "delay-apply");
