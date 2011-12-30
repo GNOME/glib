@@ -24,7 +24,6 @@
 #include "config.h"
 
 #include "gsettingsbackendinternal.h"
-#include "gdelayedsettingsbackend.h"
 #include "gsimplepermission.h"
 #include "giomodule-priv.h"
 
@@ -712,7 +711,7 @@ ignore_subscription (GSettingsBackend *backend,
 static GSettingsBackend *
 g_settings_backend_real_delay (GSettingsBackend *backend)
 {
-  return g_delayed_settings_backend_new (backend);
+  return g_null_settings_backend_new ();
 }
 
 static void
