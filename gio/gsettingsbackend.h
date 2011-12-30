@@ -77,9 +77,6 @@ struct _GSettingsBackendClass
                                          const gchar         *key,
                                          GVariant            *value,
                                          gpointer             origin_tag);
-  gboolean           (* write_tree)     (GSettingsBackend    *backend,
-                                         GTree               *tree,
-                                         gpointer             origin_tag);
   void               (* reset)          (GSettingsBackend    *backend,
                                          const gchar         *key,
                                          gpointer             origin_tag);
@@ -97,7 +94,7 @@ struct _GSettingsBackendClass
   void               (* apply)          (GSettingsBackend    *backend);
   void               (* revert)         (GSettingsBackend    *backend);
 
-  gpointer padding[21];
+  gpointer padding[18];
 };
 
 struct _GSettingsBackend

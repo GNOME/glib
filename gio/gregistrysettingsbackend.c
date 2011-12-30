@@ -1032,34 +1032,6 @@ g_registry_backend_write (GSettingsBackend *backend,
   return TRUE;
 }
 
-static gboolean
-g_registry_backend_write_tree (GSettingsBackend *backend,
-                               GTree            *values,
-                               gpointer          origin_tag)
-{
-  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
-  LONG result;
-  HKEY hroot;
-  RegistryWrite action;
-
-  result = RegCreateKeyExA (HKEY_CURRENT_USER, self->base_path, 0, NULL, 0,
-                            KEY_WRITE, NULL, &hroot, NULL);
-  if (result != ERROR_SUCCESS) {
-    trace ("Error opening/creating key %s.\n", self->base_path);
-    return FALSE;
-  }
-
-  action.self =  self;
-  action.hroot = hroot;
-  g_tree_foreach (values, (GTraverseFunc)g_registry_backend_write_one,
-                  &action);
-
-  g_settings_backend_changed_tree (backend, values, origin_tag);
-  RegCloseKey (hroot);
-
-  return TRUE;
-}
-
 static void
 g_registry_backend_reset (GSettingsBackend *backend,
                           const gchar      *key_name,
@@ -1948,7 +1920,6 @@ g_registry_backend_class_init (GRegistryBackendClass *class)
 
   backend_class->read = g_registry_backend_read;
   backend_class->write = g_registry_backend_write;
-  backend_class->write_tree = g_registry_backend_write_tree;
   backend_class->reset = g_registry_backend_reset;
   backend_class->get_writable = g_registry_backend_get_writable;
   backend_class->get_permission = g_registry_backend_get_permission;

@@ -262,59 +262,6 @@ g_keyfile_settings_backend_read (GSettingsBackend   *backend,
   return get_from_keyfile (kfsb, expected_type, key);
 }
 
-typedef struct
-{
-  GKeyfileSettingsBackend *kfsb;
-  gboolean failed;
-} WriteManyData;
-
-static gboolean
-g_keyfile_settings_backend_write_one (gpointer key,
-                                      gpointer value,
-                                      gpointer user_data)
-{
-  WriteManyData *data = user_data;
-  gboolean success;
-
-  success = set_to_keyfile (data->kfsb, key, value);
-  g_assert (success);
-
-  return FALSE;
-}
-
-static gboolean
-g_keyfile_settings_backend_check_one (gpointer key,
-                                      gpointer value,
-                                      gpointer user_data)
-{
-  WriteManyData *data = user_data;
-
-  return data->failed = !path_is_valid (data->kfsb, key);
-}
-
-static gboolean
-g_keyfile_settings_backend_write_tree (GSettingsBackend *backend,
-                                       GTree            *tree,
-                                       gpointer          origin_tag)
-{
-  WriteManyData data = { G_KEYFILE_SETTINGS_BACKEND (backend) };
-
-  if (!data.kfsb->writable)
-    return FALSE;
-
-  g_tree_foreach (tree, g_keyfile_settings_backend_check_one, &data);
-
-  if (data.failed)
-    return FALSE;
-
-  g_tree_foreach (tree, g_keyfile_settings_backend_write_one, &data);
-  g_keyfile_settings_backend_keyfile_write (data.kfsb);
-
-  g_settings_backend_changed_tree (backend, tree, origin_tag);
-
-  return TRUE;
-}
-
 static gboolean
 g_keyfile_settings_backend_write (GSettingsBackend *backend,
                                   const gchar      *key,
@@ -532,7 +479,6 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
 
   class->read = g_keyfile_settings_backend_read;
   class->write = g_keyfile_settings_backend_write;
-  class->write_tree = g_keyfile_settings_backend_write_tree;
   class->reset = g_keyfile_settings_backend_reset;
   class->get_writable = g_keyfile_settings_backend_get_writable;
   class->get_permission = g_keyfile_settings_backend_get_permission;

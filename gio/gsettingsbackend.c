@@ -86,11 +86,6 @@ static gboolean g_settings_has_backend;
  * implementations must carefully adhere to the expectations of
  * callers that are documented on each of the interface methods.
  *
- * Some of the GSettingsBackend functions accept or return a #GTree.
- * These trees always have strings as keys and #GVariant as values.
- * g_settings_backend_create_tree() is a convenience function to create
- * suitable trees.
- *
  * <note><para>
  * The #GSettingsBackend API is exported to allow third-party
  * implementations, but does not carry the same stability guarantees
@@ -591,38 +586,6 @@ g_settings_backend_write (GSettingsBackend *backend,
 }
 
 /*< private >
- * g_settings_backend_write_keys:
- * @backend: a #GSettingsBackend implementation
- * @values: a #GTree containing key-value pairs to write
- * @origin_tag: the origin tag
- *
- * Writes one or more keys.  This call will never block.
- *
- * The key of each item in the tree is the key name to write to and the
- * value is a #GVariant to write.  The proper type of #GTree for this
- * call can be created with g_settings_backend_create_tree().  This call
- * might take a reference to the tree; you must not modified the #GTree
- * after passing it to this call.
- *
- * This call does not fail.  During this call a #GSettingsBackend::changed
- * signal will be emitted if any keys have been changed.  The new values of
- * all updated keys will be visible to any signal callbacks.
- *
- * One possible method that an implementation might deal with failures is
- * to emit a second "changed" signal (either during this call, or later)
- * to indicate that the affected keys have suddenly "changed back" to their
- * old values.
- */
-gboolean
-g_settings_backend_write_tree (GSettingsBackend *backend,
-                               GTree            *tree,
-                               gpointer          origin_tag)
-{
-  return G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->write_tree (backend, tree, origin_tag);
-}
-
-/*< private >
  * g_settings_backend_reset:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of a key
@@ -750,29 +713,6 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   g_object_class_install_properties (gobject_class, N_PROPS, g_settings_backend_pspecs);
 
   g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
-}
-
-static void
-g_settings_backend_variant_unref0 (gpointer data)
-{
-  if (data != NULL)
-    g_variant_unref (data);
-}
-
-/*< private >
- * g_settings_backend_create_tree:
- *
- * This is a convenience function for creating a tree that is compatible
- * with g_settings_backend_write().  It merely calls g_tree_new_full()
- * with strcmp(), g_free() and g_variant_unref().
- *
- * Returns: a new #GTree
- */
-GTree *
-g_settings_backend_create_tree (void)
-{
-  return g_tree_new_full ((GCompareDataFunc) strcmp, NULL,
-                          g_free, g_settings_backend_variant_unref0);
 }
 
 static gboolean

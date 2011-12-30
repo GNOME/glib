@@ -87,32 +87,6 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
   return TRUE;
 }
 
-static gboolean
-g_memory_settings_backend_write_one (gpointer key,
-                                     gpointer value,
-                                     gpointer data)
-{
-  GMemorySettingsBackend *memory = data;
-
-  if (value != NULL)
-    g_hash_table_insert (memory->table, g_strdup (key), g_variant_ref (value));
-  else
-    g_hash_table_remove (memory->table, key);
-
-  return FALSE;
-}
-
-static gboolean
-g_memory_settings_backend_write_tree (GSettingsBackend *backend,
-                                      GTree            *tree,
-                                      gpointer          origin_tag)
-{
-  g_tree_foreach (tree, g_memory_settings_backend_write_one, backend);
-  g_settings_backend_changed_tree (backend, tree, origin_tag);
-
-  return TRUE;
-}
-
 static void
 g_memory_settings_backend_reset (GSettingsBackend *backend,
                                  const gchar      *key,
@@ -167,7 +141,6 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
 
   backend_class->read = g_memory_settings_backend_read;
   backend_class->write = g_memory_settings_backend_write;
-  backend_class->write_tree = g_memory_settings_backend_write_tree;
   backend_class->reset = g_memory_settings_backend_reset;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   backend_class->get_permission = g_memory_settings_backend_get_permission;

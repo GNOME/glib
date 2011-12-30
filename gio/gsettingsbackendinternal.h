@@ -51,10 +51,6 @@ gboolean                g_settings_backend_write                        (GSettin
                                                                          GVariant             *value,
                                                                          gpointer              origin_tag);
 G_GNUC_INTERNAL
-gboolean                g_settings_backend_write_tree                   (GSettingsBackend     *backend,
-                                                                         GTree                *tree,
-                                                                         gpointer              origin_tag);
-G_GNUC_INTERNAL
 void                    g_settings_backend_reset                        (GSettingsBackend     *backend,
                                                                          const gchar          *key,
                                                                          gpointer              origin_tag);
