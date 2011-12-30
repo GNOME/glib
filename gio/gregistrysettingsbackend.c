@@ -1007,8 +1007,7 @@ g_registry_backend_write_one (const char *key_name,
 static gboolean
 g_registry_backend_write (GSettingsBackend *backend,
                           const gchar      *key_name,
-                          GVariant         *value,
-                          gpointer          origin_tag)
+                          GVariant         *value)
 {
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
   LONG result;
@@ -1025,7 +1024,7 @@ g_registry_backend_write (GSettingsBackend *backend,
   action.self = self;
   action.hroot = hroot;
   g_registry_backend_write_one (key_name, value, &action);
-  g_settings_backend_changed (backend, key_name, origin_tag);
+  g_settings_backend_changed (backend, key_name);
 
   RegCloseKey (hroot);
 
@@ -1034,8 +1033,7 @@ g_registry_backend_write (GSettingsBackend *backend,
 
 static void
 g_registry_backend_reset (GSettingsBackend *backend,
-                          const gchar      *key_name,
-                          gpointer          origin_tag)
+                          const gchar      *key_name)
 {
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
   gchar *path_name, *value_name = NULL;
@@ -1074,7 +1072,7 @@ g_registry_backend_reset (GSettingsBackend *backend,
   g_free (path_name);
 
 
-  g_settings_backend_changed (backend, key_name, origin_tag);
+  g_settings_backend_changed (backend, key_name);
 }
 
 /* Not implemented and probably beyond the scope of this backend */

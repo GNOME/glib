@@ -265,8 +265,7 @@ g_keyfile_settings_backend_read (GSettingsBackend   *backend,
 static gboolean
 g_keyfile_settings_backend_write (GSettingsBackend *backend,
                                   const gchar      *key,
-                                  GVariant         *value,
-                                  gpointer          origin_tag)
+                                  GVariant         *value)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
   gboolean success;
@@ -278,7 +277,7 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
 
   if (success)
     {
-      g_settings_backend_changed (backend, key, origin_tag);
+      g_settings_backend_changed (backend, key);
       g_keyfile_settings_backend_keyfile_write (kfsb);
     }
 
@@ -287,15 +286,14 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
 
 static void
 g_keyfile_settings_backend_reset (GSettingsBackend *backend,
-                                  const gchar      *key,
-                                  gpointer          origin_tag)
+                                  const gchar      *key)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
   if (set_to_keyfile (kfsb, key, NULL))
     g_keyfile_settings_backend_keyfile_write (kfsb);
 
-  g_settings_backend_changed (backend, key, origin_tag);
+  g_settings_backend_changed (backend, key);
 }
 
 static gboolean
@@ -407,7 +405,7 @@ g_keyfile_settings_backend_keyfile_reload (GKeyfileSettingsBackend *kfsb)
       kfsb->keyfile = keyfiles[1];
 
       if (g_tree_nnodes (tree) > 0)
-        g_settings_backend_changed_tree (&kfsb->parent_instance, tree, NULL);
+        g_settings_backend_changed_tree (&kfsb->parent_instance, tree);
 
       g_tree_unref (tree);
 

@@ -48,12 +48,10 @@ GVariant *              g_settings_backend_read                         (GSettin
 G_GNUC_INTERNAL
 gboolean                g_settings_backend_write                        (GSettingsBackend     *backend,
                                                                          const gchar          *key,
-                                                                         GVariant             *value,
-                                                                         gpointer              origin_tag);
+                                                                         GVariant             *value);
 G_GNUC_INTERNAL
 void                    g_settings_backend_reset                        (GSettingsBackend     *backend,
-                                                                         const gchar          *key,
-                                                                         gpointer              origin_tag);
+                                                                         const gchar          *key);
 G_GNUC_INTERNAL
 gboolean                g_settings_backend_get_writable                 (GSettingsBackend     *backend,
                                                                          const char           *key);

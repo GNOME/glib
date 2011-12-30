@@ -67,8 +67,7 @@ g_memory_settings_backend_read (GSettingsBackend   *backend,
 static gboolean
 g_memory_settings_backend_write (GSettingsBackend *backend,
                                  const gchar      *key,
-                                 GVariant         *value,
-                                 gpointer          origin_tag)
+                                 GVariant         *value)
 {
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   GVariant *old_value;
@@ -79,7 +78,7 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
   if (old_value == NULL || !g_variant_equal (value, old_value))
     {
       g_hash_table_insert (memory->table, g_strdup (key), value);
-      g_settings_backend_changed (backend, key, origin_tag);
+      g_settings_backend_changed (backend, key);
     }
   else
     g_variant_unref (value);
@@ -89,15 +88,14 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
 
 static void
 g_memory_settings_backend_reset (GSettingsBackend *backend,
-                                 const gchar      *key,
-                                 gpointer          origin_tag)
+                                 const gchar      *key)
 {
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
 
   if (g_hash_table_lookup (memory->table, key))
     {
       g_hash_table_remove (memory->table, key);
-      g_settings_backend_changed (backend, key, origin_tag);
+      g_settings_backend_changed (backend, key);
     }
 }
 

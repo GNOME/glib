@@ -53,8 +53,7 @@ g_null_settings_backend_read (GSettingsBackend   *backend,
 static gboolean
 g_null_settings_backend_write (GSettingsBackend *backend,
                                const gchar      *key,
-                               GVariant         *value,
-                               gpointer          origin_tag)
+                               GVariant         *value)
 {
   if (value)
     g_variant_unref (g_variant_ref_sink (value));
@@ -63,8 +62,7 @@ g_null_settings_backend_write (GSettingsBackend *backend,
 
 static void
 g_null_settings_backend_reset (GSettingsBackend *backend,
-                               const gchar      *key,
-                               gpointer          origin_tag)
+                               const gchar      *key)
 {
 }
 

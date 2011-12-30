@@ -144,7 +144,6 @@ g_settings_backend_event (GSettingsBackend     *backend,
  * g_settings_backend_changed:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of the key
- * @origin_tag: the origin tag
  *
  * Signals that a single key has possibly changed.  Backend
  * implementations should call this if a key has possibly changed its
@@ -165,16 +164,11 @@ g_settings_backend_event (GSettingsBackend     *backend,
  * in response to any other action (including from calls to
  * g_settings_backend_write()).
  *
- * In the case that this call is in response to a call to
- * g_settings_backend_write() then @origin_tag must be set to the same
- * value that was passed to that call.
- *
  * Since: 2.26
  **/
 void
 g_settings_backend_changed (GSettingsBackend *backend,
-                            const gchar      *key,
-                            gpointer          origin_tag)
+                            const gchar      *key)
 {
   GSettingsEvent event;
   gchar *null = NULL;
@@ -185,7 +179,6 @@ g_settings_backend_changed (GSettingsBackend *backend,
   event.type = G_SETTINGS_EVENT_CHANGE;
   event.prefix = (gchar *) key;
   event.keys = &null;
-  event.origin_tag = origin_tag;
 
   g_settings_backend_event (backend, &event);
 }
@@ -195,7 +188,6 @@ g_settings_backend_changed (GSettingsBackend *backend,
  * @backend: a #GSettingsBackend implementation
  * @path: the path containing the changes
  * @items: (array zero-terminated=1): the %NULL-terminated list of changed keys
- * @origin_tag: the origin tag
  *
  * Signals that a list of keys have possibly changed.  Backend
  * implementations should call this if keys have possibly changed their
@@ -224,8 +216,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
 void
 g_settings_backend_keys_changed (GSettingsBackend    *backend,
                                  const gchar         *path,
-                                 gchar const * const *items,
-                                 gpointer             origin_tag)
+                                 gchar const * const *items)
 {
   GSettingsEvent event;
 
@@ -238,7 +229,6 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
   event.type = G_SETTINGS_EVENT_CHANGE;
   event.prefix = (gchar *) path;
   event.keys = (gchar **) items;
-  event.origin_tag = origin_tag;
 
   g_settings_backend_event (backend, &event);
 }
@@ -247,7 +237,6 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
  * g_settings_backend_path_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the path containing the changes
- * @origin_tag: the origin tag
  *
  * Signals that all keys below a given path may have possibly changed.
  * Backend implementations should call this if an entire path of keys
@@ -275,8 +264,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
  */
 void
 g_settings_backend_path_changed (GSettingsBackend *backend,
-                                 const gchar      *path,
-                                 gpointer          origin_tag)
+                                 const gchar      *path)
 {
   GSettingsEvent event;
   gchar *null = NULL;
@@ -287,7 +275,6 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
   event.type = G_SETTINGS_EVENT_CHANGE;
   event.prefix = (gchar *) path;
   event.keys = &null;
-  event.origin_tag = origin_tag;
 
   g_settings_backend_event (backend, &event);
 }
@@ -317,7 +304,6 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
   event.type = G_SETTINGS_EVENT_WRITABLE_CHANGE;
   event.prefix = (gchar *) key;
   event.keys = &null;
-  event.origin_tag = NULL;
 
   g_settings_backend_event (backend, &event);
 }
@@ -348,7 +334,6 @@ g_settings_backend_path_writable_changed (GSettingsBackend *backend,
   event.type = G_SETTINGS_EVENT_WRITABLE_CHANGE;
   event.prefix = (gchar *) path;
   event.keys = &null;
-  event.origin_tag = NULL;
 
   g_settings_backend_event (backend, &event);
 }
@@ -466,7 +451,6 @@ g_settings_backend_flatten_tree (GTree         *tree,
  * g_settings_backend_changed_tree:
  * @backend: a #GSettingsBackend implementation
  * @tree: a #GTree containing the changes
- * @origin_tag: the origin tag
  *
  * This call is a convenience wrapper.  It gets the list of changes from
  * @tree, computes the longest common prefix and calls
@@ -476,8 +460,7 @@ g_settings_backend_flatten_tree (GTree         *tree,
  **/
 void
 g_settings_backend_changed_tree (GSettingsBackend *backend,
-                                 GTree            *tree,
-                                 gpointer          origin_tag)
+                                 GTree            *tree)
 {
   const gchar **keys;
   gchar *path;
@@ -498,7 +481,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   }
 #endif
 
-  g_settings_backend_keys_changed (backend, path, keys, origin_tag);
+  g_settings_backend_keys_changed (backend, path, keys);
   g_free (path);
   g_free (keys);
 }
@@ -553,7 +536,6 @@ g_settings_backend_read (GSettingsBackend   *backend,
  * @backend: a #GSettingsBackend implementation
  * @key: the name of the key
  * @value: a #GVariant value to write to this key
- * @origin_tag: the origin tag
  *
  * Writes exactly one key.
  *
@@ -572,14 +554,13 @@ g_settings_backend_read (GSettingsBackend   *backend,
 gboolean
 g_settings_backend_write (GSettingsBackend *backend,
                           const gchar      *key,
-                          GVariant         *value,
-                          gpointer          origin_tag)
+                          GVariant         *value)
 {
   gboolean success;
 
   g_variant_ref_sink (value);
   success = G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->write (backend, key, value, origin_tag);
+    ->write (backend, key, value);
   g_variant_unref (value);
 
   return success;
@@ -589,7 +570,6 @@ g_settings_backend_write (GSettingsBackend *backend,
  * g_settings_backend_reset:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of a key
- * @origin_tag: the origin tag
  *
  * "Resets" the named key to its "default" value (ie: after system-wide
  * defaults, mandatory keys, etc. have been taken into account) or possibly
@@ -597,11 +577,10 @@ g_settings_backend_write (GSettingsBackend *backend,
  */
 void
 g_settings_backend_reset (GSettingsBackend *backend,
-                          const gchar      *key,
-                          gpointer          origin_tag)
+                          const gchar      *key)
 {
   G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->reset (backend, key, origin_tag);
+    ->reset (backend, key);
 }
 
 /*< private >

@@ -1090,7 +1090,7 @@ g_settings_write_to_backend (GSettings          *settings,
   gchar *path;
 
   path = g_strconcat (settings->priv->path, key->name, NULL);
-  success = g_settings_backend_write (settings->priv->backend, path, value, NULL);
+  success = g_settings_backend_write (settings->priv->backend, path, value);
   g_free (path);
 
   return success;
@@ -2050,7 +2050,7 @@ g_settings_reset (GSettings *settings,
   gchar *path;
 
   path = g_strconcat (settings->priv->path, key, NULL);
-  g_settings_backend_reset (settings->priv->backend, path, NULL);
+  g_settings_backend_reset (settings->priv->backend, path);
   g_free (path);
 }
 
