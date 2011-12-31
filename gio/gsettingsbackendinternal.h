@@ -65,6 +65,42 @@ G_GNUC_INTERNAL
 GPermission *           g_settings_backend_get_permission               (GSettingsBackend     *backend,
                                                                          const gchar          *path);
 G_GNUC_INTERNAL
+gboolean                g_settings_backend_check_exists                 (GSettingsBackend     *backend,
+                                                                         const gchar          *path);
+G_GNUC_INTERNAL
+gchar **                g_settings_backend_list                         (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar * const  *schema_items);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_can_insert                   (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *before);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_insert                       (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *before,
+                                                                         gchar               **item);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_can_move                     (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *item,
+                                                                         const gchar          *before);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_move                         (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *item,
+                                                                         const gchar          *before);
+G_GNUC_INTERNAL
+GSettingsBackend *      g_settings_backend_delay                        (GSettingsBackend     *backend);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_can_remove                   (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *item);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_remove                       (GSettingsBackend     *backend,
+                                                                         const gchar          *dir,
+                                                                         const gchar          *item);
+G_GNUC_INTERNAL
 GSettingsBackend *      g_settings_backend_delay                        (GSettingsBackend     *backend);
 G_GNUC_INTERNAL
 gboolean                g_settings_backend_get_has_unapplied            (GSettingsBackend     *backend);

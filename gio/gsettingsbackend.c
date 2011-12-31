@@ -650,6 +650,72 @@ ignore_subscription (GSettingsBackend *backend,
 {
 }
 
+static gboolean
+g_settings_backend_real_check_exists (GSettingsBackend *backend,
+                                      const gchar      *path)
+{
+  return !strstr (path, ":/:");
+}
+
+static gchar **
+g_settings_backend_real_list (GSettingsBackend    *backend,
+                              const gchar         *dir,
+                              const gchar * const *schema_items)
+{
+  return g_strdupv ((gchar **) schema_items);
+}
+
+static gboolean
+g_settings_backend_real_can_insert (GSettingsBackend *backend,
+                                    const gchar      *dir,
+                                    const gchar      *before)
+{
+  return FALSE;
+}
+
+static gboolean
+g_settings_backend_real_insert (GSettingsBackend  *backend,
+                                const gchar       *dir,
+                                const gchar       *before,
+                                gchar            **item)
+{
+  return FALSE;
+}
+
+static gboolean
+g_settings_backend_real_can_move (GSettingsBackend *backend,
+                                  const gchar      *dir,
+                                  const gchar      *item,
+                                  const gchar      *before)
+{
+  return FALSE;
+}
+
+static gboolean
+g_settings_backend_real_move (GSettingsBackend *backend,
+                              const gchar      *dir,
+                              const gchar      *item,
+                              const gchar      *before)
+{
+  return FALSE;
+}
+
+static gboolean
+g_settings_backend_real_can_remove (GSettingsBackend *backend,
+                                    const gchar      *dir,
+                                    const gchar      *item)
+{
+  return FALSE;
+}
+
+static gboolean
+g_settings_backend_real_remove (GSettingsBackend *backend,
+                                const gchar      *dir,
+                                const gchar      *item)
+{
+  return FALSE;
+}
+
 static GSettingsBackend *
 g_settings_backend_real_delay (GSettingsBackend *backend)
 {
@@ -676,6 +742,14 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
 
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
+  class->check_exists = g_settings_backend_real_check_exists;
+  class->list = g_settings_backend_real_list;
+  class->can_insert = g_settings_backend_real_can_insert;
+  class->insert = g_settings_backend_real_insert;
+  class->can_move = g_settings_backend_real_can_move;
+  class->move = g_settings_backend_real_move;
+  class->can_remove = g_settings_backend_real_can_remove;
+  class->remove = g_settings_backend_real_remove;
   class->delay = g_settings_backend_real_delay;
   class->apply = ignore_apply;
   class->revert = ignore_apply;
@@ -778,6 +852,80 @@ g_settings_backend_sync_default (void)
       if (class->sync)
         class->sync (backend);
     }
+}
+
+gboolean
+g_settings_backend_check_exists (GSettingsBackend *backend,
+                                 const gchar      *path)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->check_exists (backend, path);
+}
+
+gchar **
+g_settings_backend_list (GSettingsBackend    *backend,
+                         const gchar         *dir,
+                         const gchar * const *schema_items)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->list (backend, dir, schema_items);
+}
+
+gboolean
+g_settings_backend_can_insert (GSettingsBackend *backend,
+                               const gchar      *dir,
+                               const gchar      *before)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->can_insert (backend, dir, before);
+}
+
+gboolean
+g_settings_backend_insert (GSettingsBackend  *backend,
+                           const gchar       *dir,
+                           const gchar       *before,
+                           gchar            **item)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->insert (backend, dir, before, item);
+}
+
+gboolean
+g_settings_backend_can_move (GSettingsBackend *backend,
+                             const gchar      *dir,
+                             const gchar      *item,
+                             const gchar      *before)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->can_move (backend, dir, item, before);
+}
+
+gboolean
+g_settings_backend_move (GSettingsBackend *backend,
+                         const gchar      *dir,
+                         const gchar      *item,
+                         const gchar      *before)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->move (backend, dir, item, before);
+}
+
+gboolean
+g_settings_backend_can_remove (GSettingsBackend *backend,
+                               const gchar      *dir,
+                               const gchar      *item)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->can_remove (backend, dir, item);
+}
+
+gboolean
+g_settings_backend_remove (GSettingsBackend *backend,
+                           const gchar      *dir,
+                           const gchar      *item)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->remove (backend, dir, item);
 }
 
 GSettingsBackend *

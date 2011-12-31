@@ -88,6 +88,33 @@ struct _GSettingsBackendClass
   GPermission *      (* get_permission) (GSettingsBackend    *backend,
                                          const gchar         *path);
 
+  gboolean           (* check_exists)   (GSettingsBackend     *backend,
+                                         const gchar          *path);
+  gchar **           (* list)           (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar * const  *schema_items);
+  gboolean           (* can_insert)     (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *before);
+  gboolean           (* insert)         (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *before,
+                                         gchar               **item);
+  gboolean           (* can_move)       (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *item,
+                                         const gchar          *before);
+  gboolean           (* move)           (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *item,
+                                         const gchar          *before);
+  gboolean           (* can_remove)     (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *item);
+  gboolean           (* remove)         (GSettingsBackend     *backend,
+                                         const gchar          *dir,
+                                         const gchar          *item);
+
   GSettingsBackend * (* delay)          (GSettingsBackend    *backend);
   void               (* apply)          (GSettingsBackend    *backend);
   void               (* revert)         (GSettingsBackend    *backend);
