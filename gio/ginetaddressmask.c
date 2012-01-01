@@ -124,6 +124,16 @@ g_inet_address_mask_get_property (GObject    *object,
 }
 
 static void
+g_inet_address_mask_dispose (GObject *object)
+{
+  GInetAddressMask *mask = G_INET_ADDRESS_MASK (object);
+
+  g_clear_object (&mask->priv->addr);
+
+  G_OBJECT_CLASS (g_inet_address_mask_parent_class)->dispose (object);
+}
+
+static void
 g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -132,6 +142,7 @@ g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
 
   gobject_class->set_property = g_inet_address_mask_set_property;
   gobject_class->get_property = g_inet_address_mask_get_property;
+  gobject_class->dispose = g_inet_address_mask_dispose;
 
   g_object_class_install_property (gobject_class, PROP_FAMILY,
                                    g_param_spec_enum ("family",
