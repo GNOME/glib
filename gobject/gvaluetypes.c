@@ -1187,7 +1187,7 @@ g_value_set_gtype (GValue *value,
 {
   g_return_if_fail (G_VALUE_HOLDS_GTYPE (value));
 
-  value->data[0].v_long = v_gtype;
+  value->data[0].v_pointer = GSIZE_TO_POINTER (v_gtype);
   
 }
 
@@ -1206,7 +1206,7 @@ g_value_get_gtype (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_GTYPE (value), 0);
 
-  return value->data[0].v_long;
+  return GPOINTER_TO_SIZE (value->data[0].v_pointer);
 }
 
 /**
