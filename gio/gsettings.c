@@ -240,6 +240,7 @@ struct _GSettingsPrivate
   gchar *path;
 
   gboolean delayed_apply;
+  gboolean destroyed;
 };
 
 enum
@@ -651,6 +652,7 @@ g_settings_constructed (GObject *object)
 
   g_signal_connect_object (settings->priv->backend, "event", G_CALLBACK (g_settings_got_event), settings, 0);
   g_settings_backend_subscribe (settings->priv->backend, settings->priv->path);
+  settings->priv->destroyed = g_settings_backend_check_exists (settings->priv->backend, settings->priv->path);
 }
 
 static void
@@ -2219,6 +2221,7 @@ g_settings_list_children (GSettings *settings)
   gint i, j;
 
   keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+
   strv = g_new (gchar *, n_keys + 1);
   for (i = j = 0; i < n_keys; i++)
     {
@@ -3176,6 +3179,125 @@ g_settings_create_action (GSettings   *settings,
   g_free (detailed_signal);
 
   return G_ACTION (gsa);
+}
+
+/* Children (add, remove, can_{add,remove}, list, get_destroyed) {{{1 */
+
+/**
+ * g_settings_add_child:
+ * @settings: a list #GSettings
+ * @prefix: the prefix of the new child name
+ * @name: return location for the new child name
+ * @returns: %TRUE if the child was added
+ *
+ * Adds a child to a list.
+ *
+ * The child will be created with a new unique name that starts with
+ * @prefix.  For example, if @prefix is "item" then the child's name may
+ * end up looking like "item0", "item1", or so on.  No particular format
+ * is specified -- only that the resulting name will have the given
+ * prefix.
+ *
+ * If the creation was successful then @name (if non-%NULL) is set to
+ * the name of the new child and %TRUE is returned.
+ *
+ * If the creation fails then %FALSE is returned and @name is untouched.
+ **/
+gboolean
+g_settings_add_child (GSettings  *settings,
+                      gchar     **name)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  return g_settings_backend_insert (settings->priv->backend, settings->priv->path, NULL, name);
+}
+
+/**
+ * g_settings_remove_child:
+ * @settings: a list #GSettings
+ * @id: the id of the child to remove
+ * @returns: %TRUE if the child was successfully removed
+ *
+ * Removes a child from the list.
+ *
+ * In the case that the removal was successful then %TRUE is returned.
+ * In the case that it failed, %FALSE is returned.
+ *
+ * The return value of this function is not particularly useful, since
+ * it is not specified if the non-operation resulting from the request
+ * to remove a non-existent child is considered to be a success (and
+ * this situation can easily arise as a race condition).  Most usually
+ * you will actually probably want to ignore the return value here and
+ * just monitor the "children-changed" signal and make changes to your
+ * user interface accordingly.
+ **/
+gboolean
+g_settings_remove_child (GSettings   *settings,
+                         const gchar *id)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+  g_return_val_if_fail (id != NULL, FALSE);
+
+  return g_settings_backend_remove (settings->priv->backend,
+                                    settings->priv->path,
+                                    id);
+}
+
+/**
+ * g_settings_can_add_child:
+ * @settings: a #GSettings object
+ * @returns: %TRUE if a call to g_settings_add_child() would succeed
+ *
+ * Checks if it is valid to add children to @settings.
+ **/
+gboolean
+g_settings_can_add_child (GSettings   *settings,
+                          const gchar *before)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  return g_settings_backend_can_insert (settings->priv->backend, settings->priv->path, before);
+}
+
+/**
+ * g_settings_can_remove_child:
+ * @settings: a #GSettings object
+ * @id: the identifier of an existing child
+ * @returns: %TRUE if a call to g_settings_remove_child() would succeed
+ *
+ * Checks if it is valid to remove @id from @settings.
+ *
+ * The return value of this function is unspecified for the case that
+ * @id does not exist.
+ **/
+gboolean
+g_settings_can_remove_child (GSettings   *settings,
+                             const gchar *id)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  return g_settings_backend_can_remove (settings->priv->backend, settings->priv->path, id);
+}
+
+/**
+ * g_settings_get_destroyed:
+ * @settings: a #GSettings
+ * @returns: %TRUE if @settings has been destroyed
+ *
+ * Checks if @settings has been destroyed.
+ *
+ * If @settings is a member of a list (or a child thereof) and has since
+ * been removed from the list then it will be considered as having been
+ * destroyed.  The "notify" signal will be emitted on the "destroyed"
+ * property and this function will return %TRUE thereafter.
+ *
+ * A destroyed #GSettings object is never revived and nearly all
+ * operations performed on it will be meaningless.
+ **/
+gboolean
+g_settings_get_destroyed (GSettings *settings)
+{
+  return settings->priv->destroyed;
 }
 
 /* Epilogue {{{1 */

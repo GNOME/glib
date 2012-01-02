@@ -1203,6 +1203,11 @@ g_settings_get_mapped
 g_settings_get_range
 g_settings_range_check
 g_credentials_get_type
+g_settings_add_child
+g_settings_can_add_child
+g_settings_can_remove_child
+g_settings_remove_child
+g_settings_get_destroyed
 g_credentials_new
 g_credentials_to_string
 g_credentials_get_native

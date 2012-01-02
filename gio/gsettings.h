@@ -60,7 +60,10 @@ struct _GSettingsClass
                                         const GQuark *keys,
                                         gint          n_keys);
 
-  gpointer padding[20];
+  void        (*can_remove_changed)    (GSettings    *settings);
+  void        (*children_changed)      (GSettings    *settings);
+
+  gpointer padding[18];
 };
 
 struct _GSettings
@@ -277,6 +280,20 @@ gpointer                g_settings_get_mapped                           (GSettin
                                                                          const gchar             *key,
                                                                          GSettingsGetMapping      mapping,
                                                                          gpointer                 user_data);
+
+gboolean                g_settings_can_add_child                        (GSettings               *settings,
+                                                                         const gchar             *before);
+
+gboolean                g_settings_can_remove_child                     (GSettings               *settings,
+                                                                         const gchar             *id);
+
+gboolean                g_settings_add_child                            (GSettings               *settings,
+                                                                         gchar                  **name);
+
+gboolean                g_settings_remove_child                         (GSettings               *settings,
+                                                                         const gchar             *id);
+
+gboolean                g_settings_get_destroyed                        (GSettings               *settings);
 
 G_END_DECLS
 
