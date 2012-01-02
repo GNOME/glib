@@ -484,8 +484,7 @@ g_dbus_object_skeleton_flush (GDBusObjectSkeleton *object)
   for (l = to_flush; l != NULL; l = l->next)
     g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (l->data));
 
-  g_list_foreach (to_flush, (GFunc) g_object_unref, NULL);
-  g_list_free (to_flush);
+  g_list_free_full (to_flush, g_object_unref);
 }
 
 static void

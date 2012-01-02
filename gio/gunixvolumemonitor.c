@@ -76,15 +76,11 @@ g_unix_volume_monitor_finalize (GObject *object)
 					
   g_object_unref (monitor->mount_monitor);
 
-  g_list_foreach (monitor->last_mountpoints, (GFunc)g_unix_mount_point_free, NULL);
-  g_list_free (monitor->last_mountpoints);
-  g_list_foreach (monitor->last_mounts, (GFunc)g_unix_mount_free, NULL);
-  g_list_free (monitor->last_mounts);
+  g_list_free_full (monitor->last_mountpoints, (GDestroyNotify) g_unix_mount_point_free);
+  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_free);
 
-  g_list_foreach (monitor->volumes, (GFunc)g_object_unref, NULL);
-  g_list_free (monitor->volumes);
-  g_list_foreach (monitor->mounts, (GFunc)g_object_unref, NULL);
-  g_list_free (monitor->mounts);
+  g_list_free_full (monitor->volumes, g_object_unref);
+  g_list_free_full (monitor->mounts, g_object_unref);
 
   G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->finalize (object);
 }
@@ -95,12 +91,11 @@ g_unix_volume_monitor_dispose (GObject *object)
   GUnixVolumeMonitor *monitor;
 
   monitor = G_UNIX_VOLUME_MONITOR (object);
-  g_list_foreach (monitor->volumes, (GFunc)g_object_unref, NULL);
-  g_list_free (monitor->volumes);
+
+  g_list_free_full (monitor->volumes, g_object_unref);
   monitor->volumes = NULL;
   
-  g_list_foreach (monitor->mounts, (GFunc)g_object_unref, NULL);
-  g_list_free (monitor->mounts);
+  g_list_free_full (monitor->mounts, g_object_unref);
   monitor->mounts = NULL;
   
   G_OBJECT_CLASS (g_unix_volume_monitor_parent_class)->dispose (object);
@@ -372,9 +367,7 @@ update_volumes (GUnixVolumeMonitor *monitor)
   
   g_list_free (added);
   g_list_free (removed);
-  g_list_foreach (monitor->last_mountpoints,
-		  (GFunc)g_unix_mount_point_free, NULL);
-  g_list_free (monitor->last_mountpoints);
+  g_list_free_full (monitor->last_mountpoints, (GDestroyNotify) g_unix_mount_point_free);
   monitor->last_mountpoints = new_mountpoints;
 }
 
@@ -428,8 +421,6 @@ update_mounts (GUnixVolumeMonitor *monitor)
   
   g_list_free (added);
   g_list_free (removed);
-  g_list_foreach (monitor->last_mounts,
-		  (GFunc)g_unix_mount_free, NULL);
-  g_list_free (monitor->last_mounts);
+  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_free);
   monitor->last_mounts = new_mounts;
 }

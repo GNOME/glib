@@ -607,8 +607,7 @@ static void
 next_async_op_free (NextAsyncOp *op)
 {
   /* Free the list, if finish wasn't called */
-  g_list_foreach (op->files, (GFunc)g_object_unref, NULL);
-  g_list_free (op->files);
+  g_list_free_full (op->files, g_object_unref);
   
   g_free (op);
 }

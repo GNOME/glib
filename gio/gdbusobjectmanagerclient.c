@@ -1252,8 +1252,7 @@ on_notify_g_name_owner (GObject    *object,
           GDBusObjectProxy *object_proxy = G_DBUS_OBJECT_PROXY (l->data);
           g_signal_emit_by_name (manager, "object-removed", object_proxy);
         }
-      g_list_foreach (proxies, (GFunc) g_object_unref, NULL);
-      g_list_free (proxies);
+      g_list_free_full (proxies, g_object_unref);
 
       /* nuke local filter */
       maybe_unsubscribe_signals (manager);
@@ -1573,8 +1572,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
 
   interfaces = g_dbus_object_get_interfaces (G_DBUS_OBJECT (op));
   num_interfaces = g_list_length (interfaces);
-  g_list_foreach (interfaces, (GFunc) g_object_unref, NULL);
-  g_list_free (interfaces);
+  g_list_free_full (interfaces, g_object_unref);
 
   num_interfaces_to_remove = g_strv_length ((gchar **) interface_names);
 

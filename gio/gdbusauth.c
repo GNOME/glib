@@ -115,8 +115,7 @@ _g_dbus_auth_finalize (GObject *object)
 
   if (auth->priv->stream != NULL)
     g_object_unref (auth->priv->stream);
-  g_list_foreach (auth->priv->available_mechanisms, (GFunc) mechanism_free, NULL);
-  g_list_free (auth->priv->available_mechanisms);
+  g_list_free_full (auth->priv->available_mechanisms, (GDestroyNotify) mechanism_free);
 
   if (G_OBJECT_CLASS (_g_dbus_auth_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (_g_dbus_auth_parent_class)->finalize (object);

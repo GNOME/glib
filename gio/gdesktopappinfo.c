@@ -1312,8 +1312,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
               envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
             }
 
-          g_list_foreach (launched_files, (GFunc)g_object_unref, NULL);
-          g_list_free (launched_files);
+          g_list_free_full (launched_files, g_object_unref);
         }
 
       if (!g_spawn_async (info->path,
@@ -1431,8 +1430,7 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
   
   res = g_desktop_app_info_launch_uris (appinfo, uris, launch_context, error);
   
-  g_list_foreach  (uris, (GFunc)g_free, NULL);
-  g_list_free (uris);
+  g_list_free_full (uris, g_free);
   
   return res;
 }
@@ -2628,8 +2626,7 @@ destroy_info_cache_value (gpointer  key,
                           GList    *value, 
                           gpointer  data)
 {
-  g_list_foreach (value, (GFunc)g_free, NULL);
-  g_list_free (value);
+  g_list_free_full (value, g_free);
 }
 
 static void
@@ -3147,10 +3144,7 @@ mime_info_cache_free (MimeInfoCache *cache)
   if (cache == NULL)
     return;
   
-  g_list_foreach (cache->dirs,
-		  (GFunc) mime_info_cache_dir_free,
-		  NULL);
-  g_list_free (cache->dirs);
+  g_list_free_full (cache->dirs, (GDestroyNotify) mime_info_cache_dir_free);
   g_hash_table_destroy (cache->global_defaults_cache);
   g_free (cache);
 }
@@ -3345,8 +3339,7 @@ get_all_desktop_entries_for_mime_type (const char  *base_mime_type,
   else
     g_free (default_entry);
 
-  g_list_foreach (removed_entries, (GFunc)g_free, NULL);
-  g_list_free (removed_entries);
+  g_list_free_full (removed_entries, g_free);
 
   desktop_entries = g_list_reverse (desktop_entries);
   

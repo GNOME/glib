@@ -73,8 +73,7 @@ g_emblemed_icon_finalize (GObject *object)
   emblemed = G_EMBLEMED_ICON (object);
 
   g_object_unref (emblemed->priv->icon);
-  g_list_foreach (emblemed->priv->emblems, (GFunc) g_object_unref, NULL);
-  g_list_free (emblemed->priv->emblems);
+  g_list_free_full (emblemed->priv->emblems, g_object_unref);
 
   (*G_OBJECT_CLASS (g_emblemed_icon_parent_class)->finalize) (object);
 }

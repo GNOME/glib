@@ -891,8 +891,7 @@ try_tcp (GDBusServer  *server,
   ret = TRUE;
 
  out:
-  g_list_foreach (resolved_addresses, (GFunc) g_object_unref, NULL);
-  g_list_free (resolved_addresses);
+  g_list_free_full (resolved_addresses, g_object_unref);
   g_object_unref (resolver);
   return ret;
 }

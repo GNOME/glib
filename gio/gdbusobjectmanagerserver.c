@@ -497,8 +497,7 @@ g_dbus_object_manager_server_export_unlocked (GDBusObjectManagerServer  *manager
       registration_data_export_interface (data, interface_skeleton, object_path);
       g_ptr_array_add (interface_names, g_dbus_interface_skeleton_get_info (interface_skeleton)->name);
     }
-  g_list_foreach (existing_interfaces, (GFunc) g_object_unref, NULL);
-  g_list_free (existing_interfaces);
+  g_list_free_full (existing_interfaces, g_object_unref);
   g_ptr_array_add (interface_names, NULL);
 
   data->exported = TRUE;
