@@ -3197,14 +3197,8 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
   /* Note all keys must be comments at the top of
    * the file, so we can just free it all.
    */
-  if (group->key_value_pairs != NULL)
-    {
-      g_list_foreach (group->key_value_pairs, 
-                      (GFunc) g_key_file_key_value_pair_free, 
-                      NULL);
-      g_list_free (group->key_value_pairs);
-      group->key_value_pairs = NULL;
-    }
+  g_list_free_full (group->key_value_pairs, (GDestroyNotify) g_key_file_key_value_pair_free);
+  group->key_value_pairs = NULL;
 
   if (comment == NULL)
      return TRUE;

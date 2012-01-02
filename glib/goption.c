@@ -356,8 +356,7 @@ void g_option_context_free (GOptionContext *context)
 {
   g_return_if_fail (context != NULL);
 
-  g_list_foreach (context->groups, (GFunc)g_option_group_free, NULL);
-  g_list_free (context->groups);
+  g_list_free_full (context->groups, (GDestroyNotify) g_option_group_free);
 
   if (context->main_group)
     g_option_group_free (context->main_group);

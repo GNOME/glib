@@ -359,21 +359,8 @@ bookmark_metadata_free (BookmarkMetadata *metadata)
   
   g_free (metadata->mime_type);
     
-  if (metadata->groups)
-    {
-      g_list_foreach (metadata->groups,
-		      (GFunc) g_free,
-		      NULL);
-      g_list_free (metadata->groups);
-    }
-  
-  if (metadata->applications)
-    {
-      g_list_foreach (metadata->applications,
-		      (GFunc) bookmark_app_info_free,
-		      NULL);
-      g_list_free (metadata->applications);
-    }
+  g_list_free_full (metadata->groups, g_free);
+  g_list_free_full (metadata->applications, (GDestroyNotify) bookmark_app_info_free);
 
   g_hash_table_destroy (metadata->apps_by_name);
 
@@ -687,15 +674,8 @@ g_bookmark_file_clear (GBookmarkFile *bookmark)
   g_free (bookmark->title);
   g_free (bookmark->description);
 
-  if (bookmark->items)
-    {
-      g_list_foreach (bookmark->items,
-		      (GFunc) bookmark_item_free,
-		      NULL);
-      g_list_free (bookmark->items);
-      
-      bookmark->items = NULL;
-    }
+  g_list_free_full (bookmark->items, (GDestroyNotify) bookmark_item_free);
+  bookmark->items = NULL;
   
   if (bookmark->items_by_uri)
     {
@@ -2933,14 +2913,8 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
   if (!item->metadata)
     item->metadata = bookmark_metadata_new ();
 
-  if (item->metadata->groups != NULL)
-    {
-      g_list_foreach (item->metadata->groups,
-		      (GFunc) g_free,
-		      NULL);
-      g_list_free (item->metadata->groups);
-      item->metadata->groups = NULL;
-    }
+  g_list_free_full (item->metadata->groups, g_free);
+  item->metadata->groups = NULL;
   
   if (groups)
     {
