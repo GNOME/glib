@@ -91,8 +91,7 @@ do_drive_tests (GDrive *drive)
       do_volume_tests (drive, volume);
     }
 
-  g_list_foreach (volumes, (GFunc)g_object_unref,  NULL);
-  g_list_free (volumes);
+  g_list_free_full (volumes, g_object_unref);
 }
 
 static void
@@ -109,8 +108,7 @@ test_connected_drives (void)
       do_drive_tests (drive);
     }
 
-  g_list_foreach (drives, (GFunc)g_object_unref,  NULL);
-  g_list_free (drives);
+  g_list_free_full (drives, g_object_unref);
 }
 
 static void
@@ -131,8 +129,7 @@ test_volumes (void)
         g_object_unref (drive);
     }
 
-  g_list_foreach (volumes, (GFunc)g_object_unref,  NULL);
-  g_list_free (volumes);
+  g_list_free_full (volumes, g_object_unref);
 }
 
 static void
@@ -158,8 +155,7 @@ test_mounts (void)
         g_object_unref (volume);
     }
 
-  g_list_foreach (mounts, (GFunc)g_object_unref,  NULL);
-  g_list_free (mounts);
+  g_list_free_full (mounts, g_object_unref);
 }
 int
 main (int argc, char *argv[])

@@ -42,11 +42,9 @@ print_objects (GDBusObjectManager *manager)
            * can be used to get the value of the :Mood property.
            */
         }
-      g_list_foreach (interfaces, (GFunc) g_object_unref, NULL);
-      g_list_free (interfaces);
+      g_list_free_full (interfaces, g_object_unref);
     }
-  g_list_foreach (objects, (GFunc) g_object_unref, NULL);
-  g_list_free (objects);
+  g_list_free_full (objects, g_object_unref);
 }
 
 static void

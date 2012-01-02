@@ -120,8 +120,7 @@ test_default (void)
   info = (GAppInfo *)list->next->data;
   g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info1)) == 0);
 
-  g_list_foreach (list, (GFunc)g_object_unref, NULL);
-  g_list_free (list);
+  g_list_free_full (list, g_object_unref);
 
   /* now try adding something at the end */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
@@ -140,8 +139,7 @@ test_default (void)
   info = (GAppInfo *)list->next->next->data;
   g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info3)) == 0);
 
-  g_list_foreach (list, (GFunc)g_object_unref, NULL);
-  g_list_free (list);
+  g_list_free_full (list, g_object_unref);
 
   /* now remove info1 again */
   g_app_info_remove_supports_type (info1, "application/x-test", &error);
@@ -157,8 +155,7 @@ test_default (void)
   info = (GAppInfo *)list->next->data;
   g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info3)) == 0);
 
-  g_list_foreach (list, (GFunc)g_object_unref, NULL);
-  g_list_free (list);
+  g_list_free_full (list, g_object_unref);
 
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");

@@ -926,8 +926,7 @@ dmp_data_free (DmpData *data)
   g_main_loop_unref (data->loop);
   g_main_context_unref (data->context);
   g_object_unref (data->server);
-  g_list_foreach (data->connections, (GFunc) g_object_unref, NULL);
-  g_list_free (data->connections);
+  g_list_free_full (data->connections, g_object_unref);
   g_free (data);
 }
 

@@ -2035,16 +2035,14 @@ check_object_manager (void)
    */
   object_proxies = g_dbus_object_manager_get_objects (pm);
   g_assert (g_list_length (object_proxies) == 2);
-  g_list_foreach (object_proxies, (GFunc) g_object_unref, NULL);
-  g_list_free (object_proxies);
+  g_list_free_full (object_proxies, g_object_unref);
   op = g_dbus_object_manager_get_object (pm, "/managed/first");
   g_assert (op != NULL);
   g_assert (FOO_IGEN_IS_OBJECT_PROXY (op));
   g_assert_cmpstr (g_dbus_object_get_object_path (op), ==, "/managed/first");
   proxies = g_dbus_object_get_interfaces (op);
   g_assert (g_list_length (proxies) == 1);
-  g_list_foreach (proxies, (GFunc) g_object_unref, NULL);
-  g_list_free (proxies);
+  g_list_free_full (proxies, g_object_unref);
   p = G_DBUS_PROXY (foo_igen_object_get_com_acme_coyote (FOO_IGEN_OBJECT (op)));
   g_assert (p != NULL);
   g_assert_cmpint (G_TYPE_FROM_INSTANCE (p), ==, FOO_IGEN_TYPE_COM_ACME_COYOTE_PROXY);
@@ -2060,8 +2058,7 @@ check_object_manager (void)
   g_assert_cmpstr (g_dbus_object_get_object_path (op), ==, "/managed/second");
   proxies = g_dbus_object_get_interfaces (op);
   g_assert (g_list_length (proxies) == 2);
-  g_list_foreach (proxies, (GFunc) g_object_unref, NULL);
-  g_list_free (proxies);
+  g_list_free_full (proxies, g_object_unref);
   p = G_DBUS_PROXY (foo_igen_object_get_bat (FOO_IGEN_OBJECT (op)));
   g_assert (p != NULL);
   g_assert_cmpint (G_TYPE_FROM_INSTANCE (p), ==, FOO_IGEN_TYPE_BAT_PROXY);

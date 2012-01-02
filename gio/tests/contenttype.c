@@ -75,8 +75,7 @@ test_list (void)
   g_assert (g_list_find_custom (types, plain, find_mime) != NULL);
   g_assert (g_list_find_custom (types, xml, find_mime) != NULL);
 
-  g_list_foreach (types, (GFunc)g_free, NULL);
-  g_list_free (types);
+  g_list_free_full (types, g_free);
 
   g_free (plain);
   g_free (xml);
