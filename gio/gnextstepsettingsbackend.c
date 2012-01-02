@@ -19,26 +19,16 @@
  * Author: William Hua <william@attente.ca>
  */
 
-
-
 #include "gsettingsbackendinternal.h"
 #include "gsimplepermission.h"
 #include "giomodule.h"
 
-
-
 #import <Foundation/Foundation.h>
-
-
 
 #define G_NEXTSTEP_SETTINGS_BACKEND(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), g_nextstep_settings_backend_get_type (), GNextstepSettingsBackend))
 
-
-
 typedef struct _GNextstepSettingsBackend GNextstepSettingsBackend;
 typedef GSettingsBackendClass            GNextstepSettingsBackendClass;
-
-
 
 struct _GNextstepSettingsBackend
 {
@@ -49,15 +39,11 @@ struct _GNextstepSettingsBackend
   GMutex            mutex;
 };
 
-
-
 G_DEFINE_TYPE_WITH_CODE (GNextstepSettingsBackend,
                          g_nextstep_settings_backend,
                          G_TYPE_SETTINGS_BACKEND,
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
                                                          g_define_type_id, "nextstep", 90));
-
-
 
 static void          g_nextstep_settings_backend_finalize       (GObject            *backend);
 
@@ -102,24 +88,20 @@ static GVariant *    g_nextstep_settings_backend_get_g_variant  (id             
 
 static id            g_nextstep_settings_backend_get_ns_object  (GVariant           *variant);
 
-
-
 static void
 g_nextstep_settings_backend_class_init (GNextstepSettingsBackendClass *class)
 {
   G_OBJECT_CLASS (class)->finalize = g_nextstep_settings_backend_finalize;
-  class->read                      = g_nextstep_settings_backend_read;
-  class->get_writable              = g_nextstep_settings_backend_get_writable;
-  class->write                     = g_nextstep_settings_backend_write;
-  class->write_tree                = g_nextstep_settings_backend_write_tree;
-  class->reset                     = g_nextstep_settings_backend_reset;
-  class->subscribe                 = g_nextstep_settings_backend_subscribe;
-  class->unsubscribe               = g_nextstep_settings_backend_unsubscribe;
-  class->sync                      = g_nextstep_settings_backend_sync;
-  class->get_permission            = g_nextstep_settings_backend_get_permission;
+  class->read = g_nextstep_settings_backend_read;
+  class->get_writable = g_nextstep_settings_backend_get_writable;
+  class->write = g_nextstep_settings_backend_write;
+  class->write_tree = g_nextstep_settings_backend_write_tree;
+  class->reset = g_nextstep_settings_backend_reset;
+  class->subscribe = g_nextstep_settings_backend_subscribe;
+  class->unsubscribe = g_nextstep_settings_backend_unsubscribe;
+  class->sync = g_nextstep_settings_backend_sync;
+  class->get_permission = g_nextstep_settings_backend_get_permission;
 }
-
-
 
 static void
 g_nextstep_settings_backend_init (GNextstepSettingsBackend *self)
@@ -134,8 +116,6 @@ g_nextstep_settings_backend_init (GNextstepSettingsBackend *self)
 
   [pool drain];
 }
-
-
 
 static void
 g_nextstep_settings_backend_finalize (GObject *self)
@@ -154,8 +134,6 @@ g_nextstep_settings_backend_finalize (GObject *self)
   G_OBJECT_CLASS (g_nextstep_settings_backend_parent_class)->finalize (self);
 }
 
-
-
 static GVariant *
 g_nextstep_settings_backend_read (GSettingsBackend   *backend,
                                   const gchar        *key,
@@ -164,15 +142,15 @@ g_nextstep_settings_backend_read (GSettingsBackend   *backend,
 {
   GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
-  NSString          *name;
-  id                 value;
-  GVariant          *variant;
+  NSString *name;
+  id value;
+  GVariant *variant;
 
   if (default_value)
     return NULL;
 
-  pool    = [[NSAutoreleasePool alloc] init];
-  name    = [NSString stringWithUTF8String:key];
+  pool = [[NSAutoreleasePool alloc] init];
+  name = [NSString stringWithUTF8String:key];
 
   g_mutex_lock (&self->mutex);
   value = [self->user_defaults objectForKey:name];
@@ -185,16 +163,12 @@ g_nextstep_settings_backend_read (GSettingsBackend   *backend,
   return variant;
 }
 
-
-
 static gboolean
 g_nextstep_settings_backend_get_writable (GSettingsBackend *backend,
                                           const gchar      *key)
 {
   return TRUE;
 }
-
-
 
 static gboolean
 g_nextstep_settings_backend_write (GSettingsBackend *backend,
@@ -218,8 +192,6 @@ g_nextstep_settings_backend_write (GSettingsBackend *backend,
   return TRUE;
 }
 
-
-
 static gboolean
 g_nextstep_settings_backend_write_tree (GSettingsBackend *backend,
                                         GTree            *tree,
@@ -240,8 +212,6 @@ g_nextstep_settings_backend_write_tree (GSettingsBackend *backend,
   return TRUE;
 }
 
-
-
 static void
 g_nextstep_settings_backend_reset (GSettingsBackend *backend,
                                    const gchar      *key,
@@ -249,10 +219,10 @@ g_nextstep_settings_backend_reset (GSettingsBackend *backend,
 {
   GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
-  NSString          *name;
+  NSString *name;
 
-  pool          = [[NSAutoreleasePool alloc] init];
-  name          = [NSString stringWithUTF8String:key];
+  pool = [[NSAutoreleasePool alloc] init];
+  name = [NSString stringWithUTF8String:key];
 
   g_mutex_lock (&self->mutex);
   [self->user_defaults removeObjectForKey:name];
@@ -263,23 +233,17 @@ g_nextstep_settings_backend_reset (GSettingsBackend *backend,
   [pool drain];
 }
 
-
-
 static void
 g_nextstep_settings_backend_subscribe (GSettingsBackend *backend,
                                        const gchar      *name)
 {
 }
 
-
-
 static void
 g_nextstep_settings_backend_unsubscribe (GSettingsBackend *backend,
                                          const gchar      *name)
 {
 }
-
-
 
 static void
 g_nextstep_settings_backend_sync (GSettingsBackend *backend)
@@ -296,8 +260,6 @@ g_nextstep_settings_backend_sync (GSettingsBackend *backend)
   [pool drain];
 }
 
-
-
 static GPermission *
 g_nextstep_settings_backend_get_permission (GSettingsBackend *backend,
                                             const gchar      *path)
@@ -305,26 +267,22 @@ g_nextstep_settings_backend_get_permission (GSettingsBackend *backend,
   return g_simple_permission_new (TRUE);
 }
 
-
-
 static gboolean
 g_nextstep_settings_backend_write_pair (gpointer name,
                                         gpointer value,
                                         gpointer data)
 {
   GNextstepSettingsBackend *backend = G_NEXTSTEP_SETTINGS_BACKEND (data);
-  NSString                 *key;
-  id                        object;
+  NSString *key;
+  id object;
 
-  key     = [NSString stringWithUTF8String:name];
-  object  = g_nextstep_settings_backend_get_ns_object (value);
+  key = [NSString stringWithUTF8String:name];
+  object = g_nextstep_settings_backend_get_ns_object (value);
 
   [backend->user_defaults setObject:object forKey:key];
 
   return FALSE;
 }
-
-
 
 static GVariant *
 g_nextstep_settings_backend_get_g_variant (id                  object,
@@ -364,10 +322,10 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
       if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
         return g_variant_new_string (string);
       else if (g_variant_type_equal (type, G_VARIANT_TYPE_OBJECT_PATH))
-        return g_variant_is_object_path  (string) ?
+        return g_variant_is_object_path (string) ?
                g_variant_new_object_path (string) : NULL;
       else if (g_variant_type_equal (type, G_VARIANT_TYPE_SIGNATURE))
-        return g_variant_is_signature  (string) ?
+        return g_variant_is_signature (string) ?
                g_variant_new_signature (string) : NULL;
     }
   else if ([object isKindOfClass:[NSDictionary class]])
@@ -375,8 +333,8 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
       if (g_variant_type_is_subtype_of (type, G_VARIANT_TYPE ("a{s*}")))
         {
           const GVariantType *value_type;
-          GVariantBuilder     builder;
-          NSString           *key;
+          GVariantBuilder builder;
+          NSString *key;
 
           value_type = g_variant_type_value (g_variant_type_element (type));
 
@@ -385,12 +343,12 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
           for (key in object)
             {
               GVariant *name;
-              id        value;
+              id value;
               GVariant *variant;
               GVariant *entry;
 
-              name    = g_variant_new_string ([key UTF8String]);
-              value   = [object objectForKey:key];
+              name = g_variant_new_string ([key UTF8String]);
+              value = [object objectForKey:key];
               variant = g_nextstep_settings_backend_get_g_variant (value, value_type);
 
               if (variant == NULL)
@@ -412,8 +370,8 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
       if (g_variant_type_is_subtype_of (type, G_VARIANT_TYPE_ARRAY))
         {
           const GVariantType *value_type;
-          GVariantBuilder     builder;
-          id                  value;
+          GVariantBuilder builder;
+          id value;
 
           value_type = g_variant_type_element (type);
           g_variant_builder_init (&builder, type);
@@ -438,8 +396,6 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
 
   return NULL;
 }
-
-
 
 static id
 g_nextstep_settings_backend_get_ns_object (GVariant *variant)
@@ -475,18 +431,18 @@ g_nextstep_settings_backend_get_ns_object (GVariant *variant)
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("a{s*}")))
     {
       NSMutableDictionary *dictionary;
-      GVariantIter         iter;
-      GVariant            *name;
-      GVariant            *value;
+      GVariantIter iter;
+      GVariant *name;
+      GVariant *value;
 
       dictionary = [NSMutableDictionary dictionaryWithCapacity:g_variant_iter_init (&iter, variant)];
 
       while (g_variant_iter_loop (&iter, "{s*}", &name, &value))
         {
           NSString *key;
-          id        object;
+          id object;
 
-          key    = [NSString stringWithUTF8String:g_variant_get_string (name, NULL)];
+          key = [NSString stringWithUTF8String:g_variant_get_string (name, NULL)];
           object = g_nextstep_settings_backend_get_ns_object (value);
 
           [dictionary setObject:object forKey:key];
@@ -497,8 +453,8 @@ g_nextstep_settings_backend_get_ns_object (GVariant *variant)
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_ARRAY))
     {
       NSMutableArray *array;
-      GVariantIter    iter;
-      GVariant       *value;
+      GVariantIter iter;
+      GVariant *value;
 
       array = [NSMutableArray arrayWithCapacity:g_variant_iter_init (&iter, variant)];
 
