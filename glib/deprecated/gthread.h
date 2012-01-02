@@ -162,7 +162,7 @@ struct _GStaticRecMutex
     pthread_t owner;
 #endif
     gdouble dummy;
-  };
+  } unused;
 };
 
 #define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
