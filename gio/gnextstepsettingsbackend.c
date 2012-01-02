@@ -46,6 +46,7 @@ struct _GNextstepSettingsBackend
 
   /*< private >*/
   NSUserDefaults   *user_defaults;
+  GMutex            mutex;
 };
 
 
@@ -129,6 +130,8 @@ g_nextstep_settings_backend_init (GNextstepSettingsBackend *self)
 
   self->user_defaults = [[NSUserDefaults standardUserDefaults] retain];
 
+  g_mutex_init (&self->mutex);
+
   [pool drain];
 }
 
@@ -137,11 +140,14 @@ g_nextstep_settings_backend_init (GNextstepSettingsBackend *self)
 static void
 g_nextstep_settings_backend_finalize (GObject *self)
 {
+  GNextstepSettingsBackend *backend = G_NEXTSTEP_SETTINGS_BACKEND (self);
   NSAutoreleasePool *pool;
 
   pool = [[NSAutoreleasePool alloc] init];
 
-  [G_NEXTSTEP_SETTINGS_BACKEND (self)->user_defaults release];
+  g_mutex_clear (&backend->mutex);
+
+  [backend->user_defaults release];
 
   [pool drain];
 
@@ -156,6 +162,7 @@ g_nextstep_settings_backend_read (GSettingsBackend   *backend,
                                   const GVariantType *expected_type,
                                   gboolean            default_value)
 {
+  GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
   NSString          *name;
   id                 value;
@@ -166,7 +173,11 @@ g_nextstep_settings_backend_read (GSettingsBackend   *backend,
 
   pool    = [[NSAutoreleasePool alloc] init];
   name    = [NSString stringWithUTF8String:key];
-  value   = [G_NEXTSTEP_SETTINGS_BACKEND (backend)->user_defaults objectForKey:name];
+
+  g_mutex_lock (&self->mutex);
+  value = [self->user_defaults objectForKey:name];
+  g_mutex_unlock (&self->mutex);
+
   variant = g_nextstep_settings_backend_get_g_variant (value, expected_type);
 
   [pool drain];
@@ -191,11 +202,15 @@ g_nextstep_settings_backend_write (GSettingsBackend *backend,
                                    GVariant         *value,
                                    gpointer          origin_tag)
 {
+  GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
 
   pool = [[NSAutoreleasePool alloc] init];
 
-  g_nextstep_settings_backend_write_pair ((gpointer) key, value, backend);
+  g_mutex_lock (&self->mutex);
+  g_nextstep_settings_backend_write_pair ((gpointer) key, value, self);
+  g_mutex_unlock (&self->mutex);
+
   g_settings_backend_changed (backend, key, origin_tag);
 
   [pool drain];
@@ -210,11 +225,14 @@ g_nextstep_settings_backend_write_tree (GSettingsBackend *backend,
                                         GTree            *tree,
                                         gpointer          origin_tag)
 {
+  GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
 
   pool = [[NSAutoreleasePool alloc] init];
 
-  g_tree_foreach (tree, g_nextstep_settings_backend_write_pair, backend);
+  g_mutex_lock (&self->mutex);
+  g_tree_foreach (tree, g_nextstep_settings_backend_write_pair, self);
+  g_mutex_unlock (&self->mutex);
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 
   [pool drain];
@@ -229,23 +247,18 @@ g_nextstep_settings_backend_reset (GSettingsBackend *backend,
                                    const gchar      *key,
                                    gpointer          origin_tag)
 {
+  GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
-  NSUserDefaults    *user_defaults;
   NSString          *name;
-  id                 value;
-  id                 default_value;
 
   pool          = [[NSAutoreleasePool alloc] init];
-  user_defaults = G_NEXTSTEP_SETTINGS_BACKEND (backend)->user_defaults;
   name          = [NSString stringWithUTF8String:key];
-  value         = [user_defaults objectForKey:name];
 
-  [user_defaults removeObjectForKey:name];
+  g_mutex_lock (&self->mutex);
+  [self->user_defaults removeObjectForKey:name];
+  g_mutex_unlock (&self->mutex);
 
-  default_value = [user_defaults objectForKey:name];
-
-  if (default_value != value && ![default_value isEqual:value])
-    g_settings_backend_changed (backend, key, origin_tag);
+  g_settings_backend_changed (backend, key, origin_tag);
 
   [pool drain];
 }
@@ -271,11 +284,14 @@ g_nextstep_settings_backend_unsubscribe (GSettingsBackend *backend,
 static void
 g_nextstep_settings_backend_sync (GSettingsBackend *backend)
 {
+  GNextstepSettingsBackend *self = G_NEXTSTEP_SETTINGS_BACKEND (backend);
   NSAutoreleasePool *pool;
 
   pool = [[NSAutoreleasePool alloc] init];
 
-  [G_NEXTSTEP_SETTINGS_BACKEND (backend)->user_defaults synchronize];
+  g_mutex_lock (&self->mutex);
+  [self->user_defaults synchronize];
+  g_mutex_unlock (&self->mutex);
 
   [pool drain];
 }
@@ -296,11 +312,10 @@ g_nextstep_settings_backend_write_pair (gpointer name,
                                         gpointer value,
                                         gpointer data)
 {
-  GNextstepSettingsBackend *backend;
+  GNextstepSettingsBackend *backend = G_NEXTSTEP_SETTINGS_BACKEND (data);
   NSString                 *key;
   id                        object;
 
-  backend = G_NEXTSTEP_SETTINGS_BACKEND (data);
   key     = [NSString stringWithUTF8String:name];
   object  = g_nextstep_settings_backend_get_ns_object (value);
 
