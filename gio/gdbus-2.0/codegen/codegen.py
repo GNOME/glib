@@ -2330,8 +2330,7 @@ class CodeGenerator:
                          '    }\n'
                          %(i.name, s.name))
             self.c.write('  g_variant_unref (signal_variant);\n')
-            self.c.write('  g_list_foreach (connections, (GFunc)g_object_unref, NULL);\n')
-            self.c.write('  g_list_free (connections);\n')
+            self.c.write('  g_list_free_full (connections, g_object_unref);\n')
             self.c.write('}\n'
                          '\n')
 
@@ -2348,8 +2347,7 @@ class CodeGenerator:
         self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
         if len(i.properties) > 0:
             self.c.write('  g_value_array_free (skeleton->priv->properties);\n')
-        self.c.write('  g_list_foreach (skeleton->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
-        self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
+        self.c.write('  g_list_free_full (skeleton->priv->changed_properties, (GDestroyNotify) _changed_property_free);\n')
         self.c.write('  if (skeleton->priv->changed_properties_idle_source != NULL)\n')
         self.c.write('    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n')
         self.c.write('  g_main_context_unref (skeleton->priv->context);\n')
@@ -2435,8 +2433,7 @@ class CodeGenerator:
                          '                                         NULL);\n'
                          '        }\n'
                          '      g_variant_unref (signal_variant);\n'
-                         '      g_list_foreach (connections, (GFunc)g_object_unref, NULL);\n'
-                         '      g_list_free (connections);\n'
+                         '      g_list_free_full (connections, g_object_unref);\n'
                          '    }\n'
                          '  else\n'
                          '    {\n'
@@ -2444,8 +2441,7 @@ class CodeGenerator:
                          '      g_variant_builder_clear (&invalidated_builder);\n'
                          '    }\n'
                          %(i.name))
-            self.c.write('  g_list_foreach (skeleton->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
-            self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
+            self.c.write('  g_list_free_full (skeleton->priv->changed_properties, (GDestroyNotify) _changed_property_free);\n')
             self.c.write('  skeleton->priv->changed_properties = NULL;\n')
             self.c.write('  skeleton->priv->changed_properties_idle_source = NULL;\n')
             self.c.write('  g_mutex_unlock (&skeleton->priv->lock);\n')
