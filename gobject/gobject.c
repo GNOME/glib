@@ -3822,8 +3822,8 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
 
 /**
  * g_weak_ref_init: (skip)
- * @weak_ref_location: (inout): uninitialized or empty location for a weak
- *  reference
+ * @weak_ref: (inout): uninitialized or empty location for a weak
+ *    reference
  * @object: (allow-none): a #GObject or %NULL
  *
  * Initialise a non-statically-allocated #GWeakRef.
@@ -3839,17 +3839,17 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * Since: 2.32
  */
 void
-g_weak_ref_init (GWeakRef *weak_ref_location,
+g_weak_ref_init (GWeakRef *weak_ref,
                  gpointer  object)
 {
-  weak_ref_location->priv.p = NULL;
+  weak_ref->priv.p = NULL;
 
-  g_weak_ref_set (weak_ref_location, object);
+  g_weak_ref_set (weak_ref, object);
 }
 
 /**
  * g_weak_ref_clear: (skip)
- * @weak_ref_location: (inout): location of a weak reference, which
+ * @weak_ref: (inout): location of a weak reference, which
  *  may be empty
  *
  * Frees resources associated with a non-statically-allocated #GWeakRef.
@@ -3861,19 +3861,19 @@ g_weak_ref_init (GWeakRef *weak_ref_location,
  * Since: 2.32
  */
 void
-g_weak_ref_clear (GWeakRef *weak_ref_location)
+g_weak_ref_clear (GWeakRef *weak_ref)
 {
-  g_weak_ref_set (weak_ref_location, NULL);
+  g_weak_ref_set (weak_ref, NULL);
 
   /* be unkind */
-  weak_ref_location->priv.p = (void *) 0xccccccccu;
+  weak_ref->priv.p = (void *) 0xccccccccu;
 }
 
 /**
  * g_weak_ref_get: (skip)
- * @weak_ref_location: (inout): location of a weak reference to a #GObject
+ * @weak_ref: (inout): location of a weak reference to a #GObject
  *
- * If @weak_ref_location is not empty, atomically acquire a strong
+ * If @weak_ref is not empty, atomically acquire a strong
  * reference to the object it points to, and return that reference.
  *
  * This function is needed because of the potential race between taking
@@ -3884,20 +3884,20 @@ g_weak_ref_clear (GWeakRef *weak_ref_location)
  * by using g_object_unref().
  *
  * Returns: (transfer full) (type GObject.Object): the object pointed to
- *  by @weak_ref_location, or %NULL if it was empty
+ *     by @weak_ref, or %NULL if it was empty
  *
  * Since: 2.32
  */
 gpointer
-g_weak_ref_get (GWeakRef *weak_ref_location)
+g_weak_ref_get (GWeakRef *weak_ref)
 {
   gpointer object_or_null;
 
-  g_return_val_if_fail (weak_ref_location != NULL, NULL);
+  g_return_val_if_fail (weak_ref!= NULL, NULL);
 
   g_rw_lock_reader_lock (&weak_locations_lock);
 
-  object_or_null = weak_ref_location->priv.p;
+  object_or_null = weak_ref->priv.p;
 
   if (object_or_null != NULL)
     g_object_ref (object_or_null);
@@ -3909,10 +3909,10 @@ g_weak_ref_get (GWeakRef *weak_ref_location)
 
 /**
  * g_weak_ref_set: (skip)
- * @weak_ref_location: location for a weak reference
+ * @weak_ref: location for a weak reference
  * @object: (allow-none): a #GObject or %NULL
  *
- * Change the object to which @weak_ref_location points, or set it to
+ * Change the object to which @weak_ref points, or set it to
  * %NULL.
  *
  * You must own a strong reference on @object while calling this
@@ -3921,14 +3921,14 @@ g_weak_ref_get (GWeakRef *weak_ref_location)
  * Since: 2.32
  */
 void
-g_weak_ref_set (GWeakRef *weak_ref_location,
+g_weak_ref_set (GWeakRef *weak_ref,
                 gpointer  object)
 {
   GSList **weak_locations;
   GObject *new_object;
   GObject *old_object;
 
-  g_return_if_fail (weak_ref_location != NULL);
+  g_return_if_fail (weak_ref != NULL);
   g_return_if_fail (object == NULL || G_IS_OBJECT (object));
 
   new_object = object;
@@ -3950,10 +3950,10 @@ g_weak_ref_set (GWeakRef *weak_ref_location,
    * races.
    */
 
-  old_object = weak_ref_location->priv.p;
+  old_object = weak_ref->priv.p;
   if (new_object != old_object)
     {
-      weak_ref_location->priv.p = new_object;
+      weak_ref->priv.p = new_object;
 
       /* Remove the weak ref from the old object */
       if (old_object != NULL)
@@ -3962,7 +3962,7 @@ g_weak_ref_set (GWeakRef *weak_ref_location,
           /* for it to point to an object, the object must have had it added once */
           g_assert (weak_locations != NULL);
 
-          *weak_locations = g_slist_remove (*weak_locations, weak_ref_location);
+          *weak_locations = g_slist_remove (*weak_locations, weak_ref);
         }
 
       /* Add the weak ref to the new object */
@@ -3976,7 +3976,7 @@ g_weak_ref_set (GWeakRef *weak_ref_location,
               g_datalist_id_set_data_full (&new_object->qdata, quark_weak_locations, weak_locations, g_free);
             }
 
-          *weak_locations = g_slist_prepend (*weak_locations, weak_ref_location);
+          *weak_locations = g_slist_prepend (*weak_locations, weak_ref);
         }
     }
 
