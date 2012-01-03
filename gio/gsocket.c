@@ -1727,6 +1727,8 @@ g_socket_check_connect_result (GSocket  *socket,
   guint optlen;
   int value;
 
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
   if (!check_socket (socket, error))
     return FALSE;
 
@@ -2692,6 +2694,8 @@ GIOCondition
 g_socket_condition_check (GSocket      *socket,
 			  GIOCondition  condition)
 {
+  g_return_val_if_fail (G_IS_SOCKET (socket), 0);
+
   if (!check_socket (socket, NULL))
     return 0;
 
@@ -2748,6 +2752,8 @@ g_socket_condition_wait (GSocket       *socket,
 			 GCancellable  *cancellable,
 			 GError       **error)
 {
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
   if (!check_socket (socket, error))
     return FALSE;
 
@@ -2918,6 +2924,8 @@ g_socket_send_message (GSocket                *socket,
 {
   GOutputVector one_vector;
   char zero;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
   if (!check_socket (socket, error))
     return -1;
@@ -3237,6 +3245,8 @@ g_socket_receive_message (GSocket                 *socket,
 {
   GInputVector one_vector;
   char one_byte;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
   if (!check_socket (socket, error))
     return -1;
