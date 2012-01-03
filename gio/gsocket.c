@@ -1837,7 +1837,7 @@ g_socket_receive_with_blocking (GSocket       *socket,
 {
   gssize ret;
 
-  g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, FALSE);
+  g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, -1);
 
   if (!check_socket (socket, error))
     return -1;
@@ -2009,7 +2009,7 @@ g_socket_send_with_blocking (GSocket       *socket,
 {
   gssize ret;
 
-  g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, FALSE);
+  g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, -1);
 
   if (!check_socket (socket, error))
     return -1;
