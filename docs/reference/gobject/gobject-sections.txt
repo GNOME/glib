@@ -286,6 +286,13 @@ g_object_watch_closure
 g_object_run_dispose
 G_OBJECT_WARN_INVALID_PROPERTY_ID
 
+<SUBSECTION Weak references>
+GWeakRef
+g_weak_ref_init
+g_weak_ref_clear
+g_weak_ref_get
+g_weak_ref_set
+
 <SUBSECTION Standard>
 G_INITIALLY_UNOWNED
 G_INITIALLY_UNOWNED_CLASS
