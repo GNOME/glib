@@ -2354,6 +2354,7 @@ g_array_sort
 g_array_sort_with_data
 g_array_index
 g_array_set_size
+g_array_set_clear_func
 g_array_free
 </SECTION>
 

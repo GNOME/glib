@@ -104,6 +104,8 @@ void    g_array_sort              (GArray           *array,
 void    g_array_sort_with_data    (GArray           *array,
 				   GCompareDataFunc  compare_func,
 				   gpointer          user_data);
+void    g_array_set_clear_func    (GArray           *array,
+                                   GDestroyNotify    clear_func);
 
 /* Resizable pointer array.  This interface is much less complicated
  * than the above.  Add appends a pointer.  Remove fills any cleared 

@@ -110,6 +110,7 @@ struct _GRealArray
   guint   zero_terminated : 1;
   guint   clear : 1;
   gint    ref_count;
+  GDestroyNotify clear_func;
 };
 
 /**
@@ -208,6 +209,34 @@ GArray* g_array_sized_new (gboolean zero_terminated,
     }
 
   return (GArray*) array;
+}
+
+/**
+ * g_array_set_clear_func:
+ * @array: A #GArray
+ * @clear_func: a function to clear an element of @array
+ *
+ * Sets a function to clear an element of @array.
+ *
+ * The @clear_func will be called when an element in the array
+ * data segment is removed and when the array is freed and data
+ * segment is deallocated as well.
+ *
+ * Note that in contrast with other uses of #GDestroyNotify
+ * functions, @clear_func is expected to clear the contents of
+ * the array element it is given, but not free the element itself.
+ *
+ * Since: 2.32
+ */
+void
+g_array_set_clear_func (GArray         *array,
+                        GDestroyNotify  clear_func)
+{
+  GRealArray *rarray = (GRealArray *) array;
+
+  g_return_if_fail (array != NULL);
+
+  rarray->clear_func = clear_func;
 }
 
 /**
@@ -325,6 +354,14 @@ array_free (GRealArray     *array,
 
   if (flags & FREE_SEGMENT)
     {
+      if (array->clear_func != NULL)
+        {
+          guint i;
+
+          for (i = 0; i < array->len; i++)
+            array->clear_func (g_array_elt_pos (array, i));
+        }
+
       g_free (array->data);
       segment = NULL;
     }
@@ -514,8 +551,8 @@ g_array_set_size (GArray *farray,
       if (array->clear)
 	g_array_elt_zero (array, array->len, length - array->len);
     }
-  else if (G_UNLIKELY (g_mem_gc_friendly) && length < array->len)
-    g_array_elt_zero (array, length, array->len - length);
+  else if (length < array->len)
+    g_array_remove_range (farray, length, array->len - length);
   
   array->len = length;
   
@@ -543,11 +580,14 @@ g_array_remove_index (GArray *farray,
 
   g_return_val_if_fail (index_ < array->len, NULL);
 
+  if (array->clear_func != NULL)
+    array->clear_func (g_array_elt_pos (array, index_));
+
   if (index_ != array->len - 1)
     g_memmove (g_array_elt_pos (array, index_),
-	       g_array_elt_pos (array, index_ + 1),
-	       g_array_elt_len (array, array->len - index_ - 1));
-  
+               g_array_elt_pos (array, index_ + 1),
+               g_array_elt_len (array, array->len - index_ - 1));
+
   array->len -= 1;
 
   if (G_UNLIKELY (g_mem_gc_friendly))
@@ -579,10 +619,13 @@ g_array_remove_index_fast (GArray *farray,
 
   g_return_val_if_fail (index_ < array->len, NULL);
 
+  if (array->clear_func != NULL)
+    array->clear_func (g_array_elt_pos (array, index_));
+
   if (index_ != array->len - 1)
-    memcpy (g_array_elt_pos (array, index_), 
-	    g_array_elt_pos (array, array->len - 1),
-	    g_array_elt_len (array, 1));
+    memcpy (g_array_elt_pos (array, index_),
+            g_array_elt_pos (array, array->len - 1),
+            g_array_elt_len (array, 1));
   
   array->len -= 1;
 
@@ -617,9 +660,17 @@ g_array_remove_range (GArray *farray,
   g_return_val_if_fail (index_ < array->len, NULL);
   g_return_val_if_fail (index_ + length <= array->len, NULL);
 
+  if (array->clear_func != NULL)
+    {
+      guint i;
+
+      for (i = 0; i < length; i++)
+        array->clear_func (g_array_elt_pos (array, index_ + i));
+    }
+
   if (index_ + length != array->len)
-    g_memmove (g_array_elt_pos (array, index_), 
-               g_array_elt_pos (array, index_ + length), 
+    g_memmove (g_array_elt_pos (array, index_),
+               g_array_elt_pos (array, index_ + length),
                (array->len - (index_ + length)) * array->elt_size);
 
   array->len -= length;

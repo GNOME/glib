@@ -304,6 +304,43 @@ array_sort_with_data (void)
   g_array_free (garray, TRUE);
 }
 
+static gint num_clear_func_invocations = 0;
+
+static void
+my_clear_func (gpointer data)
+{
+  num_clear_func_invocations += 1;
+}
+
+static void
+array_clear_func (void)
+{
+  GArray *garray;
+  gint i;
+  gint cur;
+
+  garray = g_array_new (FALSE, FALSE, sizeof (gint));
+  g_array_set_clear_func (garray, my_clear_func);
+
+  for (i = 0; i < 10; i++)
+    {
+      cur = g_random_int_range (0, 100);
+      g_array_append_val (garray, cur);
+    }
+
+  g_array_remove_index (garray, 9);
+  g_assert_cmpint (num_clear_func_invocations, ==, 1);
+
+  g_array_remove_range (garray, 5, 3);
+  g_assert_cmpint (num_clear_func_invocations, ==, 4);
+
+  g_array_remove_index_fast (garray, 4);
+  g_assert_cmpint (num_clear_func_invocations, ==, 5);
+
+  g_array_free (garray, TRUE);
+  g_assert_cmpint (num_clear_func_invocations, ==, 10);
+}
+
 static void
 pointer_array_add (void)
 {
@@ -812,6 +849,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/large-size", array_large_size);
   g_test_add_func ("/array/sort", array_sort);
   g_test_add_func ("/array/sort-with-data", array_sort_with_data);
+  g_test_add_func ("/array/clear-func", array_clear_func);
 
   /* pointer arrays */
   g_test_add_func ("/pointerarray/add", pointer_array_add);
