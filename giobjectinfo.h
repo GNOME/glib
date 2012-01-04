@@ -108,6 +108,9 @@ GIVFuncInfo *     g_object_info_get_vfunc        (GIObjectInfo *info,
 						  gint          n);
 GIVFuncInfo *     g_object_info_find_vfunc       (GIObjectInfo *info,
                                                   const gchar  *name);
+GIVFuncInfo *     g_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
+								const gchar   *name,
+								GIObjectInfo **implementor);
 gint              g_object_info_get_n_constants  (GIObjectInfo *info);
 GIConstantInfo *  g_object_info_get_constant     (GIObjectInfo *info,
 						  gint          n);

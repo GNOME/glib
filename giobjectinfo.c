@@ -660,6 +660,66 @@ g_object_info_find_vfunc (GIObjectInfo *info,
 }
 
 /**
+ * g_object_info_find_vfunc_using_interfaces:
+ * @info: a #GIObjectInfo
+ * @name: name of method to obtain
+ * @implementor: (out) (transfer full): The implementor of the interface
+ *
+ * Locate a virtual function slot with name @name, searching both the object
+ * @info and any interfaces it implements.  Note that the namespace for
+ * virtuals is distinct from that of methods; there may or may not be a
+ * concrete method associated for a virtual. If there is one, it may be
+ * retrieved using g_vfunc_info_get_invoker(), otherwise %NULL will be
+ * returned.
+ *
+ * Note that this function does *not* search parent classes; you will have
+ * to chain up if that's desired.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
+GIVFuncInfo *
+g_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
+                                           const gchar   *name,
+                                           GIObjectInfo **implementor)
+{
+  GIVFuncInfo *result = NULL;
+  GIObjectInfo *implementor_result = NULL;
+
+  result = g_object_info_find_vfunc (info, name);
+  if (result)
+    implementor_result = g_base_info_ref ((GIBaseInfo*) info);
+
+  if (result == NULL)
+    {
+      int n_interfaces;
+      int i;
+
+      n_interfaces = g_object_info_get_n_interfaces (info);
+      for (i = 0; i < n_interfaces; ++i)
+	{
+	  GIInterfaceInfo *iface_info;
+
+	  iface_info = g_object_info_get_interface (info, i);
+
+	  result = g_interface_info_find_vfunc (iface_info, name);
+
+	  if (result != NULL)
+	    {
+	      implementor_result = iface_info;
+	      break;
+	    }
+	  g_base_info_unref ((GIBaseInfo*) iface_info);
+	}
+    }
+  if (implementor)
+    *implementor = implementor_result;
+  else if (implementor_result != NULL)
+    g_base_info_unref ((GIBaseInfo*) implementor_result);
+  return result;
+}
+
+/**
  * g_object_info_get_n_constants:
  * @info: a #GIObjectInfo
  *
