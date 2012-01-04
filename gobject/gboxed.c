@@ -21,11 +21,14 @@
 
 #include <string.h>
 
+/* for GValueArray */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "gboxed.h"
+#include "gclosure.h"
 #include "gtype-private.h"
 #include "gvalue.h"
 #include "gvaluearray.h"
-#include "gclosure.h"
 #include "gvaluecollector.h"
 
 

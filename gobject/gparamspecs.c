@@ -26,9 +26,12 @@
 
 #include <string.h>
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "gparamspecs.h"
 #include "gtype-private.h"
 #include "gvaluecollector.h"
+
 #include "gvaluearray.h"
 
 

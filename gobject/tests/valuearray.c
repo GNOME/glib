@@ -1,3 +1,4 @@
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include <glib-object.h>
 
 static gint

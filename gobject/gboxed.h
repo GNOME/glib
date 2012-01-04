@@ -111,11 +111,15 @@ GType    g_boxed_type_register_static     (const gchar   *name,
  *
  * The type ID of the "GValueArray" type which is a boxed type,
  * used to pass around pointers to GValueArrays.
+ *
+ * Deprecated: 2.32: Use #GArray instead of #GValueArray
  */
 #define G_TYPE_VALUE_ARRAY (g_value_array_get_type ())
 
 GType   g_closure_get_type         (void) G_GNUC_CONST;
 GType   g_value_get_type           (void) G_GNUC_CONST;
+
+GLIB_DEPRECATED
 GType   g_value_array_get_type     (void) G_GNUC_CONST;
 
 G_END_DECLS

@@ -27,7 +27,6 @@
 
 #include	<gobject/gvalue.h>
 
-
 G_BEGIN_DECLS
 
 
@@ -51,22 +50,41 @@ struct _GValueArray
 
 
 /* --- prototypes --- */
+GLIB_DEPRECATED_FOR(g_array_index)
 GValue*		g_value_array_get_nth	     (GValueArray	*value_array,
 					      guint		 index_);
+
+GLIB_DEPRECATED_FOR(g_array_new)
 GValueArray*	g_value_array_new	     (guint		 n_prealloced);
+
+GLIB_DEPRECATED_FOR(g_array_unref)
 void		g_value_array_free	     (GValueArray	*value_array);
+
+GLIB_DEPRECATED_FOR(g_array_ref)
 GValueArray*	g_value_array_copy	     (const GValueArray *value_array);
+
+GLIB_DEPRECATED_FOR(g_array_prepend_vals)
 GValueArray*	g_value_array_prepend	     (GValueArray	*value_array,
 					      const GValue	*value);
+
+GLIB_DEPRECATED_FOR(g_array_append_vals)
 GValueArray*	g_value_array_append	     (GValueArray	*value_array,
 					      const GValue	*value);
+
+GLIB_DEPRECATED_FOR(g_array_insert_vals)
 GValueArray*	g_value_array_insert	     (GValueArray	*value_array,
 					      guint		 index_,
 					      const GValue	*value);
+
+GLIB_DEPRECATED_FOR(g_array_remove_index)
 GValueArray*	g_value_array_remove	     (GValueArray	*value_array,
 					      guint		 index_);
+
+GLIB_DEPRECATED_FOR(g_array_sort)
 GValueArray*	g_value_array_sort	     (GValueArray	*value_array,
 					      GCompareFunc	 compare_func);
+
+GLIB_DEPRECATED_FOR(g_array_sort_with_data)
 GValueArray*	g_value_array_sort_with_data (GValueArray	*value_array,
 					      GCompareDataFunc	 compare_func,
 					      gpointer		 user_data);

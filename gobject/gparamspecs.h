@@ -451,6 +451,8 @@ G_BEGIN_DECLS
  * G_TYPE_PARAM_VALUE_ARRAY:
  * 
  * The #GType of #GParamSpecValueArray.
+ *
+ * Deprecated: 2.32: Use #GArray instead of #GValueArray
  */
 #define	G_TYPE_PARAM_VALUE_ARRAY	   (g_param_spec_types[18])
 /**
@@ -460,6 +462,8 @@ G_BEGIN_DECLS
  * Checks whether the given #GParamSpec is of type %G_TYPE_PARAM_VALUE_ARRAY.
  * 
  * Returns: %TRUE on success.
+ *
+ * Deprecated: 2.32: Use #GArray instead of #GValueArray
  */
 #define G_IS_PARAM_SPEC_VALUE_ARRAY(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_VALUE_ARRAY))
 /**
@@ -467,6 +471,8 @@ G_BEGIN_DECLS
  * @pspec: a valid #GParamSpec instance
  * 
  * Cast a #GParamSpec instance into a #GParamSpecValueArray.
+ *
+ * Deprecated: 2.32: Use #GArray instead of #GValueArray
  */
 #define G_PARAM_SPEC_VALUE_ARRAY(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_VALUE_ARRAY, GParamSpecValueArray))
 
