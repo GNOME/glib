@@ -1292,6 +1292,10 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                    TRUE);
           data.pid_envvar = (char *)g_environ_getenv (envp, "GIO_LAUNCHED_DESKTOP_FILE_PID");
         }
+      else
+        {
+          data.pid_envvar = NULL;
+        }
 
       display = NULL;
       sn_id = NULL;
