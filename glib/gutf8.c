@@ -220,10 +220,12 @@ g_utf8_prev_char (const gchar *p)
  * @max: the maximum number of bytes to examine. If @max
  *       is less than 0, then the string is assumed to be
  *       nul-terminated. If @max is 0, @p will not be examined and
- *       may be %NULL.
+ *       may be %NULL. If @max is greater than 0, up to @max
+ *       bytes are examined
  *
  * Computes the length of the string in characters, not including
- * the terminating nul character.
+ * the terminating nul character. If the @max'th byte falls in the
+ * middle of a character, the last (partial) character is not counted.
  *
  * Return value: the length of the string in characters
  **/
