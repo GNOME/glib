@@ -195,8 +195,7 @@ g_file_monitor_dispose (GObject *object)
       g_source_unref (priv->pending_file_change_source);
       priv->pending_file_change_source = NULL;
     }
-  g_slist_foreach (priv->pending_file_changes, (GFunc) file_change_free, NULL);
-  g_slist_free (priv->pending_file_changes);
+  g_slist_free_full (priv->pending_file_changes, (GDestroyNotify) file_change_free);
   priv->pending_file_changes = NULL;
 
   /* Make sure we cancel on last unref */
