@@ -213,6 +213,12 @@
  * Assert that the last forked test failed.
  * See g_test_trap_fork().
  *
+ * This is sometimes used to test situations that are formally considered to
+ * be undefined behaviour, like inputs that fail a g_return_if_fail()
+ * check. In these situations you should skip the entire test, including the
+ * call to g_test_trap_fork(), unless g_test_undefined() returns %TRUE
+ * to indicate that undefined behaviour may be tested.
+ *
  * Since: 2.16
  */
 
@@ -245,6 +251,12 @@
  *
  * Assert that the stderr output of the last forked test
  * matches @serrpattern. See  g_test_trap_fork().
+ *
+ * This is sometimes used to test situations that are formally considered to
+ * be undefined behaviour, like inputs that fail a g_return_if_fail()
+ * check. In these situations you should skip the entire test, including the
+ * call to g_test_trap_fork(), unless g_test_undefined() returns %TRUE
+ * to indicate that undefined behaviour may be tested.
  *
  * Since: 2.16
  */
