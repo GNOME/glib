@@ -478,6 +478,9 @@ test_interface_default_init (TestInterfaceInterface *iface)
 
         if (perms[j] == NULL)
           {
+            if (!g_test_undefined ())
+              continue;
+
             /* we think that this is impossible.  make sure. */
             if (g_test_trap_fork (G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR))
               {
@@ -708,6 +711,16 @@ test_param_implement (void)
       for (use_this_flag = 0; use_this_flag < 16; use_this_flag++)
         for (use_this_type = 0; use_this_type < 4; use_this_type++)
           {
+            if (!g_test_undefined ())
+              {
+                /* only test the valid (defined) cases, e.g. under valgrind */
+                if (valid_impl_flags[change_this_flag][use_this_flag] != 'v')
+                  continue;
+
+                if (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type] != 'v')
+                  continue;
+              }
+
             if (g_test_trap_fork (G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR))
               {
                 g_type_class_ref (test_implementation_get_type ());
