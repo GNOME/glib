@@ -294,7 +294,19 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
 				   GAsyncResult    *res,
 				   GError         **error)
 {
-  return TRUE; /* Errors handled by base impl */
+  /* Although g_async_initable_init_finish() does this error handling
+   * as well, we do it here too, so that a class that reimplements
+   * GAsyncInitable can properly run its parent class's implementation
+   * by directly invoking its ->init_async() and ->init_finish().
+   */
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
+
+  return TRUE;
 }
 
 /**
