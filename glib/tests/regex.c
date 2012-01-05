@@ -268,8 +268,7 @@ test_match_next (gconstpointer d)
     }
 
   g_regex_unref (regex);
-  g_slist_foreach (matches, free_match, NULL);
-  g_slist_free (matches);
+  g_slist_free_full (matches, free_match);
 }
 
 #define TEST_MATCH_NEXT0(_pattern, _string, _string_len, _start_position) { \

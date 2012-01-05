@@ -587,12 +587,8 @@ tokenize_command_line (const gchar *command_line,
 
  error:
   g_assert (error == NULL || *error != NULL);
-  
-  if (retval)
-    {
-      g_slist_foreach (retval, (GFunc)g_free, NULL);
-      g_slist_free (retval);
-    }
+
+  g_slist_free_full (retval, g_free);
 
   return NULL;
 }
@@ -667,8 +663,7 @@ g_shell_parse_argv (const gchar *command_line,
       ++i;
     }
   
-  g_slist_foreach (tokens, (GFunc)g_free, NULL);
-  g_slist_free (tokens);
+  g_slist_free_full (tokens, g_free);
   
   if (argcp)
     *argcp = argc;
@@ -684,8 +679,7 @@ g_shell_parse_argv (const gchar *command_line,
 
   g_assert (error == NULL || *error != NULL);
   g_strfreev (argv);
-  g_slist_foreach (tokens, (GFunc) g_free, NULL);
-  g_slist_free (tokens);
+  g_slist_free_full (tokens, g_free);
   
   return FALSE;
 }
