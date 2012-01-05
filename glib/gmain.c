@@ -594,19 +594,19 @@ g_main_context_default (void)
 }
 
 static void
+free_context (gpointer data)
+{
+  GMainContext *context = data;
+
+  g_main_context_release (context);
+  if (context)
+    g_main_context_unref (context);
+}
+
+static void
 free_context_stack (gpointer data)
 {
-  GQueue *stack = data;
-  GMainContext *context;
-
-  while (!g_queue_is_empty (stack))
-    {
-      context = g_queue_pop_head (stack);
-      g_main_context_release (context);
-      if (context)
-        g_main_context_unref (context);
-    }
-  g_queue_free (stack);
+  g_queue_free_full((GQueue *) data, (GDestroyNotify) free_context);
 }
 
 static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);

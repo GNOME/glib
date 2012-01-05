@@ -465,13 +465,9 @@ _g_dbus_worker_unref (GDBusWorker *worker)
       if (worker->read_fd_list != NULL)
         g_object_unref (worker->read_fd_list);
 
-      g_queue_foreach (worker->received_messages_while_frozen, (GFunc) g_object_unref, NULL);
-      g_queue_free (worker->received_messages_while_frozen);
-
+      g_queue_free_full (worker->received_messages_while_frozen, (GDestroyNotify) g_object_unref);
       g_mutex_clear (&worker->write_lock);
-      g_queue_foreach (worker->write_queue, (GFunc) message_to_write_data_free, NULL);
-      g_queue_free (worker->write_queue);
-
+      g_queue_free_full (worker->write_queue, (GDestroyNotify) message_to_write_data_free);
       g_free (worker->read_buffer);
 
       g_free (worker);
@@ -1411,9 +1407,7 @@ iostream_close_cb (GObject      *source_object,
   g_clear_error (&error);
 
   /* all messages queued for sending are discarded */
-  g_queue_foreach (send_queue, (GFunc) message_to_write_data_free, NULL);
-  g_queue_free (send_queue);
-
+  g_queue_free_full (send_queue, (GDestroyNotify) message_to_write_data_free);
   /* all queued flushes fail */
   error = g_error_new (G_IO_ERROR, G_IO_ERROR_CANCELLED,
                        _("Operation was cancelled"));
