@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include "gfilteroutputstream.h"
-#include "gsimpleasyncresult.h"
 #include "goutputstream.h"
 #include "glibintl.h"
 

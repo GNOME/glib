@@ -23,7 +23,6 @@
 #include "config.h"
 #include "gfilterinputstream.h"
 #include "ginputstream.h"
-#include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
 
@@ -77,8 +76,6 @@ G_DEFINE_ABSTRACT_TYPE (GFilterInputStream, g_filter_input_stream, G_TYPE_INPUT_
 typedef struct
 {
   gboolean close_base;
-  GAsyncReadyCallback outstanding_callback;
-  gpointer outstanding_user_data;
 } GFilterInputStreamPrivate;
 
 static void
