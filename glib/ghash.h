@@ -78,7 +78,7 @@ gboolean    g_hash_table_steal             (GHashTable     *hash_table,
 void        g_hash_table_steal_all         (GHashTable     *hash_table);
 gpointer    g_hash_table_lookup            (GHashTable     *hash_table,
                                             gconstpointer   key);
-gboolean    g_hash_table_has               (GHashTable     *hash_table,
+gboolean    g_hash_table_contains          (GHashTable     *hash_table,
                                             gconstpointer   lookup_key);
 gboolean    g_hash_table_lookup_extended   (GHashTable     *hash_table,
                                             gconstpointer   lookup_key,
