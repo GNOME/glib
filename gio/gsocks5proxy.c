@@ -206,7 +206,7 @@ set_auth_msg (guint8	  *msg,
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
 			   _("Username or password is too long for SOCKSv5 "
-			     "protocol)."));
+			     "protocol."));
       return FALSE;
     }
 
