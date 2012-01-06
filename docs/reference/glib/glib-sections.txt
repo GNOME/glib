@@ -2111,6 +2111,7 @@ g_slist_index
 GQueue
 g_queue_new
 g_queue_free
+g_queue_free_full
 G_QUEUE_INIT
 g_queue_init
 g_queue_clear
