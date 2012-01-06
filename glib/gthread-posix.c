@@ -195,9 +195,6 @@ g_mutex_clear (GMutex *mutex)
  * current thread will block until @mutex is unlocked by the other
  * thread.
  *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
- *
  * <note>#GMutex is neither guaranteed to be recursive nor to be
  * non-recursive.  As such, calling g_mutex_lock() on a #GMutex that has
  * already been locked by the same thread results in undefined behaviour
@@ -221,9 +218,6 @@ g_mutex_lock (GMutex *mutex)
  *
  * Calling g_mutex_unlock() on a mutex that is not locked by the
  * current thread leads to undefined behaviour.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
  */
 void
 g_mutex_unlock (GMutex *mutex)
@@ -241,9 +235,6 @@ g_mutex_unlock (GMutex *mutex)
  * Tries to lock @mutex. If @mutex is already locked by another thread,
  * it immediately returns %FALSE. Otherwise it locks @mutex and returns
  * %TRUE.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return %TRUE.
  *
  * <note>#GMutex is neither guaranteed to be recursive nor to be
  * non-recursive.  As such, calling g_mutex_lock() on a #GMutex that has
@@ -764,9 +755,6 @@ g_cond_wait (GCond  *cond,
  * If no threads are waiting for @cond, this function has no effect.
  * It is good practice to hold the same lock as the waiting thread
  * while calling this function, though not required.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
  */
 void
 g_cond_signal (GCond *cond)
@@ -785,9 +773,6 @@ g_cond_signal (GCond *cond)
  * If no threads are waiting for @cond, this function has no effect.
  * It is good practice to lock the same mutex as the waiting threads
  * while calling this function, though not required.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
  */
 void
 g_cond_broadcast (GCond *cond)
