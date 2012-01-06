@@ -2,7 +2,7 @@
 # Copyright © 2010 GNOME i18n Project for Vietnamese.
 # T.M.Thanh <tmthanh@yahoo.com>, 2002.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2010.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2011.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2012.
 #
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-12-19 15:34+0000\n"
-"PO-Revision-Date: 2012-01-06 16:48+0700\n"
+"PO-Revision-Date: 2012-01-06 16:57+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -284,10 +284,10 @@ msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Đã huỷ thông qua GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error statting directory `%s': %s"
 msgid "Error when getting information for directory `%s': %s"
-msgstr "Gặp lỗi khi stat() thư mục '%s': %s"
+msgstr "Gặp lỗi khi lấy thông tin thư mục '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
@@ -617,10 +617,9 @@ msgid "Error return with empty body"
 msgstr "Lỗi trả về thân trống rỗng"
 
 #: ../gio/gdbusprivate.c:2071
-#, fuzzy
 #| msgid "Unable to load /var/lib/dbus/machine-id: "
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Không thể nạp /var/lib/dbus/machine-id: "
+msgstr "Không thể nạp /var/lib/dbus/machine-id hoặc /etc/machine-id: "
 
 #: ../gio/gdbusproxy.c:1529
 #, c-format
@@ -1131,22 +1130,22 @@ msgstr "Không thể quản lý phiên bản đã cung cấp của bảng mã bi
 
 #: ../gio/ginetaddressmask.c:173
 msgid "No address specified"
-msgstr ""
+msgstr "Chưa xác định địa chỉ"
 
 #: ../gio/ginetaddressmask.c:181
 #, c-format
 msgid "Length %u is too long for address"
-msgstr ""
+msgstr "%u là quá dài cho địa chỉ"
 
 #: ../gio/ginetaddressmask.c:214
 msgid "Address has bits set beyond prefix length"
-msgstr ""
+msgstr "Địa chỉ đặt bit vượt độ dài prefix"
 
 #: ../gio/ginetaddressmask.c:293
-#, fuzzy, c-format
+#, c-format
 #| msgid "could not get local address: %s"
 msgid "Could not parse '%s' as IP address mask"
-msgstr "không thể lấy địa chỉ cục bộ: %s"
+msgstr "không thể phân tích '%s' làm mặt nạ địa chỉ IP"
 
 #: ../gio/ginetsocketaddress.c:181 ../gio/ginetsocketaddress.c:198
 #: ../gio/gunixsocketaddress.c:221
@@ -1212,7 +1211,6 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> đã được xác định rồi"
 
 #: ../gio/glib-compile-schemas.c:884
-#, fuzzy
 #| msgid "can not add keys to a 'list-of' schema"
 msgid "cannot add keys to a 'list-of' schema"
 msgstr "không thể thêm khoá vào schema 'list-of'"
@@ -1596,16 +1594,16 @@ msgid " (invalid encoding)"
 msgstr " (bảng mã không hợp lệ)"
 
 #: ../gio/glocalfileinfo.c:1527 ../gio/glocalfileoutputstream.c:843
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error opening nonce file `%s': %s"
 msgid "Error when getting information for file '%s': %s"
-msgstr "Gặp lỗi khi mở nonce-file `%s': %s"
+msgstr "Lỗi lấy thông tin cho tập tin '%s': %s"
 
 #: ../gio/glocalfileinfo.c:1779
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error stating file descriptor: %s"
 msgid "Error when getting information for file descriptor: %s"
-msgstr "Gặp lỗi khi lấy trạng thái về mô tả tập tin: %s"
+msgstr "Lỗi lấy thông tin cho bộ mô tả tập tin: %s"
 
 #: ../gio/glocalfileinfo.c:1824
 msgid "Invalid attribute type (uint32 expected)"
@@ -1838,31 +1836,29 @@ msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Tên máy '%s' có '[' nhưng không có ']'"
 
 #: ../gio/gnetworkmonitorbase.c:178
-#, fuzzy
 #| msgid "Network unreachable through SOCKSv5 proxy."
 msgid "Network unreachable"
-msgstr "Không thể tiếp cận mạng thông qua máy chủ SOCKSv5."
+msgstr "Mạng không thể tiếp cận"
 
 #: ../gio/gnetworkmonitorbase.c:218
 msgid "Host unreachable"
-msgstr ""
+msgstr "Máy không thể tiếp cận"
 
 #: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
 #: ../gio/gnetworkmonitornetlink.c:120
-#, fuzzy, c-format
+#, c-format
 #| msgid "could not get remote address: %s"
 msgid "Could not create network monitor: %s"
-msgstr "không thể lấy địa chỉ ở xa: %s"
+msgstr "không thể tạo trình theo dõi mạng: %s"
 
 #: ../gio/gnetworkmonitornetlink.c:129
 msgid "Could not create network monitor: "
-msgstr ""
+msgstr "Không thể tạo trình theo dõi mạng: "
 
 #: ../gio/gnetworkmonitornetlink.c:177
-#, fuzzy
 #| msgid "could not get remote address: %s"
 msgid "Could not get network status: "
-msgstr "không thể lấy địa chỉ ở xa: %s"
+msgstr "Không thể lấy trạng thái mạng: "
 
 #: ../gio/goutputstream.c:210 ../gio/goutputstream.c:415
 msgid "Output stream doesn't implement write"
@@ -2036,7 +2032,6 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:617
-#, fuzzy
 #| msgid ""
 #| "Usage:\n"
 #| "  gsettings COMMAND [ARGS...]\n"
@@ -2081,7 +2076,7 @@ msgid ""
 "\n"
 msgstr ""
 "Cách dùng:\n"
-"  gsettings LỆNH [ĐỐI SỐ...]\n"
+"  gsettings [--schemadir SCHEMADIR] LỆNH [ĐỐI SỐ...]\n"
 "\n"
 "Commands:\n"
 "  help                      Hiện thông tin này\n"
@@ -2102,7 +2097,7 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:639
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Usage:\n"
 #| "  gsettings %s %s\n"
@@ -2117,7 +2112,7 @@ msgid ""
 "\n"
 msgstr ""
 "Cách dùng:\n"
-"  gsettings %s %s\n"
+"  gsettings [--schemadir SCHEMADIR] %s %s\n"
 "\n"
 "%s\n"
 "\n"
@@ -2128,7 +2123,7 @@ msgstr "Đối số:\n"
 
 #: ../gio/gsettings-tool.c:645
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr ""
+msgstr "  SCHEMADIR Thư mục cần tìm schema bổ sung\n"
 
 #: ../gio/gsettings-tool.c:649
 msgid "  COMMAND   The (optional) command to explain\n"
@@ -2270,19 +2265,18 @@ msgstr "g_socket_get_credentials không được hỗ trợ trên hệ điều h
 #: ../gio/gsocketclient.c:163
 #, c-format
 msgid "Could not connect to proxy server %s: "
-msgstr ""
+msgstr "Không thể kết nối đến máy uỷ nhiệm %s: "
 
 #: ../gio/gsocketclient.c:177
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not open converter from '%s' to '%s': %s"
 msgid "Could not connect to %s: "
-msgstr "Không thể mở bộ chuyển đổi từ '%s' sang '%s': %s"
+msgstr "Không thể kết nối đến %s: "
 
 #: ../gio/gsocketclient.c:179
-#, fuzzy
 #| msgid "could not listen: %s"
 msgid "Could not connect: "
-msgstr "không thể lắng nghe: %s"
+msgstr "không thể kết nối: "
 
 #: ../gio/gsocketclient.c:834 ../gio/gsocketclient.c:1399
 msgid "Unknown error on connect"
@@ -2311,18 +2305,15 @@ msgid "SOCKSv4 does not support IPv6 address '%s'"
 msgstr "SOCKSv4 không hỗ trợ địa chỉ IPv6 '%s'"
 
 #: ../gio/gsocks4aproxy.c:139
-#, fuzzy
 #| msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr ""
-"Tên người dùng hoặc mật khẩu quá dài so với đặc tả giao thức SOCKSv5 (tối đa "
-"%i)."
+msgstr "Tên người dùng hoặc mật khẩu quá dài cho giao thức SOCKSv4"
 
 #: ../gio/gsocks4aproxy.c:156
-#, fuzzy, c-format
+#, c-format
 #| msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgid "Hostname '%s' is too long for SOCKSv4 protocol"
-msgstr "Tên máy '%s' quá dài đối với đặc tả giao thức SOCKSv5 (tối đa %i byte)"
+msgstr "Tên máy '%s' quá dài đối cho giao thức SOCKSv4"
 
 #: ../gio/gsocks4aproxy.c:182
 msgid "The server is not a SOCKSv4 proxy server."
@@ -2350,22 +2341,19 @@ msgstr ""
 "GLib."
 
 #: ../gio/gsocks5proxy.c:208
-#, fuzzy
 #| msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
 msgid "Username or password is too long for SOCKSv5 protocol)."
-msgstr ""
-"Tên người dùng hoặc mật khẩu quá dài so với đặc tả giao thức SOCKSv5 (tối đa "
-"%i)."
+msgstr "Tên người dùng hoặc mật khẩu quá dài cho giao thức SOCKSv5."
 
 #: ../gio/gsocks5proxy.c:238
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr "Xác thực SOCKSv5 thất bại vì sai tên người dùng hoặc mật khẩu."
 
 #: ../gio/gsocks5proxy.c:288
-#, fuzzy, c-format
+#, c-format
 #| msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgid "Hostname '%s' is too long for SOCKSv5 protocol"
-msgstr "Tên máy '%s' quá dài đối với đặc tả giao thức SOCKSv5 (tối đa %i byte)"
+msgstr "Tên máy '%s' quá dài cho giao thức SOCKSv5"
 
 #: ../gio/gsocks5proxy.c:350
 msgid "The SOCKSv5 proxy server uses unknown address type."
@@ -2409,10 +2397,9 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Không thể quản lý phiên bản %d của bảng mã GThemedIcon"
 
 #: ../gio/gtlscertificate.c:249
-#, fuzzy
 #| msgid "Could not parse PEM-encoded private key"
 msgid "Cannot decrypt PEM-encoded private key"
-msgstr "Không thể phân tích khoá riêng mã hoá dạng PEM"
+msgstr "Không thể giải mã khoá riêng mã hoá dạng PEM"
 
 #: ../gio/gtlscertificate.c:254
 msgid "No PEM-encoded private key found"
@@ -2507,17 +2494,17 @@ msgstr "Lỗi khi tắt SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
 #: ../gio/gunixinputstream.c:492
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error stating file descriptor: %s"
 msgid "Error reading from file descriptor: %s"
-msgstr "Gặp lỗi khi lấy trạng thái về mô tả tập tin: %s"
+msgstr "Gặp lỗi khi đọc từ bộ mô tả tập tin: %s"
 
 #: ../gio/gunixinputstream.c:447 ../gio/gunixinputstream.c:642
 #: ../gio/gunixoutputstream.c:433 ../gio/gunixoutputstream.c:597
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error stating file descriptor: %s"
 msgid "Error closing file descriptor: %s"
-msgstr "Gặp lỗi khi lấy trạng thái về mô tả tập tin: %s"
+msgstr "Gặp lỗi khi đóng bộ mô tả tập tin: %s"
 
 #: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2020
 msgid "Filesystem root"
@@ -2525,10 +2512,10 @@ msgstr "Gốc hệ thống tập tin"
 
 #: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
 #: ../gio/gunixoutputstream.c:478
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error stating file descriptor: %s"
 msgid "Error writing to file descriptor: %s"
-msgstr "Gặp lỗi khi lấy trạng thái về mô tả tập tin: %s"
+msgstr "Gặp lỗi khi ghi vào bộ mô tả tập tin: %s"
 
 #: ../gio/gunixsocketaddress.c:244
 msgid "Abstract unix domain socket addresses not supported on this system"
@@ -3121,7 +3108,7 @@ msgid ""
 msgstr "Không thể phân tích giá trị '%s' chứa trong tập tin khoá."
 
 #: ../glib/gkeyfile.c:2551 ../glib/gkeyfile.c:2917
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Key file contains key '%s' in group '%s' which has value that cannot be "
 #| "interpreted."
@@ -3129,18 +3116,15 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr ""
-"Tập tin khóa chứa khóa « %s » trong nhóm « %s » có giá trị không có khả năng "
-"giải dịch."
+"Tập tin khóa chứa khóa '%s' trong nhóm '%s' có giá trị không thể diễn giải."
 
 #: ../glib/gkeyfile.c:2629 ../glib/gkeyfile.c:2705
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Key file contains key '%s' in group '%s' which has value that cannot be "
 #| "interpreted."
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr ""
-"Tập tin khóa chứa khóa « %s » trong nhóm « %s » có giá trị không có khả năng "
-"giải dịch."
+msgstr "Khoá '%s' trong nhóm '%s' có giá trị '%s' trong khi cần %s"
 
 #: ../glib/gkeyfile.c:3103 ../glib/gkeyfile.c:3304 ../glib/gkeyfile.c:3882
 #, c-format
@@ -3177,16 +3161,16 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Không thể giải dịch giá trị '%s' dạng bun (đúng/sai)."
 
 #: ../glib/gmappedfile.c:128
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
-msgstr "Không lấy được các thuộc tính của tập tin '%s': fstat() không được: %s"
+msgstr "Không lấy được các thuộc tính của tập tin '%s%s%s%s': fstat() lỗi: %s"
 
 #: ../glib/gmappedfile.c:194
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to map file '%s': mmap() failed: %s"
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
-msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
+msgstr "Không ánh xạ được tập tin '%s%s%s%s': mmap() lỗi: %s"
 
 #: ../glib/gmappedfile.c:260
 #, c-format
