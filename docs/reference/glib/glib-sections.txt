@@ -2228,6 +2228,8 @@ GHashFunc
 GEqualFunc
 g_hash_table_insert
 g_hash_table_replace
+g_hash_table_add
+g_hash_table_contains
 g_hash_table_size
 g_hash_table_lookup
 g_hash_table_lookup_extended

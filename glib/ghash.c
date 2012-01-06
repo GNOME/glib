@@ -123,6 +123,9 @@
  * }
  * </programlisting>
  * </example>
+ *
+ * As of version 2.32, there is also a g_hash_table_add() function to
+ * add a key to a #GHashTable that is being used as a set.
  */
 
 /**
@@ -1180,6 +1183,51 @@ g_hash_table_replace (GHashTable *hash_table,
                       gpointer    value)
 {
   g_hash_table_insert_internal (hash_table, key, value, TRUE);
+}
+
+/**
+ * g_hash_table_add:
+ * @hash_table: a #GHashTable
+ * @key: a key to insert
+ *
+ * This is a convenience function for using a #GHashTable as a set.  It
+ * is equivalent to calling g_hash_table_replace() with @key as both the
+ * key and the value.
+ *
+ * When a hash table only ever contains keys that have themselves as the
+ * corresponding value it is able to be stored more efficiently.  See
+ * the discussion in the section description.
+ *
+ * Since: 2.32
+ **/
+void
+g_hash_table_add (GHashTable *hash_table,
+                  gpointer    key)
+{
+  g_hash_table_insert_internal (hash_table, key, key, TRUE);
+}
+
+/**
+ * g_hash_table_contains:
+ * @hash_table: a #GHashTable
+ * @key: a key to check
+ *
+ * Checks if @key is in @hash_table.
+ *
+ * Since: 2.32
+ **/
+gboolean
+g_hash_table_contains (GHashTable    *hash_table,
+                       gconstpointer  key)
+{
+  guint node_index;
+  guint node_hash;
+
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+
+  node_index = g_hash_table_lookup_node (hash_table, key, &node_hash);
+
+  return HASH_IS_REAL (hash_table->hashes[node_index]);
 }
 
 /*
