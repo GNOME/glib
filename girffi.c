@@ -121,22 +121,21 @@ gi_type_tag_get_ffi_type (GITypeTag   tag,
 ffi_type *
 g_type_info_get_ffi_type (GITypeInfo *info)
 {
-  gboolean is_enum;
+  gboolean is_enum = FALSE;
   GIBaseInfo *iinfo;
 
   if (g_type_info_get_tag (info) == GI_TYPE_TAG_INTERFACE)
     {
       iinfo = g_type_info_get_interface (info);
       switch (g_base_info_get_type (iinfo))
-	{
-	case GI_INFO_TYPE_ENUM:
-	case GI_INFO_TYPE_FLAGS:
-	  is_enum = TRUE;
-	  break;
-	default:
-	  is_enum = FALSE;
-	  break;
-	}
+        {
+        case GI_INFO_TYPE_ENUM:
+        case GI_INFO_TYPE_FLAGS:
+          is_enum = TRUE;
+          break;
+        default:
+          break;
+        }
       g_base_info_unref (iinfo);
     }
 
@@ -198,13 +197,11 @@ static ffi_type *
 g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
 {
   GITypeInfo *return_type;
-  GITypeTag type_tag;
   ffi_type *return_ffi_type;
 
   g_return_val_if_fail (callable_info != NULL, NULL);
 
   return_type = g_callable_info_get_return_type (callable_info);
-  type_tag = g_type_info_get_tag (return_type);
   return_ffi_type = g_type_info_get_ffi_type (return_type);
   g_base_info_unref((GIBaseInfo*)return_type);
 
