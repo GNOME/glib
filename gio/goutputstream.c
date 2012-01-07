@@ -177,6 +177,8 @@ g_output_stream_init (GOutputStream *stream)
  *
  * On error -1 is returned and @error is set accordingly.
  * 
+ * Virtual: write_fn
+ *
  * Return value: Number of bytes written, or -1 on error
  **/
 gssize

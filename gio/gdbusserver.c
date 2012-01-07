@@ -447,7 +447,7 @@ on_run (GSocketService    *service,
  * @address: A D-Bus address.
  * @flags: Flags from the #GDBusServerFlags enumeration.
  * @guid: A D-Bus GUID.
- * @observer: A #GDBusAuthObserver or %NULL.
+ * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for server or %NULL.
  *

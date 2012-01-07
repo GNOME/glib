@@ -1890,9 +1890,10 @@ g_socket_receive_with_blocking (GSocket       *socket,
 /**
  * g_socket_receive_from:
  * @socket: a #GSocket
- * @address: a pointer to a #GSocketAddress pointer, or %NULL
- * @buffer: a buffer to read data into (which should be at least @size
- *     bytes long).
+ * @address: (out) (allow-none): a pointer to a #GSocketAddress
+ *     pointer, or %NULL
+ * @buffer: (array length=size) (element-type guint8): a buffer to
+ *     read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -1944,7 +1945,8 @@ g_socket_receive_from (GSocket         *socket,
 /**
  * g_socket_send:
  * @socket: a #GSocket
- * @buffer: (array length=size): the buffer containing the data to send.
+ * @buffer: (array length=size) (element-type guint8): the buffer
+ *     containing the data to send.
  * @size: the number of bytes to send
  * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -1984,7 +1986,8 @@ g_socket_send (GSocket       *socket,
 /**
  * g_socket_send_with_blocking:
  * @socket: a #GSocket
- * @buffer: (array length=size): the buffer containing the data to send.
+ * @buffer: (array length=size) (element-type guint8): the buffer
+ *     containing the data to send.
  * @size: the number of bytes to send
  * @blocking: whether to do blocking or non-blocking I/O
  * @cancellable: (allow-none): a %GCancellable or %NULL
@@ -2063,7 +2066,8 @@ g_socket_send_with_blocking (GSocket       *socket,
  * g_socket_send_to:
  * @socket: a #GSocket
  * @address: a #GSocketAddress, or %NULL
- * @buffer: (array length=size): the buffer containing the data to send.
+ * @buffer: (array length=size) (element-type guint8): the buffer
+ *     containing the data to send.
  * @size: the number of bytes to send
  * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -3158,7 +3162,8 @@ g_socket_send_message (GSocket                *socket,
 /**
  * g_socket_receive_message:
  * @socket: a #GSocket
- * @address: a pointer to a #GSocketAddress pointer, or %NULL
+ * @address: (out) (allow-none): a pointer to a #GSocketAddress
+ *     pointer, or %NULL
  * @vectors: (array length=num_vectors): an array of #GInputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
  * @messages: (array length=num_messages) (allow-none): a pointer which

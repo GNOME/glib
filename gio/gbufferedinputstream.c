@@ -566,7 +566,8 @@ g_buffered_input_stream_get_available (GBufferedInputStream *stream)
 /**
  * g_buffered_input_stream_peek:
  * @stream: a #GBufferedInputStream
- * @buffer: a pointer to an allocated chunk of memory
+ * @buffer: (array length=count) (element-type guint8): a pointer to
+ *   an allocated chunk of memory
  * @offset: a #gsize
  * @count: a #gsize
  *

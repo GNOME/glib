@@ -1173,7 +1173,7 @@ _g_file_info_set_attribute_stringv_by_id (GFileInfo *info,
  * g_file_info_set_attribute_stringv:
  * @info: a #GFileInfo.
  * @attribute: a file attribute key
- * @attr_value: a %NULL terminated array of UTF-8 strings.
+ * @attr_value: (array) (element-type utf8): a %NULL terminated array of UTF-8 strings.
  *
  * Sets the @attribute to contain the given @attr_value,
  * if possible.

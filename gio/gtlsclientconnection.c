@@ -153,7 +153,8 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
  * must have pollable input and output streams) which is assumed to
  * communicate with the server identified by @server_identity.
  *
- * Return value: (transfer full): the new #GTlsClientConnection, or %NULL on error
+ * Return value: (transfer full) (type GTlsClientConnection): the new
+ * #GTlsClientConnection, or %NULL on error
  *
  * Since: 2.28
  */

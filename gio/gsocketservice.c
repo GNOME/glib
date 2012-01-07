@@ -254,7 +254,8 @@ g_socket_service_class_init (GSocketServiceClass *class)
    * GSocketService::incoming:
    * @service: the #GSocketService
    * @connection: a new #GSocketConnection object
-   * @source_object: the source_object passed to g_socket_listener_add_address()
+   * @source_object: (allow-none): the source_object passed to
+   *     g_socket_listener_add_address()
    *
    * The ::incoming signal is emitted when a new incoming connection
    * to @service needs to be handled. The handler must initiate the

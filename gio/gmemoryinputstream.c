@@ -202,7 +202,7 @@ g_memory_input_stream_new (void)
 
 /**
  * g_memory_input_stream_new_from_data:
- * @data: (array length=len) (element-type guint8): input data
+ * @data: (array length=len) (element-type guint8) (transfer full): input data
  * @len: length of the data, may be -1 if @data is a nul-terminated string
  * @destroy: (allow-none): function that is called to free @data, or %NULL
  *
@@ -228,7 +228,7 @@ g_memory_input_stream_new_from_data (const void     *data,
 /**
  * g_memory_input_stream_add_data:
  * @stream: a #GMemoryInputStream
- * @data: (array length=len) (element-type guint8): input data
+ * @data: (array length=len) (element-type guint8) (transfer full): input data
  * @len: length of the data, may be -1 if @data is a nul-terminated string
  * @destroy: (allow-none): function that is called to free @data, or %NULL
  *

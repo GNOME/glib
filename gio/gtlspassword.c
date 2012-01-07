@@ -295,6 +295,7 @@ g_tls_password_set_value (GTlsPassword  *password,
  * @length if using a null-terminated password, and @length will be calculated
  * automatically.
  *
+ * Virtual: set_value
  * Since: 2.30
  */
 void

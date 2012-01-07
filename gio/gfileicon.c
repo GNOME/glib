@@ -158,7 +158,8 @@ g_file_icon_init (GFileIcon *file)
  * 
  * Creates a new icon for a file.
  * 
- * Returns: (transfer full): a #GIcon for the given @file, or %NULL on error.
+ * Returns: (transfer full) (type GFileIcon): a #GIcon for the given
+ *   @file, or %NULL on error.
  **/
 GIcon *
 g_file_icon_new (GFile *file)

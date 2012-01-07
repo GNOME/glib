@@ -152,7 +152,7 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
  *
  * Creates a new emblemed icon for @icon with the emblem @emblem.
  *
- * Returns: (transfer full): a new #GIcon
+ * Returns: (transfer full) (type GEmblemedIcon): a new #GIcon
  *
  * Since: 2.18
  **/

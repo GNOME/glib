@@ -439,7 +439,7 @@ g_inet_address_new_from_string (const gchar *string)
 
 /**
  * g_inet_address_new_from_bytes:
- * @bytes: raw address data
+ * @bytes: (array) (element-type guint8): raw address data
  * @family: the address family of @bytes
  *
  * Creates a new #GInetAddress from the given @family and @bytes.

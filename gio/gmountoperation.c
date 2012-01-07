@@ -343,7 +343,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * GMountOperation::show-processes:
    * @op: a #GMountOperation.
    * @message: string containing a message to display to the user.
-   * @processes: an array of #GPid for processes blocking the operation.
+   * @processes: (element-type GPid): an array of #GPid for processes
+   *   blocking the operation.
    * @choices: an array of strings for each possible choice.
    *
    * Emitted when one or more processes are blocking an operation

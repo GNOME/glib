@@ -157,7 +157,7 @@ g_initable_new (GType          object_type,
  * g_initable_newv:
  * @object_type: a #GType supporting #GInitable.
  * @n_parameters: the number of parameters in @parameters
- * @parameters: the parameters to use to construct the object
+ * @parameters: (array length=n_parameters): the parameters to use to construct the object
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.

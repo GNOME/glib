@@ -367,8 +367,8 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
 /**
  * g_simple_action_group_add_entries:
  * @simple: a #GSimpleActionGroup
- * @entries: a pointer to the first item in an array of #GActionEntry
- *           structs
+ * @entries: (array length=n_entries): a pointer to the first item in
+ *           an array of #GActionEntry structs
  * @n_entries: the length of @entries, or -1
  * @user_data: the user data for signal connections
  *

@@ -625,7 +625,7 @@ g_file_get_parent (GFile *file)
 /**
  * g_file_has_parent:
  * @file: input #GFile
- * @parent: the parent to check for, or %NULL
+ * @parent: (allow-none): the parent to check for, or %NULL
  *
  * Checks if @file has a parent, and optionally, if it is @parent.
  *
@@ -3199,7 +3199,7 @@ g_file_copy_finish (GFile        *file,
  * @destination: #GFile pointing to the destination location.
  * @flags: set of #GFileCopyFlags.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @progress_callback: (scope call): #GFileProgressCallback function for updates.
+ * @progress_callback: (allow-none) (scope call): #GFileProgressCallback function for updates.
  * @progress_callback_data: (closure): gpointer to user data for the callback function.
  * @error: #GError for returning error conditions, or %NULL
  *
@@ -4233,7 +4233,7 @@ g_file_set_attribute_int64 (GFile                *file,
  * g_file_mount_mountable:
  * @file: input #GFile.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @mount_operation: (allow-none): a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: (closure): the data to pass to callback function
@@ -4408,7 +4408,7 @@ g_file_unmount_mountable_finish (GFile         *file,
  * g_file_unmount_mountable_with_operation:
  * @file: input #GFile.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @mount_operation: (allow-none): a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: (closure): the data to pass to callback function
@@ -4593,7 +4593,7 @@ g_file_eject_mountable_finish (GFile         *file,
  * g_file_eject_mountable_with_operation:
  * @file: input #GFile.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @mount_operation: (allow-none): a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: (closure): the data to pass to callback function
@@ -6030,8 +6030,8 @@ g_file_new_for_commandline_arg (const char *arg)
  * g_file_mount_enclosing_volume:
  * @location: input #GFile.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid user interaction.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
  * 
@@ -6966,7 +6966,7 @@ g_file_replace_contents_finish (GFile         *file,
  * g_file_start_mountable:
  * @file: input #GFile.
  * @flags: flags affecting the operation
- * @start_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @start_operation: (allow-none): a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function
@@ -7058,7 +7058,7 @@ g_file_start_mountable_finish (GFile                      *file,
  * g_file_stop_mountable:
  * @file: input #GFile.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation, or %NULL to avoid user interaction.
+ * @mount_operation: (allow-none): a #GMountOperation, or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied, or %NULL.
  * @user_data: the data to pass to callback function

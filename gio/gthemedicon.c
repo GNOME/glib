@@ -263,7 +263,7 @@ g_themed_icon_init (GThemedIcon *themed)
  * 
  * Creates a new themed icon for @iconname.
  * 
- * Returns: (transfer full): a new #GThemedIcon.
+ * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon.
  **/
 GIcon *
 g_themed_icon_new (const char *iconname)
@@ -281,7 +281,7 @@ g_themed_icon_new (const char *iconname)
  * 
  * Creates a new themed icon for @iconnames.
  * 
- * Returns: (transfer full): a new #GThemedIcon
+ * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon
  **/
 GIcon *
 g_themed_icon_new_from_names (char **iconnames,
@@ -333,7 +333,7 @@ g_themed_icon_new_from_names (char **iconnames,
  * icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
  * ]|
  *
- * Returns: (transfer full): a new #GThemedIcon.
+ * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon.
  */
 GIcon *
 g_themed_icon_new_with_default_fallbacks (const char *iconname)

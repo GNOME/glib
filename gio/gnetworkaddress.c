@@ -251,7 +251,7 @@ g_network_address_set_addresses (GNetworkAddress *addr,
  * Creates a new #GSocketConnectable for connecting to the given
  * @hostname and @port.
  *
- * Return value: (transfer full): the new #GNetworkAddress
+ * Return value: (transfer full) (type GNetworkAddress): the new #GNetworkAddress
  *
  * Since: 2.22
  */
