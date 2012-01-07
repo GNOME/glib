@@ -102,10 +102,10 @@
  * }
  *
  * void
- * set_insert (GHashTable *set,
- *             gpointer    element)
+ * set_add (GHashTable *set,
+ *          gpointer    element)
  * {
- *   g_hash_table_insert (set, element, element);
+ *   g_hash_table_replace (set, element, element);
  * }
  *
  * gboolean
