@@ -76,7 +76,9 @@ class GHashPrinter:
         def __init__(self, ht, keys_are_strings):
             self.ht = ht
             if ht != 0:
-                self.array = ht["nodes"]
+                self.keys = ht["keys"]
+                self.values = ht["values"]
+                self.hashes = ht["hashes"]
                 self.size = ht["size"]
             self.pos = 0
             self.keys_are_strings = keys_are_strings
@@ -93,11 +95,10 @@ class GHashPrinter:
                 self.value = None
                 return v
             while long(self.pos) < long(self.size):
-                node = self.array[self.pos]
                 self.pos = self.pos + 1
-                if long (node["key_hash"]) >= 2:
-                    key = node["key"]
-                    val = node["value"]
+                if long (self.hashes[self.pos]) >= 2:
+                    key = self.keys[self.pos]
+                    val = self.values[self.pos]
 
                     if self.keys_are_strings:
                         key = key.cast (gdb.lookup_type("char").pointer())
