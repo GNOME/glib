@@ -202,7 +202,7 @@ struct _Match
 typedef struct _Match Match;
 
 static void
-free_match (gpointer data, gpointer user_data)
+free_match (gpointer data)
 {
   Match *match = data;
   if (match == NULL)
