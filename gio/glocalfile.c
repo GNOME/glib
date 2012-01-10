@@ -907,8 +907,8 @@ g_local_file_query_filesystem_info (GFile         *file,
 #elif defined(USE_STATVFS)
   guint64 block_size;
   struct statvfs statfs_buffer;
-#endif
-#endif
+#endif /* USE_STATFS */
+#endif /* G_OS_WIN32 */
   GFileAttributeMatcher *attribute_matcher;
 	
   no_size = FALSE;
@@ -920,7 +920,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 #elif STATFS_ARGS == 4
   statfs_result = statfs (local->filename, &statfs_buffer,
 			  sizeof (statfs_buffer), 0);
-#endif
+#endif /* STATFS_ARGS == 2 */
   block_size = statfs_buffer.f_bsize;
   
   /* Many backends can't report free size (for instance the gvfs fuse
@@ -932,12 +932,12 @@ g_local_file_query_filesystem_info (GFile         *file,
   if (statfs_result == 0 &&
       statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
     no_size = TRUE;
-#endif
+#endif /* G_OS_WIN32 */
   
 #elif defined(USE_STATVFS)
   statfs_result = statvfs (local->filename, &statfs_buffer);
   block_size = statfs_buffer.f_frsize; 
-#endif
+#endif /* USE_STATFS */
 
   if (statfs_result == -1)
     {
@@ -990,7 +990,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 #if defined(USE_STATFS) || defined(USE_STATVFS)
       g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE, block_size * statfs_buffer.f_blocks);
 #endif
-#endif
+#endif /* G_OS_WIN32 */
     }
 
 #ifndef G_OS_WIN32
@@ -1009,13 +1009,13 @@ g_local_file_query_filesystem_info (GFile         *file,
 #else
   fstype = NULL;
 #endif
-#endif
+#endif /* USE_STATFS */
 
   if (fstype &&
       g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
     g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, fstype);
-#endif  
+#endif /* G_OS_WIN32 */
 
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
@@ -1024,7 +1024,7 @@ g_local_file_query_filesystem_info (GFile         *file,
       get_filesystem_readonly (info, local->filename);
 #else
       get_mount_info (info, local->filename, attribute_matcher);
-#endif
+#endif /* G_OS_WIN32 */
     }
   
   g_file_attribute_matcher_unref (attribute_matcher);
