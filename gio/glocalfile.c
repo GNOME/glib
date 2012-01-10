@@ -993,6 +993,25 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif /* G_OS_WIN32 */
     }
 
+  if (!no_size &&
+      g_file_attribute_matcher_matches (attribute_matcher,
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_USED))
+    {
+#ifdef G_OS_WIN32
+      gchar *localdir = g_path_get_dirname (local->filename);
+      wchar_t *wdirname = g_utf8_to_utf16 (localdir, -1, NULL, NULL, NULL);
+      ULARGE_INTEGER li_free;
+      ULARGE_INTEGER li_total;
+
+      g_free (localdir);
+      if (GetDiskFreeSpaceExW (wdirname, &li_free, &li_total, NULL))
+        g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_USED,  (guint64)li_total.QuadPart - (guint64)li_free.QuadPart);
+      g_free (wdirname);
+#else
+      g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_USED, block_size * (statfs_buffer.f_blocks - statfs_buffer.f_bfree));
+#endif /* G_OS_WIN32 */
+    }
+
 #ifndef G_OS_WIN32
 #ifdef USE_STATFS
 #if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)

@@ -729,6 +729,17 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_FILESYSTEM_FREE "filesystem::free"                       /* uint64 */
 
 /**
+ * G_FILE_ATTRIBUTE_FILESYSTEM_USED:
+ *
+ * A key in the "filesystem" namespace for getting the number of bytes of used on the
+ * file system. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64.
+ *
+ * Since: 2.32
+ */
+#define G_FILE_ATTRIBUTE_FILESYSTEM_USED "filesystem::used"                       /* uint64 */
+
+/**
  * G_FILE_ATTRIBUTE_FILESYSTEM_TYPE:
  *
  * A key in the "filesystem" namespace for getting the file system's type.
