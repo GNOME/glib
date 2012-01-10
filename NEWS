@@ -1,3 +1,58 @@
+Overview of changes from GLib 2.31.6 to 2.31.8
+==============================================
+
+* GObject:
+ - The type checks for overriding properties have been loosened.
+   In particular, it is now possible to add the CONSTRUCT flag
+   to an overridden property
+ - GWeakRef is a new API for weak references; unlike g_object_weak_ref
+   and g_object_add_weak_pointer, it is thread-safe.
+
+* GHashTable has grown new convenience api for use as a set:
+  g_hash_table_add, g_hash_table_contains
+
+* GSocketConnection has gained API for managing connection status
+
+* GSettings: a native OS X backend has been added, under the
+  name 'nexstep'
+
+* Bugs fixed
+ 455640 Something fishy with GRegex and unicode
+ 548954 weak references are not threadsafe
+ 625751 Add G_FILE_ATTRIBUTE_FILESYSTEM_USED
+ 658871 gbacktrace: g_get_prgname () isn't called for a NULL argu...
+ 664069 gvariant: Never break out of g_variant_iter_loop
+ 664830 g_strescape doesn't natively handle \v (vertical tab)
+ 665211 GDBusConnection singleton access can race with disposal
+ 665805 Add GSocketClient::action, for tracking socket client status
+ 666116 some tests provoke undefined behaviour, which is undesira...
+ 666422 Unreachable code in gio gnetworkmonitornetlink.c
+ 666551 Crash in g_thread_xp_SleepConditionVariableSRW
+ 666595 menu parser disallows id='' on submenu and section
+ 666615 loosen property override flag restrictions
+ 666616 gobject: fix property override type checks
+ 666803 g_utf8_validate() fails to validate strings with known size
+ 666804 g_ateaxit deprecation warning in devhelp points in wrong ...
+ 666951 g_mkdtemp: Since version incorrect in docs
+ 666978 Fails to compile glib applications with ISO C90 compiler
+ 667098 ginetaddressmask leaks its address property
+ 667225 GSocket: add missing type checks to public methods
+ 667226 GSocket: fix an error return value
+ 667279 Sometimes crashes when launching commandline-crea...
+ 667285 Wrong keyname listed in documentation for g_deskt...
+ 667331 Use g_queue_free_full() convenience function
+ 667420 GHashTable GDB pretty printing is broken
+
+* Updated translations
+ Belarusian
+ Bulgarian
+ Hebrew
+ Norwegian bokmål
+ Norwegian Nynorsk
+ Spanish
+ Vietnamese
+
+
 Overview of changes from GLib 2.31.4 to 2.31.6
 ==============================================
 
@@ -5871,4 +5926,4 @@ What's new in GLib 1.3.1:
   more tightly defined semantics.
 * the g_string(x) macro has been removed, #x may be used instead.
                                 
-* bugs fixed:
+
