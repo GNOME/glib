@@ -36,6 +36,7 @@ struct _GResource
   int ref_count;
 
   GvdbTable *table;
+  GTypeModule *module;
 };
 
 G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
@@ -115,8 +116,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Note that resource data can point directly into the data segment of e.g. a library, so if you are unloading libraries
  * during runtime you need to be very careful with keeping around pointers to data from a resource, as this goes away
- * when the library is unloaded. However, in practice this is not generally a problem, since most resource accesses
- * is for your own resources, and resource data is often used once, during parsing, and then released.
+ * when the library is unloaded. For modules using #GTypeModule we support disallowing unload while resources are
+ * outstanding by using g_resource_set_module(), but not all libraries might use this. However, in practice this is
+ * not generally a problem, since most resource accesses is for your own resources, and resource data is often
+ * used once, during parsing, and then released.
  *
  * Since: 2.32
  */
@@ -173,6 +176,51 @@ g_resource_unref (GResource *resource)
       gvdb_table_unref (resource->table);
       g_free (resource);
     }
+}
+
+/**
+ * g_resource_set_module:
+ * @resource: A #GResource.
+ * @type_module: (allow-none): A #GTypeModule, or %NULL.
+ *
+ * Allows setting a #GTypeModule to be associated with the
+ * resource. As long as any reference to data from the
+ * resource is outstanding the GTypeModule is used, and
+ * thus will not be unloaded.
+ *
+ * This is useful if you link a resource into a module
+ * and want to ensure that its not unloaded while there
+ * is outstanding pointers into the linked in data.
+ *
+ * Since: 2.32
+ **/
+void
+g_resource_set_module (GResource *resource,
+		       GTypeModule *type_module)
+{
+  if (resource->module)
+    g_object_unref (resource->module);
+
+  resource->module = type_module;
+
+  if (resource->module)
+    g_object_ref (resource->module);
+}
+
+static GResource *
+g_resource_use (GResource *resource)
+{
+  if (resource->module)
+    g_type_module_use (resource->module);
+  return g_resource_ref (resource);
+}
+
+static void
+g_resource_unuse (GResource *resource)
+{
+  if (resource->module)
+    g_type_module_unuse (resource->module);
+  g_resource_unref (resource);
 }
 
 /**
@@ -367,8 +415,8 @@ g_resource_open_stream (GResource *resource,
 
   stream = g_memory_input_stream_new_from_data (data, data_size, NULL);
   g_object_set_data_full (G_OBJECT (stream), "g-resource",
-			  g_resource_ref (resource),
-			  (GDestroyNotify)g_resource_unref);
+			  g_resource_use (resource),
+			  (GDestroyNotify)g_resource_unuse);
 
   if (flags & G_RESOURCE_FLAGS_COMPRESSED)
     {
@@ -474,7 +522,7 @@ g_resource_lookup_data (GResource *resource,
       return g_bytes_new_take (uncompressed, size);
     }
   else
-    return g_bytes_new_with_free_func (data, data_size, (GDestroyNotify)g_resource_unref, g_resource_ref (resource));
+    return g_bytes_new_with_free_func (data, data_size, (GDestroyNotify)g_resource_unuse, g_resource_use (resource));
 }
 
 /**

@@ -74,6 +74,8 @@ gboolean      g_resource_get_info            (GResource             *resource,
 					      gsize                 *size,
 					      guint32               *flags,
 					      GError               **error);
+void          g_resource_set_module          (GResource             *resource,
+					      GTypeModule           *type_module);
 
 void          g_resources_register           (GResource             *resource);
 void          g_resources_unregister         (GResource             *resource);

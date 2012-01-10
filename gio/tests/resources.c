@@ -411,12 +411,16 @@ test_resource_module (void)
 
       error = NULL;
 
+      /* Module is not loaded yet */
+
       found = g_resources_get_info ("/resourceplugin/test1.txt",
 				    G_RESOURCE_LOOKUP_FLAGS_NONE,
 				    &size, &flags, &error);
       g_assert (!found);
       g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
       g_clear_error (&error);
+
+      /* Load the module */
 
       g_type_module_use (G_TYPE_MODULE (module));
 
@@ -436,9 +440,21 @@ test_resource_module (void)
       size = g_bytes_get_size (data);
       g_assert (size == 6);
       g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
-      g_bytes_unref (data);
 
+      /* Don't unref data, should keep the module in use */
+
+      /* Unuse the module */
       g_type_module_unuse (G_TYPE_MODULE (module));
+
+      found = g_resources_get_info ("/resourceplugin/test1.txt",
+				    G_RESOURCE_LOOKUP_FLAGS_NONE,
+				    &size, &flags, &error);
+      g_assert (found);
+      g_assert_no_error (error);
+
+
+      /* Unref the data, should unload the module */
+      g_bytes_unref (data);
 
       found = g_resources_get_info ("/resourceplugin/test1.txt",
 				    G_RESOURCE_LOOKUP_FLAGS_NONE,
