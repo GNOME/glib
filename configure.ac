@@ -2238,11 +2238,23 @@ if test x"$have_threads" = xposix; then
         # This is not AC_CHECK_FUNC to also work with function
         # name mangling in header files.
         AC_MSG_CHECKING(for pthread_attr_setstacksize)
-        AC_TRY_LINK([#include <pthread.h>],
-                    [pthread_attr_t t; pthread_attr_setstacksize(&t,0)],
-                    [AC_MSG_RESULT(yes)
-                     AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE,1,[Have function pthread_attr_setstacksize])],
-                    [AC_MSG_RESULT(no)])
+        AC_LINK_IFELSE(
+            [AC_LANG_PROGRAM(
+                [#include <pthread.h>],
+                [pthread_attr_t t; pthread_attr_setstacksize(&t,0)])],
+            [AC_MSG_RESULT(yes)
+             AC_DEFINE(HAVE_PTHREAD_ATTR_SETSTACKSIZE,1,
+                [Have function pthread_attr_setstacksize])],
+            [AC_MSG_RESULT(no)])
+        AC_MSG_CHECKING(for pthread_condattr_setclock)
+        AC_LINK_IFELSE(
+            [AC_LANG_PROGRAM(
+                [#include <pthread.h>],
+                [pthread_condattr_t a; pthread_condattr_setclock(&a,0)])],
+            [AC_MSG_RESULT(yes)
+             AC_DEFINE(HAVE_PTHREAD_CONDATTR_SETCLOCK,1,
+                [Have function pthread_condattr_setclock])],
+            [AC_MSG_RESULT(no)])
         CPPFLAGS="$glib_save_CPPFLAGS"
 fi
 

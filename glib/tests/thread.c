@@ -167,9 +167,9 @@ test_thread5 (void)
 static gpointer
 thread6_func (gpointer data)
 {
+#ifdef HAVE_SYS_PRCTL_H
   const gchar name[16];
 
-#ifdef HAVE_SYS_PRCTL_H
   prctl (PR_GET_NAME, name, 0, 0, 0, 0);
 
   g_assert_cmpstr (name, ==, (gchar*)data);

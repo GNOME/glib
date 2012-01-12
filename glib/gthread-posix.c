@@ -636,7 +636,7 @@ g_cond_impl_new (void)
   gint status;
 
   pthread_condattr_init (&attr);
-#ifdef CLOCK_MONOTONIC
+#if defined (HAVE_PTHREAD_CONDATTR_SETCLOCK) && defined (CLOCK_MONOTONIC)
   pthread_condattr_setclock (&attr, CLOCK_MONOTONIC);
 #endif
 
