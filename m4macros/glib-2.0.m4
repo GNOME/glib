@@ -64,6 +64,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
     GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
     GOBJECT_QUERY=`$PKG_CONFIG --variable=gobject_query glib-2.0`
     GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+    GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable=glib_compile_resources gio-2.0`
 
     GLIB_CFLAGS=`$PKG_CONFIG --cflags $pkg_config_args`
     GLIB_LIBS=`$PKG_CONFIG --libs $pkg_config_args`
@@ -200,6 +201,7 @@ main ()
      GLIB_GENMARSHAL=""
      GOBJECT_QUERY=""
      GLIB_MKENUMS=""
+     GLIB_COMPILE_RESOURCES=""
      ifelse([$3], , :, [$3])
   fi
   AC_SUBST(GLIB_CFLAGS)
@@ -207,5 +209,6 @@ main ()
   AC_SUBST(GLIB_GENMARSHAL)
   AC_SUBST(GOBJECT_QUERY)
   AC_SUBST(GLIB_MKENUMS)
+  AC_SUBST(GLIB_COMPILE_RESOURCES)
   rm -f conf.glibtest
 ])
