@@ -5,6 +5,7 @@ includedir=@includedir@
 
 giomoduledir=@GIO_MODULE_DIR@
 glib_compile_schemas=@bindir@/glib-compile-schemas@EXEEXT@
+glib_compile_resources=@bindir@/glib-compile-resources@EXEEXT@
 
 Name: GIO
 Description: glib I/O library
