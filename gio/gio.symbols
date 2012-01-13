@@ -950,6 +950,7 @@ g_socket_condition_wait
 g_socket_connect
 g_socket_create_source
 g_socket_get_blocking
+g_socket_get_broadcast
 g_socket_get_family
 g_socket_get_fd
 g_socket_get_timeout
@@ -978,6 +979,7 @@ g_socket_send_message
 g_socket_send_to
 g_socket_send_with_blocking
 g_socket_set_blocking
+g_socket_set_broadcast
 g_socket_set_timeout
 g_socket_set_ttl
 g_socket_set_keepalive

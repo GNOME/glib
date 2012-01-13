@@ -105,6 +105,10 @@ guint                  g_socket_get_ttl                 (GSocket                
 void                   g_socket_set_ttl                 (GSocket                 *socket,
                                                          guint                    ttl);
 
+gboolean               g_socket_get_broadcast           (GSocket                 *socket);
+void                   g_socket_set_broadcast           (GSocket                 *socket,
+                                                         gboolean		  broadcast);
+
 gboolean               g_socket_get_multicast_loopback  (GSocket                 *socket);
 void                   g_socket_set_multicast_loopback  (GSocket                 *socket,
                                                          gboolean		  loopback);

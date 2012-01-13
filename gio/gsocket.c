@@ -139,6 +139,7 @@ enum
   PROP_REMOTE_ADDRESS,
   PROP_TIMEOUT,
   PROP_TTL,
+  PROP_BROADCAST,
   PROP_MULTICAST_LOOPBACK,
   PROP_MULTICAST_TTL
 };
@@ -620,6 +621,10 @@ g_socket_get_property (GObject    *object,
 	g_value_set_uint (value, g_socket_get_ttl (socket));
 	break;
 
+      case PROP_BROADCAST:
+	g_value_set_boolean (value, g_socket_get_broadcast (socket));
+	break;
+
       case PROP_MULTICAST_LOOPBACK:
 	g_value_set_boolean (value, g_socket_get_multicast_loopback (socket));
 	break;
@@ -677,6 +682,10 @@ g_socket_set_property (GObject      *object,
 
       case PROP_TTL:
 	g_socket_set_ttl (socket, g_value_get_uint (value));
+	break;
+
+      case PROP_BROADCAST:
+	g_socket_set_broadcast (socket, g_value_get_boolean (value));
 	break;
 
       case PROP_MULTICAST_LOOPBACK:
@@ -844,6 +853,21 @@ g_socket_class_init (GSocketClass *klass)
 						      0,
 						      G_PARAM_READWRITE |
 						      G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocket:broadcast:
+   *
+   * Whether the socket should allow sending to and receiving from broadcast addresses.
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_BROADCAST,
+				   g_param_spec_boolean ("broadcast",
+							 P_("Broadcast"),
+							 P_("Whether to allow sending to and receiving from broadcast addresses"),
+							 FALSE,
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   /**
    * GSocket:ttl:
@@ -1323,6 +1347,76 @@ g_socket_set_ttl (GSocket  *socket,
     }
 
   g_object_notify (G_OBJECT (socket), "ttl");
+}
+
+/**
+ * g_socket_get_broadcast:
+ * @socket: a #GSocket.
+ *
+ * Gets the broadcast setting on @socket; if %TRUE,
+ * it is possible to send packets to broadcast
+ * addresses or receive from broadcast addresses.
+ *
+ * Returns: the broadcast setting on @socket
+ *
+ * Since: 2.32
+ */
+gboolean
+g_socket_get_broadcast (GSocket *socket)
+{
+  int result;
+  guint value = 0, optlen;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  optlen = sizeof (guchar);
+  result = getsockopt (socket->priv->fd, SOL_SOCKET, SO_BROADCAST,
+                       &value, &optlen);
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error getting broadcast: %s", socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return !!value;
+}
+
+/**
+ * g_socket_set_broadcast:
+ * @socket: a #GSocket.
+ * @loopback: whether @socket should allow sending to and receiving
+ *     from broadcast addresses
+ *
+ * Sets whether @socket should allow sending to and receiving from
+ * broadcast addresses. This is %FALSE by default.
+ *
+ * Since: 2.32
+ */
+void
+g_socket_set_broadcast (GSocket    *socket,
+       	                gboolean    broadcast)
+{
+  int result;
+  guchar value;
+
+  g_return_if_fail (G_IS_SOCKET (socket));
+
+  broadcast = !!broadcast;
+  value = (guchar)broadcast;
+
+  result = setsockopt (socket->priv->fd, SOL_SOCKET, SO_BROADCAST,
+		       &value, sizeof (value));
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error setting broadcast: %s", socket_strerror (errsv));
+      return;
+    }
+
+  g_object_notify (G_OBJECT (socket), "broadcast");
 }
 
 /**
