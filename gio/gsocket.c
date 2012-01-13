@@ -47,8 +47,6 @@
 #include <sys/uio.h>
 #endif
 
-#include <net/if.h>
-
 #include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "ginetaddress.h"
@@ -1690,6 +1688,7 @@ g_socket_bind (GSocket         *socket,
 static gboolean
 g_socket_multicast_group_operation (GSocket       *socket,
 				    GInetAddress  *group,
+                                    gboolean       source_specific,
                                     const gchar   *interface,
 				    gboolean       join_group,
 				    GError       **error)
@@ -1725,7 +1724,10 @@ g_socket_multicast_group_operation (GSocket       *socket,
       mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
 #endif
 
-      optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
+      if (source_specific)
+        optname = join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
+      else
+        optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
       result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
 			   &mc_req, sizeof (mc_req));
     }
@@ -1766,12 +1768,16 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to join.
  * @interface: Interface to use
+ * @source_specific: %TRUE if source-specific multicast should be used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Registers @socket to receive multicast messages sent to @group.
  * @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
  * been bound to an appropriate interface and port with
  * g_socket_bind().
+ *
+ * If @source_specific is %TRUE, source-specific multicast as defined
+ * in RFC 4604 is used.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
@@ -1780,10 +1786,11 @@ g_socket_multicast_group_operation (GSocket       *socket,
 gboolean
 g_socket_join_multicast_group (GSocket       *socket,
 			       GInetAddress  *group,
+                               gboolean       source_specific,
                                const gchar   *interface,
 			       GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, interface, TRUE, error);
+  return g_socket_multicast_group_operation (socket, group, source_specific, interface, TRUE, error);
 }
 
 /**
@@ -1791,10 +1798,14 @@ g_socket_join_multicast_group (GSocket       *socket,
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to leave.
  * @interface: Interface to use
+ * @source_specific: %TRUE if source-specific multicast should be used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Removes @socket from the multicast group @group (while still
  * allowing it to receive unicast messages).
+ *
+ * If @source_specific is %TRUE, source-specific multicast as defined
+ * in RFC 4604 is used.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
@@ -1803,10 +1814,11 @@ g_socket_join_multicast_group (GSocket       *socket,
 gboolean
 g_socket_leave_multicast_group (GSocket       *socket,
 				GInetAddress  *group,
+                                gboolean       source_specific,
                                 const gchar   *interface,
 				GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, interface, FALSE, error);
+  return g_socket_multicast_group_operation (socket, group, source_specific, interface, FALSE, error);
 }
 
 /**
