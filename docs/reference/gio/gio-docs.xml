@@ -185,6 +185,10 @@
         <xi:include href="xml/gsettingsbackend.xml"/>
         <xi:include href="xml/gsettingsschema.xml"/>
     </chapter>
+    <chapter id="resources">
+        <title>Resources</title>
+        <xi:include href="xml/gresource.xml"/>
+    </chapter>
     <chapter id='permissions'>
         <title>Permissions</title>
         <xi:include href="xml/gpermission.xml"/>
@@ -219,6 +223,7 @@
         <xi:include href="gio-querymodules.xml"/>
         <xi:include href="gsettings.xml"/>
         <xi:include href="glib-compile-schemas.xml"/>
+        <xi:include href="glib-compile-resources.xml"/>
         <xi:include href="gdbus.xml"/>
         <xi:include href="xml/gdbus-codegen.xml"/>
     </chapter>

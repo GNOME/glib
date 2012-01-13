@@ -3756,3 +3756,46 @@ g_menu_markup_parser_start_menu
 g_menu_markup_print_stderr
 g_menu_markup_print_string
 </SECTION>
+
+<SECTION>
+<FILE>gresource</FILE>
+<TITLE>GResource</TITLE>
+GResource
+GResourceFlags
+GResourceLookupFlags
+g_resource_load
+g_resource_new_from_data
+g_resource_ref
+g_resource_unref
+g_resource_lookup_data
+g_resource_open_stream
+g_resource_enumerate_children
+g_resource_get_info
+g_resource_set_module
+
+<SUBSECTION Global>
+g_resources_register
+g_resources_unregister
+g_resources_lookup_data
+g_resources_open_stream
+g_resources_enumerate_children
+g_resources_get_info
+
+<SUBSECTION>
+G_RESOURCE_ERROR
+GResourceError
+
+<SUBSECTION Standard>
+G_TYPE_RESOURCE
+G_TYPE_RESOURCE_ERROR
+G_TYPE_RESOURCE_FILE
+G_TYPE_RESOURCE_FLAGS
+G_TYPE_RESOURCE_LOOKUP_FLAGS
+
+<SUBSECTION Private>
+g_resource_get_type
+g_resource_error_get_type
+g_resource_flags_get_type
+g_resource_lookup_flags_get_type
+g_resource_error_quark
+</SECTION>
