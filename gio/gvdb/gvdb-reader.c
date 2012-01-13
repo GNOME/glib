@@ -30,7 +30,10 @@ struct _GvdbTable {
   const gchar *data;
   gsize size;
 
-  GMappedFile *mapped;
+  gpointer user_data;
+  GvdbRefFunc ref_user_data;
+  GDestroyNotify unref_user_data;
+
   gboolean byteswapped;
   gboolean trusted;
 
@@ -123,6 +126,62 @@ gvdb_table_setup_root (GvdbTable                 *file,
   file->n_hash_items = size / sizeof (struct gvdb_hash_item);
 }
 
+static GvdbTable *
+new_from_data (const void    *data,
+	       gsize          data_len,
+	       gboolean       trusted,
+	       gpointer       user_data,
+	       GvdbRefFunc    ref,
+	       GDestroyNotify unref,
+	       const char    *filename,
+	       GError       **error)
+{
+  GvdbTable *file;
+
+  file = g_slice_new0 (GvdbTable);
+  file->data = data;
+  file->size = data_len;
+  file->trusted = trusted;
+  file->ref_count = 1;
+  file->ref_user_data = ref;
+  file->unref_user_data = unref;
+  file->user_data = user_data;
+
+  if (sizeof (struct gvdb_header) <= file->size)
+    {
+      const struct gvdb_header *header = (gpointer) file->data;
+
+      if (header->signature[0] == GVDB_SIGNATURE0 &&
+          header->signature[1] == GVDB_SIGNATURE1 &&
+          guint32_from_le (header->version) == 0)
+        file->byteswapped = FALSE;
+
+      else if (header->signature[0] == GVDB_SWAPPED_SIGNATURE0 &&
+               header->signature[1] == GVDB_SWAPPED_SIGNATURE1 &&
+               guint32_from_le (header->version) == 0)
+        file->byteswapped = TRUE;
+
+      else
+        {
+	  if (filename)
+	    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
+			 "%s: invalid header", filename);
+	  else
+	    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
+			 "invalid gvdb header");
+          g_slice_free (GvdbTable, file);
+	  if (unref)
+	    unref (user_data);
+
+          return NULL;
+        }
+
+      gvdb_table_setup_root (file, &header->root);
+    }
+
+  return file;
+}
+
 /**
  * gvdb_table_new:
  * @filename: the path to the hash file
@@ -149,46 +208,52 @@ gvdb_table_new (const gchar  *filename,
                 GError      **error)
 {
   GMappedFile *mapped;
-  GvdbTable *file;
 
   if ((mapped = g_mapped_file_new (filename, FALSE, error)) == NULL)
     return NULL;
 
-  file = g_slice_new0 (GvdbTable);
-  file->data = g_mapped_file_get_contents (mapped);
-  file->size = g_mapped_file_get_length (mapped);
-  file->trusted = trusted;
-  file->mapped = mapped;
-  file->ref_count = 1;
+  return new_from_data (g_mapped_file_get_contents (mapped),
+			g_mapped_file_get_length (mapped),
+			trusted,
+			mapped,
+			(GvdbRefFunc)g_mapped_file_ref,
+			(GDestroyNotify)g_mapped_file_unref,
+			filename,
+			error);
+}
 
-  if (sizeof (struct gvdb_header) <= file->size)
-    {
-      const struct gvdb_header *header = (gpointer) file->data;
-
-      if (header->signature[0] == GVDB_SIGNATURE0 &&
-          header->signature[1] == GVDB_SIGNATURE1 &&
-          guint32_from_le (header->version) == 0)
-        file->byteswapped = FALSE;
-
-      else if (header->signature[0] == GVDB_SWAPPED_SIGNATURE0 &&
-               header->signature[1] == GVDB_SWAPPED_SIGNATURE1 &&
-               guint32_from_le (header->version) == 0)
-        file->byteswapped = TRUE;
-
-      else
-        {
-          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
-                       "%s: invalid header", filename);
-          g_slice_free (GvdbTable, file);
-          g_mapped_file_unref (mapped);
-
-          return NULL;
-        }
-
-      gvdb_table_setup_root (file, &header->root);
-    }
-
-  return file;
+/**
+ * gvdb_table_new_from_data:
+ * @data: the data
+ * @data_len: the length of @data in bytes
+ * @trusted: if the contents of @data are trusted
+ * @user_data: User supplied data that owns @data
+ * @ref: Ref function for @user_data
+ * @unref: Unref function for @user_data
+ * @returns: a new #GvdbTable
+ *
+ * Creates a new #GvdbTable from the data in @data.
+ *
+ * An empty or otherwise corrupted data is considered to be a valid
+ * #GvdbTable with no entries.
+ *
+ * You should call gvdb_table_unref() on the return result when you no
+ * longer require it.
+ **/
+GvdbTable *
+gvdb_table_new_from_data (const void    *data,
+			  gsize          data_len,
+			  gboolean       trusted,
+			  gpointer       user_data,
+			  GvdbRefFunc    ref,
+			  GDestroyNotify unref,
+			  GError        **error)
+{
+  return new_from_data (data, data_len,
+			trusted,
+			user_data, ref, unref,
+			NULL,
+			error);
 }
 
 static gboolean
@@ -408,8 +473,8 @@ gvdb_table_value_from_item (GvdbTable                   *table,
 
   variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT,
                                      data, size, table->trusted,
-                                     (GDestroyNotify) g_mapped_file_unref,
-                                     g_mapped_file_ref (table->mapped));
+                                     table->unref_user_data,
+                                     table->ref_user_data ? table->ref_user_data (table->user_data) : table->user_data);
   value = g_variant_get_variant (variant);
   g_variant_unref (variant);
 
@@ -510,7 +575,9 @@ gvdb_table_get_table (GvdbTable   *file,
     return NULL;
 
   new = g_slice_new0 (GvdbTable);
-  new->mapped = g_mapped_file_ref (file->mapped);
+  new->user_data = file->ref_user_data ? file->ref_user_data (file->user_data) : file->user_data;
+  new->ref_user_data = file->ref_user_data;
+  new->unref_user_data = file->unref_user_data;
   new->byteswapped = file->byteswapped;
   new->trusted = file->trusted;
   new->data = file->data;
@@ -550,7 +617,8 @@ gvdb_table_unref (GvdbTable *file)
 {
   if (g_atomic_int_dec_and_test (&file->ref_count))
     {
-      g_mapped_file_unref (file->mapped);
+      if (file->unref_user_data)
+	file->unref_user_data (file->user_data);
       g_slice_free (GvdbTable, file);
     }
 }
