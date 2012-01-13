@@ -649,23 +649,29 @@ typedef enum {
  * GResourceFlags:
  * @G_RESOURCE_FLAGS_NONE: No flags set.
  * @G_RESOURCE_FLAGS_COMPRESSED: The file is compressed.
+ * @G_RESOURCE_FLAGS_LOCALIZED: The file has alternate versions based on locale.
  *
  * GResourceFlags give information about a particular file inside a resource
  * bundle.
  **/
 typedef enum {
   G_RESOURCE_FLAGS_NONE       = 0,
-  G_RESOURCE_FLAGS_COMPRESSED = (1<<0)
+  G_RESOURCE_FLAGS_COMPRESSED = (1<<0),
+  G_RESOURCE_FLAGS_LOCALIZED  = (1<<1)
 } GResourceFlags;
 
 /**
  * GResourceLookupFlags:
  * @G_RESOURCE_LOOKUP_FLAGS_NONE: No flags set.
+ * @G_RESOURCE_LOOKUP_FLAGS_NO_ALTERNATIVE: If there is an alternative
+ * (for instance a locale-specific version of the file) return the original
+ * version, not the alternative.
  *
  * GResourceLookupFlags determine how resource path lookups are handled.
  **/
 typedef enum {
   G_RESOURCE_LOOKUP_FLAGS_NONE       = 0,
+  G_RESOURCE_LOOKUP_FLAGS_NO_ALTERNATIVE = (1<<0),
 } GResourceLookupFlags;
 
 /**

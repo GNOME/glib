@@ -48,7 +48,7 @@ test_resource (GResource *resource)
   g_assert (found);
   g_assert_no_error (error);
   g_assert (size == 6);
-  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+  g_assert (flags == (G_RESOURCE_FLAGS_LOCALIZED | G_RESOURCE_FLAGS_COMPRESSED));
 
   found = g_resource_get_info (resource,
 			       "/a_prefix/test2.txt",
@@ -61,6 +61,15 @@ test_resource (GResource *resource)
 
   found = g_resource_get_info (resource,
 			       "/a_prefix/test2-alias.txt",
+			       G_RESOURCE_LOOKUP_FLAGS_NONE,
+			       &size, &flags, &error);
+  g_assert (found);
+  g_assert_no_error (error);
+  g_assert (size == 6);
+  g_assert (flags == 0);
+
+  found = g_resource_get_info (resource,
+			       "/sv/test1.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &size, &flags, &error);
   g_assert (found);
@@ -114,6 +123,16 @@ test_resource (GResource *resource)
   size = g_bytes_get_size (data);
   g_assert (size == 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
+  g_bytes_unref (data);
+
+  data = g_resource_lookup_data (resource,
+				 "/sv/test1.txt",
+				 G_RESOURCE_LOOKUP_FLAGS_NONE,
+				 &error);
+  g_assert (data != NULL);
+  g_assert_no_error (error);
+  g_assert (size == 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test3\n");
   g_bytes_unref (data);
 
   children = g_resource_enumerate_children  (resource,
@@ -209,7 +228,7 @@ test_resource_registred (void)
   g_assert (found);
   g_assert_no_error (error);
   g_assert (size == 6);
-  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+  g_assert (flags == (G_RESOURCE_FLAGS_LOCALIZED | G_RESOURCE_FLAGS_COMPRESSED));
 
   found = g_resources_get_info ("/a_prefix/test2.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -220,6 +239,14 @@ test_resource_registred (void)
   g_assert (flags == 0);
 
   found = g_resources_get_info ("/a_prefix/test2-alias.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&size, &flags, &error);
+  g_assert (found);
+  g_assert_no_error (error);
+  g_assert (size == 6);
+  g_assert (flags == 0);
+
+  found = g_resources_get_info ("/sv/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
   g_assert (found);
@@ -270,6 +297,16 @@ test_resource_registred (void)
   size = g_bytes_get_size (data);
   g_assert (size == 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
+  g_bytes_unref (data);
+
+  data = g_resources_lookup_data ("/sv/test1.txt",
+				  G_RESOURCE_LOOKUP_FLAGS_NONE,
+				  &error);
+  g_assert (data != NULL);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+  g_assert (size == 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test3\n");
   g_bytes_unref (data);
 
   children = g_resources_enumerate_children ("/not/here",

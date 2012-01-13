@@ -7,4 +7,7 @@
     <file alias="test2-alias.txt">test2.txt</file>
     <file>test2.txt</file>
   </gresource>
+  <gresource lang="sv">
+    <file alias="test1.txt">test3.txt</file>
+  </gresource>
 </gresources>

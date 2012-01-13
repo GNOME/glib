@@ -58,6 +58,9 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * simple (no need to check for things like I/O errors or locate the files in the filesystem). It
  * also makes it easier to create relocatable applications.
  *
+ * Resource files can have locale specific alternatives, so that the current locale causes resource
+ * lookups to automatically pick up an alternate file.
+ *
  * Resource files can also be marked as compresses. Such files will be included in the resource bundle
  * in a compressed form, but will be automatically uncompressed when the resource is used. This
  * is very useful e.g. for larger text files that are parsed once (or rarely) and then thrown away.
@@ -75,6 +78,9 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *     <file compressed="true">dialog.ui</file>
  *     <file>menumarkup.xml</file>
  *   </gresource>
+ *   <gresource lang="sv" prefix="/org/gtk/Example">
+ *     <file alias="menumarkup.xml">menumarkup_SV.xml</file>
+ *   </gresource>
  * </gresources>
  * ]]></programlisting></example>
  *
@@ -83,7 +89,11 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * /org/gtk/Example/data/splashscreen.png
  * /org/gtk/Example/dialog.ui
  * /org/gtk/Example/menumarkup.xml
+ * /sv/org/gtk/Example/menumarkup.xml
  * ]]></programlisting>
+ *
+ * Where the contents at "/org/gtk/Example/menumarkup.xml" automatically redirects
+ * to "/sv/org/gtk/Example/menumarkup.xml" when run in e.g. a sv_SE locale.
  *
  * Note that all resources in the process share the same namespace, so use java-style
  * path prefixes (like in the above example) to avoid conflicts.
@@ -276,6 +286,29 @@ static gboolean do_lookup (GResource *resource,
 		     &_size,
 		     &_flags,
 		     &array);
+
+      if (!(lookup_flags & G_RESOURCE_LOOKUP_FLAGS_NO_ALTERNATIVE) &&
+	  (_flags & G_RESOURCE_FLAGS_LOCALIZED))
+	{
+	  const gchar * const *langs = g_get_language_names ();
+	  int i;
+
+	  for (i = 0; langs[i] != NULL; i++)
+	    {
+	      char *prefixed_path = g_strconcat ("/", langs[i], path, NULL);
+	      res = do_lookup (resource, prefixed_path,
+			       lookup_flags | G_RESOURCE_LOOKUP_FLAGS_NO_ALTERNATIVE,
+			       size, flags, data, data_size, NULL);
+              g_free (prefixed_path);
+	      if (res)
+		{
+		  /* Mark the target as localized too if we followed the "link" */
+		  if (flags)
+		    *flags |= G_RESOURCE_FLAGS_LOCALIZED;
+		  break;
+		}
+	    }
+	}
 
       if (!res)
 	{

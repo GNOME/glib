@@ -54,6 +54,7 @@ typedef struct
 
   /* per gresource */
   char *prefix;
+  char *lang;
 
   /* per file */
   char *alias;
@@ -106,7 +107,8 @@ start_element (GMarkupParseContext  *context,
       if (strcmp (element_name, "gresource") == 0)
 	{
 	  COLLECT (OPTIONAL | STRDUP,
-		   "prefix", &state->prefix);
+		   "prefix", &state->prefix,
+		   OPTIONAL | STRDUP, "lang", &state->lang);
 	  return;
 	}
     }
@@ -172,12 +174,14 @@ end_element (GMarkupParseContext  *context,
     {
       g_free (state->prefix);
       state->prefix = NULL;
+      g_free (state->lang);
+      state->lang = NULL;
     }
 
   else if (strcmp (element_name, "file") == 0)
     {
       gchar *file, *real_file;
-      gchar *key;
+      gchar *key, *old_key;
       FileData *data;
 
       file = state->string->str;
@@ -189,6 +193,23 @@ end_element (GMarkupParseContext  *context,
 	key = g_build_path ("/", "/", state->prefix, key, NULL);
       else
 	key = g_build_path ("/", "/", key, NULL);
+
+      if (state->lang)
+	{
+	  data = g_hash_table_lookup (state->table, key);
+	  if (data == NULL)
+	    {
+	      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+			   _("File %s is in lang=%s, but not without lang"),
+			   key, state->lang);
+	      return;
+	    }
+	  data->flags |= G_RESOURCE_FLAGS_LOCALIZED;
+
+	  old_key = key;
+	  key = g_build_path ("/", "/", state->lang, key, NULL);
+	  g_free (old_key);
+	}
 
       if (g_hash_table_lookup (state->table, key) != NULL)
 	{
