@@ -56,6 +56,7 @@ gio/gioerror.c
 gio/giomodule.c
 gio/gioscheduler.c
 gio/giostream.c
+gio/glib-compile-resources.c
 gio/glib-compile-schemas.c
 gio/gloadableicon.c
 gio/glocaldirectorymonitor.c
@@ -83,6 +84,8 @@ gio/gpollfilemonitor.c
 gio/gproxyaddress.c
 gio/gproxyaddressenumerator.c
 gio/gresolver.c
+gio/gresource.c
+gio/gresourcefile.c
 gio/gseekable.c
 gio/gsettingsbackend.c
 gio/gsettings.c
