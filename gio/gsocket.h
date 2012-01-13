@@ -113,9 +113,11 @@ gboolean               g_socket_bind                    (GSocket                
 							 GError                 **error);
 gboolean               g_socket_join_multicast_group    (GSocket                 *socket,
                                                          GInetAddress            *group,
+                                                         const gchar             *interface,
                                                          GError                 **error);
 gboolean               g_socket_leave_multicast_group   (GSocket                 *socket,
                                                          GInetAddress            *group,
+                                                         const gchar             *interface,
                                                          GError                 **error);
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,

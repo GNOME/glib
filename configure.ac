@@ -1109,6 +1109,10 @@ AC_CHECK_HEADER([linux/netlink.h],
 		[#include <sys/socket.h>])
 AM_CONDITIONAL(HAVE_NETLINK, [test "$ac_cv_header_linux_netlink_h" = "yes"])
 
+AC_CHECK_TYPE([struct ip_mreqn], [
+              AC_DEFINE(HAVE_IP_MREQN,, [Define if we have struct ip_mreqn])],,
+              [#include <netinet/in.h>])
+
 case $host in
   *-*-solaris* )
      AC_DEFINE(_XOPEN_SOURCE_EXTENDED, 1, Needed to get declarations for msg_control and msg_controllen on Solaris)

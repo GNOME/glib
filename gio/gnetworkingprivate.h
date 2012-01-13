@@ -53,6 +53,7 @@
 #if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
 #include <arpa/nameser_compat.h>
 #endif
+#include <net/if.h>
 
 #ifndef T_SRV
 #define T_SRV 33

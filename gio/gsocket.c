@@ -47,6 +47,8 @@
 #include <sys/uio.h>
 #endif
 
+#include <net/if.h>
+
 #include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "ginetaddress.h"
@@ -1688,6 +1690,7 @@ g_socket_bind (GSocket         *socket,
 static gboolean
 g_socket_multicast_group_operation (GSocket       *socket,
 				    GInetAddress  *group,
+                                    const gchar   *interface,
 				    gboolean       join_group,
 				    GError       **error)
 {
@@ -1705,10 +1708,22 @@ g_socket_multicast_group_operation (GSocket       *socket,
   native_addr = g_inet_address_to_bytes (group);
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
+#ifdef HAVE_IP_MREQN
+      struct ip_mreqn mc_req;
+#else
       struct ip_mreq mc_req;
+#endif
 
       memcpy (&mc_req.imr_multiaddr, native_addr, sizeof (struct in_addr));
+
+#ifdef HAVE_IP_MREQN
+      if (interface)
+        mc_req.imr_ifindex = if_nametoindex (interface);
+      else
+        mc_req.imr_ifindex = 0;  /* Pick any.  */
+#else
       mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
+#endif
 
       optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
       result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
@@ -1719,7 +1734,10 @@ g_socket_multicast_group_operation (GSocket       *socket,
       struct ipv6_mreq mc_req_ipv6;
 
       memcpy (&mc_req_ipv6.ipv6mr_multiaddr, native_addr, sizeof (struct in6_addr));
-      mc_req_ipv6.ipv6mr_interface = 0;
+      if (interface)
+        mc_req_ipv6.ipv6mr_interface = if_nametoindex (interface);
+      else
+        mc_req_ipv6.ipv6mr_interface = 0;
 
       optname = join_group ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
       result = setsockopt (socket->priv->fd, IPPROTO_IPV6, optname,
@@ -1747,6 +1765,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * g_socket_join_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to join.
+ * @interface: Interface to use
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Registers @socket to receive multicast messages sent to @group.
@@ -1761,15 +1780,17 @@ g_socket_multicast_group_operation (GSocket       *socket,
 gboolean
 g_socket_join_multicast_group (GSocket       *socket,
 			       GInetAddress  *group,
+                               const gchar   *interface,
 			       GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, TRUE, error);
+  return g_socket_multicast_group_operation (socket, group, interface, TRUE, error);
 }
 
 /**
  * g_socket_leave_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to leave.
+ * @interface: Interface to use
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Removes @socket from the multicast group @group (while still
@@ -1782,9 +1803,10 @@ g_socket_join_multicast_group (GSocket       *socket,
 gboolean
 g_socket_leave_multicast_group (GSocket       *socket,
 				GInetAddress  *group,
+                                const gchar   *interface,
 				GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, FALSE, error);
+  return g_socket_multicast_group_operation (socket, group, interface, FALSE, error);
 }
 
 /**
