@@ -566,7 +566,12 @@ EXTRA_DIST += \
 	cert-list.pem			\
 	nothing.pem			\
 	test.gresource.xml		\
+	test1.txt			\
 	test2.gresource.xml		\
+	test2.txt			\
+	test3.gresource.xml		\
+	test3.txt			\
+	test4.gresource.xml		\
 	$(NULL)
 
 MISC_STUFF = test.mo test.gresource
