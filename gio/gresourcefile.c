@@ -454,6 +454,7 @@ g_resource_file_query_info (GFile                *file,
 	    }
 	  else
 	    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+			 "%s",
 			 my_error->message);
 	  g_clear_error (&my_error);
 	  return FALSE;
@@ -554,6 +555,7 @@ g_resource_file_read (GFile         *file,
 	}
       else
 	g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+		     "%s",
 		     my_error->message);
       g_clear_error (&my_error);
       return NULL;
