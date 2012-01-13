@@ -6,8 +6,13 @@ include $(top_srcdir)/Makefile.decl
 
 ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
 
-SUBDIRS = . m4macros glib gmodule gthread gobject gio tests po docs
+SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs
 DIST_SUBDIRS = $(SUBDIRS) build
+if BUILD_MODULAR_TESTS
+SUBDIRS += tests 
+else
+DIST_SUBDIRS += tests
+endif
 
 bin_SCRIPTS = glib-gettextize
 

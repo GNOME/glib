@@ -247,6 +247,11 @@ AC_ARG_ENABLE(rebuilds,
               [AC_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
+AC_ARG_ENABLE(modular_tests,
+              AC_HELP_STRING([--disable-modular-tests],
+                             [Disable build of test programs (default: no)]),,
+              [enable_modular_tests=yes])
+AM_CONDITIONAL(BUILD_MODULAR_TESTS, test x$enable_modular_tests = xyes)
 
 AC_MSG_CHECKING([whether to enable garbage collector friendliness])
 if test "x$enable_gc_friendly" = "xyes"; then
@@ -3449,12 +3454,14 @@ AC_CHECK_ALIGNOF([unsigned long])
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 #
 # 1.2.14 required for dbus_message_set_serial
-PKG_CHECK_MODULES(DBUS1,
-                  dbus-1 >= 1.2.14,
-                  [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
-                  have_dbus1=no)
-AC_SUBST(DBUS1_CFLAGS)
-AC_SUBST(DBUS1_LIBS)
+if test x$enable_modular_tests = xyes; then
+   PKG_CHECK_MODULES(DBUS1,
+                     dbus-1 >= 1.2.14,
+                     [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
+                     have_dbus1=no)
+   AC_SUBST(DBUS1_CFLAGS)
+   AC_SUBST(DBUS1_LIBS)
+fi
 AM_CONDITIONAL(HAVE_DBUS1, [test "x$have_dbus1" = "xyes"])
 
 dnl

@@ -4,7 +4,13 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = . tests
+SUBDIRS = .
+DIST_SUBDIRS =
+if BUILD_MODULAR_TESTS
+SUBDIRS += tests 
+else
+DIST_SUBDIRS += tests
+endif
 
 BUILT_SOURCES=
 CLEANFILES=
