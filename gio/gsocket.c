@@ -138,6 +138,7 @@ enum
   PROP_LOCAL_ADDRESS,
   PROP_REMOTE_ADDRESS,
   PROP_TIMEOUT,
+  PROP_TTL,
   PROP_MULTICAST_LOOPBACK,
   PROP_MULTICAST_TTL
 };
@@ -615,6 +616,10 @@ g_socket_get_property (GObject    *object,
 	g_value_set_uint (value, socket->priv->timeout);
 	break;
 
+      case PROP_TTL:
+	g_value_set_uint (value, g_socket_get_ttl (socket));
+	break;
+
       case PROP_MULTICAST_LOOPBACK:
 	g_value_set_boolean (value, g_socket_get_multicast_loopback (socket));
 	break;
@@ -668,6 +673,10 @@ g_socket_set_property (GObject      *object,
 
       case PROP_TIMEOUT:
 	g_socket_set_timeout (socket, g_value_get_uint (value));
+	break;
+
+      case PROP_TTL:
+	g_socket_set_ttl (socket, g_value_get_uint (value));
 	break;
 
       case PROP_MULTICAST_LOOPBACK:
@@ -833,6 +842,21 @@ g_socket_class_init (GSocketClass *klass)
 						      0,
 						      G_MAXUINT,
 						      0,
+						      G_PARAM_READWRITE |
+						      G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocket:ttl:
+   *
+   * Time-to-live for outgoing unicast packets
+   *
+   * Since: 2.32
+   */
+  g_object_class_install_property (gobject_class, PROP_TTL,
+				   g_param_spec_uint ("ttl",
+						      P_("TTL"),
+						      P_("Time-to-live of outgoing unicast packets"),
+						      0, G_MAXUINT, 0,
 						      G_PARAM_READWRITE |
 						      G_PARAM_STATIC_STRINGS));
 
@@ -1209,6 +1233,96 @@ g_socket_set_timeout (GSocket *socket,
       socket->priv->timeout = timeout;
       g_object_notify (G_OBJECT (socket), "timeout");
     }
+}
+
+/**
+ * g_socket_get_ttl:
+ * @socket: a #GSocket.
+ *
+ * Gets the unicast time-to-live setting on @socket; see
+ * g_socket_set_ttl() for more details.
+ *
+ * Returns: the time-to-live setting on @socket
+ *
+ * Since: 2.32
+ */
+guint
+g_socket_get_ttl (GSocket *socket)
+{
+  int result;
+  guint value, optlen;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      guchar optval;
+
+      optlen = sizeof (optval);
+      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_TTL,
+			   &optval, &optlen);
+      value = optval;
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      optlen = sizeof (value);
+      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
+			   &value, &optlen);
+    }
+  else
+    g_return_val_if_reached (FALSE);
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error getting unicast ttl: %s", socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return value;
+}
+
+/**
+ * g_socket_set_ttl:
+ * @socket: a #GSocket.
+ * @ttl: the time-to-live value for all unicast packets on @socket
+ *
+ * Sets the time-to-live for outgoing unicast packets on @socket.
+ * By default the platform-specific default value is used.
+ *
+ * Since: 2.32
+ */
+void
+g_socket_set_ttl (GSocket  *socket,
+                  guint     ttl)
+{
+  int result;
+
+  g_return_if_fail (G_IS_SOCKET (socket));
+
+  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+    {
+      guchar optval = (guchar)ttl;
+
+      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_TTL,
+			   &optval, sizeof (optval));
+    }
+  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+    {
+      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
+			   &ttl, sizeof (ttl));
+    }
+  else
+    g_return_if_reached ();
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+      g_warning ("error setting unicast ttl: %s", socket_strerror (errsv));
+      return;
+    }
+
+  g_object_notify (G_OBJECT (socket), "ttl");
 }
 
 /**

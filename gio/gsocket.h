@@ -100,6 +100,11 @@ void                   g_socket_set_listen_backlog      (GSocket                
 guint                  g_socket_get_timeout             (GSocket                 *socket);
 void                   g_socket_set_timeout             (GSocket                 *socket,
 							 guint                    timeout);
+
+guint                  g_socket_get_ttl                 (GSocket                 *socket);
+void                   g_socket_set_ttl                 (GSocket                 *socket,
+                                                         guint                    ttl);
+
 gboolean               g_socket_get_multicast_loopback  (GSocket                 *socket);
 void                   g_socket_set_multicast_loopback  (GSocket                 *socket,
                                                          gboolean		  loopback);
