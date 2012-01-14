@@ -162,7 +162,9 @@ g_array_new (gboolean zero_terminated,
 	     gboolean clear,
 	     guint    elt_size)
 {
-  return (GArray*) g_array_sized_new (zero_terminated, clear, elt_size, 0);
+  g_return_val_if_fail (elt_size > 0, NULL);
+
+  return g_array_sized_new (zero_terminated, clear, elt_size, 0);
 }
 
 /**
@@ -185,7 +187,11 @@ GArray* g_array_sized_new (gboolean zero_terminated,
 			   guint    elt_size,
 			   guint    reserved_size)
 {
-  GRealArray *array = g_slice_new (GRealArray);
+  GRealArray *array;
+  
+  g_return_val_if_fail (elt_size > 0, NULL);
+
+  array = g_slice_new (GRealArray);
 
   array->data            = NULL;
   array->len             = 0;
