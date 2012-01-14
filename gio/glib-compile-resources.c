@@ -687,12 +687,13 @@ main (int argc, char **argv)
 		 "}\n", c_name, c_name);
 
       fclose (file);
+
+      g_free (data);
     }
 
   g_free (binary_target);
-
-
   g_free (target);
+  g_hash_table_destroy (table);
 
   return 0;
 }
