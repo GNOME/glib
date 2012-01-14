@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <glib.h>
 #include <gstdio.h>
 #include <gi18n.h>
 #include <gioenums.h>
@@ -28,6 +29,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <locale.h>
+#include <errno.h>
+#ifdef HAVE_SYS_WAIT_H
+#include <sys/wait.h>
+#endif
 
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gzlibcompressor.h>
@@ -58,11 +63,13 @@ typedef struct
   /* per file */
   char *alias;
   gboolean compressed;
+  char *preproc_options;
 
   GString *string;  /* non-NULL when accepting text */
 } ParseState;
 
-gchar *sourcedir = NULL;
+static gchar *sourcedir = NULL;
+static gchar *xmllint = NULL;
 
 static void
 file_data_free (FileData *data)
@@ -115,7 +122,8 @@ start_element (GMarkupParseContext  *context,
       if (strcmp (element_name, "file") == 0)
 	{
 	  COLLECT (OPTIONAL | STRDUP, "alias", &state->alias,
-		   OPTIONAL | BOOL, "compressed", &state->compressed);
+		   OPTIONAL | BOOL, "compressed", &state->compressed,
+                   OPTIONAL | STRDUP, "preprocess", &state->preproc_options);
 	  state->string = g_string_new ("");
 	  return;
 	}
@@ -179,6 +187,7 @@ end_element (GMarkupParseContext  *context,
       gchar *file, *real_file;
       gchar *key;
       FileData *data;
+      char *tmp_file;
 
       file = state->string->str;
       key = file;
@@ -205,13 +214,88 @@ end_element (GMarkupParseContext  *context,
       else
 	real_file = g_strdup (file);
 
+      tmp_file = NULL;
+      if (state->preproc_options)
+        {
+          gchar **options;
+          guint i;
+          gboolean xml_stripblanks = FALSE;
+
+          options = g_strsplit (state->preproc_options, ",", -1);
+
+          for (i = 0; options[i]; i++)
+            {
+              if (!strcmp (options[i], "xml-stripblanks"))
+                xml_stripblanks = TRUE;
+              else
+                {
+                  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                               _("Unknown proprocessing options \"%s\""), options[i]);
+                  g_strfreev (options);
+                  goto cleanup;
+                }
+            }
+          g_strfreev (options);
+
+          if (xml_stripblanks && xmllint != NULL)
+            {
+              gchar *argv[8];
+              int status, fd, argc;
+
+              tmp_file = g_strdup ("resource-XXXXXXXX");
+              if ((fd = g_mkstemp (tmp_file)) == -1)
+                {
+                  int errsv = errno;
+
+                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                               _("Failed to create temp file: %s"),
+                              g_strerror (errsv));
+                  g_free (tmp_file);
+                  tmp_file = NULL;
+                  goto cleanup;
+                }
+              close (fd);
+
+              argc = 0;
+              argv[argc++] = (gchar *) xmllint;
+              argv[argc++] = "--nonet";
+              argv[argc++] = "--noent";
+              argv[argc++] = "--noblanks";
+              argv[argc++] = "--output";
+              argv[argc++] = tmp_file;
+              argv[argc++] = real_file;
+              argv[argc++] = NULL;
+              g_assert (argc <= G_N_ELEMENTS (argv));
+
+              if (!g_spawn_sync (NULL /* cwd */, argv, NULL /* envv */,
+                                 G_SPAWN_STDOUT_TO_DEV_NULL |
+                                 G_SPAWN_STDERR_TO_DEV_NULL,
+                                 NULL, NULL, NULL, NULL, &status, &my_error))
+                {
+                  g_propagate_error (error, my_error);
+                  goto cleanup;
+                }
+#ifdef HAVE_SYS_WAIT_H
+              if (!WIFEXITED (status) || WEXITSTATUS (status) != 0)
+                {
+                  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                      _("Error processing input file with xmllint"));
+                  goto cleanup;
+                }
+#endif
+
+              g_free (real_file);
+              real_file = g_strdup (tmp_file);
+            }
+        }
+
       if (!g_file_get_contents (real_file, &data->content, &data->size, &my_error))
 	{
 	  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
 		       _("Error reading file %s: %s"),
 		       real_file, my_error->message);
 	  g_clear_error (&my_error);
-	  return;
+	  goto cleanup;
 	}
       /* Include zero termination in content_size for uncompressed files (but not in size) */
       data->content_size = data->size + 1;
@@ -230,7 +314,7 @@ end_element (GMarkupParseContext  *context,
 	      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
 			   _("Error compressing file %s"),
 			   real_file);
-	      return;
+	      goto cleanup;
 	    }
 
 	  g_free (data->content);
@@ -244,16 +328,24 @@ end_element (GMarkupParseContext  *context,
 	  data->flags |= G_RESOURCE_FLAGS_COMPRESSED;
 	}
 
-      g_free (real_file);
-
       g_hash_table_insert (state->table, key, data);
 
+    cleanup:
       /* Cleanup */
 
       g_free (state->alias);
       state->alias = NULL;
       g_string_free (state->string, TRUE);
       state->string = NULL;
+      g_free (state->preproc_options);
+      state->preproc_options = NULL;
+
+      g_free (real_file);
+      if (tmp_file)
+        {
+          unlink (tmp_file);
+          g_free (tmp_file);
+        }
     }
 }
 
@@ -448,6 +540,12 @@ main (int argc, char **argv)
 
   if (sourcedir == NULL)
     sourcedir = "";
+
+  xmllint = g_strdup (g_getenv ("XMLLINT"));
+  if (xmllint == NULL)
+    xmllint = g_find_program_in_path ("xmllint");
+  if (xmllint == NULL)
+    g_printerr ("XMLLINT not set and xmllint not found in path; skipping xml preprocessing.\n");
 
   if (target == NULL)
     {
@@ -694,6 +792,7 @@ main (int argc, char **argv)
   g_free (binary_target);
   g_free (target);
   g_hash_table_destroy (table);
+  g_free (xmllint);
 
   return 0;
 }

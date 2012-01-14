@@ -95,6 +95,20 @@ at initialization and uninitialization time.
 
 </variablelist>
 </refsect2>
+
+<refsect2><title>Environment Variables</title>
+<variablelist>
+
+<varlistentry>
+<term><envar>XMLLINT</envar></term>
+<listitem><para>
+The full path to the xmllint executable. This is used to preprocess resources with the
+<literal>xml-stripblanks</literal> preprocessing option. If this environment variable is not
+set, xmllint is searched in the <envar>PATH</envar>.
+</para></listitem>
+</varlistentry>
+</refsect2>
+
 </refsect1>
 <refsect1><title>See also</title>
 </refsect1>

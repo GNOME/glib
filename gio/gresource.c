@@ -62,6 +62,14 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * in a compressed form, but will be automatically uncompressed when the resource is used. This
  * is very useful e.g. for larger text files that are parsed once (or rarely) and then thrown away.
  *
+ * Resource files can also be marked to be preprocessed, by setting the value of the
+ * <literal>preprocess</literal> attribute to a comma-separated list of preprocessing options.
+ * The only option currently supported is 
+ * <literal>xml-stripblanks</literal> which will use <literal>xmllint</literal> to strip
+ * ignorable whitespace from the xml file. For this to work, the <envar>XMLLINT</envar>
+ * environment variable must be set to the full path to the xmllint executable; 
+ * otherwise the preprocessing step is skipped.
+ *
  * Resource bundles are created by the <link linkend="glib-compile-schemas">glib-compile-resources</link> program
  * which takes an xml file that describes the bundle, and a set of files that the xml references. These
  * are combined into a binary resource bundle.
@@ -73,7 +81,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *   <gresource prefix="/org/gtk/Example">
  *     <file>data/splashscreen.png</file>
  *     <file compressed="true">dialog.ui</file>
- *     <file>menumarkup.xml</file>
+ *     <file preprocess="xml-stripblanks">menumarkup.xml</file>
  *   </gresource>
  * </gresources>
  * ]]></programlisting></example>
