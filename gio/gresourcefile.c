@@ -453,9 +453,8 @@ g_resource_file_query_info (GFile                *file,
 			   resource->path);
 	    }
 	  else
-	    g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			 "%s",
-			 my_error->message);
+	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                 my_error->message);
 	  g_clear_error (&my_error);
 	  return FALSE;
 	}
@@ -554,9 +553,8 @@ g_resource_file_read (GFile         *file,
 		       resource->path);
 	}
       else
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		     "%s",
-		     my_error->message);
+	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                             my_error->message);
       g_clear_error (&my_error);
       return NULL;
     }
