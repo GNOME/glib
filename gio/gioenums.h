@@ -218,7 +218,7 @@ typedef enum {
  *
  * Flags used when mounting a mount.
  */
-typedef enum {
+typedef enum /*< flags >*/ {
   G_MOUNT_MOUNT_NONE = 0
 } GMountMountFlags;
 
@@ -244,7 +244,7 @@ typedef enum {
  *
  * Since: 2.22
  */
-typedef enum {
+typedef enum /*< flags >*/ {
   G_DRIVE_START_NONE = 0
 } GDriveStartFlags;
 
@@ -668,7 +668,7 @@ typedef enum {
  * 
  * Since: 2.32
  **/
-typedef enum {
+typedef enum /*< flags >*/ {
   G_RESOURCE_LOOKUP_FLAGS_NONE       = 0,
 } GResourceLookupFlags;
 
@@ -1515,7 +1515,6 @@ typedef enum
 } GDBusObjectManagerClientFlags;
 
 /**
-<<<<<<< HEAD
  * GTlsDatabaseVerifyFlags:
  * @G_TLS_DATABASE_VERIFY_NONE: No verification flags
  *
@@ -1523,7 +1522,7 @@ typedef enum
  *
  * Since: 2.30
  */
-typedef enum {
+typedef enum /*< flags >*/ {
   G_TLS_DATABASE_VERIFY_NONE = 0
 } GTlsDatabaseVerifyFlags;
 
