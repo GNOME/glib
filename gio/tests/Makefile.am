@@ -600,8 +600,8 @@ test.gresource: test.gresource.xml test1.txt test2.txt test3.txt
 noinst_LTLIBRARIES = libresourceplugin.la
 
 libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
-libresourceplugin_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
-libresourceplugin_la_LIBADD = $(G_MODULE_LIBS)
+libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(libdir)
+libresourceplugin_la_LIBADD = $(progs_ldadd)
 
 CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
 
