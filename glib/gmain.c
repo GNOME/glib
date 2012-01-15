@@ -1174,7 +1174,7 @@ g_source_add_child_source (GSource *source,
   source->priv->child_sources = g_slist_prepend (source->priv->child_sources,
 						 g_source_ref (child_source));
   child_source->priv->parent_source = source;
-  g_source_set_priority_unlocked (child_source, context, source->priority);
+  g_source_set_priority_unlocked (child_source, NULL, source->priority);
 
   if (context)
     {
