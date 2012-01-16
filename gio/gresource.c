@@ -531,7 +531,7 @@ g_resource_enumerate_children (GResource *resource,
 }
 
 static GRWLock resources_lock;
-static GList *registred_resources;
+static GList *registered_resources;
 
 /**
  * g_resources_register:
@@ -548,7 +548,7 @@ g_resources_register (GResource *resource)
 {
   g_rw_lock_writer_lock (&resources_lock);
 
-  registred_resources = g_list_prepend (registred_resources,
+  registered_resources = g_list_prepend (registered_resources,
 					g_resource_ref (resource));
 
   g_rw_lock_writer_unlock (&resources_lock);
@@ -567,13 +567,13 @@ g_resources_unregister (GResource *resource)
 {
   g_rw_lock_writer_lock (&resources_lock);
 
-  if (g_list_find (registred_resources, resource) == NULL)
+  if (g_list_find (registered_resources, resource) == NULL)
     {
       g_warning ("Tried to remove not registred resource");
     }
   else
     {
-      registred_resources = g_list_remove (registred_resources,
+      registered_resources = g_list_remove (registered_resources,
 					   resource);
       g_resource_unref (resource);
     }
@@ -609,7 +609,7 @@ g_resources_open_stream (const char *path,
 
   g_rw_lock_reader_lock (&resources_lock);
 
-  for (l = registred_resources; l != NULL; l = l->next)
+  for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
       GError *my_error = NULL;
@@ -676,7 +676,7 @@ g_resources_lookup_data (const char *path,
 
   g_rw_lock_reader_lock (&resources_lock);
 
-  for (l = registred_resources; l != NULL; l = l->next)
+  for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
       GError *my_error = NULL;
@@ -735,7 +735,7 @@ g_resources_enumerate_children (const char *path,
 
   g_rw_lock_reader_lock (&resources_lock);
 
-  for (l = registred_resources; l != NULL; l = l->next)
+  for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
 
@@ -813,7 +813,7 @@ g_resources_get_info (const char   *path,
 
   g_rw_lock_reader_lock (&resources_lock);
 
-  for (l = registred_resources; l != NULL; l = l->next)
+  for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
       GError *my_error = NULL;
