@@ -1400,7 +1400,7 @@ g_socket_set_broadcast (GSocket    *socket,
        	                gboolean    broadcast)
 {
   int result;
-  guchar value;
+  gint value;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
