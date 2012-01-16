@@ -265,7 +265,7 @@
  * <listitem><para>
  *   The quark function for the error domain is called
  *   <literal>&lt;namespace&gt;_&lt;module&gt;_error_quark</literal>,
- *   for example g_spawn_error_quark() or %g_thread_error_quark().
+ *   for example g_spawn_error_quark() or g_thread_error_quark().
  * </para></listitem>
  * <listitem><para>
  *   The error codes are in an enumeration called
@@ -313,6 +313,10 @@
  *   then you handled it and you should not report it. If it was fatal,
  *   then you must report it and discontinue whatever you were doing
  *   immediately.
+ * </para></listitem>
+ * <listitem><para>
+ *   If a #GError is reported, out parameters are not guaranteed to
+ *   be set to any defined value.
  * </para></listitem>
  * <listitem><para>
  *   A #GError* must be initialized to %NULL before passing its address
