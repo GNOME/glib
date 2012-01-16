@@ -1,3 +1,27 @@
+Overview of changes from GLib 2.31.8 to 2.31.10
+===============================================
+
+* GResource:
+ - A new facility to allow linking data files into binaries
+   and make them available as resources
+ - Resources are compiled using glib-compile-resources
+ - GIO supports resource:/// uris to access resources
+
+* Bugs fixed:
+ 619126 Missing dependency libs
+ 658315 g_key_file_get_keys() should set length to 0...
+ 660371 is it ever valid to have 0 as a GError domain?
+ 666700 Add some missing (allow-none) annotations
+ 667375 GAsyncInitable subclassing (and async subclassing...
+ 667447 Missing many introspection annotations
+ 667790 Protect call to pthread_condattr_setclock with define
+ 667938 wrong gtypes generated for empty flags enums
+
+* Translation updates:
+ Hebrew
+ Spanish
+
+
 Overview of changes from GLib 2.31.6 to 2.31.8
 ==============================================
 
