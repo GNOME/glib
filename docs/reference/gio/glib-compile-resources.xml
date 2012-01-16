@@ -8,7 +8,7 @@
 
 <refnamediv>
   <refname>glib-compile-resources</refname>
-  <refpurpose>glib resource compiler</refpurpose>
+  <refpurpose>GLib resource compiler</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
