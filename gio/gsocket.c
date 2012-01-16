@@ -1950,7 +1950,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
       else
         mc_req_ipv6.ipv6mr_interface = 0;
 
-      optname = join_group ? IPV6_ADD_MEMBERSHIP : IPV6_DROP_MEMBERSHIP;
+      optname = join_group ? IPV6_JOIN_GROUP : IPV6_LEAVE_GROUP;
       result = setsockopt (socket->priv->fd, IPPROTO_IPV6, optname,
 			   &mc_req_ipv6, sizeof (mc_req_ipv6));
     }
