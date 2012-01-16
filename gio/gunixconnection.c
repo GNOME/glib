@@ -256,15 +256,6 @@ gint                    g_unix_connection_receive_fd_finish             (GUnixCo
                                                                          GError              **error);
 
 
-gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
-                                                                         GError              **error);
-void                    g_unix_connection_send_credentials_async        (GUnixConnection      *connection,
-                                                                         gint                  io_priority,
-                                                                         GAsyncReadyCallback   callback,
-                                                                         gpointer              user_data);
-gboolean                g_unix_connection_send_credentials_finish       (GUnixConnection      *connection,
-                                                                         GError              **error);
-
 gboolean                g_unix_connection_send_fake_credentials         (GUnixConnection      *connection,
                                                                          guint64               pid,
                                                                          guint64               uid,
@@ -278,21 +269,6 @@ void                    g_unix_connection_send_fake_credentials_async   (GUnixCo
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
 gboolean                g_unix_connection_send_fake_credentials_finish  (GUnixConnection      *connection,
-                                                                         GError              **error);
-
-gboolean                g_unix_connection_receive_credentials           (GUnixConnection      *connection,
-                                                                         guint64              *pid,
-                                                                         guint64              *uid,
-                                                                         guint64              *gid,
-                                                                         GError              **error);
-void                    g_unix_connection_receive_credentials_async     (GUnixConnection      *connection,
-                                                                         gint                  io_priority,
-                                                                         GAsyncReadyCallback   callback,
-                                                                         gpointer              user_data);
-gboolean                g_unix_connection_receive_credentials_finish    (GUnixConnection      *connection,
-                                                                         guint64              *pid,
-                                                                         guint64              *uid,
-                                                                         guint64              *gid,
                                                                          GError              **error);
 
 gboolean                g_unix_connection_create_pair                   (GUnixConnection     **one,
@@ -380,6 +356,89 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
     g_object_unref (scm);
   g_object_unref (credentials);
   return ret;
+}
+
+static void
+send_credentials_async_thread (GSimpleAsyncResult *result,
+                               GObject            *object,
+                               GCancellable       *cancellable)
+{
+  GError *error = NULL;
+
+  if (!g_unix_connection_send_credentials (G_UNIX_CONNECTION (object),
+                                           cancellable,
+                                           &error))
+    {
+      g_simple_async_result_take_error (result, error);
+    }
+}
+
+/**
+ * g_unix_connection_send_credentials_async:
+ * @connection: A #GUnixConnection.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Asynchronously send credentials.
+ *
+ * For more details, see g_unix_connection_send_credentials() which is
+ * the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_unix_connection_send_credentials_finish() to get the result of the operation.
+ *
+ * Since: 2.32
+ **/
+void
+g_unix_connection_send_credentials_async (GUnixConnection      *connection,
+                                          GCancellable         *cancellable,
+                                          GAsyncReadyCallback   callback,
+                                          gpointer              user_data)
+{
+  GSimpleAsyncResult *result;
+
+  result = g_simple_async_result_new (G_OBJECT (connection),
+                                      callback, user_data,
+                                      g_unix_connection_send_credentials_async);
+
+  g_simple_async_result_run_in_thread (result,
+                                       send_credentials_async_thread,
+                                       G_PRIORITY_DEFAULT,
+                                       cancellable);
+  g_object_unref (result);
+}
+
+/**
+ * g_unix_connection_send_credentials_finish:
+ * @connection: A #GUnixConnection.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous send credentials operation started with
+ * g_unix_connection_send_credentials_async().
+ *
+ * Returns: %TRUE if the operation was successful, otherwise %FALSE.
+ *
+ * Since: 2.32
+ **/
+gboolean
+g_unix_connection_send_credentials_finish (GUnixConnection *connection,
+                                           GAsyncResult    *result,
+                                           GError         **error)
+{
+  g_return_val_if_fail (
+      g_simple_async_result_is_valid (result,
+                                      G_OBJECT (connection),
+                                      g_unix_connection_send_credentials_async),
+      FALSE);
+
+  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
+                                             error))
+    return FALSE;
+
+
+  return TRUE;
 }
 
 /**
@@ -583,4 +642,92 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
     }
   g_object_unref (socket);
   return ret;
+}
+
+static void
+receive_credentials_async_thread (GSimpleAsyncResult *result,
+                                  GObject            *object,
+                                  GCancellable       *cancellable)
+{
+  GCredentials *creds;
+  GError *error = NULL;
+
+  creds = g_unix_connection_receive_credentials (G_UNIX_CONNECTION (object),
+                                                 cancellable,
+                                                 &error);
+
+  if (creds == NULL)
+    g_simple_async_result_take_error (result, error);
+  else
+    g_simple_async_result_set_op_res_gpointer (result, creds, g_object_unref);
+}
+
+/**
+ * g_unix_connection_receive_credentials_async:
+ * @connection: A #GUnixConnection.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Asynchronously receive credentials.
+ *
+ * For more details, see g_unix_connection_receive_credentials() which is
+ * the synchronous version of this call.
+ *
+ * When the operation is finished, @callback will be called. You can then call
+ * g_unix_connection_receive_credentials_finish() to get the result of the operation.
+ *
+ * Since: 2.32
+ **/
+void
+g_unix_connection_receive_credentials_async (GUnixConnection      *connection,
+                                              GCancellable         *cancellable,
+                                              GAsyncReadyCallback   callback,
+                                              gpointer              user_data)
+{
+  GSimpleAsyncResult *result;
+
+  result = g_simple_async_result_new (G_OBJECT (connection),
+                                      callback, user_data,
+                                      g_unix_connection_receive_credentials_async);
+
+  g_simple_async_result_run_in_thread (result,
+                                       receive_credentials_async_thread,
+                                       G_PRIORITY_DEFAULT,
+                                       cancellable);
+
+  g_object_unref (result);
+}
+
+/**
+ * g_unix_connection_receive_credentials_finish:
+ * @connection: A #GUnixConnection.
+ * @result: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous receive credentials operation started with
+ * g_unix_connection_receive_credentials_async().
+ *
+ * Returns: (transfer full): a #GCredentials, or %NULL on error.
+ *     Free the returned object with g_object_unref().
+ *
+ * Since: 2.32
+ **/
+GCredentials *
+g_unix_connection_receive_credentials_finish (GUnixConnection *connection,
+                                              GAsyncResult    *result,
+                                              GError         **error)
+{
+  g_return_val_if_fail (
+      g_simple_async_result_is_valid (result,
+                                      G_OBJECT (connection),
+                                      g_unix_connection_receive_credentials_async),
+      NULL);
+
+  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
+                                             error))
+    return NULL;
+
+  return g_object_ref (g_simple_async_result_get_op_res_gpointer (
+      G_SIMPLE_ASYNC_RESULT (result)));
 }

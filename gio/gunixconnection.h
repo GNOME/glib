@@ -74,11 +74,24 @@ gint                    g_unix_connection_receive_fd                    (GUnixCo
 gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
+void                    g_unix_connection_send_credentials_async        (GUnixConnection      *connection,
+                                                                         GCancellable         *cancellable,
+                                                                         GAsyncReadyCallback   callback,
+                                                                         gpointer              user_data);
+gboolean                g_unix_connection_send_credentials_finish       (GUnixConnection      *connection,
+                                                                         GAsyncResult         *result,
+                                                                         GError              **error);
 
 GCredentials           *g_unix_connection_receive_credentials           (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
-
+void                    g_unix_connection_receive_credentials_async     (GUnixConnection      *connection,
+                                                                         GCancellable         *cancellable,
+                                                                         GAsyncReadyCallback   callback,
+                                                                         gpointer              user_data);
+GCredentials           *g_unix_connection_receive_credentials_finish    (GUnixConnection      *connection,
+                                                                         GAsyncResult         *result,
+                                                                         GError              **error);
 
 G_END_DECLS
 
