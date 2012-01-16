@@ -226,9 +226,7 @@ enum
   PROP_IS_REGISTERED,
   PROP_IS_REMOTE,
   PROP_INACTIVITY_TIMEOUT,
-  PROP_ACTION_GROUP,
-  PROP_APP_MENU,
-  PROP_MENUBAR
+  PROP_ACTION_GROUP
 };
 
 enum
@@ -508,13 +506,6 @@ g_application_real_add_platform_data (GApplication    *application,
 }
 
 /* GObject implementation stuff {{{1 */
-static void         g_application_set_app_menu (GApplication *application,
-                                                GMenuModel   *app_menu);
-static GMenuModel * g_application_get_app_menu (GApplication *application);
-static void         g_application_set_menubar  (GApplication *application,
-                                                GMenuModel   *menubar);
-static GMenuModel * g_application_get_menubar  (GApplication *application);
-
 static void
 g_application_set_property (GObject      *object,
                             guint         prop_id,
@@ -542,14 +533,6 @@ g_application_set_property (GObject      *object,
     case PROP_ACTION_GROUP:
       g_clear_object (&application->priv->actions);
       application->priv->actions = g_value_dup_object (value);
-      break;
-
-    case PROP_APP_MENU:
-      g_application_set_app_menu (application, g_value_get_object (value));
-      break;
-
-    case PROP_MENUBAR:
-      g_application_set_menubar (application, g_value_get_object (value));
       break;
 
     default:
@@ -590,62 +573,6 @@ g_application_set_action_group (GApplication *application,
 }
 
 static void
-g_application_set_app_menu (GApplication *application,
-                            GMenuModel   *app_menu)
-{
-  g_return_if_fail (G_IS_APPLICATION (application));
-
-  if (app_menu != application->priv->app_menu)
-    {
-      if (application->priv->app_menu != NULL)
-        g_object_unref (application->priv->app_menu);
-
-      application->priv->app_menu = app_menu;
-
-      if (application->priv->app_menu != NULL)
-        g_object_ref (application->priv->app_menu);
-
-      g_object_notify (G_OBJECT (application), "app-menu");
-    }
-}
-
-static GMenuModel *
-g_application_get_app_menu (GApplication *application)
-{
-  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
-
-  return application->priv->app_menu;
-}
-
-static void
-g_application_set_menubar (GApplication *application,
-                            GMenuModel   *menubar)
-{
-  g_return_if_fail (G_IS_APPLICATION (application));
-
-  if (menubar != application->priv->menubar)
-    {
-      if (application->priv->menubar != NULL)
-        g_object_unref (application->priv->menubar);
-
-      application->priv->menubar = menubar;
-
-      if (application->priv->menubar != NULL)
-        g_object_ref (application->priv->menubar);
-
-      g_object_notify (G_OBJECT (application), "menubar");
-    }
-}
-
-static GMenuModel *
-g_application_get_menubar (GApplication *application)
-{
-  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
-
-  return application->priv->menubar;
-}
-
-static void
 g_application_get_property (GObject    *object,
                             guint       prop_id,
                             GValue     *value,
@@ -680,16 +607,6 @@ g_application_get_property (GObject    *object,
                         g_application_get_inactivity_timeout (application));
       break;
 
-    case PROP_APP_MENU:
-      g_value_set_object (value,
-                          g_application_get_app_menu (application));
-      break;
-
-    case PROP_MENUBAR:
-      g_value_set_object (value,
-                          g_application_get_menubar (application));
-      break;
-
     default:
       g_assert_not_reached ();
     }
@@ -717,12 +634,6 @@ g_application_finalize (GObject *object)
 
   if (g_application_get_default () == application)
     g_application_set_default (NULL);
-
-  if (application->priv->app_menu)
-    g_object_unref (application->priv->app_menu);
-
-  if (application->priv->menubar)
-    g_object_unref (application->priv->menubar);
 
   if (application->priv->actions)
     g_object_unref (application->priv->actions);
@@ -812,20 +723,6 @@ g_application_class_init (GApplicationClass *class)
                          P_("The group of actions that the application exports"),
                          G_TYPE_ACTION_GROUP,
                          G_PARAM_DEPRECATED | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
-
-  g_object_class_install_property (object_class, PROP_APP_MENU,
-    g_param_spec_object ("app-menu",
-                         P_("Application menu"),
-                         P_("The GMenuModel for the application menu"),
-                         G_TYPE_MENU_MODEL,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-
-  g_object_class_install_property (object_class, PROP_MENUBAR,
-    g_param_spec_object ("menubar",
-                         P_("Menubar"),
-                         P_("The GMenuModel for the menubar"),
-                         G_TYPE_MENU_MODEL,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication::startup:
