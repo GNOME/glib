@@ -3112,6 +3112,8 @@ socket_source_dispatch (GSource     *source,
 {
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
+  GSocket *socket = socket_source->socket;
+  gboolean ret;
 
 #ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
@@ -3119,9 +3121,18 @@ socket_source_dispatch (GSource     *source,
   if (socket_source->socket->priv->timed_out)
     socket_source->pollfd.revents |= socket_source->condition & (G_IO_IN | G_IO_OUT);
 
-  return (*func) (socket_source->socket,
-		  socket_source->pollfd.revents & socket_source->condition,
-		  user_data);
+  ret = (*func) (socket,
+		 socket_source->pollfd.revents & socket_source->condition,
+		 user_data);
+
+  if (socket->priv->timeout)
+    socket_source->timeout_time = g_get_monotonic_time () +
+                                  socket->priv->timeout * 1000000;
+
+  else
+    socket_source->timeout_time = 0;
+
+  return ret;
 }
 
 static void
