@@ -949,6 +949,7 @@ g_socket_condition_check
 g_socket_condition_wait
 g_socket_connect
 g_socket_create_source
+g_socket_get_available_bytes
 g_socket_get_blocking
 g_socket_get_broadcast
 g_socket_get_family

@@ -137,6 +137,8 @@ gboolean               g_socket_connect                 (GSocket                
 gboolean               g_socket_check_connect_result    (GSocket                 *socket,
 							 GError                 **error);
 
+gssize                 g_socket_get_available_bytes     (GSocket                 *socket);
+
 GIOCondition           g_socket_condition_check         (GSocket                 *socket,
 							 GIOCondition             condition);
 gboolean               g_socket_condition_wait          (GSocket                 *socket,
