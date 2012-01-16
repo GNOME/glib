@@ -2286,10 +2286,8 @@ AC_CHECK_FUNCS(clock_gettime, [], [
     AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
     G_THREAD_LIBS="$G_THREAD_LIBS -lrt"
     G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS_FOR_GTHREAD -lrt"
-    GLIB_RT_LIBS="-lrt"
   ])
 ])
-AC_SUBST(GLIB_RT_LIBS)
 
 
 dnl ************************
@@ -2526,7 +2524,7 @@ case $host in
 	G_LIBS_EXTRA="-luser32 -lkernel32"
     ;;
   *-*-mingw*)
-	G_LIBS_EXTRA="-lws2_32 -lole32 -lwinmm"
+	G_LIBS_EXTRA="-lws2_32 -lole32 -lwinmm -lshlwapi"
     ;;
   *)
 	G_LIBS_EXTRA=""
