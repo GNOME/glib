@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-15 15:42+0100\n"
-"PO-Revision-Date: 2012-01-15 15:52+0100\n"
+"POT-Creation-Date: 2012-01-17 17:11+0100\n"
+"PO-Revision-Date: 2012-01-17 17:11+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -64,7 +64,7 @@ msgstr "Ugyldig bytesekvens i inndata for konvertering"
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:856
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:953
 msgid "Cancellable initialization not supported"
 msgstr "Avbrytbar initiering er ikke støttet"
 
@@ -1149,12 +1149,12 @@ msgstr "Adressen har biter satt forbi lengde på prefiks"
 msgid "Could not parse '%s' as IP address mask"
 msgstr "Kunne ikke lese «%s» som IP-adressemaske"
 
-#: ../gio/ginetsocketaddress.c:181 ../gio/ginetsocketaddress.c:198
+#: ../gio/ginetsocketaddress.c:206 ../gio/ginetsocketaddress.c:223
 #: ../gio/gunixsocketaddress.c:221
 msgid "Not enough space for socket address"
 msgstr "Ikke nok plass til adresse for plugg"
 
-#: ../gio/ginetsocketaddress.c:211
+#: ../gio/ginetsocketaddress.c:238
 msgid "Unsupported socket address"
 msgstr "Adresse for plugg er ikke støttet"
 
@@ -1206,41 +1206,41 @@ msgstr "Feil ved komprimering av fil %s"
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:392
+#: ../gio/glib-compile-resources.c:393
 msgid "name of the output file"
 msgstr "navn på utdatafil"
 
-#: ../gio/glib-compile-resources.c:392 ../gio/glib-compile-resources.c:423
+#: ../gio/glib-compile-resources.c:393 ../gio/glib-compile-resources.c:424
 msgid "FILE"
 msgstr "FIL"
 
-#: ../gio/glib-compile-resources.c:393
+#: ../gio/glib-compile-resources.c:394
 msgid ""
 "The directory where files are to be read from (default to current directory)"
 msgstr "Katalog filene skal leses fra (aktiv katalog er forvalgt)"
 
-#: ../gio/glib-compile-resources.c:393 ../gio/glib-compile-schemas.c:1939
+#: ../gio/glib-compile-resources.c:394 ../gio/glib-compile-schemas.c:1939
 #: ../gio/glib-compile-schemas.c:1969
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:394
+#: ../gio/glib-compile-resources.c:395
 msgid "Generate source header"
 msgstr "Lag hode for kildekode"
 
-#: ../gio/glib-compile-resources.c:395
+#: ../gio/glib-compile-resources.c:396
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Lag kildekode som skal brukes til å lenke inn ressursfilen i din kode"
 
-#: ../gio/glib-compile-resources.c:396
+#: ../gio/glib-compile-resources.c:397
 msgid "Don't automatically create and register resource"
 msgstr "Ikke lag og registrer ressursen automatisk"
 
-#: ../gio/glib-compile-resources.c:397
+#: ../gio/glib-compile-resources.c:398
 msgid "C identifier name used for the generated source code"
 msgstr "Navn på C-identifikator som brukes for generert kildekode"
 
-#: ../gio/glib-compile-resources.c:426
+#: ../gio/glib-compile-resources.c:427
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1250,7 +1250,7 @@ msgstr ""
 "Ressursspesifikasjonsfiler har type .gresource.xml,\n"
 "og ressufsfilen har etternavn .gresource."
 
-#: ../gio/glib-compile-resources.c:442
+#: ../gio/glib-compile-resources.c:443
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du må kun oppgi ett filnavn\n"
@@ -1948,7 +1948,7 @@ msgstr "Feil ved oppslag av «%s»"
 #: ../gio/gresource.c:267 ../gio/gresource.c:508 ../gio/gresource.c:525
 #: ../gio/gresource.c:634 ../gio/gresource.c:701 ../gio/gresource.c:760
 #: ../gio/gresource.c:838 ../gio/gresourcefile.c:452
-#: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:656
+#: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Ressurs ved «%s» eksisterer ikke"
@@ -1958,12 +1958,12 @@ msgstr "Ressurs ved «%s» eksisterer ikke"
 msgid "The resource at '%s' failed to decompress"
 msgstr "Ressursen ved «%s» kunne ikke dekomprimeres"
 
-#: ../gio/gresourcefile.c:652
+#: ../gio/gresourcefile.c:650
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "Ressurs ved «%s» er ikke en katalog"
 
-#: ../gio/gresourcefile.c:860
+#: ../gio/gresourcefile.c:858
 msgid "Input stream doesn't implement seek"
 msgstr "Inndatastrøm implementerer ikke søk"
 
@@ -2202,111 +2202,121 @@ msgstr "  VERDI     Verdi som skal settes\n"
 msgid "Empty schema name given\n"
 msgstr "Tomt navn på schema oppgitt\n"
 
-#: ../gio/gsocket.c:277
+#: ../gio/gsocket.c:282
 msgid "Invalid socket, not initialized"
 msgstr "Ugyldig plugg, ikke initiert"
 
-#: ../gio/gsocket.c:284
+#: ../gio/gsocket.c:289
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Ugyldig plugg, initiering feilet pga: %s"
 
-#: ../gio/gsocket.c:292
+#: ../gio/gsocket.c:297
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:300 ../gio/gsocket.c:2809 ../gio/gsocket.c:2853
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3431 ../gio/gsocket.c:3475
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
-#: ../gio/gsocket.c:466
+#: ../gio/gsocket.c:471
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "lager GSocket fra fd: %s"
 
-#: ../gio/gsocket.c:500 ../gio/gsocket.c:516
+#: ../gio/gsocket.c:505 ../gio/gsocket.c:521
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kunne ikke lage plugg: %s"
 
-#: ../gio/gsocket.c:500
+#: ../gio/gsocket.c:505
 msgid "Unknown protocol was specified"
 msgstr "Ukjent protokoll ble oppgitt"
 
-#: ../gio/gsocket.c:1270
+#: ../gio/gsocket.c:1712
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kunne ikke hente lokal adresse: %s"
 
-#: ../gio/gsocket.c:1313
+#: ../gio/gsocket.c:1755
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "kunne ikke hente ekstern adresse: %s"
 
-#: ../gio/gsocket.c:1374
+#: ../gio/gsocket.c:1816
 #, c-format
 msgid "could not listen: %s"
 msgstr "kunne ikke lytte: %s"
 
-#: ../gio/gsocket.c:1448
+#: ../gio/gsocket.c:1890
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Feil ved binding til adresse: %s"
 
-#: ../gio/gsocket.c:1568
+#: ../gio/gsocket.c:1966
+#, c-format
+msgid "Error joining multicast group: %s"
+msgstr "Feil ved forsøk på å bli med i multicast-gruppe: %s"
+
+#: ../gio/gsocket.c:1967
+#, c-format
+msgid "Error leaving multicast group: %s"
+msgstr "Feil ved forsøk på å forlate multicast-gruppe: %s"
+
+#: ../gio/gsocket.c:2146
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Feil ved godkjenning av tilkobling: %s"
 
-#: ../gio/gsocket.c:1689
+#: ../gio/gsocket.c:2267
 msgid "Connection in progress"
 msgstr "Tilkobling pågår"
 
-#: ../gio/gsocket.c:1741 ../gio/gsocket.c:3595
+#: ../gio/gsocket.c:2319 ../gio/gsocket.c:4217
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
 
-#: ../gio/gsocket.c:1878
+#: ../gio/gsocket.c:2489
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Feil ved mottak av data: %s"
 
-#: ../gio/gsocket.c:2056
+#: ../gio/gsocket.c:2667
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Feil ved sending av data: %s"
 
-#: ../gio/gsocket.c:2170
+#: ../gio/gsocket.c:2781
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kan ikke stenge ned plugg: %s"
 
-#: ../gio/gsocket.c:2249
+#: ../gio/gsocket.c:2860
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:2802
+#: ../gio/gsocket.c:3424
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3069 ../gio/gsocket.c:3150
+#: ../gio/gsocket.c:3691 ../gio/gsocket.c:3772
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3094
+#: ../gio/gsocket.c:3716
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:3374 ../gio/gsocket.c:3510
+#: ../gio/gsocket.c:3996 ../gio/gsocket.c:4132
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:3614
+#: ../gio/gsocket.c:4236
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
