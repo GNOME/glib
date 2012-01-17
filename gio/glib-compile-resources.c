@@ -387,6 +387,7 @@ main (int argc, char **argv)
   gboolean generate_header = FALSE;
   gboolean manual_register = FALSE;
   char *c_name = NULL;
+  char *c_name_no_underscores;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "target", 0, 0, G_OPTION_ARG_FILENAME, &target, N_("name of the output file"), N_("FILE") },
@@ -528,6 +529,10 @@ main (int argc, char **argv)
   else
     binary_target = g_strdup (target);
 
+  c_name_no_underscores = c_name;
+  while (c_name_no_underscores && *c_name_no_underscores == '_')
+    c_name_no_underscores++;
+
   if (binary_target != NULL &&
       !write_to_file (table, binary_target, &error))
     {
@@ -602,7 +607,7 @@ main (int argc, char **argv)
 	       "#endif\n"
 	       "\n"
 	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
-	       c_name, data_size, c_name);
+	       c_name_no_underscores, data_size, c_name);
 
       for (i = 0; i < data_size; i++) {
 	if (i % 8 == 0)
