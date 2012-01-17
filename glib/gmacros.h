@@ -343,7 +343,7 @@
 #define G_DEFINE_CONSTRUCTOR(_func) static void __attribute__((constructor)) _func (void);
 #define G_DEFINE_DESTRUCTOR(_func) static void __attribute__((destructor)) _func (void);
 
-#elif _MSC_VER >= 1500
+#elif defined (_MSC_VER) && (_MSC_VER >= 1500)
 /* Visual studio 2008 and later has _Pragma */
 
 #define G_HAS_CONSTRUCTORS 1
