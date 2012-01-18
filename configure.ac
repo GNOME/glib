@@ -1067,7 +1067,7 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for MSG_* constants])
 fi
 
-AC_CHECK_FUNCS(getprotobyname_r endservent)
+AC_CHECK_FUNCS(getprotobyname_r endservent if_nametoindex)
 AC_CHECK_HEADERS([netdb.h wspiapi.h arpa/nameser_compat.h])
 
 if test $glib_native_win32 = no; then

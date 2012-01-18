@@ -123,12 +123,12 @@ gboolean               g_socket_bind                    (GSocket                
 gboolean               g_socket_join_multicast_group    (GSocket                 *socket,
                                                          GInetAddress            *group,
                                                          gboolean                 source_specific,
-                                                         const gchar             *interface,
+                                                         const gchar             *iface,
                                                          GError                 **error);
 gboolean               g_socket_leave_multicast_group   (GSocket                 *socket,
                                                          GInetAddress            *group,
                                                          gboolean                 source_specific,
-                                                         const gchar             *interface,
+                                                         const gchar             *iface,
                                                          GError                 **error);
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,

@@ -1898,7 +1898,7 @@ static gboolean
 g_socket_multicast_group_operation (GSocket       *socket,
 				    GInetAddress  *group,
                                     gboolean       source_specific,
-                                    const gchar   *interface,
+                                    const gchar   *iface,
 				    gboolean       join_group,
 				    GError       **error)
 {
@@ -1925,8 +1925,8 @@ g_socket_multicast_group_operation (GSocket       *socket,
       memcpy (&mc_req.imr_multiaddr, native_addr, sizeof (struct in_addr));
 
 #ifdef HAVE_IP_MREQN
-      if (interface)
-        mc_req.imr_ifindex = if_nametoindex (interface);
+      if (iface)
+        mc_req.imr_ifindex = if_nametoindex (iface);
       else
         mc_req.imr_ifindex = 0;  /* Pick any.  */
 #else
@@ -1945,9 +1945,11 @@ g_socket_multicast_group_operation (GSocket       *socket,
       struct ipv6_mreq mc_req_ipv6;
 
       memcpy (&mc_req_ipv6.ipv6mr_multiaddr, native_addr, sizeof (struct in6_addr));
-      if (interface)
-        mc_req_ipv6.ipv6mr_interface = if_nametoindex (interface);
+#ifdef HAVE_IF_NAMETOINDEX
+      if (iface)
+        mc_req_ipv6.ipv6mr_interface = if_nametoindex (iface);
       else
+#endif
         mc_req_ipv6.ipv6mr_interface = 0;
 
       optname = join_group ? IPV6_JOIN_GROUP : IPV6_LEAVE_GROUP;
@@ -1976,7 +1978,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * g_socket_join_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to join.
- * @interface: Interface to use
+ * @iface: Interface to use
  * @source_specific: %TRUE if source-specific multicast should be used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -1996,17 +1998,17 @@ gboolean
 g_socket_join_multicast_group (GSocket       *socket,
 			       GInetAddress  *group,
                                gboolean       source_specific,
-                               const gchar   *interface,
+                               const gchar   *iface,
 			       GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, source_specific, interface, TRUE, error);
+  return g_socket_multicast_group_operation (socket, group, source_specific, iface, TRUE, error);
 }
 
 /**
  * g_socket_leave_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to leave.
- * @interface: Interface to use
+ * @iface: Interface to use
  * @source_specific: %TRUE if source-specific multicast should be used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -2024,10 +2026,10 @@ gboolean
 g_socket_leave_multicast_group (GSocket       *socket,
 				GInetAddress  *group,
                                 gboolean       source_specific,
-                                const gchar   *interface,
+                                const gchar   *iface,
 				GError       **error)
 {
-  return g_socket_multicast_group_operation (socket, group, source_specific, interface, FALSE, error);
+  return g_socket_multicast_group_operation (socket, group, source_specific, iface, FALSE, error);
 }
 
 /**
