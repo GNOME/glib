@@ -2577,6 +2577,11 @@ if test $cross_compiling = yes; then
   if test x$GLIB_COMPILE_SCHEMAS = xno; then
     AC_MSG_ERROR(Could not find a glib-compile-schemas in your PATH)
   fi
+
+  AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources, no)
+  if test x$GLIB_COMPILE_RESOURCES = xno; then
+    AC_MSG_ERROR(Could not find a glib-compile-resources in your PATH)
+  fi
 fi
 
 dnl **************************

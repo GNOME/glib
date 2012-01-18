@@ -581,21 +581,27 @@ test.mo: de.po
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
+if CROSS_COMPILING
+  glib_compile_resources=$(GLIB_COMPILE_RESOURCES)
+else
+  glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
+endif
+
 BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
 test_resources.c: test2.gresource.xml test1.txt
-	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $(srcdir)/test2.gresource.xml
+	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $(srcdir)/test2.gresource.xml
 
 test_resources2.c: test3.gresource.xml test1.txt
-	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
+	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
 
 test_resources2.h: test3.gresource.xml
-	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-header --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
+	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-header --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
 
 plugin_resources.c: test4.gresource.xml test1.txt
-	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $(srcdir)/test4.gresource.xml
+	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $(srcdir)/test4.gresource.xml
 
 test.gresource: test.gresource.xml test1.txt test2.txt test3.txt
-	$(top_builddir)/gio/glib-compile-resources --target=$@ --sourcedir=$(srcdir) $(srcdir)/test.gresource.xml
+	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $(srcdir)/test.gresource.xml
 
 noinst_LTLIBRARIES = libresourceplugin.la
 
