@@ -29,6 +29,16 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifdef G_OS_UNIX
+#include "gunixinputstream.h"
+#endif
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#undef environ
+#include "gwin32inputstream.h"
+#endif
+
 G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJECT)
 
 /**
@@ -188,6 +198,16 @@ g_application_command_line_real_printerr_literal (GApplicationCommandLine *cmdli
   g_printerr ("%s", message);
 }
 
+static GInputStream *
+g_application_command_line_real_get_stdin (GApplicationCommandLine *cmdline)
+{
+#ifdef G_OS_UNIX
+  return g_unix_input_stream_new (0, FALSE);
+#else
+  return g_win32_input_stream_new (GetStdHandle (STD_INPUT_HANDLE), FALSE);
+#endif
+}
+
 static void
 g_application_command_line_get_property (GObject    *object,
                                          guint       prop_id,
@@ -296,6 +316,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
 
   class->printerr_literal = g_application_command_line_real_printerr_literal;
   class->print_literal = g_application_command_line_real_print_literal;
+  class->get_stdin = g_application_command_line_real_get_stdin;
 
   g_object_class_install_property (object_class, PROP_ARGUMENTS,
     g_param_spec_variant ("arguments",
@@ -356,6 +377,31 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
     *argc = len;
 
   return argv;
+}
+
+/**
+ * g_application_command_line_get_stdin_data:
+ * @cmdline: a #GApplicationCommandLine
+ *
+ * Gets the stdin of the invoking process.
+ *
+ * The #GInputStream can be used to read data passed to the standard
+ * input of the invoking process.
+ * This doesn't work on all platforms.  Presently, it is only available
+ * on UNIX when using a DBus daemon capable of passing file descriptors.
+ * If stdin is not available then %NULL will be returned.  In the
+ * future, support may be expanded to other platforms.
+ *
+ * You must only call this function once per commandline invocation.
+ *
+ * Returns: (transfer full): a #GInputStream for stdin
+ *
+ * Since: 2.34
+ **/
+GInputStream *
+g_application_command_line_get_stdin (GApplicationCommandLine *cmdline)
+{
+  return G_APPLICATION_COMMAND_LINE_GET_CLASS (cmdline)->get_stdin (cmdline);
 }
 
 /**

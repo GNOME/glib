@@ -62,18 +62,21 @@ struct _GApplicationCommandLineClass
   /*< private >*/
   GObjectClass parent_class;
 
-  void (* print_literal)    (GApplicationCommandLine *cmdline,
-                             const gchar             *message);
-  void (* printerr_literal) (GApplicationCommandLine *cmdline,
-                             const gchar             *message);
+  void                  (* print_literal)       (GApplicationCommandLine *cmdline,
+                                                 const gchar             *message);
+  void                  (* printerr_literal)    (GApplicationCommandLine *cmdline,
+                                                 const gchar             *message);
+  GInputStream *        (* get_stdin)           (GApplicationCommandLine *cmdline);
 
-  gpointer padding[12];
+  gpointer padding[11];
 };
 
 GType                   g_application_command_line_get_type             (void) G_GNUC_CONST;
 
 gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
                                                                          int                       *argc);
+
+GInputStream *          g_application_command_line_get_stdin            (GApplicationCommandLine   *cmdline);
 
 const gchar * const *   g_application_command_line_get_environ          (GApplicationCommandLine   *cmdline);
 
