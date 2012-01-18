@@ -2,6 +2,7 @@ gschema-compile
 gio-querymodules
 gio-marshal.[ch]
 gioenumtypes.[ch]
+glib-compile-resources
 glib-compile-schemas
 gdbus
 gsettings

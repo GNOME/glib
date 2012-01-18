@@ -24,6 +24,7 @@ gapplication-example-actions
 gapplication-example-cmdline
 gapplication-example-cmdline2
 gapplication-example-cmdline3
+gapplication-example-menu
 gapplication-example-open
 gdbus-addresses
 gdbus-bz627724
@@ -77,9 +78,11 @@ network-address
 network-monitor
 org.gtk.test.enums.xml
 pollable
+plugin_resources.c
 proxy
 readwrite
 resolver
+resources
 send-data
 simple-async-result
 sleepy-stream
@@ -88,7 +91,12 @@ socket-client
 socket-server
 srvtarget
 test.mo
+test.gresource
+test_resources.c
+test_resources2.c
+test_resources2.h
 tls-certificate
+tls-interaction
 unix-fd
 unix-streams
 vfs
