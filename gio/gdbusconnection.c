@@ -956,6 +956,9 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * calling <literal>raise(SIGTERM)</literal>) if the connection
    * is closed by the remote peer.
    *
+   * Note that #GDBusConnection objects returned by g_bus_get_finish() and
+   * g_bus_get_sync() will (usually) have this property set to %TRUE.
+   *
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
