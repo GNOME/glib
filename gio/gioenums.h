@@ -669,7 +669,7 @@ typedef enum {
  * Since: 2.32
  **/
 typedef enum /*< flags >*/ {
-  G_RESOURCE_LOOKUP_FLAGS_NONE       = 0,
+  G_RESOURCE_LOOKUP_FLAGS_NONE       = 0
 } GResourceLookupFlags;
 
 /**
