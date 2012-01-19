@@ -478,7 +478,9 @@ ensure_schema_lists (void)
         {
           list = gvdb_table_list (source->table, "");
 
-          g_assert (list != NULL);
+          /* empty schema cache file? */
+          if (list == NULL)
+            continue;
 
           for (i = 0; list[i]; i++)
             {
