@@ -267,6 +267,9 @@ void                    g_settings_bind_writable                        (GSettin
 void                    g_settings_unbind                               (gpointer                 object,
                                                                          const gchar             *property);
 
+GAction *               g_settings_create_action                        (GSettings               *settings,
+                                                                         const gchar             *key);
+
 gpointer                g_settings_get_mapped                           (GSettings               *settings,
                                                                          const gchar             *key,
                                                                          GSettingsGetMapping      mapping,

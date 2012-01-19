@@ -31,6 +31,7 @@
 #include "gsettingsbackendinternal.h"
 #include "gsettings-mapping.h"
 #include "gsettingsschema-internal.h"
+#include "gaction.h"
 
 #include "strinfo.c"
 
@@ -2839,6 +2840,267 @@ g_settings_unbind (gpointer     object,
 
   binding_quark = g_settings_binding_quark (property);
   g_object_set_qdata (object, binding_quark, NULL);
+}
+
+/* GAction {{{1 */
+
+typedef struct
+{
+  GObject parent_instance;
+
+  GSettingsSchemaKey key;
+  GSettings *settings;
+} GSettingsAction;
+
+typedef GObjectClass GSettingsActionClass;
+
+static GType g_settings_action_get_type (void);
+static void g_settings_action_iface_init (GActionInterface *iface);
+G_DEFINE_TYPE_WITH_CODE (GSettingsAction, g_settings_action, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ACTION, g_settings_action_iface_init))
+
+enum
+{
+  ACTION_PROP_0,
+  ACTION_PROP_NAME,
+  ACTION_PROP_PARAMETER_TYPE,
+  ACTION_PROP_ENABLED,
+  ACTION_PROP_STATE_TYPE,
+  ACTION_PROP_STATE
+};
+
+static const gchar *
+g_settings_action_get_name (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  return gsa->key.name;
+}
+
+static const GVariantType *
+g_settings_action_get_parameter_type (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+  const GVariantType *type;
+
+  type = g_variant_get_type (gsa->key.default_value);
+  if (g_variant_type_equal (type, G_VARIANT_TYPE_BOOLEAN))
+    type = NULL;
+
+  return type;
+}
+
+static gboolean
+g_settings_action_get_enabled (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  return g_settings_is_writable (gsa->settings, gsa->key.name);
+}
+
+static const GVariantType *
+g_settings_action_get_state_type (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  return g_variant_get_type (gsa->key.default_value);
+}
+
+static GVariant *
+g_settings_action_get_state (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+  GVariant *value;
+
+  value = g_settings_read_from_backend (gsa->settings, &gsa->key);
+
+  if (value == NULL)
+    value = g_settings_schema_key_get_translated_default (&gsa->key);
+
+  if (value == NULL)
+    value = g_variant_ref (gsa->key.default_value);
+
+  return value;
+}
+
+static GVariant *
+g_settings_action_get_state_hint (GAction *action)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  /* no point in reimplementing this... */
+  return g_settings_get_range (gsa->settings, gsa->key.name);
+}
+
+static void
+g_settings_action_change_state (GAction  *action,
+                                GVariant *value)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  if (g_settings_schema_key_type_check (&gsa->key, value) && g_settings_schema_key_range_check (&gsa->key, value))
+    g_settings_write_to_backend (gsa->settings, &gsa->key, value);
+}
+
+static void
+g_settings_action_activate (GAction  *action,
+                            GVariant *parameter)
+{
+  GSettingsAction *gsa = (GSettingsAction *) action;
+
+  if (g_variant_is_of_type (gsa->key.default_value, G_VARIANT_TYPE_BOOLEAN))
+    {
+      GVariant *old;
+
+      if (parameter != NULL)
+        return;
+
+      old = g_settings_action_get_state (action);
+      parameter = g_variant_new_boolean (!g_variant_get_boolean (old));
+      g_variant_unref (old);
+    }
+
+  g_action_change_state (action, parameter);
+}
+
+static void
+g_settings_action_get_property (GObject *object, guint prop_id,
+                                GValue *value, GParamSpec *pspec)
+{
+  GAction *action = G_ACTION (object);
+
+  switch (prop_id)
+    {
+    case ACTION_PROP_NAME:
+      g_value_set_string (value, g_settings_action_get_name (action));
+      break;
+
+    case ACTION_PROP_PARAMETER_TYPE:
+      g_value_set_boxed (value, g_settings_action_get_parameter_type (action));
+      break;
+
+    case ACTION_PROP_ENABLED:
+      g_value_set_boolean (value, g_settings_action_get_enabled (action));
+      break;
+
+    case ACTION_PROP_STATE_TYPE:
+      g_value_set_boxed (value, g_settings_action_get_state_type (action));
+      break;
+
+    case ACTION_PROP_STATE:
+      g_value_set_variant (value, g_settings_action_get_state (action));
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static void
+g_settings_action_finalize (GObject *object)
+{
+  GSettingsAction *gsa = (GSettingsAction *) object;
+
+  g_signal_handlers_disconnect_by_data (gsa->settings, gsa);
+  g_object_unref (gsa->settings);
+
+  G_OBJECT_CLASS (g_settings_action_parent_class)
+    ->finalize (object);
+}
+
+static void
+g_settings_action_init (GSettingsAction *gsa)
+{
+}
+
+static void
+g_settings_action_iface_init (GActionInterface *iface)
+{
+  iface->get_name = g_settings_action_get_name;
+  iface->get_parameter_type = g_settings_action_get_parameter_type;
+  iface->get_enabled = g_settings_action_get_enabled;
+  iface->get_state_type = g_settings_action_get_state_type;
+  iface->get_state = g_settings_action_get_state;
+  iface->get_state_hint = g_settings_action_get_state_hint;
+  iface->change_state = g_settings_action_change_state;
+  iface->activate = g_settings_action_activate;
+}
+
+static void
+g_settings_action_class_init (GSettingsActionClass *class)
+{
+  class->get_property = g_settings_action_get_property;
+  class->finalize = g_settings_action_finalize;
+
+  g_object_class_override_property (class, ACTION_PROP_NAME, "name");
+  g_object_class_override_property (class, ACTION_PROP_PARAMETER_TYPE, "parameter-type");
+  g_object_class_override_property (class, ACTION_PROP_ENABLED, "enabled");
+  g_object_class_override_property (class, ACTION_PROP_STATE_TYPE, "state-type");
+  g_object_class_override_property (class, ACTION_PROP_STATE, "state");
+}
+
+static void
+g_settings_action_changed (GSettings   *settings,
+                           const gchar *key,
+                           gpointer     user_data)
+{
+  g_object_notify (user_data, "state");
+}
+
+static void
+g_settings_action_enabled_changed (GSettings   *settings,
+                                   const gchar *key,
+                                   gpointer     user_data)
+{
+  g_object_notify (user_data, "enabled");
+}
+
+/**
+ * g_settings_create_action:
+ * @settings: a #GSettings
+ * @key: the name of a key in @settings
+ *
+ * Creates a #GAction corresponding to a given #GSettings key.
+ *
+ * The action has the same name as the key.
+ *
+ * The value of the key becomes the state of the action and the action
+ * is enabled when the key is writable.  Changing the state of the
+ * action results in the key being written to.  Changes to the value or
+ * writability of the key cause appropriate change notifications to be
+ * emitted for the action.
+ *
+ * For boolean-valued keys, action activations take no parameter and
+ * result in the toggling of the value.  For all other types,
+ * activations take the new value for the key (which must have the
+ * correct type).
+ *
+ * Returns: (transfer full): a new #GAction
+ *
+ * Since: 2.32
+ **/
+GAction *
+g_settings_create_action (GSettings   *settings,
+                          const gchar *key)
+{
+  GSettingsAction *gsa;
+  gchar *detailed_signal;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  gsa = g_object_new (g_settings_action_get_type (), NULL);
+  gsa->settings = g_object_ref (settings);
+  g_settings_schema_key_init (&gsa->key, settings->priv->schema, key);
+
+  detailed_signal = g_strdup_printf ("changed::%s", key);
+  g_signal_connect (settings, detailed_signal, G_CALLBACK (g_settings_action_changed), gsa);
+  g_free (detailed_signal);
+  detailed_signal = g_strdup_printf ("writable-changed::%s", key);
+  g_signal_connect (settings, detailed_signal, G_CALLBACK (g_settings_action_enabled_changed), gsa);
+  g_free (detailed_signal);
+
+  return G_ACTION (gsa);
 }
 
 /* Epilogue {{{1 */

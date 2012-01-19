@@ -2354,6 +2354,9 @@ g_settings_unbind
 GSettingsBindSetMapping
 GSettingsBindGetMapping
 
+<SUBSECTION>
+g_settings_create_action
+
 <SUBSECTION Standard>
 GSettingsClass
 G_IS_SETTINGS
