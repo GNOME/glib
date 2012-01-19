@@ -1343,24 +1343,24 @@ if test x$glib_cv_langinfo_time = xyes; then
   AC_DEFINE(HAVE_LANGINFO_TIME,1,[Have nl_langinfo (PM_STR)])
 fi
 
-dnl Check for nl_langinfo and _NL_CTYPE_OUTDIGITn_WC
-AC_CACHE_CHECK([for nl_langinfo (_NL_CTYPE_OUTDIGITn_WC)], glib_cv_langinfo_outdigit,[
+dnl Check for nl_langinfo and _NL_CTYPE_OUTDIGITn_MB
+AC_CACHE_CHECK([for nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)], glib_cv_langinfo_outdigit,[
         AC_TRY_COMPILE([#include <langinfo.h>],
                 [char *str;
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT0_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT1_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT2_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT3_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT4_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT5_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT6_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT7_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT8_WC);
-                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT9_WC);],
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT0_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT1_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT2_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT3_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT4_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT5_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT6_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT7_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT8_MB);
+                 str = nl_langinfo (_NL_CTYPE_OUTDIGIT9_MB);],
                 [glib_cv_langinfo_outdigit=yes],
                 [glib_cv_langinfo_outdigit=no])])
 if test x$glib_cv_langinfo_outdigit = xyes; then
-  AC_DEFINE(HAVE_LANGINFO_OUTDIGIT,1,[Have nl_langinfo (_NL_CTYPE_OUTDIGITn_WC)])
+  AC_DEFINE(HAVE_LANGINFO_OUTDIGIT,1,[Have nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)])
 fi
 
 dnl ****************************************

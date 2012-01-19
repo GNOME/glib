@@ -847,6 +847,68 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 }
 
 static void
+test_non_utf8_printf (void)
+{
+  gchar *oldlocale;
+
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "ja_JP.eucjp");
+  if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
+    {
+      g_test_message ("locale ja_JP.eucjp not available, skipping non-UTF8 tests");
+      return;
+    }
+
+  /* These are the outputs that ja_JP.UTF-8 generates; if everything
+   * is working then ja_JP.eucjp should generate the same.
+   */
+  TEST_PRINTF ("%a", "\345\234\237");
+  TEST_PRINTF ("%A", "\345\234\237\346\233\234\346\227\245");
+  TEST_PRINTF ("%b", "10\346\234\210");
+  TEST_PRINTF ("%B", "10\346\234\210");
+  TEST_PRINTF ("%d", "24");
+  TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
+  TEST_PRINTF ("%e", "24"); // fixme
+  TEST_PRINTF ("%h", "10\346\234\210");
+  TEST_PRINTF ("%H", "00");
+  TEST_PRINTF_TIME (15, 0, 0, "%H", "15");
+  TEST_PRINTF ("%I", "12");
+  TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
+  TEST_PRINTF_TIME (15, 0, 0, "%I", "03");
+  TEST_PRINTF ("%j", "297");
+  TEST_PRINTF ("%k", " 0");
+  TEST_PRINTF_TIME (13, 13, 13, "%k", "13");
+  TEST_PRINTF ("%l", "12");
+  TEST_PRINTF_TIME (12, 0, 0, "%I", "12");
+  TEST_PRINTF_TIME (13, 13, 13, "%l", " 1");
+  TEST_PRINTF_TIME (10, 13, 13, "%l", "10");
+  TEST_PRINTF ("%m", "10");
+  TEST_PRINTF ("%M", "00");
+  TEST_PRINTF ("%p", "\345\215\210\345\211\215");
+  TEST_PRINTF_TIME (13, 13, 13, "%p", "\345\215\210\345\276\214");
+  TEST_PRINTF ("%P", "\345\215\210\345\211\215");
+  TEST_PRINTF_TIME (13, 13, 13, "%P", "\345\215\210\345\276\214");
+  TEST_PRINTF ("%r", "\345\215\210\345\211\21512\346\231\20200\345\210\20600\347\247\222");
+  TEST_PRINTF_TIME (13, 13, 13, "%r", "\345\215\210\345\276\21401\346\231\20213\345\210\20613\347\247\222");
+  TEST_PRINTF ("%R", "00:00");
+  TEST_PRINTF_TIME (13, 13, 31, "%R", "13:13");
+  TEST_PRINTF ("%S", "00");
+  TEST_PRINTF ("%t", "	");
+  TEST_PRINTF ("%u", "6");
+  TEST_PRINTF ("%x", "2009\345\271\26410\346\234\21024\346\227\245");
+  TEST_PRINTF ("%X", "00\346\231\20200\345\210\20600\347\247\222");
+  TEST_PRINTF_TIME (13, 14, 15, "%X", "13\346\231\20214\345\210\20615\347\247\222");
+  TEST_PRINTF ("%y", "09");
+  TEST_PRINTF ("%Y", "2009");
+  TEST_PRINTF ("%%", "%");
+  TEST_PRINTF ("%", "");
+  TEST_PRINTF ("%9", NULL);
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
+static void
 test_modifiers (void)
 {
   gchar *oldlocale;
@@ -1170,6 +1232,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
+  g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);
   g_test_add_func ("/GDateTime/to_local", test_GDateTime_to_local);
