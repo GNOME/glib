@@ -1994,6 +1994,51 @@ test_schema_source (void)
   g_settings_schema_source_unref (source);
 }
 
+static void
+test_actions (void)
+{
+  GAction *string, *toggle;
+  gboolean c1, c2, c3;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.basic-types");
+  string = g_settings_create_action (settings, "test-string");
+  toggle = g_settings_create_action (settings, "test-boolean");
+  g_object_unref (settings); /* should be held by the actions */
+
+  g_signal_connect (settings, "changed", G_CALLBACK (changed_cb2), &c1);
+  g_signal_connect (string, "notify::state", G_CALLBACK (changed_cb2), &c2);
+  g_signal_connect (toggle, "notify::state", G_CALLBACK (changed_cb2), &c3);
+
+  c1 = c2 = c3 = FALSE;
+  g_settings_set_string (settings, "test-string", "hello world");
+  check_and_free (g_action_get_state (string), "'hello world'");
+  g_assert (c1 && c2 && !c3);
+  c1 = c2 = c3 = FALSE;
+
+  g_action_activate (string, g_variant_new_string ("hihi"));
+  check_and_free (g_settings_get_value (settings, "test-string"), "'hihi'");
+  g_assert (c1 && c2 && !c3);
+  c1 = c2 = c3 = FALSE;
+
+  g_action_change_state (string, g_variant_new_string ("kthxbye"));
+  check_and_free (g_settings_get_value (settings, "test-string"), "'kthxbye'");
+  g_assert (c1 && c2 && !c3);
+  c1 = c2 = c3 = FALSE;
+
+  g_action_change_state (toggle, g_variant_new_boolean (TRUE));
+  g_assert (g_settings_get_boolean (settings, "test-boolean"));
+  g_assert (c1 && !c2 && c3);
+  c1 = c2 = c3 = FALSE;
+
+  g_action_activate (toggle, NULL);
+  g_assert (!g_settings_get_boolean (settings, "test-boolean"));
+  g_assert (c1 && !c2 && c3);
+
+  g_object_unref (string);
+  g_object_unref (toggle);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2086,6 +2131,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
   g_test_add_func ("/gsettings/get-range", test_get_range);
   g_test_add_func ("/gsettings/schema-source", test_schema_source);
+  g_test_add_func ("/gsettings/actions", test_actions);
 
   result = g_test_run ();
 
