@@ -472,6 +472,21 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
     g_signal_handlers_disconnect_matched ((instance),								\
 					  (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA),	\
 					  0, 0, NULL, (func), (data))
+
+/**
+ * g_signal_handlers_disconnect_by_data:
+ * @instance: The instance to remove handlers from
+ * @data: the closure data of the handlers' closures
+ *
+ * Disconnects all handlers on an instance that match @data.
+ *
+ * Returns: The number of handlers that matched.
+ *
+ * Since: 2.32
+ */
+#define g_signal_handlers_disconnect_by_data(instance, data) \
+  g_signal_handlers_disconnect_matched ((instance), G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, (data))
+
 /**
  * g_signal_handlers_block_by_func:
  * @instance: The instance to block handlers from.
