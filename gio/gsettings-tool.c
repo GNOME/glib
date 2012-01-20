@@ -457,6 +457,7 @@ gsettings_set (GSettings   *settings,
 
   existing = g_settings_get_value (settings, key);
   type = g_variant_get_type (existing);
+  g_variant_unref (existing);
 
   new = g_variant_parse (type, value, NULL, NULL, &error);
 
@@ -503,8 +504,6 @@ gsettings_set (GSettings   *settings,
     }
 
   g_settings_set_value (settings, key, new);
-  g_variant_unref (existing);
-  g_variant_unref (new);
 
   g_settings_sync ();
 
