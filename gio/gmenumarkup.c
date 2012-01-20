@@ -193,7 +193,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
         {
           GMenuItem *item;
           GMenu *menu;
-          gchar *id;
+          const gchar *id;
 
           menu = g_menu_new ();
           item = g_menu_item_new_submenu (NULL, G_MENU_MODEL (menu));
@@ -214,7 +214,7 @@ g_menu_markup_start_element (GMarkupParseContext  *context,
         {
           GMenuItem *item;
           GMenu *menu;
-          gchar *id;
+          const gchar *id;
 
           menu = g_menu_new ();
           item = g_menu_item_new_section (NULL, G_MENU_MODEL (menu));
