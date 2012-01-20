@@ -140,8 +140,7 @@ g_memory_input_stream_class_init (GMemoryInputStreamClass *klass)
 }
 
 static void
-free_chunk (gpointer data, 
-            gpointer user_data)
+free_chunk (gpointer data)
 {
   Chunk *chunk = data;
 
