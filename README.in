@@ -63,6 +63,16 @@ Notes about GLib 2.32
   on gthread-2.0.pc (if you care about compatibility with older GLib
   versions) or to stop calling g_thread_init().
 
+* g_debug() output is no longer enabled by default.  It can be enabled
+  on a per-domain basis with the G_MESSAGES_DEBUG environment variable
+  like
+
+    G_MESSAGES_DEBUG=domain1,domain2
+
+  or
+
+    G_MESSAGE_DEBUG=all
+
 Notes about GLib 2.30
 =====================
 
