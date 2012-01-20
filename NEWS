@@ -1,3 +1,25 @@
+Overview of changes from GLib 2.31.10 to 2.31.11
+================================================
+
+* GApplication:
+ - Drop support for exporting menus - this functionality
+   will be provided in GtkApplication
+ - Add a way to create actions that change settings
+
+* Bugs fixed:
+ 629503 Add async versions of g_unix_connection_{receive,send}_credentials
+ 656301 glib-compile-schemas should not create an empty file
+ 668071 mingw-gcc build fails on gio/gsocket.[c|h]
+ 668118 the big appmenu switcheroo
+ 668158 base64 encode and line termination
+ 668163 GDBusConnection: note that exit-on-close is sometimes TRUE
+ 668269 gsignal: add g_signal_handlers_disconnect_by_data
+ 668279 create GAction from GSettings
+
+* Translation updates:
+ Norwegian bokmål
+
+
 Overview of changes from GLib 2.31.8 to 2.31.10
 ===============================================
 
