@@ -169,6 +169,19 @@ GNode*	 g_node_find		(GNode		  *root,
      g_node_insert ((parent), (position), g_node_new (data))
 
 /**
+ * g_node_insert_data_after:
+ * @parent: the #GNode to place the new #GNode under
+ * @sibling: the sibling #GNode to place the new #GNode after
+ * @data: the data for the new #GNode
+ *
+ * Inserts a new #GNode after the given sibling.
+ *
+ * Returns: the new #GNode
+ */
+
+#define	g_node_insert_data_after(parent, sibling, data)	\
+     g_node_insert_after ((parent), (sibling), g_node_new (data))
+/**
  * g_node_insert_data_before:
  * @parent: the #GNode to place the new #GNode under
  * @sibling: the sibling #GNode to place the new #GNode before

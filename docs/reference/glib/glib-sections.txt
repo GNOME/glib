@@ -2469,6 +2469,7 @@ g_node_prepend
 
 <SUBSECTION>
 g_node_insert_data
+g_node_insert_data_after
 g_node_insert_data_before
 g_node_append_data
 g_node_prepend_data

@@ -53,8 +53,9 @@
  * g_node_insert_before(), g_node_append() and g_node_prepend().
  *
  * To create a new node and insert it into a tree use
- * g_node_insert_data(), g_node_insert_data_before(),
- * g_node_append_data() and g_node_prepend_data().
+ * g_node_insert_data(), g_node_insert_data_after(),
+ * g_node_insert_data_before(), g_node_append_data()
+ * and g_node_prepend_data().
  *
  * To reverse the children of a node use g_node_reverse_children().
  *
