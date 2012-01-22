@@ -693,8 +693,19 @@ gdbus_LDADD = libgio-2.0.la \
 completiondir = $(sysconfdir)/bash_completion.d
 completion_DATA = \
 	gdbus-bash-completion.sh		\
-	gsettings-bash-completion.sh
+	gsettings-bash-completion.sh		\
+	gresource-bash-completion.sh
 EXTRA_DIST += $(completion_DATA)
+
+# ------------------------------------------------------------------------
+# gresource tool
+
+bin_PROGRAMS += gresource
+gresource_SOURCES = gresource-tool.c
+gresource_LDADD = libgio-2.0.la \
+	$(top_builddir)/glib/libglib-2.0.la 		\
+	$(top_builddir)/gobject/libgobject-2.0.la \
+	$(ELF_LIBS)
 
 # ------------------------------------------------------------------------
 
