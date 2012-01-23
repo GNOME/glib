@@ -86,6 +86,7 @@ gio/gproxyaddressenumerator.c
 gio/gresolver.c
 gio/gresource.c
 gio/gresourcefile.c
+gio/gresource-tool.c
 gio/gseekable.c
 gio/gsettingsbackend.c
 gio/gsettings.c
