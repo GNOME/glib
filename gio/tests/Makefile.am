@@ -395,6 +395,7 @@ appinfo_SOURCES = appinfo.c
 appinfo_LDADD   = $(progs_ldadd)
 
 resources_SOURCES = resources.c test_resources.c test_resources2.c test_resources2.h
+resources_DEPENDENCIES = test.gresource
 resources_LDADD   = $(progs_ldadd)
 
 appinfo_test_SOURCES = appinfo-test.c
@@ -588,19 +589,19 @@ else
 endif
 
 BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
-test_resources.c: test2.gresource.xml test1.txt
+test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test2.gresource.xml)
 	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $(srcdir)/test2.gresource.xml
 
-test_resources2.c: test3.gresource.xml test1.txt
+test_resources2.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test3.gresource.xml)
 	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
 
-test_resources2.h: test3.gresource.xml
+test_resources2.h: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test3.gresource.xml)
 	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-header --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
 
-plugin_resources.c: test4.gresource.xml test1.txt
+plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test4.gresource.xml)
 	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $(srcdir)/test4.gresource.xml
 
-test.gresource: test.gresource.xml test1.txt test2.txt test3.txt
+test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test.gresource.xml)
 	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $(srcdir)/test.gresource.xml
 
 noinst_LTLIBRARIES = libresourceplugin.la

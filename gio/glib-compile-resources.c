@@ -47,6 +47,7 @@
 
 typedef struct
 {
+  char *filename;
   char *content;
   gsize content_size;
   gsize size;
@@ -56,6 +57,8 @@ typedef struct
 typedef struct
 {
   GHashTable *table; /* resource path -> FileData */
+
+  gboolean collect_data;
 
   /* per gresource */
   char *prefix;
@@ -74,6 +77,7 @@ static gchar *xmllint = NULL;
 static void
 file_data_free (FileData *data)
 {
+  g_free (data->filename);
   g_free (data->content);
   g_free (data);
 }
@@ -187,7 +191,7 @@ end_element (GMarkupParseContext  *context,
       gchar *file, *real_file;
       gchar *key;
       FileData *data;
-      char *tmp_file;
+      char *tmp_file = NULL;
 
       file = state->string->str;
       key = file;
@@ -214,7 +218,10 @@ end_element (GMarkupParseContext  *context,
       else
 	real_file = g_strdup (file);
 
-      tmp_file = NULL;
+      data->filename = g_strdup (real_file);
+      if (!state->collect_data)
+        goto done;
+
       if (state->preproc_options)
         {
           gchar **options;
@@ -328,6 +335,8 @@ end_element (GMarkupParseContext  *context,
 	  data->flags |= G_RESOURCE_FLAGS_COMPRESSED;
 	}
 
+    done:
+
       g_hash_table_insert (state->table, key, data);
 
     cleanup:
@@ -375,7 +384,8 @@ text (GMarkupParseContext  *context,
 }
 
 static GHashTable *
-parse_resource_file (const gchar *filename)
+parse_resource_file (const gchar *filename,
+                     gboolean collect_data)
 {
   GMarkupParser parser = { start_element, end_element, text };
   ParseState state = { 0, };
@@ -393,6 +403,7 @@ parse_resource_file (const gchar *filename)
     }
 
   state.table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)file_data_free);
+  state.collect_data = collect_data;
 
   context = g_markup_parse_context_new (&parser,
 					G_MARKUP_TREAT_CDATA_AS_TEXT |
@@ -405,7 +416,7 @@ parse_resource_file (const gchar *filename)
       g_printerr ("%s: %s.\n", filename, error->message);
       g_clear_error (&error);
     }
-  else
+  else if (collect_data)
     {
       GHashTableIter iter;
       const char *key;
@@ -445,8 +456,12 @@ parse_resource_file (const gchar *filename)
 			       g_variant_builder_end (&builder));
 	}
     }
+  else
+    {
+      table = g_hash_table_ref (state.table);
+    }
 
-  g_hash_table_destroy (state.table);
+  g_hash_table_unref (state.table);
   g_markup_parse_context_free (context);
   g_free (contents);
 
@@ -474,10 +489,11 @@ main (int argc, char **argv)
   GHashTable *table;
   gchar *srcfile;
   gchar *target = NULL;
-  gchar *binary_target;
+  gchar *binary_target = NULL;
   gboolean generate_source = FALSE;
   gboolean generate_header = FALSE;
   gboolean manual_register = FALSE;
+  gboolean generate_dependencies = FALSE;
   char *c_name = NULL;
   char *c_name_no_underscores;
   GOptionContext *context;
@@ -486,6 +502,7 @@ main (int argc, char **argv)
     { "sourcedir", 0, 0, G_OPTION_ARG_FILENAME, &sourcedir, N_("The directory where files are to be read from (default to current directory)"), N_("DIRECTORY") },
     { "generate-header", 0, 0, G_OPTION_ARG_NONE, &generate_header, N_("Generate source header"), NULL },
     { "generate-source", 0, 0, G_OPTION_ARG_NONE, &generate_source, N_("Generate sourcecode used to link in the resource file into your code"), NULL },
+    { "generate-dependencies", 0, 0, G_OPTION_ARG_NONE, &generate_dependencies, N_("Generate dependency list"), NULL },
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don't automatically create and register resource"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
     { NULL }
@@ -575,13 +592,26 @@ main (int argc, char **argv)
       g_free (base);
     }
 
-  if ((table = parse_resource_file (srcfile)) == NULL)
+  if ((table = parse_resource_file (srcfile, !generate_dependencies)) == NULL)
     {
       g_free (target);
       return 1;
     }
 
-  if (generate_source || generate_header)
+  if (generate_dependencies)
+    {
+      GHashTableIter iter;
+      gpointer key, data;
+      FileData *file_data;
+
+      g_hash_table_iter_init (&iter, table);
+      while (g_hash_table_iter_next (&iter, &key, &data))
+        {
+          file_data = data;
+          g_print ("%s\n",file_data->filename);
+        }
+    }
+  else if (generate_source || generate_header)
     {
       if (generate_source)
 	{
@@ -593,8 +623,6 @@ main (int argc, char **argv)
 	    }
 	  close (fd);
 	}
-      else
-	binary_target = NULL;
 
       if (c_name == NULL)
 	{
