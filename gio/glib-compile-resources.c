@@ -490,6 +490,7 @@ main (int argc, char **argv)
   gchar *srcfile;
   gchar *target = NULL;
   gchar *binary_target = NULL;
+  gboolean generate_automatic = FALSE;
   gboolean generate_source = FALSE;
   gboolean generate_header = FALSE;
   gboolean manual_register = FALSE;
@@ -500,6 +501,7 @@ main (int argc, char **argv)
   GOptionEntry entries[] = {
     { "target", 0, 0, G_OPTION_ARG_FILENAME, &target, N_("name of the output file"), N_("FILE") },
     { "sourcedir", 0, 0, G_OPTION_ARG_FILENAME, &sourcedir, N_("The directory where files are to be read from (default to current directory)"), N_("DIRECTORY") },
+    { "generate", 0, 0, G_OPTION_ARG_NONE, &generate_automatic, N_("Generate output in the format selected for by the target filename extension"), NULL },
     { "generate-header", 0, 0, G_OPTION_ARG_NONE, &generate_header, N_("Generate source header"), NULL },
     { "generate-source", 0, 0, G_OPTION_ARG_NONE, &generate_source, N_("Generate sourcecode used to link in the resource file into your code"), NULL },
     { "generate-dependencies", 0, 0, G_OPTION_ARG_NONE, &generate_dependencies, N_("Generate dependency list"), NULL },
@@ -590,6 +592,15 @@ main (int argc, char **argv)
       g_free (target_basename);
       g_free (dirname);
       g_free (base);
+    }
+  else if (generate_automatic)
+    {
+      if (g_str_has_suffix (target, ".c"))
+        generate_source = TRUE;
+      else if (g_str_has_suffix (target, ".h"))
+        generate_header = TRUE;
+      else if (g_str_has_suffix (target, ".gresource"))
+        ;
     }
 
   if ((table = parse_resource_file (srcfile, !generate_dependencies)) == NULL)

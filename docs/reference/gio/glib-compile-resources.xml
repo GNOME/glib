@@ -60,6 +60,27 @@ not specified the current directory is used.
 </varlistentry>
 
 <varlistentry>
+<term><option>--generate</option></term>
+<listitem><para>
+Write the output file in the format selected for by its filename extension:
+<variablelist>
+<varlistentry>
+<term><literal>.c</literal></term>
+<listitem><para>C source</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>.h</literal></term>
+<listitem><para>C header</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>.gresource</literal></term>
+<listitem><para>resource bundle</para></listitem>
+</varlistentry>
+</variablelist>
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--generate-source</option></term>
 <listitem><para>
 Instead of a writing the resource bundle in binary form create a C source file that contains the

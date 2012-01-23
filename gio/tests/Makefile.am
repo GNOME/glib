@@ -590,19 +590,16 @@ endif
 
 BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
 test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test2.gresource.xml)
-	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $(srcdir)/test2.gresource.xml
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $<
 
-test_resources2.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test3.gresource.xml)
-	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
-
-test_resources2.h: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test3.gresource.xml)
-	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-header --c-name _g_test2 --manual-register $(srcdir)/test3.gresource.xml
+test_resources2.h test_resources2.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test3.gresource.xml)
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate --c-name _g_test2 --manual-register $<
 
 plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test4.gresource.xml)
-	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $(srcdir)/test4.gresource.xml
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $<
 
 test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --generate-dependencies test.gresource.xml)
-	$(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $(srcdir)/test.gresource.xml
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $<
 
 noinst_LTLIBRARIES = libresourceplugin.la
 
