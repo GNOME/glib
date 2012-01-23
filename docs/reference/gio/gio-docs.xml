@@ -226,6 +226,7 @@
         <xi:include href="glib-compile-resources.xml"/>
         <xi:include href="gdbus.xml"/>
         <xi:include href="xml/gdbus-codegen.xml"/>
+        <xi:include href="gresource.xml"/>
     </chapter>
   </part>
 

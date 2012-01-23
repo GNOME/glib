@@ -112,6 +112,7 @@ content_files =			\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
+	gresource.xml		\
 	gdbus.xml		\
 	gdbus-codegen.xml	\
 	$(NULL)
@@ -142,6 +143,7 @@ man_MANS =			\
 	glib-compile-schemas.1	\
 	glib-compile-resources.1	\
 	gsettings.1		\
+	gresource.1		\
 	gdbus.1			\
 	gdbus-codegen.1
 
