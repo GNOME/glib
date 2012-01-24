@@ -2344,12 +2344,12 @@ dnl that then to silently fall back on emulated atomic ops just because
 dnl the user had the wrong build environment.
 
 dnl We may add other compilers here in the future...
-AC_MSG_CHECKING([for lock-free atomic intrinsics])
-AC_TRY_COMPILE([],
-               [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
-               [glib_cv_g_atomic_lock_free=yes],
-               [glib_cv_g_atomic_lock_free=no])
-AC_MSG_RESULT($glib_cv_g_atomic_lock_free)
+
+AC_CACHE_CHECK([for lock-free atomic intrinsics], glib_cv_g_atomic_lock_free, [
+  AC_TRY_COMPILE([],
+                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                 [glib_cv_g_atomic_lock_free=yes],
+                 [glib_cv_g_atomic_lock_free=no])])
 
 if test "$glib_cv_g_atomic_lock_free" = "no"; then
   SAVE_CFLAGS="${CFLAGS}"
