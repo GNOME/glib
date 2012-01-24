@@ -1418,6 +1418,20 @@ test_ref (void)
   g_key_file_unref (file);
 }
 
+/* https://bugzilla.gnome.org/show_bug.cgi?id=634232 */
+static void
+test_replace_value (void)
+{
+  GKeyFile *keyfile;
+
+  keyfile = g_key_file_new();
+  g_key_file_set_value(keyfile, "grupo1", "chave1", "1234567890");
+  g_key_file_set_value(keyfile, "grupo1", "chave1", "123123423423423432432423423");
+  g_key_file_remove_group(keyfile, "grupo1", NULL);
+  g_free (g_key_file_to_data (keyfile, NULL, NULL));
+  g_key_file_unref (keyfile);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1450,6 +1464,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
   g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
   g_test_add_func ("/keyfile/ref", test_ref);
+  g_test_add_func ("/keyfile/replace-value", test_replace_value);
 
   return g_test_run ();
 }
