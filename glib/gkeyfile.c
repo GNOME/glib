@@ -438,9 +438,6 @@ struct _GKeyFile
 
   GString *parse_buffer; /* Holds up to one line of not-yet-parsed data */
 
-  /* Used for sizing the output buffer during serialization */
-  gsize approximate_size;
-
   gchar list_separator;
 
   GKeyFileFlags flags;
@@ -573,7 +570,6 @@ g_key_file_init (GKeyFile *key_file)
   key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->start_group = NULL;
   key_file->parse_buffer = g_string_sized_new (128);
-  key_file->approximate_size = 0;
   key_file->list_separator = ';';
   key_file->flags = 0;
   key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
@@ -766,11 +762,8 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
       return FALSE;
     }
 
-  if (key_file->approximate_size > 0)
-    {
-      g_key_file_clear (key_file);
-      g_key_file_init (key_file);
-    }
+  g_key_file_clear (key_file);
+  g_key_file_init (key_file);
   key_file->flags = flags;
 
   do
@@ -894,11 +887,8 @@ g_key_file_load_from_data (GKeyFile       *key_file,
   if (length == (gsize)-1)
     length = strlen (data);
 
-  if (key_file->approximate_size > 0)
-    {
-      g_key_file_clear (key_file);
-      g_key_file_init (key_file);
-    }
+  g_key_file_clear (key_file);
+  g_key_file_init (key_file);
   key_file->flags = flags;
 
   g_key_file_parse_data (key_file, data, length, &key_file_error);
@@ -1408,8 +1398,6 @@ g_key_file_parse_data (GKeyFile     *key_file,
           i += line_length;
         }
     }
-
-  key_file->approximate_size += length;
 }
 
 static void
@@ -1465,8 +1453,8 @@ g_key_file_to_data (GKeyFile  *key_file,
 
   g_return_val_if_fail (key_file != NULL, NULL);
 
-  data_string = g_string_sized_new (2 * key_file->approximate_size);
-  
+  data_string = g_string_new (NULL);
+
   for (group_node = g_list_last (key_file->groups);
        group_node != NULL;
        group_node = group_node->prev)
@@ -3255,9 +3243,6 @@ g_key_file_set_comment (GKeyFile     *key_file,
         return FALSE;
     }
 
-  if (comment != NULL)
-    key_file->approximate_size += strlen (comment);
-
   return TRUE;
 }
 
@@ -3631,7 +3616,6 @@ g_key_file_add_group (GKeyFile    *key_file,
   group->name = g_strdup (group_name);
   group->lookup_map = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->groups = g_list_prepend (key_file->groups, group);
-  key_file->approximate_size += strlen (group_name) + 3;
   key_file->current_group = group;
 
   if (key_file->start_group == NULL)
@@ -3672,11 +3656,7 @@ g_key_file_remove_key_value_pair_node (GKeyFile      *key_file,
 
   group->key_value_pairs = g_list_remove_link (group->key_value_pairs, pair_node);
 
-  if (pair->key != NULL)
-    key_file->approximate_size -= strlen (pair->key) + 1;
-
   g_warn_if_fail (pair->value != NULL);
-  key_file->approximate_size -= strlen (pair->value);
 
   g_key_file_key_value_pair_free (pair);
 
@@ -3731,9 +3711,6 @@ g_key_file_remove_group_node (GKeyFile *key_file,
     }
 
   key_file->groups = g_list_remove_link (key_file->groups, group_node);
-
-  if (group->name != NULL)
-    key_file->approximate_size -= strlen (group->name) + 3;
 
   tmp = group->key_value_pairs;
   while (tmp != NULL)
@@ -3811,7 +3788,6 @@ g_key_file_add_key_value_pair (GKeyFile             *key_file,
   g_hash_table_replace (group->lookup_map, pair->key, pair);
   group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
   group->has_trailing_blank_line = FALSE;
-  key_file->approximate_size += strlen (pair->key) + strlen (pair->value) + 2;
 }
 
 static void
@@ -3878,10 +3854,8 @@ g_key_file_remove_key (GKeyFile     *key_file,
       return FALSE;
     }
 
-  key_file->approximate_size -= strlen (pair->key) + strlen (pair->value) + 2;
-
   group->key_value_pairs = g_list_remove (group->key_value_pairs, pair);
-  g_hash_table_remove (group->lookup_map, pair->key);  
+  g_hash_table_remove (group->lookup_map, pair->key);
   g_key_file_key_value_pair_free (pair);
 
   return TRUE;
