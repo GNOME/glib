@@ -345,6 +345,7 @@ g_menu_markup_end_element (GMarkupParseContext  *context,
                 {
                   g_variant_unref (value);
                   value = g_variant_new_string (msgstr);
+                  g_variant_ref_sink (value);
                 }
             }
 
