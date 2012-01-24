@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-17 17:11+0100\n"
-"PO-Revision-Date: 2012-01-17 17:11+0100\n"
+"POT-Creation-Date: 2012-01-24 10:47+0100\n"
+"PO-Revision-Date: 2012-01-24 10:53+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -31,8 +31,8 @@ msgstr "Tellerverdi gitt til %s er for stor"
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1831
-#: ../gio/gdbusconnection.c:1922 ../gio/gdbusconnection.c:2096
+#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1834
+#: ../gio/gdbusconnection.c:1925 ../gio/gdbusconnection.c:2099
 #: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2119
 #: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
 #, c-format
@@ -240,7 +240,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Kan ikke bestemme adresse til øktbussen (ikke implementert på dette OSet)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6685
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6688
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -249,7 +249,7 @@ msgstr ""
 "Kan ikke bestemme adresse for buss fra miljøvariabelen DBUS_STARTER_BUS_TYPE "
 "- ukjent verdi «%s»"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6694
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6697
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -360,86 +360,86 @@ msgstr "Feil under åpning av nøkkelring «%s» for skriving: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(I tillegg feilet frislipp av lås for «%s» også: %s) "
 
-#: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2399
+#: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2402
 msgid "The connection is closed"
 msgstr "Tilkoblingen er lukket"
 
-#: ../gio/gdbusconnection.c:1876
+#: ../gio/gdbusconnection.c:1879
 msgid "Timeout was reached"
 msgstr "Tidsavbrudd ble nådd"
 
-#: ../gio/gdbusconnection.c:2521
+#: ../gio/gdbusconnection.c:2524
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Ikke støttede flagg funnet ved oppretting av en klientside tilkobling"
 
-#: ../gio/gdbusconnection.c:4023 ../gio/gdbusconnection.c:4339
+#: ../gio/gdbusconnection.c:4026 ../gio/gdbusconnection.c:4342
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Grensesnitt «org.freedesktop.DBus.Properties» finnes ikke på objekt i sti %s"
 
-#: ../gio/gdbusconnection.c:4094
+#: ../gio/gdbusconnection.c:4097
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Feil ved setting av egenskap «%s»: Forventet type «%s», men fikk «%s»"
 
-#: ../gio/gdbusconnection.c:4189
+#: ../gio/gdbusconnection.c:4192
 #, c-format
 msgid "No such property `%s'"
 msgstr "Egenskap «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4201
+#: ../gio/gdbusconnection.c:4204
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Egenskap «%s» er er ikke lesbar"
 
-#: ../gio/gdbusconnection.c:4212
+#: ../gio/gdbusconnection.c:4215
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Egenskap «%s» er er ikke skrivbar"
 
-#: ../gio/gdbusconnection.c:4282 ../gio/gdbusconnection.c:6128
+#: ../gio/gdbusconnection.c:4285 ../gio/gdbusconnection.c:6131
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Grensesnitt «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4466
+#: ../gio/gdbusconnection.c:4469
 msgid "No such interface"
 msgstr "Grensesnittet finnes ikke"
 
-#: ../gio/gdbusconnection.c:4687 ../gio/gdbusconnection.c:6634
+#: ../gio/gdbusconnection.c:4690 ../gio/gdbusconnection.c:6637
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Grensesnitt «%s» finnes ikke på objektsti %s"
 
-#: ../gio/gdbusconnection.c:4739
+#: ../gio/gdbusconnection.c:4742
 #, c-format
 msgid "No such method `%s'"
 msgstr "Metoden «%s» finnes ikke"
 
-#: ../gio/gdbusconnection.c:4770
+#: ../gio/gdbusconnection.c:4773
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type melding, «%s», stemmer ikke overens med forventet type «%s»"
 
-#: ../gio/gdbusconnection.c:4990
+#: ../gio/gdbusconnection.c:4993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Et objekt er allerede eksportert for grensesnitt %s ved %s"
 
-#: ../gio/gdbusconnection.c:5188
+#: ../gio/gdbusconnection.c:5191
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metode «%s» returnerte type «%s», men forventet «%s»"
 
-#: ../gio/gdbusconnection.c:6239
+#: ../gio/gdbusconnection.c:6242
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metode «%s» på grensesnitt «%s» med signatur «%s» eksisterer ikke"
 
-#: ../gio/gdbusconnection.c:6358
+#: ../gio/gdbusconnection.c:6361
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Et undertre er allerede eksportert for %s"
@@ -1201,7 +1201,7 @@ msgid "Error compressing file %s"
 msgstr "Feil ved komprimering av fil %s"
 
 #: ../gio/glib-compile-resources.c:278 ../gio/glib-compile-schemas.c:1511
-#: ../gio/gmenumarkup.c:383
+#: ../gio/gmenumarkup.c:384
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
@@ -1800,15 +1800,15 @@ msgstr "Filen ble endret eksternt"
 msgid "Error removing old file: %s"
 msgstr "Feil ved fjerning av gammel fil: %s"
 
-#: ../gio/gmemoryinputstream.c:493 ../gio/gmemoryoutputstream.c:750
+#: ../gio/gmemoryinputstream.c:492 ../gio/gmemoryoutputstream.c:750
 msgid "Invalid GSeekType supplied"
 msgstr "Ugyldig GSeekType oppgitt"
 
-#: ../gio/gmemoryinputstream.c:503
+#: ../gio/gmemoryinputstream.c:502
 msgid "Invalid seek request"
 msgstr "Ugyldig søkeforespørsel"
 
-#: ../gio/gmemoryinputstream.c:527
+#: ../gio/gmemoryinputstream.c:526
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Kan ikke avkorte GMemoryInputStream"
 
@@ -1967,6 +1967,129 @@ msgstr "Ressurs ved «%s» er ikke en katalog"
 msgid "Input stream doesn't implement seek"
 msgstr "Inndatastrøm implementerer ikke søk"
 
+#: ../gio/gresource-tool.c:469 ../gio/gsettings-tool.c:528
+msgid "Print help"
+msgstr "Skriv ut hjelp"
+
+#: ../gio/gresource-tool.c:475
+msgid "List sections containing resources in an elf FILE"
+msgstr "Vis seksjoner som inneholder ressurser i en elf FIL"
+
+#: ../gio/gresource-tool.c:481
+msgid ""
+"List resources\n"
+"If SECTION is given, only list resources in this section\n"
+"If PATH is given, only list matching resources"
+msgstr ""
+"Vis ressurser\n"
+"Hvis SEKSJON oppgis skal kun ressurser i denne seksjonen vises\n"
+"Hvis STI oppgis skal kun relevante ressurser vises"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+#: ../gio/gresource-tool.c:502
+msgid "SECTION"
+msgstr "SEKSJON"
+
+#: ../gio/gresource-tool.c:490
+msgid ""
+"List resources with details\n"
+"If SECTION is given, only list resources in this section\n"
+"If PATH is given, only list matching resources\n"
+"Details include the section, size and compression"
+msgstr ""
+"Vis ressurser med detaljer\n"
+"Hvis SEKSJON oppgis skal kun ressurser i denne seksjonen vises\n"
+"Hvis STI oppgis vises kun relevante ressurser\n"
+"Detaljer inkluderer seksjon, størrelse og komprimering"
+
+#: ../gio/gresource-tool.c:500
+msgid "Extract a resource file to stdout"
+msgstr "Hent ut en ressursfil til stdout"
+
+#: ../gio/gresource-tool.c:507 ../gio/gsettings-tool.c:608
+#, c-format
+msgid ""
+"Unknown command %s\n"
+"\n"
+msgstr ""
+"Ukjent kommando «%s»\n"
+"\n"
+
+#: ../gio/gresource-tool.c:515
+msgid ""
+"Usage:\n"
+"  gresource [--section SECTION] COMMAND [ARGS...]\n"
+"\n"
+"Commands:\n"
+"  help                      Show this information\n"
+"  sections                  List resource sections\n"
+"  list                      List resources\n"
+"  details                   List resources with details\n"
+"  extract                   Extract a resource\n"
+"\n"
+"Use 'gresource help COMMAND' to get detailed help.\n"
+"\n"
+msgstr ""
+"Bruk:\n"
+"  gresource [--section SEKSJON] KOMMANDO [ARGUMENTER …]\n"
+"\n"
+"Kommandoer:\n"
+"  help                      Vis denne informasjonen\n"
+"  sections                  Vis ressursseksjoner\n"
+"  list                      Vis ressurser\n"
+"  details                   Vis ressurser med detaljer\n"
+"  extract                   Hent ut en ressurs\n"
+"\n"
+"Bruk «gresource help KOMMANDO» for å få detaljert hjelp.\n"
+"\n"
+
+#: ../gio/gresource-tool.c:529
+#, c-format
+msgid ""
+"Usage:\n"
+"  gresource %s%s%s %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Bruk:\n"
+"  gresource %s%s%s %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../gio/gresource-tool.c:532 ../gio/gsettings-tool.c:641
+msgid "Arguments:\n"
+msgstr "Argumenter:\n"
+
+#: ../gio/gresource-tool.c:536
+msgid "  SECTION   An (optional) elf section name\n"
+msgstr "  SEKSJON  Et valgfritt navn på en elf seksjon\n"
+
+#: ../gio/gresource-tool.c:540 ../gio/gsettings-tool.c:648
+msgid "  COMMAND   The (optional) command to explain\n"
+msgstr "  KOMMANDO Valgfri kommando som skal forklares\n"
+
+#: ../gio/gresource-tool.c:546
+msgid "  FILE      An elf file (a binary or a shared library)\n"
+msgstr "  FIL      En elf-fil. Binærfil eller delt bibliotek\n"
+
+#: ../gio/gresource-tool.c:549
+msgid ""
+"  FILE      An elf file (a binary or a shared library)\n"
+"            or a compiled resource file\n"
+msgstr ""
+"  FIL       En elf-fil - binær eller delt bibliotek\n"
+"            eller en kompilert ressursfil\n"
+
+#: ../gio/gresource-tool.c:555
+msgid "  PATH      An (optional) resource path (may be partial)\n"
+msgstr "  STI      En valgfri ressurssti - kan være ufullstendig\n"
+
+#: ../gio/gresource-tool.c:558
+msgid "  PATH      A resource path\n"
+msgstr "  STI      En ressurssti\n"
+
 #: ../gio/gsettings-tool.c:53 ../gio/gsettings-tool.c:74
 #, c-format
 msgid "No such schema '%s'\n"
@@ -2007,37 +2130,33 @@ msgstr "Sti må ikke inneholde to etterfølgende skråstreker (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Nøkkel «%s» finnes ikke\n"
 
-#: ../gio/gsettings-tool.c:500
+#: ../gio/gsettings-tool.c:501
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Oppgitt verdi er utenfor gyldig område\n"
 
-#: ../gio/gsettings-tool.c:529
-msgid "Print help"
-msgstr "Skriv ut hjelp"
-
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:534
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Vis installerte (ikke-flyttbare) schema"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:540
 msgid "List the installed relocatable schemas"
 msgstr "Vis installerte flyttbare schema"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:546
 msgid "List the keys in SCHEMA"
 msgstr "Vis nøklene i SCHEMA"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:547 ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:590
 msgid "SCHEMA[:PATH]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:552
 msgid "List the children of SCHEMA"
 msgstr "Vis barn av SCHEMA"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:558
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2045,44 +2164,44 @@ msgstr ""
 "Vis nøkler og verdier rekursivt\n"
 "Vis alle nøkler hvis SKJEMA ikke oppgis\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:560
 msgid "[SCHEMA[:PATH]]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:565
 msgid "Get the value of KEY"
 msgstr "Hent verdi for NØKKEL"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:584 ../gio/gsettings-tool.c:596
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SKJEMA[:STI] NØKKEL"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:571
 msgid "Query the range of valid values for KEY"
 msgstr "Spør på gyldig verdiområde for NØKKEL"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:577
 msgid "Set the value of KEY to VALUE"
 msgstr "Sett verdien for NØKKEL til VERDI"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:578
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SKJEMA[:STI] NØKKEL VERDI"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:583
 msgid "Reset KEY to its default value"
 msgstr "Nullstill NØKKEL til forvalgt verdi"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:589
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Nullstill alle nøkler i SKJEMA til sine forvalgte verdier"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:595
 msgid "Check if KEY is writable"
 msgstr "Sjekk om NØKKEL er skrivbar"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:601
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2092,20 +2211,11 @@ msgstr ""
 "Hvis ingen NØKKEL oppgis overvåkes alle nøkler i SKJEMA.\n"
 "Bruk Ctrl+C for å stoppe overvåking.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:604
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:STI] [NØKKEL]"
 
-#: ../gio/gsettings-tool.c:609
-#, c-format
-msgid ""
-"Unknown command %s\n"
-"\n"
-msgstr ""
-"Ukjent kommando «%s»\n"
-"\n"
-
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:616
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2149,7 +2259,7 @@ msgstr ""
 "Bruk «gsettings help KOMMANDO» for å få detaljert hjelp.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:638
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2164,19 +2274,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:642
-msgid "Arguments:\n"
-msgstr "Argumenter:\n"
-
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:644
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMAKATALOG en katalog for søk etter ekstra schemas\n"
 
-#: ../gio/gsettings-tool.c:649
-msgid "  COMMAND   The (optional) command to explain\n"
-msgstr "  KOMMANDO   Valgfri kommando som skal forklares\n"
-
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:652
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2185,19 +2287,19 @@ msgstr ""
 "  SCHEMA      Id for schema\n"
 "  PATH        Sti, for schema som kan relokeres\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:657
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  NØKKEL    Valgfri nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:661
 msgid "  KEY       The key within the schema\n"
 msgstr "  NØKKEL       Nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:665
 msgid "  VALUE     The value to set\n"
 msgstr "  VERDI     Verdi som skal settes\n"
 
-#: ../gio/gsettings-tool.c:787
+#: ../gio/gsettings-tool.c:786
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Tomt navn på schema oppgitt\n"
@@ -2215,7 +2317,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3431 ../gio/gsocket.c:3475
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3433 ../gio/gsocket.c:3477
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -2253,70 +2355,70 @@ msgstr "kunne ikke lytte: %s"
 msgid "Error binding to address: %s"
 msgstr "Feil ved binding til adresse: %s"
 
-#: ../gio/gsocket.c:1966
+#: ../gio/gsocket.c:1968
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Feil ved forsøk på å bli med i multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:1967
+#: ../gio/gsocket.c:1969
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Feil ved forsøk på å forlate multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:2146
+#: ../gio/gsocket.c:2148
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Feil ved godkjenning av tilkobling: %s"
 
-#: ../gio/gsocket.c:2267
+#: ../gio/gsocket.c:2269
 msgid "Connection in progress"
 msgstr "Tilkobling pågår"
 
-#: ../gio/gsocket.c:2319 ../gio/gsocket.c:4217
+#: ../gio/gsocket.c:2321 ../gio/gsocket.c:4219
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
 
-#: ../gio/gsocket.c:2489
+#: ../gio/gsocket.c:2491
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Feil ved mottak av data: %s"
 
-#: ../gio/gsocket.c:2667
+#: ../gio/gsocket.c:2669
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Feil ved sending av data: %s"
 
-#: ../gio/gsocket.c:2781
+#: ../gio/gsocket.c:2783
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kan ikke stenge ned plugg: %s"
 
-#: ../gio/gsocket.c:2860
+#: ../gio/gsocket.c:2862
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3424
+#: ../gio/gsocket.c:3426
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3691 ../gio/gsocket.c:3772
+#: ../gio/gsocket.c:3693 ../gio/gsocket.c:3774
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3716
+#: ../gio/gsocket.c:3718
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:3996 ../gio/gsocket.c:4132
+#: ../gio/gsocket.c:3998 ../gio/gsocket.c:4134
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4236
+#: ../gio/gsocket.c:4238
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -2486,12 +2588,12 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "Oppgitt passord er ikke korrekt."
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:580
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Ventet 1 kontrollmelding, fikk %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:531
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:590
 msgid "Unexpected type of ancillary data"
 msgstr "Uventet type data"
 
@@ -2504,16 +2606,16 @@ msgstr "Ventet en fd, men fikk %d\n"
 msgid "Received invalid fd"
 msgstr "Mottok ugyldig fd"
 
-#: ../gio/gunixconnection.c:371
+#: ../gio/gunixconnection.c:347
 msgid "Error sending credentials: "
 msgstr "Feil ved sending av påloggingsinformasjon: "
 
-#: ../gio/gunixconnection.c:452
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Feil under sjekk om SO_PASSCRED er slått på for plugg: %s"
 
-#: ../gio/gunixconnection.c:461
+#: ../gio/gunixconnection.c:520
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
@@ -2522,24 +2624,24 @@ msgstr ""
 "Uventet lengde på flagg ved sjekk om SO_PASSCRED er slått på for plugg. "
 "Forventet %d byte, fikk %d"
 
-#: ../gio/gunixconnection.c:478
+#: ../gio/gunixconnection.c:537
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Feil under forsøk på å slå på SO_PASSCRED: %s"
 
-#: ../gio/gunixconnection.c:509
+#: ../gio/gunixconnection.c:568
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Forventer å lese en enkelt byte for mottak av påloggingsinformasjon, men "
 "leste null byte"
 
-#: ../gio/gunixconnection.c:545
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Forventet ikke kontrollmelding, men fikk %d"
 
-#: ../gio/gunixconnection.c:571
+#: ../gio/gunixconnection.c:630
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Feil ved forsøk på å slå av SO_PASSCRED: %s"
@@ -2749,227 +2851,227 @@ msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:208
+#: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %e %b %H.%M.%S"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:214
+#: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:217
+#: ../glib/gdatetime.c:219
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "January"
 msgstr "Januar"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "February"
 msgstr "Februar"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "March"
 msgstr "Mars"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:252
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:254
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:285
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:285
+#: ../glib/gdatetime.c:287
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:287
+#: ../glib/gdatetime.c:289
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:289
+#: ../glib/gdatetime.c:291
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Mandag"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Tirsdag"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:310
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:312
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: ../glib/gdatetime.c:312
+#: ../glib/gdatetime.c:314
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Fredag"
 
-#: ../glib/gdatetime.c:314
+#: ../glib/gdatetime.c:316
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: ../glib/gdatetime.c:316
+#: ../glib/gdatetime.c:318
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Søndag"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Man"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Tir"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Ons"
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:339
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Tor"
 
-#: ../glib/gdatetime.c:339
+#: ../glib/gdatetime.c:341
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fre"
 
-#: ../glib/gdatetime.c:341
+#: ../glib/gdatetime.c:343
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Lør"
 
-#: ../glib/gdatetime.c:343
+#: ../glib/gdatetime.c:345
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Søn"
