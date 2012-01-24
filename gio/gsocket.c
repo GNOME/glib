@@ -1934,7 +1934,18 @@ g_socket_multicast_group_operation (GSocket       *socket,
 #endif
 
       if (source_specific)
-        optname = join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
+	{
+#ifdef IP_ADD_SOURCE_MEMBERSHIP
+	  optname = join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
+#else
+	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+		       join_group ?
+		       _("Error joining multicast group: %s") :
+		       _("Error leaving multicast group: %s"),
+		       _("No support for source-specific multicast"));
+	  return FALSE;
+#endif
+	}
       else
         optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
       result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
@@ -1978,7 +1989,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * g_socket_join_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to join.
- * @iface: Interface to use
+ * @iface: (allow-none): Name of the interface to use, or %NULL
  * @source_specific: %TRUE if source-specific multicast should be used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -1987,8 +1998,12 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * been bound to an appropriate interface and port with
  * g_socket_bind().
  *
+ * If @iface is %NULL, the system will automatically pick an interface
+ * to bind to based on @group.
+ *
  * If @source_specific is %TRUE, source-specific multicast as defined
- * in RFC 4604 is used.
+ * in RFC 4604 is used. Note that on older platforms this may fail
+ * with a %G_IO_ERROR_NOT_SUPPORTED error.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
@@ -2008,15 +2023,16 @@ g_socket_join_multicast_group (GSocket       *socket,
  * g_socket_leave_multicast_group:
  * @socket: a #GSocket.
  * @group: a #GInetAddress specifying the group address to leave.
- * @iface: Interface to use
- * @source_specific: %TRUE if source-specific multicast should be used
+ * @iface: (allow-none): Interface used
+ * @source_specific: %TRUE if source-specific multicast was used
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Removes @socket from the multicast group @group (while still
- * allowing it to receive unicast messages).
+ * Removes @socket from the multicast group defined by @group, @iface,
+ * and @source_specific (which must all have the same values they had
+ * when you joined the group).
  *
- * If @source_specific is %TRUE, source-specific multicast as defined
- * in RFC 4604 is used.
+ * @socket remains bound to its address and port, and can still receive
+ * unicast messages after calling this.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
