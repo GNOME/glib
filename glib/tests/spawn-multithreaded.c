@@ -104,7 +104,7 @@ on_child_exited (GPid     pid,
   if (data->child_exited && data->stdout_done)
     g_main_loop_quit (data->loop);
   
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean

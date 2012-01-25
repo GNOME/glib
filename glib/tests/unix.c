@@ -71,7 +71,7 @@ on_sig_received (gpointer user_data)
   GMainLoop *loop = user_data;
   g_main_loop_quit (loop);
   sig_received = TRUE;
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -80,7 +80,7 @@ sig_not_received (gpointer data)
   GMainLoop *loop = data;
   (void) loop;
   g_error ("Timed out waiting for signal");
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -88,7 +88,7 @@ exit_mainloop (gpointer data)
 {
   GMainLoop *loop = data;
   g_main_loop_quit (loop);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

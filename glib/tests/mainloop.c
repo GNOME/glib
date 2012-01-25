@@ -219,7 +219,7 @@ call_func (gpointer data)
 {
   func (g_thread_self ());
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gpointer

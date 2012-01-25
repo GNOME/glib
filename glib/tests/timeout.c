@@ -8,13 +8,15 @@ stop_waiting (gpointer data)
 {
   g_main_loop_quit (loop);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
 function (gpointer data)
 {
   g_assert_not_reached ();
+
+  return G_SOURCE_REMOVE;
 }
 
 static void

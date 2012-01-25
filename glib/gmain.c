@@ -2358,7 +2358,7 @@ g_main_current_source (void)
  *   self->idle_id = 0;
  *   GDK_THREADS_LEAVE (<!-- -->);
  *    
- *   return FALSE;
+ *   return G_SOURCE_REMOVE;
  * }
  *  
  * static void 
