@@ -253,7 +253,7 @@ static gboolean
 release_app (gpointer user_data)
 {
   g_application_release (user_data);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

@@ -67,7 +67,7 @@ my_cmdline_handler (gpointer data)
   /* we are done handling this commandline */
   g_object_unref (cmdline);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static int

@@ -1243,7 +1243,7 @@ inactivity_timeout_expired (gpointer data)
 
   application->priv->inactivity_timeout_id = 0;
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 

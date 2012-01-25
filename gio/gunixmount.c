@@ -387,7 +387,7 @@ handle_error:
     g_free (data);
   }
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

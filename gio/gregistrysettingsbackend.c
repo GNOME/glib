@@ -1377,7 +1377,7 @@ watch_handler (RegistryEvent *event)
   g_object_unref (event->self);
   
   g_slice_free (RegistryEvent, event);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 };
 
 

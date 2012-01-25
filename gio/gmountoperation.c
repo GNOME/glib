@@ -200,7 +200,7 @@ reply_non_handled_in_idle (gpointer data)
   GMountOperation *op = data;
 
   g_mount_operation_reply (op, G_MOUNT_OPERATION_UNHANDLED);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

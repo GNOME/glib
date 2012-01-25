@@ -87,7 +87,7 @@ idle_start_test1_thread (gpointer loop)
 
   g_mutex_unlock (&test1_mutex);
   g_main_loop_quit (loop);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gpointer

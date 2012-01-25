@@ -88,7 +88,7 @@ test_simple_async_idle (gpointer user_data)
   ensure_destroyed (c);
 
   *ran = TRUE;
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
