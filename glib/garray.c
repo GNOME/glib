@@ -201,6 +201,7 @@ GArray* g_array_sized_new (gboolean zero_terminated,
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
   array->ref_count       = 1;
+  array->clear_func      = NULL;
 
   if (array->zero_terminated || reserved_size != 0)
     {
