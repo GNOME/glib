@@ -745,7 +745,8 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
   gssize bytes_read;
   struct stat stat_buf;
   gchar read_buf[4096];
-  
+  gchar list_separator;
+
   if (fstat (fd, &stat_buf) < 0)
     {
       g_set_error_literal (error, G_FILE_ERROR,
@@ -762,8 +763,10 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
       return FALSE;
     }
 
+  list_separator = key_file->list_separator;
   g_key_file_clear (key_file);
   g_key_file_init (key_file);
+  key_file->list_separator = list_separator;
   key_file->flags = flags;
 
   do
@@ -879,6 +882,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 			   GError        **error)
 {
   GError *key_file_error = NULL;
+  gchar list_separator;
 
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -887,8 +891,10 @@ g_key_file_load_from_data (GKeyFile       *key_file,
   if (length == (gsize)-1)
     length = strlen (data);
 
+  list_separator = key_file->list_separator;
   g_key_file_clear (key_file);
   g_key_file_init (key_file);
+  key_file->list_separator = list_separator;
   key_file->flags = flags;
 
   g_key_file_parse_data (key_file, data, length, &key_file_error);
