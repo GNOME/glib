@@ -651,6 +651,7 @@ static void
 test_locale_string (void)
 {
   GKeyFile *keyfile;
+  gchar *old_locale;
 
   const gchar *data =
     "[valid]\n"
@@ -677,8 +678,8 @@ test_locale_string (void)
 
   /* now test that translations are thrown away */
 
-  g_setenv ("LANGUAGE", "de", TRUE);
-  setlocale (LC_ALL, "");
+  old_locale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "de_DE.utf-8");
 
   keyfile = load_data (data, 0);
 
@@ -691,6 +692,9 @@ test_locale_string (void)
   check_locale_string_value (keyfile, "valid", "key1", "en", "v1");
 
   g_key_file_free (keyfile);
+
+  setlocale (LC_ALL, old_locale);
+  g_free (old_locale);
 }
 
 static void
@@ -1432,6 +1436,24 @@ test_replace_value (void)
   g_key_file_unref (keyfile);
 }
 
+static void
+test_list_separator (void)
+{
+  GKeyFile *keyfile;
+  GError *error = NULL;
+
+  const gchar *data =
+    "[test]\n"
+    "key1=v1,v2\n";
+
+  keyfile = g_key_file_new ();
+  g_key_file_set_list_separator (keyfile, ',');
+  g_key_file_load_from_data (keyfile, data, -1, 0, &error);
+
+  check_string_list_value (keyfile, "valid", "key1", "v1", "v2", NULL);
+  g_key_file_unref (keyfile);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1465,6 +1487,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
   g_test_add_func ("/keyfile/ref", test_ref);
   g_test_add_func ("/keyfile/replace-value", test_replace_value);
+  g_test_add_func ("/keyfile/list-separator", test_list_separator);
+
 
   return g_test_run ();
 }
