@@ -679,7 +679,8 @@ test_locale_string (void)
   /* now test that translations are thrown away */
 
   old_locale = g_strdup (setlocale (LC_ALL, NULL));
-  setlocale (LC_ALL, "de_DE.utf-8");
+  setenv ("LANGUAGE", "de", TRUE);
+  setlocale (LC_ALL, "");
 
   keyfile = load_data (data, 0);
 
@@ -1450,7 +1451,7 @@ test_list_separator (void)
   g_key_file_set_list_separator (keyfile, ',');
   g_key_file_load_from_data (keyfile, data, -1, 0, &error);
 
-  check_string_list_value (keyfile, "valid", "key1", "v1", "v2", NULL);
+  check_string_list_value (keyfile, "test", "key1", "v1", "v2", NULL);
   g_key_file_unref (keyfile);
 }
 
