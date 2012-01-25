@@ -162,6 +162,11 @@
  * Using g_str_hash() in that situation might make your application
  * vulerable to <ulink url="https://lwn.net/Articles/474912/">Algorithmic Complexity Attacks</ulink>.
  *
+ * The key to choosing a good hash is unpredictability.  Even
+ * cryptographic hashes are very easy to find collisions for when the
+ * remainder is taken modulo a somewhat predictable prime number.  There
+ * must be an element of randomness that an attacker is unable to guess.
+ *
  * Returns: the hash value corresponding to the key
  */
 
