@@ -2006,8 +2006,8 @@ g_clock_win32_init (void)
  * On Windows, "limitations of the OS kernel" is a rather substantial
  * statement.  Depending on the configuration of the system, the wall
  * clock time is updated as infrequently as 64 times a second (which
- * is approximately every 16ms). Also, the on XP (not on Vista or later)
- * the monitonic clock is locally monotonic, but may differ in exact
+ * is approximately every 16ms). Also, on XP (but not on Vista or later)
+ * the monotonic clock is locally monotonic, but may differ in exact
  * value between processes due to timer wrap handling.
  *
  * Returns: the monotonic time, in microseconds
@@ -2055,7 +2055,7 @@ g_get_monotonic_time (void)
   guint64 ticks;
   guint32 ticks32;
 
-  /* There are four of sources for the monotonic on windows:
+  /* There are four sources for the monotonic time on Windows:
    *
    * Three are based on a (1 msec accuracy, but only read periodically) clock chip:
    * - GetTickCount (GTC)
@@ -2065,19 +2065,19 @@ g_get_monotonic_time (void)
    *    Only availible in Vista or later
    * - timeGetTime (TGT)
    *    similar to GetTickCount by default: 15msec, 50 day wrap.
-   *    availible in winmm.dll (thus known as the multi media timers) 
+   *    available in winmm.dll (thus known as the multimedia timers)
    *    However apps can raise the system timer clock frequency using timeBeginPeriod()
-   *    increasing the accuracy up to 1 msec, at a cost in general system performancs
+   *    increasing the accuracy up to 1 msec, at a cost in general system performance
    *    and battery use.
    *
    * One is based on high precision clocks:
    * - QueryPrecisionCounter (QPC)
    *    This has much higher accuracy, but is not guaranteed monotonic, and
    *    has lots of complications like clock jumps and different times on different
-   *    cpus. It also has lower long term accuracy (i.e. it will drift compared to
+   *    CPUs. It also has lower long term accuracy (i.e. it will drift compared to
    *    the low precision clocks.
    *
-   * Additionally, the precision availible in the timer-based wakeup such as
+   * Additionally, the precision available in the timer-based wakeup such as
    * MsgWaitForMultipleObjectsEx (which is what the mainloop is based on) is based
    * on the TGT resolution, so by default it is ~15msec, but can be increased by apps.
    *
@@ -2088,7 +2088,7 @@ g_get_monotonic_time (void)
    * 
    * However this seems quite complicated, so we're not doing this right now.
    *
-   * The approach we take instead is to use the TGT timer, extenting it to 64bit
+   * The approach we take instead is to use the TGT timer, extending it to 64bit
    * either by using the GTC64 value, or if that is not availible, a process local
    * time epoch that we increment when we detect a timer wrap (assumes that we read
    * the time at least once every 50 days).
@@ -2109,15 +2109,15 @@ g_get_monotonic_time (void)
 
       /* GTC64 and TGT are sampled at different times, however they 
        * have the same base and source (msecs since system boot). 
-       * They can differ with as much as -16 to +16 msecs.
+       * They can differ by as much as -16 to +16 msecs.
        * We can't just inject the low bits into the 64bit counter 
        * as one of the counters can have wrapped in 32bit space and
-       * the other not. Instead we calulate the signed differece
+       * the other not. Instead we calculate the signed difference
        * in 32bit space and apply that difference to the 64bit counter.
        */
       ticks_as_32bit = (guint32)ticks;
 
-      /* We could do some 2s complement hack, but we play it safe */
+      /* We could do some 2's complement hack, but we play it safe */
       if (ticks32 - ticks_as_32bit <= G_MAXINT32)
 	ticks += ticks32 - ticks_as_32bit;
       else
@@ -2129,15 +2129,17 @@ g_get_monotonic_time (void)
 
       epoch = g_atomic_int_get (&g_win32_tick_epoch);
 
-      /* Must read ticks after the epoch, then we're guaranteed
-	 that the ticks value we read is higher or equal to any
-	 previous ones that lead to the writing of the epoch. */
+      /* Must read ticks after the epoch. Then we're guaranteed
+       * that the ticks value we read is higher or equal to any
+       * previous ones that lead to the writing of the epoch.
+       */
       ticks32 = timeGetTime();
 
-      /* We store the msb of the current time as the lsb
+      /* We store the MSB of the current time as the LSB
        * of the epoch. Comparing these bits lets us detect when
        * the 32bit counter has wrapped so we can increase the
        * epoch.
+       *
        * This will work as long as this function is called at
        * least once every ~24 days, which is half the wrap time
        * of a 32bit msec counter. I think this is pretty likely.
@@ -2160,11 +2162,6 @@ g_get_monotonic_time (void)
 
 #else /* !HAVE_CLOCK_GETTIME && ! G_OS_WIN32*/
 
-  /* It may look like we are discarding accuracy on Windows (since its
-   * current time is expressed in 100s of nanoseconds) but according to
-   * many sources, the time is only updated 64 times per second, so
-   * microsecond accuracy is more than enough.
-   */
   GTimeVal tv;
 
   g_get_current_time (&tv);
