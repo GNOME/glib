@@ -1455,6 +1455,31 @@ test_list_separator (void)
   g_key_file_unref (keyfile);
 }
 
+static void
+test_empty_string (void)
+{
+  GError *error = NULL;
+  GKeyFile *kf;
+
+  kf = g_key_file_new ();
+
+  g_key_file_load_from_data (kf, "", 0, 0, &error);
+  g_assert_no_error (error);
+
+  g_key_file_load_from_data (kf, "", -1, 0, &error);
+  g_assert_no_error (error);
+
+  /* NULL is a fine pointer to use if length is zero */
+  g_key_file_load_from_data (kf, NULL, 0, 0, &error);
+  g_assert_no_error (error);
+
+  /* should not attempt to access non-NULL pointer if length is zero */
+  g_key_file_load_from_data (kf, GINT_TO_POINTER (1), 0, 0, &error);
+  g_assert_no_error (error);
+
+  g_key_file_unref (kf);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1489,7 +1514,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/ref", test_ref);
   g_test_add_func ("/keyfile/replace-value", test_replace_value);
   g_test_add_func ("/keyfile/list-separator", test_list_separator);
-
+  g_test_add_func ("/keyfile/empty-string", test_empty_string);
 
   return g_test_run ();
 }

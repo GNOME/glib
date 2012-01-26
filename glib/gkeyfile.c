@@ -885,8 +885,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
   gchar list_separator;
 
   g_return_val_if_fail (key_file != NULL, FALSE);
-  g_return_val_if_fail (data != NULL, FALSE);
-  g_return_val_if_fail (length != 0, FALSE);
+  g_return_val_if_fail (data != NULL || length == 0, FALSE);
 
   if (length == (gsize)-1)
     length = strlen (data);
@@ -1354,7 +1353,7 @@ g_key_file_parse_data (GKeyFile     *key_file,
   gsize i;
 
   g_return_if_fail (key_file != NULL);
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (data != NULL || length == 0);
 
   parse_error = NULL;
 
