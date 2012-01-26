@@ -415,6 +415,19 @@ g_dbus_interface_skeleton_get_object (GDBusInterface *interface_)
   return ret;
 }
 
+static GDBusObject *
+g_dbus_interface_skeleton_dup_object (GDBusInterface *interface_)
+{
+  GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (interface_);
+  GDBusObject *ret;
+  g_mutex_lock (&interface->priv->lock);
+  ret = interface->priv->object;
+  if (ret != NULL)
+    g_object_ref (ret);
+  g_mutex_unlock (&interface->priv->lock);
+  return ret;
+}
+
 static void
 g_dbus_interface_skeleton_set_object (GDBusInterface *interface_,
                                       GDBusObject    *object)
@@ -434,6 +447,7 @@ dbus_interface_interface_init (GDBusInterfaceIface *iface)
 {
   iface->get_info    = _g_dbus_interface_skeleton_get_info;
   iface->get_object  = g_dbus_interface_skeleton_get_object;
+  iface->dup_object  = g_dbus_interface_skeleton_dup_object;
   iface->set_object  = g_dbus_interface_skeleton_set_object;
 }
 

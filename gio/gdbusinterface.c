@@ -66,10 +66,15 @@ g_dbus_interface_get_info (GDBusInterface *interface_)
 }
 
 /**
- * g_dbus_interface_get_object:
+ * g_dbus_interface_get_object: (skip)
  * @interface_: An exported D-Bus interface.
  *
  * Gets the #GDBusObject that @interface_ belongs to, if any.
+ *
+ * <warning>It is not safe to use the returned object if @interface_
+ * or the returned object is being used from other threads. See
+ * g_dbus_interface_dup_object() for a thread-safe
+ * alternative.</warning>
  *
  * Returns: (transfer none): A #GDBusObject or %NULL. The returned
  * reference belongs to @interface_ and should not be freed.
@@ -81,6 +86,39 @@ g_dbus_interface_get_object (GDBusInterface *interface_)
 {
   g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface_), NULL);
   return G_DBUS_INTERFACE_GET_IFACE (interface_)->get_object (interface_);
+}
+
+/**
+ * g_dbus_interface_dup_object:
+ * @interface_: An exported D-Bus interface.
+ *
+ * Gets the #GDBusObject that @interface_ belongs to, if any.
+ *
+ * Returns: (transfer full): A #GDBusObject or %NULL. The returned
+ * reference should be freed with g_object_unref().
+ *
+ * Since: 2.32
+ *
+ * Rename to: g_dbus_interface_get_object
+ */
+GDBusObject *
+g_dbus_interface_dup_object (GDBusInterface *interface_)
+{
+  GDBusObject *ret;
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface_), NULL);
+  if (G_LIKELY (G_DBUS_INTERFACE_GET_IFACE (interface_)->dup_object != NULL))
+    {
+      ret = G_DBUS_INTERFACE_GET_IFACE (interface_)->dup_object (interface_);
+    }
+  else
+    {
+      g_warning ("No dup_object() vfunc on type %s - using get_object() in a way that is not thread-safe.",
+                 g_type_name_from_instance ((GTypeInstance *) interface_));
+      ret = G_DBUS_INTERFACE_GET_IFACE (interface_)->get_object (interface_);
+      if (ret != NULL)
+        g_object_ref (ret);
+    }
+  return ret;
 }
 
 /**

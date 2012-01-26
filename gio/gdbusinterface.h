@@ -48,6 +48,7 @@ typedef struct _GDBusInterfaceIface GDBusInterfaceIface;
  * @get_info: Returns a #GDBusInterfaceInfo. See g_dbus_interface_get_info().
  * @get_object: Gets the enclosing #GDBusObject. See g_dbus_interface_get_object().
  * @set_object: Sets the enclosing #GDBusObject. See g_dbus_interface_set_object().
+ * @dup_object: Gets a reference to the enclosing #GDBusObject. See g_dbus_interface_dup_object(). Added in 2.32.
  *
  * Base type for D-Bus interfaces.
  *
@@ -62,6 +63,7 @@ struct _GDBusInterfaceIface
   GDBusObject          *(*get_object) (GDBusInterface      *interface_);
   void                  (*set_object) (GDBusInterface      *interface_,
                                        GDBusObject         *object);
+  GDBusObject          *(*dup_object) (GDBusInterface      *interface_);
 };
 
 GType                 g_dbus_interface_get_type         (void) G_GNUC_CONST;
@@ -69,6 +71,7 @@ GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *in
 GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *interface_);
 void                  g_dbus_interface_set_object       (GDBusInterface      *interface_,
                                                          GDBusObject         *object);
+GDBusObject          *g_dbus_interface_dup_object       (GDBusInterface      *interface_);
 
 G_END_DECLS
 

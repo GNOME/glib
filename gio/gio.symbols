@@ -1569,6 +1569,7 @@ g_tls_password_get_flags
 g_tls_password_get_description
 g_dbus_interface_get_info
 g_dbus_interface_get_object
+g_dbus_interface_dup_object
 g_dbus_interface_get_type
 g_dbus_interface_set_object
 g_dbus_interface_skeleton_export

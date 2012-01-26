@@ -153,6 +153,7 @@ struct _GDBusProxyPrivate
 
   gboolean initialized;
 
+  /* mutable, protected by properties_lock */
   GDBusObject *object;
 
   SignalSubscriptionData *signal_subscription_data;
@@ -3080,16 +3081,31 @@ _g_dbus_proxy_get_object (GDBusInterface *interface)
   return proxy->priv->object;
 }
 
+static GDBusObject *
+_g_dbus_proxy_dup_object (GDBusInterface *interface)
+{
+  GDBusProxy *proxy = G_DBUS_PROXY (interface);
+  GDBusObject *ret = NULL;
+
+  G_LOCK (properties_lock);
+  if (proxy->priv->object != NULL)
+    ret = g_object_ref (proxy->priv->object);
+  G_UNLOCK (properties_lock);
+  return ret;
+}
+
 static void
 _g_dbus_proxy_set_object (GDBusInterface *interface,
                           GDBusObject    *object)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (interface);
+  G_LOCK (properties_lock);
   if (proxy->priv->object != NULL)
     g_object_remove_weak_pointer (G_OBJECT (proxy->priv->object), (gpointer *) &proxy->priv->object);
   proxy->priv->object = object;
   if (proxy->priv->object != NULL)
     g_object_add_weak_pointer (G_OBJECT (proxy->priv->object), (gpointer *) &proxy->priv->object);
+  G_UNLOCK (properties_lock);
 }
 
 static void
@@ -3097,6 +3113,7 @@ dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface)
 {
   dbus_interface_iface->get_info   = _g_dbus_proxy_get_info;
   dbus_interface_iface->get_object = _g_dbus_proxy_get_object;
+  dbus_interface_iface->dup_object = _g_dbus_proxy_dup_object;
   dbus_interface_iface->set_object = _g_dbus_proxy_set_object;
 }
 

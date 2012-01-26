@@ -3419,6 +3419,7 @@ GDBusInterface
 GDBusInterfaceIface
 g_dbus_interface_get_info
 g_dbus_interface_get_object
+g_dbus_interface_dup_object
 g_dbus_interface_set_object
 <SUBSECTION Standard>
 G_DBUS_INTERFACE
