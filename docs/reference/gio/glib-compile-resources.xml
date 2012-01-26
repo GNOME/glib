@@ -145,6 +145,8 @@ The full path to the xmllint executable. This is used to preprocess resources wi
 set, xmllint is searched in the <envar>PATH</envar>.
 </para></listitem>
 </varlistentry>
+
+</variablelist>
 </refsect2>
 
 </refsect1>
