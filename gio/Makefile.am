@@ -145,7 +145,6 @@ application_headers = \
 	gsimpleaction.h			\
 					\
 	gmenumodel.h			\
-	gmenumarkup.h			\
 	gmenu.h				\
 	gmenuexporter.h			\
 	gdbusmenumodel.h		\
@@ -167,7 +166,6 @@ application_sources = \
 	gsimpleaction.c				\
 						\
 	gmenumodel.c				\
-	gmenumarkup.c				\
 	gmenu.c					\
 	gmenuexporter.c				\
 	gdbusmenumodel.c			\
@@ -615,9 +613,6 @@ EXTRA_DIST += 			\
 	abicheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
-	menumarkup.xml		\
-	menumarkup2.xml		\
-	menumarkup.dtd		\
 	$(NULL)
 
 BUILT_EXTRA_DIST = 		\

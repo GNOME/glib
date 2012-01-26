@@ -1,5 +1,125 @@
 #include <gio/gio.h>
 
+/* Markup printing {{{1 */
+
+/* This used to be part of GLib, but it was removed before the stable
+ * release because it wasn't generally useful.  We want it here, though.
+ */
+static void
+indent_string (GString *string,
+               gint     indent)
+{
+  while (indent--)
+    g_string_append_c (string, ' ');
+}
+
+static GString *
+g_menu_markup_print_string (GString    *string,
+                            GMenuModel *model,
+                            gint        indent,
+                            gint        tabstop)
+{
+  gboolean need_nl = FALSE;
+  gint i, n;
+
+  if G_UNLIKELY (string == NULL)
+    string = g_string_new (NULL);
+
+  n = g_menu_model_get_n_items (model);
+
+  for (i = 0; i < n; i++)
+    {
+      GMenuAttributeIter *attr_iter;
+      GMenuLinkIter *link_iter;
+      GString *contents;
+      GString *attrs;
+
+      attr_iter = g_menu_model_iterate_item_attributes (model, i);
+      link_iter = g_menu_model_iterate_item_links (model, i);
+      contents = g_string_new (NULL);
+      attrs = g_string_new (NULL);
+
+      while (g_menu_attribute_iter_next (attr_iter))
+        {
+          const char *name = g_menu_attribute_iter_get_name (attr_iter);
+          GVariant *value = g_menu_attribute_iter_get_value (attr_iter);
+
+          if (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+            {
+              gchar *str;
+              str = g_markup_printf_escaped (" %s='%s'", name, g_variant_get_string (value, NULL));
+              g_string_append (attrs, str);
+              g_free (str);
+            }
+
+          else
+            {
+              gchar *printed;
+              gchar *str;
+              const gchar *type;
+
+              printed = g_variant_print (value, TRUE);
+              type = g_variant_type_peek_string (g_variant_get_type (value));
+              str = g_markup_printf_escaped ("<attribute name='%s' type='%s'>%s</attribute>\n", name, type, printed);
+              indent_string (contents, indent + tabstop);
+              g_string_append (contents, str);
+              g_free (printed);
+              g_free (str);
+            }
+
+          g_variant_unref (value);
+        }
+      g_object_unref (attr_iter);
+
+      while (g_menu_link_iter_next (link_iter))
+        {
+          const gchar *name = g_menu_link_iter_get_name (link_iter);
+          GMenuModel *menu = g_menu_link_iter_get_value (link_iter);
+          gchar *str;
+
+          if (contents->str[0])
+            g_string_append_c (contents, '\n');
+
+          str = g_markup_printf_escaped ("<link name='%s'>\n", name);
+          indent_string (contents, indent + tabstop);
+          g_string_append (contents, str);
+          g_free (str);
+
+          g_menu_markup_print_string (contents, menu, indent + 2 * tabstop, tabstop);
+
+          indent_string (contents, indent + tabstop);
+          g_string_append (contents, "</link>\n");
+          g_object_unref (menu);
+        }
+      g_object_unref (link_iter);
+
+      if (contents->str[0])
+        {
+          indent_string (string, indent);
+          g_string_append_printf (string, "<item%s>\n", attrs->str);
+          g_string_append (string, contents->str);
+          indent_string (string, indent);
+          g_string_append (string, "</item>\n");
+          need_nl = TRUE;
+        }
+
+      else
+        {
+          if (need_nl)
+            g_string_append_c (string, '\n');
+
+          indent_string (string, indent);
+          g_string_append_printf (string, "<item%s/>\n", attrs->str);
+          need_nl = FALSE;
+        }
+
+      g_string_free (contents, TRUE);
+      g_string_free (attrs, TRUE);
+    }
+
+  return string;
+}
+
 /* TestItem {{{1 */
 
 /* This utility struct is used by both the RandomMenu and MirrorMenu
@@ -789,189 +909,6 @@ test_dbus_threaded (void)
     g_object_unref (menu[i]);
 }
 
-typedef struct {
-  GMenu *menu;
-  GHashTable *objects;
-} ParserData;
-
-static void
-start_element (GMarkupParseContext *context,
-               const gchar         *element_name,
-               const gchar        **attribute_names,
-               const gchar        **attribute_values,
-               gpointer             user_data,
-               GError             **error)
-{
-  ParserData *data = user_data;
-
-  if (g_strcmp0 (element_name, "menu") == 0)
-    g_menu_markup_parser_start_menu (context, "domain", data->objects);
-}
-
-static void
-end_element (GMarkupParseContext *context,
-             const gchar         *element_name,
-             gpointer             user_data,
-             GError             **error)
-{
-  ParserData *data = user_data;
-
-  if (g_strcmp0 (element_name, "menu") == 0)
-    data->menu = g_menu_markup_parser_end_menu (context);
-}
-
-static GMenuModel *
-parse_menu_string (const gchar *string, GHashTable *objects, GError **error)
-{
-  const GMarkupParser parser = {
-    start_element, end_element, NULL, NULL, NULL
-  };
-  GMarkupParseContext *context;
-  ParserData data;
-
-  data.menu = NULL;
-  data.objects = objects;
-
-  context = g_markup_parse_context_new (&parser, 0, &data, NULL);
-  g_markup_parse_context_parse (context, string, -1, error);
-  g_markup_parse_context_free (context);
-
-  return (GMenuModel*)data.menu;
-}
-
-static gchar *
-menu_to_string (GMenuModel *menu)
-{
-  GString *s;
-
-  s = g_string_new ("<menu>\n");
-  g_menu_markup_print_string (s, menu, 2, 2);
-  g_string_append (s, "</menu>\n");
-
-  return g_string_free (s, FALSE);
-}
-
-const gchar menu_data[] =
-  "<menu id='edit-menu'>\n"
-  "  <section>\n"
-  "    <item action='undo'>\n"
-  "      <attribute name='label' translatable='yes' context='Stock label'>'_Undo'</attribute>\n"
-  "    </item>\n"
-  "    <item label='Redo' action='redo'/>\n"
-  "  </section>\n"
-  "  <section></section>\n"
-  "  <section label='Copy &amp; Paste'>\n"
-  "    <item label='Cut' action='cut'/>\n"
-  "    <item label='Copy' action='copy'/>\n"
-  "    <item label='Paste' action='paste'/>\n"
-  "  </section>\n"
-  "  <item><link name='section' id='blargh'>\n"
-  "    <item label='Bold' action='bold'/>\n"
-  "    <submenu label='Language'>\n"
-  "      <item label='Latin' action='lang' target='latin'/>\n"
-  "      <item label='Greek' action='lang' target='greek'/>\n"
-  "      <item label='Urdu'  action='lang' target='urdu'/>\n"
-  "    </submenu>\n"
-  "    <item name='test unusual attributes'>\n"
-  "      <attribute name='action' type='s'>'quite-some-action'</attribute>\n"
-  "      <attribute name='target' type='i'>36</attribute>\n"
-  "      <attribute name='chocolate-thunda' type='as'>['a','b']</attribute>\n"
-  "      <attribute name='thing1' type='g'>'s(uu)'</attribute>\n"
-  "      <attribute name='icon' type='s'>'small blue thing'</attribute>\n"
-  "   </item>\n"
-  "  </link></item>\n"
-  "</menu>\n";
-
-static void
-test_markup_roundtrip (void)
-{
-  GError *error = NULL;
-  GMenuModel *a;
-  GMenuModel *b;
-  gchar *s;
-  gchar *s2;
-
-  a = parse_menu_string (menu_data, NULL, &error);
-  g_assert_no_error (error);
-  g_assert (G_IS_MENU_MODEL (a));
-
-  /* normalized representation */
-  s = menu_to_string (a);
-
-  b = parse_menu_string (s, NULL, &error);
-  g_assert_no_error (error);
-  g_assert (G_IS_MENU_MODEL (b));
-
-  assert_menus_equal (G_MENU_MODEL (a), G_MENU_MODEL (b));
-
-  s2 = menu_to_string (b);
-
-  g_assert_cmpstr (s, ==, s2);
-
-  g_object_unref (a);
-  g_object_unref (b);
-  g_free (s);
-  g_free (s2);
-}
-
-static void
-test_markup_objects (void)
-{
-  GMenuModel *a, *b;
-  GHashTable *objects;
-  GError *error = NULL;
-
-  objects = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
-  a = parse_menu_string (menu_data, objects, &error);
-  g_assert_no_error (error);
-  g_assert (G_IS_MENU_MODEL (a));
-  g_assert_cmpint (g_hash_table_size (objects), ==, 1);
-  b = g_hash_table_lookup (objects, "blargh");
-  g_assert (G_IS_MENU_MODEL (b));
-  g_object_unref (a);
-  g_hash_table_unref (objects);
-}
-
-const gchar menu_data2[] =
-  "<menu>"
-  "  <section>"
-  "    <item label='Redo' action='redo'/>"
-  "  </section>"
-  "  <section></section>\n"
-  "  <section label='Copy &amp; Paste'>"
-  "    <item label='Cut' action='cut'/>"
-  "  </section>"
-  "  <section id='section1'>"
-  "    <item label='Bold' action='bold'/>"
-  "    <submenu label='Language' id='submenu1'>"
-  "      <section id='section2'>"
-  "        <item label='Urdu'  action='lang' target='urdu'/>"
-  "      </section>"
-  "    </submenu>"
-  "  </section>"
-  "</menu>";
-static void
-test_markup_ids (void)
-{
-  GMenuModel *a, *b;
-  GHashTable *objects;
-  GError *error = NULL;
-
-  objects = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
-  a = parse_menu_string (menu_data2, objects, &error);
-  g_assert_no_error (error);
-  g_assert (G_IS_MENU_MODEL (a));
-  g_assert_cmpint (g_hash_table_size (objects), ==, 3);
-  b = g_hash_table_lookup (objects, "section1");
-  g_assert (G_IS_MENU_MODEL (b));
-  b = g_hash_table_lookup (objects, "section2");
-  g_assert (G_IS_MENU_MODEL (b));
-  b = g_hash_table_lookup (objects, "submenu1");
-  g_assert (G_IS_MENU_MODEL (b));
-  g_object_unref (a);
-  g_hash_table_unref (objects);
-}
-
 static void
 test_attributes (void)
 {
@@ -1078,73 +1015,7 @@ test_mutable (void)
   g_object_unref (menu);
 }
 
-static void
-test_misc (void)
-{
-  /* trying to use most of the GMenu api for constructing the
-   * same menu two different ways
-   */
-  GMenu *a, *m, *m2;
-  GMenuModel *b;
-  GMenuItem *item;
-  const gchar *s;
-
-  a = g_menu_new ();
-  item = g_menu_item_new ("test1", "action1::target1");
-  g_menu_prepend_item (a, item);
-  g_object_unref (item);
-
-  m = g_menu_new ();
-  g_menu_prepend (m, "test2a", "action2");
-  g_menu_append (m, "test2c", NULL);
-  g_menu_insert (m, 1, "test2b", NULL);
-
-  item = g_menu_item_new_submenu ("test2", G_MENU_MODEL (m));
-  g_menu_append_item (a, item);
-  g_object_unref (item);
-  g_object_unref (m);
-
-  m = g_menu_new ();
-
-  m2 = g_menu_new ();
-  g_menu_append (m2, "x", NULL);
-  g_menu_prepend_section (m, "test3a", G_MENU_MODEL (m2));
-  g_object_unref (m2);
-
-  item = g_menu_item_new_section ("test3", G_MENU_MODEL (m));
-  g_menu_insert_item (a, -1, item);
-  g_object_unref (item);
-  g_object_unref (m);
-
-  s = ""
-"<menu>"
-"  <item target='target1' action='action1' label='test1'/>"
-"  <item label='test2'>"
-"    <link name='submenu'>"
-"      <item action='action2' label='test2a'/>"
-"      <item label='test2b'/>"
-"      <item label='test2c'/>"
-"    </link>"
-"  </item>"
-"  <item label='test3'>"
-"    <link name='section'>"
-"      <item label='test3a'>"
-"        <link name='section'>"
-"          <item label='x'/>"
-"        </link>"
-"      </item>"
-"    </link>"
-"  </item>"
-"</menu>";
-
-  b = parse_menu_string (s, NULL, NULL);
-
-  assert_menus_equal (G_MENU_MODEL (a), G_MENU_MODEL (b));
-  g_object_unref (a);
-  g_object_unref (b);
-}
-
- /* Epilogue {{{1 */
+/* Epilogue {{{1 */
 int
 main (int argc, char **argv)
 {
@@ -1157,13 +1028,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/dbus/roundtrip", test_dbus_roundtrip);
   g_test_add_func ("/gmenu/dbus/subscriptions", test_dbus_subscriptions);
   g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
-  g_test_add_func ("/gmenu/markup/roundtrip", test_markup_roundtrip);
-  g_test_add_func ("/gmenu/markup/objects", test_markup_objects);
-  g_test_add_func ("/gmenu/markup/ids", test_markup_ids);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
-  g_test_add_func ("/gmenu/misc", test_misc);
 
   return g_test_run ();
 }
