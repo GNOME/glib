@@ -679,7 +679,7 @@ test_locale_string (void)
   /* now test that translations are thrown away */
 
   old_locale = g_strdup (setlocale (LC_ALL, NULL));
-  setenv ("LANGUAGE", "de", TRUE);
+  g_setenv ("LANGUAGE", "de", TRUE);
   setlocale (LC_ALL, "");
 
   keyfile = load_data (data, 0);
