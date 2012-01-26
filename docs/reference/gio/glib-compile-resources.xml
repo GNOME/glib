@@ -103,13 +103,12 @@ This can be used to track dependencies in the build system. For example, the fol
 make rule would mark <replaceable>test.gresource</replaceable> as depending on all the
 files that <replaceable>test.gresource.xm</replaceable> includes, so that is is automatically
 rebuilt if any of them change:
-  <literal>
-    test.gresource: test.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies test.gresource.xml)
-  </literal>
+<programlisting>
+test.gresource: test.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies test.gresource.xml)
+</programlisting>
 Note that this may or may not be portable to non-GNU <command>make</command>.
 </para>
-<para>For example i
-</para></listitem>
+</listitem>
 </varlistentry>
 
 <varlistentry>
