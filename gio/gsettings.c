@@ -1322,6 +1322,7 @@ g_settings_set_value (GSettings   *settings,
                       GVariant    *value)
 {
   GSettingsSchemaKey skey;
+  gboolean success;
 
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
@@ -1349,9 +1350,10 @@ g_settings_set_value (GSettings   *settings,
         return FALSE;
     }
 
+  success = g_settings_write_to_backend (settings, &skey, value);
   g_settings_schema_key_clear (&skey);
 
-  return g_settings_write_to_backend (settings, &skey, value);
+  return success;
 }
 
 /**

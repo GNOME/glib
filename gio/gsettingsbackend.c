@@ -772,8 +772,14 @@ g_settings_backend_write (GSettingsBackend *backend,
                           GVariant         *value,
                           gpointer          origin_tag)
 {
-  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+  gboolean success;
+
+  g_variant_ref_sink (value);
+  success = G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->write (backend, key, value, origin_tag);
+  g_variant_unref (value);
+
+  return success;
 }
 
 /*< private >
