@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-25 13:49+0000\n"
-"PO-Revision-Date: 2012-01-27 11:16+0100\n"
+"POT-Creation-Date: 2012-01-27 10:17+0000\n"
+"PO-Revision-Date: 2012-01-27 13:39+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -671,17 +671,17 @@ msgstr "Error al devolver un cuepro vacío"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "No se puede cargar /var/lib/dbus/machine-id o /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1529
+#: ../gio/gdbusproxy.c:1530
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Error al llamar StartSereviceByName para %s: "
 
-#: ../gio/gdbusproxy.c:1550
+#: ../gio/gdbusproxy.c:1551
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Respuesta %d no esperada del método StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2631 ../gio/gdbusproxy.c:2765
+#: ../gio/gdbusproxy.c:2632 ../gio/gdbusproxy.c:2766
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1227,13 +1227,11 @@ msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
 #: ../gio/glib-compile-resources.c:138 ../gio/glib-compile-schemas.c:1416
-#: ../gio/gmenumarkup.c:299
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "No se permite el elemento <%s> dentro de <%s>"
 
 #: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1420
-#: ../gio/gmenumarkup.c:304
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "No se permite el elemento <%s> en el nivel superior"
@@ -1245,18 +1243,15 @@ msgstr "El archivo %s aparece varias veces en el recurso"
 
 #: ../gio/glib-compile-resources.c:240
 #, c-format
-#| msgid "Unknown option %s"
 msgid "Unknown proprocessing options \"%s\""
 msgstr "Opciones de pro-procesado desconocidas «%s»"
 
 #: ../gio/glib-compile-resources.c:258
 #, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to create temp file: %s"
 msgstr "Falló al crear el archivo temporal: %s"
 
 #: ../gio/glib-compile-resources.c:289
-#| msgid "Error setting symlink: file is not a symlink"
 msgid "Error processing input file with xmllint"
 msgstr "Error al procesar el archivo de entrada con xmllint"
 
@@ -1271,7 +1266,6 @@ msgid "Error compressing file %s"
 msgstr "Error al comprimir el archivo %s"
 
 #: ../gio/glib-compile-resources.c:379 ../gio/glib-compile-schemas.c:1511
-#: ../gio/gmenumarkup.c:384
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "El texto no debe aparecer dentro de <%s>"
@@ -1326,7 +1320,6 @@ msgid "C identifier name used for the generated source code"
 msgstr "Nombre del identificador C usado para el código fuente generado"
 
 #: ../gio/glib-compile-resources.c:538
-#, fuzzy
 #| msgid ""
 #| "Compile all GSettings schema files into a schema cache.\n"
 #| "Schema files are required to have the extension .gschema.xml,\n"
@@ -1336,10 +1329,10 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
-"Compilar todos los archivos de esquema de GSettings en una caché de "
-"esquemas.\n"
-"Los archivos de esquema deben tener la extensión .gschema.xml,\n"
-"y el archivo de caché se llama gschemas.compiled."
+"Compilar la especificación de un recurso en un archivo de recurso.\n"
+"Los archivos de especificación de recursos deben tener la extensión ."
+"gresource.xml,\n"
+"y el archivo del recurso debe tener la extensión se llama .gresource."
 
 #: ../gio/glib-compile-resources.c:554
 #, c-format
@@ -2086,6 +2079,9 @@ msgid ""
 "If SECTION is given, only list resources in this section\n"
 "If PATH is given, only list matching resources"
 msgstr ""
+"Listar recursos\n"
+"Si se da la SECCIÓN, listar solo los recursos de esta sección.\n"
+"Si se da la RUTA, listar solo los recursos que coincidan"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2099,6 +2095,10 @@ msgid ""
 "If PATH is given, only list matching resources\n"
 "Details include the section, size and compression"
 msgstr ""
+"Listar recursos con detalles\n"
+"Si se da la SECCIÓN, listar solo los recursos de esta sección.\n"
+"Si se da la RUTA, listar solo los recursos que coincidan\n"
+"Los detalles incluyen la sección, el tamaño y la compresión"
 
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
@@ -2162,7 +2162,7 @@ msgstr "Argumentos:\n"
 
 #: ../gio/gresource-tool.c:537
 msgid "  SECTION   An (optional) elf section name\n"
-msgstr ""
+msgstr "  SECCIÓN   El nombre de sección (opcional) de un elf\n"
 
 #: ../gio/gresource-tool.c:541 ../gio/gsettings-tool.c:648
 msgid "  COMMAND   The (optional) command to explain\n"
@@ -2171,6 +2171,7 @@ msgstr "  COMANDO   El comando (opcional) que explicar\n"
 #: ../gio/gresource-tool.c:547
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr ""
+"  ARCHIVO      Un archivo elf (un binario o una biblioteca compartida)\n"
 
 #: ../gio/gresource-tool.c:550
 msgid ""
@@ -2182,11 +2183,11 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
-msgstr ""
+msgstr "  RUTA      La ruta (opcional) de un recurso (puede ser parcial)\n"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
-msgstr ""
+msgstr "  RUTA      La ruta de un recurso\n"
 
 #: ../gio/gsettings-tool.c:53 ../gio/gsettings-tool.c:74
 #, c-format
@@ -2455,20 +2456,20 @@ msgid "Error binding to address: %s"
 msgstr "Error al vincular con la dirección: %s"
 
 #: ../gio/gsocket.c:1943 ../gio/gsocket.c:1979
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error joining multicast group: %s"
-msgstr "Error al analizar la aplicación: %s"
+msgstr "Error al unirse al grupo de multicast: %s"
 
 #: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error leaving multicast group: %s"
-msgstr "Error al analizar la aplicación: %s"
+msgstr "Error al abandonar al grupo de multicast: %s"
 
 #: ../gio/gsocket.c:1945
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "No se soporta el multicast específico de la fuente"
 
 #: ../gio/gsocket.c:2164
 #, c-format
@@ -3325,7 +3326,7 @@ msgstr ""
 msgid "Not a regular file"
 msgstr "No es un archivo regular"
 
-#: ../glib/gkeyfile.c:1163
+#: ../glib/gkeyfile.c:1162
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -3333,45 +3334,45 @@ msgstr ""
 "El archivo de claves contiene la línea «%s» que no es un par valor-clave, "
 "grupo o comentario"
 
-#: ../glib/gkeyfile.c:1223
+#: ../glib/gkeyfile.c:1222
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nombre de grupo no válido: %s"
 
-#: ../glib/gkeyfile.c:1245
+#: ../glib/gkeyfile.c:1244
 msgid "Key file does not start with a group"
 msgstr "El archivo de claves no empieza por un grupo"
 
-#: ../glib/gkeyfile.c:1271
+#: ../glib/gkeyfile.c:1270
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nombre de clave no válida: %s"
 
-#: ../glib/gkeyfile.c:1298
+#: ../glib/gkeyfile.c:1297
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "El archivo de claves contiene una codificación «%s» no soportada"
 
-#: ../glib/gkeyfile.c:1542 ../glib/gkeyfile.c:1704 ../glib/gkeyfile.c:3082
-#: ../glib/gkeyfile.c:3148 ../glib/gkeyfile.c:3274 ../glib/gkeyfile.c:3407
-#: ../glib/gkeyfile.c:3549 ../glib/gkeyfile.c:3779 ../glib/gkeyfile.c:3847
+#: ../glib/gkeyfile.c:1541 ../glib/gkeyfile.c:1703 ../glib/gkeyfile.c:3081
+#: ../glib/gkeyfile.c:3147 ../glib/gkeyfile.c:3273 ../glib/gkeyfile.c:3406
+#: ../glib/gkeyfile.c:3548 ../glib/gkeyfile.c:3778 ../glib/gkeyfile.c:3846
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "El archivo de claves no tiene el grupo «%s»"
 
-#: ../glib/gkeyfile.c:1716
+#: ../glib/gkeyfile.c:1715
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "El archivo de claves no tiene la clave «%s»"
 
-#: ../glib/gkeyfile.c:1823 ../glib/gkeyfile.c:1939
+#: ../glib/gkeyfile.c:1822 ../glib/gkeyfile.c:1938
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "El archivo de claves contiene la clave  «%s» con el valor «%s» el cual no es "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1843 ../glib/gkeyfile.c:1959 ../glib/gkeyfile.c:2328
+#: ../glib/gkeyfile.c:1842 ../glib/gkeyfile.c:1958 ../glib/gkeyfile.c:2327
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -3379,7 +3380,7 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» que tiene un valor que no se "
 "puede interpretar."
 
-#: ../glib/gkeyfile.c:2545 ../glib/gkeyfile.c:2911
+#: ../glib/gkeyfile.c:2544 ../glib/gkeyfile.c:2910
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3388,42 +3389,42 @@ msgstr ""
 "El archivo de claves contiene la clave «%s» en el grupo «%s» que tiene un "
 "valor que no puede interpretarse."
 
-#: ../glib/gkeyfile.c:2623 ../glib/gkeyfile.c:2699
+#: ../glib/gkeyfile.c:2622 ../glib/gkeyfile.c:2698
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "La clave «%s» en el grupo «%s» tiene el valor «%s», pero se esperaba %s"
 
-#: ../glib/gkeyfile.c:3097 ../glib/gkeyfile.c:3289 ../glib/gkeyfile.c:3858
+#: ../glib/gkeyfile.c:3096 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3857
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "El archivo de claves no tiene la clave «%s» en el grupo «%s»"
 
-#: ../glib/gkeyfile.c:4090
+#: ../glib/gkeyfile.c:4089
 msgid "Key file contains escape character at end of line"
 msgstr ""
 "El archivo de claves contiene un carácter de escape al final de la línea"
 
-#: ../glib/gkeyfile.c:4112
+#: ../glib/gkeyfile.c:4111
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "El archivo de claves contiene la secuencia de escape inválida «%s»"
 
-#: ../glib/gkeyfile.c:4254
+#: ../glib/gkeyfile.c:4253
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "El valor «%s» no puede interpretarse como un número."
 
-#: ../glib/gkeyfile.c:4268
+#: ../glib/gkeyfile.c:4267
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "El valor entero «%s» está fuera de rango"
 
-#: ../glib/gkeyfile.c:4301
+#: ../glib/gkeyfile.c:4300
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:4325
+#: ../glib/gkeyfile.c:4324
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
