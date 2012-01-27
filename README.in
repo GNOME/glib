@@ -71,7 +71,7 @@ Notes about GLib 2.32
 
   or
 
-    G_MESSAGE_DEBUG=all
+    G_MESSAGES_DEBUG=all
 
 Notes about GLib 2.30
 =====================
