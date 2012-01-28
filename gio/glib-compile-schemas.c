@@ -36,6 +36,22 @@
 #include "gvdb/gvdb-builder.h"
 #include "strinfo.c"
 
+static void
+strip_string (GString *string)
+{
+  gint i;
+
+  for (i = 0; g_ascii_isspace (string->str[i]); i++);
+  g_string_erase (string, 0, i);
+
+  if (string->len > 0)
+    {
+      /* len > 0, so there must be at least one non-whitespace character */
+      for (i = string->len - 1; g_ascii_isspace (string->str[i]); i--);
+      g_string_truncate (string, i + 1);
+    }
+}
+
 /* Handling of <enum> {{{1 */
 typedef struct
 {
@@ -629,6 +645,23 @@ key_state_serialise (KeyState *state)
           /* translation */
           if (state->l10n)
             {
+              /* We are going to store the untranslated default for
+               * runtime translation according to the current locale.
+               * We need to strip leading and trailing whitespace from
+               * the string so that it's exactly the same as the one
+               * that ended up in the .po file for translation.
+               *
+               * We want to do this so that
+               *
+               *   <default l10n='messages'>
+               *     ['a', 'b', 'c']
+               *   </default>
+               *
+               * ends up in the .po file like "['a', 'b', 'c']",
+               * omitting the extra whitespace at the start and end.
+               */
+              strip_string (state->unparsed_default_value);
+
               if (state->l10n_context)
                 {
                   gint len;
@@ -1498,21 +1531,38 @@ text (GMarkupParseContext  *context,
       GError              **error)
 {
   ParseState *state = user_data;
-  gsize i;
 
-  for (i = 0; i < text_len; i++)
-    if (!g_ascii_isspace (text[i]))
-      {
-        if (state->string)
-          g_string_append_len (state->string, text, text_len);
+  if (state->string)
+    {
+      /* we are expecting a string, so store the text data.
+       *
+       * we store the data verbatim here and deal with whitespace
+       * later on.  there are two reasons for that:
+       *
+       *  1) whitespace is handled differently depending on the tag
+       *     type.
+       *
+       *  2) we could do leading whitespace removal by refusing to
+       *     insert it into state->string if it's at the start, but for
+       *     trailing whitespace, we have no idea if there is another
+       *     text() call coming or not.
+       */
+      g_string_append_len (state->string, text, text_len);
+    }
+  else
+    {
+      /* string is not expected: accept (and ignore) pure whitespace */
+      gsize i;
 
-        else
-          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("text may not appear inside <%s>"),
-                       g_markup_parse_context_get_element (context));
-
-        break;
-      }
+      for (i = 0; i < text_len; i++)
+        if (!g_ascii_isspace (text[i]))
+          {
+            g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                         _("text may not appear inside <%s>"),
+                         g_markup_parse_context_get_element (context));
+            break;
+          }
+    }
 }
 
 /* Write to GVDB {{{1 */
