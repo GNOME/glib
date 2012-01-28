@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-24 10:47+0100\n"
-"PO-Revision-Date: 2012-01-24 10:53+0100\n"
+"POT-Creation-Date: 2012-01-28 15:42+0100\n"
+"PO-Revision-Date: 2012-01-28 15:42+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -624,17 +624,17 @@ msgstr "Feil retur med tom kropp"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Kan ikke laste /var/lib/dbus/machine-id eller /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1529
+#: ../gio/gdbusproxy.c:1530
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Feil ved kall til StartServiceByName for %s: "
 
-#: ../gio/gdbusproxy.c:1550
+#: ../gio/gdbusproxy.c:1551
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Uventet svar %d fra metoden StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2631 ../gio/gdbusproxy.c:2765
+#: ../gio/gdbusproxy.c:2632 ../gio/gdbusproxy.c:2766
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1173,74 +1173,94 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
-#: ../gio/glib-compile-resources.c:126 ../gio/glib-compile-schemas.c:1416
-#: ../gio/gmenumarkup.c:299
+#: ../gio/glib-compile-resources.c:138 ../gio/glib-compile-schemas.c:1449
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> er ikke tillatt inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:130 ../gio/glib-compile-schemas.c:1420
-#: ../gio/gmenumarkup.c:304
+#: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> er ikke tillatt på toppnivå"
 
-#: ../gio/glib-compile-resources.c:196
+#: ../gio/glib-compile-resources.c:209
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Filen %s finnes flere ganger i ressursen"
 
-#: ../gio/glib-compile-resources.c:211
+#: ../gio/glib-compile-resources.c:240
+#, c-format
+msgid "Unknown proprocessing options \"%s\""
+msgstr "Ukjente flagg for preprosessering «%s»"
+
+#: ../gio/glib-compile-resources.c:258
+#, c-format
+msgid "Failed to create temp file: %s"
+msgstr "Klarte ikke å opprette midlertidig fil: %s"
+
+#: ../gio/glib-compile-resources.c:289
+msgid "Error processing input file with xmllint"
+msgstr "Feil ved prosessering av inndatafil med xmllint"
+
+#: ../gio/glib-compile-resources.c:302
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Feil ved lesing av fil %s: %s"
 
-#: ../gio/glib-compile-resources.c:231
+#: ../gio/glib-compile-resources.c:322
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Feil ved komprimering av fil %s"
 
-#: ../gio/glib-compile-resources.c:278 ../gio/glib-compile-schemas.c:1511
-#: ../gio/gmenumarkup.c:384
+#: ../gio/glib-compile-resources.c:379 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:393
+#: ../gio/glib-compile-resources.c:502
 msgid "name of the output file"
 msgstr "navn på utdatafil"
 
-#: ../gio/glib-compile-resources.c:393 ../gio/glib-compile-resources.c:424
+#: ../gio/glib-compile-resources.c:502 ../gio/glib-compile-resources.c:535
 msgid "FILE"
 msgstr "FIL"
 
-#: ../gio/glib-compile-resources.c:394
+#: ../gio/glib-compile-resources.c:503
 msgid ""
 "The directory where files are to be read from (default to current directory)"
 msgstr "Katalog filene skal leses fra (aktiv katalog er forvalgt)"
 
-#: ../gio/glib-compile-resources.c:394 ../gio/glib-compile-schemas.c:1939
-#: ../gio/glib-compile-schemas.c:1969
+#: ../gio/glib-compile-resources.c:503 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:395
+#: ../gio/glib-compile-resources.c:504
+msgid ""
+"Generate output in the format selected for by the target filename extension"
+msgstr "Lag utdata i formatet som er valgt for målets filtype"
+
+#: ../gio/glib-compile-resources.c:505
 msgid "Generate source header"
 msgstr "Lag hode for kildekode"
 
-#: ../gio/glib-compile-resources.c:396
+#: ../gio/glib-compile-resources.c:506
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Lag kildekode som skal brukes til å lenke inn ressursfilen i din kode"
 
-#: ../gio/glib-compile-resources.c:397
+#: ../gio/glib-compile-resources.c:507
+msgid "Generate dependency list"
+msgstr "Lag listet med avhengigheter"
+
+#: ../gio/glib-compile-resources.c:508
 msgid "Don't automatically create and register resource"
 msgstr "Ikke lag og registrer ressursen automatisk"
 
-#: ../gio/glib-compile-resources.c:398
+#: ../gio/glib-compile-resources.c:509
 msgid "C identifier name used for the generated source code"
 msgstr "Navn på C-identifikator som brukes for generert kildekode"
 
-#: ../gio/glib-compile-resources.c:427
+#: ../gio/glib-compile-resources.c:538
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1250,21 +1270,21 @@ msgstr ""
 "Ressursspesifikasjonsfiler har type .gresource.xml,\n"
 "og ressufsfilen har etternavn .gresource."
 
-#: ../gio/glib-compile-resources.c:443
+#: ../gio/glib-compile-resources.c:554
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du må kun oppgi ett filnavn\n"
 
-#: ../gio/glib-compile-schemas.c:741
+#: ../gio/glib-compile-schemas.c:774
 msgid "empty names are not permitted"
 msgstr "tomme navn er ikke tillatt"
 
-#: ../gio/glib-compile-schemas.c:751
+#: ../gio/glib-compile-schemas.c:784
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "ugyldig navn «%s»: navn må starte med liten bokstav"
 
-#: ../gio/glib-compile-schemas.c:763
+#: ../gio/glib-compile-schemas.c:796
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -1273,37 +1293,37 @@ msgstr ""
 "ugyldig navn «%s»: ugyldig tegn «%c»; kun små bokstaver, tall og bindestrek "
 "(«-») er tillatt."
 
-#: ../gio/glib-compile-schemas.c:772
+#: ../gio/glib-compile-schemas.c:805
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr ""
 "ugyldig navn «%s»: to etterfølgende bindestreker («--») er ikke tillatt."
 
-#: ../gio/glib-compile-schemas.c:781
+#: ../gio/glib-compile-schemas.c:814
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "ugyldig navn «%s»: siste tegn kan ikke være en bindestrek («-»)."
 
-#: ../gio/glib-compile-schemas.c:789
+#: ../gio/glib-compile-schemas.c:822
 #, c-format
 msgid "invalid name '%s': maximum length is 1024"
 msgstr "ugyldig navn «%s»: maksimal lengde er 1024"
 
-#: ../gio/glib-compile-schemas.c:858
+#: ../gio/glib-compile-schemas.c:891
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> allerede oppgitt"
 
-#: ../gio/glib-compile-schemas.c:884
+#: ../gio/glib-compile-schemas.c:917
 msgid "cannot add keys to a 'list-of' schema"
 msgstr "kan ikke legge til nøkler i et «list-of»-schema"
 
-#: ../gio/glib-compile-schemas.c:895
+#: ../gio/glib-compile-schemas.c:928
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> allerede oppgitt"
 
-#: ../gio/glib-compile-schemas.c:913
+#: ../gio/glib-compile-schemas.c:946
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -1312,7 +1332,7 @@ msgstr ""
 "<key name='%s'> overskygger <key name='%s'> i <schema id='%s'>; bruk "
 "<override> for å endre verdien"
 
-#: ../gio/glib-compile-schemas.c:924
+#: ../gio/glib-compile-schemas.c:957
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -1321,56 +1341,56 @@ msgstr ""
 "eksakt en av 'type', 'enum' eller 'flags' må oppgis som en attributt for "
 "<key>"
 
-#: ../gio/glib-compile-schemas.c:943
+#: ../gio/glib-compile-schemas.c:976
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'>ikke definert ennå."
 
-#: ../gio/glib-compile-schemas.c:958
+#: ../gio/glib-compile-schemas.c:991
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "ugyldig GVariant-typestreng «%s»"
 
-#: ../gio/glib-compile-schemas.c:988
+#: ../gio/glib-compile-schemas.c:1021
 msgid "<override> given but schema isn't extending anything"
 msgstr "<override> ble gitt men schema utvider ingenting"
 
-#: ../gio/glib-compile-schemas.c:1001
+#: ../gio/glib-compile-schemas.c:1034
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "ingen <key name='%s'> å overstyre"
 
-#: ../gio/glib-compile-schemas.c:1009
+#: ../gio/glib-compile-schemas.c:1042
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> allerede oppgitt"
 
-#: ../gio/glib-compile-schemas.c:1080
+#: ../gio/glib-compile-schemas.c:1113
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> allerede oppgitt"
 
-#: ../gio/glib-compile-schemas.c:1092
+#: ../gio/glib-compile-schemas.c:1125
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> utvider et ikke-eksisterende schema '%s'"
 
-#: ../gio/glib-compile-schemas.c:1108
+#: ../gio/glib-compile-schemas.c:1141
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> er en liste med ikke-eksisterende schema «%s»"
 
-#: ../gio/glib-compile-schemas.c:1116
+#: ../gio/glib-compile-schemas.c:1149
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Kan ikke være en liste av et schema med en sti"
 
-#: ../gio/glib-compile-schemas.c:1126
+#: ../gio/glib-compile-schemas.c:1159
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Kan ikke utvide et schema med en sti"
 
-#: ../gio/glib-compile-schemas.c:1136
+#: ../gio/glib-compile-schemas.c:1169
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
@@ -1378,7 +1398,7 @@ msgstr ""
 "<schema id='%s'> er en liste som utvider <schema id='%s'> som ikke er en "
 "liste"
 
-#: ../gio/glib-compile-schemas.c:1146
+#: ../gio/glib-compile-schemas.c:1179
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -1387,56 +1407,56 @@ msgstr ""
 "<schema id='%s' list-of='%s'> utvider <schema id='%s' list-of='%s'> men '%s' "
 "utvider ikke '%s'"
 
-#: ../gio/glib-compile-schemas.c:1163
+#: ../gio/glib-compile-schemas.c:1196
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "hvis en sti oppgis må denne begynne med «slash»"
 
-#: ../gio/glib-compile-schemas.c:1170
+#: ../gio/glib-compile-schemas.c:1203
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "stien for en liste må slutte med «:/»"
 
-#: ../gio/glib-compile-schemas.c:1196
+#: ../gio/glib-compile-schemas.c:1229
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id=«%s»> er allerede spesifisert"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1697 ../gio/glib-compile-schemas.c:1768
-#: ../gio/glib-compile-schemas.c:1844
+#: ../gio/glib-compile-schemas.c:1747 ../gio/glib-compile-schemas.c:1818
+#: ../gio/glib-compile-schemas.c:1894
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict ble oppgitt; avslutter.\n"
 
-#: ../gio/glib-compile-schemas.c:1705
+#: ../gio/glib-compile-schemas.c:1755
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Hele filen ble ignorert.\n"
 
-#: ../gio/glib-compile-schemas.c:1764
+#: ../gio/glib-compile-schemas.c:1814
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Ignorerer denne filen.\n"
 
-#: ../gio/glib-compile-schemas.c:1804
+#: ../gio/glib-compile-schemas.c:1854
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr "Ingen nøkkel «%s» i skjema «%s» som oppgitt i overstyringsfil «%s»"
 
-#: ../gio/glib-compile-schemas.c:1810 ../gio/glib-compile-schemas.c:1868
-#: ../gio/glib-compile-schemas.c:1896
+#: ../gio/glib-compile-schemas.c:1860 ../gio/glib-compile-schemas.c:1918
+#: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; ignorerer overstyring for denne nøkkelen.\n"
 
-#: ../gio/glib-compile-schemas.c:1814 ../gio/glib-compile-schemas.c:1872
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1864 ../gio/glib-compile-schemas.c:1922
+#: ../gio/glib-compile-schemas.c:1950
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " og --strict ble oppgitt; avslutter.\n"
 
-#: ../gio/glib-compile-schemas.c:1830
+#: ../gio/glib-compile-schemas.c:1880
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
@@ -1445,12 +1465,12 @@ msgstr ""
 "feil ved lesing av nøkkel «%s» i skjema «%s» som oppgitt i overstyringsfil "
 "«%s»: %s.  "
 
-#: ../gio/glib-compile-schemas.c:1840
+#: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Ignorerer overstyring for denne nøkkelen.\n"
 
-#: ../gio/glib-compile-schemas.c:1858
+#: ../gio/glib-compile-schemas.c:1908
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -1459,7 +1479,7 @@ msgstr ""
 "overstyring for nøkkel «%s» i skjema «%s» i overstyringsfil «%s» er utenfor "
 "området som er oppgitt i skjema"
 
-#: ../gio/glib-compile-schemas.c:1886
+#: ../gio/glib-compile-schemas.c:1936
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -1468,23 +1488,23 @@ msgstr ""
 "overstyring for nøkkel «%s» i skjema «%s» i overstyringsfil «%s» er ikke i "
 "listen med gyldige valg"
 
-#: ../gio/glib-compile-schemas.c:1939
+#: ../gio/glib-compile-schemas.c:1989
 msgid "where to store the gschemas.compiled file"
 msgstr "gschemas.compiled filen lagres her"
 
-#: ../gio/glib-compile-schemas.c:1940
+#: ../gio/glib-compile-schemas.c:1990
 msgid "Abort on any errors in schemas"
 msgstr "Avbryt ved feil i schema"
 
-#: ../gio/glib-compile-schemas.c:1941
+#: ../gio/glib-compile-schemas.c:1991
 msgid "Do not write the gschema.compiled file"
 msgstr "Ikke skriv filen gschema.compiled"
 
-#: ../gio/glib-compile-schemas.c:1942
+#: ../gio/glib-compile-schemas.c:1992
 msgid "Do not enforce key name restrictions"
 msgstr "Ikke sett restriksjoner på navn på nøkler"
 
-#: ../gio/glib-compile-schemas.c:1972
+#: ../gio/glib-compile-schemas.c:2022
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -1494,22 +1514,22 @@ msgstr ""
 "Skjemafiler må ha type .gschema.xml, og mellomlagerfilen\n"
 "kalles gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1988
+#: ../gio/glib-compile-schemas.c:2038
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Du må kun oppgi navn på én katalog\n"
 
-#: ../gio/glib-compile-schemas.c:2027
+#: ../gio/glib-compile-schemas.c:2077
 #, c-format
 msgid "No schema files found: "
 msgstr "Ingen schema-filer funnet: "
 
-#: ../gio/glib-compile-schemas.c:2030
+#: ../gio/glib-compile-schemas.c:2080
 #, c-format
 msgid "doing nothing.\n"
 msgstr "gjør ingenting.\n"
 
-#: ../gio/glib-compile-schemas.c:2033
+#: ../gio/glib-compile-schemas.c:2083
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "fjernet eksisterende utdatafil.\n"
@@ -1945,15 +1965,15 @@ msgstr "Midlertidig ute av stand til å slå opp «%s»"
 msgid "Error resolving '%s'"
 msgstr "Feil ved oppslag av «%s»"
 
-#: ../gio/gresource.c:267 ../gio/gresource.c:508 ../gio/gresource.c:525
-#: ../gio/gresource.c:634 ../gio/gresource.c:701 ../gio/gresource.c:760
-#: ../gio/gresource.c:838 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:275 ../gio/gresource.c:516 ../gio/gresource.c:533
+#: ../gio/gresource.c:642 ../gio/gresource.c:709 ../gio/gresource.c:768
+#: ../gio/gresource.c:846 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Ressurs ved «%s» eksisterer ikke"
 
-#: ../gio/gresource.c:427
+#: ../gio/gresource.c:435
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Ressursen ved «%s» kunne ikke dekomprimeres"
@@ -1967,15 +1987,15 @@ msgstr "Ressurs ved «%s» er ikke en katalog"
 msgid "Input stream doesn't implement seek"
 msgstr "Inndatastrøm implementerer ikke søk"
 
-#: ../gio/gresource-tool.c:469 ../gio/gsettings-tool.c:528
+#: ../gio/gresource-tool.c:470 ../gio/gsettings-tool.c:528
 msgid "Print help"
 msgstr "Skriv ut hjelp"
 
-#: ../gio/gresource-tool.c:475
+#: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Vis seksjoner som inneholder ressurser i en elf FIL"
 
-#: ../gio/gresource-tool.c:481
+#: ../gio/gresource-tool.c:482
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -1985,12 +2005,12 @@ msgstr ""
 "Hvis SEKSJON oppgis skal kun ressurser i denne seksjonen vises\n"
 "Hvis STI oppgis skal kun relevante ressurser vises"
 
-#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:502
+#: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
+#: ../gio/gresource-tool.c:503
 msgid "SECTION"
 msgstr "SEKSJON"
 
-#: ../gio/gresource-tool.c:490
+#: ../gio/gresource-tool.c:491
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2002,11 +2022,11 @@ msgstr ""
 "Hvis STI oppgis vises kun relevante ressurser\n"
 "Detaljer inkluderer seksjon, størrelse og komprimering"
 
-#: ../gio/gresource-tool.c:500
+#: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Hent ut en ressursfil til stdout"
 
-#: ../gio/gresource-tool.c:507 ../gio/gsettings-tool.c:608
+#: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:608
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2015,7 +2035,7 @@ msgstr ""
 "Ukjent kommando «%s»\n"
 "\n"
 
-#: ../gio/gresource-tool.c:515
+#: ../gio/gresource-tool.c:516
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS...]\n"
@@ -2043,7 +2063,7 @@ msgstr ""
 "Bruk «gresource help KOMMANDO» for å få detaljert hjelp.\n"
 "\n"
 
-#: ../gio/gresource-tool.c:529
+#: ../gio/gresource-tool.c:530
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2058,23 +2078,23 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:532 ../gio/gsettings-tool.c:641
+#: ../gio/gresource-tool.c:533 ../gio/gsettings-tool.c:641
 msgid "Arguments:\n"
 msgstr "Argumenter:\n"
 
-#: ../gio/gresource-tool.c:536
+#: ../gio/gresource-tool.c:537
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SEKSJON  Et valgfritt navn på en elf seksjon\n"
 
-#: ../gio/gresource-tool.c:540 ../gio/gsettings-tool.c:648
+#: ../gio/gresource-tool.c:541 ../gio/gsettings-tool.c:648
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMMANDO Valgfri kommando som skal forklares\n"
 
-#: ../gio/gresource-tool.c:546
+#: ../gio/gresource-tool.c:547
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  FIL      En elf-fil. Binærfil eller delt bibliotek\n"
 
-#: ../gio/gresource-tool.c:549
+#: ../gio/gresource-tool.c:550
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -2082,11 +2102,11 @@ msgstr ""
 "  FIL       En elf-fil - binær eller delt bibliotek\n"
 "            eller en kompilert ressursfil\n"
 
-#: ../gio/gresource-tool.c:555
+#: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  STI      En valgfri ressurssti - kan være ufullstendig\n"
 
-#: ../gio/gresource-tool.c:558
+#: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
 msgstr "  STI      En ressurssti\n"
 
@@ -2317,7 +2337,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3433 ../gio/gsocket.c:3477
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3449 ../gio/gsocket.c:3493
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -2355,70 +2375,74 @@ msgstr "kunne ikke lytte: %s"
 msgid "Error binding to address: %s"
 msgstr "Feil ved binding til adresse: %s"
 
-#: ../gio/gsocket.c:1968
+#: ../gio/gsocket.c:1943 ../gio/gsocket.c:1979
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Feil ved forsøk på å bli med i multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:1969
+#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Feil ved forsøk på å forlate multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:2148
+#: ../gio/gsocket.c:1945
+msgid "No support for source-specific multicast"
+msgstr "Ingen støtte for kildespesifikk multicast"
+
+#: ../gio/gsocket.c:2164
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Feil ved godkjenning av tilkobling: %s"
 
-#: ../gio/gsocket.c:2269
+#: ../gio/gsocket.c:2285
 msgid "Connection in progress"
 msgstr "Tilkobling pågår"
 
-#: ../gio/gsocket.c:2321 ../gio/gsocket.c:4219
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4235
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
 
-#: ../gio/gsocket.c:2491
+#: ../gio/gsocket.c:2507
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Feil ved mottak av data: %s"
 
-#: ../gio/gsocket.c:2669
+#: ../gio/gsocket.c:2685
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Feil ved sending av data: %s"
 
-#: ../gio/gsocket.c:2783
+#: ../gio/gsocket.c:2799
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kan ikke stenge ned plugg: %s"
 
-#: ../gio/gsocket.c:2862
+#: ../gio/gsocket.c:2878
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3426
+#: ../gio/gsocket.c:3442
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3693 ../gio/gsocket.c:3774
+#: ../gio/gsocket.c:3709 ../gio/gsocket.c:3790
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3718
+#: ../gio/gsocket.c:3734
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:3998 ../gio/gsocket.c:4134
+#: ../gio/gsocket.c:4014 ../gio/gsocket.c:4150
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4238
+#: ../gio/gsocket.c:4254
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -3198,15 +3222,15 @@ msgstr "Kanalen terminerer i et oppdelt tegn"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke utføre rå avlesing i g_io_channel_read_to_end"
 
-#: ../glib/gkeyfile.c:730
+#: ../glib/gkeyfile.c:726
 msgid "Valid key file could not be found in search dirs"
 msgstr "Gyldig nøkkelfil ble ikke funnet i søkemapper"
 
-#: ../glib/gkeyfile.c:765
+#: ../glib/gkeyfile.c:762
 msgid "Not a regular file"
 msgstr "Ikke en vanlig fil"
 
-#: ../glib/gkeyfile.c:1167
+#: ../glib/gkeyfile.c:1162
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -3214,43 +3238,43 @@ msgstr ""
 "Nøkkelfil inneholder linjen «%s» som ikke er et par med nøkkelverdier, "
 "gruppe eller kommentar"
 
-#: ../glib/gkeyfile.c:1227
+#: ../glib/gkeyfile.c:1222
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Ugyldig navn på gruppe: %s"
 
-#: ../glib/gkeyfile.c:1249
+#: ../glib/gkeyfile.c:1244
 msgid "Key file does not start with a group"
 msgstr "Nøkkelfil starter ikke med en gruppe"
 
-#: ../glib/gkeyfile.c:1275
+#: ../glib/gkeyfile.c:1270
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Ugyldig navn på nøkkel: %s"
 
-#: ../glib/gkeyfile.c:1302
+#: ../glib/gkeyfile.c:1297
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Nøkkelfil inneholder ustøttet tegnkoding «%s»"
 
-#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1710 ../glib/gkeyfile.c:3088
-#: ../glib/gkeyfile.c:3154 ../glib/gkeyfile.c:3283 ../glib/gkeyfile.c:3416
-#: ../glib/gkeyfile.c:3558 ../glib/gkeyfile.c:3796 ../glib/gkeyfile.c:3865
+#: ../glib/gkeyfile.c:1541 ../glib/gkeyfile.c:1703 ../glib/gkeyfile.c:3081
+#: ../glib/gkeyfile.c:3147 ../glib/gkeyfile.c:3273 ../glib/gkeyfile.c:3406
+#: ../glib/gkeyfile.c:3548 ../glib/gkeyfile.c:3778 ../glib/gkeyfile.c:3846
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Nøkkelfil har ikke gruppe «%s»"
 
-#: ../glib/gkeyfile.c:1722
+#: ../glib/gkeyfile.c:1715
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Nøkkelfil har ikke nøkkelen «%s»"
 
-#: ../glib/gkeyfile.c:1829 ../glib/gkeyfile.c:1945
+#: ../glib/gkeyfile.c:1822 ../glib/gkeyfile.c:1938
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Nøkkelfilen inneholder nøkkelen «%s» med verdi «%s» som ikke er UTF-8"
 
-#: ../glib/gkeyfile.c:1849 ../glib/gkeyfile.c:1965 ../glib/gkeyfile.c:2334
+#: ../glib/gkeyfile.c:1842 ../glib/gkeyfile.c:1958 ../glib/gkeyfile.c:2327
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -3258,7 +3282,7 @@ msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» som har en verdi som ikke kan bli "
 "tolket."
 
-#: ../glib/gkeyfile.c:2551 ../glib/gkeyfile.c:2917
+#: ../glib/gkeyfile.c:2544 ../glib/gkeyfile.c:2910
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3267,41 +3291,41 @@ msgstr ""
 "Nøkkelfilen inneholder nøkkelen «%s» i gruppen «%s» som har en verdi som "
 "ikke kan bli tolket."
 
-#: ../glib/gkeyfile.c:2629 ../glib/gkeyfile.c:2705
+#: ../glib/gkeyfile.c:2622 ../glib/gkeyfile.c:2698
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "Nøkkel «%s» i gruppe «%s» har en verdi «%s» hvor %s var forventet"
 
-#: ../glib/gkeyfile.c:3103 ../glib/gkeyfile.c:3298 ../glib/gkeyfile.c:3876
+#: ../glib/gkeyfile.c:3096 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3857
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Nøkkelfilen har ikke nøkkelen i «%s» i gruppen «%s»"
 
-#: ../glib/gkeyfile.c:4110
+#: ../glib/gkeyfile.c:4089
 msgid "Key file contains escape character at end of line"
 msgstr "Nøkkelfilen inneholder skiftetegn ved linjeslutt"
 
-#: ../glib/gkeyfile.c:4132
+#: ../glib/gkeyfile.c:4111
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Nøkkelfil inneholder ugyldig skiftesekvens «%s»"
 
-#: ../glib/gkeyfile.c:4274
+#: ../glib/gkeyfile.c:4253
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vedien «%s» kan ikke bli tolket som et tall."
 
-#: ../glib/gkeyfile.c:4288
+#: ../glib/gkeyfile.c:4267
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Heltallsverdi «%s» er utenfor gyldig område"
 
-#: ../glib/gkeyfile.c:4321
+#: ../glib/gkeyfile.c:4300
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Verdi «%s» kan ikke tolkes som et flyttall."
 
-#: ../glib/gkeyfile.c:4345
+#: ../glib/gkeyfile.c:4324
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Verdi «%s» kan ikke tolkes som en bolsk verdi."
