@@ -321,7 +321,7 @@ g_rand_set_seed (GRand* rand, guint32 seed)
       /* [KNUTH 1981, The Art of Computer Programming */
       /*    Vol. 2 (2nd Ed.), pp102]                  */
       
-      if (seed == 0) /* This would make the PRNG procude only zeros */
+      if (seed == 0) /* This would make the PRNG produce only zeros */
 	seed = 0x6b842128; /* Just set it to another number */
       
       rand->mt[0]= seed;

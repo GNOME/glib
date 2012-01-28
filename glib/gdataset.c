@@ -203,7 +203,7 @@ static inline GQuark	g_quark_new			(gchar  	*string);
 G_LOCK_DEFINE_STATIC (g_dataset_global);
 static GHashTable   *g_dataset_location_ht = NULL;
 static GDataset     *g_dataset_cached = NULL; /* should this be
-						 threadspecific? */
+						 thread specific? */
 G_LOCK_DEFINE_STATIC (g_quark_global);
 static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
@@ -838,7 +838,7 @@ g_datalist_id_get_data (GData	 **datalist,
  * @key: the string identifying a data element.
  * @Returns: the data element, or %NULL if it is not found.
  *
- * Gets a data element, using its string identifer. This is slower than
+ * Gets a data element, using its string identifier. This is slower than
  * g_datalist_id_get_data() because it compares strings.
  **/
 gpointer

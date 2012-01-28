@@ -1879,7 +1879,7 @@ g_date_get_sunday_weeks_in_year (GDateYear year)
  * @lhs: first date to compare
  * @rhs: second date to compare
  *
- * qsort()-style comparsion function for dates.
+ * qsort()-style comparison function for dates.
  * Both dates must be valid.
  *
  * Returns: 0 for equal, less than zero if @lhs is less than @rhs,

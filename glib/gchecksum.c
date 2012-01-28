@@ -564,7 +564,7 @@ sha1_transform (guint32  buf[5],
   D = buf[3];
   E = buf[4];
 
-  /* Heavy mangling, in 4 sub-rounds of 20 interations each. */
+  /* Heavy mangling, in 4 sub-rounds of 20 iterations each. */
   subRound (A, B, C, D, E, f1, K1, in[0]);
   subRound (E, A, B, C, D, f1, K1, in[1]);
   subRound (D, E, A, B, C, f1, K1, in[2]);

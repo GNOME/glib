@@ -1834,7 +1834,7 @@ find_file_in_data_dirs (const gchar   *file,
  * @full_path.  If the file could not be loaded then an %error is
  * set to either a #GFileError or #GBookmarkFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
  *
  * Since: 2.12
  */

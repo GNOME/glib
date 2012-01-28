@@ -834,7 +834,7 @@ g_cond_broadcast (GCond *cond)
  * Notice that the end time is calculated once, before entering the
  * loop and reused.  This is the motivation behind the use of absolute
  * time on this API -- if a relative time of 5 seconds were passed
- * directly to the call and a spurious wakeup occured, the program would
+ * directly to the call and a spurious wakeup occurred, the program would
  * have to start over waiting again (which would lead to a total wait
  * time of more than 5 seconds).
  *

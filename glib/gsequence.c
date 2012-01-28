@@ -521,7 +521,7 @@ g_sequence_insert_before (GSequenceIter *iter,
  * Removes the item pointed to by @iter. It is an error to pass the
  * end iterator to this function.
  *
- * If the sequnce has a data destroy function associated with it, this
+ * If the sequence has a data destroy function associated with it, this
  * function is called on the data for the removed item.
  *
  * Since: 2.14

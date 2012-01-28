@@ -410,7 +410,7 @@ g_slice_init_nomessage (void)
    * fit less than 8 times (see [4]) into 4KB pages.
    * we allow very small page sizes here, to reduce wastage in
    * threads if only small allocations are required (this does
-   * bear the risk of incresing allocation times and fragmentation
+   * bear the risk of increasing allocation times and fragmentation
    * though).
    */
   allocator->min_page_size = MAX (allocator->min_page_size, 4096);
@@ -1509,7 +1509,7 @@ smc_notify_free (void   *pointer,
 /* --- g-slice memory checker tree implementation --- */
 #define SMC_TRUNK_COUNT     (4093 /* 16381 */)          /* prime, to distribute trunk collisions (big, allocated just once) */
 #define SMC_BRANCH_COUNT    (511)                       /* prime, to distribute branch collisions */
-#define SMC_TRUNK_EXTENT    (SMC_BRANCH_COUNT * 2039)   /* key adress space per trunk, should distribute uniformly across BRANCH_COUNT */
+#define SMC_TRUNK_EXTENT    (SMC_BRANCH_COUNT * 2039)   /* key address space per trunk, should distribute uniformly across BRANCH_COUNT */
 #define SMC_TRUNK_HASH(k)   ((k / SMC_TRUNK_EXTENT) % SMC_TRUNK_COUNT)  /* generate new trunk hash per megabyte (roughly) */
 #define SMC_BRANCH_HASH(k)  (k % SMC_BRANCH_COUNT)
 

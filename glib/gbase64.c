@@ -403,7 +403,7 @@ g_base64_decode (const gchar *text,
   input_length = strlen (text);
 
   /* We can use a smaller limit here, since we know the saved state is 0,
-     +1 used to avoid calling g_malloc0(0), and hence retruning NULL */
+     +1 used to avoid calling g_malloc0(0), and hence returning NULL */
   ret = g_malloc0 ((input_length / 4) * 3 + 1);
 
   *out_len = g_base64_decode_step (text, input_length, ret, &state, &save);

@@ -144,7 +144,7 @@ glib_gettext (const gchar *str)
  * This is an internal function and should only be used by
  * the internals of glib (such as libgio).
  *
- * Returns: the transation of @str to the current locale
+ * Returns: the translation of @str to the current locale
  */
 const gchar *
 glib_pgettext (const gchar *msgctxtid,

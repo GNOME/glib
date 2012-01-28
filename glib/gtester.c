@@ -722,7 +722,7 @@ static int
 main_selftest (int    argc,
                char **argv)
 {
-  /* gtester main() for --gtester-selftest invokations */
+  /* gtester main() for --gtester-selftest invocations */
   g_test_init (&argc, &argv, NULL);
   g_test_add ("/gtester/fixture-test", guint, NULL, fixture_setup, fixture_test, fixture_teardown);
   return g_test_run();
