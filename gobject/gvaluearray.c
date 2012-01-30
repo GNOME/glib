@@ -49,7 +49,7 @@
  *
  * |[
  *   GValueArray *array = g_value_array_new (10);
- * |]
+ * ]|
  *
  * can be replaced by:
  *
