@@ -25,7 +25,6 @@ test_fundamentals (void)
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_OBJECT));
   g_assert (G_TYPE_OBJECT == g_object_get_type ());
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_VARIANT));
-  g_assert (G_TYPE_VARIANT == g_variant_get_gtype ());
   g_assert (G_TYPE_IS_DERIVED (G_TYPE_INITIALLY_UNOWNED));
 
   g_assert (g_type_fundamental_next () == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST));
