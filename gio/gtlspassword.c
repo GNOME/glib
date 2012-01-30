@@ -71,7 +71,7 @@ static void
 g_tls_password_init (GTlsPassword *password)
 {
   password->priv = G_TYPE_INSTANCE_GET_PRIVATE (password, G_TYPE_TLS_PASSWORD,
-                                              GTlsPasswordPrivate);
+						GTlsPasswordPrivate);
 }
 
 static const guchar *
@@ -84,10 +84,10 @@ g_tls_password_real_get_value (GTlsPassword  *password,
 }
 
 static void
-g_tls_password_real_set_value (GTlsPassword  *password,
-                               guchar        *value,
-                               gssize         length,
-                               GDestroyNotify destroy)
+g_tls_password_real_set_value (GTlsPassword   *password,
+                               guchar         *value,
+                               gssize          length,
+                               GDestroyNotify  destroy)
 {
   if (password->priv->destroy)
       (password->priv->destroy) (password->priv->value);
@@ -146,10 +146,10 @@ g_tls_password_get_property (GObject    *object,
 }
 
 static void
-g_tls_password_set_property (GObject    *object,
-                             guint       prop_id,
-                             const GValue     *value,
-                             GParamSpec *pspec)
+g_tls_password_set_property (GObject      *object,
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
 {
   GTlsPassword *password = G_TLS_PASSWORD (object);
 
@@ -198,17 +198,29 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
   g_type_class_add_private (klass, sizeof (GTlsPasswordPrivate));
 
   g_object_class_install_property (gobject_class, PROP_FLAGS,
-             g_param_spec_flags ("flags", "Flags", "Flags about the password",
-                                 G_TYPE_TLS_PASSWORD_FLAGS, G_TLS_PASSWORD_NONE,
-                                 G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+				   g_param_spec_flags ("flags",
+						       P_("Flags"),
+						       P_("Flags about the password"),
+						       G_TYPE_TLS_PASSWORD_FLAGS,
+						       G_TLS_PASSWORD_NONE,
+						       G_PARAM_READWRITE |
+						       G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
-             g_param_spec_string ("description", "Description", "Description of what the password is for",
-                                  "", G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+				   g_param_spec_string ("description",
+							P_("Description"),
+							P_("Description of what the password is for"),
+							"",
+							G_PARAM_READWRITE |
+							G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_WARNING,
-             g_param_spec_string ("warning", "Warning", "Warning about the password",
-                                 "", G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+				   g_param_spec_string ("warning",
+							P_("Warning"),
+							P_("Warning about the password"),
+							"",
+							G_PARAM_READWRITE |
+							G_PARAM_STATIC_STRINGS));
 
 }
 
@@ -236,10 +248,13 @@ g_tls_password_new (GTlsPasswordFlags  flags,
  * @password: a #GTlsPassword object
  * @length: (allow-none): location to place the length of the password.
  *
- * Get the password value. If @length is not %NULL then it will be filled
- * in with the length of the password value.
+ * Get the password value. If @length is not %NULL then it will be
+ * filled in with the length of the password value. (Note that the
+ * password value is not nul-terminated, so you can only pass %NULL
+ * for @length in contexts where you know the password will have a
+ * certain fixed length.)
  *
- * Returns: The password value owned by the password object.
+ * Returns: The password value (owned by the password object).
  *
  * Since: 2.30
  */
@@ -260,9 +275,10 @@ g_tls_password_get_value (GTlsPassword  *password,
  * Set the value for this password. The @value will be copied by the password
  * object.
  *
- * Specify the @length, for a non-null-terminated password. Pass -1 as
- * @length if using a null-terminated password, and @length will be calculated
- * automatically.
+ * Specify the @length, for a non-nul-terminated password. Pass -1 as
+ * @length if using a nul-terminated password, and @length will be
+ * calculated automatically. (Note that the terminating nul is not
+ * considered part of the password in this case.)
  *
  * Since: 2.30
  */
@@ -291,18 +307,19 @@ g_tls_password_set_value (GTlsPassword  *password,
  * The @value will be owned by the password object, and later freed using
  * the @destroy function callback.
  *
- * Specify the @length, for a non-null-terminated password. Pass -1 as
- * @length if using a null-terminated password, and @length will be calculated
- * automatically.
+ * Specify the @length, for a non-nul-terminated password. Pass -1 as
+ * @length if using a nul-terminated password, and @length will be
+ * calculated automatically. (Note that the terminating nul is not
+ * considered part of the password in this case.)
  *
  * Virtual: set_value
  * Since: 2.30
  */
 void
-g_tls_password_set_value_full (GTlsPassword  *password,
-                               guchar        *value,
-                               gssize         length,
-                               GDestroyNotify destroy)
+g_tls_password_set_value_full (GTlsPassword   *password,
+                               guchar         *value,
+                               gssize          length,
+                               GDestroyNotify  destroy)
 {
   g_return_if_fail (G_IS_TLS_PASSWORD (password));
   G_TLS_PASSWORD_GET_CLASS (password)->set_value (password, value,
