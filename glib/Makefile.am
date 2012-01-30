@@ -86,6 +86,7 @@ EXTRA_DIST += 			\
 	win_iconv.c		\
 	libglib-gdb.py.in	\
 	docs.c			\
+	gconstructor.h		\
 	$(MIRRORING_TAB_SOURCE)
 
 # These may be in the builddir too
