@@ -1661,7 +1661,6 @@ static GApplication *default_app;
 
 /**
  * g_application_get_default:
- * @returns: (transfer none): the default application for this process, or %NULL
  *
  * Returns the default #GApplication instance for this process.
  *
@@ -1670,6 +1669,8 @@ static GApplication *default_app;
  * this by using g_application_set_default().
  *
  * If there is no default application then %NULL is returned.
+ *
+ * Returns: (transfer none): the default application for this process, or %NULL
  *
  * Since: 2.32
  **/

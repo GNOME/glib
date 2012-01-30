@@ -402,7 +402,7 @@ g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
 }
 
 /**
- * g_inet_address_get_scope_id:
+ * g_inet_socket_address_get_scope_id:
  * @address: a %G_SOCKET_FAMILY_IPV6 #GInetAddress
  *
  * Gets the <literal>sin6_scope_id</literal> field from @address,

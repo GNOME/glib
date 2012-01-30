@@ -35,6 +35,10 @@
  * @title: GNetworkMonitor
  * @short_description: Network status monitor
  * @include: gio/gio.h
+ *
+ * #GNetworkMonitor provides an easy-to-use cross-platform API
+ * for monitoring network connectivity. On Linux, the implementation
+ * is based on the kernels netlink interface.
  */
 
 /**
@@ -158,6 +162,25 @@ g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
   g_object_unref (simple);
 }
 
+/**
+ * g_network_monitor_can_reach_async:
+ * @monitor: a #GNetworkMonitor
+ * @connectable: a #GSocketConnectable
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the
+ *     request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Asynchronously attempts to determine whether or not the host
+ * pointed to by @connectable can be reached, without actually
+ * trying to connect to it.
+ *
+ * For more details, see g_network_monitor_can_reach().
+ *
+ * When the operation is finished, @callback will be called.
+ * You can then call g_network_monitor_can_reach_finish()
+ * to get the result of the operation.
+ */
 void
 g_network_monitor_can_reach_async (GNetworkMonitor     *monitor,
                                    GSocketConnectable  *connectable,
@@ -187,6 +210,17 @@ g_network_monitor_real_can_reach_finish (GNetworkMonitor  *monitor,
     return g_simple_async_result_get_op_res_gboolean (simple);
 }
 
+/**
+ * g_network_monitor_can_reach_finish:
+ * @monitor: a #GNetworkMonitor
+ * @result: a #GAsyncResult
+ * @error: return location for errors, or %NULL
+ *
+ * Finishes an async network connectivity test.
+ * See g_network_monitor_can_reach_async().
+ *
+ * Return value: %TRUE if network is reachable, %FALSE if not.
+ */
 gboolean
 g_network_monitor_can_reach_finish (GNetworkMonitor     *monitor,
                                     GAsyncResult        *result,

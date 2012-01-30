@@ -2948,10 +2948,6 @@ g_dbus_connection_unexport_action_group
 GDBusActionGroup
 g_dbus_action_group_get
 
-<SUBSECTION>
-g_dbus_action_group_activate_action_full
-g_dbus_action_group_change_action_state_full
-
 <SUBSECTION Standard>
 G_TYPE_DBUS_ACTION_GROUP
 G_DBUS_ACTION_GROUP
@@ -3783,7 +3779,6 @@ g_resource_lookup_data
 g_resource_open_stream
 g_resource_enumerate_children
 g_resource_get_info
-g_resource_set_module
 
 <SUBSECTION Global>
 g_resources_register
