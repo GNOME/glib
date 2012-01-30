@@ -823,8 +823,11 @@ _g_io_modules_ensure_extension_points_registered (void)
       
 #ifdef G_OS_UNIX
 #if !GLIB_CHECK_VERSION (3, 0, 0)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
+#pragma GCC diagnostic pop
 #endif
 #endif
       
