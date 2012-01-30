@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef __linux
+#if defined __linux || defined __OpenBSD__
 static void
 test_platform_argv0 (void)
 {
@@ -55,7 +55,7 @@ main (int   argc,
   /* Note - we can't actually use g_test_* because g_test_init mutates
    * g_get_prgname() which is exactly what we wanted to test =/
    */
-#ifdef __linux
+#if defined __linux || defined __OpenBSD__
   g_print ("/option/argv0: ");
   test_platform_argv0 ();
   g_print ("OK\n");
