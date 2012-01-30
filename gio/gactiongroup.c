@@ -86,7 +86,7 @@
  * @get_action_state_hint: the virtual function pointer for g_action_group_get_action_state_hint()
  * @get_action_enabled: the virtual function pointer for g_action_group_get_action_enabled()
  * @get_action_state: the virtual function pointer for g_action_group_get_action_state()
- * @set_action_state: the virtual function pointer for g_action_group_set_action_state()
+ * @change_action_state: the virtual function pointer for g_action_group_change_action_state()
  * @query_action: the virtual function pointer for g_action_group_query_action()
  * @activate_action: the virtual function pointer for g_action_group_activate_action()
  * @change_action_state: the virtual function pointer for g_action_group_change_action_state()

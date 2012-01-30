@@ -1387,7 +1387,7 @@ g_socket_get_broadcast (GSocket *socket)
 /**
  * g_socket_set_broadcast:
  * @socket: a #GSocket.
- * @loopback: whether @socket should allow sending to and receiving
+ * @broadcast: whether @socket should allow sending to and receiving
  *     from broadcast addresses
  *
  * Sets whether @socket should allow sending to and receiving from
