@@ -628,7 +628,7 @@ BUILT_EXTRA_DIST = 		\
 gio-public-headers.txt: Makefile
 	echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
-CLEANFILES = gio-public-headers.txt
+CLEANFILES = gio-public-headers.txt gconstructor_as_data.h
 
 all-local: gio-public-headers.txt
 
@@ -667,7 +667,7 @@ gio_querymodules_LDADD	 = \
 	$(NULL)
 
 gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c$(EXEEXT)
-	$(builddir)/data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > gconstructor_as_data.h
+	$(AM_V_GEN) $(builddir)/data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
