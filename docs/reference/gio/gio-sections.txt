@@ -3770,16 +3770,6 @@ G_MENU_ATTRIBUTE_ITER_GET_CLASS
 </SECTION>
 
 <SECTION>
-<FILE>gmenumarkup</FILE>
-g_menu_markup_parser_end
-g_menu_markup_parser_end_menu
-g_menu_markup_parser_start
-g_menu_markup_parser_start_menu
-g_menu_markup_print_stderr
-g_menu_markup_print_string
-</SECTION>
-
-<SECTION>
 <FILE>gresource</FILE>
 <TITLE>GResource</TITLE>
 GResource
