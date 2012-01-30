@@ -1,4 +1,45 @@
-Overview of changes from GLib 2.31.10 to 2.31.11
+Overview of changes from GLib 2.31.12 to 2.31.14
+================================================
+
+* GResource:
+ - GLib now includes a commandline utility, gresource,
+   to explore resources in ELF files
+ - The resource compiler can now optionally strip
+   ignorable whitespace from XML resources
+ - The resource compiler can now generate build dependencies
+ - The resource compiler will now autoselect output formats
+
+* GApplication:
+ - The menu markup parser API has been dropped, the
+   menu XML support lives in GTK+ now
+
+* GValueArray has been deprecated
+
+* Bugs fixed:
+ 626258 N-ary Trees - 'nodes' can be inserted before and after...
+ 634232 Core Dump / Aborted using g_key_file_to_data
+ 639099 schema compiler chokes on valid schema
+ 667228 Deprecate GValueArray
+ 667243 Add an element clear function to GArray
+ 667929 glib-compile-resources: xml resources doesn't need to...
+ 668250 g_date_time_format() produces a non-UTF8 string
+ 668468 'IP_ADD_SOURCE_MEMBERSHIP' undeclared
+ 668532 resources: add dependency generator to the resource compiler
+ 668539 resources: compiler should autoselect output format...
+ 668561 gresource-tool not internationalized
+ 668572 glib_cv_g_atomic_lock_free config.cache setting not honored...
+ 668650 GRealArray->clear_func should be initialized
+ 668756 GKeyFile: allow loading from empty strings
+ 668857 fix couple of typos in comments
+ 669024 goption: implement platform_get_argv0() for OpenBSD
+
+* Updated translations:
+ Galician
+ Norwegian bokmål
+ Spanish
+ Traditional Chinese
+
+Overview of changes from GLib 2.31.10 to 2.31.12
 ================================================
 
 * GApplication:
