@@ -667,7 +667,7 @@ gio_querymodules_LDADD	 = \
 	$(NULL)
 
 gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c$(EXEEXT)
-	./data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > gconstructor_as_data.h
+	$(builddir)/data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > gconstructor_as_data.h
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
