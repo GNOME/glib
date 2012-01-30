@@ -26,12 +26,19 @@ main (int argc, char **argv)
 {
   char *content;
   int i;
+  GError *error = NULL;
 
   if (argc != 3)
-    return 1;
+    {
+      g_printerr ("Usage: data-to-c <filename> <variable>");
+      return 1;
+    }
 
-  if (!g_file_get_contents (argv[1], &content, NULL, NULL))
-    return 1;
+  if (!g_file_get_contents (argv[1], &content, NULL, &error))
+    {
+      g_printerr ("%s", error->message);
+      return 1;
+    }
 
   g_print ("const char %s[] = \"", argv[2]);
   
