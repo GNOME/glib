@@ -45,6 +45,8 @@
 #include <glib.h>
 #include "gvdb/gvdb-builder.h"
 
+#include "gconstructor_as_data.h"
+
 typedef struct
 {
   char *filename;
@@ -765,6 +767,7 @@ main (int argc, char **argv)
       else
 	{
 	  static_str = "static ";
+	  fprintf (file, "%s", gconstructor_code);
 	  fprintf (file,
 		   "\n"
 		   "#ifdef G_HAS_CONSTRUCTORS\n"

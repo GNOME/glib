@@ -8,6 +8,11 @@ if OS_UNIX
 SUBDIRS += xdgmime
 endif
 
+noinst_PROGRAMS = data-to-c
+
+data_to_c_SOURCES = data-to-c.c
+data_to_c_LDADD = $(top_builddir)/glib/libglib-2.0.la
+
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
 noinst_DATA = gio-2.0.lib
@@ -601,6 +606,7 @@ gioinclude_HEADERS = 		\
 
 # these sources (also mentioned above) are generated.
 BUILT_SOURCES = 		\
+	gconstructor_as_data.h	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
 	$(NULL)
@@ -660,8 +666,12 @@ gio_querymodules_LDADD	 = \
 	libgio-2.0.la					\
 	$(NULL)
 
+gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c$(EXEEXT)
+	./data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > gconstructor_as_data.h
+
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
+	gconstructor_as_data.h \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-builder.h		\
 	gvdb/gvdb-builder.c		\

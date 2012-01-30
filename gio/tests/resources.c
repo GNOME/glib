@@ -19,6 +19,7 @@
  */
 
 #include <gio/gio.h>
+#include "gconstructor.h"
 #include "test_resources2.h"
 
 static void
