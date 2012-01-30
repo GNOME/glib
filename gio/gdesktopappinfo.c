@@ -3378,12 +3378,12 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  *
  * Deprecated: The #GDesktopAppInfoLookup interface is deprecated and unused by gio.
  */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
 						      const char            *uri_scheme)
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   GDesktopAppInfoLookupIface *iface;
 
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO_LOOKUP (lookup), NULL);
@@ -3391,5 +3391,5 @@ g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *loo
   iface = G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE (lookup);
 
   return (* iface->get_default_for_uri_scheme) (lookup, uri_scheme);
-#pragma GCC diagnostic pop
 }
+#pragma GCC diagnostic pop
