@@ -50,7 +50,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * GMenu markup xml, CSS files, icons, etc. These are often shipped as files in <filename>$datadir/appname</filename>, or
  * manually included as literal strings in the code.
  *
- * The #GResource API and the <link linkend="glib-compile-schemas">glib-compile-resources</link> program
+ * The #GResource API and the <link linkend="glib-compile-resources">glib-compile-resources</link> program
  * provide a convenient and efficient alternative to this which has some nice properties. You
  * maintain the files as normal files, so its easy to edit them, but during the build the files
  * are combined into a binary bundle that is linked into the executable. This means that loading
@@ -64,13 +64,13 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Resource files can also be marked to be preprocessed, by setting the value of the
  * <literal>preprocess</literal> attribute to a comma-separated list of preprocessing options.
- * The only option currently supported is 
+ * The only option currently supported is
  * <literal>xml-stripblanks</literal> which will use <literal>xmllint</literal> to strip
  * ignorable whitespace from the xml file. For this to work, the <envar>XMLLINT</envar>
- * environment variable must be set to the full path to the xmllint executable; 
+ * environment variable must be set to the full path to the xmllint executable;
  * otherwise the preprocessing step is skipped.
  *
- * Resource bundles are created by the <link linkend="glib-compile-schemas">glib-compile-resources</link> program
+ * Resource bundles are created by the <link linkend="glib-compile-resources">glib-compile-resources</link> program
  * which takes an xml file that describes the bundle, and a set of files that the xml references. These
  * are combined into a binary resource bundle.
  *
@@ -96,7 +96,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * Note that all resources in the process share the same namespace, so use java-style
  * path prefixes (like in the above example) to avoid conflicts.
  *
- * You can then use <link linkend="glib-compile-schemas">glib-compile-resources</link> to compile the xml to a
+ * You can then use <link linkend="glib-compile-resources">glib-compile-resources</link> to compile the xml to a
  * binary bundle that you can load with g_resource_load(). However, its more common to use the --generate-source and
  * --generate-header arguments to create a source file and header to link directly into your application.
  *
