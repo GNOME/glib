@@ -38,6 +38,8 @@ struct _GResource
   GvdbTable *table;
 };
 
+static void register_lazy_static_resources ();
+
 G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
 
 /**
@@ -541,6 +543,32 @@ g_resource_enumerate_children (GResource *resource,
 static GRWLock resources_lock;
 static GList *registered_resources;
 
+/* This is updated atomically, so we can append to it and check for NULL outside the
+   lock, but all other accesses are done under the write lock */
+static GStaticResource *lazy_register_resources;
+
+static void
+g_resources_register_unlocked (GResource *resource)
+{
+  registered_resources = g_list_prepend (registered_resources,
+					g_resource_ref (resource));
+}
+
+static void
+g_resources_unregister_unlocked (GResource *resource)
+{
+  if (g_list_find (registered_resources, resource) == NULL)
+    {
+      g_warning ("Tried to remove not registred resource");
+    }
+  else
+    {
+      registered_resources = g_list_remove (registered_resources,
+					   resource);
+      g_resource_unref (resource);
+    }
+}
+
 /**
  * g_resources_register:
  * @resource: A #GResource.
@@ -555,10 +583,7 @@ void
 g_resources_register (GResource *resource)
 {
   g_rw_lock_writer_lock (&resources_lock);
-
-  registered_resources = g_list_prepend (registered_resources,
-					g_resource_ref (resource));
-
+  g_resources_register_unlocked (resource);
   g_rw_lock_writer_unlock (&resources_lock);
 }
 
@@ -574,18 +599,7 @@ void
 g_resources_unregister (GResource *resource)
 {
   g_rw_lock_writer_lock (&resources_lock);
-
-  if (g_list_find (registered_resources, resource) == NULL)
-    {
-      g_warning ("Tried to remove not registred resource");
-    }
-  else
-    {
-      registered_resources = g_list_remove (registered_resources,
-					   resource);
-      g_resource_unref (resource);
-    }
-
+  g_resources_unregister_unlocked (resource);
   g_rw_lock_writer_unlock (&resources_lock);
 }
 
@@ -614,6 +628,8 @@ g_resources_open_stream (const char *path,
   GInputStream *res = NULL;
   GList *l;
   GInputStream *stream;
+
+  register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
 
@@ -682,6 +698,8 @@ g_resources_lookup_data (const char *path,
   GList *l;
   GBytes *data;
 
+  register_lazy_static_resources ();
+
   g_rw_lock_reader_lock (&resources_lock);
 
   for (l = registered_resources; l != NULL; l = l->next)
@@ -740,6 +758,8 @@ g_resources_enumerate_children (const char *path,
   GList *l;
   char **children;
   int i;
+
+  register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
 
@@ -819,6 +839,8 @@ g_resources_get_info (const char   *path,
   GList *l;
   gboolean r_res;
 
+  register_lazy_static_resources ();
+
   g_rw_lock_reader_lock (&resources_lock);
 
   for (l = registered_resources; l != NULL; l = l->next)
@@ -849,4 +871,139 @@ g_resources_get_info (const char   *path,
   g_rw_lock_reader_unlock (&resources_lock);
 
   return res;
+}
+
+/* This code is to handle registration of resources very early, from a constructor.
+ * At that point we'd like to do minimal work, to avoid ordering issues. For instance,
+ * we're not allowed to use g_malloc, as the user need to be able to call g_mem_set_vtable
+ * before the first call to g_malloc.
+ *
+ * So, what we do at construction time is that we just register a static structure on
+ * a list of resources that need to be initialized, and then later, when doing any lookups
+ * in the global list of registered resources, or when getting a reference to the
+ * lazily initialized resource we lazily create and register all the GResources on
+ * the lazy list.
+ *
+ * To avoid having to use locks in the constructor, and having to grab the writer lock
+ * when checking the lazy registering list we update lazy_register_resources in
+ * a lock-less fashion (atomic prepend-only, atomic replace with NULL). However, all
+ * operations except:
+ *  * check if there are any resources to lazily initialize
+ *  * Add a static resource to the lazy init list
+ * Do use the full writer lock for protection.
+ */
+
+static void
+register_lazy_static_resources_unlocked ()
+{
+  GStaticResource *list;
+
+  do
+    list = lazy_register_resources;
+  while (!g_atomic_pointer_compare_and_exchange (&lazy_register_resources, list, NULL));
+
+  while (list != NULL)
+    {
+      GBytes *bytes = g_bytes_new_static (list->data, list->data_len);
+      GResource *resource = g_resource_new_from_data (bytes, NULL);
+      if (resource)
+	{
+	  g_resources_register_unlocked (resource);
+	  g_atomic_pointer_set (&list->resource, resource);
+	}
+      g_bytes_unref (bytes);
+
+      list = list->next;
+    }
+}
+
+static void
+register_lazy_static_resources ()
+{
+  if (g_atomic_pointer_get (&lazy_register_resources) == NULL)
+    return;
+
+  g_rw_lock_writer_lock (&resources_lock);
+  register_lazy_static_resources_unlocked ();
+  g_rw_lock_writer_unlock (&resources_lock);
+}
+
+/**
+ * g_static_resource_init:
+ * @static_resource: pointer to a static #GStaticResource.
+ *
+ * Initializes a GResource from static data using a
+ * GStaticResource.
+ *
+ * This is normally used by code generated by
+ * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
+ * not typically used by other code.
+ *
+ * Since: 2.32
+ **/
+void
+g_static_resource_init (GStaticResource *static_resource)
+{
+  gpointer next;
+
+  do
+    {
+      next = lazy_register_resources;
+      static_resource->next = next;
+    }
+  while (!g_atomic_pointer_compare_and_exchange (&lazy_register_resources, next, static_resource));
+}
+
+/**
+ * g_static_resource_fini:
+ * @static_resource: pointer to a static #GStaticResource.
+ *
+ * Finalized a GResource initialized by g_static_resource_init ().
+ *
+ * This is normally used by code generated by
+ * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
+ * not typically used by other code.
+ *
+ * Since: 2.32
+ **/
+void
+g_static_resource_fini (GStaticResource *static_resource)
+{
+  GResource *resource;
+
+  g_rw_lock_writer_lock (&resources_lock);
+
+  register_lazy_static_resources_unlocked ();
+
+  resource = g_atomic_pointer_get (&static_resource->resource);
+  if (resource)
+    {
+      g_atomic_pointer_set (&static_resource->resource, NULL);
+      g_resources_unregister_unlocked (resource);
+      g_resource_unref (resource);
+    }
+
+  g_rw_lock_writer_unlock (&resources_lock);
+}
+
+/**
+ * g_static_resource_get_resource:
+ * @static_resource: pointer to a static #GStaticResource.
+ *
+ * Gets the GResource that was registred by a call to g_static_resource_init ().
+ *
+ * This is normally used by code generated by
+ * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
+ * not typically used by other code.
+ *
+ * Return value:  (transfer none): a #GResource.
+ *
+ * Since: 2.32
+ **/
+GResource *
+g_static_resource_get_resource  (GStaticResource *static_resource)
+{
+  register_lazy_static_resources ();
+
+  return g_atomic_pointer_get (&static_resource->resource);
 }

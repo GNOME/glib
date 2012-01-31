@@ -49,6 +49,16 @@ G_BEGIN_DECLS
 #define G_RESOURCE_ERROR (g_resource_error_quark ())
 GQuark g_resource_error_quark (void);
 
+typedef struct _GStaticResource GStaticResource;
+
+struct _GStaticResource {
+  const guint8 *data;
+  gsize data_len;
+  GResource *resource;
+  GStaticResource *next;
+  gpointer padding;
+};
+
 GType         g_resource_get_type            (void) G_GNUC_CONST;
 GResource *   g_resource_new_from_data       (GBytes                *data,
 					      GError               **error);
@@ -92,6 +102,10 @@ gboolean      g_resources_get_info           (const char            *path,
 					      guint32               *flags,
 					      GError               **error);
 
+
+void          g_static_resource_init          (GStaticResource *static_resource);
+void          g_static_resource_fini          (GStaticResource *static_resource);
+GResource    *g_static_resource_get_resource  (GStaticResource *static_resource);
 
 G_END_DECLS
 

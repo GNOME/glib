@@ -697,7 +697,7 @@ main (int argc, char **argv)
 	       "\n"
 	       "#include <gio/gio.h>\n"
 	       "\n"
-	       "extern GResource *%s_resource;\n",
+	       "extern GResource *%s_get_resource (void);\n",
 	       c_name, c_name, c_name);
 
       if (manual_register)
@@ -719,7 +719,6 @@ main (int argc, char **argv)
       guint8 *data;
       gsize data_size;
       gsize i;
-      char *static_str;
 
       if (!g_file_get_contents (binary_target, (char **)&data,
 				&data_size, NULL))
@@ -760,13 +759,36 @@ main (int argc, char **argv)
 
       fprintf (file, "} };\n");
 
+      fprintf (file,
+	       "\n"
+	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data) };\n"
+	       "extern GResource *%s_get_resource (void);\n"
+	       "GResource *%s_get_resource (void)\n"
+	       "{\n"
+	       "  return g_static_resource_get_resource (&static_resource);\n"
+	       "}\n",
+	       c_name, c_name, c_name, c_name);
+
+
       if (manual_register)
 	{
-	  static_str = "";
+	  fprintf (file,
+		   "\n"
+		   "extern void %s_unregister_resource (void);\n"
+		   "void %s_unregister_resource (void)\n"
+		   "{\n"
+		   "  g_static_resource_fini (&static_resource);\n"
+		   "}\n"
+		   "\n"
+		   "extern void %s_register_resource (void);\n"
+		   "void %s_register_resource (void)\n"
+		   "{\n"
+		   "  g_static_resource_init (&static_resource);\n"
+		   "}\n",
+		   c_name, c_name, c_name, c_name);
 	}
       else
 	{
-	  static_str = "static ";
 	  fprintf (file, "%s", gconstructor_code);
 	  fprintf (file,
 		   "\n"
@@ -784,47 +806,17 @@ main (int argc, char **argv)
 		   "#else\n"
 		   "#warning \"Constructor not supported on this compiler, linking in resources will not work\"\n"
 		   "#endif\n"
-		   "\n");
+		   "\n"
+		   "static void resource_constructor (void)\n"
+		   "{\n"
+		   "  g_static_resource_init (&static_resource);\n"
+		   "}\n"
+		   "\n"
+		   "static void resource_destructor (void)\n"
+		   "{\n"
+		   "  g_static_resource_fini (&static_resource);\n"
+		   "}\n");
 	}
-
-      fprintf (file,
-	       "\n"
-	       "GResource *%s_resource = NULL;\n"
-	       "\n"
-	       "%svoid %s_unregister_resource (void)\n"
-	       "{\n"
-	       "  if (%s_resource)\n"
-	       "    {\n"
-	       "      g_resources_unregister (%s_resource);\n"
-	       "      g_resource_unref (%s_resource);\n"
-	       "      %s_resource = NULL;\n"
-	       "    }\n"
-	       "}\n"
-	       "\n"
-	       "%svoid %s_register_resource (void)\n"
-	       "{\n"
-	       "  if (%s_resource == NULL)\n"
-	       "    {\n"
-	       "      GBytes *bytes = g_bytes_new_static (%s_resource_data.data, sizeof (%s_resource_data.data));\n"
-	       "      %s_resource = g_resource_new_from_data (bytes, NULL);\n"
-	       "      if (%s_resource)\n"
-	       "        g_resources_register (%s_resource);\n"
-	       "       g_bytes_unref (bytes);\n"
-	       "    }\n"
-	       "}\n", c_name, static_str, c_name, c_name, c_name, c_name, c_name, static_str, c_name, c_name, c_name, c_name, c_name, c_name, c_name);
-
-      if (!manual_register)
-	fprintf (file,
-		 "\n"
-		 "static void resource_constructor (void)\n"
-		 "{\n"
-		 "  %s_register_resource ();\n"
-		 "}\n"
-		 "\n"
-		 "static void resource_destructor (void)\n"
-		 "{\n"
-		 "  %s_unregister_resource ();\n"
-		 "}\n", c_name, c_name);
 
       fclose (file);
 
