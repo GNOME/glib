@@ -75,6 +75,7 @@ typedef struct
 
 static gchar *sourcedir = NULL;
 static gchar *xmllint = NULL;
+static gchar *gdk_pixbuf_pixdata = NULL;
 
 static void
 file_data_free (FileData *data)
@@ -194,6 +195,7 @@ end_element (GMarkupParseContext  *context,
       gchar *key;
       FileData *data;
       char *tmp_file = NULL;
+      char *tmp_file2 = NULL;
 
       file = state->string->str;
       key = file;
@@ -229,6 +231,7 @@ end_element (GMarkupParseContext  *context,
           gchar **options;
           guint i;
           gboolean xml_stripblanks = FALSE;
+          gboolean to_pixdata = FALSE;
 
           options = g_strsplit (state->preproc_options, ",", -1);
 
@@ -236,6 +239,8 @@ end_element (GMarkupParseContext  *context,
             {
               if (!strcmp (options[i], "xml-stripblanks"))
                 xml_stripblanks = TRUE;
+              else if (!strcmp (options[i], "to-pixdata"))
+                to_pixdata = TRUE;
               else
                 {
                   g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
@@ -296,7 +301,56 @@ end_element (GMarkupParseContext  *context,
               g_free (real_file);
               real_file = g_strdup (tmp_file);
             }
-        }
+
+          if (to_pixdata && gdk_pixbuf_pixdata == NULL)
+	    g_printerr ("GDK_PIXBUF_PIXDATA not set and gdk-pixbuf-pixdata not found in path; skipping to-pixdata preprocessing.\n");
+          if (to_pixdata && gdk_pixbuf_pixdata != NULL)
+            {
+              gchar *argv[4];
+              int status, fd, argc;
+
+              tmp_file2 = g_strdup ("resource-XXXXXXXX");
+              if ((fd = g_mkstemp (tmp_file2)) == -1)
+                {
+                  int errsv = errno;
+
+                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                               _("Failed to create temp file: %s"),
+			       g_strerror (errsv));
+                  g_free (tmp_file2);
+                  tmp_file2 = NULL;
+                  goto cleanup;
+                }
+              close (fd);
+
+              argc = 0;
+              argv[argc++] = (gchar *) gdk_pixbuf_pixdata;
+              argv[argc++] = real_file;
+              argv[argc++] = tmp_file2;
+              argv[argc++] = NULL;
+              g_assert (argc <= G_N_ELEMENTS (argv));
+
+              if (!g_spawn_sync (NULL /* cwd */, argv, NULL /* envv */,
+                                 G_SPAWN_STDOUT_TO_DEV_NULL |
+                                 G_SPAWN_STDERR_TO_DEV_NULL,
+                                 NULL, NULL, NULL, NULL, &status, &my_error))
+                {
+                  g_propagate_error (error, my_error);
+                  goto cleanup;
+                }
+#ifdef HAVE_SYS_WAIT_H
+              if (!WIFEXITED (status) || WEXITSTATUS (status) != 0)
+                {
+                  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+				       _("Error processing input file with xmllint"));
+                  goto cleanup;
+                }
+#endif
+
+              g_free (real_file);
+              real_file = g_strdup (tmp_file2);
+            }
+	}
 
       if (!g_file_get_contents (real_file, &data->content, &data->size, &my_error))
 	{
@@ -352,10 +406,17 @@ end_element (GMarkupParseContext  *context,
       state->preproc_options = NULL;
 
       g_free (real_file);
+
       if (tmp_file)
         {
           unlink (tmp_file);
           g_free (tmp_file);
+        }
+
+      if (tmp_file2)
+        {
+          unlink (tmp_file2);
+          g_free (tmp_file2);
         }
     }
 }
@@ -567,6 +628,10 @@ main (int argc, char **argv)
     xmllint = g_find_program_in_path ("xmllint");
   if (xmllint == NULL)
     g_printerr ("XMLLINT not set and xmllint not found in path; skipping xml preprocessing.\n");
+
+  gdk_pixbuf_pixdata = g_strdup (g_getenv ("GDK_PIXBUF_PIXDATA"));
+  if (gdk_pixbuf_pixdata == NULL)
+    gdk_pixbuf_pixdata = g_find_program_in_path ("gdk-pixbuf-pixdata");
 
   if (target == NULL)
     {

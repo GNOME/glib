@@ -145,6 +145,15 @@ set, xmllint is searched in the <envar>PATH</envar>.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><envar>GDK_PIXBUF_PIXDATA</envar></term>
+<listitem><para>
+The full path to the gdk-pixbuf-pixdata executable. This is used to preprocess resources with the
+<literal>to-pixdata</literal> preprocessing option. If this environment variable is not
+set, gdk-pixbuf-pixdata is searched in the <envar>PATH</envar>.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect2>
 
