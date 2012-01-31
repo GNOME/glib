@@ -273,7 +273,6 @@ end_element (GMarkupParseContext  *context,
               argc = 0;
               argv[argc++] = (gchar *) xmllint;
               argv[argc++] = "--nonet";
-              argv[argc++] = "--noent";
               argv[argc++] = "--noblanks";
               argv[argc++] = "--output";
               argv[argc++] = tmp_file;
