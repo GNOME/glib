@@ -302,12 +302,18 @@ end_element (GMarkupParseContext  *context,
               real_file = g_strdup (tmp_file);
             }
 
-          if (to_pixdata && gdk_pixbuf_pixdata == NULL)
-	    g_printerr ("GDK_PIXBUF_PIXDATA not set and gdk-pixbuf-pixdata not found in path; skipping to-pixdata preprocessing.\n");
-          if (to_pixdata && gdk_pixbuf_pixdata != NULL)
+          if (to_pixdata)
             {
               gchar *argv[4];
               int status, fd, argc;
+
+              if (gdk_pixbuf_pixdata == NULL)
+                {
+                  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                       "to-pixbuf preprocessing requested but GDK_PIXBUF_PIXDATA "
+                                       "not set and gdk-pixbuf-pixdata not found in path");
+                  goto cleanup;
+                }
 
               tmp_file2 = g_strdup ("resource-XXXXXXXX");
               if ((fd = g_mkstemp (tmp_file2)) == -1)
