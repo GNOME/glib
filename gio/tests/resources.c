@@ -48,8 +48,8 @@ test_resource (GResource *resource)
 			       &size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
 
   found = g_resource_get_info (resource,
 			       "/a_prefix/test2.txt",
@@ -57,8 +57,8 @@ test_resource (GResource *resource)
 			       &size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
 
   found = g_resource_get_info (resource,
 			       "/a_prefix/test2-alias.txt",
@@ -66,8 +66,8 @@ test_resource (GResource *resource)
 			       &size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
 
   data = g_resource_lookup_data (resource,
 				 "/test1.txt",
@@ -89,7 +89,7 @@ test_resource (GResource *resource)
 				     NULL, &error);
   g_assert (success);
   g_assert_no_error (error);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
 
@@ -102,7 +102,7 @@ test_resource (GResource *resource)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
@@ -113,7 +113,7 @@ test_resource (GResource *resource)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
@@ -131,7 +131,7 @@ test_resource (GResource *resource)
 					     &error);
   g_assert (children != NULL);
   g_assert_no_error (error);
-  g_assert (g_strv_length (children) == 2);
+  g_assert_cmpint (g_strv_length (children), ==, 2);
   g_strfreev (children);
 }
 
@@ -209,7 +209,7 @@ test_resource_registred (void)
 				&size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
 
   found = g_resources_get_info ("/a_prefix/test2.txt",
@@ -217,16 +217,16 @@ test_resource_registred (void)
 				&size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpint (flags, ==, 0);
 
   found = g_resources_get_info ("/a_prefix/test2-alias.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
 
   data = g_resources_lookup_data ("/test1.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -246,7 +246,7 @@ test_resource_registred (void)
 				     NULL, &error);
   g_assert (success);
   g_assert_no_error (error);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
 
@@ -259,7 +259,7 @@ test_resource_registred (void)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
@@ -269,7 +269,7 @@ test_resource_registred (void)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
@@ -285,7 +285,7 @@ test_resource_registred (void)
 					     &error);
   g_assert (children != NULL);
   g_assert_no_error (error);
-  g_assert (g_strv_length (children) == 2);
+  g_assert_cmpint (g_strv_length (children), ==, 2);
 
   g_resources_unregister (resource);
 
@@ -311,8 +311,8 @@ test_resource_automatic (void)
 				&size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpint (flags, ==, 0);
 
   data = g_resources_lookup_data ("/auto_loaded/test1.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -320,7 +320,7 @@ test_resource_automatic (void)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
   g_bytes_unref (data);
 }
@@ -339,8 +339,8 @@ test_resource_manual (void)
 				&size, &flags, &error);
   g_assert (found);
   g_assert_no_error (error);
-  g_assert (size == 6);
-  g_assert (flags == 0);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
 
   data = g_resources_lookup_data ("/manual_loaded/test1.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -348,7 +348,7 @@ test_resource_manual (void)
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
-  g_assert (size == 6);
+  g_assert_cmpint (size, ==, 6);
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
   g_bytes_unref (data);
 }
@@ -389,8 +389,8 @@ test_resource_module (void)
 				    &size, &flags, &error);
       g_assert (found);
       g_assert_no_error (error);
-      g_assert (size == 6);
-      g_assert (flags == 0);
+      g_assert_cmpint (size, ==, 6);
+      g_assert_cmpuint (flags, ==, 0);
 
       data = g_resources_lookup_data ("/resourceplugin/test1.txt",
 				      G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -398,7 +398,7 @@ test_resource_module (void)
       g_assert (data != NULL);
       g_assert_no_error (error);
       size = g_bytes_get_size (data);
-      g_assert (size == 6);
+      g_assert_cmpint (size, ==, 6);
       g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
       g_bytes_unref (data);
 
