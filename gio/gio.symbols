@@ -1705,3 +1705,6 @@ g_resources_lookup_data
 g_resources_open_stream
 g_resources_register
 g_resources_unregister
+g_static_resource_fini
+g_static_resource_get_resource
+g_static_resource_init
