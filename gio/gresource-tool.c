@@ -28,12 +28,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
-#include <sys/mman.h>
 #include <locale.h>
 
 #ifdef HAVE_LIBELF
 #include <libelf.h>
 #include <gelf.h>
+#include <sys/mman.h>
 #endif
 
 #include <gio/gio.h>
