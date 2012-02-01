@@ -8,11 +8,6 @@ if OS_UNIX
 SUBDIRS += xdgmime
 endif
 
-noinst_PROGRAMS = data-to-c
-
-data_to_c_SOURCES = data-to-c.c
-data_to_c_LDADD = $(top_builddir)/glib/libglib-2.0.la
-
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
 noinst_DATA = gio-2.0.lib
@@ -612,6 +607,7 @@ BUILT_SOURCES = 		\
 	$(NULL)
 
 EXTRA_DIST += 			\
+	data-to-c.pl		\
 	gio.symbols		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
@@ -666,8 +662,8 @@ gio_querymodules_LDADD	 = \
 	libgio-2.0.la					\
 	$(NULL)
 
-gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c$(EXEEXT)
-	$(AM_V_GEN) $(builddir)/data-to-c $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@
+gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.pl
+	$(AM_V_GEN) $(srcdir)/data-to-c.pl $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@.tmp && mv $@.tmp $@
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
