@@ -457,7 +457,6 @@ gsettings_set (GSettings   *settings,
 
   existing = g_settings_get_value (settings, key);
   type = g_variant_get_type (existing);
-  g_variant_unref (existing);
 
   new = g_variant_parse (type, value, NULL, NULL, &error);
 
@@ -489,6 +488,9 @@ gsettings_set (GSettings   *settings,
       g_clear_error (&error);
       new = g_variant_new_string (value);
     }
+
+  /* we're done with 'type' now, so we can free 'existing' */
+  g_variant_unref (existing);
 
   if (new == NULL)
     {
