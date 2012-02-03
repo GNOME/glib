@@ -1,6 +1,5 @@
-
-/* -*- Mode: C; c-file-style: "gnu"; -*- */
-/* GObject introspection: IDL generator
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: IDL generator
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.
