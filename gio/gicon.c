@@ -433,7 +433,7 @@ g_icon_new_for_string (const gchar   *str,
 
       /* handle special GFileIcon and GThemedIcon cases */
       scheme = g_uri_parse_scheme (str);
-      if (scheme != NULL || str[0] == '/')
+      if (scheme != NULL || str[0] == '/' || str[0] == G_DIR_SEPARATOR)
         {
           GFile *location;
           location = g_file_new_for_commandline_arg (str);
