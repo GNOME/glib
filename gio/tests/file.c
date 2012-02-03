@@ -420,6 +420,17 @@ test_create_delete (gconstpointer d)
   error = NULL;
   data->monitor = g_file_monitor_file (data->file, 0, NULL, &error);
   g_assert_no_error (error);
+
+  /* This test doesn't work with GPollFileMonitor, because it assumes
+   * that the monitor will notice a create immediately followed by a
+   * delete, rather than coalescing them into nothing.
+   */
+  if (!strcmp (G_OBJECT_TYPE_NAME (data->monitor), "GPollFileMonitor"))
+    {
+      g_print ("skipping test for this GFileMonitor implementation");
+      goto skip;
+    }
+
   g_file_monitor_set_rate_limit (data->monitor, 100);
 
   g_signal_connect (data->monitor, "changed", G_CALLBACK (monitor_changed), data);
@@ -441,9 +452,11 @@ test_create_delete (gconstpointer d)
   g_assert (g_file_monitor_is_cancelled (data->monitor));
 
   g_main_loop_unref (data->loop);
-  g_object_unref (data->monitor);
   g_object_unref (data->ostream);
   g_object_unref (data->istream);
+
+ skip:
+  g_object_unref (data->monitor);
   g_object_unref (data->file);
   free (data->monitor_path);
   g_free (data->buffer);
