@@ -289,7 +289,7 @@ g_resource_file_get_parent (GFile *file)
 
   parent = g_object_new (G_TYPE_RESOURCE_FILE, NULL);
   parent->path = g_strndup (resource->path,
-			    end - resource->path - 1);
+			    end - resource->path);
 
   return G_FILE (parent);
 }
