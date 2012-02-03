@@ -1,4 +1,5 @@
-/* GObject introspection: Parsed IDL
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Parsed IDL
  *
  * Copyright (C) 2005 Matthias Clasen
  *

@@ -1,4 +1,5 @@
-/* GObject introspection: Helper functions for ffi integration
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Helper functions for ffi integration
  *
  * Copyright (C) 2008 Red Hat, Inc
  * Copyright (C) 2005 Matthias Clasen

@@ -1,4 +1,5 @@
-/* GObject introspection: Compute structure offsets
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Compute structure offsets
  *
  * Copyright (C) 2008 Red Hat, Inc.
  *

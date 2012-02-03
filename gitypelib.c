@@ -1,4 +1,5 @@
-/* GObject introspection: typelib validation, auxiliary functions
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: typelib validation, auxiliary functions
  * related to the binary typelib format
  *
  * Copyright (C) 2005 Matthias Clasen

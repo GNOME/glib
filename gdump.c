@@ -1,4 +1,5 @@
-/* GObject introspection: Dump introspection data
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Dump introspection data
  *
  * Copyright (C) 2008 Colin Walters <walters@verbum.org>
  *

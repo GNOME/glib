@@ -1,4 +1,5 @@
-/* GObject introspection: struct definitions for the binary
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: struct definitions for the binary
  * typelib format, validation
  *
  * Copyright (C) 2005 Matthias Clasen

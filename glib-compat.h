@@ -1,4 +1,5 @@
-/* GObject introspection: Compatibility definitions
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Compatibility definitions
  *
  * Copyright (C) 2009 Javier Jardón
  *

@@ -1,4 +1,5 @@
-/* GObject introspection: A parser for the XML GIR format
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: A parser for the XML GIR format
  *
  * Copyright (C) 2005 Matthias Clasen
  *

@@ -1,4 +1,5 @@
-/* GObject introspection: Struct
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Struct
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.

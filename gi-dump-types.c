@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #include "gdump.c"
 #include <gio/gunixoutputstream.h>
 

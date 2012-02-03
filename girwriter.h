@@ -1,4 +1,5 @@
-/* GObject introspection: IDL writer
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: IDL writer
  *
  * Copyright (C) 2007 Johan Dahlin
  *

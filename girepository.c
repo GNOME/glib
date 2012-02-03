@@ -1,5 +1,5 @@
-/* -*- Mode: C; c-file-style: "gnu"; -*- */
-/* GObject introspection: Repository implementation
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Repository implementation
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008 Colin Walters <walters@verbum.org>

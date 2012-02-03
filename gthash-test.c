@@ -1,4 +1,5 @@
-/* GObject introspection: Test typelib hashing
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Test typelib hashing
  *
  * Copyright (C) 2010 Red Hat, Inc.
  *

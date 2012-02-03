@@ -1,4 +1,5 @@
-/* GObject introspection: Argument implementation
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Argument implementation
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.

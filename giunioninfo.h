@@ -1,4 +1,5 @@
-/* GObject introspection: Union
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Union
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.

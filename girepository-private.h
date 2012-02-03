@@ -1,5 +1,5 @@
-/* -*- Mode: C; c-file-style: "gnu"; -*- */
-/* GObject introspection: Private headers
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Private headers
  *
  * Copyright (C) 2010 Johan Dahlin
  *

@@ -1,4 +1,5 @@
-/* GObject introspection: Invoke functionality
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Invoke functionality
  *
  * Copyright (C) 2005 Matthias Clasen
  *
