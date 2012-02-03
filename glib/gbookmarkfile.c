@@ -1438,9 +1438,9 @@ static const GMarkupParser markup_parser =
 
 static gboolean
 g_bookmark_file_parse (GBookmarkFile  *bookmark,
-			 const gchar      *buffer,
-			 gsize             length,
-			 GError          **error)
+			 const gchar  *buffer,
+			 gsize         length,
+			 GError       **error)
 {
   GMarkupParseContext *context;
   ParseData *parse_data;
@@ -1451,6 +1451,9 @@ g_bookmark_file_parse (GBookmarkFile  *bookmark,
 
   if (!buffer)
     return FALSE;
+
+  parse_error = NULL;
+  end_error = NULL;
   
   if (length == (gsize) -1)
     length = strlen (buffer);
@@ -1463,30 +1466,22 @@ g_bookmark_file_parse (GBookmarkFile  *bookmark,
   					parse_data,
   					(GDestroyNotify) parse_data_free);
   
-  parse_error = NULL;
   retval = g_markup_parse_context_parse (context,
   					 buffer,
   					 length,
   					 &parse_error);
   if (!retval)
-    {
-      g_propagate_error (error, parse_error);
-      
-      return FALSE;
-    }
-  
-  end_error = NULL;
-  retval = g_markup_parse_context_end_parse (context, &end_error);
-  if (!retval)
-    {
-      g_propagate_error (error, end_error);
-      
-      return FALSE;
-    }
-  
+    g_propagate_error (error, parse_error);
+  else
+   {
+     retval = g_markup_parse_context_end_parse (context, &end_error);
+      if (!retval)
+        g_propagate_error (error, end_error);
+   }
+ 
   g_markup_parse_context_free (context);
-  
-  return TRUE;
+
+  return retval;
 }
 
 static gchar *
@@ -1705,14 +1700,11 @@ g_bookmark_file_load_from_data (GBookmarkFile  *bookmark,
 
   parse_error = NULL;
   retval = g_bookmark_file_parse (bookmark, data, length, &parse_error);
+
   if (!retval)
-    {
-      g_propagate_error (error, parse_error);
-      
-      return FALSE;
-    }
-  
-  return TRUE;
+    g_propagate_error (error, parse_error);
+
+  return retval;
 }
 
 /**
