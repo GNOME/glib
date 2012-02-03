@@ -1784,6 +1784,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->must_be_implemented = 0; /* FIXME */
 	blob->must_not_be_implemented = 0; /* FIXME */
 	blob->class_closure = 0; /* FIXME */
+        blob->throws = vfunc->throws;
 	blob->reserved = 0;
 
 	if (vfunc->invoker)

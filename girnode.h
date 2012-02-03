@@ -206,6 +206,7 @@ struct _GIrNodeVFunc
   gboolean must_be_implemented;
   gboolean must_not_be_implemented;
   gboolean is_class_closure;
+  gboolean throws;
 
   char *invoker;
 

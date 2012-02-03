@@ -104,6 +104,9 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
   if (blob->must_not_be_implemented)
     flags = flags | GI_VFUNC_MUST_NOT_OVERRIDE;
 
+  if (blob->throws)
+    flags = flags | GI_VFUNC_THROWS;
+
   return flags;
 }
 

@@ -403,6 +403,7 @@ typedef enum
  * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
  * @GI_VFUNC_MUST_OVERRIDE: overrides
  * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
+ * @GI_VFUNC_THROWS: Includes a #GError
  *
  * Flags of a #GIVFuncInfo struct.
  */
@@ -410,7 +411,8 @@ typedef enum
 {
   GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,
   GI_VFUNC_MUST_OVERRIDE     = 1 << 1,
-  GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2
+  GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2,
+  GI_VFUNC_THROWS =            1 << 3
 } GIVFuncInfoFlags;
 
 /**

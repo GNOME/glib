@@ -2345,6 +2345,7 @@ start_vfunc (GMarkupParseContext *context,
   const gchar *is_class_closure;
   const gchar *offset;
   const gchar *invoker;
+  const gchar *throws;
   GIrNodeInterface *iface;
   GIrNodeVFunc *vfunc;
 
@@ -2362,6 +2363,7 @@ start_vfunc (GMarkupParseContext *context,
   is_class_closure = find_attribute ("is-class-closure", attribute_names, attribute_values);
   offset = find_attribute ("offset", attribute_names, attribute_values);
   invoker = find_attribute ("invoker", attribute_names, attribute_values);
+  throws = find_attribute ("throws", attribute_names, attribute_values);
 
   if (name == NULL)
     {
@@ -2399,6 +2401,11 @@ start_vfunc (GMarkupParseContext *context,
     vfunc->is_class_closure = TRUE;
   else
     vfunc->is_class_closure = FALSE;
+
+  if (throws && strcmp (throws, "1") == 0)
+    vfunc->throws = TRUE;
+  else
+    vfunc->throws = FALSE;
 
   if (offset)
     vfunc->offset = atoi (offset);

@@ -916,6 +916,9 @@ write_vfunc_info (const gchar *namespace,
   else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
     xml_printf (file, " override=\"never\"");
 
+  if (flags & GI_VFUNC_THROWS)
+    xml_printf (file, " throws=\"1\"");
+
   xml_printf (file, " offset=\"%d\"", offset);
 
   if (invoker)

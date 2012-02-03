@@ -925,7 +925,8 @@ typedef struct {
   guint16 must_be_implemented     : 1;
   guint16 must_not_be_implemented : 1;
   guint16 class_closure           : 1;
-  guint16 reserved                :12;
+  guint16 throws                  : 1;
+  guint16 reserved                :11;
   guint16 signal;
 
   guint16 struct_offset;
