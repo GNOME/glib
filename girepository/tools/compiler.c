@@ -1,4 +1,5 @@
-/* GObject introspection: Typelib compiler
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*-
+ * GObject introspection: Typelib compiler
  *
  * Copyright (C) 2005 Matthias Clasen
  *
