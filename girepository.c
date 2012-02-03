@@ -93,7 +93,9 @@ g_irepository_init (GIRepository *repository)
 			     (GDestroyNotify) NULL,
 			     (GDestroyNotify) g_typelib_free);
   repository->priv->lazy_typelibs
-    = g_hash_table_new (g_str_hash, g_str_equal);
+    = g_hash_table_new_full (g_str_hash, g_str_equal,
+                             (GDestroyNotify) g_free,
+                             (GDestroyNotify) NULL);
   repository->priv->info_by_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
