@@ -307,16 +307,8 @@ g_cond_wait_until (GCond  *cond,
                    gint64  end_time)
 {
   gint64 span;
-  FILETIME ft;
-  gint64 now;
 
-  GetSystemTimeAsFileTime (&ft);
-  memmove (&now, &ft, sizeof (FILETIME));
-
-  now -= G_GINT64_CONSTANT (116444736000000000);
-  now /= 10;
-
-  span = end_time - now;
+  span = end_time - g_get_monotonic_time ();
 
   if G_UNLIKELY (span < 0)
     span = 0;
