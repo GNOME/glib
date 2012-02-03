@@ -301,8 +301,15 @@ g_function_invoker_new_for_address (gpointer           addr,
         throws = (flags & GI_FUNCTION_THROWS) != 0;
       }
       break;
-    case GI_INFO_TYPE_CALLBACK:
     case GI_INFO_TYPE_VFUNC:
+      {
+        GIVFuncInfoFlags flags;
+        flags = g_vfunc_info_get_flags ((GIVFuncInfo *)info);
+        throws = (flags & GI_VFUNC_THROWS) != 0;
+      }
+      is_method = FALSE;
+      break;
+    case GI_INFO_TYPE_CALLBACK:
       is_method = TRUE;
       throws = FALSE;
       break;
