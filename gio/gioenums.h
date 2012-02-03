@@ -393,9 +393,9 @@ typedef enum {
 /**
  * GIOErrorEnum:
  * @G_IO_ERROR_FAILED: Generic error condition for when any operation fails.
- * @G_IO_ERROR_NOT_FOUND: File not found error.
- * @G_IO_ERROR_EXISTS: File already exists error.
- * @G_IO_ERROR_IS_DIRECTORY: File is a directory error.
+ * @G_IO_ERROR_NOT_FOUND: File not found.
+ * @G_IO_ERROR_EXISTS: File already exists.
+ * @G_IO_ERROR_IS_DIRECTORY: File is a directory.
  * @G_IO_ERROR_NOT_DIRECTORY: File is not a directory.
  * @G_IO_ERROR_NOT_EMPTY: File is a directory that isn't empty.
  * @G_IO_ERROR_NOT_REGULAR_FILE: File is not a regular file.
