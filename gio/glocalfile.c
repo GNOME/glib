@@ -1314,6 +1314,20 @@ g_local_file_read (GFile         *file,
     {
       int errsv = errno;
 
+#ifdef G_OS_WIN32
+      if (errsv == EACCES)
+	{
+	  ret = _stati64 (local->filename, &buf);
+	  if (ret == 0 && S_ISDIR (buf.st_mode))
+	    {
+	      g_set_error_literal (error, G_IO_ERROR,
+				   G_IO_ERROR_IS_DIRECTORY,
+				   _("Can't open directory"));
+	      return NULL;
+	    }
+	}
+#endif
+
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
 		   _("Error opening file: %s"),

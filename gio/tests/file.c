@@ -78,6 +78,7 @@ test_type (void)
 {
   GFile *file;
   GFileType type;
+  GError *error = NULL;
 
   file = g_file_new_for_path (SRCDIR "/file.c");
   type = g_file_query_file_type (file, 0, NULL);
@@ -87,6 +88,10 @@ test_type (void)
   file = g_file_new_for_path (SRCDIR "/schema-tests");
   type = g_file_query_file_type (file, 0, NULL);
   g_assert_cmpint (type, ==, G_FILE_TYPE_DIRECTORY);
+
+  g_file_read (file, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY);
+  g_error_free (error);
   g_object_unref (file);
 }
 
