@@ -58,7 +58,7 @@ test_g_icon_serialize (void)
   g_object_unref (file);
 
   data = g_icon_to_string (icon);
-  g_assert_cmpstr (data, ==, "/some/native/path/to/an/icon.png");
+  g_assert_cmpstr (data, ==, G_DIR_SEPARATOR_S "some" G_DIR_SEPARATOR_S "native" G_DIR_SEPARATOR_S "path" G_DIR_SEPARATOR_S "to" G_DIR_SEPARATOR_S "an" G_DIR_SEPARATOR_S "icon.png");
   icon2 = g_icon_new_for_string (data, &error);
   g_assert_no_error (error);
   g_assert (g_icon_equal (icon, icon2));
@@ -71,7 +71,7 @@ test_g_icon_serialize (void)
   location = g_file_new_for_uri (uri);
   icon = g_file_icon_new (location);
   data = g_icon_to_string (icon);
-  g_assert_cmpstr (data, ==, "/some/native/path/to/an/icon with spaces.png");
+  g_assert_cmpstr (data, ==, G_DIR_SEPARATOR_S "some" G_DIR_SEPARATOR_S "native" G_DIR_SEPARATOR_S "path" G_DIR_SEPARATOR_S "to" G_DIR_SEPARATOR_S "an" G_DIR_SEPARATOR_S "icon with spaces.png");
   icon2 = g_icon_new_for_string (data, &error);
   g_assert_no_error (error);
   g_assert (g_icon_equal (icon, icon2));
@@ -138,7 +138,7 @@ test_g_icon_serialize (void)
   icon = g_icon_new_for_string ("/path/to/somewhere with whitespace.png", &error);
   g_assert_no_error (error);
   data = g_icon_to_string (icon);
-  g_assert_cmpstr (data, ==, "/path/to/somewhere with whitespace.png");
+  g_assert_cmpstr (data, ==, G_DIR_SEPARATOR_S "path" G_DIR_SEPARATOR_S "to" G_DIR_SEPARATOR_S "somewhere with whitespace.png");
   g_free (data);
   location = g_file_new_for_commandline_arg ("/path/to/somewhere with whitespace.png");
   icon2 = g_file_icon_new (location);
