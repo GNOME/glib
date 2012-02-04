@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 15:42+0100\n"
-"PO-Revision-Date: 2012-01-28 15:42+0100\n"
+"POT-Creation-Date: 2012-02-04 12:32+0100\n"
+"PO-Revision-Date: 2012-02-04 12:32+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -1173,94 +1173,98 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
-#: ../gio/glib-compile-resources.c:138 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:141 ../gio/glib-compile-schemas.c:1449
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> er ikke tillatt inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> er ikke tillatt på toppnivå"
 
-#: ../gio/glib-compile-resources.c:209
+#: ../gio/glib-compile-resources.c:213
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Filen %s finnes flere ganger i ressursen"
 
-#: ../gio/glib-compile-resources.c:240
+#: ../gio/glib-compile-resources.c:247
 #, c-format
 msgid "Unknown proprocessing options \"%s\""
 msgstr "Ukjente flagg for preprosessering «%s»"
 
-#: ../gio/glib-compile-resources.c:258
+#: ../gio/glib-compile-resources.c:265 ../gio/glib-compile-resources.c:323
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Klarte ikke å opprette midlertidig fil: %s"
 
-#: ../gio/glib-compile-resources.c:289
+#: ../gio/glib-compile-resources.c:295
 msgid "Error processing input file with xmllint"
 msgstr "Feil ved prosessering av inndatafil med xmllint"
 
-#: ../gio/glib-compile-resources.c:302
+#: ../gio/glib-compile-resources.c:350
+msgid "Error processing input file with to-pixdata"
+msgstr "Feil ved prosessering av inndatafil med to-pixdata"
+
+#: ../gio/glib-compile-resources.c:363
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Feil ved lesing av fil %s: %s"
 
-#: ../gio/glib-compile-resources.c:322
+#: ../gio/glib-compile-resources.c:383
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Feil ved komprimering av fil %s"
 
-#: ../gio/glib-compile-resources.c:379 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:447 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:502
+#: ../gio/glib-compile-resources.c:570
 msgid "name of the output file"
 msgstr "navn på utdatafil"
 
-#: ../gio/glib-compile-resources.c:502 ../gio/glib-compile-resources.c:535
+#: ../gio/glib-compile-resources.c:570 ../gio/glib-compile-resources.c:603
 msgid "FILE"
 msgstr "FIL"
 
-#: ../gio/glib-compile-resources.c:503
+#: ../gio/glib-compile-resources.c:571
 msgid ""
 "The directory where files are to be read from (default to current directory)"
 msgstr "Katalog filene skal leses fra (aktiv katalog er forvalgt)"
 
-#: ../gio/glib-compile-resources.c:503 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-resources.c:571 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:504
+#: ../gio/glib-compile-resources.c:572
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Lag utdata i formatet som er valgt for målets filtype"
 
-#: ../gio/glib-compile-resources.c:505
+#: ../gio/glib-compile-resources.c:573
 msgid "Generate source header"
 msgstr "Lag hode for kildekode"
 
-#: ../gio/glib-compile-resources.c:506
+#: ../gio/glib-compile-resources.c:574
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Lag kildekode som skal brukes til å lenke inn ressursfilen i din kode"
 
-#: ../gio/glib-compile-resources.c:507
+#: ../gio/glib-compile-resources.c:575
 msgid "Generate dependency list"
 msgstr "Lag listet med avhengigheter"
 
-#: ../gio/glib-compile-resources.c:508
+#: ../gio/glib-compile-resources.c:576
 msgid "Don't automatically create and register resource"
 msgstr "Ikke lag og registrer ressursen automatisk"
 
-#: ../gio/glib-compile-resources.c:509
+#: ../gio/glib-compile-resources.c:577
 msgid "C identifier name used for the generated source code"
 msgstr "Navn på C-identifikator som brukes for generert kildekode"
 
-#: ../gio/glib-compile-resources.c:538
+#: ../gio/glib-compile-resources.c:606
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1270,7 +1274,7 @@ msgstr ""
 "Ressursspesifikasjonsfiler har type .gresource.xml,\n"
 "og ressufsfilen har etternavn .gresource."
 
-#: ../gio/glib-compile-resources.c:554
+#: ../gio/glib-compile-resources.c:622
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du må kun oppgi ett filnavn\n"
@@ -1965,15 +1969,15 @@ msgstr "Midlertidig ute av stand til å slå opp «%s»"
 msgid "Error resolving '%s'"
 msgstr "Feil ved oppslag av «%s»"
 
-#: ../gio/gresource.c:275 ../gio/gresource.c:516 ../gio/gresource.c:533
-#: ../gio/gresource.c:642 ../gio/gresource.c:709 ../gio/gresource.c:768
-#: ../gio/gresource.c:846 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:285 ../gio/gresource.c:526 ../gio/gresource.c:543
+#: ../gio/gresource.c:666 ../gio/gresource.c:735 ../gio/gresource.c:796
+#: ../gio/gresource.c:876 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Ressurs ved «%s» eksisterer ikke"
 
-#: ../gio/gresource.c:435
+#: ../gio/gresource.c:445
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Ressursen ved «%s» kunne ikke dekomprimeres"
@@ -1987,7 +1991,7 @@ msgstr "Ressurs ved «%s» er ikke en katalog"
 msgid "Input stream doesn't implement seek"
 msgstr "Inndatastrøm implementerer ikke søk"
 
-#: ../gio/gresource-tool.c:470 ../gio/gsettings-tool.c:528
+#: ../gio/gresource-tool.c:470 ../gio/gsettings-tool.c:530
 msgid "Print help"
 msgstr "Skriv ut hjelp"
 
@@ -2026,7 +2030,7 @@ msgstr ""
 msgid "Extract a resource file to stdout"
 msgstr "Hent ut en ressursfil til stdout"
 
-#: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:608
+#: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2078,7 +2082,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:533 ../gio/gsettings-tool.c:641
+#: ../gio/gresource-tool.c:533 ../gio/gsettings-tool.c:643
 msgid "Arguments:\n"
 msgstr "Argumenter:\n"
 
@@ -2086,7 +2090,7 @@ msgstr "Argumenter:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SEKSJON  Et valgfritt navn på en elf seksjon\n"
 
-#: ../gio/gresource-tool.c:541 ../gio/gsettings-tool.c:648
+#: ../gio/gresource-tool.c:541 ../gio/gsettings-tool.c:650
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMMANDO Valgfri kommando som skal forklares\n"
 
@@ -2150,33 +2154,33 @@ msgstr "Sti må ikke inneholde to etterfølgende skråstreker (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Nøkkel «%s» finnes ikke\n"
 
-#: ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:503
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Oppgitt verdi er utenfor gyldig område\n"
 
-#: ../gio/gsettings-tool.c:534
+#: ../gio/gsettings-tool.c:536
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Vis installerte (ikke-flyttbare) schema"
 
-#: ../gio/gsettings-tool.c:540
+#: ../gio/gsettings-tool.c:542
 msgid "List the installed relocatable schemas"
 msgstr "Vis installerte flyttbare schema"
 
-#: ../gio/gsettings-tool.c:546
+#: ../gio/gsettings-tool.c:548
 msgid "List the keys in SCHEMA"
 msgstr "Vis nøklene i SCHEMA"
 
-#: ../gio/gsettings-tool.c:547 ../gio/gsettings-tool.c:553
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:549 ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:592
 msgid "SCHEMA[:PATH]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:552
+#: ../gio/gsettings-tool.c:554
 msgid "List the children of SCHEMA"
 msgstr "Vis barn av SCHEMA"
 
-#: ../gio/gsettings-tool.c:558
+#: ../gio/gsettings-tool.c:560
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2184,44 +2188,44 @@ msgstr ""
 "Vis nøkler og verdier rekursivt\n"
 "Vis alle nøkler hvis SKJEMA ikke oppgis\n"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:562
 msgid "[SCHEMA[:PATH]]"
 msgstr "SKJEMA[:STI]"
 
-#: ../gio/gsettings-tool.c:565
+#: ../gio/gsettings-tool.c:567
 msgid "Get the value of KEY"
 msgstr "Hent verdi for NØKKEL"
 
-#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:572
-#: ../gio/gsettings-tool.c:584 ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:568 ../gio/gsettings-tool.c:574
+#: ../gio/gsettings-tool.c:586 ../gio/gsettings-tool.c:598
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SKJEMA[:STI] NØKKEL"
 
-#: ../gio/gsettings-tool.c:571
+#: ../gio/gsettings-tool.c:573
 msgid "Query the range of valid values for KEY"
 msgstr "Spør på gyldig verdiområde for NØKKEL"
 
-#: ../gio/gsettings-tool.c:577
+#: ../gio/gsettings-tool.c:579
 msgid "Set the value of KEY to VALUE"
 msgstr "Sett verdien for NØKKEL til VERDI"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:580
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SKJEMA[:STI] NØKKEL VERDI"
 
-#: ../gio/gsettings-tool.c:583
+#: ../gio/gsettings-tool.c:585
 msgid "Reset KEY to its default value"
 msgstr "Nullstill NØKKEL til forvalgt verdi"
 
-#: ../gio/gsettings-tool.c:589
+#: ../gio/gsettings-tool.c:591
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Nullstill alle nøkler i SKJEMA til sine forvalgte verdier"
 
-#: ../gio/gsettings-tool.c:595
+#: ../gio/gsettings-tool.c:597
 msgid "Check if KEY is writable"
 msgstr "Sjekk om NØKKEL er skrivbar"
 
-#: ../gio/gsettings-tool.c:601
+#: ../gio/gsettings-tool.c:603
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2231,11 +2235,11 @@ msgstr ""
 "Hvis ingen NØKKEL oppgis overvåkes alle nøkler i SKJEMA.\n"
 "Bruk Ctrl+C for å stoppe overvåking.\n"
 
-#: ../gio/gsettings-tool.c:604
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:STI] [NØKKEL]"
 
-#: ../gio/gsettings-tool.c:616
+#: ../gio/gsettings-tool.c:618
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2279,7 +2283,7 @@ msgstr ""
 "Bruk «gsettings help KOMMANDO» for å få detaljert hjelp.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:638
+#: ../gio/gsettings-tool.c:640
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2294,11 +2298,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:646
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMAKATALOG en katalog for søk etter ekstra schemas\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:654
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2307,19 +2311,19 @@ msgstr ""
 "  SCHEMA      Id for schema\n"
 "  PATH        Sti, for schema som kan relokeres\n"
 
-#: ../gio/gsettings-tool.c:657
+#: ../gio/gsettings-tool.c:659
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  NØKKEL    Valgfri nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:661
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The key within the schema\n"
 msgstr "  NØKKEL       Nøkkel i schema\n"
 
-#: ../gio/gsettings-tool.c:665
+#: ../gio/gsettings-tool.c:667
 msgid "  VALUE     The value to set\n"
 msgstr "  VERDI     Verdi som skal settes\n"
 
-#: ../gio/gsettings-tool.c:786
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Tomt navn på schema oppgitt\n"
@@ -2446,29 +2450,29 @@ msgstr "Feil ved mottak av melding: %s"
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
-#: ../gio/gsocketclient.c:171
+#: ../gio/gsocketclient.c:174
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "Kunne ikke koble til proxy-tjener %s: "
 
-#: ../gio/gsocketclient.c:185
+#: ../gio/gsocketclient.c:188
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "Kunne ikke koble til «%s»: "
 
-#: ../gio/gsocketclient.c:187
+#: ../gio/gsocketclient.c:190
 msgid "Could not connect: "
 msgstr "Kunne ikke koble til: "
 
-#: ../gio/gsocketclient.c:973 ../gio/gsocketclient.c:1544
+#: ../gio/gsocketclient.c:976 ../gio/gsocketclient.c:1547
 msgid "Unknown error on connect"
 msgstr "Ukjent feil ved tilkobling"
 
-#: ../gio/gsocketclient.c:1026 ../gio/gsocketclient.c:1483
+#: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1486
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr "Proxy over annet enn TCP-forbindelser er ikke støttet."
 
-#: ../gio/gsocketclient.c:1052 ../gio/gsocketclient.c:1504
+#: ../gio/gsocketclient.c:1055 ../gio/gsocketclient.c:1507
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokoll «%s» er er ikke støttet"
@@ -3550,61 +3554,61 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
 
-#: ../glib/goption.c:759
+#: ../glib/goption.c:766
 msgid "Usage:"
 msgstr "Bruk:"
 
-#: ../glib/goption.c:759
+#: ../glib/goption.c:766
 msgid "[OPTION...]"
 msgstr "[FLAGG …]"
 
-#: ../glib/goption.c:865
+#: ../glib/goption.c:872
 msgid "Help Options:"
 msgstr "Flagg for hjelp:"
 
-#: ../glib/goption.c:866
+#: ../glib/goption.c:873
 msgid "Show help options"
 msgstr "Vis flagg for hjelp"
 
-#: ../glib/goption.c:872
+#: ../glib/goption.c:879
 msgid "Show all help options"
 msgstr "Vis alle flagg for hjelp"
 
-#: ../glib/goption.c:934
+#: ../glib/goption.c:941
 msgid "Application Options:"
 msgstr "Flagg for applikasjonen"
 
-#: ../glib/goption.c:996 ../glib/goption.c:1066
+#: ../glib/goption.c:1003 ../glib/goption.c:1073
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan ikke lese heltallsverdi «%s» for %s"
 
-#: ../glib/goption.c:1006 ../glib/goption.c:1074
+#: ../glib/goption.c:1013 ../glib/goption.c:1081
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltallsverdi «%s» for %s er utenfor gyldig område"
 
-#: ../glib/goption.c:1031
+#: ../glib/goption.c:1038
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan ikke lese verdi for double «%s» for %s"
 
-#: ../glib/goption.c:1039
+#: ../glib/goption.c:1046
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Double-verdi «%s» for %s er utenfor gyldig område"
 
-#: ../glib/goption.c:1302 ../glib/goption.c:1381
+#: ../glib/goption.c:1309 ../glib/goption.c:1388
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../glib/goption.c:1412 ../glib/goption.c:1525
+#: ../glib/goption.c:1419 ../glib/goption.c:1532
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mangler argument for %s"
 
-#: ../glib/goption.c:1956
+#: ../glib/goption.c:1985
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"
