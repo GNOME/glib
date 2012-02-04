@@ -28,7 +28,7 @@
 #include "ginputstream.h"
 #include "gioerror.h"
 #include "glibintl.h"
-
+#include "gpollableoutputstream.h"
 
 /**
  * SECTION:goutputstream
@@ -1266,6 +1266,10 @@ typedef struct {
   const void         *buffer;
   gsize               count_requested;
   gssize              count_written;
+
+  GCancellable       *cancellable;
+  gint                io_priority;
+  gboolean            need_idle;
 } WriteData;
 
 static void
@@ -1283,6 +1287,60 @@ write_async_thread (GSimpleAsyncResult *res,
 				       cancellable, &error);
   if (op->count_written == -1)
     g_simple_async_result_take_error (res, error);
+}
+
+static void write_async_pollable (GPollableOutputStream *stream,
+				  GSimpleAsyncResult    *result);
+
+static gboolean
+write_async_pollable_ready (GPollableOutputStream *stream,
+			    gpointer               user_data)
+{
+  GSimpleAsyncResult *result = user_data;
+
+  write_async_pollable (stream, result);
+  return FALSE;
+}
+
+static void
+write_async_pollable (GPollableOutputStream *stream,
+		      GSimpleAsyncResult    *result)
+{
+  GError *error = NULL;
+  WriteData *op = g_simple_async_result_get_op_res_gpointer (result);
+
+  if (g_cancellable_set_error_if_cancelled (op->cancellable, &error))
+    op->count_written = -1;
+  else
+    {
+      op->count_written = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
+	write_nonblocking (stream, op->buffer, op->count_requested, &error);
+    }
+
+  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+    {
+      GSource *source;
+
+      g_error_free (error);
+      op->need_idle = FALSE;
+
+      source = g_pollable_output_stream_create_source (stream, op->cancellable);
+      g_source_set_callback (source,
+			     (GSourceFunc) write_async_pollable_ready,
+			     g_object_ref (result), g_object_unref);
+      g_source_set_priority (source, op->io_priority);
+      g_source_attach (source, g_main_context_get_thread_default ());
+      g_source_unref (source);
+      return;
+    }
+
+  if (op->count_written == -1)
+    g_simple_async_result_take_error (result, error);
+
+  if (op->need_idle)
+    g_simple_async_result_complete_in_idle (result);
+  else
+    g_simple_async_result_complete (result);
 }
 
 static void
@@ -1303,7 +1361,11 @@ g_output_stream_real_write_async (GOutputStream       *stream,
   op->buffer = buffer;
   op->count_requested = count;
   
-  g_simple_async_result_run_in_thread (res, write_async_thread, io_priority, cancellable);
+  if (G_IS_POLLABLE_OUTPUT_STREAM (stream) &&
+      g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (stream)))
+    write_async_pollable (G_POLLABLE_OUTPUT_STREAM (stream), res);
+  else
+    g_simple_async_result_run_in_thread (res, write_async_thread, io_priority, cancellable);
   g_object_unref (res);
 }
 

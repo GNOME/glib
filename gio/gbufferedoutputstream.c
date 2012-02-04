@@ -88,16 +88,6 @@ static gboolean g_buffered_output_stream_close        (GOutputStream  *stream,
                                                        GCancellable   *cancellable,
                                                        GError        **error);
 
-static void     g_buffered_output_stream_write_async  (GOutputStream        *stream,
-                                                       const void           *buffer,
-                                                       gsize                 count,
-                                                       int                   io_priority,
-                                                       GCancellable         *cancellable,
-                                                       GAsyncReadyCallback   callback,
-                                                       gpointer              data);
-static gssize   g_buffered_output_stream_write_finish (GOutputStream        *stream,
-                                                       GAsyncResult         *result,
-                                                       GError              **error);
 static void     g_buffered_output_stream_flush_async  (GOutputStream        *stream,
                                                        int                   io_priority,
                                                        GCancellable         *cancellable,
@@ -137,8 +127,6 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
   ostream_class->write_fn = g_buffered_output_stream_write;
   ostream_class->flush = g_buffered_output_stream_flush;
   ostream_class->close_fn = g_buffered_output_stream_close;
-  ostream_class->write_async  = g_buffered_output_stream_write_async;
-  ostream_class->write_finish = g_buffered_output_stream_write_finish;
   ostream_class->flush_async  = g_buffered_output_stream_flush_async;
   ostream_class->flush_finish = g_buffered_output_stream_flush_finish;
   ostream_class->close_async  = g_buffered_output_stream_close_async;
@@ -576,102 +564,6 @@ flush_buffer_thread (GSimpleAsyncResult *result,
 
   if (res == FALSE)
     g_simple_async_result_take_error (result, error);
-}
-
-typedef struct {
-    
-  FlushData fdata;
-
-  gsize  count;
-  const void  *buffer;
-
-} WriteData;
-
-static void 
-free_write_data (gpointer data)
-{
-  g_slice_free (WriteData, data);
-}
-
-static void
-g_buffered_output_stream_write_async (GOutputStream        *stream,
-                                      const void           *buffer,
-                                      gsize                 count,
-                                      int                   io_priority,
-                                      GCancellable         *cancellable,
-                                      GAsyncReadyCallback   callback,
-                                      gpointer              data)
-{
-  GBufferedOutputStream *buffered_stream;
-  GBufferedOutputStreamPrivate *priv;
-  GSimpleAsyncResult *res;
-  WriteData *wdata;
-
-  buffered_stream = G_BUFFERED_OUTPUT_STREAM (stream);
-  priv = buffered_stream->priv;
-
-  wdata = g_slice_new (WriteData);
-  wdata->count  = count;
-  wdata->buffer = buffer;
-
-  res = g_simple_async_result_new (G_OBJECT (stream),
-                                   callback,
-                                   data,
-                                   g_buffered_output_stream_write_async);
-
-  g_simple_async_result_set_op_res_gpointer (res, wdata, free_write_data);
-
-  /* if we have space left directly call the
-   * callback (from idle) otherwise schedule a buffer 
-   * flush in the thread. In both cases the actual
-   * copying of the data to the buffer will be done in
-   * the write_finish () func since that should
-   * be fast enough */
-  if (priv->len - priv->pos > 0)
-    {
-      g_simple_async_result_complete_in_idle (res);
-    }
-  else
-    {
-      wdata->fdata.flush_stream = FALSE;
-      wdata->fdata.close_stream = FALSE;
-      g_simple_async_result_run_in_thread (res,
-                                           flush_buffer_thread,
-                                           io_priority,
-                                           cancellable);
-    }
-    g_object_unref (res);
-}
-
-static gssize
-g_buffered_output_stream_write_finish (GOutputStream        *stream,
-                                       GAsyncResult         *result,
-                                       GError              **error)
-{
-  GBufferedOutputStreamPrivate *priv;
-  GBufferedOutputStream        *buffered_stream;
-  GSimpleAsyncResult *simple;
-  WriteData          *wdata;
-  gssize              count;
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  buffered_stream = G_BUFFERED_OUTPUT_STREAM (stream);
-  priv = buffered_stream->priv;
-
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-            g_buffered_output_stream_write_async);
-
-  wdata = g_simple_async_result_get_op_res_gpointer (simple);
-
-  /* Now do the real copying of data to the buffer */
-  count = priv->len - priv->pos; 
-  count = MIN (wdata->count, count);
-
-  memcpy (priv->buffer + priv->pos, wdata->buffer, count);
-  
-  priv->pos += count;
-
-  return count;
 }
 
 static void

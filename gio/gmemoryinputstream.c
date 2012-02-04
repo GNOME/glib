@@ -70,16 +70,6 @@ static gssize   g_memory_input_stream_skip         (GInputStream         *stream
 static gboolean g_memory_input_stream_close        (GInputStream         *stream,
 						    GCancellable         *cancellable,
 						    GError              **error);
-static void     g_memory_input_stream_read_async   (GInputStream         *stream,
-						    void                 *buffer,
-						    gsize                 count,
-						    int                   io_priority,
-						    GCancellable         *cancellable,
-						    GAsyncReadyCallback   callback,
-						    gpointer              user_data);
-static gssize   g_memory_input_stream_read_finish  (GInputStream         *stream,
-						    GAsyncResult         *result,
-						    GError              **error);
 static void     g_memory_input_stream_skip_async   (GInputStream         *stream,
 						    gsize                 count,
 						    int                   io_priority,
@@ -143,8 +133,6 @@ g_memory_input_stream_class_init (GMemoryInputStreamClass *klass)
   istream_class->skip  = g_memory_input_stream_skip;
   istream_class->close_fn = g_memory_input_stream_close;
 
-  istream_class->read_async  = g_memory_input_stream_read_async;
-  istream_class->read_finish  = g_memory_input_stream_read_finish;
   istream_class->skip_async  = g_memory_input_stream_skip_async;
   istream_class->skip_finish  = g_memory_input_stream_skip_finish;
   istream_class->close_async = g_memory_input_stream_close_async;
@@ -350,51 +338,6 @@ g_memory_input_stream_close (GInputStream  *stream,
                              GError       **error)
 {
   return TRUE;
-}
-
-static void
-g_memory_input_stream_read_async (GInputStream        *stream,
-                                  void                *buffer,
-                                  gsize                count,
-                                  int                  io_priority,
-                                  GCancellable        *cancellable,
-                                  GAsyncReadyCallback  callback,
-                                  gpointer             user_data)
-{
-  GSimpleAsyncResult *simple;
-  GError *error = NULL;
-  gssize nread;
-
-  nread = G_INPUT_STREAM_GET_CLASS (stream)->read_fn (stream,
-						      buffer,
-						      count,
-						      cancellable,
-						      &error);
-  simple = g_simple_async_result_new (G_OBJECT (stream),
-				      callback,
-				      user_data,
-				      g_memory_input_stream_read_async);
-  if (error)
-    g_simple_async_result_take_error (simple, error);
-  else
-    g_simple_async_result_set_op_res_gssize (simple, nread);
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
-}
-
-static gssize
-g_memory_input_stream_read_finish (GInputStream  *stream,
-                                   GAsyncResult  *result,
-                                   GError       **error)
-{
-  GSimpleAsyncResult *simple;
-  gssize nread;
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_memory_input_stream_read_async);
-  
-  nread = g_simple_async_result_get_op_res_gssize (simple);
-  return nread;
 }
 
 static void

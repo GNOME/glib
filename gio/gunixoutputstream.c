@@ -95,16 +95,6 @@ static gssize   g_unix_output_stream_write        (GOutputStream        *stream,
 static gboolean g_unix_output_stream_close        (GOutputStream        *stream,
 						   GCancellable         *cancellable,
 						   GError              **error);
-static void     g_unix_output_stream_write_async  (GOutputStream        *stream,
-						   const void           *buffer,
-						   gsize                 count,
-						   int                   io_priority,
-						   GCancellable         *cancellable,
-						   GAsyncReadyCallback   callback,
-						   gpointer              data);
-static gssize   g_unix_output_stream_write_finish (GOutputStream        *stream,
-						   GAsyncResult         *result,
-						   GError              **error);
 static void     g_unix_output_stream_close_async  (GOutputStream        *stream,
 						   int                   io_priority,
 						   GCancellable         *cancellable,
@@ -138,8 +128,6 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
 
   stream_class->write_fn = g_unix_output_stream_write;
   stream_class->close_fn = g_unix_output_stream_close;
-  stream_class->write_async = g_unix_output_stream_write_async;
-  stream_class->write_finish = g_unix_output_stream_write_finish;
   stream_class->close_async = g_unix_output_stream_close_async;
   stream_class->close_finish = g_unix_output_stream_close_finish;
 
@@ -438,129 +426,6 @@ g_unix_output_stream_close (GOutputStream  *stream,
     }
 
   return res != -1;
-}
-
-typedef struct {
-  gsize count;
-  const void *buffer;
-  GAsyncReadyCallback callback;
-  gpointer user_data;
-  GCancellable *cancellable;
-  GUnixOutputStream *stream;
-} WriteAsyncData;
-
-static gboolean
-write_async_cb (int             fd,
-		GIOCondition    condition,
-		WriteAsyncData *data)
-{
-  GSimpleAsyncResult *simple;
-  GError *error = NULL;
-  gssize count_written;
-
-  while (1)
-    {
-      if (g_cancellable_set_error_if_cancelled (data->cancellable, &error))
-	{
-	  count_written = -1;
-	  break;
-	}
-      
-      count_written = write (data->stream->priv->fd, data->buffer, data->count);
-      if (count_written == -1)
-	{
-          int errsv = errno;
-
-	  if (errsv == EINTR || errsv == EAGAIN)
-	    return TRUE;
-	  
-	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	}
-      break;
-    }
-
-  simple = g_simple_async_result_new (G_OBJECT (data->stream),
-				      data->callback,
-				      data->user_data,
-				      g_unix_output_stream_write_async);
-  
-  g_simple_async_result_set_op_res_gssize (simple, count_written);
-
-  if (count_written == -1)
-    g_simple_async_result_take_error (simple, error);
-
-  /* Complete immediately, not in idle, since we're already in a mainloop callout */
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-
-  return FALSE;
-}
-
-static void
-g_unix_output_stream_write_async (GOutputStream       *stream,
-				  const void          *buffer,
-				  gsize                count,
-				  int                  io_priority,
-				  GCancellable        *cancellable,
-				  GAsyncReadyCallback  callback,
-				  gpointer             user_data)
-{
-  GSource *source;
-  GUnixOutputStream *unix_stream;
-  WriteAsyncData *data;
-
-  unix_stream = G_UNIX_OUTPUT_STREAM (stream);
-
-  if (!unix_stream->priv->is_pipe_or_socket)
-    {
-      G_OUTPUT_STREAM_CLASS (g_unix_output_stream_parent_class)->
-	write_async (stream, buffer, count, io_priority,
-		     cancellable, callback, user_data);
-      return;
-    }
-
-  data = g_new0 (WriteAsyncData, 1);
-  data->count = count;
-  data->buffer = buffer;
-  data->callback = callback;
-  data->user_data = user_data;
-  data->cancellable = cancellable;
-  data->stream = unix_stream;
-
-  source = _g_fd_source_new (unix_stream->priv->fd,
-			     G_IO_OUT,
-			     cancellable);
-  g_source_set_name (source, "GUnixOutputStream");
-  
-  g_source_set_callback (source, (GSourceFunc)write_async_cb, data, g_free);
-  g_source_attach (source, g_main_context_get_thread_default ());
-  
-  g_source_unref (source);
-}
-
-static gssize
-g_unix_output_stream_write_finish (GOutputStream  *stream,
-				   GAsyncResult   *result,
-				   GError        **error)
-{
-  GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
-  GSimpleAsyncResult *simple;
-  gssize nwritten;
-
-  if (!unix_stream->priv->is_pipe_or_socket)
-    {
-      return G_OUTPUT_STREAM_CLASS (g_unix_output_stream_parent_class)->
-	write_finish (stream, result, error);
-    }
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_unix_output_stream_write_async);
-  
-  nwritten = g_simple_async_result_get_op_res_gssize (simple);
-  return nwritten;
 }
 
 typedef struct {

@@ -95,16 +95,6 @@ static gssize   g_unix_input_stream_read         (GInputStream         *stream,
 static gboolean g_unix_input_stream_close        (GInputStream         *stream,
 						  GCancellable         *cancellable,
 						  GError              **error);
-static void     g_unix_input_stream_read_async   (GInputStream         *stream,
-						  void                 *buffer,
-						  gsize                 count,
-						  int                   io_priority,
-						  GCancellable         *cancellable,
-						  GAsyncReadyCallback   callback,
-						  gpointer              data);
-static gssize   g_unix_input_stream_read_finish  (GInputStream         *stream,
-						  GAsyncResult         *result,
-						  GError              **error);
 static void     g_unix_input_stream_skip_async   (GInputStream         *stream,
 						  gsize                 count,
 						  int                   io_priority,
@@ -123,6 +113,7 @@ static gboolean g_unix_input_stream_close_finish (GInputStream         *stream,
 						  GAsyncResult         *result,
 						  GError              **error);
 
+static gboolean g_unix_input_stream_pollable_can_poll      (GPollableInputStream *stream);
 static gboolean g_unix_input_stream_pollable_is_readable   (GPollableInputStream *stream);
 static GSource *g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
 							    GCancellable         *cancellable);
@@ -147,8 +138,6 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
 
   stream_class->read_fn = g_unix_input_stream_read;
   stream_class->close_fn = g_unix_input_stream_close;
-  stream_class->read_async = g_unix_input_stream_read_async;
-  stream_class->read_finish = g_unix_input_stream_read_finish;
   if (0)
     {
       /* TODO: Implement instead of using fallbacks */
@@ -192,6 +181,7 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
 static void
 g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 {
+  iface->can_poll = g_unix_input_stream_pollable_can_poll;
   iface->is_readable = g_unix_input_stream_pollable_is_readable;
   iface->create_source = g_unix_input_stream_pollable_create_source;
 }
@@ -454,129 +444,6 @@ g_unix_input_stream_close (GInputStream  *stream,
   return res != -1;
 }
 
-typedef struct {
-  gsize count;
-  void *buffer;
-  GAsyncReadyCallback callback;
-  gpointer user_data;
-  GCancellable *cancellable;
-  GUnixInputStream *stream;
-} ReadAsyncData;
-
-static gboolean
-read_async_cb (int            fd,
-               GIOCondition   condition,
-               ReadAsyncData *data)
-{
-  GSimpleAsyncResult *simple;
-  GError *error = NULL;
-  gssize count_read;
-
-  /* We know that we can read from fd once without blocking */
-  while (1)
-    {
-      if (g_cancellable_set_error_if_cancelled (data->cancellable, &error))
-	{
-	  count_read = -1;
-	  break;
-	}
-      count_read = read (data->stream->priv->fd, data->buffer, data->count);
-      if (count_read == -1)
-	{
-          int errsv = errno;
-
-	  if (errsv == EINTR || errsv == EAGAIN)
-	    return TRUE;
-	  
-	  g_set_error (&error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error reading from file descriptor: %s"),
-		       g_strerror (errsv));
-	}
-      break;
-    }
-
-  simple = g_simple_async_result_new (G_OBJECT (data->stream),
-				      data->callback,
-				      data->user_data,
-				      g_unix_input_stream_read_async);
-
-  g_simple_async_result_set_op_res_gssize (simple, count_read);
-
-  if (count_read == -1)
-    g_simple_async_result_take_error (simple, error);
-
-  /* Complete immediately, not in idle, since we're already in a mainloop callout */
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-
-  return FALSE;
-}
-
-static void
-g_unix_input_stream_read_async (GInputStream        *stream,
-				void                *buffer,
-				gsize                count,
-				int                  io_priority,
-				GCancellable        *cancellable,
-				GAsyncReadyCallback  callback,
-				gpointer             user_data)
-{
-  GSource *source;
-  GUnixInputStream *unix_stream;
-  ReadAsyncData *data;
-
-  unix_stream = G_UNIX_INPUT_STREAM (stream);
-
-  if (!unix_stream->priv->is_pipe_or_socket)
-    {
-      G_INPUT_STREAM_CLASS (g_unix_input_stream_parent_class)->
-	read_async (stream, buffer, count, io_priority,
-		    cancellable, callback, user_data);
-      return;
-    }
-
-  data = g_new0 (ReadAsyncData, 1);
-  data->count = count;
-  data->buffer = buffer;
-  data->callback = callback;
-  data->user_data = user_data;
-  data->cancellable = cancellable;
-  data->stream = unix_stream;
-
-  source = _g_fd_source_new (unix_stream->priv->fd,
-			     G_IO_IN,
-			     cancellable);
-  g_source_set_name (source, "GUnixInputStream");
-  
-  g_source_set_callback (source, (GSourceFunc)read_async_cb, data, g_free);
-  g_source_attach (source, g_main_context_get_thread_default ());
- 
-  g_source_unref (source);
-}
-
-static gssize
-g_unix_input_stream_read_finish (GInputStream  *stream,
-				 GAsyncResult  *result,
-				 GError       **error)
-{
-  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (stream);
-  GSimpleAsyncResult *simple;
-  gssize nread;
-
-  if (!unix_stream->priv->is_pipe_or_socket)
-    {
-      return G_INPUT_STREAM_CLASS (g_unix_input_stream_parent_class)->
-	read_finish (stream, result, error);
-    }
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_unix_input_stream_read_async);
-  
-  nread = g_simple_async_result_get_op_res_gssize (simple);
-  return nread;
-}
-
 static void
 g_unix_input_stream_skip_async (GInputStream        *stream,
 				gsize                count,
@@ -693,6 +560,12 @@ g_unix_input_stream_close_finish (GInputStream  *stream,
 {
   /* Failures handled in generic close_finish code */
   return TRUE;
+}
+
+static gboolean
+g_unix_input_stream_pollable_can_poll (GPollableInputStream *stream)
+{
+  return G_UNIX_INPUT_STREAM (stream)->priv->is_pipe_or_socket;
 }
 
 static gboolean

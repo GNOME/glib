@@ -89,16 +89,6 @@ static gboolean g_memory_output_stream_close       (GOutputStream  *stream,
                                                     GCancellable   *cancellable,
                                                     GError        **error);
 
-static void     g_memory_output_stream_write_async  (GOutputStream        *stream,
-                                                     const void           *buffer,
-                                                     gsize                 count,
-                                                     int                   io_priority,
-                                                     GCancellable         *cancellable,
-                                                     GAsyncReadyCallback   callback,
-                                                     gpointer              data);
-static gssize   g_memory_output_stream_write_finish (GOutputStream        *stream,
-                                                     GAsyncResult         *result,
-                                                     GError              **error);
 static void     g_memory_output_stream_close_async  (GOutputStream        *stream,
                                                      int                   io_priority,
                                                      GCancellable         *cancellable,
@@ -152,8 +142,6 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
 
   ostream_class->write_fn = g_memory_output_stream_write;
   ostream_class->close_fn = g_memory_output_stream_close;
-  ostream_class->write_async  = g_memory_output_stream_write_async;
-  ostream_class->write_finish = g_memory_output_stream_write_finish;
   ostream_class->close_async  = g_memory_output_stream_close_async;
   ostream_class->close_finish = g_memory_output_stream_close_finish;
 
@@ -626,56 +614,6 @@ g_memory_output_stream_close (GOutputStream  *stream,
                               GError        **error)
 {
   return TRUE;
-}
-
-static void
-g_memory_output_stream_write_async (GOutputStream       *stream,
-                                    const void          *buffer,
-                                    gsize                count,
-                                    int                  io_priority,
-                                    GCancellable        *cancellable,
-                                    GAsyncReadyCallback  callback,
-                                    gpointer             data)
-{
-  GSimpleAsyncResult *simple;
-  GError *error = NULL;
-  gssize nwritten;
-
-  nwritten = G_OUTPUT_STREAM_GET_CLASS (stream)->write_fn (stream,
-							   buffer,
-							   count,
-							   cancellable,
-							   &error);
-
-  simple = g_simple_async_result_new (G_OBJECT (stream),
-                                      callback,
-                                      data,
-                                      g_memory_output_stream_write_async);
-
-  if (error)
-    g_simple_async_result_take_error (simple, error);
-  else
-    g_simple_async_result_set_op_res_gssize (simple, nwritten);
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
-}
-
-static gssize
-g_memory_output_stream_write_finish (GOutputStream  *stream,
-                                     GAsyncResult   *result,
-                                     GError        **error)
-{
-  GSimpleAsyncResult *simple;
-  gssize nwritten;
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) ==
-                  g_memory_output_stream_write_async);
-
-  nwritten = g_simple_async_result_get_op_res_gssize (simple);
-
-  return nwritten;
 }
 
 static void
