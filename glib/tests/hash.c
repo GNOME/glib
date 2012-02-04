@@ -942,6 +942,7 @@ test_destroy_modify (void)
       FakeFreeData *ffd = g_ptr_array_index (fake_free_data, i);
 
       g_assert (ffd->freed);
+      g_free (ffd->string);
       g_free (ffd);
     }
 

@@ -881,6 +881,7 @@ test_non_utf8_printf (void)
   if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
     {
       g_test_message ("locale ja_JP.eucjp not available, skipping non-UTF8 tests");
+      g_free (oldlocale);
       return;
     }
 
