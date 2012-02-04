@@ -1,3 +1,23 @@
+Overview of changes from GLib 2.31.14 to 2.31.16
+================================================
+
+* GResource:
+ - The resource compiler can now convert pngs into
+   pixel data that can be used without parsing at runtime
+   (requires gdk-pixbuf-pixdata to be present)
+
+* Bugs fixed:
+ 669123 resource compiler: failing to-pixdata should...
+ 669173 resource: fix xml preprocess entity handling
+ 669224 Cross-compilation broken by data-to-c
+ 669253 gsettings set buggy on array values
+ 669334 fix memory leak in bookmark file parser
+
+* Translation updates:
+ Norwegian bokmål
+ Spanish
+
+
 Overview of changes from GLib 2.31.12 to 2.31.14
 ================================================
 
