@@ -183,6 +183,24 @@ g_resource_unref (GResource *resource)
     }
 }
 
+/*
+ * g_resource_new_from_table:
+ * @table: (transfer full): a GvdbTable
+ *
+ * Returns: (transfer full): a new #GResource for @table
+ */
+static GResource *
+g_resource_new_from_table (GvdbTable *table)
+{
+  GResource *resource;
+
+  resource = g_new (GResource, 1);
+  resource->ref_count = 1;
+  resource->table = table;
+
+  return resource;
+}
+
 /**
  * g_resource_new_from_data:
  * @data: A #GBytes.
@@ -203,7 +221,6 @@ GResource *
 g_resource_new_from_data (GBytes *data,
 			  GError **error)
 {
-  GResource *resource;
   GvdbTable *table;
 
   table = gvdb_table_new_from_data (g_bytes_get_data (data, NULL),
@@ -217,11 +234,7 @@ g_resource_new_from_data (GBytes *data,
   if (table == NULL)
     return NULL;
 
-  resource = g_new0 (GResource, 1);
-  resource->ref_count = 1;
-  resource->table = table;
-
-  return resource;
+  return g_resource_new_from_table (table);
 }
 
 /**
@@ -243,18 +256,13 @@ GResource *
 g_resource_load (const gchar *filename,
 		 GError **error)
 {
-  GResource *resource;
   GvdbTable *table;
 
   table = gvdb_table_new (filename, FALSE, error);
   if (table == NULL)
     return NULL;
 
-  resource = g_new0 (GResource, 1);
-  resource->ref_count = 1;
-  resource->table = table;
-
-  return resource;
+  return g_resource_new_from_table (table);
 }
 
 static gboolean do_lookup (GResource *resource,
