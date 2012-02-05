@@ -295,24 +295,23 @@ static gboolean do_lookup (GResource *resource,
 		     &_flags,
 		     &array);
 
-      if (!res)
-	{
-	  if (size)
-	    *size = _size;
-	  if (flags)
-	    *flags = _flags;
-	  if (data)
-	    *data = g_variant_get_data (array);
-	  if (data_size)
-	    {
-	      /* Don't report trailing newline that non-compressed files has */
-	      if (_flags & G_RESOURCE_FLAGS_COMPRESSED)
-		*data_size = g_variant_get_size (array);
-	      else
-		*data_size = g_variant_get_size (array) - 1;
-	    }
-	  res = TRUE;
-	}
+      if (size)
+        *size = _size;
+      if (flags)
+        *flags = _flags;
+      if (data)
+        *data = g_variant_get_data (array);
+      if (data_size)
+        {
+          /* Don't report trailing newline that non-compressed files has */
+          if (_flags & G_RESOURCE_FLAGS_COMPRESSED)
+            *data_size = g_variant_get_size (array);
+          else
+            *data_size = g_variant_get_size (array) - 1;
+        }
+      g_variant_unref (array);
+
+      res = TRUE;
     }
 
   g_free (free_path);
