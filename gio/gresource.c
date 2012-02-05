@@ -310,6 +310,7 @@ static gboolean do_lookup (GResource *resource,
             *data_size = g_variant_get_size (array) - 1;
         }
       g_variant_unref (array);
+      g_variant_unref (value);
 
       res = TRUE;
     }
