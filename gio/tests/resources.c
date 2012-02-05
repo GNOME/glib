@@ -286,6 +286,7 @@ test_resource_registred (void)
   g_assert (children != NULL);
   g_assert_no_error (error);
   g_assert_cmpint (g_strv_length (children), ==, 2);
+  g_strfreev (children);
 
   g_resources_unregister (resource);
 
