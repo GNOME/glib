@@ -293,6 +293,7 @@ test_resource_registred (void)
   g_strfreev (children);
 
   g_resources_unregister (resource);
+  g_resource_unref (resource);
 
   found = g_resources_get_info ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
