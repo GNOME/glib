@@ -372,6 +372,7 @@ test_resource_module (void)
       path = g_strconcat (dir, G_DIR_SEPARATOR_S "libresourceplugin",  NULL);
       module = g_io_module_new (path);
       g_free (path);
+      g_free (dir);
 
       error = NULL;
 
