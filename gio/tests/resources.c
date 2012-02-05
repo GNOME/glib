@@ -434,6 +434,7 @@ test_uri_query_info (void)
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
+  g_bytes_unref (data);
   g_assert (resource != NULL);
   g_assert_no_error (error);
 
