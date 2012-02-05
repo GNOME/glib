@@ -93,7 +93,9 @@ test_resource (GResource *resource)
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
 
-  g_input_stream_close (in, NULL, NULL);
+  g_input_stream_close (in, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&in);
 
   data = g_resource_lookup_data (resource,
 				 "/a_prefix/test2.txt",
@@ -250,8 +252,9 @@ test_resource_registred (void)
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
 
-  g_input_stream_close (in, NULL, NULL);
-
+  g_input_stream_close (in, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&in);
 
   data = g_resources_lookup_data ("/a_prefix/test2.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
