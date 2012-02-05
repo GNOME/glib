@@ -441,6 +441,8 @@ g_resource_lookup_data (GResource *resource,
 	  if (res == G_CONVERTER_ERROR)
 	    {
 	      g_free (uncompressed);
+              g_object_unref (decompressor);
+
 	      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_INTERNAL,
 			   _("The resource at '%s' failed to decompress"),
 			   path);
@@ -455,6 +457,8 @@ g_resource_lookup_data (GResource *resource,
       while (res != G_CONVERTER_FINISHED);
 
       uncompressed[size] = 0; /* Zero terminate */
+
+      g_object_unref (decompressor);
 
       return g_bytes_new_take (uncompressed, size);
     }
