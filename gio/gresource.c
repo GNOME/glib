@@ -251,6 +251,7 @@ g_resource_load (const gchar *filename,
     return NULL;
 
   resource = g_new0 (GResource, 1);
+  resource->ref_count = 1;
   resource->table = table;
 
   return resource;
