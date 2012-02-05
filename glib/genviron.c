@@ -109,7 +109,7 @@ g_environ_getenv (gchar       **envp,
 /**
  * g_environ_setenv:
  * @envp: (array zero-terminated=1) (transfer full): an environment
- *     list (eg, as returned from g_get_environ())
+ *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ())
  * @variable: the environment variable to set, must not contain '='
  * @value: the value for to set the variable to
  * @overwrite: whether to change the variable if it already exists
@@ -122,7 +122,7 @@ g_environ_getenv (gchar       **envp,
  * arbitrary byte strings. On Windows, they should be in UTF-8.
  *
  * Return value: (array zero-terminated=1) (transfer full): the
- *     updated environment
+ *     updated environment list. Free it using g_strfreev().
  *
  * Since: 2.32
  */
@@ -160,30 +160,13 @@ g_environ_setenv (gchar       **envp,
   return envp;
 }
 
-/**
- * g_environ_unsetenv:
- * @envp: (array zero-terminated=1) (transfer full): an environment
- *     list (eg, as returned from g_get_environ())
- * @variable: the environment variable to remove, must not contain '='
- *
- * Removes the environment variable @variable from the provided
- * environment @envp.
- *
- * Return value: (array zero-terminated=1) (transfer full): the
- *     updated environment
- *
- * Since: 2.32
- */
-gchar **
-g_environ_unsetenv (gchar       **envp,
-                    const gchar  *variable)
+static gchar **
+g_environ_unsetenv_internal (gchar        **envp,
+                             const gchar   *variable,
+                             gboolean       free_value)
 {
   gint len;
   gchar **e, **f;
-
-  g_return_val_if_fail (envp != NULL, NULL);
-  g_return_val_if_fail (variable != NULL, NULL);
-  g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
 
   len = strlen (variable);
 
@@ -198,11 +181,43 @@ g_environ_unsetenv (gchar       **envp,
           *f = *e;
           f++;
         }
+      else
+        {
+          if (free_value)
+            g_free (*e);
+        }
+
       e++;
     }
   *f = NULL;
 
   return envp;
+}
+
+
+/**
+ * g_environ_unsetenv:
+ * @envp: (array zero-terminated=1) (transfer full): an environment
+ *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ())
+ * @variable: the environment variable to remove, must not contain '='
+ *
+ * Removes the environment variable @variable from the provided
+ * environment @envp.
+ *
+ * Return value: (array zero-terminated=1) (transfer full): the
+ *     updated environment list. Free it using g_strfreev().
+ *
+ * Since: 2.32
+ */
+gchar **
+g_environ_unsetenv (gchar       **envp,
+                    const gchar  *variable)
+{
+  g_return_val_if_fail (envp != NULL, NULL);
+  g_return_val_if_fail (variable != NULL, NULL);
+  g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
+
+  return g_environ_unsetenv_internal (envp, variable, TRUE);
 }
 
 /* UNIX implemention {{{1 */
@@ -346,7 +361,7 @@ g_unsetenv (const gchar *variable)
   /* Mess directly with the environ array.
    * This seems to be the only portable way to do this.
    */
-  g_environ_unsetenv (environ, variable);
+  g_environ_unsetenv_internal (environ, variable, FALSE);
 #endif /* !HAVE_UNSETENV */
 }
 
