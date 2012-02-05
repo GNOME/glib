@@ -198,6 +198,9 @@ g_environ_unsetenv (gchar       **envp,
           *f = *e;
           f++;
         }
+      else
+        g_free (*e);
+
       e++;
     }
   *f = NULL;
