@@ -724,6 +724,219 @@ test_charset (gconstpointer data)
   g_object_unref (conv);
 }
 
+
+static void
+client_connected (GObject      *source,
+		  GAsyncResult *result,
+		  gpointer      user_data)
+{
+  GSocketClient *client = G_SOCKET_CLIENT (source);
+  GSocketConnection **conn = user_data;
+  GError *error = NULL;
+
+  *conn = g_socket_client_connect_finish (client, result, &error);
+  g_assert_no_error (error);
+}
+
+static void
+server_connected (GObject      *source,
+		  GAsyncResult *result,
+		  gpointer      user_data)
+{
+  GSocketListener *listener = G_SOCKET_LISTENER (source);
+  GSocketConnection **conn = user_data;
+  GError *error = NULL;
+
+  *conn = g_socket_listener_accept_finish (listener, result, NULL, &error);
+  g_assert_no_error (error);
+}
+
+static void
+make_socketpair (GIOStream **left,
+		 GIOStream **right)
+{
+  GInetAddress *iaddr;
+  GSocketAddress *saddr, *effective_address;
+  GSocketListener *listener;
+  GSocketClient *client;
+  GError *error = NULL;
+  GSocketConnection *client_conn = NULL, *server_conn = NULL;
+
+  iaddr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
+  saddr = g_inet_socket_address_new (iaddr, 0);
+  g_object_unref (iaddr);
+
+  listener = g_socket_listener_new ();
+  g_socket_listener_add_address (listener, saddr,
+				 G_SOCKET_TYPE_STREAM,
+				 G_SOCKET_PROTOCOL_TCP,
+				 NULL,
+				 &effective_address,
+				 &error);
+  g_assert_no_error (error);
+  g_object_unref (saddr);
+
+  client = g_socket_client_new ();
+
+  g_socket_client_connect_async (client,
+				 G_SOCKET_CONNECTABLE (effective_address),
+				 NULL, client_connected, &client_conn);
+  g_socket_listener_accept_async (listener, NULL,
+				  server_connected, &server_conn);
+
+  while (!client_conn || !server_conn)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_object_unref (client);
+  g_object_unref (listener);
+  g_object_unref (effective_address);
+
+  *left = G_IO_STREAM (client_conn);
+  *right = G_IO_STREAM (server_conn);
+}
+
+static void
+test_converter_pollable (void)
+{
+  GIOStream *left, *right;
+  guint8 *converted, *inptr;
+  guint8 *expanded, *outptr, *expanded_end;
+  gsize n_read, expanded_size;
+  gsize total_read;
+  gssize res;
+  gboolean is_readable;
+  GConverterResult cres;
+  GInputStream *cstream;
+  GPollableInputStream *pollable_in;
+  GOutputStream *socket_out, *mem_out, *cstream_out;
+  GPollableOutputStream *pollable_out;
+  GConverter *expander, *compressor;
+  GError *error;
+  int i;
+
+  expander = g_expander_converter_new ();
+  expanded = g_malloc (100*1000); /* Large enough */
+  cres = g_converter_convert (expander,
+			      unexpanded_data, sizeof(unexpanded_data),
+			      expanded, 100*1000,
+			      G_CONVERTER_INPUT_AT_END,
+			      &n_read, &expanded_size, NULL);
+  g_assert (cres == G_CONVERTER_FINISHED);
+  g_assert (n_read == 11);
+  g_assert (expanded_size == 41030);
+  expanded_end = expanded + expanded_size;
+
+  make_socketpair (&left, &right);
+
+  compressor = g_compressor_converter_new ();
+
+  converted = g_malloc (100*1000); /* Large enough */
+
+  cstream = g_converter_input_stream_new (g_io_stream_get_input_stream (left),
+					  compressor);
+  pollable_in = G_POLLABLE_INPUT_STREAM (cstream);
+  g_assert (g_pollable_input_stream_can_poll (pollable_in));
+
+  socket_out = g_io_stream_get_output_stream (right);
+
+  total_read = 0;
+  outptr = expanded;
+  inptr = converted;
+  while (TRUE)
+    {
+      error = NULL;
+
+      if (outptr < expanded_end)
+	{
+	  res = g_output_stream_write (socket_out,
+				       outptr,
+				       MIN (1000, (expanded_end - outptr)),
+				       NULL, &error);
+	  g_assert_cmpint (res, >, 0);
+	  outptr += res;
+	}
+      else if (socket_out)
+	{
+	  g_object_unref (right);
+	  socket_out = NULL;
+	}
+
+      is_readable = g_pollable_input_stream_is_readable (pollable_in);
+      res = g_pollable_input_stream_read_nonblocking (pollable_in,
+						      inptr, 1,
+						      NULL, &error);
+
+      /* is_readable can be a false positive, but not a false negative */
+      if (!is_readable)
+	g_assert_cmpint (res, ==, -1);
+
+      /* After closing the write end, we can't get WOULD_BLOCK any more */
+      if (!socket_out)
+	g_assert_cmpint (res, !=, -1);
+
+      if (res == -1)
+	{
+	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK);
+	  g_error_free (error);
+
+	  continue;
+	}
+
+      if (res == 0)
+	break;
+      inptr += res;
+      total_read += res;
+    }
+
+  g_assert (total_read == n_read - 1); /* Last 2 zeros are combined */
+  g_assert (memcmp (converted, unexpanded_data, total_read)  == 0);
+
+  g_object_unref (cstream);
+  g_object_unref (left);
+
+  g_converter_reset (compressor);
+
+  /* This doesn't actually test the behavior on
+   * G_IO_ERROR_WOULD_BLOCK; to do that we'd need to implement a
+   * custom GOutputStream that we could control blocking on.
+   */
+
+  mem_out = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+  cstream_out = g_converter_output_stream_new (mem_out, compressor);
+  g_object_unref (mem_out);
+  pollable_out = G_POLLABLE_OUTPUT_STREAM (cstream_out);
+
+  for (i = 0; i < expanded_size; i++)
+    {
+      error = NULL;
+      res = g_pollable_output_stream_write_nonblocking (pollable_out,
+							expanded + i, 1,
+							NULL, &error);
+      g_assert (res != -1);
+      if (res == 0)
+	{
+	  g_assert (i == expanded_size -1);
+	  break;
+	}
+      g_assert (res == 1);
+    }
+
+  g_output_stream_close (cstream_out, NULL, NULL);
+
+  g_assert (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mem_out)) == n_read - 1); /* Last 2 zeros are combined */
+  g_assert (memcmp (g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mem_out)),
+		    unexpanded_data,
+		    g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mem_out)))  == 0);
+
+  g_object_unref (cstream_out);
+
+  g_free (expanded);
+  g_free (converted);
+  g_object_unref (expander);
+  g_object_unref (compressor);
+}
+
+
 int
 main (int   argc,
       char *argv[])
@@ -759,6 +972,7 @@ main (int   argc,
   for (i = 0; i < G_N_ELEMENTS (charset_tests); i++)
     g_test_add_data_func (charset_tests[i].path, &charset_tests[i], test_charset);
 
+  g_test_add_func ("/converter-stream/pollable", test_converter_pollable);
 
   return g_test_run();
 }

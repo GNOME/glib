@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include "gmemoryinputstream.h"
+#include "gpollableinputstream.h"
 #include "ginputstream.h"
 #include "gseekable.h"
 #include "string.h"
@@ -39,6 +40,8 @@
  * #GMemoryInputStream is a class for using arbitrary
  * memory chunks as input for GIO streaming input operations.
  *
+ * As of GLib 2.34, #GMemoryInputStream implements
+ * #GPollableInputStream.
  */
 
 typedef struct _Chunk Chunk;
@@ -108,11 +111,20 @@ static gboolean g_memory_input_stream_truncate            (GSeekable       *seek
                                                            goffset          offset,
                                                            GCancellable    *cancellable,
                                                            GError         **error);
+
+static void     g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
+static gboolean g_memory_input_stream_is_readable         (GPollableInputStream *stream);
+static GSource *g_memory_input_stream_create_source       (GPollableInputStream *stream,
+							   GCancellable          *cancellable);
+
 static void     g_memory_input_stream_finalize            (GObject         *object);
 
 G_DEFINE_TYPE_WITH_CODE (GMemoryInputStream, g_memory_input_stream, G_TYPE_INPUT_STREAM,
                          G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-                                                g_memory_input_stream_seekable_iface_init))
+                                                g_memory_input_stream_seekable_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
+                                                g_memory_input_stream_pollable_iface_init);
+			 )
 
 
 static void
@@ -172,6 +184,13 @@ g_memory_input_stream_seekable_iface_init (GSeekableIface *iface)
   iface->seek         = g_memory_input_stream_seek;
   iface->can_truncate = g_memory_input_stream_can_truncate;
   iface->truncate_fn  = g_memory_input_stream_truncate;
+}
+
+static void
+g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
+{
+  iface->is_readable   = g_memory_input_stream_is_readable;
+  iface->create_source = g_memory_input_stream_create_source;
 }
 
 static void
@@ -525,4 +544,24 @@ g_memory_input_stream_truncate (GSeekable     *seekable,
                        G_IO_ERROR_NOT_SUPPORTED,
                        _("Cannot truncate GMemoryInputStream"));
   return FALSE;
+}
+
+static gboolean
+g_memory_input_stream_is_readable (GPollableInputStream *stream)
+{
+  return TRUE;
+}
+
+static GSource *
+g_memory_input_stream_create_source (GPollableInputStream *stream,
+				     GCancellable         *cancellable)
+{
+  GSource *base_source, *pollable_source;
+
+  base_source = g_timeout_source_new (0);
+  pollable_source = g_pollable_source_new_full (stream, base_source,
+						cancellable);
+  g_source_unref (base_source);
+
+  return pollable_source;
 }

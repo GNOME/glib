@@ -25,6 +25,7 @@
 #include "config.h"
 #include "gmemoryoutputstream.h"
 #include "goutputstream.h"
+#include "gpollableoutputstream.h"
 #include "gseekable.h"
 #include "gsimpleasyncresult.h"
 #include "gioerror.h"
@@ -41,6 +42,8 @@
  * #GMemoryOutputStream is a class for using arbitrary
  * memory chunks as output for GIO streaming output operations.
  *
+ * As of GLib 2.34, #GMemoryOutputStream implements
+ * #GPollableOutputStream.
  */
 
 #define MIN_ARRAY_SIZE  16
@@ -119,9 +122,17 @@ static gboolean g_memory_output_stream_truncate            (GSeekable       *see
                                                            GCancellable    *cancellable,
                                                            GError         **error);
 
+static gboolean g_memory_output_stream_is_writable       (GPollableOutputStream *stream);
+static GSource *g_memory_output_stream_create_source     (GPollableOutputStream *stream,
+							  GCancellable          *cancellable);
+
+static void g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
+
 G_DEFINE_TYPE_WITH_CODE (GMemoryOutputStream, g_memory_output_stream, G_TYPE_OUTPUT_STREAM,
                          G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-                                                g_memory_output_stream_seekable_iface_init))
+                                                g_memory_output_stream_seekable_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
+                                                g_memory_output_stream_pollable_iface_init))
 
 
 static void
@@ -222,6 +233,13 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                          P_("Function called with the buffer as argument when the stream is destroyed."),
                                                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
+}
+
+static void
+g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
+{
+  iface->is_writable = g_memory_output_stream_is_writable;
+  iface->create_source = g_memory_output_stream_create_source;
 }
 
 static void
@@ -799,4 +817,24 @@ g_memory_output_stream_truncate (GSeekable     *seekable,
     return FALSE;
 
   return TRUE;
+}
+
+static gboolean
+g_memory_output_stream_is_writable (GPollableOutputStream *stream)
+{
+  return TRUE;
+}
+
+static GSource *
+g_memory_output_stream_create_source (GPollableOutputStream *stream,
+				      GCancellable          *cancellable)
+{
+  GSource *base_source, *pollable_source;
+
+  base_source = g_timeout_source_new (0);
+  pollable_source = g_pollable_source_new_full (stream, base_source,
+						cancellable);
+  g_source_unref (base_source);
+
+  return pollable_source;
 }
