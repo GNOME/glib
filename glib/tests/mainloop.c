@@ -27,12 +27,31 @@ static gboolean cb (gpointer data)
   return FALSE;
 }
 
+static gboolean prepare (GSource *source, gint *time)
+{
+  return FALSE;
+}
+static gboolean check (GSource *source)
+{
+  return FALSE;
+}
+static gboolean dispatch (GSource *source, GSourceFunc cb, gpointer date)
+{
+  return FALSE;
+}
+
+GSourceFuncs funcs = {
+  prepare,
+  check,
+  dispatch,
+  NULL
+};
+
 static void
 test_maincontext_basic (void)
 {
   GMainContext *ctx;
   GSource *source;
-  GSourceFuncs funcs;
   guint id;
   gpointer data = &funcs;
 
@@ -58,6 +77,7 @@ test_maincontext_basic (void)
   g_assert (g_main_context_find_source_by_funcs_user_data (ctx, &funcs, NULL) == NULL);
 
   id = g_source_attach (source, ctx);
+  g_source_unref (source);
   g_assert_cmpint (g_source_get_id (source), ==, id);
   g_assert (g_main_context_find_source_by_id (ctx, id) == source);
 
@@ -72,6 +92,7 @@ test_maincontext_basic (void)
   g_source_set_funcs (source, &funcs);
   g_source_set_callback (source, cb, data, NULL);
   id = g_source_attach (source, ctx);
+  g_source_unref (source);
   g_source_set_name_by_id (id, "e");
   g_assert_cmpstr (g_source_get_name (source), ==, "e");
   g_assert (g_source_get_context (source) == ctx);
