@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib", "glib.vcxproj", "{12BCA020-EABF-429E-876A-A476BC9C10C0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gmodule", "gmodule.vcxproj", "{4214047C-F5C1-40B3-8369-5DCED8C32770}"
@@ -23,6 +23,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsettings", "gsettings.vcxproj", "{05041C63-F1C5-49BA-A7DE-61EBB5307EAA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "install.vcxproj", "{2093D218-190E-4194-9421-3BA7CBF33B10}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gresource", "gresource.vcxproj", "{95A1571F-61BE-4C51-BE53-2F2DAB280685}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib-compile-resources", "glib-compile-resources.vcxproj", "{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -228,6 +232,38 @@ Global
 		{2093D218-190E-4194-9421-3BA7CBF33B10}.Release|Win32.Build.0 = Release|Win32
 		{2093D218-190E-4194-9421-3BA7CBF33B10}.Release|x64.ActiveCfg = Release|x64
 		{2093D218-190E-4194-9421-3BA7CBF33B10}.Release|x64.Build.0 = Release|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug_ExtPCRE|Win32.ActiveCfg = Debug|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug_ExtPCRE|Win32.Build.0 = Debug|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug_ExtPCRE|x64.ActiveCfg = Debug|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug_ExtPCRE|x64.Build.0 = Debug|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug|Win32.ActiveCfg = Debug|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug|Win32.Build.0 = Debug|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug|x64.ActiveCfg = Debug|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Debug|x64.Build.0 = Debug|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release_ExtPCRE|Win32.ActiveCfg = Release|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release_ExtPCRE|Win32.Build.0 = Release|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release_ExtPCRE|x64.ActiveCfg = Release|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release_ExtPCRE|x64.Build.0 = Release|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release|Win32.ActiveCfg = Release|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release|Win32.Build.0 = Release|Win32
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release|x64.ActiveCfg = Release|x64
+		{95A1571F-61BE-4C51-BE53-2F2DAB280685}.Release|x64.Build.0 = Release|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug_ExtPCRE|Win32.ActiveCfg = Debug|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug_ExtPCRE|Win32.Build.0 = Debug|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug_ExtPCRE|x64.ActiveCfg = Debug|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug_ExtPCRE|x64.Build.0 = Debug|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug|Win32.Build.0 = Debug|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug|x64.ActiveCfg = Debug|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Debug|x64.Build.0 = Debug|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release_ExtPCRE|Win32.ActiveCfg = Release|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release_ExtPCRE|Win32.Build.0 = Release|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release_ExtPCRE|x64.ActiveCfg = Release|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release_ExtPCRE|x64.Build.0 = Release|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release|Win32.ActiveCfg = Release|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release|Win32.Build.0 = Release|Win32
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release|x64.ActiveCfg = Release|x64
+		{B0CDEC7F-DCE1-4F7E-B8A4-A3009C18FB2A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

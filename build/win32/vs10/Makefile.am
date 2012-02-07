@@ -30,4 +30,8 @@ EXTRA_DIST = \
 	glib-compile-schemas.vcxproj.filters \
 	gsettings.vcxproj \
 	gsettings.vcxproj.filters \
+	glib-compile-resources.vcxproj \
+	glib-compile-resources.vcxproj.filters \
+	gresource.vcxproj \
+	gresource.vcxproj.filters \
 	install.vcxproj 
