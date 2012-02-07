@@ -632,6 +632,27 @@ GUnixInputStreamPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gwin32inputstream</FILE>
+<TITLE>GWin32InputStream</TITLE>
+GWin32InputStream
+g_win32_input_stream_new
+g_win32_input_stream_set_close_handle
+g_win32_input_stream_get_close_handle
+g_win_input_stream_get_handle
+<SUBSECTION Standard>
+GWin32InputStreamClass
+G_WIN32_INPUT_STREAM
+G_IS_WIN32_INPUT_STREAM
+G_TYPE_WIN32_INPUT_STREAM
+G_WIN32_INPUT_STREAM_CLASS
+G_IS_WIN32_INPUT_STREAM_CLASS
+G_WIN32_INPUT_STREAM_GET_CLASS
+<SUBSECTION Private>
+g_win32_input_stream_get_type
+GWin32InputStreamPrivate
+</SECTION>
+
+<SECTION>
 <FILE>gmemoryinputstream</FILE>
 <TITLE>GMemoryInputStream</TITLE>
 GMemoryInputStream
@@ -890,6 +911,27 @@ G_UNIX_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_unix_output_stream_get_type
 GUnixOutputStreamPrivate
+</SECTION>
+
+<SECTION>
+<FILE>gwin32outputstream</FILE>
+<TITLE>GWin32OutputStream</TITLE>
+GWin32OutputStream
+g_win32_output_stream_new
+g_win32_output_stream_set_close_handle
+g_win32_output_stream_get_close_handle
+g_win32_output_stream_get_handle
+<SUBSECTION Standard>
+GWin32OutputStreamClass
+G_WIN32_OUTPUT_STREAM
+G_IS_WIN32_OUTPUT_STREAM
+G_TYPE_WIN32_OUTPUT_STREAM
+G_WIN32_OUTPUT_STREAM_CLASS
+G_IS_WIN32_OUTPUT_STREAM_CLASS
+G_WIN32_OUTPUT_STREAM_GET_CLASS
+<SUBSECTION Private>
+g_win32_output_stream_get_type
+GWin32OutputStreamPrivate
 </SECTION>
 
 <SECTION>
