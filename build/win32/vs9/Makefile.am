@@ -16,4 +16,6 @@ EXTRA_DIST = \
 	testglib.vcproj \
 	glib-compile-schemas.vcproj \
 	gsettings.vcproj \
+	glib-compile-resources.vcproj \
+	gresource.vcproj \
 	install.vcproj
