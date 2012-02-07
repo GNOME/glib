@@ -30,6 +30,9 @@
 #include <stdio.h>
 #include <locale.h>
 #include <errno.h>
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 #ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
