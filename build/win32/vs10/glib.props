@@ -421,7 +421,7 @@ copy ..\..\..\gio\gremoteactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
-copy ..\..\..\gio\gresource.h $(OutDir)\include\glib-$(ApiVersion)\gio
+copy ..\..\..\gio\gresource.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gseekable.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
