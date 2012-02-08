@@ -66,9 +66,6 @@
 /* #undef G_HAVE___INLINE__ */
 #endif /* _MSC_VER or __DMC__ */
 
-/* Source file containing theread implementation */
-#define G_THREAD_SOURCE "gthread-win32.c"
-
 /* A 'va_copy' style function */
 #ifndef _MSC_VER
 #define G_VA_COPY va_copy
@@ -224,6 +221,9 @@
 /* Define to 1 if you have the `hasmntopt' function. */
 /* #undef HAVE_HASMNTOPT */
 
+/* Define to 1 if you have the `if_nametoindex' function. */
+/* #undef HAVE_IF_NAMETOINDEX */
+
 /* Define to 1 if you have the `inotify_init1' function. */
 /* #undef HAVE_INOTIFY_INIT1 */
 
@@ -255,6 +255,9 @@
 /* #undef HAVE_INTTYPES_H_WITH_UINTMAX */
 #endif /* _MSC_VER */
 
+/* Define if we have struct ip_mreqn */
+/* #undef HAVE_IP_MREQN */
+
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
 
@@ -272,6 +275,9 @@
 
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 /* #undef HAVE_LC_MESSAGES */
+
+/* Define if libelf is available */
+/* #undef HAVE_LIBELF */
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
@@ -367,6 +373,9 @@
 /* Have function pthread_attr_setstacksize */
 /* #undef HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
+/* Have function pthread_condattr_setclock */
+/* #undef HAVE_PTHREAD_CONDATTR_SETCLOCK */
+
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #define HAVE_PTRDIFF_T 1
 
@@ -396,9 +405,6 @@
 
 /* Define to 1 if you have the `setmntent' function. */
 /* #undef HAVE_SETMNTENT */
-
-/* Define to 1 if you have the `setresuid' function. */
-/* #undef HAVE_SETRESUID */
 
 /* Define to 1 if you have the `snprintf' function. */
 #ifndef _MSC_VER
@@ -482,9 +488,6 @@
 #else /* _MSC_VER or __DMC__ */
 /* #undef HAVE_STRNCASECMP */
 #endif /* _MSC_VER or __DMC__ */
-
-/* Define to 1 if you have the `strndup' function. */
-/* #undef HAVE_STRNDUP */
 
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
