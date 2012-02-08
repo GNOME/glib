@@ -280,7 +280,7 @@ test_properties (GDBusProxy *proxy)
    */
   result = g_dbus_proxy_call_sync (proxy,
                                    "FrobInvalidateProperty",
-                                   NULL,
+                                   g_variant_new ("(s)", "OMGInvalidated"),
                                    G_DBUS_CALL_FLAGS_NONE,
                                    -1,
                                    NULL,
@@ -294,6 +294,51 @@ test_properties (GDBusProxy *proxy)
   /* ... and now we finally, check that the cached value has been invalidated */
   variant = g_dbus_proxy_get_cached_property (proxy, "PropertyThatWillBeInvalidated");
   g_assert (variant == NULL);
+
+  /* Now test that G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES works - we need a new proxy for that */
+  gchar *name_owner;
+  GDBusProxy *proxy2;
+  error = NULL;
+  proxy2 = g_dbus_proxy_new_sync (g_dbus_proxy_get_connection (proxy),
+                                  G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
+                                  NULL,                      /* GDBusInterfaceInfo */
+                                  "com.example.TestService", /* name */
+                                  "/com/example/TestObject", /* object path */
+                                  "com.example.Frob",        /* interface */
+                                  NULL, /* GCancellable */
+                                  &error);
+  g_assert_no_error (error);
+
+  name_owner = g_dbus_proxy_get_name_owner (proxy2);
+  g_assert (name_owner != NULL);
+  g_free (name_owner);
+
+  variant = g_dbus_proxy_get_cached_property (proxy2, "PropertyThatWillBeInvalidated");
+  g_assert (variant != NULL);
+  g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "OMGInvalidated"); /* from previous test */
+  g_variant_unref (variant);
+
+  result = g_dbus_proxy_call_sync (proxy2,
+                                   "FrobInvalidateProperty",
+                                   g_variant_new ("(s)", "OMGInvalidated2"),
+                                   G_DBUS_CALL_FLAGS_NONE,
+                                   -1,
+                                   NULL,
+                                   &error);
+  g_assert_no_error (error);
+  g_assert (result != NULL);
+  g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
+  g_variant_unref (result);
+
+  /* this time we should get the ::g-properties-changed _with_ the value */
+  _g_assert_signal_received (proxy2, "g-properties-changed");
+
+  variant = g_dbus_proxy_get_cached_property (proxy2, "PropertyThatWillBeInvalidated");
+  g_assert (variant != NULL);
+  g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "OMGInvalidated2");
+  g_variant_unref (variant);
+
+  g_object_unref (proxy2);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

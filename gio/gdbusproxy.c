@@ -587,6 +587,10 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * that both @changed_properties and @invalidated_properties are
    * guaranteed to never be %NULL (either may be empty though).
    *
+   * If the proxy has the flag
+   * %G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set, then
+   * @invalidated_properties will always be empty.
+   *
    * This signal corresponds to the
    * <literal>PropertiesChanged</literal> D-Bus signal on the
    * <literal>org.freedesktop.DBus.Properties</literal> interface.
@@ -971,6 +975,63 @@ insert_property_checked (GDBusProxy  *proxy,
   g_free (property_name);
 }
 
+typedef struct
+{
+  GDBusProxy *proxy;
+  gchar *prop_name;
+} InvalidatedPropGetData;
+
+static void
+invalidated_property_get_cb (GDBusConnection *connection,
+                             GAsyncResult    *res,
+                             gpointer         user_data)
+{
+  InvalidatedPropGetData *data = user_data;
+  const gchar *invalidated_properties[] = {NULL};
+  GVariantBuilder builder;
+  GVariant *value = NULL;
+  GVariant *unpacked_value = NULL;
+
+  /* errors are fine, the other end could have disconnected */
+  value = g_dbus_connection_call_finish (connection, res, NULL);
+  if (value == NULL)
+    {
+      goto out;
+    }
+
+  if (!g_variant_is_of_type (value, G_VARIANT_TYPE ("(v)")))
+    {
+      g_warning ("Expected type `(v)' for Get() reply, got `%s'", g_variant_get_type_string (value));
+      goto out;
+    }
+
+  g_variant_get (value, "(v)", &unpacked_value);
+
+  /* synthesize the a{sv} in the PropertiesChanged signal */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder, "{sv}", data->prop_name, unpacked_value);
+
+  G_LOCK (properties_lock);
+  insert_property_checked (data->proxy,
+                           data->prop_name,  /* adopts string */
+                           unpacked_value);  /* adopts value */
+  data->prop_name = NULL;
+  G_UNLOCK (properties_lock);
+
+  g_signal_emit (data->proxy,
+                 signals[PROPERTIES_CHANGED_SIGNAL], 0,
+                 g_variant_builder_end (&builder), /* consumed */
+                 invalidated_properties);
+
+
+ out:
+  if (value != NULL)
+    g_variant_unref (value);
+  g_object_unref (data->proxy);
+  g_free (data->prop_name);
+  g_slice_free (InvalidatedPropGetData, data);
+}
+
 static void
 on_properties_changed (GDBusConnection *connection,
                        const gchar     *sender_name,
@@ -981,6 +1042,7 @@ on_properties_changed (GDBusConnection *connection,
                        gpointer         user_data)
 {
   SignalSubscriptionData *data = user_data;
+  gboolean emit_g_signal = FALSE;
   GDBusProxy *proxy;
   const gchar *interface_name_for_signal;
   GVariant *changed_properties;
@@ -1043,20 +1105,52 @@ on_properties_changed (GDBusConnection *connection,
       insert_property_checked (proxy,
 			       key, /* adopts string */
 			       value); /* adopts value */
+      emit_g_signal = TRUE;
     }
 
-  for (n = 0; invalidated_properties[n] != NULL; n++)
+  if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES)
     {
-      g_hash_table_remove (proxy->priv->properties, invalidated_properties[n]);
+      if (proxy->priv->name_owner != NULL)
+        {
+          for (n = 0; invalidated_properties[n] != NULL; n++)
+            {
+              InvalidatedPropGetData *data;
+              data = g_slice_new0 (InvalidatedPropGetData);
+              data->proxy = g_object_ref (proxy);
+              data->prop_name = g_strdup (invalidated_properties[n]);
+              g_dbus_connection_call (proxy->priv->connection,
+                                      proxy->priv->name_owner,
+                                      proxy->priv->object_path,
+                                      "org.freedesktop.DBus.Properties",
+                                      "Get",
+                                      g_variant_new ("(ss)", proxy->priv->interface_name, data->prop_name),
+                                      G_VARIANT_TYPE ("(v)"),
+                                      G_DBUS_CALL_FLAGS_NONE,
+                                      -1,           /* timeout */
+                                      NULL,         /* GCancellable */
+                                      (GAsyncReadyCallback) invalidated_property_get_cb,
+                                      data);
+            }
+        }
+    }
+  else
+    {
+      emit_g_signal = TRUE;
+      for (n = 0; invalidated_properties[n] != NULL; n++)
+        {
+          g_hash_table_remove (proxy->priv->properties, invalidated_properties[n]);
+        }
     }
 
   G_UNLOCK (properties_lock);
 
-  /* emit signal */
-  g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
-                 0,
-                 changed_properties,
-                 invalidated_properties);
+  if (emit_g_signal)
+    {
+      g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
+                     0,
+                     changed_properties,
+                     invalidated_properties);
+    }
 
  out:
   if (changed_properties != NULL)

@@ -880,6 +880,7 @@ typedef enum
  * @G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START: If not set and the proxy if for a well-known name,
  * then request the bus to launch an owner for the name if no-one owns the name. This flag can
  * only be used in proxies for well-known names.
+ * @G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES: If set, the property value for any <emphasis>invalidated property</emphasis> will be (asynchronously) retrieved upon receiving the <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">PropertiesChanged</ulink> D-Bus signal and the property will not cause emission of the #GDBusProxy::g-properties-changed signal. When the value is received the #GDBusProxy::g-properties-changed signal is emitted for the property along with the retrieved value. Since 2.32.
  *
  * Flags used when constructing an instance of a #GDBusProxy derived class.
  *
@@ -890,7 +891,8 @@ typedef enum
   G_DBUS_PROXY_FLAGS_NONE = 0,
   G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0),
   G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1),
-  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START = (1<<2)
+  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START = (1<<2),
+  G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES = (1<<3)
 } GDBusProxyFlags;
 
 /**
