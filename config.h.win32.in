@@ -222,6 +222,10 @@
 /* #undef HAVE_HASMNTOPT */
 
 /* Define to 1 if you have the `if_nametoindex' function. */
+/* This is available on Windows, but the catch is that this will require */
+/* Windows Vista/Server 2008, so disabled for now-please see */
+/* http://msdn.microsoft.com/en-us/library/windows/desktop/bb408409%28v=vs.85%29.aspx */
+/* A workaround for Windows XP is under review in Bug 668071 */
 /* #undef HAVE_IF_NAMETOINDEX */
 
 /* Define to 1 if you have the `inotify_init1' function. */
