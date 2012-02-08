@@ -282,7 +282,7 @@ typedef struct {
   guint32 sections;
 
   /* <private> */
-  guint16 padding[5];
+  guint16 padding[6];
 } Header;
 
 typedef enum {
@@ -433,6 +433,10 @@ typedef struct {
   /* <public> */
   gint8        closure;
   gint8        destroy;
+
+  /* <private> */
+  guint16      padding;
+  /* <public> */
 
   SimpleTypeBlob arg_type;
 } ArgBlob;
@@ -1050,6 +1054,8 @@ typedef struct {
   guint16 n_signals;
   guint16 n_vfuncs;
   guint16 n_constants;
+
+  guint16 padding;
 
   guint32 reserved2;
   guint32 reserved3;
