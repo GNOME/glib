@@ -80,6 +80,8 @@ g_async_queue_sort
 g_async_queue_sort_unlocked
 g_async_queue_timed_pop
 g_async_queue_timed_pop_unlocked
+g_async_queue_timeout_pop
+g_async_queue_timeout_pop_unlocked
 g_async_queue_try_pop
 g_async_queue_try_pop_unlocked
 g_async_queue_unlock

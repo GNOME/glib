@@ -29,9 +29,11 @@
 #include "gasyncqueue.h"
 #include "gasyncqueueprivate.h"
 
+#include "gmain.h"
 #include "gmem.h"
 #include "gqueue.h"
 #include "gtestutils.h"
+#include "gtimer.h"
 #include "gthread.h"
 #include "deprecated/gthread.h"
 
@@ -67,7 +69,7 @@
  * available in the queue at that point, the thread is now put to sleep
  * until a message arrives. The message will be removed from the queue
  * and returned. The functions g_async_queue_try_pop() and
- * g_async_queue_timed_pop() can be used to only check for the presence
+ * g_async_queue_timeout_pop() can be used to only check for the presence
  * of messages or to only wait a certain time for messages respectively.
  *
  * For almost every function there exist two variants, one that locks
@@ -406,7 +408,7 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
 static gpointer
 g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
                                    gboolean     wait,
-                                   GTimeVal    *end_time)
+                                   gint64       end_time)
 {
   gpointer retval;
 
@@ -415,15 +417,20 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
       queue->waiting_threads++;
       while (!g_queue_peek_tail_link (&queue->queue))
         {
-          if (!g_cond_timed_wait (&queue->cond, &queue->mutex, end_time))
-            break;
+	  if (end_time == -1)
+	    g_cond_wait (&queue->cond, &queue->mutex);
+	  else
+	    {
+	      if (!g_cond_wait_until (&queue->cond, &queue->mutex, end_time))
+		break;
+	    }
         }
       queue->waiting_threads--;
     }
 
   retval = g_queue_pop_tail (&queue->queue);
 
-  g_assert (retval || !wait || end_time);
+  g_assert (retval || !wait || end_time > 0);
 
   return retval;
 }
@@ -445,7 +452,7 @@ g_async_queue_pop (GAsyncQueue *queue)
   g_return_val_if_fail (queue, NULL);
 
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
+  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, -1);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -467,7 +474,7 @@ g_async_queue_pop_unlocked (GAsyncQueue *queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
+  return g_async_queue_pop_intern_unlocked (queue, TRUE, -1);
 }
 
 /**
@@ -488,7 +495,7 @@ g_async_queue_try_pop (GAsyncQueue *queue)
   g_return_val_if_fail (queue, NULL);
 
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
+  retval = g_async_queue_pop_intern_unlocked (queue, FALSE, -1);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -511,7 +518,58 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
+  return g_async_queue_pop_intern_unlocked (queue, FALSE, -1);
+}
+
+/**
+ * g_async_queue_timeout_pop:
+ * @queue: a #GAsyncQueue
+ * @timeout: the number of microseconds to wait
+ *
+ * Pops data from the @queue. If the queue is empty, blocks for
+ * @timeout microseconds, or until data becomes available.
+ *
+ * If no data is received before the timeout, %NULL is returned.
+ *
+ * Return value: data from the queue or %NULL, when no data is
+ *     received before the timeout.
+ */
+gpointer
+g_async_queue_timeout_pop (GAsyncQueue *queue,
+			   guint64      timeout)
+{
+  gint64 end_time = g_get_monotonic_time () + timeout;
+  gpointer retval;
+
+  g_mutex_lock (&queue->mutex);
+  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
+  g_mutex_unlock (&queue->mutex);
+
+  return retval;
+}
+
+/**
+ * g_async_queue_timeout_pop_unlocked:
+ * @queue: a #GAsyncQueue
+ * @time: the number of microseconds to wait
+ *
+ * Pops data from the @queue. If the queue is empty, blocks for
+ * @timeout microseconds, or until data becomes available.
+ *
+ * If no data is received before the timeout, %NULL is returned.
+ *
+ * This function must be called while holding the @queue's lock.
+ *
+ * Return value: data from the queue or %NULL, when no data is
+ *     received before the timeout.
+ */
+gpointer
+g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
+				    guint64      timeout)
+{
+  gint64 end_time = g_get_monotonic_time () + timeout;
+
+  return g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
 }
 
 /**
@@ -529,17 +587,29 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
  *
  * Return value: data from the queue or %NULL, when no data is
  *     received before @end_time.
+ *
+ * Deprecated: use g_async_queue_timeout_pop().
  */
 gpointer
 g_async_queue_timed_pop (GAsyncQueue *queue,
                          GTimeVal    *end_time)
 {
+  gint64 m_end_time;
   gpointer retval;
 
   g_return_val_if_fail (queue, NULL);
 
+  if (end_time != NULL)
+    {
+      m_end_time = g_get_monotonic_time () +
+	(end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec -
+	 g_get_real_time ());
+    }
+  else
+    m_end_time = -1;
+
   g_mutex_lock (&queue->mutex);
-  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
+  retval = g_async_queue_pop_intern_unlocked (queue, TRUE, m_end_time);
   g_mutex_unlock (&queue->mutex);
 
   return retval;
@@ -562,14 +632,27 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
  *
  * Return value: data from the queue or %NULL, when no data is
  *     received before @end_time.
+ *
+ * Deprecated: use g_async_queue_timeout_pop_unlocked().
  */
 gpointer
 g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
                                   GTimeVal    *end_time)
 {
+  gint64 m_end_time;
+
   g_return_val_if_fail (queue, NULL);
 
-  return g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
+  if (end_time != NULL)
+    {
+      m_end_time = g_get_monotonic_time () +
+	(end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec -
+	 g_get_real_time ());
+    }
+  else
+    m_end_time = -1;
+
+  return g_async_queue_pop_intern_unlocked (queue, TRUE, m_end_time);
 }
 
 /**

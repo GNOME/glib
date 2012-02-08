@@ -163,15 +163,11 @@ g_thread_pool_wait_for_new_pool (void)
       else if (local_max_idle_time > 0)
         {
           /* If a maximal idle time is given, wait for the given time. */
-          GTimeVal end_time;
-
-          g_get_current_time (&end_time);
-          g_time_val_add (&end_time, local_max_idle_time * 1000);
-
           DEBUG_MSG (("thread %p waiting in global pool for %f seconds.",
                       g_thread_self (), local_max_idle_time / 1000.0));
 
-          pool = g_async_queue_timed_pop (unused_thread_queue, &end_time);
+          pool = g_async_queue_timeout_pop (unused_thread_queue,
+					    local_max_idle_time * 1000);
         }
       else
         {
@@ -260,17 +256,13 @@ g_thread_pool_wait_for_new_task (GRealThreadPool *pool)
           /* A thread will wait for new tasks for at most 1/2
            * second before going to the global pool.
            */
-          GTimeVal end_time;
-
-          g_get_current_time (&end_time);
-          g_time_val_add (&end_time, G_USEC_PER_SEC / 2);    /* 1/2 second */
-
           DEBUG_MSG (("thread %p in pool %p waits for up to a 1/2 second for task "
                       "(%d running, %d unprocessed).",
                       g_thread_self (), pool, pool->num_threads,
                       g_async_queue_length_unlocked (pool->queue)));
 
-          task = g_async_queue_timed_pop_unlocked (pool->queue, &end_time);
+          task = g_async_queue_timeout_pop_unlocked (pool->queue,
+						     G_USEC_PER_SEC / 2);
         }
     }
   else

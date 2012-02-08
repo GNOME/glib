@@ -66,10 +66,10 @@ gpointer     g_async_queue_pop                  (GAsyncQueue      *queue);
 gpointer     g_async_queue_pop_unlocked         (GAsyncQueue      *queue);
 gpointer     g_async_queue_try_pop              (GAsyncQueue      *queue);
 gpointer     g_async_queue_try_pop_unlocked     (GAsyncQueue      *queue);
-gpointer     g_async_queue_timed_pop            (GAsyncQueue      *queue,
-                                                 GTimeVal         *end_time);
-gpointer     g_async_queue_timed_pop_unlocked   (GAsyncQueue      *queue,
-                                                 GTimeVal         *end_time);
+gpointer     g_async_queue_timeout_pop          (GAsyncQueue      *queue,
+                                                 guint64           timeout);
+gpointer     g_async_queue_timeout_pop_unlocked (GAsyncQueue      *queue,
+                                                 guint64           timeout);
 gint         g_async_queue_length               (GAsyncQueue      *queue);
 gint         g_async_queue_length_unlocked      (GAsyncQueue      *queue);
 void         g_async_queue_sort                 (GAsyncQueue      *queue,
@@ -78,6 +78,13 @@ void         g_async_queue_sort                 (GAsyncQueue      *queue,
 void         g_async_queue_sort_unlocked        (GAsyncQueue      *queue,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+
+GLIB_DEPRECATED_FOR(g_async_queue_timeout_pop)
+gpointer     g_async_queue_timed_pop            (GAsyncQueue      *queue,
+                                                 GTimeVal         *end_time);
+GLIB_DEPRECATED_FOR(g_async_queue_timeout_pop_unlocked)
+gpointer     g_async_queue_timed_pop_unlocked   (GAsyncQueue      *queue,
+                                                 GTimeVal         *end_time);
 
 G_END_DECLS
 
