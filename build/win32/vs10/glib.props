@@ -385,8 +385,6 @@ copy ..\..\..\gio\gmemoryoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gi
 
 copy ..\..\..\gio\gmenuexporter.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
-copy ..\..\..\gio\gmenumarkup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
-
 copy ..\..\..\gio\gmenumodel.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gmenu.h $(CopyDir)\include\glib-$(ApiVersion)\gio
@@ -422,6 +420,8 @@ copy ..\..\..\gio\gproxyresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 copy ..\..\..\gio\gremoteactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gresource.h $(OutDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gseekable.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
