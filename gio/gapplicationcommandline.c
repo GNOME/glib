@@ -139,9 +139,9 @@ struct _GApplicationCommandLinePrivate
 {
   GVariant *platform_data;
   GVariant *arguments;
-  GVariant *cwd;
+  gchar *cwd;
 
-  const gchar **environ;
+  gchar **environ;
   gint exit_status;
 };
 
@@ -162,14 +162,14 @@ grok_platform_data (GApplicationCommandLine *cmdline)
     if (strcmp (key, "cwd") == 0)
       {
         if (!cmdline->priv->cwd)
-          cmdline->priv->cwd = g_variant_ref (value);
+          cmdline->priv->cwd = g_variant_dup_bytestring (value, NULL);
       }
 
     else if (strcmp (key, "environ") == 0)
       {
         if (!cmdline->priv->environ)
           cmdline->priv->environ =
-            g_variant_get_bytestring_array (value, NULL);
+            g_variant_dup_bytestring_array (value, NULL);
       }
 }
 
@@ -250,8 +250,9 @@ g_application_command_line_finalize (GObject *object)
     g_variant_unref (cmdline->priv->platform_data);
   if (cmdline->priv->arguments)
     g_variant_unref (cmdline->priv->arguments);
-  if (cmdline->priv->cwd)
-    g_variant_unref (cmdline->priv->cwd);
+
+  g_free (cmdline->priv->cwd);
+  g_strfreev (cmdline->priv->environ);
 
   G_OBJECT_CLASS (g_application_command_line_parent_class)
     ->finalize (object);
@@ -267,6 +268,22 @@ g_application_command_line_init (GApplicationCommandLine *cmdline)
 }
 
 static void
+g_application_command_line_constructed (GObject *object)
+{
+  GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
+
+  if (IS_REMOTE (cmdline))
+    return;
+
+  /* In the local case, set cmd and environ */
+  if (!cmdline->priv->cwd)
+    cmdline->priv->cwd = g_get_current_dir ();
+
+  if (!cmdline->priv->environ)
+    cmdline->priv->environ = g_get_environ ();
+}
+
+static void
 g_application_command_line_class_init (GApplicationCommandLineClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
@@ -274,6 +291,8 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
   object_class->get_property = g_application_command_line_get_property;
   object_class->set_property = g_application_command_line_set_property;
   object_class->finalize = g_application_command_line_finalize;
+  object_class->constructed = g_application_command_line_constructed;
+
   class->printerr_literal = g_application_command_line_real_printerr_literal;
   class->print_literal = g_application_command_line_real_print_literal;
 
@@ -358,10 +377,7 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
 const gchar *
 g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
 {
-  if (cmdline->priv->cwd)
-    return g_variant_get_bytestring (cmdline->priv->cwd);
-  else
-    return NULL;
+  return cmdline->priv->cwd;
 }
 
 /**
@@ -392,7 +408,7 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
 const gchar * const *
 g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
 {
-  return cmdline->priv->environ;
+  return (const gchar **)cmdline->priv->environ;
 }
 
 /**
