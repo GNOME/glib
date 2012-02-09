@@ -1429,11 +1429,15 @@ g_hash_table_foreach (GHashTable *hash_table,
 {
   gint i;
 #ifndef G_DISABLE_ASSERT
-  gint version = hash_table->version;
+  gint version;
 #endif
 
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (func != NULL);
+
+#ifndef G_DISABLE_ASSERT
+  version = hash_table->version;
+#endif
 
   for (i = 0; i < hash_table->size; i++)
     {
@@ -1483,12 +1487,16 @@ g_hash_table_find (GHashTable *hash_table,
 {
   gint i;
 #ifndef G_DISABLE_ASSERT
-  gint version = hash_table->version;
+  gint version;
 #endif
   gboolean match;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
   g_return_val_if_fail (predicate != NULL, NULL);
+
+#ifndef G_DISABLE_ASSERT
+  version = hash_table->version;
+#endif
 
   match = FALSE;
 
