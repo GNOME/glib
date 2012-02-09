@@ -73,7 +73,7 @@ typedef struct
   GString *string;  /* non-NULL when accepting text */
 } ParseState;
 
-static gchar *sourcedir = NULL;
+static gchar **sourcedirs = NULL;
 static gchar *xmllint = NULL;
 static gchar *gdk_pixbuf_pixdata = NULL;
 
@@ -174,6 +174,25 @@ get_parent (GHashTable *table,
   return parent;
 }
 
+static gchar *
+find_file (const gchar *filename)
+{
+  guint i;
+  gchar *real_file;
+  gboolean exists;
+
+  /* search all the sourcedirs for the correct files in order */
+  for (i = 0; sourcedirs[i] != NULL; i++)
+    {
+	real_file = g_build_filename (sourcedirs[i], filename, NULL);
+	exists = g_file_test (real_file, G_FILE_TEST_EXISTS);
+	if (exists)
+	  return real_file;
+	g_free (real_file);
+    }
+    return NULL;
+}
+
 static void
 end_element (GMarkupParseContext  *context,
 	     const gchar          *element_name,
@@ -217,10 +236,28 @@ end_element (GMarkupParseContext  *context,
 
       data = g_new0 (FileData, 1);
 
-      if (sourcedir != NULL)
-	real_file = g_build_filename (sourcedir, file, NULL);
+      if (sourcedirs != NULL)
+        {
+	  real_file = find_file (file);
+	  if (real_file == NULL)
+	    {
+		g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+			     _("Failed to locate '%s' in any source directory"), file);
+		return;
+	    }
+	}
       else
-	real_file = g_strdup (file);
+        {
+	  gboolean exists;
+	  exists = g_file_test (file, G_FILE_TEST_EXISTS);
+	  if (!exists)
+	    {
+	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+			   _("Failed to locate '%s' in current directory"), file);
+	      return;
+	    }
+	  real_file = g_strdup (file);
+	}
 
       data->filename = g_strdup (real_file);
       if (!state->collect_data)
@@ -568,7 +605,7 @@ main (int argc, char **argv)
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "target", 0, 0, G_OPTION_ARG_FILENAME, &target, N_("name of the output file"), N_("FILE") },
-    { "sourcedir", 0, 0, G_OPTION_ARG_FILENAME, &sourcedir, N_("The directory where files are to be read from (default to current directory)"), N_("DIRECTORY") },
+    { "sourcedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &sourcedirs, N_("The directories where files are to be read from (default to current directory)"), N_("DIRECTORY") },
     { "generate", 0, 0, G_OPTION_ARG_NONE, &generate_automatic, N_("Generate output in the format selected for by the target filename extension"), NULL },
     { "generate-header", 0, 0, G_OPTION_ARG_NONE, &generate_header, N_("Generate source header"), NULL },
     { "generate-source", 0, 0, G_OPTION_ARG_NONE, &generate_source, N_("Generate sourcecode used to link in the resource file into your code"), NULL },
@@ -624,9 +661,6 @@ main (int argc, char **argv)
     }
 
   srcfile = argv[1];
-
-  if (sourcedir == NULL)
-    sourcedir = "";
 
   xmllint = g_strdup (g_getenv ("XMLLINT"));
   if (xmllint == NULL)
