@@ -218,6 +218,7 @@ application_path_from_appid (const gchar *appid)
  */
 static gboolean
 g_application_impl_attempt_primary (GApplicationImpl  *impl,
+                                    gboolean           non_unique,
                                     GCancellable      *cancellable,
                                     GError           **error)
 {
@@ -267,6 +268,21 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (impl->actions_id == 0)
     return FALSE;
 
+  if (non_unique)
+    {
+      /* If this is a non-unique application then it is sufficient to
+       * have our object paths registered. We can return now.
+       *
+       * Note: non-unique applications always act as primary-instance.
+       */
+      impl->primary = TRUE;
+      return TRUE;
+    }
+
+  /* If this is a unique application then we need to attempt to own
+   * the well-known name and fall back to remote mode (!is_primary)
+   * in the case that we can't do that.
+   */
   /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
   reply = g_dbus_connection_call_sync (impl->session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
                                        "org.freedesktop.DBus", "RequestName",
@@ -367,7 +383,11 @@ g_application_impl_register (GApplication        *application,
    */
   if (~flags & G_APPLICATION_IS_LAUNCHER)
     {
-      if (!g_application_impl_attempt_primary (impl, cancellable, error))
+      gboolean non_unique;
+
+      non_unique = (flags & G_APPLICATION_NON_UNIQUE) != 0;
+
+      if (!g_application_impl_attempt_primary (impl, non_unique, cancellable, error))
         {
           g_application_impl_destroy (impl);
           return NULL;
