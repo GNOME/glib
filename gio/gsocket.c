@@ -3040,8 +3040,26 @@ update_condition (GSocket *socket)
   if (socket->priv->current_events & (FD_READ | FD_ACCEPT))
     condition |= G_IO_IN;
 
-  if (socket->priv->current_events & FD_CLOSE ||
-      socket->priv->closed)
+  if (socket->priv->current_events & FD_CLOSE)
+    {
+      int r, errsv, buffer;
+
+      r = recv (socket->priv->fd, &buffer, sizeof (buffer), MSG_PEEK);
+      if (r < 0)
+          errsv = get_socket_errno ();
+
+      if (r > 0 ||
+          (r < 0 && errsv == WSAENOTCONN))
+        condition |= G_IO_IN;
+      else if (r == 0 ||
+               (r < 0 && (errsv == WSAESHUTDOWN || errsv == WSAECONNRESET ||
+                          errsv == WSAECONNABORTED || errsv == WSAENETRESET)))
+        condition |= G_IO_HUP;
+      else
+        condition |= G_IO_ERR;
+    }
+
+  if (socket->priv->closed)
     condition |= G_IO_HUP;
 
   /* Never report both G_IO_OUT and HUP, these are
