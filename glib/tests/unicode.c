@@ -678,13 +678,151 @@ test_fully_decompose_len (void)
 static void
 test_iso15924 (void)
 {
+  const struct {
+    GUnicodeScript script;
+    char four_letter_code[5];
+  } data[] = {
+    { G_UNICODE_SCRIPT_COMMON,             "Zyyy" },
+    { G_UNICODE_SCRIPT_INHERITED,          "Zinh" },
+    { G_UNICODE_SCRIPT_ARABIC,             "Arab" },
+    { G_UNICODE_SCRIPT_ARMENIAN,           "Armn" },
+    { G_UNICODE_SCRIPT_BENGALI,            "Beng" },
+    { G_UNICODE_SCRIPT_BOPOMOFO,           "Bopo" },
+    { G_UNICODE_SCRIPT_CHEROKEE,           "Cher" },
+    { G_UNICODE_SCRIPT_COPTIC,             "Copt" },
+    { G_UNICODE_SCRIPT_CYRILLIC,           "Cyrl" },
+    { G_UNICODE_SCRIPT_DESERET,            "Dsrt" },
+    { G_UNICODE_SCRIPT_DEVANAGARI,         "Deva" },
+    { G_UNICODE_SCRIPT_ETHIOPIC,           "Ethi" },
+    { G_UNICODE_SCRIPT_GEORGIAN,           "Geor" },
+    { G_UNICODE_SCRIPT_GOTHIC,             "Goth" },
+    { G_UNICODE_SCRIPT_GREEK,              "Grek" },
+    { G_UNICODE_SCRIPT_GUJARATI,           "Gujr" },
+    { G_UNICODE_SCRIPT_GURMUKHI,           "Guru" },
+    { G_UNICODE_SCRIPT_HAN,                "Hani" },
+    { G_UNICODE_SCRIPT_HANGUL,             "Hang" },
+    { G_UNICODE_SCRIPT_HEBREW,             "Hebr" },
+    { G_UNICODE_SCRIPT_HIRAGANA,           "Hira" },
+    { G_UNICODE_SCRIPT_KANNADA,            "Knda" },
+    { G_UNICODE_SCRIPT_KATAKANA,           "Kana" },
+    { G_UNICODE_SCRIPT_KHMER,              "Khmr" },
+    { G_UNICODE_SCRIPT_LAO,                "Laoo" },
+    { G_UNICODE_SCRIPT_LATIN,              "Latn" },
+    { G_UNICODE_SCRIPT_MALAYALAM,          "Mlym" },
+    { G_UNICODE_SCRIPT_MONGOLIAN,          "Mong" },
+    { G_UNICODE_SCRIPT_MYANMAR,            "Mymr" },
+    { G_UNICODE_SCRIPT_OGHAM,              "Ogam" },
+    { G_UNICODE_SCRIPT_OLD_ITALIC,         "Ital" },
+    { G_UNICODE_SCRIPT_ORIYA,              "Orya" },
+    { G_UNICODE_SCRIPT_RUNIC,              "Runr" },
+    { G_UNICODE_SCRIPT_SINHALA,            "Sinh" },
+    { G_UNICODE_SCRIPT_SYRIAC,             "Syrc" },
+    { G_UNICODE_SCRIPT_TAMIL,              "Taml" },
+    { G_UNICODE_SCRIPT_TELUGU,             "Telu" },
+    { G_UNICODE_SCRIPT_THAANA,             "Thaa" },
+    { G_UNICODE_SCRIPT_THAI,               "Thai" },
+    { G_UNICODE_SCRIPT_TIBETAN,            "Tibt" },
+    { G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL, "Cans" },
+    { G_UNICODE_SCRIPT_YI,                 "Yiii" },
+    { G_UNICODE_SCRIPT_TAGALOG,            "Tglg" },
+    { G_UNICODE_SCRIPT_HANUNOO,            "Hano" },
+    { G_UNICODE_SCRIPT_BUHID,              "Buhd" },
+    { G_UNICODE_SCRIPT_TAGBANWA,           "Tagb" },
+
+    /* Unicode-4.0 additions */
+    { G_UNICODE_SCRIPT_BRAILLE,            "Brai" },
+    { G_UNICODE_SCRIPT_CYPRIOT,            "Cprt" },
+    { G_UNICODE_SCRIPT_LIMBU,              "Limb" },
+    { G_UNICODE_SCRIPT_OSMANYA,            "Osma" },
+    { G_UNICODE_SCRIPT_SHAVIAN,            "Shaw" },
+    { G_UNICODE_SCRIPT_LINEAR_B,           "Linb" },
+    { G_UNICODE_SCRIPT_TAI_LE,             "Tale" },
+    { G_UNICODE_SCRIPT_UGARITIC,           "Ugar" },
+
+    /* Unicode-4.1 additions */
+    { G_UNICODE_SCRIPT_NEW_TAI_LUE,        "Talu" },
+    { G_UNICODE_SCRIPT_BUGINESE,           "Bugi" },
+    { G_UNICODE_SCRIPT_GLAGOLITIC,         "Glag" },
+    { G_UNICODE_SCRIPT_TIFINAGH,           "Tfng" },
+    { G_UNICODE_SCRIPT_SYLOTI_NAGRI,       "Sylo" },
+    { G_UNICODE_SCRIPT_OLD_PERSIAN,        "Xpeo" },
+    { G_UNICODE_SCRIPT_KHAROSHTHI,         "Khar" },
+
+    /* Unicode-5.0 additions */
+    { G_UNICODE_SCRIPT_UNKNOWN,            "Zzzz" },
+    { G_UNICODE_SCRIPT_BALINESE,           "Bali" },
+    { G_UNICODE_SCRIPT_CUNEIFORM,          "Xsux" },
+    { G_UNICODE_SCRIPT_PHOENICIAN,         "Phnx" },
+    { G_UNICODE_SCRIPT_PHAGS_PA,           "Phag" },
+    { G_UNICODE_SCRIPT_NKO,                "Nkoo" },
+
+    /* Unicode-5.1 additions */
+    { G_UNICODE_SCRIPT_KAYAH_LI,           "Kali" },
+    { G_UNICODE_SCRIPT_LEPCHA,             "Lepc" },
+    { G_UNICODE_SCRIPT_REJANG,             "Rjng" },
+    { G_UNICODE_SCRIPT_SUNDANESE,          "Sund" },
+    { G_UNICODE_SCRIPT_SAURASHTRA,         "Saur" },
+    { G_UNICODE_SCRIPT_CHAM,               "Cham" },
+    { G_UNICODE_SCRIPT_OL_CHIKI,           "Olck" },
+    { G_UNICODE_SCRIPT_VAI,                "Vaii" },
+    { G_UNICODE_SCRIPT_CARIAN,             "Cari" },
+    { G_UNICODE_SCRIPT_LYCIAN,             "Lyci" },
+    { G_UNICODE_SCRIPT_LYDIAN,             "Lydi" },
+
+    /* Unicode-5.2 additions */
+    { G_UNICODE_SCRIPT_AVESTAN,                "Avst" },
+    { G_UNICODE_SCRIPT_BAMUM,                  "Bamu" },
+    { G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS,   "Egyp" },
+    { G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC,       "Armi" },
+    { G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI,  "Phli" },
+    { G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN, "Prti" },
+    { G_UNICODE_SCRIPT_JAVANESE,               "Java" },
+    { G_UNICODE_SCRIPT_KAITHI,                 "Kthi" },
+    { G_UNICODE_SCRIPT_LISU,                   "Lisu" },
+    { G_UNICODE_SCRIPT_MEETEI_MAYEK,           "Mtei" },
+    { G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,      "Sarb" },
+    { G_UNICODE_SCRIPT_OLD_TURKIC,             "Orkh" },
+    { G_UNICODE_SCRIPT_SAMARITAN,              "Samr" },
+    { G_UNICODE_SCRIPT_TAI_THAM,               "Lana" },
+    { G_UNICODE_SCRIPT_TAI_VIET,               "Tavt" },
+
+    /* Unicode-6.0 additions */
+    { G_UNICODE_SCRIPT_BATAK,                  "Batk" },
+    { G_UNICODE_SCRIPT_BRAHMI,                 "Brah" },
+    { G_UNICODE_SCRIPT_MANDAIC,                "Mand" },
+
+    /* Unicode-6.1 additions */
+    { G_UNICODE_SCRIPT_CHAKMA,                 "Cakm" },
+    { G_UNICODE_SCRIPT_MEROITIC_CURSIVE,       "Merc" },
+    { G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS,   "Mero" },
+    { G_UNICODE_SCRIPT_MIAO,                   "Plrd" },
+    { G_UNICODE_SCRIPT_SHARADA,                "Shrd" },
+    { G_UNICODE_SCRIPT_SORA_SOMPENG,           "Sora" },
+    { G_UNICODE_SCRIPT_TAKRI,                  "Takr" },
+  };
+  guint i;
+
   g_assert_cmphex (0, ==, g_unicode_script_to_iso15924 (G_UNICODE_SCRIPT_INVALID_CODE));
   g_assert_cmphex (0x5A7A7A7A, ==, g_unicode_script_to_iso15924 (1000));
   g_assert_cmphex (0x41726162, ==, g_unicode_script_to_iso15924 (G_UNICODE_SCRIPT_ARABIC));
 
   g_assert_cmphex (G_UNICODE_SCRIPT_INVALID_CODE, ==, g_unicode_script_from_iso15924 (0));
   g_assert_cmphex (G_UNICODE_SCRIPT_UNKNOWN, ==, g_unicode_script_from_iso15924 (0x12345678));
-  g_assert_cmphex (G_UNICODE_SCRIPT_ARABIC, ==, g_unicode_script_from_iso15924 (0x41726162));
+
+#define PACK(a,b,c,d) ((guint32)((((guint8)(a))<<24)|(((guint8)(b))<<16)|(((guint8)(c))<<8)|((guint8)(d))))
+
+  for (i = 0; i < G_N_ELEMENTS (data); i++)
+    {
+      guint32 code = PACK (data[i].four_letter_code[0],
+                           data[i].four_letter_code[1],
+                           data[i].four_letter_code[2],
+                           data[i].four_letter_code[3]);
+
+      g_assert_cmphex (g_unicode_script_to_iso15924 (data[i].script), ==, code);
+      g_assert_cmpint (g_unicode_script_from_iso15924 (code), ==, data[i].script);
+    }
+
+#undef PACK
 }
 
 int
