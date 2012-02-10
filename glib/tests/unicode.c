@@ -129,6 +129,8 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_HANGUL_T_JAMO,       0x11A8 },
     { G_UNICODE_BREAK_HANGUL_LV_SYLLABLE,  0xAC00 },
     { G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE, 0xAC01 },
+    { G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER, 0x3041 },
+    { G_UNICODE_BREAK_HEBREW_LETTER,                0x05D0 }
   };
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
