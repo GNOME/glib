@@ -244,7 +244,14 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_TAI_VIET,                0xAA80 },
     { G_UNICODE_SCRIPT_BATAK,                   0x1BC0 },
     { G_UNICODE_SCRIPT_BRAHMI,                 0x11000 },
-    { G_UNICODE_SCRIPT_MANDAIC,                 0x0840 }
+    { G_UNICODE_SCRIPT_MANDAIC,                 0x0840 },
+    { G_UNICODE_SCRIPT_CHAKMA,                 0x11100 },
+    { G_UNICODE_SCRIPT_MEROITIC_CURSIVE,       0x109A0 },
+    { G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS,   0x10980 },
+    { G_UNICODE_SCRIPT_MIAO,                   0x16F00 },
+    { G_UNICODE_SCRIPT_SHARADA,                0x11180 },
+    { G_UNICODE_SCRIPT_SORA_SOMPENG,           0x110D0 },
+    { G_UNICODE_SCRIPT_TAKRI,                  0x11680 }
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
