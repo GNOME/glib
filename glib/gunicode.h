@@ -361,6 +361,13 @@ typedef enum
  * @G_UNICODE_SCRIPT_BATAK:      Batak. Since 2.28
  * @G_UNICODE_SCRIPT_BRAHMI:     Brahmi. Since 2.28
  * @G_UNICODE_SCRIPT_MANDAIC:    Mandaic. Since 2.28
+ * @G_UNICODE_SCRIPT_CHAKMA:               Chakma. Since: 2.32
+ * @G_UNICODE_SCRIPT_MEROITIC_CURSIVE:     Meroitic Cursive. Since: 2.32
+ * @G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS, Meroitic Hieroglyphs. Since: 2.32
+ * @G_UNICODE_SCRIPT_MIAO:                 Miao. Since: 2.32
+ * @G_UNICODE_SCRIPT_SHARADA:              Sharada. Since: 2.32
+ * @G_UNICODE_SCRIPT_SORA_SOMPENG:         Sora Sompeng. Since: 2.32
+ * @G_UNICODE_SCRIPT_TAKRI                 Takri. Since: 2.32
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -377,13 +384,13 @@ typedef enum
 {                         /* ISO 15924 code */
   G_UNICODE_SCRIPT_INVALID_CODE = -1,
   G_UNICODE_SCRIPT_COMMON       = 0,   /* Zyyy */
-  G_UNICODE_SCRIPT_INHERITED,          /* Qaai */
+  G_UNICODE_SCRIPT_INHERITED,          /* Zinh (Qaai) */
   G_UNICODE_SCRIPT_ARABIC,             /* Arab */
   G_UNICODE_SCRIPT_ARMENIAN,           /* Armn */
   G_UNICODE_SCRIPT_BENGALI,            /* Beng */
   G_UNICODE_SCRIPT_BOPOMOFO,           /* Bopo */
   G_UNICODE_SCRIPT_CHEROKEE,           /* Cher */
-  G_UNICODE_SCRIPT_COPTIC,             /* Qaac */
+  G_UNICODE_SCRIPT_COPTIC,             /* Copt (Qaac) */
   G_UNICODE_SCRIPT_CYRILLIC,           /* Cyrl (Cyrs) */
   G_UNICODE_SCRIPT_DESERET,            /* Dsrt */
   G_UNICODE_SCRIPT_DEVANAGARI,         /* Deva */
@@ -483,7 +490,16 @@ typedef enum
   /* Unicode-6.0 additions */
   G_UNICODE_SCRIPT_BATAK,                  /* Batk */
   G_UNICODE_SCRIPT_BRAHMI,                 /* Brah */
-  G_UNICODE_SCRIPT_MANDAIC                 /* Mand */
+  G_UNICODE_SCRIPT_MANDAIC,                /* Mand */
+
+  /* Unicode-6.1 additions */
+  G_UNICODE_SCRIPT_CHAKMA,                 /* Cakm */
+  G_UNICODE_SCRIPT_MEROITIC_CURSIVE,       /* Merc */
+  G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS,   /* Mero */
+  G_UNICODE_SCRIPT_MIAO,                   /* Plrd */
+  G_UNICODE_SCRIPT_SHARADA,                /* Shrd */
+  G_UNICODE_SCRIPT_SORA_SOMPENG,           /* Sora */
+  G_UNICODE_SCRIPT_TAKRI                   /* Takr */
 } GUnicodeScript;
 
 guint32        g_unicode_script_to_iso15924   (GUnicodeScript script);

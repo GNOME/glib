@@ -1432,6 +1432,15 @@ static const guint32 iso15924_tags[] =
     PACK ('B','r','a','h'), /* G_UNICODE_SCRIPT_BRAHMI */
     PACK ('M','a','n','d'), /* G_UNICODE_SCRIPT_MANDAIC */
 
+  /* Unicode-6.1 additions */
+    PACK ('C','a','k','m'), /* G_UNICODE_SCRIPT_CHAKMA */
+    PACK ('M','e','r','c'), /* G_UNICODE_SCRIPT_MEROITIC_CURSIVE */
+    PACK ('M','e','r','o'), /* G_UNICODE_SCRIPT_MEROITIC_HIEROGLYPHS */
+    PACK ('P','l','r','d'), /* G_UNICODE_SCRIPT_MIAO */
+    PACK ('S','h','r','d'), /* G_UNICODE_SCRIPT_SHARADA */
+    PACK ('S','o','r','a'), /* G_UNICODE_SCRIPT_SORA_SOMPENG */
+    PACK ('T','a','k','r'), /* G_UNICODE_SCRIPT_TAKRI */
+
 #undef PACK
 };
 
