@@ -128,7 +128,7 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_HANGUL_V_JAMO,       0x1160 },
     { G_UNICODE_BREAK_HANGUL_T_JAMO,       0x11A8 },
     { G_UNICODE_BREAK_HANGUL_LV_SYLLABLE,  0xAC00 },
-    { G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE, 0xAC01 }
+    { G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE, 0xAC01 },
   };
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
@@ -386,7 +386,6 @@ test_defined (void)
   g_assert (g_unichar_isdefined ('a'));
   g_assert (!g_unichar_isdefined (0x10C49));
   g_assert (!g_unichar_isdefined (0x169D));
-  g_assert (!g_unichar_isdefined (0x27CD));
 }
 
 static void
