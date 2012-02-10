@@ -642,7 +642,7 @@ GWin32InputStream
 g_win32_input_stream_new
 g_win32_input_stream_set_close_handle
 g_win32_input_stream_get_close_handle
-g_win_input_stream_get_handle
+g_win32_input_stream_get_handle
 <SUBSECTION Standard>
 GWin32InputStreamClass
 G_WIN32_INPUT_STREAM

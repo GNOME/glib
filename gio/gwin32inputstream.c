@@ -192,9 +192,9 @@ g_win32_input_stream_init (GWin32InputStream *win32_stream)
 /**
  * g_win32_input_stream_new:
  * @handle: a Win32 file handle
- * @close_fd: %TRUE to close the handle when done
+ * @close_handle: %TRUE to close the handle when done
  *
- * Creates a new #GWin32InputStream for the given @fd.
+ * Creates a new #GWin32InputStream for the given @handle.
  *
  * If @close_handle is %TRUE, the handle will be closed
  * when the stream is closed.
