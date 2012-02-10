@@ -615,6 +615,7 @@ EXTRA_DIST += 			\
 	abicheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
+	gconstructor_as_data.h	\
 	$(NULL)
 
 BUILT_EXTRA_DIST = 		\
