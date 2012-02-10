@@ -114,6 +114,17 @@
 #define G_GNUC_DEPRECATED_FOR(f)        G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
 
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS		\
+  _Pragma ("GCC diagnostic push")			\
+  _Pragma ("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define G_GNUC_END_IGNORE_DEPRECATIONS			\
+  _Pragma ("GCC diagnostic pop")
+#else
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+#define G_GNUC_END_IGNORE_DEPRECATIONS
+#endif
+
 #if     __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
 #  define G_GNUC_MAY_ALIAS __attribute__((may_alias))
 #else

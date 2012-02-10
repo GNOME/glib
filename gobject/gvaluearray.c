@@ -228,7 +228,9 @@ g_value_array_prepend (GValueArray  *value_array,
 {
   g_return_val_if_fail (value_array != NULL, NULL);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_value_array_insert (value_array, 0, value);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 /**
@@ -249,7 +251,9 @@ g_value_array_append (GValueArray  *value_array,
 {
   g_return_val_if_fail (value_array != NULL, NULL);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_value_array_insert (value_array, value_array->n_values, value);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 /**

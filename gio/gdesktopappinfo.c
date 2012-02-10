@@ -3352,6 +3352,8 @@ get_all_desktop_entries_for_mime_type (const char  *base_mime_type,
 
 /* GDesktopAppInfoLookup interface: */
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 typedef GDesktopAppInfoLookupIface GDesktopAppInfoLookupInterface;
 G_DEFINE_INTERFACE (GDesktopAppInfoLookup, g_desktop_app_info_lookup, G_TYPE_OBJECT)
 
@@ -3378,8 +3380,6 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  *
  * Deprecated: The #GDesktopAppInfoLookup interface is deprecated and unused by gio.
  */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
 						      const char            *uri_scheme)
@@ -3392,4 +3392,5 @@ g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *loo
 
   return (* iface->get_default_for_uri_scheme) (lookup, uri_scheme);
 }
-#pragma GCC diagnostic pop
+
+G_GNUC_END_IGNORE_DEPRECATIONS

@@ -809,8 +809,6 @@ DllMain (HINSTANCE hinstDLL,
 
 #endif
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 void
 _g_io_modules_ensure_extension_points_registered (void)
 {
@@ -826,7 +824,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 #ifdef G_OS_UNIX
 #if !GLIB_CHECK_VERSION (3, 0, 0)
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
+      G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
 #endif
       
@@ -863,7 +863,6 @@ _g_io_modules_ensure_extension_points_registered (void)
   
   G_UNLOCK (registered_extensions);
 }
-#pragma GCC diagnostic pop
 
 void
 _g_io_modules_ensure_loaded (void)

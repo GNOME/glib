@@ -1987,6 +1987,39 @@
  */
 
 /**
+ * G_GNUC_BEGIN_IGNORE_DEPRECATIONS:
+ *
+ * Tells <command>gcc</command> (if it is a new enough version) to
+ * temporarily stop emitting warnings when functions marked with
+ * %G_GNUC_DEPRECATED or %G_GNUC_DEPRECATED_FOR are called. This is
+ * useful for when you have one deprecated function calling another
+ * one, or when you still have regression tests for deprecated
+ * functions.
+ *
+ * Use %G_GNUC_END_IGNORE_DEPRECATIONS to begin warning again. (If you
+ * are not compiling with <literal>-Wdeprecated-declarations</literal>
+ * then neither macro has any effect.)
+ *
+ * This macro can be used either inside or outside of a function body,
+ * but must appear on a line by itself.
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_GNUC_END_IGNORE_DEPRECATIONS:
+ *
+ * Undoes the effect of %G_GNUC_BEGIN_IGNORE_DEPRECATIONS, telling
+ * <command>gcc</command> to begin outputting warnings again
+ * (assuming those warnings had been enabled to begin with).
+ *
+ * This macro can be used either inside or outside of a function body,
+ * but must appear on a line by itself.
+ *
+ * Since: 2.32
+ */
+
+/**
  * G_GNUC_NORETURN:
  *
  * Expands to the GNU C <literal>noreturn</literal> function attribute
