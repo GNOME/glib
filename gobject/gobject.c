@@ -33,6 +33,7 @@
 #include "gparamspecs.h"
 #include "gvaluetypes.h"
 #include "gobject_trace.h"
+#include "gconstructor.h"
 
 /**
  * SECTION:objects
@@ -329,6 +330,13 @@ debug_objects_foreach (gpointer key,
 	     object->ref_count);
 }
 
+#ifdef G_HAS_CONSTRUCTORS
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(debug_objects_atexit)
+#endif
+G_DEFINE_DESTRUCTOR(debug_objects_atexit)
+#endif /* G_HAS_CONSTRUCTORS */
+
 static void
 debug_objects_atexit (void)
 {
@@ -387,7 +395,9 @@ _g_object_type_init (void)
   IF_DEBUG (OBJECTS)
     {
       debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
+#ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
+#endif /* G_HAS_CONSTRUCTORS */
     }
 #endif	/* G_ENABLE_DEBUG */
 }
