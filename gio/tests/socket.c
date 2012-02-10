@@ -424,6 +424,90 @@ test_ipv6_sync (void)
   test_ip_sync (G_SOCKET_FAMILY_IPV6);
 }
 
+static gpointer
+graceful_server_thread (gpointer user_data)
+{
+  IPTestData *data = user_data;
+  GSocket *sock;
+  GError *error = NULL;
+  gssize len;
+
+  sock = g_socket_accept (data->server, NULL, &error);
+  g_assert_no_error (error);
+
+  len = g_socket_send (sock, testbuf, strlen (testbuf) + 1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  return sock;
+}
+
+static void
+test_close_graceful (void)
+{
+  GSocketFamily family = G_SOCKET_FAMILY_IPV4;
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client, *server;
+  GSocketAddress *addr;
+  gssize len;
+  gchar buf[128];
+
+  data = create_server (family, graceful_server_thread, FALSE);
+  addr = g_socket_get_local_address (data->server, &error);
+
+  client = g_socket_new (family,
+			 G_SOCKET_TYPE_STREAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_socket_get_family (client), ==, family);
+  g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
+  g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 1);
+
+  g_socket_connect (client, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (g_socket_is_connected (client));
+  g_object_unref (addr);
+
+  server = g_thread_join (data->thread);
+
+  /* similar to g_tcp_connection_set_graceful_disconnect(), but explicit */
+  g_socket_shutdown (server, FALSE, TRUE, &error);
+  g_assert_no_error (error);
+
+  /* we must timeout */
+  g_socket_condition_wait (client, G_IO_HUP, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_clear_error (&error);
+
+  /* check that the remaining data is received */
+  len = g_socket_receive (client, buf, strlen (testbuf) + 1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  /* and only then the connection is closed */
+  len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, 0);
+
+  g_socket_close (server, &error);
+  g_assert_no_error (error);
+
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (server);
+  g_object_unref (data->server);
+  g_object_unref (client);
+
+  g_slice_free (IPTestData, data);
+}
+
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
 static gpointer
 v4mapped_server_thread (gpointer user_data)
@@ -690,6 +774,7 @@ main (int   argc,
   g_test_add_func ("/socket/ipv4_async", test_ipv4_async);
   g_test_add_func ("/socket/ipv6_sync", test_ipv6_sync);
   g_test_add_func ("/socket/ipv6_async", test_ipv6_async);
+  g_test_add_func ("/socket/close_graceful", test_close_graceful);
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   g_test_add_func ("/socket/ipv6_v4mapped", test_ipv6_v4mapped);
 #endif
