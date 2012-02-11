@@ -3436,6 +3436,7 @@ GTlsInteractionResult
 g_tls_interaction_ask_password
 g_tls_interaction_ask_password_async
 g_tls_interaction_ask_password_finish
+g_tls_interaction_invoke_ask_password
 <SUBSECTION Standard>
 GTlsInteractionClass
 G_IS_TLS_INTERACTION
