@@ -2852,6 +2852,7 @@ g_test_slow
 g_test_thorough
 g_test_perf
 g_test_verbose
+g_test_undefined
 g_test_quiet
 g_test_run
 GTestFunc
