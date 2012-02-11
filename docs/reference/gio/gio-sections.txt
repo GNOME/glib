@@ -3202,9 +3202,6 @@ g_pollable_input_stream_can_poll
 g_pollable_input_stream_is_readable
 g_pollable_input_stream_create_source
 g_pollable_input_stream_read_nonblocking
-<SUBSECTION>
-GPollableSourceFunc
-g_pollable_source_new
 <SUBSECTION Standard>
 G_POLLABLE_INPUT_STREAM
 G_POLLABLE_INPUT_STREAM_GET_INTERFACE
@@ -3231,6 +3228,17 @@ G_IS_POLLABLE_OUTPUT_STREAM
 G_TYPE_POLLABLE_OUTPUT_STREAM
 <SUBSECTION Private>
 g_pollable_output_stream_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gpollableutils</FILE>
+GPollableSourceFunc
+g_pollable_source_new
+g_pollable_source_new_full
+<SUBSECTION>
+g_pollable_stream_read
+g_pollable_stream_write
+g_pollable_stream_write_all
 </SECTION>
 
 <SECTION>

@@ -98,6 +98,7 @@
 #include <gio/gpermission.h>
 #include <gio/gpollableinputstream.h>
 #include <gio/gpollableoutputstream.h>
+#include <gio/gpollableutils.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyaddress.h>
 #include <gio/gproxyaddressenumerator.h>

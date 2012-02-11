@@ -95,9 +95,6 @@ gssize   g_pollable_input_stream_read_nonblocking (GPollableInputStream  *stream
 						   GCancellable          *cancellable,
 						   GError               **error);
 
-/* Helper method for stream implementations */
-GSource *g_pollable_source_new                    (GObject               *pollable_stream);
-
 G_END_DECLS
 
 

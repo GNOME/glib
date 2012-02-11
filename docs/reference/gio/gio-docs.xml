@@ -76,6 +76,7 @@
         <xi:include href="xml/gconverteroutputstream.xml"/>
         <xi:include href="xml/gpollableinputstream.xml"/>
         <xi:include href="xml/gpollableoutputstream.xml"/>
+        <xi:include href="xml/gpollableutils.xml"/>
     </chapter>
     <chapter id="types">
         <title>File types and applications</title>
