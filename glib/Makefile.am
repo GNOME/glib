@@ -30,16 +30,9 @@ PRINTF_SUBDIR = gnulib
 printf_la = gnulib/libgnulib.la
 endif 
 
-if ENABLE_REGEX
 if USE_SYSTEM_PCRE
 else
 MAYBE_PCRE = pcre 
-endif
-gregex_c = gregex.c
-gregex_h = gregex.h
-else
-gregex_c =
-gregex_h =
 endif
 
 SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
@@ -173,7 +166,7 @@ libglib_2_0_la_SOURCES = 	\
 	gqsort.c		\
 	gqueue.c		\
 	grand.c			\
-	$(gregex_c)		\
+	gregex.c		\
 	gscanner.c		\
 	gscripttable.h		\
 	gsequence.c		\
@@ -299,7 +292,7 @@ glibsubinclude_HEADERS = \
 	gquark.h	\
 	gqueue.h	\
 	grand.h		\
-	$(gregex_h)	\
+	gregex.h	\
 	gscanner.h	\
 	gsequence.h	\
 	gshell.h	\
@@ -368,16 +361,11 @@ uninstall-def-file:
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
-if ENABLE_REGEX
 if USE_SYSTEM_PCRE
 pcre_lib = $(PCRE_LIBS)
 pcre_inc = $(PCRE_CFLAGS)
 else
 pcre_lib = pcre/libpcre.la
-pcre_inc =
-endif
-else
-pcre_lib =
 pcre_inc =
 endif
 

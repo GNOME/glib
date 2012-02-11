@@ -27,8 +27,6 @@
 #include <locale.h>
 #include "glib.h"
 
-#ifdef ENABLE_REGEX
-
 /* U+20AC EURO SIGN (symbol, currency) */
 #define EURO "\xe2\x82\xac"
 /* U+00E0 LATIN SMALL LETTER A WITH GRAVE (letter, lowercase) */
@@ -2659,14 +2657,3 @@ main (int argc, char *argv[])
 
   return g_test_run ();
 }
-
-#else /* ENABLE_REGEX false */
-
-int
-main (int argc, char *argv[])
-{
-  g_print ("GRegex is disabled.\n");
-  return 0;
-}
-
-#endif /* ENABLE_REGEX */
