@@ -2344,6 +2344,7 @@ g_settings_new
 g_settings_new_with_path
 g_settings_new_with_backend
 g_settings_new_with_backend_and_path
+g_settings_new_full
 g_settings_sync
 g_settings_get_value
 g_settings_set_value
