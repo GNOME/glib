@@ -2890,43 +2890,43 @@ Returns:       TRUE if auto-possessifying is OK
 static BOOL
 check_char_prop(int c, int ptype, int pdata, BOOL negated)
 {
-const ucd_record *prop = GET_UCD(c);
+const pcre_uint8 chartype = UCD_CHARTYPE(c);
 switch(ptype)
   {
   case PT_LAMP:
-  return (prop->chartype == ucp_Lu ||
-          prop->chartype == ucp_Ll ||
-          prop->chartype == ucp_Lt) == negated;
+  return (chartype == ucp_Lu ||
+          chartype == ucp_Ll ||
+          chartype == ucp_Lt) == negated;
 
   case PT_GC:
-  return (pdata == PRIV(ucp_gentype)[prop->chartype]) == negated;
+  return (pdata == PRIV(ucp_gentype)[chartype]) == negated;
 
   case PT_PC:
-  return (pdata == prop->chartype) == negated;
+  return (pdata == chartype) == negated;
 
   case PT_SC:
-  return (pdata == prop->script) == negated;
+  return (pdata == UCD_SCRIPT(c)) == negated;
 
   /* These are specials */
 
   case PT_ALNUM:
-  return (PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-          PRIV(ucp_gentype)[prop->chartype] == ucp_N) == negated;
+  return (PRIV(ucp_gentype)[chartype] == ucp_L ||
+          PRIV(ucp_gentype)[chartype] == ucp_N) == negated;
 
   case PT_SPACE:    /* Perl space */
-  return (PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+  return (PRIV(ucp_gentype)[chartype] == ucp_Z ||
           c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR)
           == negated;
 
   case PT_PXSPACE:  /* POSIX space */
-  return (PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+  return (PRIV(ucp_gentype)[chartype] == ucp_Z ||
           c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
           c == CHAR_FF || c == CHAR_CR)
           == negated;
 
   case PT_WORD:
-  return (PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-          PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+  return (PRIV(ucp_gentype)[chartype] == ucp_L ||
+          PRIV(ucp_gentype)[chartype] == ucp_N ||
           c == CHAR_UNDERSCORE) == negated;
   }
 return FALSE;

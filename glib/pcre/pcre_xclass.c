@@ -127,7 +127,7 @@ while ((t = *data++) != XCL_END)
 #ifdef SUPPORT_UCP
   else  /* XCL_PROP & XCL_NOTPROP */
     {
-    const ucd_record *prop = GET_UCD(c);
+    const pcre_uint8 chartype = UCD_CHARTYPE(c);
 
     switch(*data)
       {
@@ -136,46 +136,46 @@ while ((t = *data++) != XCL_END)
       break;
 
       case PT_LAMP:
-      if ((prop->chartype == ucp_Lu || prop->chartype == ucp_Ll ||
-           prop->chartype == ucp_Lt) == (t == XCL_PROP)) return !negated;
+      if ((chartype == ucp_Lu || chartype == ucp_Ll ||
+           chartype == ucp_Lt) == (t == XCL_PROP)) return !negated;
       break;
 
       case PT_GC:
-      if ((data[1] == PRIV(ucp_gentype)[prop->chartype]) == (t == XCL_PROP))
+      if ((data[1] == PRIV(ucp_gentype)[chartype]) == (t == XCL_PROP))
         return !negated;
       break;
 
       case PT_PC:
-      if ((data[1] == prop->chartype) == (t == XCL_PROP)) return !negated;
+      if ((data[1] == chartype) == (t == XCL_PROP)) return !negated;
       break;
 
       case PT_SC:
-      if ((data[1] == prop->script) == (t == XCL_PROP)) return !negated;
+      if ((data[1] == UCD_SCRIPT(c)) == (t == XCL_PROP)) return !negated;
       break;
 
       case PT_ALNUM:
-      if ((PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-           PRIV(ucp_gentype)[prop->chartype] == ucp_N) == (t == XCL_PROP))
+      if ((PRIV(ucp_gentype)[chartype] == ucp_L ||
+           PRIV(ucp_gentype)[chartype] == ucp_N) == (t == XCL_PROP))
         return !negated;
       break;
 
       case PT_SPACE:    /* Perl space */
-      if ((PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+      if ((PRIV(ucp_gentype)[chartype] == ucp_Z ||
            c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR)
              == (t == XCL_PROP))
         return !negated;
       break;
 
       case PT_PXSPACE:  /* POSIX space */
-      if ((PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+      if ((PRIV(ucp_gentype)[chartype] == ucp_Z ||
            c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
            c == CHAR_FF || c == CHAR_CR) == (t == XCL_PROP))
         return !negated;
       break;
 
       case PT_WORD:
-      if ((PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-           PRIV(ucp_gentype)[prop->chartype] == ucp_N || c == CHAR_UNDERSCORE)
+      if ((PRIV(ucp_gentype)[chartype] == ucp_L ||
+           PRIV(ucp_gentype)[chartype] == ucp_N || c == CHAR_UNDERSCORE)
              == (t == XCL_PROP))
         return !negated;
       break;

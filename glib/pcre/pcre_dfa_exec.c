@@ -1015,7 +1015,7 @@ for (;;)
       if (clen > 0)
         {
         BOOL OK;
-        const ucd_record * prop = GET_UCD(c);
+        const pcre_uint8 chartype = UCD_CHARTYPE(c);
         switch(code[1])
           {
           case PT_ANY:
@@ -1023,43 +1023,43 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = prop->chartype == ucp_Lu || prop->chartype == ucp_Ll ||
-               prop->chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+               chartype == ucp_Lt;
           break;
 
           case PT_GC:
-          OK = PRIV(ucp_gentype)[prop->chartype] == code[2];
+          OK = PRIV(ucp_gentype)[chartype] == code[2];
           break;
 
           case PT_PC:
-          OK = prop->chartype == code[2];
+          OK = chartype == code[2];
           break;
 
           case PT_SC:
-          OK = prop->script == code[2];
+          OK = UCD_SCRIPT(c) == code[2];
           break;
 
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N;
           break;
 
           case PT_SPACE:    /* Perl space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_PXSPACE:  /* POSIX space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
                c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_WORD:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
@@ -1209,7 +1209,7 @@ for (;;)
       if (clen > 0)
         {
         BOOL OK;
-        const ucd_record * prop = GET_UCD(c);
+        const pcre_uint8 chartype = UCD_CHARTYPE(c);
         switch(code[2])
           {
           case PT_ANY:
@@ -1217,43 +1217,43 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = prop->chartype == ucp_Lu || prop->chartype == ucp_Ll ||
-            prop->chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
-          OK = PRIV(ucp_gentype)[prop->chartype] == code[3];
+          OK = PRIV(ucp_gentype)[chartype] == code[3];
           break;
 
           case PT_PC:
-          OK = prop->chartype == code[3];
+          OK = chartype == code[3];
           break;
 
           case PT_SC:
-          OK = prop->script == code[3];
+          OK = UCD_SCRIPT(c) == code[3];
           break;
 
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N;
           break;
 
           case PT_SPACE:    /* Perl space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_PXSPACE:  /* POSIX space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
                c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_WORD:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
@@ -1456,7 +1456,7 @@ for (;;)
       if (clen > 0)
         {
         BOOL OK;
-        const ucd_record * prop = GET_UCD(c);
+        const pcre_uint8 chartype = UCD_CHARTYPE(c);
         switch(code[2])
           {
           case PT_ANY:
@@ -1464,43 +1464,43 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = prop->chartype == ucp_Lu || prop->chartype == ucp_Ll ||
-            prop->chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
-          OK = PRIV(ucp_gentype)[prop->chartype] == code[3];
+          OK = PRIV(ucp_gentype)[chartype] == code[3];
           break;
 
           case PT_PC:
-          OK = prop->chartype == code[3];
+          OK = chartype == code[3];
           break;
 
           case PT_SC:
-          OK = prop->script == code[3];
+          OK = UCD_SCRIPT(c) == code[3];
           break;
 
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N;
           break;
 
           case PT_SPACE:    /* Perl space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_PXSPACE:  /* POSIX space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
                c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_WORD:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 
@@ -1728,7 +1728,7 @@ for (;;)
       if (clen > 0)
         {
         BOOL OK;
-        const ucd_record * prop = GET_UCD(c);
+        const pcre_uint8 chartype = UCD_CHARTYPE(c);
         switch(code[1 + IMM2_SIZE + 1])
           {
           case PT_ANY:
@@ -1736,43 +1736,43 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = prop->chartype == ucp_Lu || prop->chartype == ucp_Ll ||
-            prop->chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
-          OK = PRIV(ucp_gentype)[prop->chartype] == code[1 + IMM2_SIZE + 2];
+          OK = PRIV(ucp_gentype)[chartype] == code[1 + IMM2_SIZE + 2];
           break;
 
           case PT_PC:
-          OK = prop->chartype == code[1 + IMM2_SIZE + 2];
+          OK = chartype == code[1 + IMM2_SIZE + 2];
           break;
 
           case PT_SC:
-          OK = prop->script == code[1 + IMM2_SIZE + 2];
+          OK = UCD_SCRIPT(c) == code[1 + IMM2_SIZE + 2];
           break;
 
           /* These are specials for combination cases. */
 
           case PT_ALNUM:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N;
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N;
           break;
 
           case PT_SPACE:    /* Perl space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_PXSPACE:  /* POSIX space */
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_Z ||
                c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
                c == CHAR_FF || c == CHAR_CR;
           break;
 
           case PT_WORD:
-          OK = PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-               PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+          OK = PRIV(ucp_gentype)[chartype] == ucp_L ||
+               PRIV(ucp_gentype)[chartype] == ucp_N ||
                c == CHAR_UNDERSCORE;
           break;
 

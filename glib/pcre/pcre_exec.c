@@ -2507,7 +2507,7 @@ for (;;)
       }
     GETCHARINCTEST(c, eptr);
       {
-      const ucd_record *prop = GET_UCD(c);
+      const pcre_uint8 chartype = UCD_CHARTYPE(c);
 
       switch(ecode[1])
         {
@@ -2516,44 +2516,44 @@ for (;;)
         break;
 
         case PT_LAMP:
-        if ((prop->chartype == ucp_Lu ||
-             prop->chartype == ucp_Ll ||
-             prop->chartype == ucp_Lt) == (op == OP_NOTPROP))
+        if ((chartype == ucp_Lu ||
+             chartype == ucp_Ll ||
+             chartype == ucp_Lt) == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_GC:
-        if ((ecode[2] != PRIV(ucp_gentype)[prop->chartype]) == (op == OP_PROP))
+        if ((ecode[2] != PRIV(ucp_gentype)[chartype]) == (op == OP_PROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_PC:
-        if ((ecode[2] != prop->chartype) == (op == OP_PROP))
+        if ((ecode[2] != chartype) == (op == OP_PROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_SC:
-        if ((ecode[2] != prop->script) == (op == OP_PROP))
+        if ((ecode[2] != UCD_SCRIPT(c)) == (op == OP_PROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         /* These are specials */
 
         case PT_ALNUM:
-        if ((PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-             PRIV(ucp_gentype)[prop->chartype] == ucp_N) == (op == OP_NOTPROP))
+        if ((PRIV(ucp_gentype)[chartype] == ucp_L ||
+             PRIV(ucp_gentype)[chartype] == ucp_N) == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_SPACE:    /* Perl space */
-        if ((PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+        if ((PRIV(ucp_gentype)[chartype] == ucp_Z ||
              c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR)
                == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;
 
         case PT_PXSPACE:  /* POSIX space */
-        if ((PRIV(ucp_gentype)[prop->chartype] == ucp_Z ||
+        if ((PRIV(ucp_gentype)[chartype] == ucp_Z ||
              c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
              c == CHAR_FF || c == CHAR_CR)
                == (op == OP_NOTPROP))
@@ -2561,8 +2561,8 @@ for (;;)
         break;
 
         case PT_WORD:
-        if ((PRIV(ucp_gentype)[prop->chartype] == ucp_L ||
-             PRIV(ucp_gentype)[prop->chartype] == ucp_N ||
+        if ((PRIV(ucp_gentype)[chartype] == ucp_L ||
+             PRIV(ucp_gentype)[chartype] == ucp_N ||
              c == CHAR_UNDERSCORE) == (op == OP_NOTPROP))
           RRETURN(MATCH_NOMATCH);
         break;

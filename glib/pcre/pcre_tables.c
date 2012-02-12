@@ -563,6 +563,22 @@ const ucp_type_table PRIV(utt)[] = {
 
 const int PRIV(utt_size) = sizeof(PRIV(utt)) / sizeof(ucp_type_table);
 
+unsigned int 
+_pcre_ucp_othercase(const unsigned int c)
+{
+  int other_case = NOTACHAR;
+
+  if (g_unichar_islower(c))
+    other_case = g_unichar_toupper(c);
+  else if (g_unichar_isupper(c))
+    other_case = g_unichar_tolower(c);
+
+  if (other_case == c)
+    other_case = NOTACHAR;
+
+  return other_case;
+}
+
 #endif /* SUPPORT_UTF */
 
 /* End of pcre_tables.c */

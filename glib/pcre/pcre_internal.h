@@ -2315,15 +2315,12 @@ extern const int         PRIV(ucp_typerange)[];
 #ifdef SUPPORT_UCP
 /* UCD access macros */
 
-#define UCD_BLOCK_SIZE 128
-#define GET_UCD(ch) (PRIV(ucd_records) + \
-        PRIV(ucd_stage2)[PRIV(ucd_stage1)[(ch) / UCD_BLOCK_SIZE] * \
-        UCD_BLOCK_SIZE + (ch) % UCD_BLOCK_SIZE])
+unsigned int _pcre_ucp_othercase(const unsigned int c);
 
-#define UCD_CHARTYPE(ch)  GET_UCD(ch)->chartype
-#define UCD_SCRIPT(ch)    GET_UCD(ch)->script
+#define UCD_CHARTYPE(ch)  (pcre_uint8)g_unichar_type((gunichar)(ch))
+#define UCD_SCRIPT(ch)    (pcre_uint8)g_unichar_get_script((gunichar)(ch))
 #define UCD_CATEGORY(ch)  PRIV(ucp_gentype)[UCD_CHARTYPE(ch)]
-#define UCD_OTHERCASE(ch) (ch + GET_UCD(ch)->other_case)
+#define UCD_OTHERCASE(ch) (_pcre_ucp_othercase(ch))
 
 #endif /* SUPPORT_UCP */
 
