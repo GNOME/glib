@@ -5,5 +5,4 @@ EXTRA_DIST += 			\
 	Makefile.am-1		\
 	Makefile.am-2		\
 	digitab.patch		\
-	memory.patch		\
-	pcre_valid_utf8.c
+	memory.patch
