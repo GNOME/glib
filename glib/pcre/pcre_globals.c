@@ -58,6 +58,8 @@ global variables are not used. */
 
 #include "pcre_internal.h"
 
+#include "gmem.h"
+
 #if defined _MSC_VER || defined  __SYMBIAN32__
 static void* LocalPcreMalloc(size_t aSize)
   {
@@ -74,10 +76,10 @@ PCRE_EXP_DATA_DEFN void  (*PUBL(stack_free))(void *) = LocalPcreFree;
 PCRE_EXP_DATA_DEFN int   (*PUBL(callout))(PUBL(callout_block) *) = NULL;
 
 #elif !defined VPCOMPAT
-PCRE_EXP_DATA_DEFN void *(*PUBL(malloc))(size_t) = malloc;
-PCRE_EXP_DATA_DEFN void  (*PUBL(free))(void *) = free;
-PCRE_EXP_DATA_DEFN void *(*PUBL(stack_malloc))(size_t) = malloc;
-PCRE_EXP_DATA_DEFN void  (*PUBL(stack_free))(void *) = free;
+PCRE_EXP_DATA_DEFN void *(*PUBL(malloc))(size_t) = g_try_malloc;
+PCRE_EXP_DATA_DEFN void  (*PUBL(free))(void *) = g_free;
+PCRE_EXP_DATA_DEFN void *(*PUBL(stack_malloc))(size_t) = g_try_malloc;
+PCRE_EXP_DATA_DEFN void  (*PUBL(stack_free))(void *) = g_free;
 PCRE_EXP_DATA_DEFN int   (*PUBL(callout))(PUBL(callout_block) *) = NULL;
 #endif
 
