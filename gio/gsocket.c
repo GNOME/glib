@@ -3404,6 +3404,8 @@ g_socket_condition_check (GSocket      *socket,
  * the appropriate value (%G_IO_ERROR_CANCELLED or
  * %G_IO_ERROR_TIMED_OUT).
  *
+ * See also g_socket_condition_timed_wait().
+ *
  * Returns: %TRUE if the condition was met, %FALSE otherwise
  *
  * Since: 2.22
@@ -3416,17 +3418,69 @@ g_socket_condition_wait (GSocket       *socket,
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
+  return g_socket_condition_timed_wait (socket, condition, -1,
+					cancellable, error);
+}
+
+/**
+ * g_socket_condition_timed_wait:
+ * @socket: a #GSocket
+ * @condition: a #GIOCondition mask to wait for
+ * @timeout: the maximum time (in microseconds) to wait, or -1
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @error: a #GError pointer, or %NULL
+ *
+ * Waits for up to @timeout microseconds for @condition to become true
+ * on @socket. If the condition is met, %TRUE is returned.
+ *
+ * If @cancellable is cancelled before the condition is met, or if
+ * @timeout (or the socket's #GSocket:timeout) is reached before the
+ * condition is met, then %FALSE is returned and @error, if non-%NULL,
+ * is set to the appropriate value (%G_IO_ERROR_CANCELLED or
+ * %G_IO_ERROR_TIMED_OUT).
+ *
+ * If you don't want a timeout, use g_socket_condition_wait().
+ * (Alternatively, you can pass -1 for @timeout.)
+ *
+ * Note that although @timeout is in microseconds for consistency with
+ * other GLib APIs, this function actually only has millisecond
+ * resolution, and the behavior is undefined if @timeout is not an
+ * exact number of milliseconds.
+ *
+ * Returns: %TRUE if the condition was met, %FALSE otherwise
+ *
+ * Since: 2.32
+ */
+gboolean
+g_socket_condition_timed_wait (GSocket       *socket,
+			       GIOCondition   condition,
+			       gint64         timeout,
+			       GCancellable  *cancellable,
+			       GError       **error)
+{
+  gint64 start_time;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
   if (!check_socket (socket, error))
     return FALSE;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
 
+  if (socket->priv->timeout &&
+      (timeout < 0 || socket->priv->timeout < timeout / G_USEC_PER_SEC))
+    timeout = socket->priv->timeout * 1000;
+  else if (timeout != -1)
+    timeout = timeout / 1000;
+
+  start_time = g_get_monotonic_time ();
+
 #ifdef G_OS_WIN32
   {
     GIOCondition current_condition;
     WSAEVENT events[2];
-    DWORD res, timeout;
+    DWORD res;
     GPollFD cancel_fd;
     int num_events;
 
@@ -3441,16 +3495,14 @@ g_socket_condition_wait (GSocket       *socket,
     if (g_cancellable_make_pollfd (cancellable, &cancel_fd))
       events[num_events++] = (WSAEVENT)cancel_fd.fd;
 
-    if (socket->priv->timeout)
-      timeout = socket->priv->timeout * 1000;
-    else
+    if (timeout == -1)
       timeout = WSA_INFINITE;
 
     current_condition = update_condition (socket);
     while ((condition & current_condition) == 0)
       {
-	res = WSAWaitForMultipleEvents(num_events, events,
-				       FALSE, timeout, FALSE);
+	res = WSAWaitForMultipleEvents (num_events, events,
+					FALSE, timeout, FALSE);
 	if (res == WSA_WAIT_FAILED)
 	  {
 	    int errsv = get_socket_errno ();
@@ -3472,6 +3524,13 @@ g_socket_condition_wait (GSocket       *socket,
 	  break;
 
 	current_condition = update_condition (socket);
+
+	if (timeout != WSA_INFINITE)
+	  {
+	    timeout -= (g_get_monotonic_time () - start_time) * 1000;
+	    if (timeout < 0)
+	      timeout = 0;
+	  }
       }
     remove_condition_watch (socket, &condition);
     if (num_events > 1)
@@ -3484,7 +3543,6 @@ g_socket_condition_wait (GSocket       *socket,
     GPollFD poll_fd[2];
     gint result;
     gint num;
-    gint timeout;
 
     poll_fd[0].fd = socket->priv->fd;
     poll_fd[0].events = condition;
@@ -3493,14 +3551,19 @@ g_socket_condition_wait (GSocket       *socket,
     if (g_cancellable_make_pollfd (cancellable, &poll_fd[1]))
       num++;
 
-    if (socket->priv->timeout)
-      timeout = socket->priv->timeout * 1000;
-    else
-      timeout = -1;
+    while (TRUE)
+      {
+	result = g_poll (poll_fd, num, timeout);
+	if (result != -1 || errno != EINTR)
+	  break;
 
-    do
-      result = g_poll (poll_fd, num, timeout);
-    while (result == -1 && get_socket_errno () == EINTR);
+	if (timeout != -1)
+	  {
+	    timeout -= (g_get_monotonic_time () - start_time) * 1000;
+	    if (timeout < 0)
+	      timeout = 0;
+	  }
+      }
     
     if (num > 1)
       g_cancellable_release_fd (cancellable);

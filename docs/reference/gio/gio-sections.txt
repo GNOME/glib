@@ -1852,6 +1852,7 @@ g_socket_is_connected
 g_socket_create_source
 g_socket_condition_check
 g_socket_condition_wait
+g_socket_condition_timed_wait
 g_socket_get_available_bytes
 g_socket_set_listen_backlog
 g_socket_get_listen_backlog

@@ -145,6 +145,11 @@ gboolean               g_socket_condition_wait          (GSocket                
 							 GIOCondition             condition,
 							 GCancellable            *cancellable,
 							 GError                 **error);
+gboolean               g_socket_condition_timed_wait    (GSocket                 *socket,
+							 GIOCondition             condition,
+							 gint64                   timeout,
+							 GCancellable            *cancellable,
+							 GError                 **error);
 GSocket *              g_socket_accept                  (GSocket                 *socket,
 							 GCancellable            *cancellable,
 							 GError                 **error);

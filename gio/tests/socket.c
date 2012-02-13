@@ -584,6 +584,56 @@ test_ipv6_v4mapped (void)
 #endif
 
 static void
+test_timed_wait (void)
+{
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *addr;
+  gint64 start_time;
+  gint poll_duration;
+
+  data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE);
+  addr = g_socket_get_local_address (data->server, &error);
+
+  client = g_socket_new (G_SOCKET_FAMILY_IPV4,
+			 G_SOCKET_TYPE_STREAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 1);
+
+  g_socket_connect (client, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (addr);
+
+  start_time = g_get_monotonic_time ();
+  g_socket_condition_timed_wait (client, G_IO_IN, 100000 /* 100 ms */,
+				 NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+  g_clear_error (&error);
+  poll_duration = g_get_monotonic_time () - start_time;
+
+  g_assert_cmpint (poll_duration, >=, 100000);
+  g_assert_cmpint (poll_duration, <, 110000);
+
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_thread_join (data->thread);
+
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (data->server);
+  g_object_unref (client);
+
+  g_slice_free (IPTestData, data);
+}
+
+static void
 test_sockaddr (void)
 {
   struct sockaddr_in6 sin6, gsin6;
@@ -774,10 +824,11 @@ main (int   argc,
   g_test_add_func ("/socket/ipv4_async", test_ipv4_async);
   g_test_add_func ("/socket/ipv6_sync", test_ipv6_sync);
   g_test_add_func ("/socket/ipv6_async", test_ipv6_async);
-  g_test_add_func ("/socket/close_graceful", test_close_graceful);
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   g_test_add_func ("/socket/ipv6_v4mapped", test_ipv6_v4mapped);
 #endif
+  g_test_add_func ("/socket/close_graceful", test_close_graceful);
+  g_test_add_func ("/socket/timed_wait", test_timed_wait);
   g_test_add_func ("/socket/address", test_sockaddr);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
