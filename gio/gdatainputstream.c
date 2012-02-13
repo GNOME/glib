@@ -1284,6 +1284,9 @@ g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
   gchar *res;
 
   res = g_data_input_stream_read_line_finish (stream, result, length, error);
+  if (!res)
+    return NULL;
+
   if (!g_utf8_validate (res, -1, NULL))
     {
       g_set_error_literal (error, G_CONVERT_ERROR,
