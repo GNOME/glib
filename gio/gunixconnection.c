@@ -13,9 +13,18 @@
  */
 
 #include "config.h"
+
 #include "gunixconnection.h"
+#include "gnetworking.h"
+#include "gsocket.h"
+#include "gsocketcontrolmessage.h"
 #include "gunixcredentialsmessage.h"
+#include "gunixfdmessage.h"
 #include "glibintl.h"
+
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
 /**
  * SECTION:gunixconnection
@@ -36,16 +45,6 @@
  *
  * Since: 2.22
  */
-
-#include <gio/gsocketcontrolmessage.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gnetworking.h>
-#include <gio/gsocket.h>
-
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
 			 G_TYPE_SOCKET_CONNECTION,
@@ -476,16 +475,14 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
 #ifdef __linux__
   {
     gint opt_val;
-    socklen_t opt_len;
 
     turn_off_so_passcreds = FALSE;
     opt_val = 0;
-    opt_len = sizeof (gint);
-    if (getsockopt (g_socket_get_fd (socket),
-                    SOL_SOCKET,
-                    SO_PASSCRED,
-                    &opt_val,
-                    &opt_len) != 0)
+    if (!g_socket_get_option (socket,
+			      SOL_SOCKET,
+			      SO_PASSCRED,
+			      &opt_val,
+			      NULL))
       {
         g_set_error (error,
                      G_IO_ERROR,
@@ -494,24 +491,13 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
                      strerror (errno));
         goto out;
       }
-    if (opt_len != sizeof (gint))
-      {
-        g_set_error (error,
-                     G_IO_ERROR,
-                     G_IO_ERROR_FAILED,
-                     _("Unexpected option length while checking if SO_PASSCRED is enabled for socket. "
-                       "Expected %d bytes, got %d"),
-                     (gint) sizeof (gint), (gint) opt_len);
-        goto out;
-      }
     if (opt_val == 0)
       {
-        opt_val = 1;
-        if (setsockopt (g_socket_get_fd (socket),
-                        SOL_SOCKET,
-                        SO_PASSCRED,
-                        &opt_val,
-                        sizeof opt_val) != 0)
+        if (!g_socket_set_option (socket,
+				  SOL_SOCKET,
+				  SO_PASSCRED,
+				  TRUE,
+				  NULL))
           {
             g_set_error (error,
                          G_IO_ERROR,
@@ -598,13 +584,11 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
 #ifdef __linux__
   if (turn_off_so_passcreds)
     {
-      gint opt_val;
-      opt_val = 0;
-      if (setsockopt (g_socket_get_fd (socket),
-                      SOL_SOCKET,
-                      SO_PASSCRED,
-                      &opt_val,
-                      sizeof opt_val) != 0)
+      if (!g_socket_set_option (socket,
+				SOL_SOCKET,
+				SO_PASSCRED,
+				FALSE,
+				NULL))
         {
           g_set_error (error,
                        G_IO_ERROR,

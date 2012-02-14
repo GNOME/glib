@@ -1900,6 +1900,8 @@ g_socket_set_ttl
 g_socket_get_ttl
 g_socket_get_broadcast
 g_socket_set_broadcast
+g_socket_get_option
+g_socket_set_option
 g_socket_get_family
 g_socket_get_fd
 g_socket_get_local_address

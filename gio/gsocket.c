@@ -344,19 +344,11 @@ g_socket_details_from_fd (GSocket *socket)
   struct sockaddr_storage address;
   gint fd;
   guint addrlen;
-  guint optlen;
   int value, family;
   int errsv;
-#ifdef G_OS_WIN32
-  /* See bug #611756 */
-  BOOL bool_val = FALSE;
-#else
-  int bool_val;
-#endif
 
   fd = socket->priv->fd;
-  optlen = sizeof value;
-  if (getsockopt (fd, SOL_SOCKET, SO_TYPE, (void *)&value, &optlen) != 0)
+  if (!g_socket_get_option (socket, SOL_SOCKET, SO_TYPE, &value, NULL))
     {
       errsv = get_socket_errno ();
 
@@ -380,7 +372,6 @@ g_socket_details_from_fd (GSocket *socket)
       goto err;
     }
 
-  g_assert (optlen == sizeof value);
   switch (value)
     {
      case SOCK_STREAM:
@@ -419,8 +410,7 @@ g_socket_details_from_fd (GSocket *socket)
        * But we can use SO_DOMAIN as a workaround there.
        */
 #ifdef SO_DOMAIN
-      optlen = sizeof family;
-      if (getsockopt (fd, SOL_SOCKET, SO_DOMAIN, (void *)&family, &optlen) != 0)
+      if (!g_socket_get_option (socket, SOL_SOCKET, SO_DOMAIN, &family, NULL))
 	{
 	  errsv = get_socket_errno ();
 	  goto err;
@@ -473,19 +463,9 @@ g_socket_details_from_fd (GSocket *socket)
 	socket->priv->connected = TRUE;
     }
 
-  optlen = sizeof bool_val;
-  if (getsockopt (fd, SOL_SOCKET, SO_KEEPALIVE,
-		  (void *)&bool_val, &optlen) == 0)
+  if (g_socket_get_option (socket, SOL_SOCKET, SO_KEEPALIVE, &value, NULL))
     {
-#ifndef G_OS_WIN32
-      /* Experimentation indicates that the SO_KEEPALIVE value is
-       * actually a char on Windows, even if documentation claims it
-       * to be a BOOL which is a typedef for int. So this g_assert()
-       * fails. See bug #611756.
-       */
-      g_assert (optlen == sizeof bool_val);
-#endif
-      socket->priv->keepalive = !!bool_val;
+      socket->priv->keepalive = !!value;
     }
   else
     {
@@ -1154,7 +1134,7 @@ void
 g_socket_set_keepalive (GSocket  *socket,
 			gboolean  keepalive)
 {
-  int value;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
@@ -1162,12 +1142,11 @@ g_socket_set_keepalive (GSocket  *socket,
   if (socket->priv->keepalive == keepalive)
     return;
 
-  value = (gint) keepalive;
-  if (setsockopt (socket->priv->fd, SOL_SOCKET, SO_KEEPALIVE,
-		  (gpointer) &value, sizeof (value)) < 0)
+  if (!g_socket_set_option (socket, SOL_SOCKET, SO_KEEPALIVE,
+			    keepalive, &error))
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error setting keepalive: %s", socket_strerror (errsv));
+      g_warning ("error setting keepalive: %s", error->message);
+      g_error_free (error);
       return;
     }
 
@@ -1316,34 +1295,29 @@ g_socket_set_timeout (GSocket *socket,
 guint
 g_socket_get_ttl (GSocket *socket)
 {
-  int result;
-  guint value, optlen;
+  GError *error = NULL;
+  gint value;
 
-  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+  g_return_val_if_fail (G_IS_SOCKET (socket), 0);
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      guchar optval;
-
-      optlen = sizeof (optval);
-      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_TTL,
-			   &optval, &optlen);
-      value = optval;
+      g_socket_get_option (socket, IPPROTO_IP, IP_TTL,
+			   &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      optlen = sizeof (value);
-      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
-			   &value, &optlen);
+      g_socket_get_option (socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
+			   &value, &error);
     }
   else
-    g_return_val_if_reached (FALSE);
+    g_return_val_if_reached (0);
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error getting unicast ttl: %s", socket_strerror (errsv));
-      return FALSE;
+      g_warning ("error getting unicast ttl: %s", error->message);
+      g_error_free (error);
+      return 0;
     }
 
   return value;
@@ -1363,29 +1337,27 @@ void
 g_socket_set_ttl (GSocket  *socket,
                   guint     ttl)
 {
-  int result;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      guchar optval = (guchar)ttl;
-
-      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_TTL,
-			   &optval, sizeof (optval));
+      g_socket_set_option (socket, IPPROTO_IP, IP_TTL,
+			   ttl, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
-			   &ttl, sizeof (ttl));
+      g_socket_set_option (socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
+			   ttl, &error);
     }
   else
     g_return_if_reached ();
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error setting unicast ttl: %s", socket_strerror (errsv));
+      g_warning ("error setting unicast ttl: %s", error->message);
+      g_error_free (error);
       return;
     }
 
@@ -1407,19 +1379,16 @@ g_socket_set_ttl (GSocket  *socket,
 gboolean
 g_socket_get_broadcast (GSocket *socket)
 {
-  int result;
-  guint value = 0, optlen;
+  GError *error = NULL;
+  gint value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
-  optlen = sizeof (guchar);
-  result = getsockopt (socket->priv->fd, SOL_SOCKET, SO_BROADCAST,
-                       &value, &optlen);
-
-  if (result < 0)
+  if (!g_socket_get_option (socket, SOL_SOCKET, SO_BROADCAST,
+			    &value, &error))
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error getting broadcast: %s", socket_strerror (errsv));
+      g_warning ("error getting broadcast: %s", error->message);
+      g_error_free (error);
       return FALSE;
     }
 
@@ -1441,21 +1410,17 @@ void
 g_socket_set_broadcast (GSocket    *socket,
        	                gboolean    broadcast)
 {
-  int result;
-  gint value;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
   broadcast = !!broadcast;
-  value = (guchar)broadcast;
 
-  result = setsockopt (socket->priv->fd, SOL_SOCKET, SO_BROADCAST,
-		       &value, sizeof (value));
-
-  if (result < 0)
+  if (!g_socket_set_option (socket, SOL_SOCKET, SO_BROADCAST,
+			    broadcast, &error))
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error setting broadcast: %s", socket_strerror (errsv));
+      g_warning ("error setting broadcast: %s", error->message);
+      g_error_free (error);
       return;
     }
 
@@ -1477,30 +1442,28 @@ g_socket_set_broadcast (GSocket    *socket,
 gboolean
 g_socket_get_multicast_loopback (GSocket *socket)
 {
-  int result;
-  guint value = 0, optlen;
+  GError *error = NULL;
+  gint value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      optlen = sizeof (guchar);
-      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
-			   &value, &optlen);
+      g_socket_get_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
+			   &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      optlen = sizeof (guint);
-      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
-			   &value, &optlen);
+      g_socket_get_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
+			   &value, &error);
     }
   else
     g_return_val_if_reached (FALSE);
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error getting multicast loopback: %s", socket_strerror (errsv));
+      g_warning ("error getting multicast loopback: %s", error->message);
+      g_error_free (error);
       return FALSE;
     }
 
@@ -1523,7 +1486,7 @@ void
 g_socket_set_multicast_loopback (GSocket    *socket,
 				 gboolean    loopback)
 {
-  int result;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
@@ -1531,25 +1494,21 @@ g_socket_set_multicast_loopback (GSocket    *socket,
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      guchar value = (guchar)loopback;
-
-      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
-			   &value, sizeof (value));
+      g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
+			   loopback, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      guint value = (guint)loopback;
-
-      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
-			   &value, sizeof (value));
+      g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
+			   loopback, &error);
     }
   else
     g_return_if_reached ();
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error setting multicast loopback: %s", socket_strerror (errsv));
+      g_warning ("error setting multicast loopback: %s", error->message);
+      g_error_free (error);
       return;
     }
 
@@ -1570,33 +1529,28 @@ g_socket_set_multicast_loopback (GSocket    *socket,
 guint
 g_socket_get_multicast_ttl (GSocket *socket)
 {
-  int result;
-  guint value, optlen;
+  GError *error = NULL;
+  gint value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      guchar optval;
-
-      optlen = sizeof (optval);
-      result = getsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_TTL,
-			   &optval, &optlen);
-      value = optval;
+      g_socket_get_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
+			   &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      optlen = sizeof (value);
-      result = getsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
-			   &value, &optlen);
+      g_socket_get_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
+			   &value, &error);
     }
   else
     g_return_val_if_reached (FALSE);
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error getting multicast ttl: %s", socket_strerror (errsv));
+      g_warning ("error getting multicast ttl: %s", error->message);
+      g_error_free (error);
       return FALSE;
     }
 
@@ -1618,29 +1572,27 @@ void
 g_socket_set_multicast_ttl (GSocket  *socket,
                             guint     ttl)
 {
-  int result;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_SOCKET (socket));
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
-      guchar optval = (guchar)ttl;
-
-      result = setsockopt (socket->priv->fd, IPPROTO_IP, IP_MULTICAST_TTL,
-			   &optval, sizeof (optval));
+      g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
+			   ttl, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
-      result = setsockopt (socket->priv->fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
-			   &ttl, sizeof (ttl));
+      g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
+			   ttl, &error);
     }
   else
     g_return_if_reached ();
 
-  if (result < 0)
+  if (error)
     {
-      int errsv = get_socket_errno ();
-      g_warning ("error setting multicast ttl: %s", socket_strerror (errsv));
+      g_warning ("error setting multicast ttl: %s", error->message);
+      g_error_free (error);
       return;
     }
 
@@ -1910,13 +1862,11 @@ g_socket_bind (GSocket         *socket,
      It always allows the unix variant of SO_REUSEADDR anyway */
 #ifndef G_OS_WIN32
   {
-    int value;
-
-    value = (int) !!reuse_address;
+    reuse_address = !!reuse_address;
     /* Ignore errors here, the only likely error is "not supported", and
        this is a "best effort" thing mainly */
-    setsockopt (socket->priv->fd, SOL_SOCKET, SO_REUSEADDR,
-		(gpointer) &value, sizeof (value));
+    g_socket_set_option (socket, SOL_SOCKET, SO_REUSEADDR,
+			 reuse_address, NULL);
   }
 #endif
 
@@ -2121,12 +2071,11 @@ g_socket_speaks_ipv4 (GSocket *socket)
     case G_SOCKET_FAMILY_IPV6:
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
       {
-        guint sizeof_int = sizeof (int);
         gint v6_only;
 
-        if (getsockopt (socket->priv->fd,
-                        IPPROTO_IPV6, IPV6_V6ONLY,
-                        &v6_only, &sizeof_int) != 0)
+        if (!g_socket_get_option (socket,
+				  IPPROTO_IPV6, IPV6_V6ONLY,
+				  &v6_only, NULL))
           return FALSE;
 
         return !v6_only;
@@ -2364,7 +2313,6 @@ gboolean
 g_socket_check_connect_result (GSocket  *socket,
 			       GError  **error)
 {
-  guint optlen;
   int value;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
@@ -2372,13 +2320,9 @@ g_socket_check_connect_result (GSocket  *socket,
   if (!check_socket (socket, error))
     return FALSE;
 
-  optlen = sizeof (value);
-  if (getsockopt (socket->priv->fd, SOL_SOCKET, SO_ERROR, (void *)&value, &optlen) != 0)
+  if (!g_socket_get_option (socket, SOL_SOCKET, SO_ERROR, &value, error))
     {
-      int errsv = get_socket_errno ();
-
-      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Unable to get pending error: %s"), socket_strerror (errsv));
+      g_prefix_error (error, _("Unable to get pending error: "));
       return FALSE;
     }
 
@@ -4425,3 +4369,139 @@ g_socket_get_credentials (GSocket   *socket,
 
   return ret;
 }
+
+/**
+ * g_socket_get_option:
+ * @socket: a #GSocket
+ * @level: the "API level" of the option (eg, <literal>SOL_SOCKET</literal>)
+ * @optname: the "name" of the option (eg, <literal>SO_BROADCAST</literal>)
+ * @value: (out): return location for the option value
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Gets the value of an integer-valued option on @socket, as with
+ * <literal>getsockopt ()</literal>. (If you need to fetch a
+ * non-integer-valued option, you will need to call
+ * <literal>getsockopt ()</literal> directly.)
+ *
+ * The <link linkend="gio-gnetworking.h"><literal>&lt;gio/gnetworking.h&gt;</literal></link>
+ * header pulls in system headers that will define most of the
+ * standard/portable socket options. For unusual socket protocols or
+ * platform-dependent options, you may need to include additional
+ * headers.
+ *
+ * Note that even for socket options that are a single byte in size,
+ * @value is still a pointer to a #gint variable, not a #guchar;
+ * g_socket_get_option() will handle the conversion internally.
+ *
+ * Returns: success or failure. On failure, @error will be set, and
+ *   the system error value (<literal>errno</literal> or
+ *   <literal>WSAGetLastError ()</literal>) will still be set to the
+ *   result of the <literal>getsockopt ()</literal> call.
+ *
+ * Since: 2.36
+ */
+gboolean
+g_socket_get_option (GSocket  *socket,
+		     gint      level,
+		     gint      optname,
+		     gint     *value,
+		     GError  **error)
+{
+  guint size;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  *value = 0;
+  size = sizeof (gint);
+  if (getsockopt (socket->priv->fd, level, optname, value, &size) != 0)
+    {
+      int errsv = get_socket_errno ();
+
+      g_set_error_literal (error,
+			   G_IO_ERROR,
+			   socket_io_error_from_errno (errsv),
+			   socket_strerror (errsv));
+#ifndef G_OS_WIN32
+      /* Reset errno in case the caller wants to look at it */
+      errno = errsv;
+#endif
+      return FALSE;
+    }
+
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  /* If the returned value is smaller than an int then we need to
+   * slide it over into the low-order bytes of *value.
+   */
+  if (size != sizeof (gint))
+    *value = *value >> (8 * (sizeof (gint) - size));
+#endif
+
+  return TRUE;
+}
+
+/**
+ * g_socket_set_option:
+ * @socket: a #GSocket
+ * @level: the "API level" of the option (eg, <literal>SOL_SOCKET</literal>)
+ * @optname: the "name" of the option (eg, <literal>SO_BROADCAST</literal>)
+ * @value: the value to set the option to
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Sets the value of an integer-valued option on @socket, as with
+ * <literal>setsockopt ()</literal>. (If you need to set a
+ * non-integer-valued option, you will need to call
+ * <literal>setsockopt ()</literal> directly.)
+ *
+ * The <link linkend="gio-gnetworking.h"><literal>&lt;gio/gnetworking.h&gt;</literal></link>
+ * header pulls in system headers that will define most of the
+ * standard/portable socket options. For unusual socket protocols or
+ * platform-dependent options, you may need to include additional
+ * headers.
+ *
+ * Returns: success or failure. On failure, @error will be set, and
+ *   the system error value (<literal>errno</literal> or
+ *   <literal>WSAGetLastError ()</literal>) will still be set to the
+ *   result of the <literal>setsockopt ()</literal> call.
+ *
+ * Since: 2.36
+ */
+gboolean
+g_socket_set_option (GSocket  *socket,
+		     gint      level,
+		     gint      optname,
+		     gint      value,
+		     GError  **error)
+{
+  gint errsv;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  if (setsockopt (socket->priv->fd, level, optname, &value, sizeof (gint)) == 0)
+    return TRUE;
+
+#if !defined (__linux__) && !defined (G_OS_WIN32)
+  /* Linux and Windows let you set a single-byte value from an int,
+   * but most other platforms don't.
+   */
+  if (errno == EINVAL && value >= SCHAR_MIN && value <= CHAR_MAX)
+    {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+      value = value << (8 * (sizeof (gint) - 1));
+#endif
+      if (setsockopt (socket->priv->fd, level, optname, &value, 1) == 0)
+        return TRUE;
+    }
+#endif
+
+  errsv = get_socket_errno ();
+
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       socket_io_error_from_errno (errsv),
+                       socket_strerror (errsv));
+#ifndef G_OS_WIN32
+  errno = errsv;
+#endif
+  return FALSE;
+}
+

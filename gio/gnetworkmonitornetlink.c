@@ -83,7 +83,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
                                          GError       **error)
 {
   GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (initable);
-  gint sockfd, val;
+  gint sockfd;
   struct sockaddr_nl snl;
 
   /* We create the socket the old-school way because sockaddr_netlink
@@ -112,22 +112,21 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  val = 1;
-  if (setsockopt (sockfd, SOL_SOCKET, SO_PASSCRED, &val, sizeof (val)) != 0)
-    {
-      int errsv = errno;
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                   _("Could not create network monitor: %s"),
-                   g_strerror (errno));
-      close (sockfd);
-      return FALSE;
-    }
-
   nl->priv->sock = g_socket_new_from_fd (sockfd, error);
   if (error)
     {
       g_prefix_error (error, "%s", _("Could not create network monitor: "));
       close (sockfd);
+      return FALSE;
+    }
+
+  if (!g_socket_set_option (nl->priv->sock, SOL_SOCKET, SO_PASSCRED,
+			    TRUE, NULL))
+    {
+      int errsv = errno;
+      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                   _("Could not create network monitor: %s"),
+                   g_strerror (errno));
       return FALSE;
     }
 

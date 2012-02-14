@@ -233,6 +233,19 @@ gssize                 g_socket_send_with_blocking      (GSocket                
 							 GCancellable            *cancellable,
 							 GError                 **error);
 
+GLIB_AVAILABLE_IN_2_36
+gboolean               g_socket_get_option              (GSocket                 *socket,
+							 gint                     level,
+							 gint                     optname,
+							 gint                    *value,
+							 GError                 **error);
+GLIB_AVAILABLE_IN_2_36
+gboolean               g_socket_set_option              (GSocket                 *socket,
+							 gint                     level,
+							 gint                     optname,
+							 gint                     value,
+							 GError                 **error);
+
 G_END_DECLS
 
 #endif /* __G_SOCKET_H__ */

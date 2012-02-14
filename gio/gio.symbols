@@ -1001,6 +1001,7 @@ g_socket_get_listen_backlog
 g_socket_get_local_address
 g_socket_get_multicast_loopback
 g_socket_get_multicast_ttl
+g_socket_get_option
 g_socket_get_protocol
 g_socket_get_remote_address
 g_socket_get_socket_type
@@ -1027,6 +1028,7 @@ g_socket_set_keepalive
 g_socket_set_listen_backlog
 g_socket_set_multicast_loopback
 g_socket_set_multicast_ttl
+g_socket_set_option
 g_socket_speaks_ipv4
 g_socket_get_credentials
 g_socket_control_message_get_type

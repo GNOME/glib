@@ -1065,25 +1065,25 @@ fi
 
 AC_CHECK_FUNCS(getprotobyname_r endservent if_nametoindex)
 
-# <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
-# inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
-# they aren't present at run-time (on Windows 2000).
-AC_CHECK_HEADER([wspiapi.h], [WSPIAPI_INCLUDE="\#include <wspiapi.h>"])
-AC_SUBST(WSPIAPI_INCLUDE)
+AS_IF([test $glib_native_win32 = yes], [
+  # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
+  # inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
+  # they aren't present at run-time (on Windows 2000).
+  AC_CHECK_HEADER([wspiapi.h], [WSPIAPI_INCLUDE="#include <wspiapi.h>"])
+  AC_SUBST(WSPIAPI_INCLUDE)
+], [
+  AC_MSG_CHECKING([if arpa/nameser_compat.h is needed])
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>],
+                                     [int qclass = C_IN;])],
+                    [AC_MSG_RESULT([no])],
+                    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>
+                                                         #include <arpa/nameser_compat.h>],
+                                                        [int qclass = C_IN;])],
+                                       [AC_MSG_RESULT([yes])
+                                        NAMESER_COMPAT_INCLUDE="\#include <arpa/nameser_compat.h>"],
+                                       [AC_MSG_ERROR([could not compile test program either way])])])
+  AC_SUBST(NAMESER_COMPAT_INCLUDE)
 
-AC_MSG_CHECKING([if arpa/nameser_compat.h is needed])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>],
-                                   [int qclass = C_IN;])],
-                  [AC_MSG_RESULT([no])],
-                  [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>
-                                                       #include <arpa/nameser_compat.h>],
-                                                      [int qclass = C_IN;])],
-                                     [AC_MSG_RESULT([yes])
-                                      NAMESER_COMPAT_INCLUDE="\#include <arpa/nameser_compat.h>"],
-                                     [AC_MSG_ERROR([could not compile test program either way])])])
-AC_SUBST(NAMESER_COMPAT_INCLUDE)
-
-AS_IF([test $glib_native_win32 = no], [
   # We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
   NETWORK_LIBS=""
   AC_MSG_CHECKING([for res_query])
