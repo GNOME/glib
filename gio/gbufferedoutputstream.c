@@ -635,12 +635,12 @@ g_buffered_output_stream_write_async (GOutputStream        *stream,
     {
       wdata->fdata.flush_stream = FALSE;
       wdata->fdata.close_stream = FALSE;
-      g_simple_async_result_run_in_thread (res, 
-                                           flush_buffer_thread, 
+      g_simple_async_result_run_in_thread (res,
+                                           flush_buffer_thread,
                                            io_priority,
                                            cancellable);
-      g_object_unref (res);
     }
+    g_object_unref (res);
 }
 
 static gssize
