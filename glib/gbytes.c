@@ -50,8 +50,8 @@
  *
  * A #GBytes can come from many different origins that may have
  * different procedures for freeing the memory region.  Examples are
- * memory from g_malloc(), from memory slices, from a #GMappedFile or
- * memory from other allocators.
+ * memory from g_malloc(), from memory slices, memory from other allocators,
+ * or from a mapped file using g_mapped_file_new() and g_mapped_file_new_from_fd().
  *
  * #GBytes work well as keys in #GHashTable. Use g_bytes_equal() and
  * g_bytes_hash() as parameters to g_hash_table_new() or g_hash_table_new_full().

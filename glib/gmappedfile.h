@@ -39,12 +39,16 @@ GMappedFile *g_mapped_file_new          (const gchar  *filename,
 GMappedFile *g_mapped_file_new_from_fd  (gint          fd,
 					 gboolean      writable,
 					 GError      **error) G_GNUC_MALLOC;
-gsize        g_mapped_file_get_length   (GMappedFile  *file);
-gchar       *g_mapped_file_get_contents (GMappedFile  *file);
-GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
-void         g_mapped_file_unref        (GMappedFile  *file);
 
-GLIB_DEPRECATED_FOR(g_mapped_file_unref)
+GLIB_DEPRECATED_FOR(g_bytes_get_size)
+gsize        g_mapped_file_get_length   (GMappedFile  *file);
+GLIB_DEPRECATED_FOR(g_bytes_get_data)
+gchar       *g_mapped_file_get_contents (GMappedFile  *file);
+GLIB_DEPRECATED_FOR(g_bytes_ref)
+GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
+GLIB_DEPRECATED_FOR(g_bytes_unref)
+void         g_mapped_file_unref        (GMappedFile  *file);
+GLIB_DEPRECATED_FOR(g_bytes_unref)
 void         g_mapped_file_free         (GMappedFile  *file);
 
 G_END_DECLS

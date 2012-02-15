@@ -76,19 +76,17 @@
  * not be accessed directly.
  */
 
-struct _GMappedFile
+typedef struct 
 {
   gchar *contents;
   gsize  length;
-  gpointer free_func;
-  int    ref_count;
 #ifdef G_OS_WIN32
   HANDLE mapping;
 #endif
-};
+} GMappedFileData;
 
 static void
-g_mapped_file_destroy (GMappedFile *file)
+g_mapped_file_destroy (GMappedFileData *file)
 {
   if (file->length)
     {
@@ -101,7 +99,7 @@ g_mapped_file_destroy (GMappedFile *file)
 #endif
     }
 
-  g_slice_free (GMappedFile, file);
+  g_slice_free (GMappedFileData, file);
 }
 
 static GMappedFile*
@@ -110,12 +108,10 @@ mapped_file_new_from_fd (int           fd,
                          const gchar  *filename,
                          GError      **error)
 {
-  GMappedFile *file;
+  GMappedFileData *file;
   struct stat st;
 
-  file = g_slice_new0 (GMappedFile);
-  file->ref_count = 1;
-  file->free_func = g_mapped_file_destroy;
+  file = g_slice_new0 (GMappedFileData);
 
   if (fstat (fd, &st) == -1)
     {
@@ -141,9 +137,8 @@ mapped_file_new_from_fd (int           fd,
    */
   if (st.st_size == 0 && S_ISREG (st.st_mode))
     {
-      file->length = 0;
-      file->contents = NULL;
-      return file;
+      g_slice_free (GMappedFileData, file);
+      return (GMappedFile *) g_bytes_new_static (NULL, 0);
     }
 
   file->contents = MAP_FAILED;
@@ -182,7 +177,6 @@ mapped_file_new_from_fd (int           fd,
     }
 #endif
 
-  
   if (file->contents == MAP_FAILED)
     {
       int save_errno = errno;
@@ -201,10 +195,12 @@ mapped_file_new_from_fd (int           fd,
       goto out;
     }
 
-  return file;
+  return (GMappedFile *) g_bytes_new_with_free_func (file->contents, file->length,
+                                                     (GDestroyNotify) g_mapped_file_destroy,
+                                                     file);
 
  out:
-  g_slice_free (GMappedFile, file);
+  g_slice_free (GMappedFileData, file);
 
   return NULL;
 }
@@ -312,13 +308,13 @@ g_mapped_file_new_from_fd (gint          fd,
  * Returns: the length of the contents of @file.
  *
  * Since: 2.8
+ *
+ * Deprecated: 2.32: Use g_bytes_get_size() instead.
  */
 gsize
 g_mapped_file_get_length (GMappedFile *file)
 {
-  g_return_val_if_fail (file != NULL, 0);
-
-  return file->length;
+  return g_bytes_get_size ((GBytes *) file);
 }
 
 /**
@@ -335,13 +331,13 @@ g_mapped_file_get_length (GMappedFile *file)
  * Returns: the contents of @file, or %NULL.
  *
  * Since: 2.8
+ * 
+ * Deprecated: 2.32: Use g_bytes_get_data() instead.
  */
 gchar *
 g_mapped_file_get_contents (GMappedFile *file)
 {
-  g_return_val_if_fail (file != NULL, NULL);
-
-  return file->contents;
+  return (gchar *) g_bytes_get_data ((GBytes *) file, NULL);
 }
 
 /**
@@ -357,7 +353,7 @@ g_mapped_file_get_contents (GMappedFile *file)
 void
 g_mapped_file_free (GMappedFile *file)
 {
-  g_mapped_file_unref (file);
+  g_bytes_unref ((GBytes *) file);
 }
 
 /**
@@ -370,15 +366,13 @@ g_mapped_file_free (GMappedFile *file)
  * Return value: the passed in #GMappedFile.
  *
  * Since: 2.22
+ *
+ * Deprecated: 2.32: Use g_bytes_unref() instead.
  **/
 GMappedFile *
 g_mapped_file_ref (GMappedFile *file)
 {
-  g_return_val_if_fail (file != NULL, NULL);
-
-  g_atomic_int_inc (&file->ref_count);
-
-  return file;
+  return (GMappedFile *) g_bytes_ref ((GBytes *) file);
 }
 
 /**
@@ -391,12 +385,11 @@ g_mapped_file_ref (GMappedFile *file)
  * It is safe to call this function from any thread.
  *
  * Since 2.22
+ *
+ * Deprecated: 2.32: Use g_bytes_unref() instead.
  **/
 void
 g_mapped_file_unref (GMappedFile *file)
 {
-  g_return_if_fail (file != NULL);
-
-  if (g_atomic_int_dec_and_test (&file->ref_count))
-    g_mapped_file_destroy (file);
+  g_bytes_unref ((GBytes *) file);
 }
