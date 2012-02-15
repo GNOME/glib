@@ -31,12 +31,12 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GMappedFile GMappedFile;
+typedef GBytes GMappedFile;
 
-GMappedFile *g_mapped_file_new          (const gchar  *filename,
+GBytes      *g_mapped_file_new          (const gchar  *filename,
 				         gboolean      writable,
 				         GError      **error) G_GNUC_MALLOC;
-GMappedFile *g_mapped_file_new_from_fd  (gint          fd,
+GBytes      *g_mapped_file_new_from_fd  (gint          fd,
 					 gboolean      writable,
 					 GError      **error) G_GNUC_MALLOC;
 

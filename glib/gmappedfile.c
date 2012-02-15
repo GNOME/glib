@@ -71,9 +71,12 @@
 /**
  * GMappedFile:
  *
- * The #GMappedFile represents a file mapping created with
- * g_mapped_file_new(). It has only private members and should
+ * #GMappedFile is a deprecated alias for a #GBytes representing 
+ * a file mapping created with g_mapped_file_new() or
+ * g_mapped_file_new_from_fd(). It has only private members and should
  * not be accessed directly.
+ *
+ * Deprecated: 2.32: Use #GBytes instead.
  */
 
 typedef struct 
@@ -102,7 +105,7 @@ g_mapped_file_destroy (GMappedFileData *file)
   g_slice_free (GMappedFileData, file);
 }
 
-static GMappedFile*
+static GBytes *
 mapped_file_new_from_fd (int           fd,
 			 gboolean      writable,
                          const gchar  *filename,
@@ -138,7 +141,7 @@ mapped_file_new_from_fd (int           fd,
   if (st.st_size == 0 && S_ISREG (st.st_mode))
     {
       g_slice_free (GMappedFileData, file);
-      return (GMappedFile *) g_bytes_new_static (NULL, 0);
+      return g_bytes_new_static (NULL, 0);
     }
 
   file->contents = MAP_FAILED;
@@ -195,9 +198,9 @@ mapped_file_new_from_fd (int           fd,
       goto out;
     }
 
-  return (GMappedFile *) g_bytes_new_with_free_func (file->contents, file->length,
-                                                     (GDestroyNotify) g_mapped_file_destroy,
-                                                     file);
+  return g_bytes_new_with_free_func (file->contents, file->length,
+                                     (GDestroyNotify) g_mapped_file_destroy,
+                                     file);
 
  out:
   g_slice_free (GMappedFileData, file);
@@ -228,12 +231,12 @@ mapped_file_new_from_fd (int           fd,
  * size 0 (e.g. device files such as /dev/null), @error will be set
  * to the #GFileError value #G_FILE_ERROR_INVAL.
  *
- * Return value: a newly allocated #GMappedFile which must be unref'd
- *    with g_mapped_file_unref(), or %NULL if the mapping failed.
+ * Return value: a newly allocated #GBytes which must be unref'd
+ *    with g_bytes_unref(), or %NULL if the mapping failed.
  *
  * Since: 2.8
  */
-GMappedFile *
+GBytes *
 g_mapped_file_new (const gchar  *filename,
 		   gboolean      writable,
 		   GError      **error)
@@ -286,12 +289,12 @@ g_mapped_file_new (const gchar  *filename,
  * will not be modified, or if all modifications of the file are done
  * atomically (e.g. using g_file_set_contents()).
  *
- * Return value: a newly allocated #GMappedFile which must be unref'd
- *    with g_mapped_file_unref(), or %NULL if the mapping failed.
+ * Return value: a newly allocated #GBytes which must be unref'd
+ *    with g_bytes_unref(), or %NULL if the mapping failed.
  *
  * Since: 2.30
  */
-GMappedFile *
+GBytes *
 g_mapped_file_new_from_fd (gint          fd,
 			   gboolean      writable,
 			   GError      **error)
@@ -314,7 +317,7 @@ g_mapped_file_new_from_fd (gint          fd,
 gsize
 g_mapped_file_get_length (GMappedFile *file)
 {
-  return g_bytes_get_size ((GBytes *) file);
+  return g_bytes_get_size (file);
 }
 
 /**
@@ -337,7 +340,7 @@ g_mapped_file_get_length (GMappedFile *file)
 gchar *
 g_mapped_file_get_contents (GMappedFile *file)
 {
-  return (gchar *) g_bytes_get_data ((GBytes *) file, NULL);
+  return (gchar *) g_bytes_get_data (file, NULL);
 }
 
 /**
@@ -353,7 +356,7 @@ g_mapped_file_get_contents (GMappedFile *file)
 void
 g_mapped_file_free (GMappedFile *file)
 {
-  g_bytes_unref ((GBytes *) file);
+  g_bytes_unref (file);
 }
 
 /**
@@ -372,7 +375,7 @@ g_mapped_file_free (GMappedFile *file)
 GMappedFile *
 g_mapped_file_ref (GMappedFile *file)
 {
-  return (GMappedFile *) g_bytes_ref ((GBytes *) file);
+  return g_bytes_ref (file);
 }
 
 /**
@@ -391,5 +394,5 @@ g_mapped_file_ref (GMappedFile *file)
 void
 g_mapped_file_unref (GMappedFile *file)
 {
-  g_bytes_unref ((GBytes *) file);
+  g_bytes_unref (file);
 }
