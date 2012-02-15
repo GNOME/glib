@@ -27,6 +27,8 @@
 #include <glib/gtypes.h>
 #include <glib/garray.h>
 
+G_BEGIN_DECLS
+
 GBytes *        g_bytes_new                     (gconstpointer   data,
                                                  gsize           size);
 
@@ -66,5 +68,7 @@ gboolean        g_bytes_equal                   (gconstpointer   bytes1,
 
 gint            g_bytes_compare                 (gconstpointer   bytes1,
                                                  gconstpointer   bytes2);
+
+G_END_DECLS
 
 #endif /* __G_BYTES_H__ */
