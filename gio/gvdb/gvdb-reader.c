@@ -207,17 +207,17 @@ gvdb_table_new (const gchar  *filename,
                 gboolean      trusted,
                 GError      **error)
 {
-  GMappedFile *mapped;
+  GBytes *mapped;
 
   if ((mapped = g_mapped_file_new (filename, FALSE, error)) == NULL)
     return NULL;
 
-  return new_from_data (g_mapped_file_get_contents (mapped),
-			g_mapped_file_get_length (mapped),
+  return new_from_data (g_bytes_get_data (mapped, NULL),
+			g_bytes_get_size (mapped),
 			trusted,
 			mapped,
-			(GvdbRefFunc)g_mapped_file_ref,
-			(GDestroyNotify)g_mapped_file_unref,
+			(GvdbRefFunc)g_bytes_ref,
+			(GDestroyNotify)g_bytes_unref,
 			filename,
 			error);
 }

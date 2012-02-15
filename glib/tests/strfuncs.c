@@ -1074,11 +1074,12 @@ test_strtoll (void)
 static void
 test_bounds (void)
 {
-  GMappedFile *file, *before, *after;
+  GBytes  *file, *before, *after;
   char buffer[4097];
   char *tmp, *tmp2;
   char **array;
   char *string;
+  gsize size;
 
   /* if we allocate the file between two others and then free those
    * other two, then hopefully we end up with unmapped memory on either
@@ -1092,12 +1093,12 @@ test_bounds (void)
 
   file = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
   after = g_mapped_file_new ("4096-random-bytes", TRUE, NULL);
-  g_mapped_file_unref (before);
-  g_mapped_file_unref (after);
+  g_bytes_unref (before);
+  g_bytes_unref (after);
 
   g_assert (file != NULL);
-  g_assert_cmpint (g_mapped_file_get_length (file), ==, 4096);
-  string = g_mapped_file_get_contents (file);
+  string = (char *) g_bytes_get_data (file, &size);
+  g_assert_cmpint (size, ==, 4096);
 
   /* ensure they're all non-nul */
   g_assert (memchr (string, '\0', 4096) == NULL);
@@ -1227,7 +1228,7 @@ test_bounds (void)
   g_free (tmp2);
   g_free (tmp);
 
-  g_mapped_file_unref (file);
+  g_bytes_unref (file);
 }
 
 static void

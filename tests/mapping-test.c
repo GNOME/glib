@@ -75,12 +75,12 @@ write_or_die (const gchar *filename,
     }
 }
 
-static GMappedFile *
+static GBytes  *
 map_or_die (const gchar *filename,
 	    gboolean     writable)
 {
   GError *error = NULL;
-  GMappedFile *map;
+  GBytes  *map;
   gchar *displayname;
 
   map = g_mapped_file_new (filename, writable, &error);
@@ -98,7 +98,7 @@ map_or_die (const gchar *filename,
 static int
 child_main (int argc, char *argv[])
 {
-  GMappedFile *map;
+  GBytes  *map;
   GMainLoop *loop;
 
   map = map_or_die (filename, FALSE);
@@ -112,8 +112,8 @@ child_main (int argc, char *argv[])
   g_main_loop_run (loop);
 
   write_or_die (childname, 
-		g_mapped_file_get_contents (map),
-		g_mapped_file_get_length (map));
+		g_bytes_get_data (map, NULL),
+		g_bytes_get_size (map));
 
   return 0;
 }
@@ -121,35 +121,35 @@ child_main (int argc, char *argv[])
 static void
 test_mapping (void)
 {
-  GMappedFile *map;
+  GBytes  *map;
 
   write_or_die (filename, "ABC", -1);
 
   map = map_or_die (filename, FALSE);
-  g_assert (g_mapped_file_get_length (map) == 3);
-  g_mapped_file_free (map);
+  g_assert_cmpint (g_bytes_get_size (map), ==, 3);
+  g_bytes_unref (map);
 
   map = map_or_die (filename, TRUE);
-  g_assert (g_mapped_file_get_length (map) == 3);
-  g_mapped_file_free (map);
+  g_assert_cmpint (g_bytes_get_size (map), ==, 3);
+  g_bytes_unref (map);
 }
 
 static void 
 test_private (void)
 {
   GError *error = NULL;
-  GMappedFile *map;
+  GBytes  *map;
   gchar *buffer;
   gsize len;
 
   write_or_die (filename, "ABC", -1);
   map = map_or_die (filename, TRUE);
 
-  buffer = (gchar *)g_mapped_file_get_contents (map);
+  buffer = (gchar *)g_bytes_get_data (map, NULL);
   buffer[0] = '1';
   buffer[1] = '2';
   buffer[2] = '3';
-  g_mapped_file_free (map);
+  g_bytes_unref (map);
 
   if (!g_file_get_contents (filename, &buffer, &len, &error))
     {
@@ -168,7 +168,7 @@ static void
 test_child_private (gchar *argv0)
 {
   GError *error = NULL;
-  GMappedFile *map;
+  GBytes  *map;
   gchar *buffer;
   gsize len;
   gchar *child_argv[3];
@@ -196,11 +196,11 @@ test_child_private (gchar *argv0)
   /* give the child some time to set up its mapping */
   g_usleep (2000000);
 
-  buffer = (gchar *)g_mapped_file_get_contents (map);
+  buffer = (gchar *)g_bytes_get_data (map, NULL);
   buffer[0] = '1';
   buffer[1] = '2';
   buffer[2] = '3';
-  g_mapped_file_free (map);
+  g_bytes_unref (map);
 
 #ifndef G_OS_WIN32
   kill (child_pid, SIGUSR1);

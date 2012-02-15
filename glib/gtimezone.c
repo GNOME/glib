@@ -345,7 +345,6 @@ GTimeZone *
 g_time_zone_new (const gchar *identifier)
 {
   GTimeZone *tz;
-  GMappedFile *file;
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
@@ -391,15 +390,7 @@ g_time_zone_new (const gchar *identifier)
           else
             filename = g_strdup ("/etc/localtime");
 
-          file = g_mapped_file_new (filename, FALSE, NULL);
-          if (file != NULL)
-            {
-              tz->zoneinfo = g_bytes_new_with_free_func (g_mapped_file_get_contents (file),
-                                                         g_mapped_file_get_length (file),
-                                                         (GDestroyNotify)g_mapped_file_unref,
-                                                         g_mapped_file_ref (file));
-              g_mapped_file_unref (file);
-            }
+          tz->zoneinfo = g_mapped_file_new (filename, FALSE, NULL);
           g_free (filename);
         }
 

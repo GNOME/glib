@@ -13,30 +13,30 @@
 static void
 test_basic (void)
 {
-  GMappedFile *file;
+  GBytes *file;
   GError *error;
 
   error = NULL;
   file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
   g_assert_no_error (error);
 
-  g_mapped_file_ref (file);
-  g_mapped_file_unref (file);
+  g_bytes_ref (file);
+  g_bytes_unref (file);
 
-  g_mapped_file_unref (file);
+  g_bytes_unref (file);
 }
 
 static void
 test_empty (void)
 {
-  GMappedFile *file;
+  GBytes *file;
   GError *error;
 
   error = NULL;
   file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
   g_assert_no_error (error);
 
-  g_assert (g_mapped_file_get_contents (file) == NULL);
+  g_assert (g_bytes_get_data (file, NULL) == NULL);
 
   g_mapped_file_free (file);
 }
@@ -45,7 +45,7 @@ static void
 test_device (void)
 {
   GError *error = NULL;
-  GMappedFile *file;
+  GBytes *file;
 
   file = g_mapped_file_new ("/dev/null", FALSE, &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
@@ -56,7 +56,7 @@ test_device (void)
 static void
 test_nonexisting (void)
 {
-  GMappedFile *file;
+  GBytes *file;
   GError *error;
 
   error = NULL;
@@ -69,9 +69,10 @@ test_nonexisting (void)
 static void
 test_writable (void)
 {
-  GMappedFile *file;
+  GBytes *file;
   GError *error;
   gchar *contents;
+  gsize size;
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
 
@@ -85,7 +86,8 @@ test_writable (void)
   file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
   g_assert_no_error (error);
 
-  contents = g_mapped_file_get_contents (file);
+  contents = (gchar *) g_bytes_get_data (file, &size);
+  g_assert_cmpint (size, ==, 4096);
   g_assert (strncmp (contents, old, strlen (old)) == 0);
 
   memcpy (contents, new, strlen (new));
@@ -97,7 +99,8 @@ test_writable (void)
   file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
   g_assert_no_error (error);
 
-  contents = g_mapped_file_get_contents (file);
+  contents = (gchar *) g_bytes_get_data (file, &size);
+  g_assert_cmpint (size, ==, 4096);
   g_assert (strncmp (contents, old, strlen (old)) == 0);
 
   g_mapped_file_free (file);
@@ -106,9 +109,10 @@ test_writable (void)
 static void
 test_writable_fd (void)
 {
-  GMappedFile *file;
+  GBytes *file;
   GError *error;
   gchar *contents;
+  gsize size;
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
   int fd;
@@ -125,7 +129,8 @@ test_writable_fd (void)
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
 
-  contents = g_mapped_file_get_contents (file);
+  contents = (gchar *) g_bytes_get_data (file, &size);
+  g_assert_cmpint (size, ==, 4096);
   g_assert (strncmp (contents, old, strlen (old)) == 0);
 
   memcpy (contents, new, strlen (new));
@@ -140,11 +145,11 @@ test_writable_fd (void)
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
 
-  contents = g_mapped_file_get_contents (file);
+  contents = (gchar *) g_bytes_get_data (file, &size);
+  g_assert_cmpint (size, ==, 4096);
   g_assert (strncmp (contents, old, strlen (old)) == 0);
 
   g_mapped_file_free (file);
-
 }
 
 int

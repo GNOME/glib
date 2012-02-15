@@ -238,7 +238,7 @@
  *    that it uses.  The buffer is responsible for ensuring that the
  *    correct call is made when the data is no longer in use by
  *    #GVariant.  This may involve a g_free() or a g_slice_free() or
- *    even g_mapped_file_unref().
+ *    even g_bytes_unref().
  *   </para>
  *   <para>
  *    One buffer management structure is used for each chunk of
