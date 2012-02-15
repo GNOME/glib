@@ -1272,7 +1272,7 @@ g_application_release (GApplication *application)
  *
  * Activates the application.
  *
- * In essence, this results in the #GApplication::activate() signal being
+ * In essence, this results in the #GApplication::activate signal being
  * emitted in the primary instance.
  *
  * The application must be registered before calling this function.
