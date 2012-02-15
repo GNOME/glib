@@ -407,7 +407,8 @@ try_steal_and_unref (GBytes         *bytes,
 {
   gpointer result;
 
-  if (bytes->free_func != free_func || bytes->data == NULL)
+  if (bytes->free_func != free_func || bytes->data == NULL ||
+      bytes->user_data != bytes->data)
     return NULL;
 
   /* Are we the only reference? */
