@@ -171,7 +171,7 @@ g_bytes_new_with_free_func (gconstpointer  data,
   GBytes *bytes;
 
   bytes = g_slice_new (GBytes);
-  bytes->data = data;
+  bytes->data = size ? data : NULL;
   bytes->size = size;
   bytes->free_func = free_func;
   bytes->user_data = user_data;
