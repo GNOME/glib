@@ -1211,7 +1211,7 @@ cat(aract|erpillar|) matches one of the words "cat", "cataract", or
 <listitem><para>
 It sets up the subpattern as a capturing subpattern. This means
 that, when the whole pattern matches, that portion of the
-string that matched the subpattern can be obtained using <function>g_regex_fetch()</function>.
+string that matched the subpattern can be obtained using <function>g_match_info_fetch()</function>.
 Opening parentheses are counted from left to right (starting from 1, as
 subpattern 0 is the whole matched string) to obtain numbers for the
 capturing subpatterns.
