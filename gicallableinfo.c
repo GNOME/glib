@@ -360,6 +360,79 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
   return TRUE;
 }
 
+/* Extract the correct bits from an ffi_arg return value into
+ * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
+ *
+ * Also see the ffi_call man page - the storage requirements for return
+ * values are "special".
+ */
+typedef GIArgument GIFFIReturnValue;
+
+static void
+set_gargument_from_ffi_return_value (GITypeInfo                  *return_info,
+                                     GIArgument                  *arg,
+                                     GIFFIReturnValue            *ffi_value)
+{
+    switch (g_type_info_get_tag (return_info)) {
+    case GI_TYPE_TAG_INT8:
+        arg->v_int8 = (gint8) ffi_value->v_long;
+        break;
+    case GI_TYPE_TAG_UINT8:
+        arg->v_uint8 = (guint8) ffi_value->v_ulong;
+        break;
+    case GI_TYPE_TAG_INT16:
+        arg->v_int16 = (gint16) ffi_value->v_long;
+        break;
+    case GI_TYPE_TAG_UINT16:
+        arg->v_uint16 = (guint16) ffi_value->v_ulong;
+        break;
+    case GI_TYPE_TAG_INT32:
+        arg->v_int32 = (gint32) ffi_value->v_long;
+        break;
+    case GI_TYPE_TAG_UINT32:
+    case GI_TYPE_TAG_BOOLEAN:
+    case GI_TYPE_TAG_UNICHAR:
+        arg->v_uint32 = (guint32) ffi_value->v_ulong;
+        break;
+    case GI_TYPE_TAG_INT64:
+        arg->v_int64 = (gint64) ffi_value->v_int64;
+        break;
+    case GI_TYPE_TAG_UINT64:
+        arg->v_uint64 = (guint64) ffi_value->v_uint64;
+        break;
+    case GI_TYPE_TAG_FLOAT:
+        arg->v_float = ffi_value->v_float;
+        break;
+    case GI_TYPE_TAG_DOUBLE:
+        arg->v_double = ffi_value->v_double;
+        break;
+    case GI_TYPE_TAG_INTERFACE:
+        {
+            GIBaseInfo* interface_info;
+            GIInfoType interface_type;
+
+            interface_info = g_type_info_get_interface(return_info);
+            interface_type = g_base_info_get_type(interface_info);
+
+            switch(interface_type) {
+            case GI_INFO_TYPE_ENUM:
+            case GI_INFO_TYPE_FLAGS:
+                arg->v_int32 = (gint32) ffi_value->v_long;
+                break;
+            default:
+                arg->v_pointer = (gpointer) ffi_value->v_ulong;
+                break;
+            }
+
+            g_base_info_unref(interface_info);
+        }
+        break;
+    default:
+        arg->v_pointer = (gpointer) ffi_value->v_ulong;
+        break;
+    }
+}
+
 gboolean
 _g_callable_info_invoke (GIFunctionInfo *info,
                          gpointer          function,
@@ -376,16 +449,20 @@ _g_callable_info_invoke (GIFunctionInfo *info,
   ffi_type *rtype;
   ffi_type **atypes;
   GITypeInfo *tinfo;
+  GITypeInfo *rinfo;
+  GITypeTag rtag;
   GIArgInfo *ainfo;
   gint n_args, n_invoke_args, in_pos, out_pos, i;
   gpointer *args;
   gboolean success = FALSE;
   GError *local_error = NULL;
   gpointer error_address = &local_error;
+  GIFFIReturnValue ffi_return_value;
+  gpointer return_value_p; /* Will point inside the union return_value */
 
-  tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
-  rtype = g_type_info_get_ffi_type (tinfo);
-  g_base_info_unref ((GIBaseInfo *)tinfo);
+  rinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
+  rtype = g_type_info_get_ffi_type (rinfo);
+  rtag = g_type_info_get_tag(rinfo);
 
   in_pos = 0;
   out_pos = 0;
@@ -516,7 +593,23 @@ _g_callable_info_invoke (GIFunctionInfo *info,
     goto out;
 
   g_return_val_if_fail (return_value, FALSE);
-  ffi_call (&cif, function, return_value, args);
+  /* See comment for GIFFIReturnValue above */
+  switch (rtag)
+    {
+    case GI_TYPE_TAG_FLOAT:
+      return_value_p = &ffi_return_value.v_float;
+      break;
+    case GI_TYPE_TAG_DOUBLE:
+      return_value_p = &ffi_return_value.v_double;
+      break;
+    case GI_TYPE_TAG_INT64:
+    case GI_TYPE_TAG_UINT64:
+      return_value_p = &ffi_return_value.v_uint64;
+      break;
+    default:
+      return_value_p = &ffi_return_value.v_long;
+    }
+  ffi_call (&cif, function, return_value_p, args);
 
   if (local_error)
     {
@@ -525,8 +618,10 @@ _g_callable_info_invoke (GIFunctionInfo *info,
     }
   else
     {
+      set_gargument_from_ffi_return_value(rinfo, return_value, &ffi_return_value);
       success = TRUE;
     }
  out:
+  g_base_info_unref ((GIBaseInfo *)rinfo);
   return success;
 }
