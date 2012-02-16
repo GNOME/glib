@@ -46,9 +46,15 @@ struct _GIFunctionInvoker {
   gpointer padding[3];
 };
 
+typedef GIArgument GIFFIReturnValue;
+
 ffi_type *    gi_type_tag_get_ffi_type            (GITypeTag type_tag, gboolean is_pointer);
 
 ffi_type *    g_type_info_get_ffi_type            (GITypeInfo           *info);
+
+void          gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
+                                                     GIFFIReturnValue            *ffi_value,
+                                                     GIArgument                  *arg);
 
 gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                    GIFunctionInvoker    *invoker,

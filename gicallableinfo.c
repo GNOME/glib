@@ -366,12 +366,10 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
  * Also see the ffi_call man page - the storage requirements for return
  * values are "special".
  */
-typedef GIArgument GIFFIReturnValue;
-
-static void
-set_gargument_from_ffi_return_value (GITypeInfo                  *return_info,
-                                     GIArgument                  *arg,
-                                     GIFFIReturnValue            *ffi_value)
+void
+gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
+                                       GIFFIReturnValue            *ffi_value,
+                                       GIArgument                  *arg)
 {
     switch (g_type_info_get_tag (return_info)) {
     case GI_TYPE_TAG_INT8:
@@ -618,7 +616,7 @@ _g_callable_info_invoke (GIFunctionInfo *info,
     }
   else
     {
-      set_gargument_from_ffi_return_value(rinfo, return_value, &ffi_return_value);
+      gi_type_info_extract_ffi_return_value (rinfo, &ffi_return_value, return_value);
       success = TRUE;
     }
  out:
