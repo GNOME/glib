@@ -119,7 +119,10 @@ typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
  * @G_SIGNAL_DEPRECATED: The signal is deprecated and will be removed
  *   in a future version. A warning will be generated if it is connected while
  *   running with G_ENABLE_DIAGNOSTIC=1.  Since 2.32.
- * 
+ * @G_SIGNAL_ACCUMULATOR_FIRST_RUN: Only used in #GSignalAccumulator accumulator
+ *   functions for the GSignalInvocationHint::run_type field to mark the first
+ *   call to the accumulator function for a signal emission.  Since 2.64.
+ *
  * The signal flags are used to specify a signal's behaviour, the overall
  * signal description outlines how especially the RUN flags control the
  * stages of a signal emission.
@@ -134,7 +137,9 @@ typedef enum
   G_SIGNAL_ACTION	= 1 << 5,
   G_SIGNAL_NO_HOOKS	= 1 << 6,
   G_SIGNAL_MUST_COLLECT = 1 << 7,
-  G_SIGNAL_DEPRECATED   = 1 << 8
+  G_SIGNAL_DEPRECATED   = 1 << 8,
+  /* normal signal flags until 1 << 16 */
+  G_SIGNAL_ACCUMULATOR_FIRST_RUN    = 1 << 17,
 } GSignalFlags;
 /**
  * G_SIGNAL_FLAGS_MASK:
@@ -215,7 +220,9 @@ typedef enum
  * @detail: The detail passed on for this emission
  * @run_type: The stage the signal emission is currently in, this
  *  field will contain one of %G_SIGNAL_RUN_FIRST,
- *  %G_SIGNAL_RUN_LAST or %G_SIGNAL_RUN_CLEANUP.
+ *  %G_SIGNAL_RUN_LAST or %G_SIGNAL_RUN_CLEANUP and %G_SIGNAL_ACCUMULATOR_FIRST_RUN.
+ *  %G_SIGNAL_ACCUMULATOR_FIRST_RUN is only set for the first run of the accumulator
+ *  function for a signal emission.
  * 
  * The #GSignalInvocationHint structure is used to pass on additional information
  * to callbacks during a signal emission.
