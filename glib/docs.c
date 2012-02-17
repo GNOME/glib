@@ -1895,7 +1895,11 @@
  * the compiler is <command>gcc</command>. Declaring a function as const
  * enables better optimization of calls to the function. A const function
  * doesn't examine any values except its parameters, and has no effects
- * except its return value. See the GNU C documentation for details.
+ * except its return value.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * <note><para>
  * A function that has pointer arguments and examines the data pointed to
@@ -1912,8 +1916,11 @@
  * compiler is <command>gcc</command>. Declaring a function as pure enables
  * better optimization of calls to the function. A pure function has no
  * effects except its return value and the return value depends only on
- * the parameters and/or global variables. See the GNU C documentation
- * for details.
+ * the parameters and/or global variables.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  */
 
 /**
@@ -1924,7 +1931,11 @@
  * better optimization of the function. A function can have the malloc
  * attribute if it returns a pointer which is guaranteed to not alias with
  * any other pointer when the function returns (in practice, this means newly
- * allocated memory). See the GNU C documentation for details.
+ * allocated memory).
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.6
  */
@@ -1937,7 +1948,11 @@
  * if the compiler is a new enough <command>gcc</command>. This attribute
  * tells the compiler that the function returns a pointer to memory of a
  * size that is specified by the @x<!-- -->th function parameter.
- * See the GNU C documentation for details.
+ *
+ * Place the attribute after the function declaration, just before the
+ * semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.18
  */
@@ -1951,7 +1966,11 @@
  * if the compiler is a new enough <command>gcc</command>. This attribute
  * tells the compiler that the function returns a pointer to memory of a
  * size that is specified by the product of two function parameters.
- * See the GNU C documentation for details.
+ *
+ * Place the attribute after the function declaration, just before the
+ * semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.18
  */
@@ -1964,7 +1983,10 @@
  * variables and functions as deprecated. When called with the
  * <option>-Wdeprecated-declarations</option> option, the compiler will
  * generate warnings when deprecated interfaces are used.
- * See the GNU C documentation for details.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.2
  */
@@ -1977,7 +1999,10 @@
  * Like %G_GNUC_DEPRECATED, but names the intended replacement for the
  * deprecated symbol if the version of <command>gcc</command> in use is
  * new enough to support custom deprecation messages.
- * See the GNU C documentation for details.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Note that if @f is a macro, it will be expanded in the warning message.
  * You can enclose it in quotes to prevent this. (The quotes will show up
@@ -2068,8 +2093,11 @@
  * Expands to the GNU C <literal>noreturn</literal> function attribute
  * if the compiler is <command>gcc</command>. It is used for declaring
  * functions which never return. It enables optimization of the function,
- * and avoids possible compiler warnings. See the GNU C documentation for
- * details.
+ * and avoids possible compiler warnings.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  */
 
 /**
@@ -2077,8 +2105,19 @@
  *
  * Expands to the GNU C <literal>unused</literal> function attribute if
  * the compiler is <command>gcc</command>. It is used for declaring
- * functions which may never be used. It avoids possible compiler warnings.
- * See the GNU C documentation for details.
+ * functions and arguments which may never be used. It avoids possible compiler
+ * warnings.
+ *
+ * For functions, place the attribute after the declaration, just before the
+ * semicolon. For arguments, place the attribute at the beginning of the
+ * argument declaration.
+ *
+ * |[
+ * void my_unused_function (G_GNUC_UNUSED gint unused_argument,
+ *                          gint other_argument) G_GNUC_UNUSED;
+ * ]|
+ *
+ * See the GNU C documentation for more details.
  */
 
 /**
@@ -2091,7 +2130,12 @@
  * if the compiler is <command>gcc</command>. This is used for declaring
  * functions which take a variable number of arguments, with the same
  * syntax as printf(). It allows the compiler to type-check the arguments
- * passed to the function. See the GNU C documentation for details.
+ * passed to the function.
+ *
+ * Place the attribute after the function declaration, just before the
+ * semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * |[
  * gint g_snprintf (gchar  *string,
@@ -2125,7 +2169,12 @@
  * so that the result can be passed to a printf(), scanf(), strftime()
  * or strfmon() style function (with the remaining arguments to the
  * format function the same as they would have been for the unmodified
- * string). See the GNU C documentation for details.
+ * string).
+ *
+ * Place the attribute after the function declaration, just after the
+ * semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * |[
  * gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
@@ -2139,7 +2188,11 @@
  * if the compiler is <command>gcc</command>, or "" if it isn't. This
  * function attribute only applies to variadic functions and instructs
  * the compiler to check that the argument list is terminated with an
- * explicit %NULL. See the GNU C documentation for details.
+ * explicit %NULL.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.8
  */
@@ -2150,7 +2203,11 @@
  * Expands to the GNU C <literal>warn_unused_result</literal> function
  * attribute if the compiler is <command>gcc</command>, or "" if it isn't.
  * This function attribute makes the compiler emit a warning if the result
- * of a function call is ignored. See the GNU C documentation for details.
+ * of a function call is ignored.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  *
  * Since: 2.10
  */
@@ -2182,7 +2239,10 @@
  * attribute if the compiler is <command>gcc</command>. Functions with this
  * attribute will not be instrumented for profiling, when the compiler is
  * called with the <option>-finstrument-functions</option> option.
- * See the GNU C documentation for details.
+ *
+ * Place the attribute after the declaration, just before the semicolon.
+ *
+ * See the GNU C documentation for more details.
  */
 
 /**
