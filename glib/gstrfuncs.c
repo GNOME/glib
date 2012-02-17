@@ -1859,9 +1859,10 @@ g_strcasecmp (const gchar *s1,
  * it doesn't work on many encodings at all, including UTF-8, EUC-JP,
  * etc.
  *
- * There are therefore two replacement functions: g_ascii_strncasecmp(),
+ * There are therefore two replacement techniques: g_ascii_strncasecmp(),
  * which only works on ASCII and is not locale-sensitive, and
- * g_utf8_casefold(), which is good for case-insensitive sorting of UTF-8.
+ * g_utf8_casefold() followed by strcmp() on the resulting strings, which is
+ * good for case-insensitive sorting of UTF-8.
  **/
 gint
 g_strncasecmp (const gchar *s1,
