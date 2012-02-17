@@ -1540,6 +1540,11 @@ g_rmdir (const gchar *filename)
  *
  * See your C library manual for more details about fopen().
  *
+ * As close() and fclose() are part of the C library, this implies that it is
+ * currently impossible to close a file if the application C library and the C library
+ * used by GLib are different. Convenience functions like g_file_set_contents()
+ * avoid this problem.
+ *
  * Returns: A FILE* if the file was successfully opened, or %NULL if
  *     an error occurred
  * 
