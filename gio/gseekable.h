@@ -49,7 +49,7 @@ typedef struct _GSeekableIface   GSeekableIface;
  * @tell: Tells the current location within a stream.
  * @can_seek: Checks if seeking is supported by the stream.
  * @seek: Seeks to a location within a stream.
- * @can_truncate: Chekcs if truncation is suppored by the stream.
+ * @can_truncate: Checks if truncation is supported by the stream.
  * @truncate_fn: Truncates a stream.
  *
  * Provides an interface for implementing seekable functionality on I/O Streams.
