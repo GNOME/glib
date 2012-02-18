@@ -112,8 +112,13 @@
  * @G_TOKEN_EOF: the end of the file
  * @G_TOKEN_LEFT_PAREN: a '(' character
  * @G_TOKEN_LEFT_CURLY: a '{' character
+ * @G_TOKEN_LEFT_BRACE: a '[' character
  * @G_TOKEN_RIGHT_CURLY: a '}' character
  * @G_TOKEN_RIGHT_PAREN: a ')' character
+ * @G_TOKEN_RIGHT_BRACE: a ']' character
+ * @G_TOKEN_EQUAL_SIGN: a '=' character
+ * @G_TOKEN_COMMA: a ',' character
+ * @G_TOKEN_NONE: not a token
  * @G_TOKEN_ERROR: an error occurred
  * @G_TOKEN_CHAR: a character
  * @G_TOKEN_BINARY: a binary integer
