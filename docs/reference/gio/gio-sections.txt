@@ -1482,6 +1482,8 @@ g_desktop_app_info_lookup_get_type
 <FILE>giomodule</FILE>
 <TITLE>GIOModule</TITLE>
 GIOModule
+GIOModuleScope
+GIOModuleScopeFlags
 g_io_module_new
 g_io_module_scope_block
 g_io_module_scope_free

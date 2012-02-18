@@ -1546,8 +1546,8 @@ typedef enum {
 
 /**
  * GIOModuleScopeFlags:
- * @G_IO_MODULES_SCOPE_NONE: No module scan flags
- * @G_IO_MODULES_SCOPE_BLOCK_DUPLICATES: When using this scope to load or
+ * @G_IO_MODULE_SCOPE_NONE: No module scan flags
+ * @G_IO_MODULE_SCOPE_BLOCK_DUPLICATES: When using this scope to load or
  *     scan modules, automatically block a modules which has the same base
  *     basename as previously loaded module.
  *
