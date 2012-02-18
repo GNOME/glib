@@ -592,7 +592,7 @@ g_drive_get_identifier (GDrive     *drive,
  * @drive: a #GDrive
  *
  * Gets the kinds of identifiers that @drive has. 
- * Use g_drive_get_identifer() to obtain the identifiers
+ * Use g_drive_get_identifier() to obtain the identifiers
  * themselves.
  *
  * Returns: (transfer full) (array zero-terminated=1): a %NULL-terminated
