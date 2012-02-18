@@ -551,7 +551,7 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
 /**
  * g_async_queue_timeout_pop_unlocked:
  * @queue: a #GAsyncQueue
- * @time: the number of microseconds to wait
+ * @timeout: the number of microseconds to wait
  *
  * Pops data from the @queue. If the queue is empty, blocks for
  * @timeout microseconds, or until data becomes available.
