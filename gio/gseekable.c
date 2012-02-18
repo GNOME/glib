@@ -141,13 +141,17 @@ g_seekable_can_truncate (GSeekable *seekable)
 
 /**
  * g_seekable_truncate:
- * @seekable: a #GSeekable.
+ * @seekable: a #GSeekable that can be truncated. Check this with
+ * g_seekable_can_truncate().
  * @offset: a #goffset.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
- * Truncates a stream with a given #offset. 
+ * Truncates a stream to a given #offset. The semantics of the POSIX truncate()
+ * function are used, in that the extra data past the offset is lost if @offset
+ * is shorter than the length of the stream. If @offset is longer than the
+ * length of the stream, the extra part is filled with null bytes.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
