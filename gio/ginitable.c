@@ -126,7 +126,7 @@ g_initable_init (GInitable     *initable,
  * @...:  the value if the first property, followed by and other property
  *    value pairs, and ended by %NULL.
  *
- * Helper function for constructing #GInitiable object. This is
+ * Helper function for constructing #GInitable object. This is
  * similar to g_object_new() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
@@ -162,7 +162,7 @@ g_initable_new (GType          object_type,
  * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
- * Helper function for constructing #GInitiable object. This is
+ * Helper function for constructing #GInitable object. This is
  * similar to g_object_newv() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
@@ -202,7 +202,7 @@ g_initable_newv (GType          object_type,
  * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
- * Helper function for constructing #GInitiable object. This is
+ * Helper function for constructing #GInitable object. This is
  * similar to g_object_new_valist() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
