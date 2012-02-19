@@ -59,7 +59,7 @@ g_converter_default_init (GConverterInterface *iface)
  * @inbuf_size: the number of bytes in @inbuf
  * @outbuf: a buffer to write converted data in.
  * @outbuf_size: the number of bytes in @outbuf, must be at least one
- * @flags: a #GConvertFlags controlling the conversion details
+ * @flags: a #GConverterFlags controlling the conversion details
  * @bytes_read: (out): will be set to the number of bytes read from @inbuf on success
  * @bytes_written: (out): will be set to the number of bytes written to @outbuf on success
  * @error: location to store the error occurring, or %NULL to ignore
