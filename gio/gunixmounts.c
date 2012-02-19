@@ -1462,7 +1462,7 @@ g_unix_mount_monitor_new (void)
 
 /**
  * g_unix_mount_free:
- * @mount_entry: a #GUnixMount.
+ * @mount_entry: a #GUnixMountEntry.
  * 
  * Frees a unix mount.
  */
