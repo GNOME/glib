@@ -57,7 +57,7 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * of this object (ie: the process exits when the last reference is
  * dropped).
  *
- * The main use for #GApplicationCommandline (and the
+ * The main use for #GApplicationCommandLine (and the
  * #GApplication::command-line signal) is 'Emacs server' like use cases:
  * You can set the <envar>EDITOR</envar> environment variable to have
  * e.g. git use your favourite editor to edit commit messages, and if you
@@ -99,7 +99,7 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * <para>
  * An example of deferred commandline handling. Here, the commandline is
  * not completely handled before the #GApplication::command-line handler
- * returns. Instead, we keep a reference to the GApplicationCommandline
+ * returns. Instead, we keep a reference to the GApplicationCommandLine
  * object and handle it later(in this example, in an idle). Note that it
  * is necessary to hold the application until you are done with the
  * commandline.

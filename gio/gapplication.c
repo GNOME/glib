@@ -114,7 +114,7 @@
  * in the form of a #GVariant dictionary mapping strings to variants.
  * To use platform data, override the @before_emit or @after_emit virtual
  * functions in your #GApplication subclass. When dealing with
- * #GApplicationCommandline objects, the platform data is directly
+ * #GApplicationCommandLine objects, the platform data is directly
  * available via g_application_command_line_get_cwd(),
  * g_application_command_line_get_environ() and
  * g_application_command_line_get_platform_data().
@@ -783,7 +783,7 @@ g_application_class_init (GApplicationClass *class)
    *
    * The ::command-line signal is emitted on the primary instance when
    * a commandline is not handled locally. See g_application_run() and
-   * the #GApplicationCommandline documentation for more information.
+   * the #GApplicationCommandLine documentation for more information.
    *
    * Returns: An integer that is set as the exit status for the calling
    *   process. See g_application_command_line_set_exit_status().
@@ -1370,7 +1370,7 @@ g_application_open (GApplication  *application,
  * If local_command_line() returns %FALSE then the application is registered
  * and the #GApplication::command-line signal is emitted in the primary
  * instance (which may or may not be this instance). The signal handler
- * gets passed a #GApplicationCommandline object that (among other things)
+ * gets passed a #GApplicationCommandLine object that (among other things)
  * contains the remaining commandline arguments that have not been handled
  * by local_command_line().
  *
