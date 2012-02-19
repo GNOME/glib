@@ -391,7 +391,7 @@ g_menu_append_section (GMenu       *menu,
  * @submenu: a #GMenuModel with the items of the submenu
  *
  * Convenience function for inserting a submenu menu item into @menu.
- * Combine g_menu_new_submenu() and g_menu_insert_item() for a more
+ * Combine g_menu_item_new_submenu() and g_menu_insert_item() for a more
  * flexible alternative.
  *
  * Since: 2.32
@@ -416,7 +416,7 @@ g_menu_insert_submenu (GMenu       *menu,
  * @submenu: a #GMenuModel with the items of the submenu
  *
  * Convenience function for prepending a submenu menu item to the start
- * of @menu.  Combine g_menu_new_submenu() and g_menu_insert_item() for
+ * of @menu.  Combine g_menu_item_new_submenu() and g_menu_insert_item() for
  * a more flexible alternative.
  *
  * Since: 2.32
@@ -436,7 +436,7 @@ g_menu_prepend_submenu (GMenu       *menu,
  * @submenu: a #GMenuModel with the items of the submenu
  *
  * Convenience function for appending a submenu menu item to the end of
- * @menu.  Combine g_menu_new_submenu() and g_menu_insert_item() for a
+ * @menu.  Combine g_menu_item_new_submenu() and g_menu_insert_item() for a
  * more flexible alternative.
  *
  * Since: 2.32
@@ -945,8 +945,7 @@ g_menu_item_set_action_and_target (GMenuItem   *menu_item,
  * a separator between an action name and a target string.  In this
  * case, this call is equivalent to calling
  * g_menu_item_set_action_and_target() with the part before the "::" and
- * g_menu_item_set_target_value() with a string-type #GVariant
- * containing the part following the "::".
+ * with a string-type #GVariant containing the part following the "::".
  *
  * If @detailed_action doesn't contain "::" then the action is set to
  * the given string (verbatim) and the target value is unset.
@@ -955,7 +954,7 @@ g_menu_item_set_action_and_target (GMenuItem   *menu_item,
  * g_menu_item_set_action_and_target_value() for more flexible (but
  * slightly less convenient) alternatives.
  *
- * See also g_menu_set_action_and_target_value() for a description of
+ * See also g_menu_item_set_action_and_target_value() for a description of
  * the semantics of the action and target attributes.
  *
  * Since: 2.32

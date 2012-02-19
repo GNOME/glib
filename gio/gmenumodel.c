@@ -714,8 +714,8 @@ struct _GMenuAttributeIterPrivate
  *
  * If successful, @name and @value are set to the name and value of the
  * attribute that has just been advanced to.  At this point,
- * g_menu_item_get_name() and g_menu_item_get_value() will return the
- * same values again.
+ * g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
+ * return the same values again.
  *
  * The value returned in @name remains valid for as long as the iterator
  * remains at the current position.  The value returned in @value must
@@ -871,7 +871,7 @@ struct _GMenuLinkIterPrivate
  *
  * If successful, @out_link and @value are set to the name and #GMenuModel
  * of the link that has just been advanced to.  At this point,
- * g_menu_item_get_name() and g_menu_item_get_value() will return the
+ * g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return the
  * same values again.
  *
  * The value returned in @out_link remains valid for as long as the iterator
