@@ -75,7 +75,7 @@
  * when the gvfs hal volume monitor is in use. Other volume monitors
  * will generally be able to provide the #G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE
  * identifier, which can be used to obtain a hal device by means of
- * libhal_manger_find_device_string_match().
+ * libhal_manager_find_device_string_match().
  */
 
 typedef GVolumeIface GVolumeInterface;
@@ -568,7 +568,7 @@ g_volume_get_identifier (GVolume    *volume,
  * @volume: a #GVolume
  * 
  * Gets the kinds of <link linkend="volume-identifier">identifiers</link>
- * that @volume has. Use g_volume_get_identifer() to obtain 
+ * that @volume has. Use g_volume_get_identifier() to obtain
  * the identifiers themselves.
  *
  * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated array
