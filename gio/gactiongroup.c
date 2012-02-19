@@ -711,7 +711,7 @@ g_action_group_action_state_changed (GActionGroup *action_group,
  * g_action_group_get_action_parameter_type(),
  * g_action_group_get_action_state_type(),
  * g_action_group_get_action_state_hint() and
- * g_action_group_get_state() with a single function call.
+ * g_action_group_get_action_state() with a single function call.
  *
  * This provides two main benefits.
  *
