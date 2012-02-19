@@ -40,8 +40,8 @@
  * equivalent of #GnomeVFSDrive.
  *
  * Mounting a #GVolume instance is an asynchronous operation. For more
- * information about asynchronous operations, see #GAsyncReady and
- * #GSimpleAsyncReady. To mount a #GVolume, first call
+ * information about asynchronous operations, see #GAsyncResult and
+ * #GSimpleAsyncResult. To mount a #GVolume, first call
  * g_volume_mount() with (at least) the #GVolume instance, optionally
  * a #GMountOperation object and a #GAsyncReadyCallback. 
  *
