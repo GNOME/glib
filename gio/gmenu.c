@@ -38,9 +38,6 @@
  * a regular item, use g_menu_insert(). To add a section, use
  * g_menu_insert_section(). To add a submenu, use
  * g_menu_insert_submenu().
- *
- * Often it is more convenient to create a #GMenu from an XML
- * fragment, using <link linkend="gio-GMenu-Markup">GMenu Markup</link>.
  */
 
 /**

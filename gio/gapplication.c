@@ -95,10 +95,8 @@
  * g_action_group_activate_action() on the application, it is always
  * invoked in the primary instance. The actions are also exported on
  * the session bus, and GIO provides the #GDBusActionGroup wrapper to
- * conveniently access them remotely. Additionally, g_application_set_app_menu()
- * and g_application_set_menubar() can be used to export representation
- * data for the actions, in the form of #GMenuModels. GIO provides
- * a #GDBusMenuModel wrapper for remote access to exported #GMenuModels.
+ * conveniently access them remotely. GIO provides a #GDBusMenuModel wrapper
+ * for remote access to exported #GMenuModels.
  *
  * There is a number of different entry points into a GApplication:
  * <itemizedlist>
