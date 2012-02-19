@@ -681,7 +681,7 @@ _g_uri_from_authority (const gchar *protocol,
  * @uri. May fail and return %NULL in case parsing @uri fails.
  *
  * Using this rather than g_network_address_new() or
- * g_network_address_parse_host() allows #GSocketClient to determine
+ * g_network_address_parse() allows #GSocketClient to determine
  * when to use application-specific proxy protocols.
  *
  * Return value: (transfer full): the new #GNetworkAddress, or %NULL on error
