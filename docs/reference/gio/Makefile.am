@@ -56,7 +56,10 @@ IGNORE_HFILES = \
 	glocalfileoutputstream.h	\
 	glocalvfs.h			\
 	gmountprivate.h			\
+	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
+	gnetworkmonitorbase.h		\
+	gnetworkmonitornetlink.h	\
 	gpollfilemonitor.h		\
 	gregistrysettingsbackend.h	\
 	gsettingsbackendinternal.h	\
