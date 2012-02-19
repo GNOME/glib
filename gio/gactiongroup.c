@@ -79,6 +79,7 @@
 
 /**
  * GActionGroupInterface:
+ * @g_iface: the parent interface
  * @has_action: the virtual function pointer for g_action_group_has_action()
  * @list_actions: the virtual function pointer for g_action_group_list_actions()
  * @get_action_parameter_type: the virtual function pointer for g_action_group_get_action_parameter_type()

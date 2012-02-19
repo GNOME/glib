@@ -63,6 +63,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 
 /**
  * GActionInterface:
+ * @g_iface: the parent interface
  * @get_name: the virtual function pointer for g_action_get_name()
  * @get_parameter_type: the virtual function pointer for g_action_get_parameter_type()
  * @get_state_type: the virtual function pointer for g_action_get_state_type()
