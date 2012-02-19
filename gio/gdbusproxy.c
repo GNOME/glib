@@ -490,7 +490,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   /**
    * GDBusProxy:g-name-owner:
    *
-   * The unique name that owns #GDBusProxy:name or %NULL if no-one
+   * The unique name that owns #GDBusProxy:g-name or %NULL if no-one
    * currently owns that name. You may connect to #GObject::notify signal to
    * track changes to this property.
    *
