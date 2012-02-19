@@ -45,7 +45,7 @@
  * stream to jump to arbitrary positions in the file, provided the 
  * filesystem of the file allows it. To find the position of a file
  * input stream, use g_seekable_tell(). To find out if a file input
- * stream supports seeking, use g_seekable_stream_can_seek().
+ * stream supports seeking, use g_seekable_can_seek().
  * To position a file input stream, use g_seekable_seek().
  **/
 
