@@ -124,7 +124,7 @@
  * "cwd"), and optionally the environment (ie the set of environment
  * variables and their values) of the calling process (key "environ").
  * The environment is only added to the platform data if the
- * #G_APPLICATION_SEND_ENVIONMENT flag is set. GApplication subclasses
+ * %G_APPLICATION_SEND_ENVIRONMENT flag is set. #GApplication subclasses
  * can add their own platform data by overriding the @add_platform_data
  * virtual function. For instance, #GtkApplication adds startup notification
  * data in this way.
@@ -1390,7 +1390,7 @@ g_application_open (GApplication  *application,
  *
  * If you need to handle commandline arguments that are not filenames,
  * and you don't mind commandline handling to happen in the primary
- * instance, you should set %G_APPLICATION_HANDLED_COMMAND_LINE and
+ * instance, you should set %G_APPLICATION_HANDLES_COMMAND_LINE and
  * process the commandline arguments in your #GApplication::command-line
  * signal handler, either manually or using the #GOptionContext API.
  *
