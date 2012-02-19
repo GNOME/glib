@@ -364,7 +364,8 @@ g_file_info_new (void)
  * @src_info: source to copy attributes from.
  * @dest_info: destination to copy attributes to.
  *
- * Copies all of the #GFileAttribute<!-- -->s from @src_info to @dest_info.
+ * Copies all of the <link linkend="gio-GFileAttribute">GFileAttribute</link>s
+ * from @src_info to @dest_info.
  **/
 void
 g_file_info_copy_into (GFileInfo *src_info,
