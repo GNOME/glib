@@ -161,17 +161,17 @@
  * (i.e. connect to D-Bus): for instance, g_dbus_connection_new() and
  * g_bus_get(), and the synchronous versions of those methods, give you an
  * initialized connection. Language bindings for GIO should use
- * g_initable_new() or g_async_initable_new(), which also initialize the
+ * g_initable_new() or g_async_initable_new_async(), which also initialize the
  * connection.
  *
  * If you construct an uninitialized #GDBusConnection, such as via
  * g_object_new(), you must initialize it via g_initable_init() or
- * g_async_initable_init() before using its methods or properties. Calling
- * methods or accessing properties on a #GDBusConnection that has not completed
- * initialization successfully is considered to be invalid, and leads to
- * undefined behaviour. In particular, if initialization fails with a #GError,
- * the only valid thing you can do with that #GDBusConnection is to free it
- * with g_object_unref().
+ * g_async_initable_init_async() before using its methods or properties.
+ * Calling methods or accessing properties on a #GDBusConnection that has not
+ * completed initialization successfully is considered to be invalid, and leads
+ * to undefined behaviour. In particular, if initialization fails with a
+ * #GError, the only valid thing you can do with that #GDBusConnection is to
+ * free it with g_object_unref().
  *
  * <example id="gdbus-server"><title>D-Bus server example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  *
