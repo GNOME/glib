@@ -62,8 +62,9 @@ typedef struct _GProxyInterface GProxyInterface;
  * @g_iface: The parent interface.
  * @connect: Connect to proxy server and wrap (if required) the #connection
  *           to handle payload.
- * @connect_async: Same has connect() but asynchronous.
+ * @connect_async: Same as connect() but asynchronous.
  * @connect_finish: Returns the result of connect_async()
+ * @supports_hostname: Returns whether the proxy supports hostname lookups.
  *
  * Provides an interface for handling proxy connection and payload.
  *
