@@ -196,7 +196,7 @@ g_tls_backend_get_server_connection_type (GTlsBackend *backend)
  * g_tls_backend_get_file_database_type:
  * @backend: the #GTlsBackend
  *
- * Gets the #GTyep of @backend's #GTlsFileDatabase implementation.
+ * Gets the #GType of @backend's #GTlsFileDatabase implementation.
  *
  * Return value: the #GType of backend's #GTlsFileDatabase implementation.
  *
