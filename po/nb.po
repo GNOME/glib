@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-04 12:32+0100\n"
-"PO-Revision-Date: 2012-02-04 12:32+0100\n"
+"POT-Creation-Date: 2012-02-19 15:25+0100\n"
+"PO-Revision-Date: 2012-02-19 15:26+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -33,7 +33,7 @@ msgstr "Strømmen er allerede lukket"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1834
 #: ../gio/gdbusconnection.c:1925 ../gio/gdbusconnection.c:2099
-#: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2119
+#: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2133
 #: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
 #, c-format
 msgid "Operation was cancelled"
@@ -52,7 +52,7 @@ msgid "Not enough space in destination"
 msgstr "Ikke nok plass i mål"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1291 ../glib/gconvert.c:767
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:767
 #: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
@@ -624,17 +624,17 @@ msgstr "Feil retur med tom kropp"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Kan ikke laste /var/lib/dbus/machine-id eller /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1530
+#: ../gio/gdbusproxy.c:1624
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Feil ved kall til StartServiceByName for %s: "
 
-#: ../gio/gdbusproxy.c:1551
+#: ../gio/gdbusproxy.c:1645
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Uventet svar %d fra metoden StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2632 ../gio/gdbusproxy.c:2766
+#: ../gio/gdbusproxy.c:2726 ../gio/gdbusproxy.c:2860
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1006,7 +1006,7 @@ msgstr "Operasjonen er ikke støttet"
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: ../gio/gfile.c:2414 ../gio/glocalfile.c:2275
+#: ../gio/gfile.c:2414 ../gio/glocalfile.c:2289
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
@@ -1014,7 +1014,7 @@ msgstr "Kan ikke kopiere over katalog"
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: ../gio/gfile.c:2483 ../gio/glocalfile.c:2284
+#: ../gio/gfile.c:2483 ../gio/glocalfile.c:2298
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
@@ -1173,98 +1173,109 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
-#: ../gio/glib-compile-resources.c:141 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1449
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> er ikke tillatt inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> er ikke tillatt på toppnivå"
 
-#: ../gio/glib-compile-resources.c:213
+#: ../gio/glib-compile-resources.c:235
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Filen %s finnes flere ganger i ressursen"
 
-#: ../gio/glib-compile-resources.c:247
+#: ../gio/glib-compile-resources.c:248
+#, c-format
+msgid "Failed to locate '%s' in any source directory"
+msgstr "Klarte ikke å finne «%s» i noen kildekatalog"
+
+#: ../gio/glib-compile-resources.c:259
+#, c-format
+msgid "Failed to locate '%s' in current directory"
+msgstr "Klarte ikke å finne «%s» i aktiv katalog"
+
+#: ../gio/glib-compile-resources.c:287
 #, c-format
 msgid "Unknown proprocessing options \"%s\""
 msgstr "Ukjente flagg for preprosessering «%s»"
 
-#: ../gio/glib-compile-resources.c:265 ../gio/glib-compile-resources.c:323
+#: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Klarte ikke å opprette midlertidig fil: %s"
 
-#: ../gio/glib-compile-resources.c:295
+#: ../gio/glib-compile-resources.c:335
 msgid "Error processing input file with xmllint"
 msgstr "Feil ved prosessering av inndatafil med xmllint"
 
-#: ../gio/glib-compile-resources.c:350
+#: ../gio/glib-compile-resources.c:390
 msgid "Error processing input file with to-pixdata"
 msgstr "Feil ved prosessering av inndatafil med to-pixdata"
 
-#: ../gio/glib-compile-resources.c:363
+#: ../gio/glib-compile-resources.c:403
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Feil ved lesing av fil %s: %s"
 
-#: ../gio/glib-compile-resources.c:383
+#: ../gio/glib-compile-resources.c:423
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Feil ved komprimering av fil %s"
 
-#: ../gio/glib-compile-resources.c:447 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:487 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst kan ikke forekomme inne i <%s>"
 
-#: ../gio/glib-compile-resources.c:570
+#: ../gio/glib-compile-resources.c:610
 msgid "name of the output file"
 msgstr "navn på utdatafil"
 
-#: ../gio/glib-compile-resources.c:570 ../gio/glib-compile-resources.c:603
+#: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
 msgid "FILE"
 msgstr "FIL"
 
-#: ../gio/glib-compile-resources.c:571
+#: ../gio/glib-compile-resources.c:611
 msgid ""
-"The directory where files are to be read from (default to current directory)"
-msgstr "Katalog filene skal leses fra (aktiv katalog er forvalgt)"
+"The directories where files are to be read from (default to current "
+"directory)"
+msgstr "Kataloger filene skal leses fra (aktiv katalog er forvalgt)"
 
-#: ../gio/glib-compile-resources.c:571 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-resources.c:611 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:572
+#: ../gio/glib-compile-resources.c:612
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Lag utdata i formatet som er valgt for målets filtype"
 
-#: ../gio/glib-compile-resources.c:573
+#: ../gio/glib-compile-resources.c:613
 msgid "Generate source header"
 msgstr "Lag hode for kildekode"
 
-#: ../gio/glib-compile-resources.c:574
+#: ../gio/glib-compile-resources.c:614
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Lag kildekode som skal brukes til å lenke inn ressursfilen i din kode"
 
-#: ../gio/glib-compile-resources.c:575
+#: ../gio/glib-compile-resources.c:615
 msgid "Generate dependency list"
 msgstr "Lag listet med avhengigheter"
 
-#: ../gio/glib-compile-resources.c:576
+#: ../gio/glib-compile-resources.c:616
 msgid "Don't automatically create and register resource"
 msgstr "Ikke lag og registrer ressursen automatisk"
 
-#: ../gio/glib-compile-resources.c:577
+#: ../gio/glib-compile-resources.c:617
 msgid "C identifier name used for the generated source code"
 msgstr "Navn på C-identifikator som brukes for generert kildekode"
 
-#: ../gio/glib-compile-resources.c:606
+#: ../gio/glib-compile-resources.c:646
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1274,7 +1285,7 @@ msgstr ""
 "Ressursspesifikasjonsfiler har type .gresource.xml,\n"
 "og ressufsfilen har etternavn .gresource."
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:662
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du må kun oppgi ett filnavn\n"
@@ -1565,96 +1576,96 @@ msgstr "Feil under endring av navn på fil: %s"
 msgid "Can't rename file, filename already exists"
 msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
 
-#: ../gio/glocalfile.c:1158 ../gio/glocalfile.c:2148 ../gio/glocalfile.c:2177
-#: ../gio/glocalfile.c:2337 ../gio/glocalfileoutputstream.c:581
+#: ../gio/glocalfile.c:1158 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2191
+#: ../gio/glocalfile.c:2351 ../gio/glocalfileoutputstream.c:581
 #: ../gio/glocalfileoutputstream.c:634 ../gio/glocalfileoutputstream.c:679
 #: ../gio/glocalfileoutputstream.c:1167
 msgid "Invalid filename"
 msgstr "Ugyldig filnavn"
 
-#: ../gio/glocalfile.c:1319
+#: ../gio/glocalfile.c:1325 ../gio/glocalfile.c:1349
+msgid "Can't open directory"
+msgstr "Kan ikke åpne mappe"
+
+#: ../gio/glocalfile.c:1333
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Feil under åpning av fil: %s"
 
-#: ../gio/glocalfile.c:1335
-msgid "Can't open directory"
-msgstr "Kan ikke åpne mappe"
-
-#: ../gio/glocalfile.c:1460
+#: ../gio/glocalfile.c:1474
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Feil ved fjerning av fil: %s"
 
-#: ../gio/glocalfile.c:1827
+#: ../gio/glocalfile.c:1841
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Feil ved plassering av fil i papirkurv: %s"
 
-#: ../gio/glocalfile.c:1850
+#: ../gio/glocalfile.c:1864
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan ikke legge katalog %s i papirkurven: %s"
 
-#: ../gio/glocalfile.c:1871
+#: ../gio/glocalfile.c:1885
 msgid "Unable to find toplevel directory for trash"
 msgstr "Kan ikke finne toppnivå for papirkurv"
 
-#: ../gio/glocalfile.c:1950 ../gio/glocalfile.c:1970
+#: ../gio/glocalfile.c:1964 ../gio/glocalfile.c:1984
 msgid "Unable to find or create trash directory"
 msgstr "Kan ikke finne eller opprette mappe for papirkurv"
 
-#: ../gio/glocalfile.c:2004
+#: ../gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Kan ikke opprette informasjonsfil for papirkurv: %s"
 
-#: ../gio/glocalfile.c:2033 ../gio/glocalfile.c:2038 ../gio/glocalfile.c:2118
-#: ../gio/glocalfile.c:2125
+#: ../gio/glocalfile.c:2047 ../gio/glocalfile.c:2052 ../gio/glocalfile.c:2132
+#: ../gio/glocalfile.c:2139
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Kan ikke legge fil i papirkurven: %s"
 
-#: ../gio/glocalfile.c:2126 ../glib/gregex.c:213
+#: ../gio/glocalfile.c:2140 ../glib/gregex.c:213
 msgid "internal error"
 msgstr "intern feil"
 
-#: ../gio/glocalfile.c:2152
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Feil under oppretting av katalog: %s"
 
-#: ../gio/glocalfile.c:2181
+#: ../gio/glocalfile.c:2195
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Filsystemet støtter ikke symbolske lenker"
 
-#: ../gio/glocalfile.c:2185
+#: ../gio/glocalfile.c:2199
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Feil ved oppretting av symbolsk lenke: %s"
 
-#: ../gio/glocalfile.c:2247 ../gio/glocalfile.c:2341
+#: ../gio/glocalfile.c:2261 ../gio/glocalfile.c:2355
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Feil under flytting av fil: %s"
 
-#: ../gio/glocalfile.c:2270
+#: ../gio/glocalfile.c:2284
 msgid "Can't move directory over directory"
 msgstr "Kan ikke flytte katalog over katalog"
 
-#: ../gio/glocalfile.c:2297 ../gio/glocalfileoutputstream.c:965
+#: ../gio/glocalfile.c:2311 ../gio/glocalfileoutputstream.c:965
 #: ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:994
 #: ../gio/glocalfileoutputstream.c:1010 ../gio/glocalfileoutputstream.c:1024
 msgid "Backup file creation failed"
 msgstr "Oppretting av sikkerhetskopi feilet"
 
-#: ../gio/glocalfile.c:2316
+#: ../gio/glocalfile.c:2330
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Feil under fjerning av målfil: %s"
 
-#: ../gio/glocalfile.c:2330
+#: ../gio/glocalfile.c:2344
 msgid "Move between mounts not supported"
 msgstr "Flytting mellom monteringspunkter er ikke støttet"
 
@@ -1969,15 +1980,15 @@ msgstr "Midlertidig ute av stand til å slå opp «%s»"
 msgid "Error resolving '%s'"
 msgstr "Feil ved oppslag av «%s»"
 
-#: ../gio/gresource.c:285 ../gio/gresource.c:526 ../gio/gresource.c:543
-#: ../gio/gresource.c:666 ../gio/gresource.c:735 ../gio/gresource.c:796
-#: ../gio/gresource.c:876 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:294 ../gio/gresource.c:539 ../gio/gresource.c:556
+#: ../gio/gresource.c:679 ../gio/gresource.c:748 ../gio/gresource.c:809
+#: ../gio/gresource.c:889 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Ressurs ved «%s» eksisterer ikke"
 
-#: ../gio/gresource.c:445
+#: ../gio/gresource.c:456
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Ressursen ved «%s» kunne ikke dekomprimeres"
@@ -2341,7 +2352,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3449 ../gio/gsocket.c:3493
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3467 ../gio/gsocket.c:3511
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -2402,7 +2413,7 @@ msgstr "Feil ved godkjenning av tilkobling: %s"
 msgid "Connection in progress"
 msgstr "Tilkobling pågår"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4235
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4253
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
@@ -2427,26 +2438,26 @@ msgstr "Kan ikke stenge ned plugg: %s"
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3442
+#: ../gio/gsocket.c:3460
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3709 ../gio/gsocket.c:3790
+#: ../gio/gsocket.c:3727 ../gio/gsocket.c:3808
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3734
+#: ../gio/gsocket.c:3752
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:4014 ../gio/gsocket.c:4150
+#: ../gio/gsocket.c:4032 ../gio/gsocket.c:4168
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4254
+#: ../gio/gsocket.c:4272
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -2787,49 +2798,49 @@ msgstr "Uventet tagg «%s», tagg «%s» forventet"
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Uventet tagg «%s» i «%s»"
 
-#: ../glib/gbookmarkfile.c:1814
+#: ../glib/gbookmarkfile.c:1806
 msgid "No valid bookmark file found in data dirs"
 msgstr "Ingen gyldig bokmerkefil ble funnet i datakatalogene"
 
-#: ../glib/gbookmarkfile.c:2015
+#: ../glib/gbookmarkfile.c:2007
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Et bokmerke eksisterer allerede for URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2061 ../glib/gbookmarkfile.c:2219
-#: ../glib/gbookmarkfile.c:2304 ../glib/gbookmarkfile.c:2384
-#: ../glib/gbookmarkfile.c:2469 ../glib/gbookmarkfile.c:2552
-#: ../glib/gbookmarkfile.c:2630 ../glib/gbookmarkfile.c:2709
-#: ../glib/gbookmarkfile.c:2751 ../glib/gbookmarkfile.c:2848
-#: ../glib/gbookmarkfile.c:2968 ../glib/gbookmarkfile.c:3158
-#: ../glib/gbookmarkfile.c:3234 ../glib/gbookmarkfile.c:3399
-#: ../glib/gbookmarkfile.c:3488 ../glib/gbookmarkfile.c:3578
-#: ../glib/gbookmarkfile.c:3706
+#: ../glib/gbookmarkfile.c:2053 ../glib/gbookmarkfile.c:2211
+#: ../glib/gbookmarkfile.c:2296 ../glib/gbookmarkfile.c:2376
+#: ../glib/gbookmarkfile.c:2461 ../glib/gbookmarkfile.c:2544
+#: ../glib/gbookmarkfile.c:2622 ../glib/gbookmarkfile.c:2701
+#: ../glib/gbookmarkfile.c:2743 ../glib/gbookmarkfile.c:2840
+#: ../glib/gbookmarkfile.c:2960 ../glib/gbookmarkfile.c:3150
+#: ../glib/gbookmarkfile.c:3226 ../glib/gbookmarkfile.c:3391
+#: ../glib/gbookmarkfile.c:3480 ../glib/gbookmarkfile.c:3570
+#: ../glib/gbookmarkfile.c:3698
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Ingen bokmerker funnet for URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2393
+#: ../glib/gbookmarkfile.c:2385
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Ingen MIME-type definert i bokmerke for URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2478
+#: ../glib/gbookmarkfile.c:2470
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Ingen private flagg er definert i bokmerke for URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2857
+#: ../glib/gbookmarkfile.c:2849
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Ingen grupper satt i bokmerke for URI «%s»"
 
-#: ../glib/gbookmarkfile.c:3252 ../glib/gbookmarkfile.c:3409
+#: ../glib/gbookmarkfile.c:3244 ../glib/gbookmarkfile.c:3401
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Ingen program med navn «%s» har registrert et bokmerke for «%s»"
 
-#: ../glib/gbookmarkfile.c:3432
+#: ../glib/gbookmarkfile.c:3424
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Feil under utvidelse av exec-linje «%s» med URI «%s»"
