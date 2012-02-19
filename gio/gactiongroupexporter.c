@@ -42,7 +42,7 @@
  * detail.
  *
  * To access an exported #GActionGroup remotely, use
- * g_dbus_action_group_new() to obtain a #GDBusActionGroup.
+ * g_dbus_action_group_get() to obtain a #GDBusActionGroup.
  */
 
 G_GNUC_INTERNAL GVariant *
