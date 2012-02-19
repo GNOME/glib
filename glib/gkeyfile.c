@@ -818,7 +818,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
  * @error: return location for a #GError, or %NULL
  *
  * Loads a key file into an empty #GKeyFile structure.
- * If the file could not be loaded then %error is set to 
+ * If the file could not be loaded then @error is set to
  * either a #GFileError or #GKeyFileError.
  *
  * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
