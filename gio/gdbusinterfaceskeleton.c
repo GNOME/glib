@@ -947,7 +947,7 @@ g_dbus_interface_skeleton_export (GDBusInterfaceSkeleton  *interface_,
  * Stops exporting @interface_ on all connections it is exported on.
  *
  * To unexport @interface_ from only a single connection, use
- * g_dbus_interface_skeleton_export_from_connection()
+ * g_dbus_interface_skeleton_unexport_from_connection()
  *
  * Since: 2.30
  */
