@@ -193,9 +193,19 @@ g_file_supports_thread_contexts
 G_FILE
 G_IS_FILE
 G_TYPE_FILE
+G_TYPE_FILE_COPY_FLAGS
+G_TYPE_FILE_CREATE_FLAGS
+G_TYPE_FILE_MONITOR_FLAGS
+G_TYPE_FILE_QUERY_INFO_FLAGS
+G_TYPE_FILESYSTEM_PREVIEW_TYPE
 G_FILE_GET_IFACE
 <SUBSECTION Private>
 g_file_get_type
+g_file_copy_flags_get_type
+g_file_create_flags_get_type
+g_file_monitor_flags_get_type
+g_file_query_info_flags_get_type
+g_filesystem_preview_type_get_type
 </SECTION>
 
 <SECTION>
@@ -384,12 +394,14 @@ GFileInfoClass
 G_FILE_INFO
 G_IS_FILE_INFO
 G_TYPE_FILE_INFO
+G_TYPE_FILE_TYPE
 G_FILE_INFO_CLASS
 G_IS_FILE_INFO_CLASS
 G_FILE_INFO_GET_CLASS
 g_file_attribute_matcher_get_type
 <SUBSECTION Private>
 g_file_info_get_type
+g_file_type_get_type
 </SECTION>
 
 <SECTION>
@@ -406,8 +418,16 @@ g_file_attribute_info_list_unref
 g_file_attribute_info_list_dup
 g_file_attribute_info_list_lookup
 g_file_attribute_info_list_add
+<SUBSECTION Standard>
+G_TYPE_FILE_ATTRIBUTE_INFO
+G_TYPE_FILE_ATTRIBUTE_INFO_FLAGS
+G_TYPE_FILE_ATTRIBUTE_STATUS
+G_TYPE_FILE_ATTRIBUTE_TYPE
 <SUBSECTION Private>
+g_file_attribute_info_flags_get_type
 g_file_attribute_info_list_get_type
+g_file_attribute_status_get_type
+g_file_attribute_type_get_type
 </SECTION>
 
 <SECTION>
@@ -424,10 +444,12 @@ GFileMonitorClass
 G_FILE_MONITOR
 G_IS_FILE_MONITOR
 G_TYPE_FILE_MONITOR
+G_TYPE_FILE_MONITOR_EVENT
 G_FILE_MONITOR_CLASS
 G_IS_FILE_MONITOR_CLASS
 G_FILE_MONITOR_GET_CLASS
 <SUBSECTION Private>
+g_file_monitor_event_get_type
 g_file_monitor_get_type
 GFileMonitorPrivate
 </SECTION>
@@ -527,6 +549,7 @@ G_TYPE_EMBLEMED_ICON
 
 <SUBSECTION Private>
 g_emblemed_icon_get_type
+GEmblemedIconPrivate
 </SECTION>
 
 <SECTION>
@@ -538,15 +561,18 @@ g_emblem_new
 g_emblem_new_with_origin
 g_emblem_get_icon
 g_emblem_get_origin
-<SUBSECTION Private>
+<SUBSECTION Standard>
 GEmblemClass
-g_emblem_get_type
 G_EMBLEM
 G_EMBLEM_CLASS
 G_EMBLEM_GET_CLASS
 G_IS_EMBLEM
 G_IS_EMBLEM_CLASS
 G_TYPE_EMBLEM
+G_TYPE_EMBLEM_ORIGIN
+<SUBSECTION Private>
+g_emblem_get_type
+g_emblem_origin_get_type
 </SECTION>
 
 <SECTION>
@@ -718,11 +744,15 @@ GDataInputStreamClass
 G_DATA_INPUT_STREAM
 G_IS_DATA_INPUT_STREAM
 G_TYPE_DATA_INPUT_STREAM
+G_TYPE_DATA_STREAM_BYTE_ORDER
+G_TYPE_DATA_STREAM_NEWLINE_TYPE
 G_DATA_INPUT_STREAM_CLASS
 G_IS_DATA_INPUT_STREAM_CLASS
 G_DATA_INPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_data_input_stream_get_type
+g_data_stream_byte_order_get_type
+g_data_stream_newline_type_get_type
 GDataInputStreamPrivate
 </SECTION>
 
@@ -785,11 +815,13 @@ GOutputStreamClass
 G_OUTPUT_STREAM
 G_IS_OUTPUT_STREAM
 G_TYPE_OUTPUT_STREAM
+G_TYPE_OUTPUT_STREAM_SPLICE_FLAGS
 G_OUTPUT_STREAM_CLASS
 G_IS_OUTPUT_STREAM_CLASS
 G_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_output_stream_get_type
+g_output_stream_splice_flags_get_type
 GOutputStreamPrivate
 </SECTION>
 
@@ -973,9 +1005,11 @@ G_IO_STREAM_GET_CLASS
 G_IS_IO_STREAM
 G_IS_IO_STREAM_CLASS
 G_TYPE_IO_STREAM
+G_TYPE_IO_STREAM_SPLICE_FLAGS
 <SUBSECTION Private>
 GIOStreamPrivate
 g_io_stream_get_type
+g_io_stream_splice_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1081,8 +1115,12 @@ G_IS_MOUNT
 G_MOUNT
 G_MOUNT_GET_IFACE
 G_TYPE_MOUNT
+G_TYPE_MOUNT_MOUNT_FLAGS
+G_TYPE_MOUNT_UNMOUNT_FLAGS
 <SUBSECTION Private>
 g_mount_get_type
+g_mount_mount_flags_get_type
+g_mount_unmount_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1162,9 +1200,13 @@ g_drive_get_sort_key
 G_DRIVE
 G_IS_DRIVE
 G_TYPE_DRIVE
+G_TYPE_DRIVE_START_FLAGS
+G_TYPE_DRIVE_START_STOP_TYPE
 G_DRIVE_GET_IFACE
 <SUBSECTION Private>
 g_drive_get_type
+g_drive_start_flags_get_type
+g_drive_start_stop_type_get_type
 </SECTION>
 
 <SECTION>
@@ -1278,7 +1320,10 @@ G_IO_ERROR
 GIOErrorEnum
 g_io_error_from_errno
 g_io_error_from_win32_error
+<SUBSECTION Standard>
+G_TYPE_IO_ERROR_ENUM
 <SUBSECTION Private>
+g_io_error_enum_get_type
 g_io_error_quark
 </SECTION>
 
@@ -1357,6 +1402,7 @@ G_APP_LAUNCH_CONTEXT_CLASS
 G_APP_LAUNCH_CONTEXT_GET_CLASS
 G_IS_APP_LAUNCH_CONTEXT
 G_IS_APP_LAUNCH_CONTEXT_CLASS
+G_TYPE_APP_INFO_CREATE_FLAGS
 G_TYPE_APP_LAUNCH_CONTEXT
 <SUBSECTION Private>
 g_app_info_get_type
@@ -1390,13 +1436,18 @@ g_mount_operation_reply
 GMountOperationClass
 G_MOUNT_OPERATION
 G_IS_MOUNT_OPERATION
+G_TYPE_ASK_PASSWORD_FLAGS
 G_TYPE_MOUNT_OPERATION
+G_TYPE_MOUNT_OPERATION_RESULT
+G_TYPE_PASSWORD_SAVE
 G_MOUNT_OPERATION_CLASS
 G_IS_MOUNT_OPERATION_CLASS
 G_MOUNT_OPERATION_GET_CLASS
 <SUBSECTION Private>
 g_mount_operation_get_type
+g_mount_operation_result_get_type
 g_ask_password_flags_get_type
+g_password_save_get_type
 GMountOperationPrivate
 </SECTION>
 
@@ -1494,6 +1545,7 @@ g_desktop_app_info_launch_uris_as_manager
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
+G_TYPE_DESKTOP_APP_INFO_LOOKUP
 G_DESKTOP_APP_INFO
 G_DESKTOP_APP_INFO_CLASS
 G_IS_DESKTOP_APP_INFO
@@ -1532,6 +1584,7 @@ G_IO_IS_MODULE_CLASS
 G_IO_MODULE_GET_CLASS
 <SUBSECTION Private>
 g_io_module_get_type
+g_io_module_scope_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1654,8 +1707,10 @@ G_SOCKET_ADDRESS
 G_SOCKET_ADDRESS_CLASS
 G_SOCKET_ADDRESS_GET_CLASS
 G_TYPE_SOCKET_ADDRESS
+G_TYPE_SOCKET_FAMILY
 <SUBSECTION Private>
 g_socket_address_get_type
+g_socket_family_get_type
 </SECTION>
 
 <SECTION>
@@ -1699,10 +1754,12 @@ GUnixSocketAddressPrivate
 G_IS_UNIX_SOCKET_ADDRESS
 G_IS_UNIX_SOCKET_ADDRESS_CLASS
 G_TYPE_UNIX_SOCKET_ADDRESS
+G_TYPE_UNIX_SOCKET_ADDRESS_TYPE
 G_UNIX_SOCKET_ADDRESS
 G_UNIX_SOCKET_ADDRESS_CLASS
 G_UNIX_SOCKET_ADDRESS_GET_CLASS
 <SUBSECTION Private>
+g_unix_socket_address_type_get_type
 g_unix_socket_address_get_type
 </SECTION>
 
@@ -1739,10 +1796,12 @@ G_RESOLVER
 G_RESOLVER_CLASS
 G_RESOLVER_GET_CLASS
 G_TYPE_RESOLVER
+G_TYPE_RESOLVER_ERROR
 
 <SUBSECTION Private>
 GResolverPrivate
 g_resolver_get_type
+g_resolver_error_get_type
 g_resolver_error_quark
 g_resolver_record_type_get_type
 </SECTION>
@@ -1919,9 +1978,15 @@ G_IS_SOCKET_CLASS
 G_SOCKET
 G_SOCKET_CLASS
 G_TYPE_SOCKET
+G_TYPE_SOCKET_MSG_FLAGS
+G_TYPE_SOCKET_PROTOCOL
+G_TYPE_SOCKET_TYPE
 G_SOCKET_GET_CLASS
 <SUBSECTION Private>
 g_socket_get_type
+g_socket_msg_flags_get_type
+g_socket_protocol_get_type
+g_socket_type_get_type
 GSocketPrivate
 </SECTION>
 
@@ -1968,8 +2033,10 @@ G_SOCKET_CLIENT
 G_SOCKET_CLIENT_CLASS
 G_SOCKET_CLIENT_GET_CLASS
 G_TYPE_SOCKET_CLIENT
+G_TYPE_SOCKET_CLIENT_EVENT
 <SUBSECTION Private>
 GSocketClientPrivate
+g_socket_client_event_get_type
 g_socket_client_get_type
 </SECTION>
 
@@ -2189,6 +2256,8 @@ g_converter_convert
 g_converter_reset
 <SUBSECTION Standard>
 G_TYPE_CONVERTER
+G_TYPE_CONVERTER_FLAGS
+G_TYPE_CONVERTER_RESULT
 G_CONVERTER
 G_IS_CONVERTER
 G_CONVERTER_GET_IFACE
@@ -2267,12 +2336,14 @@ g_zlib_compressor_set_file_info
 <SUBSECTION Standard>
 GZlibCompressorClass
 G_TYPE_ZLIB_COMPRESSOR
+G_TYPE_ZLIB_COMPRESSOR_FORMAT
 G_ZLIB_COMPRESSOR
 G_IS_ZLIB_COMPRESSOR
 G_ZLIB_COMPRESSOR_CLASS
 G_IS_ZLIB_COMPRESSOR_CLASS
 G_ZLIB_COMPRESSOR_GET_CLASS
 <SUBSECTION Private>
+g_zlib_compressor_format_get_type
 g_zlib_compressor_get_type
 </SECTION>
 
@@ -2442,9 +2513,11 @@ G_SETTINGS
 G_SETTINGS_CLASS
 G_SETTINGS_GET_CLASS
 G_TYPE_SETTINGS
+G_TYPE_SETTINGS_BIND_FLAGS
 
 <SUBSECTION Private>
 GSettingsPrivate
+g_settings_bind_flags_get_type
 g_settings_get_type
 </SECTION>
 
@@ -2485,6 +2558,7 @@ g_credentials_set_unix_user
 G_CREDENTIALS
 G_IS_CREDENTIALS
 G_TYPE_CREDENTIALS
+G_TYPE_CREDENTIALS_TYPE
 G_CREDENTIALS_CLASS
 G_IS_CREDENTIALS_CLASS
 G_CREDENTIALS_GET_CLASS
@@ -2611,8 +2685,16 @@ g_dbus_message_to_gerror
 G_DBUS_MESSAGE
 G_IS_DBUS_MESSAGE
 G_TYPE_DBUS_MESSAGE
+G_TYPE_DBUS_MESSAGE_BYTE_ORDER
+G_TYPE_DBUS_MESSAGE_FLAGS
+G_TYPE_DBUS_MESSAGE_HEADER_FIELD
+G_TYPE_DBUS_MESSAGE_TYPE
 <SUBSECTION Private>
+g_dbus_message_byte_order_get_type
 g_dbus_message_get_type
+g_dbus_message_header_field_get_type
+g_dbus_message_flags_get_type
+g_dbus_message_type_get_type
 </SECTION>
 
 <SECTION>
@@ -2683,8 +2765,15 @@ g_dbus_connection_unregister_subtree
 <SUBSECTION Standard>
 G_DBUS_CONNECTION
 G_IS_DBUS_CONNECTION
+G_TYPE_BUS_TYPE
+G_TYPE_DBUS_CALL_FLAGS
+G_TYPE_DBUS_CAPABILITY_FLAGS
 G_TYPE_DBUS_CONNECTION
+G_TYPE_DBUS_CONNECTION_FLAGS
 <SUBSECTION Private>
+g_dbus_call_flags_get_type
+g_dbus_capability_flags_get_type
+g_dbus_connection_flags_get_type
 g_dbus_connection_get_type
 g_bus_type_get_type
 </SECTION>
@@ -2730,6 +2819,8 @@ g_bus_unown_name
 g_bus_own_name_with_closures
 g_bus_own_name_on_connection_with_closures
 
+<SUBSECTION Standard>
+G_TYPE_BUS_NAME_OWNER_FLAGS
 <SUBSECTION Private>
 g_bus_name_owner_flags_get_type
 </SECTION>
@@ -2745,6 +2836,8 @@ g_bus_unwatch_name
 g_bus_watch_name_with_closures
 g_bus_watch_name_on_connection_with_closures
 
+<SUBSECTION Standard>
+G_TYPE_BUS_NAME_WATCHER_FLAGS
 <SUBSECTION Private>
 g_bus_name_watcher_flags_get_type
 </SECTION>
@@ -2765,7 +2858,9 @@ g_dbus_error_set_dbus_error
 g_dbus_error_set_dbus_error_valist
 g_dbus_error_encode_gerror
 <SUBSECTION Standard>
+g_dbus_error_get_type
 g_dbus_error_quark
+G_TYPE_DBUS_ERROR
 </SECTION>
 
 <SECTION>
@@ -2808,6 +2903,7 @@ G_IS_DBUS_PROXY_CLASS
 G_DBUS_PROXY_GET_CLASS
 <SUBSECTION Private>
 GDBusProxyPrivate
+g_dbus_proxy_flags_get_type
 g_dbus_proxy_get_type
 </SECTION>
 
@@ -2852,14 +2948,26 @@ g_dbus_signal_info_unref
 g_dbus_property_info_unref
 g_dbus_arg_info_unref
 g_dbus_annotation_info_unref
+<SUBSECTION Standard>
+G_TYPE_DBUS_PROPERTY_INFO_FLAGS
+G_TYPE_DBUS_PROXY_FLAGS
+G_TYPE_DBUS_SEND_MESSAGE_FLAGS
+G_TYPE_DBUS_SERVER_FLAGS
+G_TYPE_DBUS_SIGNAL_FLAGS
+G_TYPE_DBUS_SUBTREE_FLAGS
 <SUBSECTION Private>
 g_dbus_annotation_info_get_type
 g_dbus_arg_info_get_type
 g_dbus_interface_info_get_type
 g_dbus_method_info_get_type
 g_dbus_node_info_get_type
+g_dbus_property_info_flags_get_type
 g_dbus_property_info_get_type
+g_dbus_send_message_flags_get_type
+g_dbus_server_flags_get_type
+g_dbus_signal_flags_get_type
 g_dbus_signal_info_get_type
+g_dbus_subtree_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -2943,6 +3051,7 @@ g_application_set_default
 g_application_get_default
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
+G_TYPE_APPLICATION_FLAGS
 G_APPLICATION
 G_APPLICATION_CLASS
 G_IS_APPLICATION
@@ -3057,6 +3166,8 @@ G_TYPE_REMOTE_ACTION_GROUP
 G_REMOTE_ACTION_GROUP
 G_IS_REMOTE_ACTION_GROUP
 G_REMOTE_ACTION_GROUP_GET_IFACE
+<SUBSECTION Private>
+g_remote_action_group_get_type
 </SECTION>
 
 <SECTION>
@@ -3147,7 +3258,6 @@ g_action_map_add_action
 g_action_map_remove_action
 
 <SUBSECTION Standard>
-GActionMapInterface
 G_TYPE_ACTION_MAP
 G_ACTION_MAP
 G_IS_ACTION_MAP
@@ -3278,6 +3388,14 @@ GTlsError
 <SUBSECTION>
 GTlsAuthenticationMode
 GTlsCertificateFlags
+<SUBSECTION Standard>
+G_TYPE_TLS_AUTHENTICATION_MODE
+G_TYPE_TLS_CERTIFICATE_FLAGS
+G_TYPE_TLS_ERROR
+<SUBSECTION Private>
+g_tls_authentication_mode_get_type
+g_tls_certificate_flags_get_type
+g_tls_error_get_type
 </SECTION>
 
 <SECTION>
@@ -3361,8 +3479,10 @@ G_TLS_CONNECTION
 G_TLS_CONNECTION_CLASS
 G_TLS_CONNECTION_GET_CLASS
 G_TYPE_TLS_CONNECTION
+G_TYPE_TLS_REHANDSHAKE_MODE
 <SUBSECTION Private>
 g_tls_connection_get_type
+g_tls_rehandshake_mode_get_type
 </SECTION>
 
 <SECTION>
@@ -3458,7 +3578,6 @@ g_tls_server_connection_get_type
 <FILE>gtlspassword</FILE>
 <TITLE>GTlsPassword</TITLE>
 GTlsPassword
-GTlsPasswordClass
 GTlsPasswordFlags
 g_tls_password_new
 g_tls_password_get_value
@@ -3474,9 +3593,15 @@ g_tls_password_set_warning
 g_tls_password_flags_get_type
 g_tls_password_get_type
 G_IS_TLS_PASSWORD
+G_IS_TLS_PASSWORD_CLASS
 G_TLS_PASSWORD
+G_TLS_PASSWORD_CLASS
+G_TLS_PASSWORD_GET_CLASS
 G_TYPE_TLS_PASSWORD
 G_TYPE_TLS_PASSWORD_FLAGS
+<SUBSECTION Private>
+GTlsPasswordClass
+GTlsPasswordPrivate
 </SECTION>
 
 <SECTION>
@@ -3869,6 +3994,7 @@ G_MENU_ATTRIBUTE_ITER_GET_CLASS
 <FILE>gresource</FILE>
 <TITLE>GResource</TITLE>
 GResource
+GResourceFile
 GResourceFlags
 GResourceLookupFlags
 g_resource_load
@@ -3893,6 +4019,12 @@ G_RESOURCE_ERROR
 GResourceError
 
 <SUBSECTION Standard>
+GResourceFileClass
+G_RESOURCE_FILE
+G_RESOURCE_FILE_CLASS
+G_RESOURCE_FILE_GET_CLASS
+G_IS_RESOURCE_FILE
+G_IS_RESOURCE_FILE_CLASS
 G_TYPE_RESOURCE
 G_TYPE_RESOURCE_ERROR
 G_TYPE_RESOURCE_FILE
