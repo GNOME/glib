@@ -321,6 +321,95 @@
 #define G_DEPRECATED_FOR(f) G_DEPRECATED
 #endif
 
+#define G_ENCODE_VERSION(major,minor)   ((major) << 16 | (minor) << 8)
+
+/**
+ * GLIB_VERSION_2_26:
+ *
+ * A macro that evaluates to the 2.26 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.32
+ */
+#define GLIB_VERSION_2_26       (G_ENCODE_VERSION (2, 26))
+
+/**
+ * GLIB_VERSION_2_28:
+ *
+ * A macro that evaluates to the 2.28 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.32
+ */
+#define GLIB_VERSION_2_28       (G_ENCODE_VERSION (2, 28))
+
+/**
+ * GLIB_VERSION_2_30:
+ *
+ * A macro that evaluates to the 2.30 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.32
+ */
+#define GLIB_VERSION_2_30       (G_ENCODE_VERSION (2, 30))
+
+/**
+ * GLIB_VERSION_2_32:
+ *
+ * A macro that evaluates to the 2.32 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.32
+ */
+#define GLIB_VERSION_2_32       (G_ENCODE_VERSION (2, 32))
+
+/**
+ * GLIB_VERSION_MIN_REQUIRED:
+ *
+ * A macro that should be defined by the user prior to including
+ * the glib.h header.
+ *
+ * This macro defines the lower bound for the GLib API to use.
+ *
+ * If a function has been deprecated in a newer version of GLib,
+ * it is possible to use this symbol to avoid the compiler warnings
+ * without disabling warning for every deprecated function.
+ *
+ * Since: 2.32
+ */
+#ifndef GLIB_VERSION_MIN_REQUIRED
+# define GLIB_VERSION_MIN_REQUIRED      (G_ENCODE_VERSION (2, 30))
+#endif
+
+/**
+ * GLIB_VERSION_MAX_ALLOWED:
+ *
+ * A macro that should be defined by the user prior to including
+ * the glib.h header.
+ *
+ * This macro defines the upper bound for the GLib API to use.
+ *
+ * If a function has been introduced in a newer version of GLib,
+ * it is possible to use this symbol to get compiler warnings when
+ * trying to use that function.
+ *
+ * Since: 2.32
+ */
+#ifndef GLIB_VERSION_MAX_ALLOWED
+# if GLIB_VERSION_MIN_REQUIRED > GLIB_VERSION_2_30
+#  define GLIB_VERSION_MAX_ALLOWED      GLIB_VERSION_MIN_REQUIRED
+# else
+#  define GLIB_VERSION_MAX_ALLOWED      GLIB_VERSION_2_30
+# endif
+#endif
+
+/* sanity checks */
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_MIN_REQUIRED
+#error "GLIB_VERSION_MAX_ALLOWED must be >= GLIB_VERSION_MIN_REQUIRED"
+#endif
+#if GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_26
+#error "GLIB_VERSION_MIN_REQUIRED must be >= GLIB_VERSION_2_26"
+#endif
 
 /* These macros are used to mark deprecated functions in GLib headers,
  * and thus have to be exposed in installed headers. But please
@@ -334,6 +423,62 @@
 #else
 #define GLIB_DEPRECATED G_DEPRECATED
 #define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_26
+# define GLIB_DEPRECATED_IN_2_26                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_26_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_26
+# define GLIB_DEPRECATED_IN_2_26_FOR(f)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_26
+# define GLIB_AVAILABLE_IN_2_26                 G_GNUC_UNAVAILABLE
+#else
+# define GLIB_AVAILABLE_IN_2_26
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_28
+# define GLIB_DEPRECATED_IN_2_28                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_28_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_28
+# define GLIB_DEPRECATED_IN_2_28_FOR(f)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_28
+# define GLIB_AVAILABLE_IN_2_28                 G_GNUC_UNAVAILABLE
+#else
+# define GLIB_AVAILABLE_IN_2_28
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_30
+# define GLIB_DEPRECATED_IN_2_30                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_30_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_30
+# define GLIB_DEPRECATED_IN_2_30_FOR(f)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_30
+# define GLIB_AVAILABLE_IN_2_30                 G_GNUC_UNAVAILABLE
+#else
+# define GLIB_AVAILABLE_IN_2_30
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_32
+# define GLIB_DEPRECATED_IN_2_32                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_32_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_32
+# define GLIB_DEPRECATED_IN_2_32_FOR(f)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_32
+# define GLIB_AVAILABLE_IN_2_32                 G_GNUC_UNAVAILABLE
+#else
+# define GLIB_AVAILABLE_IN_2_32
 #endif
 
 #endif /* __G_MACROS_H__ */
