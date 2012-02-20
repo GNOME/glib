@@ -1,4 +1,4 @@
-#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_VERSION_MIN_REQUIRED       GLIB_VERSION_2_30
 #include <glib-object.h>
 
 static gint
