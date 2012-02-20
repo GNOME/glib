@@ -138,6 +138,8 @@ int                     g_application_run                               (GApplic
                                                                          int                       argc,
                                                                          char                    **argv);
 
+void                    g_application_quit                              (GApplication             *application);
+
 GApplication *          g_application_get_default                       (void);
 void                    g_application_set_default                       (GApplication             *application);
 

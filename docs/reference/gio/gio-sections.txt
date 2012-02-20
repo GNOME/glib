@@ -2897,6 +2897,7 @@ g_application_register
 <SUBSECTION>
 g_application_hold
 g_application_release
+g_application_quit
 <SUBSECTION>
 g_application_activate
 g_application_open

@@ -211,6 +211,7 @@ struct _GApplicationPrivate
   guint              is_remote : 1;
   guint              did_startup : 1;
   guint              did_shutdown : 1;
+  guint              must_quit_now : 1;
 
   GRemoteActionGroup *remote_actions;
   GApplicationImpl   *impl;
@@ -1425,6 +1426,7 @@ g_application_run (GApplication  *application,
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
+  g_return_val_if_fail (!application->priv->must_quit_now, 1);
 
   arguments = g_new (gchar *, argc + 1);
   for (i = 0; i < argc; i++)
@@ -1488,6 +1490,9 @@ g_application_run (GApplication  *application,
 
   while (application->priv->use_count || application->priv->inactivity_timeout_id)
     {
+      if (application->priv->must_quit_now)
+        break;
+
       g_main_context_iteration (NULL, TRUE);
       status = 0;
     }
@@ -1692,6 +1697,30 @@ void
 g_application_set_default (GApplication *application)
 {
   default_app = application;
+}
+
+/**
+ * g_application_quit:
+ * @application: a #GApplication
+ *
+ * Immediately quits the application.
+ *
+ * Upon return to the mainloop, g_application_run() will return,
+ * calling only the 'shutdown' function before doing so.
+ *
+ * The hold count is ignored.
+ *
+ * The result of calling g_application_run() again after it returns is
+ * unspecified.
+ *
+ * Since: 2.32
+ **/
+void
+g_application_quit (GApplication *application)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+
+  application->priv->must_quit_now = TRUE;
 }
 
 /* Epilogue {{{1 */
