@@ -1,3 +1,45 @@
+Overview of changes from GLib 2.31.16 to 2.31.18
+================================================
+
+* GDBusProxy has now a flag, G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
+  which can be set to make GDBus automatically reload
+  changed properties even if the propertychanged signal
+  does not contain the new values.
+
+* GApplication puts non-unique applications on the bus
+
+* g_async_queue_timed_pop has been deprecated in favor of
+  the new g_async_queue_timeout_pop, which uses relative
+  delays in microseconds instead of a GTimeVal.
+
+* Bugs fixed:
+ 647986 put non-unique apps on D-Bus
+ 658484 vpn connection vs NetworkSecretDialog
+ 664237 GDateTime falls back to UTC if TZ is set
+ 669329 gthread-win32: update for g_get_monotonic_time() changes
+ 669330 glocalfile: fix error code when opening a directory on win32
+ 669372 glib/tests memory leaks.
+ 669412 mem leak in g_environ_unsetenv
+ 669538 Fix compilation of glib-compile-resources.c on Windows
+ 669544 gdbus-codegen example introspection XML is not complete
+ 669595 glib-mkenums: fix handling of forward enum declarations
+ 669670 gasyncqueue: don't use deprecated g_cond_timed_wait()
+ 669671 gobject: use #pragmas to avoid deprecated function warnings
+ 669689 Retrieve cwd and environ in local GApplicationCommandLine
+ 669810 socket/win32: flush pending read before signaling HUP
+ 669865 g_regex_fetch()
+ 670085 memory leak in g_output_stream_write_async
+ 670138 gbytes.h is missing the G_BEGIN/END_DECL guards
+
+* Updated translations:
+ Belarusian
+ Danish
+ Galician
+ Serbian
+ Telugu
+ Hebrew
+
+
 Overview of changes from GLib 2.31.14 to 2.31.16
 ================================================
 
