@@ -148,6 +148,14 @@ make_app (gboolean non_unique)
   return app;
 }
 
+#if 0
+Now that we register non-unique apps on the bus we need to fix the
+following test not to assume that it's safe to create multiple instances
+of the same app in one process.
+
+See https://bugzilla.gnome.org/show_bug.cgi?id=647986 for the patch that
+introduced this problem.
+
 static void
 test_nonunique (void)
 {
@@ -186,6 +194,7 @@ test_nonunique (void)
 
   session_bus_down ();
 }
+#endif
 
 static void
 properties (void)
@@ -299,7 +308,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
   g_test_add_func ("/gapplication/basic", basic);
-  g_test_add_func ("/gapplication/non-unique", test_nonunique);
+/*  g_test_add_func ("/gapplication/non-unique", test_nonunique); */
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
 
