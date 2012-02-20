@@ -2020,6 +2020,38 @@
  */
 
 /**
+ * G_DEPRECATED:
+ *
+ * This macro is similar to %G_GNUC_DEPRECATED, and can be used to mark
+ * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED, it is
+ * meant to be portable across different compilers and must be placed
+ * before the function declaration.
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_DEPRECATED_FOR:
+ *
+ * This macro is similar to %G_GNUC_DEPRECATED_FOR, and can be used to mark
+ * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED_FOR, it is
+ * meant to be portable across different compilers and must be placed
+ * before the function declaration.
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_UNAVAILABLE:
+ *
+ * This macro can be used to mark a function declaration as unavailable.
+ * It must be placed before the function declaration. Use of a function
+ * that has been annotated with this macros will produce a compiler warning.
+ *
+ * Since: 2.32
+ */
+
+/**
  * G_GNUC_NORETURN:
  *
  * Expands to the GNU C <literal>noreturn</literal> function attribute

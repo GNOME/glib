@@ -78,6 +78,15 @@ problematic, they can be turned off by defining the preprocessor
 symbol GLIB_DISABLE_DEPRECATION_WARNINGS by using the commandline
 option <literal>-DGLIB_DISABLE_DEPRECATION_WARNINGS</literal>
 </para>
+
+<para>
+GLib deprecation annotations are versioned; by defining the
+macros %GLIB_VERSION_MIN_REQUIRED and %GLIB_VERSION_MAX_ALLOWED,
+you can specify the range of GLib versions whose API you want
+to use. APIs that were deprecated before or introduced after
+this range will trigger compiler warnings.
+</para>
+
 <para>
 The older deprecation mechanism of hiding deprecated interfaces
 entirely from the compiler by using the preprocessor symbol

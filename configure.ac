@@ -20,6 +20,10 @@ m4_define(glib_configure_ac)
 # if backwards compatibility has been broken,
 # set glib_binary_age _and_ glib_interface_age to 0.
 #
+# remember to add a GLIB_VERSION_2_xx macro every time the minor version is
+# bumped, as well as the GLIB_DEPRECATED_IN and GLIB_AVAILABLE_IN macros
+# for that version - see gversion.h for further information.
+#
 # in easier to understand terms:
 #
 # <mclasen> on the stable branch, interface age == micro

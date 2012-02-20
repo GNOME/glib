@@ -316,6 +316,13 @@
 #define G_DEPRECATED_FOR(f) G_DEPRECATED
 #endif
 
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#define G_UNAVAILABLE(maj,min) __attribute__((deprecated("Not available for " #maj "." #min)))
+#elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
+#define G_UNAVAILABLE(maj,min) __declspec(deprecated("is not available for " #maj "." #min))
+#else
+#define G_UNAVAILABLE(maj,min)
+#endif
 
 /* These macros are used to mark deprecated functions in GLib headers,
  * and thus have to be exposed in installed headers. But please
@@ -326,9 +333,11 @@
 #ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DEPRECATED
 #define GLIB_DEPRECATED_FOR(f)
+#define GLIB_UNAVAILABLE(maj,min)
 #else
 #define GLIB_DEPRECATED G_DEPRECATED
 #define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
+#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min)
 #endif
 
 #endif /* __G_MACROS_H__ */

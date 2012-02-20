@@ -317,6 +317,7 @@ glibsubinclude_HEADERS = \
 	gvarianttype.h	\
 	gvariant.h	\
 	gversion.h	\
+	gversionmacros.h \
 	gwin32.h	\
 	gprintf.h
 
