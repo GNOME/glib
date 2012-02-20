@@ -211,11 +211,11 @@ test_find_program (void)
   gchar *res;
 
   res = g_find_program_in_path ("sh");
-  g_assert_cmpstr (res, ==, "/bin/sh");
+  g_assert (res != NULL);
   g_free (res);
 
   res = g_find_program_in_path ("/bin/sh");
-  g_assert_cmpstr (res, ==, "/bin/sh");
+  g_assert (res != NULL);
   g_free (res);
 
   res = g_find_program_in_path ("this_program_does_not_exit");
