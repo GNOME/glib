@@ -216,7 +216,7 @@ value_transform_flags_string (const GValue *src_value,
           g_string_append (gstring, flags_value->value_name);
           flags_value = g_flags_get_first_value (class, v_flags);
         }
-      while (flags_value);
+      while (flags_value && v_flags);
       
       if (v_flags)
         dest_value->data[0].v_pointer = g_strdup_printf ("%s | %u",
