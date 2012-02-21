@@ -66,38 +66,38 @@ struct _GTuples
  * g_relation_count() counts ...
  */
 
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 GRelation* g_relation_new     (gint         fields);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 void       g_relation_destroy (GRelation   *relation);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 void       g_relation_index   (GRelation   *relation,
                                gint         field,
                                GHashFunc    hash_func,
                                GEqualFunc   key_equal_func);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 void       g_relation_insert  (GRelation   *relation,
                                ...);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 gint       g_relation_delete  (GRelation   *relation,
                                gconstpointer  key,
                                gint         field);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 GTuples*   g_relation_select  (GRelation   *relation,
                                gconstpointer  key,
                                gint         field);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 gint       g_relation_count   (GRelation   *relation,
                                gconstpointer  key,
                                gint         field);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 gboolean   g_relation_exists  (GRelation   *relation,
                                ...);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 void       g_relation_print   (GRelation   *relation);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 void       g_tuples_destroy   (GTuples     *tuples);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_26
 gpointer   g_tuples_index     (GTuples     *tuples,
                                gint         index_,
                                gint         field);
