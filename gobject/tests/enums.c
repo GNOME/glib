@@ -52,12 +52,22 @@ test_enum_basic (void)
 
 static const GFlagsValue my_flag_values[] =
 {
+  { 0, "no flags", "none" },
   { 1, "the first flag", "one" },
   { 2, "the second flag", "two" },
   { 8, "the third flag", "three" },
   { 0, NULL, NULL }
 };
 
+static void
+test_flags_transform_to_string (const GValue *value)
+{
+  GValue tmp = G_VALUE_INIT;
+
+  g_value_init (&tmp, G_TYPE_STRING);
+  g_value_transform (value, &tmp);
+  g_value_unset (&tmp);
+}
 
 static void
 test_flags_basic (void)
@@ -74,12 +84,11 @@ test_flags_basic (void)
 
   g_value_set_flags (&value, 2|8);
   g_assert_cmpint (g_value_get_flags (&value), ==, 2|8);
-  g_value_unset (&value);
 
   class = g_type_class_ref (type);
 
   g_assert_cmpint (class->mask, ==, 1|2|8);
-  g_assert_cmpint (class->n_values, ==, 3);
+  g_assert_cmpint (class->n_values, ==, 4);
 
   val = g_flags_get_first_value (class, 2|8);
   g_assert (val != NULL);
@@ -98,6 +107,9 @@ test_flags_basic (void)
   g_assert_cmpint (val->value, ==, 1);
   val = g_flags_get_value_by_nick (class, "purple");
   g_assert (val == NULL);
+
+  test_flags_transform_to_string (&value);
+  g_value_unset (&value);
 }
 
 int
