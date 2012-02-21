@@ -1111,7 +1111,7 @@ _g_file_info_set_attribute_by_id (GFileInfo                 *info,
  * @value_p: pointer to the value
  *
  * Sets the @attribute to contain the given value, if possible. To unset the
- * attribute, use %G_ATTRIBUTE_TYPE_INVALID for @type.
+ * attribute, pass %G_ATTRIBUTE_TYPE_INVALID for @type.
  **/
 void
 g_file_info_set_attribute (GFileInfo                 *info,
