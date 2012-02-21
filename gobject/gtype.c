@@ -2584,10 +2584,11 @@ g_type_remove_interface_check (gpointer                check_data,
  * @flags: Bitwise combination of #GTypeFlags values.
  *
  * Registers @type_id as the predefined identifier and @type_name as the
- * name of a fundamental type.  The type system uses the information
- * contained in the #GTypeInfo structure pointed to by @info and the
- * #GTypeFundamentalInfo structure pointed to by @finfo to manage the
- * type and its instances.  The value of @flags determines additional
+ * name of a fundamental type. If @type_id is already registered, or a type
+ * named @type_name is already registered, the behaviour is undefined. The type
+ * system uses the information contained in the #GTypeInfo structure pointed to
+ * by @info and the #GTypeFundamentalInfo structure pointed to by @finfo to
+ * manage the type and its instances. The value of @flags determines additional
  * characteristics of the fundamental type.
  *
  * Returns: The predefined type identifier.
