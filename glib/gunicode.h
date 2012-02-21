@@ -570,7 +570,7 @@ void g_unicode_canonical_ordering (gunichar *string,
                                    gsize     len);
 
 
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_30
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
                                              gsize    *result_len) G_GNUC_MALLOC;
 
