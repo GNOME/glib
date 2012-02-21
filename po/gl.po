@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-06 02:52+0100\n"
-"PO-Revision-Date: 2012-02-06 02:54+0100\n"
+"POT-Creation-Date: 2012-02-21 11:56+0100\n"
+"PO-Revision-Date: 2012-02-21 11:57+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -43,7 +43,7 @@ msgstr "O fluxo xa se pechou"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1834
 #: ../gio/gdbusconnection.c:1925 ../gio/gdbusconnection.c:2099
-#: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2119
+#: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2133
 #: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
 #, c-format
 msgid "Operation was cancelled"
@@ -62,7 +62,7 @@ msgid "Not enough space in destination"
 msgstr "Non hai espazo abondo para o enderezo do socket"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1291 ../glib/gconvert.c:767
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:767
 #: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
@@ -662,17 +662,17 @@ msgstr "Produciuse un erro ao devolver co corpo baleiro"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id ou /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1530
+#: ../gio/gdbusproxy.c:1624
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Produciuse un erro ao chamar a StartServiceByName para %s:"
 
-#: ../gio/gdbusproxy.c:1551
+#: ../gio/gdbusproxy.c:1645
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Resposta %d non esperada desde o método StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2632 ../gio/gdbusproxy.c:2766
+#: ../gio/gdbusproxy.c:2726 ../gio/gdbusproxy.c:2860
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1049,7 +1049,7 @@ msgstr "Operación non permitida"
 msgid "Containing mount does not exist"
 msgstr "O punto de montaxe contido non existe"
 
-#: ../gio/gfile.c:2414 ../gio/glocalfile.c:2275
+#: ../gio/gfile.c:2414 ../gio/glocalfile.c:2289
 msgid "Can't copy over directory"
 msgstr "Non é posíbel copiar sobre o directorio"
 
@@ -1057,7 +1057,7 @@ msgstr "Non é posíbel copiar sobre o directorio"
 msgid "Can't copy directory over directory"
 msgstr "Non é posíbel copiar un directorio sobre o directorio"
 
-#: ../gio/gfile.c:2483 ../gio/glocalfile.c:2284
+#: ../gio/gfile.c:2483 ../gio/glocalfile.c:2298
 msgid "Target file exists"
 msgstr "O ficheiro de destino xa existe"
 
@@ -1216,102 +1216,114 @@ msgstr "O fluxo de entrada non implementa a lectura"
 msgid "Stream has outstanding operation"
 msgstr "O fluxo ten unha operación excepcional"
 
-#: ../gio/glib-compile-resources.c:141 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1449
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Non se permite o elemento <%s> dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Non se permite o elemento <%s> non nivel superior"
 
-#: ../gio/glib-compile-resources.c:213
+#: ../gio/glib-compile-resources.c:235
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "O ficheiro %s aparece varias veces no recurso"
 
-#: ../gio/glib-compile-resources.c:247
+#: ../gio/glib-compile-resources.c:248
+#, c-format
+msgid "Failed to locate '%s' in any source directory"
+msgstr "Produciuse un fallo ao buscar «%s» en calquera carpeta fonte"
+
+#: ../gio/glib-compile-resources.c:259
+#, c-format
+msgid "Failed to locate '%s' in current directory"
+msgstr "Produciuse un fallo ao buscar «%s» no cartafol actual"
+
+#: ../gio/glib-compile-resources.c:287
 #, c-format
 msgid "Unknown proprocessing options \"%s\""
 msgstr "Opciones de pro-procesado descoñecidas «%s»"
 
-#: ../gio/glib-compile-resources.c:265 ../gio/glib-compile-resources.c:323
+#: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Produciuse un fallo ao crear o ficheiro temporal: %s"
 
-#: ../gio/glib-compile-resources.c:295
+#: ../gio/glib-compile-resources.c:335
 msgid "Error processing input file with xmllint"
 msgstr "Produciuse un erro ao procesar o ficheiro de entrada con xmllint"
 
-#: ../gio/glib-compile-resources.c:350
+#: ../gio/glib-compile-resources.c:390
 msgid "Error processing input file with to-pixdata"
 msgstr "Produciuse un erro ao procesar o ficheiro de entrada con to-pixdata"
 
-#: ../gio/glib-compile-resources.c:363
+#: ../gio/glib-compile-resources.c:403
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Produciuse un erro ao ler o ficheiro %s: %s"
 
-#: ../gio/glib-compile-resources.c:383
+#: ../gio/glib-compile-resources.c:423
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Produciuse un erro ao comprimir o ficheiro: %s"
 
-#: ../gio/glib-compile-resources.c:447 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:487 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "O texto non debe aparecer dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:570
+#: ../gio/glib-compile-resources.c:610
 msgid "name of the output file"
 msgstr "o nome do ficheiro de saída"
 
-#: ../gio/glib-compile-resources.c:570 ../gio/glib-compile-resources.c:603
+#: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
 msgid "FILE"
 msgstr "FICHEIRO"
 
-#: ../gio/glib-compile-resources.c:571
+#: ../gio/glib-compile-resources.c:611
 msgid ""
-"The directory where files are to be read from (default to current directory)"
+"The directories where files are to be read from (default to current "
+"directory)"
 msgstr ""
-"O cartafol desde onde se van ler os ficheiros (por omisión o cartafol actual)"
+"O cartafol da que se ten que ler os ficheiros (o predeterminado é o cartafol "
+"actual)"
 
-#: ../gio/glib-compile-resources.c:571 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-resources.c:611 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/glib-compile-resources.c:572
+#: ../gio/glib-compile-resources.c:612
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Xerar saída no formato seleccionado pola extensión do nome do ficheiro "
 "obxetivo"
 
-#: ../gio/glib-compile-resources.c:573
+#: ../gio/glib-compile-resources.c:613
 msgid "Generate source header"
 msgstr "Xerar unha cabeceira de orixe"
 
-#: ../gio/glib-compile-resources.c:574
+#: ../gio/glib-compile-resources.c:614
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Xera o código fonte usado para ligar o ficheiro do recurso no seu código"
 
-#: ../gio/glib-compile-resources.c:575
+#: ../gio/glib-compile-resources.c:615
 msgid "Generate dependency list"
 msgstr "Xerar lista de dependencias"
 
-#: ../gio/glib-compile-resources.c:576
+#: ../gio/glib-compile-resources.c:616
 msgid "Don't automatically create and register resource"
 msgstr "Non crear e rexistrar o recurso automaticamente"
 
-#: ../gio/glib-compile-resources.c:577
+#: ../gio/glib-compile-resources.c:617
 msgid "C identifier name used for the generated source code"
 msgstr "O nome identificador C usado para xerar o código fonte"
 
-#: ../gio/glib-compile-resources.c:606
+#: ../gio/glib-compile-resources.c:646
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1322,7 +1334,7 @@ msgstr ""
 "xml,\n"
 "e o ficheiro do recurso ten a extensión .gresource."
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:662
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Debería fornecer exactamente un nome de ficheiro\n"
@@ -1616,96 +1628,96 @@ msgstr "Produciuse un erro ao renomear o ficheiro: %s"
 msgid "Can't rename file, filename already exists"
 msgstr "Non é posíbel renomear o ficheiro, o ficheiro xa existe"
 
-#: ../gio/glocalfile.c:1158 ../gio/glocalfile.c:2148 ../gio/glocalfile.c:2177
-#: ../gio/glocalfile.c:2337 ../gio/glocalfileoutputstream.c:581
+#: ../gio/glocalfile.c:1158 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2191
+#: ../gio/glocalfile.c:2351 ../gio/glocalfileoutputstream.c:581
 #: ../gio/glocalfileoutputstream.c:634 ../gio/glocalfileoutputstream.c:679
 #: ../gio/glocalfileoutputstream.c:1167
 msgid "Invalid filename"
 msgstr "O nome do ficheiro non é válido"
 
-#: ../gio/glocalfile.c:1319
+#: ../gio/glocalfile.c:1325 ../gio/glocalfile.c:1349
+msgid "Can't open directory"
+msgstr "Non é posíbel abrir o directorio"
+
+#: ../gio/glocalfile.c:1333
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Produciuse un erro ao abrir o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1335
-msgid "Can't open directory"
-msgstr "Non é posíbel abrir o directorio"
-
-#: ../gio/glocalfile.c:1460
+#: ../gio/glocalfile.c:1474
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1827
+#: ../gio/glocalfile.c:1841
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Produciuse un erro ao mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1850
+#: ../gio/glocalfile.c:1864
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Non é posíbel crear o directorio do lixo %s: %s"
 
-#: ../gio/glocalfile.c:1871
+#: ../gio/glocalfile.c:1885
 msgid "Unable to find toplevel directory for trash"
 msgstr "Non é posíbel atopar o directorio de nivel superior para o lixo"
 
-#: ../gio/glocalfile.c:1950 ../gio/glocalfile.c:1970
+#: ../gio/glocalfile.c:1964 ../gio/glocalfile.c:1984
 msgid "Unable to find or create trash directory"
 msgstr "Non é posíbel atopar ou crear o directorio do lixo"
 
-#: ../gio/glocalfile.c:2004
+#: ../gio/glocalfile.c:2018
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Non é posíbel crear a información de lixo para o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2033 ../gio/glocalfile.c:2038 ../gio/glocalfile.c:2118
-#: ../gio/glocalfile.c:2125
+#: ../gio/glocalfile.c:2047 ../gio/glocalfile.c:2052 ../gio/glocalfile.c:2132
+#: ../gio/glocalfile.c:2139
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Non é posíbel mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2126 ../glib/gregex.c:213
+#: ../gio/glocalfile.c:2140 ../glib/gregex.c:213
 msgid "internal error"
 msgstr "erro interno"
 
-#: ../gio/glocalfile.c:2152
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Produciuse un erro ao crear o directorio: %s"
 
-#: ../gio/glocalfile.c:2181
+#: ../gio/glocalfile.c:2195
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "O sistema de ficheiros non é compatíbel coas ligazóns simbólicas"
 
-#: ../gio/glocalfile.c:2185
+#: ../gio/glocalfile.c:2199
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Produciuse un erro ao crear a ligazón simbolica: %s"
 
-#: ../gio/glocalfile.c:2247 ../gio/glocalfile.c:2341
+#: ../gio/glocalfile.c:2261 ../gio/glocalfile.c:2355
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Produciuse un erro ao mover o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2270
+#: ../gio/glocalfile.c:2284
 msgid "Can't move directory over directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
-#: ../gio/glocalfile.c:2297 ../gio/glocalfileoutputstream.c:965
+#: ../gio/glocalfile.c:2311 ../gio/glocalfileoutputstream.c:965
 #: ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:994
 #: ../gio/glocalfileoutputstream.c:1010 ../gio/glocalfileoutputstream.c:1024
 msgid "Backup file creation failed"
 msgstr "Fallou a creación do ficheiro de seguranza"
 
-#: ../gio/glocalfile.c:2316
+#: ../gio/glocalfile.c:2330
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro obxectivo: %s"
 
-#: ../gio/glocalfile.c:2330
+#: ../gio/glocalfile.c:2344
 msgid "Move between mounts not supported"
 msgstr "Non se permite mover entre puntos de montaxe"
 
@@ -2401,7 +2413,7 @@ msgstr "O socket non é válido, a inicialización fallou debido a: %s"
 msgid "Socket is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3449 ../gio/gsocket.c:3493
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
 msgid "Socket I/O timed out"
 msgstr "Tempo de espera do Socket de E/S superado"
 
@@ -2462,7 +2474,7 @@ msgstr "Produciuse un erro ao aceptar a conexión: %s"
 msgid "Connection in progress"
 msgstr "Conexión en marcha"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4235
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Non é posíbel obter o erro pendente: %s"
@@ -2487,26 +2499,26 @@ msgstr "Non é posíbel desconectar o socket: %s"
 msgid "Error closing socket: %s"
 msgstr "Produciuse un erro ao pechar o socket: %s"
 
-#: ../gio/gsocket.c:3442
+#: ../gio/gsocket.c:3512
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: ../gio/gsocket.c:3709 ../gio/gsocket.c:3790
+#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: ../gio/gsocket.c:3734
+#: ../gio/gsocket.c:3815
 msgid "GSocketControlMessage not supported on windows"
 msgstr "O GSocketControlMessage non está permitido en windows"
 
-#: ../gio/gsocket.c:4014 ../gio/gsocket.c:4150
+#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: ../gio/gsocket.c:4254
+#: ../gio/gsocket.c:4335
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
