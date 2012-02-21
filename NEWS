@@ -8,6 +8,8 @@ Overview of changes from GLib 2.31.16 to 2.31.18
 
 * GApplication puts non-unique applications on the bus
 
+* GApplication now has g_application_quit()
+
 * g_async_queue_timed_pop has been deprecated in favor of
   the new g_async_queue_timeout_pop, which uses relative
   delays in microseconds instead of a GTimeVal.
@@ -32,6 +34,7 @@ Overview of changes from GLib 2.31.16 to 2.31.18
  669865 g_regex_fetch()
  670085 memory leak in g_output_stream_write_async
  670138 gbytes.h is missing the G_BEGIN/END_DECL guards
+ 670485 Simplify session API (shared bug with gtk+)
 
 * Updated translations:
  Belarusian
