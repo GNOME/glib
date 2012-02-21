@@ -12,6 +12,8 @@ Overview of changes from GLib 2.31.16 to 2.31.18
   the new g_async_queue_timeout_pop, which uses relative
   delays in microseconds instead of a GTimeVal.
 
+* a huge number of API documentation fixes
+
 * Bugs fixed:
  647986 put non-unique apps on D-Bus
  658484 vpn connection vs NetworkSecretDialog
