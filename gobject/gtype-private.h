@@ -33,6 +33,8 @@ struct _GRealClosure
 {
   GClosureMarshal meta_marshal;
   gpointer meta_marshal_data;
+  GVaClosureMarshal va_meta_marshal;
+  GVaClosureMarshal va_marshal;
   GClosure closure;
 };
 
@@ -57,6 +59,17 @@ void            _g_type_boxed_free      (GType          type,
 void            _g_type_boxed_init      (GType          type,
                                          GBoxedCopyFunc copy_func,
                                          GBoxedFreeFunc free_func);
+
+gboolean    _g_closure_supports_invoke_va (GClosure       *closure);
+void        _g_closure_set_va_marshal (GClosure       *closure,
+				       GVaClosureMarshal marshal);
+void        _g_closure_invoke_va (GClosure       *closure,
+				  GValue /*out*/ *return_value,
+				  gpointer        instance,
+				  va_list         args,
+				  int             n_params,
+				  GType          *param_types);
+
 
 G_END_DECLS
 

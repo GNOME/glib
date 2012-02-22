@@ -288,6 +288,24 @@ closure_invoke_notifiers (GClosure *closure,
     }
 }
 
+static void
+g_closure_set_meta_va_marshal (GClosure       *closure,
+			       GVaClosureMarshal va_meta_marshal)
+{
+  GRealClosure *real_closure;
+
+  g_return_if_fail (closure != NULL);
+  g_return_if_fail (va_meta_marshal != NULL);
+  g_return_if_fail (closure->is_invalid == FALSE);
+  g_return_if_fail (closure->in_marshal == FALSE);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  g_return_if_fail (real_closure->meta_marshal != NULL);
+
+  real_closure->va_meta_marshal = va_meta_marshal;
+}
+
 /**
  * g_closure_set_meta_marshal: (skip)
  * @closure: a #GClosure
@@ -768,6 +786,70 @@ g_closure_invoke (GClosure       *closure,
   g_closure_unref (closure);
 }
 
+gboolean
+_g_closure_supports_invoke_va (GClosure       *closure)
+{
+  GRealClosure *real_closure;
+
+  g_return_val_if_fail (closure != NULL, FALSE);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  return
+    real_closure->va_marshal != NULL &&
+    (real_closure->meta_marshal == NULL ||
+     real_closure->va_meta_marshal != NULL);
+}
+
+void
+_g_closure_invoke_va (GClosure       *closure,
+		      GValue /*out*/ *return_value,
+		      gpointer        instance,
+		      va_list         args,
+		      int             n_params,
+		      GType          *param_types)
+{
+  GRealClosure *real_closure;
+
+  g_return_if_fail (closure != NULL);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  g_closure_ref (closure);      /* preserve floating flag */
+  if (!closure->is_invalid)
+    {
+      GVaClosureMarshal marshal;
+      gpointer marshal_data;
+      gboolean in_marshal = closure->in_marshal;
+
+      g_return_if_fail (closure->marshal || real_closure->meta_marshal);
+
+      SET (closure, in_marshal, TRUE);
+      if (real_closure->va_meta_marshal)
+	{
+	  marshal_data = real_closure->meta_marshal_data;
+	  marshal = real_closure->va_meta_marshal;
+	}
+      else
+	{
+	  marshal_data = NULL;
+	  marshal = real_closure->va_marshal;
+	}
+      if (!in_marshal)
+	closure_invoke_notifiers (closure, PRE_NOTIFY);
+      marshal (closure,
+	       return_value,
+	       instance, args,
+	       marshal_data,
+	       n_params, param_types);
+      if (!in_marshal)
+	closure_invoke_notifiers (closure, POST_NOTIFY);
+      SET (closure, in_marshal, in_marshal);
+    }
+  g_closure_unref (closure);
+}
+
+
 /**
  * g_closure_set_marshal: (skip)
  * @closure: a #GClosure
@@ -792,6 +874,24 @@ g_closure_set_marshal (GClosure       *closure,
 	       closure->marshal, marshal);
   else
     closure->marshal = marshal;
+}
+
+void
+_g_closure_set_va_marshal (GClosure       *closure,
+			   GVaClosureMarshal marshal)
+{
+  GRealClosure *real_closure;
+
+  g_return_if_fail (closure != NULL);
+  g_return_if_fail (marshal != NULL);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  if (real_closure->va_marshal && real_closure->va_marshal != marshal)
+    g_warning ("attempt to override closure->va_marshal (%p) with new marshal (%p)",
+	       real_closure->va_marshal, marshal);
+  else
+    real_closure->va_marshal = marshal;
 }
 
 /**
@@ -875,6 +975,34 @@ g_type_class_meta_marshal (GClosure       *closure,
 }
 
 static void
+g_type_class_meta_marshalv (GClosure *closure,
+			    GValue   *return_value,
+			    gpointer  instance,
+			    va_list   args,
+			    gpointer  marshal_data,
+			    int       n_params,
+			    GType    *param_types)
+{
+  GRealClosure *real_closure;
+  GTypeClass *class;
+  gpointer callback;
+  /* GType itype = (GType) closure->data; */
+  guint offset = GPOINTER_TO_UINT (marshal_data);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  class = G_TYPE_INSTANCE_GET_CLASS (instance, itype, GTypeClass);
+  callback = G_STRUCT_MEMBER (gpointer, class, offset);
+  if (callback)
+    real_closure->va_marshal (closure,
+			      return_value,
+			      instance, args,
+			      callback,
+			      n_params,
+			      param_types);
+}
+
+static void
 g_type_iface_meta_marshal (GClosure       *closure,
 			   GValue /*out*/ *return_value,
 			   guint           n_param_values,
@@ -895,6 +1023,34 @@ g_type_iface_meta_marshal (GClosure       *closure,
 		      n_param_values, param_values,
 		      invocation_hint,
 		      callback);
+}
+
+static void
+g_type_iface_meta_marshalv (GClosure *closure,
+			    GValue   *return_value,
+			    gpointer  instance,
+			    va_list   args,
+			    gpointer  marshal_data,
+			    int       n_params,
+			    GType    *param_types)
+{
+  GRealClosure *real_closure;
+  GTypeClass *class;
+  gpointer callback;
+  GType itype = (GType) closure->data;
+  guint offset = GPOINTER_TO_UINT (marshal_data);
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  class = G_TYPE_INSTANCE_GET_INTERFACE (instance, itype, GTypeClass);
+  callback = G_STRUCT_MEMBER (gpointer, class, offset);
+  if (callback)
+    real_closure->va_marshal (closure,
+			      return_value,
+			      instance, args,
+			      callback,
+			      n_params,
+			      param_types);
 }
 
 /**
@@ -920,10 +1076,15 @@ g_signal_type_cclosure_new (GType    itype,
   
   closure = g_closure_new_simple (sizeof (GClosure), (gpointer) itype);
   if (G_TYPE_IS_INTERFACE (itype))
-    g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_iface_meta_marshal);
+    {
+      g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_iface_meta_marshal);
+      g_closure_set_meta_va_marshal (closure, g_type_iface_meta_marshalv);
+    }
   else
-    g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_class_meta_marshal);
-  
+    {
+      g_closure_set_meta_marshal (closure, GUINT_TO_POINTER (struct_offset), g_type_class_meta_marshal);
+      g_closure_set_meta_va_marshal (closure, g_type_class_meta_marshalv);
+    }
   return closure;
 }
 
@@ -1081,6 +1242,86 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
     }
 }
 
+typedef union {
+  gpointer _gpointer;
+  float _float;
+  double _double;
+  gint _gint;
+  guint _guint;
+  glong _glong;
+  gulong _gulong;
+  gint64 _gint64;
+  guint64 _guint64;
+} va_arg_storage;
+
+static ffi_type *
+va_to_ffi_type (GType gtype,
+		va_list *va,
+		va_arg_storage *storage)
+{
+  ffi_type *rettype = NULL;
+  GType type = g_type_fundamental (gtype);
+  g_assert (type != G_TYPE_INVALID);
+
+  switch (type)
+    {
+    case G_TYPE_BOOLEAN:
+    case G_TYPE_CHAR:
+    case G_TYPE_INT:
+    case G_TYPE_ENUM:
+      rettype = &ffi_type_sint;
+      storage->_gint = va_arg (*va, gint);
+      break;
+    case G_TYPE_UCHAR:
+    case G_TYPE_UINT:
+    case G_TYPE_FLAGS:
+      rettype = &ffi_type_uint;
+      storage->_guint = va_arg (*va, guint);
+      break;
+    case G_TYPE_STRING:
+    case G_TYPE_OBJECT:
+    case G_TYPE_BOXED:
+    case G_TYPE_PARAM:
+    case G_TYPE_POINTER:
+    case G_TYPE_INTERFACE:
+    case G_TYPE_VARIANT:
+      rettype = &ffi_type_pointer;
+      storage->_gpointer = va_arg (*va, gpointer);
+      break;
+    case G_TYPE_FLOAT:
+      /* Float args are passed as doubles in varargs */
+      rettype = &ffi_type_float;
+      storage->_float = (float)va_arg (*va, double);
+      break;
+    case G_TYPE_DOUBLE:
+      rettype = &ffi_type_double;
+      storage->_double = va_arg (*va, double);
+      break;
+    case G_TYPE_LONG:
+      rettype = &ffi_type_slong;
+      storage->_glong = va_arg (*va, glong);
+      break;
+    case G_TYPE_ULONG:
+      rettype = &ffi_type_ulong;
+      storage->_gulong = va_arg (*va, gulong);
+      break;
+    case G_TYPE_INT64:
+      rettype = &ffi_type_sint64;
+      storage->_gint64 = va_arg (*va, gint64);
+      break;
+    case G_TYPE_UINT64:
+      rettype = &ffi_type_uint64;
+      storage->_guint64 = va_arg (*va, guint64);
+      break;
+    default:
+      rettype = &ffi_type_pointer;
+      storage->_guint64  = 0;
+      g_warning ("va_to_ffi_type: Unsupported fundamental type: %s", g_type_name (type));
+      break;
+    }
+  return rettype;
+}
+
 /**
  * g_cclosure_marshal_generic:
  * @closure: A #GClosure.
@@ -1175,6 +1416,123 @@ g_cclosure_marshal_generic (GClosure     *closure,
 
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     value_from_ffi_type (return_gvalue, rvalue);
+}
+
+void
+g_cclosure_marshal_generic_va (GClosure *closure,
+			       GValue   *return_value,
+			       gpointer  instance,
+			       va_list   args_list,
+			       gpointer  marshal_data,
+			       int       n_params,
+			       GType    *param_types)
+{
+  ffi_type *rtype;
+  void *rvalue;
+  int n_args;
+  ffi_type **atypes;
+  void **args;
+  va_arg_storage *storage;
+  int i;
+  ffi_cif cif;
+  GCClosure *cc = (GCClosure*) closure;
+  gint *enum_tmpval;
+  gboolean tmpval_used = FALSE;
+  va_list args_copy;
+
+  enum_tmpval = g_alloca (sizeof (gint));
+  if (return_value && G_VALUE_TYPE (return_value))
+    {
+      rtype = value_to_ffi_type (return_value, &rvalue, enum_tmpval, &tmpval_used);
+    }
+  else
+    {
+      rtype = &ffi_type_void;
+    }
+
+  rvalue = g_alloca (MAX (rtype->size, sizeof (ffi_arg)));
+
+  n_args = n_params + 2;
+  atypes = g_alloca (sizeof (ffi_type *) * n_args);
+  args =  g_alloca (sizeof (gpointer) * n_args);
+  storage = g_alloca (sizeof (va_arg_storage) * n_params);
+
+  if (tmpval_used)
+    enum_tmpval = g_alloca (sizeof (gint));
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      atypes[n_args-1] = &ffi_type_pointer;
+      args[n_args-1] = &instance;
+      atypes[0] = &ffi_type_pointer;
+      args[0] = &closure->data;
+    }
+  else
+    {
+      atypes[0] = &ffi_type_pointer;
+      args[0] = &instance;
+      atypes[n_args-1] = &ffi_type_pointer;
+      args[n_args-1] = &closure->data;
+    }
+
+  va_copy (args_copy, args_list);
+
+  /* Box non-primitive arguments */
+  for (i = 0; i < n_params; i++)
+    {
+      GType type = param_types[i]  & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      GType fundamental = G_TYPE_FUNDAMENTAL (type);
+
+      atypes[i+1] = va_to_ffi_type (type,
+				    &args_copy,
+				    &storage[i]);
+      args[i+1] = &storage[i];
+
+      if ((param_types[i]  & G_SIGNAL_TYPE_STATIC_SCOPE) == 0)
+	{
+	  if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
+	    storage[i]._gpointer = g_strdup (storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
+	    storage[i]._gpointer = g_param_spec_ref (storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
+	    storage[i]._gpointer = g_boxed_copy (type, storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
+	    storage[i]._gpointer = g_variant_ref_sink (storage[i]._gpointer);
+	}
+      if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
+	storage[i]._gpointer = g_object_ref (storage[i]._gpointer);
+    }
+
+  va_end (args_copy);
+  
+  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
+    return;
+
+  ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
+
+  /* Unbox non-primitive arguments */
+  for (i = 0; i < n_params; i++)
+    {
+      GType type = param_types[i]  & ~G_SIGNAL_TYPE_STATIC_SCOPE;
+      GType fundamental = G_TYPE_FUNDAMENTAL (type);
+
+      if ((param_types[i]  & G_SIGNAL_TYPE_STATIC_SCOPE) == 0)
+	{
+	  if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
+	    g_free (storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
+	    g_param_spec_unref (storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
+	    g_boxed_free (type, storage[i]._gpointer);
+	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
+	    g_variant_unref (storage[i]._gpointer);
+	}
+      if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
+	g_object_unref (storage[i]._gpointer);
+    }
+  
+  if (return_value && G_VALUE_TYPE (return_value))
+    value_from_ffi_type (return_value, rvalue);
 }
 
 /**

@@ -120,6 +120,15 @@ typedef void  (*GClosureMarshal)	(GClosure	*closure,
 					 const GValue   *param_values,
 					 gpointer        invocation_hint,
 					 gpointer	 marshal_data);
+
+typedef void (* GVaClosureMarshal) (GClosure *closure,
+				    GValue   *return_value,
+				    gpointer  instance,
+				    va_list   args,
+				    gpointer  marshal_data,
+				    int       n_params,
+				    GType    *param_types);
+
 /**
  * GCClosure:
  * @closure: the #GClosure
@@ -257,6 +266,15 @@ void g_cclosure_marshal_generic (GClosure     *closure,
                                  const GValue *param_values,
                                  gpointer      invocation_hint,
                                  gpointer      marshal_data);
+
+void g_cclosure_marshal_generic_va (GClosure *closure,
+				    GValue   *return_value,
+				    gpointer  instance,
+				    va_list   args_list,
+				    gpointer  marshal_data,
+				    int       n_params,
+				    GType    *param_types);
+
 
 G_END_DECLS
 
