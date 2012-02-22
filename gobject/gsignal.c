@@ -502,7 +502,7 @@ handlers_find (gpointer         instance,
             ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
 	    ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
 	    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
-					      handler->closure->meta_marshal == 0 &&
+					      G_REAL_CLOSURE (handler->closure)->meta_marshal == NULL &&
 					      ((GCClosure*) handler->closure)->callback == func)))
 	  {
 	    mlist = handler_match_prepend (mlist, handler, signal_id);
@@ -539,7 +539,7 @@ handlers_find (gpointer         instance,
                     ((mask & G_SIGNAL_MATCH_DATA) || handler->closure->data == data) &&
 		    ((mask & G_SIGNAL_MATCH_UNBLOCKED) || handler->block_count == 0) &&
 		    ((mask & G_SIGNAL_MATCH_FUNC) || (handler->closure->marshal == node->c_marshaller &&
-						      handler->closure->meta_marshal == 0 &&
+						      G_REAL_CLOSURE (handler->closure)->meta_marshal == NULL &&
 						      ((GCClosure*) handler->closure)->callback == func)))
 		  {
 		    mlist = handler_match_prepend (mlist, handler, hlist->signal_id);

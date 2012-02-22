@@ -24,8 +24,20 @@
 #define __G_TYPE_PRIVATE_H__
 
 #include "gboxed.h"
+#include "gclosure.h"
 
 G_BEGIN_DECLS
+
+typedef struct _GRealClosure  GRealClosure;
+struct _GRealClosure
+{
+  GClosureMarshal meta_marshal;
+  gpointer meta_marshal_data;
+  GClosure closure;
+};
+
+#define G_REAL_CLOSURE(_c) \
+  ((GRealClosure *)G_STRUCT_MEMBER_P ((_c), -G_STRUCT_OFFSET (GRealClosure, closure)))
 
 void    _g_value_c_init          (void); /* sync with gvalue.c */
 void    _g_value_types_init      (void); /* sync with gvaluetypes.c */

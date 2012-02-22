@@ -51,7 +51,7 @@ G_BEGIN_DECLS
  *
  * Returns: number of notifiers
  */
-#define	G_CLOSURE_N_NOTIFIERS(cl)	 ((cl)->meta_marshal + ((cl)->n_guards << 1L) + \
+#define	G_CLOSURE_N_NOTIFIERS(cl)	 (((cl)->n_guards << 1L) + \
                                           (cl)->n_fnotifiers + (cl)->n_inotifiers)
 /**
  * G_CCLOSURE_SWAP_DATA:
@@ -149,7 +149,9 @@ struct _GClosure
 {
   /*< private >*/
   volatile      	guint	 ref_count : 15;
-  volatile       	guint	 meta_marshal : 1;
+  /* meta_marshal is not used anymore but must be zero for historical reasons
+     as it was exposed in the G_CLOSURE_N_NOTIFIERS macro */
+  volatile       	guint	 meta_marshal_nouse : 1;
   volatile       	guint	 n_guards : 1;
   volatile       	guint	 n_fnotifiers : 2;	/* finalization notifiers */
   volatile       	guint	 n_inotifiers : 8;	/* invalidation notifiers */

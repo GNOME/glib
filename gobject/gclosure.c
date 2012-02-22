@@ -34,6 +34,7 @@
 #include "genums.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
+#include  "gtype-private.h"
 
 
 /**
@@ -90,13 +91,11 @@
  * </itemizedlist>
  */
 
-
 #define	CLOSURE_MAX_REF_COUNT		((1 << 15) - 1)
 #define	CLOSURE_MAX_N_GUARDS		((1 << 1) - 1)
 #define	CLOSURE_MAX_N_FNOTIFIERS	((1 << 2) - 1)
 #define	CLOSURE_MAX_N_INOTIFIERS	((1 << 8) - 1)
-#define	CLOSURE_N_MFUNCS(cl)		((cl)->meta_marshal + \
-                                         ((cl)->n_guards << 1L))
+#define	CLOSURE_N_MFUNCS(cl)		(((cl)->n_guards << 1L))
 /* same as G_CLOSURE_N_NOTIFIERS() (keep in sync) */
 #define	CLOSURE_N_NOTIFIERS(cl)		(CLOSURE_N_MFUNCS (cl) + \
                                          (cl)->n_fnotifiers + \
@@ -198,25 +197,17 @@ GClosure*
 g_closure_new_simple (guint           sizeof_closure,
 		      gpointer        data)
 {
+  GRealClosure *real_closure;
   GClosure *closure;
 
   g_return_val_if_fail (sizeof_closure >= sizeof (GClosure), NULL);
+  sizeof_closure = sizeof_closure + sizeof (GRealClosure) - sizeof (GClosure);
 
-  closure = g_malloc0 (sizeof_closure);
+  real_closure = g_malloc0 (sizeof_closure);
+  closure = &real_closure->closure;
   SET (closure, ref_count, 1);
-  SET (closure, meta_marshal, 0);
-  SET (closure, n_guards, 0);
-  SET (closure, n_fnotifiers, 0);
-  SET (closure, n_inotifiers, 0);
-  SET (closure, in_inotify, FALSE);
   SET (closure, floating, TRUE);
-  SET (closure, derivative_flag, 0);
-  SET (closure, in_marshal, FALSE);
-  SET (closure, is_invalid, FALSE);
-  closure->marshal = NULL;
   closure->data = data;
-  closure->notifiers = NULL;
-  memset (G_STRUCT_MEMBER_P (closure, sizeof (*closure)), 0, sizeof_closure - sizeof (*closure));
 
   return closure;
 }
@@ -226,10 +217,10 @@ closure_invoke_notifiers (GClosure *closure,
 			  guint     notify_type)
 {
   /* notifier layout:
-   *     meta_marshal  n_guards    n_guards     n_fnotif.  n_inotifiers
-   * ->[[meta_marshal][pre_guards][post_guards][fnotifiers][inotifiers]]
+   *     n_guards    n_guards     n_fnotif.  n_inotifiers
+   * ->[[pre_guards][post_guards][fnotifiers][inotifiers]]
    *
-   * CLOSURE_N_MFUNCS(cl)    = meta_marshal + n_guards + n_guards;
+   * CLOSURE_N_MFUNCS(cl)    = n_guards + n_guards;
    * CLOSURE_N_NOTIFIERS(cl) = CLOSURE_N_MFUNCS(cl) + n_fnotifiers + n_inotifiers
    *
    * constrains/catches:
@@ -239,7 +230,6 @@ closure_invoke_notifiers (GClosure *closure,
    * - must prepare for callback removal during FNOTIFY and INOTIFY (done via ->marshal= & ->data=)
    * - must distinguish (->marshal= & ->data=) for INOTIFY vs. FNOTIFY (via ->in_inotify)
    * + closure->n_guards is const during PRE_NOTIFY & POST_NOTIFY
-   * + closure->meta_marshal is const for all cases
    * + none of the callbacks can cause recursion
    * + closure->n_inotifiers is const 0 during FNOTIFY
    */
@@ -279,7 +269,7 @@ closure_invoke_notifiers (GClosure *closure,
       break;
     case PRE_NOTIFY:
       i = closure->n_guards;
-      offs = closure->meta_marshal;
+      offs = 0;
       while (i--)
 	{
 	  ndata = closure->notifiers + offs + i;
@@ -288,7 +278,7 @@ closure_invoke_notifiers (GClosure *closure,
       break;
     case POST_NOTIFY:
       i = closure->n_guards;
-      offs = closure->meta_marshal + i;
+      offs = i;
       while (i--)
 	{
 	  ndata = closure->notifiers + offs + i;
@@ -325,27 +315,19 @@ g_closure_set_meta_marshal (GClosure       *closure,
 			    gpointer        marshal_data,
 			    GClosureMarshal meta_marshal)
 {
-  GClosureNotifyData *notifiers;
+  GRealClosure *real_closure;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (meta_marshal != NULL);
   g_return_if_fail (closure->is_invalid == FALSE);
   g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (closure->meta_marshal == 0);
 
-  notifiers = closure->notifiers;
-  closure->notifiers = g_renew (GClosureNotifyData, NULL, CLOSURE_N_NOTIFIERS (closure) + 1);
-  if (notifiers)
-    {
-      /* usually the meta marshal will be setup right after creation, so the
-       * g_memmove() should be rare-case scenario
-       */
-      g_memmove (closure->notifiers + 1, notifiers, CLOSURE_N_NOTIFIERS (closure) * sizeof (notifiers[0]));
-      g_free (notifiers);
-    }
-  closure->notifiers[0].data = marshal_data;
-  closure->notifiers[0].notify = (GClosureNotify) meta_marshal;
-  SET (closure, meta_marshal, 1);
+  real_closure = G_REAL_CLOSURE (closure);
+
+  g_return_if_fail (real_closure->meta_marshal == NULL);
+
+  real_closure->meta_marshal = meta_marshal;
+  real_closure->meta_marshal_data = marshal_data;
 }
 
 /**
@@ -395,14 +377,13 @@ g_closure_add_marshal_guards (GClosure      *closure,
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
 			closure->n_fnotifiers)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 1];
   if (closure->n_guards)
-    closure->notifiers[(closure->meta_marshal +
-			closure->n_guards +
-			closure->n_guards + 1)] = closure->notifiers[closure->meta_marshal + closure->n_guards];
+    closure->notifiers[(closure->n_guards +
+			closure->n_guards + 1)] = closure->notifiers[closure->n_guards];
   i = closure->n_guards;
-  closure->notifiers[closure->meta_marshal + i].data = pre_marshal_data;
-  closure->notifiers[closure->meta_marshal + i].notify = pre_marshal_notify;
-  closure->notifiers[closure->meta_marshal + i + 1].data = post_marshal_data;
-  closure->notifiers[closure->meta_marshal + i + 1].notify = post_marshal_notify;
+  closure->notifiers[i].data = pre_marshal_data;
+  closure->notifiers[i].notify = pre_marshal_notify;
+  closure->notifiers[i + 1].data = post_marshal_data;
+  closure->notifiers[i + 1].notify = post_marshal_notify;
   INC (closure, n_guards);
 }
 
@@ -599,7 +580,7 @@ g_closure_unref (GClosure *closure)
     {
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
-      g_free (closure);
+      g_free (G_REAL_CLOSURE (closure));
     }
 }
 
@@ -747,7 +728,11 @@ g_closure_invoke (GClosure       *closure,
 		  const GValue   *param_values,
 		  gpointer        invocation_hint)
 {
+  GRealClosure *real_closure;
+
   g_return_if_fail (closure != NULL);
+
+  real_closure = G_REAL_CLOSURE (closure);
 
   g_closure_ref (closure);      /* preserve floating flag */
   if (!closure->is_invalid)
@@ -756,13 +741,13 @@ g_closure_invoke (GClosure       *closure,
       gpointer marshal_data;
       gboolean in_marshal = closure->in_marshal;
 
-      g_return_if_fail (closure->marshal || closure->meta_marshal);
+      g_return_if_fail (closure->marshal || real_closure->meta_marshal);
 
       SET (closure, in_marshal, TRUE);
-      if (closure->meta_marshal)
+      if (real_closure->meta_marshal)
 	{
-	  marshal_data = closure->notifiers[0].data;
-	  marshal = (GClosureMarshal) closure->notifiers[0].notify;
+	  marshal_data = real_closure->meta_marshal_data;
+	  marshal = real_closure->meta_marshal;
 	}
       else
 	{
