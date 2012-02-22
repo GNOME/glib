@@ -169,6 +169,40 @@ test_async_queue_threads (void)
   g_assert_cmpint (c, ==, 1000);
 }
 
+static void
+test_async_queue_timed (void)
+{
+  GAsyncQueue *q;
+  GTimeVal tv;
+  gint64 start, end, diff;
+  gpointer val;
+
+  q = g_async_queue_new ();
+
+  start = g_get_monotonic_time ();
+  val = g_async_queue_timeout_pop (q, G_USEC_PER_SEC / 10);
+  g_assert (val == NULL);
+
+  end = g_get_monotonic_time ();
+  diff = end - start;
+  g_assert_cmpint (diff, >=, G_USEC_PER_SEC / 10);
+  /* diff should be only a little bit more than G_USEC_PER_SEC/10, but
+   * we have to leave some wiggle room for heavily-loaded machines...
+   */
+  g_assert_cmpint (diff, <, G_USEC_PER_SEC);
+
+  start = end;
+  g_get_current_time (&tv);
+  g_time_val_add (&tv, G_USEC_PER_SEC / 10);
+  val = g_async_queue_timed_pop (q, &tv);
+  g_assert (val == NULL);
+
+  end = g_get_monotonic_time ();
+  diff = end - start;
+  g_assert_cmpint (diff, >=, G_USEC_PER_SEC / 10);
+  g_assert_cmpint (diff, <, G_USEC_PER_SEC);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -177,6 +211,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/asyncqueue/sort", test_async_queue_sort);
   g_test_add_func ("/asyncqueue/destroy", test_async_queue_destroy);
   g_test_add_func ("/asyncqueue/threads", test_async_queue_threads);
+  g_test_add_func ("/asyncqueue/timed", test_async_queue_timed);
 
   return g_test_run ();
 }
