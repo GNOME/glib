@@ -44,6 +44,14 @@ typedef struct _GSignalInvocationHint	 GSignalInvocationHint;
  */
 typedef GClosureMarshal			 GSignalCMarshaller;
 /**
+ * GSignalCVaMarshaller:
+ * 
+ * This is the signature of va_list marshaller functions, an optional
+ * marshaller that can be used in some situations to avoid
+ * marshalling the signal argument into GValues.
+ */
+typedef GVaClosureMarshal		 GSignalCVaMarshaller;
+/**
  * GSignalEmissionHook:
  * @ihint: Signal invocation hint, see #GSignalInvocationHint.
  * @n_param_values: the number of parameters to the function, including
@@ -294,6 +302,9 @@ guint            g_signal_new_class_handler (const gchar        *signal_name,
                                              GType               return_type,
                                              guint               n_params,
                                              ...);
+void             g_signal_set_va_marshaller (guint              signal_id,
+					     GType              instance_type,
+					     GSignalCVaMarshaller va_marshaller);
 
 void                  g_signal_emitv        (const GValue       *instance_and_params,
 					     guint               signal_id,

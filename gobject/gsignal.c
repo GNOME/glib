@@ -213,6 +213,7 @@ struct _SignalNode
   GBSearchArray     *class_closure_bsa;
   SignalAccumulator *accumulator;
   GSignalCMarshaller c_marshaller;
+  GSignalCVaMarshaller va_marshaller;
   GHookList         *emission_hooks;
 };
 #define	MAX_TEST_CLASS_OFFSET	(4096)	/* 2^12, 12 bits for test_class_offset */
@@ -1492,7 +1493,11 @@ signal_add_class_closure (SignalNode *node,
 						    &key);
   g_closure_sink (closure);
   if (node->c_marshaller && closure && G_CLOSURE_NEEDS_MARSHAL (closure))
-    g_closure_set_marshal (closure, node->c_marshaller);
+    {
+      g_closure_set_marshal (closure, node->c_marshaller);
+      if (node->va_marshaller)
+	_g_closure_set_va_marshal (closure, node->va_marshaller);
+    }
 }
 
 /**
@@ -1645,8 +1650,12 @@ g_signal_newv (const gchar       *signal_name,
     }
   else
     node->accumulator = NULL;
+  node->va_marshaller = NULL;
   if (c_marshaller == NULL)
+    {
       c_marshaller = g_cclosure_marshal_generic;
+      node->va_marshaller = g_cclosure_marshal_generic_va;
+    }
   node->c_marshaller = c_marshaller;
   node->emission_hooks = NULL;
   if (class_closure)
@@ -1664,6 +1673,32 @@ g_signal_newv (const gchar       *signal_name,
 
   return signal_id;
 }
+
+void
+g_signal_set_va_marshaller (guint              signal_id,
+			    GType              instance_type,
+			    GSignalCVaMarshaller va_marshaller)
+{
+  SignalNode *node;
+  
+  g_return_if_fail (signal_id > 0);
+  g_return_if_fail (va_marshaller != NULL);
+  
+  SIGNAL_LOCK ();
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  if (node)
+    {
+      node->va_marshaller = va_marshaller;
+      if (node->class_closure_bsa)
+	{
+	  ClassClosure *cc = g_bsearch_array_get_nth (node->class_closure_bsa, &g_class_closure_bconfig, 0);
+	  if (cc->closure->marshal == node->c_marshaller)
+	    _g_closure_set_va_marshal (cc->closure, va_marshaller);
+	}
+    }
+  SIGNAL_UNLOCK ();
+}
+
 
 /**
  * g_signal_new_valist:
@@ -1741,6 +1776,7 @@ signal_destroy_R (SignalNode *signal_node)
   signal_node->class_closure_bsa = NULL;
   signal_node->accumulator = NULL;
   signal_node->c_marshaller = NULL;
+  signal_node->va_marshaller = NULL;
   signal_node->emission_hooks = NULL;
   
 #ifdef	G_ENABLE_DEBUG
@@ -2166,7 +2202,11 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	  g_closure_sink (closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (closure))
-	    g_closure_set_marshal (closure, node->c_marshaller);
+	    {
+	      g_closure_set_marshal (closure, node->c_marshaller);
+	      if (node->va_marshaller)
+		_g_closure_set_va_marshal (closure, node->va_marshaller);
+	    }
 	}
     }
   else
@@ -2224,7 +2264,11 @@ g_signal_connect_closure (gpointer     instance,
 	  g_closure_sink (closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
-	    g_closure_set_marshal (handler->closure, node->c_marshaller);
+	    {
+	      g_closure_set_marshal (handler->closure, node->c_marshaller);
+	      if (node->va_marshaller)
+		_g_closure_set_va_marshal (handler->closure, node->va_marshaller);
+	    }
 	}
     }
   else
@@ -2318,8 +2362,12 @@ g_signal_connect_data (gpointer       instance,
 	  g_closure_sink (handler->closure);
 	  handler_insert (signal_id, instance, handler);
 	  if (node->c_marshaller && G_CLOSURE_NEEDS_MARSHAL (handler->closure))
-	    g_closure_set_marshal (handler->closure, node->c_marshaller);
-	}
+	    {
+	      g_closure_set_marshal (handler->closure, node->c_marshaller);
+	      if (node->va_marshaller)
+		_g_closure_set_va_marshal (handler->closure, node->va_marshaller);
+	    }
+        }
     }
   else
     g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
