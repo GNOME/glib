@@ -293,7 +293,7 @@ g_mapped_file_new (const gchar  *filename,
  * Return value: a newly allocated #GMappedFile which must be unref'd
  *    with g_mapped_file_unref(), or %NULL if the mapping failed.
  *
- * Since: 2.30
+ * Since: 2.32
  */
 GMappedFile *
 g_mapped_file_new_from_fd (gint          fd,
