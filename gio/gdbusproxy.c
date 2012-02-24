@@ -180,7 +180,7 @@ enum
   LAST_SIGNAL,
 };
 
-guint signals[LAST_SIGNAL] = {0};
+static guint signals[LAST_SIGNAL] = {0};
 
 static void dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface);
 static void initable_iface_init       (GInitableIface *initable_iface);

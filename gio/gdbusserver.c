@@ -148,7 +148,7 @@ enum
   LAST_SIGNAL,
 };
 
-guint _signals[LAST_SIGNAL] = {0};
+static guint _signals[LAST_SIGNAL] = {0};
 
 static void initable_iface_init       (GInitableIface *initable_iface);
 
