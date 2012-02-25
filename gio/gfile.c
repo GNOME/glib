@@ -5904,7 +5904,7 @@ g_file_new_for_uri (const char *uri)
  * returned by g_get_tmp_dir()) and returns a #GFile and
  * #GFileIOStream pointing to it.
  *
- * @template should be a string in the GLib file name encoding
+ * @tmpl should be a string in the GLib file name encoding
  * containing a sequence of six 'X' characters, and containing no
  * directory components. If it is %NULL, a default template is used.
  *
