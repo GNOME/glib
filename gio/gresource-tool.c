@@ -468,13 +468,13 @@ cmd_help (gboolean     requested,
   else if (strcmp (command, "help") == 0)
     {
       description = _("Print help");
-      synopsis = "[COMMAND]";
+      synopsis = _("[COMMAND]");
     }
 
   else if (strcmp (command, "sections") == 0)
     {
       description = _("List sections containing resources in an elf FILE");
-      synopsis = "FILE";
+      synopsis = _("FILE");
     }
 
   else if (strcmp (command, "list") == 0)
@@ -482,7 +482,7 @@ cmd_help (gboolean     requested,
       description = _("List resources\n"
                       "If SECTION is given, only list resources in this section\n"
                       "If PATH is given, only list matching resources");
-      synopsis = "FILE [PATH]";
+      synopsis = _("FILE [PATH]");
       option = g_strdup_printf ("[--section %s]", _("SECTION"));
     }
 
@@ -492,14 +492,14 @@ cmd_help (gboolean     requested,
                       "If SECTION is given, only list resources in this section\n"
                       "If PATH is given, only list matching resources\n"
                       "Details include the section, size and compression");
-      synopsis = "FILE [PATH]";
+      synopsis = _("FILE [PATH]");
       option = g_strdup_printf ("[--section %s]", _("SECTION"));
     }
 
   else if (strcmp (command, "extract") == 0)
     {
       description = _("Extract a resource file to stdout");
-      synopsis = "FILE PATH";
+      synopsis = _("FILE PATH");
       option = g_strdup_printf ("[--section %s]", _("SECTION"));
     }
 
@@ -528,7 +528,7 @@ cmd_help (gboolean     requested,
   else
     {
       g_string_append_printf (string, _("Usage:\n  gresource %s%s%s %s\n\n%s\n\n"),
-                              option ? option : "", option ? " " : "", command, synopsis[0] ? _(synopsis) : "", description);
+                              option ? option : "", option ? " " : "", command, synopsis[0] ? synopsis : "", description);
 
       g_string_append (string, _("Arguments:\n"));
 
@@ -536,11 +536,11 @@ cmd_help (gboolean     requested,
         g_string_append (string,
                          _("  SECTION   An (optional) elf section name\n"));
 
-      if (strstr (synopsis, "[COMMAND]"))
+      if (strstr (synopsis, _("[COMMAND]")))
         g_string_append (string,
                        _("  COMMAND   The (optional) command to explain\n"));
 
-      if (strstr (synopsis, "FILE"))
+      if (strstr (synopsis, _("FILE")))
         {
           if (strcmp (command, "sections") == 0)
             g_string_append (string,
@@ -551,10 +551,10 @@ cmd_help (gboolean     requested,
                                "            or a compiled resource file\n"));
         }
 
-      if (strstr (synopsis, "[PATH"))
+      if (strstr (synopsis, _("[PATH]")))
         g_string_append (string,
                        _("  PATH      An (optional) resource path (may be partial)\n"));
-      else if (strstr (synopsis, "PATH"))
+      else if (strstr (synopsis, _("PATH")))
         g_string_append (string,
                        _("  PATH      A resource path\n"));
 
