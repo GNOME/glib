@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 18:28+0300\n"
-"PO-Revision-Date: 2012-02-14 18:28+0300\n"
+"POT-Creation-Date: 2012-02-26 01:16+0300\n"
+"PO-Revision-Date: 2012-02-26 01:18+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -51,14 +51,14 @@ msgid "Not enough space in destination"
 msgstr "У месцы прызначэння не стае вольнай прасторы"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1291 ../glib/gconvert.c:767
-#: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
+#: ../glib/gconvert.c:1160 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
 msgstr "Хібная паслядоўнасць байтаў ва ўводзе на пераўтварэнне"
 
-#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:775
-#: ../glib/gconvert.c:1084 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
+#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:776
+#: ../glib/gconvert.c:1085 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Падчас пераўтварэння ўзнікла памылка: %s"
@@ -67,14 +67,14 @@ msgstr "Падчас пераўтварэння ўзнікла памылка: %
 msgid "Cancellable initialization not supported"
 msgstr "Ініцыяцыя з магчымасцю скасавання не падтрымліваецца"
 
-#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:567
-#: ../glib/gconvert.c:645 ../glib/giochannel.c:1411
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:568
+#: ../glib/gconvert.c:646 ../glib/giochannel.c:1411
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Пераўтварэнне даных са знаказбору \"%s\" у \"%s\" не падтрымліваецца"
 
-#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:571
-#: ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
+#: ../glib/gconvert.c:650
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не ўдалося адкрыць пераўтваральнік з \"%s\" у \"%s\""
@@ -1224,8 +1224,8 @@ msgstr "Не ўдалося адшукаць \"%s\" у бягучым катал
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
-msgstr "Невядомая опцыя папярэдняга апрацавання \"%s\""
+msgid "Unknown processing option \"%s\""
+msgstr "Невядомая опцыя апрацавання \"%s\""
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
@@ -1260,6 +1260,7 @@ msgid "name of the output file"
 msgstr "назва файла вываду"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -2033,6 +2034,10 @@ msgstr "Уваходны струмень не мае функцыі пошук�
 msgid "Print help"
 msgstr "Вывесці даведку"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+msgid "[COMMAND]"
+msgstr "[ЗАГАД]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Пералічыць секцыі, якія змяшчаюць рэсурсы ў elf-файле ФАЙЛ"
@@ -2046,6 +2051,10 @@ msgstr ""
 "Пералічыць рэсурсы\n"
 "Калі дадзена СЕКЦЫЯ, пералічвае толькі рэсурсы з гэтай секцыі\n"
 "Калі дадзена СЦЕЖКА, пералічвае толькі адпаведныя рэсурсы"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "ФАЙЛ [СЦЕЖКА]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2067,6 +2076,10 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Выняць файл рэсурса ў стандартны выхад"
+
+#: ../gio/gresource-tool.c:502
+msgid "FILE PATH"
+msgstr "СЦЕЖКА ФАЙЛ"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2144,9 +2157,17 @@ msgstr ""
 "  ФАЙЛ      Elf-файл (двайковая ці супольная бібліятэка)\n"
 "            ці скампіляваны файл рэсурса\n"
 
+#: ../gio/gresource-tool.c:554
+msgid "[PATH]"
+msgstr "[СЦЕЖКА]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  СЦЕЖКА    (Неабавязковая) сцежка рэсурса (можа быць няпоўнай)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "СЦЕЖКА"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2380,7 +2401,7 @@ msgstr "Хібны сокет не ініцыяваны з наступнай п
 msgid "Socket is already closed"
 msgstr "Сокет ужо закрыты"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3467 ../gio/gsocket.c:3511
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
 msgid "Socket I/O timed out"
 msgstr "Скончыўся тэрмін чакання ўводу-вываду на сокеце"
 
@@ -2441,7 +2462,7 @@ msgstr "Памылка ўхвалення злучэння: %s"
 msgid "Connection in progress"
 msgstr "Адбываецца злучэнне"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4253
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не ўдалося ўзяць чарговую памылку: %s"
@@ -2466,26 +2487,26 @@ msgstr "Не ўдалося спыніць працу сокета: %s"
 msgid "Error closing socket: %s"
 msgstr "Памылка закрыцця сокета: %s"
 
-#: ../gio/gsocket.c:3460
+#: ../gio/gsocket.c:3512
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Чакаем умовы на сокеце: %s"
 
-#: ../gio/gsocket.c:3727 ../gio/gsocket.c:3808
+#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Памылка пасылання паведамлення: %s"
 
-#: ../gio/gsocket.c:3752
+#: ../gio/gsocket.c:3815
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не падтрымліваецца ў сістэме Windows"
 
-#: ../gio/gsocket.c:4032 ../gio/gsocket.c:4168
+#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Памылка атрымання паведамлення: %s"
 
-#: ../gio/gsocket.c:4272
+#: ../gio/gsocket.c:4335
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials адсутнічае для гэтай аперацыйнай сістэмы"
 
@@ -2877,47 +2898,47 @@ msgstr "Няма праграм з назвай \"%s\", якія б зарэгі
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Не ўдалося разгарнуць загад \"%s\" з дапамогай адрасу \"%s\""
 
-#: ../glib/gconvert.c:806 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
+#: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
 msgid "Partial character sequence at end of input"
 msgstr "Абрэзаная паслядоўнасць знакаў напрыканцы ўводу"
 
-#: ../glib/gconvert.c:1056
+#: ../glib/gconvert.c:1057
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Не ўдалося пераўтварыць даныя з падменнага знаказбору \"%s\" у \"%s\""
 
-#: ../glib/gconvert.c:1873
+#: ../glib/gconvert.c:1874
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"%s\" не з'яўляецца абсалютным адрасам файла"
 
-#: ../glib/gconvert.c:1883
+#: ../glib/gconvert.c:1884
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адрас мясцовага файла \"%s\" не можа змяшчаць знак \"#\""
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адрас \"%s\" няправільны"
 
-#: ../glib/gconvert.c:1912
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Назва машыны ў адрасе \"%s\" няправільная"
 
-#: ../glib/gconvert.c:1928
+#: ../glib/gconvert.c:1929
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адрас \"%s\" змяшчае памылкова экранаваныя знакі"
 
-#: ../glib/gconvert.c:2023
+#: ../glib/gconvert.c:2024
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "\"%s\" не з'яўляецца абсалютнай сцежкай"
 
-#: ../glib/gconvert.c:2033
+#: ../glib/gconvert.c:2034
 msgid "Invalid hostname"
 msgstr "Хібная назва машыны"
 
