@@ -284,7 +284,7 @@ end_element (GMarkupParseContext  *context,
               else
                 {
                   g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                               _("Unknown proprocessing options \"%s\""), options[i]);
+                               _("Unknown processing option \"%s\""), options[i]);
                   g_strfreev (options);
                   goto cleanup;
                 }
