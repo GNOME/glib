@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-09 17:25+0000\n"
-"PO-Revision-Date: 2012-02-12 13:06+0100\n"
+"POT-Creation-Date: 2012-02-25 20:54+0000\n"
+"PO-Revision-Date: 2012-02-26 20:02+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,14 +59,14 @@ msgid "Not enough space in destination"
 msgstr "No hay suficiente espacio en el destino"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1291 ../glib/gconvert.c:767
-#: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
+#: ../glib/gconvert.c:1160 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:775
-#: ../glib/gconvert.c:1084 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
+#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:776
+#: ../glib/gconvert.c:1085 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Falló durante la conversión: %s"
@@ -75,15 +75,15 @@ msgstr "Falló durante la conversión: %s"
 msgid "Cancellable initialization not supported"
 msgstr "La inicialización cancelable no eestá soportada"
 
-#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:567
-#: ../glib/gconvert.c:645 ../glib/giochannel.c:1411
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:568
+#: ../glib/gconvert.c:646 ../glib/giochannel.c:1411
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
 "La conversión desde el conjunto de caracteres «%s» a «%s» no está soportada"
 
-#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:571
-#: ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
+#: ../glib/gconvert.c:650
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No se pudo abrir el conversor de «%s» a «%s»"
@@ -1231,78 +1231,75 @@ msgstr "El flujo de entrada no implementa la lectura"
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
-#: ../gio/glib-compile-resources.c:141 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1449
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "No se permite el elemento <%s> dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "No se permite el elemento <%s> en el nivel superior"
 
-#: ../gio/glib-compile-resources.c:232
+#: ../gio/glib-compile-resources.c:235
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "El archivo %s aparece varias veces en el recurso"
 
-#: ../gio/glib-compile-resources.c:245
+#: ../gio/glib-compile-resources.c:248
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Failed to locate '%s' in any source directory"
 msgstr "Falló al buscar «%s» en cualquier carpeta fuente"
 
-#: ../gio/glib-compile-resources.c:256
+#: ../gio/glib-compile-resources.c:259
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Failed to locate '%s' in current directory"
 msgstr "Falló al buscar «%s» en la carpeta actual"
 
-#: ../gio/glib-compile-resources.c:284
+#: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
-msgstr "Opciones de pro-procesado desconocidas «%s»"
+#| msgid "Unknown proprocessing options \"%s\""
+msgid "Unknown processing option \"%s\""
+msgstr "Opción de procesado desconocida «%s»"
 
-#: ../gio/glib-compile-resources.c:302 ../gio/glib-compile-resources.c:360
+#: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Falló al crear el archivo temporal: %s"
 
-#: ../gio/glib-compile-resources.c:332
+#: ../gio/glib-compile-resources.c:335
 msgid "Error processing input file with xmllint"
 msgstr "Error al procesar el archivo de entrada con xmllint"
 
-#: ../gio/glib-compile-resources.c:387
+#: ../gio/glib-compile-resources.c:390
 msgid "Error processing input file with to-pixdata"
 msgstr "Error al procesar el archivo de entrada con to-pixdata"
 
-#: ../gio/glib-compile-resources.c:400
+#: ../gio/glib-compile-resources.c:403
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Error al leer el archivo %s: %s"
 
-#: ../gio/glib-compile-resources.c:420
+#: ../gio/glib-compile-resources.c:423
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Error al comprimir el archivo %s"
 
-#: ../gio/glib-compile-resources.c:484 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:487 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "El texto no debe aparecer dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:607
+#: ../gio/glib-compile-resources.c:610
 msgid "name of the output file"
 msgstr "nombre del archivo de salida"
 
-#: ../gio/glib-compile-resources.c:607 ../gio/glib-compile-resources.c:640
+#: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "ARCHIVO"
 
-#: ../gio/glib-compile-resources.c:608
-#| msgid ""
-#| "The directory where files are to be read from (default to current "
-#| "directory)"
+#: ../gio/glib-compile-resources.c:611
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -1310,41 +1307,41 @@ msgstr ""
 "La carpeta de la que se tienen que leer los archivos (la predeterminada es "
 "la carpeta actual)"
 
-#: ../gio/glib-compile-resources.c:608 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-resources.c:611 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/glib-compile-resources.c:609
+#: ../gio/glib-compile-resources.c:612
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Generar salida en el formato seleccionado por la extensión del nombre del "
 "archivo objetivo"
 
-#: ../gio/glib-compile-resources.c:610
+#: ../gio/glib-compile-resources.c:613
 msgid "Generate source header"
 msgstr "Generar cabecera fuente"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Generar el código fuente usado para enlazar el archivo del recurso en su "
 "código fuente"
 
-#: ../gio/glib-compile-resources.c:612
+#: ../gio/glib-compile-resources.c:615
 msgid "Generate dependency list"
 msgstr "Generar lista de dependencias"
 
-#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:616
 msgid "Don't automatically create and register resource"
 msgstr "No crear y registrar automáticamente un recurso"
 
-#: ../gio/glib-compile-resources.c:614
+#: ../gio/glib-compile-resources.c:617
 msgid "C identifier name used for the generated source code"
 msgstr "Nombre del identificador C usado para el código fuente generado"
 
-#: ../gio/glib-compile-resources.c:643
+#: ../gio/glib-compile-resources.c:646
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1355,7 +1352,7 @@ msgstr ""
 "gresource.xml,\n"
 "y el archivo del recurso debe tener la extensión se llama .gresource."
 
-#: ../gio/glib-compile-resources.c:659
+#: ../gio/glib-compile-resources.c:662
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Deberá proporcionar exactamente un nombre de archivo\n"
@@ -2090,6 +2087,11 @@ msgstr "El flujo de entrada no implementa la búsqueda"
 msgid "Print help"
 msgstr "Imprimir ayuda"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+#| msgid "COMMAND"
+msgid "[COMMAND]"
+msgstr "[COMANDO]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Listar secciones que contengan recursos en un ARCHIVO elf"
@@ -2103,6 +2105,10 @@ msgstr ""
 "Listar recursos\n"
 "Si se da la SECCIÓN, listar solo los recursos de esta sección.\n"
 "Si se da la RUTA, listar solo los recursos que coincidan"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "ARCHIVO [RUTA]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2124,6 +2130,11 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Extraer un archivo de recursos a stdout"
+
+#: ../gio/gresource-tool.c:502
+#| msgid "FILE"
+msgid "FILE PATH"
+msgstr "ARCHIVO RUTA"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2202,9 +2213,18 @@ msgstr ""
 "  ARCHIVO      Un archivo elf (un binario o una biblioteca compartida)\n"
 "            o un archivo de recursos compilado\n"
 
+#: ../gio/gresource-tool.c:554
+#| msgid "PATH"
+msgid "[PATH]"
+msgstr "[RUTA]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  RUTA      La ruta (opcional) de un recurso (puede ser parcial)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "RUTA"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2438,7 +2458,7 @@ msgstr "Socket no válido, falló la instalación debido a: %s"
 msgid "Socket is already closed"
 msgstr "El socket ya está cerrado"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3449 ../gio/gsocket.c:3493
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
 msgid "Socket I/O timed out"
 msgstr "Expiró la E/S del socket"
 
@@ -2499,7 +2519,7 @@ msgstr "Error al aceptar la conexión: %s"
 msgid "Connection in progress"
 msgstr "Conexión en progreso"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4235
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "No se pudo obtener el error pendiente: %s"
@@ -2524,26 +2544,26 @@ msgstr "No se pudo desconectar el socket: %s"
 msgid "Error closing socket: %s"
 msgstr "Error al cerrar el socket: %s"
 
-#: ../gio/gsocket.c:3442
+#: ../gio/gsocket.c:3512
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Esperando la condición del socket: %s"
 
-#: ../gio/gsocket.c:3709 ../gio/gsocket.c:3790
+#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Error al enviar el mensaje: %s"
 
-#: ../gio/gsocket.c:3734
+#: ../gio/gsocket.c:3815
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage no está soportado en win32"
 
-#: ../gio/gsocket.c:4014 ../gio/gsocket.c:4150
+#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error al recibir el mensaje: %s"
 
-#: ../gio/gsocket.c:4254
+#: ../gio/gsocket.c:4335
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials no está implementado en este SO"
 
@@ -2942,47 +2962,47 @@ msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Falló la expansión de la la linea ejecutable «%s» con el URI «%s»"
 
-#: ../glib/gconvert.c:806 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
+#: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
-#: ../glib/gconvert.c:1056
+#: ../glib/gconvert.c:1057
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s» al conjunto de códigos «%s»"
 
-#: ../glib/gconvert.c:1873
+#: ../glib/gconvert.c:1874
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "El URI «%s» no es una URI absoluta utilizando el esquema «file»"
 
-#: ../glib/gconvert.c:1883
+#: ../glib/gconvert.c:1884
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local en la URI «%s» no debe incluir un «#»"
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "El URI «%s» es inválida"
 
-#: ../glib/gconvert.c:1912
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nombre del host de la URI «%s» es inválido"
 
-#: ../glib/gconvert.c:1928
+#: ../glib/gconvert.c:1929
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "El URI «%s» contiene caracteres de escape inválidos"
 
-#: ../glib/gconvert.c:2023
+#: ../glib/gconvert.c:2024
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
-#: ../glib/gconvert.c:2033
+#: ../glib/gconvert.c:2034
 msgid "Invalid hostname"
 msgstr "El nombre del host es inválido"
 
@@ -4383,9 +4403,6 @@ msgstr "%.1f KiB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "Especificar la ruta para el esquema"
-
-#~ msgid "PATH"
-#~ msgstr "RUTA"
 
 #~ msgid ""
 #~ "Arguments:\n"
