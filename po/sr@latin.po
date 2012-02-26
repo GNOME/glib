@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-12 19:14+0000\n"
-"PO-Revision-Date: 2012-02-14 10:59+0200\n"
+"POT-Creation-Date: 2012-02-25 20:54+0000\n"
+"PO-Revision-Date: 2012-02-26 11:19+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -59,14 +59,14 @@ msgid "Not enough space in destination"
 msgstr "Nema dovoljno mesta u odredištu"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1291 ../glib/gconvert.c:767
-#: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
+#: ../glib/gconvert.c:1160 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neispravan niz bajtova u ulazu koji pretvaram"
 
-#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:775
-#: ../glib/gconvert.c:1084 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
+#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:776
+#: ../glib/gconvert.c:1085 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Greška prilikom pretvaranja: %s"
@@ -75,14 +75,14 @@ msgstr "Greška prilikom pretvaranja: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Nije podržano pokretanje uz mogućnost prekida"
 
-#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:567
-#: ../glib/gconvert.c:645 ../glib/giochannel.c:1411
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:568
+#: ../glib/gconvert.c:646 ../glib/giochannel.c:1411
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Pretvaranje iz skupa znakova „%s“ u „%s“ nije podržano"
 
-#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:571
-#: ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
+#: ../glib/gconvert.c:650
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ne mogu da pokrenem pretvaranje iz „%s“ u „%s“"
@@ -1220,20 +1220,19 @@ msgstr "Datoteka „%s“ se pojavljuje više puta u izvoru"
 
 #: ../gio/glib-compile-resources.c:248
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Failed to locate '%s' in any source directory"
 msgstr "Nisam uspeo da pronađem „%s“ ni u jenom izvornom direktorijumu"
 
 #: ../gio/glib-compile-resources.c:259
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Failed to locate '%s' in current directory"
 msgstr "Nisam uspeo da pronađem „%s“ u tekućem direktorijumu"
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
-msgstr "Nepoznata opcija predobrade „%s“"
+#| msgid "Unknown proprocessing options \"%s\""
+msgid "Unknown processing option \"%s\""
+msgstr "Nepoznata opcija obrade „%s“"
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
@@ -1268,13 +1267,11 @@ msgid "name of the output file"
 msgstr "naziv izlazne datoteke"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "DATOTEKA"
 
 #: ../gio/glib-compile-resources.c:611
-#| msgid ""
-#| "The directory where files are to be read from (default to current "
-#| "directory)"
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -2040,6 +2037,11 @@ msgstr "Ulazni tok ne podržava premotavanje"
 msgid "Print help"
 msgstr "Štampa pomoć"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+#| msgid "COMMAND"
+msgid "[COMMAND]"
+msgstr "[NAREDBA]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Navodi odeljke koji sadrže resurse u elf DATOTECI"
@@ -2053,6 +2055,10 @@ msgstr ""
 "Navodi resurse\n"
 "Ako je dato ODELJAK, navodi samo resurse u tom odeljku\n"
 "Ako je dato PUTANJA, navodi samo odgovarajuće resurse"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "DATOTEKA [PUTANJA]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2074,6 +2080,11 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Izvlači datoteku resursa u standardni izlaz"
+
+#: ../gio/gresource-tool.c:502
+#| msgid "FILE"
+msgid "FILE PATH"
+msgstr "PUTANJA DATOTEKE"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2151,9 +2162,18 @@ msgstr ""
 "  DATOTEKA   Elf datoteka (izvršna ili deljena biblioteka)\n"
 "             ili prevedena datoteka resursa\n"
 
+#: ../gio/gresource-tool.c:554
+#| msgid "PATH"
+msgid "[PATH]"
+msgstr "[PUTANJA]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  PUTANJA     Putanja (opcionalno) resursa (može biti delimična)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "PATH"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2384,7 +2404,7 @@ msgstr "Neispravna utičnica, pokretanje nije uspelo zbog: %s"
 msgid "Socket is already closed"
 msgstr "Utičnica je već zatvorena"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3467 ../gio/gsocket.c:3511
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
 msgid "Socket I/O timed out"
 msgstr "Isteklo vreme za U/I utičnice"
 
@@ -2445,7 +2465,7 @@ msgstr "greška u prihvatanju veze: %s"
 msgid "Connection in progress"
 msgstr "Povezivanje je u toku"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4253
+#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Ne mogu da dobijem grešku na čekanju: %s"
@@ -2470,26 +2490,26 @@ msgstr "Ne mogu da ugasim utičnicu: %s"
 msgid "Error closing socket: %s"
 msgstr "Greška u zatvaranju utičnice: %s"
 
-#: ../gio/gsocket.c:3460
+#: ../gio/gsocket.c:3512
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čekam uslov utičnice: %s"
 
-#: ../gio/gsocket.c:3727 ../gio/gsocket.c:3808
+#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Greška pri slanju poruke: %s"
 
-#: ../gio/gsocket.c:3752
+#: ../gio/gsocket.c:3815
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage nije podržano u prozorima"
 
-#: ../gio/gsocket.c:4032 ../gio/gsocket.c:4168
+#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Greška pri primanju poruke: %s"
 
-#: ../gio/gsocket.c:4272
+#: ../gio/gsocket.c:4335
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials funkcija nije implementirana za ovaj operativni "
@@ -2882,48 +2902,48 @@ msgstr "Program „%s“ nije registrovao obeleživač za „%s“"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Ne mogu da proširim komadnu liniju „%s“ sa adresom „%s“"
 
-#: ../glib/gconvert.c:806 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
+#: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
 msgid "Partial character sequence at end of input"
 msgstr "Nepotpun niz znakova na kraju ulaza"
 
 # ovo pretpostavljam da se odnosi na delimičan UTF8 zapis
-#: ../glib/gconvert.c:1056
+#: ../glib/gconvert.c:1057
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ne može pretvoriti rezervu „%s“ u zapis „%s“"
 
-#: ../glib/gconvert.c:1873
+#: ../glib/gconvert.c:1874
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Adresa „%s“ nije apsolutna adresa pomoću „file“ šeme"
 
-#: ../glib/gconvert.c:1883
+#: ../glib/gconvert.c:1884
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Adresa lokalne datoteke „%s“ ne sme sadržati „#“"
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Adresa „%s“ je neispravna"
 
-#: ../glib/gconvert.c:1912
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Ime domaćina iz adrese „%s“ je neispravno"
 
-#: ../glib/gconvert.c:1928
+#: ../glib/gconvert.c:1929
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Adresa „%s“ sadrži neispravno naznačene znake"
 
-#: ../glib/gconvert.c:2023
+#: ../glib/gconvert.c:2024
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Putanja „%s“ nije apsolutna putanja"
 
-#: ../glib/gconvert.c:2033
+#: ../glib/gconvert.c:2034
 msgid "Invalid hostname"
 msgstr "Neispravno ime domaćina"
 
@@ -4267,9 +4287,6 @@ msgstr "%.1f KB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "Navedite putanju šeme"
-
-#~ msgid "PATH"
-#~ msgstr "PATH"
 
 #~ msgid ""
 #~ "Arguments:\n"
