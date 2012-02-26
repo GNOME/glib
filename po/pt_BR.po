@@ -17,15 +17,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-24 17:10-0200\n"
-"PO-Revision-Date: 2012-02-24 16:51-0200\n"
+"POT-Creation-Date: 2012-02-26 10:58-0300\n"
+"PO-Revision-Date: 2012-02-26 10:55-0300\n"
 "Last-Translator: Jonh Wendell <jwendell@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
@@ -64,14 +64,14 @@ msgid "Not enough space in destination"
 msgstr "Sem espaço suficiente no destino"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:767
-#: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
+#: ../glib/gconvert.c:1160 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequência de bytes inválida na entrada de conversão"
 
-#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:775
-#: ../glib/gconvert.c:1084 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
+#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:776
+#: ../glib/gconvert.c:1085 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
@@ -80,15 +80,15 @@ msgstr "Erro durante a conversão: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Sem suporte a inicialização cancelável"
 
-#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:567
-#: ../glib/gconvert.c:645 ../glib/giochannel.c:1411
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:568
+#: ../glib/gconvert.c:646 ../glib/giochannel.c:1411
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
 "Não há suporte à conversão do conjunto de caracteres \"%s\" para \"%s\""
 
-#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:571
-#: ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
+#: ../glib/gconvert.c:650
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Não foi possível abrir conversor de \"%s\" para \"%s\""
@@ -1252,7 +1252,7 @@ msgstr "Falha ao localizar \"%s\" no diretório atual"
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
+msgid "Unknown processing option \"%s\""
 msgstr "Opção de processamento %s desconhecida"
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
@@ -1288,6 +1288,7 @@ msgid "name of the output file"
 msgstr "nome do arquivo de saída"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "ARQUIVO"
 
@@ -2063,6 +2064,10 @@ msgstr "Fluxo de entrada não implementa busca"
 msgid "Print help"
 msgstr "Exibe a ajuda"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+msgid "[COMMAND]"
+msgstr "[COMANDO]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Lista as seções contendo recursos no arquivo elf ARQUIVO"
@@ -2076,6 +2081,10 @@ msgstr ""
 "Lista recursos\n"
 "Se SEÇÃO é fornecida, só lista os recursos dentro desta seção\n"
 "Se CAMINHO é fornecido, só lista recursos que casam com o caminho"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "ARQUIVO [CAMINHO]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2097,6 +2106,10 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Extrai um arquivo de recurso para a saída padrão"
+
+#: ../gio/gresource-tool.c:502
+msgid "FILE PATH"
+msgstr "ARQUIVO CAMINHO"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2174,9 +2187,17 @@ msgstr ""
 "  ARQUIVO   Um arquivo elf (binário ou biblioteca compartilhada)\n"
 "            ou um arquivo de recurso compilado\n"
 
+#: ../gio/gresource-tool.c:554
+msgid "[PATH]"
+msgstr "[CAMINHO]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  CAMINHO   Um caminho do recurso (opcional, pode ser parcial)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "CAMINHO"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2906,48 +2927,48 @@ msgstr "Nenhum aplicativo chamado \"%s\" registrou um marcador para \"%s\""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Falha em expandir linha de execução \"%s\" com URI \"%s\""
 
-#: ../glib/gconvert.c:806 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
+#: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
 msgid "Partial character sequence at end of input"
 msgstr "Sequência de caracteres parcial no final da entrada"
 
-#: ../glib/gconvert.c:1056
+#: ../glib/gconvert.c:1057
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Não é possível converter a sequência \"%s\" para conjunto caracteres \"%s\""
 
-#: ../glib/gconvert.c:1873
+#: ../glib/gconvert.c:1874
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "O URI \"%s\" não é um URI absoluto que utilize o esquema \"file\""
 
-#: ../glib/gconvert.c:1883
+#: ../glib/gconvert.c:1884
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de arquivo local \"%s\" não pode incluir um \"#\""
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI \"%s\" é inválido"
 
-#: ../glib/gconvert.c:1912
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "O nome de servidor do URI \"%s\" é inválido"
 
-#: ../glib/gconvert.c:1928
+#: ../glib/gconvert.c:1929
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "O URI \"%s\" contém caracteres com escape inválido"
 
-#: ../glib/gconvert.c:2023
+#: ../glib/gconvert.c:2024
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho \"%s\" não é um caminho absoluto"
 
-#: ../glib/gconvert.c:2033
+#: ../glib/gconvert.c:2034
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
@@ -4222,15 +4243,6 @@ msgstr[1] "%s bytes"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#~ msgid "[COMMAND]"
-#~ msgstr "[COMANDO]"
-
-#~ msgid "FILE [PATH]"
-#~ msgstr "ARQUIVO [CAMINHO]"
-
-#~ msgid "FILE PATH"
-#~ msgstr "ARQUIVO CAMINHO"
-
 #~ msgid "File is empty"
 #~ msgstr "Arquivo vazio"
 
@@ -4314,9 +4326,6 @@ msgstr "%.1f KB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "Especificar o caminho para um esquema"
-
-#~ msgid "PATH"
-#~ msgstr "CAMINHO"
 
 #~ msgid ""
 #~ "Arguments:\n"
