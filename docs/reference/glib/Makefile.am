@@ -64,6 +64,7 @@ content_files =				\
 	running.sgml			\
 	building.sgml			\
 	changes.sgml			\
+	compiling.sgml			\
 	resources.sgml			\
 	regex-syntax.sgml		\
 	version.xml			\
@@ -72,9 +73,6 @@ content_files =				\
 	gtester-report.xml		\
 	gvariant-varargs.xml		\
 	gvariant-text.xml
-
-expand_content_files = 			\
-	compiling.sgml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../gobject/html --extra-dir=$(srcdir)/../gio/html
