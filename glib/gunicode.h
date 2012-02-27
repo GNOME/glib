@@ -371,7 +371,7 @@ typedef enum
  * @G_UNICODE_SCRIPT_MIAO:                 Miao. Since: 2.32
  * @G_UNICODE_SCRIPT_SHARADA:              Sharada. Since: 2.32
  * @G_UNICODE_SCRIPT_SORA_SOMPENG:         Sora Sompeng. Since: 2.32
- * @G_UNICODE_SCRIPT_TAKRI                 Takri. Since: 2.32
+ * @G_UNICODE_SCRIPT_TAKRI:                Takri. Since: 2.32
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
