@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 6.0 data
+# Test cases generated from Unicode 6.1 data
 # by gen-casefold-test.pl. Do not edit.
 #
 # Some special hand crafted tests
@@ -526,6 +526,8 @@ Z	z
 Ⴣ	ⴣ
 Ⴤ	ⴤ
 Ⴥ	ⴥ
+Ⴧ	ⴧ
+Ⴭ	ⴭ
 Ḁ	ḁ
 Ḃ	ḃ
 Ḅ	ḅ
@@ -966,6 +968,7 @@ Z	z
 Ⳣ	ⳣ
 Ⳬ	ⳬ
 Ⳮ	ⳮ
+Ⳳ	ⳳ
 Ꙁ	ꙁ
 Ꙃ	ꙃ
 Ꙅ	ꙅ
@@ -1050,11 +1053,13 @@ Z	z
 Ꞌ	ꞌ
 Ɥ	ɥ
 Ꞑ	ꞑ
+Ꞓ	ꞓ
 Ꞡ	ꞡ
 Ꞣ	ꞣ
 Ꞥ	ꞥ
 Ꞧ	ꞧ
 Ꞩ	ꞩ
+Ɦ	ɦ
 ﬀ	ff
 ﬁ	fi
 ﬂ	fl

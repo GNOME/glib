@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 6.0 data
+# Test cases generated from Unicode 6.1 data
 # by gen-case-tests.pl. Do not edit.
 #
 # Some special hand crafted tests
@@ -97,9 +97,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	x	x	X	X	#   78
 	y	y	Y	Y	#   79
 	z	z	Z	Z	#   7A
-	ª	ª			#   AA
 	µ	µ	Μ	Μ	#   B5
-	º	º			#   BA
 	À	à		À	#   C0
 	Á	á		Á	#   C1
 	Â	â		Â	#   C2
@@ -515,7 +513,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ɣ	ɣ	Ɣ	Ɣ	#  263
 	ɤ	ɤ			#  264
 	ɥ	ɥ	Ɥ	Ɥ	#  265
-	ɦ	ɦ			#  266
+	ɦ	ɦ	Ɦ	Ɦ	#  266
 	ɧ	ɧ			#  267
 	ɨ	ɨ	Ɨ	Ɨ	#  268
 	ɩ	ɩ	Ɩ	Ɩ	#  269
@@ -1116,6 +1114,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	Ⴣ	ⴣ		Ⴣ	# 10C3
 	Ⴤ	ⴤ		Ⴤ	# 10C4
 	Ⴥ	ⴥ		Ⴥ	# 10C5
+	Ⴧ	ⴧ		Ⴧ	# 10C7
+	Ⴭ	ⴭ		Ⴭ	# 10CD
 	ᴀ	ᴀ			# 1D00
 	ᴁ	ᴁ			# 1D01
 	ᴂ	ᴂ			# 1D02
@@ -1160,15 +1160,6 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ᴩ	ᴩ			# 1D29
 	ᴪ	ᴪ			# 1D2A
 	ᴫ	ᴫ			# 1D2B
-	ᵢ	ᵢ			# 1D62
-	ᵣ	ᵣ			# 1D63
-	ᵤ	ᵤ			# 1D64
-	ᵥ	ᵥ			# 1D65
-	ᵦ	ᵦ			# 1D66
-	ᵧ	ᵧ			# 1D67
-	ᵨ	ᵨ			# 1D68
-	ᵩ	ᵩ			# 1D69
-	ᵪ	ᵪ			# 1D6A
 	ᵫ	ᵫ			# 1D6B
 	ᵬ	ᵬ			# 1D6C
 	ᵭ	ᵭ			# 1D6D
@@ -1856,7 +1847,6 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ⱹ	ⱹ			# 2C79
 	ⱺ	ⱺ			# 2C7A
 	ⱻ	ⱻ			# 2C7B
-	ⱼ	ⱼ			# 2C7C
 	Ȿ	ȿ		Ȿ	# 2C7E
 	Ɀ	ɀ		Ɀ	# 2C7F
 	Ⲁ	ⲁ		Ⲁ	# 2C80
@@ -1964,6 +1954,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ⳬ	ⳬ	Ⳬ	Ⳬ	# 2CEC
 	Ⳮ	ⳮ		Ⳮ	# 2CED
 	ⳮ	ⳮ	Ⳮ	Ⳮ	# 2CEE
+	Ⳳ	ⳳ		Ⳳ	# 2CF2
+	ⳳ	ⳳ	Ⳳ	Ⳳ	# 2CF3
 	ⴀ	ⴀ	Ⴀ	Ⴀ	# 2D00
 	ⴁ	ⴁ	Ⴁ	Ⴁ	# 2D01
 	ⴂ	ⴂ	Ⴂ	Ⴂ	# 2D02
@@ -2002,6 +1994,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ⴣ	ⴣ	Ⴣ	Ⴣ	# 2D23
 	ⴤ	ⴤ	Ⴤ	Ⴤ	# 2D24
 	ⴥ	ⴥ	Ⴥ	Ⴥ	# 2D25
+	ⴧ	ⴧ	Ⴧ	Ⴧ	# 2D27
+	ⴭ	ⴭ	Ⴭ	Ⴭ	# 2D2D
 	Ꙁ	ꙁ		Ꙁ	# A640
 	ꙁ	ꙁ	Ꙁ	Ꙁ	# A641
 	Ꙃ	ꙃ		Ꙃ	# A642
@@ -2179,6 +2173,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꞎ	ꞎ			# A78E
 	Ꞑ	ꞑ		Ꞑ	# A790
 	ꞑ	ꞑ	Ꞑ	Ꞑ	# A791
+	Ꞓ	ꞓ		Ꞓ	# A792
+	ꞓ	ꞓ	Ꞓ	Ꞓ	# A793
 	Ꞡ	ꞡ		Ꞡ	# A7A0
 	ꞡ	ꞡ	Ꞡ	Ꞡ	# A7A1
 	Ꞣ	ꞣ		Ꞣ	# A7A2
@@ -2189,6 +2185,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꞧ	ꞧ	Ꞧ	Ꞧ	# A7A7
 	Ꞩ	ꞩ		Ꞩ	# A7A8
 	ꞩ	ꞩ	Ꞩ	Ꞩ	# A7A9
+	Ɦ	ɦ		Ɦ	# A7AA
 	ꟺ	ꟺ			# A7FA
 	ﬀ	ﬀ	Ff	FF	# FB00
 	ﬁ	ﬁ	Fi	FI	# FB01
