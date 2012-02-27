@@ -5298,8 +5298,8 @@ g_dbus_connection_call_done (GObject      *source,
     {
       g_simple_async_result_set_op_res_gpointer (state->simple, state, (GDestroyNotify) call_state_free);
       g_simple_async_result_complete (state->simple);
-      g_object_unref (reply);
     }
+  g_clear_object (&reply);
   g_object_unref (simple);
 }
 
