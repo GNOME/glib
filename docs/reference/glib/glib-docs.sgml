@@ -32,7 +32,7 @@
 
     <xi:include href="building.sgml" />
     <xi:include href="cross.sgml" />
-    <xi:include href="compiling.sgml" />
+    <xi:include href="xml/compiling.sgml" />
     <xi:include href="running.sgml" />
     <xi:include href="changes.sgml" />
     <xi:include href="resources.sgml" />

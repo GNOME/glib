@@ -75,7 +75,7 @@ Deprecated GLib functions are annotated to make the compiler
 emit warnings when they are used (e.g. with gcc, you need to use
 the -Wdeprecated-declarations option). If these warnings are
 problematic, they can be turned off by defining the preprocessor
-symbol GLIB_DISABLE_DEPRECATION_WARNINGS by using the commandline
+symbol %GLIB_DISABLE_DEPRECATION_WARNINGS by using the commandline
 option <literal>-DGLIB_DISABLE_DEPRECATION_WARNINGS</literal>
 </para>
 

@@ -2052,6 +2052,14 @@
  */
 
 /**
+ * GLIB_DISABLE_DEPRECATION_WARNINGS:
+ *
+ * A macro that should be defined before including the glib.h header.
+ * If it is defined, no compiler warnings will be produced for uses
+ * of deprecated GLib APIs.
+ */
+
+/**
  * G_GNUC_NORETURN:
  *
  * Expands to the GNU C <literal>noreturn</literal> function attribute
