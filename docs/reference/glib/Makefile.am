@@ -74,6 +74,9 @@ content_files =				\
 	gvariant-varargs.xml		\
 	gvariant-text.xml
 
+expand_content_files = 			\
+	compiling.sgml
+
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../gobject/html --extra-dir=$(srcdir)/../gio/html
 
