@@ -145,6 +145,12 @@
 #error "GLIB_VERSION_MIN_REQUIRED must be >= GLIB_VERSION_2_26"
 #endif
 
+/* These macros are used to mark deprecated functions in GLib headers,
+ * and thus have to be exposed in installed headers. But please
+ * do *not* use them in other projects. Instead, use G_DEPRECATED
+ * or define your own wrappers around it.
+ */
+
 /* XXX: Every new stable minor release should add a set of macros here */
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_26
