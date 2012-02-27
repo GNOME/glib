@@ -381,6 +381,7 @@ g_dbus_menu_group_unref (GDBusMenuGroup *group)
 
       g_hash_table_remove (group->path->groups, GINT_TO_POINTER (group->id));
       g_hash_table_unref (group->proxies);
+      g_hash_table_unref (group->menus);
 
       g_dbus_menu_path_unref (group->path);
 
