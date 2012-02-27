@@ -317,9 +317,9 @@
 #endif
 
 #if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
-#define G_UNAVAILABLE(maj,min) __attribute__((deprecated("Not available for " #maj "." #min)))
+#define G_UNAVAILABLE(maj,min) __attribute__((deprecated("Not available before " #maj "." #min)))
 #elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
-#define G_UNAVAILABLE(maj,min) __declspec(deprecated("is not available for " #maj "." #min))
+#define G_UNAVAILABLE(maj,min) __declspec(deprecated("is not available before " #maj "." #min))
 #else
 #define G_UNAVAILABLE(maj,min)
 #endif
