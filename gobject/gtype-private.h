@@ -60,6 +60,8 @@ void            _g_type_boxed_init      (GType          type,
                                          GBoxedCopyFunc copy_func,
                                          GBoxedFreeFunc free_func);
 
+gboolean    _g_closure_is_void (GClosure       *closure,
+				gpointer        instance);
 gboolean    _g_closure_supports_invoke_va (GClosure       *closure);
 void        _g_closure_set_va_marshal (GClosure       *closure,
 				       GVaClosureMarshal marshal);

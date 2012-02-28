@@ -1025,6 +1025,42 @@ g_type_iface_meta_marshal (GClosure       *closure,
 		      callback);
 }
 
+gboolean
+_g_closure_is_void (GClosure *closure,
+		    gpointer instance)
+{
+  GRealClosure *real_closure;
+  GTypeClass *class;
+  gpointer callback;
+  GType itype;
+  guint offset;
+
+  if (closure->is_invalid)
+    return TRUE;
+
+  real_closure = G_REAL_CLOSURE (closure);
+
+  if (real_closure->meta_marshal == g_type_iface_meta_marshal)
+    {
+      itype = (GType) closure->data;
+      offset = GPOINTER_TO_UINT (real_closure->meta_marshal_data);
+
+      class = G_TYPE_INSTANCE_GET_INTERFACE (instance, itype, GTypeClass);
+      callback = G_STRUCT_MEMBER (gpointer, class, offset);
+      return callback == NULL;
+    }
+  else if (real_closure->meta_marshal == g_type_class_meta_marshal)
+    {
+      offset = GPOINTER_TO_UINT (real_closure->meta_marshal_data);
+
+      class = G_TYPE_INSTANCE_GET_CLASS (instance, itype, GTypeClass);
+      callback = G_STRUCT_MEMBER (gpointer, class, offset);
+      return callback == NULL;
+    }
+
+  return FALSE;
+}
+
 static void
 g_type_iface_meta_marshalv (GClosure *closure,
 			    GValue   *return_value,
