@@ -29,6 +29,15 @@
 
 G_BEGIN_DECLS
 
+/**
+ * G_TYPE_VALUE_ARRAY:
+ *
+ * The type ID of the "GValueArray" type which is a boxed type,
+ * used to pass around pointers to GValueArrays.
+ *
+ * Deprecated: 2.32: Use #GArray instead of #GValueArray
+ */
+#define G_TYPE_VALUE_ARRAY (g_value_array_get_type ())
 
 /* --- typedefs & structs --- */
 typedef struct _GValueArray GValueArray;
@@ -48,8 +57,10 @@ struct _GValueArray
   guint   n_prealloced;
 };
 
-
 /* --- prototypes --- */
+GLIB_DEPRECATED_IN_2_32_FOR(g_array_get_type)
+GType           g_value_array_get_type       (void) G_GNUC_CONST;
+
 GLIB_DEPRECATED_IN_2_32_FOR(g_array_index)
 GValue*		g_value_array_get_nth	     (GValueArray	*value_array,
 					      guint		 index_);
