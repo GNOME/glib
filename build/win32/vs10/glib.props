@@ -171,6 +171,8 @@ copy ..\..\..\glib\gvarianttype.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\gversion.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\gversionmacros.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\gwin32.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 

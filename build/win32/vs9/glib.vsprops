@@ -129,6 +129,7 @@ copy ..\..\..\glib\gutils.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A
 copy ..\..\..\glib\gvariant.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gvarianttype.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gversion.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gversionmacros.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 
 mkdir $(OutDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
