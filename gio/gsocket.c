@@ -335,9 +335,10 @@ g_socket_details_from_fd (GSocket *socket)
 	{
 #ifdef ENOTSOCK
 	 case ENOTSOCK:
-#endif
+#else
 #ifdef WSAENOTSOCK
 	 case WSAENOTSOCK:
+#endif
 #endif
 	 case EBADF:
 	  /* programmer error */
