@@ -67,6 +67,24 @@ G_BEGIN_DECLS
  */
 #define G_VOLUME_IDENTIFIER_KIND_NFS_MOUNT "nfs-mount"
 
+/**
+ * G_VOLUME_IDENTIFIER_KIND_CLASS:
+ *
+ * The string used to obtain the volume <emphasis>class</emphasis>
+ * with g_volume_get_identifier().
+ *
+ * Known volume classes include <literal>device</literal> and
+ * <literal>network</literal>. Other classes may be added in the
+ * future.
+ *
+ * This is intended to be used by applications to classify #GVolume
+ * instances into different sections - for example a file manager or
+ * file chooser can use this information to show
+ * <literal>network</literal> volumes under a "Network" heading and
+ * <literal>device</literal> volumes under a "Devices" heading.
+ */
+#define G_VOLUME_IDENTIFIER_KIND_CLASS "class"
+
 
 #define G_TYPE_VOLUME            (g_volume_get_type ())
 #define G_VOLUME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_VOLUME, GVolume))
