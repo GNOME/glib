@@ -47,7 +47,8 @@ G_BEGIN_DECLS
  * @G_SPAWN_ERROR_CHDIR: Changing to working directory failed.
  * @G_SPAWN_ERROR_ACCES: execv() returned <literal>EACCES</literal>
  * @G_SPAWN_ERROR_PERM: execv() returned <literal>EPERM</literal>
- * @G_SPAWN_ERROR_2BIG: execv() returned <literal>E2BIG</literal>
+ * @G_SPAWN_ERROR_TOO_BIG: execv() returned <literal>E2BIG</literal>
+ * @G_SPAWN_ERROR_2BIG: deprecated alias for %G_SPAWN_ERROR_TOO_BIG
  * @G_SPAWN_ERROR_NOEXEC: execv() returned <literal>ENOEXEC</literal>
  * @G_SPAWN_ERROR_NAMETOOLONG: execv() returned <literal>ENAMETOOLONG</literal>
  * @G_SPAWN_ERROR_NOENT: execv() returned <literal>ENOENT</literal>
@@ -73,7 +74,10 @@ typedef enum
   G_SPAWN_ERROR_CHDIR,  /* changing to working dir failed */
   G_SPAWN_ERROR_ACCES,  /* execv() returned EACCES */
   G_SPAWN_ERROR_PERM,   /* execv() returned EPERM */
-  G_SPAWN_ERROR_2BIG,   /* execv() returned E2BIG */
+  G_SPAWN_ERROR_TOO_BIG,/* execv() returned E2BIG */
+#ifndef G_DISABLE_DEPRECATED
+  G_SPAWN_ERROR_2BIG = G_SPAWN_ERROR_TOO_BIG,
+#endif
   G_SPAWN_ERROR_NOEXEC, /* execv() returned ENOEXEC */
   G_SPAWN_ERROR_NAMETOOLONG, /* ""  "" ENAMETOOLONG */
   G_SPAWN_ERROR_NOENT,       /* ""  "" ENOENT */

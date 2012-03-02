@@ -797,7 +797,7 @@ exec_err_to_g_error (gint en)
 
 #ifdef E2BIG
     case E2BIG:
-      return G_SPAWN_ERROR_2BIG;
+      return G_SPAWN_ERROR_TOO_BIG;
       break;
 #endif
 
