@@ -1545,6 +1545,8 @@ g_signal_newv (const gchar       *signal_name,
   gchar *name;
   guint signal_id, i;
   SignalNode *node;
+  GSignalCMarshaller builtin_c_marshaller;
+  GSignalCVaMarshaller va_marshaller;
   
   g_return_val_if_fail (signal_name != NULL, 0);
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
@@ -1650,13 +1652,59 @@ g_signal_newv (const gchar       *signal_name,
     }
   else
     node->accumulator = NULL;
-  node->va_marshaller = NULL;
+
+  builtin_c_marshaller = NULL;
+  va_marshaller = NULL;
+
+  /* Pick up built-in va marshallers for standard types, and
+     instead of generic marshaller if no marshaller specified */
+  if (n_params == 0 && return_type == G_TYPE_NONE)
+    {
+      builtin_c_marshaller = g_cclosure_marshal_VOID__VOID;
+      va_marshaller = g_cclosure_marshal_VOID__VOIDv;
+    }
+  else if (n_params == 1 && return_type == G_TYPE_NONE)
+    {
+#define ADD_CHECK(__type__) \
+      else if (g_type_is_a (param_types[0], G_TYPE_ ##__type__))         \
+	{                                                                \
+	  builtin_c_marshaller = g_cclosure_marshal_VOID__ ## __type__;  \
+	  va_marshaller = g_cclosure_marshal_VOID__ ## __type__ ##v;     \
+	}
+
+      if (0) {}
+      ADD_CHECK (BOOLEAN)
+      ADD_CHECK (CHAR)
+      ADD_CHECK (UCHAR)
+      ADD_CHECK (INT)
+      ADD_CHECK (UINT)
+      ADD_CHECK (LONG)
+      ADD_CHECK (ULONG)
+      ADD_CHECK (ENUM)
+      ADD_CHECK (FLAGS)
+      ADD_CHECK (FLOAT)
+      ADD_CHECK (DOUBLE)
+      ADD_CHECK (STRING)
+      ADD_CHECK (PARAM)
+      ADD_CHECK (BOXED)
+      ADD_CHECK (POINTER)
+      ADD_CHECK (OBJECT)
+      ADD_CHECK (VARIANT)
+    }
+
   if (c_marshaller == NULL)
     {
-      c_marshaller = g_cclosure_marshal_generic;
-      node->va_marshaller = g_cclosure_marshal_generic_va;
+      if (builtin_c_marshaller)
+	c_marshaller = builtin_c_marshaller;
+      else
+	{
+	  c_marshaller = g_cclosure_marshal_generic;
+	  va_marshaller = g_cclosure_marshal_generic_va;
+	}
     }
+
   node->c_marshaller = c_marshaller;
+  node->va_marshaller = va_marshaller;
   node->emission_hooks = NULL;
   if (class_closure)
     signal_add_class_closure (node, 0, class_closure);
