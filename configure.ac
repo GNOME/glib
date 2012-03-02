@@ -1546,8 +1546,13 @@ if test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL"; then
 	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
 dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
 	echo "void glib_plugin_test(void) { }" > plugin.c
-	${SHELL} ./libtool --mode=compile ${CC} -shared \
-		-export-dynamic -o plugin.o plugin.c 2>&1 >/dev/null
+	${SHELL} ./libtool --mode=compile --tag=CC ${CC} ${CFLAGS} \
+		${CPPFLAGS} -c -o plugin.lo plugin.c >/dev/null 2>&1
+	${SHELL} ./libtool --mode=link --tag=CC ${CC} ${CFLAGS} \
+		${LDFLAGS} -module -o plugin.la -export-dynamic \
+		-shrext ".o" -avoid-version plugin.lo \
+		-rpath /dont/care >/dev/null 2>&1
+	eval `./libtool --config | grep ^objdir`
 	AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
 		glib_cv_rtldglobal_broken,[
 		AC_TRY_RUN([
@@ -1562,7 +1567,7 @@ int glib_plugin_test;
 int main () {
     void *handle, *global, *local;
     global = &glib_plugin_test;
-    handle = dlopen ("./.libs/plugin.o", RTLD_GLOBAL | RTLD_LAZY);
+    handle = dlopen ("./$objdir/plugin.o", RTLD_GLOBAL | RTLD_LAZY);
     if (!handle) return 0;
     local = dlsym (handle, "glib_plugin_test");
     return global == local;
@@ -1570,8 +1575,8 @@ int main () {
 			[glib_cv_rtldglobal_broken=no],
 			[glib_cv_rtldglobal_broken=yes],
 			[glib_cv_rtldglobal_broken=no])
-		rm -f plugin.c plugin.o plugin.lo .libs/plugin.o
-		rmdir .libs 2>/dev/null
+		rm -f plugin.c plugin.o plugin.lo plugin.la ${objdir}/plugin.*
+		rmdir ${objdir} 2>/dev/null
 	])
 	if test "x$glib_cv_rtldglobal_broken" = "xyes"; then
   		G_MODULE_BROKEN_RTLD_GLOBAL=1
