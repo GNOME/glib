@@ -1703,7 +1703,7 @@ g_signal_newv (const gchar       *signal_name,
   else if (n_params == 1 && return_type == G_TYPE_NONE)
     {
 #define ADD_CHECK(__type__) \
-      else if (g_type_is_a (param_types[0], G_TYPE_ ##__type__))         \
+      else if (g_type_is_a (param_types[0] & ~G_SIGNAL_TYPE_STATIC_SCOPE, G_TYPE_ ##__type__))         \
 	{                                                                \
 	  builtin_c_marshaller = g_cclosure_marshal_VOID__ ## __type__;  \
 	  va_marshaller = g_cclosure_marshal_VOID__ ## __type__ ##v;     \
