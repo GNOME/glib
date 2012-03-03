@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-01 19:09+0000\n"
-"PO-Revision-Date: 2012-03-03 22:35+0700\n"
+"PO-Revision-Date: 2012-03-03 22:48+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1181,54 +1181,51 @@ msgstr "Không cho phép phần tử <%s> ở cấp cao nhất"
 #: ../gio/glib-compile-resources.c:235
 #, c-format
 msgid "File %s appears multiple times in the resource"
-msgstr ""
+msgstr "Tập tin %s xuất hiện nhiều lần trong tài nguyên"
 
 #: ../gio/glib-compile-resources.c:248
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
-msgstr ""
+msgstr "Lỗi định vị '%s' trong thư mục nguồn"
 
 #: ../gio/glib-compile-resources.c:259
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to change to directory '%s' (%s)"
 msgid "Failed to locate '%s' in current directory"
-msgstr "Không thay đổi được thư mục '%s' (%s)"
+msgstr "Lỗi định vị '%s' trong thư mục hiện thời"
 
 #: ../gio/glib-compile-resources.c:287
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unknown option %s"
 msgid "Unknown processing option \"%s\""
-msgstr "Không biết tùy chọn %s."
+msgstr "Không biết tùy chọn xử lý \"%s\""
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to create file '%s': %s"
 msgid "Failed to create temp file: %s"
-msgstr "Không tạo được tập tin '%s': %s"
+msgstr "Không tạo được tập tin tạm: %s"
 
 #: ../gio/glib-compile-resources.c:335
-#, fuzzy
 #| msgid "Error setting symlink: file is not a symlink"
 msgid "Error processing input file with xmllint"
 msgstr ""
-"Gặp lỗi khi đặt liên kết tượng trưng: tập tin không phải là liên kết tượng "
-"trưng"
 
 #: ../gio/glib-compile-resources.c:390
 msgid "Error processing input file with to-pixdata"
-msgstr ""
+msgstr "Lỗi xử lý tập tin nhập với to-pixdata"
 
 #: ../gio/glib-compile-resources.c:403
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error reading file '%s': %s"
 msgid "Error reading file %s: %s"
-msgstr "Lỗi khi đọc tập tin '%s': %s"
+msgstr "Lỗi khi đọc tập tin %s: %s"
 
 #: ../gio/glib-compile-resources.c:423
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error opening file: %s"
 msgid "Error compressing file %s"
-msgstr "Gặp lỗi khi mở tập tin: %s"
+msgstr "Gặp lỗi khi nén tập tin %s"
 
 #: ../gio/glib-compile-resources.c:487 ../gio/glib-compile-schemas.c:1561
 #, c-format
@@ -1236,21 +1233,20 @@ msgid "text may not appear inside <%s>"
 msgstr "văn bản không thể xuất hiện bên trong <%s>"
 
 #: ../gio/glib-compile-resources.c:610
-#, fuzzy
 #| msgid "removed existing output file.\n"
 msgid "name of the output file"
-msgstr "đã xoá tập tin kết xuất hiện có.\n"
+msgstr "tên tập tin xuất"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
 #: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
-msgstr ""
+msgstr "TẬP TIN"
 
 #: ../gio/glib-compile-resources.c:611
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
-msgstr ""
+msgstr "Thư mục chứa tập tin cần đọc (mặc định là thư mục hiện thời)"
 
 #: ../gio/glib-compile-resources.c:611 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
@@ -1261,29 +1257,29 @@ msgstr "THƯ MỤC"
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
+"Phát sinh kết quả theo định dạng chọn theo phần mở rộng tên tập tin đích"
 
 #: ../gio/glib-compile-resources.c:613
 msgid "Generate source header"
-msgstr ""
+msgstr "Phát sinh source header"
 
 #: ../gio/glib-compile-resources.c:614
 msgid "Generate sourcecode used to link in the resource file into your code"
-msgstr ""
+msgstr "Phát sinh mã nguồn để liên kết trong tập tin tài nguyên vào mã của bạn"
 
 #: ../gio/glib-compile-resources.c:615
 msgid "Generate dependency list"
-msgstr ""
+msgstr "Phát sinh danh sách phụ thuộc"
 
 #: ../gio/glib-compile-resources.c:616
 msgid "Don't automatically create and register resource"
-msgstr ""
+msgstr "Không tự động tạo và đăng ký tài nguyên"
 
 #: ../gio/glib-compile-resources.c:617
 msgid "C identifier name used for the generated source code"
 msgstr ""
 
 #: ../gio/glib-compile-resources.c:646
-#, fuzzy
 #| msgid ""
 #| "Compile all GSettings schema files into a schema cache.\n"
 #| "Schema files are required to have the extension .gschema.xml,\n"
@@ -1293,15 +1289,15 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
-"Biên dịch tất cả tập tin GSettings schema thành schema cache.\n"
-"Tập tin schema cần có phần mở rộng .gschema.xml,\n"
-"và tập tin cache tên là gschemas.compiled."
+"Biên dịch đặc tả tài nguyên thành tập tin tài nguyên.\n"
+"Tập tin đặc tả tài nguyên có đuôi .gresource.xml,\n"
+"và tập tin tài nguyên có đuôi .gresource."
 
 #: ../gio/glib-compile-resources.c:662
-#, fuzzy, c-format
+#, c-format
 #| msgid "You should give exactly one directory name\n"
 msgid "You should give exactly one file name\n"
-msgstr "Bạn nên đưa chính xác một tên thư mục\n"
+msgstr "Bạn nên đưa chính xác một tên tập tin\n"
 
 #: ../gio/glib-compile-schemas.c:774
 msgid "empty names are not permitted"
@@ -2006,34 +2002,32 @@ msgstr "Lỗi phân giải '%s'"
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
-msgstr ""
+msgstr "Tài nguyên tại '%s' không tồn tại"
 
 #: ../gio/gresource.c:456
 #, c-format
 msgid "The resource at '%s' failed to decompress"
-msgstr ""
+msgstr "Tài nguyên tại '%s' gặp lỗi giải nén"
 
 #: ../gio/gresourcefile.c:650
-#, fuzzy, c-format
+#, c-format
 #| msgid "Target file is a directory"
 msgid "The resource at '%s' is not a directory"
-msgstr "Tập tin đích là một thư mục"
+msgstr "Tài nguyên tại '%s' không phải là thư mục"
 
 #: ../gio/gresourcefile.c:858
-#, fuzzy
 #| msgid "Input stream doesn't implement read"
 msgid "Input stream doesn't implement seek"
-msgstr "Luồng nhập vào không thực hiện chức năng đọc"
+msgstr "Luồng nhập vào không thực hiện chức năng seek"
 
 #: ../gio/gresource-tool.c:470 ../gio/gsettings-tool.c:530
 msgid "Print help"
 msgstr "In trợ giúp"
 
 #: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
-#, fuzzy
 #| msgid "COMMAND"
 msgid "[COMMAND]"
-msgstr "LỆNH"
+msgstr "[LỆNH]"
 
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
@@ -2068,7 +2062,6 @@ msgid "Extract a resource file to stdout"
 msgstr ""
 
 #: ../gio/gresource-tool.c:502
-#, fuzzy
 #| msgid "PATH"
 msgid "FILE PATH"
 msgstr "ĐƯỜNG DẪN"
@@ -2131,10 +2124,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gresource-tool.c:554
-#, fuzzy
 #| msgid "PATH"
 msgid "[PATH]"
-msgstr "ĐƯỜNG DẪN"
+msgstr "[ĐƯỜNG DẪN]"
 
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
@@ -2413,16 +2405,16 @@ msgid "Error binding to address: %s"
 msgstr "Lỗi liên kết địa chỉ: %s"
 
 #: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error joining multicast group: %s"
-msgstr "Gặp lỗi khi khởi chạy ứng dụng: %s"
+msgstr ""
 
 #: ../gio/gsocket.c:1945 ../gio/gsocket.c:1981
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error leaving multicast group: %s"
-msgstr "Gặp lỗi khi khởi chạy ứng dụng: %s"
+msgstr ""
 
 #: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
@@ -2560,7 +2552,6 @@ msgstr ""
 "GLib."
 
 #: ../gio/gsocks5proxy.c:208
-#, fuzzy
 #| msgid "Username or password is too long for SOCKSv5 protocol)."
 msgid "Username or password is too long for SOCKSv5 protocol."
 msgstr "Tên người dùng hoặc mật khẩu quá dài cho giao thức SOCKSv5."
