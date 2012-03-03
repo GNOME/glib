@@ -114,6 +114,7 @@ content_files =			\
 	migrating-gdbus.xml	\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
+	glib-compile-resources.xml	\
 	gsettings.xml		\
 	gresource.xml		\
 	gdbus.xml		\
