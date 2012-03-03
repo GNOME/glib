@@ -1312,10 +1312,11 @@ typedef enum
  *     to the #GApplication::command-line signal handler, via
  *     g_application_command_line_getenv().
  * @G_APPLICATION_NON_UNIQUE: Make no attempts to do any of the typical
- *     single-instance application negotiation.  The application neither
- *     attempts to become the owner of the application ID nor does it
- *     check if an existing owner already exists.  Everything occurs in
- *     the local process.  Since: 2.30.
+ *     single-instance application negotiation, even if the application
+ *     ID is given.  The application neither attempts to become the
+ *     owner of the application ID nor does it check if an existing
+ *     owner already exists.  Everything occurs in the local process.
+ *     Since: 2.30.
  *
  * Flags used to define the behaviour of a #GApplication.
  *
