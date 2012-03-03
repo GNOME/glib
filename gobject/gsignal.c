@@ -701,7 +701,7 @@ node_update_single_va_closure (SignalNode *node)
 
   /* Fast path single-handler without boxing the arguments in GValues */
   if (G_TYPE_IS_OBJECT (node->itype) &&
-      (node->flags & (G_SIGNAL_NO_RECURSE|G_SIGNAL_MUST_COLLECT)) == 0 &&
+      (node->flags & (G_SIGNAL_MUST_COLLECT)) == 0 &&
       (node->emission_hooks == NULL || node->emission_hooks->hooks == NULL))
     {
       GSignalFlags run_type;
@@ -3158,6 +3158,11 @@ g_signal_emit_valist (gpointer instance,
 	  return;
 	}
 
+      /* Don't allow no-recurse emission as we might have to restart, which means
+	 we will run multiple handlers and thus must ref all arguments */
+      if (closure != NULL && node->flags & (G_SIGNAL_NO_RECURSE) != 0)
+	fastpath = FALSE;
+      
       if (fastpath)
 	{
 	  SignalAccumulator *accumulator;
