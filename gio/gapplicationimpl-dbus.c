@@ -218,7 +218,6 @@ application_path_from_appid (const gchar *appid)
  */
 static gboolean
 g_application_impl_attempt_primary (GApplicationImpl  *impl,
-                                    gboolean           non_unique,
                                     GCancellable      *cancellable,
                                     GError           **error)
 {
@@ -268,7 +267,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (impl->actions_id == 0)
     return FALSE;
 
-  if (non_unique)
+  if (impl->bus_name == NULL)
     {
       /* If this is a non-unique application then it is sufficient to
        * have our object paths registered. We can return now.
@@ -324,7 +323,7 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
       impl->actions_id = 0;
     }
 
-  if (impl->primary)
+  if (impl->primary && impl->bus_name)
     {
       g_dbus_connection_call (impl->session_bus, "org.freedesktop.DBus",
                               "/org/freedesktop/DBus", "org.freedesktop.DBus",
@@ -363,7 +362,10 @@ g_application_impl_register (GApplication        *application,
 
   impl->app = application;
   impl->exported_actions = exported_actions;
-  impl->bus_name = appid;
+
+  /* non-unique applications do not attempt to acquire a bus name */
+  if (~flags & G_APPLICATION_NON_UNIQUE)
+    impl->bus_name = appid;
 
   impl->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, NULL);
 
@@ -383,11 +385,7 @@ g_application_impl_register (GApplication        *application,
    */
   if (~flags & G_APPLICATION_IS_LAUNCHER)
     {
-      gboolean non_unique;
-
-      non_unique = (flags & G_APPLICATION_NON_UNIQUE) != 0;
-
-      if (!g_application_impl_attempt_primary (impl, non_unique, cancellable, error))
+      if (!g_application_impl_attempt_primary (impl, cancellable, error))
         {
           g_application_impl_destroy (impl);
           return NULL;
