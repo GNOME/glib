@@ -46,21 +46,11 @@
  * @title: GApplication
  * @short_description: Core application class
  *
- * A #GApplication is the foundation of an application, unique for a
- * given application identifier.  The GApplication class wraps some
+ * A #GApplication is the foundation of an application.  It wraps some
  * low-level platform-specific services and is intended to act as the
  * foundation for higher-level application classes such as
  * #GtkApplication or #MxApplication.  In general, you should not use
  * this class outside of a higher level framework.
- *
- * One of the core features that GApplication provides is process
- * uniqueness, in the context of a "session".  The session concept is
- * platform-dependent, but corresponds roughly to a graphical desktop
- * login.  When your application is launched again, its arguments
- * are passed through platform communication to the already running
- * program. The already running instance of the program is called the
- * <firstterm>primary instance</firstterm>. On Linux, the D-Bus session
- * bus is used for communication.
  *
  * GApplication provides convenient life cycle management by maintaining
  * a <firstterm>use count</firstterm> for the primary application instance.
@@ -70,9 +60,20 @@
  * ensure that the application stays alive as long as it has any opened
  * windows.
  *
- * Before using GApplication, you must choose an "application identifier".
- * The expected form of an application identifier is very close to that of
- * of a <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
+ * Another feature that GApplication (optionally) provides is process
+ * uniqueness.  Applications can make use of this functionality by
+ * providing a unique application ID.  If given, only one application
+ * with this ID can be running at a time per session.  The session
+ * concept is platform-dependent, but corresponds roughly to a graphical
+ * desktop login.  When your application is launched again, its
+ * arguments are passed through platform communication to the already
+ * running program.  The already running instance of the program is
+ * called the <firstterm>primary instance</firstterm>. On Linux, the
+ * D-Bus session bus is used for communication.
+ *
+ * If used, the expected form of an application identifier is very close
+ * to that of of a
+ * <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
  * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
  * For details on valid application identifiers, see g_application_id_is_valid().
  *
@@ -616,8 +617,6 @@ g_application_constructed (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
 
-  g_assert (application->priv->id != NULL);
-
   if (g_application_get_default () == NULL)
     g_application_set_default (application);
 }
@@ -905,14 +904,18 @@ g_application_id_is_valid (const gchar *application_id)
 /* Public Constructor {{{1 */
 /**
  * g_application_new:
- * @application_id: the application id
+ * @application_id: (allow-none): the application id
  * @flags: the application flags
  *
  * Creates a new #GApplication instance.
  *
  * This function calls g_type_init() for you.
  *
- * The application id must be valid.  See g_application_id_is_valid().
+ * If non-%NULL, the application id must be valid.  See
+ * g_application_id_is_valid().
+ *
+ * If no application ID is given then some features of #GApplication
+ * (most notably application uniqueness) will be disabled.
  *
  * Returns: a new #GApplication instance
  **/
@@ -920,7 +923,7 @@ GApplication *
 g_application_new (const gchar       *application_id,
                    GApplicationFlags  flags)
 {
-  g_return_val_if_fail (g_application_id_is_valid (application_id), NULL);
+  g_return_val_if_fail (application_id == NULL || g_application_id_is_valid (application_id), NULL);
 
   g_type_init ();
 
@@ -952,14 +955,15 @@ g_application_get_application_id (GApplication *application)
 /**
  * g_application_set_application_id:
  * @application: a #GApplication
- * @application_id: the identifier for @application
+ * @application_id: (allow-none): the identifier for @application
  *
  * Sets the unique identifier for @application.
  *
  * The application id can only be modified if @application has not yet
  * been registered.
  *
- * The application id must be valid.  See g_application_id_is_valid().
+ * If non-%NULL, the application id must be valid.  See
+ * g_application_id_is_valid().
  *
  * Since: 2.28
  **/
@@ -971,7 +975,7 @@ g_application_set_application_id (GApplication *application,
 
   if (g_strcmp0 (application->priv->id, application_id) != 0)
     {
-      g_return_if_fail (g_application_id_is_valid (application_id));
+      g_return_if_fail (application_id == NULL || g_application_id_is_valid (application_id));
       g_return_if_fail (!application->priv->is_registered);
 
       g_free (application->priv->id);
@@ -1146,6 +1150,9 @@ g_application_get_is_remote (GApplication *application)
  * application identifier as a unique bus name on the session bus using
  * GDBus.
  *
+ * If there is no application ID or if %G_APPLICATION_NON_UNIQUE was
+ * given, then this process will always become the primary instance.
+ *
  * Due to the internal architecture of GDBus, method calls can be
  * dispatched at any time (even if a main loop is not running).  For
  * this reason, you must ensure that any object paths that you wish to
@@ -1155,7 +1162,8 @@ g_application_get_is_remote (GApplication *application)
  * returned with no work performed.
  *
  * The #GApplication::startup signal is emitted if registration succeeds
- * and @application is the primary instance.
+ * and @application is the primary instance (including the non-unique
+ * case).
  *
  * In the event of an error (such as @cancellable being cancelled, or a
  * failure to connect to the session bus), %FALSE is returned and @error
@@ -1178,6 +1186,9 @@ g_application_register (GApplication  *application,
 
   if (!application->priv->is_registered)
     {
+      if (application->priv->id == NULL)
+        application->priv->flags |= G_APPLICATION_NON_UNIQUE;
+
       application->priv->impl =
         g_application_impl_register (application, application->priv->id,
                                      application->priv->flags,

@@ -194,6 +194,10 @@ application_path_from_appid (const gchar *appid)
 {
   gchar *appid_path, *iter;
 
+  if (appid == NULL)
+    /* this is a private implementation detail */
+    return g_strdup ("/org/gtk/Application/anonymous");
+
   appid_path = g_strconcat ("/", appid, NULL);
   for (iter = appid_path; *iter; iter++)
     {
@@ -357,6 +361,8 @@ g_application_impl_register (GApplication        *application,
 {
   GDBusActionGroup *actions;
   GApplicationImpl *impl;
+
+  g_assert ((flags & G_APPLICATION_NON_UNIQUE) || appid != NULL);
 
   impl = g_slice_new0 (GApplicationImpl);
 
