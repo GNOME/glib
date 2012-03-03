@@ -621,4 +621,4 @@ DISTCLEANFILES = \
 	schema-source/gschemas.compiled
 
 distclean-local:
-	rm -r xdgdatahome xdgdatadir
+	rm -rf xdgdatahome xdgdatadir
