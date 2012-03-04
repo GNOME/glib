@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-03-04 06:37+0000\n"
-"PO-Revision-Date: 2012-03-04 20:57+0100\n"
+"PO-Revision-Date: 2012-03-04 21:19+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -596,9 +596,8 @@ msgid "Error return with empty body"
 msgstr "Napaka vrnjena s praznim telesom"
 
 #: ../gio/gdbusprivate.c:2065
-#, fuzzy
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Ni mogoče naložiti /var/lib/dbus/machine-id: "
+msgstr "Ni mogoče naložiti /var/lib/dbus/machine-id oziroma /etc/machine-id: "
 
 #: ../gio/gdbusproxy.c:1624
 #, c-format
@@ -1158,7 +1157,7 @@ msgid "Address has bits set beyond prefix length"
 msgstr "Naslov ima določene bite prek dolžine predpone"
 
 #: ../gio/ginetaddressmask.c:304
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse '%s' as IP address mask"
 msgstr "Ni mogoče razčleniti '%s' kot maske naslova IP"
 
@@ -1222,9 +1221,9 @@ msgstr "Neznana možnost obdelovanja \"%s\""
 
 #: ../gio/glib-compile-resources.c:305
 #: ../gio/glib-compile-resources.c:363
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create temp file: %s"
-msgstr "Ni mogoče ustvariti začasne datoteke \"%s\": %s"
+msgstr "Ustvarjanje začasne datoteke je spodletelo: %s"
 
 #: ../gio/glib-compile-resources.c:335
 msgid "Error processing input file with xmllint"
@@ -1276,9 +1275,8 @@ msgid "Generate output in the format selected for by the target filename extensi
 msgstr "Ustvari odvod v obliki, izbrani s pripono imena ciljne datoteke"
 
 #: ../gio/glib-compile-resources.c:613
-#, fuzzy
 msgid "Generate source header"
-msgstr "Naslovi vira/glave:"
+msgstr "Ustvari glavo vira"
 
 #: ../gio/glib-compile-resources.c:614
 msgid "Generate sourcecode used to link in the resource file into your code"
@@ -1294,18 +1292,17 @@ msgstr "Vira ne ustvari in ne vpiši samodejno"
 
 #: ../gio/glib-compile-resources.c:617
 msgid "C identifier name used for the generated source code"
-msgstr ""
+msgstr "Določilo imena jezika C za ustvarjanje izvorne kode"
 
 #: ../gio/glib-compile-resources.c:646
-#, fuzzy
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
-"Kodno prevedi vse datoteke shem GSetting v predpomnilnik.\n"
-"sheme. Datoteke shem morajo imeti pripono .gschema.xml,\n"
-"datoteka predpomnilnika pa se imenuje gschemas.compiled."
+"Kodno prevedi določilo vira v datoteko vira.\n"
+"Datoteke določil vira imajo pripone .gresource.xml,\n"
+"datoteke vira pa pripono .gresource."
 
 #: ../gio/glib-compile-resources.c:662
 #, c-format
@@ -1954,14 +1951,13 @@ msgstr "Gostitelj ni dosegljiv"
 #: ../gio/gnetworkmonitornetlink.c:97
 #: ../gio/gnetworkmonitornetlink.c:109
 #: ../gio/gnetworkmonitornetlink.c:120
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create network monitor: %s"
-msgstr "Ni mogoče shraniti nastavitev zaslona"
+msgstr "Ni mogoče ustvariti nadzornika omrežja: %s"
 
 #: ../gio/gnetworkmonitornetlink.c:129
-#, fuzzy
 msgid "Could not create network monitor: "
-msgstr "Ni mogoče shraniti nastavitev zaslona"
+msgstr "Ni mogoče ustvariti nadzornika omrežja:"
 
 #: ../gio/gnetworkmonitornetlink.c:177
 msgid "Could not get network status: "
@@ -2015,24 +2011,23 @@ msgstr "Napaka med razreševanjem '%s'"
 #: ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552
 #: ../gio/gresourcefile.c:654
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at '%s' does not exist"
-msgstr "Ne obstaja na izbranem mestu."
+msgstr "Vir '%s' ne obstaja"
 
 #: ../gio/gresource.c:456
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at '%s' failed to decompress"
-msgstr "Povezava s strežnikom slovarja na %s:%d ni uspela"
+msgstr "Vira '%s' ni mogoče razširiti"
 
 #: ../gio/gresourcefile.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at '%s' is not a directory"
-msgstr "Programska mapa '%s' ni krajevna mapa"
+msgstr "VIr '%s' ni mapa"
 
 #: ../gio/gresourcefile.c:858
-#, fuzzy
 msgid "Input stream doesn't implement seek"
-msgstr "Vhodni pretok ne podpira branja"
+msgstr "Vhodni pretok ne podpira iskanja"
 
 #: ../gio/gresource-tool.c:470
 #: ../gio/gsettings-tool.c:530
@@ -2066,9 +2061,8 @@ msgstr "DATOTEKA [POT]"
 #: ../gio/gresource-tool.c:486
 #: ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
-#, fuzzy
 msgid "SECTION"
-msgstr "odsek"
+msgstr "ODSEK"
 
 #: ../gio/gresource-tool.c:491
 msgid ""
@@ -2083,9 +2077,8 @@ msgstr ""
 "Podrobnosti vsebujejo odsek, velikost in stiskanje"
 
 #: ../gio/gresource-tool.c:501
-#, fuzzy
 msgid "Extract a resource file to stdout"
-msgstr "Datoteka za razširitev metapodatkov"
+msgstr "Razširi datoteko vira na standardni odvod"
 
 #: ../gio/gresource-tool.c:502
 msgid "FILE PATH"
@@ -2461,17 +2454,17 @@ msgstr "Napaka vezanjem na naslov: %s"
 #: ../gio/gsocket.c:1980
 #, c-format
 msgid "Error joining multicast group: %s"
-msgstr "Napaka povezovanja v skupino za večsmerno oddajanje:"
+msgstr "Napaka povezovanja v skupino za večsmerno oddajanje: %s"
 
 #: ../gio/gsocket.c:1945
 #: ../gio/gsocket.c:1981
 #, c-format
 msgid "Error leaving multicast group: %s"
-msgstr "Napaka zapuščanja skupine za večsmerno oddajanje:"
+msgstr "Napaka zapuščanja skupine za večsmerno oddajanje: %s"
 
 #: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "Ni podpore za večsmerno oddajanje lastno viru"
 
 #: ../gio/gsocket.c:2165
 #, c-format
@@ -2662,9 +2655,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Ni mogoče upravljati z različico %d kodiranja GThemedIcon"
 
 #: ../gio/gtlscertificate.c:249
-#, fuzzy
 msgid "Cannot decrypt PEM-encoded private key"
-msgstr "Potrdila kodiranega s protokolom PEM ni mogoče najti."
+msgstr "Ni mogoče odšifrirati s protokolom PEM šifriranega osebnega ključa"
 
 #: ../gio/gtlscertificate.c:254
 msgid "No PEM-encoded private key found"
@@ -2750,17 +2742,17 @@ msgstr "Napaka med onemogočanjem SO_PASSCRED: %s"
 #: ../gio/gunixinputstream.c:392
 #: ../gio/gunixinputstream.c:413
 #: ../gio/gunixinputstream.c:492
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from file descriptor: %s"
-msgstr "Napaka med branjem iz datoteke"
+msgstr "Napaka med branjem iz opisovalnika datoteke: %s"
 
 #: ../gio/gunixinputstream.c:447
 #: ../gio/gunixinputstream.c:642
 #: ../gio/gunixoutputstream.c:433
 #: ../gio/gunixoutputstream.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing file descriptor: %s"
-msgstr "Napaka med pošiljanjem opisovalnika datoteke: %s"
+msgstr "Napaka med zapiranjem opisovalnika datoteke: %s"
 
 #: ../gio/gunixmounts.c:1983
 #: ../gio/gunixmounts.c:2020
@@ -2770,9 +2762,9 @@ msgstr "Koren datotečnega sistema"
 #: ../gio/gunixoutputstream.c:378
 #: ../gio/gunixoutputstream.c:399
 #: ../gio/gunixoutputstream.c:478
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to file descriptor: %s"
-msgstr "Napaka med pisanjem v slikovno datoteko: %s"
+msgstr "Napaka med pisanjem v opisovalnik datoteke: %s"
 
 #: ../gio/gunixsocketaddress.c:244
 msgid "Abstract unix domain socket addresses not supported on this system"
