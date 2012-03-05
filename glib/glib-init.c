@@ -24,6 +24,7 @@
 #include "glib-init.h"
 
 #include "gutils.h"     /* for GDebugKey */
+#include "gconstructor.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -246,9 +247,14 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
-#elif defined (__GNUC__)
+#elif defined (G_HAS_CONSTRUCTORS)
 
-__attribute__ ((constructor)) static void
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_ctor)
+#endif
+G_DEFINE_CONSTRUCTOR(glib_init_ctor)
+
+static void
 glib_init_ctor (void)
 {
   glib_init ();
