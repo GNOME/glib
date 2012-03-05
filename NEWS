@@ -9,6 +9,9 @@ Overview of changes from GLib 2.31.18 to 2.31.20
   marked with the version it was introduced.
   Use these with GLIB_VERSION_{MIN,MAX}_REQUIRED
 
+* The performance of signal emissions has been
+  improved for simple cases
+
 * Bugs fixed:
  529806 Cannot build in 64-bit Mac OS X due to libiconv
  580873 Documentation of register type functions incomplete
@@ -42,6 +45,7 @@ Overview of changes from GLib 2.31.18 to 2.31.20
  Persian
  Punjabi
  Serbian
+ Simplified Chinese
  Slovenian
  Telugu
  Traditional Chinese
