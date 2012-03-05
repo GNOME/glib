@@ -1,3 +1,54 @@
+Overview of changes from GLib 2.31.18 to 2.31.20
+================================================
+
+* Update to Unicode 6.1
+
+* Update PCRE to 8.30
+
+* Deprecations are now versioned, and new API is
+  marked with the version it was introduced.
+  Use these with GLIB_VERSION_{MIN,MAX}_REQUIRED
+
+* Bugs fixed:
+ 529806 Cannot build in 64-bit Mac OS X due to libiconv
+ 580873 Documentation of register type functions incomplete
+ 592666 Document how to unset an attribute
+ 597785 g_type_class_add_private code snippet is a bad example
+ 621368 glib-2.24.1: FAIL: run-assert-msg-test.sh when updating...
+ 622149 --disable-regex breaks glib2 build
+ 639873 GBinding: Crash when binding two properties on the same...
+ 640202 For GLIB v. 2.23.6 and above: impossibility to build mu...
+ 668295 Need a way to classify GVolume instances
+ 669670 gasyncqueue: don't use deprecated g_cond_timed_wait()
+ 670542 Add version information for deprecations
+ 670557 gvaluetransform: Fix an infinite loop with GFlagsValue...
+ 670721 global variable for signal ID should be hidden
+ 670751 IceWM build fails due to the G_DEPRECATED_FOR macro
+ 670909 g_dbus_connection_call leaks when it receives an error...
+ 670922 Include path to gdbus-codegen in the pkgconfig file
+ 670969 GSequence lookup may fail if there was no sort prior to...
+ 671025 Constants and identifiers starting with a number are no...
+ 671270 make distclean failures
+ 671281 glib-compile-resources.xml is missing from the dist tar...
+
+* Translation updates:
+ Basque
+ Belarusian
+ Brazilian Portuguese
+ Bulgarian
+ Galician
+ Hebrew
+ Lithuanian
+ Persian
+ Punjabi
+ Serbian
+ Slovenian
+ Telugu
+ Traditional Chinese
+ Uyghur
+ Vietnamese
+
+
 Overview of changes from GLib 2.31.16 to 2.31.18
 ================================================
 
