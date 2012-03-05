@@ -46,4 +46,4 @@ install-data-hook:
 	fi
 
 uninstall-local:
-	$(RM) $(DESTDIR)$(GIO_MODULE_DIR)/giomodules.cache
+	$(RM) $(DESTDIR)$(GIO_MODULE_DIR)/giomodule.cache
