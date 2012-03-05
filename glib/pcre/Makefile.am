@@ -54,7 +54,9 @@ libpcre_la_SOURCES = \
 	pcre_valid_utf8.c \
 	pcre_version.c \
 	pcre_xclass.c \
-	pcre.h
+	pcre.h \
+	pcre_internal.h \
+	ucp.h
 
 libpcre_la_LIBADD = $(DEP_LIBS)
 
