@@ -9,3 +9,4 @@ reference
 signals
 threadtests
 valuearray
+marshalers.[ch]

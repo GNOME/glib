@@ -11,6 +11,13 @@ extern void g_cclosure_marshal_VOID__VOID (GClosure     *closure,
                                            const GValue *param_values,
                                            gpointer      invocation_hint,
                                            gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__VOIDv (GClosure     *closure,
+                                            GValue       *return_value,
+                                            gpointer      instance,
+                                            va_list       args,
+                                            gpointer      marshal_data,
+                                            int           n_params,
+                                            GType        *param_types);
 
 /* VOID:BOOLEAN (./gmarshal.list:7) */
 extern void g_cclosure_marshal_VOID__BOOLEAN (GClosure     *closure,
@@ -19,6 +26,13 @@ extern void g_cclosure_marshal_VOID__BOOLEAN (GClosure     *closure,
                                               const GValue *param_values,
                                               gpointer      invocation_hint,
                                               gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__BOOLEANv (GClosure     *closure,
+                                               GValue       *return_value,
+                                               gpointer      instance,
+                                               va_list       args,
+                                               gpointer      marshal_data,
+                                               int           n_params,
+                                               GType        *param_types);
 
 /* VOID:CHAR (./gmarshal.list:8) */
 extern void g_cclosure_marshal_VOID__CHAR (GClosure     *closure,
@@ -27,6 +41,13 @@ extern void g_cclosure_marshal_VOID__CHAR (GClosure     *closure,
                                            const GValue *param_values,
                                            gpointer      invocation_hint,
                                            gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__CHARv (GClosure     *closure,
+                                            GValue       *return_value,
+                                            gpointer      instance,
+                                            va_list       args,
+                                            gpointer      marshal_data,
+                                            int           n_params,
+                                            GType        *param_types);
 
 /* VOID:UCHAR (./gmarshal.list:9) */
 extern void g_cclosure_marshal_VOID__UCHAR (GClosure     *closure,
@@ -35,6 +56,13 @@ extern void g_cclosure_marshal_VOID__UCHAR (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__UCHARv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:INT (./gmarshal.list:10) */
 extern void g_cclosure_marshal_VOID__INT (GClosure     *closure,
@@ -43,6 +71,13 @@ extern void g_cclosure_marshal_VOID__INT (GClosure     *closure,
                                           const GValue *param_values,
                                           gpointer      invocation_hint,
                                           gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__INTv (GClosure     *closure,
+                                           GValue       *return_value,
+                                           gpointer      instance,
+                                           va_list       args,
+                                           gpointer      marshal_data,
+                                           int           n_params,
+                                           GType        *param_types);
 
 /* VOID:UINT (./gmarshal.list:11) */
 extern void g_cclosure_marshal_VOID__UINT (GClosure     *closure,
@@ -51,6 +86,13 @@ extern void g_cclosure_marshal_VOID__UINT (GClosure     *closure,
                                            const GValue *param_values,
                                            gpointer      invocation_hint,
                                            gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__UINTv (GClosure     *closure,
+                                            GValue       *return_value,
+                                            gpointer      instance,
+                                            va_list       args,
+                                            gpointer      marshal_data,
+                                            int           n_params,
+                                            GType        *param_types);
 
 /* VOID:LONG (./gmarshal.list:12) */
 extern void g_cclosure_marshal_VOID__LONG (GClosure     *closure,
@@ -59,6 +101,13 @@ extern void g_cclosure_marshal_VOID__LONG (GClosure     *closure,
                                            const GValue *param_values,
                                            gpointer      invocation_hint,
                                            gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__LONGv (GClosure     *closure,
+                                            GValue       *return_value,
+                                            gpointer      instance,
+                                            va_list       args,
+                                            gpointer      marshal_data,
+                                            int           n_params,
+                                            GType        *param_types);
 
 /* VOID:ULONG (./gmarshal.list:13) */
 extern void g_cclosure_marshal_VOID__ULONG (GClosure     *closure,
@@ -67,6 +116,13 @@ extern void g_cclosure_marshal_VOID__ULONG (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__ULONGv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:ENUM (./gmarshal.list:14) */
 extern void g_cclosure_marshal_VOID__ENUM (GClosure     *closure,
@@ -75,6 +131,13 @@ extern void g_cclosure_marshal_VOID__ENUM (GClosure     *closure,
                                            const GValue *param_values,
                                            gpointer      invocation_hint,
                                            gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__ENUMv (GClosure     *closure,
+                                            GValue       *return_value,
+                                            gpointer      instance,
+                                            va_list       args,
+                                            gpointer      marshal_data,
+                                            int           n_params,
+                                            GType        *param_types);
 
 /* VOID:FLAGS (./gmarshal.list:15) */
 extern void g_cclosure_marshal_VOID__FLAGS (GClosure     *closure,
@@ -83,6 +146,13 @@ extern void g_cclosure_marshal_VOID__FLAGS (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__FLAGSv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:FLOAT (./gmarshal.list:16) */
 extern void g_cclosure_marshal_VOID__FLOAT (GClosure     *closure,
@@ -91,6 +161,13 @@ extern void g_cclosure_marshal_VOID__FLOAT (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__FLOATv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:DOUBLE (./gmarshal.list:17) */
 extern void g_cclosure_marshal_VOID__DOUBLE (GClosure     *closure,
@@ -99,6 +176,13 @@ extern void g_cclosure_marshal_VOID__DOUBLE (GClosure     *closure,
                                              const GValue *param_values,
                                              gpointer      invocation_hint,
                                              gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__DOUBLEv (GClosure     *closure,
+                                              GValue       *return_value,
+                                              gpointer      instance,
+                                              va_list       args,
+                                              gpointer      marshal_data,
+                                              int           n_params,
+                                              GType        *param_types);
 
 /* VOID:STRING (./gmarshal.list:18) */
 extern void g_cclosure_marshal_VOID__STRING (GClosure     *closure,
@@ -107,6 +191,13 @@ extern void g_cclosure_marshal_VOID__STRING (GClosure     *closure,
                                              const GValue *param_values,
                                              gpointer      invocation_hint,
                                              gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__STRINGv (GClosure     *closure,
+                                              GValue       *return_value,
+                                              gpointer      instance,
+                                              va_list       args,
+                                              gpointer      marshal_data,
+                                              int           n_params,
+                                              GType        *param_types);
 
 /* VOID:PARAM (./gmarshal.list:19) */
 extern void g_cclosure_marshal_VOID__PARAM (GClosure     *closure,
@@ -115,6 +206,13 @@ extern void g_cclosure_marshal_VOID__PARAM (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__PARAMv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:BOXED (./gmarshal.list:20) */
 extern void g_cclosure_marshal_VOID__BOXED (GClosure     *closure,
@@ -123,6 +221,13 @@ extern void g_cclosure_marshal_VOID__BOXED (GClosure     *closure,
                                             const GValue *param_values,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__BOXEDv (GClosure     *closure,
+                                             GValue       *return_value,
+                                             gpointer      instance,
+                                             va_list       args,
+                                             gpointer      marshal_data,
+                                             int           n_params,
+                                             GType        *param_types);
 
 /* VOID:POINTER (./gmarshal.list:21) */
 extern void g_cclosure_marshal_VOID__POINTER (GClosure     *closure,
@@ -131,6 +236,13 @@ extern void g_cclosure_marshal_VOID__POINTER (GClosure     *closure,
                                               const GValue *param_values,
                                               gpointer      invocation_hint,
                                               gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__POINTERv (GClosure     *closure,
+                                               GValue       *return_value,
+                                               gpointer      instance,
+                                               va_list       args,
+                                               gpointer      marshal_data,
+                                               int           n_params,
+                                               GType        *param_types);
 
 /* VOID:OBJECT (./gmarshal.list:22) */
 extern void g_cclosure_marshal_VOID__OBJECT (GClosure     *closure,
@@ -139,6 +251,13 @@ extern void g_cclosure_marshal_VOID__OBJECT (GClosure     *closure,
                                              const GValue *param_values,
                                              gpointer      invocation_hint,
                                              gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__OBJECTv (GClosure     *closure,
+                                              GValue       *return_value,
+                                              gpointer      instance,
+                                              va_list       args,
+                                              gpointer      marshal_data,
+                                              int           n_params,
+                                              GType        *param_types);
 
 /* VOID:VARIANT (./gmarshal.list:23) */
 extern void g_cclosure_marshal_VOID__VARIANT (GClosure     *closure,
@@ -147,6 +266,13 @@ extern void g_cclosure_marshal_VOID__VARIANT (GClosure     *closure,
                                               const GValue *param_values,
                                               gpointer      invocation_hint,
                                               gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__VARIANTv (GClosure     *closure,
+                                               GValue       *return_value,
+                                               gpointer      instance,
+                                               va_list       args,
+                                               gpointer      marshal_data,
+                                               int           n_params,
+                                               GType        *param_types);
 
 /* VOID:UINT,POINTER (./gmarshal.list:26) */
 extern void g_cclosure_marshal_VOID__UINT_POINTER (GClosure     *closure,
@@ -155,6 +281,13 @@ extern void g_cclosure_marshal_VOID__UINT_POINTER (GClosure     *closure,
                                                    const GValue *param_values,
                                                    gpointer      invocation_hint,
                                                    gpointer      marshal_data);
+extern void g_cclosure_marshal_VOID__UINT_POINTERv (GClosure     *closure,
+                                                    GValue       *return_value,
+                                                    gpointer      instance,
+                                                    va_list       args,
+                                                    gpointer      marshal_data,
+                                                    int           n_params,
+                                                    GType        *param_types);
 
 /* BOOL:FLAGS (./gmarshal.list:27) */
 extern void g_cclosure_marshal_BOOLEAN__FLAGS (GClosure     *closure,
@@ -163,6 +296,13 @@ extern void g_cclosure_marshal_BOOLEAN__FLAGS (GClosure     *closure,
                                                const GValue *param_values,
                                                gpointer      invocation_hint,
                                                gpointer      marshal_data);
+extern void g_cclosure_marshal_BOOLEAN__FLAGSv (GClosure     *closure,
+                                                GValue       *return_value,
+                                                gpointer      instance,
+                                                va_list       args,
+                                                gpointer      marshal_data,
+                                                int           n_params,
+                                                GType        *param_types);
 #define g_cclosure_marshal_BOOL__FLAGS	g_cclosure_marshal_BOOLEAN__FLAGS
 
 /* STRING:OBJECT,POINTER (./gmarshal.list:28) */
@@ -172,6 +312,13 @@ extern void g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure     *closure,
                                                        const GValue *param_values,
                                                        gpointer      invocation_hint,
                                                        gpointer      marshal_data);
+extern void g_cclosure_marshal_STRING__OBJECT_POINTERv (GClosure     *closure,
+                                                        GValue       *return_value,
+                                                        gpointer      instance,
+                                                        va_list       args,
+                                                        gpointer      marshal_data,
+                                                        int           n_params,
+                                                        GType        *param_types);
 
 /* BOOL:BOXED,BOXED (./gmarshal.list:29) */
 extern void g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure     *closure,
@@ -180,6 +327,13 @@ extern void g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure     *closure,
                                                      const GValue *param_values,
                                                      gpointer      invocation_hint,
                                                      gpointer      marshal_data);
+extern void g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv (GClosure     *closure,
+                                                      GValue       *return_value,
+                                                      gpointer      instance,
+                                                      va_list       args,
+                                                      gpointer      marshal_data,
+                                                      int           n_params,
+                                                      GType        *param_types);
 #define g_cclosure_marshal_BOOL__BOXED_BOXED	g_cclosure_marshal_BOOLEAN__BOXED_BOXED
 
 G_END_DECLS

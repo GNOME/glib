@@ -18,4 +18,17 @@ TEST_PROGS += 		\
 	ifaceproperties	\
 	valuearray
 
+signals_SOURCES = signals.c marshalers.c
+
+marshalers.h: Makefile.am marshalers.list
+	$(AM_V_GEN) ../glib-genmarshal --prefix=test $(srcdir)/marshalers.list --header --valist-marshallers > marshalers.h
+
+marshalers.c: Makefile.am marshalers.list
+	$(AM_V_GEN) ../glib-genmarshal --prefix=test $(srcdir)/marshalers.list --body --valist-marshallers > marshalers.c
+
+BUILT_SOURCES = marshalers.h marshalers.c
+CLEANFILES = marshalers.h marshalers.c
+
 ifaceproperties_SOURCES = ifaceproperties.c testcommon.h
+
+EXTRA_DIST += marshalers.list

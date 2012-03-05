@@ -24,8 +24,22 @@
 #define __G_TYPE_PRIVATE_H__
 
 #include "gboxed.h"
+#include "gclosure.h"
 
 G_BEGIN_DECLS
+
+typedef struct _GRealClosure  GRealClosure;
+struct _GRealClosure
+{
+  GClosureMarshal meta_marshal;
+  gpointer meta_marshal_data;
+  GVaClosureMarshal va_meta_marshal;
+  GVaClosureMarshal va_marshal;
+  GClosure closure;
+};
+
+#define G_REAL_CLOSURE(_c) \
+  ((GRealClosure *)G_STRUCT_MEMBER_P ((_c), -G_STRUCT_OFFSET (GRealClosure, closure)))
 
 void    _g_value_c_init          (void); /* sync with gvalue.c */
 void    _g_value_types_init      (void); /* sync with gvaluetypes.c */
@@ -45,6 +59,19 @@ void            _g_type_boxed_free      (GType          type,
 void            _g_type_boxed_init      (GType          type,
                                          GBoxedCopyFunc copy_func,
                                          GBoxedFreeFunc free_func);
+
+gboolean    _g_closure_is_void (GClosure       *closure,
+				gpointer        instance);
+gboolean    _g_closure_supports_invoke_va (GClosure       *closure);
+void        _g_closure_set_va_marshal (GClosure       *closure,
+				       GVaClosureMarshal marshal);
+void        _g_closure_invoke_va (GClosure       *closure,
+				  GValue /*out*/ *return_value,
+				  gpointer        instance,
+				  va_list         args,
+				  int             n_params,
+				  GType          *param_types);
+
 
 G_END_DECLS
 
