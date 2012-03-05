@@ -7,6 +7,7 @@ typedef struct _BindingSource
   GObject parent_instance;
 
   gint foo;
+  gint bar;
   gdouble value;
   gboolean toggle;
 } BindingSource;
@@ -21,6 +22,7 @@ enum
   PROP_SOURCE_0,
 
   PROP_SOURCE_FOO,
+  PROP_SOURCE_BAR,
   PROP_SOURCE_VALUE,
   PROP_SOURCE_TOGGLE
 };
@@ -39,6 +41,10 @@ binding_source_set_property (GObject      *gobject,
     {
     case PROP_SOURCE_FOO:
       source->foo = g_value_get_int (value);
+      break;
+
+    case PROP_SOURCE_BAR:
+      source->bar = g_value_get_int (value);
       break;
 
     case PROP_SOURCE_VALUE:
@@ -68,6 +74,10 @@ binding_source_get_property (GObject    *gobject,
       g_value_set_int (value, source->foo);
       break;
 
+    case PROP_SOURCE_BAR:
+      g_value_set_int (value, source->bar);
+      break;
+
     case PROP_SOURCE_VALUE:
       g_value_set_double (value, source->value);
       break;
@@ -91,6 +101,11 @@ binding_source_class_init (BindingSourceClass *klass)
 
   g_object_class_install_property (gobject_class, PROP_SOURCE_FOO,
                                    g_param_spec_int ("foo", "Foo", "Foo",
+                                                     -1, 100,
+                                                     0,
+                                                     G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_SOURCE_BAR,
+                                   g_param_spec_int ("bar", "Bar", "Bar",
                                                      -1, 100,
                                                      0,
                                                      G_PARAM_READWRITE));
@@ -530,6 +545,26 @@ binding_invert_boolean (void)
   g_object_unref (target);
 }
 
+static void
+binding_same_object (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (),
+                                        "foo", 100,
+                                        "bar", 50,
+                                        NULL);
+  GBinding *binding G_GNUC_UNUSED;
+
+  binding = g_object_bind_property (source, "foo",
+                                    source, "bar",
+                                    G_BINDING_BIDIRECTIONAL);
+
+  g_object_set (source, "foo", 10, NULL);
+  g_assert_cmpint (source->foo, ==, 10);
+  g_assert_cmpint (source->bar, ==, 10);
+
+  g_object_unref (source);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -546,6 +581,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/chain", binding_chain);
   g_test_add_func ("/binding/sync-create", binding_sync_create);
   g_test_add_func ("/binding/invert-boolean", binding_invert_boolean);
+  g_test_add_func ("/binding/same-object", binding_same_object);
 
   return g_test_run ();
 }
