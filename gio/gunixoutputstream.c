@@ -403,7 +403,8 @@ g_unix_output_stream_write (GOutputStream  *stream,
       break;
     }
 
-  g_cancellable_release_fd (cancellable);
+  if (nfds == 2)
+    g_cancellable_release_fd (cancellable);
   return res;
 }
 

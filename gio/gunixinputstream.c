@@ -417,7 +417,8 @@ g_unix_input_stream_read (GInputStream  *stream,
       break;
     }
 
-  g_cancellable_release_fd (cancellable);
+  if (nfds == 2)
+    g_cancellable_release_fd (cancellable);
   return res;
 }
 
