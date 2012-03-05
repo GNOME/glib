@@ -77,6 +77,27 @@ Do not use the standard marshallers of the GObject library, and skip
 </varlistentry>
 
 <varlistentry>
+<term><option>--internal</option></term>
+<listitem><para>
+Mark generated functions as internal, using G_GNUC_INTERNAL.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--valist-marshallers</option></term>
+<listitem><para>
+Generate valist marshallers, for use with g_signal_set_va_marshaller().
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-v</option>, <option>--version</option></term>
+<listitem><para>
+Print version information.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--g-fatal-warnings</option></term>
 <listitem><para>
 Make warnings fatal, that is, exit immediately once a warning occurs.
