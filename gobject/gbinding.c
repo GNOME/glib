@@ -575,9 +575,11 @@ g_binding_constructed (GObject *gobject)
                                                G_CALLBACK (on_target_notify),
                                                binding);
 
-  g_object_weak_ref (binding->target, weak_unbind, binding);
-  add_binding_qdata (binding->target, binding);
-
+  if (binding->target != binding->source)
+    {
+      g_object_weak_ref (binding->target, weak_unbind, binding);
+      add_binding_qdata (binding->target, binding);
+    }
 }
 
 static void
