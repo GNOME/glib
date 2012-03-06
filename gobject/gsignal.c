@@ -3183,7 +3183,7 @@ g_signal_emit_valist (gpointer instance,
 	    return_accu = &emission_return;
 
 	  emission.instance = instance;
-	  emission.ihint.signal_id = node->signal_id;
+	  emission.ihint.signal_id = signal_id;
 	  emission.ihint.detail = detail;
 	  emission.ihint.run_type = run_type;
 	  emission.state = EMISSION_RUN;
