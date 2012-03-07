@@ -1,6 +1,8 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 
+#include "gdbus-sessionbus.h"
+
 typedef struct
 {
   GVariant *params;
@@ -536,6 +538,7 @@ test_dbus_export (void)
 
   loop = g_main_loop_new (NULL, FALSE);
 
+  session_bus_up ();
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   group = g_simple_action_group_new ();
@@ -627,6 +630,8 @@ test_dbus_export (void)
   g_object_unref (group);
   g_main_loop_unref (loop);
   g_object_unref (bus);
+
+  session_bus_down ();
 }
 
 static gpointer
@@ -683,6 +688,8 @@ test_dbus_threaded (void)
   };
   gint i;
 
+  session_bus_up ();
+
   for (i = 0; i < 10; i++)
     {
       group[i] = g_simple_action_group_new ();
@@ -695,6 +702,8 @@ test_dbus_threaded (void)
 
   for (i = 0; i < 10; i++)
     g_object_unref (group[i]);
+
+  session_bus_down ();
 }
 
 int
@@ -702,6 +711,8 @@ main (int argc, char **argv)
 {
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
   g_test_add_func ("/actions/basic", test_basic);
   g_test_add_func ("/actions/simplegroup", test_simple_group);

@@ -140,6 +140,7 @@ endif
 io_stream_SOURCES = io-stream.c
 io_stream_LDADD   = $(progs_ldadd)
 
+actions_SOURCES   = actions.c gdbus-sessionbus.c gdbus-sessionbus.h
 actions_LDADD	  = $(progs_ldadd)
 
 memory_input_stream_SOURCES	  = memory-input-stream.c
