@@ -3160,7 +3160,7 @@ g_signal_emit_valist (gpointer instance,
 
       /* Don't allow no-recurse emission as we might have to restart, which means
 	 we will run multiple handlers and thus must ref all arguments */
-      if (closure != NULL && (node->flags & (G_SIGNAL_NO_RECURSE) != 0))
+      if (closure != NULL && (node->flags & (G_SIGNAL_NO_RECURSE)) != 0)
 	fastpath = FALSE;
       
       if (fastpath)
