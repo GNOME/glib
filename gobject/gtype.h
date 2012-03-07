@@ -1206,12 +1206,12 @@ struct _GTypeValueTable
 				  GValue       *dest_value);
   /* varargs functionality (optional) */
   gpointer (*value_peek_pointer) (const GValue *value);
-  gchar	    *collect_format;
+  const gchar *collect_format;
   gchar*   (*collect_value)      (GValue       *value,
 				  guint         n_collect_values,
 				  GTypeCValue  *collect_values,
 				  guint		collect_flags);
-  gchar	    *lcopy_format;
+  const gchar *lcopy_format;
   gchar*   (*lcopy_value)        (const GValue *value,
 				  guint         n_collect_values,
 				  GTypeCValue  *collect_values,
