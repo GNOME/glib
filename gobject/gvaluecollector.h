@@ -92,7 +92,7 @@ G_STMT_START {										\
   GValue *_val = (value);								\
   guint _flags = (flags);								\
   GTypeValueTable *_vtab = g_type_value_table_peek (_value_type);			\
-  gchar *_collect_format = _vtab->collect_format;					\
+  const gchar *_collect_format = _vtab->collect_format;					\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\
                                                                                         \
@@ -161,7 +161,7 @@ G_STMT_START {										\
 #define G_VALUE_COLLECT_SKIP(_value_type, var_args)					\
 G_STMT_START {										\
   GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
-  gchar *_collect_format = _vtable->collect_format;					\
+  const gchar *_collect_format = _vtable->collect_format;				\
                                                                                         \
   while (*_collect_format)								\
     {											\
@@ -207,7 +207,7 @@ G_STMT_START {										\
   guint _flags = (flags);								\
   GType _value_type = G_VALUE_TYPE (_value);						\
   GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\
-  gchar *_lcopy_format = _vtable->lcopy_format;						\
+  const gchar *_lcopy_format = _vtable->lcopy_format;					\
   GTypeCValue _cvalues[G_VALUE_COLLECT_FORMAT_MAX_LENGTH] = { { 0, }, };		\
   guint _n_values = 0;									\
                                                                                         \
