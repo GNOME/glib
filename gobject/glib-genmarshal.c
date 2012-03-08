@@ -549,7 +549,7 @@ generate_marshal (const gchar *signame,
       if (has_arg)
 	{
 	  g_fprintf (fout, "\n");
-	  g_fprintf (fout, "  va_copy (args_copy, args);\n");
+	  g_fprintf (fout, "  G_VA_COPY (args_copy, args);\n");
 	  i = 0;
 	  for (node = sig->args; node; node = node->next)
 	    {
