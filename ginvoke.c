@@ -227,7 +227,6 @@ gi_cclosure_marshal_generic (GClosure *closure,
     {
       rtype = g_value_to_ffi_return_type (return_gvalue, &return_ffi_value,
 					  &rvalue);
-      rtype = value_to_ffi_type (return_gvalue, &rvalue);
     }
   else
     {
