@@ -169,7 +169,7 @@ g_cclosure_marshal_VOID__BOOLEANv (GClosure     *closure,
   gboolean arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gboolean) va_arg (args_copy, gboolean);
   va_end (args_copy);
 
@@ -243,7 +243,7 @@ g_cclosure_marshal_VOID__CHARv (GClosure     *closure,
   gchar arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gchar) va_arg (args_copy, gint);
   va_end (args_copy);
 
@@ -317,7 +317,7 @@ g_cclosure_marshal_VOID__UCHARv (GClosure     *closure,
   guchar arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (guchar) va_arg (args_copy, guint);
   va_end (args_copy);
 
@@ -391,7 +391,7 @@ g_cclosure_marshal_VOID__INTv (GClosure     *closure,
   gint arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+ G_VA_COPY (args_copy, args);
   arg0 = (gint) va_arg (args_copy, gint);
   va_end (args_copy);
 
@@ -465,7 +465,7 @@ g_cclosure_marshal_VOID__UINTv (GClosure     *closure,
   guint arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   va_end (args_copy);
 
@@ -539,7 +539,7 @@ g_cclosure_marshal_VOID__LONGv (GClosure     *closure,
   glong arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (glong) va_arg (args_copy, glong);
   va_end (args_copy);
 
@@ -613,7 +613,7 @@ g_cclosure_marshal_VOID__ULONGv (GClosure     *closure,
   gulong arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gulong) va_arg (args_copy, gulong);
   va_end (args_copy);
 
@@ -687,7 +687,7 @@ g_cclosure_marshal_VOID__ENUMv (GClosure     *closure,
   gint arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gint) va_arg (args_copy, gint);
   va_end (args_copy);
 
@@ -761,7 +761,7 @@ g_cclosure_marshal_VOID__FLAGSv (GClosure     *closure,
   guint arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   va_end (args_copy);
 
@@ -835,7 +835,7 @@ g_cclosure_marshal_VOID__FLOATv (GClosure     *closure,
   gfloat arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gfloat) va_arg (args_copy, gdouble);
   va_end (args_copy);
 
@@ -909,7 +909,7 @@ g_cclosure_marshal_VOID__DOUBLEv (GClosure     *closure,
   gdouble arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gdouble) va_arg (args_copy, gdouble);
   va_end (args_copy);
 
@@ -983,7 +983,7 @@ g_cclosure_marshal_VOID__STRINGv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_strdup (arg0);
@@ -1061,7 +1061,7 @@ g_cclosure_marshal_VOID__PARAMv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_param_spec_ref (arg0);
@@ -1139,7 +1139,7 @@ g_cclosure_marshal_VOID__BOXEDv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_boxed_copy (param_types[0] & ~G_SIGNAL_TYPE_STATIC_SCOPE, arg0);
@@ -1217,7 +1217,7 @@ g_cclosure_marshal_VOID__POINTERv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   va_end (args_copy);
 
@@ -1291,7 +1291,7 @@ g_cclosure_marshal_VOID__OBJECTv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1369,7 +1369,7 @@ g_cclosure_marshal_VOID__VARIANTv (GClosure     *closure,
   gpointer arg0;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_variant_ref_sink (arg0);
@@ -1451,7 +1451,7 @@ g_cclosure_marshal_VOID__UINT_POINTERv (GClosure     *closure,
   gpointer arg1;
   va_list args_copy;
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   arg1 = (gpointer) va_arg (args_copy, gpointer);
   va_end (args_copy);
@@ -1534,7 +1534,7 @@ g_cclosure_marshal_BOOLEAN__FLAGSv (GClosure     *closure,
 
   g_return_if_fail (return_value != NULL);
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (guint) va_arg (args_copy, guint);
   va_end (args_copy);
 
@@ -1621,7 +1621,7 @@ g_cclosure_marshal_STRING__OBJECT_POINTERv (GClosure     *closure,
 
   g_return_if_fail (return_value != NULL);
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if (arg0 != NULL)
     arg0 = g_object_ref (arg0);
@@ -1714,7 +1714,7 @@ g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv (GClosure     *closure,
 
   g_return_if_fail (return_value != NULL);
 
-  va_copy (args_copy, args);
+  G_VA_COPY (args_copy, args);
   arg0 = (gpointer) va_arg (args_copy, gpointer);
   if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
     arg0 = g_boxed_copy (param_types[0] & ~G_SIGNAL_TYPE_STATIC_SCOPE, arg0);

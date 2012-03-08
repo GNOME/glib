@@ -1511,7 +1511,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
       args[n_args-1] = &closure->data;
     }
 
-  va_copy (args_copy, args_list);
+  G_VA_COPY (args_copy, args_list);
 
   /* Box non-primitive arguments */
   for (i = 0; i < n_params; i++)
