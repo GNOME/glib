@@ -8,10 +8,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib 2.31.13\n"
+"Project-Id-Version: glib 2.31.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-25 10:44+0800\n"
-"PO-Revision-Date: 2012-02-24 23:10+0800\n"
+"POT-Creation-Date: 2012-03-08 15:55+0800\n"
+"PO-Revision-Date: 2012-03-05 21:41+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
 "Language: zh_TW\n"
@@ -66,7 +66,7 @@ msgstr "轉換輸入資料時遇到不正確的位元組組合"
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:953
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:954
 msgid "Cancellable initialization not supported"
 msgstr "不支援可取消的初始化"
 
@@ -1160,8 +1160,8 @@ msgstr "無法在目前的目錄中定位「%s」"
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
-msgstr "不明的前置處理選項「%s」"
+msgid "Unknown processing option \"%s\""
+msgstr "不明的置處理選項「%s」"
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
 #, c-format
@@ -1196,6 +1196,7 @@ msgid "name of the output file"
 msgstr "輸出檔案的名稱"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FILE"
 
@@ -1956,6 +1957,10 @@ msgstr "輸入串流尚未實作尋找"
 msgid "Print help"
 msgstr "顯示求助"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+msgid "[COMMAND]"
+msgstr "[指令]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "列出 elf FILE 中包含資源的節區"
@@ -1969,6 +1974,10 @@ msgstr ""
 "列出資源\n"
 "如果指定  SECTION，只會列出這個節區的資源\n"
 "如果指定  PATH，只會列出符合的資源"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "檔案 [路徑]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -1990,6 +1999,10 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "解壓縮資源檔案到 stdout"
+
+#: ../gio/gresource-tool.c:502
+msgid "FILE PATH"
+msgstr "檔案路徑"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2067,9 +2080,17 @@ msgstr ""
 "  FILE      一個 elf 檔案 (二元檔或共享程式庫)\n"
 "           或編譯過的資源檔案\n"
 
+#: ../gio/gresource-tool.c:554
+msgid "[PATH]"
+msgstr "[路徑]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  PATH      一個 (選擇性的) 資源路徑 (可能為部分)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "路徑"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2301,112 +2322,112 @@ msgstr "無效的 socket，初始化失敗原因為：%s"
 msgid "Socket is already closed"
 msgstr "Socket 已經關閉"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3520 ../gio/gsocket.c:3575
 msgid "Socket I/O timed out"
 msgstr "Socket I/O 逾時"
 
-#: ../gio/gsocket.c:471
+#: ../gio/gsocket.c:472
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "正在從 fd 建立 GSocket：%s"
 
-#: ../gio/gsocket.c:505 ../gio/gsocket.c:521
+#: ../gio/gsocket.c:506 ../gio/gsocket.c:522
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "無法建立 socket：%s"
 
-#: ../gio/gsocket.c:505
+#: ../gio/gsocket.c:506
 msgid "Unknown protocol was specified"
 msgstr "指定了不明的通訊協定"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1713
 #, c-format
 msgid "could not get local address: %s"
 msgstr "無法取得本地端位址：%s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1756
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "無法取得遠端位址：%s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1817
 #, c-format
 msgid "could not listen: %s"
 msgstr "無法聽取：%s"
 
-#: ../gio/gsocket.c:1890
+#: ../gio/gsocket.c:1891
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "綁定至位址時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1943 ../gio/gsocket.c:1979
+#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "加入多點廣播群組時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
+#: ../gio/gsocket.c:1945 ../gio/gsocket.c:1981
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "離開多點廣播群組時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1945
+#: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
 msgstr "不支援指定來源的多點廣播"
 
-#: ../gio/gsocket.c:2164
+#: ../gio/gsocket.c:2165
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接受連線時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2286
 msgid "Connection in progress"
 msgstr "連線進行中"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
+#: ../gio/gsocket.c:2338 ../gio/gsocket.c:4317
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "無法取得未處理的錯誤：%s"
 
-#: ../gio/gsocket.c:2507
+#: ../gio/gsocket.c:2508
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "接收資料時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2685
+#: ../gio/gsocket.c:2686
 #, c-format
 msgid "Error sending data: %s"
 msgstr "傳送資料時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2799
+#: ../gio/gsocket.c:2800
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "無法關閉 socket：%s"
 
-#: ../gio/gsocket.c:2878
+#: ../gio/gsocket.c:2879
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "關閉 socket 時發生錯誤：%s"
 
-#: ../gio/gsocket.c:3512
+#: ../gio/gsocket.c:3513
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等候 socket 情況：%s"
 
-#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
+#: ../gio/gsocket.c:3791 ../gio/gsocket.c:3872
 #, c-format
 msgid "Error sending message: %s"
 msgstr "傳送訊息時發生錯誤：%s"
 
-#: ../gio/gsocket.c:3815
+#: ../gio/gsocket.c:3816
 msgid "GSocketControlMessage not supported on windows"
 msgstr "視窗不支援 GSocketControlMessage"
 
-#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
+#: ../gio/gsocket.c:4096 ../gio/gsocket.c:4232
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "取回郵件發生錯誤：%s"
 
-#: ../gio/gsocket.c:4335
+#: ../gio/gsocket.c:4336
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials 沒有在這個 OS 上實作"
 
@@ -2630,13 +2651,13 @@ msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "停用 SO_PASSCRED 時發生錯誤：%s"
 
 #: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:492
+#: ../gio/gunixinputstream.c:493
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "讀取檔案描述狀態時發生錯誤：%s"
 
-#: ../gio/gunixinputstream.c:447 ../gio/gunixinputstream.c:642
-#: ../gio/gunixoutputstream.c:433 ../gio/gunixoutputstream.c:597
+#: ../gio/gunixinputstream.c:448 ../gio/gunixinputstream.c:643
+#: ../gio/gunixoutputstream.c:434 ../gio/gunixoutputstream.c:598
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "關閉檔案描述狀態時發生錯誤：%s"
@@ -2646,7 +2667,7 @@ msgid "Filesystem root"
 msgstr "根檔案系統"
 
 #: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:478
+#: ../gio/gunixoutputstream.c:479
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "寫入檔案描述狀態時發生錯誤：%s"
@@ -4132,9 +4153,6 @@ msgstr "%.1f KB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "指定 schema 的路徑"
-
-#~ msgid "PATH"
-#~ msgstr "路徑"
 
 #~ msgid ""
 #~ "Arguments:\n"
