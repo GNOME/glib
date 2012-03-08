@@ -23,6 +23,9 @@
 #include "config.h"
 #include "giomodule.h"
 
+#include <gstdio.h>
+#include <errno.h>
+
 static gboolean
 is_valid_module_name (const gchar *basename)
 {
@@ -101,11 +104,20 @@ query_dir (const char *dirname)
 
   cachename = g_build_filename (dirname, "giomodule.cache", NULL);
 
-  error = NULL;
-  if (!g_file_set_contents (cachename, data->str, data->len, &error))
+  if (data->len > 0)
     {
-      g_printerr ("Unable to create %s: %s\n", cachename, error->message);
-      g_error_free (error);
+      error = NULL;
+
+      if (!g_file_set_contents (cachename, data->str, data->len, &error))
+        {
+          g_printerr ("Unable to create %s: %s\n", cachename, error->message);
+          g_error_free (error);
+        }
+    }
+  else
+    {
+      if (g_unlink (cachename) != 0 && errno != ENOENT)
+        g_printerr ("Unable to unlink %s: %s\n", cachename, g_strerror (errno));
     }
 
   g_string_free (data, TRUE);
