@@ -807,14 +807,17 @@ g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
   GRecMutex *rm;
   gint depth;
+  gint i;
 
   rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
+
+  /* all access to mutex->depth done while still holding the lock */
   depth = mutex->depth;
-  while (mutex->depth)
-    {
-      mutex->depth--;
-      g_rec_mutex_unlock (rm);
-    }
+  i = mutex->depth;
+  mutex->depth = 0;
+
+  while (i--)
+    g_rec_mutex_unlock (rm);
 
   return depth;
 }
