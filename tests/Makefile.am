@@ -79,7 +79,7 @@ errorcheck_mutex_test_LDADD = $(libglib) $(libgthread) $(G_THREAD_LIBS)
 assert_msg_test_LDADD = $(libglib)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
-timeloop_closure_LDADD = $(libglib) $(libgobject)
+timeloop_closure_LDADD = $(libglib) $(libgobject) $(libgthread)
 endif
 datetime_LDADD = $(libglib)
 

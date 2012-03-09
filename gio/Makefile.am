@@ -48,6 +48,12 @@ AM_CPPFLAGS = \
 
 lib_LTLIBRARIES = libgio-2.0.la
 
+gio_dependency_libs = 	\
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la	\
+	$(top_builddir)/gthread/libgthread-2.0.la
+
 gdbus_headers = 			\
 	gdbusauthobserver.h		\
 	gcredentials.h			\
@@ -602,10 +608,8 @@ bin_PROGRAMS = gio-querymodules glib-compile-schemas gsettings
 
 gio_querymodules_SOURCES = gio-querymodules.c
 gio_querymodules_LDADD	 = \
-	$(top_builddir)/glib/libglib-2.0.la		\
-	$(top_builddir)/gobject/libgobject-2.0.la	\
-	$(top_builddir)/gmodule/libgmodule-2.0.la	\
-	libgio-2.0.la					\
+	$(gio_dependency_libs)	\
+	libgio-2.0.la		\
 	$(NULL)
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
@@ -616,8 +620,7 @@ glib_compile_schemas_SOURCES = \
 	glib-compile-schemas.c
 
 gsettings_LDADD = \
-	$(top_builddir)/glib/libglib-2.0.la		\
-	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(gio_dependency_libs)	\
 	libgio-2.0.la
 gsettings_SOURCES = gsettings-tool.c
 
@@ -630,8 +633,7 @@ dist_schema_DATA = gschema.dtd
 bin_PROGRAMS += gdbus
 gdbus_SOURCES = gdbus-tool.c
 gdbus_LDADD = libgio-2.0.la \
-	$(top_builddir)/glib/libglib-2.0.la 		\
-	$(top_builddir)/gobject/libgobject-2.0.la
+	$(gio_dependency_libs)
 
 completiondir = $(sysconfdir)/bash_completion.d
 completion_DATA = \
