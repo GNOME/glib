@@ -2121,7 +2121,8 @@ g_signal_chain_from_overridden_handler (gpointer instance,
       va_start (var_args, instance);
 
       signal_return_type = node->return_type;
-      instance_and_params = g_slice_alloc0 (sizeof (GValue) * (n_params + 1));
+      instance_and_params = g_alloca (sizeof (GValue) * (n_params + 1));
+      memset (instance_and_params, 0, sizeof (GValue) * (n_params + 1));
       param_values = instance_and_params + 1;
 
       for (i = 0; i < node->n_params; i++)
@@ -2146,7 +2147,6 @@ g_signal_chain_from_overridden_handler (gpointer instance,
               while (i--)
                 g_value_unset (param_values + i);
 
-              g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
               va_end (var_args);
               return;
             }
@@ -2207,7 +2207,6 @@ g_signal_chain_from_overridden_handler (gpointer instance,
       for (i = 0; i < n_params; i++)
         g_value_unset (param_values + i);
       g_value_unset (instance_and_params);
-      g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 
       va_end (var_args);
 
@@ -3256,7 +3255,8 @@ g_signal_emit_valist (gpointer instance,
 
   n_params = node->n_params;
   signal_return_type = node->return_type;
-  instance_and_params = g_slice_alloc0 (sizeof (GValue) * (n_params + 1));
+  instance_and_params = g_alloca (sizeof (GValue) * (n_params + 1));
+  memset (instance_and_params, 0, sizeof (GValue) * (n_params + 1));
   param_values = instance_and_params + 1;
 
   for (i = 0; i < node->n_params; i++)
@@ -3281,7 +3281,6 @@ g_signal_emit_valist (gpointer instance,
 	  while (i--)
 	    g_value_unset (param_values + i);
 
-	  g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 	  return;
 	}
       SIGNAL_LOCK ();
@@ -3323,7 +3322,6 @@ g_signal_emit_valist (gpointer instance,
   for (i = 0; i < n_params; i++)
     g_value_unset (param_values + i);
   g_value_unset (instance_and_params);
-  g_slice_free1 (sizeof (GValue) * (n_params + 1), instance_and_params);
 }
 
 /**
