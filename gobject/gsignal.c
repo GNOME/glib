@@ -3168,6 +3168,7 @@ g_signal_emit_valist (gpointer instance,
 	  Emission emission;
 	  GValue *return_accu, accu = G_VALUE_INIT;
 	  guint signal_id;
+	  GType instance_type = G_TYPE_FROM_INSTANCE (instance);
 	  GValue emission_return = G_VALUE_INIT;
           GType rtype = node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
 	  gboolean static_scope = node->return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
@@ -3186,12 +3187,12 @@ g_signal_emit_valist (gpointer instance,
 	  emission.ihint.detail = detail;
 	  emission.ihint.run_type = run_type;
 	  emission.state = EMISSION_RUN;
-	  emission.chain_type = G_TYPE_FROM_INSTANCE (instance);
+	  emission.chain_type = instance_type;
 	  emission_push (&g_recursive_emissions, &emission);
 
 	  SIGNAL_UNLOCK ();
 
-	  TRACE(GOBJECT_SIGNAL_EMIT(signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
+	  TRACE(GOBJECT_SIGNAL_EMIT(signal_id, detail, instance, instance_type));
 
 	  if (rtype != G_TYPE_NONE)
 	    g_value_init (&emission_return, rtype);
@@ -3247,7 +3248,7 @@ g_signal_emit_valist (gpointer instance,
 		}
 	    }
 	  
-	  TRACE(GOBJECT_SIGNAL_EMIT_END(signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
+	  TRACE(GOBJECT_SIGNAL_EMIT_END(signal_id, detail, instance, instance_type));
 
 	  return;
 	}
