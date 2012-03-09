@@ -261,6 +261,8 @@ bug653052 (void)
 int
 main (int argc, char *argv[])
 {
+  unsetenv ("G_MESSAGES_DEBUG");
+
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
