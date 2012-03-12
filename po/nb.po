@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 15:25+0100\n"
-"PO-Revision-Date: 2012-02-19 15:26+0100\n"
+"POT-Creation-Date: 2012-03-12 17:53+0100\n"
+"PO-Revision-Date: 2012-03-12 18:18+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -52,30 +52,30 @@ msgid "Not enough space in destination"
 msgstr "Ikke nok plass i mål"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:767
-#: ../glib/gconvert.c:1159 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
+#: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
+#: ../glib/gconvert.c:1160 ../glib/giochannel.c:1583 ../glib/giochannel.c:1625
 #: ../glib/giochannel.c:2468 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
-#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:775
-#: ../glib/gconvert.c:1084 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
+#: ../gio/gcharsetconverter.c:350 ../glib/gconvert.c:776
+#: ../glib/gconvert.c:1085 ../glib/giochannel.c:1590 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:953
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:954
 msgid "Cancellable initialization not supported"
 msgstr "Avbrytbar initiering er ikke støttet"
 
-#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:567
-#: ../glib/gconvert.c:645 ../glib/giochannel.c:1411
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:568
+#: ../glib/gconvert.c:646 ../glib/giochannel.c:1411
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Konvertering fra tegnsett «%s» til «%s» er ikke støttet"
 
-#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:571
-#: ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
+#: ../glib/gconvert.c:650
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Kunne ikke åpne program for å konvertere fra «%s» til «%s»"
@@ -1200,7 +1200,7 @@ msgstr "Klarte ikke å finne «%s» i aktiv katalog"
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-msgid "Unknown proprocessing options \"%s\""
+msgid "Unknown processing option \"%s\""
 msgstr "Ukjente flagg for preprosessering «%s»"
 
 #: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
@@ -1236,6 +1236,7 @@ msgid "name of the output file"
 msgstr "navn på utdatafil"
 
 #: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FIL"
 
@@ -2006,6 +2007,10 @@ msgstr "Inndatastrøm implementerer ikke søk"
 msgid "Print help"
 msgstr "Skriv ut hjelp"
 
+#: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
+msgid "[COMMAND]"
+msgstr "[KOMMANDO]"
+
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
 msgstr "Vis seksjoner som inneholder ressurser i en elf FIL"
@@ -2019,6 +2024,10 @@ msgstr ""
 "Vis ressurser\n"
 "Hvis SEKSJON oppgis skal kun ressurser i denne seksjonen vises\n"
 "Hvis STI oppgis skal kun relevante ressurser vises"
+
+#: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "FIL [STI]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
@@ -2040,6 +2049,10 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Hent ut en ressursfil til stdout"
+
+#: ../gio/gresource-tool.c:502
+msgid "FILE PATH"
+msgstr "STI TIL FIL"
 
 #: ../gio/gresource-tool.c:508 ../gio/gsettings-tool.c:610
 #, c-format
@@ -2117,9 +2130,17 @@ msgstr ""
 "  FIL       En elf-fil - binær eller delt bibliotek\n"
 "            eller en kompilert ressursfil\n"
 
+#: ../gio/gresource-tool.c:554
+msgid "[PATH]"
+msgstr "[STI]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  STI      En valgfri ressurssti - kan være ufullstendig\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "STI"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2352,112 +2373,112 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3467 ../gio/gsocket.c:3511
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3520 ../gio/gsocket.c:3575
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
-#: ../gio/gsocket.c:471
+#: ../gio/gsocket.c:472
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "lager GSocket fra fd: %s"
 
-#: ../gio/gsocket.c:505 ../gio/gsocket.c:521
+#: ../gio/gsocket.c:506 ../gio/gsocket.c:522
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kunne ikke lage plugg: %s"
 
-#: ../gio/gsocket.c:505
+#: ../gio/gsocket.c:506
 msgid "Unknown protocol was specified"
 msgstr "Ukjent protokoll ble oppgitt"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1713
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kunne ikke hente lokal adresse: %s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1756
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "kunne ikke hente ekstern adresse: %s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1817
 #, c-format
 msgid "could not listen: %s"
 msgstr "kunne ikke lytte: %s"
 
-#: ../gio/gsocket.c:1890
+#: ../gio/gsocket.c:1891
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Feil ved binding til adresse: %s"
 
-#: ../gio/gsocket.c:1943 ../gio/gsocket.c:1979
+#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Feil ved forsøk på å bli med i multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
+#: ../gio/gsocket.c:1945 ../gio/gsocket.c:1981
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Feil ved forsøk på å forlate multicast-gruppe: %s"
 
-#: ../gio/gsocket.c:1945
+#: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
 msgstr "Ingen støtte for kildespesifikk multicast"
 
-#: ../gio/gsocket.c:2164
+#: ../gio/gsocket.c:2165
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Feil ved godkjenning av tilkobling: %s"
 
-#: ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2286
 msgid "Connection in progress"
 msgstr "Tilkobling pågår"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4253
+#: ../gio/gsocket.c:2338 ../gio/gsocket.c:4317
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
 
-#: ../gio/gsocket.c:2507
+#: ../gio/gsocket.c:2508
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Feil ved mottak av data: %s"
 
-#: ../gio/gsocket.c:2685
+#: ../gio/gsocket.c:2686
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Feil ved sending av data: %s"
 
-#: ../gio/gsocket.c:2799
+#: ../gio/gsocket.c:2800
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kan ikke stenge ned plugg: %s"
 
-#: ../gio/gsocket.c:2878
+#: ../gio/gsocket.c:2879
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3460
+#: ../gio/gsocket.c:3513
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3727 ../gio/gsocket.c:3808
+#: ../gio/gsocket.c:3791 ../gio/gsocket.c:3872
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3752
+#: ../gio/gsocket.c:3816
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:4032 ../gio/gsocket.c:4168
+#: ../gio/gsocket.c:4096 ../gio/gsocket.c:4232
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4272
+#: ../gio/gsocket.c:4336
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -2686,13 +2707,13 @@ msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Feil ved forsøk på å slå av SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:492
+#: ../gio/gunixinputstream.c:493
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Feil under lesing fra fildeskriptor: %s"
 
-#: ../gio/gunixinputstream.c:447 ../gio/gunixinputstream.c:642
-#: ../gio/gunixoutputstream.c:433 ../gio/gunixoutputstream.c:597
+#: ../gio/gunixinputstream.c:448 ../gio/gunixinputstream.c:643
+#: ../gio/gunixoutputstream.c:434 ../gio/gunixoutputstream.c:598
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Feil under lukking av fildeskriptor: %s"
@@ -2702,7 +2723,7 @@ msgid "Filesystem root"
 msgstr "Filsystemrot"
 
 #: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:478
+#: ../gio/gunixoutputstream.c:479
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Feil under skriving til fildeskriptor: %s"
@@ -2845,47 +2866,47 @@ msgstr "Ingen program med navn «%s» har registrert et bokmerke for «%s»"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Feil under utvidelse av exec-linje «%s» med URI «%s»"
 
-#: ../glib/gconvert.c:806 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
+#: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
 msgid "Partial character sequence at end of input"
 msgstr "Ufullstendig tegnsekvens ved slutten på inndata"
 
-#: ../glib/gconvert.c:1056
+#: ../glib/gconvert.c:1057
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" «%s» til tegnsett «%s»"
 
-#: ../glib/gconvert.c:1873
+#: ../glib/gconvert.c:1874
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI «%s» er ikke en absolutt URI som bruker skjema for filer"
 
-#: ../glib/gconvert.c:1883
+#: ../glib/gconvert.c:1884
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokal fil-URI «%s» kan ikke inneholde en «#»"
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:1901
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI «%s» er ugyldig"
 
-#: ../glib/gconvert.c:1912
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vertsnavnet for URI «%s» er ugyldig"
 
-#: ../glib/gconvert.c:1928
+#: ../glib/gconvert.c:1929
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Vertsnavnet for URI «%s» inneholder ugyldige escape-tegn"
 
-#: ../glib/gconvert.c:2023
+#: ../glib/gconvert.c:2024
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Stinavnet «%s» er ikke en absolutt sti"
 
-#: ../glib/gconvert.c:2033
+#: ../glib/gconvert.c:2034
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
