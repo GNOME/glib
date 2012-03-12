@@ -733,7 +733,7 @@ typedef enum
  *
  * Since: 2.22
  */
-typedef enum
+typedef enum /*< flags >*/
 {
   G_SOCKET_MSG_NONE,
   G_SOCKET_MSG_OOB = GLIB_SYSDEF_MSG_OOB,
