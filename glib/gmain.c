@@ -388,8 +388,13 @@ static GMainContext *default_main_context;
 /* UNIX signals work by marking one of these variables then waking the
  * worker context to check on them and dispatch accordingly.
  */
-static volatile gchar unix_signal_pending[NSIG];
-static volatile gboolean any_unix_signal_pending;
+#ifdef HAVE_SIG_ATOMIC_T
+static volatile sig_atomic_t unix_signal_pending[NSIG];
+static volatile sig_atomic_t any_unix_signal_pending;
+#else
+static volatile int unix_signal_pending[NSIG];
+static volatile int any_unix_signal_pending;
+#endif
 
 /* Guards all the data below */
 G_LOCK_DEFINE_STATIC (unix_signal_lock);

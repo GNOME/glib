@@ -577,6 +577,18 @@ AC_CHECK_SIZEOF(void *)
 AC_CHECK_SIZEOF(long long)
 AC_CHECK_SIZEOF(__int64)
 
+AC_CACHE_CHECK([for sig_atomic_t], ac_cv_type_sig_atomic_t,
+  [AC_TRY_LINK([#include <signal.h>
+     #include <sys/types.h>
+     sig_atomic_t val = 42;],
+    [return val == 42 ? 0 : 1],
+   ac_cv_type_sig_atomic_t=yes,
+   ac_cv_type_sig_atomic_t=no)])
+if test x$ac_cv_type_sig_atomic_t = xyes; then
+   AC_DEFINE(HAVE_SIG_ATOMIC_T, 1,
+     [Define if you have the 'sig_atomic_t' type.])
+fi
+
 if test x$ac_cv_sizeof_long = x8 || test x$ac_cv_sizeof_long_long = x8 || test x$ac_cv_sizeof___int64 = x8 ; then
   :
 else
