@@ -1695,6 +1695,7 @@ async_initable_init_second_async (GAsyncInitable      *initable,
                                             callback,
                                             user_data,
                                             NULL);
+  g_simple_async_result_set_check_cancellable (data->simple, cancellable);
 
   /* Check name ownership asynchronously - possibly also start the service */
   if (proxy->priv->name == NULL)
@@ -1840,6 +1841,7 @@ get_connection_cb (GObject       *source_object,
                                           data->callback,
                                           data->user_data,
                                           NULL);
+      g_simple_async_result_set_check_cancellable (simple, data->cancellable);
       g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
@@ -2698,6 +2700,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
                                       callback,
                                       user_data,
                                       g_dbus_proxy_call_internal);
+  g_simple_async_result_set_check_cancellable (simple, cancellable);
 
   G_LOCK (properties_lock);
 

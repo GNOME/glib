@@ -856,6 +856,7 @@ g_dbus_address_get_stream (const gchar         *address,
                                    callback,
                                    user_data,
                                    g_dbus_address_get_stream);
+  g_simple_async_result_set_check_cancellable (res, cancellable);
   data = g_new0 (GetStreamData, 1);
   data->address = g_strdup (address);
   g_simple_async_result_set_op_res_gpointer (res,

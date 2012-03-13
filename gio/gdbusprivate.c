@@ -191,6 +191,7 @@ _g_socket_read_with_control_messages (GSocket                 *socket,
                                             callback,
                                             user_data,
                                             _g_socket_read_with_control_messages);
+  g_simple_async_result_set_check_cancellable (data->simple, cancellable);
 
   if (!g_socket_condition_check (socket, G_IO_IN))
     {

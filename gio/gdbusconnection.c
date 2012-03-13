@@ -1246,6 +1246,7 @@ g_dbus_connection_flush (GDBusConnection     *connection,
                                       callback,
                                       user_data,
                                       g_dbus_connection_flush);
+  g_simple_async_result_set_check_cancellable (simple, cancellable);
   g_simple_async_result_run_in_thread (simple,
                                        flush_in_thread_func,
                                        G_PRIORITY_DEFAULT,
@@ -1459,6 +1460,7 @@ g_dbus_connection_close (GDBusConnection     *connection,
                                       callback,
                                       user_data,
                                       g_dbus_connection_close);
+  g_simple_async_result_set_check_cancellable (simple, cancellable);
   _g_dbus_worker_close (connection->worker, cancellable, simple);
   g_object_unref (simple);
 }
@@ -1916,6 +1918,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
                                       callback,
                                       user_data,
                                       g_dbus_connection_send_message_with_reply);
+  g_simple_async_result_set_check_cancellable (simple, cancellable);
 
   if (g_cancellable_is_cancelled (cancellable))
     {
@@ -5340,6 +5343,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
   state->simple = g_simple_async_result_new (G_OBJECT (connection),
                                              callback, user_data,
                                              g_dbus_connection_call_internal);
+  g_simple_async_result_set_check_cancellable (state->simple, cancellable);
   state->method_name = g_strjoin (".", interface_name, method_name, NULL);
 
   if (reply_type == NULL)
@@ -6859,6 +6863,7 @@ g_bus_get (GBusType             bus_type,
                                       callback,
                                       user_data,
                                       g_bus_get);
+  g_simple_async_result_set_check_cancellable (simple, cancellable);
 
   error = NULL;
   connection = get_uninitialized_connection (bus_type, cancellable, &error);
