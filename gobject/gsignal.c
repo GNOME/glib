@@ -972,6 +972,7 @@ g_signal_add_emission_hook (guint               signal_id,
       SIGNAL_UNLOCK ();
       return 0;
     }
+    node->single_va_closure_is_valid = FALSE;
   if (!node->emission_hooks)
     {
       node->emission_hooks = g_new (GHookList, 1);
