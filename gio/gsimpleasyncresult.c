@@ -227,6 +227,7 @@ struct _GSimpleAsyncResult
   GError *error;
   gboolean failed;
   gboolean handle_cancellation;
+  GCancellable *check_cancellable;
 
   gpointer source_tag;
 
@@ -268,6 +269,9 @@ g_simple_async_result_finalize (GObject *object)
   if (simple->source_object)
     g_object_unref (simple->source_object);
 
+  if (simple->check_cancellable)
+    g_object_unref (simple->check_cancellable);
+
   g_main_context_unref (simple->context);
 
   clear_op_res (simple);
@@ -302,6 +306,15 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
  * @source_tag: the asynchronous function.
  *
  * Creates a #GSimpleAsyncResult.
+ *
+ * The common convention is to create the #GSimpleAsyncResult in the
+ * function that starts the asynchronous operation and use that same
+ * function as the @source_tag.
+ *
+ * If your operation supports cancellation with #GCancellable (which it
+ * probably should) then you should provide the user's cancellable to
+ * g_simple_async_result_set_check_cancellable() immediately after
+ * this function returns.
  *
  * Returns: a #GSimpleAsyncResult.
  **/
@@ -458,6 +471,9 @@ g_simple_async_result_async_result_iface_init (GAsyncResultIface *iface)
  *
  * Sets whether to handle cancellation within the asynchronous operation.
  *
+ * This function has nothing to do with
+ * g_simple_async_result_set_check_cancellable().  It only refers to the
+ * #GCancellable passed to g_simple_async_result_run_in_thread().
  **/
 void
 g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult *simple,
@@ -490,6 +506,10 @@ g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple)
  * Propagates an error from within the simple asynchronous result to
  * a given destination.
  *
+ * If the #GCancellable given to a prior call to
+ * g_simple_async_result_set_check_cancellable() is cancelled then this
+ * function will return %TRUE with @dest set appropriately.
+ *
  * Returns: %TRUE if the error was propagated to @dest. %FALSE otherwise.
  **/
 gboolean
@@ -497,6 +517,9 @@ g_simple_async_result_propagate_error (GSimpleAsyncResult  *simple,
                                        GError             **dest)
 {
   g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple), FALSE);
+
+  if (g_cancellable_set_error_if_cancelled (simple->check_cancellable, dest))
+    return TRUE;
 
   if (simple->failed)
     {
@@ -1033,4 +1056,39 @@ g_simple_async_report_take_gerror_in_idle (GObject *object,
                                                  error);
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
+}
+
+/**
+ * g_simple_async_result_set_check_cancellable:
+ * @simple: a #GSimpleAsyncResult
+ * @check_cancellable: a #GCancellable to check, or %NULL to unset
+ *
+ * Sets a #GCancellable to check before dispatching results.
+ *
+ * This function has one very specific purpose: the provided cancellable
+ * is checked at the time of g_simple_async_result_propagate_error() If
+ * it is cancelled, these functions will return an "Operation was
+ * cancelled" error (%G_IO_ERROR_CANCELLED).
+ *
+ * Implementors of cancellable asynchronous functions should use this in
+ * order to provide a guarantee to their callers that cancelling an
+ * async operation will reliably result in an error being returned for
+ * that operation (even if a positive result for the operation has
+ * already been sent as an idle to the main context to be dispatched).
+ *
+ * The checking described above is done regardless of any call to the
+ * unrelated g_simple_async_result_set_handle_cancellation() function.
+ *
+ * Since: 2.32
+ **/
+void
+g_simple_async_result_set_check_cancellable (GSimpleAsyncResult *simple,
+                                             GCancellable *check_cancellable)
+{
+  g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
+  g_return_if_fail (check_cancellable == NULL || G_IS_CANCELLABLE (check_cancellable));
+
+  g_clear_object (&simple->check_cancellable);
+  if (check_cancellable)
+    simple->check_cancellable = g_object_ref (check_cancellable);
 }

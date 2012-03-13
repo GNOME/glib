@@ -83,6 +83,8 @@ gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResul
 
 
 
+void                g_simple_async_result_set_check_cancellable (GSimpleAsyncResult *simple,
+                                                                 GCancellable       *check_cancellable);
 gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
 void                g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult      *simple,
 								   gboolean          handle_cancellation);
