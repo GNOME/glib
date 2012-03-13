@@ -249,7 +249,7 @@ struct _GMainContext
   GList *source_lists;
   gint in_check_or_prepare;
 
-  GPollRec *poll_records, *poll_records_tail;
+  GPollRec *poll_records;
   guint n_poll_records;
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
@@ -3506,33 +3506,43 @@ g_main_context_query (GMainContext *context,
 		      gint          n_fds)
 {
   gint n_poll;
-  GPollRec *pollrec;
+  GPollRec *pollrec, *lastpollrec;
+  gushort events;
   
   LOCK_CONTEXT (context);
 
-  pollrec = context->poll_records;
   n_poll = 0;
-  while (pollrec && max_priority >= pollrec->priority)
+  lastpollrec = NULL;
+  for (pollrec = context->poll_records; pollrec; pollrec = pollrec->next)
     {
-      /* We need to include entries with fd->events == 0 in the array because
-       * otherwise if the application changes fd->events behind our back and 
-       * makes it non-zero, we'll be out of sync when we check the fds[] array.
-       * (Changing fd->events after adding an FD wasn't an anticipated use of 
-       * this API, but it occurs in practice.) */
-      if (n_poll < n_fds)
-	{
-	  fds[n_poll].fd = pollrec->fd->fd;
-	  /* In direct contradiction to the Unix98 spec, IRIX runs into
-	   * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
-	   * flags in the events field of the pollfd while it should
-	   * just ignoring them. So we mask them out here.
-	   */
-	  fds[n_poll].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
-	  fds[n_poll].revents = 0;
-	}
+      if (pollrec->priority > max_priority)
+        continue;
 
-      pollrec = pollrec->next;
-      n_poll++;
+      /* In direct contradiction to the Unix98 spec, IRIX runs into
+       * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
+       * flags in the events field of the pollfd while it should
+       * just ignoring them. So we mask them out here.
+       */
+      events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
+
+      if (lastpollrec && pollrec->fd->fd == lastpollrec->fd->fd)
+        {
+          if (n_poll - 1 < n_fds)
+            fds[n_poll - 1].events |= events;
+        }
+      else
+        {
+          if (n_poll < n_fds)
+            {
+              fds[n_poll].fd = pollrec->fd->fd;
+              fds[n_poll].events = events;
+              fds[n_poll].revents = 0;
+            }
+
+          n_poll++;
+        }
+
+      lastpollrec = pollrec;
     }
 
   context->poll_changed = FALSE;
@@ -3597,15 +3607,21 @@ g_main_context_check (GMainContext *context,
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
-  
+
   pollrec = context->poll_records;
   i = 0;
-  while (i < n_fds)
+  while (pollrec && i < n_fds)
     {
-      if (pollrec->fd->events)
-	pollrec->fd->revents = fds[i].revents;
+      while (pollrec && pollrec->fd->fd == fds[i].fd)
+        {
+          if (pollrec->priority <= max_priority)
+            {
+              pollrec->fd->revents =
+                fds[i].revents & (pollrec->fd->events | G_IO_ERR | G_IO_HUP | G_IO_NVAL);
+            }
+          pollrec = pollrec->next;
+        }
 
-      pollrec = pollrec->next;
       i++;
     }
 
@@ -4185,12 +4201,14 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   newrec->fd = fd;
   newrec->priority = priority;
 
-  prevrec = context->poll_records_tail;
-  nextrec = NULL;
-  while (prevrec && priority < prevrec->priority)
+  prevrec = NULL;
+  nextrec = context->poll_records;
+  while (nextrec)
     {
-      nextrec = prevrec;
-      prevrec = prevrec->prev;
+      if (nextrec->fd > fd)
+        break;
+      prevrec = nextrec;
+      nextrec = nextrec->next;
     }
 
   if (prevrec)
@@ -4203,8 +4221,6 @@ g_main_context_add_poll_unlocked (GMainContext *context,
 
   if (nextrec)
     nextrec->prev = newrec;
-  else 
-    context->poll_records_tail = newrec;
 
   context->n_poll_records++;
 
@@ -4258,8 +4274,6 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
 
 	  if (nextrec != NULL)
 	    nextrec->prev = prevrec;
-	  else
-	    context->poll_records_tail = prevrec;
 
 	  g_slice_free (GPollRec, pollrec);
 

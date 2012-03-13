@@ -22,6 +22,7 @@
 
 #include <glib.h>
 #include "glib-private.h"
+#include <stdio.h>
 #include <string.h>
 
 static gboolean cb (gpointer data)
@@ -1564,6 +1565,165 @@ test_mainloop_wait (void)
   g_main_context_unref (context);
 }
 
+static gboolean
+nfds_in_cb (GIOChannel   *io,
+            GIOCondition  condition,
+            gpointer      user_data)
+{
+  gboolean *in_cb_ran = user_data;
+
+  *in_cb_ran = TRUE;
+  g_assert_cmpint (condition, ==, G_IO_IN);
+  return FALSE;
+}
+
+static gboolean
+nfds_out_cb (GIOChannel   *io,
+             GIOCondition  condition,
+             gpointer      user_data)
+{
+  gboolean *out_cb_ran = user_data;
+
+  *out_cb_ran = TRUE;
+  g_assert_cmpint (condition, ==, G_IO_OUT);
+  return FALSE;
+}
+
+static gboolean
+nfds_out_low_cb (GIOChannel   *io,
+                 GIOCondition  condition,
+                 gpointer      user_data)
+{
+  g_assert_not_reached ();
+  return FALSE;
+}
+
+static void
+test_nfds (void)
+{
+  GMainContext *ctx;
+  GPollFD out_fds[3];
+  gint fd, nfds;
+  GIOChannel *io;
+  GSource *source1, *source2, *source3;
+  gboolean source1_ran = FALSE, source3_ran = FALSE;
+  gchar *tmpfile;
+  GError *error = NULL;
+
+  ctx = g_main_context_new ();
+  nfds = g_main_context_query (ctx, G_MAXINT, NULL,
+                               out_fds, G_N_ELEMENTS (out_fds));
+  /* An "empty" GMainContext will have a single GPollFD, for its
+   * internal GWakeup.
+   */
+  g_assert_cmpint (nfds, ==, 1);
+
+  fd = g_file_open_tmp (NULL, &tmpfile, &error);
+  g_assert_no_error (error);
+
+  io = g_io_channel_unix_new (fd);
+#ifdef G_OS_WIN32
+  /* The fd in the pollfds won't be the same fd we passed in */
+  g_io_channel_win32_make_pollfd (io, G_IO_IN, out_fds);
+  fd = out_fds[0].fd;
+#endif
+
+  /* Add our first pollfd */
+  source1 = g_io_create_watch (io, G_IO_IN);
+  g_source_set_priority (source1, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source1, (GSourceFunc) nfds_in_cb,
+                         &source1_ran, NULL);
+  g_source_attach (source1, ctx);
+
+  nfds = g_main_context_query (ctx, G_MAXINT, NULL,
+                               out_fds, G_N_ELEMENTS (out_fds));
+  g_assert_cmpint (nfds, ==, 2);
+  if (out_fds[0].fd == fd)
+    g_assert_cmpint (out_fds[0].events, ==, G_IO_IN);
+  else if (out_fds[1].fd == fd)
+    g_assert_cmpint (out_fds[1].events, ==, G_IO_IN);
+  else
+    g_assert_not_reached ();
+
+  /* Add a second pollfd with the same fd but different event, and
+   * lower priority.
+   */
+  source2 = g_io_create_watch (io, G_IO_OUT);
+  g_source_set_priority (source2, G_PRIORITY_LOW);
+  g_source_set_callback (source2, (GSourceFunc) nfds_out_low_cb,
+                         NULL, NULL);
+  g_source_attach (source2, ctx);
+
+  /* g_main_context_query() should still return only 2 pollfds,
+   * one of which has our fd, and a combined events field.
+   */
+  nfds = g_main_context_query (ctx, G_MAXINT, NULL,
+                               out_fds, G_N_ELEMENTS (out_fds));
+  g_assert_cmpint (nfds, ==, 2);
+  if (out_fds[0].fd == fd)
+    g_assert_cmpint (out_fds[0].events, ==, G_IO_IN | G_IO_OUT);
+  else if (out_fds[1].fd == fd)
+    g_assert_cmpint (out_fds[1].events, ==, G_IO_IN | G_IO_OUT);
+  else
+    g_assert_not_reached ();
+
+  /* But if we query with a max priority, we won't see the
+   * lower-priority one.
+   */
+  nfds = g_main_context_query (ctx, G_PRIORITY_DEFAULT, NULL,
+                               out_fds, G_N_ELEMENTS (out_fds));
+  g_assert_cmpint (nfds, ==, 2);
+  if (out_fds[0].fd == fd)
+    g_assert_cmpint (out_fds[0].events, ==, G_IO_IN);
+  else if (out_fds[1].fd == fd)
+    g_assert_cmpint (out_fds[1].events, ==, G_IO_IN);
+  else
+    g_assert_not_reached ();
+
+  /* Third pollfd */
+  source3 = g_io_create_watch (io, G_IO_OUT);
+  g_source_set_priority (source3, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source3, (GSourceFunc) nfds_out_cb,
+                         &source3_ran, NULL);
+  g_source_attach (source3, ctx);
+
+  nfds = g_main_context_query (ctx, G_MAXINT, NULL,
+                               out_fds, G_N_ELEMENTS (out_fds));
+  g_assert_cmpint (nfds, ==, 2);
+  if (out_fds[0].fd == fd)
+    g_assert_cmpint (out_fds[0].events, ==, G_IO_IN | G_IO_OUT);
+  else if (out_fds[1].fd == fd)
+    g_assert_cmpint (out_fds[1].events, ==, G_IO_IN | G_IO_OUT);
+  else
+    g_assert_not_reached ();
+
+  /* Now actually iterate the loop; the fd should be readable and
+   * writable, so source1 and source3 should be triggered, but *not*
+   * source2, since it's lower priority than them. (Though on
+   * G_OS_WIN32, source3 doesn't get triggered, probably because of
+   * giowin32 weirdness...)
+   */
+  g_main_context_iteration (ctx, FALSE);
+
+  g_assert (source1_ran);
+#ifndef G_OS_WIN32
+  g_assert (source3_ran);
+#endif
+
+  g_source_destroy (source1);
+  g_source_unref (source1);
+  g_source_destroy (source2);
+  g_source_unref (source2);
+  g_source_destroy (source3);
+  g_source_unref (source3);
+
+  g_io_channel_unref (io);
+  remove (tmpfile);
+  g_free (tmpfile);
+
+  g_main_context_unref (ctx);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1592,6 +1752,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/wait", test_mainloop_wait);
   g_test_add_func ("/mainloop/unix-file-poll", test_unix_file_poll);
 #endif
+  g_test_add_func ("/mainloop/nfds", test_nfds);
 
   return g_test_run ();
 }
