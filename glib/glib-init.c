@@ -165,7 +165,7 @@ g_parse_debug_envvar (const gchar     *envvar,
 
 #ifdef OS_WIN32
   /* "fatal-warnings,fatal-criticals,all,help" is pretty short */
-  gchar buffer[80];
+  gchar buffer[100];
 
   if (GetEnvironmentVariable (envvar, buffer, 100) < 100)
     value = buffer;
