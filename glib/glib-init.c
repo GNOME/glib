@@ -159,7 +159,8 @@ g_parse_debug_string  (const gchar     *string,
 static guint
 g_parse_debug_envvar (const gchar     *envvar,
                       const GDebugKey *keys,
-                      gint             n_keys)
+                      gint             n_keys,
+                      guint            default_value)
 {
   const gchar *value;
 
@@ -174,6 +175,9 @@ g_parse_debug_envvar (const gchar     *envvar,
 #else
   value = getenv (envvar);
 #endif
+
+  if (value == NULL)
+    return default_value;
 
   return g_parse_debug_string (value, keys, n_keys);
 }
@@ -190,7 +194,7 @@ g_messages_prefixed_init (void)
     { "debug", G_LOG_LEVEL_DEBUG }
   };
 
-  g_log_msg_prefix = g_parse_debug_envvar ("G_MESSAGES_PREFIXED", keys, G_N_ELEMENTS (keys));
+  g_log_msg_prefix = g_parse_debug_envvar ("G_MESSAGES_PREFIXED", keys, G_N_ELEMENTS (keys), g_log_msg_prefix);
 }
 
 static void
@@ -203,7 +207,7 @@ g_debug_init (void)
   };
   GLogLevelFlags flags;
 
-  flags = g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys));
+  flags = g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys), 0);
 
   g_log_always_fatal |= flags & G_LOG_LEVEL_MASK;
 
