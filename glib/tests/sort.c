@@ -48,12 +48,51 @@ test_sort_basic (void)
   g_free (data);
 }
 
+typedef struct {
+  int val;
+  int i;
+} SortItem;
+
+static int
+item_compare_data (gconstpointer p1, gconstpointer p2, gpointer data)
+{
+  const SortItem *i1 = p1;
+  const SortItem *i2 = p2;
+
+  return i1->val - i2->val;
+}
+
+static void
+test_sort_stable (void)
+{
+  SortItem *data;
+  gint i;
+
+  data = g_malloc (10000 * sizeof (SortItem));
+  for (i = 0; i < 10000; i++)
+    {
+      data[i].val = g_random_int_range (0, 10000);
+      data[i].i = i;
+    }
+
+  g_qsort_with_data (data, 10000, sizeof (SortItem), item_compare_data, NULL);
+
+  for (i = 1; i < 10000; i++)
+    {
+      g_assert_cmpint (data[i -1].val, <=, data[i].val);
+      if (data[i -1].val == data[i].val)
+	g_assert_cmpint (data[i -1].i, <, data[i].i);
+    }
+  g_free (data);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/sort/basic", test_sort_basic);
+  g_test_add_func ("/sort/stable", test_sort_stable);
 
   return g_test_run ();
 }

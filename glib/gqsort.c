@@ -19,30 +19,268 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/*
- * This file was originally part of the GNU C Library, and was modified to allow
- * user data to be passed in to the sorting function.
- *
- * Written by Douglas C. Schmidt (schmidt@ics.uci.edu).
- * Modified by Maciej Stachowiak (mjs@eazel.com)
- *
- * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GLib Team.  See the ChangeLog
- * files for a list of changes.  These files are distributed with GLib
- * at ftp://ftp.gtk.org/pub/gtk/.
- */
-
 #include "config.h"
 
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include "galloca.h"
+#include "gmem.h"
 
 #include "gqsort.h"
 
 #include "gtestutils.h"
 
-#ifdef HAVE_QSORT_R
+/* This file was originally from stdlib/msort.c in gnu libc, just changed
+   to build inside glib and to not fall back to an unstable quicksort
+   for large arrays. */
+
+/* An alternative to qsort, with an identical interface.
+   This file is part of the GNU C Library.
+   Copyright (C) 1992,95-97,99,2000,01,02,04,07 Free Software Foundation, Inc.
+   Written by Mike Haertel, September 1988.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
+
+
+struct msort_param
+{
+  size_t s;
+  size_t var;
+  GCompareDataFunc cmp;
+  void *arg;
+  char *t;
+};
+
+static void msort_with_tmp (const struct msort_param *p, void *b, size_t n);
+
+static void
+msort_with_tmp (const struct msort_param *p, void *b, size_t n)
+{
+  char *b1, *b2;
+  size_t n1, n2;
+
+  if (n <= 1)
+    return;
+
+  n1 = n / 2;
+  n2 = n - n1;
+  b1 = b;
+  b2 = (char *) b + (n1 * p->s);
+
+  msort_with_tmp (p, b1, n1);
+  msort_with_tmp (p, b2, n2);
+
+  char *tmp = p->t;
+  const size_t s = p->s;
+  GCompareDataFunc cmp = p->cmp;
+  void *arg = p->arg;
+  switch (p->var)
+    {
+    case 0:
+      while (n1 > 0 && n2 > 0)
+	{
+	  if ((*cmp) (b1, b2, arg) <= 0)
+	    {
+	      *(guint32 *) tmp = *(guint32 *) b1;
+	      b1 += sizeof (guint32);
+	      --n1;
+	    }
+	  else
+	    {
+	      *(guint32 *) tmp = *(guint32 *) b2;
+	      b2 += sizeof (guint32);
+	      --n2;
+	    }
+	  tmp += sizeof (guint32);
+	}
+      break;
+    case 1:
+      while (n1 > 0 && n2 > 0)
+	{
+	  if ((*cmp) (b1, b2, arg) <= 0)
+	    {
+	      *(guint64 *) tmp = *(guint64 *) b1;
+	      b1 += sizeof (guint64);
+	      --n1;
+	    }
+	  else
+	    {
+	      *(guint64 *) tmp = *(guint64 *) b2;
+	      b2 += sizeof (guint64);
+	      --n2;
+	    }
+	  tmp += sizeof (guint64);
+	}
+      break;
+    case 2:
+      while (n1 > 0 && n2 > 0)
+	{
+	  unsigned long *tmpl = (unsigned long *) tmp;
+	  unsigned long *bl;
+
+	  tmp += s;
+	  if ((*cmp) (b1, b2, arg) <= 0)
+	    {
+	      bl = (unsigned long *) b1;
+	      b1 += s;
+	      --n1;
+	    }
+	  else
+	    {
+	      bl = (unsigned long *) b2;
+	      b2 += s;
+	      --n2;
+	    }
+	  while (tmpl < (unsigned long *) tmp)
+	    *tmpl++ = *bl++;
+	}
+      break;
+    case 3:
+      while (n1 > 0 && n2 > 0)
+	{
+	  if ((*cmp) (*(const void **) b1, *(const void **) b2, arg) <= 0)
+	    {
+	      *(void **) tmp = *(void **) b1;
+	      b1 += sizeof (void *);
+	      --n1;
+	    }
+	  else
+	    {
+	      *(void **) tmp = *(void **) b2;
+	      b2 += sizeof (void *);
+	      --n2;
+	    }
+	  tmp += sizeof (void *);
+	}
+      break;
+    default:
+      while (n1 > 0 && n2 > 0)
+	{
+	  if ((*cmp) (b1, b2, arg) <= 0)
+	    {
+	      memcpy (tmp, b1, s);
+	      tmp += s;
+	      b1 += s;
+	      --n1;
+	    }
+	  else
+	    {
+	      mempcpy (tmp, b2, s);
+	      tmp += s;
+	      b2 += s;
+	      --n2;
+	    }
+	}
+      break;
+    }
+
+  if (n1 > 0)
+    memcpy (tmp, b1, n1 * s);
+  memcpy (b, p->t, (n - n2) * s);
+}
+
+
+static void
+msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
+{
+  size_t size = n * s;
+  char *tmp = NULL;
+  struct msort_param p;
+
+  /* For large object sizes use indirect sorting.  */
+  if (s > 32)
+    size = 2 * n * sizeof (void *) + s;
+
+  if (size < 1024)
+    /* The temporary array is small, so put it on the stack.  */
+    p.t = g_alloca (size);
+  else
+    {
+      /* It's large, so malloc it.  */
+      tmp = g_malloc (size);
+      p.t = tmp;
+    }
+
+  p.s = s;
+  p.var = 4;
+  p.cmp = cmp;
+  p.arg = arg;
+
+  if (s > 32)
+    {
+      /* Indirect sorting.  */
+      char *ip = (char *) b;
+      void **tp = (void **) (p.t + n * sizeof (void *));
+      void **t = tp;
+      void *tmp_storage = (void *) (tp + n);
+
+      while ((void *) t < tmp_storage)
+	{
+	  *t++ = ip;
+	  ip += s;
+	}
+      p.s = sizeof (void *);
+      p.var = 3;
+      msort_with_tmp (&p, p.t + n * sizeof (void *), n);
+
+      /* tp[0] .. tp[n - 1] is now sorted, copy around entries of
+	 the original array.  Knuth vol. 3 (2nd ed.) exercise 5.2-10.  */
+      char *kp;
+      size_t i;
+      for (i = 0, ip = (char *) b; i < n; i++, ip += s)
+	if ((kp = tp[i]) != ip)
+	  {
+	    size_t j = i;
+	    char *jp = ip;
+	    memcpy (tmp_storage, ip, s);
+
+	    do
+	      {
+		size_t k = (kp - (char *) b) / s;
+		tp[j] = jp;
+		memcpy (jp, kp, s);
+		j = k;
+		jp = kp;
+		kp = tp[k];
+	      }
+	    while (kp != ip);
+
+	    tp[j] = jp;
+	    memcpy (jp, tmp_storage, s);
+	  }
+    }
+  else
+    {
+      if ((s & (sizeof (guint32) - 1)) == 0
+	  && ((char *) b - (char *) 0) % ALIGNOF_GUINT32 == 0)
+	{
+	  if (s == sizeof (guint32))
+	    p.var = 0;
+	  else if (s == sizeof (guint64)
+		   && ((char *) b - (char *) 0) % ALIGNOF_GUINT64 == 0)
+	    p.var = 1;
+	  else if ((s & (sizeof (unsigned long) - 1)) == 0
+		   && ((char *) b - (char *) 0)
+		      % ALIGNOF_UNSIGNED_LONG == 0)
+	    p.var = 2;
+	}
+      msort_with_tmp (&p, b, n);
+    }
+  g_free (tmp);
+}
 
 /**
  * g_qsort_with_data:
@@ -54,6 +292,8 @@
  *
  * This is just like the standard C qsort() function, but
  * the comparison routine accepts a user data argument.
+ *
+ * This is guaranteed to be a stable sort since version 2.32.
  */
 void
 g_qsort_with_data (gconstpointer    pbase,
@@ -62,239 +302,5 @@ g_qsort_with_data (gconstpointer    pbase,
                    GCompareDataFunc compare_func,
                    gpointer         user_data)
 {
-  qsort_r ((gpointer)pbase, total_elems, size, compare_func, user_data);
+  return msort_r (pbase, total_elems, size, compare_func, user_data);
 }
-
-#else
-
-/* Byte-wise swap two items of size SIZE. */
-#define SWAP(a, b, size)						      \
-  do									      \
-    {									      \
-      register size_t __size = (size);					      \
-      register char *__a = (a), *__b = (b);				      \
-      do								      \
-	{								      \
-	  char __tmp = *__a;						      \
-	  *__a++ = *__b;						      \
-	  *__b++ = __tmp;						      \
-	} while (--__size > 0);						      \
-    } while (0)
-
-/* Discontinue quicksort algorithm when partition gets below this size.
-   This particular magic number was chosen to work best on a Sun 4/260. */
-#define MAX_THRESH 4
-
-/* Stack node declarations used to store unfulfilled partition obligations. */
-typedef struct
-  {
-    char *lo;
-    char *hi;
-  } stack_node;
-
-/* The next 4 #defines implement a very fast in-line stack abstraction. */
-/* The stack needs log (total_elements) entries (we could even subtract
-   log(MAX_THRESH)).  Since total_elements has type size_t, we get as
-   upper bound for log (total_elements):
-   bits per byte (CHAR_BIT) * sizeof(size_t).  */
-#define STACK_SIZE	(CHAR_BIT * sizeof(size_t))
-#define PUSH(low, high)	((void) ((top->lo = (low)), (top->hi = (high)), ++top))
-#define	POP(low, high)	((void) (--top, (low = top->lo), (high = top->hi)))
-#define	STACK_NOT_EMPTY	(stack < top)
-
-
-/* Order size using quicksort.  This implementation incorporates
-   four optimizations discussed in Sedgewick:
-
-   1. Non-recursive, using an explicit stack of pointer that store the
-      next array partition to sort.  To save time, this maximum amount
-      of space required to store an array of SIZE_MAX is allocated on the
-      stack.  Assuming a 32-bit (64 bit) integer for size_t, this needs
-      only 32 * sizeof(stack_node) == 256 bytes (for 64 bit: 1024 bytes).
-      Pretty cheap, actually.
-
-   2. Chose the pivot element using a median-of-three decision tree.
-      This reduces the probability of selecting a bad pivot value and
-      eliminates certain extraneous comparisons.
-
-   3. Only quicksorts TOTAL_ELEMS / MAX_THRESH partitions, leaving
-      insertion sort to order the MAX_THRESH items within each partition.
-      This is a big win, since insertion sort is faster for small, mostly
-      sorted array segments.
-
-   4. The larger of the two sub-partitions is always pushed onto the
-      stack first, with the algorithm then concentrating on the
-      smaller partition.  This *guarantees* no more than log (total_elems)
-      stack size is needed (actually O(1) in this case)!  */
-
-void
-g_qsort_with_data (gconstpointer    pbase,
-		   gint             total_elems,
-		   gsize            size,
-		   GCompareDataFunc compare_func,
-		   gpointer         user_data)
-{
-  register char *base_ptr = (char *) pbase;
-
-  const size_t max_thresh = MAX_THRESH * size;
-
-  g_return_if_fail (total_elems >= 0);
-  g_return_if_fail (pbase != NULL || total_elems == 0);
-  g_return_if_fail (compare_func != NULL);
-
-  if (total_elems == 0)
-    /* Avoid lossage with unsigned arithmetic below.  */
-    return;
-
-  if (total_elems > MAX_THRESH)
-    {
-      char *lo = base_ptr;
-      char *hi = &lo[size * (total_elems - 1)];
-      stack_node stack[STACK_SIZE];
-      stack_node *top = stack;
-
-      PUSH (NULL, NULL);
-
-      while (STACK_NOT_EMPTY)
-        {
-          char *left_ptr;
-          char *right_ptr;
-
-	  /* Select median value from among LO, MID, and HI. Rearrange
-	     LO and HI so the three values are sorted. This lowers the
-	     probability of picking a pathological pivot value and
-	     skips a comparison for both the LEFT_PTR and RIGHT_PTR in
-	     the while loops. */
-
-	  char *mid = lo + size * ((hi - lo) / size >> 1);
-
-	  if ((*compare_func) ((void *) mid, (void *) lo, user_data) < 0)
-	    SWAP (mid, lo, size);
-	  if ((*compare_func) ((void *) hi, (void *) mid, user_data) < 0)
-	    SWAP (mid, hi, size);
-	  else
-	    goto jump_over;
-	  if ((*compare_func) ((void *) mid, (void *) lo, user_data) < 0)
-	    SWAP (mid, lo, size);
-	jump_over:;
-
-	  left_ptr  = lo + size;
-	  right_ptr = hi - size;
-
-	  /* Here's the famous ``collapse the walls'' section of quicksort.
-	     Gotta like those tight inner loops!  They are the main reason
-	     that this algorithm runs much faster than others. */
-	  do
-	    {
-	      while ((*compare_func) ((void *) left_ptr, (void *) mid, user_data) < 0)
-		left_ptr += size;
-
-	      while ((*compare_func) ((void *) mid, (void *) right_ptr, user_data) < 0)
-		right_ptr -= size;
-
-	      if (left_ptr < right_ptr)
-		{
-		  SWAP (left_ptr, right_ptr, size);
-		  if (mid == left_ptr)
-		    mid = right_ptr;
-		  else if (mid == right_ptr)
-		    mid = left_ptr;
-		  left_ptr += size;
-		  right_ptr -= size;
-		}
-	      else if (left_ptr == right_ptr)
-		{
-		  left_ptr += size;
-		  right_ptr -= size;
-		  break;
-		}
-	    }
-	  while (left_ptr <= right_ptr);
-
-          /* Set up pointers for next iteration.  First determine whether
-             left and right partitions are below the threshold size.  If so,
-             ignore one or both.  Otherwise, push the larger partition's
-             bounds on the stack and continue sorting the smaller one. */
-
-          if ((size_t) (right_ptr - lo) <= max_thresh)
-            {
-              if ((size_t) (hi - left_ptr) <= max_thresh)
-		/* Ignore both small partitions. */
-                POP (lo, hi);
-              else
-		/* Ignore small left partition. */
-                lo = left_ptr;
-            }
-          else if ((size_t) (hi - left_ptr) <= max_thresh)
-	    /* Ignore small right partition. */
-            hi = right_ptr;
-          else if ((right_ptr - lo) > (hi - left_ptr))
-            {
-	      /* Push larger left partition indices. */
-              PUSH (lo, right_ptr);
-              lo = left_ptr;
-            }
-          else
-            {
-	      /* Push larger right partition indices. */
-              PUSH (left_ptr, hi);
-              hi = right_ptr;
-            }
-        }
-    }
-
-  /* Once the BASE_PTR array is partially sorted by quicksort the rest
-     is completely sorted using insertion sort, since this is efficient
-     for partitions below MAX_THRESH size. BASE_PTR points to the beginning
-     of the array to sort, and END_PTR points at the very last element in
-     the array (*not* one beyond it!). */
-
-#define min(x, y) ((x) < (y) ? (x) : (y))
-
-  {
-    char *const end_ptr = &base_ptr[size * (total_elems - 1)];
-    char *tmp_ptr = base_ptr;
-    char *thresh = min(end_ptr, base_ptr + max_thresh);
-    register char *run_ptr;
-
-    /* Find smallest element in first threshold and place it at the
-       array's beginning.  This is the smallest array element,
-       and the operation speeds up insertion sort's inner loop. */
-
-    for (run_ptr = tmp_ptr + size; run_ptr <= thresh; run_ptr += size)
-      if ((*compare_func) ((void *) run_ptr, (void *) tmp_ptr, user_data) < 0)
-        tmp_ptr = run_ptr;
-
-    if (tmp_ptr != base_ptr)
-      SWAP (tmp_ptr, base_ptr, size);
-
-    /* Insertion sort, running from left-hand-side up to right-hand-side.  */
-
-    run_ptr = base_ptr + size;
-    while ((run_ptr += size) <= end_ptr)
-      {
-	tmp_ptr = run_ptr - size;
-	while ((*compare_func) ((void *) run_ptr, (void *) tmp_ptr, user_data) < 0)
-	  tmp_ptr -= size;
-
-	tmp_ptr += size;
-        if (tmp_ptr != run_ptr)
-          {
-            char *trav;
-
-	    trav = run_ptr + size;
-	    while (--trav >= run_ptr)
-              {
-                char c = *trav;
-                char *hi, *lo;
-
-                for (hi = lo = trav; (lo -= size) >= tmp_ptr; hi = lo)
-                  *hi = *lo;
-                *hi = c;
-              }
-          }
-      }
-  }
-}
-
-#endif /* HAVE_QSORT_R */

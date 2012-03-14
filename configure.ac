@@ -3411,6 +3411,37 @@ if test x$glib_win32_static_compilation = xyes; then
 fi
 ])
 
+# Redo enough to get guint32 and guint64 for the alignment checks below
+case 4 in
+$ac_cv_sizeof_short)
+  gint32=short
+  ;;
+$ac_cv_sizeof_int)
+  gint32=int
+  ;;
+$ac_cv_sizeof_long)
+  gint32=long
+  ;;
+esac
+case 8 in
+$ac_cv_sizeof_int)
+  gint64=int
+  ;;
+$ac_cv_sizeof_long)
+  gint64=long
+  ;;
+$ac_cv_sizeof_long_long)
+  gint64='long long'
+  ;;
+$ac_cv_sizeof___int64)
+  gint64='__int64'
+  ;;
+esac
+
+AC_CHECK_ALIGNOF([guint32], [typedef unsigned $gint32 guint32;])
+AC_CHECK_ALIGNOF([guint64], typedef unsigned $gint64 guint64;)
+AC_CHECK_ALIGNOF([unsigned long])
+
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 #
 # 1.2.14 required for dbus_message_set_serial
