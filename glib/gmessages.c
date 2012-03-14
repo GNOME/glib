@@ -1209,7 +1209,7 @@ g_log_default_handler (const gchar   *log_domain,
   if (!log_domain)
     g_string_append (gstring, "** ");
 
-  if ((g_log_msg_prefix & log_level) == log_level)
+  if ((g_log_msg_prefix & (log_level & G_LOG_LEVEL_MASK)) == (log_level & G_LOG_LEVEL_MASK))
     {
       const gchar *prg_name = g_get_prgname ();
       
