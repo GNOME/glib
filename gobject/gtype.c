@@ -4265,6 +4265,8 @@ _g_type_boxed_init (GType          type,
  *               debugging purposes.
  *
  * Similar to g_type_init(), but additionally sets debug flags.
+ *
+ * This function is idempotent.
  */
 void
 g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
@@ -4375,6 +4377,8 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
  * to initialize the type system and assorted other code portions
  * (such as the various fundamental type implementations or the signal
  * system).
+ *
+ * This function is idempotent.
  *
  * Since version 2.24 this also initializes the thread system
  */
