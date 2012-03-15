@@ -1954,10 +1954,6 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
                                                             G_CALLBACK (send_message_with_reply_cancelled_cb),
                                                             send_message_data_ref (data),
                                                             (GDestroyNotify) send_message_data_unref);
-      g_object_set_data_full (G_OBJECT (simple),
-                              "cancellable",
-                              g_object_ref (cancellable),
-                              (GDestroyNotify) g_object_unref);
     }
 
   if (timeout_msec != G_MAXINT)
@@ -2078,7 +2074,6 @@ g_dbus_connection_send_message_with_reply_finish (GDBusConnection  *connection,
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GDBusMessage *reply;
-  GCancellable *cancellable;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -2091,16 +2086,7 @@ g_dbus_connection_send_message_with_reply_finish (GDBusConnection  *connection,
     goto out;
 
   reply = g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
-  cancellable = g_object_get_data (G_OBJECT (simple), "cancellable");
-  if (cancellable != NULL && g_cancellable_is_cancelled (cancellable))
-    {
-      g_object_unref (reply);
-      reply = NULL;
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CANCELLED,
-                           _("Operation was cancelled"));
-    }
+
  out:
   return reply;
 }
