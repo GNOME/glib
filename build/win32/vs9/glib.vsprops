@@ -359,6 +359,6 @@ copy ..\..\..\gio\gschema.dtd $(OutDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#
 	/>
 	<UserMacro
 		Name="GlibEtcInstallRoot"
-		Value="..\..\..\..\..\vs9\$(PlatformName)"
+		Value="..\..\..\..\vs9\$(PlatformName)"
 	/>
 </VisualStudioPropertySheet>

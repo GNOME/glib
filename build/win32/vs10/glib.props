@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
-    <CopyDir>..\..\..\..\..\vs10\$(Platform)</CopyDir>
+    <GlibEtcInstallRoot>..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
+    <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <ApiVersion>2.0</ApiVersion>
     <GlibDoInstall>
@@ -528,7 +529,6 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
     <GlibSeparateVS10DllSuffix>-2-vs10</GlibSeparateVS10DllSuffix>
     <GlibDllPrefix>$(GlibSeparateVS10DllPrefix)</GlibDllPrefix>
     <GlibDllSuffix>$(GlibSeparateVS10DllSuffix)</GlibDllSuffix>
-    <GlibEtcInstallRoot>..\..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>glibprops</_PropertySheetDisplayName>
@@ -577,6 +577,9 @@ perl ..\..\..\gio\data-to-c.pl ..\..\..\glib\gconstructor.h gconstructor_code > 
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
     <BuildMacro Include="CopyDir">
       <Value>$(CopyDir)</Value>
     </BuildMacro>
@@ -621,9 +624,6 @@ perl ..\..\..\gio\data-to-c.pl ..\..\..\glib\gconstructor.h gconstructor_code > 
     </BuildMacro>
     <BuildMacro Include="GlibDllSuffix">
       <Value>$(GlibDllSuffix)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibEtcInstallRoot">
-      <Value>$(GlibEtcInstallRoot)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
