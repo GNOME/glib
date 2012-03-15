@@ -1680,6 +1680,14 @@ g_execute (const gchar *file,
                */
 	      break;
 
+	    case ENODEV:
+	    case ETIMEDOUT:
+	      /* Some strange filesystems like AFS return even
+	       * stranger error numbers.  They cannot reasonably mean anything
+	       * else so ignore those, too.
+	       */
+	      break;
+
 	    default:
 	      /* Some other error means we found an executable file, but
                * something went wrong executing it; return the error to our
