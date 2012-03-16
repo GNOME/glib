@@ -569,51 +569,6 @@ AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
 AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
 
-dnl don't use AC_CHECK_FUNCS here, otherwise HAVE_QSORT_R will
-dnl be automatically defined, which we don't want to do
-dnl until we have checked this function is actually usable
-AC_CHECK_FUNC([qsort_r])
-
-# BSD has a qsort_r with wrong argument order
-if test x$ac_cv_func_qsort_r = xyes ; then
-  AC_CACHE_CHECK([if qsort_r uses glibc compatible argument order], glib_cv_have_qsort_r, [
-  AC_RUN_IFELSE([AC_LANG_SOURCE([[
-  #define _GNU_SOURCE
-  #include <stdlib.h>
-
-  static int
-  cmp (const void *a, const void *b, void *c)
-  {
-    const int *ia = a;
-    const int *ib = b;
-
-    if (*ia < *ib)
-      return -1;
-    else if (*ia > *ib)
-      return 1;
-    else
-      return 0;
-  }
-
-  int
-  main (int argc, char **argv)
-  {
-    int arr[3] = { 1, 2, 0 };
-    int d = 3;
-
-    qsort_r (arr, 3, sizeof (int), cmp, &d);
-
-    if (arr[0] == 0 && arr[1] == 1 && arr[2] == 2)
-      return 0;
-    else
-      return 1;
-  }]])],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no],[glib_cv_have_qsort_r=no])])
-fi
-
-if test x$glib_cv_have_qsort_r = xyes ; then
-  AC_DEFINE(HAVE_QSORT_R, 1, [Define to 1 if you have the 'qsort_r' function])
-fi
-
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
