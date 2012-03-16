@@ -2071,13 +2071,15 @@ gboolean
 g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
 {
   const char *mount_path;
+  const gchar *user_name;
+  gsize user_name_len;
 
   /* Never display internal mountpoints */
   if (g_unix_mount_is_system_internal (mount_entry))
     return FALSE;
   
   /* Only display things in /media (which are generally user mountable)
-     and home dir (fuse stuff) and $XDG_RUNTIME_DIR */
+     and home dir (fuse stuff) and /run/media/$USER */
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
@@ -2086,7 +2088,12 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
       if (g_strstr_len (mount_path, -1, "/.") != NULL)
         return FALSE;
 
-      if (g_getenv ("XDG_RUNTIME_DIR") != NULL && g_str_has_prefix (mount_path, g_get_user_runtime_dir ()))
+      /* Check /run/media/$USER/ */
+      user_name = g_get_user_name ();
+      user_name_len = strlen (user_name);
+      if (strncmp (mount_path, "/run/media/", sizeof ("/run/media/") - 1) == 0 &&
+          strncmp (mount_path + sizeof ("/run/media/") - 1, user_name, user_name_len) == 0 &&
+          mount_path[sizeof ("/run/media/") - 1 + user_name_len] == '/')
         is_in_runtime_dir = TRUE;
 
       if (is_in_runtime_dir || g_str_has_prefix (mount_path, "/media/"))
