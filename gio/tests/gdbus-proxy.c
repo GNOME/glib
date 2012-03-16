@@ -836,6 +836,47 @@ test_no_properties (void)
   g_object_unref (proxy);
 }
 
+static gboolean
+fail_test (gpointer user_data)
+{
+  g_assert_not_reached ();
+}
+
+static void
+check_error (GObject      *source,
+             GAsyncResult *result,
+             gpointer      user_data)
+{
+  GError *error = NULL;
+  GVariant *reply;
+
+  reply = g_dbus_proxy_call_finish (G_DBUS_PROXY (source), result, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_assert (reply == NULL);
+  g_error_free (error);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+test_wellknown_noauto (void)
+{
+  GError *error = NULL;
+  GDBusProxy *proxy;
+
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                         NULL, "some.name.that.does.not.exist",
+                                         "/", "some.interface", NULL, &error);
+  g_assert_no_error (error);
+  g_assert (proxy != NULL);
+
+  g_dbus_proxy_call (proxy, "method", NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, check_error, NULL);
+  g_timeout_add (10000, fail_test, NULL);
+  g_main_loop_run (loop);
+  g_object_unref (proxy);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -860,8 +901,9 @@ main (int   argc,
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
   g_test_add_func ("/gdbus/proxy", test_proxy);
-  g_test_add_func ("/gdbus/proxy/async", test_async);
   g_test_add_func ("/gdbus/proxy/no-properties", test_no_properties);
+  g_test_add_func ("/gdbus/proxy/wellknown-noauto", test_wellknown_noauto);
+  g_test_add_func ("/gdbus/proxy/async", test_async);
 
   ret = g_test_run();
 
