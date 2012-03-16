@@ -5309,7 +5309,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
                                  gpointer                user_data)
 {
   GDBusMessage *message;
-  CallState *state;
+  guint32 serial;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (bus_name == NULL || g_dbus_is_name (bus_name));
@@ -5325,18 +5325,6 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
   g_return_if_fail (fd_list == NULL);
 #endif
 
-  state = g_slice_new0 (CallState);
-  state->simple = g_simple_async_result_new (G_OBJECT (connection),
-                                             callback, user_data,
-                                             g_dbus_connection_call_internal);
-  g_simple_async_result_set_check_cancellable (state->simple, cancellable);
-  state->method_name = g_strjoin (".", interface_name, method_name, NULL);
-
-  if (reply_type == NULL)
-    reply_type = G_VARIANT_TYPE_ANY;
-
-  state->reply_type = g_variant_type_copy (reply_type);
-
   message = g_dbus_message_new_method_call (bus_name,
                                             object_path,
                                             interface_name,
@@ -5350,14 +5338,50 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
     g_dbus_message_set_unix_fd_list (message, fd_list);
 #endif
 
-  g_dbus_connection_send_message_with_reply (connection,
-                                             message,
-                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                             timeout_msec,
-                                             &state->serial,
-                                             cancellable,
-                                             g_dbus_connection_call_done,
-                                             state);
+  /* If the user has no callback then we can just send the message with
+   * the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set and skip all
+   * the logic for processing the reply.  If the service sends the reply
+   * anyway then it will just be ignored.
+   */
+  if (callback != NULL)
+    {
+      CallState *state;
+
+      state = g_slice_new0 (CallState);
+      state->simple = g_simple_async_result_new (G_OBJECT (connection),
+                                                 callback, user_data,
+                                                 g_dbus_connection_call_internal);
+      g_simple_async_result_set_check_cancellable (state->simple, cancellable);
+      state->method_name = g_strjoin (".", interface_name, method_name, NULL);
+
+      if (reply_type == NULL)
+        reply_type = G_VARIANT_TYPE_ANY;
+
+      state->reply_type = g_variant_type_copy (reply_type);
+
+      g_dbus_connection_send_message_with_reply (connection,
+                                                 message,
+                                                 G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                                 timeout_msec,
+                                                 &state->serial,
+                                                 cancellable,
+                                                 g_dbus_connection_call_done,
+                                                 state);
+      serial = state->serial;
+    }
+  else
+    {
+      GDBusMessageFlags flags;
+
+      flags = g_dbus_message_get_flags (message);
+      flags |= G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+      g_dbus_message_set_flags (message, flags);
+
+      g_dbus_connection_send_message (connection,
+                                      message,
+                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                      &serial, NULL);
+    }
 
   if (G_UNLIKELY (_g_dbus_debug_call ()))
     {
@@ -5371,7 +5395,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
                method_name,
                object_path,
                bus_name != NULL ? bus_name : "(none)",
-               state->serial);
+               serial);
       _g_dbus_debug_print_unlock ();
     }
 
@@ -5597,6 +5621,9 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  * g_dbus_connection_call_finish() to get the result of the operation.
  * See g_dbus_connection_call_sync() for the synchronous version of this
  * function.
+ *
+ * If @callback is %NULL then the D-Bus method call message will be sent with
+ * the %G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
  *
  * Since: 2.26
  */

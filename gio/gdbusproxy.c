@@ -2682,6 +2682,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
   const gchar *target_interface_name;
   gchar *destination;
   GVariantType *reply_type;
+  GAsyncReadyCallback my_callback;
 
   g_return_if_fail (G_IS_DBUS_PROXY (proxy));
   g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
@@ -2696,11 +2697,24 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
   reply_type = NULL;
   split_interface_name = NULL;
 
-  simple = g_simple_async_result_new (G_OBJECT (proxy),
-                                      callback,
-                                      user_data,
-                                      g_dbus_proxy_call_internal);
-  g_simple_async_result_set_check_cancellable (simple, cancellable);
+  /* g_dbus_connection_call() is optimised for the case of a NULL
+   * callback.  If we get a NULL callback from our user then make sure
+   * we pass along a NULL callback for ourselves as well.
+   */
+  if (callback != NULL)
+    {
+      my_callback = (GAsyncReadyCallback) reply_cb;
+      simple = g_simple_async_result_new (G_OBJECT (proxy),
+                                          callback,
+                                          user_data,
+                                          g_dbus_proxy_call_internal);
+      g_simple_async_result_set_check_cancellable (simple, cancellable);
+    }
+  else
+    {
+      my_callback = NULL;
+      simple = NULL;
+    }
 
   G_LOCK (properties_lock);
 
@@ -2723,12 +2737,15 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
       destination = g_strdup (get_destination_for_call (proxy));
       if (destination == NULL)
         {
-          g_simple_async_result_set_error (simple,
-                                           G_IO_ERROR,
-                                           G_IO_ERROR_FAILED,
-                                           _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
-          g_simple_async_result_complete_in_idle (simple);
-          g_object_unref (simple);
+          if (simple != NULL)
+            {
+              g_simple_async_result_set_error (simple,
+                                               G_IO_ERROR,
+                                               G_IO_ERROR_FAILED,
+                                               _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+              g_simple_async_result_complete_in_idle (simple);
+              g_object_unref (simple);
+            }
           G_UNLOCK (properties_lock);
           goto out;
         }
@@ -2748,7 +2765,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
                                             timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
                                             fd_list,
                                             cancellable,
-                                            (GAsyncReadyCallback) reply_cb,
+                                            my_callback,
                                             simple);
 #else
   g_dbus_connection_call (proxy->priv->connection,
@@ -2761,7 +2778,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
                           flags,
                           timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
                           cancellable,
-                          (GAsyncReadyCallback) reply_cb,
+                          my_callback,
                           simple);
 #endif
 
@@ -2963,6 +2980,9 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  * You can then call g_dbus_proxy_call_finish() to get the result of
  * the operation. See g_dbus_proxy_call_sync() for the synchronous
  * version of this method.
+ *
+ * If @callback is %NULL then the D-Bus method call message will be sent with
+ * the %G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
  *
  * Since: 2.26
  */
