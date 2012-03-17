@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-25 18:45+0000\n"
-"PO-Revision-Date: 2012-02-25 22:35+0300\n"
+"POT-Creation-Date: 2012-03-12 09:02+0000\n"
+"PO-Revision-Date: 2012-03-17 18:44+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid "Error during conversion: %s"
 msgstr "Klaida keitimo metu: %s"
 
 #: ../gio/gcharsetconverter.c:447
-#: ../gio/gsocket.c:953
+#: ../gio/gsocket.c:954
 msgid "Cancellable initialization not supported"
 msgstr "Atšaukiamas inicijavimas nepalaikomas"
 
@@ -596,7 +596,6 @@ msgid "Error return with empty body"
 msgstr "Klaidos grąžinimas su tuščia pagrindine dalimi"
 
 #: ../gio/gdbusprivate.c:2065
-#| msgid "Unable to load /var/lib/dbus/machine-id: "
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nepavyko įkelti /var/lib/dbus/machine-id or /etc/machine-id: "
 
@@ -1159,7 +1158,6 @@ msgstr "Adresas turi nustatytus bitus už priešdėlio ilgio"
 
 #: ../gio/ginetaddressmask.c:304
 #, c-format
-#| msgid "could not get local address: %s"
 msgid "Could not parse '%s' as IP address mask"
 msgstr "Nepavyko perskaityti „%s“ kaip IP adreso kaukės"
 
@@ -1213,25 +1211,21 @@ msgstr "Nepavyko rasti „%s“ jokiame šaltinio kataloge"
 
 #: ../gio/glib-compile-resources.c:259
 #, c-format
-#| msgid "Failed to change to directory '%s' (%s)"
 msgid "Failed to locate '%s' in current directory"
 msgstr "Nepavyko rasti „%s“ esamame kataloge"
 
 #: ../gio/glib-compile-resources.c:287
 #, c-format
-#| msgid "Unknown option %s"
 msgid "Unknown processing option \"%s\""
 msgstr "Nežinomas apdorojimo parametras „%s“"
 
 #: ../gio/glib-compile-resources.c:305
 #: ../gio/glib-compile-resources.c:363
 #, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to create temp file: %s"
 msgstr "Nepavyko sukurti laikino failo: %s"
 
 #: ../gio/glib-compile-resources.c:335
-#| msgid "Error setting symlink: file is not a symlink"
 msgid "Error processing input file with xmllint"
 msgstr "Klaida apdorojant įvesties failą su xmllint"
 
@@ -1241,13 +1235,11 @@ msgstr "Klaida apdorojant įvesties failą su to-pixdata"
 
 #: ../gio/glib-compile-resources.c:403
 #, c-format
-#| msgid "Error reading file '%s': %s"
 msgid "Error reading file %s: %s"
 msgstr "Klaida skaitant failą %s: %s"
 
 #: ../gio/glib-compile-resources.c:423
 #, c-format
-#| msgid "Error opening file: %s"
 msgid "Error compressing file %s"
 msgstr "Klaida spaudžiant failą: %s"
 
@@ -1258,13 +1250,13 @@ msgid "text may not appear inside <%s>"
 msgstr "tekstas negali būti viduje <%s>"
 
 #: ../gio/glib-compile-resources.c:610
-#| msgid "The name of the icon"
 msgid "name of the output file"
 msgstr "išvesties failo pavadinimas"
 
 #: ../gio/glib-compile-resources.c:610
 #: ../gio/glib-compile-resources.c:643
-#| msgid "[FILE...]"
+#: ../gio/gresource-tool.c:477
+#: ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FAILAS"
 
@@ -1303,10 +1295,6 @@ msgid "C identifier name used for the generated source code"
 msgstr "C identifikatoriaus vardas, naudojamas generuojamame kode"
 
 #: ../gio/glib-compile-resources.c:646
-#| msgid ""
-#| "Compile all GSettings schema files into a schema cache.\n"
-#| "Schema files are required to have the extension .gschema.xml,\n"
-#| "and the cache file is called gschemas.compiled."
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1318,7 +1306,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:662
 #, c-format
-#| msgid "You should give exactly one directory name\n"
 msgid "You should give exactly one file name\n"
 msgstr "Turite nurodyti vienintelį failo pavadinimą\n"
 
@@ -1954,7 +1941,6 @@ msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Mazgo varde „%s“ yra ženklas „[“, bet nėra „]“"
 
 #: ../gio/gnetworkmonitorbase.c:178
-#| msgid "Network unreachable through SOCKSv5 proxy."
 msgid "Network unreachable"
 msgstr "Tinklas nepasiekiamas"
 
@@ -1966,7 +1952,6 @@ msgstr "Serveris nepasiekiamas"
 #: ../gio/gnetworkmonitornetlink.c:109
 #: ../gio/gnetworkmonitornetlink.c:120
 #, c-format
-#| msgid "could not get remote address: %s"
 msgid "Could not create network monitor: %s"
 msgstr "Nepavyko sukurti tinklo stebyklės: %s"
 
@@ -1975,7 +1960,6 @@ msgid "Could not create network monitor: "
 msgstr "Nepavyko sukurti tiklo stebėtojo: "
 
 #: ../gio/gnetworkmonitornetlink.c:177
-#| msgid "could not get remote address: %s"
 msgid "Could not get network status: "
 msgstr "Nepavyko gauti tinklo būsenos: "
 
@@ -2038,12 +2022,10 @@ msgstr "Resurso vietoje „%s“ nepavyko išskleisti"
 
 #: ../gio/gresourcefile.c:650
 #, c-format
-#| msgid "Target file is a directory"
 msgid "The resource at '%s' is not a directory"
 msgstr "Resursas vietoje „%s“ nėra katalogas"
 
 #: ../gio/gresourcefile.c:858
-#| msgid "Input stream doesn't implement read"
 msgid "Input stream doesn't implement seek"
 msgstr "Švesties srautas nerealizuoja paieškos"
 
@@ -2051,6 +2033,12 @@ msgstr "Švesties srautas nerealizuoja paieškos"
 #: ../gio/gsettings-tool.c:530
 msgid "Print help"
 msgstr "Spausdinti pagalbą"
+
+#: ../gio/gresource-tool.c:471
+#: ../gio/gresource-tool.c:539
+#| msgid "COMMAND"
+msgid "[COMMAND]"
+msgstr "[KOMANDA]"
 
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
@@ -2065,6 +2053,11 @@ msgstr ""
 "Išvardinti resursus\n"
 "Jei SEKCIJA pateikta, išvardinti tik resursus šioje sekcijoje\n"
 "Jei KELIAS yra pateiktas, išvardinti tik atitinkančius resursus"
+
+#: ../gio/gresource-tool.c:485
+#: ../gio/gresource-tool.c:495
+msgid "FILE [PATH]"
+msgstr "FAILAS [KELIAS]"
 
 #: ../gio/gresource-tool.c:486
 #: ../gio/gresource-tool.c:496
@@ -2087,6 +2080,11 @@ msgstr ""
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
 msgstr "Išgauti resurso failą į standartinę išvastį"
+
+#: ../gio/gresource-tool.c:502
+#| msgid "FILE"
+msgid "FILE PATH"
+msgstr "FAILO KELIAS"
 
 #: ../gio/gresource-tool.c:508
 #: ../gio/gsettings-tool.c:610
@@ -2128,12 +2126,6 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:530
 #, c-format
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings %s %s\n"
-#| "\n"
-#| "%s\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gresource %s%s%s %s\n"
@@ -2173,9 +2165,18 @@ msgstr ""
 "  FAILAS    elf failas (dvejetainis arba bendro naudojimo biblioteka)\n"
 "            arba kompiliuotas resurso failas\n"
 
+#: ../gio/gresource-tool.c:554
+#| msgid "PATH"
+msgid "[PATH]"
+msgstr "[KELIAS]"
+
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  KELIAS    (Nebūtinas) resurso kelias (gali būti dalinis)\n"
+
+#: ../gio/gresource-tool.c:557
+msgid "PATH"
+msgstr "KELIAS"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
@@ -2311,27 +2312,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:KELIAS] [RAKTAS]"
 
 #: ../gio/gsettings-tool.c:618
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2376,12 +2356,6 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:640
 #, c-format
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings %s %s\n"
-#| "\n"
-#| "%s\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] %s %s\n"
@@ -2438,121 +2412,119 @@ msgid "Socket is already closed"
 msgstr "Lizdas jau užvertas"
 
 #: ../gio/gsocket.c:305
-#: ../gio/gsocket.c:3519
-#: ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:3520
+#: ../gio/gsocket.c:3575
 msgid "Socket I/O timed out"
 msgstr "Lizdo I/O baigėsi laikas"
 
-#: ../gio/gsocket.c:471
+#: ../gio/gsocket.c:472
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "iš fd kuriamas GSocket: %s"
 
-#: ../gio/gsocket.c:505
-#: ../gio/gsocket.c:521
+#: ../gio/gsocket.c:506
+#: ../gio/gsocket.c:522
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nepavyko sukurti lizdo: %s"
 
-#: ../gio/gsocket.c:505
+#: ../gio/gsocket.c:506
 msgid "Unknown protocol was specified"
 msgstr "Nurodytas nežinomas protokolas"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1713
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nepavyko gauto lokalaus adreso: %s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1756
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nepavyko gauti nuotolinio adreso: %s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1817
 #, c-format
 msgid "could not listen: %s"
 msgstr "nepavyko klausytis: %s"
 
-#: ../gio/gsocket.c:1890
+#: ../gio/gsocket.c:1891
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Susiejimo su adresu klaida: %s"
 
-#: ../gio/gsocket.c:1943
-#: ../gio/gsocket.c:1979
-#, c-format
-#| msgid "Error launching application: %s"
-msgid "Error joining multicast group: %s"
-msgstr "Klaida prisijungian prie transliavimo grupės: %s"
-
 #: ../gio/gsocket.c:1944
 #: ../gio/gsocket.c:1980
 #, c-format
-#| msgid "Error launching application: %s"
+msgid "Error joining multicast group: %s"
+msgstr "Klaida prisijungian prie transliavimo grupės: %s"
+
+#: ../gio/gsocket.c:1945
+#: ../gio/gsocket.c:1981
+#, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Klaida paliekant transliavimo grupę: %s"
 
-#: ../gio/gsocket.c:1945
+#: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
 msgstr "Nėra resursams specifinio transliavimo palaikymo"
 
-#: ../gio/gsocket.c:2164
+#: ../gio/gsocket.c:2165
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Klaida priimant ryšį: %s"
 
-#: ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2286
 msgid "Connection in progress"
 msgstr "Prisijungiama"
 
-#: ../gio/gsocket.c:2337
-#: ../gio/gsocket.c:4316
+#: ../gio/gsocket.c:2338
+#: ../gio/gsocket.c:4317
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Nepavyko gauti laukiančios klaidos: %s"
 
-#: ../gio/gsocket.c:2507
+#: ../gio/gsocket.c:2508
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Klaida priimant duomenis: %s"
 
-#: ../gio/gsocket.c:2685
+#: ../gio/gsocket.c:2686
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Klaida siunčiant duomenis: %s"
 
-#: ../gio/gsocket.c:2799
+#: ../gio/gsocket.c:2800
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nepavyko išjungti lizdo: %s"
 
-#: ../gio/gsocket.c:2878
+#: ../gio/gsocket.c:2879
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Klaida užveriant lizdą: %s"
 
-#: ../gio/gsocket.c:3512
+#: ../gio/gsocket.c:3513
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Laukiama lizdo būsenos: %s"
 
-#: ../gio/gsocket.c:3790
-#: ../gio/gsocket.c:3871
+#: ../gio/gsocket.c:3791
+#: ../gio/gsocket.c:3872
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Klaida siunčiant pranešimą: %s"
 
-#: ../gio/gsocket.c:3815
+#: ../gio/gsocket.c:3816
 msgid "GSocketControlMessage not supported on windows"
 msgstr "„Windows“ sistemoje „GSocketControlMessage“ nepalaikoma"
 
-#: ../gio/gsocket.c:4095
-#: ../gio/gsocket.c:4231
+#: ../gio/gsocket.c:4096
+#: ../gio/gsocket.c:4232
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Klaida priimant pranešimą: %s"
 
-#: ../gio/gsocket.c:4335
+#: ../gio/gsocket.c:4336
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nerealizuota šiai operacinei sistemai"
 
@@ -2563,12 +2535,10 @@ msgstr "Nepavyko prisijungti prie tarpinio serverio %s: "
 
 #: ../gio/gsocketclient.c:188
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s': %s"
 msgid "Could not connect to %s: "
 msgstr "Nepavyko prisijungti prie %s: "
 
 #: ../gio/gsocketclient.c:190
-#| msgid "could not listen: %s"
 msgid "Could not connect: "
 msgstr "Nepavyko prisijungti: "
 
@@ -2633,7 +2603,6 @@ msgid "The SOCKSv5 proxy requires an authentication method that is not supported
 msgstr "SOCKSv5 reikalauja tapatybės patvirtinimo metodo, kurio GLib nepalaiko."
 
 #: ../gio/gsocks5proxy.c:208
-#| msgid "Username or password is too long for SOCKSv5 protocol)."
 msgid "Username or password is too long for SOCKSv5 protocol."
 msgstr "Naudotojo vardas arba slaptažodis yra per ilgas SOCKSv5 protokolui."
 
@@ -2688,7 +2657,6 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nepavyko apdoroti GThemedIcon koduotės versijos %d"
 
 #: ../gio/gtlscertificate.c:249
-#| msgid "Could not parse PEM-encoded private key"
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Nepavyko perskaityti PEM užkoduoto privataus rakto"
 
@@ -2775,18 +2743,16 @@ msgstr "Klaida išjungiant SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:392
 #: ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:492
+#: ../gio/gunixinputstream.c:493
 #, c-format
-#| msgid "Error reading from file: %s"
 msgid "Error reading from file descriptor: %s"
 msgstr "Klaida skaitant failą: %s"
 
-#: ../gio/gunixinputstream.c:447
-#: ../gio/gunixinputstream.c:642
-#: ../gio/gunixoutputstream.c:433
-#: ../gio/gunixoutputstream.c:597
+#: ../gio/gunixinputstream.c:448
+#: ../gio/gunixinputstream.c:643
+#: ../gio/gunixoutputstream.c:434
+#: ../gio/gunixoutputstream.c:598
 #, c-format
-#| msgid "Error closing file: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Klaida užveriant failą: %s"
 
@@ -2797,9 +2763,8 @@ msgstr "Failų sistemos šaknis"
 
 #: ../gio/gunixoutputstream.c:378
 #: ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:478
+#: ../gio/gunixoutputstream.c:479
 #, c-format
-#| msgid "Error writing to file: %s"
 msgid "Error writing to file descriptor: %s"
 msgstr "Klaida rašant į failą: %s"
 
@@ -4316,9 +4281,6 @@ msgstr "%.1f KB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "Nurodyti kelią schemai"
-
-#~ msgid "PATH"
-#~ msgstr "KELIAS"
 
 #~ msgid ""
 #~ "Arguments:\n"
