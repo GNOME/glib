@@ -48,7 +48,7 @@ AM_CPPFLAGS = 				\
 	-DPCRE_STATIC
 
 glib.def: glib.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > glib.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > $(builddir)/glib.def
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -343,7 +343,7 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols glib.def
+export_symbols = -export-symbols $(builddir)/glib.def
 
 glib_win32_res = glib-win32-res.o
 glib_win32_res_ldflag = -Wl,$(glib_win32_res)
@@ -351,7 +351,7 @@ glib_win32_res_ldflag = -Wl,$(glib_win32_res)
 glib_def = glib.def
 
 install-def-file:
-	$(INSTALL) glib.def $(DESTDIR)$(libdir)/glib-2.0.def
+	$(INSTALL) $(builddir)/glib.def $(DESTDIR)$(libdir)/glib-2.0.def
 
 uninstall-def-file:
 	-rm $(DESTDIR)$(libdir)/glib-2.0.def
@@ -457,7 +457,7 @@ install-exec-hook:
 endif
 
 glib-2.0.lib: libglib-2.0.la glib.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:glib.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/glib.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs10/glib.vcxproj ../build/win32/vs10/glib.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
@@ -501,22 +501,17 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin >$@	
 	rm libglib.vs10.sourcefiles.filters
 
-distclean-local:
-	if test $(srcdir) = .; then :; else \
-	    rm -f libglib-gdb.py; \
-	fi
-
 # install gdb scripts
 gdbdir = $(datadir)/glib-2.0/gdb
 dist_gdb_SCRIPTS = glib.py
 
 libglib-gdb.py: libglib-gdb.py.in
-	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > libglib-gdb.py
+	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > $(builddir)/libglib-gdb.py
 
 
 install-data-hook: libglib-gdb.py
 	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)
-	$(INSTALL) libglib-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).$(LT_REVISION)-gdb.py
+	$(INSTALL) $(builddir)/libglib-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).$(LT_REVISION)-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libglib-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)

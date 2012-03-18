@@ -8,7 +8,7 @@ AM_CPPFLAGS = 				\
 	-DG_DISABLE_DEPRECATED
 
 gmodule.def: gmodule.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > $(builddir)/gmodule.def
 
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
@@ -61,14 +61,14 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols gmodule.def
+export_symbols = -export-symbols $(builddir)/gmodule.def
 gmodule_def = gmodule.def
 
 gmodule_win32_res = gmodule-win32-res.o
 gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
 
 install-def-file:
-	$(INSTALL) gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
+	$(INSTALL) $(builddir)/gmodule.def $(DESTDIR)$(libdir)/gmodule-2.0.def
 
 uninstall-def-file:
 	-rm $(DESTDIR)$(libdir)/gmodule-2.0.def
@@ -92,7 +92,7 @@ gmodule-win32-res.o: gmodule.rc
 	$(AM_V_GEN) $(WINDRES) gmodule.rc $@
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gmodule.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gmodule.def -out:$@
 
 .PHONY: files release
 

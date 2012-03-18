@@ -16,7 +16,7 @@ AM_CPPFLAGS = 					\
 	-DGOBJECT_COMPILATION
 
 gobject.def: gobject.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gobject.def
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -49,14 +49,14 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols gobject.def
+export_symbols = -export-symbols $(builddir)/gobject.def
 gobject_def = gobject.def
 
 gobject_win32_res = gobject-win32-res.o
 gobject_win32_res_ldflag = -Wl,$(gobject_win32_res)
 
 install-def-file:
-	$(INSTALL) gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
+	$(INSTALL) $(builddir)/gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
 
 uninstall-def-file:
 	-rm $(DESTDIR)$(libdir)/gobject-2.0.def
@@ -240,7 +240,7 @@ gobject-win32-res.o: gobject.rc
 	$(AM_V_GEN) $(WINDRES) gobject.rc $@
 
 gobject-2.0.lib: libgobject-2.0.la gobject.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gobject.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/vs10/gobject.vcxproj ../build/win32/vs10/gobject.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
@@ -285,7 +285,6 @@ uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
 distclean-local:
 	if test $(srcdir) = .; then :; else \
 	    rm -f $(BUILT_EXTRA_DIST); \
-	    rm -f libgobject-gdb.py; \
 	fi
 
 # install gdb scripts
@@ -293,14 +292,14 @@ gdbdir = $(datadir)/glib-2.0/gdb
 dist_gdb_SCRIPTS = gobject.py
 
 libgobject-gdb.py: libgobject-gdb.py.in
-	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > libgobject-gdb.py
+	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > $(builddir)/libgobject-gdb.py
 
 uninstall-gdb:
 	-rm -r $(DESTDIR)$(datadir)/gdb
 
 install-data-hook: libgobject-gdb.py
 	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load/$(ABS_GLIB_RUNTIME_LIBDIR)
-	$(INSTALL) libgobject-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load/$(ABS_GLIB_RUNTIME_LIBDIR)/libgobject-2.0.so.0.$(LT_CURRENT).$(LT_REVISION)-gdb.py
+	$(INSTALL) $(builddir)/libgobject-gdb.py $(DESTDIR)$(datadir)/gdb/auto-load/$(ABS_GLIB_RUNTIME_LIBDIR)/libgobject-2.0.so.0.$(LT_CURRENT).$(LT_REVISION)-gdb.py
 if HAVE_GLIB_RUNTIME_LIBDIR
 	mkdir -p $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)
 	mv $(DESTDIR)$(libdir)/libgobject-2.0.so.0 $(DESTDIR)$(libdir)/$(GLIB_RUNTIME_LIBDIR)

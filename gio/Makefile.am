@@ -24,8 +24,8 @@ uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
 gio.def: gio.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
-	  mv gio.def.tmp gio.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gio.def.tmp && \
+	  mv $(builddir)/gio.def.tmp $(builddir)/gio.def
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -464,14 +464,14 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols gio.def
+export_symbols = -export-symbols $(builddir)/gio.def
 gio_def = gio.def
 
 gio_win32_res = gio-win32-res.o
 gio_win32_res_ldflag = -Wl,$(gio_win32_res)
 
 install-def-file:
-	$(INSTALL) gio.def $(DESTDIR)$(libdir)/gio-2.0.def
+	$(INSTALL) $(builddir)/gio.def $(DESTDIR)$(libdir)/gio-2.0.def
 
 uninstall-def-file:
 	-rm $(DESTDIR)$(libdir)/gio-2.0.def
@@ -640,7 +640,7 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 	    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
 
 gio-2.0.lib: libgio-2.0.la gio.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gio.def -out:$@
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
 
 bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
 
