@@ -3730,7 +3730,7 @@ test_parses (void)
         GError *error = NULL;
         value = g_variant_parse (NULL, tests[i], NULL, NULL, &error);
         printed = g_variant_print (value, FALSE);
-        g_assert_cmpstr (tests[i], ==, printed);
+        g_assert (g_str_has_prefix (printed, tests[i]));
         g_free (printed);
         g_variant_unref (value);
       }
