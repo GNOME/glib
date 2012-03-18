@@ -181,6 +181,12 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 /* Arch specific stuff for speed
  */
 #if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
+
+#  if __GNUC__ >= 4 && defined (__GNUC_MINOR__) && __GNUC_MINOR__ >= 3
+#    define GUINT32_SWAP_LE_BE(val) ((guint32) __builtin_bswap32 ((gint32) val))
+#    define GUINT64_SWAP_LE_BE(val) ((guint64) __builtin_bswap64 ((gint64) val))
+#  endif
+
 #  if defined (__i386__)
 #    define GUINT16_SWAP_LE_BE_IA32(val) \
        (G_GNUC_EXTENSION					\
@@ -236,8 +242,12 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 	   __r.__ll; }))
      /* Possibly just use the constant version and let gcc figure it out? */
 #    define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_IA32 (val))
-#    define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_IA32 (val))
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_IA32 (val))
+#    ifndef GUINT32_SWAP_LE_BE
+#      define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_IA32 (val))
+#    endif
+#    ifndef GUINT64_SWAP_LE_BE
+#      define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_IA32 (val))
+#    endif
 #  elif defined (__ia64__)
 #    define GUINT16_SWAP_LE_BE_IA64(val) \
        (G_GNUC_EXTENSION					\
@@ -272,8 +282,12 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 				   : "r" (__x));		\
 	   __v; }))
 #    define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_IA64 (val))
-#    define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_IA64 (val))
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_IA64 (val))
+#    ifndef GUINT32_SWAP_LE_BE
+#      define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_IA64 (val))
+#    endif
+#    ifndef GUINT64_SWAP_LE_BE
+#      define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_IA64 (val))
+#    endif
 #  elif defined (__x86_64__)
 #    define GUINT32_SWAP_LE_BE_X86_64(val) \
        (G_GNUC_EXTENSION					\
@@ -297,12 +311,20 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 	   __v; }))
      /* gcc seems to figure out optimal code for this on its own */
 #    define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_CONSTANT (val))
-#    define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_X86_64 (val))
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_X86_64 (val))
+#    ifndef GUINT32_SWAP_LE_BE
+#      define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_X86_64 (val))
+#    endif
+#    ifndef GUINT64_SWAP_LE_BE
+#      define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_X86_64 (val))
+#    endif
 #  else /* generic gcc */
 #    define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_CONSTANT (val))
-#    define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
-#    define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_CONSTANT (val))
+#    ifndef GUINT32_SWAP_LE_BE
+#      define GUINT32_SWAP_LE_BE(val) (GUINT32_SWAP_LE_BE_CONSTANT (val))
+#    endif
+#    ifndef GUINT64_SWAP_LE_BE
+#      define GUINT64_SWAP_LE_BE(val) (GUINT64_SWAP_LE_BE_CONSTANT (val))
+#    endif
 #  endif
 #else /* generic */
 #  define GUINT16_SWAP_LE_BE(val) (GUINT16_SWAP_LE_BE_CONSTANT (val))

@@ -208,6 +208,29 @@ test_bits (void)
 }
 
 static void
+test_swap (void)
+{
+  guint16 a16, b16;
+  guint32 a32, b32;
+  guint64 a64, b64;
+
+  a16 = 0xaabb;
+  b16 = 0xbbaa;
+
+  g_assert_cmpint (GUINT16_SWAP_LE_BE (a16), ==, b16);
+
+  a32 = 0xaaaabbbb;
+  b32 = 0xbbbbaaaa;
+
+  g_assert_cmpint (GUINT32_SWAP_LE_BE (a32), ==, b32);
+
+  a64 = 0xaaaaaaaabbbbbbbb;
+  b64 = 0xbbbbbbbbaaaaaaaa;
+
+  g_assert_cmpint (GUINT64_SWAP_LE_BE (a64), ==, b64);
+}
+
+static void
 test_find_program (void)
 {
   gchar *res;
@@ -319,6 +342,7 @@ main (int   argc,
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);
   g_test_add_func ("/utils/bits", test_bits);
+  g_test_add_func ("/utils/swap", test_swap);
   g_test_add_func ("/utils/find-program", test_find_program);
   g_test_add_func ("/utils/debug", test_debug);
   g_test_add_func ("/utils/codeset", test_codeset);
