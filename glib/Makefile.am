@@ -82,6 +82,8 @@ EXTRA_DIST += 			\
 	gconstructor.h		\
 	$(MIRRORING_TAB_SOURCE)
 
+CLEANFILES= libglib-gdb.py
+
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
@@ -336,7 +338,7 @@ install-data-local: install-ms-lib install-def-file
 	  false ;									\
 	fi
 
-uninstall-local: uninstall-ms-lib uninstall-def-file
+uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -519,3 +521,6 @@ if HAVE_GLIB_RUNTIME_LIBDIR
 	rm -f $(DESTDIR)$(libdir)/libglib-2.0.so
 	ln -s $(GLIB_RUNTIME_LIBDIR)/libglib-2.0.so.0.$(LT_CURRENT).$(LT_REVISION) $(DESTDIR)$(libdir)/libglib-2.0.so
 endif
+
+uninstall-gdb:
+	-rm -r $(DESTDIR)$(datadir)/gdb
