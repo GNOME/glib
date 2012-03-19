@@ -1122,12 +1122,21 @@ test_bounds (void)
   g_strrstr_len (string, 4096, ".");
   g_strrstr_len (string, 4096, "");
 
-  g_ascii_strdown (string, 4096);
-  g_ascii_strdown (string, 4096);
-  g_ascii_strup (string, 4096);
-  g_ascii_strup (string, 4096);
+  tmp = g_ascii_strup (string, 4096);
+  tmp2 = g_ascii_strup (tmp, 4096);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp, 4096), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp2, 4096), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (tmp, tmp2, 4096), ==, 0);
+  g_free (tmp);
+  g_free (tmp2);
 
-  g_ascii_strncasecmp (string, string, 4096);
+  tmp = g_ascii_strdown (string, 4096);
+  tmp2 = g_ascii_strdown (tmp, 4096);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp, 4096), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp2, 4096), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (tmp, tmp2, 4096), ==, 0);
+  g_free (tmp);
+  g_free (tmp2);
 
   tmp = g_markup_escape_text (string, 4096);
   g_free (tmp);
@@ -1180,10 +1189,25 @@ test_bounds (void)
   g_assert_cmpint (strlen (tmp), ==, 4095 + 2);
   g_free (tmp);
 
-  g_ascii_strdown (string, -1);
-  g_ascii_strdown (string, -1);
-  g_ascii_strup (string, -1);
-  g_ascii_strup (string, -1);
+  tmp = g_ascii_strdown (string, -1);
+  tmp2 = g_ascii_strdown (tmp, -1);
+  g_assert_cmpint (strlen(tmp), ==, strlen(tmp2));
+  g_assert_cmpint (strlen(string), ==, strlen(tmp));
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp, -1), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp2, -1), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (tmp, tmp2, -1), ==, 0);
+  g_free (tmp);
+  g_free (tmp2);
+
+  tmp = g_ascii_strup (string, -1);
+  tmp2 = g_ascii_strup (string, -1);
+  g_assert_cmpint (strlen(tmp), ==, strlen(tmp2));
+  g_assert_cmpint (strlen(string), ==, strlen(tmp));
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp, -1), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (string, tmp2, -1), ==, 0);
+  g_assert_cmpint (g_ascii_strncasecmp (tmp, tmp2, -1), ==, 0);
+  g_free (tmp);
+  g_free (tmp2);
 
   g_ascii_strcasecmp (string, string);
   g_ascii_strncasecmp (string, string, 10000);
