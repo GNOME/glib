@@ -302,5 +302,5 @@ g_qsort_with_data (gconstpointer    pbase,
                    GCompareDataFunc compare_func,
                    gpointer         user_data)
 {
-  return msort_r (pbase, total_elems, size, compare_func, user_data);
+  return msort_r ((gpointer)pbase, total_elems, size, compare_func, user_data);
 }
