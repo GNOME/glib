@@ -4663,9 +4663,6 @@ call_in_idle_cb (gpointer user_data)
   guint registration_id;
   guint subtree_registration_id;
 
-  vtable = g_object_get_data (G_OBJECT (invocation), "g-dbus-interface-vtable");
-  g_assert (vtable != NULL && vtable->method_call != NULL);
-
   registration_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (invocation), "g-dbus-registration-id"));
   subtree_registration_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (invocation), "g-dbus-subtree-registration-id"));
 
@@ -4683,6 +4680,9 @@ call_in_idle_cb (gpointer user_data)
       g_object_unref (reply);
       goto out;
     }
+
+  vtable = g_object_get_data (G_OBJECT (invocation), "g-dbus-interface-vtable");
+  g_assert (vtable != NULL && vtable->method_call != NULL);
 
   vtable->method_call (g_dbus_method_invocation_get_connection (invocation),
                        g_dbus_method_invocation_get_sender (invocation),
