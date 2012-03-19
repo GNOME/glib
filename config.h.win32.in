@@ -383,9 +383,6 @@
 /* Define to 1 if you have the <pwd.h> header file. */
 /* #undef HAVE_PWD_H */
 
-/* Define to 1 if you have the 'qsort_r' function */
-/* #undef HAVE_QSORT_R */
-
 /* Define to 1 if you have the `readlink' function. */
 /* #undef HAVE_READLINK */
 
@@ -406,6 +403,9 @@
 
 /* Define to 1 if you have the `setmntent' function. */
 /* #undef HAVE_SETMNTENT */
+
+/* Define if you have the 'sig_atomic_t' type. */
+#define HAVE_SIG_ATOMIC_T 1
 
 /* Define to 1 if you have the `snprintf' function. */
 #ifndef _MSC_VER
