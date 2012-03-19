@@ -71,6 +71,10 @@ msort_with_tmp (const struct msort_param *p, void *b, size_t n)
 {
   char *b1, *b2;
   size_t n1, n2;
+  char *tmp = p->t;
+  const size_t s = p->s;
+  GCompareDataFunc cmp = p->cmp;
+  void *arg = p->arg;
 
   if (n <= 1)
     return;
@@ -83,10 +87,6 @@ msort_with_tmp (const struct msort_param *p, void *b, size_t n)
   msort_with_tmp (p, b1, n1);
   msort_with_tmp (p, b2, n2);
 
-  char *tmp = p->t;
-  const size_t s = p->s;
-  GCompareDataFunc cmp = p->cmp;
-  void *arg = p->arg;
   switch (p->var)
     {
     case 0:
