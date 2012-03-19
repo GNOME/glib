@@ -261,6 +261,10 @@ typedef void * GPid;
 #define GLIB_SYSDEF_MSG_PEEK      2
 #define GLIB_SYSDEF_MSG_DONTROUTE 4
 
+#define ALIGNOF_GUINT32 4
+#define ALIGNOF_GUINT64 8
+#define ALIGNOF_UNSIGNED_LONG 4
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */
