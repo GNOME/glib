@@ -1,3 +1,44 @@
+Overview of changes from GLib 2.31.20 to 2.31.22
+================================================
+
+* Bugs fixed:
+ 531901 Use __builtin_bswap* for GUINT*_SWAP_LE_BE if building...
+ 653167 Out of tree build is broken on windows
+ 668973 Test /gvariant/parser fails on Solaris 10
+ 669797 gvfs now lists its fuse mounts
+ 670846 deadlock: GStreamer-WARNING **: wrong STREAM_LOCK count 0
+ 671664 gio-querymodules: unlink instead of writing empty cache
+ 671676 Glib can't be cross-compiled any more after merge of...
+ 671918 gnome-shell is inaccessible unless started while an AT...
+ 671942 GSocketMsgFlags: annotate as a flags
+ 671997 Unix signal handling assumes that volatile 1-byte writes...
+ 672013 GSimpleAsyncResult: support reliable cancellation
+ 672026 default log output should include pid and/or prgname
+ 672095 glib needs stable sort function
+ 672201 G_SPAWN_SEARCH_PATH should continue on ENODEV and ETIMEDOUT
+ 672239 request NO_REPLY from g_dbus_connection_call() with no as...
+ 672249 gdbusproxy leaks asyncresult in an error case instead of...
+
+* Translation updates:
+ Assamese
+ British English
+ Catalan
+ Catalan (Valencian)
+ Danish
+ Esperanto
+ Finnish
+ French
+ German
+ Hungarian
+ Korean
+ Lithuanian
+ Norwegian bokmål
+ Polish
+ Portuguese
+ Russian
+ Traditional Chinese
+
+
 Overview of changes from GLib 2.31.18 to 2.31.20
 ================================================
 
