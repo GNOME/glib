@@ -660,19 +660,32 @@ g_get_any_init_do (void)
   gchar hostname[100];
 
   g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
+
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    g_tmp_dir = g_strdup (g_getenv ("TMP"));
+    {
+      g_free (g_tmp_dir);
+      g_tmp_dir = g_strdup (g_getenv ("TMP"));
+    }
+
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    g_tmp_dir = g_strdup (g_getenv ("TEMP"));
+    {
+      g_free (g_tmp_dir);
+      g_tmp_dir = g_strdup (g_getenv ("TEMP"));
+    }
 
 #ifdef G_OS_WIN32
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    g_tmp_dir = get_windows_directory_root ();
-#else  
+    {
+      g_free (g_tmp_dir);
+      g_tmp_dir = get_windows_directory_root ();
+    }
+#else
+ 
 #ifdef P_tmpdir
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     {
-      gsize k;    
+      gsize k;
+      g_free (g_tmp_dir);
       g_tmp_dir = g_strdup (P_tmpdir);
       k = strlen (g_tmp_dir);
       if (k > 1 && G_IS_DIR_SEPARATOR (g_tmp_dir[k - 1]))
@@ -682,7 +695,8 @@ g_get_any_init_do (void)
   
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     {
-      g_tmp_dir = g_strdup ("/tmp");
+      g_free (g_tmp_dir);
+      g_tmp_dir = g_strdup (g_getenv ("/tmp"));
     }
 #endif	/* !G_OS_WIN32 */
   

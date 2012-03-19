@@ -90,7 +90,7 @@ test_message_cb1 (GIOChannel  * channel,
   GIOStatus  status;
   guchar     buf[512];
   gsize      read_bytes = 0;
-
+ 
   g_assert_cmpuint (condition, ==, G_IO_IN);
 
   for (status = g_io_channel_read_chars (channel, (gchar*)buf, sizeof (buf), &read_bytes, NULL);
@@ -214,6 +214,7 @@ test_message (void)
         default:
           g_error ("unexpected log message type: %s", g_test_log_type_name (msg->log_type));
         }
+       g_test_log_msg_free (msg);
     }
 
   g_assert_cmpint (passed, ==, 3);
@@ -221,6 +222,7 @@ test_message (void)
 
   g_free (argv[1]);
   g_main_loop_unref (loop);
+  g_test_log_buffer_free (tlb);
 }
 
 static void
@@ -319,10 +321,12 @@ test_error (void)
             default:
               g_error ("unexpected log message type: %s", g_test_log_type_name (msg->log_type));
             }
+            g_test_log_msg_free (msg);
         }
 
       g_free (argv[1]);
       g_main_loop_unref (loop);
+      g_test_log_buffer_free (tlb);
     }
 
   g_assert_cmpint (messages, ==, 3);
