@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include "gtestutils.h"
+#include "gfileutils.h"
 
 #include <sys/types.h>
 #ifdef G_OS_UNIX
@@ -1404,14 +1405,14 @@ g_test_add_vtable (const char       *testpath,
   GTestSuite *suite;
 
   g_return_if_fail (testpath != NULL);
-  g_return_if_fail (testpath[0] == '/');
+  g_return_if_fail (g_path_is_absolute (testpath));
   g_return_if_fail (fixture_test_func != NULL);
 
   if (g_slist_find_custom (test_paths_skipped, testpath, (GCompareFunc)g_strcmp0))
     return;
 
   suite = g_test_get_root();
-  segments = g_strsplit (testpath, "/", -1);
+  segments = g_strsplit (testpath, G_DIR_SEPARATOR_S, -1);
   for (ui = 0; segments[ui] != NULL; ui++)
     {
       const char *seg = segments[ui];
