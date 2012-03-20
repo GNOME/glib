@@ -27,7 +27,6 @@ progs_ldadd     = 					\
 
 TEST_PROGS +=	 		\
 	io-stream		\
-	actions 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
 	readwrite		\
@@ -65,6 +64,7 @@ TEST_PROGS +=	 		\
 
 if OS_UNIX
 TEST_PROGS +=			\
+	actions 		\
 	gdbus-close-pending	\
 	gdbus-connection	\
 	gdbus-connection-flush	\
@@ -114,7 +114,6 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
 	$(NULL)
-
 
 if OS_UNIX
 TEST_PROGS += 			\
