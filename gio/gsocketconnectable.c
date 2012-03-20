@@ -46,7 +46,7 @@
  *   GSocketAddress *sockaddr;
  *   GError *conn_error = NULL;
  *
- *   addr = g_network_address_new ("www.gnome.org", 80);
+ *   addr = g_network_address_new (hostname, port);
  *   enumerator = g_socket_connectable_enumerate (addr);
  *   g_object_unref (addr);
  *
