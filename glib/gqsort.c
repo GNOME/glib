@@ -178,7 +178,7 @@ msort_with_tmp (const struct msort_param *p, void *b, size_t n)
 	    }
 	  else
 	    {
-	      mempcpy (tmp, b2, s);
+	      memcpy (tmp, b2, s);
 	      tmp += s;
 	      b2 += s;
 	      --n2;
@@ -226,6 +226,8 @@ msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
       void **tp = (void **) (p.t + n * sizeof (void *));
       void **t = tp;
       void *tmp_storage = (void *) (tp + n);
+      char *kp;
+      size_t i;
 
       while ((void *) t < tmp_storage)
 	{
@@ -238,8 +240,6 @@ msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
 
       /* tp[0] .. tp[n - 1] is now sorted, copy around entries of
 	 the original array.  Knuth vol. 3 (2nd ed.) exercise 5.2-10.  */
-      char *kp;
-      size_t i;
       for (i = 0, ip = (char *) b; i < n; i++, ip += s)
 	if ((kp = tp[i]) != ip)
 	  {
