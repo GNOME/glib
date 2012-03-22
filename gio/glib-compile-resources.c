@@ -184,6 +184,9 @@ find_file (const gchar *filename)
   gchar *real_file;
   gboolean exists;
 
+  if (g_path_is_absolute (filename))
+    return g_strdup (filename);
+
   /* search all the sourcedirs for the correct files in order */
   for (i = 0; sourcedirs[i] != NULL; i++)
     {
