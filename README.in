@@ -7,8 +7,9 @@ provides data structure handling for C, portability wrappers, and
 interfaces for such runtime functionality as an event loop, threads,
 dynamic loading, and an object system.
 
-The official ftp site is:
+The official download locations are:
   ftp://ftp.gtk.org/pub/glib
+  http://download.gnome.org/sources/glib
 
 The official web site is:
   http://www.gtk.org/
@@ -16,19 +17,61 @@ The official web site is:
 Information about mailing lists can be found at
   http://www.gtk.org/mailing-lists.html
 
-To subscribe: mail -s subscribe gtk-list-request@gnome.org < /dev/null
-(Send mail to gtk-list-request@gnome.org with the subject "subscribe")
+To subscribe, send mail to gtk-list-request@gnome.org
+with the subject "subscribe".
 
 Installation
 ============
 
 See the file 'INSTALL'
 
+How to report bugs
+==================
+
+Bugs should be reported to the GNOME bug tracking system.
+(http://bugzilla.gnome.org, product glib.) You will need
+to create an account for yourself.
+
+In the bug report please include:
+
+* Information about your system. For instance:
+
+   - What operating system and version
+   - For Linux, what version of the C library
+
+  And anything else you think is relevant.
+
+* How to reproduce the bug.
+
+  If you can reproduce it with one of the test programs that are built
+  in the tests/ subdirectory, that will be most convenient.  Otherwise,
+  please include a short test program that exhibits the behavior.
+  As a last resort, you can also provide a pointer to a larger piece
+  of software that can be downloaded.
+
+* If the bug was a crash, the exact text that was printed out
+  when the crash occured.
+
+* Further information such as stack traces may be useful, but
+  is not necessary.
+
+Patches
+=======
+
+Patches should also be submitted to bugzilla.gnome.org. If the
+patch fixes an existing bug, add the patch as an attachment
+to that bug report.
+
+Otherwise, enter a new bug report that describes the patch,
+and attach the patch to that bug report.
+
+Patches should be in unified diff form. (The -up option to GNU diff.)
+
 Notes about GLib 2.32
 =====================
 
 * It is no longer necessary to use g_thread_init() or to link against
-  libgthread.  libglib is now always thread-enabled.  Custom thread
+  libgthread.  libglib is now always thread-enabled. Custom thread
   system implementations are no longer supported (including errorcheck
   mutexes).
 
@@ -66,11 +109,8 @@ Notes about GLib 2.32
 * g_debug() output is no longer enabled by default.  It can be enabled
   on a per-domain basis with the G_MESSAGES_DEBUG environment variable
   like
-
     G_MESSAGES_DEBUG=domain1,domain2
-
   or
-
     G_MESSAGES_DEBUG=all
 
 Notes about GLib 2.30
@@ -246,45 +286,3 @@ Notes about GLib 2.6.0
   connected to dies, just disables it. See the API docs for the function
   for further details and the correct workaround that will continue to
   work with future versions of GLib.
-
-How to report bugs
-==================
-
-Bugs should be reported to the GNOME bug tracking system.
-(http://bugzilla.gnome.org, product glib.) You will need
-to create an account for yourself.
-
-In the bug report please include:
-
-* Information about your system. For instance:
-
-   - What operating system and version
-   - For Linux, what version of the C library
-
-  And anything else you think is relevant.
-
-* How to reproduce the bug.
-
-  If you can reproduce it with one of the test programs that are built
-  in the tests/ subdirectory, that will be most convenient.  Otherwise,
-  please include a short test program that exhibits the behavior.
-  As a last resort, you can also provide a pointer to a larger piece
-  of software that can be downloaded.
-
-* If the bug was a crash, the exact text that was printed out
-  when the crash occured.
-
-* Further information such as stack traces may be useful, but
-  is not necessary.
-
-Patches
-=======
-
-Patches should also be submitted to bugzilla.gnome.org. If the
-patch fixes an existing bug, add the patch as an attachment
-to that bug report.
-
-Otherwise, enter a new bug report that describes the patch,
-and attach the patch to that bug report.
-
-Patches should be in unified diff form. (The -up option to GNUdiff.)
