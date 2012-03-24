@@ -1,3 +1,15 @@
+Overview of changes from GLib 2.31.22 to 2.32.0
+===============================================
+
+* Bugs fixed:
+ 671988 Quickly registering / unregistering objects on bus...
+ 672095 glib needs stable sort function
+ 672406 glib/tests/include.c fails to build on FreeBSD
+
+* Updated translations:
+ Telugu
+
+
 Overview of changes from GLib 2.31.20 to 2.31.22
 ================================================
 
