@@ -618,7 +618,7 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
 
 /**
  * g_main_context_push_thread_default:
- * @context: a #GMainContext, or %NULL for the global default context
+ * @context: (allow-none): a #GMainContext, or %NULL for the global default context
  *
  * Acquires @context and sets it as the thread-default context for the
  * current thread. This will cause certain asynchronous operations
@@ -677,7 +677,7 @@ g_main_context_push_thread_default (GMainContext *context)
 
 /**
  * g_main_context_pop_thread_default:
- * @context: a #GMainContext object, or %NULL
+ * @context: (allow-none): a #GMainContext object, or %NULL
  *
  * Pops @context off the thread-default context stack (verifying that
  * it was on the top of the stack).
@@ -1049,7 +1049,7 @@ g_source_get_id (GSource *source)
  * Gets the #GMainContext with which the source is associated.
  * Calling this function on a destroyed source is an error.
  * 
- * Return value: (transfer none): the #GMainContext with which the
+ * Return value: (transfer none) (allow-none): the #GMainContext with which the
  *               source is associated, or %NULL if the context has not
  *               yet been added to a source.
  **/
@@ -1313,7 +1313,7 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * @source: the source
  * @func: a callback function
  * @data: the data to pass to callback function
- * @notify: a function to call when @data is no longer in use, or %NULL.
+ * @notify: (allow-none): a function to call when @data is no longer in use, or %NULL.
  * 
  * Sets the callback function for a source. The callback for a source is
  * called from the source's dispatch function.
@@ -1699,7 +1699,7 @@ g_source_unref (GSource *source)
 
 /**
  * g_main_context_find_source_by_id:
- * @context: a #GMainContext (if %NULL, the default context will be used)
+ * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used)
  * @source_id: the source ID, as returned by g_source_get_id(). 
  * 
  * Finds a #GSource given a pair of context and ID.
@@ -1735,7 +1735,7 @@ g_main_context_find_source_by_id (GMainContext *context,
 
 /**
  * g_main_context_find_source_by_funcs_user_data:
- * @context: a #GMainContext (if %NULL, the default context will be used).
+ * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used).
  * @funcs: the @source_funcs passed to g_source_new().
  * @user_data: the user data from the callback.
  * 
@@ -3131,7 +3131,7 @@ g_main_context_iterate (GMainContext *context,
 
 /**
  * g_main_context_pending:
- * @context: a #GMainContext (if %NULL, the default context will be used)
+ * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used)
  *
  * Checks if any sources have pending events for the given context.
  * 
@@ -3154,7 +3154,7 @@ g_main_context_pending (GMainContext *context)
 
 /**
  * g_main_context_iteration:
- * @context: a #GMainContext (if %NULL, the default context will be used) 
+ * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used) 
  * @may_block: whether the call may block.
  * 
  * Runs a single iteration for the given main loop. This involves
@@ -3474,7 +3474,7 @@ g_main_context_poll (GMainContext *context,
 
 /**
  * g_main_context_add_poll:
- * @context: a #GMainContext (or %NULL for the default context)
+ * @context: (allow-none): a #GMainContext (or %NULL for the default context)
  * @fd: a #GPollFD structure holding information about a file
  *      descriptor to watch.
  * @priority: the priority for this file descriptor which should be
@@ -3934,7 +3934,7 @@ g_timeout_source_new_seconds (guint interval)
  *             (1/1000ths of a second)
  * @function: function to call
  * @data:     data to pass to @function
- * @notify:   function to call when the timeout is removed, or %NULL
+ * @notify: (allow-none): function to call when the timeout is removed, or %NULL
  * 
  * Sets a function to be called at regular intervals, with the given
  * priority.  The function is called repeatedly until it returns
@@ -4032,7 +4032,7 @@ g_timeout_add (guint32        interval,
  * @interval: the time between calls to the function, in seconds
  * @function: function to call
  * @data:     data to pass to @function
- * @notify:   function to call when the timeout is removed, or %NULL
+ * @notify: (allow-none): function to call when the timeout is removed, or %NULL
  *
  * Sets a function to be called at regular intervals, with @priority.
  * The function is called repeatedly until it returns %FALSE, at which
@@ -4513,7 +4513,7 @@ g_child_watch_source_new (GPid pid)
  * Windows a handle for a process (which doesn't have to be a child).
  * @function: function to call
  * @data:     data to pass to @function
- * @notify:   function to call when the idle is removed, or %NULL
+ * @notify: (allow-none): function to call when the idle is removed, or %NULL
  * 
  * Sets a function to be called when the child indicated by @pid 
  * exits, at the priority @priority.
@@ -4664,7 +4664,7 @@ g_idle_source_new (void)
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @function: function to call
  * @data:     data to pass to @function
- * @notify:   function to call when the idle is removed, or %NULL
+ * @notify: (allow-none): function to call when the idle is removed, or %NULL
  * 
  * Adds a function to be called whenever there are no higher priority
  * events pending.  If the function returns %FALSE it is automatically
@@ -4784,7 +4784,7 @@ g_main_context_invoke (GMainContext *context,
  * @priority: the priority at which to run @function
  * @function: function to call
  * @data: data to pass to @function
- * @notify: a function to call when @data is no longer in use, or %NULL.
+ * @notify: (allow-none): a function to call when @data is no longer in use, or %NULL.
  *
  * Invokes a function in such a way that @context is owned during the
  * invocation of @function.

@@ -1061,7 +1061,7 @@ g_simple_async_report_take_gerror_in_idle (GObject *object,
 /**
  * g_simple_async_result_set_check_cancellable:
  * @simple: a #GSimpleAsyncResult
- * @check_cancellable: a #GCancellable to check, or %NULL to unset
+ * @check_cancellable: (allow-none): a #GCancellable to check, or %NULL to unset
  *
  * Sets a #GCancellable to check before dispatching results.
  *

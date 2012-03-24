@@ -1954,8 +1954,8 @@ g_assertion_message_error (const char     *domain,
 
 /**
  * g_strcmp0:
- * @str1: a C string or %NULL
- * @str2: another C string or %NULL
+ * @str1: (allow-none): a C string or %NULL
+ * @str2: (allow-none): another C string or %NULL
  *
  * Compares @str1 and @str2 like strcmp(). Handles %NULL 
  * gracefully by sorting it before non-%NULL strings.

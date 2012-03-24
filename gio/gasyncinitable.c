@@ -318,7 +318,7 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
  * @callback: a #GAsyncReadyCallback to call when the initialization is
  *     finished
  * @user_data: the data to pass to callback function
- * @first_property_name: the name of the first property, or %NULL if no
+ * @first_property_name: (allow-none): the name of the first property, or %NULL if no
  *     properties
  * @...:  the value of the first property, followed by other property
  *    value pairs, and ended by %NULL.

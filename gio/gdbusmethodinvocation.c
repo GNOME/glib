@@ -286,11 +286,11 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
 
 /* < internal >
  * _g_dbus_method_invocation_new:
- * @sender: The bus name that invoked the method or %NULL if @connection is not a bus connection.
+ * @sender: (allow-none): The bus name that invoked the method or %NULL if @connection is not a bus connection.
  * @object_path: The object path the method was invoked on.
  * @interface_name: The name of the D-Bus interface the method was invoked on.
  * @method_name: The name of the method that was invoked.
- * @method_info: Information about the method call or %NULL.
+ * @method_info: (allow-none): Information about the method call or %NULL.
  * @connection: The #GDBusConnection the method was invoked on.
  * @message: The D-Bus message as a #GDBusMessage.
  * @parameters: The parameters as a #GVariant tuple.

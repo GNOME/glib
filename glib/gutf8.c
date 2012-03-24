@@ -696,7 +696,7 @@ g_utf8_get_char_validated (const  gchar *p,
  * @str: a UTF-8 encoded string
  * @len: the maximum length of @str to use, in bytes. If @len < 0,
  *       then the string is nul-terminated.
- * @items_written: location to store the number of characters in the
+ * @items_written: (allow-none): location to store the number of characters in the
  *                 result, or %NULL.
  *
  * Convert a string from UTF-8 to a 32-bit fixed width
@@ -789,12 +789,12 @@ g_utf8_to_ucs4_fast (const gchar *str,
  * @str: a UTF-8 encoded string
  * @len: the maximum length of @str to use, in bytes. If @len < 0,
  *       then the string is nul-terminated.
- * @items_read: location to store number of bytes read, or %NULL.
+ * @items_read: (allow-none): location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of characters written or %NULL.
+ * @items_written: (allow-none): location to store number of characters written or %NULL.
  *                 The value here stored does not include the trailing 0
  *                 character. 
  * @error: location to store the error occurring, or %NULL to ignore
@@ -873,8 +873,8 @@ g_utf8_to_ucs4 (const gchar *str,
  * @str: a UCS-4 encoded string
  * @len: the maximum length (number of characters) of @str to use. 
  *       If @len < 0, then the string is nul-terminated.
- * @items_read: location to store number of characters read, or %NULL.
- * @items_written: location to store number of bytes written or %NULL.
+ * @items_read: (allow-none): location to store number of characters read, or %NULL.
+ * @items_written: (allow-none): location to store number of bytes written or %NULL.
  *                 The value here stored does not include the trailing 0
  *                 byte. 
  * @error: location to store the error occurring, or %NULL to ignore
@@ -945,12 +945,12 @@ g_ucs4_to_utf8 (const gunichar *str,
  * @str: a UTF-16 encoded string
  * @len: the maximum length (number of <type>gunichar2</type>) of @str to use. 
  *       If @len < 0, then the string is nul-terminated.
- * @items_read: location to store number of words read, or %NULL.
+ * @items_read: (allow-none): location to store number of words read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of bytes written, or %NULL.
+ * @items_written: (allow-none): location to store number of bytes written, or %NULL.
  *                 The value stored here does not include the trailing
  *                 0 byte.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1100,12 +1100,12 @@ g_utf16_to_utf8 (const gunichar2  *str,
  * @str: a UTF-16 encoded string
  * @len: the maximum length (number of <type>gunichar2</type>) of @str to use. 
  *       If @len < 0, then the string is nul-terminated.
- * @items_read: location to store number of words read, or %NULL.
+ * @items_read: (allow-none): location to store number of words read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of characters written, or %NULL.
+ * @items_written: (allow-none): location to store number of characters written, or %NULL.
  *                 The value stored here does not include the trailing
  *                 0 character.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1238,12 +1238,12 @@ g_utf16_to_ucs4 (const gunichar2  *str,
  * @str: a UTF-8 encoded string
  * @len: the maximum length (number of bytes) of @str to use.
  *       If @len < 0, then the string is nul-terminated.
- * @items_read: location to store number of bytes read, or %NULL.
+ * @items_read: (allow-none): location to store number of bytes read, or %NULL.
  *              If %NULL, then %G_CONVERT_ERROR_PARTIAL_INPUT will be
  *              returned in case @str contains a trailing partial
  *              character. If an error occurs then the index of the
  *              invalid input is stored here.
- * @items_written: location to store number of <type>gunichar2</type> written,
+ * @items_written: (allow-none): location to store number of <type>gunichar2</type> written,
  *                 or %NULL.
  *                 The value stored here does not include the trailing 0.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1355,10 +1355,10 @@ g_utf8_to_utf16 (const gchar *str,
  * @str: a UCS-4 encoded string
  * @len: the maximum length (number of characters) of @str to use. 
  *       If @len < 0, then the string is nul-terminated.
- * @items_read: location to store number of bytes read, or %NULL.
+ * @items_read: (allow-none): location to store number of bytes read, or %NULL.
  *              If an error occurs then the index of the invalid input
  *              is stored here.
- * @items_written: location to store number of <type>gunichar2</type> 
+ * @items_written: (allow-none): location to store number of <type>gunichar2</type> 
  *                 written, or %NULL. The value stored here does not 
  *                 include the trailing 0.
  * @error: location to store the error occurring, or %NULL to ignore

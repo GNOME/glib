@@ -559,7 +559,7 @@ g_option_context_get_main_group (GOptionContext *context)
  * g_option_context_add_main_entries:
  * @context: a #GOptionContext
  * @entries: a %NULL-terminated array of #GOptionEntry<!-- -->s
- * @translation_domain: a translation domain to use for translating
+ * @translation_domain: (allow-none): a translation domain to use for translating
  *    the <option>--help</option> output for the options in @entries
  *    with gettext(), or %NULL
  *
@@ -716,7 +716,7 @@ context_has_h_entry (GOptionContext *context)
  * g_option_context_get_help:
  * @context: a #GOptionContext
  * @main_help: if %TRUE, only include the main group
- * @group: the #GOptionGroup to create help for, or %NULL
+ * @group: (allow-none): the #GOptionGroup to create help for, or %NULL
  *
  * Returns a formatted, translated help text for the given context.
  * To obtain the text produced by <option>--help</option>, call
@@ -2087,9 +2087,9 @@ g_option_context_parse (GOptionContext   *context,
  * @help_description: a description for the <option>--help-</option>@name option.
  *   This string is translated using the translation domain or translation function
  *   of the group
- * @user_data: user data that will be passed to the pre- and post-parse hooks,
+ * @user_data: (allow-none): user data that will be passed to the pre- and post-parse hooks,
  *   the error hook and to callbacks of %G_OPTION_ARG_CALLBACK options, or %NULL
- * @destroy: a function that will be called to free @user_data, or %NULL
+ * @destroy: (allow-none): a function that will be called to free @user_data, or %NULL
  *
  * Creates a new #GOptionGroup.
  *
@@ -2208,8 +2208,8 @@ g_option_group_add_entries (GOptionGroup       *group,
 /**
  * g_option_group_set_parse_hooks:
  * @group: a #GOptionGroup
- * @pre_parse_func: a function to call before parsing, or %NULL
- * @post_parse_func: a function to call after parsing, or %NULL
+ * @pre_parse_func: (allow-none): a function to call before parsing, or %NULL
+ * @post_parse_func: (allow-none): a function to call after parsing, or %NULL
  *
  * Associates two functions with @group which will be called
  * from g_option_context_parse() before the first option is parsed
@@ -2258,9 +2258,9 @@ g_option_group_set_error_hook (GOptionGroup     *group,
 /**
  * g_option_group_set_translate_func:
  * @group: a #GOptionGroup
- * @func: the #GTranslateFunc, or %NULL
- * @data: user data to pass to @func, or %NULL
- * @destroy_notify: a function which gets called to free @data, or %NULL
+ * @func: (allow-none): the #GTranslateFunc, or %NULL
+ * @data: (allow-none): user data to pass to @func, or %NULL
+ * @destroy_notify: (allow-none): a function which gets called to free @data, or %NULL
  *
  * Sets the function which is used to translate user-visible
  * strings, for <option>--help</option> output. Different
@@ -2320,9 +2320,9 @@ g_option_group_set_translation_domain (GOptionGroup *group,
 /**
  * g_option_context_set_translate_func:
  * @context: a #GOptionContext
- * @func: the #GTranslateFunc, or %NULL
- * @data: user data to pass to @func, or %NULL
- * @destroy_notify: a function which gets called to free @data, or %NULL
+ * @func: (allow-none): the #GTranslateFunc, or %NULL
+ * @data: (allow-none): user data to pass to @func, or %NULL
+ * @destroy_notify: (allow-none): a function which gets called to free @data, or %NULL
  *
  * Sets the function which is used to translate the contexts
  * user-visible strings, for <option>--help</option> output.
@@ -2379,7 +2379,7 @@ g_option_context_set_translation_domain (GOptionContext *context,
 /**
  * g_option_context_set_summary:
  * @context: a #GOptionContext
- * @summary: a string to be shown in <option>--help</option> output
+ * @summary: (allow-none): a string to be shown in <option>--help</option> output
  *  before the list of options, or %NULL
  *
  * Adds a string to be displayed in <option>--help</option> output
@@ -2424,7 +2424,7 @@ g_option_context_get_summary (GOptionContext *context)
 /**
  * g_option_context_set_description:
  * @context: a #GOptionContext
- * @description: a string to be shown in <option>--help</option> output
+ * @description: (allow-none): a string to be shown in <option>--help</option> output
  *   after the list of options, or %NULL
  *
  * Adds a string to be displayed in <option>--help</option> output

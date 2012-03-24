@@ -203,7 +203,7 @@ g_win32_error_message (gint error)
 
 /**
  * g_win32_get_package_installation_directory_of_module:
- * @hmodule: The Win32 handle for a DLL loaded into the current process, or %NULL
+ * @hmodule: (allow-none): The Win32 handle for a DLL loaded into the current process, or %NULL
  *
  * This function tries to determine the installation directory of a
  * software package based on the location of a DLL of the software
@@ -322,8 +322,8 @@ get_package_directory_from_module (const gchar *module_name)
 
 /**
  * g_win32_get_package_installation_directory:
- * @package: You should pass %NULL for this.
- * @dll_name: The name of a DLL that a package provides in UTF-8, or %NULL.
+ * @package: (allow-none): You should pass %NULL for this.
+ * @dll_name: (allow-none): The name of a DLL that a package provides in UTF-8, or %NULL.
  *
  * Try to determine the installation directory for a software package.
  *
@@ -428,8 +428,8 @@ g_win32_get_package_installation_directory (const gchar *package,
 
 /**
  * g_win32_get_package_installation_subdirectory:
- * @package: You should pass %NULL for this.
- * @dll_name: The name of a DLL that a package provides, in UTF-8, or %NULL.
+ * @package: (allow-none): You should pass %NULL for this.
+ * @dll_name: (allow-none): The name of a DLL that a package provides, in UTF-8, or %NULL.
  * @subdir: A subdirectory of the package installation directory, also in UTF-8
  *
  * This function is deprecated. Use

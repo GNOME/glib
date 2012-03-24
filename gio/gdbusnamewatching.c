@@ -505,10 +505,10 @@ connection_get_cb (GObject      *source_object,
  * @bus_type: The type of bus to watch a name on.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
- * @name_appeared_handler: Handler to invoke when @name is known to exist or %NULL.
- * @name_vanished_handler: Handler to invoke when @name is known to not exist or %NULL.
+ * @name_appeared_handler: (allow-none): Handler to invoke when @name is known to exist or %NULL.
+ * @name_vanished_handler: (allow-none): Handler to invoke when @name is known to not exist or %NULL.
  * @user_data: User data to pass to handlers.
- * @user_data_free_func: Function for freeing @user_data or %NULL.
+ * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
  *
  * Starts watching @name on the bus specified by @bus_type and calls
  * @name_appeared_handler and @name_vanished_handler when the name is
@@ -594,10 +594,10 @@ g_bus_watch_name (GBusType                  bus_type,
  * @connection: A #GDBusConnection.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
- * @name_appeared_handler: Handler to invoke when @name is known to exist or %NULL.
- * @name_vanished_handler: Handler to invoke when @name is known to not exist or %NULL.
+ * @name_appeared_handler: (allow-none): Handler to invoke when @name is known to exist or %NULL.
+ * @name_vanished_handler: (allow-none): Handler to invoke when @name is known to not exist or %NULL.
  * @user_data: User data to pass to handlers.
- * @user_data_free_func: Function for freeing @user_data or %NULL.
+ * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
  *
  * Like g_bus_watch_name() but takes a #GDBusConnection instead of a
  * #GBusType.

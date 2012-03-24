@@ -681,7 +681,7 @@ g_module_open (const gchar    *file_name,
 
 /**
  * g_module_open:
- * @file_name: the name of the file containing the module, or %NULL
+ * @file_name: (allow-none): the name of the file containing the module, or %NULL
  *     to obtain a #GModule representing the main program itself
  * @flags: the flags used for opening the module. This can be the
  *     logical OR of any of the #GModuleFlags

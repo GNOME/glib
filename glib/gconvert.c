@@ -1838,7 +1838,7 @@ hostname_validate (const char *hostname)
 /**
  * g_filename_from_uri:
  * @uri: a uri describing a filename (escaped, encoded in ASCII).
- * @hostname: Location to store hostname for the URI, or %NULL.
+ * @hostname: (allow-none): Location to store hostname for the URI, or %NULL.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
  * @error: location to store the error occurring, or %NULL to ignore

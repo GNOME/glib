@@ -1816,7 +1816,7 @@ find_file_in_data_dirs (const gchar   *file,
  * g_bookmark_file_load_from_data_dirs:
  * @bookmark: a #GBookmarkFile
  * @file: a relative path to a filename to open and parse
- * @full_path: return location for a string containing the full path
+ * @full_path: (allow-none): return location for a string containing the full path
  *   of the file, or %NULL
  * @error: return location for a #GError, or %NULL
  *
@@ -1897,7 +1897,7 @@ g_bookmark_file_load_from_data_dirs (GBookmarkFile  *bookmark,
 /**
  * g_bookmark_file_to_data:
  * @bookmark: a #GBookmarkFile
- * @length: return location for the length of the returned string, or %NULL
+ * @length: (allow-none): return location for the length of the returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * This function outputs @bookmark as a string.
@@ -2087,7 +2087,7 @@ g_bookmark_file_has_item (GBookmarkFile *bookmark,
 /**
  * g_bookmark_file_get_uris:
  * @bookmark: a #GBookmarkFile
- * @length: return location for the number of returned URIs, or %NULL
+ * @length: (allow-none): return location for the number of returned URIs, or %NULL
  *
  * Returns all URIs of the bookmarks in the bookmark file @bookmark.
  * The array of returned URIs will be %NULL-terminated, so @length may
@@ -2131,7 +2131,7 @@ g_bookmark_file_get_uris (GBookmarkFile *bookmark,
 /**
  * g_bookmark_file_set_title:
  * @bookmark: a #GBookmarkFile
- * @uri: a valid URI or %NULL
+ * @uri: (allow-none): a valid URI or %NULL
  * @title: a UTF-8 encoded string
  *
  * Sets @title as the title of the bookmark for @uri inside the
@@ -2176,7 +2176,7 @@ g_bookmark_file_set_title (GBookmarkFile *bookmark,
 /**
  * g_bookmark_file_get_title:
  * @bookmark: a #GBookmarkFile
- * @uri: a valid URI or %NULL
+ * @uri: (allow-none): a valid URI or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the title of the bookmark for @uri.
@@ -2219,7 +2219,7 @@ g_bookmark_file_get_title (GBookmarkFile  *bookmark,
 /**
  * g_bookmark_file_set_description:
  * @bookmark: a #GBookmarkFile
- * @uri: a valid URI or %NULL
+ * @uri: (allow-none): a valid URI or %NULL
  * @description: a string
  *
  * Sets @description as the description of the bookmark for @uri.
@@ -2872,7 +2872,7 @@ g_bookmark_file_remove_group (GBookmarkFile  *bookmark,
  * g_bookmark_file_set_groups:
  * @bookmark: a #GBookmarkFile
  * @uri: an item's URI
- * @groups: an array of group names, or %NULL to remove all groups
+ * @groups: (allow-none): an array of group names, or %NULL to remove all groups
  * @length: number of group name values in @groups
  *
  * Sets a list of group names for the item with URI @uri.  Each previously
@@ -2922,7 +2922,7 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
  * g_bookmark_file_get_groups:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @length: return location for the length of the returned string, or %NULL
+ * @length: (allow-none): return location for the length of the returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Retrieves the list of group names of the bookmark for @uri.
@@ -2994,9 +2994,9 @@ g_bookmark_file_get_groups (GBookmarkFile  *bookmark,
  * g_bookmark_file_add_application:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @name: the name of the application registering the bookmark
+ * @name: (allow-none): the name of the application registering the bookmark
  *   or %NULL
- * @exec: command line to be used to launch the bookmark or %NULL
+ * @exec: (allow-none): command line to be used to launch the bookmark or %NULL
  *
  * Adds the application with @name and @exec to the list of
  * applications that have registered a bookmark for @uri into
@@ -3344,9 +3344,9 @@ expand_exec_line (const gchar *exec_fmt,
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
  * @name: an application's name
- * @exec: location for the command line of the application, or %NULL
- * @count: return location for the registration count, or %NULL
- * @stamp: return location for the last registration time, or %NULL
+ * @exec: (allow-none): location for the command line of the application, or %NULL
+ * @count: (allow-none): return location for the registration count, or %NULL
+ * @stamp: (allow-none): return location for the last registration time, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Gets the registration informations of @app_name for the bookmark for
@@ -3444,7 +3444,7 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
  * g_bookmark_file_get_applications:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @length: return location of the length of the returned list, or %NULL
+ * @length: (allow-none): return location of the length of the returned list, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Retrieves the names of the applications that have registered the
@@ -3536,7 +3536,7 @@ g_bookmark_file_get_size (GBookmarkFile *bookmark)
  * g_bookmark_file_move_item:
  * @bookmark: a #GBookmarkFile
  * @old_uri: a valid URI
- * @new_uri: a valid URI, or %NULL
+ * @new_uri: (allow-none): a valid URI, or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Changes the URI of a bookmark item from @old_uri to @new_uri.  Any
@@ -3615,7 +3615,7 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
  * g_bookmark_file_set_icon:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @href: the URI of the icon for the bookmark, or %NULL
+ * @href: (allow-none): the URI of the icon for the bookmark, or %NULL
  * @mime_type: the MIME type of the icon for the bookmark
  *
  * Sets the icon for the bookmark for @uri. If @href is %NULL, unsets
@@ -3664,8 +3664,8 @@ g_bookmark_file_set_icon (GBookmarkFile *bookmark,
  * g_bookmark_file_get_icon:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @href: return location for the icon's location or %NULL
- * @mime_type: return location for the icon's MIME type or %NULL
+ * @href: (allow-none): return location for the icon's location or %NULL
+ * @mime_type: (allow-none): return location for the icon's MIME type or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Gets the icon of the bookmark for @uri.

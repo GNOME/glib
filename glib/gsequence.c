@@ -239,7 +239,7 @@ iter_compare (GSequenceIter *node1,
 
 /**
  * g_sequence_new:
- * @data_destroy: a #GDestroyNotify function, or %NULL
+ * @data_destroy: (allow-none): a #GDestroyNotify function, or %NULL
  *
  * Creates a new GSequence. The @data_destroy function, if non-%NULL will
  * be called on all items when the sequence is destroyed and on items that

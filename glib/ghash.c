@@ -664,10 +664,10 @@ g_hash_table_new (GHashFunc  hash_func,
  * g_hash_table_new_full:
  * @hash_func: a function to create a hash value from a key
  * @key_equal_func: a function to check two keys for equality
- * @key_destroy_func: a function to free the memory allocated for the key
+ * @key_destroy_func: (allow-none): a function to free the memory allocated for the key
  *     used when removing the entry from the #GHashTable, or %NULL
  *     if you don't want to supply such a function.
- * @value_destroy_func: a function to free the memory allocated for the
+ * @value_destroy_func: (allow-none): a function to free the memory allocated for the
  *     value used when removing the entry from the #GHashTable, or %NULL
  *     if you don't want to supply such a function.
  *
@@ -745,8 +745,8 @@ g_hash_table_iter_init (GHashTableIter *iter,
 /**
  * g_hash_table_iter_next:
  * @iter: an initialized #GHashTableIter
- * @key: a location to store the key, or %NULL
- * @value: a location to store the value, or %NULL
+ * @key: (allow-none): a location to store the key, or %NULL
+ * @value: (allow-none): a location to store the value, or %NULL
  *
  * Advances @iter and retrieves the key and/or value that are now
  * pointed to as a result of this advancement. If %FALSE is returned,
@@ -855,7 +855,7 @@ g_hash_table_iter_remove (GHashTableIter *iter)
  * @hash_table: our #GHashTable
  * @node_index: pointer to node to insert/replace
  * @key_hash: key hash
- * @key: key to replace with, or %NULL
+ * @key: (allow-none): key to replace with, or %NULL
  * @value: value to replace with
  * @keep_new_key: whether to replace the key in the node with @key
  * @reusing_key: whether @key was taken out of the existing node

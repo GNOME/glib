@@ -448,7 +448,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 
 /**
  * g_log_set_handler:
- * @log_domain: the log domain, or %NULL for the default ""
+ * @log_domain: (allow-none): the log domain, or %NULL for the default ""
  *     application domain
  * @log_levels: the log levels to apply the log handler for.
  *     To handle fatal and recursive messages as well, combine

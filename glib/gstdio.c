@@ -737,7 +737,7 @@ g_fopen (const gchar *filename,
  * @filename: a pathname in the GLib file name encoding (UTF-8 on Windows)
  * @mode: a string describing the mode in which the file should be 
  *   opened
- * @stream: an existing stream which will be reused, or %NULL
+ * @stream: (allow-none): an existing stream which will be reused, or %NULL
  *
  * A wrapper for the POSIX freopen() function. The freopen() function
  * opens a file and associates it with an existing stream.

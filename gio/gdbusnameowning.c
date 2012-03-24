@@ -495,10 +495,10 @@ connection_get_cb (GObject      *source_object,
  * @connection: A #GDBusConnection.
  * @name: The well-known name to own.
  * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
- * @name_acquired_handler: Handler to invoke when @name is acquired or %NULL.
- * @name_lost_handler: Handler to invoke when @name is lost or %NULL.
+ * @name_acquired_handler: (allow-none): Handler to invoke when @name is acquired or %NULL.
+ * @name_lost_handler: (allow-none): Handler to invoke when @name is lost or %NULL.
  * @user_data: User data to pass to handlers.
- * @user_data_free_func: Function for freeing @user_data or %NULL.
+ * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
  *
  * Like g_bus_own_name() but takes a #GDBusConnection instead of a
  * #GBusType.
@@ -557,11 +557,11 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * @bus_type: The type of bus to own a name on.
  * @name: The well-known name to own.
  * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
- * @bus_acquired_handler: Handler to invoke when connected to the bus of type @bus_type or %NULL.
- * @name_acquired_handler: Handler to invoke when @name is acquired or %NULL.
- * @name_lost_handler: Handler to invoke when @name is lost or %NULL.
+ * @bus_acquired_handler: (allow-none): Handler to invoke when connected to the bus of type @bus_type or %NULL.
+ * @name_acquired_handler: (allow-none): Handler to invoke when @name is acquired or %NULL.
+ * @name_lost_handler: (allow-none): Handler to invoke when @name is lost or %NULL.
  * @user_data: User data to pass to handlers.
- * @user_data_free_func: Function for freeing @user_data or %NULL.
+ * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
  *
  * Starts acquiring @name on the bus specified by @bus_type and calls
  * @name_acquired_handler and @name_lost_handler when the name is

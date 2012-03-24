@@ -482,7 +482,7 @@ g_socket_client_get_local_address (GSocketClient *client)
 /**
  * g_socket_client_set_local_address:
  * @client: a #GSocketClient.
- * @address: a #GSocketAddress, or %NULL
+ * @address: (allow-none): a #GSocketAddress, or %NULL
  *
  * Sets the local address of the socket client.
  * The sockets created by this object will bound to the

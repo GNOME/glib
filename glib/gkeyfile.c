@@ -920,7 +920,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse
  * @search_dirs: (array zero-terminated=1) (element-type filename): %NULL-terminated array of directories to search
- * @full_path: (out) (type filename): return location for a string containing the full path
+ * @full_path: (out) (type filename) (allow-none): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
@@ -993,7 +993,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
  * g_key_file_load_from_data_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse
- * @full_path: (out) (type filename): return location for a string containing the full path
+ * @full_path: (out) (type filename) (allow-none): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags 
  * @error: return location for a #GError, or %NULL
@@ -1504,7 +1504,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * g_key_file_get_keys:
  * @key_file: a #GKeyFile
  * @group_name: a group name
- * @length: (out): return location for the number of keys returned, or %NULL
+ * @length: (out) (allow-none): return location for the number of keys returned, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns all keys for the group name @group_name.  The array of
@@ -3439,7 +3439,7 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
 /**
  * g_key_file_get_comment:
  * @key_file: a #GKeyFile
- * @group_name: a group name, or %NULL
+ * @group_name: (allow-none): a group name, or %NULL
  * @key: a key
  * @error: return location for a #GError
  *

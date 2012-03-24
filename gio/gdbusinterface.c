@@ -124,7 +124,7 @@ g_dbus_interface_dup_object (GDBusInterface *interface_)
 /**
  * g_dbus_interface_set_object:
  * @interface_: An exported D-Bus interface.
- * @object: A #GDBusObject or %NULL.
+ * @object: (allow-none): A #GDBusObject or %NULL.
  *
  * Sets the #GDBusObject for @interface_ to @object.
  *

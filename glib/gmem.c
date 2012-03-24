@@ -305,7 +305,7 @@ g_try_malloc0 (gsize n_bytes)
 
 /**
  * g_try_realloc:
- * @mem: previously-allocated memory, or %NULL.
+ * @mem: (allow-none): previously-allocated memory, or %NULL.
  * @n_bytes: number of bytes to allocate.
  * 
  * Attempts to realloc @mem to a new size, @n_bytes, and returns %NULL
@@ -455,7 +455,7 @@ g_try_malloc0_n (gsize n_blocks,
 
 /**
  * g_try_realloc_n:
- * @mem: previously-allocated memory, or %NULL.
+ * @mem: (allow-none): previously-allocated memory, or %NULL.
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
  * 

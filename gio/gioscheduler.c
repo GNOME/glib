@@ -188,7 +188,7 @@ io_job_thread (gpointer data,
  * g_io_scheduler_push_job:
  * @job_func: a #GIOSchedulerJobFunc.
  * @user_data: data to pass to @job_func
- * @notify: a #GDestroyNotify for @user_data, or %NULL
+ * @notify: (allow-none): a #GDestroyNotify for @user_data, or %NULL
  * @io_priority: the <link linkend="gioscheduler">I/O priority</link> 
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
@@ -309,7 +309,7 @@ mainloop_proxy_free (MainLoopProxy *proxy)
  * @job: a #GIOSchedulerJob
  * @func: a #GSourceFunc callback that will be called in the original thread
  * @user_data: data to pass to @func
- * @notify: a #GDestroyNotify for @user_data, or %NULL
+ * @notify: (allow-none): a #GDestroyNotify for @user_data, or %NULL
  * 
  * Used from an I/O job to send a callback to be run in the thread
  * that the job was started from, waiting for the result (and thus
@@ -361,7 +361,7 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
  * @job: a #GIOSchedulerJob
  * @func: a #GSourceFunc callback that will be called in the original thread
  * @user_data: data to pass to @func
- * @notify: a #GDestroyNotify for @user_data, or %NULL
+ * @notify: (allow-none): a #GDestroyNotify for @user_data, or %NULL
  * 
  * Used from an I/O job to send a callback to be run asynchronously in
  * the thread that the job was started from. The callback will be run

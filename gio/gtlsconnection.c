@@ -730,7 +730,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 /**
  * g_tls_connection_handshake:
  * @conn: a #GTlsConnection
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a #GError, or %NULL
  *
  * Attempts a TLS handshake on @conn.
@@ -775,7 +775,7 @@ g_tls_connection_handshake (GTlsConnection   *conn,
  * @conn: a #GTlsConnection
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  * of the request.
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @callback: callback to call when the handshake is complete
  * @user_data: the data to pass to the callback function
  *

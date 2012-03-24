@@ -89,7 +89,7 @@
 /* < private >
  * GVariantSerialised:
  * @type_info: the #GVariantTypeInfo of this value
- * @data: the serialised data of this value, or %NULL
+ * @data: (allow-none): the serialised data of this value, or %NULL
  * @size: the size of this value
  *
  * A structure representing a GVariant in serialised form.  This

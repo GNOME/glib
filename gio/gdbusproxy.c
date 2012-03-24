@@ -612,7 +612,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
   /**
    * GDBusProxy::g-signal:
    * @proxy: The #GDBusProxy emitting the signal.
-   * @sender_name: The sender of the signal or %NULL if the connection is not a bus connection.
+   * @sender_name: (allow-none): The sender of the signal or %NULL if the connection is not a bus connection.
    * @signal_name: The name of the signal.
    * @parameters: A #GVariant tuple with parameters for the signal.
    *
@@ -2007,7 +2007,7 @@ initable_iface_init (GInitableIface *initable_iface)
  * @name: (allow-none): A bus name (well-known or unique) or %NULL if @connection is not a message bus connection.
  * @object_path: An object path.
  * @interface_name: A D-Bus interface name.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: Callback function to invoke when the proxy is ready.
  * @user_data: User data to pass to @callback.
  *
@@ -2177,7 +2177,7 @@ g_dbus_proxy_new_sync (GDBusConnection     *connection,
  * @name: A bus name (well-known or unique).
  * @object_path: An object path.
  * @interface_name: A D-Bus interface name.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: Callback function to invoke when the proxy is ready.
  * @user_data: User data to pass to @callback.
  *
@@ -2243,7 +2243,7 @@ g_dbus_proxy_new_for_bus_finish (GAsyncResult  *res,
  * @name: A bus name (well-known or unique).
  * @object_path: An object path.
  * @interface_name: A D-Bus interface name.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Like g_dbus_proxy_new_sync() but takes a #GBusType instead of a #GDBusConnection.
@@ -2936,8 +2936,8 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
- * @cancellable: A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
  * care about the result of the method invocation.
  * @user_data: The data to pass to @callback.
  *
@@ -3029,7 +3029,7 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously invokes the @method_name method on @proxy.
@@ -3097,8 +3097,8 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
  * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @cancellable: A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
  * care about the result of the method invocation.
  * @user_data: The data to pass to @callback.
  *
@@ -3125,7 +3125,7 @@ g_dbus_proxy_call_with_unix_fd_list (GDBusProxy          *proxy,
 /**
  * g_dbus_proxy_call_with_unix_fd_list_finish:
  * @proxy: A #GDBusProxy.
- * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
  * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_proxy_call_with_unix_fd_list().
  * @error: Return location for error or %NULL.
  *
@@ -3155,8 +3155,8 @@ g_dbus_proxy_call_with_unix_fd_list_finish (GDBusProxy    *proxy,
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
  * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Like g_dbus_proxy_call_sync() but also takes and returns #GUnixFDList objects.

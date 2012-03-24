@@ -454,7 +454,7 @@ g_volume_eject_finish (GVolume       *volume,
  * @mount_operation: (allow-none): a #GMountOperation or %NULL to
  *     avoid user interaction.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  *
  * Ejects a volume. This is an asynchronous operation, and is

@@ -222,8 +222,8 @@ g_variant_type_info_get_type_string (GVariantTypeInfo *info)
 /* < private >
  * g_variant_type_info_query:
  * @info: a #GVariantTypeInfo
- * @alignment: the location to store the alignment, or %NULL
- * @fixed_size: the location to store the fixed size, or %NULL
+ * @alignment: (allow-none): the location to store the alignment, or %NULL
+ * @fixed_size: (allow-none): the location to store the fixed size, or %NULL
  *
  * Queries @info to determine the alignment requirements and fixed size
  * (if any) of the type.
@@ -306,8 +306,8 @@ g_variant_type_info_element (GVariantTypeInfo *info)
 /* < private >
  * g_variant_type_query_element:
  * @info: a #GVariantTypeInfo for an array or maybe type
- * @alignment: the location to store the alignment, or %NULL
- * @fixed_size: the location to store the fixed size, or %NULL
+ * @alignment: (allow-none): the location to store the alignment, or %NULL
+ * @fixed_size: (allow-none): the location to store the fixed size, or %NULL
  *
  * Returns the alignment requires and fixed size (if any) for the
  * element type of the array.  This call is a convenience wrapper around

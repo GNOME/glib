@@ -218,9 +218,9 @@ g_dbus_message_new (void)
 
 /**
  * g_dbus_message_new_method_call:
- * @name: A valid D-Bus name or %NULL.
+ * @name: (allow-none): A valid D-Bus name or %NULL.
  * @path: A valid object path.
- * @interface_: A valid D-Bus interface name or %NULL.
+ * @interface_: (allow-none): A valid D-Bus interface name or %NULL.
  * @method: A valid method name.
  *
  * Creates a new #GDBusMessage for a method call.
@@ -636,7 +636,7 @@ g_dbus_message_get_header (GDBusMessage             *message,
  * g_dbus_message_set_header:
  * @message: A #GDBusMessage.
  * @header_field: A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
- * @value: A #GVariant to set the header field or %NULL to clear the header field.
+ * @value: (allow-none): A #GVariant to set the header field or %NULL to clear the header field.
  *
  * Sets a header field on @message.
  *

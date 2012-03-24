@@ -1891,7 +1891,7 @@ g_strncasecmp (const gchar *s1,
 /**
  * g_strdelimit:
  * @string: the string to convert
- * @delimiters: a string containing the current delimiters, or %NULL
+ * @delimiters: (allow-none): a string containing the current delimiters, or %NULL
  *     to use the standard delimiters defined in #G_STR_DELIMITERS
  * @new_delimiter: the new delimiter character
  *
@@ -2441,7 +2441,7 @@ g_strdupv (gchar **str_array)
 
 /**
  * g_strjoinv:
- * @separator: a string to insert between each of the strings, or %NULL
+ * @separator: (allow-none): a string to insert between each of the strings, or %NULL
  * @str_array: a %NULL-terminated array of strings to join
  *
  * Joins a number of strings together to form one long string, with the
@@ -2493,7 +2493,7 @@ g_strjoinv (const gchar  *separator,
 
 /**
  * g_strjoin:
- * @separator: a string to insert between each of the strings, or %NULL
+ * @separator: (allow-none): a string to insert between each of the strings, or %NULL
  * @...: a %NULL-terminated list of strings to join
  *
  * Joins a number of strings together to form one long string, with the

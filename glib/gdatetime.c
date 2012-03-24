@@ -1449,9 +1449,9 @@ g_date_time_equal (gconstpointer dt1,
 /**
  * g_date_time_get_ymd:
  * @datetime: a #GDateTime.
- * @year: (out): the return location for the gregorian year, or %NULL.
- * @month: (out): the return location for the month of the year, or %NULL.
- * @day: (out): the return location for the day of the month, or %NULL.
+ * @year: (out) (allow-none): the return location for the gregorian year, or %NULL.
+ * @month: (out) (allow-none): the return location for the month of the year, or %NULL.
+ * @day: (out) (allow-none): the return location for the day of the month, or %NULL.
  *
  * Retrieves the Gregorian day, month, and year of a given #GDateTime.
  *

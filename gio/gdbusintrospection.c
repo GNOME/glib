@@ -1838,7 +1838,7 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
 
 /**
  * g_dbus_annotation_info_lookup:
- * @annotations: (array zero-terminated=1): A %NULL-terminated array of annotations or %NULL.
+ * @annotations: (array zero-terminated=1) (allow-none): A %NULL-terminated array of annotations or %NULL.
  * @name: The name of the annotation to look up.
  *
  * Looks up the value of an annotation.

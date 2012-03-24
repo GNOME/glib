@@ -121,7 +121,7 @@ g_initable_init (GInitable     *initable,
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to
  *    ignore.
- * @first_property_name: the name of the first property, or %NULL if no
+ * @first_property_name: (allow-none): the name of the first property, or %NULL if no
  *     properties
  * @...:  the value if the first property, followed by and other property
  *    value pairs, and ended by %NULL.

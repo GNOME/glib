@@ -184,7 +184,7 @@ g_strip_context (const gchar *msgid,
 
 /**
  * g_dpgettext:
- * @domain: the translation domain to use, or %NULL to use
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
  * @msgctxtid: a combined message context and message id, separated
  *   by a \004 character
@@ -248,7 +248,7 @@ g_dpgettext (const gchar *domain,
  */
 /**
  * g_dpgettext2:
- * @domain: the translation domain to use, or %NULL to use
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
  * @context: the message context
  * @msgid: the message
@@ -350,7 +350,7 @@ _g_dgettext_should_translate (void)
 
 /**
  * g_dgettext:
- * @domain: the translation domain to use, or %NULL to use
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
  * @msgid: message to translate
  *
@@ -428,7 +428,7 @@ g_dcgettext (const gchar *domain,
 
 /**
  * g_dngettext:
- * @domain: the translation domain to use, or %NULL to use
+ * @domain: (allow-none): the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
  * @msgid: message to translate
  * @msgid_plural: plural form of the message

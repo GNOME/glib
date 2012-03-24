@@ -650,7 +650,7 @@ g_dbus_error_new_for_dbus_error (const gchar *dbus_error_name,
  * @error: A pointer to a #GError or %NULL.
  * @dbus_error_name: D-Bus error name.
  * @dbus_error_message: D-Bus error message.
- * @format: printf()-style format to prepend to @dbus_error_message or %NULL.
+ * @format: (allow-none): printf()-style format to prepend to @dbus_error_message or %NULL.
  * @...: Arguments for @format.
  *
  * Does nothing if @error is %NULL. Otherwise sets *@error to
@@ -695,7 +695,7 @@ g_dbus_error_set_dbus_error (GError      **error,
  * @error: A pointer to a #GError or %NULL.
  * @dbus_error_name: D-Bus error name.
  * @dbus_error_message: D-Bus error message.
- * @format: printf()-style format to prepend to @dbus_error_message or %NULL.
+ * @format: (allow-none): printf()-style format to prepend to @dbus_error_message or %NULL.
  * @var_args: Arguments for @format.
  *
  * Like g_dbus_error_set_dbus_error() but intended for language bindings.

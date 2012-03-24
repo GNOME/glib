@@ -507,7 +507,7 @@ g_error_copy (const GError *error)
 
 /**
  * g_error_matches:
- * @error: a #GError or %NULL
+ * @error: (allow-none): a #GError or %NULL
  * @domain: an error domain
  * @code: an error code
  *
@@ -533,7 +533,7 @@ g_error_matches (const GError *error,
 
 /**
  * g_set_error:
- * @err: a return location for a #GError, or %NULL
+ * @err: (allow-none): a return location for a #GError, or %NULL
  * @domain: error domain
  * @code: error code
  * @format: printf()-style format
@@ -568,7 +568,7 @@ g_set_error (GError      **err,
 
 /**
  * g_set_error_literal:
- * @err: a return location for a #GError, or %NULL
+ * @err: (allow-none): a return location for a #GError, or %NULL
  * @domain: error domain
  * @code: error code
  * @message: error message
@@ -662,7 +662,7 @@ g_error_add_prefix (gchar       **string,
 
 /**
  * g_prefix_error:
- * @err: a return location for a #GError, or %NULL
+ * @err: (allow-none): a return location for a #GError, or %NULL
  * @format: printf()-style format string
  * @...: arguments to @format
  *

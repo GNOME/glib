@@ -177,7 +177,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * g_settings_backend_watch:
  * @backend: a #GSettingsBackend
  * @target: the GObject (typically GSettings instance) to call back to
- * @context: a #GMainContext, or %NULL
+ * @context: (allow-none): a #GMainContext, or %NULL
  * ...: callbacks...
  *
  * Registers a new watch on a #GSettingsBackend.

@@ -1135,7 +1135,7 @@ g_application_get_is_remote (GApplication *application)
 /**
  * g_application_register:
  * @application: a #GApplication
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a NULL #GError, or %NULL
  *
  * Attempts registration of the application.
@@ -1682,7 +1682,7 @@ g_application_get_default (void)
 
 /**
  * g_application_set_default:
- * @application: the application to set as default, or %NULL
+ * @application: (allow-none): the application to set as default, or %NULL
  *
  * Sets or unsets the default application for the process, as returned
  * by g_application_get_default().

@@ -2695,7 +2695,7 @@ g_socket_send_with_blocking (GSocket       *socket,
 /**
  * g_socket_send_to:
  * @socket: a #GSocket
- * @address: a #GSocketAddress, or %NULL
+ * @address: (allow-none): a #GSocketAddress, or %NULL
  * @buffer: (array length=size) (element-type guint8): the buffer
  *     containing the data to send.
  * @size: the number of bytes to send
@@ -3584,7 +3584,7 @@ g_socket_condition_timed_wait (GSocket       *socket,
 /**
  * g_socket_send_message:
  * @socket: a #GSocket
- * @address: a #GSocketAddress, or %NULL
+ * @address: (allow-none): a #GSocketAddress, or %NULL
  * @vectors: (array length=num_vectors): an array of #GOutputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
  * @messages: (array length=num_messages) (allow-none): a pointer to an

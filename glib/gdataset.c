@@ -598,7 +598,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_id_set_data_full:
  * @datalist: a datalist.
  * @key_id: the #GQuark to identify the data element.
- * @data: the data element or %NULL to remove any previous element
+ * @data: (allow-none): the data element or %NULL to remove any previous element
  *        corresponding to @key_id.
  * @destroy_func: the function to call when the data element is
  *                removed. This function will be called with the data
@@ -615,7 +615,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_set_data_full:
  * @dl: a datalist.
  * @k: the string to identify the data element.
- * @d: the data element, or %NULL to remove any previous element
+ * @d: (allow-none): the data element, or %NULL to remove any previous element
  *     corresponding to @k.
  * @f: the function to call when the data element is removed. This
  *     function will be called with the data element and can be used to
@@ -629,7 +629,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_id_set_data:
  * @dl: a datalist.
  * @q: the #GQuark to identify the data element.
- * @d: the data element, or %NULL to remove any previous element
+ * @d: (allow-none): the data element, or %NULL to remove any previous element
  *     corresponding to @q.
  *
  * Sets the data corresponding to the given #GQuark id. Any previous
@@ -640,7 +640,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_set_data:
  * @dl: a datalist.
  * @k: the string to identify the data element.
- * @d: the data element, or %NULL to remove any previous element
+ * @d: (allow-none): the data element, or %NULL to remove any previous element
  *     corresponding to @k.
  *
  * Sets the data element corresponding to the given string identifier.

@@ -597,7 +597,7 @@ g_variant_type_string_is_valid (const gchar *type_string)
 
 /**
  * g_variant_type_free:
- * @type: a #GVariantType, or %NULL
+ * @type: (allow-none): a #GVariantType, or %NULL
  *
  * Frees a #GVariantType that was allocated with
  * g_variant_type_copy(), g_variant_type_new() or one of the container

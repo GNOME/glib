@@ -249,8 +249,8 @@ call_destroy_notify_data_free (CallDestroyNotifyData *data)
 
 /*
  * call_destroy_notify: <internal>
- * @context: A #GMainContext or %NULL.
- * @callback: A #GDestroyNotify or %NULL.
+ * @context: (allow-none): A #GMainContext or %NULL.
+ * @callback: (allow-none): A #GDestroyNotify or %NULL.
  * @user_data: Data to pass to @callback.
  *
  * Schedules @callback to run in @context.
@@ -1209,7 +1209,7 @@ flush_in_thread_func (GSimpleAsyncResult *res,
 /**
  * g_dbus_connection_flush:
  * @connection: A #GDBusConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
  *            satisfied or %NULL if you don't care about the result.
  * @user_data: The data to pass to @callback.
@@ -1294,7 +1294,7 @@ g_dbus_connection_flush_finish (GDBusConnection  *connection,
 /**
  * g_dbus_connection_flush_sync:
  * @connection: A #GDBusConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously flushes @connection. The calling thread is blocked
@@ -1408,7 +1408,7 @@ schedule_closed_unlocked (GDBusConnection *connection,
 /**
  * g_dbus_connection_close:
  * @connection: A #GDBusConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
  *            satisfied or %NULL if you don't care about the result.
  * @user_data: The data to pass to @callback.
@@ -1522,7 +1522,7 @@ sync_close_cb (GObject *source_object,
 /**
  * g_dbus_connection_close_sync:
  * @connection: A #GDBusConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously closees @connection. The calling thread is blocked
@@ -1985,7 +1985,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  *                timeout or %G_MAXINT for no timeout.
  * @out_serial: (out) (allow-none): Return location for serial number assigned
  *              to @message when sending it or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
  *            satisfied or %NULL if you don't care about the result.
  * @user_data: The data to pass to @callback.
@@ -2120,7 +2120,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  *                timeout or %G_MAXINT for no timeout.
  * @out_serial: (out) (allow-none): Return location for serial number assigned
  *              to @message when sending it or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously sends @message to the peer represented by @connection
@@ -2665,7 +2665,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * @guid: (allow-none): The GUID to use if a authenticating as a server or %NULL.
  * @flags: Flags describing how to make the connection.
  * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
  *
@@ -2753,7 +2753,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * @guid: (allow-none): The GUID to use if a authenticating as a server or %NULL.
  * @flags: Flags describing how to make the connection.
  * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously sets up a D-Bus connection for exchanging D-Bus messages
@@ -2803,7 +2803,7 @@ g_dbus_connection_new_sync (GIOStream             *stream,
  * @address: A D-Bus address.
  * @flags: Flags describing how to make the connection.
  * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
  *
@@ -2888,7 +2888,7 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
  * @address: A D-Bus address.
  * @flags: Flags describing how to make the connection.
  * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously connects and sets up a D-Bus client connection for
@@ -5576,7 +5576,7 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds, -1 to use the default
  *                timeout or %G_MAXINT for no timeout.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
  *            satisfied or %NULL if you don't care about the result of the
  *            method invocation.
@@ -5678,7 +5678,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds, -1 to use the default
  *                timeout or %G_MAXINT for no timeout.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously invokes the @method_name method on the
@@ -5758,7 +5758,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
  * @timeout_msec: The timeout in milliseconds, -1 to use the default
  *                timeout or %G_MAXINT for no timeout.
  * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
  *            satisfied or %NULL if you don't * care about the result of the
  *            method invocation.
@@ -5791,7 +5791,7 @@ g_dbus_connection_call_with_unix_fd_list (GDBusConnection        *connection,
 /**
  * g_dbus_connection_call_with_unix_fd_list_finish:
  * @connection: A #GDBusConnection.
- * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
  * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call_with_unix_fd_list().
  * @error: Return location for error or %NULL.
  *
@@ -5825,8 +5825,8 @@ g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
  * @timeout_msec: The timeout in milliseconds, -1 to use the default
  *                timeout or %G_MAXINT for no timeout.
  * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
- * @cancellable: A #GCancellable or %NULL.
+ * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Like g_dbus_connection_call_sync() but also takes and returns #GUnixFDList objects.
@@ -6771,7 +6771,7 @@ get_uninitialized_connection (GBusType       bus_type,
 /**
  * g_bus_get_sync:
  * @bus_type: A #GBusType.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously connects to the message bus specified by @bus_type.
@@ -6848,7 +6848,7 @@ bus_get_async_initable_cb (GObject      *source_object,
 /**
  * g_bus_get:
  * @bus_type: A #GBusType.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
  *

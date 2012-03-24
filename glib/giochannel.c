@@ -1653,8 +1653,8 @@ reencode:
  *              line terminator. This data should be freed with g_free()
  *              when no longer needed. This is a nul-terminated string. 
  *              If a @length of zero is returned, this will be %NULL instead.
- * @length: location to store length of the read data, or %NULL
- * @terminator_pos: location to store position of line terminator, or %NULL
+ * @length: (allow-none): location to store length of the read data, or %NULL
+ * @terminator_pos: (allow-none): location to store position of line terminator, or %NULL
  * @error: A location to return an error of type #GConvertError
  *         or #GIOChannelError
  *
@@ -1704,7 +1704,7 @@ g_io_channel_read_line (GIOChannel  *channel,
  * @buffer: a #GString into which the line will be written.
  *          If @buffer already contains data, the old data will
  *          be overwritten.
- * @terminator_pos: location to store position of line terminator, or %NULL
+ * @terminator_pos: (allow-none): location to store position of line terminator, or %NULL
  * @error: a location to store an error of type #GConvertError
  *         or #GIOChannelError
  *

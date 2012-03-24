@@ -329,11 +329,11 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
 
 /**
  * g_memory_output_stream_new: (skip)
- * @data: pointer to a chunk of memory to use, or %NULL
+ * @data: (allow-none): pointer to a chunk of memory to use, or %NULL
  * @size: the size of @data
- * @realloc_function: a function with realloc() semantics (like g_realloc())
+ * @realloc_function: (allow-none): a function with realloc() semantics (like g_realloc())
  *     to be called when @data needs to be grown, or %NULL
- * @destroy_function: a function to be called on @data when the stream is
+ * @destroy_function: (allow-none): a function to be called on @data when the stream is
  *     finalized, or %NULL
  *
  * Creates a new #GMemoryOutputStream.

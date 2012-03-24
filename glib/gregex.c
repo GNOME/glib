@@ -779,7 +779,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
 
 /**
  * g_match_info_expand_references:
- * @match_info: a #GMatchInfo or %NULL
+ * @match_info: (allow-none): a #GMatchInfo or %NULL
  * @string_to_expand: the string to expand
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
