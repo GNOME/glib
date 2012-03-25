@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-25 20:54+0000\n"
-"PO-Revision-Date: 2012-03-25 12:41+0530\n"
+"PO-Revision-Date: 2012-03-25 13:01+0530\n"
 "Last-Translator: s\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -339,9 +339,7 @@ msgstr "'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋ�
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr ""
-""
-"'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "'%s' ಕಡತವನ್ನು ಬರೆಯಲು ತೆರೆಯುವಲ್ಲಿ ದೋಷ:"
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
@@ -665,25 +663,23 @@ msgstr "%s ಆಯ್ಕೆಯ ಶಬ್ಧಲಕ್ಷಣವನ್ನು ಹೇ�
 
 #: ../gio/gdbus-tool.c:348
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "ವ್ಯವಸ್ಥೆಯ ಬಸ್‌ಗೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸು"
 
 #: ../gio/gdbus-tool.c:349
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "ಅಧಿವೇಶನದ ಬಸ್‌ಗೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸು"
 
 #: ../gio/gdbus-tool.c:350
-#, fuzzy
 msgid "Connect to given D-Bus address"
-msgstr "ಸಂಪರ್ಕವು ಪ್ರಗತಿಯಲ್ಲಿದೆ"
+msgstr "ಒದಗಿಸಲಾದ D-ಬಸ್ ವಿಳಾಸ ಬಸ್‌ಗೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸು"
 
 #: ../gio/gdbus-tool.c:360
-#, fuzzy
 msgid "Connection Endpoint Options:"
-msgstr "ಸಂಪರ್ಕವು ಪ್ರಗತಿಯಲ್ಲಿದೆ"
+msgstr "ಸಂಪರ್ಕದ ಅಂತ್ಯಬಿಂದುವಿನ ಆಯ್ಕೆಗಳು:"
 
 #: ../gio/gdbus-tool.c:361
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "ಸಂಪರ್ಕದ ಅಂತ್ಯಬಿಂದುವನ್ನು ಸೂಚಿಸುವ ಆಯ್ಕೆಗಳು"
 
 #: ../gio/gdbus-tool.c:383
 #, c-format
