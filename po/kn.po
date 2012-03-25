@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-02-25 20:54+0000\n"
-"PO-Revision-Date: 2012-03-25 00:31+0530\n"
+"PO-Revision-Date: 2012-03-25 12:41+0530\n"
 "Last-Translator: s\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,9 +41,8 @@ msgid "Operation was cancelled"
 msgstr "ಕಾರ್ಯವು ರದ್ದುಗೊಂಡಿದೆ"
 
 #: ../gio/gcharsetconverter.c:263
-#, fuzzy
 msgid "Invalid object, not initialized"
-msgstr "ಅಮಾನ್ಯವಾದ ಸಾಕೆಟ್, ಆರಂಭಿಸಲಾಗಿಲ್ಲ"
+msgstr "ಅಮಾನ್ಯವಾದ ವಸ್ತು, ಆರಂಭಿಸಲಾಗಿಲ್ಲ"
 
 #: ../gio/gcharsetconverter.c:284 ../gio/gcharsetconverter.c:312
 #, fuzzy
@@ -51,9 +50,8 @@ msgid "Incomplete multibyte sequence in input"
 msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ ಅನುಕ್ರಮ ಅಮಾನ್ಯವಾಗಿದೆ"
 
 #: ../gio/gcharsetconverter.c:318 ../gio/gcharsetconverter.c:327
-#, fuzzy
 msgid "Not enough space in destination"
-msgstr "ಸಾಕೆಟ್‌ ವಿಳಾಸಕ್ಕಾಗಿ ಸಾಕಷ್ಟು ಸ್ಥಳವಿಲ್ಲ"
+msgstr "ಗುರಿಯಲ್ಲಿ ಸಾಕಷ್ಟು ಸ್ಥಳವಿಲ್ಲ"
 
 #: ../gio/gcharsetconverter.c:345 ../gio/gdatainputstream.c:854
 #: ../gio/gdatainputstream.c:1294 ../glib/gconvert.c:768
@@ -100,11 +98,11 @@ msgstr "%s ಬಗೆ"
 
 #: ../gio/gcredentials.c:273 ../gio/gcredentials.c:495
 msgid "GCredentials is not implemented on this OS"
-msgstr ""
+msgstr "ಈ OS ನಲ್ಲಿ GCredentials ಅನ್ನು ಅಳವಡಿಸಲಾಗಿಲ್ಲ"
 
 #: ../gio/gcredentials.c:447
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "ನಿಮ್ಮ ಪ್ಲಾಟ್‌ಫಾರ್ಮಿಗೆ GCredentials ಬೆಂಬಲವಿಲ್ಲ"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -112,9 +110,9 @@ msgstr "ಸ್ಟ್ರೀಮ್‍ನ ಅನಿರೀಕ್ಷಿತ ಕ್ಷ�
 
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "ಬೆಂಬಲವಿರದ ಸಾಕೆಟ್ ವಿಳಾಸ"
+msgstr "ಬೆಂಬಲವಿರದ `%s' ಕೀಲಿ, `%s' ಎಂಬ ವಿಳಾಸ ನಮೂದಿನಲ್ಲಿ"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
@@ -130,12 +128,12 @@ msgstr ""
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "`%s' ಎಂಬ ವಿಳಾಸದಲ್ಲಿ ದೋಷ - ಸಂಪರ್ಕಸ್ಥಾನವು ಗುಣವಿಶೇಷವು ತಪ್ಪಾಗಿದೆ"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
-msgstr ""
+msgstr "`%s' ಎಂಬ ವಿಳಾಸದಲ್ಲಿ ದೋಷ - ಕುಲದ ಗುಣವಿಶೇಷವು ತಪ್ಪಾಗಿದೆ"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
@@ -166,22 +164,21 @@ msgstr ""
 #: ../gio/gdbusaddress.c:595
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr ""
+msgstr "`%s' ಎಂಬ ವಿಳಾಸದಲ್ಲಿ ದೋಷ - ಆತಿಥೇಯ ಗುಣವಿಶೇಷವು ಇಲ್ಲ ಅಥವ ತಪ್ಪಾಗಿದೆ"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr ""
+msgstr "`%s' ಎಂಬ ವಿಳಾಸದಲ್ಲಿ ದೋಷ - ಸಂಪರ್ಕಸ್ಥಾನ ಗುಣವಿಶೇಷವು ಇಲ್ಲ ಅಥವ ತಪ್ಪಾಗಿದೆ"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr ""
+msgstr "`%s' ಎಂಬ ವಿಳಾಸದಲ್ಲಿ ದೋಷ - noncefile ಗುಣವಿಶೇಷವು ಇಲ್ಲ ಅಥವ ತಪ್ಪಾಗಿದೆ"
 
 #: ../gio/gdbusaddress.c:644
-#, fuzzy
 msgid "Error auto-launching: "
-msgstr "ಸಂಪರ್ಕಸಾಧಿಸುವಲ್ಲಿ ದೋಷ: "
+msgstr "ಸ್ವಯಂ-ಆರಂಭಗೊಳಿಕೆ ದೋಷ: "
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
@@ -275,15 +272,17 @@ msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "Error when getting information for directory `%s': %s"
-msgstr "ಕಡತ ಕೋಶ '%s' ವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "'%s' ಎಂಬ ಕಡತ ಕೋಶಕ್ಕಾಗಿ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"`%s' ಎಂಬ ಕೋಶದ ಅನುಮತಿಗಳು ತಪ್ಪಾಗಿವೆ. 0700 ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, 0%o "
+"ಕಂಡುಬಂದಿದೆ"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -291,9 +290,9 @@ msgid "Error creating directory `%s': %s"
 msgstr "%s ಎಂಬ ಕಡತ ಕೋಶವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for reading: "
-msgstr "'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "'%s' ಕೀರಿಂಗ್ ಅನ್ನು ಓದಲು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
@@ -318,14 +317,14 @@ msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file `%s': %s"
-msgstr "'%s' ಕಡತವನ್ನು ಓದುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "'%s' ಎಂಬ ಹಳೆಯ ಕಡತವನ್ನು ಅಳಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock file `%s': %s"
-msgstr "'%s' ಕಡತವನ್ನು ಓದುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "'%s' ಎಂಬ ಲಾಕ್ ಕಡತವನ್ನು ರಚಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, fuzzy, c-format
@@ -338,9 +337,11 @@ msgid "Error unlinking lock file `%s': %s"
 msgstr "'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr "'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
+msgstr ""
+""
+"'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
@@ -348,9 +349,8 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
 
 #: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2402
-#, fuzzy
 msgid "The connection is closed"
-msgstr "ಸೇರಿಸಲಾದ ಸಾಕೆಟ್ ಅನ್ನು ಮುಚ್ಚಲಾಗಿದೆ"
+msgstr "ಸಂಪರ್ಕವನ್ನು ಮುಚ್ಚಲಾಗಿದೆ"
 
 #: ../gio/gdbusconnection.c:1879
 msgid "Timeout was reached"
@@ -375,36 +375,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4192
 #, c-format
 msgid "No such property `%s'"
-msgstr ""
+msgstr "`%s' ಅಂತಹ ಯಾವುದೆ ಗುಣವಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4204
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not readable"
-msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
+msgstr "%s ಎಂಬ ಗುಣವನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4215
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not writable"
-msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
+msgstr "`%s' ಎಂಬ ಗುಣವನ್ನು ಬರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4285 ../gio/gdbusconnection.c:6131
 #, c-format
 msgid "No such interface `%s'"
-msgstr ""
+msgstr "`%s' ಅಂತಹ ಯಾವುದೆ ಸಂಪರ್ಕಸಾಧನವಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4469
 msgid "No such interface"
-msgstr ""
+msgstr "ಅಂತಹ ಯಾವುದೆ ಸಂಪರ್ಕಸಾಧನವಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4690 ../gio/gdbusconnection.c:6637
 #, c-format
 msgid "No such interface `%s' on object at path %s"
-msgstr ""
+msgstr "`%s' ಅಂತಹ ಯಾವುದೆ ಸಂಪರ್ಕಸಾಧನವಿಲ್ಲ (%s ಮಾರ್ಗದಲ್ಲಿನ ವಸ್ತುವಿನಲ್ಲಿ)"
 
 #: ../gio/gdbusconnection.c:4742
 #, c-format
 msgid "No such method `%s'"
-msgstr ""
+msgstr "`%s' ಅಂತಹ ಯಾವುದೆ ವಿಧಾನವಿಲ್ಲ"
 
 #: ../gio/gdbusconnection.c:4773
 #, c-format
@@ -433,7 +433,7 @@ msgstr "ಆಲಿಸುವುವುದನ್ನು ಈಗಾಗಲೆ ಮುಚ�
 
 #: ../gio/gdbusmessage.c:859
 msgid "type is INVALID"
-msgstr ""
+msgstr "ಬಗೆಯು INVALID ಆಗಿದೆ"
 
 #: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
@@ -591,6 +591,8 @@ msgstr ""
 #: ../gio/gdbusprivate.c:2065
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr ""
+"/var/lib/dbus/machine-id ಅನ್ನು ಅಥವ /etc/machine-id ಅನ್ನು ಲೋಡ್ ಮಾಡಲು "
+"ಸಾಧ್ಯವಾಗಿಲ್ಲ: "
 
 #: ../gio/gdbusproxy.c:1624
 #, c-format
