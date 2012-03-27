@@ -227,7 +227,7 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
    * Emitted when @file has been changed.
    *
    * If using #G_FILE_MONITOR_SEND_MOVED flag and @event_type is
-   * #G_FILE_MONITOR_SEND_MOVED, @file will be set to a #GFile containing the
+   * #G_FILE_MONITOR_EVENT_MOVED, @file will be set to a #GFile containing the
    * old path, and @other_file will be set to a #GFile containing the new path.
    *
    * In all the other cases, @other_file will be set to #NULL.
