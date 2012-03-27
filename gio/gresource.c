@@ -116,10 +116,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * the resource data.
  *
  * There are two forms of the generated source, the default version uses the compiler support for constructor
- * and destructor functions (where availible) to automatically create and register the #GResource on startup
+ * and destructor functions (where available) to automatically create and register the #GResource on startup
  * or library load time. If you pass --manual-register two functions to register/unregister the resource is instead
  * created. This requires an explicit initialization call in your application/library, but it works on all platforms,
- * even on the minor ones where this is not availible. (Constructor support is availible for at least Win32, MacOS and Linux.)
+ * even on the minor ones where this is not available. (Constructor support is available for at least Win32, MacOS and Linux.)
  *
  * Note that resource data can point directly into the data segment of e.g. a library, so if you are unloading libraries
  * during runtime you need to be very careful with keeping around pointers to data from a resource, as this goes away

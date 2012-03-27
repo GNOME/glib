@@ -2067,7 +2067,7 @@ g_get_monotonic_time (void)
    *    32bit msec counter, updated each ~15msec, wraps in ~50 days
    * - GetTickCount64 (GTC64)
    *    Same as GetTickCount, but extended to 64bit, so no wrap
-   *    Only availible in Vista or later
+   *    Only available in Vista or later
    * - timeGetTime (TGT)
    *    similar to GetTickCount by default: 15msec, 50 day wrap.
    *    available in winmm.dll (thus known as the multimedia timers)
@@ -2094,7 +2094,7 @@ g_get_monotonic_time (void)
    * However this seems quite complicated, so we're not doing this right now.
    *
    * The approach we take instead is to use the TGT timer, extending it to 64bit
-   * either by using the GTC64 value, or if that is not availible, a process local
+   * either by using the GTC64 value, or if that is not available, a process local
    * time epoch that we increment when we detect a timer wrap (assumes that we read
    * the time at least once every 50 days).
    *
