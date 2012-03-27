@@ -1834,7 +1834,7 @@ hostname_validate (const char *hostname)
 /**
  * g_filename_from_uri:
  * @uri: a uri describing a filename (escaped, encoded in ASCII).
- * @hostname: (allow-none): Location to store hostname for the URI, or %NULL.
+ * @hostname: (out) (allow-none): Location to store hostname for the URI, or %NULL.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1843,8 +1843,8 @@ hostname_validate (const char *hostname)
  * Converts an escaped ASCII-encoded URI to a local filename in the
  * encoding used for filenames. 
  * 
- * Return value: a newly-allocated string holding the resulting
- *               filename, or %NULL on an error.
+ * Return value: (type filename): a newly-allocated string holding
+ *               the resulting filename, or %NULL on an error.
  **/
 gchar *
 g_filename_from_uri (const gchar *uri,
