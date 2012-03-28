@@ -23,8 +23,10 @@
 #include "config.h"
 #include "gbufferedoutputstream.h"
 #include "goutputstream.h"
+#include "gseekable.h"
 #include "gsimpleasyncresult.h"
 #include "string.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 /**
@@ -105,9 +107,25 @@ static gboolean g_buffered_output_stream_close_finish (GOutputStream        *str
                                                        GAsyncResult         *result,
                                                        GError              **error);
 
-G_DEFINE_TYPE (GBufferedOutputStream,
-               g_buffered_output_stream,
-               G_TYPE_FILTER_OUTPUT_STREAM)
+static void     g_buffered_output_stream_seekable_iface_init (GSeekableIface  *iface);
+static goffset  g_buffered_output_stream_tell                (GSeekable       *seekable);
+static gboolean g_buffered_output_stream_can_seek            (GSeekable       *seekable);
+static gboolean g_buffered_output_stream_seek                (GSeekable       *seekable,
+							      goffset          offset,
+							      GSeekType        type,
+							      GCancellable    *cancellable,
+							      GError         **error);
+static gboolean g_buffered_output_stream_can_truncate        (GSeekable       *seekable);
+static gboolean g_buffered_output_stream_truncate            (GSeekable       *seekable,
+							      goffset          offset,
+							      GCancellable    *cancellable,
+							      GError         **error);
+
+G_DEFINE_TYPE_WITH_CODE (GBufferedOutputStream,
+			 g_buffered_output_stream,
+			 G_TYPE_FILTER_OUTPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+						g_buffered_output_stream_seekable_iface_init))
 
 
 static void
@@ -333,6 +351,16 @@ g_buffered_output_stream_init (GBufferedOutputStream *stream)
 
 }
 
+static void
+g_buffered_output_stream_seekable_iface_init (GSeekableIface *iface)
+{
+  iface->tell         = g_buffered_output_stream_tell;
+  iface->can_seek     = g_buffered_output_stream_can_seek;
+  iface->seek         = g_buffered_output_stream_seek;
+  iface->can_truncate = g_buffered_output_stream_can_truncate;
+  iface->truncate_fn  = g_buffered_output_stream_truncate;
+}
+
 /**
  * g_buffered_output_stream_new:
  * @base_stream: a #GOutputStream.
@@ -499,6 +527,104 @@ g_buffered_output_stream_close (GOutputStream  *stream,
     }
 
   return res;
+}
+
+static goffset
+g_buffered_output_stream_tell (GSeekable *seekable)
+{
+  GBufferedOutputStream        *bstream;
+  GBufferedOutputStreamPrivate *priv;
+  GOutputStream *base_stream;
+  GSeekable    *base_stream_seekable;
+  goffset base_offset;
+  
+  bstream = G_BUFFERED_OUTPUT_STREAM (seekable);
+  priv = bstream->priv;
+
+  base_stream = G_FILTER_OUTPUT_STREAM (seekable)->base_stream;
+  if (!G_IS_SEEKABLE (base_stream))
+    return 0;
+
+  base_stream_seekable = G_SEEKABLE (base_stream);
+  
+  base_offset = g_seekable_tell (base_stream_seekable);
+  return base_offset + priv->pos;
+}
+
+static gboolean
+g_buffered_output_stream_can_seek (GSeekable *seekable)
+{
+  GOutputStream *base_stream;
+  
+  base_stream = G_FILTER_OUTPUT_STREAM (seekable)->base_stream;
+  return G_IS_SEEKABLE (base_stream) && g_seekable_can_seek (G_SEEKABLE (base_stream));
+}
+
+static gboolean
+g_buffered_output_stream_seek (GSeekable     *seekable,
+			       goffset        offset,
+			       GSeekType      type,
+			       GCancellable  *cancellable,
+			       GError       **error)
+{
+  GBufferedOutputStream *bstream;
+  GOutputStream *base_stream;
+  GSeekable *base_stream_seekable;
+  gboolean flushed;
+
+  bstream = G_BUFFERED_OUTPUT_STREAM (seekable);
+
+  base_stream = G_FILTER_OUTPUT_STREAM (seekable)->base_stream;
+  if (!G_IS_SEEKABLE (base_stream))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Seek not supported on base stream"));
+      return FALSE;
+    }
+
+  base_stream_seekable = G_SEEKABLE (base_stream);
+  flushed = flush_buffer (bstream, cancellable, error);
+  if (!flushed)
+    return FALSE;
+
+  return g_seekable_seek (base_stream_seekable, offset, type, cancellable, error);
+}
+
+static gboolean
+g_buffered_output_stream_can_truncate (GSeekable *seekable)
+{
+  GOutputStream *base_stream;
+  
+  base_stream = G_FILTER_OUTPUT_STREAM (seekable)->base_stream;
+  return G_IS_SEEKABLE (base_stream) && g_seekable_can_truncate (G_SEEKABLE (base_stream));
+}
+
+static gboolean
+g_buffered_output_stream_truncate (GSeekable     *seekable,
+				   goffset        offset,
+				   GCancellable  *cancellable,
+				   GError       **error)
+{
+  GBufferedOutputStream        *bstream;
+  GOutputStream *base_stream;
+  GSeekable *base_stream_seekable;
+  gboolean flushed;
+
+  bstream = G_BUFFERED_OUTPUT_STREAM (seekable);
+  base_stream = G_FILTER_OUTPUT_STREAM (seekable)->base_stream;
+  if (!G_IS_SEEKABLE (base_stream))
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           _("Truncate not supported on base stream"));
+      return FALSE;
+    }
+
+  base_stream_seekable = G_SEEKABLE (base_stream);
+
+  flushed = flush_buffer (bstream, cancellable, error);
+  if (!flushed)
+    return FALSE;
+  return g_seekable_truncate (base_stream_seekable, offset, cancellable, error);
 }
 
 /* ************************** */
