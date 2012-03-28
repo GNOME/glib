@@ -4176,6 +4176,77 @@ test_check_format_string (void)
   g_variant_unref (value);
 }
 
+static void
+verify_gvariant_checksum (const gchar  *sha256,
+			  GVariant     *v)
+	     
+{
+  gchar *checksum;
+  checksum = g_compute_checksum_for_data (G_CHECKSUM_SHA256,
+					  g_variant_get_data (v),
+					  g_variant_get_size (v));
+  g_assert_cmpstr (sha256, ==, checksum);
+  g_free (checksum);
+}
+
+static void
+verify_gvariant_checksum_va (const gchar *sha256,
+			     const gchar *fmt,
+			     ...)
+{
+  va_list args;
+  GVariant *v;
+
+  va_start (args, fmt);
+
+  v = g_variant_new_va (fmt, NULL, &args);
+  g_variant_ref_sink (v);
+
+  va_end (args);
+
+  verify_gvariant_checksum (sha256, v);
+
+  g_variant_unref (v);
+}
+
+static void
+test_checksum_basic (void)
+{
+  verify_gvariant_checksum_va ("e8a4b2ee7ede79a3afb332b5b6cc3d952a65fd8cffb897f5d18016577c33d7cc",
+			       "u", 42);
+  verify_gvariant_checksum_va ("c53e363c33b00cfce298229ee83856b8a98c2e6126cab13f65899f62473b0df5",
+			       "s", "moocow");
+  verify_gvariant_checksum_va ("2b4c342f5433ebe591a1da77e013d1b72475562d48578dca8b84bac6651c3cb9",
+			       "y", 9);
+  verify_gvariant_checksum_va ("12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+			       "t", G_MAXUINT64);
+  verify_gvariant_checksum_va ("e25a59b24440eb6c833aa79c93b9840e6eab6966add0dacf31df7e9e7000f5b3",
+			       "d", 3.14159);
+  verify_gvariant_checksum_va ("4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+			       "b", TRUE);
+  verify_gvariant_checksum_va ("ca2fd00fa001190744c15c317643ab092e7048ce086a243e2be9437c898de1bb",
+			       "q", G_MAXUINT16);
+}
+
+static void
+test_checksum_nested (void)
+{
+  static const char* const strv[] = {"foo", "bar", "baz", NULL};
+
+  verify_gvariant_checksum_va ("31fbc92f08fddaca716188fe4b5d44ae122fc6306fd3c6925af53cfa47ea596d",
+			       "(uu)", 41, 43);
+  verify_gvariant_checksum_va ("01759d683cead856d1d386d59af0578841698a424a265345ad5413122f220de8",
+			       "(su)", "moocow", 79);
+  verify_gvariant_checksum_va ("52b3ae95f19b3e642ea1d01185aea14a09004c1d1712672644427403a8a0afe6",
+			       "(qyst)", G_MAXUINT16, 9, "moocow", G_MAXUINT64);
+  verify_gvariant_checksum_va ("6fc6f4524161c3ae0d316812d7088e3fcd372023edaea2d7821093be40ae1060",
+			       "(@ay)", g_variant_new_bytestring ("\xFF\xFF\xFF"));
+  verify_gvariant_checksum_va ("572aca386e1a983dd23bb6eb6e3dfa72eef9ca7c7744581aa800e18d7d9d0b0b",
+			       "(^as)", strv);
+  verify_gvariant_checksum_va ("4bddf6174c791bb44fc6a4106573031690064df34b741033a0122ed8dc05bcf3",
+			       "(yvu)", 254, g_variant_new ("(^as)", strv), 42);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4221,6 +4292,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/compare", test_compare);
   g_test_add_func ("/gvariant/fixed-array", test_fixed_array);
   g_test_add_func ("/gvariant/check-format-string", test_check_format_string);
+
+  g_test_add_func ("/gvariant/checksum-basic", test_checksum_basic);
+  g_test_add_func ("/gvariant/checksum-nested", test_checksum_nested);
 
   return g_test_run ();
 }
