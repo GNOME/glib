@@ -12,7 +12,7 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-genmarshal.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gspawn-win32-helper*.exe $(CopyDir)\bin
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gspawn-win*-helper*.exe $(CopyDir)\bin
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-compile-schemas.exe $(CopyDir)\bin
 

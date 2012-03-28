@@ -48,7 +48,7 @@ mkdir $(OutDir)&#x0D;&#x0A;
 mkdir $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.exe $(OutDir)\bin&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win32-helper*.exe $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win*-helper*.exe $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-compile-schemas.exe $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gsettings.exe $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-compile-resources.exe $(OutDir)\bin&#x0D;&#x0A;
