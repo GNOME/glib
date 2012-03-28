@@ -124,7 +124,6 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)gspawn-win64-helper.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -146,6 +145,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
+      <OutputFile>$(OutDir)gspawn-win64-helper.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
