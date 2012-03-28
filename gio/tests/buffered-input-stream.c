@@ -283,6 +283,91 @@ test_close (void)
   g_object_unref (base);
 }
 
+static void
+test_seek (void)
+{
+  GInputStream *base;
+  GInputStream *in;
+  GError *error;
+  gint byte;
+  gboolean ret;
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
+  in = g_buffered_input_stream_new_sized (base, 4);
+  error = NULL;
+
+  /* Seek by read */
+  g_assert_cmpstr (g_seekable_tell (G_SEEKABLE (in)), ==, 0);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'a');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 1);
+
+  /* Seek forward (in buffer) */
+  ret = g_seekable_seek (G_SEEKABLE (in), 1, G_SEEK_CUR, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 2);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'c');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 3);
+
+  /* Seek backward (in buffer) */
+  ret = g_seekable_seek (G_SEEKABLE (in), -2, G_SEEK_CUR, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 1);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'b');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 2);
+
+  /* Seek forward (outside buffer) */
+  ret = g_seekable_seek (G_SEEKABLE (in), 6, G_SEEK_CUR, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 8);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'i');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 9);
+
+  /* Seek backward (outside buffer) */
+  ret = g_seekable_seek (G_SEEKABLE (in), -6, G_SEEK_CUR, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 3);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'd');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 4);
+
+  /* Seek from beginning */
+  ret = g_seekable_seek (G_SEEKABLE (in), 8, G_SEEK_SET, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 8);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'i');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 9);
+
+  /* Seek from end */
+  ret = g_seekable_seek (G_SEEKABLE (in), -1, G_SEEK_END, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 50);
+  byte = g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (byte, ==, 'Z');
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (in)), ==, 51);
+
+  /* Cleanup */
+  g_object_unref (in);
+  g_object_unref (base);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -297,6 +382,7 @@ main (int   argc,
   g_test_add_func ("/buffered-input-stream/read-byte", test_read_byte);
   g_test_add_func ("/buffered-input-stream/read", test_read);
   g_test_add_func ("/buffered-input-stream/skip", test_skip);
+  g_test_add_func ("/buffered-input-stream/seek", test_seek);
   g_test_add_func ("/filter-input-stream/close", test_close);
 
   return g_test_run();
