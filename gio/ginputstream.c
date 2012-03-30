@@ -161,7 +161,7 @@ g_input_stream_init (GInputStream *stream)
  *
  * On error -1 is returned and @error is set accordingly.
  * 
- * Return value: Number of bytes read, or -1 on error
+ * Return value: Number of bytes read, or -1 on error, or 0 on end of file.
  **/
 gssize
 g_input_stream_read  (GInputStream  *stream,
@@ -583,7 +583,7 @@ g_input_stream_read_async (GInputStream        *stream,
  * 
  * Finishes an asynchronous stream read operation. 
  * 
- * Returns: number of bytes read in, or -1 on error.
+ * Returns: number of bytes read in, or -1 on error, or 0 on end of file.
  **/
 gssize
 g_input_stream_read_finish (GInputStream  *stream,
