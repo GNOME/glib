@@ -225,7 +225,7 @@ g_mutex_unlock (GMutex *mutex)
   gint status;
 
   if G_UNLIKELY ((status = pthread_mutex_unlock (g_mutex_get_impl (mutex))) != 0)
-    g_thread_abort (status, "pthread_mutex_lock");
+    g_thread_abort (status, "pthread_mutex_unlock");
 }
 
 /**
