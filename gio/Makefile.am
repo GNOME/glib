@@ -704,10 +704,11 @@ EXTRA_DIST += $(completion_DATA)
 
 bin_PROGRAMS += gresource
 gresource_SOURCES = gresource-tool.c
+gresource_CPPFLAGS = $(LIBELF_CFLAGS) $(AM_CPPFLAGS)
 gresource_LDADD = libgio-2.0.la \
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la \
-	$(ELF_LIBS)
+	$(LIBELF_LIBS)
 
 # ------------------------------------------------------------------------
 

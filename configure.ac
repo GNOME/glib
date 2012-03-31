@@ -1799,12 +1799,13 @@ dnl ************************
 dnl *** check for libelf ***
 dnl ************************
 
-AC_CHECK_LIB([elf], [elf_begin], have_libelf=yes, have_libelf=no)
+PKG_CHECK_MODULES([LIBELF], [libelf], [have_libelf=yes], [
+  AC_CHECK_LIB([elf], [elf_begin], have_libelf=yes, have_libelf=no)
+  ])
 if test $have_libelf = yes; then
   AC_DEFINE(HAVE_LIBELF, 1, [Define if libelf is available])
-  ELF_LIBS=-lelf
+  LIBELF_LIBS=-lelf
 fi
-AC_SUBST(ELF_LIBS)
 
 dnl ****************************************
 dnl *** platform dependent source checks ***
