@@ -819,7 +819,7 @@ _get_func(GIObjectInfo *info,
   GIObjectInfo *parent_info;
   gpointer func = NULL;
 
-  parent_info = info;
+  parent_info = g_base_info_ref (info);
   while (parent_info != NULL)
     {
       parents = g_slist_prepend (parents, parent_info);
@@ -828,7 +828,6 @@ _get_func(GIObjectInfo *info,
 
   for (l = parents; l; l = l->next)
     {
-      GIObjectInfoRefFunction func;
       parent_info = l->data;
       symbol = getter (parent_info);
       if (symbol == NULL)
