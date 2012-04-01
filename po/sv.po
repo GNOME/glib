@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-24 16:45+0100\n"
-"PO-Revision-Date: 2012-03-24 16:58+0100\n"
+"POT-Creation-Date: 2012-04-01 12:53+0200\n"
+"PO-Revision-Date: 2012-04-01 13:11+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1143,7 +1143,7 @@ msgstr "Längden %u är för lång för adressen"
 
 #: ../gio/ginetaddressmask.c:225
 msgid "Address has bits set beyond prefix length"
-msgstr ""
+msgstr "Adress har bitar inställda utanför prefixlängden"
 
 #: ../gio/ginetaddressmask.c:304
 #, c-format
@@ -1188,114 +1188,112 @@ msgstr "Elementet <%s> tillåts inte inuti <%s>"
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Elementet <%s> tillåts inte på toppnivå"
 
-#: ../gio/glib-compile-resources.c:235
+#: ../gio/glib-compile-resources.c:238
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Filen %s finns på flera ställen i resursen"
 
-#: ../gio/glib-compile-resources.c:248
+#: ../gio/glib-compile-resources.c:251
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
-msgstr ""
+msgstr "Misslyckades med att hitta \"%s\" i någon källkatalog"
 
-#: ../gio/glib-compile-resources.c:259
+#: ../gio/glib-compile-resources.c:262
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "Misslyckades med att hitta \"%s\" i aktuell katalog"
 
-#: ../gio/glib-compile-resources.c:287
-#, fuzzy, c-format
+#: ../gio/glib-compile-resources.c:290
+#, c-format
 msgid "Unknown processing option \"%s\""
-msgstr "Okänd flagga %s"
+msgstr "Okänd behandlingsflagga \"%s\""
 
-#: ../gio/glib-compile-resources.c:305
-#: ../gio/glib-compile-resources.c:363
+#: ../gio/glib-compile-resources.c:308
+#: ../gio/glib-compile-resources.c:366
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Misslyckades med att skapa temporärfil: %s"
 
-#: ../gio/glib-compile-resources.c:335
-#, fuzzy
+#: ../gio/glib-compile-resources.c:338
 msgid "Error processing input file with xmllint"
-msgstr "Fel vid inställning av symbolisk länk: filen är inte en symbolisk länk"
+msgstr "Fel vid behandling av inmatningsfil med xmllint"
 
-#: ../gio/glib-compile-resources.c:390
+#: ../gio/glib-compile-resources.c:393
 msgid "Error processing input file with to-pixdata"
-msgstr ""
+msgstr "Fel vid behandling av inmatningsfil med to-pixdata"
 
-#: ../gio/glib-compile-resources.c:403
+#: ../gio/glib-compile-resources.c:406
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Fel vid läsning av filen %s: %s"
 
-#: ../gio/glib-compile-resources.c:423
+#: ../gio/glib-compile-resources.c:426
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Fel vid komprimering av filen %s"
 
-#: ../gio/glib-compile-resources.c:487
+#: ../gio/glib-compile-resources.c:490
 #: ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "text får inte vara inuti <%s>"
 
-#: ../gio/glib-compile-resources.c:610
+#: ../gio/glib-compile-resources.c:613
 msgid "name of the output file"
 msgstr "namn på utmatningsfilen"
 
-#: ../gio/glib-compile-resources.c:610
-#: ../gio/glib-compile-resources.c:643
+#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:646
 #: ../gio/gresource-tool.c:477
 #: ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FIL"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 msgid "The directories where files are to be read from (default to current directory)"
-msgstr ""
+msgstr "Katalogerna där filer ska läsas från (standard är aktuell katalog)"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 #: ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:612
-msgid "Generate output in the format selected for by the target filename extension"
-msgstr ""
-
-#: ../gio/glib-compile-resources.c:613
-msgid "Generate source header"
-msgstr ""
-
-#: ../gio/glib-compile-resources.c:614
-msgid "Generate sourcecode used to link in the resource file into your code"
-msgstr ""
-
 #: ../gio/glib-compile-resources.c:615
-msgid "Generate dependency list"
-msgstr ""
+msgid "Generate output in the format selected for by the target filename extension"
+msgstr "Generera utmatning i formatet valt av målfilnamnets filändelse"
 
 #: ../gio/glib-compile-resources.c:616
+msgid "Generate source header"
+msgstr "Generera källkods-header"
+
+#: ../gio/glib-compile-resources.c:617
+msgid "Generate sourcecode used to link in the resource file into your code"
+msgstr "Generera källkod som används för att länka in resursfilen i din kod"
+
+#: ../gio/glib-compile-resources.c:618
+msgid "Generate dependency list"
+msgstr "Generera beroendelista"
+
+#: ../gio/glib-compile-resources.c:619
 msgid "Don't automatically create and register resource"
 msgstr "Skapa och registrera inte resursen automatiskt"
 
-#: ../gio/glib-compile-resources.c:617
+#: ../gio/glib-compile-resources.c:620
 msgid "C identifier name used for the generated source code"
-msgstr ""
+msgstr "C-identifierarnamn som används för den genererade källkoden"
 
-#: ../gio/glib-compile-resources.c:646
-#, fuzzy
+#: ../gio/glib-compile-resources.c:649
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
-"Kompilera alla GSettings-schemafiler till en schemacache.\n"
-"Schemafiler måste ha filändelsen .gschema.xml,\n"
-"och cachefilen kallas för gschemas.compiled."
+"Kompilera en resursspecifikation till en resursfil.\n"
+"Resursspecifikationsfiler har filändelsen .gresource.xml,\n"
+"och resursfilen har filändelsen .gresource."
 
-#: ../gio/glib-compile-resources.c:662
+#: ../gio/glib-compile-resources.c:665
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du bör ange exakt ett filnamn\n"
@@ -2009,7 +2007,7 @@ msgstr "Resursen på \"%s\" finns inte"
 #: ../gio/gresource.c:456
 #, c-format
 msgid "The resource at '%s' failed to decompress"
-msgstr ""
+msgstr "Resursen på \"%s\" gick inte att dekomprimera"
 
 #: ../gio/gresourcefile.c:650
 #, c-format
@@ -2032,7 +2030,7 @@ msgstr "[KOMMANDO]"
 
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
-msgstr ""
+msgstr "Lista sektioner som innehåller resurser i en elf-FIL"
 
 #: ../gio/gresource-tool.c:482
 msgid ""
@@ -2040,6 +2038,9 @@ msgid ""
 "If SECTION is given, only list resources in this section\n"
 "If PATH is given, only list matching resources"
 msgstr ""
+"Lista resurser\n"
+"Om SEKTION anges, lista endast resurser i denna sektion\n"
+"Om SÖKVÄG anges, lista endast matchande resurser"
 
 #: ../gio/gresource-tool.c:485
 #: ../gio/gresource-tool.c:495
@@ -2059,6 +2060,10 @@ msgid ""
 "If PATH is given, only list matching resources\n"
 "Details include the section, size and compression"
 msgstr ""
+"Lista resurser med detaljer\n"
+"Om SEKTION anges, lista endast resurser i denna sektion\n"
+"Om SÖKVÄG anges, lista endast matchande resurser\n"
+"Detaljer inkluderar sektionen, storlek och komprimering"
 
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
@@ -2093,6 +2098,18 @@ msgid ""
 "Use 'gresource help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Användning:\n"
+"  gresource [--section SEKTION] KOMMANDO [ARG...]\n"
+"\n"
+"Kommandon:\n"
+"  help                      Visa denna information\n"
+"  sections                  Lista resurssektioner\n"
+"  list                      Lista resurser\n"
+"  details                   Lista resurser med detaljer\n"
+"  extract                   Extrahera en resurs\n"
+"\n"
+"Använd \"gresource help KOMMANDO\" för detaljerad hjälp.\n"
+"\n"
 
 #: ../gio/gresource-tool.c:530
 #, c-format
@@ -2116,7 +2133,7 @@ msgstr "Argument:\n"
 
 #: ../gio/gresource-tool.c:537
 msgid "  SECTION   An (optional) elf section name\n"
-msgstr ""
+msgstr "  SEKTION   Ett (valfritt) elf-sektionsnamn\n"
 
 #: ../gio/gresource-tool.c:541
 #: ../gio/gsettings-tool.c:650
@@ -2281,7 +2298,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:SÖKVÄG] [NYCKEL]"
 
 #: ../gio/gsettings-tool.c:618
-#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2305,7 +2321,7 @@ msgid ""
 "\n"
 msgstr ""
 "Användning:\n"
-"  gsettings KOMMANDO [ARG...]\n"
+"  gsettings [--schemadir SCHEMAKAT] KOMMANDO [ARG...]\n"
 "\n"
 "Kommandon:\n"
 "  help                      Visa denna information\n"
@@ -2326,7 +2342,7 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:640
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] %s %s\n"
@@ -2335,14 +2351,14 @@ msgid ""
 "\n"
 msgstr ""
 "Användning:\n"
-"  gsettings %s %s\n"
+"  gsettings [--schemadir SCHEMAKAT] %s %s\n"
 "\n"
 "%s\n"
 "\n"
 
 #: ../gio/gsettings-tool.c:646
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr ""
+msgstr "  SCHEMAKAT En katalog att söka i efter ytterligare scheman\n"
 
 #: ../gio/gsettings-tool.c:654
 msgid ""
@@ -2425,19 +2441,19 @@ msgstr "Fel vid bindning till adress: %s"
 
 #: ../gio/gsocket.c:1944
 #: ../gio/gsocket.c:1980
-#, fuzzy, c-format
+#, c-format
 msgid "Error joining multicast group: %s"
-msgstr "Fel vid start av program: %s"
+msgstr "Fel vid medlemskap i multicast-grupp: %s"
 
 #: ../gio/gsocket.c:1945
 #: ../gio/gsocket.c:1981
-#, fuzzy, c-format
+#, c-format
 msgid "Error leaving multicast group: %s"
-msgstr "Fel vid start av program: %s"
+msgstr "Fel vid lämnande av multicast-grupp: %s"
 
 #: ../gio/gsocket.c:1946
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "Inget stöd för källspecifik multicast"
 
 #: ../gio/gsocket.c:2165
 #, c-format
