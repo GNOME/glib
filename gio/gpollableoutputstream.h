@@ -18,6 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
+#error "Only <gio/gio.h> can be included directly."
+#endif
+
 #ifndef __G_POLLABLE_OUTPUT_STREAM_H__
 #define __G_POLLABLE_OUTPUT_STREAM_H__
 
@@ -73,7 +77,7 @@ struct _GPollableOutputStreamInterface
 				     GCancellable           *cancellable);
   gssize       (*write_nonblocking) (GPollableOutputStream  *stream,
 				     const void             *buffer,
-				     gsize                   size,
+				     gsize                   count,
 				     GError                **error);
 };
 
@@ -87,7 +91,7 @@ GSource *g_pollable_output_stream_create_source     (GPollableOutputStream  *str
 
 gssize   g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 						     const void             *buffer,
-						     gsize                   size,
+						     gsize                   count,
 						     GCancellable           *cancellable,
 						     GError                **error);
 
