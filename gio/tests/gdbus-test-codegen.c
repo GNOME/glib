@@ -532,6 +532,8 @@ on_bus_acquired (GDBusConnection *connection,
   exported_thread_object_1 = foo_igen_method_threads_skeleton_new ();
   g_dbus_interface_skeleton_set_flags (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1),
                                        G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+
+  g_assert (!g_dbus_interface_skeleton_has_connection (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1), connection));
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1),
                                     connection,
                                     "/method_threads_1",
@@ -541,6 +543,7 @@ on_bus_acquired (GDBusConnection *connection,
                     "handle-get-self",
                     G_CALLBACK (on_handle_get_self),
                     NULL);
+  g_assert_cmpint (g_dbus_interface_skeleton_get_flags (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1)), ==, G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
 
   exported_thread_object_2 = foo_igen_method_threads_skeleton_new ();
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_thread_object_2),
@@ -552,6 +555,8 @@ on_bus_acquired (GDBusConnection *connection,
                     "handle-get-self",
                     G_CALLBACK (on_handle_get_self),
                     NULL);
+
+  g_assert_cmpint (g_dbus_interface_skeleton_get_flags (G_DBUS_INTERFACE_SKELETON (exported_thread_object_2)), ==, G_DBUS_INTERFACE_SKELETON_FLAGS_NONE);
 
   method_handler_thread = g_thread_self ();
 }
@@ -1752,6 +1757,10 @@ check_object_manager (void)
   GDBusObject *op;
   GDBusProxy *p;
   FooiGenBar *bar_skeleton;
+  GDBusInterface *iface;
+  gchar *path, *name, *name_owner;
+  GDBusConnection *c2;
+  GDBusObjectManagerClientFlags flags;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -1795,7 +1804,17 @@ check_object_manager (void)
   g_assert (pm == NULL);
 
   manager = g_dbus_object_manager_server_new ("/managed");
+
+  g_assert (g_dbus_object_manager_server_get_connection (manager) == NULL);
+
   g_dbus_object_manager_server_set_connection (manager, c);
+
+  g_assert_cmpstr (g_dbus_object_manager_get_object_path (G_DBUS_OBJECT_MANAGER (manager)), ==, "/managed");
+  g_object_get (manager, "object-path", &path, "connection", &c2, NULL);
+  g_assert_cmpstr (path, ==, "/managed");
+  g_assert (c2 == c);
+  g_free (path);
+  g_object_unref (c2);
 
   /* Check that the manager object is visible */
   info = introspect (c, g_dbus_connection_get_unique_name (c), "/managed", loop);
@@ -1831,6 +1850,25 @@ check_object_manager (void)
                     "object-removed",
                     G_CALLBACK (on_object_proxy_removed),
                     om_data);
+
+  g_assert_cmpstr (g_dbus_object_manager_get_object_path (G_DBUS_OBJECT_MANAGER (pm)), ==, "/managed");
+  g_object_get (pm,
+                "object-path", &path,
+                "connection", &c2,
+                "name", &name,
+                "name-owner", &name_owner,
+                "flags", &flags,
+                NULL);
+  g_assert_cmpstr (path, ==, "/managed");
+  g_assert_cmpstr (name, ==, g_dbus_connection_get_unique_name (c));
+  g_assert_cmpstr (name_owner, ==, g_dbus_connection_get_unique_name (c));
+  g_assert_cmpint (flags, ==, G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE);
+  g_assert (c2 == c);
+  g_free (path);
+  g_object_unref (c2);
+  g_free (name);
+  g_free (name_owner);
+
   /* ... check there are no object proxies yet */
   object_proxies = g_dbus_object_manager_get_objects (pm);
   g_assert (object_proxies == NULL);
@@ -1846,13 +1884,18 @@ check_object_manager (void)
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == G_DBUS_OBJECT (o));
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
-  g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   foo_igen_object_skeleton_set_bar (o, NULL);
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == NULL);
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   foo_igen_object_skeleton_set_bar (o, FOO_IGEN_BAR (i));
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == G_DBUS_OBJECT (o));
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
+
+  o2 = FOO_IGEN_OBJECT_SKELETON (g_dbus_interface_dup_object (G_DBUS_INTERFACE (i)));
+  g_assert (G_DBUS_OBJECT (o2) == G_DBUS_OBJECT (o));
+  g_assert_cmpint (G_OBJECT (o2)->ref_count, ==, 2);
+  g_object_unref (o2);
+
   g_dbus_object_manager_server_export (manager, G_DBUS_OBJECT_SKELETON (o));
 
   /* ... check we get the InterfacesAdded signal */
@@ -1868,6 +1911,18 @@ check_object_manager (void)
   g_assert_cmpint (count_interfaces (info), ==, 4); /* Bar + Properties,Introspectable,Peer */
   g_assert (has_interface (info, "org.project.Bar"));
   g_dbus_node_info_unref (info);
+
+  /* Also check g_dbus_object_manager_get_interface */
+  iface = g_dbus_object_manager_get_interface (G_DBUS_OBJECT_MANAGER (manager), "/managed/first", "org.project.Bar");
+  g_assert (iface != NULL);
+  g_object_unref (iface);
+  iface = g_dbus_object_manager_get_interface (G_DBUS_OBJECT_MANAGER (manager), "/managed/first", "org.project.Bat");
+  g_assert (iface == NULL);
+  iface = g_dbus_object_manager_get_interface (G_DBUS_OBJECT_MANAGER (pm), "/managed/first", "org.project.Bar");
+  g_assert (iface != NULL);
+  g_object_unref (iface);
+  iface = g_dbus_object_manager_get_interface (G_DBUS_OBJECT_MANAGER (pm), "/managed/first", "org.project.Bat");
+  g_assert (iface == NULL);
 
   /* Now, check adding the same interface replaces the existing one */
   foo_igen_object_skeleton_set_bar (o, FOO_IGEN_BAR (i));
