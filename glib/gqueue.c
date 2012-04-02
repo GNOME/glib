@@ -794,7 +794,7 @@ g_queue_link_index (GQueue *queue,
 }
 
 /**
- * g_queue_unlink
+ * g_queue_unlink:
  * @queue: a #GQueue
  * @link_: a #GList link that <emphasis>must</emphasis> be part of @queue
  *

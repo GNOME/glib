@@ -483,7 +483,7 @@ g_mount_operation_new (void)
 }
 
 /**
- * g_mount_operation_get_username
+ * g_mount_operation_get_username:
  * @op: a #GMountOperation.
  * 
  * Get the user name from the mount operation.

@@ -283,7 +283,7 @@ g_proxy_address_get_protocol (GProxyAddress *proxy)
 }
 
 /**
- * g_proxy_address_get_destination_hostname
+ * g_proxy_address_get_destination_hostname:
  * @proxy: a #GProxyAddress
  *
  * Gets @proxy's destination hostname.
@@ -299,7 +299,7 @@ g_proxy_address_get_destination_hostname (GProxyAddress *proxy)
 }
 
 /**
- * g_proxy_address_get_destination_port
+ * g_proxy_address_get_destination_port:
  * @proxy: a #GProxyAddress
  *
  * Gets @proxy's destination port.
@@ -315,7 +315,7 @@ g_proxy_address_get_destination_port (GProxyAddress *proxy)
 }
 
 /**
- * g_proxy_address_get_username
+ * g_proxy_address_get_username:
  * @proxy: a #GProxyAddress
  *
  * Gets @proxy's username.
@@ -331,7 +331,7 @@ g_proxy_address_get_username (GProxyAddress *proxy)
 }
 
 /**
- * g_proxy_address_get_password
+ * g_proxy_address_get_password:
  * @proxy: a #GProxyAddress
  *
  * Gets @proxy's password.

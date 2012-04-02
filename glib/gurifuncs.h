@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 #define G_URI_RESERVED_CHARS_GENERIC_DELIMITERS ":/?#[]@"
 
 /**
- * G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS
+ * G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS:
  * 
  * Subcomponent delimiter characters as defined in RFC 3986. Includes "!$&'()*+,;=".
  **/

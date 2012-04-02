@@ -238,7 +238,7 @@ g_desktop_app_info_class_init (GDesktopAppInfoClass *klass)
   gobject_class->finalize = g_desktop_app_info_finalize;
 
   /**
-   * GDesktopAppInfo:filename
+   * GDesktopAppInfo:filename:
    *
    * The origin filename of this #GDesktopAppInfo
    */

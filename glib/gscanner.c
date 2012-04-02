@@ -659,7 +659,7 @@ g_scanner_lookup_internal (GScanner	*scanner,
 }
 
 /**
- * g_scanner_add_symbol
+ * g_scanner_add_symbol:
  * @scanner: a #GScanner
  * @symbol: the symbol to add
  * @value: the value of the symbol

@@ -2482,7 +2482,7 @@ g_test_log_buffer_new (void)
 }
 
 /**
- * g_test_log_buffer_free
+ * g_test_log_buffer_free:
  *
  * Internal function for gtester to free test log messages, no ABI guarantees provided.
  */
@@ -2497,7 +2497,7 @@ g_test_log_buffer_free (GTestLogBuffer *tbuffer)
 }
 
 /**
- * g_test_log_buffer_push
+ * g_test_log_buffer_push:
  *
  * Internal function for gtester to decode test log messages, no ABI guarantees provided.
  */

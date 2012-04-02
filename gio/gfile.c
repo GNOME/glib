@@ -3323,7 +3323,7 @@ g_file_move (GFile                  *source,
 }
 
 /**
- * g_file_make_directory
+ * g_file_make_directory:
  * @file: input #GFile.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, or %NULL 

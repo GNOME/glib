@@ -494,7 +494,7 @@ fallback_calloc (gsize n_blocks,
 static gboolean vtable_set = FALSE;
 
 /**
- * g_mem_is_system_malloc
+ * g_mem_is_system_malloc:
  * 
  * Checks whether the allocator used by g_malloc() is the system's
  * malloc implementation. If it returns %TRUE memory allocated with

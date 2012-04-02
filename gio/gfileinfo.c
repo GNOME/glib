@@ -2006,7 +2006,7 @@ g_file_info_set_size (GFileInfo *info,
 }
 
 /**
- * g_file_info_set_modification_time
+ * g_file_info_set_modification_time:
  * @info: a #GFileInfo.
  * @mtime: a #GTimeVal.
  *
