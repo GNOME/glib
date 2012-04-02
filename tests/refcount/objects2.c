@@ -111,6 +111,8 @@ main (int argc, char **argv)
     my_test_do_refcount (test);
   }
 
+  g_object_unref (test);
+
   g_print ("\n");
 
   return 0;
