@@ -1812,8 +1812,8 @@ g_variant_get_bytestring (GVariant *value)
  *
  * The return value must be freed using g_free().
  *
- * Returns: (transfer full) (array zero-terminated=1 length=length)
- *          (element-type guint8): a newly allocated string
+ * Returns: (transfer full) (array zero-terminated=1 length=length) (element-type guint8):
+ *          a newly allocated string
  *
  * Since: 2.26
  **/
