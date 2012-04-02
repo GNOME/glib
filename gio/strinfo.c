@@ -22,7 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-/**
+/*
  * The string info map is an efficient data structure designed to be
  * used with a small set of items.  It is used by GSettings schemas for
  * three purposes:
