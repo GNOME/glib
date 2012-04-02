@@ -40,7 +40,7 @@ In addition to schema files, glib-compile-schemas reads 'vendor override'
 files, which are key files that can override default values for keys in
 the schemas. The group names in the key files are the schema id, and the
 values are written in serialized GVariant form.
-Vendor ovrride files must have the filename extension
+Vendor override files must have the filename extension
 <filename>.gschema.override</filename>.
 </para>
 <para>
