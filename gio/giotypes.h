@@ -179,7 +179,7 @@ typedef struct _GSocketClient                               GSocketClient;
  **/
 typedef struct _GSocketConnection                           GSocketConnection;
 /**
- * GSocketClient:
+ * GSocketListener:
  *
  * A helper class for network servers to listen for and accept connections.
  *
