@@ -1799,12 +1799,22 @@ dnl ************************
 dnl *** check for libelf ***
 dnl ************************
 
-PKG_CHECK_MODULES([LIBELF], [libelf], [have_libelf=yes], [
-  AC_CHECK_LIB([elf], [elf_begin], have_libelf=yes, have_libelf=no)
-  ])
+PKG_CHECK_MODULES([LIBELF], [libelf], [have_libelf=yes], [have_libelf=maybe])
+
+if test $have_libelf = maybe; then
+  AC_CHECK_LIB([elf], [elf_begin], , [have_libelf=no])
+  AC_CHECK_LIB([elf], [elf_getshdrstrndx], , [have_libelf=no])
+  AC_CHECK_LIB([elf], [elf_getshdrnum], , [have_libelf=no])
+  AC_CHECK_HEADER([libelf.h], , [have_libelf=no])
+
+  if test $have_libelf != no; then
+    LIBELF_LIBS=-lelf
+    have_libelf = yes
+  fi
+fi
+
 if test $have_libelf = yes; then
   AC_DEFINE(HAVE_LIBELF, 1, [Define if libelf is available])
-  LIBELF_LIBS=-lelf
 fi
 
 dnl ****************************************
