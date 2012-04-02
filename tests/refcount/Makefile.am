@@ -6,11 +6,10 @@ INCLUDES =					\
 	$(GLIB_DEBUG_FLAGS)
 
 libglib = $(top_builddir)/glib/libglib-2.0.la
-libgthread = $(top_builddir)/gthread/libgthread-2.0.la
 libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
 libgobject = $(top_builddir)/gobject/libgobject-2.0.la
 
-LDADD = $(libglib) $(libgobject) $(libgthread) $(G_THREAD_LIBS)
+LDADD = $(libglib) $(libgobject)
 
 test_programs = 				\
 	closures				\

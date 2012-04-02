@@ -241,7 +241,6 @@ main (int    argc,
   GTest *object;
   guint i;
 
-  g_thread_init (NULL);
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
   g_type_init ();

@@ -98,9 +98,6 @@ my_test_class_init (GTestClass * klass)
 
   parent_class = g_type_class_ref (G_TYPE_OBJECT);
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-
   gobject_class->dispose = my_test_dispose;
   gobject_class->set_property = my_test_set_property;
   gobject_class->get_property = my_test_get_property;
@@ -239,7 +236,6 @@ main (int argc, char **argv)
   GArray *test_threads;
   const gint n_threads = 1;
 
-  g_thread_init (NULL);
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
   g_type_init ();
