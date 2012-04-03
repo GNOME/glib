@@ -258,36 +258,16 @@ _g_unichar_get_width (gunichar c)
 }
 
 static glong
-_g_utf8_strwidth (const gchar *p,
-                  gssize       max)
+_g_utf8_strwidth (const gchar *p)
 {
   glong len = 0;
   const gchar *start = p;
-  g_return_val_if_fail (p != NULL || max == 0, 0);
+  g_return_val_if_fail (p != NULL, 0);
 
-  if (max < 0)
+  while (*p)
     {
-      while (*p)
-        {
-          len += _g_unichar_get_width (g_utf8_get_char (p));
-          p = g_utf8_next_char (p);
-        }
-    }
-  else
-    {
-      if (max == 0 || !*p)
-        return 0;
-
-      /* this case may not be quite correct */
-
       len += _g_unichar_get_width (g_utf8_get_char (p));
       p = g_utf8_next_char (p);
-
-      while (p - start < max && *p)
-        {
-          len += _g_unichar_get_width (g_utf8_get_char (p));
-          p = g_utf8_next_char (p);
-        }
     }
 
   return len;
@@ -597,13 +577,13 @@ calculate_max_length (GOptionGroup *group)
       if (entry->flags & G_OPTION_FLAG_HIDDEN)
         continue;
 
-      len = _g_utf8_strwidth (entry->long_name, -1);
+      len = _g_utf8_strwidth (entry->long_name);
 
       if (entry->short_name)
         len += 4;
 
       if (!NO_ARG (entry) && entry->arg_description)
-        len += 1 + _g_utf8_strwidth (TRANSLATE (group, entry->arg_description), -1);
+        len += 1 + _g_utf8_strwidth (TRANSLATE (group, entry->arg_description));
 
       max_length = MAX (max_length, len);
     }
@@ -636,7 +616,7 @@ print_entry (GOptionGroup       *group,
     g_string_append_printf (str, "=%s", TRANSLATE (group, entry->arg_description));
 
   g_string_append_printf (string, "%s%*s %s\n", str->str,
-                          (int) (max_length + 4 - _g_utf8_strwidth (str->str, -1)), "",
+                          (int) (max_length + 4 - _g_utf8_strwidth (str->str)), "",
                           entry->description ? TRANSLATE (group, entry->description) : "");
   g_string_free (str, TRUE);
 }
@@ -830,11 +810,11 @@ g_option_context_get_help (GOptionContext *context,
 
   list = context->groups;
 
-  max_length = _g_utf8_strwidth ("-?, --help", -1);
+  max_length = _g_utf8_strwidth ("-?, --help");
 
   if (list)
     {
-      len = _g_utf8_strwidth ("--help-all", -1);
+      len = _g_utf8_strwidth ("--help-all");
       max_length = MAX (max_length, len);
     }
 
@@ -849,7 +829,7 @@ g_option_context_get_help (GOptionContext *context,
       GOptionGroup *g = list->data;
 
       /* First, we check the --help-<groupname> options */
-      len = _g_utf8_strwidth ("--help-", -1) + _g_utf8_strwidth (g->name, -1);
+      len = _g_utf8_strwidth ("--help-") + _g_utf8_strwidth (g->name);
       max_length = MAX (max_length, len);
 
       /* Then we go through the entries */
