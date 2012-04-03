@@ -74,7 +74,7 @@ struct _GIRepositoryClass
 };
 
 /**
- * GIRepositoryLoadFlags
+ * GIRepositoryLoadFlags:
  * @G_IREPOSITORY_LOAD_FLAG_LAZY: Load the types lazily.
  *
  * Flags that controlls how a typelib is loaded by

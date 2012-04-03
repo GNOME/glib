@@ -809,7 +809,7 @@ collect_namespaces (gpointer key,
  *
  * Return the list of currently loaded namespaces.
  *
- * Returns: (utf8) (transfer full): List of namespaces
+ * Returns: (element-type utf8) (transfer full): List of namespaces
  */
 gchar **
 g_irepository_get_loaded_namespaces (GIRepository *repository)
@@ -902,7 +902,7 @@ g_irepository_get_shared_library (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_c_prefix
+ * g_irepository_get_c_prefix:
  * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  *
@@ -938,7 +938,7 @@ g_irepository_get_c_prefix (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_typelib_path
+ * g_irepository_get_typelib_path:
  * @repository: (allow-none): Repository, may be %NULL for the default
  * @namespace_: GI namespace to use, e.g. "Gtk"
  *

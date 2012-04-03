@@ -117,7 +117,7 @@ typedef GIBaseInfo GIValueInfo;
 typedef GIBaseInfo GISignalInfo;
 
 /**
- * GIVFuncInfo
+ * GIVFuncInfo:
  *
  * Represents a virtual function.
  */
