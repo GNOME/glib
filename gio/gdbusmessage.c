@@ -3020,32 +3020,32 @@ _sort_keys_func (gconstpointer a,
  * and formatting is subject to change at any time. Typical output
  * looks something like this:
  * <programlisting>
- * Type:    method-call
- * Flags:   none
- * Version: 0
- * Serial:  4
- * Headers:
+ * Type&colon;    method-call
+ * Flags&colon;   none
+ * Version&colon; 0
+ * Serial&colon;  4
+ * Headers&colon;
  *   path -> objectpath '/org/gtk/GDBus/TestObject'
  *   interface -> 'org.gtk.GDBus.TestInterface'
  *   member -> 'GimmeStdout'
  *   destination -> ':1.146'
- * Body: ()
+ * Body&colon; ()
  * UNIX File Descriptors:
  *   (none)
  * </programlisting>
  * or
  * <programlisting>
- * Type:    method-return
- * Flags:   no-reply-expected
- * Version: 0
- * Serial:  477
- * Headers:
+ * Type&colon;    method-return
+ * Flags&colon;   no-reply-expected
+ * Version&colon; 0
+ * Serial&colon;  477
+ * Headers&colon;
  *   reply-serial -> uint32 4
  *   destination -> ':1.159'
  *   sender -> ':1.146'
  *   num-unix-fds -> uint32 1
- * Body: ()
- * UNIX File Descriptors:
+ * Body&colon; ()
+ * UNIX File Descriptors&colon;
  *   fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
  * </programlisting>
  *

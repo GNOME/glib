@@ -135,7 +135,7 @@ G_BEGIN_DECLS
  * @G_PARAM_DEPRECATED: the parameter is deprecated and will be removed
  *  in a future version. A warning will be generated if it is used
  *  while running with G_ENABLE_DIAGNOSTIC=1.
- *  Since: 2.26
+ *  Since 2.26
  * 
  * Through the #GParamFlags flag values, certain aspects of parameters
  * can be configured.
