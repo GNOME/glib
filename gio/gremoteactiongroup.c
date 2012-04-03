@@ -81,7 +81,7 @@ g_remote_action_group_default_init (GRemoteActionGroupInterface *iface)
  * g_remote_action_group_activate_action_full:
  * @remote: a #GDBusActionGroup
  * @action_name: the name of the action to activate
- * @parameter: (allow none): the optional parameter to the activation
+ * @parameter: (allow-none): the optional parameter to the activation
  * @platform_data: the platform data to send
  *
  * Activates the remote action.

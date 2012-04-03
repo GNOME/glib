@@ -659,7 +659,6 @@ profile_print_locked (guint   *local_data,
 
 /**
  * g_mem_profile:
- * @void:
  * 
  * Outputs a summary of memory usage.
  * 
