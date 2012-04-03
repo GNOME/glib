@@ -177,10 +177,10 @@ G_BEGIN_DECLS
 
 
 /* --- prototypes --- */
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_32_FOR(g_value_set_schar)
 void                  g_value_set_char          (GValue       *value,
                                                  gchar         v_char);
-GLIB_DEPRECATED
+GLIB_DEPRECATED_IN_2_32_FOR(g_value_get_schar)
 gchar                 g_value_get_char          (const GValue *value);
 void		      g_value_set_schar		(GValue	      *value,
 						 gint8	       v_char);
