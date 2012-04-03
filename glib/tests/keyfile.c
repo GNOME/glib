@@ -1326,6 +1326,24 @@ test_load (void)
 }
 
 static void
+test_load_fail (void)
+{
+  GKeyFile *file;
+  GError *error;
+
+  file = g_key_file_new ();
+  error = NULL;
+  g_assert (!g_key_file_load_from_file (file, "/", 0, &error));
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_PARSE);
+  g_clear_error (&error);
+  g_assert (!g_key_file_load_from_file (file, "/nosuchfile", 0, &error));
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_clear_error (&error);
+
+  g_key_file_free (file);
+}
+
+static void
 test_non_utf8 (void)
 {
   GKeyFile *file;
@@ -1480,6 +1498,46 @@ test_empty_string (void)
   g_key_file_unref (kf);
 }
 
+static void
+test_limbo (void)
+{
+  GKeyFile *file;
+  static const char data[] =
+"a=b\n"
+"[group]\n"
+"b=c\n";
+  gboolean ok;
+  GError *error;
+
+  file = g_key_file_new ();
+
+  error = NULL;
+  ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
+  g_assert (!ok);
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+  g_clear_error (&error);
+  g_key_file_free (file);
+}
+
+static void
+test_utf8 (void)
+{
+  GKeyFile *file;
+  static const char data[] =
+"[group]\n"
+"Encoding=non-UTF-8\n";
+  gboolean ok;
+  GError *error;
+
+  file = g_key_file_new ();
+
+  error = NULL;
+  ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
+  g_assert (!ok);
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
+  g_clear_error (&error);
+  g_key_file_free (file);
+}
 int
 main (int argc, char *argv[])
 {
@@ -1509,12 +1567,15 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   g_test_add_func ("/keyfile/int64", test_int64);
   g_test_add_func ("/keyfile/load", test_load);
+  g_test_add_func ("/keyfile/load-fail", test_load_fail);
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
   g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
   g_test_add_func ("/keyfile/ref", test_ref);
   g_test_add_func ("/keyfile/replace-value", test_replace_value);
   g_test_add_func ("/keyfile/list-separator", test_list_separator);
   g_test_add_func ("/keyfile/empty-string", test_empty_string);
+  g_test_add_func ("/keyfile/limbo", test_limbo);
+  g_test_add_func ("/keyfile/utf8", test_utf8);
 
   return g_test_run ();
 }
