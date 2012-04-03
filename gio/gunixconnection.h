@@ -39,13 +39,6 @@ G_BEGIN_DECLS
 #define G_UNIX_CONNECTION_GET_CLASS(inst)                   (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
                                                              G_TYPE_UNIX_CONNECTION, GUnixConnectionClass))
 
-/**
- * GTcpConnection:
- *
- * A #GSocketConnection for UNIX domain socket connections.
- *
- * Since: 2.22
- */
 typedef struct _GUnixConnection                             GUnixConnection;
 typedef struct _GUnixConnectionPrivate                      GUnixConnectionPrivate;
 typedef struct _GUnixConnectionClass                        GUnixConnectionClass;

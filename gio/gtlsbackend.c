@@ -67,8 +67,9 @@
 /**
  * GTlsBackend:
  *
- * Type implemented by TLS #GIOModules to provide access to additional
- * TLS-related types.
+ * TLS (Transport Layer Security, aka SSL) backend. This is an
+ * internal type used to coordinate the different classes implemented
+ * by a TLS backend.
  *
  * Since: 2.28
  */

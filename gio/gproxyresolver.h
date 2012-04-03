@@ -44,11 +44,6 @@ G_BEGIN_DECLS
  */
 #define G_PROXY_RESOLVER_EXTENSION_POINT_NAME "gio-proxy-resolver"
 
-/**
- * GProxyResolver:
- *
- * Interface that can be used to resolve proxy address.
- */
 typedef struct _GProxyResolverInterface GProxyResolverInterface;
 
 struct _GProxyResolverInterface {

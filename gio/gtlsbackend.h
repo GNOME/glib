@@ -42,16 +42,6 @@ G_BEGIN_DECLS
 #define G_IS_TLS_BACKEND(obj)	         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TLS_BACKEND))
 #define G_TLS_BACKEND_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_TLS_BACKEND, GTlsBackendInterface))
 
-/**
- * GTlsBackend:
- *
- * TLS (Transport Layer Security, aka SSL) backend. This is an
- * internal type used to coordinate the different classes implemented
- * by a TLS backend.
- *
- * Since: 2.28
- */
-
 typedef struct _GTlsBackend          GTlsBackend;
 typedef struct _GTlsBackendInterface GTlsBackendInterface;
 

@@ -34,14 +34,6 @@ G_BEGIN_DECLS
 #define G_IS_TLS_CLIENT_CONNECTION(inst)            (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_TLS_CLIENT_CONNECTION))
 #define G_TLS_CLIENT_CONNECTION_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), G_TYPE_TLS_CLIENT_CONNECTION, GTlsClientConnectionInterface))
 
-/**
- * GTlsClientConnection:
- *
- * TLS client-side connection; the client-side implementation of a
- * #GTlsConnection
- *
- * Since: 2.28
- */
 typedef struct _GTlsClientConnectionInterface GTlsClientConnectionInterface;
 
 struct _GTlsClientConnectionInterface
