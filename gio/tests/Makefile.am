@@ -413,7 +413,7 @@ file_LDADD   = $(progs_ldadd)
 fileattributematcher_SOURCES = fileattributematcher.c
 fileattributematcher_LDADD   = $(progs_ldadd)
 
-gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
+gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbus-tests.h gdbus-tests.c
 gapplication_LDADD = $(progs_ldadd)
 
 basic_application_LDADD = $(progs_ldadd)

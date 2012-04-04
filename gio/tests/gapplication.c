@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "gdbus-tests.h"
 #include "gdbus-sessionbus.h"
 
 static gint outstanding_watches;
@@ -84,7 +86,10 @@ spawn (const gchar *expected_stdout,
 static void
 basic (void)
 {
+  GDBusConnection *c;
+
   session_bus_up ();
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   main_loop = g_main_loop_new (NULL, 0);
 
@@ -112,6 +117,10 @@ basic (void)
   g_main_loop_run (main_loop);
 
   session_bus_down ();
+  _g_object_wait_for_single_ref_do (c);
+  g_object_unref (c);
+
+  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
 }
 
 
@@ -200,11 +209,18 @@ test_nonunique (void)
 static void
 properties (void)
 {
+  GDBusConnection *c;
   GObject *app;
   gchar *id;
   GApplicationFlags flags;
   gboolean registered;
   guint timeout;
+  gboolean remote;
+  gboolean ret;
+  GError *error = NULL;
+
+  session_bus_up ();
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   app = g_object_new (G_TYPE_APPLICATION,
                       "application-id", "org.gtk.TestApplication",
@@ -222,8 +238,28 @@ properties (void)
   g_assert (!registered);
   g_assert_cmpint (timeout, ==, 0);
 
+  ret = g_application_register (G_APPLICATION (app), NULL, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+
+  g_object_get (app,
+                "is-registered", &registered,
+                "is-remote", &remote,
+                NULL);
+
+  g_assert (registered);
+  g_assert (!remote);
+
+  g_application_quit (G_APPLICATION (app));
+
   g_object_unref (app);
   g_free (id);
+
+  session_bus_down ();
+  _g_object_wait_for_single_ref (c);
+  g_object_unref (c);
+
+  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
 }
 
 static void
@@ -278,11 +314,7 @@ static void
 test_nodbus (void)
 {
   gchar *argv[] = { "./unimportant", NULL };
-  GDBusConnection *session;
   GApplication *app;
-
-  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (session == NULL);
 
   app = g_application_new ("org.gtk.Unimportant",
                            G_APPLICATION_FLAGS_NONE);
@@ -313,12 +345,12 @@ quit_activate (GApplication *app)
 static void
 test_quit (void)
 {
+  GDBusConnection *c;
   gchar *argv[] = { "./unimportant", NULL };
-  GDBusConnection *session;
   GApplication *app;
 
-  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (session == NULL);
+  session_bus_up ();
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   app = g_application_new ("org.gtk.Unimportant",
                            G_APPLICATION_FLAGS_NONE);
@@ -327,6 +359,13 @@ test_quit (void)
   g_object_unref (app);
 
   g_assert (quit_activated);
+
+  session_bus_down ();
+
+  _g_object_wait_for_single_ref (c);
+  g_object_unref (c);
+
+  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
 }
 
 static void
@@ -366,11 +405,9 @@ static void
 test_actions (void)
 {
   gchar *argv[] = { "./unimportant", NULL };
-  GDBusConnection *session;
   GApplication *app;
 
-  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (session == NULL);
+  g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
 
   app = g_application_new ("org.gtk.Unimportant",
                            G_APPLICATION_FLAGS_NONE);
