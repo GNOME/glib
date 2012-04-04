@@ -158,7 +158,7 @@ _g_bus_get_priv (GBusType            bus_type,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#if 1
+#if 0
 /* toggle refs are not easy to use (maybe not even safe) when multiple
  * threads are involved so implement this by busy-waiting for now
  */
