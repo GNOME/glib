@@ -114,6 +114,7 @@ test_GDateTime_new_from_unix (void)
   tm.tm_hour = 0;
   tm.tm_min = 0;
   tm.tm_sec = 0;
+  tm.tm_isdst = -1;
   t = mktime (&tm);
 
   dt = g_date_time_new_from_unix_local (t);
