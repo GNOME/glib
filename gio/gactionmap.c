@@ -223,7 +223,7 @@ g_action_map_add_action_entries (GActionMap         *action_map,
         {
           if (!g_variant_type_string_is_valid (entry->parameter_type))
             {
-              g_critical ("g_simple_action_group_add_entries: the type "
+              g_critical ("g_action_map_add_entries: the type "
                           "string '%s' given as the parameter type for "
                           "action '%s' is not a valid GVariant type "
                           "string.  This action will not be added.",
@@ -244,7 +244,7 @@ g_action_map_add_action_entries (GActionMap         *action_map,
           state = g_variant_parse (NULL, entry->state, NULL, NULL, &error);
           if (state == NULL)
             {
-              g_critical ("g_simple_action_group_add_entries: GVariant could "
+              g_critical ("g_action_map_add_entries: GVariant could "
                           "not parse the state value given for action '%s' "
                           "('%s'): %s.  This action will not be added.",
                           entry->name, entry->state, error->message);
