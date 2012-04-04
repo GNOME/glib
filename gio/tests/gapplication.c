@@ -329,6 +329,56 @@ test_quit (void)
   g_assert (quit_activated);
 }
 
+static void
+on_activate (GApplication *app)
+{
+  gchar **actions;
+  GAction *action;
+  GVariant *state;
+
+  g_assert (!g_application_get_is_remote (app));
+
+  actions = g_action_group_list_actions (G_ACTION_GROUP (app));
+  g_assert (g_strv_length (actions) == 0);
+  g_strfreev (actions);
+
+  action = (GAction*)g_simple_action_new_stateful ("test", G_VARIANT_TYPE_BOOLEAN, g_variant_new_boolean (FALSE));
+  g_action_map_add_action (G_ACTION_MAP (app), action);
+
+  actions = g_action_group_list_actions (G_ACTION_GROUP (app));
+  g_assert (g_strv_length (actions) == 1);
+  g_strfreev (actions);
+
+  g_action_group_change_action_state (G_ACTION_GROUP (app), "test", g_variant_new_boolean (TRUE));
+  state = g_action_group_get_action_state (G_ACTION_GROUP (app), "test");
+  g_assert (g_variant_get_boolean (state) == TRUE);
+
+  g_action_map_remove_action (G_ACTION_MAP (app), "test");
+
+  actions = g_action_group_list_actions (G_ACTION_GROUP (app));
+  g_assert (g_strv_length (actions) == 0);
+  g_strfreev (actions);
+
+  g_idle_add (quit_app, app);
+}
+
+static void
+test_actions (void)
+{
+  gchar *argv[] = { "./unimportant", NULL };
+  GDBusConnection *session;
+  GApplication *app;
+
+  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (session == NULL);
+
+  app = g_application_new ("org.gtk.Unimportant",
+                           G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (on_activate), NULL);
+  g_application_run (app, 1, argv);
+  g_object_unref (app);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -349,6 +399,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
   g_test_add_func ("/gapplication/quit", test_quit);
+  g_test_add_func ("/gapplication/actions", test_actions);
 
   return g_test_run ();
 }
