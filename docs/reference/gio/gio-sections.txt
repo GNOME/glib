@@ -1699,6 +1699,9 @@ g_resolver_lookup_service
 g_resolver_lookup_service_async
 g_resolver_lookup_service_finish
 g_resolver_free_targets
+g_resolver_lookup_records
+g_resolver_lookup_records_async
+g_resolver_lookup_records_finish
 
 <SUBSECTION>
 G_RESOLVER_ERROR
@@ -1717,6 +1720,7 @@ G_TYPE_RESOLVER
 GResolverPrivate
 g_resolver_get_type
 g_resolver_error_quark
+g_resolver_record_type_get_type
 </SECTION>
 
 <SECTION>

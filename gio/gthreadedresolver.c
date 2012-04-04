@@ -151,8 +151,9 @@ struct _GThreadedResolverRequest {
     } address;
     struct {
       gchar *rrname;
-      GList *targets;
-    } service;
+      GResolverRecordType record_type;
+      GList *results;
+    } records;
   } u;
 
   GCancellable *cancellable;
@@ -515,85 +516,108 @@ lookup_by_address_finish (GResolver     *resolver,
 
 
 static void
-do_lookup_service (GThreadedResolverRequest *req,
-                   GError   **error)
+do_lookup_records (GThreadedResolverRequest  *req,
+                   GError                   **error)
 {
 #if defined(G_OS_UNIX)
-  gint len, herr;
-  guchar answer[1024];
+  gint len = 512;
+  gint herr;
+  GByteArray *answer;
+  gint rrtype;
+
+  rrtype = _g_resolver_record_type_to_rrtype (req->u.records.record_type);
+  answer = g_byte_array_new ();
+  for (;;)
+    {
+      g_byte_array_set_size (answer, len * 2);
+      len = res_query (req->u.records.rrname, C_IN, rrtype, answer->data, answer->len);
+
+      /* If answer fit in the buffer then we're done */
+      if (len < 0 || len < (gint)answer->len)
+        break;
+
+      /*
+       * On overflow some res_query's return the length needed, others
+       * return the full length entered. This code works in either case.
+       */
+  }
+
+  herr = h_errno;
+  req->u.records.results = _g_resolver_records_from_res_query (req->u.records.rrname, rrtype, answer->data, len, herr, error);
+  g_byte_array_free (answer, TRUE);
+
 #elif defined(G_OS_WIN32)
   DNS_STATUS status;
-  DNS_RECORD *results;
-#endif
+  DNS_RECORD *results = NULL;
+  WORD dnstype;
 
-#if defined(G_OS_UNIX)
-  len = res_query (req->u.service.rrname, C_IN, T_SRV, answer, sizeof (answer));
-  herr = h_errno;
-  req->u.service.targets = _g_resolver_targets_from_res_query (req->u.service.rrname, answer, len, herr, error);
-#elif defined(G_OS_WIN32)
-  status = DnsQuery_A (req->u.service.rrname, DNS_TYPE_SRV,
-                       DNS_QUERY_STANDARD, NULL, &results, NULL);
-  req->u.service.targets = _g_resolver_targets_from_DnsQuery (req->u.service.rrname, status, results, error);
-  DnsRecordListFree (results, DnsFreeRecordList);
+  dnstype = _g_resolver_record_type_to_dnstype (req->u.records.record_type);
+  status = DnsQuery_A (req->u.records.rrname, dnstype, DNS_QUERY_STANDARD, NULL, &results, NULL);
+  req->u.records.results = _g_resolver_records_from_DnsQuery (req->u.records.rrname, dnstype, status, results, error);
+  if (results != NULL)
+    DnsRecordListFree (results, DnsFreeRecordList);
 #endif
 }
 
 static GList *
-lookup_service (GResolver        *resolver,
-                const gchar      *rrname,
-		GCancellable     *cancellable,
-                GError          **error)
+lookup_records (GResolver              *resolver,
+                const gchar            *rrname,
+                GResolverRecordType    record_type,
+                GCancellable          *cancellable,
+                GError               **error)
 {
   GThreadedResolver *gtr = G_THREADED_RESOLVER (resolver);
   GThreadedResolverRequest *req;
-  GList *targets;
+  GList *results;
 
-  req = g_threaded_resolver_request_new (do_lookup_service, NULL, cancellable);
-  req->u.service.rrname = (char *)rrname;
+  req = g_threaded_resolver_request_new (do_lookup_records, NULL, cancellable);
+  req->u.records.rrname = (char *)rrname;
+  req->u.records.record_type = record_type;
   resolve_sync (gtr, req, error);
 
-  targets = req->u.service.targets;
+  results = req->u.records.results;
   g_threaded_resolver_request_unref (req);
-  return targets;
+  return results;
 }
 
 static void
-free_lookup_service (GThreadedResolverRequest *req)
+free_lookup_records (GThreadedResolverRequest *req)
 {
-  g_free (req->u.service.rrname);
-  if (req->u.service.targets)
-    g_resolver_free_targets (req->u.service.targets);
+  g_free (req->u.records.rrname);
+  g_list_free_full (req->u.records.results, (GDestroyNotify)g_variant_unref);
 }
 
 static void
-lookup_service_async (GResolver           *resolver,
+lookup_records_async (GResolver           *resolver,
                       const char          *rrname,
-		      GCancellable        *cancellable,
+                      GResolverRecordType  record_type,
+                      GCancellable        *cancellable,
                       GAsyncReadyCallback  callback,
-		      gpointer             user_data)
+                      gpointer             user_data)
 {
   GThreadedResolver *gtr = G_THREADED_RESOLVER (resolver);
   GThreadedResolverRequest *req;
 
-  req = g_threaded_resolver_request_new (do_lookup_service,
-                                         free_lookup_service,
+  req = g_threaded_resolver_request_new (do_lookup_records,
+                                         free_lookup_records,
                                          cancellable);
-  req->u.service.rrname = g_strdup (rrname);
-  resolve_async (gtr, req, callback, user_data, lookup_service_async);
+  req->u.records.rrname = g_strdup (rrname);
+  req->u.records.record_type = record_type;
+  resolve_async (gtr, req, callback, user_data, lookup_records_async);
 }
 
 static GList *
-lookup_service_finish (GResolver     *resolver,
+lookup_records_finish (GResolver     *resolver,
                        GAsyncResult  *result,
-		       GError       **error)
+                       GError       **error)
 {
   GThreadedResolverRequest *req;
-  GList *targets;
+  GList *records;
 
-  req = resolve_finish (resolver, result, lookup_service_async, error);
-  targets = req->u.service.targets;
-  req->u.service.targets = NULL;
-  return targets;
+  req = resolve_finish (resolver, result, lookup_records_async, error);
+  records = req->u.records.results;
+  req->u.records.results = NULL;
+  return records;
 }
 
 
@@ -609,9 +633,9 @@ g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
   resolver_class->lookup_by_address        = lookup_by_address;
   resolver_class->lookup_by_address_async  = lookup_by_address_async;
   resolver_class->lookup_by_address_finish = lookup_by_address_finish;
-  resolver_class->lookup_service           = lookup_service;
-  resolver_class->lookup_service_async     = lookup_service_async;
-  resolver_class->lookup_service_finish    = lookup_service_finish;
+  resolver_class->lookup_records           = lookup_records;
+  resolver_class->lookup_records_async     = lookup_records_async;
+  resolver_class->lookup_records_finish    = lookup_records_finish;
 
   object_class->finalize = finalize;
 }

@@ -91,10 +91,24 @@ struct _GResolverClass {
 					GAsyncResult         *result,
 					GError              **error);
 
+  GList * ( *lookup_records)           (GResolver            *resolver,
+                                        const gchar          *rrname,
+                                        GResolverRecordType   record_type,
+                                        GCancellable         *cancellable,
+                                        GError              **error);
+
+  void    ( *lookup_records_async)     (GResolver            *resolver,
+                                        const gchar          *rrname,
+                                        GResolverRecordType   record_type,
+                                        GCancellable         *cancellable,
+                                        GAsyncReadyCallback   callback,
+                                        gpointer              user_data);
+
+  GList * ( *lookup_records_finish)    (GResolver            *resolver,
+                                        GAsyncResult         *result,
+                                        GError              **error);
+
   /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
   void (*_g_reserved4) (void);
   void (*_g_reserved5) (void);
   void (*_g_reserved6) (void);
@@ -149,6 +163,21 @@ void       g_resolver_lookup_service_async      (GResolver            *resolver,
 GList     *g_resolver_lookup_service_finish     (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
+
+GList     *g_resolver_lookup_records            (GResolver            *resolver,
+                                                 const gchar          *rrname,
+                                                 GResolverRecordType   record_type,
+                                                 GCancellable         *cancellable,
+                                                 GError              **error);
+void       g_resolver_lookup_records_async      (GResolver            *resolver,
+                                                 const gchar          *rrname,
+                                                 GResolverRecordType   record_type,
+                                                 GCancellable         *cancellable,
+                                                 GAsyncReadyCallback   callback,
+                                                 gpointer              user_data);
+GList     *g_resolver_lookup_records_finish     (GResolver            *resolver,
+                                                 GAsyncResult         *result,
+                                                 GError              **error);
 
 void       g_resolver_free_targets              (GList                *targets);
 

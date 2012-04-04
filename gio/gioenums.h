@@ -631,6 +631,49 @@ typedef enum {
 } GResolverError;
 
 /**
+ * GResolverRecordType:
+ * @G_RESOLVER_RECORD_SRV: lookup DNS SRV records for a domain
+ * @G_RESOLVER_RECORD_MX: lookup DNS MX records for a domain
+ * @G_RESOLVER_RECORD_TXT: lookup DNS TXT records for a name
+ * @G_RESOLVER_RECORD_SOA: lookup DNS SOA records for a zone
+ * @G_RESOLVER_RECORD_NS: lookup DNS NS records for a domain
+ *
+ * The type of record that g_resolver_lookup_records() or
+ * g_resolver_lookup_records_async() should retrieve. The records are returned
+ * as lists of #GVariant tuples. Each record type has different values in
+ * the variant tuples returned.
+ *
+ * %G_RESOLVER_RECORD_SRV records are returned as variants with the signature
+ * '(qqqs)', containing a guint16 with the priority, a guint16 with the
+ * weight, a guint16 with the port, and a string of the hostname.
+ *
+ * %G_RESOLVER_RECORD_MX records are returned as variants with the signature
+ * '(qs)', representing a guint16 with the preference, and a string containing
+ * the mail exchanger hostname.
+ *
+ * %G_RESOLVER_RECORD_TXT records are returned as variants with the signature
+ * '(as)', representing an array of the strings in the text record.
+ *
+ * %G_RESOLVER_RECORD_SOA records are returned as variants with the signature
+ * '(ssuuuuu)', representing a string containing the primary name server, a
+ * string containing the administrator, the serial as a guint32, the refresh
+ * interval as guint32, the retry interval as a guint32, the expire timeout
+ * as a guint32, and the ttl as a guint32.
+ *
+ * %G_RESOLVER_RECORD_NS records are returned as variants with the signature
+ * '(s)', representing a string of the hostname of the name server.
+ *
+ * Since: 2.34
+ */
+typedef enum {
+  G_RESOLVER_RECORD_SRV = 1,
+  G_RESOLVER_RECORD_MX,
+  G_RESOLVER_RECORD_TXT,
+  G_RESOLVER_RECORD_SOA,
+  G_RESOLVER_RECORD_NS
+} GResolverRecordType;
+
+/**
  * GResourceError:
  * @G_RESOURCE_ERROR_NOT_FOUND: no file was found at the requested path
  * @G_RESOURCE_ERROR_INTERNAL: unknown error

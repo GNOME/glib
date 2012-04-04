@@ -1713,3 +1713,7 @@ g_resources_unregister
 g_static_resource_fini
 g_static_resource_get_resource
 g_static_resource_init
+g_resolver_lookup_records
+g_resolver_lookup_records_async
+g_resolver_lookup_records_finish
+g_resolver_record_type_get_type

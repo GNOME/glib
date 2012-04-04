@@ -36,15 +36,20 @@ static GResolver *resolver;
 static GCancellable *cancellable;
 static GMainLoop *loop;
 static int nlookups = 0;
+static gboolean synchronous = FALSE;
+static guint connectable_count = 0;
+static GResolverRecordType record_type = 0;
 
 static void G_GNUC_NORETURN
 usage (void)
 {
 	fprintf (stderr, "Usage: resolver [-s] [hostname | IP | service/protocol/domain ] ...\n");
+	fprintf (stderr, "Usage: resolver [-s] [-t MX|TXT|NS|SOA] rrname ...\n");
 	fprintf (stderr, "       resolver [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
 	fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
 	fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
+	fprintf (stderr, "       Use -t with MX, TXT, NS or SOA to lookup DNS records of those types.\n");
 	exit (1);
 }
 
@@ -138,12 +143,162 @@ print_resolved_service (const char *service,
 	{
 	  printf ("%s:%u (pri %u, weight %u)\n",
 		  g_srv_target_get_hostname (t->data),
-		  g_srv_target_get_port (t->data),
-		  g_srv_target_get_priority (t->data),
-		  g_srv_target_get_weight (t->data));
+		  (guint)g_srv_target_get_port (t->data),
+		  (guint)g_srv_target_get_priority (t->data),
+		  (guint)g_srv_target_get_weight (t->data));
           g_srv_target_free (t->data);
 	}
       g_list_free (targets);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
+print_resolved_mx (const char *rrname,
+                   GList      *records,
+                   GError     *error)
+{
+  const gchar *hostname;
+  guint16 priority;
+  GList *t;
+
+  G_LOCK (response);
+  printf ("Domain: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no MX records\n");
+    }
+  else
+    {
+      for (t = records; t; t = t->next)
+        {
+          g_variant_get (t->data, "(q&s)", &priority, &hostname);
+          printf ("%s (pri %u)\n", hostname, (guint)priority);
+          g_variant_unref (t->data);
+        }
+      g_list_free (records);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
+print_resolved_txt (const char *rrname,
+                    GList      *records,
+                    GError     *error)
+{
+  const gchar **contents;
+  GList *t;
+  gint i;
+
+  G_LOCK (response);
+  printf ("Domain: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no TXT records\n");
+    }
+  else
+    {
+      for (t = records; t; t = t->next)
+        {
+          if (t != records)
+            printf ("\n");
+          g_variant_get (t->data, "(^a&s)", &contents);
+          for (i = 0; contents[i] != NULL; i++)
+            printf ("%s\n", contents[i]);
+          g_variant_unref (t->data);
+        }
+      g_list_free (records);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
+print_resolved_soa (const char *rrname,
+                    GList      *records,
+                    GError     *error)
+{
+  GList *t;
+  const gchar *primary_ns;
+  const gchar *administrator;
+  guint32 serial, refresh, retry, expire, ttl;
+
+  G_LOCK (response);
+  printf ("Zone: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no SOA records\n");
+    }
+  else
+    {
+      for (t = records; t; t = t->next)
+        {
+          g_variant_get (t->data, "(&s&suuuuu)", &primary_ns, &administrator,
+                         &serial, &refresh, &retry, &expire, &ttl);
+          printf ("%s %s (serial %u, refresh %u, retry %u, expire %u, ttl %u)\n",
+                  primary_ns, administrator, (guint)serial, (guint)refresh,
+                  (guint)retry, (guint)expire, (guint)ttl);
+          g_variant_unref (t->data);
+        }
+      g_list_free (records);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
+print_resolved_ns (const char *rrname,
+                    GList      *records,
+                    GError     *error)
+{
+  GList *t;
+  const gchar *hostname;
+
+  G_LOCK (response);
+  printf ("Zone: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no NS records\n");
+    }
+  else
+    {
+      for (t = records; t; t = t->next)
+        {
+          g_variant_get (t->data, "(&s)", &hostname);
+          printf ("%s\n", hostname);
+          g_variant_unref (t->data);
+        }
+      g_list_free (records);
     }
   printf ("\n");
 
@@ -156,7 +311,31 @@ lookup_one_sync (const char *arg)
 {
   GError *error = NULL;
 
-  if (strchr (arg, '/'))
+  if (record_type != 0)
+    {
+      GList *records;
+
+      records = g_resolver_lookup_records (resolver, arg, record_type, cancellable, &error);
+      switch (record_type)
+      {
+        case G_RESOLVER_RECORD_MX:
+          print_resolved_mx (arg, records, error);
+          break;
+        case G_RESOLVER_RECORD_SOA:
+          print_resolved_soa (arg, records, error);
+          break;
+        case G_RESOLVER_RECORD_NS:
+          print_resolved_ns (arg, records, error);
+          break;
+        case G_RESOLVER_RECORD_TXT:
+          print_resolved_txt (arg, records, error);
+          break;
+        default:
+          g_warn_if_reached ();
+          break;
+      }
+    }
+  else if (strchr (arg, '/'))
     {
       GList *targets;
       /* service/protocol/domain */
@@ -245,13 +424,49 @@ lookup_service_callback (GObject *source, GAsyncResult *result,
 }
 
 static void
+lookup_records_callback (GObject      *source,
+                         GAsyncResult *result,
+                         gpointer      user_data)
+{
+  const char *arg = user_data;
+  GError *error = NULL;
+  GList *records;
+
+  records = g_resolver_lookup_records_finish (resolver, result, &error);
+
+  switch (record_type)
+  {
+    case G_RESOLVER_RECORD_MX:
+      print_resolved_mx (arg, records, error);
+      break;
+    case G_RESOLVER_RECORD_SOA:
+      print_resolved_soa (arg, records, error);
+      break;
+    case G_RESOLVER_RECORD_NS:
+      print_resolved_ns (arg, records, error);
+      break;
+    case G_RESOLVER_RECORD_TXT:
+      print_resolved_txt (arg, records, error);
+      break;
+    default:
+      g_warn_if_reached ();
+      break;
+  }
+}
+
+static void
 start_async_lookups (char **argv, int argc)
 {
   int i;
 
   for (i = 0; i < argc; i++)
     {
-      if (strchr (argv[i], '/'))
+      if (record_type != 0)
+	{
+	  g_resolver_lookup_records_async (resolver, argv[i], record_type,
+	                                   cancellable, lookup_records_callback, argv[i]);
+	}
+      else if (strchr (argv[i], '/'))
 	{
 	  /* service/protocol/domain */
 	  char **parts = g_strsplit (argv[i], "/", 3);
@@ -428,11 +643,42 @@ async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancel)
 }
 #endif
 
+
+static gboolean
+record_type_arg (const gchar *option_name,
+                 const gchar *value,
+                 gpointer data,
+                 GError **error)
+{
+  if (g_ascii_strcasecmp (value, "MX") == 0) {
+    record_type = G_RESOLVER_RECORD_MX;
+  } else if (g_ascii_strcasecmp (value, "TXT") == 0) {
+    record_type = G_RESOLVER_RECORD_TXT;
+  } else if (g_ascii_strcasecmp (value, "SOA") == 0) {
+    record_type = G_RESOLVER_RECORD_SOA;
+  } else if (g_ascii_strcasecmp (value, "NS") == 0) {
+    record_type = G_RESOLVER_RECORD_NS;
+  } else {
+      g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
+                   "Specify MX, TXT, NS or SOA for the special record lookup types");
+      return FALSE;
+  }
+
+  return TRUE;
+}
+
+static const GOptionEntry option_entries[] = {
+  { "synchronous", 's', 0, G_OPTION_ARG_NONE, &synchronous, "Synchronous connections", NULL },
+  { "connectable", 'c', 0, G_OPTION_ARG_INT, &connectable_count, "Connectable count", "C" },
+  { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS or SOA", "RR" },
+  { NULL },
+};
+
 int
 main (int argc, char **argv)
 {
-  gboolean synchronous = FALSE;
-  guint connectable_count = 0;
+  GOptionContext *context;
+  GError *error = NULL;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
   guint watch;
@@ -440,22 +686,13 @@ main (int argc, char **argv)
 
   g_type_init ();
 
-  /* FIXME: use GOptionContext */
-  while (argc >= 2 && argv[1][0] == '-')
+  context = g_option_context_new ("lookups ...");
+  g_option_context_add_main_entries (context, option_entries, NULL);
+  if (!g_option_context_parse (context, &argc, &argv, &error))
     {
-      if (!strcmp (argv[1], "-s"))
-        synchronous = TRUE;
-      else if (!strcmp (argv[1], "-c"))
-        {
-          connectable_count = atoi (argv[2]);
-          argv++;
-          argc--;
-        }
-      else
-        usage ();
-
-      argv++;
-      argc--;
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
+      usage();
     }
 
   if (argc < 2 || (argc > 2 && connectable_count))

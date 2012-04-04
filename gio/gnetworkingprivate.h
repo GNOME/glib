@@ -95,13 +95,19 @@ char  *_g_resolver_name_from_nameinfo      (GInetAddress     *address,
 					    GError          **error);
 
 #if defined(G_OS_UNIX)
-GList *_g_resolver_targets_from_res_query  (const gchar      *rrname,
+gint   _g_resolver_record_type_to_rrtype   (GResolverRecordType record_type);
+
+GList *_g_resolver_records_from_res_query  (const gchar      *rrname,
+					    gint              rrtype,
 					    guchar           *answer,
 					    gint              len,
 					    gint              herr,
 					    GError          **error);
 #elif defined(G_OS_WIN32)
-GList *_g_resolver_targets_from_DnsQuery   (const gchar      *rrname,
+WORD   _g_resolver_record_type_to_dnstype  (GResolverRecordType record_type);
+
+GList *_g_resolver_records_from_DnsQuery   (const gchar      *rrname,
+					    WORD              dnstype,
 					    DNS_STATUS        status,
 					    DNS_RECORD       *results,
 					    GError          **error);
