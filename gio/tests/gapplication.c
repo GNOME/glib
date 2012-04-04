@@ -115,6 +115,15 @@ basic (void)
 }
 
 
+#if 0
+/* Now that we register non-unique apps on the bus we need to fix the
+ * following test not to assume that it's safe to create multiple instances
+ * of the same app in one process.
+ *
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=647986 for the patch that
+ * introduced this problem.
+ */
+
 static GApplication *recently_activated;
 static GMainLoop *loop;
 
@@ -147,14 +156,6 @@ make_app (gboolean non_unique)
 
   return app;
 }
-
-#if 0
-Now that we register non-unique apps on the bus we need to fix the
-following test not to assume that it's safe to create multiple instances
-of the same app in one process.
-
-See https://bugzilla.gnome.org/show_bug.cgi?id=647986 for the patch that
-introduced this problem.
 
 static void
 test_nonunique (void)
