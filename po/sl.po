@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-04 06:37+0000\n"
-"PO-Revision-Date: 2012-03-04 21:19+0100\n"
+"POT-Creation-Date: 2012-04-04 09:56+0000\n"
+"PO-Revision-Date: 2012-04-04 13:24+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -42,13 +42,12 @@ msgid "Stream is already closed"
 msgstr "Pretok je že zaprt"
 
 #: ../gio/gcancellable.c:318
-#: ../gio/gdbusconnection.c:1834
-#: ../gio/gdbusconnection.c:1925
-#: ../gio/gdbusconnection.c:2099
-#: ../gio/gdbusprivate.c:1413
+#: ../gio/gdbusconnection.c:1836
+#: ../gio/gdbusconnection.c:1928
+#: ../gio/gdbusprivate.c:1414
 #: ../gio/glocalfile.c:2133
-#: ../gio/gsimpleasyncresult.c:810
-#: ../gio/gsimpleasyncresult.c:836
+#: ../gio/gsimpleasyncresult.c:833
+#: ../gio/gsimpleasyncresult.c:859
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Opravilo je bilo preklicano."
@@ -90,7 +89,7 @@ msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
 #: ../gio/gcharsetconverter.c:447
-#: ../gio/gsocket.c:954
+#: ../gio/gsocket.c:961
 msgid "Cancellable initialization not supported"
 msgstr "Dejanje prekinitve zagona ni podprto"
 
@@ -229,46 +228,46 @@ msgstr "Napaka med branjem iz datoteke nonce `%s'; pričakovanih 16 bajtov, dobl
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Napaka med pisanjem vsebine datoteke nonce `%s' v pretok:"
 
-#: ../gio/gdbusaddress.c:951
+#: ../gio/gdbusaddress.c:952
 msgid "The given address is empty"
 msgstr "Podan naslov je prazen."
 
-#: ../gio/gdbusaddress.c:1020
+#: ../gio/gdbusaddress.c:1021
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Ni mogoče oživiti vodila sporočila brez predmeta machine-id:"
 
-#: ../gio/gdbusaddress.c:1057
+#: ../gio/gdbusaddress.c:1058
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Napaka med oživljanjem ukazne vrstice `%s': "
 
-#: ../gio/gdbusaddress.c:1068
+#: ../gio/gdbusaddress.c:1069
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Nepravilna zaustavitev programa med izvajanjem ukazne vrstice `%s': %s"
 
-#: ../gio/gdbusaddress.c:1082
+#: ../gio/gdbusaddress.c:1083
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Izhodno stanje ukazne vrstice `%s' je nenični %d: %s"
 
-#: ../gio/gdbusaddress.c:1155
+#: ../gio/gdbusaddress.c:1156
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 
-#: ../gio/gdbusaddress.c:1254
-#: ../gio/gdbusconnection.c:6688
+#: ../gio/gdbusaddress.c:1255
+#: ../gio/gdbusconnection.c:6705
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
 msgstr "Ni mogoče določiti naslova vodila iz okoljske spremenljivke DBUS_STARTER_BUS_TYPE - neznana vrednost `%s'"
 
-#: ../gio/gdbusaddress.c:1263
-#: ../gio/gdbusconnection.c:6697
+#: ../gio/gdbusaddress.c:1264
+#: ../gio/gdbusconnection.c:6714
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr "Ni mogoče določiti naslova vodila, kajti okoljska spremenljivka DBUS_STARTER_BUS_TYPE ni nastavljena"
 
-#: ../gio/gdbusaddress.c:1273
+#: ../gio/gdbusaddress.c:1274
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznana vrsta vodila %d"
@@ -364,86 +363,86 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(V nadaljevanju je spodletelo tudi sproščanje zaklepa `%s': %s)"
 
 #: ../gio/gdbusconnection.c:594
-#: ../gio/gdbusconnection.c:2402
+#: ../gio/gdbusconnection.c:2391
 msgid "The connection is closed"
 msgstr "Povezava je zaprta"
 
-#: ../gio/gdbusconnection.c:1879
+#: ../gio/gdbusconnection.c:1881
 msgid "Timeout was reached"
 msgstr "Čas zakasnitve je potekel"
 
-#: ../gio/gdbusconnection.c:2524
+#: ../gio/gdbusconnection.c:2513
 msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Med izgrajevanjem povezave s strani odjemalca so bile odkrite nepodprte zastavice"
 
-#: ../gio/gdbusconnection.c:4026
-#: ../gio/gdbusconnection.c:4342
+#: ../gio/gdbusconnection.c:4015
+#: ../gio/gdbusconnection.c:4331
 #, c-format
 msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Vmesnik `org.freedesktop.DBus.Properties' na predmetu na poti %s ne obstaja"
 
-#: ../gio/gdbusconnection.c:4097
+#: ../gio/gdbusconnection.c:4086
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Napaka med nastavljanjem lastnosti `%s': pričakovana je vrsta `%s', dobljena pa `%s'"
 
-#: ../gio/gdbusconnection.c:4192
+#: ../gio/gdbusconnection.c:4181
 #, c-format
 msgid "No such property `%s'"
 msgstr "Lastnost `%s' ne obstaja"
 
-#: ../gio/gdbusconnection.c:4204
+#: ../gio/gdbusconnection.c:4193
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Lastnosti `%s' ni berljiva"
 
-#: ../gio/gdbusconnection.c:4215
+#: ../gio/gdbusconnection.c:4204
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Lastnost `%s' ni zapisljiva"
 
-#: ../gio/gdbusconnection.c:4285
-#: ../gio/gdbusconnection.c:6131
+#: ../gio/gdbusconnection.c:4274
+#: ../gio/gdbusconnection.c:6148
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Vmesnik `%s' ne obstaja"
 
-#: ../gio/gdbusconnection.c:4469
+#: ../gio/gdbusconnection.c:4458
 msgid "No such interface"
 msgstr "Vmesnik ne obstaja"
 
-#: ../gio/gdbusconnection.c:4690
-#: ../gio/gdbusconnection.c:6637
+#: ../gio/gdbusconnection.c:4676
+#: ../gio/gdbusconnection.c:6654
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Vmesnik `%s' na predmetu na poti %s ne obstaja"
 
-#: ../gio/gdbusconnection.c:4742
+#: ../gio/gdbusconnection.c:4731
 #, c-format
 msgid "No such method `%s'"
 msgstr "Način `%s' ne obstaja"
 
-#: ../gio/gdbusconnection.c:4773
+#: ../gio/gdbusconnection.c:4762
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Vrsta sporočila `%s' se ne sklada s pričakovano vrsto `%s'"
 
-#: ../gio/gdbusconnection.c:4993
+#: ../gio/gdbusconnection.c:4982
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Za vmesnik %s pri %s je predmet že izvožen"
 
-#: ../gio/gdbusconnection.c:5191
+#: ../gio/gdbusconnection.c:5180
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Način `%s' je vrnil vrsto `%s', pričakovana pa je vrsta `%s'"
 
-#: ../gio/gdbusconnection.c:6242
+#: ../gio/gdbusconnection.c:6259
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Način `%s' na vmesniku `%s' s podpisom `%s' ne obstaja"
 
-#: ../gio/gdbusconnection.c:6361
+#: ../gio/gdbusconnection.c:6378
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Podrejeno drevo je že izvoženo za %s"
@@ -595,7 +594,7 @@ msgstr "Napaka vrnjena s telesom vrste `%s'"
 msgid "Error return with empty body"
 msgstr "Napaka vrnjena s praznim telesom"
 
-#: ../gio/gdbusprivate.c:2065
+#: ../gio/gdbusprivate.c:2066
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Ni mogoče naložiti /var/lib/dbus/machine-id oziroma /etc/machine-id: "
 
@@ -609,8 +608,8 @@ msgstr "Napaka med klicanjem predmeta StartServiceByName za %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Nepričakovan odgovor %d iz načina StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2726
-#: ../gio/gdbusproxy.c:2860
+#: ../gio/gdbusproxy.c:2745
+#: ../gio/gdbusproxy.c:2882
 msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr "Ni mogoče sklicati načina; posredniški strežnik za znano ime brez lastnika je bil zgrajen z zastavico  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
@@ -1199,102 +1198,102 @@ msgstr "Predmet <%s> ni dovoljen znotraj predmeta <%s>"
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Predmet <%s> ni dovoljen na vrhnji ravni"
 
-#: ../gio/glib-compile-resources.c:235
+#: ../gio/glib-compile-resources.c:238
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Datoteka %s se v viru pojavi večkrat"
 
-#: ../gio/glib-compile-resources.c:248
+#: ../gio/glib-compile-resources.c:251
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr "'%s' ni mogoče najti v nobeni mapi virov"
 
-#: ../gio/glib-compile-resources.c:259
+#: ../gio/glib-compile-resources.c:262
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "'%s' ni mogoče najti v trenutni mapi"
 
-#: ../gio/glib-compile-resources.c:287
+#: ../gio/glib-compile-resources.c:290
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "Neznana možnost obdelovanja \"%s\""
 
-#: ../gio/glib-compile-resources.c:305
-#: ../gio/glib-compile-resources.c:363
+#: ../gio/glib-compile-resources.c:308
+#: ../gio/glib-compile-resources.c:366
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Ustvarjanje začasne datoteke je spodletelo: %s"
 
-#: ../gio/glib-compile-resources.c:335
+#: ../gio/glib-compile-resources.c:338
 msgid "Error processing input file with xmllint"
 msgstr "Napaka pri obdelavi vhodne datoteke z xmllint"
 
-#: ../gio/glib-compile-resources.c:390
+#: ../gio/glib-compile-resources.c:393
 msgid "Error processing input file with to-pixdata"
 msgstr "Napaka pri obdelovanju dovodne datoteke z to-pixdata"
 
-#: ../gio/glib-compile-resources.c:403
+#: ../gio/glib-compile-resources.c:406
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Napaka med branjem datoteke %s: %s"
 
-#: ../gio/glib-compile-resources.c:423
+#: ../gio/glib-compile-resources.c:426
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Napaka med stiskanjem datoteke %s"
 
-#: ../gio/glib-compile-resources.c:487
+#: ../gio/glib-compile-resources.c:490
 #: ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "besedilo se ne sme pojaviti znotraj <%s>"
 
-#: ../gio/glib-compile-resources.c:610
+#: ../gio/glib-compile-resources.c:613
 msgid "name of the output file"
 msgstr "ime izhodne datoteke"
 
-#: ../gio/glib-compile-resources.c:610
-#: ../gio/glib-compile-resources.c:643
+#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:646
 #: ../gio/gresource-tool.c:477
 #: ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "DATOTEKA"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 msgid "The directories where files are to be read from (default to current directory)"
 msgstr "Mape, iz katerih naj bodo brane datoteke (privzeto je to trenutna mapa)"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 #: ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "MAPA"
 
-#: ../gio/glib-compile-resources.c:612
+#: ../gio/glib-compile-resources.c:615
 msgid "Generate output in the format selected for by the target filename extension"
 msgstr "Ustvari odvod v obliki, izbrani s pripono imena ciljne datoteke"
 
-#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:616
 msgid "Generate source header"
 msgstr "Ustvari glavo vira"
 
-#: ../gio/glib-compile-resources.c:614
+#: ../gio/glib-compile-resources.c:617
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Ustvari izvorno kodo za povezavo datoteke virov z vašo kodo"
 
-#: ../gio/glib-compile-resources.c:615
+#: ../gio/glib-compile-resources.c:618
 msgid "Generate dependency list"
 msgstr "Ustvari seznam odvisnosti."
 
-#: ../gio/glib-compile-resources.c:616
+#: ../gio/glib-compile-resources.c:619
 msgid "Don't automatically create and register resource"
 msgstr "Vira ne ustvari in ne vpiši samodejno"
 
-#: ../gio/glib-compile-resources.c:617
+#: ../gio/glib-compile-resources.c:620
 msgid "C identifier name used for the generated source code"
 msgstr "Določilo imena jezika C za ustvarjanje izvorne kode"
 
-#: ../gio/glib-compile-resources.c:646
+#: ../gio/glib-compile-resources.c:649
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1304,7 +1303,7 @@ msgstr ""
 "Datoteke določil vira imajo pripone .gresource.xml,\n"
 "datoteke vira pa pripono .gresource."
 
-#: ../gio/glib-compile-resources.c:662
+#: ../gio/glib-compile-resources.c:665
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Podati je treba natanko eno ime datoteke\n"
@@ -2410,8 +2409,8 @@ msgid "Socket is already closed"
 msgstr "Vtič je že zaprt"
 
 #: ../gio/gsocket.c:305
-#: ../gio/gsocket.c:3520
-#: ../gio/gsocket.c:3575
+#: ../gio/gsocket.c:3527
+#: ../gio/gsocket.c:3582
 msgid "Socket I/O timed out"
 msgstr "Vtič V/I naprave je časovno potekel"
 
@@ -2421,108 +2420,113 @@ msgid "creating GSocket from fd: %s"
 msgstr "ustvarjanje GSocet preko fd: %s"
 
 #: ../gio/gsocket.c:506
-#: ../gio/gsocket.c:522
+#: ../gio/gsocket.c:513
+#: ../gio/gsocket.c:529
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Ni mogoče ustvariti vtiča: %s"
 
 #: ../gio/gsocket.c:506
+msgid "Unknown family was specified"
+msgstr "Določena je neznana družina"
+
+#: ../gio/gsocket.c:513
 msgid "Unknown protocol was specified"
 msgstr "Določen je neznan protokol"
 
-#: ../gio/gsocket.c:1713
+#: ../gio/gsocket.c:1720
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ni mogoče pridobiti krajevnega naslova: %s"
 
-#: ../gio/gsocket.c:1756
+#: ../gio/gsocket.c:1763
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ni mogoče pridobiti oddaljenega naslova: %s"
 
-#: ../gio/gsocket.c:1817
+#: ../gio/gsocket.c:1824
 #, c-format
 msgid "could not listen: %s"
 msgstr "ni mogoče slediti: %s"
 
-#: ../gio/gsocket.c:1891
+#: ../gio/gsocket.c:1898
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Napaka vezanjem na naslov: %s"
 
-#: ../gio/gsocket.c:1944
-#: ../gio/gsocket.c:1980
+#: ../gio/gsocket.c:1951
+#: ../gio/gsocket.c:1987
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Napaka povezovanja v skupino za večsmerno oddajanje: %s"
 
-#: ../gio/gsocket.c:1945
-#: ../gio/gsocket.c:1981
+#: ../gio/gsocket.c:1952
+#: ../gio/gsocket.c:1988
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Napaka zapuščanja skupine za večsmerno oddajanje: %s"
 
-#: ../gio/gsocket.c:1946
+#: ../gio/gsocket.c:1953
 msgid "No support for source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje lastno viru"
 
-#: ../gio/gsocket.c:2165
+#: ../gio/gsocket.c:2172
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Napaka med sprejemanjem povezave: %s"
 
-#: ../gio/gsocket.c:2286
+#: ../gio/gsocket.c:2293
 msgid "Connection in progress"
 msgstr "Povezava v teku"
 
-#: ../gio/gsocket.c:2338
-#: ../gio/gsocket.c:4317
+#: ../gio/gsocket.c:2345
+#: ../gio/gsocket.c:4324
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Ni mogoče pridobiti uvrščene napake: %s"
 
-#: ../gio/gsocket.c:2508
+#: ../gio/gsocket.c:2515
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Napaka med prejemanjem podatkov: %s"
 
-#: ../gio/gsocket.c:2686
+#: ../gio/gsocket.c:2693
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Napaka med pošiljanjem podatkov: %s"
 
-#: ../gio/gsocket.c:2800
+#: ../gio/gsocket.c:2807
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Ni mogoče izklopiti vtiča: %s"
 
-#: ../gio/gsocket.c:2879
+#: ../gio/gsocket.c:2886
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Napaka med zapiranjem vtiča: %s"
 
-#: ../gio/gsocket.c:3513
+#: ../gio/gsocket.c:3520
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čakanje na stanje vtiča: %s"
 
-#: ../gio/gsocket.c:3791
-#: ../gio/gsocket.c:3872
+#: ../gio/gsocket.c:3798
+#: ../gio/gsocket.c:3879
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Napaka med pošiljanjem sporočila: %s"
 
-#: ../gio/gsocket.c:3816
+#: ../gio/gsocket.c:3823
 msgid "GSocketControlMessage not supported on windows"
 msgstr "Šredmet GSocketControlMessage ni podprt na sistemih Windows"
 
-#: ../gio/gsocket.c:4096
-#: ../gio/gsocket.c:4232
+#: ../gio/gsocket.c:4103
+#: ../gio/gsocket.c:4239
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Napaka med prejemanjem sporočila: %s"
 
-#: ../gio/gsocket.c:4336
+#: ../gio/gsocket.c:4343
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Operacijski sistem ne podpira možnosti g_socket_get_credentials"
 
@@ -2741,15 +2745,15 @@ msgstr "Napaka med onemogočanjem SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:392
 #: ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:492
+#: ../gio/gunixinputstream.c:493
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Napaka med branjem iz opisovalnika datoteke: %s"
 
-#: ../gio/gunixinputstream.c:447
-#: ../gio/gunixinputstream.c:642
-#: ../gio/gunixoutputstream.c:433
-#: ../gio/gunixoutputstream.c:597
+#: ../gio/gunixinputstream.c:448
+#: ../gio/gunixinputstream.c:643
+#: ../gio/gunixoutputstream.c:434
+#: ../gio/gunixoutputstream.c:598
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Napaka med zapiranjem opisovalnika datoteke: %s"
@@ -2761,7 +2765,7 @@ msgstr "Koren datotečnega sistema"
 
 #: ../gio/gunixoutputstream.c:378
 #: ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:478
+#: ../gio/gunixoutputstream.c:479
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Napaka med pisanjem v opisovalnik datoteke: %s"
