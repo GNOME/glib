@@ -61,7 +61,7 @@ main (int argc, char **argv)
 
   app = g_application_new ("org.gtk.TestApplication",
                            G_APPLICATION_HANDLES_OPEN |
-                           (strcmp (argv[1], "./cmd") == 0 ?
+                           (g_strcmp0 (argv[1], "./cmd") == 0 ?
                              G_APPLICATION_HANDLES_COMMAND_LINE
                            : 0));
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
@@ -73,6 +73,7 @@ main (int argc, char **argv)
   g_application_set_inactivity_timeout (app, 1000);
 #endif
   status = g_application_run (app, argc - 1, argv + 1);
+
   g_object_unref (app);
 
   g_print ("exit status: %d\n", status);
