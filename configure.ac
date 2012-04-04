@@ -3350,7 +3350,7 @@ g_pollnval=$glib_cv_value_POLLNVAL
 # This is needed because glib-mkenums doesn't handle optional
 # values in enums, and thus we have to have all existing values
 # defined in the enum.
-if "x$glib_cv_value_AF_UNIX" != "x"; then
+if test "x$glib_cv_value_AF_UNIX" != "x"; then
   g_af_unix=$glib_cv_value_AF_UNIX
 else
   g_af_unix=-1
