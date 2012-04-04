@@ -35,7 +35,7 @@
  * @short_description: Base class for implementing streaming output
  * @include: gio/gio.h
  *
- * GOutputStream has functions to write to a stream (g_output_stream_write()),
+ * #GOutputStream has functions to write to a stream (g_output_stream_write()),
  * to close a stream (g_output_stream_close()) and to flush pending writes
  * (g_output_stream_flush()). 
  *
@@ -169,7 +169,7 @@ g_output_stream_init (GOutputStream *stream)
  * is written or an error occurs; 0 is never returned (unless
  * @count is 0).
  * 
- * If @cancellable is not NULL, then the operation can be cancelled by
+ * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
  * operation was partially finished when the operation was cancelled the
@@ -248,7 +248,7 @@ g_output_stream_write (GOutputStream  *stream,
  * On a successful write of @count bytes, %TRUE is returned, and @bytes_written
  * is set to @count.
  * 
- * If there is an error during the operation FALSE is returned and @error
+ * If there is an error during the operation %FALSE is returned and @error
  * is set to indicate the error status, @bytes_written is updated to contain
  * the number of bytes written into the stream before the error occurred.
  *
@@ -551,7 +551,7 @@ _g_output_stream_close_internal (GOutputStream  *stream,
  * is important to check and report the error to the user, otherwise
  * there might be a loss of data as all data might not be written.
  * 
- * If @cancellable is not NULL, then the operation can be cancelled by
+ * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  * Cancelling a close will still leave the stream closed, but there some streams
