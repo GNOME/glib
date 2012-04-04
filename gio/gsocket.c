@@ -500,6 +500,13 @@ g_socket_create_socket (GSocketFamily   family,
       g_assert_not_reached ();
     }
 
+  if (family < 0)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Unable to create socket: %s"), _("Unknown family was specified"));
+      return -1;
+    }
+
   if (protocol == -1)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,

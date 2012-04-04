@@ -3344,7 +3344,17 @@ g_pollhup=$glib_cv_value_POLLHUP
 g_pollerr=$glib_cv_value_POLLERR
 g_pollnval=$glib_cv_value_POLLNVAL
 
-g_af_unix=$glib_cv_value_AF_UNIX
+# If a family is not found on the system, define that family to
+# a negative value, picking a different one for each undefined
+# family (-1 for AF_UNIX, -2 for the next one, -3 ...)
+# This is needed because glib-mkenums doesn't handle optional
+# values in enums, and thus we have to have all existing values
+# defined in the enum.
+if "x$glib_cv_value_AF_UNIX" != "x"; then
+  g_af_unix=$glib_cv_value_AF_UNIX
+else
+  g_af_unix=-1
+fi
 g_af_inet=$glib_cv_value_AF_INET
 g_af_inet6=$glib_cv_value_AF_INET6
 
