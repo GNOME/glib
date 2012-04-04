@@ -293,6 +293,42 @@ test_nodbus (void)
   g_assert (nodbus_activated);
 }
 
+static gboolean
+quit_app (gpointer user_data)
+{
+  g_application_quit (user_data);
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean quit_activated;
+
+static void
+quit_activate (GApplication *app)
+{
+  quit_activated = TRUE;
+  g_application_hold (app);
+  g_idle_add (quit_app, app);
+}
+
+static void
+test_quit (void)
+{
+  gchar *argv[] = { "./unimportant", NULL };
+  GDBusConnection *session;
+  GApplication *app;
+
+  session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (session == NULL);
+
+  app = g_application_new ("org.gtk.Unimportant",
+                           G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (quit_activate), NULL);
+  g_application_run (app, 1, argv);
+  g_object_unref (app);
+
+  g_assert (quit_activated);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -312,6 +348,7 @@ main (int argc, char **argv)
 /*  g_test_add_func ("/gapplication/non-unique", test_nonunique); */
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
+  g_test_add_func ("/gapplication/quit", test_quit);
 
   return g_test_run ();
 }
