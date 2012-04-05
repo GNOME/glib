@@ -696,9 +696,11 @@ test_all_types (void)
   GBytes *bytes = g_bytes_new_static ("Blah", 5);
   gpointer ptr = &enum_type;
   GVariant *var = g_variant_new_uint16 (99);
+  gint64 i64;
+  guint64 ui64;
   g_variant_ref_sink (var);
-  gint64 i64 = G_MAXINT64 - 1234;
-  guint64 ui64 = G_MAXUINT64 - 123456;
+  i64 = G_MAXINT64 - 1234;
+  ui64 = G_MAXUINT64 - 123456;
 
   test = g_object_new (test_get_type (), NULL);
 
