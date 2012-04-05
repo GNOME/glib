@@ -273,6 +273,20 @@ test_environment (void)
   g_object_unref (ctx);
 }
 
+static void
+test_startup_wm_class (void)
+{
+  GDesktopAppInfo *appinfo;
+  const char *wm_class;
+
+  appinfo = g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
+  wm_class = g_desktop_app_info_get_startup_wm_class (appinfo);
+
+  g_assert_cmpstr (wm_class, ==, "appinfo-class");
+
+  g_object_unref (appinfo);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -288,6 +302,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/tryexec", test_tryexec);
   g_test_add_func ("/appinfo/associations", test_associations);
   g_test_add_func ("/appinfo/environment", test_environment);
+  g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
 
   return g_test_run ();
 }

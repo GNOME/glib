@@ -8,3 +8,5 @@ Comment=GAppInfo example
 Comment[de]=GAppInfo Beispiel
 Exec=./appinfo-test --option
 Icon=testicon
+StartupNotify=true
+StartupWMClass=appinfo-class

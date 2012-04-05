@@ -56,6 +56,8 @@ const char * const *g_desktop_app_info_get_keywords   (GDesktopAppInfo *info);
 gboolean         g_desktop_app_info_get_nodisplay     (GDesktopAppInfo *info);
 gboolean         g_desktop_app_info_get_show_in       (GDesktopAppInfo *info,
                                                        const gchar     *desktop_env);
+GLIB_AVAILABLE_IN_2_34
+const char *     g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *info);
 
 GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_id);
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
