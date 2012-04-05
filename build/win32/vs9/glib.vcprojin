@@ -419,16 +419,6 @@
 					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
 					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
-				<File RelativePath="..\..\..\glib\pcre\pcre_maketables.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_newline.c" >
 					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
 					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
@@ -440,16 +430,6 @@
 					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-				</File>
-				<File RelativePath="..\..\..\glib\pcre\pcre_refcount.c" >
 					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
 					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
@@ -490,16 +470,6 @@
 					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_valid_utf8.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-				</File>
-				<File RelativePath="..\..\..\glib\pcre\pcre_version.c" >
 					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
 					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" AdditionalOptions="-DG_LOG_DOMAIN=\&quot;GLib-GRegex\&quot; -UBSR_ANYCRLF -UEBCDIC" /></FileConfiguration>
