@@ -3,17 +3,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-26 01:16+0300\n"
-"PO-Revision-Date: 2012-02-26 01:18+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-04-04 09:41+0000\n"
+"PO-Revision-Date: 2012-04-05 15:25+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
-"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Language: be\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Virtaal 0.7.0\n"
 "X-Project-Style: gnome\n"
 
@@ -30,10 +31,10 @@ msgstr "Надта вялікае значэнне перададзена ў %s"
 msgid "Stream is already closed"
 msgstr "Струмень ужо закрыты"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1834
-#: ../gio/gdbusconnection.c:1925 ../gio/gdbusconnection.c:2099
-#: ../gio/gdbusprivate.c:1413 ../gio/glocalfile.c:2133
-#: ../gio/gsimpleasyncresult.c:810 ../gio/gsimpleasyncresult.c:836
+#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1836
+#: ../gio/gdbusconnection.c:1928 ../gio/gdbusprivate.c:1414
+#: ../gio/glocalfile.c:2133 ../gio/gsimpleasyncresult.c:833
+#: ../gio/gsimpleasyncresult.c:859
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Дзеянне скасавана"
@@ -63,7 +64,7 @@ msgstr "Хібная паслядоўнасць байтаў ва ўводзе �
 msgid "Error during conversion: %s"
 msgstr "Падчас пераўтварэння ўзнікла памылка: %s"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:953
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:961
 msgid "Cancellable initialization not supported"
 msgstr "Ініцыяцыя з магчымасцю скасавання не падтрымліваецца"
 
@@ -217,37 +218,37 @@ msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Памылка перасылкі змесціва файла таямніцы (\"nonce\") \"%s\" у струмень:"
 
-#: ../gio/gdbusaddress.c:951
+#: ../gio/gdbusaddress.c:952
 msgid "The given address is empty"
 msgstr "Гэты адрас пусты"
 
-#: ../gio/gdbusaddress.c:1020
+#: ../gio/gdbusaddress.c:1021
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Немагчыма стварыць шыну апавяшчэння без ідэнтыфікатара машыны: "
 
-#: ../gio/gdbusaddress.c:1057
+#: ../gio/gdbusaddress.c:1058
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Памылка запуску праграмы \"%s\": "
 
-#: ../gio/gdbusaddress.c:1068
+#: ../gio/gdbusaddress.c:1069
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Праграма недарэчна спынена падчас запуску праграмы \"%s\": %s"
 
-#: ../gio/gdbusaddress.c:1082
+#: ../gio/gdbusaddress.c:1083
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Праграма \"%s\" скончыла працу з ненулявым кодам выхаду %d: %s"
 
-#: ../gio/gdbusaddress.c:1155
+#: ../gio/gdbusaddress.c:1156
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Немагчыма вызначыць адрас сеансавай магістралі (такая здольнасць не "
 "рэалізаваная для вашай аперацыйнай сістэмы)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6688
+#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -256,7 +257,7 @@ msgstr ""
 "Не ўдалося вызначыць адрас магістралі апавяшчэнняў са зменнай асяроддзя "
 "DBUS_STARTER_BUS_TYPE. Зменная мае невядомае значэнне \"%s\""
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6697
+#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -264,7 +265,7 @@ msgstr ""
 "Не ўдалося вызначыць адрас магістралі апавяшчэнняў, бо зменная асяроддзя "
 "DBUS_STARTER_BUS_TYPE не настаўлена"
 
-#: ../gio/gdbusaddress.c:1273
+#: ../gio/gdbusaddress.c:1274
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Невядомы тып магістралі %d"
@@ -368,87 +369,87 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
 "(Да таго ж, вызваленне блок-файла для \"%s\" таксама пацярпела няўдачу: %s) "
 
-#: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2402
+#: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2391
 msgid "The connection is closed"
 msgstr "Злучэнне закрыта"
 
-#: ../gio/gdbusconnection.c:1879
+#: ../gio/gdbusconnection.c:1881
 msgid "Timeout was reached"
 msgstr "Тэрмін чакання скончыўся"
 
-#: ../gio/gdbusconnection.c:2524
+#: ../gio/gdbusconnection.c:2513
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Падчас стварэння злучэння з боку кліента напатканыя невядомыя сцяжкі"
 
-#: ../gio/gdbusconnection.c:4026 ../gio/gdbusconnection.c:4342
+#: ../gio/gdbusconnection.c:4015 ../gio/gdbusconnection.c:4331
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Аб'ект са сцежкі \"%s\" не мае інтэрфейсу \"org.freedesktop.DBus.Properties\""
 
-#: ../gio/gdbusconnection.c:4097
+#: ../gio/gdbusconnection.c:4086
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Памылка настаўлення ўласцівасці \"%s\": чакалі тып \"%s\", а маем \"%s\""
 
-#: ../gio/gdbusconnection.c:4192
+#: ../gio/gdbusconnection.c:4181
 #, c-format
 msgid "No such property `%s'"
 msgstr "Няма такой уласцівасці (\"%s\")"
 
-#: ../gio/gdbusconnection.c:4204
+#: ../gio/gdbusconnection.c:4193
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Няма дазволу на прачытанне ўласцівасці \"%s\""
 
-#: ../gio/gdbusconnection.c:4215
+#: ../gio/gdbusconnection.c:4204
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Няма дазволу на запіс уласцівасці \"%s\""
 
-#: ../gio/gdbusconnection.c:4285 ../gio/gdbusconnection.c:6131
+#: ../gio/gdbusconnection.c:4274 ../gio/gdbusconnection.c:6148
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Няма такога інтэрфейсу (\"%s\")"
 
-#: ../gio/gdbusconnection.c:4469
+#: ../gio/gdbusconnection.c:4458
 msgid "No such interface"
 msgstr "Няма такога інтэрфейсу"
 
-#: ../gio/gdbusconnection.c:4690 ../gio/gdbusconnection.c:6637
+#: ../gio/gdbusconnection.c:4676 ../gio/gdbusconnection.c:6654
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Аб'ект са сцежкі \"%2$s\" не мае такога інтэрфейсу (\"%1$s\")"
 
-#: ../gio/gdbusconnection.c:4742
+#: ../gio/gdbusconnection.c:4731
 #, c-format
 msgid "No such method `%s'"
 msgstr "Няма такога метаду (\"%s\")"
 
-#: ../gio/gdbusconnection.c:4773
+#: ../gio/gdbusconnection.c:4762
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Тып паведамлення \"%s\" не адпавядае чаканаму тыпу \"%s\""
 
-#: ../gio/gdbusconnection.c:4993
+#: ../gio/gdbusconnection.c:4982
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Аб'ект ужо экспартаваны для інтэрфейсу \"%s\" на \"%s\""
 
-#: ../gio/gdbusconnection.c:5191
+#: ../gio/gdbusconnection.c:5180
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Метад \"%s\" вярнуў значэнне тыпу \"%s\", хоць чакалі \"%s\""
 
-#: ../gio/gdbusconnection.c:6242
+#: ../gio/gdbusconnection.c:6259
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Метад \"%s\" на інтэрфейсе \"%s\" з подпісам \"%s\" не існуе"
 
-#: ../gio/gdbusconnection.c:6361
+#: ../gio/gdbusconnection.c:6378
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Паддрэва для \"%s\" ужо экспартавана"
@@ -622,8 +623,8 @@ msgstr "Цела паведамлення мае подпіс \"%s\", але н�
 #: ../gio/gdbusmessage.c:2366
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr "Цела паведамлення мае подпіс \"%s\", але подпіс загалоўка іншы: \"%s\""
 
 #: ../gio/gdbusmessage.c:2382
@@ -640,7 +641,7 @@ msgstr "Памылка вярнулася з целам тыпу \"%s\""
 msgid "Error return with empty body"
 msgstr "Памылка вярнулася з пустым целам"
 
-#: ../gio/gdbusprivate.c:2065
+#: ../gio/gdbusprivate.c:2066
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Не ўдалося прачытаць /var/lib/dbus/machine-id або /etc/machine-id: "
 
@@ -654,7 +655,7 @@ msgstr "Памылка запуску StartServiceByName для %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Нечаканы адказ %d ад метаду StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2726 ../gio/gdbusproxy.c:2860
+#: ../gio/gdbusproxy.c:2745 ../gio/gdbusproxy.c:2882
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1207,101 +1208,101 @@ msgstr "Элемент <%s> унутры <%s> забаронены"
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Элемент <%s> забаронены для найвышэйшага ўзроўню"
 
-#: ../gio/glib-compile-resources.c:235
+#: ../gio/glib-compile-resources.c:238
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "Файл %s з'яўляецца ў рэсурсе некалькі разоў"
 
-#: ../gio/glib-compile-resources.c:248
+#: ../gio/glib-compile-resources.c:251
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr "Не ўдалося адшукаць \"%s\" ва ўсіх выточных каталогах"
 
-#: ../gio/glib-compile-resources.c:259
+#: ../gio/glib-compile-resources.c:262
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "Не ўдалося адшукаць \"%s\" у бягучым каталогу"
 
-#: ../gio/glib-compile-resources.c:287
+#: ../gio/glib-compile-resources.c:290
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "Невядомая опцыя апрацавання \"%s\""
 
-#: ../gio/glib-compile-resources.c:305 ../gio/glib-compile-resources.c:363
+#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:366
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Не ўдалося стварыць часовы файл: %s"
 
-#: ../gio/glib-compile-resources.c:335
+#: ../gio/glib-compile-resources.c:338
 msgid "Error processing input file with xmllint"
 msgstr "Памылка апрацавання ўваходнага файла з дапамогай xmllint"
 
-#: ../gio/glib-compile-resources.c:390
+#: ../gio/glib-compile-resources.c:393
 msgid "Error processing input file with to-pixdata"
 msgstr "Памылка апрацавання ўваходнага файла з дапамогай to-pixdata"
 
-#: ../gio/glib-compile-resources.c:403
+#: ../gio/glib-compile-resources.c:406
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Не ўдалося прачытаць файл %s: %s"
 
-#: ../gio/glib-compile-resources.c:423
+#: ../gio/glib-compile-resources.c:426
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Памылка сціскання файла: %s"
 
-#: ../gio/glib-compile-resources.c:487 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1561
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "тэкст не павінен быць унутры <%s>"
 
-#: ../gio/glib-compile-resources.c:610
+#: ../gio/glib-compile-resources.c:613
 msgid "name of the output file"
 msgstr "назва файла вываду"
 
-#: ../gio/glib-compile-resources.c:610 ../gio/glib-compile-resources.c:643
+#: ../gio/glib-compile-resources.c:613 ../gio/glib-compile-resources.c:646
 #: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "ФАЙЛ"
 
-#: ../gio/glib-compile-resources.c:611
+#: ../gio/glib-compile-resources.c:614
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Каталог, файлы з якога трэба прачытаць (прадвызначана: бягучы каталог)"
 
-#: ../gio/glib-compile-resources.c:611 ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1989
 #: ../gio/glib-compile-schemas.c:2019
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
-#: ../gio/glib-compile-resources.c:612
+#: ../gio/glib-compile-resources.c:615
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Згенераваць вывад у фармаце, абраным для пашырэння мэтавага файла"
 
-#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:616
 msgid "Generate source header"
 msgstr "Згенераваць загаловак крыніцы"
 
-#: ../gio/glib-compile-resources.c:614
+#: ../gio/glib-compile-resources.c:617
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Згенераваць выточны код для спасылкі на файл рэсурса ў вашым кодзе"
 
-#: ../gio/glib-compile-resources.c:615
+#: ../gio/glib-compile-resources.c:618
 msgid "Generate dependency list"
 msgstr "Згенераваць спіс залежнасцяў"
 
-#: ../gio/glib-compile-resources.c:616
+#: ../gio/glib-compile-resources.c:619
 msgid "Don't automatically create and register resource"
 msgstr "Не ствараць і не рэгістраваць рэсурсы аўтаматычна"
 
-#: ../gio/glib-compile-resources.c:617
+#: ../gio/glib-compile-resources.c:620
 msgid "C identifier name used for the generated source code"
 msgstr ""
 "Назва ідэнтыфікатара \"С\", якая будзе ўжывацца ў згенераваным выточным кодзе"
 
-#: ../gio/glib-compile-resources.c:646
+#: ../gio/glib-compile-resources.c:649
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1311,7 +1312,7 @@ msgstr ""
 "Файлы спецыфікацыі рэсурса мусяць мець пашырэнне .gresource.xml,\n"
 "а файл рэсурса мае пашырэнне .gresource."
 
-#: ../gio/glib-compile-resources.c:662
+#: ../gio/glib-compile-resources.c:665
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Трэба падаць дакладна адну назву файла\n"
@@ -1443,8 +1444,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> засланяе <schema id='%s' list-of='%s'>, але "
-"\"%s\" не засланяе \"%s\""
+"<schema id='%s' list-of='%s'> засланяе <schema id='%s' list-of='%s'>, але \"%"
+"s\" не засланяе \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1196
 #, c-format
@@ -1499,8 +1500,8 @@ msgstr " , а таксама вызначана опцыя --strict; выход�
 #: ../gio/glib-compile-schemas.c:1880
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "памылка разбору ключа \"%s\" схемы \"%s\", вызначанага ў файле заслоны \"%s"
 "\": %s.  "
@@ -2401,112 +2402,116 @@ msgstr "Хібны сокет не ініцыяваны з наступнай п
 msgid "Socket is already closed"
 msgstr "Сокет ужо закрыты"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3519 ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:305 ../gio/gsocket.c:3527 ../gio/gsocket.c:3582
 msgid "Socket I/O timed out"
 msgstr "Скончыўся тэрмін чакання ўводу-вываду на сокеце"
 
-#: ../gio/gsocket.c:471
+#: ../gio/gsocket.c:472
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "стварэнне GSocket-аб'екта з fd: %s"
 
-#: ../gio/gsocket.c:505 ../gio/gsocket.c:521
+#: ../gio/gsocket.c:506 ../gio/gsocket.c:513 ../gio/gsocket.c:529
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Не ўдалося стварыць сокет: %s"
 
-#: ../gio/gsocket.c:505
+#: ../gio/gsocket.c:506
+msgid "Unknown family was specified"
+msgstr "Невядомае сямейства пратакола"
+
+#: ../gio/gsocket.c:513
 msgid "Unknown protocol was specified"
 msgstr "Невядомы пратакол"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1720
 #, c-format
 msgid "could not get local address: %s"
 msgstr "не ўдалося вызначыць свой адрас: %s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1763
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "не ўдалося вызначыць адрас аддаленай машыны: %s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1824
 #, c-format
 msgid "could not listen: %s"
 msgstr "не ўдалося пачаць слухаць: %s"
 
-#: ../gio/gsocket.c:1890
+#: ../gio/gsocket.c:1898
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Памылка прывязання да адрасу: %s"
 
-#: ../gio/gsocket.c:1943 ../gio/gsocket.c:1979
+#: ../gio/gsocket.c:1951 ../gio/gsocket.c:1987
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Не ўдалося далучыцца да групы multicast: %s"
 
-#: ../gio/gsocket.c:1944 ../gio/gsocket.c:1980
+#: ../gio/gsocket.c:1952 ../gio/gsocket.c:1988
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Не ўдалося выйсці з групы multicast: %s"
 
-#: ../gio/gsocket.c:1945
+#: ../gio/gsocket.c:1953
 msgid "No support for source-specific multicast"
 msgstr "Спецыфічная крыніца multicast не падтрымліваецца"
 
-#: ../gio/gsocket.c:2164
+#: ../gio/gsocket.c:2172
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Памылка ўхвалення злучэння: %s"
 
-#: ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2293
 msgid "Connection in progress"
 msgstr "Адбываецца злучэнне"
 
-#: ../gio/gsocket.c:2337 ../gio/gsocket.c:4316
+#: ../gio/gsocket.c:2345 ../gio/gsocket.c:4324
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не ўдалося ўзяць чарговую памылку: %s"
 
-#: ../gio/gsocket.c:2507
+#: ../gio/gsocket.c:2515
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Памылка атрымання даных: %s"
 
-#: ../gio/gsocket.c:2685
+#: ../gio/gsocket.c:2693
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Памылка паслання даных: %s"
 
-#: ../gio/gsocket.c:2799
+#: ../gio/gsocket.c:2807
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Не ўдалося спыніць працу сокета: %s"
 
-#: ../gio/gsocket.c:2878
+#: ../gio/gsocket.c:2886
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Памылка закрыцця сокета: %s"
 
-#: ../gio/gsocket.c:3512
+#: ../gio/gsocket.c:3520
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Чакаем умовы на сокеце: %s"
 
-#: ../gio/gsocket.c:3790 ../gio/gsocket.c:3871
+#: ../gio/gsocket.c:3798 ../gio/gsocket.c:3879
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Памылка пасылання паведамлення: %s"
 
-#: ../gio/gsocket.c:3815
+#: ../gio/gsocket.c:3823
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не падтрымліваецца ў сістэме Windows"
 
-#: ../gio/gsocket.c:4095 ../gio/gsocket.c:4231
+#: ../gio/gsocket.c:4103 ../gio/gsocket.c:4239
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Памылка атрымання паведамлення: %s"
 
-#: ../gio/gsocket.c:4335
+#: ../gio/gsocket.c:4343
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials адсутнічае для гэтай аперацыйнай сістэмы"
 
@@ -2737,13 +2742,13 @@ msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Не ўдалося выключыць опцыю SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:492
+#: ../gio/gunixinputstream.c:493
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Памылка чытання з дэскрыптара файла: %s"
 
-#: ../gio/gunixinputstream.c:447 ../gio/gunixinputstream.c:642
-#: ../gio/gunixoutputstream.c:433 ../gio/gunixoutputstream.c:597
+#: ../gio/gunixinputstream.c:448 ../gio/gunixinputstream.c:643
+#: ../gio/gunixoutputstream.c:434 ../gio/gunixoutputstream.c:598
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Памылка закрыцця дэскрыптара файла: %s"
@@ -2753,7 +2758,7 @@ msgid "Filesystem root"
 msgstr "Корань файлавай сістэмы"
 
 #: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:478
+#: ../gio/gunixoutputstream.c:479
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Памылка запісу ў дэскрыптар файла: %s"
@@ -3503,8 +3508,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1184
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Напатканы нечаканы \"%s\" замест чаканага знака \">\", які б закрыў тэг \"%s"
 "\" пустога элемента."
@@ -4029,8 +4034,8 @@ msgstr "Не ўдалося прачытаць даныя працэсу-наш�
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Нечаканая памылка ў функцыі select() падчас чытання даных працэсу-нашчадка "
-"(%s)"
+"Нечаканая памылка ў функцыі select() падчас чытання даных працэсу-нашчадка (%"
+"s)"
 
 #: ../glib/gspawn.c:433
 #, c-format
