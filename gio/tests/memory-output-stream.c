@@ -150,6 +150,32 @@ test_properties (void)
 }
 
 static void
+test_write_bytes (void)
+{
+  GOutputStream *mo;
+  GBytes *bytes, *bytes2;
+  GError *error = NULL;
+
+  mo = (GOutputStream*) g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
+                                      "realloc-function", g_realloc,
+                                      "destroy-function", g_free,
+                                      NULL);
+  bytes = g_bytes_new_static ("hello world!", strlen ("hello world!") + 1);
+  g_output_stream_write_bytes (mo, bytes, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_close (mo, NULL, &error);
+  g_assert_no_error (error);
+
+  bytes2 = g_memory_output_stream_steal_as_bytes (G_MEMORY_OUTPUT_STREAM (mo));
+  g_object_unref (mo);
+  g_assert (g_bytes_equal (bytes, bytes2));
+
+  g_bytes_unref (bytes);
+  g_bytes_unref (bytes2);
+}
+
+static void
 test_steal_as_bytes (void)
 {
   GOutputStream *mo;
@@ -198,6 +224,7 @@ main (int   argc,
   g_test_add_func ("/memory-output-stream/seek", test_seek);
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
+  g_test_add_func ("/memory-output-stream/write-bytes", test_write_bytes);
   g_test_add_func ("/memory-output-stream/steal_as_bytes", test_steal_as_bytes);
 
   return g_test_run();

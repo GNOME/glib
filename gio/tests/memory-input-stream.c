@@ -194,6 +194,31 @@ test_truncate (void)
   g_object_unref (stream);
 }
 
+static void
+test_read_bytes (void)
+{
+  const char *data1 = "abcdefghijklmnopqrstuvwxyz";
+  const char *data2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  GInputStream *stream;
+  GError *error = NULL;
+  GBytes *bytes;
+  gsize size;
+  gconstpointer data;
+
+  stream = g_memory_input_stream_new ();
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data1, -1, NULL);
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data2, -1, NULL);
+
+  bytes = g_input_stream_read_bytes (stream, 26, NULL, &error);
+  g_assert_no_error (error);
+
+  data = g_bytes_get_data (bytes, &size);
+  g_assert_cmpint (size, ==, 26);
+  g_assert (strncmp (data, data1, 26) == 0);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -205,6 +230,7 @@ main (int   argc,
   g_test_add_func ("/memory-input-stream/async", test_async);
   g_test_add_func ("/memory-input-stream/seek", test_seek);
   g_test_add_func ("/memory-input-stream/truncate", test_truncate);
+  g_test_add_func ("/memory-input-stream/read-bytes", test_read_bytes);
 
   return g_test_run();
 }

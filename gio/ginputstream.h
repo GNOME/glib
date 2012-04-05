@@ -124,6 +124,11 @@ gboolean g_input_stream_read_all      (GInputStream          *stream,
 				       gsize                 *bytes_read,
 				       GCancellable          *cancellable,
 				       GError               **error);
+GLIB_AVAILABLE_IN_2_34
+GBytes  *g_input_stream_read_bytes    (GInputStream          *stream,
+				       gsize                  count,
+				       GCancellable          *cancellable,
+				       GError               **error);
 gssize   g_input_stream_skip          (GInputStream          *stream,
 				       gsize                  count,
 				       GCancellable          *cancellable,
@@ -141,6 +146,17 @@ void     g_input_stream_read_async    (GInputStream          *stream,
 gssize   g_input_stream_read_finish   (GInputStream          *stream,
 				       GAsyncResult          *result,
 				       GError               **error);
+GLIB_AVAILABLE_IN_2_34
+void     g_input_stream_read_bytes_async  (GInputStream          *stream,
+					   gsize                  count,
+					   int                    io_priority,
+					   GCancellable          *cancellable,
+					   GAsyncReadyCallback    callback,
+					   gpointer               user_data);
+GLIB_AVAILABLE_IN_2_34
+GBytes  *g_input_stream_read_bytes_finish (GInputStream          *stream,
+					   GAsyncResult          *result,
+					   GError               **error);
 void     g_input_stream_skip_async    (GInputStream          *stream,
 				       gsize                  count,
 				       int                    io_priority,

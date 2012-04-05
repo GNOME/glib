@@ -274,6 +274,65 @@ g_input_stream_read_all (GInputStream  *stream,
 }
 
 /**
+ * g_input_stream_read_bytes:
+ * @stream: a #GInputStream.
+ * @count: maximum number of bytes that will be read from the stream. Common
+ * values include 4096 and 8192.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occurring, or %NULL to ignore
+ *
+ * Like g_input_stream_read(), this tries to read @count bytes from
+ * the stream in a blocking fashion. However, rather than reading into
+ * a user-supplied buffer, this will create a new #GBytes containing
+ * the data that was read. This may be easier to use from language
+ * bindings.
+ *
+ * If count is zero, returns a zero-length #GBytes and does nothing. A
+ * value of @count larger than %G_MAXSSIZE will cause a
+ * %G_IO_ERROR_INVALID_ARGUMENT error.
+ *
+ * On success, a new #GBytes is returned. It is not an error if the
+ * size of this object is not the same as the requested size, as it
+ * can happen e.g. near the end of a file. A zero-length #GBytes is
+ * returned on end of file (or if @count is zero), but never
+ * otherwise.
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+ * operation was partially finished when the operation was cancelled the
+ * partial result will be returned, without an error.
+ *
+ * On error %NULL is returned and @error is set accordingly.
+ *
+ * Return value: a new #GBytes, or %NULL on error
+ **/
+GBytes *
+g_input_stream_read_bytes (GInputStream  *stream,
+			   gsize          count,
+			   GCancellable  *cancellable,
+			   GError       **error)
+{
+  guchar *buf;
+  gssize nread;
+
+  buf = g_malloc (count);
+  nread = g_input_stream_read (stream, buf, count, cancellable, error);
+  if (nread == -1)
+    {
+      g_free (buf);
+      return NULL;
+    }
+  else if (nread == 0)
+    {
+      g_free (buf);
+      return g_bytes_new_static ("", 0);
+    }
+  else
+    return g_bytes_new_take (buf, nread);
+}
+
+/**
  * g_input_stream_skip:
  * @stream: a #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
@@ -609,6 +668,121 @@ g_input_stream_read_finish (GInputStream  *stream,
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
   return class->read_finish (stream, result, error);
+}
+
+static void
+read_bytes_callback (GObject      *stream,
+		     GAsyncResult *result,
+		     gpointer      user_data)
+{
+  GSimpleAsyncResult *simple = user_data;
+  guchar *buf = g_simple_async_result_get_op_res_gpointer (simple);
+  GError *error = NULL;
+  gssize nread;
+  GBytes *bytes = NULL;
+
+  nread = g_input_stream_read_finish (G_INPUT_STREAM (stream),
+				      result, &error);
+  if (nread == -1)
+    {
+      g_free (buf);
+      g_simple_async_result_take_error (simple, error);
+    }
+  else if (nread == 0)
+    {
+      g_free (buf);
+      bytes = g_bytes_new_static ("", 0);
+    }
+  else
+    bytes = g_bytes_new_take (buf, nread);
+
+  if (bytes)
+    {
+      g_simple_async_result_set_op_res_gpointer (simple, bytes,
+						 (GDestroyNotify)g_bytes_unref);
+    }
+  g_simple_async_result_complete (simple);
+  g_object_unref (simple);
+}
+
+/**
+ * g_input_stream_read_bytes_async:
+ * @stream: A #GInputStream.
+ * @count: the number of bytes that will be read from the stream
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *   of the request.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Request an asynchronous read of @count bytes from the stream into a
+ * new #GBytes. When the operation is finished @callback will be
+ * called. You can then call g_input_stream_read_bytes_finish() to get the
+ * result of the operation.
+ *
+ * During an async request no other sync and async calls are allowed
+ * on @stream, and will result in %G_IO_ERROR_PENDING errors.
+ *
+ * A value of @count larger than %G_MAXSSIZE will cause a
+ * %G_IO_ERROR_INVALID_ARGUMENT error.
+ *
+ * On success, the new #GBytes will be passed to the callback. It is
+ * not an error if this is smaller than the requested size, as it can
+ * happen e.g. near the end of a file, but generally we try to read as
+ * many bytes as requested. Zero is returned on end of file (or if
+ * @count is zero), but never otherwise.
+ *
+ * Any outstanding I/O request with higher priority (lower numerical
+ * value) will be executed before an outstanding request with lower
+ * priority. Default priority is %G_PRIORITY_DEFAULT.
+ **/
+void
+g_input_stream_read_bytes_async (GInputStream          *stream,
+				 gsize                  count,
+				 int                    io_priority,
+				 GCancellable          *cancellable,
+				 GAsyncReadyCallback    callback,
+				 gpointer               user_data)
+{
+  GSimpleAsyncResult *simple;
+  guchar *buf;
+
+  simple = g_simple_async_result_new (G_OBJECT (stream),
+				      callback, user_data,
+				      g_input_stream_read_bytes_async);
+  buf = g_malloc (count);
+  g_simple_async_result_set_op_res_gpointer (simple, buf, NULL);
+
+  g_input_stream_read_async (stream, buf, count,
+			     io_priority, cancellable,
+			     read_bytes_callback, simple);
+}
+
+/**
+ * g_input_stream_read_bytes_finish:
+ * @stream: a #GInputStream.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occurring, or %NULL to
+ *   ignore.
+ *
+ * Finishes an asynchronous stream read-into-#GBytes operation.
+ *
+ * Returns: the newly-allocated #GBytes, or %NULL on error
+ **/
+GBytes *
+g_input_stream_read_bytes_finish (GInputStream  *stream,
+				  GAsyncResult  *result,
+				  GError       **error)
+{
+  GSimpleAsyncResult *simple;
+
+  g_return_val_if_fail (G_IS_INPUT_STREAM (stream), NULL);
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (stream), g_input_stream_read_bytes_async), NULL);
+
+  simple = G_SIMPLE_ASYNC_RESULT (result);
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+  return g_bytes_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
 
 /**

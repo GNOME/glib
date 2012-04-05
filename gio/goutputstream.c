@@ -293,6 +293,53 @@ g_output_stream_write_all (GOutputStream  *stream,
 }
 
 /**
+ * g_output_stream_write_bytes:
+ * @stream: a #GOutputStream.
+ * @bytes: the #GBytes to write
+ * @cancellable: (allow-none): optional cancellable object
+ * @error: location to store the error occurring, or %NULL to ignore
+ *
+ * Tries to write the data from @bytes into the stream. Will block
+ * during the operation.
+ *
+ * If @bytes is 0-length, returns 0 and does nothing. A #GBytes larger
+ * than %G_MAXSSIZE will cause a %G_IO_ERROR_INVALID_ARGUMENT error.
+ *
+ * On success, the number of bytes written to the stream is returned.
+ * It is not an error if this is not the same as the requested size, as it
+ * can happen e.g. on a partial I/O error, or if there is not enough
+ * storage in the stream. All writes block until at least one byte
+ * is written or an error occurs; 0 is never returned (unless
+ * the size of @bytes is 0).
+ *
+ * If @cancellable is not %NULL, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the operation
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+ * operation was partially finished when the operation was cancelled the
+ * partial result will be returned, without an error.
+ *
+ * On error -1 is returned and @error is set accordingly.
+ *
+ * Return value: Number of bytes written, or -1 on error
+ **/
+gssize
+g_output_stream_write_bytes (GOutputStream  *stream,
+			     GBytes         *bytes,
+			     GCancellable   *cancellable,
+			     GError        **error)
+{
+  gsize size;
+  gconstpointer data;
+
+  data = g_bytes_get_data (bytes, &size);
+
+  return g_output_stream_write (stream,
+                                data, size,
+				cancellable,
+				error);
+}
+
+/**
  * g_output_stream_flush:
  * @stream: a #GOutputStream.
  * @cancellable: (allow-none): optional cancellable object
@@ -807,6 +854,116 @@ g_output_stream_write_finish (GOutputStream  *stream,
   
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
   return class->write_finish (stream, result, error);
+}
+
+static void
+write_bytes_callback (GObject      *stream,
+		      GAsyncResult *result,
+		      gpointer      user_data)
+{
+  GSimpleAsyncResult *simple = user_data;
+  GError *error = NULL;
+  gssize nwrote;
+
+  nwrote = g_output_stream_write_finish (G_OUTPUT_STREAM (stream),
+					 result, &error);
+  if (nwrote == -1)
+    g_simple_async_result_take_error (simple, error);
+  else
+    g_simple_async_result_set_op_res_gssize (simple, nwrote);
+  g_simple_async_result_complete (simple);
+  g_object_unref (simple);
+}
+
+/**
+ * g_output_stream_write_bytes_async:
+ * @stream: A #GOutputStream.
+ * @bytes: The bytes to write
+ * @io_priority: the io priority of the request.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
+ *
+ * Request an asynchronous write of the data in @bytes to the stream.
+ * When the operation is finished @callback will be called. You can
+ * then call g_output_stream_write_bytes_finish() to get the result of
+ * the operation.
+ *
+ * During an async request no other sync and async calls are allowed,
+ * and will result in %G_IO_ERROR_PENDING errors.
+ *
+ * A #GBytes larger than %G_MAXSSIZE will cause a
+ * %G_IO_ERROR_INVALID_ARGUMENT error.
+ *
+ * On success, the number of bytes written will be passed to the
+ * @callback. It is not an error if this is not the same as the
+ * requested size, as it can happen e.g. on a partial I/O error,
+ * but generally we try to write as many bytes as requested.
+ *
+ * You are guaranteed that this method will never fail with
+ * %G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the
+ * method will just wait until this changes.
+ *
+ * Any outstanding I/O request with higher priority (lower numerical
+ * value) will be executed before an outstanding request with lower
+ * priority. Default priority is %G_PRIORITY_DEFAULT.
+ *
+ * For the synchronous, blocking version of this function, see
+ * g_output_stream_write_bytes().
+ **/
+void
+g_output_stream_write_bytes_async (GOutputStream       *stream,
+				   GBytes              *bytes,
+				   int                  io_priority,
+				   GCancellable        *cancellable,
+				   GAsyncReadyCallback  callback,
+				   gpointer             user_data)
+{
+  GSimpleAsyncResult *simple;
+  gsize size;
+  gconstpointer data;
+
+  data = g_bytes_get_data (bytes, &size);
+
+  simple = g_simple_async_result_new (G_OBJECT (stream),
+				      callback, user_data,
+				      g_output_stream_write_bytes_async);
+  g_simple_async_result_set_op_res_gpointer (simple, g_bytes_ref (bytes),
+					     (GDestroyNotify) g_bytes_unref);
+
+  g_output_stream_write_async (stream,
+                               data, size,
+                               io_priority,
+                               cancellable,
+                               write_bytes_callback,
+                               simple);
+}
+
+/**
+ * g_output_stream_write_bytes_finish:
+ * @stream: a #GOutputStream.
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occurring, or %NULL to
+ * ignore.
+ *
+ * Finishes a stream write-from-#GBytes operation.
+ *
+ * Returns: a #gssize containing the number of bytes written to the stream.
+ **/
+gssize
+g_output_stream_write_bytes_finish (GOutputStream  *stream,
+				    GAsyncResult   *result,
+				    GError        **error)
+{
+  GSimpleAsyncResult *simple;
+
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (stream), g_output_stream_write_bytes_async), -1);
+
+  simple = G_SIMPLE_ASYNC_RESULT (result);
+  if (g_simple_async_result_propagate_error (simple, error))
+    return -1;
+  return g_simple_async_result_get_op_res_gssize (simple);
 }
 
 typedef struct {

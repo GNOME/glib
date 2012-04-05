@@ -146,6 +146,11 @@ gboolean g_output_stream_write_all     (GOutputStream             *stream,
 					gsize                     *bytes_written,
 					GCancellable              *cancellable,
 					GError                   **error);
+GLIB_AVAILABLE_IN_2_34
+gssize   g_output_stream_write_bytes   (GOutputStream             *stream,
+					GBytes                    *bytes,
+					GCancellable              *cancellable,
+					GError                   **error);
 gssize   g_output_stream_splice        (GOutputStream             *stream,
 					GInputStream              *source,
 					GOutputStreamSpliceFlags   flags,
@@ -167,6 +172,17 @@ void     g_output_stream_write_async   (GOutputStream             *stream,
 gssize   g_output_stream_write_finish  (GOutputStream             *stream,
 					GAsyncResult              *result,
 					GError                   **error);
+GLIB_AVAILABLE_IN_2_34
+void     g_output_stream_write_bytes_async  (GOutputStream             *stream,
+					     GBytes                    *bytes,
+					     int                        io_priority,
+					     GCancellable              *cancellable,
+					     GAsyncReadyCallback        callback,
+					     gpointer                   user_data);
+GLIB_AVAILABLE_IN_2_34
+gssize   g_output_stream_write_bytes_finish (GOutputStream             *stream,
+					     GAsyncResult              *result,
+					     GError                   **error);
 void     g_output_stream_splice_async  (GOutputStream             *stream,
 					GInputStream              *source,
 					GOutputStreamSpliceFlags   flags,
