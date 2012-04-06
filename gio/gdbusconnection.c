@@ -6769,6 +6769,25 @@ get_uninitialized_connection (GBusType       bus_type,
   return ret;
 }
 
+/* May be called from any thread. Must not hold message_bus_lock. */
+GDBusConnection *
+_g_bus_get_singleton_if_exists (GBusType bus_type)
+{
+  GWeakRef *singleton;
+  GDBusConnection *ret = NULL;
+
+  G_LOCK (message_bus_lock);
+  singleton = message_bus_get_singleton (bus_type, NULL);
+  if (singleton == NULL)
+    goto out;
+
+  ret = g_weak_ref_get (singleton);
+
+ out:
+  G_UNLOCK (message_bus_lock);
+  return ret;
+}
+
 /**
  * g_bus_get_sync:
  * @bus_type: A #GBusType.
