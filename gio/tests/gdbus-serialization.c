@@ -607,8 +607,8 @@ check_serialization (GVariant *value,
                                                         blob_size,
                                                         G_DBUS_CAPABILITY_FLAGS_NONE,
                                                         &error);
-      g_assert (recovered_message != NULL);
       g_assert_no_error (error);
+      g_assert (recovered_message != NULL);
 
       if (value == NULL)
         {
@@ -997,6 +997,59 @@ message_serialize_header_checks (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+message_parse_empty_arrays_of_arrays (void)
+{
+  GVariant *body;
+  GError *error = NULL;
+
+  g_test_bug ("673612");
+  /* These three-element array of empty arrays were previously read back as a
+   * two-element array of empty arrays, due to sometimes erroneously skipping
+   * four bytes to align for the eight-byte-aligned grandchild types (x and
+   * dict_entry).
+   */
+  body = g_variant_parse (G_VARIANT_TYPE ("(aaax)"),
+      "([@aax [], [], []],)", NULL, NULL, &error);
+  g_assert_no_error (error);
+  check_serialization (body,
+      "value 0:   array:\n"
+      "    array:\n"
+      "    array:\n"
+      "    array:\n");
+
+  body = g_variant_parse (G_VARIANT_TYPE ("(aaa{uu})"),
+      "([@aa{uu} [], [], []],)", NULL, NULL, &error);
+  g_assert_no_error (error);
+  check_serialization (body,
+      "value 0:   array:\n"
+      "    array:\n"
+      "    array:\n"
+      "    array:\n");
+
+  /* Due to the same bug, g_dbus_message_new_from_blob() would fail for this
+   * message because it would try to read past the end of the string. Hence,
+   * sending this to an application would make it fall off the bus. */
+  body = g_variant_parse (G_VARIANT_TYPE ("(a(aa{sv}as))"),
+      "([ ([], []),"
+      "   ([], []),"
+      "   ([], [])],)", NULL, NULL, &error);
+  g_assert_no_error (error);
+  check_serialization (body,
+      "value 0:   array:\n"
+      "    struct:\n"
+      "      array:\n"
+      "      array:\n"
+      "    struct:\n"
+      "      array:\n"
+      "      array:\n"
+      "    struct:\n"
+      "      array:\n"
+      "      array:\n");
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1005,11 +1058,16 @@ main (int   argc,
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/gdbus/message-serialize-basic", message_serialize_basic);
   g_test_add_func ("/gdbus/message-serialize-complex", message_serialize_complex);
   g_test_add_func ("/gdbus/message-serialize-invalid", message_serialize_invalid);
   g_test_add_func ("/gdbus/message-serialize-header-checks", message_serialize_header_checks);
+
+  g_test_add_func ("/gdbus/message-parse-empty-arrays-of-arrays",
+      message_parse_empty_arrays_of_arrays);
+
   return g_test_run();
 }
 
