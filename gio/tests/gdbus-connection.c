@@ -32,6 +32,7 @@
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
+#if 0
 G_GNUC_UNUSED static void
 _log (const gchar *format, ...)
 {
@@ -56,12 +57,15 @@ _log (const gchar *format, ...)
            str);
   g_free (str);
 }
+#else
+#define _log(...)
+#endif
 
 static gboolean
 test_connection_quit_mainloop (gpointer user_data)
 {
   volatile gboolean *quit_mainloop_fired = user_data;
-  //_log ("quit_mainloop_fired");
+  _log ("quit_mainloop_fired");
   *quit_mainloop_fired = TRUE;
   g_main_loop_quit (loop);
   return TRUE;
@@ -113,7 +117,7 @@ a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop (gpointer user_data
 {
   volatile gboolean *val = user_data;
   *val = TRUE;
-  //_log ("destroynotify fired for %p", val);
+  _log ("destroynotify fired for %p", val);
   g_main_loop_quit (loop);
 }
 
@@ -232,13 +236,13 @@ test_connection_life_cycle (void)
   g_object_unref (c2);
   quit_mainloop_fired = FALSE;
   quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, (gpointer) &quit_mainloop_fired);
-  //_log ("destroynotifies for\n"
-  //      " register_object %p\n"
-  //      " filter          %p\n"
-  //      " signal          %p",
-  //      &on_register_object_freed_called,
-  //      &on_filter_freed_called,
-  //      &on_signal_registration_freed_called);
+  _log ("destroynotifies for\n"
+        " register_object %p\n"
+        " filter          %p\n"
+        " signal          %p",
+        &on_register_object_freed_called,
+        &on_filter_freed_called,
+        &on_signal_registration_freed_called);
   while (TRUE)
     {
       if (on_signal_registration_freed_called &&
@@ -247,9 +251,9 @@ test_connection_life_cycle (void)
         break;
       if (quit_mainloop_fired)
         break;
-      //_log ("entering loop");
+      _log ("entering loop");
       g_main_loop_run (loop);
-      //_log ("exiting loop");
+      _log ("exiting loop");
     }
   g_source_remove (quit_mainloop_id);
   g_assert (on_signal_registration_freed_called);
