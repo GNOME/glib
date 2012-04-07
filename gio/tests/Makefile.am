@@ -433,6 +433,7 @@ gapplication_example_cmdline3_LDADD   = $(progs_ldadd)
 gapplication_example_actions_SOURCES = gapplication-example-actions.c
 gapplication_example_actions_LDADD   = $(progs_ldadd)
 
+gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
 gmenumodel_LDADD = $(progs_ldadd)
 
 schema_tests = \

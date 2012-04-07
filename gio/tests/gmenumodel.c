@@ -1,5 +1,7 @@
 #include <gio/gio.h>
 
+#include "gdbus-sessionbus.h"
+
 /* Markup printing {{{1 */
 
 /* This used to be part of GLib, but it was removed before the stable
@@ -1019,9 +1021,15 @@ test_mutable (void)
 int
 main (int argc, char **argv)
 {
-  g_test_init (&argc, &argv, NULL);
+  gboolean ret;
 
+  g_test_init (&argc, &argv, NULL);
   g_type_init ();
+
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+
+  session_bus_up ();
 
   g_test_add_func ("/gmenu/equality", test_equality);
   g_test_add_func ("/gmenu/random", test_random);
@@ -1032,6 +1040,10 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
 
-  return g_test_run ();
+  ret = g_test_run ();
+
+  session_bus_down ();
+
+  return ret;
 }
 /* vim:set foldmethod=marker: */
