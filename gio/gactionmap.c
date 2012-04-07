@@ -101,8 +101,7 @@ void
 g_action_map_add_action (GActionMap *action_map,
                          GAction    *action)
 {
-  return G_ACTION_MAP_GET_IFACE (action_map)
-    ->add_action (action_map, action);
+  G_ACTION_MAP_GET_IFACE (action_map)->add_action (action_map, action);
 }
 
 /**
@@ -120,8 +119,7 @@ void
 g_action_map_remove_action (GActionMap  *action_map,
                             const gchar *action_name)
 {
-  return G_ACTION_MAP_GET_IFACE (action_map)
-    ->remove_action (action_map, action_name);
+  G_ACTION_MAP_GET_IFACE (action_map)->remove_action (action_map, action_name);
 }
 
 /**
