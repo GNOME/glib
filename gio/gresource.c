@@ -134,7 +134,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Gets the #GResource Error Quark.
  *
- * Return value: a #GQuark.
+ * Return value: a #GQuark
  *
  * Since: 2.32
  */
@@ -146,12 +146,12 @@ g_resource_error_quark (void)
 
 /**
  * g_resource_ref:
- * @resource: A #GResource.
+ * @resource: A #GResource
  *
  * Atomically increments the reference count of @array by one. This
  * function is MT-safe and may be called from any thread.
  *
- * Returns: The passed in #GResource.
+ * Returns: The passed in #GResource
  *
  * Since: 2.32
  **/
@@ -164,7 +164,7 @@ g_resource_ref (GResource *resource)
 
 /**
  * g_resource_unref:
- * @resource: A #GResource.
+ * @resource: A #GResource
  *
  * Atomically decrements the reference count of @resource by one. If the
  * reference count drops to 0, all memory allocated by the array is
@@ -203,8 +203,8 @@ g_resource_new_from_table (GvdbTable *table)
 
 /**
  * g_resource_new_from_data:
- * @data: A #GBytes.
- * @error: return location for a #GError, or %NULL.
+ * @data: A #GBytes
+ * @error: return location for a #GError, or %NULL
  *
  * Creates a GResource from a reference to the binary resource bundle.
  * This will keep a reference to @data while the resource lives, so
@@ -213,23 +213,23 @@ g_resource_new_from_table (GvdbTable *table)
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
- * Return value: (transfer full): a new #GResource, or %NULL on error.
+ * Return value: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
  **/
 GResource *
-g_resource_new_from_data (GBytes *data,
-			  GError **error)
+g_resource_new_from_data (GBytes  *data,
+                          GError **error)
 {
   GvdbTable *table;
 
   table = gvdb_table_new_from_data (g_bytes_get_data (data, NULL),
-				    g_bytes_get_size (data),
-				    TRUE,
-				    g_bytes_ref (data),
-				    (GvdbRefFunc)g_bytes_ref,
-				    (GDestroyNotify)g_bytes_unref,
-				    error);
+                                    g_bytes_get_size (data),
+                                    TRUE,
+                                    g_bytes_ref (data),
+                                    (GvdbRefFunc)g_bytes_ref,
+                                    (GDestroyNotify)g_bytes_unref,
+                                    error);
 
   if (table == NULL)
     return NULL;
@@ -239,8 +239,8 @@ g_resource_new_from_data (GBytes *data,
 
 /**
  * g_resource_load:
- * @filename: (type filename): the path of a filename to load, in the GLib filename encoding.
- * @error: return location for a #GError, or %NULL.
+ * @filename: (type filename): the path of a filename to load, in the GLib filename encoding
+ * @error: return location for a #GError, or %NULL
  *
  * Loads a binary resource bundle and creates a #GResource representation of it, allowing
  * you to query it for data.
@@ -248,13 +248,13 @@ g_resource_new_from_data (GBytes *data,
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
- * Return value: (transfer full): a new #GResource, or %NULL on error.
+ * Return value: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
  **/
 GResource *
-g_resource_load (const gchar *filename,
-		 GError **error)
+g_resource_load (const gchar  *filename,
+                 GError      **error)
 {
   GvdbTable *table;
 
@@ -265,14 +265,15 @@ g_resource_load (const gchar *filename,
   return g_resource_new_from_table (table);
 }
 
-static gboolean do_lookup (GResource *resource,
-			   const char *path,
-			   GResourceLookupFlags lookup_flags,
-			   gsize *size,
-			   guint32 *flags,
-			   const void **data,
-			   gsize *data_size,
-			   GError **error)
+static
+gboolean do_lookup (GResource             *resource,
+                    const gchar           *path,
+                    GResourceLookupFlags   lookup_flags,
+                    gsize                 *size,
+                    guint32               *flags,
+                    const void           **data,
+                    gsize                 *data_size,
+                    GError               **error)
 {
   char *free_path = NULL;
   gsize path_len;
@@ -291,8 +292,8 @@ static gboolean do_lookup (GResource *resource,
   if (value == NULL)
     {
       g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		   _("The resource at '%s' does not exist"),
-		   path);
+                   _("The resource at '%s' does not exist"),
+                   path);
     }
   else
     {
@@ -300,9 +301,9 @@ static gboolean do_lookup (GResource *resource,
       GVariant *array;
 
       g_variant_get (value, "(uu@ay)",
-		     &_size,
-		     &_flags,
-		     &array);
+                     &_size,
+                     &_flags,
+                     &array);
 
       if (size)
         *size = _size;
@@ -330,10 +331,10 @@ static gboolean do_lookup (GResource *resource,
 
 /**
  * g_resource_open_stream:
- * @resource: A #GResource.
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the resource and
  * returns a #GInputStream that lets you read the data.
@@ -341,15 +342,15 @@ static gboolean do_lookup (GResource *resource,
  * @lookup_flags controls the behaviour of the lookup.
  *
  * Returns: (transfer full): #GInputStream or %NULL on error.
- *     Free the returned object with g_object_unref().
+ *     Free the returned object with g_object_unref()
  *
  * Since: 2.32
  **/
 GInputStream *
-g_resource_open_stream (GResource *resource,
-			const char *path,
-			GResourceLookupFlags lookup_flags,
-			GError **error)
+g_resource_open_stream (GResource             *resource,
+                        const gchar           *path,
+                        GResourceLookupFlags   lookup_flags,
+                        GError               **error)
 {
   const void *data;
   gsize data_size;
@@ -361,13 +362,13 @@ g_resource_open_stream (GResource *resource,
 
   stream = g_memory_input_stream_new_from_data (data, data_size, NULL);
   g_object_set_data_full (G_OBJECT (stream), "g-resource",
-			  g_resource_ref (resource),
-			  (GDestroyNotify)g_resource_unref);
+                          g_resource_ref (resource),
+                          (GDestroyNotify)g_resource_unref);
 
   if (flags & G_RESOURCE_FLAGS_COMPRESSED)
     {
       GZlibDecompressor *decompressor =
-	g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
+        g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
 
       stream2 = g_converter_input_stream_new (stream, G_CONVERTER (decompressor));
       g_object_unref (decompressor);
@@ -380,10 +381,10 @@ g_resource_open_stream (GResource *resource,
 
 /**
  * g_resource_lookup_data:
- * @resource: A #GResource.
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the resource and
  * returns a #GBytes that lets you directly access the data in
@@ -401,15 +402,15 @@ g_resource_open_stream (GResource *resource,
  * @lookup_flags controls the behaviour of the lookup.
  *
  * Returns: (transfer full): #GBytes or %NULL on error.
- *     Free the returned object with g_bytes_unref().
+ *     Free the returned object with g_bytes_unref()
  *
  * Since: 2.32
  **/
 GBytes *
-g_resource_lookup_data (GResource *resource,
-			const char *path,
-			GResourceLookupFlags lookup_flags,
-			GError **error)
+g_resource_lookup_data (GResource             *resource,
+                        const gchar           *path,
+                        GResourceLookupFlags   lookup_flags,
+                        GError               **error)
 {
   const void *data;
   guint32 flags;
@@ -429,7 +430,7 @@ g_resource_lookup_data (GResource *resource,
 
 
       GZlibDecompressor *decompressor =
-	g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
+        g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
 
       uncompressed = g_malloc (size + 1);
 
@@ -439,30 +440,30 @@ g_resource_lookup_data (GResource *resource,
       d_size = size;
 
       do
-	{
-	  res = g_converter_convert (G_CONVERTER (decompressor),
-				     s, s_size,
-				     d, d_size,
-				     G_CONVERTER_INPUT_AT_END,
-				     &bytes_read,
-				     &bytes_written,
-				     NULL);
-	  if (res == G_CONVERTER_ERROR)
-	    {
-	      g_free (uncompressed);
+        {
+          res = g_converter_convert (G_CONVERTER (decompressor),
+                                     s, s_size,
+                                     d, d_size,
+                                     G_CONVERTER_INPUT_AT_END,
+                                     &bytes_read,
+                                     &bytes_written,
+                                     NULL);
+          if (res == G_CONVERTER_ERROR)
+            {
+              g_free (uncompressed);
               g_object_unref (decompressor);
 
-	      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_INTERNAL,
-			   _("The resource at '%s' failed to decompress"),
-			   path);
-	      return NULL;
+              g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_INTERNAL,
+                           _("The resource at '%s' failed to decompress"),
+                           path);
+              return NULL;
 
-	    }
-	  s += bytes_read;
-	  s_size -= bytes_read;
-	  d += bytes_written;
-	  d_size -= bytes_written;
-	}
+            }
+          s += bytes_read;
+          s_size -= bytes_read;
+          d += bytes_written;
+          d_size -= bytes_written;
+        }
       while (res != G_CONVERTER_FINISHED);
 
       uncompressed[size] = 0; /* Zero terminate */
@@ -477,41 +478,41 @@ g_resource_lookup_data (GResource *resource,
 
 /**
  * g_resource_get_info:
- * @resource: A #GResource.
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
  * @size:  (out) (allow-none): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
  * @flags:  (out) (allow-none): a location to place the flags about the file,
  *    or %NULL if the length is not needed
- * @error: return location for a #GError, or %NULL.
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the resource and
  * if found returns information about it.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
- * Returns: %TRUE if the file was found. %FALSE if there were errors.
+ * Returns: %TRUE if the file was found. %FALSE if there were errors
  *
  * Since: 2.32
  **/
 gboolean
-g_resource_get_info (GResource *resource,
-		     const char *path,
-		     GResourceLookupFlags lookup_flags,
-		     gsize *size,
-		     guint32 *flags,
-		     GError **error)
+g_resource_get_info (GResource             *resource,
+                     const gchar           *path,
+                     GResourceLookupFlags   lookup_flags,
+                     gsize                 *size,
+                     guint32               *flags,
+                     GError               **error)
 {
   return do_lookup (resource, path, lookup_flags, size, flags, NULL, NULL, error);
 }
 
 /**
  * g_resource_enumerate_children:
- * @resource: A #GResource.
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Returns all the names of children at the specified @path in the resource.
  * The return result is a %NULL terminated list of strings which should
@@ -523,11 +524,11 @@ g_resource_get_info (GResource *resource,
  *
  * Since: 2.32
  **/
-char **
-g_resource_enumerate_children (GResource *resource,
-			       const char *path,
-			       GResourceLookupFlags lookup_flags,
-			       GError **error)
+gchar **
+g_resource_enumerate_children (GResource             *resource,
+                               const gchar           *path,
+                               GResourceLookupFlags   lookup_flags,
+                               GError               **error)
 {
   gchar **children;
   gsize path_len;
@@ -536,8 +537,8 @@ g_resource_enumerate_children (GResource *resource,
   if (*path == 0)
     {
       g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		   _("The resource at '%s' does not exist"),
-		   path);
+                   _("The resource at '%s' does not exist"),
+                   path);
       return NULL;
     }
 
@@ -553,8 +554,8 @@ g_resource_enumerate_children (GResource *resource,
   if (children == NULL)
     {
       g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		   _("The resource at '%s' does not exist"),
-		   path);
+                   _("The resource at '%s' does not exist"),
+                   path);
       return NULL;
     }
 
@@ -571,8 +572,7 @@ static GStaticResource *lazy_register_resources;
 static void
 g_resources_register_unlocked (GResource *resource)
 {
-  registered_resources = g_list_prepend (registered_resources,
-					g_resource_ref (resource));
+  registered_resources = g_list_prepend (registered_resources, g_resource_ref (resource));
 }
 
 static void
@@ -584,15 +584,14 @@ g_resources_unregister_unlocked (GResource *resource)
     }
   else
     {
-      registered_resources = g_list_remove (registered_resources,
-					   resource);
+      registered_resources = g_list_remove (registered_resources, resource);
       g_resource_unref (resource);
     }
 }
 
 /**
  * g_resources_register:
- * @resource: A #GResource.
+ * @resource: A #GResource
  *
  * Registers the resource with the process-global set of resources.
  * Once a resource is registered the files in it can be accessed
@@ -610,7 +609,7 @@ g_resources_register (GResource *resource)
 
 /**
  * g_resources_unregister:
- * @resource: A #GResource.
+ * @resource: A #GResource
  *
  * Unregisters the resource from the process-global set of resources.
  *
@@ -626,9 +625,9 @@ g_resources_unregister (GResource *resource)
 
 /**
  * g_resources_open_stream:
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the set of
  * globally registred resources and returns a #GInputStream
@@ -637,14 +636,14 @@ g_resources_unregister (GResource *resource)
  * @lookup_flags controls the behaviour of the lookup.
  *
  * Returns: (transfer full): #GInputStream or %NULL on error.
- *     Free the returned object with g_object_unref().
+ *     Free the returned object with g_object_unref()
  *
  * Since: 2.32
  **/
 GInputStream *
-g_resources_open_stream (const char *path,
-			 GResourceLookupFlags lookup_flags,
-			 GError **error)
+g_resources_open_stream (const gchar           *path,
+                         GResourceLookupFlags   lookup_flags,
+                         GError               **error)
 {
   GInputStream *res = NULL;
   GList *l;
@@ -661,23 +660,23 @@ g_resources_open_stream (const char *path,
 
       stream = g_resource_open_stream (r, path, lookup_flags, &my_error);
       if (stream == NULL &&
-	  g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
-	{
-	  g_clear_error (&my_error);
-	}
+          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&my_error);
+        }
       else
-	{
-	  if (stream == NULL)
-	    g_propagate_error (error, my_error);
-	  res = stream;
-	  break;
-	}
+        {
+          if (stream == NULL)
+            g_propagate_error (error, my_error);
+          res = stream;
+          break;
+        }
     }
 
   if (l == NULL)
     g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		 _("The resource at '%s' does not exist"),
-		 path);
+                 _("The resource at '%s' does not exist"),
+                 path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
@@ -686,9 +685,9 @@ g_resources_open_stream (const char *path,
 
 /**
  * g_resources_lookup_data:
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the set of
  * globally registred resources and returns a #GBytes that
@@ -706,14 +705,14 @@ g_resources_open_stream (const char *path,
  * @lookup_flags controls the behaviour of the lookup.
  *
  * Returns: (transfer full): #GBytes or %NULL on error.
- *     Free the returned object with g_bytes_unref().
+ *     Free the returned object with g_bytes_unref()
  *
  * Since: 2.32
  **/
 GBytes *
-g_resources_lookup_data (const char *path,
-			 GResourceLookupFlags lookup_flags,
-			 GError **error)
+g_resources_lookup_data (const gchar           *path,
+                         GResourceLookupFlags   lookup_flags,
+                         GError               **error)
 {
   GBytes *res = NULL;
   GList *l;
@@ -730,23 +729,23 @@ g_resources_lookup_data (const char *path,
 
       data = g_resource_lookup_data (r, path, lookup_flags, &my_error);
       if (data == NULL &&
-	  g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
-	{
-	  g_clear_error (&my_error);
-	}
+          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&my_error);
+        }
       else
-	{
-	  if (data == NULL)
-	    g_propagate_error (error, my_error);
-	  res = data;
-	  break;
-	}
+        {
+          if (data == NULL)
+            g_propagate_error (error, my_error);
+          res = data;
+          break;
+        }
     }
 
   if (l == NULL)
     g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		 _("The resource at '%s' does not exist"),
-		 path);
+                 _("The resource at '%s' does not exist"),
+                 path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
@@ -755,9 +754,9 @@ g_resources_lookup_data (const char *path,
 
 /**
  * g_resources_enumerate_children:
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
- * @error: return location for a #GError, or %NULL.
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
+ * @error: return location for a #GError, or %NULL
  *
  * Returns all the names of children at the specified @path in the set of
  * globally registred resources.
@@ -770,10 +769,10 @@ g_resources_lookup_data (const char *path,
  *
  * Since: 2.32
  **/
-char **
-g_resources_enumerate_children (const char *path,
-				GResourceLookupFlags lookup_flags,
-				GError **error)
+gchar **
+g_resources_enumerate_children (const gchar           *path,
+                                GResourceLookupFlags   lookup_flags,
+                                GError               **error)
 {
   GHashTable *hash = NULL;
   GList *l;
@@ -791,14 +790,14 @@ g_resources_enumerate_children (const char *path,
       children = g_resource_enumerate_children (r, path, 0, NULL);
 
       if (children != NULL)
-	{
-	  if (hash == NULL)
-	    hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+        {
+          if (hash == NULL)
+            hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	  for (i = 0; children[i] != NULL; i++)
-	    g_hash_table_insert (hash, children[i], children[i]);
-	  g_free (children);
-	}
+          for (i = 0; children[i] != NULL; i++)
+            g_hash_table_insert (hash, children[i], children[i]);
+          g_free (children);
+        }
     }
 
   g_rw_lock_reader_unlock (&resources_lock);
@@ -806,8 +805,8 @@ g_resources_enumerate_children (const char *path,
   if (hash == NULL)
     {
       g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		   _("The resource at '%s' does not exist"),
-		   path);
+                   _("The resource at '%s' does not exist"),
+                   path);
       return NULL;
     }
   else
@@ -821,7 +820,7 @@ g_resources_enumerate_children (const char *path,
 
       g_hash_table_iter_init (&iter, hash);
       while (g_hash_table_iter_next (&iter, (gpointer *)&key, NULL))
-	children[i++] = g_strdup (key);
+        children[i++] = g_strdup (key);
       children[i++] = NULL;
 
       g_hash_table_destroy (hash);
@@ -832,29 +831,29 @@ g_resources_enumerate_children (const char *path,
 
 /**
  * g_resources_get_info:
- * @path: A pathname inside the resource.
- * @lookup_flags: A #GResourceLookupFlags.
+ * @path: A pathname inside the resource
+ * @lookup_flags: A #GResourceLookupFlags
  * @size:  (out) (allow-none): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
  * @flags:  (out) (allow-none): a location to place the flags about the file,
  *    or %NULL if the length is not needed
- * @error: return location for a #GError, or %NULL.
+ * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the set of
  * globally registred resources and if found returns information about it.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
- * Returns: %TRUE if the file was found. %FALSE if there were errors.
+ * Returns: %TRUE if the file was found. %FALSE if there were errors
  *
  * Since: 2.32
  **/
 gboolean
-g_resources_get_info (const char   *path,
-		      GResourceLookupFlags lookup_flags,
-		      gsize        *size,
-		      guint32      *flags,
-		      GError      **error)
+g_resources_get_info (const gchar           *path,
+                      GResourceLookupFlags   lookup_flags,
+                      gsize                 *size,
+                      guint32               *flags,
+                      GError               **error)
 {
   gboolean res = FALSE;
   GList *l;
@@ -871,23 +870,23 @@ g_resources_get_info (const char   *path,
 
       r_res = g_resource_get_info (r, path, lookup_flags, size, flags, &my_error);
       if (!r_res &&
-	  g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
-	{
-	  g_clear_error (&my_error);
-	}
+          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&my_error);
+        }
       else
-	{
-	  if (!r_res)
-	    g_propagate_error (error, my_error);
-	  res = r_res;
-	  break;
-	}
+        {
+          if (!r_res)
+            g_propagate_error (error, my_error);
+          res = r_res;
+          break;
+        }
     }
 
   if (l == NULL)
     g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-		 _("The resource at '%s' does not exist"),
-		 path);
+                 _("The resource at '%s' does not exist"),
+                 path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
@@ -915,7 +914,7 @@ g_resources_get_info (const char   *path,
  */
 
 static void
-register_lazy_static_resources_unlocked ()
+register_lazy_static_resources_unlocked (void)
 {
   GStaticResource *list;
 
@@ -928,10 +927,10 @@ register_lazy_static_resources_unlocked ()
       GBytes *bytes = g_bytes_new_static (list->data, list->data_len);
       GResource *resource = g_resource_new_from_data (bytes, NULL);
       if (resource)
-	{
-	  g_resources_register_unlocked (resource);
-	  g_atomic_pointer_set (&list->resource, resource);
-	}
+        {
+          g_resources_register_unlocked (resource);
+          g_atomic_pointer_set (&list->resource, resource);
+        }
       g_bytes_unref (bytes);
 
       list = list->next;
@@ -939,7 +938,7 @@ register_lazy_static_resources_unlocked ()
 }
 
 static void
-register_lazy_static_resources ()
+register_lazy_static_resources (void)
 {
   if (g_atomic_pointer_get (&lazy_register_resources) == NULL)
     return;
@@ -951,14 +950,14 @@ register_lazy_static_resources ()
 
 /**
  * g_static_resource_init:
- * @static_resource: pointer to a static #GStaticResource.
+ * @static_resource: pointer to a static #GStaticResource
  *
  * Initializes a GResource from static data using a
  * GStaticResource.
  *
  * This is normally used by code generated by
- * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
- * not typically used by other code.
+ * <link linkend="glib-compile-resources">glib-compile-resources</link>
+ * and is not typically used by other code.
  *
  * Since: 2.32
  **/
@@ -977,13 +976,13 @@ g_static_resource_init (GStaticResource *static_resource)
 
 /**
  * g_static_resource_fini:
- * @static_resource: pointer to a static #GStaticResource.
+ * @static_resource: pointer to a static #GStaticResource
  *
- * Finalized a GResource initialized by g_static_resource_init ().
+ * Finalized a GResource initialized by g_static_resource_init().
  *
  * This is normally used by code generated by
- * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
- * not typically used by other code.
+ * <link linkend="glib-compile-resources">glib-compile-resources</link>
+ * and is not typically used by other code.
  *
  * Since: 2.32
  **/
@@ -1009,20 +1008,20 @@ g_static_resource_fini (GStaticResource *static_resource)
 
 /**
  * g_static_resource_get_resource:
- * @static_resource: pointer to a static #GStaticResource.
+ * @static_resource: pointer to a static #GStaticResource
  *
- * Gets the GResource that was registred by a call to g_static_resource_init ().
+ * Gets the GResource that was registred by a call to g_static_resource_init().
  *
  * This is normally used by code generated by
- * <link linkend="glib-compile-resources">glib-compile-resources</link> and is
- * not typically used by other code.
+ * <link linkend="glib-compile-resources">glib-compile-resources</link>
+ * and is not typically used by other code.
  *
- * Return value:  (transfer none): a #GResource.
+ * Return value:  (transfer none): a #GResource
  *
  * Since: 2.32
  **/
 GResource *
-g_static_resource_get_resource  (GStaticResource *static_resource)
+g_static_resource_get_resource (GStaticResource *static_resource)
 {
   register_lazy_static_resources ();
 
