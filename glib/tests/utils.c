@@ -26,6 +26,7 @@
 #include "glib.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <stdarg.h>
 
 static gboolean
@@ -322,6 +323,23 @@ test_basename (void)
   g_assert_cmpstr (b, ==, "down.sh");
 }
 
+extern const gchar *glib_pgettext (const gchar *msgidctxt, gsize msgidoffset);
+
+static void
+test_gettext (void)
+{
+  const gchar *am0, *am1, *am2, *am3;
+
+  am0 = glib_pgettext ("GDateTime\004AM", strlen ("GDateTime") + 1);
+  am1 = g_dpgettext ("glib20", "GDateTime\004AM", strlen ("GDateTime") + 1);
+  am2 = g_dpgettext ("glib20", "GDateTime|AM", 0);
+  am3 = g_dpgettext2 ("glib20", "GDateTime", "AM");
+
+  g_assert_cmpstr (am0, ==, am1);
+  g_assert_cmpstr (am1, ==, am2);
+  g_assert_cmpstr (am2, ==, am3);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -347,6 +365,7 @@ main (int   argc,
   g_test_add_func ("/utils/debug", test_debug);
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/basename", test_basename);
+  g_test_add_func ("/utils/gettext", test_gettext);
 
   return g_test_run();
 }
