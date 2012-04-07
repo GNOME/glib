@@ -685,11 +685,28 @@ test_filename_display (void)
   g_free (display);
 }
 
+static void
+test_no_conv (void)
+{
+  gchar *in = "";
+  gchar *out G_GNUC_UNUSED;
+  gsize bytes_read = 0;
+  gsize bytes_written = 0;
+  GError *error = NULL;
+
+  out = g_convert (in, -1, "XXX", "UVZ",
+                   &bytes_read, &bytes_written, &error);
+
+  /* error code is unreliable, since we mishandle errno there */
+  g_assert (error && error->domain == G_CONVERT_ERROR);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/conversion/no-conv", test_no_conv);
   g_test_add_func ("/conversion/iconv-state", test_iconv_state);
   g_test_add_func ("/conversion/illegal-sequence", test_one_half);
   g_test_add_func ("/conversion/byte-order", test_byte_order);
