@@ -130,6 +130,18 @@ test_parse (void)
   g_assert_cmpint (g_date_get_day (d), ==, 10);
   g_assert_cmpint (g_date_get_year (d), ==, 2000);
 
+  g_date_set_parse (d, "10 10 10");
+  g_assert (g_date_valid (d));
+  g_assert_cmpint (g_date_get_month (d), ==, 10);
+  g_assert_cmpint (g_date_get_day (d), ==, 10);
+  g_assert_cmpint (g_date_get_year (d), ==, 10);
+
+  g_date_set_parse (d, "10 March 10");
+  g_assert (g_date_valid (d));
+  g_assert_cmpint (g_date_get_month (d), ==, 3);
+  g_assert_cmpint (g_date_get_day (d), ==, 10);
+  g_assert_cmpint (g_date_get_year (d), ==, 10);
+
   g_date_free (d);
 }
 
@@ -282,6 +294,41 @@ test_year (gconstpointer t)
   g_assert_cmpint (j + 2, ==, g_date_get_julian (&tmp));
 }
 
+static void
+test_clamp (void)
+{
+  GDate d1, d2, d, o;
+
+  g_date_set_dmy (&d1, 1, 1, 1970);
+  g_date_set_dmy (&d2, 1, 1, 1980);
+  g_date_set_dmy (&d, 1, 1, 1);
+
+  o = d;
+  g_date_clamp (&o, NULL, NULL);
+  g_assert (g_date_compare (&o, &d) == 0);
+
+  g_date_clamp (&o,  &d1, &d2);
+  g_assert (g_date_compare (&o, &d1) == 0);
+
+  g_date_set_dmy (&o, 1, 1, 2000);
+
+  g_date_clamp (&o,  &d1, &d2);
+  g_assert (g_date_compare (&o, &d2) == 0);
+}
+
+static void
+test_order (void)
+{
+  GDate d1, d2;
+
+  g_date_set_dmy (&d1, 1, 1, 1970);
+  g_date_set_dmy (&d2, 1, 1, 1980);
+
+  g_assert (g_date_compare (&d1, &d2) == -1);
+  g_date_order (&d2, &d1);
+  g_assert (g_date_compare (&d1, &d2) == 1);
+}
+
 int
 main (int argc, char** argv)
 {
@@ -314,6 +361,8 @@ main (int argc, char** argv)
   g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
+  g_test_add_func ("/date/clamp", test_clamp);
+  g_test_add_func ("/date/order", test_order);
   for (i = 0; i < G_N_ELEMENTS (check_years); i++)
     {
       path = g_strdup_printf ("/date/year/%d", check_years[i]);
