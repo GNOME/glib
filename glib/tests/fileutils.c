@@ -107,6 +107,7 @@ test_build_pathv (void)
 {
   gchar *args[10];
 
+  g_assert (g_build_pathv ("", NULL) == NULL);
   args[0] = NULL;
   check_string (g_build_pathv ("", args), "");
   args[0] = ""; args[1] = NULL;
@@ -505,9 +506,12 @@ test_format_size_for_display (void)
   check_string (g_format_size (0), "0 bytes");
   check_string (g_format_size (1), "1 byte");
   check_string (g_format_size (2), "2 bytes");
-  check_string (g_format_size (1000), "1.0 kB");
-  check_string (g_format_size (1000 * 1000), "1.0 MB");
-  check_string (g_format_size (1000 * 1000 * 1000), "1.0 GB");
+  check_string (g_format_size (1000ULL), "1.0 kB");
+  check_string (g_format_size (1000ULL * 1000), "1.0 MB");
+  check_string (g_format_size (1000ULL * 1000 * 1000), "1.0 GB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000), "1.0 TB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000), "1.0 PB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000 * 1000), "1.0 EB");
 
   check_string (g_format_size_full (0, G_FORMAT_SIZE_IEC_UNITS), "0 bytes");
   check_string (g_format_size_full (1, G_FORMAT_SIZE_IEC_UNITS), "1 byte");
@@ -525,6 +529,53 @@ test_format_size_for_display (void)
   check_string (g_format_size_full (238472938, G_FORMAT_SIZE_LONG_FORMAT), "238.5 MB (238472938 bytes)");
 }
 
+static void
+test_file_errors (void)
+{
+  g_assert (g_file_error_from_errno (EEXIST) == G_FILE_ERROR_EXIST);
+  g_assert (g_file_error_from_errno (EISDIR) == G_FILE_ERROR_ISDIR);
+  g_assert (g_file_error_from_errno (EACCES) == G_FILE_ERROR_ACCES);
+  g_assert (g_file_error_from_errno (ENAMETOOLONG) == G_FILE_ERROR_NAMETOOLONG);
+  g_assert (g_file_error_from_errno (ENOENT) == G_FILE_ERROR_NOENT);
+  g_assert (g_file_error_from_errno (ENOTDIR) == G_FILE_ERROR_NOTDIR);
+  g_assert (g_file_error_from_errno (ENXIO) == G_FILE_ERROR_NXIO);
+  g_assert (g_file_error_from_errno (ENODEV) == G_FILE_ERROR_NODEV);
+  g_assert (g_file_error_from_errno (EROFS) == G_FILE_ERROR_ROFS);
+  g_assert (g_file_error_from_errno (ETXTBSY) == G_FILE_ERROR_TXTBSY);
+  g_assert (g_file_error_from_errno (EFAULT) == G_FILE_ERROR_FAULT);
+  g_assert (g_file_error_from_errno (ELOOP) == G_FILE_ERROR_LOOP);
+  g_assert (g_file_error_from_errno (ENOSPC) == G_FILE_ERROR_NOSPC);
+  g_assert (g_file_error_from_errno (ENOMEM) == G_FILE_ERROR_NOMEM);
+  g_assert (g_file_error_from_errno (EMFILE) == G_FILE_ERROR_MFILE);
+  g_assert (g_file_error_from_errno (ENFILE) == G_FILE_ERROR_NFILE);
+  g_assert (g_file_error_from_errno (EBADF) == G_FILE_ERROR_BADF);
+  g_assert (g_file_error_from_errno (EINVAL) == G_FILE_ERROR_INVAL);
+  g_assert (g_file_error_from_errno (EPIPE) == G_FILE_ERROR_PIPE);
+  g_assert (g_file_error_from_errno (EAGAIN) == G_FILE_ERROR_AGAIN);
+  g_assert (g_file_error_from_errno (EINTR) == G_FILE_ERROR_INTR);
+  g_assert (g_file_error_from_errno (EIO) == G_FILE_ERROR_IO);
+  g_assert (g_file_error_from_errno (EPERM) == G_FILE_ERROR_PERM);
+  g_assert (g_file_error_from_errno (ENOSYS) == G_FILE_ERROR_NOSYS);
+}
+
+static void
+test_basename (void)
+{
+  gchar *b;
+
+  b = g_path_get_basename ("");
+  g_assert_cmpstr (b, ==, ".");
+  g_free (b);
+
+  b = g_path_get_basename ("///");
+  g_assert_cmpstr (b, ==, "/");
+  g_free (b);
+
+  b = g_path_get_basename ("/a/b/c/d");
+  g_assert_cmpstr (b, ==, "d");
+  g_free (b);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -537,6 +588,8 @@ main (int   argc,
   g_test_add_func ("/fileutils/build-filenamev", test_build_filenamev);
   g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
   g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
+  g_test_add_func ("/fileutils/errors", test_file_errors);
+  g_test_add_func ("/fileutils/basename", test_basename);
 
   return g_test_run();
 }
