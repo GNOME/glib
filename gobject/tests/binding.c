@@ -563,6 +563,9 @@ binding_same_object (void)
   g_object_set (source, "foo", 10, NULL);
   g_assert_cmpint (source->foo, ==, 10);
   g_assert_cmpint (source->bar, ==, 10);
+  g_object_set (source, "bar", 30, NULL);
+  g_assert_cmpint (source->foo, ==, 30);
+  g_assert_cmpint (source->bar, ==, 30);
 
   g_object_unref (source);
 }
