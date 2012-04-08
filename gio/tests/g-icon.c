@@ -41,6 +41,8 @@ test_g_icon_serialize (void)
   GFile *location;
   char *data;
   GError *error;
+  gint origin;
+  GIcon *i;
 
   error = NULL;
 
@@ -223,6 +225,12 @@ test_g_icon_serialize (void)
   icon5 = g_icon_new_for_string (data, &error);
   g_assert_no_error (error);
   g_assert (g_icon_equal (icon4, icon5));
+
+  g_object_get (emblem1, "origin", &origin, "icon", &i, NULL);
+  g_assert (origin == G_EMBLEM_ORIGIN_DEVICE);
+  g_assert (i == icon2);
+  g_object_unref (i);
+
   g_object_unref (emblem1);
   g_object_unref (emblem2);
   g_object_unref (icon);
