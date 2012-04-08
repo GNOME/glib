@@ -6,16 +6,65 @@ test_guess (void)
   gchar *res;
   gchar *expected;
   gboolean uncertain;
+  guchar *data = (guchar*)
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "Name=appinfo-test\n"
+    "Exec=./appinfo-test --option\n";
 
   res = g_content_type_guess ("/etc/", NULL, 0, &uncertain);
   expected = g_content_type_from_mime_type ("inode/directory");
   g_assert (g_content_type_equals (expected, res));
+  g_assert (uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("foo.txt", NULL, 0, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("foo.desktop", data, -1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-desktop");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("foo.txt", data, -1, &uncertain);
+  expected = g_content_type_from_mime_type ("text/plain");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("foo", data, -1, &uncertain);
+  expected = g_content_type_from_mime_type ("text/plain");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess (NULL, data, -1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-desktop");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", -1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/vnd.ms-powerpoint");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("test.otf", (guchar *)"OTTO", -1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-font-otf");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 }
@@ -113,6 +162,26 @@ test_description (void)
   g_free (type);
 }
 
+static void
+test_icon (void)
+{
+  gchar *type;
+  GIcon *icon;
+
+  type = g_content_type_from_mime_type ("text/plain");
+  icon = g_content_type_get_icon (type);
+  g_assert (G_IS_ICON (icon));
+  g_object_unref (icon);
+  g_free (type);
+
+  type = g_content_type_from_mime_type ("application/rtf");
+  icon = g_content_type_get_icon (type);
+  g_assert (G_IS_ICON (icon));
+  g_object_unref (icon);
+  g_free (type);
+}
+
+
 int
 main (int argc, char *argv[])
 {
@@ -126,6 +195,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/list", test_list);
   g_test_add_func ("/contenttype/executable", test_executable);
   g_test_add_func ("/contenttype/description", test_description);
+  g_test_add_func ("/contenttype/icon", test_icon);
 
   return g_test_run ();
 }
