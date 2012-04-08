@@ -27,6 +27,7 @@
 #include <string.h>
 
 static char *echo_prog_path;
+static char *echo_script_path;
 
 typedef struct {
   GMainLoop *loop;
@@ -164,6 +165,25 @@ test_spawn_sync (void)
   g_ptr_array_free (argv, TRUE);
 }
 
+static void
+test_spawn_script (void)
+{
+  GError *error = NULL;
+  GPtrArray *argv;
+  char *stdout_str;
+  int estatus;
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, echo_script_path);
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char**)argv->pdata, NULL, 0, NULL, NULL, &stdout_str, NULL, &estatus, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr ("echo\n", ==, stdout_str);
+  g_free (stdout_str);
+  g_ptr_array_free (argv, TRUE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -174,17 +194,29 @@ main (int   argc,
 
   dirname = g_path_get_dirname (argv[0]);
   echo_prog_path = g_build_filename (dirname, "test-spawn-echo", NULL);
+  echo_script_path = g_build_filename (dirname, "echo-script", NULL);
   if (!g_file_test (echo_prog_path, G_FILE_TEST_EXISTS))
     {
       g_free (echo_prog_path);
       echo_prog_path = g_build_filename (dirname, "lt-test-spawn-echo", NULL);
     }
+  if (!g_file_test (echo_script_path, G_FILE_TEST_EXISTS))
+    {
+      gchar *tmp;
+      /* strip .libs */
+      tmp = g_path_get_dirname (dirname);
+      g_free (echo_script_path);
+      echo_script_path = g_build_filename (tmp, "echo-script", NULL);
+      g_free (tmp);
+    }
   g_free (dirname);
 
   g_assert (g_file_test (echo_prog_path, G_FILE_TEST_EXISTS));
+  g_assert (g_file_test (echo_script_path, G_FILE_TEST_EXISTS));
 
   g_test_add_func ("/gthread/spawn-single-sync", test_spawn_sync);
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
+  g_test_add_func ("/gthread/spawn-script", test_spawn_script);
 
   return g_test_run();
 }
