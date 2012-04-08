@@ -97,6 +97,16 @@ test_maincontext_basic (void)
   g_assert_cmpstr (g_source_get_name (source), ==, "e");
   g_assert (g_source_get_context (source) == ctx);
   g_assert (g_source_remove_by_funcs_user_data (&funcs, data));
+
+  source = g_source_new (&funcs, sizeof (GSource));
+  g_source_set_funcs (source, &funcs);
+  g_source_set_callback (source, cb, data, NULL);
+  id = g_source_attach (source, ctx);
+  g_source_unref (source);
+  g_assert (g_source_remove_by_user_data (data));
+
+  g_idle_add (cb, data);
+  g_assert (g_idle_remove_by_data (data));
 }
 
 static void
