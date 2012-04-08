@@ -6,18 +6,52 @@ test_basic (void)
   GNetworkAddress *address;
   guint port;
   gchar *hostname;
+  gchar *scheme;
 
   address = (GNetworkAddress*)g_network_address_new ("www.gnome.org", 8080);
 
   g_assert_cmpstr (g_network_address_get_hostname (address), ==, "www.gnome.org");
   g_assert_cmpint (g_network_address_get_port (address), ==, 8080);
 
-  g_object_get (address, "hostname", &hostname, "port", &port, NULL);
+  g_object_get (address, "hostname", &hostname, "port", &port, "scheme", &scheme, NULL);
   g_assert_cmpstr (hostname, ==, "www.gnome.org");
   g_assert_cmpint (port, ==, 8080);
+  g_assert (scheme == NULL);
   g_free (hostname);
 
   g_object_unref (address);
+}
+
+static void
+test_parse_uri (void)
+{
+  GNetworkAddress *address;
+  GError *error = NULL;
+
+  address = (GNetworkAddress*)g_network_address_parse_uri ("http://www.gnome.org:2020/start", 8080, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (g_network_address_get_scheme (address), ==, "http");
+  g_assert_cmpstr (g_network_address_get_hostname (address), ==, "www.gnome.org");
+  g_assert_cmpint (g_network_address_get_port (address), ==, 2020);
+  g_object_unref (address);
+
+  address = (GNetworkAddress*)g_network_address_parse_uri ("ftp://joe~:(*)%46@ftp.gnome.org:2020/start", 8080, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (g_network_address_get_scheme (address), ==, "ftp");
+  g_assert_cmpstr (g_network_address_get_hostname (address), ==, "ftp.gnome.org");
+  g_assert_cmpint (g_network_address_get_port (address), ==, 2020);
+  g_object_unref (address);
+
+  address = (GNetworkAddress*)g_network_address_parse_uri ("ftp://[fec0::abcd]/start", 8080, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (g_network_address_get_scheme (address), ==, "ftp");
+  g_assert_cmpstr (g_network_address_get_hostname (address), ==, "fec0::abcd");
+  g_assert_cmpint (g_network_address_get_port (address), ==, 8080);
+  g_object_unref (address);
+
+  address = (GNetworkAddress*)g_network_address_parse_uri ("ftp://joe%x-@ftp.gnome.org:2020/start", 8080, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert (address == NULL);
 }
 
 typedef struct _ParseTest ParseTest;
@@ -81,6 +115,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/network-address/basic", test_basic);
+  g_test_add_func ("/network-address/parse/uri", test_parse_uri);
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
