@@ -325,8 +325,11 @@ service_thread_func (gpointer user_data)
 {
   PeerData *data = user_data;
   GMainContext *service_context;
-  GDBusAuthObserver *observer;
+  GDBusAuthObserver *observer, *o;
   GError *error;
+  GDBusServerFlags f;
+  gchar *a, *g;
+  gboolean b;
 
   service_context = g_main_context_new ();
   g_main_context_push_thread_default (service_context);
@@ -349,6 +352,25 @@ service_thread_func (gpointer user_data)
                     "authorize-authenticated-peer",
                     G_CALLBACK (on_authorize_authenticated_peer),
                     data);
+
+  g_assert_cmpint (g_dbus_server_get_flags (server), ==, G_DBUS_SERVER_FLAGS_NONE);
+  g_assert_cmpstr (g_dbus_server_get_guid (server), ==, test_guid);
+  g_object_get (server,
+                "flags", &f,
+                "address", &a,
+                "guid", &g,
+                "active", &b,
+                "authentication-observer", &o,
+                NULL);
+  g_assert_cmpint (f, ==, G_DBUS_SERVER_FLAGS_NONE);
+  g_assert_cmpstr (a, ==, tmp_address);
+  g_assert_cmpstr (g, ==, test_guid);
+  g_assert (!b);
+  g_assert (o == observer);
+  g_free (a);
+  g_free (g);
+  g_object_unref (o);
+
   g_object_unref (observer);
 
   g_dbus_server_start (server);
