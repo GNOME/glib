@@ -475,15 +475,15 @@ _g_uri_parse_authority (const char  *uri,
     return FALSE;
 
   start += 2;
-  p = strchr (start, '@');
 
-  if (p != NULL)
+  if (strchr (start, '@') != NULL)
     {
       /* Decode userinfo:
        * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
        * unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
        * pct-encoded   = "%" HEXDIG HEXDIG
        */
+      p = start;
       while (1)
 	{
 	  c = *p++;
@@ -504,7 +504,7 @@ _g_uri_parse_authority (const char  *uri,
 	    }
 
 	  /* unreserved /  sub-delims / : */
-	  if (!(g_ascii_isalnum(c) ||
+	  if (!(g_ascii_isalnum (c) ||
 		strchr (G_URI_OTHER_UNRESERVED, c) ||
 		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
 		c == ':'))
@@ -540,7 +540,7 @@ _g_uri_parse_authority (const char  *uri,
 	    break;
 
 	  /* unreserved /  sub-delims */
-	  if (!(g_ascii_isalnum(c) ||
+	  if (!(g_ascii_isalnum (c) ||
 		strchr (G_URI_OTHER_UNRESERVED, c) ||
 		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
 		c == ':' ||
@@ -574,7 +574,7 @@ _g_uri_parse_authority (const char  *uri,
 	    }
 
 	  /* unreserved /  sub-delims */
-	  if (!(g_ascii_isalnum(c) ||
+	  if (!(g_ascii_isalnum (c) ||
 		strchr (G_URI_OTHER_UNRESERVED, c) ||
 		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c)))
 	    goto error;
