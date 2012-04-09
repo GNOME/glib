@@ -287,7 +287,7 @@ gboolean do_lookup (GResource             *resource,
       free_path[path_len-1] = 0;
     }
 
-  value = gvdb_table_get_value (resource->table, path);
+  value = gvdb_table_get_raw_value (resource->table, path);
 
   if (value == NULL)
     {
@@ -304,6 +304,9 @@ gboolean do_lookup (GResource             *resource,
                      &_size,
                      &_flags,
                      &array);
+
+      _size = GUINT32_FROM_LE (_size);
+      _flags = GUINT32_FROM_LE (_flags);
 
       if (size)
         *size = _size;
