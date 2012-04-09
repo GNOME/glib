@@ -700,7 +700,7 @@ g_object_info_find_vfunc (GIObjectInfo *info,
 /**
  * g_object_info_find_vfunc_using_interfaces:
  * @info: a #GIObjectInfo
- * @name: name of method to obtain
+ * @name: name of vfunc to obtain
  * @implementor: (out) (transfer full): The implementor of the interface
  *
  * Locate a virtual function slot with name @name, searching both the object
@@ -713,7 +713,7 @@ g_object_info_find_vfunc (GIObjectInfo *info,
  * Note that this function does *not* search parent classes; you will have
  * to chain up if that's desired.
  *
- * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * Returns: (transfer full): the #GIVFuncInfo. Free the struct by calling
  * g_base_info_unref() when done.
  */
 GIVFuncInfo *
