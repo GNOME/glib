@@ -77,6 +77,16 @@
  */
 #define GLIB_VERSION_2_32       (G_ENCODE_VERSION (2, 32))
 
+/**
+ * GLIB_VERSION_2_34:
+ *
+ * A macro that evaluates to the 2.34 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.34
+ */
+#define GLIB_VERSION_2_34       (G_ENCODE_VERSION (2, 34))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
@@ -207,6 +217,20 @@
 # define GLIB_AVAILABLE_IN_2_32                 GLIB_UNAVAILABLE(2, 32)
 #else
 # define GLIB_AVAILABLE_IN_2_32
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_34
+# define GLIB_DEPRECATED_IN_2_34                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_34_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_34
+# define GLIB_DEPRECATED_IN_2_34_FOR(f)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_34
+# define GLIB_AVAILABLE_IN_2_34                 GLIB_UNAVAILABLE(2, 34)
+#else
+# define GLIB_AVAILABLE_IN_2_34
 #endif
 
 #endif /*  __G_VERSION_MACROS_H__ */
