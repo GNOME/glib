@@ -1272,6 +1272,9 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
     case G_TYPE_OBJECT:
       g_value_set_object (gvalue, *(gpointer*)value);
       break;
+    case G_TYPE_VARIANT:
+      g_value_set_variant (gvalue, *(gpointer*)value);
+      break;
     default:
       g_warning ("value_from_ffi_type: Unsupported fundamental type: %s",
                 g_type_name (g_type_fundamental (G_VALUE_TYPE (gvalue))));
