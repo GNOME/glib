@@ -289,33 +289,8 @@ g_function_invoker_new_for_address (gpointer           addr,
 
   invoker->native_address = addr;
 
-  info_type = g_base_info_get_type ((GIBaseInfo *) info);
-
-  switch (info_type)
-    {
-    case GI_INFO_TYPE_FUNCTION:
-      {
-        GIFunctionInfoFlags flags;
-        flags = g_function_info_get_flags ((GIFunctionInfo *)info);
-        is_method = (flags & GI_FUNCTION_IS_METHOD) != 0;
-        throws = (flags & GI_FUNCTION_THROWS) != 0;
-      }
-      break;
-    case GI_INFO_TYPE_VFUNC:
-      {
-        GIVFuncInfoFlags flags;
-        flags = g_vfunc_info_get_flags ((GIVFuncInfo *)info);
-        throws = (flags & GI_VFUNC_THROWS) != 0;
-      }
-      is_method = TRUE;
-      break;
-    case GI_INFO_TYPE_CALLBACK:
-      is_method = TRUE;
-      throws = FALSE;
-      break;
-    default:
-      g_assert_not_reached ();
-    }
+  is_method = g_callable_info_is_method (info);
+  throws = g_callable_info_can_throw_gerror (info);
 
   tinfo = g_callable_info_get_return_type (info);
   rtype = g_type_info_get_ffi_type (tinfo);

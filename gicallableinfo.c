@@ -82,6 +82,76 @@ signature_offset (GICallableInfo *info)
 }
 
 /**
+ * g_callable_info_can_throw_gerror:
+ * @info: a #GICallableInfo
+ *
+ * Returns: %TRUE if this #GICallableInfo can throw a #GError
+ *
+ * Since: 1.34
+ */
+gboolean
+g_callable_info_can_throw_gerror (GICallableInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo*)info;
+  switch (rinfo->type) {
+  case GI_INFO_TYPE_FUNCTION:
+    {
+      FunctionBlob *blob;
+      blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
+      return blob->throws;
+    }
+  case GI_INFO_TYPE_VFUNC:
+    {
+      VFuncBlob *blob;
+      blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
+      return blob->throws;
+    }
+  case GI_INFO_TYPE_CALLBACK:
+  case GI_INFO_TYPE_SIGNAL:
+    return FALSE;
+  default:
+    g_assert_not_reached ();
+  }
+}
+
+/**
+ * g_callable_info_is_method:
+ * @info: a #GICallableInfo
+ *
+ * Determines if the callable info is a method. For #GIVFuncInfo<!-- -->s,
+ * #GICallbackInfo<!-- -->s, and #GISignalInfo<!-- -->s,
+ * this is always true. Otherwise, this looks at the %GI_FUNCTION_IS_METHOD
+ * flag on the #GIFunctionInfo.
+ *
+ * Concretely, this function returns whether g_callable_info_get_n_args()
+ * matches the number of arguments in the raw C method. For methods, there
+ * is one more C argument than is exposed by introspection: the "self"
+ * or "this" object.
+ *
+ * Since: 1.34
+ */
+gboolean
+g_callable_info_is_method (GICallableInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo*)info;
+  switch (rinfo->type) {
+  case GI_INFO_TYPE_FUNCTION:
+    {
+      FunctionBlob *blob;
+      blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
+      return (!blob->constructor && !blob->is_static);
+    }
+  case GI_INFO_TYPE_VFUNC:
+  case GI_INFO_TYPE_SIGNAL:
+    return TRUE;
+  case GI_INFO_TYPE_CALLBACK:
+    return FALSE;
+  default:
+    g_assert_not_reached ();
+  }
+}
+
+/**
  * g_callable_info_get_return_type:
  * @info: a #GICallableInfo
  *
