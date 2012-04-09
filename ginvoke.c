@@ -172,7 +172,7 @@ g_value_from_ffi_value (GValue           *gvalue,
       g_value_set_string (gvalue, (gchar*)value->v_pointer);
       break;
   case G_TYPE_CHAR:
-      g_value_set_char (gvalue, (gchar)value->v_long);
+      g_value_set_schar (gvalue, (gchar)value->v_long);
       break;
   case G_TYPE_UCHAR:
       g_value_set_uchar (gvalue, (guchar)value->v_ulong);

@@ -771,11 +771,9 @@ write_constant_info (const gchar    *namespace,
 {
   GITypeInfo *type;
   const gchar *name;
-  gboolean deprecated;
   GIArgument value;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
-  deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
   xml_start_element (file, "constant");
   xml_printf (file, " name=\"%s\"", name);

@@ -372,7 +372,6 @@ register_internal (GIRepository *repository,
 {
   Header *header;
   const gchar *namespace;
-  const gchar *version;
 
   g_return_val_if_fail (typelib != NULL, FALSE);
 
@@ -381,7 +380,6 @@ register_internal (GIRepository *repository,
   g_return_val_if_fail (header != NULL, FALSE);
 
   namespace = g_typelib_get_string (typelib, header->namespace);
-  version = g_typelib_get_string (typelib, header->nsversion);
 
   if (lazy)
     {

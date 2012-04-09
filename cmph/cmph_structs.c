@@ -1,6 +1,7 @@
 #include "cmph_structs.h"
 
 #include <string.h>
+#include <errno.h>
 
 //#define DEBUG
 #include "debug.h"
@@ -27,6 +28,9 @@ void __cmph_dump(cmph_t *mphf, FILE *fd)
 	register size_t nbytes;
 	nbytes = fwrite(cmph_names[mphf->algo], (size_t)(strlen(cmph_names[mphf->algo]) + 1), (size_t)1, fd);
 	nbytes = fwrite(&(mphf->size), sizeof(mphf->size), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+        }
 }
 cmph_t *__cmph_load(FILE *f) 
 {
@@ -62,6 +66,9 @@ cmph_t *__cmph_load(FILE *f)
 	nbytes = fread(&(mphf->size), sizeof(mphf->size), (size_t)1, f);
 	mphf->data = NULL;
 	DEBUGP("Algorithm is %s and mphf is sized %u\n", cmph_names[algo],  mphf->size);
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+        }
 
 	return mphf;
 }

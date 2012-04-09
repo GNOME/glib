@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 #define MAX_BUCKET_SIZE 255
 //#define DEBUG
 #include "debug.h"
@@ -370,7 +371,11 @@ static int brz_gen_mphf(cmph_config_t *mph)
 	nbytes = fwrite(&(brz->algo), sizeof(brz->algo), (size_t)1, brz->mphf_fd);
 	nbytes = fwrite(&(brz->k), sizeof(cmph_uint32), (size_t)1, brz->mphf_fd); // number of MPHFs
 	nbytes = fwrite(brz->size, sizeof(cmph_uint8)*(brz->k), (size_t)1, brz->mphf_fd);
-	
+        if (nbytes == 0 && ferror(brz->mphf_fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
+
 	//tmp_fds = (FILE **)calloc(nflushes, sizeof(FILE *));
 	buff_manager = buffer_manager_new(brz->memory_availability, nflushes);
 	buffer_merge = (cmph_uint8 **)calloc((size_t)nflushes, sizeof(cmph_uint8 *));
@@ -574,6 +579,10 @@ int brz_dump(cmph_t *mphf, FILE *fd)
 	// Dumping m and the vector offset.
 	nbytes = fwrite(&(data->m), sizeof(cmph_uint32), (size_t)1, fd);	
 	nbytes = fwrite(data->offset, sizeof(cmph_uint32)*(data->k), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	return 1;
 }
 
@@ -639,6 +648,9 @@ void brz_load(FILE *f, cmph_t *mphf)
 	nbytes = fread(&(brz->m), sizeof(cmph_uint32), (size_t)1, f);
 	brz->offset = (cmph_uint32 *)malloc(sizeof(cmph_uint32)*brz->k);
 	nbytes = fread(brz->offset, sizeof(cmph_uint32)*(brz->k), (size_t)1, f);
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+        }
 	return;
 }
 

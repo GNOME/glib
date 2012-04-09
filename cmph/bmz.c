@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 
 //#define DEBUG
 #include "debug.h"
@@ -469,6 +470,10 @@ int bmz_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->m), sizeof(cmph_uint32), (size_t)1, fd);
 	
 	nbytes = fwrite(data->g, sizeof(cmph_uint32)*(data->n), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	#ifdef DEBUG
 	cmph_uint32 i;
 	fprintf(stderr, "G: ");
@@ -510,6 +515,10 @@ void bmz_load(FILE *f, cmph_t *mphf)
 
 	bmz->g = (cmph_uint32 *)malloc(sizeof(cmph_uint32)*bmz->n);
 	nbytes = fread(bmz->g, bmz->n*sizeof(cmph_uint32), (size_t)1, f);
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return;
+        }
 	#ifdef DEBUG
 	fprintf(stderr, "G: ");
 	for (i = 0; i < bmz->n; ++i) fprintf(stderr, "%u ", bmz->g[i]);

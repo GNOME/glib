@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 //#define DEBUG
 #include "debug.h"
 #define UNASSIGNED 3
@@ -465,6 +466,10 @@ int bdz_ph_dump(cmph_t *mphf, FILE *fd)
 	sizeg = (cmph_uint32)ceil(data->n/5.0);	
 	nbytes = fwrite(data->g, sizeof(cmph_uint8)*sizeg, (size_t)1, fd);
 
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	#ifdef DEBUG
 	cmph_uint32 i;
 	fprintf(stderr, "G: ");
@@ -501,6 +506,9 @@ void bdz_ph_load(FILE *f, cmph_t *mphf)
 	bdz_ph->g = (cmph_uint8 *)calloc((size_t)sizeg, sizeof(cmph_uint8));
 	nbytes = fread(bdz_ph->g, sizeg*sizeof(cmph_uint8), (size_t)1, f);
 
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+        }
 	return;
 }
 		

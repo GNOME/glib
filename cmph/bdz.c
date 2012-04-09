@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 //#define DEBUG
 #include "debug.h"
 #define UNASSIGNED 3U
@@ -508,6 +509,10 @@ int bdz_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->ranktablesize), sizeof(cmph_uint32), (size_t)1, fd);
 
 	nbytes = fwrite(data->ranktable, sizeof(cmph_uint32)*(data->ranktablesize), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	#ifdef DEBUG
 	cmph_uint32 i;
 	fprintf(stderr, "G: ");
@@ -549,6 +554,10 @@ void bdz_load(FILE *f, cmph_t *mphf)
 
 	bdz->ranktable = (cmph_uint32 *)calloc((size_t)bdz->ranktablesize, sizeof(cmph_uint32));
 	nbytes = fread(bdz->ranktable, sizeof(cmph_uint32)*(bdz->ranktablesize), (size_t)1, f);
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return;
+        }
 
 	#ifdef DEBUG
 	cmph_uint32  i = 0;

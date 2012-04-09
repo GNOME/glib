@@ -5,6 +5,7 @@
 #include<time.h>
 #include<assert.h>
 #include<limits.h>
+#include<errno.h>
 
 #include "cmph_structs.h"
 #include "chd_structs_ph.h"
@@ -859,6 +860,9 @@ void chd_ph_load(FILE *fd, cmph_t *mphf)
 	DEBUGP("Reading n and nbuckets\n");
 	nbytes = fread(&(chd_ph->n), sizeof(cmph_uint32), (size_t)1, fd);	
 	nbytes = fread(&(chd_ph->nbuckets), sizeof(cmph_uint32), (size_t)1, fd);	
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+        }
 }
 
 int chd_ph_dump(cmph_t *mphf, FILE *fd)
@@ -885,6 +889,10 @@ int chd_ph_dump(cmph_t *mphf, FILE *fd)
 	// dumping n and nbuckets
 	nbytes = fwrite(&(data->n), sizeof(cmph_uint32), (size_t)1, fd);
 	nbytes = fwrite(&(data->nbuckets), sizeof(cmph_uint32), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	return 1;
 }
 

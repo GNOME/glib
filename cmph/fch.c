@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 #define INDEX 0 /* alignment index within a bucket */
 //#define DEBUG
 #include "debug.h"
@@ -339,6 +340,10 @@ int fch_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->p1), sizeof(double), (size_t)1, fd);
 	nbytes = fwrite(&(data->p2), sizeof(double), (size_t)1, fd);
 	nbytes = fwrite(data->g, sizeof(cmph_uint32)*(data->b), (size_t)1, fd);
+        if (nbytes == 0 && ferror(fd)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return 0;
+        }
 	#ifdef DEBUG
 	cmph_uint32 i;
 	fprintf(stderr, "G: ");
@@ -387,6 +392,10 @@ void fch_load(FILE *f, cmph_t *mphf)
 
 	fch->g = (cmph_uint32 *)malloc(sizeof(cmph_uint32)*fch->b);
 	nbytes = fread(fch->g, fch->b*sizeof(cmph_uint32), (size_t)1, f);
+        if (nbytes == 0 && ferror(f)) {
+          fprintf(stderr, "ERROR: %s\n", strerror(errno));
+          return;
+        }
 	#ifdef DEBUG
 	cmph_uint32 i;
 	fprintf(stderr, "G: ");
