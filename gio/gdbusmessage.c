@@ -1289,94 +1289,87 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       break;
 
     case 'a': /* G_VARIANT_TYPE_ARRAY */
-      {
-        guint32 array_len;
-        goffset offset;
-        goffset target;
-        const GVariantType *element_type;
-        GVariantBuilder builder;
+      if (!ensure_input_padding (mis, 4, &local_error))
+        goto fail;
 
-        if (!ensure_input_padding (mis, 4, &local_error))
-          goto fail;
+      /* If we are only aligning for this array type, it is the child type of
+       * another array, which is empty. So, we do not need to add padding for
+       * this nonexistent array's elements: we only need to align for this
+       * array itself (4 bytes). See
+       * <https://bugzilla.gnome.org/show_bug.cgi?id=673612>.
+       */
+      if (!just_align)
+        {
+          guint32 array_len;
+          goffset offset;
+          goffset target;
+          const GVariantType *element_type;
+          GVariantBuilder builder;
 
-        if (just_align)
-          {
-            array_len = 0;
-          }
-        else
-          {
-            array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
-            if (local_error != NULL)
-              goto fail;
+          array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
+          if (local_error != NULL)
+            goto fail;
 
-            is_leaf = FALSE;
+          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
-            g_print (": array spans 0x%04x bytes\n", array_len);
+          g_print (": array spans 0x%04x bytes\n", array_len);
 #endif /* DEBUG_SERIALIZER */
 
-            if (array_len > (2<<26))
-              {
-                /* G_GUINT32_FORMAT doesn't work with gettext, so use u */
-                g_set_error (&local_error,
-                             G_IO_ERROR,
-                             G_IO_ERROR_INVALID_ARGUMENT,
-                             g_dngettext (GETTEXT_PACKAGE,
-                                          "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB).",
-                                          "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB).",
-                                          array_len),
-                             array_len);
-                goto fail;
-              }
-          }
+          if (array_len > (2<<26))
+            {
+              /* G_GUINT32_FORMAT doesn't work with gettext, so use u */
+              g_set_error (&local_error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           g_dngettext (GETTEXT_PACKAGE,
+                                        "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB).",
+                                        "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB).",
+                                        array_len),
+                           array_len);
+              goto fail;
+            }
 
-        g_variant_builder_init (&builder, type);
-        element_type = g_variant_type_element (type);
+          g_variant_builder_init (&builder, type);
+          element_type = g_variant_type_element (type);
 
-        if (array_len == 0)
-          {
-            GVariant *item;
-            item = parse_value_from_blob (mis,
-                                          dis,
-                                          element_type,
-                                          TRUE,
-                                          indent + 2,
-                                          NULL);
-            g_assert (item == NULL);
-          }
-        else
-          {
-            /* TODO: optimize array of primitive types */
-            offset = g_seekable_tell (G_SEEKABLE (mis));
-            target = offset + array_len;
-            while (offset < target)
-              {
-                GVariant *item;
-                item = parse_value_from_blob (mis,
-                                              dis,
-                                              element_type,
-                                              FALSE,
-                                              indent + 2,
-                                              &local_error);
-                if (item == NULL)
-                  {
-                    g_variant_builder_clear (&builder);
-                    goto fail;
-                  }
-                g_variant_builder_add_value (&builder, item);
-                g_variant_unref (item);
-                offset = g_seekable_tell (G_SEEKABLE (mis));
-              }
-          }
+          if (array_len == 0)
+            {
+              GVariant *item;
+              item = parse_value_from_blob (mis,
+                                            dis,
+                                            element_type,
+                                            TRUE,
+                                            indent + 2,
+                                            NULL);
+              g_assert (item == NULL);
+            }
+          else
+            {
+              /* TODO: optimize array of primitive types */
+              offset = g_seekable_tell (G_SEEKABLE (mis));
+              target = offset + array_len;
+              while (offset < target)
+                {
+                  GVariant *item;
+                  item = parse_value_from_blob (mis,
+                                                dis,
+                                                element_type,
+                                                FALSE,
+                                                indent + 2,
+                                                &local_error);
+                  if (item == NULL)
+                    {
+                      g_variant_builder_clear (&builder);
+                      goto fail;
+                    }
+                  g_variant_builder_add_value (&builder, item);
+                  g_variant_unref (item);
+                  offset = g_seekable_tell (G_SEEKABLE (mis));
+                }
+            }
 
-        if (!just_align)
-          {
-            ret = g_variant_builder_end (&builder);
-          }
-        else
-          {
-            g_variant_builder_clear (&builder);
-          }
-      }
+          ret = g_variant_builder_end (&builder);
+        }
       break;
 
     default:
