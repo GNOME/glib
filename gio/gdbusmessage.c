@@ -1066,12 +1066,12 @@ parse_value_from_blob (GMemoryInputStream    *mis,
   type_string = g_variant_type_peek_string (type);
 
 #ifdef DEBUG_SERIALIZER
-  if (!just_align)
     {
       gchar *s;
       s = g_variant_type_dup_string (type);
-      g_print ("%*sReading type %s from offset 0x%04x",
+      g_print ("%*s%s type %s from offset 0x%04x",
                indent, "",
+               just_align ? "Aligning" : "Reading",
                s,
                (gint) g_seekable_tell (G_SEEKABLE (mis)));
       g_free (s);
