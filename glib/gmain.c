@@ -191,7 +191,8 @@ typedef struct _GSourceCallback GSourceCallback;
 typedef enum
 {
   G_SOURCE_READY = 1 << G_HOOK_FLAG_USER_SHIFT,
-  G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1)
+  G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1),
+  G_SOURCE_BLOCKED = 1 << (G_HOOK_FLAG_USER_SHIFT + 2)
 } GSourceFlags;
 
 typedef struct _GMainWaiter GMainWaiter;
@@ -313,8 +314,7 @@ struct _GSourcePrivate
 #define G_THREAD_SELF g_thread_self ()
 
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
-#define SOURCE_BLOCKED(source) (((source)->flags & G_HOOK_FLAG_IN_CALL) != 0 && \
-		                ((source)->flags & G_SOURCE_CAN_RECURSE) == 0)
+#define SOURCE_BLOCKED(source) (((source)->flags & G_SOURCE_BLOCKED) != 0)
 
 #define SOURCE_UNREF(source, context)                       \
    G_STMT_START {                                           \
@@ -2426,11 +2426,23 @@ block_source (GSource *source)
 
   g_return_if_fail (!SOURCE_BLOCKED (source));
 
+  source->flags |= G_SOURCE_BLOCKED;
+
   tmp_list = source->poll_fds;
   while (tmp_list)
     {
       g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
       tmp_list = tmp_list->next;
+    }
+
+  if (source->priv && source->priv->child_sources)
+    {
+      tmp_list = source->priv->child_sources;
+      while (tmp_list)
+	{
+	  block_source (tmp_list->data);
+	  tmp_list = tmp_list->next;
+	}
     }
 }
 
@@ -2440,14 +2452,26 @@ unblock_source (GSource *source)
 {
   GSList *tmp_list;
   
-  g_return_if_fail (!SOURCE_BLOCKED (source)); /* Source already unblocked */
+  g_return_if_fail (SOURCE_BLOCKED (source)); /* Source already unblocked */
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
+  source->flags &= ~G_SOURCE_BLOCKED;
+
   tmp_list = source->poll_fds;
   while (tmp_list)
     {
       g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
       tmp_list = tmp_list->next;
+    }
+
+  if (source->priv && source->priv->child_sources)
+    {
+      tmp_list = source->priv->child_sources;
+      while (tmp_list)
+	{
+	  unblock_source (tmp_list->data);
+	  tmp_list = tmp_list->next;
+	}
     }
 }
 
@@ -2527,8 +2551,7 @@ g_main_dispatch (GMainContext *context)
 	  if (!was_in_call)
 	    source->flags &= ~G_HOOK_FLAG_IN_CALL;
 
-	  if ((source->flags & G_SOURCE_CAN_RECURSE) == 0 &&
-	      !SOURCE_DESTROYED (source))
+	  if (SOURCE_BLOCKED (source) && !SOURCE_DESTROYED (source))
 	    unblock_source (source);
 	  
 	  /* Note: this depends on the fact that we can't switch
