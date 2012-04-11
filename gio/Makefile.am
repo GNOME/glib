@@ -455,10 +455,6 @@ libgio_2_0_la_LIBADD = \
 
 libgio_2_0_la_CPPFLAGS = $(ZLIB_CFLAGS) $(AM_CPPFLAGS)
 
-if OS_CARBON
-libgio_2_0_la_CFLAGS = -xobjective-c
-endif
-
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
@@ -491,6 +487,13 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
+
+# This condition is misnamed.  It's really checking for Cocoa, not Carbon
+if OS_CARBON
+# This is dumb.  The ObjC source file should be properly named .m
+libgio_2_0_la_CFLAGS = -xobjective-c
+libgio_2_0_la_LDFLAGS += -framework Foundation
+endif
 
 libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
 
