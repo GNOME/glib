@@ -1367,6 +1367,9 @@ g_source_set_priority_unlocked (GSource      *source,
 {
   GSList *tmp_list;
   
+  g_return_if_fail (source->priv->parent_source == NULL ||
+		    source->priv->parent_source->priority == priority);
+
   source->priority = priority;
 
   if (context)
