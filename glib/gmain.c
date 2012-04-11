@@ -195,6 +195,14 @@ typedef enum
   G_SOURCE_BLOCKED = 1 << (G_HOOK_FLAG_USER_SHIFT + 2)
 } GSourceFlags;
 
+typedef struct _GSourceList GSourceList;
+
+struct _GSourceList
+{
+  GSource *head, *tail;
+  gint priority;
+};
+
 typedef struct _GMainWaiter GMainWaiter;
 
 struct _GMainWaiter
@@ -232,7 +240,7 @@ struct _GMainContext
   gint timeout;			/* Timeout for current iteration */
 
   guint next_id;
-  GSource *source_list;
+  GList *source_lists;
   gint in_check_or_prepare;
 
   GPollRec *poll_records, *poll_records_tail;
@@ -313,6 +321,7 @@ typedef struct _GSourceIter
 {
   GMainContext *context;
   gboolean may_modify;
+  GList *current_list;
   GSource *source;
 } GSourceIter;
 
@@ -551,7 +560,7 @@ g_main_context_new (void)
 
   context->next_id = 1;
   
-  context->source_list = NULL;
+  context->source_lists = NULL;
   
   context->poll_func = g_poll;
   
@@ -823,6 +832,7 @@ g_source_iter_init (GSourceIter  *iter,
 		    gboolean      may_modify)
 {
   iter->context = context;
+  iter->current_list = NULL;
   iter->source = NULL;
   iter->may_modify = may_modify;
 }
@@ -834,14 +844,33 @@ g_source_iter_next (GSourceIter *iter, GSource **source)
   GSource *next_source;
 
   if (iter->source)
-    {
-      next_source = iter->source->next;
-      if (iter->may_modify)
-	SOURCE_UNREF (iter->source, iter->context);
-    }
+    next_source = iter->source->next;
   else
-    next_source = iter->context->source_list;
+    next_source = NULL;
 
+  if (!next_source)
+    {
+      if (iter->current_list)
+	iter->current_list = iter->current_list->next;
+      else
+	iter->current_list = iter->context->source_lists;
+
+      if (iter->current_list)
+	{
+	  GSourceList *source_list = iter->current_list->data;
+
+	  next_source = source_list->head;
+	}
+    }
+
+  /* Note: unreffing iter->source could potentially cause its
+   * GSourceList to be removed from source_lists (if iter->source is
+   * the only source in its list, and it is destroyed), so we have to
+   * keep it reffed until after we advance iter->current_list, above.
+   */
+
+  if (iter->source && iter->may_modify)
+    SOURCE_UNREF (iter->source, iter->context);
   iter->source = next_source;
   if (iter->source && iter->may_modify)
     iter->source->ref_count++;
@@ -865,56 +894,121 @@ g_source_iter_clear (GSourceIter *iter)
 
 /* Holds context's lock
  */
-static void
-g_source_list_add (GSource      *source,
-		   GMainContext *context)
+static GSourceList *
+find_source_list_for_priority (GMainContext *context,
+			       gint          priority,
+			       gboolean      create)
 {
+  GList *iter, *last;
+  GSourceList *source_list;
+
+  last = NULL;
+  for (iter = context->source_lists; iter != NULL; last = iter, iter = iter->next)
+    {
+      source_list = iter->data;
+
+      if (source_list->priority == priority)
+	return source_list;
+
+      if (source_list->priority > priority)
+	{
+	  if (!create)
+	    return NULL;
+
+	  source_list = g_slice_new0 (GSourceList);
+	  source_list->priority = priority;
+	  context->source_lists = g_list_insert_before (context->source_lists,
+							iter,
+							source_list);
+	  return source_list;
+	}
+    }
+
+  if (!create)
+    return NULL;
+
+  source_list = g_slice_new0 (GSourceList);
+  source_list->priority = priority;
+
+  if (!last)
+    context->source_lists = g_list_append (NULL, source_list);
+  else
+    {
+      /* This just appends source_list to the end of
+       * context->source_lists without having to walk the list again.
+       */
+      last = g_list_append (last, source_list);
+    }
+  return source_list;
+}
+
+/* Holds context's lock
+ */
+static void
+source_add_to_context (GSource      *source,
+		       GMainContext *context)
+{
+  GSourceList *source_list;
   GSource *prev, *next;
-  
+
+  source_list = find_source_list_for_priority (context, source->priority, TRUE);
+
   if (source->priv->parent_source)
     {
+      g_assert (source_list->head != NULL);
+
       /* Put the source immediately before its parent */
       prev = source->priv->parent_source->prev;
       next = source->priv->parent_source;
     }
   else
     {
-      prev = NULL;
-      next = context->source_list;
-      while (next && next->priority <= source->priority)
-	{
-	  prev = next;
-	  next = next->next;
-	}
+      prev = source_list->tail;
+      next = NULL;
     }
 
   source->next = next;
   if (next)
     next->prev = source;
+  else
+    source_list->tail = source;
   
   source->prev = prev;
   if (prev)
     prev->next = source;
   else
-    context->source_list = source;
+    source_list->head = source;
 }
 
 /* Holds context's lock
  */
 static void
-g_source_list_remove (GSource      *source,
-		      GMainContext *context)
+source_remove_from_context (GSource      *source,
+			    GMainContext *context)
 {
+  GSourceList *source_list;
+
+  source_list = find_source_list_for_priority (context, source->priority, FALSE);
+  g_return_if_fail (source_list != NULL);
+
   if (source->prev)
     source->prev->next = source->next;
   else
-    context->source_list = source->next;
+    source_list->head = source->next;
 
   if (source->next)
     source->next->prev = source->prev;
+  else
+    source_list->tail = source->prev;
 
   source->prev = NULL;
   source->next = NULL;
+
+  if (source_list->head == NULL)
+    {
+      context->source_lists = g_list_remove (context->source_lists, source_list);
+      g_slice_free (GSourceList, source_list);
+    }
 }
 
 static guint
@@ -928,7 +1022,7 @@ g_source_attach_unlocked (GSource      *source,
   result = source->source_id = context->next_id++;
 
   source->ref_count++;
-  g_source_list_add (source, context);
+  source_add_to_context (source, context);
 
   tmp_list = source->poll_fds;
   while (tmp_list)
@@ -1429,15 +1523,19 @@ g_source_set_priority_unlocked (GSource      *source,
   g_return_if_fail (source->priv->parent_source == NULL ||
 		    source->priv->parent_source->priority == priority);
 
+  if (context)
+    {
+      /* Remove the source from the context's source and then
+       * add it back after so it is sorted in the correct place
+       */
+      source_remove_from_context (source, source->context);
+    }
+
   source->priority = priority;
 
   if (context)
     {
-      /* Remove the source from the context's source and then
-       * add it back so it is sorted in the correct place
-       */
-      g_source_list_remove (source, source->context);
-      g_source_list_add (source, source->context);
+      source_add_to_context (source, source->context);
 
       if (!SOURCE_BLOCKED (source))
 	{
@@ -1693,7 +1791,7 @@ g_source_unref_internal (GSource      *source,
 	{
 	  if (!SOURCE_DESTROYED (source))
 	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
-	  g_source_list_remove (source, context);
+	  source_remove_from_context (source, context);
 	}
 
       if (source->source_funcs->finalize)
