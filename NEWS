@@ -1,3 +1,38 @@
+Overview of changes from GLib 2.32.0 to 2.32.1
+==============================================
+
+* Bugs fixed:
+ 670254 glib-2.30.2: Fails /GDateTime/new_from_unix test
+ 672541 glib-compile-resources prepends --sourcedir to absolute paths
+ 673139 URL to mailing lists in README incorrect
+ 673174 g_input_stream_read[_finish]: document returning 0 on EOF
+ 673191 glib/gchecksum.c warning: dereferencing type-punned pointer...
+ 673216 [W32] gtestutils does not use path separators consistently
+ 673439 Properly deprecate g_value_{set,get}_char
+ 673612 Fails to decode dictionaries wrapped in two layers of array
+ 673803 gclosure: Support return values of GVariants
+
+* Updated translations:
+ Belarusian
+ Bulgarian
+ Catalan
+ Czech
+ Hebrew
+ Hindi
+ Hungarian
+ Italian
+ Kannada
+ Latvian
+ Lithuanian
+ Marathi
+ Odia
+ Polish
+ Serbian
+ Slovenian
+ Spanish
+ Swedish
+ Telugu
+
 Overview of changes from GLib 2.31.22 to 2.32.0
 ===============================================
 
