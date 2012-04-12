@@ -570,7 +570,9 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
       goto out;
     }
 
-  if (g_unix_credentials_message_is_supported ())
+  if (g_unix_credentials_message_is_supported () &&
+      /* Fall back on get_credentials if the other side didn't send the credentials */
+      nscm > 0)
     {
       if (nscm != 1)
         {
