@@ -144,6 +144,13 @@ g_unix_credentials_message_deserialize (gint     level,
 
     ucred = data;
 
+    if (ucred->uid == (uid_t)-1 &&
+	ucred->gid == (gid_t)-1)
+      {
+	/* This happens if the remote side didn't pass the credentials */
+	goto out;
+      }
+
     credentials = g_credentials_new ();
     g_credentials_set_native (credentials, G_CREDENTIALS_TYPE_LINUX_UCRED, ucred);
     message = g_unix_credentials_message_new_with_credentials (credentials);
