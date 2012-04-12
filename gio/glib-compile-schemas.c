@@ -1204,6 +1204,12 @@ parse_state_start_schema (ParseState  *state,
       return;
     }
 
+  if (path && (g_str_has_prefix (path, "/apps/") ||
+               g_str_has_prefix (path, "/desktop/") ||
+               g_str_has_prefix (path, "/system/")))
+    g_printerr ("warning: Schema '%s' has path '%s'.  Paths starting with "
+                "'/apps/', '/desktop/' or '/system/' are deprecated.\n", id, path);
+
   state->schema_state = schema_state_new (path, gettext_domain,
                                           extends, extends_name, list_of);
 
