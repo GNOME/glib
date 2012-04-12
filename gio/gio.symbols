@@ -1203,6 +1203,7 @@ g_dbus_address_get_stream_sync
 g_dbus_auth_observer_get_type
 g_dbus_auth_observer_new
 g_dbus_auth_observer_authorize_authenticated_peer
+g_dbus_auth_observer_allow_mechanism
 g_dbus_connection_get_type
 g_bus_get
 g_bus_get_finish

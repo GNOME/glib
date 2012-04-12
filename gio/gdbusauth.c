@@ -194,17 +194,22 @@ mechanism_free (Mechanism *m)
 }
 
 static void
-add_mechanism (GDBusAuth *auth,
-               GType      mechanism_type)
+add_mechanism (GDBusAuth         *auth,
+               GDBusAuthObserver *observer,
+               GType              mechanism_type)
 {
-  Mechanism *m;
+  const gchar *name;
 
-  m = g_new0 (Mechanism, 1);
-  m->name = _g_dbus_auth_mechanism_get_name (mechanism_type);
-  m->priority = _g_dbus_auth_mechanism_get_priority (mechanism_type);
-  m->gtype = mechanism_type;
-
-  auth->priv->available_mechanisms = g_list_prepend (auth->priv->available_mechanisms, m);
+  name = _g_dbus_auth_mechanism_get_name (mechanism_type);
+  if (g_dbus_auth_observer_allow_mechanism (observer, name))
+    {
+      Mechanism *m;
+      m = g_new0 (Mechanism, 1);
+      m->name = name;
+      m->priority = _g_dbus_auth_mechanism_get_priority (mechanism_type);
+      m->gtype = mechanism_type;
+      auth->priv->available_mechanisms = g_list_prepend (auth->priv->available_mechanisms, m);
+    }
 }
 
 static gint
@@ -223,10 +228,16 @@ _g_dbus_auth_init (GDBusAuth *auth)
 {
   auth->priv = G_TYPE_INSTANCE_GET_PRIVATE (auth, G_TYPE_DBUS_AUTH, GDBusAuthPrivate);
 
+}
+
+static void
+_g_dbus_auth_add_mechs (GDBusAuth         *auth,
+                        GDBusAuthObserver *observer)
+{
   /* TODO: trawl extension points */
-  add_mechanism (auth, G_TYPE_DBUS_AUTH_MECHANISM_ANON);
-  add_mechanism (auth, G_TYPE_DBUS_AUTH_MECHANISM_SHA1);
-  add_mechanism (auth, G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL);
+  add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_ANON);
+  add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_SHA1);
+  add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL);
 
   auth->priv->available_mechanisms = g_list_sort (auth->priv->available_mechanisms,
                                                   (GCompareFunc) mech_compare_func);
@@ -576,6 +587,7 @@ typedef enum
 
 gchar *
 _g_dbus_auth_run_client (GDBusAuth     *auth,
+                         GDBusAuthObserver     *observer,
                          GDBusCapabilityFlags offered_capabilities,
                          GDBusCapabilityFlags *out_negotiated_capabilities,
                          GCancellable  *cancellable,
@@ -595,6 +607,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
   GDBusCapabilityFlags negotiated_capabilities;
 
   debug_print ("CLIENT: initiating");
+
+  _g_dbus_auth_add_mechs (auth, observer);
 
   ret_guid = NULL;
   supported_auth_mechs = NULL;
@@ -961,6 +975,8 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
   GCredentials *credentials;
 
   debug_print ("SERVER: initiating");
+
+  _g_dbus_auth_add_mechs (auth, observer);
 
   ret = FALSE;
   dis = NULL;

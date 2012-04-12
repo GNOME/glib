@@ -2493,6 +2493,7 @@ g_dbus_gvariant_to_gvalue
 GDBusAuthObserver
 g_dbus_auth_observer_new
 g_dbus_auth_observer_authorize_authenticated_peer
+g_dbus_auth_observer_allow_mechanism
 <SUBSECTION Standard>
 G_DBUS_AUTH_OBSERVER
 G_IS_DBUS_AUTH_OBSERVER

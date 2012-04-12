@@ -41,6 +41,9 @@ gboolean           g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthO
                                                                       GIOStream          *stream,
                                                                       GCredentials       *credentials);
 
+gboolean           g_dbus_auth_observer_allow_mechanism (GDBusAuthObserver  *observer,
+                                                         const gchar        *mechanism);
+
 G_END_DECLS
 
 #endif /* _G_DBUS_AUTH_OBSERVER_H__ */

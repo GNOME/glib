@@ -89,6 +89,9 @@ struct _GDBusAuthObserverClass
   gboolean (*authorize_authenticated_peer) (GDBusAuthObserver  *observer,
                                             GIOStream          *stream,
                                             GCredentials       *credentials);
+
+  gboolean (*allow_mechanism) (GDBusAuthObserver  *observer,
+                               const gchar        *mechanism);
 };
 
 /**
@@ -107,6 +110,7 @@ struct _GDBusAuthObserver
 enum
 {
   AUTHORIZE_AUTHENTICATED_PEER_SIGNAL,
+  ALLOW_MECHANISM_SIGNAL,
   LAST_SIGNAL,
 };
 
@@ -130,6 +134,13 @@ g_dbus_auth_observer_authorize_authenticated_peer_real (GDBusAuthObserver  *obse
   return TRUE;
 }
 
+static gboolean
+g_dbus_auth_observer_allow_mechanism_real (GDBusAuthObserver  *observer,
+                                           const gchar        *mechanism)
+{
+  return TRUE;
+}
+
 static void
 g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
 {
@@ -138,6 +149,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
   gobject_class->finalize = g_dbus_auth_observer_finalize;
 
   klass->authorize_authenticated_peer = g_dbus_auth_observer_authorize_authenticated_peer_real;
+  klass->allow_mechanism = g_dbus_auth_observer_allow_mechanism_real;
 
   /**
    * GDBusAuthObserver::authorize-authenticated-peer:
@@ -164,6 +176,29 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   2,
                   G_TYPE_IO_STREAM,
                   G_TYPE_CREDENTIALS);
+
+  /**
+   * GDBusAuthObserver::allow-mechanism:
+   * @observer: The #GDBusAuthObserver emitting the signal.
+   * @mechanism: The name of the mechanism, e.g. <literal>DBUS_COOKIE_SHA1</literal>.
+   *
+   * Emitted to check if @mechanism is allowed to be used.
+   *
+   * Returns: %TRUE if @mechanism can be used to authenticate the other peer, %FALSE if not.
+   *
+   * Since: 2.34
+   */
+  signals[ALLOW_MECHANISM_SIGNAL] =
+    g_signal_new ("allow-mechanism",
+                  G_TYPE_DBUS_AUTH_OBSERVER,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GDBusAuthObserverClass, allow_mechanism),
+                  _g_signal_accumulator_false_handled,
+                  NULL, /* accu_data */
+                  NULL,
+                  G_TYPE_BOOLEAN,
+                  1,
+                  G_TYPE_STRING);
 }
 
 static void
@@ -216,3 +251,30 @@ g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
                  &denied);
   return denied;
 }
+
+/**
+ * g_dbus_auth_observer_allow_mechanism:
+ * @observer: A #GDBusAuthObserver.
+ * @mechanism: The name of the mechanism, e.g. <literal>DBUS_COOKIE_SHA1</literal>.
+ *
+ * Emits the #GDBusAuthObserver::allow-mechanism signal on @observer.
+ *
+ * Returns: %TRUE if @mechanism can be used to authenticate the other peer, %FALSE if not.
+ *
+ * Since: 2.34
+ */
+gboolean
+g_dbus_auth_observer_allow_mechanism (GDBusAuthObserver  *observer,
+                                      const gchar        *mechanism)
+{
+  gboolean ret;
+
+  ret = FALSE;
+  g_signal_emit (observer,
+                 signals[ALLOW_MECHANISM_SIGNAL],
+                 0,
+                 mechanism,
+                 &ret);
+  return ret;
+}
+
