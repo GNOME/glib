@@ -2568,7 +2568,7 @@ dnl ******************************************************************
 
 AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
 
-if test $cross_compiling = yes; then
+if test $cross_compiling = yes && test x$enable_modular_tests = xyes; then
   AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
   if test x$GLIB_GENMARSHAL = xno; then
     AC_MSG_ERROR(Could not find a glib-genmarshal in your PATH)
