@@ -124,9 +124,7 @@ settings_sources += \
 	gregistrysettingsbackend.c
 endif
 
-if OS_CARBON
-AM_CPPFLAGS += -DG_OS_CARBON
-
+if OS_COCOA
 settings_sources += \
 	gnextstepsettingsbackend.c
 endif
@@ -488,8 +486,7 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)
 
-# This condition is misnamed.  It's really checking for Cocoa, not Carbon
-if OS_CARBON
+if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
 libgio_2_0_la_CFLAGS = -xobjective-c
 libgio_2_0_la_LDFLAGS += -framework Foundation

@@ -175,11 +175,20 @@ AC_TRY_CPP([
 
 AC_MSG_RESULT([$glib_have_carbon])
 
+glib_have_cocoa=no
+AC_MSG_CHECKING([for Mac OS X Cocoa support])
+AC_TRY_CPP([
+#include <Foundation/Foundation.h>
+], glib_have_cocoa=yes)
+
+AC_MSG_RESULT([$glib_have_cocoa])
+
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AM_CONDITIONAL(OS_WIN32_X64, [test "$LIB_EXE_MACHINE_FLAG" = "X64"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
 AM_CONDITIONAL(OS_LINUX, [test "$glib_os_linux" = "yes"])
 AM_CONDITIONAL(OS_CARBON, [test "$glib_have_carbon" = "yes"])
+AM_CONDITIONAL(OS_COCOA, [test "$glib_have_cocoa" = "yes"])
 
 if test "$glib_native_win32" = "yes"; then
   AC_CHECK_TOOL(WINDRES, windres, no)
@@ -208,6 +217,11 @@ AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
 if test "x$glib_have_carbon" = "xyes"; then
   AC_DEFINE(HAVE_CARBON, 1, [define to 1 if Carbon is available])
   LDFLAGS="$LDFLAGS -framework Carbon"
+fi
+
+if test "x$glib_have_cocoa" = "xyes"; then
+  AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
+  LDFLAGS="$LDFLAGS -framework Foundation"
 fi
 
 gl_GLIBC21
