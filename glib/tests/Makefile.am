@@ -300,7 +300,8 @@ EXTRA_DIST += \
 	keyfiletest.ini		\
 	pages.ini		\
 	bookmarks.xbel		\
-	empty
+	empty			\
+	echo-script
 
 dist-hook:
 	mkdir $(distdir)/markups;		\
