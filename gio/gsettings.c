@@ -69,6 +69,14 @@
  * useful e.g. when the schema describes an 'account', and you want to be
  * able to store a arbitrary number of accounts.
  *
+ * Paths must start with and end with a forward slash character ('/')
+ * and must not contain two sequential slash characters.  Paths should
+ * be chosen based on a domain name associated with the program or
+ * library to which the settings belong.  Examples of paths are
+ * "/org/gtk/settings/file-chooser/" and "/ca/desrt/dconf-editor/".
+ * Paths should not start with "/apps/", "/desktop/" or "/system/" as
+ * they often did in GConf.
+ *
  * Unlike other configuration systems (like GConf), GSettings does not
  * restrict keys to basic types like strings and numbers. GSettings stores
  * values as #GVariant, and allows any #GVariantType for keys. Key names
@@ -114,7 +122,7 @@
  * <example id="schema-default-values"><title>Default values</title>
  * <programlisting><![CDATA[
  * <schemalist>
- *   <schema id="org.gtk.Test" path="/tests/" gettext-domain="test">
+ *   <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
  *
  *     <key name="greeting" type="s">
  *       <default l10n="messages">"Hello, earthlings"</default>
