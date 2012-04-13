@@ -60,7 +60,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * simple (no need to check for things like I/O errors or locate the files in the filesystem). It
  * also makes it easier to create relocatable applications.
  *
- * Resource files can also be marked as compresses. Such files will be included in the resource bundle
+ * Resource files can also be marked as compressed. Such files will be included in the resource bundle
  * in a compressed form, but will be automatically uncompressed when the resource is used. This
  * is very useful e.g. for larger text files that are parsed once (or rarely) and then thrown away.
  *
