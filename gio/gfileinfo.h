@@ -800,11 +800,11 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * A key in the "trash" namespace.  When requested against
  * items in "trash:///", will return the original path to the file before it
  * was trashed. Corresponding #GFileAttributeType is
- * %G_FILE_ATTRIBUTE_TYPE_STRING.
+ * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  *
  * Since: 2.24.
  **/
-#define G_FILE_ATTRIBUTE_TRASH_ORIG_PATH "trash::orig-path"     /* string */
+#define G_FILE_ATTRIBUTE_TRASH_ORIG_PATH "trash::orig-path"     /* byte string */
 
 /**
  * G_FILE_ATTRIBUTE_TRASH_DELETION_DATE:
