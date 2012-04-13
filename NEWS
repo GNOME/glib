@@ -11,20 +11,28 @@ Overview of changes from GLib 2.32.0 to 2.32.1
  673439 Properly deprecate g_value_{set,get}_char
  673612 Fails to decode dictionaries wrapped in two layers of array
  673803 gclosure: Support return values of GVariants
+ 669285 glib/tests/markup-parse fails under non-english locale
+ 673911 gio-2.0.pc lists full path to executables, breaking cross com..
+ 673762 gnextstepsettingsbackend.c:343: error: parse error before 'in'
 
 * Updated translations:
  Belarusian
+ British English
  Bulgarian
  Catalan
  Czech
+ French
+ German
  Hebrew
  Hindi
  Hungarian
  Italian
+ Japanese
  Kannada
  Latvian
  Lithuanian
  Marathi
+ Norwegian bokmål
  Odia
  Polish
  Serbian
@@ -32,6 +40,7 @@ Overview of changes from GLib 2.32.0 to 2.32.1
  Spanish
  Swedish
  Telugu
+
 
 Overview of changes from GLib 2.31.22 to 2.32.0
 ===============================================
