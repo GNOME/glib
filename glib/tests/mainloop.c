@@ -61,7 +61,7 @@ test_maincontext_basic (void)
   g_assert (!g_main_context_iteration (ctx, FALSE));
 
   source = g_source_new (&funcs, sizeof (GSource));
-  g_assert (g_source_get_priority (source) == G_PRIORITY_DEFAULT);
+  g_assert_cmpint (g_source_get_priority (source), ==, G_PRIORITY_DEFAULT);
   g_assert (!g_source_is_destroyed (source));
 
   g_assert (!g_source_get_can_recurse (source));
@@ -82,7 +82,7 @@ test_maincontext_basic (void)
   g_assert (g_main_context_find_source_by_id (ctx, id) == source);
 
   g_source_set_priority (source, G_PRIORITY_HIGH);
-  g_assert (g_source_get_priority (source) == G_PRIORITY_HIGH);
+  g_assert_cmpint (g_source_get_priority (source), ==, G_PRIORITY_HIGH);
 
   g_source_destroy (source);
   g_main_context_unref (ctx);
@@ -126,7 +126,7 @@ test_mainloop_basic (void)
 
   g_main_loop_unref (loop);
 
-  g_assert (g_main_depth () == 0);
+  g_assert_cmpint (g_main_depth (), ==, 0);
 
   g_main_loop_unref (loop);
 }
@@ -179,9 +179,9 @@ test_timeouts (void)
 
   g_main_loop_run (loop);
 
-  g_assert (a == 10);
-  g_assert (b == 4);
-  g_assert (c == 3);
+  g_assert_cmpint (a, ==, 10);
+  g_assert_cmpint (b, ==, 4);
+  g_assert_cmpint (c, ==, 3);
 
   g_main_loop_unref (loop);
   g_main_context_unref (ctx);
@@ -212,18 +212,18 @@ test_priorities (void)
 
   g_assert (g_main_context_pending (ctx));
   g_assert (g_main_context_iteration (ctx, FALSE));
-  g_assert (a == 0);
-  g_assert (b == 1);
+  g_assert_cmpint (a, ==, 0);
+  g_assert_cmpint (b, ==, 1);
 
   g_assert (g_main_context_iteration (ctx, FALSE));
-  g_assert (a == 0);
-  g_assert (b == 2);
+  g_assert_cmpint (a, ==, 0);
+  g_assert_cmpint (b, ==, 2);
 
   g_source_destroy (sourceb);
 
   g_assert (g_main_context_iteration (ctx, FALSE));
-  g_assert (a == 1);
-  g_assert (b == 2);
+  g_assert_cmpint (a, ==, 1);
+  g_assert_cmpint (b, ==, 2);
 
   g_assert (g_main_context_pending (ctx));
   g_source_destroy (sourcea);
@@ -282,12 +282,12 @@ test_invoke (void)
 
   /* this one gets invoked directly */
   g_main_context_invoke (NULL, func, g_thread_self ());
-  g_assert (count == 1);
+  g_assert_cmpint (count, ==, 1);
 
   /* invoking out of an idle works too */
   g_idle_add (call_func, NULL);
   g_main_context_iteration (g_main_context_default (), FALSE);
-  g_assert (count == 2);
+  g_assert_cmpint (count, ==, 2);
 
   /* test thread-default forcing the invocation to go
    * to another thread
@@ -298,10 +298,10 @@ test_invoke (void)
   g_usleep (1000); /* give some time to push the thread-default */
 
   g_main_context_invoke (ctx, func, thread);
-  g_assert (count == 2);
+  g_assert_cmpint (count, ==, 2);
 
   g_thread_join (thread);
-  g_assert (count == 3);
+  g_assert_cmpint (count, ==, 3);
 }
 
 int
