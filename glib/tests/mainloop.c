@@ -253,6 +253,9 @@ call_func (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
+static GMutex mutex;
+static GCond cond;
+
 static gpointer
 thread_func (gpointer data)
 {
@@ -260,6 +263,10 @@ thread_func (gpointer data)
   GSource *source;
 
   g_main_context_push_thread_default (ctx);
+
+  g_mutex_lock (&mutex);
+  g_cond_signal (&cond);
+  g_mutex_unlock (&mutex);
 
   source = g_timeout_source_new (500);
   g_source_set_callback (source, (GSourceFunc)g_thread_exit, NULL, NULL);
@@ -293,9 +300,10 @@ test_invoke (void)
    * to another thread
    */
   ctx = g_main_context_new ();
+  g_mutex_lock (&mutex);
   thread = g_thread_new ("worker", thread_func, ctx);
 
-  g_usleep (1000); /* give some time to push the thread-default */
+  g_cond_wait (&cond, &mutex);
 
   g_main_context_invoke (ctx, func, thread);
   g_assert_cmpint (count, ==, 2);
