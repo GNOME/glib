@@ -201,7 +201,7 @@ add_mechanism (GDBusAuth         *auth,
   const gchar *name;
 
   name = _g_dbus_auth_mechanism_get_name (mechanism_type);
-  if (g_dbus_auth_observer_allow_mechanism (observer, name))
+  if (observer == NULL || g_dbus_auth_observer_allow_mechanism (observer, name))
     {
       Mechanism *m;
       m = g_new0 (Mechanism, 1);
