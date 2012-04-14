@@ -58,7 +58,6 @@ TEST_PROGS +=	 		\
 	vfs			\
 	network-monitor		\
 	fileattributematcher	\
-	gmenumodel		\
 	resources		\
 	$(NULL)
 
@@ -82,6 +81,7 @@ TEST_PROGS +=			\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-bz627724		\
+	gmenumodel		\
 	appinfo			\
 	contenttype		\
 	mimeapps		\
