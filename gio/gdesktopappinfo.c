@@ -108,6 +108,7 @@ struct _GDesktopAppInfo
   char *path;
   char *categories;
   char *startup_wm_class;
+  char **mime_types;
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -187,6 +188,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->path);
   g_free (info->categories);
   g_free (info->startup_wm_class);
+  g_strfreev (info->mime_types);
   
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -333,6 +335,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->hidden = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL) != FALSE;
   info->categories = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_CATEGORIES, NULL);
   info->startup_wm_class = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, STARTUP_WM_CLASS_KEY, NULL);
+  info->mime_types = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   
   info->icon = NULL;
   if (info->icon_name)
@@ -1981,6 +1984,15 @@ g_desktop_app_info_remove_supports_type (GAppInfo    *appinfo,
                                error);
 }
 
+static const char **
+g_desktop_app_info_get_supported_types (GAppInfo *appinfo)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+
+  return (const char**) info->mime_types;
+}
+
+
 static gboolean
 g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
 				 GError          **error)
@@ -2202,6 +2214,7 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->get_commandline = g_desktop_app_info_get_commandline;
   iface->get_display_name = g_desktop_app_info_get_display_name;
   iface->set_as_last_used_for_type = g_desktop_app_info_set_as_last_used_for_type;
+  iface->get_supported_types = g_desktop_app_info_get_supported_types;
 }
 
 static gboolean

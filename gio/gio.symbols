@@ -56,6 +56,7 @@ g_app_info_get_description
 g_app_info_get_executable
 g_app_info_get_commandline
 g_app_info_get_icon
+g_app_info_get_supported_types
 g_app_info_launch
 g_app_info_supports_uris
 g_app_info_supports_files

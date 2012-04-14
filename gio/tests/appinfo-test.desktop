@@ -10,3 +10,4 @@ Exec=./appinfo-test --option
 Icon=testicon
 StartupNotify=true
 StartupWMClass=appinfo-class
+MimeType=image/png;image/jpeg;

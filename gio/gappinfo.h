@@ -132,6 +132,7 @@ struct _GAppInfoIface
   gboolean     (* set_as_last_used_for_type)    (GAppInfo           *appinfo,
                                                  const char         *content_type,
                                                  GError            **error);
+  const char ** (* get_supported_types)         (GAppInfo           *appinfo);
 };
 
 GType       g_app_info_get_type                     (void) G_GNUC_CONST;
@@ -174,6 +175,9 @@ gboolean    g_app_info_can_remove_supports_type     (GAppInfo             *appin
 gboolean    g_app_info_remove_supports_type         (GAppInfo             *appinfo,
                                                      const char           *content_type,
                                                      GError              **error);
+GLIB_AVAILABLE_IN_2_34
+const char **g_app_info_get_supported_types         (GAppInfo             *appinfo);
+
 gboolean    g_app_info_can_delete                   (GAppInfo   *appinfo);
 gboolean    g_app_info_delete                       (GAppInfo   *appinfo);
 

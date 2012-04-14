@@ -287,6 +287,21 @@ test_startup_wm_class (void)
   g_object_unref (appinfo);
 }
 
+static void
+test_supported_types (void)
+{
+  GAppInfo *appinfo;
+  const char * const *content_types;
+
+  appinfo = G_APP_INFO (g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop"));
+  content_types = g_app_info_get_supported_types (appinfo);
+
+  g_assert_cmpint (g_strv_length ((char**)content_types), ==, 2);
+  g_assert_cmpstr (content_types[0], ==, "image/png");
+
+  g_object_unref (appinfo);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -303,6 +318,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/associations", test_associations);
   g_test_add_func ("/appinfo/environment", test_environment);
   g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
+  g_test_add_func ("/appinfo/supported-types", test_supported_types);
 
   return g_test_run ();
 }

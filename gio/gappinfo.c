@@ -458,6 +458,37 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
   return FALSE;
 }
 
+/**
+ * g_app_info_get_supported_types:
+ * @info: a #GAppInfo that can handle files
+ *
+ * Retrieves the list of content types that @app_info claims to support.
+ * If this information is not provided by the environment, this function
+ * will return %NULL.
+ * This function does not take in consideration associations added with
+ * g_app_info_add_supports_type(), but only those exported directly by
+ * the application.
+ *
+ * Returns: (transfer none) (array zero-terminated=1) (element-type utf8):
+ *    a list of content types.
+ *
+ * Since: 2.34
+ */
+const char **
+g_app_info_get_supported_types (GAppInfo *appinfo)
+{
+  GAppInfoIface *iface;
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), NULL);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->get_supported_types)
+    return iface->get_supported_types (appinfo);
+  else
+    return NULL;
+}
+
 
 /**
  * g_app_info_get_icon:
