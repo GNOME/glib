@@ -1828,7 +1828,7 @@ if test $have_libelf = maybe; then
 
   if test $have_libelf != no; then
     LIBELF_LIBS=-lelf
-    have_libelf = yes
+    have_libelf=yes
   fi
 fi
 
