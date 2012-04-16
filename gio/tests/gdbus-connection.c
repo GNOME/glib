@@ -619,18 +619,6 @@ test_connection_signals (void)
   count_name_owner_changed = 0;
 
   /*
-   * Bring up two other connections
-   */
-  c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c2 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c2));
-  g_assert_cmpstr (g_dbus_connection_get_unique_name (c2), ==, ":1.2");
-  c3 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c3 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c3));
-  g_assert_cmpstr (g_dbus_connection_get_unique_name (c3), ==, ":1.3");
-
-  /*
    * Make c2 emit "Foo" - we should catch it twice
    *
    * Note that there is no way to be sure that the signal subscriptions
@@ -655,6 +643,19 @@ test_connection_signals (void)
   g_assert_no_error (error);
   g_assert (result != NULL);
   g_variant_unref (result);
+
+  /*
+   * Bring up two other connections
+   */
+  c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (c2 != NULL);
+  g_assert (!g_dbus_connection_is_closed (c2));
+  g_assert_cmpstr (g_dbus_connection_get_unique_name (c2), ==, ":1.2");
+  c3 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (c3 != NULL);
+  g_assert (!g_dbus_connection_is_closed (c3));
+  g_assert_cmpstr (g_dbus_connection_get_unique_name (c3), ==, ":1.3");
+
   /* now, emit the signal on c2 */
   ret = g_dbus_connection_emit_signal (c2,
                                        NULL, /* destination bus name */
