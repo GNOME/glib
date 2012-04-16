@@ -179,6 +179,9 @@ glib_have_cocoa=no
 AC_MSG_CHECKING([for Mac OS X Cocoa support])
 AC_TRY_CPP([
 #include <Cocoa/Cocoa.h>
+#ifdef GNUSTEP_BASE_VERSION
+#error "Detected GNUstep, not Cocoa"
+#endif
 ], glib_have_cocoa=yes)
 
 AC_MSG_RESULT([$glib_have_cocoa])
