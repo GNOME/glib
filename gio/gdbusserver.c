@@ -32,6 +32,7 @@
 #include <io.h>
 #endif
 
+#include <glib/gstdio.h>
 #include "giotypes.h"
 #include "gioerror.h"
 #include "gdbusaddress.h"
@@ -655,6 +656,13 @@ try_unix (GDBusServer  *server,
 
   if (path != NULL)
     {
+      struct stat sb;
+
+      /* This is what libdbus does in _dbus_listen_unix_socket, so we do it too */
+      if (g_stat (path, &sb) == 0 &&
+	  S_ISSOCK (sb.st_mode))
+	unlink (path);
+
       address = g_unix_socket_address_new (path);
     }
   else if (tmpdir != NULL)
@@ -675,7 +683,17 @@ try_unix (GDBusServer  *server,
                                                        -1,
                                                        G_UNIX_SOCKET_ADDRESS_ABSTRACT);
       else
-        address = g_unix_socket_address_new (s->str);
+	{
+	  struct stat sb;
+
+	  /* This is what libdbus does in _dbus_listen_unix_socket, so we do it too */
+	  if (g_stat (s->str, &sb) == 0 &&
+	      S_ISSOCK (sb.st_mode))
+	    unlink (s->str);
+
+	  address = g_unix_socket_address_new (s->str);
+	}
+
       g_string_free (s, TRUE);
 
       local_error = NULL;
