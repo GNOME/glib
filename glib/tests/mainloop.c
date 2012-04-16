@@ -255,6 +255,7 @@ call_func (gpointer data)
 
 static GMutex mutex;
 static GCond cond;
+static gboolean thread_ready;
 
 static gpointer
 thread_func (gpointer data)
@@ -265,6 +266,7 @@ thread_func (gpointer data)
   g_main_context_push_thread_default (ctx);
 
   g_mutex_lock (&mutex);
+  thread_ready = TRUE;
   g_cond_signal (&cond);
   g_mutex_unlock (&mutex);
 
@@ -300,13 +302,14 @@ test_invoke (void)
    * to another thread
    */
   ctx = g_main_context_new ();
-  g_mutex_lock (&mutex);
   thread = g_thread_new ("worker", thread_func, ctx);
 
-  g_cond_wait (&cond, &mutex);
+  g_mutex_lock (&mutex);
+  while (!thread_ready)
+    g_cond_wait (&cond, &mutex);
+  g_mutex_unlock (&mutex);
 
   g_main_context_invoke (ctx, func, thread);
-  g_assert_cmpint (count, ==, 2);
 
   g_thread_join (thread);
   g_assert_cmpint (count, ==, 3);
