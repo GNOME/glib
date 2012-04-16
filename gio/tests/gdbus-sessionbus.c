@@ -165,7 +165,13 @@ session_bus_up_with_address (const gchar *given_address)
     }
   g_string_free (config_file_contents, TRUE);
 
-  argv[2] = g_strdup_printf ("--config-file=%s", config_file_name);
+  if (g_getenv ("G_DBUS_DAEMON") != NULL)
+    {
+      argv[0] = "./gdbus-daemon";
+      argv[2] = g_strdup_printf ("--address=%s", given_address);
+    }
+  else
+    argv[2] = g_strdup_printf ("--config-file=%s", config_file_name);
 
   if (session_bus_address_to_pid == NULL)
     {
