@@ -95,6 +95,19 @@ gdbus_sources = 							\
 	gdbusobjectmanagerserver.h	gdbusobjectmanagerserver.c	\
 	$(NULL)
 
+# These are not built into the library yet
+EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h
+
+gdbus-daemon-generated.h gdbus-daemon-generated.c : dbus-daemon.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-prefix org. \
+		--generate-c-code gdbus-daemon-generated \
+		--c-namespace _G \
+		$(srcdir)/dbus-daemon.xml \
+		$(NULL)
+
 settings_headers = \
 	gsettingsbackend.h		\
 	gsettingsschema.h		\
@@ -604,6 +617,8 @@ BUILT_SOURCES = 		\
 	gconstructor_as_data.h	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
+	gdbus-daemon-generated.c \
+	gdbus-daemon-generated.h \
 	$(NULL)
 
 EXTRA_DIST += 			\
@@ -625,7 +640,7 @@ BUILT_EXTRA_DIST = 		\
 gio-public-headers.txt: Makefile
 	echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
-CLEANFILES = gio-public-headers.txt gconstructor_as_data.h
+CLEANFILES = gdbus-daemon-generated.c gdbus-daemon-generated.h gio-public-headers.txt gconstructor_as_data.h
 
 all-local: gio-public-headers.txt
 
