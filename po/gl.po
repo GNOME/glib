@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-08 21:55+0200\n"
-"PO-Revision-Date: 2012-04-08 21:56+0200\n"
+"POT-Creation-Date: 2012-04-17 01:10+0200\n"
+"PO-Revision-Date: 2012-04-17 01:11+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -259,7 +259,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -268,7 +268,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6715
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -281,15 +281,15 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d descoñecido"
 
-#: ../gio/gdbusauth.c:287
+#: ../gio/gdbusauth.c:298
 msgid "Unexpected lack of content trying to read a line"
 msgstr "Falta o contido inesperada ao tentar ler unha liña"
 
-#: ../gio/gdbusauth.c:331
+#: ../gio/gdbusauth.c:342
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Falta de contido inesperada ao tentar ler (de forma segura) unha liña"
 
-#: ../gio/gdbusauth.c:502
+#: ../gio/gdbusauth.c:513
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -297,7 +297,7 @@ msgstr ""
 "Agotáronse todos os mecanismos de autenticación dispoñíbel (tentaronse: %s) "
 "(dispoñíbeis: %s)"
 
-#: ../gio/gdbusauth.c:1158
+#: ../gio/gdbusauth.c:1174
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelando mediante GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -394,7 +394,7 @@ msgid ""
 msgstr ""
 "Atopáronse opcións non compatíbeis ao construír a conexión da parte cliente"
 
-#: ../gio/gdbusconnection.c:4015 ../gio/gdbusconnection.c:4331
+#: ../gio/gdbusconnection.c:4016 ../gio/gdbusconnection.c:4332
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -402,68 +402,68 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto coa ruta "
 "%s"
 
-#: ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:4087
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:4181
+#: ../gio/gdbusconnection.c:4182
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:4193
+#: ../gio/gdbusconnection.c:4194
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:4204
+#: ../gio/gdbusconnection.c:4205
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:4274 ../gio/gdbusconnection.c:6148
+#: ../gio/gdbusconnection.c:4275 ../gio/gdbusconnection.c:6149
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4458
+#: ../gio/gdbusconnection.c:4459
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4676 ../gio/gdbusconnection.c:6654
+#: ../gio/gdbusconnection.c:4677 ../gio/gdbusconnection.c:6655
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto coa ruta %s"
 
-#: ../gio/gdbusconnection.c:4731
+#: ../gio/gdbusconnection.c:4732
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4762
+#: ../gio/gdbusconnection.c:4763
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4982
+#: ../gio/gdbusconnection.c:4983
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:5180
+#: ../gio/gdbusconnection.c:5181
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:6259
+#: ../gio/gdbusconnection.c:6260
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:6378
+#: ../gio/gdbusconnection.c:6379
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -536,7 +536,7 @@ msgstr "O valor analizado «%s» non é unha ruta de obxecto D-Bus válida"
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "«%s» non é un nome válido"
 
-#: ../gio/gdbusmessage.c:1324
+#: ../gio/gdbusmessage.c:1325
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -549,13 +549,13 @@ msgstr[1] ""
 "Atopouse unha matriz cunha lonxitude de %u bytes. A lonxitude máxima é 2<<26 "
 "bytes (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1490
+#: ../gio/gdbusmessage.c:1483
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "O valor «%s» analizado para a variante non é unha sinatura de D-Bus válida."
 
-#: ../gio/gdbusmessage.c:1517
+#: ../gio/gdbusmessage.c:1510
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
@@ -563,7 +563,7 @@ msgstr ""
 "Produciuse un erro ao deserializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:1705
+#: ../gio/gdbusmessage.c:1698
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -572,25 +572,25 @@ msgstr ""
 "Valor de «endianness» non válido. Esperábase 0x6c («|») ou 0x42 («B») pero "
 "atopouse 0x%02x"
 
-#: ../gio/gdbusmessage.c:1719
+#: ../gio/gdbusmessage.c:1712
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "A versión maior do protocolo non é válida. Esperábase 1 pero atopouse a %d"
 
-#: ../gio/gdbusmessage.c:1776
+#: ../gio/gdbusmessage.c:1769
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Atopouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
 "está baleiro"
 
-#: ../gio/gdbusmessage.c:1790
+#: ../gio/gdbusmessage.c:1783
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
-#: ../gio/gdbusmessage.c:1821
+#: ../gio/gdbusmessage.c:1814
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -601,11 +601,11 @@ msgstr[1] ""
 "Non hai unha cabeceira da sinatura na mensaxe pero o corpo da mensaxe ten %u "
 "bytes"
 
-#: ../gio/gdbusmessage.c:1831
+#: ../gio/gdbusmessage.c:1824
 msgid "Cannot deserialize message: "
 msgstr "Non foi posíbel deserializar a mensaxe: "
 
-#: ../gio/gdbusmessage.c:2163
+#: ../gio/gdbusmessage.c:2156
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
@@ -613,7 +613,7 @@ msgstr ""
 "Produciuse un erro ao serializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:2304
+#: ../gio/gdbusmessage.c:2297
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -622,18 +622,18 @@ msgstr ""
 "A mensaxe ten %d descritores de ficheiro pero o campo da cabeceira indica %d "
 "descritores de ficheiro"
 
-#: ../gio/gdbusmessage.c:2312
+#: ../gio/gdbusmessage.c:2305
 msgid "Cannot serialize message: "
 msgstr "Non foi posíbel serializar a mensaxe: "
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2349
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
 "sinatura"
 
-#: ../gio/gdbusmessage.c:2366
+#: ../gio/gdbusmessage.c:2359
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `"
@@ -642,19 +642,19 @@ msgstr ""
 "O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
 "cabeceira é «%s»"
 
-#: ../gio/gdbusmessage.c:2382
+#: ../gio/gdbusmessage.c:2375
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é "
 "«(%s)»"
 
-#: ../gio/gdbusmessage.c:2939
+#: ../gio/gdbusmessage.c:2932
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Produciuse un erro ao devolver co corpo de tipo «%s»"
 
-#: ../gio/gdbusmessage.c:2947
+#: ../gio/gdbusmessage.c:2940
 msgid "Error return with empty body"
 msgstr "Produciuse un erro ao devolver co corpo baleiro"
 
@@ -930,40 +930,40 @@ msgstr "Ruta do obxecto a monitorizar"
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
-#: ../gio/gdesktopappinfo.c:575 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:578 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Sen nome"
 
-#: ../gio/gdesktopappinfo.c:988
+#: ../gio/gdesktopappinfo.c:991
 msgid "Desktop file didn't specify Exec field"
 msgstr "O ficheiro de escritorio non especificou o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:1276
+#: ../gio/gdesktopappinfo.c:1279
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel atopar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1563
+#: ../gio/gdesktopappinfo.c:1566
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1567
+#: ../gio/gdesktopappinfo.c:1570
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1807 ../gio/gdesktopappinfo.c:1831
+#: ../gio/gdesktopappinfo.c:1810 ../gio/gdesktopappinfo.c:1834
 msgid "Application information lacks an identifier"
 msgstr "A información do aplicativo carece dun identificador"
 
-#: ../gio/gdesktopappinfo.c:2055
+#: ../gio/gdesktopappinfo.c:2058
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:2171
+#: ../gio/gdesktopappinfo.c:2174
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -1216,12 +1216,12 @@ msgstr "O fluxo de entrada non implementa a lectura"
 msgid "Stream has outstanding operation"
 msgstr "O fluxo ten unha operación excepcional"
 
-#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1455
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Non se permite o elemento <%s> dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1459
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Non se permite o elemento <%s> non nivel superior"
@@ -1269,7 +1269,7 @@ msgstr "Produciuse un erro ao ler o ficheiro %s: %s"
 msgid "Error compressing file %s"
 msgstr "Produciuse un erro ao comprimir o ficheiro: %s"
 
-#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1567
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "O texto non debe aparecer dentro de <%s>"
@@ -1291,8 +1291,8 @@ msgstr ""
 "O cartafol da que se ten que ler os ficheiros (o predeterminado é o cartafol "
 "actual)"
 
-#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1989
-#: ../gio/glib-compile-schemas.c:2019
+#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1995
+#: ../gio/glib-compile-schemas.c:2025
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
@@ -1481,48 +1481,48 @@ msgstr "unha ruta, se se especifica, debe comezar e rematar con unha barra"
 msgid "the path of a list must end with ':/'"
 msgstr "a ruta dunha lista debe rematar con «:/»"
 
-#: ../gio/glib-compile-schemas.c:1229
+#: ../gio/glib-compile-schemas.c:1235
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> xa especificado"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1747 ../gio/glib-compile-schemas.c:1818
-#: ../gio/glib-compile-schemas.c:1894
+#: ../gio/glib-compile-schemas.c:1753 ../gio/glib-compile-schemas.c:1824
+#: ../gio/glib-compile-schemas.c:1900
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1755
+#: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Ignorouse este ficheiro completamente.\n"
 
-#: ../gio/glib-compile-schemas.c:1814
+#: ../gio/glib-compile-schemas.c:1820
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Ignorando este ficheiro.\n"
 
-#: ../gio/glib-compile-schemas.c:1854
+#: ../gio/glib-compile-schemas.c:1860
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Non existe a chave «%s» no esquema «%s» como se especificou no ficheiro de "
 "sobrescritura «%s»"
 
-#: ../gio/glib-compile-schemas.c:1860 ../gio/glib-compile-schemas.c:1918
-#: ../gio/glib-compile-schemas.c:1946
+#: ../gio/glib-compile-schemas.c:1866 ../gio/glib-compile-schemas.c:1924
+#: ../gio/glib-compile-schemas.c:1952
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; ignorando a sobrescritura para esta chave.\n"
 
-#: ../gio/glib-compile-schemas.c:1864 ../gio/glib-compile-schemas.c:1922
-#: ../gio/glib-compile-schemas.c:1950
+#: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
+#: ../gio/glib-compile-schemas.c:1956
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr "e --strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1880
+#: ../gio/glib-compile-schemas.c:1886
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
@@ -1531,12 +1531,12 @@ msgstr ""
 "produciuse un erro ao analizar a chave «%s» no esquema «%s» como se "
 "especificou no ficheiro de sobrescritura «%s»: %s.  "
 
-#: ../gio/glib-compile-schemas.c:1890
+#: ../gio/glib-compile-schemas.c:1896
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Ignorando a sobrescritura para esta chave.\n"
 
-#: ../gio/glib-compile-schemas.c:1908
+#: ../gio/glib-compile-schemas.c:1914
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -1545,7 +1545,7 @@ msgstr ""
 "a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» está fora do rango fornecido no esquema"
 
-#: ../gio/glib-compile-schemas.c:1936
+#: ../gio/glib-compile-schemas.c:1942
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -1554,23 +1554,23 @@ msgstr ""
 "a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» non está na lista de opcións válidas"
 
-#: ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-schemas.c:1995
 msgid "where to store the gschemas.compiled file"
 msgstr "onde almacenar o ficheiro compilado de gschemas"
 
-#: ../gio/glib-compile-schemas.c:1990
+#: ../gio/glib-compile-schemas.c:1996
 msgid "Abort on any errors in schemas"
 msgstr "Abortar ao atopar calquera erro nos esquemas"
 
-#: ../gio/glib-compile-schemas.c:1991
+#: ../gio/glib-compile-schemas.c:1997
 msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
-#: ../gio/glib-compile-schemas.c:1992
+#: ../gio/glib-compile-schemas.c:1998
 msgid "Do not enforce key name restrictions"
 msgstr "Non respetar as restricións de nome de chave"
 
-#: ../gio/glib-compile-schemas.c:2022
+#: ../gio/glib-compile-schemas.c:2028
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -1580,22 +1580,22 @@ msgstr ""
 "de esquemas. Os ficheiros de esquema deben ter a extensión\n"
 ".gschema.xml e o ficheiro de caché chámase gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2044
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Debería fornecer exactamente un nome de cartafol\n"
 
-#: ../gio/glib-compile-schemas.c:2077
+#: ../gio/glib-compile-schemas.c:2083
 #, c-format
 msgid "No schema files found: "
 msgstr "Non se atoparon ficheiros de esquema: "
 
-#: ../gio/glib-compile-schemas.c:2080
+#: ../gio/glib-compile-schemas.c:2086
 #, c-format
 msgid "doing nothing.\n"
 msgstr "sen facer nada.\n"
 
-#: ../gio/glib-compile-schemas.c:2083
+#: ../gio/glib-compile-schemas.c:2089
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "eliminouse o ficheiro de saída existente.\n"
@@ -2015,40 +2015,40 @@ msgstr "O fluxo de saída non implementa a escritura"
 msgid "Source stream is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: ../gio/gresolver.c:764
+#: ../gio/gresolver.c:940
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Produciuse un erro ao ler o ficheiro «%s»: %s"
 
-#: ../gio/gresolver.c:814
+#: ../gio/gresolver.c:990
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Produciuse un erro ao reverter-resolver «%s»: %s"
 
-#: ../gio/gresolver.c:849 ../gio/gresolver.c:928
+#: ../gio/gresolver.c:1149 ../gio/gresolver.c:1323
 #, c-format
-msgid "No service record for '%s'"
-msgstr "Non hai rexistro de servizo de «%s»"
+msgid "No DNS record of the requested type for '%s'"
+msgstr "Non hai un rexistro de DNS do tipo solicitado para «%s»"
 
-#: ../gio/gresolver.c:854 ../gio/gresolver.c:933
+#: ../gio/gresolver.c:1154 ../gio/gresolver.c:1328
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Foi incapaz de resolver temporalmente «%s»"
 
-#: ../gio/gresolver.c:859 ../gio/gresolver.c:938
+#: ../gio/gresolver.c:1159 ../gio/gresolver.c:1333
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Produciuse un erro ao resolver: «%s»"
 
-#: ../gio/gresource.c:295 ../gio/gresource.c:540 ../gio/gresource.c:557
-#: ../gio/gresource.c:678 ../gio/gresource.c:747 ../gio/gresource.c:808
-#: ../gio/gresource.c:888 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:295 ../gio/gresource.c:543 ../gio/gresource.c:560
+#: ../gio/gresource.c:681 ../gio/gresource.c:750 ../gio/gresource.c:811
+#: ../gio/gresource.c:891 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Non existe o recurso en «%s»"
 
-#: ../gio/gresource.c:457
+#: ../gio/gresource.c:460
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Produciuse un fallo ao descomprimir o resurso en «%s»"
@@ -2722,12 +2722,12 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "O contrasinal introducido non é correcto"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:580
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:582
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Esperando 1 mensaxe de control, obtívose %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:590
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:592
 msgid "Unexpected type of ancillary data"
 msgstr "Tipo de datos subsidiarios inesperados"
 
@@ -2771,12 +2771,12 @@ msgid ""
 msgstr ""
 "Esperábase ler un só byte para recibir as credenciais pero léronse creo bytes"
 
-#: ../gio/gunixconnection.c:604
+#: ../gio/gunixconnection.c:606
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Non se esperaba unha mensaxe de control, pero obtívose %d"
 
-#: ../gio/gunixconnection.c:630
+#: ../gio/gunixconnection.c:632
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Produciuse un erro ao desactivar SO_PASSCRED: %s"
@@ -4280,6 +4280,9 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "No service record for '%s'"
+#~ msgstr "Non hai rexistro de servizo de «%s»"
 
 #~ msgid "Could not bind netlink socket: %s"
 #~ msgstr "Non foi posíbel conectar ao socket netlink: %s:"
