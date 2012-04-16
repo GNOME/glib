@@ -930,6 +930,17 @@ handle_get_name_owner (_GFreedesktopDBus *object,
       return TRUE;
     }
 
+  if (arg_name[0] == ':')
+    {
+      if (g_hash_table_lookup (daemon->clients, arg_name) == NULL)
+	g_dbus_method_invocation_return_error (invocation,
+					       G_DBUS_ERROR, G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+					       "Could not get owner of name '%s': no such name", arg_name);
+      else
+	_g_freedesktop_dbus_complete_get_name_owner (object, invocation, arg_name);
+      return TRUE;
+    }
+
   name = name_lookup (daemon, arg_name);
   if (name == NULL)
     {
