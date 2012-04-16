@@ -119,6 +119,7 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline2	\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
+	gdbus-daemon			\
 	$(NULL)
 
 if OS_UNIX
@@ -263,6 +264,9 @@ gsettings_LDADD		  = $(progs_ldadd)
 
 gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
+
+gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_srcdir)/gio/gdbus-daemon-generated.c
+gdbus_daemon_LDADD = $(progs_ldadd)
 
 if HAVE_DBUS1
 TEST_PROGS += gdbus-serialization
