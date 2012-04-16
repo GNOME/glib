@@ -409,6 +409,62 @@ test_child_sources (void)
   g_main_context_unref (ctx);
 }
 
+static void
+test_recursive_child_sources (void)
+{
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *parent, *child_b, *child_c, *end;
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  a = b = c = 0;
+
+  parent = g_timeout_source_new (500);
+  g_source_set_callback (parent, count_calls, &a, NULL);
+
+  child_b = g_timeout_source_new (220);
+  g_source_set_callback (child_b, count_calls, &b, NULL);
+  g_source_add_child_source (parent, child_b);
+
+  child_c = g_timeout_source_new (430);
+  g_source_set_callback (child_c, count_calls, &c, NULL);
+  g_source_add_child_source (child_b, child_c);
+
+  g_source_attach (parent, ctx);
+
+  end = g_timeout_source_new (2010);
+  g_source_set_callback (end, (GSourceFunc)g_main_loop_quit, loop, NULL);
+  g_source_attach (end, ctx);
+  g_source_unref (end);
+
+  g_main_loop_run (loop);
+
+  /* Sequence of events:
+   * 220 b (b = 440, a = 720)
+   * 430 c (c = 860, b = 650, a = 930)
+   * 650 b (b = 870, a = 1150)
+   * 860 c (c = 1290, b = 1080, a = 1360)
+   * 1080 b (b = 1300, a = 1580)
+   * 1290 c (c = 1720, b = 1510, a = 1790)
+   * 1510 b (b = 1730, a = 2010)
+   * 1720 c (c = 2150, b = 1940, a = 2220)
+   * 1940 b (b = 2160, a = 2440)
+   */
+
+  g_assert_cmpint (a, ==, 9);
+  g_assert_cmpint (b, ==, 9);
+  g_assert_cmpint (c, ==, 4);
+
+  g_source_unref (parent);
+  g_source_unref (child_b);
+  g_source_unref (child_c);
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -420,6 +476,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/priorities", test_priorities);
   g_test_add_func ("/mainloop/invoke", test_invoke);
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
+  g_test_add_func ("/mainloop/recursive_child_sources", test_recursive_child_sources);
 
   return g_test_run ();
 }
