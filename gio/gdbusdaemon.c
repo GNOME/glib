@@ -112,6 +112,14 @@ typedef struct {
   MatchElement *elements;
 } Match;
 
+static GDBusMessage *filter_function   (GDBusConnection *connection,
+					GDBusMessage    *message,
+					gboolean         incoming,
+					gpointer         user_data);
+static void          connection_closed (GDBusConnection *connection,
+					gboolean         remote_peer_vanished,
+					GError          *error,
+					Client          *client);
 
 static NameOwner *
 name_owner_new (Client *client, guint32 flags)
@@ -789,11 +797,12 @@ static Client *
 client_new (GDBusDaemon *daemon, GDBusConnection *connection)
 {
   Client *client;
+  GError *error = NULL;
 
   client = g_new0 (Client, 1);
   client->daemon = daemon;
   client->id = g_strdup_printf (":%d.%d", daemon->next_major_id, daemon->next_minor_id);
-  client->connection = connection;
+  client->connection = g_object_ref (connection);
 
   if (daemon->next_minor_id == G_MAXUINT32)
     {
@@ -806,6 +815,15 @@ client_new (GDBusDaemon *daemon, GDBusConnection *connection)
   g_object_set_data (G_OBJECT (connection), "client", client);
   g_hash_table_insert (daemon->clients, client->id, client);
 
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (daemon), connection,
+				    "/org/freedesktop/DBus", &error);
+  g_assert_no_error (error);
+
+  g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), client);
+  g_dbus_connection_add_filter (connection,
+				filter_function,
+				client, NULL);
+
   send_name_owner_changed (daemon, client->id, NULL, client->id);
 
   return client;
@@ -816,6 +834,9 @@ client_free (Client *client)
 {
   GDBusDaemon *daemon = client->daemon;
   GList *l, *names;
+
+  g_dbus_interface_skeleton_unexport_from_connection (G_DBUS_INTERFACE_SKELETON (daemon),
+						      client->connection);
 
   g_hash_table_remove (daemon->clients, client->id);
 
@@ -853,7 +874,6 @@ connection_closed (GDBusConnection *connection,
 		   GError *error,
 		   Client *client)
 {
-  g_print ("connection %s closed %d %s\n", client->id, remote_peer_vanished, error->message);
   client_free (client);
 }
 
@@ -1437,22 +1457,10 @@ on_new_connection (GDBusServer *server,
 		   gpointer user_data)
 {
   GDBusDaemon *daemon = user_data;
-  GError        *error = NULL;
-  Client *client;
 
-  client = client_new (daemon, connection);
-
-  g_object_ref (connection);
   g_dbus_connection_set_exit_on_close (connection, FALSE);
-  g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), client);
 
-  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (daemon), connection,
-				    "/org/freedesktop/DBus", &error);
-  g_assert_no_error (error);
-
-  g_dbus_connection_add_filter (connection,
-				filter_function,
-				client, NULL);
+  client_new (daemon, connection);
 
   return TRUE;
 }
