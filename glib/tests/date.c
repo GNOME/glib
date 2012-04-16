@@ -351,6 +351,7 @@ main (int argc, char** argv)
     3000, 3001, 3002, 3998, 3999, 4000, 4001, 4002, 4003
   };
 
+  g_setenv ("LANG", "en_US.utf-8", TRUE);
   setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
