@@ -3,6 +3,7 @@ gdbus
 gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml
 gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml
 gdbus-example-objectmanager-generated.[ch]
+gdbus-daemon-generated.[ch]
 gio-marshal.[ch]
 gio-public-headers.txt
 gio-querymodules
