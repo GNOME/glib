@@ -1306,7 +1306,8 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
           display = g_app_launch_context_get_display (launch_context,
                                                       appinfo,
                                                       launched_files);
-          envp = g_environ_setenv (envp, "DISPLAY", display, TRUE);
+          if (display)
+            envp = g_environ_setenv (envp, "DISPLAY", display, TRUE);
 
           if (info->startup_notify)
             {
