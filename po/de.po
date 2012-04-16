@@ -7,7 +7,7 @@
 # Andre Klapper <ak-47@gmx.net>, 2007, 2008.
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2012.
-# Wolfgang Stöggl <c72578@yahoo.de>, 2011.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2011, 2012.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2010, 2012.
 #
 msgid ""
@@ -15,15 +15,15 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-13 13:45+0000\n"
-"PO-Revision-Date: 2012-04-13 15:42+0100\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2012-04-16 20:24+0000\n"
+"PO-Revision-Date: 2012-04-16 22:21+0200\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
@@ -258,7 +258,7 @@ msgstr ""
 "Adresse des Sitzungsbus konnte nicht ermittelt werden (für dieses "
 "Betriebssystem nicht implementiert)"
 
-#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -267,7 +267,7 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden, unbekannter Wert »%s«"
 
-#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6715
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -280,16 +280,16 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "Unbekannter Bus-Typ %d"
 
-#: ../gio/gdbusauth.c:287
+#: ../gio/gdbusauth.c:298
 msgid "Unexpected lack of content trying to read a line"
 msgstr "Unerwarteter Mangel an Inhalt beim Versuch, eine Zeile zu lesen"
 
-#: ../gio/gdbusauth.c:331
+#: ../gio/gdbusauth.c:342
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
 "Unerwarteter Mangel an Inhalt beim Versuch, eine Zeile (sicher) zu lesen"
 
-#: ../gio/gdbusauth.c:502
+#: ../gio/gdbusauth.c:513
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -297,7 +297,7 @@ msgstr ""
 "Alle verfügbaren Legitimierungsmechanismen sind ausgeschöpft (%s Versuche) "
 "(verfügbar: %s)"
 
-#: ../gio/gdbusauth.c:1158
+#: ../gio/gdbusauth.c:1174
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Abgebrochen durch GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -396,7 +396,7 @@ msgstr ""
 "Beim Erstellen einer client-seitigen Verbindung wurden nicht unterstützte "
 "Flags entdeckt"
 
-#: ../gio/gdbusconnection.c:4015 ../gio/gdbusconnection.c:4331
+#: ../gio/gdbusconnection.c:4016 ../gio/gdbusconnection.c:4332
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -404,68 +404,68 @@ msgstr ""
 "Keine derartige Schnittstelle »org.freedesktop.DBus.Properties« des Objekts "
 "im Pfad %s"
 
-#: ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:4087
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Fehler beim Setzen der Eigenschaft »%s«: Erwarteter Typ war »%s«, aber »%s« "
 "wurde erhalten"
 
-#: ../gio/gdbusconnection.c:4181
+#: ../gio/gdbusconnection.c:4182
 #, c-format
 msgid "No such property `%s'"
 msgstr "Keine derartige Eigenschaft »%s«"
 
-#: ../gio/gdbusconnection.c:4193
+#: ../gio/gdbusconnection.c:4194
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Eigenschaft »%s« ist nicht lesbar"
 
-#: ../gio/gdbusconnection.c:4204
+#: ../gio/gdbusconnection.c:4205
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Eigenschaft »%s« ist nicht schreibbar"
 
-#: ../gio/gdbusconnection.c:4274 ../gio/gdbusconnection.c:6148
+#: ../gio/gdbusconnection.c:4275 ../gio/gdbusconnection.c:6149
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Keine derartige Schnittstelle »%s«"
 
-#: ../gio/gdbusconnection.c:4458
+#: ../gio/gdbusconnection.c:4459
 msgid "No such interface"
 msgstr "Keine derartige Schnittstelle"
 
-#: ../gio/gdbusconnection.c:4676 ../gio/gdbusconnection.c:6654
+#: ../gio/gdbusconnection.c:4677 ../gio/gdbusconnection.c:6655
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Keine derartige Schnittstelle »%s« des Objekts im Pfad %s"
 
-#: ../gio/gdbusconnection.c:4731
+#: ../gio/gdbusconnection.c:4732
 #, c-format
 msgid "No such method `%s'"
 msgstr "Keine derartige Methode »%s«"
 
-#: ../gio/gdbusconnection.c:4762
+#: ../gio/gdbusconnection.c:4763
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Der Nachrichtentyp »%s« entspricht nicht dem erwarteten Wert »%s«"
 
-#: ../gio/gdbusconnection.c:4982
+#: ../gio/gdbusconnection.c:4983
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Für die Schnittstelle %s auf %s wurde bereits ein Objekt exportiert"
 
-#: ../gio/gdbusconnection.c:5180
+#: ../gio/gdbusconnection.c:5181
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Methode »%s« gab Typ »%s« zurück, aber »%s« wurde erwartet"
 
-#: ../gio/gdbusconnection.c:6259
+#: ../gio/gdbusconnection.c:6260
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Methode »%s« in Schnittstelle »%s« mit Signatur »%s« existiert nicht"
 
-#: ../gio/gdbusconnection.c:6378
+#: ../gio/gdbusconnection.c:6379
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ein Unterbaum wurde bereits für %s exportiert"
@@ -935,41 +935,41 @@ msgstr "Zu überwachender Objektpfad"
 msgid "Monitor a remote object."
 msgstr "Ein entferntes Objekt überwachen."
 
-#: ../gio/gdesktopappinfo.c:575 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:578 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: ../gio/gdesktopappinfo.c:988
+#: ../gio/gdesktopappinfo.c:991
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 
-#: ../gio/gdesktopappinfo.c:1276
+#: ../gio/gdesktopappinfo.c:1279
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: ../gio/gdesktopappinfo.c:1563
+#: ../gio/gdesktopappinfo.c:1566
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1567
+#: ../gio/gdesktopappinfo.c:1570
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1807 ../gio/gdesktopappinfo.c:1831
+#: ../gio/gdesktopappinfo.c:1810 ../gio/gdesktopappinfo.c:1834
 msgid "Application information lacks an identifier"
 msgstr "Den Anwendungsinformationen fehlt ein Bezeichner"
 
-#: ../gio/gdesktopappinfo.c:2055
+#: ../gio/gdesktopappinfo.c:2058
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: ../gio/gdesktopappinfo.c:2171
+#: ../gio/gdesktopappinfo.c:2174
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
@@ -1320,7 +1320,7 @@ msgstr "Abhängigkeitsliste generieren"
 
 #: ../gio/glib-compile-resources.c:619
 msgid "Don't automatically create and register resource"
-msgstr "Die Resssource nicht automatisch anlegen und registrieren"
+msgstr "Die Ressource nicht automatisch anlegen und registrieren"
 
 #: ../gio/glib-compile-resources.c:620
 msgid "C identifier name used for the generated source code"
@@ -2016,27 +2016,27 @@ msgstr "Ausgabedatenstrom unterstützt kein Schreiben"
 msgid "Source stream is already closed"
 msgstr "Quelldatenstrom ist bereits geschlossen"
 
-#: ../gio/gresolver.c:764
+#: ../gio/gresolver.c:940
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Fehler beim Auflösen von »%s«: %s"
 
-#: ../gio/gresolver.c:814
+#: ../gio/gresolver.c:990
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Fehler beim Rückwärtsauflösen von »%s«: %s"
 
-#: ../gio/gresolver.c:849 ../gio/gresolver.c:928
+#: ../gio/gresolver.c:1149 ../gio/gresolver.c:1323
 #, c-format
-msgid "No service record for '%s'"
-msgstr "Kein Diensteintrag für »%s«"
+msgid "No DNS record of the requested type for '%s'"
+msgstr "Kein DNS-Eintrag des angeforderten Typs für »%s«"
 
-#: ../gio/gresolver.c:854 ../gio/gresolver.c:933
+#: ../gio/gresolver.c:1154 ../gio/gresolver.c:1328
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "»%s« kann vorübergehend nicht aufgelöst werden"
 
-#: ../gio/gresolver.c:859 ../gio/gresolver.c:938
+#: ../gio/gresolver.c:1159 ../gio/gresolver.c:1333
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Fehler beim Auflösen von »%s«"
@@ -2729,7 +2729,7 @@ msgstr "1 Kontrollnachricht wird erwartet, %d wurden erhalten"
 
 #: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:592
 msgid "Unexpected type of ancillary data"
-msgstr "Unerwartete Art von Zustzdaten"
+msgstr "Unerwartete Art von Zusatzdaten"
 
 #: ../gio/gunixconnection.c:195
 #, c-format
@@ -4293,6 +4293,9 @@ msgstr[1] "%s Bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "No service record for '%s'"
+#~ msgstr "Kein Diensteintrag für »%s«"
 
 #~ msgid "Error connecting: "
 #~ msgstr "Fehler beim Verbinden:"
