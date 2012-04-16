@@ -55,7 +55,7 @@ enum {
   PROP_ADDRESS
 };
 
-static void initable_iface_init       (GInitableIface      *initable_iface);
+static void initable_iface_init      (GInitableIface         *initable_iface);
 static void g_dbus_daemon_iface_init (_GFreedesktopDBusIface *iface);
 
 #define g_dbus_daemon_get_type _g_dbus_daemon_get_type
@@ -1058,9 +1058,10 @@ handle_list_queued_owners (_GFreedesktopDBus *object,
   return TRUE;
 }
 
-static gboolean handle_name_has_owner (_GFreedesktopDBus *object,
-				       GDBusMethodInvocation *invocation,
-				       const gchar *arg_name)
+static gboolean
+handle_name_has_owner (_GFreedesktopDBus *object,
+		       GDBusMethodInvocation *invocation,
+		       const gchar *arg_name)
 {
   GDBusDaemon *daemon = G_DBUS_DAEMON (object);
   Name *name;
@@ -1309,7 +1310,7 @@ return_error (Client *client, GDBusMessage *message,
   g_object_unref (reply);
 }
 
-GDBusMessage *
+static GDBusMessage *
 route_message (Client *source_client, GDBusMessage *message)
 {
   const char *dest;
@@ -1366,7 +1367,7 @@ route_message (Client *source_client, GDBusMessage *message)
   return message;
 }
 
-GDBusMessage *
+static GDBusMessage *
 copy_if_locked (GDBusMessage *message)
 {
   if (g_dbus_message_get_locked (message))
@@ -1378,7 +1379,7 @@ copy_if_locked (GDBusMessage *message)
   return message;
 }
 
-GDBusMessage *
+static GDBusMessage *
 filter_function (GDBusConnection *connection,
 		 GDBusMessage    *message,
 		 gboolean         incoming,
