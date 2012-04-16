@@ -44,7 +44,14 @@ def camel_case_to_uscore(s):
     ret = ''
     insert_uscore = False
     prev_was_lower = False
+    initial = True;
     for c in s:
+        # Keep initial underscores in camel case
+        if initial and c == '_':
+            ret += '_'
+            continue;
+        initial = False
+
         if c.isupper():
             if prev_was_lower:
                 insert_uscore = True
