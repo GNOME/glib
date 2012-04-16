@@ -60,7 +60,6 @@ TEST_PROGS +=	 		\
 	fileattributematcher	\
 	gmenumodel		\
 	resources		\
-	gdbus-daemon		\
 	$(NULL)
 
 if OS_UNIX
@@ -114,6 +113,7 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline2	\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
+	gdbus-daemon			\
 	$(NULL)
 
 if OS_UNIX
