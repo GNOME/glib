@@ -573,7 +573,7 @@ match_matches (GDBusDaemon *daemon,
 	  break;
 	case CHECK_TYPE_NAME:
 	  name = name_lookup (daemon, element->value);
-	  if (name != NULL)
+	  if (name != NULL && name->owner != NULL)
 	    {
 	      if (strcmp (name->owner->client->id, value) != 0)
 		return FALSE;
@@ -847,7 +847,7 @@ client_free (Client *client)
 
       name_ref (name);
 
-      if (name->owner->client == client)
+      if (name->owner && name->owner->client == client)
 	name_release_owner (name);
 
       name_unqueue_owner (name, client);
@@ -962,15 +962,13 @@ handle_get_name_owner (_GFreedesktopDBus *object,
     }
 
   name = name_lookup (daemon, arg_name);
-  if (name == NULL)
+  if (name == NULL || name->owner == NULL)
     {
       g_dbus_method_invocation_return_error (invocation,
 					     G_DBUS_ERROR, G_DBUS_ERROR_NAME_HAS_NO_OWNER,
 					     "Could not get owner of name '%s': no such name", arg_name);
       return TRUE;
     }
-
-  g_assert (name->owner != NULL);
 
   _g_freedesktop_dbus_complete_get_name_owner (object, invocation, name->owner->client->id);
   return TRUE;
@@ -1057,10 +1055,8 @@ handle_list_queued_owners (_GFreedesktopDBus *object,
   array = g_ptr_array_new ();
 
   name = name_lookup (daemon, arg_name);
-  if (name)
+  if (name && name->owner)
     {
-      g_assert (name->owner != NULL);
-
       for (l = name->queue; l != NULL; l = l->next)
 	{
 	  Client *client = l->data;
@@ -1131,7 +1127,7 @@ handle_release_name (_GFreedesktopDBus *object,
 
   if (name == NULL)
     result = DBUS_RELEASE_NAME_REPLY_NON_EXISTENT;
-  else if (name->owner->client == client)
+  else if (name->owner && name->owner->client == client)
     {
       name_release_owner (name);
       result = DBUS_RELEASE_NAME_REPLY_RELEASED;
@@ -1238,7 +1234,7 @@ handle_request_name (_GFreedesktopDBus *object,
 
       result = DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER;
     }
-  else if (name->owner->client == client)
+  else if (name->owner && name->owner->client == client)
     {
       name->owner->flags = flags;
       result = DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER;
@@ -1349,11 +1345,8 @@ route_message (Client *source_client, GDBusMessage *message)
 	{
 	  Name *name;
 	  name = name_lookup (daemon, dest);
-	  if (name)
-	    {
-	      g_assert (name->owner != NULL);
-	      dest_client = name->owner->client;
-	    }
+	  if (name && name->owner)
+	    dest_client = name->owner->client;
 	}
 
       if (dest_client == NULL)
