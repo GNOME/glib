@@ -25,16 +25,28 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
+#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
+#endif
 #include <signal.h>
 #include <stdio.h>
 
 #include <gio/gio.h>
 
+#ifdef G_OS_WIN32
+#include <Windows.h>
+#endif
+
 #include "gdbus-sessionbus.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 /* Utilities for bringing up and tearing down session message bus instances */
+
+#define GPID_TO_POINTER(u)	((gpointer) (gsize) (u))
+#define GPOINTER_TO_PID(u)	((GPid) (gpointer) (u))
+
+#ifdef G_OS_UNIX
+static gint pipe_fds[2];
 
 static void
 watch_parent (gint fd)
@@ -106,11 +118,88 @@ watch_parent (gint fd)
         }
     }
   while (TRUE);
+}
 
+static void
+init_watch_parent (void)
+{
+  /* fork a child to clean up session buses when we are killed */
+  if (pipe (pipe_fds) != 0)
+    {
+      g_warning ("pipe() failed: %m");
+      g_assert_not_reached ();
+    }
+  switch (fork ())
+    {
+    case -1:
+      g_warning ("fork() failed: %m");
+      g_assert_not_reached ();
+      break;
+
+    case 0:
+      /* child */
+      close (pipe_fds[1]);
+      watch_parent (pipe_fds[0]);
+      break;
+
+    default:
+      /* parent */
+      close (pipe_fds[0]);
+      break;
+    }
+  //atexit (cleanup_session_buses);
+  /* TODO: need to handle the cases where we crash */
+}
+
+static void
+watch_pid (GPid pid)
+{
+  gchar buf[512];
+
+  /* write the pid to the child so it can kill it when we die */
+  g_snprintf (buf, sizeof buf, "add %d\n", (guint) pid);
+  write (pipe_fds[1], buf, strlen (buf));
+}
+
+static void
+unwatch_pid (GPid pid)
+{
+  gchar buf[512];
+
+  /* write the pid to the child so it won't kill it when we die */
+  g_snprintf (buf, sizeof buf, "remove %d\n", (guint) pid);
+  write (pipe_fds[1], buf, strlen (buf));
+}
+#else
+
+static void
+init_watch_parent (void)
+{
+}
+
+static void
+watch_pid (GPid pid)
+{
+}
+
+static void
+unwatch_pid (GPid pid)
+{
+}
+
+#endif
+
+static void
+terminate_pid (GPid pid)
+{
+#ifdef G_OS_WIN32
+  TerminateProcess (pid, 0);
+#else
+  kill (SIGTERM, pid);
+#endif
 }
 
 static GHashTable *session_bus_address_to_pid = NULL;
-static gint pipe_fds[2];
 
 const gchar *
 session_bus_up_with_address (const gchar *given_address)
@@ -167,7 +256,11 @@ session_bus_up_with_address (const gchar *given_address)
 
   if (g_getenv ("G_DBUS_DAEMON") != NULL)
     {
+#ifdef G_OS_WIN32
+      argv[0] = "./gdbus-daemon.exe";
+#else
       argv[0] = "./gdbus-daemon";
+#endif
       argv[2] = g_strdup_printf ("--address=%s", given_address);
     }
   else
@@ -177,34 +270,7 @@ session_bus_up_with_address (const gchar *given_address)
     {
       /* keep a mapping from session bus address to the pid */
       session_bus_address_to_pid = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-      /* fork a child to clean up session buses when we are killed */
-      if (pipe (pipe_fds) != 0)
-        {
-          g_warning ("pipe() failed: %m");
-          g_assert_not_reached ();
-        }
-      switch (fork ())
-        {
-        case -1:
-          g_warning ("fork() failed: %m");
-          g_assert_not_reached ();
-          break;
-
-        case 0:
-          /* child */
-          close (pipe_fds[1]);
-          watch_parent (pipe_fds[0]);
-          break;
-
-        default:
-          /* parent */
-          close (pipe_fds[0]);
-          break;
-        }
-
-      //atexit (cleanup_session_buses);
-      /* TODO: need to handle the cases where we crash */
+      init_watch_parent ();
     }
   else
     {
@@ -243,16 +309,14 @@ session_bus_up_with_address (const gchar *given_address)
   if (bytes_read == 0 || bytes_read == sizeof buf)
     {
       g_warning ("Error reading address from dbus daemon, %d bytes read", (gint) bytes_read);
-      kill (SIGTERM, pid);
+      terminate_pid (pid);
       goto out;
     }
 
   address = g_strdup (buf);
   g_strstrip (address);
 
-  /* write the pid to the child so it can kill it when we die */
-  g_snprintf (buf, sizeof buf, "add %d\n", (guint) pid);
-  write (pipe_fds[1], buf, strlen (buf));
+  watch_pid (pid);
 
   /* start dbus-monitor */
   if (g_getenv ("G_DBUS_MONITOR") != NULL)
@@ -261,7 +325,7 @@ session_bus_up_with_address (const gchar *given_address)
       usleep (500 * 1000);
     }
 
-  g_hash_table_insert (session_bus_address_to_pid, address, GUINT_TO_POINTER (pid));
+  g_hash_table_insert (session_bus_address_to_pid, address, GPID_TO_POINTER (pid));
 
  out:
   if (config_file_fd > 0)
@@ -286,23 +350,20 @@ session_bus_down_with_address (const gchar *address)
 {
   gpointer value;
   GPid pid;
-  gchar buf[512];
 
   g_assert (address != NULL);
   g_assert (session_bus_address_to_pid != NULL);
 
   value = g_hash_table_lookup (session_bus_address_to_pid, address);
-  g_assert (value != NULL);
+  if (value != NULL)
+    {
+      pid = GPOINTER_TO_PID (g_hash_table_lookup (session_bus_address_to_pid, address));
 
-  pid = GPOINTER_TO_UINT (g_hash_table_lookup (session_bus_address_to_pid, address));
+      terminate_pid (pid);
+      unwatch_pid (pid);
 
-  kill (pid, SIGTERM);
-
-  /* write the pid to the child so it won't kill it when we die */
-  g_snprintf (buf, sizeof buf, "remove %d\n", (guint) pid);
-  write (pipe_fds[1], buf, strlen (buf));
-
-  g_hash_table_remove (session_bus_address_to_pid, address);
+      g_hash_table_remove (session_bus_address_to_pid, address);
+    }
 }
 
 static gchar *temporary_address = NULL;
@@ -313,7 +374,11 @@ session_bus_get_temporary_address (void)
 {
   if (temporary_address == NULL)
     {
+#ifdef G_OS_WIN32
+      temporary_address = g_strdup_printf ("tcp:port=44001,host=127.0.0.1");
+#else
       temporary_address = g_strdup_printf ("unix:path=/tmp/g-dbus-tests-pid-%d", getpid ());
+#endif
     }
 
   return temporary_address;
