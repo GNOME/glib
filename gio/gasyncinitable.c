@@ -289,6 +289,7 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
    * even though g_async_initable_real_init_async doesn't generate
    * them any more.
    */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (G_IS_SIMPLE_ASYNC_RESULT (res))
     {
       GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
@@ -297,6 +298,7 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
       else
         return TRUE;
     }
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_return_val_if_fail (g_task_is_valid (res, initable), FALSE);
 
