@@ -2585,8 +2585,13 @@ AS_IF([ test $cross_compiling = yes && test x$enable_modular_tests = xyes], [
 dnl **************************
 dnl *** Checks for gtk-doc ***
 dnl **************************
-
+# gtkdocize greps for ^GTK_DOC_CHECK and parses it, so you need to have
+# it on it's own line.
+m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
+],[
+AM_CONDITIONAL([ENABLE_GTK_DOC],[false])
+])
 
 AC_ARG_ENABLE(man,
               [AC_HELP_STRING([--enable-man],

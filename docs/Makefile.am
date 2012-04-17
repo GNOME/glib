@@ -1,7 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
+if ENABLE_GTK_DOC
 SUBDIRS = reference
+endif
 
 EXTRA_DIST += debugging.txt macros.txt
 

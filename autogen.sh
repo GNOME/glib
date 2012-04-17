@@ -7,10 +7,13 @@ test -n "$srcdir" || srcdir=.
 olddir=`pwd`
 cd "$srcdir"
 
-GTKDOCIZE=`which gtkdocize`
+GTKDOCIZE=$(which gtkdocize 2>/dev/null)
 if test -z $GTKDOCIZE; then
-        echo "*** No GTK-Doc found, please install it ***"
-        exit 1
+        echo "You don't have gtk-doc installed, and thus won't be able to generate the documentation."
+        rm -f gtk-doc.make
+        echo 'EXTRA_DIST =' > gtk-doc.make
+else
+        gtkdocize || exit $?
 fi
 
 AUTORECONF=`which autoreconf`
@@ -24,7 +27,6 @@ fi
 # regenerated from their corresponding *.in files by ./configure anyway.
 touch README INSTALL
 
-gtkdocize || exit $?
 autoreconf --force --install --verbose || exit $?
 
 cd "$olddir"
