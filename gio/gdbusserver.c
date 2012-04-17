@@ -861,6 +861,7 @@ try_tcp (GDBusServer  *server,
       guint n;
       gsize bytes_written;
       gsize bytes_remaining;
+      char *file_escaped;
 
       server->nonce = g_new0 (guchar, 16);
       for (n = 0; n < 16; n++)
@@ -896,10 +897,12 @@ try_tcp (GDBusServer  *server,
           bytes_remaining -= ret;
         }
       close (fd);
+      file_escaped = g_uri_escape_string (server->nonce_file, "/\\", FALSE);
       server->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
                                                 host,
                                                 port_num,
-                                                server->nonce_file);
+                                                file_escaped);
+      g_free (file_escaped);
     }
   else
     {
