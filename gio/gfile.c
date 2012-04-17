@@ -5758,15 +5758,6 @@ copy_async_progress_in_main (gpointer user_data)
   return FALSE;
 }
 
-static gboolean
-mainloop_barrier (gpointer user_data)
-{
-  /* Does nothing, but ensures all queued idles before
-     this are run */
-  return FALSE;
-}
-
-
 static void
 copy_async_progress_callback (goffset  current_num_bytes,
 			      goffset  total_num_bytes,
@@ -5809,12 +5800,6 @@ copy_async_thread (GIOSchedulerJob *job,
 			data,
 			&error);
 
-  /* Ensure all progress callbacks are done running in main thread */
-  if (data->progress_cb != NULL)
-    g_io_scheduler_job_send_to_mainloop (job,
-					 mainloop_barrier,
-					 NULL, NULL);
-  
   if (!result)
     g_simple_async_result_take_error (res, error);
 
