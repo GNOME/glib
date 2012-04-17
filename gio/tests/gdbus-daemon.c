@@ -57,7 +57,7 @@ main (int argc, char *argv[])
     }
 
   if (print_env)
-    g_print ("export DBUS_SESSION_BUS_ADDRESS=%s\n", _g_dbus_daemon_get_address (daemon));
+    g_print ("export DBUS_SESSION_BUS_ADDRESS=\"%s\"\n", _g_dbus_daemon_get_address (daemon));
 
   if (print_address)
     g_print ("%s\n", _g_dbus_daemon_get_address (daemon));
