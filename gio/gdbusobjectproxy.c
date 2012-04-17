@@ -71,6 +71,8 @@ g_dbus_object_proxy_finalize (GObject *object)
 
   g_hash_table_unref (proxy->priv->map_name_to_iface);
 
+  g_clear_object (&proxy->priv->connection);
+
   g_mutex_clear (&proxy->priv->lock);
 
   if (G_OBJECT_CLASS (g_dbus_object_proxy_parent_class)->finalize != NULL)
