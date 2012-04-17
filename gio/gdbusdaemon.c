@@ -1498,7 +1498,7 @@ g_dbus_daemon_finalize (GObject *object)
 
   if (daemon->tmpdir)
     {
-      rmdir (daemon->tmpdir);
+      g_rmdir (daemon->tmpdir);
       g_free (daemon->tmpdir);
     }
 
