@@ -904,6 +904,9 @@ handle_get_connection_selinux_security_context (_GFreedesktopDBus *object,
 						GDBusMethodInvocation *invocation,
 						const gchar *arg_name)
 {
+  g_dbus_method_invocation_return_error (invocation,
+					 G_DBUS_ERROR, G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN,
+					 "selinux context not supported");
   _g_freedesktop_dbus_complete_get_connection_selinux_security_context (object, invocation, "");
   return TRUE;
 }
@@ -913,8 +916,10 @@ handle_get_connection_unix_process_id (_GFreedesktopDBus *object,
 				       GDBusMethodInvocation *invocation,
 				       const gchar *arg_name)
 {
-  /* TODO: Implement */
-  return FALSE;
+  g_dbus_method_invocation_return_error (invocation,
+					 G_DBUS_ERROR, G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN,
+					 "connection pid not supported");
+  return TRUE;
 }
 
 static gboolean
@@ -922,8 +927,10 @@ handle_get_connection_unix_user (_GFreedesktopDBus *object,
 				 GDBusMethodInvocation *invocation,
 				 const gchar *arg_name)
 {
-  /* TODO: Implement */
-  return FALSE;
+  g_dbus_method_invocation_return_error (invocation,
+					 G_DBUS_ERROR, G_DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN,
+					 "connection user not supported");
+  return TRUE;
 }
 
 static gboolean
@@ -996,7 +1003,6 @@ handle_list_activatable_names (_GFreedesktopDBus *object,
 {
   const char *names[] = { NULL };
 
-  /* TODO: Implement */
   _g_freedesktop_dbus_complete_list_activatable_names (object,
 						       invocation,
 						       names);
@@ -1475,6 +1481,18 @@ static void
 g_dbus_daemon_finalize (GObject *object)
 {
   GDBusDaemon *daemon = G_DBUS_DAEMON (object);
+  GList *clients, *l;
+
+  clients = g_hash_table_get_values (daemon->clients);
+  for (l = clients; l != NULL; l = l->next)
+    client_free (l->data);
+  g_list_free (clients);
+
+  g_assert (g_hash_table_size (daemon->clients) == 0);
+  g_assert (g_hash_table_size (daemon->names) == 0);
+
+  g_hash_table_destroy (daemon->clients);
+  g_hash_table_destroy (daemon->names);
 
   g_object_unref (daemon->server);
 
@@ -1486,11 +1504,6 @@ g_dbus_daemon_finalize (GObject *object)
 
   g_free (daemon->guid);
   g_free (daemon->address);
-
-  /* TODO: Destroy all clients */
-
-  g_hash_table_destroy (daemon->clients);
-  g_hash_table_destroy (daemon->names);
 
   G_OBJECT_CLASS (g_dbus_daemon_parent_class)->finalize (object);
 }
