@@ -541,9 +541,13 @@ test_file_errors (void)
   g_assert (g_file_error_from_errno (ENXIO) == G_FILE_ERROR_NXIO);
   g_assert (g_file_error_from_errno (ENODEV) == G_FILE_ERROR_NODEV);
   g_assert (g_file_error_from_errno (EROFS) == G_FILE_ERROR_ROFS);
+#ifdef ETXTBSY
   g_assert (g_file_error_from_errno (ETXTBSY) == G_FILE_ERROR_TXTBSY);
+#endif
   g_assert (g_file_error_from_errno (EFAULT) == G_FILE_ERROR_FAULT);
+#ifdef ELOOP
   g_assert (g_file_error_from_errno (ELOOP) == G_FILE_ERROR_LOOP);
+#endif
   g_assert (g_file_error_from_errno (ENOSPC) == G_FILE_ERROR_NOSPC);
   g_assert (g_file_error_from_errno (ENOMEM) == G_FILE_ERROR_NOMEM);
   g_assert (g_file_error_from_errno (EMFILE) == G_FILE_ERROR_MFILE);
