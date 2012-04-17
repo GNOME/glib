@@ -1081,11 +1081,13 @@ handle_name_has_owner (_GFreedesktopDBus *object,
 {
   GDBusDaemon *daemon = G_DBUS_DAEMON (object);
   Name *name;
+  Client *client;
 
   name = name_lookup (daemon, arg_name);
+  client = g_hash_table_lookup (daemon->clients, arg_name);
 
   _g_freedesktop_dbus_complete_name_has_owner (object, invocation,
-					       name != NULL);
+					       name != NULL || client != NULL);
   return TRUE;
 }
 
