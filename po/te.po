@@ -1,6 +1,6 @@
 # translation of glib.master.te.po to Telugu
 # Telugu translation of glib
-# Copyright (C) 2012 Swecha telugu localisation Team.
+# Copyright (C) 2012 Swecha telugu localisation Team <localization@swecha.net>
 # This file is distributed under the same license as the GLIB package.
 #
 #
@@ -17,9 +17,9 @@ msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-04 09:41+0000\n"
-"PO-Revision-Date: 2012-04-05 19:12+0530\n"
-"Last-Translator: Sasi Bhushan Boddepalli<sasi@swecha.net>\n"
+"POT-Creation-Date: 2012-04-16 13:53+0000\n"
+"PO-Revision-Date: 2012-04-17 15:42+0530\n"
+"Last-Translator: Sasi Bhushan Boddepalli<sasi@swecha.net> <>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -242,7 +242,7 @@ msgstr "కమాండ్ లైన్ `%s 'non-సున్నా నిష
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "సెషన్ బస్సు చిరునామా (ఈ OS కోసం అమలు కాలేదు) కనుగొనలేదు"
 
-#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -250,7 +250,7 @@ msgid ""
 msgstr ""
 "చరరాశి DBUS_STARTER_BUS_TYPE పర్యావరణం నుంచి బస్సు చిరునామా కనుగొనలేదు - తెలియని విలువ `%s '"
 
-#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6715
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -262,21 +262,21 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "తెలియని బస్సు రకం%d"
 
-#: ../gio/gdbusauth.c:287
+#: ../gio/gdbusauth.c:298
 msgid "Unexpected lack of content trying to read a line"
 msgstr "ఒక లైన్ చదివి ప్రయత్నిస్తున్న కంటెంట్ ఊహించని లేకపోవడం"
 
-#: ../gio/gdbusauth.c:331
+#: ../gio/gdbusauth.c:342
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "ప్రయత్నిస్తున్న కంటెంట్ ఊహించని లేకపోవడం (సురక్షితంగా) ఒక లైన్ చదివి"
 
-#: ../gio/gdbusauth.c:502
+#: ../gio/gdbusauth.c:513
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr "(అందుబాటులో:%s): అన్నీ అందుబాటులో ప్రామాణీకరణ విధానాల (%s ప్రయత్నించాడు) అలిసిపోయిన"
 
-#: ../gio/gdbusauth.c:1158
+#: ../gio/gdbusauth.c:1174
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "GDBusAuthObserver ద్వారా రద్దు అయ్యింది :: అధికారం-అధికారం-పీర్"
 
@@ -366,72 +366,72 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "ఒక క్లయింట్-వైపు కనెక్షన్ నిర్మించడానికి ఉన్నప్పుడు మద్దతు లేని జెండాలు ఎదుర్కొంది"
 
-#: ../gio/gdbusconnection.c:4015 ../gio/gdbusconnection.c:4331
+#: ../gio/gdbusconnection.c:4016 ../gio/gdbusconnection.c:4332
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "మార్గం%s వద్ద వస్తువు మీద అటువంటి ఇంటర్ఫేస్ `org.freedesktop.DBus.Properties '"
 
-#: ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:4087
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "సెట్టింగ్లో లోపం ఆస్తి `%s ': ఊహించినది రకం`%s' కానీ వచ్చింది `%s '"
 
-#: ../gio/gdbusconnection.c:4181
+#: ../gio/gdbusconnection.c:4182
 #, c-format
 msgid "No such property `%s'"
 msgstr "అటువంటి ఆస్తి `%s '"
 
-#: ../gio/gdbusconnection.c:4193
+#: ../gio/gdbusconnection.c:4194
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "ఆస్తి `%s 'రీడబుల్ కాదు"
 
-#: ../gio/gdbusconnection.c:4204
+#: ../gio/gdbusconnection.c:4205
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "ఆస్తి `%s 'వ్రైటబుల్ కాదు"
 
-#: ../gio/gdbusconnection.c:4274 ../gio/gdbusconnection.c:6148
+#: ../gio/gdbusconnection.c:4275 ../gio/gdbusconnection.c:6149
 #, c-format
 msgid "No such interface `%s'"
 msgstr "అటువంటి ఇంటర్ఫేస్ `%s '"
 
-#: ../gio/gdbusconnection.c:4458
+#: ../gio/gdbusconnection.c:4459
 msgid "No such interface"
 msgstr "అటువంటి ఇంటర్ఫేస్"
 
-#: ../gio/gdbusconnection.c:4676 ../gio/gdbusconnection.c:6654
+#: ../gio/gdbusconnection.c:4677 ../gio/gdbusconnection.c:6655
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "అటువంటి ఇంటర్ఫేస్ `%s 'మార్గం%s వద్ద వస్తువు న"
 
-#: ../gio/gdbusconnection.c:4731
+#: ../gio/gdbusconnection.c:4732
 #, c-format
 msgid "No such method `%s'"
 msgstr "అటువంటి పద్ధతి `%s'"
 
-#: ../gio/gdbusconnection.c:4762
+#: ../gio/gdbusconnection.c:4763
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "సందేశం యొక్క పద్ధతి, `%s ', సరిపోలడం లేదు అంచనా రకం`%s'"
 
-#: ../gio/gdbusconnection.c:4982
+#: ../gio/gdbusconnection.c:4983
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "ఒక వస్తువు ఇప్పటికే %s వద్ద ఇంటర్ఫేస్ %s కోసం ఎగుమతి ఉంది"
 
-#: ../gio/gdbusconnection.c:5180
+#: ../gio/gdbusconnection.c:5181
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "పద్ధతి `%s 'తిరిగి రకం`%s', కానీ అంచనా `%s'"
 
-#: ../gio/gdbusconnection.c:6259
+#: ../gio/gdbusconnection.c:6260
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "పద్ధతి `%s 'ఇంటర్ఫేస్ న`%s' సంతకం `%s 'లేదు తో"
 
-#: ../gio/gdbusconnection.c:6378
+#: ../gio/gdbusconnection.c:6379
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "ఒక subtree ఇప్పటికే %s కోసం ఎగుమతి ఉంది"
@@ -503,7 +503,7 @@ msgstr "అన్వయించడం విలువ `%s 'ఒక చెల్�
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "అన్వయించడం విలువ `%s 'ఒక చెల్లుబాటు అయ్యే D-బస్ సంతకం కాదు "
 
-#: ../gio/gdbusmessage.c:1324
+#: ../gio/gdbusmessage.c:1325
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -512,18 +512,18 @@ msgid_plural ""
 msgstr[0] "పొడవు %u బైట్ యొక్క ఎదుర్కొంది అర్రే. గరిష్ఠ పొడవు 2 << 26 బైట్లు (64 MiB) ఉంది."
 msgstr[1] "పొడవు %u బైట్లు యొక్క ఎదుర్కొంది అర్రే. గరిష్ఠ పొడవు 2 << 26 బైట్లు (64 MiB) ఉంది."
 
-#: ../gio/gdbusmessage.c:1490
+#: ../gio/gdbusmessage.c:1483
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "అన్వయించడం విలువ `%s 'వేరియంట్ కొరకు ఒక చెల్లుబాటు అయ్యే D-బస్ సంతకం కాదు"
 
-#: ../gio/gdbusmessage.c:1517
+#: ../gio/gdbusmessage.c:1510
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr "D-బస్ వైర్ ఫార్మాట్ నుండి రకం స్ట్రింగ్ `%s 'తో GVariant deserializing లోపం"
 
-#: ../gio/gdbusmessage.c:1705
+#: ../gio/gdbusmessage.c:1698
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -531,72 +531,72 @@ msgid ""
 msgstr ""
 "చెల్లని endianness విలువ. కానీ అంచనా 0x6c ('ఎల్') లేదా 0x42 ('B') విలువ దొరకలేదు0x%02x"
 
-#: ../gio/gdbusmessage.c:1719
+#: ../gio/gdbusmessage.c:1712
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "చెల్లని ప్రధాన ప్రోటోకాల్ వెర్షన్. 1 అంచనా కాని %d దొరకలేదు"
 
-#: ../gio/gdbusmessage.c:1776
+#: ../gio/gdbusmessage.c:1769
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "సంతకం `%s 'తో సంతకం శీర్షిక కానీ దొరకలేదు సందేశ భాగం ఖాళీగా ఉంది"
 
-#: ../gio/gdbusmessage.c:1790
+#: ../gio/gdbusmessage.c:1783
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "అన్వయించడం విలువ `%s 'ఒక చెల్లుబాటు అయ్యే D-బస్ సంతకం (శరీరం కోసం) కాదు"
 
-#: ../gio/gdbusmessage.c:1821
+#: ../gio/gdbusmessage.c:1814
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "సందేశం కాని సందేశ భాగం లో కాదు సంతకం శీర్షిక %u బైట్ ఉంది"
 msgstr[1] "సందేశం ఏ సంతకం శీర్షిక కాని సందేశ భాగం %u బైట్లు"
 
-#: ../gio/gdbusmessage.c:1831
+#: ../gio/gdbusmessage.c:1824
 msgid "Cannot deserialize message: "
 msgstr "సందేశం deserialize సాధ్యం కాదు:"
 
-#: ../gio/gdbusmessage.c:2163
+#: ../gio/gdbusmessage.c:2156
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "తో GVariant serializing లోపం రకం స్ట్రింగ్ `%s 'D-బస్ వైర్ ఆకృతికి"
 
-#: ../gio/gdbusmessage.c:2304
+#: ../gio/gdbusmessage.c:2297
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
 msgstr "సందేశం%d ఫైలు సూచికలు కలిగి ఉంది కాని శీర్షిక ఫీల్డ్ %d ఫైలు సూచిస్తుందిసూచికలు"
 
-#: ../gio/gdbusmessage.c:2312
+#: ../gio/gdbusmessage.c:2305
 msgid "Cannot serialize message: "
 msgstr "సందేశం serialize సాధ్యం కాదు:"
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2349
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "సందేశ భాగం సంతకం `%s 'కలిగి ఉంది కాని సంఖ్య సంతకం శీర్షిక ఉంది"
 
-#: ../gio/gdbusmessage.c:2366
+#: ../gio/gdbusmessage.c:2359
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
 "s'"
 msgstr "సందేశ భాగం రకం లేదు సంతకం `%s' కానీ శీర్షిక క్షేత్రంలో సంతకం`%s' ఉంది"
 
-#: ../gio/gdbusmessage.c:2382
+#: ../gio/gdbusmessage.c:2375
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "సందేశ భాగం ఖాళీగా ఉంది కానీ శీర్షిక క్షేత్రంలో సంతకం (%s) `ఉంది '"
 
-#: ../gio/gdbusmessage.c:2939
+#: ../gio/gdbusmessage.c:2932
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "రకం `%s యొక్క శరీరం తో లోపం తిరిగి '"
 
-#: ../gio/gdbusmessage.c:2947
+#: ../gio/gdbusmessage.c:2940
 msgid "Error return with empty body"
 msgstr "ఖాళీ శరీరంతో లోపం తిరిగి"
 
@@ -869,38 +869,38 @@ msgstr "పర్యవేక్షించుటకు వస్తువు �
 msgid "Monitor a remote object."
 msgstr "ఒక మారుమూల వస్తువు పర్యవేక్షించడానికి"
 
-#: ../gio/gdesktopappinfo.c:575 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:578 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "నామములేని"
 
-#: ../gio/gdesktopappinfo.c:988
+#: ../gio/gdesktopappinfo.c:991
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: ../gio/gdesktopappinfo.c:1276
+#: ../gio/gdesktopappinfo.c:1279
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: ../gio/gdesktopappinfo.c:1563
+#: ../gio/gdesktopappinfo.c:1566
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: ../gio/gdesktopappinfo.c:1567
+#: ../gio/gdesktopappinfo.c:1570
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: ../gio/gdesktopappinfo.c:1807 ../gio/gdesktopappinfo.c:1831
+#: ../gio/gdesktopappinfo.c:1810 ../gio/gdesktopappinfo.c:1834
 msgid "Application information lacks an identifier"
 msgstr "దరఖాస్తు సమాచారం ఒక గుర్తించే లేదు"
 
-#: ../gio/gdesktopappinfo.c:2055
+#: ../gio/gdesktopappinfo.c:2058
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: ../gio/gdesktopappinfo.c:2171
+#: ../gio/gdesktopappinfo.c:2174
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1150,12 +1150,12 @@ msgstr "ఇన్‌పుట్ స్ట్రీమ్ చదువుటన�
 msgid "Stream has outstanding operation"
 msgstr "ఈ స్ట్రీమ్ యిప్పటికే వొక ఆపరేషన్‌ను కలిగివుంది"
 
-#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1449
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1455
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "మూలకం <%s> <%s> లోపల అనుమతి లేదు"
 
-#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1453
+#: ../gio/glib-compile-resources.c:148 ../gio/glib-compile-schemas.c:1459
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "మూలకం <%s> toplevel వద్ద అనుమతి లేదు"
@@ -1203,7 +1203,7 @@ msgstr "ఫైలు %s చదువుటలో దోషం: %s"
 msgid "Error compressing file %s"
 msgstr "ఫైలు %s కుదించుటలో దోషం"
 
-#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1561
+#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1567
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "టెక్స్ట్ <%s> లోపల కనిపించక పోవచ్చు"
@@ -1223,8 +1223,8 @@ msgid ""
 "directory)"
 msgstr "ఎచటనుండి ఫైళ్ళు చదువబడునో ఆ డైరెక్టరీలు (అప్రమేయంగా స్థానిక డైరెక్టరీనకు)"
 
-#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1989
-#: ../gio/glib-compile-schemas.c:2019
+#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1995
+#: ../gio/glib-compile-schemas.c:2025
 msgid "DIRECTORY"
 msgstr "డైరెక్టరీ"
 
@@ -1405,58 +1405,58 @@ msgstr "ఒక మార్గ, వాడితేనే, ప్రారంభ�
 msgid "the path of a list must end with ':/'"
 msgstr "ఒక జాబితా యొక్క మార్గం ':/' తో అంతం చేయాలి"
 
-#: ../gio/glib-compile-schemas.c:1229
+#: ../gio/glib-compile-schemas.c:1235
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id = '%s'> ఇప్పటికే తెలుపబడిన"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1747 ../gio/glib-compile-schemas.c:1818
-#: ../gio/glib-compile-schemas.c:1894
+#: ../gio/glib-compile-schemas.c:1753 ../gio/glib-compile-schemas.c:1824
+#: ../gio/glib-compile-schemas.c:1900
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "-- కఠినమైన పేర్కొన్న జరిగినది; నిష్క్రమించే \n"
 
-#: ../gio/glib-compile-schemas.c:1755
+#: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "ఈ మొత్తం ఫైలు విస్మరించబడింది.\n"
 
-#: ../gio/glib-compile-schemas.c:1814
+#: ../gio/glib-compile-schemas.c:1820
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "ఈ ఫైలు విస్మరిస్తున్నాము.\n"
 
-#: ../gio/glib-compile-schemas.c:1854
+#: ../gio/glib-compile-schemas.c:1860
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr "అటువంటి కీలక `%s 'స్కీమ లో `%s' గా ఓవరురైడు ఫైలు లో పేర్కొన్న `%s '"
 
-#: ../gio/glib-compile-schemas.c:1860 ../gio/glib-compile-schemas.c:1918
-#: ../gio/glib-compile-schemas.c:1946
+#: ../gio/glib-compile-schemas.c:1866 ../gio/glib-compile-schemas.c:1924
+#: ../gio/glib-compile-schemas.c:1952
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr ";. ఈ కీ కోసం ఓవరురైడు విస్మరిస్తూ \n"
 
-#: ../gio/glib-compile-schemas.c:1864 ../gio/glib-compile-schemas.c:1922
-#: ../gio/glib-compile-schemas.c:1950
+#: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
+#: ../gio/glib-compile-schemas.c:1956
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " మరియు కఠినమైన పేర్కొన్న జరిగినది; నిష్క్రమించే.\n"
 
-#: ../gio/glib-compile-schemas.c:1880
+#: ../gio/glib-compile-schemas.c:1886
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
 "s.  "
 msgstr "లోపం పార్సింగ్ కీలక `%s' స్కీమ లో`%s' గా ఓవరురైడు లో పేర్కొన్న ఫైల్ `%s': %s. "
 
-#: ../gio/glib-compile-schemas.c:1890
+#: ../gio/glib-compile-schemas.c:1896
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "ఈ కీ కోసం ఓవరురైడు విస్మరించడం. \n"
 
-#: ../gio/glib-compile-schemas.c:1908
+#: ../gio/glib-compile-schemas.c:1914
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -1464,7 +1464,7 @@ msgid ""
 msgstr ""
 "కీలక `%s' కోసం తొలగించకండి 'స్కీమ లో`%s' ఓవరురైడు ఫైలు `%s'లో ముగిసింది స్కీమలో ఇవ్వబడిన పరిధికి"
 
-#: ../gio/glib-compile-schemas.c:1936
+#: ../gio/glib-compile-schemas.c:1942
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -1473,23 +1473,23 @@ msgstr ""
 "కీలక `%s కోసం తొలగించకండి 'స్కీమ లో`%s' ఓవరురైడు ఫైలు `%s'లో లేదుచెల్లుబాటు అయ్యే ఎంపికలు యొక్క "
 "జాబితా"
 
-#: ../gio/glib-compile-schemas.c:1989
+#: ../gio/glib-compile-schemas.c:1995
 msgid "where to store the gschemas.compiled file"
 msgstr "gschemas.compiled ఫైలు నిల్వ చేయడానికి ఇక్కడ"
 
-#: ../gio/glib-compile-schemas.c:1990
+#: ../gio/glib-compile-schemas.c:1996
 msgid "Abort on any errors in schemas"
 msgstr "స్కీమాస్ ఏ లోపాలను విస్మరించు"
 
-#: ../gio/glib-compile-schemas.c:1991
+#: ../gio/glib-compile-schemas.c:1997
 msgid "Do not write the gschema.compiled file"
 msgstr "Gschema.compiled ఫైలు వ్రాయడం లేదు"
 
-#: ../gio/glib-compile-schemas.c:1992
+#: ../gio/glib-compile-schemas.c:1998
 msgid "Do not enforce key name restrictions"
 msgstr "కీలక పేరు ఆంక్షలు అమలు లేదు"
 
-#: ../gio/glib-compile-schemas.c:2022
+#: ../gio/glib-compile-schemas.c:2028
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -1499,22 +1499,22 @@ msgstr ""
 "స్కీమ ఫైళ్లు పొడిగింపు కలిగి ఉంటుంది. Gschema.xml,\n"
 "మరియు కాషె ఫైల్ gschemas.compiled అని పిలుస్తారు."
 
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2044
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "మీరు సరిగ్గా ఒక డైరెక్టరీ పేరు ఇవ్వాలి\n"
 
-#: ../gio/glib-compile-schemas.c:2077
+#: ../gio/glib-compile-schemas.c:2083
 #, c-format
 msgid "No schema files found: "
 msgstr "ఏ స్కీమ ఫైళ్లు దొరకలేదు:"
 
-#: ../gio/glib-compile-schemas.c:2080
+#: ../gio/glib-compile-schemas.c:2086
 #, c-format
 msgid "doing nothing.\n"
 msgstr "ఏమీ చేయడం.\n"
 
-#: ../gio/glib-compile-schemas.c:2083
+#: ../gio/glib-compile-schemas.c:2089
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "తొలగించబడింది ఉన్న అవుట్పుట్ ఫైలు.\n"
@@ -1923,40 +1923,40 @@ msgstr "అవుట్‌పుట్ స్ట్రీమ్ వ్రాయ�
 msgid "Source stream is already closed"
 msgstr "మూల స్ట్రీమ్ యిప్పటికే మూయబడివుంది"
 
-#: ../gio/gresolver.c:764
+#: ../gio/gresolver.c:940
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "'%s' పరిష్కరించుటలో దోషము: %s"
 
-#: ../gio/gresolver.c:814
+#: ../gio/gresolver.c:990
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "వ్యతిరేక-పరిష్కారములో దోషము '%s': %s"
 
-#: ../gio/gresolver.c:849 ../gio/gresolver.c:928
+#: ../gio/gresolver.c:1149 ../gio/gresolver.c:1323
 #, c-format
-msgid "No service record for '%s'"
-msgstr "'%s' కొరకు ఏ సేవ రికార్డైలేదు"
+msgid "No DNS record of the requested type for '%s'"
+msgstr "'%s' కోసం అభ్యర్ధన రకం సంఖ్య DNS రికార్డు "
 
-#: ../gio/gresolver.c:854 ../gio/gresolver.c:933
+#: ../gio/gresolver.c:1154 ../gio/gresolver.c:1328
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "తాత్కాలికంగా '%s' పరిష్కరించలేదు"
 
-#: ../gio/gresolver.c:859 ../gio/gresolver.c:938
+#: ../gio/gresolver.c:1159 ../gio/gresolver.c:1333
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "%s పరిష్కరించుటలో దోషము"
 
-#: ../gio/gresource.c:294 ../gio/gresource.c:539 ../gio/gresource.c:556
-#: ../gio/gresource.c:679 ../gio/gresource.c:748 ../gio/gresource.c:809
-#: ../gio/gresource.c:889 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:295 ../gio/gresource.c:540 ../gio/gresource.c:557
+#: ../gio/gresource.c:678 ../gio/gresource.c:747 ../gio/gresource.c:808
+#: ../gio/gresource.c:888 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "'%s' వద్ద వనరు లేదు"
 
-#: ../gio/gresource.c:456
+#: ../gio/gresource.c:457
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "'%s' వద్ద వనరు డీకంప్రెస్ అగుటకు విఫలమైంది"
@@ -2352,7 +2352,6 @@ msgid "Unable to create socket: %s"
 msgstr "సాకెట్‌ను సృష్టించలేక పోయింది: %s"
 
 #: ../gio/gsocket.c:506
-#| msgid "Unknown protocol was specified"
 msgid "Unknown family was specified"
 msgstr "అపరిచిత కుటుంబం  తెలుపబడింది"
 
@@ -2613,12 +2612,12 @@ msgstr "ఎంటర్ అనేక వర్డ్ ఉన్నాయి, మ�
 msgid "The password entered is incorrect."
 msgstr "నమోదు చేసిన పాస్ వర్డ్ సరియైనది కాదు."
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:580
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:582
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "1 నింయంత్రణ సందేశము అనుకొంది, %d పొందింది"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:590
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:592
 msgid "Unexpected type of ancillary data"
 msgstr "ఊహించని యాన్సిల్లరి డాటా రకము"
 
@@ -2659,12 +2658,12 @@ msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr "ఆధారాలను అందుకోవటానికి ఒకే బైట్ చదువు కానీ సున్నా బైట్లు చదవడానికి ఎక్స్పెక్టింగ్"
 
-#: ../gio/gunixconnection.c:604
+#: ../gio/gunixconnection.c:606
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "నియంత్రణ సందేశం వస్తుందని వాళ్ళకు, కానీ%d సంపాదించుకున్నారు"
 
-#: ../gio/gunixconnection.c:630
+#: ../gio/gunixconnection.c:632
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED నిలిపివేసిన లోపం అయితే:%s"
@@ -3530,61 +3529,61 @@ msgstr " '%s'మూలకము యోక్క మూసిన బొందు 
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr " లోపల వ్యాఖ్య క్రమగతి ఆదేశం ఉండగా ఊహించకుండా పాఠం ముగింపు  అయినది "
 
-#: ../glib/goption.c:766
+#: ../glib/goption.c:746
 msgid "Usage:"
 msgstr "వినిమయం:"
 
-#: ../glib/goption.c:766
+#: ../glib/goption.c:746
 msgid "[OPTION...]"
 msgstr "[ఇచ్చాపూర్వరకం...]"
 
-#: ../glib/goption.c:872
+#: ../glib/goption.c:852
 msgid "Help Options:"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలు:"
 
-#: ../glib/goption.c:873
+#: ../glib/goption.c:853
 msgid "Show help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలను చూపించుట"
 
-#: ../glib/goption.c:879
+#: ../glib/goption.c:859
 msgid "Show all help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలన్నింటని చూపించుట"
 
-#: ../glib/goption.c:941
+#: ../glib/goption.c:921
 msgid "Application Options:"
 msgstr "కార్యక్షేత్ర ఇచ్ఛాపూర్వకాలు :"
 
-#: ../glib/goption.c:1003 ../glib/goption.c:1073
+#: ../glib/goption.c:983 ../glib/goption.c:1053
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "పూర్ణాంకం విలువ %sను %s కొరకు పార్స్‍ చేయలేదు"
 
-#: ../glib/goption.c:1013 ../glib/goption.c:1081
+#: ../glib/goption.c:993 ../glib/goption.c:1061
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: ../glib/goption.c:1038
+#: ../glib/goption.c:1018
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "డబుల్ విలువ '%s'ను %sకొరకు పార్శ్‍‌చేయలేదు"
 
-#: ../glib/goption.c:1046
+#: ../glib/goption.c:1026
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "డబుల్ విలువ '%s' అనునది %sకొరకు వ్యాప్తిలో లేదు"
 
-#: ../glib/goption.c:1309 ../glib/goption.c:1388
+#: ../glib/goption.c:1289 ../glib/goption.c:1368
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ఐచ్చికం పార్శింగ్‌లో దోషము %s"
 
-#: ../glib/goption.c:1419 ../glib/goption.c:1532
+#: ../glib/goption.c:1399 ../glib/goption.c:1512
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s కొరకు తప్పిపోయిన ఆర్గుమెంట్"
 
-#: ../glib/goption.c:1985
+#: ../glib/goption.c:1965
 #, c-format
 msgid "Unknown option %s"
 msgstr "తెలియని  ఇచ్ఛాపూర్వకము %s"
@@ -4106,6 +4105,9 @@ msgstr[1] "%s బైట్లు"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "No service record for '%s'"
+#~ msgstr "'%s' కొరకు ఏ సేవ రికార్డైలేదు"
 
 #~ msgid "File is empty"
 #~ msgstr " కాళీ దస్త్రం "
