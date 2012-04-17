@@ -1089,8 +1089,7 @@ signal_cb (GDBusConnection *connection,
     }
 
  out:
-  if (object_proxy != NULL)
-    g_object_ref (object_proxy);
+  g_clear_object (&object_proxy);
 }
 
 static void
