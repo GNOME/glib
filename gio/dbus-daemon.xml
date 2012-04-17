@@ -53,6 +53,9 @@
       <arg direction="in" type="s" name="name"/>
       <arg direction="out" type="ay" name="security_context"/>
     </method>
+    <method name="UpdateActivationEnvironment">
+      <arg direction="in" type="a{ss}" name="environment"/>
+    </method>
     <method name="ReloadConfig">
     </method>
     <method name="GetId">

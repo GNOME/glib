@@ -1152,6 +1152,17 @@ handle_reload_config (_GFreedesktopDBus *object,
 }
 
 static gboolean
+handle_update_activation_environment (_GFreedesktopDBus *object,
+				      GDBusMethodInvocation *invocation,
+				      GVariant *arg_environment)
+{
+  g_dbus_method_invocation_return_error (invocation,
+					 G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+					 "UpdateActivationEnvironment not implemented");
+  return TRUE;
+}
+
+static gboolean
 handle_remove_match (_GFreedesktopDBus *object,
 		     GDBusMethodInvocation *invocation,
 		     const gchar *arg_rule)
@@ -1608,6 +1619,7 @@ g_dbus_daemon_iface_init (_GFreedesktopDBusIface *iface)
   iface->handle_name_has_owner = handle_name_has_owner;
   iface->handle_release_name = handle_release_name;
   iface->handle_reload_config = handle_reload_config;
+  iface->handle_update_activation_environment = handle_update_activation_environment;
   iface->handle_remove_match = handle_remove_match;
   iface->handle_request_name = handle_request_name;
   iface->handle_start_service_by_name = handle_start_service_by_name;
