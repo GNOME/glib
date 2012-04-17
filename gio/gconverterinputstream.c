@@ -495,18 +495,18 @@ g_converter_input_stream_read (GInputStream *stream,
 	{
 	  /* Need more data */
 	  my_error2 = NULL;
-	  res = fill_input_buffer (cstream,
-				   buffer_data_size (&priv->input_buffer) + 4096,
-				   cancellable,
-				   &my_error2);
-	  if (res < 0)
+	  nread = fill_input_buffer (cstream,
+				     buffer_data_size (&priv->input_buffer) + 4096,
+				     cancellable,
+				     &my_error2);
+	  if (nread < 0)
 	    {
 	      /* Can't read any more data, return that error */
 	      g_error_free (my_error);
 	      g_propagate_error (error, my_error2);
 	      return -1;
 	    }
-	  else if (res == 0)
+	  else if (nread == 0)
 	    {
 	      /* End of file, try INPUT_AT_END */
 	      priv->at_input_end = TRUE;
