@@ -193,6 +193,7 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
    * deprecation warnings in the future.)
    */
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (G_IS_SIMPLE_ASYNC_RESULT (res))
     {
       return g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res),
@@ -200,6 +201,7 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
     }
   else
     return FALSE;
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 /**
