@@ -79,6 +79,8 @@ gio/gnetworkmonitornetlink.c
 gio/gnetworkservice.c
 gio/goutputstream.c
 gio/gpermission.c
+gio/gpollableinputstream.c
+gio/gpollableoutputstream.c
 gio/gpollfilemonitor.c
 gio/gproxyaddress.c
 gio/gproxyaddressenumerator.c
