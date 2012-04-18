@@ -286,7 +286,15 @@ unix_sources +=			 \
 endif
 endif
 
+gdbus_daemon_sources = \
+	gdbusdaemon.c \
+	gdbusdaemon.h \
+	gdbus-daemon-generated.c \
+	gdbus-daemon-generated.h \
+	$(NULL)
+
 win32_actual_sources = \
+	$(gdbus_daemon_sources) \
 	gwin32mount.c \
 	gwin32mount.h \
 	gwin32volumemonitor.c \
