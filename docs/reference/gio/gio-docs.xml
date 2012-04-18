@@ -230,6 +230,10 @@
         <xi:include href="xml/gdbus-codegen.xml"/>
         <xi:include href="gresource.xml"/>
     </chapter>
+    <chapter id="testing">
+        <title>GIO Testing</title>
+        <xi:include href="xml/gtestdbus.xml"/>
+    </chapter>
   </part>
 
   <part id="migrating">

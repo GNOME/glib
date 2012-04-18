@@ -1640,6 +1640,18 @@ typedef enum {
   G_SOCKET_CLIENT_COMPLETE
 } GSocketClientEvent;
 
+/**
+ * GTestDBusFlags:
+ * @G_TEST_DBUS_NONE: No flags.
+ *
+ * Flags to define future #GTestDBus behaviour.
+ *
+ * Since: 2.34
+ */
+typedef enum /*< flags >*/ {
+  G_TEST_DBUS_NONE = 0,
+} GTestDBusFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

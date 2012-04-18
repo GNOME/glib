@@ -3870,3 +3870,21 @@ g_resource_flags_get_type
 g_resource_lookup_flags_get_type
 g_resource_error_quark
 </SECTION>
+
+<SECTION>
+<FILE>gtestdbus</FILE>
+<TITLE>GTestDBus</TITLE>
+GTestDBus
+GTestDBusFlags
+g_test_dbus_new
+g_test_dbus_get_flags
+g_test_dbus_get_bus_address
+g_test_dbus_add_service_dir
+g_test_dbus_up
+g_test_dbus_stop
+g_test_dbus_down
+g_test_dbus_unset
+<SUBSECTION Private>
+g_test_dbus_get_type
+g_test_dbus_flags_get_type
+</SECTION>
