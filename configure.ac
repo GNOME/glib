@@ -178,7 +178,7 @@ AC_MSG_RESULT([$glib_have_carbon])
 glib_have_cocoa=no
 AC_MSG_CHECKING([for Mac OS X Cocoa support])
 AC_TRY_CPP([
-#include <Foundation/Foundation.h>
+#include <Cocoa/Cocoa.h>
 ], glib_have_cocoa=yes)
 
 AC_MSG_RESULT([$glib_have_cocoa])
