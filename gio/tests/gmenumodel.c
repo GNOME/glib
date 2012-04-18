@@ -839,6 +839,7 @@ test_dbus_subscriptions (void)
   g_object_unref (menu);
 
   g_main_loop_unref (loop);
+  g_object_unref (bus);
 }
 
 static gpointer
