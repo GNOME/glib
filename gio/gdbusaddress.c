@@ -38,10 +38,18 @@
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
 #include "gdbusprivate.h"
+#include "giomodule-priv.h"
+#include "gdbusdaemon.h"
 
 #ifdef G_OS_UNIX
 #include <gio/gunixsocketaddress.h>
 #include <sys/wait.h>
+#endif
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <io.h>
+#include <conio.h>
 #endif
 
 #include "glibintl.h"
@@ -1138,17 +1146,311 @@ get_session_address_dbus_launch (GError **error)
 }
 #endif
 
+#ifdef G_OS_WIN32
+
+#define DBUS_DAEMON_ADDRESS_INFO "DBusDaemonAddressInfo"
+#define DBUS_DAEMON_MUTEX "DBusDaemonMutex"
+#define UNIQUE_DBUS_INIT_MUTEX "UniqueDBusInitMutex"
+#define DBUS_AUTOLAUNCH_MUTEX "DBusAutolaunchMutex"
+
+static void
+release_mutex (HANDLE mutex)
+{
+  ReleaseMutex (mutex);
+  CloseHandle (mutex);
+}
+
+static HANDLE
+acquire_mutex (const char *mutexname)
+{
+  HANDLE mutex;
+  DWORD res;
+
+  mutex = CreateMutexA (NULL, FALSE, mutexname);
+  if (!mutex)
+    return 0;
+
+  res = WaitForSingleObject (mutex, INFINITE);
+  switch (res)
+    {
+    case WAIT_ABANDONED:
+      release_mutex (mutex);
+      return 0;
+    case WAIT_FAILED:
+    case WAIT_TIMEOUT:
+      return 0;
+    }
+
+  return mutex;
+}
+
+static gboolean
+is_mutex_owned (const char *mutexname)
+{
+  HANDLE mutex;
+  gboolean res = FALSE;
+
+  mutex = CreateMutexA (NULL, FALSE, mutexname);
+  if (WaitForSingleObject (mutex, 10) == WAIT_TIMEOUT)
+    res = TRUE;
+  else
+    ReleaseMutex (mutex);
+  CloseHandle (mutex);
+
+  return res;
+}
+
+static char *
+read_shm (const char *shm_name)
+{
+  HANDLE shared_mem;
+  char *shared_data;
+  char *res;
+  int i;
+
+  res = NULL;
+
+  for (i = 0; i < 20; i++)
+    {
+      shared_mem = OpenFileMappingA (FILE_MAP_READ, FALSE, shm_name);
+      if (shared_mem != 0)
+	break;
+      Sleep (100);
+    }
+
+  if (shared_mem != 0)
+    {
+      shared_data = MapViewOfFile (shared_mem, FILE_MAP_READ, 0, 0, 0);
+      if (shared_data != NULL)
+	{
+	  res = g_strdup (shared_data);
+	  UnmapViewOfFile (shared_data);
+	}
+      CloseHandle (shared_mem);
+    }
+
+  return res;
+}
+
+static HANDLE
+set_shm (const char *shm_name, const char *value)
+{
+  HANDLE shared_mem;
+  char *shared_data;
+
+  shared_mem = CreateFileMappingA (INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
+				   0, strlen (value) + 1, shm_name);
+  if (shared_mem == 0)
+    return 0;
+
+  shared_data = MapViewOfFile (shared_mem, FILE_MAP_WRITE, 0, 0, 0 );
+  if (shared_data == NULL)
+    return 0;
+
+  strcpy (shared_data, value);
+
+  UnmapViewOfFile (shared_data);
+
+  return shared_mem;
+}
+
+/* These keep state between publish_session_bus and unpublish_session_bus */
+static HANDLE published_daemon_mutex;
+static HANDLE published_shared_mem;
+
+static gboolean
+publish_session_bus (const char *address)
+{
+  HANDLE init_mutex;
+
+  init_mutex = acquire_mutex (UNIQUE_DBUS_INIT_MUTEX);
+
+  published_daemon_mutex = CreateMutexA (NULL, FALSE, DBUS_DAEMON_MUTEX);
+  if (WaitForSingleObject (published_daemon_mutex, 10 ) != WAIT_OBJECT_0)
+    {
+      release_mutex (init_mutex);
+      CloseHandle (published_daemon_mutex);
+      published_daemon_mutex = NULL;
+      return FALSE;
+    }
+
+  published_shared_mem = set_shm (DBUS_DAEMON_ADDRESS_INFO, address);
+  if (!published_shared_mem)
+    {
+      release_mutex (init_mutex);
+      CloseHandle (published_daemon_mutex);
+      published_daemon_mutex = NULL;
+      return FALSE;
+    }
+
+  release_mutex (init_mutex);
+  return TRUE;
+}
+
+static void
+unpublish_session_bus ()
+{
+  HANDLE init_mutex;
+
+  init_mutex = acquire_mutex (UNIQUE_DBUS_INIT_MUTEX);
+
+  CloseHandle (published_shared_mem);
+  published_shared_mem = NULL;
+
+  release_mutex (published_daemon_mutex);
+  published_daemon_mutex = NULL;
+
+  release_mutex (init_mutex);
+}
+
+static void
+wait_console_window (void)
+{
+  FILE *console = fopen ("CONOUT$", "w");
+
+  SetConsoleTitleW (L"gdbus-daemon output. Type any character to close this window.");
+  fprintf (console, _("(Type any character to close this window)\n"));
+  fflush (console);
+  _getch ();
+}
+
+static void
+open_console_window (void)
+{
+  if (((HANDLE) _get_osfhandle (fileno (stdout)) == INVALID_HANDLE_VALUE ||
+       (HANDLE) _get_osfhandle (fileno (stderr)) == INVALID_HANDLE_VALUE) && AllocConsole ())
+    {
+      if ((HANDLE) _get_osfhandle (fileno (stdout)) == INVALID_HANDLE_VALUE)
+        freopen ("CONOUT$", "w", stdout);
+
+      if ((HANDLE) _get_osfhandle (fileno (stderr)) == INVALID_HANDLE_VALUE)
+        freopen ("CONOUT$", "w", stderr);
+
+      SetConsoleTitleW (L"gdbus-daemon debug output.");
+
+      atexit (wait_console_window);
+    }
+}
+static void
+idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+  g_main_loop_quit (loop);
+}
+
+__declspec(dllexport) void CALLBACK
+g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow)
+{
+  GDBusDaemon *daemon;
+  GMainLoop *loop;
+  const char *address;
+  GError *error = NULL;
+
+  if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
+    open_console_window ();
+
+  g_type_init ();
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  address = "nonce-tcp:";
+  daemon = _g_dbus_daemon_new (address, NULL, &error);
+  if (daemon == NULL)
+    {
+      g_printerr ("Can't init bus: %s\n", error->message);
+      return;
+    }
+
+  g_signal_connect (daemon, "idle-timeout", G_CALLBACK (idle_timeout_cb), loop);
+
+  if ( publish_session_bus (_g_dbus_daemon_get_address (daemon)))
+    {
+      g_main_loop_run (loop);
+
+      unpublish_session_bus ();
+    }
+
+  g_main_loop_unref (loop);
+  g_object_unref (daemon);
+}
+
+static gchar *
+get_session_address_dbus_launch (GError **error)
+{
+  HANDLE autolaunch_mutex, init_mutex;
+  char *address = NULL;
+  wchar_t gio_path[MAX_PATH+1+200];
+
+  autolaunch_mutex = acquire_mutex (DBUS_AUTOLAUNCH_MUTEX);
+
+  init_mutex = acquire_mutex (UNIQUE_DBUS_INIT_MUTEX);
+
+  if (is_mutex_owned (DBUS_DAEMON_MUTEX))
+    address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+
+  release_mutex (init_mutex);
+
+  if (address == NULL)
+    {
+      gio_path[MAX_PATH] = 0;
+      if (GetModuleFileNameW (_g_io_win32_get_module (), gio_path, MAX_PATH))
+	{
+	  PROCESS_INFORMATION pi = { 0 };
+	  STARTUPINFOW si = { 0 };
+	  BOOL res;
+	  wchar_t gio_path_short[MAX_PATH];
+	  wchar_t rundll_path[MAX_PATH*2];
+	  wchar_t args[MAX_PATH*4];
+
+	  GetShortPathNameW (gio_path, gio_path_short, MAX_PATH);
+
+	  GetWindowsDirectoryW (rundll_path, MAX_PATH);
+	  wcscat (rundll_path, L"\\rundll32.exe");
+	  if (GetFileAttributesW (rundll_path) == INVALID_FILE_ATTRIBUTES)
+	    {
+	      GetSystemDirectoryW (rundll_path, MAX_PATH);
+	      wcscat (rundll_path, L"\\rundll32.exe");
+	    }
+
+	  wcscpy (args, L"\"");
+	  wcscat (args, rundll_path);
+	  wcscat (args, L"\" ");
+	  wcscat (args, gio_path_short);
+	  wcscat (args, L",g_win32_run_session_bus@16");
+
+	  res = CreateProcessW (rundll_path, args,
+				0, 0, FALSE,
+				NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
+				0, NULL /* TODO: Should be root */,
+				&si, &pi);
+	  if (res)
+	    address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+	}
+    }
+
+  release_mutex (autolaunch_mutex);
+
+  if (address == NULL)
+    g_set_error (error,
+		 G_IO_ERROR,
+		 G_IO_ERROR_FAILED,
+		 _("Session dbus not running, and autolaunch failed"));
+
+  return address;
+}
+#endif
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gchar *
 get_session_address_platform_specific (GError **error)
 {
   gchar *ret;
-#ifdef G_OS_UNIX
+#if defined (G_OS_UNIX) || defined(G_OS_WIN32)
   /* need to handle OS X in a different way since `dbus-launch --autolaunch' probably won't work there */
   ret = get_session_address_dbus_launch (error);
 #else
-  /* TODO: implement for UNIX, Win32 and OS X */
+  /* TODO: implement for OS X */
   ret = NULL;
   g_set_error (error,
                G_IO_ERROR,
