@@ -1,6 +1,6 @@
 /* GLib testing framework examples and tests
  *
- * Copyright (C) 2008-2009 Red Hat, Inc.
+ * Copyright (C) 2012 Collabora Ltd. <http://www.collabora.co.uk/>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: David Zeuthen <davidz@redhat.com>
+ * Author: Xavier Claessens <xavier.claessens@collabora.co.uk>
  */
 
 #ifndef __SESSION_BUS_H__
@@ -27,11 +27,9 @@
 
 G_BEGIN_DECLS
 
-const gchar *session_bus_up_with_address       (const gchar *given_address);
-void         session_bus_down_with_address     (const gchar *address);
-const gchar *session_bus_get_temporary_address (void);
-const gchar *session_bus_up                    (void);
-void         session_bus_down                  (void);
+void session_bus_up   (void);
+void session_bus_stop (void);
+void session_bus_down (void);
 
 G_END_DECLS
 

@@ -267,12 +267,12 @@ test_connection_life_cycle (void)
    */
   g_assert (!g_dbus_connection_is_closed (c));
   g_dbus_connection_set_exit_on_close (c, FALSE);
-  session_bus_down ();
+  session_bus_stop ();
   _g_assert_signal_received (c, "closed");
   g_assert (g_dbus_connection_is_closed (c));
-
-  _g_object_wait_for_single_ref (c);
   g_object_unref (c);
+
+  session_bus_down ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -469,7 +469,7 @@ test_connection_send (void)
    * Check that we get an error when sending to a connection that is disconnected.
    */
   g_dbus_connection_set_exit_on_close (c, FALSE);
-  session_bus_down ();
+  session_bus_stop ();
   _g_assert_signal_received (c, "closed");
   g_assert (g_dbus_connection_is_closed (c));
 
@@ -486,8 +486,9 @@ test_connection_send (void)
                           NULL);
   g_main_loop_run (loop);
 
-  _g_object_wait_for_single_ref (c);
   g_object_unref (c);
+
+  session_bus_down ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -704,10 +705,6 @@ test_connection_signals (void)
   g_dbus_connection_signal_unsubscribe (c1, s2);
   g_dbus_connection_signal_unsubscribe (c1, s3);
   g_dbus_connection_signal_unsubscribe (c1, s1b);
-
-  _g_object_wait_for_single_ref (c1);
-  _g_object_wait_for_single_ref (c2);
-  _g_object_wait_for_single_ref (c3);
 
   g_object_unref (c1);
   g_object_unref (c2);
@@ -992,7 +989,6 @@ test_connection_filter (void)
 
   g_dbus_connection_remove_filter (c, filter_id);
 
-  _g_object_wait_for_single_ref (c);
   g_object_unref (c);
   g_object_unref (m);
 
@@ -1046,7 +1042,6 @@ test_connection_basic (void)
   g_free (name);
   g_free (guid);
 
-  _g_object_wait_for_single_ref (connection);
   g_object_unref (connection);
 
   session_bus_down ();
@@ -1064,11 +1059,7 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+  g_test_dbus_unset ();
 
   g_test_add_func ("/gdbus/connection/basic", test_connection_basic);
   g_test_add_func ("/gdbus/connection/life-cycle", test_connection_life_cycle);

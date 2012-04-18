@@ -116,11 +116,8 @@ basic (void)
 
   g_main_loop_run (main_loop);
 
-  session_bus_down ();
-  _g_object_wait_for_single_ref_do (c);
   g_object_unref (c);
-
-  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
+  session_bus_down ();
 }
 
 
@@ -252,14 +249,11 @@ properties (void)
 
   g_application_quit (G_APPLICATION (app));
 
+  g_object_unref (c);
   g_object_unref (app);
   g_free (id);
 
   session_bus_down ();
-  _g_object_wait_for_single_ref (c);
-  g_object_unref (c);
-
-  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
 }
 
 static void
@@ -357,15 +351,11 @@ test_quit (void)
   g_signal_connect (app, "activate", G_CALLBACK (quit_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
+  g_object_unref (c);
 
   g_assert (quit_activated);
 
   session_bus_down ();
-
-  _g_object_wait_for_single_ref (c);
-  g_object_unref (c);
-
-  g_assert (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL) == NULL);
 }
 
 static void
@@ -423,12 +413,7 @@ main (int argc, char **argv)
 
   g_test_init (&argc, &argv, NULL);
 
-  /* all the tests use a session bus with a well-known address
-   * that we can bring up and down using session_bus_up() and
-   * session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+  g_test_dbus_unset ();
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
   g_test_add_func ("/gapplication/basic", basic);

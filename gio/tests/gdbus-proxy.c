@@ -739,13 +739,6 @@ test_proxy (void)
   GDBusConnection *connection;
   GError *error;
 
-  session_bus_up ();
-
-  /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
-   * until one can connect to the bus but that's not how things work right now
-   */
-  usleep (500 * 1000);
-
   error = NULL;
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
                                NULL,
@@ -894,11 +887,7 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+  session_bus_up ();
 
   g_test_add_func ("/gdbus/proxy", test_proxy);
   g_test_add_func ("/gdbus/proxy/no-properties", test_no_properties);
@@ -908,5 +897,7 @@ main (int   argc,
   ret = g_test_run();
 
   g_dbus_node_info_unref (introspection_data);
+
+  session_bus_down ();
   return ret;
 }

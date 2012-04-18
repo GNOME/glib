@@ -116,31 +116,6 @@ GDBusConnection *_g_bus_get_priv (GBusType            bus_type,
                                   GCancellable       *cancellable,
                                   GError            **error);
 
-
-#define _g_object_wait_for_single_ref(object) \
-  do \
-    { \
-      if (!G_IS_OBJECT (object))                                        \
-        {                                                               \
-          g_assertion_message (G_LOG_DOMAIN,                            \
-                               __FILE__,                                \
-                               __LINE__,                                \
-                               G_STRFUNC,                               \
-                               "Not a GObject instance");               \
-        }                                                               \
-      if (_g_object_wait_for_single_ref_do (object))                    \
-        {                                                               \
-          g_assertion_message (G_LOG_DOMAIN,                            \
-                               __FILE__,                                \
-                               __LINE__,                                \
-                               G_STRFUNC,                               \
-                               "Timed out waiting for single ref");     \
-        }                                                               \
-    }                                                                   \
-  while (FALSE)
-
-gboolean _g_object_wait_for_single_ref_do (gpointer object);
-
 G_END_DECLS
 
 #endif /* __TESTS_H__ */

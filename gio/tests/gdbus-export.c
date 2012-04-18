@@ -1341,7 +1341,7 @@ test_object_registration (void)
 
   /* To prevent from exiting and attaching a D-Bus tool like D-Feet; uncomment: */
 #if 0
-  g_debug ("Point D-feet or other tool at: %s", session_bus_get_temporary_address());
+  g_debug ("Point D-feet or other tool at: %s", g_test_dbus_get_temporary_address());
   g_main_loop_run (loop);
 #endif
 
@@ -1537,18 +1537,7 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
-
   session_bus_up ();
-
-  /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
-   * until one can connect to the bus but that's not how things work right now
-   */
-  usleep (500 * 1000);
 
   g_test_add_func ("/gdbus/object-registration", test_object_registration);
   g_test_add_func ("/gdbus/registered-interfaces", test_registered_interfaces);

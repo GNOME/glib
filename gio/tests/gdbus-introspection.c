@@ -108,13 +108,6 @@ test_introspection_parser (void)
   GDBusConnection *connection;
   GError *error;
 
-  session_bus_up ();
-
-  /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
-   * until one can connect to the bus but that's not how things work right now
-   */
-  usleep (500 * 1000);
-
   error = NULL;
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
                                NULL,
@@ -308,17 +301,15 @@ int
 main (int   argc,
       char *argv[])
 {
+  gint ret;
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+  session_bus_up ();
 
   g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
   g_test_add_func ("/gdbus/introspection-generate", test_generate);
@@ -328,5 +319,9 @@ main (int   argc,
   g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
 #endif
 
-  return g_test_run();
+  ret = g_test_run ();
+
+  session_bus_down ();
+
+  return ret;
 }

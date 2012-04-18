@@ -54,7 +54,7 @@ static gboolean
 on_timeout (gpointer user_data)
 {
   /* tear down bus */
-  session_bus_down ();
+  session_bus_stop ();
   return FALSE; /* remove source */
 }
 
@@ -119,18 +119,7 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
-
   session_bus_up ();
-
-  /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
-   * until one can connect to the bus but that's not how things work right now
-   */
-  usleep (500 * 1000);
 
   /* this is safe; testserver will exit once the bus goes away */
   g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
