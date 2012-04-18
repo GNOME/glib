@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <gstdio.h>
 #include <gio/gio.h>
 #include <gio/gunixsocketaddress.h>
 #include "gdbusdaemon.h"
