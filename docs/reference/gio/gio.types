@@ -133,3 +133,5 @@ g_menu_attribute_iter_get_type
 g_menu_link_iter_get_type
 g_menu_get_type
 g_menu_item_get_type
+g_test_dbus_get_type
+g_test_dbus_flags_get_type

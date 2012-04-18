@@ -712,8 +712,6 @@ main (int argc, char **argv)
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
-
   g_test_add_func ("/actions/basic", test_basic);
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);

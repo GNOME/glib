@@ -1026,9 +1026,6 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
   g_type_init ();
 
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
-
   session_bus_up ();
 
   g_test_add_func ("/gmenu/equality", test_equality);

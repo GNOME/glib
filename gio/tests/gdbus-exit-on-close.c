@@ -117,11 +117,7 @@ test_exit_on_close (gconstpointer test_data)
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  /* all the tests use a session bus with a well-known address that we can bring up and down
-   * using session_bus_up() and session_bus_down().
-   */
-  g_unsetenv ("DISPLAY");
-  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+  g_test_dbus_unset ();
 
   if (g_test_verbose ())
     silence = 0;
@@ -173,12 +169,16 @@ test_exit_on_close (gconstpointer test_data)
         }
       else
         {
-          session_bus_down ();
+          session_bus_stop ();
         }
 
       g_main_loop_run (loop);
       /* this is only reached when we turn off exit-on-close */
       g_main_loop_unref (loop);
+      g_object_unref (c);
+
+      session_bus_down ();
+
       exit (0);
     }
 
