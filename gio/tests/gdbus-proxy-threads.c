@@ -205,6 +205,11 @@ test_proxy (void)
 
   session_bus_up ();
 
+  /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
+   * until one can connect to the bus but that's not how things work right now
+   */
+  usleep (500 * 1000);
+
   loop = g_main_loop_new (NULL, TRUE);
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
@@ -235,10 +240,11 @@ int
 main (int   argc,
       char *argv[])
 {
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
-
-  g_test_dbus_unset ();
 
   g_test_add_func ("/gdbus/proxy/vs-threads", test_proxy);
 

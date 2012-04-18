@@ -65,7 +65,6 @@ gdbus_headers = 			\
 	gdbusobjectmanager.h		\
 	gdbusobjectmanagerclient.h	\
 	gdbusobjectmanagerserver.h	\
-	gtestdbus.h			\
 	$(NULL)
 
 gdbus_sources = 							\
@@ -96,7 +95,6 @@ gdbus_sources = 							\
 	gdbusobjectmanagerclient.h	gdbusobjectmanagerclient.c	\
 	gdbusobjectmanagerserver.h	gdbusobjectmanagerserver.c	\
 	gdbus-tests.h			gdbus-tests.c			\
-	gtestdbus.h			gtestdbus.c			\
 	$(NULL)
 
 settings_headers = \

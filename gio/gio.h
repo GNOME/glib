@@ -124,7 +124,6 @@
 #include <gio/gsrvtarget.h>
 #include <gio/gtcpconnection.h>
 #include <gio/gtcpwrapperconnection.h>
-#include <gio/gtestdbus.h>
 #include <gio/gthemedicon.h>
 #include <gio/gthreadedsocketservice.h>
 #include <gio/gtlsbackend.h>

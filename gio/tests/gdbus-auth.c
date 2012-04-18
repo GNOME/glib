@@ -269,6 +269,11 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  /* all the tests use a session bus with a well-known address that we can bring up and down
+   * using session_bus_up() and session_bus_down().
+   */
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
   session_bus_up ();
 
   g_test_add_func ("/gdbus/auth/client/EXTERNAL",         auth_client_external);

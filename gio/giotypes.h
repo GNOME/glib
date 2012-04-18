@@ -465,8 +465,6 @@ typedef GType (*GDBusProxyTypeFunc) (GDBusObjectManagerClient   *manager,
                                      const gchar                *interface_name,
                                      gpointer                    user_data);
 
-typedef struct _GTestDBus GTestDBus;
-
 G_END_DECLS
 
 #endif /* __GIO_TYPES_H__ */

@@ -105,6 +105,7 @@ test_connection_flush (void)
     }
 
   g_dbus_connection_signal_unsubscribe (connection, signal_handler_id);
+  _g_object_wait_for_single_ref (connection);
   g_object_unref (connection);
 
   session_bus_down ();
@@ -201,7 +202,11 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  g_test_dbus_unset ();
+  /* all the tests use a session bus with a well-known address that we can bring up and down
+   * using session_bus_up() and session_bus_down().
+   */
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
   g_test_add_func ("/gdbus/connection/flush", test_connection_flush);
   g_test_add_func ("/gdbus/connection/large_message", test_connection_large_message);
