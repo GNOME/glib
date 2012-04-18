@@ -143,9 +143,6 @@ void _g_dbus_object_proxy_add_interface (GDBusObjectProxy *proxy,
 void _g_dbus_object_proxy_remove_interface (GDBusObjectProxy *proxy,
                                             const gchar      *interface_name);
 
-/* Implemented in gdbusconnection.c */
-GDBusConnection *_g_bus_get_singleton_if_exists (GBusType bus_type);
-
 G_END_DECLS
 
 #endif /* __G_DBUS_PRIVATE_H__ */
