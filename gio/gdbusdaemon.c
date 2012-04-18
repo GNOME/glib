@@ -32,11 +32,14 @@
 #define DBUS_START_REPLY_SUCCESS         1 /**< Service was auto started */
 #define DBUS_START_REPLY_ALREADY_RUNNING 2 /**< Service was already running */
 
+#define IDLE_TIMEOUT_MSEC 3000
+
 struct _GDBusDaemon
 {
   _GFreedesktopDBusSkeleton parent_instance;
 
   gchar *address;
+  guint timeout;
   gchar *tmpdir;
   GDBusServer *server;
   gchar *guid;
@@ -53,8 +56,17 @@ struct _GDBusDaemonClass
 
 enum {
   PROP_0,
-  PROP_ADDRESS
+  PROP_ADDRESS,
 };
+
+enum
+{
+  SIGNAL_IDLE_TIMEOUT,
+  NR_SIGNALS
+};
+
+static guint g_dbus_daemon_signals[NR_SIGNALS];
+
 
 static void initable_iface_init      (GInitableIface         *initable_iface);
 static void g_dbus_daemon_iface_init (_GFreedesktopDBusIface *iface);
@@ -869,13 +881,34 @@ client_free (Client *client)
   g_free (client);
 }
 
+static gboolean
+idle_timeout_cb (gpointer user_data)
+{
+  GDBusDaemon *daemon = user_data;
+
+  daemon->timeout = 0;
+
+  g_signal_emit (daemon,
+                 g_dbus_daemon_signals[SIGNAL_IDLE_TIMEOUT],
+                 0);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 connection_closed (GDBusConnection *connection,
 		   gboolean remote_peer_vanished,
 		   GError *error,
 		   Client *client)
 {
+  GDBusDaemon *daemon = client->daemon;
+
   client_free (client);
+
+  if (g_hash_table_size (daemon->clients) == 0)
+    daemon->timeout = g_timeout_add (IDLE_TIMEOUT_MSEC,
+				     idle_timeout_cb,
+				     daemon);
 }
 
 static gboolean
@@ -1473,6 +1506,12 @@ on_new_connection (GDBusServer *server,
 
   g_dbus_connection_set_exit_on_close (connection, FALSE);
 
+  if (daemon->timeout)
+    {
+      g_source_remove (daemon->timeout);
+      daemon->timeout = 0;
+    }
+
   client_new (daemon, connection);
 
   return TRUE;
@@ -1483,6 +1522,9 @@ g_dbus_daemon_finalize (GObject *object)
 {
   GDBusDaemon *daemon = G_DBUS_DAEMON (object);
   GList *clients, *l;
+
+  if (daemon->timeout)
+    g_source_remove (daemon->timeout);
 
   clients = g_hash_table_get_values (daemon->clients);
   for (l = clients; l != NULL; l = l->next)
@@ -1605,6 +1647,15 @@ g_dbus_daemon_class_init (GDBusDaemonClass *klass)
   gobject_class->finalize = g_dbus_daemon_finalize;
   gobject_class->set_property = g_dbus_daemon_set_property;
   gobject_class->get_property = g_dbus_daemon_get_property;
+
+  g_dbus_daemon_signals[SIGNAL_IDLE_TIMEOUT] =
+    g_signal_new ("idle-timeout",
+                  G_TYPE_DBUS_DAEMON,
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   g_object_class_install_property (gobject_class,
 				   PROP_ADDRESS,
