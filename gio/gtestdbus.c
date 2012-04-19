@@ -38,6 +38,11 @@
 
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#define _WIN32_WINNT 0x0500
+#include <windows.h>
+#endif
+
 /* -------------------------------------------------------------------------- */
 /* Utility: Wait until object has a single ref  */
 
@@ -96,6 +101,44 @@ _g_object_unref_and_wait_weak_notify (gpointer object)
 
 /* -------------------------------------------------------------------------- */
 /* Utilities to cleanup the mess in the case unit test process crash */
+
+#ifdef G_OS_WIN32
+
+/* This could be interesting to expose in public API */
+static void
+_g_test_watcher_add_pid (GPid pid)
+{
+  static gsize started = 0;
+  HANDLE job;
+
+  if (g_once_init_enter (&started))
+    {
+      JOBOBJECT_EXTENDED_LIMIT_INFORMATION info;
+
+      job = CreateJobObjectW (NULL, NULL);
+      memset (&info, 0, sizeof (info));
+      info.BasicLimitInformation.LimitFlags = 0x2000 /* JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE */;
+
+      if (!SetInformationJobObject(job, JobObjectExtendedLimitInformation, &info, sizeof (info)))
+	g_warning ("Can't enable JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE: %s", g_win32_error_message (GetLastError()));
+
+      g_once_init_leave (&started,(gsize)job);
+    }
+
+  job = (HANDLE)started;
+
+  if (!AssignProcessToJobObject(job, pid))
+    g_warning ("Can't assign process to job: %s", g_win32_error_message (GetLastError()));
+}
+
+static void
+_g_test_watcher_remove_pid (GPid pid)
+{
+  /* No need to unassign the process from the job object as the process
+     will be killed anyway */
+}
+
+#else
 
 #define ADD_PID_FORMAT "add pid %d\n"
 #define REMOVE_PID_FORMAT "remove pid %d\n"
@@ -257,6 +300,8 @@ _g_test_watcher_remove_pid (GPid pid)
   watcher_send_command (command);
   g_free (command);
 }
+
+#endif
 
 /* -------------------------------------------------------------------------- */
 /* GTestDBus object implementation */
@@ -422,7 +467,12 @@ write_config_file (GTestDBus *self)
   g_string_append (contents,
       "<busconfig>\n"
       "  <type>session</type>\n"
-      "  <listen>unix:tmpdir=/tmp</listen>\n");
+#ifdef G_OS_WIN32
+      "  <listen>nonce-tcp:</listen>\n"
+#else
+      "  <listen>unix:tmpdir=/tmp</listen>\n"
+#endif
+		   );
 
   for (i = 0; i < self->priv->service_dirs->len; i++)
     {
@@ -474,7 +524,11 @@ start_daemon (GTestDBus *self)
   g_spawn_async_with_pipes (NULL,
                             argv,
                             NULL,
-                            G_SPAWN_SEARCH_PATH,
+                            G_SPAWN_SEARCH_PATH
+#ifdef G_OS_WIN32
+			    /* We Need this to get the pid returned on win32 */
+			    | G_SPAWN_DO_NOT_REAP_CHILD,
+#endif
                             NULL,
                             NULL,
                             &self->priv->bus_pid,
@@ -522,8 +576,14 @@ start_daemon (GTestDBus *self)
 static void
 stop_daemon (GTestDBus *self)
 {
+#ifdef G_OS_WIN32
+  if (!TerminateProcess (self->priv->bus_pid, 0))
+    g_warning ("Can't terminate process: %s", g_win32_error_message (GetLastError()));
+#else
   kill (self->priv->bus_pid, SIGTERM);
+#endif
   _g_test_watcher_remove_pid (self->priv->bus_pid);
+  g_spawn_close_pid (self->priv->bus_pid);
   self->priv->bus_pid = 0;
 
   g_free (self->priv->bus_address);
