@@ -532,34 +532,78 @@ test_format_size_for_display (void)
 static void
 test_file_errors (void)
 {
+#ifdef EEXIST
   g_assert (g_file_error_from_errno (EEXIST) == G_FILE_ERROR_EXIST);
+#endif
+#ifdef EISDIR
   g_assert (g_file_error_from_errno (EISDIR) == G_FILE_ERROR_ISDIR);
+#endif
+#ifdef EACCES
   g_assert (g_file_error_from_errno (EACCES) == G_FILE_ERROR_ACCES);
+#endif
+#ifdef ENAMETOOLONG
   g_assert (g_file_error_from_errno (ENAMETOOLONG) == G_FILE_ERROR_NAMETOOLONG);
+#endif
+#ifdef ENOENT
   g_assert (g_file_error_from_errno (ENOENT) == G_FILE_ERROR_NOENT);
+#endif
+#ifdef ENOTDIR
   g_assert (g_file_error_from_errno (ENOTDIR) == G_FILE_ERROR_NOTDIR);
+#endif
+#ifdef ENXIO
   g_assert (g_file_error_from_errno (ENXIO) == G_FILE_ERROR_NXIO);
+#endif
+#ifdef ENODEV
   g_assert (g_file_error_from_errno (ENODEV) == G_FILE_ERROR_NODEV);
+#endif
+#ifdef EROFS
   g_assert (g_file_error_from_errno (EROFS) == G_FILE_ERROR_ROFS);
+#endif
 #ifdef ETXTBSY
   g_assert (g_file_error_from_errno (ETXTBSY) == G_FILE_ERROR_TXTBSY);
 #endif
+#ifdef EFAULT
   g_assert (g_file_error_from_errno (EFAULT) == G_FILE_ERROR_FAULT);
+#endif
 #ifdef ELOOP
   g_assert (g_file_error_from_errno (ELOOP) == G_FILE_ERROR_LOOP);
 #endif
+#ifdef ENOSPC
   g_assert (g_file_error_from_errno (ENOSPC) == G_FILE_ERROR_NOSPC);
+#endif
+#ifdef ENOMEM
   g_assert (g_file_error_from_errno (ENOMEM) == G_FILE_ERROR_NOMEM);
+#endif
+#ifdef EMFILE
   g_assert (g_file_error_from_errno (EMFILE) == G_FILE_ERROR_MFILE);
+#endif
+#ifdef ENFILE
   g_assert (g_file_error_from_errno (ENFILE) == G_FILE_ERROR_NFILE);
+#endif
+#ifdef EBADF
   g_assert (g_file_error_from_errno (EBADF) == G_FILE_ERROR_BADF);
+#endif
+#ifdef EINVAL
   g_assert (g_file_error_from_errno (EINVAL) == G_FILE_ERROR_INVAL);
+#endif
+#ifdef EPIPE
   g_assert (g_file_error_from_errno (EPIPE) == G_FILE_ERROR_PIPE);
+#endif
+#ifdef EAGAIN
   g_assert (g_file_error_from_errno (EAGAIN) == G_FILE_ERROR_AGAIN);
+#endif
+#ifdef EINTR
   g_assert (g_file_error_from_errno (EINTR) == G_FILE_ERROR_INTR);
+#endif
+#ifdef EIO
   g_assert (g_file_error_from_errno (EIO) == G_FILE_ERROR_IO);
+#endif
+#ifdef EPERM
   g_assert (g_file_error_from_errno (EPERM) == G_FILE_ERROR_PERM);
+#endif
+#ifdef ENOSYS
   g_assert (g_file_error_from_errno (ENOSYS) == G_FILE_ERROR_NOSYS);
+#endif
 }
 
 static void
