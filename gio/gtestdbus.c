@@ -514,6 +514,9 @@ start_daemon (GTestDBus *self)
   gsize termpos;
   GError *error = NULL;
 
+  if (g_getenv ("G_TEST_DBUS_DAEMON") != NULL)
+    argv[0] = g_getenv ("G_TEST_DBUS_DAEMON");
+
   /* Write config file and set its path in argv */
   file = write_config_file (self);
   config_path = g_file_get_path (file);
