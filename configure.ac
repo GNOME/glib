@@ -3467,6 +3467,9 @@ if test x$enable_modular_tests = xyes; then
 fi
 AM_CONDITIONAL(HAVE_DBUS1, [test "x$have_dbus1" = "xyes"])
 
+AC_CHECK_PROGS([DBUS_DAEMON], [dbus-daemon])
+AM_CONDITIONAL([HAVE_DBUS_DAEMON], [test x$DBUS_DAEMON = xdbus-daemon ])
+
 dnl
 dnl Check for -Bsymbolic-functions linker flag used to avoid
 dnl intra-library PLT jumps, if available.

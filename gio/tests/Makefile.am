@@ -61,12 +61,10 @@ TEST_PROGS +=	 		\
 	resources		\
 	$(NULL)
 
-if OS_UNIX
+if HAVE_DBUS_DAEMON
 TEST_PROGS +=			\
 	actions 		\
-	gdbus-close-pending	\
 	gdbus-connection	\
-	gdbus-connection-flush	\
 	gdbus-connection-loss	\
 	gdbus-connection-slow	\
 	gdbus-names		\
@@ -77,11 +75,19 @@ TEST_PROGS +=			\
 	gdbus-threading		\
 	gdbus-export		\
 	gdbus-error		\
+	gdbus-bz627724		\
+	gmenumodel		\
+	$(NULL)
+endif
+
+
+if OS_UNIX
+TEST_PROGS +=			\
+	gdbus-close-pending	\
+	gdbus-connection-flush	\
 	gdbus-peer		\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
-	gdbus-bz627724		\
-	gmenumodel		\
 	appinfo			\
 	contenttype		\
 	mimeapps		\
