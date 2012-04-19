@@ -527,8 +527,9 @@ start_daemon (GTestDBus *self)
                             G_SPAWN_SEARCH_PATH
 #ifdef G_OS_WIN32
 			    /* We Need this to get the pid returned on win32 */
-			    | G_SPAWN_DO_NOT_REAP_CHILD,
+			    | G_SPAWN_DO_NOT_REAP_CHILD
 #endif
+			    ,
                             NULL,
                             NULL,
                             &self->priv->bus_pid,
