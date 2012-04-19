@@ -25,7 +25,9 @@
 #include <string.h>
 
 #include <sys/types.h>
+#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
+#endif
 
 #include "gdbus-tests.h"
 
@@ -95,8 +97,10 @@ test_connection_flush (void)
                                        &exit_status,
                                        &error);
       g_assert_no_error (error);
+#ifdef HAVE_SYS_WAIT_H
       g_assert (WIFEXITED (exit_status));
       g_assert_cmpint (WEXITSTATUS (exit_status), ==, 0);
+#endif
       g_assert (ret);
 
       timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
