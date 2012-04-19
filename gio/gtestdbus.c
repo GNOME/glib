@@ -524,12 +524,11 @@ start_daemon (GTestDBus *self)
   g_spawn_async_with_pipes (NULL,
                             argv,
                             NULL,
-                            G_SPAWN_SEARCH_PATH
 #ifdef G_OS_WIN32
-			    /* We Need this to get the pid returned on win32 */
-			    | G_SPAWN_DO_NOT_REAP_CHILD
+                            /* We Need this to get the pid returned on win32 */
+                            G_SPAWN_DO_NOT_REAP_CHILD |
 #endif
-			    ,
+                            G_SPAWN_SEARCH_PATH,
                             NULL,
                             NULL,
                             &self->priv->bus_pid,
