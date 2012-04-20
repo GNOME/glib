@@ -2048,6 +2048,47 @@ out:
 gchar *
 _g_dbus_get_machine_id (GError **error)
 {
+#ifdef G_OS_WIN32
+  HW_PROFILE_INFOA info;
+  char *src, *dest, *res;
+  int i;
+
+  if (!GetCurrentHwProfileA (&info))
+    {
+      char *message = g_win32_error_message (GetLastError ());
+      g_set_error (error,
+		   G_IO_ERROR,
+		   G_IO_ERROR_FAILED,
+		   _("Unable to get Hardware profile: %s"), message);
+      g_free (message);
+      return NULL;
+    }
+
+  /* Form: {12340001-4980-1920-6788-123456789012} */
+  src = &info.szHwProfileGuid[0];
+
+  res = g_malloc (32+1);
+  dest = res;
+
+  src++; /* Skip { */
+  for (i = 0; i < 8; i++)
+    *dest++ = *src++;
+  src++; /* Skip - */
+  for (i = 0; i < 4; i++)
+    *dest++ = *src++;
+  src++; /* Skip - */
+  for (i = 0; i < 4; i++)
+    *dest++ = *src++;
+  src++; /* Skip - */
+  for (i = 0; i < 4; i++)
+    *dest++ = *src++;
+  src++; /* Skip - */
+  for (i = 0; i < 12; i++)
+    *dest++ = *src++;
+  *dest = 0;
+
+  return res;
+#else
   gchar *ret;
   GError *first_error;
   /* TODO: use PACKAGE_LOCALSTATEDIR ? */
@@ -2073,6 +2114,7 @@ _g_dbus_get_machine_id (GError **error)
       g_strstrip (ret);
     }
   return ret;
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
