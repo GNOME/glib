@@ -106,6 +106,7 @@ gio/gsocks4aproxy.c
 gio/gsocks5proxy.c
 gio/gtcpconnection.c
 gio/gtcpwrapperconnection.c
+gio/gtestdbus.c
 gio/gthemedicon.c
 gio/gthreadedsocketservice.c
 gio/gtlscertificate.c
@@ -132,6 +133,7 @@ gio/gwin32inputstream.c
 gio/gwin32outputstream.c
 gio/gzlibcompressor.c
 gio/gzlibdecompressor.c
+gio/tests/gdbus-daemon.c
 gio/win32/gwinhttpfile.c
 glib/gatomic.c
 glib/gbookmarkfile.c
