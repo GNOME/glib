@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-17 01:10+0200\n"
-"PO-Revision-Date: 2012-04-17 01:11+0200\n"
+"POT-Creation-Date: 2012-04-20 15:11+0200\n"
+"PO-Revision-Date: 2012-04-20 15:12+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -28,15 +28,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
+#: ../gio/gbufferedinputstream.c:399 ../gio/gbufferedinputstream.c:480
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:753
+#: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "O valor de conta pasado a %s é demasiado longo"
 
-#: ../gio/gbufferedinputstream.c:882 ../gio/ginputstream.c:888
+#: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:292 ../gio/goutputstream.c:1228
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
@@ -116,13 +117,13 @@ msgstr "A súa plataforma non ten compatibilidade con GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de fluxo inesperadamente prematuro"
 
-#: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
-#: ../gio/gdbusaddress.c:311
+#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Chave «%s» non admitida na entrada do enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:169
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -130,27 +131,27 @@ msgstr ""
 "O enderezo «%s» non é válido (necesítase exactamente unha ruta, tmpdir ou "
 "chaves abstractas)"
 
-#: ../gio/gdbusaddress.c:182
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Combinación de par chave/valor sen sentido na entrada do enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
+#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Erro no enderezo «%s»  o atributo do porto está mal formado"
 
-#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
+#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Erro no enderezo «%s» - o atributo da familia está mal formada"
 
-#: ../gio/gdbusaddress.c:446
+#: ../gio/gdbusaddress.c:454
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "O elemento do enderezo «%s» non contén un caracter dous puntos (:)"
 
-#: ../gio/gdbusaddress.c:467
+#: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -159,7 +160,7 @@ msgstr ""
 "O par chave/valor %d, «%s» no elemento do enderezo «%s» non contén un signo "
 "de igual"
 
-#: ../gio/gdbusaddress.c:481
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -168,7 +169,7 @@ msgstr ""
 "Produciuse un erro ao desescapar a chave ou o valor no par chave/valor %d, "
 "«%s», no elemento de enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:559
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -177,89 +178,99 @@ msgstr ""
 "Erro no enderezo «%s» - o transporte unix require que se estabeleza "
 "exactamente unha das chaves «path» ou «abstract»"
 
-#: ../gio/gdbusaddress.c:595
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Erro no enderezo «%s» - falta o atributo do equipo ou está mal formado"
 
-#: ../gio/gdbusaddress.c:609
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Erro no enderezo «%s» - falta o atributo do porto ou está mal formado"
 
-#: ../gio/gdbusaddress.c:623
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Produciuse un erro no enderezo «%s» - falta o atributo do ficheiro de uso de "
 "unha vez ou está mal formado"
 
-#: ../gio/gdbusaddress.c:644
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Produciuse un erro ao autoiniciar "
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Transporte «%s» descoñecido ou non compatíbel para o enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:688
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Produciuse un erro ao abrir o ficheiro de uso de unha vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:706
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Produciuse un erro ao ler o ficheiro de uso de unha vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:715
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Produciuse un erro ao ler o ficheiro de uso de unha vez «%s»:, esperábanse "
 "16 bytes, obtivéronse %d"
 
-#: ../gio/gdbusaddress.c:733
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Produciuse un erro ao gravar os contidos do ficheiro de uso de unha vez «%s» "
 "ao fluxo:"
 
-#: ../gio/gdbusaddress.c:952
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "O enderezo fornecido está baleiro"
 
-#: ../gio/gdbusaddress.c:1021
+#: ../gio/gdbusaddress.c:1029
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Non é posíbel iniciar (|«spawn») unha mensaxe ao bus sen un ID de máquina:"
 
-#: ../gio/gdbusaddress.c:1058
+#: ../gio/gdbusaddress.c:1066
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Produciuse un erro ao iniciar («spawn») a orde «%s»:"
 
-#: ../gio/gdbusaddress.c:1069
+#: ../gio/gdbusaddress.c:1077
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Terminación anómala do programa ao iniciar («spawn») a orde «%s»:%s"
 
-#: ../gio/gdbusaddress.c:1083
+#: ../gio/gdbusaddress.c:1091
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
 "A orde de liña «%s» rematou con un estado de saída distinto de cero %d: %s"
 
-#: ../gio/gdbusaddress.c:1156
+#: ../gio/gdbusaddress.c:1312
+#, c-format
+msgid "(Type any character to close this window)\n"
+msgstr "(Prema calquera caracter para pechar esta xanela)\n"
+
+#: ../gio/gdbusaddress.c:1437
+#, c-format
+msgid "Session dbus not running, and autolaunch failed"
+msgstr "O DBus de sesión non está executándose e o autoiniciado fallou"
+
+#: ../gio/gdbusaddress.c:1458
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6706
+#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -268,7 +279,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6715
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6715
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -276,7 +287,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus xa que a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE non está estabelecida"
 
-#: ../gio/gdbusaddress.c:1274
+#: ../gio/gdbusaddress.c:1576
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d descoñecido"
@@ -658,7 +669,12 @@ msgstr "Produciuse un erro ao devolver co corpo de tipo «%s»"
 msgid "Error return with empty body"
 msgstr "Produciuse un erro ao devolver co corpo baleiro"
 
-#: ../gio/gdbusprivate.c:2066
+#: ../gio/gdbusprivate.c:2062
+#, c-format
+msgid "Unable to get Hardware profile: %s"
+msgstr "Non é posíbel obter o perfil de hardware: %s"
+
+#: ../gio/gdbusprivate.c:2107
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id ou /etc/machine-id: "
 
@@ -689,18 +705,18 @@ msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 "Non é posíbel especificar o ficheiro de uso de unha vez ao crear un servidor"
 
-#: ../gio/gdbusserver.c:872
+#: ../gio/gdbusserver.c:873
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr ""
 "Produciuse un erro ao escribir no ficheiro de uso de unha vez en «%s»: %s"
 
-#: ../gio/gdbusserver.c:1038
+#: ../gio/gdbusserver.c:1041
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "A cadea «%s» non é un GUID de D-BUS válida"
 
-#: ../gio/gdbusserver.c:1078
+#: ../gio/gdbusserver.c:1081
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Non é posíbel escoitar nun transporte «%s» non admitido"
@@ -1894,27 +1910,27 @@ msgstr "O ficheiro foi modificado externamente"
 msgid "Error removing old file: %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro antigo: %s"
 
-#: ../gio/gmemoryinputstream.c:492 ../gio/gmemoryoutputstream.c:750
+#: ../gio/gmemoryinputstream.c:454 ../gio/gmemoryoutputstream.c:706
 msgid "Invalid GSeekType supplied"
 msgstr "Proporcionouse un GSeekType non válido"
 
-#: ../gio/gmemoryinputstream.c:502
+#: ../gio/gmemoryinputstream.c:464
 msgid "Invalid seek request"
 msgstr "Petición de busca non válida"
 
-#: ../gio/gmemoryinputstream.c:526
+#: ../gio/gmemoryinputstream.c:488
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Non é posíbel truncar GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:496
+#: ../gio/gmemoryoutputstream.c:502
 msgid "Memory output stream not resizable"
 msgstr "O fluxo de saída da memoria non é redimensionábel"
 
-#: ../gio/gmemoryoutputstream.c:512
+#: ../gio/gmemoryoutputstream.c:518
 msgid "Failed to resize memory output stream"
 msgstr "Produciuse un fallo ao redimensionar o fluxo de saída da memoria"
 
-#: ../gio/gmemoryoutputstream.c:600
+#: ../gio/gmemoryoutputstream.c:606
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -1922,11 +1938,11 @@ msgstr ""
 "A cantidade de memoria requirida para procesar a escrita é máis grande que o "
 "espazo de enderezos dispoñíbel"
 
-#: ../gio/gmemoryoutputstream.c:760
+#: ../gio/gmemoryoutputstream.c:716
 msgid "Requested seek before the beginning of the stream"
 msgstr "Solicitouse unha busca antes do inicio do fluxo"
 
-#: ../gio/gmemoryoutputstream.c:769
+#: ../gio/gmemoryoutputstream.c:725
 msgid "Requested seek beyond the end of the stream"
 msgstr "Solicitouse unha busca máis aló do final do fluxo"
 
@@ -2043,7 +2059,7 @@ msgstr "Produciuse un erro ao resolver: «%s»"
 #: ../gio/gresource.c:295 ../gio/gresource.c:543 ../gio/gresource.c:560
 #: ../gio/gresource.c:681 ../gio/gresource.c:750 ../gio/gresource.c:811
 #: ../gio/gresource.c:891 ../gio/gresourcefile.c:452
-#: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
+#: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Non existe o recurso en «%s»"
@@ -2053,12 +2069,12 @@ msgstr "Non existe o recurso en «%s»"
 msgid "The resource at '%s' failed to decompress"
 msgstr "Produciuse un fallo ao descomprimir o resurso en «%s»"
 
-#: ../gio/gresourcefile.c:650
+#: ../gio/gresourcefile.c:651
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "O recurso en «%s» non é un cartafol"
 
-#: ../gio/gresourcefile.c:858
+#: ../gio/gresourcefile.c:859
 msgid "Input stream doesn't implement seek"
 msgstr "O fluxo de entrada non implementa seek"
 
@@ -2781,14 +2797,13 @@ msgstr "Non se esperaba unha mensaxe de control, pero obtívose %d"
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Produciuse un erro ao desactivar SO_PASSCRED: %s"
 
-#: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
-#: ../gio/gunixinputstream.c:493
+#: ../gio/gunixinputstream.c:382 ../gio/gunixinputstream.c:403
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Produciuse un erro ao ler do descritor do ficheiro: %s"
 
-#: ../gio/gunixinputstream.c:448 ../gio/gunixinputstream.c:643
-#: ../gio/gunixoutputstream.c:434 ../gio/gunixoutputstream.c:598
+#: ../gio/gunixinputstream.c:438 ../gio/gunixinputstream.c:510
+#: ../gio/gunixoutputstream.c:422 ../gio/gunixoutputstream.c:463
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Produciuse un erro o descritor do ficheiro: %s"
@@ -2797,8 +2812,7 @@ msgstr "Produciuse un erro o descritor do ficheiro: %s"
 msgid "Filesystem root"
 msgstr "Raíz do sistema de ficheiros"
 
-#: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
-#: ../gio/gunixoutputstream.c:479
+#: ../gio/gunixoutputstream.c:366 ../gio/gunixoutputstream.c:387
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Produciuse un erro ao escribir no descritor do ficheiro: %s"
