@@ -465,6 +465,7 @@ g_resource_file_query_info (GFile                *file,
   info = g_file_info_new ();
   base = g_resource_file_get_basename (file);
   g_file_info_set_name (info, base);
+  g_file_info_set_display_name (info, base);
 
   _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_READ, TRUE);
   _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_WRITE, FALSE);
