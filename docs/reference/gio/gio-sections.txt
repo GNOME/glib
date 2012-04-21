@@ -3154,11 +3154,13 @@ g_proxy_resolver_get_type
 <TITLE>GProxyAddress</TITLE>
 GProxyAddress
 GProxyAddressClass
+g_proxy_address_get_destination_protocol
 g_proxy_address_get_destination_hostname
 g_proxy_address_get_destination_port
 g_proxy_address_get_password
 g_proxy_address_get_protocol
 g_proxy_address_get_username
+g_proxy_address_get_uri
 g_proxy_address_new
 <SUBSECTION Standard>
 G_PROXY_ADDRESS

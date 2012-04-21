@@ -64,6 +64,7 @@ struct _GProxyAddressEnumeratorPrivate
   gchar			  **next_proxy;
   GSocketAddressEnumerator *addr_enum;
   GSocketAddress           *proxy_address;
+  const gchar              *proxy_uri;
   gchar			   *proxy_type;
   gchar			   *proxy_username;
   gchar			   *proxy_password;
@@ -122,12 +123,11 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
   while (priv->addr_enum == NULL && *priv->next_proxy)
     {
       GSocketConnectable *connectable = NULL;
-      const gchar *proxy_uri;
       GProxy *proxy;
 
-      proxy_uri = *priv->next_proxy++;
+      priv->proxy_uri = *priv->next_proxy++;
       g_free (priv->proxy_type);
-      priv->proxy_type = g_uri_parse_scheme (proxy_uri);
+      priv->proxy_type = g_uri_parse_scheme (priv->proxy_uri);
 
       if (priv->proxy_type == NULL)
 	continue;
@@ -153,16 +153,16 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
 	{
 	  GError *error = NULL;
 
-	  connectable = g_network_address_parse_uri (proxy_uri, 0, &error);
+	  connectable = g_network_address_parse_uri (priv->proxy_uri, 0, &error);
 
 	  if (error)
 	    {
 	      g_warning ("Invalid proxy URI '%s': %s",
-			 proxy_uri, error->message);
+			 priv->proxy_uri, error->message);
 	      g_error_free (error);
 	    }
 
-	  save_userinfo (priv, proxy_uri);
+	  save_userinfo (priv, priv->proxy_uri);
 	}
 
       if (connectable)
@@ -198,6 +198,7 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
   while (result == NULL && (*priv->next_proxy || priv->addr_enum))
     {
       gchar *dest_hostname;
+      gchar *dest_protocol;
       GInetSocketAddress *inetsaddr;
       GInetAddress *inetaddr;
       guint16 port;
@@ -271,7 +272,7 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 	{
 	  dest_hostname = g_strdup (priv->dest_hostname);
 	}
-	
+      dest_protocol = g_uri_parse_scheme (priv->dest_uri);
 		 		  
       g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address),
 			    NULL);
@@ -280,13 +281,19 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
       inetaddr = g_inet_socket_address_get_address (inetsaddr);
       port = g_inet_socket_address_get_port (inetsaddr);
 
-      result = g_proxy_address_new (inetaddr, port,
-				    priv->proxy_type,
-				    dest_hostname, priv->dest_port,
-				    priv->proxy_username,
-				    priv->proxy_password);
-
+      result = g_object_new (G_TYPE_PROXY_ADDRESS,
+			     "address", inetaddr,
+			     "port", port,
+			     "protocol", priv->proxy_type,
+			     "destination-protocol", dest_protocol,
+			     "destination-hostname", dest_hostname,
+			     "destination-port", priv->dest_port,
+			     "username", priv->proxy_username,
+			     "password", priv->proxy_password,
+			     "uri", priv->proxy_uri,
+			     NULL);
       g_free (dest_hostname);
+      g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
 	{
@@ -340,7 +347,7 @@ save_result (GProxyAddressEnumeratorPrivate *priv)
     }
   else
     {
-      gchar *dest_hostname;
+      gchar *dest_hostname, *dest_protocol;
       GInetSocketAddress *inetsaddr;
       GInetAddress *inetaddr;
       guint16 port;
@@ -361,6 +368,7 @@ save_result (GProxyAddressEnumeratorPrivate *priv)
 	{
 	  dest_hostname = g_strdup (priv->dest_hostname);
 	}
+      dest_protocol = g_uri_parse_scheme (priv->dest_uri);
 
       g_return_if_fail (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address));
 
@@ -368,13 +376,19 @@ save_result (GProxyAddressEnumeratorPrivate *priv)
       inetaddr = g_inet_socket_address_get_address (inetsaddr);
       port = g_inet_socket_address_get_port (inetsaddr);
 
-      result = g_proxy_address_new (inetaddr, port,
-				    priv->proxy_type,
-				    dest_hostname, priv->dest_port,
-				    priv->proxy_username,
-				    priv->proxy_password);
-
+      result = g_object_new (G_TYPE_PROXY_ADDRESS,
+			     "address", inetaddr,
+			     "port", port,
+			     "protocol", priv->proxy_type,
+			     "destination-protocol", dest_protocol,
+			     "destination-hostname", dest_hostname,
+			     "destination-port", priv->dest_port,
+			     "username", priv->proxy_username,
+			     "password", priv->proxy_password,
+			     "uri", priv->proxy_uri,
+			     NULL);
       g_free (dest_hostname);
+      g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
 	{

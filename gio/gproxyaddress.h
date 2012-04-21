@@ -66,10 +66,15 @@ GSocketAddress *g_proxy_address_new         (GInetAddress *inetaddr,
 					     const gchar  *password);
 
 const gchar    *g_proxy_address_get_protocol                (GProxyAddress *proxy);
+GLIB_AVAILABLE_IN_2_34
+const gchar    *g_proxy_address_get_destination_protocol    (GProxyAddress *proxy);
 const gchar    *g_proxy_address_get_destination_hostname    (GProxyAddress *proxy);
 guint16         g_proxy_address_get_destination_port        (GProxyAddress *proxy);
 const gchar    *g_proxy_address_get_username                (GProxyAddress *proxy);
 const gchar    *g_proxy_address_get_password                (GProxyAddress *proxy);
+
+GLIB_AVAILABLE_IN_2_34
+const gchar    *g_proxy_address_get_uri                     (GProxyAddress *proxy);
 
 G_END_DECLS
 

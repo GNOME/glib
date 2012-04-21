@@ -49,17 +49,21 @@ enum
 {
   PROP_0,
   PROP_PROTOCOL,
+  PROP_DESTINATION_PROTOCOL,
   PROP_DESTINATION_HOSTNAME,
   PROP_DESTINATION_PORT,
   PROP_USERNAME,
-  PROP_PASSWORD
+  PROP_PASSWORD,
+  PROP_URI
 };
 
 struct _GProxyAddressPrivate
 {
+  gchar 	 *uri;
   gchar 	 *protocol;
   gchar		 *username;
   gchar		 *password;
+  gchar 	 *dest_protocol;
   gchar 	 *dest_hostname;
   guint16 	  dest_port;
 };
@@ -69,19 +73,21 @@ g_proxy_address_finalize (GObject *object)
 {
   GProxyAddress *proxy = G_PROXY_ADDRESS (object);
 
+  g_free (proxy->priv->uri);
   g_free (proxy->priv->protocol);
   g_free (proxy->priv->username);
   g_free (proxy->priv->password);
   g_free (proxy->priv->dest_hostname);
+  g_free (proxy->priv->dest_protocol);
 
   G_OBJECT_CLASS (g_proxy_address_parent_class)->finalize (object);
 }
 
 static void
 g_proxy_address_set_property (GObject      *object,
-			     guint         prop_id,
-			     const GValue *value,
-			     GParamSpec   *pspec)
+			      guint         prop_id,
+			      const GValue *value,
+			      GParamSpec   *pspec)
 {
   GProxyAddress *proxy = G_PROXY_ADDRESS (object);
 
@@ -90,6 +96,11 @@ g_proxy_address_set_property (GObject      *object,
     case PROP_PROTOCOL:
       g_free (proxy->priv->protocol);
       proxy->priv->protocol = g_value_dup_string (value);
+      break;
+
+    case PROP_DESTINATION_PROTOCOL:
+      g_free (proxy->priv->dest_protocol);
+      proxy->priv->dest_protocol = g_value_dup_string (value);
       break;
 
     case PROP_DESTINATION_HOSTNAME:
@@ -111,6 +122,11 @@ g_proxy_address_set_property (GObject      *object,
       proxy->priv->password = g_value_dup_string (value);
       break;
 
+    case PROP_URI:
+      g_free (proxy->priv->uri);
+      proxy->priv->uri = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -130,6 +146,10 @@ g_proxy_address_get_property (GObject    *object,
 	g_value_set_string (value, proxy->priv->protocol);
 	break;
 
+      case PROP_DESTINATION_PROTOCOL:
+	g_value_set_string (value, proxy->priv->dest_protocol);
+	break;
+
       case PROP_DESTINATION_HOSTNAME:
 	g_value_set_string (value, proxy->priv->dest_hostname);
 	break;
@@ -144,6 +164,10 @@ g_proxy_address_get_property (GObject    *object,
 
       case PROP_PASSWORD:
 	g_value_set_string (value, proxy->priv->password);
+	break;
+
+      case PROP_URI:
+	g_value_set_string (value, proxy->priv->uri);
 	break;
 
       default:
@@ -192,6 +216,24 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GProxyAddress:destination-protocol:
+   *
+   * The protocol being spoke to the destination host, or %NULL if
+   * the #GProxyAddress doesn't know.
+   *
+   * Since: 2.34
+   */
+  g_object_class_install_property (gobject_class,
+				   PROP_DESTINATION_PROTOCOL,
+				   g_param_spec_string ("destination-protocol",
+						       P_("Destionation Protocol"),
+						       P_("The proxy destination protocol"),
+						       NULL,
+						       G_PARAM_READWRITE |
+						       G_PARAM_CONSTRUCT_ONLY |
+						       G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_HOSTNAME,
 				   g_param_spec_string ("destination-hostname",
@@ -211,6 +253,24 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT_ONLY |
 						      G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GProxyAddress:uri:
+   *
+   * The URI string that the proxy was constructed from (or %NULL
+   * if the creator didn't specify this).
+   *
+   * Since: 2.34
+   */
+  g_object_class_install_property (gobject_class,
+				   PROP_URI,
+				   g_param_spec_string ("uri",
+							P_("URI"),
+							P_("The proxy's URI"),
+							NULL,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT_ONLY |
+							G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -241,6 +301,10 @@ g_proxy_address_init (GProxyAddress *proxy)
  * Creates a new #GProxyAddress for @inetaddr with @protocol that should
  * tunnel through @dest_hostname and @dest_port.
  *
+ * (Note that this method doesn't set the #GProxyAddress:uri or
+ * #GProxyAddress:destination-protocol fields; use g_object_new()
+ * directly if you want to set those.)
+ *
  * Returns: a new #GProxyAddress
  *
  * Since: 2.26
@@ -270,7 +334,7 @@ g_proxy_address_new (GInetAddress  *inetaddr,
  * g_proxy_address_get_protocol:
  * @proxy: a #GProxyAddress
  *
- * Gets @proxy's protocol.
+ * Gets @proxy's protocol. eg, "socks" or "http"
  *
  * Returns: the @proxy's protocol
  *
@@ -283,10 +347,29 @@ g_proxy_address_get_protocol (GProxyAddress *proxy)
 }
 
 /**
+ * g_proxy_address_get_destination_protocol:
+ * @proxy: a #GProxyAddress
+ *
+ * Gets the protocol that is being spoken to the destination
+ * server; eg, "http" or "ftp".
+ *
+ * Returns: the @proxy's destination protocol
+ *
+ * Since: 2.34
+ */
+const gchar *
+g_proxy_address_get_destination_protocol (GProxyAddress *proxy)
+{
+  return proxy->priv->dest_protocol;
+}
+
+/**
  * g_proxy_address_get_destination_hostname:
  * @proxy: a #GProxyAddress
  *
- * Gets @proxy's destination hostname.
+ * Gets @proxy's destination hostname; that is, the name of the host
+ * that will be connected to via the proxy, not the name of the proxy
+ * itself.
  *
  * Returns: the @proxy's destination hostname
  *
@@ -302,7 +385,9 @@ g_proxy_address_get_destination_hostname (GProxyAddress *proxy)
  * g_proxy_address_get_destination_port:
  * @proxy: a #GProxyAddress
  *
- * Gets @proxy's destination port.
+ * Gets @proxy's destination port; that is, the port on the
+ * destination host that will be connected to via the proxy, not the
+ * port number of the proxy itself.
  *
  * Returns: the @proxy's destination port
  *
@@ -344,4 +429,21 @@ const gchar *
 g_proxy_address_get_password (GProxyAddress *proxy)
 {
   return proxy->priv->password;
+}
+
+
+/**
+ * g_proxy_address_get_uri:
+ * @proxy: a #GProxyAddress
+ *
+ * Gets the proxy URI that @proxy was constructed from.
+ *
+ * Returns: the @proxy's URI, or %NULL if unknown
+ *
+ * Since: 2.34
+ */
+const gchar *
+g_proxy_address_get_uri (GProxyAddress *proxy)
+{
+  return proxy->priv->uri;
 }
