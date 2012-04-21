@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-20 15:11+0200\n"
-"PO-Revision-Date: 2012-04-20 15:12+0200\n"
+"POT-Creation-Date: 2012-04-21 16:29+0200\n"
+"PO-Revision-Date: 2012-04-21 16:30+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -2886,6 +2886,31 @@ msgstr "Necesítase máis entrada"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "O nome do host non é válido"
+
+#: ../gio/tests/gdbus-daemon.c:18
+msgid "Address to listen on"
+msgstr "Enderezo no que escoitar"
+
+#: ../gio/tests/gdbus-daemon.c:19
+msgid "Ignored, for compat with GTestDbus"
+msgstr "Ignorado, para compatibilidade con GTestDbus"
+
+#: ../gio/tests/gdbus-daemon.c:20
+msgid "Print address"
+msgstr ""
+
+#: ../gio/tests/gdbus-daemon.c:21
+msgid "Print address in shell mode"
+msgstr ""
+
+#: ../gio/tests/gdbus-daemon.c:30
+msgid "Run a dbus service"
+msgstr "Executar servizo dbus"
+
+#: ../gio/tests/gdbus-daemon.c:44
+#, c-format
+msgid "Wrong args\n"
+msgstr "Argumentos incorrectos\n"
 
 #: ../glib/gbookmarkfile.c:760
 #, c-format
