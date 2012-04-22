@@ -59,6 +59,7 @@ TEST_PROGS +=	 		\
 	network-monitor		\
 	fileattributematcher	\
 	resources		\
+	proxy-test		\
 	$(NULL)
 
 if HAVE_DBUS_DAEMON
@@ -452,6 +453,9 @@ gapplication_example_actions_LDADD   = $(progs_ldadd)
 
 gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
 gmenumodel_LDADD = $(progs_ldadd)
+
+proxy_test_SOURCES = proxy-test.c
+proxy_test_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
