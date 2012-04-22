@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-21 16:29+0200\n"
-"PO-Revision-Date: 2012-04-21 16:30+0200\n"
+"POT-Creation-Date: 2012-04-22 15:33+0200\n"
+"PO-Revision-Date: 2012-04-22 15:34+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -2897,11 +2897,11 @@ msgstr "Ignorado, para compatibilidade con GTestDbus"
 
 #: ../gio/tests/gdbus-daemon.c:20
 msgid "Print address"
-msgstr ""
+msgstr "Imprimir enderezo"
 
 #: ../gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
-msgstr ""
+msgstr "Imprimir enderezo en modo consola"
 
 #: ../gio/tests/gdbus-daemon.c:30
 msgid "Run a dbus service"
