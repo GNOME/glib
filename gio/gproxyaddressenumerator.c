@@ -69,6 +69,7 @@ struct _GProxyAddressEnumeratorPrivate
   gchar			   *proxy_password;
   gboolean                  supports_hostname;
   GList			   *next_dest_ip;
+  GError                   *last_error;
 
   /* Async attributes */
   GSimpleAsyncResult *simple;
@@ -316,6 +317,13 @@ complete_async (GProxyAddressEnumeratorPrivate *priv)
     }
 
   priv->simple = NULL;
+
+  if (priv->last_error)
+    {
+      g_simple_async_result_take_error (simple, priv->last_error);
+      priv->last_error = NULL;
+    }
+
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
 }
@@ -380,57 +388,14 @@ save_result (GProxyAddressEnumeratorPrivate *priv)
 					     g_object_unref);
 }
 
-static void
-dest_hostname_lookup_cb (GObject           *object,
-			 GAsyncResult      *result,
-			 gpointer           user_data)
-{
-  GError *error = NULL;
-  GProxyAddressEnumeratorPrivate *priv = user_data;
-  GSimpleAsyncResult *simple = priv->simple;
-
-  priv->dest_ips = g_resolver_lookup_by_name_finish (G_RESOLVER (object),
-						     result,
-						     &error);
-  if (priv->dest_ips)
-    save_result (priv);
-  else
-    g_simple_async_result_take_error (simple, error);
-
-  complete_async (priv); 
-}
+static void address_enumerate_cb (GObject      *object,
+				  GAsyncResult *result,
+				  gpointer	user_data);
 
 static void
-address_enumerate_cb (GObject	   *object,
-		      GAsyncResult *result,
-		      gpointer	    user_data)
+next_proxy (GProxyAddressEnumeratorPrivate *priv)
 {
-  GError *error = NULL;
-  GProxyAddressEnumeratorPrivate *priv = user_data;
-  GSimpleAsyncResult *simple = priv->simple;
-
-  priv->proxy_address =
-    g_socket_address_enumerator_next_finish (priv->addr_enum,
-					     result,
-					     &error);
-  if (priv->proxy_address)
-    {
-      if (!priv->supports_hostname && !priv->dest_ips)
-	{
-	  GResolver *resolver;
-	  resolver = g_resolver_get_default();
-	  g_resolver_lookup_by_name_async (resolver,
-					   priv->dest_hostname,
-					   priv->cancellable,
-					   dest_hostname_lookup_cb,
-					   priv);
-	  g_object_unref (resolver);
-	  return;
-	}
-
-      save_result (priv);
-    }
-  else if (*priv->next_proxy)
+  if (*priv->next_proxy)
     {
       g_object_unref (priv->addr_enum);
       priv->addr_enum = NULL;
@@ -453,10 +418,64 @@ address_enumerate_cb (GObject	   *object,
 	}
     }
 
-  if (error)
-    g_simple_async_result_take_error (simple, error);
+  complete_async (priv);
+}
 
-  complete_async (priv); 
+static void
+dest_hostname_lookup_cb (GObject           *object,
+			 GAsyncResult      *result,
+			 gpointer           user_data)
+{
+  GProxyAddressEnumeratorPrivate *priv = user_data;
+
+  g_clear_error (&priv->last_error);
+  priv->dest_ips = g_resolver_lookup_by_name_finish (G_RESOLVER (object),
+						     result,
+						     &priv->last_error);
+  if (priv->dest_ips)
+    {
+      save_result (priv);
+      complete_async (priv);
+    }
+  else
+    {
+      g_clear_object (&priv->proxy_address);
+      next_proxy (priv);
+    }
+}
+
+static void
+address_enumerate_cb (GObject	   *object,
+		      GAsyncResult *result,
+		      gpointer	    user_data)
+{
+  GProxyAddressEnumeratorPrivate *priv = user_data;
+
+  g_clear_error (&priv->last_error);
+  priv->proxy_address =
+    g_socket_address_enumerator_next_finish (priv->addr_enum,
+					     result,
+					     &priv->last_error);
+  if (priv->proxy_address)
+    {
+      if (!priv->supports_hostname && !priv->dest_ips)
+	{
+	  GResolver *resolver;
+	  resolver = g_resolver_get_default();
+	  g_resolver_lookup_by_name_async (resolver,
+					   priv->dest_hostname,
+					   priv->cancellable,
+					   dest_hostname_lookup_cb,
+					   priv);
+	  g_object_unref (resolver);
+	  return;
+	}
+
+      save_result (priv);
+      complete_async (priv);
+    }
+  else
+    next_proxy (priv);
 }
 
 static void
@@ -671,6 +690,8 @@ g_proxy_address_enumerator_finalize (GObject *object)
 
   if (priv->cancellable)
     g_object_unref (priv->cancellable);
+
+  g_clear_error (&priv->last_error);
 
   G_OBJECT_CLASS (g_proxy_address_enumerator_parent_class)->finalize (object);
 }
