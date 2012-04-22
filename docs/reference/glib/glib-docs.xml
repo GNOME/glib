@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V4.5//EN'
+                      'http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd' [
 <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
 <!ENTITY version SYSTEM "version.xml">
 ]>
@@ -30,12 +30,12 @@
       structure, they must use a lock to synchronize their operation.
     </para>
 
-    <xi:include href="building.sgml" />
-    <xi:include href="cross.sgml" />
-    <xi:include href="xml/compiling.sgml" />
-    <xi:include href="running.sgml" />
-    <xi:include href="changes.sgml" />
-    <xi:include href="resources.sgml" />
+    <xi:include href="building.xml" />
+    <xi:include href="cross.xml" />
+    <xi:include href="xml/compiling.xml" />
+    <xi:include href="running.xml" />
+    <xi:include href="changes.xml" />
+    <xi:include href="resources.xml" />
 
   </chapter>
 
@@ -91,7 +91,7 @@
     <xi:include href="xml/option.xml" />
     <xi:include href="xml/patterns.xml" />
     <xi:include href="xml/gregex.xml" />
-    <xi:include href="regex-syntax.sgml" />
+    <xi:include href="regex-syntax.xml" />
     <xi:include href="xml/markup.xml" />
     <xi:include href="xml/keyfile.xml" />
     <xi:include href="xml/bookmarkfile.xml" />

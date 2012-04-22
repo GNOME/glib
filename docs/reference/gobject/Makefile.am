@@ -7,7 +7,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=gobject
 
 # The top-level SGML file.
-DOC_MAIN_SGML_FILE=gobject-docs.sgml
+DOC_MAIN_SGML_FILE=gobject-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=$(top_srcdir)/gobject

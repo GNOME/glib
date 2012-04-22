@@ -7,7 +7,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=glib
 
 # The top-level SGML file.
-DOC_MAIN_SGML_FILE=glib-docs.sgml
+DOC_MAIN_SGML_FILE=glib-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=$(top_srcdir)/glib $(top_srcdir)/gmodule
@@ -60,13 +60,13 @@ HTML_IMAGES =  				\
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files =				\
-	cross.sgml			\
-	running.sgml			\
-	building.sgml			\
-	changes.sgml			\
-	compiling.sgml			\
-	resources.sgml			\
-	regex-syntax.sgml		\
+	cross.xml			\
+	running.xml			\
+	building.xml			\
+	changes.xml			\
+	compiling.xml			\
+	resources.xml			\
+	regex-syntax.xml		\
 	version.xml			\
 	glib-gettextize.xml		\
 	gtester.xml			\
@@ -75,7 +75,7 @@ content_files =				\
 	gvariant-text.xml
 
 expand_content_files = 			\
-	compiling.sgml
+	compiling.xml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../gobject/html --extra-dir=$(srcdir)/../gio/html
