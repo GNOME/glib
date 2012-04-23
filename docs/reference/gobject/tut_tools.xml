@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="ISO-8859-1"?>
-<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
-               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 ]>
 <part label="V">
   <title>Related Tools</title>
