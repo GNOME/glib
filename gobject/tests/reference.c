@@ -152,15 +152,26 @@ test_clear_function (void)
 }
 
 static void
+toggle_cb (gpointer data, GObject *obj, gboolean is_last)
+{
+  gboolean *b = data;
+
+  *b = TRUE;
+}
+
+static void
 test_object_value (void)
 {
   GObject *v;
   GObject *v2;
   GValue value = G_VALUE_INIT;
+  gboolean toggled = FALSE;
 
   g_value_init (&value, G_TYPE_OBJECT);
 
   v = g_object_new (G_TYPE_OBJECT, NULL);
+  g_object_add_toggle_ref (v, toggle_cb, &toggled);
+
   g_value_take_object (&value, v);
 
   v2 = g_value_get_object (&value);
@@ -170,7 +181,24 @@ test_object_value (void)
   g_assert (v2 == v);  /* objects use ref/unref for copy/free */
   g_object_unref (v2);
 
+  g_assert (!toggled);
   g_value_unset (&value);
+  g_assert (toggled);
+
+  /* test the deprecated variant too */
+  g_value_init (&value, G_TYPE_OBJECT);
+  /* get a new reference */
+  g_object_ref (v);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_value_set_object_take_ownership (&value, v);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+  toggled = FALSE;
+  g_value_unset (&value);
+  g_assert (toggled);
+
+  g_object_remove_toggle_ref (v, toggle_cb, &toggled);
 }
 
 static void
@@ -327,6 +355,124 @@ test_weak_ref (void)
   g_free (dynamic_weak);
 }
 
+typedef struct
+{
+  gboolean should_be_last;
+  gint count;
+} Count;
+
+static void
+toggle_notify (gpointer  data,
+               GObject  *obj,
+               gboolean  is_last)
+{
+  Count *c = data;
+
+  g_assert (is_last == c->should_be_last);
+
+  c->count++;
+}
+
+static void
+test_toggle_ref (void)
+{
+  GObject *obj;
+  Count c, c2;
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  g_object_add_toggle_ref (obj, toggle_notify, &c);
+  g_object_add_toggle_ref (obj, toggle_notify, &c2);
+
+  c.should_be_last = c2.should_be_last = TRUE;
+  c.count = c2.count = 0;
+
+  g_object_unref (obj);
+
+  g_assert_cmpint (c.count, ==, 0);
+  g_assert_cmpint (c2.count, ==, 0);
+
+  g_object_ref (obj);
+
+  g_assert_cmpint (c.count, ==, 0);
+  g_assert_cmpint (c2.count, ==, 0);
+
+  g_object_remove_toggle_ref (obj, toggle_notify, &c2);
+
+  g_object_unref (obj);
+
+  g_assert_cmpint (c.count, ==, 1);
+
+  c.should_be_last = FALSE;
+
+  g_object_ref (obj);
+
+  g_assert_cmpint (c.count, ==, 2);
+
+  c.should_be_last = TRUE;
+
+  g_object_unref (obj);
+
+  g_assert_cmpint (c.count, ==, 3);
+
+  g_object_remove_toggle_ref (obj, toggle_notify, &c);
+}
+
+static gboolean destroyed;
+static gint value;
+
+static void
+data_destroy (gpointer data)
+{
+  g_assert_cmpint (GPOINTER_TO_INT (data), ==, value);
+
+  destroyed = TRUE;
+}
+
+static void
+test_object_qdata (void)
+{
+  GObject *obj;
+  gpointer v;
+  GQuark quark;
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  value = 1;
+  destroyed = FALSE;
+  g_object_set_data_full (obj, "test", GINT_TO_POINTER (1), data_destroy);
+  v = g_object_get_data (obj, "test");
+  g_assert_cmpint (GPOINTER_TO_INT (v), ==, 1);
+  g_object_set_data_full (obj, "test", GINT_TO_POINTER (2), data_destroy);
+  g_assert (destroyed);
+  value = 2;
+  destroyed = FALSE;
+  v = g_object_steal_data (obj, "test");
+  g_assert_cmpint (GPOINTER_TO_INT (v), ==, 2);
+  g_assert (!destroyed);
+
+  value = 1;
+  destroyed = FALSE;
+  quark = g_quark_from_string ("test");
+  g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (1), data_destroy);
+  v = g_object_get_qdata (obj, quark);
+  g_assert_cmpint (GPOINTER_TO_INT (v), ==, 1);
+  g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (2), data_destroy);
+  g_assert (destroyed);
+  value = 2;
+  destroyed = FALSE;
+  v = g_object_steal_qdata (obj, quark);
+  g_assert_cmpint (GPOINTER_TO_INT (v), ==, 2);
+  g_assert (!destroyed);
+
+  g_object_set_qdata_full (obj, quark, GINT_TO_POINTER (3), data_destroy);
+  value = 3;
+  destroyed = FALSE;
+  g_object_unref (obj);
+
+  g_assert (destroyed);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -344,6 +490,8 @@ main (int argc, char **argv)
   g_test_add_func ("/object/initially-unowned", test_initially_unowned);
   g_test_add_func ("/object/weak-pointer", test_weak_pointer);
   g_test_add_func ("/object/weak-ref", test_weak_ref);
+  g_test_add_func ("/object/toggle-ref", test_toggle_ref);
+  g_test_add_func ("/object/qdata", test_object_qdata);
 
   return g_test_run ();
 }
