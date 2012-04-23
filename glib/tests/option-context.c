@@ -1938,14 +1938,25 @@ test_basic (void)
 }
 
 static void
+set_bool (gpointer data)
+{
+  gboolean *b = data;
+
+  *b = TRUE;
+}
+
+static void
 test_main_group (void)
 {
   GOptionContext *context;
   GOptionGroup *group;
+  gboolean b = FALSE;
 
   context = g_option_context_new (NULL);
   g_assert (g_option_context_get_main_group (context) == NULL);
-  group = g_option_group_new ("name", "description", "hlep", NULL, NULL);
+  group = g_option_group_new ("name", "description", "hlep", &b, set_bool);
+  g_option_context_add_group (context, group);
+  group = g_option_group_new ("name2", "description", "hlep", NULL, NULL);
   g_option_context_add_group (context, group);
   g_assert (g_option_context_get_main_group (context) == NULL);
   group = g_option_group_new ("name", "description", "hlep", NULL, NULL);
@@ -1953,6 +1964,8 @@ test_main_group (void)
   g_assert (g_option_context_get_main_group (context) == group);
 
   g_option_context_free (context);
+
+  g_assert (b);
 }
 
 static gboolean error_func_called = FALSE;
