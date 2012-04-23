@@ -254,6 +254,45 @@ g_free (gpointer mem)
 }
 
 /**
+ * g_clear_pointer: (skip)
+ * @pp: a pointer to a variable, struct member etc. holding a pointer
+ * @destroy: a function to which a gpointer can be passed, to destroy *@pp
+ *
+ * Clears a reference to a variable.
+ *
+ * @pp must not be %NULL.
+ *
+ * If the reference is %NULL then this function does nothing.
+ * Otherwise, the variable is destroyed using @destroy and the
+ * pointer is set to %NULL.
+ *
+ * This function is threadsafe and modifies the pointer atomically,
+ * using memory barriers where needed.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts.
+ *
+ * Since: 2.34
+ **/
+#undef g_clear_pointer
+void
+g_clear_pointer (gpointer      *pp,
+                 GDestroyNotify destroy)
+{
+  gpointer _p;
+
+  /* This is a little frustrating.
+   * Would be nice to have an atomic exchange (with no compare).
+   */
+  do
+    _p = g_atomic_pointer_get (pp);
+  while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (pp, _p, NULL));
+
+  if (_p)
+    destroy (_p);
+}
+
+/**
  * g_try_malloc:
  * @n_bytes: number of bytes to allocate.
  * 

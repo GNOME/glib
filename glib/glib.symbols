@@ -682,6 +682,7 @@ g_markup_printf_escaped
 g_markup_vprintf_escaped
 g_markup_collect_attributes
 g_free
+g_clear_pointer
 g_malloc
 g_malloc0
 g_malloc_n

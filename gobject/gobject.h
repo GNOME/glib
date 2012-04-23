@@ -561,19 +561,7 @@ G_STMT_START { \
     G_OBJECT_WARN_INVALID_PSPEC ((object), "property", (property_id), (pspec))
 
 void    g_clear_object (volatile GObject **object_ptr);
-#define g_clear_object(object_ptr) \
-  G_STMT_START {                                                             \
-    /* Only one access, please */                                            \
-    gpointer *_p = (gpointer) (object_ptr);                                  \
-    gpointer _o;                                                             \
-                                                                             \
-    do                                                                       \
-      _o = g_atomic_pointer_get (_p);                                        \
-    while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_p, _o, NULL));\
-                                                                             \
-    if (_o)                                                                  \
-      g_object_unref (_o);                                                   \
-  } G_STMT_END
+#define g_clear_object(object_ptr) g_clear_pointer ((object_ptr), g_object_unref)
 
 typedef struct {
     /*<private>*/

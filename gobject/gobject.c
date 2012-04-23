@@ -3057,18 +3057,7 @@ g_object_unref (gpointer _object)
 void
 g_clear_object (volatile GObject **object_ptr)
 {
-  gpointer *ptr = (gpointer) object_ptr;
-  gpointer old;
-
-  /* This is a little frustrating.
-   * Would be nice to have an atomic exchange (with no compare).
-   */
-  do
-    old = g_atomic_pointer_get (ptr);
-  while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (ptr, old, NULL));
-
-  if (old)
-    g_object_unref (old);
+  g_clear_pointer (object_ptr, g_object_unref);
 }
 
 /**

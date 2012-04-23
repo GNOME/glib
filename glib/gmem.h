@@ -69,6 +69,10 @@ typedef struct _GMemVTable GMemVTable;
 
 void	 g_free	          (gpointer	 mem);
 
+GLIB_AVAILABLE_IN_2_34
+void     g_clear_pointer  (gpointer      *pp,
+                           GDestroyNotify destroy);
+
 gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 gpointer g_realloc        (gpointer	 mem,
@@ -93,6 +97,20 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 			   gsize	 n_blocks,
 			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
+#define g_clear_pointer(pp, destroy) \
+  G_STMT_START {                                                               \
+    G_STATIC_ASSERT (sizeof (*(pp)) == sizeof (gpointer));                     \
+    /* Only one access, please */                                              \
+    gpointer *_pp = (gpointer *) pp;                                           \
+    gpointer _p;                                                               \
+                                                                               \
+    do                                                                         \
+      _p = g_atomic_pointer_get (_pp);                                         \
+    while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_pp, _p, NULL)); \
+                                                                               \
+    if (_p)                                                                    \
+      ((GDestroyNotify) (destroy)) (_p);                                       \
+  } G_STMT_END
 
 /* Optimise: avoid the call to the (slower) _n function if we can
  * determine at compile-time that no overflow happens.
