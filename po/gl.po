@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-22 15:33+0200\n"
-"PO-Revision-Date: 2012-04-22 15:34+0200\n"
+"POT-Creation-Date: 2012-04-24 00:28+0200\n"
+"PO-Revision-Date: 2012-04-24 00:29+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../gio/gbufferedinputstream.c:399 ../gio/gbufferedinputstream.c:480
+#: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:508
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:753
@@ -37,10 +37,23 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "O valor de conta pasado a %s é demasiado longo"
 
-#: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:888
+#: ../gio/gbufferedinputstream.c:909 ../gio/gbufferedoutputstream.c:581
+#: ../gio/gdataoutputstream.c:568
+msgid "Seek not supported on base stream"
+msgstr "Non se permite buscar no fluxo base"
+
+#: ../gio/gbufferedinputstream.c:955
+msgid "Cannot truncate GBufferedInputStream"
+msgstr "Non é posíbel truncar GBufferedInputStream"
+
+#: ../gio/gbufferedinputstream.c:1000 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:292 ../gio/goutputstream.c:1228
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
+
+#: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
+msgid "Truncate not supported on base stream"
+msgstr "Non se permite truncar no fluxo base"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1836
 #: ../gio/gdbusconnection.c:1928 ../gio/gdbusprivate.c:1414
