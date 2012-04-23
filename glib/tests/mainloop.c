@@ -316,6 +316,16 @@ test_invoke (void)
 }
 
 static gboolean
+quit_loop (gpointer data)
+{
+  GMainLoop *loop = data;
+
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
 run_inner_loop (gpointer user_data)
 {
   GMainContext *ctx = user_data;
@@ -326,13 +336,13 @@ run_inner_loop (gpointer user_data)
 
   inner = g_main_loop_new (ctx, FALSE);
   timeout = g_timeout_source_new (100);
-  g_source_set_callback (timeout, (GSourceFunc)g_main_loop_quit, inner, NULL);
+  g_source_set_callback (timeout, quit_loop, inner, NULL);
   g_source_attach (timeout, ctx);
 
   g_main_loop_run (inner);
   g_main_loop_unref (inner);
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 static void
@@ -371,7 +381,7 @@ test_child_sources (void)
   g_assert_cmpint (g_source_get_priority (child_c), ==, G_PRIORITY_DEFAULT);
 
   end = g_timeout_source_new (1050);
-  g_source_set_callback (end, (GSourceFunc)g_main_loop_quit, loop, NULL);
+  g_source_set_callback (end, quit_loop, loop, NULL);
   g_source_attach (end, ctx);
   g_source_unref (end);
 
