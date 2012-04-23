@@ -340,6 +340,96 @@ test_gettext (void)
   g_assert_cmpstr (am2, ==, am3);
 }
 
+static void
+test_realname (void)
+{
+  const gchar *name;
+
+  name = g_get_real_name ();
+
+  g_assert (name != NULL);
+}
+
+static void
+test_hostname (void)
+{
+  const gchar *name;
+
+  name = g_get_host_name ();
+
+  g_assert (name != NULL);
+}
+
+static void
+test_xdg_dirs (void)
+{
+  gchar *xdg;
+  const gchar *dir;
+  const gchar * const *dirs;
+  gchar *s;
+
+  xdg = g_strdup (g_getenv ("XDG_CONFIG_HOME"));
+  if (!xdg)
+    xdg = g_build_filename (g_get_home_dir (), ".config", NULL);
+
+  dir = g_get_user_config_dir ();
+
+  g_assert_cmpstr (dir, ==, xdg);
+  g_free (xdg);
+
+  xdg = g_strdup (g_getenv ("XDG_DATA_HOME"));
+  if (!xdg)
+    xdg = g_build_filename (g_get_home_dir (), ".local", "share", NULL);
+
+  dir = g_get_user_data_dir ();
+
+  g_assert_cmpstr (dir, ==, xdg);
+  g_free (xdg);
+
+  xdg = g_strdup (g_getenv ("XDG_CACHE_HOME"));
+  if (!xdg)
+    xdg = g_build_filename (g_get_home_dir (), ".cache", NULL);
+
+  dir = g_get_user_cache_dir ();
+
+  g_assert_cmpstr (dir, ==, xdg);
+  g_free (xdg);
+
+  xdg = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
+  if (!xdg)
+    xdg = g_strdup (g_get_user_cache_dir ());
+
+  dir = g_get_user_runtime_dir ();
+
+  g_assert_cmpstr (dir, ==, xdg);
+  g_free (xdg);
+
+  xdg = (gchar *)g_getenv ("XDG_CONFIG_DIRS");
+  if (!xdg)
+    xdg = "/etc/xdg";
+
+  dirs = g_get_system_config_dirs ();
+
+  s = g_strjoinv (":", (gchar **)dirs);
+
+  g_assert_cmpstr (s, ==, xdg);
+
+  g_strfreev ((gchar **)dirs);
+  g_free (s);
+}
+
+static void
+test_special_dir (void)
+{
+  const gchar *dir, *dir2;
+
+  dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+  g_reload_user_special_dirs_cache ();
+  dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+
+  g_assert_cmpstr (dir, ==, dir2);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -366,6 +456,10 @@ main (int   argc,
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
+  g_test_add_func ("/utils/realname", test_realname);
+  g_test_add_func ("/utils/hostname", test_hostname);
+  g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
+  g_test_add_func ("/utils/specialdir", test_special_dir);
 
   return g_test_run();
 }
