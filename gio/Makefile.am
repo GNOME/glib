@@ -101,7 +101,7 @@ EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h
 gdbus-daemon-generated.h gdbus-daemon-generated.c : dbus-daemon.xml $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
-		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen.in \
+		$(PYTHON) $(top_srcdir)/gio/gdbus-2.0/codegen/gdbus-codegen.in \
 		--interface-prefix org. \
 		--generate-c-code gdbus-daemon-generated \
 		--c-namespace _G \
