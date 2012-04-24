@@ -266,7 +266,7 @@ gsettings_LDADD		  = $(progs_ldadd)
 gschema_compile_SOURCES	  = gschema-compile.c
 gschema_compile_LDADD	  = $(progs_ldadd)
 
-gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_srcdir)/gio/gdbus-daemon-generated.c
+gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_builddir)/gio/gdbus-daemon-generated.c
 gdbus_daemon_LDADD = $(progs_ldadd)
 
 if HAVE_DBUS1
