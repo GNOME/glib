@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-22 09:06+0300\n"
-"PO-Revision-Date: 2012-04-22 09:06+0300\n"
+"POT-Creation-Date: 2012-04-24 07:28+0300\n"
+"PO-Revision-Date: 2012-04-24 07:28+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gio/gbufferedinputstream.c:399 ../gio/gbufferedinputstream.c:480
+#: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:508
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:753
@@ -28,10 +28,23 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "Подадена е прекалено голяма стойност на %s"
 
-#: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:888
+#: ../gio/gbufferedinputstream.c:909 ../gio/gbufferedoutputstream.c:581
+#: ../gio/gdataoutputstream.c:568
+msgid "Seek not supported on base stream"
+msgstr "Търсенето не се поддържа от основния поток"
+
+#: ../gio/gbufferedinputstream.c:955
+msgid "Cannot truncate GBufferedInputStream"
+msgstr "GBufferedInputStream не може да се съкрати"
+
+#: ../gio/gbufferedinputstream.c:1000 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:292 ../gio/goutputstream.c:1228
 msgid "Stream is already closed"
 msgstr "Потокът вече е затворен"
+
+#: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
+msgid "Truncate not supported on base stream"
+msgstr "Основният поток не може да се съкращава"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1836
 #: ../gio/gdbusconnection.c:1928 ../gio/gdbusprivate.c:1414
