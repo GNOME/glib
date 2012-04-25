@@ -2,7 +2,6 @@ include $(top_srcdir)/Makefile.decl
 
 NULL =
 
-DIST_SUBDIRS =
 SUBDIRS = gdbus-2.0/codegen
 
 if OS_UNIX
@@ -328,8 +327,6 @@ endif
 
 if BUILD_MODULAR_TESTS
 SUBDIRS += tests 
-else
-DIST_SUBDIRS += tests
 endif
 
 libgio_2_0_la_SOURCES =		\

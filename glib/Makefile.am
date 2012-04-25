@@ -36,14 +36,10 @@ MAYBE_PCRE = pcre
 endif
 
 SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre .
-DIST_SUBDIRS =
+DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
 if BUILD_MODULAR_TESTS
 SUBDIRS += tests 
-else
-DIST_SUBDIRS += tests
 endif
-
-DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
 
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
