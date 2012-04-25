@@ -563,10 +563,12 @@ G_STMT_START { \
 void    g_clear_object (volatile GObject **object_ptr);
 #define g_clear_object(object_ptr) \
   G_STMT_START {                                                             \
+    G_STATIC_ASSERT (sizeof *(object_ptr) == sizeof (gpointer));             \
     /* Only one access, please */                                            \
-    gpointer *_p = (gpointer) (object_ptr);                                  \
+    gpointer *_p = (gpointer *) (object_ptr);                                \
     gpointer _o;                                                             \
                                                                              \
+    (void) (0 ? (gpointer) *(object_ptr) : 0);                               \
     do                                                                       \
       _o = g_atomic_pointer_get (_p);                                        \
     while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_p, _o, NULL));\
