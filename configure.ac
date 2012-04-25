@@ -3443,10 +3443,13 @@ $ac_cv_sizeof___int64)
   ;;
 esac
 
+AC_CHECK_TYPE([guint32],,,[typedef unsigned $gint32 guint32;])
 AC_CHECK_ALIGNOF([guint32], [AC_INCLUDES_DEFAULT
 typedef unsigned $gint32 guint32;])
+AC_CHECK_TYPE([guint64],,,[typedef unsigned $gint64 guint64;])
 AC_CHECK_ALIGNOF([guint64], [AC_INCLUDES_DEFAULT
 typedef unsigned $gint64 guint64;])
+AC_CHECK_TYPE([unsigned long])
 AC_CHECK_ALIGNOF([unsigned long])
 
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
