@@ -1231,7 +1231,7 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       g_value_set_boolean (gvalue, (gboolean) *int_val);
       break;
     case G_TYPE_STRING:
-      g_value_set_string (gvalue, *(gchar**)value);
+      g_value_take_string (gvalue, *(gchar**)value);
       break;
     case G_TYPE_CHAR:
       g_value_set_schar (gvalue, (gint8) *int_val);
@@ -1258,7 +1258,7 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       g_value_set_uint64 (gvalue, (guint64) *int_val);
       break;
     case G_TYPE_BOXED:
-      g_value_set_boxed (gvalue, *(gpointer*)value);
+      g_value_take_boxed (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_ENUM:
       g_value_set_enum (gvalue, (gint) *int_val);
@@ -1267,13 +1267,13 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       g_value_set_flags (gvalue, (guint) *int_val);
       break;
     case G_TYPE_PARAM:
-      g_value_set_param (gvalue, *(gpointer*)value);
+      g_value_take_param (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_OBJECT:
-      g_value_set_object (gvalue, *(gpointer*)value);
+      g_value_take_object (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_VARIANT:
-      g_value_set_variant (gvalue, *(gpointer*)value);
+      g_value_take_variant (gvalue, *(gpointer*)value);
       break;
     default:
       g_warning ("value_from_ffi_type: Unsupported fundamental type: %s",
