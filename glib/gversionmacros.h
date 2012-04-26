@@ -111,11 +111,13 @@
  * The definition should be one of the predefined GLib version
  * macros: %GLIB_VERSION_2_26, %GLIB_VERSION_2_28,...
  *
- * This macro defines the lower bound for the GLib API to use.
+ * This macro defines the earliest version of GLib that the package is
+ * required to be able to compile against.
  *
- * If a function has been deprecated in a newer version of GLib,
- * it is possible to use this symbol to avoid the compiler warnings
- * without disabling warning for every deprecated function.
+ * If the compiler is configured to warn about the use of deprecated
+ * functions, then using functions that were deprecated in version
+ * %GLIB_VERSION_MIN_REQUIRED or earlier will cause warnings (but
+ * using functions deprecated in later releases will not).
  *
  * Since: 2.32
  */
@@ -138,11 +140,16 @@
  * The definition should be one of the predefined GLib version
  * macros: %GLIB_VERSION_2_26, %GLIB_VERSION_2_28,...
  *
- * This macro defines the upper bound for the GLib API to use.
+ * This macro defines the latest version of the GLib API that the
+ * package is allowed to make use of.
  *
- * If a function has been introduced in a newer version of GLib,
- * it is possible to use this symbol to get compiler warnings when
- * trying to use that function.
+ * If the compiler is configured to warn about the use of deprecated
+ * functions, then using functions added after version
+ * %GLIB_VERSION_MAX_ALLOWED will cause warnings.
+ *
+ * Unless you are using GLIB_CHECK_VERSION() or the like to compile
+ * different code depending on the GLib version, then this should be
+ * set to the same value as %GLIB_VERSION_MIN_REQUIRED.
  *
  * Since: 2.32
  */
