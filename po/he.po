@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-22 11:40+0300\n"
-"PO-Revision-Date: 2012-04-22 11:41+0200\n"
+"POT-Creation-Date: 2012-04-26 15:28+0300\n"
+"PO-Revision-Date: 2012-04-26 15:29+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../gio/gbufferedinputstream.c:399
-#: ../gio/gbufferedinputstream.c:480
+#: ../gio/gbufferedinputstream.c:427
+#: ../gio/gbufferedinputstream.c:508
 #: ../gio/ginputstream.c:185
 #: ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556
@@ -37,12 +37,27 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "Too large count value passed to %s"
 
-#: ../gio/gbufferedinputstream.c:870
+#: ../gio/gbufferedinputstream.c:909
+#: ../gio/gbufferedoutputstream.c:581
+#: ../gio/gdataoutputstream.c:568
+msgid "Seek not supported on base stream"
+msgstr "Seek not supported on base stream"
+
+#: ../gio/gbufferedinputstream.c:955
+msgid "Cannot truncate GBufferedInputStream"
+msgstr "Cannot truncate GBufferedInputStream"
+
+#: ../gio/gbufferedinputstream.c:1000
 #: ../gio/ginputstream.c:888
 #: ../gio/giostream.c:292
 #: ../gio/goutputstream.c:1228
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
+
+#: ../gio/gbufferedoutputstream.c:618
+#: ../gio/gdataoutputstream.c:598
+msgid "Truncate not supported on base stream"
+msgstr "Truncate not supported on base stream"
 
 #: ../gio/gcancellable.c:318
 #: ../gio/gdbusconnection.c:1836
