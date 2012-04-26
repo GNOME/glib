@@ -96,12 +96,12 @@ gdbus_sources = 							\
 	$(NULL)
 
 # These are not built into the library yet
-EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h
+EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h dbus-daemon.xml
 
-gdbus-daemon-generated.h gdbus-daemon-generated.c : dbus-daemon.xml $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in
+gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
-		$(PYTHON) $(top_srcdir)/gio/gdbus-2.0/codegen/gdbus-codegen.in \
+		$(PYTHON) $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in \
 		--interface-prefix org. \
 		--generate-c-code gdbus-daemon-generated \
 		--c-namespace _G \
