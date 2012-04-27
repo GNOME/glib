@@ -932,6 +932,14 @@ typedef struct {
 } ReadData;
 
 static void
+free_read_data (ReadData *op)
+{
+  if (op->cancellable)
+    g_object_unref (op->cancellable);
+  g_slice_free (ReadData, op);
+}
+
+static void
 read_async_thread (GSimpleAsyncResult *res,
 		   GObject            *object,
 		   GCancellable       *cancellable)
@@ -1017,9 +1025,9 @@ g_input_stream_real_read_async (GInputStream        *stream,
   GSimpleAsyncResult *res;
   ReadData *op;
   
-  op = g_new (ReadData, 1);
+  op = g_slice_new0 (ReadData);
   res = g_simple_async_result_new (G_OBJECT (stream), callback, user_data, g_input_stream_real_read_async);
-  g_simple_async_result_set_op_res_gpointer (res, op, g_free);
+  g_simple_async_result_set_op_res_gpointer (res, op, (GDestroyNotify) free_read_data);
   op->buffer = buffer;
   op->count_requested = count;
   op->cancellable = cancellable ? g_object_ref (cancellable) : NULL;

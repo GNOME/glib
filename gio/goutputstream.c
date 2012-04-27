@@ -1273,6 +1273,14 @@ typedef struct {
 } WriteData;
 
 static void
+free_write_data (WriteData *op)
+{
+  if (op->cancellable)
+    g_object_unref (op->cancellable);
+  g_slice_free (WriteData, op);
+}
+
+static void
 write_async_thread (GSimpleAsyncResult *res,
                     GObject            *object,
                     GCancellable       *cancellable)
@@ -1355,11 +1363,14 @@ g_output_stream_real_write_async (GOutputStream       *stream,
   GSimpleAsyncResult *res;
   WriteData *op;
 
-  op = g_new0 (WriteData, 1);
+  op = g_slice_new0 (WriteData);
   res = g_simple_async_result_new (G_OBJECT (stream), callback, user_data, g_output_stream_real_write_async);
-  g_simple_async_result_set_op_res_gpointer (res, op, g_free);
+  g_simple_async_result_set_op_res_gpointer (res, op, (GDestroyNotify) free_write_data);
   op->buffer = buffer;
   op->count_requested = count;
+  op->cancellable = cancellable ? g_object_ref (cancellable) : NULL;
+  op->io_priority = io_priority;
+  op->need_idle = TRUE;
   
   if (G_IS_POLLABLE_OUTPUT_STREAM (stream) &&
       g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (stream)))
