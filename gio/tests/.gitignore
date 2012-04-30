@@ -27,6 +27,7 @@ gapplication-example-cmdline3
 gapplication-example-menu
 gapplication-example-open
 gdbus-addresses
+gdbus-auth
 gdbus-bz627724
 gdbus-close-pending
 gdbus-connection
@@ -34,6 +35,7 @@ gdbus-connection-flush
 gdbus-connection-flush-helper
 gdbus-connection-loss
 gdbus-connection-slow
+gdbus-daemon
 gdbus-error
 gdbus-example-export
 gdbus-example-objectmanager-client
