@@ -99,11 +99,12 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 
 #define g_clear_pointer(pp, destroy) \
   G_STMT_START {                                                               \
-    G_STATIC_ASSERT (sizeof (*(pp)) == sizeof (gpointer));                     \
+    G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
     /* Only one access, please */                                              \
-    gpointer *_pp = (gpointer *) pp;                                           \
+    gpointer *_pp = (gpointer *) (pp);                                         \
     gpointer _p;                                                               \
                                                                                \
+    (void) (0 ? (gpointer) *(pp) : 0);                                         \
     do                                                                         \
       _p = g_atomic_pointer_get (_pp);                                         \
     while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_pp, _p, NULL)); \
