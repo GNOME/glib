@@ -41,3 +41,9 @@ int                     g_application_impl_command_line                 (GApplic
 
 G_GNUC_INTERNAL
 void                    g_application_impl_flush                        (GApplicationImpl   *impl);
+
+G_GNUC_INTERNAL
+GDBusConnection *       g_application_impl_get_dbus_connection          (GApplicationImpl   *impl);
+
+G_GNUC_INTERNAL
+const gchar *           g_application_impl_get_dbus_object_path         (GApplicationImpl   *impl);

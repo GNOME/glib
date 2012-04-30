@@ -2897,6 +2897,9 @@ g_application_set_inactivity_timeout
 g_application_get_flags
 g_application_set_flags
 <SUBSECTION>
+g_application_get_dbus_connection
+g_application_get_dbus_object_path
+<SUBSECTION>
 g_application_set_action_group
 <SUBSECTION>
 g_application_get_is_registered

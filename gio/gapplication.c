@@ -1085,7 +1085,7 @@ g_application_set_inactivity_timeout (GApplication *application,
       g_object_notify (G_OBJECT (application), "inactivity-timeout");
     }
 }
-/* Read-only property getters (is registered, is remote) {{{1 */
+/* Read-only property getters (is registered, is remote, dbus stuff) {{{1 */
 /**
  * g_application_get_is_registered:
  * @application: a #GApplication
@@ -1133,6 +1133,69 @@ g_application_get_is_remote (GApplication *application)
   g_return_val_if_fail (application->priv->is_registered, FALSE);
 
   return application->priv->is_remote;
+}
+
+/**
+ * g_application_get_dbus_connection:
+ * @application: a #GApplication
+ *
+ * Gets the #GDBusConnection being used by the application, or %NULL.
+ *
+ * If #GApplication is using its D-Bus backend then this function will
+ * return the #GDBusConnection being used for uniqueness and
+ * communication with the desktop environment and other instances of the
+ * application.
+ *
+ * If #GApplication is not using D-Bus then this function will return
+ * %NULL.  This includes the situation where the D-Bus backend would
+ * normally be in use but we were unable to connect to the bus.
+ *
+ * This function must not be called before the application has been
+ * registered.  See g_application_get_is_registered().
+ *
+ * Returns: (transfer none): a #GDBusConnection, or %NULL
+ *
+ * Since: 2.34
+ **/
+GDBusConnection *
+g_application_get_dbus_connection (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+  g_return_val_if_fail (application->priv->is_registered, FALSE);
+
+  return g_application_impl_get_dbus_connection (application->priv->impl);
+}
+
+/**
+ * g_application_get_dbus_object_path:
+ * @application: a #GApplication
+ *
+ * Gets the D-Bus object path being used by the application, or %NULL.
+ *
+ * If #GApplication is using its D-Bus backend then this function will
+ * return the D-Bus object path that #GApplication is using.  If the
+ * application is the primary instance then there is an object published
+ * at this path.  If the application is not the primary instance then
+ * the result of this function is undefined.
+ *
+ * If #GApplication is not using D-Bus then this function will return
+ * %NULL.  This includes the situation where the D-Bus backend would
+ * normally be in use but we were unable to connect to the bus.
+ *
+ * This function must not be called before the application has been
+ * registered.  See g_application_get_is_registered().
+ *
+ * Returns: the object path, or %NULL
+ *
+ * Since: 2.34
+ **/
+const gchar *
+g_application_get_dbus_object_path (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+  g_return_val_if_fail (application->priv->is_registered, FALSE);
+
+  return g_application_impl_get_dbus_object_path (application->priv->impl);
 }
 
 /* Register {{{1 */

@@ -105,6 +105,11 @@ const gchar *           g_application_get_application_id                (GApplic
 void                    g_application_set_application_id                (GApplication             *application,
                                                                          const gchar              *application_id);
 
+GLIB_AVAILABLE_IN_2_34
+GDBusConnection *       g_application_get_dbus_connection               (GApplication             *application);
+GLIB_AVAILABLE_IN_2_34
+const gchar *           g_application_get_dbus_object_path              (GApplication             *application);
+
 guint                   g_application_get_inactivity_timeout            (GApplication             *application);
 void                    g_application_set_inactivity_timeout            (GApplication             *application,
                                                                          guint                     inactivity_timeout);

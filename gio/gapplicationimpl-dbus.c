@@ -597,6 +597,17 @@ g_application_impl_flush (GApplicationImpl *impl)
     g_dbus_connection_flush_sync (impl->session_bus, NULL, NULL);
 }
 
+GDBusConnection *
+g_application_impl_get_dbus_connection (GApplicationImpl *impl)
+{
+  return impl->session_bus;
+}
+
+const gchar *
+g_application_impl_get_dbus_object_path (GApplicationImpl *impl)
+{
+  return impl->object_path;
+}
 
 /* GDBusCommandLine implementation {{{1 */
 
