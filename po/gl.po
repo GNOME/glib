@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-24 00:28+0200\n"
+"POT-Creation-Date: 2012-04-30 16:14+0200\n"
 "PO-Revision-Date: 2012-04-24 00:29+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
@@ -971,28 +971,28 @@ msgstr "O ficheiro de escritorio non especificou o campo Exec"
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel atopar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1566
+#: ../gio/gdesktopappinfo.c:1567
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1570
+#: ../gio/gdesktopappinfo.c:1571
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1810 ../gio/gdesktopappinfo.c:1834
+#: ../gio/gdesktopappinfo.c:1811 ../gio/gdesktopappinfo.c:1835
 msgid "Application information lacks an identifier"
 msgstr "A información do aplicativo carece dun identificador"
 
-#: ../gio/gdesktopappinfo.c:2058
+#: ../gio/gdesktopappinfo.c:2059
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:2174
+#: ../gio/gdesktopappinfo.c:2175
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -3737,61 +3737,61 @@ msgstr ""
 "O documento terminou inesperadamente dentro dun comentario ou instrución de "
 "procesamento"
 
-#: ../glib/goption.c:746
+#: ../glib/goption.c:745
 msgid "Usage:"
 msgstr "Uso:"
 
-#: ../glib/goption.c:746
+#: ../glib/goption.c:745
 msgid "[OPTION...]"
 msgstr "[OPCIÓN…]"
 
-#: ../glib/goption.c:852
+#: ../glib/goption.c:851
 msgid "Help Options:"
 msgstr "Opcións de axuda:"
 
-#: ../glib/goption.c:853
+#: ../glib/goption.c:852
 msgid "Show help options"
 msgstr "Mostrar as opcións de axuda"
 
-#: ../glib/goption.c:859
+#: ../glib/goption.c:858
 msgid "Show all help options"
 msgstr "Mostrar todas as opcións de axuda"
 
-#: ../glib/goption.c:921
+#: ../glib/goption.c:920
 msgid "Application Options:"
 msgstr "Opcións do aplicativo:"
 
-#: ../glib/goption.c:983 ../glib/goption.c:1053
+#: ../glib/goption.c:982 ../glib/goption.c:1052
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Non é posíbel analizar o valor enteiro «%s» para %s"
 
-#: ../glib/goption.c:993 ../glib/goption.c:1061
+#: ../glib/goption.c:992 ../glib/goption.c:1060
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "O valor enteiro «%s» para %s está fóra do intervalo"
 
-#: ../glib/goption.c:1018
+#: ../glib/goption.c:1017
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Non é posíbel analizar o valor \"double\" «%s» para %s"
 
-#: ../glib/goption.c:1026
+#: ../glib/goption.c:1025
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "O valor \"double\" «%s» para %s está fóra do intervalo"
 
-#: ../glib/goption.c:1289 ../glib/goption.c:1368
+#: ../glib/goption.c:1288 ../glib/goption.c:1367
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Produciuse un erro ao analizar a opción %s"
 
-#: ../glib/goption.c:1399 ../glib/goption.c:1512
+#: ../glib/goption.c:1398 ../glib/goption.c:1511
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumento que falta para %s"
 
-#: ../glib/goption.c:1965
+#: ../glib/goption.c:1964
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción %s descoñecida"
