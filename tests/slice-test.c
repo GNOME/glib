@@ -297,7 +297,7 @@ main (int   argc,
         for (i = 0; i < n_chunks; i++)
           {
             gint64 *vals = g_slice_get_config_state (G_SLICE_CONFIG_CONTENTION_COUNTER, i, &n);
-            g_print ("  %9llu   |  %9llu   |  %9llu\n", vals[0], vals[2], vals[1]);
+            g_print ("  %9" G_GINT64_FORMAT "   |  %9" G_GINT64_FORMAT "   |  %9" G_GINT64_FORMAT "\n", vals[0], vals[2], vals[1]);
             g_free (vals);
           }
       }

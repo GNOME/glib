@@ -5,8 +5,13 @@
 
 #include <glib.h>
 
-#define DEBUG_MSG(x)
-/* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");  */
+/* #define DEBUG 1 */
+
+#ifdef DEBUG
+# define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");
+#else
+# define DEBUG_MSG(x)
+#endif
 
 #define WAIT                5    /* seconds */
 #define MAX_THREADS         10
@@ -128,9 +133,11 @@ test_thread_stop_unused (void)
 static void
 test_thread_pools_entry_func (gpointer data, gpointer user_data)
 {
+#ifdef DEBUG
   guint id = 0;
 
   id = GPOINTER_TO_UINT (data);
+#endif
 
   DEBUG_MSG (("[pool] ---> [%3.3d] entered thread.", id));
 
@@ -293,9 +300,11 @@ test_thread_sort (gboolean sort)
 static void
 test_thread_idle_time_entry_func (gpointer data, gpointer user_data)
 {
+#ifdef DEBUG
   guint thread_id;
 
   thread_id = GPOINTER_TO_UINT (data);
+#endif
 
   DEBUG_MSG (("[idle] ---> entered thread:%2.2d", thread_id));
 
@@ -307,10 +316,7 @@ test_thread_idle_time_entry_func (gpointer data, gpointer user_data)
 static gboolean
 test_thread_idle_timeout (gpointer data)
 {
-  guint interval;
   gint i;
-
-  interval = GPOINTER_TO_UINT (data);
 
   for (i = 0; i < 2; i++) {
     g_thread_pool_push (idle_pool, GUINT_TO_POINTER (100 + i), NULL);

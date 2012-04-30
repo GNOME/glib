@@ -110,10 +110,9 @@ module_register (GTypeModule *module)
 static void
 test_dynamic_type (void)
 {
-  GTypeModule *module;
   DynamicObjectClass *class;
 
-  module = test_module_new (module_register);
+  test_module_new (module_register);
 
   /* Not loaded until we call ref for the first time */
   class = g_type_class_peek (DYNAMIC_OBJECT_TYPE);

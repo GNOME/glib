@@ -139,10 +139,9 @@ module_register (GTypeModule *module)
 static void
 test_dynamic_iface (void)
 {
-  GTypeModule *module;
   TestDynamicIfaceClass *dynamic_iface;
 
-  module = test_module_new (module_register);
+  test_module_new (module_register);
 
   /* Not loaded until we call ref for the first time */
   dynamic_iface = g_type_default_interface_peek (TEST_TYPE_DYNAMIC_IFACE);

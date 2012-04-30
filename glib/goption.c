@@ -261,7 +261,6 @@ static glong
 _g_utf8_strwidth (const gchar *p)
 {
   glong len = 0;
-  const gchar *start = p;
   g_return_val_if_fail (p != NULL, 0);
 
   while (*p)

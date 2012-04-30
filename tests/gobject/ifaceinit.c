@@ -418,5 +418,7 @@ main (int   argc,
   iface = TEST_IFACE6_GET_CLASS (object);
   g_assert (iface && iface->val == 0x60006 && iface->base_val == 0x660066);
 
+  g_type_class_unref (object_class);
+
   return 0;
 }

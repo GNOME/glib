@@ -1523,7 +1523,6 @@ on_authorize_authenticated_peer (GDBusAuthObserver *observer,
 				 GCredentials      *credentials,
 				 gpointer           user_data)
 {
-  GDBusDaemon *daemon = user_data;
   gboolean authorized = TRUE;
 
   if (credentials != NULL)
