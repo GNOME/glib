@@ -1292,8 +1292,8 @@ get_thumbnail_attributes (const char *path,
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
   g_checksum_free (checksum);
 
-  filename = g_build_filename (g_get_home_dir (),
-                               ".thumbnails", "normal", basename,
+  filename = g_build_filename (g_get_user_cache_dir (),
+                               "thumbnails", "normal", basename,
                                NULL);
 
   if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
@@ -1301,8 +1301,8 @@ get_thumbnail_attributes (const char *path,
   else
     {
       g_free (filename);
-      filename = g_build_filename (g_get_home_dir (),
-                                   ".thumbnails", "fail",
+      filename = g_build_filename (g_get_user_cache_dir (),
+                                   "thumbnails", "fail",
                                    "gnome-thumbnail-factory",
                                    basename,
                                    NULL);
