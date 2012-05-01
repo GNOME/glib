@@ -1,3 +1,81 @@
+Overview of changes from GLib 2.32.1 to 2.33.1
+==============================================
+
+* GApplication
+ - can now have a NULL application ID
+ - add accessors for determining dbus connection and object path
+
+* g_clear_object: fix warnings when using it on C++ (due to lack of
+  ability to implicitly cast void*)
+* add g_clear_pointer as a generic form of g_clear_object
+
+* GDBus:
+ - add our own implementation of the message bus for use on Windows only
+ - fix up a few bugs that use of this bus uncovered in GDBus
+ - escape nonce files in dbus addressess (think 'c:\')
+ - support initial underscores in dbus codegen namespace (for private)
+ - add GTestDBus for bringing up a session bus for testing purposes
+ - gdbus-codegen: Avoid warnings in generated code
+ - GDBusAuthObserver: Add a way to control what authentication mechanisms to use
+ - 
+
+* Fix misdetection of GNUstep as Cocoa (for the MacOS GSettings backend)
+
+* make sure configure fails if AC_CHECK_ALIGNOF cannot detect the alignment
+
+* GAppInfo
+ - overwrite the DISPLAY only if it is set in the launch context
+ - add accessor for StartupWMClass
+
+* glib/tests/date: force US locale running the GDateTime tests
+
+* Resources:
+ - fix broken use of GVDB on big endian machines
+ - set a 'display name' so that pretty file names appear in Gtk CSS
+   warning messages
+
+* GMainContext:
+ - block child sources when blocking the parent
+ - introduce more testcases for child sources
+
+* GResolver: add support for MX, TXT, NS and SOA records
+
+* GSocketControlMessage: Don't warn about unknown messages
+
+* GIO:
+ - implement GSeekable for the data and buffered stream classes
+ - implement GPollable for many more classes as well
+ - fix GConverterInputStream infinite loop when fill_buffer returns an error
+ - fileinfo: document the correct type for trash::orig-path
+
+* test coverage improvements and general fixes
+
+* new 2.34 stuff: version macros, docs index section, etc.
+
+* Build:
+ - add --disable-modular-tests build option
+ - don't require host binaries if tests are not enabled for cross-builds
+
+* Translations updated
+ Brazilian Portuguese
+ Bulgarian
+ Czech
+ French
+ Galician
+ German
+ Hebrew
+ Hindi
+ Italian
+ Norwegian bokmål
+ Polish
+ Russian
+ Russian
+ Serbian
+ Simplified Chinese
+ Slovenian
+ Spanish
+ Telugu
+
 Overview of changes from GLib 2.32.0 to 2.32.1
 ==============================================
 
