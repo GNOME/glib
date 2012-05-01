@@ -136,7 +136,7 @@ main (int   argc,
       return 1;
     }
 
-  g_printerr ("Will allocate and touch %" G_GUINT64_FORMAT " blocks of %" G_GUINT64_FORMAT " bytes (= %" G_GUINT64_FORMAT " bytes) %" G_GUINT64_FORMAT " times with color increment: 0x%08" G_GUINT64_MODIFIER "x\n",
+  g_printerr ("Will allocate and touch %" G_GUINT64_FORMAT " blocks of %" G_GUINT64_FORMAT " bytes (= %" G_GUINT64_FORMAT " bytes) %" G_GUINT64_FORMAT " times with color increment: 0x%08" G_GINT64_MODIFIER "x\n",
               n_blocks, block_size, n_blocks * block_size, repeats,
 	      (guint64)g_slice_get_config (G_SLICE_CONFIG_COLOR_INCREMENT));
 
