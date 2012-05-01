@@ -1,4 +1,5 @@
 #include <gio/gio.h>
+#include <string.h>
 
 static void
 test_guess (void)
@@ -6,7 +7,7 @@ test_guess (void)
   gchar *res;
   gchar *expected;
   gboolean uncertain;
-  guchar *data = (guchar*)
+  guchar data[] =
     "[Desktop Entry]\n"
     "Type=Application\n"
     "Name=appinfo-test\n"
@@ -26,28 +27,28 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("foo.desktop", data, -1, &uncertain);
+  res = g_content_type_guess ("foo.desktop", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-desktop");
   g_assert (g_content_type_equals (expected, res));
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("foo.txt", data, -1, &uncertain);
+  res = g_content_type_guess ("foo.txt", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert (g_content_type_equals (expected, res));
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("foo", data, -1, &uncertain);
+  res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert (g_content_type_equals (expected, res));
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess (NULL, data, -1, &uncertain);
+  res = g_content_type_guess (NULL, data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-desktop");
   g_assert (g_content_type_equals (expected, res));
   g_assert (!uncertain);
