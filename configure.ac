@@ -1819,10 +1819,12 @@ dnl ************************
 PKG_CHECK_MODULES([LIBELF], [libelf], [have_libelf=yes], [have_libelf=maybe])
 
 if test $have_libelf = maybe; then
+  glib_save_LIBS=$LIBS
   AC_CHECK_LIB([elf], [elf_begin], , [have_libelf=no])
   AC_CHECK_LIB([elf], [elf_getshdrstrndx], , [have_libelf=no])
   AC_CHECK_LIB([elf], [elf_getshdrnum], , [have_libelf=no])
   AC_CHECK_HEADER([libelf.h], , [have_libelf=no])
+  LIBS=$glib_save_LIBS
 
   if test $have_libelf != no; then
     LIBELF_LIBS=-lelf
