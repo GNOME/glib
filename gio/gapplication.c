@@ -68,8 +68,9 @@
  * desktop login.  When your application is launched again, its
  * arguments are passed through platform communication to the already
  * running program.  The already running instance of the program is
- * called the <firstterm>primary instance</firstterm>. On Linux, the
- * D-Bus session bus is used for communication.
+ * called the <firstterm>primary instance</firstterm>; for non-unique
+ * applications this is the always the current instance.
+ * On Linux, the D-Bus session bus is used for communication.
  *
  * If used, the expected form of an application identifier is very close
  * to that of of a
