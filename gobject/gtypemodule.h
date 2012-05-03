@@ -160,7 +160,7 @@ struct _GTypeModuleClass
  *   };
  *   gtk_gadget_type_id = g_type_module_register_type (type_module,
  *                                                     GTK_TYPE_THING,
- *                                                     GtkGadget,
+ *                                                     "GtkGadget",
  *                                                     &g_define_type_info,
  *                                                     (GTypeFlags) flags);
  *   {
