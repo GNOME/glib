@@ -462,14 +462,14 @@ dnl
 dnl zlib support
 dnl
 PKG_CHECK_MODULES([ZLIB], [zlib], [found_zlib=yes], [found_zlib=no])
-if test "x$found_zlib" = "xno" ; then
+AS_IF([test "x$found_zlib" = "xno"], [
   AC_CHECK_LIB(z, inflate, [AC_CHECK_HEADER(zlib.h, found_zlib=yes)])
   if test "x$found_zlib" = "xno" ; then
     AC_MSG_ERROR([*** Working zlib library and headers not found ***])
   fi
   ZLIB_LIBS='-lz'
   AC_SUBST(ZLIB_LIBS)
-fi
+])
 
 PKG_CHECK_MODULES(LIBFFI, [libffi >= 3.0.0])
 AC_SUBST(LIBFFI_CFLAGS)
