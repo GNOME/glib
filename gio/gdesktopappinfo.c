@@ -289,6 +289,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   char *start_group;
   char *type;
   char *try_exec;
+  char *exec;
 
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
@@ -325,6 +326,36 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       g_free (t);
     }
 
+  exec = g_key_file_get_string (key_file,
+                                G_KEY_FILE_DESKTOP_GROUP,
+                                G_KEY_FILE_DESKTOP_KEY_EXEC,
+                                NULL);
+  if (exec && exec[0] != '\0')
+    {
+      gint argc;
+      char **argv;
+      if (!g_shell_parse_argv (exec, &argc, &argv, NULL))
+        {
+          g_free (exec);
+          g_free (try_exec);
+          return FALSE;
+        }
+      else
+        {
+          char *t;
+          t = g_find_program_in_path (argv[0]);
+          g_strfreev (argv);
+
+          if (t == NULL)
+            {
+              g_free (exec);
+              g_free (try_exec);
+              return FALSE;
+            }
+          g_free (t);
+        }
+    }
+
   info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
   info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
@@ -335,7 +366,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->only_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN, NULL, NULL);
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
   info->try_exec = try_exec;
-  info->exec = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_EXEC, NULL);
+  info->exec = exec;
   info->path = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
   info->terminal = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TERMINAL, NULL) != FALSE;
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
