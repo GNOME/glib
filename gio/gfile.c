@@ -3400,7 +3400,7 @@ g_file_make_directory_with_parents (GFile         *file,
 		                    GError       **error)
 {
   gboolean result;
-  GFile *parent_file, *work_file;
+  GFile *work_file = NULL;
   GList *list = NULL, *l;
   GError *my_error = NULL;
 
@@ -3415,27 +3415,36 @@ g_file_make_directory_with_parents (GFile         *file,
       return result;
     }
   
-  work_file = file;
+  work_file = g_object_ref (file);
   
   while (!result && my_error->code == G_IO_ERROR_NOT_FOUND) 
     {
+      GFile *parent_file;
+
       g_clear_error (&my_error);
-    
+
       parent_file = g_file_get_parent (work_file);
       if (parent_file == NULL)
         break;
       result = g_file_make_directory (parent_file, cancellable, &my_error);
-    
-      if (!result && my_error->code == G_IO_ERROR_NOT_FOUND)
-        list = g_list_prepend (list, parent_file);
 
-      work_file = parent_file;
+      g_object_unref (work_file);
+      work_file = g_object_ref (parent_file);
+
+      if (!result && my_error->code == G_IO_ERROR_NOT_FOUND)
+        list = g_list_prepend (list, parent_file);  /* Transfer ownership of ref */
+      else
+        g_object_unref (parent_file);
     }
 
+  g_clear_error (&my_error);
   for (l = list; result && l; l = l->next)
     {
       result = g_file_make_directory ((GFile *) l->data, cancellable, &my_error);
     }
+
+  if (work_file)
+    g_object_unref (work_file);
   
   /* Clean up */
   while (list != NULL) 
