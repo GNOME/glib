@@ -322,8 +322,9 @@ GType maman_bar_get_type (void)
       </para>
 
       <para>
-        When having no special requirements you also can use the <function>G_DEFINE_TYPE</function>
-	macro:
+        If you have no special requirements you can use the
+        <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
+	macro to define a class:
 <programlisting>
 G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 </programlisting>
@@ -688,7 +689,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
   MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
 </programlisting>
-         <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIBaz</emphasis>
+         <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIbaz</emphasis>
          which inherits from G_TYPE_INTERFACE. All interfaces must be children of G_TYPE_INTERFACE in the 
          inheritance tree.
         </para>
@@ -706,13 +707,12 @@ void maman_ibaz_do_action (MamanIbaz *self)
           Once an interface type is registered, you must register implementations for these
           interfaces. The function named <function>maman_baz_get_type</function> registers
           a new GType named MamanBaz which inherits from <link linkend="GObject"><type>GObject</type></link> and which
-          implements the interface <type>MamanIBaz</type>.
+          implements the interface <type>MamanIbaz</type>.
 <programlisting>
 static void maman_baz_do_action (MamanIbaz *self)
 {
-  g_print ("Baz implementation of IBaz interface Action.\n");
+  g_print ("Baz implementation of Ibaz interface Action.\n");
 }
-
 
 static void
 baz_interface_init (gpointer         g_iface,
@@ -728,7 +728,7 @@ maman_baz_get_type (void)
   static GType type = 0;
   if (type == 0) {
     const GTypeInfo info = {
-      sizeof (MamanBazInterface),
+      sizeof (MamanBazClass),
       NULL,   /* base_init */
       NULL,   /* base_finalize */
       NULL,   /* class_init */
@@ -771,22 +771,38 @@ struct _GInterfaceInfo
 };
 </programlisting>
         </para>
+
         <para>
-        When having no special requirements you also can use the <function>G_DEFINE_INTERFACE</function> macro:
+        If you have no special requirements you can use the
+        <link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link> macro
+        to implement an interface:
 <programlisting>
-G_DEFINE_INTERFACE (MamanBaz, maman_baz, G_TYPE_OBJECT)
+static void
+maman_baz_do_action (MamanIbaz *self)
+{
+  g_print ("Baz implementation of Ibaz interface Action.\n");
+}
+
+static void
+maman_ibaz_interface_init (MamanIbazInterface *iface)
+{
+  iface->do_action = maman_baz_do_action;
+}
+
+G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
+                                                maman_ibaz_interface_init));
 </programlisting>
         </para>
-
 
         <sect2 id="gtype-non-instantiable-classed-init">
           <title>Interface Initialization</title>
 
           <para>
-            When an instantiable classed type which registered an interface 
-            implementation is created for the first time, its class structure 
-            is initialized following the process
-            described in <xref linkend="gtype-instantiable-classed"/>. 
+            When an instantiable classed type which implements an interface
+            (either directly or by inheriting an implementation from a superclass)
+            is created for the first time, its class structure is initialized
+            following the process described in <xref linkend="gtype-instantiable-classed"/>.
             After that, the interface implementations associated with
             the type are initialized.
           </para>
@@ -802,28 +818,65 @@ G_DEFINE_INTERFACE (MamanBaz, maman_baz, G_TYPE_OBJECT)
           </para>
 
           <para>
-            Finally, the interface' most-derived <function>base_init</function> function and then 
+            The interface's <function>base_init</function> function is called,
+            and then the interface's <function>default_init</function> is invoked.
+            Finally if the type has registered an implementation of the interface,
             the implementation's <function>interface_init</function>
-            function are invoked. It is important to understand that if there are multiple 
-            implementations of an interface the <function>base_init</function> and 
-            <function>interface_init</function> functions will be
-            invoked once for each implementation initialized.
+            function is invoked. If there are multiple implementations of an
+            interface the <function>base_init</function> and
+            <function>interface_init</function> functions will be invoked once
+            for each implementation initialized.
           </para>
 
           <para>
-            It is thus common for base_init functions to hold a local static boolean variable
-            which makes sure that the interface type is initialized only once even if there are 
-            multiple implementations of the interface:
+            It is thus recommended to use a <function>default_init</function> function to
+            initialize an interface. This function is called only once for the interface no
+            matter how many implementations there are. The
+            <function>default_init</function> function is declared by
+            <link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link>
+            which can be used to define the interface:
 <programlisting>
-static void
-maman_ibaz_base_init (gpointer g_iface)
-{
-  static gboolean initialized = FALSE;
+G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, G_TYPE_OBJECT);
 
-  if (!initialized) {
-    /* create interface signals here. */
-    initialized = TRUE;
+static void
+maman_ibaz_default_init (MamanIbazInterface *iface)
+{
+  /* add properties and signals here, will only called once */
+}
+</programlisting>
+          </para>
+
+          <para>
+            Or you can do that yourself in a GType function for your interface:
+<programlisting>
+GType
+maman_ibaz_get_type (void)
+{
+  static volatile gsize type_id = 0;
+  if (g_once_init_enter (&amp;type_id)) {
+    const GTypeInfo info = {
+      sizeof (MamanIbazInterface),
+      NULL,   /* base_init */
+      NULL,   /* base_finalize */
+      maman_ibaz_default_init, /* class_init */
+      NULL,   /* class_finalize */
+      NULL,   /* class_data */
+      0,      /* instance_size */
+      0,      /* n_preallocs */
+      NULL    /* instance_init */
+    };
+    GType type = g_type_register_static (G_TYPE_INTERFACE,
+                                        "MamanIbaz",
+                                        &amp;info, 0);
+    g_once_init_leave (&amp;type_id, type);
   }
+  return type_id;
+}
+
+static void
+maman_ibaz_default_init (MamanIbazInterface *iface)
+{
+  /* add properties and signals here, will only called once */
 }
 </programlisting>
           </para>
@@ -835,7 +888,6 @@ maman_ibaz_base_init (gpointer g_iface)
         </para>
 
           <para>
-            The above process can be summarized as follows:
           <table id="ginterface-init-table">
             <title>Interface Initialization</title>
             <tgroup cols="3">
@@ -853,24 +905,31 @@ maman_ibaz_base_init (gpointer g_iface)
               </thead>
               <tbody>
                 <row>
-                  <entry morerows="1">First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
-                    implementing interface
+                  <entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
+                    for <emphasis>any</emphasis> type implementing interface
                    </entry>
-                  <entry>interface' base_init function</entry>
-                  <entry>On interface' vtable</entry>
-                  <entry>Register interface' signals here (use a local static 
-                    boolean variable as described above to make sure not to register them
-                    twice.).</entry>
+                  <entry>interface's <function>base_init</function> function</entry>
+                  <entry>On interface's vtable</entry>
+                  <entry>Rarely necessary to use this. Called once per instantiated classed type implementing the interface.</entry>
                 </row>
                 <row>
-                  <!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for type
-                    implementing interface
-                   </entry-->
-                  <entry>interface' interface_init function</entry>
-                  <entry>On interface' vtable</entry>
+                  <entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
+                    for <emphasis>each</emphasis> type implementing interface
+                   </entry>
+                  <entry>interface's <function>default_init</function> function</entry>
+                  <entry>On interface's vtable</entry>
+                  <entry>Register interface's signals, properties, etc. here. Will be called once.</entry>
+                </row>
+                <row>
+                  <entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
+                    for <emphasis>any</emphasis> type implementing interface
+                   </entry>
+                  <entry>implementation's <function>interface_init</function> function</entry>
+                  <entry>On interface's vtable</entry>
                   <entry>
-                    Initialize interface' implementation. That is, initialize the interface 
-                    method pointers in the interface structure to the function's implementation.
+                    Initialize interface implementation. Called for each class that that
+                    implements the interface. Initialize the interface method pointers
+                    in the interface structure to the implementing class's implementation.
                   </entry>
                 </row>
               </tbody>
