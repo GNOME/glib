@@ -442,7 +442,7 @@ g_application_real_local_command_line (GApplication   *application,
 
       if (!g_application_register (application, NULL, &error))
         {
-          g_critical ("%s", error->message);
+          g_printerr ("%s", error->message);
           g_error_free (error);
           *exit_status = 1;
           return TRUE;
