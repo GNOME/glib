@@ -159,6 +159,14 @@
  * </xi:include>
  * </programlisting>
  * </example>
+ *
+ * <example id="gapplication-example-dbushooks"><title>Using extra D-Bus hooks with a GApplication</title>
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-dbushooks.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ * </programlisting>
+ * </example>
  */
 
 /**
@@ -190,6 +198,16 @@
  *     g_application_run() if the use-count is non-zero. Since 2.32,
  *     GApplication is iterating the main context directly and is not
  *     using @run_mainloop anymore
+ * @dbus_register: invoked locally during registration, if the application is
+ *     using its D-Bus backend. You can use this to export extra objects on the
+ *     bus, that need to exist before the application tries to own the bus name.
+ *     The function is passed the #GDBusConnection to to session bus, and the
+ *     object path that #GApplication will use to export is D-Bus API.
+ *     If this function returns %TRUE, registration will proceed; otherwise
+ *     registration will abort. Since: 2.34
+ * @dbus_unregister: invoked locally during unregistration, if the application
+ *     is using its D-Bus backend. Use this to undo anything done by the
+ *     @dbus_register vfunc. Since: 2.34
  *
  * Virtual function table for #GApplication.
  *
@@ -506,6 +524,22 @@ g_application_real_add_platform_data (GApplication    *application,
 {
 }
 
+static gboolean
+g_application_real_dbus_register (GApplication    *application,
+                                  GDBusConnection *connection,
+                                  const gchar     *object_path,
+                                  GError         **error)
+{
+  return TRUE;
+}
+
+static void
+g_application_real_dbus_unregister (GApplication    *application,
+                                    GDBusConnection *connection,
+                                    const gchar     *object_path)
+{
+}
+
 /* GObject implementation stuff {{{1 */
 static void
 g_application_set_property (GObject      *object,
@@ -682,6 +716,8 @@ g_application_class_init (GApplicationClass *class)
   class->command_line = g_application_real_command_line;
   class->local_command_line = g_application_real_local_command_line;
   class->add_platform_data = g_application_real_add_platform_data;
+  class->dbus_register = g_application_real_dbus_register;
+  class->dbus_unregister = g_application_real_dbus_unregister;
 
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
     g_param_spec_string ("application-id",

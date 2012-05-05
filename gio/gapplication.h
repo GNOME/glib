@@ -90,8 +90,16 @@ struct _GApplicationClass
   void                      (* run_mainloop)        (GApplication              *application);
   void                      (* shutdown)            (GApplication              *application);
 
+  gboolean                  (* dbus_register)       (GApplication              *application,
+                                                     GDBusConnection           *connection,
+                                                     const gchar               *object_path,
+                                                     GError                   **error);
+  void                      (* dbus_unregister)     (GApplication              *application,
+                                                     GDBusConnection           *connection,
+                                                     const gchar               *object_path);
+
   /*< private >*/
-  gpointer padding[11];
+  gpointer padding[9];
 };
 
 GType                   g_application_get_type                          (void) G_GNUC_CONST;

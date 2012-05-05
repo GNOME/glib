@@ -97,7 +97,7 @@ struct _GApplicationImpl
 
   gboolean         properties_live;
   gboolean         primary;
-  gpointer         app;
+  GApplication    *app;
 };
 
 
@@ -228,6 +228,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_method_call,
   };
+  GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
   GVariant *reply;
   guint32 rval;
 
@@ -269,6 +270,12 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
                                                             impl->exported_actions, error);
 
   if (impl->actions_id == 0)
+    return FALSE;
+
+  if (!app_class->dbus_register (impl->app,
+                                 impl->session_bus,
+                                 impl->object_path,
+                                 error))
     return FALSE;
 
   if (impl->bus_name == NULL)
@@ -315,6 +322,12 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
 static void
 g_application_impl_stop_primary (GApplicationImpl *impl)
 {
+  GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
+
+  app_class->dbus_unregister (impl->app,
+                              impl->session_bus,
+                              impl->object_path);
+
   if (impl->object_id)
     {
       g_dbus_connection_unregister_object (impl->session_bus, impl->object_id);
