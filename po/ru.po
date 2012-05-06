@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-20 18:50+0000\n"
-"PO-Revision-Date: 2012-04-21 11:00+0400\n"
+"POT-Creation-Date: 2012-05-04 07:31+0000\n"
+"PO-Revision-Date: 2012-05-06 08:41+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: ../gio/gbufferedinputstream.c:399 ../gio/gbufferedinputstream.c:480
+#: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:508
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:753
@@ -34,10 +34,23 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "Слишком большое значение количества передано в %s"
 
-#: ../gio/gbufferedinputstream.c:870 ../gio/ginputstream.c:888
+#: ../gio/gbufferedinputstream.c:909 ../gio/gbufferedoutputstream.c:581
+#: ../gio/gdataoutputstream.c:568
+msgid "Seek not supported on base stream"
+msgstr "Переход в базовом потоке не поддерживается"
+
+#: ../gio/gbufferedinputstream.c:955
+msgid "Cannot truncate GBufferedInputStream"
+msgstr "Нельзя усечь GBufferedInputStream"
+
+#: ../gio/gbufferedinputstream.c:1000 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:292 ../gio/goutputstream.c:1228
 msgid "Stream is already closed"
 msgstr "Поток уже закрыт"
+
+#: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
+msgid "Truncate not supported on base stream"
+msgstr "Усечение не поддерживается в базовом потоке"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1836
 #: ../gio/gdbusconnection.c:1928 ../gio/gdbusprivate.c:1414
@@ -944,26 +957,26 @@ msgstr "В desktop-файле не указано поле Exec"
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: ../gio/gdesktopappinfo.c:1566
+#: ../gio/gdesktopappinfo.c:1567
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек приложения %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1570
+#: ../gio/gdesktopappinfo.c:1571
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую папку настроек MIME %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1810 ../gio/gdesktopappinfo.c:1834
+#: ../gio/gdesktopappinfo.c:1811 ../gio/gdesktopappinfo.c:1835
 msgid "Application information lacks an identifier"
 msgstr "В информации о приложении отсутствует идентификатор"
 
-#: ../gio/gdesktopappinfo.c:2058
+#: ../gio/gdesktopappinfo.c:2059
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не удалось создать пользовательский desktop-файл %s"
 
-#: ../gio/gdesktopappinfo.c:2174
+#: ../gio/gdesktopappinfo.c:2175
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Особое определение для %s"
@@ -3679,61 +3692,61 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Документ неожиданно окончился внутри комментария или инструкции обработки"
 
-#: ../glib/goption.c:746
+#: ../glib/goption.c:745
 msgid "Usage:"
 msgstr "Использование:"
 
-#: ../glib/goption.c:746
+#: ../glib/goption.c:745
 msgid "[OPTION...]"
 msgstr "[ПАРАМЕТР...]"
 
-#: ../glib/goption.c:852
+#: ../glib/goption.c:851
 msgid "Help Options:"
 msgstr "Параметры справки:"
 
-#: ../glib/goption.c:853
+#: ../glib/goption.c:852
 msgid "Show help options"
 msgstr "Показать параметры справки"
 
-#: ../glib/goption.c:859
+#: ../glib/goption.c:858
 msgid "Show all help options"
 msgstr "Показать все параметры справки"
 
-#: ../glib/goption.c:921
+#: ../glib/goption.c:920
 msgid "Application Options:"
 msgstr "Параметры приложения:"
 
-#: ../glib/goption.c:983 ../glib/goption.c:1053
+#: ../glib/goption.c:982 ../glib/goption.c:1052
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Не удалось разобрать целочисленное значение «%s» для %s"
 
-#: ../glib/goption.c:993 ../glib/goption.c:1061
+#: ../glib/goption.c:992 ../glib/goption.c:1060
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Целочисленное значение «%s» для %s выходит за пределы"
 
-#: ../glib/goption.c:1018
+#: ../glib/goption.c:1017
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Не удалось разобрать дробное значение двойной точности «%s» для %s"
 
-#: ../glib/goption.c:1026
+#: ../glib/goption.c:1025
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Дробное значение двойной точности «%s» для %s выходит за пределы"
 
-#: ../glib/goption.c:1289 ../glib/goption.c:1368
+#: ../glib/goption.c:1288 ../glib/goption.c:1367
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Произошла ошибка при разборе параметра %s"
 
-#: ../glib/goption.c:1399 ../glib/goption.c:1512
+#: ../glib/goption.c:1398 ../glib/goption.c:1511
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Отсутствует аргумент для %s"
 
-#: ../glib/goption.c:1965
+#: ../glib/goption.c:1964
 #, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
