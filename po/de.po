@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-13 13:45+0000\n"
-"PO-Revision-Date: 2012-04-13 15:42+0100\n"
+"POT-Creation-Date: 2012-05-07 04:37+0000\n"
+"PO-Revision-Date: 2012-05-07 17:09+0100\n"
 "Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -115,13 +115,13 @@ msgstr "Es gibt auf Ihrer Plattform keine Unterstützung für GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "Unerwartet frühes Datenstromende"
 
-#: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
-#: ../gio/gdbusaddress.c:311
+#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Nicht unterstützter Schlüssel »%s« im Adresseintrag »%s«"
 
-#: ../gio/gdbusaddress.c:169
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -129,27 +129,27 @@ msgstr ""
 "Adresse »%s« ist ungültig (benötigt genau einen der Schlüssel path, tmpdir "
 "oder abstract)"
 
-#: ../gio/gdbusaddress.c:182
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Bedeutungsloses Schlüssel-Wert-Paar im Adresseintrag »%s«"
 
-#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
+#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Fehler in Adresse »%s« - Das Port-Attribut ist nicht korrekt"
 
-#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
+#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Fehler in Adresse »%s« - Das Familien-Attribut ist nicht korrekt"
 
-#: ../gio/gdbusaddress.c:446
+#: ../gio/gdbusaddress.c:454
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Adresselement »%s« enthält keinen Doppelpunkt"
 
-#: ../gio/gdbusaddress.c:467
+#: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -158,7 +158,7 @@ msgstr ""
 "Schlüssel-Wert-Paar %d, »%s«, in Adresselement »%s« enthält kein "
 "Gleichheitszeichen"
 
-#: ../gio/gdbusaddress.c:481
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -167,7 +167,7 @@ msgstr ""
 "Fehler beim Entfernen von Escape-Zeichen im Schlüssel-Wert-Paar %d, »%s« im "
 "Adresselement »%s«"
 
-#: ../gio/gdbusaddress.c:559
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -176,89 +176,100 @@ msgstr ""
 "Fehler in Adresse »%s« - für den Unix-Transport muss genau einer der "
 "Schlüssel »path« oder »abstract« gesetzt sein"
 
-#: ../gio/gdbusaddress.c:595
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Fehler in Adresse »%s« - Das Host-Attribut fehlt oder ist nicht korrekt"
 
-#: ../gio/gdbusaddress.c:609
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Fehler in Adresse »%s« - Das Port-Attribut fehlt oder ist nicht korrekt"
 
-#: ../gio/gdbusaddress.c:623
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Fehler in Adresse »%s« - Das noncefile-Attribut fehlt oder ist nicht korrekt"
 
-#: ../gio/gdbusaddress.c:644
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Fehler beim automatischen Starten:"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Unbekannter oder nicht unterstützter Transport »%s« für Adresse »%s«"
 
-#: ../gio/gdbusaddress.c:688
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Fehler beim Öffnen der Nonce-Datei »%s«: %s"
 
-#: ../gio/gdbusaddress.c:706
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Fehler beim Lesen der Nonce-Datei »%s«: %s"
 
-#: ../gio/gdbusaddress.c:715
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Fehler beim Lesen der Nonce-Datei »%s«, erwartet wurden 16 Bytes, jedoch %d "
 "erhalten"
 
-#: ../gio/gdbusaddress.c:733
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Fehler beim Schreiben des Inhalts der Nonce-Datei »%s« in den Datenstrom:"
 
-#: ../gio/gdbusaddress.c:952
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "Die angegebene Adresse ist leer"
 
-#: ../gio/gdbusaddress.c:1021
+#: ../gio/gdbusaddress.c:1029
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Ein Nachrichtenbus kann nicht ohne eine Rechner-Kennung erzeugt werden:"
 
-#: ../gio/gdbusaddress.c:1058
+#: ../gio/gdbusaddress.c:1066
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Fehler beim Erzeugen der Befehlszeile »%s«:"
 
-#: ../gio/gdbusaddress.c:1069
+#: ../gio/gdbusaddress.c:1077
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
 "Außergewöhnlicher Abbruch des Programms beim Erzeugen der Befehlszeile »%s«: %"
 "s"
 
-#: ../gio/gdbusaddress.c:1083
+#: ../gio/gdbusaddress.c:1091
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
 "Befehlszeile »%s« brach mit von Null verschiedenem Beenden-Status %d ab: %s"
 
-#: ../gio/gdbusaddress.c:1156
+#: ../gio/gdbusaddress.c:1312
+#, c-format
+msgid "(Type any character to close this window)\n"
+msgstr ""
+"(Geben Sie ein beliebiges Zeichen ein, um dieses Fenster zu schließen)\n"
+
+#: ../gio/gdbusaddress.c:1437
+#, c-format
+msgid "Session dbus not running, and autolaunch failed"
+msgstr "Der Sitzungs-dbus läuft nicht und automatisches Starten schlug fehl"
+
+#: ../gio/gdbusaddress.c:1458
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Adresse des Sitzungsbus konnte nicht ermittelt werden (für dieses "
 "Betriebssystem nicht implementiert)"
 
-#: ../gio/gdbusaddress.c:1255 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -267,7 +278,7 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden, unbekannter Wert »%s«"
 
-#: ../gio/gdbusaddress.c:1264 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -275,7 +286,7 @@ msgstr ""
 "Bus-Adresse konnte nicht ermittelt werden, da die Umgebungsvariable "
 "DBUS_STARTER_BUS_TYPE nicht gesetzt ist"
 
-#: ../gio/gdbusaddress.c:1274
+#: ../gio/gdbusaddress.c:1576
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Unbekannter Bus-Typ %d"
@@ -660,7 +671,12 @@ msgstr "Fehlerrückmeldung mit Inhalt des Typs »%s«"
 msgid "Error return with empty body"
 msgstr "Fehlerrückmeldung mit leerem Inhalt"
 
-#: ../gio/gdbusprivate.c:2066
+#: ../gio/gdbusprivate.c:2062
+#, c-format
+msgid "Unable to get Hardware profile: %s"
+msgstr "Hardware-Profil konnte nicht ermittelt werden: %s"
+
+#: ../gio/gdbusprivate.c:2107
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr ""
 "/var/lib/dbus/machine-id oder /etc/machine-id konnte nicht geladen werden: "
@@ -692,17 +708,17 @@ msgstr "Abstrakter Namensraum wird nicht unterstützt"
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Nonce-Datei kann beim Erstellen eines Servers nicht angegeben werden"
 
-#: ../gio/gdbusserver.c:872
+#: ../gio/gdbusserver.c:873
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Fehler beim Schreiben der Nonce-Datei auf »%s«: %s"
 
-#: ../gio/gdbusserver.c:1038
+#: ../gio/gdbusserver.c:1041
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Die Zeichenkette »%s« ist keine gültige GUID für D-Bus"
 
-#: ../gio/gdbusserver.c:1078
+#: ../gio/gdbusserver.c:1081
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "An nicht unterstützter Übertragung »%s« kann nicht gelauscht werden"
@@ -947,29 +963,29 @@ msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: ../gio/gdesktopappinfo.c:1563
+#: ../gio/gdesktopappinfo.c:1564
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1567
+#: ../gio/gdesktopappinfo.c:1568
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: ../gio/gdesktopappinfo.c:1807 ../gio/gdesktopappinfo.c:1831
+#: ../gio/gdesktopappinfo.c:1808 ../gio/gdesktopappinfo.c:1832
 msgid "Application information lacks an identifier"
 msgstr "Den Anwendungsinformationen fehlt ein Bezeichner"
 
-#: ../gio/gdesktopappinfo.c:2055
+#: ../gio/gdesktopappinfo.c:2056
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: ../gio/gdesktopappinfo.c:2171
+#: ../gio/gdesktopappinfo.c:2172
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
@@ -2041,25 +2057,25 @@ msgstr "»%s« kann vorübergehend nicht aufgelöst werden"
 msgid "Error resolving '%s'"
 msgstr "Fehler beim Auflösen von »%s«"
 
-#: ../gio/gresource.c:295 ../gio/gresource.c:540 ../gio/gresource.c:557
-#: ../gio/gresource.c:678 ../gio/gresource.c:747 ../gio/gresource.c:808
-#: ../gio/gresource.c:888 ../gio/gresourcefile.c:452
-#: ../gio/gresourcefile.c:552 ../gio/gresourcefile.c:654
+#: ../gio/gresource.c:295 ../gio/gresource.c:543 ../gio/gresource.c:560
+#: ../gio/gresource.c:681 ../gio/gresource.c:750 ../gio/gresource.c:811
+#: ../gio/gresource.c:891 ../gio/gresourcefile.c:452
+#: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Die Ressource auf »%s« existiert nicht"
 
-#: ../gio/gresource.c:457
+#: ../gio/gresource.c:460
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Die Ressource auf »%s« konnte nicht entpackt werden"
 
-#: ../gio/gresourcefile.c:650
+#: ../gio/gresourcefile.c:651
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "Die Ressource »%s« ist ein Ordner"
 
-#: ../gio/gresourcefile.c:858
+#: ../gio/gresourcefile.c:859
 msgid "Input stream doesn't implement seek"
 msgstr "Eingabedatenstrom unterstützt kein Suchen"
 
