@@ -103,6 +103,8 @@ gpointer g_try_realloc_n  (gpointer	 mem,
     /* Only one access, please */                                              \
     gpointer *_pp = (gpointer *) (pp);                                         \
     gpointer _p;                                                               \
+    /* This assignment is needed to avoid a gcc warning */                     \
+    GDestroyNotify _destroy = (GDestroyNotify) (destroy);                      \
                                                                                \
     (void) (0 ? (gpointer) *(pp) : 0);                                         \
     do                                                                         \
@@ -110,7 +112,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
     while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_pp, _p, NULL)); \
                                                                                \
     if (_p)                                                                    \
-      ((GDestroyNotify) (destroy)) (_p);                                       \
+      _destroy (_p);                                                           \
   } G_STMT_END
 
 /* Optimise: avoid the call to the (slower) _n function if we can
