@@ -457,11 +457,19 @@ g_simple_async_result_get_source_object (GAsyncResult *res)
   return NULL;
 }
 
+static gboolean
+g_simple_async_result_is_tagged (GAsyncResult *res,
+				 gpointer      source_tag)
+{
+  return G_SIMPLE_ASYNC_RESULT (res)->source_tag == source_tag;
+}
+
 static void
 g_simple_async_result_async_result_iface_init (GAsyncResultIface *iface)
 {
   iface->get_user_data = g_simple_async_result_get_user_data;
   iface->get_source_object = g_simple_async_result_get_source_object;
+  iface->is_tagged = g_simple_async_result_is_tagged;
 }
 
 /**

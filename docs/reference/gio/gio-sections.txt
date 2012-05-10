@@ -1199,6 +1199,7 @@ GAsyncResultIface
 GAsyncReadyCallback
 g_async_result_get_user_data
 g_async_result_get_source_object
+g_async_result_is_tagged
 g_async_result_legacy_propagate_error
 <SUBSECTION Standard>
 G_ASYNC_RESULT

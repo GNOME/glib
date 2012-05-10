@@ -542,7 +542,6 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
                                      GAsyncResult          *result,
                                      GError               **error)
 {
-  GSimpleAsyncResult *simple;
   GBufferedInputStreamClass *class;
 
   g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
@@ -550,14 +549,10 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_buffered_input_stream_fill_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case read of 0 bytes */
-      if (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_fill_async)
-        return 0;
+      return 0;
     }
 
   class = G_BUFFERED_INPUT_STREAM_GET_CLASS (stream);

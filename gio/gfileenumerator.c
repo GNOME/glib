@@ -400,21 +400,16 @@ g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
 				     GError          **error)
 {
   GFileEnumeratorClass *class;
-  GSimpleAsyncResult *simple;
   
   g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
   
   if (g_async_result_legacy_propagate_error (result, error))
     return NULL;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-      
+  else if (g_async_result_is_tagged (result, g_file_enumerator_next_files_async))
+    { 
       /* Special case read of 0 files */
-      if (g_simple_async_result_get_source_tag (simple) == g_file_enumerator_next_files_async)
-	return NULL;
+      return NULL;
     }
   
   class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);

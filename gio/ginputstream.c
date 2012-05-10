@@ -649,7 +649,6 @@ g_input_stream_read_finish (GInputStream  *stream,
 			    GAsyncResult  *result,
 			    GError       **error)
 {
-  GSimpleAsyncResult *simple;
   GInputStreamClass *class;
   
   g_return_val_if_fail (G_IS_INPUT_STREAM (stream), -1);
@@ -657,14 +656,10 @@ g_input_stream_read_finish (GInputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_input_stream_read_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case read of 0 bytes */
-      if (g_simple_async_result_get_source_tag (simple) == g_input_stream_read_async)
-	return 0;
+      return 0;
     }
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
@@ -889,7 +884,6 @@ g_input_stream_skip_finish (GInputStream  *stream,
 			    GAsyncResult  *result,
 			    GError       **error)
 {
-  GSimpleAsyncResult *simple;
   GInputStreamClass *class;
 
   g_return_val_if_fail (G_IS_INPUT_STREAM (stream), -1);
@@ -897,14 +891,10 @@ g_input_stream_skip_finish (GInputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_input_stream_skip_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case skip of 0 bytes */
-      if (g_simple_async_result_get_source_tag (simple) == g_input_stream_skip_async)
-	return 0;
+      return 0;
     }
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
@@ -988,7 +978,6 @@ g_input_stream_close_finish (GInputStream  *stream,
 			     GAsyncResult  *result,
 			     GError       **error)
 {
-  GSimpleAsyncResult *simple;
   GInputStreamClass *class;
 
   g_return_val_if_fail (G_IS_INPUT_STREAM (stream), FALSE);
@@ -996,14 +985,10 @@ g_input_stream_close_finish (GInputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_input_stream_close_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case already closed */
-      if (g_simple_async_result_get_source_tag (simple) == g_input_stream_close_async)
-	return TRUE;
+      return TRUE;
     }
 
   class = G_INPUT_STREAM_GET_CLASS (stream);

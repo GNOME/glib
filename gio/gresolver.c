@@ -447,19 +447,14 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return NULL;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_resolver_lookup_by_name_async))
     {
       GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+      GInetAddress *addr;
 
       /* Handle the stringified-IP-addr case */
-      if (g_simple_async_result_get_source_tag (simple) == g_resolver_lookup_by_name_async)
-        {
-          GInetAddress *addr;
-
-          addr = g_simple_async_result_get_op_res_gpointer (simple);
-          return g_list_append (NULL, g_object_ref (addr));
-        }
+      addr = g_simple_async_result_get_op_res_gpointer (simple);
+      return g_list_append (NULL, g_object_ref (addr));
     }
 
   addrs = G_RESOLVER_GET_CLASS (resolver)->

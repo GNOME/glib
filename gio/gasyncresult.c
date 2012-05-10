@@ -194,3 +194,32 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
   else
     return FALSE;
 }
+
+/**
+ * g_async_result_is_tagged:
+ * @result: a #GAsyncResult
+ * @source_tag: an application-defined tag
+ *
+ * Checks if @result has the given @source_tag (generally a function
+ * pointer indicating the function @result was created by).
+ *
+ * Returns: %TRUE if @result has the indicated @source_tag, %FALSE if
+ *   not.
+ *
+ * Since: 2.34
+ **/
+gboolean
+g_async_result_is_tagged (GAsyncResult  *res,
+			  gpointer       source_tag)
+{
+  GAsyncResultIface *iface;
+
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), FALSE);
+
+  iface = G_ASYNC_RESULT_GET_IFACE (res);
+
+  if (!iface->is_tagged)
+    return FALSE;
+
+  return (* iface->is_tagged) (res, source_tag);
+}

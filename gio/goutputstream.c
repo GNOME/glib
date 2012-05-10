@@ -835,7 +835,6 @@ g_output_stream_write_finish (GOutputStream  *stream,
                               GAsyncResult   *result,
                               GError        **error)
 {
-  GSimpleAsyncResult *simple;
   GOutputStreamClass *class;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
@@ -843,14 +842,10 @@ g_output_stream_write_finish (GOutputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_output_stream_write_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case writes of 0 bytes */
-      if (g_simple_async_result_get_source_tag (simple) == g_output_stream_write_async)
-	return 0;
+      return 0;
     }
   
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
@@ -1161,7 +1156,6 @@ g_output_stream_flush_finish (GOutputStream  *stream,
                               GAsyncResult   *result,
                               GError        **error)
 {
-  GSimpleAsyncResult *simple;
   GOutputStreamClass *klass;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
@@ -1169,14 +1163,10 @@ g_output_stream_flush_finish (GOutputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_output_stream_flush_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case default implementation */
-      if (g_simple_async_result_get_source_tag (simple) == g_output_stream_flush_async)
-	return TRUE;
+      return 0;
     }
 
   klass = G_OUTPUT_STREAM_GET_CLASS (stream);
@@ -1284,7 +1274,6 @@ g_output_stream_close_finish (GOutputStream  *stream,
                               GAsyncResult   *result,
                               GError        **error)
 {
-  GSimpleAsyncResult *simple;
   GOutputStreamClass *class;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
@@ -1292,14 +1281,10 @@ g_output_stream_close_finish (GOutputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
-
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
+  else if (g_async_result_is_tagged (result, g_output_stream_close_async))
     {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-
       /* Special case already closed */
-      if (g_simple_async_result_get_source_tag (simple) == g_output_stream_close_async)
-	return TRUE;
+      return TRUE;
     }
 
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
