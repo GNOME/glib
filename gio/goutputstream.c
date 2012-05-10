@@ -841,11 +841,12 @@ g_output_stream_write_finish (GOutputStream  *stream,
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), -1);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return -1;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return -1;
 
       /* Special case writes of 0 bytes */
       if (g_simple_async_result_get_source_tag (simple) == g_output_stream_write_async)
@@ -1074,18 +1075,13 @@ g_output_stream_splice_finish (GOutputStream  *stream,
 			       GAsyncResult   *result,
 			       GError        **error)
 {
-  GSimpleAsyncResult *simple;
   GOutputStreamClass *class;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), -1);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return -1;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return -1;
   
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
   return class->splice_finish (stream, result, error);
@@ -1171,11 +1167,12 @@ g_output_stream_flush_finish (GOutputStream  *stream,
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
 
       /* Special case default implementation */
       if (g_simple_async_result_get_source_tag (simple) == g_output_stream_flush_async)
@@ -1293,11 +1290,12 @@ g_output_stream_close_finish (GOutputStream  *stream,
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
 
       /* Special case already closed */
       if (g_simple_async_result_get_source_tag (simple) == g_output_stream_close_async)

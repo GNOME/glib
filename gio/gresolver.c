@@ -445,12 +445,12 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
 
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
 
       /* Handle the stringified-IP-addr case */
       if (g_simple_async_result_get_source_tag (simple) == g_resolver_lookup_by_name_async)
@@ -581,13 +581,8 @@ g_resolver_lookup_by_address_finish (GResolver     *resolver,
 {
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
 
   return G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_address_finish (resolver, result, error);
@@ -741,13 +736,8 @@ g_resolver_lookup_service_finish (GResolver     *resolver,
 {
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
 
   return G_RESOLVER_GET_CLASS (resolver)->
     lookup_service_finish (resolver, result, error);

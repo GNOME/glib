@@ -405,11 +405,12 @@ g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
   g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
   
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
       
       /* Special case read of 0 files */
       if (g_simple_async_result_get_source_tag (simple) == g_file_enumerator_next_files_async)
@@ -515,19 +516,14 @@ g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
 				GAsyncResult     *result,
 				GError          **error)
 {
-  GSimpleAsyncResult *simple;
   GFileEnumeratorClass *class;
 
   g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
   
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
-  
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
   return class->close_finish (enumerator, result, error);
 }

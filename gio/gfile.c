@@ -946,12 +946,8 @@ g_file_enumerate_children_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->enumerate_children_finish) (file, res, error);
@@ -1175,12 +1171,8 @@ g_file_query_info_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->query_info_finish) (file, res, error);
@@ -1309,12 +1301,8 @@ g_file_query_filesystem_info_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->query_filesystem_info_finish) (file, res, error);
@@ -1423,12 +1411,8 @@ g_file_find_enclosing_mount_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->find_enclosing_mount_finish) (file, res, error);
@@ -1902,12 +1886,8 @@ g_file_read_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->read_finish) (file, res, error);
@@ -1974,12 +1954,8 @@ g_file_append_to_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->append_to_finish) (file, res, error);
@@ -2047,12 +2023,8 @@ g_file_create_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->create_finish) (file, res, error);
@@ -2127,13 +2099,9 @@ g_file_replace_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
-
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
+  
   iface = G_FILE_GET_IFACE (file);
   return (* iface->replace_finish) (file, res, error);
 }
@@ -2201,13 +2169,9 @@ g_file_open_readwrite_finish (GFile                      *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
-
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
+  
   iface = G_FILE_GET_IFACE (file);
   return (* iface->open_readwrite_finish) (file, res, error);
 }
@@ -2279,13 +2243,9 @@ g_file_create_readwrite_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
-
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
+  
   iface = G_FILE_GET_IFACE (file);
   return (* iface->create_readwrite_finish) (file, res, error);
 }
@@ -2363,13 +2323,9 @@ g_file_replace_readwrite_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
-
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
+  
   iface = G_FILE_GET_IFACE (file);
   return (* iface->replace_readwrite_finish) (file, res, error);
 }
@@ -3181,13 +3137,8 @@ g_file_copy_finish (GFile        *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return FALSE;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->copy_finish) (file, res, error);
@@ -3715,12 +3666,8 @@ g_file_set_display_name_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->set_display_name_finish) (file, res, error);
@@ -4317,12 +4264,8 @@ g_file_mount_mountable_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->mount_mountable_finish) (file, result, error);
@@ -4404,12 +4347,8 @@ g_file_unmount_mountable_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
   
   iface = G_FILE_GET_IFACE (file);
   return (* iface->unmount_mountable_finish) (file, result, error);
@@ -4501,12 +4440,8 @@ g_file_unmount_mountable_with_operation_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_FILE_GET_IFACE (file);
   if (iface->unmount_mountable_with_operation_finish != NULL)
@@ -4589,13 +4524,9 @@ g_file_eject_mountable_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
-  
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   iface = G_FILE_GET_IFACE (file);
   return (* iface->eject_mountable_finish) (file, result, error);
 }
@@ -4684,12 +4615,8 @@ g_file_eject_mountable_with_operation_finish (GFile         *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_FILE_GET_IFACE (file);
   if (iface->eject_mountable_with_operation_finish != NULL)
@@ -6130,13 +6057,9 @@ g_file_mount_enclosing_volume_finish (GFile         *location,
   g_return_val_if_fail (G_IS_FILE (location), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
-  
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   iface = G_FILE_GET_IFACE (location);
 
   return (* iface->mount_enclosing_volume_finish) (location, result, error);
@@ -7078,12 +7001,8 @@ g_file_start_mountable_finish (GFile                      *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_FILE_GET_IFACE (file);
   return (* iface->start_mountable_finish) (file, result, error);
@@ -7168,12 +7087,8 @@ g_file_stop_mountable_finish (GFile                      *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_FILE_GET_IFACE (file);
   return (* iface->stop_mountable_finish) (file, result, error);
@@ -7252,12 +7167,8 @@ g_file_poll_mountable_finish (GFile                      *file,
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_FILE_GET_IFACE (file);
   return (* iface->poll_mountable_finish) (file, result, error);

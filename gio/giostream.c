@@ -521,11 +521,12 @@ g_io_stream_close_finish (GIOStream     *stream,
   g_return_val_if_fail (G_IS_IO_STREAM (stream), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
 
       /* Special case already closed */
       if (g_simple_async_result_get_source_tag (simple) == g_io_stream_close_async)

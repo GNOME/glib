@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include "gasyncresult.h"
+#include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
 
@@ -151,4 +152,45 @@ g_async_result_get_source_object (GAsyncResult *res)
   iface = G_ASYNC_RESULT_GET_IFACE (res);
 
   return (* iface->get_source_object) (res);
+}
+
+/**
+ * g_async_result_legacy_propagate_error:
+ * @result: a #GAsyncResult
+ * @dest: (out): a location to propagate the error to.
+ *
+ * If @result is a #GSimpleAsyncResult, this is equivalent to
+ * g_simple_async_result_propagate_error(). Otherwise it returns
+ * %FALSE.
+ *
+ * This can be used for legacy error handling in async
+ * <literal>_finish ()</literal> wrapper functions that traditionally
+ * handled #GSimpleAsyncResult error returns themselves rather than
+ * calling into the virtual method. This should not be used in new
+ * code; #GAsyncResult errors that are set by virtual methods should
+ * also be extracted by virtual methods, to enable subclasses to chain
+ * up correctly.
+ *
+ * Returns: %TRUE if @error is has been filled in with an error from
+ *   @res, %FALSE if not.
+ *
+ * Since: 2.34
+ **/
+gboolean
+g_async_result_legacy_propagate_error (GAsyncResult  *res,
+				       GError       **error)
+{
+  /* This doesn't use a vmethod, because it's only for code that used
+   * to use GSimpleAsyncResult. (But it's a GAsyncResult method so
+   * that callers don't need to worry about GSimpleAsyncResult
+   * deprecation warnings in the future.)
+   */
+
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      return g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res),
+						    error);
+    }
+  else
+    return FALSE;
 }

@@ -392,12 +392,8 @@ g_mount_unmount_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->unmount_finish) (mount, result, error);
@@ -471,12 +467,8 @@ g_mount_eject_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->eject_finish) (mount, result, error);
@@ -555,12 +547,8 @@ g_mount_unmount_with_operation_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_MOUNT_GET_IFACE (mount);
   if (iface->unmount_with_operation_finish != NULL)
@@ -642,12 +630,8 @@ g_mount_eject_with_operation_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
 
   iface = G_MOUNT_GET_IFACE (mount);
   if (iface->eject_with_operation_finish != NULL)
@@ -728,12 +712,8 @@ g_mount_remount_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->remount_finish) (mount, result, error);
@@ -818,12 +798,8 @@ g_mount_guess_content_type_finish (GMount        *mount,
   g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
   
   iface = G_MOUNT_GET_IFACE (mount);
   return (* iface->guess_content_type_finish) (mount, result, error);

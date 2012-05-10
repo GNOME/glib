@@ -248,12 +248,8 @@ g_async_initable_init_finish (GAsyncInitable  *initable,
   g_return_val_if_fail (G_IS_ASYNC_INITABLE (initable), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), FALSE);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
-    }
+  if (g_async_result_legacy_propagate_error (res, error))
+    return FALSE;
 
   iface = G_ASYNC_INITABLE_GET_IFACE (initable);
 

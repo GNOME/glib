@@ -548,11 +548,12 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
   g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), -1);
 
+  if (g_async_result_legacy_propagate_error (result, error))
+    return -1;
+
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-        return -1;
 
       /* Special case read of 0 bytes */
       if (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_fill_async)

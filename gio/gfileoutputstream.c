@@ -256,18 +256,13 @@ g_file_output_stream_query_info_finish (GFileOutputStream     *stream,
 					   GAsyncResult         *result,
 					   GError              **error)
 {
-  GSimpleAsyncResult *simple;
   GFileOutputStreamClass *class;
 
   g_return_val_if_fail (G_IS_FILE_OUTPUT_STREAM (stream), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
   
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
 
   class = G_FILE_OUTPUT_STREAM_GET_CLASS (stream);
   return class->query_info_finish (stream, result, error);

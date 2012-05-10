@@ -141,13 +141,9 @@ g_loadable_icon_load_finish (GLoadableIcon  *icon,
   g_return_val_if_fail (G_IS_LOADABLE_ICON (icon), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (res))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
-  
+  if (g_async_result_legacy_propagate_error (res, error))
+    return NULL;
+
   iface = G_LOADABLE_ICON_GET_IFACE (icon);
 
   return (* iface->load_finish) (icon, res, type, error);

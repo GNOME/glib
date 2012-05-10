@@ -257,21 +257,16 @@ g_file_io_stream_query_info_async (GFileIOStream     *stream,
  **/
 GFileInfo *
 g_file_io_stream_query_info_finish (GFileIOStream     *stream,
-					   GAsyncResult         *result,
-					   GError              **error)
+				    GAsyncResult         *result,
+				    GError              **error)
 {
-  GSimpleAsyncResult *simple;
   GFileIOStreamClass *class;
 
   g_return_val_if_fail (G_IS_FILE_IO_STREAM (stream), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
 
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      simple = G_SIMPLE_ASYNC_RESULT (result);
-      if (g_simple_async_result_propagate_error (simple, error))
-	return NULL;
-    }
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
 
   class = G_FILE_IO_STREAM_GET_CLASS (stream);
   return class->query_info_finish (stream, result, error);
