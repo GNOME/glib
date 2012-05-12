@@ -165,15 +165,15 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
 				 const char *name)
 {
   Section *dirindex;
-  gint i;
+  gint i, n_entries;
   const char *entry_name;
   DirEntry *entry;
 
   dirindex = get_section_by_id (typelib, GI_SECTION_DIRECTORY_INDEX);
+  n_entries = ((Header *)typelib->data)->n_local_entries;
 
   if (dirindex == NULL)
     {
-      gint n_entries = ((Header *)typelib->data)->n_local_entries;
       for (i = 1; i <= n_entries; i++)
 	{
 	  entry = g_typelib_get_dir_entry (typelib, i);
@@ -188,7 +188,7 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
       guint8 *hash = (guint8*) &typelib->data[dirindex->offset];
       guint16 index;
 
-      index = _gi_typelib_hash_search (hash, name);
+      index = _gi_typelib_hash_search (hash, name, n_entries);
       entry = g_typelib_get_dir_entry (typelib, index + 1);
       entry_name = g_typelib_get_string (typelib, entry->name);
       if (strcmp (name, entry_name) == 0)

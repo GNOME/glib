@@ -47,10 +47,10 @@ test_build_retrieve (void)
 
   _gi_typelib_hash_builder_destroy (builder);
 
-  g_assert (_gi_typelib_hash_search (buf, "Action") == 0);
-  g_assert (_gi_typelib_hash_search (buf, "ZLibDecompressor") == 42);
-  g_assert (_gi_typelib_hash_search (buf, "VolumeMonitor") == 9);
-  g_assert (_gi_typelib_hash_search (buf, "FileMonitorFlags") == 31);
+  g_assert (_gi_typelib_hash_search (buf, "Action", 4) == 0);
+  g_assert (_gi_typelib_hash_search (buf, "ZLibDecompressor", 4) == 42);
+  g_assert (_gi_typelib_hash_search (buf, "VolumeMonitor", 4) == 9);
+  g_assert (_gi_typelib_hash_search (buf, "FileMonitorFlags", 4) == 31);
 }
 
 int

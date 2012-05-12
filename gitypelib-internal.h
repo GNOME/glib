@@ -1183,7 +1183,7 @@ void _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, 
 
 void _gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder);
 
-guint16 _gi_typelib_hash_search (guint8* memory, const char *str);
+guint16 _gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries);
 
 
 G_END_DECLS
