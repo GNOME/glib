@@ -430,6 +430,20 @@ test_special_dir (void)
   g_assert_cmpstr (dir, ==, dir2);
 }
 
+static void
+test_clear_pointer (void)
+{
+  gpointer a;
+
+  a = g_malloc (5);
+  g_clear_pointer (&a, g_free);
+  g_assert (a == NULL);
+
+  a = g_malloc (5);
+  (g_clear_pointer) (&a, g_free);
+  g_assert (a == NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -460,6 +474,7 @@ main (int   argc,
   g_test_add_func ("/utils/hostname", test_hostname);
   g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
   g_test_add_func ("/utils/specialdir", test_special_dir);
+  g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
 
   return g_test_run();
 }
