@@ -143,7 +143,7 @@ test_rec_mutex4 (void)
     g_rec_mutex_init (&locks[i]);
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_create (thread_func, NULL, TRUE, NULL);
+    threads[i] = g_thread_new ("test", thread_func, NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);
@@ -203,7 +203,7 @@ test_mutex_perf (gconstpointer data)
   depth = c % 256;
 
   for (i = 0; i < n_threads - 1; i++)
-    threads[i] = g_thread_create (addition_thread, &x, TRUE, NULL);
+    threads[i] = g_thread_new ("test", addition_thread, &x);
 
   /* avoid measuring thread setup/teardown time */
   start_time = g_get_monotonic_time ();

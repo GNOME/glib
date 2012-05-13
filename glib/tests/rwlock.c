@@ -170,7 +170,7 @@ test_rwlock7 (void)
     g_rw_lock_init (&locks[i]);
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_create (thread_func, NULL, TRUE, NULL);
+    threads[i] = g_thread_new ("test", thread_func, NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);
@@ -253,10 +253,10 @@ test_rwlock8 (void)
   g_rw_lock_init (&even_lock);
 
   for (i = 0; i < 2; i++)
-    writers[i] = g_thread_create (writer_func, GINT_TO_POINTER (i), TRUE, NULL);
+    writers[i] = g_thread_new ("a", writer_func, GINT_TO_POINTER (i));
 
   for (i = 0; i < 10; i++)
-    readers[i] = g_thread_create (reader_func, NULL, TRUE, NULL);
+    readers[i] = g_thread_new ("b", reader_func, NULL);
 
   for (i = 0; i < 2; i++)
     g_thread_join (writers[i]);
