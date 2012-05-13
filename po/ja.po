@@ -26,16 +26,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-07 04:37+0000\n"
-"PO-Revision-Date: 2012-05-07 08:28+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-05-08 17:15+0000\n"
+"PO-Revision-Date: 2012-05-10 13:40+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
@@ -134,11 +133,8 @@ msgstr "サポートしていないキー '%s' がアドレスエントリ '%s' 
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
-msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
-msgstr ""
-"アドレス '%s' は正しくありません (パス、tmpdir、または抽象キーのいずれか一つ"
-"が必要)"
+msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgstr "アドレス '%s' は正しくありません (パス、tmpdir、または抽象キーのいずれか一つが必要)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
@@ -162,30 +158,18 @@ msgstr "アドレス要素 '%s' がコロン ':' を含んでいません"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
-msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
-"sign"
-msgstr ""
-"アドレス要素 '%3$s'中の %1$d 番目のキー/値のペア '%2$s' が等号記号を含んでい"
-"ません"
+msgid "Key/Value pair %d, `%s', in address element `%s', does not contain an equal sign"
+msgstr "アドレス要素 '%3$s'中の %1$d 番目のキー/値のペア '%2$s' が等号記号を含んでいません"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
-msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
-msgstr ""
-"アドレス要素 '%3$s' 中の %1$d 番目のキー/値のペア '%2$s' 中のキーまたは値をア"
-"ンエスケープする際にエラー"
+msgid "Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"
+msgstr "アドレス要素 '%3$s' 中の %1$d 番目のキー/値のペア '%2$s' 中のキーまたは値をアンエスケープする際にエラー"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
-msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
-msgstr ""
-"アドレス '%s' 中にエラー - UNIX トランスポートはキー 'path' または "
-"'abstract' のうち一つが設定されている必要があります"
+msgid "Error in address `%s' - the unix transport requires exactly one of the keys `path' or `abstract' to be set"
+msgstr "アドレス '%s' 中にエラー - UNIX トランスポートはキー 'path' または 'abstract' のうち一つが設定されている必要があります"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
@@ -209,8 +193,7 @@ msgstr "自動起動時にエラー: "
 #: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr ""
-"アドレス '%2$s' に不明なあるいはサポートしていないトランスポート '%1$s'"
+msgstr "アドレス '%2$s' に不明なあるいはサポートしていないトランスポート '%1$s'"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
@@ -225,9 +208,7 @@ msgstr "nonce ファイル '%s' の読み出し中にエラー: %s"
 #: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr ""
-"nonce ファイル '%s' の読み出し中にエラー。16 バイトを期待しましたが、%d バイ"
-"トでした"
+msgstr "nonce ファイル '%s' の読み出し中にエラー。16 バイトを期待しましたが、%d バイトでした"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
@@ -270,25 +251,16 @@ msgstr ""
 #: ../gio/gdbusaddress.c:1458
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
-msgstr ""
-"セッションバスのアドレスを決定できません (このOSでは実装されていません)"
+msgstr "セッションバスのアドレスを決定できません (このOSでは実装されていません)"
 
 #: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
 #, c-format
-msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
-msgstr ""
-"DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%"
-"s'"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
+msgstr "DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%s'"
 
 #: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
-msgid ""
-"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
-"variable is not set"
-msgstr ""
-"DBUS_STARTER_BUS_TYPE 環境変数が設定されていないため、バスアドレスを決定でき"
-"ません"
+msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
+msgstr "DBUS_STARTER_BUS_TYPE 環境変数が設定されていないため、バスアドレスを決定できません"
 
 #: ../gio/gdbusaddress.c:1576
 #, c-format
@@ -305,15 +277,12 @@ msgstr "(安全に)行を読みこもうとしましたが内容が意図せず�
 
 #: ../gio/gdbusauth.c:502
 #, c-format
-msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr ""
-"すべての利用可能な認証メカニズムを試し尽くしました (試行: %s) (利用可能: %s)"
+msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgstr "すべての利用可能な認証メカニズムを試し尽くしました (試行: %s) (利用可能: %s)"
 
 #: ../gio/gdbusauth.c:1158
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
-"GDBusAuthObserver::authorize-authenticated-peer 経由でキャンセルされました"
+msgstr "GDBusAuthObserver::authorize-authenticated-peer 経由でキャンセルされました"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
@@ -322,11 +291,8 @@ msgstr "ディレクトリ `%s' の情報を取得する際にエラー: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr ""
-"ディレクトリ '%s' が不正なパーミッションです。0700 モードを期待しましたが、0%"
-"o でした"
+msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgstr "ディレクトリ '%s' が不正なパーミッションです。0700 モードを期待しましたが、0%o でした"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -345,17 +311,13 @@ msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目が不正
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
-msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の最初のトークンが不正です"
+msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の最初のトークンが不正です"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
-msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です"
+msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
@@ -401,19 +363,13 @@ msgid "Timeout was reached"
 msgstr "タイムアウトしました"
 
 #: ../gio/gdbusconnection.c:2513
-msgid ""
-"Unsupported flags encountered when constructing a client-side connection"
-msgstr ""
-"クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭"
-"遇しました"
+msgid "Unsupported flags encountered when constructing a client-side connection"
+msgstr "クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭遇しました"
 
 #: ../gio/gdbusconnection.c:4015 ../gio/gdbusconnection.c:4331
 #, c-format
-msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
-"パス %s のオブジェクト上にインターフェース 'org.freedesktop.DBus.Properties' "
-"がありません"
+msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+msgstr "パス %s のオブジェクト上にインターフェース 'org.freedesktop.DBus.Properties' がありません"
 
 #: ../gio/gdbusconnection.c:4086
 #, c-format
@@ -462,8 +418,7 @@ msgstr "メッセージの型 '%s' は期待した型 '%s' に一致しません
 #: ../gio/gdbusconnection.c:4982
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
-msgstr ""
-"%2$s のインターフェース %1$s にオブジェクトは既にエクスポートされています"
+msgstr "%2$s のインターフェース %1$s にオブジェクトは既にエクスポートされています"
 
 #: ../gio/gdbusconnection.c:5180
 #, c-format
@@ -473,9 +428,7 @@ msgstr "メソッド '%s' は '%s' 型を返しましたが、'%s' を期待し�
 #: ../gio/gdbusconnection.c:6259
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr ""
-"シグネチャ '%3$s' を持ったインターフェース '%2$s' にメソッド '%1$s' が存在し"
-"ません"
+msgstr "シグネチャ '%3$s' を持ったインターフェース '%2$s' にメソッド '%1$s' が存在しません"
 
 #: ../gio/gdbusconnection.c:6378
 #, c-format
@@ -488,8 +441,7 @@ msgstr "型が INVALID"
 
 #: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr ""
-"METHOD_CALL メッセージ: PATH または MEMBER ヘッダーフィールドがありません"
+msgstr "METHOD_CALL メッセージ: PATH または MEMBER ヘッダーフィールドがありません"
 
 #: ../gio/gdbusmessage.c:881
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
@@ -497,31 +449,19 @@ msgstr "METHOD_RETURN メッセージ: REPLY_SERIAL ヘッダーフィールド�
 
 #: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr ""
-"ERROR メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダーフィールドがありませ"
-"ん"
+msgstr "ERROR メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダーフィールドがありません"
 
 #: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr ""
-"SIGNAL メッセージ: PATH、INTERFACE あるいは MEMBER ヘッダーフィールドがありま"
-"せん"
+msgstr "SIGNAL メッセージ: PATH、INTERFACE あるいは MEMBER ヘッダーフィールドがありません"
 
 #: ../gio/gdbusmessage.c:914
-msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
-msgstr ""
-"SIGNAL メッセージ: PATH ヘッダーフィールドが予約された値 /org/freedesktop/"
-"DBus/Local を使っています"
+msgid "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
+msgstr "SIGNAL メッセージ: PATH ヘッダーフィールドが予約された値 /org/freedesktop/DBus/Local を使っています"
 
 #: ../gio/gdbusmessage.c:922
-msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
-msgstr ""
-"SIGNAL メッセージ: INTERFACE ヘッダーフィールドが予約された値 org."
-"freedesktop.DBus.Local を使っています"
+msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
+msgstr "SIGNAL メッセージ: INTERFACE ヘッダーフィールドが予約された値 org.freedesktop.DBus.Local を使っています"
 
 #: ../gio/gdbusmessage.c:998
 #, fuzzy, c-format
@@ -531,12 +471,8 @@ msgstr[0] "%lu バイト読もうとしましたが、EOF になりました"
 
 #: ../gio/gdbusmessage.c:1025
 #, c-format
-msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
-msgstr ""
-"UTF-8 文字列を期待しましたが、正しくないバイト列がオフセット %d にありました "
-"(文字列の長さは %d です)。正しい UTF-8 文字列は '%s' までです。"
+msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
+msgstr "UTF-8 文字列を期待しましたが、正しくないバイト列がオフセット %d にありました (文字列の長さは %d です)。正しい UTF-8 文字列は '%s' までです。"
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
@@ -555,64 +491,45 @@ msgstr "解析された値 '%s' は妥当な D-Bus のシグネチャではあ�
 
 #: ../gio/gdbusmessage.c:1325
 #, fuzzy, c-format
-msgid ""
-"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
-msgid_plural ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr[0] ""
-"%u バイトの長さの配列に出会いました。最大の長さは 2<<26 バイト (64 MiB) で"
-"す。"
+msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgstr[0] "%u バイトの長さの配列に出会いました。最大の長さは 2<<26 バイト (64 MiB) です。"
 
 #: ../gio/gdbusmessage.c:1483
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr ""
-"Variant 型として解析した値 '%s'  は正しい D-Bus のシグネチャではありません"
+msgstr "Variant 型として解析した値 '%s'  は正しい D-Bus のシグネチャではありません"
 
 #: ../gio/gdbusmessage.c:1510
 #, c-format
-msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
-msgstr ""
-"D-Bus 書き出し形式から GVariant を型文字列 '%s' でデシリアライズしようとした"
-"らエラー"
+msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgstr "D-Bus 書き出し形式から GVariant を型文字列 '%s' でデシリアライズしようとしたらエラー"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
-msgid ""
-"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
-"0x%02x"
-msgstr ""
-"エンディアンについての値が正しくありません。0x6c ('l') または 0x42 ('B') のと"
-"ころ、0x%02x でした"
+msgid "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
+msgstr "エンディアンについての値が正しくありません。0x6c ('l') または 0x42 ('B') のところ、0x%02x でした"
 
 #: ../gio/gdbusmessage.c:1712
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
-msgstr ""
-"プロトコルのメジャーバージョンが正しくありません。1 を期待したところ %d でし"
-"た"
+msgstr "プロトコルのメジャーバージョンが正しくありません。1 を期待したところ %d でした"
 
 #: ../gio/gdbusmessage.c:1769
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
-msgstr ""
-"シグネチャ '%s' のシグネチャヘッダーが見つかりましたが、メッセージボディが空"
-"です"
+msgstr "シグネチャ '%s' のシグネチャヘッダーが見つかりましたが、メッセージボディが空です"
 
 #: ../gio/gdbusmessage.c:1783
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr ""
-"値 '%s' を解析しましたが、D-Bus のシグネチャとして正しくありません (ボディ)"
+msgstr "値 '%s' を解析しましたが、D-Bus のシグネチャとして正しくありません (ボディ)"
 
 #: ../gio/gdbusmessage.c:1814
 #, fuzzy, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] ""
-"メッセージ中にシグネチャヘッダーがありませんが、メッセージボディが %u バイト"
-"あります"
+msgstr[0] "メッセージ中にシグネチャヘッダーがありませんが、メッセージボディが %u バイトあります"
 
 #: ../gio/gdbusmessage.c:1824
 msgid "Cannot deserialize message: "
@@ -620,20 +537,13 @@ msgstr "メッセージをデシリアライズできません: "
 
 #: ../gio/gdbusmessage.c:2156
 #, c-format
-msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
-msgstr ""
-"GVariant を型文字列 '%s' で D-Bus 書き出し形式にシリアライズしようとしました"
-"がエラーです"
+msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgstr "GVariant を型文字列 '%s' で D-Bus 書き出し形式にシリアライズしようとしましたがエラーです"
 
 #: ../gio/gdbusmessage.c:2297
 #, fuzzy, c-format
-msgid ""
-"Message has %d file descriptors but the header field indicates %d file "
-"descriptors"
-msgstr ""
-"メッセージには %d 個の fd が含まれていますが、ヘッダーフィールドでは %d 個の "
-"fd があることになってます"
+msgid "Message has %d file descriptors but the header field indicates %d file descriptors"
+msgstr "メッセージには %d 個の fd が含まれていますが、ヘッダーフィールドでは %d 個の fd があることになってます"
 
 #: ../gio/gdbusmessage.c:2305
 msgid "Cannot serialize message: "
@@ -642,24 +552,17 @@ msgstr "メッセージをシリアライズできません: "
 #: ../gio/gdbusmessage.c:2349
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
-msgstr ""
-"メッセージボディにはシグネチャ '%s' がありますが、シグネチャのヘッダーがあり"
-"ません"
+msgstr "メッセージボディにはシグネチャ '%s' がありますが、シグネチャのヘッダーがありません"
 
 #: ../gio/gdbusmessage.c:2359
 #, c-format
-msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
-msgstr ""
-"メッセージボディには型シグネチャ '%s' がありますが、ヘッダーフィールド中のシ"
-"グネチャは '%s' です"
+msgid "Message body has type signature `%s' but signature in the header field is `%s'"
+msgstr "メッセージボディには型シグネチャ '%s' がありますが、ヘッダーフィールド中のシグネチャは '%s' です"
 
 #: ../gio/gdbusmessage.c:2375
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr ""
-"メッセージボディは空ですが、ヘッダーフィールド中のシグネチャは '(%s)' です"
+msgstr "メッセージボディは空ですが、ヘッダーフィールド中のシグネチャは '(%s)' です"
 
 #: ../gio/gdbusmessage.c:2932
 #, c-format
@@ -672,13 +575,11 @@ msgstr "空のボディでエラーが返りました"
 
 #: ../gio/gdbusprivate.c:2062
 #, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to get Hardware profile: %s"
 msgstr "ファイルをゴミ箱へ移動できません: %s"
 
 #: ../gio/gdbusprivate.c:2107
 #, fuzzy
-#| msgid "Unable to load /var/lib/dbus/machine-id: "
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "/var/lib/dbus/machine-id を読みこめません: "
 
@@ -693,12 +594,8 @@ msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "StartServiceByName(\"%2$s\") メソッドから期待してない応答 %1$d"
 
 #: ../gio/gdbusproxy.c:2745 ../gio/gdbusproxy.c:2882
-msgid ""
-"Cannot invoke method; proxy is for a well-known name without an owner and "
-"proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
-msgstr ""
-"メソッドを起動できません: proxy がオーナーの無い既知の名前で、"
-"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START フラグで proxy が作成されていました"
+msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+msgstr "メソッドを起動できません: proxy がオーナーの無い既知の名前で、G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START フラグで proxy が作成されていました"
 
 #: ../gio/gdbusserver.c:708
 msgid "Abstract name space not supported"
@@ -791,20 +688,13 @@ msgstr "複数の接続の終端が指定されています"
 
 #: ../gio/gdbus-tool.c:463
 #, c-format
-msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr ""
-"警告: イントロスペクションのデータによれば、インターフェース '%s' は存在しま"
-"せん\n"
+msgid "Warning: According to introspection data, interface `%s' does not exist\n"
+msgstr "警告: イントロスペクションのデータによれば、インターフェース '%s' は存在しません\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
-msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
-msgstr ""
-"警告: イントロスペクションのデータによれば、メソッド '%s' はインターフェース "
-"'%s' に存在しません\n"
+msgid "Warning: According to introspection data, method `%s' does not exist on interface `%s'\n"
+msgstr "警告: イントロスペクションのデータによれば、メソッド '%s' はインターフェース '%s' に存在しません\n"
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
@@ -1030,14 +920,12 @@ msgstr "GEmblem のエンコーディングにあるトークンの数 (%d) が�
 #: ../gio/gemblemedicon.c:367
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
-msgstr ""
-"バージョン %d の GEmblemedIcon のエンコーディングはサポートしていません"
+msgstr "バージョン %d の GEmblemedIcon のエンコーディングはサポートしていません"
 
 #: ../gio/gemblemedicon.c:377
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr ""
-"GEmblemedIcon のエンコーディングにあるトークンの数 (%d) が間違っています"
+msgstr "GEmblemedIcon のエンコーディングにあるトークンの数 (%d) が間違っています"
 
 #: ../gio/gemblemedicon.c:400
 msgid "Expected a GEmblem for GEmblemedIcon"
@@ -1188,8 +1076,7 @@ msgstr "バージョン番号が間違っています: %s"
 #: ../gio/gicon.c:353
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr ""
-"%s という型は GIcon のインターフェースで from_tokens() を実装していません"
+msgstr "%s という型は GIcon のインターフェースで from_tokens() を実装していません"
 
 #: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
@@ -1210,7 +1097,6 @@ msgstr ""
 
 #: ../gio/ginetaddressmask.c:304
 #, fuzzy, c-format
-#| msgid "could not get local address: %s"
 msgid "Could not parse '%s' as IP address mask"
 msgstr "ローカルのアドレスを取得できませんでした: %s"
 
@@ -1260,25 +1146,21 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:262
 #, fuzzy, c-format
-#| msgid "Failed to change to directory '%s' (%s)"
 msgid "Failed to locate '%s' in current directory"
 msgstr "'%s' というディレクトリへ移動できませんでした (%s)"
 
 #: ../gio/glib-compile-resources.c:290
 #, fuzzy, c-format
-#| msgid "Unknown option %s"
 msgid "Unknown processing option \"%s\""
 msgstr "%s は不明なオプションです"
 
 #: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:366
 #, fuzzy, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to create temp file: %s"
 msgstr "'%s' というファイルを生成できませんでした: %s"
 
 #: ../gio/glib-compile-resources.c:338
 #, fuzzy
-#| msgid "Error setting symlink: file is not a symlink"
 msgid "Error processing input file with xmllint"
 msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
@@ -1288,13 +1170,11 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:406
 #, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
 msgid "Error reading file %s: %s"
 msgstr "'%s' の読み出し中にエラー: %s"
 
 #: ../gio/glib-compile-resources.c:426
 #, fuzzy, c-format
-#| msgid "Error opening file: %s"
 msgid "Error compressing file %s"
 msgstr "ファイルをオープンする際にエラー: %s"
 
@@ -1305,21 +1185,17 @@ msgstr "<%s> 中では文字列は出現しません"
 
 #: ../gio/glib-compile-resources.c:613
 #, fuzzy
-#| msgid "The name of the icon"
 msgid "name of the output file"
 msgstr "アイコンの名前です"
 
 #: ../gio/glib-compile-resources.c:613 ../gio/glib-compile-resources.c:646
 #: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 #, fuzzy
-#| msgid "[FILE...]"
 msgid "FILE"
 msgstr "[ファイル...]"
 
 #: ../gio/glib-compile-resources.c:614
-msgid ""
-"The directories where files are to be read from (default to current "
-"directory)"
+msgid "The directories where files are to be read from (default to current directory)"
 msgstr ""
 
 #: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1995
@@ -1328,8 +1204,7 @@ msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
 #: ../gio/glib-compile-resources.c:615
-msgid ""
-"Generate output in the format selected for by the target filename extension"
+msgid "Generate output in the format selected for by the target filename extension"
 msgstr ""
 
 #: ../gio/glib-compile-resources.c:616
@@ -1375,12 +1250,8 @@ msgstr "正しくない名前 '%s': 名前は小文字で始まっていなけ�
 
 #: ../gio/glib-compile-schemas.c:796
 #, c-format
-msgid ""
-"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
-msgstr ""
-"正しくない名前 '%s': 正しくない文字 '%c' があります。小文字、数字、およびダッ"
-"シュ ('-') のみが許可されている文字です"
+msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and dash ('-') are permitted."
+msgstr "正しくない名前 '%s': 正しくない文字 '%c' があります。小文字、数字、およびダッシュ ('-') のみが許可されている文字です"
 
 #: ../gio/glib-compile-schemas.c:805
 #, c-format
@@ -1404,7 +1275,6 @@ msgstr "<child name='%s'> は既に指定されています"
 
 #: ../gio/glib-compile-schemas.c:917
 #, fuzzy
-#| msgid "can not add keys to a 'list-of' schema"
 msgid "cannot add keys to a 'list-of' schema"
 msgstr "キーを 'list-of' スキーマに追加することができません"
 
@@ -1415,21 +1285,13 @@ msgstr "<key name='%s'> は既に指定されています"
 
 #: ../gio/glib-compile-schemas.c:946
 #, c-format
-msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
-"to modify value"
-msgstr ""
-"<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠してしまい"
-"ます。値の変更は <override> を使ってください"
+msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
+msgstr "<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠してしまいます。値の変更は <override> を使ってください"
 
 #: ../gio/glib-compile-schemas.c:957
 #, c-format
-msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
-"to <key>"
-msgstr ""
-"<key> の属性としては、'type'、'enum'、あるいは 'flags' のうち一つだけが指定で"
-"きます"
+msgid "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to <key>"
+msgstr "<key> の属性としては、'type'、'enum'、あるいは 'flags' のうち一つだけが指定できます"
 
 #: ../gio/glib-compile-schemas.c:976
 #, c-format
@@ -1482,25 +1344,18 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1169
 #, c-format
-msgid ""
-"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
-msgstr ""
-"<schema id='%s'> はリストですが、リストではない <schema id='%s'> を拡張してい"
-"ます"
+msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr "<schema id='%s'> はリストですが、リストではない <schema id='%s'> を拡張しています"
 
 #: ../gio/glib-compile-schemas.c:1179
 #, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
-"does not extend '%s'"
+msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' does not extend '%s'"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1196
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
-msgstr ""
-"パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはな"
-"りません"
+msgstr "パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはなりません"
 
 #: ../gio/glib-compile-schemas.c:1203
 #, c-format
@@ -1548,9 +1403,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1886
 #, c-format
-msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s.  "
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1896
@@ -1560,16 +1413,12 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1914
 #, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
-"range given in the schema"
+msgid "override for key `%s' in schema `%s' in override file `%s' is out of the range given in the schema"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1942
 #, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
-"list of valid choices"
+msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1995
@@ -1617,8 +1466,7 @@ msgstr ""
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
-msgstr ""
-"ローカル・ディレクトリを監視するデフォルト・モニターの種類が見つかりません"
+msgstr "ローカル・ディレクトリを監視するデフォルト・モニターの種類が見つかりません"
 
 #: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
 #, c-format
@@ -1924,11 +1772,8 @@ msgid "Failed to resize memory output stream"
 msgstr "メモリ出力ストリームの大きさを変更できませんでした"
 
 #: ../gio/gmemoryoutputstream.c:600
-msgid ""
-"Amount of memory required to process the write is larger than available "
-"address space"
-msgstr ""
-"書き込むプロセスに必要なメモリの量が利用可能なアドレススペースより大きいです"
+msgid "Amount of memory required to process the write is larger than available address space"
+msgstr "書き込むプロセスに必要なメモリの量が利用可能なアドレススペースより大きいです"
 
 #: ../gio/gmemoryoutputstream.c:760
 msgid "Requested seek before the beginning of the stream"
@@ -1958,16 +1803,14 @@ msgstr "mount は \"eject\" を実装していません"
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr ""
-"mount は \"unmount\" あるいは \"unmount_with_operation\" を実装していません"
+msgstr "mount は \"unmount\" あるいは \"unmount_with_operation\" を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:611
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr ""
-"mount は \"eject\" あるいは \"eject_with_operation\" を実装していません"
+msgstr "mount は \"eject\" あるいは \"eject_with_operation\" を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2006,7 +1849,6 @@ msgstr ""
 #: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
 #: ../gio/gnetworkmonitornetlink.c:120
 #, fuzzy, c-format
-#| msgid "could not get remote address: %s"
 msgid "Could not create network monitor: %s"
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
@@ -2016,7 +1858,6 @@ msgstr ""
 
 #: ../gio/gnetworkmonitornetlink.c:177
 #, fuzzy
-#| msgid "could not get remote address: %s"
 msgid "Could not get network status: "
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
@@ -2068,13 +1909,11 @@ msgstr ""
 
 #: ../gio/gresourcefile.c:651
 #, fuzzy, c-format
-#| msgid "Target file is a directory"
 msgid "The resource at '%s' is not a directory"
 msgstr "対象となるファイルはディレクトリです"
 
 #: ../gio/gresourcefile.c:859
 #, fuzzy
-#| msgid "Input stream doesn't implement read"
 msgid "Input stream doesn't implement seek"
 msgstr "入力ストリームで読み込みを実装していません"
 
@@ -2084,7 +1923,6 @@ msgstr "ヘルプを表示する"
 
 #: ../gio/gresource-tool.c:471 ../gio/gresource-tool.c:539
 #, fuzzy
-#| msgid "COMMAND"
 msgid "[COMMAND]"
 msgstr "COMMAND"
 
@@ -2122,7 +1960,6 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:502
 #, fuzzy
-#| msgid "PATH"
 msgid "FILE PATH"
 msgstr "PATH"
 
@@ -2153,12 +1990,6 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:530
 #, fuzzy, c-format
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings %s %s\n"
-#| "\n"
-#| "%s\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gresource %s%s%s %s\n"
@@ -2196,7 +2027,6 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:554
 #, fuzzy
-#| msgid "PATH"
 msgid "[PATH]"
 msgstr "PATH"
 
@@ -2235,16 +2065,12 @@ msgstr ""
 #: ../gio/gsettings-tool.c:100
 #, fuzzy, c-format
 msgid "Path must begin with a slash (/)\n"
-msgstr ""
-"パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはな"
-"りません"
+msgstr "パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはなりません"
 
 #: ../gio/gsettings-tool.c:106
 #, fuzzy, c-format
 msgid "Path must end with a slash (/)\n"
-msgstr ""
-"パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはな"
-"りません"
+msgstr "パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはなりません"
 
 #: ../gio/gsettings-tool.c:112
 #, c-format
@@ -2342,28 +2168,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
 #: ../gio/gsettings-tool.c:618
-#, fuzzy
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2387,7 +2191,7 @@ msgid ""
 "\n"
 msgstr ""
 "用法:\n"
-"  gsettings COMMAND [ARGS...]\n"
+"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "コマンド:\n"
 "  help                      この情報を表示する\n"
@@ -2408,13 +2212,7 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:640
-#, fuzzy, c-format
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings %s %s\n"
-#| "\n"
-#| "%s\n"
-#| "\n"
+#, c-format
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] %s %s\n"
@@ -2423,14 +2221,14 @@ msgid ""
 "\n"
 msgstr ""
 "用法:\n"
-"  gsettings %s %s\n"
+"  gsettings [--schemadir SCHEMADIR] %s %s\n"
 "\n"
 "%s\n"
 "\n"
 
 #: ../gio/gsettings-tool.c:646
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr ""
+msgstr "  SCHEMADIR 追加スキーマを検索するディレクトリ\n"
 
 #: ../gio/gsettings-tool.c:654
 msgid ""
@@ -2486,7 +2284,6 @@ msgstr "ソケットを作成できません: %s"
 
 #: ../gio/gsocket.c:506
 #, fuzzy
-#| msgid "Unknown protocol was specified"
 msgid "Unknown family was specified"
 msgstr "不明なプロトコルが指定されました"
 
@@ -2516,13 +2313,11 @@ msgstr "アドレスに bind 時にエラー: %s"
 
 #: ../gio/gsocket.c:1951 ../gio/gsocket.c:1987
 #, fuzzy, c-format
-#| msgid "Error launching application: %s"
 msgid "Error joining multicast group: %s"
 msgstr "アプリケーションを起動する際にエラー: %s"
 
 #: ../gio/gsocket.c:1952 ../gio/gsocket.c:1988
 #, fuzzy, c-format
-#| msgid "Error launching application: %s"
 msgid "Error leaving multicast group: %s"
 msgstr "アプリケーションを起動する際にエラー: %s"
 
@@ -2594,13 +2389,11 @@ msgstr ""
 
 #: ../gio/gsocketclient.c:188
 #, fuzzy, c-format
-#| msgid "Could not open converter from '%s' to '%s': %s"
 msgid "Could not connect to %s: "
 msgstr "'%s' から '%s' へ変換するコンバーターを開けませんでした: %s"
 
 #: ../gio/gsocketclient.c:190
 #, fuzzy
-#| msgid "could not listen: %s"
 msgid "Could not connect: "
 msgstr "listen できませんでした: %s"
 
@@ -2657,9 +2450,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr ""
 
 #: ../gio/gsocks5proxy.c:179
-msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by "
-"GLib."
+msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 
 #: ../gio/gsocks5proxy.c:208
@@ -2737,15 +2528,11 @@ msgid "Could not parse PEM-encoded certificate"
 msgstr ""
 
 #: ../gio/gtlspassword.c:114
-msgid ""
-"This is the last chance to enter the password correctly before your access "
-"is locked out."
+msgid "This is the last chance to enter the password correctly before your access is locked out."
 msgstr ""
 
 #: ../gio/gtlspassword.c:116
-msgid ""
-"Several password entered have been incorrect, and your access will be locked "
-"out after further failures."
+msgid "Several password entered have been incorrect, and your access will be locked out after further failures."
 msgstr ""
 
 #: ../gio/gtlspassword.c:118
@@ -2781,9 +2568,7 @@ msgstr ""
 
 #: ../gio/gunixconnection.c:520
 #, c-format
-msgid ""
-"Unexpected option length while checking if SO_PASSCRED is enabled for "
-"socket. Expected %d bytes, got %d"
+msgid "Unexpected option length while checking if SO_PASSCRED is enabled for socket. Expected %d bytes, got %d"
 msgstr ""
 
 #: ../gio/gunixconnection.c:537
@@ -2792,8 +2577,7 @@ msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED を有効にする際にエラー: %s"
 
 #: ../gio/gunixconnection.c:568
-msgid ""
-"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 
 #: ../gio/gunixconnection.c:606
@@ -2809,14 +2593,12 @@ msgstr ""
 #: ../gio/gunixinputstream.c:392 ../gio/gunixinputstream.c:413
 #: ../gio/gunixinputstream.c:493
 #, fuzzy, c-format
-#| msgid "Error stating file descriptor: %s"
 msgid "Error reading from file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
 #: ../gio/gunixinputstream.c:448 ../gio/gunixinputstream.c:643
 #: ../gio/gunixoutputstream.c:434 ../gio/gunixoutputstream.c:598
 #, fuzzy, c-format
-#| msgid "Error stating file descriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
@@ -2827,15 +2609,12 @@ msgstr "ファイルシステムのルート"
 #: ../gio/gunixoutputstream.c:378 ../gio/gunixoutputstream.c:399
 #: ../gio/gunixoutputstream.c:479
 #, fuzzy, c-format
-#| msgid "Error stating file descriptor: %s"
 msgid "Error writing to file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
 #: ../gio/gunixsocketaddress.c:244
 msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr ""
-"抽象化されたUNIXドメインソケットのアドレスはこのシステムではサポートされてい"
-"ません"
+msgstr "抽象化されたUNIXドメインソケットのアドレスはこのシステムではサポートされていません"
 
 #: ../gio/gvolume.c:408
 msgid "volume doesn't implement eject"
@@ -2954,9 +2733,7 @@ msgstr "'%s' という URI のブックマークには MIME 型が定義され�
 #: ../glib/gbookmarkfile.c:2470
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr ""
-"'%s' という URI のブックマークにはプライベートではないフラグが定義されていま"
-"す"
+msgstr "'%s' という URI のブックマークにはプライベートではないフラグが定義されています"
 
 #: ../glib/gbookmarkfile.c:2849
 #, c-format
@@ -3286,8 +3063,7 @@ msgstr "'%s' を開けません: fdopen() に失敗しました: %s"
 #: ../glib/gfileutils.c:997
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr ""
-"'%s' から '%s' にファイル名を変更できません: g_rename() に失敗しました: %s"
+msgstr "'%s' から '%s' にファイル名を変更できません: g_rename() に失敗しました: %s"
 
 #: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1584
 #, c-format
@@ -3322,9 +3098,7 @@ msgstr "'%s' をクローズできません: fclose() に失敗しました: %s"
 #: ../glib/gfileutils.c:1287
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr ""
-"'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: %"
-"s"
+msgstr "'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: %s"
 
 #: ../glib/gfileutils.c:1547
 #, c-format
@@ -3377,11 +3151,8 @@ msgstr "通常のファイルではありません"
 
 #: ../glib/gkeyfile.c:1162
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
-"ん"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありません"
 
 #: ../glib/gkeyfile.c:1222
 #, c-format
@@ -3421,29 +3192,18 @@ msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではあり�
 
 #: ../glib/gkeyfile.c:1842 ../glib/gkeyfile.c:1958 ../glib/gkeyfile.c:2327
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "キー・ファイルに解釈できない値を持つキー '%s' が含まれています。"
 
 #: ../glib/gkeyfile.c:2544 ../glib/gkeyfile.c:2910
 #, fuzzy, c-format
-#| msgid ""
-#| "Key file contains key '%s' in group '%s' which has value that cannot be "
-#| "interpreted."
-msgid ""
-"Key file contains key '%s' in group '%s' which has a value that cannot be "
-"interpreted."
-msgstr ""
-"キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
+msgid "Key file contains key '%s' in group '%s' which has a value that cannot be interpreted."
+msgstr "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
 #: ../glib/gkeyfile.c:2622 ../glib/gkeyfile.c:2698
 #, fuzzy, c-format
-#| msgid ""
-#| "Key file contains key '%s' in group '%s' which has value that cannot be "
-#| "interpreted."
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr ""
-"キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
+msgstr "キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
 #: ../glib/gkeyfile.c:3096 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3857
 #, c-format
@@ -3481,13 +3241,11 @@ msgstr "値 '%s' を論理値として解釈できません"
 
 #: ../glib/gmappedfile.c:128
 #, fuzzy, c-format
-#| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
 msgstr "'%s' の属性の取得できません: fstat() に失敗しました: %s"
 
 #: ../glib/gmappedfile.c:194
 #, fuzzy, c-format
-#| msgid "Failed to map file '%s': mmap() failed: %s"
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "ファイル '%s' のマップに失敗しました: mmap() が失敗: %s"
 
@@ -3523,22 +3281,12 @@ msgstr "%d 行目でエラー: %s"
 
 #: ../glib/gmarkup.c:639
 #, c-format
-msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"'%-.*s' をパースできません。文字参照の範囲内の数字でなければなりません (例: "
-"&#234;) 数字が大きすぎる可能性もあります"
+msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "'%-.*s' をパースできません。文字参照の範囲内の数字でなければなりません (例: &#234;) 数字が大きすぎる可能性もあります"
 
 #: ../glib/gmarkup.c:651
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
-"文字参照がセミコロンで終わっていません。エンティティのつもりもないのにアンパ"
-"サンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープして"
-"ください"
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "文字参照がセミコロンで終わっていません。エンティティのつもりもないのにアンパサンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープしてください"
 
 #: ../glib/gmarkup.c:677
 #, c-format
@@ -3546,11 +3294,8 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "文字参照 '%-.*s' が使用可能な文字をエンコードしていません"
 
 #: ../glib/gmarkup.c:715
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"空のエンティティ '&;' があります; 正しいエンティティは: &amp; &quot; &lt; "
-"&gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "空のエンティティ '&;' があります; 正しいエンティティは: &amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:723
 #, c-format
@@ -3558,13 +3303,8 @@ msgid "Entity name '%-.*s' is not known"
 msgstr "エンティティ名 '%-.*s' というのは不明です"
 
 #: ../glib/gmarkup.c:728
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"エンティティがセミコロンで終わってません。エンティティでもないのにアンパサン"
-"ドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてく"
-"ださい"
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "エンティティがセミコロンで終わってません。エンティティでもないのにアンパサンドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてください"
 
 #: ../glib/gmarkup.c:1076
 msgid "Document must begin with an element (e.g. <book>)"
@@ -3572,65 +3312,38 @@ msgstr "ドキュメントは要素 (例 <book>) で始まってなくてはな�
 
 #: ../glib/gmarkup.c:1116
 #, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr ""
-"'%s' は '<' に続く文字としては正しくありません。おそらく要素名の開始になって"
-"いません"
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "'%s' は '<' に続く文字としては正しくありません。おそらく要素名の開始になっていません"
 
 #: ../glib/gmarkup.c:1184
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
-msgstr ""
-"おかしな文字 '%s' があります。空の要素のタグ '%s' の最後は '>' でなくてはなり"
-"ません"
+msgid "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+msgstr "おかしな文字 '%s' があります。空の要素のタグ '%s' の最後は '>' でなくてはなりません"
 
 #: ../glib/gmarkup.c:1268
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "おかしな文字 '%s' です。属性名'%s' (要素 '%s') の後には '=' が必要です"
 
 #: ../glib/gmarkup.c:1309
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
-"おかしな文字 '%s' です。要素 '%s' の開始タグの末尾は '>' または '/' でなくて"
-"はなりません。あるいは属性になります。おかしな文字を属性名に使ったのかもしれ"
-"ません"
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "おかしな文字 '%s' です。要素 '%s' の開始タグの末尾は '>' または '/' でなくてはなりません。あるいは属性になります。おかしな文字を属性名に使ったのかもしれません"
 
 #: ../glib/gmarkup.c:1353
 #, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
-"おかしな文字 '%s' です。属性 '%s' (要素 '%s') の値を設定するには等号記号の後"
-"は引用記号で始まってなくてはなりません"
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "おかしな文字 '%s' です。属性 '%s' (要素 '%s') の値を設定するには等号記号の後は引用記号で始まってなくてはなりません"
 
 #: ../glib/gmarkup.c:1486
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
-"'%s' は '</' に続く文字としては正しくありません。'%s' では要素名は始まってま"
-"せん"
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "'%s' は '</' に続く文字としては正しくありません。'%s' では要素名は始まってません"
 
 #: ../glib/gmarkup.c:1522
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
-"'%s' は閉じ要素名 '%s' に続く文字としては正しくありあません。'>' のみが使用で"
-"きます"
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s' は閉じ要素名 '%s' に続く文字としては正しくありあません。'>' のみが使用できます"
 
 #: ../glib/gmarkup.c:1533
 #, c-format
@@ -3652,21 +3365,13 @@ msgstr "ドキュメントが開きカギカッコ '<' の直後で終了して�
 
 #: ../glib/gmarkup.c:1732 ../glib/gmarkup.c:1777
 #, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
-"ドキュメントが突然終了しています。要素が開きっぱなしです。最後に開いた要素は "
-"'%s' です。"
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "ドキュメントが突然終了しています。要素が開きっぱなしです。最後に開いた要素は '%s' です。"
 
 #: ../glib/gmarkup.c:1740
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
-"ドキュメントはタグ <%s/> で終了しているものと想定していましたが、突然終了して"
-"います。"
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "ドキュメントはタグ <%s/> で終了しているものと想定していましたが、突然終了しています。"
 
 #: ../glib/gmarkup.c:1746
 msgid "Document ended unexpectedly inside an element name"
@@ -3681,12 +3386,8 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "要素の開始タグの途中でドキュメントが突然終了しています"
 
 #: ../glib/gmarkup.c:1763
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr ""
-"属性名の後にある等号記号の次でドキュメントが突然終了しています: 属性値があり"
-"ません"
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "属性名の後にある等号記号の次でドキュメントが突然終了しています: 属性値がありません"
 
 #: ../glib/gmarkup.c:1770
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -3699,8 +3400,7 @@ msgstr "ドキュメントが要素 '%s' の閉じタグの途中で突然終了
 
 #: ../glib/gmarkup.c:1792
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"ドキュメントがコメントあるいはプロセシング指示子の途中で突然終了しています"
+msgstr "ドキュメントがコメントあるいはプロセシング指示子の途中で突然終了しています"
 
 #: ../glib/goption.c:746
 msgid "Usage:"
@@ -3823,8 +3523,7 @@ msgstr "認識できない文字の後ろに \\ があります"
 
 #: ../glib/gregex.c:275
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
-"ここに大/小文字の変換を行うエスケープ (\\l、\\L、\\u、\\U) を挿入できません"
+msgstr "ここに大/小文字の変換を行うエスケープ (\\l、\\L、\\u、\\U) を挿入できません"
 
 #: ../glib/gregex.c:278
 msgid "numbers out of order in {} quantifier"
@@ -3978,11 +3677,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "NEWLINE オプションに矛盾があります"
 
 #: ../glib/gregex.c:396
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"ブレース名の後ろに \\g が存在していないか、または0以外の数値でブレースしてい"
-"ます"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "ブレース名の後ろに \\g が存在していないか、または0以外の数値でブレースしています"
 
 #: ../glib/gregex.c:401
 msgid "unexpected repeat"
@@ -4070,9 +3766,7 @@ msgstr "引用テキストが引用記号で始まっていません"
 
 #: ../glib/gshell.c:181
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr ""
-"コマンドライン、あるいはシェルの引用テキストにおいて引用記号の対応が取れてい"
-"ません"
+msgstr "コマンドライン、あるいはシェルの引用テキストにおいて引用記号の対応が取れていません"
 
 #: ../glib/gshell.c:559
 #, c-format
@@ -4185,11 +3879,8 @@ msgid "Failed to execute helper program (%s)"
 msgstr "ヘルパー・プログラムを起動できませんでした (%s)"
 
 #: ../glib/gspawn-win32.c:997
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
-"g_io_channel_win32_poll() が子プロセスからデータを読み出す際に想定外のエラー"
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "g_io_channel_win32_poll() が子プロセスからデータを読み出す際に想定外のエラー"
 
 #: ../glib/gutf8.c:915
 msgid "Character out of range for UTF-8"
@@ -4285,8 +3976,7 @@ msgstr "%.1f KB"
 #~ msgid "File is empty"
 #~ msgstr "ファイルが空です"
 
-#~ msgid ""
-#~ "Key file contains key '%s' which has value that cannot be interpreted."
+#~ msgid "Key file contains key '%s' which has value that cannot be interpreted."
 #~ msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
 
 #~ msgid "Error stating file '%s': %s"
@@ -4316,16 +4006,10 @@ msgstr "%.1f KB"
 #~ msgstr "午後"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
-#~ msgstr ""
-#~ "返り値の型が正しくありません。'%s' を受け取りましたが、期待したのは '%s' "
-#~ "です"
+#~ msgstr "返り値の型が正しくありません。'%s' を受け取りましたが、期待したのは '%s' です"
 
-#~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected "
-#~ "interface the type is %s"
-#~ msgstr ""
-#~ "型 %2$s のプロパティ %1$s を設定しようとしましたが、期待するインターフェイ"
-#~ "スによれば型は %3$s です"
+#~ msgid "Trying to set property %s of type %s but according to the expected interface the type is %s"
+#~ msgstr "型 %2$s のプロパティ %1$s を設定しようとしましたが、期待するインターフェイスによれば型は %3$s です"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -4371,14 +4055,8 @@ msgstr "%.1f KB"
 #~ msgid "use a long listing format"
 #~ msgstr "長い形式で一覧表示する"
 
-#~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & "
-#~ "character begins an entity; if this ampersand isn't supposed to be an "
-#~ "entity, escape it as &amp;"
-#~ msgstr ""
-#~ "文字 '%s' はエンティティ名の最初には使えません。文字 & はエンティティの開"
-#~ "始を表わします。もしアンパサンドがエンティティでなければ、&amp; のようにエ"
-#~ "スケープしてください"
+#~ msgid "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand isn't supposed to be an entity, escape it as &amp;"
+#~ msgstr "文字 '%s' はエンティティ名の最初には使えません。文字 & はエンティティの開始を表わします。もしアンパサンドがエンティティでなければ、&amp; のようにエスケープしてください"
 
 #~ msgid "Character '%s' is not valid inside an entity name"
 #~ msgstr "文字 '%s' はエンティティ名として使えません"
@@ -4413,13 +4091,8 @@ msgstr "%.1f KB"
 #~ msgid "use default fallbacks"
 #~ msgstr "デフォルトのフォールバックを使用する"
 
-#~ msgid ""
-#~ "Whether to use default fallbacks found by shortening the name at '-' "
-#~ "characters. Ignores names after the first if multiple names are given."
-#~ msgstr ""
-#~ "'-' という代替え文字で名前を省略するデフォルトのフォールバックを使用するか"
-#~ "どうかです (複数の名前を指定すると一番最初の名前より後ろの名前をすべて無視"
-#~ "します)"
+#~ msgid "Whether to use default fallbacks found by shortening the name at '-' characters. Ignores names after the first if multiple names are given."
+#~ msgstr "'-' という代替え文字で名前を省略するデフォルトのフォールバックを使用するかどうかです (複数の名前を指定すると一番最初の名前より後ろの名前をすべて無視します)"
 
 #~ msgid "File descriptor"
 #~ msgstr "ファイル・ディスクリプター"
