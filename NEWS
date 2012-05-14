@@ -1,4 +1,4 @@
-Overview of changes from GLib 2.32.2 to 2.32.2
+Overview of changes from GLib 2.32.1 to 2.32.2
 ==============================================
 
 * GApplication: can now have a NULL application ID
