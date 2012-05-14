@@ -1,3 +1,23 @@
+Overview of changes from GLib 2.32.2 to 2.32.3
+==============================================
+
+* Bug fixes:
+ Correct a typo in the ELF configure check
+ Reset LIBS after the ELF configure check
+ Fix GIO/GObject Visual C++ projects
+ gio: fix error handling in async case of GProxy...
+ GConverterInputStream: fix an infinite loop...
+
+* Translation updates:
+ Bulgarian
+ Catalan
+ Czech
+ German
+ Japanese
+ Slovenian
+ Telugu
+
+
 Overview of changes from GLib 2.32.1 to 2.32.2
 ==============================================
 
