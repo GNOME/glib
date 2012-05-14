@@ -444,6 +444,24 @@ test_clear_pointer (void)
   g_assert (a == NULL);
 }
 
+static void
+test_misc_mem (void)
+{
+  gpointer a;
+
+  a = g_try_malloc (0);
+  g_assert (a == NULL);
+
+  a = g_try_malloc0 (0);
+  g_assert (a == NULL);
+
+  a = g_malloc (16);
+  a = g_try_realloc (a, 20);
+  a = g_try_realloc (a, 0);
+
+  g_assert (a == NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -475,6 +493,7 @@ main (int   argc,
   g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/utils/misc-mem", test_misc_mem);
 
   return g_test_run();
 }
