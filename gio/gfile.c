@@ -3404,6 +3404,8 @@ g_file_make_directory_with_parents (GFile         *file,
   GList *list = NULL, *l;
   GError *my_error = NULL;
 
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
   
