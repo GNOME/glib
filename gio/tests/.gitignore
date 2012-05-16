@@ -82,6 +82,7 @@ org.gtk.test.enums.xml
 pollable
 plugin_resources.c
 proxy
+proxy-test
 readwrite
 resolver
 resources
