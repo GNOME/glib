@@ -71,6 +71,8 @@ gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
 gio-du
+gsubprocess
+gsubprocess-testprog
 g-file
 g-file-info
 g-icon

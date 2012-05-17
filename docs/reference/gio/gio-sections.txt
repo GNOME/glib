@@ -4077,4 +4077,37 @@ G_SIMPLE_PROXY_RESOLVER_CLASS
 G_IS_SIMPLE_PROXY_RESOLVER_CLASS
 G_SIMPLE_PROXY_RESOLVER_GET_CLASS
 g_simple_proxy_resolver_get_type
+
+<FILE>gsubprocess</FILE>
+<TITLE>GSubprocess</TITLE>
+GSubprocess
+g_subprocess_new
+g_subprocess_newv
+<SUBSECTION IO>
+g_subprocess_get_stdin_pipe
+g_subprocess_get_stdout_pipe
+g_subprocess_get_stderr_pipe
+<SUBSECTION Waiting>
+g_subprocess_wait
+g_subprocess_wait_sync
+g_subprocess_wait_finish
+g_subprocess_wait_check
+g_subprocess_wait_check_sync
+g_subprocess_wait_check_finish
+<SUBSECTION Status>
+g_subprocess_get_successful
+g_subprocess_get_if_exited
+g_subprocess_get_exit_status
+g_subprocess_get_if_signaled
+g_subprocess_get_term_sig
+g_subprocess_get_status
+<SUBSECTION Control>
+g_subprocess_send_signal
+g_subprocess_force_exit
+<SUBSECTION Standard>
+G_IS_SUBPROCESS
+G_TYPE_SUBPROCESS
+G_SUBPROCESS
+<SUBSECTION Private>
+g_subprocess_get_type
 </SECTION>
