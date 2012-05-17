@@ -5926,7 +5926,6 @@ g_file_new_tmp (const char     *tmpl,
   GFile *file;
   GFileOutputStream *output;
 
-  g_return_val_if_fail (tmpl != NULL, NULL);
   g_return_val_if_fail (iostream != NULL, NULL);
 
   fd = g_file_open_tmp (tmpl, &path, error);
