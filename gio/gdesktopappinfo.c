@@ -2128,6 +2128,12 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
  *
  * Creates a new #GAppInfo from the given information.
  *
+ * Note that for @commandline, the quoting rules of the Exec key of the
+ * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">freedesktop.org Desktop
+ * Entry Specification</ulink> are applied. For example, if the @commandline contains
+ * percent-encoded URIs, the percent-character must be doubled in order to prevent it from
+ * being swallowed by Exec key unquoting. See the specification for exact quoting rules.
+ *
  * Returns: (transfer full): new #GAppInfo for given command.
  **/
 GAppInfo *
