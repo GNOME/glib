@@ -44,14 +44,6 @@
  * #GPollableInputStream.
  */
 
-typedef struct _Chunk Chunk;
-
-struct _Chunk {
-  guint8         *data;
-  gsize           len;
-  GDestroyNotify  destroy;
-};
-
 struct _GMemoryInputStreamPrivate {
   GSList *chunks;
   gsize   len;
@@ -140,17 +132,6 @@ g_memory_input_stream_class_init (GMemoryInputStreamClass *klass)
 }
 
 static void
-free_chunk (gpointer data)
-{
-  Chunk *chunk = data;
-
-  if (chunk->destroy)
-    chunk->destroy (chunk->data);
-
-  g_slice_free (Chunk, chunk);
-}
-
-static void
 g_memory_input_stream_finalize (GObject *object)
 {
   GMemoryInputStream        *stream;
@@ -159,7 +140,7 @@ g_memory_input_stream_finalize (GObject *object)
   stream = G_MEMORY_INPUT_STREAM (object);
   priv = stream->priv;
 
-  g_slist_free_full (priv->chunks, free_chunk);
+  g_slist_free_full (priv->chunks, (GDestroyNotify)g_bytes_unref);
 
   G_OBJECT_CLASS (g_memory_input_stream_parent_class)->finalize (object);
 }
@@ -232,6 +213,29 @@ g_memory_input_stream_new_from_data (const void     *data,
 }
 
 /**
+ * g_memory_input_stream_new_from_bytes:
+ * @bytes: a #GBytes
+ *
+ * Creates a new #GMemoryInputStream with data from the given @bytes.
+ * 
+ * Returns: new #GInputStream read from @bytes
+ * Since: 2.34
+ **/
+GInputStream *
+g_memory_input_stream_new_from_bytes (GBytes  *bytes)
+{
+  
+  GInputStream *stream;
+
+  stream = g_memory_input_stream_new ();
+
+  g_memory_input_stream_add_bytes (G_MEMORY_INPUT_STREAM (stream),
+				   bytes);
+
+  return stream;
+}
+
+/**
  * g_memory_input_stream_add_data:
  * @stream: a #GMemoryInputStream
  * @data: (array length=len) (element-type guint8) (transfer full): input data
@@ -246,24 +250,43 @@ g_memory_input_stream_add_data (GMemoryInputStream *stream,
                                 gssize              len,
                                 GDestroyNotify      destroy)
 {
-  GMemoryInputStreamPrivate *priv;
-  Chunk *chunk;
- 
-  g_return_if_fail (G_IS_MEMORY_INPUT_STREAM (stream));
-  g_return_if_fail (data != NULL);
-
-  priv = stream->priv;
+  GBytes *bytes;
 
   if (len == -1)
     len = strlen (data);
-  
-  chunk = g_slice_new (Chunk);
-  chunk->data = (guint8 *)data;
-  chunk->len = len;
-  chunk->destroy = destroy;
 
-  priv->chunks = g_slist_append (priv->chunks, chunk);
-  priv->len += chunk->len;
+  /* It's safe to discard the const here because we're chaining the
+   * destroy callback.
+   */
+  bytes = g_bytes_new_with_free_func (data, len, destroy, (void*)data);
+
+  g_memory_input_stream_add_bytes (stream, bytes);
+  
+  g_bytes_unref (bytes);
+}
+
+/**
+ * g_memory_input_stream_add_bytes:
+ * @stream: a #GMemoryInputStream
+ * @bytes: input data
+ *
+ * Appends @bytes to data that can be read from the input stream.
+ *
+ * Since: 2.34
+ */
+void
+g_memory_input_stream_add_bytes (GMemoryInputStream *stream,
+				 GBytes             *bytes)
+{
+  GMemoryInputStreamPrivate *priv;
+ 
+  g_return_if_fail (G_IS_MEMORY_INPUT_STREAM (stream));
+  g_return_if_fail (bytes != NULL);
+
+  priv = stream->priv;
+
+  priv->chunks = g_slist_append (priv->chunks, g_bytes_ref (bytes));
+  priv->len += g_bytes_get_size (bytes);
 }
 
 static gssize
@@ -276,7 +299,8 @@ g_memory_input_stream_read (GInputStream  *stream,
   GMemoryInputStream *memory_stream;
   GMemoryInputStreamPrivate *priv;
   GSList *l;
-  Chunk *chunk;
+  GBytes *chunk;
+  gsize len;
   gsize offset, start, rest, size;
 
   memory_stream = G_MEMORY_INPUT_STREAM (stream);
@@ -287,12 +311,13 @@ g_memory_input_stream_read (GInputStream  *stream,
   offset = 0;
   for (l = priv->chunks; l; l = l->next) 
     {
-      chunk = (Chunk *)l->data;
+      chunk = (GBytes *)l->data;
+      len = g_bytes_get_size (chunk);
 
-      if (offset + chunk->len > priv->pos)
+      if (offset + len > priv->pos)
         break;
 
-      offset += chunk->len;
+      offset += len;
     }
   
   start = priv->pos - offset;
@@ -300,10 +325,14 @@ g_memory_input_stream_read (GInputStream  *stream,
 
   for (; l && rest > 0; l = l->next)
     {
-      chunk = (Chunk *)l->data;
-      size = MIN (rest, chunk->len - start);
+      const guint8* chunk_data;
+      chunk = (GBytes *)l->data;
 
-      memcpy ((guint8 *)buffer + (count - rest), chunk->data + start, size);
+      chunk_data = g_bytes_get_data (chunk, &len);
+
+      size = MIN (rest, len - start);
+
+      memcpy ((guint8 *)buffer + (count - rest), chunk_data + start, size);
       rest -= size;
 
       start = 0;

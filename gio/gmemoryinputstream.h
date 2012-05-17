@@ -72,10 +72,16 @@ GInputStream * g_memory_input_stream_new           (void);
 GInputStream * g_memory_input_stream_new_from_data (const void         *data,
                                                     gssize              len,
                                                     GDestroyNotify      destroy);
+GLIB_AVAILABLE_IN_2_34
+GInputStream * g_memory_input_stream_new_from_bytes (GBytes            *bytes);
+
 void           g_memory_input_stream_add_data      (GMemoryInputStream *stream,
                                                     const void         *data,
                                                     gssize              len,
                                                     GDestroyNotify      destroy);
+GLIB_AVAILABLE_IN_2_34
+void           g_memory_input_stream_add_bytes     (GMemoryInputStream     *stream,
+						    GBytes                 *bytes);
 
 G_END_DECLS
 
