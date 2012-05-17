@@ -21,7 +21,7 @@ __gsettings() {
 
   case "$((${COMP_CWORD}-$coffset))" in
     1)
-      choices=$'--schemadir\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nwritable \nmonitor'
+      choices=$'--schemadir\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nreset-recursively \nwritable \nmonitor'
       ;;
 
     2)
@@ -32,9 +32,9 @@ __gsettings() {
 	  ;;
 
         help)
-          choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nwritable\nmonitor'
+          choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nreset-recursively\nwritable\nmonitor'
           ;;
-        list-keys|list-children|list-recursively)
+        list-keys|list-children|list-recursively|reset-recursively)
           choices="$(gsettings $schemadir list-schemas)"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
 
