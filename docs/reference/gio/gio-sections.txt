@@ -3991,3 +3991,28 @@ g_task_get_type
 <TITLE>gnetworking.h</TITLE>
 g_networking_init
 </SECTION>
+
+<FILE>gsubprocess</FILE>
+<TITLE>GSubprocess</TITLE>
+GSubprocess
+g_subprocess_new
+<SUBSECTION IO>
+g_subprocess_get_stdin_pipe
+g_subprocess_get_stdout_pipe
+g_subprocess_get_stderr_pipe
+<SUBSECTION Waiting>
+g_subprocess_wait
+g_subprocess_wait_finish
+g_subprocess_wait_sync
+g_subprocess_wait_sync_check
+<SUBSECTION Control>
+g_subprocess_get_pid
+g_subprocess_request_exit
+g_subprocess_force_exit
+<SUBSECTION Standard>
+G_IS_SUBPROCESS
+G_TYPE_SUBPROCESS
+G_SUBPROCESS
+<SUBSECTION Private>
+g_subprocess_get_type
+</SECTION>

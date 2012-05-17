@@ -107,6 +107,10 @@
         <xi:include href="xml/ginitable.xml"/>
         <xi:include href="xml/gasyncinitable.xml"/>
     </chapter>
+    <chapter id="subprocesses">
+      <title>Subprocesses</title>
+      <xi:include href="xml/gsubprocess.xml"/>
+    </chapter>
     <chapter id="networking">
       <title>Low-level network support</title>
       <xi:include href="xml/gsocket.xml"/>

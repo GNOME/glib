@@ -297,9 +297,8 @@ end_element (GMarkupParseContext  *context,
 
           if (xml_stripblanks && xmllint != NULL)
             {
-              gchar *argv[8];
-              int status, fd, argc;
-              gchar *stderr_child = NULL;
+              int fd;
+	      GSubprocess *proc;
 
               tmp_file = g_strdup ("resource-XXXXXXXX");
               if ((fd = g_mkstemp (tmp_file)) == -1)
@@ -315,43 +314,34 @@ end_element (GMarkupParseContext  *context,
                 }
               close (fd);
 
-              argc = 0;
-              argv[argc++] = (gchar *) xmllint;
-              argv[argc++] = "--nonet";
-              argv[argc++] = "--noblanks";
-              argv[argc++] = "--output";
-              argv[argc++] = tmp_file;
-              argv[argc++] = real_file;
-              argv[argc++] = NULL;
-              g_assert (argc <= G_N_ELEMENTS (argv));
-
-              if (!g_spawn_sync (NULL /* cwd */, argv, NULL /* envv */,
-                                 G_SPAWN_STDOUT_TO_DEV_NULL,
-                                 NULL, NULL, NULL, &stderr_child, &status, &my_error))
-                {
-                  g_propagate_error (error, my_error);
-                  goto cleanup;
-                }
-	      
-	      /* Ugly...we shoud probably just let stderr be inherited */
-	      if (!g_spawn_check_exit_status (status, NULL))
-                {
-                  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                               _("Error processing input file with xmllint:\n%s"), stderr_child);
-                  g_free (stderr_child);
-                  goto cleanup;
-                }
-
-              g_free (stderr_child);
+              proc = g_subprocess_new_simple_argl (G_SUBPROCESS_STREAM_DISPOSITION_NULL,
+                                                   G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
+                                                   error,
+                                                   xmllint,
+                                                   "--nonet", "--noblanks",
+                                                   "--output", tmp_file,
+                                                   real_file, NULL);
               g_free (real_file);
+	      real_file = NULL;
+
+	      if (!proc)
+		goto cleanup;
+
+	      if (!g_subprocess_wait_sync_check (proc, NULL, error))
+		{
+		  g_object_unref (proc);
+                  goto cleanup;
+                }
+
+	      g_object_unref (proc);
+
               real_file = g_strdup (tmp_file);
             }
 
           if (to_pixdata)
             {
-              gchar *argv[4];
-              gchar *stderr_child = NULL;
-              int status, fd, argc;
+              int fd;
+	      GSubprocess *proc;
 
               if (gdk_pixbuf_pixdata == NULL)
                 {
@@ -375,31 +365,22 @@ end_element (GMarkupParseContext  *context,
                 }
               close (fd);
 
-              argc = 0;
-              argv[argc++] = (gchar *) gdk_pixbuf_pixdata;
-              argv[argc++] = real_file;
-              argv[argc++] = tmp_file2;
-              argv[argc++] = NULL;
-              g_assert (argc <= G_N_ELEMENTS (argv));
-
-              if (!g_spawn_sync (NULL /* cwd */, argv, NULL /* envv */,
-                                 G_SPAWN_STDOUT_TO_DEV_NULL,
-                                 NULL, NULL, NULL, &stderr_child, &status, &my_error))
-                {
-                  g_propagate_error (error, my_error);
-                  goto cleanup;
-                }
-	      
-	      if (!g_spawn_check_exit_status (status, NULL))
-                {
-                  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			       _("Error processing input file with to-pixdata:\n%s"), stderr_child);
-                  g_free (stderr_child);
-                  goto cleanup;
-                }
-
-              g_free (stderr_child);
+              proc = g_subprocess_new_simple_argl (G_SUBPROCESS_STREAM_DISPOSITION_NULL,
+                                                   G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
+                                                   error,
+                                                   gdk_pixbuf_pixdata, real_file, tmp_file2,
+                                                   NULL);
               g_free (real_file);
+              real_file = NULL;
+
+	      if (!g_subprocess_wait_sync_check (proc, NULL, error))
+		{
+		  g_object_unref (proc);
+                  goto cleanup;
+		}
+
+	      g_object_unref (proc);
+
               real_file = g_strdup (tmp_file2);
             }
 	}

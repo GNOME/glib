@@ -64,6 +64,8 @@ gdbus-serialization
 gdbus-test-codegen
 gdbus-test-codegen-generated*
 gdbus-threading
+gsubprocess
+gsubprocess-testprog
 g-file
 g-file-info
 g-icon

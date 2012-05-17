@@ -1658,6 +1658,25 @@ typedef enum /*< flags >*/ {
   G_TEST_DBUS_NONE = 0
 } GTestDBusFlags;
 
+/**
+ * GSubprocessStreamDisposition:
+ * @G_SUBPROCESS_STREAM_DISPOSITION_NULL: Redirect to operating system's null output stream
+ * @G_SUBPROCESS_STREAM_DISPOSITION_INHERIT: Keep the stream from the parent process
+ * @G_SUBPROCESS_STREAM_DISPOSITION_PIPE: Open a private unidirectional channel between the processes
+ * @G_SUBPROCESS_STREAM_DISPOSITION_STDERR_MERGE: Only applicable to standard error; causes it to be merged with standard output
+ *
+ * Flags to define the behaviour of the standard input/output/error of
+ * a #GSubprocess.
+ *
+ * Since: 2.36
+ **/
+typedef enum {
+  G_SUBPROCESS_STREAM_DISPOSITION_NULL,
+  G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
+  G_SUBPROCESS_STREAM_DISPOSITION_PIPE,
+  G_SUBPROCESS_STREAM_DISPOSITION_STDERR_MERGE
+} GSubprocessStreamDisposition;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
