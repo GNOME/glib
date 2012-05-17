@@ -285,7 +285,7 @@ finish_dump (GNetworkMonitorNetlink *nl)
   g_network_monitor_base_set_networks (G_NETWORK_MONITOR_BASE (nl),
                                        (GInetAddressMask **)nl->priv->dump_networks->pdata,
                                        nl->priv->dump_networks->len);
-  g_ptr_array_free (nl->priv->dump_networks, FALSE);
+  g_ptr_array_free (nl->priv->dump_networks, TRUE);
   nl->priv->dump_networks = NULL;
 }
 
