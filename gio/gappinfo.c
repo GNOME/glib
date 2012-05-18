@@ -683,21 +683,37 @@ g_app_info_launch_default_for_uri (const char         *uri,
 				   GAppLaunchContext  *launch_context,
 				   GError            **error)
 {
+  char *uri_scheme;
   GAppInfo *app_info;
-  GFile *file;
   GList l;
   gboolean res;
 
-  file = g_file_new_for_uri (uri);
-  app_info = g_file_query_default_handler (file, NULL, error);
-  g_object_unref (file);
-  if (app_info == NULL)
-    return FALSE;
-
-  /* Use the uri, not the GFile, as the GFile roundtrip may
-   * affect the uri which we don't want (for instance for a
-   * mailto: uri).
+  /* g_file_query_default_handler() calls
+   * g_app_info_get_default_for_uri_scheme() too, but we have to do it
+   * here anyway in case GFile can't parse @uri correctly.
    */
+  uri_scheme = g_uri_parse_scheme (uri);
+  if (uri_scheme && uri_scheme[0] != '\0')
+    app_info = g_app_info_get_default_for_uri_scheme (uri_scheme);
+  g_free (uri_scheme);
+
+  if (!app_info)
+    {
+      GFile *file;
+
+      file = g_file_new_for_uri (uri);
+      app_info = g_file_query_default_handler (file, NULL, error);
+      g_object_unref (file);
+      if (app_info == NULL)
+	return FALSE;
+
+      /* We still use the original @uri rather than calling
+       * g_file_get_uri(), because GFile might have modified the URI
+       * in ways we don't want (eg, removing the fragment identifier
+       * from a file: URI).
+       */
+    }
+
   l.data = (char *)uri;
   l.next = l.prev = NULL;
   res = g_app_info_launch_uris (app_info, &l,
