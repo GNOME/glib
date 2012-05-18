@@ -93,6 +93,9 @@ gsize          g_memory_output_stream_get_size      (GMemoryOutputStream *ostrea
 gsize          g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream);
 gpointer       g_memory_output_stream_steal_data    (GMemoryOutputStream *ostream);
 
+GLIB_AVAILABLE_IN_2_34
+GBytes *       g_memory_output_stream_steal_as_bytes (GMemoryOutputStream *ostream);
+
 G_END_DECLS
 
 #endif /* __G_MEMORY_OUTPUT_STREAM_H__ */

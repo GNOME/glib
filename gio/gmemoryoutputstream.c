@@ -475,6 +475,34 @@ g_memory_output_stream_steal_data (GMemoryOutputStream *ostream)
   return data;
 }
 
+/**
+ * g_memory_output_stream_steal_as_bytes:
+ * @ostream: a #GMemoryOutputStream
+ *
+ * Returns data from the @ostream as a #GBytes. @ostream must be
+ * closed before calling this function.
+ *
+ * Returns: (transfer full): the stream's data
+ *
+ * Since: 2.34
+ **/
+GBytes *
+g_memory_output_stream_steal_as_bytes (GMemoryOutputStream *ostream)
+{
+  GBytes *result;
+
+  g_return_val_if_fail (G_IS_MEMORY_OUTPUT_STREAM (ostream), NULL);
+  g_return_val_if_fail (g_output_stream_is_closed (G_OUTPUT_STREAM (ostream)), NULL);
+
+  result = g_bytes_new_with_free_func (ostream->priv->data,
+				       ostream->priv->valid_len,
+				       ostream->priv->destroy,
+				       ostream->priv->data);
+  ostream->priv->data = NULL;
+			     
+  return result;
+}
+
 static gboolean
 array_resize (GMemoryOutputStream  *ostream,
               gsize                 size,
