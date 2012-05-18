@@ -674,6 +674,62 @@ create_server (ServerData *data, GCancellable *cancellable)
 }
 
 
+/******************************************************************/
+/* Now a GResolver implementation, so the can't-resolve test will */
+/* pass even if you have an evil DNS-faking ISP.                  */
+/******************************************************************/
+
+typedef GResolver GFakeResolver;
+typedef GResolverClass GFakeResolverClass;
+
+G_DEFINE_TYPE (GFakeResolver, g_fake_resolver, G_TYPE_RESOLVER)
+
+static void
+g_fake_resolver_init (GFakeResolver *gtr)
+{
+}
+
+static GList *
+g_fake_resolver_lookup_by_name (GResolver     *resolver,
+				const gchar   *hostname,
+				GCancellable  *cancellable,
+				GError       **error)
+{
+  /* This is only ever called with lookups that are expected to
+   * fail.
+   */
+  g_set_error (error,
+	       G_RESOLVER_ERROR,
+	       G_RESOLVER_ERROR_NOT_FOUND,
+	       "Not found");
+  return NULL;
+}
+
+static void
+g_fake_resolver_lookup_by_name_async (GResolver           *resolver,
+				      const gchar         *hostname,
+				      GCancellable        *cancellable,
+				      GAsyncReadyCallback  callback,
+				      gpointer             user_data)
+{
+  g_simple_async_report_error_in_idle (G_OBJECT (resolver),
+				       callback, user_data,
+				       G_RESOLVER_ERROR,
+				       G_RESOLVER_ERROR_NOT_FOUND,
+				       "Not found");
+}
+
+static void
+g_fake_resolver_class_init (GFakeResolverClass *fake_class)
+{
+  GResolverClass *resolver_class = G_RESOLVER_CLASS (fake_class);
+
+  resolver_class->lookup_by_name        = g_fake_resolver_lookup_by_name;
+  resolver_class->lookup_by_name_async  = g_fake_resolver_lookup_by_name_async;
+}
+
+
+
 /****************************************/
 /* We made it! Now for the actual test! */
 /****************************************/
@@ -1030,6 +1086,7 @@ int
 main (int   argc,
       char *argv[])
 {
+  GResolver *fake_resolver;
   GCancellable *cancellable;
   gint result;
 
@@ -1046,6 +1103,9 @@ main (int   argc,
   g_proxy_a_get_type ();
   g_proxy_b_get_type ();
   g_setenv ("GIO_USE_PROXY_RESOLVER", "test", TRUE);
+
+  fake_resolver = g_object_new (g_fake_resolver_get_type (), NULL);
+  g_resolver_set_default (fake_resolver);
 
   cancellable = g_cancellable_new ();
   create_server (&server, cancellable);
