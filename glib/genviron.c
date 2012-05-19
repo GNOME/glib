@@ -54,6 +54,9 @@ g_environ_find (gchar       **envp,
 {
   gint len, i;
 
+  if (envp == NULL)
+    return -1;
+
   len = strlen (variable);
 
   for (i = 0; envp[i]; i++)
@@ -68,8 +71,9 @@ g_environ_find (gchar       **envp,
 
 /**
  * g_environ_getenv:
- * @envp: (array zero-terminated=1) (transfer none): an environment
- *     list (eg, as returned from g_get_environ())
+ * @envp: (allow-none) (array zero-terminated=1) (transfer none): an environment
+ *     list (eg, as returned from g_get_environ()), or %NULL
+ *     for an empty environment list
  * @variable: the environment variable to get, in the GLib file name
  *     encoding
  *
@@ -96,7 +100,6 @@ g_environ_getenv (gchar       **envp,
 {
   gint index;
 
-  g_return_val_if_fail (envp != NULL, NULL);
   g_return_val_if_fail (variable != NULL, NULL);
 
   index = g_environ_find (envp, variable);
@@ -108,8 +111,9 @@ g_environ_getenv (gchar       **envp,
 
 /**
  * g_environ_setenv:
- * @envp: (array zero-terminated=1) (transfer full): an environment
- *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ())
+ * @envp: (allow-none) (array zero-terminated=1) (transfer full): an environment
+ *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ()), or %NULL
+ *     for an empty environment list
  * @variable: the environment variable to set, must not contain '='
  * @value: the value for to set the variable to
  * @overwrite: whether to change the variable if it already exists
@@ -134,7 +138,6 @@ g_environ_setenv (gchar       **envp,
 {
   gint index;
 
-  g_return_val_if_fail (envp != NULL, NULL);
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
 
@@ -151,7 +154,7 @@ g_environ_setenv (gchar       **envp,
     {
       gint length;
 
-      length = g_strv_length (envp);
+      length = envp ? g_strv_length (envp) : 0;
       envp = g_renew (gchar *, envp, length + 2);
       envp[length] = g_strdup_printf ("%s=%s", variable, value);
       envp[length + 1] = NULL;
@@ -191,14 +194,18 @@ g_environ_unsetenv_internal (gchar        **envp,
     }
   *f = NULL;
 
-  return envp;
+  if (free_value_and_realloc)
+    return g_renew (gchar *, envp, envc + 1);
+  else
+    return envp;
 }
 
 
 /**
  * g_environ_unsetenv:
- * @envp: (array zero-terminated=1) (transfer full): an environment
- *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ())
+ * @envp: (allow-none) (array zero-terminated=1) (transfer full): an environment
+ *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ()), 
+ *     or %NULL for an empty environment list
  * @variable: the environment variable to remove, must not contain '='
  *
  * Removes the environment variable @variable from the provided
@@ -213,9 +220,11 @@ gchar **
 g_environ_unsetenv (gchar       **envp,
                     const gchar  *variable)
 {
-  g_return_val_if_fail (envp != NULL, NULL);
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
+
+  if (envp == NULL)
+    return NULL;
 
   return g_environ_unsetenv_internal (envp, variable, TRUE);
 }
