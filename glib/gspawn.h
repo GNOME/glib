@@ -155,6 +155,9 @@ typedef void (* GSpawnChildSetupFunc) (gpointer user_data);
  *   vector to pass to the file. Normally g_spawn_async_with_pipes() uses
  *   <literal>argv[0]</literal> as the file to execute, and passes all of
  *   <literal>argv</literal> to the child.
+ * @G_SPAWN_SEARCH_PATH_FROM_ENVP: if <literal>argv[0]</literal> is not an abolute path,
+ *   it will be looked for in the <envar>PATH</envar> from the passed child 
+ *   environment. Since: 2.34
  *
  * Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
  */
@@ -168,7 +171,8 @@ typedef enum
   G_SPAWN_STDOUT_TO_DEV_NULL     = 1 << 3,
   G_SPAWN_STDERR_TO_DEV_NULL     = 1 << 4,
   G_SPAWN_CHILD_INHERITS_STDIN   = 1 << 5,
-  G_SPAWN_FILE_AND_ARGV_ZERO     = 1 << 6
+  G_SPAWN_FILE_AND_ARGV_ZERO     = 1 << 6,
+  G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7,
 } GSpawnFlags;
 
 GQuark g_spawn_error_quark (void);

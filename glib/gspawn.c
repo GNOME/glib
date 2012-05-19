@@ -64,7 +64,8 @@
 static gint g_execute (const gchar  *file,
                        gchar **argv,
                        gchar **envp,
-                       gboolean search_path);
+                       gboolean search_path,
+                       gboolean search_path_from_envp);
 
 static gboolean make_pipe            (gint                  p[2],
                                       GError              **error);
@@ -74,6 +75,7 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gchar               **envp,
                                       gboolean              close_descriptors,
                                       gboolean              search_path,
+                                      gboolean              search_path_from_envp,
                                       gboolean              stdout_to_null,
                                       gboolean              stderr_to_null,
                                       gboolean              child_inherits_stdin,
@@ -288,6 +290,7 @@ g_spawn_sync (const gchar          *working_directory,
                              envp,
                              !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
                              (flags & G_SPAWN_SEARCH_PATH) != 0,
+                             (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
                              (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
                              (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                              (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
@@ -480,8 +483,15 @@ g_spawn_sync (const gchar          *working_directory,
  * should be a %NULL-terminated array of strings, to be passed as the
  * argument vector for the child. The first string in @argv is of
  * course the name of the program to execute. By default, the name of
- * the program must be a full path; the <envar>PATH</envar> shell variable 
- * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
+ * the program must be a full path. If @flags contains the 
+ * %G_SPAWN_SEARCH_PATH flag, the <envar>PATH</envar> environment variable 
+ * is used to search for the executable. If @flags contains the
+ * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the <envar>PATH</envar> variable from 
+ * @envp is used to search for the executable.
+ * If both the %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP
+ * flags are set, the <envar>PATH</envar> variable from @envp takes precedence 
+ * over the environment variable.
+ *
  * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag is not
  * used, then the program will be run from the current directory (or
  * @working_directory, if specified); this might be unexpected or even
@@ -547,7 +557,11 @@ g_spawn_sync (const gchar          *working_directory,
  * descriptors except stdin/stdout/stderr will be closed before
  * calling exec() in the child. %G_SPAWN_SEARCH_PATH 
  * means that <literal>argv[0]</literal> need not be an absolute path, it
- * will be looked for in the user's <envar>PATH</envar>. 
+ * will be looked for in the <envar>PATH</envar> environment variable.
+ * %G_SPAWN_SEARCH_PATH_FROM_ENVP means need not be an absolute path, it
+ * will be looked for in the <envar>PATH</envar> variable from @envp. If
+ * both %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP are used,
+ * the value from @envp takes precedence over the environment.
  * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will 
  * be discarded, instead of going to the same location as the parent's 
  * standard output. If you use this flag, @standard_output must be %NULL.
@@ -656,6 +670,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                                envp,
                                !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
                                (flags & G_SPAWN_SEARCH_PATH) != 0,
+                               (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
                                (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
                                (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                                (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
@@ -1040,6 +1055,7 @@ do_exec (gint                  child_err_report_fd,
          gchar               **envp,
          gboolean              close_descriptors,
          gboolean              search_path,
+         gboolean              search_path_from_envp,
          gboolean              stdout_to_null,
          gboolean              stderr_to_null,
          gboolean              child_inherits_stdin,
@@ -1131,7 +1147,7 @@ do_exec (gint                  child_err_report_fd,
 
   g_execute (argv[0],
              file_and_argv_zero ? argv + 1 : argv,
-             envp, search_path);
+             envp, search_path, search_path_from_envp);
 
   /* Exec failed */
   write_err_and_exit (child_err_report_fd,
@@ -1194,6 +1210,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                       gchar               **envp,
                       gboolean              close_descriptors,
                       gboolean              search_path,
+                      gboolean              search_path_from_envp,
                       gboolean              stdout_to_null,
                       gboolean              stderr_to_null,
                       gboolean              child_inherits_stdin,
@@ -1301,6 +1318,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                        envp,
                        close_descriptors,
                        search_path,
+                       search_path_from_envp,
                        stdout_to_null,
                        stderr_to_null,
                        child_inherits_stdin,
@@ -1330,6 +1348,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                    envp,
                    close_descriptors,
                    search_path,
+                   search_path_from_envp,
                    stdout_to_null,
                    stderr_to_null,
                    child_inherits_stdin,
@@ -1531,8 +1550,7 @@ make_pipe (gint     p[2],
 static void
 script_execute (const gchar *file,
                 gchar      **argv,
-                gchar      **envp,
-                gboolean     search_path)
+                gchar      **envp)
 {
   /* Count the arguments.  */
   int argc = 0;
@@ -1577,7 +1595,8 @@ static gint
 g_execute (const gchar *file,
            gchar      **argv,
            gchar      **envp,
-           gboolean     search_path)
+           gboolean     search_path,
+           gboolean     search_path_from_envp)
 {
   if (*file == '\0')
     {
@@ -1586,7 +1605,7 @@ g_execute (const gchar *file,
       return -1;
     }
 
-  if (!search_path || strchr (file, '/') != NULL)
+  if (!(search_path || search_path_from_envp) || strchr (file, '/') != NULL)
     {
       /* Don't search when it contains a slash. */
       if (envp)
@@ -1595,7 +1614,7 @@ g_execute (const gchar *file,
         execv (file, argv);
       
       if (errno == ENOEXEC)
-	script_execute (file, argv, envp, FALSE);
+	script_execute (file, argv, envp);
     }
   else
     {
@@ -1605,7 +1624,12 @@ g_execute (const gchar *file,
       gsize len;
       gsize pathlen;
 
-      path = g_getenv ("PATH");
+      path = NULL;
+      if (search_path_from_envp)
+        path = g_environ_getenv (envp, "PATH");
+      if (search_path && path == NULL)
+        path = g_getenv ("PATH");
+
       if (path == NULL)
 	{
 	  /* There is no `PATH' in the environment.  The default
@@ -1654,7 +1678,7 @@ g_execute (const gchar *file,
             execv (startp, argv);
           
 	  if (errno == ENOEXEC)
-	    script_execute (startp, argv, envp, search_path);
+	    script_execute (startp, argv, envp);
 
 	  switch (errno)
 	    {
