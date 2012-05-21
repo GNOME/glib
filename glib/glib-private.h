@@ -29,6 +29,8 @@ G_GNUC_INTERNAL
 gboolean                g_check_setuid                  (void);
 G_GNUC_INTERNAL
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
+G_GNUC_INTERNAL
+GSource *               g_child_watch_source_new_nowait (GPid     pid);
 
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
@@ -46,6 +48,7 @@ typedef struct {
 
   gboolean              (* g_check_setuid)              (void);
   GMainContext *        (* g_main_context_new_with_next_id) (guint next_id);
+  GSource *             (* g_child_watch_source_new_nowait) (GPid pid);
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
