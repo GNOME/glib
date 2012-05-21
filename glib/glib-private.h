@@ -23,6 +23,11 @@
 #include <glib.h>
 #include "gwakeup.h"
 
+typedef enum {
+  _G_CHILD_WATCH_FLAGS_NONE = 0,
+  _G_CHILD_WATCH_FLAGS_WNOWAIT = (1 << 0)
+} _GChildWatchFlags;
+
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
@@ -32,6 +37,9 @@ gchar *_glib_get_dll_directory (void);
 GLIB_AVAILABLE_IN_ALL
 gchar *_glib_get_locale_dir    (void);
 #endif
+
+GSource *               g_child_watch_source_new_with_flags (GPid pid,
+                                                             gint flags);
 
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
@@ -49,6 +57,8 @@ typedef struct {
 
   gboolean              (* g_check_setuid)              (void);
   GMainContext *        (* g_main_context_new_with_next_id) (guint next_id);
+  GSource *             (* g_child_watch_source_new_with_flags) (GPid pid,
+                                                                 gint flags);
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
