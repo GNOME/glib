@@ -1731,14 +1731,18 @@ g_reload_user_special_dirs_cache (void)
       /* only leak changed directories */
       for (i = 0; i < G_USER_N_DIRECTORIES; i++)
         {
-	  old_val = old_g_user_special_dirs[i];
-	  if (g_strcmp0 (old_val, g_user_special_dirs[i]) == 0)
+          old_val = old_g_user_special_dirs[i];
+          if (g_user_special_dirs[i] == NULL)
             {
-	      /* don't leak */
-	      g_free (g_user_special_dirs[i]);
-	      g_user_special_dirs[i] = old_val;
+              g_user_special_dirs[i] = old_val;
             }
-	  else
+          else if (g_strcmp0 (old_val, g_user_special_dirs[i]) == 0)
+            {
+              /* don't leak */
+              g_free (g_user_special_dirs[i]);
+              g_user_special_dirs[i] = old_val;
+            }
+          else
             g_free (old_val);
         }
 
