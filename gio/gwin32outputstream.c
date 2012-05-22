@@ -63,6 +63,7 @@ G_DEFINE_TYPE (GWin32OutputStream, g_win32_output_stream, G_TYPE_OUTPUT_STREAM);
 struct _GWin32OutputStreamPrivate {
   HANDLE handle;
   gboolean close_handle;
+  gint fd;
 };
 
 static void     g_win32_output_stream_set_property (GObject              *object,
@@ -190,6 +191,7 @@ g_win32_output_stream_init (GWin32OutputStream *win32_stream)
 
   win32_stream->priv->handle = NULL;
   win32_stream->priv->close_handle = TRUE;
+  win32_stream->priv->fd = -1;
 }
 
 /**
@@ -364,19 +366,44 @@ g_win32_output_stream_close (GOutputStream  *stream,
   if (!win32_stream->priv->close_handle)
     return TRUE;
 
-  res = CloseHandle (win32_stream->priv->handle);
-  if (!res)
+  if (win32_stream->priv->fd != -1)
     {
-      int errsv = GetLastError ();
-      gchar *emsg = g_win32_error_message (errsv);
+      if (close (win32_stream->priv->fd) < 0)
+	{
+	  g_set_error_literal (error, G_IO_ERROR,
+			       g_io_error_from_errno (errno),
+			       g_strerror (errno));
+	  return FALSE;
+	}
+    }
+  else
+    {
+      res = CloseHandle (win32_stream->priv->handle);
+      if (!res)
+	{
+	  int errsv = GetLastError ();
+	  gchar *emsg = g_win32_error_message (errsv);
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_win32_error (errsv),
-		   _("Error closing handle: %s"),
-		   emsg);
-      g_free (emsg);
-      return FALSE;
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_win32_error (errsv),
+		       _("Error closing handle: %s"),
+		       emsg);
+	  g_free (emsg);
+	  return FALSE;
+	}
     }
 
   return TRUE;
+}
+
+GOutputStream *
+g_win32_output_stream_new_from_fd (gint      fd,
+				  gboolean  close_fd)
+{
+  GWin32OutputStream *win32_stream;
+
+  win32_stream = G_WIN32_OUTPUT_STREAM (g_win32_output_stream_new ((HANDLE) _get_osfhandle (fd), close_fd));
+  win32_stream->priv->fd = fd;
+
+  return (GOutputStream*)win32_stream;
 }
