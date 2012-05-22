@@ -194,10 +194,7 @@ g_environ_unsetenv_internal (gchar        **envp,
     }
   *f = NULL;
 
-  if (free_value_and_realloc)
-    return g_renew (gchar *, envp, envc + 1);
-  else
-    return envp;
+  return envp;
 }
 
 
