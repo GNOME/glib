@@ -480,7 +480,7 @@ g_application_real_local_command_line (GApplication   *application,
 
       if (!g_application_register (application, NULL, &error))
         {
-          g_critical ("%s", error->message);
+          g_printerr ("Failed to register: %s\n", error->message);
           g_error_free (error);
           *exit_status = 1;
           return TRUE;
@@ -1596,7 +1596,7 @@ g_application_run (GApplication  *application,
 
       if (!g_application_register (application, NULL, &error))
         {
-          g_printerr ("%s", error->message);
+          g_printerr ("Failed to register: %s\n", error->message);
           g_error_free (error);
           return 1;
         }
