@@ -224,6 +224,7 @@ gboolean    g_drive_eject_with_operation_finish (GDrive            *drive,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_2_32
 const gchar *g_drive_get_sort_key         (GDrive               *drive);
 
 G_END_DECLS

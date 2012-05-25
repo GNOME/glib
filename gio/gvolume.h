@@ -228,6 +228,7 @@ gboolean    g_volume_eject_with_operation_finish (GVolume          *volume,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_2_32
 const gchar *g_volume_get_sort_key            (GVolume              *volume);
 
 G_END_DECLS

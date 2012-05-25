@@ -145,7 +145,9 @@ int                     g_application_run                               (GApplic
 
 void                    g_application_quit                              (GApplication             *application);
 
+GLIB_AVAILABLE_IN_2_32
 GApplication *          g_application_get_default                       (void);
+GLIB_AVAILABLE_IN_2_32
 void                    g_application_set_default                       (GApplication             *application);
 
 G_END_DECLS

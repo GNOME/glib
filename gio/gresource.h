@@ -59,25 +59,33 @@ struct _GStaticResource {
   gpointer padding;
 };
 
+GLIB_AVAILABLE_IN_2_32
 GType         g_resource_get_type            (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_32
 GResource *   g_resource_new_from_data       (GBytes                *data,
 					      GError               **error);
 GResource *   g_resource_ref                 (GResource             *resource);
+GLIB_AVAILABLE_IN_2_32
 void          g_resource_unref               (GResource             *resource);
+GLIB_AVAILABLE_IN_2_32
 GResource *   g_resource_load                (const gchar           *filename,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 GInputStream *g_resource_open_stream         (GResource             *resource,
 					      const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 GBytes *      g_resource_lookup_data         (GResource             *resource,
 					      const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 char **       g_resource_enumerate_children  (GResource             *resource,
 					      const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 gboolean      g_resource_get_info            (GResource             *resource,
 					      const char            *path,
 					      GResourceLookupFlags   lookup_flags,
@@ -85,17 +93,23 @@ gboolean      g_resource_get_info            (GResource             *resource,
 					      guint32               *flags,
 					      GError               **error);
 
+GLIB_AVAILABLE_IN_2_32
 void          g_resources_register           (GResource             *resource);
+GLIB_AVAILABLE_IN_2_32
 void          g_resources_unregister         (GResource             *resource);
+GLIB_AVAILABLE_IN_2_32
 GInputStream *g_resources_open_stream        (const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 GBytes *      g_resources_lookup_data        (const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 char **       g_resources_enumerate_children (const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 gboolean      g_resources_get_info           (const char            *path,
 					      GResourceLookupFlags   lookup_flags,
 					      gsize                 *size,
@@ -103,8 +117,11 @@ gboolean      g_resources_get_info           (const char            *path,
 					      GError               **error);
 
 
+GLIB_AVAILABLE_IN_2_32
 void          g_static_resource_init          (GStaticResource *static_resource);
+GLIB_AVAILABLE_IN_2_32
 void          g_static_resource_fini          (GStaticResource *static_resource);
+GLIB_AVAILABLE_IN_2_32
 GResource    *g_static_resource_get_resource  (GStaticResource *static_resource);
 
 G_END_DECLS

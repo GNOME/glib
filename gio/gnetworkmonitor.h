@@ -66,7 +66,9 @@ struct _GNetworkMonitorInterface {
 				GError              **error);
 };
 
+GLIB_AVAILABLE_IN_2_32
 GType            g_network_monitor_get_type              (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_32
 GNetworkMonitor *g_network_monitor_get_default           (void);
 
 gboolean         g_network_monitor_get_network_available (GNetworkMonitor     *monitor);

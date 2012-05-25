@@ -135,6 +135,7 @@ void                    g_action_group_action_state_changed             (GAction
                                                                          const gchar  *action_name,
                                                                          GVariant     *state);
 
+GLIB_AVAILABLE_IN_2_32
 gboolean                g_action_group_query_action                     (GActionGroup        *action_group,
                                                                          const gchar         *action_name,
                                                                          gboolean            *enabled,

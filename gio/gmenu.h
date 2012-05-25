@@ -41,7 +41,9 @@ G_BEGIN_DECLS
 typedef struct _GMenuItem GMenuItem;
 typedef struct _GMenu     GMenu;
 
+GLIB_AVAILABLE_IN_2_32
 GType       g_menu_get_type                         (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_32
 GMenu *     g_menu_new                              (void);
 
 void        g_menu_freeze                           (GMenu       *menu);

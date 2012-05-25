@@ -27,11 +27,13 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_2_32
 guint                   g_dbus_connection_export_menu_model             (GDBusConnection  *connection,
                                                                          const gchar      *object_path,
                                                                          GMenuModel       *menu,
                                                                          GError          **error);
 
+GLIB_AVAILABLE_IN_2_32
 void                    g_dbus_connection_unexport_menu_model           (GDBusConnection  *connection,
                                                                          guint             export_id);
 

@@ -67,17 +67,21 @@ gint                    g_unix_connection_receive_fd                    (GUnixCo
 gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
+GLIB_AVAILABLE_IN_2_32
 void                    g_unix_connection_send_credentials_async        (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
+GLIB_AVAILABLE_IN_2_32
 gboolean                g_unix_connection_send_credentials_finish       (GUnixConnection      *connection,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
 
+GLIB_AVAILABLE_IN_2_32
 GCredentials           *g_unix_connection_receive_credentials           (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
+GLIB_AVAILABLE_IN_2_32
 void                    g_unix_connection_receive_credentials_async     (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,

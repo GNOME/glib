@@ -27,10 +27,14 @@ typedef struct _GSettingsSchemaSource                       GSettingsSchemaSourc
 typedef struct _GSettingsSchema                             GSettingsSchema;
 
 #define                 G_TYPE_SETTINGS_SCHEMA_SOURCE                   (g_settings_schema_source_get_type ())
+GLIB_AVAILABLE_IN_2_32
 GType                   g_settings_schema_source_get_type               (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_2_32
 GSettingsSchemaSource * g_settings_schema_source_get_default            (void);
+GLIB_AVAILABLE_IN_2_32
 GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettingsSchemaSource  *source);
+GLIB_AVAILABLE_IN_2_32
 void                    g_settings_schema_source_unref                  (GSettingsSchemaSource  *source);
 
 GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (const gchar            *directory,
@@ -43,9 +47,12 @@ GSettingsSchema *       g_settings_schema_source_lookup                 (GSettin
                                                                          gboolean                recursive);
 
 #define                 G_TYPE_SETTINGS_SCHEMA                          (g_settings_schema_get_type ())
+GLIB_AVAILABLE_IN_2_32
 GType                   g_settings_schema_get_type                      (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_2_32
 GSettingsSchema *       g_settings_schema_ref                           (GSettingsSchema        *schema);
+GLIB_AVAILABLE_IN_2_32
 void                    g_settings_schema_unref                         (GSettingsSchema        *schema);
 
 const gchar *           g_settings_schema_get_id                        (GSettingsSchema        *schema);
