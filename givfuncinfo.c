@@ -253,6 +253,7 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
   offset = g_field_info_get_offset (field_info);
   func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
   g_type_class_unref (implementor_vtable);
+  g_base_info_unref (field_info);
 
   if (func == NULL)
     {
