@@ -207,8 +207,10 @@ typedef enum
   G_FORMAT_SIZE_IEC_UNITS   = 1 << 1
 } GFormatSizeFlags;
 
+GLIB_AVAILABLE_IN_2_30
 gchar *g_format_size_full   (guint64          size,
                              GFormatSizeFlags flags);
+GLIB_AVAILABLE_IN_2_30
 gchar *g_format_size        (guint64          size);
 
 GLIB_DEPRECATED_FOR(g_format_size)

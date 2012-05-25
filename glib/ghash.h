@@ -107,6 +107,7 @@ gboolean    g_hash_table_iter_next         (GHashTableIter *iter,
                                             gpointer       *value);
 GHashTable* g_hash_table_iter_get_hash_table (GHashTableIter *iter);
 void        g_hash_table_iter_remove       (GHashTableIter *iter);
+GLIB_AVAILABLE_IN_2_30
 void        g_hash_table_iter_replace      (GHashTableIter *iter,
                                             gpointer        value);
 void        g_hash_table_iter_steal        (GHashTableIter *iter);

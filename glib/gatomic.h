@@ -40,8 +40,10 @@ gboolean                g_atomic_int_compare_and_exchange     (volatile gint  *a
                                                                gint            newval);
 gint                    g_atomic_int_add                      (volatile gint  *atomic,
                                                                gint            val);
+GLIB_AVAILABLE_IN_2_30
 guint                   g_atomic_int_and                      (volatile guint *atomic,
                                                                guint           val);
+GLIB_AVAILABLE_IN_2_30
 guint                   g_atomic_int_or                       (volatile guint *atomic,
                                                                guint           val);
 guint                   g_atomic_int_xor                      (volatile guint *atomic,
@@ -55,8 +57,10 @@ gboolean                g_atomic_pointer_compare_and_exchange (volatile void  *a
                                                                gpointer        newval);
 gssize                  g_atomic_pointer_add                  (volatile void  *atomic,
                                                                gssize          val);
+GLIB_AVAILABLE_IN_2_30
 gsize                   g_atomic_pointer_and                  (volatile void  *atomic,
                                                                gsize           val);
+GLIB_AVAILABLE_IN_2_30
 gsize                   g_atomic_pointer_or                   (volatile void  *atomic,
                                                                gsize           val);
 gsize                   g_atomic_pointer_xor                  (volatile void  *atomic,
