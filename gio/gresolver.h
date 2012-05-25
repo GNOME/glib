@@ -164,17 +164,20 @@ GList     *g_resolver_lookup_service_finish     (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
 
+GLIB_AVAILABLE_IN_2_34
 GList     *g_resolver_lookup_records            (GResolver            *resolver,
                                                  const gchar          *rrname,
                                                  GResolverRecordType   record_type,
                                                  GCancellable         *cancellable,
                                                  GError              **error);
+GLIB_AVAILABLE_IN_2_34
 void       g_resolver_lookup_records_async      (GResolver            *resolver,
                                                  const gchar          *rrname,
                                                  GResolverRecordType   record_type,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
+GLIB_AVAILABLE_IN_2_34
 GList     *g_resolver_lookup_records_finish     (GResolver            *resolver,
                                                  GAsyncResult         *result,
                                                  GError              **error);
