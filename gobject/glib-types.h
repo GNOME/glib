@@ -237,6 +237,7 @@ GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
 GType   g_bytes_get_type           (void) G_GNUC_CONST;
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
 GType   g_regex_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_30
 GType   g_match_info_get_type      (void) G_GNUC_CONST;
 GType   g_error_get_type           (void) G_GNUC_CONST;
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
@@ -244,8 +245,11 @@ GType   g_io_channel_get_type      (void) G_GNUC_CONST;
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
 GType   g_variant_builder_get_type (void) G_GNUC_CONST;
 GType   g_key_file_get_type        (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_30
 GType   g_main_loop_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_30
 GType   g_main_context_get_type    (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_30
 GType   g_source_get_type          (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')

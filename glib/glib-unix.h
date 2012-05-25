@@ -57,24 +57,30 @@ G_BEGIN_DECLS
  */
 #define G_UNIX_ERROR (g_unix_error_quark())
 
+GLIB_AVAILABLE_IN_2_30
 GQuark g_unix_error_quark (void);
 
+GLIB_AVAILABLE_IN_2_30
 gboolean g_unix_open_pipe (gint    *fds,
                            gint     flags,
                            GError **error);
 
+GLIB_AVAILABLE_IN_2_30
 gboolean g_unix_set_fd_nonblocking (gint       fd,
                                     gboolean   nonblock,
                                     GError   **error);
 
+GLIB_AVAILABLE_IN_2_30
 GSource *g_unix_signal_source_new  (gint signum);
 
+GLIB_AVAILABLE_IN_2_30
 guint    g_unix_signal_add_full    (gint           priority,
                                     gint           signum,
                                     GSourceFunc    handler,
                                     gpointer       user_data,
                                     GDestroyNotify notify);
 
+GLIB_AVAILABLE_IN_2_30
 guint    g_unix_signal_add         (gint        signum,
                                     GSourceFunc handler,
                                     gpointer    user_data);

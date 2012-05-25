@@ -100,7 +100,9 @@ gchar   *g_file_read_link    (const gchar  *filename,
                               GError      **error);
 
 /* Wrapper / workalike for mkdtemp() */
+GLIB_AVAILABLE_IN_2_30
 gchar   *g_mkdtemp            (gchar        *tmpl);
+GLIB_AVAILABLE_IN_2_30
 gchar   *g_mkdtemp_full       (gchar        *tmpl,
                                gint          mode);
 
@@ -114,6 +116,7 @@ gint     g_mkstemp_full       (gchar        *tmpl,
 gint     g_file_open_tmp      (const gchar  *tmpl,
                                gchar       **name_used,
                                GError      **error);
+GLIB_AVAILABLE_IN_2_30
 gchar   *g_dir_make_tmp       (const gchar  *tmpl,
                                GError      **error);
 

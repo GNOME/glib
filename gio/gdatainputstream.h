@@ -102,6 +102,7 @@ char *                 g_data_input_stream_read_line            (GDataInputStrea
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+GLIB_AVAILABLE_IN_2_30
 char *                 g_data_input_stream_read_line_utf8       (GDataInputStream        *stream,
 								 gsize                   *length,
 								 GCancellable            *cancellable,
@@ -115,6 +116,7 @@ char *                 g_data_input_stream_read_line_finish     (GDataInputStrea
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
+GLIB_AVAILABLE_IN_2_30
 char *                 g_data_input_stream_read_line_finish_utf8(GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,

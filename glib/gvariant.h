@@ -86,6 +86,7 @@ gboolean                        g_variant_is_signature                  (const g
 GVariant *                      g_variant_new_variant                   (GVariant             *value);
 GVariant *                      g_variant_new_strv                      (const gchar * const  *strv,
                                                                          gssize                length);
+GLIB_AVAILABLE_IN_2_30
 GVariant *                      g_variant_new_objv                      (const gchar * const  *strv,
                                                                          gssize                length);
 GVariant *                      g_variant_new_bytestring                (const gchar          *string);
@@ -114,6 +115,7 @@ const gchar **                  g_variant_get_strv                      (GVarian
                                                                          gsize                *length);
 gchar **                        g_variant_dup_strv                      (GVariant             *value,
                                                                          gsize                *length);
+GLIB_AVAILABLE_IN_2_30
 const gchar **                  g_variant_get_objv                      (GVariant             *value,
                                                                          gsize                *length);
 gchar **                        g_variant_dup_objv                      (GVariant             *value,

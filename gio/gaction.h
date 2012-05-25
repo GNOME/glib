@@ -58,6 +58,7 @@ struct _GActionInterface
                                                  GVariant *parameter);
 };
 
+GLIB_AVAILABLE_IN_2_30
 GType                   g_action_get_type                               (void) G_GNUC_CONST;
 
 const gchar *           g_action_get_name                               (GAction            *action);
