@@ -76,6 +76,7 @@ gint           g_unix_mount_point_compare           (GUnixMountPoint    *mount1,
 const char *   g_unix_mount_point_get_mount_path    (GUnixMountPoint    *mount_point);
 const char *   g_unix_mount_point_get_device_path   (GUnixMountPoint    *mount_point);
 const char *   g_unix_mount_point_get_fs_type       (GUnixMountPoint    *mount_point);
+GLIB_AVAILABLE_IN_2_32
 const char *   g_unix_mount_point_get_options       (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_readonly       (GUnixMountPoint    *mount_point);
 gboolean       g_unix_mount_point_is_user_mountable (GUnixMountPoint    *mount_point);

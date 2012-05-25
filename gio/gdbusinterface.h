@@ -71,6 +71,7 @@ GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *in
 GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *interface_);
 void                  g_dbus_interface_set_object       (GDBusInterface      *interface_,
                                                          GDBusObject         *object);
+GLIB_AVAILABLE_IN_2_32
 GDBusObject          *g_dbus_interface_dup_object       (GDBusInterface      *interface_);
 
 G_END_DECLS

@@ -234,11 +234,14 @@ struct _GAppLaunchContextClass
 GType              g_app_launch_context_get_type              (void) G_GNUC_CONST;
 GAppLaunchContext *g_app_launch_context_new                   (void);
 
+GLIB_AVAILABLE_IN_2_32
 void               g_app_launch_context_setenv                (GAppLaunchContext *context,
                                                                const char        *variable,
                                                                const char        *value);
+GLIB_AVAILABLE_IN_2_32
 void               g_app_launch_context_unsetenv              (GAppLaunchContext *context,
                                                                const char        *variable);
+GLIB_AVAILABLE_IN_2_32
 char **            g_app_launch_context_get_environment       (GAppLaunchContext *context);
 
 char *             g_app_launch_context_get_display           (GAppLaunchContext *context,

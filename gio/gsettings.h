@@ -81,6 +81,7 @@ GSettings *             g_settings_new_with_backend                     (const g
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema_id,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
+GLIB_AVAILABLE_IN_2_32
 GSettings *             g_settings_new_full                             (GSettingsSchema    *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
@@ -267,6 +268,7 @@ void                    g_settings_bind_writable                        (GSettin
 void                    g_settings_unbind                               (gpointer                 object,
                                                                          const gchar             *property);
 
+GLIB_AVAILABLE_IN_2_32
 GAction *               g_settings_create_action                        (GSettings               *settings,
                                                                          const gchar             *key);
 

@@ -101,18 +101,26 @@ guint                  g_socket_get_timeout             (GSocket                
 void                   g_socket_set_timeout             (GSocket                 *socket,
 							 guint                    timeout);
 
+GLIB_AVAILABLE_IN_2_32
 guint                  g_socket_get_ttl                 (GSocket                 *socket);
+GLIB_AVAILABLE_IN_2_32
 void                   g_socket_set_ttl                 (GSocket                 *socket,
                                                          guint                    ttl);
 
+GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_get_broadcast           (GSocket                 *socket);
+GLIB_AVAILABLE_IN_2_32
 void                   g_socket_set_broadcast           (GSocket                 *socket,
                                                          gboolean		  broadcast);
 
+GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_get_multicast_loopback  (GSocket                 *socket);
+GLIB_AVAILABLE_IN_2_32
 void                   g_socket_set_multicast_loopback  (GSocket                 *socket,
                                                          gboolean		  loopback);
+GLIB_AVAILABLE_IN_2_32
 guint                  g_socket_get_multicast_ttl       (GSocket                 *socket);
+GLIB_AVAILABLE_IN_2_32
 void                   g_socket_set_multicast_ttl       (GSocket                 *socket,
                                                          guint                    ttl);
 gboolean               g_socket_is_connected            (GSocket                 *socket);
@@ -120,11 +128,13 @@ gboolean               g_socket_bind                    (GSocket                
 							 GSocketAddress          *address,
 							 gboolean                 allow_reuse,
 							 GError                 **error);
+GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_join_multicast_group    (GSocket                 *socket,
                                                          GInetAddress            *group,
                                                          gboolean                 source_specific,
                                                          const gchar             *iface,
                                                          GError                 **error);
+GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_leave_multicast_group   (GSocket                 *socket,
                                                          GInetAddress            *group,
                                                          gboolean                 source_specific,
@@ -145,6 +155,7 @@ gboolean               g_socket_condition_wait          (GSocket                
 							 GIOCondition             condition,
 							 GCancellable            *cancellable,
 							 GError                 **error);
+GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_condition_timed_wait    (GSocket                 *socket,
 							 GIOCondition             condition,
 							 gint64                   timeout,

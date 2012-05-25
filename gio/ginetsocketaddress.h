@@ -63,7 +63,9 @@ GSocketAddress *g_inet_socket_address_new          (GInetAddress       *address,
 GInetAddress *  g_inet_socket_address_get_address  (GInetSocketAddress *address);
 guint16         g_inet_socket_address_get_port     (GInetSocketAddress *address);
 
+GLIB_AVAILABLE_IN_2_32
 guint32         g_inet_socket_address_get_flowinfo (GInetSocketAddress *address);
+GLIB_AVAILABLE_IN_2_32
 guint32         g_inet_socket_address_get_scope_id (GInetSocketAddress *address);
 
 G_END_DECLS

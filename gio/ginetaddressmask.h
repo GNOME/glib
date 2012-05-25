@@ -53,12 +53,15 @@ struct _GInetAddressMaskClass
 
 };
 
+GLIB_AVAILABLE_IN_2_32
 GType g_inet_address_mask_get_type (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new             (GInetAddress      *addr,
 						       guint              length,
 						       GError           **error);
 
+GLIB_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new_from_string (const gchar       *mask_string,
 						       GError           **error);
 gchar            *g_inet_address_mask_to_string       (GInetAddressMask  *mask);

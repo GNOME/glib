@@ -45,6 +45,7 @@ G_BEGIN_DECLS
 
 GType                   g_dbus_action_group_get_type                  (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_2_32
 GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection        *connection,
                                                                        const gchar            *bus_name,
                                                                        const gchar            *object_path);
