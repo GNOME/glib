@@ -684,7 +684,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
 				   GError            **error)
 {
   char *uri_scheme;
-  GAppInfo *app_info;
+  GAppInfo *app_info = NULL;
   GList l;
   gboolean res;
 
