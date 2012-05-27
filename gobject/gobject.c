@@ -1070,7 +1070,9 @@ g_object_run_dispose (GObject *object)
  * Increases the freeze count on @object. If the freeze count is
  * non-zero, the emission of "notify" signals on @object is
  * stopped. The signals are queued until the freeze count is decreased
- * to zero.
+ * to zero. Duplicate notifications are squashed so that at most one
+ * #GObject::notify signal is emitted for each property modified while the
+ * object is frozen.
  *
  * This is necessary for accessors that modify multiple properties to prevent
  * premature notification while the object is still being modified.
@@ -1241,7 +1243,10 @@ g_object_notify_by_pspec (GObject    *object,
  *
  * Reverts the effect of a previous call to
  * g_object_freeze_notify(). The freeze count is decreased on @object
- * and when it reaches zero, all queued "notify" signals are emitted.
+ * and when it reaches zero, queued "notify" signals are emitted.
+ *
+ * Duplicate notifications for each property are squashed so that at most one
+ * #GObject::notify signal is emitted for each property.
  *
  * It is an error to call this function when the freeze count is zero.
  */
