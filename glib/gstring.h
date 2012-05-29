@@ -33,6 +33,7 @@
 
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>
+#include <glib/gbytes.h>
 #include <glib/gutils.h>  /* for G_CAN_INLINE */
 
 G_BEGIN_DECLS
@@ -52,6 +53,8 @@ GString*     g_string_new_len           (const gchar     *init,
 GString*     g_string_sized_new         (gsize            dfl_size);
 gchar*       g_string_free              (GString         *string,
                                          gboolean         free_segment);
+GLIB_AVAILABLE_IN_2_34
+GBytes*      g_string_free_to_bytes     (GString         *string);
 gboolean     g_string_equal             (const GString   *v,
                                          const GString   *v2);
 guint        g_string_hash              (const GString   *str);

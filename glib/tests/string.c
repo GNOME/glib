@@ -472,6 +472,26 @@ test_string_set_size (void)
   g_string_free (s, TRUE);
 }
 
+static void
+test_string_to_bytes (void)
+{
+  GString *s;
+  GBytes *bytes;
+  gconstpointer byte_data;
+  gsize byte_len;
+
+  s = g_string_new ("foo");
+  g_string_append (s, "-bar");
+
+  bytes = g_string_free_to_bytes (s);
+
+  byte_data = g_bytes_get_data (bytes, &byte_len);
+
+  g_assert_cmpint (byte_len, ==, 7);
+
+  g_assert_cmpint (memcmp (byte_data, "foo-bar", byte_len), ==, 0);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -495,6 +515,7 @@ main (int   argc,
   g_test_add_func ("/string/test-string-nul-handling", test_string_nul_handling);
   g_test_add_func ("/string/test-string-up-down", test_string_up_down);
   g_test_add_func ("/string/test-string-set-size", test_string_set_size);
+  g_test_add_func ("/string/test-string-to-bytes", test_string_to_bytes);
 
   return g_test_run();
 }

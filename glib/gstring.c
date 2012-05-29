@@ -50,12 +50,17 @@
  * @short_description: text buffers which grow automatically
  *     as text is added
  *
- * A #GString is an object that handles the memory management
- * of a C string for you. You can think of it as similar to a
- * Java StringBuffer. In addition to the string itself, GString
- * stores the length of the string, so can be used for binary
- * data with embedded nul bytes. To access the C string managed
- * by the GString @string, simply use @string->str.
+ * A #GString is an object that handles the memory management of a C
+ * string for you.  The emphasis of #GString is on text, typically
+ * UTF-8.  Crucially, the "str" member of a #GString is guaranteed to
+ * have a trailing NUL character, and it is therefore always safe to
+ * call functions such as strlen() or g_strdup() on it.
+ *
+ * However, a #GString can also hold arbitrary binary data, because it
+ * has a "len" member, which includes any possible embedded NUL
+ * characters in the data.  Conceptually then, #GString is effectively
+ * a #GByteArray with many convenience methods for text, and a
+ * guaranteed NUL terminator.
  */
 
 /**
@@ -224,6 +229,37 @@ g_string_free (GString  *string,
   g_slice_free (GString, string);
 
   return segment;
+}
+
+/**
+ * g_string_free_to_bytes:
+ * @string: a #GString
+ *
+ * Transfers ownership of the contents of @string to a newly allocated
+ * #GBytes.  The #GString structure itself is deallocated, and it is
+ * therefore invalid to use @string after invoking this function.
+ *
+ * Note that while #GString ensures that its buffer always has a
+ * trailing NUL character (not reflected in its "len"), the returned
+ * #GBytes does not include this extra NUL; i.e. it has length exactly
+ * equal to the "len" member.
+ *
+ * Returns: A newly allocated #GBytes containing contents of @string; @string itself is freed
+ * Since: 2.34
+ */
+GBytes*
+g_string_free_to_bytes (GString         *string)
+{
+  gsize len;
+  gchar *buf;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  len = string->len;
+
+  buf = g_string_free (string, FALSE);
+
+  return g_bytes_new_take (buf, len);
 }
 
 /**
