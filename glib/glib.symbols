@@ -665,6 +665,7 @@ g_mapped_file_new
 g_mapped_file_new_from_fd
 g_mapped_file_get_length
 g_mapped_file_get_contents
+g_mapped_file_get_bytes
 g_mapped_file_ref
 g_mapped_file_unref
 g_mapped_file_free

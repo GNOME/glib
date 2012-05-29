@@ -147,6 +147,24 @@ test_writable_fd (void)
 
 }
 
+static void
+test_gbytes (void)
+{
+  GMappedFile *file;
+  GBytes *bytes;
+  GError *error;
+
+  error = NULL;
+  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
+  g_assert_no_error (error);
+
+  bytes = g_mapped_file_get_bytes (file);
+  g_mapped_file_unref (file);
+
+  g_assert_cmpint (g_bytes_get_size (bytes), ==, 0);
+  g_bytes_unref (bytes);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -158,6 +176,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mappedfile/nonexisting", test_nonexisting);
   g_test_add_func ("/mappedfile/writable", test_writable);
   g_test_add_func ("/mappedfile/writable_fd", test_writable_fd);
+  g_test_add_func ("/mappedfile/gbytes", test_gbytes);
 
   return g_test_run ();
 }

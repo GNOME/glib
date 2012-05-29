@@ -1225,6 +1225,7 @@ g_mapped_file_unref
 g_mapped_file_free
 g_mapped_file_get_length
 g_mapped_file_get_contents
+g_mapped_file_get_bytes
 
 <SUBSECTION>
 g_open

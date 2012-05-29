@@ -400,3 +400,27 @@ g_mapped_file_unref (GMappedFile *file)
   if (g_atomic_int_dec_and_test (&file->ref_count))
     g_mapped_file_destroy (file);
 }
+
+/**
+ * g_mapped_file_get_bytes:
+ * @file: a #GMappedFile
+ *
+ * Creates a new #GBytes which references the data mapped from @file.
+ * The mapped contents of the file must not be modified after creating this
+ * bytes object, because a #GBytes should be immutable.
+ *
+ * Returns: (transfer full): A newly allocated #GBytes referencing data
+ *     from @file
+ *
+ * Since: 2.34
+ **/
+GBytes *
+g_mapped_file_get_bytes (GMappedFile *file)
+{
+  g_return_val_if_fail (file != NULL, NULL);
+
+  return g_bytes_new_with_free_func (file->contents,
+				     file->length,
+				     (GDestroyNotify) g_mapped_file_unref,
+				     g_mapped_file_ref (file));
+}
