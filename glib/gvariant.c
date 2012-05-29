@@ -1250,6 +1250,22 @@ g_variant_new_fixed_array (const GVariantType  *element_type,
   return value;
 }
 
+/**
+ * g_variant_new_byte_array:
+ * @bytes: a #GBytes
+ *
+ * Construct a new #GVariant of type 'ay', using the provided @bytes.
+ * A reference is taken on @bytes.
+ *
+ * Returns: (transfer none): a floating reference to a new byte array #GVariant instance
+ * Since: 2.34
+ */
+GVariant *
+g_variant_new_byte_array (GBytes *bytes)
+{
+  return g_variant_new_from_bytes (G_VARIANT_TYPE ("ay"), bytes, TRUE);
+}
+
 /* String type constructor/getters/validation {{{1 */
 /**
  * g_variant_new_string:
