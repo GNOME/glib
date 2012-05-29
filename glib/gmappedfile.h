@@ -41,6 +41,8 @@ GMappedFile *g_mapped_file_new_from_fd  (gint          fd,
 					 GError      **error) G_GNUC_MALLOC;
 gsize        g_mapped_file_get_length   (GMappedFile  *file);
 gchar       *g_mapped_file_get_contents (GMappedFile  *file);
+GLIB_AVAILABLE_IN_2_34
+GBytes *     g_mapped_file_get_bytes    (GMappedFile  *file);
 GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
 void         g_mapped_file_unref        (GMappedFile  *file);
 
