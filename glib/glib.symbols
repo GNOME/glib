@@ -1084,6 +1084,7 @@ g_string_chunk_new
 g_string_equal
 g_string_erase
 g_string_free
+g_string_free_to_bytes
 g_string_hash
 g_string_insert
 g_string_insert_c
