@@ -564,6 +564,168 @@ test_compressor (void)
   g_object_unref (compressor);
 }
 
+#define LEFTOVER_SHORT_READ_SIZE 512
+
+#define G_TYPE_LEFTOVER_CONVERTER         (g_leftover_converter_get_type ())
+#define G_LEFTOVER_CONVERTER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_LEFTOVER_CONVERTER, GLeftoverConverter))
+#define G_LEFTOVER_CONVERTER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_LEFTOVER_CONVERTER, GLeftoverConverterClass))
+#define G_IS_LEFTOVER_CONVERTER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LEFTOVER_CONVERTER))
+#define G_IS_LEFTOVER_CONVERTER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_LEFTOVER_CONVERTER))
+#define G_LEFTOVER_CONVERTER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_LEFTOVER_CONVERTER, GLeftoverConverterClass))
+
+typedef struct _GLeftoverConverter       GLeftoverConverter;
+typedef struct _GLeftoverConverterClass  GLeftoverConverterClass;
+
+struct _GLeftoverConverterClass
+{
+  GObjectClass parent_class;
+};
+
+GType       g_leftover_converter_get_type (void) G_GNUC_CONST;
+GConverter *g_leftover_converter_new      (void);
+
+
+
+static void g_leftover_converter_iface_init          (GConverterIface *iface);
+
+struct _GLeftoverConverter
+{
+  GObject parent_instance;
+};
+
+G_DEFINE_TYPE_WITH_CODE (GLeftoverConverter, g_leftover_converter, G_TYPE_OBJECT,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
+						g_leftover_converter_iface_init))
+
+static void
+g_leftover_converter_class_init (GLeftoverConverterClass *klass)
+{
+}
+
+static void
+g_leftover_converter_init (GLeftoverConverter *local)
+{
+}
+
+GConverter *
+g_leftover_converter_new (void)
+{
+  GConverter *conv;
+
+  conv = g_object_new (G_TYPE_LEFTOVER_CONVERTER, NULL);
+
+  return conv;
+}
+
+static void
+g_leftover_converter_reset (GConverter *converter)
+{
+}
+
+static GConverterResult
+g_leftover_converter_convert (GConverter *converter,
+			      const void *inbuf,
+			      gsize       inbuf_size,
+			      void       *outbuf,
+			      gsize       outbuf_size,
+			      GConverterFlags flags,
+			      gsize      *bytes_read,
+			      gsize      *bytes_written,
+			      GError    **error)
+{
+  if (outbuf_size == LEFTOVER_SHORT_READ_SIZE)
+    {
+      g_set_error_literal (error,
+			   G_IO_ERROR,
+			   G_IO_ERROR_PARTIAL_INPUT,
+			   "partial input");
+      return G_CONVERTER_ERROR;
+    }
+
+  if (inbuf_size < 100)
+    *bytes_read = *bytes_written = MIN (inbuf_size, outbuf_size);
+  else
+    *bytes_read = *bytes_written = MIN (inbuf_size - 10, outbuf_size);
+  memcpy (outbuf, inbuf, *bytes_written);
+
+  if (*bytes_read == inbuf_size && (flags & G_CONVERTER_INPUT_AT_END))
+    return G_CONVERTER_FINISHED;
+  return G_CONVERTER_CONVERTED;
+}
+
+static void
+g_leftover_converter_iface_init (GConverterIface *iface)
+{
+  iface->convert = g_leftover_converter_convert;
+  iface->reset = g_leftover_converter_reset;
+}
+
+#define LEFTOVER_BUFSIZE 8192
+#define INTERNAL_BUFSIZE 4096
+
+static void
+test_converter_leftover (void)
+{
+  gchar *orig, *converted;
+  gsize total_read;
+  gssize res;
+  goffset offset;
+  GInputStream *mem, *cstream;
+  GConverter *converter;
+  GError *error;
+  int i;
+
+  converter = g_leftover_converter_new ();
+
+  orig = g_malloc (LEFTOVER_BUFSIZE);
+  converted = g_malloc (LEFTOVER_BUFSIZE);
+  for (i = 0; i < LEFTOVER_BUFSIZE; i++)
+    orig[i] = i % 64 + 32;
+
+  mem = g_memory_input_stream_new_from_data (orig, LEFTOVER_BUFSIZE, NULL);
+  cstream = g_converter_input_stream_new (mem, G_CONVERTER (converter));
+  g_object_unref (mem);
+
+  total_read = 0;
+
+  error = NULL;
+  res = g_input_stream_read (cstream,
+			     converted, LEFTOVER_SHORT_READ_SIZE,
+			     NULL, &error);
+  g_assert_cmpint (res, ==, LEFTOVER_SHORT_READ_SIZE);
+  total_read += res;
+
+  offset = g_seekable_tell (G_SEEKABLE (mem));
+  g_assert_cmpint (offset, >, LEFTOVER_SHORT_READ_SIZE);
+  g_assert_cmpint (offset, <, LEFTOVER_BUFSIZE);
+
+  /* At this point, @cstream has both a non-empty input_buffer
+   * and a non-empty converted_buffer, which is the case
+   * we want to test.
+   */
+
+  while (TRUE)
+    {
+      error = NULL;
+      res = g_input_stream_read (cstream,
+				 converted + total_read,
+				 LEFTOVER_BUFSIZE - total_read,
+				 NULL, &error);
+      g_assert (res >= 0);
+      if (res == 0)
+	break;
+      total_read += res;
+  }
+
+  g_assert_cmpint (total_read, ==, LEFTOVER_BUFSIZE);
+  g_assert (memcmp (converted, orig, LEFTOVER_BUFSIZE)  == 0);
+
+  g_object_unref (cstream);
+  g_free (orig);
+  g_free (converted);
+  g_object_unref (converter);
+}
+
 #define DATA_LENGTH 1000000
 
 static void
@@ -973,6 +1135,7 @@ main (int   argc,
     g_test_add_data_func (charset_tests[i].path, &charset_tests[i], test_charset);
 
   g_test_add_func ("/converter-stream/pollable", test_converter_pollable);
+  g_test_add_func ("/converter-stream/leftover", test_converter_leftover);
 
   return g_test_run();
 }
