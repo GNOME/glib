@@ -1,6 +1,9 @@
 # Note: This file used to generate gmarshal.[ch], but it doesn't any
-# longer.  Now that we have g_cclosure_marshal_generic(), there's no
-# reason to use these.  They're kept for ABI compatibility.
+# longer; it is kept mainly for backward compatibility purposes. If
+# you find yourself in the need to add a marshaller in GObject, use
+# g_cclosure_marshal_generic() instead.
+#
+# Warning: The generated symbols are part of the GObject ABI.
 
 # standard VOID return marshallers
 VOID:VOID
