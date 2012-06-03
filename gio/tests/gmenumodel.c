@@ -924,12 +924,15 @@ test_attributes (void)
   item = g_menu_item_new ("test", NULL);
   g_menu_item_set_attribute_value (item, "boolean", g_variant_new_boolean (FALSE));
   g_menu_item_set_attribute_value (item, "string", g_variant_new_string ("bla"));
-  g_menu_item_set_attribute_value (item, "double", g_variant_new_double (1.5));
+
+  g_menu_item_set_attribute (item, "double", "d", 1.5);
   v = g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
   g_menu_item_set_attribute_value (item, "complex", v);
   g_menu_item_set_attribute_value (item, "test-123", g_variant_new_string ("test-123"));
 
   g_menu_append_item (menu, item);
+
+  g_menu_item_set_attribute (item, "double", "d", G_PI);
 
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (menu)), ==, 1);
 
@@ -950,6 +953,7 @@ test_attributes (void)
   g_variant_unref (v);
 
   g_object_unref (menu);
+  g_object_unref (item);
 }
 
 static void
@@ -965,17 +969,17 @@ test_links (void)
 
   menu = g_menu_new ();
 
-  item = g_menu_item_new ("test1", NULL);
-  g_menu_item_set_link (item, "section", m);
-  g_menu_append_item (menu, item);
-
   item = g_menu_item_new ("test2", NULL);
   g_menu_item_set_link (item, "submenu", m);
-  g_menu_append_item (menu, item);
+  g_menu_prepend_item (menu, item);
+
+  item = g_menu_item_new ("test1", NULL);
+  g_menu_item_set_link (item, "section", m);
+  g_menu_insert_item (menu, 0, item);
 
   item = g_menu_item_new ("test3", NULL);
   g_menu_item_set_link (item, "wallet", m);
-  g_menu_append_item (menu, item);
+  g_menu_insert_item (menu, 1000, item);
 
   item = g_menu_item_new ("test4", NULL);
   g_menu_item_set_link (item, "purse", m);
@@ -1018,6 +1022,51 @@ test_mutable (void)
   g_object_unref (menu);
 }
 
+static void
+test_convenience (void)
+{
+  GMenu *m1, *m2;
+  GMenu *sub;
+  GMenuItem *item;
+
+  m1 = g_menu_new ();
+  m2 = g_menu_new ();
+  sub = g_menu_new ();
+
+  g_menu_prepend (m1, "label1", "do::something");
+  g_menu_insert (m2, 0, "label1", "do::something");
+
+  g_menu_append (m1, "label2", "do::somethingelse");
+  g_menu_insert (m2, -1, "label2", "do::somethingelse");
+
+  g_menu_insert_section (m1, 10, "label3", G_MENU_MODEL (sub));
+  item = g_menu_item_new_section ("label3", G_MENU_MODEL (sub));
+  g_menu_insert_item (m2, 10, item);
+  g_object_unref (item);
+
+  g_menu_prepend_section (m1, "label4", G_MENU_MODEL (sub));
+  g_menu_insert_section (m2, 0, "label4", G_MENU_MODEL (sub));
+
+  g_menu_append_section (m1, "label5", G_MENU_MODEL (sub));
+  g_menu_insert_section (m2, -1, "label5", G_MENU_MODEL (sub));
+
+  g_menu_insert_submenu (m1, 5, "label6", G_MENU_MODEL (sub));
+  item = g_menu_item_new_submenu ("label6", G_MENU_MODEL (sub));
+  g_menu_insert_item (m2, 5, item);
+  g_object_unref (item);
+
+  g_menu_prepend_submenu (m1, "label7", G_MENU_MODEL (sub));
+  g_menu_insert_submenu (m2, 0, "label7", G_MENU_MODEL (sub));
+
+  g_menu_append_submenu (m1, "label8", G_MENU_MODEL (sub));
+  g_menu_insert_submenu (m2, -1, "label8", G_MENU_MODEL (sub));
+
+  assert_menus_equal (G_MENU_MODEL (m1), G_MENU_MODEL (m2));
+
+  g_object_unref (m1);
+  g_object_unref (m2);
+}
+
 /* Epilogue {{{1 */
 int
 main (int argc, char **argv)
@@ -1037,6 +1086,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
+  g_test_add_func ("/gmenu/convenience", test_convenience);
 
   ret = g_test_run ();
 
