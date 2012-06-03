@@ -247,6 +247,10 @@ properties (void)
   g_assert (registered);
   g_assert (!remote);
 
+  g_object_set (app,
+                "inactivity-timeout", 1000,
+                NULL);
+
   g_application_quit (G_APPLICATION (app));
 
   g_object_unref (c);
@@ -301,6 +305,10 @@ nodbus_activate (GApplication *app)
 {
   nodbus_activated = TRUE;
   g_application_hold (app);
+
+  g_assert (g_application_get_dbus_connection (app) == NULL);
+  g_assert (g_application_get_dbus_object_path (app) == NULL);
+
   g_idle_add (release_app, app);
 }
 
@@ -310,14 +318,42 @@ test_nodbus (void)
   gchar *argv[] = { "./unimportant", NULL };
   GApplication *app;
 
-  app = g_application_new ("org.gtk.Unimportant",
-                           G_APPLICATION_FLAGS_NONE);
+  app = g_application_new ("org.gtk.Unimportant", G_APPLICATION_FLAGS_NONE);
   g_signal_connect (app, "activate", G_CALLBACK (nodbus_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
 
   g_assert (nodbus_activated);
 }
+
+static gboolean noappid_activated;
+
+static void
+noappid_activate (GApplication *app)
+{
+  noappid_activated = TRUE;
+  g_application_hold (app);
+
+  g_assert (g_application_get_flags (app) & G_APPLICATION_NON_UNIQUE);
+
+  g_idle_add (release_app, app);
+}
+
+/* test that no appid -> non-unique */
+static void
+test_noappid (void)
+{
+  gchar *argv[] = { "./unimportant", NULL };
+  GApplication *app;
+
+  app = g_application_new (NULL, G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (noappid_activate), NULL);
+  g_application_run (app, 1, argv);
+  g_object_unref (app);
+
+  g_assert (noappid_activated);
+}
+
 
 static gboolean
 quit_app (gpointer user_data)
@@ -333,6 +369,10 @@ quit_activate (GApplication *app)
 {
   quit_activated = TRUE;
   g_application_hold (app);
+
+  g_assert (g_application_get_dbus_connection (app) != NULL);
+  g_assert (g_application_get_dbus_object_path (app) != NULL);
+
   g_idle_add (quit_app, app);
 }
 
@@ -417,6 +457,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
   g_test_add_func ("/gapplication/basic", basic);
+  g_test_add_func ("/gapplication/no-appid", test_noappid);
 /*  g_test_add_func ("/gapplication/non-unique", test_nonunique); */
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);

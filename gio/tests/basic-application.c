@@ -60,6 +60,7 @@ main (int argc, char **argv)
   int status;
 
   app = g_application_new ("org.gtk.TestApplication",
+                           G_APPLICATION_SEND_ENVIRONMENT |
                            G_APPLICATION_HANDLES_OPEN |
                            (g_strcmp0 (argv[1], "./cmd") == 0 ?
                              G_APPLICATION_HANDLES_COMMAND_LINE
