@@ -515,6 +515,108 @@ stop_loop (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
+static GActionEntry exported_entries[] = {
+  { "undo",  activate_action, NULL, NULL,      NULL },
+  { "redo",  activate_action, NULL, NULL,      NULL },
+  { "cut",   activate_action, NULL, NULL,      NULL },
+  { "copy",  activate_action, NULL, NULL,      NULL },
+  { "paste", activate_action, NULL, NULL,      NULL },
+  { "bold",  activate_toggle, NULL, "true",    NULL },
+  { "lang",  activate_radio,  "s",  "'latin'", NULL },
+};
+
+static void
+list_cb (GObject      *source,
+         GAsyncResult *res,
+         gpointer      user_data)
+{
+  GDBusConnection *bus = G_DBUS_CONNECTION (source);
+  GMainLoop *loop = user_data;
+  GError *error = NULL;
+  GVariant *v;
+  gchar **actions;
+
+  v = g_dbus_connection_call_finish (bus, res, &error);
+  g_assert (v);
+  g_variant_get (v, "(^a&s)", &actions);
+  g_assert_cmpint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
+  g_variant_unref (v);
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+call_list (gpointer user_data)
+{
+  GDBusConnection *bus;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "List",
+                          NULL,
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          list_cb,
+                          user_data);
+  g_object_unref (bus);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+describe_cb (GObject      *source,
+             GAsyncResult *res,
+             gpointer      user_data)
+{
+  GDBusConnection *bus = G_DBUS_CONNECTION (source);
+  GMainLoop *loop = user_data;
+  GError *error = NULL;
+  GVariant *v;
+  gboolean enabled;
+  gchar *param;
+  GVariantIter *iter;
+
+  v = g_dbus_connection_call_finish (bus, res, &error);
+  g_assert (v);
+  /* FIXME: there's an extra level of tuplelization in here */
+  g_variant_get (v, "((bgav))", &enabled, &param, &iter);
+  g_assert (enabled == TRUE);
+  g_assert_cmpstr (param, ==, "");
+  g_assert_cmpint (g_variant_iter_n_children (iter), ==, 0);
+  g_free (param);
+  g_variant_iter_free (iter);
+  g_variant_unref (v);
+
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+call_describe (gpointer user_data)
+{
+  GDBusConnection *bus;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_dbus_connection_call (bus,
+                          g_dbus_connection_get_unique_name (bus),
+                          "/",
+                          "org.gtk.Actions",
+                          "Describe",
+                          g_variant_new ("(s)", "copy"),
+                          NULL,
+                          0,
+                          G_MAXINT,
+                          NULL,
+                          describe_cb,
+                          user_data);
+  g_object_unref (bus);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 test_dbus_export (void)
 {
@@ -523,18 +625,10 @@ test_dbus_export (void)
   GDBusActionGroup *proxy;
   GSimpleAction *action;
   GMainLoop *loop;
-  static GActionEntry entries[] = {
-    { "undo",  activate_action, NULL, NULL,      NULL },
-    { "redo",  activate_action, NULL, NULL,      NULL },
-    { "cut",   activate_action, NULL, NULL,      NULL },
-    { "copy",  activate_action, NULL, NULL,      NULL },
-    { "paste", activate_action, NULL, NULL,      NULL },
-    { "bold",  activate_toggle, NULL, "true",    NULL },
-    { "lang",  activate_radio,  "s",  "'latin'", NULL },
-  };
   GError *error = NULL;
   GVariant *v;
   guint id;
+  gchar **actions;
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -542,15 +636,33 @@ test_dbus_export (void)
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   group = g_simple_action_group_new ();
-  g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
+  g_simple_action_group_add_entries (group,
+                                     exported_entries,
+                                     G_N_ELEMENTS (exported_entries),
+                                     NULL);
 
   id = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &error);
   g_assert_no_error (error);
 
   proxy = g_dbus_action_group_get (bus, g_dbus_connection_get_unique_name (bus), "/");
-  g_strfreev (g_action_group_list_actions (G_ACTION_GROUP (proxy)));
+
+  actions = g_action_group_list_actions (G_ACTION_GROUP (proxy));
+  g_assert_cmpint (g_strv_length (actions), ==, 0);
+  g_strfreev (actions);
 
   g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  actions = g_action_group_list_actions (G_ACTION_GROUP (proxy));
+  g_assert_cmpint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
+  g_strfreev (actions);
+
+  /* check that calling "List" works too */
+  g_idle_add (call_list, loop);
+  g_main_loop_run (loop);
+
+  /* check that calling "Describe" works */
+  g_idle_add (call_describe, loop);
   g_main_loop_run (loop);
 
   /* test that the initial transfer works */
