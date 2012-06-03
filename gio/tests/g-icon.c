@@ -287,6 +287,7 @@ test_emblemed_icon (void)
   GIcon *icon1, *icon2, *icon3, *icon4;
   GEmblem *emblem, *emblem1, *emblem2;
   GList *emblems;
+  GIcon *icon;
 
   icon1 = g_themed_icon_new ("testicon");
   icon2 = g_themed_icon_new ("testemblem");
@@ -312,6 +313,14 @@ test_emblemed_icon (void)
   emblem = emblems->next->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
   g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
+
+  g_emblemed_icon_clear_emblems (G_EMBLEMED_ICON (icon4));
+  g_assert (g_emblemed_icon_get_emblems (G_EMBLEMED_ICON (icon4)) == NULL);
+
+  g_assert (g_icon_hash (icon4) != g_icon_hash (icon2));
+  g_object_get (icon4, "gicon", &icon, NULL);
+  g_assert (icon == icon1);
+  g_object_unref (icon);
 
   g_object_unref (icon1);
   g_object_unref (icon2);
