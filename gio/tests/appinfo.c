@@ -248,8 +248,22 @@ test_environment (void)
 {
   GAppLaunchContext *ctx;
   gchar **env;
+  const gchar *path;
+
+  g_unsetenv ("FOO");
+  g_unsetenv ("BLA");
+  path = g_getenv ("PATH");
 
   ctx = g_app_launch_context_new ();
+
+  env = g_app_launch_context_get_environment (ctx);
+
+  g_assert (g_environ_getenv (env, "FOO") == NULL);
+  g_assert (g_environ_getenv (env, "BAR") == NULL);
+  g_assert_cmpstr (g_environ_getenv (env, "PATH"), ==, path);
+
+  g_strfreev (env);
+
   g_app_launch_context_setenv (ctx, "FOO", "bar");
   g_app_launch_context_setenv (ctx, "BLA", "bla");
 
@@ -257,6 +271,7 @@ test_environment (void)
 
   g_assert_cmpstr (g_environ_getenv (env, "FOO"), ==, "bar");
   g_assert_cmpstr (g_environ_getenv (env, "BLA"), ==, "bla");
+  g_assert_cmpstr (g_environ_getenv (env, "PATH"), ==, path);
 
   g_strfreev (env);
 
