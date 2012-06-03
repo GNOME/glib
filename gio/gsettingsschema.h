@@ -25,6 +25,7 @@
 
 typedef struct _GSettingsSchemaSource                       GSettingsSchemaSource;
 typedef struct _GSettingsSchema                             GSettingsSchema;
+typedef struct _GSettingsSchemaKey                          GSettingsSchemaKey;
 
 #define                 G_TYPE_SETTINGS_SCHEMA_SOURCE                   (g_settings_schema_source_get_type ())
 GLIB_AVAILABLE_IN_2_32
@@ -57,5 +58,16 @@ void                    g_settings_schema_unref                         (GSettin
 
 const gchar *           g_settings_schema_get_id                        (GSettingsSchema        *schema);
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema        *schema);
+GSettingsSchemaKey *    g_settings_schema_get_key                       (GSettingsSchema        *schema,
+                                                                         const gchar            *key);
+
+#define                 G_TYPE_SETTINGS_SCHEMA_KEY                      (g_settings_schema_key_get_type ())
+GType                   g_settings_schema_key_get_type                  (void) G_GNUC_CONST;
+
+GSettingsSchemaKey *    g_settings_schema_key_ref                       (GSettingsSchemaKey     *key);
+void                    g_settings_schema_key_unref                     (GSettingsSchemaKey     *key);
+
+const gchar *           g_settings_schema_key_get_summary               (GSettingsSchemaKey     *key);
+const gchar *           g_settings_schema_key_get_description           (GSettingsSchemaKey     *key);
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */
