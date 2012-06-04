@@ -43,6 +43,7 @@ test_g_icon_serialize (void)
   GError *error;
   gint origin;
   GIcon *i;
+  GFile *file;
 
   error = NULL;
 
@@ -51,6 +52,11 @@ test_g_icon_serialize (void)
   uri = "file:///some/native/path/to/an/icon.png";
   location = g_file_new_for_uri (uri);
   icon = g_file_icon_new (location);
+
+  g_object_get (icon, "file", &file, NULL);
+  g_assert (file == location);
+  g_object_unref (file);
+
   data = g_icon_to_string (icon);
   g_assert_cmpstr (data, ==, "/some/native/path/to/an/icon.png");
   icon2 = g_icon_new_for_string (data, &error);
