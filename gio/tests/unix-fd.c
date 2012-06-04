@@ -57,6 +57,10 @@ test_fds (void)
   gint flags;
   gint nm;
   gint s;
+  gchar *path;
+  GByteArray *array;
+  gboolean abstract;
+  GUnixSocketAddressType type;
 
   create_fd_list (fd_list);
 
@@ -115,8 +119,6 @@ test_fds (void)
   g_object_unref (message);
   g_object_unref (list);
 
-
-
   message = G_UNIX_FD_MESSAGE (g_unix_fd_message_new ());
   list = g_unix_fd_message_get_fd_list (message);
   s = pipe (sv);
@@ -155,6 +157,20 @@ test_fds (void)
   g_assert (G_IS_UNIX_SOCKET_ADDRESS (addr));
   g_assert_cmpint (g_unix_socket_address_get_address_type (G_UNIX_SOCKET_ADDRESS (addr)), ==, G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
   g_assert_cmpint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (addr)), ==, 0);
+
+  g_object_get (addr,
+                "path", &path,
+                "path-as-array", &array,
+                "abstract", &abstract,
+                "address-type", &type,
+                NULL);
+  g_assert_cmpstr (path, ==, "");
+  g_assert_cmpint (array->len, ==, 0);
+  g_assert (!abstract);
+  g_assert (type == G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+  g_free (path);
+  g_byte_array_free (array, TRUE);
+
   g_object_unref (addr);
 
   buffer[0] = 0xff;
