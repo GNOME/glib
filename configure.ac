@@ -1816,7 +1816,7 @@ dnl ************************
 dnl *** check for libelf ***
 dnl ************************
 
-PKG_CHECK_MODULES([LIBELF], [libelf], [have_libelf=yes], [have_libelf=maybe])
+PKG_CHECK_MODULES([LIBELF], [libelf >= 0.8.12], [have_libelf=yes], [have_libelf=maybe])
 
 AS_IF([ test $have_libelf = maybe], [
   glib_save_LIBS=$LIBS
