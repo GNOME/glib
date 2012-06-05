@@ -219,12 +219,12 @@ AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
 
 AS_IF([test "x$glib_have_carbon" = "xyes"], [
   AC_DEFINE(HAVE_CARBON, 1, [define to 1 if Carbon is available])
-  LDFLAGS="$LDFLAGS -framework Carbon"
+  LDFLAGS="$LDFLAGS -Wl,-framework,Carbon"
 ])
 
 if test "x$glib_have_cocoa" = "xyes"; then
   AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
-  LDFLAGS="$LDFLAGS -framework Foundation"
+  LDFLAGS="$LDFLAGS -Wl,-framework,Foundation"
 fi
 
 gl_GLIBC21

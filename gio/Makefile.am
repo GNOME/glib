@@ -515,7 +515,7 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
 libgio_2_0_la_CFLAGS = -xobjective-c
-libgio_2_0_la_LDFLAGS += -framework Foundation
+libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation
 endif
 
 libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
