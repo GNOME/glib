@@ -355,7 +355,7 @@ g_dbus_is_guid (const gchar *string)
 /**
  * g_dbus_gvariant_to_gvalue:
  * @value: A #GVariant.
- * @out_gvalue: Return location pointing to a zero-filled (uninitialized) #GValue.
+ * @out_gvalue: (out): Return location pointing to a zero-filled (uninitialized) #GValue.
  *
  * Converts a #GVariant to a #GValue. If @value is floating, it is consumed.
  *
