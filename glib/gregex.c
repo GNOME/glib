@@ -396,36 +396,36 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("\\g is not followed by a braced name or an optionally "
                  "braced non-zero number");
       break;
-    case 11:
+    case 111:
       *errcode = G_REGEX_ERROR_INTERNAL;
       *errmsg = _("unexpected repeat");
       break;
-    case 23:
+    case 123:
       *errcode = G_REGEX_ERROR_INTERNAL;
       *errmsg = _("code overflow");
       break;
-    case 52:
+    case 152:
       *errcode = G_REGEX_ERROR_INTERNAL;
       *errmsg = _("overran compiling workspace");
       break;
-    case 53:
+    case 153:
       *errcode = G_REGEX_ERROR_INTERNAL;
       *errmsg = _("previously-checked referenced subpattern not found");
       break;
-    case 16:
+    case 116:
       /* This should not happen as we never pass a NULL erroffset */
       g_warning ("erroffset passed as NULL");
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
-    case 17:
+    case 117:
       /* This should not happen as we check options before passing them
        * to pcre_compile2() */
       g_warning ("unknown option bit(s) set");
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
-    case 32:
-    case 44:
-    case 45:
+    case 132:
+    case 144:
+    case 145:
       /* These errors should not happen as we are using an UTF8-enabled PCRE
        * and we do not check if strings are valid */
       g_warning ("%s", *errmsg);
