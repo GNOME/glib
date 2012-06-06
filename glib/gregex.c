@@ -267,13 +267,6 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_UNRECOGNIZED_ESCAPE:
       *errmsg = _("unrecognized character follows \\");
       break;
-    case 137:
-      /* A number of Perl escapes are not handled by PCRE.
-       * Therefore it explicitly raises ERR37.
-       */
-      *errcode = G_REGEX_ERROR_UNRECOGNIZED_ESCAPE;
-      *errmsg = _("case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here");
-      break;
     case G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER:
       *errmsg = _("numbers out of order in {} quantifier");
       break;
@@ -292,33 +285,18 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_NOTHING_TO_REPEAT:
       *errmsg = _("nothing to repeat");
       break;
+    case 111: /* internal error: unexpected repeat */
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("unexpected repeat");
+      break;
     case G_REGEX_ERROR_UNRECOGNIZED_CHARACTER:
-      *errmsg = _("unrecognized character after (?");
-      break;
-    case 124:
-      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
-      *errmsg = _("unrecognized character after (?<");
-      break;
-    case 141:
-      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
-      *errmsg = _("unrecognized character after (?P");
+      *errmsg = _("unrecognized character after (? or (?-");
       break;
     case G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS:
       *errmsg = _("POSIX named classes are supported only within a class");
       break;
     case G_REGEX_ERROR_UNMATCHED_PARENTHESIS:
       *errmsg = _("missing terminating )");
-      break;
-    case 122:
-      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
-      *errmsg = _(") without opening (");
-      break;
-    case 129:
-      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
-      /* translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
-       * sequences here, '(?-54' would be an example for the second group.
-       */
-      *errmsg = _("(?R or (?[+-]digits must be followed by )");
       break;
     case G_REGEX_ERROR_INEXISTENT_SUBPATTERN_REFERENCE:
       *errmsg = _("reference to non-existent subpattern");
@@ -327,10 +305,22 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("missing ) after comment");
       break;
     case G_REGEX_ERROR_EXPRESSION_TOO_LARGE:
-      *errmsg = _("regular expression too large");
+      *errmsg = _("regular expression is too large");
       break;
     case G_REGEX_ERROR_MEMORY_ERROR:
       *errmsg = _("failed to get memory");
+      break;
+    case 122: /* unmatched parentheses */
+      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
+      *errmsg = _(") without opening (");
+      break;
+    case 123: /* internal error: code overflow */
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("code overflow");
+      break;
+    case 124: /* "unrecognized character after (?<\0 */
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
+      *errmsg = _("unrecognized character after (?<");
       break;
     case G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND:
       *errmsg = _("lookbehind assertion is not fixed length");
@@ -343,6 +333,13 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     case G_REGEX_ERROR_ASSERTION_EXPECTED:
       *errmsg = _("assertion expected after (?(");
+      break;
+    case 129:
+      *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
+      /* translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
+       * sequences here, '(?-54' would be an example for the second group.
+       */
+      *errmsg = _("(?R or (?[+-]digits must be followed by )");
       break;
     case G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME:
       *errmsg = _("unknown POSIX class name");
@@ -359,8 +356,19 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_SINGLE_BYTE_MATCH_IN_LOOKBEHIND:
       *errmsg = _("\\C not allowed in lookbehind assertion");
       break;
+    case 137: /* PCRE does not support \\L, \\l, \\N{name}, \\U, or \\u\0 */
+      /* A number of Perl escapes are not handled by PCRE.
+       * Therefore it explicitly raises ERR37.
+       */
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_ESCAPE;
+      *errmsg = _("escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported");
+      break;
     case G_REGEX_ERROR_INFINITE_LOOP:
       *errmsg = _("recursive call could loop indefinitely");
+      break;
+    case 141: /* unrecognized character after (?P\0 */
+      *errcode = G_REGEX_ERROR_UNRECOGNIZED_CHARACTER;
+      *errmsg = _("unrecognized character after (?P");
       break;
     case G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR:
       *errmsg = _("missing terminator in subpattern name");
@@ -383,6 +391,14 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_INVALID_OCTAL_VALUE:
       *errmsg = _("octal value is greater than \\377");
       break;
+    case 152: /* internal error: overran compiling workspace */
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("overran compiling workspace");
+      break;
+    case 153: /* internal error: previously-checked referenced subpattern not found */
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      *errmsg = _("previously-checked referenced subpattern not found");
+      break;
     case G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE:
       *errmsg = _("DEFINE group contains more than one branch");
       break;
@@ -390,44 +406,77 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("inconsistent NEWLINE options");
       break;
     case G_REGEX_ERROR_MISSING_BACK_REFERENCE:
-      *errmsg = _("\\g is not followed by a braced name or an optionally "
-                 "braced non-zero number");
+      *errmsg = _("\\g is not followed by a braced, angle-bracketed, or quoted name or "
+                  "number, or by a plain number");
       break;
-    case 111:
-      *errcode = G_REGEX_ERROR_INTERNAL;
-      *errmsg = _("unexpected repeat");
+    case G_REGEX_ERROR_INVALID_RELATIVE_REFERENCE:
+      *errmsg = _("a numbered reference must not be zero");
       break;
-    case 123:
-      *errcode = G_REGEX_ERROR_INTERNAL;
-      *errmsg = _("code overflow");
+    case G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_FORBIDDEN:
+      *errmsg = _("an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)");
       break;
-    case 152:
-      *errcode = G_REGEX_ERROR_INTERNAL;
-      *errmsg = _("overran compiling workspace");
+    case G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB:
+      *errmsg = _("(*VERB) not recognized");
       break;
-    case 153:
-      *errcode = G_REGEX_ERROR_INTERNAL;
-      *errmsg = _("previously-checked referenced subpattern not found");
+    case G_REGEX_ERROR_NUMBER_TOO_BIG:
+      *errmsg = _("number is too bug");
       break;
-    case 116:
+    case G_REGEX_ERROR_MISSING_SUBPATTERN_NAME:
+      *errmsg = _("missing subpattern name after (?&");
+      break;
+    case G_REGEX_ERROR_MISSING_DIGIT:
+      *errmsg = _("digit expected after (?+");
+      break;
+    case G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME:
+      *errmsg = _("different names for subpatterns of the same number are not allowed");
+      break;
+    case G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_REQUIRED:
+      *errmsg = _("(*MARK) must have an argument");
+      break;
+    case G_REGEX_ERROR_INVALID_CONTROL_CHAR:
+      *errmsg = _( "\\c must be followed by an ASCII character");
+      break;
+    case G_REGEX_ERROR_MISSING_NAME:
+      *errmsg = _("\\k is not followed by a braced, angle-bracketed, or quoted name");
+      break;
+    case G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS:
+      *errmsg = _("\\N is not supported in a class");
+      break;
+    case G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES:
+      *errmsg = _("too many forward references");
+      break;
+    case G_REGEX_ERROR_NAME_TOO_LONG:
+      *errmsg = _("name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)");
+      break;
+
+    case 116: /* erroffset passed as NULL */
       /* This should not happen as we never pass a NULL erroffset */
       g_warning ("erroffset passed as NULL");
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
-    case 117:
+    case 117: /* unknown option bit(s) set */
       /* This should not happen as we check options before passing them
        * to pcre_compile2() */
       g_warning ("unknown option bit(s) set");
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
-    case 132:
-    case 144:
-    case 145:
-      /* These errors should not happen as we are using an UTF8-enabled PCRE
+    case 132: /* this version of PCRE is compiled without UTF support */
+    case 144: /* invalid UTF-8 string */
+    case 145: /* support for \\P, \\p, and \\X has not been compiled */
+    case 167: /* this version of PCRE is not compiled with Unicode property support */
+    case 173: /* disallowed Unicode code point (>= 0xd800 && <= 0xdfff) */
+    case 174: /* invalid UTF-16 string */
+      /* These errors should not happen as we are using an UTF-8 and UCP-enabled PCRE
        * and we do not check if strings are valid */
+    case 164: /* ] is an invalid data character in JavaScript compatibility mode */
+      /* This should not happen as we don't use PCRE_JAVASCRIPT_COMPAT */
       g_warning ("%s", *errmsg);
       *errcode = G_REGEX_ERROR_COMPILE;
       break;
+    case 170: /* internal error: unknown opcode in find_fixedlength() */
+      *errcode = G_REGEX_ERROR_INTERNAL;
+      break;
+
     default:
       *errcode = G_REGEX_ERROR_COMPILE;
     }

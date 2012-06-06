@@ -107,9 +107,28 @@ G_BEGIN_DECLS
  *     This error is never raised. Since: 2.16 Deprecated: 2.34
  * @G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS: Inconsistent newline options.
  *     Since 2.16
- * @G_REGEX_ERROR_MISSING_BACK_REFERENCE: "\\g" is not followed by a braced
- *     name or an optionally braced non-zero number. Since 2.16
- *
+ * @G_REGEX_ERROR_MISSING_BACK_REFERENCE: "\\g" is not followed by a braced,
+ *      angle-bracketed, or quoted name or number, or by a plain number. Since: 2.16
+ * @G_REGEX_ERROR_INVALID_RELATIVE_REFERENCE: relative reference must not be zero. Since: 2.34
+ * @G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_FORBIDDEN: the backtracing
+ *     control verb used does not allow an argument. Since: 2.34
+ * @G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB: unknown backtracing 
+ *     control verb. Since: 2.34
+ * @G_REGEX_ERROR_NUMBER_TOO_BIG: number is too big in escape sequence. Since: 2.34
+ * @G_REGEX_ERROR_MISSING_SUBPATTERN_NAME: Missing subpattern name. Since: 2.34
+ * @G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME: different names for subpatterns of the 
+ *     same number are not allowed. Since: 2.34
+ * @G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_REQUIRED: the backtracing control
+ *     verb requires an argument. Since: 2.34
+ * @G_REGEX_ERROR_INVALID_CONTROL_CHAR: "\\c" must be followed by an ASCII 
+ *     character. Since: 2.34
+ * @G_REGEX_ERROR_MISSING_NAME: "\\k" is not followed by a braced, angle-bracketed, or 
+ *     quoted name. Since: 2.34
+ * @G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS: "\\N" is not supported in a class. Since: 2.34
+ * @G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES: too many forward references. Since: 2.34
+ * @G_REGEX_ERROR_NAME_TOO_LONG: the name is too long in "(*MARK)", "(*PRUNE)", 
+ *     "(*SKIP)", or "(*THEN)". Since: 2.34
+ * 
  * Error codes returned by regular expressions functions.
  *
  * Since: 2.14
@@ -159,7 +178,20 @@ typedef enum
   G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE = 154,
   G_REGEX_ERROR_DEFINE_REPETION = 155,
   G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS = 156,
-  G_REGEX_ERROR_MISSING_BACK_REFERENCE = 157
+  G_REGEX_ERROR_MISSING_BACK_REFERENCE = 157,
+  G_REGEX_ERROR_INVALID_RELATIVE_REFERENCE = 158,
+  G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_FORBIDDEN = 159,
+  G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB  = 160,
+  G_REGEX_ERROR_NUMBER_TOO_BIG = 161,
+  G_REGEX_ERROR_MISSING_SUBPATTERN_NAME = 162,
+  G_REGEX_ERROR_MISSING_DIGIT = 163,
+  G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME = 165,
+  G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_REQUIRED = 166,
+  G_REGEX_ERROR_INVALID_CONTROL_CHAR = 168,
+  G_REGEX_ERROR_MISSING_NAME = 169,
+  G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS = 171,
+  G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES = 172,
+  G_REGEX_ERROR_NAME_TOO_LONG = 175
 } GRegexError;
 
 /**
