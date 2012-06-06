@@ -444,6 +444,9 @@ struct _GDBusConnection
   GHashTable *map_object_path_to_es;  /* gchar* -> ExportedSubtree* */
   GHashTable *map_id_to_es;           /* guint  -> ExportedSubtree* */
 
+  /* Map used for storing last used serials for each thread, protected by @lock */
+  GHashTable *map_thread_to_last_serial;
+
   /* Structure used for message filters, protected by @lock */
   GPtrArray *filters;
 
@@ -671,6 +674,8 @@ g_dbus_connection_finalize (GObject *object)
   g_hash_table_unref (connection->map_object_path_to_eo);
   g_hash_table_unref (connection->map_id_to_es);
   g_hash_table_unref (connection->map_object_path_to_es);
+
+  g_hash_table_unref (connection->map_thread_to_last_serial);
 
   g_main_context_unref (connection->main_context_at_construction);
 
@@ -1089,6 +1094,9 @@ g_dbus_connection_init (GDBusConnection *connection)
 
   connection->map_id_to_es = g_hash_table_new (g_direct_hash,
                                                g_direct_equal);
+
+  connection->map_thread_to_last_serial = g_hash_table_new (g_direct_hash,
+                                                            g_direct_equal);
 
   connection->main_context_at_construction = g_main_context_ref_thread_default ();
 
@@ -1571,6 +1579,38 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * g_dbus_connection_get_last_serial:
+ * @connection: A #GDBusConnection.
+ *
+ * Retrieves the last serial number assigned to a #GDBusMessage on
+ * the current thread. This includes messages sent via both low-level
+ * API such as g_dbus_connection_send_message() as well as
+ * high-level API such as g_dbus_connection_emit_signal(),
+ * g_dbus_connection_call() or g_dbus_proxy_call().
+ *
+ * Returns: the last used serial or zero when no message has been sent
+ * within the current thread.
+ *
+ * Since: 2.34
+ */
+guint32
+g_dbus_connection_get_last_serial (GDBusConnection *connection)
+{
+  guint32 ret;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
+
+  CONNECTION_LOCK (connection);
+  ret = GPOINTER_TO_UINT (g_hash_table_lookup (connection->map_thread_to_last_serial,
+                                               g_thread_self ()));
+  CONNECTION_UNLOCK (connection);
+
+  return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 /* Can be called by any thread, with the connection lock held */
 static gboolean
 g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
@@ -1644,6 +1684,15 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
   if (out_serial != NULL)
     *out_serial = serial_to_use;
+
+  /* store used serial for the current thread */
+  /* TODO: watch the thread disposal and remove associated record
+   *       from hashtable
+   *  - see https://bugzilla.gnome.org/show_bug.cgi?id=676825#c7
+   */
+  g_hash_table_replace (connection->map_thread_to_last_serial,
+                        g_thread_self (),
+                        GUINT_TO_POINTER (serial_to_use));
 
   if (!(flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL))
     g_dbus_message_set_serial (message, serial_to_use);

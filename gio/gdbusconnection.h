@@ -89,6 +89,10 @@ GIOStream       *g_dbus_connection_get_stream                 (GDBusConnection  
 const gchar     *g_dbus_connection_get_guid                   (GDBusConnection    *connection);
 const gchar     *g_dbus_connection_get_unique_name            (GDBusConnection    *connection);
 GCredentials    *g_dbus_connection_get_peer_credentials       (GDBusConnection    *connection);
+
+GLIB_AVAILABLE_IN_2_34
+guint32          g_dbus_connection_get_last_serial            (GDBusConnection    *connection);
+
 gboolean         g_dbus_connection_get_exit_on_close          (GDBusConnection    *connection);
 void             g_dbus_connection_set_exit_on_close          (GDBusConnection    *connection,
                                                                gboolean            exit_on_close);

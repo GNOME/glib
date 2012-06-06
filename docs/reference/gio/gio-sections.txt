@@ -2629,6 +2629,7 @@ g_dbus_connection_get_unique_name
 GDBusCapabilityFlags
 g_dbus_connection_get_capabilities
 g_dbus_connection_get_peer_credentials
+g_dbus_connection_get_last_serial
 GDBusCallFlags
 g_dbus_connection_call
 g_dbus_connection_call_finish

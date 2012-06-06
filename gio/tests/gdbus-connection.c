@@ -995,6 +995,95 @@ test_connection_filter (void)
   session_bus_down ();
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
+
+#define NUM_THREADS 50
+
+static void
+send_bogus_message (GDBusConnection *c, guint32 *out_serial)
+{
+  GDBusMessage *m;
+  GError *error;
+
+  m = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
+                                      "/org/freedesktop/DBus", /* path */
+                                      "org.freedesktop.DBus", /* interface */
+                                      "GetNameOwner");
+  g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
+  error = NULL;
+  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, out_serial, &error);
+  g_assert_no_error (error);
+}
+
+static gpointer
+serials_thread_func (GDBusConnection *c)
+{
+  guint32 message_serial;
+
+  /* No calls on this thread yet */
+  g_assert_cmpint (g_dbus_connection_get_last_serial(c), ==, 0);
+
+  /* Send a bogus message and store its serial */
+  message_serial = 0;
+  send_bogus_message (c, &message_serial);
+
+  /* Give it some time to actually send the message out */
+  g_usleep (250000);
+
+  g_assert_cmpint (g_dbus_connection_get_last_serial(c), !=, 0);
+  g_assert_cmpint (g_dbus_connection_get_last_serial(c), ==, message_serial);
+
+  return NULL;
+}
+
+static void
+test_connection_serials (void)
+{
+  GDBusConnection *c;
+  GError *error;
+  GThread *pool[NUM_THREADS];
+  int i;
+
+  session_bus_up ();
+
+  error = NULL;
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (c != NULL);
+
+  /* Status after initialization */
+  g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 1);
+
+  /* Send a bogus message */
+  send_bogus_message (c, NULL);
+  g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 2);
+
+  /* Start the threads */
+  for (i = 0; i < NUM_THREADS; i++)
+    pool[i] = g_thread_new (NULL, (GThreadFunc) serials_thread_func, c);
+
+  /* Wait until threads are finished */
+  for (i = 0; i < NUM_THREADS; i++)
+    {
+      g_thread_join (pool[i]);
+      g_thread_unref (pool[i]);
+    }
+
+  /* No calls in between on this thread, should be the last value */
+  g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 2);
+
+  send_bogus_message (c, NULL);
+
+  /* All above calls + calls in threads */
+  g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 3 + NUM_THREADS);
+
+  g_object_unref (c);
+
+  session_bus_down ();
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static void
 test_connection_basic (void)
 {
@@ -1066,5 +1155,6 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/send", test_connection_send);
   g_test_add_func ("/gdbus/connection/signals", test_connection_signals);
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
+  g_test_add_func ("/gdbus/connection/serials", test_connection_serials);
   return g_test_run();
 }
