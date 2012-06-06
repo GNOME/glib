@@ -26,7 +26,7 @@
 #include <glib.h>
 #include <string.h>
 
-#define N_THREADS (100)
+#define N_THREADS (20)
 
 static char *echo_prog_path;
 
