@@ -1320,6 +1320,12 @@ g_regex_new (const gchar         *pattern,
 
   compile_options |= PCRE_UCP;
 
+  /* PCRE_BSR_UNICODE is the default for the internal PCRE but
+   * possibly not for the system one.
+   */
+  if (~compile_options & G_REGEX_BSR_ANYCRLF)
+    compile_options |= PCRE_BSR_UNICODE;
+
   /* compile the pattern */
   re = pcre_compile2 (pattern, compile_options, &errcode,
                       &errmsg, &erroffset, NULL);

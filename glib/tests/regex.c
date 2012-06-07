@@ -1366,6 +1366,7 @@ test_match_all (gconstpointer d)
 #define PCRE_NO_UTF8_CHECK      0x00002000
 #define PCRE_NEWLINE_ANY        0x00400000
 #define PCRE_UCP                0x20000000
+#define PCRE_BSR_UNICODE        0x01000000
 
 static void
 test_basic (void)
@@ -1377,7 +1378,7 @@ test_basic (void)
   regex = g_regex_new ("[A-Z]+", cflags, mflags, NULL);
 
   g_assert (regex != NULL);
-  g_assert_cmpint (g_regex_get_compile_flags (regex), ==, cflags|PCRE_UTF8|PCRE_NO_UTF8_CHECK|PCRE_NEWLINE_ANY|PCRE_UCP );
+  g_assert_cmpint (g_regex_get_compile_flags (regex), ==, cflags|PCRE_UTF8|PCRE_NO_UTF8_CHECK|PCRE_NEWLINE_ANY|PCRE_UCP|PCRE_BSR_UNICODE);
   g_assert_cmpint (g_regex_get_match_flags (regex), ==, mflags|PCRE_NO_UTF8_CHECK);
 
   g_regex_unref (regex);
