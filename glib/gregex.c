@@ -112,7 +112,8 @@
                               G_REGEX_DUPNAMES          | \
                               G_REGEX_NEWLINE_CR        | \
                               G_REGEX_NEWLINE_LF        | \
-                              G_REGEX_NEWLINE_CRLF)
+                              G_REGEX_NEWLINE_CRLF      | \
+                              G_REGEX_NEWLINE_ANYCRLF)
 
 /* Mask of all the possible values for GRegexMatchFlags. */
 #define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED      | \
@@ -138,6 +139,7 @@ G_STATIC_ASSERT (G_REGEX_DUPNAMES        == PCRE_DUPNAMES);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_CR      == PCRE_NEWLINE_CR);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_LF      == PCRE_NEWLINE_LF);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF    == PCRE_NEWLINE_CRLF);
+G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
 
 G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED     == PCRE_ANCHORED);
 G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL       == PCRE_NOTBOL);
