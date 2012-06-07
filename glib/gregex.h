@@ -346,6 +346,15 @@ typedef enum
  * @G_REGEX_MATCH_NEWLINE_ANYCRLF: Overrides the newline definition set when
  *     creating a new #GRegex; any '\r', '\n', or '\r\n' character sequence
  *     is recognized as a newline. Since: 2.34
+ * @G_REGEX_MATCH_BSR_ANYCRLF: Overrides the newline definition for "\R" set when
+ *     creating a new #GRegex; only '\r', '\n', or '\r\n' character sequences
+ *     are recognized as a newline by "\R". Since: 2.34
+ * @G_REGEX_MATCH_BSR_ANY: Overrides the newline definition for "\R" set when
+ *     creating a new #GRegex; any Unicode newline character or character sequence
+ *     are recognized as a newline by "\R". These are '\r', '\n' and '\rn', and the
+ *     single characters U+000B LINE TABULATION, U+000C FORM FEED (FF),
+ *     U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and
+ *     U+2029 PARAGRAPH SEPARATOR. Since: 2.34
  *
  * Flags specifying match-time options.
  *
@@ -364,7 +373,9 @@ typedef enum
   G_REGEX_MATCH_NEWLINE_LF      = 1 << 21,
   G_REGEX_MATCH_NEWLINE_CRLF    = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
   G_REGEX_MATCH_NEWLINE_ANY     = 1 << 22,
-  G_REGEX_MATCH_NEWLINE_ANYCRLF = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY
+  G_REGEX_MATCH_NEWLINE_ANYCRLF = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
+  G_REGEX_MATCH_BSR_ANYCRLF     = 1 << 23,
+  G_REGEX_MATCH_BSR_ANY         = 1 << 24
 } GRegexMatchFlags;
 
 /**
