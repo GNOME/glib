@@ -160,7 +160,7 @@ test_match_simple (gconstpointer d)
   g_assert_cmpint (match, ==, data->expected);
 }
 
-#define TEST_MATCH_SIMPLE(_pattern, _string, _compile_opts, _match_opts, _expected) { \
+#define TEST_MATCH_SIMPLE_NAMED(_name, _pattern, _string, _compile_opts, _match_opts, _expected) { \
   TestMatchData *data;                                                  \
   gchar *path;                                                          \
   data = g_new0 (TestMatchData, 1);                                     \
@@ -169,10 +169,17 @@ test_match_simple (gconstpointer d)
   data->compile_opts = _compile_opts;                                    \
   data->match_opts = _match_opts;                                        \
   data->expected = _expected;                                            \
-  path = g_strdup_printf ("/regex/match-simple/%d", ++total);           \
+  path = g_strdup_printf ("/regex/match-%s/%d", _name, ++total);        \
   g_test_add_data_func (path, data, test_match_simple);                 \
   g_free (path);                                                        \
 }
+
+#define TEST_MATCH_SIMPLE(_pattern, _string, _compile_opts, _match_opts, _expected) \
+  TEST_MATCH_SIMPLE_NAMED("simple", _pattern, _string, _compile_opts, _match_opts, _expected)
+#define TEST_MATCH_NOTEMPTY(_pattern, _string, _expected) \
+  TEST_MATCH_SIMPLE_NAMED("notempty", _pattern, _string, 0, G_REGEX_MATCH_NOTEMPTY, _expected)
+#define TEST_MATCH_NOTEMPTY_ATSTART(_pattern, _string, _expected) \
+  TEST_MATCH_SIMPLE_NAMED("notempty-atstart", _pattern, _string, 0, G_REGEX_MATCH_NOTEMPTY_ATSTART, _expected)
 
 static void
 test_match (gconstpointer d)
@@ -2682,6 +2689,10 @@ main (int argc, char *argv[])
   TEST_MATCH_ALL3("<.*>", "<a><b><c>", -1, 0, "<a><b><c>", 0, 9,
 		  "<a><b>", 0, 6, "<a>", 0, 3);
   TEST_MATCH_ALL3("a+", "aaa", -1, 0, "aaa", 0, 3, "aa", 0, 2, "a", 0, 1);
+
+  /* NOTEMPTY matching */
+  TEST_MATCH_NOTEMPTY("a?b?", "xyz", FALSE);
+  TEST_MATCH_NOTEMPTY_ATSTART("a?b?", "xyz", TRUE);
 
   return g_test_run ();
 }

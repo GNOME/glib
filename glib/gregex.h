@@ -366,6 +366,9 @@ typedef enum
  *     to #G_REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial match
  *     is found, without continuing to search for a possible complete match. See
  *     see g_match_info_is_partial_match() for more information. Since: 2.34
+ * @G_REGEX_MATCH_NOTEMPTY_ATSTART: Like #G_REGEX_MATCH_NOTEMPTY, but only applied to
+ *     the start of the matched string. For anchored
+ *     patterns this can only happen for pattern containing "\K". Since: 2.34
  *
  * Flags specifying match-time options.
  *
@@ -375,20 +378,21 @@ typedef enum
  * adding a new flag. */
 typedef enum
 {
-  G_REGEX_MATCH_ANCHORED        = 1 << 4,
-  G_REGEX_MATCH_NOTBOL          = 1 << 7,
-  G_REGEX_MATCH_NOTEOL          = 1 << 8,
-  G_REGEX_MATCH_NOTEMPTY        = 1 << 10,
-  G_REGEX_MATCH_PARTIAL         = 1 << 15,
-  G_REGEX_MATCH_NEWLINE_CR      = 1 << 20,
-  G_REGEX_MATCH_NEWLINE_LF      = 1 << 21,
-  G_REGEX_MATCH_NEWLINE_CRLF    = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
-  G_REGEX_MATCH_NEWLINE_ANY     = 1 << 22,
-  G_REGEX_MATCH_NEWLINE_ANYCRLF = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
-  G_REGEX_MATCH_BSR_ANYCRLF     = 1 << 23,
-  G_REGEX_MATCH_BSR_ANY         = 1 << 24,
-  G_REGEX_MATCH_PARTIAL_SOFT    = G_REGEX_MATCH_PARTIAL,
-  G_REGEX_MATCH_PARTIAL_HARD    = 1 << 27
+  G_REGEX_MATCH_ANCHORED         = 1 << 4,
+  G_REGEX_MATCH_NOTBOL           = 1 << 7,
+  G_REGEX_MATCH_NOTEOL           = 1 << 8,
+  G_REGEX_MATCH_NOTEMPTY         = 1 << 10,
+  G_REGEX_MATCH_PARTIAL          = 1 << 15,
+  G_REGEX_MATCH_NEWLINE_CR       = 1 << 20,
+  G_REGEX_MATCH_NEWLINE_LF       = 1 << 21,
+  G_REGEX_MATCH_NEWLINE_CRLF     = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
+  G_REGEX_MATCH_NEWLINE_ANY      = 1 << 22,
+  G_REGEX_MATCH_NEWLINE_ANYCRLF  = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
+  G_REGEX_MATCH_BSR_ANYCRLF      = 1 << 23,
+  G_REGEX_MATCH_BSR_ANY          = 1 << 24,
+  G_REGEX_MATCH_PARTIAL_SOFT     = G_REGEX_MATCH_PARTIAL,
+  G_REGEX_MATCH_PARTIAL_HARD     = 1 << 27,
+  G_REGEX_MATCH_NOTEMPTY_ATSTART = 1 << 28
 } GRegexMatchFlags;
 
 /**
