@@ -88,6 +88,18 @@
  * unescaped "#" outside a character class is encountered. This indicates
  * a comment that lasts until after the next newline.
  *
+ * When setting the %G_REGEX_JAVASCRIPT_COMPAT flag, pattern syntax and pattern
+ * matching is changed to be compatible with the way that regular expressions
+ * work in JavaScript. More precisely, a lonely ']' character in the pattern
+ * is a syntax error; the '\x' escape only allows 0 to 2 hexadecimal digits, and
+ * you must use the '\u' escape sequence with 4 hex digits to specify a unicode
+ * codepoint instead of '\x' or 'x{....}'. If '\x' or '\u' are not followed by
+ * the specified number of hex digits, they match 'x' and 'u' literally; also
+ * '\U' always matches 'U' instead of being an error in the pattern. Finally,
+ * pattern matching is modified so that back references to an unset subpattern
+ * group produces a match with the empty string instead of an error. See
+ * <ulink>man:pcreapi(3)<ulink> for more information.
+ *
  * Creating and manipulating the same #GRegex structure from different
  * threads is not a problem as #GRegex does not modify its internal
  * state between creation and destruction, on the other hand #GMatchInfo
@@ -114,7 +126,8 @@
                               G_REGEX_NEWLINE_LF        | \
                               G_REGEX_NEWLINE_CRLF      | \
                               G_REGEX_NEWLINE_ANYCRLF   | \
-                              G_REGEX_BSR_ANYCRLF)
+                              G_REGEX_BSR_ANYCRLF       | \
+                              G_REGEX_JAVASCRIPT_COMPAT)
 
 /* Mask of all GRegexCompileFlags values that are (not) passed trough to PCRE */
 #define G_REGEX_COMPILE_PCRE_MASK (G_REGEX_COMPILE_MASK & ~G_REGEX_COMPILE_NONPCRE_MASK)
@@ -136,20 +149,21 @@
                             G_REGEX_MATCH_BSR_ANY)
 
 /* we rely on these flags having the same values */
-G_STATIC_ASSERT (G_REGEX_CASELESS        == PCRE_CASELESS);
-G_STATIC_ASSERT (G_REGEX_MULTILINE       == PCRE_MULTILINE);
-G_STATIC_ASSERT (G_REGEX_DOTALL          == PCRE_DOTALL);
-G_STATIC_ASSERT (G_REGEX_EXTENDED        == PCRE_EXTENDED);
-G_STATIC_ASSERT (G_REGEX_ANCHORED        == PCRE_ANCHORED);
-G_STATIC_ASSERT (G_REGEX_DOLLAR_ENDONLY  == PCRE_DOLLAR_ENDONLY);
-G_STATIC_ASSERT (G_REGEX_UNGREEDY        == PCRE_UNGREEDY);
-G_STATIC_ASSERT (G_REGEX_NO_AUTO_CAPTURE == PCRE_NO_AUTO_CAPTURE);
-G_STATIC_ASSERT (G_REGEX_DUPNAMES        == PCRE_DUPNAMES);
-G_STATIC_ASSERT (G_REGEX_NEWLINE_CR      == PCRE_NEWLINE_CR);
-G_STATIC_ASSERT (G_REGEX_NEWLINE_LF      == PCRE_NEWLINE_LF);
-G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF    == PCRE_NEWLINE_CRLF);
-G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
-G_STATIC_ASSERT (G_REGEX_BSR_ANYCRLF     == PCRE_BSR_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_CASELESS          == PCRE_CASELESS);
+G_STATIC_ASSERT (G_REGEX_MULTILINE         == PCRE_MULTILINE);
+G_STATIC_ASSERT (G_REGEX_DOTALL            == PCRE_DOTALL);
+G_STATIC_ASSERT (G_REGEX_EXTENDED          == PCRE_EXTENDED);
+G_STATIC_ASSERT (G_REGEX_ANCHORED          == PCRE_ANCHORED);
+G_STATIC_ASSERT (G_REGEX_DOLLAR_ENDONLY    == PCRE_DOLLAR_ENDONLY);
+G_STATIC_ASSERT (G_REGEX_UNGREEDY          == PCRE_UNGREEDY);
+G_STATIC_ASSERT (G_REGEX_NO_AUTO_CAPTURE   == PCRE_NO_AUTO_CAPTURE);
+G_STATIC_ASSERT (G_REGEX_DUPNAMES          == PCRE_DUPNAMES);
+G_STATIC_ASSERT (G_REGEX_NEWLINE_CR        == PCRE_NEWLINE_CR);
+G_STATIC_ASSERT (G_REGEX_NEWLINE_LF        == PCRE_NEWLINE_LF);
+G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF      == PCRE_NEWLINE_CRLF);
+G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF   == PCRE_NEWLINE_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_BSR_ANYCRLF       == PCRE_BSR_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_JAVASCRIPT_COMPAT == PCRE_JAVASCRIPT_COMPAT);
 
 G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED        == PCRE_ANCHORED);
 G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL          == PCRE_NOTBOL);
@@ -472,6 +486,9 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_MISSING_DIGIT:
       *errmsg = _("digit expected after (?+");
       break;
+    case G_REGEX_ERROR_INVALID_DATA_CHARACTER:
+      *errmsg = _("] is an invalid data character in JavaScript compatibility mode");
+      break;
     case G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME:
       *errmsg = _("different names for subpatterns of the same number are not allowed");
       break;
@@ -513,11 +530,6 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case 174: /* invalid UTF-16 string */
       /* These errors should not happen as we are using an UTF-8 and UCP-enabled PCRE
        * and we do not check if strings are valid */
-    case 164: /* ] is an invalid data character in JavaScript compatibility mode */
-      /* This should not happen as we don't use PCRE_JAVASCRIPT_COMPAT */
-      g_warning ("%s", *errmsg);
-      *errcode = G_REGEX_ERROR_COMPILE;
-      break;
     case 170: /* internal error: unknown opcode in find_fixedlength() */
       *errcode = G_REGEX_ERROR_INTERNAL;
       break;

@@ -116,6 +116,8 @@ G_BEGIN_DECLS
  *     control verb. Since: 2.34
  * @G_REGEX_ERROR_NUMBER_TOO_BIG: number is too big in escape sequence. Since: 2.34
  * @G_REGEX_ERROR_MISSING_SUBPATTERN_NAME: Missing subpattern name. Since: 2.34
+ * @G_REGEX_ERROR_INVALID_DATA_CHARACTER: In JavaScript compatibility mode,
+ *     "[" is an invalid data character. Since: 2.34
  * @G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME: different names for subpatterns of the 
  *     same number are not allowed. Since: 2.34
  * @G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_REQUIRED: the backtracing control
@@ -185,6 +187,7 @@ typedef enum
   G_REGEX_ERROR_NUMBER_TOO_BIG = 161,
   G_REGEX_ERROR_MISSING_SUBPATTERN_NAME = 162,
   G_REGEX_ERROR_MISSING_DIGIT = 163,
+  G_REGEX_ERROR_INVALID_DATA_CHARACTER = 164,
   G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME = 165,
   G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_REQUIRED = 166,
   G_REGEX_ERROR_INVALID_CONTROL_CHAR = 168,
@@ -299,7 +302,8 @@ typedef enum
   G_REGEX_NEWLINE_LF        = 1 << 21,
   G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
-  G_REGEX_BSR_ANYCRLF       = 1 << 23
+  G_REGEX_BSR_ANYCRLF       = 1 << 23,
+  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25
 } GRegexCompileFlags;
 
 /**
@@ -355,6 +359,8 @@ typedef enum
  *     single characters U+000B LINE TABULATION, U+000C FORM FEED (FF),
  *     U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and
  *     U+2029 PARAGRAPH SEPARATOR. Since: 2.34
+ * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
+ *     JavaScript rather than PCRE. Since: 2.34
  *
  * Flags specifying match-time options.
  *
