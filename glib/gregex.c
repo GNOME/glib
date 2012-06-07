@@ -116,15 +116,16 @@
                               G_REGEX_NEWLINE_ANYCRLF)
 
 /* Mask of all the possible values for GRegexMatchFlags. */
-#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED      | \
-                            G_REGEX_MATCH_NOTBOL        | \
-                            G_REGEX_MATCH_NOTEOL        | \
-                            G_REGEX_MATCH_NOTEMPTY      | \
-                            G_REGEX_MATCH_PARTIAL       | \
-                            G_REGEX_MATCH_NEWLINE_CR    | \
-                            G_REGEX_MATCH_NEWLINE_LF    | \
-                            G_REGEX_MATCH_NEWLINE_CRLF  | \
-                            G_REGEX_MATCH_NEWLINE_ANY)
+#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED         | \
+                            G_REGEX_MATCH_NOTBOL           | \
+                            G_REGEX_MATCH_NOTEOL           | \
+                            G_REGEX_MATCH_NOTEMPTY         | \
+                            G_REGEX_MATCH_PARTIAL          | \
+                            G_REGEX_MATCH_NEWLINE_CR       | \
+                            G_REGEX_MATCH_NEWLINE_LF       | \
+                            G_REGEX_MATCH_NEWLINE_CRLF     | \
+                            G_REGEX_MATCH_NEWLINE_ANY      | \
+                            G_REGEX_MATCH_NEWLINE_ANYCRLF)
 
 /* we rely on these flags having the same values */
 G_STATIC_ASSERT (G_REGEX_CASELESS        == PCRE_CASELESS);
@@ -141,15 +142,16 @@ G_STATIC_ASSERT (G_REGEX_NEWLINE_LF      == PCRE_NEWLINE_LF);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF    == PCRE_NEWLINE_CRLF);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
 
-G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED     == PCRE_ANCHORED);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL       == PCRE_NOTBOL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTEOL       == PCRE_NOTEOL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY     == PCRE_NOTEMPTY);
-G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL      == PCRE_PARTIAL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CR   == PCRE_NEWLINE_CR);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_LF   == PCRE_NEWLINE_LF);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CRLF == PCRE_NEWLINE_CRLF);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY  == PCRE_NEWLINE_ANY);
+G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED        == PCRE_ANCHORED);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL          == PCRE_NOTBOL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTEOL          == PCRE_NOTEOL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY        == PCRE_NOTEMPTY);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL         == PCRE_PARTIAL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CR      == PCRE_NEWLINE_CR);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_LF      == PCRE_NEWLINE_LF);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CRLF    == PCRE_NEWLINE_CRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY     == PCRE_NEWLINE_ANY);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
