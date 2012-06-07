@@ -56,6 +56,9 @@ typedef struct {
   GRegexCompileFlags compile_opts;
   GRegexMatchFlags   match_opts;
   gint expected_error;
+  gboolean check_flags;
+  GRegexCompileFlags real_compile_opts;
+  GRegexMatchFlags real_match_opts;
 } TestNewData;
 
 static void
@@ -70,6 +73,12 @@ test_new (gconstpointer d)
   g_assert_no_error (error);
   g_assert_cmpstr (data->pattern, ==, g_regex_get_pattern (regex));
 
+  if (data->check_flags)
+    {
+      g_assert_cmphex (g_regex_get_compile_flags (regex), ==, data->real_compile_opts);
+      g_assert_cmphex (g_regex_get_match_flags (regex), ==, data->real_match_opts);
+    }
+
   g_regex_unref (regex);
 }
 
@@ -81,9 +90,26 @@ test_new (gconstpointer d)
   data->compile_opts = _compile_opts;                    \
   data->match_opts = _match_opts;                        \
   data->expected_error = 0;                             \
+  data->check_flags = FALSE;                            \
   path = g_strdup_printf ("/regex/new/%d", ++total);    \
   g_test_add_data_func (path, data, test_new);          \
   g_free (path);                                        \
+}
+
+#define TEST_NEW_CHECK_FLAGS(_pattern, _compile_opts, _match_opts, _real_compile_opts, _real_match_opts) { \
+  TestNewData *data; \
+  gchar *path; \
+  data = g_new0 (TestNewData, 1); \
+  data->pattern = _pattern; \
+  data->compile_opts = _compile_opts; \
+  data->match_opts = 0; \
+  data->expected_error = 0; \
+  data->check_flags = TRUE; \
+  data->real_compile_opts = _real_compile_opts; \
+  data->real_match_opts = _real_match_opts; \
+  path = g_strdup_printf ("/regex/new-check-flags/%d", ++total); \
+  g_test_add_data_func (path, data, test_new); \
+  g_free (path); \
 }
 
 static void
@@ -1362,28 +1388,6 @@ test_match_all (gconstpointer d)
   }                                                                     \
 }
 
-#define PCRE_UTF8               0x00000800
-#define PCRE_NO_UTF8_CHECK      0x00002000
-#define PCRE_NEWLINE_ANY        0x00400000
-#define PCRE_UCP                0x20000000
-#define PCRE_BSR_UNICODE        0x01000000
-
-static void
-test_basic (void)
-{
-  GRegexCompileFlags cflags = G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE;
-  GRegexMatchFlags mflags = G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL;
-  GRegex *regex;
-
-  regex = g_regex_new ("[A-Z]+", cflags, mflags, NULL);
-
-  g_assert (regex != NULL);
-  g_assert_cmpint (g_regex_get_compile_flags (regex), ==, cflags|PCRE_UTF8|PCRE_NO_UTF8_CHECK|PCRE_NEWLINE_ANY|PCRE_UCP|PCRE_BSR_UNICODE);
-  g_assert_cmpint (g_regex_get_match_flags (regex), ==, mflags|PCRE_NO_UTF8_CHECK);
-
-  g_regex_unref (regex);
-}
-
 static void
 test_properties (void)
 {
@@ -2043,7 +2047,6 @@ main (int argc, char *argv[])
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
-  g_test_add_func ("/regex/basic", test_basic);
   g_test_add_func ("/regex/properties", test_properties);
   g_test_add_func ("/regex/class", test_class);
   g_test_add_func ("/regex/lookahead", test_lookahead);
@@ -2055,6 +2058,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
+  TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
   TEST_NEW("", 0, 0);
   TEST_NEW(".*", 0, 0);
   TEST_NEW(".*", G_REGEX_OPTIMIZE, 0);
@@ -2068,6 +2072,29 @@ main (int argc, char *argv[])
   TEST_NEW("(?P<A>x)|(?P<A>y)", G_REGEX_DUPNAMES | G_REGEX_OPTIMIZE, 0);
   /* This gives "internal error: code overflow" with pcre 6.0 */
   TEST_NEW("(?i)(?-i)", 0, 0);
+
+  /* Check that flags are correct if the pattern modifies them */
+  /* TEST_NEW_CHECK_FLAGS(pattern, compile_opts, match_ops, real_compile_opts, real_match_opts) */
+  TEST_NEW_CHECK_FLAGS ("a", G_REGEX_OPTIMIZE, 0, G_REGEX_OPTIMIZE, 0);
+  TEST_NEW_CHECK_FLAGS ("a", G_REGEX_RAW, 0, G_REGEX_RAW, 0);
+  TEST_NEW_CHECK_FLAGS ("(?i)a", 0, 0, G_REGEX_CASELESS, 0);
+  TEST_NEW_CHECK_FLAGS ("(?m)a", 0, 0, G_REGEX_MULTILINE, 0);
+  TEST_NEW_CHECK_FLAGS ("(?s)a", 0, 0, G_REGEX_DOTALL, 0);
+  TEST_NEW_CHECK_FLAGS ("(?x)a", 0, 0, G_REGEX_EXTENDED, 0);
+  TEST_NEW_CHECK_FLAGS ("(?J)a", 0, 0, G_REGEX_DUPNAMES, 0);
+  TEST_NEW_CHECK_FLAGS ("(?U)[a-z]+", 0, 0, G_REGEX_UNGREEDY, 0);
+  TEST_NEW_CHECK_FLAGS ("(?X)a", 0, 0, 0 /* not exposed by GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("^.*", 0, 0, G_REGEX_ANCHORED, 0);
+  TEST_NEW_CHECK_FLAGS ("(*UTF8)a", 0, 0, 0 /* this is the default in GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("(*UCP)a", 0, 0, 0 /* this always on in GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("(*CR)a", 0, 0, G_REGEX_NEWLINE_CR, 0);
+  TEST_NEW_CHECK_FLAGS ("(*LF)a", 0, 0, G_REGEX_NEWLINE_LF, 0);
+  TEST_NEW_CHECK_FLAGS ("(*CRLF)a", 0, 0, G_REGEX_NEWLINE_CRLF, 0);
+  TEST_NEW_CHECK_FLAGS ("(*ANY)a", 0, 0, 0 /* this is the default in GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("(*ANYCRLF)a", 0, 0, G_REGEX_NEWLINE_ANYCRLF, 0);
+  TEST_NEW_CHECK_FLAGS ("(*BSR_ANYCRLF)a", 0, 0, G_REGEX_BSR_ANYCRLF, 0);
+  TEST_NEW_CHECK_FLAGS ("(*BSR_UNICODE)a", 0, 0, 0 /* this is the default in GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("(*NO_START_OPT)a", 0, 0, 0 /* not exposed in GRegex */, 0);
 
   /* TEST_NEW_FAIL(pattern, compile_opts, expected_error) */
   TEST_NEW_FAIL("(", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
