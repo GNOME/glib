@@ -1815,10 +1815,11 @@ AC_SUBST(XATTR_LIBS)
 dnl ************************
 dnl *** check for libelf ***
 dnl ************************
-
+AC_ARG_ENABLE(libelf,
+              AC_HELP_STRING([--disable-libelf], [build without libelf support]))
+AS_IF([ test "x$enable_libelf" != "xno"],[
 PKG_CHECK_MODULES([LIBELF], [libelf >= 0.8.12], [have_libelf=yes], [have_libelf=maybe])
-
-AS_IF([ test $have_libelf = maybe], [
+AS_IF([ test $have_libelf = maybe ], [
   glib_save_LIBS=$LIBS
   AC_CHECK_LIB([elf], [elf_begin], [:], [have_libelf=no])
   AC_CHECK_LIB([elf], [elf_getshdrstrndx], [:], [have_libelf=no])
@@ -1831,8 +1832,9 @@ AS_IF([ test $have_libelf = maybe], [
     have_libelf=yes
   fi
 ])
+])
 
-if test $have_libelf = yes; then
+if test x$have_libelf = xyes; then
   AC_DEFINE(HAVE_LIBELF, 1, [Define if libelf is available])
 fi
 
