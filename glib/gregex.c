@@ -116,6 +116,11 @@
                               G_REGEX_NEWLINE_ANYCRLF   | \
                               G_REGEX_BSR_ANYCRLF)
 
+/* Mask of all GRegexCompileFlags values that are (not) passed trough to PCRE */
+#define G_REGEX_COMPILE_PCRE_MASK (G_REGEX_COMPILE_MASK & ~G_REGEX_COMPILE_NONPCRE_MASK)
+#define G_REGEX_COMPILE_NONPCRE_MASK (G_REGEX_RAW              | \
+                                      G_REGEX_OPTIMIZE)
+
 /* Mask of all the possible values for GRegexMatchFlags. */
 #define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED         | \
                             G_REGEX_MATCH_NOTBOL           | \
@@ -159,14 +164,20 @@ G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANYCRLF     == PCRE_BSR_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANY         == PCRE_BSR_UNICODE);
 
+/* These PCRE flags are unused or not exposed publically in GRegexFlags, so
+ * it should be ok to reuse them for different things.
+ */
+G_STATIC_ASSERT (G_REGEX_OPTIMIZE          == PCRE_NO_UTF8_CHECK);
+G_STATIC_ASSERT (G_REGEX_RAW               == PCRE_UTF8);
+
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
-#define NEXT_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
-                                g_utf8_next_char (s) : \
-                                ((s) + 1))
-#define PREV_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
-                                g_utf8_prev_char (s) : \
-                                ((s) - 1))
+#define NEXT_CHAR(re, s) (((re)->compile_opts & G_REGEX_RAW) ? \
+                                ((s) + 1) : \
+                                g_utf8_next_char (s))
+#define PREV_CHAR(re, s) (((re)->compile_opts & G_REGEX_RAW) ? \
+                                ((s) - 1) : \
+                                g_utf8_prev_char (s))
 
 struct _GMatchInfo
 {
@@ -1269,6 +1280,7 @@ g_regex_new (const gchar         *pattern,
   gboolean optimize = FALSE;
   static volatile gsize initialised = 0;
   unsigned long int pcre_compile_options;
+  GRegexCompileFlags nonpcre_compile_options;
 
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -1296,6 +1308,8 @@ g_regex_new (const gchar         *pattern,
                            _("PCRE library is compiled with incompatible options"));
       return NULL;
     }
+
+  nonpcre_compile_options = compile_options & G_REGEX_COMPILE_NONPCRE_MASK;
 
   /* G_REGEX_OPTIMIZE has the same numeric value of PCRE_NO_UTF8_CHECK,
    * as we do not need to wrap PCRE_NO_UTF8_CHECK. */
@@ -1362,7 +1376,13 @@ g_regex_new (const gchar         *pattern,
    * compile options, e.g. "(?i)foo" will make the pcre structure store
    * PCRE_CASELESS even though it wasn't explicitly given for compilation. */
   pcre_fullinfo (re, NULL, PCRE_INFO_OPTIONS, &pcre_compile_options);
-  compile_options = pcre_compile_options;
+  compile_options = pcre_compile_options & G_REGEX_COMPILE_PCRE_MASK;
+
+  /* Don't leak PCRE_NEWLINE_ANY, which is part of PCRE_NEWLINE_ANYCRLF */
+  if ((pcre_compile_options & PCRE_NEWLINE_ANYCRLF) != PCRE_NEWLINE_ANYCRLF)
+    compile_options &= ~PCRE_NEWLINE_ANY;
+
+  compile_options |= nonpcre_compile_options;
 
   if (!(compile_options & G_REGEX_DUPNAMES))
     {
@@ -1517,7 +1537,7 @@ g_regex_get_match_flags (const GRegex *regex)
 {
   g_return_val_if_fail (regex != NULL, 0);
 
-  return regex->match_opts;
+  return regex->match_opts & G_REGEX_MATCH_MASK;
 }
 
 /**
