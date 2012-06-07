@@ -256,8 +256,6 @@ match_error (gint errcode)
     case PCRE_ERROR_DFA_RECURSE:
     case PCRE_ERROR_RECURSIONLIMIT:
       return _("recursion limit reached");
-    case PCRE_ERROR_NULLWSLIMIT:
-      return _("workspace limit for empty substrings reached");
     case PCRE_ERROR_BADNEWLINE:
       return _("invalid combination of newline flags");
     case PCRE_ERROR_BADOFFSET:
