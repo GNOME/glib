@@ -126,7 +126,9 @@
                             G_REGEX_MATCH_NEWLINE_LF       | \
                             G_REGEX_MATCH_NEWLINE_CRLF     | \
                             G_REGEX_MATCH_NEWLINE_ANY      | \
-                            G_REGEX_MATCH_NEWLINE_ANYCRLF)
+                            G_REGEX_MATCH_NEWLINE_ANYCRLF  | \
+                            G_REGEX_MATCH_BSR_ANYCRLF      | \
+                            G_REGEX_MATCH_BSR_ANY)
 
 /* we rely on these flags having the same values */
 G_STATIC_ASSERT (G_REGEX_CASELESS        == PCRE_CASELESS);
@@ -154,6 +156,8 @@ G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_LF      == PCRE_NEWLINE_LF);
 G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CRLF    == PCRE_NEWLINE_CRLF);
 G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY     == PCRE_NEWLINE_ANY);
 G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANYCRLF     == PCRE_BSR_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANY         == PCRE_BSR_UNICODE);
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
