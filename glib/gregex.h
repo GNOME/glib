@@ -331,10 +331,16 @@ typedef enum
  * @G_REGEX_MATCH_NEWLINE_LF: Overrides the newline definition set when
  *     creating a new #GRegex, setting the '\n' character as line terminator.
  * @G_REGEX_MATCH_NEWLINE_CRLF: Overrides the newline definition set when
- *     creating a new #GRegex, setting the '\r\n' characters as line terminator.
+ *     creating a new #GRegex, setting the '\r\n' characters sequence as line terminator.
  * @G_REGEX_MATCH_NEWLINE_ANY: Overrides the newline definition set when
- *     creating a new #GRegex, any newline character or character sequence
- *     is recognized.
+ *     creating a new #GRegex, any Unicode newline sequence
+ *     is recognised as a newline. These are '\r', '\n' and '\rn', and the
+ *     single characters U+000B LINE TABULATION, U+000C FORM FEED (FF),
+ *     U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and
+ *     U+2029 PARAGRAPH SEPARATOR.
+ * @G_REGEX_MATCH_NEWLINE_ANYCRLF: Overrides the newline definition set when
+ *     creating a new #GRegex; any '\r', '\n', or '\r\n' character sequence
+ *     is recognized as a newline. Since: 2.34
  *
  * Flags specifying match-time options.
  *
@@ -344,15 +350,16 @@ typedef enum
  * adding a new flag. */
 typedef enum
 {
-  G_REGEX_MATCH_ANCHORED      = 1 << 4,
-  G_REGEX_MATCH_NOTBOL        = 1 << 7,
-  G_REGEX_MATCH_NOTEOL        = 1 << 8,
-  G_REGEX_MATCH_NOTEMPTY      = 1 << 10,
-  G_REGEX_MATCH_PARTIAL       = 1 << 15,
-  G_REGEX_MATCH_NEWLINE_CR    = 1 << 20,
-  G_REGEX_MATCH_NEWLINE_LF    = 1 << 21,
-  G_REGEX_MATCH_NEWLINE_CRLF  = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
-  G_REGEX_MATCH_NEWLINE_ANY   = 1 << 22
+  G_REGEX_MATCH_ANCHORED        = 1 << 4,
+  G_REGEX_MATCH_NOTBOL          = 1 << 7,
+  G_REGEX_MATCH_NOTEOL          = 1 << 8,
+  G_REGEX_MATCH_NOTEMPTY        = 1 << 10,
+  G_REGEX_MATCH_PARTIAL         = 1 << 15,
+  G_REGEX_MATCH_NEWLINE_CR      = 1 << 20,
+  G_REGEX_MATCH_NEWLINE_LF      = 1 << 21,
+  G_REGEX_MATCH_NEWLINE_CRLF    = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
+  G_REGEX_MATCH_NEWLINE_ANY     = 1 << 22,
+  G_REGEX_MATCH_NEWLINE_ANYCRLF = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY
 } GRegexMatchFlags;
 
 /**
