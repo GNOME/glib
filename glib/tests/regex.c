@@ -470,7 +470,7 @@ test_partial (gconstpointer d)
 
   g_assert (regex != NULL);
 
-  g_regex_match (regex, data->string, G_REGEX_MATCH_PARTIAL, &match_info);
+  g_regex_match (regex, data->string, data->match_opts, &match_info);
 
   g_assert_cmpint (data->expected, ==, g_match_info_is_partial_match (match_info));
 
@@ -484,17 +484,20 @@ test_partial (gconstpointer d)
   g_regex_unref (regex);
 }
 
-#define TEST_PARTIAL(_pattern, _string, _expected) {               \
+#define TEST_PARTIAL_FULL(_pattern, _string, _match_opts, _expected) { \
   TestMatchData *data;                                          \
   gchar *path;                                                  \
   data = g_new0 (TestMatchData, 1);                             \
   data->pattern = _pattern;                                      \
   data->string = _string;                                        \
+  data->match_opts = _match_opts;                                \
   data->expected = _expected;                                    \
   path = g_strdup_printf ("/regex/match/partial/%d", ++total);  \
   g_test_add_data_func (path, data, test_partial);              \
   g_free (path);                                                \
 }
+
+#define TEST_PARTIAL(_pattern, _string, _expected) TEST_PARTIAL_FULL(_pattern, _string, G_REGEX_MATCH_PARTIAL, _expected)
 
 typedef struct {
   const gchar *pattern;
@@ -2348,6 +2351,10 @@ main (int argc, char *argv[])
   TEST_PARTIAL("a+b", "aa", TRUE);
   TEST_PARTIAL("(a)+b", "aa", TRUE);
   TEST_PARTIAL("a?b", "a", TRUE);
+
+  /* Test soft vs. hard partial matching */
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE);
 
   /* TEST_SUB_PATTERN(pattern, string, start_position, sub_n, expected_sub,
    * 		      expected_start, expected_end) */
