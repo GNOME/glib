@@ -236,6 +236,8 @@ match_error (gint errcode)
       return _("bad offset");
     case PCRE_ERROR_SHORTUTF8:
       return _("short utf8");
+    case PCRE_ERROR_RECURSELOOP:
+      return _("recursion loop");
     default:
       break;
     }
