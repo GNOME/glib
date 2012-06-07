@@ -200,6 +200,8 @@ struct _GMatchInfo
   gint n_workspace;             /* number of workspace elements */
   const gchar *string;          /* string passed to the match function */
   gssize string_len;            /* length of string */
+  /* const */ guchar *mark;     /* MARK when using backtracing control */
+  pcre_extra extra;             /* pcre_extra data */
 };
 
 struct _GRegex
@@ -578,6 +580,20 @@ match_info_new (const GRegex *regex,
   match_info->offsets[0] = -1;
   match_info->offsets[1] = -1;
 
+  if (!is_dfa)
+    {
+      /* We need a pcre_extra to store a pointer to GMatchInfo::mark
+       * where pcre_exec will store the MARK.
+       * Since pcre_exec does not modify the extra data otherwise,
+       * it should be safe to do a shallow copy here.
+       */
+      if (regex->extra)
+        match_info->extra = *regex->extra;
+
+      match_info->extra.flags |= PCRE_EXTRA_MARK;
+      match_info->extra.mark = &match_info->mark;
+    }
+
   return match_info;
 }
 
@@ -617,6 +633,27 @@ g_match_info_get_string (const GMatchInfo *match_info)
 {
   g_return_val_if_fail (match_info != NULL, NULL);
   return match_info->string;
+}
+
+/**
+ * g_match_info_get_mark:
+ * @match_info: a #GMatchInfo structure
+ *
+ * When the pattern contains backtracking control verbs, and there is
+ * a match, returns the argument of the verb last encountered on the
+ * matching path. If there is a partial match, or no match, returns
+ * the argument of the last verb encountered in the whole matching
+ * process. Otherwise, $NULL is returned.
+ *
+ * Returns: (transfer none): the mark, or %NULL
+ *
+ * Since: 2.34
+ */
+const gchar *
+g_match_info_get_mark (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, NULL);
+  return (const gchar *) match_info->mark;
 }
 
 /**
@@ -715,7 +752,7 @@ g_match_info_next (GMatchInfo  *match_info,
     }
 
   match_info->matches = pcre_exec (match_info->regex->pcre_re,
-                                   match_info->regex->extra,
+                                   &match_info->extra,
                                    match_info->string,
                                    match_info->string_len,
                                    match_info->pos,
@@ -1208,7 +1245,6 @@ g_match_info_fetch_all (const GMatchInfo *match_info)
 
   return result;
 }
-
 
 /* GRegex */
 
