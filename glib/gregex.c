@@ -115,7 +115,8 @@
                               G_REGEX_NEWLINE_CRLF      | \
                               G_REGEX_NEWLINE_ANYCRLF   | \
                               G_REGEX_BSR_ANYCRLF       | \
-                              G_REGEX_JAVASCRIPT_COMPAT)
+                              G_REGEX_JAVASCRIPT_COMPAT | \
+                              G_REGEX_NO_START_OPTIMIZE)
 
 /* Mask of all GRegexCompileFlags values that are (not) passed trough to PCRE */
 #define G_REGEX_COMPILE_PCRE_MASK (G_REGEX_COMPILE_MASK & ~G_REGEX_COMPILE_NONPCRE_MASK)
@@ -123,20 +124,21 @@
                                       G_REGEX_OPTIMIZE)
 
 /* Mask of all the possible values for GRegexMatchFlags. */
-#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED         | \
-                            G_REGEX_MATCH_NOTBOL           | \
-                            G_REGEX_MATCH_NOTEOL           | \
-                            G_REGEX_MATCH_NOTEMPTY         | \
-                            G_REGEX_MATCH_PARTIAL          | \
-                            G_REGEX_MATCH_NEWLINE_CR       | \
-                            G_REGEX_MATCH_NEWLINE_LF       | \
-                            G_REGEX_MATCH_NEWLINE_CRLF     | \
-                            G_REGEX_MATCH_NEWLINE_ANY      | \
-                            G_REGEX_MATCH_NEWLINE_ANYCRLF  | \
-                            G_REGEX_MATCH_BSR_ANYCRLF      | \
-                            G_REGEX_MATCH_BSR_ANY          | \
-                            G_REGEX_MATCH_PARTIAL_SOFT     | \
-                            G_REGEX_MATCH_PARTIAL_HARD     | \
+#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED          | \
+                            G_REGEX_MATCH_NOTBOL            | \
+                            G_REGEX_MATCH_NOTEOL            | \
+                            G_REGEX_MATCH_NOTEMPTY          | \
+                            G_REGEX_MATCH_PARTIAL           | \
+                            G_REGEX_MATCH_NEWLINE_CR        | \
+                            G_REGEX_MATCH_NEWLINE_LF        | \
+                            G_REGEX_MATCH_NEWLINE_CRLF      | \
+                            G_REGEX_MATCH_NEWLINE_ANY       | \
+                            G_REGEX_MATCH_NEWLINE_ANYCRLF   | \
+                            G_REGEX_MATCH_BSR_ANYCRLF       | \
+                            G_REGEX_MATCH_BSR_ANY           | \
+                            G_REGEX_MATCH_NO_START_OPTIMIZE | \
+                            G_REGEX_MATCH_PARTIAL_SOFT      | \
+                            G_REGEX_MATCH_PARTIAL_HARD      | \
                             G_REGEX_MATCH_NOTEMPTY_ATSTART)
 
 /* we rely on these flags having the same values */
@@ -155,22 +157,24 @@ G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF      == PCRE_NEWLINE_CRLF);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF   == PCRE_NEWLINE_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_BSR_ANYCRLF       == PCRE_BSR_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_JAVASCRIPT_COMPAT == PCRE_JAVASCRIPT_COMPAT);
+G_STATIC_ASSERT (G_REGEX_NO_START_OPTIMIZE == PCRE_NO_START_OPTIMIZE);
 
-G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED         == PCRE_ANCHORED);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL           == PCRE_NOTBOL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTEOL           == PCRE_NOTEOL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY         == PCRE_NOTEMPTY);
-G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL          == PCRE_PARTIAL);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CR       == PCRE_NEWLINE_CR);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_LF       == PCRE_NEWLINE_LF);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CRLF     == PCRE_NEWLINE_CRLF);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY      == PCRE_NEWLINE_ANY);
-G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF  == PCRE_NEWLINE_ANYCRLF);
-G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANYCRLF      == PCRE_BSR_ANYCRLF);
-G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANY          == PCRE_BSR_UNICODE);
-G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_SOFT     == PCRE_PARTIAL_SOFT);
-G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_HARD     == PCRE_PARTIAL_HARD);
-G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY_ATSTART == PCRE_NOTEMPTY_ATSTART);
+G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED          == PCRE_ANCHORED);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL            == PCRE_NOTBOL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTEOL            == PCRE_NOTEOL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY          == PCRE_NOTEMPTY);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL           == PCRE_PARTIAL);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CR        == PCRE_NEWLINE_CR);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_LF        == PCRE_NEWLINE_LF);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_CRLF      == PCRE_NEWLINE_CRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY       == PCRE_NEWLINE_ANY);
+G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF   == PCRE_NEWLINE_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANYCRLF       == PCRE_BSR_ANYCRLF);
+G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANY           == PCRE_BSR_UNICODE);
+G_STATIC_ASSERT (G_REGEX_MATCH_NO_START_OPTIMIZE == PCRE_NO_START_OPTIMIZE);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_SOFT      == PCRE_PARTIAL_SOFT);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_HARD      == PCRE_PARTIAL_HARD);
+G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY_ATSTART  == PCRE_NOTEMPTY_ATSTART);
 
 /* These PCRE flags are unused or not exposed publically in GRegexFlags, so
  * it should be ok to reuse them for different things.
@@ -644,6 +648,9 @@ g_match_info_get_string (const GMatchInfo *match_info)
  * matching path. If there is a partial match, or no match, returns
  * the argument of the last verb encountered in the whole matching
  * process. Otherwise, $NULL is returned.
+ *
+ * See <ulink>man:pcrepattern<ulink> for more information on
+ * backtracking control verbs.
  *
  * Returns: (transfer none): the mark, or %NULL
  *
