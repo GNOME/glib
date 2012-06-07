@@ -49,8 +49,8 @@ MINGW32*)
     ;;
 esac
 
-datadir=@datadir@
 datarootdir=@datarootdir@
+datadir=@datadir@
 
 gettext_dir=$prefix/share/glib-2.0/gettext
 
