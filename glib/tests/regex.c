@@ -2146,7 +2146,7 @@ main (int argc, char *argv[])
   TEST_NEW_CHECK_FLAGS ("(*ANYCRLF)a", 0, 0, G_REGEX_NEWLINE_ANYCRLF, 0);
   TEST_NEW_CHECK_FLAGS ("(*BSR_ANYCRLF)a", 0, 0, G_REGEX_BSR_ANYCRLF, 0);
   TEST_NEW_CHECK_FLAGS ("(*BSR_UNICODE)a", 0, 0, 0 /* this is the default in GRegex */, 0);
-  TEST_NEW_CHECK_FLAGS ("(*NO_START_OPT)a", 0, 0, 0 /* not exposed in GRegex */, 0);
+  TEST_NEW_CHECK_FLAGS ("(*NO_START_OPT)", 0, 0, G_REGEX_NO_START_OPTIMIZE, 0);
 
   /* TEST_NEW_FAIL(pattern, compile_opts, expected_error) */
   TEST_NEW_FAIL("(", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);

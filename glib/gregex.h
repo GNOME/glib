@@ -279,7 +279,8 @@ GQuark g_regex_error_quark (void);
  * G_REGEX_BSR_ANYCRLF: Usually any newline character or character sequence
  *     is recognised. If this option is set, then "\R" only recognizes the newline
  *    characters '\r', '\n' and '\r\n'. Since: 2.34
- * 
+ * @G_REGEX_NO_START_OPTIMIZE: Disable some optimizations that will cause incorrect
+ *     results for g_match_info_get_mark() when using backtracking control verbs. Since: 2.34
  *
  * Flags specifying compile-time options.
  *
@@ -306,7 +307,8 @@ typedef enum
   G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
   G_REGEX_BSR_ANYCRLF       = 1 << 23,
-  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25
+  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25,
+  G_REGEX_NO_START_OPTIMIZE = 1 << 26
 } GRegexCompileFlags;
 
 /**
@@ -372,6 +374,8 @@ typedef enum
  * @G_REGEX_MATCH_NOTEMPTY_ATSTART: Like #G_REGEX_MATCH_NOTEMPTY, but only applied to
  *     the start of the matched string. For anchored
  *     patterns this can only happen for pattern containing "\K". Since: 2.34
+ * @G_REGEX_MATCH_NO_START_OPTIMIZE: Disable some optimizations that will cause incorrect
+ *     results for g_match_info_get_mark() when using backtracking control verbs. Since: 2.34
  *
  * Flags specifying match-time options.
  *
@@ -381,21 +385,22 @@ typedef enum
  * adding a new flag. */
 typedef enum
 {
-  G_REGEX_MATCH_ANCHORED         = 1 << 4,
-  G_REGEX_MATCH_NOTBOL           = 1 << 7,
-  G_REGEX_MATCH_NOTEOL           = 1 << 8,
-  G_REGEX_MATCH_NOTEMPTY         = 1 << 10,
-  G_REGEX_MATCH_PARTIAL          = 1 << 15,
-  G_REGEX_MATCH_NEWLINE_CR       = 1 << 20,
-  G_REGEX_MATCH_NEWLINE_LF       = 1 << 21,
-  G_REGEX_MATCH_NEWLINE_CRLF     = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
-  G_REGEX_MATCH_NEWLINE_ANY      = 1 << 22,
-  G_REGEX_MATCH_NEWLINE_ANYCRLF  = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
-  G_REGEX_MATCH_BSR_ANYCRLF      = 1 << 23,
-  G_REGEX_MATCH_BSR_ANY          = 1 << 24,
-  G_REGEX_MATCH_PARTIAL_SOFT     = G_REGEX_MATCH_PARTIAL,
-  G_REGEX_MATCH_PARTIAL_HARD     = 1 << 27,
-  G_REGEX_MATCH_NOTEMPTY_ATSTART = 1 << 28
+  G_REGEX_MATCH_ANCHORED          = 1 << 4,
+  G_REGEX_MATCH_NOTBOL            = 1 << 7,
+  G_REGEX_MATCH_NOTEOL            = 1 << 8,
+  G_REGEX_MATCH_NOTEMPTY          = 1 << 10,
+  G_REGEX_MATCH_PARTIAL           = 1 << 15,
+  G_REGEX_MATCH_NEWLINE_CR        = 1 << 20,
+  G_REGEX_MATCH_NEWLINE_LF        = 1 << 21,
+  G_REGEX_MATCH_NEWLINE_CRLF      = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_LF,
+  G_REGEX_MATCH_NEWLINE_ANY       = 1 << 22,
+  G_REGEX_MATCH_NEWLINE_ANYCRLF   = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
+  G_REGEX_MATCH_BSR_ANYCRLF       = 1 << 23,
+  G_REGEX_MATCH_BSR_ANY           = 1 << 24,
+  G_REGEX_MATCH_NO_START_OPTIMIZE = 1 << 26,
+  G_REGEX_MATCH_PARTIAL_SOFT      = G_REGEX_MATCH_PARTIAL,
+  G_REGEX_MATCH_PARTIAL_HARD      = 1 << 27,
+  G_REGEX_MATCH_NOTEMPTY_ATSTART  = 1 << 28
 } GRegexMatchFlags;
 
 /**
