@@ -271,6 +271,10 @@ GQuark g_regex_error_quark (void);
  * @G_REGEX_NEWLINE_ANYCRLF: Usually any newline character or character sequence
  *     is recognized. If this option is set, the only recognized newline character
  *     sequences are '\r', '\n', and '\r\n'. Since: 2.34
+ * G_REGEX_BSR_ANYCRLF: Usually any newline character or character sequence
+ *     is recognised. If this option is set, then "\R" only recognizes the newline
+ *    characters '\r', '\n' and '\r\n'. Since: 2.34
+ * 
  *
  * Flags specifying compile-time options.
  *
@@ -294,7 +298,8 @@ typedef enum
   G_REGEX_NEWLINE_CR        = 1 << 20,
   G_REGEX_NEWLINE_LF        = 1 << 21,
   G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
-  G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22
+  G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
+  G_REGEX_BSR_ANYCRLF       = 1 << 23
 } GRegexCompileFlags;
 
 /**
