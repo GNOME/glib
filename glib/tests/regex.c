@@ -1384,89 +1384,6 @@ test_basic (void)
 }
 
 static void
-test_compile (void)
-{
-  GRegex *regex;
-  GError *error;
-
-  error = NULL;
-  regex = g_regex_new ("a\\", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_STRAY_BACKSLASH);
-  g_clear_error (&error);
-  regex = g_regex_new ("a\\c", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MISSING_CONTROL_CHAR);
-  g_clear_error (&error);
-  regex = g_regex_new ("a\\l", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_ESCAPE);
-  g_clear_error (&error);
-  regex = g_regex_new ("a{4,2}", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER);
-  g_clear_error (&error);
-  regex = g_regex_new ("a{999999,}", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_QUANTIFIER_TOO_BIG);
-  g_clear_error (&error);
-  regex = g_regex_new ("[a-z", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS);
-  g_clear_error (&error);
-#if 0
-  regex = g_regex_new ("[\\b]", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_INVALID_ESCAPE_IN_CHARACTER_CLASS);
-  g_clear_error (&error);
-#endif
-  regex = g_regex_new ("[z-a]", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_RANGE_OUT_OF_ORDER);
-  g_clear_error (&error);
-  regex = g_regex_new ("{2,4}", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_NOTHING_TO_REPEAT);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(?u)", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(?<$foo)bar", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
-  g_clear_error (&error);
-  regex = g_regex_new ("a[:alpha:]b", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(b", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
-  g_clear_error (&error);
-  regex = g_regex_new ("a)b", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(?R", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(?-54", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
-  g_clear_error (&error);
-  regex = g_regex_new ("a(?#abc", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNTERMINATED_COMMENT);
-  g_clear_error (&error);
-  regex = g_regex_new ("a[[:fubar:]]b", 0, 0, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME);
-  g_clear_error (&error);
-}
-
-static void
 test_properties (void)
 {
   GRegex *regex;
@@ -2116,7 +2033,6 @@ main (int argc, char *argv[])
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/regex/basic", test_basic);
-  g_test_add_func ("/regex/compile", test_compile);
   g_test_add_func ("/regex/properties", test_properties);
   g_test_add_func ("/regex/class", test_class);
   g_test_add_func ("/regex/lookahead", test_lookahead);
@@ -2148,6 +2064,28 @@ main (int argc, char *argv[])
   TEST_NEW_FAIL("*", 0, G_REGEX_ERROR_NOTHING_TO_REPEAT);
   TEST_NEW_FAIL("?", 0, G_REGEX_ERROR_NOTHING_TO_REPEAT);
   TEST_NEW_FAIL("(?P<A>x)|(?P<A>y)", 0, G_REGEX_ERROR_DUPLICATE_SUBPATTERN_NAME);
+
+  /* Check all GRegexError codes */
+  TEST_NEW_FAIL ("a\\", 0, G_REGEX_ERROR_STRAY_BACKSLASH);
+  TEST_NEW_FAIL ("a\\c", 0, G_REGEX_ERROR_MISSING_CONTROL_CHAR);
+  TEST_NEW_FAIL ("a\\l", 0, G_REGEX_ERROR_UNRECOGNIZED_ESCAPE);
+  TEST_NEW_FAIL ("a{4,2}", 0, G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER);
+  TEST_NEW_FAIL ("a{999999,}", 0, G_REGEX_ERROR_QUANTIFIER_TOO_BIG);
+  TEST_NEW_FAIL ("[a-z", 0, G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS);
+#if 0
+  TEST_NEW_FAIL ("[\\b]", 0, G_REGEX_ERROR_INVALID_ESCAPE_IN_CHARACTER_CLASS);
+#endif
+  TEST_NEW_FAIL ("[z-a]", 0, G_REGEX_ERROR_RANGE_OUT_OF_ORDER);
+  TEST_NEW_FAIL ("{2,4}", 0, G_REGEX_ERROR_NOTHING_TO_REPEAT);
+  TEST_NEW_FAIL ("a(?u)", 0, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
+  TEST_NEW_FAIL ("a(?<$foo)bar", 0, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
+  TEST_NEW_FAIL ("a[:alpha:]b", 0, G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS);
+  TEST_NEW_FAIL ("a(b", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL ("a)b", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL ("a(?R", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL ("a(?-54", 0, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  TEST_NEW_FAIL ("a(?#abc", 0, G_REGEX_ERROR_UNTERMINATED_COMMENT);
+  TEST_NEW_FAIL ("a[[:fubar:]]b", 0, G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME);
 
   /* TEST_MATCH_SIMPLE(pattern, string, compile_opts, match_opts, expected) */
   TEST_MATCH_SIMPLE("a", "", 0, 0, FALSE);
