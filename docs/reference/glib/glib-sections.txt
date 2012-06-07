@@ -1026,6 +1026,7 @@ g_regex_check_replacement
 GMatchInfo
 g_match_info_get_regex
 g_match_info_get_string
+g_match_info_get_mark
 g_match_info_ref
 g_match_info_unref
 g_match_info_free

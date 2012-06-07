@@ -2048,6 +2048,48 @@ test_explicit_crlf (void)
   g_regex_unref (regex);
 }
 
+
+typedef struct {
+  const gchar *pattern;
+  const gchar *string;
+  const gchar *mark;
+  gboolean expected;
+} TestMarkData;
+
+static void
+test_mark (gconstpointer d)
+{
+  const TestMarkData *data = d;
+  GRegex *regex;
+  GMatchInfo *info;
+  gboolean match;
+  GError *error = NULL;
+
+  regex = g_regex_new (data->pattern, 0, 0, &error);
+  g_assert_no_error (error);
+
+  match = g_regex_match_full (regex, data->string, -1, 0, 0, &info, NULL);
+  g_assert_cmpint (match, ==, data->expected);
+  g_assert_cmpstr (g_match_info_get_mark (info), ==, data->mark);
+
+  g_match_info_free (info);
+  g_regex_unref (regex);
+}
+
+#define TEST_MARK(_pattern, _string, _expected, _mark) \
+{ \
+  TestMarkData *data; \
+  gchar *path; \
+  data = g_new0 (TestMarkData, 1); \
+  data->pattern = _pattern; \
+  data->string = _string; \
+  data->mark = _mark; \
+  data->expected = _expected; \
+  path = g_strdup_printf ("/regex/mark/%d", ++total); \
+  g_test_add_data_func (path, data, test_mark); \
+  g_free (path); \
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2702,6 +2744,14 @@ main (int argc, char *argv[])
   /* NOTEMPTY matching */
   TEST_MATCH_NOTEMPTY("a?b?", "xyz", FALSE);
   TEST_MATCH_NOTEMPTY_ATSTART("a?b?", "xyz", TRUE);
+
+  /* MARK */
+  TEST_MARK("^(A(*PRUNE:A)B|C(*PRUNE:B)D)", "AC", FALSE, "A");
+  TEST_MARK("^(A(*PRUNE:A)B|C(*PRUNE:B)D)", "CB", FALSE, "B");
+  TEST_MARK("(*MARK:A)(*SKIP:B)(C|X)", "C", TRUE, "A");
+  TEST_MARK("(*MARK:A)(*SKIP:B)(C|X)", "D", FALSE, "A");
+  TEST_MARK("X(*MARK:A)Y|X(*MARK:B)Z", "XY", TRUE, "A");
+  TEST_MARK("X(*MARK:A)Y|X(*MARK:B)Z", "XZ", TRUE, "B");
 
   return g_test_run ();
 }
