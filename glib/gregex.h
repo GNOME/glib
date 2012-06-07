@@ -104,7 +104,7 @@ G_BEGIN_DECLS
  * @G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE: "DEFINE" group contains more
  *     than one branch. Since 2.16
  * @G_REGEX_ERROR_DEFINE_REPETION: Repeating a "DEFINE" group is not allowed.
- *     Since 2.16
+ *     This error is never raised. Since: 2.16 Deprecated: 2.34
  * @G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS: Inconsistent newline options.
  *     Since 2.16
  * @G_REGEX_ERROR_MISSING_BACK_REFERENCE: "\\g" is not followed by a braced

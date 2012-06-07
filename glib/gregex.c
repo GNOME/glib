@@ -386,9 +386,6 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE:
       *errmsg = _("DEFINE group contains more than one branch");
       break;
-    case G_REGEX_ERROR_DEFINE_REPETION:
-      *errmsg = _("repeating a DEFINE group is not allowed");
-      break;
     case G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS:
       *errmsg = _("inconsistent NEWLINE options");
       break;
