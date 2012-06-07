@@ -1261,7 +1261,7 @@ g_regex_new (const gchar         *pattern,
   gint erroffset;
   gint errcode;
   gboolean optimize = FALSE;
-  static gsize initialised;
+  static volatile gsize initialised = 0;
   unsigned long int pcre_compile_options;
 
   g_return_val_if_fail (pattern != NULL, NULL);
@@ -1271,28 +1271,24 @@ g_regex_new (const gchar         *pattern,
 
   if (g_once_init_enter (&initialised))
     {
-      gint support;
-      const gchar *msg;
+      int supports_utf8, supports_ucp;
 
-      pcre_config (PCRE_CONFIG_UTF8, &support);
-      if (!support)
-        {
-          msg = N_("PCRE library is compiled without UTF8 support");
-          g_critical ("%s", msg);
-          g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
-          return NULL;
-        }
+      pcre_config (PCRE_CONFIG_UTF8, &supports_utf8);
+      if (!supports_utf8)
+        g_critical (_("PCRE library is compiled without UTF8 support"));
 
-      pcre_config (PCRE_CONFIG_UNICODE_PROPERTIES, &support);
-      if (!support)
-        {
-          msg = N_("PCRE library is compiled without UTF8 properties support");
-          g_critical ("%s", msg);
-          g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
-          return NULL;
-        }
+      pcre_config (PCRE_CONFIG_UNICODE_PROPERTIES, &supports_ucp);
+      if (!supports_ucp)
+        g_critical (_("PCRE library is compiled without UTF8 properties support"));
 
-      g_once_init_leave (&initialised, TRUE);
+      g_once_init_leave (&initialised, supports_utf8 && supports_ucp ? 1 : 2);
+    }
+
+  if (G_UNLIKELY (initialised != 1)) 
+    {
+      g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, 
+                           _("PCRE library is compiled with incompatible options"));
+      return NULL;
     }
 
   /* G_REGEX_OPTIMIZE has the same numeric value of PCRE_NO_UTF8_CHECK,
