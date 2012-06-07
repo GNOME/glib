@@ -361,6 +361,11 @@ typedef enum
  *     U+2029 PARAGRAPH SEPARATOR. Since: 2.34
  * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
  *     JavaScript rather than PCRE. Since: 2.34
+ * @G_REGEX_MATCH_PARTIAL_SOFT: An alias for #G_REGEX_MATCH_PARTIAL. Since: 2.34
+ * @G_REGEX_MATCH_PARTIAL_HARD: Turns on the partial matching feature. In contrast to
+ *     to #G_REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial match
+ *     is found, without continuing to search for a possible complete match. See
+ *     see g_match_info_is_partial_match() for more information. Since: 2.34
  *
  * Flags specifying match-time options.
  *
@@ -381,7 +386,9 @@ typedef enum
   G_REGEX_MATCH_NEWLINE_ANY     = 1 << 22,
   G_REGEX_MATCH_NEWLINE_ANYCRLF = G_REGEX_MATCH_NEWLINE_CR | G_REGEX_MATCH_NEWLINE_ANY,
   G_REGEX_MATCH_BSR_ANYCRLF     = 1 << 23,
-  G_REGEX_MATCH_BSR_ANY         = 1 << 24
+  G_REGEX_MATCH_BSR_ANY         = 1 << 24,
+  G_REGEX_MATCH_PARTIAL_SOFT    = G_REGEX_MATCH_PARTIAL,
+  G_REGEX_MATCH_PARTIAL_HARD    = 1 << 27
 } GRegexMatchFlags;
 
 /**

@@ -146,7 +146,9 @@
                             G_REGEX_MATCH_NEWLINE_ANY      | \
                             G_REGEX_MATCH_NEWLINE_ANYCRLF  | \
                             G_REGEX_MATCH_BSR_ANYCRLF      | \
-                            G_REGEX_MATCH_BSR_ANY)
+                            G_REGEX_MATCH_BSR_ANY          | \
+                            G_REGEX_MATCH_PARTIAL_SOFT     | \
+                            G_REGEX_MATCH_PARTIAL_HARD)
 
 /* we rely on these flags having the same values */
 G_STATIC_ASSERT (G_REGEX_CASELESS          == PCRE_CASELESS);
@@ -177,6 +179,8 @@ G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANY     == PCRE_NEWLINE_ANY);
 G_STATIC_ASSERT (G_REGEX_MATCH_NEWLINE_ANYCRLF == PCRE_NEWLINE_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANYCRLF     == PCRE_BSR_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_MATCH_BSR_ANY         == PCRE_BSR_UNICODE);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_SOFT    == PCRE_PARTIAL_SOFT);
+G_STATIC_ASSERT (G_REGEX_MATCH_PARTIAL_HARD    == PCRE_PARTIAL_HARD);
 
 /* These PCRE flags are unused or not exposed publically in GRegexFlags, so
  * it should be ok to reuse them for different things.
@@ -849,13 +853,21 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * able to raise an error as soon as a mistake is made.
  *
  * GRegex supports the concept of partial matching by means of the
- * #G_REGEX_MATCH_PARTIAL flag. When this is set the return code for
+ * #G_REGEX_MATCH_PARTIAL_SOFT and #G_REGEX_MATCH_PARTIAL_HARD flags.
+ * When they are used, the return code for
  * g_regex_match() or g_regex_match_full() is, as usual, %TRUE
  * for a complete match, %FALSE otherwise. But, when these functions
  * return %FALSE, you can check if the match was partial calling
  * g_match_info_is_partial_match().
  *
- * When using partial matching you cannot use g_match_info_fetch*().
+ * The difference between #G_REGEX_MATCH_PARTIAL_SOFT and 
+ * #G_REGEX_MATCH_PARTIAL_HARD is that when a partial match is encountered
+ * with #G_REGEX_MATCH_PARTIAL_SOFT, matching continues to search for a
+ * possible complete match, while with #G_REGEX_MATCH_PARTIAL_HARD matching
+ * stops at the partial match.
+ * When both #G_REGEX_MATCH_PARTIAL_SOFT and #G_REGEX_MATCH_PARTIAL_HARD
+ * are set, the latter takes precedence.
+ * See <ulink>man:pcrepartial</ulink> for more information on partial matching.
  *
  * Because of the way certain internal optimizations are implemented
  * the partial matching algorithm cannot be used with all patterns.
@@ -864,7 +876,8 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * of occurrences is greater than one. Optional items such as "\d?"
  * (where the maximum is one) are permitted. Quantifiers with any values
  * are permitted after parentheses, so the invalid examples above can be
- * coded thus "(a){2,4}" and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set
+ * coded thus "(a){2,4}" and "(\d)+". If #G_REGEX_MATCH_PARTIAL or 
+ * #G_REGEX_MATCH_PARTIAL_HARD is set
  * for a pattern that does not conform to the restrictions, matching
  * functions return an error.
  *
