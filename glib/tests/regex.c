@@ -2023,6 +2023,16 @@ test_multiline (void)
   g_assert_cmpint (count, ==, 2);
 }
 
+static void
+test_explicit_crlf (void)
+{
+  GRegex *regex;
+
+  regex = g_regex_new ("[\r\n]a", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_has_cr_or_lf (regex), ==, TRUE);
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2041,6 +2051,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/condition", test_condition);
   g_test_add_func ("/regex/recursion", test_recursion);
   g_test_add_func ("/regex/multiline", test_multiline);
+  g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("", 0, 0);
