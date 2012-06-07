@@ -1456,6 +1456,27 @@ g_regex_get_capture_count (const GRegex *regex)
 }
 
 /**
+ * g_regex_get_has_cr_or_lf:
+ * @regex: a #GRegex structure
+ *
+ * Checks whether the pattern contains explicit CR or LF references.
+ *
+ * Returns: %TRUE if the pattern contains explicit CR or LF references
+ *
+ * Since: 2.34
+ */
+gboolean
+g_regex_get_has_cr_or_lf (const GRegex *regex)
+{
+  gint value;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+                 PCRE_INFO_HASCRORLF, &value);
+
+  return !!value;
+}
+
+/**
  * g_regex_get_compile_flags:
  * @regex: a #GRegex
  *
