@@ -259,12 +259,18 @@ GQuark g_regex_error_quark (void);
  *     be unique. This can be helpful for certain types of pattern when it
  *     is known that only one instance of the named subpattern can ever be
  *     matched.
- * @G_REGEX_NEWLINE_CR: Usually any newline character is recognized, if this
- *     option is set, the only recognized newline character is '\r'.
- * @G_REGEX_NEWLINE_LF: Usually any newline character is recognized, if this
- *     option is set, the only recognized newline character is '\n'.
- * @G_REGEX_NEWLINE_CRLF: Usually any newline character is recognized, if this
- *     option is set, the only recognized newline character sequence is '\r\n'.
+ * @G_REGEX_NEWLINE_CR: Usually any newline character or character sequence is
+ *     recognized. If this option is set, the only recognized newline character
+ *     is '\r'.
+ * @G_REGEX_NEWLINE_LF: Usually any newline character or character sequence is
+ *     recognized. If this option is set, the only recognized newline character
+ *     is '\n'.
+ * @G_REGEX_NEWLINE_CRLF: Usually any newline character or character sequence is
+ *     recognized. If this option is set, the only recognized newline character
+ *     sequence is '\r\n'.
+ * @G_REGEX_NEWLINE_ANYCRLF: Usually any newline character or character sequence
+ *     is recognized. If this option is set, the only recognized newline character
+ *     sequences are '\r', '\n', and '\r\n'. Since: 2.34
  *
  * Flags specifying compile-time options.
  *
@@ -287,7 +293,8 @@ typedef enum
   G_REGEX_DUPNAMES          = 1 << 19,
   G_REGEX_NEWLINE_CR        = 1 << 20,
   G_REGEX_NEWLINE_LF        = 1 << 21,
-  G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF
+  G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
+  G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22
 } GRegexCompileFlags;
 
 /**
