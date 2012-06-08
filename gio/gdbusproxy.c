@@ -1609,21 +1609,39 @@ async_init_start_service_by_name_cb (GDBusConnection *connection,
        *   org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.Epiphany2
        *   was not provided by any .service files
        *
+       * or (see #677718)
+       *
+       *   org.freedesktop.systemd1.Masked: Unit polkit.service is masked.
+       *
        * This doesn't mean that the name doesn't have an owner, just
-       * that it's not provided by a .service file. So just proceed to
-       * invoke GetNameOwner() if dealing with that error.
+       * that it's not provided by a .service file or can't currently
+       * be started.
+       *
+       * In particular, in both cases, it could be that a service
+       * owner will actually appear later. So instead of erroring out,
+       * we just proceed to invoke GetNameOwner() if dealing with the
+       * kind of errors above.
        */
-      if (error->domain == G_DBUS_ERROR &&
-          error->code == G_DBUS_ERROR_SERVICE_UNKNOWN)
+      if (error->domain == G_DBUS_ERROR && error->code == G_DBUS_ERROR_SERVICE_UNKNOWN)
         {
           g_error_free (error);
         }
       else
         {
-          g_prefix_error (&error,
-                          _("Error calling StartServiceByName for %s: "),
-                          data->proxy->priv->name);
-          goto failed;
+          gchar *remote_error = g_dbus_error_get_remote_error (error);
+          if (g_strcmp0 (remote_error, "org.freedesktop.systemd1.Masked") == 0)
+            {
+              g_error_free (error);
+              g_free (remote_error);
+            }
+          else
+            {
+              g_prefix_error (&error,
+                              _("Error calling StartServiceByName for %s: "),
+                              data->proxy->priv->name);
+              g_free (remote_error);
+              goto failed;
+            }
         }
     }
   else
