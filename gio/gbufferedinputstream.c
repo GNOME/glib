@@ -1131,6 +1131,9 @@ g_buffered_input_stream_real_fill_finish (GBufferedInputStream *stream,
   simple = G_SIMPLE_ASYNC_RESULT (result);
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_buffered_input_stream_real_fill_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return -1;
+
   nread = g_simple_async_result_get_op_res_gssize (simple);
   return nread;
 }

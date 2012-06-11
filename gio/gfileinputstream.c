@@ -456,6 +456,9 @@ g_file_input_stream_real_query_info_finish (GFileInputStream  *stream,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_input_stream_real_query_info_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)
     return g_object_ref (data->info);

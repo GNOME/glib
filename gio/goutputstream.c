@@ -1546,6 +1546,10 @@ g_output_stream_real_write_finish (GOutputStream  *stream,
   WriteData *op;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_output_stream_real_write_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return -1;
+
   op = g_simple_async_result_get_op_res_gpointer (simple);
   return op->count_written;
 }
@@ -1613,6 +1617,10 @@ g_output_stream_real_splice_finish (GOutputStream  *stream,
   SpliceData *op;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_output_stream_real_splice_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return -1;
+
   op = g_simple_async_result_get_op_res_gpointer (simple);
   return op->bytes_copied;
 }
@@ -1656,6 +1664,10 @@ g_output_stream_real_flush_finish (GOutputStream  *stream,
                                    GAsyncResult   *result,
                                    GError        **error)
 {
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
   return TRUE;
 }
 
@@ -1720,6 +1732,10 @@ g_output_stream_real_close_finish (GOutputStream  *stream,
                                    GError        **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_output_stream_real_close_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
   return TRUE;
 }

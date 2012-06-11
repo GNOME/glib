@@ -229,6 +229,9 @@ g_loadable_icon_real_load_finish (GLoadableIcon        *icon,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_loadable_icon_real_load_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
 
   if (type)

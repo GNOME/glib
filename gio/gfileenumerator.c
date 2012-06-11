@@ -693,6 +693,9 @@ g_file_enumerator_real_next_files_finish (GFileEnumerator                *enumer
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
 	    g_file_enumerator_real_next_files_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   op = g_simple_async_result_get_op_res_gpointer (simple);
 
   res = op->files;
@@ -750,7 +753,12 @@ g_file_enumerator_real_close_finish (GFileEnumerator  *enumerator,
                                      GError          **error)
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
 	    g_file_enumerator_real_close_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
+
   return TRUE;
 }

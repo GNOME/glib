@@ -4889,6 +4889,9 @@ g_file_real_query_info_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_query_info_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)
     return g_object_ref (data->info);
@@ -4959,6 +4962,9 @@ g_file_real_query_filesystem_info_finish (GFile         *file,
   QueryFilesystemInfoAsyncData *data;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_query_filesystem_info_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->info)
@@ -5034,6 +5040,9 @@ g_file_real_enumerate_children_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_enumerate_children_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->enumerator)
     return g_object_ref (data->enumerator);
@@ -5096,6 +5105,9 @@ g_file_real_read_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_read_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
     return g_object_ref (op);
@@ -5156,6 +5168,9 @@ g_file_real_append_to_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_append_to_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
     return g_object_ref (op);
@@ -5215,6 +5230,9 @@ g_file_real_create_finish (GFile         *file,
   gpointer op;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_create_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -5301,6 +5319,9 @@ g_file_real_replace_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_replace_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->stream)
     return g_object_ref (data->stream);
@@ -5362,6 +5383,9 @@ g_file_real_open_readwrite_finish (GFile         *file,
   gpointer op;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_open_readwrite_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -5433,6 +5457,9 @@ g_file_real_create_readwrite_finish (GFile         *file,
   gpointer op;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_create_readwrite_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
   op = g_simple_async_result_get_op_res_gpointer (simple);
   if (op)
@@ -5519,6 +5546,9 @@ g_file_real_replace_readwrite_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_replace_readwrite_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->stream)
     return g_object_ref (data->stream);
@@ -5589,6 +5619,9 @@ g_file_real_set_display_name_finish (GFile         *file,
   SetDisplayNameAsyncData *data;
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_set_display_name_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
 
   data = g_simple_async_result_get_op_res_gpointer (simple);
   if (data->file)
@@ -5717,6 +5750,9 @@ g_file_real_find_enclosing_mount_finish (GFile         *file,
 
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_find_enclosing_mount_async);
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
   mount = g_simple_async_result_get_op_res_gpointer (simple);
   return g_object_ref (mount);
 }
@@ -5840,7 +5876,11 @@ g_file_real_copy_finish (GFile        *file,
 			 GAsyncResult *res,
 			 GError      **error)
 {
-  /* Error handled in g_file_copy_finish() */
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
+
   return TRUE;
 }
 
