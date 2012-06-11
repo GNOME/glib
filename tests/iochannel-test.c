@@ -26,7 +26,7 @@ test_small_writes (void)
       g_warning ("Unable to open file %s: %s", 
 		 "iochannel-test-outfile", 
 		 error->message);
-      g_error_free (error);
+      g_clear_error (&error);
       
       exit (1);
     }
@@ -75,14 +75,14 @@ gint main (gint argc, gchar * argv[])
     if (gerr)
       {
         g_warning ("Unable to open file %s: %s", filename, gerr->message);
-        g_error_free (gerr);
+        g_clear_error (&gerr);
         return 1;
       }
     gio_w = g_io_channel_new_file ("iochannel-test-outfile", "w", &gerr);
     if (gerr)
       {
         g_warning ("Unable to open file %s: %s", "iochannel-test-outfile", gerr->message);
-        g_error_free (gerr);
+        g_clear_error (&gerr);
         return 1;
       }
 
@@ -93,8 +93,7 @@ gint main (gint argc, gchar * argv[])
         /* Keep going if this is just a case of iconv not supporting EUC-JP, see bug 428048 */
         if (gerr->code != G_CONVERT_ERROR_NO_CONVERSION)
           return 1;
-        g_error_free (gerr);
-        gerr = NULL;
+        g_clear_error (&gerr);
       }
     
     g_io_channel_set_buffer_size (gio_r, BUFFER_SIZE);
@@ -103,8 +102,7 @@ gint main (gint argc, gchar * argv[])
     if (status == G_IO_STATUS_ERROR)
       {
         g_warning ("%s", gerr->message);
-        g_error_free (gerr);
-        gerr = NULL;
+        g_clear_error (&gerr);
       }
     buffer = g_string_sized_new (BUFFER_SIZE);
 
@@ -142,8 +140,7 @@ gint main (gint argc, gchar * argv[])
           break;
         case G_IO_STATUS_ERROR:
           g_warning ("%s", gerr->message);
-          g_error_free (gerr);
-          gerr = NULL;
+          g_clear_error (&gerr);
           break;
         default:
           g_warning ("Abnormal exit from write loop.");
@@ -157,8 +154,7 @@ gint main (gint argc, gchar * argv[])
     if (status == G_IO_STATUS_ERROR)
       {
         g_warning ("%s", gerr->message);
-        g_error_free (gerr);
-        gerr = NULL;
+        g_clear_error (&gerr);
       }
 
 #ifdef VERBOSE
