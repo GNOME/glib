@@ -591,7 +591,7 @@ interval_valid (GTimeZone *tz,
  *
  * This function may, however, modify @time_ in order to deal with
  * non-existent times.  If the non-existent local @time_ of 02:30 were
- * requested on March 13th 2010 in Toronto then this function would
+ * requested on March 14th 2010 in Toronto then this function would
  * adjust @time_ to be 03:00 and return the interval containing the
  * adjusted time.
  *
