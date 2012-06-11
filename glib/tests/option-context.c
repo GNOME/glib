@@ -28,7 +28,7 @@
 #include <locale.h>
 
 static void
-group_captions (void)
+test_group_captions (void)
 {
   gchar *help_variants[] = { "--help", "--help-all", "--help-test" };
 
@@ -1938,6 +1938,61 @@ test_basic (void)
 }
 
 static void
+test_help (void)
+{
+  GOptionContext *context;
+  GOptionGroup *group;
+  gchar *str;
+  gchar *arg = NULL;
+  gchar **sarr = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Test tests", "Argument to use in test" },
+    { "test2", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_NONE, NULL, "Tests also", NULL },
+    { "frob", 0, 0, G_OPTION_ARG_NONE, NULL, "Main frob", NULL },
+    { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &sarr, "Rest goes here", "REST" },
+    { NULL }
+  };
+  GOptionEntry group_entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Group test", "Group test arg" },
+    { "frob", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_NONE, NULL, "Group frob", NULL },
+    { NULL }
+  };
+
+  context = g_option_context_new ("blabla");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "Summary");
+  g_option_context_set_description (context, "Description");
+
+  group = g_option_group_new ("group1", "Group1-description", "Group1-help", NULL, NULL);
+  g_option_group_add_entries (group, group_entries);
+
+  g_option_context_add_group (context, group);
+
+  str = g_option_context_get_help (context, FALSE, NULL);
+  g_assert (strstr (str, "blabla") != NULL);
+  g_assert (strstr (str, "Test tests") != NULL);
+  g_assert (strstr (str, "Argument to use in test") != NULL);
+  g_assert (strstr (str, "Tests also") == NULL);
+  g_assert (strstr (str, "REST") != NULL);
+  g_assert (strstr (str, "Summary") != NULL);
+  g_assert (strstr (str, "Description") != NULL);
+  g_assert (strstr (str, "--help") != NULL);
+  g_assert (strstr (str, "--help-all") != NULL);
+  g_assert (strstr (str, "--help-group1") != NULL);
+  g_assert (strstr (str, "Group1-description") != NULL);
+  g_assert (strstr (str, "Group1-help") != NULL);
+  g_assert (strstr (str, "Group test arg") != NULL);
+  g_assert (strstr (str, "Group frob") != NULL);
+  g_assert (strstr (str, "Main frob") != NULL);
+  g_assert (strstr (str, "--frob") != NULL);
+  g_assert (strstr (str, "--group1-test") != NULL);
+  g_assert (strstr (str, "--group1-frob") == NULL);
+  g_free (str);
+
+  g_option_context_free (context);
+}
+
+static void
 set_bool (gpointer data)
 {
   gboolean *b = data;
@@ -2020,6 +2075,56 @@ test_error_hook (void)
 }
 
 static void
+test_group_parse (void)
+{
+  GOptionContext *context;
+  GOptionGroup *group;
+  gchar *arg1 = NULL;
+  gchar *arg2 = NULL;
+  gchar *arg3 = NULL;
+  gchar *arg4 = NULL;
+  gchar *arg5 = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg1, NULL, NULL },
+    { "faz", 'f', 0, G_OPTION_ARG_STRING, &arg2, NULL, NULL },
+    { NULL }
+  };
+  GOptionEntry group_entries[] = {
+    { "test", 0, 0, G_OPTION_ARG_STRING, &arg3, NULL, NULL },
+    { "frob", 'f', 0, G_OPTION_ARG_STRING, &arg4, NULL, NULL },
+    { "faz", 'z', 0, G_OPTION_ARG_STRING, &arg5, NULL, NULL },
+    { NULL }
+  };
+  gchar **argv;
+  gint argc;
+  GError *error = NULL;
+  gboolean retval;
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+  group = g_option_group_new ("group", "A group", "help for group", NULL, NULL);
+  g_option_group_add_entries (group, group_entries);
+  g_option_context_add_group (context, group);
+
+  argv = split_string ("program --test arg1 -f arg2 --group-test arg3 --frob arg4 -z arg5", &argc);
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_no_error (error);
+  g_assert (retval);
+  g_assert_cmpstr (arg1, ==, "arg1");
+  g_assert_cmpstr (arg2, ==, "arg2");
+  g_assert_cmpstr (arg3, ==, "arg3");
+  g_assert_cmpstr (arg4, ==, "arg4");
+  g_assert_cmpstr (arg5, ==, "arg5");
+
+  g_free (arg1);
+  g_free (arg2);
+  g_free (arg3);
+  g_free (arg4);
+  g_free (arg5);
+  g_option_context_free (context);
+}
+
+static void
 flag_reverse_string (void)
 {
   if (!g_test_undefined ())
@@ -2093,11 +2198,13 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_add_func ("/option/help", test_help);
 
   g_test_add_func ("/option/basic", test_basic);
-  g_test_add_func ("/option/group/captions", group_captions);
+  g_test_add_func ("/option/group/captions", test_group_captions);
   g_test_add_func ("/option/group/main", test_main_group);
   g_test_add_func ("/option/group/error-hook", test_error_hook);
+  g_test_add_func ("/option/group/parse", test_group_parse);
 
   /* Test that restoration on failure works */
   g_test_add_func ("/option/restoration/int", error_test1);
