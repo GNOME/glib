@@ -1854,16 +1854,14 @@ g_type_create_instance (GType type)
   node = lookup_type_node_I (type);
   if (!node || !node->is_instantiatable)
     {
-      g_warning ("cannot create new instance of invalid (non-instantiatable) type `%s'",
+      g_error ("cannot create new instance of invalid (non-instantiatable) type `%s'",
 		 type_descriptive_name_I (type));
-      return NULL;
     }
   /* G_TYPE_IS_ABSTRACT() is an external call: _U */
   if (!node->mutatable_check_cache && G_TYPE_IS_ABSTRACT (type))
     {
-      g_warning ("cannot create instance of abstract (non-instantiatable) type `%s'",
+      g_error ("cannot create instance of abstract (non-instantiatable) type `%s'",
 		 type_descriptive_name_I (type));
-      return NULL;
     }
   
   class = g_type_class_ref (type);
