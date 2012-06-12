@@ -172,7 +172,7 @@ typedef enum
   G_SPAWN_STDERR_TO_DEV_NULL     = 1 << 4,
   G_SPAWN_CHILD_INHERITS_STDIN   = 1 << 5,
   G_SPAWN_FILE_AND_ARGV_ZERO     = 1 << 6,
-  G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7,
+  G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7
 } GSpawnFlags;
 
 GQuark g_spawn_error_quark (void);

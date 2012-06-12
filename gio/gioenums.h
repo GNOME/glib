@@ -1650,7 +1650,7 @@ typedef enum {
  * Since: 2.34
  */
 typedef enum /*< flags >*/ {
-  G_TEST_DBUS_NONE = 0,
+  G_TEST_DBUS_NONE = 0
 } GTestDBusFlags;
 
 G_END_DECLS
