@@ -104,6 +104,7 @@ static gboolean g_unix_output_stream_close_finish (GOutputStream        *stream,
 						   GAsyncResult         *result,
 						   GError              **error);
 
+static gboolean g_unix_output_stream_pollable_can_poll      (GPollableOutputStream *stream);
 static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStream *stream);
 static GSource *g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
 							     GCancellable         *cancellable);
@@ -165,6 +166,7 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
 static void
 g_unix_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
 {
+  iface->can_poll = g_unix_output_stream_pollable_can_poll;
   iface->is_writable = g_unix_output_stream_pollable_is_writable;
   iface->create_source = g_unix_output_stream_pollable_create_source;
 }
@@ -513,6 +515,12 @@ g_unix_output_stream_close_finish (GOutputStream  *stream,
 {
   /* Failures handled in generic close_finish code */
   return TRUE;
+}
+
+static gboolean
+g_unix_output_stream_pollable_can_poll (GPollableOutputStream *stream)
+{
+  return G_UNIX_OUTPUT_STREAM (stream)->priv->is_pipe_or_socket;
 }
 
 static gboolean
