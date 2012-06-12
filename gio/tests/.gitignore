@@ -24,6 +24,7 @@ gapplication-example-actions
 gapplication-example-cmdline
 gapplication-example-cmdline2
 gapplication-example-cmdline3
+gapplication-example-dbushooks
 gapplication-example-menu
 gapplication-example-open
 gdbus-addresses
