@@ -1017,7 +1017,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * @connection: The #GDBusConnection emitting the signal.
    * @remote_peer_vanished: %TRUE if @connection is closed because the
    * remote peer closed its end of the connection.
-   * @error: A #GError with more details about the event or %NULL.
+   * @error: (allow-none): A #GError with more details about the event or %NULL.
    *
    * Emitted when the connection is closed.
    *
