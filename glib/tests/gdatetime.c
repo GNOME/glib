@@ -1286,6 +1286,20 @@ test_adjust_time (void)
   g_time_zone_unref (tz);
 }
 
+static void
+test_no_header (void)
+{
+  GTimeZone *tz;
+
+  tz = g_time_zone_new ("blabla");
+
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
+  g_assert (!g_time_zone_is_dst (tz, 0));
+
+  g_time_zone_unref (tz);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -1335,8 +1349,9 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
   g_test_add_func ("/GDateTime/test_z", test_z);
   g_test_add_func ("/GDateTime/test-all-dates", test_all_dates);
-  g_test_add_func ("/GDateTime/find-interval", test_find_interval);
-  g_test_add_func ("/GDateTime/adjust-time", test_adjust_time);
+  g_test_add_func ("/GTimeZone/find-interval", test_find_interval);
+  g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
+  g_test_add_func ("/GTimeZone/no-header", test_no_header);
 
   return g_test_run ();
 }
