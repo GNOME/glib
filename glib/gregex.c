@@ -109,6 +109,7 @@
                               G_REGEX_RAW               | \
                               G_REGEX_NO_AUTO_CAPTURE   | \
                               G_REGEX_OPTIMIZE          | \
+                              G_REGEX_FIRSTLINE         | \
                               G_REGEX_DUPNAMES          | \
                               G_REGEX_NEWLINE_CR        | \
                               G_REGEX_NEWLINE_LF        | \
@@ -150,6 +151,7 @@ G_STATIC_ASSERT (G_REGEX_ANCHORED          == PCRE_ANCHORED);
 G_STATIC_ASSERT (G_REGEX_DOLLAR_ENDONLY    == PCRE_DOLLAR_ENDONLY);
 G_STATIC_ASSERT (G_REGEX_UNGREEDY          == PCRE_UNGREEDY);
 G_STATIC_ASSERT (G_REGEX_NO_AUTO_CAPTURE   == PCRE_NO_AUTO_CAPTURE);
+G_STATIC_ASSERT (G_REGEX_FIRSTLINE         == PCRE_FIRSTLINE);
 G_STATIC_ASSERT (G_REGEX_DUPNAMES          == PCRE_DUPNAMES);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_CR        == PCRE_NEWLINE_CR);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_LF        == PCRE_NEWLINE_LF);

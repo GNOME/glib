@@ -250,7 +250,7 @@ GQuark g_regex_error_quark (void);
  *     It can also be set by a "(?U)" option setting within the pattern.
  * @G_REGEX_RAW: Usually strings must be valid UTF-8 strings, using this
  *     flag they are considered as a raw sequence of bytes.
- *     @G_REGEX_NO_AUTO_CAPTURE: Disables the use of numbered capturing
+ * @G_REGEX_NO_AUTO_CAPTURE: Disables the use of numbered capturing
  *     parentheses in the pattern. Any opening parenthesis that is not
  *     followed by "?" behaves as if it were followed by "?:" but named
  *     parentheses can still be used for capturing (and they acquire numbers
@@ -258,6 +258,8 @@ GQuark g_regex_error_quark (void);
  * @G_REGEX_OPTIMIZE: Optimize the regular expression. If the pattern will
  *     be used many times, then it may be worth the effort to optimize it
  *     to improve the speed of matches.
+ * @G_REGEX_FIRSTLINE: Limits an unanchored pattern to match before (or at) the
+ *     first newline. Since: 2.34
  * @G_REGEX_DUPNAMES: Names used to identify capturing subpatterns need not
  *     be unique. This can be helpful for certain types of pattern when it
  *     is known that only one instance of the named subpattern can ever be
@@ -298,6 +300,7 @@ typedef enum
   G_REGEX_RAW               = 1 << 11,
   G_REGEX_NO_AUTO_CAPTURE   = 1 << 12,
   G_REGEX_OPTIMIZE          = 1 << 13,
+  G_REGEX_FIRSTLINE         = 1 << 18,
   G_REGEX_DUPNAMES          = 1 << 19,
   G_REGEX_NEWLINE_CR        = 1 << 20,
   G_REGEX_NEWLINE_LF        = 1 << 21,
