@@ -304,11 +304,8 @@ class CodeGenerator:
             #
             # See https://bugzilla.gnome.org/show_bug.cgi?id=647577#c5
             # for discussion
-            keys = function_pointers.keys()
-            if len(keys) > 0:
-                keys.sort(cmp=utils.my_version_cmp)
-                for key in keys:
-                    self.h.write('%s'%function_pointers[key])
+            for key in sorted(function_pointers.keys(), key=utils.version_cmp_key):
+                self.h.write('%s'%function_pointers[key])
 
             self.h.write('};\n')
             self.h.write('\n')
@@ -1022,11 +1019,9 @@ class CodeGenerator:
                 value  = '@get_%s: '%(p.name_lower)
                 value += 'Getter for the #%s:%s property.'%(i.camel_name, p.name_hyphen)
                 doc_bits[key] = value
-        keys = doc_bits.keys()
-        if len(keys) > 0:
-            keys.sort(cmp=utils.my_version_cmp)
-            for key in keys:
-                self.c.write(' * %s\n'%doc_bits[key])
+        for key in sorted(doc_bits.keys(), key=utils.version_cmp_key):
+            self.c.write(' * %s\n'%doc_bits[key])
+
         self.c.write(self.docbook_gen.expand(
                 ' *\n'
                 ' * Virtual table for the D-Bus interface #%s.\n'
