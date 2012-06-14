@@ -2326,6 +2326,9 @@ main (int argc, char *argv[])
   TEST_MATCH("a#\nb", G_REGEX_EXTENDED, G_REGEX_MATCH_NEWLINE_CR, "a", -1, 0, 0, FALSE);
   TEST_MATCH("a#\nb", G_REGEX_EXTENDED | G_REGEX_NEWLINE_CR, 0, "a", -1, 0, 0, TRUE);
 
+  TEST_MATCH("line\nbreak", G_REGEX_MULTILINE, 0, "this is a line\nbreak", -1, 0, 0, TRUE);
+  TEST_MATCH("line\nbreak", G_REGEX_MULTILINE | G_REGEX_FIRSTLINE, 0, "first line\na line\nbreak", -1, 0, 0, FALSE);
+
   /* This failed with PCRE 7.2 (gnome bug #455640) */
   TEST_MATCH(".*$", 0, 0, "\xe1\xbb\x85", -1, 0, 0, TRUE);
 
