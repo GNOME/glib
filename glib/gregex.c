@@ -1525,6 +1525,34 @@ g_regex_get_max_backref (const GRegex *regex)
   return value;
 }
 
+
+/**
+ * g_regex_get_max_backref:
+ * @regex: a #GRegex
+ *
+ * Returns the lentgh of the longest lookbehind assertion in the pattern, in
+ * characters. Returns <literal>0</literal> if the pattern does not
+ * contain lookbehind assertions.
+ *
+ * This information may be useful when doing incremental partial matching; in
+ * that case you should always keep at least this many characters before the
+ * partially matched string.
+ *
+ * Returns: the length of the longest lookbehind assertion in the pattern
+ *
+ * Since: 2.34
+ */
+gint
+g_regex_get_max_lookbehind (const GRegex *regex)
+{
+  gint value;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+                 PCRE_INFO_MAXLOOKBEHIND, &value);
+
+  return value;
+}
+
 /**
  * g_regex_get_capture_count:
  * @regex: a #GRegex
