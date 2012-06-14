@@ -58,7 +58,11 @@ global variables are not used. */
 
 #include "pcre_internal.h"
 
+#ifdef GLIB_COMPILATION
 #include "gmem.h"
+#else
+#include <glib.h>
+#endif /* GLIB_COMPILATION */
 
 #if defined _MSC_VER || defined  __SYMBIAN32__
 static void* LocalPcreMalloc(size_t aSize)

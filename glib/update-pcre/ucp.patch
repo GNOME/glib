@@ -1,11 +1,10 @@
-From 384879be07418fc6224b6603a2e8ca6f11e178fc Mon Sep 17 00:00:00 2001
+From 23d48c5fc7aa889dc7798f9c64acd43d9cb34683 Mon Sep 17 00:00:00 2001
 From: Christian Persch <chpe@gnome.org>
 Date: Sun, 12 Feb 2012 21:20:33 +0100
 Subject: [PATCH] regex: Use glib for unicode data
 
 Use g_unichar_type() and g_unichar_get_script() instead of pcre tables.
 ---
- glib/pcre/Makefile.am     |    1 -
  glib/pcre/pcre_compile.c  |   26 +++---
  glib/pcre/pcre_dfa_exec.c |   96 ++++++++--------
  glib/pcre/pcre_exec.c     |   26 +++---
@@ -13,25 +12,13 @@ Use g_unichar_type() and g_unichar_get_script() instead of pcre tables.
  glib/pcre/pcre_tables.c   |   16 +++
  glib/pcre/pcre_xclass.c   |   24 ++--
  glib/pcre/ucp.h           |  265 +++++++++++++++++++++++----------------------
- 8 files changed, 239 insertions(+), 226 deletions(-)
+ 7 files changed, 239 insertions(+), 225 deletions(-)
 
-diff --git a/glib/pcre/Makefile.am b/glib/pcre/Makefile.am
-index 21da5c5..1981953 100644
---- a/glib/pcre/Makefile.am
-+++ b/glib/pcre/Makefile.am
-@@ -51,7 +51,6 @@ libpcre_la_SOURCES = \
- 	pcre_string_utils.c \
- 	pcre_study.c \
- 	pcre_tables.c \
--	pcre_ucd.c \
- 	pcre_valid_utf8.c \
- 	pcre_version.c \
- 	pcre_xclass.c \
 diff --git a/glib/pcre/pcre_compile.c b/glib/pcre/pcre_compile.c
-index eb985df..b44055a 100644
+index 21bef80..a6c84e1 100644
 --- a/glib/pcre/pcre_compile.c
 +++ b/glib/pcre/pcre_compile.c
-@@ -2890,43 +2890,43 @@ Returns:       TRUE if auto-possessifying is OK
+@@ -2920,43 +2920,43 @@ Returns:       TRUE if auto-possessifying is OK
  static BOOL
  check_char_prop(int c, int ptype, int pdata, BOOL negated)
  {
@@ -89,10 +76,10 @@ index eb985df..b44055a 100644
    }
  return FALSE;
 diff --git a/glib/pcre/pcre_dfa_exec.c b/glib/pcre/pcre_dfa_exec.c
-index 21d7be6..41ff65b 100644
+index 9565d46..3f913ce 100644
 --- a/glib/pcre/pcre_dfa_exec.c
 +++ b/glib/pcre/pcre_dfa_exec.c
-@@ -1015,7 +1015,7 @@ for (;;)
+@@ -1060,7 +1060,7 @@ for (;;)
        if (clen > 0)
          {
          BOOL OK;
@@ -101,7 +88,7 @@ index 21d7be6..41ff65b 100644
          switch(code[1])
            {
            case PT_ANY:
-@@ -1023,43 +1023,43 @@ for (;;)
+@@ -1068,43 +1068,43 @@ for (;;)
            break;
  
            case PT_LAMP:
@@ -156,7 +143,7 @@ index 21d7be6..41ff65b 100644
                 c == CHAR_UNDERSCORE;
            break;
  
-@@ -1209,7 +1209,7 @@ for (;;)
+@@ -1294,7 +1294,7 @@ for (;;)
        if (clen > 0)
          {
          BOOL OK;
@@ -165,7 +152,7 @@ index 21d7be6..41ff65b 100644
          switch(code[2])
            {
            case PT_ANY:
-@@ -1217,43 +1217,43 @@ for (;;)
+@@ -1302,43 +1302,43 @@ for (;;)
            break;
  
            case PT_LAMP:
@@ -220,7 +207,7 @@ index 21d7be6..41ff65b 100644
                 c == CHAR_UNDERSCORE;
            break;
  
-@@ -1456,7 +1456,7 @@ for (;;)
+@@ -1541,7 +1541,7 @@ for (;;)
        if (clen > 0)
          {
          BOOL OK;
@@ -229,7 +216,7 @@ index 21d7be6..41ff65b 100644
          switch(code[2])
            {
            case PT_ANY:
-@@ -1464,43 +1464,43 @@ for (;;)
+@@ -1549,43 +1549,43 @@ for (;;)
            break;
  
            case PT_LAMP:
@@ -284,7 +271,7 @@ index 21d7be6..41ff65b 100644
                 c == CHAR_UNDERSCORE;
            break;
  
-@@ -1728,7 +1728,7 @@ for (;;)
+@@ -1813,7 +1813,7 @@ for (;;)
        if (clen > 0)
          {
          BOOL OK;
@@ -293,7 +280,7 @@ index 21d7be6..41ff65b 100644
          switch(code[1 + IMM2_SIZE + 1])
            {
            case PT_ANY:
-@@ -1736,43 +1736,43 @@ for (;;)
+@@ -1821,43 +1821,43 @@ for (;;)
            break;
  
            case PT_LAMP:
@@ -349,10 +336,10 @@ index 21d7be6..41ff65b 100644
            break;
  
 diff --git a/glib/pcre/pcre_exec.c b/glib/pcre/pcre_exec.c
-index b715353..8eb3162 100644
+index 830b8b5..c89a3f9 100644
 --- a/glib/pcre/pcre_exec.c
 +++ b/glib/pcre/pcre_exec.c
-@@ -2507,7 +2507,7 @@ for (;;)
+@@ -2565,7 +2565,7 @@ for (;;)
        }
      GETCHARINCTEST(c, eptr);
        {
@@ -361,7 +348,7 @@ index b715353..8eb3162 100644
  
        switch(ecode[1])
          {
-@@ -2516,44 +2516,44 @@ for (;;)
+@@ -2574,44 +2574,44 @@ for (;;)
          break;
  
          case PT_LAMP:
@@ -416,7 +403,7 @@ index b715353..8eb3162 100644
               c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
               c == CHAR_FF || c == CHAR_CR)
                 == (op == OP_NOTPROP))
-@@ -2561,8 +2561,8 @@ for (;;)
+@@ -2619,8 +2619,8 @@ for (;;)
          break;
  
          case PT_WORD:
@@ -428,10 +415,10 @@ index b715353..8eb3162 100644
            RRETURN(MATCH_NOMATCH);
          break;
 diff --git a/glib/pcre/pcre_internal.h b/glib/pcre/pcre_internal.h
-index e5a4b6a..41c7ee3 100644
+index 181c312..234af1b 100644
 --- a/glib/pcre/pcre_internal.h
 +++ b/glib/pcre/pcre_internal.h
-@@ -2315,15 +2315,12 @@ extern const int         PRIV(ucp_typerange)[];
+@@ -2329,15 +2329,12 @@ extern const int         PRIV(ucp_typerange)[];
  #ifdef SUPPORT_UCP
  /* UCD access macros */
  
@@ -452,10 +439,10 @@ index e5a4b6a..41c7ee3 100644
  #endif /* SUPPORT_UCP */
  
 diff --git a/glib/pcre/pcre_tables.c b/glib/pcre/pcre_tables.c
-index c8134ec..47becc7 100644
+index 7ac2d89..e401974 100644
 --- a/glib/pcre/pcre_tables.c
 +++ b/glib/pcre/pcre_tables.c
-@@ -563,6 +563,22 @@ const ucp_type_table PRIV(utt)[] = {
+@@ -584,6 +584,22 @@ const ucp_type_table PRIV(utt)[] = {
  
  const int PRIV(utt_size) = sizeof(PRIV(utt)) / sizeof(ucp_type_table);
  

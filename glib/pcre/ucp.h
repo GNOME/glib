@@ -10,7 +10,11 @@ the UCD access macros. New values that are added for new releases of Unicode
 should always be at the end of each enum, for backwards compatibility. */
 
 /* These are the general character categories. */
+#ifdef GLIB_COMPILATION
 #include "gunicode.h"
+#else
+#include <glib.h>
+#endif
 
 enum {
   ucp_C,     /* Other */
@@ -60,6 +64,9 @@ enum {
 /* These are the script identifications. */
 
 enum {
+  ucp_Common = G_UNICODE_SCRIPT_COMMON,
+  ucp_Inherited = G_UNICODE_SCRIPT_INHERITED,
+
   ucp_Arabic = G_UNICODE_SCRIPT_ARABIC,
   ucp_Armenian = G_UNICODE_SCRIPT_ARMENIAN,
   ucp_Bengali = G_UNICODE_SCRIPT_BENGALI,
@@ -69,7 +76,6 @@ enum {
   ucp_Buhid = G_UNICODE_SCRIPT_BUHID,
   ucp_Canadian_Aboriginal = G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL,
   ucp_Cherokee = G_UNICODE_SCRIPT_CHEROKEE,
-  ucp_Common = G_UNICODE_SCRIPT_COMMON,
   ucp_Coptic = G_UNICODE_SCRIPT_COPTIC,
   ucp_Cypriot = G_UNICODE_SCRIPT_CYPRIOT,
   ucp_Cyrillic = G_UNICODE_SCRIPT_CYRILLIC,
@@ -87,7 +93,6 @@ enum {
   ucp_Hanunoo = G_UNICODE_SCRIPT_HANUNOO,
   ucp_Hebrew = G_UNICODE_SCRIPT_HEBREW,
   ucp_Hiragana = G_UNICODE_SCRIPT_HIRAGANA,
-  ucp_Inherited = G_UNICODE_SCRIPT_INHERITED,
   ucp_Kannada = G_UNICODE_SCRIPT_KANNADA,
   ucp_Katakana = G_UNICODE_SCRIPT_KATAKANA,
   ucp_Kharoshthi = G_UNICODE_SCRIPT_KHAROSHTHI,
