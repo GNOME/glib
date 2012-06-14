@@ -259,14 +259,12 @@ class DocbookCodeGenerator:
                 self.expand_member_dict[key] = value
         # Make sure to expand the keys in reverse order so e.g. #org.foo.Iface:MediaCompat
         # is evaluated before #org.foo.Iface:Media ...
-        self.expand_member_dict_keys = self.expand_member_dict.keys()
-        self.expand_member_dict_keys.sort(reverse=True)
-        self.expand_iface_dict_keys = self.expand_iface_dict.keys()
-        self.expand_iface_dict_keys.sort(reverse=True)
+        self.expand_member_dict_keys = sorted(self.expand_member_dict.keys(), reverse=True)
+        self.expand_iface_dict_keys = sorted(self.expand_iface_dict.keys(), reverse=True)
 
     def generate(self):
         for i in self.ifaces:
-            self.out = file('%s-%s.xml'%(self.docbook, i.name), 'w')
+            self.out = open('%s-%s.xml'%(self.docbook, i.name), 'w')
             self.out.write(''%())
             self.out.write('<?xml version="1.0" encoding="utf-8"?>\n'%())
             self.out.write('<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"\n'%())

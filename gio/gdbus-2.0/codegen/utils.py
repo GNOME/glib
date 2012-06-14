@@ -97,15 +97,8 @@ def lookup_brief_docs(annotations):
     else:
         return s
 
-# I'm sure this could be a lot more elegant if I was
-# more fluent in python...
-def my_version_cmp(a, b):
-    if len(a[0]) > 0 and len(b[0]) > 0:
-        va = distutils.version.LooseVersion(a[0])
-        vb = distutils.version.LooseVersion(b[0])
-        ret = va.__cmp__(vb)
-    else:
-        ret = cmp(a[0], b[0])
-    if ret != 0:
-        return ret
-    return cmp(a[1], b[1])
+def version_cmp_key(key):
+    # If the 'since' version is empty put a 0 in its place as this will
+    # allow LooseVersion to work and will always compare lower.
+    v = key[0] if key[0] else '0'
+    return (distutils.version.LooseVersion(v), key[1])
