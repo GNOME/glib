@@ -377,7 +377,7 @@ g_find_program_in_path (const gchar *program)
  * variable. If the program is found, the return value contains the 
  * full name including the type suffix.
  *
- * Return value: absolute path, or %NULL
+ * Return value: a newly-allocated string with the absolute path, or %NULL
  **/
 #ifdef G_OS_WIN32
 static gchar *
