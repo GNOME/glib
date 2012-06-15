@@ -1538,6 +1538,31 @@ test_utf8 (void)
   g_clear_error (&error);
   g_key_file_free (file);
 }
+
+static void
+test_roundtrip (void)
+{
+  GKeyFile *kf;
+  const gchar orig[] =
+    "[Group1]\n"
+    "key1=value1\n"
+    "\n"
+    "[Group2]\n"
+    "key1=value1\n";
+  gsize len;
+  gchar *data;
+
+  kf = load_data (orig, G_KEY_FILE_KEEP_COMMENTS);
+  g_key_file_set_integer (kf, "Group1", "key2", 0);
+  g_key_file_remove_key (kf, "Group1", "key2", NULL);
+
+  data = g_key_file_to_data (kf, &len, NULL);
+  g_assert_cmpstr (data, ==, orig);
+
+  g_free (data);
+  g_key_file_free (kf);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1576,6 +1601,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/empty-string", test_empty_string);
   g_test_add_func ("/keyfile/limbo", test_limbo);
   g_test_add_func ("/keyfile/utf8", test_utf8);
+  g_test_add_func ("/keyfile/roundtrip", test_roundtrip);
 
   return g_test_run ();
 }
