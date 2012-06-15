@@ -2976,7 +2976,7 @@ g_main_context_check (GMainContext *context,
       return FALSE;
     }
 
-  if (context->wake_up_rec.events)
+  if (context->wake_up_rec.revents)
     g_wakeup_acknowledge (context->wakeup);
 
   /* If the set of poll file descriptors changed, bail out
