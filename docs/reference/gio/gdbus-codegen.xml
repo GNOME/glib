@@ -697,7 +697,8 @@ on_handle_hello_world (MyAppFrobber           *interface,
     }
   else
     {
-      g_dbus_method_invocation_return_error (MY_APP_ERROR,
+      g_dbus_method_invocation_return_error (invocation,
+                 MY_APP_ERROR,
                  MY_APP_ERROR_NO_WHINING,
                  "Hey, %s, there will be no whining!",
                  g_dbus_method_invocation_get_sender (invocation));
