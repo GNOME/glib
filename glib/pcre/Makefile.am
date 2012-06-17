@@ -8,6 +8,7 @@ libpcre_la_CPPFLAGS = \
 	-DSUPPORT_UCP \
 	-DSUPPORT_UTF \
 	-DSUPPORT_UTF8 \
+	-DSUPPORT_JIT \
 	-DNEWLINE=-1 \
 	-DMATCH_LIMIT=10000000 \
 	-DMATCH_LIMIT_RECURSION=8192 \
@@ -20,6 +21,7 @@ libpcre_la_CPPFLAGS = \
 	-UBSR_ANYCRLF \
 	-UEBCDIC \
 	$(glib_INCLUDES) \
+	-I$(srcdir)/sljit \
 	@GLIB_DEBUG_FLAGS@ \
 	-DGLIB_COMPILATION \
 	$(AM_CPPFLAGS)
@@ -55,8 +57,27 @@ libpcre_la_SOURCES = \
 	pcre_internal.h \
 	ucp.h
 
+libpcre_la_DEPENDENCIES = \
+	sljit/sljitConfig.h \
+	sljit/sljitConfigInternal.h \
+	sljit/sljitExecAllocator.c \
+	sljit/sljitLir.c \
+	sljit/sljitLir.h \
+	sljit/sljitNativeARM_Thumb2.c \
+	sljit/sljitNativeARM_v5.c \
+	sljit/sljitNativeMIPS_32.c \
+	sljit/sljitNativeMIPS_common.c \
+	sljit/sljitNativePPC_32.c \
+	sljit/sljitNativePPC_64.c \
+	sljit/sljitNativePPC_common.c \
+	sljit/sljitNativeX86_32.c \
+	sljit/sljitNativeX86_64.c \
+	sljit/sljitNativeX86_common.c \
+	sljit/sljitUtils.c
+
 libpcre_la_LIBADD = $(DEP_LIBS)
 
-EXTRA_DIST +=				\
-		COPYING			\
-		makefile.msc
+EXTRA_DIST += \
+	COPYING \
+	makefile.msc \
+	$(libpcre_la_DEPENDENCIES)
