@@ -2332,6 +2332,12 @@ main (int argc, char *argv[])
   /* This failed with PCRE 7.2 (gnome bug #455640) */
   TEST_MATCH(".*$", 0, 0, "\xe1\xbb\x85", -1, 0, 0, TRUE);
 
+  /* Test that othercasing in our pcre/glib integration is bug-for-bug compatible
+   * with pcre's internal tables. Bug #678273 */
+  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "Ǆ", -1, 0, 0, TRUE);
+  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, FALSE);
+  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǆ", -1, 0, 0, TRUE);
+
   /* TEST_MATCH_NEXT#(pattern, string, string_len, start_position, ...) */
   TEST_MATCH_NEXT0("a", "x", -1, 0);
   TEST_MATCH_NEXT0("a", "ax", -1, 1);

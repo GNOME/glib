@@ -589,9 +589,9 @@ _pcre_ucp_othercase(const unsigned int c)
 {
   unsigned int oc;
 
-  if ((oc = g_unichar_tolower(c)) != c)
-    return oc;
   if ((oc = g_unichar_toupper(c)) != c)
+    return oc;
+  if ((oc = g_unichar_tolower(c)) != c)
     return oc;
 
   return c;
