@@ -66,7 +66,9 @@ class CodeGenerator:
                      '#endif\n'
                      '\n'
                      '#include "%s"\n'
-                     '\n'%(self.h.name))
+                     '\n'
+                     '#include <string.h>\n'
+                     %(self.h.name))
 
         self.c.write('#ifdef G_OS_UNIX\n'
                      '#  include <gio/gunixfdlist.h>\n'
@@ -192,7 +194,12 @@ class CodeGenerator:
                      '        ret = (g_value_get_uint64 (a) == g_value_get_uint64 (b));\n'
                      '        break;\n'
                      '      case G_TYPE_DOUBLE:\n'
-                     '        ret = (g_value_get_double (a) == g_value_get_double (b));\n'
+                     '        {\n'
+                     '          /* Avoid -Wfloat-equal warnings by doing a direct bit compare */\n'
+                     '          gdouble da = g_value_get_double (a);\n'
+                     '          gdouble db = g_value_get_double (b);\n'
+                     '          ret = memcmp (&da, &db, sizeof (gdouble)) == 0;\n'
+                     '        }\n'
                      '        break;\n'
                      '      case G_TYPE_STRING:\n'
                      '        ret = (g_strcmp0 (g_value_get_string (a), g_value_get_string (b)) == 0);\n'

@@ -1730,10 +1730,23 @@ on_object_proxy_removed (GDBusObjectManagerClient  *manager,
 }
 
 static void
+property_d_changed (GObject    *object,
+		    GParamSpec *pspec,
+		    gpointer    user_data)
+{
+  gboolean *changed = user_data;
+
+  *changed = TRUE;
+}
+
+static void
 om_check_property_and_signal_emission (GMainLoop  *loop,
                                        FooiGenBar *skeleton,
                                        FooiGenBar *proxy)
 {
+  gboolean d_changed = FALSE;
+  guint handler;
+
   /* First PropertiesChanged */
   g_assert_cmpint (foo_igen_bar_get_i (skeleton), ==, 0);
   g_assert_cmpint (foo_igen_bar_get_i (proxy), ==, 0);
@@ -1741,6 +1754,24 @@ om_check_property_and_signal_emission (GMainLoop  *loop,
   _g_assert_property_notify (proxy, "i");
   g_assert_cmpint (foo_igen_bar_get_i (skeleton), ==, 1);
   g_assert_cmpint (foo_igen_bar_get_i (proxy), ==, 1);
+
+  /* Double-check the gdouble case */
+  g_assert_cmpfloat (foo_igen_bar_get_d (skeleton), ==, 0.0);
+  g_assert_cmpfloat (foo_igen_bar_get_d (proxy), ==, 0.0);
+  foo_igen_bar_set_d (skeleton, 1.0);
+  _g_assert_property_notify (proxy, "d");
+
+  /* Verify that re-setting it to the same value doesn't cause a
+   * notify on the proxy, by taking advantage of the fact that
+   * notifications are serialized.
+   */
+  handler = g_signal_connect (proxy, "notify::d",
+			      G_CALLBACK (property_d_changed), &d_changed);
+  foo_igen_bar_set_d (skeleton, 1.0);
+  foo_igen_bar_set_i (skeleton, 2);
+  _g_assert_property_notify (proxy, "i");
+  g_assert (d_changed == FALSE);
+  g_signal_handler_disconnect (proxy, handler);
 
   /* Then just a regular signal */
   foo_igen_bar_emit_another_signal (skeleton, "word");
