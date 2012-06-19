@@ -26,7 +26,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #include <glib.h>
 
@@ -560,7 +562,7 @@ start_daemon (GTestDBus *self)
       g_spawn_command_line_async (command, NULL);
       g_free (command);
 
-      usleep (500 * 1000);
+      g_usleep (500 * 1000);
     }
 
   /* Cleanup */

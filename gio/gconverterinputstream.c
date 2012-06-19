@@ -415,7 +415,7 @@ read_internal (GInputStream *stream,
   buffer_read (&priv->converted_buffer, buffer, available);
 
   total_bytes_read = available;
-  buffer += available;
+  (char *) buffer += available;
   count -= available;
 
   /* If there is no data to convert, and no pre-converted data,
