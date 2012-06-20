@@ -73,5 +73,12 @@ built DLLs go into <root>\vs9\<PlatformName>\bin, built LIBs into
 project files higher in the stack are supposed to look for them, not
 from a specific GLib source tree.
 
+Note: If you see C4819 warnings and you are compiling GLib on a DBCS
+(Chinese/Korean/Japanese) version of Windows, you may need to switch
+to an English locale in Control Panel->Region and Languages->System->
+Change System Locale, reboot and rebuild to ensure GLib, Pango, GDK-Pixbuf,
+ATK and GTK+ is built correctly.  This is due to a bug in Visual C++ running
+on DBCS locales.
+
 --Tor Lillqvist <tml@iki.fi>
 --Updated by Chun-wei Fan <fanc999@gmail.com>
