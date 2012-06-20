@@ -21,6 +21,7 @@
 #include <gio/gio.h>
 
 #ifdef G_OS_UNIX
+#include <fcntl.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
 #endif
@@ -92,6 +93,9 @@ test_streams (void)
   GSource *poll_source;
   gboolean success = FALSE;
 
+  g_assert (g_pollable_input_stream_can_poll (in));
+  g_assert (g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (out)));
+
   readable = g_pollable_input_stream_is_readable (in);
   g_assert (!readable);
 
@@ -136,7 +140,7 @@ test_streams (void)
 static void
 test_pollable_unix (void)
 {
-  int pipefds[2], status;
+  int pipefds[2], status, fd;
 
   status = pipe (pipefds);
   g_assert_cmpint (status, ==, 0);
@@ -148,6 +152,19 @@ test_pollable_unix (void)
 
   g_object_unref (in);
   g_object_unref (out);
+
+  /* Non-pipe/socket unix streams are not pollable */
+  fd = open ("/dev/null", O_RDWR);
+  g_assert_cmpint (fd, !=, -1);
+  in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (fd, FALSE));
+  out = g_unix_output_stream_new (fd, FALSE);
+
+  g_assert (!g_pollable_input_stream_can_poll (in));
+  g_assert (!g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (out)));
+
+  g_object_unref (in);
+  g_object_unref (out);
+  close (fd);
 }
 #endif
 
