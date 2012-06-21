@@ -830,7 +830,7 @@ g_resource_file_input_stream_tell (GFileInputStream *stream)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);;
 
-  if (!G_IS_SEEKABLE (file->stream));
+  if (!G_IS_SEEKABLE (file->stream))
       return 0;
 
   return g_seekable_tell (G_SEEKABLE (file->stream));
