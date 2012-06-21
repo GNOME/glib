@@ -1166,7 +1166,6 @@ write_to_temp_file (const gchar  *contents,
 		   display_name, 
 		   g_strerror (save_errno));
 
-      fclose (file);
       g_unlink (tmp_name);
       
       goto out;
