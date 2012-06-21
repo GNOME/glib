@@ -1064,21 +1064,25 @@ test_dns (gpointer fixture,
   uri = g_strdup_printf ("beta://no-such-host.xx:%u", server.server_port);
   conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
   g_assert_no_error (error);
-  g_clear_object (&conn);
 
   g_assert_no_error (proxy_a.last_error);
   g_assert_no_error (proxy_b.last_error);
+
+  do_echo_test (conn);
+  g_clear_object (&conn);
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
 					async_got_conn, &conn);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
-  g_clear_object (&conn);
   g_free (uri);
 
   g_assert_no_error (proxy_a.last_error);
   g_assert_no_error (proxy_b.last_error);
+
+  do_echo_test (conn);
+  g_clear_object (&conn);
   teardown_test (NULL, NULL);
 }
 
