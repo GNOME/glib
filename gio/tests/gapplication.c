@@ -70,6 +70,8 @@ spawn (const gchar *expected_stdout,
   g_ptr_array_add (array, NULL);
   args = (gchar **) g_ptr_array_free (array, FALSE);
 
+  va_end (ap);
+
   data = g_slice_new (ChildData);
   data->expected_stdout = expected_stdout;
 
