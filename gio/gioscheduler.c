@@ -45,7 +45,7 @@
  **/
 
 struct _GIOSchedulerJob {
-  GSList *active_link;
+  GList *active_link;
   GIOSchedulerJobFunc job_func;
   GSourceFunc cancel_func; /* Runs under job map lock */
   gpointer data;
@@ -57,7 +57,7 @@ struct _GIOSchedulerJob {
 };
 
 G_LOCK_DEFINE_STATIC(active_jobs);
-static GSList *active_jobs = NULL;
+static GList *active_jobs = NULL;
 
 static GThreadPool *job_thread_pool = NULL;
 
@@ -142,7 +142,7 @@ job_destroy (gpointer data)
     job->destroy_notify (job->data);
 
   G_LOCK (active_jobs);
-  active_jobs = g_slist_delete_link (active_jobs, job->active_link);
+  active_jobs = g_list_delete_link (active_jobs, job->active_link);
   G_UNLOCK (active_jobs);
   g_io_job_free (job);
 }
@@ -215,7 +215,7 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   job->context = g_main_context_ref_thread_default ();
 
   G_LOCK (active_jobs);
-  active_jobs = g_slist_prepend (active_jobs, job);
+  active_jobs = g_list_prepend (active_jobs, job);
   job->active_link = active_jobs;
   G_UNLOCK (active_jobs);
 
@@ -234,7 +234,7 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
 void
 g_io_scheduler_cancel_all_jobs (void)
 {
-  GSList *cancellable_list, *l;
+  GList *cancellable_list, *l;
   
   G_LOCK (active_jobs);
   cancellable_list = NULL;
@@ -242,8 +242,8 @@ g_io_scheduler_cancel_all_jobs (void)
     {
       GIOSchedulerJob *job = l->data;
       if (job->cancellable)
-	cancellable_list = g_slist_prepend (cancellable_list,
-					    g_object_ref (job->cancellable));
+	cancellable_list = g_list_prepend (cancellable_list,
+					   g_object_ref (job->cancellable));
     }
   G_UNLOCK (active_jobs);
 
@@ -253,7 +253,7 @@ g_io_scheduler_cancel_all_jobs (void)
       g_cancellable_cancel (c);
       g_object_unref (c);
     }
-  g_slist_free (cancellable_list);
+  g_list_free (cancellable_list);
 }
 
 typedef struct {
