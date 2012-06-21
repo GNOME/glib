@@ -551,6 +551,7 @@ g_list_alloc
 g_list_append
 g_list_concat
 g_list_copy
+g_list_copy_deep
 g_list_delete_link
 g_list_find
 g_list_find_custom
@@ -942,6 +943,7 @@ g_slist_alloc
 g_slist_append
 g_slist_concat
 g_slist_copy
+g_slist_copy_deep
 g_slist_delete_link
 g_slist_find
 g_slist_find_custom

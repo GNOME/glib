@@ -566,13 +566,49 @@ g_list_delete_link (GList *list,
  * <note><para>
  * Note that this is a "shallow" copy. If the list elements 
  * consist of pointers to data, the pointers are copied but 
- * the actual data is not.
+ * the actual data is not. See g_list_copy_deep() if you need
+ * to copy the data as well.
  * </para></note>
  *
  * Returns: a copy of @list
  */
 GList*
 g_list_copy (GList *list)
+{
+  return g_list_copy_deep (list, NULL, NULL);
+}
+
+/**
+ * g_list_copy_deep:
+ * @list: a #GList
+ * @func: a copy function used to copy every element in the list
+ * @user_data: user data passed to the copy function @func, or #NULL
+ *
+ * Makes a full (deep) copy of a #GList.
+ *
+ * In contrast with g_list_copy(), this function uses @func to make a copy of
+ * each list element, in addition to copying the list container itself.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied and a user
+ * pointer. It's safe to pass #NULL as user_data, if the copy function takes only
+ * one argument.
+ *
+ * For instance, if @list holds a list of GObjects, you can do:
+ * |[
+ * another_list = g_list_copy_deep (list, (GCopyFunc) g_object_ref, NULL);
+ * ]|
+ *
+ * And, to entirely free the new list, you could do:
+ * |[
+ * g_list_free_full (another_list, g_object_unref);
+ * ]|
+ *
+ * Returns: a full copy of @list, use #g_list_free_full to free it
+ *
+ * Since: 2.34
+ */
+GList*
+g_list_copy_deep (GList *list, GCopyFunc func, gpointer user_data)
 {
   GList *new_list = NULL;
 
@@ -581,7 +617,10 @@ g_list_copy (GList *list)
       GList *last;
 
       new_list = _g_list_alloc ();
-      new_list->data = list->data;
+      if (func)
+        new_list->data = func (list->data, user_data);
+      else
+        new_list->data = list->data;
       new_list->prev = NULL;
       last = new_list;
       list = list->next;
@@ -590,7 +629,10 @@ g_list_copy (GList *list)
 	  last->next = _g_list_alloc ();
 	  last->next->prev = last;
 	  last = last->next;
-	  last->data = list->data;
+	  if (func)
+	    last->data = func (list->data, user_data);
+	  else
+	    last->data = list->data;
 	  list = list->next;
 	}
       last->next = NULL;

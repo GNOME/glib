@@ -2051,6 +2051,7 @@ g_list_free1
 <SUBSECTION>
 g_list_length
 g_list_copy
+g_list_copy_deep
 g_list_reverse
 g_list_sort
 GCompareFunc
@@ -2101,6 +2102,7 @@ g_slist_free1
 <SUBSECTION>
 g_slist_length
 g_slist_copy
+g_slist_copy_deep
 g_slist_reverse
 g_slist_insert_sorted_with_data
 g_slist_sort

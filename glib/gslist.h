@@ -32,6 +32,7 @@
 #define __G_SLIST_H__
 
 #include <glib/gmem.h>
+#include <glib/gnode.h>
 
 G_BEGIN_DECLS
 
@@ -80,6 +81,11 @@ GSList*  g_slist_delete_link             (GSList           *list,
 					  GSList           *link_) G_GNUC_WARN_UNUSED_RESULT;
 GSList*  g_slist_reverse                 (GSList           *list) G_GNUC_WARN_UNUSED_RESULT;
 GSList*  g_slist_copy                    (GSList           *list) G_GNUC_WARN_UNUSED_RESULT;
+
+GLIB_AVAILABLE_IN_2_34
+GSList*  g_slist_copy_deep               (GSList            *list,
+					  GCopyFunc         func,
+					  gpointer          user_data) G_GNUC_WARN_UNUSED_RESULT;
 GSList*  g_slist_nth                     (GSList           *list,
 					  guint             n);
 GSList*  g_slist_find                    (GSList           *list,

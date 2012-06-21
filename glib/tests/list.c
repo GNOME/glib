@@ -388,6 +388,34 @@ test_list_copy (void)
   g_list_free (l2);
 }
 
+static gpointer
+multiply_value (gconstpointer value, gpointer data)
+{
+  return GINT_TO_POINTER (GPOINTER_TO_INT (value) * GPOINTER_TO_INT (data));
+}
+
+static void
+test_list_copy_deep (void)
+{
+  GList *l, *l2;
+  GList *u, *v;
+
+  l = NULL;
+  l = g_list_append (l, GINT_TO_POINTER (1));
+  l = g_list_append (l, GINT_TO_POINTER (2));
+  l = g_list_append (l, GINT_TO_POINTER (3));
+
+  l2 = g_list_copy_deep (l, multiply_value, GINT_TO_POINTER (2));
+
+  for (u = l, v = l2; u && v; u = u->next, v = v->next)
+    {
+      g_assert_cmpint (GPOINTER_TO_INT (u->data) * 2, ==, GPOINTER_TO_INT (v->data));
+    }
+
+  g_list_free (l);
+  g_list_free (l2);
+}
+
 static void
 test_delete_link (void)
 {
@@ -484,6 +512,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/insert", test_list_insert);
   g_test_add_func ("/list/free-full", test_free_full);
   g_test_add_func ("/list/copy", test_list_copy);
+  g_test_add_func ("/list/copy-deep", test_list_copy_deep);
   g_test_add_func ("/list/delete-link", test_delete_link);
   g_test_add_func ("/list/prepend", test_prepend);
   g_test_add_func ("/list/position", test_position);
