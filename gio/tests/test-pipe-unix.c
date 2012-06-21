@@ -105,7 +105,7 @@ test_bidi_pipe (GIOStream **left,
   GOutputStream *left_out = NULL;
   GInputStream *right_in = NULL;
   GOutputStream *right_out = NULL;
-  gboolean ret;
+  gboolean ret = FALSE;
 
   if (!test_pipe (&left_in, &right_out, error))
     goto out;
