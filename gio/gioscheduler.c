@@ -120,34 +120,17 @@ init_scheduler (gpointer arg)
 }
 
 static void
-remove_active_job (GIOSchedulerJob *job)
+on_job_canceled (GCancellable    *cancellable,
+		 gpointer         user_data)
 {
-  GIOSchedulerJob *other_job;
-  GSList *l;
-  gboolean resort_jobs;
-  
-  G_LOCK (active_jobs);
-  active_jobs = g_slist_delete_link (active_jobs, job->active_link);
-  
-  resort_jobs = FALSE;
-  for (l = active_jobs; l != NULL; l = l->next)
-    {
-      other_job = l->data;
-      if (other_job->io_priority >= 0 &&
-	  g_cancellable_is_cancelled (other_job->cancellable))
-	{
-	  other_job->io_priority = -1;
-	  resort_jobs = TRUE;
-	}
-    }
-  G_UNLOCK (active_jobs);
-  
-  if (resort_jobs &&
-      job_thread_pool != NULL)
+  GIOSchedulerJob *job = user_data;
+
+  job->io_priority = -1;
+
+  if (job_thread_pool != NULL)
     g_thread_pool_set_sort_function (job_thread_pool,
 				     g_io_job_compare,
 				     NULL);
-
 }
 
 static void
@@ -158,7 +141,9 @@ job_destroy (gpointer data)
   if (job->destroy_notify)
     job->destroy_notify (job->data);
 
-  remove_active_job (job);
+  G_LOCK (active_jobs);
+  active_jobs = g_slist_delete_link (active_jobs, job->active_link);
+  G_UNLOCK (active_jobs);
   g_io_job_free (job);
 }
 
@@ -221,7 +206,11 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   job->io_priority = io_priority;
     
   if (cancellable)
-    job->cancellable = g_object_ref (cancellable);
+    {
+      job->cancellable = g_object_ref (cancellable);
+      g_cancellable_connect (job->cancellable, (GCallback)on_job_canceled,
+			     job, NULL);
+    }
 
   job->context = g_main_context_ref_thread_default ();
 
