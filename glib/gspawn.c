@@ -1099,6 +1099,7 @@ do_exec (gint                  child_err_report_fd,
     {
       /* Keep process from blocking on a read of stdin */
       gint read_null = open ("/dev/null", O_RDONLY);
+      g_assert (read_null != -1);
       sane_dup2 (read_null, 0);
       close_and_invalidate (&read_null);
     }
@@ -1117,6 +1118,7 @@ do_exec (gint                  child_err_report_fd,
   else if (stdout_to_null)
     {
       gint write_null = sane_open ("/dev/null", O_WRONLY);
+      g_assert (write_null != -1);
       sane_dup2 (write_null, 1);
       close_and_invalidate (&write_null);
     }
