@@ -105,28 +105,20 @@ static GList *
 get_mounts (GVolumeMonitor *volume_monitor)
 {
   GUnixVolumeMonitor *monitor;
-  GList *l;
   
   monitor = G_UNIX_VOLUME_MONITOR (volume_monitor);
 
-  l = g_list_copy (monitor->mounts);
-  g_list_foreach (l, (GFunc)g_object_ref, NULL);
-
-  return l;
+  return g_list_copy_deep (monitor->mounts, (GCopyFunc) g_object_ref, NULL);
 }
 
 static GList *
 get_volumes (GVolumeMonitor *volume_monitor)
 {
   GUnixVolumeMonitor *monitor;
-  GList *l;
   
   monitor = G_UNIX_VOLUME_MONITOR (volume_monitor);
 
-  l = g_list_copy (monitor->volumes);
-  g_list_foreach (l, (GFunc)g_object_ref, NULL);
-
-  return l;
+  return g_list_copy_deep (monitor->volumes, (GCopyFunc) g_object_ref, NULL);
 }
 
 static GList *
