@@ -451,7 +451,7 @@ g_menu_clear_item (struct item *item)
 {
   if (item->attributes != NULL)
     g_hash_table_unref (item->attributes);
-  if (item->links != NULL);
+  if (item->links != NULL)
     g_hash_table_unref (item->links);
 }
 
