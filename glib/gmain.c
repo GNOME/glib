@@ -233,6 +233,7 @@ struct _GMainContext
 
   guint next_id;
   GSource *source_list;
+  GSource *source_list_last;
   gint in_check_or_prepare;
 
   GPollRec *poll_records, *poll_records_tail;
@@ -819,13 +820,13 @@ g_source_list_add (GSource      *source,
       last_source = source->priv->parent_source->prev;
     }
   else
-    {
-      last_source = NULL;
-      tmp_source = context->source_list;
-      while (tmp_source && tmp_source->priority <= source->priority)
+    { 
+      tmp_source = NULL;
+      last_source = context->source_list_last;
+      while (last_source && last_source->priority > source->priority)
 	{
-	  last_source = tmp_source;
-	  tmp_source = tmp_source->next;
+	  tmp_source = last_source;
+	  last_source = last_source->prev;
 	}
     }
 
@@ -838,6 +839,9 @@ g_source_list_add (GSource      *source,
     last_source->next = source;
   else
     context->source_list = source;
+
+  if (source->next == NULL)
+    context->source_list_last = source;
 }
 
 /* Holds context's lock
@@ -853,6 +857,8 @@ g_source_list_remove (GSource      *source,
 
   if (source->next)
     source->next->prev = source->prev;
+  else
+    context->source_list_last = context->source_list_last->prev;
 
   source->prev = NULL;
   source->next = NULL;
