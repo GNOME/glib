@@ -1017,12 +1017,16 @@ g_signal_remove_emission_hook (guint  signal_id,
   SIGNAL_LOCK ();
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || node->destroyed)
-    g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+    {
+      g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+      goto out;
+    }
   else if (!node->emission_hooks || !g_hook_destroy (node->emission_hooks, hook_id))
     g_warning ("%s: signal \"%s\" had no hook (%lu) to remove", G_STRLOC, node->name, hook_id);
 
   node->single_va_closure_is_valid = FALSE;
 
+ out:
   SIGNAL_UNLOCK ();
 }
 
@@ -1775,9 +1779,9 @@ g_signal_set_va_marshaller (guint              signal_id,
 	  if (cc->closure->marshal == node->c_marshaller)
 	    _g_closure_set_va_marshal (cc->closure, va_marshaller);
 	}
-    }
 
-  node->single_va_closure_is_valid = FALSE;
+      node->single_va_closure_is_valid = FALSE;
+    }
 
   SIGNAL_UNLOCK ();
 }
