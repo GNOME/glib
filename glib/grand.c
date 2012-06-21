@@ -216,11 +216,8 @@ g_rand_new (void)
       FILE* dev_urandom;
 
       do
-        {
-	  errno = 0;
-	  dev_urandom = fopen("/dev/urandom", "rb");
-	}
-      while G_UNLIKELY (errno == EINTR);
+	dev_urandom = fopen("/dev/urandom", "rb");
+      while G_UNLIKELY (dev_urandom == NULL && errno == EINTR);
 
       if (dev_urandom)
 	{
