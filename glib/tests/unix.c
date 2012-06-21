@@ -43,6 +43,7 @@ test_pipe (void)
   memset (buf, 0, sizeof (buf));
   bytes_read = read (pipefd[0], buf, sizeof(buf) - 1);
   g_assert_cmpint (bytes_read, >, 0);
+  buf[bytes_read] = '\0';
 
   close (pipefd[0]);
   close (pipefd[1]);
