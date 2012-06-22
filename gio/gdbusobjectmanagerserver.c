@@ -598,6 +598,40 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
 
 }
 
+/**
+ * g_dbus_object_manager_server_is_exported:
+ * @manager: A #GDBusObjectManagerServer.
+ * @object: An object.
+ *
+ * Returns whether @object is currently exported on @manager.
+ *
+ * Returns: %TRUE if @object is exported
+ *
+ * Since: 2.34
+ **/
+gboolean
+g_dbus_object_manager_server_is_exported (GDBusObjectManagerServer *manager,
+                                          GDBusObjectSkeleton      *object)
+{
+  RegistrationData *data = NULL;
+  const gchar *object_path;
+  gboolean object_is_exported;
+
+  g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), FALSE);
+  g_return_val_if_fail (G_IS_DBUS_OBJECT (object), FALSE);
+
+  g_mutex_lock (&manager->priv->lock);
+
+  object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (object));
+  if (object_path != NULL)
+    data = g_hash_table_lookup (manager->priv->map_object_path_to_data, object_path);
+  object_is_exported = (data != NULL);
+
+  g_mutex_unlock (&manager->priv->lock);
+
+  return object_is_exported;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
