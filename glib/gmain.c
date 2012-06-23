@@ -810,32 +810,32 @@ static void
 g_source_list_add (GSource      *source,
 		   GMainContext *context)
 {
-  GSource *tmp_source, *last_source;
+  GSource *prev, *next;
   
   if (source->priv->parent_source)
     {
       /* Put the source immediately before its parent */
-      tmp_source = source->priv->parent_source;
-      last_source = source->priv->parent_source->prev;
+      prev = source->priv->parent_source->prev;
+      next = source->priv->parent_source;
     }
   else
     {
-      last_source = NULL;
-      tmp_source = context->source_list;
-      while (tmp_source && tmp_source->priority <= source->priority)
+      prev = NULL;
+      next = context->source_list;
+      while (next && next->priority <= source->priority)
 	{
-	  last_source = tmp_source;
-	  tmp_source = tmp_source->next;
+	  prev = next;
+	  next = next->next;
 	}
     }
 
-  source->next = tmp_source;
-  if (tmp_source)
-    tmp_source->prev = source;
+  source->next = next;
+  if (next)
+    next->prev = source;
   
-  source->prev = last_source;
-  if (last_source)
-    last_source->next = source;
+  source->prev = prev;
+  if (prev)
+    prev->next = source;
   else
     context->source_list = source;
 }
