@@ -1329,7 +1329,7 @@ initable_init (GInitable     *initable,
 
   proxy_flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES;
   if (manager->priv->flags & G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START)
-    proxy_flags |= G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START;;
+    proxy_flags |= G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START;
 
   manager->priv->control_proxy = g_dbus_proxy_new_sync (manager->priv->connection,
                                                         proxy_flags,

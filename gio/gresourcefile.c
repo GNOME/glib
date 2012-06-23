@@ -828,7 +828,7 @@ g_resource_file_input_stream_close (GInputStream  *stream,
 static goffset
 g_resource_file_input_stream_tell (GFileInputStream *stream)
 {
-  GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);;
+  GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
 
   if (!G_IS_SEEKABLE (file->stream))
       return 0;
