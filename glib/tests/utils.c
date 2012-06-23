@@ -431,6 +431,19 @@ test_special_dir (void)
 }
 
 static void
+test_desktop_special_dir (void)
+{
+  const gchar *dir, *dir2;
+
+  dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+  g_assert (dir != NULL);
+
+  g_reload_user_special_dirs_cache ();
+  dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+  g_assert (dir2 != NULL);
+}
+
+static void
 test_clear_pointer (void)
 {
   gpointer a;
@@ -492,6 +505,7 @@ main (int   argc,
   g_test_add_func ("/utils/hostname", test_hostname);
   g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
   g_test_add_func ("/utils/specialdir", test_special_dir);
+  g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
 
