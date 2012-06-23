@@ -515,6 +515,12 @@ _g_slist_remove_link (GSList *list,
  * link is set to %NULL, so that it becomes a
  * self-contained list with one element.
  *
+ * <note>Removing arbitrary nodes from a singly-linked list
+ * requires time that is proportional to the length of the list
+ * (ie. O(n)). If you find yourself using g_slist_remove_link()
+ * frequently, you should consider a different data structure, such
+ * as the doubly-linked #GList.</note>
+ *
  * Returns: the new start of the #GSList, without the element
  */
 GSList*
@@ -532,6 +538,12 @@ g_slist_remove_link (GSList *list,
  * Removes the node link_ from the list and frees it.
  * Compare this to g_slist_remove_link() which removes the node
  * without freeing it.
+ *
+ * <note>Removing arbitrary nodes from a singly-linked list
+ * requires time that is proportional to the length of the list
+ * (ie. O(n)). If you find yourself using g_slist_delete_link()
+ * frequently, you should consider a different data structure, such
+ * as the doubly-linked #GList.</note>
  *
  * Returns: the new head of @list
  */
