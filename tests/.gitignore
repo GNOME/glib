@@ -53,6 +53,7 @@ slice-concurrent
 slice-test
 slice-threadinit
 slist-test
+sources
 spawn-test
 testgdate
 testgdateparser
