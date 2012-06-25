@@ -540,7 +540,7 @@ list_cb (GObject      *source,
   g_assert (v);
   g_variant_get (v, "(^a&s)", &actions);
   g_assert_cmpint (g_strv_length (actions), ==, G_N_ELEMENTS (exported_entries));
-  g_strfreev (actions);
+  g_free (actions);
   g_variant_unref (v);
   g_main_loop_quit (loop);
 }
