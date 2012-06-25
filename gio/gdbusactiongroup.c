@@ -360,6 +360,7 @@ g_dbus_action_group_query_action (GActionGroup        *g_group,
   else
     {
       g_dbus_action_group_async_init (group);
+      group->strict = TRUE;
 
       return FALSE;
     }
