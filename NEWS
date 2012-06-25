@@ -1,3 +1,47 @@
+Overview of changes from GLib 2.33.2 to 2.33.3
+==============================================
+
+This release contains mostly bugfixes, cleanups and performance
+improvements (including many fixes contributed by Colin on the advice of
+Coverity).  There are a few notable externally-visible changes:
+
+* Thumbnails are now in XDG_CACHE_HOME
+
+* new GDBus API: per-thread g_dbus_connection_get_last_serial()
+
+* GUnixOutputStream now has a can_poll() implementation
+
+* New deep copy APIs for G(S)List: g_(s)list_copy_deep
+
+* Bugs fixed:
+ 518309 Incorrect data*dir path in glib-gettextize output
+ 566994 Safer passing of -framework flag
+ 672889 GLib.utf8_validate does segfault
+ 673253 Not strict enough autconf test for libelf
+ 675024 adds g_list_copy_deep() and g_slist_copy_deep
+ 675168 prepare for thumbnails to move to XDG_CACHE_HOME
+ 675966 gresolver: More robust parsing of DNS responses
+ 676594 [Patch] fix g_reload_user_special_dirs_cache
+ 676825 Implement g_dbus_connection_get_last_serial ()
+ 677235 Clarify the comment at the top of gmarshal.list
+ 677527 OS X: gthread/spawn-async selftest failure
+ 677718 GDBusProxy: treat org.freedesktop.systemd1.Masked error as non-fatal
+ 677770 GUnixOutputStream does not implement can_poll
+ 677782 Install bash completion files in /usr/share
+ 677817 g_key_file_to_data adds extra blank lines in some cases
+ 677952 Missing annotation for GDBusConnection signal "closed"
+ 678052 g_wakeup_acknowledge is called too often.
+ 678273 unicode othercasing is wrong in gregex
+ 678333 gdbus-codegen code causes warnings under -Wfloat-equal
+
+* Translations updated:
+ Arabic
+ Assamese
+ Galecian
+ Greek
+ Spanish
+ Telugu
+
 Overview of changes from GLib 2.33.1 to 2.33.2
 ==============================================
 
