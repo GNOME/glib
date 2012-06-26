@@ -2032,6 +2032,7 @@
 
 /**
  * G_DEPRECATED_FOR:
+ * @f: the name of the function that this function was deprecated for
  *
  * This macro is similar to %G_GNUC_DEPRECATED_FOR, and can be used to mark
  * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED_FOR, it is
@@ -2043,6 +2044,8 @@
 
 /**
  * G_UNAVAILABLE:
+ * @maj: the major version that introduced the symbol
+ * @min: the minor version that introduced the symbol
  *
  * This macro can be used to mark a function declaration as unavailable.
  * It must be placed before the function declaration. Use of a function

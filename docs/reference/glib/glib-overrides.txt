@@ -2,6 +2,11 @@
 # functions, which they really were, if possible easy.
 
 <MACRO>
+<NAME>GLIB_DISABLE_DEPRECATION_WARNINGS</NAME>
+#ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
+</MACRO>
+
+<MACRO>
 <NAME>G_ATOMIC_LOCK_FREE</NAME>
 #define G_ATOMIC_LOCK_FREE
 </MACRO>
