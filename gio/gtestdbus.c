@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <gstdio.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -522,6 +523,7 @@ start_daemon (GTestDBus *self)
   /* Write config file and set its path in argv */
   file = write_config_file (self);
   config_path = g_file_get_path (file);
+  g_object_unref (file);
   config_arg = g_strdup_printf ("--config-file=%s", config_path);
   argv[2] = config_arg;
 
@@ -570,9 +572,9 @@ start_daemon (GTestDBus *self)
   g_assert_no_error (error);
   g_io_channel_unref (channel);
 
-  g_file_delete (file, NULL, &error);
-  g_assert_no_error (error);
-  g_object_unref (file);
+  /* Don't use g_file_delete since it calls into gvfs */
+  if (g_unlink (config_path) != 0)
+    g_assert_not_reached ();
 
   g_free (config_path);
   g_free (config_arg);
