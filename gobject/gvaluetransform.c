@@ -140,7 +140,7 @@ value_transform_##func_name (const GValue *src_value,                       \
 DEFINE_BOOL_CHECK (int_bool,    v_int);
 DEFINE_BOOL_CHECK (uint_bool,   v_uint);
 DEFINE_BOOL_CHECK (long_bool,   v_long);
-DEFINE_BOOL_CHECK (ulong_bool,  v_uint);
+DEFINE_BOOL_CHECK (ulong_bool,  v_ulong);
 DEFINE_BOOL_CHECK (int64_bool,  v_int64);
 DEFINE_BOOL_CHECK (uint64_bool, v_uint64);
 
