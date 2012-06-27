@@ -54,10 +54,27 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
+  /* this is potentially ambiguous: it does not match the PO template format,
+   * but looks like text so it can't be Powerpoint */
   res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", 7, &uncertain);
+  expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("test.pot", (guchar *)"msgid \"", 7, &uncertain);
+  expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
+  g_assert (g_content_type_equals (expected, res));
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  res = g_content_type_guess ("test.pot", (guchar *)"\xCF\xD0\xE0\x11", 4, &uncertain);
   expected = g_content_type_from_mime_type ("application/vnd.ms-powerpoint");
   g_assert (g_content_type_equals (expected, res));
-  g_assert (uncertain);
+  /* we cannot reliably detect binary powerpoint files as long as there is no
+   * defined MIME magic, so do not check uncertain here */
   g_free (res);
   g_free (expected);
 
