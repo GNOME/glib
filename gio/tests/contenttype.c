@@ -55,14 +55,14 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", -1, &uncertain);
+  res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", 7, &uncertain);
   expected = g_content_type_from_mime_type ("application/vnd.ms-powerpoint");
   g_assert (g_content_type_equals (expected, res));
   g_assert (uncertain);
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("test.otf", (guchar *)"OTTO", -1, &uncertain);
+  res = g_content_type_guess ("test.otf", (guchar *)"OTTO", 4, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-font-otf");
   g_assert (g_content_type_equals (expected, res));
   g_assert (!uncertain);

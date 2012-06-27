@@ -330,6 +330,10 @@ g_content_type_guess (const gchar  *filename,
   if (result_uncertain)
     *result_uncertain = FALSE;
 
+  /* our test suite and potentially other code used -1 in the past, which is
+   * not documented and not allowed; guard against that */
+  g_return_val_if_fail (data_size != (gsize) -1, g_strdup (XDG_MIME_TYPE_UNKNOWN));
+
   if (filename)
     {
       basename = g_path_get_basename (filename);
@@ -905,6 +909,10 @@ g_content_type_guess (const gchar  *filename,
 
   if (result_uncertain)
     *result_uncertain = FALSE;
+
+  /* our test suite and potentially other code used -1 in the past, which is
+   * not documented and not allowed; guard against that */
+  g_return_val_if_fail (data_size != (gsize) -1, g_strdup (XDG_MIME_TYPE_UNKNOWN));
 
   G_LOCK (gio_xdgmime);
 
