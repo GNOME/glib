@@ -179,7 +179,10 @@ test_timeouts (void)
 
   g_main_loop_run (loop);
 
-  g_assert_cmpint (a, ==, 10);
+  /* this is a race condition; under some circumstances we might not get 10
+   * 100ms runs in 1050 ms, so consider 9 as "close enough" */
+  g_assert_cmpint (a, >=, 9);
+  g_assert_cmpint (a, <=, 10);
   g_assert_cmpint (b, ==, 4);
   g_assert_cmpint (c, ==, 3);
 
