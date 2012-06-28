@@ -130,7 +130,9 @@ G_BEGIN_DECLS
  * @G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES: too many forward references. Since: 2.34
  * @G_REGEX_ERROR_NAME_TOO_LONG: the name is too long in "(*MARK)", "(*PRUNE)", 
  *     "(*SKIP)", or "(*THEN)". Since: 2.34
- * 
+ * @G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE: the character value in the \\u sequence is
+ *     too large. Since: 2.34
+ *
  * Error codes returned by regular expressions functions.
  *
  * Since: 2.14
@@ -194,7 +196,8 @@ typedef enum
   G_REGEX_ERROR_MISSING_NAME = 169,
   G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS = 171,
   G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES = 172,
-  G_REGEX_ERROR_NAME_TOO_LONG = 175
+  G_REGEX_ERROR_NAME_TOO_LONG = 175,
+  G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE = 176
 } GRegexError;
 
 /**
