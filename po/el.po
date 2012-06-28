@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-13 16:55+0000\n"
-"PO-Revision-Date: 2012-06-15 12:56+0200\n"
+"POT-Creation-Date: 2012-06-22 06:38+0000\n"
+"PO-Revision-Date: 2012-06-26 18:41+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "MIME-Version: 1.0\n"
@@ -1274,7 +1274,6 @@ msgstr "Αποτυχία δημιουργίας προσωρινού αρχεί�
 
 #: ../gio/glib-compile-resources.c:338
 #, c-format
-#| msgid "Error processing input file with xmllint"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1284,7 +1283,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:394
 #, c-format
-#| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
@@ -2061,23 +2059,29 @@ msgstr "Σφάλμα επίλυσης του '%s': %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Σφάλμα ανάστροφης επίλυσης του '%s': %s"
 
-#: ../gio/gresolver.c:1146
-#: ../gio/gresolver.c:1320
+#: ../gio/gresolver.c:1190
+#: ../gio/gresolver.c:1389
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Χωρίς εγγραφή DNS του αιτούμενου τύπου για '%s'"
 
-#: ../gio/gresolver.c:1151
-#: ../gio/gresolver.c:1325
+#: ../gio/gresolver.c:1195
+#: ../gio/gresolver.c:1394
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Προσωρινή αδυναμία επίλυσης του '%s'"
 
-#: ../gio/gresolver.c:1156
-#: ../gio/gresolver.c:1330
+#: ../gio/gresolver.c:1200
+#: ../gio/gresolver.c:1399
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Σφάλμα επίλυσης του '%s'"
+
+#: ../gio/gresolver.c:1228
+#: ../gio/gresolver.c:1289
+#, c-format
+msgid "Incomplete data received for '%s'"
+msgstr "Ελήφθησαν ελλιπής στοιχεία για το '%s'"
 
 #: ../gio/gresource.c:295
 #: ../gio/gresource.c:543
@@ -3452,113 +3456,113 @@ msgstr "Το κανάλι τερματίζει σε ημιτελή χαρακτ�
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Αδυναμία ανάγνωσης raw σε g_io_channel_read_to_end"
 
-#: ../glib/gkeyfile.c:726
+#: ../glib/gkeyfile.c:725
 msgid "Valid key file could not be found in search dirs"
 msgstr "Αδυναμία εύρεσης έγκυρου αρχείου κλειδιού στους καταλόγους αναζήτησης"
 
-#: ../glib/gkeyfile.c:762
+#: ../glib/gkeyfile.c:761
 msgid "Not a regular file"
 msgstr "Δεν είναι κανονικό αρχείο"
 
-#: ../glib/gkeyfile.c:1162
+#: ../glib/gkeyfile.c:1161
 #, c-format
 msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "Το αρχείο κλειδιού περιέχει την γραμμή '%s' που δεν είναι ζεύγος κλειδιού-τιμής, ομάδας, ή σχολίου"
 
-#: ../glib/gkeyfile.c:1222
+#: ../glib/gkeyfile.c:1218
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Άκυρο όνομα ομάδας: %s"
 
-#: ../glib/gkeyfile.c:1244
+#: ../glib/gkeyfile.c:1240
 msgid "Key file does not start with a group"
 msgstr "Το αρχείο κλειδιού δεν ξεκινάει με ομάδα"
 
-#: ../glib/gkeyfile.c:1270
+#: ../glib/gkeyfile.c:1266
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Άκυρο όνομα κλειδιού: %s"
 
-#: ../glib/gkeyfile.c:1297
+#: ../glib/gkeyfile.c:1293
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Το αρχείο κλειδιού περιέχει ανυποστήρικτη κωδικοποίηση '%s'"
 
-#: ../glib/gkeyfile.c:1541
-#: ../glib/gkeyfile.c:1703
-#: ../glib/gkeyfile.c:3081
-#: ../glib/gkeyfile.c:3147
-#: ../glib/gkeyfile.c:3273
-#: ../glib/gkeyfile.c:3406
-#: ../glib/gkeyfile.c:3548
-#: ../glib/gkeyfile.c:3778
-#: ../glib/gkeyfile.c:3846
+#: ../glib/gkeyfile.c:1536
+#: ../glib/gkeyfile.c:1698
+#: ../glib/gkeyfile.c:3076
+#: ../glib/gkeyfile.c:3142
+#: ../glib/gkeyfile.c:3268
+#: ../glib/gkeyfile.c:3401
+#: ../glib/gkeyfile.c:3543
+#: ../glib/gkeyfile.c:3773
+#: ../glib/gkeyfile.c:3840
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Το αρχείο κλειδιού δεν έχει ομάδα '%s'"
 
-#: ../glib/gkeyfile.c:1715
+#: ../glib/gkeyfile.c:1710
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Το αρχείο κλειδιού δεν έχει κλειδί '%s'"
 
-#: ../glib/gkeyfile.c:1822
-#: ../glib/gkeyfile.c:1938
+#: ../glib/gkeyfile.c:1817
+#: ../glib/gkeyfile.c:1933
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Το αρχείο κλειδιού περιέχει κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
 
-#: ../glib/gkeyfile.c:1842
-#: ../glib/gkeyfile.c:1958
-#: ../glib/gkeyfile.c:2327
+#: ../glib/gkeyfile.c:1837
+#: ../glib/gkeyfile.c:1953
+#: ../glib/gkeyfile.c:2322
 #, c-format
 msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Το αρχείο κλειδιού περιέχει κλειδί '%s' που περιέχει μια τιμή που δεν μπορεί να ερμηνευθεί."
 
-#: ../glib/gkeyfile.c:2544
-#: ../glib/gkeyfile.c:2910
+#: ../glib/gkeyfile.c:2539
+#: ../glib/gkeyfile.c:2905
 #, c-format
 msgid "Key file contains key '%s' in group '%s' which has a value that cannot be interpreted."
 msgstr "Το αρχείο κλειδιού περιέχει κλειδί '%s' στην ομάδα '%s' που η τιμή του δεν μπορεί να ερμηνευθεί."
 
-#: ../glib/gkeyfile.c:2622
-#: ../glib/gkeyfile.c:2698
+#: ../glib/gkeyfile.c:2617
+#: ../glib/gkeyfile.c:2693
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "Το κλειδί '%s' στην ομάδα '%s' έχει τιμή '%s' όταν αναμενόταν %s"
 
-#: ../glib/gkeyfile.c:3096
-#: ../glib/gkeyfile.c:3288
-#: ../glib/gkeyfile.c:3857
+#: ../glib/gkeyfile.c:3091
+#: ../glib/gkeyfile.c:3283
+#: ../glib/gkeyfile.c:3851
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Το αρχείο κλειδιού δεν έχει κλειδί '%s' στην ομάδα '%s'"
 
-#: ../glib/gkeyfile.c:4089
+#: ../glib/gkeyfile.c:4083
 msgid "Key file contains escape character at end of line"
 msgstr "Το αρχείο κλειδιού περιέχει χαρακτήρα διαφυγής στο τέλος της γραμμής"
 
-#: ../glib/gkeyfile.c:4111
+#: ../glib/gkeyfile.c:4105
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Το αρχείο κλειδιού περιέχει άκυρη σειρά διαφυγής '%s'"
 
-#: ../glib/gkeyfile.c:4253
+#: ../glib/gkeyfile.c:4247
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως αριθμός."
 
-#: ../glib/gkeyfile.c:4267
+#: ../glib/gkeyfile.c:4261
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Η ακέραιη τιμή '%s' είναι εκτός εύρους"
 
-#: ../glib/gkeyfile.c:4300
+#: ../glib/gkeyfile.c:4294
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως αριθμός κινητής υποδιαστολής."
 
-#: ../glib/gkeyfile.c:4324
+#: ../glib/gkeyfile.c:4318
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως Μπουλ."
