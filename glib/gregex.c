@@ -117,12 +117,21 @@
                               G_REGEX_NEWLINE_ANYCRLF   | \
                               G_REGEX_BSR_ANYCRLF       | \
                               G_REGEX_JAVASCRIPT_COMPAT | \
-                              G_REGEX_NO_START_OPTIMIZE)
+                              G_REGEX_NO_START_OPTIMIZE | \
+                              G_REGEX_JIT               | \
+                              G_REGEX_JIT_PARTIAL_SOFT  | \
+                              G_REGEX_JIT_PARTIAL_HARD)
+
+/* All JIT flags from GRegexCompileFlags */
+#define G_REGEX_COMPILE_JIT_MASK (G_REGEX_JIT              | \
+                                  G_REGEX_JIT_PARTIAL_SOFT | \
+                                  G_REGEX_JIT_PARTIAL_HARD)
 
 /* Mask of all GRegexCompileFlags values that are (not) passed trough to PCRE */
 #define G_REGEX_COMPILE_PCRE_MASK (G_REGEX_COMPILE_MASK & ~G_REGEX_COMPILE_NONPCRE_MASK)
 #define G_REGEX_COMPILE_NONPCRE_MASK (G_REGEX_RAW              | \
-                                      G_REGEX_OPTIMIZE)
+                                      G_REGEX_OPTIMIZE         | \
+                                      G_REGEX_COMPILE_JIT_MASK)
 
 /* Mask of all the possible values for GRegexMatchFlags. */
 #define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED          | \
@@ -183,6 +192,9 @@ G_STATIC_ASSERT (G_REGEX_MATCH_NOTEMPTY_ATSTART  == PCRE_NOTEMPTY_ATSTART);
  */
 G_STATIC_ASSERT (G_REGEX_OPTIMIZE          == PCRE_NO_UTF8_CHECK);
 G_STATIC_ASSERT (G_REGEX_RAW               == PCRE_UTF8);
+G_STATIC_ASSERT (G_REGEX_JIT               == PCRE_NOTBOL);
+G_STATIC_ASSERT (G_REGEX_JIT_PARTIAL_SOFT  == PCRE_PARTIAL_SOFT);
+G_STATIC_ASSERT (G_REGEX_JIT_PARTIAL_HARD  == PCRE_PARTIAL_HARD);
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
@@ -208,6 +220,7 @@ struct _GMatchInfo
   gssize string_len;            /* length of string */
   /* const */ guchar *mark;     /* MARK when using backtracing control */
   pcre_extra extra;             /* pcre_extra data */
+  guint jited : 1;              /* whether the matching was using the JIT code */
 };
 
 struct _GRegex
@@ -297,6 +310,8 @@ match_error (gint errcode)
       return _("short utf8");
     case PCRE_ERROR_RECURSELOOP:
       return _("recursion loop");
+    case PCRE_ERROR_JIT_STACKLIMIT:
+      return _("JIT stack limit exceeded");
     default:
       break;
     }
@@ -546,6 +561,15 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
 
 /* GMatchInfo */
 
+static pcre_jit_stack *
+jit_stack_cb (void *arg)
+{
+  GMatchInfo *info = arg;
+
+  info->jited = TRUE;
+  return NULL; /* keep using the internal 32K stack */
+}
+
 static GMatchInfo *
 match_info_new (const GRegex *regex,
                 const gchar  *string,
@@ -601,6 +625,8 @@ match_info_new (const GRegex *regex,
 
       match_info->extra.flags |= PCRE_EXTRA_MARK;
       match_info->extra.mark = &match_info->mark;
+
+      pcre_assign_jit_stack(&match_info->extra, jit_stack_cb, match_info);
     }
 
   return match_info;
@@ -666,6 +692,30 @@ g_match_info_get_mark (const GMatchInfo *match_info)
 {
   g_return_val_if_fail (match_info != NULL, NULL);
   return (const gchar *) match_info->mark;
+}
+
+/**
+ * g_match_info_get_jited:
+ * @match_info: a #GMatchInfo structure
+ *
+ * Returns whether matching was done using the JIT code.
+ *
+ * See <ulink>man:pcrejit(3)<ulink> for more information on
+ * JIT.
+ *
+ * Note that if the @match_info was generated using the alternative DFA
+ * algorithm by g_regex_match_all() or g_regex_match_all_full(), the
+ * JIT code is never used, and therefore this function returns %FALSE.
+ *
+ * Returns: (transfer none): the mark, or %NULL
+ *
+ * Since: 2.34
+ */
+gboolean
+g_match_info_get_jited (const GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, FALSE);
+  return match_info->jited;
 }
 
 /**
@@ -1324,6 +1374,37 @@ g_regex_unref (GRegex *regex)
  * Compiles the regular expression to an internal form, and does
  * the initial setup of the #GRegex structure.
  *
+ * Since 2.34, and only on some platforms, there is support for
+ * Just-In-Time (JIT) code generation. Using JIT code speeds up the matching
+ * process, at the expense of using more time in g_regex_new().
+ * It is therefore most useful when matching the same pattern often, or
+ * when matching large amounts of data.
+ *
+ * If @compile_options includes the %G_REGEX_JIT flag, JIT code is generated
+ * for matching complete matches.
+ * If @compile_options includes the %G_REGEX_JIT_PARTIAL_SOFT flag, JIT code is
+ * generated for partial matching with the %G_REGEX_MATCH_PARTIAL_SOFT match flag.
+ * Note that if @match_options includes the %G_REGEX_MATCH_PARTIAL_SOFT flag,
+ * then the %G_REGEX_JIT_PARTIAL_SOFT flag is set implicitly.
+ * If @compile_options includes the %G_REGEX_JIT_PARTIAL_HARD flag, JIT code is
+ * generated for partial matching with the %G_REGEX_MATCH_PARTIAL_HARD match flag.
+ * Note that if @match_options includes the %G_REGEX_MATCH_PARTIAL_HARD flag,
+ * then the %G_REGEX_JIT_PARTIAL_HARD flag is set implicitly.
+ *
+ * Note that JIT code is not supported for all patterns and all compile for match
+ * flags; to check if there actually was JIT code generated for the pattern, you
+ * can  test the result of g_regex_get_compile_flags() for the corresponding flag.
+ * At this time, only the %G_REGEX_MATCH_NOTBOL, %G_REGEX_MATCH_NOTEOL,
+ * %G_REGEX_MATCH_NOTEMPTY, G_REGEX_MATCH_NOTEMPTY_ATSTART,
+ * %G_REGEX_MATCH_PARTIAL_SOFT and %G_REGEX_MATCH_PARTIAL_HARD flags are compatible
+ * with JIT code generation.
+ *
+ * Also note that JIT code is generated for the specific set of flags
+ * passed in @compile_options and @match_options; if you do matching with an
+ * incompatible set of match flags, the JIT code will not be used.
+ *
+ * See <ulink>man:pcrejit(3)</ulink> for more information on JIT code generation.
+ *
  * Returns: a #GRegex structure. Call g_regex_unref() when you
  *   are done with it
  *
@@ -1341,6 +1422,7 @@ g_regex_new (const gchar         *pattern,
   gint erroffset;
   gint errcode;
   gboolean optimize = FALSE;
+  gint study_options;
   static volatile gsize initialised = 0;
   unsigned long int pcre_compile_options;
   GRegexCompileFlags nonpcre_compile_options;
@@ -1409,6 +1491,40 @@ g_regex_new (const gchar         *pattern,
   if (~compile_options & G_REGEX_BSR_ANYCRLF)
     compile_options |= PCRE_BSR_UNICODE;
 
+  study_options = 0;
+  if (compile_options & G_REGEX_COMPILE_JIT_MASK)
+    {
+      optimize = TRUE;
+
+      /* G_REGEX_COMPILE_JIT has the same value as PCRE_UTF8_CHECK,
+       * as we do not need to wrap PCRE_NO_UTF8_CHECK.
+       */
+      if (compile_options & G_REGEX_JIT)
+        {
+          study_options |= PCRE_STUDY_JIT_COMPILE;
+
+          /* If the given match options include G_REGEX_MATCH_PARTIAL_{SOFT,HARD}
+           * force the G_REGEX_JIT_PARTIAL_{SOFT,HARD} flags.
+           */
+          if (match_options & G_REGEX_MATCH_PARTIAL_SOFT)
+            compile_options |= G_REGEX_JIT_PARTIAL_SOFT;
+          if (match_options & G_REGEX_MATCH_PARTIAL_HARD)
+            compile_options |= G_REGEX_JIT_PARTIAL_HARD;
+        }
+
+      /* G_REGEX_COMPILE_JIT_PARTIAL_{SOFT,HARD} have the same value
+       * as PCRE_PARTIAL_{SOFT,HARD} as these are match options, not
+       * compile options and are thus free to use in GRegexcFlags.
+       */
+      if (compile_options & G_REGEX_JIT_PARTIAL_SOFT)
+        study_options |= PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE;
+      if (compile_options & G_REGEX_JIT_PARTIAL_HARD)
+        study_options |= PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE;
+
+      /* Mask out these options as they're not meant for pcre_compile2 */
+      compile_options &= ~G_REGEX_COMPILE_JIT_MASK;
+    }
+
   /* compile the pattern */
   re = pcre_compile2 (pattern, compile_options, &errcode,
                       &errmsg, &erroffset, NULL);
@@ -1464,7 +1580,7 @@ g_regex_new (const gchar         *pattern,
 
   if (optimize)
     {
-      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
+      regex->extra = pcre_study (regex->pcre_re, study_options, &errmsg);
       if (errmsg != NULL)
         {
           GError *tmp_error = g_error_new (G_REGEX_ERROR,
@@ -1477,6 +1593,16 @@ g_regex_new (const gchar         *pattern,
 
           g_regex_unref (regex);
           return NULL;
+        }
+
+      /* Check whether the pattern was actually JITed */
+      if (study_options != 0)
+        {
+          int jited = FALSE;
+
+          pcre_fullinfo (re, regex->extra, PCRE_INFO_JIT, &jited);
+          if (!jited)
+            regex->compile_opts &= ~G_REGEX_COMPILE_JIT_MASK;
         }
     }
 
@@ -1691,6 +1817,8 @@ g_regex_match_simple (const gchar        *pattern,
  * To retrieve all the non-overlapping matches of the pattern in
  * string you can use g_match_info_next().
  *
+ * See g_regex_match_full() for more information.
+ *
  * |[
  * static void
  * print_uppercase_words (const gchar *string)
@@ -1792,6 +1920,31 @@ g_regex_match (const GRegex      *regex,
  * }
  * ]|
  *
+ * If JIT code was generated by passing the %G_REGEX_JIT,
+ * %G_REGEX_JIT_PARTIAL_SOFT or %G_REGEX_JIT_PARTIAL_HARD flags to
+ * g_regex_new(), then matching may be done using the JIT code, if the
+ * @match_options passed are compatible with it, that is, with the exception
+ * of the %G_REGEX_MATCH_PARTIAL_SOFT and %G_REGEX_MATCH_PARTIAL_HARD flags,
+ * no match flag may be passed that was not passed when creating @regex, and no
+ * match flag be omitted that was passed when creating @regex.
+ *
+ * If @regex was created using the %G_REGEX_JIT flag, and
+ * g_regex_get_compile_flags() contains the %G_REGEX_JIT flag, then complete
+ * matching will be done using the JIT code.
+ * If @regex was created using the %G_REGEX_JIT_PARTIAL_SOFT flag, and
+ * g_regex_get_compile_flags() contains the %G_REGEX_JIT_PARTIAL_SOFT flag, then
+ * partial matchin with %G_REGEX_MATCH_PARTIAL_SOFT matching will be done using
+ * the JIT code.
+ * If @regex was created using the %G_REGEX_JIT_PARTIAL_HARD flag, and
+ * g_regex_get_compile_flags() contains the %G_REGEX_JIT_PARTIAL_HARD flag, then
+ * partial matchin with %G_REGEX_MATCH_PARTIAL_HARD matching will be done using
+ * the JIT code.
+ *
+ * You can use g_match_info_get_jited() on the returned @match_info to check
+ * whether the JIT code was used.
+ *
+ * See <ulink>man:pcrejit(3)</ulink> for more information on using JIT code.
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
@@ -1847,6 +2000,10 @@ g_regex_match_full (const GRegex      *regex,
  * @string is not copied and is used in #GMatchInfo internally. If
  * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
+ *
+ * Note that matching using this function never uses the JIT code
+ * generated by passing %G_REGEX_JIT, %G_REGEX_JIT_PARTIAL_SOFT or
+ * %G_REGEX_JIT_PARTIAL_HARD to g_regex_new().
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
@@ -1909,6 +2066,10 @@ g_regex_match_all (const GRegex      *regex,
  * @string is not copied and is used in #GMatchInfo internally. If
  * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
+ *
+ * Note that matching using this function never uses the JIT code
+ * generated by passing %G_REGEX_JIT, %G_REGEX_JIT_PARTIAL_SOFT or
+ * %G_REGEX_JIT_PARTIAL_HARD to g_regex_new().
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
@@ -3182,4 +3343,28 @@ g_regex_escape_string (const gchar *string,
     g_string_append_len (escaped, piece_start, end - piece_start);
 
   return g_string_free (escaped, FALSE);
+}
+
+/**
+ * g_regex_jit_supported:
+ * 
+ * Returns whether JIT accelerated regex evaulation is available 
+ * on this platform. Currently supported are:
+ *  * ARM v5, v7, and Thumb2
+ *  * Intel x86 32-bit and 64-bit
+ *  * MIPS 32-bit
+ *  * Power PC 32-bit and 64-bit
+ *
+ * Returns: %TRUE if JITing is supported
+ * 
+ * Since: 2.34
+ */
+gboolean
+g_regex_jit_supported (void)
+{
+  int jit;
+
+  pcre_config(PCRE_CONFIG_JIT, &jit);
+
+  return jit != 0;
 }

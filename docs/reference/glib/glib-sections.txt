@@ -999,6 +999,7 @@ GRegexCompileFlags
 GRegexMatchFlags
 GRegex
 GRegexEvalCallback
+g_regex_jit_supported
 g_regex_new
 g_regex_ref
 g_regex_unref
@@ -1028,6 +1029,7 @@ GMatchInfo
 g_match_info_get_regex
 g_match_info_get_string
 g_match_info_get_mark
+g_match_info_get_jited
 g_match_info_ref
 g_match_info_unref
 g_match_info_free

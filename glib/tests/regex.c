@@ -141,6 +141,8 @@ typedef struct {
   GRegexCompileFlags compile_opts;
   GRegexMatchFlags match_opts;
   gboolean expected;
+  gboolean check_jited;
+  gboolean expected_jited;
   gssize string_len;
   gint start_position;
   GRegexMatchFlags match_opts2;
@@ -182,6 +184,7 @@ test_match (gconstpointer d)
 {
   const TestMatchData *data = d;
   GRegex *regex;
+  GMatchInfo *info;
   gboolean match;
   GError *error = NULL;
 
@@ -190,21 +193,28 @@ test_match (gconstpointer d)
   g_assert_no_error (error);
 
   match = g_regex_match_full (regex, data->string, data->string_len,
-                              data->start_position, data->match_opts2, NULL, NULL);
+                              data->start_position, data->match_opts2, &info, NULL);
 
   g_assert_cmpint (match, ==, data->expected);
+  if (data->check_jited)
+    g_assert_cmpint (g_match_info_get_jited (info), ==, data->expected_jited);
+  g_match_info_free (info);
 
   if (data->string_len == -1 && data->start_position == 0)
     {
       match = g_regex_match (regex, data->string, data->match_opts2, NULL);
       g_assert_cmpint (match, ==, data->expected);
+      if (data->check_jited)
+        g_assert_cmpint (g_match_info_get_jited (info), ==, data->expected_jited);
+      g_match_info_free (info);
     }
 
   g_regex_unref (regex);
 }
 
-#define TEST_MATCH(_pattern, _compile_opts, _match_opts, _string, \
-                   _string_len, _start_position, _match_opts2, _expected) { \
+#define TEST_MATCH_FULL(_extra_name, _pattern, _compile_opts, _match_opts, _string, \
+                   _string_len, _start_position, _match_opts2, _expected, \
+                   _check_jited, _expected_jited) { \
   TestMatchData *data;                                                  \
   gchar *path;                                                          \
   data = g_new0 (TestMatchData, 1);                                     \
@@ -216,10 +226,21 @@ test_match (gconstpointer d)
   data->start_position = _start_position;                                \
   data->match_opts2 = _match_opts2;                                      \
   data->expected = _expected;                                            \
-  path = g_strdup_printf ("/regex/match/%d", ++total);                  \
+  data->check_jited = _check_jited;                                     \
+  data->expected_jited = _expected_jited;                               \
+  path = g_strdup_printf ("/regex/match/%s%d", _extra_name, ++total);   \
   g_test_add_data_func (path, data, test_match);                        \
   g_free (path);                                                        \
 }
+
+#define TEST_MATCH(_pattern, _compile_opts, _match_opts, _string, \
+                   _string_len, _start_position, _match_opts2, _expected) \
+  TEST_MATCH_FULL("", _pattern, _compile_opts, _match_opts, _string,\
+                  _string_len, _start_position, _match_opts2, _expected, FALSE, FALSE)
+#define TEST_MATCH_JIT(_pattern, _compile_opts, _match_opts, _string, \
+                       _string_len, _start_position, _match_opts2, _expected, _expected_jited) \
+  TEST_MATCH_FULL("jit/", _pattern, G_REGEX_JIT|(_compile_opts), _match_opts, _string,\
+                  _string_len, _start_position, _match_opts2, _expected, TRUE, _expected_jited)
 
 struct _Match
 {
@@ -473,11 +494,11 @@ test_partial (gconstpointer d)
   GRegex *regex;
   GMatchInfo *match_info;
 
-  regex = g_regex_new (data->pattern, 0, 0, NULL);
+  regex = g_regex_new (data->pattern, data->compile_opts, data->match_opts, NULL);
 
   g_assert (regex != NULL);
 
-  g_regex_match (regex, data->string, data->match_opts, &match_info);
+  g_regex_match (regex, data->string, data->match_opts2, &match_info);
 
   g_assert_cmpint (data->expected, ==, g_match_info_is_partial_match (match_info));
 
@@ -487,24 +508,40 @@ test_partial (gconstpointer d)
       g_assert (!g_match_info_fetch_pos (match_info, 1, NULL, NULL));
     }
 
+  if (data->check_jited)
+    g_assert_cmpint (g_match_info_get_jited (match_info), ==, data->expected_jited);
+
   g_match_info_free (match_info);
   g_regex_unref (regex);
 }
 
-#define TEST_PARTIAL_FULL(_pattern, _string, _match_opts, _expected) { \
+#define TEST_PARTIAL_FULL(_extra_name, _pattern, _compile_opts, _match_opts, \
+                          _string, _match_opts2, _expected, \
+                          _check_jited, _expected_jited) { \
   TestMatchData *data;                                          \
   gchar *path;                                                  \
   data = g_new0 (TestMatchData, 1);                             \
   data->pattern = _pattern;                                      \
   data->string = _string;                                        \
-  data->match_opts = _match_opts;                                \
-  data->expected = _expected;                                    \
-  path = g_strdup_printf ("/regex/match/partial/%d", ++total);  \
+  data->compile_opts = _compile_opts;                           \
+  data->match_opts = _match_opts;                               \
+  data->match_opts2 = _match_opts2;                             \
+  data->expected = _expected;                                   \
+  data->check_jited = _check_jited;                             \
+  data->expected_jited = _expected_jited;                       \
+  path = g_strdup_printf ("/regex/match/partial/%s%d", _extra_name, ++total);  \
   g_test_add_data_func (path, data, test_partial);              \
   g_free (path);                                                \
 }
 
-#define TEST_PARTIAL(_pattern, _string, _expected) TEST_PARTIAL_FULL(_pattern, _string, G_REGEX_MATCH_PARTIAL, _expected)
+#define TEST_PARTIAL_WITH_FLAGS(_pattern, _string, _match_opts2, _expected) \
+  TEST_PARTIAL_FULL("", _pattern, 0, 0 , _string, _match_opts2, _expected, FALSE, FALSE)
+#define TEST_PARTIAL(_pattern, _string, _expected) \
+  TEST_PARTIAL_WITH_FLAGS(_pattern, _string, G_REGEX_MATCH_PARTIAL_SOFT, _expected)
+#define TEST_PARTIAL_FULL_JIT(_pattern, _compile_opts, _match_opts, _string, _match_opts2, \
+                               _expected, _expected_jited) \
+  TEST_PARTIAL_FULL("jit/", _pattern, G_REGEX_JIT|(_compile_opts), _match_opts, _string, _match_opts2, \
+                    _expected, TRUE, _expected_jited)
 
 typedef struct {
   const gchar *pattern;
@@ -2404,8 +2441,8 @@ main (int argc, char *argv[])
   TEST_PARTIAL("a?b", "a", TRUE);
 
   /* Test soft vs. hard partial matching */
-  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
-  TEST_PARTIAL_FULL("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE);
+  TEST_PARTIAL_WITH_FLAGS("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE);
+  TEST_PARTIAL_WITH_FLAGS("cat(fish)?", "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE);
 
   /* TEST_SUB_PATTERN(pattern, string, start_position, sub_n, expected_sub,
    * 		      expected_start, expected_end) */
@@ -2730,6 +2767,18 @@ main (int argc, char *argv[])
   TEST_MARK("(*MARK:A)(*SKIP:B)(C|X)", "D", FALSE, "A");
   TEST_MARK("X(*MARK:A)Y|X(*MARK:B)Z", "XY", TRUE, "A");
   TEST_MARK("X(*MARK:A)Y|X(*MARK:B)Z", "XZ", TRUE, "B");
+
+  if (g_regex_jit_supported ())
+    {
+      /* Test JITing compile */
+      TEST_NEW("foo", G_REGEX_JIT, 0);
+
+      TEST_MATCH_JIT("^ab", 0, 0, "ab", -1, 0, 0, TRUE, TRUE);
+      TEST_PARTIAL_FULL_JIT("cat(fish)?", 0, 0, "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE, FALSE);
+      TEST_PARTIAL_FULL_JIT("cat(fish)?", 0, 0, "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE, FALSE);
+      TEST_PARTIAL_FULL_JIT("cat(fish)?", 0, G_REGEX_MATCH_PARTIAL_SOFT, "cat", G_REGEX_MATCH_PARTIAL_SOFT, FALSE, TRUE);
+      TEST_PARTIAL_FULL_JIT("cat(fish)?", 0, G_REGEX_MATCH_PARTIAL_HARD, "cat", G_REGEX_MATCH_PARTIAL_HARD, TRUE, TRUE);
+    }
 
   return g_test_run ();
 }

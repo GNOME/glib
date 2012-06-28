@@ -284,6 +284,11 @@ GQuark g_regex_error_quark (void);
  *    characters '\r', '\n' and '\r\n'. Since: 2.34
  * @G_REGEX_NO_START_OPTIMIZE: Disable some optimizations that will cause incorrect
  *     results for g_match_info_get_mark() when using backtracking control verbs. Since: 2.34
+ * @G_REGEX_JIT: generate JIT code for complete matches. Since: 2.34
+ * @G_REGEX_JIT_PARTIAL_SOFT: generate JIT code for partial matching using
+ *     %G_REGEX_MATCH_PARTIAL_SOFT. Since: 2.34
+ * @G_REGEX_JIT_PARTIAL_HARD: generate JIT code for partial matching using
+ *     %G_REGEX_MATCH_PARTIAL_HARD. Since: 2.34
  *
  * Flags specifying compile-time options.
  *
@@ -311,7 +316,10 @@ typedef enum
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
   G_REGEX_BSR_ANYCRLF       = 1 << 23,
   G_REGEX_JAVASCRIPT_COMPAT = 1 << 25,
-  G_REGEX_NO_START_OPTIMIZE = 1 << 26
+  G_REGEX_NO_START_OPTIMIZE = 1 << 26,
+  G_REGEX_JIT               = 1 << 7,
+  G_REGEX_JIT_PARTIAL_SOFT  = 1 << 15,
+  G_REGEX_JIT_PARTIAL_HARD  = 1 << 27
 } GRegexCompileFlags;
 
 /**
@@ -441,6 +449,8 @@ typedef gboolean (*GRegexEvalCallback)		(const GMatchInfo *match_info,
 						 gpointer          user_data);
 
 
+gboolean          g_regex_jit_supported         (void);
+
 GRegex		 *g_regex_new			(const gchar         *pattern,
 						 GRegexCompileFlags   compile_options,
 						 GRegexMatchFlags     match_options,
@@ -537,7 +547,7 @@ gboolean	  g_regex_check_replacement	(const gchar         *replacement,
 GRegex		 *g_match_info_get_regex	(const GMatchInfo    *match_info);
 const gchar      *g_match_info_get_string       (const GMatchInfo    *match_info);
 const gchar      *g_match_info_get_mark         (const GMatchInfo    *match_info);
-
+gboolean          g_match_info_get_jited        (const GMatchInfo    *match_info);
 
 GMatchInfo       *g_match_info_ref              (GMatchInfo          *match_info);
 void              g_match_info_unref            (GMatchInfo          *match_info);
