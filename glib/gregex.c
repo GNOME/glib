@@ -512,6 +512,9 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_NAME_TOO_LONG:
       *errmsg = _("name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)");
       break;
+    case G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE:
+      *errmsg = _("character value in \\u.... sequence is too large");
+      break;
 
     case 116: /* erroffset passed as NULL */
       /* This should not happen as we never pass a NULL erroffset */
