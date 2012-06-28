@@ -321,6 +321,7 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
   GTlsInteractionResult result;
   InvokeClosure *closure;
   GTlsInteractionClass *klass;
+  gboolean complete;
 
   g_return_val_if_fail (G_IS_TLS_INTERACTION (interaction), G_TLS_INTERACTION_UNHANDLED);
   g_return_val_if_fail (G_IS_TLS_PASSWORD (password), G_TLS_INTERACTION_UNHANDLED);
@@ -348,12 +349,16 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
        */
       if (g_main_context_acquire (interaction->priv->context))
         {
-          while (!closure->complete)
+          for (;;)
             {
-              g_mutex_unlock (&closure->mutex);
-              g_main_context_iteration (interaction->priv->context, TRUE);
               g_mutex_lock (&closure->mutex);
+              complete = closure->complete;
+              g_mutex_unlock (&closure->mutex);
+              if (complete)
+                break;
+              g_main_context_iteration (interaction->priv->context, TRUE);
             }
+
           g_main_context_release (interaction->priv->context);
 
           if (closure->error)
