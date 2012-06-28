@@ -3310,7 +3310,7 @@ get_all_desktop_entries_for_mime_type (const char  *base_mime_type,
 	  default_entries = g_hash_table_lookup (dir->defaults_list_map, mime_type);
 	  for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
             {
-              if (default_entry == NULL && old_default_entry == NULL)
+              if (default_entry == NULL && old_default_entry == NULL && desktop_entries == NULL)
                 old_default_entry = g_strdup (default_entries[j]);
 
               desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
