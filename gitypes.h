@@ -158,7 +158,12 @@ typedef GIBaseInfo GITypeInfo;
  */
 typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
 
-union _GIArgument
+/**
+ * GIArgument:
+ *
+ * Stores an argument of varying type
+ */
+typedef union
 {
   gboolean v_boolean;
   gint8    v_int8;
@@ -181,8 +186,7 @@ union _GIArgument
   gsize    v_size;
   gchar *  v_string;
   gpointer v_pointer;
-};
-typedef union _GIArgument GIArgument;
+}  GIArgument;
 
 /**
  * GIInfoType:
