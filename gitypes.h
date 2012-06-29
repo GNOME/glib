@@ -186,7 +186,7 @@ typedef union
   gsize    v_size;
   gchar *  v_string;
   gpointer v_pointer;
-}  GIArgument;
+} GIArgument;
 
 /**
  * GIInfoType:
@@ -443,7 +443,7 @@ typedef enum
 
 #ifndef __GI_SCANNER__
 /* backwards compatibility */
-typedef union _GIArgument GArgument;
+typedef GIArgument GArgument;
 typedef struct _GITypelib GTypelib;
 #endif
 
