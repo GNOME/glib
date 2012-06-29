@@ -1993,6 +1993,30 @@ test_help (void)
 }
 
 static void
+test_help_no_options (void)
+{
+  GOptionContext *context;
+  gchar **sarr = NULL;
+  GOptionEntry entries[] = {
+    { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &sarr, "Rest goes here", "REST" },
+    { NULL }
+  };
+  gchar *str;
+
+  context = g_option_context_new ("blabla");
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  str = g_option_context_get_help (context, FALSE, NULL);
+  g_assert (strstr (str, "blabla") != NULL);
+  g_assert (strstr (str, "REST") != NULL);
+  g_assert (strstr (str, "Help Options") != NULL);
+  g_assert (strstr (str, "Application Options") == NULL);
+
+  g_free (str);
+  g_option_context_free (context);
+}
+
+static void
 set_bool (gpointer data)
 {
   gboolean *b = data;
@@ -2198,7 +2222,8 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
-  g_test_add_func ("/option/help", test_help);
+  g_test_add_func ("/option/help/options", test_help);
+  g_test_add_func ("/option/help/no-options", test_help_no_options);
 
   g_test_add_func ("/option/basic", test_basic);
   g_test_add_func ("/option/group/captions", test_group_captions);

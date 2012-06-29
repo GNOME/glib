@@ -639,6 +639,8 @@ group_has_visible_entries (GOptionContext *context,
 
       if (main_entries && !main_group && !(entry->flags & G_OPTION_FLAG_IN_MAIN))
         continue;
+      if (entry->long_name[0] == 0) /* ignore rest entry */
+        continue;
       if (!(entry->flags & reject_filter))
         return TRUE;
     }
