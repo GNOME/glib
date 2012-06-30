@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-06-22 06:38+0000\n"
-"PO-Revision-Date: 2012-06-30 09:42+0700\n"
+"PO-Revision-Date: 2012-06-30 09:55+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,16 +31,14 @@ msgstr "Giá trị đếm quá lớn được gửi cho %s"
 
 #: ../gio/gbufferedinputstream.c:909 ../gio/gbufferedoutputstream.c:581
 #: ../gio/gdataoutputstream.c:568
-#, fuzzy
 #| msgid "Seek not supported on stream"
 msgid "Seek not supported on base stream"
-msgstr "Chức năng seek (tìm nơi) không được hỗ trợ trên luồng"
+msgstr "Chức năng seek (di chuyển nhanh) không được hỗ trợ trên luồng cơ sở"
 
 #: ../gio/gbufferedinputstream.c:955
-#, fuzzy
 #| msgid "Cannot truncate GMemoryInputStream"
 msgid "Cannot truncate GBufferedInputStream"
-msgstr "Không thể cắt GMemoryInputStream"
+msgstr "Không thể cắt GBufferedInputStream"
 
 #: ../gio/gbufferedinputstream.c:1000 ../gio/ginputstream.c:1062
 #: ../gio/giostream.c:292 ../gio/goutputstream.c:1385
@@ -48,10 +46,9 @@ msgid "Stream is already closed"
 msgstr "Luồng đã bị đóng"
 
 #: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
-#, fuzzy
 #| msgid "Truncate not supported on stream"
 msgid "Truncate not supported on base stream"
-msgstr "Không cho phép cắt ngắn luồng"
+msgstr "Không cho phép cắt ngắn luồng cơ sở"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1885
 #: ../gio/gdbusconnection.c:1977 ../gio/gdbusprivate.c:1414
@@ -259,12 +256,12 @@ msgstr "Lệnh `%s' thoát với mã khác không %d: %s"
 #: ../gio/gdbusaddress.c:1312
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr ""
+msgstr "(Nhập ký tự bất kỳ để đóng cửa sổ)\n"
 
 #: ../gio/gdbusaddress.c:1437
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
+msgstr "Dbus cho phiên làm việc chưa chạy, tự động chạy thất bại"
 
 #: ../gio/gdbusaddress.c:1458
 #, c-format
@@ -646,10 +643,10 @@ msgid "Error return with empty body"
 msgstr "Lỗi trả về thân trống rỗng"
 
 #: ../gio/gdbusprivate.c:2062
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to trash file: %s"
 msgid "Unable to get Hardware profile: %s"
-msgstr "Không thể chuyển tập tin vào sọt rác: %s"
+msgstr "Không thể lấy hồ sơ phần cứng: %s"
 
 #: ../gio/gdbusprivate.c:2107
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
@@ -1240,20 +1237,24 @@ msgid "Failed to create temp file: %s"
 msgstr "Không tạo được tập tin tạm: %s"
 
 #: ../gio/glib-compile-resources.c:338
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
-msgstr "Lỗi xử lý tập tin nhập với to-pixdata"
+msgstr ""
+"Lỗi xử lý tập tin nhập với xmllint:\n"
+"%s"
 
 #: ../gio/glib-compile-resources.c:394
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
-msgstr "Lỗi xử lý tập tin nhập với to-pixdata"
+msgstr ""
+"Lỗi xử lý tập tin nhập với to-pixdata:\n"
+"%s"
 
 #: ../gio/glib-compile-resources.c:408
 #, c-format
@@ -1314,7 +1315,7 @@ msgstr "Không tự động tạo và đăng ký tài nguyên"
 
 #: ../gio/glib-compile-resources.c:622
 msgid "C identifier name used for the generated source code"
-msgstr ""
+msgstr "Tên định danh C cho mã nguồn phát sinh"
 
 #: ../gio/glib-compile-resources.c:651
 msgid ""
@@ -2016,7 +2017,7 @@ msgstr "Lỗi phân giải ngược '%s': %s"
 #: ../gio/gresolver.c:1190 ../gio/gresolver.c:1389
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
-msgstr ""
+msgstr "Không có loại bản ghi DNS được yêu cầu cho '%s'"
 
 #: ../gio/gresolver.c:1195 ../gio/gresolver.c:1394
 #, c-format
@@ -2031,7 +2032,7 @@ msgstr "Lỗi phân giải '%s'"
 #: ../gio/gresolver.c:1228 ../gio/gresolver.c:1289
 #, c-format
 msgid "Incomplete data received for '%s'"
-msgstr ""
+msgstr "Nhận dữ liệu không hoàn chỉnh cho '%s'"
 
 #: ../gio/gresource.c:295 ../gio/gresource.c:543 ../gio/gresource.c:560
 #: ../gio/gresource.c:681 ../gio/gresource.c:750 ../gio/gresource.c:811
@@ -2065,7 +2066,7 @@ msgstr "[LỆNH]"
 
 #: ../gio/gresource-tool.c:476
 msgid "List sections containing resources in an elf FILE"
-msgstr ""
+msgstr "Danh sách phần chứa tài nguyên của tập tin elf"
 
 #: ../gio/gresource-tool.c:482
 msgid ""
@@ -2073,15 +2074,18 @@ msgid ""
 "If SECTION is given, only list resources in this section\n"
 "If PATH is given, only list matching resources"
 msgstr ""
+"Danh sách tài nguyên\n"
+"Nếu xác định phần, chỉ liệt kê tài nguyên của phần đó\n"
+"Nếu xác định đường dẫn, chỉ liệt kê tài nguyên khớp"
 
 #: ../gio/gresource-tool.c:485 ../gio/gresource-tool.c:495
 msgid "FILE [PATH]"
-msgstr ""
+msgstr "TẬP-TIN [ĐƯỜNG-DẪN]"
 
 #: ../gio/gresource-tool.c:486 ../gio/gresource-tool.c:496
 #: ../gio/gresource-tool.c:503
 msgid "SECTION"
-msgstr ""
+msgstr "PHẦN"
 
 #: ../gio/gresource-tool.c:491
 msgid ""
@@ -2090,10 +2094,14 @@ msgid ""
 "If PATH is given, only list matching resources\n"
 "Details include the section, size and compression"
 msgstr ""
+"Danh sách tài nguyên chi tiết\n"
+"Nếu xác định phần, chỉ liệt kê tài nguyên của phần đó\n"
+"Nếu xác định đường dẫn, chỉ liệt kê tài nguyên khớp\n"
+"Chi tiết bao gồm phần, kích thước và nén"
 
 #: ../gio/gresource-tool.c:501
 msgid "Extract a resource file to stdout"
-msgstr ""
+msgstr "Trích tập tin tài nguyên ra đầu ra"
 
 #: ../gio/gresource-tool.c:502
 msgid "FILE PATH"
@@ -2123,6 +2131,18 @@ msgid ""
 "Use 'gresource help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Cách dùng:\n"
+"  gresource [--section PHẦN] LỆNH [THAM-SỐ...]\n"
+"\n"
+"Lệnh:\n"
+"  help                      Hiện thông tin này\n"
+"  sections                  Liệt kê các phần tài nguyên\n"
+"  list                      Liệt kê tài nguyên\n"
+"  details                   Liêt kê tài nguyên chi tiết\n"
+"  extract                   Trích tài nguyên\n"
+"\n"
+"Dùng 'gresource help LỆNH' để biết chi tiết.\n"
+"\n"
 
 #: ../gio/gresource-tool.c:530
 #, c-format
@@ -2133,6 +2153,11 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"Cách dùng:\n"
+"  gresource %s%s%s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gresource-tool.c:533 ../gio/gsettings-tool.c:643
 msgid "Arguments:\n"
@@ -2140,21 +2165,23 @@ msgstr "Đối số:\n"
 
 #: ../gio/gresource-tool.c:537
 msgid "  SECTION   An (optional) elf section name\n"
-msgstr ""
+msgstr "  PHẦN      Tên phần elf (tuỳ chọn)\n"
 
 #: ../gio/gresource-tool.c:541 ../gio/gsettings-tool.c:650
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr "  COMMAND   Lệnh để giải thích (tuỳ chọn)\n"
+msgstr "  LỆNH      Lệnh để giải thích (tuỳ chọn)\n"
 
 #: ../gio/gresource-tool.c:547
 msgid "  FILE      An elf file (a binary or a shared library)\n"
-msgstr ""
+msgstr "  TẬP TIN   Tẹn tập tin elf (chương trình hoặc thư viện)\n"
 
 #: ../gio/gresource-tool.c:550
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
 msgstr ""
+"  TẬP TIN   Tập tin elf (chương trình hoặc thư viện)\n"
+"            hoặc tập tin tài nguyên đã biên dịch\n"
 
 #: ../gio/gresource-tool.c:554
 msgid "[PATH]"
@@ -2162,7 +2189,7 @@ msgstr "[ĐƯỜNG DẪN]"
 
 #: ../gio/gresource-tool.c:556
 msgid "  PATH      An (optional) resource path (may be partial)\n"
-msgstr ""
+msgstr "  ĐƯỜNG DẪN (Một phần) Đường dẫn tài nguyên (tuỳ chọn)\n"
 
 #: ../gio/gresource-tool.c:557
 msgid "PATH"
@@ -2170,7 +2197,7 @@ msgstr "ĐƯỜNG DẪN"
 
 #: ../gio/gresource-tool.c:559
 msgid "  PATH      A resource path\n"
-msgstr ""
+msgstr "  ĐƯỜNG DẪN Đường dẫn tài nguyên\n"
 
 #: ../gio/gsettings-tool.c:53 ../gio/gsettings-tool.c:74
 #, c-format
@@ -2413,10 +2440,9 @@ msgid "Unable to create socket: %s"
 msgstr "Không thể tạo socket: %s"
 
 #: ../gio/gsocket.c:506
-#, fuzzy
 #| msgid "Unknown protocol was specified"
 msgid "Unknown family was specified"
-msgstr "Lỗi giao thức không xác định"
+msgstr "Lỗi họ giao thức không xác định"
 
 #: ../gio/gsocket.c:513
 msgid "Unknown protocol was specified"
@@ -2445,16 +2471,16 @@ msgstr "Lỗi liên kết địa chỉ: %s"
 #: ../gio/gsocket.c:1949 ../gio/gsocket.c:1985
 #, c-format
 msgid "Error joining multicast group: %s"
-msgstr ""
+msgstr "Lỗi tham gia nhóm multicast: %s"
 
 #: ../gio/gsocket.c:1950 ../gio/gsocket.c:1986
 #, c-format
 msgid "Error leaving multicast group: %s"
-msgstr ""
+msgstr "Lỗi rời nhóm multicast: %s"
 
 #: ../gio/gsocket.c:1951
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "Không hỗ trợ multicast nguồn xác định"
 
 #: ../gio/gsocket.c:2170
 #, c-format
@@ -2828,30 +2854,29 @@ msgstr "Sai nén dữ liệu"
 
 #: ../gio/tests/gdbus-daemon.c:18
 msgid "Address to listen on"
-msgstr ""
+msgstr "Địa chỉ cần lắng nghe"
 
 #: ../gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr ""
+msgstr "Bỏ qua, mục đích tương thích với GTestDbus"
 
 #: ../gio/tests/gdbus-daemon.c:20
-#, fuzzy
 #| msgid "Print help"
 msgid "Print address"
-msgstr "In trợ giúp"
+msgstr "Địa chỉ in"
 
 #: ../gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
-msgstr ""
+msgstr "In địa chỉ trong chế độ hệ vỏ"
 
 #: ../gio/tests/gdbus-daemon.c:30
 msgid "Run a dbus service"
-msgstr ""
+msgstr "Chạy dịch vụ dbus"
 
 #: ../gio/tests/gdbus-daemon.c:44
 #, c-format
 msgid "Wrong args\n"
-msgstr ""
+msgstr "Tham số sai\n"
 
 #: ../glib/gbookmarkfile.c:760
 #, c-format
