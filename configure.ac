@@ -2475,7 +2475,7 @@ dnl *********************
 dnl *** GRegex checks ***
 dnl *********************
 
-PCRE_REQUIRED_VERSION=8.11
+PCRE_REQUIRED_VERSION=8.13
 
 # Check if we should use the internal or the system-supplied pcre
 AC_ARG_WITH(pcre,
