@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-02 14:07+0000\n"
-"PO-Revision-Date: 2012-07-02 17:27+0200\n"
+"POT-Creation-Date: 2012-07-02 15:29+0000\n"
+"PO-Revision-Date: 2012-07-02 17:34+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -3915,7 +3915,6 @@ msgid "unexpected repeat"
 msgstr "repetición inesperada"
 
 #: ../glib/gregex.c:360
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "carácter no reconocido después de (? o (?-"
 
@@ -3936,7 +3935,6 @@ msgid "missing ) after comment"
 msgstr "falta ) después del comentario"
 
 #: ../glib/gregex.c:375
-#| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "la expresión regular es demasiado larga"
 
@@ -4058,9 +4056,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "opciones NEWLINE inconsistentes"
 
 #: ../glib/gregex.c:476
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -4081,16 +4076,15 @@ msgid "(*VERB) not recognized"
 msgstr "(*VERB) no reconocido"
 
 #: ../glib/gregex.c:489
-msgid "number is too bug"
+#| msgid "number is too bug"
+msgid "number is too big"
 msgstr "el número es demasiado grande"
 
 #: ../glib/gregex.c:492
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr "falta el el nombre del subpatrón después de (?&"
 
 #: ../glib/gregex.c:495
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "se esperaba un dígito después de (?+"
 
@@ -4101,7 +4095,6 @@ msgstr ""
 "JavaScript"
 
 #: ../glib/gregex.c:501
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "no se permiten diferentes nombres para subpatrones del mismo número"
 
@@ -4114,16 +4107,12 @@ msgid "\\c must be followed by an ASCII character"
 msgstr "\\c debe estar seguido de un carácter ASCII"
 
 #: ../glib/gregex.c:510
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\k no está seguido por un nombre entre llaves, corchetes angulares o entre "
 "comillas"
 
 #: ../glib/gregex.c:513
-#| msgid "Seek not supported on base stream"
 msgid "\\N is not supported in a class"
 msgstr "\\N no está soportado en una clase"
 
@@ -4150,7 +4139,6 @@ msgstr ""
 "La biblioteca PCRE está compilada sin soporte para las propiedades de UTF8"
 
 #: ../glib/gregex.c:1337
-#| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "La biblioteca PCRE está compilada con opciones incompatibles"
 
