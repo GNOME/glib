@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-22 06:38+0000\n"
-"PO-Revision-Date: 2012-06-22 13:02+0200\n"
+"POT-Creation-Date: 2012-07-02 14:07+0000\n"
+"PO-Revision-Date: 2012-07-02 17:27+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -112,7 +112,7 @@ msgstr "Tipo desconocido"
 msgid "%s filetype"
 msgstr "tipo de archivo %s"
 
-#: ../gio/gcontenttype.c:680
+#: ../gio/gcontenttype.c:684
 #, c-format
 msgid "%s type"
 msgstr "tipo %s"
@@ -1734,7 +1734,7 @@ msgstr "No se pudo crear la información de papelera para el archivo: %s"
 msgid "Unable to trash file: %s"
 msgstr "No se pudo enviar a la papelera el archivo: %s"
 
-#: ../gio/glocalfile.c:2140 ../glib/gregex.c:213
+#: ../gio/glocalfile.c:2140 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "error interno"
 
@@ -3341,7 +3341,7 @@ msgstr "Falló al abrir el archivo «%s»: fdopen() falló: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Falló al renombrar el archivo «%s» a «%s»: g_rename() falló: %s"
 
-#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1584
+#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1583
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falló al crear el archivo «%s»: %s"
@@ -3371,27 +3371,27 @@ msgstr "Falló al escribir el archivo «%s»: falló fsync(): %s"
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Falló al cerrar el archivo «%s»: falló fclose(): %s"
 
-#: ../glib/gfileutils.c:1287
+#: ../glib/gfileutils.c:1286
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "El archivo existente «%s» no se pudo eliminar: g_unlink() falló: %s"
 
-#: ../glib/gfileutils.c:1547
+#: ../glib/gfileutils.c:1546
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "La plantilla «%s» no es válida, no debería contener un «%s»"
 
-#: ../glib/gfileutils.c:1560
+#: ../glib/gfileutils.c:1559
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no contiene XXXXXX"
 
-#: ../glib/gfileutils.c:2088
+#: ../glib/gfileutils.c:2087
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falló al leer el enlace simbólico «%s»: %s"
 
-#: ../glib/gfileutils.c:2109
+#: ../glib/gfileutils.c:2108
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
@@ -3764,369 +3764,443 @@ msgstr ""
 "El documento termina inesperadamente dentro de un comentario o instrucción "
 "de proceso"
 
-#: ../glib/goption.c:745
+#: ../glib/goption.c:747
 msgid "Usage:"
 msgstr "Uso:"
 
-#: ../glib/goption.c:745
+#: ../glib/goption.c:747
 msgid "[OPTION...]"
 msgstr "[OPCIÓN…]"
 
-#: ../glib/goption.c:851
+#: ../glib/goption.c:853
 msgid "Help Options:"
 msgstr "Opciones de ayuda:"
 
-#: ../glib/goption.c:852
+#: ../glib/goption.c:854
 msgid "Show help options"
 msgstr "Mostrar opciones de ayuda"
 
-#: ../glib/goption.c:858
+#: ../glib/goption.c:860
 msgid "Show all help options"
 msgstr "Muestra todas las opciones de ayuda"
 
-#: ../glib/goption.c:920
+#: ../glib/goption.c:922
 msgid "Application Options:"
 msgstr "Opciones de la aplicación:"
 
-#: ../glib/goption.c:982 ../glib/goption.c:1052
+#: ../glib/goption.c:984 ../glib/goption.c:1054
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "No se puede analizar el valor entero «%s» para %s"
 
-#: ../glib/goption.c:992 ../glib/goption.c:1060
+#: ../glib/goption.c:994 ../glib/goption.c:1062
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: ../glib/goption.c:1017
+#: ../glib/goption.c:1019
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "No se puede analizar el valor doble «%s» para %s"
 
-#: ../glib/goption.c:1025
+#: ../glib/goption.c:1027
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "El valor doble «%s» para %s está fuera de rango"
 
-#: ../glib/goption.c:1288 ../glib/goption.c:1367
+#: ../glib/goption.c:1290 ../glib/goption.c:1369
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Error al analizar la opción: %s"
 
-#: ../glib/goption.c:1398 ../glib/goption.c:1511
+#: ../glib/goption.c:1400 ../glib/goption.c:1513
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Falta un argumento para %s"
 
-#: ../glib/goption.c:1964
+#: ../glib/goption.c:1966
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
 
-#: ../glib/gregex.c:190
+#: ../glib/gregex.c:257
 msgid "corrupted object"
 msgstr "objeto corrupto"
 
-#: ../glib/gregex.c:192
+#: ../glib/gregex.c:259
 msgid "internal error or corrupted object"
 msgstr "error interno u objeto corrupto"
 
-#: ../glib/gregex.c:194
+#: ../glib/gregex.c:261
 msgid "out of memory"
 msgstr "sin memoria"
 
-#: ../glib/gregex.c:199
+#: ../glib/gregex.c:266
 msgid "backtracking limit reached"
 msgstr "se alcanzó el límite de «backtracking»"
 
-#: ../glib/gregex.c:211 ../glib/gregex.c:219
+#: ../glib/gregex.c:278 ../glib/gregex.c:286
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "el patrón contiene elementos no soportados para una coincidencia parcial"
 
-#: ../glib/gregex.c:221
+#: ../glib/gregex.c:288
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "no se soportan referencias anteriores como condiciones para coincidencias "
 "parciales"
 
-#: ../glib/gregex.c:230
+#: ../glib/gregex.c:297
 msgid "recursion limit reached"
 msgstr "se alcanzó el límite de recursividad"
 
-#: ../glib/gregex.c:232
-msgid "workspace limit for empty substrings reached"
-msgstr "límite del espacio de trabajo cuando se alcanzan subcadenas vacías"
-
-#: ../glib/gregex.c:234
+#: ../glib/gregex.c:299
 msgid "invalid combination of newline flags"
 msgstr "combinación de banderas de nueva línea no válidas"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:301
 msgid "bad offset"
 msgstr "desplazamiento erróneo"
 
-#: ../glib/gregex.c:238
+#: ../glib/gregex.c:303
 msgid "short utf8"
 msgstr "UTF8 corto"
 
-#: ../glib/gregex.c:242
+#: ../glib/gregex.c:305
+msgid "recursion loop"
+msgstr "bucle de repetición"
+
+#: ../glib/gregex.c:309
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: ../glib/gregex.c:262
+#: ../glib/gregex.c:329
 msgid "\\ at end of pattern"
 msgstr "\\ al final del patrón"
 
-#: ../glib/gregex.c:265
+#: ../glib/gregex.c:332
 msgid "\\c at end of pattern"
 msgstr "\\c al final del patrón"
 
-#: ../glib/gregex.c:268
+#: ../glib/gregex.c:335
 msgid "unrecognized character follows \\"
 msgstr "carácter no reconocido después de \\"
 
-#: ../glib/gregex.c:275
-msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
-"aquí no se permite escapar las letras (\\l, \\L, \\u, \\U) (mayúscula y "
-"minúscula)"
-
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
 msgstr "números fuera de rango en el cuantificador {}"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:341
 msgid "number too big in {} quantifier"
 msgstr "número demasiado grande en el cuantificador {}"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:344
 msgid "missing terminating ] for character class"
 msgstr "falta la terminación ] para la clase de carácter"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:347
 msgid "invalid escape sequence in character class"
 msgstr "secuencia de escape no válida en la clase de carácter"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:350
 msgid "range out of order in character class"
 msgstr "rango fuera de orden en la clase de carácter"
 
-#: ../glib/gregex.c:293
+#: ../glib/gregex.c:353
 msgid "nothing to repeat"
 msgstr "nada que repetir"
 
-#: ../glib/gregex.c:296
-msgid "unrecognized character after (?"
-msgstr "carácter no reconocido después de (?"
+#: ../glib/gregex.c:357
+msgid "unexpected repeat"
+msgstr "repetición inesperada"
 
-#: ../glib/gregex.c:300
-msgid "unrecognized character after (?<"
-msgstr "carácter no reconocido después de (?<"
+#: ../glib/gregex.c:360
+#| msgid "unrecognized character after (?"
+msgid "unrecognized character after (? or (?-"
+msgstr "carácter no reconocido después de (? o (?-"
 
-#: ../glib/gregex.c:304
-msgid "unrecognized character after (?P"
-msgstr "carácter no reconocido después de (?P"
-
-#: ../glib/gregex.c:307
+#: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
 msgstr "Sólo se soportan las clases con nombres POSIX dentro de una clase"
 
-#: ../glib/gregex.c:310
+#: ../glib/gregex.c:366
 msgid "missing terminating )"
 msgstr "falta el ) de terminación"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:369
+msgid "reference to non-existent subpattern"
+msgstr "referencia a un subpatrón no existente"
+
+#: ../glib/gregex.c:372
+msgid "missing ) after comment"
+msgstr "falta ) después del comentario"
+
+#: ../glib/gregex.c:375
+#| msgid "regular expression too large"
+msgid "regular expression is too large"
+msgstr "la expresión regular es demasiado larga"
+
+#: ../glib/gregex.c:378
+msgid "failed to get memory"
+msgstr "falló al obtener memoria"
+
+#: ../glib/gregex.c:382
 msgid ") without opening ("
 msgstr ") sin ( que lo abriera"
+
+#: ../glib/gregex.c:386
+msgid "code overflow"
+msgstr "desbordamiento de código"
+
+#: ../glib/gregex.c:390
+msgid "unrecognized character after (?<"
+msgstr "carácter no reconocido después de (?<"
+
+#: ../glib/gregex.c:393
+msgid "lookbehind assertion is not fixed length"
+msgstr "la comprobación «lookbehind» no tiene una longitud fija"
+
+#: ../glib/gregex.c:396
+msgid "malformed number or name after (?("
+msgstr "número o nombre mal formado después de (?("
+
+#: ../glib/gregex.c:399
+msgid "conditional group contains more than two branches"
+msgstr "el grupo condicional contiene más de dos ramas"
+
+#: ../glib/gregex.c:402
+msgid "assertion expected after (?("
+msgstr "se esperaba una comprobación después de (?("
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:321
+#: ../glib/gregex.c:409
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R o los dígitos (?[+-] deben estar seguidos por )"
 
-#: ../glib/gregex.c:324
-msgid "reference to non-existent subpattern"
-msgstr "referencia a un subpatrón no existente"
-
-#: ../glib/gregex.c:327
-msgid "missing ) after comment"
-msgstr "falta ) después del comentario"
-
-#: ../glib/gregex.c:330
-msgid "regular expression too large"
-msgstr "la expresión regular es demasiado larga"
-
-#: ../glib/gregex.c:333
-msgid "failed to get memory"
-msgstr "falló al obtener memoria"
-
-#: ../glib/gregex.c:336
-msgid "lookbehind assertion is not fixed length"
-msgstr "la comprobación «lookbehind» no tiene una longitud fija"
-
-#: ../glib/gregex.c:339
-msgid "malformed number or name after (?("
-msgstr "número o nombre mal formado después de (?("
-
-#: ../glib/gregex.c:342
-msgid "conditional group contains more than two branches"
-msgstr "el grupo condicional contiene más de dos ramas"
-
-#: ../glib/gregex.c:345
-msgid "assertion expected after (?("
-msgstr "se esperaba una comprobación después de (?("
-
-#: ../glib/gregex.c:348
+#: ../glib/gregex.c:412
 msgid "unknown POSIX class name"
 msgstr "nombre de clase POSIX desconocido"
 
-#: ../glib/gregex.c:351
+#: ../glib/gregex.c:415
 msgid "POSIX collating elements are not supported"
 msgstr "los elementos POSIX recopilados no están soportados"
 
-#: ../glib/gregex.c:354
+#: ../glib/gregex.c:418
 msgid "character value in \\x{...} sequence is too large"
 msgstr "el valor del carácter en la secuencia \\x{…} es demasiado largo"
 
-#: ../glib/gregex.c:357
+#: ../glib/gregex.c:421
 msgid "invalid condition (?(0)"
 msgstr "condición no válida (?(0)"
 
-#: ../glib/gregex.c:360
+#: ../glib/gregex.c:424
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "no se permite \\C en comprobaciones «lookbehind»"
 
-#: ../glib/gregex.c:363
+#: ../glib/gregex.c:431
+msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
+msgstr ""
+"las secuencias de escape \\L, \\l, \\N{nombre}, \\U, y \\u no están "
+"soportadas"
+
+#: ../glib/gregex.c:434
 msgid "recursive call could loop indefinitely"
 msgstr "una llamada recursiva podrá crear un bucle infinito"
 
-#: ../glib/gregex.c:366
+#: ../glib/gregex.c:438
+msgid "unrecognized character after (?P"
+msgstr "carácter no reconocido después de (?P"
+
+#: ../glib/gregex.c:441
 msgid "missing terminator in subpattern name"
 msgstr "falta el terminador en el nombre del subpatrón"
 
-#: ../glib/gregex.c:369
+#: ../glib/gregex.c:444
 msgid "two named subpatterns have the same name"
 msgstr "dos subpatrones tienen el mismo nombre"
 
-#: ../glib/gregex.c:372
+#: ../glib/gregex.c:447
 msgid "malformed \\P or \\p sequence"
 msgstr "secuencia \\P o \\p mal formada"
 
-#: ../glib/gregex.c:375
+#: ../glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
 msgstr "nombre de propiedad desconocido después de \\P o \\p"
 
-#: ../glib/gregex.c:378
+#: ../glib/gregex.c:453
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "el nombre del subpatrón es demasiado largo (máximo 32 caracteres)"
 
-#: ../glib/gregex.c:381
+#: ../glib/gregex.c:456
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "demasiados subpatrones con nombre (máximo 10.000)"
 
-#: ../glib/gregex.c:384
+#: ../glib/gregex.c:459
 msgid "octal value is greater than \\377"
 msgstr "el valor octal es mayor que \\377"
 
-#: ../glib/gregex.c:387
-msgid "DEFINE group contains more than one branch"
-msgstr "el grupo DEFINE contiene más de una rama"
-
-#: ../glib/gregex.c:390
-msgid "repeating a DEFINE group is not allowed"
-msgstr "no se permite repetir un grupo DEFINE"
-
-#: ../glib/gregex.c:393
-msgid "inconsistent NEWLINE options"
-msgstr "opciones NEWLINE inconsistentes"
-
-#: ../glib/gregex.c:396
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g no está seguido por un nombre de llave o un número distinto de cero con "
-"una llave opcional"
-
-#: ../glib/gregex.c:401
-msgid "unexpected repeat"
-msgstr "repetición inesperada"
-
-#: ../glib/gregex.c:405
-msgid "code overflow"
-msgstr "desbordamiento de código"
-
-#: ../glib/gregex.c:409
+#: ../glib/gregex.c:463
 msgid "overran compiling workspace"
 msgstr "se desbordó el espacio de trabajo de compilación"
 
-#: ../glib/gregex.c:413
+#: ../glib/gregex.c:467
 msgid "previously-checked referenced subpattern not found"
 msgstr "no se encontró el subpatrón referenciado anteriormente comprobado"
 
-#: ../glib/gregex.c:631 ../glib/gregex.c:1753
+#: ../glib/gregex.c:470
+msgid "DEFINE group contains more than one branch"
+msgstr "el grupo DEFINE contiene más de una rama"
+
+#: ../glib/gregex.c:473
+msgid "inconsistent NEWLINE options"
+msgstr "opciones NEWLINE inconsistentes"
+
+#: ../glib/gregex.c:476
+#| msgid ""
+#| "\\g is not followed by a braced name or an optionally braced non-zero "
+#| "number"
+msgid ""
+"\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
+"or by a plain number"
+msgstr ""
+"\\g no está seguido por un nombre entre llaves, corchetes angulares o número "
+"o entre comillas, o por un número simple"
+
+#: ../glib/gregex.c:480
+msgid "a numbered reference must not be zero"
+msgstr "una referencia con número no puede ser cero"
+
+#: ../glib/gregex.c:483
+msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
+msgstr "no se permite un argumento para (*ACCEPT), (*FAIL), o (*COMMIT)"
+
+#: ../glib/gregex.c:486
+msgid "(*VERB) not recognized"
+msgstr "(*VERB) no reconocido"
+
+#: ../glib/gregex.c:489
+msgid "number is too bug"
+msgstr "el número es demasiado grande"
+
+#: ../glib/gregex.c:492
+#| msgid "missing terminator in subpattern name"
+msgid "missing subpattern name after (?&"
+msgstr "falta el el nombre del subpatrón después de (?&"
+
+#: ../glib/gregex.c:495
+#| msgid "digit expected"
+msgid "digit expected after (?+"
+msgstr "se esperaba un dígito después de (?+"
+
+#: ../glib/gregex.c:498
+msgid "] is an invalid data character in JavaScript compatibility mode"
+msgstr ""
+"] es un carácter de datos no válido en el modo de compatibilidad de "
+"JavaScript"
+
+#: ../glib/gregex.c:501
+#| msgid "two named subpatterns have the same name"
+msgid "different names for subpatterns of the same number are not allowed"
+msgstr "no se permiten diferentes nombres para subpatrones del mismo número"
+
+#: ../glib/gregex.c:504
+msgid "(*MARK) must have an argument"
+msgstr "(*MARK) debe tener un argumento"
+
+#: ../glib/gregex.c:507
+msgid "\\c must be followed by an ASCII character"
+msgstr "\\c debe estar seguido de un carácter ASCII"
+
+#: ../glib/gregex.c:510
+#| msgid ""
+#| "\\g is not followed by a braced name or an optionally braced non-zero "
+#| "number"
+msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
+msgstr ""
+"\\k no está seguido por un nombre entre llaves, corchetes angulares o entre "
+"comillas"
+
+#: ../glib/gregex.c:513
+#| msgid "Seek not supported on base stream"
+msgid "\\N is not supported in a class"
+msgstr "\\N no está soportado en una clase"
+
+#: ../glib/gregex.c:516
+msgid "too many forward references"
+msgstr "demasiadas referencias hacia adelante"
+
+#: ../glib/gregex.c:519
+msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
+msgstr "el nombre es demasiado largo en (*MARK), (*PRUNE), (*SKIP), o (*THEN)"
+
+#: ../glib/gregex.c:742 ../glib/gregex.c:1905
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Error al coincidir con la expresión regular %s: %s"
 
-#: ../glib/gregex.c:1206
+#: ../glib/gregex.c:1325
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La biblioteca PCRE está compilada sin soporte para UTF8"
 
-#: ../glib/gregex.c:1215
+#: ../glib/gregex.c:1329
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 "La biblioteca PCRE está compilada sin soporte para las propiedades de UTF8"
 
-#: ../glib/gregex.c:1271
+#: ../glib/gregex.c:1337
+#| msgid "PCRE library is compiled without UTF8 properties support"
+msgid "PCRE library is compiled with incompatible options"
+msgstr "La biblioteca PCRE está compilada con opciones incompatibles"
+
+#: ../glib/gregex.c:1396
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Error al compilar la expresión regular %s en el carácter %d: %s"
 
-#: ../glib/gregex.c:1307
+#: ../glib/gregex.c:1438
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Error al optimizar la expresión regular %s: %s"
 
-#: ../glib/gregex.c:2182
+#: ../glib/gregex.c:2334
 msgid "hexadecimal digit or '}' expected"
 msgstr "se esperaba un dígito hexadecimal o «}»"
 
-#: ../glib/gregex.c:2198
+#: ../glib/gregex.c:2350
 msgid "hexadecimal digit expected"
 msgstr "se esperaba un dígito hexadecimal"
 
-#: ../glib/gregex.c:2238
+#: ../glib/gregex.c:2390
 msgid "missing '<' in symbolic reference"
 msgstr "falta «<» en la referencia simbólica"
 
-#: ../glib/gregex.c:2247
+#: ../glib/gregex.c:2399
 msgid "unfinished symbolic reference"
 msgstr "referencia de símbolo sin terminar"
 
-#: ../glib/gregex.c:2254
+#: ../glib/gregex.c:2406
 msgid "zero-length symbolic reference"
 msgstr "referencia simbólica de longitud cero"
 
-#: ../glib/gregex.c:2265
+#: ../glib/gregex.c:2417
 msgid "digit expected"
 msgstr "se esperaba un dígito"
 
-#: ../glib/gregex.c:2283
+#: ../glib/gregex.c:2435
 msgid "illegal symbolic reference"
 msgstr "referencia simbólica ilegal"
 
-#: ../glib/gregex.c:2345
+#: ../glib/gregex.c:2497
 msgid "stray final '\\'"
 msgstr "«\\» al final de la cadena"
 
-#: ../glib/gregex.c:2349
+#: ../glib/gregex.c:2501
 msgid "unknown escape sequence"
 msgstr "secuencia de escape desconocida"
 
-#: ../glib/gregex.c:2359
+#: ../glib/gregex.c:2511
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Error al analizar el texto de reemplazo «%s» en el carácter %lu: %s"
@@ -4172,47 +4246,47 @@ msgstr "Falló inesperado en select() leyendo datos desde el proceso hijo (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Falló inesperado en waitpid() (%s)"
 
-#: ../glib/gspawn.c:1190 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
+#: ../glib/gspawn.c:1192 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falló al leer desde el conducto hijo (%s)"
 
-#: ../glib/gspawn.c:1258
+#: ../glib/gspawn.c:1260
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falló al bifurcar (fork) (%s)"
 
-#: ../glib/gspawn.c:1406 ../glib/gspawn-win32.c:369
+#: ../glib/gspawn.c:1408 ../glib/gspawn-win32.c:369
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falló al cambiar al directorio «%s» (%s)"
 
-#: ../glib/gspawn.c:1416
+#: ../glib/gspawn.c:1418
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falló al ejecutar el proceso hijo «%s» (%s)"
 
-#: ../glib/gspawn.c:1426
+#: ../glib/gspawn.c:1428
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falló al redirigir la salida o la entrada del proceso hijo (%s)"
 
-#: ../glib/gspawn.c:1435
+#: ../glib/gspawn.c:1437
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falló al bifurcar el proceso hijo (%s)"
 
-#: ../glib/gspawn.c:1443
+#: ../glib/gspawn.c:1445
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Falló desconocido al ejecutar el proceso hijo «%s»"
 
-#: ../glib/gspawn.c:1467
+#: ../glib/gspawn.c:1469
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falló al leer suficientes datos desde el conducto del pid hijo (%s)"
 
-#: ../glib/gspawn.c:1540 ../glib/gspawn-win32.c:299
+#: ../glib/gspawn.c:1542 ../glib/gspawn-win32.c:299
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -4355,6 +4429,17 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "workspace limit for empty substrings reached"
+#~ msgstr "límite del espacio de trabajo cuando se alcanzan subcadenas vacías"
+
+#~ msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
+#~ msgstr ""
+#~ "aquí no se permite escapar las letras (\\l, \\L, \\u, \\U) (mayúscula y "
+#~ "minúscula)"
+
+#~ msgid "repeating a DEFINE group is not allowed"
+#~ msgstr "no se permite repetir un grupo DEFINE"
 
 #~ msgid "No service record for '%s'"
 #~ msgstr "No hay registro de servicio para «%s»"
