@@ -486,7 +486,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("(*VERB) not recognized");
       break;
     case G_REGEX_ERROR_NUMBER_TOO_BIG:
-      *errmsg = _("number is too bug");
+      *errmsg = _("number is too big");
       break;
     case G_REGEX_ERROR_MISSING_SUBPATTERN_NAME:
       *errmsg = _("missing subpattern name after (?&");
