@@ -266,7 +266,7 @@ struct _GSourceFuncs
  * Use this macro as the return value of a #GSourceFunc to remove
  * the #GSource from the main loop.
  *
- * Since: 2.28
+ * Since: 2.32
  */
 #define G_SOURCE_REMOVE         FALSE
 
@@ -276,7 +276,7 @@ struct _GSourceFuncs
  * Use this macro as the return value of a #GSourceFunc to leave
  * the #GSource in the main loop.
  *
- * Since: 2.28
+ * Since: 2.32
  */
 #define G_SOURCE_CONTINUE       TRUE
 
