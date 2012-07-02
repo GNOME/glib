@@ -291,6 +291,8 @@ g_win32_input_stream_read (GInputStream  *stream,
   GWin32InputStream *win32_stream;
   BOOL res;
   DWORD nbytes, nread;
+  OVERLAPPED overlap = { 0, };
+  gssize retval = -1;
 
   win32_stream = G_WIN32_INPUT_STREAM (stream);
 
@@ -302,26 +304,54 @@ g_win32_input_stream_read (GInputStream  *stream,
   else
     nbytes = count;
 
-  res = ReadFile (win32_stream->priv->handle, buffer, nbytes, &nread, NULL);
-  if (!res)
+  overlap.hEvent = CreateEvent (NULL, FALSE, FALSE, NULL);
+  g_return_val_if_fail (overlap.hEvent != NULL, -1);
+
+  res = ReadFile (win32_stream->priv->handle, buffer, nbytes, &nread, &overlap);
+  if (res)
+    retval = nread;
+  else
     {
       int errsv = GetLastError ();
-      gchar *emsg;
 
+      if (errsv == ERROR_IO_PENDING &&
+          _g_win32_overlap_wait_result (win32_stream->priv->handle,
+                                        &overlap, &nread, cancellable))
+        {
+          retval = nread;
+          goto end;
+        }
+
+      if (g_cancellable_set_error_if_cancelled (cancellable, error))
+        goto end;
+
+      errsv = GetLastError ();
       if (errsv == ERROR_HANDLE_EOF ||
-	  errsv == ERROR_BROKEN_PIPE)
-	return 0;
+          errsv == ERROR_BROKEN_PIPE)
+        {
+          /* TODO: the other end of a pipe may call the WriteFile
+           * function with nNumberOfBytesToWrite set to zero. In this
+           * case, it's not possible for the caller to know if it's
+           * broken pipe or a read of 0. Perhaps we should add a
+           * is_broken flag for this win32 case.. */
+          retval = 0;
+        }
+      else
+        {
+          gchar *emsg;
 
-      emsg = g_win32_error_message (errsv);
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_win32_error (errsv),
-		   _("Error reading from handle: %s"),
-		   emsg);
-      g_free (emsg);
-      return -1;
+          emsg = g_win32_error_message (errsv);
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_win32_error (errsv),
+                       _("Error reading from handle: %s"),
+                       emsg);
+          g_free (emsg);
+        }
     }
 
-  return nread;
+end:
+  CloseHandle (overlap.hEvent);
+  return retval;
 }
 
 static gboolean

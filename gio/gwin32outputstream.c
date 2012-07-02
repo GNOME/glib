@@ -293,6 +293,8 @@ g_win32_output_stream_write (GOutputStream  *stream,
   GWin32OutputStream *win32_stream;
   BOOL res;
   DWORD nbytes, nwritten;
+  OVERLAPPED overlap = { 0, };
+  gssize retval = -1;
 
   win32_stream = G_WIN32_OUTPUT_STREAM (stream);
 
@@ -304,24 +306,49 @@ g_win32_output_stream_write (GOutputStream  *stream,
   else
     nbytes = count;
 
-  res = WriteFile (win32_stream->priv->handle, buffer, nbytes, &nwritten, NULL);
-  if (!res)
+  overlap.hEvent = CreateEvent (NULL, FALSE, FALSE, NULL);
+  g_return_val_if_fail (overlap.hEvent != NULL, -1);
+
+  res = WriteFile (win32_stream->priv->handle, buffer, nbytes, &nwritten, &overlap);
+  if (res)
+    retval = nwritten;
+  else
     {
       int errsv = GetLastError ();
-      gchar *emsg = g_win32_error_message (errsv);
 
-      if (errsv == ERROR_HANDLE_EOF)
-	return 0;
+      if (errsv == ERROR_IO_PENDING &&
+          _g_win32_overlap_wait_result (win32_stream->priv->handle,
+                                        &overlap, &nwritten, cancellable))
+        {
+          retval = nwritten;
+          goto end;
+        }
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_win32_error (errsv),
-		   _("Error writing to handle: %s"),
-		   emsg);
-      g_free (emsg);
-      return -1;
+      if (g_cancellable_set_error_if_cancelled (cancellable, error))
+        goto end;
+
+      errsv = GetLastError ();
+      if (errsv == ERROR_HANDLE_EOF ||
+          errsv == ERROR_BROKEN_PIPE)
+        {
+          retval = 0;
+        }
+      else
+        {
+          gchar *emsg;
+
+          emsg = g_win32_error_message (errsv);
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_win32_error (errsv),
+                       _("Error writing to handle: %s"),
+                       emsg);
+          g_free (emsg);
+        }
     }
 
-  return nwritten;
+end:
+  CloseHandle (overlap.hEvent);
+  return retval;
 }
 
 static gboolean

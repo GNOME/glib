@@ -168,3 +168,31 @@ _g_fd_source_new (int           fd,
 
   return source;
 }
+
+#ifdef G_OS_WIN32
+gboolean
+_g_win32_overlap_wait_result (HANDLE           hfile,
+                              OVERLAPPED      *overlap,
+                              DWORD           *transferred,
+                              GCancellable    *cancellable G_GNUC_UNUSED)
+{
+  GPollFD pollfd[1] = { 0, };
+  gboolean result = FALSE;
+  gint num, npoll;
+
+  pollfd[0].fd = (gint)overlap->hEvent;
+  pollfd[0].events = G_IO_IN;
+  num = 1;
+
+  npoll = g_poll (pollfd, num, -1);
+  if (npoll <= 0)
+    /* error out, should never happen */
+    goto end;
+
+  /* either cancelled or IO completed, either way get the result */
+  result = GetOverlappedResult (overlap->hEvent, overlap, transferred, TRUE);
+
+end:
+  return result;
+}
+#endif
