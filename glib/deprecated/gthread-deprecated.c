@@ -1461,7 +1461,7 @@ g_static_private_free (GStaticPrivate *private_key)
  *
  * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
  *
- * Deprecated:3.32:GMutex can now be statically allocated, or embedded
+ * Deprecated: 2.32: GMutex can now be statically allocated, or embedded
  * in structures and initialised with g_mutex_init().
  */
 GMutex *
@@ -1484,7 +1484,7 @@ g_mutex_new (void)
  * Calling g_mutex_free() on a locked mutex may result
  * in undefined behaviour.
  *
- * Deprecated:3.32:GMutex can now be statically allocated, or embedded
+ * Deprecated: 2.32: GMutex can now be statically allocated, or embedded
  * in structures and initialised with g_mutex_init().
  */
 void
@@ -1503,7 +1503,7 @@ g_mutex_free (GMutex *mutex)
  *
  * Returns: a newly allocated #GCond. Free with g_cond_free()
  *
- * Deprecated:3.32:GCond can now be statically allocated, or embedded
+ * Deprecated: 2.32: GCond can now be statically allocated, or embedded
  * in structures and initialised with g_cond_init().
  */
 GCond *
@@ -1526,7 +1526,7 @@ g_cond_new (void)
  * Calling g_cond_free() for a #GCond on which threads are
  * blocking leads to undefined behaviour.
  *
- * Deprecated:3.32:GCond can now be statically allocated, or embedded
+ * Deprecated: 2.32: GCond can now be statically allocated, or embedded
  * in structures and initialised with g_cond_init().
  */
 void
