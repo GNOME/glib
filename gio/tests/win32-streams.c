@@ -27,6 +27,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <io.h>
+#include <unistd.h>
 
 #include <windows.h>
 
@@ -466,6 +467,60 @@ test_pipe_io_concurrent (void)
   close (writer_pipe[1]);
 }
 
+static void
+readable_cancel (GObject *source, GAsyncResult *res, gpointer user_data)
+{
+  GInputStream *in = G_INPUT_STREAM (source);
+  GError *err = NULL;
+  gssize len;
+
+  len = g_input_stream_read_finish (in, res, &err);
+  g_assert_cmpint (len, ==, -1);
+  g_assert_error (err, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_error_free (err);
+
+  g_main_loop_quit (loop);
+}
+
+static void
+test_pipe_io_cancel (void)
+{
+  GInputStream *in;
+  GOutputStream *out;
+  HANDLE in_handle, out_handle;
+  gchar name[256];
+
+  g_snprintf (name, sizeof (name),
+              "\\\\.\\pipe\\gtest-io-cancel-%u", (guint) getpid ());
+
+  in_handle = CreateNamedPipe (name,
+                               PIPE_ACCESS_INBOUND | FILE_FLAG_OVERLAPPED,
+                               PIPE_READMODE_BYTE | PIPE_WAIT,
+                               1, 0, 0, 0, NULL);
+  g_assert (in_handle != INVALID_HANDLE_VALUE);
+
+  out_handle = CreateFile (name, GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+  g_assert (out_handle != INVALID_HANDLE_VALUE);
+
+  in = g_win32_input_stream_new (in_handle, TRUE);
+  out = g_win32_output_stream_new (out_handle, TRUE);
+
+  reader_cancel = g_cancellable_new ();
+  g_input_stream_read_async (in, main_buf, sizeof (main_buf),
+                             G_PRIORITY_DEFAULT, reader_cancel,
+                             readable_cancel, out);
+
+  g_timeout_add (500, timeout, reader_cancel);
+
+  loop = g_main_loop_new (NULL, TRUE);
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
+
+  g_object_unref (reader_cancel);
+  g_object_unref (in);
+  g_object_unref (out);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -474,6 +529,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/win32-streams/pipe-io-test", test_pipe_io);
+  g_test_add_func ("/win32-streams/pipe-io-cancel-test", test_pipe_io_cancel);
   g_test_add_func ("/win32-streams/pipe-io-overlap-test", test_pipe_io_overlap);
   g_test_add_func ("/win32-streams/pipe-io-concurrent-test", test_pipe_io_concurrent);
 
