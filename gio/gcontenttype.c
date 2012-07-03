@@ -332,7 +332,7 @@ g_content_type_guess (const gchar  *filename,
 
   /* our test suite and potentially other code used -1 in the past, which is
    * not documented and not allowed; guard against that */
-  g_return_val_if_fail (data_size != (gsize) -1, g_strdup (XDG_MIME_TYPE_UNKNOWN));
+  g_return_val_if_fail (data_size != (gsize) -1, g_strdup ("*"));
 
   if (filename)
     {
