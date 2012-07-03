@@ -237,6 +237,15 @@ typedef gsize GType;
 #define G_TYPE_POLLFD (g_pollfd_get_type ())
 
 /**
+ * G_TYPE_MARKUP_PARSE_CONTEXT:
+ *
+ * The #GType for a boxed type holding a #GMarkupParseContext.
+ *
+ * Since: 2.36
+ */
+#define G_TYPE_MARKUP_PARSE_CONTEXT (g_markup_parse_context_get_type ())
+
+/**
  * G_TYPE_KEY_FILE:
  *
  * The #GType for a boxed type holding a #GKeyFile.
@@ -294,6 +303,8 @@ GLIB_AVAILABLE_IN_2_36
 GType   g_thread_get_type          (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_36
 GType   g_checksum_get_type        (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_36
+GType   g_markup_parse_context_get_type (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;

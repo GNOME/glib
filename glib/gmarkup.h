@@ -182,6 +182,10 @@ GMarkupParseContext *g_markup_parse_context_new   (const GMarkupParser *parser,
                                                    GMarkupParseFlags    flags,
                                                    gpointer             user_data,
                                                    GDestroyNotify       user_data_dnotify);
+GLIB_AVAILABLE_IN_2_36
+GMarkupParseContext *g_markup_parse_context_ref   (GMarkupParseContext *context);
+GLIB_AVAILABLE_IN_2_36
+void                 g_markup_parse_context_unref (GMarkupParseContext *context);
 void                 g_markup_parse_context_free  (GMarkupParseContext *context);
 gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
                                                    const gchar         *text,

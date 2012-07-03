@@ -29,6 +29,7 @@
 
 #include "gmarkup.h"
 
+#include "gatomic.h"
 #include "gslice.h"
 #include "galloca.h"
 #include "gstrfuncs.h"
@@ -116,6 +117,8 @@ typedef struct
 struct _GMarkupParseContext
 {
   const GMarkupParser *parser;
+
+  volatile gint ref_count;
 
   GMarkupParseFlags flags;
 
@@ -224,6 +227,7 @@ g_markup_parse_context_new (const GMarkupParser *parser,
 
   context = g_new (GMarkupParseContext, 1);
 
+  context->ref_count = 1;
   context->parser = parser;
   context->flags = flags;
   context->user_data = user_data;
@@ -264,6 +268,46 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->balance = 0;
 
   return context;
+}
+
+/**
+ * g_markup_parse_context_ref:
+ * @context: a #GMarkupParseContext
+ *
+ * Increases the reference count of @context.
+ *
+ * Returns: the same @context
+ *
+ * Since: 2.36
+ **/
+GMarkupParseContext *
+g_markup_parse_context_ref (GMarkupParseContext *context)
+{
+  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (context->ref_count > 0, NULL);
+
+  g_atomic_int_inc (&context->ref_count);
+
+  return context;
+}
+
+/**
+ * g_markup_parse_context_unref:
+ * @context: a #GMarkupParseContext
+ *
+ * Decreases the reference count of @context.  When its reference count
+ * drops to 0, it is freed.
+ *
+ * Since: 2.36
+ **/
+void
+g_markup_parse_context_unref (GMarkupParseContext *context)
+{
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (context->ref_count > 0);
+
+  if (g_atomic_int_dec_and_test (&context->ref_count))
+    g_markup_parse_context_free (context);
 }
 
 static void

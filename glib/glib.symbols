@@ -684,6 +684,8 @@ g_markup_parse_context_new
 g_markup_parse_context_parse
 g_markup_parse_context_push
 g_markup_parse_context_pop
+g_markup_parse_context_ref
+g_markup_parse_context_unref
 g_markup_printf_escaped
 g_markup_vprintf_escaped
 g_markup_collect_attributes

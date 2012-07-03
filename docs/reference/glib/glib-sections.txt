@@ -1127,6 +1127,8 @@ g_markup_parse_context_new
 g_markup_parse_context_parse
 g_markup_parse_context_push
 g_markup_parse_context_pop
+g_markup_parse_context_ref
+g_markup_parse_context_unref
 <SUBSECTION>
 GMarkupCollectType
 g_markup_collect_attributes

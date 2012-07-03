@@ -160,6 +160,7 @@ G_DEFINE_BOXED_TYPE (GMainLoop, g_main_loop, g_main_loop_ref, g_main_loop_unref)
 G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_context_unref)
 G_DEFINE_BOXED_TYPE (GSource, g_source, g_source_ref, g_source_unref)
 G_DEFINE_BOXED_TYPE (GPollFD, g_pollfd, pollfd_copy, g_free)
+G_DEFINE_BOXED_TYPE (GMarkupParseContext, g_markup_parse_context, g_markup_parse_context_ref, g_markup_parse_context_unref)
 
 G_DEFINE_BOXED_TYPE (GThread, g_thread, g_thread_ref, g_thread_unref)
 G_DEFINE_BOXED_TYPE (GChecksum, g_checksum, g_checksum_copy, g_checksum_free)
