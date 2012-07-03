@@ -749,6 +749,7 @@ g_param_spec_types
 GTypeCValue
 G_VALUE_COLLECT_INIT
 G_VALUE_COLLECT
+G_VALUE_COLLECT_SKIP
 G_VALUE_LCOPY
 G_VALUE_COLLECT_FORMAT_MAX_LENGTH
 </SECTION>
@@ -759,6 +760,7 @@ G_VALUE_COLLECT_FORMAT_MAX_LENGTH
 GSignalInvocationHint
 GSignalAccumulator
 GSignalCMarshaller
+GSignalCVaMarshaller
 GSignalEmissionHook
 GSignalFlags
 GSignalMatchType
@@ -769,6 +771,7 @@ G_SIGNAL_FLAGS_MASK
 g_signal_new
 g_signal_newv
 g_signal_new_valist
+g_signal_set_va_marshaller
 g_signal_query
 g_signal_lookup
 g_signal_name
@@ -828,6 +831,7 @@ GClosure
 G_TYPE_CLOSURE
 GCClosure
 GClosureMarshal
+GVaClosureMarshal
 GClosureNotify
 g_cclosure_new
 g_cclosure_new_swap
@@ -876,6 +880,31 @@ g_cclosure_marshal_BOOLEAN__FLAGS
 g_cclosure_marshal_BOOL__FLAGS
 g_cclosure_marshal_BOOLEAN__BOXED_BOXED
 g_cclosure_marshal_BOOL__BOXED_BOXED
+
+<SUBSECTION>
+g_cclosure_marshal_generic_va
+g_cclosure_marshal_VOID__VOIDv
+g_cclosure_marshal_VOID__BOOLEANv
+g_cclosure_marshal_VOID__CHARv
+g_cclosure_marshal_VOID__UCHARv
+g_cclosure_marshal_VOID__INTv
+g_cclosure_marshal_VOID__UINTv
+g_cclosure_marshal_VOID__LONGv
+g_cclosure_marshal_VOID__ULONGv
+g_cclosure_marshal_VOID__ENUMv
+g_cclosure_marshal_VOID__FLAGSv
+g_cclosure_marshal_VOID__FLOATv
+g_cclosure_marshal_VOID__DOUBLEv
+g_cclosure_marshal_VOID__STRINGv
+g_cclosure_marshal_VOID__PARAMv
+g_cclosure_marshal_VOID__BOXEDv
+g_cclosure_marshal_VOID__POINTERv
+g_cclosure_marshal_VOID__OBJECTv
+g_cclosure_marshal_VOID__VARIANTv
+g_cclosure_marshal_STRING__OBJECT_POINTERv
+g_cclosure_marshal_VOID__UINT_POINTERv
+g_cclosure_marshal_BOOLEAN__FLAGSv
+g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv
 
 <SUBSECTION Private>
 GClosureNotifyData
