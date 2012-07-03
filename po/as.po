@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-19 08:36+0000\n"
-"PO-Revision-Date: 2012-06-19 18:50+0530\n"
+"POT-Creation-Date: 2012-07-02 15:25+0000\n"
+"PO-Revision-Date: 2012-07-03 21:00+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -106,7 +106,7 @@ msgstr "অজ্ঞাত ধৰণ"
 msgid "%s filetype"
 msgstr "%s নথিপত্ৰৰ ধৰণ"
 
-#: ../gio/gcontenttype.c:680
+#: ../gio/gcontenttype.c:684
 #, c-format
 msgid "%s type"
 msgstr "%s ধৰণ"
@@ -1625,7 +1625,7 @@ msgstr "trashing তথ্যৰ নথিপত্ৰ সৃষ্টি কৰ
 msgid "Unable to trash file: %s"
 msgstr "নথিপত্ৰ বৰ্জন কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../gio/glocalfile.c:2140 ../glib/gregex.c:213
+#: ../gio/glocalfile.c:2140 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "অভ্যন্তৰীণ ত্ৰুটি"
 
@@ -1962,20 +1962,25 @@ msgstr "'%s' বিশ্লেষণ কৰোঁতে ত্ৰুটি: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' ক ওলোটা ভাবে বুজিবলৈ ত্ৰুটি: %s"
 
-#: ../gio/gresolver.c:1146 ../gio/gresolver.c:1320
+#: ../gio/gresolver.c:1190 ../gio/gresolver.c:1389
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' ৰ বাবে অনুৰোধ কৰা ধৰণৰ কোনো DNS ৰেকৰ্ড নাই"
 
-#: ../gio/gresolver.c:1151 ../gio/gresolver.c:1325
+#: ../gio/gresolver.c:1195 ../gio/gresolver.c:1394
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "'%s' ক অস্থায়ীভাবে বুজিব পৰা নাযায়"
 
-#: ../gio/gresolver.c:1156 ../gio/gresolver.c:1330
+#: ../gio/gresolver.c:1200 ../gio/gresolver.c:1399
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "'%s' বুজিব লওঁতে ত্ৰুটি"
+
+#: ../gio/gresolver.c:1228 ../gio/gresolver.c:1289
+#, c-format
+msgid "Incomplete data received for '%s'"
+msgstr "'%s' ৰ বাবে অসম্পূৰ্ণ তথ্য প্ৰাপ্ত হৈছে"
 
 #: ../gio/gresource.c:295 ../gio/gresource.c:543 ../gio/gresource.c:560
 #: ../gio/gresource.c:681 ../gio/gresource.c:750 ../gio/gresource.c:811
@@ -3199,7 +3204,7 @@ msgstr "'%s' নথিপত্ৰ খোলোঁতে ত্ৰুটি: fdo
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' নথিপত্ৰক '%s' লৈ পুনঃনামকৰণ কৰোঁতে ব্যৰ্থ: g_rename() ব্যৰ্থ: %s"
 
-#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1584
+#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1583
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' নথিপত্ৰ সৃষ্টি কৰোঁতে ব্যৰ্থ: %s"
@@ -3229,27 +3234,27 @@ msgstr "'%s' নথিপত্ৰ লিখাত ব্যৰ্থ: fsync() �
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "'%s' নথিপত্ৰ বন্ধ কৰাত ব্যৰ্থ: fclose() ব্যৰ্থ: %s"
 
-#: ../glib/gfileutils.c:1287
+#: ../glib/gfileutils.c:1286
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "বৰ্ত্তমানে থকা নথিপত্ৰ '%s' আঁতৰাব পৰা নগল: g_unlink() ব্যৰ্থ: %s"
 
-#: ../glib/gfileutils.c:1547
+#: ../glib/gfileutils.c:1546
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' টেমপ্লেট অৱৈধ, এটা '%s' থাকিব নালাগে"
 
-#: ../glib/gfileutils.c:1560
+#: ../glib/gfileutils.c:1559
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' টেমপ্লেটত XXXXXX নাই"
 
-#: ../glib/gfileutils.c:2088
+#: ../glib/gfileutils.c:2087
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "চিমসংযোগ পঢ়াত ব্যৰ্থ '%s': %s"
 
-#: ../glib/gfileutils.c:2109
+#: ../glib/gfileutils.c:2108
 msgid "Symbolic links not supported"
 msgstr "চিমসংযোগ সমৰ্থিত নহয়"
 
@@ -3586,360 +3591,434 @@ msgstr "'%s' পদাৰ্থৰ অন্তিম টেগত দস্ত�
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "কোনো মন্তব্য বা প্ৰক্ৰিয়াকৰণৰ নিৰ্দেশত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/goption.c:745
+#: ../glib/goption.c:747
 msgid "Usage:"
 msgstr "ব্যৱহাৰ:"
 
-#: ../glib/goption.c:745
+#: ../glib/goption.c:747
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:851
+#: ../glib/goption.c:853
 msgid "Help Options:"
 msgstr "সহায় বিকল্পসমূহ:"
 
-#: ../glib/goption.c:852
+#: ../glib/goption.c:854
 msgid "Show help options"
 msgstr "সহায় বিকল্পসমূহ দেখুৱাওক"
 
-#: ../glib/goption.c:858
+#: ../glib/goption.c:860
 msgid "Show all help options"
 msgstr "সহায় সমস্ত বিকল্প দেখুৱাওক"
 
-#: ../glib/goption.c:920
+#: ../glib/goption.c:922
 msgid "Application Options:"
 msgstr "অনুপ্ৰয়োগ বিকল্পসমূহ:"
 
-#: ../glib/goption.c:982 ../glib/goption.c:1052
+#: ../glib/goption.c:984 ../glib/goption.c:1054
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' পূৰ্ণসংখ্যাৰ মান %s ৰ বাবে বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: ../glib/goption.c:992 ../glib/goption.c:1060
+#: ../glib/goption.c:994 ../glib/goption.c:1062
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' পূৰ্ণসংখ্যাৰ মান %s ৰ বাবে সীমাৰ বহিৰ্ভূত"
 
-#: ../glib/goption.c:1017
+#: ../glib/goption.c:1019
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "'%s' ৰ দ্বীবৈশিষ্ট মান %s ৰ বাবে বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: ../glib/goption.c:1025
+#: ../glib/goption.c:1027
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' ৰ দ্বীবৈশিষ্ট মান %s ৰ বাবে সীমা বহিৰ্ভূত"
 
-#: ../glib/goption.c:1288 ../glib/goption.c:1367
+#: ../glib/goption.c:1290 ../glib/goption.c:1369
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s বিকল্প বিশ্লেষণ কৰিবলৈ ব্যৰ্থ"
 
-#: ../glib/goption.c:1398 ../glib/goption.c:1511
+#: ../glib/goption.c:1400 ../glib/goption.c:1513
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s ৰ তৰ্ক সন্ধানহিন"
 
-#: ../glib/goption.c:1964
+#: ../glib/goption.c:1966
 #, c-format
 msgid "Unknown option %s"
 msgstr "অজ্ঞাত বিকল্প %s"
 
-#: ../glib/gregex.c:190
+#: ../glib/gregex.c:257
 msgid "corrupted object"
 msgstr "ক্ষতিগ্ৰস্ত অৱজেক্ট"
 
-#: ../glib/gregex.c:192
+#: ../glib/gregex.c:259
 msgid "internal error or corrupted object"
 msgstr "অভ্যন্তৰীণ ত্ৰুটি বা ক্ষতিগ্ৰস্ত অৱজেক্ট"
 
-#: ../glib/gregex.c:194
+#: ../glib/gregex.c:261
 msgid "out of memory"
 msgstr "মেমৰি অৱশিষ্ট নাই"
 
-#: ../glib/gregex.c:199
+#: ../glib/gregex.c:266
 msgid "backtracking limit reached"
 msgstr "backtracking ৰ সুনিৰ্দিষ্ট সীমা পূৰ্ণ"
 
-#: ../glib/gregex.c:211 ../glib/gregex.c:219
+#: ../glib/gregex.c:278 ../glib/gregex.c:286
 msgid "the pattern contains items not supported for partial matching"
 msgstr "উল্লিখিত বিন্যাসত অন্তৰ্ভুক্ত সামগ্ৰী, আংশিক মিল অনুসন্ধানত সমৰ্থিত নহয়"
 
-#: ../glib/gregex.c:221
+#: ../glib/gregex.c:288
 msgid "back references as conditions are not supported for partial matching"
 msgstr "আংশিক মিল অনুসন্ধানৰ সময় বেক প্ৰসংগ সমৰ্থিত নহয়"
 
-#: ../glib/gregex.c:230
+#: ../glib/gregex.c:297
 msgid "recursion limit reached"
 msgstr "পুনৰাবৃত্তিৰ সীমা পূৰ্ণ"
 
-#: ../glib/gregex.c:232
-msgid "workspace limit for empty substrings reached"
-msgstr "ৰিক্ত উপস্ট্ৰিং ৰ কৰ্মক্ষেত্ৰৰ সীমা পূৰ্ণ"
-
-#: ../glib/gregex.c:234
+#: ../glib/gregex.c:299
 msgid "invalid combination of newline flags"
 msgstr "নতুন পংক্তি চিহ্নকাৰী ফ্লেগৰ অৱৈধ দল"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:301
 msgid "bad offset"
 msgstr "বেয়া অফচেট"
 
-#: ../glib/gregex.c:238
+#: ../glib/gregex.c:303
 msgid "short utf8"
 msgstr "সৰু utf8"
 
-#: ../glib/gregex.c:242
+#: ../glib/gregex.c:305
+msgid "recursion loop"
+msgstr "বাৰংবাৰতা লুপ"
+
+#: ../glib/gregex.c:309
 msgid "unknown error"
 msgstr "অজ্ঞাত ত্ৰুটি"
 
-#: ../glib/gregex.c:262
+#: ../glib/gregex.c:329
 msgid "\\ at end of pattern"
 msgstr "পংক্তিৰ শেষত \\ উপস্থিত"
 
-#: ../glib/gregex.c:265
+#: ../glib/gregex.c:332
 msgid "\\c at end of pattern"
 msgstr "পংক্তিৰ শেষত \\c উপস্থিত"
 
-#: ../glib/gregex.c:268
+#: ../glib/gregex.c:335
 msgid "unrecognized character follows \\"
 msgstr "\\ ৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
 
-#: ../glib/gregex.c:275
-msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr "ফলা সলনি কৰা escapes (\\l, \\L, \\u, \\U) ৰ ইয়াত অনুমতি নাই"
-
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
 msgstr "{} quantifier ত সংখ্যা ক্ৰমত নাই"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:341
 msgid "number too big in {} quantifier"
 msgstr "{} quantifier ৰ সংখ্যা অত্যাধিক ডাঙৰ"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:344
 msgid "missing terminating ] for character class"
 msgstr "আখৰৰ শ্ৰেণীৰ শেষত ] চিহ্ন অনুপস্থিত"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:347
 msgid "invalid escape sequence in character class"
 msgstr "আখৰৰ শ্ৰেণীত অৱৈধ escape ক্ৰম"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:350
 msgid "range out of order in character class"
 msgstr "আখৰৰ শ্ৰেণীৰ অঞ্চল সীমাৰ বাহিৰত"
 
-#: ../glib/gregex.c:293
+#: ../glib/gregex.c:353
 msgid "nothing to repeat"
 msgstr "পুনৰাবৃত্তিৰ বাবে একো উপস্থিত নাই"
 
-#: ../glib/gregex.c:296
-msgid "unrecognized character after (?"
-msgstr "(? চিহ্নৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
+#: ../glib/gregex.c:357
+msgid "unexpected repeat"
+msgstr "অপ্ৰত্যাশিত পুনৰাবৃত্তি"
 
-#: ../glib/gregex.c:300
-msgid "unrecognized character after (?<"
-msgstr "(?< চিহ্নৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
+#: ../glib/gregex.c:360
+#| msgid "unrecognized character after (?"
+msgid "unrecognized character after (? or (?-"
+msgstr "(? অথবা (?- ৰ পিছত অপৰিচিত আখৰ"
 
-#: ../glib/gregex.c:304
-msgid "unrecognized character after (?P"
-msgstr "(?P চিহ্নৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
-
-#: ../glib/gregex.c:307
+#: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX নামৰ শ্ৰেণীসমূহ অকল শ্ৰেণীত সমৰ্থিত হ'ব"
 
-#: ../glib/gregex.c:310
+#: ../glib/gregex.c:366
 msgid "missing terminating )"
 msgstr "শেষৰ ) অনুপস্থিত"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:369
+msgid "reference to non-existent subpattern"
+msgstr "অনুপস্থিত উপবিন্যাস নিৰ্দেশ কৰা হৈছে"
+
+#: ../glib/gregex.c:372
+msgid "missing ) after comment"
+msgstr "বক্তব্যৰ পিছত ) চিহ্ন অনুপস্থিত"
+
+#: ../glib/gregex.c:375
+#| msgid "regular expression too large"
+msgid "regular expression is too large"
+msgstr "সাধাৰণ অভিব্যক্তি অত্যাধিক ডাঙৰ"
+
+#: ../glib/gregex.c:378
+msgid "failed to get memory"
+msgstr "মেমৰি প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ"
+
+#: ../glib/gregex.c:382
 msgid ") without opening ("
 msgstr "( চিহ্ন নোহোৱাকে ) চিহ্ন প্ৰয়োগ কৰা হৈছে"
+
+#: ../glib/gregex.c:386
+msgid "code overflow"
+msgstr "ক'ড অভাৰফ্লো"
+
+#: ../glib/gregex.c:390
+msgid "unrecognized character after (?<"
+msgstr "(?< চিহ্নৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
+
+#: ../glib/gregex.c:393
+msgid "lookbehind assertion is not fixed length"
+msgstr "lookbehind assertion সীমিত দৈৰ্ঘ্যৰ নহয়"
+
+#: ../glib/gregex.c:396
+msgid "malformed number or name after (?("
+msgstr "(?( ৰ পিছত ত্ৰুটিপূৰ্ণ সংখ্যা বা নাম উপস্থিত আছে"
+
+#: ../glib/gregex.c:399
+msgid "conditional group contains more than two branches"
+msgstr "চৰ্তসাপেক্ষ দলত দুটাতকৈ অধিক শাখা আছে"
+
+#: ../glib/gregex.c:402
+msgid "assertion expected after (?("
+msgstr "(?( ৰ পিছত assertion প্ৰত্যাশিত"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:321
+#: ../glib/gregex.c:409
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R বা (?[+-]সংখ্যা ৰ পিছত ) চিহ্ন ব্যৱহাৰ কৰা আৱশ্যক"
 
-#: ../glib/gregex.c:324
-msgid "reference to non-existent subpattern"
-msgstr "অনুপস্থিত উপবিন্যাস নিৰ্দেশ কৰা হৈছে"
-
-#: ../glib/gregex.c:327
-msgid "missing ) after comment"
-msgstr "বক্তব্যৰ পিছত ) চিহ্ন অনুপস্থিত"
-
-#: ../glib/gregex.c:330
-msgid "regular expression too large"
-msgstr "সাধাৰণ অভিব্যক্তি অত্যাধিক দীঘল"
-
-#: ../glib/gregex.c:333
-msgid "failed to get memory"
-msgstr "মেমৰি প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ"
-
-#: ../glib/gregex.c:336
-msgid "lookbehind assertion is not fixed length"
-msgstr "lookbehind assertion সীমিত দৈৰ্ঘ্যৰ নহয়"
-
-#: ../glib/gregex.c:339
-msgid "malformed number or name after (?("
-msgstr "(?( ৰ পিছত ত্ৰুটিপূৰ্ণ সংখ্যা বা নাম উপস্থিত আছে"
-
-#: ../glib/gregex.c:342
-msgid "conditional group contains more than two branches"
-msgstr "চৰ্তসাপেক্ষ দলত দুটাতকৈ অধিক শাখা আছে"
-
-#: ../glib/gregex.c:345
-msgid "assertion expected after (?("
-msgstr "(?( ৰ পিছত assertion প্ৰত্যাশিত"
-
-#: ../glib/gregex.c:348
+#: ../glib/gregex.c:412
 msgid "unknown POSIX class name"
 msgstr "অজ্ঞাত POSIX শ্ৰেণীৰ নাম"
 
-#: ../glib/gregex.c:351
+#: ../glib/gregex.c:415
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX কলেটিং পদাৰ্থ সমৰ্থিত নহয়"
 
-#: ../glib/gregex.c:354
+#: ../glib/gregex.c:418
 msgid "character value in \\x{...} sequence is too large"
 msgstr "\\x{...} শাৰীত আখৰৰ মান বৰ ডাঙৰ"
 
-#: ../glib/gregex.c:357
+#: ../glib/gregex.c:421
 msgid "invalid condition (?(0)"
 msgstr "অৱৈধ চৰ্ত (?(0)"
 
-#: ../glib/gregex.c:360
+#: ../glib/gregex.c:424
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "lookbehind assertion ত \\C ৰ অনুমতি নাই"
 
-#: ../glib/gregex.c:363
+#: ../glib/gregex.c:431
+msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
+msgstr "escape \\L, \\l, \\N{name}, \\U, আৰু \\u সমৰ্থিত নহয়"
+
+#: ../glib/gregex.c:434
 msgid "recursive call could loop indefinitely"
 msgstr "ৰিকাৰ্ছিভ কল অনিশ্চিত কাললৈ লুপ কৰিব পাৰে"
 
-#: ../glib/gregex.c:366
+#: ../glib/gregex.c:438
+msgid "unrecognized character after (?P"
+msgstr "(?P চিহ্নৰ পিছত অজ্ঞাত আখৰ উপস্থিত"
+
+#: ../glib/gregex.c:441
 msgid "missing terminator in subpattern name"
 msgstr "উপবিন্যাস নামত হেৰুৱা টাৰ্মিনেটৰ"
 
-#: ../glib/gregex.c:369
+#: ../glib/gregex.c:444
 msgid "two named subpatterns have the same name"
 msgstr "দুটা নাম দিয়া উপবিন্যাসসমূহ ৰ একে নাম"
 
-#: ../glib/gregex.c:372
+#: ../glib/gregex.c:447
 msgid "malformed \\P or \\p sequence"
 msgstr "ত্ৰুটিপূৰ্ণ \\P বা \\p ক্ৰম"
 
-#: ../glib/gregex.c:375
+#: ../glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
 msgstr "\\P বা \\p ৰ পিছত অজ্ঞাত বৈশিষ্টৰ নাম"
 
-#: ../glib/gregex.c:378
+#: ../glib/gregex.c:453
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "উপবিন্যাস নাম বৰ দীঘল (সৰ্বাধিক ৩২ টা আখৰ)"
 
-#: ../glib/gregex.c:381
+#: ../glib/gregex.c:456
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "বহুত নাম দিয়া উপবিন্যাসসমূহ (সৰ্বাধিক ১০,০০০)"
 
-#: ../glib/gregex.c:384
+#: ../glib/gregex.c:459
 msgid "octal value is greater than \\377"
 msgstr "অক্টাল মান \\377 ৰ অধিক"
 
-#: ../glib/gregex.c:387
-msgid "DEFINE group contains more than one branch"
-msgstr "DEFINE দলত একাধিক ব্ৰাঞ্চ উপস্থিত আছে"
-
-#: ../glib/gregex.c:390
-msgid "repeating a DEFINE group is not allowed"
-msgstr "কোনো DEFINE দলৰ পুনৰাবৃত্তি কৰা নাযাব"
-
-#: ../glib/gregex.c:393
-msgid "inconsistent NEWLINE options"
-msgstr "বিসংগত NEWLINE বিকল্পসমূহ"
-
-#: ../glib/gregex.c:396
-msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr "\\g ৰ পিছত এটা brace থকা নাম বা এটা বৈকল্পিক brace থকা শুণ্য নোহোৱা সংখ্যা নাই"
-
-#: ../glib/gregex.c:401
-msgid "unexpected repeat"
-msgstr "অপ্ৰত্যাশিত পুনৰাবৃত্তি"
-
-#: ../glib/gregex.c:405
-msgid "code overflow"
-msgstr "ক'ড অভাৰফ্লো"
-
-#: ../glib/gregex.c:409
+#: ../glib/gregex.c:463
 msgid "overran compiling workspace"
 msgstr "অভাৰৰেন কমপাইলিং কৰ্মস্থান"
 
-#: ../glib/gregex.c:413
+#: ../glib/gregex.c:467
 msgid "previously-checked referenced subpattern not found"
 msgstr "আগতে পৰীক্ষা কৰা সন্দৰ্ভ থকা উপবিন্যাস পোৱা নগল"
 
-#: ../glib/gregex.c:631 ../glib/gregex.c:1753
+#: ../glib/gregex.c:470
+msgid "DEFINE group contains more than one branch"
+msgstr "DEFINE দলত একাধিক ব্ৰাঞ্চ উপস্থিত আছে"
+
+#: ../glib/gregex.c:473
+msgid "inconsistent NEWLINE options"
+msgstr "বিসংগত NEWLINE বিকল্পসমূহ"
+
+#: ../glib/gregex.c:476
+#| msgid ""
+#| "\\g is not followed by a braced name or an optionally braced non-zero "
+#| "number"
+msgid ""
+"\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
+"or by a plain number"
+msgstr ""
+"\\g এটা ব্ৰেইচ, এঙ্ল-ব্ৰেকেট, অথবা কৌট নাম অথবা নম্বৰ, অথবা এটা সাধাৰণ নম্বৰ দ্বাৰা "
+"অনুকৰিত "
+"নহয়"
+
+#: ../glib/gregex.c:480
+msgid "a numbered reference must not be zero"
+msgstr "এটা সাংখ্যিক প্ৰসংগ শূন্য হব নোৱাৰিব"
+
+#: ../glib/gregex.c:483
+msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
+msgstr "(*ACCEPT), (*FAIL), অথবা (*COMMIT) ৰ বাবে এটা তৰ্কৰ অনুমতি নাই"
+
+#: ../glib/gregex.c:486
+msgid "(*VERB) not recognized"
+msgstr "(*VERB) পৰিচিত নহয়"
+
+#: ../glib/gregex.c:489
+msgid "number is too big"
+msgstr "নম্বৰ অত্যাধিক ডাঙৰ"
+
+#: ../glib/gregex.c:492
+#| msgid "missing terminator in subpattern name"
+msgid "missing subpattern name after (?&"
+msgstr "(?& পিছৰ উপবিন্যাস নাম সন্ধানহিন"
+
+#: ../glib/gregex.c:495
+#| msgid "digit expected"
+msgid "digit expected after (?+"
+msgstr "(?+ ৰ পিছত ডিজিট প্ৰত্যাশিত"
+
+#: ../glib/gregex.c:498
+msgid "] is an invalid data character in JavaScript compatibility mode"
+msgstr "JavaScript সংগতি অৱস্থাত ] এটা অবৈধ তথ্য আখৰ"
+
+#: ../glib/gregex.c:501
+#| msgid "two named subpatterns have the same name"
+msgid "different names for subpatterns of the same number are not allowed"
+msgstr "একে নম্বৰৰ উপবিন্যাসৰ বাবে ভিন্ন নাম অনুমোদিত নহয়"
+
+#: ../glib/gregex.c:504
+msgid "(*MARK) must have an argument"
+msgstr "(*MARK) ৰ এটা তৰ্ক থাকিব লাগিব"
+
+#: ../glib/gregex.c:507
+msgid "\\c must be followed by an ASCII character"
+msgstr "\\c এটা ASCII আখৰ দ্বাৰা অনুকৰিত হব লাগিব"
+
+#: ../glib/gregex.c:510
+#| msgid ""
+#| "\\g is not followed by a braced name or an optionally braced non-zero "
+#| "number"
+msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
+msgstr "\\k এটা ব্ৰেইচ, এঙ্ল-ব্ৰেকেট, অথবা কৌট নাম দ্বাৰা অনুকৰিত নহয়"
+
+#: ../glib/gregex.c:513
+#| msgid "Seek not supported on base stream"
+msgid "\\N is not supported in a class"
+msgstr "\\N এটা শ্ৰেণীত সমৰ্থিত নহয়"
+
+#: ../glib/gregex.c:516
+msgid "too many forward references"
+msgstr "অত্যাধিক আগবঢ়োৱা প্ৰসংগসমূহ"
+
+#: ../glib/gregex.c:519
+msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
+msgstr "(*MARK), (*PRUNE), (*SKIP), অথবা (*THEN) ত নাম অত্যাধিক ডাঙৰ"
+
+#: ../glib/gregex.c:742 ../glib/gregex.c:1905
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "সাধাৰণ অভিব্যক্তি %s ৰ মিল অনুসন্ধানত সমস্যা: %s"
 
-#: ../glib/gregex.c:1206
+#: ../glib/gregex.c:1325
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE লাইব্ৰেৰি UTF8 সমৰ্থন নোহোৱাকে কমপাইল কৰা হৈছে"
 
-#: ../glib/gregex.c:1215
+#: ../glib/gregex.c:1329
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE লাইব্ৰেৰি UTF8 বৈশিষ্ট্যৰ সমৰ্থন নোহোৱাকে কমপাইল কৰা হৈছে"
 
-#: ../glib/gregex.c:1271
+#: ../glib/gregex.c:1337
+#| msgid "PCRE library is compiled without UTF8 properties support"
+msgid "PCRE library is compiled with incompatible options"
+msgstr "PCRE লাইব্ৰেৰী অসংগত বিকল্পসমূহ দ্বাৰা কমপাইল কৰা আছে"
+
+#: ../glib/gregex.c:1396
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "সাধাৰণ অভিব্যক্তি %s, %d আখৰত কমপাইল কৰিবলৈ সমস্যা: %s"
 
-#: ../glib/gregex.c:1307
+#: ../glib/gregex.c:1438
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "সাধাৰণ অভিব্যক্তি %s ৰ সৰ্বোত্তম ব্যৱহাৰত সমস্যা: %s"
 
-#: ../glib/gregex.c:2182
+#: ../glib/gregex.c:2334
 msgid "hexadecimal digit or '}' expected"
 msgstr "hexadecimal সংখ্যা বা '}' প্ৰত্যাশিত"
 
-#: ../glib/gregex.c:2198
+#: ../glib/gregex.c:2350
 msgid "hexadecimal digit expected"
 msgstr "hexadecimal সংখ্যা প্ৰত্যাশিত"
 
-#: ../glib/gregex.c:2238
+#: ../glib/gregex.c:2390
 msgid "missing '<' in symbolic reference"
 msgstr "সাঙ্কেতিক প্ৰসংগত '<' অনুপস্থিত"
 
-#: ../glib/gregex.c:2247
+#: ../glib/gregex.c:2399
 msgid "unfinished symbolic reference"
 msgstr "সাঙ্কেতিক প্ৰসংগ অসম্পূৰ্ণ"
 
-#: ../glib/gregex.c:2254
+#: ../glib/gregex.c:2406
 msgid "zero-length symbolic reference"
 msgstr "সাঙ্কেতিক প্ৰসংগত আখৰ সংখ্যা শূণ্য"
 
-#: ../glib/gregex.c:2265
+#: ../glib/gregex.c:2417
 msgid "digit expected"
 msgstr "সংখ্যা প্ৰত্যাশিত"
 
-#: ../glib/gregex.c:2283
+#: ../glib/gregex.c:2435
 msgid "illegal symbolic reference"
 msgstr "অৱৈধ সাঙ্কেতিক প্ৰসংগ"
 
-#: ../glib/gregex.c:2345
+#: ../glib/gregex.c:2497
 msgid "stray final '\\'"
 msgstr "অন্তত অপ্ৰত্যাশিত '\\'"
 
-#: ../glib/gregex.c:2349
+#: ../glib/gregex.c:2501
 msgid "unknown escape sequence"
 msgstr "অজ্ঞাত এস্কেইপ ক্ৰম"
 
-#: ../glib/gregex.c:2359
+#: ../glib/gregex.c:2511
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "প্ৰতিস্থাপন লিখনী \"%s\"  আখৰ %lu ত বিশ্লেষণ কৰিবলৈ সমস্যা: %s"
@@ -3981,47 +4060,47 @@ msgstr "চাইল্ড প্ৰক্ৰিয়াৰ পৰা তথ্য
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() ত অপ্ৰত্যাশিত ত্ৰুটি (%s)"
 
-#: ../glib/gspawn.c:1190 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
+#: ../glib/gspawn.c:1192 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "চাইল্ড পাইপৰ পৰা পঢ়িবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1258
+#: ../glib/gspawn.c:1260
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1406 ../glib/gspawn-win32.c:369
+#: ../glib/gspawn.c:1408 ../glib/gspawn-win32.c:369
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ডাইৰেকটৰিলৈ পৰিবৰ্তন কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1416
+#: ../glib/gspawn.c:1418
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়া \"%s\" চলাওঁতে ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1426
+#: ../glib/gspawn.c:1428
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ আউটপুট বা ইনপুট পুনৰনিৰ্দেশ কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1435
+#: ../glib/gspawn.c:1437
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়া fork কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1443
+#: ../glib/gspawn.c:1445
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "চাইল্ড প্ৰক্ৰিয়া \"%s\" প্ৰণয়ন কৰিবলৈ অজ্ঞাত ত্ৰুটি"
 
-#: ../glib/gspawn.c:1467
+#: ../glib/gspawn.c:1469
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "চাইল্ড pid পাইপৰ পৰা পৰ্যাপ্ত তথ্য পঢ়িবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1540 ../glib/gspawn-win32.c:299
+#: ../glib/gspawn.c:1542 ../glib/gspawn-win32.c:299
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ সৈতে যোগাযোগৰ উদ্দেশ্যে পাইপ সৃষ্টিত ব্যৰ্থ (%s)"
@@ -4161,6 +4240,15 @@ msgstr[1] "%s বাইটসমূহ"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "workspace limit for empty substrings reached"
+#~ msgstr "ৰিক্ত উপস্ট্ৰিং ৰ কৰ্মক্ষেত্ৰৰ সীমা পূৰ্ণ"
+
+#~ msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
+#~ msgstr "ফলা সলনি কৰা escapes (\\l, \\L, \\u, \\U) ৰ ইয়াত অনুমতি নাই"
+
+#~ msgid "repeating a DEFINE group is not allowed"
+#~ msgstr "কোনো DEFINE দলৰ পুনৰাবৃত্তি কৰা নাযাব"
 
 #~ msgid "No service record for '%s'"
 #~ msgstr "'%s' ৰ কাৰণে সেৱাৰ ৰেকৰ্ড নাই"
