@@ -260,6 +260,8 @@ unix_sources = \
 	gunixvolumemonitor.h 	\
 	gunixinputstream.c 	\
 	gunixoutputstream.c 	\
+	gcontenttype.c 		\
+	gcontenttypeprivate.h 	\
 	$(NULL)
 
 
@@ -294,6 +296,7 @@ gdbus_daemon_sources = \
 
 win32_actual_sources = \
 	$(gdbus_daemon_sources) \
+	gcontenttype-win32.c \
 	gwin32mount.c \
 	gwin32mount.h \
 	gwin32volumemonitor.c \
@@ -338,8 +341,6 @@ libgio_2_0_la_SOURCES =		\
 	gbufferedinputstream.c 	\
 	gbufferedoutputstream.c \
 	gcancellable.c 		\
-	gcontenttype.c 		\
-	gcontenttypeprivate.h 	\
 	gcharsetconverter.c	\
 	gconverter.c		\
 	gconverterinputstream.c	\
