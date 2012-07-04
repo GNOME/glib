@@ -24,7 +24,7 @@
 
 #include <string.h>
 
-#include "gcontenttypeprivate.h"
+#include "gcontenttype.h"
 #include "gwin32appinfo.h"
 #include "gappinfo.h"
 #include "gioerror.h"

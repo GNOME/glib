@@ -26,7 +26,6 @@
 
 #include <errno.h>
 
-#include "gcontenttypeprivate.h"
 #include "ginitable.h"
 #include "gioerror.h"
 #include "glibintl.h"

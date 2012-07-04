@@ -90,7 +90,6 @@
 #include "glocalfileinfo.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
-#include "gcontenttype.h"
 #include "gcontenttypeprivate.h"
 
 
