@@ -11,6 +11,7 @@ gio/gbufferedoutputstream.c
 gio/gcancellable.c
 gio/gcharsetconverter.c
 gio/gcontenttype.c
+gio/gcontenttype-win32.c
 gio/gconverter.c
 gio/gconverterinputstream.c
 gio/gconverteroutputstream.c
