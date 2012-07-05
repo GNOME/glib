@@ -128,13 +128,13 @@ gvdb_table_setup_root (GvdbTable                 *file,
 
 static GvdbTable *
 new_from_data (const void    *data,
-	       gsize          data_len,
-	       gboolean       trusted,
-	       gpointer       user_data,
-	       GvdbRefFunc    ref,
-	       GDestroyNotify unref,
-	       const char    *filename,
-	       GError       **error)
+               gsize          data_len,
+               gboolean       trusted,
+               gpointer       user_data,
+               GvdbRefFunc    ref,
+               GDestroyNotify unref,
+               const char    *filename,
+               GError       **error)
 {
   GvdbTable *file;
 
@@ -163,15 +163,15 @@ new_from_data (const void    *data,
 
       else
         {
-	  if (filename)
-	    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
-			 "%s: invalid header", filename);
-	  else
-	    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
-			 "invalid gvdb header");
+          if (filename)
+            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
+                         "%s: invalid header", filename);
+          else
+            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
+                         "invalid gvdb header");
           g_slice_free (GvdbTable, file);
-	  if (unref)
-	    unref (user_data);
+          if (unref)
+            unref (user_data);
 
           return NULL;
         }
@@ -213,13 +213,13 @@ gvdb_table_new (const gchar  *filename,
     return NULL;
 
   return new_from_data (g_mapped_file_get_contents (mapped),
-			g_mapped_file_get_length (mapped),
-			trusted,
-			mapped,
-			(GvdbRefFunc)g_mapped_file_ref,
-			(GDestroyNotify)g_mapped_file_unref,
-			filename,
-			error);
+                        g_mapped_file_get_length (mapped),
+                        trusted,
+                        mapped,
+                        (GvdbRefFunc)g_mapped_file_ref,
+                        (GDestroyNotify)g_mapped_file_unref,
+                        filename,
+                        error);
 }
 
 /**
@@ -242,18 +242,18 @@ gvdb_table_new (const gchar  *filename,
  **/
 GvdbTable *
 gvdb_table_new_from_data (const void    *data,
-			  gsize          data_len,
-			  gboolean       trusted,
-			  gpointer       user_data,
-			  GvdbRefFunc    ref,
-			  GDestroyNotify unref,
-			  GError        **error)
+                          gsize          data_len,
+                          gboolean       trusted,
+                          gpointer       user_data,
+                          GvdbRefFunc    ref,
+                          GDestroyNotify unref,
+                          GError        **error)
 {
   return new_from_data (data, data_len,
-			trusted,
-			user_data, ref, unref,
-			NULL,
-			error);
+                        trusted,
+                        user_data, ref, unref,
+                        NULL,
+                        error);
 }
 
 static gboolean
@@ -618,7 +618,7 @@ gvdb_table_unref (GvdbTable *file)
   if (g_atomic_int_dec_and_test (&file->ref_count))
     {
       if (file->unref_user_data)
-	file->unref_user_data (file->user_data);
+        file->unref_user_data (file->user_data);
       g_slice_free (GvdbTable, file);
     }
 }
