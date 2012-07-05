@@ -371,7 +371,8 @@ myInvalidParameterHandler(const wchar_t *expression,
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())
  *
- * A convenience function/macro to log a warning message.
+ * A convenience function/macro to log a warning message. The message should
+ * typically *not* be translated to the user's language.
  *
  * This is not intended for end user error reporting. Use of #GError is
  * preferred for that instead, as it allows calling functions to perform actions
@@ -406,6 +407,9 @@ myInvalidParameterHandler(const wchar_t *expression,
  * setting the `G_DEBUG` environment variable (see
  * [Running GLib Applications](glib-running.html)).
  *
+ * The message should typically *not* be translated to the
+ * user's language.
+ *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
@@ -420,7 +424,8 @@ myInvalidParameterHandler(const wchar_t *expression,
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())
  *
- * A convenience function/macro to log an error message.
+ * A convenience function/macro to log an error message. The message should
+ * typically *not* be translated to the user's language.
  *
  * This is not intended for end user error reporting. Use of #GError is
  * preferred for that instead, as it allows calling functions to perform actions
@@ -468,7 +473,8 @@ myInvalidParameterHandler(const wchar_t *expression,
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())
  *
- * A convenience function/macro to log a debug message.
+ * A convenience function/macro to log a debug message. The message should
+ * typically *not* be translated to the user's language.
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
