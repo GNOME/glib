@@ -174,9 +174,9 @@ gboolean
 _g_win32_overlap_wait_result (HANDLE           hfile,
                               OVERLAPPED      *overlap,
                               DWORD           *transferred,
-                              GCancellable    *cancellable G_GNUC_UNUSED)
+                              GCancellable    *cancellable)
 {
-  GPollFD pollfd[1] = { 0, };
+  GPollFD pollfd[2];
   gboolean result = FALSE;
   gint num, npoll;
 
@@ -184,15 +184,36 @@ _g_win32_overlap_wait_result (HANDLE           hfile,
   pollfd[0].events = G_IO_IN;
   num = 1;
 
+  if (g_cancellable_make_pollfd (cancellable, &pollfd[1]))
+    num++;
+
+loop:
   npoll = g_poll (pollfd, num, -1);
   if (npoll <= 0)
     /* error out, should never happen */
     goto end;
 
-  /* either cancelled or IO completed, either way get the result */
-  result = GetOverlappedResult (overlap->hEvent, overlap, transferred, TRUE);
+  if (g_cancellable_is_cancelled (cancellable))
+    {
+      /* CancelIO only cancels pending operations issued by the
+       * current thread and since we're doing only sync operations,
+       * this is safe.... */
+      /* CancelIoEx is only Vista+. Since we have only one overlap
+       * operaton on this thread, we can just use: */
+      result = CancelIo (hfile);
+      g_warn_if_fail (result);
+    }
+
+  result = GetOverlappedResult (overlap->hEvent, overlap, transferred, FALSE);
+  if (result == FALSE &&
+      GetLastError () == ERROR_IO_INCOMPLETE &&
+      !g_cancellable_is_cancelled (cancellable))
+    goto loop;
 
 end:
+  if (num > 1)
+    g_cancellable_release_fd (cancellable);
+
   return result;
 }
 #endif
