@@ -136,6 +136,7 @@ new_from_data (const void    *data,
                const char    *filename,
                GError       **error)
 {
+  const struct gvdb_header *header;
   GvdbTable *file;
 
   file = g_slice_new0 (GvdbTable);
@@ -147,39 +148,40 @@ new_from_data (const void    *data,
   file->unref_user_data = unref;
   file->user_data = user_data;
 
-  if (sizeof (struct gvdb_header) <= file->size)
-    {
-      const struct gvdb_header *header = (gpointer) file->data;
+  if (file->size < sizeof (struct gvdb_header))
+    goto invalid;
 
-      if (header->signature[0] == GVDB_SIGNATURE0 &&
-          header->signature[1] == GVDB_SIGNATURE1 &&
-          guint32_from_le (header->version) == 0)
-        file->byteswapped = FALSE;
+  header = (gpointer) file->data;
 
-      else if (header->signature[0] == GVDB_SWAPPED_SIGNATURE0 &&
-               header->signature[1] == GVDB_SWAPPED_SIGNATURE1 &&
-               guint32_from_le (header->version) == 0)
-        file->byteswapped = TRUE;
+  if (header->signature[0] == GVDB_SIGNATURE0 &&
+      header->signature[1] == GVDB_SIGNATURE1 &&
+      guint32_from_le (header->version) == 0)
+    file->byteswapped = FALSE;
 
-      else
-        {
-          if (filename)
-            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
-                         "%s: invalid header", filename);
-          else
-            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL,
-                         "invalid gvdb header");
-          g_slice_free (GvdbTable, file);
-          if (unref)
-            unref (user_data);
+  else if (header->signature[0] == GVDB_SWAPPED_SIGNATURE0 &&
+           header->signature[1] == GVDB_SWAPPED_SIGNATURE1 &&
+           guint32_from_le (header->version) == 0)
+    file->byteswapped = TRUE;
 
-          return NULL;
-        }
+  else
+    goto invalid;
 
-      gvdb_table_setup_root (file, &header->root);
-    }
+  gvdb_table_setup_root (file, &header->root);
 
   return file;
+
+invalid:
+  if (filename)
+    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL, "%s: invalid header", filename);
+  else
+    g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_INVAL, "invalid gvdb header");
+
+  g_slice_free (GvdbTable, file);
+
+  if (unref)
+    unref (user_data);
+
+  return NULL;
 }
 
 /**
