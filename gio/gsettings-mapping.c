@@ -182,7 +182,12 @@ g_settings_set_mapping_unsigned_int (const GValue       *value,
         variant = g_variant_new_handle ((guint) u);
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
+#ifdef _MSC_VER && (_MSC_VER <= 1200)
+      /* error C2520: conversion from unsigned __int64 to double not implemented */
+    variant = g_variant_new_double ((gdouble) (__int64)u);
+#else
     variant = g_variant_new_double ((gdouble) u);
+#endif
 
   return variant;
 }
@@ -320,7 +325,12 @@ g_settings_get_mapping_unsigned_int (GValue   *value,
     }
   else if (G_VALUE_HOLDS_DOUBLE (value))
     {
+#ifdef _MSC_VER && (_MSC_VER <= 1200)
+      /* error C2520: conversion from unsigned __int64 to double not implemented */
+      g_value_set_double (value, (__int64)u);
+#else
       g_value_set_double (value, u);
+#endif
       return TRUE;
     }
 

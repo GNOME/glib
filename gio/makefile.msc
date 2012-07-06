@@ -5,7 +5,7 @@ PACKAGE = gio
 PKG_VER = 2.0
 !INCLUDE $(TOP)\glib\build\win32\make.msc
 
-SUBDIRS = win32
+SUBDIRS = gvdb win32
 
 sub-all: 
 	for %d in ($(SUBDIRS)) do nmake -nologo -f makefile.msc sub-one THIS=%d
@@ -67,6 +67,7 @@ gio_headers =			\
 	gnativevolumemonitor.h 	\
 	goutputstream.h 	\
 	gseekable.h 		\
+	gsettings.h		\
 	gsimpleasyncresult.h 	\
 	gthemedicon.h 		\
 	gvfs.h 			\
@@ -75,23 +76,55 @@ gio_headers =			\
 	$(NULL)
 
 OBJECTS = \
+	gaction.obj \
+	gactiongroup.obj \
 	gappinfo.obj \
+	gapplication.obj \
+	gapplicationcommandline.obj \
+	gapplicationimpl-win32.obj \
 	gasynchelper.obj \
 	gasyncinitable.obj \
 	gasyncresult.obj \
 	gbufferedinputstream.obj \
 	gbufferedoutputstream.obj \
 	gcancellable.obj \
+	gcharsetconverter.obj \
 	gcontenttype.obj \
+	gconverter.obj \
+	gconverterinputstream.obj \
+	gconverteroutputstream.obj \
+	gcredentials.obj \
 	gdatainputstream.obj \
 	gdataoutputstream.obj \
+	gdbusaddress.obj \
+	gdbusauth.obj \
+	gdbusauthmechanism.obj \
+	gdbusauthmechanismanon.obj \
+	gdbusauthmechanismexternal.obj \
+	gdbusauthmechanismsha1.obj \
+	gdbusauthobserver.obj \
+	gdbusconnection.obj \
+	gdbuserror.obj \
+	gdbusintrospection.obj \
+	gdbusmessage.obj \
+	gdbusmethodinvocation.obj \
+	gdbusnameowning.obj \
+	gdbusnamewatching.obj \
+	gdbusprivate.obj \
+	gdbusproxy.obj \
+	gdbusserver.obj \
+	gdbusutils.obj \
 #	gdesktopappinfo.obj \
+	gdelayedsettingsbackend.obj \
 	gdrive.obj \
 	gdummyfile.obj \
+	gdummyproxyresolver.obj \
+	gdummytlsbackend.obj \
 	gemblem.obj \
 	gemblemedicon.obj \
 	gfile.obj \
 	gfileattribute.obj \
+	gfiledescriptorbased.obj \
 	gfileenumerator.obj \
 	gfileicon.obj \
 	gfileinfo.obj \
@@ -112,20 +145,38 @@ OBJECTS = \
 	giomodule.obj \
 	gioscheduler.obj \
 	giostream.obj \
+	gkeyfilesettingsbackend.obj \
 	gloadableicon.obj \
 	glocalfileiostream.obj \
 	gmemoryinputstream.obj \
 	gmemoryoutputstream.obj \
+	gmemorysettingsbackend.obj \
 	gmount.obj \
 	gmountoperation.obj \
 	gnativevolumemonitor.obj \
 	gnetworkaddress.obj \
 	gnetworkservice.obj \
+	gnullsettingsbackend.obj \
 	goutputstream.obj \
+	gpermission.obj \
+	gpollableinputstream.obj \
+	gpollableoutputstream.obj \
 	gpollfilemonitor.obj \
+	gproxy.obj \
+	gproxyaddress.obj \
+	gproxyaddressenumerator.obj \
+	gproxyresolver.obj \
 	gresolver.obj \
+	gsettings-mapping.obj \
+	gsettings-tool.obj \
+	gsettings.obj \
+	gsettingsbackend.obj \
+	gsettingsschema.obj \
 	gseekable.obj \
+	gsimpleaction.obj \
+	gsimpleactiongroup.obj \
 	gsimpleasyncresult.obj \
+	gsimplepermission.obj \
 	gsocket.obj \
 	gsocketaddress.obj \
 	gsocketaddressenumerator.obj \
@@ -137,6 +188,10 @@ OBJECTS = \
 	gsocketservice.obj \
 	gsocketinputstream.obj \
 	gsocketoutputstream.obj \
+	gsocks4aproxy.obj \
+	gsocks4proxy.obj \
+	gsocks5proxy.obj \
+	gtcpwrapperconnection.obj \
 	gsrvtarget.obj \
 	gtcpconnection.obj \
 	gthreadedresolver.obj \
@@ -157,10 +212,21 @@ OBJECTS = \
 	glocaldirectorymonitor.obj \
 	gwin32appinfo.obj \
 	\
+	gtlsbackend.obj \
+	gtlscertificate.obj \
+	gtlsclientconnection.obj \
+	gtlsconnection.obj \
+	gtlsserverconnection.obj \
+	\
 	gio-marshal.obj \
+	gregistrysettingsbackend.obj \
+	gwin32inputstream.obj \
+	gwin32outputstream.obj \
 	gwin32mount.obj \
 	gwin32volumemonitor.obj \
-	gwin32resolver.obj 
+	gwin32resolver.obj \
+	gzlibcompressor.obj \
+	gzlibdecompressor.obj \
 
 libgio_2_0_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la \
@@ -250,8 +316,8 @@ $(PACKAGE).res : $(PACKAGE).rc
 libgio-$(PKG_VER)-0.dll : $(OBJECTS) win32\giowin32.lib $(PACKAGE).def $(RESOURCE)
 	$(CC) $(CFLAGS) -LD -Felibgio-$(PKG_VER)-0.dll $(OBJECTS) $(RESOURCE) \
 	..\glib\glib-2.0.lib ..\gobject\gobject-2.0.lib ..\gmodule\gmodule-2.0.lib \
-	win32\giowin32.lib \
-	$(INTL_LIBS) \
+	gvdb\gvdb.lib win32\giowin32.lib \
+	$(INTL_LIBS) $(ZLIB_LIBS) \
 	kernel32.lib user32.lib advapi32.lib shell32.lib wsock32.lib ws2_32.lib dnsapi.lib mpr.lib $(LDFLAGS) \
 	/implib:gio-2.0.lib /def:$(PACKAGE).def
 

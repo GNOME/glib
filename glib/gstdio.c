@@ -49,7 +49,7 @@
 #error Please port this to your operating system
 #endif
 
-#if defined (_MSC_VER) && !defined(_WIN64)
+#if defined (_MSC_VER) && (_MSC_VER > 1200) && !defined(_WIN64)
 #undef _wstat
 #define _wstat _wstat32
 #endif

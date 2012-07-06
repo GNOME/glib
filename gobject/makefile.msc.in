@@ -7,7 +7,7 @@ TOP = ..\..
 
 ################################################################
 
-INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib
+INCLUDES = -FImsvc_recommended_pragmas.h -I .. -I . -I ..\glib $(INTL_CFLAGS)
 DEFINES = -DHAVE_CONFIG_H -DGOBJECT_COMPILATION -DG_LOG_DOMAIN=\"GLib-GObject\" \
 		-DG_ENABLE_DEBUG
 #		-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS
@@ -24,6 +24,8 @@ all :				\
 	testgobject.exe
 
 gobject_OBJECTS =		\
+	gatomicarray.obj 	\
+	gbinding.obj		\
 	gboxed.obj		\
 	gclosure.obj		\
 	genums.obj		\
@@ -61,7 +63,8 @@ gmarshal.c: gmarshal.list gmarshal.h glib-genmarshal.exe
 
 libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll : $(gobject_OBJECTS) gobject.def gobject.res
 	$(CC) $(CFLAGS) -Fm -LD -Fe$@ $(gobject_OBJECTS) gobject.res \
-	..\glib\glib-2.0.lib $(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def || del $@
+	..\glib\glib-2.0.lib ..\gthread\gthread-2.0.lib \
+	$(LDFLAGS) /implib:gobject-2.0.lib /def:gobject.def || del $@
 
 gobject-@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@s.lib : $(gobject_OBJECTS) 
 	lib /out:$@ $(gobject_OBJECTS)

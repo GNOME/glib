@@ -17,7 +17,7 @@ DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(DIRENT_CFLAGS)
 
 all :				\
 	..\config.h		\
-	..\glibconfig.h	\
+	glibconfig.h	\
 	gnulib\gnulib.lib	\
 	pcre\pcre.lib		\
 	libglib-2.0-0.dll \
@@ -42,13 +42,16 @@ glib_OBJECTS =			\
 	gatomic.obj	\
 	gbacktrace.obj		\
 	gbase64.obj	\
+	gbitlock.obj \
 	gbookmarkfile.obj \
+	gbuffer.obj \
 	gcache.obj \
 	gchecksum.obj	\
 	gcompletion.obj	\
 	gconvert.obj \
 	gdataset.obj \
 	gdate.obj \
+	gdatetime.obj \
 	gdir.obj \
 	gerror.obj \
 	gfileutils.obj \
@@ -88,19 +91,26 @@ glib_OBJECTS =			\
 	gthread.obj \
 	gthreadpool.obj \
 	gtimer.obj \
+	gtimezone.obj \
 	gtree.obj \
 	gunibreak.obj \
 	gunicollate.obj \
 	gunidecomp.obj \
 	guniprop.obj \
 	gurifuncs.obj \
-	gutf8.obj		\
-	gutils.obj		\
-	gwin32.obj		\
+	gutf8.obj \
+	gutils.obj \
+	gvariant-core.obj \
+	gvariant-parser.obj \
+	gvariant-serialiser.obj \
+	gvariant.obj \
+	gvarianttype.obj \
+	gvarianttypeinfo.obj \
+	gwin32.obj \
 	localcharset.obj
 
-..\glibconfig.h: ..\glibconfig.h.win32
-	copy ..\glibconfig.h.win32 ..\glibconfig.h
+glibconfig.h: glibconfig.h.win32
+	copy glibconfig.h.win32 glibconfig.h
 
 ..\config.h: ..\config.h.win32
 	copy ..\config.h.win32 ..\config.h

@@ -1826,7 +1826,12 @@ g_date_time_get_seconds (GDateTime *datetime)
 {
   g_return_val_if_fail (datetime != NULL, 0);
 
+#ifdef _MSC_VER && (MSC_VER <= 1200)
+  /* error C2520: conversion from unsigned __int64 to double not implemented */
+  return (__int64)(datetime->usec % USEC_PER_MINUTE) / 1000000.0;
+#else  
   return (datetime->usec % USEC_PER_MINUTE) / 1000000.0;
+#endif
 }
 
 /* Exporters {{{1 */

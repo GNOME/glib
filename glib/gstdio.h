@@ -43,9 +43,11 @@ G_BEGIN_DECLS
  * in MinGW, a plain "struct stat" is the one with 32-bit st_size and
  * st_*time fields.
  */
-
+# if (_MSC_VER > 1200)
 typedef struct _stat32 GStatBuf;
-
+# else
+typedef struct stat GStatBuf;
+# endif
 #else
 
 typedef struct stat GStatBuf;
