@@ -80,6 +80,11 @@ struct _GMountOperationClass
                            GArray               *processes,
                            const gchar          *choices[]);
 
+  void (* show_unmount_progress) (GMountOperation *op,
+                                  const gchar     *message,
+                                  guint64          time_left,
+                                  guint64          bytes_left);
+
   /*< private >*/
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -91,7 +96,6 @@ struct _GMountOperationClass
   void (*_g_reserved7) (void);
   void (*_g_reserved8) (void);
   void (*_g_reserved9) (void);
-  void (*_g_reserved10) (void);
 };
 
 GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
