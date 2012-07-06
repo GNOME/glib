@@ -4079,6 +4079,11 @@ test_compare (void)
   g_assert (g_variant_compare (a, b) < 0);
   g_variant_unref (a);
   g_variant_unref (b);
+  a = g_variant_new_boolean (FALSE);
+  b = g_variant_new_boolean (TRUE);
+  g_assert (g_variant_compare (a, b) < 0);
+  g_variant_unref (a);
+  g_variant_unref (b);
 }
 
 static void
