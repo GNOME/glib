@@ -954,7 +954,7 @@ class CodeGenerator:
             self.c.write('GDBusInterfaceInfo *\n'
                          '%s_interface_info (void)\n'
                          '{\n'
-                         '  return (GDBusInterfaceInfo *) &_%s_interface_info;\n'
+                         '  return (gpointer) &_%s_interface_info;\n'
                          '}\n'
                          '\n'%(i.name_lower, i.name_lower))
 
@@ -1672,7 +1672,7 @@ class CodeGenerator:
                      '  guint n;\n'
                      '  guint signal_id;\n');
         # Note: info could be NULL if we are talking to a newer version of the interface
-        self.c.write('  info = (_ExtendedGDBusSignalInfo *) g_dbus_interface_info_lookup_signal ((GDBusInterfaceInfo *) &_%s_interface_info, signal_name);\n'
+        self.c.write('  info = (_ExtendedGDBusSignalInfo *) g_dbus_interface_info_lookup_signal ((gpointer) &_%s_interface_info, signal_name);\n'
                      '  if (info == NULL)\n'
                      '    return;\n'
                      %(i.name_lower))
@@ -1721,7 +1721,7 @@ class CodeGenerator:
                      '  g_variant_get (changed_properties, "a{sv}", &iter);\n'
                      '  while (g_variant_iter_next (iter, "{&sv}", &key, NULL))\n'
                      '    {\n'
-                     '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, key);\n'
+                     '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((gpointer) &_%s_interface_info, key);\n'
                      '      g_datalist_remove_data (&proxy->priv->qdata, key);\n'
                      '      if (info != NULL)\n'
                      '        g_object_notify (G_OBJECT (proxy), info->hyphen_name);\n'
@@ -1729,7 +1729,7 @@ class CodeGenerator:
                      '  g_variant_iter_free (iter);\n'
                      '  for (n = 0; invalidated_properties[n] != NULL; n++)\n'
                      '    {\n'
-                     '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, invalidated_properties[n]);\n'
+                     '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((gpointer) &_%s_interface_info, invalidated_properties[n]);\n'
                      '      g_datalist_remove_data (&proxy->priv->qdata, invalidated_properties[n]);\n'
                      '      if (info != NULL)\n'
                      '        g_object_notify (G_OBJECT (proxy), info->hyphen_name);\n'
@@ -2157,7 +2157,7 @@ class CodeGenerator:
                      '  GVariant *ret;\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper))
         self.c.write('  ret = NULL;\n'
-                     '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, property_name);\n'
+                     '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((gpointer) &_%s_interface_info, property_name);\n'
                      '  g_assert (info != NULL);\n'
                      '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (skeleton), info->hyphen_name);\n'
                      '  if (pspec == NULL)\n'
@@ -2194,7 +2194,7 @@ class CodeGenerator:
                      '  gboolean ret;\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper))
         self.c.write('  ret = FALSE;\n'
-                     '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, property_name);\n'
+                     '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((gpointer) &_%s_interface_info, property_name);\n'
                      '  g_assert (info != NULL);\n'
                      '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (skeleton), info->hyphen_name);\n'
                      '  if (pspec == NULL)\n'
