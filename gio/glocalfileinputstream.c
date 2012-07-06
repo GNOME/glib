@@ -59,7 +59,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYP
 						g_file_descriptor_based_iface_init)
 );
 #else
-G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,);
+G_DEFINE_TYPE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM); 
 #endif
 
 struct _GLocalFileInputStreamPrivate {

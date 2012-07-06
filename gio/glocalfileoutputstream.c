@@ -69,7 +69,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_T
 						g_file_descriptor_based_iface_init)
                            );
 #else
-G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,);
+G_DEFINE_TYPE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM); 
 #endif
 
 
