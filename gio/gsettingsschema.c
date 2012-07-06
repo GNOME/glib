@@ -636,7 +636,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
 
   value = gvdb_table_get_raw_value (schema->table, key);
 
-  if G_UNLIKELY (value == NULL)
+  if G_UNLIKELY (value == NULL || !g_variant_is_of_type (value, G_VARIANT_TYPE_TUPLE))
     g_error ("Settings schema '%s' does not contain a key named '%s'", schema->id, key);
 
   iter = g_variant_iter_new (value);
