@@ -2321,6 +2321,33 @@ test_interface_stability (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* property naming
+ *
+ * - check that a property with name "Type" is mapped into g-name "type"
+ *   with C accessors get_type_ (to avoid clashing with the GType accessor)
+ *   and set_type_ (for symmetri)
+ *   (see https://bugzilla.gnome.org/show_bug.cgi?id=679473 for details)
+ *
+ * - (could add more tests here)
+ */
+
+static void
+test_property_naming (void)
+{
+  gpointer c_getter_name = foo_igen_naming_get_type_;
+  gpointer c_setter_name = foo_igen_naming_set_type_;
+  FooiGenNaming *skel;
+
+  (void) c_getter_name;
+  (void) c_setter_name;
+
+  skel = foo_igen_naming_skeleton_new ();
+  g_assert (g_object_class_find_property (G_OBJECT_GET_CLASS (skel), "type") != NULL);
+  g_object_unref (skel);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -2335,6 +2362,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/annotations", test_annotations);
   g_test_add_func ("/gdbus/codegen/interface_stability", test_interface_stability);
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
+  g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
 
   ret = g_test_run();
 

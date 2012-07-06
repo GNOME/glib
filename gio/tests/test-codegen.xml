@@ -475,4 +475,8 @@
     </method>
   </interface>
 
+  <interface name="Naming">
+    <property name="Type" type="i" access="readwrite"/>
+  </interface>
+
 </node>
