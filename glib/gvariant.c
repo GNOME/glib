@@ -2748,6 +2748,10 @@ g_variant_compare (gconstpointer one,
 
   switch (g_variant_classify (a))
     {
+    case G_VARIANT_CLASS_BOOLEAN:
+      return g_variant_get_boolean (a) -
+             g_variant_get_boolean (b);
+
     case G_VARIANT_CLASS_BYTE:
       return ((gint) g_variant_get_byte (a)) -
              ((gint) g_variant_get_byte (b));
