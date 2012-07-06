@@ -36,12 +36,12 @@ GvdbTable *             gvdb_table_new                                  (const g
                                                                          GError      **error);
 G_GNUC_INTERNAL
 GvdbTable *             gvdb_table_new_from_data                        (const void   *data,
-									 gsize         data_len,
+                                                                         gsize         data_len,
                                                                          gboolean      trusted,
-									 gpointer      user_data,
-									 GvdbRefFunc   ref,
-									 GDestroyNotify unref,
-									 GError      **error);
+                                                                         gpointer      user_data,
+                                                                         GvdbRefFunc   ref,
+                                                                         GDestroyNotify unref,
+                                                                         GError      **error);
 G_GNUC_INTERNAL
 GvdbTable *             gvdb_table_ref                                  (GvdbTable    *table);
 G_GNUC_INTERNAL
