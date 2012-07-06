@@ -55,8 +55,9 @@ BABL_CFLAGS = -I $(BABL)
 BABL_LIBS = $(BABL)\babl\babl-1.0.lib
 
 # force inclusion of the _right_ cairoversion.h even when using without installation 
-CAIRO_CFLAGS = -FI $(CAIRO)\cairo-version.h -I $(CAIRO)\src -I $(CAIRO)
-CAIRO_LIBS = $(CAIRO)\src\libcairo.lib
+CAIRO_CFLAGS = -FI $(CAIRO)\cairo-version.h -I $(CAIRO)\src -I $(CAIRO) -I $(CAIRO)\util\cairo-gobject -DCAIRO_HAS_GOBJECT_FUNCTIONS
+CAIRO_LIBS = $(CAIRO)\src\libcairo.lib 
+CAIRO_GOBJECT_LIBS = $(CAIRO)\util\cairo-gobject\cairo-gobject.lib 
 
 DIRENT_CFLAGS = -I $(GLIB)\build\win32\dirent
 DIRENT_LIBS = $(GLIB)\build\win32\dirent\dirent.lib
@@ -83,9 +84,6 @@ FONTCONFIG_CFLAGS = -I $(DEVTOP)\include
 FONTCONFIG_LIBS = $(DEVTOP)\lib\fontconfig.lib
 !ENDIF
 
-GDK_PIXBUF_CFLAGS = -I $(GDK_PIXBUF)
-GDK_PIXBUF_LIBS = $(GTK2)\gdk-pixbuf\gdk_pixbuf-$(GDK_PIXBUF_VER).lib
-
 GIMP_CFLAGS = -I $(GIMP)
 GIMP_PLUGIN_LIBS = $(GIMP)\libgimp\gimp-$(GIMP_VER).lib $(GIMP)\libgimp\gimpui-$(GIMP_VER).lib
 
@@ -99,6 +97,9 @@ GTHREAD_LIBS = $(GLIB)\gthread\gthread-$(GLIB_VER).lib
 !IFNDEF GDK_PIXBUF
 GDK_PIXBUF_CFLAGS = $(GTK2_CFLAGS)
 GDK_PIXBUF_LIBS = $(GTK2_LIBS)
+!ELSE
+GDK_PIXBUF_CFLAGS = -I $(GDK_PIXBUF)
+GDK_PIXBUF_LIBS = $(GDK_PIXBUF)\gdk-pixbuf\gdk_pixbuf-$(GDK_PIXBUF_VER).lib 
 !ENDIF
 
 GNOMECANVAS_CFLAGS = -I $(GNOMECANVAS)
@@ -110,11 +111,11 @@ GNOMEPRINT_LIBS = $(GNOMEPRINT)\libgnomeprint\gnome-print-$(GNOMEPRINT_VER).lib
 GNOMEPRINTUI_CFLAGS = -I $(GNOMEPRINTUI)
 GNOMEPRINTUI_LIBS = $(GNOMEPRINTUI)\libgnomeprintui\gnome-printui-$(GNOMEPRINTUI_VER).lib
 
-GTK_CFLAGS = -I$(GTK)\gdk -I$(GTK)\gdk -I$(GTK) 
-GTK_LIBS = $(GTK)\gtk\gtk.lib $(GTK)\gdk\gdk.lib 
+GTK_CFLAGS = -I$(GTK)\gdk -I$(GTK)\gdk -I$(GTK)  $(GDK_PIXBUF_CFLAGS) 
+GTK_LIBS = $(GTK)\gtk\gtk.lib $(GTK)\gdk\gdk.lib $(GDK_PIXBUF_LIBS) 
 
-GTK2_CFLAGS = $(GLIB_CFLAGS) $(ATK_CFLAGS) -I$(GTK2)\gdk -I$(GTK2)\gdk -I$(GTK2) -I$(PANGO) -I$(ATK) $(CAIRO_CFLAGS)
-GTK2_LIBS = $(GTK2)\gtk\gtk-win32-$(GTK2_VER).lib $(GTK2)\gdk\gdk-win32-$(GTK2_VER).lib $(GTK2)\gdk-pixbuf\gdk_pixbuf-$(GTK2_VER).lib $(PANGO_LIBS)
+GTK2_CFLAGS = $(GLIB_CFLAGS) $(ATK_CFLAGS) -I$(GTK2)\gdk -I$(GTK2)\gdk -I$(GTK2) $(GDK_PIXBUF_CFLAGS) -I$(PANGO) -I$(ATK) $(CAIRO_CFLAGS)
+GTK2_LIBS = $(GTK2)\gtk\gtk-win32-$(GTK2_VER).lib $(GTK2)\gdk\gdk-win32-$(GTK2_VER).lib $(PANGO_LIBS)
 
 GTKGLAREA_CFLAGS = -I $(GTKGLAREA)
 GTKGLAREA_LIBS = $(GTKGLAREA)\gtkgl\gtkgl-$(GTKGLAREA_VER).lib
@@ -177,6 +178,9 @@ PNG_LIBS = $(PNG)\projects\visualc6\Win32_LIB_Release\libpng.lib  $(ZLIB_LIBS)
 PNG_CFLAGS = -I $(DEVTOP)\include $(ZLIB_CFLAGS)
 PNG_LIBS = $(DEVTOP)\lib\libpng.lib  $(ZLIB_LIBS)
 !ENDIF
+
+LIBCROCO_CFLAGS = -I $(LIBCROCO)
+LIBCROCO_LIBS = -I $(LIBCROCO)\src\libcroco-0.0.lib
 
 RSVG_CFLAGS = -I $(RSVG)\..
 RSVG_LIBS = $(RSVG)\librsvg-2.lib

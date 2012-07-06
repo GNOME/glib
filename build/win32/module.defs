@@ -39,7 +39,6 @@ DEVTOP=$(TOP)\..\other\dev
 # built using libtool.
 
 ATK_VER = 1.0
-CAIRO_VER = 1.4
 FREETYPE2_VER = 2.0
 GIMP_VER = 1.2
 GDK_PIXBUF_VER = 2.0
@@ -63,18 +62,21 @@ RSVG_VER = 2.4
 
 ATK = $(TOP)/atk
 BABL = $(TOP)/babl
-CAIRO = d:\devel\from-svn\other\cairo-1.8.4
+CAIRO = d:\devel\from-git\cairo
 GIMP = $(TOP)/gimp
 GEGL = $(TOP)/gegl
 GLIB = $(TOP)/glib
 GNOMECANVAS = $(TOP)\libgnomecanvas
 GNOMECANVAS_VER = 2.9
 
+GDK_PIXBUF = $(TOP)/gdk-pixbuf
+GDK_PIXBUF_VER = 2.0 
+
 # GTK+ 1.3.0, gtk-1-3-win32-production branch. Rename directory
 # to gtk+p after initial checkout from CVS.
 GTK = $(TOP)/gtk+p
 # GTK+ 2.0
-GTK2 = $(TOP)/gtk+
+GTK2 = $(TOP)/gtk-2-2x
 GTKSOURCEVIEW = $(TOP)/gtksourceview
 GNOMEPRINT = $(TOP)\libgnomeprint
 GNOMEPRINT_VER = 2.8
@@ -104,12 +106,16 @@ GLIB_GENMARSHAL = $(GLIB)/gobject/glib-genmarshal
 GTKEXTRA = $(TOP)/gtk+extra
 GTKGLAREA = $(TOP)/gtkglarea
 #INTL = d:/devel/from-svn/other/intl-tml
-JPEG = d:/devel/from-svn/other/jpeg-6b
+#JPEG = d:/devel/from-svn/other/jpeg-6b
 LCMS = d:/devel/other/lcms-1.15
 LIBART = $(TOP)/libart_lgpl
 LIBICONV = $(TOP)/libiconv-$(LIBICONV_VER)
 LIBXSLT = $(TOP)/libxslt
 #PNG = d:/devel/from-svn/other/lpng1224
+# Only work with a trick whit unistalled version. Use:
+# 	junction src librcroco
+# in the checkout directory to have the headers avalibale for #include <libcroco/...>
+LIBCROCO = $(TOP)\libcroco
 RSVG = $(TOP)\librsvg
 SVG = $(TOP)\libsvg
 #TIFF = d:/devel/from-svn/other/tiff-3.7.2
