@@ -457,7 +457,15 @@ gboolean
 gvdb_table_has_value (GvdbTable    *file,
                       const gchar  *key)
 {
-  return gvdb_table_lookup (file, key, 'v') != NULL;
+  static const struct gvdb_hash_item *item;
+  gsize size;
+
+  item = gvdb_table_lookup (file, key, 'v');
+
+  if (item == NULL)
+    return FALSE;
+
+  return gvdb_table_dereference (file, &item->value.pointer, 8, &size) != NULL;
 }
 
 static GVariant *
@@ -699,23 +707,38 @@ gvdb_table_walk (GvdbTable         *table,
           item = gvdb_table_get_item (table, *pointers[index]++);
  start_here:
 
-          if (item != NULL &&
-              (name = gvdb_table_item_get_key (table, item, &name_len)))
+          if (item != NULL && (name = gvdb_table_item_get_key (table, item, &name_len)))
             {
               if (item->type == 'L')
                 {
-                  if (open_func (name, name_len, user_data))
+                  const guint32_le *dir;
+                  guint length;
+
+                  if (gvdb_table_list_from_item (table, item, &dir, &length))
                     {
-                      guint length;
+                      gint i;
 
-                      index++;
-                      g_assert (index < 64);
+                      /* In order to avoid files with recursive contents
+                       * we impose the rule that a directory's data must
+                       * follow the data of any directory pointing to
+                       * it.
+                       *
+                       * If we discover that our newly-discovered
+                       * directory follows the one we're traversing now
+                       * then bail out.
+                       */
+                      if (dir <= pointers[index])
+                        continue;
 
-                      gvdb_table_list_from_item (table, item,
-                                                 &pointers[index],
-                                                 &length);
-                      enders[index] = pointers[index] + length;
-                      name_lengths[index] = name_len;
+                      if (open_func (name, name_len, user_data))
+                        {
+                          index++;
+                          g_assert (index < 64);
+
+                          name_lengths[index] = name_len;
+                          pointers[index] = dir;
+                          enders[index] = pointers[index] + length;
+                        }
                     }
                 }
               else if (item->type == 'v')
