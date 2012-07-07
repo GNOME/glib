@@ -201,13 +201,12 @@ typedef enum
  * @G_UNICODE_BREAK_CLOSE_PARANTHESIS: Closing Parenthesis (CP). Since 2.28
  * @G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER: Conditional Japanese Starter (CJ). Since: 2.32
  * @G_UNICODE_BREAK_HEBREW_LETTER: Hebrew Letter (HL). Since: 2.32
+ * @G_UNICODE_BREAK_REGIONAL_INDICATOR: Regional Indicator (RI). Since: 2.36
  *
  * These are the possible line break classifications.
  *
- * The five Hangul types were added in Unicode 4.1, so, has been
- * introduced in GLib 2.10. Note that new types may be added in the future.
- * Applications should be ready to handle unknown values.
- * They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
+ * Since new unicode versions may add new types here, applications should be ready 
+ * to handle unknown values. They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
  *
  * See <ulink url="http://www.unicode.org/unicode/reports/tr14/">http://www.unicode.org/unicode/reports/tr14/</ulink>.
  */
@@ -251,7 +250,8 @@ typedef enum
   G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE,
   G_UNICODE_BREAK_CLOSE_PARANTHESIS,
   G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER,
-  G_UNICODE_BREAK_HEBREW_LETTER
+  G_UNICODE_BREAK_HEBREW_LETTER,
+  G_UNICODE_BREAK_REGIONAL_INDICATOR
 } GUnicodeBreakType;
 
 /**
