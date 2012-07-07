@@ -80,7 +80,7 @@ test_unichar_character_type (void)
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_assert (g_unichar_type (examples[i].c) == examples[i].type);
+      g_assert_cmpint (g_unichar_type (examples[i].c), ==, examples[i].type);
     }
 }
 
@@ -135,7 +135,7 @@ test_unichar_break_type (void)
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_assert (g_unichar_break_type (examples[i].c) == examples[i].type);
+      g_assert_cmpint (g_unichar_break_type (examples[i].c), ==, examples[i].type);
     }
 }
 
@@ -255,7 +255,7 @@ test_unichar_script (void)
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_assert (g_unichar_get_script (examples[i].c) == examples[i].script);
+      g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
     }
 }
 
@@ -303,7 +303,7 @@ test_combining_class (void)
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_assert (g_unichar_combining_class (examples[i].c) == examples[i].class);
+      g_assert_cmpint (g_unichar_combining_class (examples[i].c), ==, examples[i].class);
     }
 }
 
@@ -359,31 +359,31 @@ test_title (void)
   g_assert (!g_unichar_istitle ('a'));
   g_assert (!g_unichar_istitle ('A'));
 
-  g_assert (g_unichar_totitle (0x01c6) == 0x01c5);
-  g_assert (g_unichar_totitle (0x01c4) == 0x01c5);
-  g_assert (g_unichar_totitle (0x01c5) == 0x01c5);
-  g_assert (g_unichar_totitle (0x1f80) == 0x1f88);
-  g_assert (g_unichar_totitle (0x1f88) == 0x1f88);
-  g_assert (g_unichar_totitle ('a') == 'A');
-  g_assert (g_unichar_totitle ('A') == 'A');
+  g_assert_cmphex (g_unichar_totitle (0x01c6), ==, 0x01c5);
+  g_assert_cmphex (g_unichar_totitle (0x01c4), ==, 0x01c5);
+  g_assert_cmphex (g_unichar_totitle (0x01c5), ==, 0x01c5);
+  g_assert_cmphex (g_unichar_totitle (0x1f80), ==, 0x1f88);
+  g_assert_cmphex (g_unichar_totitle (0x1f88), ==, 0x1f88);
+  g_assert_cmphex (g_unichar_totitle ('a'), ==, 'A');
+  g_assert_cmphex (g_unichar_totitle ('A'), ==, 'A');
 }
 
 static void
 test_cases (void)
 {
-  g_assert (g_unichar_toupper ('a') == 'A');
-  g_assert (g_unichar_toupper ('A') == 'A');
-  g_assert (g_unichar_toupper (0x01C5) == 0x01C4);
-  g_assert (g_unichar_toupper (0x01C6) == 0x01C4);
-  g_assert (g_unichar_tolower ('A') == 'a');
-  g_assert (g_unichar_tolower ('a') == 'a');
-  g_assert (g_unichar_tolower (0x01C4) == 0x01C6);
-  g_assert (g_unichar_tolower (0x01C5) == 0x01C6);
-  g_assert (g_unichar_tolower (0x1F8A) == 0x1F82);
-  g_assert (g_unichar_totitle (0x1F8A) == 0x1F8A);
-  g_assert (g_unichar_toupper (0x1F8A) == 0x1F8A);
-  g_assert (g_unichar_tolower (0x1FB2) == 0x1FB2);
-  g_assert (g_unichar_toupper (0x1FB2) == 0x1FB2);
+  g_assert_cmphex (g_unichar_toupper ('a'), ==, 'A');
+  g_assert_cmphex (g_unichar_toupper ('A'), ==, 'A');
+  g_assert_cmphex (g_unichar_toupper (0x01C5), ==, 0x01C4);
+  g_assert_cmphex (g_unichar_toupper (0x01C6), ==, 0x01C4);
+  g_assert_cmphex (g_unichar_tolower ('A'), ==, 'a');
+  g_assert_cmphex (g_unichar_tolower ('a'), ==, 'a');
+  g_assert_cmphex (g_unichar_tolower (0x01C4), ==, 0x01C6);
+  g_assert_cmphex (g_unichar_tolower (0x01C5), ==, 0x01C6);
+  g_assert_cmphex (g_unichar_tolower (0x1F8A), ==, 0x1F82);
+  g_assert_cmphex (g_unichar_totitle (0x1F8A), ==, 0x1F8A);
+  g_assert_cmphex (g_unichar_toupper (0x1F8A), ==, 0x1F8A);
+  g_assert_cmphex (g_unichar_tolower (0x1FB2), ==, 0x1FB2);
+  g_assert_cmphex (g_unichar_toupper (0x1FB2), ==, 0x1FB2);
 }
 
 static void
@@ -474,8 +474,8 @@ test_wide (void)
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_assert (g_unichar_iswide (examples[i].c) == (examples[i].wide == WIDE));
-      g_assert (g_unichar_iswide_cjk (examples[i].c) == (examples[i].wide != NOT_WIDE));
+      g_assert_cmpint (g_unichar_iswide (examples[i].c), ==, (examples[i].wide == WIDE));
+      g_assert_cmpint (g_unichar_iswide_cjk (examples[i].c), ==, (examples[i].wide != NOT_WIDE));
     }
 };
 
@@ -657,7 +657,10 @@ test_decompose_tail (void)
     if (g_unichar_decompose (ch, &a, &b))
       g_assert (!g_unichar_decompose (b, &c, &d));
     else
-      g_assert (a == ch && b == 0);
+      {
+        g_assert_cmpuint (a, ==, ch);
+        g_assert_cmpuint (b, ==, 0);
+      }
 }
 
 static void
