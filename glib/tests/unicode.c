@@ -130,7 +130,8 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_HANGUL_LV_SYLLABLE,  0xAC00 },
     { G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE, 0xAC01 },
     { G_UNICODE_BREAK_CONDITIONAL_JAPANESE_STARTER, 0x3041 },
-    { G_UNICODE_BREAK_HEBREW_LETTER,                0x05D0 }
+    { G_UNICODE_BREAK_HEBREW_LETTER,                0x05D0 },
+    { G_UNICODE_BREAK_REGIONAL_INDICATOR,           0x1F1F6 }
   };
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
@@ -391,6 +392,7 @@ test_defined (void)
 {
   g_assert (g_unichar_isdefined (0x0903));
   g_assert (g_unichar_isdefined (0x20DD));
+  g_assert (g_unichar_isdefined (0x20BA));
   g_assert (g_unichar_isdefined (0xA806));
   g_assert (g_unichar_isdefined ('a'));
   g_assert (!g_unichar_isdefined (0x10C49));
