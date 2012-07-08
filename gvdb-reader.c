@@ -716,8 +716,6 @@ gvdb_table_walk (GvdbTable         *table,
 
                   if (gvdb_table_list_from_item (table, item, &dir, &length))
                     {
-                      gint i;
-
                       /* In order to avoid files with recursive contents
                        * we impose the rule that a directory's data must
                        * follow the data of any directory pointing to
