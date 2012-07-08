@@ -1681,6 +1681,10 @@ platform_get_argv0 (void)
 
   cmdline = (char **) realloc (cmdline, len);
 
+#ifndef nitems
+#define nitems(_a)      (sizeof((_a)) / sizeof((_a)[0]))
+#endif
+
   if (sysctl (mib, nitems (mib), cmdline, &len, NULL, 0) == -1)
     {
       g_free (cmdline);
