@@ -466,7 +466,11 @@ g_getenv (const gchar *variable)
   if (len == 0)
     {
       g_free (wname);
-      return NULL;
+      if (GetLastError () == ERROR_ENVVAR_NOT_FOUND)
+        return NULL;
+
+      quark = g_quark_from_static_string ("");
+      return g_quark_to_string (quark);
     }
   else if (len == 1)
     len = 2;
