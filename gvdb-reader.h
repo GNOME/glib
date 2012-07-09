@@ -46,7 +46,9 @@ G_GNUC_INTERNAL
 GvdbTable *             gvdb_table_ref                                  (GvdbTable    *table);
 G_GNUC_INTERNAL
 void                    gvdb_table_unref                                (GvdbTable    *table);
-
+G_GNUC_INTERNAL
+gchar **                gvdb_table_get_names                            (GvdbTable    *table,
+                                                                         gint         *length);
 G_GNUC_INTERNAL
 gchar **                gvdb_table_list                                 (GvdbTable    *table,
                                                                          const gchar  *key);
