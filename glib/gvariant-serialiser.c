@@ -1593,11 +1593,20 @@ gboolean
 g_variant_serialiser_is_string (gconstpointer data,
                                 gsize         size)
 {
+  const gchar *expected_end;
   const gchar *end;
+
+  if (size == 0)
+    return FALSE;
+
+  expected_end = ((gchar *) data) + size - 1;
+
+  if (*expected_end != '\0')
+    return FALSE;
 
   g_utf8_validate (data, size, &end);
 
-  return data == end - (size - 1);
+  return end == expected_end;
 }
 
 /* < private >

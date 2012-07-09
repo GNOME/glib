@@ -1821,6 +1821,7 @@ test_strings (void)
     { is_nval,     13, "hello world\0" },
     { is_nval,     13, "hello\0world!" },
     { is_nval,     12, "hello world!" },
+    { is_nval,     13, "hello world!\xff" },
 
     { is_objpath,   2, "/" },
     { is_objpath,   3, "/a" },
