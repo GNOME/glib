@@ -1817,11 +1817,8 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
       /* clean up */
       for (n = 0; n < num_nodes; n++)
         {
-          for (n = 0; n < num_nodes; n++)
-            {
-              g_dbus_node_info_unref (ughret[n]);
-              ughret[n] = NULL;
-            }
+          g_dbus_node_info_unref (ughret[n]);
+          ughret[n] = NULL;
         }
     }
 
