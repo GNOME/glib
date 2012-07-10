@@ -97,6 +97,14 @@ typedef enum
 } GSpawnError;
 
 /**
+ * G_SPAWN_EXIT_ERROR:
+ *
+ * Error domain used by g_spawn_check_exit_status().  The code
+ * will be the the program exit code.
+ */
+#define G_SPAWN_EXIT_ERROR g_spawn_exit_error_quark ()
+
+/**
  * GSpawnChildSetupFunc:
  * @user_data: user data to pass to the function.
  *
@@ -176,6 +184,7 @@ typedef enum
 } GSpawnFlags;
 
 GQuark g_spawn_error_quark (void);
+GQuark g_spawn_exit_error_quark (void);
 
 #ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
@@ -235,6 +244,10 @@ gboolean g_spawn_command_line_sync  (const gchar          *command_line,
                                      GError              **error);
 gboolean g_spawn_command_line_async (const gchar          *command_line,
                                      GError              **error);
+
+GLIB_AVAILABLE_IN_2_34
+gboolean g_spawn_check_exit_status (gint      exit_status,
+				    GError  **error);
 
 void g_spawn_close_pid (GPid pid);
 

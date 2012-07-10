@@ -43,7 +43,6 @@
 
 #ifdef G_OS_UNIX
 #include <gio/gunixsocketaddress.h>
-#include <sys/wait.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -1063,36 +1062,12 @@ get_session_address_dbus_launch (GError **error)
                                   &exit_status,
                                   error))
     {
+      goto out;
+    }
+
+  if (!g_spawn_check_exit_status (exit_status, error))
+    {
       g_prefix_error (error, _("Error spawning command line `%s': "), command_line);
-      goto out;
-    }
-
-  if (!WIFEXITED (exit_status))
-    {
-      gchar *escaped_stderr;
-      escaped_stderr = g_strescape (launch_stderr, "");
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Abnormal program termination spawning command line `%s': %s"),
-                   command_line,
-                   escaped_stderr);
-      g_free (escaped_stderr);
-      goto out;
-    }
-
-  if (WEXITSTATUS (exit_status) != 0)
-    {
-      gchar *escaped_stderr;
-      escaped_stderr = g_strescape (launch_stderr, "");
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Command line `%s' exited with non-zero exit status %d: %s"),
-                   command_line,
-                   WEXITSTATUS (exit_status),
-                   escaped_stderr);
-      g_free (escaped_stderr);
       goto out;
     }
 

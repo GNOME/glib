@@ -139,11 +139,13 @@ typedef gboolean (*GSourceFunc)       (gpointer user_data);
 /**
  * GChildWatchFunc:
  * @pid: the process id of the child process
- * @status: Status information about the child process,
- *     see waitpid(2) for more information about this field
+ * @status: Status information about the child process, encoded
+ *     in a platform-specific manner
  * @user_data: user data passed to g_child_watch_add()
  *
- * The type of functions to be called when a child exists.
+ * Prototype of a #GChildWatchSource callback, called when a child
+ * process has exited.  To interpret @status, see the documentation
+ * for g_spawn_check_exit_status().
  */
 typedef void     (*GChildWatchFunc)   (GPid     pid,
                                        gint     status,

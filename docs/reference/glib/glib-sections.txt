@@ -1093,6 +1093,7 @@ GSpawnChildSetupFunc
 g_spawn_async_with_pipes
 g_spawn_async
 g_spawn_sync
+g_spawn_check_exit_status
 g_spawn_command_line_async
 g_spawn_command_line_sync
 g_spawn_close_pid

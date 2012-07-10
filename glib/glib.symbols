@@ -980,6 +980,7 @@ g_spawn_command_line_async PRIVATE
 g_spawn_command_line_sync PRIVATE
 #endif
 g_spawn_error_quark
+g_spawn_exit_error_quark
 #ifndef _WIN64
 g_spawn_sync PRIVATE
 #endif
@@ -990,6 +991,7 @@ g_spawn_command_line_async_utf8
 g_spawn_command_line_sync_utf8
 g_spawn_sync_utf8
 #endif
+g_spawn_check_exit_status
 #if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
 /* gstdio wrappers */
 g_chmod

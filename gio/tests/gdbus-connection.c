@@ -141,7 +141,7 @@ test_connection_life_cycle (void)
    *
    */
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  _g_assert_error_domain (error, G_IO_ERROR);
+  g_assert (error != NULL);
   g_assert (!g_dbus_error_is_remote_error (error));
   g_assert (c == NULL);
   g_error_free (error);

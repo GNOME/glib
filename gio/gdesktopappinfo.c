@@ -26,7 +26,6 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/wait.h>
 
 #ifdef HAVE_CRT_EXTERNS_H
 #include <crt_externs.h>
@@ -1850,8 +1849,7 @@ update_program_done (GPid     pid,
 		     gpointer data)
 {
   /* Did the application exit correctly */
-  if (WIFEXITED (status) &&
-      WEXITSTATUS (status) == 0)
+  if (g_spawn_check_exit_status (status, NULL))
     {
       /* Here we could clean out any caches in use */
     }
