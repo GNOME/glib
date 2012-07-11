@@ -855,7 +855,6 @@ g_spawn_check_exit_status (gint      exit_status,
 {
   gboolean ret = FALSE;
 
-#ifdef G_OS_UNIX
   if (WIFEXITED (exit_status))
     {
       if (WEXITSTATUS (exit_status) != 0)
@@ -886,15 +885,6 @@ g_spawn_check_exit_status (gint      exit_status,
 		   _("Child process exited abnormally"));
       goto out;
     }
-#else
-  if (exit_status != 0)
-    {
-      g_set_error (error, G_SPAWN_EXIT_ERROR, exit_status,
-		   _("Child process exited with code %ld"),
-		   (long) exit_status);
-      goto out;
-    }
-#endif
 
   ret = TRUE;
  out:
