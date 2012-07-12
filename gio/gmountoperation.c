@@ -408,6 +408,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * If the message contains a line break, the first line should be
    * presented as a heading. For example, it may be used as the
    * primary text in a #GtkMessageDialog.
+   *
+   * Since: 2.34
    */
   signals[SHOW_UNMOUNT_PROGRESS] =
     g_signal_new (I_("show-unmount-progress"),
