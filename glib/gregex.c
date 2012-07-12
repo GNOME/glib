@@ -1199,9 +1199,9 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
  * The strings are fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: (allow-none): a %NULL-terminated array of gchar * pointers.
- *     It must be freed using g_strfreev(). If the previous match failed
- *     %NULL is returned
+ * Returns: (transfer full): a %NULL-terminated array of gchar *
+ *     pointers.  It must be freed using g_strfreev(). If the previous
+ *     match failed %NULL is returned
  *
  * Since: 2.14
  */
@@ -1984,7 +1984,8 @@ g_regex_get_string_number (const GRegex *regex,
  * characters. For example splitting "ab c" using as a separator
  * "\s*", you will get "a", "b" and "c".
  *
- * Returns: a %NULL-terminated array of strings. Free it using g_strfreev()
+ * Returns: (transfer full): a %NULL-terminated array of strings. Free
+ * it using g_strfreev()
  *
  * Since: 2.14
  **/
@@ -2030,7 +2031,8 @@ g_regex_split_simple (const gchar        *pattern,
  * For example splitting "ab c" using as a separator "\s*", you will get
  * "a", "b" and "c".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
+ * Returns: (transfer full): a %NULL-terminated gchar ** array. Free
+ * it using g_strfreev()
  *
  * Since: 2.14
  **/
@@ -2076,7 +2078,8 @@ g_regex_split (const GRegex     *regex,
  * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
- * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
+ * Returns: (transfer full): a %NULL-terminated gchar ** array. Free
+ * it using g_strfreev()
  *
  * Since: 2.14
  **/

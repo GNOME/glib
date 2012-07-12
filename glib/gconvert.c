@@ -2079,9 +2079,9 @@ g_filename_to_uri (const gchar *filename,
  * mime type defined in RFC 2483 into individual URIs,
  * discarding any comments. The URIs are not validated.
  *
- * Returns: a newly allocated %NULL-terminated list of
- *   strings holding the individual URIs. The array should
- *   be freed with g_strfreev().
+ * Returns: (transfer full): a newly allocated %NULL-terminated list
+ *   of strings holding the individual URIs. The array should be freed
+ *   with g_strfreev().
  *
  * Since: 2.6
  */
