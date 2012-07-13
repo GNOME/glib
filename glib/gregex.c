@@ -98,7 +98,7 @@
  * '\U' always matches 'U' instead of being an error in the pattern. Finally,
  * pattern matching is modified so that back references to an unset subpattern
  * group produces a match with the empty string instead of an error. See
- * <ulink>man:pcreapi(3)<ulink> for more information.
+ * <ulink>man:pcreapi(3)</ulink> for more information.
  *
  * Creating and manipulating the same #GRegex structure from different
  * threads is not a problem as #GRegex does not modify its internal
