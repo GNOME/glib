@@ -1,3 +1,57 @@
+Overview of changes from GLib 2.33.3 to 2.33.4
+==============================================
+
+* GMainContext: the source list has been reorganzied to
+  avoid O(n) behaviour
+
+* GRegex: Update included PCRE to 8.31 and expose new
+  functionality in 8.x versions of PCRE
+
+* GMountOperation gained a ::show-unmount-progress signal
+  which provides information about slow unmount operations
+
+* Bugs fixed:
+ 616892 gio: Add a boxed type for GFileAttributeMatcher
+ 619329 g_source_attach() O(n) in number of sources
+ 639771 g_dir_read_name() can also return NULL on error
+ 661767 merge/improve various bits of run-in-thread fun...
+ 667375 GAsyncInitable subclassing (and async subclassi...
+ 671545 Constify collect and lcopy strings in GTypeValu...
+ 674452 SEGFAULT in gio contenttype test
+ 674898 Deal with GLIB_VERSION_MIN_REQUIRED/MAX_ALLOWED...
+ 675504 Fix up GObject interface documentation
+ 677064 GString: Tweak documentation, add g_string_free...
+ 677578 error in PCRE error code conversion
+ 677579 update GRegexError for newer PCRE error codes
+ 678066 gdbus codegen does not work with python3
+ 678273 unicode othercasing is wrong in gregex
+ 678576 GIOScheduler performance enhancements
+ 678758 GTlsInteraction unlocks an unlocked mutex
+ 678808 GTestDBus issues
+ 678881 Test failures in /socket/timed_wait in some cas...
+ 678941 /contenttype/guess test case failure
+ 678944 gio returns the wrong default applications for ...
+ 678949 wrong definition of ulong_bool for 64 bit big e...
+ 678959 /mainloop/timeouts race condition: assertion fa...
+ 679193 update included pcre to 8.31
+ 679258 The 'Since' tag for G_SOURCE_CONTINUE and G_SOU...
+ 679473 Don't generate invalid property names
+ 679691 Add g_spawn_check_exit_status() 
+ 679671 GDBusNodeInfo: the XML string must contain exac...
+ 676111 mount-operation: add show-unmount-progress signal
+ 679691 win32: fix build g_spawn_check_exit_status() wi...
+
+
+* Translation updates:
+ Assamese
+ Bulgarian
+ Galician
+ Greek
+ Norwegian bokmål
+ Spanish
+ Vietnamese
+ 
+
 Overview of changes from GLib 2.33.2 to 2.33.3
 ==============================================
 
