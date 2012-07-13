@@ -779,6 +779,13 @@ g_module_close (GModule *module)
   return g_module_error() == NULL;
 }
 
+/**
+ * g_module_make_resident:
+ * @module: a #GModule to make permanently resident
+ *
+ * Ensures that a module will never be unloaded.
+ * Any future g_module_close() calls on the module will be ignored.
+ */
 void
 g_module_make_resident (GModule *module)
 {
@@ -857,10 +864,13 @@ g_module_symbol (GModule     *module,
 
 /**
  * g_module_name:
- * @module: a #GModule to make permanently resident
+ * @module: a #GModule
  *
- * Ensures that a module will never be unloaded.
- * Any future g_module_close() calls on the module will be ignored.
+ * Returns the filename that the module was opened with.
+ *
+ * If @module refers to the application itself, "main" is returned.
+ *
+ * Returns: (transfer none): the filename of the module
  */
 const gchar *
 g_module_name (GModule *module)
