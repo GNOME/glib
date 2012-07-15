@@ -819,6 +819,31 @@ test_dbus_threaded (void)
   session_bus_down ();
 }
 
+static void
+test_bug679509 (void)
+{
+  GDBusConnection *bus;
+  GDBusActionGroup *proxy;
+  GMainLoop *loop;
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  session_bus_up ();
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  proxy = g_dbus_action_group_get (bus, g_dbus_connection_get_unique_name (bus), "/");
+  g_strfreev (g_action_group_list_actions (G_ACTION_GROUP (proxy)));
+  g_object_unref (proxy);
+
+  g_timeout_add (100, stop_loop, loop);
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
+  g_object_unref (bus);
+
+  session_bus_down ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -831,6 +856,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/entries", test_entries);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
+  g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
 
   return g_test_run ();
 }
