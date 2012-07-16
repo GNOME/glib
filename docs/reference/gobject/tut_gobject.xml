@@ -6,9 +6,9 @@
   <title>The GObject base class</title>
 
   <para>
-    The two previous chapters discussed the details of GLib's Dynamic Type System
-    and its signal control system. The GObject library also contains an implementation
-    for a base fundamental type named <link linkend="GObject"><type>GObject</type></link>.
+    The previous chapter discussed the details of GLib's Dynamic Type System.
+    The GObject library also contains an implementation for a base fundamental
+    type named <link linkend="GObject"><type>GObject</type></link>.
   </para>
 
   <para>
