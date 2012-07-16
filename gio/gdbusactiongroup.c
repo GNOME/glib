@@ -268,6 +268,8 @@ g_dbus_action_group_describe_all_done (GObject      *source,
       g_variant_iter_free (iter);
       g_variant_unref (reply);
     }
+
+  g_object_unref (group);
 }
 
 
@@ -283,7 +285,7 @@ g_dbus_action_group_async_init (GDBusActionGroup *group)
 
   g_dbus_connection_call (group->connection, group->bus_name, group->object_path, "org.gtk.Actions", "DescribeAll", NULL,
                           G_VARIANT_TYPE ("(a{s(bgav)})"), G_DBUS_CALL_FLAGS_NONE, -1, NULL,
-                          g_dbus_action_group_describe_all_done, group);
+                          g_dbus_action_group_describe_all_done, g_object_ref (group));
 }
 
 static gchar **
