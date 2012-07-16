@@ -36,21 +36,24 @@ Overview of changes from GLib 2.33.3 to 2.33.4
  679193 update included pcre to 8.31
  679258 The 'Since' tag for G_SOURCE_CONTINUE and G_SOU...
  679473 Don't generate invalid property names
- 679691 Add g_spawn_check_exit_status() 
+ 679691 Add g_spawn_check_exit_status()
  679671 GDBusNodeInfo: the XML string must contain exac...
  676111 mount-operation: add show-unmount-progress signal
  679691 win32: fix build g_spawn_check_exit_status() wi...
-
+ 679813 Documentation bug on http://developer.gnome.org...
 
 * Translation updates:
  Assamese
+ Belarusian
  Bulgarian
  Galician
  Greek
  Norwegian bokmål
+ Polish
  Spanish
+ Traditional Chinese
  Vietnamese
- 
+
 
 Overview of changes from GLib 2.33.2 to 2.33.3
 ==============================================
