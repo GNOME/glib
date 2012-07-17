@@ -1,3 +1,17 @@
+Overview of changes from GLib 2.33.4 to 2.33.6
+==============================================
+
+* GAsyncInitable: partially revert the init_finish changes,
+  some applications were found to rely on behaviour that
+  was broken by these changes
+
+* Bugs fixed:
+ 679617 win32: fix g_get_environ()
+ 679968 Add some annotations to GBytes, GVariantType...
+
+* Translation updates:
+ Spanish
+
 Overview of changes from GLib 2.33.3 to 2.33.4
 ==============================================
 
