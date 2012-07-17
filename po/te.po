@@ -12,20 +12,21 @@
 # Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012.
 # Praveen Illa (swecha team)<mail2ipn@gmail.com>, 2012.
 # GVS.Giri (swecha team)<gvs.giri947@gmail.com>,2012.
-# Hari Krishna <hari@swecha.net>,2012.
+# Hari Krishna <hari@swecha.net>,2012, 2012.
+# GVS.Giri (swecha team)<gvs.giri947@gmail.com>,2012
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-13 10:23+0000\n"
-"PO-Revision-Date: 2012-04-05 19:12+0530\n"
-"Last-Translator: Hari Krishna <hari@swecha.net>\n"
+"POT-Creation-Date: 2012-07-16 15:16+0000\n"
+"PO-Revision-Date: 2012-07-17 15:59+0530\n"
+"Last-Translator: GVS.Giri (swecha team)<gvs.giri947@gmail.com>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
+"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: te\n"
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -100,7 +101,7 @@ msgstr "తెలియని రకము"
 msgid "%s filetype"
 msgstr "%s దస్త్రమురకము"
 
-#: ../gio/gcontenttype.c:680
+#: ../gio/gcontenttype.c:684
 #, c-format
 msgid "%s type"
 msgstr "%s రకము"
@@ -593,8 +594,8 @@ msgstr "సందేశ భాగం సంతకం `%s 'కలిగి ఉం
 #: ../gio/gdbusmessage.c:2359
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr "సందేశ భాగం రకం లేదు సంతకం `%s' కానీ శీర్షిక క్షేత్రంలో సంతకం`%s' ఉంది"
 
 #: ../gio/gdbusmessage.c:2375
@@ -612,6 +613,7 @@ msgid "Error return with empty body"
 msgstr "ఖాళీ శరీరంతో లోపం తిరిగి"
 
 #: ../gio/gdbusprivate.c:2062
+#, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "హార్డ్వేరు ప్రొఫైల్ కనుగొన లేక పోయింది: %s"
 
@@ -619,17 +621,17 @@ msgstr "హార్డ్వేరు ప్రొఫైల్ కనుగొ�
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "/var/lib/dbus/machine-id లేదా /etc/machine-id లోడ్ చేయుటలో విఫలమైంది: "
 
-#: ../gio/gdbusproxy.c:1624
+#: ../gio/gdbusproxy.c:1640
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "%s యొక్క లోపం కాల్ StartServiceByName: "
 
-#: ../gio/gdbusproxy.c:1645
+#: ../gio/gdbusproxy.c:1663
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "ఊహించని సమాధానం %d StartServiceByName (\"%s\") పద్దతి నుండి"
 
-#: ../gio/gdbusproxy.c:2745 ../gio/gdbusproxy.c:2882
+#: ../gio/gdbusproxy.c:2763 ../gio/gdbusproxy.c:2900
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -915,7 +917,7 @@ msgstr "దరఖాస్తు సమాచారం ఒక గుర్తి
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: ../gio/gdesktopappinfo.c:2172
+#: ../gio/gdesktopappinfo.c:2178
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -976,11 +978,11 @@ msgstr "GEmblemedIcon కొరకు GEmblem కావలసివుంది"
 #: ../gio/gfile.c:1477 ../gio/gfile.c:1531 ../gio/gfile.c:1588
 #: ../gio/gfile.c:1671 ../gio/gfile.c:1726 ../gio/gfile.c:1786
 #: ../gio/gfile.c:1840 ../gio/gfile.c:3312 ../gio/gfile.c:3366
-#: ../gio/gfile.c:3500 ../gio/gfile.c:3541 ../gio/gfile.c:3871
-#: ../gio/gfile.c:4273 ../gio/gfile.c:4359 ../gio/gfile.c:4448
-#: ../gio/gfile.c:4546 ../gio/gfile.c:4633 ../gio/gfile.c:4727
-#: ../gio/gfile.c:5048 ../gio/gfile.c:5315 ../gio/gfile.c:5380
-#: ../gio/gfile.c:7008 ../gio/gfile.c:7098 ../gio/gfile.c:7184
+#: ../gio/gfile.c:3511 ../gio/gfile.c:3552 ../gio/gfile.c:3882
+#: ../gio/gfile.c:4284 ../gio/gfile.c:4370 ../gio/gfile.c:4459
+#: ../gio/gfile.c:4557 ../gio/gfile.c:4644 ../gio/gfile.c:4738
+#: ../gio/gfile.c:5059 ../gio/gfile.c:5326 ../gio/gfile.c:5391
+#: ../gio/gfile.c:7018 ../gio/gfile.c:7108 ../gio/gfile.c:7194
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
@@ -1027,24 +1029,24 @@ msgstr "లోపం splicing ఫైలు: %s"
 msgid "Can't copy special file"
 msgstr "ప్రత్యేక దస్త్రమును నకలుతీయలేదు"
 
-#: ../gio/gfile.c:3490
+#: ../gio/gfile.c:3501
 msgid "Invalid symlink value given"
 msgstr "చెల్లని సిమ్‌లింక్ విలువ యివ్వబడినది"
 
-#: ../gio/gfile.c:3584
+#: ../gio/gfile.c:3595
 msgid "Trash not supported"
 msgstr "ట్రాష్ మద్దతీయలేదు"
 
-#: ../gio/gfile.c:3633
+#: ../gio/gfile.c:3644
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "దస్త్రము నామములు '%c'ని కలిగిలేవు"
 
-#: ../gio/gfile.c:6067 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6077 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "వాల్యూమ్ మౌంట్‌ను చేయలేకపోయింది"
 
-#: ../gio/gfile.c:6178
+#: ../gio/gfile.c:6188
 msgid "No application is registered as handling this file"
 msgstr "ఈ దస్త్రము సంబాలించుతున్నట్లు యెటువంటి అనువర్తనము నమోదుకాలేదు"
 
@@ -1190,85 +1192,97 @@ msgstr "ఏదైనా వనరు డైరెక్టరీనందు '%s
 msgid "Failed to locate '%s' in current directory"
 msgstr "ప్రస్తుత డైరెక్టరీ నందు '%s' గుర్తించుటకు విఫలమయ్యెను"
 
-#: ../gio/glib-compile-resources.c:290
+#: ../gio/glib-compile-resources.c:291
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "తెలియని నిర్వర్తన ఐచ్చికం \"%s\""
 
-#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:366
+#: ../gio/glib-compile-resources.c:309 ../gio/glib-compile-resources.c:368
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "తాత్కాలిక ఫైలు సృష్టించుటకు విఫలమైంది: %s"
 
 #: ../gio/glib-compile-resources.c:338
-msgid "Error processing input file with xmllint"
-msgstr "xmllint తో యిన్పుట్ ఫైలు నిర్వర్తించుటలో దోషం"
+#, c-format
+#| msgid "Error processing input file with xmllint"
+msgid ""
+"Error processing input file with xmllint:\n"
+"%s"
+msgstr ""
+"Xmllint లోపం క్రమగతి ఎగుబడి దస్త్ర లోపం :\n"
+"%s"
 
-#: ../gio/glib-compile-resources.c:393
-msgid "Error processing input file with to-pixdata"
-msgstr "to-pixdata తో యిన్పుట్ ఫైల్ నిర్వర్తించుటలో దోషం"
+#: ../gio/glib-compile-resources.c:394
+#, c-format
+#| msgid "Error processing input file with to-pixdata"
+msgid ""
+"Error processing input file with to-pixdata:\n"
+"%s"
+msgstr ""
+"to-pixdata క్రమగతి ఎగుబడి దస్త్ర లోపం:\n"
+"%s"
 
-#: ../gio/glib-compile-resources.c:406
+#: ../gio/glib-compile-resources.c:408
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "ఫైలు %s చదువుటలో దోషం: %s"
 
-#: ../gio/glib-compile-resources.c:426
+#: ../gio/glib-compile-resources.c:428
 #, c-format
 msgid "Error compressing file %s"
 msgstr "ఫైలు %s కుదించుటలో దోషం"
 
-#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1567
+#: ../gio/glib-compile-resources.c:492 ../gio/glib-compile-schemas.c:1567
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "టెక్స్ట్ <%s> లోపల కనిపించక పోవచ్చు"
 
-#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:615
 msgid "name of the output file"
 msgstr "అవుట్పుట్ ఫైల్ పేరు"
 
-#: ../gio/glib-compile-resources.c:613 ../gio/glib-compile-resources.c:646
+#: ../gio/glib-compile-resources.c:615 ../gio/glib-compile-resources.c:648
 #: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FILE"
 
-#: ../gio/glib-compile-resources.c:614
+#: ../gio/glib-compile-resources.c:616
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "ఎచటనుండి ఫైళ్ళు చదువబడునో ఆ డైరెక్టరీలు (అప్రమేయంగా స్థానిక డైరెక్టరీనకు)"
 
-#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1995
+#: ../gio/glib-compile-resources.c:616 ../gio/glib-compile-schemas.c:1995
 #: ../gio/glib-compile-schemas.c:2025
 msgid "DIRECTORY"
 msgstr "డైరెక్టరీ"
 
-#: ../gio/glib-compile-resources.c:615
+#: ../gio/glib-compile-resources.c:617
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "లక్ష్యపు ఫైల్‌పేరు పొడిగింపు చేత యెంపికచేసిన ఫార్మాట్‌లో అవుట్పుట్ జనియింపచేయి"
 
-#: ../gio/glib-compile-resources.c:616
+#: ../gio/glib-compile-resources.c:618
 msgid "Generate source header"
 msgstr "మూలపు యెగువసూచి జనియింపచేయి"
 
-#: ../gio/glib-compile-resources.c:617
+#: ../gio/glib-compile-resources.c:619
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "మీ కోడ్ లోనికి వనరు ఫైలునకు లింకు చేయుటకు వుపయోగించు సోర్సుకోడ్ జనియింపచేయి"
 
-#: ../gio/glib-compile-resources.c:618
+#: ../gio/glib-compile-resources.c:620
 msgid "Generate dependency list"
 msgstr "ఆధార జాబితాను జనియింపచేయి"
 
-#: ../gio/glib-compile-resources.c:619
+#: ../gio/glib-compile-resources.c:621
 msgid "Don't automatically create and register resource"
 msgstr "వనరు స్వయంచాలకంగా సృష్టించి మరియు నమోదు చేయవద్దు"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:622
 msgid "C identifier name used for the generated source code"
 msgstr "జనియింపచేసిన సోర్స్ కోడ్ కొరకు వుపయోగించిన C గుర్తింపుకారి"
 
-#: ../gio/glib-compile-resources.c:649
+#: ../gio/glib-compile-resources.c:651
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1278,7 +1292,7 @@ msgstr ""
 "వనరు వివరణము ఫైళ్లు .gresource.xml పొడిగింపును కలిగివుంటాయి,\n"
 "మరియు మరియు వనరు ఫైలు .gresource గా పిలుచు పొడిగింపును కలిగివుండును."
 
-#: ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:667
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "మీరు ఖచ్చితంగా వొక ఫైలు పేరు యివ్వాలి\n"
@@ -1407,8 +1421,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> <schema id='%s' list-of='%s'> విస్తరించి కానీ '%"
-"s'విస్తరించడానికి లేదు '%s'"
+"<schema id='%s' list-of='%s'> <schema id='%s' list-of='%s'> విస్తరించి కానీ "
+"'%s'విస్తరించడానికి లేదు '%s'"
 
 #: ../gio/glib-compile-schemas.c:1196
 #, c-format
@@ -1462,8 +1476,8 @@ msgstr " మరియు కఠినమైన పేర్కొన్న �
 #: ../gio/glib-compile-schemas.c:1886
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr "లోపం పార్సింగ్ కీలక `%s' స్కీమ లో`%s' గా ఓవరురైడు లో పేర్కొన్న ఫైల్ `%s': %s. "
 
 #: ../gio/glib-compile-schemas.c:1896
@@ -2660,8 +2674,8 @@ msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
 msgstr ""
-"ఊహించని ఎంపికను పొడవు SO_PASSCRED ఎనేబుల్ ఒకవేళ చూడ్డంలోకరంటు ప్లగ్గు పెట్టే చోటు. ఆశించబడింది%"
-"d బైట్లు,%d వచ్చింది"
+"ఊహించని ఎంపికను పొడవు SO_PASSCRED ఎనేబుల్ ఒకవేళ చూడ్డంలోకరంటు ప్లగ్గు పెట్టే చోటు. ఆశించబడింది"
+"%d బైట్లు,%d వచ్చింది"
 
 #: ../gio/gunixconnection.c:537
 #, c-format
@@ -3158,7 +3172,7 @@ msgstr "దస్త్రం '%s' తెరుచుటలో విఫలమ�
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "దస్త్రమును '%s'నుండి '%s'కు పునఃనామకరణ చేయుటలో విఫలమైంది: g_rename() విఫలమైంది: %s"
 
-#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1584
+#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1583
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr " '%s' దస్త్రమును సృష్టించుటలో విఫలమయినావు. :%s"
@@ -3188,27 +3202,27 @@ msgstr "దస్త్రము '%s'కు వ్రాయటలో విఫ�
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "దస్త్రము '%s'ను మూయుటలో విఫలమైంది: fclose() విఫలమైంది: %s"
 
-#: ../glib/gfileutils.c:1287
+#: ../glib/gfileutils.c:1286
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ఉన్న దస్త్రము '%s' తొలగించబడ లేకపోయింది: g_unlink() విఫలమైంది: %s"
 
-#: ../glib/gfileutils.c:1547
+#: ../glib/gfileutils.c:1546
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr " '%s' మాదిరి,  '%s' కలిగియుండలెదు. "
 
-#: ../glib/gfileutils.c:1560
+#: ../glib/gfileutils.c:1559
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "మాదిరి '%s' XXXXXX కలిగిలేదు"
 
-#: ../glib/gfileutils.c:2088
+#: ../glib/gfileutils.c:2087
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr " '%s'  చిహ్న పూరితజోడి చదువుటలో విఫలమయినావు : %s"
 
-#: ../glib/gfileutils.c:2109
+#: ../glib/gfileutils.c:2108
 msgid "Symbolic links not supported"
 msgstr "చిహ్న పూరితజోడి సహకరించలెదు. "
 
@@ -3234,104 +3248,104 @@ msgstr " పూర్తికాని అక్షరాన్ని ప్ర
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "జి_ఐఓ_ఛానెల్_రీడ్_లైన్_ఎండ్ ముడి చదువు సాధ్యపడదు"
 
-#: ../glib/gkeyfile.c:726
+#: ../glib/gkeyfile.c:725
 msgid "Valid key file could not be found in search dirs"
 msgstr "శోధన dirsనందు విలువైన కీ దస్త్రము కనబడలేదు"
 
-#: ../glib/gkeyfile.c:762
+#: ../glib/gkeyfile.c:761
 msgid "Not a regular file"
 msgstr "క్రమబద్దమైన దస్త్రం కాదు"
 
-#: ../glib/gkeyfile.c:1162
+#: ../glib/gkeyfile.c:1161
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "ఏదైతే మీట-విలువలు , గ్రూప్ ,లేక వ్యాఖ్య కాదో అది మీట దస్త్రంలో లైన్ '%s' కలిగియున్నది"
 
-#: ../glib/gkeyfile.c:1222
+#: ../glib/gkeyfile.c:1218
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "చెల్లని గ్రూప్ నామము : %s"
 
-#: ../glib/gkeyfile.c:1244
+#: ../glib/gkeyfile.c:1240
 msgid "Key file does not start with a group"
 msgstr " మీట దస్త్రం సముదాయంతో ప్రారంభమవలెదు.  "
 
-#: ../glib/gkeyfile.c:1270
+#: ../glib/gkeyfile.c:1266
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "చెల్లని కీ నామము :%s"
 
-#: ../glib/gkeyfile.c:1297
+#: ../glib/gkeyfile.c:1293
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr " మీట దస్త్రం కలిగియున్న సంకేతరచన '%s' సహకరించదు "
 
-#: ../glib/gkeyfile.c:1541 ../glib/gkeyfile.c:1703 ../glib/gkeyfile.c:3081
-#: ../glib/gkeyfile.c:3147 ../glib/gkeyfile.c:3273 ../glib/gkeyfile.c:3406
-#: ../glib/gkeyfile.c:3548 ../glib/gkeyfile.c:3778 ../glib/gkeyfile.c:3846
+#: ../glib/gkeyfile.c:1536 ../glib/gkeyfile.c:1698 ../glib/gkeyfile.c:3076
+#: ../glib/gkeyfile.c:3142 ../glib/gkeyfile.c:3268 ../glib/gkeyfile.c:3401
+#: ../glib/gkeyfile.c:3543 ../glib/gkeyfile.c:3773 ../glib/gkeyfile.c:3840
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr " మీట దస్త్రం సముదాయం '%s' ను కలిగియుండలేదు "
 
-#: ../glib/gkeyfile.c:1715
+#: ../glib/gkeyfile.c:1710
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "మీట దస్త్రం '%s' తాళంను కలిగియుండలేదు. "
 
-#: ../glib/gkeyfile.c:1822 ../glib/gkeyfile.c:1938
+#: ../glib/gkeyfile.c:1817 ../glib/gkeyfile.c:1933
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "'%s' మీట దస్త్రం యొక్క మీటను కలిగియున్నది,దాని విలువ '%s' యుటిఫ్-8 "
 
-#: ../glib/gkeyfile.c:1842 ../glib/gkeyfile.c:1958 ../glib/gkeyfile.c:2327
+#: ../glib/gkeyfile.c:1837 ../glib/gkeyfile.c:1953 ../glib/gkeyfile.c:2322
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "కీ దస్త్రము ఇంటర్‌ప్రీట్ కాలేనటువంటి విలువను కలిగివున్న కీ '%s'ను కలిగివుంది."
 
-#: ../glib/gkeyfile.c:2544 ../glib/gkeyfile.c:2910
+#: ../glib/gkeyfile.c:2539 ../glib/gkeyfile.c:2905
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr "'%s' కీను '%s' సమూహం నందు కలిగివున్న కీఫైలు యింటర్‌ప్రెట్ చేయలేని విలువను కలిగివుంది."
 
-#: ../glib/gkeyfile.c:2622 ../glib/gkeyfile.c:2698
+#: ../glib/gkeyfile.c:2617 ../glib/gkeyfile.c:2693
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "కీ '%s' సమూహం '%s' నందు '%s' విలువను కలిగివుంది కాని %s కావాలి"
 
-#: ../glib/gkeyfile.c:3096 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3857
+#: ../glib/gkeyfile.c:3091 ../glib/gkeyfile.c:3283 ../glib/gkeyfile.c:3851
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "'%s' మీట దస్త్రం యొక్క మీట ను గ్రూప్ '%s' లో కలిగియుండలేదు "
 
-#: ../glib/gkeyfile.c:4089
+#: ../glib/gkeyfile.c:4083
 msgid "Key file contains escape character at end of line"
 msgstr " మీట దస్త్రం గీత చివర ఎస్పేప్ అక్షరము కలదు"
 
-#: ../glib/gkeyfile.c:4111
+#: ../glib/gkeyfile.c:4105
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr " '%s' మీట దస్త్రం నిస్సారమైన ఎస్పేప్ వరుస కలదు "
 
-#: ../glib/gkeyfile.c:4253
+#: ../glib/gkeyfile.c:4247
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' విలువను సంఖ్య గా చదువుటకు సాధ్యపడదు."
 
-#: ../glib/gkeyfile.c:4267
+#: ../glib/gkeyfile.c:4261
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "పూర్ణాంకం విలువ '%s' విస్రృతిలో లేదు"
 
-#: ../glib/gkeyfile.c:4300
+#: ../glib/gkeyfile.c:4294
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' విలువను ఫ్లోట్ సంఖ్యగా చదువుటకు సాధ్యపడదు."
 
-#: ../glib/gkeyfile.c:4324
+#: ../glib/gkeyfile.c:4318
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "%s' విలువను బులియన్ గా చదువుటకు సాధ్యపడదు."
@@ -3432,8 +3446,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1184
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr "బేసి అక్షరము '%s', ఖాళీ-మూలకపు టాగ్ '%s'ను ముగించుటకు '>' అనుకొనబడింది"
 
 #: ../glib/gmarkup.c:1268
@@ -3940,47 +3954,47 @@ msgstr " శిశు కార్యం (%s) నుండి పాఠం చ�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
 
-#: ../glib/gspawn.c:1174 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
+#: ../glib/gspawn.c:1176 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr " శిశు పైప్ నుండి చదువుటలో విఫలమయినావు(%s)"
 
-#: ../glib/gspawn.c:1241
+#: ../glib/gspawn.c:1243
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ఫోర్క్ విఫలమయినది  "
 
-#: ../glib/gspawn.c:1387 ../glib/gspawn-win32.c:369
+#: ../glib/gspawn.c:1389 ../glib/gspawn-win32.c:369
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr " '%s' (%s) వివరణ మార్చుటలో విఫలమయినావు  "
 
-#: ../glib/gspawn.c:1397
+#: ../glib/gspawn.c:1399
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో విఫలమయినావు (%s)"
 
-#: ../glib/gspawn.c:1407
+#: ../glib/gspawn.c:1409
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "ఎగుబడికి రిడైరెక్ట్ చేయుటలో విఫలమైనది లేక శిశు కార్యం యొక్క దిగుబడి  (%s)"
 
-#: ../glib/gspawn.c:1416
+#: ../glib/gspawn.c:1418
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr " (%s) శిశుకార్యం యెక్క ఫోర్క్ విఫలమయినది "
 
-#: ../glib/gspawn.c:1424
+#: ../glib/gspawn.c:1426
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో తెలియని ధోషం కలదు  "
 
-#: ../glib/gspawn.c:1448
+#: ../glib/gspawn.c:1450
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
 
-#: ../glib/gspawn.c:1521 ../glib/gspawn-win32.c:299
+#: ../glib/gspawn.c:1523 ../glib/gspawn-win32.c:299
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) శిశు కార్యం తో తెలియచేయుటకు పైప్ ను సృష్టించుటలో విఫలమైనావు "
@@ -4041,82 +4055,82 @@ msgstr "పరివర్తన ఎగుబడి వరుస నిస్స
 msgid "Character out of range for UTF-16"
 msgstr "అక్షరము UTF-16 శ్రేణియందు లేదు"
 
-#: ../glib/gutils.c:2166 ../glib/gutils.c:2193 ../glib/gutils.c:2297
+#: ../glib/gutils.c:2184 ../glib/gutils.c:2211 ../glib/gutils.c:2315
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u బైట్"
 msgstr[1] "%u బైట్లు"
 
-#: ../glib/gutils.c:2172
+#: ../glib/gutils.c:2190
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2174
+#: ../glib/gutils.c:2192
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2177
+#: ../glib/gutils.c:2195
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2180
+#: ../glib/gutils.c:2198
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2183
+#: ../glib/gutils.c:2201
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f piB"
 
-#: ../glib/gutils.c:2186
+#: ../glib/gutils.c:2204
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2199
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f KB"
 
-#: ../glib/gutils.c:2202 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2220 ../glib/gutils.c:2328
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2205 ../glib/gutils.c:2315
+#: ../glib/gutils.c:2223 ../glib/gutils.c:2333
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2207 ../glib/gutils.c:2320
+#: ../glib/gutils.c:2225 ../glib/gutils.c:2338
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f KB"
 
-#: ../glib/gutils.c:2210 ../glib/gutils.c:2325
+#: ../glib/gutils.c:2228 ../glib/gutils.c:2343
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f pB"
 
-#: ../glib/gutils.c:2213 ../glib/gutils.c:2330
+#: ../glib/gutils.c:2231 ../glib/gutils.c:2348
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2250
+#: ../glib/gutils.c:2268
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s బైటు"
 msgstr[1] "%s బైట్లు"
 
-#: ../glib/gutils.c:2305
+#: ../glib/gutils.c:2323
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
