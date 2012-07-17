@@ -8,6 +8,7 @@ Overview of changes from GLib 2.33.4 to 2.33.6
 * Bugs fixed:
  679617 win32: fix g_get_environ()
  679968 Add some annotations to GBytes, GVariantType...
+ 680111 GIOScheduler assumes GCancellable "cancelled...
 
 * Translation updates:
  Spanish
