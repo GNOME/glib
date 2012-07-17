@@ -728,9 +728,16 @@ test_converter_leftover (void)
 
 #define DATA_LENGTH 1000000
 
+typedef struct {
+  const gchar *path;
+  GZlibCompressorFormat format;
+  gint level;
+} CompressorTest;
+
 static void
-test_corruption (GZlibCompressorFormat format, gint level)
+test_roundtrip (gconstpointer data)
 {
+  const CompressorTest *test = data;
   GError *error = NULL;
   guint32 *data0, *data1;
   gsize data1_size;
@@ -741,6 +748,8 @@ test_corruption (GZlibCompressorFormat format, gint level)
   GZlibCompressorFormat fmt;
   gint lvl;
 
+  g_test_bug ("619945");
+
   data0 = g_malloc (DATA_LENGTH * sizeof (guint32));
   for (i = 0; i < DATA_LENGTH; i++)
     data0[i] = g_random_int ();
@@ -749,7 +758,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
     DATA_LENGTH * sizeof (guint32), NULL);
 
   ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
-  compressor = G_CONVERTER (g_zlib_compressor_new (format, level));
+  compressor = G_CONVERTER (g_zlib_compressor_new (test->format, test->level));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
   g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
 
@@ -760,8 +769,8 @@ test_corruption (GZlibCompressorFormat format, gint level)
 
   g_converter_reset (compressor);
   g_object_get (compressor, "format", &fmt, "level", &lvl, NULL);
-  g_assert_cmpint (fmt, ==, format);
-  g_assert_cmpint (lvl, ==, level);
+  g_assert_cmpint (fmt, ==, test->format);
+  g_assert_cmpint (lvl, ==, test->level);
   g_object_unref (compressor);
   data1 = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (ostream1));
   data1_size = g_memory_output_stream_get_data_size (
@@ -770,7 +779,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_object_unref (istream0);
 
   istream1 = g_memory_input_stream_new_from_data (data1, data1_size, g_free);
-  decompressor = G_CONVERTER (g_zlib_decompressor_new (format));
+  decompressor = G_CONVERTER (g_zlib_decompressor_new (test->format));
   cistream1 = g_converter_input_stream_new (istream1, decompressor);
 
   ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
@@ -785,27 +794,11 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_object_unref (istream1);
   g_converter_reset (decompressor);
   g_object_get (decompressor, "format", &fmt, NULL);
-  g_assert_cmpint (fmt, ==, format);
+  g_assert_cmpint (fmt, ==, test->format);
   g_object_unref (decompressor);
   g_object_unref (cistream1);
   g_object_unref (ostream2);
   g_free (data0);
-}
-
-typedef struct {
-  const gchar *path;
-  GZlibCompressorFormat format;
-  gint level;
-} CompressorTest;
-
-static void
-test_roundtrip (gconstpointer data)
-{
-  const CompressorTest *test = data;
-
-  g_test_bug ("162549");
-
-  test_corruption (test->format, test->level);
 }
 
 typedef struct {
@@ -1098,24 +1091,82 @@ test_converter_pollable (void)
   g_object_unref (compressor);
 }
 
+static void
+test_truncation (gconstpointer data)
+{
+  const CompressorTest *test = data;
+  GError *error = NULL;
+  guint32 *data0, *data1;
+  gsize data1_size;
+  gint i;
+  GInputStream *istream0, *istream1, *cistream1;
+  GOutputStream *ostream1, *ostream2, *costream1;
+  GConverter *compressor, *decompressor;
+
+  data0 = g_malloc (DATA_LENGTH * sizeof (guint32));
+  for (i = 0; i < DATA_LENGTH; i++)
+    data0[i] = g_random_int ();
+
+  istream0 = g_memory_input_stream_new_from_data (data0,
+    DATA_LENGTH * sizeof (guint32), NULL);
+
+  ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+  compressor = G_CONVERTER (g_zlib_compressor_new (test->format, -1));
+  costream1 = g_converter_output_stream_new (ostream1, compressor);
+  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
+
+  g_output_stream_splice (costream1, istream0, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (costream1);
+  g_object_unref (compressor);
+
+  data1 = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (ostream1));
+  data1_size = g_memory_output_stream_get_data_size (
+    G_MEMORY_OUTPUT_STREAM (ostream1));
+  g_object_unref (ostream1);
+  g_object_unref (istream0);
+
+  /* truncate */
+  data1_size /= 2;
+
+  istream1 = g_memory_input_stream_new_from_data (data1, data1_size, g_free);
+  decompressor = G_CONVERTER (g_zlib_decompressor_new (test->format));
+  cistream1 = g_converter_input_stream_new (istream1, decompressor);
+
+  ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+
+  g_output_stream_splice (ostream2, cistream1, 0, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT);
+
+  g_object_unref (istream1);
+  g_object_unref (decompressor);
+  g_object_unref (cistream1);
+  g_object_unref (ostream2);
+  g_free (data0);
+}
 
 int
 main (int   argc,
       char *argv[])
 {
   CompressorTest compressor_tests[] = {
-    { "/converter-output-stream/corruption/zlib-0", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 0 },
-    { "/converter-output-stream/corruption/zlib-9", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9 },
-    { "/converter-output-stream/corruption/gzip-0", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 0 },
-    { "/converter-output-stream/corruption/gzip-9", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9 },
-    { "/converter-output-stream/corruption/raw-0", G_ZLIB_COMPRESSOR_FORMAT_RAW, 0 },
-    { "/converter-output-stream/corruption/raw-9", G_ZLIB_COMPRESSOR_FORMAT_RAW, 9 },
+    { "/converter-output-stream/roundtrip/zlib-0", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 0 },
+    { "/converter-output-stream/roundtrip/zlib-9", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9 },
+    { "/converter-output-stream/roundtrip/gzip-0", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 0 },
+    { "/converter-output-stream/roundtrip/gzip-9", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9 },
+    { "/converter-output-stream/roundtrip/raw-0", G_ZLIB_COMPRESSOR_FORMAT_RAW, 0 },
+    { "/converter-output-stream/roundtrip/raw-9", G_ZLIB_COMPRESSOR_FORMAT_RAW, 9 },
+  };
+  CompressorTest truncation_tests[] = {
+    { "/converter-input-stream/truncation/zlib", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 0 },
+    { "/converter-input-stream/truncation/gzip", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 0 },
+    { "/converter-input-stream/truncation/raw", G_ZLIB_COMPRESSOR_FORMAT_RAW, 0 },
   };
   CharsetTest charset_tests[] = {
     { "/converter-input-stream/charset/utf8->latin1", "UTF-8", "\303\205rr Sant\303\251", "ISO-8859-1", "\305rr Sant\351", 0 },
     { "/converter-input-stream/charset/latin1->utf8", "ISO-8859-1", "\305rr Sant\351", "UTF-8", "\303\205rr Sant\303\251", 0 },
     { "/converter-input-stream/charset/fallbacks", "UTF-8", "Some characters just don't fit into latin1: πא", "ISO-8859-1", "Some characters just don't fit into latin1: \\CF\\80\\D7\\90", 4 },
-
   };
 
   gint i;
@@ -1130,6 +1181,9 @@ main (int   argc,
 
   for (i = 0; i < G_N_ELEMENTS (compressor_tests); i++)
     g_test_add_data_func (compressor_tests[i].path, &compressor_tests[i], test_roundtrip);
+
+  for (i = 0; i < G_N_ELEMENTS (truncation_tests); i++)
+    g_test_add_data_func (truncation_tests[i].path, &truncation_tests[i], test_truncation);
 
   for (i = 0; i < G_N_ELEMENTS (charset_tests); i++)
     g_test_add_data_func (charset_tests[i].path, &charset_tests[i], test_charset);
