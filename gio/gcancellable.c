@@ -632,8 +632,16 @@ typedef struct {
   GSource       source;
 
   GCancellable *cancellable;
-  GPollFD       pollfd;
 } GCancellableSource;
+
+static void
+cancellable_source_cancelled (GCancellable *cancellable,
+			      gpointer      user_data)
+{
+  GSource *source = user_data;
+
+  g_main_context_wakeup (g_source_get_context (source));
+}
 
 static gboolean
 cancellable_source_prepare (GSource *source,
@@ -670,7 +678,12 @@ cancellable_source_finalize (GSource *source)
   GCancellableSource *cancellable_source = (GCancellableSource *)source;
 
   if (cancellable_source->cancellable)
-    g_object_unref (cancellable_source->cancellable);
+    {
+      g_signal_handlers_disconnect_by_func (cancellable_source->cancellable,
+					    G_CALLBACK (cancellable_source_cancelled),
+					    cancellable_source);
+      g_object_unref (cancellable_source->cancellable);
+    }
 }
 
 static gboolean
@@ -733,11 +746,12 @@ g_cancellable_source_new (GCancellable *cancellable)
   g_source_set_name (source, "GCancellable");
   cancellable_source = (GCancellableSource *)source;
 
-  if (g_cancellable_make_pollfd (cancellable,
-                                 &cancellable_source->pollfd))
+  if (cancellable)
     {
       cancellable_source->cancellable = g_object_ref (cancellable);
-      g_source_add_poll (source, &cancellable_source->pollfd);
+      g_signal_connect (cancellable, "cancelled",
+			G_CALLBACK (cancellable_source_cancelled),
+			source);
     }
 
   return source;
