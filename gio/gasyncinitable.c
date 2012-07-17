@@ -290,15 +290,16 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
 				   GAsyncResult    *res,
 				   GError         **error)
 {
-  GSimpleAsyncResult *simple;
+  /* For backward compatibility we have to process GSimpleAsyncResults
+   * even if they aren't tagged from g_async_initable_real_init_async.
+   */
+  if (G_IS_SIMPLE_ASYNC_RESULT (res))
+    {
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+      if (g_simple_async_result_propagate_error (simple, error))
+	return FALSE;
+    }
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (res, G_OBJECT (initable),
-							g_async_initable_real_init_async),
-			FALSE);
-
-  simple = G_SIMPLE_ASYNC_RESULT (res);
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
   return TRUE;
 }
 
