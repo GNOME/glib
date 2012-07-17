@@ -130,8 +130,8 @@ on_job_canceled (GCancellable    *cancellable,
 {
   GIOSchedulerJob *job = user_data;
 
+  /* This might be called more than once */
   job->io_priority = -1;
-  job->cancellable_id = 0;
 
   if (job_thread_pool != NULL)
     g_thread_pool_set_sort_function (job_thread_pool,
