@@ -400,6 +400,8 @@ static gboolean g_idle_dispatch    (GSource     *source,
 				    GSourceFunc  callback,
 				    gpointer     user_data);
 
+static void block_source (GSource *source);
+
 static GMainContext *glib_worker_context;
 
 G_LOCK_DEFINE_STATIC (main_loop);
@@ -1325,6 +1327,8 @@ g_source_add_child_source (GSource *source,
 						 g_source_ref (child_source));
   child_source->priv->parent_source = source;
   g_source_set_priority_unlocked (child_source, NULL, source->priority);
+  if (SOURCE_BLOCKED (source))
+    block_source (child_source);
 
   if (context)
     {
