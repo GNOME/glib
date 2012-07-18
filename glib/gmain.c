@@ -1091,7 +1091,7 @@ g_source_destroy_internal (GSource      *source,
   
   if (!SOURCE_DESTROYED (source))
     {
-      GSList *tmp_list;
+      GSList *sources, *tmp_list;
       gpointer old_cb_data;
       GSourceCallbackFuncs *old_cb_funcs;
       
@@ -1122,20 +1122,24 @@ g_source_destroy_internal (GSource      *source,
 
       if (source->priv->child_sources)
 	{
-	  /* This is safe because even if a child_source finalizer or
-	   * closure notify tried to modify source->priv->child_sources
-	   * from outside the lock, it would fail since
-	   * SOURCE_DESTROYED(source) is now TRUE.
-	   */
-	  tmp_list = source->priv->child_sources;
+	  sources = tmp_list = source->priv->child_sources;
+	  source->priv->child_sources = NULL;
 	  while (tmp_list)
 	    {
 	      g_source_destroy_internal (tmp_list->data, context, TRUE);
 	      g_source_unref_internal (tmp_list->data, context, TRUE);
 	      tmp_list = tmp_list->next;
 	    }
-	  g_slist_free (source->priv->child_sources);
-	  source->priv->child_sources = NULL;
+	  g_slist_free (sources);
+	}
+
+      if (source->priv->parent_source)
+	{
+	  GSource *parent = source->priv->parent_source;
+
+	  parent->priv->child_sources =
+	    g_slist_remove (parent->priv->child_sources, source);
+	  source->priv->parent_source = NULL;
 	}
 	  
       g_source_unref_internal (source, context, TRUE);
@@ -1364,7 +1368,6 @@ g_source_remove_child_source (GSource *source,
   if (context)
     LOCK_CONTEXT (context);
 
-  source->priv->child_sources = g_slist_remove (source->priv->child_sources, child_source);
   g_source_destroy_internal (child_source, context, TRUE);
   g_source_unref_internal (child_source, context, TRUE);
 

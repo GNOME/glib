@@ -481,6 +481,70 @@ test_recursive_child_sources (void)
   g_main_context_unref (ctx);
 }
 
+typedef struct {
+  GSource *parent, *old_child, *new_child;
+  GMainLoop *loop;
+} SwappingTestData;
+
+static gboolean
+swap_sources (gpointer user_data)
+{
+  SwappingTestData *data = user_data;
+
+  if (data->old_child)
+    {
+      g_source_remove_child_source (data->parent, data->old_child);
+      g_clear_pointer (&data->old_child, g_source_unref);
+    }
+
+  if (!data->new_child)
+    {
+      data->new_child = g_timeout_source_new (0);
+      g_source_set_callback (data->new_child, quit_loop, data->loop, NULL);
+      g_source_add_child_source (data->parent, data->new_child);
+    }
+
+  return G_SOURCE_CONTINUE;
+}
+
+static gboolean
+assert_not_reached_callback (gpointer user_data)
+{
+  g_assert_not_reached ();
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_swapping_child_sources (void)
+{
+  GMainContext *ctx;
+  GMainLoop *loop;
+  SwappingTestData data;
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  data.parent = g_timeout_source_new (50);
+  data.loop = loop;
+  g_source_set_callback (data.parent, swap_sources, &data, NULL);
+  g_source_attach (data.parent, ctx);
+
+  data.old_child = g_timeout_source_new (100);
+  g_source_add_child_source (data.parent, data.old_child);
+  g_source_set_callback (data.old_child, assert_not_reached_callback, NULL, NULL);
+
+  data.new_child = NULL;
+  g_main_loop_run (loop);
+
+  g_source_destroy (data.parent);
+  g_source_unref (data.parent);
+  g_source_unref (data.new_child);
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -493,6 +557,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/invoke", test_invoke);
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
   g_test_add_func ("/mainloop/recursive_child_sources", test_recursive_child_sources);
+  g_test_add_func ("/mainloop/swapping_child_sources", test_swapping_child_sources);
 
   return g_test_run ();
 }
