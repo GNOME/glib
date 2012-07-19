@@ -317,7 +317,15 @@ static const guint16 ascii_table_data[256] = {
 
 const guint16 * const g_ascii_table = ascii_table_data;
 
-#ifdef HAVE_NEWLOCALE
+#if defined (HAVE_NEWLOCALE) && \
+    defined (HAVE_USELOCALE) && \
+    defined (HAVE_STRTOD_L) && \
+    defined (HAVE_STRTOULL_L) && \
+    defined (HAVE_STRTOLL_L)
+#define USE_XLOCALE 1
+#endif
+
+#ifdef USE_XLOCALE
 static locale_t
 get_C_locale (void)
 {
@@ -683,7 +691,7 @@ gdouble
 g_ascii_strtod (const gchar *nptr,
                 gchar      **endptr)
 {
-#ifdef HAVE_STRTOD_L
+#ifdef USE_XLOCALE
 
   g_return_val_if_fail (nptr != NULL, 0);
 
@@ -890,7 +898,7 @@ g_ascii_formatd (gchar       *buffer,
                  const gchar *format,
                  gdouble      d)
 {
-#ifdef HAVE_USELOCALE
+#ifdef USE_XLOCALE
   locale_t old_locale;
 
   old_locale = uselocale (get_C_locale ());
@@ -975,7 +983,7 @@ g_ascii_formatd (gchar       *buffer,
 #define TOUPPER(c)              (ISLOWER (c) ? (c) - 'a' + 'A' : (c))
 #define TOLOWER(c)              (ISUPPER (c) ? (c) - 'A' + 'a' : (c))
 
-#if !defined(HAVE_STRTOLL_L) || !defined(HAVE_STRTOULL_L)
+#ifndef USE_XLOCALE
 
 static guint64
 g_parse_long_long (const gchar  *nptr,
@@ -1100,7 +1108,7 @@ g_parse_long_long (const gchar  *nptr,
     }
   return 0;
 }
-#endif
+#endif /* !USE_XLOCALE */
 
 /**
  * g_ascii_strtoull:
@@ -1136,7 +1144,7 @@ g_ascii_strtoull (const gchar *nptr,
                   gchar      **endptr,
                   guint        base)
 {
-#ifdef HAVE_STRTOULL_L
+#ifdef USE_XLOCALE
   return strtoull_l (nptr, endptr, base, get_C_locale ());
 #else
   gboolean negative;
@@ -1183,7 +1191,7 @@ g_ascii_strtoll (const gchar *nptr,
                  gchar      **endptr,
                  guint        base)
 {
-#ifdef HAVE_STRTOLL_L
+#ifdef USE_XLOCALE
   return strtoll_l (nptr, endptr, base, get_C_locale ());
 #else
   gboolean negative;
