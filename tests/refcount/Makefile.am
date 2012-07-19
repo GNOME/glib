@@ -21,7 +21,8 @@ test_programs = 				\
 	properties4				\
 	signal1					\
 	signal2					\
-	signal3
+	signal3					\
+	signal4
 
 
 
@@ -31,6 +32,8 @@ signal2_SOURCES = signals.c
 signal2_CFLAGS = -DTESTNUM=2 $(AM_CFLAGS)
 signal3_SOURCES = signals.c
 signal3_CFLAGS = -DTESTNUM=3 $(AM_CFLAGS)
+signal4_SOURCES = signals.c
+signal4_CFLAGS = -DTESTNUM=4 $(AM_CFLAGS)
 
 check_PROGRAMS = $(test_programs)
 
