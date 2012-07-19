@@ -276,5 +276,9 @@ main (int argc, char **argv)
 
   g_print ("stopped\n");
 
+  g_array_free (test_threads, TRUE);
+  g_object_unref (test1);
+  g_object_unref (test2);
+
   return 0;
 }
