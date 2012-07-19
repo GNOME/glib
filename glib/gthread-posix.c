@@ -1172,7 +1172,9 @@ void
 g_system_thread_set_name (const gchar *name)
 {
 #ifdef HAVE_SYS_PRCTL_H
+#ifdef PR_SET_NAME
   prctl (PR_SET_NAME, name, 0, 0, 0, 0);
+#endif
 #endif
 }
 
