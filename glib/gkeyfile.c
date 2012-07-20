@@ -861,7 +861,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 /**
  * g_key_file_load_from_data:
  * @key_file: an empty #GKeyFile struct
- * @data: (array length=length): key file loaded in memory
+ * @data: key file loaded in memory
  * @length: the length of @data in bytes (or -1 if data is nul-terminated)
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
