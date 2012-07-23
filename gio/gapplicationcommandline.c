@@ -177,14 +177,14 @@ static void
 g_application_command_line_real_print_literal (GApplicationCommandLine *cmdline,
                                                const gchar             *message)
 {
-  g_print ("%s\n", message);
+  g_print ("%s", message);
 }
 
 static void
 g_application_command_line_real_printerr_literal (GApplicationCommandLine *cmdline,
                                                   const gchar             *message)
 {
-  g_printerr ("%s\n", message);
+  g_printerr ("%s", message);
 }
 
 static void
