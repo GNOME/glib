@@ -36,6 +36,24 @@
  */
 #define SUPPORTED_GIR_VERSION "1.2"
 
+#ifdef G_OS_WIN32
+
+#include <windows.h>
+
+#ifdef GIR_DIR
+#undef GIR_DIR
+#endif
+
+/* GIR_DIR is used only in code called just once,
+ * so no problem leaking this
+ */
+#define GIR_DIR \
+  g_build_filename (g_win32_get_package_installation_directory_of_module(NULL), \
+    "share", \
+    GIR_SUFFIX, \
+    NULL)
+#endif
+
 struct _GIrParser
 {
   gchar **includes;
@@ -329,10 +347,12 @@ state_switch (ParseContext *ctx, ParseState newstate)
 static GIrNode *
 pop_node (ParseContext *ctx)
 {
+  GSList *top;
+  GIrNode *node;
   g_assert (ctx->node_stack != 0);
 
-  GSList *top = ctx->node_stack;
-  GIrNode *node = top->data;
+  top = ctx->node_stack;
+  node = top->data;
 
   g_debug ("popping node %d %s", node->type, node->name);
   ctx->node_stack = top->next;
@@ -552,8 +572,8 @@ parse_type_internal (GIrModule *module,
 
       if (*str == '<')
 	{
-	  (str)++;
 	  char *tmp, *end;
+	  (str)++;
 
 	  end = strchr (str, '>');
 	  tmp = g_strndup (str, end - str);
@@ -565,9 +585,10 @@ parse_type_internal (GIrModule *module,
     }
   else
     {
+      const char *start;
       type->tag = GI_TYPE_TAG_INTERFACE;
       type->is_interface = TRUE;
-      const char *start = str;
+      start = str;
 
       /* must be an interface type */
       while (g_ascii_isalnum (*str) ||
@@ -577,7 +598,7 @@ parse_type_internal (GIrModule *module,
 	     *str == ':')
 	(str)++;
 
-      type->interface = g_strndup (start, str - start);
+      type->giinterface = g_strndup (start, str - start);
     }
 
   if (next)
@@ -1965,7 +1986,7 @@ start_type (GMarkupParseContext *context,
        * doesn't look like a pointer, but is internally.
        */
       if (typenode->tag == GI_TYPE_TAG_INTERFACE &&
-	  is_disguised_structure (ctx, typenode->interface))
+	  is_disguised_structure (ctx, typenode->giinterface))
 	pointer_depth++;
 
       if (pointer_depth > 0)

@@ -133,7 +133,7 @@ struct _GIrNodeType
   GIrNodeType *parameter_type1;
   GIrNodeType *parameter_type2;
 
-  gchar *interface;
+  gchar *giinterface;
   gchar **errors;
 };
 
