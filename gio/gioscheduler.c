@@ -113,12 +113,6 @@ init_scheduler (gpointer arg)
 	  g_thread_pool_set_sort_function (job_thread_pool,
 					   g_io_job_compare,
 					   NULL);
-	  /* It's kinda weird that this is a global setting
-	   * instead of per threadpool. However, we really
-	   * want to cache some threads, but not keep around
-	   * those threads forever. */
-	  g_thread_pool_set_max_idle_time (15 * 1000);
-	  g_thread_pool_set_max_unused_threads (2);
 	}
     }
   return NULL;

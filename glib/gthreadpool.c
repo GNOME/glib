@@ -110,9 +110,9 @@ static gint wakeup_thread_serial = 0;
 /* Here all unused threads are waiting  */
 static GAsyncQueue *unused_thread_queue = NULL;
 static gint unused_threads = 0;
-static gint max_unused_threads = 0;
+static gint max_unused_threads = 2;
 static gint kill_unused_threads = 0;
-static guint max_idle_time = 0;
+static guint max_idle_time = 15 * 1000;
 
 static void             g_thread_pool_queue_push_unlocked (GRealThreadPool  *pool,
                                                            gpointer          data);
@@ -829,6 +829,8 @@ g_thread_pool_wakeup_and_stop_all (GRealThreadPool *pool)
  * Sets the maximal number of unused threads to @max_threads.
  * If @max_threads is -1, no limit is imposed on the number
  * of unused threads.
+ *
+ * The default value is 2.
  */
 void
 g_thread_pool_set_max_unused_threads (gint max_threads)
@@ -964,8 +966,7 @@ g_thread_pool_set_sort_function (GThreadPool      *pool,
  *
  * By setting @interval to 0, idle threads will not be stopped.
  *
- * This function makes use of g_async_queue_timed_pop () using
- * @interval.
+ * The default value is 15000 (15 seconds).
  *
  * Since: 2.10
  */
