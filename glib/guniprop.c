@@ -753,6 +753,9 @@ get_locale_type (void)
   g_free (tem);
 #else
   const char *locale = setlocale (LC_CTYPE, NULL);
+
+  if (locale == NULL)
+    return LOCALE_NORMAL;
 #endif
 
   switch (locale[0])
