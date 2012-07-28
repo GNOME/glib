@@ -196,6 +196,14 @@ static void               g_file_real_replace_async               (GFile        
 static GFileOutputStream *g_file_real_replace_finish              (GFile                  *file,
 								   GAsyncResult           *res,
 								   GError                **error);
+static void               g_file_real_delete_async                (GFile                  *file,
+								   int                     io_priority,
+								   GCancellable           *cancellable,
+								   GAsyncReadyCallback     callback,
+								   gpointer                user_data);
+static gboolean           g_file_real_delete_finish               (GFile                  *file,
+								   GAsyncResult           *res,
+								   GError                **error);
 static void               g_file_real_open_readwrite_async        (GFile                  *file,
                                                                    int                  io_priority,
                                                                    GCancellable           *cancellable,
@@ -294,6 +302,8 @@ g_file_default_init (GFileIface *iface)
   iface->create_finish = g_file_real_create_finish;
   iface->replace_async = g_file_real_replace_async;
   iface->replace_finish = g_file_real_replace_finish;
+  iface->delete_file_async = g_file_real_delete_async;
+  iface->delete_file_finish = g_file_real_delete_finish;
   iface->open_readwrite_async = g_file_real_open_readwrite_async;
   iface->open_readwrite_finish = g_file_real_open_readwrite_finish;
   iface->create_readwrite_async = g_file_real_create_readwrite_async;
@@ -3508,6 +3518,69 @@ g_file_delete (GFile         *file,
 }
 
 /**
+ * g_file_delete_async:
+ * @file: input #GFile.
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Asynchronously delete a file. If the @file is a directory, it will
+ * only be deleted if it is empty.
+ *
+ * Virtual: delete_file_async
+ * Since: 2.34
+ **/
+void
+g_file_delete_async (GFile               *file,
+                     int                  io_priority,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+  (* iface->delete_file_async) (file,
+                                io_priority,
+                                cancellable,
+                                callback,
+                                user_data);
+}
+
+/**
+ * g_file_delete_finish:
+ * @file: input #GFile.
+ * @res: a #GAsyncResult.
+ * @error: a #GError, or %NULL
+ *
+ * Finishes deleting a file started with
+ * g_file_delete_async().
+ *
+ * Virtual: delete_file_finish
+ * Since: 2.34
+ **/
+gboolean
+g_file_delete_finish (GFile            *file,
+                      GAsyncResult     *result,
+                      GError          **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  if (g_async_result_legacy_propagate_error (result, error))
+    return FALSE;
+
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->delete_file_finish) (file, result, error);
+}
+
+/**
  * g_file_trash:
  * @file: #GFile to send to trash.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
@@ -5254,6 +5327,51 @@ g_file_real_replace_finish (GFile         *file,
     return g_object_ref (data->stream);
   
   return NULL;
+}
+
+static void
+delete_async_thread (GSimpleAsyncResult *res,
+                     GObject            *object,
+                     GCancellable       *cancellable)
+{
+  GFileIface *iface;
+  GError *error = NULL;
+
+  iface = G_FILE_GET_IFACE (object);
+
+  if (!iface->delete_file (G_FILE (object),
+                           cancellable,
+                           &error))
+    g_simple_async_result_take_error (res, error);
+}
+
+static void
+g_file_real_delete_async (GFile               *file,
+                          int                  io_priority,
+                          GCancellable        *cancellable,
+                          GAsyncReadyCallback  callback,
+                          gpointer             user_data)
+{
+  GSimpleAsyncResult *res;
+
+  res = g_simple_async_result_new (G_OBJECT (file), callback, user_data, g_file_real_delete_async);
+  g_simple_async_result_run_in_thread (res, delete_async_thread, io_priority, cancellable);
+  g_object_unref (res);
+}
+
+static gboolean
+g_file_real_delete_finish (GFile         *file,
+                           GAsyncResult  *res,
+                           GError       **error)
+{
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_real_delete_async);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
+
+  return TRUE;
 }
 
 static void

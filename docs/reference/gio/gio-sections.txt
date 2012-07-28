@@ -127,6 +127,8 @@ g_file_set_display_name
 g_file_set_display_name_async
 g_file_set_display_name_finish
 g_file_delete
+g_file_delete_async
+g_file_delete_finish
 g_file_trash
 g_file_copy
 g_file_copy_async

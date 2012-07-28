@@ -105,8 +105,8 @@ typedef struct _GFileIface    		GFileIface;
  * @replace_async: Asynchronously replaces the contents of a file.
  * @replace_finish: Finishes asynchronously replacing a file.
  * @delete_file: Deletes a file.
- * @_delete_file_async: Asynchronously deletes a file.
- * @_delete_file_finish: Finishes an asynchronous delete.
+ * @delete_file_async: Asynchronously deletes a file.
+ * @delete_file_finish: Finishes an asynchronous delete.
  * @trash: Sends a #GFile to the Trash location.
  * @_trash_async: Asynchronously sends a #GFile to the Trash location.
  * @_trash_finish: Finishes an asynchronous file trashing operation.
@@ -353,8 +353,14 @@ struct _GFileIface
   gboolean            (* delete_file)                 (GFile                *file,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
-  void                (* _delete_file_async)          (void);
-  void                (* _delete_file_finish)         (void);
+  void                (* delete_file_async)           (GFile                *file,
+						       int                   io_priority,
+						       GCancellable         *cancellable,
+						       GAsyncReadyCallback   callback,
+						       gpointer              user_data);
+  gboolean            (* delete_file_finish)          (GFile                *file,
+						       GAsyncResult         *result,
+						       GError              **error);
 
   gboolean            (* trash)                       (GFile                *file,
                                                        GCancellable         *cancellable,
@@ -751,6 +757,19 @@ GFile *                 g_file_set_display_name_finish    (GFile                
 gboolean                g_file_delete                     (GFile                      *file,
 							   GCancellable               *cancellable,
 							   GError                    **error);
+
+GLIB_AVAILABLE_IN_2_34
+void                    g_file_delete_async               (GFile                      *file,
+							   int                         io_priority,
+							   GCancellable               *cancellable,
+							   GAsyncReadyCallback         callback,
+							   gpointer                    user_data);
+
+GLIB_AVAILABLE_IN_2_34
+gboolean                g_file_delete_finish              (GFile                      *file,
+							   GAsyncResult               *result,
+							   GError                    **error);
+
 gboolean                g_file_trash                      (GFile                      *file,
 							   GCancellable               *cancellable,
 							   GError                    **error);
