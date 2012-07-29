@@ -2367,6 +2367,7 @@ g_settings_new_full
 g_settings_sync
 g_settings_get_value
 g_settings_set_value
+g_settings_is_set
 g_settings_is_writable
 g_settings_delay
 g_settings_apply

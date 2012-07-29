@@ -2033,7 +2033,7 @@ g_settings_get_has_unapplied (GSettings *settings)
   return g_settings_backend_get_has_unapplied (settings->priv->backend);
 }
 
-/* Extra API (reset, sync, get_child, is_writable, list_*, ranges) {{{1 */
+/* Extra API (reset, sync, get_child, is_set, is_writable, list_*, ranges) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2102,6 +2102,45 @@ g_settings_is_writable (GSettings   *settings,
   g_free (path);
 
   return writable;
+}
+
+/**
+ * g_settings_is_set:
+ * @settings: a #GSettings object
+ * @name: the name of a key
+ *
+ * Determines if a key is "set".
+ *
+ * A key being set means (more or less) that g_settings_set() has been
+ * called on it more recently than the last call to g_settings_reset().
+ * This does not include system-level default settings.
+ *
+ * Another way of looking at it is that g_settings_reset() will only
+ * change the value of a key if it was already set.  It is possible,
+ * however, that a key is explicitly set to the default value.
+ *
+ * Keys that are "set" will not change if the default value for the key
+ * is changed (ie: by the system administrator) unless it is also locked
+ * down.
+ *
+ * Returns: %TRUE if the key is set
+ *
+ * Since: 2.34
+ **/
+gboolean
+g_settings_is_set (GSettings   *settings,
+                   const gchar *key)
+{
+  gboolean set;
+  gchar *path;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  path = g_strconcat (settings->priv->path, key, NULL);
+  set = g_settings_backend_is_set (settings->priv->backend, path);
+  g_free (path);
+
+  return set;
 }
 
 /**

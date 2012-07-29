@@ -606,6 +606,24 @@ g_settings_backend_get_writable (GSettingsBackend *backend,
 }
 
 /*< private >
+ * g_settings_backend_is_set:
+ * @backend: a #GSettingsBackend Implementation
+ * @key: the name of a key
+ *
+ * Finds out if a key is "set".  See g_settings_is_set().
+ *
+ * Returns: %TRUE if the key is set
+ */
+gboolean
+g_settings_backend_is_set (GSettingsBackend *backend,
+                           const gchar      *key)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->is_set (backend, key);
+}
+
+
+/*< private >
  * g_settings_backend_unsubscribe:
  * @backend: a #GSettingsBackend
  * @name: a key or path to subscribe to

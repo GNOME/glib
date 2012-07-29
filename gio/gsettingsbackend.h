@@ -70,6 +70,9 @@ struct _GSettingsBackendClass
                                          const GVariantType  *expected_type,
                                          gboolean             default_value);
 
+  gboolean           (* is_set)         (GSettingsBackend    *backend,
+                                         const gchar         *key);
+
   gboolean           (* get_writable)   (GSettingsBackend    *backend,
                                          const gchar         *key);
 

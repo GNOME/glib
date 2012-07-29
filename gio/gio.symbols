@@ -1175,6 +1175,7 @@ g_settings_get_child
 g_settings_get_has_unapplied
 g_settings_get_type
 g_settings_get_value
+g_settings_is_set
 g_settings_is_writable
 g_settings_new
 g_settings_new_with_backend

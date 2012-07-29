@@ -53,6 +53,9 @@ G_GNUC_INTERNAL
 void                    g_settings_backend_reset                        (GSettingsBackend     *backend,
                                                                          const gchar          *key);
 G_GNUC_INTERNAL
+gboolean                g_settings_backend_is_set                       (GSettingsBackend     *backend,
+                                                                         const char           *key);
+G_GNUC_INTERNAL
 gboolean                g_settings_backend_get_writable                 (GSettingsBackend     *backend,
                                                                          const char           *key);
 G_GNUC_INTERNAL
