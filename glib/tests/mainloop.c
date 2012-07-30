@@ -77,7 +77,6 @@ test_maincontext_basic (void)
   g_assert (g_main_context_find_source_by_funcs_user_data (ctx, &funcs, NULL) == NULL);
 
   id = g_source_attach (source, ctx);
-  g_source_unref (source);
   g_assert_cmpint (g_source_get_id (source), ==, id);
   g_assert (g_main_context_find_source_by_id (ctx, id) == source);
 
@@ -85,6 +84,10 @@ test_maincontext_basic (void)
   g_assert_cmpint (g_source_get_priority (source), ==, G_PRIORITY_HIGH);
 
   g_source_destroy (source);
+  g_assert (g_source_get_context (source) == ctx);
+  g_assert (g_main_context_find_source_by_id (ctx, id) == NULL);
+
+  g_source_unref (source);
   g_main_context_unref (ctx);
 
   ctx = g_main_context_default ();
@@ -602,7 +605,7 @@ timeout2_callback (gpointer user_data)
 {
   TimeTestData *data = user_data;
   GSource *source;
-  gint64 time2;
+  gint64 time2, time3;
 
   source = g_main_current_source ();
   g_assert (source == data->timeout2);
@@ -614,6 +617,13 @@ timeout2_callback (gpointer user_data)
    */
   time2 = g_source_get_time (source);
   g_assert_cmpint (data->time1, ==, time2);
+
+  /* The source should still have a valid time even after being
+   * destroyed, since it's currently running.
+   */
+  g_source_destroy (source);
+  time3 = g_source_get_time (source);
+  g_assert_cmpint (time2, ==, time3);
 
   return FALSE;
 }

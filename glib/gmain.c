@@ -512,7 +512,10 @@ g_main_context_unref (GMainContext *context)
 
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
-    g_source_destroy_internal (source, context, FALSE);
+    {
+      source->context = NULL;
+      g_source_destroy_internal (source, context, FALSE);
+    }
 
   g_mutex_clear (&context->mutex);
 
@@ -1203,7 +1206,13 @@ g_source_get_id (GSource *source)
  * @source: a #GSource
  * 
  * Gets the #GMainContext with which the source is associated.
- * Calling this function on a destroyed source is an error.
+ *
+ * You can call this on a source that has been destroyed, provided
+ * that the #GMainContext it was attached to still exists (in which
+ * case it will return that #GMainContext). In particular, you can
+ * always call this function on the source returned from
+ * g_main_current_source(). But calling this function on a source
+ * whose #GMainContext has been destroyed is an error.
  * 
  * Return value: (transfer none) (allow-none): the #GMainContext with which the
  *               source is associated, or %NULL if the context has not
@@ -1212,7 +1221,7 @@ g_source_get_id (GSource *source)
 GMainContext *
 g_source_get_context (GSource *source)
 {
-  g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
+  g_return_val_if_fail (source->context != NULL || !SOURCE_DESTROYED (source), NULL);
 
   return source->context;
 }
