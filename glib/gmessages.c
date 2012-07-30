@@ -657,15 +657,29 @@ void
 g_logv (const gchar   *log_domain,
 	GLogLevelFlags log_level,
 	const gchar   *format,
-	va_list	       args1)
+	va_list	       args)
 {
   gboolean was_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
+  gchar buffer[1025], *msg, *msg_alloc = NULL;
   gint i;
 
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
     return;
+
+  if (log_level & G_LOG_FLAG_RECURSION)
+    {
+      /* we use a stack buffer of fixed size, since we're likely
+       * in an out-of-memory situation
+       */
+      gsize size G_GNUC_UNUSED;
+
+      size = _g_vsnprintf (buffer, 1024, format, args);
+      msg = buffer;
+    }
+  else
+    msg = msg_alloc = g_strdup_vprintf (format, args);
 
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
@@ -705,42 +719,14 @@ g_logv (const gchar   *log_domain,
 
 	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 
+          log_func (log_domain, test_level, msg, data);
 
-	  if (test_level & G_LOG_FLAG_RECURSION)
-	    {
-	      /* we use a stack buffer of fixed size, since we're likely
-	       * in an out-of-memory situation
-	       */
-	      gchar buffer[1025];
-              gsize size G_GNUC_UNUSED;
-              va_list args2;
-
-              G_VA_COPY (args2, args1);
-	      size = _g_vsnprintf (buffer, 1024, format, args2);
-              va_end (args2);
-
-	      log_func (log_domain, test_level, buffer, data);
-	    }
-	  else
-	    {
-	      gchar *msg;
-              va_list args2;
-
-              G_VA_COPY (args2, args1);
-              msg = g_strdup_vprintf (format, args2);
-              va_end (args2);
-
-	      log_func (log_domain, test_level, msg, data);
-
-              if ((test_level & G_LOG_FLAG_FATAL)
-                && !(test_level & G_LOG_LEVEL_ERROR))
-                {
-                  masquerade_fatal = fatal_log_func
-                    && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
-                }
-
-	      g_free (msg);
-	    }
+          if ((test_level & G_LOG_FLAG_FATAL)
+              && !(test_level & G_LOG_LEVEL_ERROR))
+            {
+              masquerade_fatal = fatal_log_func
+                && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
+            }
 
 	  if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
             {
@@ -765,6 +751,8 @@ g_logv (const gchar   *log_domain,
 	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 	}
     }
+
+  g_free (msg_alloc);
 }
 
 /**
