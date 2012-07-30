@@ -2901,6 +2901,9 @@ g_test_queue_free
 g_test_queue_destroy
 g_test_queue_unref
 
+g_test_expect_message
+g_test_assert_expected_messages
+
 GTestTrapFlags
 g_test_trap_fork
 g_test_trap_has_passed
@@ -2945,6 +2948,7 @@ g_assertion_message_expr
 g_assertion_message_cmpstr
 g_assertion_message_cmpnum
 g_assertion_message_error
+g_test_assert_expected_messages_internal
 
 g_test_config_vars
 

@@ -1187,11 +1187,13 @@ g_strcmp0
 g_test_add_data_func
 g_test_add_func
 g_test_add_vtable
+g_test_assert_expected_messages_internal
 g_test_bug
 g_test_bug_base
 g_test_config_vars
 g_test_create_case
 g_test_create_suite
+g_test_expect_message
 g_test_fail
 g_test_get_root
 g_test_init

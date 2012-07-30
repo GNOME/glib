@@ -296,6 +296,16 @@ void
 g_test_log_set_fatal_handler            (GTestLogFatalFunc log_func,
                                          gpointer          user_data);
 
+void    g_test_expect_message                    (const gchar    *log_domain,
+                                                  GLogLevelFlags  log_level,
+                                                  const gchar    *pattern);
+void    g_test_assert_expected_messages_internal (const char     *domain,
+                                                  const char     *file,
+                                                  int             line,
+                                                  const char     *func);
+
+#define g_test_assert_expected_messages() g_test_assert_expected_messages_internal (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC)
+
 G_END_DECLS
 
 #endif /* __G_TEST_UTILS_H__ */

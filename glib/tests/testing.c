@@ -236,6 +236,91 @@ test_fatal_log_handler (void)
   g_test_trap_assert_failed ();
 }
 
+static void
+expected_messages_helper (void)
+{
+  g_warning ("This is a %d warning", g_random_int ());
+  g_return_if_reached ();
+}
+
+static void
+test_expected_messages (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      expected_messages_helper ();
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*This is a * warning*");
+  g_test_trap_assert_stderr_unmatched ("*should not be reached*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "This is a * warning");
+      expected_messages_helper ();
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr_unmatched ("*This is a * warning*");
+  g_test_trap_assert_stderr ("*should not be reached*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*should not be *");
+      expected_messages_helper ();
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr_unmatched ("*should not be reached*");
+  g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*should not be *WARNING*This is a * warning*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "This is a * warning");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*should not be reached");
+      expected_messages_helper ();
+      g_test_assert_expected_messages ();
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "This is a * warning");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*should not be reached");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "nope");
+      expected_messages_helper ();
+      /* If we don't assert, it won't notice the missing message */
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "This is a * warning");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*should not be reached");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "nope");
+      expected_messages_helper ();
+      g_test_assert_expected_messages ();
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*nope*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -255,6 +340,7 @@ main (int   argc,
   if (g_test_slow())
     g_test_add_func ("/forking/timeout", test_fork_timeout);
   g_test_add_func ("/misc/fatal-log-handler", test_fatal_log_handler);
+  g_test_add_func ("/misc/expected-messages", test_expected_messages);
 
   return g_test_run();
 }
