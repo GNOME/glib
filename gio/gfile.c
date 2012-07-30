@@ -3395,12 +3395,14 @@ g_file_make_directory_with_parents (GFile         *file,
       work_file = g_object_ref (parent_file);
 
       if (!result && my_error->code == G_IO_ERROR_NOT_FOUND)
-        list = g_list_prepend (list, parent_file);  /* Transfer ownership of ref */
+        {
+          g_clear_error (&my_error);
+          list = g_list_prepend (list, parent_file);  /* Transfer ownership of ref */
+        }
       else
         g_object_unref (parent_file);
     }
 
-  g_clear_error (&my_error);
   for (l = list; result && l; l = l->next)
     {
       result = g_file_make_directory ((GFile *) l->data, cancellable, &my_error);
