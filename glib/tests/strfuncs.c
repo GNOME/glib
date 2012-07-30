@@ -329,19 +329,21 @@ test_strcanon (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strcanon (NULL, "ab", 'y');
-        }
-      g_test_trap_assert_failed ();
+      gchar *ret;
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strdup ("abxabxab");
-          str = g_strcanon (str, NULL, 'y');
-          g_free (str);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str = g_strcanon (NULL, "ab", 'y');
+      g_test_assert_expected_messages ();
+      g_assert (str == NULL);
+
+      str = g_strdup ("abxabxab");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      ret = g_strcanon (str, NULL, 'y');
+      g_test_assert_expected_messages ();
+      g_assert (ret == NULL);
+      g_free (str);
     }
 
   str = g_strdup ("abxabxab");
@@ -360,18 +362,19 @@ test_strcompress_strescape (void)
   /* test compress */
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strcompress (NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str = g_strcompress (NULL);
+      g_test_assert_expected_messages ();
+      g_assert (str == NULL);
 
       /* trailing slashes are not allowed */
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strcompress ("abc\\");
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*trailing \\*");
+      str = g_strcompress ("abc\\");
+      g_test_assert_expected_messages ();
+      g_assert_cmpstr (str, ==, "abc");
+      g_free (str);
     }
 
   str = g_strcompress ("abc\\\\\\\"\\b\\f\\n\\r\\t\\v\\003\\177\\234\\313\\12345z");
@@ -382,11 +385,11 @@ test_strcompress_strescape (void)
   /* test escape */
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strescape (NULL, NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str = g_strescape (NULL, NULL);
+      g_test_assert_expected_messages ();
+      g_assert (str == NULL);
     }
 
   str = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313", NULL);
@@ -416,17 +419,17 @@ test_ascii_strcasecmp (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_ascii_strcasecmp ("foo", NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_ascii_strcasecmp ("foo", NULL);
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_ascii_strcasecmp (NULL, "foo");
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_ascii_strcasecmp (NULL, "foo");
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
     }
 
   res = g_ascii_strcasecmp ("FroboZZ", "frobozz");
@@ -492,11 +495,10 @@ test_strchug (void)
 {
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_strchug (NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_strchug (NULL);
+      g_test_assert_expected_messages ();
     }
 
   do_test_strchug ("", "");
@@ -528,11 +530,10 @@ test_strchomp (void)
 {
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_strchomp (NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_strchomp (NULL);
+      g_test_assert_expected_messages ();
     }
 
   do_test_strchomp ("", "");
@@ -552,11 +553,11 @@ test_strreverse (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          str = g_strreverse (NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str = g_strreverse (NULL);
+      g_test_assert_expected_messages ();
+      g_assert (str == NULL);
     }
 
   str = p = g_strdup ("abcde");
@@ -656,17 +657,17 @@ test_has_prefix (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_str_has_prefix ("foo", NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_str_has_prefix ("foo", NULL);
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_str_has_prefix (NULL, "foo");
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_str_has_prefix (NULL, "foo");
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
     }
 
   res = g_str_has_prefix ("foo", "bar");
@@ -698,17 +699,17 @@ test_has_suffix (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_str_has_suffix ("foo", NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_str_has_suffix ("foo", NULL);
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          res = g_str_has_suffix (NULL, "foo");
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      res = g_str_has_suffix (NULL, "foo");
+      g_test_assert_expected_messages ();
+      g_assert (res == FALSE);
     }
 
   res = g_str_has_suffix ("foo", "bar");
@@ -880,11 +881,11 @@ test_strv_length (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          l = g_strv_length (NULL);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      l = g_strv_length (NULL);
+      g_test_assert_expected_messages ();
+      g_assert_cmpint (l, ==, 0);
     }
 
   strv = g_strsplit ("1,2,3,4", ",", -1);

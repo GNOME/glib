@@ -3,6 +3,7 @@ include $(top_srcdir)/Makefile.decl
 INCLUDES = 				\
 	-g 				\
 	$(glib_INCLUDES) 		\
+	-DG_LOG_DOMAIN=\"GLib\" 	\
 	-DSRCDIR=\""$(srcdir)"\"	\
 	$(GLIB_DEBUG_FLAGS)
 

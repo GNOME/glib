@@ -87,8 +87,17 @@ test_maincontext_basic (void)
   g_assert (g_source_get_context (source) == ctx);
   g_assert (g_main_context_find_source_by_id (ctx, id) == NULL);
 
-  g_source_unref (source);
   g_main_context_unref (ctx);
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*source->context != NULL*failed*");
+      g_assert (g_source_get_context (source) == NULL);
+      g_test_assert_expected_messages ();
+    }
+
+  g_source_unref (source);
 
   ctx = g_main_context_default ();
   source = g_source_new (&funcs, sizeof (GSource));

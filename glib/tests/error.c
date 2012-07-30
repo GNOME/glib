@@ -3,28 +3,35 @@
 static void
 test_overwrite (void)
 {
+  GError *error, *dest, *src;
+
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GError *error;
-      error = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
-      g_set_error_literal (&error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*set over the top*");
+  error = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GError *dest;
-      GError *src;
-      dest = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
-      src = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
-      g_propagate_error (&dest, src);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*set over the top*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*set over the top*");
+  g_set_error_literal (&error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
+  g_test_assert_expected_messages ();
+
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY);
+  g_error_free (error);
+
+
+  dest = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
+  src = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*set over the top*");
+  g_propagate_error (&dest, src);
+  g_test_assert_expected_messages ();
+
+  g_assert_error (dest, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY);
+  g_assert_error (src, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE);
+  g_error_free (dest);
+  g_error_free (src);
+
 }
 
 static void

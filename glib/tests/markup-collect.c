@@ -238,22 +238,20 @@ static GMarkupParser cleanup_parser = {
 static void
 test_cleanup (void)
 {
+  GMarkupParseContext *context;
+
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GMarkupParseContext *context;
+  context = g_markup_parse_context_new (&cleanup_parser, 0, NULL, NULL);
+  g_markup_parse_context_parse (context, XML, -1, NULL);
 
-      context = g_markup_parse_context_new (&cleanup_parser, 0, NULL, NULL);
-      g_markup_parse_context_parse (context, XML, -1, NULL);
-      g_markup_parse_context_end_parse (context, NULL);
-      g_markup_parse_context_free (context);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "assertion `context->state != STATE_ERROR' failed");
+  g_markup_parse_context_end_parse (context, NULL);
+  g_test_assert_expected_messages ();
 
-      exit (0);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*assertion `context->state != STATE_ERROR' failed*");
+  g_markup_parse_context_free (context);
 }
 
 int

@@ -2832,28 +2832,36 @@ do_failed_test (const gchar *pattern)
 static void
 test_invalid_varargs (void)
 {
+  GVariant *value;
+  const gchar *end;
+
   if (!g_test_undefined ())
     return;
 
-  if (do_failed_test ("*GVariant format string*"))
-    {
-      g_variant_new ("z");
-      abort ();
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*GVariant format string*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*valid_format_string*");
+  value = g_variant_new ("z");
+  g_test_assert_expected_messages ();
+  g_assert (value == NULL);
 
-  if (do_failed_test ("*valid GVariant format string as a prefix*"))
-    {
-      const gchar *end;
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*valid GVariant format string as a prefix*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*valid_format_string*");
+  value = g_variant_new_va ("z", &end, NULL);
+  g_test_assert_expected_messages ();
+  g_assert (value == NULL);
 
-      g_variant_new_va ("z", &end, NULL);
-      abort ();
-    }
-
-  if (do_failed_test ("*type of `q' but * has a type of `y'*"))
-    {
-      g_variant_get (g_variant_new ("y", 'a'), "q");
-      abort ();
-    }
+  value = g_variant_new ("y", 'a');
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*type of `q' but * has a type of `y'*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*valid_format_string*");
+  g_variant_get (value, "q");
+  g_test_assert_expected_messages ();
+  g_variant_unref (value);
 }
 
 static void
@@ -3133,12 +3141,10 @@ test_varargs (void)
         g_free (str);
       }
 
-  if (do_failed_test ("*NULL has already been returned*"))
-    {
-      g_variant_iter_next_value (&iter);
-      abort ();
-    }
-
+    g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                           "*NULL has already been returned*");
+    g_variant_iter_next_value (&iter);
+    g_test_assert_expected_messages ();
 
     while (g_variant_iter_loop (i3, "*", &sub))
       {
