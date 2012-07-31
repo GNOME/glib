@@ -1462,3 +1462,33 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
 
   return g_compute_checksum_for_data (checksum_type, (const guchar *) str, length);
 }
+
+/**
+ * g_compute_checksum_for_bytes:
+ * @checksum_type: a #GChecksumType
+ * @data: binary blob to compute the digest of
+ *
+ * Computes the checksum for a binary @data. This is a
+ * convenience wrapper for g_checksum_new(), g_checksum_get_string()
+ * and g_checksum_free().
+ *
+ * The hexadecimal string returned will be in lower case.
+ *
+ * Return value: the digest of the binary data as a string in hexadecimal.
+ *   The returned string should be freed with g_free() when done using it.
+ *
+ * Since: 2.34
+ */
+gchar *
+g_compute_checksum_for_bytes (GChecksumType  checksum_type,
+                              GBytes        *data)
+{
+  gconstpointer byte_data;
+  gsize length;
+
+  g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
+  g_return_val_if_fail (data != NULL, NULL);
+
+  byte_data = g_bytes_get_data (data, &length);
+  return g_compute_checksum_for_data (checksum_type, byte_data, length);
+}

@@ -26,6 +26,7 @@
 #define __G_CHECKSUM_H__
 
 #include <glib/gtypes.h>
+#include <glib/gbytes.h>
 
 G_BEGIN_DECLS
 
@@ -80,6 +81,10 @@ gchar                *g_compute_checksum_for_data   (GChecksumType    checksum_t
 gchar                *g_compute_checksum_for_string (GChecksumType    checksum_type,
                                                      const gchar     *str,
                                                      gssize           length);
+
+GLIB_AVAILABLE_IN_2_34
+gchar                *g_compute_checksum_for_bytes  (GChecksumType    checksum_type,
+                                                     GBytes          *data);
 
 G_END_DECLS
 

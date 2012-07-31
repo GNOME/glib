@@ -700,12 +700,12 @@ test_checksum_reset (gconstpointer d)
 typedef struct {
   GChecksumType   checksum_type;
   const gchar   **sums;
-} ChecksumStringTest;
+} ChecksumComputeTest;
 
 static void
 test_checksum_string (gconstpointer d)
 {
-  const ChecksumStringTest *test = d;
+  const ChecksumComputeTest *test = d;
   int length;
   gchar *checksum;
 
@@ -723,6 +723,25 @@ test_checksum_string (gconstpointer d)
                                             -1);
   g_assert_cmpstr (checksum, ==, test->sums[FIXED_LEN]);
   g_free (checksum);
+}
+
+static void
+test_checksum_bytes (gconstpointer d)
+{
+  const ChecksumComputeTest *test = d;
+  GBytes *input;
+  int length;
+  gchar *checksum;
+
+  for (length = 0; length <= FIXED_LEN; length++)
+    {
+      input = g_bytes_new_static (FIXED_STR, length);
+      checksum = g_compute_checksum_for_bytes (test->checksum_type, input);
+      g_bytes_unref (input);
+
+      g_assert_cmpstr (checksum, ==, test->sums[length]);
+      g_free (checksum);
+    }
 }
 
 static void
@@ -750,13 +769,28 @@ add_checksum_string_test (GChecksumType   type,
                           const gchar    *type_name,
                           const gchar   **sums)
 {
-  ChecksumStringTest *test;
+  ChecksumComputeTest *test;
   gchar *path;
-  test = g_new0 (ChecksumStringTest, 1);
+  test = g_new0 (ChecksumComputeTest, 1);
   test->checksum_type = type;
   test->sums = sums;
   path = g_strdup_printf ("/checksum/%s/string", type_name);
   g_test_add_data_func (path, test, test_checksum_string);
+  g_free (path);
+}
+
+static void
+add_checksum_bytes_test (GChecksumType   type,
+                          const gchar    *type_name,
+                          const gchar   **sums)
+{
+  ChecksumComputeTest *test;
+  gchar *path;
+  test = g_new0 (ChecksumComputeTest, 1);
+  test->checksum_type = type;
+  test->sums = sums;
+  path = g_strdup_printf ("/checksum/%s/bytes", type_name);
+  g_test_add_data_func (path, test, test_checksum_bytes);
   g_free (path);
 }
 
@@ -779,14 +813,17 @@ main (int argc, char *argv[])
   for (length = 0; length <= FIXED_LEN; length++)
     add_checksum_test (G_CHECKSUM_MD5, "MD5", MD5_sums[length], length);
   add_checksum_string_test (G_CHECKSUM_MD5, "MD5", MD5_sums);
+  add_checksum_bytes_test (G_CHECKSUM_MD5, "MD5", MD5_sums);
 
   for (length = 0; length <= FIXED_LEN; length++)
     add_checksum_test (G_CHECKSUM_SHA1, "SHA1", SHA1_sums[length], length);
   add_checksum_string_test (G_CHECKSUM_SHA1, "SHA1", SHA1_sums);
+  add_checksum_bytes_test (G_CHECKSUM_SHA1, "SHA1", SHA1_sums);
 
   for (length = 0; length <= FIXED_LEN; length++)
     add_checksum_test (G_CHECKSUM_SHA256, "SHA256", SHA256_sums[length], length);
   add_checksum_string_test (G_CHECKSUM_SHA256, "SHA256", SHA256_sums);
+  add_checksum_bytes_test (G_CHECKSUM_SHA256, "SHA256", SHA256_sums);
 
   return g_test_run ();
 }

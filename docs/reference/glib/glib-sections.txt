@@ -2845,6 +2845,7 @@ g_checksum_get_digest
 <SUBSECTION>
 g_compute_checksum_for_data
 g_compute_checksum_for_string
+g_compute_checksum_for_bytes
 </SECTION>
 
 <SECTION>
