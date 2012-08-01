@@ -220,8 +220,6 @@ g_tls_database_real_lookup_certificate_for_handle_async (GTlsDatabase           
   GSimpleAsyncResult *res;
   AsyncLookupCertificateForHandle *args;
 
-  g_return_if_fail (callback != NULL);
-
   args = g_slice_new0 (AsyncLookupCertificateForHandle);
   args->handle = g_strdup (handle);
   args->interaction = interaction ? g_object_ref (interaction) : NULL;
@@ -304,9 +302,6 @@ g_tls_database_real_lookup_certificate_issuer_async (GTlsDatabase           *sel
 {
   GSimpleAsyncResult *res;
   AsyncLookupCertificateIssuer *args;
-
-  g_return_if_fail (G_IS_TLS_CERTIFICATE (certificate));
-  g_return_if_fail (callback != NULL);
 
   args = g_slice_new0 (AsyncLookupCertificateIssuer);
   args->certificate = g_object_ref (certificate);
@@ -393,8 +388,6 @@ g_tls_database_real_lookup_certificates_issued_by_async (GTlsDatabase           
 {
   GSimpleAsyncResult *res;
   AsyncLookupCertificatesIssuedBy *args;
-
-  g_return_if_fail (callback);
 
   args = g_slice_new0 (AsyncLookupCertificatesIssuedBy);
   args->issuer = g_byte_array_ref (issuer);
