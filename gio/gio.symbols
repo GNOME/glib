@@ -1525,6 +1525,7 @@ g_tls_error_get_type
 g_tls_error_quark
 g_tls_certificate_get_issuer
 g_tls_certificate_get_type
+g_tls_certificate_is_same
 g_tls_certificate_list_new_from_file
 g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files

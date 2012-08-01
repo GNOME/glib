@@ -78,6 +78,10 @@ GTlsCertificateFlags  g_tls_certificate_verify             (GTlsCertificate     
 							    GSocketConnectable  *identity,
 							    GTlsCertificate     *trusted_ca);
 
+GLIB_AVAILABLE_IN_2_34
+gboolean              g_tls_certificate_is_same            (GTlsCertificate     *cert_one,
+                                                            GTlsCertificate     *cert_two);
+
 G_END_DECLS
 
 #endif /* __G_TLS_CERTIFICATE_H__ */
