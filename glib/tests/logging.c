@@ -5,9 +5,6 @@
 static void
 test_warnings (void)
 {
-  if (!g_test_undefined ())
-    return;
-
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       g_warn_if_reached ();
@@ -65,32 +62,29 @@ test_set_handler (void)
 static void
 test_default_handler (void)
 {
-  if (g_test_undefined ())
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_error ("message1");
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*ERROR*message1*");
-
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_critical ("message2");
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*CRITICAL*message2*");
-
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_warning ("message3");
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*WARNING*message3*");
+      g_error ("message1");
+      exit (0);
     }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*message1*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_critical ("message2");
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*message2*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_warning ("message3");
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*message3*");
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
@@ -151,9 +145,6 @@ static void
 test_fatal_log_mask (void)
 {
   GLogLevelFlags flags;
-
-  if (!g_test_undefined ())
-    return;
 
   flags = g_log_set_fatal_mask ("bu", G_LOG_LEVEL_INFO);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
@@ -242,9 +233,6 @@ test_handler (const gchar    *log_domain,
 static void
 bug653052 (void)
 {
-  if (!g_test_undefined ())
-    return;
-
   g_test_bug ("653052");
 
   g_test_log_set_fatal_handler (good_failure_handler, fail_str);

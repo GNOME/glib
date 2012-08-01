@@ -46,22 +46,19 @@ test_assertions (void)
   g_assert_cmpstr ("fzz", >, "faa");
   g_assert_cmpstr ("fzz", ==, "fzz");
 
-  if (g_test_undefined ())
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_assert_cmpstr ("fzz", !=, "fzz");
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*assertion failed*");
-
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_assert_cmpint (4, !=, 4);
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*assertion failed*");
+      g_assert_cmpstr ("fzz", !=, "fzz");
     }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_assert_cmpint (4, !=, 4);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
 }
 
 /* test g_test_timer* API */
@@ -83,9 +80,6 @@ test_timer (void)
 static void
 test_fork_fail (void)
 {
-  if (!g_test_undefined ())
-    return;
-
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
       g_assert_not_reached();
@@ -113,9 +107,6 @@ test_fork_patterns (void)
 static void
 test_fork_timeout (void)
 {
-  if (!g_test_undefined ())
-    return;
-
   /* allow child to run for only a fraction of a second */
   if (g_test_trap_fork (0.11 * 1000000, 0))
     {
@@ -226,9 +217,6 @@ fatal_handler (const gchar    *log_domain,
 static void
 test_fatal_log_handler (void)
 {
-  if (!g_test_undefined ())
-    return;
-
   g_test_log_set_fatal_handler (fatal_handler, NULL);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
