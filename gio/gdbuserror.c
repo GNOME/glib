@@ -68,6 +68,7 @@
  *   FOO_BAR_ERROR_FAILED,
  *   FOO_BAR_ERROR_ANOTHER_ERROR,
  *   FOO_BAR_ERROR_SOME_THIRD_ERROR,
+ *   FOO_BAR_N_ERRORS /<!-- -->*< skip >*<!-- -->/
  * } FooBarError;
  *
  * /<!-- -->* foo-bar-error.c: *<!-- -->/
@@ -79,6 +80,9 @@
  *   {FOO_BAR_ERROR_SOME_THIRD_ERROR, "org.project.Foo.Bar.Error.SomeThirdError"},
  * };
  *
+ * /<!-- -->* Ensure that every error code has an associated D-Bus error name *<!-- -->/
+ * G_STATIC_ASSERT (G_N_ELEMENTS (foo_bar_error_entries) == FOO_BAR_N_ERRORS);
+ *
  * GQuark
  * foo_bar_error_quark (void)
  * {
@@ -87,7 +91,6 @@
  *                                       &quark_volatile,
  *                                       foo_bar_error_entries,
  *                                       G_N_ELEMENTS (foo_bar_error_entries));
- *   G_STATIC_ASSERT (G_N_ELEMENTS (foo_bar_error_entries) - 1 == FOO_BAR_ERROR_SOME_THIRD_ERROR);
  *   return (GQuark) quark_volatile;
  * }
  * </programlisting></example>
