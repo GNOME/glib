@@ -24,6 +24,7 @@
 #include "gasyncinitable.h"
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "glibintl.h"
 
 
@@ -249,14 +250,17 @@ g_async_initable_init_finish (GAsyncInitable  *initable,
 }
 
 static void
-async_init_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+async_init_thread (GTask        *task,
+                   gpointer      source_object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
   GError *error = NULL;
 
-  if (!g_initable_init (G_INITABLE (object), cancellable, &error))
-    g_simple_async_result_take_error (res, error);
+  if (g_initable_init (G_INITABLE (source_object), cancellable, &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
 }
 
 static void
@@ -266,15 +270,14 @@ g_async_initable_real_init_async (GAsyncInitable      *initable,
 				  GAsyncReadyCallback  callback,
 				  gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
 
   g_return_if_fail (G_IS_INITABLE (initable));
 
-  res = g_simple_async_result_new (G_OBJECT (initable), callback, user_data,
-				   g_async_initable_real_init_async);
-  g_simple_async_result_run_in_thread (res, async_init_thread,
-				       io_priority, cancellable);
-  g_object_unref (res);
+  task = g_task_new (initable, cancellable, callback, user_data);
+  g_task_set_priority (task, io_priority);
+  g_task_run_in_thread (task, async_init_thread);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -283,16 +286,21 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
 				   GError         **error)
 {
   /* For backward compatibility we have to process GSimpleAsyncResults
-   * even if they aren't tagged from g_async_initable_real_init_async.
+   * even though g_async_initable_real_init_async doesn't generate
+   * them any more.
    */
   if (G_IS_SIMPLE_ASYNC_RESULT (res))
     {
       GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
       if (g_simple_async_result_propagate_error (simple, error))
-	return FALSE;
+        return FALSE;
+      else
+        return TRUE;
     }
 
-  return TRUE;
+  g_return_val_if_fail (g_task_is_valid (res, initable), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (res), error);
 }
 
 /**
