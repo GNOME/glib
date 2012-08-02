@@ -28,7 +28,6 @@
 #include "gseekable.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
 #include "gioerror.h"
 #include "gpollableinputstream.h"
 
@@ -589,7 +588,6 @@ g_input_stream_read_async (GInputStream        *stream,
 			   gpointer             user_data)
 {
   GInputStreamClass *class;
-  GSimpleAsyncResult *simple;
   GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
@@ -597,32 +595,30 @@ g_input_stream_read_async (GInputStream        *stream,
 
   if (count == 0)
     {
-      simple = g_simple_async_result_new (G_OBJECT (stream),
-					  callback,
-					  user_data,
-					  g_input_stream_read_async);
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      GTask *task;
+
+      task = g_task_new (stream, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_input_stream_read_async);
+      g_task_return_int (task, 0);
+      g_object_unref (task);
       return;
     }
   
   if (((gssize) count) < 0)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to %s"),
-					   G_STRFUNC);
+      g_task_report_new_error (stream, callback, user_data,
+                               g_input_stream_read_async,
+                               G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Too large count value passed to %s"),
+                               G_STRFUNC);
       return;
     }
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback,
-					    user_data,
-					    error);
+      g_task_report_error (stream, callback, user_data,
+                           g_input_stream_read_async,
+                           error);
       return;
     }
 
@@ -657,10 +653,7 @@ g_input_stream_read_finish (GInputStream  *stream,
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
   else if (g_async_result_is_tagged (result, g_input_stream_read_async))
-    {
-      /* Special case read of 0 bytes */
-      return 0;
-    }
+    return g_task_propagate_int (G_TASK (result), error);
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
   return class->read_finish (stream, result, error);
@@ -671,8 +664,8 @@ read_bytes_callback (GObject      *stream,
 		     GAsyncResult *result,
 		     gpointer      user_data)
 {
-  GSimpleAsyncResult *simple = user_data;
-  guchar *buf = g_simple_async_result_get_op_res_gpointer (simple);
+  GTask *task = user_data;
+  guchar *buf = g_task_get_task_data (task);
   GError *error = NULL;
   gssize nread;
   GBytes *bytes = NULL;
@@ -682,7 +675,7 @@ read_bytes_callback (GObject      *stream,
   if (nread == -1)
     {
       g_free (buf);
-      g_simple_async_result_take_error (simple, error);
+      g_task_return_error (task, error);
     }
   else if (nread == 0)
     {
@@ -693,12 +686,9 @@ read_bytes_callback (GObject      *stream,
     bytes = g_bytes_new_take (buf, nread);
 
   if (bytes)
-    {
-      g_simple_async_result_set_op_res_gpointer (simple, bytes,
-						 (GDestroyNotify)g_bytes_unref);
-    }
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
+    g_task_return_pointer (task, bytes, (GDestroyNotify)g_bytes_unref);
+
+  g_object_unref (task);
 }
 
 /**
@@ -740,18 +730,16 @@ g_input_stream_read_bytes_async (GInputStream          *stream,
 				 GAsyncReadyCallback    callback,
 				 gpointer               user_data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
   guchar *buf;
 
-  simple = g_simple_async_result_new (G_OBJECT (stream),
-				      callback, user_data,
-				      g_input_stream_read_bytes_async);
+  task = g_task_new (stream, cancellable, callback, user_data);
   buf = g_malloc (count);
-  g_simple_async_result_set_op_res_gpointer (simple, buf, NULL);
+  g_task_set_task_data (task, buf, NULL);
 
   g_input_stream_read_async (stream, buf, count,
-			     io_priority, cancellable,
-			     read_bytes_callback, simple);
+                             io_priority, cancellable,
+                             read_bytes_callback, task);
 }
 
 /**
@@ -770,15 +758,10 @@ g_input_stream_read_bytes_finish (GInputStream  *stream,
 				  GAsyncResult  *result,
 				  GError       **error)
 {
-  GSimpleAsyncResult *simple;
-
   g_return_val_if_fail (G_IS_INPUT_STREAM (stream), NULL);
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (stream), g_input_stream_read_bytes_async), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, stream), NULL);
 
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-  return g_bytes_ref (g_simple_async_result_get_op_res_gpointer (simple));
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**
@@ -824,40 +807,36 @@ g_input_stream_skip_async (GInputStream        *stream,
 			   gpointer             user_data)
 {
   GInputStreamClass *class;
-  GSimpleAsyncResult *simple;
   GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
 
   if (count == 0)
     {
-      simple = g_simple_async_result_new (G_OBJECT (stream),
-					  callback,
-					  user_data,
-					  g_input_stream_skip_async);
+      GTask *task;
 
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      task = g_task_new (stream, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_input_stream_skip_async);
+      g_task_return_int (task, 0);
+      g_object_unref (task);
       return;
     }
   
   if (((gssize) count) < 0)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (stream),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					   _("Too large count value passed to %s"),
-					   G_STRFUNC);
+      g_task_report_new_error (stream, callback, user_data,
+                               g_input_stream_skip_async,
+                               G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Too large count value passed to %s"),
+                               G_STRFUNC);
       return;
     }
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback,
-					    user_data,
-					    error);
+      g_task_report_error (stream, callback, user_data,
+                           g_input_stream_skip_async,
+                           error);
       return;
     }
 
@@ -892,10 +871,7 @@ g_input_stream_skip_finish (GInputStream  *stream,
   if (g_async_result_legacy_propagate_error (result, error))
     return -1;
   else if (g_async_result_is_tagged (result, g_input_stream_skip_async))
-    {
-      /* Special case skip of 0 bytes */
-      return 0;
-    }
+    return g_task_propagate_int (G_TASK (result), error);
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
   return class->skip_finish (stream, result, error);
@@ -929,29 +905,26 @@ g_input_stream_close_async (GInputStream        *stream,
 			    gpointer             user_data)
 {
   GInputStreamClass *class;
-  GSimpleAsyncResult *simple;
   GError *error = NULL;
 
   g_return_if_fail (G_IS_INPUT_STREAM (stream));
 
   if (stream->priv->closed)
     {
-      simple = g_simple_async_result_new (G_OBJECT (stream),
-					  callback,
-					  user_data,
-					  g_input_stream_close_async);
+      GTask *task;
 
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      task = g_task_new (stream, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_input_stream_close_async);
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
       return;
     }
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback,
-					    user_data,
-					    error);
+      g_task_report_error (stream, callback, user_data,
+                           g_input_stream_close_async,
+                           error);
       return;
     }
   
@@ -986,10 +959,7 @@ g_input_stream_close_finish (GInputStream  *stream,
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
   else if (g_async_result_is_tagged (result, g_input_stream_close_async))
-    {
-      /* Special case already closed */
-      return TRUE;
-    }
+    return g_task_propagate_boolean (G_TASK (result), error);
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
   return class->close_finish (stream, result, error);
@@ -1084,95 +1054,86 @@ g_input_stream_clear_pending (GInputStream *stream)
  ********************************************/
 
 typedef struct {
-  void              *buffer;
-  gsize              count_requested;
-  gssize             count_read;
-
-  GCancellable      *cancellable;
-  gint               io_priority;
-  gboolean           need_idle;
+  void   *buffer;
+  gsize   count;
 } ReadData;
 
 static void
 free_read_data (ReadData *op)
 {
-  if (op->cancellable)
-    g_object_unref (op->cancellable);
   g_slice_free (ReadData, op);
 }
 
 static void
-read_async_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+read_async_thread (GTask        *task,
+                   gpointer      source_object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
-  ReadData *op;
+  GInputStream *stream = source_object;
+  ReadData *op = task_data;
   GInputStreamClass *class;
   GError *error = NULL;
+  gssize nread;
  
-  op = g_simple_async_result_get_op_res_gpointer (res);
+  class = G_INPUT_STREAM_GET_CLASS (stream);
 
-  class = G_INPUT_STREAM_GET_CLASS (object);
-
-  op->count_read = class->read_fn (G_INPUT_STREAM (object),
-				   op->buffer, op->count_requested,
-				   cancellable, &error);
-  if (op->count_read == -1)
-    g_simple_async_result_take_error (res, error);
+  nread = class->read_fn (stream,
+                          op->buffer, op->count,
+                          g_task_get_cancellable (task),
+                          &error);
+  if (nread == -1)
+    g_task_return_error (task, error);
+  else
+    g_task_return_int (task, nread);
 }
 
 static void read_async_pollable (GPollableInputStream *stream,
-				 GSimpleAsyncResult   *result);
+                                 GTask                *task);
 
 static gboolean
 read_async_pollable_ready (GPollableInputStream *stream,
 			   gpointer              user_data)
 {
-  GSimpleAsyncResult *result = user_data;
+  GTask *task = user_data;
 
-  read_async_pollable (stream, result);
+  read_async_pollable (stream, task);
   return FALSE;
 }
 
 static void
 read_async_pollable (GPollableInputStream *stream,
-		     GSimpleAsyncResult   *result)
+                     GTask                *task)
 {
+  ReadData *op = g_task_get_task_data (task);
   GError *error = NULL;
-  ReadData *op = g_simple_async_result_get_op_res_gpointer (result);
+  gssize nread;
 
-  if (g_cancellable_set_error_if_cancelled (op->cancellable, &error))
-    op->count_read = -1;
-  else
-    {
-      op->count_read = G_POLLABLE_INPUT_STREAM_GET_INTERFACE (stream)->
-	read_nonblocking (stream, op->buffer, op->count_requested, &error);
-    }
+  if (g_task_return_error_if_cancelled (task))
+    return;
+
+  nread = G_POLLABLE_INPUT_STREAM_GET_INTERFACE (stream)->
+    read_nonblocking (stream, op->buffer, op->count, &error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
     {
       GSource *source;
 
       g_error_free (error);
-      op->need_idle = FALSE;
 
-      source = g_pollable_input_stream_create_source (stream, op->cancellable);
-      g_source_set_callback (source,
-			     (GSourceFunc) read_async_pollable_ready,
-			     g_object_ref (result), g_object_unref);
-      g_source_set_priority (source, op->io_priority);
-      g_source_attach (source, g_main_context_get_thread_default ());
+      source = g_pollable_input_stream_create_source (stream,
+                                                      g_task_get_cancellable (task));
+      g_task_attach_source (task, source,
+                            (GSourceFunc) read_async_pollable_ready);
       g_source_unref (source);
       return;
     }
 
-  if (op->count_read == -1)
-    g_simple_async_result_take_error (result, error);
-
-  if (op->need_idle)
-    g_simple_async_result_complete_in_idle (result);
+  if (nread == -1)
+    g_task_return_error (task, error);
   else
-    g_simple_async_result_complete (result);
+    g_task_return_int (task, nread);
+  /* g_input_stream_real_read_async() unrefs task */
 }
 
 static void
@@ -1184,24 +1145,22 @@ g_input_stream_real_read_async (GInputStream        *stream,
 				GAsyncReadyCallback  callback,
 				gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   ReadData *op;
   
   op = g_slice_new0 (ReadData);
-  res = g_simple_async_result_new (G_OBJECT (stream), callback, user_data, g_input_stream_real_read_async);
-  g_simple_async_result_set_op_res_gpointer (res, op, (GDestroyNotify) free_read_data);
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_task_data (task, op, (GDestroyNotify) free_read_data);
+  g_task_set_priority (task, io_priority);
   op->buffer = buffer;
-  op->count_requested = count;
-  op->cancellable = cancellable ? g_object_ref (cancellable) : NULL;
-  op->io_priority = io_priority;
-  op->need_idle = TRUE;
+  op->count = count;
 
   if (G_IS_POLLABLE_INPUT_STREAM (stream) &&
       g_pollable_input_stream_can_poll (G_POLLABLE_INPUT_STREAM (stream)))
-    read_async_pollable (G_POLLABLE_INPUT_STREAM (stream), res);
+    read_async_pollable (G_POLLABLE_INPUT_STREAM (stream), task);
   else
-    g_simple_async_result_run_in_thread (res, read_async_thread, io_priority, cancellable);
-  g_object_unref (res);
+    g_task_run_in_thread (task, read_async_thread);
+  g_object_unref (task);
 }
 
 static gssize
@@ -1209,50 +1168,38 @@ g_input_stream_real_read_finish (GInputStream  *stream,
 				 GAsyncResult  *result,
 				 GError       **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  ReadData *op;
+  g_return_val_if_fail (g_task_is_valid (result, stream), -1);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-	    g_input_stream_real_read_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return -1;
-
-  op = g_simple_async_result_get_op_res_gpointer (simple);
-
-  return op->count_read;
+  return g_task_propagate_int (G_TASK (result), error);
 }
-
-typedef struct {
-  gsize count_requested;
-  gssize count_skipped;
-} SkipData;
 
 
 static void
-skip_async_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+skip_async_thread (GTask        *task,
+                   gpointer      source_object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
-  SkipData *op;
+  GInputStream *stream = source_object;
+  gsize count = GPOINTER_TO_SIZE (task_data);
   GInputStreamClass *class;
   GError *error = NULL;
-  
-  class = G_INPUT_STREAM_GET_CLASS (object);
-  op = g_simple_async_result_get_op_res_gpointer (res);
-  op->count_skipped = class->skip (G_INPUT_STREAM (object),
-				   op->count_requested,
-				   cancellable, &error);
-  if (op->count_skipped == -1)
-    g_simple_async_result_take_error (res, error);
+  gssize ret;
+
+  class = G_INPUT_STREAM_GET_CLASS (stream);
+  ret = class->skip (stream, count,
+                     g_task_get_cancellable (task),
+                     &error);
+  if (ret == -1)
+    g_task_return_error (task, error);
+  else
+    g_task_return_int (task, ret);
 }
 
 typedef struct {
   char buffer[8192];
   gsize count;
   gsize count_skipped;
-  int io_prio;
-  GCancellable *cancellable;
   gpointer user_data;
   GAsyncReadyCallback callback;
 } SkipFallbackAsyncData;
@@ -1263,9 +1210,8 @@ skip_callback_wrapper (GObject      *source_object,
 		       gpointer      user_data)
 {
   GInputStreamClass *class;
-  SkipFallbackAsyncData *data = user_data;
-  SkipData *op;
-  GSimpleAsyncResult *simple;
+  GTask *task = user_data;
+  SkipFallbackAsyncData *data = g_task_get_task_data (task);
   GError *error = NULL;
   gssize ret;
 
@@ -1279,35 +1225,28 @@ skip_callback_wrapper (GObject      *source_object,
       if (data->count > 0)
 	{
 	  class = G_INPUT_STREAM_GET_CLASS (source_object);
-	  class->read_async (G_INPUT_STREAM (source_object), data->buffer, MIN (8192, data->count), data->io_prio, data->cancellable,
-			     skip_callback_wrapper, data);
+	  class->read_async (G_INPUT_STREAM (source_object),
+                             data->buffer, MIN (8192, data->count),
+                             g_task_get_priority (task),
+                             g_task_get_cancellable (task),
+                             skip_callback_wrapper, data);
 	  return;
 	}
     }
 
-  op = g_new0 (SkipData, 1);
-  op->count_skipped = data->count_skipped;
-  simple = g_simple_async_result_new (source_object,
-				      data->callback, data->user_data,
-				      g_input_stream_real_skip_async);
-
-  g_simple_async_result_set_op_res_gpointer (simple, op, g_free);
-
-  if (ret == -1)
+  if (ret == -1 &&
+      g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+      data->count_skipped)
     {
-      if (data->count_skipped &&
-          g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-	/* No error, return partial read */
-	g_error_free (error);
-      else
-	g_simple_async_result_take_error (simple, error);
+      /* No error, return partial read */
+      g_clear_error (&error);
     }
 
-  /* Complete immediately, not in idle, since we're already in a mainloop callout */
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-  
-  g_free (data);
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_int (task, data->count_skipped);
+  g_object_unref (task);
  }
 
 static void
@@ -1319,28 +1258,23 @@ g_input_stream_real_skip_async (GInputStream        *stream,
 				gpointer             user_data)
 {
   GInputStreamClass *class;
-  SkipData *op;
   SkipFallbackAsyncData *data;
-  GSimpleAsyncResult *res;
+  GTask *task;
 
   class = G_INPUT_STREAM_GET_CLASS (stream);
+
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_priority (task, io_priority);
 
   if (class->read_async == g_input_stream_real_read_async)
     {
       /* Read is thread-using async fallback.
        * Make skip use threads too, so that we can use a possible sync skip
        * implementation. */
-      op = g_new0 (SkipData, 1);
-      
-      res = g_simple_async_result_new (G_OBJECT (stream), callback, user_data,
-				       g_input_stream_real_skip_async);
+      g_task_set_task_data (task, GSIZE_TO_POINTER (count), NULL);
 
-      g_simple_async_result_set_op_res_gpointer (res, op, g_free);
-
-      op->count_requested = count;
-
-      g_simple_async_result_run_in_thread (res, skip_async_thread, io_priority, cancellable);
-      g_object_unref (res);
+      g_task_run_in_thread (task, skip_async_thread);
+      g_object_unref (task);
     }
   else
     {
@@ -1350,10 +1284,10 @@ g_input_stream_real_skip_async (GInputStream        *stream,
       data = g_new (SkipFallbackAsyncData, 1);
       data->count = count;
       data->count_skipped = 0;
-      data->io_prio = io_priority;
-      data->cancellable = cancellable;
       data->callback = callback;
       data->user_data = user_data;
+      g_task_set_task_data (task, data, g_free);
+      g_task_set_check_cancellable (task, FALSE);
       class->read_async (stream, data->buffer, MIN (8192, count), io_priority, cancellable,
 			 skip_callback_wrapper, data);
     }
@@ -1365,39 +1299,36 @@ g_input_stream_real_skip_finish (GInputStream  *stream,
 				 GAsyncResult  *result,
 				 GError       **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  SkipData *op;
+  g_return_val_if_fail (g_task_is_valid (result, stream), -1);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_skip_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return -1;
-
-  op = g_simple_async_result_get_op_res_gpointer (simple);
-  return op->count_skipped;
+  return g_task_propagate_int (G_TASK (result), error);
 }
 
 static void
-close_async_thread (GSimpleAsyncResult *res,
-		    GObject            *object,
-		    GCancellable       *cancellable)
+close_async_thread (GTask        *task,
+                    gpointer      source_object,
+                    gpointer      task_data,
+                    GCancellable *cancellable)
 {
+  GInputStream *stream = source_object;
   GInputStreamClass *class;
   GError *error = NULL;
   gboolean result;
 
-  /* Auto handling of cancelation disabled, and ignore
-     cancellation, since we want to close things anyway, although
-     possibly in a quick-n-dirty way. At least we never want to leak
-     open handles */
-
-  class = G_INPUT_STREAM_GET_CLASS (object);
+  class = G_INPUT_STREAM_GET_CLASS (stream);
   if (class->close_fn)
     {
-      result = class->close_fn (G_INPUT_STREAM (object), cancellable, &error);
+      result = class->close_fn (stream,
+                                g_task_get_cancellable (task),
+                                &error);
       if (!result)
-        g_simple_async_result_take_error (res, error);
+        {
+          g_task_return_error (task, error);
+          return;
+        }
     }
+
+  g_task_return_boolean (task, TRUE);
 }
 
 static void
@@ -1407,20 +1338,14 @@ g_input_stream_real_close_async (GInputStream        *stream,
 				 GAsyncReadyCallback  callback,
 				 gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
-  
-  res = g_simple_async_result_new (G_OBJECT (stream),
-				   callback,
-				   user_data,
-				   g_input_stream_real_close_async);
+  GTask *task;
 
-  g_simple_async_result_set_handle_cancellation (res, FALSE);
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_check_cancellable (task, FALSE);
+  g_task_set_priority (task, io_priority);
   
-  g_simple_async_result_run_in_thread (res,
-				       close_async_thread,
-				       io_priority,
-				       cancellable);
-  g_object_unref (res);
+  g_task_run_in_thread (task, close_async_thread);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -1428,12 +1353,7 @@ g_input_stream_real_close_finish (GInputStream  *stream,
 				  GAsyncResult  *result,
 				  GError       **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_close_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }

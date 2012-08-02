@@ -24,7 +24,7 @@
 
 #include "config.h"
 #include "gdatainputstream.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
@@ -952,49 +952,41 @@ g_data_input_stream_read_until (GDataInputStream  *stream,
 
 typedef struct
 {
-  GDataInputStream *stream;
-  GSimpleAsyncResult *simple;
   gboolean last_saw_cr;
   gsize checked;
-  gint io_priority;
-  GCancellable *cancellable;
 
   gchar *stop_chars;
   gssize stop_chars_len;
-  gchar *line;
   gsize length;
 } GDataInputStreamReadData;
 
 static void
-g_data_input_stream_read_complete (GDataInputStreamReadData *data,
-                                   gsize                     read_length,
-                                   gsize                     skip_length,
-                                   gboolean                  need_idle_dispatch)
+g_data_input_stream_read_complete (GTask *task,
+                                   gsize  read_length,
+                                   gsize  skip_length)
 {
+  GDataInputStreamReadData *data = g_task_get_task_data (task);
+  GInputStream *stream = g_task_get_source_object (task);
+  char *line = NULL;
+
   if (read_length || skip_length)
     {
       gssize bytes;
 
       data->length = read_length;
-      data->line = g_malloc (read_length + 1);
-      data->line[read_length] = '\0';
+      line = g_malloc (read_length + 1);
+      line[read_length] = '\0';
 
       /* we already checked the buffer.  this shouldn't fail. */
-      bytes = g_input_stream_read (G_INPUT_STREAM (data->stream),
-                                   data->line, read_length, NULL, NULL);
+      bytes = g_input_stream_read (stream, line, read_length, NULL, NULL);
       g_assert_cmpint (bytes, ==, read_length);
 
-      bytes = g_input_stream_skip (G_INPUT_STREAM (data->stream),
-                                   skip_length, NULL, NULL);
+      bytes = g_input_stream_skip (stream, skip_length, NULL, NULL);
       g_assert_cmpint (bytes, ==, skip_length);
     }
 
-  if (need_idle_dispatch)
-    g_simple_async_result_complete_in_idle (data->simple);
-  else
-    g_simple_async_result_complete (data->simple);
-
-  g_object_unref (data->simple);
+  g_task_return_pointer (task, line, g_free);
+  g_object_unref (task);
 }
 
 static void
@@ -1002,14 +994,15 @@ g_data_input_stream_read_line_ready (GObject      *object,
                                      GAsyncResult *result,
                                      gpointer      user_data)
 {
-  GDataInputStreamReadData *data = user_data;
+  GTask *task = user_data;
+  GDataInputStreamReadData *data = g_task_get_task_data (task);
+  GBufferedInputStream *buffer = g_task_get_source_object (task);
   gssize found_pos;
   gint newline_len;
 
   if (result)
     /* this is a callback.  finish the async call. */
     {
-      GBufferedInputStream *buffer = G_BUFFERED_INPUT_STREAM (data->stream);
       GError *error = NULL;
       gssize bytes;
 
@@ -1020,11 +1013,12 @@ g_data_input_stream_read_line_ready (GObject      *object,
           if (bytes < 0)
             /* stream error. */
             {
-              g_simple_async_result_take_error (data->simple, error);
-              data->checked = 0;
+              g_task_return_error (task, error);
+              g_object_unref (task);
+              return;
             }
 
-          g_data_input_stream_read_complete (data, data->checked, 0, FALSE);
+          g_data_input_stream_read_complete (task, data->checked, 0);
           return;
         }
 
@@ -1033,20 +1027,19 @@ g_data_input_stream_read_line_ready (GObject      *object,
 
   if (data->stop_chars)
     {
-      found_pos = scan_for_chars (data->stream,
+      found_pos = scan_for_chars (G_DATA_INPUT_STREAM (buffer),
                                   &data->checked,
                                   data->stop_chars,
                                   data->stop_chars_len);
       newline_len = 0;
     }
   else
-    found_pos = scan_for_newline (data->stream, &data->checked,
+    found_pos = scan_for_newline (G_DATA_INPUT_STREAM (buffer), &data->checked,
                                   &data->last_saw_cr, &newline_len);
 
   if (found_pos == -1)
     /* didn't find a full line; need to buffer some more bytes */
     {
-      GBufferedInputStream *buffer = G_BUFFERED_INPUT_STREAM (data->stream);
       gsize size;
 
       size = g_buffered_input_stream_get_buffer_size (buffer);
@@ -1056,16 +1049,16 @@ g_data_input_stream_read_line_ready (GObject      *object,
         g_buffered_input_stream_set_buffer_size (buffer, size * 2);
 
       /* try again */
-      g_buffered_input_stream_fill_async (buffer, -1, data->io_priority,
-                                          data->cancellable,
+      g_buffered_input_stream_fill_async (buffer, -1,
+                                          g_task_get_priority (task),
+                                          g_task_get_cancellable (task),
                                           g_data_input_stream_read_line_ready,
                                           user_data);
     }
   else
     {
       /* read the line and the EOL.  no error is possible. */
-      g_data_input_stream_read_complete (data, found_pos,
-                                         newline_len, result == NULL);
+      g_data_input_stream_read_complete (task, found_pos, newline_len);
     }
 }
 
@@ -1074,14 +1067,7 @@ g_data_input_stream_read_data_free (gpointer user_data)
 {
   GDataInputStreamReadData *data = user_data;
 
-  /* we don't hold a ref to ->simple because it keeps a ref to us.
-   * we are called because it is being finalized.
-   */
-
   g_free (data->stop_chars);
-  if (data->cancellable)
-    g_object_unref (data->cancellable);
-  g_free (data->line);
   g_slice_free (GDataInputStreamReadData, data);
 }
 
@@ -1092,30 +1078,23 @@ g_data_input_stream_read_async (GDataInputStream    *stream,
                                 gint                 io_priority,
                                 GCancellable        *cancellable,
                                 GAsyncReadyCallback  callback,
-                                gpointer             user_data,
-                                gpointer             source_tag)
+                                gpointer             user_data)
 {
   GDataInputStreamReadData *data;
+  GTask *task;
 
-  data = g_slice_new (GDataInputStreamReadData);
-  data->stream = stream;
-  if (cancellable)
-    g_object_ref (cancellable);
-  data->cancellable = cancellable;
+  data = g_slice_new0 (GDataInputStreamReadData);
   if (stop_chars_len == -1)
     stop_chars_len = strlen (stop_chars);
   data->stop_chars = g_memdup (stop_chars, stop_chars_len);
   data->stop_chars_len = stop_chars_len;
-  data->io_priority = io_priority;
   data->last_saw_cr = FALSE;
-  data->checked = 0;
-  data->line = NULL;
 
-  data->simple = g_simple_async_result_new (G_OBJECT (stream), callback,
-                                            user_data, source_tag);
-  g_simple_async_result_set_op_res_gpointer (data->simple, data,
-                                             g_data_input_stream_read_data_free);
-  g_data_input_stream_read_line_ready (NULL, NULL, data);
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_task_data (task, data, g_data_input_stream_read_data_free);
+  g_task_set_priority (task, io_priority);
+
+  g_data_input_stream_read_line_ready (NULL, NULL, task);
 }
 
 static gchar *
@@ -1124,22 +1103,17 @@ g_data_input_stream_read_finish (GDataInputStream  *stream,
                                  gsize             *length,
                                  GError           **error)
 {
-  GDataInputStreamReadData *data;
-  GSimpleAsyncResult *simple;
+  GTask *task = G_TASK (result);
   gchar *line;
 
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  data = g_simple_async_result_get_op_res_gpointer (simple);
-
-  line = data->line;
-  data->line = NULL;
+  line = g_task_propagate_pointer (task, error);
 
   if (length && line)
-    *length = data->length;
+    {
+      GDataInputStreamReadData *data = g_task_get_task_data (task);
+
+      *length = data->length;
+    }
 
   return line;
 }
@@ -1173,8 +1147,7 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
   g_data_input_stream_read_async (stream, NULL, 0, io_priority,
-                                  cancellable, callback, user_data,
-                                  g_data_input_stream_read_line_async);
+                                  cancellable, callback, user_data);
 }
 
 /**
@@ -1218,8 +1191,7 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
   g_return_if_fail (stop_chars != NULL);
 
   g_data_input_stream_read_async (stream, stop_chars, -1, io_priority,
-                                  cancellable, callback, user_data,
-                                  g_data_input_stream_read_until_async);
+                                  cancellable, callback, user_data);
 }
 
 /**
@@ -1249,9 +1221,7 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
                                       gsize             *length,
                                       GError           **error)
 {
-  g_return_val_if_fail (
-    g_simple_async_result_is_valid (result, G_OBJECT (stream),
-      g_data_input_stream_read_line_async), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, stream), NULL);
 
   return g_data_input_stream_read_finish (stream, result, length, error);
 }
@@ -1321,9 +1291,7 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
                                        gsize             *length,
                                        GError           **error)
 {
-  g_return_val_if_fail (
-    g_simple_async_result_is_valid (result, G_OBJECT (stream),
-      g_data_input_stream_read_until_async), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, stream), NULL);
 
   return g_data_input_stream_read_finish (stream, result, length, error);
 }
@@ -1463,8 +1431,7 @@ g_data_input_stream_read_upto_async (GDataInputStream    *stream,
   g_return_if_fail (stop_chars != NULL);
 
   g_data_input_stream_read_async (stream, stop_chars, stop_chars_len, io_priority,
-                                  cancellable, callback, user_data,
-                                  g_data_input_stream_read_upto_async);
+                                  cancellable, callback, user_data);
 }
 
 /**
@@ -1494,9 +1461,7 @@ g_data_input_stream_read_upto_finish (GDataInputStream  *stream,
                                       gsize             *length,
                                       GError           **error)
 {
-  g_return_val_if_fail (
-    g_simple_async_result_is_valid (result, G_OBJECT (stream),
-      g_data_input_stream_read_upto_async), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, stream), NULL);
 
   return g_data_input_stream_read_finish (stream, result, length, error);
 }
