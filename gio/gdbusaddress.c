@@ -36,7 +36,7 @@
 #include "gsocketclient.h"
 #include "giostream.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "glib-private.h"
 #include "gdbusprivate.h"
 #include "giomodule-priv.h"
@@ -796,7 +796,6 @@ out:
 
 typedef struct {
   gchar *address;
-  GIOStream *stream;
   gchar *guid;
 } GetStreamData;
 
@@ -804,29 +803,28 @@ static void
 get_stream_data_free (GetStreamData *data)
 {
   g_free (data->address);
-  if (data->stream != NULL)
-    g_object_unref (data->stream);
   g_free (data->guid);
   g_free (data);
 }
 
 static void
-get_stream_thread_func (GSimpleAsyncResult *res,
-                        GObject            *object,
-                        GCancellable       *cancellable)
+get_stream_thread_func (GTask         *task,
+                        gpointer       source_object,
+                        gpointer       task_data,
+                        GCancellable  *cancellable)
 {
-  GetStreamData *data;
-  GError *error;
+  GetStreamData *data = task_data;
+  GIOStream *stream;
+  GError *error = NULL;
 
-  data = g_simple_async_result_get_op_res_gpointer (res);
-
-  error = NULL;
-  data->stream = g_dbus_address_get_stream_sync (data->address,
-                                                 &data->guid,
-                                                 cancellable,
-                                                 &error);
-  if (data->stream == NULL)
-    g_simple_async_result_take_error (res, error);
+  stream = g_dbus_address_get_stream_sync (data->address,
+                                           &data->guid,
+                                           cancellable,
+                                           &error);
+  if (stream)
+    g_task_return_pointer (task, stream, g_object_unref);
+  else
+    g_task_return_error (task, error);
 }
 
 /**
@@ -855,26 +853,18 @@ g_dbus_address_get_stream (const gchar         *address,
                            GAsyncReadyCallback  callback,
                            gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   GetStreamData *data;
 
   g_return_if_fail (address != NULL);
 
-  res = g_simple_async_result_new (NULL,
-                                   callback,
-                                   user_data,
-                                   g_dbus_address_get_stream);
-  g_simple_async_result_set_check_cancellable (res, cancellable);
   data = g_new0 (GetStreamData, 1);
   data->address = g_strdup (address);
-  g_simple_async_result_set_op_res_gpointer (res,
-                                             data,
-                                             (GDestroyNotify) get_stream_data_free);
-  g_simple_async_result_run_in_thread (res,
-                                       get_stream_thread_func,
-                                       G_PRIORITY_DEFAULT,
-                                       cancellable);
-  g_object_unref (res);
+
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_task_data (task, data, (GDestroyNotify) get_stream_data_free);
+  g_task_run_in_thread (task, get_stream_thread_func);
+  g_object_unref (task);
 }
 
 /**
@@ -894,26 +884,23 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
                                   gchar              **out_guid,
                                   GError             **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  GTask *task;
   GetStreamData *data;
   GIOStream *ret;
 
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
+  g_return_val_if_fail (g_task_is_valid (res, NULL), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_address_get_stream);
+  task = G_TASK (res);
+  ret = g_task_propagate_pointer (task, error);
 
-  ret = NULL;
+  if (ret != NULL && out_guid != NULL)
+    {
+      data = g_task_get_task_data (task);
+      *out_guid = data->guid;
+      data->guid = NULL;
+    }
 
-  data = g_simple_async_result_get_op_res_gpointer (simple);
-  if (g_simple_async_result_propagate_error (simple, error))
-    goto out;
-
-  ret = g_object_ref (data->stream);
-  if (out_guid != NULL)
-    *out_guid = g_strdup (data->guid);
-
- out:
   return ret;
 }
 
