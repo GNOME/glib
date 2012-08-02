@@ -153,8 +153,16 @@ man_MANS =			\
 
 if ENABLE_MAN
 
+XSLTPROC_FLAGS = \
+        --nonet \
+        --stringparam man.output.quietly 1 \
+        --stringparam funcsynopsis.style ansi \
+        --stringparam man.th.extra1.suppress 1 \
+        --stringparam man.authors.section.enabled 0 \
+        --stringparam man.copyright.section.enabled 0
+
 .xml.1:
-	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+	$(AM_V_GEN) $(XSLTPROC) $(XSLTPROC_FLAGS) http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
 dist-local-check-mans-enabled:
 	if grep "Man generation disabled" $(man_MANS) >/dev/null; then $(RM) $(man_MANS); fi
