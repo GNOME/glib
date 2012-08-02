@@ -21,10 +21,10 @@
  */
 
 #include "config.h"
-#include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
 #include "gicon.h"
 #include "gloadableicon.h"
+#include "gasyncresult.h"
+#include "gtask.h"
 #include "glibintl.h"
 
 
@@ -156,43 +156,35 @@ g_loadable_icon_load_finish (GLoadableIcon  *icon,
 typedef struct {
   int size;
   char *type;
-  GInputStream *stream;
 } LoadData;
 
 static void
 load_data_free (LoadData *data)
 {
-  if (data->stream)
-    g_object_unref (data->stream);
   g_free (data->type);
   g_free (data);
 }
 
 static void
-load_async_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+load_async_thread (GTask        *task,
+                   gpointer      source_object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
+  GLoadableIcon *icon = source_object;
+  LoadData *data = task_data;
   GLoadableIconIface *iface;
   GInputStream *stream;
-  LoadData *data;
   GError *error = NULL;
-  char *type = NULL;
 
-  data = g_simple_async_result_get_op_res_gpointer (res);
-  
-  iface = G_LOADABLE_ICON_GET_IFACE (object);
-  stream = iface->load (G_LOADABLE_ICON (object), data->size, &type, cancellable, &error);
+  iface = G_LOADABLE_ICON_GET_IFACE (icon);
+  stream = iface->load (icon, data->size, &data->type,
+                        cancellable, &error);
 
-  if (stream == NULL)
-    {
-      g_simple_async_result_take_error (res, error);
-    }
+  if (stream)
+    g_task_return_pointer (task, stream, g_object_unref);
   else
-    {
-      data->stream = stream;
-      data->type = type;
-    }
+    g_task_return_error (task, error);
 }
 
 
@@ -204,14 +196,14 @@ g_loadable_icon_real_load_async (GLoadableIcon       *icon,
 				 GAsyncReadyCallback  callback,
 				 gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   LoadData *data;
-  
-  res = g_simple_async_result_new (G_OBJECT (icon), callback, user_data, g_loadable_icon_real_load_async);
+
+  task = g_task_new (icon, cancellable, callback, user_data);
   data = g_new0 (LoadData, 1);
-  g_simple_async_result_set_op_res_gpointer (res, data, (GDestroyNotify) load_data_free);
-  g_simple_async_result_run_in_thread (res, load_async_thread, 0, cancellable);
-  g_object_unref (res);
+  g_task_set_task_data (task, data, (GDestroyNotify) load_data_free);
+  g_task_run_in_thread (task, load_async_thread);
+  g_object_unref (task);
 }
 
 static GInputStream *
@@ -220,21 +212,21 @@ g_loadable_icon_real_load_finish (GLoadableIcon        *icon,
 				  char                **type,
 				  GError              **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  GTask *task;
   LoadData *data;
+  GInputStream *stream;
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_loadable_icon_real_load_async);
+  g_return_val_if_fail (g_task_is_valid (res, icon), NULL);
 
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
+  task = G_TASK (res);
+  data = g_task_get_task_data (task);
 
-  data = g_simple_async_result_get_op_res_gpointer (simple);
-
-  if (type)
+  stream = g_task_propagate_pointer (task, error);
+  if (stream && type)
     {
       *type = data->type;
       data->type = NULL;
     }
 
-  return g_object_ref (data->stream);
+  return stream;
 }

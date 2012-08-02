@@ -25,8 +25,8 @@
 #include <glib.h>
 #include <gfileiostream.h>
 #include <gseekable.h>
-#include "gsimpleasyncresult.h"
 #include "gasyncresult.h"
+#include "gtask.h"
 #include "gcancellable.h"
 #include "gioerror.h"
 #include "gfileoutputstream.h"
@@ -227,10 +227,9 @@ g_file_io_stream_query_info_async (GFileIOStream     *stream,
 
   if (!g_io_stream_set_pending (io_stream, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback,
-					    user_data,
-					    error);
+      g_task_report_error (stream, callback, user_data,
+                           g_file_io_stream_query_info_async,
+                           error);
       return;
     }
 
@@ -239,7 +238,7 @@ g_file_io_stream_query_info_async (GFileIOStream     *stream,
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   klass->query_info_async (stream, attributes, io_priority, cancellable,
-			      async_ready_callback_wrapper, user_data);
+                           async_ready_callback_wrapper, user_data);
 }
 
 /**
@@ -267,6 +266,8 @@ g_file_io_stream_query_info_finish (GFileIOStream     *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return NULL;
+  else if (g_async_result_is_tagged (result, g_file_io_stream_query_info_async))
+    return g_task_propagate_pointer (G_TASK (result), error);
 
   class = G_FILE_IO_STREAM_GET_CLASS (stream);
   return class->query_info_finish (stream, result, error);
