@@ -1,5 +1,17 @@
 <refentry id="glib-compile-schemas" lang="en">
 
+<refentryinfo>
+  <title>glib-compile-schemas</title>
+  <productname>GIO</productname>
+  <authorgroup>
+    <author>
+      <contrib>Developer</contrib>
+      <firstname>Ryan</firstname>
+      <surname>Lortie</surname>
+    </author>
+  </authorgroup>
+</refentryinfo>
+
 <refmeta>
   <refentrytitle>glib-compile-schemas</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -14,14 +26,14 @@
 <refsynopsisdiv>
   <cmdsynopsis>
     <command>glib-compile-schemas</command>
-    <arg choice="opt" rep="repeat">option</arg>
-    <arg choice="req">directory</arg>
+    <arg choice="opt" rep="repeat">OPTION</arg>
+    <arg choice="req">DIRECTORY</arg>
   </cmdsynopsis>
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
 <para><command>glib-compile-schemas</command> compiles all the GSettings XML
-schema files in <replaceable>directory</replaceable> into a binary file
+schema files in <replaceable>DIRECTORY</replaceable> into a binary file
 with the name <filename>gschemas.compiled</filename> that can be used
 by <link linkend="GSettings"><type>GSettings</type></link>. The XML schema
 files must have the filename extension <filename>.gschema.xml</filename>.
@@ -50,8 +62,9 @@ numbered files have higher priority (eg: if the same override is made in
 a file numbered 10 and then again in a file numbered 20, the override
 from 20 will take precedence).
 </para>
+</refsect1>
 
-<refsect2><title>Options</title>
+<refsect1><title>Options</title>
 <variablelist>
 
 <varlistentry>
@@ -62,9 +75,9 @@ Print help and exit
 </varlistentry>
 
 <varlistentry>
-<term><option>--targetdir=<replaceable>TARGETDIR</replaceable></option></term>
+<term><option>--targetdir=<replaceable>TARGET</replaceable></option></term>
 <listitem><para>
-Store <filename>gschemas.compiled</filename> in <replaceable>TARGETDIR</replaceable> instead of <replaceable>directory</replaceable>.
+Store <filename>gschemas.compiled</filename> in the <replaceable>TARGET</replaceable> directory instead of <replaceable>DIRECTORY</replaceable>.
 </para></listitem>
 </varlistentry>
 
@@ -86,9 +99,5 @@ in the future.
 </varlistentry>
 
 </variablelist>
-</refsect2>
-</refsect1>
-<refsect1><title>See also</title>
 </refsect1>
 </refentry>
-

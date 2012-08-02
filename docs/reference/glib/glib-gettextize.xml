@@ -1,5 +1,17 @@
 <refentry id="glib-gettextize" lang="en">
 
+<refentryinfo>
+<title>glib-gettextize</title>
+<productname>GLib</productname>
+<authorgroup>
+<author>
+<contrib>Developer</contrib>
+<firstname>Owen</firstname>
+<surname>Taylor</surname>
+</author>
+</authorgroup>
+</refentryinfo>
+
 <refmeta>
 <refentrytitle>glib-gettextize</refentrytitle>
 <manvolnum>1</manvolnum>
@@ -14,8 +26,8 @@
 <refsynopsisdiv>
 <cmdsynopsis>
 <command>glib-gettextize</command>
-<arg choice="opt" rep="repeat">option</arg>
-<arg choice="opt">directory</arg>
+<arg choice="opt" rep="repeat">OPTION</arg>
+<arg choice="opt">DIRECTORY</arg>
 </cmdsynopsis>
 </refsynopsisdiv>
 
@@ -33,7 +45,9 @@ from <command>gettextize</command> in that it doesn't create an
 <command>gettextize</command> behave like this when called with the
 <option>--no-changelog</option> option).
 </para>
-<refsect2><title>Options</title>
+</refsect1>
+
+<refsect1><title>Options</title>
 <variablelist>
 
 <varlistentry>
@@ -64,7 +78,6 @@ force writing of new files even if old ones exist
 </para></listitem>
 </varlistentry>
 </variablelist>
-</refsect2>
 </refsect1>
 
 <refsect1><title>See also</title>
@@ -73,5 +86,3 @@ force writing of new files even if old ones exist
 </para>
 </refsect1>
 </refentry>
-
-

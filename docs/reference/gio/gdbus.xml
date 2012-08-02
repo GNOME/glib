@@ -1,5 +1,18 @@
 <refentry id="gdbus" lang="en">
 
+<refentryinfo>
+  <title>gdbus</title>
+  <productname>GIO</productname>
+  <authorgroup>
+    <author>
+      <contrib>Developer</contrib>
+      <firstname>David</firstname>
+      <surname>Zeuthen</surname>
+      <email>zeuthen@gmail.com</email>
+    </author>
+  </authorgroup>
+</refentryinfo>
+
 <refmeta>
   <refentrytitle>gdbus</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -89,7 +102,8 @@
   <para>
     <command>gdbus</command> is a simple tool for working with D-Bus objects.
   </para>
-  <refsect2>
+</refsect1>
+<refsect1>
     <title>Commands</title>
     <variablelist>
       <varlistentry>
@@ -140,7 +154,6 @@
         </para></listitem>
       </varlistentry>
     </variablelist>
-  </refsect2>
 </refsect1>
 
 <refsect1>
@@ -327,15 +340,7 @@ $ gdbus emit --session --object-path /bar --signal org.bar.Bar someString --dest
 </refsect1>
 
 <refsect1>
-  <title>AUTHOR</title>
-  <para>
-    Written by David Zeuthen <email>zeuthen@gmail.com</email> with
-    a lot of help from many others.
-  </para>
-</refsect1>
-
-<refsect1>
-  <title>BUGS</title>
+  <title>Bugs</title>
   <para>
     Please send bug reports to either the distribution bug tracker
     or the upstream bug tracker at
@@ -344,7 +349,7 @@ $ gdbus emit --session --object-path /bar --signal org.bar.Bar someString --dest
 </refsect1>
 
 <refsect1>
-  <title>SEE ALSO</title>
+  <title>See Also</title>
   <para>
     <citerefentry>
       <refentrytitle>dbus-send</refentrytitle><manvolnum>1</manvolnum>

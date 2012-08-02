@@ -1,5 +1,22 @@
 <refentry id="gtester">
 
+<refentryinfo>
+<title>gtester</title>
+<productname>GLib</productname>
+<authorgroup>
+<author>
+<contrib>Developer</contrib>
+<firstname>Tim</firstname>
+<surname>Janik</surname>
+</author>
+<author>
+<contrib>Developer</contrib>
+<firstname>Sven</firstname>
+<surname>Herzberg</surname>
+</author>
+</authorgroup>
+</refentryinfo>
+
 <refmeta>
 <refentrytitle>gtester</refentrytitle>
 <manvolnum>1</manvolnum>
@@ -14,7 +31,7 @@
 <refsynopsisdiv>
 <cmdsynopsis>
 <command>gtester</command>
-<arg choice="opt" rep="repeat">option</arg>
+<arg choice="opt" rep="repeat">OPTION</arg>
 <arg>testprogram</arg>
 </cmdsynopsis>
 </refsynopsisdiv>
@@ -28,8 +45,9 @@ When called with the <option>-o</option> option, <command>gtester</command>
 writes an XML report of the test results, which can be converted
 into HTML using the <command>gtester-report</command> utility.
 </para>
+</refsect1>
 
-<refsect2><title>Options</title>
+<refsect1><title>Options</title>
 <variablelist>
 
 <varlistentry>
@@ -73,33 +91,43 @@ list paths of available test cases
     run test cases in <replaceable>MODE</replaceable>, which can be one of:
 
     <variablelist>
+      <varlistentry>
       <term><option>perf</option></term>
       <listitem><para>
           run performance tests
       </para></listitem>
+      </varlistentry>
 
+      <varlistentry>
       <term><option>slow</option>, <option>thorough</option></term>
       <listitem><para>
           run slow tests, or repeat non-deterministic tests more often
       </para></listitem>
+      </varlistentry>
 
+      <varlistentry>
       <term><option>quick</option></term>
       <listitem><para>
           do not run slow or performance tests, or do extra repeats
           of non-deterministic tests (default)
       </para></listitem>
+      </varlistentry>
 
+      <varlistentry>
       <term><option>undefined</option></term>
       <listitem><para>
           run test cases that deliberately provoke checks or assertion
           failures, if implemented (default)
       </para></listitem>
+      </varlistentry>
 
+      <varlistentry>
       <term><option>no-undefined</option></term>
       <listitem><para>
           do not run test cases that deliberately provoke checks or
           assertion failures
       </para></listitem>
+      </varlistentry>
     </variablelist>
 
 </para></listitem>
@@ -148,7 +176,6 @@ report success per testcase
 </varlistentry>
 
 </variablelist>
-</refsect2>
 </refsect1>
 
 <refsect1><title>See also</title>

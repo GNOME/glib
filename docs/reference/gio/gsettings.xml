@@ -1,5 +1,17 @@
 <refentry id="gsettings-tool" lang="en">
 
+<refentryinfo>
+  <title>gsettings</title>
+  <productname>GIO</productname>
+  <authorgroup>
+    <author>
+      <contrib>Developer</contrib>
+      <firstname>Ryan</firstname>
+      <surname>Lortie</surname>
+    </author>
+  </authorgroup>
+</refentryinfo>
+
 <refmeta>
   <refentrytitle>gsettings</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -104,8 +116,9 @@ so e.g. a string
 must include explicit quotes: "'foo'". This format is also used when printing
 out values.
 </para>
+</refsect1>
 
-<refsect2><title>Commands</title>
+<refsect1><title>Commands</title>
 <variablelist>
 
 <varlistentry>
@@ -211,8 +224,6 @@ Prints help and exits.
 </varlistentry>
 
 </variablelist>
-</refsect2>
 
 </refsect1>
 </refentry>
-

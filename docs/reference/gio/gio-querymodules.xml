@@ -1,5 +1,17 @@
 <refentry id="gio-querymodules" lang="en">
 
+<refentryinfo>
+  <title>glib-compile-schemas</title>
+  <productname>GIO</productname>
+  <authorgroup>
+    <author>
+      <contrib>Developer</contrib>
+      <firstname>Alexander</firstname>
+      <surname>Larsson</surname>
+    </author>
+  </authorgroup>
+</refentryinfo>
+
 <refmeta>
   <refentrytitle>gio-querymodules</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -14,7 +26,7 @@
 <refsynopsisdiv>
   <cmdsynopsis>
     <command>gio-querymodules</command>
-    <arg choice="req" rep="repeat">directory</arg>
+    <arg choice="req" rep="repeat">DIRECTORY</arg>
   </cmdsynopsis>
 </refsynopsisdiv>
 

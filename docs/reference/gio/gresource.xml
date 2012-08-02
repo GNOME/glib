@@ -1,5 +1,17 @@
 <refentry id="gresource-tool" lang="en">
 
+<refentryinfo>
+  <title>gresource</title>
+  <productname>GIO</productname>
+  <authorgroup>
+    <author>
+      <contrib>Developer</contrib>
+      <firstname>Matthias</firstname>
+      <surname>Clasen</surname>
+    </author>
+  </authorgroup>
+</refentryinfo>
+
 <refmeta>
   <refentrytitle>gresource</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -62,8 +74,9 @@ possible to select which one to operate on with the
 <arg choice="plain">--section</arg> option. Use the
 <arg choice="plain">sections</arg> command to find available sections.
 </para>
+</refsect1>
 
-<refsect2><title>Commands</title>
+<refsect1><title>Commands</title>
 <variablelist>
 
 <varlistentry>
@@ -109,8 +122,6 @@ Prints help and exits.
 </varlistentry>
 
 </variablelist>
-</refsect2>
 
 </refsect1>
 </refentry>
-
