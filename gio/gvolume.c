@@ -26,7 +26,7 @@
 #include "gvolume.h"
 #include "gthemedicon.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gioerror.h"
 #include "glibintl.h"
 
@@ -42,9 +42,9 @@
  *
  * Mounting a #GVolume instance is an asynchronous operation. For more
  * information about asynchronous operations, see #GAsyncResult and
- * #GSimpleAsyncResult. To mount a #GVolume, first call
- * g_volume_mount() with (at least) the #GVolume instance, optionally
- * a #GMountOperation object and a #GAsyncReadyCallback. 
+ * #GTask. To mount a #GVolume, first call g_volume_mount() with (at
+ * least) the #GVolume instance, optionally a #GMountOperation object
+ * and a #GAsyncReadyCallback.
  *
  * Typically, one will only want to pass %NULL for the
  * #GMountOperation if automounting all volumes when a desktop session
@@ -359,10 +359,10 @@ g_volume_mount (GVolume             *volume,
 
   if (iface->mount_fn == NULL)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (volume), callback, user_data,
-					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-					   _("volume doesn't implement mount"));
-      
+      g_task_report_new_error (volume, callback, user_data,
+                               g_volume_mount,
+                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               _("volume doesn't implement mount"));
       return;
     }
   
@@ -397,6 +397,8 @@ g_volume_mount_finish (GVolume       *volume,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
+  else if (g_async_result_is_tagged (result, g_volume_mount))
+    return g_task_propagate_boolean (G_TASK (result), error);
   
   iface = G_VOLUME_GET_IFACE (volume);
   return (* iface->mount_finish) (volume, result, error);
@@ -431,10 +433,10 @@ g_volume_eject (GVolume             *volume,
 
   if (iface->eject == NULL)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (volume), callback, user_data,
-					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-					   _("volume doesn't implement eject"));
-      
+      g_task_report_new_error (volume, callback, user_data,
+                               g_volume_eject_with_operation,
+                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               _("volume doesn't implement eject"));
       return;
     }
   
@@ -466,6 +468,8 @@ g_volume_eject_finish (GVolume       *volume,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
+  if (g_async_result_is_tagged (result, g_volume_eject_with_operation))
+    return g_task_propagate_boolean (G_TASK (result), error);
   
   iface = G_VOLUME_GET_IFACE (volume);
   return (* iface->eject_finish) (volume, result, error);
@@ -503,13 +507,13 @@ g_volume_eject_with_operation (GVolume              *volume,
 
   if (iface->eject == NULL && iface->eject_with_operation == NULL)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (volume),
-					   callback, user_data,
-					   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-					   /* Translators: This is an error
-					    * message for volume objects that
-					    * don't implement any of eject or eject_with_operation. */
-					   _("volume doesn't implement eject or eject_with_operation"));
+      g_task_report_new_error (volume, callback, user_data,
+                               g_volume_eject_with_operation,
+                               G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               /* Translators: This is an error
+                                * message for volume objects that
+                                * don't implement any of eject or eject_with_operation. */
+                               _("volume doesn't implement eject or eject_with_operation"));
       return;
     }
 
@@ -545,6 +549,8 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
+  else if (g_async_result_is_tagged (result, g_volume_eject_with_operation))
+    return g_task_propagate_boolean (G_TASK (result), error);
 
   iface = G_VOLUME_GET_IFACE (volume);
   if (iface->eject_with_operation_finish != NULL)

@@ -25,9 +25,9 @@
 #include <glib.h>
 #include <gfileinputstream.h>
 #include <gseekable.h>
-#include "gsimpleasyncresult.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
+#include "gtask.h"
 #include "gioerror.h"
 #include "glibintl.h"
 
@@ -215,10 +215,9 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
   
   if (!g_input_stream_set_pending (input_stream, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback,
-					    user_data,
-					    error);
+      g_task_report_error (stream, callback, user_data,
+                           g_file_input_stream_query_info_async,
+                           error);
       return;
     }
 
@@ -227,7 +226,7 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
   stream->priv->outstanding_callback = callback;
   g_object_ref (stream);
   klass->query_info_async (stream, attributes, io_priority, cancellable,
-			      async_ready_callback_wrapper, user_data);
+                           async_ready_callback_wrapper, user_data);
 }
 
 /**
@@ -253,6 +252,8 @@ g_file_input_stream_query_info_finish (GFileInputStream  *stream,
 
   if (g_async_result_legacy_propagate_error (result, error))
     return NULL;
+  else if (g_async_result_is_tagged (result, g_file_input_stream_query_info_async))
+    return g_task_propagate_pointer (G_TASK (result), error);
 
   class = G_FILE_INPUT_STREAM_GET_CLASS (stream);
   return class->query_info_finish (stream, result, error);
@@ -379,45 +380,29 @@ g_file_input_stream_seekable_truncate (GSeekable     *seekable,
  *   Default implementation of async ops    *
  ********************************************/
 
-typedef struct {
-  char *attributes;
-  GFileInfo *info;
-} QueryInfoAsyncData;
-
 static void
-query_info_data_free (QueryInfoAsyncData *data)
+query_info_async_thread (GTask        *task,
+                         gpointer      source_object,
+                         gpointer      task_data,
+                         GCancellable *cancellable)
 {
-  if (data->info)
-    g_object_unref (data->info);
-  g_free (data->attributes);
-  g_free (data);
-}
-
-static void
-query_info_async_thread (GSimpleAsyncResult *res,
-		         GObject            *object,
-		         GCancellable       *cancellable)
-{
+  GFileInputStream *stream = source_object;
+  const char *attributes = task_data;
   GFileInputStreamClass *class;
   GError *error = NULL;
-  QueryInfoAsyncData *data;
-  GFileInfo *info;
-  
-  data = g_simple_async_result_get_op_res_gpointer (res);
+  GFileInfo *info = NULL;
 
-  info = NULL;
-  
-  class = G_FILE_INPUT_STREAM_GET_CLASS (object);
+  class = G_FILE_INPUT_STREAM_GET_CLASS (stream);
   if (class->query_info)
-    info = class->query_info (G_FILE_INPUT_STREAM (object), data->attributes, cancellable, &error);
+    info = class->query_info (stream, attributes, cancellable, &error);
   else
     g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                          _("Stream doesn't support query_info"));
 
   if (info == NULL)
-    g_simple_async_result_take_error (res, error);
+    g_task_return_error (task, error);
   else
-    data->info = info;
+    g_task_return_pointer (task, info, g_object_unref);
 }
 
 static void
@@ -428,17 +413,14 @@ g_file_input_stream_real_query_info_async (GFileInputStream    *stream,
                                            GAsyncReadyCallback  callback,
                                            gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
-  QueryInfoAsyncData *data;
+  GTask *task;
 
-  data = g_new0 (QueryInfoAsyncData, 1);
-  data->attributes = g_strdup (attributes);
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_task_data (task, g_strdup (attributes), g_free);
+  g_task_set_priority (task, io_priority);
   
-  res = g_simple_async_result_new (G_OBJECT (stream), callback, user_data, g_file_input_stream_real_query_info_async);
-  g_simple_async_result_set_op_res_gpointer (res, data, (GDestroyNotify)query_info_data_free);
-  
-  g_simple_async_result_run_in_thread (res, query_info_async_thread, io_priority, cancellable);
-  g_object_unref (res);
+  g_task_run_in_thread (task, query_info_async_thread);
+  g_object_unref (task);
 }
 
 static GFileInfo *
@@ -446,17 +428,7 @@ g_file_input_stream_real_query_info_finish (GFileInputStream  *stream,
                                             GAsyncResult      *res,
                                             GError           **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-  QueryInfoAsyncData *data;
+  g_return_val_if_fail (g_task_is_valid (res, stream), NULL);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_file_input_stream_real_query_info_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  data = g_simple_async_result_get_op_res_gpointer (simple);
-  if (data->info)
-    return g_object_ref (data->info);
-  
-  return NULL;
+  return g_task_propagate_pointer (G_TASK (res), error);
 }

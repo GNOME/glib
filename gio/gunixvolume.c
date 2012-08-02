@@ -36,7 +36,7 @@
 #include "gthemedicon.h"
 #include "gvolume.h"
 #include "gvolumemonitor.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gioerror.h"
 #include "glibintl.h"
 /* for BUFSIZ */
@@ -270,9 +270,6 @@ _g_unix_volume_has_mount_path (GUnixVolume *volume,
 
 typedef struct {
   GUnixVolume *unix_volume;
-  GAsyncReadyCallback callback;
-  gpointer user_data;
-  GCancellable *cancellable;
   int error_fd;
   GIOChannel *error_channel;
   GSource *error_channel_source;
@@ -280,46 +277,44 @@ typedef struct {
 } EjectMountOp;
 
 static void
-eject_mount_cb (GPid     pid,
-                gint     status,
-                gpointer user_data)
+eject_mount_op_free (EjectMountOp *data)
 {
-  EjectMountOp *data = user_data;
-  GSimpleAsyncResult *simple;
-  
-  if (WEXITSTATUS (status) != 0)
-    {
-      GError *error;
-      error = g_error_new_literal (G_IO_ERROR, 
-                                   G_IO_ERROR_FAILED,
-                                   data->error_string->str);
-      simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
-                                                     data->callback,
-                                                     data->user_data,
-                                                     error);
-      g_error_free (error);
-    }
-  else
-    {
-      simple = g_simple_async_result_new (G_OBJECT (data->unix_volume),
-                                          data->callback,
-                                          data->user_data,
-                                          NULL);
-    }
+  if (data->error_string != NULL)
+    g_string_free (data->error_string, TRUE);
 
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
+  if (data->error_channel != NULL)
+    g_io_channel_unref (data->error_channel);
 
   if (data->error_channel_source)
     {
       g_source_destroy (data->error_channel_source);
       g_source_unref (data->error_channel_source);
     }
-  g_io_channel_unref (data->error_channel);
-  g_string_free (data->error_string, TRUE);
-  close (data->error_fd);
-  g_spawn_close_pid (pid);
+
+  if (data->error_fd != -1)
+    close (data->error_fd);
+
   g_free (data);
+}
+
+static void
+eject_mount_cb (GPid     pid,
+                gint     status,
+                gpointer user_data)
+{
+  GTask *task = user_data;
+  EjectMountOp *data = g_task_get_task_data (task);
+  
+  if (WEXITSTATUS (status) != 0)
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR, 
+                               G_IO_ERROR_FAILED,
+                               data->error_string->str);
+    }
+  else
+    g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -327,7 +322,8 @@ eject_mount_read_error (GIOChannel   *channel,
                         GIOCondition  condition,
                         gpointer      user_data)
 {
-  EjectMountOp *data = user_data;
+  GTask *task = user_data;
+  EjectMountOp *data = g_task_get_task_data (task);
   char buf[BUFSIZ];
   gsize bytes_read;
   GError *error;
@@ -371,6 +367,7 @@ eject_mount_do (GVolume             *volume,
                 char               **argv)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
+  GTask *task;
   EjectMountOp *data;
   GPid child_pid;
   GSource *child_watch;
@@ -378,10 +375,11 @@ eject_mount_do (GVolume             *volume,
   
   data = g_new0 (EjectMountOp, 1);
   data->unix_volume = unix_volume;
-  data->callback = callback;
-  data->user_data = user_data;
-  data->cancellable = cancellable;
+  data->error_fd = -1;
   
+  task = g_task_new (unix_volume, cancellable, callback, user_data);
+  g_task_set_task_data (task, data, (GDestroyNotify) eject_mount_op_free);
+
   error = NULL;
   if (!g_spawn_async_with_pipes (NULL,         /* working dir */
                                  argv,
@@ -407,33 +405,18 @@ eject_mount_do (GVolume             *volume,
     goto handle_error;
 
   data->error_channel_source = g_io_create_watch (data->error_channel, G_IO_IN);
-  g_source_set_callback (data->error_channel_source,
-                         (GSourceFunc) eject_mount_read_error, data, NULL);
-  g_source_attach (data->error_channel_source, g_main_context_get_thread_default ());
+  g_task_attach_source (task, data->error_channel_source,
+                        (GSourceFunc) eject_mount_read_error);
 
   child_watch = g_child_watch_source_new (child_pid);
-  g_source_set_callback (child_watch, (GSourceFunc) eject_mount_cb, data, NULL);
-  g_source_attach (child_watch, g_main_context_get_thread_default ());
+  g_task_attach_source (task, child_watch, (GSourceFunc) eject_mount_cb);
   g_source_unref (child_watch);
 
 handle_error:
   if (error != NULL)
     {
-      GSimpleAsyncResult *simple;
-      simple = g_simple_async_result_new_take_error (G_OBJECT (data->unix_volume),
-                                                     data->callback,
-                                                     data->user_data,
-                                                     error);
-      g_simple_async_result_complete (simple);
-      g_object_unref (simple);
-
-      if (data->error_string != NULL)
-        g_string_free (data->error_string, TRUE);
-
-      if (data->error_channel != NULL)
-        g_io_channel_unref (data->error_channel);
-
-      g_free (data);
+      g_task_return_error (task, error);
+      g_object_unref (task);
     }
 }
 

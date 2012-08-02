@@ -26,7 +26,6 @@
 #include "gioscheduler.h"
 #include "gasyncresult.h"
 #include "gasynchelper.h"
-#include "gsimpleasyncresult.h"
 #include "gioerror.h"
 #include "glibintl.h"
 
@@ -335,7 +334,6 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
 				    gpointer             user_data)
 {
   GFileEnumeratorClass *class;
-  GSimpleAsyncResult *simple;
 
   g_return_if_fail (G_IS_FILE_ENUMERATOR (enumerator));
   g_return_if_fail (enumerator != NULL);
@@ -343,32 +341,30 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
 
   if (num_files == 0)
     {
-      simple = g_simple_async_result_new (G_OBJECT (enumerator),
-					  callback,
-					  user_data,
-					  g_file_enumerator_next_files_async);
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      GTask *task;
+
+      task = g_task_new (enumerator, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_file_enumerator_next_files_async);
+      g_task_return_pointer (task, NULL, NULL);
+      g_object_unref (task);
       return;
     }
   
   if (enumerator->priv->closed)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (enumerator),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("File enumerator is already closed"));
+      g_task_report_new_error (enumerator, callback, user_data,
+                               g_file_enumerator_next_files_async,
+                               G_IO_ERROR, G_IO_ERROR_CLOSED,
+                               _("File enumerator is already closed"));
       return;
     }
   
   if (enumerator->priv->pending)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (enumerator),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("File enumerator has outstanding operation"));
+      g_task_report_new_error (enumerator, callback, user_data,
+                               g_file_enumerator_next_files_async,
+                               G_IO_ERROR, G_IO_ERROR_PENDING,
+                               _("File enumerator has outstanding operation"));
       return;
     }
 
@@ -407,10 +403,7 @@ g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
   if (g_async_result_legacy_propagate_error (result, error))
     return NULL;
   else if (g_async_result_is_tagged (result, g_file_enumerator_next_files_async))
-    { 
-      /* Special case read of 0 files */
-      return NULL;
-    }
+    return g_task_propagate_pointer (G_TASK (result), error);
   
   class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
   return class->next_files_finish (enumerator, result, error);
@@ -459,21 +452,19 @@ g_file_enumerator_close_async (GFileEnumerator     *enumerator,
 
   if (enumerator->priv->closed)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (enumerator),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_CLOSED,
-					   _("File enumerator is already closed"));
+      g_task_report_new_error (enumerator, callback, user_data,
+                               g_file_enumerator_close_async,
+                               G_IO_ERROR, G_IO_ERROR_CLOSED,
+                               _("File enumerator is already closed"));
       return;
     }
   
   if (enumerator->priv->pending)
     {
-      g_simple_async_report_error_in_idle (G_OBJECT (enumerator),
-					   callback,
-					   user_data,
-					   G_IO_ERROR, G_IO_ERROR_PENDING,
-					   _("File enumerator has outstanding operation"));
+      g_task_report_new_error (enumerator, callback, user_data,
+                               g_file_enumerator_close_async,
+                               G_IO_ERROR, G_IO_ERROR_PENDING,
+                               _("File enumerator has outstanding operation"));
       return;
     }
 
@@ -518,6 +509,8 @@ g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
   
   if (g_async_result_legacy_propagate_error (result, error))
     return FALSE;
+  else if (g_async_result_is_tagged (result, g_file_enumerator_close_async))
+    return g_task_propagate_boolean (G_TASK (result), error);
 
   class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
   return class->close_finish (enumerator, result, error);
@@ -620,40 +613,29 @@ g_file_enumerator_get_child (GFileEnumerator *enumerator,
                            g_file_info_get_name (info));
 }
 
-typedef struct {
-  int                num_files;
-  GList             *files;
-} NextAsyncOp;
-
 static void
-next_async_op_free (NextAsyncOp *op)
+next_async_op_free (GList *files)
 {
-  /* Free the list, if finish wasn't called */
-  g_list_free_full (op->files, g_object_unref);
-  
-  g_free (op);
+  g_list_free_full (files, g_object_unref);
 }
-		    
-
 
 static void
-next_files_thread (GSimpleAsyncResult *res,
-		   GObject            *object,
-		   GCancellable       *cancellable)
+next_files_thread (GTask        *task,
+                   gpointer      source_object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
 {
-  NextAsyncOp *op;
+  GFileEnumerator *enumerator = source_object;
+  int num_files = GPOINTER_TO_INT (task_data);
   GFileEnumeratorClass *class;
+  GList *files = NULL;
   GError *error = NULL;
   GFileInfo *info;
-  GFileEnumerator *enumerator;
   int i;
 
-  enumerator = G_FILE_ENUMERATOR (object);
-  op = g_simple_async_result_get_op_res_gpointer (res);
+  class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
 
-  class = G_FILE_ENUMERATOR_GET_CLASS (object);
-
-  for (i = 0; i < op->num_files; i++)
+  for (i = 0; i < num_files; i++)
     {
       if (g_cancellable_set_error_if_cancelled (cancellable, &error))
 	info = NULL;
@@ -665,8 +647,7 @@ next_files_thread (GSimpleAsyncResult *res,
 	  /* If we get an error after first file, return that on next operation */
 	  if (error != NULL && i > 0)
 	    {
-	      if (error->domain == G_IO_ERROR &&
-		  error->code == G_IO_ERROR_CANCELLED)
+	      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
 		g_error_free (error); /* Never propagate cancel errors to other call */
 	      else
 		enumerator->priv->outstanding_error = error;
@@ -676,8 +657,13 @@ next_files_thread (GSimpleAsyncResult *res,
 	  break;
 	}
       else
-	op->files = g_list_prepend (op->files, info);
+	files = g_list_prepend (files, info);
     }
+
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_pointer (task, files, (GDestroyNotify)next_async_op_free);
 }
 
 static void
@@ -688,19 +674,14 @@ g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
 					 GAsyncReadyCallback  callback,
 					 gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
-  NextAsyncOp *op;
+  GTask *task;
 
-  op = g_new0 (NextAsyncOp, 1);
+  task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_task_data (task, GINT_TO_POINTER (num_files), NULL);
+  g_task_set_priority (task, io_priority);
 
-  op->num_files = num_files;
-  op->files = NULL;
-
-  res = g_simple_async_result_new (G_OBJECT (enumerator), callback, user_data, g_file_enumerator_real_next_files_async);
-  g_simple_async_result_set_op_res_gpointer (res, op, (GDestroyNotify) next_async_op_free);
-  
-  g_simple_async_result_run_in_thread (res, next_files_thread, io_priority, cancellable);
-  g_object_unref (res);
+  g_task_run_in_thread (task, next_files_thread);
+  g_object_unref (task);
 }
 
 static GList *
@@ -708,43 +689,29 @@ g_file_enumerator_real_next_files_finish (GFileEnumerator                *enumer
 					  GAsyncResult                   *result,
 					  GError                        **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  NextAsyncOp *op;
-  GList *res;
+  g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-	    g_file_enumerator_real_next_files_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  op = g_simple_async_result_get_op_res_gpointer (simple);
-
-  res = op->files;
-  op->files = NULL;
-  return res;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
-close_async_thread (GSimpleAsyncResult *res,
-		    GObject            *object,
-		    GCancellable       *cancellable)
+close_async_thread (GTask        *task,
+                    gpointer      source_object,
+                    gpointer      task_data,
+                    GCancellable *cancellable)
 {
+  GFileEnumerator *enumerator = source_object;
   GFileEnumeratorClass *class;
   GError *error = NULL;
   gboolean result;
 
-  /* Auto handling of cancelation disabled, and ignore
-     cancellation, since we want to close things anyway, although
-     possibly in a quick-n-dirty way. At least we never want to leak
-     open handles */
-  
-  class = G_FILE_ENUMERATOR_GET_CLASS (object);
-  result = class->close_fn (G_FILE_ENUMERATOR (object), cancellable, &error);
-  if (!result)
-    g_simple_async_result_take_error (res, error);
+  class = G_FILE_ENUMERATOR_GET_CLASS (enumerator);
+  result = class->close_fn (enumerator, cancellable, &error);
+  if (result)
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
 }
-
 
 static void
 g_file_enumerator_real_close_async (GFileEnumerator     *enumerator,
@@ -753,20 +720,13 @@ g_file_enumerator_real_close_async (GFileEnumerator     *enumerator,
 				    GAsyncReadyCallback  callback,
 				    gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
-  
-  res = g_simple_async_result_new (G_OBJECT (enumerator),
-				   callback,
-				   user_data,
-				   g_file_enumerator_real_close_async);
+  GTask *task;
 
-  g_simple_async_result_set_handle_cancellation (res, FALSE);
+  task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_priority (task, io_priority);
   
-  g_simple_async_result_run_in_thread (res,
-				       close_async_thread,
-				       io_priority,
-				       cancellable);
-  g_object_unref (res);
+  g_task_run_in_thread (task, close_async_thread);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -774,13 +734,7 @@ g_file_enumerator_real_close_finish (GFileEnumerator  *enumerator,
                                      GAsyncResult     *result,
                                      GError          **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+  g_return_val_if_fail (g_task_is_valid (result, enumerator), FALSE);
 
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == 
-	    g_file_enumerator_real_close_async);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
