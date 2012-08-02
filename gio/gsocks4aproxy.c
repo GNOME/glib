@@ -26,7 +26,6 @@
 
 #include <string.h>
 
-#include "gasyncresult.h"
 #include "giomodule.h"
 #include "giomodule-priv.h"
 #include "giostream.h"
@@ -36,7 +35,7 @@
 #include "goutputstream.h"
 #include "gproxy.h"
 #include "gproxyaddress.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 
 #define SOCKS4_VERSION		  4
 
@@ -249,10 +248,7 @@ error:
 
 typedef struct
 {
-  GSimpleAsyncResult *simple;
   GIOStream *io_stream;
-  GProxyAddress *proxy_address;
-  GCancellable *cancellable;
 
   /* For connecting */
   guint8 *buffer;
@@ -271,50 +267,34 @@ static void connect_reply_read_cb     (GObject          *source,
 static void
 free_connect_data (ConnectAsyncData *data)
 {
-  if (data->io_stream)
-    g_object_unref (data->io_stream);
-  
-  if (data->proxy_address)
-    g_object_unref (data->proxy_address);
-
-  if (data->cancellable)
-    g_object_unref (data->cancellable);
-
+  g_object_unref (data->io_stream);
   g_slice_free (ConnectAsyncData, data);
 }
 
 static void
-complete_async_from_error (ConnectAsyncData *data, GError *error)
-{
-  GSimpleAsyncResult *simple = data->simple;
-  g_simple_async_result_take_error (data->simple, error);
-  g_simple_async_result_set_op_res_gpointer (simple, NULL, NULL);
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-}
-
-static void
-do_read (GAsyncReadyCallback callback, ConnectAsyncData *data)
+do_read (GAsyncReadyCallback callback, GTask *task, ConnectAsyncData *data)
 {
    GInputStream *in;
    in = g_io_stream_get_input_stream (data->io_stream);
    g_input_stream_read_async (in,
 			      data->buffer + data->offset,
 			      data->length - data->offset,
-			      G_PRIORITY_DEFAULT, data->cancellable,
-			      callback, data);
+			      g_task_get_priority (task),
+			      g_task_get_cancellable (task),
+			      callback, task);
 }
 
 static void
-do_write (GAsyncReadyCallback callback, ConnectAsyncData *data)
+do_write (GAsyncReadyCallback callback, GTask *task, ConnectAsyncData *data)
 {
   GOutputStream *out;
   out = g_io_stream_get_output_stream (data->io_stream);
   g_output_stream_write_async (out,
 			       data->buffer + data->offset,
 			       data->length - data->offset,
-			       G_PRIORITY_DEFAULT, data->cancellable,
-			       callback, data);
+			       g_task_get_priority (task),
+			       g_task_get_cancellable (task),
+			       callback, task);
 }
 
 
@@ -328,26 +308,17 @@ g_socks4a_proxy_connect_async (GProxy               *proxy,
 			       gpointer              user_data)
 {
   GError *error = NULL;
-  GSimpleAsyncResult *simple;
+  GTask *task;
   ConnectAsyncData *data;
   const gchar *hostname;
   guint16 port;
   const gchar *username;
 
-  simple = g_simple_async_result_new (G_OBJECT (proxy),
-				      callback, user_data,
-				      g_socks4a_proxy_connect_async);
-
   data = g_slice_new0 (ConnectAsyncData);
-
-  data->simple = simple;
   data->io_stream = g_object_ref (io_stream);
 
-  if (cancellable)
-    data->cancellable = g_object_ref (cancellable);
-
-  g_simple_async_result_set_op_res_gpointer (simple, data, 
-					     (GDestroyNotify) free_connect_data);
+  task = g_task_new (proxy, cancellable, callback, user_data);
+  g_task_set_task_data (task, data, (GDestroyNotify) free_connect_data);
 
   hostname = g_proxy_address_get_destination_hostname (proxy_address);
   port = g_proxy_address_get_destination_port (proxy_address);
@@ -361,14 +332,12 @@ g_socks4a_proxy_connect_async (GProxy               *proxy,
 
   if (data->length < 0)
     {
-      g_simple_async_result_take_error (data->simple, error);
-      g_simple_async_result_set_op_res_gpointer (simple, NULL, NULL);
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      g_task_return_error (task, error);
+      g_object_unref (task);
     }
   else
     {
-      do_write (connect_msg_write_cb, data);
+      do_write (connect_msg_write_cb, task, data);
     }
 }
 
@@ -377,8 +346,9 @@ connect_msg_write_cb (GObject      *source,
 		      GAsyncResult *result,
 		      gpointer      user_data)
 {
+  GTask *task = user_data;
+  ConnectAsyncData *data = g_task_get_task_data (task);
   GError *error = NULL;
-  ConnectAsyncData *data = user_data;
   gssize written;
 
   written = g_output_stream_write_finish (G_OUTPUT_STREAM (source),
@@ -386,7 +356,8 @@ connect_msg_write_cb (GObject      *source,
   
   if (written < 0)
     {
-      complete_async_from_error (data, error);
+      g_task_return_error (task, error);
+      g_object_unref (task);
       return;
     }
 
@@ -400,11 +371,11 @@ connect_msg_write_cb (GObject      *source,
       data->length = SOCKS4_CONN_REP_LEN;
       data->offset = 0;
 
-      do_read (connect_reply_read_cb, data);
+      do_read (connect_reply_read_cb, task, data);
     }
   else
     {
-      do_write (connect_msg_write_cb, data);
+      do_write (connect_msg_write_cb, task, data);
     }
 }
 
@@ -413,8 +384,9 @@ connect_reply_read_cb (GObject       *source,
 		       GAsyncResult  *result,
 		       gpointer       user_data)
 {
+  GTask *task = user_data;
+  ConnectAsyncData *data = g_task_get_task_data (task);
   GError *error = NULL;
-  ConnectAsyncData *data = user_data;
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
@@ -422,7 +394,8 @@ connect_reply_read_cb (GObject       *source,
 
   if (read < 0)
     {
-      complete_async_from_error (data, error);
+      g_task_return_error (task, error);
+      g_object_unref (task);
       return;
     }
 
@@ -432,18 +405,20 @@ connect_reply_read_cb (GObject       *source,
     {
       if (!parse_connect_reply (data->buffer, &error))
 	{
-	  complete_async_from_error (data, error);
+	  g_task_return_error (task, error);
+	  g_object_unref (task);
+	  return;
 	}
       else
 	{
-	  GSimpleAsyncResult *simple = data->simple;
-	  g_simple_async_result_complete (simple);
-	  g_object_unref (simple);
+	  g_task_return_pointer (task, g_object_ref (data->io_stream), g_object_unref);
+	  g_object_unref (task);
+	  return;
 	}
     }
   else
     {
-      do_read (connect_reply_read_cb, data);
+      do_read (connect_reply_read_cb, task, data);
     }
 }
 
@@ -456,13 +431,7 @@ g_socks4a_proxy_connect_finish (GProxy       *proxy,
 			        GAsyncResult *result,
 			        GError      **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  ConnectAsyncData *data = g_simple_async_result_get_op_res_gpointer (simple);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  return g_object_ref (data->io_stream);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static gboolean

@@ -28,7 +28,7 @@
 #include "gtlspassword.h"
 #include "gasyncresult.h"
 #include "gcancellable.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gioenumtypes.h"
 #include "glibintl.h"
 
@@ -468,7 +468,7 @@ g_tls_interaction_ask_password_async (GTlsInteraction    *interaction,
                                       gpointer            user_data)
 {
   GTlsInteractionClass *klass;
-  GSimpleAsyncResult *res;
+  GTask *task;
 
   g_return_if_fail (G_IS_TLS_INTERACTION (interaction));
   g_return_if_fail (G_IS_TLS_PASSWORD (password));
@@ -483,10 +483,10 @@ g_tls_interaction_ask_password_async (GTlsInteraction    *interaction,
     }
   else
     {
-      res = g_simple_async_result_new (G_OBJECT (interaction), callback, user_data,
-                                       g_tls_interaction_ask_password_async);
-      g_simple_async_result_complete_in_idle (res);
-      g_object_unref (res);
+      task = g_task_new (interaction, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_tls_interaction_ask_password_async);
+      g_task_return_int (task, G_TLS_INTERACTION_UNHANDLED);
+      g_object_unref (task);
     }
 }
 
@@ -520,18 +520,17 @@ g_tls_interaction_ask_password_finish (GTlsInteraction    *interaction,
   g_return_val_if_fail (G_IS_TLS_INTERACTION (interaction), G_TLS_INTERACTION_UNHANDLED);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), G_TLS_INTERACTION_UNHANDLED);
 
-  /* If it's one of our simple unhandled async results, handle here */
-  if (g_simple_async_result_is_valid (result, G_OBJECT (interaction),
-                                      g_tls_interaction_ask_password_async))
+  klass = G_TLS_INTERACTION_GET_CLASS (interaction);
+  if (klass->ask_password_finish)
     {
-      return G_TLS_INTERACTION_UNHANDLED;
-    }
+      g_return_val_if_fail (klass->ask_password_async != NULL, G_TLS_INTERACTION_UNHANDLED);
 
-  /* Invoke finish of derived class */
+      return (klass->ask_password_finish) (interaction, result, error);
+    }
   else
     {
-      klass = G_TLS_INTERACTION_GET_CLASS (interaction);
-      g_return_val_if_fail (klass->ask_password_finish, G_TLS_INTERACTION_UNHANDLED);
-      return (klass->ask_password_finish) (interaction, result, error);
+      g_return_val_if_fail (g_async_result_is_tagged (result, g_tls_interaction_ask_password_async), G_TLS_INTERACTION_UNHANDLED);
+
+      return g_task_propagate_int (G_TASK (result), error);
     }
 }

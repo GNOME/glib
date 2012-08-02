@@ -27,7 +27,6 @@
 #include "gsocketinputstream.h"
 #include "glibintl.h"
 
-#include "gsimpleasyncresult.h"
 #include "gcancellable.h"
 #include "gpollableinputstream.h"
 #include "gioerror.h"
@@ -62,8 +61,6 @@ struct _GSocketInputStreamPrivate
   GSocket *socket;
 
   /* pending operation metadata */
-  GSimpleAsyncResult *result;
-  GCancellable *cancellable;
   gpointer buffer;
   gsize count;
 };

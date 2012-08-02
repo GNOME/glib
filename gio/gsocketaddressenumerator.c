@@ -22,7 +22,7 @@
 #include "gsocketaddressenumerator.h"
 #include "glibintl.h"
 
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 
 
 G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT);
@@ -95,21 +95,19 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
 					     GAsyncReadyCallback       callback,
 					     gpointer                  user_data)
 {
-  GSimpleAsyncResult *result;
+  GTask *task;
   GSocketAddress *address;
   GError *error = NULL;
 
-  result = g_simple_async_result_new (G_OBJECT (enumerator),
-				      callback, user_data,
-				      g_socket_address_enumerator_real_next_async);
-  address = g_socket_address_enumerator_next (enumerator, cancellable, &error);
-  if (address)
-    g_simple_async_result_set_op_res_gpointer (result, address, NULL);
-  else if (error)
-    g_simple_async_result_take_error (result, error);
+  task = g_task_new (enumerator, NULL, callback, user_data);
 
-  g_simple_async_result_complete_in_idle (result);
-  g_object_unref (result);
+  address = g_socket_address_enumerator_next (enumerator, cancellable, &error);
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_pointer (task, address, g_object_unref);
+
+  g_object_unref (task);
 }
 
 /**
@@ -144,16 +142,9 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
 					      GAsyncResult              *result,
 					      GError                   **error)
 {
-  GSimpleAsyncResult *simple;
+  g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
-  g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (result), NULL);
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  g_return_val_if_fail (g_simple_async_result_get_source_tag (simple) == g_socket_address_enumerator_real_next_async, NULL);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-  else
-    return g_simple_async_result_get_op_res_gpointer (simple);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**

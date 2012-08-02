@@ -28,7 +28,7 @@
 #include "ginitable.h"
 #include "gioenumtypes.h"
 #include "giomodule-priv.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 
 /**
  * SECTION:gnetworkmonitor
@@ -148,18 +148,15 @@ g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
                                         GAsyncReadyCallback  callback,
                                         gpointer             user_data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
   GError *error = NULL;
 
-  simple = g_simple_async_result_new (G_OBJECT (monitor),
-                                      callback, user_data,
-                                      g_network_monitor_real_can_reach_async);
+  task = g_task_new (monitor, cancellable, callback, user_data);
   if (g_network_monitor_can_reach (monitor, connectable, cancellable, &error))
-    g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+    g_task_return_boolean (task, TRUE);
   else
-    g_simple_async_result_take_error (simple, error);
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+    g_task_return_error (task, error);
+  g_object_unref (task);
 }
 
 /**
@@ -199,15 +196,9 @@ g_network_monitor_real_can_reach_finish (GNetworkMonitor  *monitor,
                                          GAsyncResult     *result,
                                          GError          **error)
 {
-  GSimpleAsyncResult *simple;
+  g_return_val_if_fail (g_task_is_valid (result, monitor), FALSE);
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (monitor), g_network_monitor_real_can_reach_async), FALSE);
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-  else
-    return g_simple_async_result_get_op_res_gboolean (simple);
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 /**

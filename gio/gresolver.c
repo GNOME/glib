@@ -30,6 +30,7 @@
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
 #include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gsrvtarget.h"
 #include "gthreadedresolver.h"
 
@@ -395,15 +396,13 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
   addr = g_inet_address_new_from_string (hostname);
   if (addr)
     {
-      GSimpleAsyncResult *simple;
+      GTask *task;
 
-      simple = g_simple_async_result_new (G_OBJECT (resolver),
-                                          callback, user_data,
-                                          g_resolver_lookup_by_name_async);
-
-      g_simple_async_result_set_op_res_gpointer (simple, addr, g_object_unref);
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
+      task = g_task_new (resolver, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_resolver_lookup_by_name_async);
+      g_task_return_pointer (task, g_list_append (NULL, addr),
+                             (GDestroyNotify) g_resolver_free_addresses);
+      g_object_unref (task);
       return;
     }
 
@@ -449,12 +448,8 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
     return NULL;
   else if (g_async_result_is_tagged (result, g_resolver_lookup_by_name_async))
     {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      GInetAddress *addr;
-
       /* Handle the stringified-IP-addr case */
-      addr = g_simple_async_result_get_op_res_gpointer (simple);
-      return g_list_append (NULL, g_object_ref (addr));
+      return g_task_propagate_pointer (G_TASK (result), error);
     }
 
   addrs = G_RESOLVER_GET_CLASS (resolver)->

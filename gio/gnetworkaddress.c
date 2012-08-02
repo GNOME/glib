@@ -32,7 +32,7 @@
 #include "gnetworkingprivate.h"
 #include "gproxyaddressenumerator.h"
 #include "gresolver.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gsocketaddressenumerator.h"
 #include "gioerror.h"
 #include "gsocketconnectable.h"
@@ -852,19 +852,19 @@ got_addresses (GObject      *source_object,
                GAsyncResult *result,
                gpointer      user_data)
 {
-  GSimpleAsyncResult *simple = user_data;
-  GNetworkAddressAddressEnumerator *addr_enum =
-    g_simple_async_result_get_op_res_gpointer (simple);
+  GTask *task = user_data;
+  GNetworkAddressAddressEnumerator *addr_enum = g_task_get_source_object (task);
   GResolver *resolver = G_RESOLVER (source_object);
   GList *addresses;
   GError *error = NULL;
+  GSocketAddress *sockaddr;
 
   if (!addr_enum->addr->priv->sockaddrs)
     {
       addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
 
       if (error)
-        g_simple_async_result_take_error (simple, error);
+        g_task_return_error (task, error);
       else
         g_network_address_set_addresses (addr_enum->addr, addresses);
     }
@@ -874,8 +874,17 @@ got_addresses (GObject      *source_object,
   addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
   addr_enum->next = addr_enum->addresses;
 
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
+  if (addr_enum->next)
+    {
+      sockaddr = g_object_ref (addr_enum->next->data);
+      addr_enum->next = addr_enum->next->next;
+    }
+  else
+    sockaddr = NULL;
+
+  if (!error)
+    g_task_return_pointer (task, sockaddr, g_object_unref);
+  g_object_unref (task);
 }
 
 static void
@@ -886,11 +895,10 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
 {
   GNetworkAddressAddressEnumerator *addr_enum =
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
-  GSimpleAsyncResult *simple;
+  GSocketAddress *sockaddr;
+  GTask *task;
 
-  simple = g_simple_async_result_new (G_OBJECT (enumerator),
-                                      callback, user_data,
-                                      g_network_address_address_enumerator_next_async);
+  task = g_task_new (addr_enum, cancellable, callback, user_data);
 
   if (addr_enum->addresses == NULL)
     {
@@ -898,11 +906,10 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
         {
           GResolver *resolver = g_resolver_get_default ();
 
-          g_simple_async_result_set_op_res_gpointer (simple, g_object_ref (addr_enum), g_object_unref);
           g_resolver_lookup_by_name_async (resolver,
                                            addr_enum->addr->priv->hostname,
                                            cancellable,
-                                           got_addresses, simple);
+                                           got_addresses, task);
           return;
         }
 
@@ -910,8 +917,16 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
       addr_enum->next = addr_enum->addresses;
     }
 
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+  if (addr_enum->next)
+    {
+      sockaddr = g_object_ref (addr_enum->next->data);
+      addr_enum->next = addr_enum->next->next;
+    }
+  else
+    sockaddr = NULL;
+
+  g_task_return_pointer (task, sockaddr, g_object_unref);
+  g_object_unref (task);
 }
 
 static GSocketAddress *
@@ -919,21 +934,9 @@ g_network_address_address_enumerator_next_finish (GSocketAddressEnumerator  *enu
                                                   GAsyncResult              *result,
                                                   GError                   **error)
 {
-  GNetworkAddressAddressEnumerator *addr_enum =
-    G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  GSocketAddress *sockaddr;
+  g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-  else if (!addr_enum->next)
-    return NULL;
-  else
-    {
-      sockaddr = addr_enum->next->data;
-      addr_enum->next = addr_enum->next->next;
-      return g_object_ref (sockaddr);
-    }
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void

@@ -32,7 +32,7 @@
 #include "gsocketoutputstream.h"
 #include "gsocketinputstream.h"
 #include <gio/giostream.h>
-#include <gio/gsimpleasyncresult.h>
+#include <gio/gtask.h>
 #include "gunixconnection.h"
 #include "gtcpconnection.h"
 #include "glibintl.h"
@@ -184,23 +184,21 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
 				   GAsyncReadyCallback  callback,
 				   gpointer             user_data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
   GError *tmp_error = NULL;
 
   g_return_if_fail (G_IS_SOCKET_CONNECTION (connection));
   g_return_if_fail (G_IS_SOCKET_ADDRESS (address));
 
-  simple = g_simple_async_result_new (G_OBJECT (connection),
-				      callback, user_data,
-				      g_socket_connection_connect_async);
+  task = g_task_new (connection, cancellable, callback, user_data);
 
   g_socket_set_blocking (connection->priv->socket, FALSE);
 
   if (g_socket_connect (connection->priv->socket, address,
 			cancellable, &tmp_error))
     {
-      g_simple_async_result_set_op_res_gboolean (simple, TRUE);
-      g_simple_async_result_complete_in_idle (simple);
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
     }
   else if (g_error_matches (tmp_error, G_IO_ERROR, G_IO_ERROR_PENDING))
     {
@@ -209,16 +207,14 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
       g_error_free (tmp_error);
       source = g_socket_create_source (connection->priv->socket,
 				       G_IO_OUT, cancellable);
-      g_source_set_callback (source,
-			     (GSourceFunc) g_socket_connection_connect_callback,
-			     simple, NULL);
-      g_source_attach (source, g_main_context_get_thread_default ());
+      g_task_attach_source (task, source,
+			    (GSourceFunc) g_socket_connection_connect_callback);
       g_source_unref (source);
     }
   else
     {
-      g_simple_async_result_take_error (simple, tmp_error);
-      g_simple_async_result_complete_in_idle (simple);
+      g_task_return_error (task, tmp_error);
+      g_object_unref (task);
     }
 }
 
@@ -227,20 +223,16 @@ g_socket_connection_connect_callback (GSocket      *socket,
 				      GIOCondition  condition,
 				      gpointer      user_data)
 {
-  GSimpleAsyncResult *simple = user_data;
-  GSocketConnection *connection;
+  GTask *task = user_data;
+  GSocketConnection *connection = g_task_get_source_object (task);
   GError *error = NULL;
 
-  connection = G_SOCKET_CONNECTION (g_async_result_get_source_object (G_ASYNC_RESULT (simple)));
-  g_object_unref (connection);
-
   if (g_socket_check_connect_result (connection->priv->socket, &error))
-    g_simple_async_result_set_op_res_gboolean (simple, TRUE);
+    g_task_return_boolean (task, TRUE);
   else
-    g_simple_async_result_take_error (simple, error);
+    g_task_return_error (task, error);
 
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
+  g_object_unref (task);
   return FALSE;
 }
 
@@ -261,15 +253,10 @@ g_socket_connection_connect_finish (GSocketConnection  *connection,
 				    GAsyncResult       *result,
 				    GError            **error)
 {
-  GSimpleAsyncResult *simple;
-
   g_return_val_if_fail (G_IS_SOCKET_CONNECTION (connection), FALSE);
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (connection), g_socket_connection_connect_async), FALSE);
+  g_return_val_if_fail (g_task_is_valid (result, connection), FALSE);
 
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-  if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 /**
@@ -479,29 +466,23 @@ g_socket_connection_close_async (GIOStream           *stream,
 				 GAsyncReadyCallback  callback,
 				 gpointer             user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   GIOStreamClass *class;
   GError *error;
 
   class = G_IO_STREAM_GET_CLASS (stream);
 
+  task = g_task_new (stream, cancellable, callback, user_data);
+
   /* socket close is not blocked, just do it! */
   error = NULL;
   if (class->close_fn &&
       !class->close_fn (stream, cancellable, &error))
-    {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
-					    callback, user_data,
-					    error);
-      return;
-    }
+    g_task_return_error (task, error);
+  else
+    g_task_return_boolean (task, TRUE);
 
-  res = g_simple_async_result_new (G_OBJECT (stream),
-				   callback,
-				   user_data,
-				   g_socket_connection_close_async);
-  g_simple_async_result_complete_in_idle (res);
-  g_object_unref (res);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -509,7 +490,7 @@ g_socket_connection_close_finish (GIOStream     *stream,
 				  GAsyncResult  *result,
 				  GError       **error)
 {
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 typedef struct {

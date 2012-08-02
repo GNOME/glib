@@ -28,7 +28,7 @@
 #include "config.h"
 #include "gsocketlistener.h"
 
-#include <gio/gsimpleasyncresult.h>
+#include <gio/gtask.h>
 #include <gio/gcancellable.h>
 #include <gio/gsocketaddress.h>
 #include <gio/ginetaddress.h>
@@ -681,43 +681,32 @@ g_socket_listener_accept (GSocketListener  *listener,
   return connection;
 }
 
-struct AcceptAsyncData {
-  GSimpleAsyncResult *simple;
-  GCancellable *cancellable;
-  GList *sources;
-};
-
 static gboolean
 accept_ready (GSocket      *accept_socket,
 	      GIOCondition  condition,
-	      gpointer      _data)
+	      gpointer      user_data)
 {
-  struct AcceptAsyncData *data = _data;
+  GTask *task = user_data;
   GError *error = NULL;
   GSocket *socket;
   GObject *source_object;
 
-  socket = g_socket_accept (accept_socket, data->cancellable, &error);
+  socket = g_socket_accept (accept_socket, g_task_get_cancellable (task), &error);
   if (socket)
     {
-      g_simple_async_result_set_op_res_gpointer (data->simple, socket,
-						 g_object_unref);
+      g_task_return_pointer (task, socket, g_object_unref);
       source_object = g_object_get_qdata (G_OBJECT (accept_socket), source_quark);
       if (source_object)
-	g_object_set_qdata_full (G_OBJECT (data->simple),
+	g_object_set_qdata_full (G_OBJECT (task),
 				 source_quark,
 				 g_object_ref (source_object), g_object_unref);
     }
   else
     {
-      g_simple_async_result_take_error (data->simple, error);
+      g_task_return_error (task, error);
     }
 
-  g_simple_async_result_complete_in_idle (data->simple);
-  g_object_unref (data->simple);
-  free_sources (data->sources);
-  g_free (data);
-
+  g_object_unref (task);
   return FALSE;
 }
 
@@ -742,27 +731,25 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
 				       GAsyncReadyCallback  callback,
 				       gpointer             user_data)
 {
-  struct AcceptAsyncData *data;
+  GTask *task;
+  GList *sources;
   GError *error = NULL;
+
+  task = g_task_new (listener, cancellable, callback, user_data);
 
   if (!check_listener (listener, &error))
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (listener),
-					    callback, user_data,
-					    error);
+      g_task_return_error (task, error);
+      g_object_unref (task);
       return;
     }
 
-  data = g_new0 (struct AcceptAsyncData, 1);
-  data->simple = g_simple_async_result_new (G_OBJECT (listener),
-					    callback, user_data,
-					    g_socket_listener_accept_socket_async);
-  data->cancellable = cancellable;
-  data->sources = add_sources (listener,
-			       accept_ready,
-			       data,
-			       cancellable,
-			       g_main_context_get_thread_default ());
+  sources = add_sources (listener,
+			 accept_ready,
+			 task,
+			 cancellable,
+			 g_main_context_get_thread_default ());
+  g_task_set_task_data (task, sources, (GDestroyNotify) free_sources);
 }
 
 /**
@@ -785,24 +772,13 @@ g_socket_listener_accept_socket_finish (GSocketListener  *listener,
 					GObject         **source_object,
 					GError          **error)
 {
-  GSocket *socket;
-  GSimpleAsyncResult *simple;
-
   g_return_val_if_fail (G_IS_SOCKET_LISTENER (listener), NULL);
-
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_socket_listener_accept_socket_async);
-
-  socket = g_simple_async_result_get_op_res_gpointer (simple);
+  g_return_val_if_fail (g_task_is_valid (result, listener), NULL);
 
   if (source_object)
     *source_object = g_object_get_qdata (G_OBJECT (result), source_quark);
 
-  return g_object_ref (socket);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**

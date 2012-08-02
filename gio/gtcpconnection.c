@@ -25,7 +25,7 @@
 #include "config.h"
 #include "gtcpconnection.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "giostream.h"
 #include "glibintl.h"
 
@@ -151,7 +151,6 @@ g_tcp_connection_close (GIOStream     *stream,
   GSocket *socket;
   char buffer[1024];
   gssize ret;
-  GError *my_error;
   gboolean had_error;
 
   socket = g_socket_connection_get_socket (G_SOCKET_CONNECTION (stream));
@@ -169,20 +168,13 @@ g_tcp_connection_close (GIOStream     *stream,
 	{
 	  while (TRUE)
 	    {
-	      my_error = NULL;
-	      ret = g_socket_receive (socket,  buffer, sizeof (buffer),
-				      cancellable, &my_error);
+	      ret = g_socket_receive_with_blocking (socket,  buffer, sizeof (buffer),
+						    TRUE, cancellable, error);
 	      if (ret < 0)
 		{
-		  if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
-		    g_error_free (my_error);
-		  else
-		    {
-		      had_error = TRUE;
-		      g_propagate_error (error, my_error);
-		      error = NULL;
-		      break;
-		    }
+		  had_error = TRUE;
+		  error = NULL;
+		  break;
 		}
 	      if (ret == 0)
 		break;
@@ -194,76 +186,60 @@ g_tcp_connection_close (GIOStream     *stream,
     ->close_fn (stream, cancellable, error) && !had_error;
 }
 
-typedef struct {
-  GSimpleAsyncResult *res;
-  GCancellable *cancellable;
-} CloseAsyncData;
-
+/* consumes @error */
 static void
-close_async_data_free (CloseAsyncData *data)
-{
-  g_object_unref (data->res);
-  if (data->cancellable)
-    g_object_unref (data->cancellable);
-  g_free (data);
-}
-
-static void
-async_close_finish (CloseAsyncData *data,
-                    GError         *error /* consumed */,
-                    gboolean        in_mainloop)
+async_close_finish (GTask    *task,
+                    GError   *error)
 {
   GIOStreamClass *parent = G_IO_STREAM_CLASS (g_tcp_connection_parent_class);
-  GIOStream *stream;
-  GError *my_error;
+  GIOStream *stream = g_task_get_source_object (task);
+  GCancellable *cancellable = g_task_get_cancellable (task);
 
-  stream = G_IO_STREAM (g_async_result_get_source_object (G_ASYNC_RESULT (data->res)));
-
-  /* Doesn't block, ignore error */
+  /* Close underlying stream, ignoring further errors if we already
+   * have one.
+   */
   if (error)
-    {
-      parent->close_fn (stream, data->cancellable, NULL);
-      g_simple_async_result_take_error (data->res, error);
-    }
+    parent->close_fn (stream, cancellable, NULL);
   else
-    {
-      my_error = NULL;
-      parent->close_fn (stream, data->cancellable, &my_error);
-      if (my_error)
-        g_simple_async_result_take_error (data->res, my_error);
-    }
+    parent->close_fn (stream, cancellable, &error);
 
-  if (in_mainloop)
-    g_simple_async_result_complete (data->res);
+  if (error)
+    g_task_return_error (task, error);
   else
-    g_simple_async_result_complete_in_idle (data->res);
+    g_task_return_boolean (task, TRUE);
 }
+
 
 static gboolean
 close_read_ready (GSocket        *socket,
 		  GIOCondition    condition,
-		  CloseAsyncData *data)
+		  GTask          *task)
 {
   GError *error = NULL;
   char buffer[1024];
   gssize ret;
 
-  ret = g_socket_receive (socket,  buffer, sizeof (buffer),
-			  data->cancellable, &error);
+  ret = g_socket_receive_with_blocking (socket,  buffer, sizeof (buffer),
+                                        FALSE, g_task_get_cancellable (task),
+                                        &error);
   if (ret < 0)
     {
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
-	g_error_free (error);
+	{
+	  g_error_free (error);
+	  return TRUE;
+	}
       else
 	{
-	  async_close_finish (data, error, TRUE);
+	  async_close_finish (task, error);
+	  g_object_unref (task);
 	  return FALSE;
 	}
     }
 
   if (ret == 0)
     {
-      async_close_finish (data, NULL, TRUE);
+      async_close_finish (task, NULL);
       return FALSE;
     }
 
@@ -279,38 +255,29 @@ g_tcp_connection_close_async (GIOStream           *stream,
 			      gpointer             user_data)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (stream);
-  CloseAsyncData *data;
   GSocket *socket;
   GSource *source;
   GError *error;
+  GTask *task;
 
   if (connection->priv->graceful_disconnect &&
       !g_cancellable_is_cancelled (cancellable) /* Cancelled -> close fast */)
     {
-      data = g_new (CloseAsyncData, 1);
-      data->res =
-	g_simple_async_result_new (G_OBJECT (stream), callback, user_data,
-				   g_tcp_connection_close_async);
-      if (cancellable)
-	data->cancellable = g_object_ref (cancellable);
-      else
-	data->cancellable = NULL;
+      task = g_task_new (stream, cancellable, callback, user_data);
+      g_task_set_priority (task, io_priority);
 
       socket = g_socket_connection_get_socket (G_SOCKET_CONNECTION (stream));
 
       error = NULL;
       if (!g_socket_shutdown (socket, FALSE, TRUE, &error))
 	{
-	  async_close_finish (data, error, FALSE);
-	  close_async_data_free (data);
+	  g_task_return_error (task, error);
+	  g_object_unref (task);
 	  return;
 	}
 
       source = g_socket_create_source (socket, G_IO_IN, cancellable);
-      g_source_set_callback (source,
-			     (GSourceFunc) close_read_ready,
-			     data, (GDestroyNotify)close_async_data_free);
-      g_source_attach (source, g_main_context_get_thread_default ());
+      g_task_attach_source (task, source, (GSourceFunc) close_read_ready);
       g_source_unref (source);
 
       return;

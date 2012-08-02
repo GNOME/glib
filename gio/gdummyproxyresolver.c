@@ -29,7 +29,7 @@
 #include "gasyncresult.h"
 #include "gcancellable.h"
 #include "gproxyresolver.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 
 #include "giomodule.h"
 #include "giomodule-priv.h"
@@ -93,29 +93,17 @@ g_dummy_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 				     gpointer             user_data)
 {
   GError *error = NULL;
-  GSimpleAsyncResult *simple;
+  GTask *task;
   gchar **proxies;
 
+  task = g_task_new (resolver, cancellable, callback, user_data);
+
   proxies = g_dummy_proxy_resolver_lookup (resolver, uri, cancellable, &error);
-
-  
-  simple = g_simple_async_result_new (G_OBJECT (resolver),
-				      callback, user_data,
-				      g_dummy_proxy_resolver_lookup_async);
-
-  if (proxies == NULL)
-    {
-      g_simple_async_result_take_error (simple, error);
-    }
+  if (proxies)
+    g_task_return_pointer (task, proxies, (GDestroyNotify) g_strfreev);
   else
-    {
-      g_simple_async_result_set_op_res_gpointer (simple,
-						 proxies,
-						 NULL);
-    }
-
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+    g_task_return_error (task, error);
+  g_object_unref (task);
 }
 
 static gchar **
@@ -123,17 +111,9 @@ g_dummy_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 				      GAsyncResult       *result,
 				      GError            **error)
 {
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+  g_return_val_if_fail (g_task_is_valid (result, resolver), NULL);
 
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-
-      return g_simple_async_result_get_op_res_gpointer (simple);
-    }
-
-  return NULL;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void

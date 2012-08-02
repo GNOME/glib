@@ -33,7 +33,7 @@
 #include "gnetworkaddress.h"
 #include "gnetworkingprivate.h"
 #include "gresolver.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
 #include "gsrvtarget.h"
@@ -395,9 +395,6 @@ typedef struct {
 
   GError *error;
 
-  /* For async operation */
-  GCancellable *cancellable;
-  GSimpleAsyncResult *result;
 } GNetworkServiceAddressEnumerator;
 
 typedef struct {
@@ -530,13 +527,13 @@ g_network_service_address_enumerator_next (GSocketAddressEnumerator  *enumerator
   return ret;
 }
 
-static void next_async_resolved_targets   (GObject                          *source_object,
-                                           GAsyncResult                     *result,
-                                           gpointer                          user_data);
-static void next_async_have_targets       (GNetworkServiceAddressEnumerator *srv_enum);
-static void next_async_have_address       (GObject                          *source_object,
-                                           GAsyncResult                     *result,
-                                           gpointer                          user_data);
+static void next_async_resolved_targets   (GObject      *source_object,
+                                           GAsyncResult *result,
+                                           gpointer      user_data);
+static void next_async_have_targets       (GTask        *srv_enum);
+static void next_async_have_address       (GObject      *source_object,
+                                           GAsyncResult *result,
+                                           gpointer      user_data);
 
 static void
 g_network_service_address_enumerator_next_async (GSocketAddressEnumerator  *enumerator,
@@ -546,15 +543,9 @@ g_network_service_address_enumerator_next_async (GSocketAddressEnumerator  *enum
 {
   GNetworkServiceAddressEnumerator *srv_enum =
     G_NETWORK_SERVICE_ADDRESS_ENUMERATOR (enumerator);
+  GTask *task;
 
-  g_return_if_fail (srv_enum->result == NULL);
-
-  srv_enum->result = g_simple_async_result_new (G_OBJECT (enumerator),
-                                                callback, user_data,
-                                                g_network_service_address_enumerator_next_async);
-
-  if (cancellable)
-    srv_enum->cancellable = g_object_ref (cancellable);
+  task = g_task_new (enumerator, cancellable, callback, user_data);
 
   /* If we haven't yet resolved srv, do that */
   if (!srv_enum->srv->priv->targets)
@@ -565,10 +556,10 @@ g_network_service_address_enumerator_next_async (GSocketAddressEnumerator  *enum
                                        srv_enum->srv->priv->domain,
                                        cancellable,
                                        next_async_resolved_targets,
-                                       srv_enum);
+                                       task);
     }
   else
-    next_async_have_targets (srv_enum);
+    next_async_have_targets (task);
 }
 
 static void
@@ -576,7 +567,8 @@ next_async_resolved_targets (GObject      *source_object,
                              GAsyncResult *result,
                              gpointer      user_data)
 {
-  GNetworkServiceAddressEnumerator *srv_enum = user_data;
+  GTask *task = user_data;
+  GNetworkServiceAddressEnumerator *srv_enum = g_task_get_source_object (task);
   GError *error = NULL;
   GList *targets;
 
@@ -593,23 +585,21 @@ next_async_resolved_targets (GObject      *source_object,
 
   if (error)
     {
-      GSimpleAsyncResult *simple = srv_enum->result;
-
-      srv_enum->result = NULL;
-      g_simple_async_result_take_error (simple, error);
-      g_simple_async_result_complete (simple);
-      g_object_unref (simple);
+      g_task_return_error (task, error);
+      g_object_unref (task);
     }
   else
     {
       srv_enum->t = srv_enum->srv->priv->targets = targets;
-      next_async_have_targets (srv_enum);
+      next_async_have_targets (task);
     }
 }
 
 static void
-next_async_have_targets (GNetworkServiceAddressEnumerator *srv_enum)
+next_async_have_targets (GTask *task)
 {
+  GNetworkServiceAddressEnumerator *srv_enum = g_task_get_source_object (task);
+
   /* Delegate to GNetworkAddress */
   if (srv_enum->addr_enum == NULL && srv_enum->t)
     {
@@ -631,23 +621,21 @@ next_async_have_targets (GNetworkServiceAddressEnumerator *srv_enum)
   if (srv_enum->addr_enum)
     {
       g_socket_address_enumerator_next_async (srv_enum->addr_enum,
-                                              srv_enum->cancellable,
+                                              g_task_get_cancellable (task),
                                               next_async_have_address,
-                                              srv_enum);
+                                              task);
     }
   else
     {
-      GSimpleAsyncResult *simple = srv_enum->result;
-      srv_enum->result = NULL;
-
       if (srv_enum->error)
         {
-          g_simple_async_result_take_error (simple, srv_enum->error);
+          g_task_return_error (task, srv_enum->error);
           srv_enum->error = NULL;
         }
+      else
+        g_task_return_pointer (task, NULL, NULL);
 
-      g_simple_async_result_complete (simple);
-      g_object_unref (simple);
+      g_object_unref (task);
     }
 }
 
@@ -656,7 +644,8 @@ next_async_have_address (GObject      *source_object,
                          GAsyncResult *result,
                          gpointer      user_data)
 {
-  GNetworkServiceAddressEnumerator *srv_enum = user_data;
+  GTask *task = user_data;
+  GNetworkServiceAddressEnumerator *srv_enum = g_task_get_source_object (task);
   GSocketAddress *address;
   GError *error = NULL;
   
@@ -677,20 +666,12 @@ next_async_have_address (GObject      *source_object,
       g_object_unref (srv_enum->addr_enum);
       srv_enum->addr_enum = NULL;
 
-      next_async_have_targets (srv_enum);
+      next_async_have_targets (task);
     }
   else
     {
-      GSimpleAsyncResult *simple = srv_enum->result;
-
-      srv_enum->result = NULL;
-
-      if (address)
-        g_simple_async_result_set_op_res_gpointer (simple,
-                                                   address, g_object_unref);
-
-      g_simple_async_result_complete (simple);
-      g_object_unref (simple);
+      g_task_return_pointer (task, address, g_object_unref);
+      g_object_unref (task);
     }
 }
 
@@ -699,14 +680,7 @@ g_network_service_address_enumerator_next_finish (GSocketAddressEnumerator  *enu
                                                   GAsyncResult              *result,
                                                   GError                   **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-  GSocketAddress *sockaddr;
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  sockaddr = g_simple_async_result_get_op_res_gpointer (simple);
-  return sockaddr ? g_object_ref (sockaddr) : NULL;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -728,12 +702,6 @@ g_network_service_address_enumerator_finalize (GObject *object)
 
   if (srv_enum->resolver)
     g_object_unref (srv_enum->resolver);
-
-  if (srv_enum->result)
-    g_object_unref (srv_enum->result);
-
-  if (srv_enum->cancellable)
-    g_object_unref (srv_enum->cancellable);
 
   if (srv_enum->error)
     g_error_free (srv_enum->error);

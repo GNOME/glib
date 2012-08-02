@@ -34,7 +34,7 @@
 #include <gio/gsocketconnection.h>
 #include <gio/gproxyaddressenumerator.h>
 #include <gio/gproxyaddress.h>
-#include <gio/gsimpleasyncresult.h>
+#include <gio/gtask.h>
 #include <gio/gcancellable.h>
 #include <gio/gioerror.h>
 #include <gio/gsocket.h>
@@ -1271,8 +1271,7 @@ g_socket_client_connect_to_uri (GSocketClient  *client,
 
 typedef struct
 {
-  GSimpleAsyncResult *result;
-  GCancellable *cancellable;
+  GTask *task;
   GSocketClient *client;
 
   GSocketConnectable *connectable;
@@ -1286,46 +1285,39 @@ typedef struct
 } GSocketClientAsyncConnectData;
 
 static void
+g_socket_client_async_connect_data_free (GSocketClientAsyncConnectData *data)
+{
+  g_clear_object (&data->connectable);
+  g_clear_object (&data->enumerator);
+  g_clear_object (&data->proxy_addr);
+  g_clear_object (&data->current_addr);
+  g_clear_object (&data->current_socket);
+  g_clear_object (&data->connection);
+
+  g_clear_error (&data->last_error);
+
+  g_slice_free (GSocketClientAsyncConnectData, data);
+}
+
+static void
 g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
 {
+  g_assert (data->connection);
+
+  if (!G_IS_SOCKET_CONNECTION (data->connection))
+    {
+      GSocketConnection *wrapper_connection;
+
+      wrapper_connection = g_tcp_wrapper_connection_new (data->connection,
+							 data->current_socket);
+      g_object_unref (data->connection);
+      data->connection = (GIOStream *)wrapper_connection;
+    }
+
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, data->connection);
-
-  if (data->last_error)
-    {
-      g_simple_async_result_take_error (data->result, data->last_error);
-    }
-  else
-    {
-      g_assert (data->connection);
-
-      if (!G_IS_SOCKET_CONNECTION (data->connection))
-	{
-	  GSocketConnection *wrapper_connection;
-
-	  wrapper_connection = g_tcp_wrapper_connection_new (data->connection,
-							     data->current_socket);
-	  g_object_unref (data->connection);
-	  data->connection = (GIOStream *)wrapper_connection;
-	}
-
-      g_simple_async_result_set_op_res_gpointer (data->result,
-						 data->connection,
-						 g_object_unref);
-    }
-
-  g_simple_async_result_complete (data->result);
-  g_object_unref (data->result);
-  g_object_unref (data->connectable);
-  g_object_unref (data->enumerator);
-  if (data->cancellable)
-    g_object_unref (data->cancellable);
-  if (data->current_addr)
-    g_object_unref (data->current_addr);
-  if (data->current_socket)
-    g_object_unref (data->current_socket);
-  if (data->proxy_addr)
-    g_object_unref (data->proxy_addr);
-  g_slice_free (GSocketClientAsyncConnectData, data);
+  g_task_return_pointer (data->task, data->connection, g_object_unref);
+  data->connection = NULL;
+  g_object_unref (data->task);
 }
 
 
@@ -1353,7 +1345,7 @@ enumerator_next_async (GSocketClientAsyncConnectData *data)
 
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVING, data->connectable, NULL);
   g_socket_address_enumerator_next_async (data->enumerator,
-					  data->cancellable,
+					  g_task_get_cancellable (data->task),
 					  g_socket_client_enumerator_callback,
 					  data);
 }
@@ -1403,7 +1395,7 @@ g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_TLS_HANDSHAKING, data->connectable, G_IO_STREAM (tlsconn));
       g_tls_connection_handshake_async (G_TLS_CONNECTION (tlsconn),
 					G_PRIORITY_DEFAULT,
-					data->cancellable,
+					g_task_get_cancellable (data->task),
 					g_socket_client_tls_handshake_callback,
 					data);
     }
@@ -1493,7 +1485,7 @@ g_socket_client_connected_callback (GObject      *source,
       g_proxy_connect_async (proxy,
                              data->connection,
                              data->proxy_addr,
-                             data->cancellable,
+                             g_task_get_cancellable (data->task),
                              g_socket_client_proxy_connect_callback,
                              data);
       g_object_unref (proxy);
@@ -1525,28 +1517,31 @@ g_socket_client_enumerator_callback (GObject      *object,
   GSocketClientAsyncConnectData *data = user_data;
   GSocketAddress *address = NULL;
   GSocket *socket;
-  GError *tmp_error = NULL;
+  GError *error = NULL;
 
-  if (g_cancellable_is_cancelled (data->cancellable))
-    {
-      g_clear_error (&data->last_error);
-      g_cancellable_set_error_if_cancelled (data->cancellable, &data->last_error);
-      g_socket_client_async_connect_complete (data);
-      return;
-    }
+  if (g_task_return_error_if_cancelled (data->task))
+    return;
 
   address = g_socket_address_enumerator_next_finish (data->enumerator,
-						     result, &tmp_error);
-
+						     result, &error);
   if (address == NULL)
     {
-      if (tmp_error)
-	set_last_error (data, tmp_error);
-      else if (data->last_error == NULL)
-        g_set_error_literal (&data->last_error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                             _("Unknown error on connect"));
-
-      g_socket_client_async_connect_complete (data);
+      g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
+      if (!error)
+	{
+	  if (data->last_error)
+	    {
+	      error = data->last_error;
+	      data->last_error = NULL;
+	    }
+	  else
+	    {
+	      g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
+				   _("Unknown error on connect"));
+	    }
+	}
+      g_task_return_error (data->task, error);
+      g_object_unref (data->task);
       return;
     }
 
@@ -1573,7 +1568,8 @@ g_socket_client_enumerator_callback (GObject      *object,
 
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTING, data->connectable, data->connection);
   g_socket_connection_connect_async (G_SOCKET_CONNECTION (data->connection),
-				     address, data->cancellable,
+				     address,
+				     g_task_get_cancellable (data->task),
 				     g_socket_client_connected_callback, data);
 }
 
@@ -1605,22 +1601,16 @@ g_socket_client_connect_async (GSocketClient       *client,
   g_return_if_fail (G_IS_SOCKET_CLIENT (client));
 
   data = g_slice_new0 (GSocketClientAsyncConnectData);
-
-  data->result = g_simple_async_result_new (G_OBJECT (client),
-					    callback, user_data,
-					    g_socket_client_connect_async);
   data->client = client;
-  if (cancellable)
-    data->cancellable = g_object_ref (cancellable);
-  else
-    data->cancellable = NULL;
-  data->last_error = NULL;
   data->connectable = g_object_ref (connectable);
 
   if (can_use_proxy (client))
       data->enumerator = g_socket_connectable_proxy_enumerate (connectable);
   else
       data->enumerator = g_socket_connectable_enumerate (connectable);
+
+  data->task = g_task_new (client, cancellable, callback, user_data);
+  g_task_set_task_data (data->task, data, (GDestroyNotify)g_socket_client_async_connect_data_free);
 
   enumerator_next_async (data);
 }
@@ -1658,8 +1648,9 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
 					 &error);
   if (connectable == NULL)
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (client),
-					    callback, user_data, error);
+      g_task_report_error (client, callback, user_data,
+                           g_socket_client_connect_to_host_async,
+                           error);
     }
   else
     {
@@ -1733,8 +1724,9 @@ g_socket_client_connect_to_uri_async (GSocketClient        *client,
   connectable = g_network_address_parse_uri (uri, default_port, &error);
   if (connectable == NULL)
     {
-      g_simple_async_report_take_gerror_in_idle (G_OBJECT (client),
-					    callback, user_data, error);
+      g_task_report_error (client, callback, user_data,
+                           g_socket_client_connect_to_uri_async,
+                           error);
     }
   else
     {
@@ -1764,12 +1756,9 @@ g_socket_client_connect_finish (GSocketClient  *client,
 				GAsyncResult   *result,
 				GError        **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
+  g_return_val_if_fail (g_task_is_valid (result, client), NULL);
 
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 /**
