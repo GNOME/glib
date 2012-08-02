@@ -159,22 +159,18 @@ g_test_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 				    gpointer             user_data)
 {
   GError *error = NULL;
-  GSimpleAsyncResult *simple;
+  GTask *task;
   gchar **proxies;
 
   proxies = g_test_proxy_resolver_lookup (resolver, uri, cancellable, &error);
 
-  simple = g_simple_async_result_new (G_OBJECT (resolver),
-				      callback, user_data,
-				      g_test_proxy_resolver_lookup_async);
-
+  task = g_task_new (resolver, NULL, callback, user_data);
   if (proxies == NULL)
-    g_simple_async_result_take_error (simple, error);
+    g_task_return_error (task, error);
   else
-    g_simple_async_result_set_op_res_gpointer (simple, proxies, (GDestroyNotify) g_strfreev);
+    g_task_return_pointer (task, proxies, (GDestroyNotify) g_strfreev);
 
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+  g_object_unref (task);
 }
 
 static gchar **
@@ -182,19 +178,7 @@ g_test_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 				     GAsyncResult       *result,
 				     GError            **error)
 {
-  if (G_IS_SIMPLE_ASYNC_RESULT (result))
-    {
-      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-      gchar **proxies;
-
-      if (g_simple_async_result_propagate_error (simple, error))
-        return NULL;
-
-      proxies = g_simple_async_result_get_op_res_gpointer (simple);
-      return g_strdupv (proxies);
-    }
-
-  return NULL;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -292,24 +276,18 @@ g_proxy_base_connect_async (GProxy               *proxy,
 			    gpointer              user_data)
 {
   GError *error = NULL;
-  GSimpleAsyncResult *simple;
+  GTask *task;
   GIOStream *proxy_io_stream;
 
-  simple = g_simple_async_result_new (G_OBJECT (proxy),
-				      callback, user_data,
-				      g_proxy_base_connect_async);
+  task = g_task_new (proxy, NULL, callback, user_data);
 
   proxy_io_stream = g_proxy_connect (proxy, io_stream, proxy_address,
 				     cancellable, &error);
   if (proxy_io_stream)
-    {
-      g_simple_async_result_set_op_res_gpointer (simple, proxy_io_stream,
-						 g_object_unref);
-    }
+    g_task_return_pointer (task, proxy_io_stream, g_object_unref);
   else
-    g_simple_async_result_take_error (simple, error);
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+    g_task_return_error (task, error);
+  g_object_unref (task);
 }
 
 static GIOStream *
@@ -317,12 +295,7 @@ g_proxy_base_connect_finish (GProxy        *proxy,
 			     GAsyncResult  *result,
 			     GError       **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -722,11 +695,18 @@ g_fake_resolver_lookup_by_name_async (GResolver           *resolver,
 				      GAsyncReadyCallback  callback,
 				      gpointer             user_data)
 {
-  g_simple_async_report_error_in_idle (G_OBJECT (resolver),
-				       callback, user_data,
-				       G_RESOLVER_ERROR,
-				       G_RESOLVER_ERROR_NOT_FOUND,
-				       "Not found");
+  g_task_report_new_error (resolver, callback, user_data,
+			   g_fake_resolver_lookup_by_name_async,
+			   G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+			   "Not found");
+}
+
+static GList *
+g_fake_resolver_lookup_by_name_finish (GResolver            *resolver,
+				       GAsyncResult         *result,
+				       GError              **error)
+{
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static void
@@ -736,6 +716,7 @@ g_fake_resolver_class_init (GFakeResolverClass *fake_class)
 
   resolver_class->lookup_by_name        = g_fake_resolver_lookup_by_name;
   resolver_class->lookup_by_name_async  = g_fake_resolver_lookup_by_name_async;
+  resolver_class->lookup_by_name_finish = g_fake_resolver_lookup_by_name_finish;
 }
 
 

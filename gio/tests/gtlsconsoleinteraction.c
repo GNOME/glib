@@ -86,18 +86,20 @@ g_tls_console_interaction_ask_password (GTlsInteraction    *interaction,
 }
 
 static void
-ask_password_with_getpass (GSimpleAsyncResult    *res,
-                           GObject               *object,
-                           GCancellable          *cancellable)
+ask_password_with_getpass (GTask        *task,
+                           gpointer      object,
+                           gpointer      task_data,
+                           GCancellable *cancellable)
 {
-  GTlsPassword *password;
+  GTlsPassword *password = task_data;
   GError *error = NULL;
 
-  password = g_simple_async_result_get_op_res_gpointer (res);
   g_tls_console_interaction_ask_password (G_TLS_INTERACTION (object), password,
                                           cancellable, &error);
   if (error != NULL)
-    g_simple_async_result_take_error (res, error);
+    g_task_return_error (task, error);
+  else
+    g_task_return_int (task, G_TLS_INTERACTION_HANDLED);
 }
 
 static void
@@ -107,14 +109,12 @@ g_tls_console_interaction_ask_password_async (GTlsInteraction    *interaction,
                                               GAsyncReadyCallback callback,
                                               gpointer            user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
 
-  res = g_simple_async_result_new (G_OBJECT (interaction), callback, user_data,
-                                   g_tls_console_interaction_ask_password);
-  g_simple_async_result_set_op_res_gpointer (res, g_object_ref (password), g_object_unref);
-  g_simple_async_result_run_in_thread (res, ask_password_with_getpass,
-                                       G_PRIORITY_DEFAULT, cancellable);
-  g_object_unref (res);
+  task = g_task_new (interaction, cancellable, callback, user_data);
+  g_task_set_task_data (task, g_object_ref (password), g_object_unref);
+  g_task_run_in_thread (task, ask_password_with_getpass);
+  g_object_unref (task);
 }
 
 static GTlsInteractionResult
@@ -122,13 +122,16 @@ g_tls_console_interaction_ask_password_finish (GTlsInteraction    *interaction,
                                                GAsyncResult       *result,
                                                GError            **error)
 {
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (interaction),
-                        g_tls_console_interaction_ask_password), G_TLS_INTERACTION_FAILED);
+  GTlsInteractionResult ret;
 
-  if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error))
+  g_return_val_if_fail (g_task_is_valid (result, interaction),
+                        G_TLS_INTERACTION_FAILED);
+
+  ret = g_task_propagate_int (G_TASK (result), error);
+  if (ret == (GTlsInteractionResult)-1)
     return G_TLS_INTERACTION_FAILED;
-
-  return G_TLS_INTERACTION_HANDLED;
+  else
+    return ret;
 }
 
 static void

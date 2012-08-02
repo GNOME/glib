@@ -82,7 +82,7 @@ test_interaction_ask_password_async_success (GTlsInteraction    *interaction,
                                              GAsyncReadyCallback callback,
                                              gpointer            user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   TestInteraction *self;
 
   g_assert (TEST_IS_INTERACTION (interaction));
@@ -93,13 +93,12 @@ test_interaction_ask_password_async_success (GTlsInteraction    *interaction,
   g_assert (G_IS_TLS_PASSWORD (password));
   g_assert (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
-  res = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
-                                   test_interaction_ask_password_async_success);
+  task = g_task_new (self, cancellable, callback, user_data);
 
   /* Don't do this in real life. Include a null terminator for testing */
   g_tls_password_set_value (password, (const guchar *)"the password", 13);
-  g_simple_async_result_complete_in_idle (res);
-  g_object_unref (res);
+  g_task_return_int (task, G_TLS_INTERACTION_HANDLED);
+  g_object_unref (task);
 }
 
 
@@ -115,12 +114,11 @@ test_interaction_ask_password_finish_success (GTlsInteraction    *interaction,
 
   g_assert (g_thread_self () == self->test->interaction_thread);
 
-  g_assert (g_simple_async_result_is_valid (result, G_OBJECT (interaction),
-                                            test_interaction_ask_password_async_success));
+  g_assert (g_task_is_valid (result, interaction));
   g_assert (error != NULL);
   g_assert (*error == NULL);
 
-  return G_TLS_INTERACTION_HANDLED;
+  return g_task_propagate_int (G_TASK (result), error);
 }
 
 static void
@@ -130,7 +128,7 @@ test_interaction_ask_password_async_failure (GTlsInteraction    *interaction,
                                              GAsyncReadyCallback callback,
                                              gpointer            user_data)
 {
-  GSimpleAsyncResult *res;
+  GTask *task;
   TestInteraction *self;
 
   g_assert (TEST_IS_INTERACTION (interaction));
@@ -141,12 +139,10 @@ test_interaction_ask_password_async_failure (GTlsInteraction    *interaction,
   g_assert (G_IS_TLS_PASSWORD (password));
   g_assert (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
-  res = g_simple_async_result_new (G_OBJECT (self), callback, user_data,
-                                   test_interaction_ask_password_async_failure);
+  task = g_task_new (self, cancellable, callback, user_data);
 
-  g_simple_async_result_set_error (res, G_FILE_ERROR, G_FILE_ERROR_ACCES, "The message");
-  g_simple_async_result_complete_in_idle (res);
-  g_object_unref (res);
+  g_task_return_new_error (task, G_FILE_ERROR, G_FILE_ERROR_ACCES, "The message");
+  g_object_unref (task);
 }
 
 static GTlsInteractionResult
@@ -161,13 +157,13 @@ test_interaction_ask_password_finish_failure (GTlsInteraction    *interaction,
 
   g_assert (g_thread_self () == self->test->interaction_thread);
 
-  g_assert (g_simple_async_result_is_valid (result, G_OBJECT (interaction),
-                                            test_interaction_ask_password_async_failure));
+  g_assert (g_task_is_valid (result, interaction));
   g_assert (error != NULL);
   g_assert (*error == NULL);
 
-  if (!g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error))
+  if (g_task_propagate_int (G_TASK (result), error) != -1)
     g_assert_not_reached ();
+
   return G_TLS_INTERACTION_FAILED;
 }
 

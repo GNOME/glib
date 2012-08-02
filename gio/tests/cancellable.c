@@ -33,31 +33,27 @@ typedef struct
 {
   guint iterations_requested;
   guint iterations_done;
-  GCancellable *cancellable;
 } MockOperationData;
 
 static void
 mock_operation_free (gpointer user_data)
 {
   MockOperationData *data = user_data;
-  g_object_unref (data->cancellable);
   g_free (data);
 }
 
 static void
-mock_operation_thread (GSimpleAsyncResult *simple,
-                       GObject            *object,
-                       GCancellable       *cancellable)
+mock_operation_thread (GTask        *task,
+                       gpointer      source_object,
+                       gpointer      task_data,
+                       GCancellable *cancellable)
 {
-  MockOperationData *data;
+  MockOperationData *data = task_data;
   guint i;
-
-  data = g_simple_async_result_get_op_res_gpointer (simple);
-  g_assert (data->cancellable == cancellable);
 
   for (i = 0; i < data->iterations_requested; i++)
     {
-      if (g_cancellable_is_cancelled (data->cancellable))
+      if (g_cancellable_is_cancelled (cancellable))
         break;
       if (g_test_verbose ())
         g_printerr ("THRD: %u iteration %u\n", data->iterations_requested, i);
@@ -67,35 +63,36 @@ mock_operation_thread (GSimpleAsyncResult *simple,
   if (g_test_verbose ())
     g_printerr ("THRD: %u stopped at %u\n", data->iterations_requested, i);
   data->iterations_done = i;
+
+  g_task_return_boolean (task, TRUE);
 }
 
 static gboolean
 mock_operation_timeout (gpointer user_data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
   MockOperationData *data;
-  GError *error = NULL;
   gboolean done = FALSE;
 
-  simple = G_SIMPLE_ASYNC_RESULT (user_data);
-  data = g_simple_async_result_get_op_res_gpointer (simple);
+  task = G_TASK (user_data);
+  data = g_task_get_task_data (task);
 
   if (data->iterations_done >= data->iterations_requested)
       done = TRUE;
 
-  if (g_cancellable_set_error_if_cancelled (data->cancellable, &error)) {
-      g_simple_async_result_take_error (simple, error);
+  if (g_cancellable_is_cancelled (g_task_get_cancellable (task)))
       done = TRUE;
-  }
 
-  if (done) {
+  if (done)
+    {
       if (g_test_verbose ())
         g_printerr ("LOOP: %u stopped at %u\n", data->iterations_requested,\
                     data->iterations_done);
-      g_simple_async_result_complete (simple);
+      g_task_return_boolean (task, TRUE);
       return FALSE; /* don't call timeout again */
-
-  } else {
+    }
+  else
+    {
       data->iterations_done++;
       if (g_test_verbose ())
         g_printerr ("LOOP: %u iteration %u\n", data->iterations_requested,
@@ -111,29 +108,29 @@ mock_operation_async (guint                wait_iterations,
                       GAsyncReadyCallback  callback,
                       gpointer             user_data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
   MockOperationData *data;
 
-  simple = g_simple_async_result_new (NULL, callback, user_data,
-                                      mock_operation_async);
+  task = g_task_new (NULL, cancellable, callback, user_data);
   data = g_new0 (MockOperationData, 1);
   data->iterations_requested = wait_iterations;
-  data->cancellable = g_object_ref (cancellable);
-  g_simple_async_result_set_op_res_gpointer (simple, data, mock_operation_free);
+  g_task_set_task_data (task, data, mock_operation_free);
 
-  if (run_in_thread) {
-      g_simple_async_result_run_in_thread (simple, mock_operation_thread,
-                                           G_PRIORITY_DEFAULT, cancellable);
+  if (run_in_thread)
+    {
+      g_task_run_in_thread (task, mock_operation_thread);
       if (g_test_verbose ())
         g_printerr ("THRD: %d started\n", wait_iterations);
-  } else {
+    }
+  else
+    {
       g_timeout_add_full (G_PRIORITY_DEFAULT, WAIT_ITERATION, mock_operation_timeout,
-                          g_object_ref (simple), g_object_unref);
+                          g_object_ref (task), g_object_unref);
       if (g_test_verbose ())
         g_printerr ("LOOP: %d started\n", wait_iterations);
-  }
+    }
 
-  g_object_unref (simple);
+  g_object_unref (task);
 }
 
 static guint
@@ -141,11 +138,17 @@ mock_operation_finish (GAsyncResult  *result,
                        GError       **error)
 {
   MockOperationData *data;
+  GTask *task;
 
-  g_assert (g_simple_async_result_is_valid (result, NULL, mock_operation_async));
-  g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error);
+  g_assert (g_task_is_valid (result, NULL));
 
-  data = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (result));
+  /* This test expects the return value to be iterations_done even
+   * when an error is set.
+   */
+  task = G_TASK (result);
+  data = g_task_get_task_data (task);
+
+  g_task_propagate_boolean (task, error);
   return data->iterations_done;
 }
 
