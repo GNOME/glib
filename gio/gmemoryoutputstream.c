@@ -27,7 +27,7 @@
 #include "goutputstream.h"
 #include "gpollableoutputstream.h"
 #include "gseekable.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "gioerror.h"
 #include "string.h"
 #include "glibintl.h"
@@ -665,19 +665,15 @@ g_memory_output_stream_close_async (GOutputStream       *stream,
                                     GAsyncReadyCallback  callback,
                                     gpointer             data)
 {
-  GSimpleAsyncResult *simple;
+  GTask *task;
 
-  simple = g_simple_async_result_new (G_OBJECT (stream),
-                                      callback,
-                                      data,
-                                      g_memory_output_stream_close_async);
-
+  task = g_task_new (stream, cancellable, callback, data);
 
   /* will always return TRUE */
   g_memory_output_stream_close (stream, cancellable, NULL);
 
-  g_simple_async_result_complete_in_idle (simple);
-  g_object_unref (simple);
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -685,14 +681,9 @@ g_memory_output_stream_close_finish (GOutputStream  *stream,
                                      GAsyncResult   *result,
                                      GError        **error)
 {
-  GSimpleAsyncResult *simple;
+  g_return_val_if_fail (g_task_is_valid (result, stream), -1);
 
-  simple = G_SIMPLE_ASYNC_RESULT (result);
-
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) ==
-                  g_memory_output_stream_close_async);
-
-  return TRUE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static goffset

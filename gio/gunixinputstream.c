@@ -425,20 +425,16 @@ g_unix_input_stream_close (GInputStream  *stream,
   if (!unix_stream->priv->close_fd)
     return TRUE;
   
-  while (1)
+  /* This might block during the close. Doesn't seem to be a way to avoid it though. */
+  res = close (unix_stream->priv->fd);
+  if (res == -1)
     {
-      /* This might block during the close. Doesn't seem to be a way to avoid it though. */
-      res = close (unix_stream->priv->fd);
-      if (res == -1)
-        {
-          int errsv = errno;
+      int errsv = errno;
 
-          g_set_error (error, G_IO_ERROR,
-                       g_io_error_from_errno (errsv),
-                       _("Error closing file descriptor: %s"),
-                       g_strerror (errsv));
-        }
-      break;
+      g_set_error (error, G_IO_ERROR,
+		   g_io_error_from_errno (errsv),
+		   _("Error closing file descriptor: %s"),
+		   g_strerror (errsv));
     }
   
   return res != -1;
@@ -466,71 +462,6 @@ g_unix_input_stream_skip_finish  (GInputStream  *stream,
   /* TODO: Not implemented */
 }
 
-
-typedef struct {
-  GInputStream *stream;
-  GAsyncReadyCallback callback;
-  gpointer user_data;
-} CloseAsyncData;
-
-static void
-close_async_data_free (gpointer _data)
-{
-  CloseAsyncData *data = _data;
-
-  g_free (data);
-}
-
-static gboolean
-close_async_cb (CloseAsyncData *data)
-{
-  GUnixInputStream *unix_stream;
-  GSimpleAsyncResult *simple;
-  GError *error = NULL;
-  gboolean result;
-  int res;
-
-  unix_stream = G_UNIX_INPUT_STREAM (data->stream);
-
-  if (!unix_stream->priv->close_fd)
-    {
-      result = TRUE;
-      goto out;
-    }
-  
-  while (1)
-    {
-      res = close (unix_stream->priv->fd);
-      if (res == -1)
-        {
-          int errsv = errno;
-
-          g_set_error (&error, G_IO_ERROR,
-                       g_io_error_from_errno (errsv),
-                       _("Error closing file descriptor: %s"),
-                       g_strerror (errsv));
-        }
-      break;
-    }
-  
-  result = res != -1;
-
- out:
-  simple = g_simple_async_result_new (G_OBJECT (data->stream),
-				      data->callback,
-				      data->user_data,
-				      g_unix_input_stream_close_async);
-
-  if (!result)
-    g_simple_async_result_take_error (simple, error);
-
-  /* Complete immediately, not in idle, since we're already in a mainloop callout */
-  g_simple_async_result_complete (simple);
-  g_object_unref (simple);
-  
-  return FALSE;
-}
-
 static void
 g_unix_input_stream_close_async (GInputStream        *stream,
 				 int                  io_priority,
@@ -538,19 +469,17 @@ g_unix_input_stream_close_async (GInputStream        *stream,
 				 GAsyncReadyCallback  callback,
 				 gpointer             user_data)
 {
-  GSource *idle;
-  CloseAsyncData *data;
+  GTask *task;
+  GError *error = NULL;
 
-  data = g_new0 (CloseAsyncData, 1);
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_priority (task, io_priority);
 
-  data->stream = stream;
-  data->callback = callback;
-  data->user_data = user_data;
-  
-  idle = g_idle_source_new ();
-  g_source_set_callback (idle, (GSourceFunc)close_async_cb, data, close_async_data_free);
-  g_source_attach (idle, g_main_context_get_thread_default ());
-  g_source_unref (idle);
+  if (g_unix_input_stream_close (stream, cancellable, &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
+  g_object_unref (task);
 }
 
 static gboolean
@@ -558,8 +487,9 @@ g_unix_input_stream_close_finish (GInputStream  *stream,
 				  GAsyncResult  *result,
 				  GError       **error)
 {
-  /* Failures handled in generic close_finish code */
-  return TRUE;
+  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gboolean
