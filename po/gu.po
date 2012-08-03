@@ -486,7 +486,7 @@ msgstr ""
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
 msgstr[0] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ EOF મળ્યુ"
-msgstr[1] ""
+msgstr[1] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ EOF મળ્યુ"
 
 #: ../gio/gdbusmessage.c:1025
 #, c-format
