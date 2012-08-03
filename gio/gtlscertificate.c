@@ -35,9 +35,9 @@
  * @see_also: #GTlsConnection
  *
  * A certificate used for TLS authentication and encryption.
- * This can represent either a public key only (eg, the certificate
+ * This can represent either a certificate only (eg, the certificate
  * received by a client from a server), or the combination of
- * a public key and a private key (which is needed when acting as a
+ * a certificate and a private key (which is needed when acting as a
  * #GTlsServerConnection).
  *
  * Since: 2.28
@@ -98,10 +98,9 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   /**
    * GTlsCertificate:certificate:
    *
-   * The DER (binary) encoded representation of the certificate's
-   * public key. This property and the
-   * #GTlsCertificate:certificate-pem property represent the same
-   * data, just in different forms.
+   * The DER (binary) encoded representation of the certificate.
+   * This property and the #GTlsCertificate:certificate-pem property
+   * represent the same data, just in different forms.
    *
    * Since: 2.28
    */
@@ -116,8 +115,8 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   /**
    * GTlsCertificate:certificate-pem:
    *
-   * The PEM (ASCII) encoded representation of the certificate's
-   * public key. This property and the #GTlsCertificate:certificate
+   * The PEM (ASCII) encoded representation of the certificate.
+   * This property and the #GTlsCertificate:certificate
    * property represent the same data, just in different forms.
    *
    * Since: 2.28
