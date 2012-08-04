@@ -1,3 +1,36 @@
+Overview of changes from GLib 2.33.6 to 2.33.8
+==============================================
+
+* GIO now has a g_file_delete_async function
+
+* The defaults for GThreadPools max_unused_threads
+  and max_idle_time values have been changed to
+  2 and 15*1000, respectively.
+
+* Bugs fixed:
+ 661767 merge/improve various bits of run-in-thread functionality
+ 680074 undefined symbol "get_C_locale"
+ 680121 g_cancellable_source_new: don't use a file descriptor
+ 680148 gthread: check for definition of PR_SET_NAME
+ 680310 Sorting of access points by strengh not working
+ 680704 g_utf8_strup() crash
+ 680760 GFile: Add g_file_delete_async()
+ 680787 Add .dir-locals.el to tell Emacs users not to use tabs...
+ 680823 g_file_make_directory_with_parents: Fix error propagation
+ 680994 STATIC_ASSERT in GDBusError docs don't have much utility
+ 681116 gtlscertificate: Add g_tls_certificate_equal() function
+ 681118 gtlsdatabase: Don't complain if no callbacks for async...
+
+* Translation updates:
+ Galician
+ German
+ Gujarati
+ Hebrew
+ Norwegian bokmål
+ Serbian
+ Slovenian
+
+
 Overview of changes from GLib 2.33.4 to 2.33.6
 ==============================================
 
