@@ -44,6 +44,10 @@
 # include <sys/ioctl.h>
 #endif
 
+#ifdef HAVE_SYS_FILIO_H
+# include <sys/filio.h>
+#endif
+
 #ifdef HAVE_SYS_UIO_H
 #include <sys/uio.h>
 #endif
