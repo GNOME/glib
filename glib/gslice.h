@@ -77,8 +77,12 @@ typedef enum {
   G_SLICE_CONFIG_CHUNK_SIZES,
   G_SLICE_CONFIG_CONTENTION_COUNTER
 } GSliceConfig;
+
+GLIB_DEPRECATED_IN_2_34
 void     g_slice_set_config	   (GSliceConfig ckey, gint64 value);
+GLIB_DEPRECATED_IN_2_34
 gint64   g_slice_get_config	   (GSliceConfig ckey);
+GLIB_DEPRECATED_IN_2_34
 gint64*  g_slice_get_config_state  (GSliceConfig ckey, gint64 address, guint *n_values);
 
 G_END_DECLS

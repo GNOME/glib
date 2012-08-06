@@ -1,5 +1,8 @@
 #include <glib.h>
 
+/* We test deprecated functionality here */
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 static void
 test_slice_config (void)
 {
