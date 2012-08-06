@@ -234,24 +234,24 @@ AS_IF([test "x$GLIBC21" = "xyes"], [
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
-              AC_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
+              AS_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
                              [turn on debugging @<:@default=glib_debug_default@:>@]),,
               enable_debug=glib_debug_default)
 
 AC_ARG_ENABLE(gc_friendly,
-              [AC_HELP_STRING([--enable-gc-friendly],
+              [AS_HELP_STRING([--enable-gc-friendly],
                               [turn on garbage collector friendliness [default=no]])],,
               [enable_gc_friendly=no])
 AC_ARG_ENABLE(mem_pools,
-              [AC_HELP_STRING([--disable-mem-pools],
+              [AS_HELP_STRING([--disable-mem-pools],
 			      [disable all glib memory pools])],,
 	      [disable_mem_pools=no])
 AC_ARG_ENABLE(rebuilds,
-              [AC_HELP_STRING([--disable-rebuilds],
+              [AS_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
 AC_ARG_ENABLE(modular_tests,
-              AC_HELP_STRING([--disable-modular-tests],
+              AS_HELP_STRING([--disable-modular-tests],
                              [Disable build of test programs (default: no)]),,
               [enable_modular_tests=yes])
 AM_CONDITIONAL(BUILD_MODULAR_TESTS, test x$enable_modular_tests = xyes)
@@ -273,7 +273,7 @@ AS_IF([test "x$disable_mem_pools" = "xno"], [
 dnl location to install runtime libraries, e.g. ../../lib to install
 dnl to /lib if libdir is /usr/lib
 AC_ARG_WITH(runtime-libdir,
-           [AC_HELP_STRING([--with-runtime-libdir=RELPATH],
+           [AS_HELP_STRING([--with-runtime-libdir=RELPATH],
                            [install runtime libraries relative to libdir])],
            [],
 	   [with_runtime_libdir=""])
@@ -395,7 +395,7 @@ AS_IF([ test x"$glib_native_win32" = xyes], [
   with_libiconv=native
 ], [
   AC_ARG_WITH(libiconv,
-	      [AC_HELP_STRING([--with-libiconv=@<:@no/gnu/native@:>@],
+	      [AS_HELP_STRING([--with-libiconv=@<:@no/gnu/native@:>@],
 			      [use the libiconv library])],,
 	      [with_libiconv=maybe])
 
@@ -430,7 +430,7 @@ AS_IF([ test x"$glib_native_win32" = xyes], [
 ])
 
 AC_ARG_ENABLE(iconv-cache, 
-              [AC_HELP_STRING([--enable-iconv-cache=@<:@yes/no/auto@:>@],
+              [AS_HELP_STRING([--enable-iconv-cache=@<:@yes/no/auto@:>@],
                               [cache iconv descriptors [default=auto]])],,
               [enable_iconv_cache=auto])
 
@@ -1156,7 +1156,7 @@ AS_IF([test "$ac_cv_func_statfs" = yes], [
 #
 
 AC_ARG_ENABLE(included-printf,
-              [AC_HELP_STRING([--enable-included-printf],
+              [AS_HELP_STRING([--enable-included-printf],
                               [use included printf [default=auto]])],
               enable_included_printf="$enableval")
 
@@ -1669,7 +1669,7 @@ dnl *** Directory for GIO modules ***
 dnl *********************************
 
 AC_ARG_WITH(gio-module-dir,
-           [AC_HELP_STRING([--with-gio-module-dir=DIR],
+           [AS_HELP_STRING([--with-gio-module-dir=DIR],
                            [load gio modules from this directory [LIBDIR/gio/modules]])],
            [],
 	   [with_gio_module_dir='${libdir}/gio/modules'])
@@ -1680,7 +1680,7 @@ dnl **********************************
 dnl *** Check for libselinux (GIO) ***
 dnl **********************************
 AC_ARG_ENABLE(selinux,
-              AC_HELP_STRING([--disable-selinux],
+              AS_HELP_STRING([--disable-selinux],
                              [build without selinux support]))
 msg_selinux=no
 SELINUX_LIBS=
@@ -1732,7 +1732,7 @@ dnl ****************************
 should_disable_fam=no
 
 AC_ARG_ENABLE(fam,
-              AC_HELP_STRING([--disable-fam],
+              AS_HELP_STRING([--disable-fam],
                              [don't use fam for file system monitoring]),
                          [
                                 if test "x$enable_fam" = "xno"; then
@@ -1761,7 +1761,7 @@ dnl *****************************
 dnl *** Check for xattr (GIO) ***
 dnl *****************************
 AC_ARG_ENABLE(xattr,
-              AC_HELP_STRING([--disable-xattr], [build without xattr support]))
+              AS_HELP_STRING([--disable-xattr], [build without xattr support]))
 msg_xattr=no
 XATTR_LIBS=
 AS_IF([ test "x$enable_xattr" != "xno"], [
@@ -1816,7 +1816,7 @@ dnl ************************
 dnl *** check for libelf ***
 dnl ************************
 AC_ARG_ENABLE(libelf,
-              AC_HELP_STRING([--disable-libelf], [build without libelf support]))
+              AS_HELP_STRING([--disable-libelf], [build without libelf support]))
 AS_IF([ test "x$enable_libelf" != "xno"],[
 PKG_CHECK_MODULES([LIBELF], [libelf >= 0.8.12], [have_libelf=yes], [have_libelf=maybe])
 AS_IF([ test $have_libelf = maybe ], [
@@ -1883,7 +1883,7 @@ dnl *** g_thread checks ***
 dnl ***********************
 
 AC_ARG_WITH(threads,
-           [AC_HELP_STRING([--with-threads=@<:@posix/win32@:>@],
+           [AS_HELP_STRING([--with-threads=@<:@posix/win32@:>@],
                            [specify a thread implementation to use])],
            [],
            [with_threads=yes])
@@ -2479,7 +2479,7 @@ PCRE_REQUIRED_VERSION=8.13
 
 # Check if we should use the internal or the system-supplied pcre
 AC_ARG_WITH(pcre,
-            [AC_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
+            [AS_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
                             [whether to use system PCRE [default=internal]])])
 
 AM_CONDITIONAL(USE_SYSTEM_PCRE, [test "x$with_pcre" = xsystem])
@@ -2594,7 +2594,7 @@ AM_CONDITIONAL([ENABLE_GTK_DOC],[false])
 ])
 
 AC_ARG_ENABLE(man,
-              [AC_HELP_STRING([--enable-man],
+              [AS_HELP_STRING([--enable-man],
                               [generate man pages [default=auto]])],,
               enable_man=maybe)
 
@@ -3503,7 +3503,7 @@ dnl intra-library PLT jumps, if available.
 dnl
 
 AC_ARG_ENABLE(Bsymbolic,
-              [AC_HELP_STRING([--disable-Bsymbolic],
+              [AS_HELP_STRING([--disable-Bsymbolic],
                               [avoid linking with -Bsymbolic])],,
               [SAVED_LDFLAGS="${LDFLAGS}"
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
