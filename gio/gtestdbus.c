@@ -453,18 +453,17 @@ g_test_dbus_class_init (GTestDBusClass *klass)
 
 }
 
-static GFile *
+static gchar *
 write_config_file (GTestDBus *self)
 {
   GString *contents;
-  GFile *file;
-  GFileIOStream *iostream;
+  gint fd;
   guint i;
   GError *error = NULL;
+  gchar *path = NULL;
 
-  file = g_file_new_tmp ("g-test-dbus-XXXXXX", &iostream, &error);
+  fd = g_file_open_tmp ("g-test-dbus-XXXXXX", &path, &error);
   g_assert_no_error (error);
-  g_object_unref (iostream);
 
   contents = g_string_new (NULL);
   g_string_append (contents,
@@ -496,20 +495,20 @@ write_config_file (GTestDBus *self)
       "  </policy>\n"
       "</busconfig>\n");
 
-  g_file_replace_contents (file, contents->str, contents->len,
-      NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
+  g_file_set_contents (path, contents->str, contents->len, &error);
   g_assert_no_error (error);
 
   g_string_free (contents, TRUE);
 
-  return file;
+  close (fd);
+
+  return path;
 }
 
 static void
 start_daemon (GTestDBus *self)
 {
   gchar *argv[] = {"dbus-daemon", "--print-address", "--config-file=foo", NULL};
-  GFile *file;
   gchar *config_path;
   gchar *config_arg;
   gint stdout_fd;
@@ -521,9 +520,7 @@ start_daemon (GTestDBus *self)
     argv[0] = (gchar *)g_getenv ("G_TEST_DBUS_DAEMON");
 
   /* Write config file and set its path in argv */
-  file = write_config_file (self);
-  config_path = g_file_get_path (file);
-  g_object_unref (file);
+  config_path = write_config_file (self);
   config_arg = g_strdup_printf ("--config-file=%s", config_path);
   argv[2] = config_arg;
 
