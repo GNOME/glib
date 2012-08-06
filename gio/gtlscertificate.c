@@ -58,8 +58,10 @@ enum
   PROP_0,
 
   PROP_CERTIFICATE,
+  PROP_CERTIFICATE_BYTES,
   PROP_CERTIFICATE_PEM,
   PROP_PRIVATE_KEY,
+  PROP_PRIVATE_KEY_BYTES,
   PROP_PRIVATE_KEY_PEM,
   PROP_ISSUER
 };
@@ -99,8 +101,9 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * GTlsCertificate:certificate:
    *
    * The DER (binary) encoded representation of the certificate.
-   * This property and the #GTlsCertificate:certificate-pem property
-   * represent the same data, just in different forms.
+   * This property and the #GTlsCertificate:certificate-bytes contain
+   * the same data. The #GTlsCertificate:certificate-pem property
+   * represents the same data, just in different forms.
    *
    * Since: 2.28
    */
@@ -113,11 +116,29 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
   /**
+   * GTlsCertificate:certificate-bytes:
+   *
+   * The DER (binary) encoded representation of the certificate as
+   * a #GBytes. The #GTlsCertificate:certificate property contains
+   * the same data. The #GTlsCertificate:certificate-pem property
+   * contains the same data as this property in a different form.
+   *
+   * Since: 2.34
+   */
+  g_object_class_install_property (gobject_class, PROP_CERTIFICATE_BYTES,
+                                   g_param_spec_boxed ("certificate-bytes",
+                                                       P_("Certificate Bytes"),
+                                                       P_("The DER representation of the certificate"),
+                                                       G_TYPE_BYTES,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
+  /**
    * GTlsCertificate:certificate-pem:
    *
    * The PEM (ASCII) encoded representation of the certificate.
-   * This property and the #GTlsCertificate:certificate
-   * property represent the same data, just in different forms.
+   * The #GTlsCertificate:certificate and #GTlsCertificate:certificate-bytes
+   * properties represent the same data, just in a different form.
    *
    * Since: 2.28
    */
@@ -152,6 +173,23 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
 						       G_PARAM_WRITABLE |
 						       G_PARAM_CONSTRUCT_ONLY |
 						       G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsCertificate:private-key-bytes:
+   *
+   * The DER (binary) encoded representation of the certificate's
+   * private key. This property and the #GtlsCertificate:private-key
+   * property contain the same data.
+   *
+   * Since: 2.34
+   */
+  g_object_class_install_property (gobject_class, PROP_PRIVATE_KEY_BYTES,
+                                   g_param_spec_boxed ("private-key-bytes",
+                                                       P_("Private key bytes"),
+                                                       P_("The DER representation of the certificate's private key"),
+                                                       G_TYPE_BYTES,
+                                                       G_PARAM_WRITABLE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:private-key-pem:
    *
@@ -579,20 +617,19 @@ gboolean
 g_tls_certificate_is_same (GTlsCertificate     *cert_one,
                            GTlsCertificate     *cert_two)
 {
-  GByteArray *b1, *b2;
+  GBytes *b1, *b2;
   gboolean equal;
 
   g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert_one), FALSE);
   g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert_two), FALSE);
 
-  g_object_get (cert_one, "certificate", &b1, NULL);
-  g_object_get (cert_two, "certificate", &b2, NULL);
+  g_object_get (cert_one, "certificate-bytes", &b1, NULL);
+  g_object_get (cert_two, "certificate-bytes", &b2, NULL);
 
-  equal = (b1->len == b2->len &&
-           memcmp (b1->data, b2->data, b1->len) == 0);
+  equal = g_bytes_equal (b1, b2);
 
-  g_byte_array_unref (b1);
-  g_byte_array_unref (b2);
+  g_bytes_unref (b1);
+  g_bytes_unref (b2);
 
   return equal;
 }
