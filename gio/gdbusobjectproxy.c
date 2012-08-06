@@ -73,6 +73,8 @@ g_dbus_object_proxy_finalize (GObject *object)
 
   g_clear_object (&proxy->priv->connection);
 
+  g_free (proxy->priv->object_path);
+
   g_mutex_clear (&proxy->priv->lock);
 
   if (G_OBJECT_CLASS (g_dbus_object_proxy_parent_class)->finalize != NULL)
