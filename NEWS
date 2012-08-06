@@ -20,6 +20,18 @@ Overview of changes from GLib 2.33.6 to 2.33.8
  680994 STATIC_ASSERT in GDBusError docs don't have much utility
  681116 gtlscertificate: Add g_tls_certificate_equal() function
  681118 gtlsdatabase: Don't complain if no callbacks for async...
+ 669331 try to get gio tests working a little better on win32
+ 674314 Make gtk-doc not a hard dependency of GLib
+ 674800 gclosure: generic marshaller leaks return value
+ 675524 gsocket: FIONREAD undeclared (needs sys/filio.h)
+ 679509 use after free in g_dbus_action_group_describe_all_done()
+ 679996 gobject docs minor cleanup
+ 680459 Extra newline char in local implementation of g_applic...
+ 680505 object_path memory leak in gdbusobjectproxy.c
+ 680831 Deprecate and remove g_slice_[sg]et_config.*
+ 680912 gchecksum: Add g_compute_checksum_for_bytes()
+ 681151 checksum: Use functions instead of macros when buildin...
+ 681158 gtlscertificate: Don't confuse certificate and public ...
 
 * Translation updates:
  Galician
