@@ -326,8 +326,17 @@ g_win32_input_stream_read (GInputStream  *stream,
         goto end;
 
       errsv = GetLastError ();
-      if (errsv == ERROR_HANDLE_EOF ||
-          errsv == ERROR_BROKEN_PIPE)
+      if (errsv == ERROR_MORE_DATA)
+        {
+          /* If a named pipe is being read in message mode and the
+           * next message is longer than the nNumberOfBytesToRead
+           * parameter specifies, ReadFile returns FALSE and
+           * GetLastError returns ERROR_MORE_DATA */
+          retval = nread;
+          goto end;
+        }
+      else if (errsv == ERROR_HANDLE_EOF ||
+               errsv == ERROR_BROKEN_PIPE)
         {
           /* TODO: the other end of a pipe may call the WriteFile
            * function with nNumberOfBytesToWrite set to zero. In this
