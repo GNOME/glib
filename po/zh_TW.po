@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-14 13:48+0800\n"
-"PO-Revision-Date: 2012-07-12 15:27+0800\n"
+"POT-Creation-Date: 2012-08-07 13:35+0800\n"
+"PO-Revision-Date: 2012-08-03 14:43+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
 "Language: zh_TW\n"
@@ -49,7 +49,7 @@ msgstr "在基礎串流中不支援截短(truncate)"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1885
 #: ../gio/gdbusconnection.c:1977 ../gio/gdbusprivate.c:1414
-#: ../gio/glocalfile.c:2133 ../gio/gsimpleasyncresult.c:841
+#: ../gio/glocalfile.c:2152 ../gio/gsimpleasyncresult.c:841
 #: ../gio/gsimpleasyncresult.c:867
 #, c-format
 msgid "Operation was cancelled"
@@ -80,7 +80,7 @@ msgstr "轉換輸入資料時遇到不正確的位元組組合"
 msgid "Error during conversion: %s"
 msgstr "轉換時發生錯誤：%s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:959
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:963
 msgid "Cancellable initialization not supported"
 msgstr "不支援可取消的初始化"
 
@@ -930,8 +930,8 @@ msgstr "裝置無法實作啟動功能(start)"
 msgid "drive doesn't implement stop"
 msgstr "裝置無法實作停止功能(stop)"
 
-#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
-#: ../gio/gdummytlsbackend.c:378
+#: ../gio/gdummytlsbackend.c:172 ../gio/gdummytlsbackend.c:292
+#: ../gio/gdummytlsbackend.c:382
 msgid "TLS support is not available"
 msgstr "TLS 支援無法使用"
 
@@ -959,15 +959,15 @@ msgstr "GEmblemedIcon 編碼中記號 (%d) 的數量格式不正確"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "預期為 GEmblemedIcon 的 GEmblem"
 
-#: ../gio/gfile.c:874 ../gio/gfile.c:1101 ../gio/gfile.c:1232
-#: ../gio/gfile.c:1461 ../gio/gfile.c:1515 ../gio/gfile.c:1572
-#: ../gio/gfile.c:1655 ../gio/gfile.c:1710 ../gio/gfile.c:1770
-#: ../gio/gfile.c:1824 ../gio/gfile.c:3263 ../gio/gfile.c:3317
-#: ../gio/gfile.c:3462 ../gio/gfile.c:3503 ../gio/gfile.c:3829
-#: ../gio/gfile.c:4231 ../gio/gfile.c:4313 ../gio/gfile.c:4398
-#: ../gio/gfile.c:4492 ../gio/gfile.c:4575 ../gio/gfile.c:4665
-#: ../gio/gfile.c:4995 ../gio/gfile.c:5274 ../gio/gfile.c:5342
-#: ../gio/gfile.c:6966 ../gio/gfile.c:7052 ../gio/gfile.c:7134
+#: ../gio/gfile.c:884 ../gio/gfile.c:1111 ../gio/gfile.c:1242
+#: ../gio/gfile.c:1471 ../gio/gfile.c:1525 ../gio/gfile.c:1582
+#: ../gio/gfile.c:1665 ../gio/gfile.c:1720 ../gio/gfile.c:1780
+#: ../gio/gfile.c:1834 ../gio/gfile.c:3273 ../gio/gfile.c:3327
+#: ../gio/gfile.c:3474 ../gio/gfile.c:3515 ../gio/gfile.c:3905
+#: ../gio/gfile.c:4307 ../gio/gfile.c:4389 ../gio/gfile.c:4474
+#: ../gio/gfile.c:4568 ../gio/gfile.c:4651 ../gio/gfile.c:4741
+#: ../gio/gfile.c:5071 ../gio/gfile.c:5395 ../gio/gfile.c:5463
+#: ../gio/gfile.c:7087 ../gio/gfile.c:7173 ../gio/gfile.c:7255
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -980,58 +980,58 @@ msgstr "不支援的操作"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1349 ../gio/glocalfile.c:1070 ../gio/glocalfile.c:1081
-#: ../gio/glocalfile.c:1094
+#: ../gio/gfile.c:1359 ../gio/glocalfile.c:1089 ../gio/glocalfile.c:1100
+#: ../gio/glocalfile.c:1113
 msgid "Containing mount does not exist"
 msgstr "包含了不存在的掛載點"
 
-#: ../gio/gfile.c:2370 ../gio/glocalfile.c:2289
+#: ../gio/gfile.c:2380 ../gio/glocalfile.c:2308
 msgid "Can't copy over directory"
 msgstr "不能複製整個目錄"
 
-#: ../gio/gfile.c:2431
+#: ../gio/gfile.c:2441
 msgid "Can't copy directory over directory"
 msgstr "不能將目錄複製到目錄上"
 
-#: ../gio/gfile.c:2439 ../gio/glocalfile.c:2298
+#: ../gio/gfile.c:2449 ../gio/glocalfile.c:2317
 msgid "Target file exists"
 msgstr "目標檔案已存在"
 
-#: ../gio/gfile.c:2457
+#: ../gio/gfile.c:2467
 msgid "Can't recursively copy directory"
 msgstr "不能遞廻複製目錄"
 
-#: ../gio/gfile.c:2717
+#: ../gio/gfile.c:2727
 msgid "Splice not supported"
 msgstr "不支援拼接"
 
-#: ../gio/gfile.c:2721
+#: ../gio/gfile.c:2731
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "拼接檔案時發生錯誤：%s"
 
-#: ../gio/gfile.c:2868
+#: ../gio/gfile.c:2878
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: ../gio/gfile.c:3452
+#: ../gio/gfile.c:3464
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: ../gio/gfile.c:3546
+#: ../gio/gfile.c:3622
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: ../gio/gfile.c:3595
+#: ../gio/gfile.c:3671
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: ../gio/gfile.c:6029 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6150 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: ../gio/gfile.c:6136
+#: ../gio/gfile.c:6257
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -1535,119 +1535,119 @@ msgstr "移除現有的輸出檔案。\n"
 msgid "Unable to find default local directory monitor type"
 msgstr "無法找到預設的本地端目錄監視器類型"
 
-#: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:590 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "無效的檔案名稱 %s"
 
-#: ../gio/glocalfile.c:948
+#: ../gio/glocalfile.c:967
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "取得檔案系統資訊時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1116
+#: ../gio/glocalfile.c:1135
 msgid "Can't rename root directory"
 msgstr "不能重新命名根目錄"
 
-#: ../gio/glocalfile.c:1136 ../gio/glocalfile.c:1162
+#: ../gio/glocalfile.c:1155 ../gio/glocalfile.c:1181
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "重新命名檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1145
+#: ../gio/glocalfile.c:1164
 msgid "Can't rename file, filename already exists"
 msgstr "不能重新命名檔案，該檔案名稱已存在"
 
-#: ../gio/glocalfile.c:1158 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2191
-#: ../gio/glocalfile.c:2351 ../gio/glocalfileoutputstream.c:581
+#: ../gio/glocalfile.c:1177 ../gio/glocalfile.c:2181 ../gio/glocalfile.c:2210
+#: ../gio/glocalfile.c:2370 ../gio/glocalfileoutputstream.c:581
 #: ../gio/glocalfileoutputstream.c:634 ../gio/glocalfileoutputstream.c:679
 #: ../gio/glocalfileoutputstream.c:1167
 msgid "Invalid filename"
 msgstr "無效的檔案名稱"
 
-#: ../gio/glocalfile.c:1325 ../gio/glocalfile.c:1349
+#: ../gio/glocalfile.c:1344 ../gio/glocalfile.c:1368
 msgid "Can't open directory"
 msgstr "不能開啟目錄"
 
-#: ../gio/glocalfile.c:1333
+#: ../gio/glocalfile.c:1352
 #, c-format
 msgid "Error opening file: %s"
 msgstr "開啓檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1474
+#: ../gio/glocalfile.c:1493
 #, c-format
 msgid "Error removing file: %s"
 msgstr "移除檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1841
+#: ../gio/glocalfile.c:1860
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "移動檔案至回收筒時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1864
+#: ../gio/glocalfile.c:1883
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "無法建立回收筒目錄 %s：%s"
 
-#: ../gio/glocalfile.c:1885
+#: ../gio/glocalfile.c:1904
 msgid "Unable to find toplevel directory for trash"
 msgstr "無法找到回收筒的頂端層級目錄"
 
-#: ../gio/glocalfile.c:1964 ../gio/glocalfile.c:1984
+#: ../gio/glocalfile.c:1983 ../gio/glocalfile.c:2003
 msgid "Unable to find or create trash directory"
 msgstr "無法找到或建立回收筒目錄"
 
-#: ../gio/glocalfile.c:2018
+#: ../gio/glocalfile.c:2037
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "無法建立回收筒資訊檔案：%s"
 
-#: ../gio/glocalfile.c:2047 ../gio/glocalfile.c:2052 ../gio/glocalfile.c:2132
-#: ../gio/glocalfile.c:2139
+#: ../gio/glocalfile.c:2066 ../gio/glocalfile.c:2071 ../gio/glocalfile.c:2151
+#: ../gio/glocalfile.c:2158
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "無法將檔案移至回收筒：%s"
 
-#: ../gio/glocalfile.c:2140 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2159 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "內部的錯誤"
 
-#: ../gio/glocalfile.c:2166
+#: ../gio/glocalfile.c:2185
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "建立目錄發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2195
+#: ../gio/glocalfile.c:2214
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "檔案系統不支援符號連結"
 
-#: ../gio/glocalfile.c:2199
+#: ../gio/glocalfile.c:2218
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "建立符號連結時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2261 ../gio/glocalfile.c:2355
+#: ../gio/glocalfile.c:2280 ../gio/glocalfile.c:2374
 #, c-format
 msgid "Error moving file: %s"
 msgstr "移動檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2284
+#: ../gio/glocalfile.c:2303
 msgid "Can't move directory over directory"
 msgstr "不能將目錄移動至目錄上"
 
-#: ../gio/glocalfile.c:2311 ../gio/glocalfileoutputstream.c:965
+#: ../gio/glocalfile.c:2330 ../gio/glocalfileoutputstream.c:965
 #: ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:994
 #: ../gio/glocalfileoutputstream.c:1010 ../gio/glocalfileoutputstream.c:1024
 msgid "Backup file creation failed"
 msgstr "建立備份檔案失敗"
 
-#: ../gio/glocalfile.c:2330
+#: ../gio/glocalfile.c:2349
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "移除目標檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2344
+#: ../gio/glocalfile.c:2363
 msgid "Move between mounts not supported"
 msgstr "不支援在掛載點之間移動"
 
@@ -2343,131 +2343,129 @@ msgstr "  VALUE     要設定的數值\n"
 msgid "Empty schema name given\n"
 msgstr "指定了空的 schema 名稱\n"
 
-#: ../gio/gsocket.c:282
+#: ../gio/gsocket.c:286
 msgid "Invalid socket, not initialized"
 msgstr "無效的 socket，尚未初始化"
 
-#: ../gio/gsocket.c:289
+#: ../gio/gsocket.c:293
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "無效的 socket，初始化失敗原因為：%s"
 
-#: ../gio/gsocket.c:297
+#: ../gio/gsocket.c:301
 msgid "Socket is already closed"
 msgstr "Socket 已經關閉"
 
-#: ../gio/gsocket.c:305 ../gio/gsocket.c:3525 ../gio/gsocket.c:3580
+#: ../gio/gsocket.c:309 ../gio/gsocket.c:3529 ../gio/gsocket.c:3584
 msgid "Socket I/O timed out"
 msgstr "Socket I/O 逾時"
 
-#: ../gio/gsocket.c:472
+#: ../gio/gsocket.c:476
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "正在從 fd 建立 GSocket：%s"
 
-#: ../gio/gsocket.c:506 ../gio/gsocket.c:513 ../gio/gsocket.c:529
+#: ../gio/gsocket.c:510 ../gio/gsocket.c:517 ../gio/gsocket.c:533
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "無法建立 socket：%s"
 
-#: ../gio/gsocket.c:506
-#, fuzzy
-#| msgid "Unknown protocol was specified"
+#: ../gio/gsocket.c:510
 msgid "Unknown family was specified"
-msgstr "指定了不明的通訊協定"
+msgstr "指定了不明的字族"
 
-#: ../gio/gsocket.c:513
+#: ../gio/gsocket.c:517
 msgid "Unknown protocol was specified"
 msgstr "指定了不明的通訊協定"
 
-#: ../gio/gsocket.c:1718
+#: ../gio/gsocket.c:1722
 #, c-format
 msgid "could not get local address: %s"
 msgstr "無法取得本地端位址：%s"
 
-#: ../gio/gsocket.c:1761
+#: ../gio/gsocket.c:1765
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "無法取得遠端位址：%s"
 
-#: ../gio/gsocket.c:1822
+#: ../gio/gsocket.c:1826
 #, c-format
 msgid "could not listen: %s"
 msgstr "無法聽取：%s"
 
-#: ../gio/gsocket.c:1896
+#: ../gio/gsocket.c:1900
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "綁定至位址時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1949 ../gio/gsocket.c:1985
+#: ../gio/gsocket.c:1953 ../gio/gsocket.c:1989
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "加入多點廣播群組時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1950 ../gio/gsocket.c:1986
+#: ../gio/gsocket.c:1954 ../gio/gsocket.c:1990
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "離開多點廣播群組時發生錯誤：%s"
 
-#: ../gio/gsocket.c:1951
+#: ../gio/gsocket.c:1955
 msgid "No support for source-specific multicast"
 msgstr "不支援指定來源的多點廣播"
 
-#: ../gio/gsocket.c:2170
+#: ../gio/gsocket.c:2174
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接受連線時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2291
+#: ../gio/gsocket.c:2295
 msgid "Connection in progress"
 msgstr "連線進行中"
 
-#: ../gio/gsocket.c:2343 ../gio/gsocket.c:4322
+#: ../gio/gsocket.c:2347 ../gio/gsocket.c:4326
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "無法取得未處理的錯誤：%s"
 
-#: ../gio/gsocket.c:2513
+#: ../gio/gsocket.c:2517
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "接收資料時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2691
+#: ../gio/gsocket.c:2695
 #, c-format
 msgid "Error sending data: %s"
 msgstr "傳送資料時發生錯誤：%s"
 
-#: ../gio/gsocket.c:2805
+#: ../gio/gsocket.c:2809
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "無法關閉 socket：%s"
 
-#: ../gio/gsocket.c:2884
+#: ../gio/gsocket.c:2888
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "關閉 socket 時發生錯誤：%s"
 
-#: ../gio/gsocket.c:3518
+#: ../gio/gsocket.c:3522
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等候 socket 情況：%s"
 
-#: ../gio/gsocket.c:3796 ../gio/gsocket.c:3877
+#: ../gio/gsocket.c:3800 ../gio/gsocket.c:3881
 #, c-format
 msgid "Error sending message: %s"
 msgstr "傳送訊息時發生錯誤：%s"
 
-#: ../gio/gsocket.c:3821
+#: ../gio/gsocket.c:3825
 msgid "GSocketControlMessage not supported on windows"
 msgstr "視窗不支援 GSocketControlMessage"
 
-#: ../gio/gsocket.c:4101 ../gio/gsocket.c:4237
+#: ../gio/gsocket.c:4105 ../gio/gsocket.c:4241
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "取回郵件發生錯誤：%s"
 
-#: ../gio/gsocket.c:4341
+#: ../gio/gsocket.c:4345
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials 沒有在這個 OS 上實作"
 
@@ -2597,23 +2595,23 @@ msgstr "不明的 SOCKSv5 代理伺服器錯誤。"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "不能處理版本為 %d 的 GThemedIcon 編碼"
 
-#: ../gio/gtlscertificate.c:249
+#: ../gio/gtlscertificate.c:286
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "不能解鎖 PEM 編碼的私鑰"
 
-#: ../gio/gtlscertificate.c:254
+#: ../gio/gtlscertificate.c:291
 msgid "No PEM-encoded private key found"
 msgstr "找不到 PEM 編碼的私鑰"
 
-#: ../gio/gtlscertificate.c:264
+#: ../gio/gtlscertificate.c:301
 msgid "Could not parse PEM-encoded private key"
 msgstr "無法解析 PEM 編碼的私鑰"
 
-#: ../gio/gtlscertificate.c:289
+#: ../gio/gtlscertificate.c:326
 msgid "No PEM-encoded certificate found"
 msgstr "找到非 PEM 編碼的憑證"
 
-#: ../gio/gtlscertificate.c:298
+#: ../gio/gtlscertificate.c:335
 msgid "Could not parse PEM-encoded certificate"
 msgstr "無法解析 PEM 編碼的憑證"
 
@@ -3665,9 +3663,8 @@ msgid "short utf8"
 msgstr "短式 utf8"
 
 #: ../glib/gregex.c:305
-#, fuzzy
 msgid "recursion loop"
-msgstr "循環順序(_L)"
+msgstr "循環廻圈"
 
 #: ../glib/gregex.c:309
 msgid "unknown error"
@@ -4049,7 +4046,7 @@ msgstr "子程序被信號 %ld 停止"
 #: ../glib/gspawn.c:885
 #, fuzzy, c-format
 msgid "Child process exited abnormally"
-msgstr "子程序正常的以狀態 %d 結束。"
+msgstr "子程序以代碼 %ld 結束"
 
 #: ../glib/gspawn.c:1290 ../glib/gspawn-win32.c:344 ../glib/gspawn-win32.c:352
 #, c-format
