@@ -127,7 +127,7 @@ dist-local-check-mans-enabled:
 
 endif
 
-MAINTAINERCLEANFILES = $(man_MANS) $(BUILT_SOURCES)
+CLEANFILES += $(man_MANS)
 
 EXTRA_DIST += $(man_MANS)
 
