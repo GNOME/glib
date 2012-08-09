@@ -66,9 +66,14 @@ feature of the shell. If you enclose a command in backticks
 be substituted into the command line before execution. So to
 compile a GLib Hello, World, you would type the following:
 <programlisting>
-$ cc `pkg-config --cflags --libs glib-2.0` hello.c -o hello
+$ cc hello.c `pkg-config --cflags --libs glib-2.0` -o hello
 </programlisting>
 </para>
+<note><para>
+Note that the name of the file must come before the other options
+(such as <emphasis>pkg-config</emphasis>), or else you may get an
+error from the linker.
+</para></note>
 
 <para>
 Deprecated GLib functions are annotated to make the compiler
