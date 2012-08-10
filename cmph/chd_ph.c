@@ -193,8 +193,9 @@ void chd_ph_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs)
 
 void chd_ph_config_set_b(cmph_config_t *mph, cmph_uint32 keys_per_bucket)
 {
+	chd_ph_config_data_t *chd_ph;
 	assert(mph);
-	chd_ph_config_data_t *chd_ph = (chd_ph_config_data_t *)mph->data;
+	chd_ph = (chd_ph_config_data_t *)mph->data;
 	if(keys_per_bucket < 1 || keys_per_bucket >= 15)
 	{
 	    keys_per_bucket = 4;
@@ -205,8 +206,9 @@ void chd_ph_config_set_b(cmph_config_t *mph, cmph_uint32 keys_per_bucket)
 
 void chd_ph_config_set_keys_per_bin(cmph_config_t *mph, cmph_uint32 keys_per_bin)
 {
+	chd_ph_config_data_t *chd_ph;
 	assert(mph);
-	chd_ph_config_data_t *chd_ph = (chd_ph_config_data_t *)mph->data;
+	chd_ph = (chd_ph_config_data_t *)mph->data;
 	if(keys_per_bin <= 1 || keys_per_bin >= 128)
 	{
 	    keys_per_bin = 1;
@@ -860,9 +862,10 @@ void chd_ph_load(FILE *fd, cmph_t *mphf)
 	DEBUGP("Reading n and nbuckets\n");
 	nbytes = fread(&(chd_ph->n), sizeof(cmph_uint32), (size_t)1, fd);	
 	nbytes = fread(&(chd_ph->nbuckets), sizeof(cmph_uint32), (size_t)1, fd);	
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
         }
+
 }
 
 int chd_ph_dump(cmph_t *mphf, FILE *fd)
@@ -889,7 +892,7 @@ int chd_ph_dump(cmph_t *mphf, FILE *fd)
 	// dumping n and nbuckets
 	nbytes = fwrite(&(data->n), sizeof(cmph_uint32), (size_t)1, fd);
 	nbytes = fwrite(&(data->nbuckets), sizeof(cmph_uint32), (size_t)1, fd);
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return 0;
         }

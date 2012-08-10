@@ -226,7 +226,7 @@ int chm_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->m), sizeof(cmph_uint32), (size_t)1, fd);
 	
 	nbytes = fwrite(data->g, sizeof(cmph_uint32)*data->n, (size_t)1, fd);
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return 0;
         }
@@ -270,7 +270,7 @@ void chm_load(FILE *f, cmph_t *mphf)
 
 	chm->g = (cmph_uint32 *)malloc(sizeof(cmph_uint32)*chm->n);
 	nbytes = fread(chm->g, chm->n*sizeof(cmph_uint32), (size_t)1, f);
-        if (nbytes == 0 && ferror(f)) {
+	if (nbytes == 0 && ferror(f)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return;
         }
@@ -313,6 +313,7 @@ void chm_pack(cmph_t *mphf, void *packed_mphf)
 {
 	chm_data_t *data = (chm_data_t *)mphf->data;
 	cmph_uint8 * ptr = packed_mphf;
+	CMPH_HASH h2_type;
 
 	// packing h1 type
 	CMPH_HASH h1_type = hash_get_type(data->hashes[0]);
@@ -324,7 +325,7 @@ void chm_pack(cmph_t *mphf, void *packed_mphf)
 	ptr += hash_state_packed_size(h1_type);
 
 	// packing h2 type
-	CMPH_HASH h2_type = hash_get_type(data->hashes[1]);
+	h2_type = hash_get_type(data->hashes[1]);
 	*((cmph_uint32 *) ptr) = h2_type;
 	ptr += sizeof(cmph_uint32);
 
@@ -370,19 +371,24 @@ cmph_uint32 chm_search_packed(void *packed_mphf, const char *key, cmph_uint32 ke
 {
 	register cmph_uint8 *h1_ptr = packed_mphf;
 	register CMPH_HASH h1_type  = *((cmph_uint32 *)h1_ptr);
+	register cmph_uint8 *h2_ptr;
+	register CMPH_HASH h2_type;
+	register cmph_uint32 *g_ptr;
+	register cmph_uint32 n, m, h1, h2;
+
 	h1_ptr += 4;
 
-	register cmph_uint8 *h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
-	register CMPH_HASH h2_type  = *((cmph_uint32 *)h2_ptr);
+	h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
+	h2_type  = *((cmph_uint32 *)h2_ptr);
 	h2_ptr += 4;
 	
-	register cmph_uint32 *g_ptr = (cmph_uint32 *)(h2_ptr + hash_state_packed_size(h2_type));
+	g_ptr = (cmph_uint32 *)(h2_ptr + hash_state_packed_size(h2_type));
 	
-	register cmph_uint32 n = *g_ptr++;  
-	register cmph_uint32 m = *g_ptr++;  
+	n = *g_ptr++;
+	m = *g_ptr++;
 	
-	register cmph_uint32 h1 = hash_packed(h1_ptr, h1_type, key, keylen) % n; 
-	register cmph_uint32 h2 = hash_packed(h2_ptr, h2_type, key, keylen) % n; 
+	h1 = hash_packed(h1_ptr, h1_type, key, keylen) % n;
+	h2 = hash_packed(h2_ptr, h2_type, key, keylen) % n;
 	DEBUGP("key: %s h1: %u h2: %u\n", key, h1, h2);
 	if (h1 == h2 && ++h2 >= n) h2 = 0;
 	DEBUGP("key: %s g[h1]: %u g[h2]: %u edges: %u\n", key, g_ptr[h1], g_ptr[h2], m);

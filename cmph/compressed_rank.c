@@ -83,9 +83,9 @@ cmph_uint32 compressed_rank_query(compressed_rank_t * cr, cmph_uint32 idx)
 		return cr->n;
 	}
 	
-	val_quot = idx >> cr->rem_r; 	
-	rems_mask = (1U << cr->rem_r) - 1U; 
-	val_rem = idx & rems_mask; 
+	val_quot = idx >> cr->rem_r;
+	rems_mask = (1U << cr->rem_r) - 1U;
+	val_rem = idx & rems_mask;
 	if(val_quot == 0)
 	{
 		rank = sel_res = 0;
@@ -128,6 +128,9 @@ void compressed_rank_dump(compressed_rank_t * cr, char **buf, cmph_uint32 *bufle
 	register cmph_uint32 pos = 0;
 	char * buf_sel = 0;
 	cmph_uint32 buflen_sel = 0;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	
 	*buflen = 4*(cmph_uint32)sizeof(cmph_uint32) + sel_size +  vals_rems_size;
 	
@@ -164,7 +167,7 @@ void compressed_rank_dump(compressed_rank_t * cr, char **buf, cmph_uint32 *bufle
 	memcpy(*buf + pos, buf_sel, buflen_sel);
 	
 	#ifdef DEBUG	
-	cmph_uint32 i = 0; 
+	i = 0;
 	for(i = 0; i < buflen_sel; i++)
 	{
 	    DEBUGP("pos = %u  -- buf_sel[%u] = %u\n", pos, i, *(*buf + pos + i));
@@ -192,6 +195,9 @@ void compressed_rank_load(compressed_rank_t * cr, const char *buf, cmph_uint32 b
 	register cmph_uint32 pos = 0;
 	cmph_uint32 buflen_sel = 0;
 	register cmph_uint32 vals_rems_size = 0;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	
 	// loading max_val, n, and rem_r
 	memcpy(&(cr->max_val), buf, sizeof(cmph_uint32));
@@ -213,7 +219,7 @@ void compressed_rank_load(compressed_rank_t * cr, const char *buf, cmph_uint32 b
 
 	select_load(&cr->sel, buf + pos, buflen_sel);
 	#ifdef DEBUG	
-	cmph_uint32 i = 0;  
+	i = 0;
 	for(i = 0; i < buflen_sel; i++)
 	{
 	    DEBUGP("pos = %u  -- buf_sel[%u] = %u\n", pos, i, *(buf + pos + i));

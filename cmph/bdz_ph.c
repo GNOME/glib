@@ -452,6 +452,10 @@ int bdz_ph_dump(cmph_t *mphf, FILE *fd)
 	cmph_uint32 sizeg = 0;
 	register size_t nbytes;
 	bdz_ph_data_t *data = (bdz_ph_data_t *)mphf->data;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
+
 	__cmph_dump(mphf, fd);
 
 	hash_state_dump(data->hl, &buf, &buflen);
@@ -466,12 +470,11 @@ int bdz_ph_dump(cmph_t *mphf, FILE *fd)
 	sizeg = (cmph_uint32)ceil(data->n/5.0);	
 	nbytes = fwrite(data->g, sizeof(cmph_uint8)*sizeg, (size_t)1, fd);
 
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return 0;
         }
 	#ifdef DEBUG
-	cmph_uint32 i;
 	fprintf(stderr, "G: ");
 	for (i = 0; i < data->n; ++i) fprintf(stderr, "%u ", GETVALUE(data->g, i));
 	fprintf(stderr, "\n");
@@ -506,7 +509,7 @@ void bdz_ph_load(FILE *f, cmph_t *mphf)
 	bdz_ph->g = (cmph_uint8 *)calloc((size_t)sizeg, sizeof(cmph_uint8));
 	nbytes = fread(bdz_ph->g, sizeg*sizeof(cmph_uint8), (size_t)1, f);
 
-        if (nbytes == 0 && ferror(f)) {
+	if (nbytes == 0 && ferror(f)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
         }
 	return;
@@ -556,6 +559,7 @@ void bdz_ph_pack(cmph_t *mphf, void *packed_mphf)
 {
 	bdz_ph_data_t *data = (bdz_ph_data_t *)mphf->data;
 	cmph_uint8 * ptr = packed_mphf;
+	cmph_uint32 sizeg;
 
 	// packing hl type
 	CMPH_HASH hl_type = hash_get_type(data->hl);
@@ -571,7 +575,7 @@ void bdz_ph_pack(cmph_t *mphf, void *packed_mphf)
 	ptr += sizeof(data->r);
 
 	// packing g
-	cmph_uint32 sizeg = (cmph_uint32)ceil(data->n/5.0);
+	sizeg = (cmph_uint32)ceil(data->n/5.0);
 	memcpy(ptr, data->g,  sizeof(cmph_uint8)*sizeg);
 }
 

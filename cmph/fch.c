@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <string.h>
 #include <errno.h>
+
 #define INDEX 0 /* alignment index within a bucket */
 //#define DEBUG
 #include "debug.h"
@@ -320,6 +321,10 @@ int fch_dump(cmph_t *mphf, FILE *fd)
 	register size_t nbytes;
 	
 	fch_data_t *data = (fch_data_t *)mphf->data;
+
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	__cmph_dump(mphf, fd);
 
 	hash_state_dump(data->h1, &buf, &buflen);
@@ -340,12 +345,11 @@ int fch_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->p1), sizeof(double), (size_t)1, fd);
 	nbytes = fwrite(&(data->p2), sizeof(double), (size_t)1, fd);
 	nbytes = fwrite(data->g, sizeof(cmph_uint32)*(data->b), (size_t)1, fd);
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return 0;
         }
 	#ifdef DEBUG
-	cmph_uint32 i;
 	fprintf(stderr, "G: ");
 	for (i = 0; i < data->b; ++i) fprintf(stderr, "%u ", data->g[i]);
 	fprintf(stderr, "\n");
@@ -359,6 +363,9 @@ void fch_load(FILE *f, cmph_t *mphf)
 	cmph_uint32 buflen;
 	register size_t nbytes;
 	fch_data_t *fch = (fch_data_t *)malloc(sizeof(fch_data_t));
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 
 	//DEBUGP("Loading fch mphf\n");
 	mphf->data = fch;
@@ -392,12 +399,12 @@ void fch_load(FILE *f, cmph_t *mphf)
 
 	fch->g = (cmph_uint32 *)malloc(sizeof(cmph_uint32)*fch->b);
 	nbytes = fread(fch->g, fch->b*sizeof(cmph_uint32), (size_t)1, f);
-        if (nbytes == 0 && ferror(f)) {
+	if (nbytes == 0 && ferror(f)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return;
         }
+
 	#ifdef DEBUG
-	cmph_uint32 i;
 	fprintf(stderr, "G: ");
 	for (i = 0; i < fch->b; ++i) fprintf(stderr, "%u ", fch->g[i]);
 	fprintf(stderr, "\n");
@@ -436,6 +443,7 @@ void fch_pack(cmph_t *mphf, void *packed_mphf)
 
 	// packing h1 type
 	CMPH_HASH h1_type = hash_get_type(data->h1);
+	CMPH_HASH h2_type;
 	*((cmph_uint32 *) ptr) = h1_type;
 	ptr += sizeof(cmph_uint32);
 
@@ -444,7 +452,7 @@ void fch_pack(cmph_t *mphf, void *packed_mphf)
 	ptr += hash_state_packed_size(h1_type);
 
 	// packing h2 type
-	CMPH_HASH h2_type = hash_get_type(data->h2);
+	h2_type = hash_get_type(data->h2);
 	*((cmph_uint32 *) ptr) = h2_type;
 	ptr += sizeof(cmph_uint32);
 
@@ -499,27 +507,32 @@ cmph_uint32 fch_search_packed(void *packed_mphf, const char *key, cmph_uint32 ke
 {
 	register cmph_uint8 *h1_ptr = packed_mphf;
 	register CMPH_HASH h1_type  = *((cmph_uint32 *)h1_ptr);
+	register cmph_uint8 *h2_ptr;
+	register CMPH_HASH h2_type;
+	register cmph_uint32 *g_ptr;
+	register cmph_uint32 m, b, h1, h2;
+	register double p1, p2;
+
 	h1_ptr += 4;
 
-	register cmph_uint8 *h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
-	register CMPH_HASH h2_type  = *((cmph_uint32 *)h2_ptr);
+	h2_ptr = h1_ptr + hash_state_packed_size(h1_type);
+	h2_type  = *((cmph_uint32 *)h2_ptr);
 	h2_ptr += 4;
 	
-	register cmph_uint32 *g_ptr = (cmph_uint32 *)(h2_ptr + hash_state_packed_size(h2_type));
+	g_ptr = (cmph_uint32 *)(h2_ptr + hash_state_packed_size(h2_type));
 	
-	register cmph_uint32 m = *g_ptr++;  
+	m = *g_ptr++;
 
-	register cmph_uint32 b = *g_ptr++;  
+	b = *g_ptr++;
 
-	register double p1 = (double)(*((cmph_uint64 *)g_ptr));
+	p1 = (double)(*((cmph_uint64 *)g_ptr));
 	g_ptr += 2;
 
-	register double p2 = (double)(*((cmph_uint64 *)g_ptr));
+	p2 = (double)(*((cmph_uint64 *)g_ptr));
 	g_ptr += 2;
 
-	register cmph_uint32 h1 = hash_packed(h1_ptr, h1_type, key, keylen) % m; 
-	register cmph_uint32 h2 = hash_packed(h2_ptr, h2_type, key, keylen) % m;
-
+	h1 = hash_packed(h1_ptr, h1_type, key, keylen) % m;
+	h2 = hash_packed(h2_ptr, h2_type, key, keylen) % m;
 	h1 = mixh10h11h12 (b, p1, p2, h1);
 	return (h2 + g_ptr[h1]) % m;
 }

@@ -489,6 +489,10 @@ int bdz_dump(cmph_t *mphf, FILE *fd)
 	cmph_uint32 buflen;
 	register size_t nbytes;
 	bdz_data_t *data = (bdz_data_t *)mphf->data;
+	cmph_uint32 sizeg;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	__cmph_dump(mphf, fd);
 
 	hash_state_dump(data->hl, &buf, &buflen);
@@ -501,7 +505,7 @@ int bdz_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->m), sizeof(cmph_uint32), (size_t)1, fd);
 	nbytes = fwrite(&(data->r), sizeof(cmph_uint32), (size_t)1, fd);
 	
-	cmph_uint32 sizeg = (cmph_uint32)ceil(data->n/4.0);
+	sizeg = (cmph_uint32)ceil(data->n/4.0);
 	nbytes = fwrite(data->g, sizeof(cmph_uint8)*sizeg, (size_t)1, fd);
 
 	nbytes = fwrite(&(data->k), sizeof(cmph_uint32), (size_t)1, fd);
@@ -509,12 +513,11 @@ int bdz_dump(cmph_t *mphf, FILE *fd)
 	nbytes = fwrite(&(data->ranktablesize), sizeof(cmph_uint32), (size_t)1, fd);
 
 	nbytes = fwrite(data->ranktable, sizeof(cmph_uint32)*(data->ranktablesize), (size_t)1, fd);
-        if (nbytes == 0 && ferror(fd)) {
+	if (nbytes == 0 && ferror(fd)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return 0;
         }
 	#ifdef DEBUG
-	cmph_uint32 i;
 	fprintf(stderr, "G: ");
 	for (i = 0; i < data->n; ++i) fprintf(stderr, "%u ", GETVALUE(data->g, i));
 	fprintf(stderr, "\n");
@@ -528,6 +531,9 @@ void bdz_load(FILE *f, cmph_t *mphf)
 	cmph_uint32 buflen, sizeg;
 	register size_t nbytes;
 	bdz_data_t *bdz = (bdz_data_t *)malloc(sizeof(bdz_data_t));
+#ifdef DEBUG
+	cmph_uint32  i = 0;
+#endif
 
 	DEBUGP("Loading bdz mphf\n");
 	mphf->data = bdz;
@@ -554,13 +560,13 @@ void bdz_load(FILE *f, cmph_t *mphf)
 
 	bdz->ranktable = (cmph_uint32 *)calloc((size_t)bdz->ranktablesize, sizeof(cmph_uint32));
 	nbytes = fread(bdz->ranktable, sizeof(cmph_uint32)*(bdz->ranktablesize), (size_t)1, f);
-        if (nbytes == 0 && ferror(f)) {
+	if (nbytes == 0 && ferror(f)) {
           fprintf(stderr, "ERROR: %s\n", strerror(errno));
           return;
         }
 
 	#ifdef DEBUG
-	cmph_uint32  i = 0;
+	i = 0;
 	fprintf(stderr, "G: ");
 	for (i = 0; i < bdz->n; ++i) fprintf(stderr, "%u ", GETVALUE(bdz->g,i));
 	fprintf(stderr, "\n");
@@ -639,6 +645,7 @@ void bdz_pack(cmph_t *mphf, void *packed_mphf)
 {
 	bdz_data_t *data = (bdz_data_t *)mphf->data;
 	cmph_uint8 * ptr = packed_mphf;
+	cmph_uint32 sizeg;
 
 	// packing hl type
 	CMPH_HASH hl_type = hash_get_type(data->hl);
@@ -665,7 +672,7 @@ void bdz_pack(cmph_t *mphf, void *packed_mphf)
 	*ptr++ = data->b;
 
 	// packing g
-	cmph_uint32 sizeg = (cmph_uint32)ceil(data->n/4.0);
+	sizeg = (cmph_uint32)ceil(data->n/4.0);
 	memcpy(ptr, data->g,  sizeof(cmph_uint8)*sizeg);
 }
 

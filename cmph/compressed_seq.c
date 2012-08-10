@@ -167,6 +167,9 @@ void compressed_seq_dump(compressed_seq_t * cs, char ** buf, cmph_uint32 * bufle
 	register cmph_uint32 pos = 0;
 	char * buf_sel = 0;
 	cmph_uint32 buflen_sel = 0;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	
 	*buflen = 4*(cmph_uint32)sizeof(cmph_uint32) + sel_size +  length_rems_size + store_table_size;
 	
@@ -202,8 +205,8 @@ void compressed_seq_dump(compressed_seq_t * cs, char ** buf, cmph_uint32 * bufle
 	DEBUGP("buflen_sel = %u\n", buflen_sel);
 
 	memcpy(*buf + pos, buf_sel, buflen_sel);
-	#ifdef DEBUG	
-	cmph_uint32 i = 0; 
+	#ifdef DEBUG
+	i = 0;
 	for(i = 0; i < buflen_sel; i++)
 	{
 	    DEBUGP("pos = %u  -- buf_sel[%u] = %u\n", pos, i, *(*buf + pos + i));
@@ -215,7 +218,7 @@ void compressed_seq_dump(compressed_seq_t * cs, char ** buf, cmph_uint32 * bufle
 	
 	// dumping length_rems
 	memcpy(*buf + pos, cs->length_rems, length_rems_size);
-	#ifdef DEBUG	
+	#ifdef DEBUG
 	for(i = 0; i < length_rems_size; i++)
 	{
 	    DEBUGP("pos = %u -- length_rems_size = %u  -- length_rems[%u] = %u\n", pos, length_rems_size, i, *(*buf + pos + i));
@@ -226,7 +229,7 @@ void compressed_seq_dump(compressed_seq_t * cs, char ** buf, cmph_uint32 * bufle
 	// dumping store_table
 	memcpy(*buf + pos, cs->store_table, store_table_size);
 
-	#ifdef DEBUG	
+	#ifdef DEBUG
 	for(i = 0; i < store_table_size; i++)
 	{
 	    DEBUGP("pos = %u -- store_table_size = %u  -- store_table[%u] = %u\n", pos, store_table_size, i, *(*buf + pos + i));
@@ -241,6 +244,9 @@ void compressed_seq_load(compressed_seq_t * cs, const char * buf, cmph_uint32 bu
 	cmph_uint32 buflen_sel = 0;
 	register cmph_uint32 length_rems_size = 0;
 	register cmph_uint32 store_table_size = 0;
+#ifdef DEBUG
+	cmph_uint32 i;
+#endif
 	
 	// loading n, rem_r and total_length
 	memcpy(&(cs->n), buf, sizeof(cmph_uint32));
@@ -261,8 +267,8 @@ void compressed_seq_load(compressed_seq_t * cs, const char * buf, cmph_uint32 bu
 	DEBUGP("buflen_sel = %u\n", buflen_sel);
 
 	select_load(&cs->sel, buf + pos, buflen_sel);
-	#ifdef DEBUG	
-	cmph_uint32 i = 0;  
+	#ifdef DEBUG
+	i = 0;
 	for(i = 0; i < buflen_sel; i++)
 	{
 	    DEBUGP("pos = %u  -- buf_sel[%u] = %u\n", pos, i, *(buf + pos + i));
@@ -280,7 +286,7 @@ void compressed_seq_load(compressed_seq_t * cs, const char * buf, cmph_uint32 bu
 	length_rems_size *= 4;
 	memcpy(cs->length_rems, buf + pos, length_rems_size);
 	
-	#ifdef DEBUG	
+	#ifdef DEBUG
 	for(i = 0; i < length_rems_size; i++)
 	{
 	    DEBUGP("pos = %u -- length_rems_size = %u  -- length_rems[%u] = %u\n", pos, length_rems_size, i, *(buf + pos + i));
@@ -298,7 +304,7 @@ void compressed_seq_load(compressed_seq_t * cs, const char * buf, cmph_uint32 bu
         store_table_size *= 4;
 	memcpy(cs->store_table, buf + pos, store_table_size);
 	
-	#ifdef DEBUG	
+	#ifdef DEBUG
 	for(i = 0; i < store_table_size; i++)
 	{
 	    DEBUGP("pos = %u -- store_table_size = %u  -- store_table[%u] = %u\n", pos, store_table_size, i, *(buf + pos + i));
@@ -336,19 +342,19 @@ cmph_uint32 compressed_seq_query_packed(void * cs_packed, cmph_uint32 idx)
 	register cmph_uint32 *ptr = (cmph_uint32 *)cs_packed;
 	register cmph_uint32 n = *ptr++;
 	register cmph_uint32 rem_r = *ptr++;
+	register cmph_uint32 buflen_sel, length_rems_size, enc_idx, enc_length;
+	// compressed sequence query computation
+	register cmph_uint32 rems_mask, stored_value, sel_res;
+	register cmph_uint32 *sel_packed, *length_rems, *store_table;
+
 	ptr++; // skipping total_length 
 // 	register cmph_uint32 total_length = *ptr++;
-	register cmph_uint32 buflen_sel = *ptr++;
-	register cmph_uint32 * sel_packed = ptr;
-	register cmph_uint32 * length_rems = (ptr += (buflen_sel >> 2)); 
-	register cmph_uint32 length_rems_size = BITS_TABLE_SIZE(n, rem_r);
-	register cmph_uint32 * store_table = (ptr += length_rems_size);
+	buflen_sel = *ptr++;
+	sel_packed = ptr;
+	length_rems = (ptr += (buflen_sel >> 2));
+	length_rems_size = BITS_TABLE_SIZE(n, rem_r);
+	store_table = (ptr += length_rems_size);
 
-	// compressed sequence query computation
-	register cmph_uint32 enc_idx, enc_length;
-	register cmph_uint32 rems_mask;
-	register cmph_uint32 stored_value;
-	register cmph_uint32 sel_res;
 
 	rems_mask = (1U << rem_r) - 1U;
 	
