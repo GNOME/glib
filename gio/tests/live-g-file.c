@@ -1037,6 +1037,94 @@ test_delete (gconstpointer test_data)
   g_object_unref (root);
 }
 
+static void
+test_make_directory_with_parents (gconstpointer test_data)
+{
+  GFile *root, *child, *grandchild, *greatgrandchild;
+  gboolean res;
+  GError *error = NULL;
+
+  g_assert (test_data != NULL);
+
+  root = g_file_new_for_commandline_arg ((char *) test_data);
+  g_assert (root != NULL);
+  res = g_file_query_exists (root, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  child = g_file_get_child (root, "a");
+  grandchild = g_file_get_child (child, "b");
+  greatgrandchild = g_file_get_child (grandchild, "c");
+
+  /* Check that we can successfully make directory hierarchies of
+   * depth 1, 2, or 3
+   */
+  res = g_file_make_directory_with_parents (child, NULL, &error);
+  g_assert_cmpint (res, ==, TRUE);
+  g_assert_no_error (error);
+  res = g_file_query_exists (child, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  g_file_delete (child, NULL, NULL);
+
+  res = g_file_make_directory_with_parents (grandchild, NULL, &error);
+  g_assert_cmpint (res, ==, TRUE);
+  g_assert_no_error (error);
+  res = g_file_query_exists (grandchild, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  g_file_delete (grandchild, NULL, NULL);
+  g_file_delete (child, NULL, NULL);
+
+  res = g_file_make_directory_with_parents (greatgrandchild, NULL, &error);
+  g_assert_cmpint (res, ==, TRUE);
+  g_assert_no_error (error);
+  res = g_file_query_exists (greatgrandchild, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  g_file_delete (greatgrandchild, NULL, NULL);
+  g_file_delete (grandchild, NULL, NULL);
+  g_file_delete (child, NULL, NULL);
+
+  /* Now test failure by trying to create a directory hierarchy
+   * where a ancestor exists but is read-only
+   */
+
+  /* No obvious way to do this on Windows */
+  if (!posix_compat)
+    goto out;
+
+#ifndef G_PLATFORM_WIN32
+  if (getuid() == 0) /* permissions are ignored for root */
+    goto out;
+#endif
+
+  g_file_make_directory (child, NULL, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  res = g_file_set_attribute_uint32 (child,
+                                     G_FILE_ATTRIBUTE_UNIX_MODE,
+                                     S_IRUSR + S_IXUSR, /* -r-x------ */
+                                     G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                     NULL, NULL);
+  g_assert_cmpint (res, ==, TRUE);
+
+  res = g_file_make_directory_with_parents (grandchild, NULL, &error);
+  g_assert_cmpint (res, ==, FALSE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
+  g_clear_error (&error);
+
+  res = g_file_make_directory_with_parents (greatgrandchild, NULL, &error);
+  g_assert_cmpint (res, ==, FALSE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
+  g_clear_error (&error);
+
+out:
+  g_object_unref (greatgrandchild);
+  g_object_unref (grandchild);
+  g_object_unref (child);
+  g_object_unref (root);
+}
+
 
 static void
 cleanup_dir_recurse (GFile *parent, GFile *root)
@@ -1220,6 +1308,11 @@ main (int argc, char *argv[])
   if (write_test && (!only_create_struct))
     g_test_add_data_func ("/live-g-file/test_delete", target_path,
 			  test_delete);
+
+  /*  Write test - make_directory_with_parents */
+  if (write_test && (!only_create_struct))
+    g_test_add_data_func ("/live-g-file/test_make_directory_with_parents", target_path,
+			  test_make_directory_with_parents);
 
   if (write_test || only_create_struct)
     g_test_add_data_func ("/live-g-file/final_clean", target_path,
