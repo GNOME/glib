@@ -35,7 +35,6 @@ endif
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"			\
-	-DGLIB_LOCALE_DIR=\"$(localedir)\"		\
 	$(gmodule_INCLUDES)				\
 	$(GLIB_DEBUG_FLAGS)				\
 	-DGIO_COMPILATION				\
