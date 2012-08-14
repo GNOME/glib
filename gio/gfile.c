@@ -3384,11 +3384,12 @@ g_file_make_directory_with_parents (GFile         *file,
     {
       GFile *parent_file;
 
-      g_clear_error (&my_error);
-
       parent_file = g_file_get_parent (work_file);
       if (parent_file == NULL)
         break;
+
+      g_clear_error (&my_error);
+
       result = g_file_make_directory (parent_file, cancellable, &my_error);
 
       g_object_unref (work_file);
