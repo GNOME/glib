@@ -333,7 +333,7 @@ gfloat baz (gpointer data1,
             gpointer data2);
 </programlisting>
 <para>
-The marshaller list has to look like this:
+The <filename>marshaller.list</filename> file has to look like this:
 </para>
 <programlisting>
 VOID:VOID
@@ -341,13 +341,20 @@ VOID:INT
 FLOAT:BOOLEAN,UCHAR
 </programlisting>
 <para>
+and you call glib-genmarshal like this:
+</para>
+<programlisting>
+glib-genmarshal --header marshaller.list > marshaller.h
+glib-genmarshal --body marshaller.list > marshaller.c
+</programlisting>
+<para>
 The generated marshallers have the arguments encoded in their function name.
 For this particular list, they are
 </para>
 <programlisting>
-g_cclosure_marshal_VOID__VOID(),
-g_cclosure_marshal_VOID__INT(),
-g_cclosure_marshal_FLOAT__BOOLEAN_UCHAR().
+g_cclosure_user_marshal_VOID__VOID(),
+g_cclosure_user_marshal_VOID__INT(),
+g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR().
 </programlisting>
 <para>
 They can be used directly for GClosures or be passed in as the
@@ -357,11 +364,11 @@ GSignalCMarshaller c_marshaller; argument upon creation of signals:
 GClosure *cc_foo, *cc_bar, *cc_baz;
 
 cc_foo = g_cclosure_new (NULL, foo, NULL);
-g_closure_set_marshal (cc_foo, g_cclosure_marshal_VOID__VOID);
+g_closure_set_marshal (cc_foo, g_cclosure_user_marshal_VOID__VOID);
 cc_bar = g_cclosure_new (NULL, bar, NULL);
-g_closure_set_marshal (cc_bar, g_cclosure_marshal_VOID__INT);
+g_closure_set_marshal (cc_bar, g_cclosure_user_marshal_VOID__INT);
 cc_baz = g_cclosure_new (NULL, baz, NULL);
-g_closure_set_marshal (cc_baz, g_cclosure_marshal_FLOAT__BOOLEAN_UCHAR);
+g_closure_set_marshal (cc_baz, g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR);
 </programlisting>
 </refsect1>
 <refsect1><title>See also</title>
