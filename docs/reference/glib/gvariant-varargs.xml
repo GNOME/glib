@@ -932,7 +932,7 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
   GVariant *value;
 
   value = g_variant_new ("&s", "hello world");
-  str = g_variant_get ("&s", &str);
+  str = g_variant_get (value, "&s", &str);
   g_print ("string is: %s\n", str);
   /* no need to free str */
 }]]></programlisting></informalexample>
