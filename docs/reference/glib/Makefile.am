@@ -94,12 +94,14 @@ EXTRA_DIST +=				\
 
 ########################################################################
 
-man_MANS =		  	\
+man_MANS =
+
+if ENABLE_MAN
+
+man_MANS += \
 	glib-gettextize.1 	\
 	gtester.1		\
 	gtester-report.1
-
-if ENABLE_MAN
 
 XSLTPROC_FLAGS = \
         --nonet \

@@ -69,12 +69,15 @@ EXTRA_DIST += 		\
 
 ########################################################################
 
-man_MANS = 			\
+man_MANS =
+
+if ENABLE_MAN
+
+man_MANS += 			\
 	glib-mkenums.1 		\
 	glib-genmarshal.1 	\
 	gobject-query.1
 
-if ENABLE_MAN
 
 XSLTPROC_FLAGS = \
         --nonet \

@@ -142,7 +142,11 @@ include $(top_srcdir)/gtk-doc.make
 EXTRA_DIST +=			\
 	version.xml.in
 
-man_MANS =			\
+man_MANS =
+
+if ENABLE_MAN
+
+man_MANS +=			\
 	gio-querymodules.1	\
 	glib-compile-schemas.1	\
 	glib-compile-resources.1	\
@@ -150,8 +154,6 @@ man_MANS =			\
 	gresource.1		\
 	gdbus.1			\
 	gdbus-codegen.1
-
-if ENABLE_MAN
 
 XSLTPROC_FLAGS = \
         --nonet \
