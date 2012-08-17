@@ -98,7 +98,7 @@ g_dbus_object_skeleton_get_property (GObject    *_object,
     {
     case PROP_G_OBJECT_PATH:
       g_mutex_lock (&object->priv->lock);
-      g_value_take_string (value, object->priv->object_path);
+      g_value_set_string (value, object->priv->object_path);
       g_mutex_unlock (&object->priv->lock);
       break;
 
