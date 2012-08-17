@@ -137,6 +137,8 @@ g_winhttp_vfs_init (GWinHttpVfs *vfs)
      WINHTTP_NO_PROXY_NAME,
      WINHTTP_NO_PROXY_BYPASS,
      0);
+
+  g_free (wagent);
 }
 
 /*
