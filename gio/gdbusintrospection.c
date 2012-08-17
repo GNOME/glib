@@ -1276,14 +1276,12 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "name", &name,
-                                        /* some hand-written introspection XML documents use this */
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "xmlns:doc", NULL,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "name", &name,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       g_dbus_node_info_set (data,
@@ -1315,14 +1313,12 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING, "name", &name,
-                                        /* seen in the wild */
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "version", NULL,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING, "name", &name,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       g_dbus_interface_info_set (data,
@@ -1346,14 +1342,12 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING, "name", &name,
-                                        /* seen in the wild */
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "version", NULL,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING, "name", &name,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       g_dbus_method_info_set (data,
@@ -1378,12 +1372,12 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING, "name", &name,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING, "name", &name,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       g_dbus_signal_info_set (data,
@@ -1409,14 +1403,14 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING, "name", &name,
-                                        G_MARKUP_COLLECT_STRING, "type", &type,
-                                        G_MARKUP_COLLECT_STRING, "access", &access,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING, "name", &name,
+                                              G_MARKUP_COLLECT_STRING, "type", &type,
+                                              G_MARKUP_COLLECT_STRING, "access", &access,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       if (strcmp (access, "read") == 0)
@@ -1460,14 +1454,14 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "name", &name,
-                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "direction", &direction,
-                                        G_MARKUP_COLLECT_STRING, "type", &type,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "name", &name,
+                                              G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "direction", &direction,
+                                              G_MARKUP_COLLECT_STRING, "type", &type,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       if (strcmp (stack->next->data, "method") == 0)
@@ -1547,13 +1541,13 @@ parser_start_element (GMarkupParseContext  *context,
           goto out;
         }
 
-      if (!g_markup_collect_attributes (element_name,
-                                        attribute_names,
-                                        attribute_values,
-                                        error,
-                                        G_MARKUP_COLLECT_STRING, "name", &name,
-                                        G_MARKUP_COLLECT_STRING, "value", &value,
-                                        G_MARKUP_COLLECT_INVALID))
+      if (!g_markup_collect_known_attributes (element_name,
+                                              attribute_names,
+                                              attribute_values,
+                                              error,
+                                              G_MARKUP_COLLECT_STRING, "name", &name,
+                                              G_MARKUP_COLLECT_STRING, "value", &value,
+                                              G_MARKUP_COLLECT_INVALID))
         goto out;
 
       g_dbus_annotation_info_set (data,
