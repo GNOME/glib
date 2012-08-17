@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-12 23:05+0000\n"
-"PO-Revision-Date: 2012-08-14 13:17+0530\n"
+"POT-Creation-Date: 2012-08-17 13:48+0000\n"
+"PO-Revision-Date: 2012-08-17 19:43+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
 "Language: te\n"
@@ -161,16 +161,15 @@ msgstr "చిరునామా `%s లో లోపం '- కుటుంబ�
 
 #: ../gio/gdbusaddress.c:453
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
-msgstr "చిరునామా మూలకం `%s ', (:) ఒక పెద్దప్రేగు కలిగి లేదు"
+msgid "Address element `%s' does not contain a colon (:)"
+msgstr "చిరునామా మూలకం `%s ' కోలన్ (:) కలిగి లేదు"
 
 #: ../gio/gdbusaddress.c:474
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
-msgstr ""
-"మీట / విలువ జత%d, `%s ', చిరునామా మూలకం లోని_`%s', సమాన సిగ్న్ కలిగి లేదు"
+msgstr "కీ/విలువ జత %d, `%s ', చిరునామా మూలకం లో `%s' ఈక్వల్ సైన్ కలిగిలేదు"
 
 #: ../gio/gdbusaddress.c:488
 #, c-format
@@ -1012,11 +1011,11 @@ msgstr "GEmblemedIcon కొరకు GEmblem కావలసివుంది"
 #: ../gio/gfile.c:1471 ../gio/gfile.c:1525 ../gio/gfile.c:1582
 #: ../gio/gfile.c:1665 ../gio/gfile.c:1720 ../gio/gfile.c:1780
 #: ../gio/gfile.c:1834 ../gio/gfile.c:3273 ../gio/gfile.c:3327
-#: ../gio/gfile.c:3474 ../gio/gfile.c:3515 ../gio/gfile.c:3905
-#: ../gio/gfile.c:4307 ../gio/gfile.c:4389 ../gio/gfile.c:4474
-#: ../gio/gfile.c:4568 ../gio/gfile.c:4651 ../gio/gfile.c:4741
-#: ../gio/gfile.c:5071 ../gio/gfile.c:5395 ../gio/gfile.c:5463
-#: ../gio/gfile.c:7087 ../gio/gfile.c:7173 ../gio/gfile.c:7255
+#: ../gio/gfile.c:3470 ../gio/gfile.c:3511 ../gio/gfile.c:3901
+#: ../gio/gfile.c:4303 ../gio/gfile.c:4385 ../gio/gfile.c:4470
+#: ../gio/gfile.c:4564 ../gio/gfile.c:4647 ../gio/gfile.c:4737
+#: ../gio/gfile.c:5067 ../gio/gfile.c:5391 ../gio/gfile.c:5459
+#: ../gio/gfile.c:7083 ../gio/gfile.c:7169 ../gio/gfile.c:7251
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
@@ -1063,24 +1062,24 @@ msgstr "లోపం splicing ఫైలు: %s"
 msgid "Can't copy special file"
 msgstr "ప్రత్యేక దస్త్రమును నకలుతీయలేదు"
 
-#: ../gio/gfile.c:3464
+#: ../gio/gfile.c:3460
 msgid "Invalid symlink value given"
 msgstr "చెల్లని సిమ్‌లింక్ విలువ యివ్వబడినది"
 
-#: ../gio/gfile.c:3622
+#: ../gio/gfile.c:3618
 msgid "Trash not supported"
 msgstr "ట్రాష్ మద్దతీయలేదు"
 
-#: ../gio/gfile.c:3671
+#: ../gio/gfile.c:3667
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "దస్త్రము నామములు '%c'ని కలిగిలేవు"
 
-#: ../gio/gfile.c:6150 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6146 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "వాల్యూమ్ మౌంట్‌ను చేయలేకపోయింది"
 
-#: ../gio/gfile.c:6257
+#: ../gio/gfile.c:6253
 msgid "No application is registered as handling this file"
 msgstr "ఈ దస్త్రము సంబాలించుతున్నట్లు యెటువంటి అనువర్తనము నమోదుకాలేదు"
 
@@ -1156,8 +1155,8 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "GIcon యింటర్ఫేస్ పైన రకము %s అనునది from_tokens()ను తయారుచేయలేదు"
 
 #: ../gio/gicon.c:428
-msgid "Can't handle the supplied version the icon encoding"
-msgstr "ప్రతిమ ఎన్కోడింగును పంపిణిచేసిన వర్షన్ సంభాలించలేదు"
+msgid "Can't handle the supplied version of the icon encoding"
+msgstr "ప్రతిమ యెన్కోడింగ్ యొక్క పంపిణీచేయబడిన వర్షన్‌ను సంభాలించలేదు"
 
 #: ../gio/ginetaddressmask.c:184
 msgid "No address specified"
@@ -1206,7 +1205,7 @@ msgstr "ఈ స్ట్రీమ్ యిప్పటికే వొక ఆ�
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "మూలకం <%s> <%s> లోపల అనుమతి లేదు"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
+#: ../gio/glib-compile-resources.c:145
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "మూలకం <%s> toplevel వద్ద అనుమతి లేదు"
@@ -1345,21 +1344,21 @@ msgstr "చెల్లని పేరు '%s': పేర్లు ఒక చ�
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
+"and hyphen ('-') are permitted."
 msgstr ""
-"చెల్లని పేరు '%s': చెల్లని పాత్ర '%c'; మాత్రమే చిన్న అక్షరాలు, నంబర్లు మరియు "
-"Dash ('-') "
-"అనుమతించబడ్డారు."
+"చెల్లని పేరు '%s': చెల్లని అక్షరం '%c'; చిన్న అక్షరాలు మాత్రమే, నంబర్లు మరియు "
+"హైఫన్ ('-') "
+"అనుమతించబడతాయి."
 
 #: ../gio/glib-compile-schemas.c:805
 #, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr "చెల్లని పేరు '%s': రెండు వరుస డాష్లు ('-') అనుమతి లేదు."
+msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+msgstr "చెల్లని పేరు '%s': రెండు వరుస హైఫన్లు ('--') అనుమతించబడవు."
 
 #: ../gio/glib-compile-schemas.c:814
 #, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr "చెల్లని పేరు '%s': ('-') చివరి అక్షరం ఒక Dash కాకపోవచ్చు."
+msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+msgstr "చెల్లని పేరు '%s': చివరి అక్షరం ('-') కాలేకపోవచ్చు."
 
 #: ../gio/glib-compile-schemas.c:822
 #, c-format
@@ -1427,13 +1426,13 @@ msgstr "ఇప్పటికే పేర్కొన్న <schema id='%s'>"
 
 #: ../gio/glib-compile-schemas.c:1125
 #, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr "<schema id='%s'> ఇంకా ఇప్పటికే ఉన్న స్కీమ '%s' లేదు విస్తరించి"
+msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
+msgstr "<schema id='%s'> ఇంకా-ఇప్పటికి-లేని స్కీమా '%s' విస్తరింపును"
 
 #: ../gio/glib-compile-schemas.c:1141
 #, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> ఇంకా ఇప్పటికే ఉన్న స్కీమ '%s' యొక్క జాబితా"
+msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
+msgstr "<schema id='%s'> ఇంకా-ఇప్పటికి-లేని స్కీమా '%s' యొక్క జాబితా"
 
 #: ../gio/glib-compile-schemas.c:1149
 #, c-format
@@ -1474,6 +1473,11 @@ msgstr "ఒక జాబితా యొక్క మార్గం ':/' తో
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id = '%s'> ఇప్పటికే తెలుపబడిన"
+
+#: ../gio/glib-compile-schemas.c:1459
+#, c-format
+msgid "Element <%s> not allowed at the top level"
+msgstr "మూలకం <%s> పైస్థాయి వద్ద అనుమతించబడదు"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1753 ../gio/glib-compile-schemas.c:1824
@@ -1526,11 +1530,11 @@ msgstr "ఈ కీ కోసం ఓవరురైడు విస్మర�
 #: ../gio/glib-compile-schemas.c:1914
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key `%s' in schema `%s' in override file `%s' is outside the "
 "range given in the schema"
 msgstr ""
-"కీలక `%s' కోసం తొలగించకండి 'స్కీమ లో`%s' ఓవరురైడు ఫైలు `%s'లో ముగిసింది "
-"స్కీమలో ఇవ్వబడిన పరిధికి"
+"కీ `%s' కోసం స్కీమా`%s' నందు ఓవరురైడు ఫైలు `%s' నందు వోవర్ రైడ్ స్కీమలో "
+"ఇవ్వబడిన పరిధికి బయటవుంది"
 
 #: ../gio/glib-compile-schemas.c:1942
 #, c-format
@@ -2513,8 +2517,8 @@ msgid "Error sending message: %s"
 msgstr "సందేశమును పంపుటలో దోషము: %s"
 
 #: ../gio/gsocket.c:3825
-msgid "GSocketControlMessage not supported on windows"
-msgstr "విండోస్ నందు GSocketControlMessage మద్దతీయదు"
+msgid "GSocketControlMessage not supported on Windows"
+msgstr "విండోస్ నందు GSocketControlMessage తోడ్పాటులేదు"
 
 #: ../gio/gsocket.c:4105 ../gio/gsocket.c:4241
 #, c-format
@@ -2544,8 +2548,8 @@ msgid "Unknown error on connect"
 msgstr "అనుసంధానమునందు తెలియని దోషము"
 
 #: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1486
-msgid "Trying to proxy over non-TCP connection is not supported."
-msgstr "g_socket_get_credentials ఈ OS కోసం అమలు కాలేదు"
+msgid "Proxying over a non-TCP connection is not supported."
+msgstr "TCP-కాని అనుసంధానంలో ప్రోక్సీయింగ్ తోడ్పాటులేదు."
 
 #: ../gio/gsocketclient.c:1055 ../gio/gsocketclient.c:1507
 #, c-format
@@ -2772,9 +2776,9 @@ msgid "Error writing to file descriptor: %s"
 msgstr "ఫైల్ వివరిణికి వ్రాయుటలో దోషం: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-msgid "Abstract unix domain socket addresses not supported on this system"
+msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
-"ఆబ్‌స్ట్రాక్టు యునిక్సు డొమైన్ సాకెట్ చిరునామా ఈ సిస్టమ్ నందు మద్దతీయబడదు"
+"ఆబ్‌స్ట్రాక్టు యునిక్సు డొమైన్ సాకెట్ చిరునామాలకు ఈ సిస్టమ్ నందు తోడ్పాటులేదు"
 
 #: ../gio/gvolume.c:404
 msgid "volume doesn't implement eject"
@@ -3776,8 +3780,8 @@ msgid "\\c at end of pattern"
 msgstr "\\c మాదిరి చివరవద్ద"
 
 #: ../glib/gregex.c:335
-msgid "unrecognized character follows \\"
-msgstr "గుర్తించబడని అక్షరము \\ను అనుసరిస్తోంది"
+msgid "unrecognized character following \\"
+msgstr "గుర్తించబడని అక్షరము అనుసరిస్తోంది \\"
 
 #: ../glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
@@ -3808,7 +3812,6 @@ msgid "unexpected repeat"
 msgstr "అనుకోని ఆవృతము"
 
 #: ../glib/gregex.c:360
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "(? లేదా (?- తర్వాత గుర్తింపులేని అక్షరము"
 
@@ -3829,7 +3832,6 @@ msgid "missing ) after comment"
 msgstr "వ్యాఖ్యానం తర్వాత తప్పిపోయిన )"
 
 #: ../glib/gregex.c:375
-#| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "సాదారణ సమీకరణం చాలా పెద్దది"
 
@@ -3949,9 +3951,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "అస్థిరత్వ NEWLINE ఐచ్చికాలు"
 
 #: ../glib/gregex.c:476
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -3977,12 +3976,10 @@ msgid "number is too big"
 msgstr "సంఖ్య మరీ పెద్దది"
 
 #: ../glib/gregex.c:492
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr "(?& తరువాత వుపమాదిరి పేరు లేదు"
 
 #: ../glib/gregex.c:495
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "(?+ తరువాతనే అంకె రావలెను"
 
@@ -3991,7 +3988,6 @@ msgid "] is an invalid data character in JavaScript compatibility mode"
 msgstr "JavaScript సారూప్యతా రీతినందు ] చెల్లని దత్తాంశ అక్షరం"
 
 #: ../glib/gregex.c:501
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "ఒకే సంఖ్య యొక్క వుపమాదిరిల కొరకు వేరువేరు పేర్లు అనుమతించబడవు"
 
@@ -4004,14 +4000,10 @@ msgid "\\c must be followed by an ASCII character"
 msgstr "\\c తప్పక ASCII అక్షరంచే అనుసరించబడాలి"
 
 #: ../glib/gregex.c:510
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "\\k బ్రేస్‌డ్ లేదా ఏంగిల్-బ్రాకెట్, లేదా కోటెడ్ పేరు చే అనుసరింపబడదు"
 
 #: ../glib/gregex.c:513
-#| msgid "Seek not supported on base stream"
 msgid "\\N is not supported in a class"
 msgstr "ఒక తరగతి నందు \\N తోడ్పాటునీయదు"
 
@@ -4024,7 +4016,6 @@ msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "(*MARK), (*PRUNE), (*SKIP), నందు (*THEN) పేరు చాలా పెద్దగావుంది"
 
 #: ../glib/gregex.c:522
-#| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
 msgstr "\\u.... వరుసక్రమం నందలి అక్షర విలువ మరీ పెద్దది"
 
@@ -4042,7 +4033,6 @@ msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE లైబ్రరీ UTF8 లక్షణముల మద్దతులేకుండా నిర్వర్తించబడింది"
 
 #: ../glib/gregex.c:1340
-#| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "PCRE లైబ్రరీ సారూప్యతలేని ఐచ్చికాలతో నిర్వర్తించబడెను"
 
