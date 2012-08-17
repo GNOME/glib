@@ -1125,6 +1125,7 @@ g_markup_parse_context_pop
 <SUBSECTION>
 GMarkupCollectType
 g_markup_collect_attributes
+g_markup_collect_known_attributes
 <SUBSECTION Private>
 g_markup_error_quark
 </SECTION>

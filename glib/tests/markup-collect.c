@@ -1,17 +1,30 @@
-/* 
+/*
  * Copyright © 2007 Ryan Lortie
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * See the included COPYING file for more information.
  */
 
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
+
+enum test_type
+{
+  COLLECT_ATTRIBUTES = 0,
+  COLLECT_KNOWN_ATTRIBUTES,
+  MAX_TEST_TYPE
+};
+
+struct test_data
+{
+  enum test_type test_type;
+  GString *string;
+};
 
 static void
 start (GMarkupParseContext  *context,
@@ -21,13 +34,26 @@ start (GMarkupParseContext  *context,
        gpointer              user_data,
        GError              **error)
 {
-  GString *string = user_data;
+  struct test_data *data = user_data;
   gboolean result;
 
-#define collect(...) \
-  g_markup_collect_attributes (element_name, attribute_names, \
-                               attribute_values, error, __VA_ARGS__, \
-                               G_MARKUP_COLLECT_INVALID)
+#define collect(...) G_STMT_START { \
+  if (data->test_type == COLLECT_ATTRIBUTES) \
+    { \
+      result = \
+        g_markup_collect_attributes (element_name, attribute_names, \
+                                     attribute_values, error, __VA_ARGS__, \
+                                     G_MARKUP_COLLECT_INVALID); \
+    } \
+  else \
+    { \
+      result = \
+        g_markup_collect_known_attributes (element_name, attribute_names, \
+                                           attribute_values, error, \
+                                           __VA_ARGS__, \
+                                           G_MARKUP_COLLECT_INVALID); \
+    } \
+  } G_STMT_END
 #define BOOL    G_MARKUP_COLLECT_BOOLEAN
 #define OPTBOOL G_MARKUP_COLLECT_BOOLEAN | G_MARKUP_COLLECT_OPTIONAL
 #define TRI     G_MARKUP_COLLECT_TRISTATE
@@ -41,9 +67,9 @@ start (GMarkupParseContext  *context,
     {
       gboolean mb = 2, ob = 2, tri = 2;
 
-      result = collect (BOOL,    "mb", &mb,
-                        OPTBOOL, "ob", &ob,
-                        TRI,     "tri", &tri);
+      collect (BOOL,    "mb", &mb,
+               OPTBOOL, "ob", &ob,
+               TRI,     "tri", &tri);
 
       g_assert (result ||
                 (mb == FALSE && ob == FALSE && tri != TRUE && tri != FALSE));
@@ -51,7 +77,7 @@ start (GMarkupParseContext  *context,
       if (tri != FALSE && tri != TRUE)
         tri = -1;
 
-      g_string_append_printf (string, "<bool(%d) %d %d %d>",
+      g_string_append_printf (data->string, "<bool(%d) %d %d %d>",
                               result, mb, ob, tri);
     }
 
@@ -60,15 +86,15 @@ start (GMarkupParseContext  *context,
       const char *cm, *co;
       char *am, *ao;
 
-      result = collect (STR,    "cm", &cm,
-                        STRDUP, "am", &am,
-                        OPTDUP, "ao", &ao,
-                        OPTSTR, "co", &co);
+      collect (STR,    "cm", &cm,
+               STRDUP, "am", &am,
+               OPTDUP, "ao", &ao,
+               OPTSTR, "co", &co);
 
       g_assert (result ||
                 (cm == NULL && am == NULL && ao == NULL && co == NULL));
 
-      g_string_append_printf (string, "<str(%d) %s %s %s %s>",
+      g_string_append_printf (data->string, "<str(%d) %s %s %s %s>",
                               result, n (cm), n (am), n (ao), n (co));
 
       g_free (am);
@@ -140,34 +166,49 @@ static void
 test_collect (gconstpointer d)
 {
   const struct test *test = d;
+  enum test_type t;
 
-  GMarkupParseContext *ctx;
-  GError *error = NULL;
-  GString *string;
-  gboolean result;
-
-  string = g_string_new ("");
-  ctx = g_markup_parse_context_new (&parser, 0, string, NULL);
-  result = g_markup_parse_context_parse (ctx,
-                                         test->document,
-                                         -1, &error);
-  if (result)
-    result = g_markup_parse_context_end_parse (ctx, &error);
-
-  if (result)
+  for (t = 0; t < MAX_TEST_TYPE; t++)
     {
-      g_assert_no_error (error);
-      g_assert_cmpint (test->error_code, ==, 0);
-      g_assert_cmpstr (test->result, ==, string->str);
-    }
-  else
-    {
-      g_assert_error (error, G_MARKUP_ERROR, test->error_code);
-    }
+      GMarkupParseContext *ctx;
+      GError *error = NULL;
+      gboolean result;
+      struct test_data data;
 
-  g_markup_parse_context_free (ctx);
-  g_string_free (string, TRUE);
-  g_clear_error (&error);
+      data.test_type = t;
+      data.string = g_string_new ("");
+
+      ctx = g_markup_parse_context_new (&parser, 0, &data, NULL);
+      result = g_markup_parse_context_parse (ctx,
+                                             test->document,
+                                             -1, &error);
+      if (result)
+        result = g_markup_parse_context_end_parse (ctx, &error);
+
+      if (result &&
+          !(t == COLLECT_KNOWN_ATTRIBUTES &&
+            test->error_code == G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE))
+        {
+          /* Normal test */
+          g_assert_no_error (error);
+          g_assert_cmpint (test->error_code, ==, 0);
+          g_assert_cmpstr (test->result, ==, data.string->str);
+        }
+      else if (result)
+        {
+          /* Test expecting UNKNOWN_ATTRIBUTE, and we're parsing with
+           * collect_known_attributes(). */
+          g_assert_no_error (error);
+        }
+      else
+        {
+          g_assert_error (error, G_MARKUP_ERROR, test->error_code);
+        }
+
+      g_markup_parse_context_free (ctx);
+      g_string_free (data.string, TRUE);
+      g_clear_error (&error);
+    }
 }
 
 #define XML "<element a='1' b='2' c='3'/>"
