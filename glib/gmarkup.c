@@ -2580,7 +2580,7 @@ _g_markup_collect_attributesv (const gchar         *element_name,
 
   /* Take a copy of the va_list so that we can iterate back over it in case of
    * errors. */
-  va_copy (ap2, ap);
+  G_VA_COPY (ap2, ap);
 
   while (type != G_MARKUP_COLLECT_INVALID)
     {
