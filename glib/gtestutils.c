@@ -784,26 +784,25 @@ parse_args (gint    *argc_p,
             }
           argv[i] = NULL;
         }
-      else if (strcmp ("-?", argv[i]) == 0 || strcmp ("--help", argv[i]) == 0)
+      else if (strcmp ("-?", argv[i]) == 0 ||
+               strcmp ("-h", argv[i]) == 0 ||
+               strcmp ("--help", argv[i]) == 0)
         {
           printf ("Usage:\n"
                   "  %s [OPTION...]\n\n"
                   "Help Options:\n"
-                  "  -?, --help                     Show help options\n"
+                  "  -h, --help                     Show help options\n\n"
                   "Test Options:\n"
+                  "  --g-fatal-warnings             Make all warnings fatal\n"
                   "  -l                             List test cases available in a test executable\n"
-                  "  -seed=RANDOMSEED               Provide a random seed to reproduce test\n"
-                  "                                 runs using random numbers\n"
-                  "  --verbose                      Run tests verbosely\n"
-                  "  -q, --quiet                    Run tests quietly\n"
-                  "  -p TESTPATH                    execute all tests matching TESTPATH\n"
-                  "  -s TESTPATH                    skip all tests matching TESTPATH\n"
-                  "  -m {perf|slow|thorough|quick}  Execute tests according modes\n"
-                  "  -m {undefined|no-undefined}    Execute tests according modes\n"
+                  "  -m {perf|slow|thorough|quick}  Execute tests according to mode\n"
+                  "  -m {undefined|no-undefined}    Execute tests according to mode\n"
+                  "  -p TESTPATH                    Only start test cases matching TESTPATH\n"
+                  "  -s TESTPATH                    Skip all tests matching TESTPATH\n"
+                  "  -seed=SEEDSTRING               Start tests with random seed SEEDSTRING\n"
                   "  --debug-log                    debug test logging output\n"
-                  "  -k, --keep-going               gtester-specific argument\n"
-                  "  --GTestLogFD=N                 gtester-specific argument\n"
-                  "  --GTestSkipCount=N             gtester-specific argument\n",
+                  "  -q, --quiet                    Run tests quietly\n"
+                  "  --verbose                      Run tests verbosely\n",
                   argv[0]);
           exit (0);
         }
@@ -836,57 +835,57 @@ parse_args (gint    *argc_p,
  *   <varlistentry>
  *     <term><option>-l</option></term>
  *     <listitem><para>
- *       list test cases available in a test executable.
+ *       List test cases available in a test executable.
  *     </para></listitem>
  *   </varlistentry>
  *   <varlistentry>
  *     <term><option>--seed=<replaceable>RANDOMSEED</replaceable></option></term>
  *     <listitem><para>
- *       provide a random seed to reproduce test runs using random numbers.
+ *       Provide a random seed to reproduce test runs using random numbers.
  *     </para></listitem>
  *     </varlistentry>
  *     <varlistentry>
  *       <term><option>--verbose</option></term>
- *       <listitem><para>run tests verbosely.</para></listitem>
+ *       <listitem><para>Run tests verbosely.</para></listitem>
  *     </varlistentry>
  *     <varlistentry>
  *       <term><option>-q</option>, <option>--quiet</option></term>
- *       <listitem><para>run tests quietly.</para></listitem>
+ *       <listitem><para>Run tests quietly.</para></listitem>
  *     </varlistentry>
  *     <varlistentry>
  *       <term><option>-p <replaceable>TESTPATH</replaceable></option></term>
  *       <listitem><para>
- *         execute all tests matching <replaceable>TESTPATH</replaceable>.
+ *         Execute all tests matching <replaceable>TESTPATH</replaceable>.
  *       </para></listitem>
  *     </varlistentry>
  *     <varlistentry>
  *       <term><option>-m {perf|slow|thorough|quick|undefined|no-undefined}</option></term>
  *       <listitem><para>
- *         execute tests according to these test modes:
+ *         Execute tests according to these test modes:
  *         <variablelist>
  *           <varlistentry>
  *             <term>perf</term>
  *             <listitem><para>
- *               performance tests, may take long and report results.
+ *               Performance tests, may take long and report results.
  *             </para></listitem>
  *           </varlistentry>
  *           <varlistentry>
  *             <term>slow, thorough</term>
  *             <listitem><para>
- *               slow and thorough tests, may take quite long and 
+ *               Slow and thorough tests, may take quite long and
  *               maximize coverage.
  *             </para></listitem>
  *           </varlistentry>
  *           <varlistentry>
  *             <term>quick</term>
  *             <listitem><para>
- *               quick tests, should run really quickly and give good coverage.
+ *               Quick tests, should run really quickly and give good coverage.
  *             </para></listitem>
  *           </varlistentry>
  *           <varlistentry>
  *             <term>undefined</term>
  *             <listitem><para>
- *               tests for undefined behaviour, may provoke programming errors
+ *               Tests for undefined behaviour, may provoke programming errors
  *               under g_test_trap_fork() to check that appropriate assertions
  *               or warnings are given
  *             </para></listitem>
@@ -894,7 +893,7 @@ parse_args (gint    *argc_p,
  *           <varlistentry>
  *             <term>no-undefined</term>
  *             <listitem><para>
- *               avoid tests for undefined behaviour
+ *               Avoid tests for undefined behaviour
  *             </para></listitem>
  *           </varlistentry>
  *         </variablelist>
@@ -902,19 +901,7 @@ parse_args (gint    *argc_p,
  *     </varlistentry>
  *     <varlistentry>
  *       <term><option>--debug-log</option></term>
- *       <listitem><para>debug test logging output.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>-k</option>, <option>--keep-going</option></term>
- *       <listitem><para>gtester-specific argument.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>--GTestLogFD <replaceable>N</replaceable></option></term>
- *       <listitem><para>gtester-specific argument.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>--GTestSkipCount <replaceable>N</replaceable></option></term>
- *       <listitem><para>gtester-specific argument.</para></listitem>
+ *       <listitem><para>Debug test logging output.</para></listitem>
  *     </varlistentry>
  *  </variablelist>
  *

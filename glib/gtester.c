@@ -474,23 +474,24 @@ usage (gboolean just_version)
       g_print ("gtester version %d.%d.%d\n", GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
       return;
     }
-  g_print ("Usage: gtester [OPTIONS] testprogram...\n");
+  g_print ("Usage:\n");
+  g_print ("gtester [OPTIONS] testprogram...\n\n");
   /*        12345678901234567890123456789012345678901234567890123456789012345678901234567890 */
-  g_print ("Options:\n");
-  g_print ("  -h, --help                  show this help message\n");
-  g_print ("  -v, --version               print version informations\n");
-  g_print ("  --g-fatal-warnings          make warnings fatal (abort)\n");
-  g_print ("  -k, --keep-going            continue running after tests failed\n");
-  g_print ("  -l                          list paths of available test cases\n");
-  g_print ("  -m=perf, -m=slow, -m=quick -m=thorough\n");
-  g_print ("                              run test cases in mode perf, slow/thorough or quick (default)\n");
-  g_print ("  -m=no-undefined             don't run test cases that provoke assertions\n");
-  g_print ("  -p=TESTPATH                 only start test cases matching TESTPATH\n");
-  g_print ("  -s=TESTPATH                 skip test cases matching TESTPATH\n");
-  g_print ("  --seed=SEEDSTRING           start all tests with random number seed SEEDSTRING\n");
-  g_print ("  -o=LOGFILE                  write the test log to LOGFILE\n");
-  g_print ("  -q, --quiet                 suppress per test binary output\n");
-  g_print ("  --verbose                   report success per testcase\n");
+  g_print ("Help Options:\n");
+  g_print ("  -h, --help                    Show this help message\n\n");
+  g_print ("Utility Options:\n");
+  g_print ("  -v, --version                 Print version informations\n");
+  g_print ("  --g-fatal-warnings            Make warnings fatal (abort)\n");
+  g_print ("  -k, --keep-going              Continue running after tests failed\n");
+  g_print ("  -l                            List paths of available test cases\n");
+  g_print ("  -m {perf|slow|thorough|quick} Run test cases according to mode\n");
+  g_print ("  -m {undefined|no-undefined}   Run test cases according to mode\n");
+  g_print ("  -p=TESTPATH                   Only start test cases matching TESTPATH\n");
+  g_print ("  -s=TESTPATH                   Skip test cases matching TESTPATH\n");
+  g_print ("  --seed=SEEDSTRING             Start tests with random seed SEEDSTRING\n");
+  g_print ("  -o=LOGFILE                    Write the test log to LOGFILE\n");
+  g_print ("  -q, --quiet                   Suppress per test binary output\n");
+  g_print ("  --verbose                     Report success per testcase\n");
 }
 
 static void
