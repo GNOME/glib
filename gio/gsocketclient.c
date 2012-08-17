@@ -1026,7 +1026,7 @@ g_socket_client_connect (GSocketClient       *client,
 
               g_set_error_literal (&last_error,
                   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                  _("Trying to proxy over non-TCP connection is not supported."));
+                  _("Proxying over a non-TCP connection is not supported."));
 
 	      g_object_unref (connection);
 	      connection = NULL;
@@ -1483,7 +1483,7 @@ g_socket_client_connected_callback (GObject      *source,
 
       g_set_error_literal (&data->last_error,
           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-          _("Trying to proxy over non-TCP connection is not supported."));
+          _("Proxying over a non-TCP connection is not supported."));
 
       enumerator_next_async (data);
     }

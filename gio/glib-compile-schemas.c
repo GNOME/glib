@@ -1122,8 +1122,8 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("<schema id='%s'> extends not yet "
-                         "existing schema '%s'"), id, extends_name);
+                       _("<schema id='%s'> extends not-yet-existing "
+                         "schema '%s'"), id, extends_name);
           return;
         }
     }
@@ -1138,8 +1138,8 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("<schema id='%s'> is list of not yet "
-                         "existing schema '%s'"), id, list_of);
+                       _("<schema id='%s'> is list of not-yet-existing "
+                         "schema '%s'"), id, list_of);
           return;
         }
 
@@ -1456,7 +1456,7 @@ start_element (GMarkupParseContext  *context,
                  element_name, container);
   else
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                 _("Element <%s> not allowed at toplevel"), element_name);
+                 _("Element <%s> not allowed at the top level"), element_name);
 }
 /* 2}}} */
 /* End element {{{2 */
@@ -1912,7 +1912,7 @@ set_overrides (GHashTable  *schema_table,
                     {
                       fprintf (stderr,
                                _("override for key `%s' in schema `%s' in "
-                                 "override file `%s' is out of the range "
+                                 "override file `%s' is outside the range "
                                  "given in the schema"),
                                key, group, filename);
 

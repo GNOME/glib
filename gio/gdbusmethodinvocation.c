@@ -364,8 +364,8 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
         {
           gchar *type_string = g_variant_type_dup_string (type);
 
-          g_warning ("Type of return value is incorrect, got `%s', expected `%s'",
-		     g_variant_get_type_string (parameters), type_string);
+          g_warning ("Type of return value is incorrect: expected `%s', got `%s''",
+		     type_string, g_variant_get_type_string (parameters));
           g_variant_type_free (type);
           g_free (type_string);
           goto out;

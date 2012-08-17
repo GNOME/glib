@@ -332,7 +332,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("\\c at end of pattern");
       break;
     case G_REGEX_ERROR_UNRECOGNIZED_ESCAPE:
-      *errmsg = _("unrecognized character follows \\");
+      *errmsg = _("unrecognized character following \\");
       break;
     case G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER:
       *errmsg = _("numbers out of order in {} quantifier");

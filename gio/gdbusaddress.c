@@ -450,7 +450,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Address element `%s', does not contain a colon (:)"),
+                   _("Address element `%s' does not contain a colon (:)"),
                    address_entry);
       goto out;
     }
@@ -471,7 +471,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Key/Value pair %d, `%s', in address element `%s', does not contain an equal sign"),
+                       _("Key/Value pair %d, `%s', in address element `%s' does not contain an equal sign"),
                        n,
                        kv_pair,
                        address_entry);

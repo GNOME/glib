@@ -176,8 +176,8 @@ parse_nego_reply (const guint8 *data,
       case SOCKS5_AUTH_NO_ACCEPT:
       default:
 	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
-			     _("The SOCKSv5 proxy requires an authentication method that is not "
-			       "supported by GLib."));
+			     _("The SOCKSv5 proxy requires an authentication "
+			       "method that is not supported by GLib."));
 	return FALSE;
 	break;
     }
