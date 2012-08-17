@@ -794,7 +794,7 @@ is_valid_keyname (const gchar  *key,
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                        _("invalid name '%s': invalid character '%c'; "
-                         "only lowercase letters, numbers and dash ('-') "
+                         "only lowercase letters, numbers and hyphen ('-') "
                          "are permitted."), key, key[i]);
           return FALSE;
         }
@@ -802,7 +802,7 @@ is_valid_keyname (const gchar  *key,
       if (key[i] == '-' && key[i + 1] == '-')
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("invalid name '%s': two successive dashes ('--') "
+                       _("invalid name '%s': two successive hyphens ('--') "
                          "are not permitted."), key);
           return FALSE;
         }
@@ -812,7 +812,7 @@ is_valid_keyname (const gchar  *key,
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                    _("invalid name '%s': the last character may not be a "
-                     "dash ('-')."), key);
+                     "hyphen ('-')."), key);
       return FALSE;
     }
 
