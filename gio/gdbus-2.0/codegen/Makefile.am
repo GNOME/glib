@@ -1,3 +1,4 @@
+include $(top_srcdir)/Makefile.decl
 
 NULL =
 bin_SCRIPTS =
