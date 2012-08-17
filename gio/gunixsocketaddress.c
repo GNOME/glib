@@ -241,7 +241,7 @@ g_unix_socket_address_to_native (GSocketAddress *address,
       if (!g_unix_socket_address_abstract_names_supported ())
 	{
 	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			       _("Abstract unix domain socket addresses not supported on this system"));
+			       _("Abstract UNIX domain socket addresses not supported on this system"));
 	  return FALSE;
 	}
 
@@ -510,7 +510,7 @@ g_unix_socket_address_get_is_abstract (GUnixSocketAddress *address)
 /**
  * g_unix_socket_address_abstract_names_supported:
  *
- * Checks if abstract unix domain socket names are supported.
+ * Checks if abstract UNIX domain socket names are supported.
  *
  * Returns: %TRUE if supported, %FALSE otherwise
  *
