@@ -84,7 +84,7 @@ EXTRA_DIST += 			\
 	gconstructor.h		\
 	$(MIRRORING_TAB_SOURCE)
 
-CLEANFILES= libglib-gdb.py
+CLEANFILES += libglib-gdb.py
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
