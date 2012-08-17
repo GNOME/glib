@@ -963,6 +963,7 @@ g_file_attribute_info_list_unref (GFileAttributeInfoList *list)
       for (i = 0; i < list->n_infos; i++)
         g_free (list->infos[i].name);
       g_array_free (priv->array, TRUE);
+      g_free (list);
     }
 }
 
