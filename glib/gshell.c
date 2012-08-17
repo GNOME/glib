@@ -520,6 +520,24 @@ tokenize_command_line (const gchar *command_line,
               /* FALL THRU */
               
             case '#':
+              if (p == command_line)
+	        { /* '#' was the first char */
+                  current_quote = *p;
+                  break;
+                }
+              switch(*(p-1))
+                {
+                  case ' ':
+                  case '\n':
+                  case '\0':
+                    current_quote = *p;
+                    break;
+                  default:
+                    ensure_token (&current_token);
+                    g_string_append_c (current_token, *p);
+		    break;
+                }
+              break;
             case '\\':
               current_quote = *p;
               break;

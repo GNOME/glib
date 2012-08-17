@@ -59,6 +59,8 @@ static CmdlineTest cmdline_tests[] =
   { "foo \"yada yada \\$\\\"\"", 2, { "foo", "yada yada $\"", NULL }, -1 },
   { "foo \"c:\\\\\"", 2, { "foo", "c:\\", NULL }, -1 },
   { "foo # bla bla bla\n bar", 2, { "foo", "bar", NULL }, -1 },
+  { "foo a#b", 2, { "foo", "a#b", NULL }, -1 },
+  { "#foo", 0, { NULL }, -1 },
   { "foo bar \\", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
   { "foo 'bar baz", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
   { "foo '\"bar\" baz", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
