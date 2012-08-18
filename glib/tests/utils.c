@@ -341,6 +341,16 @@ test_gettext (void)
 }
 
 static void
+test_username (void)
+{
+  const gchar *name;
+
+  name = g_get_user_name ();
+
+  g_assert (name != NULL);
+}
+
+static void
 test_realname (void)
 {
   const gchar *name;
@@ -475,6 +485,18 @@ test_misc_mem (void)
   g_assert (a == NULL);
 }
 
+static void
+test_nullify (void)
+{
+  gpointer p = &test_nullify;
+
+  g_assert (p != NULL);
+
+  g_nullify_pointer (&p);
+
+  g_assert (p == NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -501,6 +523,7 @@ main (int   argc,
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
+  g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
   g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
@@ -508,6 +531,7 @@ main (int   argc,
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
+  g_test_add_func ("/utils/nullify", test_nullify);
 
-  return g_test_run();
+  return g_test_run ();
 }
