@@ -452,7 +452,9 @@ test_match_count (gconstpointer d)
 
   g_assert_cmpint (count, ==, data->expected_count);
 
-  g_match_info_free (match_info);
+  g_match_info_ref (match_info);
+  g_match_info_unref (match_info);
+  g_match_info_unref (match_info);
   g_regex_unref (regex);
 }
 
@@ -1660,6 +1662,8 @@ test_subpattern (void)
   regex = g_regex_new ("cat(aract|erpillar|)", G_REGEX_OPTIMIZE, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
+  g_assert_cmpint (g_regex_get_capture_count (regex), ==, 1);
+  g_assert_cmpint (g_regex_get_max_backref (regex), ==, 0);
   res = g_regex_match_all (regex, "caterpillar", 0, &match);
   g_assert (res);
   g_assert (g_match_info_matches (match));
@@ -1676,6 +1680,8 @@ test_subpattern (void)
   regex = g_regex_new ("the ((red|white) (king|queen))", G_REGEX_OPTIMIZE, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
+  g_assert_cmpint (g_regex_get_capture_count (regex), ==, 3);
+  g_assert_cmpint (g_regex_get_max_backref (regex), ==, 0);
   res = g_regex_match (regex, "the red king", 0, &match);
   g_assert (res);
   g_assert (g_match_info_matches (match));
@@ -1702,6 +1708,7 @@ test_subpattern (void)
   g_assert (res);
   g_assert (g_match_info_matches (match));
   g_assert_cmpint (g_match_info_get_match_count (match), ==, 3);
+  g_assert_cmpint (g_regex_get_max_backref (regex), ==, 0);
   str = g_match_info_fetch (match, 0);
   g_assert_cmpstr (str, ==, "the white queen");
   g_free (str);
@@ -1717,6 +1724,7 @@ test_subpattern (void)
   regex = g_regex_new ("(?|(Sat)(ur)|(Sun))day (morning|afternoon)", G_REGEX_OPTIMIZE, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
+  g_assert_cmpint (g_regex_get_capture_count (regex), ==, 3);
   res = g_regex_match (regex, "Saturday morning", 0, &match);
   g_assert (res);
   g_assert (g_match_info_matches (match));
@@ -1736,6 +1744,7 @@ test_subpattern (void)
   regex = g_regex_new ("(?|(abc)|(def))\\1", G_REGEX_OPTIMIZE, 0, &error);
   g_assert (regex);
   g_assert_no_error (error);
+  g_assert_cmpint (g_regex_get_max_backref (regex), ==, 1);
   res = g_regex_match (regex, "abcabc abcdef defabc defdef", 0, &match);
   g_assert (res);
   g_assert (g_match_info_matches (match));
