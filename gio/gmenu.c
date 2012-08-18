@@ -745,6 +745,124 @@ g_menu_item_set_link (GMenuItem   *menu_item,
 }
 
 /**
+ * g_menu_item_get_attribute_value:
+ * @menu_item: a #GMenuItem
+ * @attribute: the attribute name to query
+ * @expected_type: (allow-none): the expected type of the attribute
+ *
+ * Queries the named @attribute on @menu_item.
+ *
+ * If @expected_type is specified and the attribute does not have this
+ * type, %NULL is returned.  %NULL is also returned if the attribute
+ * simply does not exist.
+ *
+ * Returns: (transfer full): the attribute value, or %NULL
+ *
+ * Since: 2.34
+ */
+GVariant *
+g_menu_item_get_attribute_value (GMenuItem          *menu_item,
+                                 const gchar        *attribute,
+                                 const GVariantType *expected_type)
+{
+  GVariant *value;
+
+  g_return_val_if_fail (G_IS_MENU_ITEM (menu_item), NULL);
+  g_return_val_if_fail (attribute != NULL, NULL);
+
+  value = g_hash_table_lookup (menu_item->attributes, attribute);
+
+  if (value != NULL)
+    {
+      if (expected_type == NULL || g_variant_is_of_type (value, expected_type))
+        g_variant_ref (value);
+      else
+        value = NULL;
+    }
+
+  return value;
+}
+
+/**
+ * g_menu_item_get_attribute:
+ * @menu_item: a #GMenuItem
+ * @attribute: the attribute name to query
+ * @format_string: a #GVariant format string
+ * @...: positional parameters, as per @format_string
+ *
+ * Queries the named @attribute on @menu_item.
+ *
+ * If the attribute exists and matches the #GVariantType corresponding
+ * to @format_string then @format_string is used to deconstruct the
+ * value into the positional parameters and %TRUE is returned.
+ *
+ * If the attribute does not exist, or it does exist but has the wrong
+ * type, then the positional parameters are ignored and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if the named attribute was found with the expected
+ *     type
+ *
+ * Since: 2.34
+ */
+gboolean
+g_menu_item_get_attribute (GMenuItem   *menu_item,
+                           const gchar *attribute,
+                           const gchar *format_string,
+                           ...)
+{
+  GVariant *value;
+  va_list ap;
+
+  g_return_val_if_fail (G_IS_MENU_ITEM (menu_item), FALSE);
+  g_return_val_if_fail (attribute != NULL, FALSE);
+  g_return_val_if_fail (format_string != NULL, FALSE);
+
+  value = g_hash_table_lookup (menu_item->attributes, attribute);
+
+  if (value == NULL)
+    return FALSE;
+
+  if (!g_variant_check_format_string (value, format_string, FALSE))
+    return FALSE;
+
+  va_start (ap, format_string);
+  g_variant_get_va (value, format_string, NULL, &ap);
+  va_end (ap);
+
+  return TRUE;
+}
+
+/**
+ * g_menu_item_get_link:
+ * @menu_item: a #GMenuItem
+ * @link: the link name to query
+ *
+ * Queries the named @link on @menu_item.
+ *
+ * Returns: (transfer full): the link, or %NULL
+ *
+ * Since: 2.34
+ */
+GMenuModel *
+g_menu_item_get_link (GMenuItem   *menu_item,
+                      const gchar *link)
+{
+  GMenuModel *model;
+
+  g_return_val_if_fail (G_IS_MENU_ITEM (menu_item), NULL);
+  g_return_val_if_fail (link != NULL, NULL);
+  g_return_val_if_fail (valid_attribute_name (link), NULL);
+
+  model = g_hash_table_lookup (menu_item->links, link);
+
+  if (model)
+    g_object_ref (model);
+
+  return model;
+}
+
+/**
  * g_menu_item_set_label:
  * @menu_item: a #GMenuItem
  * @label: (allow-none): the label to set, or %NULL to unset

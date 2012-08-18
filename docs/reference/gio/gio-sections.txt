@@ -3754,6 +3754,9 @@ g_menu_item_set_section
 g_menu_item_set_submenu
 
 <SUBSECTION>
+g_menu_item_get_attribute_value
+g_menu_item_get_attribute
+g_menu_item_get_link
 g_menu_item_set_attribute_value
 g_menu_item_set_attribute
 g_menu_item_set_link

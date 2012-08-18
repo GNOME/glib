@@ -102,6 +102,19 @@ GMenuItem * g_menu_item_new_submenu                 (const gchar *label,
 GMenuItem * g_menu_item_new_section                 (const gchar *label,
                                                      GMenuModel  *section);
 
+GLIB_AVAILABLE_IN_2_34
+GVariant *  g_menu_item_get_attribute_value         (GMenuItem   *menu_item,
+                                                     const gchar *attribute,
+                                                     const GVariantType *expected_value);
+GLIB_AVAILABLE_IN_2_34
+gboolean    g_menu_item_get_attribute               (GMenuItem   *menu_item,
+                                                     const gchar *attribute,
+                                                     const gchar *format_string,
+                                                     ...);
+GLIB_AVAILABLE_IN_2_34
+GMenuModel *g_menu_item_get_link                    (GMenuItem   *menu_item,
+                                                     const gchar *link);
+
 void        g_menu_item_set_attribute_value         (GMenuItem   *menu_item,
                                                      const gchar *attribute,
                                                      GVariant    *value);
