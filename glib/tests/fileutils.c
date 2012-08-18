@@ -20,6 +20,7 @@
  */
 
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 
 /* We are testing some deprecated APIs here */
@@ -502,6 +503,9 @@ test_format_size_for_display (void)
   check_string (g_format_size_for_display (1024), "1.0 KB");
   check_string (g_format_size_for_display (1024 * 1024), "1.0 MB");
   check_string (g_format_size_for_display (1024 * 1024 * 1024), "1.0 GB");
+  check_string (g_format_size_for_display (1024ULL * 1024 * 1024 * 1024), "1.0 TB");
+  check_string (g_format_size_for_display (1024ULL * 1024 * 1024 * 1024 * 1024), "1.0 PB");
+  check_string (g_format_size_for_display (1024ULL * 1024 * 1024 * 1024 * 1024 * 1024), "1.0 EB");
 
   check_string (g_format_size (0), "0 bytes");
   check_string (g_format_size (1), "1 byte");
@@ -624,6 +628,144 @@ test_basename (void)
   g_free (b);
 }
 
+static void
+test_dir_make_tmp (void)
+{
+  gchar *name;
+  GError *error = NULL;
+
+  name = g_dir_make_tmp ("testXXXXXXtest", &error);
+  g_assert_no_error (error);
+  g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert (g_rmdir (name) == 0);
+  g_free (name);
+
+  name = g_dir_make_tmp (NULL, &error);
+  g_assert_no_error (error);
+  g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert (g_rmdir (name) == 0);
+  g_free (name);
+
+  name = g_dir_make_tmp ("test/XXXXXX", &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
+  g_clear_error (&error);
+  g_assert (name == NULL);
+
+  name = g_dir_make_tmp ("XXXXxX", &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
+  g_clear_error (&error);
+  g_assert (name == NULL);
+}
+
+static void
+test_file_open_tmp (void)
+{
+  gchar *name = NULL;
+  GError *error = NULL;
+  gint fd;
+
+  fd = g_file_open_tmp ("testXXXXXXtest", &name, &error);
+  g_assert (fd != -1);
+  g_assert_no_error (error);
+  g_assert (name != NULL);
+  unlink (name);
+  close (fd);
+
+  fd = g_file_open_tmp (NULL, &name, &error);
+  g_assert (fd != -1);
+  g_assert_no_error (error);
+  g_assert (name != NULL);
+  g_unlink (name);
+  close (fd);
+
+  name = NULL;
+  fd = g_file_open_tmp ("test/XXXXXX", &name, &error);
+  g_assert (fd == -1);
+  g_assert (name == NULL);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
+  g_clear_error (&error);
+
+  fd = g_file_open_tmp ("XXXXxX", &name, &error);
+  g_assert (fd == -1);
+  g_assert (name == NULL);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
+  g_clear_error (&error);
+}
+
+static void
+test_mkstemp (void)
+{
+  gchar *name;
+  gint fd;
+
+  name = g_strdup ("testXXXXXXtest"),
+  fd = g_mkstemp (name);
+  g_assert (fd != -1);
+  g_assert (strstr (name, "XXXXXX") == NULL);
+  unlink (name);
+  close (fd);
+  g_free (name);
+
+  name = g_strdup ("testYYYYYYtest"),
+  fd = g_mkstemp (name);
+  g_assert (fd == -1);
+  g_free (name);
+}
+
+static void
+test_mkdtemp (void)
+{
+  gchar *name;
+  gchar *ret;
+
+  name = g_strdup ("testXXXXXXtest"),
+  ret = g_mkdtemp (name);
+  g_assert (ret == name);
+  g_assert (strstr (name, "XXXXXX") == NULL);
+  g_rmdir (name);
+  g_free (name);
+
+  name = g_strdup ("testYYYYYYtest"),
+  ret = g_mkdtemp (name);
+  g_assert (ret == NULL);
+  g_free (name);
+}
+
+static void
+test_set_contents (void)
+{
+  GError *error = NULL;
+  gint fd;
+  gchar *name;
+  gchar *buf;
+  gsize len;
+  gboolean ret;
+
+  fd = g_file_open_tmp (NULL, &name, &error);
+  g_assert_no_error (error);
+  write (fd, "a", 1);
+  close (fd);
+
+  ret = g_file_get_contents (name, &buf, &len, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  g_assert_cmpstr (buf, ==, "a");
+  g_free (buf);
+
+  ret = g_file_set_contents (name, "b", 1, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+
+  ret = g_file_get_contents (name, &buf, &len, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  g_assert_cmpstr (buf, ==, "b");
+  g_free (buf);
+
+  g_remove (name);
+  g_free (name);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -638,6 +780,11 @@ main (int   argc,
   g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
   g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/basename", test_basename);
+  g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
+  g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
+  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
+  g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
+  g_test_add_func ("/fileutils/set-contents", test_set_contents);
 
-  return g_test_run();
+  return g_test_run ();
 }
