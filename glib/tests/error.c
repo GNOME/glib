@@ -61,6 +61,23 @@ test_literal (void)
   g_error_free (error);
 }
 
+static void
+test_copy (void)
+{
+  GError *error;
+  GError *copy;
+
+  error = NULL;
+  g_set_error_literal (&error, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "%s %d %x");
+  copy = g_error_copy (error);
+
+  g_assert_error (copy, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY);
+  g_assert_cmpstr (copy->message, ==, "%s %d %x");
+
+  g_error_free (error);
+  g_error_free (copy);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -69,6 +86,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/error/overwrite", test_overwrite);
   g_test_add_func ("/error/prefix", test_prefix);
   g_test_add_func ("/error/literal", test_literal);
+  g_test_add_func ("/error/copy", test_copy);
 
   return g_test_run ();
 }
