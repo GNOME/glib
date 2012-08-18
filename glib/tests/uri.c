@@ -357,6 +357,9 @@ test_uri_escape (void)
   s = g_uri_escape_string ("a+b:c", "+", FALSE);
   g_assert_cmpstr (s, ==, "a+b%3Ac");
   g_free (s);
+  s = g_uri_escape_string ("a+b:c\303\234", "+", TRUE);
+  g_assert_cmpstr (s, ==, "a+b%3Ac\303\234");
+  g_free (s);
 }
 
 static void
