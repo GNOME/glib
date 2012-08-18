@@ -3741,6 +3741,110 @@ g_variant_format_string_scan (const gchar  *string,
   return TRUE;
 }
 
+/**
+ * g_variant_check_format_string:
+ * @value: a #GVariant
+ * @format_string: a valid #GVariant format string
+ * @copy_only: %TRUE to ensure the format string makes deep copies
+ *
+ * Checks if calling g_variant_get() with @format_string on @value would
+ * be valid from a type-compatibility standpoint.  @format_string is
+ * assumed to be a valid format string (from a syntactic standpoint).
+ *
+ * If @copy_only is %TRUE then this function additionally checks that it
+ * would be safe to call g_variant_unref() on @value immediately after
+ * the call to g_variant_get() without invalidating the result.  This is
+ * only possible if deep copies are made (ie: there are no pointers to
+ * the data inside of the soon-to-be-freed #GVariant instance).  If this
+ * check fails then a g_critical() is printed and %FALSE is returned.
+ *
+ * This function is meant to be used by functions that wish to provide
+ * varargs accessors to #GVariant values of uncertain values (eg:
+ * g_variant_lookup() or g_menu_model_get_item_attribute()).
+ *
+ * Returns: %TRUE if @format_string is safe to use
+ *
+ * Since: 2.34
+ */
+gboolean
+g_variant_check_format_string (GVariant    *value,
+                               const gchar *format_string,
+                               gboolean     copy_only)
+{
+  const gchar *original_format = format_string;
+  const gchar *type_string;
+
+  /* Interesting factoid: assuming a format string is valid, it can be
+   * converted to a type string by removing all '@' '&' and '^'
+   * characters.
+   *
+   * Instead of doing that, we can just skip those characters when
+   * comparing it to the type string of @value.
+   *
+   * For the copy-only case we can just drop the '&' from the list of
+   * characters to skip over.  A '&' will never appear in a type string
+   * so we know that it won't be possible to return %TRUE if it is in a
+   * format string.
+   */
+  type_string = g_variant_get_type_string (value);
+
+  while (*type_string || *format_string)
+    {
+      gchar format = *format_string++;
+
+      switch (format)
+        {
+        case '&':
+          if G_UNLIKELY (copy_only)
+            {
+              /* for the love of all that is good, please don't mark this string for translation... */
+              g_critical ("g_variant_check_format_string() is being called by a function with a GVariant varargs "
+                          "interface to validate the passed format string for type safety.  The passed format "
+                          "(%s) contains a '&' character which would result in a pointer being returned to the "
+                          "data inside of a GVariant instance that may no longer exist by the time the function "
+                          "returns.  Modify your code to use a format string without '&'.", original_format);
+              return FALSE;
+            }
+
+          /* fall through */
+        case '^':
+        case '@':
+          /* ignore these 2 (or 3) */
+          continue;
+
+        case '?':
+          /* attempt to consume one of 'bynqiuxthdsog' */
+          {
+            char s = *type_string++;
+
+            if (s == '\0' || strchr ("bynqiuxthdsog", s) == NULL)
+              return FALSE;
+          }
+          continue;
+
+        case 'r':
+          /* ensure it's a tuple */
+          if (*type_string != '(')
+            return FALSE;
+
+          /* fall through */
+        case '*':
+          /* consume a full type string for the '*' or 'r' */
+          if (!g_variant_type_string_scan (type_string, NULL, &type_string))
+            return FALSE;
+
+          continue;
+
+        default:
+          /* attempt to consume exactly one character equal to the format */
+          if (format != *type_string++)
+            return FALSE;
+        }
+    }
+
+  return TRUE;
+}
+
 /*< private >
  * g_variant_format_string_scan_type:
  * @string: a string that may be prefixed with a format string

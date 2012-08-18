@@ -4123,6 +4123,59 @@ test_fixed_array (void)
   g_variant_unref (a);
 }
 
+static void
+test_check_format_string (void)
+{
+  GVariant *value;
+
+  value = g_variant_new ("(sas)", "foo", NULL);
+  g_variant_ref_sink (value);
+
+  g_assert (g_variant_check_format_string (value, "(s*)", TRUE));
+  g_assert (g_variant_check_format_string (value, "(s*)", FALSE));
+  g_assert (!g_variant_check_format_string (value, "(u*)", TRUE));
+  g_assert (!g_variant_check_format_string (value, "(u*)", FALSE));
+
+  g_assert (g_variant_check_format_string (value, "(&s*)", FALSE));
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "*contains a '&' character*");
+  g_assert (!g_variant_check_format_string (value, "(&s*)", TRUE));
+  g_test_assert_expected_messages ();
+
+  g_assert (g_variant_check_format_string (value, "(s^as)", TRUE));
+  g_assert (g_variant_check_format_string (value, "(s^as)", FALSE));
+
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "*contains a '&' character*");
+  g_assert (!g_variant_check_format_string (value, "(s^a&s)", TRUE));
+  g_test_assert_expected_messages ();
+  g_assert (g_variant_check_format_string (value, "(s^a&s)", FALSE));
+
+  g_variant_unref (value);
+
+  /* Do it again with a type that will let us put a '&' after a '^' */
+  value = g_variant_new ("(say)", "foo", NULL);
+  g_variant_ref_sink (value);
+
+  g_assert (g_variant_check_format_string (value, "(s*)", TRUE));
+  g_assert (g_variant_check_format_string (value, "(s*)", FALSE));
+  g_assert (!g_variant_check_format_string (value, "(u*)", TRUE));
+  g_assert (!g_variant_check_format_string (value, "(u*)", FALSE));
+
+  g_assert (g_variant_check_format_string (value, "(&s*)", FALSE));
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "*contains a '&' character*");
+  g_assert (!g_variant_check_format_string (value, "(&s*)", TRUE));
+  g_test_assert_expected_messages ();
+
+  g_assert (g_variant_check_format_string (value, "(s^ay)", TRUE));
+  g_assert (g_variant_check_format_string (value, "(s^ay)", FALSE));
+
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "*contains a '&' character*");
+  g_assert (!g_variant_check_format_string (value, "(s^&ay)", TRUE));
+  g_test_assert_expected_messages ();
+  g_assert (g_variant_check_format_string (value, "(s^&ay)", FALSE));
+
+  g_variant_unref (value);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4167,6 +4220,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/lookup", test_lookup);
   g_test_add_func ("/gvariant/compare", test_compare);
   g_test_add_func ("/gvariant/fixed-array", test_fixed_array);
+  g_test_add_func ("/gvariant/check-format-string", test_check_format_string);
 
   return g_test_run ();
 }

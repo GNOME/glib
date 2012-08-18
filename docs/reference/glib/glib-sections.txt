@@ -3061,6 +3061,7 @@ g_variant_classify
 GVariantClass
 
 <SUBSECTION>
+g_variant_check_format_string
 g_variant_get
 g_variant_get_va
 g_variant_new

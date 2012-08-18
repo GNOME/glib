@@ -1560,6 +1560,7 @@ g_variant_builder_end
 g_variant_builder_new
 g_variant_builder_unref
 g_variant_builder_ref
+g_variant_check_format_string
 g_variant_new_va
 g_variant_get_va
 g_variant_new

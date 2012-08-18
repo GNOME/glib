@@ -265,7 +265,9 @@ void                            g_variant_get_va                        (GVarian
                                                                          const gchar          *format_string,
                                                                          const gchar         **endptr,
                                                                          va_list              *app);
-
+gboolean                        g_variant_check_format_string           (GVariant             *value,
+                                                                         const gchar          *format_string,
+                                                                         gboolean              copy_only);
 
 GVariant *                      g_variant_parse                         (const GVariantType   *type,
                                                                          const gchar          *text,
