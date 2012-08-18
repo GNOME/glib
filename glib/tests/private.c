@@ -85,6 +85,7 @@ private2_func (gpointer data)
  * - destroy notifies are called for each thread exit
  * - destroy notifies are called for g_thread_exit() too
  * - destroy notifies are not called on g_private_set()
+ * - destroy notifies are called on g_private_replace()
  */
 static void
 test_private2 (void)
@@ -94,13 +95,16 @@ test_private2 (void)
 
   private2 = g_private_new (private2_destroy);
 
+  g_private_set (private2, GINT_TO_POINTER(234));
+  g_private_replace (private2, GINT_TO_POINTER(123));
+
   for (i = 0; i < 10; i++)
     thread[i] = g_thread_create (private2_func, GINT_TO_POINTER (i), TRUE, NULL);
 
   for (i = 0; i < 10; i++)
     g_thread_join (thread[i]);
 
-  g_assert_cmpint (private2_destroy_count, ==, 10);
+  g_assert_cmpint (private2_destroy_count, ==, 11);
 }
 
 static gboolean private3_freed;
