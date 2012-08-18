@@ -579,6 +579,12 @@ g_menu_model_get_item_attribute_value (GMenuModel         *model,
  * type, then the positional parameters are ignored and %FALSE is
  * returned.
  *
+ * This function is a mix of g_menu_model_get_item_attribute_value() and
+ * g_variant_get(), followed by a g_variant_unref().  As such,
+ * @format_string must make a complete copy of the data (since the
+ * #GVariant may go away after the call to g_variant_unref()).  In
+ * particular, no '&amp;' characters are allowed in @format_string.
+ *
  * Returns: %TRUE if the named attribute was found with the expected
  *     type
  *
@@ -591,15 +597,19 @@ g_menu_model_get_item_attribute (GMenuModel  *model,
                                  const gchar *format_string,
                                  ...)
 {
-  const GVariantType *expected_type;
   GVariant *value;
   va_list ap;
 
-  expected_type = NULL; /* XXX devine the type, ensure no '&' */
+  value = g_menu_model_get_item_attribute_value (model, item_index, attribute, NULL);
 
-  value = g_menu_model_get_item_attribute_value (model, item_index, attribute, expected_type);
   if (value == NULL)
     return FALSE;
+
+  if (!g_variant_check_format_string (value, format_string, TRUE))
+    {
+      g_variant_unref (value);
+      return FALSE;
+    }
 
   va_start (ap, format_string);
   g_variant_get_va (value, format_string, NULL, &ap);
