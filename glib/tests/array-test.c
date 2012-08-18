@@ -429,19 +429,23 @@ pointer_array_free_func (void)
   g_ptr_array_add (gparray, g_strdup ("baz"));
   g_ptr_array_remove_index (gparray, 0);
   g_assert_cmpint (num_free_func_invocations, ==, 1);
+  g_ptr_array_remove_index_fast (gparray, 1);
+  g_assert_cmpint (num_free_func_invocations, ==, 2);
   s = g_strdup ("frob");
   g_ptr_array_add (gparray, s);
   g_assert (g_ptr_array_remove (gparray, s));
   g_assert (!g_ptr_array_remove (gparray, "nuun"));
   g_assert (!g_ptr_array_remove_fast (gparray, "mlo"));
-  g_assert_cmpint (num_free_func_invocations, ==, 2);
-  g_ptr_array_set_size (gparray, 1);
   g_assert_cmpint (num_free_func_invocations, ==, 3);
+  s = g_strdup ("frob");
+  g_ptr_array_add (gparray, s);
+  g_ptr_array_set_size (gparray, 1);
+  g_assert_cmpint (num_free_func_invocations, ==, 4);
   g_ptr_array_ref (gparray);
   g_ptr_array_unref (gparray);
-  g_assert_cmpint (num_free_func_invocations, ==, 3);
-  g_ptr_array_unref (gparray);
   g_assert_cmpint (num_free_func_invocations, ==, 4);
+  g_ptr_array_unref (gparray);
+  g_assert_cmpint (num_free_func_invocations, ==, 5);
 
   num_free_func_invocations = 0;
   gparray = g_ptr_array_new_full (10, my_free_func);
