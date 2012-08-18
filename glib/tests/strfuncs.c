@@ -568,6 +568,13 @@ test_strreverse (void)
 }
 
 static void
+test_strncasecmp (void)
+{
+  g_assert (g_strncasecmp ("abc1", "ABC2", 3) == 0);
+  g_assert (g_strncasecmp ("abc1", "ABC2", 4) != 0);
+}
+
+static void
 test_strstr (void)
 {
   gchar *haystack;
@@ -1340,6 +1347,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strchug", test_strchug);
   g_test_add_func ("/strfuncs/strchomp", test_strchomp);
   g_test_add_func ("/strfuncs/strreverse", test_strreverse);
+  g_test_add_func ("/strfuncs/strncasecmp", test_strncasecmp);
   g_test_add_func ("/strfuncs/strstr", test_strstr);
   g_test_add_func ("/strfuncs/has-prefix", test_has_prefix);
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
