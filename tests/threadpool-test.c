@@ -340,13 +340,15 @@ test_thread_idle_time ()
 
   idle_pool = g_thread_pool_new (test_thread_idle_time_entry_func,
 				 NULL,
-				 MAX_THREADS,
+				 0,
 				 FALSE,
 				 NULL);
 
+  g_thread_pool_set_max_threads (idle_pool, MAX_THREADS, NULL);
   g_thread_pool_set_max_unused_threads (MAX_UNUSED_THREADS);
   g_thread_pool_set_max_idle_time (interval);
 
+  g_assert (g_thread_pool_get_max_threads (idle_pool) == MAX_THREADS);
   g_assert (g_thread_pool_get_max_unused_threads () == MAX_UNUSED_THREADS);
   g_assert (g_thread_pool_get_max_idle_time () == interval);
 
@@ -358,6 +360,8 @@ test_thread_idle_time ()
 		g_thread_pool_get_num_threads (idle_pool),
 		g_thread_pool_unprocessed (idle_pool)));
   }
+
+  g_assert_cmpint (g_thread_pool_unprocessed (idle_pool), <=, limit);
 
   g_timeout_add ((interval - 1000),
 		 test_thread_idle_timeout,
