@@ -96,6 +96,10 @@ GType       g_menu_item_get_type                    (void) G_GNUC_CONST;
 GMenuItem * g_menu_item_new                         (const gchar *label,
                                                      const gchar *detailed_action);
 
+GLIB_AVAILABLE_IN_2_34
+GMenuItem * g_menu_item_new_from_model              (GMenuModel  *model,
+                                                     gint         item_index);
+
 GMenuItem * g_menu_item_new_submenu                 (const gchar *label,
                                                      GMenuModel  *submenu);
 

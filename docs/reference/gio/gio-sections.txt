@@ -3744,6 +3744,7 @@ GMenuItem
 g_menu_item_new
 g_menu_item_new_section
 g_menu_item_new_submenu
+g_menu_item_new_from_model
 
 <SUBSECTION>
 g_menu_item_set_label

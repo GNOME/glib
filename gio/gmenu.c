@@ -1247,3 +1247,90 @@ g_menu_item_new_section (const gchar *label,
 
   return menu_item;
 }
+
+/**
+ * g_menu_item_new_from_model:
+ * @model: a #GMenuModel
+ * @item_index: the index of an item in @model
+ *
+ * Creates a #GMenuItem as an exact copy of an existing menu item in a
+ * #GMenuModel.
+ *
+ * @item_index must be valid (ie: be sure to call
+ * g_menu_model_get_n_items() first).
+ *
+ * Returns: a new #GMenuItem.
+ *
+ * Since: 2.34
+ */
+GMenuItem *
+g_menu_item_new_from_model (GMenuModel *model,
+                            gint        item_index)
+{
+  GMenuModelClass *class = G_MENU_MODEL_GET_CLASS (model);
+  GMenuItem *menu_item;
+
+  menu_item = g_object_new (G_TYPE_MENU_ITEM, NULL);
+
+  /* With some trickery we can be pretty efficient.
+   *
+   * A GMenuModel must either implement iterate_item_attributes() or
+   * get_item_attributes().  If it implements get_item_attributes() then
+   * we are in luck -- we can just take a reference on the returned
+   * hashtable and mark ourselves as copy-on-write.
+   *
+   * In the case that the model is based on get_item_attributes (which
+   * is the case for both GMenu and GDBusMenuModel) then this is
+   * basically just g_hash_table_ref().
+   */
+  if (class->get_item_attributes)
+    {
+      GHashTable *attributes = NULL;
+
+      class->get_item_attributes (model, item_index, &attributes);
+      if (attributes)
+        {
+          g_hash_table_unref (menu_item->attributes);
+          menu_item->attributes = attributes;
+          menu_item->cow = TRUE;
+        }
+    }
+  else
+    {
+      GMenuAttributeIter *iter;
+      const gchar *attribute;
+      GVariant *value;
+
+      iter = g_menu_model_iterate_item_attributes (model, item_index);
+      while (g_menu_attribute_iter_get_next (iter, &attribute, &value))
+        g_hash_table_insert (menu_item->attributes, g_strdup (attribute), value);
+      g_object_unref (iter);
+    }
+
+  /* Same story for the links... */
+  if (class->get_item_links)
+    {
+      GHashTable *links = NULL;
+
+      class->get_item_links (model, item_index, &links);
+      if (links)
+        {
+          g_hash_table_unref (menu_item->links);
+          menu_item->links = links;
+          menu_item->cow = TRUE;
+        }
+    }
+  else
+    {
+      GMenuLinkIter *iter;
+      const gchar *link;
+      GMenuModel *value;
+
+      iter = g_menu_model_iterate_item_links (model, item_index);
+      while (g_menu_link_iter_get_next (iter, &link, &value))
+        g_hash_table_insert (menu_item->links, g_strdup (link), value);
+      g_object_unref (iter);
+    }
+
+  return menu_item;
+}
