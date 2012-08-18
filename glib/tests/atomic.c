@@ -162,6 +162,11 @@ test_types (void)
   s2 = g_atomic_int_xor ((guint*)&s, 4);
   g_assert_cmpint (s2, ==, 12);
   g_assert_cmpint (s, ==, 8);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  s2 = g_atomic_int_exchange_and_add ((gint*)&s, 1);
+G_GNUC_END_IGNORE_DEPRECATIONS
+  g_assert_cmpint (s2, ==, 8);
+  g_assert_cmpint (s, ==, 9);
 
   g_atomic_pointer_set (&vp, 0);
   vp2 = g_atomic_pointer_get (&vp);
