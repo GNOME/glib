@@ -11,13 +11,17 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include <string.h>
 #include <glib/glib.h>
 #include <gio/gio.h>
 
 static void
 test_input_filter (void)
 {
-  GInputStream *base, *f1, *f2;
+  GInputStream *base, *f1, *f2, *s;
+  gboolean close_base;
+  gchar buf[1024];
+  GError *error = NULL;
 
   g_test_bug ("568394");
   base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
@@ -33,10 +37,26 @@ test_input_filter (void)
   g_assert (!g_input_stream_is_closed (f1));
   g_assert (!g_input_stream_is_closed (f2));
 
+  g_object_get (f1,
+                "close-base-stream", &close_base,
+                "base-stream", &s,
+                NULL);
+  g_assert (!close_base);
+  g_assert (s == base);
+  g_object_unref (s);
+
   g_object_unref (f1);
 
   g_assert (!g_input_stream_is_closed (base));
   g_assert (!g_input_stream_is_closed (f2));
+
+  g_input_stream_skip (f2, 3, NULL, &error);
+  g_assert_no_error (error);
+
+  memset (buf, 0, 1024);
+  g_input_stream_read_all (f2, buf, 1024, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (buf, ==, "defghijk");
 
   g_object_unref (f2);
 
