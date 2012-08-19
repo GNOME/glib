@@ -118,7 +118,7 @@ _g_param_type_init (void)
   };
   GType type;
 
-  /* This should be registred as GParamSpec instead of GParam, for
+  /* This should be registered as GParamSpec instead of GParam, for
    * consistency sake, so that type name can be mapped to struct name,
    * However, some language bindings, most noticeable the python ones
    * depends on the "GParam" identifier, see #548689
