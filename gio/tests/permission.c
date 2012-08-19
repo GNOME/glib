@@ -28,6 +28,7 @@ acquired (GObject      *source,
           gpointer      user_data)
 {
   GPermission *p = G_PERMISSION (source);
+  GMainLoop *loop = user_data;
   GError *error = NULL;
   gboolean ret;
 
@@ -35,6 +36,8 @@ acquired (GObject      *source,
   g_assert (!ret);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
   g_clear_error (&error);
+
+  g_main_loop_quit (loop);
 }
 
 static void
@@ -43,6 +46,7 @@ released (GObject      *source,
           gpointer      user_data)
 {
   GPermission *p = G_PERMISSION (source);
+  GMainLoop *loop = user_data;
   GError *error = NULL;
   gboolean ret;
 
@@ -50,6 +54,8 @@ released (GObject      *source,
   g_assert (!ret);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
   g_clear_error (&error);
+
+  g_main_loop_quit (loop);
 }
 
 static void
@@ -61,6 +67,7 @@ test_simple (void)
   gboolean can_release;
   gboolean ret;
   GError *error = NULL;
+  GMainLoop *loop;
 
   p = g_simple_permission_new (TRUE);
 
@@ -88,8 +95,13 @@ test_simple (void)
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
   g_clear_error (&error);
 
-  g_permission_acquire_async (p, NULL, acquired, NULL);
-  g_permission_release_async (p, NULL, released, NULL);
+  loop = g_main_loop_new (NULL, FALSE);
+  g_permission_acquire_async (p, NULL, acquired, loop);
+  g_main_loop_run (loop);
+  g_permission_release_async (p, NULL, released, loop);
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
 
   g_object_unref (p);
 }
