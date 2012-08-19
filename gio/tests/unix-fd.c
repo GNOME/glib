@@ -158,6 +158,10 @@ test_fds (void)
   g_assert_cmpint (g_unix_socket_address_get_address_type (G_UNIX_SOCKET_ADDRESS (addr)), ==, G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
   g_assert_cmpint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (addr)), ==, 0);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_assert (!g_unix_socket_address_get_is_abstract (G_UNIX_SOCKET_ADDRESS (addr)));
+G_GNUC_END_IGNORE_DEPRECATIONS
+
   g_object_get (addr,
                 "path", &path,
                 "path-as-array", &array,
