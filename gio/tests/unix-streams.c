@@ -257,6 +257,43 @@ test_pipe_io (gconstpointer nonblocking)
   g_object_unref (out);
 }
 
+static void
+test_basic (void)
+{
+  GUnixInputStream *is;
+  GUnixOutputStream *os;
+  gint fd;
+  gboolean close_fd;
+
+  is = G_UNIX_INPUT_STREAM (g_unix_input_stream_new (0, TRUE));
+  g_object_get (is,
+                "fd", &fd,
+                "close-fd", &close_fd,
+                NULL);
+  g_assert_cmpint (fd, ==, 0);
+  g_assert (close_fd);
+
+  g_unix_input_stream_set_close_fd (is, FALSE);
+  g_assert (!g_unix_input_stream_get_close_fd (is));
+  g_assert_cmpint (g_unix_input_stream_get_fd (is), ==, 0);
+
+  g_object_unref (is);
+
+  os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (1, TRUE));
+  g_object_get (os,
+                "fd", &fd,
+                "close-fd", &close_fd,
+                NULL);
+  g_assert_cmpint (fd, ==, 1);
+  g_assert (close_fd);
+
+  g_unix_output_stream_set_close_fd (os, FALSE);
+  g_assert (!g_unix_output_stream_get_close_fd (os));
+  g_assert_cmpint (g_unix_output_stream_get_fd (os), ==, 1);
+
+  g_object_unref (os);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -264,6 +301,7 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/unix-streams/basic", test_basic);
   g_test_add_data_func ("/unix-streams/pipe-io-test",
 			GINT_TO_POINTER (FALSE),
 			test_pipe_io);
