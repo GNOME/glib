@@ -60,6 +60,7 @@ TEST_PROGS +=	 		\
 	fileattributematcher	\
 	resources		\
 	proxy-test		\
+	permission		\
 	$(NULL)
 
 if HAVE_DBUS_DAEMON
@@ -460,6 +461,9 @@ gmenumodel_LDADD = $(progs_ldadd)
 
 proxy_test_SOURCES = proxy-test.c
 proxy_test_LDADD   = $(progs_ldadd)
+
+permission_SOURCES = permission.c
+permission_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
