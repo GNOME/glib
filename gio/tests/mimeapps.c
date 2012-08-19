@@ -73,12 +73,13 @@ const gchar *myapp5_data =
   "Type=Application\n"
   "Exec=my_app5 %f\n"
   "Name=my app 5\n"
-  "MimeType=image/bmp;";
+  "MimeType=image/bmp;x-scheme-handler/ftp;";
 
 const gchar *defaults_data =
   "[Default Applications]\n"
   "image/bmp=myapp4.desktop;\n"
-  "image/png=myapp3.desktop;\n";
+  "image/png=myapp3.desktop;\n"
+  "x-scheme-handler/ftp=myapp5.desktop;\n";
 
 const gchar *mimecache_data =
   "[MIME Cache]\n"
@@ -562,6 +563,19 @@ test_mime_default_last_used (void)
   g_object_unref (appinfo5);
 }
 
+static void
+test_scheme_handler (void)
+{
+  GAppInfo *info, *info5;
+
+  info5 = (GAppInfo*)g_desktop_app_info_new ("myapp5.desktop");
+  info = g_app_info_get_default_for_uri_scheme ("ftp");
+  g_assert (g_app_info_equal (info, info5));
+
+  g_object_unref (info);
+  g_object_unref (info5);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -573,7 +587,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/mime/api", test_mime_api);
   g_test_add_func ("/appinfo/mime/default", test_mime_default);
   g_test_add_func ("/appinfo/mime/file", test_mime_file);
-  g_test_add_func ("/appinfo/mime/default_last_used", test_mime_default_last_used);
+  g_test_add_func ("/appinfo/mime/scheme-handler", test_scheme_handler);
+  g_test_add_func ("/appinfo/mime/default-last-used", test_mime_default_last_used);
 
   return g_test_run ();
 }

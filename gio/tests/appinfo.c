@@ -9,6 +9,8 @@ test_launch (void)
 {
   GAppInfo *appinfo;
   GError *error;
+  GFile *file;
+  GList *l;
 
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
   g_assert (appinfo != NULL);
@@ -19,6 +21,23 @@ test_launch (void)
 
   g_assert (g_app_info_launch_uris (appinfo, NULL, NULL, &error));
   g_assert_no_error (error);
+
+  file = g_file_new_for_path (SRCDIR "/appinfo-test.desktop");
+  l = NULL;
+  l = g_list_append (l, file);
+
+  g_assert (g_app_info_launch (appinfo, l, NULL, &error));
+  g_assert_no_error (error);
+  g_list_free (l);
+  g_object_unref (file);
+
+  l = NULL;
+  l = g_list_append (l, "file://" SRCDIR "/appinfo-test.desktop");
+  l = g_list_append (l, "file:///etc/group#adm");
+
+  g_assert (g_app_info_launch_uris (appinfo, l, NULL, &error));
+  g_assert_no_error (error);
+  g_list_free (l);
 }
 
 static void
@@ -78,7 +97,6 @@ test_basic (void)
 
   g_assert (g_app_info_get_id (appinfo) == NULL);
   g_assert_cmpstr (g_app_info_get_executable (appinfo), ==, "./appinfo-test");
-  g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, "./appinfo-test --option");
 
   icon = g_app_info_get_icon (appinfo);
   g_assert (G_IS_THEMED_ICON (icon));
@@ -317,6 +335,45 @@ test_supported_types (void)
   g_object_unref (appinfo);
 }
 
+static void
+test_from_keyfile (void)
+{
+  GDesktopAppInfo *info;
+  GKeyFile *kf;
+  GError *error = NULL;
+  const gchar *categories;
+  gchar **keywords;
+  const gchar *file;
+  const gchar *name;
+
+  kf = g_key_file_new ();
+  g_key_file_load_from_file (kf,
+                             SRCDIR "/appinfo-test.desktop",
+                             G_KEY_FILE_NONE,
+                             &error);
+  g_assert_no_error (error);
+  info = g_desktop_app_info_new_from_keyfile (kf);
+  g_key_file_free (kf);
+  g_assert (info != NULL);
+
+  g_object_get (info, "filename", &file, NULL);
+  g_assert (file == NULL);
+
+  file = g_desktop_app_info_get_filename (info);
+  g_assert (file == NULL);
+  categories = g_desktop_app_info_get_categories (info);
+  g_assert_cmpstr (categories, ==, "GNOME;GTK;");
+  keywords = (gchar **)g_desktop_app_info_get_keywords (info);
+  g_assert_cmpint (g_strv_length (keywords), ==, 2);
+  g_assert_cmpstr (keywords[0], ==, "keyword1");
+  g_assert_cmpstr (keywords[1], ==, "test keyword");
+  name = g_desktop_app_info_get_generic_name (info);
+  g_assert_cmpstr (name, ==, "generic-appinfo-test");
+  g_assert (!g_desktop_app_info_get_nodisplay (info));
+
+  g_object_unref (info);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -334,6 +391,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/environment", test_environment);
   g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
   g_test_add_func ("/appinfo/supported-types", test_supported_types);
+  g_test_add_func ("/appinfo/from-keyfile", test_from_keyfile);
 
   return g_test_run ();
 }
