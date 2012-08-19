@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <string.h>
 #include <gio/gio.h>
 #include "gconstructor.h"
 #include "test_resources2.h"
@@ -360,6 +361,30 @@ test_resource_manual (void)
 }
 
 static void
+test_resource_manual2 (void)
+{
+  GResource *resource;
+  GBytes *data;
+  gsize size;
+  GError *error = NULL;
+
+  resource = _g_test2_get_resource ();
+
+  data = g_resource_lookup_data (resource,
+                                 "/manual_loaded/test1.txt",
+				 G_RESOURCE_LOOKUP_FLAGS_NONE,
+				 &error);
+  g_assert (data != NULL);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_bytes_unref (data);
+
+  g_resource_unref (resource);
+}
+
+static void
 test_resource_module (void)
 {
   GIOModule *module;
@@ -478,6 +503,10 @@ test_uri_file (void)
   GFileEnumerator *enumerator;
   gchar *scheme;
   GFileAttributeInfoList *attrs;
+  GInputStream *stream;
+  gchar buf[1024];
+  gboolean ret;
+  gssize skipped;
 
   loaded_file = g_file_get_contents ("test.gresource", &content, &content_size,
                                      NULL);
@@ -560,7 +589,38 @@ test_uri_file (void)
   g_assert_no_error (error);
   g_file_attribute_info_list_unref (attrs);
 
+  stream = G_INPUT_STREAM (g_file_read (file, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (stream)), ==, 0);
+  g_assert (g_seekable_can_seek (G_SEEKABLE (G_SEEKABLE (stream))));
+  ret = g_seekable_seek (G_SEEKABLE (stream), 1, G_SEEK_SET, NULL, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  skipped = g_input_stream_skip (stream, 1, NULL, &error);
+  g_assert_cmpint (skipped, ==, 1);
+  g_assert_no_error (error);
+
+  memset (buf, 0, 1024);
+  ret = g_input_stream_read_all (stream, &buf, 1024, NULL, NULL, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  g_assert_cmpstr (buf, ==, "st2\n");
+  info = g_file_input_stream_query_info (G_FILE_INPUT_STREAM (stream),
+                                         G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                         NULL,
+                                         &error);
+  g_assert_no_error (error);
+  g_assert (info != NULL);
+  g_assert_cmpint (g_file_info_get_size (info), ==, 6);
+  g_object_unref (info);
+
+  ret = g_input_stream_close (stream, NULL, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  g_object_unref (stream);
+
   g_object_unref (file);
+  g_object_unref (file2);
 
   g_resources_unregister (resource);
   g_resource_unref (resource);
@@ -579,6 +639,7 @@ main (int   argc,
   g_test_add_func ("/resource/data", test_resource_data);
   g_test_add_func ("/resource/registered", test_resource_registered);
   g_test_add_func ("/resource/manual", test_resource_manual);
+  g_test_add_func ("/resource/manual2", test_resource_manual2);
 #ifdef G_HAS_CONSTRUCTORS
   g_test_add_func ("/resource/automatic", test_resource_automatic);
   /* This only uses automatic resources too, so it tests the constructors and destructors */
