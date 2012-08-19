@@ -166,6 +166,34 @@ test_pollable_unix (void)
   g_object_unref (out);
   close (fd);
 }
+
+static void
+test_pollable_converter (void)
+{
+  GConverter *converter;
+  GError *error = NULL;
+  GInputStream *ibase;
+  int pipefds[2], status;
+
+  status = pipe (pipefds);
+  g_assert_cmpint (status, ==, 0);
+
+  ibase = G_INPUT_STREAM (g_unix_input_stream_new (pipefds[0], TRUE));
+  converter = G_CONVERTER (g_charset_converter_new ("UTF-8", "UTF-8", &error));
+  g_assert_no_error (error);
+
+  in = G_POLLABLE_INPUT_STREAM (g_converter_input_stream_new (ibase, converter));
+  g_object_unref (converter);
+  g_object_unref (ibase);
+
+  out = g_unix_output_stream_new (pipefds[1], TRUE);
+
+  test_streams ();
+
+  g_object_unref (in);
+  g_object_unref (out);
+}
+
 #endif
 
 static void
@@ -250,6 +278,7 @@ main (int   argc,
 
 #ifdef G_OS_UNIX
   g_test_add_func ("/pollable/unix", test_pollable_unix);
+  g_test_add_func ("/pollable/converter", test_pollable_converter);
 #endif
   g_test_add_func ("/pollable/socket", test_pollable_socket);
 
