@@ -60,6 +60,7 @@ TEST_PROGS +=	 		\
 	fileattributematcher	\
 	resources		\
 	proxy-test		\
+	inet-address		\
 	permission		\
 	$(NULL)
 
@@ -461,6 +462,9 @@ gmenumodel_LDADD = $(progs_ldadd)
 
 proxy_test_SOURCES = proxy-test.c
 proxy_test_LDADD   = $(progs_ldadd)
+
+inet_address_SOURCES = inet-address.c
+inet_address_LDADD   = $(progs_ldadd)
 
 permission_SOURCES = permission.c
 permission_LDADD   = $(progs_ldadd)
