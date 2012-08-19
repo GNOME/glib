@@ -22,6 +22,11 @@
 #include "config.h"
 
 #include "gpermission.h"
+
+#include "gioerror.h"
+#include "gioenums.h"
+#include "gasyncresult.h"
+#include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
 
@@ -318,21 +323,24 @@ g_permission_impl_update (GPermission *permission,
 
   g_object_freeze_notify (object);
 
+  allowed = allowed != FALSE;
   if (allowed != permission->priv->allowed)
     {
-      permission->priv->allowed = !!allowed;
+      permission->priv->allowed = allowed;
       g_object_notify (object, "allowed");
     }
 
+  can_acquire = can_acquire != FALSE;
   if (can_acquire != permission->priv->can_acquire)
     {
-      permission->priv->can_acquire = !!can_acquire;
+      permission->priv->can_acquire = can_acquire;
       g_object_notify (object, "can-acquire");
     }
 
+  can_release = can_release != FALSE;
   if (can_release != permission->priv->can_release)
     {
-      permission->priv->can_release = !!can_release;
+      permission->priv->can_release = can_release;
       g_object_notify (object, "can-release");
     }
 
@@ -372,12 +380,51 @@ g_permission_init (GPermission *permission)
                                                   GPermissionPrivate);
 }
 
+static gboolean
+acquire_or_release (GPermission   *permission,
+                    GCancellable  *cancellable,
+                    GError       **error)
+{
+  g_set_error_literal  (error,
+                        G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                        "Can't acquire or release permission");
+  return FALSE;
+}
+
+static void
+acquire_or_release_async (GPermission         *permission,
+                          GCancellable        *cancellable,
+                          GAsyncReadyCallback  callback,
+                          gpointer             user_data)
+{
+  g_simple_async_report_error_in_idle (G_OBJECT (permission),
+                                       callback, user_data,
+                                       G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                                       "Can't acquire or release permission");
+}
+
+static gboolean
+acquire_or_release_finish (GPermission   *permission,
+                           GAsyncResult  *result,
+                           GError       **error)
+{
+  g_async_result_legacy_propagate_error (result, error);
+  return FALSE;
+}
+
 static void
 g_permission_class_init (GPermissionClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->get_property = g_permission_get_property;
+
+  class->acquire = acquire_or_release;
+  class->release = acquire_or_release;
+  class->acquire_async = acquire_or_release_async;
+  class->release_async = acquire_or_release_async;
+  class->acquire_finish = acquire_or_release_finish;
+  class->release_finish = acquire_or_release_finish;
 
   /**
    * GPermission:allowed:
