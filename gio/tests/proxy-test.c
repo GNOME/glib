@@ -826,6 +826,11 @@ assert_direct (GSocketConnection *conn)
   addr = g_socket_connection_get_remote_address (conn, &error);
   g_assert_no_error (error);
   g_assert (!G_IS_PROXY_ADDRESS (addr));
+
+  addr = g_socket_connection_get_local_address (conn, &error);
+  g_assert_no_error (error);
+
+  g_assert (g_socket_connection_is_connected (conn));
 }
 
 static void
