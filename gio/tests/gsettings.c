@@ -724,7 +724,8 @@ enum
   PROP_NO_READ,
   PROP_NO_WRITE,
   PROP_STRV,
-  PROP_ENUM
+  PROP_ENUM,
+  PROP_FLAGS
 };
 
 typedef struct
@@ -746,6 +747,7 @@ typedef struct
   gchar *no_write_prop;
   gchar **strv_prop;
   guint enum_prop;
+  guint flags_prop;
 } TestObject;
 
 typedef struct
@@ -822,6 +824,9 @@ test_object_get_property (GObject    *object,
     case PROP_ENUM:
       g_value_set_enum (value, test_object->enum_prop);
       break;
+    case PROP_FLAGS:
+      g_value_set_flags (value, test_object->flags_prop);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -883,6 +888,9 @@ test_object_set_property (GObject      *object,
     case PROP_ENUM:
       test_object->enum_prop = g_value_get_enum (value);
       break;
+    case PROP_FLAGS:
+      test_object->flags_prop = g_value_get_flags (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -905,6 +913,28 @@ test_enum_get_type (void)
       };
 
       GType type_id = g_enum_register_static ("TestEnum", values);
+      g_once_init_leave (&define_type_id, type_id);
+    }
+
+  return define_type_id;
+}
+
+static GType
+test_flags_get_type (void)
+{
+  static volatile gsize define_type_id = 0;
+
+  if (g_once_init_enter (&define_type_id))
+    {
+      static const GFlagsValue values[] = {
+        { TEST_FLAGS_NONE, "TEST_FLAGS_NONE", "none" },
+        { TEST_FLAGS_MOURNING, "TEST_FLAGS_MOURNING", "mourning" },
+        { TEST_FLAGS_LAUGHING, "TEST_FLAGS_LAUGHING", "laughing" },
+        { TEST_FLAGS_WALKING, "TEST_FLAGS_WALKING", "walking" },
+        { 0, NULL, NULL }
+      };
+
+      GType type_id = g_flags_register_static ("TestFlags", values);
       g_once_init_leave (&define_type_id, type_id);
     }
 
@@ -950,6 +980,8 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_boxed ("strv", "", "", G_TYPE_STRV, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_ENUM,
     g_param_spec_enum ("enum", "", "", test_enum_get_type (), TEST_ENUM_FOO, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_FLAGS,
+    g_param_spec_flags ("flags", "", "", test_flags_get_type (), TEST_FLAGS_NONE, G_PARAM_READWRITE));
 }
 
 static TestObject *
@@ -1155,6 +1187,20 @@ test_simple_binding (void)
   i = 230;
   g_object_get (obj, "enum", &i, NULL);
   g_assert_cmpint (i, ==, TEST_ENUM_BAZ);
+
+  g_settings_bind (settings, "flags", obj, "flags", G_SETTINGS_BIND_DEFAULT);
+  g_object_set (obj, "flags", TEST_FLAGS_MOURNING, NULL);
+  strv = g_settings_get_strv (settings, "flags");
+  g_assert_cmpint (g_strv_length (strv), ==, 1);
+  g_assert_cmpstr (strv[0], ==, "mourning");
+  g_strfreev (strv);
+
+  g_assert_cmpint (g_settings_get_flags (settings, "flags"), ==, TEST_FLAGS_MOURNING);
+
+  g_settings_set_flags (settings, "flags", TEST_FLAGS_MOURNING | TEST_FLAGS_WALKING);
+  i = 230;
+  g_object_get (obj, "flags", &i, NULL);
+  g_assert_cmpint (i, ==, TEST_FLAGS_MOURNING | TEST_FLAGS_WALKING);
 
   g_object_unref (obj);
   g_object_unref (settings);
@@ -1721,6 +1767,7 @@ static void
 test_range (void)
 {
   GSettings *settings, *direct;
+  GVariant *value;
 
   settings = g_settings_new ("org.gtk.test.range");
   direct = g_settings_new ("org.gtk.test.range.direct");
@@ -1748,6 +1795,16 @@ test_range (void)
   g_settings_set_int (direct, "val", 1);
   g_assert_cmpint (g_settings_get_int (direct, "val"), ==, 1);
   g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
+
+  value = g_variant_new_int32 (1);
+  g_assert (!g_settings_range_check (settings, "val", value));
+  g_variant_unref (value);
+  value = g_variant_new_int32 (33);
+  g_assert (g_settings_range_check (settings, "val", value));
+  g_variant_unref (value);
+  value = g_variant_new_int32 (45);
+  g_assert (!g_settings_range_check (settings, "val", value));
+  g_variant_unref (value);
 }
 
 static gboolean
@@ -2011,6 +2068,11 @@ test_actions (void)
   GAction *string, *toggle;
   gboolean c1, c2, c3;
   GSettings *settings;
+  gchar *name;
+  GVariantType *param_type;
+  gboolean enabled;
+  GVariantType *state_type;
+  GVariant *state;
 
   settings = g_settings_new ("org.gtk.test.basic-types");
   string = g_settings_create_action (settings, "test-string");
@@ -2045,6 +2107,23 @@ test_actions (void)
   g_action_activate (toggle, NULL);
   g_assert (!g_settings_get_boolean (settings, "test-boolean"));
   g_assert (c1 && !c2 && c3);
+
+  g_object_get (string,
+                "name", &name,
+                "parameter-type", &param_type,
+                "enabled", &enabled,
+                "state-type", &state_type,
+                "state", &state,
+                NULL);
+
+  g_assert_cmpstr (name, ==, "test-string");
+  g_assert (g_variant_type_equal (param_type, G_VARIANT_TYPE_STRING));
+  g_assert (enabled);
+  g_assert (g_variant_type_equal (state_type, G_VARIANT_TYPE_STRING));
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "kthxbye");
+
+  g_free (name);
+  g_variant_unref (state);
 
   g_object_unref (string);
   g_object_unref (toggle);

@@ -120,6 +120,9 @@
     <key name="enum" enum="org.gtk.test.TestEnum">
       <default>'foo'</default>
     </key>
+    <key name="flags" flags="org.gtk.test.TestFlags">
+      <default>['mourning', 'laughing']</default>
+    </key>
   </schema>
 
   <schema id='org.gtk.test.enums' path='/tests/enums/'>
