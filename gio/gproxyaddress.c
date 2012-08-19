@@ -291,7 +291,7 @@ g_proxy_address_init (GProxyAddress *proxy)
  * @inetaddr: The proxy server #GInetAddress.
  * @port: The proxy server port.
  * @protocol: The proxy protocol to support, in lower case (e.g. socks, http).
- * @dest_hostname: The destination hostname the the proxy should tunnel to.
+ * @dest_hostname: The destination hostname the proxy should tunnel to.
  * @dest_port: The destination port to tunnel to.
  * @username: (allow-none): The username to authenticate to the proxy server
  *     (or %NULL).

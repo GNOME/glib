@@ -100,7 +100,7 @@ typedef enum
  * G_SPAWN_EXIT_ERROR:
  *
  * Error domain used by g_spawn_check_exit_status().  The code
- * will be the the program exit code.
+ * will be the program exit code.
  */
 #define G_SPAWN_EXIT_ERROR g_spawn_exit_error_quark ()
 

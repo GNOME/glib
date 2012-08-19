@@ -2341,7 +2341,7 @@ g_markup_vprintf_escaped (const gchar *format,
    * then use the normal g_strdup_vprintf() to format the arguments
    * with the two new format strings. By comparing the results,
    * we can figure out what segments of the output come from
-   * the the original format string, and what from the arguments,
+   * the original format string, and what from the arguments,
    * and thus know what portions of the string to escape.
    *
    * For instance, for:

@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 /**
  * G_VALUE_TYPE:
  * @value: A #GValue structure.
- * 
+ *
  * Get the type identifier of @value.
  *
  * Returns: the #GType.
@@ -63,7 +63,7 @@ G_BEGIN_DECLS
  * G_VALUE_TYPE_NAME:
  * @value: A #GValue structure.
  *
- * Gets the the type name of @value. 
+ * Gets the type name of @value.
  *
  * Returns: the type name.
  */
@@ -72,7 +72,7 @@ G_BEGIN_DECLS
  * G_VALUE_HOLDS:
  * @value: A #GValue structure.
  * @type: A #GType value.
- * 
+ *
  * Checks if @value holds (or contains) a value of @type.
  * This macro will also check for @value != %NULL and issue a
  * warning if the check fails.

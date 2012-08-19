@@ -253,7 +253,7 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
    *
    * If set to a non-%NULL #GFileInfo object, and #GZlibCompressor:format is
    * %G_ZLIB_COMPRESSOR_FORMAT_GZIP, the compressor will write the file name
-   * and modification time from the file info to the the GZIP header.
+   * and modification time from the file info to the GZIP header.
    *
    * Since: 2.26
    */
