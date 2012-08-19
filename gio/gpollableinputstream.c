@@ -32,7 +32,7 @@
  * @include: gio/gio.h
  * @see_also: #GInputStream, #GPollableOutputStream, #GFileDescriptorBased
  *
- * #GPollableInputStream is implemented by #GInputStream<!-- -->s that
+ * #GPollableInputStream is implemented by #GInputStreams that
  * can be polled for readiness to read. This can be used when
  * interfacing with a non-GIO API that expects
  * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
