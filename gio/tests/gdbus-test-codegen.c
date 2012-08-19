@@ -964,7 +964,7 @@ check_bar_proxy (FooiGenBar *proxy,
    * properties.
    *
    * On the first reception, y and i should both be increased by
-   * two. On the the second reception, only by one. The signal handler
+   * two. On the second reception, only by one. The signal handler
    * checks this.
    *
    * This also checks that _drain_notify() works.
@@ -1868,7 +1868,7 @@ check_object_manager (void)
   om_check_get_all (c, loop,
                     "(@a{oa{sa{sv}}} {},)");
 
-  /* Now try to create the the proxy manager again - this time it should work */
+  /* Now try to create the proxy manager again - this time it should work */
   error = NULL;
   foo_igen_object_manager_client_new (c,
                                       G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
