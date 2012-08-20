@@ -714,7 +714,7 @@ profile_print_locked (guint   *local_data,
 void
 g_mem_profile (void)
 {
-  guint local_data[(MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0])];
+  guint local_data[(MEM_PROFILE_TABLE_SIZE + 1) * 8];
   gsize local_allocs;
   gsize local_zinit;
   gsize local_frees;
