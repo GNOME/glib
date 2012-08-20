@@ -278,6 +278,97 @@ test_pipe_io (void)
   g_object_unref (out);
 }
 
+typedef struct _PipeIOOverlapReader
+{
+  char buf[sizeof (DATA)];
+  GInputStream *in;
+  GThread *thread;
+} PipeIOOverlapReader;
+
+#define TEST_PIPE_IO_OVERLAP (1024 * 4)
+
+static gpointer
+pipe_io_overlap_reader_thread (gpointer user_data)
+{
+  PipeIOOverlapReader *p = user_data;
+  GError *err = NULL;
+  gsize read;
+  guint i;
+
+  for (i = 0; i < TEST_PIPE_IO_OVERLAP; ++i) {
+    memset (p->buf, 0, sizeof (p->buf));
+    g_input_stream_read_all (p->in, p->buf, sizeof (p->buf),
+                             &read, NULL, &err);
+
+    g_assert_cmpuint (read, ==, sizeof (p->buf));
+    g_assert_no_error (err);
+    g_assert_cmpstr (p->buf, ==, DATA);
+  }
+
+  return NULL;
+}
+
+static gpointer
+pipe_io_overlap_writer_thread (gpointer user_data)
+{
+  GOutputStream *out = user_data;
+  GError *err = NULL;
+  gsize bytes_written;
+  guint i;
+
+  for (i = 0; i < TEST_PIPE_IO_OVERLAP; ++i) {
+    g_output_stream_write_all (out, DATA, sizeof (DATA),
+                               &bytes_written, NULL, &err);
+
+    g_assert_cmpuint (bytes_written, ==, sizeof (DATA));
+    g_assert_no_error (err);
+  }
+
+  return NULL;
+}
+
+static void
+test_pipe_io_overlap (void)
+{
+  GOutputStream *out_server, *out_client;
+  GThread *writer_server, *writer_client;
+  PipeIOOverlapReader rs, rc;
+  HANDLE server, client;
+  gchar name[256];
+
+  g_snprintf (name, sizeof (name),
+              "\\\\.\\pipe\\gtest-io-overlap-%u", (guint) getpid ());
+
+  server = CreateNamedPipe (name,
+                            PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
+                            PIPE_READMODE_BYTE | PIPE_WAIT,
+                            1, 0, 0, 0, NULL);
+  g_assert (server != INVALID_HANDLE_VALUE);
+
+  client = CreateFile (name, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+  g_assert (client != INVALID_HANDLE_VALUE);
+
+  out_server = g_win32_output_stream_new (server, TRUE);
+  writer_server = g_thread_new ("writer_server", pipe_io_overlap_writer_thread, out_server);
+  rs.in = g_win32_input_stream_new (server, TRUE);
+  rs.thread = g_thread_new ("reader_server", pipe_io_overlap_reader_thread, &rs);
+
+  out_client = g_win32_output_stream_new (client, TRUE);
+  writer_client = g_thread_new ("writer_client", pipe_io_overlap_writer_thread, out_client);
+  rc.in = g_win32_input_stream_new (client, TRUE);
+  rc.thread = g_thread_new ("reader_client", pipe_io_overlap_reader_thread, &rc);
+
+  g_thread_join (writer_client);
+  g_thread_join (writer_server);
+  g_thread_join (rc.thread);
+  g_thread_join (rs.thread);
+
+  g_object_unref (rs.in);
+  g_object_unref (rc.in);
+  g_object_unref (out_server);
+  g_object_unref (out_client);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -286,6 +377,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/win32-streams/pipe-io-test", test_pipe_io);
+  g_test_add_func ("/win32-streams/pipe-io-overlap-test", test_pipe_io_overlap);
 
   return g_test_run();
 }
