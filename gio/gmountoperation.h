@@ -82,8 +82,8 @@ struct _GMountOperationClass
 
   void (* show_unmount_progress) (GMountOperation *op,
                                   const gchar     *message,
-                                  guint64          time_left,
-                                  guint64          bytes_left);
+                                  gint64           time_left,
+                                  gint64           bytes_left);
 
   /*< private >*/
   /* Padding for future expansion */

@@ -243,8 +243,8 @@ show_processes (GMountOperation      *op,
 static void
 show_unmount_progress (GMountOperation *op,
                        const gchar     *message,
-                       guint64          time_left,
-                       guint64          bytes_left)
+                       gint64           time_left,
+                       gint64           bytes_left)
 {
   /* nothing to do */
 }
@@ -387,7 +387,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * GMountOperation::show-unmount-progress:
    * @op: a #GMountOperation:
    * @message: string containing a mesage to display to the user
-   * @time_left: the estimated time left before the operation completes, or -1
+   * @time_left: the estimated time left before the operation completes,
+   *     in microseconds, or -1
    * @bytes_left: the amount of bytes to be written before the operation
    *     completes (or -1 if such amount is not known), or zero if the operation
    *     is completed
@@ -418,7 +419,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                   G_STRUCT_OFFSET (GMountOperationClass, show_unmount_progress),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 3,
-                  G_TYPE_STRING, G_TYPE_UINT64, G_TYPE_UINT64);
+                  G_TYPE_STRING, G_TYPE_INT64, G_TYPE_INT64);
 
   /**
    * GMountOperation:username:
