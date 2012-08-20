@@ -1,3 +1,61 @@
+Overview of changes from GLib 2.33.8 to 2.33.10
+===============================================
+
+* New GTest API for testcases where log output is expected:
+  g_test_expect_message()
+
+* GMenuItem now has 'get' accessors and a construct-from-GMenuModel API
+
+* GVariant now has a function to check a format-string for type
+  compatibility
+
+* win32: We now use overlapped IO to support multiple asynchronous
+  operations (ie: reading and writing) at the same time.
+
+* GMappedFile: Add g_mapped_file_get_bytes()
+
+* The problems with g_file_make_directory_with_parents() should be
+  resolved.
+
+* The long-standing issues with placeholder generation of manpages are
+  now resolved.
+
+* gtlscertificate: Add GBytes based certificate and private-key props
+
+* build: Switch back to using AS_IF for conditionals
+
+* test coverage improvements, documentation improvements, leak fixes
+
+* Bugs fixed
+ 326931 Better docs for G_GNUC_*
+ 550433 g_test_init doesn't recognize --help
+ 600751 GCompletion should better document if and how items memory is managed
+ 628193 Miscellaneous string fixes
+ 637460 man glib-genmarshal is hard to use
+ 674483 broken configure results when cross-compiling with gcc >= 4.5
+ 677065 GMappedFile: Add g_mapped_file_get_bytes()
+ 679288 win32: use overlapped events for streams
+ 679556 it's hard to use gtest when g_warning() is expected
+ 680823 g_file_make_directory_with_parents: Fix error propagation
+ 681319 gtlscertificate: Add certificate-bytes and private-key-bytes props
+ 681336 man pages not built if --enable-gtk-doc not specified
+ 681413 build: Switch back to using AS_IF for conditionals
+ 681501 gmem: array only partially filled with memcpy
+ 681854 Documentation fix for Howto compile a program with glib
+ 682025 Documentation correction
+ 682067 Fix problems with CLEANFILES and automake-1.11.1 
+
+* Translations updated:
+ Lithuanian
+ Spanish
+ Galician
+ Telugu
+ Serbian
+ Assamese
+ Marathi
+ Indonesian
+ Traditional Chinese
+
 Overview of changes from GLib 2.33.6 to 2.33.8
 ==============================================
 
