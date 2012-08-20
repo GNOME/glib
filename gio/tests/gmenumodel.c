@@ -586,6 +586,49 @@ assert_menus_equal (GMenuModel *a,
     }
 }
 
+static void
+assert_menuitem_equal (GMenuItem  *item,
+                       GMenuModel *model,
+                       gint        index)
+{
+  GMenuAttributeIter *attr_iter;
+  GMenuLinkIter *link_iter;
+  const gchar *name;
+  GVariant *value;
+  GMenuModel *linked_model;
+
+  /* NOTE we can't yet test whether item has attributes or links that
+   * are not in the model, because there's no iterator API for menu
+   * items */
+
+  attr_iter = g_menu_model_iterate_item_attributes (model, index);
+  while (g_menu_attribute_iter_get_next (attr_iter, &name, &value))
+    {
+      GVariant *item_value;
+
+      item_value = g_menu_item_get_attribute_value (item, name, g_variant_get_type (value));
+      g_assert (item_value && g_variant_equal (item_value, value));
+
+      g_variant_unref (item_value);
+      g_variant_unref (value);
+    }
+
+  link_iter = g_menu_model_iterate_item_links (model, index);
+  while (g_menu_link_iter_get_next (link_iter, &name, &linked_model))
+    {
+      GMenuModel *item_linked_model;
+
+      item_linked_model = g_menu_item_get_link (item, name);
+      g_assert (linked_model == item_linked_model);
+
+      g_object_unref (item_linked_model);
+      g_object_unref (linked_model);
+    }
+
+  g_object_unref (attr_iter);
+  g_object_unref (link_iter);
+}
+
 /* Test cases {{{1 */
 static void
 test_equality (void)
@@ -1067,6 +1110,30 @@ test_convenience (void)
   g_object_unref (m2);
 }
 
+static void
+test_menuitem (void)
+{
+  GMenu *menu;
+  GMenu *submenu;
+  GMenuItem *item;
+
+  menu = g_menu_new ();
+  submenu = g_menu_new ();
+
+  item = g_menu_item_new ("label", "action");
+  g_menu_item_set_attribute (item, "attribute", "b", TRUE);
+  g_menu_item_set_link (item, G_MENU_LINK_SUBMENU, G_MENU_MODEL (submenu));
+  g_menu_append_item (menu, item);
+  g_object_unref (item);
+
+  item = g_menu_item_new_from_model (G_MENU_MODEL (menu), 0);
+  assert_menuitem_equal (item, G_MENU_MODEL (menu), 0);
+  g_object_unref (item);
+
+  g_object_unref (menu);
+  g_object_unref (submenu);
+}
+
 /* Epilogue {{{1 */
 int
 main (int argc, char **argv)
@@ -1087,6 +1154,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
   g_test_add_func ("/gmenu/convenience", test_convenience);
+  g_test_add_func ("/gmenu/menuitem", test_menuitem);
 
   ret = g_test_run ();
 
