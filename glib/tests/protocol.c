@@ -200,8 +200,8 @@ test_message (void)
           {
             gchar const* known_messages[] = {
                     "this is a regular g_test_message() from the test suite",
-                    "MESSAGE: this is a regular g_message() from the test suite",
-                    "DEBUG: this is a regular g_debug() from the test suite"
+                    "GLib-MESSAGE: this is a regular g_message() from the test suite",
+                    "GLib-DEBUG: this is a regular g_debug() from the test suite"
             };
             g_assert_cmpint (messages, <, G_N_ELEMENTS (known_messages));
             g_assert_cmpstr (msg->strings[0], ==, known_messages[messages]);
@@ -309,9 +309,9 @@ test_error (void)
             case G_TEST_LOG_ERROR:
                 {
                   gchar const* known_messages[] = {
-                          "FATAL-WARNING: this is a regular g_warning() from the test suite",
-                          "FATAL-CRITICAL: this is a regular g_critical() from the test suite",
-                          "FATAL-ERROR: this is a regular g_error() from the test suite"
+                          "GLib-FATAL-WARNING: this is a regular g_warning() from the test suite",
+                          "GLib-FATAL-CRITICAL: this is a regular g_critical() from the test suite",
+                          "GLib-FATAL-ERROR: this is a regular g_error() from the test suite"
                   };
                   g_assert_cmpint (messages, <, G_N_ELEMENTS (known_messages));
                   g_assert_cmpstr (msg->strings[0], ==, known_messages[messages]);
