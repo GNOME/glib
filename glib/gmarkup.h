@@ -233,15 +233,6 @@ gboolean   g_markup_collect_attributes (const gchar         *element_name,
                                         const gchar         *first_attr,
                                         ...);
 
-GLIB_AVAILABLE_IN_2_34
-gboolean   g_markup_collect_known_attributes (const gchar         *element_name,
-                                              const gchar        **attribute_names,
-                                              const gchar        **attribute_values,
-                                              GError             **error,
-                                              GMarkupCollectType   first_type,
-                                              const gchar         *first_attr,
-                                              ...);
-
 G_END_DECLS
 
 #endif /* __G_MARKUP_H__ */
