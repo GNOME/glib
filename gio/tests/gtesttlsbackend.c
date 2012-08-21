@@ -81,10 +81,8 @@ enum
   PROP_CERTIFICATE_0,
 
   PROP_CERT_CERTIFICATE,
-  PROP_CERT_CERTIFICATE_BYTES,
   PROP_CERT_CERTIFICATE_PEM,
   PROP_CERT_PRIVATE_KEY,
-  PROP_CERT_PRIVATE_KEY_BYTES,
   PROP_CERT_PRIVATE_KEY_PEM,
   PROP_CERT_ISSUER
 };
@@ -135,9 +133,7 @@ g_test_tls_certificate_set_property (GObject      *object,
       cert->key_pem = g_value_dup_string (value);
       break;
     case PROP_CERT_CERTIFICATE:
-    case PROP_CERT_CERTIFICATE_BYTES:
     case PROP_CERT_PRIVATE_KEY:
-    case PROP_CERT_PRIVATE_KEY_BYTES:
     case PROP_CERT_ISSUER:
       /* ignore */
       break;
@@ -166,10 +162,8 @@ g_test_tls_certificate_class_init (GTestTlsCertificateClass *certificate_class)
   gobject_class->finalize = g_test_tls_certificate_finalize;
 
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE, "certificate");
-  g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_BYTES, "certificate-bytes");
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_PEM, "certificate-pem");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY, "private-key");
-  g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_BYTES, "private-key-bytes");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PEM, "private-key-pem");
   g_object_class_override_property (gobject_class, PROP_CERT_ISSUER, "issuer");
 }

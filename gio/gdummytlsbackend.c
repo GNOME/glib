@@ -105,10 +105,8 @@ enum
   PROP_CERTIFICATE_0,
 
   PROP_CERT_CERTIFICATE,
-  PROP_CERT_CERTIFICATE_BYTES,
   PROP_CERT_CERTIFICATE_PEM,
   PROP_CERT_PRIVATE_KEY,
-  PROP_CERT_PRIVATE_KEY_BYTES,
   PROP_CERT_PRIVATE_KEY_PEM,
   PROP_CERT_ISSUER
 };
@@ -150,10 +148,8 @@ g_dummy_tls_certificate_class_init (GDummyTlsCertificateClass *certificate_class
   gobject_class->set_property = g_dummy_tls_certificate_set_property;
 
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE, "certificate");
-  g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_BYTES, "certificate-bytes");
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_PEM, "certificate-pem");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY, "private-key");
-  g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_BYTES, "private-key-bytes");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PEM, "private-key-pem");
   g_object_class_override_property (gobject_class, PROP_CERT_ISSUER, "issuer");
 }
