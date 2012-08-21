@@ -10,17 +10,15 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-08 14:38+0000\n"
-"PO-Revision-Date: 2012-08-12 22:52+0700\n"
-"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"POT-Creation-Date: 2012-08-20 23:10+0000\n"
+"PO-Revision-Date: 2012-08-21 13:53+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Indonesian\n"
-"X-Poedit-Country: Indonesia\n"
 "X-Generator: Lokalize 1.2\n"
 
 #: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:508
@@ -106,12 +104,12 @@ msgstr "tipe %s"
 
 #: ../gio/gcontenttype-win32.c:162
 msgid "Unknown type"
-msgstr "Jenis tak dikenal"
+msgstr "Tipe tak dikenal"
 
 #: ../gio/gcontenttype-win32.c:163
 #, c-format
 msgid "%s filetype"
-msgstr "jenis berkas %s"
+msgstr "tipe berkas %s"
 
 #: ../gio/gcredentials.c:273 ../gio/gcredentials.c:495
 msgid "GCredentials is not implemented on this OS"
@@ -156,13 +154,13 @@ msgstr "Galat di alamat '%s' - atribut family salah bentuk"
 
 #: ../gio/gdbusaddress.c:453
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
+msgid "Address element `%s' does not contain a colon (:)"
 msgstr "Elemen alamat '%s' tak memuat titik dua (:)"
 
 #: ../gio/gdbusaddress.c:474
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
 msgstr ""
 "Pasangan kunci/nilai %d, '%s', di elemen alamat '%s' tak memuat tanda sama "
@@ -1011,11 +1009,11 @@ msgstr "Berharap suatu GEmblem bagi GEmblemedIcon"
 #: ../gio/gfile.c:1471 ../gio/gfile.c:1525 ../gio/gfile.c:1582
 #: ../gio/gfile.c:1665 ../gio/gfile.c:1720 ../gio/gfile.c:1780
 #: ../gio/gfile.c:1834 ../gio/gfile.c:3273 ../gio/gfile.c:3327
-#: ../gio/gfile.c:3474 ../gio/gfile.c:3515 ../gio/gfile.c:3905
-#: ../gio/gfile.c:4307 ../gio/gfile.c:4389 ../gio/gfile.c:4474
-#: ../gio/gfile.c:4568 ../gio/gfile.c:4651 ../gio/gfile.c:4741
-#: ../gio/gfile.c:5071 ../gio/gfile.c:5395 ../gio/gfile.c:5463
-#: ../gio/gfile.c:7087 ../gio/gfile.c:7173 ../gio/gfile.c:7255
+#: ../gio/gfile.c:3470 ../gio/gfile.c:3511 ../gio/gfile.c:3901
+#: ../gio/gfile.c:4303 ../gio/gfile.c:4385 ../gio/gfile.c:4470
+#: ../gio/gfile.c:4564 ../gio/gfile.c:4647 ../gio/gfile.c:4737
+#: ../gio/gfile.c:5067 ../gio/gfile.c:5391 ../gio/gfile.c:5459
+#: ../gio/gfile.c:7083 ../gio/gfile.c:7169 ../gio/gfile.c:7251
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operasi tak didukung"
@@ -1062,24 +1060,24 @@ msgstr "Galat saat men-splice berkas: %s"
 msgid "Can't copy special file"
 msgstr "Tak bisa menyalin berkas spesial"
 
-#: ../gio/gfile.c:3464
+#: ../gio/gfile.c:3460
 msgid "Invalid symlink value given"
 msgstr "Diberikan nilai link simbolik yang tak valid"
 
-#: ../gio/gfile.c:3622
+#: ../gio/gfile.c:3618
 msgid "Trash not supported"
 msgstr "Tong sampah tak didukung"
 
-#: ../gio/gfile.c:3671
+#: ../gio/gfile.c:3667
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nama berkas tak boleh mengandung '%c'"
 
-#: ../gio/gfile.c:6150 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6146 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "volume tak mengimplementasi pengaitan"
 
-#: ../gio/gfile.c:6257
+#: ../gio/gfile.c:6253
 msgid "No application is registered as handling this file"
 msgstr "Tak ada aplikasi terdaftar yang menangani berkas ini"
 
@@ -1155,8 +1153,8 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Tipe %s tak mengimplementasi from_tokens() pada antar muka GIcon"
 
 #: ../gio/gicon.c:428
-msgid "Can't handle the supplied version the icon encoding"
-msgstr "Tak bisa menangani versi yang diberikan pengkodean ikon"
+msgid "Can't handle the supplied version of the icon encoding"
+msgstr "Tak bisa menangani versi pengkodean ikon yang diberikan"
 
 #: ../gio/ginetaddressmask.c:184
 msgid "No address specified"
@@ -1205,7 +1203,7 @@ msgstr "Stream memiliki operasi tertunda"
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Elemen <%s> tidak diijinkan di dalam <%s>"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
+#: ../gio/glib-compile-resources.c:145
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Elemen <%s> tidak diijinkan pada aras puncak"
@@ -1344,20 +1342,20 @@ msgstr "nama '%s' tak valid: nama mesti diawali dengan huruf kecil"
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
+"and hyphen ('-') are permitted."
 msgstr ""
-"nama '%s' tak valid: karakter tak valid '%c'; hanya huruf kecil, angka, dan "
-"minus yang diijinkan."
+"nama '%s' tak valid: karakter '%c' tak valid; hanya huruf kecil, angka, dan "
+"tanda hubung ('-') yang diijinkan."
 
 #: ../gio/glib-compile-schemas.c:805
 #, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr "nama '%s' tak valid: dua minus berturutan ('--') tak diijinkan."
+msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+msgstr "nama '%s' tak valid: dua tanda hubung berturutan ('--') tak diijinkan."
 
 #: ../gio/glib-compile-schemas.c:814
 #, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr "nama '%s' tak valid: karakter terakhir tak boleh minus."
+msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+msgstr "nama '%s' tak valid: karakter terakhir tak boleh tanda hubung ('-')."
 
 #: ../gio/glib-compile-schemas.c:822
 #, c-format
@@ -1427,12 +1425,12 @@ msgstr "<schema id='%s'> sudah ditentukan"
 
 #: ../gio/glib-compile-schemas.c:1125
 #, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> memperluas skema '%s' yang belum ada"
 
 #: ../gio/glib-compile-schemas.c:1141
 #, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> adalah daftar dari skema '%s' yang belum ada"
 
 #: ../gio/glib-compile-schemas.c:1149
@@ -1476,6 +1474,11 @@ msgstr "path dari suatu daftar mesti diakhiri dengan ':/'"
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> sudah ditentukan"
+
+#: ../gio/glib-compile-schemas.c:1459
+#, c-format
+msgid "Element <%s> not allowed at the top level"
+msgstr "Elemen <%s> tidak diijinkan pada aras puncak"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1753 ../gio/glib-compile-schemas.c:1824
@@ -1530,7 +1533,7 @@ msgstr "Mengabaikan penimpaan bagi kunci ini.\n"
 #: ../gio/glib-compile-schemas.c:1914
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key `%s' in schema `%s' in override file `%s' is outside the "
 "range given in the schema"
 msgstr ""
 "penimpa bagi kunci '%s' dalam skema '%s' di berkas penimpa '%s' di luar "
@@ -2519,8 +2522,8 @@ msgid "Error sending message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
 #: ../gio/gsocket.c:3825
-msgid "GSocketControlMessage not supported on windows"
-msgstr "GSocketControlMessage tak didukung pada windows"
+msgid "GSocketControlMessage not supported on Windows"
+msgstr "GSocketControlMessage tak didukung pada Windows"
 
 #: ../gio/gsocket.c:4105 ../gio/gsocket.c:4241
 #, c-format
@@ -2550,8 +2553,8 @@ msgid "Unknown error on connect"
 msgstr "Galat tak dikenal saat hubungan"
 
 #: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1486
-msgid "Trying to proxy over non-TCP connection is not supported."
-msgstr "Mencoba proksi melalui koneksi bukan TCP tidak didukung."
+msgid "Proxying over a non-TCP connection is not supported."
+msgstr "Proksi melalui koneksi bukan TCP tidak didukung."
 
 #: ../gio/gsocketclient.c:1055 ../gio/gsocketclient.c:1507
 #, c-format
@@ -2776,8 +2779,8 @@ msgid "Error writing to file descriptor: %s"
 msgstr "Galat saat menulis ke descriptor berkas: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-msgid "Abstract unix domain socket addresses not supported on this system"
-msgstr "Alamat soket domain unix abstrak tak didukung pada sistem ini"
+msgid "Abstract UNIX domain socket addresses not supported on this system"
+msgstr "Alamat soket domain UNIX abstrak tak didukung pada sistem ini"
 
 #: ../gio/gvolume.c:404
 msgid "volume doesn't implement eject"
@@ -2811,17 +2814,17 @@ msgstr "perubahan asosiasi tak didukung pada win32"
 msgid "Association creation not supported on win32"
 msgstr "Pembuatan asosiasi tak didukung pada win32"
 
-#: ../gio/gwin32inputstream.c:318
+#: ../gio/gwin32inputstream.c:355
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Galat saat membaca dari handle: %s"
 
-#: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
+#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:375
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Galat saat menutup handle: %s"
 
-#: ../gio/gwin32outputstream.c:318
+#: ../gio/gwin32outputstream.c:343
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Galat saat menulis ke handle: %s"
@@ -3780,8 +3783,8 @@ msgid "\\c at end of pattern"
 msgstr "\\c di akhir pola"
 
 #: ../glib/gregex.c:335
-msgid "unrecognized character follows \\"
-msgstr "karakter tak dikenal mengikuti \\"
+msgid "unrecognized character following \\"
+msgstr "karakter tak dikenal setelah \\"
 
 #: ../glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
@@ -4331,4 +4334,3 @@ msgstr[0] "%s bita"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
