@@ -19,9 +19,6 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#include <sys/time.h>
-#include <sys/resource.h>
-
 #include <glib.h>
 
 #define NSOURCES 50000
@@ -68,19 +65,12 @@ thread_pool_destroy_func (gpointer data,
   g_source_destroy (source);
 }
 
-static double
-difftimeval (struct timeval *old, struct timeval *new)
-{
-  return
-    (new->tv_sec - old->tv_sec) * 1000. + (new->tv_usec - old->tv_usec) / 1000;
-}
-
 int
 main (int argc, char **argv)
 {
   int i;
-  struct rusage old_usage;
-  struct rusage new_usage;
+  gint64 start;
+  gint64 end;
   GMainContext *context;
   GSource **sources;
   GThreadPool *pool;
@@ -89,39 +79,39 @@ main (int argc, char **argv)
   context = g_main_context_default ();
   sources = g_new0 (GSource *, NSOURCES);
 
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     {
       sources[i] = g_idle_source_new ();
       g_source_set_callback (sources[i], callback, NULL, NULL);
       g_source_attach (sources[i], context);
     }
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Add same-priority sources: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Add same-priority sources: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
 #ifdef SLOW
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     g_assert (sources[i] == g_main_context_find_source_by_id (context, g_source_get_id (sources[i])));
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Find each source: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Find each source: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 #endif
 
   shuffle (sources, NSOURCES);
 
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     g_source_destroy (sources[i]);
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Remove in random order: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Remove in random order: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
   /* Make sure they really did get removed */
   g_main_context_iteration (context, FALSE);
 
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     {
       sources[i] = g_idle_source_new ();
@@ -129,34 +119,34 @@ main (int argc, char **argv)
       g_source_set_priority (sources[i], i % 100);
       g_source_attach (sources[i], context);
     }
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Add different-priority sources: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Add different-priority sources: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
 #ifdef SLOW
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     g_assert (sources[i] == g_main_context_find_source_by_id (context, g_source_get_id (sources[i])));
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Find each source: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Find each source: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 #endif
 
   shuffle (sources, NSOURCES);
 
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     g_source_destroy (sources[i]);
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Remove in random order: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Remove in random order: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
   /* Make sure they really did get removed */
   g_main_context_iteration (context, FALSE);
 
   pool = g_thread_pool_new (thread_pool_attach_func, context,
                             20, TRUE, NULL);
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     {
       sources[i] = g_idle_source_new ();
@@ -165,22 +155,22 @@ main (int argc, char **argv)
       g_assert_no_error (error);
     }
   g_thread_pool_free (pool, FALSE, TRUE);
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Add sources from threads: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Add sources from threads: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
   pool = g_thread_pool_new (thread_pool_destroy_func, context,
                             20, TRUE, NULL);
-  getrusage (RUSAGE_SELF, &old_usage);
+  start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
     {
       g_thread_pool_push (pool, sources[i], &error);
       g_assert_no_error (error);
     }
   g_thread_pool_free (pool, FALSE, TRUE);
-  getrusage (RUSAGE_SELF, &new_usage);
-  g_print ("Remove sources from threads: %g\n",
-           difftimeval (&old_usage.ru_utime, &new_usage.ru_utime));
+  end = g_get_monotonic_time ();
+  g_print ("Remove sources from threads: %" G_GINT64_FORMAT "\n",
+           (end - start) / 1000);
 
   /* Make sure they really did get removed */
   g_main_context_iteration (context, FALSE);
