@@ -586,8 +586,19 @@ AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
 # Checks for library functions.
 AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
-AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
+AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
 AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
+
+AC_CACHE_CHECK([for __libc_enable_secure], glib_cv_have_libc_enable_secure,
+  [AC_TRY_LINK([#include <unistd.h>
+    extern int __libc_enable_secure;],
+    [return __libc_enable_secure;],
+   glib_cv_have_libc_enable_secure=yes,
+   glib_cv_have_libc_enable_secure=no)])
+AS_IF([test x$glib_cv_have_libc_enable_secure = xyes], [
+   AC_DEFINE(HAVE_LIBC_ENABLE_SECURE, 1,
+     [Define if you have the __libc_enable_secure variable (GNU libc, eglibc)])
+])
 
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
@@ -985,7 +996,7 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
-AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid)
+AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid getresuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(splice)

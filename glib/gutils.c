@@ -2409,3 +2409,60 @@ g_get_tmp_dir (void)
 }
 
 #endif
+
+/* Private API:
+ *
+ * Returns %TRUE if the current process was executed as setuid (or an
+ * equivalent __libc_enable_secure is available).  See:
+ * http://osdir.com/ml/linux.lfs.hardened/2007-04/msg00032.html
+ */ 
+gboolean
+g_check_setuid (void)
+{
+  /* TODO: get __libc_enable_secure exported from glibc.
+   * See http://www.openwall.com/lists/owl-dev/2012/08/14/1
+   */
+#if 0 && defined(HAVE_LIBC_ENABLE_SECURE)
+  {
+    /* See glibc/include/unistd.h */
+    extern int __libc_enable_secure;
+    return __libc_enable_secure;
+  }
+#elif defined(HAVE_ISSETUGID)
+  /* BSD: http://www.freebsd.org/cgi/man.cgi?query=issetugid&sektion=2 */
+  return issetugid ();
+#elif defined(G_OS_UNIX)
+  uid_t ruid, euid, suid; /* Real, effective and saved user ID's */
+  gid_t rgid, egid, sgid; /* Real, effective and saved group ID's */
+
+  static gsize check_setuid_initialised;
+  static gboolean is_setuid;
+
+  if (g_once_init_enter (&check_setuid_initialised))
+    {
+#ifdef HAVE_GETRESUID
+      /* These aren't in the header files, so we prototype them here.
+       */
+      int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid);
+      int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid);
+      
+      if (getresuid (&ruid, &euid, &suid) != 0 ||
+          getresgid (&rgid, &egid, &sgid) != 0)
+#endif /* HAVE_GETRESUID */
+        {
+          suid = ruid = getuid ();
+          sgid = rgid = getgid ();
+          euid = geteuid ();
+          egid = getegid ();
+        }
+
+      is_setuid = (ruid != euid || ruid != suid ||
+                   rgid != egid || rgid != sgid);
+
+      g_once_init_leave (&check_setuid_initialised, 1);
+    }
+  return is_setuid;
+#else
+  return FALSE;
+#endif
+}

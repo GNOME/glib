@@ -40,6 +40,7 @@
 #include <windows.h>
 #endif
 
+#include "glib-private.h"
 #include "gmem.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
