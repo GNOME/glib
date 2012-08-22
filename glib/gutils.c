@@ -696,7 +696,7 @@ g_get_any_init_do (void)
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     {
       g_free (g_tmp_dir);
-      g_tmp_dir = g_strdup (g_getenv ("/tmp"));
+      g_tmp_dir = g_strdup ("/tmp");
     }
 #endif	/* !G_OS_WIN32 */
   
