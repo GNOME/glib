@@ -38,7 +38,9 @@ glib__private__ (void)
     g_wakeup_signal,
     g_wakeup_acknowledge,
 
-    g_get_worker_context
+    g_get_worker_context,
+
+    g_check_setuid
   };
 
   return &table;

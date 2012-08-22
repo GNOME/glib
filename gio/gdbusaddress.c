@@ -37,6 +37,7 @@
 #include "giostream.h"
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
+#include "glib-private.h"
 #include "gdbusprivate.h"
 #include "giomodule-priv.h"
 #include "gdbusdaemon.h"
@@ -1022,6 +1023,14 @@ get_session_address_dbus_launch (GError **error)
   launch_stderr = NULL;
   restore_dbus_verbose = FALSE;
   old_dbus_verbose = NULL;
+
+  /* Don't run binaries as root if we're setuid. */
+  if (GLIB_PRIVATE_CALL (g_check_setuid) ())
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+		   _("Cannot spawn a message bus when setuid"));
+      goto out;
+    }
 
   machine_id = _g_dbus_get_machine_id (error);
   if (machine_id == NULL)

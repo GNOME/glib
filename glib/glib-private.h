@@ -25,6 +25,8 @@
 
 G_GNUC_INTERNAL
 GMainContext *          g_get_worker_context            (void);
+G_GNUC_INTERNAL
+gboolean                g_check_setuid                  (void);
 
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
@@ -40,6 +42,8 @@ typedef struct {
   /* See gmain.c */
   GMainContext *        (* g_get_worker_context)        (void);
   /* Add other private functions here, initialize them in glib-private.c */
+
+  gboolean              (* g_check_setuid)              (void);
 } GLibPrivateVTable;
 
 GLibPrivateVTable *glib__private__ (void);
