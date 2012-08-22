@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-17 03:06+0000\n"
-"PO-Revision-Date: 2012-08-22 08:51+0700\n"
+"PO-Revision-Date: 2012-08-22 09:14+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -152,20 +152,20 @@ msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Lỗi ở địa chỉ `%s' - thuộc tính họ (family) bị hư"
 
 #: ../gio/gdbusaddress.c:453
-#, fuzzy, c-format
+#, c-format
 #| msgid "Address element `%s', does not contain a colon (:)"
 msgid "Address element `%s' does not contain a colon (:)"
-msgstr "Thành phần địa chỉ `%s', không chứ dấu hai chấm (:)"
+msgstr "Thành phần địa chỉ `%s' không chứ dấu hai chấm (:)"
 
 #: ../gio/gdbusaddress.c:474
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Key/Value pair %d, `%s', in address element `%s', does not contain an "
 #| "equal sign"
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
-msgstr "Cặp khoá/giá trị %d, `%s', ở địa chỉ `%s', không chứa dấu bằng"
+msgstr "Cặp khoá/giá trị %d, `%s' ở địa chỉ `%s' không chứa dấu bằng"
 
 #: ../gio/gdbusaddress.c:488
 #, c-format
@@ -1146,7 +1146,6 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Kiểu %s không thực hiện 'from_tokens()' trên giao diện GIcon"
 
 #: ../gio/gicon.c:428
-#, fuzzy
 #| msgid "Can't handle the supplied version the icon encoding"
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "Không thể quản lý phiên bản đã cung cấp của bảng mã biểu tượng"
@@ -1332,7 +1331,7 @@ msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "tên không hợp lệ '%s': tên phải bắt đầu bằng chữ thường"
 
 #: ../gio/glib-compile-schemas.c:796
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "invalid name '%s': invalid character '%c'; only lowercase letters, "
 #| "numbers and dash ('-') are permitted."
@@ -1344,14 +1343,14 @@ msgstr ""
 "hoặc dấu gạch ngang ('-')."
 
 #: ../gio/glib-compile-schemas.c:805
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgstr ""
 "tên không hợp lệ '%s': không được dùng hai gạch ngang liên tiếp ('--')."
 
 #: ../gio/glib-compile-schemas.c:814
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgstr "tên không hợp lệ '%s': ký tự cuối không thể là gạch ngang ('-')."
@@ -1423,13 +1422,13 @@ msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> đã được xác định rồi"
 
 #: ../gio/glib-compile-schemas.c:1125
-#, fuzzy, c-format
+#, c-format
 #| msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> mở rộng schema chưa tồn tại '%s'"
 
 #: ../gio/glib-compile-schemas.c:1141
-#, fuzzy, c-format
+#, c-format
 #| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> là danh sách của schema chưa tồn tại '%s'"
@@ -1477,7 +1476,7 @@ msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> đã được xác định rồi"
 
 #: ../gio/glib-compile-schemas.c:1459
-#, fuzzy, c-format
+#, c-format
 #| msgid "Element <%s> not allowed at toplevel"
 msgid "Element <%s> not allowed at the top level"
 msgstr "Không cho phép phần tử <%s> ở cấp cao nhất"
@@ -1533,7 +1532,7 @@ msgid "Ignoring override for this key.\n"
 msgstr "Bỏ qua ghi đè khoá này.\n"
 
 #: ../gio/glib-compile-schemas.c:1914
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "override for key `%s' in schema `%s' in override file `%s' is out of the "
 #| "range given in the schema"
@@ -2532,7 +2531,6 @@ msgid "Error sending message: %s"
 msgstr "Lỗi gửi thông điệp: %s"
 
 #: ../gio/gsocket.c:3825
-#, fuzzy
 #| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage không được hỗ trợ trên Windows"
@@ -2565,7 +2563,6 @@ msgid "Unknown error on connect"
 msgstr "Lỗi lạ khi kết nối"
 
 #: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1486
-#, fuzzy
 #| msgid "Trying to proxy over non-TCP connection is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Không hỗ trợ uỷ nhiệm thông qua kết nối không phải TCP."
@@ -2792,7 +2789,6 @@ msgid "Error writing to file descriptor: %s"
 msgstr "Gặp lỗi khi ghi vào bộ mô tả tập tin: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-#, fuzzy
 #| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Địa chỉ socket UNIX trừu tượng không được hỗ trợ trên hệ thống này"
@@ -3780,7 +3776,7 @@ msgstr "utf8 ngắn"
 
 #: ../glib/gregex.c:305
 msgid "recursion loop"
-msgstr ""
+msgstr "vòng lặp đệ quy"
 
 #: ../glib/gregex.c:309
 msgid "unknown error"
@@ -3795,7 +3791,6 @@ msgid "\\c at end of pattern"
 msgstr "\\c ở kết thúc của mẫu"
 
 #: ../glib/gregex.c:335
-#, fuzzy
 #| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "có ký tự lạ phía sau \\"
@@ -3829,10 +3824,9 @@ msgid "unexpected repeat"
 msgstr "lặp lại bất thường"
 
 #: ../glib/gregex.c:360
-#, fuzzy
 #| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
-msgstr "không nhận dạng ký tự nằm sau (?"
+msgstr "không nhận dạng ký tự nằm sau (? hoặc (?-"
 
 #: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
@@ -3851,7 +3845,6 @@ msgid "missing ) after comment"
 msgstr "thiếu ) nằm sau chú thích"
 
 #: ../glib/gregex.c:375
-#, fuzzy
 #| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "biểu thức chính quy quá lớn"
@@ -3917,7 +3910,7 @@ msgstr "\\C không được phép trong khẳng định lookbehind (thấy ở s
 
 #: ../glib/gregex.c:431
 msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr ""
+msgstr "không hỗ trợ thoát \\L, \\l, \\N{tên}, \\U và \\u"
 
 #: ../glib/gregex.c:434
 msgid "recursive call could loop indefinitely"
@@ -3972,7 +3965,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "các tùy chọn NEWLINE (dòng mới) không thống nhất với nhau"
 
 #: ../glib/gregex.c:476
-#, fuzzy
 #| msgid ""
 #| "\\g is not followed by a braced name or an optionally braced non-zero "
 #| "number"
@@ -3980,84 +3972,77 @@ msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr ""
-"\\g không đi trước một tên có dấu ngoặc móc hoặc một con số không phải số "
-"không có dấu ngoặc móc tùy chọn"
+"\\g không đi trước một tên có dấu ngoặc móc, ngoặc vuông, tên hoặc số trích "
+"dẫn hoặc một con số không phải số thuần tuý"
 
 #: ../glib/gregex.c:480
 msgid "a numbered reference must not be zero"
-msgstr ""
+msgstr "tham chiếu đánh số phải khác không"
 
 #: ../glib/gregex.c:483
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
-msgstr ""
+msgstr "không chấp nhận đối số cho (*ACCEPT), (*FAIL) hoặc (*COMMIT)"
 
 #: ../glib/gregex.c:486
 msgid "(*VERB) not recognized"
-msgstr ""
+msgstr "không nhận ra (*VERB)"
 
 #: ../glib/gregex.c:489
 msgid "number is too big"
-msgstr ""
+msgstr "số quá lớn"
 
 #: ../glib/gregex.c:492
-#, fuzzy
 #| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
-msgstr "thiếu dấu chấm dứt trong tên mẫu phụ"
+msgstr "thiếu tên mẫu phụ sau (?&"
 
 #: ../glib/gregex.c:495
-#, fuzzy
 #| msgid "digit expected"
 msgid "digit expected after (?+"
-msgstr "đợi chữ số"
+msgstr "cần một chữ số sau (?+"
 
 #: ../glib/gregex.c:498
 msgid "] is an invalid data character in JavaScript compatibility mode"
-msgstr ""
+msgstr "] là kí tự không hợp lệ trong chế độ tương thích JavaScript"
 
 #: ../glib/gregex.c:501
-#, fuzzy
 #| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
-msgstr "hai mẫu phụ có tên cũng có cùng một tên"
+msgstr "không cho phép tên khác nhau cho mẫu con trong cùng số"
 
 #: ../glib/gregex.c:504
 msgid "(*MARK) must have an argument"
-msgstr ""
+msgstr "(*MARK) phải có đối số"
 
 #: ../glib/gregex.c:507
 msgid "\\c must be followed by an ASCII character"
-msgstr ""
+msgstr "\\c phải theo sau là một kí tự ASCII"
 
 #: ../glib/gregex.c:510
-#, fuzzy
 #| msgid ""
 #| "\\g is not followed by a braced name or an optionally braced non-zero "
 #| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
-"\\g không đi trước một tên có dấu ngoặc móc hoặc một con số không phải số "
-"không có dấu ngoặc móc tùy chọn"
+"\\k không đi trước một tên có dấu ngoặc móc, ngoặc vuông, tên trích dẫn"
 
 #: ../glib/gregex.c:513
-#, fuzzy
 #| msgid "Seek not supported on base stream"
 msgid "\\N is not supported in a class"
-msgstr "Chức năng seek (di chuyển nhanh) không được hỗ trợ trên luồng cơ sở"
+msgstr "\\N không được hỗ trợ trong lớp"
 
 #: ../glib/gregex.c:516
 msgid "too many forward references"
-msgstr ""
+msgstr "quá nhiều tham chiếu tới"
 
 #: ../glib/gregex.c:519
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
-msgstr ""
+msgstr "tên quá dài trong (*MARK), (*PRUNE), (*SKIP) hoặc (*THEN)"
 
 #: ../glib/gregex.c:522
-#, fuzzy
 #| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
-msgstr "dãy \\x{...} chứa giá trị ký tự quá lớn"
+msgstr "dãy \\u... chứa giá trị ký tự quá lớn"
 
 #: ../glib/gregex.c:745 ../glib/gregex.c:1908
 #, c-format
@@ -4073,10 +4058,9 @@ msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ tài sản UTF-8"
 
 #: ../glib/gregex.c:1340
-#, fuzzy
 #| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
-msgstr "Thư viện PCRE đã biên dịch không có khả năng hỗ trợ tài sản UTF-8"
+msgstr "Thư viện PCRE đã biên dịch với tuỳ chọn không tương thích"
 
 #: ../glib/gregex.c:1399
 #, c-format
@@ -4171,22 +4155,22 @@ msgstr "Lỗi không mong muốn trong waitpid() (%s)"
 #: ../glib/gspawn.c:863 ../glib/gspawn-win32.c:1239
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr ""
+msgstr "Tiến trình con thoát với mã %ld"
 
 #: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr ""
+msgstr "Tiến trình con bị giết bằng tín hiệu %ld"
 
 #: ../glib/gspawn.c:878
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr ""
+msgstr "Tiến trình con bị dừng bằng tín hiệu %ld"
 
 #: ../glib/gspawn.c:885
 #, c-format
 msgid "Child process exited abnormally"
-msgstr ""
+msgstr "Tiến trình con thoát bất thường"
 
 #: ../glib/gspawn.c:1290 ../glib/gspawn-win32.c:344 ../glib/gspawn-win32.c:352
 #, c-format
