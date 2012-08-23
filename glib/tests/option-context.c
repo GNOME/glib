@@ -2119,7 +2119,7 @@ test_group_parse (void)
     { "faz", 'z', 0, G_OPTION_ARG_STRING, &arg5, NULL, NULL },
     { NULL }
   };
-  gchar **argv;
+  gchar **argv, **orig_argv;
   gint argc;
   GError *error = NULL;
   gboolean retval;
@@ -2131,7 +2131,10 @@ test_group_parse (void)
   g_option_context_add_group (context, group);
 
   argv = split_string ("program --test arg1 -f arg2 --group-test arg3 --frob arg4 -z arg5", &argc);
+  orig_argv = g_memdup (argv, (argc + 1) * sizeof (char *));
+
   retval = g_option_context_parse (context, &argc, &argv, &error);
+
   g_assert_no_error (error);
   g_assert (retval);
   g_assert_cmpstr (arg1, ==, "arg1");
@@ -2145,6 +2148,9 @@ test_group_parse (void)
   g_free (arg3);
   g_free (arg4);
   g_free (arg5);
+
+  g_free (argv);
+  g_strfreev (orig_argv);
   g_option_context_free (context);
 }
 

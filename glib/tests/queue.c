@@ -498,8 +498,9 @@ random_test (gconstpointer d)
         case REMOVE:
           if (!g_queue_is_empty (q))
             g_queue_remove (q, qinf->tail->data);
+          /* qinf->head/qinf->tail may be invalid at this point */
           if (!g_queue_is_empty (q))
-            g_queue_remove (q, qinf->head->data);
+            g_queue_remove (q, q->head->data);
           if (!g_queue_is_empty (q))
             g_queue_remove (q, g_queue_peek_nth (q, get_random_position (q, TRUE)));
 
@@ -510,8 +511,9 @@ random_test (gconstpointer d)
         case REMOVE_ALL:
           if (!g_queue_is_empty (q))
             g_queue_remove_all (q, qinf->tail->data);
+          /* qinf->head/qinf->tail may be invalid at this point */
           if (!g_queue_is_empty (q))
-            g_queue_remove_all (q, qinf->head->data);
+            g_queue_remove_all (q, q->head->data);
           if (!g_queue_is_empty (q))
             g_queue_remove_all (q, g_queue_peek_nth (q, get_random_position (q, TRUE)));
 

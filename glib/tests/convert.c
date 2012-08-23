@@ -699,6 +699,7 @@ test_no_conv (void)
 
   /* error code is unreliable, since we mishandle errno there */
   g_assert (error && error->domain == G_CONVERT_ERROR);
+  g_error_free (error);
 }
 
 int

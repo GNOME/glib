@@ -167,6 +167,8 @@ test_async_queue_threads (void)
 
   g_assert_cmpint (s, ==, total);
   g_assert_cmpint (c, ==, 1000);
+
+  g_async_queue_unref (q);
 }
 
 static void
@@ -201,6 +203,8 @@ test_async_queue_timed (void)
   diff = end - start;
   g_assert_cmpint (diff, >=, G_USEC_PER_SEC / 10);
   g_assert_cmpint (diff, <, G_USEC_PER_SEC);
+
+  g_async_queue_unref (q);
 }
 
 int

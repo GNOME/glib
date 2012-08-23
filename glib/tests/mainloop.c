@@ -247,6 +247,16 @@ test_priorities (void)
   g_main_context_unref (ctx);
 }
 
+static gboolean
+quit_loop (gpointer data)
+{
+  GMainLoop *loop = data;
+
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
 static gint count;
 
 static gboolean
@@ -276,9 +286,11 @@ static gpointer
 thread_func (gpointer data)
 {
   GMainContext *ctx = data;
+  GMainLoop *loop;
   GSource *source;
 
   g_main_context_push_thread_default (ctx);
+  loop = g_main_loop_new (ctx, FALSE);
 
   g_mutex_lock (&mutex);
   thread_ready = TRUE;
@@ -286,12 +298,14 @@ thread_func (gpointer data)
   g_mutex_unlock (&mutex);
 
   source = g_timeout_source_new (500);
-  g_source_set_callback (source, (GSourceFunc)g_thread_exit, NULL, NULL);
+  g_source_set_callback (source, quit_loop, loop, NULL);
   g_source_attach (source, ctx);
   g_source_unref (source);
 
-  while (TRUE)
-    g_main_context_iteration (ctx, TRUE);
+  g_main_loop_run (loop);
+
+  g_main_context_pop_thread_default (ctx);
+  g_main_loop_unref (loop);
 
   return NULL;
 }
@@ -328,16 +342,8 @@ test_invoke (void)
 
   g_thread_join (thread);
   g_assert_cmpint (count, ==, 3);
-}
 
-static gboolean
-quit_loop (gpointer data)
-{
-  GMainLoop *loop = data;
-
-  g_main_loop_quit (loop);
-
-  return G_SOURCE_REMOVE;
+  g_main_context_unref (ctx);
 }
 
 static gboolean
@@ -353,6 +359,7 @@ run_inner_loop (gpointer user_data)
   timeout = g_timeout_source_new (100);
   g_source_set_callback (timeout, quit_loop, inner, NULL);
   g_source_attach (timeout, ctx);
+  g_source_unref (timeout);
 
   g_main_loop_run (inner);
   g_main_loop_unref (inner);
@@ -429,6 +436,7 @@ test_child_sources (void)
   g_assert_cmpint (b, ==, 3);
   g_assert_cmpint (c, ==, 3);
 
+  g_source_destroy (parent);
   g_source_unref (parent);
   g_source_unref (child_b);
   g_source_unref (child_c);
@@ -485,6 +493,7 @@ test_recursive_child_sources (void)
   g_assert_cmpint (b, ==, 9);
   g_assert_cmpint (c, ==, 4);
 
+  g_source_destroy (parent);
   g_source_unref (parent);
   g_source_unref (child_b);
   g_source_unref (child_c);

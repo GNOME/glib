@@ -287,7 +287,8 @@ main (int argc, char *argv[])
   while ((name = g_dir_read_name (dir)) != NULL)
     {
       path = g_strdup_printf ("/bookmarks/parse/%s", name);
-      g_test_add_data_func (path, g_build_filename (SRCDIR, "bookmarks", name, NULL), test_file);
+      g_test_add_data_func_full (path, g_build_filename (SRCDIR, "bookmarks", name, NULL),
+                                 test_file, g_free);
       g_free (path);
     }
   g_dir_close (dir);

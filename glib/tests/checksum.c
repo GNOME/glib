@@ -752,15 +752,18 @@ add_checksum_test (GChecksumType  type,
 {
   ChecksumTest *test;
   gchar *path;
+
   test = g_new0 (ChecksumTest, 1);
   test->checksum_type = type;
   test->sum = sum;
   test->length = length;
+
   path = g_strdup_printf ("/checksum/%s/%d", type_name, length);
   g_test_add_data_func (path, test, test_checksum);
   g_free (path);
+
   path = g_strdup_printf ("/checksum/%s/reset/%d", type_name, length);
-  g_test_add_data_func (path, test, test_checksum_reset);
+  g_test_add_data_func_full (path, test, test_checksum_reset, g_free);
   g_free (path);
 }
 
@@ -771,11 +774,13 @@ add_checksum_string_test (GChecksumType   type,
 {
   ChecksumComputeTest *test;
   gchar *path;
+
   test = g_new0 (ChecksumComputeTest, 1);
   test->checksum_type = type;
   test->sums = sums;
+
   path = g_strdup_printf ("/checksum/%s/string", type_name);
-  g_test_add_data_func (path, test, test_checksum_string);
+  g_test_add_data_func_full (path, test, test_checksum_string, g_free);
   g_free (path);
 }
 
@@ -786,11 +791,13 @@ add_checksum_bytes_test (GChecksumType   type,
 {
   ChecksumComputeTest *test;
   gchar *path;
+
   test = g_new0 (ChecksumComputeTest, 1);
   test->checksum_type = type;
   test->sums = sums;
+
   path = g_strdup_printf ("/checksum/%s/bytes", type_name);
-  g_test_add_data_func (path, test, test_checksum_bytes);
+  g_test_add_data_func_full (path, test, test_checksum_bytes, g_free);
   g_free (path);
 }
 

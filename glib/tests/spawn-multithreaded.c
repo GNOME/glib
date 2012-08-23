@@ -215,6 +215,7 @@ main (int   argc,
       char *argv[])
 {
   char *dirname;
+  int ret;
 
   g_test_init (&argc, &argv, NULL);
 
@@ -232,5 +233,9 @@ main (int   argc,
   g_test_add_func ("/gthread/spawn-sync", test_spawn_sync_multithreaded);
   g_test_add_func ("/gthread/spawn-async", test_spawn_async_multithreaded);
 
-  return g_test_run();
+  ret = g_test_run();
+
+  g_free (echo_prog_path);
+
+  return ret;
 }

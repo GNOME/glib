@@ -107,6 +107,7 @@ context_clear (struct context *ctx)
   g_assert (ctx->pending_tokens == NULL);
   g_assert (ctx->quit);
 
+  g_mutex_clear (&ctx->lock);
   g_wakeup_free (ctx->wakeup);
 }
 

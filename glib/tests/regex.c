@@ -82,34 +82,34 @@ test_new (gconstpointer d)
   g_regex_unref (regex);
 }
 
-#define TEST_NEW(_pattern, _compile_opts, _match_opts) {   \
-  TestNewData *data;                                    \
-  gchar *path;                                          \
-  data = g_new0 (TestNewData, 1);                       \
-  data->pattern = _pattern;                              \
-  data->compile_opts = _compile_opts;                    \
-  data->match_opts = _match_opts;                        \
-  data->expected_error = 0;                             \
-  data->check_flags = FALSE;                            \
-  path = g_strdup_printf ("/regex/new/%d", ++total);    \
-  g_test_add_data_func (path, data, test_new);          \
-  g_free (path);                                        \
+#define TEST_NEW(_pattern, _compile_opts, _match_opts) {    \
+  TestNewData *data;                                        \
+  gchar *path;                                              \
+  data = g_new0 (TestNewData, 1);                           \
+  data->pattern = _pattern;                                 \
+  data->compile_opts = _compile_opts;                       \
+  data->match_opts = _match_opts;                           \
+  data->expected_error = 0;                                 \
+  data->check_flags = FALSE;                                \
+  path = g_strdup_printf ("/regex/new/%d", ++total);        \
+  g_test_add_data_func_full (path, data, test_new, g_free); \
+  g_free (path);                                            \
 }
 
 #define TEST_NEW_CHECK_FLAGS(_pattern, _compile_opts, _match_opts, _real_compile_opts, _real_match_opts) { \
-  TestNewData *data; \
-  gchar *path; \
-  data = g_new0 (TestNewData, 1); \
-  data->pattern = _pattern; \
-  data->compile_opts = _compile_opts; \
-  data->match_opts = 0; \
-  data->expected_error = 0; \
-  data->check_flags = TRUE; \
-  data->real_compile_opts = _real_compile_opts; \
-  data->real_match_opts = _real_match_opts; \
+  TestNewData *data;                                             \
+  gchar *path;                                                   \
+  data = g_new0 (TestNewData, 1);                                \
+  data->pattern = _pattern;                                      \
+  data->compile_opts = _compile_opts;                            \
+  data->match_opts = 0;                                          \
+  data->expected_error = 0;                                      \
+  data->check_flags = TRUE;                                      \
+  data->real_compile_opts = _real_compile_opts;                  \
+  data->real_match_opts = _real_match_opts;                      \
   path = g_strdup_printf ("/regex/new-check-flags/%d", ++total); \
-  g_test_add_data_func (path, data, test_new); \
-  g_free (path); \
+  g_test_add_data_func_full (path, data, test_new, g_free);      \
+  g_free (path);                                                 \
 }
 
 static void
@@ -126,17 +126,17 @@ test_new_fail (gconstpointer d)
   g_error_free (error);
 }
 
-#define TEST_NEW_FAIL(_pattern, _compile_opts, _expected_error) {  \
-  TestNewData *data;                                            \
-  gchar *path;                                                  \
-  data = g_new0 (TestNewData, 1);                               \
-  data->pattern = _pattern;                                      \
-  data->compile_opts = _compile_opts;                            \
-  data->match_opts = 0;                                         \
-  data->expected_error = _expected_error;                        \
-  path = g_strdup_printf ("/regex/new-fail/%d", ++total);       \
-  g_test_add_data_func (path, data, test_new_fail);             \
-  g_free (path);                                                \
+#define TEST_NEW_FAIL(_pattern, _compile_opts, _expected_error) { \
+  TestNewData *data;                                              \
+  gchar *path;                                                    \
+  data = g_new0 (TestNewData, 1);                                 \
+  data->pattern = _pattern;                                       \
+  data->compile_opts = _compile_opts;                             \
+  data->match_opts = 0;                                           \
+  data->expected_error = _expected_error;                         \
+  path = g_strdup_printf ("/regex/new-fail/%d", ++total);         \
+  g_test_add_data_func_full (path, data, test_new_fail, g_free);  \
+  g_free (path);                                                  \
 }
 
 typedef struct {
@@ -164,13 +164,13 @@ test_match_simple (gconstpointer d)
   TestMatchData *data;                                                  \
   gchar *path;                                                          \
   data = g_new0 (TestMatchData, 1);                                     \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->compile_opts = _compile_opts;                                    \
-  data->match_opts = _match_opts;                                        \
-  data->expected = _expected;                                            \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->compile_opts = _compile_opts;                                   \
+  data->match_opts = _match_opts;                                       \
+  data->expected = _expected;                                           \
   path = g_strdup_printf ("/regex/match-%s/%d", _name, ++total);        \
-  g_test_add_data_func (path, data, test_match_simple);                 \
+  g_test_add_data_func_full (path, data, test_match_simple, g_free);    \
   g_free (path);                                                        \
 }
 
@@ -212,16 +212,16 @@ test_match (gconstpointer d)
   TestMatchData *data;                                                  \
   gchar *path;                                                          \
   data = g_new0 (TestMatchData, 1);                                     \
-  data->pattern = _pattern;                                              \
-  data->compile_opts = _compile_opts;                                    \
-  data->match_opts = _match_opts;                                        \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
-  data->match_opts2 = _match_opts2;                                      \
-  data->expected = _expected;                                            \
+  data->pattern = _pattern;                                             \
+  data->compile_opts = _compile_opts;                                   \
+  data->match_opts = _match_opts;                                       \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
+  data->match_opts2 = _match_opts2;                                     \
+  data->expected = _expected;                                           \
   path = g_strdup_printf ("/regex/match/%d", ++total);                  \
-  g_test_add_data_func (path, data, test_match);                        \
+  g_test_add_data_func_full (path, data, test_match, g_free);           \
   g_free (path);                                                        \
 }
 
@@ -302,17 +302,26 @@ test_match_next (gconstpointer d)
   g_slist_free_full (matches, free_match);
 }
 
+static void
+free_match_next_data (gpointer _data)
+{
+  TestMatchNextData *data = _data;
+
+  g_slist_free_full (data->expected, g_free);
+  g_free (data);
+}
+
 #define TEST_MATCH_NEXT0(_pattern, _string, _string_len, _start_position) { \
   TestMatchNextData *data;                                              \
   gchar *path;                                                          \
   data = g_new0 (TestMatchNextData, 1);                                 \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
   data->expected = NULL;                                                \
   path = g_strdup_printf ("/regex/match/next0/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_next);                   \
+  g_test_add_data_func_full (path, data, test_match_next, free_match_next_data); \
   g_free (path);                                                        \
 }
 
@@ -322,17 +331,17 @@ test_match_next (gconstpointer d)
   Match *match;                                                         \
   gchar *path;                                                          \
   data = g_new0 (TestMatchNextData, 1);                                 \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
   match = g_new0 (Match, 1);                                            \
   match->string = t1;                                                   \
   match->start = s1;                                                    \
   match->end = e1;                                                      \
   data->expected = g_slist_append (NULL, match);                        \
   path = g_strdup_printf ("/regex/match/next1/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_next);                   \
+  g_test_add_data_func_full (path, data, test_match_next, free_match_next_data); \
   g_free (path);                                                        \
 }
 
@@ -342,10 +351,10 @@ test_match_next (gconstpointer d)
   Match *match;                                                         \
   gchar *path;                                                          \
   data = g_new0 (TestMatchNextData, 1);                                 \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
   match = g_new0 (Match, 1);                                            \
   match->string = t1;                                                   \
   match->start = s1;                                                    \
@@ -357,7 +366,7 @@ test_match_next (gconstpointer d)
   match->end = e2;                                                      \
   data->expected = g_slist_append (data->expected, match);              \
   path = g_strdup_printf ("/regex/match/next2/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_next);                   \
+  g_test_add_data_func_full (path, data, test_match_next, free_match_next_data); \
   g_free (path);                                                        \
 }
 
@@ -367,10 +376,10 @@ test_match_next (gconstpointer d)
   Match *match;                                                         \
   gchar *path;                                                          \
   data = g_new0 (TestMatchNextData, 1);                                 \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
   match = g_new0 (Match, 1);                                            \
   match->string = t1;                                                   \
   match->start = s1;                                                    \
@@ -387,7 +396,7 @@ test_match_next (gconstpointer d)
   match->end = e3;                                                      \
   data->expected = g_slist_append (data->expected, match);              \
   path = g_strdup_printf ("/regex/match/next3/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_next);                   \
+  g_test_add_data_func_full (path, data, test_match_next, free_match_next_data); \
   g_free (path);                                                        \
 }
 
@@ -397,10 +406,10 @@ test_match_next (gconstpointer d)
   Match *match;                                                         \
   gchar *path;                                                          \
   data = g_new0 (TestMatchNextData, 1);                                 \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->string_len = _string_len;                                       \
+  data->start_position = _start_position;                               \
   match = g_new0 (Match, 1);                                            \
   match->string = t1;                                                   \
   match->start = s1;                                                    \
@@ -422,7 +431,7 @@ test_match_next (gconstpointer d)
   match->end = e4;                                                      \
   data->expected = g_slist_append (data->expected, match);              \
   path = g_strdup_printf ("/regex/match/next4/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_next);                   \
+  g_test_add_data_func_full (path, data, test_match_next, free_match_next_data); \
   g_free (path);                                                        \
 }
 
@@ -462,13 +471,13 @@ test_match_count (gconstpointer d)
   TestMatchCountData *data;                                             \
   gchar *path;                                                          \
   data = g_new0 (TestMatchCountData, 1);                                \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->match_opts = _match_opts;                                        \
-  data->expected_count = _expected_count;                                \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->start_position = _start_position;                               \
+  data->match_opts = _match_opts;                                       \
+  data->expected_count = _expected_count;                               \
   path = g_strdup_printf ("/regex/match/count/%d", ++total);            \
-  g_test_add_data_func (path, data, test_match_count);                 \
+  g_test_add_data_func_full (path, data, test_match_count, g_free);     \
   g_free (path);                                                        \
 }
 
@@ -501,12 +510,12 @@ test_partial (gconstpointer d)
   TestMatchData *data;                                          \
   gchar *path;                                                  \
   data = g_new0 (TestMatchData, 1);                             \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->match_opts = _match_opts;                                \
-  data->expected = _expected;                                    \
+  data->pattern = _pattern;                                     \
+  data->string = _string;                                       \
+  data->match_opts = _match_opts;                               \
+  data->expected = _expected;                                   \
   path = g_strdup_printf ("/regex/match/partial/%d", ++total);  \
-  g_test_add_data_func (path, data, test_partial);              \
+  g_test_add_data_func_full (path, data, test_partial, g_free); \
   g_free (path);                                                \
 }
 
@@ -554,15 +563,15 @@ test_sub_pattern (gconstpointer d)
   TestSubData *data;                                                    \
   gchar *path;                                                          \
   data = g_new0 (TestSubData, 1);                                       \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->sub_n = _sub_n;                                                  \
-  data->expected_sub = _expected_sub;                                    \
-  data->expected_start = _expected_start;                                \
-  data->expected_end = _expected_end;                                    \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->start_position = _start_position;                               \
+  data->sub_n = _sub_n;                                                 \
+  data->expected_sub = _expected_sub;                                   \
+  data->expected_start = _expected_start;                               \
+  data->expected_end = _expected_end;                                   \
   path = g_strdup_printf ("/regex/match/subpattern/%d", ++total);       \
-  g_test_add_data_func (path, data, test_sub_pattern);                  \
+  g_test_add_data_func_full (path, data, test_sub_pattern, g_free);     \
   g_free (path);                                                        \
 }
 
@@ -605,38 +614,38 @@ test_named_sub_pattern (gconstpointer d)
 
 #define TEST_NAMED_SUB_PATTERN(_pattern, _string, _start_position, _sub_name, \
 			       _expected_sub, _expected_start, _expected_end) { \
-  TestNamedSubData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestNamedSubData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->flags = 0;                                                      \
-  data->start_position = _start_position;                                \
-  data->sub_name = _sub_name;                                            \
-  data->expected_sub = _expected_sub;                                    \
-  data->expected_start = _expected_start;                                \
-  data->expected_end = _expected_end;                                    \
-  path = g_strdup_printf ("/regex/match/named/subpattern/%d", ++total); \
-  g_test_add_data_func (path, data, test_named_sub_pattern);            \
-  g_free (path);                                                        \
+  TestNamedSubData *data;                                                 \
+  gchar *path;                                                            \
+  data = g_new0 (TestNamedSubData, 1);                                    \
+  data->pattern = _pattern;                                               \
+  data->string = _string;                                                 \
+  data->flags = 0;                                                        \
+  data->start_position = _start_position;                                 \
+  data->sub_name = _sub_name;                                             \
+  data->expected_sub = _expected_sub;                                     \
+  data->expected_start = _expected_start;                                 \
+  data->expected_end = _expected_end;                                     \
+  path = g_strdup_printf ("/regex/match/named/subpattern/%d", ++total);   \
+  g_test_add_data_func_full (path, data, test_named_sub_pattern, g_free); \
+  g_free (path);                                                          \
 }
 
 #define TEST_NAMED_SUB_PATTERN_DUPNAMES(_pattern, _string, _start_position, _sub_name, \
                                         _expected_sub, _expected_start, _expected_end) { \
-  TestNamedSubData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestNamedSubData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->flags = G_REGEX_DUPNAMES;                                       \
-  data->start_position = _start_position;                                \
-  data->sub_name = _sub_name;                                            \
-  data->expected_sub = _expected_sub;                                    \
-  data->expected_start = _expected_start;                                \
-  data->expected_end = _expected_end;                                    \
+  TestNamedSubData *data;                                                        \
+  gchar *path;                                                                   \
+  data = g_new0 (TestNamedSubData, 1);                                           \
+  data->pattern = _pattern;                                                      \
+  data->string = _string;                                                        \
+  data->flags = G_REGEX_DUPNAMES;                                                \
+  data->start_position = _start_position;                                        \
+  data->sub_name = _sub_name;                                                    \
+  data->expected_sub = _expected_sub;                                            \
+  data->expected_start = _expected_start;                                        \
+  data->expected_end = _expected_end;                                            \
   path = g_strdup_printf ("/regex/match/subpattern/named/dupnames/%d", ++total); \
-  g_test_add_data_func (path, data, test_named_sub_pattern);            \
-  g_free (path);                                                        \
+  g_test_add_data_func_full (path, data, test_named_sub_pattern, g_free);        \
+  g_free (path);                                                                 \
 }
 
 typedef struct {
@@ -682,55 +691,64 @@ test_fetch_all (gconstpointer d)
   g_strfreev (matches);
 }
 
-#define TEST_FETCH_ALL0(_pattern, _string) {                      \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = NULL;                                        \
-  path = g_strdup_printf ("/regex/fetch-all0/%d", ++total);     \
-  g_test_add_data_func (path, data, test_fetch_all);            \
-  g_free (path);                                                \
+static void
+free_fetch_all_data (gpointer _data)
+{
+  TestFetchAllData *data = _data;
+
+  g_slist_free (data->expected);
+  g_free (data);
 }
 
-#define TEST_FETCH_ALL1(_pattern, _string, e1) {                  \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  path = g_strdup_printf ("/regex/fetch-all1/%d", ++total);     \
-  g_test_add_data_func (path, data, test_fetch_all);            \
-  g_free (path);                                                \
+#define TEST_FETCH_ALL0(_pattern, _string) {                                   \
+  TestFetchAllData *data;                                                      \
+  gchar *path;                                                                 \
+  data = g_new0 (TestFetchAllData, 1);                                         \
+  data->pattern = _pattern;                                                    \
+  data->string = _string;                                                      \
+  data->expected = NULL;                                                       \
+  path = g_strdup_printf ("/regex/fetch-all0/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_fetch_all, free_fetch_all_data); \
+  g_free (path);                                                               \
 }
 
-#define TEST_FETCH_ALL2(_pattern, _string, e1, e2) {              \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  data->expected = g_slist_append (data->expected, e2);         \
-  path = g_strdup_printf ("/regex/fetch-all2/%d", ++total);     \
-  g_test_add_data_func (path, data, test_fetch_all);            \
-  g_free (path);                                                \
+#define TEST_FETCH_ALL1(_pattern, _string, e1) {                               \
+  TestFetchAllData *data;                                                      \
+  gchar *path;                                                                 \
+  data = g_new0 (TestFetchAllData, 1);                                         \
+  data->pattern = _pattern;                                                    \
+  data->string = _string;                                                      \
+  data->expected = g_slist_append (NULL, e1);                                  \
+  path = g_strdup_printf ("/regex/fetch-all1/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_fetch_all, free_fetch_all_data); \
+  g_free (path);                                                               \
 }
 
-#define TEST_FETCH_ALL3(_pattern, _string, e1, e2, e3) {          \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  data->expected = g_slist_append (data->expected, e2);         \
-  data->expected = g_slist_append (data->expected, e3);         \
-  path = g_strdup_printf ("/regex/fetch-all3/%d", ++total);     \
-  g_test_add_data_func (path, data, test_fetch_all);            \
-  g_free (path);                                                \
+#define TEST_FETCH_ALL2(_pattern, _string, e1, e2) {                           \
+  TestFetchAllData *data;                                                      \
+  gchar *path;                                                                 \
+  data = g_new0 (TestFetchAllData, 1);                                         \
+  data->pattern = _pattern;                                                    \
+  data->string = _string;                                                      \
+  data->expected = g_slist_append (NULL, e1);                                  \
+  data->expected = g_slist_append (data->expected, e2);                        \
+  path = g_strdup_printf ("/regex/fetch-all2/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_fetch_all, free_fetch_all_data); \
+  g_free (path);                                                               \
+}
+
+#define TEST_FETCH_ALL3(_pattern, _string, e1, e2, e3) {                       \
+  TestFetchAllData *data;                                                      \
+  gchar *path;                                                                 \
+  data = g_new0 (TestFetchAllData, 1);                                         \
+  data->pattern = _pattern;                                                    \
+  data->string = _string;                                                      \
+  data->expected = g_slist_append (NULL, e1);                                  \
+  data->expected = g_slist_append (data->expected, e2);                        \
+  data->expected = g_slist_append (data->expected, e3);                        \
+  path = g_strdup_printf ("/regex/fetch-all3/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_fetch_all, free_fetch_all_data); \
+  g_free (path);                                                               \
 }
 
 static void
@@ -759,55 +777,55 @@ test_split_simple (gconstpointer d)
   g_strfreev (tokens);
 }
 
-#define TEST_SPLIT_SIMPLE0(_pattern, _string) {                   \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = NULL;                                        \
-  path = g_strdup_printf ("/regex/split/simple0/%d", ++total);  \
-  g_test_add_data_func (path, data, test_split_simple);         \
-  g_free (path);                                                \
+#define TEST_SPLIT_SIMPLE0(_pattern, _string) {                                   \
+  TestFetchAllData *data;                                                         \
+  gchar *path;                                                                    \
+  data = g_new0 (TestFetchAllData, 1);                                            \
+  data->pattern = _pattern;                                                       \
+  data->string = _string;                                                         \
+  data->expected = NULL;                                                          \
+  path = g_strdup_printf ("/regex/split/simple0/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_simple, free_fetch_all_data); \
+  g_free (path);                                                                  \
 }
 
-#define TEST_SPLIT_SIMPLE1(_pattern, _string, e1) {               \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  path = g_strdup_printf ("/regex/split/simple1/%d", ++total);  \
-  g_test_add_data_func (path, data, test_split_simple);         \
-  g_free (path);                                                \
+#define TEST_SPLIT_SIMPLE1(_pattern, _string, e1) {                               \
+  TestFetchAllData *data;                                                         \
+  gchar *path;                                                                    \
+  data = g_new0 (TestFetchAllData, 1);                                            \
+  data->pattern = _pattern;                                                       \
+  data->string = _string;                                                         \
+  data->expected = g_slist_append (NULL, e1);                                     \
+  path = g_strdup_printf ("/regex/split/simple1/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_simple, free_fetch_all_data); \
+  g_free (path);                                                                  \
 }
 
-#define TEST_SPLIT_SIMPLE2(_pattern, _string, e1, e2) {           \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  data->expected = g_slist_append (data->expected, e2);         \
-  path = g_strdup_printf ("/regex/split/simple2/%d", ++total);  \
-  g_test_add_data_func (path, data, test_split_simple);         \
-  g_free (path);                                                \
+#define TEST_SPLIT_SIMPLE2(_pattern, _string, e1, e2) {                           \
+  TestFetchAllData *data;                                                         \
+  gchar *path;                                                                    \
+  data = g_new0 (TestFetchAllData, 1);                                            \
+  data->pattern = _pattern;                                                       \
+  data->string = _string;                                                         \
+  data->expected = g_slist_append (NULL, e1);                                     \
+  data->expected = g_slist_append (data->expected, e2);                           \
+  path = g_strdup_printf ("/regex/split/simple2/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_simple, free_fetch_all_data); \
+  g_free (path);                                                                  \
 }
 
-#define TEST_SPLIT_SIMPLE3(_pattern, _string, e1, e2, e3) {       \
-  TestFetchAllData *data;                                       \
-  gchar *path;                                                  \
-  data = g_new0 (TestFetchAllData, 1);                          \
-  data->pattern = _pattern;                                      \
-  data->string = _string;                                        \
-  data->expected = g_slist_append (NULL, e1);                   \
-  data->expected = g_slist_append (data->expected, e2);         \
-  data->expected = g_slist_append (data->expected, e3);         \
-  path = g_strdup_printf ("/regex/split/simple3/%d", ++total);  \
-  g_test_add_data_func (path, data, test_split_simple);         \
-  g_free (path);                                                \
+#define TEST_SPLIT_SIMPLE3(_pattern, _string, e1, e2, e3) {                       \
+  TestFetchAllData *data;                                                         \
+  gchar *path;                                                                    \
+  data = g_new0 (TestFetchAllData, 1);                                            \
+  data->pattern = _pattern;                                                       \
+  data->string = _string;                                                         \
+  data->expected = g_slist_append (NULL, e1);                                     \
+  data->expected = g_slist_append (data->expected, e2);                           \
+  data->expected = g_slist_append (data->expected, e3);                           \
+  path = g_strdup_printf ("/regex/split/simple3/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_simple, free_fetch_all_data); \
+  g_free (path);                                                                  \
 }
 
 static void
@@ -875,86 +893,86 @@ test_split (gconstpointer d)
   g_strfreev (tokens);
 }
 
-#define TEST_SPLIT0(_pattern, _string, _start_position, _max_tokens) {      \
-  TestFetchAllData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestFetchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->max_tokens = _max_tokens;                                        \
-  data->expected = NULL;                                                \
-  path = g_strdup_printf ("/regex/full-split0/%d", ++total);            \
-  g_test_add_data_func (path, data, test_split_full);                   \
-  g_free (path);                                                        \
-  if (_start_position == 0 && _max_tokens <= 0) {                         \
-    path = g_strdup_printf ("/regex/split0/%d", ++total);               \
-    g_test_add_data_func (path, data, test_split);                      \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_SPLIT0(_pattern, _string, _start_position, _max_tokens) {          \
+  TestFetchAllData *data;                                                       \
+  gchar *path;                                                                  \
+  data = g_new0 (TestFetchAllData, 1);                                          \
+  data->pattern = _pattern;                                                     \
+  data->string = _string;                                                       \
+  data->start_position = _start_position;                                       \
+  data->max_tokens = _max_tokens;                                               \
+  data->expected = NULL;                                                        \
+  if (_start_position == 0 && _max_tokens <= 0) {                               \
+    path = g_strdup_printf ("/regex/split0/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_split);                              \
+    g_free (path);                                                              \
+  }                                                                             \
+  path = g_strdup_printf ("/regex/full-split0/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_full, free_fetch_all_data); \
+  g_free (path);                                                                \
 }
 
-#define TEST_SPLIT1(_pattern, _string, _start_position, _max_tokens, e1) { \
-  TestFetchAllData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestFetchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->max_tokens = _max_tokens;                                        \
-  data->expected = NULL;                                                \
-  data->expected = g_slist_append (data->expected, e1);                 \
-  path = g_strdup_printf ("/regex/full-split1/%d", ++total);            \
-  g_test_add_data_func (path, data, test_split_full);                   \
-  g_free (path);                                                        \
-  if (_start_position == 0 && _max_tokens <= 0) {                         \
-    path = g_strdup_printf ("/regex/split1/%d", ++total);               \
-    g_test_add_data_func (path, data, test_split);                      \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_SPLIT1(_pattern, _string, _start_position, _max_tokens, e1) {      \
+  TestFetchAllData *data;                                                       \
+  gchar *path;                                                                  \
+  data = g_new0 (TestFetchAllData, 1);                                          \
+  data->pattern = _pattern;                                                     \
+  data->string = _string;                                                       \
+  data->start_position = _start_position;                                       \
+  data->max_tokens = _max_tokens;                                               \
+  data->expected = NULL;                                                        \
+  data->expected = g_slist_append (data->expected, e1);                         \
+  if (_start_position == 0 && _max_tokens <= 0) {                               \
+    path = g_strdup_printf ("/regex/split1/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_split);                              \
+    g_free (path);                                                              \
+  }                                                                             \
+  path = g_strdup_printf ("/regex/full-split1/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_full, free_fetch_all_data); \
+  g_free (path);                                                                \
 }
 
-#define TEST_SPLIT2(_pattern, _string, _start_position, _max_tokens, e1, e2) { \
-  TestFetchAllData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestFetchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->max_tokens = _max_tokens;                                        \
-  data->expected = NULL;                                                \
-  data->expected = g_slist_append (data->expected, e1);                 \
-  data->expected = g_slist_append (data->expected, e2);                 \
-  path = g_strdup_printf ("/regex/full-split2/%d", ++total);            \
-  g_test_add_data_func (path, data, test_split_full);                   \
-  g_free (path);                                                        \
-  if (_start_position == 0 && _max_tokens <= 0) {                         \
-    path = g_strdup_printf ("/regex/split2/%d", ++total);               \
-    g_test_add_data_func (path, data, test_split);                      \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_SPLIT2(_pattern, _string, _start_position, _max_tokens, e1, e2) {  \
+  TestFetchAllData *data;                                                       \
+  gchar *path;                                                                  \
+  data = g_new0 (TestFetchAllData, 1);                                          \
+  data->pattern = _pattern;                                                     \
+  data->string = _string;                                                       \
+  data->start_position = _start_position;                                       \
+  data->max_tokens = _max_tokens;                                               \
+  data->expected = NULL;                                                        \
+  data->expected = g_slist_append (data->expected, e1);                         \
+  data->expected = g_slist_append (data->expected, e2);                         \
+  if (_start_position == 0 && _max_tokens <= 0) {                               \
+    path = g_strdup_printf ("/regex/split2/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_split);                              \
+    g_free (path);                                                              \
+  }                                                                             \
+  path = g_strdup_printf ("/regex/full-split2/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_split_full, free_fetch_all_data); \
+  g_free (path);                                                                \
 }
 
 #define TEST_SPLIT3(_pattern, _string, _start_position, _max_tokens, e1, e2, e3) { \
-  TestFetchAllData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestFetchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->max_tokens = _max_tokens;                                        \
-  data->expected = NULL;                                                \
-  data->expected = g_slist_append (data->expected, e1);                 \
-  data->expected = g_slist_append (data->expected, e2);                 \
-  data->expected = g_slist_append (data->expected, e3);                 \
-  path = g_strdup_printf ("/regex/full-split3/%d", ++total);            \
-  g_test_add_data_func (path, data, test_split_full);                   \
-  g_free (path);                                                        \
-  if (_start_position == 0 && _max_tokens <= 0) {                         \
-    path = g_strdup_printf ("/regex/split3/%d", ++total);               \
-    g_test_add_data_func (path, data, test_split);                      \
-    g_free (path);                                                      \
-  }                                                                     \
+  TestFetchAllData *data;                                                          \
+  gchar *path;                                                                     \
+  data = g_new0 (TestFetchAllData, 1);                                             \
+  data->pattern = _pattern;                                                        \
+  data->string = _string;                                                          \
+  data->start_position = _start_position;                                          \
+  data->max_tokens = _max_tokens;                                                  \
+  data->expected = NULL;                                                           \
+  data->expected = g_slist_append (data->expected, e1);                            \
+  data->expected = g_slist_append (data->expected, e2);                            \
+  data->expected = g_slist_append (data->expected, e3);                            \
+  if (_start_position == 0 && _max_tokens <= 0) {                                  \
+    path = g_strdup_printf ("/regex/split3/%d", ++total);                          \
+    g_test_add_data_func (path, data, test_split);                                 \
+    g_free (path);                                                                 \
+  }                                                                                \
+  path = g_strdup_printf ("/regex/full-split3/%d", ++total);                       \
+  g_test_add_data_func_full (path, data, test_split_full, free_fetch_all_data);    \
+  g_free (path);                                                                   \
 }
 
 typedef struct {
@@ -978,15 +996,15 @@ test_check_replacement (gconstpointer d)
 }
 
 #define TEST_CHECK_REPLACEMENT(_string_to_expand, _expected, _expected_refs) { \
-  TestCheckReplacementData *data;                                           \
-  gchar *path;                                                              \
-  data = g_new0 (TestCheckReplacementData, 1);                              \
-  data->string_to_expand = _string_to_expand;                                \
-  data->expected = _expected;                                                \
-  data->expected_refs = _expected_refs;                                      \
-  path = g_strdup_printf ("/regex/check-repacement/%d", ++total);  \
-  g_test_add_data_func (path, data, test_check_replacement);                \
-  g_free (path);                                                            \
+  TestCheckReplacementData *data;                                              \
+  gchar *path;                                                                 \
+  data = g_new0 (TestCheckReplacementData, 1);                                 \
+  data->string_to_expand = _string_to_expand;                                  \
+  data->expected = _expected;                                                  \
+  data->expected_refs = _expected_refs;                                        \
+  path = g_strdup_printf ("/regex/check-repacement/%d", ++total);              \
+  g_test_add_data_func_full (path, data, test_check_replacement, g_free);      \
+  g_free (path);                                                               \
 }
 
 typedef struct {
@@ -1020,17 +1038,17 @@ test_expand (gconstpointer d)
 }
 
 #define TEST_EXPAND(_pattern, _string, _string_to_expand, _raw, _expected) { \
-  TestExpandData *data;                                                 \
-  gchar *path;                                                          \
-  data = g_new0 (TestExpandData, 1);                                    \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_to_expand = _string_to_expand;                            \
-  data->raw = _raw;                                                      \
-  data->expected = _expected;                                            \
-  path = g_strdup_printf ("/regex/expand/%d", ++total);                 \
-  g_test_add_data_func (path, data, test_expand);                       \
-  g_free (path);                                                        \
+  TestExpandData *data;                                                      \
+  gchar *path;                                                               \
+  data = g_new0 (TestExpandData, 1);                                         \
+  data->pattern = _pattern;                                                  \
+  data->string = _string;                                                    \
+  data->string_to_expand = _string_to_expand;                                \
+  data->raw = _raw;                                                          \
+  data->expected = _expected;                                                \
+  path = g_strdup_printf ("/regex/expand/%d", ++total);                      \
+  g_test_add_data_func_full (path, data, test_expand, g_free);               \
+  g_free (path);                                                             \
 }
 
 typedef struct {
@@ -1061,13 +1079,13 @@ test_replace (gconstpointer d)
   TestReplaceData *data;                                                \
   gchar *path;                                                          \
   data = g_new0 (TestReplaceData, 1);                                   \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->replacement = _replacement;                                      \
-  data->expected = _expected;                                            \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->start_position = _start_position;                               \
+  data->replacement = _replacement;                                     \
+  data->expected = _expected;                                           \
   path = g_strdup_printf ("/regex/replace/%d", ++total);                \
-  g_test_add_data_func (path, data, test_replace);                      \
+  g_test_add_data_func_full (path, data, test_replace, g_free);         \
   g_free (path);                                                        \
 }
 
@@ -1091,13 +1109,13 @@ test_replace_lit (gconstpointer d)
   TestReplaceData *data;                                                \
   gchar *path;                                                          \
   data = g_new0 (TestReplaceData, 1);                                   \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->start_position = _start_position;                                \
-  data->replacement = _replacement;                                      \
-  data->expected = _expected;                                            \
+  data->pattern = _pattern;                                             \
+  data->string = _string;                                               \
+  data->start_position = _start_position;                               \
+  data->replacement = _replacement;                                     \
+  data->expected = _expected;                                           \
   path = g_strdup_printf ("/regex/replace-literally/%d", ++total);      \
-  g_test_add_data_func (path, data, test_replace_lit);                  \
+  g_test_add_data_func_full (path, data, test_replace_lit, g_free);     \
   g_free (path);                                                        \
 }
 
@@ -1121,16 +1139,16 @@ test_get_string_number (gconstpointer d)
   g_regex_unref (regex);
 }
 
-#define TEST_GET_STRING_NUMBER(_pattern, _name, _expected_num) { \
-  TestStringNumData *data;                                      \
-  gchar *path;                                                  \
-  data = g_new0 (TestStringNumData, 1);                         \
-  data->pattern = _pattern;                                      \
-  data->name = _name;                                            \
-  data->expected_num = _expected_num;                            \
-  path = g_strdup_printf ("/regex/string-number/%d", ++total);  \
-  g_test_add_data_func (path, data, test_get_string_number);    \
-  g_free (path);                                                \
+#define TEST_GET_STRING_NUMBER(_pattern, _name, _expected_num) {          \
+  TestStringNumData *data;                                                \
+  gchar *path;                                                            \
+  data = g_new0 (TestStringNumData, 1);                                   \
+  data->pattern = _pattern;                                               \
+  data->name = _name;                                                     \
+  data->expected_num = _expected_num;                                     \
+  path = g_strdup_printf ("/regex/string-number/%d", ++total);            \
+  g_test_add_data_func_full (path, data, test_get_string_number, g_free); \
+  g_free (path);                                                          \
 }
 
 typedef struct {
@@ -1152,16 +1170,16 @@ test_escape (gconstpointer d)
   g_free (escaped);
 }
 
-#define TEST_ESCAPE(_string, _length, _expected) {         \
-  TestEscapeData *data;                                 \
-  gchar *path;                                          \
-  data = g_new0 (TestEscapeData, 1);                    \
-  data->string = _string;                                \
-  data->length = _length;                                \
-  data->expected = _expected;                            \
-  path = g_strdup_printf ("/regex/escape/%d", ++total);  \
-  g_test_add_data_func (path, data, test_escape);       \
-  g_free (path);                                        \
+#define TEST_ESCAPE(_string, _length, _expected) {             \
+  TestEscapeData *data;                                        \
+  gchar *path;                                                 \
+  data = g_new0 (TestEscapeData, 1);                           \
+  data->string = _string;                                      \
+  data->length = _length;                                      \
+  data->expected = _expected;                                  \
+  path = g_strdup_printf ("/regex/escape/%d", ++total);        \
+  g_test_add_data_func_full (path, data, test_escape, g_free); \
+  g_free (path);                                               \
 }
 
 static void
@@ -1177,16 +1195,16 @@ test_escape_nul (gconstpointer d)
   g_free (escaped);
 }
 
-#define TEST_ESCAPE_NUL(_string, _length, _expected) {  \
-  TestEscapeData *data;                                 \
-  gchar *path;                                          \
-  data = g_new0 (TestEscapeData, 1);                    \
-  data->string = _string;                               \
-  data->length = _length;                               \
-  data->expected = _expected;                           \
-  path = g_strdup_printf ("/regex/escape_nul/%d", ++total);  \
-  g_test_add_data_func (path, data, test_escape_nul);   \
-  g_free (path);                                        \
+#define TEST_ESCAPE_NUL(_string, _length, _expected) {             \
+  TestEscapeData *data;                                            \
+  gchar *path;                                                     \
+  data = g_new0 (TestEscapeData, 1);                               \
+  data->string = _string;                                          \
+  data->length = _length;                                          \
+  data->expected = _expected;                                      \
+  path = g_strdup_printf ("/regex/escape_nul/%d", ++total);        \
+  g_test_add_data_func_full (path, data, test_escape_nul, g_free); \
+  g_free (path);                                                   \
 }
 
 typedef struct {
@@ -1288,116 +1306,125 @@ test_match_all (gconstpointer d)
   g_regex_unref (regex);
 }
 
-#define TEST_MATCH_ALL0(_pattern, _string, _string_len, _start_position) { \
-  TestMatchAllData *data;                                               \
-  gchar *path;                                                          \
-  data = g_new0 (TestMatchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
-  data->expected = NULL;                                                \
-  path = g_strdup_printf ("/regex/match-all-full0/%d", ++total);        \
-  g_test_add_data_func (path, data, test_match_all_full);               \
-  g_free (path);                                                        \
-  if (_string_len == -1 && _start_position == 0) {                        \
-    path = g_strdup_printf ("/regex/match-all0/%d", ++total);           \
-    g_test_add_data_func (path, data, test_match_all);                  \
-    g_free (path);                                                      \
-  }                                                                     \
+static void
+free_match_all_data (gpointer _data)
+{
+  TestMatchAllData *data = _data;
+
+  g_slist_free_full (data->expected, g_free);
+  g_free (data);
 }
 
-#define TEST_MATCH_ALL1(_pattern, _string, _string_len, _start_position, \
-                        t1, s1, e1) {                                   \
-  TestMatchAllData *data;                                               \
-  Match *match;                                                         \
-  gchar *path;                                                          \
-  data = g_new0 (TestMatchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
-  data->expected = NULL;                                                \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t1;                                                   \
-  match->start = s1;                                                    \
-  match->end = e1;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  path = g_strdup_printf ("/regex/match-all-full1/%d", ++total);        \
-  g_test_add_data_func (path, data, test_match_all_full);               \
-  g_free (path);                                                        \
-  if (_string_len == -1 && _start_position == 0) {                        \
-    path = g_strdup_printf ("/regex/match-all1/%d", ++total);           \
-    g_test_add_data_func (path, data, test_match_all);                  \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_MATCH_ALL0(_pattern, _string, _string_len, _start_position) {          \
+  TestMatchAllData *data;                                                           \
+  gchar *path;                                                                      \
+  data = g_new0 (TestMatchAllData, 1);                                              \
+  data->pattern = _pattern;                                                         \
+  data->string = _string;                                                           \
+  data->string_len = _string_len;                                                   \
+  data->start_position = _start_position;                                           \
+  data->expected = NULL;                                                            \
+  if (_string_len == -1 && _start_position == 0) {                                  \
+    path = g_strdup_printf ("/regex/match-all0/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_match_all);                              \
+    g_free (path);                                                                  \
+  }                                                                                 \
+  path = g_strdup_printf ("/regex/match-all-full0/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_match_all_full, free_match_all_data); \
+  g_free (path);                                                                    \
 }
 
-#define TEST_MATCH_ALL2(_pattern, _string, _string_len, _start_position, \
-                        t1, s1, e1, t2, s2, e2) {                       \
-  TestMatchAllData *data;                                               \
-  Match *match;                                                         \
-  gchar *path;                                                          \
-  data = g_new0 (TestMatchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
-  data->expected = NULL;                                                \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t1;                                                   \
-  match->start = s1;                                                    \
-  match->end = e1;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t2;                                                   \
-  match->start = s2;                                                    \
-  match->end = e2;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  path = g_strdup_printf ("/regex/match-all-full2/%d", ++total);        \
-  g_test_add_data_func (path, data, test_match_all_full);               \
-  g_free (path);                                                        \
-  if (_string_len == -1 && _start_position == 0) {                        \
-    path = g_strdup_printf ("/regex/match-all2/%d", ++total);           \
-    g_test_add_data_func (path, data, test_match_all);                  \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_MATCH_ALL1(_pattern, _string, _string_len, _start_position,            \
+                        t1, s1, e1) {                                               \
+  TestMatchAllData *data;                                                           \
+  Match *match;                                                                     \
+  gchar *path;                                                                      \
+  data = g_new0 (TestMatchAllData, 1);                                              \
+  data->pattern = _pattern;                                                         \
+  data->string = _string;                                                           \
+  data->string_len = _string_len;                                                   \
+  data->start_position = _start_position;                                           \
+  data->expected = NULL;                                                            \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t1;                                                               \
+  match->start = s1;                                                                \
+  match->end = e1;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  if (_string_len == -1 && _start_position == 0) {                                  \
+    path = g_strdup_printf ("/regex/match-all1/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_match_all);                              \
+    g_free (path);                                                                  \
+  }                                                                                 \
+  path = g_strdup_printf ("/regex/match-all-full1/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_match_all_full, free_match_all_data); \
+  g_free (path);                                                                    \
 }
 
-#define TEST_MATCH_ALL3(_pattern, _string, _string_len, _start_position, \
-                        t1, s1, e1, t2, s2, e2, t3, s3, e3) {           \
-  TestMatchAllData *data;                                               \
-  Match *match;                                                         \
-  gchar *path;                                                          \
-  data = g_new0 (TestMatchAllData, 1);                                  \
-  data->pattern = _pattern;                                              \
-  data->string = _string;                                                \
-  data->string_len = _string_len;                                        \
-  data->start_position = _start_position;                                \
-  data->expected = NULL;                                                \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t1;                                                   \
-  match->start = s1;                                                    \
-  match->end = e1;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t2;                                                   \
-  match->start = s2;                                                    \
-  match->end = e2;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  match = g_new0 (Match, 1);                                            \
-  match->string = t3;                                                   \
-  match->start = s3;                                                    \
-  match->end = e3;                                                      \
-  data->expected = g_slist_append (data->expected, match);              \
-  path = g_strdup_printf ("/regex/match-all-full3/%d", ++total);        \
-  g_test_add_data_func (path, data, test_match_all_full);               \
-  g_free (path);                                                        \
-  if (_string_len == -1 && _start_position == 0) {                        \
-    path = g_strdup_printf ("/regex/match-all3/%d", ++total);           \
-    g_test_add_data_func (path, data, test_match_all);                  \
-    g_free (path);                                                      \
-  }                                                                     \
+#define TEST_MATCH_ALL2(_pattern, _string, _string_len, _start_position,            \
+                        t1, s1, e1, t2, s2, e2) {                                   \
+  TestMatchAllData *data;                                                           \
+  Match *match;                                                                     \
+  gchar *path;                                                                      \
+  data = g_new0 (TestMatchAllData, 1);                                              \
+  data->pattern = _pattern;                                                         \
+  data->string = _string;                                                           \
+  data->string_len = _string_len;                                                   \
+  data->start_position = _start_position;                                           \
+  data->expected = NULL;                                                            \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t1;                                                               \
+  match->start = s1;                                                                \
+  match->end = e1;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t2;                                                               \
+  match->start = s2;                                                                \
+  match->end = e2;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  if (_string_len == -1 && _start_position == 0) {                                  \
+    path = g_strdup_printf ("/regex/match-all2/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_match_all);                              \
+    g_free (path);                                                                  \
+  }                                                                                 \
+  path = g_strdup_printf ("/regex/match-all-full2/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_match_all_full, free_match_all_data); \
+  g_free (path);                                                                    \
+}
+
+#define TEST_MATCH_ALL3(_pattern, _string, _string_len, _start_position,            \
+                        t1, s1, e1, t2, s2, e2, t3, s3, e3) {                       \
+  TestMatchAllData *data;                                                           \
+  Match *match;                                                                     \
+  gchar *path;                                                                      \
+  data = g_new0 (TestMatchAllData, 1);                                              \
+  data->pattern = _pattern;                                                         \
+  data->string = _string;                                                           \
+  data->string_len = _string_len;                                                   \
+  data->start_position = _start_position;                                           \
+  data->expected = NULL;                                                            \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t1;                                                               \
+  match->start = s1;                                                                \
+  match->end = e1;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t2;                                                               \
+  match->start = s2;                                                                \
+  match->end = e2;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  match = g_new0 (Match, 1);                                                        \
+  match->string = t3;                                                               \
+  match->start = s3;                                                                \
+  match->end = e3;                                                                  \
+  data->expected = g_slist_append (data->expected, match);                          \
+  if (_string_len == -1 && _start_position == 0) {                                  \
+    path = g_strdup_printf ("/regex/match-all3/%d", ++total);                       \
+    g_test_add_data_func (path, data, test_match_all);                              \
+    g_free (path);                                                                  \
+  }                                                                                 \
+  path = g_strdup_printf ("/regex/match-all-full3/%d", ++total);                    \
+  g_test_add_data_func_full (path, data, test_match_all_full, free_match_all_data); \
+  g_free (path);                                                                    \
 }
 
 static void

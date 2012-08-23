@@ -189,6 +189,7 @@ main (int   argc,
       char *argv[])
 {
   char *dirname;
+  int ret;
 
   g_test_init (&argc, &argv, NULL);
 
@@ -221,5 +222,10 @@ main (int   argc,
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
 
-  return g_test_run();
+  ret = g_test_run();
+
+  g_free (echo_script_path);
+  g_free (echo_prog_path);
+
+  return ret;
 }

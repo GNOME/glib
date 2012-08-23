@@ -304,7 +304,8 @@ main (int argc, char *argv[])
         continue;
 
       path = g_strdup_printf ("/markup/parse/%s", name);
-      g_test_add_data_func (path, g_build_filename (SRCDIR, "markups", name, NULL),  test_parse);
+      g_test_add_data_func_full (path, g_build_filename (SRCDIR, "markups", name, NULL),
+                                 test_parse, g_free);
       g_free (path);
     }
   g_dir_close (dir);

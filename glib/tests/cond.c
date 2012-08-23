@@ -170,6 +170,13 @@ barrier_wait (Barrier *barrier)
   return ret;
 }
 
+static void
+barrier_clear (Barrier *barrier)
+{
+  g_mutex_clear (&barrier->mutex);
+  g_cond_clear (&barrier->cond);
+}
+
 static Barrier b;
 static gint check;
 
@@ -220,6 +227,8 @@ test_cond2 (void)
     g_thread_join (threads[i]);
 
   g_assert_cmpint (g_atomic_int_get (&check), ==, 10);
+
+  barrier_clear (&b);
 }
 
 int

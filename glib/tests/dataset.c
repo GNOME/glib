@@ -125,6 +125,8 @@ test_dataset_foreach (void)
   g_dataset_set_data_full (location, "test3", "test3", notify);
   g_dataset_foreach (location, foreach, &my_count);
   g_assert (my_count == 3);
+
+  g_dataset_destroy (location);
 }
 
 static void

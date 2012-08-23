@@ -10,9 +10,15 @@ typedef struct {
 } CollateTest;
 
 typedef struct {
-  const gchar *key;
+  gchar *key;
   const gchar *str;
 } Line;
+
+static void
+clear_line (Line *line)
+{
+  g_free (line->key);
+}
 
 static int
 compare_collate (const void *a, const void *b)
@@ -35,9 +41,12 @@ compare_key (const void *a, const void *b)
 static void
 do_collate (gboolean for_file, gboolean use_key, const CollateTest *test)
 {
-  GArray *line_array = g_array_new (FALSE, FALSE, sizeof(Line));
+  GArray *line_array;
   Line line;
   gint i;
+
+  line_array = g_array_new (FALSE, FALSE, sizeof(Line));
+  g_array_set_clear_func (line_array, (GDestroyNotify)clear_line);
 
   for (i = 0; test->input[i]; i++)
     {
@@ -61,6 +70,8 @@ do_collate (gboolean for_file, gboolean use_key, const CollateTest *test)
       else
         g_assert_cmpstr (str, ==, test->sorted[i]);
     }
+
+  g_array_free (line_array, TRUE);
 }
 
 static void

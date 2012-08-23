@@ -490,6 +490,8 @@ test_string_to_bytes (void)
   g_assert_cmpint (byte_len, ==, 7);
 
   g_assert_cmpint (memcmp (byte_data, "foo-bar", byte_len), ==, 0);
+
+  g_bytes_unref (bytes);
 }
 
 int

@@ -669,6 +669,7 @@ test_file_open_tmp (void)
   g_assert_no_error (error);
   g_assert (name != NULL);
   unlink (name);
+  g_free (name);
   close (fd);
 
   fd = g_file_open_tmp (NULL, &name, &error);
@@ -676,6 +677,7 @@ test_file_open_tmp (void)
   g_assert_no_error (error);
   g_assert (name != NULL);
   g_unlink (name);
+  g_free (name);
   close (fd);
 
   name = NULL;

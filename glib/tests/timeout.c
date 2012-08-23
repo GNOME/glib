@@ -22,6 +22,8 @@ function (gpointer data)
 static void
 test_seconds (void)
 {
+  guint id;
+
   /* Bug 642052 mentions that g_timeout_add_seconds(21475) schedules a
    * job that runs once per second.
    *
@@ -40,10 +42,12 @@ test_seconds (void)
   loop = g_main_loop_new (NULL, FALSE);
 
   g_timeout_add (2100, stop_waiting, NULL);
-  g_timeout_add_seconds (21475, function, NULL);
+  id = g_timeout_add_seconds (21475, function, NULL);
 
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
+
+  g_source_remove (id);
 }
 
 static gint64 last_time;
