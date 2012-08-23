@@ -352,6 +352,9 @@ static void g_source_destroy_internal           (GSource      *source,
 static void g_source_set_priority_unlocked      (GSource      *source,
 						 GMainContext *context,
 						 gint          priority);
+static void g_child_source_remove_internal      (GSource      *child_source,
+                                                 GMainContext *context);
+
 static void g_main_context_poll                 (GMainContext *context,
 						 gint          timeout,
 						 gint          priority,
@@ -1102,7 +1105,7 @@ g_source_destroy_internal (GSource      *source,
   
   if (!SOURCE_DESTROYED (source))
     {
-      GSList *sources, *tmp_list;
+      GSList *tmp_list;
       gpointer old_cb_data;
       GSourceCallbackFuncs *old_cb_funcs;
       
@@ -1131,27 +1134,11 @@ g_source_destroy_internal (GSource      *source,
 	    }
 	}
 
-      if (source->priv->child_sources)
-	{
-	  sources = tmp_list = source->priv->child_sources;
-	  source->priv->child_sources = NULL;
-	  while (tmp_list)
-	    {
-	      g_source_destroy_internal (tmp_list->data, context, TRUE);
-	      g_source_unref_internal (tmp_list->data, context, TRUE);
-	      tmp_list = tmp_list->next;
-	    }
-	  g_slist_free (sources);
-	}
+      while (source->priv->child_sources)
+        g_child_source_remove_internal (source->priv->child_sources->data, context);
 
       if (source->priv->parent_source)
-	{
-	  GSource *parent = source->priv->parent_source;
-
-	  parent->priv->child_sources =
-	    g_slist_remove (parent->priv->child_sources, source);
-	  source->priv->parent_source = NULL;
-	}
+        g_child_source_remove_internal (source, context);
 	  
       g_source_unref_internal (source, context, TRUE);
     }
@@ -1358,6 +1345,20 @@ g_source_add_child_source (GSource *source,
     }
 }
 
+static void
+g_child_source_remove_internal (GSource *child_source,
+                                GMainContext *context)
+{
+  GSource *parent_source = child_source->priv->parent_source;
+
+  parent_source->priv->child_sources =
+    g_slist_remove (parent_source->priv->child_sources, child_source);
+  child_source->priv->parent_source = NULL;
+
+  g_source_destroy_internal (child_source, context, TRUE);
+  g_source_unref_internal (child_source, context, TRUE);
+}
+
 /**
  * g_source_remove_child_source:
  * @source:a #GSource
@@ -1385,8 +1386,7 @@ g_source_remove_child_source (GSource *source,
   if (context)
     LOCK_CONTEXT (context);
 
-  g_source_destroy_internal (child_source, context, TRUE);
-  g_source_unref_internal (child_source, context, TRUE);
+  g_child_source_remove_internal (child_source, context);
 
   if (context)
     UNLOCK_CONTEXT (context);
