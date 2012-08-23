@@ -762,6 +762,9 @@ test_all_types (void)
   g_assert_cmpint (all_type_handlers_count, ==, 3 + 5 + 5);
 
   g_object_unref (test);
+  g_param_spec_unref (param);
+  g_bytes_unref (bytes);
+  g_variant_unref (var);
 }
 
 static void

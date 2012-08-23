@@ -114,12 +114,19 @@ tester_init_thread (gpointer data)
 static void
 test_threaded_class_init (void)
 {
+  GThread *thread;
+
   /* pause newly created threads */
   g_mutex_lock (&sync_mutex);
+
   /* create threads */
-  g_thread_create (tester_init_thread, (gpointer) my_tester0_get_type(), TRUE, NULL);
-  g_thread_create (tester_init_thread, (gpointer) my_tester1_get_type(), TRUE, NULL);
-  g_thread_create (tester_init_thread, (gpointer) my_tester2_get_type(), TRUE, NULL);
+  thread = g_thread_create (tester_init_thread, (gpointer) my_tester0_get_type(), TRUE, NULL);
+  g_thread_unref (thread);
+  thread = g_thread_create (tester_init_thread, (gpointer) my_tester1_get_type(), TRUE, NULL);
+  g_thread_unref (thread);
+  thread = g_thread_create (tester_init_thread, (gpointer) my_tester2_get_type(), TRUE, NULL);
+  g_thread_unref (thread);
+
   /* execute threads */
   g_mutex_unlock (&sync_mutex);
   while (g_atomic_int_get (&mtsafe_call_counter) < (3 + 3 + 3 * 3) * NUM_COUNTER_INCREMENTS)
