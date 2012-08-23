@@ -4499,6 +4499,7 @@ g_unix_signal_watch_dispatch (GSource    *source,
 			      gpointer    user_data)
 {
   GUnixSignalWatchSource *unix_signal_source;
+  gboolean again;
 
   unix_signal_source = (GUnixSignalWatchSource *) source;
 
@@ -4509,11 +4510,11 @@ g_unix_signal_watch_dispatch (GSource    *source,
       return FALSE;
     }
 
-  (callback) (user_data);
+  again = (callback) (user_data);
 
   unix_signal_source->pending = FALSE;
 
-  return TRUE;
+  return again;
 }
 
 static void
