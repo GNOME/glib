@@ -1510,7 +1510,35 @@ g_test_add_data_func (const char     *testpath,
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (testpath[0] == '/');
   g_return_if_fail (test_func != NULL);
+
   g_test_add_vtable (testpath, 0, test_data, NULL, (GTestFixtureFunc) test_func, NULL);
+}
+
+/**
+ * g_test_add_data_func_full:
+ * @testpath: /-separated test case path name for the test.
+ * @test_data: Test data argument for the test function.
+ * @test_func: The test function to invoke for this test.
+ * @data_free_func: #GDestroyNotify for @test_data.
+ *
+ * Create a new test case, as with g_test_add_data_func(), but freeing
+ * @test_data after the test run is complete.
+ *
+ * Since: 2.34
+ */
+void
+g_test_add_data_func_full (const char     *testpath,
+                           gpointer        test_data,
+                           GTestDataFunc   test_func,
+                           GDestroyNotify  data_free_func)
+{
+  g_return_if_fail (testpath != NULL);
+  g_return_if_fail (testpath[0] == '/');
+  g_return_if_fail (test_func != NULL);
+
+  g_test_add_vtable (testpath, 0, test_data, NULL,
+                     (GTestFixtureFunc) test_func,
+                     (GTestFixtureFunc) data_free_func);
 }
 
 /**

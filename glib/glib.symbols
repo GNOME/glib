@@ -1184,6 +1184,7 @@ g_assertion_message_expr
 g_assertion_message_error
 g_strcmp0
 g_test_add_data_func
+g_test_add_data_func_full
 g_test_add_func
 g_test_add_vtable
 g_test_assert_expected_messages_internal

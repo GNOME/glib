@@ -2883,6 +2883,7 @@ GTestFunc
 g_test_add_func
 GTestDataFunc
 g_test_add_data_func
+g_test_add_data_func_full
 g_test_add
 
 g_test_fail
