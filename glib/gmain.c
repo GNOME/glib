@@ -499,6 +499,8 @@ g_main_context_unref (GMainContext *context)
 {
   GSourceIter iter;
   GSource *source;
+  GList *sl_iter;
+  GSourceList *list;
 
   g_return_if_fail (context != NULL);
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
@@ -516,6 +518,12 @@ g_main_context_unref (GMainContext *context)
       source->context = NULL;
       g_source_destroy_internal (source, context, FALSE);
     }
+  for (sl_iter = context->source_lists; sl_iter; sl_iter = sl_iter->next)
+    {
+      list = sl_iter->data;
+      g_slice_free (GSourceList, list);
+    }
+  g_list_free (context->source_lists);
 
   g_mutex_clear (&context->mutex);
 
