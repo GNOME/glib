@@ -557,10 +557,12 @@ g_option_context_add_main_entries (GOptionContext      *context,
 }
 
 static gint
-calculate_max_length (GOptionGroup *group)
+calculate_max_length (GOptionGroup *group,
+                      GHashTable   *aliases)
 {
   GOptionEntry *entry;
   gint i, len, max_length;
+  const gchar *long_name;
 
   max_length = 0;
 
@@ -571,7 +573,10 @@ calculate_max_length (GOptionGroup *group)
       if (entry->flags & G_OPTION_FLAG_HIDDEN)
         continue;
 
-      len = _g_utf8_strwidth (entry->long_name);
+      long_name = g_hash_table_lookup (aliases, &entry->long_name);
+      if (!long_name)
+        long_name = entry->long_name;
+      len = _g_utf8_strwidth (long_name);
 
       if (entry->short_name)
         len += 4;
@@ -589,9 +594,11 @@ static void
 print_entry (GOptionGroup       *group,
              gint                max_length,
              const GOptionEntry *entry,
-             GString            *string)
+             GString            *string,
+             GHashTable         *aliases)
 {
   GString *str;
+  const gchar *long_name;
 
   if (entry->flags & G_OPTION_FLAG_HIDDEN)
     return;
@@ -599,12 +606,16 @@ print_entry (GOptionGroup       *group,
   if (entry->long_name[0] == 0)
     return;
 
+  long_name = g_hash_table_lookup (aliases, &entry->long_name);
+  if (!long_name)
+    long_name = entry->long_name;
+
   str = g_string_new (NULL);
 
   if (entry->short_name)
-    g_string_append_printf (str, "  -%c, --%s", entry->short_name, entry->long_name);
+    g_string_append_printf (str, "  -%c, --%s", entry->short_name, long_name);
   else
-    g_string_append_printf (str, "  --%s", entry->long_name);
+    g_string_append_printf (str, "  --%s", long_name);
 
   if (entry->arg_description)
     g_string_append_printf (str, "=%s", TRANSLATE (group, entry->arg_description));
@@ -716,6 +727,7 @@ g_option_context_get_help (GOptionContext *context,
   gint i;
   GOptionEntry *entry;
   GHashTable *shadow_map;
+  GHashTable *aliases;
   gboolean seen[256];
   const gchar *rest_description;
   GString *string;
@@ -763,6 +775,7 @@ g_option_context_get_help (GOptionContext *context,
 
   memset (seen, 0, sizeof (gboolean) * 256);
   shadow_map = g_hash_table_new (g_str_hash, g_str_equal);
+  aliases = g_hash_table_new_full (NULL, NULL, NULL, g_free);
 
   if (context->main_group)
     {
@@ -789,7 +802,10 @@ g_option_context_get_help (GOptionContext *context,
           entry = &g->entries[i];
           if (g_hash_table_lookup (shadow_map, entry->long_name) &&
               !(entry->flags & G_OPTION_FLAG_NOALIAS))
-            entry->long_name = g_strdup_printf ("%s-%s", g->name, entry->long_name);
+            {
+              g_hash_table_insert (aliases, &entry->long_name,
+                                   g_strdup_printf ("%s-%s", g->name, entry->long_name));
+            }
           else
             g_hash_table_insert (shadow_map, (gpointer)entry->long_name, entry);
 
@@ -816,7 +832,7 @@ g_option_context_get_help (GOptionContext *context,
 
   if (context->main_group)
     {
-      len = calculate_max_length (context->main_group);
+      len = calculate_max_length (context->main_group, aliases);
       max_length = MAX (max_length, len);
     }
 
@@ -829,7 +845,7 @@ g_option_context_get_help (GOptionContext *context,
       max_length = MAX (max_length, len);
 
       /* Then we go through the entries */
-      len = calculate_max_length (g);
+      len = calculate_max_length (g, aliases);
       max_length = MAX (max_length, len);
 
       list = list->next;
@@ -878,7 +894,7 @@ g_option_context_get_help (GOptionContext *context,
           g_string_append (string, TRANSLATE (group, group->description));
           g_string_append (string, "\n");
           for (i = 0; i < group->n_entries; i++)
-            print_entry (group, max_length, &group->entries[i], string);
+            print_entry (group, max_length, &group->entries[i], string, aliases);
           g_string_append (string, "\n");
         }
     }
@@ -898,7 +914,7 @@ g_option_context_get_help (GOptionContext *context,
               g_string_append (string, "\n");
               for (i = 0; i < g->n_entries; i++)
                 if (!(g->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
-                  print_entry (g, max_length, &g->entries[i], string);
+                  print_entry (g, max_length, &g->entries[i], string, aliases);
 
               g_string_append (string, "\n");
             }
@@ -919,7 +935,7 @@ g_option_context_get_help (GOptionContext *context,
       if (context->main_group)
         for (i = 0; i < context->main_group->n_entries; i++)
           print_entry (context->main_group, max_length,
-                       &context->main_group->entries[i], string);
+                       &context->main_group->entries[i], string, aliases);
 
       while (list != NULL)
         {
@@ -928,7 +944,7 @@ g_option_context_get_help (GOptionContext *context,
           /* Print main entries from other groups */
           for (i = 0; i < g->n_entries; i++)
             if (g->entries[i].flags & G_OPTION_FLAG_IN_MAIN)
-              print_entry (g, max_length, &g->entries[i], string);
+              print_entry (g, max_length, &g->entries[i], string, aliases);
 
           list = list->next;
         }
@@ -941,6 +957,8 @@ g_option_context_get_help (GOptionContext *context,
       g_string_append (string, TRANSLATE (context, context->description));
       g_string_append (string, "\n");
     }
+
+  g_hash_table_destroy (aliases);
 
   return g_string_free (string, FALSE);
 }
