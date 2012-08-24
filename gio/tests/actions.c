@@ -66,12 +66,10 @@ test_basic (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_action_activate (G_ACTION (action), g_variant_new_string ("xxx"));
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*g_variant_is_of_type*failed*");
+      g_action_activate (G_ACTION (action), g_variant_new_string ("xxx"));
+      g_test_assert_expected_messages ();
     }
 
   g_object_unref (action);
@@ -94,13 +92,10 @@ test_basic (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_action_activate (G_ACTION (action), NULL);
-          exit (0);
-        }
-
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*failed*");
+      g_action_activate (G_ACTION (action), NULL);
+      g_test_assert_expected_messages ();
     }
 
   g_object_unref (action);
@@ -260,12 +255,10 @@ test_stateful (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_simple_action_set_state (action, g_variant_new_int32 (123));
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*g_variant_is_of_type*failed*");
+      g_simple_action_set_state (action, g_variant_new_int32 (123));
+      g_test_assert_expected_messages ();
     }
 
   g_simple_action_set_state (action, g_variant_new_string ("hello"));
@@ -279,12 +272,10 @@ test_stateful (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_simple_action_set_state (action, g_variant_new_int32 (123));
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*failed*");
+      g_simple_action_set_state (action, g_variant_new_int32 (123));
+      g_test_assert_expected_messages ();
     }
 
   g_object_unref (action);
@@ -357,27 +348,22 @@ test_entries (void)
 
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          const GActionEntry bad_type = {
-            "bad-type", NULL, "ss"
-          };
+      const GActionEntry bad_type = {
+        "bad-type", NULL, "ss"
+      };
+      const GActionEntry bad_state = {
+        "bad-state", NULL, NULL, "flse"
+      };
 
-          g_simple_action_group_add_entries (actions, &bad_type, 1, NULL);
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*not a valid GVariant type string*");
+      g_simple_action_group_add_entries (actions, &bad_type, 1, NULL);
+      g_test_assert_expected_messages ();
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          const GActionEntry bad_state = {
-            "bad-state", NULL, NULL, "flse"
-          };
-
-          g_simple_action_group_add_entries (actions, &bad_state, 1, NULL);
-          exit (0);
-        }
-      g_test_trap_assert_failed ();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*could not parse*");
+      g_simple_action_group_add_entries (actions, &bad_state, 1, NULL);
+      g_test_assert_expected_messages ();
     }
 
   state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");

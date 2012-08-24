@@ -7,7 +7,7 @@ include $(top_srcdir)/Makefile.decl
 SUBDIRS = gdbus-object-manager-example
 
 INCLUDES = 			\
-	-g 			\
+	-DG_LOG_DOMAIN=\"GLib-GIO\" \
 	$(gio_INCLUDES)		\
 	$(GLIB_DEBUG_FLAGS)	\
 	-I$(top_builddir)/gio	\

@@ -55,14 +55,14 @@ test_basic (void)
 
   if (!backend_set && g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          settings = g_settings_new ("org.gtk.test");
-          g_settings_set (settings, "greeting", "i", 555);
-          abort ();
-        }
-      g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_set_value*expects type*");
+      GSettings *tmp_settings = g_settings_new ("org.gtk.test");
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*g_settings_set_value*expects type*");
+      g_settings_set (tmp_settings, "greeting", "i", 555);
+      g_test_assert_expected_messages ();
+
+      g_object_unref (tmp_settings);
     }
 
   g_settings_get (settings, "greeting", "s", &str);
@@ -132,33 +132,29 @@ test_no_schema (void)
 static void
 test_wrong_type (void)
 {
+  GSettings *settings;
+  gchar *str = NULL;
+
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings;
-      gchar *str = NULL;
+  settings = g_settings_new ("org.gtk.test");
 
-      settings = g_settings_new ("org.gtk.test");
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
+                         "*given value has a type of*");
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
+                         "*valid_format_string*");
+  g_settings_get (settings, "greeting", "o", &str);
+  g_test_assert_expected_messages ();
 
-      g_settings_get (settings, "greeting", "o", &str);
+  g_assert (str == NULL);
 
-      g_assert (str == NULL);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*CRITICAL*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*expects type 's'*");
+  g_settings_set (settings, "greeting", "o", "/a/path");
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings;
-
-      settings = g_settings_new ("org.gtk.test");
-
-      g_settings_set (settings, "greeting", "o", "/a/path");
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*CRITICAL*");
+  g_object_unref (settings);
 }
 
 /* Check errors with explicit paths */

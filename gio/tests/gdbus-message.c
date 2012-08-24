@@ -54,29 +54,35 @@ message_lock (void)
   g_assert (g_dbus_message_get_locked (m));
   g_assert_cmpint (count, ==, 1);
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_serial (m, 42);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_serial (m, 42);
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_byte_order (m, G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_byte_order (m, G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN);
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_message_type (m, G_DBUS_MESSAGE_TYPE_METHOD_CALL);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_message_type (m, G_DBUS_MESSAGE_TYPE_METHOD_CALL);
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_flags (m, G_DBUS_MESSAGE_FLAGS_NONE);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_flags (m, G_DBUS_MESSAGE_FLAGS_NONE);
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_body (m, NULL);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_body (m, NULL);
+  g_test_assert_expected_messages ();
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_dbus_message_set_header (m, 0, NULL);
-  g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Attempted to modify a locked message*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*Attempted to modify a locked message*");
+  g_dbus_message_set_header (m, 0, NULL);
+  g_test_assert_expected_messages ();
 
   g_object_unref (m);
 }
