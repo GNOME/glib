@@ -149,6 +149,8 @@ mock_operation_finish (GAsyncResult  *result,
   return data->iterations_done;
 }
 
+GMainLoop *loop;
+
 static void
 on_mock_operation_ready (GObject      *source,
                          GAsyncResult *result,
@@ -166,6 +168,9 @@ on_mock_operation_ready (GObject      *source,
 
   g_assert_cmpint (iterations_requested, >, iterations_done);
   num_async_operations--;
+
+  if (!num_async_operations)
+    g_main_loop_quit (loop);
 }
 
 static gboolean
@@ -181,7 +186,6 @@ test_cancel_multiple_concurrent (void)
 {
   GCancellable *cancellable;
   guint i, iterations;
-  GMainLoop *loop;
 
   cancellable = g_cancellable_new ();
   loop = g_main_loop_new (NULL, FALSE);
@@ -203,8 +207,7 @@ test_cancel_multiple_concurrent (void)
   g_cancellable_cancel (cancellable);
   g_assert (g_cancellable_is_cancelled (cancellable));
 
-  /* Wait for two more iterations, and all threads should be cancelled */
-  g_timeout_add (WAIT_ITERATION * 2, on_main_loop_timeout_quit, loop);
+  /* Wait for all operations to be cancelled */
   g_main_loop_run (loop);
   g_assert_cmpint (num_async_operations, ==, 0);
 
