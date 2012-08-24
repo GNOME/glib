@@ -218,7 +218,7 @@ enumerate (GSettings *settings)
   gchar *schema;
   gint i;
 
-  g_object_get (settings, "schema", &schema, NULL);
+  g_object_get (settings, "schema-id", &schema, NULL);
 
   keys = g_settings_list_keys (settings);
   for (i = 0; keys[i]; i++)
@@ -252,15 +252,10 @@ gsettings_list_recursively (GSettings   *settings,
       for (i = 0; children[i]; i++)
         {
           GSettings *child;
-          GSettingsSchema *schema;
 
           child = g_settings_get_child (settings, children[i]);
-          g_object_get (child, "settings-schema", &schema, NULL);
-
-          enumerate (child);
-
+          gsettings_list_recursively (child, NULL, NULL);
           g_object_unref (child);
-          g_settings_schema_unref (schema);
         }
 
       g_strfreev (children);
@@ -275,7 +270,7 @@ gsettings_list_recursively (GSettings   *settings,
       for (i = 0; schemas[i]; i++)
         {
           settings = g_settings_new (schemas[i]);
-          enumerate (settings);
+          gsettings_list_recursively (settings, NULL, NULL);
           g_object_unref (settings);
         }
     }
