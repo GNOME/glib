@@ -2534,6 +2534,7 @@ open_source_for_copy (GFile           *source,
           /* Error getting info from target, return that error
            * (except for NOT_FOUND, which is no error here)
            */
+          g_clear_object (&info);
           if (my_error != NULL && !g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
             {
               g_propagate_error (error, my_error);
