@@ -3234,6 +3234,9 @@ g_bookmark_file_set_app_info (GBookmarkFile  *bookmark,
 	}
     }
   
+  if (!item->metadata)
+    item->metadata = bookmark_metadata_new ();
+
   ai = bookmark_item_lookup_app_info (item, name);
   if (!ai)
     {
