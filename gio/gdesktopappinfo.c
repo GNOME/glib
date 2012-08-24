@@ -1373,12 +1373,12 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
        * the connection if we were the initial owner.
        */
       g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
     }
 
   completed = TRUE;
 
  out:
+  g_clear_object (&session_bus);
   g_strfreev (argv);
   g_strfreev (envp);
 
@@ -2078,6 +2078,7 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   close (fd);
   
   res = g_file_set_contents (filename, data, data_size, error);
+  g_free (data);
   if (!res)
     {
       g_free (desktop_id);
