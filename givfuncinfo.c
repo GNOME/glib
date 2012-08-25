@@ -220,7 +220,8 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
   GIStructInfo *struct_info;
   GIFieldInfo *field_info = NULL;
   int length, i, offset;
-  gpointer implementor_vtable, func;
+  gpointer implementor_vtable;
+  gpointer func = NULL;
 
   object_info = (GIObjectInfo *) g_base_info_get_container (vfunc_info);
   struct_info = g_object_info_get_class_struct (object_info);
@@ -246,7 +247,7 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
                    G_INVOKE_ERROR,
                    G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
                    "Couldn't find struct field for this vfunc");
-      return NULL;
+      goto out;
     }
 
   implementor_vtable = g_type_class_ref (implementor_gtype);
@@ -263,8 +264,11 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
                    "Class %s doesn't implement %s",
                    g_type_name (implementor_gtype),
                    g_base_info_get_name ( (GIBaseInfo*) vfunc_info));
-      return NULL;
+      goto out;
     }
+
+ out:
+  g_base_info_unref ((GIBaseInfo*) struct_info);
 
   return func;
 }
