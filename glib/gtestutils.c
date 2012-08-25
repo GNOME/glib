@@ -1835,7 +1835,7 @@ g_test_run_suite_internal (GTestSuite *suite,
     {
       GTestCase *tc = slist->data;
       guint n = l ? strlen (tc->name) : 0;
-      if (l == n && strncmp (path, tc->name, n) == 0)
+      if (l == n && !rest && strncmp (path, tc->name, n) == 0)
         {
           if (!test_case_run (tc))
             n_bad++;

@@ -450,6 +450,121 @@ test_expected_messages (void)
   g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*nope*");
 }
 
+static void
+test_dash_p_colon (void)
+{
+  if (!g_test_subprocess ())
+    g_assert_not_reached ();
+
+  g_print ("Test /misc/dash-p:colon ran\n");
+}
+
+/* The rest of the dash_p tests will get run by the toplevel test
+ * process, but they shouldn't do anything there.
+ */
+static void
+test_dash_p_colon_sub (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p:colon/sub ran\n");
+}
+
+static void
+test_dash_p_colon_sub2 (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p:colon/sub2 ran\n");
+}
+
+static void
+test_dash_p_colon_sub_child (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p:colon/sub:child ran\n");
+}
+
+static void
+test_dash_p_slash (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/slash ran\n");
+}
+
+static void
+test_dash_p_slash_sub (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/slash/sub ran\n");
+}
+
+static void
+test_dash_p_slash_sub2 (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/slash/sub2 ran\n");
+}
+
+static void
+test_dash_p_slash_sub_child (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/slash/sub:child ran\n");
+}
+
+static void
+test_dash_p (void)
+{
+  g_test_trap_subprocess ("/misc/dash-p:colon", 0,
+                          G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p:colon ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p:colon/sub ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p:colon/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon/sub:child ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash*");
+
+  g_test_trap_subprocess ("/misc/dash-p:colon/sub", 0,
+                          G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p:colon/sub ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon/sub:child ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash*");
+
+  g_test_trap_subprocess ("/misc/dash-p/slash", 0,
+                          G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/slash ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/slash/sub ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/slash/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash/sub:child ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon*");
+
+  g_test_trap_subprocess ("/misc/dash-p/slash/sub", 0,
+                          G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/slash/sub ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/slash/sub:child ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p:colon*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -498,6 +613,16 @@ main (int   argc,
   g_test_add_func ("/misc/expected-messages:expected", test_expected_messages_expected);
   g_test_add_func ("/misc/expected-messages:extra-warning", test_expected_messages_extra_warning);
   g_test_add_func ("/misc/expected-messages:unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
+
+  g_test_add_func ("/misc/dash-p", test_dash_p);
+  g_test_add_func ("/misc/dash-p:colon", test_dash_p_colon);
+  g_test_add_func ("/misc/dash-p:colon/sub", test_dash_p_colon_sub);
+  g_test_add_func ("/misc/dash-p:colon/sub:child", test_dash_p_colon_sub_child);
+  g_test_add_func ("/misc/dash-p:colon/sub2", test_dash_p_colon_sub2);
+  g_test_add_func ("/misc/dash-p/slash", test_dash_p_slash);
+  g_test_add_func ("/misc/dash-p/slash/sub", test_dash_p_slash_sub);
+  g_test_add_func ("/misc/dash-p/slash/sub:child", test_dash_p_slash_sub_child);
+  g_test_add_func ("/misc/dash-p/slash/sub2", test_dash_p_slash_sub2);
 
   return g_test_run();
 }
