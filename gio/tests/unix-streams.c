@@ -65,6 +65,7 @@ writer_thread (gpointer user_data)
 
   if (g_cancellable_is_cancelled (writer_cancel))
     {
+      g_clear_error (&err);
       g_cancellable_cancel (main_cancel);
       g_object_unref (out);
       return NULL;

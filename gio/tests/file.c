@@ -122,8 +122,11 @@ monitor_changed (GFileMonitor      *monitor,
                  gpointer           user_data)
 {
   CreateDeleteData *data = user_data;
+  gchar *path;
 
-  g_assert_cmpstr (data->monitor_path, ==, g_file_get_path (file));
+  path = g_file_get_path (file);
+  g_assert_cmpstr (data->monitor_path, ==, path);
+  g_free (path);
 
   if (event_type == G_FILE_MONITOR_EVENT_CREATED)
     data->monitor_created++;

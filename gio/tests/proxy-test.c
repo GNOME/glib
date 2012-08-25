@@ -475,7 +475,7 @@ proxy_thread (gpointer user_data)
   gssize nread, nwrote;
   gchar command[2] = { 0, 0 };
   GMainContext *context;
-  GSource *source;
+  GSource *read_source, *write_source;
 
   context = g_main_context_new ();
   proxy->loop = g_main_loop_new (context, FALSE);
@@ -486,6 +486,7 @@ proxy_thread (gpointer user_data)
       if (!proxy->client_sock)
 	{
 	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+          g_error_free (error);
 	  break;
 	}
       else
@@ -516,15 +517,13 @@ proxy_thread (gpointer user_data)
       g_socket_connect (proxy->server_sock, server.server_addr, NULL, &error);
       g_assert_no_error (error);
 
-      source = g_socket_create_source (proxy->client_sock, G_IO_IN, NULL);
-      g_source_set_callback (source, (GSourceFunc)proxy_bytes, proxy, NULL);
-      g_source_attach (source, context);
-      g_source_unref (source);
+      read_source = g_socket_create_source (proxy->client_sock, G_IO_IN, NULL);
+      g_source_set_callback (read_source, (GSourceFunc)proxy_bytes, proxy, NULL);
+      g_source_attach (read_source, context);
 
-      source = g_socket_create_source (proxy->server_sock, G_IO_IN, NULL);
-      g_source_set_callback (source, (GSourceFunc)proxy_bytes, proxy, NULL);
-      g_source_attach (source, context);
-      g_source_unref (source);
+      write_source = g_socket_create_source (proxy->server_sock, G_IO_IN, NULL);
+      g_source_set_callback (write_source, (GSourceFunc)proxy_bytes, proxy, NULL);
+      g_source_attach (write_source, context);
 
       g_main_loop_run (proxy->loop);
 
@@ -535,6 +534,11 @@ proxy_thread (gpointer user_data)
       g_socket_close (proxy->server_sock, &error);
       g_assert_no_error (error);
       g_clear_object (&proxy->server_sock);
+
+      g_source_destroy (read_source);
+      g_source_unref (read_source);
+      g_source_destroy (write_source);
+      g_source_unref (write_source);
     }
 
   g_main_loop_unref (proxy->loop);
@@ -542,6 +546,10 @@ proxy_thread (gpointer user_data)
 
   g_object_unref (proxy->server);
   g_object_unref (proxy->cancellable);
+
+  g_free (proxy->proxy_command);
+  g_free (proxy->supported_protocol);
+  g_free (proxy->uri);
 
   return NULL;
 }
@@ -608,6 +616,7 @@ echo_server_thread (gpointer user_data)
       if (!sock)
 	{
 	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+          g_error_free (error);
 	  break;
 	}
       else
@@ -633,6 +642,7 @@ echo_server_thread (gpointer user_data)
     }
 
   g_object_unref (data->server);
+  g_object_unref (data->server_addr);
   g_object_unref (data->cancellable);
 
   return NULL;
@@ -826,9 +836,11 @@ assert_direct (GSocketConnection *conn)
   addr = g_socket_connection_get_remote_address (conn, &error);
   g_assert_no_error (error);
   g_assert (!G_IS_PROXY_ADDRESS (addr));
+  g_object_unref (addr);
 
   addr = g_socket_connection_get_local_address (conn, &error);
   g_assert_no_error (error);
+  g_object_unref (addr);
 
   g_assert (g_socket_connection_is_connected (conn));
 }
@@ -895,6 +907,8 @@ assert_single (GSocketConnection *conn)
   g_assert_cmpstr (proxy_uri, ==, proxy_a.uri);
   proxy_port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr));
   g_assert_cmpint (proxy_port, ==, proxy_a.port);
+
+  g_object_unref (addr);
 }
 
 static void
@@ -959,6 +973,8 @@ assert_multiple (GSocketConnection *conn)
   g_assert_cmpstr (proxy_uri, ==, proxy_b.uri);
   proxy_port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr));
   g_assert_cmpint (proxy_port, ==, proxy_b.port);
+
+  g_object_unref (addr);
 }
 
 static void
@@ -1140,6 +1156,8 @@ main (int   argc,
   g_thread_join (proxy_a.thread);
   g_thread_join (proxy_b.thread);
   g_thread_join (server.server_thread);
+
+  g_object_unref (cancellable);
 
   return result;
 }

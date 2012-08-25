@@ -119,6 +119,9 @@ test1_thread (gpointer user_data)
   g_cond_signal (&test1_cond);
   g_mutex_unlock (&test1_mutex);
 
+  g_main_context_pop_thread_default (context);
+  g_main_context_unref (context);
+
   return NULL;
 }
 
@@ -164,6 +167,9 @@ test_context_independence (void)
   g_source_remove (default_timeout);
   g_source_destroy (thread_default_timeout);
   g_source_unref (thread_default_timeout);
+
+  g_main_context_pop_thread_default (context);
+  g_main_context_unref (context);
 }
 
 static gboolean
@@ -177,6 +183,7 @@ int
 main (int argc, char **argv)
 {
   GError *error = NULL;
+  int ret;
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
@@ -188,5 +195,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gio/contexts/thread-independence", test_thread_independence);
   g_test_add_func ("/gio/contexts/context-independence", test_context_independence);
 
-  return g_test_run();
+  ret = g_test_run();
+
+  g_free (test_file_buffer);
+
+  return ret;
 }

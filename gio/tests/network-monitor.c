@@ -230,6 +230,8 @@ run_tests (GNetworkMonitor *monitor,
           g_clear_error (&error);
         }
     }
+
+  g_main_loop_unref (data.loop);
 }
 
 static void
@@ -474,6 +476,16 @@ init_test (TestMask *test)
 }
 
 static void
+cleanup_test (TestMask *test)
+{
+  int i;
+
+  g_object_unref (test->mask);
+  for (i = 0; test->addresses[i].string; i++)
+    g_object_unref (test->addresses[i].address);
+}
+
+static void
 watch_network_changed (GNetworkMonitor *monitor,
                        gboolean         available,
                        gpointer         user_data)
@@ -500,6 +512,8 @@ do_watch_network (void)
 int
 main (int argc, char **argv)
 {
+  int ret;
+
   g_type_init ();
 
   if (argc == 2 && !strcmp (argv[1], "--watch"))
@@ -523,5 +537,15 @@ main (int argc, char **argv)
   g_test_add_func ("/network-monitor/add_networks", test_add_networks);
   g_test_add_func ("/network-monitor/remove_networks", test_remove_networks);
 
-  return g_test_run ();
+  ret = g_test_run ();
+
+  cleanup_test (&net127);
+  cleanup_test (&net10);
+  cleanup_test (&net192);
+  cleanup_test (&netlocal6);
+  cleanup_test (&netfe80);
+  g_object_unref (ip4_default);
+  g_object_unref (ip6_default);
+
+  return ret;
 }

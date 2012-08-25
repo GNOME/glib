@@ -1138,6 +1138,7 @@ test_truncation (gconstpointer data)
 
   g_output_stream_splice (ostream2, cistream1, 0, NULL, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT);
+  g_error_free (error);
 
   g_object_unref (istream1);
   g_object_unref (decompressor);

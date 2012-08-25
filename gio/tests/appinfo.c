@@ -38,6 +38,8 @@ test_launch (void)
   g_assert (g_app_info_launch_uris (appinfo, l, NULL, &error));
   g_assert_no_error (error);
   g_list_free (l);
+
+  g_object_unref (appinfo);
 }
 
 static void

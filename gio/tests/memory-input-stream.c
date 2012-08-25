@@ -217,6 +217,9 @@ test_read_bytes (void)
   data = g_bytes_get_data (bytes, &size);
   g_assert_cmpint (size, ==, 26);
   g_assert (strncmp (data, data1, 26) == 0);
+
+  g_bytes_unref (bytes);
+  g_object_unref (stream);
 }
 
 int

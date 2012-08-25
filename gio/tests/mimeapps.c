@@ -349,6 +349,7 @@ test_mime_file (void)
   str = g_key_file_get_string (keyfile, "Default Applications", contenttype, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (str, ==, "myapp.desktop");
+  g_free (str);
 
   g_key_file_free (keyfile);
 

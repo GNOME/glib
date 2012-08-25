@@ -52,6 +52,7 @@ test_parse_uri (void)
   address = (GNetworkAddress*)g_network_address_parse_uri ("ftp://joe%x-@ftp.gnome.org:2020/start", 8080, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert (address == NULL);
+  g_error_free (error);
 }
 
 typedef struct _ParseTest ParseTest;
