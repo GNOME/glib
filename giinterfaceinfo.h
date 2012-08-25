@@ -48,6 +48,8 @@ GIFunctionInfo * g_interface_info_find_method         (GIInterfaceInfo *info,
 gint             g_interface_info_get_n_signals       (GIInterfaceInfo *info);
 GISignalInfo *   g_interface_info_get_signal          (GIInterfaceInfo *info,
 						       gint             n);
+GISignalInfo *   g_interface_info_find_signal         (GIInterfaceInfo *info,
+                                                       const gchar  *name);
 gint             g_interface_info_get_n_vfuncs        (GIInterfaceInfo *info);
 GIVFuncInfo *    g_interface_info_get_vfunc           (GIInterfaceInfo *info,
 						       gint             n);

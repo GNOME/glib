@@ -293,6 +293,39 @@ g_interface_info_get_signal (GIInterfaceInfo *info,
 }
 
 /**
+ * g_interface_info_find_signal:
+ * @info: a #GIInterfaceInfo
+ * @name: Name of signal
+ *
+ * Returns: (transfer full): Info for the signal with name @name in @info, or
+ * %NULL on failure.
+ *
+ * Since: 1.34
+ */
+GISignalInfo *
+g_interface_info_find_signal (GIInterfaceInfo *info,
+                              const gchar  *name)
+{
+  gint n_signals;
+  gint i;
+
+  n_signals = g_interface_info_get_n_signals (info);
+  for (i = 0; i < n_signals; i++)
+    {
+      GISignalInfo *siginfo = g_interface_info_get_signal (info, i);
+
+      if (g_strcmp0 (g_base_info_get_name (siginfo), name) != 0)
+        {
+          g_base_info_unref ((GIBaseInfo*)siginfo);
+          continue;
+        }
+
+      return siginfo;
+    }
+  return NULL;
+}
+
+/**
  * g_interface_info_get_n_vfuncs:
  * @info: a #GIInterfaceInfo
  *
