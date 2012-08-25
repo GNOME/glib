@@ -168,6 +168,7 @@ XSLTPROC_FLAGS = \
 
 endif
 
+CLEANFILES ?=
 CLEANFILES += $(man_MANS)
 
 EXTRA_DIST += $(man_MANS)
