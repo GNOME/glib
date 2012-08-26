@@ -48,6 +48,7 @@ shell-test
 signal1
 signal2
 signal3
+signal4
 slice-color
 slice-concurrent
 slice-test
