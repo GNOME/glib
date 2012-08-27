@@ -40,6 +40,7 @@
 #include <sys/utime.h>
 #else
 #include <utime.h>
+#include <errno.h>
 #endif
 
 #include "gstdio.h"
@@ -209,7 +210,11 @@ g_open (const gchar *filename,
   errno = save_errno;
   return retval;
 #else
-  return open (filename, flags, mode);
+  int fd;
+  do
+    fd = open (filename, flags, mode);
+  while (G_UNLIKELY (fd == -1 && errno == EINTR));
+  return fd;
 #endif
 }
 
