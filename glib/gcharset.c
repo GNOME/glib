@@ -38,18 +38,19 @@
 #include <stdio.h>
 
 G_LOCK_DEFINE_STATIC (aliases);
+static GHashTable *alias_hash = NULL;
 
 static GHashTable *
 get_alias_hash (void)
 {
-  static GHashTable *alias_hash = NULL;
   const char *aliases;
 
   G_LOCK (aliases);
 
   if (!alias_hash)
     {
-      alias_hash = g_hash_table_new (g_str_hash, g_str_equal);
+      alias_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                          NULL, g_free);
 
       aliases = _g_locale_get_charset_aliases ();
       while (*aliases != '\0')
@@ -152,6 +153,8 @@ charset_cache_free (gpointer data)
   g_free (cache);
 }
 
+static GPrivate charset_cache_private = G_PRIVATE_INIT (charset_cache_free);
+
 /**
  * g_get_charset:
  * @charset: return location for character set name
@@ -179,14 +182,13 @@ charset_cache_free (gpointer data)
 gboolean
 g_get_charset (const char **charset)
 {
-  static GPrivate cache_private = G_PRIVATE_INIT (charset_cache_free);
-  GCharsetCache *cache = g_private_get (&cache_private);
+  GCharsetCache *cache = g_private_get (&charset_cache_private);
   const gchar *raw;
 
   if (!cache)
     {
       cache = g_new0 (GCharsetCache, 1);
-      g_private_set (&cache_private, cache);
+      g_private_set (&charset_cache_private, cache);
     }
 
   G_LOCK (aliases);
@@ -240,7 +242,10 @@ read_aliases (gchar *file)
   char buf[256];
 
   if (!alias_table)
-    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
+    {
+      alias_table = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                           g_free, g_free);
+    }
   fp = fopen (file,"r");
   if (!fp)
     return;
@@ -530,6 +535,8 @@ language_names_cache_free (gpointer data)
   g_free (cache);
 }
 
+static GPrivate langnames_cache_private = G_PRIVATE_INIT (language_names_cache_free);
+
 /**
  * g_get_language_names:
  *
@@ -553,14 +560,13 @@ language_names_cache_free (gpointer data)
 const gchar * const *
 g_get_language_names (void)
 {
-  static GPrivate cache_private = G_PRIVATE_INIT (language_names_cache_free);
-  GLanguageNamesCache *cache = g_private_get (&cache_private);
+  GLanguageNamesCache *cache = g_private_get (&langnames_cache_private);
   const gchar *value;
 
   if (!cache)
     {
       cache = g_new0 (GLanguageNamesCache, 1);
-      g_private_set (&cache_private, cache);
+      g_private_set (&langnames_cache_private, cache);
     }
 
   value = guess_category_value ("LC_MESSAGES");
@@ -589,4 +595,15 @@ g_get_language_names (void)
     }
 
   return (const gchar * const *) cache->language_names;
+}
+
+void
+g_charset_cleanup (void)
+{
+  g_clear_pointer (&alias_hash, g_hash_table_unref);
+#ifndef G_OS_WIN32
+  g_clear_pointer (&alias_table, g_hash_table_unref);
+#endif
+  g_private_replace (&charset_cache_private, NULL);
+  g_private_replace (&langnames_cache_private, NULL);
 }

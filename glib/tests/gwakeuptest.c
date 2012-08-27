@@ -210,8 +210,16 @@ test_threaded (void)
 {
   gint i;
 
-  /* make sure we don't block forever */
-  alarm (60);
+  if (!g_mem_do_cleanup)
+    {
+      /* Make sure we don't block forever. But if g_mem_do_cleanup is
+       * set, we're probably running under valgrind, in which case things
+       * may run arbitrarily more slowly, so just skip this part; presumably
+       * the developer has already made sure the test passes outside of
+       * valgrind anyway...
+       */
+      alarm (60);
+    }
 
   /* simple mainloop test based on GWakeup.
    *
@@ -251,7 +259,8 @@ test_threaded (void)
   g_wakeup_free (last_token_wakeup);
 
   /* cancel alarm */
-  alarm (0);
+  if (!g_mem_do_cleanup)
+    alarm (0);
 }
 
 int

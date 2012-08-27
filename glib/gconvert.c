@@ -349,6 +349,10 @@ struct _iconv_cache_bucket {
   GIConv cd;
 };
 
+static void iconv_cache_bucket_expire (GList *node,
+                                       struct _iconv_cache_bucket *bucket);
+
+static gboolean iconv_cache_initialized = FALSE;
 static GList *iconv_cache_list;
 static GHashTable *iconv_cache;
 static GHashTable *iconv_open_hash;
@@ -359,18 +363,42 @@ G_LOCK_DEFINE_STATIC (iconv_cache_lock);
 static void
 iconv_cache_init (void)
 {
-  static gboolean initialized = FALSE;
-  
-  if (initialized)
+  if (iconv_cache_initialized)
     return;
   
   iconv_cache_list = NULL;
   iconv_cache = g_hash_table_new (g_str_hash, g_str_equal);
   iconv_open_hash = g_hash_table_new (g_direct_hash, g_direct_equal);
   
-  initialized = TRUE;
+  iconv_cache_initialized = TRUE;
 }
 
+static void
+iconv_cache_deinit (void)
+{
+  struct _iconv_cache_bucket *bucket;
+  GList *node, *next;
+
+  if (!iconv_cache_initialized)
+    return;
+
+  node = iconv_cache_list;
+  while (node)
+    {
+      next = node->next;
+
+      bucket = node->data;
+      iconv_cache_bucket_expire (node, bucket);
+
+      node = next;
+    }
+  g_assert (iconv_cache_list == NULL);
+
+  g_clear_pointer (&iconv_cache, g_hash_table_unref);
+  g_clear_pointer (&iconv_open_cache, g_hash_table_unref);
+
+  iconv_cache_initialized = FALSE;
+}
 
 /*
  * iconv_cache_bucket_new:
@@ -1281,6 +1309,8 @@ filename_charset_cache_free (gpointer data)
   g_free (cache);
 }
 
+static GPrivate filename_cache_private = G_PRIVATE_INIT (filename_charset_cache_free);
+
 /**
  * g_get_filename_charsets:
  * @charsets: return location for the %NULL-terminated list of encoding names
@@ -1318,14 +1348,13 @@ filename_charset_cache_free (gpointer data)
 gboolean
 g_get_filename_charsets (const gchar ***filename_charsets)
 {
-  static GPrivate cache_private = G_PRIVATE_INIT (filename_charset_cache_free);
-  GFilenameCharsetCache *cache = g_private_get (&cache_private);
+  GFilenameCharsetCache *cache = g_private_get (&filename_cache_private);
   const gchar *charset;
 
   if (!cache)
     {
       cache = g_new0 (GFilenameCharsetCache, 1);
-      g_private_set (&cache_private, cache);
+      g_private_set (&filename_cache_private, cache);
     }
 
   g_get_charset (&charset);
@@ -2247,4 +2276,13 @@ g_filename_display_name (const gchar *filename)
     display_name = _g_utf8_make_valid (filename);
 
   return display_name;
+}
+
+void
+g_convert_cleanup (void)
+{
+#ifdef NEED_ICONV_CACHE
+  iconv_cache_deinit ();
+#endif
+  g_private_replace (&filename_cache_private, NULL);
 }

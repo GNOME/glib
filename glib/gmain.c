@@ -2359,10 +2359,11 @@ g_main_dispatch_free (gpointer dispatch)
 
 /* Running the main loop */
 
+static GPrivate depth_private = G_PRIVATE_INIT (g_main_dispatch_free);
+
 static GMainDispatch *
 get_dispatch (void)
 {
-  static GPrivate depth_private = G_PRIVATE_INIT (g_main_dispatch_free);
   GMainDispatch *dispatch;
 
   dispatch = g_private_get (&depth_private);
@@ -5020,10 +5021,13 @@ g_main_context_invoke_full (GMainContext   *context,
     }
 }
 
+static GThread *glib_worker_thread;
+static volatile gboolean glib_worker_running;
+
 static gpointer
 glib_worker_main (gpointer data)
 {
-  while (TRUE)
+  while (glib_worker_running)
     {
       g_main_context_iteration (glib_worker_context, TRUE);
 
@@ -5052,7 +5056,8 @@ g_get_worker_context (void)
       pthread_sigmask (SIG_SETMASK, &all, &prev_mask);
 #endif
       glib_worker_context = g_main_context_new ();
-      g_thread_new ("gmain", glib_worker_main, NULL);
+      glib_worker_running = TRUE;
+      glib_worker_thread = g_thread_new ("gmain", glib_worker_main, NULL);
 #ifdef G_OS_UNIX
       pthread_sigmask (SIG_SETMASK, &prev_mask, NULL);
 #endif
@@ -5060,4 +5065,21 @@ g_get_worker_context (void)
     }
 
   return glib_worker_context;
+}
+
+void
+g_main_cleanup (void)
+{
+  if (glib_worker_running)
+    {
+      glib_worker_running = FALSE;
+      g_main_context_wakeup (glib_worker_context);
+      g_thread_join (glib_worker_thread);
+
+      g_clear_pointer (&glib_worker_context, g_main_context_unref);
+      glib_worker_thread = NULL;
+    }
+
+  g_clear_pointer (&default_main_context, g_main_context_unref);
+  g_private_replace (&depth_private, NULL);
 }

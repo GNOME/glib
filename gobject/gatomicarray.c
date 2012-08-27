@@ -45,6 +45,9 @@
 
 G_LOCK_DEFINE_STATIC (array);
 
+#define G_ATOMIC_ARRAY_REAL_SIZE_FROM(s) \
+    (sizeof (gsize) + MAX (s, sizeof (FreeListNode)))
+
 typedef struct _FreeListNode FreeListNode;
 struct _FreeListNode {
   FreeListNode *next;
@@ -75,7 +78,7 @@ freelist_alloc (gsize size, gboolean reuse)
 	}
     }
 
-  real_size = sizeof (gsize) + MAX (size, sizeof (FreeListNode));
+  real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
   mem = g_slice_alloc (real_size);
   mem = ((char *) mem) + sizeof (gsize);
   G_ATOMIC_ARRAY_DATA_SIZE (mem) = size;
@@ -97,6 +100,30 @@ void
 _g_atomic_array_init (GAtomicArray *array)
 {
   array->data = NULL;
+}
+
+void
+_g_atomic_array_free (GAtomicArray *array)
+{
+  if (array->data != NULL)
+    freelist_free (array->data);
+}
+
+void
+_g_atomic_array_deinit (void)
+{
+  FreeListNode *cur, *next;
+
+  for (cur = freelist; cur; cur = next)
+    {
+      gsize size, real_size;
+
+      next = cur->next;
+
+      size = G_ATOMIC_ARRAY_DATA_SIZE (cur);
+      real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
+      g_slice_free1 (real_size, ((char *) cur) - sizeof (gsize));
+    }
 }
 
 /* Get a copy of the data (if non-NULL) that

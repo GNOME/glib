@@ -481,6 +481,7 @@ struct DestroyEntry
 
 /* --- prototypes --- */
 static void     test_run_seed                   (const gchar *rseed);
+static void     g_test_destroy_suite            (GTestSuite *suite);
 static void     test_trap_clear                 (void);
 static guint8*  g_test_log_dump                 (GTestLogMsg *msg,
                                                  guint       *len);
@@ -958,6 +959,15 @@ g_test_init (int    *argc,
   g_test_log (G_TEST_LOG_START_BINARY, g_get_prgname(), test_run_seedstr, 0, NULL);
 }
 
+void
+g_test_cleanup (void)
+{
+  g_clear_pointer (&test_run_rand, g_rand_free);
+  g_clear_pointer (&test_user_timer, g_timer_destroy);
+  g_clear_pointer (&test_suite_root, g_test_destroy_suite);
+  g_clear_pointer (&test_uri_base, g_free);
+}
+
 static void
 test_run_seed (const gchar *rseed)
 {
@@ -1361,6 +1371,13 @@ g_test_create_case (const char       *test_name,
   return tc;
 }
 
+static void
+g_test_destroy_case (GTestCase *tc)
+{
+  g_free (tc->name);
+  g_slice_free (GTestCase, tc);
+}
+
 /**
  * GTestFixtureFunc:
  * @fixture: the test fixture
@@ -1561,6 +1578,17 @@ g_test_create_suite (const char *suite_name)
   ts = g_slice_new0 (GTestSuite);
   ts->name = g_strdup (suite_name);
   return ts;
+}
+
+static void
+g_test_destroy_suite (GTestSuite *suite)
+{
+  g_free (suite->name);
+
+  g_slist_free_full (suite->suites, (GDestroyNotify)g_test_destroy_suite);
+  g_slist_free_full (suite->cases, (GDestroyNotify)g_test_destroy_case);
+
+  g_slice_free (GTestSuite, suite);
 }
 
 /**

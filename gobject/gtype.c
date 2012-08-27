@@ -4386,6 +4386,220 @@ g_type_init (void)
   g_type_init_with_debug_flags (0);
 }
 
+static void
+type_iface_vtable_finalize (TypeNode       *iface,
+			    TypeNode       *node,
+			    GTypeInterface *vtable)
+{
+  IFaceEntry *entry = type_lookup_iface_entry_L (node, iface);
+  IFaceHolder *iholder;
+
+  iholder = type_iface_retrieve_holder_info_Wm (iface, NODE_TYPE (node), FALSE);
+  if (!iholder)
+    return;
+
+  g_assert (entry && entry->vtable == vtable && iholder->info);
+
+  g_assert (entry->init_state == INITIALIZED);
+  entry->init_state = UNINITIALIZED;
+
+  if (iholder->info->interface_finalize)
+    iholder->info->interface_finalize (vtable, iholder->info->interface_data);
+  if (iface->data->iface.vtable_finalize_base)
+    iface->data->iface.vtable_finalize_base (vtable);
+}
+
+static void
+type_data_finalize_class_ifaces (TypeNode *node)
+{
+  IFaceEntries *entries;
+  guint i;
+
+  entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
+  for (i = 0; entries != NULL && i < IFACE_ENTRIES_N_ENTRIES (entries); i++)
+    {
+      IFaceEntry *entry = &entries->entry[i];
+      if (entry->vtable)
+	{
+          g_assert (entry->init_state == INITIALIZED);
+
+          type_iface_vtable_finalize (lookup_type_node_I (entry->iface_type), node, entry->vtable);
+
+          entry->init_state = UNINITIALIZED;
+	}
+    }
+}
+
+static void
+type_data_finalize_class (TypeNode  *node,
+			  ClassData *cdata)
+{
+  GTypeClass *class = cdata->class;
+  TypeNode *bnode;
+
+  if (cdata->class_finalize)
+    cdata->class_finalize (class, (gpointer) cdata->class_data);
+
+  /* call all base class destruction functions in descending order
+   */
+  if (cdata->class_finalize_base)
+    cdata->class_finalize_base (class);
+  for (bnode = lookup_type_node_I (NODE_PARENT_TYPE (node)); bnode; bnode = lookup_type_node_I (NODE_PARENT_TYPE (bnode)))
+    if (bnode->data->class.class_finalize_base)
+      bnode->data->class.class_finalize_base (class);
+}
+
+static void
+type_data_finalize (TypeNode *node)
+{
+  GType ptype = NODE_PARENT_TYPE (node);
+  TypeData *tdata;
+
+  tdata = node->data;
+  if (node->is_classed && tdata->class.class)
+    {
+      if (CLASSED_NODE_IFACES_ENTRIES_LOCKED (node) != NULL)
+	type_data_finalize_class_ifaces (node);
+      type_data_finalize_class (node, &tdata->class);
+    }
+  else if (NODE_IS_IFACE (node) && tdata->iface.dflt_vtable)
+    {
+      if (tdata->iface.dflt_finalize)
+        tdata->iface.dflt_finalize (tdata->iface.dflt_vtable, (gpointer) tdata->iface.dflt_data);
+      if (tdata->iface.vtable_finalize_base)
+        tdata->iface.vtable_finalize_base (tdata->iface.dflt_vtable);
+
+      /* FIXME: This is awful...
+        *
+        * Interfaces might do g_object_interface_install_property() in their
+        * base_init, which means that the GTypeInterface owns this GParamSpec.
+        * However, the GParamSpecPool is owned by GObject... and the interface'
+        * GParamSpecs need to be released when it goes away.
+        */
+      _g_object_release_resources_owned_by (NODE_TYPE (node));
+    }
+}
+
+void
+g_type_deinit (void)
+{
+  GHashTableIter iter;
+  gpointer value;
+  GHashTable * vtables;
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+      if (node->is_classed)
+        type_data_finalize (node);
+    }
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+      if (NODE_IS_IFACE (node))
+        type_data_finalize (node);
+    }
+
+  g_signal_deinit ();
+
+  g_param_spec_types_deinit ();
+
+  g_object_type_deinit ();
+
+  g_param_type_deinit ();
+
+  g_value_c_deinit ();
+
+  static_n_class_cache_funcs = 0;
+  g_free (static_class_cache_funcs);
+  static_class_cache_funcs = NULL;
+
+  static_n_iface_check_funcs = 0;
+  g_free (static_iface_check_funcs);
+  static_iface_check_funcs = NULL;
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  vtables = g_hash_table_new (NULL, NULL);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+
+      g_free (node->children);
+
+      if (node->is_classed)
+        {
+          IFaceEntries *entries;
+
+          entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
+          if (entries)
+	    {
+              guint i;
+
+	      for (i = 0; i != IFACE_ENTRIES_N_ENTRIES (entries); i++)
+	        g_hash_table_insert (vtables, entries->entry[i].vtable, NULL);
+            }
+
+          _g_atomic_array_free (CLASSED_NODE_IFACES_ENTRIES (node));
+
+          if (node->data != NULL)
+            g_free (node->data->class.class);
+        }
+
+      if (NODE_IS_IFACE (node))
+        {
+          IFaceHolder *iholder, *next;
+
+          _g_atomic_array_free (&node->_prot.offsets);
+
+          iholder = iface_node_get_holders_L (node);
+          while (iholder)
+            {
+              next = iholder->next;
+
+              g_free (iholder->info);
+              g_free (iholder);
+
+              iholder = next;
+            }
+
+          if (node->data != NULL)
+            g_free (node->data->iface.dflt_vtable);
+
+          g_free (iface_node_get_dependants_array_L (node));
+        }
+
+      g_free (node->data);
+
+      if (node->global_gdata != NULL)
+        g_free (node->global_gdata->qdatas);
+      g_free (node->global_gdata);
+
+      g_free (node->prerequisites);
+
+      if (G_TYPE_IS_FUNDAMENTAL (gtype))
+        node = G_STRUCT_MEMBER_P (node, -SIZEOF_FUNDAMENTAL_INFO);
+      g_free (node);
+    }
+  g_hash_table_foreach (vtables, (GHFunc) g_free, NULL);
+  g_hash_table_unref (vtables);
+  g_hash_table_unref (static_type_nodes_ht);
+  static_type_nodes_ht = NULL;
+
+  _g_atomic_array_deinit ();
+}
+
 /**
  * g_type_class_add_private:
  * @g_class: class structure for an instantiatable type

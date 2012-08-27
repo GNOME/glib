@@ -832,6 +832,36 @@ _g_signal_init (void)
 }
 
 void
+g_signal_deinit (void)
+{
+  guint i;
+
+  SIGNAL_LOCK (); /* signal_destroy_R releases this lock, so we must hold it */
+
+  for (i = 1; i < g_n_signal_nodes; i++)
+    {
+      SignalNode *node = g_signal_nodes[i];
+
+      if (!node->destroyed)
+	signal_destroy_R (node);
+      g_free (node);
+    }
+
+  SIGNAL_UNLOCK ();
+
+  g_hash_table_unref (g_handler_list_bsa_ht);
+  g_handler_list_bsa_ht = NULL;
+
+  g_bsearch_array_free (g_signal_key_bsa, &g_signal_key_bconfig);
+  g_signal_key_bsa = NULL;
+
+  g_n_signal_nodes = 0;
+
+  g_free (g_signal_nodes);
+  g_signal_nodes = NULL;
+}
+
+void
 _g_signals_destroy (GType itype)
 {
   guint i;

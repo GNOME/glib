@@ -73,6 +73,9 @@ void        _g_closure_invoke_va (GClosure       *closure,
 				  GType          *param_types);
 
 
+/* for gtype.c */
+void _g_object_release_resources_owned_by (GType type);
+
 G_END_DECLS
 
 #endif /* __G_TYPE_PRIVATE_H__ */

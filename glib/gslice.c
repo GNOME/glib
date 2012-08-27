@@ -494,13 +494,14 @@ g_mutex_lock_a (GMutex *mutex,
     }
 }
 
+static GMutex init_mutex;
+
 static inline ThreadMemory*
 thread_memory_from_self (void)
 {
   ThreadMemory *tmem = g_private_get (&private_thread_memory);
   if (G_UNLIKELY (!tmem))
     {
-      static GMutex init_mutex;
       guint n_magazines;
 
       g_mutex_lock (&init_mutex);
@@ -1368,6 +1369,8 @@ slab_allocator_free_chunk (gsize    chunk_size,
  */
 
 #if !(HAVE_COMPLIANT_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC)
+static gpointer    *compat_allocations = NULL;
+static guint        compat_n_allocations = 0;
 static GTrashStack *compat_valloc_trash = NULL;
 #endif
 
@@ -1396,6 +1399,12 @@ allocator_memalign (gsize alignment,
       const guint n_pages = 16;
       guint8 *mem = malloc (n_pages * sys_page_size);
       err = errno;
+
+      compat_n_allocations++;
+      compat_allocations = realloc (compat_allocations,
+          compat_n_allocations * sizeof (gpointer));
+      compat_allocations[compat_n_allocations - 1] = mem;
+
       if (mem)
         {
           gint i = n_pages;
@@ -1716,3 +1725,29 @@ g_slice_debug_tree_statistics (void)
    */
 }
 #endif /* G_ENABLE_DEBUG */
+
+void
+g_slice_cleanup (void)
+{
+  g_private_replace (&private_thread_memory, NULL);
+
+#if HAVE_COMPLIANT_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC
+  /* no need to clean up slabs, they go away when the last chunk is freed */
+#else
+  int i;
+
+  for (i = 0; i < compat_n_allocations; i++)
+    free (compat_allocations[i]);
+  free (compat_allocations);
+  compat_allocations = NULL;
+  compat_n_allocations = 0;
+  compat_valloc_trash = NULL;
+#endif
+
+  g_clear_pointer (&allocator->contention_counters, g_free);
+  g_clear_pointer (&allocator->magazines, g_free);
+  g_clear_pointer (&allocator->slab_stack, g_free);
+
+  g_mutex_clear (&allocator->magazine_mutex);
+  g_mutex_clear (&allocator->slab_mutex);
+}

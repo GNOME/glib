@@ -1,0 +1,41 @@
+# valgrind suppressions
+
+{
+   static GCond
+   Memcheck:Leak
+   fun:malloc
+   fun:g_cond_impl_new
+   fun:g_cond_get_impl
+}
+
+{
+   static GMutex
+   Memcheck:Leak
+   fun:malloc
+   fun:g_mutex_impl_new
+   fun:g_mutex_get_impl
+}
+
+{
+   static GPrivate
+   Memcheck:Leak
+   fun:malloc
+   fun:g_private_impl_new
+   fun:g_private_get_impl
+}
+
+{
+   static GRecMutex
+   Memcheck:Leak
+   fun:g_slice_new
+   fun:g_rec_mutex_impl_new
+   fun:g_rec_mutex_get_impl
+}
+
+{
+   static GRWLock
+   Memcheck:Leak
+   fun:malloc
+   fun:g_rw_lock_impl_new
+   fun:g_rw_lock_get_impl
+}

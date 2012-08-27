@@ -3931,6 +3931,8 @@ valid_format_string (const gchar *format_string,
                   "`%s' but the given value has a type of `%s'",
                   fragment, typestr, g_variant_get_type_string (value));
 
+      g_free (typestr);
+      g_free (fragment);
       g_variant_type_free (type);
 
       return FALSE;

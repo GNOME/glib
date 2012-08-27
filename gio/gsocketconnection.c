@@ -29,6 +29,7 @@
 
 #include "gsocketconnection.h"
 
+#include "gioprivate.h"
 #include "gsocketoutputstream.h"
 #include "gsocketinputstream.h"
 #include <gio/giostream.h>
@@ -554,6 +555,16 @@ connection_factory_equal (gconstpointer _a,
 
 static GHashTable *connection_factories = NULL;
 G_LOCK_DEFINE_STATIC(connection_factories);
+
+void
+_g_socket_connection_factory_deinit (void)
+{
+  if (connection_factories != NULL)
+    {
+      g_hash_table_unref (connection_factories);
+      connection_factories = NULL;
+    }
+}
 
 /**
  * g_socket_connection_factory_register_type:

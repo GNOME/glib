@@ -1070,6 +1070,13 @@ g_data_initialize (void)
   g_dataset_cached = NULL;
 }
 
+void
+g_dataset_cleanup (void)
+{
+  g_clear_pointer (&g_dataset_location_ht, g_hash_table_unref);
+  g_dataset_cached = NULL;
+}
+
 /**
  * SECTION:quarks
  * @title: Quarks
@@ -1139,6 +1146,7 @@ g_quark_try_string (const gchar *string)
 #define QUARK_STRING_BLOCK_SIZE (4096 - sizeof (gsize))
 static char *quark_block = NULL;
 static int quark_block_offset = 0;
+static GSList *quark_blocks = NULL;
 
 /* HOLDS: g_quark_global_lock */
 static char *
@@ -1152,13 +1160,20 @@ quark_strdup(const gchar *string)
   /* For strings longer than half the block size, fall back
      to strdup so that we fill our blocks at least 50%. */
   if (len > QUARK_STRING_BLOCK_SIZE / 2)
-    return g_strdup (string);
+    {
+      copy = g_strdup (string);
+      if (G_UNLIKELY (g_mem_do_cleanup))
+        quark_blocks = g_slist_prepend (quark_blocks, copy);
+      return copy;
+    }
 
   if (quark_block == NULL ||
       QUARK_STRING_BLOCK_SIZE - quark_block_offset < len)
     {
       quark_block = g_malloc (QUARK_STRING_BLOCK_SIZE);
       quark_block_offset = 0;
+      if (G_UNLIKELY (g_mem_do_cleanup))
+        quark_blocks = g_slist_prepend (quark_blocks, quark_block);
     }
 
   copy = quark_block + quark_block_offset;
@@ -1301,6 +1316,16 @@ g_quark_new (gchar *string)
   g_atomic_int_inc (&g_quark_seq_id);
 
   return quark;
+}
+
+void
+g_quark_cleanup (void)
+{
+  g_clear_pointer (&g_quark_ht, g_hash_table_unref);
+  g_clear_pointer (&g_quarks, g_free);
+
+  g_slist_free_full (quark_blocks, g_free);
+  quark_blocks = NULL;
 }
 
 /**

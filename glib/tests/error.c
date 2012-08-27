@@ -28,9 +28,7 @@ test_overwrite (void)
   g_test_assert_expected_messages ();
 
   g_assert_error (dest, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY);
-  g_assert_error (src, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE);
   g_error_free (dest);
-  g_error_free (src);
 
 }
 

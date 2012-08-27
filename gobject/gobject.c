@@ -31,6 +31,7 @@
 #include "gvaluecollector.h"
 #include "gsignal.h"
 #include "gparamspecs.h"
+#include "gtype-private.h"
 #include "gvaluetypes.h"
 #include "gobject_trace.h"
 #include "gconstructor.h"
@@ -342,6 +343,9 @@ debug_objects_atexit (void)
 {
   IF_DEBUG (OBJECTS)
     {
+      if (debug_objects_ht == NULL)
+        return; /* deinitialized, do nothing */
+
       G_LOCK (debug_objects);
       g_message ("stale GObjects: %u", debug_objects_count);
       g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
@@ -402,6 +406,24 @@ _g_object_type_init (void)
 #endif	/* G_ENABLE_DEBUG */
 }
 
+void
+g_object_type_deinit (void)
+{
+  if (pspec_pool != NULL)
+    {
+      g_param_spec_pool_destroy (pspec_pool);
+      pspec_pool = NULL;
+    }
+
+#ifdef	G_ENABLE_DEBUG
+  if (debug_objects_ht != NULL)
+    {
+      g_hash_table_unref (debug_objects_ht);
+      debug_objects_ht = NULL;
+    }
+#endif	/* G_ENABLE_DEBUG */
+}
+
 static void
 g_object_base_class_init (GObjectClass *class)
 {
@@ -421,14 +443,21 @@ g_object_base_class_init (GObjectClass *class)
 
 static void
 g_object_base_class_finalize (GObjectClass *class)
-{
-  GList *list, *node;
-  
+{  
   _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
 
   g_slist_free (class->construct_properties);
   class->construct_properties = NULL;
-  list = g_param_spec_pool_list_owned (pspec_pool, G_OBJECT_CLASS_TYPE (class));
+
+  _g_object_release_resources_owned_by (G_OBJECT_CLASS_TYPE (class));
+}
+
+void
+_g_object_release_resources_owned_by (GType type)
+{
+  GList *list, *node;
+
+  list = g_param_spec_pool_list_owned (pspec_pool, type);
   for (node = list; node; node = node->next)
     {
       GParamSpec *pspec = node->data;

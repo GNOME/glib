@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "gioscheduler.h"
+#include "gioprivate.h"
 #include "gcancellable.h"
 
 
@@ -388,4 +389,14 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
 
   g_source_attach (source, job->context);
   g_source_unref (source);
+}
+
+void
+_g_io_scheduler_deinit (void)
+{
+  if (job_thread_pool)
+    {
+      g_thread_pool_free (job_thread_pool, FALSE, FALSE);
+      job_thread_pool = NULL;
+    }
 }

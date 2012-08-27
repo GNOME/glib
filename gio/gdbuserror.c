@@ -328,6 +328,19 @@ static GHashTable *quark_code_pair_to_re = NULL;
 /* maps from gchar* -> RegisteredError* */
 static GHashTable *dbus_error_name_to_re = NULL;
 
+void
+_g_dbus_error_deinit (void)
+{
+  if (quark_code_pair_to_re != NULL)
+    {
+      g_hash_table_unref (quark_code_pair_to_re);
+      quark_code_pair_to_re = NULL;
+
+      g_hash_table_unref (dbus_error_name_to_re);
+      dbus_error_name_to_re = NULL;
+    }
+}
+
 /**
  * g_dbus_error_register_error:
  * @error_domain: A #GQuark for a error domain.

@@ -158,5 +158,11 @@
 
 #undef __GIO_GIO_H_INSIDE__
 
+G_BEGIN_DECLS
+
+void g_io_deinit (void);
+
+G_END_DECLS
+
 #endif /* __G_IO_H__ */
 

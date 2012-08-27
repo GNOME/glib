@@ -2549,3 +2549,16 @@ g_date_strftime (gchar       *s,
   return retval;
 #endif
 }
+
+void
+g_date_cleanup (void)
+{
+  int i;
+
+  for (i = 1; i <= 12; i++)
+    {
+      g_clear_pointer (&short_month_names[i], g_free);
+      g_clear_pointer (&long_month_names[i], g_free);
+    }
+  g_clear_pointer (&current_locale, g_free);
+}

@@ -31,6 +31,7 @@
 #include "gcancellable.h"
 #include "giomodule.h"
 #include "giomodule-priv.h"
+#include "gioprivate.h"
 #include "gsimpleasyncresult.h"
 
 /**
@@ -194,4 +195,14 @@ g_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
   return (* iface->lookup_finish) (resolver, result, error);
+}
+
+void
+_g_proxy_resolver_deinit (void)
+{
+  if (default_proxy_resolver)
+  {
+    g_object_unref (default_proxy_resolver);
+    default_proxy_resolver = NULL;
+  }
 }

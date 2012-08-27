@@ -600,6 +600,10 @@ static  gchar  **g_system_config_dirs = NULL;
 
 static  gchar  **g_user_special_dirs = NULL;
 
+#ifndef G_OS_WIN32
+static  gchar   *g_user_runtime_dir;
+#endif
+
 /* fifteen minutes of fame for everybody */
 #define G_USER_DIRS_EXPIRE      15 * 60
 
@@ -935,6 +939,40 @@ g_get_any_init_locked (void)
   G_UNLOCK (g_utils_global);
 }
 
+static void
+g_get_any_cleanup (void)
+{
+  g_clear_pointer (&g_tmp_dir, g_free);
+  g_clear_pointer (&g_user_name, g_free);
+  g_clear_pointer (&g_real_name, g_free);
+  g_clear_pointer (&g_home_dir, g_free);
+  g_clear_pointer (&g_host_name, g_free);
+
+#ifdef G_OS_WIN32
+  g_clear_pointer (&g_tmp_dir_cp, g_free);
+  g_clear_pointer (&g_user_name_cp, g_free);
+  g_clear_pointer (&g_real_name_cp, g_free);
+  g_clear_pointer (&g_home_dir_cp, g_free);
+#else
+  g_clear_pointer (&g_user_runtime_dir, g_free);
+#endif
+
+  g_clear_pointer (&g_user_data_dir, g_free);
+  g_clear_pointer (&g_system_data_dirs, g_strfreev);
+  g_clear_pointer (&g_user_cache_dir, g_free);
+  g_clear_pointer (&g_user_config_dir, g_free);
+  g_clear_pointer (&g_system_config_dirs, g_strfreev);
+
+  if (g_user_special_dirs != NULL)
+    {
+      gint i;
+
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        g_free (g_user_special_dirs[i]);
+
+      g_clear_pointer (&g_user_special_dirs, g_free);
+    }
+}
 
 /**
  * g_get_user_name:
@@ -1391,18 +1429,17 @@ const gchar *
 g_get_user_runtime_dir (void)
 {
 #ifndef G_OS_WIN32
-  static const gchar *runtime_dir;
   static gsize initialised;
 
   if (g_once_init_enter (&initialised))
     {
-      runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
+      g_user_runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
       
       g_once_init_leave (&initialised, 1);
     }
 
-  if (runtime_dir)
-    return runtime_dir;
+  if (g_user_runtime_dir)
+    return g_user_runtime_dir;
 
   /* Both fallback for UNIX and the default
    * in Windows: use the user cache directory.
@@ -1801,6 +1838,15 @@ g_get_user_special_dir (GUserDirectory directory)
   G_UNLOCK (g_utils_global);
 
   return g_user_special_dirs[directory];
+}
+
+void
+g_utils_cleanup (void)
+{
+  g_clear_pointer (&g_prgname, g_free);
+  g_clear_pointer (&g_application_name, g_free);
+
+  g_get_any_cleanup ();
 }
 
 #ifdef G_OS_WIN32

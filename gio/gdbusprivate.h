@@ -84,6 +84,7 @@ void         _g_dbus_worker_close        (GDBusWorker         *worker,
 /* ---------------------------------------------------------------------------------------------------- */
 
 void _g_dbus_initialize (void);
+void _g_dbus_deinitialize (void);
 gboolean _g_dbus_debug_authentication (void);
 gboolean _g_dbus_debug_transport (void);
 gboolean _g_dbus_debug_message (void);
@@ -106,6 +107,11 @@ gboolean _g_dbus_address_parse_entry (const gchar  *address_entry,
 GVariantType * _g_dbus_compute_complete_signature (GDBusArgInfo **args);
 
 gchar *_g_dbus_hexdump (const gchar *data, gsize len, guint indent);
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+void _g_dbus_connection_deinit (void);
+void _g_dbus_error_deinit (void);
 
 /* ---------------------------------------------------------------------------------------------------- */
 

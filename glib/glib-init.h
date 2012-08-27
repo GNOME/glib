@@ -26,7 +26,6 @@
 
 G_GNUC_INTERNAL extern GLogLevelFlags g_log_always_fatal;
 G_GNUC_INTERNAL extern GLogLevelFlags g_log_msg_prefix;
-GLIB_VAR gboolean g_mem_gc_friendly;
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -36,5 +35,19 @@ G_GNUC_INTERNAL void g_thread_win32_init (void);
 G_GNUC_INTERNAL void g_clock_win32_init (void);
 G_GNUC_INTERNAL extern HMODULE glib_dll;
 #endif
+
+/* For G_DEBUG=cleanup */
+G_GNUC_INTERNAL void g_charset_cleanup (void);
+G_GNUC_INTERNAL void g_convert_cleanup (void);
+G_GNUC_INTERNAL void g_dataset_cleanup (void);
+G_GNUC_INTERNAL void g_date_cleanup (void);
+G_GNUC_INTERNAL void g_main_cleanup (void);
+G_GNUC_INTERNAL void g_quark_cleanup (void);
+G_GNUC_INTERNAL void g_rand_cleanup (void);
+G_GNUC_INTERNAL void g_slice_cleanup (void);
+G_GNUC_INTERNAL void g_test_cleanup (void);
+G_GNUC_INTERNAL void g_threading_cleanup (void);
+G_GNUC_INTERNAL void g_time_zone_cleanup (void);
+G_GNUC_INTERNAL void g_utils_cleanup (void);
 
 #endif /* __GLIB_INIT_H__ */

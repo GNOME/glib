@@ -107,6 +107,8 @@ struct _GRealThreadPool
 static const gpointer wakeup_thread_marker = (gpointer) &g_thread_pool_new;
 static gint wakeup_thread_serial = 0;
 
+static gint alive_threads = 0;
+
 /* Here all unused threads are waiting  */
 static GAsyncQueue *unused_thread_queue = NULL;
 static gint unused_threads = 0;
@@ -377,6 +379,8 @@ g_thread_pool_thread_proxy (gpointer data)
            */
         }
     }
+
+  g_atomic_int_add (&alive_threads, -1);
 
   return NULL;
 }
@@ -1014,4 +1018,22 @@ guint
 g_thread_pool_get_max_idle_time (void)
 {
   return g_atomic_int_get (&max_idle_time);
+}
+
+void
+g_thread_pool_cleanup (void)
+{
+  /*
+   * FIXME: Making sure that no threads are left behind requires
+   *        significant changes to the current implementation,
+   *        so for now we'll signal and always wait 10 ms,
+   *        allowing any threads that were already in the process
+   *        of shutting down to execute their last instructions... ICK!
+   */
+  g_thread_pool_set_max_unused_threads (0);
+  while (alive_threads)
+    g_thread_yield ();
+  g_usleep (10000);
+
+  g_clear_pointer (&unused_thread_queue, g_async_queue_unref);
 }

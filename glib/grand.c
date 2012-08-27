@@ -153,6 +153,12 @@ get_random_version (void)
   return random_version;
 }
 
+void
+g_rand_cleanup (void)
+{
+  g_clear_pointer (&global_random, g_rand_free);
+}
+
 struct _GRand
 {
   guint32 mt[N]; /* the array for the state vector  */

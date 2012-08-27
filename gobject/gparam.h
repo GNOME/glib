@@ -376,6 +376,7 @@ gpointer	g_param_spec_internal		(GType	        param_type,
 						 const gchar   *blurb,
 						 GParamFlags    flags);
 GParamSpecPool* g_param_spec_pool_new		(gboolean	type_prefixing);
+void            g_param_spec_pool_destroy       (GParamSpecPool *pool);
 void		g_param_spec_pool_insert	(GParamSpecPool	*pool,
 						 GParamSpec	*pspec,
 						 GType		 owner_type);

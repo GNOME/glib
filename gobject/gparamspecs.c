@@ -1592,6 +1592,13 @@ _g_param_spec_types_init (void)
   g_assert (spec_types == spec_types_bound);
 }
 
+void
+g_param_spec_types_deinit (void)
+{
+  g_free (g_param_spec_types);
+  g_param_spec_types = NULL;
+}
+
 /* --- GParamSpec initialization --- */
 
 /**

@@ -42,6 +42,17 @@ gboolean g_mem_gc_friendly = TRUE;
 #else
 gboolean g_mem_gc_friendly = FALSE;
 #endif
+
+/**
+ * g_mem_do_cleanup:
+ *
+ * This variable is %TRUE if the <envar>G_DEBUG</envar> environment
+ * variable includes the key <literal>cleanup</literal>. This will
+ * cause glib to free as much data as possible before exiting, to help
+ * with finding real memory leaks.
+ */
+gboolean g_mem_do_cleanup = FALSE;
+
 GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING |
                                   G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
@@ -202,6 +213,7 @@ g_debug_init (void)
 {
   const GDebugKey keys[] = {
     { "gc-friendly", 1 },
+    { "cleanup", 2 },
     {"fatal-warnings",  G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL },
     {"fatal-criticals", G_LOG_LEVEL_CRITICAL }
   };
@@ -212,6 +224,7 @@ g_debug_init (void)
   g_log_always_fatal |= flags & G_LOG_LEVEL_MASK;
 
   g_mem_gc_friendly = flags & 1;
+  g_mem_do_cleanup = flags & 2;
 }
 
 static void
@@ -219,6 +232,25 @@ glib_init (void)
 {
   g_messages_prefixed_init ();
   g_debug_init ();
+}
+
+static void
+glib_cleanup (void)
+{
+  g_test_cleanup ();
+
+  g_charset_cleanup ();
+  g_convert_cleanup ();
+  g_dataset_cleanup ();
+  g_date_cleanup ();
+  g_main_cleanup ();
+  g_quark_cleanup ();
+  g_rand_cleanup ();
+  g_time_zone_cleanup ();
+  g_utils_cleanup ();
+
+  g_threading_cleanup ();
+  g_slice_cleanup ();
 }
 
 #if defined (G_OS_WIN32)
@@ -241,6 +273,8 @@ DllMain (HINSTANCE hinstDLL,
 
     case DLL_THREAD_DETACH:
       g_thread_win32_thread_detach ();
+      if (G_UNLIKELY (g_mem_do_cleanup))
+        glib_cleanup ();
       break;
 
     default:
@@ -262,6 +296,18 @@ static void
 glib_init_ctor (void)
 {
   glib_init ();
+}
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_dtor)
+#endif
+G_DEFINE_DESTRUCTOR(glib_init_dtor)
+
+static void
+glib_init_dtor (void)
+{
+  if (G_UNLIKELY (g_mem_do_cleanup))
+    glib_cleanup ();
 }
 
 #else

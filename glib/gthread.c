@@ -1010,5 +1010,11 @@ g_thread_self (void)
   return (GThread*) thread;
 }
 
+void
+g_threading_cleanup (void)
+{
+  g_private_replace (&g_thread_specific_private, NULL);
+}
+
 /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */

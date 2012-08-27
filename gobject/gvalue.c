@@ -145,6 +145,13 @@ _g_value_c_init (void)
   transform_array = g_bsearch_array_create (&transform_bconfig);
 }
 
+void
+g_value_c_deinit (void)
+{
+  g_bsearch_array_free (transform_array, &transform_bconfig);
+  transform_array = NULL;
+}
+
 static inline void		/* keep this function in sync with gvaluecollector.h and gboxed.c */
 value_meminit (GValue *value,
 	       GType   value_type)

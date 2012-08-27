@@ -1642,6 +1642,7 @@ glib_mem_profiler_table
 glib_micro_version
 glib_minor_version
 glib_on_error_halt
+g_mem_do_cleanup
 g_mem_gc_friendly
 g_cond_broadcast
 g_cond_clear

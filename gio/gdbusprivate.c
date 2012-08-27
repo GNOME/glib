@@ -282,6 +282,14 @@ gdbus_shared_thread_func (gpointer user_data)
   return NULL;
 }
 
+static gboolean
+quit_main_loop (gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+  g_main_loop_quit (loop);
+  return FALSE;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static SharedThreadData *
@@ -1947,6 +1955,20 @@ _g_dbus_initialize (void)
 
       g_once_init_leave (&initialized, 1);
     }
+}
+
+void
+_g_dbus_deinitialize (void)
+{
+  if (shared_thread_data)
+    {
+      g_assert_cmpint (shared_thread_data->num_users, ==, 1); /* if not, there's a leak */
+      _g_dbus_shared_thread_unref ();
+    }
+
+  _g_dbus_connection_deinit ();
+
+  _g_dbus_error_deinit ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

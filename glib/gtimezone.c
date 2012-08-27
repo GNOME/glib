@@ -813,5 +813,11 @@ g_time_zone_is_dst (GTimeZone *tz,
   return interval_isdst (tz, interval);
 }
 
+void
+g_time_zone_cleanup (void)
+{
+  g_clear_pointer (&time_zones, g_hash_table_unref);
+}
+
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */

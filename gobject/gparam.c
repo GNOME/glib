@@ -80,6 +80,8 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 						 GTypeCValue    *collect_values,
 						 guint           collect_flags);
 
+G_LOCK_DEFINE_STATIC (g_param_spec_class_info);
+static GSList *g_param_spec_class_info = NULL;
 
 /* --- functions --- */
 void
@@ -126,6 +128,14 @@ _g_param_type_init (void)
   type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParam"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
   g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
+}
+
+void
+g_param_type_deinit (void)
+{
+  g_slist_foreach (g_param_spec_class_info, (GFunc) g_free, NULL);
+  g_slist_free (g_param_spec_class_info);
+  g_param_spec_class_info = NULL;
 }
 
 static void
@@ -901,6 +911,20 @@ g_param_spec_pool_new (gboolean type_prefixing)
   return pool;
 }
 
+void
+g_param_spec_pool_destroy (GParamSpecPool *pool)
+{
+  GHashTableIter iter;
+  gpointer key;
+
+  g_hash_table_iter_init (&iter, pool->hash_table);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    g_param_spec_unref (key);
+  g_hash_table_unref (pool->hash_table);
+
+  g_free (pool);
+}
+
 /**
  * g_param_spec_pool_insert:
  * @pool: a #GParamSpecPool.
@@ -1341,6 +1365,12 @@ param_spec_generic_class_init (gpointer g_class,
   if (info->value_validate)
     class->value_validate = info->value_validate;	/* optional */
   class->values_cmp = info->values_cmp;
+
+  G_LOCK (g_param_spec_class_info);
+  g_param_spec_class_info = g_slist_remove (g_param_spec_class_info,
+      class_data);
+  G_UNLOCK (g_param_spec_class_info);
+
   g_free (class_data);
 }
 
@@ -1407,6 +1437,10 @@ g_param_type_register_static (const gchar              *name,
   cinfo->value_validate = pspec_info->value_validate;
   cinfo->values_cmp = pspec_info->values_cmp ? pspec_info->values_cmp : default_values_cmp;
   info.class_data = cinfo;
+
+  G_LOCK (g_param_spec_class_info);
+  g_param_spec_class_info = g_slist_prepend (g_param_spec_class_info, cinfo);
+  G_UNLOCK (g_param_spec_class_info);
 
   return g_type_register_static (G_TYPE_PARAM, name, &info, 0);
 }
