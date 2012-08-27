@@ -486,14 +486,11 @@
 static gboolean
 g_variant_type_check (const GVariantType *type)
 {
-  const gchar *type_string;
-
   if (type == NULL)
     return FALSE;
 
-  type_string = (const gchar *) type;
-#ifndef G_DISABLE_CHECKS
-  return g_variant_type_string_scan (type_string, NULL, NULL);
+#if 0
+  return g_variant_type_string_scan ((const gchar *) type, NULL, NULL);
 #else
   return TRUE;
 #endif
