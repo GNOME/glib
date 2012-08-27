@@ -28,6 +28,7 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <glib/gstdio.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
@@ -2177,7 +2178,7 @@ g_test_trap_fork (guint64        usec_timeout,
       close (stderr_pipe[0]);
       close (stdtst_pipe[0]);
       if (!(test_trap_flags & G_TEST_TRAP_INHERIT_STDIN))
-        fd0 = open ("/dev/null", O_RDONLY);
+        fd0 = g_open ("/dev/null", O_RDONLY, 0);
       if (sane_dup2 (stdout_pipe[1], 1) < 0 || sane_dup2 (stderr_pipe[1], 2) < 0 || (fd0 >= 0 && sane_dup2 (fd0, 0) < 0))
         g_error ("failed to dup2() in forked test program: %s", g_strerror (errno));
       if (fd0 >= 3)

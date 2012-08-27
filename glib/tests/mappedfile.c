@@ -6,6 +6,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <glib/gstdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -120,7 +121,7 @@ test_writable_fd (void)
     }
 
   error = NULL;
-  fd = open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
+  fd = g_open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
   g_assert (fd != -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
@@ -135,7 +136,7 @@ test_writable_fd (void)
   close (fd);
 
   error = NULL;
-  fd = open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
+  fd = g_open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
   g_assert (fd != -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);

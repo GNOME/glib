@@ -1247,10 +1247,10 @@ get_content_type (const char          *basename,
 	    sniff_length = 4096;
 
 #ifdef O_NOATIME	  
-          fd = open (path, O_RDONLY | O_NOATIME);
+          fd = g_open (path, O_RDONLY | O_NOATIME, 0);
           if (fd < 0 && errno == EPERM)
 #endif
-	    fd = open (path, O_RDONLY);
+	    fd = g_open (path, O_RDONLY, 0);
 
 	  if (fd != -1)
 	    {

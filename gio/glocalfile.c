@@ -2017,7 +2017,7 @@ g_local_file_trash (GFile         *file,
     infofile = g_build_filename (infodir, infoname, NULL);
     g_free (infoname);
 
-    fd = open (infofile, O_CREAT | O_EXCL, 0666);
+    fd = g_open (infofile, O_CREAT | O_EXCL, 0666);
   } while (fd == -1 && errno == EEXIST);
 
   g_free (basename);

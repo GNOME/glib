@@ -28,6 +28,7 @@
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <glib/gstdio.h>
 
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "GLib-Genmarshal"
@@ -848,7 +849,7 @@ main (int   argc,
 	/* Mostly for Win32. This is equivalent to opening /dev/stdin */
 	fd = dup (0);
       else
-	fd = open (file, O_RDONLY);
+	fd = g_open (file, O_RDONLY, 0);
 
       if (fd < 0)
 	{

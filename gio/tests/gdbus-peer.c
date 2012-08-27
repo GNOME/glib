@@ -178,7 +178,7 @@ test_interface_method_call (GDBusConnection       *connection,
 
       error = NULL;
 
-      fd = open (path, O_RDONLY);
+      fd = g_open (path, O_RDONLY, 0);
       g_unix_fd_list_append (fd_list, fd, &error);
       g_assert_no_error (error);
       close (fd);

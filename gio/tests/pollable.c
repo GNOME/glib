@@ -19,6 +19,7 @@
  */
 
 #include <gio/gio.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
 #include <fcntl.h>
@@ -154,7 +155,7 @@ test_pollable_unix (void)
   g_object_unref (out);
 
   /* Non-pipe/socket unix streams are not pollable */
-  fd = open ("/dev/null", O_RDWR);
+  fd = g_open ("/dev/null", O_RDWR, 0);
   g_assert_cmpint (fd, !=, -1);
   in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (fd, FALSE));
   out = g_unix_output_stream_new (fd, FALSE);

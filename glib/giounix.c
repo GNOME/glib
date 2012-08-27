@@ -42,6 +42,7 @@
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
+#include <glib/gstdio.h>
 
 #include "giochannel.h"
 
@@ -525,12 +526,7 @@ g_io_channel_new_file (const gchar *filename,
 
   create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 
-  do
-    {
-      fid = open (filename, flags, create_mode);
-    }
-  while (fid == -1 && errno == EINTR);
-
+  fid = g_open (filename, flags, create_mode);
   if (fid == -1)
     {
       int err = errno;
