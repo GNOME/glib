@@ -615,21 +615,19 @@ base2_object_init (Base2Object *object)
 static void
 test_not_overridden (void)
 {
+  Base2Object *object;
+
   if (!g_test_undefined ())
     return;
 
   g_test_bug ("637738");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT|G_TEST_TRAP_SILENCE_STDERR))
-    {
-      Base2Object *object;
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*Base2Object doesn't implement property 'prop3' from interface 'TestIface'*");
+  object = g_object_new (BASE2_TYPE_OBJECT, NULL);
+  g_test_assert_expected_messages ();
 
-      object = g_object_new (BASE2_TYPE_OBJECT, NULL);
-      g_object_unref (object);
-      exit (0);
-    }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*Base2Object doesn't implement property 'prop3' from interface 'TestIface'*");
+  g_object_unref (object);
 }
 
 int
