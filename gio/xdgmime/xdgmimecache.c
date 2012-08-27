@@ -34,6 +34,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include <fnmatch.h>
 #include <assert.h>
 
@@ -120,7 +121,9 @@ _xdg_mime_cache_new_from_file (const char *file_name)
   int minor;
 
   /* Open the file and map it into memory */
-  fd = open (file_name, O_RDONLY|_O_BINARY, 0);
+  do
+    fd = open (file_name, O_RDONLY|_O_BINARY, 0);
+  while (fd == -1 && errno == EINTR);
 
   if (fd < 0)
     return NULL;
