@@ -3106,8 +3106,93 @@ g_object_set_qdata (GObject *object,
 {
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (quark > 0);
-  
+
   g_datalist_id_set_data (&object->qdata, quark, data);
+}
+
+/**
+ * g_object_dup_qdata:
+ * @object: the #GObject to store user data on
+ * @quark: a #GQuark, naming the user data pointer
+ * @dup_func: (allow-none): function to dup the value
+ * @user_data: (allow-none): passed as user_data to @dup_func
+ *
+ * This is a variant of g_object_get_qdata() which returns
+ * a 'duplicate' of the value. @dup_func defines the
+ * meaning of 'duplicate' in this context, it could e.g.
+ * take a reference on a ref-counted object.
+ *
+ * If the @quark is not set on the object then @dup_func
+ * will be called with a %NULL argument.
+ *
+ * Note that @dup_func is called while user data of @object
+ * is locked.
+ *
+ * This function can be useful to avoid races when multiple
+ * threads are using object data on the same key on the same
+ * object.
+ *
+ * Returns: the result of calling @dup_func on the value
+ *     associated with @quark on @object, or %NULL if not set.
+ *     If @dup_func is %NULL, the value is returned
+ *     unmodified.
+ *
+ * Since: 2.34
+ */
+gpointer
+g_object_dup_qdata (GObject        *object,
+                    GQuark          quark,
+                    GDuplicateFunc   dup_func,
+                    gpointer         user_data)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (quark > 0, NULL);
+
+  return g_datalist_id_dup_data (&object->qdata, quark, dup_func, user_data);
+}
+
+/**
+ * g_object_replace_qdata:
+ * @object: the #GObject to store user data on
+ * @quark: a #GQuark, naming the user data pointer
+ * @oldval: (allow-none): the old value to compare against
+ * @newval: (allow-none): the new value
+ * @destroy: (allow-none): a destroy notify for the new value
+ * @old_destroy: (allow-none): destroy notify for the existing value
+ *
+ * Compares the user data for the key @quark on @object with
+ * @oldval, and if they are the same, replaces @oldval with
+ * @newval.
+ *
+ * This is like a typical atomic compare-and-exchange
+ * operation, for user data on an object.
+ *
+ * If the previous value was replaced then ownership of the
+ * old value (@oldval) is passed to the caller, including
+ * the registred destroy notify for it (passed out in @old_destroy).
+ * Its up to the caller to free this as he wishes, which may
+ * or may not include using @old_destroy as sometimes replacement
+ * should not destroy the object in the normal way.
+ *
+ * Return: %TRUE if the existing value for @quark was replaced
+ *  by @newval, %FALSE otherwise.
+ *
+ * Since: 2.34
+ */
+gboolean
+g_object_replace_qdata (GObject        *object,
+                        GQuark          quark,
+                        gpointer        oldval,
+                        gpointer        newval,
+                        GDestroyNotify  destroy,
+                        GDestroyNotify *old_destroy)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (quark > 0, FALSE);
+
+  return g_datalist_id_replace_data (&object->qdata, quark,
+                                     oldval, newval, destroy,
+                                     old_destroy);
 }
 
 /**
@@ -3230,6 +3315,94 @@ g_object_set_data (GObject     *object,
   g_return_if_fail (key != NULL);
 
   g_datalist_id_set_data (&object->qdata, g_quark_from_string (key), data);
+}
+
+/**
+ * g_object_dup_data:
+ * @object: the #GObject to store user data on
+ * @key: a string, naming the user data pointer
+ * @dup_func: (allow-none): function to dup the value
+ * @user_data: (allow-none): passed as user_data to @dup_func
+ *
+ * This is a variant of g_object_get_data() which returns
+ * a 'duplicate' of the value. @dup_func defines the
+ * meaning of 'duplicate' in this context, it could e.g.
+ * take a reference on a ref-counted object.
+ *
+ * If the @key is not set on the object then @dup_func
+ * will be called with a %NULL argument.
+ *
+ * Note that @dup_func is called while user data of @object
+ * is locked.
+ *
+ * This function can be useful to avoid races when multiple
+ * threads are using object data on the same key on the same
+ * object.
+ *
+ * Returns: the result of calling @dup_func on the value
+ *     associated with @key on @object, or %NULL if not set.
+ *     If @dup_func is %NULL, the value is returned
+ *     unmodified.
+ *
+ * Since: 2.34
+ */
+gpointer
+g_object_dup_data (GObject        *object,
+                   const gchar    *key,
+                   GDuplicateFunc   dup_func,
+                   gpointer         user_data)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  return g_datalist_id_dup_data (&object->qdata,
+                                 g_quark_from_string (key),
+                                 dup_func, user_data);
+}
+
+/**
+ * g_object_replace_data:
+ * @object: the #GObject to store user data on
+ * @key: a string, naming the user data pointer
+ * @oldval: (allow-none): the old value to compare against
+ * @newval: (allow-none): the new value
+ * @destroy: (allow-none): a destroy notify for the new value
+ * @old_destroy: (allow-none): destroy notify for the existing value
+ *
+ * Compares the user data for the key @key on @object with
+ * @oldval, and if they are the same, replaces @oldval with
+ * @newval.
+ *
+ * This is like a typical atomic compare-and-exchange
+ * operation, for user data on an object.
+ *
+ * If the previous value was replaced then ownership of the
+ * old value (@oldval) is passed to the caller, including
+ * the registred destroy notify for it (passed out in @old_destroy).
+ * Its up to the caller to free this as he wishes, which may
+ * or may not include using @old_destroy as sometimes replacement
+ * should not destroy the object in the normal way.
+ *
+ * Return: %TRUE if the existing value for @key was replaced
+ *  by @newval, %FALSE otherwise.
+ *
+ * Since: 2.34
+ */
+gboolean
+g_object_replace_data (GObject        *object,
+                       const gchar    *key,
+                       gpointer        oldval,
+                       gpointer        newval,
+                       GDestroyNotify  destroy,
+                       GDestroyNotify *old_destroy)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  return g_datalist_id_replace_data (&object->qdata,
+                                     g_quark_from_string (key),
+                                     oldval, newval, destroy,
+                                     old_destroy);
 }
 
 /**
