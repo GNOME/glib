@@ -35,6 +35,7 @@
 #include "gstring.h"
 #include "gtestutils.h"
 #include "glibintl.h"
+#include "gthread.h"
 
 /**
  * SECTION:markup

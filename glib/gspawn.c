@@ -42,6 +42,7 @@
 #endif /* HAVE_SYS_RESOURCE_H */
 
 #include "gspawn.h"
+#include "gthread.h"
 
 #include "genviron.h"
 #include "gmem.h"

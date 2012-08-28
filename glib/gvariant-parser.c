@@ -33,6 +33,7 @@
 #include "gvariant.h"
 #include "gvarianttype.h"
 #include "gslice.h"
+#include "gthread.h"
 
 /*
  * two-pass algorithm

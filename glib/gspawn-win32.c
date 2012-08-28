@@ -47,6 +47,7 @@
 #include "glib.h"
 #include "gprintfint.h"
 #include "glibintl.h"
+#include "gthread.h"
 
 #include <string.h>
 #include <stdlib.h>
