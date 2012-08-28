@@ -817,6 +817,7 @@ void
 g_time_zone_cleanup (void)
 {
   g_clear_pointer (&time_zones, g_hash_table_unref);
+  g_mutex_clear (&G_LOCK_NAME (time_zones));
 }
 
 /* Epilogue {{{1 */

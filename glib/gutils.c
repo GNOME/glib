@@ -972,6 +972,8 @@ g_get_any_cleanup (void)
 
       g_clear_pointer (&g_user_special_dirs, g_free);
     }
+
+  g_mutex_clear (&G_LOCK_NAME (g_utils_global));
 }
 
 /**
@@ -1844,7 +1846,9 @@ void
 g_utils_cleanup (void)
 {
   g_clear_pointer (&g_prgname, g_free);
+  g_mutex_clear (&G_LOCK_NAME (g_prgname));
   g_clear_pointer (&g_application_name, g_free);
+  g_mutex_clear (&G_LOCK_NAME (g_application_name));
 
   g_get_any_cleanup ();
 }

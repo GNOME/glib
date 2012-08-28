@@ -1750,4 +1750,5 @@ g_slice_cleanup (void)
 
   g_mutex_clear (&allocator->magazine_mutex);
   g_mutex_clear (&allocator->slab_mutex);
+  g_mutex_clear (&init_mutex);
 }

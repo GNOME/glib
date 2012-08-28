@@ -49,6 +49,9 @@ test_mutex2 (void)
   g_mutex_unlock (&mutex);
   g_mutex_lock (&mutex);
   g_mutex_unlock (&mutex);
+
+  if (g_mem_do_cleanup)
+    g_mutex_clear (&mutex);
 }
 
 static void
@@ -78,6 +81,9 @@ test_mutex4 (void)
     g_mutex_unlock (&mutex);
 
   g_mutex_unlock (&mutex);
+
+  if (g_mem_do_cleanup)
+    g_mutex_clear (&mutex);
 }
 
 #define LOCKS      48

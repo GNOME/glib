@@ -606,4 +606,5 @@ g_charset_cleanup (void)
 #endif
   g_private_replace (&charset_cache_private, NULL);
   g_private_replace (&langnames_cache_private, NULL);
+  g_mutex_clear (&G_LOCK_NAME (aliases));
 }

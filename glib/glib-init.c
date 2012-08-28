@@ -248,9 +248,12 @@ glib_cleanup (void)
   g_rand_cleanup ();
   g_time_zone_cleanup ();
   g_utils_cleanup ();
+  g_variant_type_info_cleanup ();
 
+  g_messages_cleanup ();
   g_threading_cleanup ();
   g_slice_cleanup ();
+  g_system_thread_cleanup ();
 }
 
 #if defined (G_OS_WIN32)

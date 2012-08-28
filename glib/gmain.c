@@ -5082,4 +5082,8 @@ g_main_cleanup (void)
 
   g_clear_pointer (&default_main_context, g_main_context_unref);
   g_private_replace (&depth_private, NULL);
+
+  g_mutex_clear (&G_LOCK_NAME (main_loop));
+  g_mutex_clear (&G_LOCK_NAME (main_context_list));
+  g_mutex_clear (&G_LOCK_NAME (unix_signal_lock));
 }

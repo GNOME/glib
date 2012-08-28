@@ -1075,6 +1075,7 @@ g_dataset_cleanup (void)
 {
   g_clear_pointer (&g_dataset_location_ht, g_hash_table_unref);
   g_dataset_cached = NULL;
+  g_mutex_clear (&G_LOCK_NAME (g_dataset_global));
 }
 
 /**
@@ -1326,6 +1327,8 @@ g_quark_cleanup (void)
 
   g_slist_free_full (quark_blocks, g_free);
   quark_blocks = NULL;
+
+  g_mutex_clear (&G_LOCK_NAME (g_quark_global));
 }
 
 /**

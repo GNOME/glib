@@ -867,3 +867,9 @@ g_variant_type_info_assert_no_infos (void)
 {
   g_assert (g_variant_type_info_table == NULL);
 }
+
+void
+g_variant_type_info_cleanup (void)
+{
+  g_rec_mutex_clear (&g_variant_type_info_lock);
+}

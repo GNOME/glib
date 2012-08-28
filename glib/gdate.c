@@ -2561,4 +2561,5 @@ g_date_cleanup (void)
       g_clear_pointer (&long_month_names[i], g_free);
     }
   g_clear_pointer (&current_locale, g_free);
+  g_mutex_clear (&G_LOCK_NAME (g_date_global));
 }

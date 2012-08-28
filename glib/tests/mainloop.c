@@ -344,6 +344,12 @@ test_invoke (void)
   g_assert_cmpint (count, ==, 3);
 
   g_main_context_unref (ctx);
+
+  if (g_mem_do_cleanup)
+    {
+      g_mutex_clear (&mutex);
+      g_cond_clear (&cond);
+    }
 }
 
 static gboolean

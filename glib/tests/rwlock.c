@@ -47,6 +47,9 @@ test_rwlock2 (void)
   g_rw_lock_writer_unlock (&lock);
   g_rw_lock_writer_lock (&lock);
   g_rw_lock_writer_unlock (&lock);
+
+  if (g_mem_do_cleanup)
+    g_rw_lock_clear (&lock);
 }
 
 static void
@@ -61,6 +64,9 @@ test_rwlock3 (void)
   g_assert (!ret);
 
   g_rw_lock_writer_unlock (&lock);
+
+  if (g_mem_do_cleanup)
+    g_rw_lock_clear (&lock);
 }
 
 static void
@@ -72,6 +78,9 @@ test_rwlock4 (void)
   g_rw_lock_reader_unlock (&lock);
   g_rw_lock_reader_lock (&lock);
   g_rw_lock_reader_unlock (&lock);
+
+  if (g_mem_do_cleanup)
+    g_rw_lock_clear (&lock);
 }
 
 static void
@@ -87,6 +96,9 @@ test_rwlock5 (void)
 
   g_rw_lock_reader_unlock (&lock);
   g_rw_lock_reader_unlock (&lock);
+
+  if (g_mem_do_cleanup)
+    g_rw_lock_clear (&lock);
 }
 
 static void
@@ -104,6 +116,9 @@ test_rwlock6 (void)
   ret = g_rw_lock_writer_trylock (&lock);
   g_assert (!ret);
   g_rw_lock_reader_unlock (&lock);
+
+  if (g_mem_do_cleanup)
+    g_rw_lock_clear (&lock);
 }
 
 

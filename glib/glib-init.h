@@ -42,12 +42,15 @@ G_GNUC_INTERNAL void g_convert_cleanup (void);
 G_GNUC_INTERNAL void g_dataset_cleanup (void);
 G_GNUC_INTERNAL void g_date_cleanup (void);
 G_GNUC_INTERNAL void g_main_cleanup (void);
+G_GNUC_INTERNAL void g_messages_cleanup (void);
 G_GNUC_INTERNAL void g_quark_cleanup (void);
 G_GNUC_INTERNAL void g_rand_cleanup (void);
 G_GNUC_INTERNAL void g_slice_cleanup (void);
+G_GNUC_INTERNAL void g_system_thread_cleanup (void);
 G_GNUC_INTERNAL void g_test_cleanup (void);
 G_GNUC_INTERNAL void g_threading_cleanup (void);
 G_GNUC_INTERNAL void g_time_zone_cleanup (void);
 G_GNUC_INTERNAL void g_utils_cleanup (void);
+G_GNUC_INTERNAL void g_variant_type_info_cleanup (void);
 
 #endif /* __GLIB_INIT_H__ */

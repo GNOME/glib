@@ -45,6 +45,7 @@
 
 #include "gthreadprivate.h"
 #include "gslice.h"
+#include "gmem.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
 
@@ -184,7 +185,8 @@ g_mutex_init (GMutex *mutex)
 void
 g_mutex_clear (GMutex *mutex)
 {
-  g_mutex_impl_free (mutex->p);
+  if (G_LIKELY (mutex->p != NULL))
+    g_mutex_impl_free (mutex->p);
 }
 
 /**
@@ -355,7 +357,8 @@ g_rec_mutex_init (GRecMutex *rec_mutex)
 void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
 {
-  g_rec_mutex_impl_free (rec_mutex->p);
+  if (G_LIKELY (rec_mutex->p != NULL))
+    g_rec_mutex_impl_free (rec_mutex->p);
 }
 
 /**
@@ -512,7 +515,8 @@ g_rw_lock_init (GRWLock *rw_lock)
 void
 g_rw_lock_clear (GRWLock *rw_lock)
 {
-  g_rw_lock_impl_free (rw_lock->p);
+  if (G_LIKELY (rw_lock->p != NULL))
+    g_rw_lock_impl_free (rw_lock->p);
 }
 
 /**
@@ -716,7 +720,8 @@ g_cond_init (GCond *cond)
 void
 g_cond_clear (GCond *cond)
 {
-  g_cond_impl_free (cond->p);
+  if (G_LIKELY (cond->p != NULL))
+    g_cond_impl_free (cond->p);
 }
 
 /**
@@ -939,6 +944,9 @@ g_cond_wait_until (GCond  *cond,
  * Since: 2.32
  **/
 
+static GPrivate **g_privates;
+static gint g_privates_len;
+
 static pthread_key_t *
 g_private_impl_new (GDestroyNotify notify)
 {
@@ -978,6 +986,12 @@ g_private_get_impl (GPrivate *key)
         {
           g_private_impl_free (impl);
           impl = key->p;
+        }
+
+      if G_UNLIKELY (g_mem_do_cleanup)
+        {
+          g_privates = realloc (g_privates, sizeof (GPrivate *) * (g_privates_len + 1));
+          g_privates[g_privates_len++] = key;
         }
     }
 
@@ -1176,6 +1190,20 @@ g_system_thread_set_name (const gchar *name)
   prctl (PR_SET_NAME, name, 0, 0, 0, 0);
 #endif
 #endif
+}
+
+void
+g_system_thread_cleanup (void)
+{
+  gint i;
+
+  if (g_privates)
+    {
+      for (i = 0; i < g_privates_len; i++)
+        g_private_impl_free (g_privates[i]->p);
+      free (g_privates);
+      g_privates = NULL;
+    }
 }
 
 /* {{{1 Epilogue */

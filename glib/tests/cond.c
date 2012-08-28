@@ -234,10 +234,20 @@ test_cond2 (void)
 int
 main (int argc, char *argv[])
 {
+  int ret;
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/thread/cond1", test_cond1);
   g_test_add_func ("/thread/cond2", test_cond2);
 
-  return g_test_run ();
+  ret = g_test_run ();
+
+  if (g_mem_do_cleanup)
+    {
+      g_mutex_clear (&mutex);
+      g_cond_clear (&cond);
+    }
+
+  return ret;
 }

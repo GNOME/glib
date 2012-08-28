@@ -1014,6 +1014,9 @@ void
 g_threading_cleanup (void)
 {
   g_private_replace (&g_thread_specific_private, NULL);
+  g_mutex_clear (&g_once_mutex);
+  g_cond_clear (&g_once_cond);
+  g_mutex_clear (&G_LOCK_NAME (g_thread_new));
 }
 
 /* Epilogue {{{1 */

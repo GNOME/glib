@@ -1545,3 +1545,9 @@ g_printf_string_upper_bound (const gchar *format,
   gchar c;
   return _g_vsnprintf (&c, 1, format, args) + 1;
 }
+
+void
+g_messages_cleanup (void)
+{
+  g_mutex_clear (&g_messages_lock);
+}

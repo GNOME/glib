@@ -157,6 +157,7 @@ void
 g_rand_cleanup (void)
 {
   g_clear_pointer (&global_random, g_rand_free);
+  g_mutex_clear (&G_LOCK_NAME (global_random));
 }
 
 struct _GRand
