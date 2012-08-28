@@ -518,11 +518,7 @@
  *
  * The error domain of the GLib thread subsystem.
  **/
-GQuark
-g_thread_error_quark (void)
-{
-  return g_quark_from_static_string ("g_thread_error");
-}
+G_DEFINE_QUARK ("g_thread_error", g_thread_error)
 
 /* Local Data {{{1 -------------------------------------------------------- */
 

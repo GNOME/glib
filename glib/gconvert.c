@@ -194,11 +194,7 @@
  */
 #define NUL_TERMINATOR_LENGTH 4
 
-GQuark 
-g_convert_error_quark (void)
-{
-  return g_quark_from_static_string ("g_convert_error");
-}
+G_DEFINE_QUARK ("g_convert_error", g_convert_error)
 
 static gboolean
 try_conversion (const char *to_codeset,

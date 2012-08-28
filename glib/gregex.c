@@ -1229,16 +1229,7 @@ g_match_info_fetch_all (const GMatchInfo *match_info)
 
 /* GRegex */
 
-GQuark
-g_regex_error_quark (void)
-{
-  static GQuark error_quark = 0;
-
-  if (error_quark == 0)
-    error_quark = g_quark_from_static_string ("g-regex-error-quark");
-
-  return error_quark;
-}
+G_DEFINE_QUARK ("g-regex-error-quark", g_regex_error)
 
 /**
  * g_regex_ref:

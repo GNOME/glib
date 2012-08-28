@@ -70,16 +70,7 @@
  *
  * Error codes returned by parsing text-format GVariants.
  **/
-GQuark
-g_variant_parser_get_error_quark (void)
-{
-  static GQuark the_quark;
-
-  if (the_quark == 0)
-    the_quark = g_quark_from_static_string ("g-variant-parse-error-quark");
-
-  return the_quark;
-}
+G_DEFINE_QUARK ("g-variant-parse-error-quark", g_variant_parser_get_error)
 
 typedef struct
 {

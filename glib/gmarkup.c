@@ -82,11 +82,7 @@
  * </itemizedlist>
  */
 
-GQuark
-g_markup_error_quark (void)
-{
-  return g_quark_from_static_string ("g-markup-error-quark");
-}
+G_DEFINE_QUARK ("g-markup-error-quark", g_markup_error)
 
 typedef enum
 {

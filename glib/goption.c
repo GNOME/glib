@@ -272,12 +272,7 @@ _g_utf8_strwidth (const gchar *p)
   return len;
 }
 
-
-GQuark
-g_option_error_quark (void)
-{
-  return g_quark_from_static_string ("g-option-context-error-quark");
-}
+G_DEFINE_QUARK ("g-option-context-error-quark", g_option_error)
 
 /**
  * g_option_context_new:
