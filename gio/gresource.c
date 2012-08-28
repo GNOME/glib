@@ -138,11 +138,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Since: 2.32
  */
-GQuark
-g_resource_error_quark (void)
-{
-  return g_quark_from_static_string ("g-resource-error-quark");
-}
+G_DEFINE_QUARK ("g-resource-error-quark", g_resource_error)
 
 /**
  * g_resource_ref:

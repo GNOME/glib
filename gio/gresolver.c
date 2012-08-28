@@ -874,12 +874,7 @@ g_resolver_lookup_records_finish (GResolver     *resolver,
  *
  * Since: 2.22
  */
-GQuark
-g_resolver_error_quark (void)
-{
-  return g_quark_from_static_string ("g-resolver-error-quark");
-}
-
+G_DEFINE_QUARK ("g-resolver-error-quark", g_resolver_error)
 
 static GResolverError
 g_resolver_error_from_addrinfo_error (gint err)

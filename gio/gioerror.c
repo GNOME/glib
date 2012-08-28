@@ -35,16 +35,12 @@
 
 /**
  * g_io_error_quark:
- * 
+ *
  * Gets the GIO Error Quark.
  *
  * Return value: a #GQuark.
  **/
-GQuark
-g_io_error_quark (void)
-{
-  return g_quark_from_static_string ("g-io-error-quark");
-}
+G_DEFINE_QUARK ("g-io-error-quark", g_io_error)
 
 /**
  * g_io_error_from_errno:

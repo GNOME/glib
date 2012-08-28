@@ -831,12 +831,7 @@ g_tls_connection_handshake_finish (GTlsConnection  *conn,
  *
  * Since: 2.28
  */
-GQuark
-g_tls_error_quark (void)
-{
-  return g_quark_from_static_string ("g-tls-error-quark");
-}
-
+G_DEFINE_QUARK ("g-tls-error-quark", g_tls_error)
 
 /**
  * g_tls_connection_emit_accept_certificate:
