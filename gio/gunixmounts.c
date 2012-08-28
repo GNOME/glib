@@ -1901,7 +1901,7 @@ g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)
 }
 
 static const char *
-type_to_icon (GUnixMountType type, gboolean is_mount_point)
+type_to_icon (GUnixMountType type, gboolean is_mount_point, gboolean use_symbolic)
 {
   const char *icon_name;
   
@@ -1909,55 +1909,51 @@ type_to_icon (GUnixMountType type, gboolean is_mount_point)
     {
     case G_UNIX_MOUNT_TYPE_HD:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "drive-harddisk";
+        icon_name = use_symbolic ? "drive-harddisk-symbolic" : "drive-harddisk";
       break;
     case G_UNIX_MOUNT_TYPE_FLOPPY:
     case G_UNIX_MOUNT_TYPE_ZIP:
     case G_UNIX_MOUNT_TYPE_JAZ:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "media-floppy";
+        icon_name = use_symbolic ? "media-removable-symbolic" : "media-floppy";
       break;
     case G_UNIX_MOUNT_TYPE_CDROM:
       if (is_mount_point)
-        icon_name = "drive-optical";
+        icon_name = use_symbolic ? "drive-optical-symbolic" : "drive-optical";
       else
-        icon_name = "media-optical";
+        icon_name = use_symbolic ? "media-optical-symbolic" : "media-optical";
       break;
     case G_UNIX_MOUNT_TYPE_NFS:
-      /* TODO: Would like a better icon here... */
-      if (is_mount_point)
-        icon_name = "drive-removable-media";
-      else
-        icon_name = "drive-harddisk";
+        icon_name = use_symbolic ? "folder-remote-symbolic" : "folder-remote";
       break;
     case G_UNIX_MOUNT_TYPE_MEMSTICK:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "media-flash";
+        icon_name = use_symbolic ? "media-removable-symbolic" : "media-flash";
       break;
     case G_UNIX_MOUNT_TYPE_CAMERA:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "camera-photo";
+        icon_name = use_symbolic ? "camera-photo-symbolic" : "camera-photo";
       break;
     case G_UNIX_MOUNT_TYPE_IPOD:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "multimedia-player";
+        icon_name = use_symbolic ? "multimedia-player-symbolic" : "multimedia-player";
       break;
     case G_UNIX_MOUNT_TYPE_UNKNOWN:
     default:
       if (is_mount_point)
-        icon_name = "drive-removable-media";
+        icon_name = use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
       else
-        icon_name = "drive-harddisk";
+        icon_name = use_symbolic ? "drive-harddisk-symbolic" : "drive-harddisk";
       break;
     }
 
@@ -1998,7 +1994,23 @@ g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
 GIcon *
 g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
 {
-  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE));
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE, FALSE));
+}
+
+/**
+ * g_unix_mount_guess_symbolic_icon:
+ * @mount_entry: a #GUnixMountEntry
+ * 
+ * Guesses the symbolic icon of a Unix mount. 
+ *
+ * Returns: (transfer full): a #GIcon
+ *
+ * Since: 2.34
+ */
+GIcon *
+g_unix_mount_guess_symbolic_icon (GUnixMountEntry *mount_entry)
+{
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_guess_type (mount_entry), FALSE, TRUE));
 }
 
 /**
@@ -2035,7 +2047,22 @@ g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
 GIcon *
 g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
 {
-  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE));
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE, FALSE));
+}
+
+/**
+ * g_unix_mount_point_guess_symbolic_icon:
+ *
+ * Guesses the symbolic icon of a Unix mount point.
+ *
+ * Returns: (transfer full): a #GIcon
+ *
+ * Since: 2.34
+ */
+GIcon *
+g_unix_mount_point_guess_symbolic_icon (GUnixMountPoint *mount_point)
+{
+  return g_themed_icon_new_with_default_fallbacks (type_to_icon (g_unix_mount_point_guess_type (mount_point), TRUE, TRUE));
 }
 
 /**

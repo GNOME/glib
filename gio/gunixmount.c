@@ -55,6 +55,7 @@ struct _GUnixMount {
 
   char *name;
   GIcon *icon;
+  GIcon *symbolic_icon;
   char *device_path;
   char *mount_path;
 
@@ -84,6 +85,7 @@ g_unix_mount_finalize (GObject *object)
     
   /* TODO: g_warn_if_fail (volume->volume == NULL); */
   g_object_unref (mount->icon);
+  g_object_unref (mount->symbolic_icon);
   g_free (mount->name);
   g_free (mount->device_path);
   g_free (mount->mount_path);
@@ -123,6 +125,7 @@ _g_unix_mount_new (GVolumeMonitor  *volume_monitor,
 
   mount->name = g_unix_mount_guess_name (mount_entry);
   mount->icon = g_unix_mount_guess_icon (mount_entry);
+  mount->symbolic_icon = g_unix_mount_guess_symbolic_icon (mount_entry);
 
   /* need to do this last */
   mount->volume = volume;
@@ -173,6 +176,14 @@ g_unix_mount_get_icon (GMount *mount)
   GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
 
   return g_object_ref (unix_mount->icon);
+}
+
+static GIcon *
+g_unix_mount_get_symbolic_icon (GMount *mount)
+{
+  GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
+
+  return g_object_ref (unix_mount->symbolic_icon);
 }
 
 static char *
@@ -473,6 +484,7 @@ g_unix_mount_mount_iface_init (GMountIface *iface)
   iface->get_root = g_unix_mount_get_root;
   iface->get_name = g_unix_mount_get_name;
   iface->get_icon = g_unix_mount_get_icon;
+  iface->get_symbolic_icon = g_unix_mount_get_symbolic_icon;
   iface->get_uuid = g_unix_mount_get_uuid;
   iface->get_drive = g_unix_mount_get_drive;
   iface->get_volume = g_unix_mount_get_volume;

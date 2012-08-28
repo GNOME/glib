@@ -24,6 +24,7 @@
 #include "config.h"
 #include "gmount.h"
 #include "gvolume.h"
+#include "gthemedicon.h"
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
 #include "gioerror.h"
@@ -154,6 +155,37 @@ g_volume_get_icon (GVolume *volume)
   iface = G_VOLUME_GET_IFACE (volume);
 
   return (* iface->get_icon) (volume);
+}
+
+/**
+ * g_volume_get_symbolic_icon:
+ * @volume: a #GVolume.
+ * 
+ * Gets the symbolic icon for @volume.
+ * 
+ * Returns: (transfer full): a #GIcon.
+ *     The returned object should be unreffed with g_object_unref()
+ *     when no longer needed.
+ *
+ * Since: 2.34
+ **/
+GIcon *
+g_volume_get_symbolic_icon (GVolume *volume)
+{
+  GVolumeIface *iface;
+  GIcon *ret;
+
+  g_return_val_if_fail (G_IS_VOLUME (volume), NULL);
+
+  iface = G_VOLUME_GET_IFACE (volume);
+
+  if (iface->get_symbolic_icon != NULL)
+    ret = iface->get_symbolic_icon (volume);
+  else
+    ret = g_themed_icon_new_with_default_fallbacks ("folder-remote-symbolic");
+
+  return ret;
+
 }
 
 /**

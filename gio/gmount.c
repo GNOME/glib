@@ -29,6 +29,7 @@
 
 #include "gmount.h"
 #include "gmountprivate.h"
+#include "gthemedicon.h"
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
 #include "gioerror.h"
@@ -211,6 +212,37 @@ g_mount_get_icon (GMount *mount)
   iface = G_MOUNT_GET_IFACE (mount);
 
   return (* iface->get_icon) (mount);
+}
+
+
+/**
+ * g_mount_get_symbolic_icon:
+ * @mount: a #GMount.
+ * 
+ * Gets the symbolic icon for @mount.
+ * 
+ * Returns: (transfer full): a #GIcon.
+ *      The returned object should be unreffed with 
+ *      g_object_unref() when no longer needed.
+ *
+ * Since: 2.34
+ **/
+GIcon *
+g_mount_get_symbolic_icon (GMount *mount)
+{
+  GMountIface *iface;
+  GIcon *ret;
+
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+
+  iface = G_MOUNT_GET_IFACE (mount);
+
+  if (iface->get_symbolic_icon != NULL)
+    ret = iface->get_symbolic_icon (mount);
+  else
+    ret = g_themed_icon_new_with_default_fallbacks ("folder-remote-symbolic");
+
+  return ret;
 }
 
 /**

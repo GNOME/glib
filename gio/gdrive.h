@@ -72,6 +72,7 @@ G_BEGIN_DECLS
  * @eject_with_operation: Starts ejecting a #GDrive using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  * @get_sort_key: Gets a key used for sorting #GDrive instances or %NULL if no such key exists. Since 2.32.
+ * @get_symbolic_icon: Returns a symbolic #GIcon for the given #GDrive. Since 2.34.
  *
  * Interface for creating #GDrive implementations.
  */
@@ -154,12 +155,15 @@ struct _GDriveIface
                                              GError             **error);
 
   const gchar * (* get_sort_key)        (GDrive              *drive);
+  GIcon *       (* get_symbolic_icon)   (GDrive              *drive);
+
 };
 
 GType    g_drive_get_type                 (void) G_GNUC_CONST;
 
 char *   g_drive_get_name                 (GDrive               *drive);
 GIcon *  g_drive_get_icon                 (GDrive               *drive);
+GIcon *  g_drive_get_symbolic_icon        (GDrive               *drive);
 gboolean g_drive_has_volumes              (GDrive               *drive);
 GList *  g_drive_get_volumes              (GDrive               *drive);
 gboolean g_drive_is_media_removable       (GDrive               *drive);

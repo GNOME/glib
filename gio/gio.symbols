@@ -219,6 +219,7 @@ g_data_output_stream_put_string
 g_drive_get_type
 g_drive_get_name
 g_drive_get_icon
+g_drive_get_symbolic_icon
 g_drive_has_volumes
 g_drive_get_volumes
 g_drive_is_media_removable
@@ -654,6 +655,7 @@ g_unix_mount_guess_can_eject
 g_unix_mount_guess_should_display
 g_unix_mount_guess_name
 g_unix_mount_guess_icon
+g_unix_mount_guess_symbolic_icon
 g_unix_mount_point_compare
 g_unix_mount_point_get_mount_path
 g_unix_mount_point_get_device_path
@@ -665,6 +667,7 @@ g_unix_mount_point_is_loopback
 g_unix_mount_point_guess_can_eject
 g_unix_mount_point_guess_name
 g_unix_mount_point_guess_icon
+g_unix_mount_point_guess_symbolic_icon
 g_unix_mount_points_get
 g_unix_mounts_get
 g_unix_mount_at
@@ -707,6 +710,7 @@ g_mount_get_type
 g_mount_get_root
 g_mount_get_name
 g_mount_get_icon
+g_mount_get_symbolic_icon
 g_mount_get_uuid
 g_mount_get_volume
 g_mount_get_drive
@@ -733,6 +737,7 @@ g_mount_get_sort_key
 g_volume_get_type
 g_volume_get_name
 g_volume_get_icon
+g_volume_get_symbolic_icon
 g_volume_get_uuid
 g_volume_get_drive
 g_volume_get_mount

@@ -120,6 +120,7 @@ G_BEGIN_DECLS
  * @eject_with_operation: Starts ejecting a #GVolume using a #GMountOperation. Since 2.22.
  * @eject_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  * @get_sort_key: Gets a key used for sorting #GVolume instance or %NULL if no such key exists. Since 2.32.
+ * @get_symbolic_icon: Gets a symbolic #GIcon for the #GVolume. Since 2.34.
  *
  * Interface for implementing operations for mountable volumes.
  **/
@@ -180,12 +181,14 @@ struct _GVolumeIface
                                              GError             **error);
 
   const gchar * (* get_sort_key)        (GVolume             *volume);
+  GIcon       * (* get_symbolic_icon)   (GVolume             *volume);
 };
 
 GType    g_volume_get_type              (void) G_GNUC_CONST;
 
 char *   g_volume_get_name              (GVolume              *volume);
 GIcon *  g_volume_get_icon              (GVolume              *volume);
+GIcon *  g_volume_get_symbolic_icon     (GVolume              *volume);
 char *   g_volume_get_uuid              (GVolume              *volume);
 GDrive * g_volume_get_drive             (GVolume              *volume);
 GMount * g_volume_get_mount             (GVolume              *volume);

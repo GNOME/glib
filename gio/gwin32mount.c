@@ -52,6 +52,7 @@ struct _GWin32Mount {
   /* why does all this stuff need to be duplicated? It is in volume already! */
   char *name;
   GIcon *icon;
+  GIcon *symbolic_icon;
   char *mount_path;
 
   gboolean can_eject;
@@ -82,6 +83,8 @@ g_win32_mount_finalize (GObject *object)
 
   if (mount->icon != NULL)
     g_object_unref (mount->icon);
+  if (mount->symbolic_icon != NULL)
+    g_object_unref (mount->symbolic_icon);
 
   g_free (mount->name);
   g_free (mount->mount_path);
@@ -192,15 +195,15 @@ g_win32_mount_get_root (GMount *mount)
 }
 
 const char *
-_win32_drive_type_to_icon (int type)
+_win32_drive_type_to_icon (int type, gboolean use_symbolic)
 {
   switch (type)
   {
-  case DRIVE_REMOVABLE : return "gtk-floppy";
-  case DRIVE_FIXED : return "gtk-harddisk";
-  case DRIVE_REMOTE : return "gtk-network"; 
-  case DRIVE_CDROM : return "gtk-cdrom";
-  default : return "gtk-directory";
+  case DRIVE_REMOVABLE : return use_symbolic ? "drive-removable-media-symbolic" : "drive-removable-media";
+  case DRIVE_FIXED : return use_symbolic ? "drive-harddisk-symbolic" : "drive-harddisk";
+  case DRIVE_REMOTE : return use_symbolic ? "folder-remote-symbolic" : "folder-remote";
+  case DRIVE_CDROM : return use_symbolic ? "drive-optical-symbolic" : "drive-optical";
+  default : return use_symbolic ? "folder-symbolic" : "folder";
   }
 }
 
@@ -227,12 +230,27 @@ g_win32_mount_get_icon (GMount *mount)
 	}
       else
         {
-          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (
-	                        _win32_drive_type_to_icon (win32_mount->drive_type));
+          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE);
 	}
     }
 
   return g_object_ref (win32_mount->icon);
+}
+
+static GIcon *
+g_win32_mount_get_symbolic_icon (GMount *mount)
+{
+  GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
+
+  g_return_val_if_fail (win32_mount->mount_path != NULL, NULL);
+
+  /* lazy creation */
+  if (!win32_mount->symbolic_icon)
+    {
+      win32_mount->symbolic_icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, TRUE);
+    }
+
+  return g_object_ref (win32_mount->symbolic_icon);
 }
 
 static char *
@@ -336,6 +354,7 @@ g_win32_mount_mount_iface_init (GMountIface *iface)
   iface->get_root = g_win32_mount_get_root;
   iface->get_name = g_win32_mount_get_name;
   iface->get_icon = g_win32_mount_get_icon;
+  iface->get_symbolic_icon = g_win32_mount_get_symbolic_icon;
   iface->get_uuid = g_win32_mount_get_uuid;
   iface->get_drive = g_win32_mount_get_drive;
   iface->get_volume = g_win32_mount_get_volume;

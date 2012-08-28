@@ -1047,6 +1047,7 @@ GMountIface
 g_mount_get_name
 g_mount_get_uuid
 g_mount_get_icon
+g_mount_get_symbolic_icon
 g_mount_get_drive
 g_mount_get_root
 g_mount_get_volume
@@ -1089,6 +1090,7 @@ GVolumeIface
 g_volume_get_name
 g_volume_get_uuid
 g_volume_get_icon
+g_volume_get_symbolic_icon
 g_volume_get_drive
 g_volume_get_mount
 g_volume_can_mount
@@ -1128,6 +1130,7 @@ GDriveStartFlags
 GDriveStartStopType
 g_drive_get_name
 g_drive_get_icon
+g_drive_get_symbolic_icon
 g_drive_has_volumes
 g_drive_get_volumes
 g_drive_can_eject
@@ -1426,6 +1429,7 @@ g_unix_mount_get_fs_type
 g_unix_mount_is_readonly
 g_unix_mount_is_system_internal
 g_unix_mount_guess_icon
+g_unix_mount_guess_symbolic_icon
 g_unix_mount_guess_name
 g_unix_mount_guess_can_eject
 g_unix_mount_guess_should_display
@@ -1439,6 +1443,7 @@ g_unix_mount_point_is_readonly
 g_unix_mount_point_is_user_mountable
 g_unix_mount_point_is_loopback
 g_unix_mount_point_guess_icon
+g_unix_mount_point_guess_symbolic_icon
 g_unix_mount_point_guess_name
 g_unix_mount_point_guess_can_eject
 g_unix_mount_points_get
