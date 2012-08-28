@@ -83,7 +83,7 @@
  * </itemizedlist>
  */
 
-G_DEFINE_QUARK ("g-markup-error-quark", g_markup_error)
+G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)
 
 typedef enum
 {

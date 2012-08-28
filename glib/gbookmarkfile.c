@@ -1585,7 +1585,7 @@ timestamp_from_iso8601 (const gchar *iso_date)
   return (time_t) stamp.tv_sec;
 }
 
-G_DEFINE_QUARK ("g-bookmark-file-error-quark", g_bookmark_file_error)
+G_DEFINE_QUARK (g-bookmark-file-error-quark, g_bookmark_file_error)
 
 /********************
  *    Public API    *

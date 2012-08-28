@@ -2581,4 +2581,4 @@ g_io_channel_write_unichar (GIOChannel  *channel,
  * Error codes returned by #GIOChannel operations.
  **/
 
-G_DEFINE_QUARK ("g-io-channel-error-quark", g_io_channel_error)
+G_DEFINE_QUARK (g-io-channel-error-quark, g_io_channel_error)

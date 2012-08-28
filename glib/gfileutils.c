@@ -459,7 +459,7 @@ g_file_test (const gchar *filename,
 #endif
 }
 
-G_DEFINE_QUARK ("g-file-error-quark", g_file_error)
+G_DEFINE_QUARK (g-file-error-quark, g_file_error)
 
 /**
  * g_file_error_from_errno:

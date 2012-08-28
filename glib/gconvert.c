@@ -194,7 +194,7 @@
  */
 #define NUL_TERMINATOR_LENGTH 4
 
-G_DEFINE_QUARK ("g_convert_error", g_convert_error)
+G_DEFINE_QUARK (g_convert_error, g_convert_error)
 
 static gboolean
 try_conversion (const char *to_codeset,

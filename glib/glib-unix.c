@@ -43,7 +43,7 @@
  * "glib-unix.h" header.
  */
 
-G_DEFINE_QUARK ("g-unix-error-quark", g_unix_error)
+G_DEFINE_QUARK (g-unix-error-quark, g_unix_error)
 
 static gboolean
 g_unix_set_error_from_errno (GError **error,

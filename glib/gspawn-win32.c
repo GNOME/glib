@@ -206,8 +206,8 @@ protect_argv (gchar  **argv,
   return argc;
 }
 
-G_DEFINE_QUARK ("g-exec-error-quark", g_spawn_error)
-G_DEFINE_QUARK ("g-spawn-exit-error-quark", g_spawn_exit_error)
+G_DEFINE_QUARK (g-exec-error-quark, g_spawn_error)
+G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
 
 gboolean
 g_spawn_async_utf8 (const gchar          *working_directory,

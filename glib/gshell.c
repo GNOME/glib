@@ -55,7 +55,7 @@
  *
  * Error codes returned by shell functions.
  **/
-G_DEFINE_QUARK ("g-shell-error-quark", g_shell_error)
+G_DEFINE_QUARK (g-shell-error-quark, g_shell_error)
 
 /* Single quotes preserve the literal string exactly. escape
  * sequences are not allowed; not even \' - if you want a '

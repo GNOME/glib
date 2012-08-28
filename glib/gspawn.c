@@ -89,8 +89,8 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gint                 *standard_error,
                                       GError              **error);
 
-G_DEFINE_QUARK ("g-exec-error-quark", g_spawn_error)
-G_DEFINE_QUARK ("g-spawn-exit-error-quark", g_spawn_exit_error)
+G_DEFINE_QUARK (g-exec-error-quark, g_spawn_error)
+G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
 
 /**
  * g_spawn_async:

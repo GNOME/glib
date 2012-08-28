@@ -1229,7 +1229,7 @@ g_match_info_fetch_all (const GMatchInfo *match_info)
 
 /* GRegex */
 
-G_DEFINE_QUARK ("g-regex-error-quark", g_regex_error)
+G_DEFINE_QUARK (g-regex-error-quark, g_regex_error)
 
 /**
  * g_regex_ref:

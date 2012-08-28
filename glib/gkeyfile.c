@@ -554,7 +554,7 @@ static void                  g_key_file_parse_data             (GKeyFile        
 static void                  g_key_file_flush_parse_buffer     (GKeyFile               *key_file,
 								GError                **error);
 
-G_DEFINE_QUARK ("g-key-file-error-quark", g_key_file_error)
+G_DEFINE_QUARK (g-key-file-error-quark, g_key_file_error)
 
 static void
 g_key_file_init (GKeyFile *key_file)
