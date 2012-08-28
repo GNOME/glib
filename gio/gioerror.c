@@ -40,7 +40,7 @@
  *
  * Return value: a #GQuark.
  **/
-G_DEFINE_QUARK ("g-io-error-quark", g_io_error)
+G_DEFINE_QUARK (g-io-error-quark, g_io_error)
 
 /**
  * g_io_error_from_errno:
