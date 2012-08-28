@@ -786,44 +786,217 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
  * g_datalist_id_get_data:
  * @datalist: a datalist.
  * @key_id: the #GQuark identifying a data element.
- * @Returns: the data element, or %NULL if it is not found.
  *
  * Retrieves the data element corresponding to @key_id.
- **/
+ *
+ * Returns: the data element, or %NULL if it is not found.
+ */
 gpointer
-g_datalist_id_get_data (GData	 **datalist,
-			GQuark     key_id)
+g_datalist_id_get_data (GData  **datalist,
+			GQuark   key_id)
 {
-  gpointer res = NULL;
+  return g_datalist_id_dup_data (datalist, key_id, NULL, NULL);
+}
+
+/**
+ * GDuplicateFunc:
+ * @data: the data to duplicate
+ *
+ * The type of functions that are used to 'duplicate' an object.
+ * What this means depends on the context, it could just be
+ * incrementing the reference count, if @data is a ref-counted
+ * object.
+ *
+ * Returns: a duplicate of data
+ */
+
+/**
+ * g_datalist_id_dup_data:
+ * @datalist: location of a datalist
+ * @key_id: the #GQuark identifying a data element
+ * @dup_func: (allow-none): function to duplicate the old value
+ * @user_data: (allow-none): passed as user_data to @dup_func
+ *
+ * This is a variant of g_datalist_id_get_data() which
+ * returns a 'duplicate' of the value. @dup_func defines the
+ * meaning of 'duplicate' in this context, it could e.g.
+ * take a reference on a ref-counted object.
+ *
+ * If the @key_id is not set in the datalist then @dup_func
+ * will be called with a %NULL argument.
+ *
+ * Note that @dup_func is called while the datalist is locked, so it
+ * is not allowed to read or modify the datalist.
+ *
+ * This function can be useful to avoid races when multiple
+ * threads are using the same datalist and the same key.
+ *
+ * Returns: the result of calling @dup_func on the value
+ *     associated with @key_id in @datalist, or %NULL if not set.
+ *     If @dup_func is %NULL, the value is returned unmodified.
+ *
+ * Since: 2.34
+ */
+gpointer
+g_datalist_id_dup_data (GData          **datalist,
+                        GQuark           key_id,
+                        GDuplicateFunc   dup_func,
+                        gpointer         user_data)
+{
+  gpointer val = NULL;
+  gpointer retval = NULL;
+  GData *d;
+  GDataElt *data, *data_end;
 
   g_return_val_if_fail (datalist != NULL, NULL);
-  if (key_id)
+  g_return_val_if_fail (key_id != 0, NULL);
+
+  g_datalist_lock (datalist);
+
+  d = G_DATALIST_GET_POINTER (datalist);
+  if (d)
     {
-      GData *d;
-      GDataElt *data, *data_end;
-
-      g_datalist_lock (datalist);
-
-      d = G_DATALIST_GET_POINTER (datalist);
-      if (d)
-	{
-	  data = d->data;
-	  data_end = data + d->len;
-	  while (data < data_end)
-	    {
-	      if (data->key == key_id)
-		{
-		  res = data->data;
-		  break;
-		}
-	      data++;
-	    }
-	}
-
-      g_datalist_unlock (datalist);
+      data = d->data;
+      data_end = data + d->len - 1;
+      while (data <= data_end)
+        {
+          if (data->key == key_id)
+            {
+              val = data->data;
+              break;
+            }
+          data++;
+        }
     }
 
-  return res;
+  if (dup_func)
+    retval = dup_func (val, user_data);
+  else
+    retval = val;
+
+  g_datalist_unlock (datalist);
+
+  return retval;
+}
+
+/**
+ * g_datalist_id_replace_data:
+ * @datalist: location of a datalist
+ * @key_id: the #GQuark identifying a data element
+ * @oldval: (allow-none): the old value to compare against
+ * @newval: (allow-none): the new value to replace it with
+ * @destroy: (allow-none): destroy notify for the new value
+ * @old_destroy: (allow-none): destroy notify for the existing value
+ *
+ * Compares the member that is associated with @key_id in
+ * @datalist to @oldval, and if they are the same, replace
+ * @oldval with @newval.
+ *
+ * This is like a typical atomic compare-and-exchange
+ * operation, for a member of @datalist.
+ *
+ * If the previous value was replaced then ownership of the
+ * old value (@oldval) is passed to the caller, including
+ * the registred destroy notify for it (passed out in @old_destroy).
+ * Its up to the caller to free this as he wishes, which may
+ * or may not include using @old_destroy as sometimes replacement
+ * should not destroy the object in the normal way.
+ *
+ * Return: %TRUE if the existing value for @key_id was replaced
+ *  by @newval, %FALSE otherwise.
+ *
+ * Since: 2.34
+ */
+gboolean
+g_datalist_id_replace_data (GData          **datalist,
+                            GQuark           key_id,
+                            gpointer         oldval,
+                            gpointer         newval,
+                            GDestroyNotify   destroy,
+                            GDestroyNotify  *old_destroy)
+{
+  gpointer val = NULL;
+  GData *d;
+  GDataElt *data, *data_end;
+
+  g_return_val_if_fail (datalist != NULL, FALSE);
+  g_return_val_if_fail (key_id != 0, FALSE);
+
+  if (old_destroy)
+    *old_destroy = NULL;
+
+  g_datalist_lock (datalist);
+
+  d = G_DATALIST_GET_POINTER (datalist);
+  if (d)
+    {
+      data = d->data;
+      data_end = data + d->len - 1;
+      while (data <= data_end)
+        {
+          if (data->key == key_id)
+            {
+              val = data->data;
+              if (val == oldval)
+                {
+                  if (old_destroy)
+                    *old_destroy = data->destroy;
+                  if (newval != NULL)
+                    {
+                      data->data = newval;
+                      data->destroy = destroy;
+                    }
+                  else
+                   {
+                     if (data != data_end)
+                       *data = *data_end;
+                     d->len--;
+
+                     /* We don't bother to shrink, but if all data are now gone
+                      * we at least free the memory
+                      */
+                     if (d->len == 0)
+                       {
+                         G_DATALIST_SET_POINTER (datalist, NULL);
+                         g_free (d);
+                       }
+                   }
+                }
+              break;
+            }
+          data++;
+        }
+    }
+
+  if (val == NULL && oldval == NULL && newval != NULL)
+    {
+      GData *old_d;
+
+      /* insert newval */
+      old_d = d;
+      if (d == NULL)
+	{
+          d = g_malloc (sizeof (GData));
+          d->len = 0;
+          d->alloc = 1;
+        }
+      else if (d->len == d->alloc)
+        {
+          d->alloc = d->alloc * 2;
+          d = g_realloc (d, sizeof (GData) + (d->alloc - 1) * sizeof (GDataElt));
+        }
+      if (old_d != d)
+        G_DATALIST_SET_POINTER (datalist, d);
+
+      d->data[d->len].key = key_id;
+      d->data[d->len].data = newval;
+      d->data[d->len].destroy = destroy;
+      d->len++;
+    }
+
+  g_datalist_unlock (datalist);
+
+  return val == oldval;
 }
 
 /**
