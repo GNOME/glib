@@ -44,6 +44,19 @@ GQuark                g_quark_from_static_string (const gchar *string);
 GQuark                g_quark_from_string        (const gchar *string);
 const gchar *         g_quark_to_string          (GQuark       quark) G_GNUC_CONST;
 
+#define G_DEFINE_QUARK(QN, q_n)                                         \
+GQuark                                                                  \
+q_n##_quark (void)                                                      \
+{                                                                       \
+  static volatile gsize g_define_quark__volatile = 0;                   \
+  if (g_once_init_enter (&g_define_quark__volatile))                    \
+    {                                                                   \
+      GQuark g_define_quark = g_quark_from_string (#QN);                \
+      g_once_init_leave (&g_define_quark__volatile, g_define_quark);    \
+    }                                                                   \
+  return g_define_quark__volatile;                                      \
+}
+
 const gchar *         g_intern_string            (const gchar *string);
 const gchar *         g_intern_static_string     (const gchar *string);
 

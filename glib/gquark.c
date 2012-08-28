@@ -93,6 +93,18 @@ static gint           quark_block_offset = 0;
  **/
 
 /**
+ * G_DEFINE_QUARK:
+ * @QN: the string to return a #GQuark for
+ * @q_n: prefix for the function name
+ *
+ * A convenience macro which defines a function returning the
+ * #GQuark for the string @QN. The function will be named
+ * @q_n<!-- -->_quark().
+ *
+ * Since: 2.34
+ */
+
+/**
  * g_quark_try_string:
  * @string: (allow-none): a string.
  * @Returns: the #GQuark associated with the string, or 0 if @string is

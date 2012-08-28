@@ -2538,6 +2538,7 @@ g_node_destroy
 <TITLE>Quarks</TITLE>
 <FILE>quarks</FILE>
 GQuark
+G_DEFINE_QUARK
 g_quark_from_string
 g_quark_from_static_string
 g_quark_to_string
