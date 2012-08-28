@@ -168,6 +168,7 @@ libglib_2_0_la_SOURCES = 	\
 	gpoll.c			\
 	gprimes.c		\
 	gqsort.c		\
+	gquark.c		\
 	gqueue.c		\
 	grand.c			\
 	gregex.c		\
