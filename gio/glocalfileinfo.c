@@ -1505,6 +1505,40 @@ get_icon_name (const char *path,
   return name;
 }
 
+static GIcon *
+get_icon (const char *path,
+          const char *content_type,
+          gboolean    is_folder,
+          gboolean    use_symbolic)
+{
+  GIcon *icon = NULL;
+  const char *icon_name;
+  gboolean with_fallbacks;
+
+  icon_name = get_icon_name (path, use_symbolic, &with_fallbacks);
+  if (icon_name != NULL)
+    {
+      if (with_fallbacks)
+        icon = g_themed_icon_new_with_default_fallbacks (icon_name);
+      else
+        icon = g_themed_icon_new (icon_name);
+    }
+  else
+    {
+      if (use_symbolic)
+        icon = g_content_type_get_symbolic_icon (content_type);
+      else
+        icon = g_content_type_get_icon (content_type);
+
+      if (G_IS_THEMED_ICON (icon) && is_folder)
+        {
+          g_themed_icon_append_name (G_THEMED_ICON (icon), use_symbolic ? "folder-symbolic" : "folder");
+        }
+    }
+
+  return icon;
+}
+
 GFileInfo *
 _g_local_file_info_get (const char             *basename,
 			const char             *path,
@@ -1666,46 +1700,31 @@ _g_local_file_info_get (const char             *basename,
 
       if (content_type)
 	{
-          gboolean use_symbolics = FALSE;
-
 	  g_file_info_set_content_type (info, content_type);
 
-          use_symbolics = _g_file_attribute_matcher_matches_id (attribute_matcher,
-                                                                G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON);
-	  if (use_symbolics ||
-              _g_file_attribute_matcher_matches_id (attribute_matcher,
-                                                    G_FILE_ATTRIBUTE_ID_STANDARD_ICON))
+	  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                     G_FILE_ATTRIBUTE_ID_STANDARD_ICON)
+               || _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                        G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON))
 	    {
 	      GIcon *icon;
-              gboolean with_fallbacks = TRUE;
-              const char *icon_name = get_icon_name (path, use_symbolics, &with_fallbacks);
 
-              if (icon_name != NULL)
-                {
-                  if (with_fallbacks)
-                    icon = g_themed_icon_new_with_default_fallbacks (icon_name);
-                  else
-                    icon = g_themed_icon_new (icon_name);
-                }
-              else
-                {
-                  icon = g_content_type_get_icon (content_type);
-                  if (G_IS_THEMED_ICON (icon))
-                    {
-                      const char *type_icon = NULL;
-
-                      if (S_ISDIR (statbuf.st_mode)) 
-                        type_icon = "folder";
-                      if (type_icon)
-                        g_themed_icon_append_name (G_THEMED_ICON (icon), type_icon);
-                    }
-                }
-
+              /* non symbolic icon */
+              icon = get_icon (path, content_type, S_ISDIR (statbuf.st_mode), FALSE);
               if (icon != NULL)
                 {
                   g_file_info_set_icon (info, icon);
                   g_object_unref (icon);
                 }
+
+              /* symbolic icon */
+              icon = get_icon (path, content_type, S_ISDIR (statbuf.st_mode), TRUE);
+              if (icon != NULL)
+                {
+                  g_file_info_set_symbolic_icon (info, icon);
+                  g_object_unref (icon);
+                }
+
 	    }
 	  
 	  g_free (content_type);

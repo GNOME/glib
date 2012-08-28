@@ -393,34 +393,43 @@ g_content_type_get_mime_type (const char *type)
   return g_strdup (type);
 }
 
-/**
- * g_content_type_get_icon:
- * @type: a content type string
- *
- * Gets the icon for a content type.
- *
- * Returns: (transfer full): #GIcon corresponding to the content type. Free the returned
- *     object with g_object_unref()
- */
-GIcon *
-g_content_type_get_icon (const gchar *type)
+
+static GIcon *
+g_content_type_get_icon_internal (const gchar *type,
+                                  gboolean     symbolic)
 {
-  char *mimetype_icon, *generic_mimetype_icon, *q;
-  char *xdg_mimetype_icon, *legacy_mimetype_icon;
+  char *mimetype_icon;
+  char *generic_mimetype_icon;
+  char *q;
+  char *xdg_mimetype_icon;
+  char *legacy_mimetype_icon;
   char *xdg_mimetype_generic_icon;
   char *icon_names[5];
   int n = 0;
   const char *p;
   GIcon *themed_icon;
+  const char *file_template;
+  const char *generic_suffix;
 
   g_return_val_if_fail (type != NULL, NULL);
 
+  if (symbolic)
+    {
+      file_template = "%s-symbolic";
+      generic_suffix = "-x-generic-symbolic";
+    }
+  else
+    {
+      file_template = "%s";
+      generic_suffix = "-x-generic";
+    }
+
   G_LOCK (gio_xdgmime);
-  xdg_mimetype_icon = g_strdup (xdg_mime_get_icon (type));
-  xdg_mimetype_generic_icon = g_strdup (xdg_mime_get_generic_icon (type));
+  xdg_mimetype_icon = g_strdup_printf (file_template, xdg_mime_get_icon (type));
+  xdg_mimetype_generic_icon = g_strdup_printf (file_template, xdg_mime_get_generic_icon (type));
   G_UNLOCK (gio_xdgmime);
 
-  mimetype_icon = g_strdup (type);
+  mimetype_icon = g_strdup_printf (file_template, type);
 
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
@@ -432,10 +441,10 @@ g_content_type_get_icon (const gchar *type)
   /* Not all icons have migrated to the new icon theme spec, look for old names too */
   legacy_mimetype_icon = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
 
-  generic_mimetype_icon = g_malloc (p - type + strlen ("-x-generic") + 1);
+  generic_mimetype_icon = g_malloc (p - type + strlen (generic_suffix) + 1);
   memcpy (generic_mimetype_icon, type, p - type);
-  memcpy (generic_mimetype_icon + (p - type), "-x-generic", strlen ("-x-generic"));
-  generic_mimetype_icon[(p - type) + strlen ("-x-generic")] = 0;
+  memcpy (generic_mimetype_icon + (p - type), generic_suffix, strlen (generic_suffix));
+  generic_mimetype_icon[(p - type) + strlen (generic_suffix)] = 0;
 
   if (xdg_mimetype_icon)
     icon_names[n++] = xdg_mimetype_icon;
@@ -457,6 +466,38 @@ g_content_type_get_icon (const gchar *type)
   g_free (generic_mimetype_icon);
 
   return themed_icon;
+}
+
+/**
+ * g_content_type_get_icon:
+ * @type: a content type string
+ *
+ * Gets the icon for a content type.
+ *
+ * Returns: (transfer full): #GIcon corresponding to the content type. Free the returned
+ *     object with g_object_unref()
+ */
+GIcon *
+g_content_type_get_icon (const gchar *type)
+{
+  return g_content_type_get_icon_internal (type, FALSE);
+}
+
+/**
+ * g_content_type_get_symbolic_icon:
+ * @type: a content type string
+ *
+ * Gets the symbolic icon for a content type.
+ *
+ * Returns: (transfer full): symbolic #GIcon corresponding to the content type.
+ *     Free the returned object with g_object_unref()
+ *
+ * Since: 2.34
+ */
+GIcon *
+g_content_type_get_symbolic_icon (const gchar *type)
+{
+  return g_content_type_get_icon_internal (type, TRUE);
 }
 
 /**
