@@ -94,12 +94,14 @@ static gint           quark_block_offset = 0;
 
 /**
  * G_DEFINE_QUARK:
- * @QN: the string to return a #GQuark for
+ * @QN: the name to return a #GQuark for
  * @q_n: prefix for the function name
  *
  * A convenience macro which defines a function returning the
- * #GQuark for the string @QN. The function will be named
+ * #GQuark for the name @QN. The function will be named
  * @q_n<!-- -->_quark().
+ * Note that the quark name will be stringified automatically in the
+ * macro, so you shouldn't use double quotes.
  *
  * Since: 2.34
  */
