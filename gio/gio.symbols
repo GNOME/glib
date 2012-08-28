@@ -422,6 +422,7 @@ g_file_info_get_name
 g_file_info_get_display_name
 g_file_info_get_edit_name
 g_file_info_get_icon
+g_file_info_get_symbolic_icon
 g_file_info_get_content_type
 g_file_info_get_size
 g_file_info_get_modification_time
@@ -437,6 +438,7 @@ g_file_info_set_name
 g_file_info_set_display_name
 g_file_info_set_edit_name
 g_file_info_set_icon
+g_file_info_set_symbolic_icon
 g_file_info_set_content_type
 g_file_info_set_size
 g_file_info_set_modification_time

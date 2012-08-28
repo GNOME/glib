@@ -204,6 +204,7 @@ ensure_attribute_hash (void)
   REGISTER_ATTRIBUTE (STANDARD_SYMLINK_TARGET);
   REGISTER_ATTRIBUTE (STANDARD_TARGET_URI);
   REGISTER_ATTRIBUTE (STANDARD_SORT_ORDER);
+  REGISTER_ATTRIBUTE (STANDARD_SYMBOLIC_ICON);
   REGISTER_ATTRIBUTE (ETAG_VALUE);
   REGISTER_ATTRIBUTE (ID_FILE);
   REGISTER_ATTRIBUTE (ID_FILESYSTEM);
@@ -1628,6 +1629,35 @@ g_file_info_get_icon (GFileInfo *info)
 }
 
 /**
+ * g_file_info_get_symbolic_icon:
+ * @info: a #GFileInfo.
+ *
+ * Gets the symbolic icon for a file.
+ *
+ * Returns: (transfer none): #GIcon for the given @info.
+ *
+ * Since: 2.34
+ **/
+GIcon *
+g_file_info_get_symbolic_icon (GFileInfo *info)
+{
+  static guint32 attr = 0;
+  GFileAttributeValue *value;
+  GObject *obj;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  if (attr == 0)
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON);
+
+  value = g_file_info_find_value (info, attr);
+  obj = _g_file_attribute_value_get_object (value);
+  if (G_IS_ICON (obj))
+    return G_ICON (obj);
+  return NULL;
+}
+
+/**
  * g_file_info_get_content_type:
  * @info: a #GFileInfo.
  *
@@ -1948,6 +1978,34 @@ g_file_info_set_icon (GFileInfo *info,
 
   if (attr == 0)
     attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_ICON);
+
+  value = g_file_info_create_value (info, attr);
+  if (value)
+    _g_file_attribute_value_set_object (value, G_OBJECT (icon));
+}
+
+/**
+ * g_file_info_set_symbolic_icon:
+ * @info: a #GFileInfo.
+ * @icon: a #GIcon.
+ *
+ * Sets the symbolic icon for a given #GFileInfo.
+ * See %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
+ *
+ * Since: 2.34
+ **/
+void
+g_file_info_set_symbolic_icon (GFileInfo *info,
+                               GIcon     *icon)
+{
+  static guint32 attr = 0;
+  GFileAttributeValue *value;
+
+  g_return_if_fail (G_IS_FILE_INFO (info));
+  g_return_if_fail (G_IS_ICON (icon));
+
+  if (attr == 0)
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON);
 
   value = g_file_info_create_value (info, attr);
   if (value)

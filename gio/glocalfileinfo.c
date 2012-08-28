@@ -1448,6 +1448,63 @@ _g_local_file_info_get_nostat (GFileInfo              *info,
     }
 }
 
+static const char *
+get_icon_name (const char *path,
+               gboolean    use_symbolic,
+               gboolean   *with_fallbacks_out)
+{
+  const char *name = NULL;
+  gboolean with_fallbacks = TRUE;
+
+  if (strcmp (path, g_get_home_dir ()) == 0)
+    {
+      name = use_symbolic ? "user-home-symbolic" : "user-home";
+      with_fallbacks = FALSE;
+    }
+  else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0)
+    {
+      name = use_symbolic ? "user-desktop-symbolic" : "user-desktop";
+      with_fallbacks = FALSE;
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS)) == 0)
+    {
+      name = use_symbolic ? "folder-documents-symbolic" : "folder-documents";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD)) == 0)
+    {
+      name = use_symbolic ? "folder-download-symbolic" : "folder-download";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_MUSIC)) == 0)
+    {
+      name = use_symbolic ? "folder-music-symbolic" : "folder-music";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PICTURES)) == 0)
+    {
+      name = use_symbolic ? "folder-pictures-symbolic" : "folder-pictures";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE)) == 0)
+    {
+      name = use_symbolic ? "folder-publicshare-symbolic" : "folder-publicshare";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES)) == 0)
+    {
+      name = use_symbolic ? "folder-templates-symbolic" : "folder-templates";
+    }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS)) == 0)
+    {
+      name = use_symbolic ? "folder-videos-symbolic" : "folder-videos";
+    }
+  else
+    {
+      name = NULL;
+    }
+
+  if (with_fallbacks_out != NULL)
+    *with_fallbacks_out = with_fallbacks;
+
+  return name;
+}
+
 GFileInfo *
 _g_local_file_info_get (const char             *basename,
 			const char             *path,
@@ -1601,37 +1658,35 @@ _g_local_file_info_get (const char             *basename,
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
       _g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_ICON))
+					    G_FILE_ATTRIBUTE_ID_STANDARD_ICON) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+					    G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON))
     {
       char *content_type = get_content_type (basename, path, stat_ok ? &statbuf : NULL, is_symlink, symlink_broken, flags, FALSE);
 
       if (content_type)
 	{
+          gboolean use_symbolics = FALSE;
+
 	  g_file_info_set_content_type (info, content_type);
 
-	  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-						    G_FILE_ATTRIBUTE_ID_STANDARD_ICON))
+          use_symbolics = _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                                G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON);
+	  if (use_symbolics ||
+              _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                    G_FILE_ATTRIBUTE_ID_STANDARD_ICON))
 	    {
 	      GIcon *icon;
+              gboolean with_fallbacks = TRUE;
+              const char *icon_name = get_icon_name (path, use_symbolics, &with_fallbacks);
 
-              if (strcmp (path, g_get_home_dir ()) == 0)
-                icon = g_themed_icon_new ("user-home");
-              else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0)
-                icon = g_themed_icon_new ("user-desktop");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-documents");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-download");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_MUSIC)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-music");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PICTURES)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-pictures");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-publicshare");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_TEMPLATES)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-templates");
-              else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_VIDEOS)) == 0)
-                icon = g_themed_icon_new_with_default_fallbacks ("folder-videos");
+              if (icon_name != NULL)
+                {
+                  if (with_fallbacks)
+                    icon = g_themed_icon_new_with_default_fallbacks (icon_name);
+                  else
+                    icon = g_themed_icon_new (icon_name);
+                }
               else
                 {
                   icon = g_content_type_get_icon (content_type);

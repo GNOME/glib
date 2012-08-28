@@ -163,6 +163,17 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_STANDARD_ICON "standard::icon"                     /* object (GIcon) */
 
 /**
+ * G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON:
+ *
+ * A key in the "standard" namespace for getting the symbolic icon for the file.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
+ * The value for this key should contain a #GIcon.
+ *
+ * Since: 2.34
+ **/
+#define G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON "standard::symbolic-icon"   /* object (GIcon) */
+
+/**
  * G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE:
  *
  * A key in the "standard" namespace for getting the content type of the file.
@@ -908,6 +919,7 @@ const char *      g_file_info_get_name               (GFileInfo         *info);
 const char *      g_file_info_get_display_name       (GFileInfo         *info);
 const char *      g_file_info_get_edit_name          (GFileInfo         *info);
 GIcon *           g_file_info_get_icon               (GFileInfo         *info);
+GIcon *           g_file_info_get_symbolic_icon      (GFileInfo         *info);
 const char *      g_file_info_get_content_type       (GFileInfo         *info);
 goffset           g_file_info_get_size               (GFileInfo         *info);
 void              g_file_info_get_modification_time  (GFileInfo         *info,
@@ -934,6 +946,8 @@ void              g_file_info_set_display_name       (GFileInfo         *info,
 void              g_file_info_set_edit_name          (GFileInfo         *info,
 						      const char        *edit_name);
 void              g_file_info_set_icon               (GFileInfo         *info,
+						      GIcon             *icon);
+void              g_file_info_set_symbolic_icon      (GFileInfo         *info,
 						      GIcon             *icon);
 void              g_file_info_set_content_type       (GFileInfo         *info,
 						      const char        *content_type);

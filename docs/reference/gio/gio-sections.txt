@@ -241,6 +241,7 @@ G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
 G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME
 G_FILE_ATTRIBUTE_STANDARD_COPY_NAME
 G_FILE_ATTRIBUTE_STANDARD_ICON
+G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON
 G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE
 G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE
 G_FILE_ATTRIBUTE_STANDARD_SIZE
@@ -347,6 +348,7 @@ g_file_info_get_name
 g_file_info_get_display_name
 g_file_info_get_edit_name
 g_file_info_get_icon
+g_file_info_get_symbolic_icon
 g_file_info_get_content_type
 g_file_info_get_size
 g_file_info_get_modification_time
@@ -362,6 +364,7 @@ g_file_info_set_name
 g_file_info_set_display_name
 g_file_info_set_edit_name
 g_file_info_set_icon
+g_file_info_set_symbolic_icon
 g_file_info_set_content_type
 g_file_info_set_size
 g_file_info_set_modification_time
