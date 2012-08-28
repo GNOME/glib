@@ -139,7 +139,7 @@ g_mutex_get_impl (GMutex *mutex)
  * This function is useful to initialize a mutex that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a mutex that has been
- * created that has been statically allocated.
+ * statically allocated.
  *
  * |[
  *   typedef struct {
