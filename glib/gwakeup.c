@@ -230,11 +230,20 @@ void
 g_wakeup_signal (GWakeup *wakeup)
 {
   guint64 one = 1;
+  int res;
 
   if (wakeup->fds[1] == -1)
-    write (wakeup->fds[0], &one, sizeof one);
+    {
+      do
+        res = write (wakeup->fds[0], &one, sizeof one);
+      while (G_UNLIKELY (res == -1 && errno == EINTR));
+    }
   else
-    write (wakeup->fds[1], &one, 1);
+    {
+      do
+        write (wakeup->fds[1], &one, 1);
+      while (G_UNLIKELY (res == -1 && errno == EINTR));
+    }
 }
 
 /**

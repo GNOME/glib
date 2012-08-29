@@ -281,7 +281,10 @@ static void
 write_string (int          fd,
 	      const gchar *string)
 {
-  write (fd, string, strlen (string));
+  int res;
+  do 
+    res = write (fd, string, strlen (string));
+  while (G_UNLIKELY (res == -1 && errno == EINTR));
 }
 
 static GLogDomain*
