@@ -51,6 +51,12 @@ void    _g_param_spec_types_init (void); /* sync with gparamspecs.c */
 void    _g_value_transforms_init (void); /* sync with gvaluetransform.c */
 void    _g_signal_init           (void); /* sync with gsignal.c */
 
+void    _g_value_c_cleanup          (void); /* sync with gvalue.c */
+void    _g_param_type_cleanup       (void); /* sync with gparam.c */
+void    _g_object_type_cleanup      (void); /* sync with gobject.c */
+void    _g_param_spec_types_cleanup (void); /* sync with gparamspecs.c */
+void    _g_signal_cleanup           (void); /* sync with gsignal.c */
+
 /* for gboxed.c */
 gpointer        _g_type_boxed_copy      (GType          type,
                                          gpointer       value);

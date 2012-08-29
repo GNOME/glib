@@ -146,7 +146,7 @@ _g_value_c_init (void)
 }
 
 void
-g_value_c_deinit (void)
+_g_value_c_cleanup (void)
 {
   g_bsearch_array_free (transform_array, &transform_bconfig);
   transform_array = NULL;

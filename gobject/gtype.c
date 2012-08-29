@@ -32,7 +32,7 @@
 #include "gbsearcharray.h"
 #include "gatomicarray.h"
 #include "gobject_trace.h"
-
+#include "gconstructor.h"
 
 /**
  * SECTION:gtype
@@ -4257,6 +4257,8 @@ _g_type_boxed_init (GType          type,
 }
 
 /* --- initialization --- */
+G_LOCK_DEFINE_STATIC (type_init_lock);
+
 /**
  * g_type_init_with_debug_flags:
  * @debug_flags: Bitwise combination of #GTypeDebugFlags values for
@@ -4269,7 +4271,6 @@ _g_type_boxed_init (GType          type,
 void
 g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 {
-  G_LOCK_DEFINE_STATIC (type_init_lock);
   const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
@@ -4452,7 +4453,6 @@ type_data_finalize_class (TypeNode  *node,
 static void
 type_data_finalize (TypeNode *node)
 {
-  GType ptype = NODE_PARENT_TYPE (node);
   TypeData *tdata;
 
   tdata = node->data;
@@ -4478,126 +4478,6 @@ type_data_finalize (TypeNode *node)
         */
       _g_object_release_resources_owned_by (NODE_TYPE (node));
     }
-}
-
-void
-g_type_deinit (void)
-{
-  GHashTableIter iter;
-  gpointer value;
-  GHashTable * vtables;
-
-  g_hash_table_iter_init (&iter, static_type_nodes_ht);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-    {
-      GType gtype = (GType) GPOINTER_TO_SIZE (value);
-      TypeNode *node;
-
-      node = lookup_type_node_I (gtype);
-      if (node->is_classed)
-        type_data_finalize (node);
-    }
-
-  g_hash_table_iter_init (&iter, static_type_nodes_ht);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-    {
-      GType gtype = (GType) GPOINTER_TO_SIZE (value);
-      TypeNode *node;
-
-      node = lookup_type_node_I (gtype);
-      if (NODE_IS_IFACE (node))
-        type_data_finalize (node);
-    }
-
-  g_signal_deinit ();
-
-  g_param_spec_types_deinit ();
-
-  g_object_type_deinit ();
-
-  g_param_type_deinit ();
-
-  g_value_c_deinit ();
-
-  static_n_class_cache_funcs = 0;
-  g_free (static_class_cache_funcs);
-  static_class_cache_funcs = NULL;
-
-  static_n_iface_check_funcs = 0;
-  g_free (static_iface_check_funcs);
-  static_iface_check_funcs = NULL;
-
-  g_hash_table_iter_init (&iter, static_type_nodes_ht);
-  vtables = g_hash_table_new (NULL, NULL);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-    {
-      GType gtype = (GType) GPOINTER_TO_SIZE (value);
-      TypeNode *node;
-
-      node = lookup_type_node_I (gtype);
-
-      g_free (node->children);
-
-      if (node->is_classed)
-        {
-          IFaceEntries *entries;
-
-          entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
-          if (entries)
-	    {
-              guint i;
-
-	      for (i = 0; i != IFACE_ENTRIES_N_ENTRIES (entries); i++)
-	        g_hash_table_insert (vtables, entries->entry[i].vtable, NULL);
-            }
-
-          _g_atomic_array_free (CLASSED_NODE_IFACES_ENTRIES (node));
-
-          if (node->data != NULL)
-            g_free (node->data->class.class);
-        }
-
-      if (NODE_IS_IFACE (node))
-        {
-          IFaceHolder *iholder, *next;
-
-          _g_atomic_array_free (&node->_prot.offsets);
-
-          iholder = iface_node_get_holders_L (node);
-          while (iholder)
-            {
-              next = iholder->next;
-
-              g_free (iholder->info);
-              g_free (iholder);
-
-              iholder = next;
-            }
-
-          if (node->data != NULL)
-            g_free (node->data->iface.dflt_vtable);
-
-          g_free (iface_node_get_dependants_array_L (node));
-        }
-
-      g_free (node->data);
-
-      if (node->global_gdata != NULL)
-        g_free (node->global_gdata->qdatas);
-      g_free (node->global_gdata);
-
-      g_free (node->prerequisites);
-
-      if (G_TYPE_IS_FUNDAMENTAL (gtype))
-        node = G_STRUCT_MEMBER_P (node, -SIZEOF_FUNDAMENTAL_INFO);
-      g_free (node);
-    }
-  g_hash_table_foreach (vtables, (GHFunc) g_free, NULL);
-  g_hash_table_unref (vtables);
-  g_hash_table_unref (static_type_nodes_ht);
-  static_type_nodes_ht = NULL;
-
-  _g_atomic_array_deinit ();
 }
 
 /**
@@ -4895,4 +4775,132 @@ g_type_ensure (GType type)
    */
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
+}
+
+static void
+g_type_cleanup (void)
+{
+  GHashTableIter iter;
+  gpointer value;
+  GHashTable * vtables;
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+      if (node->is_classed && node->data)
+        type_data_finalize (node);
+    }
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+      if (NODE_IS_IFACE (node) && node->data)
+        type_data_finalize (node);
+    }
+
+  _g_signal_cleanup ();
+  _g_param_spec_types_cleanup ();
+  _g_object_type_cleanup ();
+  _g_param_type_cleanup ();
+  _g_value_c_cleanup ();
+
+  g_clear_pointer (&static_class_cache_funcs, g_free);
+  g_clear_pointer (&static_iface_check_funcs, g_free);
+
+  g_hash_table_iter_init (&iter, static_type_nodes_ht);
+  vtables = g_hash_table_new (NULL, NULL);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      GType gtype = (GType) GPOINTER_TO_SIZE (value);
+      TypeNode *node;
+
+      node = lookup_type_node_I (gtype);
+
+      g_free (node->children);
+
+      if (node->is_classed)
+        {
+          IFaceEntries *entries;
+
+          entries = CLASSED_NODE_IFACES_ENTRIES_LOCKED (node);
+          if (entries)
+	    {
+              guint i;
+
+	      for (i = 0; i != IFACE_ENTRIES_N_ENTRIES (entries); i++)
+	        g_hash_table_insert (vtables, entries->entry[i].vtable, NULL);
+            }
+
+          _g_atomic_array_free (CLASSED_NODE_IFACES_ENTRIES (node));
+
+          if (node->data != NULL)
+            g_free (node->data->class.class);
+        }
+
+      if (NODE_IS_IFACE (node))
+        {
+          IFaceHolder *iholder, *next;
+
+          _g_atomic_array_free (&node->_prot.offsets);
+
+          iholder = iface_node_get_holders_L (node);
+          while (iholder)
+            {
+              next = iholder->next;
+
+              g_free (iholder->info);
+              g_free (iholder);
+
+              iholder = next;
+            }
+
+          if (node->data != NULL)
+            g_free (node->data->iface.dflt_vtable);
+
+          g_free (iface_node_get_dependants_array_L (node));
+        }
+
+      g_free (node->data);
+
+      if (node->global_gdata != NULL)
+        g_free (node->global_gdata->qdatas);
+      g_free (node->global_gdata);
+
+      g_free (node->prerequisites);
+
+      if (G_TYPE_IS_FUNDAMENTAL (gtype))
+        node = G_STRUCT_MEMBER_P (node, -SIZEOF_FUNDAMENTAL_INFO);
+      g_free (node);
+    }
+
+  g_hash_table_foreach (vtables, (GHFunc) g_free, NULL);
+  g_hash_table_unref (vtables);
+
+  g_clear_pointer (&static_type_nodes_ht, g_hash_table_unref);
+
+  _g_atomic_array_cleanup ();
+
+  g_rw_lock_clear (&type_rw_lock);
+  g_rec_mutex_clear (&class_init_rec_mutex);
+  g_mutex_clear (&G_LOCK_NAME (type_init_lock));
+}
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS (gtype_dtor)
+#endif
+G_DEFINE_DESTRUCTOR (gtype_dtor)
+
+static void
+gtype_dtor (void)
+{
+  if (G_UNLIKELY (g_mem_do_cleanup))
+    g_type_cleanup ();
 }

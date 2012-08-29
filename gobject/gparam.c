@@ -131,11 +131,12 @@ _g_param_type_init (void)
 }
 
 void
-g_param_type_deinit (void)
+_g_param_type_cleanup (void)
 {
-  g_slist_foreach (g_param_spec_class_info, (GFunc) g_free, NULL);
-  g_slist_free (g_param_spec_class_info);
+  g_slist_free_full (g_param_spec_class_info, g_free);
   g_param_spec_class_info = NULL;
+
+  g_mutex_clear (&G_LOCK_NAME (g_param_spec_class_info));
 }
 
 static void
@@ -921,6 +922,7 @@ g_param_spec_pool_destroy (GParamSpecPool *pool)
   while (g_hash_table_iter_next (&iter, &key, NULL))
     g_param_spec_unref (key);
   g_hash_table_unref (pool->hash_table);
+  g_mutex_clear (&pool->mutex);
 
   g_free (pool);
 }

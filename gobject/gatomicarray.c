@@ -102,30 +102,6 @@ _g_atomic_array_init (GAtomicArray *array)
   array->data = NULL;
 }
 
-void
-_g_atomic_array_free (GAtomicArray *array)
-{
-  if (array->data != NULL)
-    freelist_free (array->data);
-}
-
-void
-_g_atomic_array_deinit (void)
-{
-  FreeListNode *cur, *next;
-
-  for (cur = freelist; cur; cur = next)
-    {
-      gsize size, real_size;
-
-      next = cur->next;
-
-      size = G_ATOMIC_ARRAY_DATA_SIZE (cur);
-      real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
-      g_slice_free1 (real_size, ((char *) cur) - sizeof (gsize));
-    }
-}
-
 /* Get a copy of the data (if non-NULL) that
  * can be changed and then re-applied with
  * g_atomic_array_update().
@@ -192,4 +168,30 @@ _g_atomic_array_update (GAtomicArray *array,
   if (old)
     freelist_free (old);
   G_UNLOCK (array);
+}
+
+void
+_g_atomic_array_free (GAtomicArray *array)
+{
+  if (array->data != NULL)
+    freelist_free (array->data);
+}
+
+void
+_g_atomic_array_cleanup (void)
+{
+  FreeListNode *cur, *next;
+
+  for (cur = freelist; cur; cur = next)
+    {
+      gsize size, real_size;
+
+      next = cur->next;
+
+      size = G_ATOMIC_ARRAY_DATA_SIZE (cur);
+      real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
+      g_slice_free1 (real_size, ((char *) cur) - sizeof (gsize));
+    }
+
+  g_mutex_clear (&G_LOCK_NAME (array));
 }

@@ -407,21 +407,19 @@ _g_object_type_init (void)
 }
 
 void
-g_object_type_deinit (void)
+_g_object_type_cleanup (void)
 {
-  if (pspec_pool != NULL)
-    {
-      g_param_spec_pool_destroy (pspec_pool);
-      pspec_pool = NULL;
-    }
-
+  g_clear_pointer (&pspec_pool, g_param_spec_pool_destroy);
 #ifdef	G_ENABLE_DEBUG
-  if (debug_objects_ht != NULL)
-    {
-      g_hash_table_unref (debug_objects_ht);
-      debug_objects_ht = NULL;
-    }
-#endif	/* G_ENABLE_DEBUG */
+  g_clear_pointer (&debug_objects_ht, g_hash_table_unref);
+#endif
+
+  g_mutex_clear (&G_LOCK_NAME (closure_array_mutex));
+  g_mutex_clear (&G_LOCK_NAME (weak_refs_mutex));
+  g_mutex_clear (&G_LOCK_NAME (toggle_refs_mutex));
+  g_mutex_clear (&G_LOCK_NAME (construction_mutex));
+  g_mutex_clear (&G_LOCK_NAME (notify_lock));
+  g_rw_lock_clear (&weak_locations_lock);
 }
 
 static void

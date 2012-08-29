@@ -1593,10 +1593,9 @@ _g_param_spec_types_init (void)
 }
 
 void
-g_param_spec_types_deinit (void)
+_g_param_spec_types_cleanup (void)
 {
-  g_free (g_param_spec_types);
-  g_param_spec_types = NULL;
+  g_clear_pointer (&g_param_spec_types, g_free);
 }
 
 /* --- GParamSpec initialization --- */

@@ -832,7 +832,7 @@ _g_signal_init (void)
 }
 
 void
-g_signal_deinit (void)
+_g_signal_cleanup (void)
 {
   guint i;
 
@@ -848,17 +848,14 @@ g_signal_deinit (void)
     }
 
   SIGNAL_UNLOCK ();
+  g_mutex_clear (&G_LOCK_NAME (g_signal_mutex));
 
-  g_hash_table_unref (g_handler_list_bsa_ht);
-  g_handler_list_bsa_ht = NULL;
+  g_clear_pointer (&g_handler_list_bsa_ht, g_hash_table_unref);
 
   g_bsearch_array_free (g_signal_key_bsa, &g_signal_key_bconfig);
   g_signal_key_bsa = NULL;
 
-  g_n_signal_nodes = 0;
-
-  g_free (g_signal_nodes);
-  g_signal_nodes = NULL;
+  g_clear_pointer (&g_signal_nodes, g_free);
 }
 
 void

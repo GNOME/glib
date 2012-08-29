@@ -48,6 +48,8 @@ test_enum_basic (void)
   g_assert_cmpint (val->value, ==, 1);
   val = g_enum_get_value_by_nick (class, "purple");
   g_assert (val == NULL);
+
+  g_type_class_unref (class);
 }
 
 static const GFlagsValue my_flag_values[] =
@@ -110,6 +112,8 @@ test_flags_basic (void)
 
   test_flags_transform_to_string (&value);
   g_value_unset (&value);
+
+  g_type_class_unref (class);
 }
 
 int

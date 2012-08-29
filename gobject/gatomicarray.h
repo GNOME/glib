@@ -36,7 +36,6 @@ struct _GAtomicArray {
 
 void     _g_atomic_array_init   (GAtomicArray *array);
 void     _g_atomic_array_free   (GAtomicArray *array);
-void     _g_atomic_array_deinit (void);
 gpointer _g_atomic_array_copy   (GAtomicArray *array,
 				 gsize         header_size,
 				 gsize         additional_element_size);
@@ -56,6 +55,8 @@ void     _g_atomic_array_update (GAtomicArray *array,
       __check = g_atomic_pointer_get (_datap);					\
     } while (transaction_data != __check);					\
   } G_STMT_END
+
+void _g_atomic_array_cleanup (void);
 
 G_END_DECLS
 
