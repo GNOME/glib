@@ -515,7 +515,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
 /**
  * g_app_info_launch:
  * @appinfo: a #GAppInfo
- * @files: (element-type GFile): a #GList of #GFile objects
+ * @files: (allow-none) (element-type GFile): a #GList of #GFile objects
  * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
@@ -611,7 +611,7 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: (element-type utf8): a #GList containing URIs to launch.
+ * @uris: (allow-none) (element-type utf8): a #GList containing URIs to launch.
  * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
