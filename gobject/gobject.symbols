@@ -137,8 +137,12 @@ g_object_disconnect
 g_object_freeze_notify
 g_object_get
 g_object_get_data
+g_object_replace_data
+g_object_dup_data
 g_object_get_property
 g_object_get_qdata
+g_object_dup_qdata
+g_object_replace_qdata
 g_object_get_type
 g_object_get_valist
 g_object_interface_find_property

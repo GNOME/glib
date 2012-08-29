@@ -274,10 +274,14 @@ g_object_get_data
 g_object_set_data
 g_object_set_data_full
 g_object_steal_data
+g_object_dup_data
+g_object_replace_data
 g_object_get_qdata
 g_object_set_qdata
 g_object_set_qdata_full
 g_object_steal_qdata
+g_object_dup_qdata
+g_object_replace_qdata
 g_object_set_property
 g_object_get_property
 g_object_new_valist
