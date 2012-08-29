@@ -473,6 +473,126 @@ test_object_qdata (void)
   g_assert (destroyed);
 }
 
+typedef struct {
+  const gchar *value;
+  gint refcount;
+} Value;
+
+static gpointer
+ref_value (gpointer value, gpointer user_data)
+{
+  Value *v = value;
+  Value **old_value_p = user_data;
+
+  if (old_value_p)
+    *old_value_p = v;
+
+  if (v)
+    v->refcount += 1;
+
+  return value;
+}
+
+static void
+unref_value (gpointer value)
+{
+  Value *v = value;
+
+  v->refcount -= 1;
+  if (v->refcount == 0)
+    g_free (value);
+}
+
+static
+Value *
+new_value (const gchar *s)
+{
+  Value *v;
+
+  v = g_new (Value, 1);
+  v->value = s;
+  v->refcount = 1;
+
+  return v;
+}
+
+static void
+test_object_qdata2 (void)
+{
+  GObject *obj;
+  Value *v, *v1, *v2, *v3, *old_val;
+  GDestroyNotify old_destroy;
+  gboolean res;
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  v1 = new_value ("bla");
+
+  g_object_set_data_full (obj, "test", v1, unref_value);
+
+  v = g_object_get_data (obj, "test");
+  g_assert_cmpstr (v->value, ==, "bla");
+  g_assert_cmpint (v->refcount, ==, 1);
+
+  v = g_object_dup_data (obj, "test", ref_value, &old_val);
+  g_assert (old_val == v1);
+  g_assert_cmpstr (v->value, ==, "bla");
+  g_assert_cmpint (v->refcount, ==, 2);
+  unref_value (v);
+
+  v = g_object_dup_data (obj, "nono", ref_value, &old_val);
+  g_assert (old_val == NULL);
+  g_assert (v == NULL);
+
+  v2 = new_value ("not");
+
+  res = g_object_replace_data (obj, "test", v1, v2, unref_value, &old_destroy);
+  g_assert (res == TRUE);
+  g_assert (old_destroy == unref_value);
+  g_assert_cmpstr (v1->value, ==, "bla");
+  g_assert_cmpint (v1->refcount, ==, 1);
+
+  v = g_object_get_data (obj, "test");
+  g_assert_cmpstr (v->value, ==, "not");
+  g_assert_cmpint (v->refcount, ==, 1);
+
+  v3 = new_value ("xyz");
+  res = g_object_replace_data (obj, "test", v1, v3, unref_value, &old_destroy);
+  g_assert (res == FALSE);
+  g_assert_cmpstr (v2->value, ==, "not");
+  g_assert_cmpint (v2->refcount, ==, 1);
+
+  unref_value (v1);
+
+  res = g_object_replace_data (obj, "test", NULL, v3, unref_value, &old_destroy);
+  g_assert (res == FALSE);
+  g_assert_cmpstr (v2->value, ==, "not");
+  g_assert_cmpint (v2->refcount, ==, 1);
+
+  res = g_object_replace_data (obj, "test", v2, NULL, unref_value, &old_destroy);
+  g_assert (res == TRUE);
+  g_assert (old_destroy == unref_value);
+  g_assert_cmpstr (v2->value, ==, "not");
+  g_assert_cmpint (v2->refcount, ==, 1);
+
+  unref_value (v2);
+
+  v = g_object_get_data (obj, "test");
+  g_assert (v == NULL);
+
+  res = g_object_replace_data (obj, "test", NULL, v3, unref_value, &old_destroy);
+  g_assert (res == TRUE);
+
+  v = g_object_get_data (obj, "test");
+  g_assert (v == v3);
+
+  ref_value (v3, NULL);
+  g_assert_cmpint (v3->refcount, ==, 2);
+  g_object_unref (obj);
+  g_assert_cmpint (v3->refcount, ==, 1);
+  unref_value (v3);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -492,6 +612,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref", test_weak_ref);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/qdata", test_object_qdata);
+  g_test_add_func ("/object/qdata2", test_object_qdata2);
 
   return g_test_run ();
 }
