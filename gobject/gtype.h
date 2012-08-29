@@ -698,6 +698,11 @@ GType*                g_type_interfaces              (GType            type,
 void                  g_type_set_qdata               (GType            type,
 						      GQuark           quark,
 						      gpointer         data);
+GLIB_AVAILABLE_IN_2_34
+void                  g_type_set_qdata_full          (GType            type,
+						      GQuark           quark,
+						      gpointer         data,
+                                                      GDestroyNotify   destroy);
 gpointer              g_type_get_qdata               (GType            type,
 						      GQuark           quark);
 void		      g_type_query		     (GType	       type,

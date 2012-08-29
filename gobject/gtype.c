@@ -198,7 +198,8 @@ static inline gpointer			type_get_qdata_L		(TypeNode		*node,
 									 GQuark			 quark);
 static inline void			type_set_qdata_W		(TypeNode		*node,
 									 GQuark			 quark,
-									 gpointer		 data);
+									 gpointer		 data,
+                                                                         GDestroyNotify          destroy);
 static IFaceHolder*			type_iface_peek_holder_L	(TypeNode		*iface,
 									 GType			 instance_type);
 static gboolean                         type_iface_vtable_base_init_Wm  (TypeNode               *iface,
@@ -266,9 +267,9 @@ struct _TypeNode
 #define	IFACE_NODE_N_PREREQUISITES(node)	((node)->n_prerequisites)
 #define	IFACE_NODE_PREREQUISITES(node)		((node)->prerequisites)
 #define	iface_node_get_holders_L(node)		((IFaceHolder*) type_get_qdata_L ((node), static_quark_iface_holder))
-#define	iface_node_set_holders_W(node, holders)	(type_set_qdata_W ((node), static_quark_iface_holder, (holders)))
+#define	iface_node_set_holders_W(node, holders)	(type_set_qdata_W ((node), static_quark_iface_holder, (holders), NULL))
 #define	iface_node_get_dependants_array_L(n)	((GType*) type_get_qdata_L ((n), static_quark_dependants_array))
-#define	iface_node_set_dependants_array_W(n,d)	(type_set_qdata_W ((n), static_quark_dependants_array, (d)))
+#define	iface_node_set_dependants_array_W(n,d)	(type_set_qdata_W ((n), static_quark_dependants_array, (d), NULL))
 #define	TYPE_ID_MASK				((GType) ((1 << G_TYPE_FUNDAMENTAL_SHIFT) - 1))
 
 #define NODE_IS_ANCESTOR(ancestor, node)                                                    \
@@ -3610,8 +3611,9 @@ struct _GData
 };
 struct _QData
 {
-  GQuark   quark;
-  gpointer data;
+  GQuark         quark;
+  gpointer       data;
+  GDestroyNotify destroy;
 };
 
 static inline gpointer
@@ -3653,7 +3655,7 @@ type_get_qdata_L (TypeNode *node,
  * @quark: a #GQuark id to identify the data
  *
  * Obtains data which has previously been attached to @type
- * with g_type_set_qdata().
+ * with g_type_set_qdata() or g_type_set_qdata_full().
  *
  * Note that this does not take subtyping into account; data
  * attached to one type with g_type_set_qdata() cannot
@@ -3684,9 +3686,10 @@ g_type_get_qdata (GType  type,
 }
 
 static inline void
-type_set_qdata_W (TypeNode *node,
-		  GQuark    quark,
-		  gpointer  data)
+type_set_qdata_W (TypeNode       *node,
+		  GQuark          quark,
+		  gpointer        data,
+                  GDestroyNotify  destroy)
 {
   GData *gdata;
   QData *qdata;
@@ -3702,7 +3705,10 @@ type_set_qdata_W (TypeNode *node,
   for (i = 0; i < gdata->n_qdatas; i++)
     if (qdata[i].quark == quark)
       {
+        if (qdata[i].destroy)
+          qdata[i].destroy (qdata[i].data);
 	qdata[i].data = data;
+	qdata[i].destroy = destroy;
 	return;
       }
   
@@ -3716,6 +3722,40 @@ type_set_qdata_W (TypeNode *node,
   g_memmove (qdata + i + 1, qdata + i, sizeof (qdata[0]) * (gdata->n_qdatas - i - 1));
   qdata[i].quark = quark;
   qdata[i].data = data;
+  qdata[i].destroy = destroy;
+}
+
+/**
+ * g_type_set_qdata_full:
+ * @type: a #GType
+ * @quark: a #GQuark id to identify the data
+ * @data: the data
+ * @destroy: #GDestroyNotify for @data
+ *
+ * Attaches arbitrary data to a type, and frees it when the type is
+ * freed or the data is changed.
+ *
+ * Since: 2.34
+ */
+void
+g_type_set_qdata_full (GType            type,
+                       GQuark           quark,
+                       gpointer         data,
+                       GDestroyNotify   destroy)
+{
+  TypeNode *node;
+  
+  g_return_if_fail (quark != 0);
+  
+  node = lookup_type_node_I (type);
+  if (node)
+    {
+      G_WRITE_LOCK (&type_rw_lock);
+      type_set_qdata_W (node, quark, data, destroy);
+      G_WRITE_UNLOCK (&type_rw_lock);
+    }
+  else
+    g_return_if_fail (node != NULL);
 }
 
 /**
@@ -3731,19 +3771,7 @@ g_type_set_qdata (GType    type,
 		  GQuark   quark,
 		  gpointer data)
 {
-  TypeNode *node;
-  
-  g_return_if_fail (quark != 0);
-  
-  node = lookup_type_node_I (type);
-  if (node)
-    {
-      G_WRITE_LOCK (&type_rw_lock);
-      type_set_qdata_W (node, quark, data);
-      G_WRITE_UNLOCK (&type_rw_lock);
-    }
-  else
-    g_return_if_fail (node != NULL);
+  g_type_set_qdata_full (type, quark, data, NULL);
 }
 
 static void
@@ -3759,7 +3787,7 @@ type_add_flags_W (TypeNode  *node,
     g_warning ("tagging type `%s' as abstract after class initialization", NODE_NAME (node));
   dflags = GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags));
   dflags |= flags;
-  type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags));
+  type_set_qdata_W (node, static_quark_type_flags, GUINT_TO_POINTER (dflags), NULL);
 }
 
 /**
@@ -4871,8 +4899,18 @@ g_type_cleanup (void)
       g_free (node->data);
 
       if (node->global_gdata != NULL)
-        g_free (node->global_gdata->qdatas);
-      g_free (node->global_gdata);
+        {
+          QData *qdatas = node->global_gdata->qdatas;
+          int i;
+
+          for (i = 0; i < node->global_gdata->n_qdatas; i++)
+            {
+              if (qdatas[i].destroy)
+                qdatas[i].destroy (qdatas[i].data);
+            }
+          g_free (qdatas);
+          g_free (node->global_gdata);
+        }
 
       g_free (node->prerequisites);
 
