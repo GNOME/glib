@@ -190,7 +190,6 @@ struct _GObjectNotifyQueue
 
 /* --- variables --- */
 G_LOCK_DEFINE_STATIC (closure_array_mutex);
-G_LOCK_DEFINE_STATIC (weak_refs_mutex);
 G_LOCK_DEFINE_STATIC (toggle_refs_mutex);
 static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
@@ -2459,6 +2458,14 @@ typedef struct {
   } weak_refs[1];  /* flexible array */
 } WeakRefStack;
 
+typedef struct {
+  GObject *object;
+  GWeakNotify notify;
+  gpointer data;
+  /* out */
+  WeakRefStack *original_wstack;
+} WeakRefData;
+
 static void
 weak_refs_notify (gpointer data)
 {
@@ -2468,6 +2475,35 @@ weak_refs_notify (gpointer data)
   for (i = 0; i < wstack->n_weak_refs; i++)
     wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object);
   g_free (wstack);
+}
+
+static WeakRefStack *
+grow_wstack (WeakRefStack *old, WeakRefData *data)
+{
+  WeakRefStack *wstack;
+  guint i;
+
+  data->original_wstack = old;
+
+  if (old)
+    {
+      i = old->n_weak_refs;
+      wstack = g_malloc (sizeof (WeakRefStack) + sizeof (old->weak_refs[0]) * i);
+      memcpy (wstack, old, sizeof (WeakRefStack) + sizeof (old->weak_refs[0]) * (i - 1));
+      wstack->n_weak_refs++;
+    }
+  else
+    {
+      i = 0;
+      wstack = g_new (WeakRefStack, 1);
+      wstack->n_weak_refs = 1;
+      wstack->object = data->object;
+    }
+
+  wstack->weak_refs[i].notify = data->notify;
+  wstack->weak_refs[i].data = data->data;
+
+  return wstack;
 }
 
 /**
@@ -2493,31 +2529,67 @@ g_object_weak_ref (GObject    *object,
 		   gpointer    data)
 {
   WeakRefStack *wstack;
-  guint i;
-  
+  WeakRefData ref_data;
+
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
   g_return_if_fail (object->ref_count >= 1);
 
-  G_LOCK (weak_refs_mutex);
-  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_refs);
-  if (wstack)
+  ref_data.object = object;
+  ref_data.notify = notify;
+  ref_data.data = data;
+
+  wstack = NULL;
+  do
     {
-      i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+      g_free (wstack);
+      wstack = g_datalist_id_dup_data (&object->qdata, quark_weak_refs, (GDuplicateFunc)grow_wstack, &ref_data);
     }
-  else
-    {
-      wstack = g_renew (WeakRefStack, NULL, 1);
-      wstack->object = object;
-      wstack->n_weak_refs = 1;
-      i = 0;
-    }
-  wstack->weak_refs[i].notify = notify;
-  wstack->weak_refs[i].data = data;
-  g_datalist_id_set_data_full (&object->qdata, quark_weak_refs, wstack, weak_refs_notify);
-  G_UNLOCK (weak_refs_mutex);
+  while (!g_datalist_id_replace_data (&object->qdata, quark_weak_refs,
+                                      ref_data.original_wstack, wstack,
+                                      weak_refs_notify, NULL));
+
+  /* Free previous wstack, but don't call callbacks */
+  g_free (ref_data.original_wstack);
 }
+
+static WeakRefStack *
+shrink_wstack (WeakRefStack *old, WeakRefData *data)
+{
+  WeakRefStack *wstack = NULL;
+  gboolean found_one = FALSE;
+  guint i, n;
+
+  data->original_wstack = old;
+
+  if (old)
+    {
+      n = old->n_weak_refs;
+      for (i = 0; i < n; i++)
+	if (old->weak_refs[i].notify == data->notify &&
+	    old->weak_refs[i].data == data->data)
+	  {
+	    found_one = TRUE;
+
+            if (n > 1)
+              {
+                wstack = g_malloc (sizeof (WeakRefStack) + sizeof (old->weak_refs[0]) * (n - 2));
+                memcpy (wstack, old, sizeof (WeakRefStack) + sizeof (old->weak_refs[0]) * (n - 2));
+                wstack->n_weak_refs--;
+                if (i != wstack->n_weak_refs)
+                  wstack->weak_refs[i] = old->weak_refs[wstack->n_weak_refs];
+              }
+
+	    break;
+	  }
+
+      if (!found_one)
+        data->original_wstack = NULL;
+    }
+
+  return wstack;
+}
+
 
 /**
  * g_object_weak_unref: (skip)
@@ -2533,32 +2605,32 @@ g_object_weak_unref (GObject    *object,
 		     gpointer    data)
 {
   WeakRefStack *wstack;
-  gboolean found_one = FALSE;
+  WeakRefData ref_data;
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  G_LOCK (weak_refs_mutex);
-  wstack = g_datalist_id_get_data (&object->qdata, quark_weak_refs);
-  if (wstack)
+  ref_data.object = object;
+  ref_data.notify = notify;
+  ref_data.data = data;
+
+  wstack = NULL;
+  do
     {
-      guint i;
-
-      for (i = 0; i < wstack->n_weak_refs; i++)
-	if (wstack->weak_refs[i].notify == notify &&
-	    wstack->weak_refs[i].data == data)
-	  {
-	    found_one = TRUE;
-	    wstack->n_weak_refs -= 1;
-	    if (i != wstack->n_weak_refs)
-	      wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
-
-	    break;
-	  }
+      g_free (wstack);
+      wstack = g_datalist_id_dup_data (&object->qdata, quark_weak_refs, (GDuplicateFunc)shrink_wstack, &ref_data);
+      if (ref_data.original_wstack == NULL)
+        {
+          g_warning ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
+          return;
+        }
     }
-  G_UNLOCK (weak_refs_mutex);
-  if (!found_one)
-    g_warning ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
+  while (!g_datalist_id_replace_data (&object->qdata, quark_weak_refs,
+                                      ref_data.original_wstack, wstack,
+                                      weak_refs_notify, NULL));
+
+  /* Free previous wstack, but don't call callbacks */
+  g_free (ref_data.original_wstack);
 }
 
 /**
