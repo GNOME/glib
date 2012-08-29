@@ -4496,15 +4496,6 @@ type_data_finalize (TypeNode *node)
         tdata->iface.dflt_finalize (tdata->iface.dflt_vtable, (gpointer) tdata->iface.dflt_data);
       if (tdata->iface.vtable_finalize_base)
         tdata->iface.vtable_finalize_base (tdata->iface.dflt_vtable);
-
-      /* FIXME: This is awful...
-        *
-        * Interfaces might do g_object_interface_install_property() in their
-        * base_init, which means that the GTypeInterface owns this GParamSpec.
-        * However, the GParamSpecPool is owned by GObject... and the interface'
-        * GParamSpecs need to be released when it goes away.
-        */
-      _g_object_release_resources_owned_by (NODE_TYPE (node));
     }
 }
 
@@ -4834,12 +4825,6 @@ g_type_cleanup (void)
         type_data_finalize (node);
     }
 
-  _g_signal_cleanup ();
-  _g_param_spec_types_cleanup ();
-  _g_object_type_cleanup ();
-  _g_param_type_cleanup ();
-  _g_value_c_cleanup ();
-
   g_clear_pointer (&static_class_cache_funcs, g_free);
   g_clear_pointer (&static_iface_check_funcs, g_free);
 
@@ -4925,6 +4910,11 @@ g_type_cleanup (void)
   g_clear_pointer (&static_type_nodes_ht, g_hash_table_unref);
 
   _g_atomic_array_cleanup ();
+  _g_signal_cleanup ();
+  _g_param_spec_types_cleanup ();
+  _g_object_type_cleanup ();
+  _g_param_type_cleanup ();
+  _g_value_c_cleanup ();
 
   g_rw_lock_clear (&type_rw_lock);
   g_rec_mutex_clear (&class_init_rec_mutex);

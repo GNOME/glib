@@ -197,6 +197,7 @@ static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
+static GQuark               quark_interface_pspecs;
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
@@ -440,18 +441,7 @@ g_object_base_class_init (GObjectClass *class)
 }
 
 static void
-g_object_base_class_finalize (GObjectClass *class)
-{  
-  _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
-
-  g_slist_free (class->construct_properties);
-  class->construct_properties = NULL;
-
-  _g_object_release_resources_owned_by (G_OBJECT_CLASS_TYPE (class));
-}
-
-void
-_g_object_release_resources_owned_by (GType type)
+_g_object_type_free_pspecs (GType type)
 {
   GList *list, *node;
 
@@ -468,6 +458,17 @@ _g_object_release_resources_owned_by (GType type)
 }
 
 static void
+g_object_base_class_finalize (GObjectClass *class)
+{
+  _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
+
+  g_slist_free (class->construct_properties);
+  class->construct_properties = NULL;
+
+  _g_object_type_free_pspecs (G_OBJECT_CLASS_TYPE (class));
+}
+
+static void
 g_object_do_class_init (GObjectClass *class)
 {
   /* read the comment about typedef struct CArray; on why not to change this quark */
@@ -477,6 +478,7 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
+  quark_interface_pspecs = g_quark_from_static_string ("GObject-interface-pspecs");
   pspec_pool = g_param_spec_pool_new (TRUE);
 
   class->constructor = g_object_constructor;
@@ -714,6 +716,14 @@ g_object_class_install_properties (GObjectClass  *oclass,
     }
 }
 
+static void
+free_interface_type_pspecs (gpointer data)
+{
+  GType type = GPOINTER_TO_SIZE (data);
+
+  _g_object_type_free_pspecs (type);
+}
+
 /**
  * g_object_interface_install_property:
  * @g_iface: any interface vtable for the interface, or the default
@@ -755,6 +765,13 @@ g_object_interface_install_property (gpointer      g_iface,
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
   install_property_internal (iface_class->g_type, 0, pspec);
+
+  if (!g_type_get_qdata (iface_class->g_type, quark_interface_pspecs))
+    {
+      g_type_set_qdata_full (iface_class->g_type, quark_interface_pspecs,
+                             GSIZE_TO_POINTER (iface_class->g_type),
+                             free_interface_type_pspecs);
+    }
 }
 
 /**
