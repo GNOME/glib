@@ -28,7 +28,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="_DEBUG;GLIB_COMPILATION"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -56,7 +56,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG"
+				PreprocessorDefinitions="_DEBUG;GLIB_COMPILATION"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -85,7 +85,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions=""
+				PreprocessorDefinitions="GLIB_COMPILATION"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -113,7 +113,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions=""
+				PreprocessorDefinitions="GLIB_COMPILATION"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
