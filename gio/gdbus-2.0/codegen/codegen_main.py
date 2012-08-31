@@ -56,6 +56,7 @@ def find_prop(iface, prop):
     return None
 
 def apply_annotation(iface_list, iface, method, signal, prop, arg, key, value):
+    iface_obj = None
     for i in iface_list:
         if i.name == iface:
             iface_obj = i
