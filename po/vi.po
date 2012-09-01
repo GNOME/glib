@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-30 09:52+0000\n"
-"PO-Revision-Date: 2012-09-01 13:16+0700\n"
+"PO-Revision-Date: 2012-09-01 13:17+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -800,10 +800,10 @@ msgid "Error: signal not specified.\n"
 msgstr "Lỗi: chưa xác định tín hiệu.\n"
 
 #: ../gio/gdbus-tool.c:632
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
-msgstr "Lỗi: chưa xác định tín hiệu.\n"
+msgstr "Lỗi: tín hiệu phải có tên đầy đủ.\n"
 
 #: ../gio/gdbus-tool.c:640
 #, c-format
