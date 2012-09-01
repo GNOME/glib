@@ -60,7 +60,7 @@ static CmdlineTest cmdline_tests[] =
   { "foo \"c:\\\\\"", 2, { "foo", "c:\\", NULL }, -1 },
   { "foo # bla bla bla\n bar", 2, { "foo", "bar", NULL }, -1 },
   { "foo a#b", 2, { "foo", "a#b", NULL }, -1 },
-  { "#foo", 0, { NULL }, -1 },
+  { "#foo", 0, { NULL }, G_SHELL_ERROR_EMPTY_STRING },
   { "foo bar \\", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
   { "foo 'bar baz", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
   { "foo '\"bar\" baz", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
@@ -94,6 +94,7 @@ do_cmdline_test (gconstpointer d)
   gboolean res;
 
   err = NULL;
+g_print ("test cmdline: %s\n", test->cmdline);
   res = g_shell_parse_argv (test->cmdline, &argc, &argv, &err);
   if (test->error_code == -1)
     {
