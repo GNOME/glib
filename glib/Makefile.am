@@ -200,6 +200,8 @@ libglib_2_0_la_SOURCES = 	\
 	gunidecomp.h		\
 	gunidecomp.c		\
 	gunicodeprivate.h	\
+	gunigraphemebreak.h	\
+	gunigraphemebreak.c	\
 	gurifuncs.c 		\
 	gutils.c		\
 	gvariant.h		\

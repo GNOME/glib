@@ -506,6 +506,44 @@ typedef enum
   G_UNICODE_SCRIPT_TAKRI                   /* Takr */
 } GUnicodeScript;
 
+/**
+ * GUnicodeGraphemeClusterBreakType:
+ * 
+ * These are the grapheme cluster break types.
+ * 
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_OTHER:
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_CR: Carriage Return
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_LF: Line Feed
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_CONTROL: Control
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_SPACING_MARK: Spacing Mark
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND: Extend
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_PREPEND: Prepend
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_REGIONAL_INDICATOR: Regional Indicator
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_L: Hangul L Syllable
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_V: Hangul T Syllable
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_T: Hangul V Syllable
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LV: Hangul LV Syllable
+ * @G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LVT: Hangul LVT Syllable
+ *
+ * Since: 2.36
+ */
+typedef enum
+{
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_OTHER = 0,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_CR,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_LF,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_CONTROL,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_SPACING_MARK,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_PREPEND,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_REGIONAL_INDICATOR,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_L,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_V,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_T,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LV,
+  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LVT
+} GUnicodeGraphemeClusterBreakType;
+
 guint32        g_unicode_script_to_iso15924   (GUnicodeScript script);
 GUnicodeScript g_unicode_script_from_iso15924 (guint32        iso15924);
 
@@ -546,6 +584,9 @@ GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 
 /* Return the line break property for a given character */
 GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
+
+/* Return the grapheme cluster break property for a given character */
+GUnicodeGraphemeClusterBreakType g_unichar_grapheme_cluster_break_type (gunichar c) G_GNUC_CONST;
 
 /* Returns the combining class for a given character */
 gint g_unichar_combining_class (gunichar uc) G_GNUC_CONST;

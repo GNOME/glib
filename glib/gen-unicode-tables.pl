@@ -153,6 +153,23 @@ $FOLDING_MAPPING = 2;
      'ZW' => "G_UNICODE_BREAK_ZERO_WIDTH_SPACE"
      );
 
+%grapheme_break_mappings =
+    (
+     'XX'                 => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_OTHER",
+     'CR'                 => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_CR",
+     'LF'                 => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_LF",
+     'Control'            => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_CONTROL",
+     'SpacingMark'        => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_SPACING_MARK",
+     'Extend'             => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND",
+     'Prepend'            => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_PREPEND",
+     'Regional_Indicator' => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_REGIONAL_INDICATOR",
+     'L'                  => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_L",
+     'V'                  => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_V",
+     'T'                  => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_T",
+     'LV'                 => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LV",
+     'LVT'                => "G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LVT"
+    );
+
 # Title case mappings.
 %title_to_lower = ();
 %title_to_upper = ();
@@ -179,10 +196,10 @@ elsif (@ARGV && $ARGV[0] eq '-both')
 
 if (@ARGV != 2) {
     $0 =~ s@.*/@@;
-    die "\nUsage: $0 [-decomp | -both] UNICODE-VERSION DIRECTORY\n\n       DIRECTORY should contain the following Unicode data files:\n       UnicodeData.txt, LineBreak.txt, SpecialCasing.txt, CaseFolding.txt,\n       CompositionExclusions.txt\n\n";
+    die "\nUsage: $0 [-decomp | -both] UNICODE-VERSION DIRECTORY\n\n       DIRECTORY should contain the following Unicode data files:\n       UnicodeData.txt, LineBreak.txt, SpecialCasing.txt, CaseFolding.txt,\n       CompositionExclusions.txt, auxiliary/GraphemeBreakProperty.txt\n\n";
 }
 
-my ($unicodedatatxt, $linebreaktxt, $specialcasingtxt, $casefoldingtxt, $compositionexclusionstxt);
+my ($unicodedatatxt, $linebreaktxt, $graphemebreaktxt, $specialcasingtxt, $casefoldingtxt, $compositionexclusionstxt);
 
 my $d = $ARGV[1];
 opendir (my $dir, $d) or die "Cannot open Unicode data dir $d: $!\n";
@@ -195,8 +212,16 @@ for my $f (readdir ($dir))
     $compositionexclusionstxt = "$d/$f" if ($f =~ /^CompositionExclusions.*\.txt/);
 }
 
+$d = "$ARGV[1]/auxiliary";
+opendir ($dir, $d) or die "Cannot open Unicode auxiliary data dir $d: $!\n";
+for my $f (readdir ($dir))
+{
+    $graphemebreaktxt = "$d/$f" if ($f =~ /^GraphemeBreakProperty.*\.txt/);
+}
+
 defined $unicodedatatxt or die "Did not find UnicodeData file";
 defined $linebreaktxt or die "Did not find LineBreak file";
+defined $graphemebreaktxt or die "Did not find GraphemeBreakProperty file";
 defined $specialcasingtxt or die "Did not find SpecialCasing file";
 defined $casefoldingtxt or die "Did not find CaseFolding file";
 defined $compositionexclusionstxt or die "Did not find CompositionExclusions file";
@@ -362,6 +387,57 @@ for (++$last_code; $last_code <= 0x10FFFF; ++$last_code)
 
 print STDERR "Last code is not 0x10FFFF" if ($last_code != 0x10FFFF);
 
+print "Creating grapheme break table\n";
+
+print "Line grapheme break data from $graphemebreaktxt\n";
+
+open (INPUT, "< $graphemebreaktxt") || exit 1;
+
+while (<INPUT>)
+{
+    my ($start_code, $end_code);
+
+    chop;
+
+    next if /^#/;
+    next if /^$/;
+
+    s/\s*#.*//;
+
+    @fields = split (';', $_, 30);
+    if ($#fields != 1)
+    {
+        printf STDERR ("Entry for $fields[$CODE] has wrong number of fields (%d)\n", $#fields);
+        next;
+    }
+
+    $fields[$CODE] =~ s/\s+//;
+    if ($fields[$CODE] =~ /([A-F0-9]{4,6})\.\.([A-F0-9]{4,6})/)
+    {
+        $start_code = hex ($1);
+        $end_code = hex ($2);
+    } else {
+        $start_code = $end_code = hex ($fields[$CODE]);
+    }
+
+    $fields[$BREAK_PROPERTY] =~ s/\s+//;
+
+    for ($last_code = $start_code; $last_code <= $end_code; $last_code++)
+    {
+        $grapheme_break_props[$last_code] = $fields[$BREAK_PROPERTY];
+    }
+
+    $last_code = $end_code;
+}
+
+close INPUT;
+
+# All other characters have value Other (XX)
+for ($last_code = 0x0; $last_code <= 0x10FFFF; ++$last_code)
+{
+    $grapheme_break_props[$last_code] = 'XX' unless defined($grapheme_break_props[$last_code]);
+}
+
 print "Reading special-casing table for case conversion\n";
 
 open (INPUT, "< $specialcasingtxt") || exit 1;
@@ -491,6 +567,8 @@ while (<INPUT>)
 
 close INPUT;
 
+$last_code = 0x10FFFF;
+
 if ($do_props) {
     &print_tables ($last_code)
 }
@@ -500,6 +578,8 @@ if ($do_decomp) {
 }
 
 &print_line_break ($last_code);
+
+&print_grapheme_break ($last_code);
 
 exit 0;
 
@@ -971,12 +1051,85 @@ sub print_line_break
     printf STDERR "Generated %d bytes in break tables\n", $bytes_out;
 }
 
+sub print_grapheme_break
+{
+    my ($last) = @_;
+    my ($outfile) = "gunigraphemebreak.h";
+
+    local ($bytes_out) = 0;
+
+    print "Writing $outfile...\n";
+
+    open (OUT, "> $outfile");
+
+    print OUT "/* This file is automatically generated.  DO NOT EDIT!\n";
+    print OUT "   Instead, edit gen-unicode-tables.pl and re-run.  */\n\n";
+
+    print OUT "#ifndef G_UNIGRAPHEMEBREAKTABLES_H\n";
+    print OUT "#define G_UNIGRAPHEMEBREAKTABLES_H\n\n";
+
+    print OUT "#include <glib/gtypes.h>\n";
+    print OUT "#include <glib/gunicode.h>\n\n";
+
+    print OUT "#define G_UNICODE_DATA_VERSION \"$ARGV[0]\"\n\n";
+
+    printf OUT "#define G_UNICODE_LAST_CHAR 0x%04X\n\n", $last;
+
+    printf OUT "#define G_UNICODE_MAX_TABLE_INDEX 10000\n\n";
+
+    my $last_part1 = ($pages_before_e0000 * 256) - 1;
+    printf OUT "/* the last code point that should be looked up in grapheme_break_property_table_part1 */\n";
+    printf OUT "#define G_UNICODE_LAST_CHAR_PART1 0x%04X\n\n", $last_part1;
+
+    $table_index = 0;
+    printf OUT "static const gint8 grapheme_break_property_data[][256] = {\n";
+    for ($count = 0; $count <= $last; $count += 256)
+    {
+        $row[$count / 256] = &print_row ($count, 1, \&fetch_grapheme_break_type);
+    }
+    printf OUT "\n};\n\n";
+
+    printf OUT "/* U+0000 through U+%04X */\n", $last_part1;
+    print OUT "static const gint16 grapheme_break_property_table_part1[$pages_before_e0000] = {\n";
+    for ($count = 0; $count <= $last_part1; $count += 256)
+    {
+        print OUT ",\n" if $count > 0;
+        print OUT "  ", $row[$count / 256];
+        $bytes_out += 2;
+    }
+    print OUT "\n};\n\n";
+
+    printf OUT "/* U+E0000 through U+%04X */\n", $last;
+    print OUT "static const gint16 grapheme_break_property_table_part2[768] = {\n";
+    for ($count = 0xE0000; $count <= $last; $count += 256)
+    {
+        print OUT ",\n" if $count > 0xE0000;
+        print OUT "  ", $row[$count / 256];
+        $bytes_out += 2;
+    }
+    print OUT "\n};\n\n";
+
+
+    print OUT "#endif /* G_UNIGRAPHEMEBREAKTABLES_H */\n";
+
+    close (OUT);
+
+    printf STDERR "Generated %d bytes in grapheme break tables\n", $bytes_out;
+}
+
 
 # A fetch function for the break properties table.
 sub fetch_break_type
 {
     my ($index) = @_;
     return $break_mappings{$break_props[$index]};
+}
+
+# A fetch function for the grapheme break properties table.
+sub fetch_grapheme_break_type
+{
+    my ($index) = @_;
+    return $grapheme_break_mappings{$grapheme_break_props[$index]};
 }
 
 # Fetcher for combining class.
@@ -1335,6 +1488,3 @@ EOT
    my $recordlen = (2+$casefoldlen+1) & ~1;
    printf "Generated %d bytes for casefold table\n", $recordlen * @casefold;
 }
-
-			     
-

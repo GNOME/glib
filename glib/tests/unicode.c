@@ -141,6 +141,42 @@ test_unichar_break_type (void)
 }
 
 static void
+test_unichar_grapheme_break_type (void)
+{
+  guint i;
+  const struct {
+    gunichar c;
+    GUnicodeGraphemeClusterBreakType type;
+  } const examples[] = {
+    { 0x000D,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_CR                  },
+    { 0x000A,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_LF                  },
+    { 0x200C,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND              },
+    { 0x200D,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND              },
+    { 0x007F,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_CONTROL             },
+    { 0x0300,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_EXTEND              },
+    { 0x1F1E6, G_UNICODE_GRAPHEME_CLUSTER_BREAK_REGIONAL_INDICATOR  },
+    { 0x1F1FF, G_UNICODE_GRAPHEME_CLUSTER_BREAK_REGIONAL_INDICATOR  },
+    { 0x0903,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_SPACING_MARK        },
+    { 0x1D16D, G_UNICODE_GRAPHEME_CLUSTER_BREAK_SPACING_MARK        },
+    { 0x1100,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_L   },
+    { 0x115F,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_L   },
+    { 0x1160,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_V   },
+    { 0x11A7,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_V   },
+    { 0x11A8,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_T   },
+    { 0x11FF,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_T   },
+    { 0xAC00,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LV  },
+    { 0xD788,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LV  },
+    { 0xAC01,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LVT },
+    { 0xD7A3,  G_UNICODE_GRAPHEME_CLUSTER_BREAK_HANGUL_SYLLABLE_LVT }
+  };
+
+  for (i = 0; i < G_N_ELEMENTS (examples); i++)
+    {
+      g_assert_cmpint (g_unichar_grapheme_cluster_break_type (examples[i].c), ==, examples[i].type);
+    }
+}
+
+static void
 test_unichar_script (void)
 {
   guint i;
@@ -839,6 +875,7 @@ main (int   argc,
   g_test_add_func ("/unicode/validate", test_unichar_validate);
   g_test_add_func ("/unicode/character-type", test_unichar_character_type);
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);
+  g_test_add_func ("/unicode/grapheme-break-type", test_unichar_grapheme_break_type);
   g_test_add_func ("/unicode/script", test_unichar_script);
   g_test_add_func ("/unicode/combining-class", test_combining_class);
   g_test_add_func ("/unicode/mirror", test_mirror);

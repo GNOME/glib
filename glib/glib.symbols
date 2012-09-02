@@ -1285,6 +1285,7 @@ g_unichar_xdigit_value
 g_unichar_type
 g_unicode_canonical_decomposition
 g_unicode_canonical_ordering
+g_unichar_grapheme_cluster_break_type
 g_unicode_script_from_iso15924
 g_unicode_script_to_iso15924
 g_utf8_casefold
