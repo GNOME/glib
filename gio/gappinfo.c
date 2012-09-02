@@ -460,7 +460,7 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
 
 /**
  * g_app_info_get_supported_types:
- * @info: a #GAppInfo that can handle files
+ * @appinfo: a #GAppInfo that can handle files
  *
  * Retrieves the list of content types that @app_info claims to support.
  * If this information is not provided by the environment, this function
