@@ -52,6 +52,7 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
     case G_TYPE_OBJECT:
     case G_TYPE_BOXED:
     case G_TYPE_POINTER:
+    case G_TYPE_PARAM:
       rettype = &ffi_type_pointer;
       *value = (gpointer)&(gvalue->data[0].v_pointer);
       break;
@@ -118,6 +119,7 @@ g_value_to_ffi_return_type (const GValue *gvalue,
   case G_TYPE_OBJECT:
   case G_TYPE_BOXED:
   case G_TYPE_POINTER:
+  case G_TYPE_PARAM:
     rettype = &ffi_type_pointer;
     break;
   case G_TYPE_FLOAT:
@@ -197,6 +199,9 @@ g_value_from_ffi_value (GValue           *gvalue,
       break;
   case G_TYPE_BOXED:
       g_value_set_boxed (gvalue, (gpointer)value->v_pointer);
+      break;
+  case G_TYPE_PARAM:
+      g_value_set_param (gvalue, (gpointer)value->v_pointer);
       break;
   default:
     g_warning ("Unsupported fundamental type: %s",
