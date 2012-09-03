@@ -156,7 +156,6 @@ xdg_mime_init_from_directory (const char *directory)
           _caches[n_caches + 1] = NULL;
 	  n_caches++;
 
-          free (file_name);
 	  return FALSE;
 	}
     }
