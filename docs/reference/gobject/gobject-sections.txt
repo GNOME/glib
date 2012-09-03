@@ -365,6 +365,7 @@ G_TYPE_BYTES
 G_TYPE_VARIANT_TYPE
 G_TYPE_ERROR
 G_TYPE_DATE_TIME
+G_TYPE_TIME_ZONE
 G_TYPE_IO_CHANNEL
 G_TYPE_IO_CONDITION
 G_TYPE_VARIANT_BUILDER
@@ -389,6 +390,7 @@ g_byte_array_get_type
 g_ptr_array_get_type
 g_error_get_type
 g_date_time_get_type
+g_time_zone_get_type
 g_variant_get_gtype
 g_variant_type_get_gtype
 g_variant_builder_get_type
