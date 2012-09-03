@@ -5,6 +5,7 @@ enums
 ifaceproperties
 param
 properties
+qdata
 reference
 signals
 threadtests
