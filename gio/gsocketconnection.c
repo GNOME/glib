@@ -557,13 +557,9 @@ static GHashTable *connection_factories = NULL;
 G_LOCK_DEFINE_STATIC(connection_factories);
 
 void
-_g_socket_connection_factory_deinit (void)
+g_socket_connection_factory_cleanup (void)
 {
-  if (connection_factories != NULL)
-    {
-      g_hash_table_unref (connection_factories);
-      connection_factories = NULL;
-    }
+  g_clear_pointer (&connection_factories, g_hash_table_unref);
 }
 
 /**

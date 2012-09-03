@@ -628,8 +628,8 @@ g_io_modules_load_all_in_directory (const char *dirname)
   return g_io_modules_load_all_in_directory_with_scope (dirname, NULL);
 }
 
-GRecMutex default_modules_lock;
-GHashTable *default_modules;
+static GRecMutex default_modules_lock;
+static GHashTable *default_modules;
 
 static gpointer
 try_implementation (GIOExtension         *extension,
@@ -704,7 +704,8 @@ _g_io_module_get_default (const gchar         *extension_point,
     }
   else
     {
-      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+      default_modules = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               g_free, g_object_unref);
     }
 
   _g_io_modules_ensure_loaded ();
@@ -954,16 +955,6 @@ _g_io_modules_ensure_loaded (void)
     }
 
   G_UNLOCK (loaded_dirs);
-}
-
-void
-_g_io_module_deinit (void)
-{
-  if (extension_points != NULL)
-    {
-      g_hash_table_unref (extension_points);
-      extension_points = NULL;
-    }
 }
 
 static void
@@ -1283,4 +1274,17 @@ gint
 g_io_extension_get_priority (GIOExtension *extension)
 {
   return extension->priority;
+}
+
+void
+g_io_module_cleanup (void)
+{
+  g_clear_pointer (&extension_points, g_hash_table_unref);
+  g_mutex_clear (&G_LOCK_NAME (extension_points));
+
+  g_clear_pointer (&default_modules, g_hash_table_unref);
+  g_rec_mutex_clear (&default_modules_lock);
+
+  g_mutex_clear (&G_LOCK_NAME (registered_extensions));
+  g_mutex_clear (&G_LOCK_NAME (loaded_dirs));
 }

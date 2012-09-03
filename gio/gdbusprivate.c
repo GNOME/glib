@@ -1958,14 +1958,8 @@ _g_dbus_initialize (void)
 }
 
 void
-_g_dbus_deinitialize (void)
+g_dbus_cleanup (void)
 {
-  if (shared_thread_data)
-    {
-      g_assert_cmpint (shared_thread_data->num_users, ==, 1); /* if not, there's a leak */
-      _g_dbus_shared_thread_unref ();
-    }
-
   _g_dbus_connection_deinit ();
 
   _g_dbus_error_deinit ();

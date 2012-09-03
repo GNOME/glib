@@ -196,13 +196,3 @@ g_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
 
   return (* iface->lookup_finish) (resolver, result, error);
 }
-
-void
-_g_proxy_resolver_deinit (void)
-{
-  if (default_proxy_resolver)
-  {
-    g_object_unref (default_proxy_resolver);
-    default_proxy_resolver = NULL;
-  }
-}

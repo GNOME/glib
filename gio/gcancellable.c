@@ -759,11 +759,8 @@ g_cancellable_source_new (GCancellable *cancellable)
 }
 
 void
-_g_cancellable_deinit (void)
+g_cancellable_cleanup (void)
 {
-  if (cancellable_cond != NULL)
-    {
-      g_cond_free (cancellable_cond);
-      cancellable_cond = NULL;
-    }
+  g_cond_clear (&cancellable_cond);
+  g_mutex_clear (&cancellable_mutex);
 }

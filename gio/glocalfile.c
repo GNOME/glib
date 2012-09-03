@@ -182,13 +182,10 @@ g_local_file_class_init (GLocalFileClass *klass)
 }
 
 void
-_g_local_file_deinit (void)
+g_local_file_cleanup (void)
 {
-  if (local_writable_attributes != NULL)
-    {
-      g_file_attribute_info_list_unref (local_writable_attributes);
-      local_writable_attributes = NULL;
-    }
+  g_clear_pointer (&local_writable_attributes,
+                   g_file_attribute_info_list_unref);
 }
 
 static void

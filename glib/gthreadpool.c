@@ -126,6 +126,26 @@ static void             g_thread_pool_wakeup_and_stop_all (GRealThreadPool  *poo
 static GRealThreadPool* g_thread_pool_wait_for_new_pool   (void);
 static gpointer         g_thread_pool_wait_for_new_task   (GRealThreadPool  *pool);
 
+static gint
+g_thread_pool_sort_func (gconstpointer a,
+                         gconstpointer b,
+                         gpointer      user_data)
+{
+  GRealThreadPool *pool = user_data;
+
+  /* Sentinels used by g_thread_pool_wakeup_and_stop_all() */
+  if (a == GUINT_TO_POINTER (1))
+    {
+      if (b == GUINT_TO_POINTER (1))
+        return 0;
+      return -1;
+    }
+  else if (b == GUINT_TO_POINTER (1))
+    return -1;
+
+  return pool->sort_func (a, b, pool->sort_user_data);
+}
+
 static void
 g_thread_pool_queue_push_unlocked (GRealThreadPool *pool,
                                    gpointer         data)
@@ -133,8 +153,8 @@ g_thread_pool_queue_push_unlocked (GRealThreadPool *pool,
   if (pool->sort_func)
     g_async_queue_push_sorted_unlocked (pool->queue,
                                         data,
-                                        pool->sort_func,
-                                        pool->sort_user_data);
+                                        g_thread_pool_sort_func,
+                                        pool);
   else
     g_async_queue_push_unlocked (pool->queue, data);
 }
@@ -951,8 +971,8 @@ g_thread_pool_set_sort_function (GThreadPool      *pool,
 
   if (func)
     g_async_queue_sort_unlocked (real->queue,
-                                 real->sort_func,
-                                 real->sort_user_data);
+                                 g_thread_pool_sort_func,
+                                 real);
 
   g_async_queue_unlock (real->queue);
 }
@@ -1031,9 +1051,8 @@ g_thread_pool_cleanup (void)
    *        of shutting down to execute their last instructions... ICK!
    */
   g_thread_pool_set_max_unused_threads (0);
-  while (alive_threads)
-    g_thread_yield ();
-  g_usleep (10000);
+  while (alive_threads > 0)
+    g_usleep (10000);
 
   g_clear_pointer (&unused_thread_queue, g_async_queue_unref);
 }

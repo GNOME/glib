@@ -1426,11 +1426,7 @@ _g_resolver_records_from_DnsQuery (const gchar  *rrname,
 #endif
 
 void
-_g_resolver_deinit (void)
+g_resolver_cleanup (void)
 {
-  if (default_resolver)
-    {
-      g_object_unref (default_resolver);
-      default_resolver = NULL;
-    }
+  g_clear_object (&default_resolver);
 }

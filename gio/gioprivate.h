@@ -25,13 +25,12 @@
 
 G_BEGIN_DECLS
 
-G_GNUC_INTERNAL void _g_cancellable_deinit (void);
-G_GNUC_INTERNAL void _g_io_module_deinit (void);
-G_GNUC_INTERNAL void _g_io_scheduler_deinit (void);
-G_GNUC_INTERNAL void _g_local_file_deinit (void);
-G_GNUC_INTERNAL void _g_proxy_resolver_deinit (void);
-G_GNUC_INTERNAL void _g_resolver_deinit (void);
-G_GNUC_INTERNAL void _g_socket_connection_factory_deinit (void);
+G_GNUC_INTERNAL void g_cancellable_cleanup (void);
+G_GNUC_INTERNAL void g_io_module_cleanup (void);
+G_GNUC_INTERNAL void g_io_scheduler_cleanup (void);
+G_GNUC_INTERNAL void g_local_file_cleanup (void);
+G_GNUC_INTERNAL void g_resolver_cleanup (void);
+G_GNUC_INTERNAL void g_socket_connection_factory_cleanup (void);
 
 G_END_DECLS
 

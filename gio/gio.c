@@ -20,18 +20,25 @@
 
 #include "gio.h"
 
-#include "gdbusprivate.h"
+#include "glib/gconstructor.h"
 #include "gioprivate.h"
 
-void
-g_io_deinit (void)
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS (gio_dtor)
+#endif
+G_DEFINE_DESTRUCTOR (gio_dtor)
+
+static void
+gio_dtor (void)
 {
-  _g_dbus_deinitialize ();
-  _g_local_file_deinit ();
-  _g_socket_connection_factory_deinit ();
-  _g_io_module_deinit ();
-  _g_cancellable_deinit ();
-  _g_io_scheduler_deinit ();
-  _g_proxy_resolver_deinit ();
-  _g_resolver_deinit ();
+  if (G_LIKELY (!g_mem_do_cleanup))
+    return;
+
+  g_cancellable_cleanup ();
+  g_dbus_cleanup ();
+  g_io_module_cleanup ();
+  g_io_scheduler_cleanup ();
+  g_local_file_cleanup ();
+  g_resolver_cleanup ();
+  g_socket_connection_factory_cleanup ();
 }

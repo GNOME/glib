@@ -392,11 +392,11 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
 }
 
 void
-_g_io_scheduler_deinit (void)
+g_io_scheduler_cleanup (void)
 {
   if (job_thread_pool)
     {
-      g_thread_pool_free (job_thread_pool, FALSE, FALSE);
+      g_thread_pool_free (job_thread_pool, FALSE, TRUE);
       job_thread_pool = NULL;
     }
 }

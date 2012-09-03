@@ -246,6 +246,7 @@ glib_cleanup (void)
   g_main_cleanup ();
   g_quark_cleanup ();
   g_rand_cleanup ();
+  g_thread_pool_cleanup ();
   g_time_zone_cleanup ();
   g_utils_cleanup ();
   g_variant_type_info_cleanup ();
