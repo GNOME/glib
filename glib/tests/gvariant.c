@@ -4201,6 +4201,13 @@ verify_gvariant_checksum_va (const gchar *sha256,
 
   v = g_variant_new_va (fmt, NULL, &args);
   g_variant_ref_sink (v);
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  {
+    GVariant *byteswapped = g_variant_byteswap (v);
+    g_variant_unref (v);
+    v = byteswapped;
+  }
+#endif
 
   va_end (args);
 
