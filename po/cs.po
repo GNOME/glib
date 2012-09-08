@@ -722,11 +722,11 @@ msgid ""
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
 "Příkazy:\n"
-"  help         Zobrazí tyto informace\n"
-"  introspect   Provede introspection vzdáleného objektu\n"
-"  monitor      Sleduje vzdálený objekt\n"
-"  call         Spustí metodu na vzdáleném objektu\n"
-"  emit         Vyšle signál\n"
+"  help         Zobrazit tyto informace\n"
+"  introspect   Provést introspection vzdáleného objektu\n"
+"  monitor      Sledovat vzdálený objekt\n"
+"  call         Spustit metodu na vzdáleném objektu\n"
+"  emit         Vyslat signál\n"
 "\n"
 "Nápovědu k jednotlivým příkazům získáte použitím „%s PŘÍKAZ --help“.\n"
 
@@ -3673,11 +3673,11 @@ msgstr "Přepínače nápovědy:"
 
 #: ../glib/goption.c:852
 msgid "Show help options"
-msgstr "Zobrazí přepínače nápovědy"
+msgstr "Zobrazit přepínače nápovědy"
 
 #: ../glib/goption.c:858
 msgid "Show all help options"
-msgstr "Zobrazí všechny přepínače nápovědy"
+msgstr "Zobrazit všechny přepínače nápovědy"
 
 #: ../glib/goption.c:920
 msgid "Application Options:"
