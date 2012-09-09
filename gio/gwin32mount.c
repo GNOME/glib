@@ -230,7 +230,7 @@ g_win32_mount_get_icon (GMount *mount)
 	}
       else
         {
-          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE);
+          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
 	}
     }
 
@@ -247,7 +247,7 @@ g_win32_mount_get_symbolic_icon (GMount *mount)
   /* lazy creation */
   if (!win32_mount->symbolic_icon)
     {
-      win32_mount->symbolic_icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, TRUE);
+      win32_mount->symbolic_icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, TRUE));
     }
 
   return g_object_ref (win32_mount->symbolic_icon);
