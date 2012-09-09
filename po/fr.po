@@ -16,10 +16,11 @@ msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-27 18:55+0000\n"
-"PO-Revision-Date: 2012-04-30 21:51+0200\n"
+"POT-Creation-Date: 2012-09-08 09:16+0000\n"
+"PO-Revision-Date: 2012-09-09 19:51+0200\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -80,7 +81,8 @@ msgstr "Initialisation annulable non prise en charge"
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
-"La conversion du jeu de caractères « %s » vers « %s » n'est pas prise en charge"
+"La conversion du jeu de caractères « %s » vers « %s » n'est pas prise en "
+"charge"
 
 #: ../gio/gcharsetconverter.c:462 ../glib/gconvert.c:572
 #: ../glib/gconvert.c:650
@@ -97,7 +99,7 @@ msgstr "Type inconnu"
 msgid "%s filetype"
 msgstr "Type de fichier %s"
 
-#: ../gio/gcontenttype.c:680
+#: ../gio/gcontenttype.c:684
 #, c-format
 msgid "%s type"
 msgstr "Type %s"
@@ -155,8 +157,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
-"Couple clé/valeur %d, « %s », dans l'élément d'adresse « %s », ne comporte pas "
-"de signe égal"
+"Couple clé/valeur %d, « %s », dans l'élément d'adresse « %s », ne comporte "
+"pas de signe égal"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
@@ -164,8 +166,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
-"Erreur lors du décodage de la clé ou de la valeur dans le couple clé/valeur %"
-"d, « %s », dans l'élément d'adresse « %s »"
+"Erreur lors du décodage de la clé ou de la valeur dans le couple clé/valeur "
+"%d, « %s », dans l'élément d'adresse « %s »"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
@@ -173,8 +175,8 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
-"Erreur dans l'adresse « %s » — le transport Unix requiert que soit exactement "
-"définie une des clés « path » ou « abstract »"
+"Erreur dans l'adresse « %s » — le transport Unix requiert que soit "
+"exactement définie une des clés « path » ou « abstract »"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
@@ -207,7 +209,8 @@ msgstr "Transport « %s » inconnu ou non pris en charge pour l'adresse « %s
 #: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
-msgstr "Erreur lors de l'ouverture du fichier à dénomination unique « %s » : %s"
+msgstr ""
+"Erreur lors de l'ouverture du fichier à dénomination unique « %s » : %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
@@ -247,14 +250,15 @@ msgstr "Erreur lors de la génération de la ligne de commande « %s » : "
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
-"Fin anormale du programme lors de la génération de la ligne de commande « %"
-"s » : %s"
+"Fin anormale du programme lors de la génération de la ligne de commande "
+"« %s » : %s"
 
 #: ../gio/gdbusaddress.c:1091
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
-"La ligne de commande « %s » s'est terminée avec un code de fin non nul %d : %s"
+"La ligne de commande « %s » s'est terminée avec un code de fin non nul %d : "
+"%s"
 
 #: ../gio/gdbusaddress.c:1312
 #, c-format
@@ -264,7 +268,9 @@ msgstr "(saisissez n'importe quel caractère pour fermer cette fenêtre)\n"
 #: ../gio/gdbusaddress.c:1437
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr "La session dbus n'est pas lancée et autolaunch (le lancement automatique) a échoué"
+msgstr ""
+"La session dbus n'est pas lancée et autolaunch (le lancement automatique) a "
+"échoué"
 
 #: ../gio/gdbusaddress.c:1458
 #, c-format
@@ -328,8 +334,8 @@ msgstr ""
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Les droits d'accès au répertoire « %s » sont mal formés. Mode 0700 attendu, 0%"
-"o obtenu"
+"Les droits d'accès au répertoire « %s » sont mal formés. Mode 0700 attendu, "
+"0%o obtenu"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -429,8 +435,8 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Erreur lors de la définition de la propriété « %s » : type attendu « %s », « %"
-"s » obtenu"
+"Erreur lors de la définition de la propriété « %s » : type attendu « %s », "
+"« %s » obtenu"
 
 #: ../gio/gdbusconnection.c:4181
 #, c-format
@@ -485,7 +491,8 @@ msgstr "La méthode « %s » a renvoyé le type « %s », mais « %s » é
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
-"La méthode « %s » sur l'interface « %s » avec la signature « %s » n'existe pas"
+"La méthode « %s » sur l'interface « %s » avec la signature « %s » n'existe "
+"pas"
 
 #: ../gio/gdbusconnection.c:6378
 #, c-format
@@ -598,8 +605,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valeur de boutisme non valide. 0x6c (« l ») ou 0x42 (« B ») attendus, mais 0x%"
-"02x trouvé"
+"Valeur de boutisme non valide. 0x6c (« l ») ou 0x42 (« B ») attendus, mais 0x"
+"%02x trouvé"
 
 #: ../gio/gdbusmessage.c:1712
 #, c-format
@@ -625,11 +632,11 @@ msgstr ""
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
-"Pas de signature d'en-tête dans le message, mais le corps du message est de %"
-"u octet"
+"Pas de signature d'en-tête dans le message, mais le corps du message est de "
+"%u octet"
 msgstr[1] ""
-"Pas de signature d'en-tête dans le message, mais le corps du message est de %"
-"u octets"
+"Pas de signature d'en-tête dans le message, mais le corps du message est de "
+"%u octets"
 
 #: ../gio/gdbusmessage.c:1824
 msgid "Cannot deserialize message: "
@@ -666,8 +673,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2359
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "Le corps du message a une signature de type « %s », mais celle dans le champ "
 "d'en-tête est « %s »"
@@ -698,18 +705,18 @@ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr ""
 "Chargement de /var/lib/dbus/machine-id ou /etc/machine-id impossible : "
 
-#: ../gio/gdbusproxy.c:1624
+#: ../gio/gdbusproxy.c:1640
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Erreur lors de l'appel de StartServiceByName pour %s : "
 
 # Guillemets anglais laissés volontairement
-#: ../gio/gdbusproxy.c:1645
+#: ../gio/gdbusproxy.c:1663
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Réponse %d inattendue de la méthode StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2745 ../gio/gdbusproxy.c:2882
+#: ../gio/gdbusproxy.c:2763 ../gio/gdbusproxy.c:2900
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -989,8 +996,8 @@ msgstr "Impossible de trouver le terminal requis par l'application"
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
-"Impossible de créer le dossier de configuration utilisateur d'application %"
-"s : %s"
+"Impossible de créer le dossier de configuration utilisateur d'application "
+"%s : %s"
 
 #: ../gio/gdesktopappinfo.c:1568
 #, c-format
@@ -1007,7 +1014,7 @@ msgstr "Les informations de l'application ne comportent pas d'identifiant"
 msgid "Can't create user desktop file %s"
 msgstr "Impossible de créer le fichier .desktop utilisateur %s"
 
-#: ../gio/gdesktopappinfo.c:2172
+#: ../gio/gdesktopappinfo.c:2178
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Définition personnalisée pour %s"
@@ -1070,11 +1077,11 @@ msgstr "Un GEmblem est attendu pour le GEmblemedIcon"
 #: ../gio/gfile.c:1477 ../gio/gfile.c:1531 ../gio/gfile.c:1588
 #: ../gio/gfile.c:1671 ../gio/gfile.c:1726 ../gio/gfile.c:1786
 #: ../gio/gfile.c:1840 ../gio/gfile.c:3312 ../gio/gfile.c:3366
-#: ../gio/gfile.c:3500 ../gio/gfile.c:3541 ../gio/gfile.c:3871
-#: ../gio/gfile.c:4273 ../gio/gfile.c:4359 ../gio/gfile.c:4448
-#: ../gio/gfile.c:4546 ../gio/gfile.c:4633 ../gio/gfile.c:4727
-#: ../gio/gfile.c:5048 ../gio/gfile.c:5315 ../gio/gfile.c:5380
-#: ../gio/gfile.c:7008 ../gio/gfile.c:7098 ../gio/gfile.c:7184
+#: ../gio/gfile.c:3511 ../gio/gfile.c:3552 ../gio/gfile.c:3882
+#: ../gio/gfile.c:4284 ../gio/gfile.c:4370 ../gio/gfile.c:4459
+#: ../gio/gfile.c:4557 ../gio/gfile.c:4644 ../gio/gfile.c:4738
+#: ../gio/gfile.c:5059 ../gio/gfile.c:5326 ../gio/gfile.c:5391
+#: ../gio/gfile.c:7018 ../gio/gfile.c:7108 ../gio/gfile.c:7194
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Opération non prise en charge"
@@ -1122,24 +1129,24 @@ msgstr "Erreur lors de l'opération de « splicing » sur le fichier : %s"
 msgid "Can't copy special file"
 msgstr "Impossible de copier le fichier spécial"
 
-#: ../gio/gfile.c:3490
+#: ../gio/gfile.c:3501
 msgid "Invalid symlink value given"
 msgstr "Valeur de lien symbolique donnée non valide"
 
-#: ../gio/gfile.c:3584
+#: ../gio/gfile.c:3595
 msgid "Trash not supported"
 msgstr "La corbeille n'est pas prise en charge"
 
-#: ../gio/gfile.c:3633
+#: ../gio/gfile.c:3644
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Les noms de fichiers ne peuvent comporter de « %c »"
 
-#: ../gio/gfile.c:6067 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6077 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "le volume n'implémente pas le montage"
 
-#: ../gio/gfile.c:6178
+#: ../gio/gfile.c:6188
 msgid "No application is registered as handling this file"
 msgstr "Aucune application n'est enregistrée pour gérer ce fichier"
 
@@ -1286,49 +1293,57 @@ msgstr "La localisation de « %s » dans tous les répertoires source a échou
 msgid "Failed to locate '%s' in current directory"
 msgstr "La localisation de « %s » dans le répertoire actuel a échoué"
 
-#: ../gio/glib-compile-resources.c:290
+#: ../gio/glib-compile-resources.c:291
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "Option de traitement inconnue « %s »"
 
-#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:366
+#: ../gio/glib-compile-resources.c:309 ../gio/glib-compile-resources.c:368
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "La création du fichier temporaire a échoué : %s"
 
 #: ../gio/glib-compile-resources.c:338
-msgid "Error processing input file with xmllint"
-msgstr "Erreur lors du traitement du fichier d'entrée avec xmllint"
+#, c-format
+msgid ""
+"Error processing input file with xmllint:\n"
+"%s"
+msgstr "Erreur lors du traitement du fichier d'entrée avec xmllint :\n"
+"%s"
 
-#: ../gio/glib-compile-resources.c:393
-msgid "Error processing input file with to-pixdata"
-msgstr "Erreur lors du traitement du fichier d'entrée avec to-pixdata"
+#: ../gio/glib-compile-resources.c:394
+#, c-format
+msgid ""
+"Error processing input file with to-pixdata:\n"
+"%s"
+msgstr "Erreur lors du traitement du fichier d'entrée avec to-pixdata :\n"
+"%s"
 
-#: ../gio/glib-compile-resources.c:406
+#: ../gio/glib-compile-resources.c:408
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Erreur de lecture du fichier %s : %s"
 
-#: ../gio/glib-compile-resources.c:426
+#: ../gio/glib-compile-resources.c:428
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Erreur à la compression du fichier %s"
 
-#: ../gio/glib-compile-resources.c:490 ../gio/glib-compile-schemas.c:1567
+#: ../gio/glib-compile-resources.c:492 ../gio/glib-compile-schemas.c:1567
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "<%s> ne peut pas contenir du texte"
 
-#: ../gio/glib-compile-resources.c:613
+#: ../gio/glib-compile-resources.c:615
 msgid "name of the output file"
 msgstr "nom du fichier de sortie"
 
-#: ../gio/glib-compile-resources.c:613 ../gio/glib-compile-resources.c:646
+#: ../gio/glib-compile-resources.c:615 ../gio/glib-compile-resources.c:648
 #: ../gio/gresource-tool.c:477 ../gio/gresource-tool.c:543
 msgid "FILE"
 msgstr "FICHIER"
 
-#: ../gio/glib-compile-resources.c:614
+#: ../gio/glib-compile-resources.c:616
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -1336,41 +1351,41 @@ msgstr ""
 "Les répertoires à partir desquels les fichiers seront lus (par défaut le "
 "répertoire actuel)"
 
-#: ../gio/glib-compile-resources.c:614 ../gio/glib-compile-schemas.c:1995
+#: ../gio/glib-compile-resources.c:616 ../gio/glib-compile-schemas.c:1995
 #: ../gio/glib-compile-schemas.c:2025
 msgid "DIRECTORY"
 msgstr "RÉPERTOIRE"
 
-#: ../gio/glib-compile-resources.c:615
+#: ../gio/glib-compile-resources.c:617
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Générer la sortie dans le format sélectionné par l'extension du nom de "
 "fichier cible"
 
-#: ../gio/glib-compile-resources.c:616
+#: ../gio/glib-compile-resources.c:618
 msgid "Generate source header"
 msgstr "Générer l'en-tête de la source"
 
-#: ../gio/glib-compile-resources.c:617
+#: ../gio/glib-compile-resources.c:619
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Générer le code source utilisé pour lier vers le fichier ressource dans "
 "votre code"
 
-#: ../gio/glib-compile-resources.c:618
+#: ../gio/glib-compile-resources.c:620
 msgid "Generate dependency list"
 msgstr "Générer la liste des dépendances"
 
-#: ../gio/glib-compile-resources.c:619
+#: ../gio/glib-compile-resources.c:621
 msgid "Don't automatically create and register resource"
 msgstr "Ne pas créer et enregistrer automatiquement la ressource"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:622
 msgid "C identifier name used for the generated source code"
 msgstr "Nom d'identifiant C utilisé pour le code source généré"
 
-#: ../gio/glib-compile-resources.c:649
+#: ../gio/glib-compile-resources.c:651
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1381,7 +1396,7 @@ msgstr ""
 "xml\n"
 "et le fichier de ressource possède l'extension .gresource."
 
-#: ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:667
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Vous devez indiquer un et un seul nom de fichier\n"
@@ -1409,13 +1424,15 @@ msgstr ""
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr ""
-"nom « %s » non valide : deux tirets successifs (« -- ») ne sont pas autorisés."
+"nom « %s » non valide : deux tirets successifs (« -- ») ne sont pas "
+"autorisés."
 
 #: ../gio/glib-compile-schemas.c:814
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr ""
-"nom « %s » non valide : le dernier caractère ne peut pas être un tiret (« - »)."
+"nom « %s » non valide : le dernier caractère ne peut pas être un tiret (« -"
+" »)."
 
 #: ../gio/glib-compile-schemas.c:822
 #, c-format
@@ -1491,7 +1508,8 @@ msgstr "<schema id='%s'> étend le schéma « %s » qui n'existe pas encore"
 #: ../gio/glib-compile-schemas.c:1141
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> est une liste du schéma « %s » qui n'existe pas encore"
+msgstr ""
+"<schema id='%s'> est une liste du schéma « %s » qui n'existe pas encore"
 
 #: ../gio/glib-compile-schemas.c:1149
 #, c-format
@@ -1517,8 +1535,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> étend <schema id='%s' list-of='%s'> mais « %s » "
-"n'étend pas « %s »"
+"<schema id='%s' list-of='%s'> étend <schema id='%s' list-of='%s'> mais "
+"« %s » n'étend pas « %s »"
 
 #: ../gio/glib-compile-schemas.c:1196
 #, c-format
@@ -1557,8 +1575,8 @@ msgstr "Ce fichier est ignoré.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"Aucune clé nommée « %s » dans le schéma « %s » comme défini dans le fichier « %"
-"s » de redéfinition"
+"Aucune clé nommée « %s » dans le schéma « %s » comme défini dans le fichier "
+"« %s » de redéfinition"
 
 #: ../gio/glib-compile-schemas.c:1866 ../gio/glib-compile-schemas.c:1924
 #: ../gio/glib-compile-schemas.c:1952
@@ -1575,8 +1593,8 @@ msgstr " et --strict a été spécifié ; sortie en cours.\n"
 #: ../gio/glib-compile-schemas.c:1886
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
 "Erreur d'analyse de la clé nommée « %s » dans le schéma « %s » comme défini "
 "dans le fichier « %s » de redéfinition : %s. "
@@ -1998,7 +2016,8 @@ msgstr "mount n'implémente pas l'éjection (« eject »)"
 #: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
-"mount n'implémente pas le démontage (« unmount » ou « unmount_with_operation »)"
+"mount n'implémente pas le démontage (« unmount » ou "
+"« unmount_with_operation »)"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2265,7 +2284,8 @@ msgstr "Le schéma « %s » n'existe pas\n"
 #, c-format
 msgid "Schema '%s' is not relocatable (path must not be specified)\n"
 msgstr ""
-"Le schéma « %s » n'est pas réadressable (le chemin ne doit pas être indiqué)\n"
+"Le schéma « %s » n'est pas réadressable (le chemin ne doit pas être "
+"indiqué)\n"
 
 #: ../gio/gsettings-tool.c:80
 #, c-format
@@ -2999,7 +3019,8 @@ msgstr "Aucune application nommée « %s » n'a enregistré un signet pour «�
 #: ../glib/gbookmarkfile.c:3424
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Échec du développement de la ligne de commande « %s » pour l'URI « %s »"
+msgstr ""
+"Échec du développement de la ligne de commande « %s » pour l'URI « %s »"
 
 #: ../glib/gconvert.c:807 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
 #: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
@@ -3010,8 +3031,8 @@ msgstr "Séquence de caractères incomplète en fin d'entrée"
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
-"Impossible de convertir le caractère de repli « %s » dans le jeu de codes « %"
-"s »"
+"Impossible de convertir le caractère de repli « %s » dans le jeu de codes "
+"« %s »"
 
 #: ../glib/gconvert.c:1874
 #, c-format
@@ -3318,9 +3339,10 @@ msgstr "L'ouverture du fichier « %s » a échoué : échec de fdopen() : %s
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Le renommage du fichier « %s » vers « %s » a échoué : échec de g_rename() : %s"
+"Le renommage du fichier « %s » vers « %s » a échoué : échec de g_rename() : "
+"%s"
 
-#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1584
+#: ../glib/gfileutils.c:1039 ../glib/gfileutils.c:1583
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "La création du fichier « %s » a échoué : %s"
@@ -3351,29 +3373,30 @@ msgstr "L'écriture dans le fichier « %s » a échoué : échec de fsync() 
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "La fermeture du fichier « %s » a échoué : échec de fclose() : %s"
 
-#: ../glib/gfileutils.c:1287
+#: ../glib/gfileutils.c:1286
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Le fichier existant « %s » ne peut pas être supprimé : échec de g_unlink() : %"
-"s"
+"Le fichier existant « %s » ne peut pas être supprimé : échec de g_unlink() : "
+"%s"
 
-#: ../glib/gfileutils.c:1547
+#: ../glib/gfileutils.c:1546
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Le modèle « %s » n'est pas valide, il ne devrait pas contenir un « %s »"
+msgstr ""
+"Le modèle « %s » n'est pas valide, il ne devrait pas contenir un « %s »"
 
-#: ../glib/gfileutils.c:1560
+#: ../glib/gfileutils.c:1559
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Le modèle « %s » ne contient pas XXXXXX"
 
-#: ../glib/gfileutils.c:2088
+#: ../glib/gfileutils.c:2087
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "La lecture du lien symbolique « %s » a échoué : %s"
 
-#: ../glib/gfileutils.c:2109
+#: ../glib/gfileutils.c:2108
 msgid "Symbolic links not supported"
 msgstr "Liens symboliques non pris en charge"
 
@@ -3400,64 +3423,64 @@ msgstr "La canal se termine avec un caractère partiel"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Lecture de données brutes impossible dans g_io_channel_read_to_end"
 
-#: ../glib/gkeyfile.c:726
+#: ../glib/gkeyfile.c:725
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Impossible de trouver un fichier de clés valide dans les répertoires de "
 "recherche"
 
-#: ../glib/gkeyfile.c:762
+#: ../glib/gkeyfile.c:761
 msgid "Not a regular file"
 msgstr "N'est pas un fichier standard"
 
-#: ../glib/gkeyfile.c:1162
+#: ../glib/gkeyfile.c:1161
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Le fichier de clés contient la ligne « %s » qui n'est ni une paire de valeurs "
-"de clé, ni un groupe, ni un commentaire"
+"Le fichier de clés contient la ligne « %s » qui n'est ni une paire de "
+"valeurs de clé, ni un groupe, ni un commentaire"
 
-#: ../glib/gkeyfile.c:1222
+#: ../glib/gkeyfile.c:1218
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nom de groupe non valide : %s"
 
-#: ../glib/gkeyfile.c:1244
+#: ../glib/gkeyfile.c:1240
 msgid "Key file does not start with a group"
 msgstr "Le fichier de clés ne débute pas par un groupe"
 
-#: ../glib/gkeyfile.c:1270
+#: ../glib/gkeyfile.c:1266
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nom de clé non valide : %s"
 
-#: ../glib/gkeyfile.c:1297
+#: ../glib/gkeyfile.c:1293
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr ""
 "Le fichier de clés contient un codage de caractères non pris en charge « %s »"
 
-#: ../glib/gkeyfile.c:1541 ../glib/gkeyfile.c:1703 ../glib/gkeyfile.c:3081
-#: ../glib/gkeyfile.c:3147 ../glib/gkeyfile.c:3273 ../glib/gkeyfile.c:3406
-#: ../glib/gkeyfile.c:3548 ../glib/gkeyfile.c:3778 ../glib/gkeyfile.c:3846
+#: ../glib/gkeyfile.c:1536 ../glib/gkeyfile.c:1698 ../glib/gkeyfile.c:3076
+#: ../glib/gkeyfile.c:3142 ../glib/gkeyfile.c:3268 ../glib/gkeyfile.c:3401
+#: ../glib/gkeyfile.c:3543 ../glib/gkeyfile.c:3773 ../glib/gkeyfile.c:3840
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Le fichier de clés n'a pas de groupe « %s »"
 
-#: ../glib/gkeyfile.c:1715
+#: ../glib/gkeyfile.c:1710
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Le fichier de clés n'a pas de clé « %s »"
 
-#: ../glib/gkeyfile.c:1822 ../glib/gkeyfile.c:1938
+#: ../glib/gkeyfile.c:1817 ../glib/gkeyfile.c:1933
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
-"Le fichier de clés contient la clé « %s » avec la valeur « %s » qui n'est pas "
-"codé en UTF-8"
+"Le fichier de clés contient la clé « %s » avec la valeur « %s » qui n'est "
+"pas codé en UTF-8"
 
-#: ../glib/gkeyfile.c:1842 ../glib/gkeyfile.c:1958 ../glib/gkeyfile.c:2327
+#: ../glib/gkeyfile.c:1837 ../glib/gkeyfile.c:1953 ../glib/gkeyfile.c:2322
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -3465,7 +3488,7 @@ msgstr ""
 "Le fichier de clés contient la clé « %s » dont une valeur est impossible à "
 "interpréter."
 
-#: ../glib/gkeyfile.c:2544 ../glib/gkeyfile.c:2910
+#: ../glib/gkeyfile.c:2539 ../glib/gkeyfile.c:2905
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3474,46 +3497,46 @@ msgstr ""
 "Le fichier de clés contient la clé « %s » dans le groupe « %s » qui a une "
 "valeur impossible à interpréter."
 
-#: ../glib/gkeyfile.c:2622 ../glib/gkeyfile.c:2698
+#: ../glib/gkeyfile.c:2617 ../glib/gkeyfile.c:2693
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
 "La clé « %s » dans le groupe « %s » a une valeur « %s » alors que %s était "
 "attendu"
 
-#: ../glib/gkeyfile.c:3096 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3857
+#: ../glib/gkeyfile.c:3091 ../glib/gkeyfile.c:3283 ../glib/gkeyfile.c:3851
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Le fichier de clés ne contient pas de clé « %s » dans le groupe « %s »"
 
-#: ../glib/gkeyfile.c:4089
+#: ../glib/gkeyfile.c:4083
 msgid "Key file contains escape character at end of line"
 msgstr "Le fichier de clés contient un caractère d'échappement en fin de ligne"
 
-#: ../glib/gkeyfile.c:4111
+#: ../glib/gkeyfile.c:4105
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr ""
 "Le fichier de clés contient une séquence d'échappement non valide « %s »"
 
-#: ../glib/gkeyfile.c:4253
+#: ../glib/gkeyfile.c:4247
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "La valeur « %s » ne peut pas être interprétée comme un nombre."
 
-#: ../glib/gkeyfile.c:4267
+#: ../glib/gkeyfile.c:4261
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "La valeur entière « %s » est hors plage"
 
-#: ../glib/gkeyfile.c:4300
+#: ../glib/gkeyfile.c:4294
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "La valeur « %s » ne peut pas être interprétée comme un nombre à virgule "
 "flottante."
 
-#: ../glib/gkeyfile.c:4324
+#: ../glib/gkeyfile.c:4318
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "La valeur « %s » ne peut pas être interprétée comme un booléen."
@@ -3622,8 +3645,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1184
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Caractère anormal « %s », un caractère « > » est requis pour terminer la "
 "balise d'élément vide « %s »"
@@ -3644,8 +3667,8 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "Caractère anormal « %s », il est requis un caractère « > » ou « / », ou "
-"optionnellement un attribut, pour clore la balise de début de l'élément « %"
-"s » ; peut-être avez-vous utilisé un caractère non valide dans un nom "
+"optionnellement un attribut, pour clore la balise de début de l'élément "
+"« %s » ; peut-être avez-vous utilisé un caractère non valide dans un nom "
 "d'attribut"
 
 #: ../glib/gmarkup.c:1353
@@ -3663,8 +3686,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"« %s » n'est pas un caractère valide à la suite des caractères « </ » ; « %s » "
-"ne peut pas commencer un nom d'élément"
+"« %s » n'est pas un caractère valide à la suite des caractères « </ » ; "
+"« %s » ne peut pas commencer un nom d'élément"
 
 #: ../glib/gmarkup.c:1522
 #, c-format
@@ -4075,8 +4098,8 @@ msgstr "La bibliothèque PCRE est compilée sans la prise en charge UTF-8"
 #: ../glib/gregex.c:1215
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
-"La bibliothèque PCRE est compilée sans la prise en charge des propriétés UTF-"
-"8"
+"La bibliothèque PCRE est compilée sans la prise en charge des propriétés "
+"UTF-8"
 
 #: ../glib/gregex.c:1271
 #, c-format
@@ -4129,7 +4152,8 @@ msgstr "séquence d'échappement inconnue"
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
-"Erreur lors de l'analyse du texte de substitution « %s » au caractère %lu : %s"
+"Erreur lors de l'analyse du texte de substitution « %s » au caractère %lu : "
+"%s"
 
 #: ../glib/gshell.c:91
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -4145,7 +4169,8 @@ msgstr ""
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr ""
-"Le texte s'est terminé juste après un caractère « \\ » (le texte était « %s »)."
+"Le texte s'est terminé juste après un caractère « \\ » (le texte était "
+"« %s »)."
 
 #: ../glib/gshell.c:566
 #, c-format
@@ -4175,50 +4200,50 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erreur inattendue dans waitpid() (%s)"
 
-#: ../glib/gspawn.c:1174 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
+#: ../glib/gspawn.c:1176 ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "La lecture depuis un tube fils a échoué (%s)"
 
-#: ../glib/gspawn.c:1241
+#: ../glib/gspawn.c:1243
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Le clonage a échoué (%s)"
 
-#: ../glib/gspawn.c:1387 ../glib/gspawn-win32.c:369
+#: ../glib/gspawn.c:1389 ../glib/gspawn-win32.c:369
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Le changement de répertoire « %s » a échoué (%s)"
 
-#: ../glib/gspawn.c:1397
+#: ../glib/gspawn.c:1399
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "L'exécution du processus fils « %s » a échoué (%s)"
 
-#: ../glib/gspawn.c:1407
+#: ../glib/gspawn.c:1409
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "La redirection de la sortie ou de l'entrée du processus fils a échoué (%s)"
 
-#: ../glib/gspawn.c:1416
+#: ../glib/gspawn.c:1418
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Le clonage du processus fils a échoué (%s)"
 
-#: ../glib/gspawn.c:1424
+#: ../glib/gspawn.c:1426
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erreur inconnue à l'exécution du processus fils « %s »"
 
-#: ../glib/gspawn.c:1448
+#: ../glib/gspawn.c:1450
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Impossible de lire suffisamment de données depuis le tube du processus fils "
 "de pid (%s)"
 
-#: ../glib/gspawn.c:1521 ../glib/gspawn-win32.c:299
+#: ../glib/gspawn.c:1523 ../glib/gspawn-win32.c:299
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
@@ -4281,82 +4306,82 @@ msgstr "Séquence non valide dans l'entrée du convertisseur"
 msgid "Character out of range for UTF-16"
 msgstr "Caractère hors plage pour UTF-16"
 
-#: ../glib/gutils.c:2166 ../glib/gutils.c:2193 ../glib/gutils.c:2297
+#: ../glib/gutils.c:2184 ../glib/gutils.c:2211 ../glib/gutils.c:2315
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u octet"
 msgstr[1] "%u octets"
 
-#: ../glib/gutils.c:2172
+#: ../glib/gutils.c:2190
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f Kio"
 
-#: ../glib/gutils.c:2174
+#: ../glib/gutils.c:2192
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f Mio"
 
-#: ../glib/gutils.c:2177
+#: ../glib/gutils.c:2195
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f Gio"
 
-#: ../glib/gutils.c:2180
+#: ../glib/gutils.c:2198
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f Tio"
 
-#: ../glib/gutils.c:2183
+#: ../glib/gutils.c:2201
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f Pio"
 
-#: ../glib/gutils.c:2186
+#: ../glib/gutils.c:2204
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f Eio"
 
-#: ../glib/gutils.c:2199
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f ko"
 
-#: ../glib/gutils.c:2202 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2220 ../glib/gutils.c:2328
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f Mo"
 
-#: ../glib/gutils.c:2205 ../glib/gutils.c:2315
+#: ../glib/gutils.c:2223 ../glib/gutils.c:2333
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f Go"
 
-#: ../glib/gutils.c:2207 ../glib/gutils.c:2320
+#: ../glib/gutils.c:2225 ../glib/gutils.c:2338
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f To"
 
-#: ../glib/gutils.c:2210 ../glib/gutils.c:2325
+#: ../glib/gutils.c:2228 ../glib/gutils.c:2343
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f Po"
 
-#: ../glib/gutils.c:2213 ../glib/gutils.c:2330
+#: ../glib/gutils.c:2231 ../glib/gutils.c:2348
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f Eo"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2250
+#: ../glib/gutils.c:2268
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s octet"
 msgstr[1] "%s octets"
 
-#: ../glib/gutils.c:2305
+#: ../glib/gutils.c:2323
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f Ko"
