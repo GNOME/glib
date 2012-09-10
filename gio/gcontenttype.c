@@ -399,52 +399,41 @@ g_content_type_get_icon_internal (const gchar *type,
                                   gboolean     symbolic)
 {
   char *mimetype_icon;
-  char *generic_mimetype_icon;
+  char *generic_mimetype_icon = NULL;
   char *q;
   char *xdg_mimetype_icon;
   char *legacy_mimetype_icon;
   char *xdg_mimetype_generic_icon;
   char *icon_names[5];
   int n = 0;
-  const char *p;
   GIcon *themed_icon;
   const char *file_template;
-  const char *generic_suffix;
 
   g_return_val_if_fail (type != NULL, NULL);
 
   if (symbolic)
     {
       file_template = "%s-symbolic";
-      generic_suffix = "-x-generic-symbolic";
     }
   else
     {
       file_template = "%s";
-      generic_suffix = "-x-generic";
     }
 
   G_LOCK (gio_xdgmime);
   xdg_mimetype_icon = g_strdup_printf (file_template, xdg_mime_get_icon (type));
-  xdg_mimetype_generic_icon = g_strdup_printf (file_template, xdg_mime_get_generic_icon (type));
   G_UNLOCK (gio_xdgmime);
+  xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
 
   mimetype_icon = g_strdup_printf (file_template, type);
+  if (xdg_mimetype_generic_icon)
+    generic_mimetype_icon = g_strdup_printf (file_template, xdg_mimetype_generic_icon);
 
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
 
-  p = strchr (type, '/');
-  if (p == NULL)
-    p = type + strlen (type);
-
   /* Not all icons have migrated to the new icon theme spec, look for old names too */
   legacy_mimetype_icon = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
-
-  generic_mimetype_icon = g_malloc (p - type + strlen (generic_suffix) + 1);
-  memcpy (generic_mimetype_icon, type, p - type);
-  memcpy (generic_mimetype_icon + (p - type), generic_suffix, strlen (generic_suffix));
-  generic_mimetype_icon[(p - type) + strlen (generic_suffix)] = 0;
 
   if (xdg_mimetype_icon)
     icon_names[n++] = xdg_mimetype_icon;
@@ -452,10 +441,8 @@ g_content_type_get_icon_internal (const gchar *type,
   icon_names[n++] = mimetype_icon;
   icon_names[n++] = legacy_mimetype_icon;
 
-  if (xdg_mimetype_generic_icon)
-    icon_names[n++] = xdg_mimetype_generic_icon;
-
-  icon_names[n++] = generic_mimetype_icon;
+  if (generic_mimetype_icon)
+    icon_names[n++] = generic_mimetype_icon;
 
   themed_icon = g_themed_icon_new_from_names (icon_names, n);
 
@@ -498,6 +485,52 @@ GIcon *
 g_content_type_get_symbolic_icon (const gchar *type)
 {
   return g_content_type_get_icon_internal (type, TRUE);
+}
+
+/**
+ * g_content_type_get_generic_icon_name:
+ * @type: a content type string
+ *
+ * Gets the generic icon name for a content type.
+ *
+ * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * specification for more on the generic icon name.
+ *
+ * Returns: (allow-none): the registered generic icon name for the given @type,
+ *     or %NULL if unknown. Free with g_free()
+ *
+ * Since: 2.34
+ */
+gchar *
+g_content_type_get_generic_icon_name (const gchar *type)
+{
+  const gchar *xdg_icon_name;
+  gchar *icon_name;
+
+  G_LOCK (gio_xdgmime);
+  xdg_icon_name = xdg_mime_get_generic_icon (type);
+  G_UNLOCK (gio_xdgmime);
+
+  if (!xdg_icon_name)
+    {
+      const char *p;
+      const char *suffix = "-x-generic";
+
+      p = strchr (type, '/');
+      if (p == NULL)
+        p = type + strlen (type);
+
+      icon_name = g_malloc (p - type + strlen (suffix) + 1);
+      memcpy (icon_name, type, p - type);
+      memcpy (icon_name + (p - type), suffix, strlen (suffix));
+      icon_name[(p - type) + strlen (suffix)] = 0;
+    }
+  else
+    {
+      icon_name = g_strdup (xdg_icon_name);
+    }
+
+  return icon_name;
 }
 
 /**

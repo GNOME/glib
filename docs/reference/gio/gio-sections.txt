@@ -1292,6 +1292,7 @@ g_content_type_get_description
 g_content_type_get_mime_type
 g_content_type_get_icon
 g_content_type_get_symbolic_icon
+g_content_type_get_generic_icon_name
 g_content_type_can_be_executable
 g_content_type_from_mime_type
 g_content_type_guess
