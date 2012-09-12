@@ -20,18 +20,13 @@
       GLib is a general-purpose utility library, which provides many useful
       data types, macros, type conversions, string utilities, file utilities,
       a mainloop abstraction, and so on. It works on many UNIX-like platforms,
-      Windows, OS/2 and BeOS. GLib is released under the GNU Library General
-      Public License (GNU LGPL).
-    </para>
-    <para>
-      The general policy of GLib is that all functions are invisibly threadsafe
-      with the exception of data structure manipulation functions, where, if
-      you have two threads manipulating the <emphasis>same</emphasis> data
-      structure, they must use a lock to synchronize their operation.
+      as well as Windows and OS X. GLib is released under the GNU Library
+      General Public License (GNU LGPL).
     </para>
 
     <xi:include href="building.xml" />
     <xi:include href="cross.xml" />
+    <xi:include href="programming.xml" />
     <xi:include href="xml/compiling.xml" />
     <xi:include href="running.xml" />
     <xi:include href="changes.xml" />
