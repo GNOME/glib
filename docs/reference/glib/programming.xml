@@ -46,30 +46,6 @@ support multithreaded applications.
 <title>Security</title>
 
 <para>
-When your program needs to carry out some privileged operation (say,
-create a new user account), there are various ways in which you can go
-about this:
-<itemizedlist>
-<listitem><para>
-Implement a daemon that offers the privileged operation. A convenient
-way to do this is as a D-Bus system-bus service. The daemon will probably
-need ways to check the identity and authorization of the caller before
-executing the operation. <ulink url="http://www.freedesktop.org/software/polkit/docs/latest/polkit.8.html">polkit</ulink> is a framework that allows this.
-</para></listitem>
-<listitem><para>
-Use a small helper that is executed with elevated privileges via
-pkexec. <ulink url="http://www.freedesktop.org/software/polkit/docs/latest/pkexec.1.html">pkexec</ulink> is a small program launcher that is part of polkit.
-</para></listitem>
-<listitem><para>
-Use a small helper that is executed with elevated privileges by
-being suid root.
-</para></listitem>
-</itemizedlist>
-None of these approaches is the clear winner, they all have their
-advantages and disadvantages.
-</para>
-
-<para>
 When writing code that runs with elevated privileges, it is important
 to follow some basic rules of secure programming. David Wheeler has an
 excellent book on this topic,
@@ -80,38 +56,8 @@ excellent book on this topic,
 When it comes to GLib and its associated libraries, GLib and
 GObject are generally fine to use in code that runs with elevated
 privileges; they don't load modules (executable code in shared objects)
-or run other programs 'behind your back'.
-</para>
-
-<para>
-When using GIO, you have to be more careful, since GIO has extension
-points whose implementations get loaded from modules. However, GIO will
-never load modules from your home-directory except when explictly asked
-to do so via an environment variable.
-</para>
-
-<para>
-In most cases, your helper program should be so small that you don't
-need GIO, whose APIs are largely designed to support full-blown desktop
-applications. If you can't resist the convenience of these APIs, here
-are some steps you should take:
-<itemizedlist>
-<listitem><para>
-Clear the environment, e.g. using the <function>clearenv()</function>
-function.
-David Wheeler has a good <ulink url="http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/environment-variables.html">explanation</ulink> for why it is
-important to sanitize the environment.
-See the GIO <ulink url="http://developer.gnome.org/gio/stable/ch03.html">documentation</ulink>
-for a list of all environment variables affecting GIO. In particular,
-<envar>PATH</envar> (used to locate binaries), <envar>GIO_EXTRA_MODULES</envar> (used to locate loadable modules) and <envar>DBUS_{SYSTEM,SESSION}_BUS_ADDRESS</envar> (used to locate the D-Bus system and session bus) are important.
-</para></listitem>
-<listitem><para>
-Don't use GVfs, by setting <envar>GIO_USE_VFS=local</envar> in the environment.
-The reason to avoid GVfs in security-sensitive programs is that it uses
-many libraries which have not necessarily been audited for security problems.
-Gvfs is also heavily distributed and relies on a session bus to be present.
-</para></listitem>
-</itemizedlist>
+or run other programs 'behind your back'. GIO has to be used
+carefully in privileged programs, see the <unlink url="http://developer.gnome.org/gio/stable/ch02.html">GIO documentation</ulink> for details.
 </para>
 
 </refsect2>
