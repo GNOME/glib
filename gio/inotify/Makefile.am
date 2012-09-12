@@ -10,8 +10,6 @@ libinotify_la_SOURCES = 		\
 	inotify-path.c 			\
 	inotify-missing.c 		\
 	inotify-helper.c 		\
-	inotify-diag.c			\
-	inotify-diag.h			\
 	inotify-kernel.h 		\
 	inotify-missing.h		\
 	inotify-path.h			\

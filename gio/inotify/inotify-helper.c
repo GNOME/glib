@@ -36,7 +36,6 @@
 #include "inotify-helper.h"
 #include "inotify-missing.h"
 #include "inotify-path.h"
-#include "inotify-diag.h"
 
 static gboolean ih_debug_enabled = FALSE;
 #define IH_W if (ih_debug_enabled) g_warning 
@@ -87,7 +86,6 @@ _ih_startup (void)
       return FALSE;
     }
   _im_startup (ih_not_missing_callback);
-  _id_startup ();
 
   IH_W ("started gvfs inotify backend\n");
   

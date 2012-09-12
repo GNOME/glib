@@ -263,17 +263,6 @@
     </formalpara>
 
     <formalpara>
-      <title><envar>GVFS_INOTIFY_DIAG</envar></title>
-
-      <para>
-        When this environment variable is set and GIO has been built
-        with inotify support, a dump of diagnostic inotify information
-        will be written every 20 seconds to a file named
-        <filename>/tmp/gvfsdid.<replaceable>pid</replaceable></filename>.
-      </para>
-    </formalpara>
-
-    <formalpara>
       <title><envar>GIO_EXTRA_MODULES</envar></title>
 
       <para>
