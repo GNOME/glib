@@ -66,7 +66,8 @@ static CmdlineTest cmdline_tests[] =
   { "foo '\"bar\" baz", 0, { NULL }, G_SHELL_ERROR_BAD_QUOTING },
   { "", 0, { NULL }, G_SHELL_ERROR_EMPTY_STRING },
   { "  ", 0, { NULL }, G_SHELL_ERROR_EMPTY_STRING },
-  { "# foo bar", 0, { NULL }, G_SHELL_ERROR_EMPTY_STRING }
+  { "# foo bar", 0, { NULL }, G_SHELL_ERROR_EMPTY_STRING },
+  {"foo '/bar/summer'\\''09 tours.pdf'", 2, {"foo", "/bar/summer'09 tours.pdf", NULL}, -1}
 };
 
 static gboolean
