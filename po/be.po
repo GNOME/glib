@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-05 11:52+0000\n"
-"PO-Revision-Date: 2012-09-07 18:27+0300\n"
+"POT-Creation-Date: 2012-09-14 07:45+0000\n"
+"PO-Revision-Date: 2012-09-14 13:26+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -120,13 +120,13 @@ msgstr "Ваша праграмная платформа не падтрымлі
 msgid "Unexpected early end-of-stream"
 msgstr "Нечаканы заўчасны канец струменя"
 
-#: ../gio/gdbusaddress.c:149 ../gio/gdbusaddress.c:237
-#: ../gio/gdbusaddress.c:318
+#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Невядомы ключ \"%s\" у адрасе \"%s\""
 
-#: ../gio/gdbusaddress.c:176
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -134,27 +134,27 @@ msgstr ""
 "Адрас \"%s\" мае хібу (трэба вызначыць толькі адзін з ключоў: сцежку, часовы "
 "каталог або абстрактны сокет)"
 
-#: ../gio/gdbusaddress.c:189
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Бессэнсоўная пара ключ-значэнне ў адрасе \"%s\""
 
-#: ../gio/gdbusaddress.c:252 ../gio/gdbusaddress.c:333
+#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Памылка ў адрасе \"%s\": хібны атрыбут порта"
 
-#: ../gio/gdbusaddress.c:263 ../gio/gdbusaddress.c:344
+#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Памылка ў адрасе \"%s\": хібны атрыбут пратакола"
 
-#: ../gio/gdbusaddress.c:453
+#: ../gio/gdbusaddress.c:454
 #, c-format
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "Элемент адрасу \"%s\" не змяшчае двукроп'я (:)"
 
-#: ../gio/gdbusaddress.c:474
+#: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
@@ -163,7 +163,7 @@ msgstr ""
 "Пара ключ-значэнне %d, \"%s\" (у элеменце адрасу \"%s\") не змяшчае знака "
 "роўнасці"
 
-#: ../gio/gdbusaddress.c:488
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -172,7 +172,7 @@ msgstr ""
 "Памылка скасавання экранавання для ключа або яго значэння ў пары %d, \"%s\", "
 "для элемента адрасу \"%s\""
 
-#: ../gio/gdbusaddress.c:566
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -181,90 +181,95 @@ msgstr ""
 "Памылка ў адрасе \"%s\": unix-транспарт вымагае дакладна толькі аднаго з "
 "ключоў \"path\" (сцежка) або \"abstract\" (абстрактны адрас)"
 
-#: ../gio/gdbusaddress.c:602
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Памылка ў адрасе \"%s\": атрыбут азначэння машыны адсутнічае або хібны"
 
-#: ../gio/gdbusaddress.c:616
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Памылка ў адрасе \"%s\": атрыбут азначэння порта адсутнічае або хібны"
 
-#: ../gio/gdbusaddress.c:630
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Памылка ў адрасе \"%s\": атрыбут азначэння файла таямніцы (\"noncefile\") "
 "адсутнічае або хібны"
 
-#: ../gio/gdbusaddress.c:651
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Памылка аўтазапуску: "
 
-#: ../gio/gdbusaddress.c:659
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr ""
 "Невядомы транспарт або транспарт, які не абслугоўваецца, (\"%s\") для адрасу "
 "\"%s\""
 
-#: ../gio/gdbusaddress.c:695
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Памылка адкрыцця файла таямніцы (\"nonce\") \"%s\": %s"
 
-#: ../gio/gdbusaddress.c:713
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Памылка чытання з файла таямніцы (\"nonce\") \"%s\": %s"
 
-#: ../gio/gdbusaddress.c:722
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Памылка чытання з файла таямніцы (\"nonce\") \"%s\": чакалі 16 байтаў, а "
 "атрымалі %d"
 
-#: ../gio/gdbusaddress.c:740
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Памылка перасылкі змесціва файла таямніцы (\"nonce\") \"%s\" у струмень:"
 
-#: ../gio/gdbusaddress.c:959
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "Гэты адрас пусты"
 
-#: ../gio/gdbusaddress.c:1028
+#: ../gio/gdbusaddress.c:1030
+#, c-format
+msgid "Cannot spawn a message bus when setuid"
+msgstr "Немагчыма стварыць шыну апавяшчэння у рэжыме setuid"
+
+#: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Немагчыма стварыць шыну апавяшчэння без ідэнтыфікатара машыны: "
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1079
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Памылка запуску праграмы \"%s\": "
 
-#: ../gio/gdbusaddress.c:1287
+#: ../gio/gdbusaddress.c:1296
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Увядзіце любы знак, каб закрыць гэта акно)\n"
 
-#: ../gio/gdbusaddress.c:1412
+#: ../gio/gdbusaddress.c:1421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "DBUS-магістраль сеанса не запушчана, але таксама не ўдалося аўтаматычна "
 "запусціць новую"
 
-#: ../gio/gdbusaddress.c:1433
+#: ../gio/gdbusaddress.c:1442
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Немагчыма вызначыць адрас сеансавай магістралі (такая здольнасць не "
 "рэалізаваная для вашай аперацыйнай сістэмы)"
 
-#: ../gio/gdbusaddress.c:1532 ../gio/gdbusconnection.c:6755
+#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -273,7 +278,7 @@ msgstr ""
 "Не ўдалося вызначыць адрас магістралі апавяшчэнняў са зменнай асяроддзя "
 "DBUS_STARTER_BUS_TYPE. Зменная мае невядомае значэнне \"%s\""
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6764
+#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -281,7 +286,7 @@ msgstr ""
 "Не ўдалося вызначыць адрас магістралі апавяшчэнняў, бо зменная асяроддзя "
 "DBUS_STARTER_BUS_TYPE не настаўлена"
 
-#: ../gio/gdbusaddress.c:1551
+#: ../gio/gdbusaddress.c:1560
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Невядомы тып магістралі %d"
@@ -426,7 +431,7 @@ msgstr "Няма дазволу на прачытанне ўласцівасці
 msgid "Property `%s' is not writable"
 msgstr "Няма дазволу на запіс уласцівасці \"%s\""
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6198
+#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Няма такога інтэрфейсу (\"%s\")"
@@ -435,7 +440,7 @@ msgstr "Няма такога інтэрфейсу (\"%s\")"
 msgid "No such interface"
 msgstr "Няма такога інтэрфейсу"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6704
+#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Аб'ект са сцежкі \"%2$s\" не мае такога інтэрфейсу (\"%1$s\")"
@@ -460,12 +465,12 @@ msgstr "Аб'ект ужо экспартаваны для інтэрфейсу 
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Метад \"%s\" вярнуў значэнне тыпу \"%s\", хоць чакалі \"%s\""
 
-#: ../gio/gdbusconnection.c:6309
+#: ../gio/gdbusconnection.c:6311
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Метад \"%s\" на інтэрфейсе \"%s\" з подпісам \"%s\" не існуе"
 
-#: ../gio/gdbusconnection.c:6428
+#: ../gio/gdbusconnection.c:6430
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Паддрэва для \"%s\" ужо экспартавана"
@@ -834,7 +839,9 @@ msgstr "Памылка: сігнал не вызначаны.\n"
 #: ../gio/gdbus-tool.c:632
 #, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
-msgstr "Памылка: сігнал мусіць мець форму поўнасцю вызначанай даменнай назвы (FQDN).\n"
+msgstr ""
+"Памылка: сігнал мусіць мець форму поўнасцю вызначанай даменнай назвы "
+"(FQDN).\n"
 
 #: ../gio/gdbus-tool.c:640
 #, c-format
