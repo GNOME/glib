@@ -65,6 +65,7 @@ content_files =				\
 	building.xml			\
 	changes.xml			\
 	compiling.xml			\
+	programming.xml			\
 	resources.xml			\
 	regex-syntax.xml		\
 	version.xml			\
