@@ -1,9 +1,7 @@
 # Galician translation of GLib.
 # Copyright (C) 2001, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
-#
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en http://www.trasno.net
-#
 # Manuel A. Fernández Montecelo <manuel@sindominio.net>, 2001, 2005.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
@@ -14,21 +12,20 @@
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-31 20:59+0200\n"
-"PO-Revision-Date: 2012-08-31 21:00+0200\n"
+"POT-Creation-Date: 2012-09-15 01:42+0200\n"
+"PO-Revision-Date: 2012-09-15 01:43+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
 
 #: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:508
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:376
@@ -132,13 +129,13 @@ msgstr "A súa plataforma non ten compatibilidade con GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de fluxo inesperadamente prematuro"
 
-#: ../gio/gdbusaddress.c:149 ../gio/gdbusaddress.c:237
-#: ../gio/gdbusaddress.c:318
+#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Clave «%s» non admitida na entrada do enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:176
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -146,27 +143,27 @@ msgstr ""
 "O enderezo «%s» non é válido (necesítase exactamente unha ruta, tmpdir ou "
 "claves abstractas)"
 
-#: ../gio/gdbusaddress.c:189
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Combinación de par clave/valor sen sentido na entrada do enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:252 ../gio/gdbusaddress.c:333
+#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Erro no enderezo «%s»  o atributo do porto está mal formado"
 
-#: ../gio/gdbusaddress.c:263 ../gio/gdbusaddress.c:344
+#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Erro no enderezo «%s» - o atributo da familia está mal formada"
 
-#: ../gio/gdbusaddress.c:453
+#: ../gio/gdbusaddress.c:454
 #, c-format
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "O elemento do enderezo «%s» non contén un caracter dous puntos (:)"
 
-#: ../gio/gdbusaddress.c:474
+#: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
@@ -175,7 +172,7 @@ msgstr ""
 "O par clave/valor %d, «%s» no elemento do enderezo «%s» non contén un signo "
 "de igual"
 
-#: ../gio/gdbusaddress.c:488
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -184,7 +181,7 @@ msgstr ""
 "Produciuse un erro ao desescapar a clave ou o valor no par clave/valor %d, "
 "«%s», no elemento de enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:566
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -193,88 +190,93 @@ msgstr ""
 "Erro no enderezo «%s» - o transporte unix require que se estabeleza "
 "exactamente unha das claves «path» ou «abstract»"
 
-#: ../gio/gdbusaddress.c:602
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Erro no enderezo «%s» - falta o atributo do equipo ou está mal formado"
 
-#: ../gio/gdbusaddress.c:616
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Erro no enderezo «%s» - falta o atributo do porto ou está mal formado"
 
-#: ../gio/gdbusaddress.c:630
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Produciuse un erro no enderezo «%s» - falta o atributo do ficheiro de uso de "
 "unha vez ou está mal formado"
 
-#: ../gio/gdbusaddress.c:651
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Produciuse un erro ao autoiniciar: "
 
-#: ../gio/gdbusaddress.c:659
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Transporte «%s» descoñecido ou non compatíbel para o enderezo «%s»"
 
-#: ../gio/gdbusaddress.c:695
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Produciuse un erro ao abrir o ficheiro de uso de unha vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:713
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Produciuse un erro ao ler o ficheiro de uso de unha vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:722
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Produciuse un erro ao ler o ficheiro de uso de unha vez «%s»:, esperábanse "
 "16 bytes, obtivéronse %d"
 
-#: ../gio/gdbusaddress.c:740
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Produciuse un erro ao gravar os contidos do ficheiro de uso de unha vez «%s» "
 "ao fluxo:"
 
-#: ../gio/gdbusaddress.c:959
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "O enderezo fornecido está baleiro"
 
-#: ../gio/gdbusaddress.c:1028
+#: ../gio/gdbusaddress.c:1030
+#, fuzzy, c-format
+msgid "Cannot spawn a message bus when setuid"
+msgstr "Non é posíbel iniciar («spawn») unha bus de mensaxe sen setuid"
+
+#: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Non é posíbel iniciar (|«spawn») unha mensaxe ao bus sen un ID de máquina:"
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1079
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Produciuse un erro ao iniciar («spawn») a orde «%s»:"
 
-#: ../gio/gdbusaddress.c:1287
+#: ../gio/gdbusaddress.c:1296
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Prema calquera caracter para pechar esta xanela)\n"
 
-#: ../gio/gdbusaddress.c:1412
+#: ../gio/gdbusaddress.c:1421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "O DBus de sesión non está executándose e o autoiniciado fallou"
 
-#: ../gio/gdbusaddress.c:1433
+#: ../gio/gdbusaddress.c:1442
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1532 ../gio/gdbusconnection.c:6755
+#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -283,7 +285,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de ambiente "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6764
+#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -291,7 +293,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus xa que a variábel de ambiente "
 "DBUS_STARTER_BUS_TYPE non está estabelecida"
 
-#: ../gio/gdbusaddress.c:1551
+#: ../gio/gdbusaddress.c:1560
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d descoñecido"
@@ -439,7 +441,7 @@ msgstr "Non é posíbel escribir a propiedade %s"
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a propiedade %s"
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6198
+#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
@@ -448,7 +450,7 @@ msgstr "Non existe a interface «%s»"
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6704
+#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto coa ruta %s"
@@ -473,12 +475,12 @@ msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:6309
+#: ../gio/gdbusconnection.c:6311
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:6428
+#: ../gio/gdbusconnection.c:6430
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -989,7 +991,7 @@ msgstr "A información do aplicativo carece dun identificador"
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:2191
+#: ../gio/gdesktopappinfo.c:2192
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -1052,12 +1054,12 @@ msgstr "Esperábase un GEmblem para o GEmblemedIcon"
 #: ../gio/gfile.c:903 ../gio/gfile.c:1142 ../gio/gfile.c:1281
 #: ../gio/gfile.c:1521 ../gio/gfile.c:1576 ../gio/gfile.c:1634
 #: ../gio/gfile.c:1718 ../gio/gfile.c:1775 ../gio/gfile.c:1839
-#: ../gio/gfile.c:1894 ../gio/gfile.c:3362 ../gio/gfile.c:3417
-#: ../gio/gfile.c:3563 ../gio/gfile.c:3605 ../gio/gfile.c:4007
-#: ../gio/gfile.c:4421 ../gio/gfile.c:4506 ../gio/gfile.c:4596
-#: ../gio/gfile.c:4693 ../gio/gfile.c:4780 ../gio/gfile.c:4872
-#: ../gio/gfile.c:5205 ../gio/gfile.c:5529 ../gio/gfile.c:5597
-#: ../gio/gfile.c:7224 ../gio/gfile.c:7314 ../gio/gfile.c:7398
+#: ../gio/gfile.c:1894 ../gio/gfile.c:3363 ../gio/gfile.c:3418
+#: ../gio/gfile.c:3564 ../gio/gfile.c:3606 ../gio/gfile.c:4008
+#: ../gio/gfile.c:4422 ../gio/gfile.c:4507 ../gio/gfile.c:4597
+#: ../gio/gfile.c:4694 ../gio/gfile.c:4781 ../gio/gfile.c:4873
+#: ../gio/gfile.c:5206 ../gio/gfile.c:5530 ../gio/gfile.c:5598
+#: ../gio/gfile.c:7225 ../gio/gfile.c:7315 ../gio/gfile.c:7399
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación non permitida"
@@ -1089,41 +1091,41 @@ msgstr "Non é posíbel copiar un directorio sobre o directorio"
 msgid "Target file exists"
 msgstr "O ficheiro de destino xa existe"
 
-#: ../gio/gfile.c:2546
+#: ../gio/gfile.c:2547
 msgid "Can't recursively copy directory"
 msgstr "Non é posíbel copiar o directorio recursivamente"
 
-#: ../gio/gfile.c:2810
+#: ../gio/gfile.c:2811
 msgid "Splice not supported"
 msgstr "Non se admite a unión"
 
-#: ../gio/gfile.c:2814
+#: ../gio/gfile.c:2815
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Produciuse un erro ao empalmar o ficheiro: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2961
 msgid "Can't copy special file"
 msgstr "Non é posíbel copiar o ficheiro especial"
 
-#: ../gio/gfile.c:3553
+#: ../gio/gfile.c:3554
 msgid "Invalid symlink value given"
 msgstr "O valor da ligazón simbólica dada non é válido"
 
-#: ../gio/gfile.c:3713
+#: ../gio/gfile.c:3714
 msgid "Trash not supported"
 msgstr "Non se asiste o Lixo"
 
-#: ../gio/gfile.c:3764
+#: ../gio/gfile.c:3765
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Os nomes de ficheiro non poden conter '%c'"
 
-#: ../gio/gfile.c:6289 ../gio/gvolume.c:364
+#: ../gio/gfile.c:6290 ../gio/gvolume.c:364
 msgid "volume doesn't implement mount"
 msgstr "o volume non implementa o montado"
 
-#: ../gio/gfile.c:6397
+#: ../gio/gfile.c:6398
 msgid "No application is registered as handling this file"
 msgstr "Non hai ningún aplicativo rexistrado para manexar este ficheiro"
 
