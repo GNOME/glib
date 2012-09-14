@@ -205,6 +205,7 @@ AS_IF([test "$glib_native_win32" = "yes"], [
     AC_MSG_ERROR([*** Could not find an implementation of nm in your PATH.])
   fi
   AC_CHECK_TOOL(RANLIB, ranlib, :)
+  AC_CHECK_TOOL(DLLTOOL, dlltool, :)
   AC_CHECK_PROG(ms_librarian, [lib.exe], [yes], [no])
 ])
 AM_CONDITIONAL(MS_LIB_AVAILABLE, [test x$ms_librarian = xyes])

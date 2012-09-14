@@ -24,7 +24,7 @@ no_undefined = -no-undefined
 module_test_exp = module-test.exp
 
 module-test.exp: module-test.o
-	dlltool --output-exp module-test.exp module-test.o
+	$(DLLTOOL) --output-exp module-test.exp module-test.o
 
 spawn_test_win32_gui = spawn-test-win32-gui
 
