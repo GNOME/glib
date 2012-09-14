@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-17 11:51+0000\n"
-"PO-Revision-Date: 2012-07-19 09:10+0100\n"
+"POT-Creation-Date: 2012-09-14 09:48+0000\n"
+"PO-Revision-Date: 2012-09-14 19:48+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -135,149 +135,155 @@ msgstr "Okolje ne podpira možnosti GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "Nepričakovan prezgodnji konec pretoka"
 
-#: ../gio/gdbusaddress.c:150
-#: ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:151
+#: ../gio/gdbusaddress.c:239
+#: ../gio/gdbusaddress.c:320
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Nepodprt ključ  `%s' v vnosu naslova  `%s'"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:178
 #, c-format
 msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "Naslov `%s' je nepravilen (zahtevana je pot, začasna mapa ali abstraktni ključ)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:191
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Nesmiselna kombinacija za par ključ/vrednost v vnosu naslova `%s'"
 
-#: ../gio/gdbusaddress.c:253
-#: ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:254
+#: ../gio/gdbusaddress.c:335
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Napaka v naslovu `%s' - atribut vrat je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:264
-#: ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:265
+#: ../gio/gdbusaddress.c:346
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Napaka v naslovu `%s' - atribut družine je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Predmet naslova `%s' ne vsebuje dvopičja (:)"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:476
 #, c-format
 msgid "Key/Value pair %d, `%s', in address element `%s', does not contain an equal sign"
 msgstr "Par ključ/vrednost %d, `%s', v predmetu naslova `%s', ne vsebuje enačaja"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:490
 #, c-format
 msgid "Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"
 msgstr "Napaka, neubežni ključ ali vrednost v paru ključ/vrednost %d, `%s', v predmetu naslova `%s'"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:568
 #, c-format
 msgid "Error in address `%s' - the unix transport requires exactly one of the keys `path' or `abstract' to be set"
 msgstr "Napaka v naslovu `%s' - unix prenos zahteva enega izmed ključev `path' ali `abstract' nastavljen"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:604
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - atribut host manjka ali pa je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:618
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - manjka atribut vrat ali pa ali je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:632
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - atribut noncefile manjka ali pa je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:653
 msgid "Error auto-launching: "
 msgstr "Napaka samodejnega zaganjanja:"
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:661
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Neznan ali nepodprt prenos `%s' za naslov `%s' "
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:697
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Napaka med odpiranjem enkratne datoteke `%s': %s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Napaka med branjem iz enkratne datoteke `%s': %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:724
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "Napaka med branjem iz datoteke nonce `%s'; pričakovanih 16 bajtov, dobljenih pa %d"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Napaka med pisanjem vsebine datoteke nonce `%s' v pretok:"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:961
 msgid "The given address is empty"
 msgstr "Podan naslov je prazen."
 
-#: ../gio/gdbusaddress.c:1029
+#: ../gio/gdbusaddress.c:1031
+#, c-format
+#| msgid "Cannot spawn a message bus without a machine-id: "
+msgid "Cannot spawn a message bus when setuid"
+msgstr "Ni mogoče oživiti vodila sporočila med izvajanjem ukaza setuid"
+
+#: ../gio/gdbusaddress.c:1038
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Ni mogoče oživiti vodila sporočila brez predmeta machine-id:"
 
-#: ../gio/gdbusaddress.c:1066
+#: ../gio/gdbusaddress.c:1075
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Napaka med oživljanjem ukazne vrstice `%s': "
 
-#: ../gio/gdbusaddress.c:1077
+#: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Nepravilna zaustavitev programa med izvajanjem ukazne vrstice `%s': %s"
 
-#: ../gio/gdbusaddress.c:1091
+#: ../gio/gdbusaddress.c:1100
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Izhodno stanje ukazne vrstice `%s' je nenični %d: %s"
 
-#: ../gio/gdbusaddress.c:1312
+#: ../gio/gdbusaddress.c:1321
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(S pritiskom na katerikoli znak tipkovnice se to okno zapre)\n"
 
-#: ../gio/gdbusaddress.c:1437
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Ozadnji program vodila dbus seje ni zagnan, samodejni zagon pa je spodletel."
 
-#: ../gio/gdbusaddress.c:1458
+#: ../gio/gdbusaddress.c:1467
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 
-#: ../gio/gdbusaddress.c:1557
+#: ../gio/gdbusaddress.c:1566
 #: ../gio/gdbusconnection.c:6705
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
 msgstr "Ni mogoče določiti naslova vodila iz okoljske spremenljivke DBUS_STARTER_BUS_TYPE - neznana vrednost `%s'"
 
-#: ../gio/gdbusaddress.c:1566
+#: ../gio/gdbusaddress.c:1575
 #: ../gio/gdbusconnection.c:6714
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr "Ni mogoče določiti naslova vodila, kajti okoljska spremenljivka DBUS_STARTER_BUS_TYPE ni nastavljena"
 
-#: ../gio/gdbusaddress.c:1576
+#: ../gio/gdbusaddress.c:1585
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznana vrsta vodila %d"
@@ -1241,7 +1247,6 @@ msgstr "Ustvarjanje začasne datoteke je spodletelo: %s"
 
 #: ../gio/glib-compile-resources.c:338
 #, c-format
-#| msgid "Error processing input file with xmllint"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1251,7 +1256,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:394
 #, c-format
-#| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
