@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-08 09:16+0000\n"
-"PO-Revision-Date: 2012-09-09 19:51+0200\n"
+"POT-Creation-Date: 2012-09-14 06:29+0000\n"
+"PO-Revision-Date: 2012-09-14 09:43+0200\n"
 "Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: \n"
@@ -116,13 +116,13 @@ msgstr "Il n'y a pas de prise en charge de GCredentials pour votre plate-forme"
 msgid "Unexpected early end-of-stream"
 msgstr "Fin précoce de flux inattendue"
 
-#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:151 ../gio/gdbusaddress.c:239
+#: ../gio/gdbusaddress.c:320
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Clé « %s » non prise en charge dans l'élément d'adresse « %s »"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:178
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -130,28 +130,28 @@ msgstr ""
 "L'adresse « %s » n'est pas valide (nécessite exactement une des clés de "
 "« path », « tmpdir » ou « abstract »)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:191
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr ""
 "Combinaison clé/valeur sans signification dans l'élément d'adresse « %s »"
 
-#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:254 ../gio/gdbusaddress.c:335
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Erreur dans l'adresse « %s » — l'attribut du port est mal formé"
 
-#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:265 ../gio/gdbusaddress.c:346
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Erreur dans l'adresse « %s » — l'attribut de la famille est mal formé"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Élément d'adresse « %s », ne comporte pas de caractère deux-points (:)"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:476
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -160,7 +160,7 @@ msgstr ""
 "Couple clé/valeur %d, « %s », dans l'élément d'adresse « %s », ne comporte "
 "pas de signe égal"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:490
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -169,7 +169,7 @@ msgstr ""
 "Erreur lors du décodage de la clé ou de la valeur dans le couple clé/valeur "
 "%d, « %s », dans l'élément d'adresse « %s »"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:568
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -178,108 +178,114 @@ msgstr ""
 "Erreur dans l'adresse « %s » — le transport Unix requiert que soit "
 "exactement définie une des clés « path » ou « abstract »"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:604
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
 "Erreur dans l'adresse « %s » — l'attribut de l'hôte est manquant ou mal formé"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:618
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
 "Erreur dans l'adresse « %s » — l'attribut du port est manquant ou mal formé"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:632
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Erreur dans l'adresse « %s » — l'attribut du fichier à dénomination unique "
 "est manquant ou mal formé"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:653
 msgid "Error auto-launching: "
 msgstr "Erreur de lancement automatique :"
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:661
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Transport « %s » inconnu ou non pris en charge pour l'adresse « %s »"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:697
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr ""
 "Erreur lors de l'ouverture du fichier à dénomination unique « %s » : %s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Erreur de lecture du fichier à dénomination unique « %s » : %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:724
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Erreur de lecture du fichier à dénomination unique « %s », 16 octets "
 "attendus, %d reçus"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Erreur d'écriture du contenu du fichier à numérotation unique « %s » sur le "
 "flux :"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:961
 msgid "The given address is empty"
 msgstr "L'adresse indiquée est vide"
 
-#: ../gio/gdbusaddress.c:1029
+#: ../gio/gdbusaddress.c:1031
+#, c-format
+msgid "Cannot spawn a message bus when setuid"
+msgstr ""
+"Impossible de générer dynamiquement un bus messages quand le drapeau setuid est mis"
+
+#: ../gio/gdbusaddress.c:1038
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Impossible de générer dynamiquement un bus messages sans identifiant "
 "machine : "
 
-#: ../gio/gdbusaddress.c:1066
+#: ../gio/gdbusaddress.c:1075
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Erreur lors de la génération de la ligne de commande « %s » : "
 
-#: ../gio/gdbusaddress.c:1077
+#: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
 "Fin anormale du programme lors de la génération de la ligne de commande "
 "« %s » : %s"
 
-#: ../gio/gdbusaddress.c:1091
+#: ../gio/gdbusaddress.c:1100
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
 "La ligne de commande « %s » s'est terminée avec un code de fin non nul %d : "
 "%s"
 
-#: ../gio/gdbusaddress.c:1312
+#: ../gio/gdbusaddress.c:1321
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(saisissez n'importe quel caractère pour fermer cette fenêtre)\n"
 
-#: ../gio/gdbusaddress.c:1437
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "La session dbus n'est pas lancée et autolaunch (le lancement automatique) a "
 "échoué"
 
-#: ../gio/gdbusaddress.c:1458
+#: ../gio/gdbusaddress.c:1467
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Impossible de déterminer l'adresse du bus de session (non pris en charge "
 "pour ce système d'exploitation)"
 
-#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -288,7 +294,7 @@ msgstr ""
 "Impossible de déterminer l'adresse du bus à partir de la variable "
 "d'environnement DBUS_STARTER_BUS_TYPE — valeur inconnue « %s »"
 
-#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1575 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -296,7 +302,7 @@ msgstr ""
 "Impossible de déterminer l'adresse du bus étant donné que la variable "
 "d'environnement DBUS_STARTER_BUS_TYPE n'est pas définie"
 
-#: ../gio/gdbusaddress.c:1576
+#: ../gio/gdbusaddress.c:1585
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Type de bus %d inconnu"
@@ -1308,7 +1314,8 @@ msgstr "La création du fichier temporaire a échoué : %s"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
-msgstr "Erreur lors du traitement du fichier d'entrée avec xmllint :\n"
+msgstr ""
+"Erreur lors du traitement du fichier d'entrée avec xmllint :\n"
 "%s"
 
 #: ../gio/glib-compile-resources.c:394
@@ -1316,7 +1323,8 @@ msgstr "Erreur lors du traitement du fichier d'entrée avec xmllint :\n"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
-msgstr "Erreur lors du traitement du fichier d'entrée avec to-pixdata :\n"
+msgstr ""
+"Erreur lors du traitement du fichier d'entrée avec to-pixdata :\n"
 "%s"
 
 #: ../gio/glib-compile-resources.c:408
