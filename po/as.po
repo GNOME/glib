@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-07 04:39+0000\n"
-"PO-Revision-Date: 2012-08-08 14:27+0530\n"
+"POT-Creation-Date: 2012-09-13 22:52+0000\n"
+"PO-Revision-Date: 2012-09-14 11:57+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -109,52 +109,52 @@ msgstr "আপোনাৰ প্লেটফৰ্মৰ বাবে কোন
 msgid "Unexpected early end-of-stream"
 msgstr "স্ৰোতৰ অপ্ৰত্যাশিত আগতীয়া অন্ত।"
 
-#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:151 ../gio/gdbusaddress.c:239
+#: ../gio/gdbusaddress.c:320
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "ঠিকনা প্ৰবিষ্টি '%s' ত অসমৰ্থিত কি '%s'"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:178
 #, c-format
 msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "ঠিকনা '%s' অবৈধ (সঠিক এটা পথৰ প্ৰয়োজন, tmpdir অথবা এবস্ট্ৰেক্ট কিসমূহ)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:191
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "ঠিকনা প্ৰবিষ্টি '%s' ত মূল্যহিন কি/মান যোৰ সংযুক্তি"
 
-#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:254 ../gio/gdbusaddress.c:335
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "ঠিকনা '%s' ত ত্ৰুটি - পৰ্ট বৈশিষ্ট ক্ষতিগ্ৰস্থ"
 
-#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:265 ../gio/gdbusaddress.c:346
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "ঠিকনা '%s' ত ত্ৰুটি - পৰিয়াল বৈশিষ্ট ক্ষতিগ্ৰস্থ"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "ঠিকনা উপাদান '%s' এ, এটা কলন (:) অন্তৰ্ভুক্ত নকৰে"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:476
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr "কি/মান যোৰ %d, '%s', ঠিকনা উপাদান '%s' ত, এটা ইকুৱেল চিহ্ন অন্তৰ্ভুক্ত নকৰে"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:490
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr "কি অথবা মান আনএক্সেইপ কৰোতে ত্ৰুটি কি/মান যোৰ %d, %s ত,ঠিকনা উপাদান '%s' ত"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:568
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -163,89 +163,95 @@ msgstr ""
 "ঠিকনা '%s' ত ত্ৰুটি - unix পৰিৱহনৰ কেৱল এটা 'পথ' অথবা 'এবস্ট্ৰেক্ট' সংহতি কৰাৰ "
 "প্ৰয়োজন"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:604
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "ঠিকনা '%s' ত ত্ৰুটি - হস্ট বৈশিষ্ট সন্ধানহিন অথবা ক্ষতিগ্ৰস্থ"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:618
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "ঠিকনা '%s' ত ত্ৰুটি - পৰ্ট বৈশিষ্ট সন্ধানহিন অথবা ক্ষতিগ্ৰস্থ"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:632
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "ঠিকনা '%s' ত ত্ৰুটি - noncefile বৈশিষ্ট সন্ধানহিন অথবা ক্ষতিগ্ৰস্থ"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:653
 msgid "Error auto-launching: "
 msgstr "স্বচালিত-লঞ্চ কৰোতে ত্ৰুটি: "
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:661
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "ঠিকনা '%s' ৰ বাবে অজ্ঞাত অথবা অসমৰ্থিত পৰিৱহন '%s'"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:697
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "nonce file '%s' খোলোতে ত্ৰুটি: %s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "nonce file '%s' ৰ পঢ়োতে ত্ৰুটি: %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:724
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "nonce file '%s' ৰ পৰা পঢ়োতে ত্ৰুটি, ১৬ বাইট আশা কৰা হৈছিল, %d পোৱা গল"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "nonce file '%s' ৰ সমলসমূহ স্ৰোতলে লিখোতে ত্ৰুটি:"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:961
 msgid "The given address is empty"
 msgstr "দিয়া ঠিকনা ৰিক্ত"
 
-#: ../gio/gdbusaddress.c:1029
+#: ../gio/gdbusaddress.c:1031
+#, c-format
+#| msgid "Cannot spawn a message bus without a machine-id: "
+msgid "Cannot spawn a message bus when setuid"
+msgstr "setuid অৱস্থাত এটা বাৰ্তা বাচ প্ৰজনন কৰিব নোৱাৰি"
+
+#: ../gio/gdbusaddress.c:1038
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "এটা মেচিন-আইডিৰ অৱিহনে এটা বাৰ্তা বাচ সৃজন কৰিব নোৱাৰি: "
 
-#: ../gio/gdbusaddress.c:1066
+#: ../gio/gdbusaddress.c:1075
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "কমান্ড শাৰী '%s' সৃজন কৰোতে ত্ৰুটি: "
 
-#: ../gio/gdbusaddress.c:1077
+#: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "কমান্ড শাৰী '%s' সৃজন কৰোতে অস্বাভাৱিক প্ৰগ্ৰাম অন্ত: %s"
 
-#: ../gio/gdbusaddress.c:1091
+#: ../gio/gdbusaddress.c:1100
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "কমান্ড শাৰী  '%s' অ-শূণ্য প্ৰস্থান অৱস্থা %d সৈতে প্ৰস্থান কৰিছে: %s"
 
-#: ../gio/gdbusaddress.c:1312
+#: ../gio/gdbusaddress.c:1321
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(এই উইন্ডো বন্ধ কৰিবলে যিকোনো আখৰ টাইপ কৰক)\n"
 
-#: ../gio/gdbusaddress.c:1437
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "অধিবেশন dbus চলি থকা নাই, আৰু autolaunch ব্যৰ্থ হল"
 
-#: ../gio/gdbusaddress.c:1458
+#: ../gio/gdbusaddress.c:1467
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "অধিবেশন বাচ ঠিকনা নিৰ্ধাৰণ কৰিব নোৱাৰি (এই OS ৰ বাবে প্ৰণয়ন কৰা নহয়)"
 
-#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -254,7 +260,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE পৰিৱেশ চলকৰ পৰা বাচ ঠিকনা নিৰ্ধাৰণ কৰিব নোৱাৰি - অজ্ঞাত "
 "মান '%s'"
 
-#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1575 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -262,7 +268,7 @@ msgstr ""
 "বাচ ঠিকনা নিৰ্ধাৰণ কৰিব নোৱাৰি কাৰণ DBUS_STARTER_BUS_TYPE পৰিৱেশ চলক সংহতি "
 "কৰা হোৱা নাই"
 
-#: ../gio/gdbusaddress.c:1576
+#: ../gio/gdbusaddress.c:1585
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "অজ্ঞাত বাচ ধৰণ %d"
@@ -1190,7 +1196,6 @@ msgstr "অস্থায়ী নথিপত্ৰ সৃষ্টি কৰো
 
 #: ../gio/glib-compile-resources.c:338
 #, c-format
-#| msgid "Error processing input file with xmllint"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1200,7 +1205,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:394
 #, c-format
-#| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
