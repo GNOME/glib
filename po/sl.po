@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-07 15:31+0000\n"
-"PO-Revision-Date: 2012-09-08 20:37+0100\n"
+"POT-Creation-Date: 2012-09-15 18:14+0000\n"
+"PO-Revision-Date: 2012-09-15 20:46+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -152,143 +152,144 @@ msgstr "Okolje ne podpira možnosti GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "Nepričakovan prezgodnji konec pretoka"
 
-#: ../gio/gdbusaddress.c:149
-#: ../gio/gdbusaddress.c:237
-#: ../gio/gdbusaddress.c:318
+#: ../gio/gdbusaddress.c:150
+#: ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Nepodprt ključ  `%s' v vnosu naslova  `%s'"
 
-#: ../gio/gdbusaddress.c:176
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "Naslov `%s' je nepravilen (zahtevana je pot, začasna mapa ali abstraktni ključ)"
 
-#: ../gio/gdbusaddress.c:189
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Nesmiselna kombinacija za par ključ/vrednost v vnosu naslova `%s'"
 
-#: ../gio/gdbusaddress.c:252
-#: ../gio/gdbusaddress.c:333
+#: ../gio/gdbusaddress.c:253
+#: ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Napaka v naslovu `%s' - atribut vrat je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:263
-#: ../gio/gdbusaddress.c:344
+#: ../gio/gdbusaddress.c:264
+#: ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Napaka v naslovu `%s' - atribut družine je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:453
+#: ../gio/gdbusaddress.c:454
 #, c-format
-#| msgid "Address element `%s', does not contain a colon (:)"
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "Predmet naslova `%s' ne vsebuje dvopičja (:)"
 
-#: ../gio/gdbusaddress.c:474
+#: ../gio/gdbusaddress.c:475
 #, c-format
-#| msgid ""
-#| "Key/Value pair %d, `%s', in address element `%s', does not contain an "
-#| "equal sign"
 msgid "Key/Value pair %d, `%s', in address element `%s' does not contain an equal sign"
 msgstr "Par ključ/vrednost %d, `%s', v predmetu naslova `%s', ne vsebuje enačaja"
 
-#: ../gio/gdbusaddress.c:488
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid "Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"
 msgstr "Napaka, neubežni ključ ali vrednost v paru ključ/vrednost %d, `%s', v predmetu naslova `%s'"
 
-#: ../gio/gdbusaddress.c:566
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid "Error in address `%s' - the unix transport requires exactly one of the keys `path' or `abstract' to be set"
 msgstr "Napaka v naslovu `%s' - unix prenos zahteva enega izmed ključev `path' ali `abstract' nastavljen"
 
-#: ../gio/gdbusaddress.c:602
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - atribut host manjka ali pa je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:616
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - manjka atribut vrat ali pa ali je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:630
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "Napaka v naslovu `%s' - atribut noncefile manjka ali pa je nepravilno oblikovan"
 
-#: ../gio/gdbusaddress.c:651
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Napaka samodejnega zaganjanja:"
 
-#: ../gio/gdbusaddress.c:659
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Neznan ali nepodprt prenos `%s' za naslov `%s' "
 
-#: ../gio/gdbusaddress.c:695
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Napaka med odpiranjem enkratne datoteke `%s': %s"
 
-#: ../gio/gdbusaddress.c:713
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Napaka med branjem iz enkratne datoteke `%s': %s"
 
-#: ../gio/gdbusaddress.c:722
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "Napaka med branjem iz datoteke nonce `%s'; pričakovanih 16 bajtov, dobljenih pa %d"
 
-#: ../gio/gdbusaddress.c:740
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Napaka med pisanjem vsebine datoteke nonce `%s' v pretok:"
 
-#: ../gio/gdbusaddress.c:959
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "Podan naslov je prazen."
 
-#: ../gio/gdbusaddress.c:1028
+#: ../gio/gdbusaddress.c:1030
+#, c-format
+msgid "Cannot spawn a message bus when setuid"
+msgstr "Ni mogoče oživiti vodila sporočila med izvajanjem ukaza setuid"
+
+#: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Ni mogoče oživiti vodila sporočila brez predmeta machine-id:"
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1079
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Napaka med oživljanjem ukazne vrstice `%s': "
 
-#: ../gio/gdbusaddress.c:1287
+#: ../gio/gdbusaddress.c:1296
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(S pritiskom na katerikoli znak, se okno zapre)\n"
 
-#: ../gio/gdbusaddress.c:1412
+#: ../gio/gdbusaddress.c:1421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Vodilo seje DBus ni zagnano, zato je samodejni zagon spodletel"
 
-#: ../gio/gdbusaddress.c:1433
+#: ../gio/gdbusaddress.c:1442
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 
-#: ../gio/gdbusaddress.c:1532
-#: ../gio/gdbusconnection.c:6755
+#: ../gio/gdbusaddress.c:1541
+#: ../gio/gdbusconnection.c:6757
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
 msgstr "Ni mogoče določiti naslova vodila iz okoljske spremenljivke DBUS_STARTER_BUS_TYPE - neznana vrednost `%s'"
 
-#: ../gio/gdbusaddress.c:1541
-#: ../gio/gdbusconnection.c:6764
+#: ../gio/gdbusaddress.c:1550
+#: ../gio/gdbusconnection.c:6766
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr "Ni mogoče določiti naslova vodila, kajti okoljska spremenljivka DBUS_STARTER_BUS_TYPE ni nastavljena"
 
-#: ../gio/gdbusaddress.c:1551
+#: ../gio/gdbusaddress.c:1560
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznana vrsta vodila %d"
@@ -423,7 +424,7 @@ msgid "Property `%s' is not writable"
 msgstr "Lastnost `%s' ni zapisljiva"
 
 #: ../gio/gdbusconnection.c:4324
-#: ../gio/gdbusconnection.c:6198
+#: ../gio/gdbusconnection.c:6200
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Vmesnik `%s' ne obstaja"
@@ -433,7 +434,7 @@ msgid "No such interface"
 msgstr "Vmesnik ne obstaja"
 
 #: ../gio/gdbusconnection.c:4726
-#: ../gio/gdbusconnection.c:6704
+#: ../gio/gdbusconnection.c:6706
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Vmesnik `%s' na predmetu na poti %s ne obstaja"
@@ -458,12 +459,12 @@ msgstr "Za vmesnik %s pri %s je predmet že izvožen"
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Način `%s' je vrnil vrsto `%s', pričakovana pa je vrsta `%s'"
 
-#: ../gio/gdbusconnection.c:6309
+#: ../gio/gdbusconnection.c:6311
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Način `%s' na vmesniku `%s' s podpisom `%s' ne obstaja"
 
-#: ../gio/gdbusconnection.c:6428
+#: ../gio/gdbusconnection.c:6430
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Podrejeno drevo je že izvoženo za %s"
@@ -789,7 +790,6 @@ msgstr "Napaka: signal ni določen\n"
 
 #: ../gio/gdbus-tool.c:632
 #, c-format
-#| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Napaka: signal mora imeti polno kvalificirano ime.\n"
 
@@ -1174,7 +1174,6 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Vrsta %s ne vstavlja from_tokens() vmesnika GIcon"
 
 #: ../gio/gicon.c:428
-#| msgid "Can't handle the supplied version the icon encoding"
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "Ni mogoče ravnati z navedeno različico kodiranja ikone"
 
@@ -1261,7 +1260,6 @@ msgstr "Ustvarjanje začasne datoteke je spodletelo: %s"
 
 #: ../gio/glib-compile-resources.c:336
 #, c-format
-#| msgid "Error processing input file with xmllint"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1271,7 +1269,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:391
 #, c-format
-#| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
@@ -1366,21 +1363,16 @@ msgstr "neveljavno ime '%s': imena se morajo začeti z malo črko"
 
 #: ../gio/glib-compile-schemas.c:796
 #, c-format
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, "
-#| "numbers and dash ('-') are permitted."
 msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and hyphen ('-') are permitted."
 msgstr "Neveljavno ime '%s': neveljaven znak '%c'; dovoljene so samo male črke, številke in vezaj ('-')."
 
 #: ../gio/glib-compile-schemas.c:805
 #, c-format
-#| msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgstr "Neveljavno ime '%s': zaporedna vezaja ('--') nista dovoljena."
 
 #: ../gio/glib-compile-schemas.c:814
 #, c-format
-#| msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgstr "Neveljavno ime '%s': zadnji znak ne sme biti vezaj ('-')."
 
@@ -1444,13 +1436,11 @@ msgstr "<schema id='%s'> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:1125
 #, c-format
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> razširja še neobstoječo shemo '%s'"
 
 #: ../gio/glib-compile-schemas.c:1141
 #, c-format
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> je seznam še neobstoječe sheme '%s'"
 
@@ -1491,7 +1481,6 @@ msgstr "<%s id='%s'> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:1459
 #, c-format
-#| msgid "Element <%s> not allowed at toplevel"
 msgid "Element <%s> not allowed at the top level"
 msgstr "Predmet <%s> na vrhnji ravni ni dovoljen"
 
@@ -1544,9 +1533,6 @@ msgstr "Prepis za ta ključ je prezrt.\n"
 
 #: ../gio/glib-compile-schemas.c:1914
 #, c-format
-#| msgid ""
-#| "override for key `%s' in schema `%s' in override file `%s' is out of the "
-#| "range given in the schema"
 msgid "override for key `%s' in schema `%s' in override file `%s' is outside the range given in the schema"
 msgstr "prepis za ključ `%s' v shemi `%s' v datoteki prepisa `%s' ni v obsegu, podanem v shemi"
 
@@ -2586,7 +2572,6 @@ msgid "Error sending message: %s"
 msgstr "Napaka med pošiljanjem sporočila: %s"
 
 #: ../gio/gsocket.c:3825
-#| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Predmet GSocketControlMessage na sistemih Windows ni podprt"
 
@@ -2621,7 +2606,6 @@ msgstr "Neznana napaka med povezovanjem"
 
 #: ../gio/gsocketclient.c:1029
 #: ../gio/gsocketclient.c:1486
-#| msgid "Trying to proxy over non-TCP connection is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Posredovanje preko ne-TCP povezave ni podprto."
 
@@ -2840,7 +2824,6 @@ msgid "Error writing to file descriptor: %s"
 msgstr "Napaka med pisanjem v opisovalnik datoteke: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-#| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Abstraktni naslovi vtiča domene UNIX na tem sistemu niso podprti"
 
@@ -3820,7 +3803,6 @@ msgid "\\c at end of pattern"
 msgstr "\\c na koncu vzorca"
 
 #: ../glib/gregex.c:335
-#| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "neprepoznan znak sledi \\"
 
@@ -3853,7 +3835,6 @@ msgid "unexpected repeat"
 msgstr "nepričakovana ponovitev"
 
 #: ../glib/gregex.c:360
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "neprepoznan znak za (? ali (?-"
 
@@ -3874,7 +3855,6 @@ msgid "missing ) after comment"
 msgstr "manjka ) po opombi"
 
 #: ../glib/gregex.c:375
-#| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "logični izraz je preobsežen"
 
@@ -3994,9 +3974,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "nepopolna NEWLINE možnost"
 
 #: ../glib/gregex.c:476
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by a plain number"
 msgstr "\\g ne sledi ime oz. število v oklepajih, oglatih oklepajih ali narekovajih, niti navadno število"
 
@@ -4017,12 +3994,10 @@ msgid "number is too big"
 msgstr "številka je prevelika"
 
 #: ../glib/gregex.c:492
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr "manjkajoče ime podrejenega vzorca po (?&"
 
 #: ../glib/gregex.c:495
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "pričakovana števka po "
 
@@ -4031,7 +4006,6 @@ msgid "] is an invalid data character in JavaScript compatibility mode"
 msgstr "] je neveljaven podatkovni znak v združljivostnem načinu JavaScript"
 
 #: ../glib/gregex.c:501
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "različna imena podrejenih vzorcev z isto številko niso dovoljena"
 
@@ -4044,14 +4018,10 @@ msgid "\\c must be followed by an ASCII character"
 msgstr "\\c mora slediti znak ASCII"
 
 #: ../glib/gregex.c:510
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "\\k ne sledi ime v oklepajih, oglatih oklepajih ali narekovajih"
 
 #: ../glib/gregex.c:513
-#| msgid "Seek not supported on base stream"
 msgid "\\N is not supported in a class"
 msgstr "\\N ni podprto v razredu"
 
@@ -4064,7 +4034,6 @@ msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "ime je predolgo v (*MARK), (*PRUNE), (*SKIP) ali (*THEN)"
 
 #: ../glib/gregex.c:522
-#| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
 msgstr "znakovna vrednost v zaporedju \\u.... je predolga"
 
@@ -4083,7 +4052,6 @@ msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Knjižnica PCRE je pretvorjena brez lastnosti UTF-8 podpore"
 
 #: ../glib/gregex.c:1331
-#| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Knjižnica PCRE je prevedena brez možnosti nezdružljivosti"
 
@@ -4397,3 +4365,4 @@ msgstr[3] "%s bajti"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
