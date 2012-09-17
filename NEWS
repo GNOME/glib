@@ -1,3 +1,60 @@
+Overview of changes from GLib 2.33.12 to 2.33.14
+================================================
+
+ * CVE-2012-3524: don't run dbus-launch from setuid binaries
+
+ * g_content_type_get_generic_icon_name():
+     new API for getting the icon name for a mime type
+
+ * Introspection fixes:
+  - GDBusConnection nullability fixes
+  - give a box type to GTimeZone
+
+ * Drop GVFS_INOTIFY_DIAG
+
+ * Add a new "Writing GLib Applications" section to the reference
+   documentation with general info on security, threads, etc.
+
+ * gwin32mount.c: Fix syntax error
+
+ * gresource tests: srcdir != builddir fixes
+
+ * tests/gvariant: Fix test on big endian architectures
+
+ * Fix regression in g_shell_parse_argv()
+
+Bugs fixed:
+ 562907 g_shell_parse_argv() mishandles # (hash)
+ 683167 g_time_zone_new not introspectable
+ 683384 /gvariant/checksum-basic failure on big endian machines
+ 683641 Typo in gwin32mount.c
+ 683744 have a way to get the generic icon name for a mime type
+
+Translation updates:
+ Assamese
+ Belarusian
+ British English
+ Czech
+ Danish
+ French
+ Galician
+ German
+ Greek
+ Hebrew
+ Indonesian
+ Indonesian
+ Korean
+ Lithuanian
+ Marathi
+ Marathi
+ Polish
+ Portuguese
+ Punjabi
+ Russian
+ Serbian
+ Slovenian
+ Traditional Chinese
+
 Overview of changes from GLib 2.33.10 to 2.33.12
 ================================================
 
