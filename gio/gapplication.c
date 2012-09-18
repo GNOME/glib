@@ -72,6 +72,19 @@
  * applications this is the always the current instance.
  * On Linux, the D-Bus session bus is used for communication.
  *
+ * The use of #GApplication differs from some other commonly-used
+ * uniqueness libraries (such as libunique) in important ways.  The
+ * application is not expected to manually register itself and check if
+ * it is the primary instance.  Instead, the <code>main()</code>
+ * function of a #GApplication should do very little more than
+ * instantiating the application instance, possibly connecting signal
+ * handlers, then calling g_application_run().  All checks for
+ * uniqueness are done internally.  If the application is the primary
+ * instance then the startup signal is emitted and the mainloop runs.
+ * If the application is not the primary instance then a signal is sent
+ * to the primary instance and g_application_run() promptly returns.
+ * See the code examples below.
+ *
  * If used, the expected form of an application identifier is very close
  * to that of of a
  * <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
