@@ -1525,9 +1525,11 @@ get_icon (const char *path,
     }
   else
     {
+#ifdef G_OS_UNIX
       if (use_symbolic)
         icon = g_content_type_get_symbolic_icon (content_type);
       else
+#endif
         icon = g_content_type_get_icon (content_type);
 
       if (G_IS_THEMED_ICON (icon) && is_folder)
