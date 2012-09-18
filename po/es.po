@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-30 09:52+0000\n"
-"PO-Revision-Date: 2012-09-03 16:06+0200\n"
+"POT-Creation-Date: 2012-09-14 23:40+0000\n"
+"PO-Revision-Date: 2012-09-18 16:12+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -130,13 +130,13 @@ msgstr "No existe soporte de GCredentials para su plataforma"
 msgid "Unexpected early end-of-stream"
 msgstr "Final de flujo inesperadamente prematuro"
 
-#: ../gio/gdbusaddress.c:149 ../gio/gdbusaddress.c:237
-#: ../gio/gdbusaddress.c:318
+#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Clave «%s» no soportada en la entrada de dirección «%s»"
 
-#: ../gio/gdbusaddress.c:176
+#: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -144,28 +144,28 @@ msgstr ""
 "La dirección «%s» no es válida (se necesita exactamente una ruta, dirtemp o "
 "claves abstractas)"
 
-#: ../gio/gdbusaddress.c:189
+#: ../gio/gdbusaddress.c:190
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr ""
 "Combinación del par clave/valor sin sentido en la entrada de dirección «%s»"
 
-#: ../gio/gdbusaddress.c:252 ../gio/gdbusaddress.c:333
+#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Error en la dirección «%s»; el atributo de puerto está mal formado"
 
-#: ../gio/gdbusaddress.c:263 ../gio/gdbusaddress.c:344
+#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Error en la dirección «%s»; el atributo de familia está mal formado"
 
-#: ../gio/gdbusaddress.c:453
+#: ../gio/gdbusaddress.c:454
 #, c-format
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "El elemento de dirección «%s» no contiene dos puntos (:)"
 
-#: ../gio/gdbusaddress.c:474
+#: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
@@ -174,7 +174,7 @@ msgstr ""
 "El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene un "
 "signo de igual"
 
-#: ../gio/gdbusaddress.c:488
+#: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -183,7 +183,7 @@ msgstr ""
 "Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en el "
 "elemento de dirección «%s»"
 
-#: ../gio/gdbusaddress.c:566
+#: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -192,92 +192,98 @@ msgstr ""
 "Error en la dirección «%s»: el transporte UNIX requiere exactamente que una "
 "de las claves «path» o «abstract» esté establecida"
 
-#: ../gio/gdbusaddress.c:602
+#: ../gio/gdbusaddress.c:603
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
 "Error en la dirección «%s»: falta o está mal formado el atributo para el "
 "servidor"
 
-#: ../gio/gdbusaddress.c:616
+#: ../gio/gdbusaddress.c:617
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
 "Error en la dirección «%s»: falta o está mal formado el atributo para el "
 "puerto"
 
-#: ../gio/gdbusaddress.c:630
+#: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Error en la dirección «%s»: falta o está mal formado el atributo para el "
 "archivo de número usado una sola vez"
 
-#: ../gio/gdbusaddress.c:651
+#: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
 msgstr "Error al autolanzar: "
 
-#: ../gio/gdbusaddress.c:659
+#: ../gio/gdbusaddress.c:660
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Transporte «%s» desconocido o no soportado para la dirección «%s»"
 
-#: ../gio/gdbusaddress.c:695
+#: ../gio/gdbusaddress.c:696
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Error al abrir el archivo de número usado una sola vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:713
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Error al leer el archivo de número usado una sola vez «%s»: %s"
 
-#: ../gio/gdbusaddress.c:722
+#: ../gio/gdbusaddress.c:723
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Error al leer el archivo de número usado una sola vez «%s», se esperaban 16 "
 "bytes, se obtuvieron %d"
 
-#: ../gio/gdbusaddress.c:740
+#: ../gio/gdbusaddress.c:741
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Error al escribir el contenido del archivo de número usado una sola vez «%s» "
 "al flujo:"
 
-#: ../gio/gdbusaddress.c:959
+#: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
 msgstr "La dirección proporcionada está vacía"
 
-#: ../gio/gdbusaddress.c:1028
+#: ../gio/gdbusaddress.c:1030
+#, c-format
+#| msgid "Cannot spawn a message bus without a machine-id: "
+msgid "Cannot spawn a message bus when setuid"
+msgstr "No se puede lanzar («spawn») un mensaje al bus con setuid"
+
+#: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "No se puede lanzar («spawn») un mensaje al bus sin un ID de máquina: "
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1079
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Error al lanzar («spawn») el comando «%s»: "
 
-#: ../gio/gdbusaddress.c:1287
+#: ../gio/gdbusaddress.c:1296
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Escriba un carácter cualquiera para cerrar esta ventana)\n"
 
-#: ../gio/gdbusaddress.c:1412
+#: ../gio/gdbusaddress.c:1421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "La sesión de dbus no está en ejecución, y falló el lanzamiento automático"
 
-#: ../gio/gdbusaddress.c:1433
+#: ../gio/gdbusaddress.c:1442
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: ../gio/gdbusaddress.c:1532 ../gio/gdbusconnection.c:6755
+#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -286,7 +292,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6764
+#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -294,7 +300,7 @@ msgstr ""
 "No se puede determinar la dirección del bus porque la variable de entorno "
 "DBUS_STARTER_BUS_TYPE no está establecida"
 
-#: ../gio/gdbusaddress.c:1551
+#: ../gio/gdbusaddress.c:1560
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d desconocido"
@@ -445,7 +451,7 @@ msgstr "No se puede leer la clave «%s»"
 msgid "Property `%s' is not writable"
 msgstr "No se puede escribir la clave «%s»"
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6198
+#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
 msgid "No such interface `%s'"
 msgstr "La interfaz «%s» no existe"
@@ -454,7 +460,7 @@ msgstr "La interfaz «%s» no existe"
 msgid "No such interface"
 msgstr "No existe tal interfaz"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6704
+#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
@@ -479,12 +485,12 @@ msgstr "Ya existe un objeto exportado para la interfaz %s en %s"
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "El método «%s» devolvió el tipo «%s» pero se esperaba «%s»"
 
-#: ../gio/gdbusconnection.c:6309
+#: ../gio/gdbusconnection.c:6311
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "El método «%s» con interfaz «%s» y firma «%s» no existe"
 
-#: ../gio/gdbusconnection.c:6428
+#: ../gio/gdbusconnection.c:6430
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ya se ha exportado un subárbol para %s"
@@ -858,7 +864,6 @@ msgstr "Error: no se especificó la señal.\n"
 
 #: ../gio/gdbus-tool.c:632
 #, c-format
-#| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Error: la señal debe ser el nombre completamente cualificado.\n"
 
@@ -1001,31 +1006,31 @@ msgstr "La información de la aplicación carece de un identificador"
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:2191
+#: ../gio/gdesktopappinfo.c:2192
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
 
-#: ../gio/gdrive.c:363
+#: ../gio/gdrive.c:393
 msgid "drive doesn't implement eject"
 msgstr "la unidad no implementa la expulsión"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:440
+#: ../gio/gdrive.c:470
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "la unidad no implementa la expulsión o expulsión con operación"
 
-#: ../gio/gdrive.c:513
+#: ../gio/gdrive.c:543
 msgid "drive doesn't implement polling for media"
 msgstr "la unidad no implementa el sondeo para medios"
 
-#: ../gio/gdrive.c:716
+#: ../gio/gdrive.c:746
 msgid "drive doesn't implement start"
 msgstr "la unidad no implementa reproducir"
 
-#: ../gio/gdrive.c:815
+#: ../gio/gdrive.c:845
 msgid "drive doesn't implement stop"
 msgstr "la unidad no implementa detener"
 
@@ -1061,12 +1066,12 @@ msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 #: ../gio/gfile.c:903 ../gio/gfile.c:1142 ../gio/gfile.c:1281
 #: ../gio/gfile.c:1521 ../gio/gfile.c:1576 ../gio/gfile.c:1634
 #: ../gio/gfile.c:1718 ../gio/gfile.c:1775 ../gio/gfile.c:1839
-#: ../gio/gfile.c:1894 ../gio/gfile.c:3362 ../gio/gfile.c:3417
-#: ../gio/gfile.c:3563 ../gio/gfile.c:3605 ../gio/gfile.c:4007
-#: ../gio/gfile.c:4421 ../gio/gfile.c:4506 ../gio/gfile.c:4596
-#: ../gio/gfile.c:4693 ../gio/gfile.c:4780 ../gio/gfile.c:4872
-#: ../gio/gfile.c:5205 ../gio/gfile.c:5529 ../gio/gfile.c:5597
-#: ../gio/gfile.c:7224 ../gio/gfile.c:7314 ../gio/gfile.c:7398
+#: ../gio/gfile.c:1894 ../gio/gfile.c:3363 ../gio/gfile.c:3418
+#: ../gio/gfile.c:3564 ../gio/gfile.c:3606 ../gio/gfile.c:4008
+#: ../gio/gfile.c:4422 ../gio/gfile.c:4507 ../gio/gfile.c:4597
+#: ../gio/gfile.c:4694 ../gio/gfile.c:4781 ../gio/gfile.c:4873
+#: ../gio/gfile.c:5206 ../gio/gfile.c:5530 ../gio/gfile.c:5598
+#: ../gio/gfile.c:7225 ../gio/gfile.c:7315 ../gio/gfile.c:7399
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1098,41 +1103,41 @@ msgstr "No se puede copiar directorio sobre directorio"
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:2546
+#: ../gio/gfile.c:2547
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar el directorio recursivamente"
 
-#: ../gio/gfile.c:2810
+#: ../gio/gfile.c:2811
 msgid "Splice not supported"
 msgstr "La unión no  está soportada"
 
-#: ../gio/gfile.c:2814
+#: ../gio/gfile.c:2815
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Error al unir el archivo: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2961
 msgid "Can't copy special file"
 msgstr "No se puede copiar el archivo especial"
 
-#: ../gio/gfile.c:3553
+#: ../gio/gfile.c:3554
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:3713
+#: ../gio/gfile.c:3714
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:3764
+#: ../gio/gfile.c:3765
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:6289 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6290 ../gio/gvolume.c:364
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:6397
+#: ../gio/gfile.c:6398
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -1800,76 +1805,76 @@ msgstr "Error al establecer el atributo extendido «%s»: %s"
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: ../gio/glocalfileinfo.c:1526 ../gio/glocalfileoutputstream.c:843
+#: ../gio/glocalfileinfo.c:1617 ../gio/glocalfileoutputstream.c:843
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Error al obtener la información del archivo «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1778
+#: ../gio/glocalfileinfo.c:1852
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Error al obtener la información del descriptor del archivo: %s"
 
-#: ../gio/glocalfileinfo.c:1823
+#: ../gio/glocalfileinfo.c:1897
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
-#: ../gio/glocalfileinfo.c:1841
+#: ../gio/glocalfileinfo.c:1915
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
-#: ../gio/glocalfileinfo.c:1860 ../gio/glocalfileinfo.c:1879
+#: ../gio/glocalfileinfo.c:1934 ../gio/glocalfileinfo.c:1953
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
-#: ../gio/glocalfileinfo.c:1914
+#: ../gio/glocalfileinfo.c:1988
 msgid "Cannot set permissions on symlinks"
 msgstr "No se pueden establecer permisos en enlaces simbólicos"
 
-#: ../gio/glocalfileinfo.c:1930
+#: ../gio/glocalfileinfo.c:2004
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error al establecer permisos: %s"
 
-#: ../gio/glocalfileinfo.c:1981
+#: ../gio/glocalfileinfo.c:2055
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error al establecer el propietario: %s"
 
-#: ../gio/glocalfileinfo.c:2004
+#: ../gio/glocalfileinfo.c:2078
 msgid "symlink must be non-NULL"
 msgstr "el enlace simbólico debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:2014 ../gio/glocalfileinfo.c:2033
-#: ../gio/glocalfileinfo.c:2044
+#: ../gio/glocalfileinfo.c:2088 ../gio/glocalfileinfo.c:2107
+#: ../gio/glocalfileinfo.c:2118
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error al establecer el enlace simbólico: %s"
 
-#: ../gio/glocalfileinfo.c:2023
+#: ../gio/glocalfileinfo.c:2097
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
-#: ../gio/glocalfileinfo.c:2149
+#: ../gio/glocalfileinfo.c:2223
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 
-#: ../gio/glocalfileinfo.c:2172
+#: ../gio/glocalfileinfo.c:2246
 msgid "SELinux context must be non-NULL"
 msgstr "El contexto SELinux debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:2187
+#: ../gio/glocalfileinfo.c:2261
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error al establecer el contexto SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2194
+#: ../gio/glocalfileinfo.c:2268
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux no está activado en este sistema"
 
-#: ../gio/glocalfileinfo.c:2286
+#: ../gio/glocalfileinfo.c:2360
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -1987,21 +1992,21 @@ msgstr "La búsqueda solicitada después del final del flujo"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: ../gio/gmount.c:363
+#: ../gio/gmount.c:395
 msgid "mount doesn't implement \"unmount\""
 msgstr "el punto de montaje no implementa el desmontado («unmount»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: ../gio/gmount.c:438
+#: ../gio/gmount.c:470
 msgid "mount doesn't implement \"eject\""
 msgstr "el punto de montaje no implementa la expulsión («eject»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:515
+#: ../gio/gmount.c:547
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "el punto de montaje no implementa desmontado («umount») o desmontado con "
@@ -2010,7 +2015,7 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:599
+#: ../gio/gmount.c:631
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 "el punto de montaje no implementa la expulsión («eject») o expulsión con "
@@ -2019,21 +2024,21 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:685
+#: ../gio/gmount.c:717
 msgid "mount doesn't implement \"remount\""
 msgstr "el punto de montaje no implementa el remontado («remount»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:765
+#: ../gio/gmount.c:797
 msgid "mount doesn't implement content type guessing"
 msgstr "el punto de montaje no implementa averiguación del tipo de contenido"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:850
+#: ../gio/gmount.c:882
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 "el punto de montaje no implementa averiguación del tipo de contenido síncrona"
@@ -2853,7 +2858,7 @@ msgstr "Error al leer del descriptor del archivo: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Error al cerrar el descriptor del archivo: %s"
 
-#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2020
+#: ../gio/gunixmounts.c:1979 ../gio/gunixmounts.c:2032
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
@@ -2867,14 +2872,14 @@ msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
 "Este sistema no soporta direcciones de socket de dominio UNIX abstracto"
 
-#: ../gio/gvolume.c:404
+#: ../gio/gvolume.c:436
 msgid "volume doesn't implement eject"
 msgstr "el volumen no implementa la expulsión"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:480
+#: ../gio/gvolume.c:512
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "el volumen no implementa la expulsión o expulsión con operación"
 
