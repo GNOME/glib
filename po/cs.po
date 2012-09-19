@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2.32\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-03 14:17+0000\n"
+"POT-Creation-Date: 2012-09-14 17:49+0000\n"
 "PO-Revision-Date: 2012-05-04 09:25+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
@@ -116,13 +116,13 @@ msgstr "Danou platformu GCredentials nepodporuje"
 msgid "Unexpected early end-of-stream"
 msgstr "Neočekávaný časný konec proudu"
 
-#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:151 ../gio/gdbusaddress.c:239
+#: ../gio/gdbusaddress.c:320
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Nepodporovaný klíč „%s“ v záznamu adresy „%s“"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:178
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -130,27 +130,27 @@ msgstr ""
 "Adresa „%s“ je neplatná (je zapotřebí právě jeden z klíčů path, tmpdir nebo "
 "abstract)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:191
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Nesmyslná párová kombinace klíč/hodnota v záznamu adresy „%s“"
 
-#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:254 ../gio/gdbusaddress.c:335
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Chyba v adrese „%s“ – atribut portu má chybný formát"
 
-#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:265 ../gio/gdbusaddress.c:346
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Chyba v adrese „%s“ – atribut rodiny má chybný formát"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Prvek adresy „%s“ neobsahuje dvojtečku (:)"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:476
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -158,7 +158,7 @@ msgid ""
 msgstr ""
 "Pár klíč/hodnota %d, „%s“, v prvku adresy „%s“ neobsahuje znak rovná se"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:490
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -167,7 +167,7 @@ msgstr ""
 "Chyba v neuvozeném klíči nebo hodnotě v páru klíč/hodnota %d, „%s“, v prvku "
 "adresy „%s“"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:568
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -176,89 +176,94 @@ msgstr ""
 "Chyba v adrese „%s“ – unix transport vyžaduje jako nastavený právě jeden z "
 "klíčů „path“ nebo „abstract“"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:604
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Chyba v adrese „%s“ – atribut počítače schází nebo má chybný formát"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:618
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Chyba v adrese „%s“ – atribut portu schází nebo má chybný formát"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:632
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "Chyba v adrese „%s“ – atribut noncefile schází nebo má chybný formát"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:653
 msgid "Error auto-launching: "
 msgstr "Chyba při automatickém spouštění: "
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:661
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Neznámý nebo nepodporovaný transport „%s“ adresy „%s“"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:697
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Chyba při otevírání souboru nonce „%s“: %s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Chyba při čtení ze souboru nonce „%s“: %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:724
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "Chyba při čtení ze souboru nonce „%s“, očekáváno 16 bajtů, obdrženo %d"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Chyba při zápisu obsahu souboru nonce „%s“ do proudu:"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:961
 msgid "The given address is empty"
 msgstr "Daná adresa je prázdná"
 
-#: ../gio/gdbusaddress.c:1029
+#: ../gio/gdbusaddress.c:1031
+#, c-format
+msgid "Cannot spawn a message bus when setuid"
+msgstr "Nelze spustit sběrnici zpráv se zapnutým setuid"
+
+#: ../gio/gdbusaddress.c:1038
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Nelze spustit sběrnici zpráv bez machine-id: "
 
-#: ../gio/gdbusaddress.c:1066
+#: ../gio/gdbusaddress.c:1075
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Chyba při spouštění příkazového řádku „%s“: "
 
-#: ../gio/gdbusaddress.c:1077
+#: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Neobvyklé ukončení programu při spouštění příkazového řádku „%s“: %s"
 
-#: ../gio/gdbusaddress.c:1091
+#: ../gio/gdbusaddress.c:1100
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Příkazový řádek „%s“ skončil s nenulovým stavem ukončení %d: %s"
 
-#: ../gio/gdbusaddress.c:1312
+#: ../gio/gdbusaddress.c:1321
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Zmáčknutím libovolného znaku okno zavřete)\n"
 
-#: ../gio/gdbusaddress.c:1437
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Sběrnice dbus sezení neběží a automatické spuštění selhalo"
 
-#: ../gio/gdbusaddress.c:1458
+#: ../gio/gdbusaddress.c:1467
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nelze určit adresu sběrnice sezení (v tomto OS neimplementováno)"
 
-#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -267,7 +272,7 @@ msgstr ""
 "Nelze určit adresu sběrnice z proměnné prostředí DBUS_STARTER_BUS_TYPE – "
 "neznámá hodnota „%s“"
 
-#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1575 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -275,7 +280,7 @@ msgstr ""
 "Nelze určit adresu sběrnice, jelikož proměnná prostředí "
 "DBUS_STARTER_BUS_TYPE není nastavena"
 
-#: ../gio/gdbusaddress.c:1576
+#: ../gio/gdbusaddress.c:1585
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznámý typ sběrnice %d"
@@ -1230,6 +1235,7 @@ msgid "Failed to create temp file: %s"
 msgstr "Nelze vytvořit dočasný soubor „%s“"
 
 #: ../gio/glib-compile-resources.c:338
+#, c-format
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1238,6 +1244,7 @@ msgstr ""
 "%s"
 
 #: ../gio/glib-compile-resources.c:394
+#, c-format
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
