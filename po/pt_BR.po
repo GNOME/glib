@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-15 18:50+0000\n"
-"PO-Revision-Date: 2012-09-15 17:05-0300\n"
+"POT-Creation-Date: 2012-09-19 02:32+0000\n"
+"PO-Revision-Date: 2012-09-19 03:39-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -144,7 +144,7 @@ msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "O endereço \"%s\" não é válido (é necessário exatamente um dentre: caminho, "
-"tmpdir e chaves abstratas)"
+"diretório temporário ou chaves abstratas)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
@@ -247,11 +247,9 @@ msgid "The given address is empty"
 msgstr "O endereço fornecido está vazio"
 
 #: ../gio/gdbusaddress.c:1030
-#, fuzzy, c-format
-#| msgid "Cannot spawn a message bus without a machine-id: "
+#, c-format
 msgid "Cannot spawn a message bus when setuid"
-msgstr ""
-"Não foi possível chamar um barramento de mensagens sem um ID de máquina: "
+msgstr "Não foi possível chamar um barramento de mensagens com setuid"
 
 #: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
@@ -677,8 +675,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é "
-"\"(%s)\""
+"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é \"(%"
+"s)\""
 
 #: ../gio/gdbusmessage.c:2932
 #, c-format
@@ -834,7 +832,7 @@ msgstr "Caminho do objeto para emitir sinal"
 
 #: ../gio/gdbus-tool.c:536
 msgid "Signal and interface name"
-msgstr "Nome e nome da interface"
+msgstr "Nome de sinal e de interface"
 
 #: ../gio/gdbus-tool.c:568
 msgid "Emit a signal."
@@ -951,7 +949,7 @@ msgstr "Exibir XML"
 
 #: ../gio/gdbus-tool.c:1415
 msgid "Introspect children"
-msgstr "Auto-examinar crianças"
+msgstr "Auto-examinar filhos"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Only print properties"
@@ -1298,7 +1296,7 @@ msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
 msgstr ""
-"Erro processando o arquivo de entrada com xmllint:\n"
+"Erro enquanto processava o arquivo de entrada com o xmllint:\n"
 "%s"
 
 #: ../gio/glib-compile-resources.c:391
@@ -1307,7 +1305,7 @@ msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
 msgstr ""
-"Erro processando o arquivo de entrada com to-pixdata:\n"
+"Erro enquanto processava o arquivo de entrada com o to-pixdata:\n"
 "%s"
 
 #: ../gio/glib-compile-resources.c:404
@@ -1792,75 +1790,75 @@ msgstr "Erro ao definir atributo estendido \"%s\": %s"
 msgid " (invalid encoding)"
 msgstr " (codificação inválida)"
 
-#: ../gio/glocalfileinfo.c:1617 ../gio/glocalfileoutputstream.c:843
+#: ../gio/glocalfileinfo.c:1619 ../gio/glocalfileoutputstream.c:843
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Erro ao obter informação para o arquivo \"%s\": %s"
 
-#: ../gio/glocalfileinfo.c:1852
+#: ../gio/glocalfileinfo.c:1854
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Erro ao obter informação para o descritor de arquivo: %s"
 
-#: ../gio/glocalfileinfo.c:1897
+#: ../gio/glocalfileinfo.c:1899
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo inválido (esperado uint32)"
 
-#: ../gio/glocalfileinfo.c:1915
+#: ../gio/glocalfileinfo.c:1917
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo inválido (esperado uint64)"
 
-#: ../gio/glocalfileinfo.c:1934 ../gio/glocalfileinfo.c:1953
+#: ../gio/glocalfileinfo.c:1936 ../gio/glocalfileinfo.c:1955
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo inválido (expressão de byte esperada)"
 
-#: ../gio/glocalfileinfo.c:1988
+#: ../gio/glocalfileinfo.c:1990
 msgid "Cannot set permissions on symlinks"
 msgstr "Não foi possível definir permissões aos links simbólicos"
 
-#: ../gio/glocalfileinfo.c:2004
+#: ../gio/glocalfileinfo.c:2006
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Erro ao definir permissões: %s"
 
-#: ../gio/glocalfileinfo.c:2055
+#: ../gio/glocalfileinfo.c:2057
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Erro ao definir proprietário: %s"
 
-#: ../gio/glocalfileinfo.c:2078
+#: ../gio/glocalfileinfo.c:2080
 msgid "symlink must be non-NULL"
 msgstr "o link simbólico deve ser não-NULO"
 
-#: ../gio/glocalfileinfo.c:2088 ../gio/glocalfileinfo.c:2107
-#: ../gio/glocalfileinfo.c:2118
+#: ../gio/glocalfileinfo.c:2090 ../gio/glocalfileinfo.c:2109
+#: ../gio/glocalfileinfo.c:2120
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Erro ao definir link simbólico: %s"
 
-#: ../gio/glocalfileinfo.c:2097
+#: ../gio/glocalfileinfo.c:2099
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Erro ao definir link simbólico: o arquivo não é um link simbólico"
 
-#: ../gio/glocalfileinfo.c:2223
+#: ../gio/glocalfileinfo.c:2225
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Erro ao definir data/hora de modificação ou acesso: %s"
 
-#: ../gio/glocalfileinfo.c:2246
+#: ../gio/glocalfileinfo.c:2248
 msgid "SELinux context must be non-NULL"
 msgstr "O contexto SELinux deve ser não-NULO"
 
-#: ../gio/glocalfileinfo.c:2261
+#: ../gio/glocalfileinfo.c:2263
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Erro ao definir o contexto SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2268
+#: ../gio/glocalfileinfo.c:2270
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux não está habilitado neste sistema"
 
-#: ../gio/glocalfileinfo.c:2360
+#: ../gio/glocalfileinfo.c:2362
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Não há suporte à definição do atributo %s"
