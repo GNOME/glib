@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-09-13 22:38+0000\n"
-"PO-Revision-Date: 2012-09-22 00:20+0530\n"
+"PO-Revision-Date: 2012-09-23 02:26+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -2223,7 +2223,7 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:574
 msgid "Set the value of KEY to VALUE"
-msgstr ""
+msgstr "KEY ಮೌಲ್ಯವನ್ನು VALUE ಗೆ ಹೊಂದಿಸು"
 
 #: ../gio/gsettings-tool.c:575
 msgid "SCHEMA[:PATH] KEY VALUE"
@@ -2231,15 +2231,15 @@ msgstr "SCHEMA[:PATH] KEY VALUE"
 
 #: ../gio/gsettings-tool.c:580
 msgid "Reset KEY to its default value"
-msgstr ""
+msgstr "KEY ಅನ್ನು ಪೂರ್ವನಿಯೋಜಿತ ಮೌಲ್ಯಕ್ಕೆ ಮರುಹೊಂದಿಸು"
 
 #: ../gio/gsettings-tool.c:586
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "SCHEMA ದಲ್ಲಿನ ಎಲ್ಲಾ ಕೀಲಿಗಳನ್ನು ಪೂರ್ವನಿಯೋಜಿತಗಳಿಗೆ ಮರುಹೊಂದಿಸು"
 
 #: ../gio/gsettings-tool.c:592
 msgid "Check if KEY is writable"
-msgstr ""
+msgstr "KEY ಗೆ ಬರೆಯಬಹುದೆ ಎಂದು ಪರೀಕ್ಷಿಸಿ"
 
 #: ../gio/gsettings-tool.c:598
 msgid ""
@@ -2346,10 +2346,9 @@ msgid "Unable to create socket: %s"
 msgstr "ಸಾಕೆಟ್‌ ಅನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #: ../gio/gsocket.c:510
-#, fuzzy
 #| msgid "Unknown protocol was specified"
 msgid "Unknown family was specified"
-msgstr "ಅಜ್ಞಾತವಾದ ಪ್ರೊಟೊಕಾಲ್ ಅನ್ನು ಸೂಚಿಸಲಾಗಿದೆ"
+msgstr "ಅಜ್ಞಾತವಾದ ಕುಟುಂಬವನ್ನು ಸೂಚಿಸಲಾಗಿದೆ"
 
 #: ../gio/gsocket.c:517
 msgid "Unknown protocol was specified"
@@ -2376,16 +2375,16 @@ msgid "Error binding to address: %s"
 msgstr "ವಿಳಾಸಕ್ಕೆ ಬದ್ದವಾಗಿರುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gsocket.c:1953 ../gio/gsocket.c:1989
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error joining multicast group: %s"
-msgstr "ಅನ್ವಯವನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "ಮಲ್ಟಿಕ್ಯಾಸ್ಟ್‍ ಗುಂಪನ್ನು ಸೇರುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gsocket.c:1954 ../gio/gsocket.c:1990
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error launching application: %s"
 msgid "Error leaving multicast group: %s"
-msgstr "ಅನ್ವಯವನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "ಮಲ್ಟಿಕ್ಯಾಸ್ಟ್‍ ಗುಂಪನ್ನು ತೊರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gsocket.c:1955
 msgid "No support for source-specific multicast"
@@ -2416,9 +2415,9 @@ msgid "Error sending data: %s"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಕಳಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gsocket.c:2809
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "ಸಾಕೆಟ್‌ ಅನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
+msgstr "ಸಾಕೆಟ್‌ ಅನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
 #: ../gio/gsocket.c:2888
 #, c-format
@@ -2476,9 +2475,9 @@ msgid "Proxying over a non-TCP connection is not supported."
 msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
 
 #: ../gio/gsocketclient.c:1055 ../gio/gsocketclient.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
+msgstr "'%s' ಎಂಬ ಪ್ರಾಕ್ಸಿ ಪ್ರೊಟೊಕಾಲ್ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ."
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
@@ -2491,88 +2490,89 @@ msgstr "ಸೇರಿಸಲಾದ ಸಾಕೆಟ್ ಅನ್ನು ಮುಚ್
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr ""
+msgstr "SOCKSv4 '%s' ಎಂಬ IPv6 ವಿಳಾಸವನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ"
 
 #: ../gio/gsocks4aproxy.c:139
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 ಪ್ರೊಟೊಕಾಲ್‌ಗಾಗಿ ಬಳಕೆದಾರ ಹೆಸರು ಬಹಳ ಉದ್ದವಾಗಿದೆ."
 
 #: ../gio/gsocks4aproxy.c:156
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 ಪ್ರೊಟೊಕಾಲ್‌ಗಾಗಿನ '%s' ಆತಿಥೇಯಗಣಕದ ಹೆಸರು ಬಹಳದ ದೊಡ್ಡದಾಗಿದೆ"
 
 #: ../gio/gsocks4aproxy.c:182
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "ಪೂರೈಕೆಗಣಕವು ಒಂದು SOCKSv4 ಪ್ರಾಕ್ಸಿ ಪೂರೈಕೆಗಣಕವಾಗಿಲ್ಲ"
 
 #: ../gio/gsocks4aproxy.c:189
 msgid "Connection through SOCKSv4 server was rejected"
-msgstr ""
+msgstr "SOCKSv4 ಪೂರೈಕೆಗಣಕದ ಮುಖಾಂತರದ ಸಂಪರ್ಕವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ"
 
 #: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:326
 #: ../gio/gsocks5proxy.c:336
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "ಪೂರೈಕೆಗಣಕವು SOCKSv5 ಪ್ರಾಕ್ಸಿ ಪೂರೈಕೆಗಣಕವಾಗಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಗಾಗಿ ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಗಾಗಿ GLib ನಿಂದ ಬೆಂಬಲಿತವಾಗಿರದ ದೃಢೀಕರಣ ವಿಧಾನದ ಅಗತ್ಯವಿದೆ."
 
 #: ../gio/gsocks5proxy.c:208
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರೊಟೊಕಾಲ್‌ಗಾಗಿ ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಬಹಳ ಉದ್ದವಾಗಿದೆ."
 
 #: ../gio/gsocks5proxy.c:238
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"ತಪ್ಪು ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದದ ಕಾರಣದಿಂದಾಗಿ SOCKSv5 ದೃಢೀಕರಣವು ವಿಫಲಗೊಂಡಿದೆ."
 
 #: ../gio/gsocks5proxy.c:288
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv5 protocol"
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರೊಟೊಕಾಲ್‌ಗಾಗಿನ '%s' ಆತಿಥೇಯಗಣಕದ ಹೆಸರು ಬಹಳದ ದೊಡ್ಡದಾಗಿದೆ"
 
 #: ../gio/gsocks5proxy.c:350
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಯ ಪೂರೈಕೆಗಣಕವು ಗೊತ್ತಿರದ ವಿಳಾಸದ ಬಗೆಯನ್ನು ಬಳಸುತ್ತದೆ."
 
 #: ../gio/gsocks5proxy.c:357
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "ಆಂತರಿಕ SOCKSv5 ಪ್ರಾಕ್ಸಿಯ ಪೂರೈಕೆಗಣಕ ದೋಷ."
 
 #: ../gio/gsocks5proxy.c:363
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "SOCKSv5 ಸಂಪರ್ಕವನ್ನು ನಿಯಮಗಳಿಂದ ಅನುಮತಿಸಲ್ಪಟ್ಟಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:370
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "SOCKSv5 ಪೂರೈಕೆಗಣಕ ಮೂಲಕ ಆತಿಥೇಯವನ್ನು ತಲುಪಲಾಗಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:376
 msgid "Network unreachable through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಯ ಮೂಲಕ ಜಾಲಬಂಧವನ್ನು ತಲುಪಲಾಗಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:382
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಯ ಮೂಲಕದ ಸಂಪರ್ಕವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ."
 
 #: ../gio/gsocks5proxy.c:388
 msgid "SOCKSv5 proxy does not support 'connect' command."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಯು 'connect' ಆಜ್ಞೆಯನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:394
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr ""
+msgstr "SOCKSv5 ಪ್ರಾಕ್ಸಿಯು ಒದಗಿಸಲಾದ ವಿಳಾಸದ ಬಗೆಯನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ."
 
 #: ../gio/gsocks5proxy.c:400
 msgid "Unknown SOCKSv5 proxy error."
-msgstr ""
+msgstr "ಅಜ್ಞಾತ SOCKSv5 ಪ್ರಾಕ್ಸಿ ದೋಷ."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
@@ -2581,35 +2581,39 @@ msgstr "GThemedIcon ಎನ್ಕೋಡಿಂಗ್‌ನ ಆವೃತ್ತಿ %
 
 #: ../gio/gtlscertificate.c:248
 msgid "Cannot decrypt PEM-encoded private key"
-msgstr ""
+msgstr "PEM-ಎನ್ಕೋಡ್ ಮಾಡಲಾದ ಖಾಸಗಿ ಕೀಲಿಯನ್ನು ಡಿಕೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: ../gio/gtlscertificate.c:253
 msgid "No PEM-encoded private key found"
-msgstr ""
+msgstr "ಯಾವುದೆ PEM-ಎನ್ಕೋಡ್ ಮಾಡಲಾದ ಖಾಸಗಿ ಕೀಲಿಯು ಕಂಡುಬಂದಿಲ್ಲ"
 
 #: ../gio/gtlscertificate.c:263
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "PEM-ಎನ್ಕೋಡ್ ಮಾಡಲಾದ ಖಾಸಗಿ ಕೀಲಿಯನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: ../gio/gtlscertificate.c:288
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "ಯಾವುದೆ PEM-ಎನ್ಕೋಡ್ ಮಾಡಲಾದ ಪ್ರಮಾಣಪತ್ರವು ಕಂಡುಬಂದಿಲ್ಲ"
 
 #: ../gio/gtlscertificate.c:297
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "PEM-ಎನ್ಕೋಡ್ ಮಾಡಲಾದ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: ../gio/gtlspassword.c:114
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"ಇದು ನಿಮ್ಮ ಪ್ರವೇಶಾಧಿಕಾರವನ್ನು ಬಂಧಿಸುವ ಮುಂಚೆ ಸರಿಯಾದ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸುವ ನಿಮ್ಮ "
+"ಕಡೆಯ ಅವಕಾಶವಾಗಿರುತ್ತದೆ."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"ನಮೂದಿಸಲಾದ ಹಲವಾರು ಗುಪ್ತಪದಗಳು ತಪ್ಪಾಗಿವೆ, ಮತ್ತು ಮುಂದಿನ ಬಾರಿ ನೀವು ವಿಫಲಗೊಂಡರೆ "
+"ನಿಮ್ಮ ಪ್ರವೇಶಾಧಿಕಾರವನ್ನು ಬಂಧಿಸಲಾಗುತ್ತದೆ."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
@@ -2640,7 +2644,7 @@ msgstr "ರುಜುವಾತುಗಳನ್ನು ಕಳುಹಿಸುವಲ�
 #: ../gio/gunixconnection.c:510
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
+msgstr "SO_PASSCRED ಅನ್ನು ಸಾಕೆಟ್‌ಗಾಗಿ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದ್ದರೆ ದೋಷ: %s"
 
 #: ../gio/gunixconnection.c:519
 #, c-format
@@ -2660,9 +2664,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gunixconnection.c:603
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "1 ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, %d ಅನ್ನು ಪಡೆಯಲಾಗಿದೆ"
+msgstr "ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿರಲಿಲ್ಲ, ಆದರೆ %d ಅನ್ನು ಪಡೆಯಲಾಗಿದೆ"
 
 #: ../gio/gunixconnection.c:629
 #, c-format
@@ -2693,7 +2697,6 @@ msgid "Error writing to file descriptor: %s"
 msgstr "ಕಡತ ವಿವರಣೆಗಾರನಿಗೆ ಬರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-#, fuzzy
 #| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
@@ -2733,9 +2736,9 @@ msgid "Association creation not supported on win32"
 msgstr "win32 ನಲ್ಲಿ ಅಸೋಸಿಯೇಶನ್ ರಚನೆಯು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: ../gio/gwin32inputstream.c:355
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "ಕಡತದಿಂದ ಓದುವಲ್ಲಿ ದೋಷ: %s"
+msgstr "ಹಿಡಿಕೆಯಿಂದ ಓದುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:375
 #, c-format
@@ -2787,7 +2790,7 @@ msgstr "ಒಂದು dbus ಸೇವೆಯನ್ನು ಚಲಾಯಿಸು"
 #: ../gio/tests/gdbus-daemon.c:44
 #, c-format
 msgid "Wrong args\n"
-msgstr ""
+msgstr "ತಪ್ಪು ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳು\n"
 
 #: ../glib/gbookmarkfile.c:760
 #, c-format
@@ -3375,16 +3378,17 @@ msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ಮೌಲ್ಯ '%s' ವನ್ನು ಒಂದು ಬೂಲಿಯನ್ ಆಗಿ ವಿವರಿಸಲು ಆಗುವುದಿಲ್ಲ."
 
 #: ../glib/gmappedfile.c:128
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
-msgstr "'%s' ಕಡತದಿಂದ ಗುಣಲಕ್ಷಣಗಳನ್ನು ಪಡೆಯುವಲ್ಲಿ ವಿಫಲತೆ: fstat() ವಿಫಲಗೊಂಡಿದೆ: %s"
+msgstr ""
+"'%s%s%s%s' ಕಡತದಿಂದ ಗುಣಲಕ್ಷಣಗಳನ್ನು ಪಡೆಯುವಲ್ಲಿ ವಿಫಲತೆ: fstat() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
 #: ../glib/gmappedfile.c:194
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to map file '%s': mmap() failed: %s"
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
-msgstr "'%s' ವನ್ನು ನಕ್ಷೆ ಕಡತಮಾಡುವಲ್ಲಿ ವಿಫಲ: mmap() ವಿಫಲಗೊಂಡಿದೆ: %s"
+msgstr "%s%s%s%s ಮಾಡುವಲ್ಲಿ ವಿಫಲತೆ: mmap() ವಿಫಲಗೊಂಡಿದೆ: %s"
 
 #: ../glib/gmappedfile.c:260
 #, c-format
@@ -3703,7 +3707,7 @@ msgstr "ಹೊಸಸಾಲು ಗುರುತುಗಳ ಅಮಾನ್ಯ ಸಂ
 
 #: ../glib/gregex.c:301
 msgid "bad offset"
-msgstr ""
+msgstr "ತಪ್ಪು ಆಫ್‌ಸೆಟ್‌"
 
 #: ../glib/gregex.c:303
 msgid "short utf8"
@@ -3711,7 +3715,7 @@ msgstr "ಚಿಕ್ಕ utf8"
 
 #: ../glib/gregex.c:305
 msgid "recursion loop"
-msgstr ""
+msgstr "ಪುನರಾವರ್ತಿತ ಕುಣಿಕೆ"
 
 #: ../glib/gregex.c:309
 msgid "unknown error"
@@ -3726,7 +3730,6 @@ msgid "\\c at end of pattern"
 msgstr "\\c ನಮೂನೆಯ ಕೊನೆಯಲ್ಲಿ"
 
 #: ../glib/gregex.c:335
-#, fuzzy
 #| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "ಗುರುತಿಸಲಾಗದ ಅಕ್ಷರಗಳು ಕಂಡುಬರುತ್ತವೆ \\"
@@ -3760,10 +3763,9 @@ msgid "unexpected repeat"
 msgstr "ಅನಿರೀಕ್ಷಿತ ಪುನರಾವರ್ತನೆ"
 
 #: ../glib/gregex.c:360
-#, fuzzy
 #| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
-msgstr "(? ನ ನಂತರ ಗುರುತಿಸಲಾಗದ ಅಕ್ಷರ"
+msgstr "(? ಅಥವ (?- ನ ನಂತರ ಗುರುತಿಸಲಾಗದ ಅಕ್ಷರ"
 
 #: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
@@ -3782,10 +3784,9 @@ msgid "missing ) after comment"
 msgstr "ಕಮೆಂಟ್‍ನ ನಂತರ ) ವು ಕಾಣೆಯಾಗಿದೆ"
 
 #: ../glib/gregex.c:375
-#, fuzzy
 #| msgid "regular expression too large"
 msgid "regular expression is too large"
-msgstr "ಸಾಮಾನ್ಯ ನಿರೂಪಣೆ ಬಹಳ ಉದ್ದವಾಗಿದೆ"
+msgstr "ಸಾಧಾರಣ ಗಣಿತೋಕ್ತಿಯು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ"
 
 #: ../glib/gregex.c:378
 msgid "failed to get memory"
@@ -3848,7 +3849,7 @@ msgstr "ಹಿಂದೆನೋಡು ಪ್ರತಿಪಾದನೆಯಲ್ಲ�
 
 #: ../glib/gregex.c:431
 msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr ""
+msgstr "\\L, \\l, \\N{name}, \\U, ಮತ್ತು \\u ಎಸ್ಕೇಪ್‌ಗಳಿಗೆ ಬೆಂಬಲವಿಲ್ಲ"
 
 #: ../glib/gregex.c:434
 msgid "recursive call could loop indefinitely"
@@ -3916,31 +3917,30 @@ msgstr ""
 
 #: ../glib/gregex.c:480
 msgid "a numbered reference must not be zero"
-msgstr ""
+msgstr "ಒಂದು ಸಂಖ್ಯೆಯ ಉಲ್ಲೇಖವು ಶೂನ್ಯವಾಗಿರಬಾರದು"
 
 #: ../glib/gregex.c:483
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr ""
+"(*ACCEPT), (*FAIL), ಅಥವ (*COMMIT) ಗಾಗಿ ಒಂದು ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗೆ ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../glib/gregex.c:486
 msgid "(*VERB) not recognized"
-msgstr ""
+msgstr "(*VERB) ಗುರುತಿಸಲಾಗಿಲ್ಲ"
 
 #: ../glib/gregex.c:489
 msgid "number is too big"
-msgstr ""
+msgstr "ಸಂಖ್ಯೆಯು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ"
 
 #: ../glib/gregex.c:492
-#, fuzzy
 #| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
-msgstr "ಉಪನಮೂನೆಯ ಹೆಸರಿನಲ್ಲಿ ಟರ್ಮಿನೇಟರ್ ಕಾಣಿಸುತ್ತಿಲ್ಲ"
+msgstr "(?& ನಂತರ ಉಪನಮೂನೆಯ ಹೆಸರು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
 #: ../glib/gregex.c:495
-#, fuzzy
 #| msgid "digit expected"
 msgid "digit expected after (?+"
-msgstr "ಅಪೇಕ್ಷಿತ ಅಂಕಿ"
+msgstr "(?+ ನಂತರ ನಿರೀಕ್ಷಿಸಿಲಾದ ಅಂಕಿ"
 
 #: ../glib/gregex.c:498
 msgid "] is an invalid data character in JavaScript compatibility mode"
@@ -3954,11 +3954,11 @@ msgstr "ಹೆಸರಿಸಲಾದ ಎರಡು ಉಪನಮೂನೆಗಳು 
 
 #: ../glib/gregex.c:504
 msgid "(*MARK) must have an argument"
-msgstr ""
+msgstr "(*MARK) ಒಂದು ಆರ್ಗ್ಯುಮೆಂಟ್ ಅನ್ನು ಹೊಂದಿರಬೇಕು"
 
 #: ../glib/gregex.c:507
 msgid "\\c must be followed by an ASCII character"
-msgstr ""
+msgstr "\\c ನಂತರ ಒಂದು ASCII ಅಕ್ಷರವಿರಬೇಕು"
 
 #: ../glib/gregex.c:510
 #, fuzzy
@@ -3971,18 +3971,17 @@ msgstr ""
 "ಇಲ್ಲ"
 
 #: ../glib/gregex.c:513
-#, fuzzy
 #| msgid "URIs not supported"
 msgid "\\N is not supported in a class"
-msgstr "URI ಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
+msgstr "\\N ಈ ವರ್ಗದಲ್ಲಿ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
 #: ../glib/gregex.c:516
 msgid "too many forward references"
-msgstr ""
+msgstr "ಬಹಳಷ್ಟು ಮುಂದಿನ ಉಲ್ಲೇಖಗಳು"
 
 #: ../glib/gregex.c:519
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
-msgstr ""
+msgstr "(*MARK), (*PRUNE), (*SKIP), ಅಥವ (*THEN) ದಲ್ಲಿನ ಹೆಸರು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ"
 
 #: ../glib/gregex.c:522
 #, fuzzy
