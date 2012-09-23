@@ -1,3 +1,25 @@
+Overview of changes from GLib 2.33.14 to 2.34.0
+===============================================
+
+* Bug fixes:
+ 684278
+
+* Translation updates:
+ Brazilian Portuguese
+ British English
+ Bulgarian
+ Catalan
+ Galician
+ Hebrew
+ Hindi
+ Hungarian
+ Kannada
+ Latvian
+ Marathi
+ Spanish
+ Telugu
+
+
 Overview of changes from GLib 2.33.12 to 2.33.14
 ================================================
 
