@@ -888,10 +888,10 @@ g_tree_lookup_extended (GTree         *tree,
 /**
  * g_tree_foreach:
  * @tree: a #GTree.
- * @func: the function to call for each node visited. If this function
- *   returns %TRUE, the traversal is stopped.
+ * @func: the function to call for each node visited.
+ *     If this function returns %TRUE, the traversal is stopped.
  * @user_data: user data to pass to the function.
- * 
+ *
  * Calls the given function for each of the key/value pairs in the #GTree.
  * The function is passed the key and value of each pair, and the given
  * @data parameter. The tree is traversed in sorted order.
