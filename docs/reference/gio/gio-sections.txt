@@ -778,7 +778,7 @@ g_output_stream_has_pending
 g_output_stream_set_pending
 g_output_stream_clear_pending
 g_output_stream_write_bytes
-g_ouuput_stream_write_bytes_async
+g_output_stream_write_bytes_async
 g_output_stream_write_bytes_finish
 <SUBSECTION Standard>
 GOutputStreamClass
