@@ -4376,7 +4376,10 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
  * (such as the various fundamental type implementations or the signal
  * system).
  *
- * This function is idempotent.
+ * This function is idempotent: If you call it multiple times, all but
+ * the first calls will be silently ignored.
+ *
+ * There is no way to undo the effect of g_type_init().
  *
  * Since version 2.24 this also initializes the thread system
  */
