@@ -357,14 +357,12 @@ gsettings_SCHEMAS = my.app.gschema.xml
         Translations for these strings will also be handled
         via gettext, so you should arrange for these strings to be
         extracted into your gettext catalog. One way to do that is to use
-        intltool. For that, you use <tag class="starttag">_summary</tag>
-        and <tag class="starttag">_description</tag> elements in a
-        .gschema.xml.in file and use
-        <literal>@<!-- -->INTLTOOL_XML_NOMERGE_RULE<!-- -->@</literal>
-        in your Makefile.am to produce the .gschema.xml file. The
-        <literal>NOMERGE</literal> part of the rule instructs intltool
-        to extract translatable strings, but not merge the translations
-        back into the generated xml file.
+        intltool. Since intltool 0.50.1, schema files are
+        supported, so all you have to do is to add your .gschema.xml
+        files to <filename>POTFILES.in</filename> with a line like
+        <programlisting>
+        [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+        </programlisting>
       </para>
       <para>
         GSettings is a bit more restrictive about key names than GConf. Key
