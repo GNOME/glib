@@ -3650,7 +3650,7 @@ g_file_delete_async (GFile               *file,
 /**
  * g_file_delete_finish:
  * @file: input #GFile
- * @res: a #GAsyncResult
+ * @result: a #GAsyncResult
  * @error: a #GError, or %NULL
  *
  * Finishes deleting a file started with g_file_delete_async().

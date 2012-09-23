@@ -2000,8 +2000,8 @@ g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
 /**
  * g_unix_mount_guess_symbolic_icon:
  * @mount_entry: a #GUnixMountEntry
- * 
- * Guesses the symbolic icon of a Unix mount. 
+ *
+ * Guesses the symbolic icon of a Unix mount.
  *
  * Returns: (transfer full): a #GIcon
  *
@@ -2052,6 +2052,7 @@ g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)
 
 /**
  * g_unix_mount_point_guess_symbolic_icon:
+ * @mount_point: a #GUnixMountPoint
  *
  * Guesses the symbolic icon of a Unix mount point.
  *

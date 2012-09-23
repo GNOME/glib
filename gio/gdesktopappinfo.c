@@ -3425,11 +3425,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_desktop_app_info_get_startup_wm_class:
- * @app_info: a #GDesktopAppInfo that supports startup notify
+ * @info: a #GDesktopAppInfo that supports startup notify
  *
- * Retrieves the StartupWMClass field from @app_info. This represents the
- * WM_CLASS property of the main window of the application, if launched through
- * @app_info.
+ * Retrieves the StartupWMClass field from @info. This represents the
+ * WM_CLASS property of the main window of the application, if launched
+ * through @info.
  *
  * Returns: (transfer none): the startup WM class, or %NULL if none is set
  * in the desktop file.
@@ -3437,9 +3437,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.34
  */
 const char *
-g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *app_info)
+g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *info)
 {
-  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (app_info), NULL);
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
 
-  return app_info->startup_wm_class;
+  return info->startup_wm_class;
 }

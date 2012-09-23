@@ -109,7 +109,7 @@ GMenuItem * g_menu_item_new_section                 (const gchar *label,
 GLIB_AVAILABLE_IN_2_34
 GVariant *  g_menu_item_get_attribute_value         (GMenuItem   *menu_item,
                                                      const gchar *attribute,
-                                                     const GVariantType *expected_value);
+                                                     const GVariantType *expected_type);
 GLIB_AVAILABLE_IN_2_34
 gboolean    g_menu_item_get_attribute               (GMenuItem   *menu_item,
                                                      const gchar *attribute,

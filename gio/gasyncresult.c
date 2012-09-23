@@ -156,10 +156,10 @@ g_async_result_get_source_object (GAsyncResult *res)
 
 /**
  * g_async_result_legacy_propagate_error:
- * @result: a #GAsyncResult
- * @dest: (out): a location to propagate the error to.
+ * @res: a #GAsyncResult
+ * @error: (out): a location to propagate the error to.
  *
- * If @result is a #GSimpleAsyncResult, this is equivalent to
+ * If @res is a #GSimpleAsyncResult, this is equivalent to
  * g_simple_async_result_propagate_error(). Otherwise it returns
  * %FALSE.
  *
@@ -197,13 +197,13 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
 
 /**
  * g_async_result_is_tagged:
- * @result: a #GAsyncResult
+ * @res: a #GAsyncResult
  * @source_tag: an application-defined tag
  *
- * Checks if @result has the given @source_tag (generally a function
- * pointer indicating the function @result was created by).
+ * Checks if @res has the given @source_tag (generally a function
+ * pointer indicating the function @res was created by).
  *
- * Returns: %TRUE if @result has the indicated @source_tag, %FALSE if
+ * Returns: %TRUE if @res has the indicated @source_tag, %FALSE if
  *   not.
  *
  * Since: 2.34
