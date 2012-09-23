@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 20:02+0300\n"
+"POT-Creation-Date: 2012-09-22 20:32+0300\n"
 "PO-Revision-Date: 2012-09-22 20:02+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latviešu <lata-l10n@googlegroups.com>\n"
@@ -383,7 +383,7 @@ msgstr "(Un vēl, “%s” slēguma atbrīvošana neizdevās — %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
-msgstr "Savienojums pārtrūka"
+msgstr "Savienojums ir aizvērts"
 
 #: ../gio/gdbusconnection.c:1930
 msgid "Timeout was reached"
