@@ -116,6 +116,7 @@ G_BEGIN_DECLS
  *     control verb. Since: 2.34
  * @G_REGEX_ERROR_NUMBER_TOO_BIG: number is too big in escape sequence. Since: 2.34
  * @G_REGEX_ERROR_MISSING_SUBPATTERN_NAME: Missing subpattern name. Since: 2.34
+ * @G_REGEX_ERROR_MISSING_DIGIT: Missing digit. Since 2.34
  * @G_REGEX_ERROR_INVALID_DATA_CHARACTER: In JavaScript compatibility mode,
  *     "[" is an invalid data character. Since: 2.34
  * @G_REGEX_ERROR_EXTRA_SUBPATTERN_NAME: different names for subpatterns of the 
@@ -279,10 +280,11 @@ GQuark g_regex_error_quark (void);
  * @G_REGEX_NEWLINE_ANYCRLF: Usually any newline character or character sequence
  *     is recognized. If this option is set, the only recognized newline character
  *     sequences are '\r', '\n', and '\r\n'. Since: 2.34
- * G_REGEX_BSR_ANYCRLF: Usually any newline character or character sequence
+ * @G_REGEX_BSR_ANYCRLF: Usually any newline character or character sequence
  *     is recognised. If this option is set, then "\R" only recognizes the newline
  *    characters '\r', '\n' and '\r\n'. Since: 2.34
- * 
+ * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
+ *     JavaScript rather than PCRE. Since: 2.34
  *
  * Flags specifying compile-time options.
  *
@@ -365,8 +367,6 @@ typedef enum
  *     single characters U+000B LINE TABULATION, U+000C FORM FEED (FF),
  *     U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and
  *     U+2029 PARAGRAPH SEPARATOR. Since: 2.34
- * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
- *     JavaScript rather than PCRE. Since: 2.34
  * @G_REGEX_MATCH_PARTIAL_SOFT: An alias for #G_REGEX_MATCH_PARTIAL. Since: 2.34
  * @G_REGEX_MATCH_PARTIAL_HARD: Turns on the partial matching feature. In contrast to
  *     to #G_REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial match
