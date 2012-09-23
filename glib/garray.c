@@ -970,15 +970,15 @@ g_ptr_array_set_free_func (GPtrArray        *array,
 
 /**
  * g_ptr_array_ref:
- * @array: A #GArray.
+ * @array: a #GPtrArray
  *
- * Atomically increments the reference count of @array by one. This
- * function is MT-safe and may be called from any thread.
+ * Atomically increments the reference count of @array by one.
+ * This function is thread-safe and may be called from any thread.
  *
- * Returns: The passed in #GPtrArray.
+ * Returns: The passed in #GPtrArray
  *
  * Since: 2.22
- **/
+ */
 GPtrArray *
 g_ptr_array_ref (GPtrArray *array)
 {
