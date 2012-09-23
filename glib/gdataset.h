@@ -55,12 +55,12 @@ void     g_datalist_id_set_data_full    (GData            **datalist,
 typedef gpointer (*GDuplicateFunc) (gpointer data, gpointer user_data);
 
 GLIB_AVAILABLE_IN_2_34
-gpointer g_datalist_id_dup_data         (GData            **data,
+gpointer g_datalist_id_dup_data         (GData            **datalist,
                                          GQuark             key_id,
                                          GDuplicateFunc     dup_func,
 					 gpointer           user_data);
 GLIB_AVAILABLE_IN_2_34
-gboolean g_datalist_id_replace_data     (GData            **data,
+gboolean g_datalist_id_replace_data     (GData            **datalist,
                                          GQuark             key_id,
                                          gpointer           oldval,
                                          gpointer           newval,

@@ -801,6 +801,7 @@ g_datalist_id_get_data (GData  **datalist,
 /**
  * GDuplicateFunc:
  * @data: the data to duplicate
+ * @user_data: user data that was specified in g_datalist_id_dup_data()
  *
  * The type of functions that are used to 'duplicate' an object.
  * What this means depends on the context, it could just be
