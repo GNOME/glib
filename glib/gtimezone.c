@@ -117,12 +117,16 @@ struct ttinfo
 struct _GTimeZone
 {
   gchar   *name;
-
-  GBytes *zoneinfo;
+  gchar    version;
+  GBytes  *zoneinfo;
 
   const struct tzhead *header;
   const struct ttinfo *infos;
-  const gint64_be     *trans;
+  union
+  {
+    const gint32_be     *one;
+    const gint64_be     *two;
+  } trans;
   const guint8        *indices;
   const gchar         *abbrs;
   gint                 timecnt;
@@ -408,8 +412,7 @@ g_time_zone_new (const gchar *identifier)
           gsize size;
           const struct tzhead *header = g_bytes_get_data (tz->zoneinfo, &size);
 
-          /* we only bother to support version 2 */
-          if (size < sizeof (struct tzhead) || memcmp (header, "TZif2", 5))
+          if (size < sizeof (struct tzhead) || memcmp (header, "TZif", 4))
             {
               g_bytes_unref (tz->zoneinfo);
               tz->zoneinfo = NULL;
@@ -417,21 +420,32 @@ g_time_zone_new (const gchar *identifier)
           else
             {
               gint typecnt;
-
+              tz->version = header->tzh_version;
               /* we trust the file completely. */
-              tz->header = (const struct tzhead *)
-                (((const gchar *) (header + 1)) +
-                  guint32_from_be(header->tzh_ttisgmtcnt) +
-                  guint32_from_be(header->tzh_ttisstdcnt) +
-                  8 * guint32_from_be(header->tzh_leapcnt) +
-                  5 * guint32_from_be(header->tzh_timecnt) +
-                  6 * guint32_from_be(header->tzh_typecnt) +
-                  guint32_from_be(header->tzh_charcnt));
+              if (tz->version == '2')
+                tz->header = (const struct tzhead *)
+                  (((const gchar *) (header + 1)) +
+                   guint32_from_be(header->tzh_ttisgmtcnt) +
+                   guint32_from_be(header->tzh_ttisstdcnt) +
+                   8 * guint32_from_be(header->tzh_leapcnt) +
+                   5 * guint32_from_be(header->tzh_timecnt) +
+                   6 * guint32_from_be(header->tzh_typecnt) +
+                   guint32_from_be(header->tzh_charcnt));
+              else
+                tz->header = header;
 
               typecnt     = guint32_from_be (tz->header->tzh_typecnt);
               tz->timecnt = guint32_from_be (tz->header->tzh_timecnt);
-              tz->trans   = (gconstpointer) (tz->header + 1);
-              tz->indices = (gconstpointer) (tz->trans + tz->timecnt);
+              if (tz->version == '2')
+                {
+                  tz->trans.two = (gconstpointer) (tz->header + 1);
+                  tz->indices   = (gconstpointer) (tz->trans.two + tz->timecnt);
+                }
+              else
+                {
+                  tz->trans.one = (gconstpointer) (tz->header + 1);
+                  tz->indices   = (gconstpointer) (tz->trans.one + tz->timecnt);
+                }
               tz->infos   = (gconstpointer) (tz->indices + tz->timecnt);
               tz->abbrs   = (gconstpointer) (tz->infos + typecnt);
             }
@@ -507,8 +521,12 @@ interval_start (GTimeZone *tz,
                 gint       interval)
 {
   if (interval)
-    return gint64_from_be (tz->trans[interval - 1]);
-
+    {
+      if (tz->version == '2')
+        return gint64_from_be (tz->trans.two[interval - 1]);
+      else
+        return gint32_from_be (tz->trans.one[interval - 1]);
+    }
   return G_MININT64;
 }
 
@@ -517,8 +535,12 @@ interval_end (GTimeZone *tz,
               gint       interval)
 {
   if (interval < tz->timecnt)
-    return gint64_from_be (tz->trans[interval]) - 1;
-
+    {
+      if (tz->version == '2')
+        return gint64_from_be (tz->trans.two[interval]) - 1;
+      else
+        return gint32_from_be (tz->trans.one[interval]) - 1;
+    }
   return G_MAXINT64;
 }
 
