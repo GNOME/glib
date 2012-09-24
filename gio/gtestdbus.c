@@ -617,6 +617,8 @@ g_test_dbus_new (GTestDBusFlags flags)
  * g_test_dbus_get_flags:
  * @self: a #GTestDBus
  *
+ * Gets the flags of the #GTestDBus object.
+ *
  * Returns: the value of #GTestDBus:flags property
  */
 GTestDBusFlags
