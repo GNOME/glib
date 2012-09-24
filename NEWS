@@ -2,7 +2,10 @@ Overview of changes from GLib 2.33.14 to 2.34.0
 ===============================================
 
 * Bug fixes:
- 684278
+ 654239 g_type_init()'s docs have no statement about how to...
+ 674620 Update GSettings migration guide for intltool updates
+ 676034 Fix doc annotation for g_ptr_array_ref()
+ 684278 Fix GIO build on Windows
 
 * Translation updates:
  Brazilian Portuguese
@@ -10,6 +13,7 @@ Overview of changes from GLib 2.33.14 to 2.34.0
  Bulgarian
  Catalan
  Galician
+ German
  Hebrew
  Hindi
  Hungarian
