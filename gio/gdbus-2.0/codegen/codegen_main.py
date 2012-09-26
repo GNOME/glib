@@ -194,6 +194,8 @@ def codegen_main():
                                     docbook_gen,
                                     h, c);
         ret = gen.generate()
+        h.close()
+        c.close()
 
     sys.exit(0)
 
