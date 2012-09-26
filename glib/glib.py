@@ -137,10 +137,6 @@ class GHashPrinter:
         return "map"
 
 def pretty_printer_lookup (val):
-    if is_g_type_instance (val):
-        return GTypePrettyPrinter (val)
-
-def pretty_printer_lookup (val):
     # None yet, want things like hash table and list
 
     type = val.type.unqualified()
