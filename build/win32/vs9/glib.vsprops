@@ -259,6 +259,7 @@ copy ..\..\..\gio\goutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D
 copy ..\..\..\gio\gpermission.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpollableinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpollableoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gpollableutils.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxy.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddressenumerator.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
@@ -285,6 +286,7 @@ copy ..\..\..\gio\gsocketservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0
 copy ..\..\..\gio\gsrvtarget.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtcpconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtcpwrapperconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gtestdbus.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gthemedicon.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gthreadedsocketservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtlsbackend.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
