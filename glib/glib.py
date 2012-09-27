@@ -10,8 +10,15 @@ def g_quark_to_string (quark):
     quark = long(quark)
     if quark == 0:
         return None
-    val = read_global_var ("g_quarks")
-    max_q = long(read_global_var ("g_quark_seq_id"))
+    try:
+        val = read_global_var ("quarks")
+        max_q = long(read_global_var ("quark_seq_id"))
+    except:
+        try:
+            val = read_global_var ("g_quarks")
+            max_q = long(read_global_var ("g_quark_seq_id"))
+        except:
+            return None;
     if quark < max_q:
         return val[quark].string()
     return None
