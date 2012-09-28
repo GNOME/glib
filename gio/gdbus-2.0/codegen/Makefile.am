@@ -5,7 +5,7 @@ bin_SCRIPTS =
 CLEANFILES =
 EXTRA_DIST =
 
-codegendir = $(libdir)/gdbus-2.0/codegen
+codegendir = $(datadir)/glib-2.0/codegen
 codegen_PYTHON =						\
 	__init__.py						\
 	codegen.py						\
@@ -24,7 +24,7 @@ CLEANFILES += gdbus-codegen
 EXTRA_DIST += gdbus-codegen.in
 
 gdbus-codegen: gdbus-codegen.in Makefile $(codegen_PYTHON)
-	$(AM_V_GEN) sed -e 's,@libdir\@,$(libdir),' -e 's,@PYTHON\@,$(PYTHON),' $< > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN) sed -e 's,@datadir\@,$(datadir),' -e 's,@PYTHON\@,$(PYTHON),' $< > $@.tmp && mv $@.tmp $@
 	@chmod a+x $@
 
 clean-local:
