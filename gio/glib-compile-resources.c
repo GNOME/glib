@@ -325,7 +325,6 @@ end_element (GMarkupParseContext  *context,
                                  G_SPAWN_STDOUT_TO_DEV_NULL,
                                  NULL, NULL, NULL, &stderr_child, &status, &my_error))
                 {
-                  g_free (stderr_child);
                   g_propagate_error (error, my_error);
                   goto cleanup;
                 }
@@ -339,6 +338,7 @@ end_element (GMarkupParseContext  *context,
                   goto cleanup;
                 }
 
+              g_free (stderr_child);
               g_free (real_file);
               real_file = g_strdup (tmp_file);
             }
@@ -383,7 +383,6 @@ end_element (GMarkupParseContext  *context,
                                  NULL, NULL, NULL, &stderr_child, &status, &my_error))
                 {
                   g_propagate_error (error, my_error);
-                  g_free (stderr_child);
                   goto cleanup;
                 }
 	      
@@ -395,6 +394,7 @@ end_element (GMarkupParseContext  *context,
                   goto cleanup;
                 }
 
+              g_free (stderr_child);
               g_free (real_file);
               real_file = g_strdup (tmp_file2);
             }
