@@ -45,6 +45,19 @@
     <signal name="Jumped">
       <arg type="d" name="height"/>
     </signal>
+
+    <!--
+        Foo:
+        Property with no <quote>since</quote> annotation (should inherit the 2.30 from its containing interface).
+      -->
+    <property name="Foo" type="s" access="read"/>
+
+    <!--
+        Bar:
+        @since: 2.36
+        Property with a later <quote>since</quote> annotation.
+      -->
+    <property name="Bar" type="s" access="read"/>
   </interface>
 
   <!-- org.gtk.GDBus.Example.ObjectManager.Cat:

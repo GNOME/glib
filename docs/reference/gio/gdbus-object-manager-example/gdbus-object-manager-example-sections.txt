@@ -11,8 +11,14 @@ example_animal_call_poke_sync
 example_animal_complete_poke
 example_animal_emit_jumped
 example_animal_get_mood
+example_animal_get_foo
+example_animal_get_bar
 example_animal_dup_mood
+example_animal_dup_foo
+example_animal_dup_bar
 example_animal_set_mood
+example_animal_set_foo
+example_animal_set_bar
 ExampleAnimalProxy
 ExampleAnimalProxyClass
 example_animal_proxy_new

@@ -235,11 +235,13 @@ class Method:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower, containing_iface):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
+            if len(self.since) == 0:
+                self.since = containing_iface.since
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
@@ -272,11 +274,13 @@ class Signal:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower, containing_iface):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
+            if len(self.since) == 0:
+                self.since = containing_iface.since
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
@@ -319,11 +323,13 @@ class Property:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower, containing_iface):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
+            if len(self.since) == 0:
+                self.since = containing_iface.since
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
@@ -411,10 +417,10 @@ class Interface:
             self.deprecated = True
 
         for m in self.methods:
-            m.post_process(interface_prefix, cns, cns_upper, cns_lower)
+            m.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
         for s in self.signals:
-            s.post_process(interface_prefix, cns, cns_upper, cns_lower)
+            s.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
         for p in self.properties:
-            p.post_process(interface_prefix, cns, cns_upper, cns_lower)
+            p.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
