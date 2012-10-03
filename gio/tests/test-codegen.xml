@@ -350,7 +350,6 @@
   </interface>
 
   <!-- ChangingInterfaceV2:
-       @since: 2.0
   -->
   <interface name="ChangingInterfaceV2">
     <!--
@@ -374,7 +373,6 @@
   </interface>
 
   <!-- ChangingInterfaceV10:
-       @since: 10.0
   -->
   <interface name="ChangingInterfaceV10">
     <!--
