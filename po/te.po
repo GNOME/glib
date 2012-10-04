@@ -1,6 +1,6 @@
 # translation of glib.master.te.po to Telugu
 # Telugu translation of glib
-# Copyright (C) 2012 Swecha Telugu Localisation Team.
+# Copyright (C) 2012 Swecha Telugu Localisation Team <localization@swecha.net>
 # This file is distributed under the same license as the GLIB package.
 #
 #
@@ -11,17 +11,17 @@
 # Krishna Babu K <kkrothap@redhat.com>, 2008, 2009, 2012.
 # Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012.
 # Praveen Illa (swecha team)<mail2ipn@gmail.com>, 2012.
-# GVS.Giri (swecha team)<gvs.giri947@gmail.com>,2012.
 # Hari Krishna <hari@swecha.net>,2012, 2012.
-# GVS.Giri (swecha team)<gvs.giri947@gmail.com>,2012
+# GVS.Giri (swecha team)<gvs.giri@swecha.net> <>,2012, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-16 15:16+0000\n"
-"PO-Revision-Date: 2012-07-17 15:59+0530\n"
-"Last-Translator: GVS.Giri (swecha team)<gvs.giri947@gmail.com>\n"
+"POT-Creation-Date: 2012-09-27 08:55+0000\n"
+"PO-Revision-Date: 2012-10-04 14:17+0530\n"
+"Last-Translator: Sasi Bhushan Boddepalli <sasi@swecha.net>\n"
 "Language-Team: Telugu <indlinux-telugu@lists.sourceforge.net>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
@@ -118,53 +118,53 @@ msgstr "మీ వేదిక ఎటువంటి GCredentials మద్ద�
 msgid "Unexpected early end-of-stream"
 msgstr "స్ట్రీమ్ యొక్క అనుకోని త్వరిత ముగింపు"
 
-#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:151 ../gio/gdbusaddress.c:239
+#: ../gio/gdbusaddress.c:320
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "మద్దతు లేని కీ `%s 'చిరునామా ప్రవేశం లో`%s'"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:178
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "చిరునామా `%s 'చెల్లదు (సరిగ్గా మార్గం, tmpdir లేదా నైరూప్య కీలను ఒక అవసరం)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:191
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "చిరునామా ప్రవేశం లో అర్ధం కీ / విలువ జంట కలయిక `%s '"
 
-#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:254 ../gio/gdbusaddress.c:335
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "చిరునామా `%s లో లోపం '- పోర్ట్ గుణం సరిగ్గా లేదు"
 
-#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:265 ../gio/gdbusaddress.c:346
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "చిరునామా `%s లో లోపం '- కుటుంబం గుణం సరిగ్గా లేదు"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "చిరునామా మూలకం `%s ', (:) ఒక పెద్దప్రేగు కలిగి లేదు"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:476
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr "మీట / విలువ జత%d, `%s ', చిరునామా మూలకం లోని_`%s', సమాన సిగ్న్ కలిగి లేదు"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:490
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr "చిరునామా మూలకం లో కీ / విలువ జంట%d లో లోపం unescaping కీ లేదా విలువ, `%s '`%s'"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:568
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -172,89 +172,95 @@ msgid ""
 msgstr ""
 "చిరునామా `%s 'లో లోపం - unix రవాణా కీలను సరిగ్గా ఒక అవసరం` మార్గం 'లేదా `నైరూప్య' అమర్చవచ్చును"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:604
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "చిరునామా `%s లో లోపం '- హోస్ట్ గుణం తప్పిపోయిన లేదా తప్పుడు ఉంది"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:618
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "చిరునామా లో లోపం `%s '- పోర్ట్ గుణం తప్పిపోయిన లేదా తప్పుడు ఉంది"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:632
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "చిరునామా లో లోపం `%s '- noncefile గుణం లేదు లేదా తప్పుడు"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:653
 msgid "Error auto-launching: "
 msgstr "అనుసంధానమగుటలో దోషము:"
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:661
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "తెలియదు లేదా మద్దతు రవాణా `%s 'చిరునామా`%s కోసం'"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:697
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "లోపం ప్రారంభ సమయము ఫైలు `%s ':%s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "దస్త్రం '%s': %s చదువుటలో దోషం"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:724
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "సమయ దస్త్రం `%s ', 16 బైట్లు అంచనా, నుండి చదవడంలో లోపం  %d వచ్చింది"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "సమయము ఫైలు `%s 'ప్రవాహానికి విషయాలు వ్రాయడం లోపం:"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:961
 msgid "The given address is empty"
 msgstr "ఇచ్చిన చిరునామా ఖాళీగా ఉంది"
 
-#: ../gio/gdbusaddress.c:1029
+#: ../gio/gdbusaddress.c:1031
+#, c-format
+#| msgid "Cannot spawn a message bus without a machine-id: "
+msgid "Cannot spawn a message bus when setuid"
+msgstr "ఒక యంత్ర id లేకుండా ఒక సందేశ బస్సు వ్యాప్తి సాధ్యం కాదు"
+
+#: ../gio/gdbusaddress.c:1038
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "ఒక యంత్రం-id లేకుండా ఒక సందేశాన్ని బస్సు వ్యాపిస్తాయి సాధ్యం కాదు:"
 
-#: ../gio/gdbusaddress.c:1066
+#: ../gio/gdbusaddress.c:1075
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "లోపం ఆవిర్భావానికి కారణమైంది కమాండ్ లైన్ `%s ':"
 
-#: ../gio/gdbusaddress.c:1077
+#: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "అసాధారణ కార్యక్రమం ముగింపు ఆవిర్భావానికి కారణమైంది కమాండ్ లైన్ `%s ':%s"
 
-#: ../gio/gdbusaddress.c:1091
+#: ../gio/gdbusaddress.c:1100
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "కమాండ్ లైన్ `%s 'non-సున్నా నిష్క్రమణ స్థితి%d తో exited:%s"
 
-#: ../gio/gdbusaddress.c:1312
+#: ../gio/gdbusaddress.c:1321
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(ఈ విండోను మూయుటకు ఏదైనా అక్షరమును నొక్కుము)\n"
 
-#: ../gio/gdbusaddress.c:1437
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "డీబస్ సెషన్ నడవటము లేదు, మరియు ఆటోలాంచ్ విఫలమైనది"
 
-#: ../gio/gdbusaddress.c:1458
+#: ../gio/gdbusaddress.c:1467
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "సెషన్ బస్సు చిరునామా (ఈ OS కోసం అమలు కాలేదు) కనుగొనలేదు"
 
-#: ../gio/gdbusaddress.c:1557 ../gio/gdbusconnection.c:6705
+#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6705
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -262,14 +268,14 @@ msgid ""
 msgstr ""
 "చరరాశి DBUS_STARTER_BUS_TYPE పర్యావరణం నుంచి బస్సు చిరునామా కనుగొనలేదు - తెలియని విలువ `%s '"
 
-#: ../gio/gdbusaddress.c:1566 ../gio/gdbusconnection.c:6714
+#: ../gio/gdbusaddress.c:1575 ../gio/gdbusconnection.c:6714
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
 "బస్సు చిరునామా కనుగొనలేదు ఎందుకంటే DBUS_STARTER_BUS_TYPE పర్యావరణం వేరియబుల్ సెట్ లేదు"
 
-#: ../gio/gdbusaddress.c:1576
+#: ../gio/gdbusaddress.c:1585
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "తెలియని బస్సు రకం%d"
@@ -1204,7 +1210,6 @@ msgstr "తాత్కాలిక ఫైలు సృష్టించుట�
 
 #: ../gio/glib-compile-resources.c:338
 #, c-format
-#| msgid "Error processing input file with xmllint"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1214,7 +1219,6 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:394
 #, c-format
-#| msgid "Error processing input file with to-pixdata"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
