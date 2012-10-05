@@ -81,6 +81,7 @@ struct _GFileMonitorPrivate {
   /* Rate limiting change events */
   GHashTable *rate_limiter;
 
+  GMutex mutex;
   GSource *pending_file_change_source;
   GSList *pending_file_changes; /* FileChange */
 
@@ -176,6 +177,7 @@ g_file_monitor_finalize (GObject *object)
   g_hash_table_destroy (monitor->priv->rate_limiter);
 
   g_main_context_unref (monitor->priv->context);
+  g_mutex_clear (&monitor->priv->mutex);
 
   G_OBJECT_CLASS (g_file_monitor_parent_class)->finalize (object);
 }
@@ -272,6 +274,7 @@ g_file_monitor_init (GFileMonitor *monitor)
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);
   monitor->priv->context = g_main_context_ref_thread_default ();
+  g_mutex_init (&monitor->priv->mutex);
 }
 
 /**
@@ -374,7 +377,8 @@ emit_cb (gpointer data)
 {
   GFileMonitor *monitor = G_FILE_MONITOR (data);
   GSList *pending, *iter;
-  
+
+  g_mutex_lock (&monitor->priv->mutex);
   pending = g_slist_reverse (monitor->priv->pending_file_changes);
   monitor->priv->pending_file_changes = NULL;
   if (monitor->priv->pending_file_change_source)
@@ -382,11 +386,13 @@ emit_cb (gpointer data)
       g_source_unref (monitor->priv->pending_file_change_source);
       monitor->priv->pending_file_change_source = NULL;
     }
+  g_mutex_unlock (&monitor->priv->mutex);
 
   g_object_ref (monitor);
   for (iter = pending; iter; iter = iter->next)
     {
        FileChange *change = iter->data;
+
        g_signal_emit (monitor, signals[CHANGED], 0,
 	  	      change->child, change->other_file, change->event_type);
        file_change_free (change);
@@ -418,6 +424,7 @@ emit_in_idle (GFileMonitor      *monitor,
     change->other_file = NULL;
   change->event_type = event_type;
 
+  g_mutex_lock (&monitor->priv->mutex);
   if (!priv->pending_file_change_source)
     {
       source = g_idle_source_new ();
@@ -432,6 +439,7 @@ emit_in_idle (GFileMonitor      *monitor,
     }
   /* We reverse this in the processor */
   priv->pending_file_changes = g_slist_prepend (priv->pending_file_changes, change);
+  g_mutex_unlock (&monitor->priv->mutex);
 }
 
 static guint32
