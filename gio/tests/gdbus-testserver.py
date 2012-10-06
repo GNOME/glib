@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import gobject
+from gi.repository import GLib
 import time
 
 import dbus
@@ -236,7 +236,7 @@ class TestService(dbus.service.Object):
         def return_from_async_wait():
             return_cb()
             return False
-        gobject.timeout_add(msec, return_from_async_wait)
+        GLib.timeout_add(msec, return_from_async_wait)
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -295,5 +295,5 @@ if __name__ == '__main__':
     obj.frob_props["foo"] = "a frobbed string"
     obj.frob_props["PropertyThatWillBeInvalidated"] = "InitialValue"
 
-    mainloop = gobject.MainLoop()
+    mainloop = GLib.MainLoop()
     mainloop.run()
