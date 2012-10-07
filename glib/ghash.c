@@ -92,40 +92,9 @@
  * allocate memory to store the values, which can be a considerable
  * space saving, if your set is large.
  * </para>
- * <programlisting>
- * GHashTable *
- * set_new (GHashFunc      hash_func,
- *          GEqualFunc     equal_func,
- *          GDestroyNotify destroy)
- * {
- *   return g_hash_table_new_full (hash_func, equal_func, destroy, NULL);
- * }
  *
- * void
- * set_add (GHashTable *set,
- *          gpointer    element)
- * {
- *   g_hash_table_replace (set, element, element);
- * }
- *
- * gboolean
- * set_contains (GHashTable *set,
- *               gpointer    element)
- * {
- *   return g_hash_table_lookup_extended (set, element, NULL, NULL);
- * }
- *
- * gboolean
- * set_remove (GHashTable *set,
- *             gpointer    element)
- * {
- *   return g_hash_table_remove (set, element);
- * }
- * </programlisting>
- * </example>
- *
- * As of version 2.32, there is also a g_hash_table_add() function to
- * add a key to a #GHashTable that is being used as a set.
+ * The functions g_hash_table_add(), g_hash_table_contains() are both
+ * designed to be used when using #GHashTable as a set.
  */
 
 /**
