@@ -3687,24 +3687,10 @@ g_value_dup_object (const GValue *value)
  * ensures that the @gobject stays alive during the call to @c_handler
  * by temporarily adding a reference count to @gobject.
  *
- * Note that there is a bug in GObject that makes this function
- * much less useful than it might seem otherwise. Once @gobject is
- * disposed, the callback will no longer be called, but, the signal
- * handler is <emphasis>not</emphasis> currently disconnected. If the
- * @instance is itself being freed at the same time than this doesn't
- * matter, since the signal will automatically be removed, but
- * if @instance persists, then the signal handler will leak. You
- * should not remove the signal yourself because in a future versions of
- * GObject, the handler <emphasis>will</emphasis> automatically
- * be disconnected.
- *
- * It's possible to work around this problem in a way that will
- * continue to work with future versions of GObject by checking
- * that the signal handler is still connected before disconnected it:
- * <informalexample><programlisting>
- *  if (g_signal_handler_is_connected (instance, id))
- *    g_signal_handler_disconnect (instance, id);
- * </programlisting></informalexample>
+ * When the object is destroyed the signal handler will be automatically
+ * disconnected.  Note that this is not currently threadsafe (ie:
+ * emitting a signal while @gobject is being destroyed in another thread
+ * is not safe).
  *
  * Returns: the handler id.
  */
