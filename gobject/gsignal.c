@@ -587,6 +587,7 @@ handler_new (gboolean after)
   handler->block_count = 0;
   handler->after = after != FALSE;
   handler->closure = NULL;
+  handler->has_invalid_closure_notify = 0;
   
   return handler;
 }
