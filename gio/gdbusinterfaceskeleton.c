@@ -836,7 +836,7 @@ g_dbus_interface_skeleton_get_connections (GDBusInterfaceSkeleton *interface_)
  * @interface_: A #GDBusInterfaceSkeleton.
  * @connection: A #GDBusConnection.
  *
- * Checks if @interface_ is export on @connection.
+ * Checks if @interface_ is exported on @connection.
  *
  * Returns: %TRUE if @interface_ is exported on @connection, %FALSE otherwise.
  *
