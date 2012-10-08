@@ -1741,14 +1741,14 @@ g_object_newv (GType       object_type,
 	g_object_notify_queue_thaw (object, nqueue);
     }
 
-  /* run 'constructed' handler if there is a custom one */
-  if (newly_constructed && CLASS_HAS_CUSTOM_CONSTRUCTED (class))
-    class->constructed (object);
-
   /* set remaining properties */
   for (i = 0; i < n_oparams; i++)
     object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
   g_free (oparams);
+
+  /* run 'constructed' handler if there is a custom one */
+  if (newly_constructed && CLASS_HAS_CUSTOM_CONSTRUCTED (class))
+    class->constructed (object);
 
   if (CLASS_HAS_PROPS (class))
     {
