@@ -317,7 +317,8 @@ _g_test_watcher_remove_pid (GPid pid)
  * @short_description: D-Bus testing helper
  * @include: gio/gio.h
  *
- * Helper to test D-Bus code wihtout messing up with user' session bus.
+ * A helper class for testing code which uses D-Bus without touching the user's
+ * session bus.
  */
 
 typedef struct _GTestDBusClass   GTestDBusClass;
@@ -670,7 +671,7 @@ g_test_dbus_add_service_dir (GTestDBus *self,
  * @self: a #GTestDBus
  *
  * Start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After this
- * call, it is safe for unit tests to start sending messages on the session bug.
+ * call, it is safe for unit tests to start sending messages on the session bus.
  *
  * If this function is called from setup callback of g_test_add(),
  * g_test_dbus_down() must be called in its teardown callback.
