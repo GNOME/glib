@@ -82,19 +82,14 @@
  *
  * To destroy a #GHashTable use g_hash_table_destroy().
  *
- * <example>
- * <title>Using a GHashTable as a set</title>
- * <para>
- * A common use-case for hash tables is to store information about
- * a set of keys, without associating any particular value with each
+ * A common use-case for hash tables is to store information about a
+ * set of keys, without associating any particular value with each
  * key. GHashTable optimizes one way of doing so: If you store only
  * key-value pairs where key == value, then GHashTable does not
  * allocate memory to store the values, which can be a considerable
- * space saving, if your set is large.
- * </para>
- *
- * The functions g_hash_table_add(), g_hash_table_contains() are both
- * designed to be used when using #GHashTable as a set.
+ * space saving, if your set is large. The functions
+ * g_hash_table_add() and g_hash_table_contains() are designed to be
+ * used when using #GHashTable this way.
  */
 
 /**
