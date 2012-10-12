@@ -372,10 +372,10 @@ g_time_zone_new (const gchar *identifier)
         {
           gchar *filename;
 
-	  /* identifier can be a relative or absolute path name;
-	     if relative, it is interpreted starting from /usr/share/timezone
-	     while the POSIX standard says it should start with :,
-	     glibc allows both syntaxes, so we should too */
+          /* identifier can be a relative or absolute path name;
+             if relative, it is interpreted starting from /usr/share/zoneinfo
+             while the POSIX standard says it should start with :,
+             glibc allows both syntaxes, so we should too */
           if (identifier != NULL)
             {
               const gchar *tzdir;
@@ -384,13 +384,13 @@ g_time_zone_new (const gchar *identifier)
               if (tzdir == NULL)
                 tzdir = "/usr/share/zoneinfo";
 
-	      if (*identifier == ':')
-		identifier ++;
+              if (*identifier == ':')
+                identifier ++;
 
-	      if (g_path_is_absolute (identifier))
-		filename = g_strdup (identifier);
-	      else
-		filename = g_build_filename (tzdir, identifier, NULL);
+              if (g_path_is_absolute (identifier))
+                filename = g_strdup (identifier);
+              else
+                filename = g_build_filename (tzdir, identifier, NULL);
             }
           else
             filename = g_strdup ("/etc/localtime");
