@@ -3737,6 +3737,7 @@ invalid_closure_notify (gpointer  instance,
 
   handler = handler_lookup (instance, 0, closure, &signal_id);
   /* GClosure removes our notifier when we're done */
+  handler->has_invalid_closure_notify = 0;
   handler_unref_R (signal_id, instance, handler);
 
   SIGNAL_UNLOCK ();
