@@ -40,6 +40,11 @@
 #include "gdatetime.h"
 #include "gdate.h"
 
+#ifdef G_OS_WIN32
+#define STRICT
+#include <windows.h>
+#endif
+
 /**
  * SECTION:timezone
  * @title: GTimeZone
@@ -486,6 +491,221 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
       g_array_append_val (gtz->transitions, trans);
     }
   g_bytes_unref (zoneinfo);
+}
+
+#elif defined (G_OS_WIN32)
+
+/* UTC = local time + bias while local time = UTC + offset */
+static void
+rule_from_windows_time_zone_info (TimeZoneRule *rules,
+                                  LONG          Bias,
+                                  LONG          StandardBias,
+                                  LONG          DaylightBias,
+                                  SYSTEMTIME    StandardDate,
+                                  SYSTEMTIME    DaylightDate)
+{
+  /* Set offset */
+  if (StandardDate.wMonth)
+    {
+      rules->std_offset = -(Bias + StandardBias) * 60;
+      rules->dlt_offset = -(Bias + DaylightBias) * 60;
+
+      rules->dlt_start.sec = DaylightDate.wSecond;
+      rules->dlt_start.min = DaylightDate.wMinute;
+      rules->dlt_start.hour = DaylightDate.wHour;
+      rules->dlt_start.mon = DaylightDate.wMonth;
+      rules->dlt_start.year = DaylightDate.wYear;
+      rules->dlt_start.wday = DaylightDate.wDayOfWeek? DaylightDate.wDayOfWeek : 7;
+
+      if (DaylightDate.wYear)
+        {
+          rules->dlt_start.mday = DaylightDate.wDay;
+          rules->dlt_start.wday = 0;
+        }
+      else
+        rules->dlt_start.week = DaylightDate.wDay;
+
+      rules->dlt_start.isstd = FALSE;
+      rules->dlt_start.isgmt = FALSE;
+
+      rules->dlt_end.sec = StandardDate.wSecond;
+      rules->dlt_end.min = StandardDate.wMinute;
+      rules->dlt_end.hour = StandardDate.wHour;
+      rules->dlt_end.mday = StandardDate.wDay;
+      rules->dlt_end.mon = StandardDate.wMonth;
+      rules->dlt_end.year = StandardDate.wYear;
+      rules->dlt_end.wday = StandardDate.wDayOfWeek? StandardDate.wDayOfWeek : 7;
+
+      if (StandardDate.wYear)
+        {
+          rules->dlt_end.mday = StandardDate.wDay;
+          rules->dlt_end.wday = 0;
+        }
+      else
+        rules->dlt_end.week = StandardDate.wDay;
+
+      rules->dlt_end.isstd = FALSE;
+      rules->dlt_end.isgmt = FALSE;
+    }
+
+  else
+    {
+      rules->std_offset = -Bias * 60;
+
+      rules->dlt_start.mon = 0;
+    }
+}
+
+static gboolean
+rules_from_windows_time_zone (const gchar   *identifier,
+                              TimeZoneRule **rules,
+                              gint          *rules_num,
+                              gchar        **std_name,
+                              gchar        **dlt_name)
+{
+  HKEY key;
+  gchar *subkey, *subkey_dynamic;
+  gchar *key_name;
+
+  /* REG_TZI_FORMAT */
+  struct {
+    LONG Bias;
+    LONG StandardBias;
+    LONG DaylightBias;
+    SYSTEMTIME StandardDate;
+    SYSTEMTIME DaylightDate;
+  } tzi, tzi_prev;
+  DWORD size;
+
+  *rules = NULL;
+  *rules_num = 0;
+  *std_name = NULL;
+  *dlt_name = NULL;
+
+  key_name = NULL;
+
+  if (!identifier)
+    {
+      subkey = "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
+
+      if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+                         KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
+        {
+          size = 0;
+          if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
+                                NULL, &size) == ERROR_SUCCESS)
+            {
+              key_name = g_malloc (size);
+
+              if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
+                                    (LPBYTE) key_name, &size) != ERROR_SUCCESS)
+                {
+                  g_free (key_name);
+                  key_name = NULL;
+                }
+            }
+
+          RegCloseKey (key);
+        }
+    }
+  else
+    key_name = g_strdup (identifier);
+
+  if (!key_name)
+    return FALSE;
+
+  subkey = g_strconcat ("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones\\",
+                        key_name,
+                        NULL);
+
+  subkey_dynamic = g_strconcat (subkey, "\\Dynamic DST", NULL);
+
+  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey_dynamic, 0,
+                     KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
+    {
+      DWORD first, last;
+      int year, i;
+      gchar *s;
+
+      size = sizeof first;
+      if (RegQueryValueExA (key, "FirstEntry", NULL, NULL,
+                            (LPBYTE) &first, &size) != ERROR_SUCCESS)
+        goto failed;
+
+      size = sizeof last;
+      if (RegQueryValueExA (key, "LastEntry", NULL, NULL,
+                            (LPBYTE) &last, &size) != ERROR_SUCCESS)
+        goto failed;
+
+      *rules_num = last - first + 2;
+      *rules = g_new0 (TimeZoneRule, *rules_num);
+
+      for (year = first, i = 0; year <= last; year++)
+        {
+          s = g_strdup_printf ("%d", year);
+
+          size = sizeof tzi;
+          if (RegQueryValueExA (key, s, NULL, NULL,
+                            (LPBYTE) &tzi, &size) != ERROR_SUCCESS)
+            {
+              g_free (*rules);
+              *rules = NULL;
+              break;
+            }
+
+          g_free (s);
+
+          if (year > first && memcmp (&tzi_prev, &tzi, sizeof tzi) == 0)
+              continue;
+          else
+            memcpy (&tzi_prev, &tzi, sizeof tzi);
+
+          rule_from_windows_time_zone_info (&(*rules)[i], tzi.Bias,
+                                            tzi.StandardBias, tzi.DaylightBias,
+                                            tzi.StandardDate, tzi.DaylightDate);
+
+          (*rules)[i++].start_year = year;
+        }
+
+      *rules_num = i + 1;
+
+failed:
+      RegCloseKey (key);
+    }
+  else if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+                          KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
+    {
+      size = sizeof tzi;
+      if (RegQueryValueExA (key, "TZI", NULL, NULL,
+                            (LPBYTE) &tzi, &size) == ERROR_SUCCESS)
+        {
+          *rules_num = 2;
+          *rules = g_new0 (TimeZoneRule, 2);
+
+          rule_from_windows_time_zone_info (&(*rules)[0], tzi.Bias,
+                                            tzi.StandardBias, tzi.DaylightBias,
+                                            tzi.StandardDate, tzi.DaylightDate);
+        }
+
+      RegCloseKey (key);
+    }
+
+  g_free (subkey_dynamic);
+  g_free (subkey);
+  g_free (key_name);
+
+  if (*rules)
+    {
+      (*rules)[0].start_year = MIN_TZYEAR;
+      if ((*rules)[*rules_num - 2].start_year < MAX_TZYEAR)
+        (*rules)[*rules_num - 1].start_year = MAX_TZYEAR;
+      else
+        (*rules)[*rules_num - 1].start_year = (*rules)[*rules_num - 2].start_year + 1;
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 #endif
@@ -938,6 +1158,7 @@ rules_from_identifier (const gchar   *identifier,
     return FALSE;
 
   dlt_name_pos = pos;
+  dlt_offset_pos = NULL;
 
   /* Format 2 */
   if (*pos != '\0')
@@ -952,9 +1173,14 @@ rules_from_identifier (const gchar   *identifier,
 
       dlt_offset_pos = pos;
 
+#ifndef G_OS_WIN32
       /* Start and end required (format 2) */
       if (*pos == '\0')
         return FALSE;
+#else
+      if (*pos != '\0')
+        {
+#endif
 
       /* Default offset is 1 hour less from standard offset */
       if (*pos++ == ',')
@@ -1007,6 +1233,10 @@ rules_from_identifier (const gchar   *identifier,
 
       if (!ret)
         return FALSE;
+
+#ifdef G_OS_WIN32
+      }
+#endif
     }
 
 
@@ -1019,6 +1249,34 @@ rules_from_identifier (const gchar   *identifier,
       *dlt_name = NULL;
       dlt_start.mon = 0;
     }
+
+
+#ifdef G_OS_WIN32
+  /* If doesn't have offset for daylight then it is Windows format */
+  if (dlt_offset_pos == pos)
+    {
+      int i;
+
+      /* Use US rules, Windows' default is Pacific Standard Time */
+      dlt_offset = std_offset - 60 * 60;
+
+      if (rules_from_windows_time_zone ("Pacific Standard Time", rules, rules_num, NULL, NULL))
+        {
+          for (i = 0; i < *rules_num - 1; i++)
+            {
+              (*rules)[i].std_offset = -std_offset;
+              (*rules)[i].dlt_offset = -dlt_offset;
+              (*rules)[i].std_name = *std_name;
+              (*rules)[i].dlt_name = *dlt_name;
+            }
+
+          return TRUE;
+        }
+      else
+        return FALSE;
+    }
+#endif
+
 
   *rules_num = 2;
   *rules = g_new0 (TimeZoneRule, 2);
@@ -1067,6 +1325,13 @@ rules_from_identifier (const gchar   *identifier,
  * (0 <= d <= 6) of week w (1 <= w <= 5) of month m (1 <= m <= 12), day
  * 0 is a Sunday).  Times are in local wall clock time, the default is
  * 02:00:00.
+ *
+ * In Windows, the "tzn[+|–]hh[:mm[:ss]][dzn]" format is used, but also
+ * accepts POSIX format.  The Windows format uses US rules for all time
+ * zones; daylight savings time is 60 minutes behind the standard time
+ * with date and time of change taken from Pacific Standard Time.
+ * Offsets are time values to be added to the local time to get
+ * Coordinated Universal Time (UTC).
  *
  * g_time_zone_new_local() calls this function with the value of the
  * <varname>TZ</varname> environment variable.  This function itself is
