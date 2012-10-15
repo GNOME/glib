@@ -115,24 +115,28 @@ struct ttinfo
   guint8    tt_abbrind;
 };
 
+typedef struct
+{
+  gint32     gmt_offset;
+  gboolean   is_dst;
+  gboolean   is_standard;
+  gboolean   is_gmt;
+  gchar     *abbrev;
+} TransitionInfo;
+
+typedef struct
+{
+  gint64 time;
+  gint   info_index;
+} Transition;
+
+
 /* GTimeZone structure and lifecycle {{{1 */
 struct _GTimeZone
 {
   gchar   *name;
-  gchar    version;
-  GBytes  *zoneinfo;
-
-  const struct tzhead *header;
-  const struct ttinfo *infos;
-  union
-  {
-    const gint32_be     *one;
-    const gint64_be     *two;
-  } trans;
-  const guint8        *indices;
-  const gchar         *abbrs;
-  gint                 timecnt;
-
+  GArray  *t_info;
+  GArray  *transitions;
   gint     ref_count;
 };
 
@@ -174,9 +178,9 @@ again:
           G_UNLOCK(time_zones);
         }
 
-      if (tz->zoneinfo)
-        g_bytes_unref (tz->zoneinfo);
-
+      g_array_free (tz->t_info, TRUE);
+      if (tz->transitions != NULL)
+        g_array_free (tz->transitions, TRUE);
       g_free (tz->name);
 
       g_slice_free (GTimeZone, tz);
@@ -254,6 +258,11 @@ static gboolean
 parse_constant_offset (const gchar *name,
                        gint32      *offset)
 {
+  if (g_strcmp0 (name, "UTC") == 0)
+    {
+      *offset = 0;
+      return TRUE;
+    }
   switch (*name++)
     {
     case 'Z':
@@ -275,36 +284,30 @@ parse_constant_offset (const gchar *name,
     }
 }
 
-static GBytes *
-zone_for_constant_offset (const gchar *name)
+static void
+zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
 {
-  const gchar fake_zoneinfo_headers[] =
-    "TZif" "2..." "...." "...." "...."
-    "\0\0\0\0" "\0\0\0\0" "\0\0\0\0" "\0\0\0\0" "\0\0\0\0" "\0\0\0\0"
-    "TZif" "2..." "...." "...." "...."
-    "\0\0\0\0" "\0\0\0\0" "\0\0\0\0" "\0\0\0\0" "\0\0\0\1" "\0\0\0\7";
-  struct {
-    struct tzhead headers[2];
-    struct ttinfo info;
-    gchar abbr[8];
-  } *fake;
   gint32 offset;
+  TransitionInfo info;
 
   if (name == NULL || !parse_constant_offset (name, &offset))
-    return NULL;
+    return;
 
-  offset = GINT32_TO_BE (offset);
+  info.gmt_offset = offset;
+  info.is_dst = FALSE;
+  info.is_standard = TRUE;
+  info.is_gmt = TRUE;
+  info.abbrev =  g_strdup (name);
 
-  fake = g_malloc (sizeof *fake);
-  memcpy (fake, fake_zoneinfo_headers, sizeof fake_zoneinfo_headers);
-  memcpy (&fake->info.tt_gmtoff, &offset, sizeof offset);
-  fake->info.tt_isdst = FALSE;
-  fake->info.tt_abbrind = 0;
-  strcpy (fake->abbr, name);
 
-  return g_bytes_new_take (fake, sizeof *fake);
+  gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo), 1);
+  g_array_append_val (gtz->t_info, info);
+
+  /* Constant offset, no transitions */
+  gtz->transitions = NULL;
 }
 
+#ifdef G_OS_UNIX
 static GBytes*
 zone_info_unix (const gchar *identifier)
 {
@@ -349,23 +352,25 @@ zone_info_unix (const gchar *identifier)
 }
 
 static void
-init_zone_from_iana_info (GTimeZone *tz)
+init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
 {
   gsize size;
-  const struct tzhead *header = g_bytes_get_data (tz->zoneinfo, &size);
+  guint index;
+  guint32 time_count, type_count, leap_count, isgmt_count;
+  guint32  isstd_count, char_count ;
+  gpointer tz_transitions, tz_type_index, tz_ttinfo;
+  gpointer  tz_leaps, tz_isgmt, tz_isstd;
+  gchar* tz_abbrs;
+  guint timesize = sizeof (gint32), countsize = sizeof (gint32);
+  const struct tzhead *header = g_bytes_get_data (zoneinfo, &size);
 
-  if (size < sizeof (struct tzhead) || memcmp (header, "TZif", 4))
-    {
-      g_bytes_unref (tz->zoneinfo);
-      tz->zoneinfo = NULL;
-    }
-  else
-    {
-      gint typecnt;
-      tz->version = header->tzh_version;
-      /* we trust the file completely. */
-      if (tz->version == '2')
-        tz->header = (const struct tzhead *)
+  g_return_if_fail (size >= sizeof (struct tzhead) &&
+                    memcmp (header, "TZif", 4) == 0);
+
+  if (header->tzh_version == '2')
+      {
+        /* Skip ahead to the newer 64-bit data if it's available. */
+        header = (const struct tzhead *)
           (((const gchar *) (header + 1)) +
            guint32_from_be(header->tzh_ttisgmtcnt) +
            guint32_from_be(header->tzh_ttisstdcnt) +
@@ -373,26 +378,59 @@ init_zone_from_iana_info (GTimeZone *tz)
            5 * guint32_from_be(header->tzh_timecnt) +
            6 * guint32_from_be(header->tzh_typecnt) +
            guint32_from_be(header->tzh_charcnt));
-      else
-        tz->header = header;
+        timesize = sizeof (gint64);
+      }
+  time_count = guint32_from_be(header->tzh_timecnt);
+  type_count = guint32_from_be(header->tzh_typecnt);
+  leap_count = guint32_from_be(header->tzh_leapcnt);
+  isgmt_count = guint32_from_be(header->tzh_ttisgmtcnt);
+  isstd_count = guint32_from_be(header->tzh_ttisstdcnt);
+  char_count = guint32_from_be(header->tzh_charcnt);
 
-      typecnt     = guint32_from_be (tz->header->tzh_typecnt);
-      tz->timecnt = guint32_from_be (tz->header->tzh_timecnt);
-      if (tz->version == '2')
-        {
-          tz->trans.two = (gconstpointer) (tz->header + 1);
-          tz->indices   = (gconstpointer) (tz->trans.two + tz->timecnt);
-        }
-      else
-        {
-          tz->trans.one = (gconstpointer) (tz->header + 1);
-          tz->indices   = (gconstpointer) (tz->trans.one + tz->timecnt);
-        }
-      tz->infos   = (gconstpointer) (tz->indices + tz->timecnt);
-      tz->abbrs   = (gconstpointer) (tz->infos + typecnt);
+  g_assert (type_count == isgmt_count);
+  g_assert (type_count == isstd_count);
+
+  tz_transitions = (gpointer)(header + 1);
+  tz_type_index = tz_transitions + timesize * time_count;
+  tz_ttinfo = tz_type_index + time_count;
+  tz_abbrs = tz_ttinfo + sizeof (struct ttinfo) * type_count;
+  tz_leaps = tz_abbrs + char_count;
+  tz_isstd = tz_leaps + (timesize + countsize) * leap_count;
+  tz_isgmt = tz_isstd + isstd_count;
+
+  gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo),
+                                   type_count);
+  gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition),
+                                        time_count);
+
+  for (index = 0; index < type_count; index++)
+    {
+      TransitionInfo t_info;
+      struct ttinfo info = ((struct ttinfo*)tz_ttinfo)[index];
+      t_info.gmt_offset = gint32_from_be (info.tt_gmtoff);
+      t_info.is_dst = info.tt_isdst ? TRUE : FALSE;
+      t_info.is_standard = ((guint8*)tz_isstd)[index] ? TRUE : FALSE;
+      t_info.is_gmt = ((guint8*)tz_isgmt)[index] ? TRUE : FALSE;
+      t_info.abbrev = g_strdup (&tz_abbrs[info.tt_abbrind]);
+      g_array_append_val (gtz->t_info, t_info);
     }
+
+  for (index = 0; index < time_count; index++)
+    {
+      Transition trans;
+      if (header->tzh_version == '2')
+        trans.time = gint64_from_be (((gint64_be*)tz_transitions)[index]);
+      else
+        trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
+      trans.info_index = ((guint8*)tz_type_index)[index];
+      g_assert (trans.info_index >= 0);
+      g_assert (trans.info_index < gtz->t_info->len);
+      g_array_append_val (gtz->transitions, trans);
+    }
+  g_bytes_unref (zoneinfo);
 }
 
+#endif
 
 /* Construction {{{1 */
 /**
@@ -439,31 +477,46 @@ init_zone_from_iana_info (GTimeZone *tz)
 GTimeZone *
 g_time_zone_new (const gchar *identifier)
 {
-  GTimeZone *tz;
-  GMappedFile *file;
+  GTimeZone *tz = NULL;
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
     time_zones = g_hash_table_new (g_str_hash, g_str_equal);
 
   if (identifier)
-    tz = g_hash_table_lookup (time_zones, identifier);
-  else
-    tz = NULL;
-
-  if (tz == NULL)
     {
-      tz = g_slice_new0 (GTimeZone);
-      tz->name = g_strdup (identifier);
-      tz->ref_count = 0;
+      tz = g_hash_table_lookup (time_zones, identifier);
+      if (tz)
+        {
+          g_atomic_int_inc (&tz->ref_count);
+          G_UNLOCK (time_zones);
+          return tz;
+        }
+    }
 
-      tz->zoneinfo = zone_for_constant_offset (identifier);
+  tz = g_slice_new0 (GTimeZone);
+  tz->name = g_strdup (identifier);
+  tz->ref_count = 0;
 
-      if (tz->zoneinfo == NULL)
-        tz->zoneinfo = zone_info_unix (identifier);
+  zone_for_constant_offset (tz, identifier);
 
-      if (tz->zoneinfo != NULL)
-        init_zone_from_iana_info (tz);
+  if (tz->t_info == NULL)
+    {
+#ifdef G_OS_UNIX
+      GBytes *zoneinfo = zone_info_unix (identifier);
+      if (!zoneinfo)
+        zone_for_constant_offset (tz, "UTC");
+      else
+        {
+          init_zone_from_iana_info (tz, zoneinfo);
+          g_bytes_unref (zoneinfo);
+        }
+#elif defined G_OS_WIN32
+#endif
+    }
+
+  if (tz->t_info != NULL)
+    {
       if (identifier)
         g_hash_table_insert (time_zones, tz->name, tz);
     }
@@ -518,69 +571,89 @@ g_time_zone_new_local (void)
   return g_time_zone_new (getenv ("TZ"));
 }
 
-/* Internal helpers {{{1 */
-inline static const struct ttinfo *
-interval_info (GTimeZone *tz,
-               gint       interval)
-{
-  if (interval)
-    return tz->infos + tz->indices[interval - 1];
+#define TRANSITION(n)         g_array_index (tz->transitions, Transition, n)
+#define TRANSITION_INFO(n)    g_array_index (tz->t_info, TransitionInfo, n)
 
-  return tz->infos;
+/* Internal helpers {{{1 */
+/* Note that interval 0 is *before* the first transition time, so
+ * interval 1 gets transitions[0].
+ */
+inline static const TransitionInfo*
+interval_info (GTimeZone *tz,
+               guint      interval)
+{
+  guint index;
+  g_return_val_if_fail (tz->t_info != NULL, NULL);
+  if (interval && tz->transitions && interval <= tz->transitions->len)
+    index = (TRANSITION(interval - 1)).info_index;
+  else
+    index = 0;
+  return &(TRANSITION_INFO(index));
 }
 
 inline static gint64
 interval_start (GTimeZone *tz,
-                gint       interval)
+                guint      interval)
 {
-  if (interval)
-    {
-      if (tz->version == '2')
-        return gint64_from_be (tz->trans.two[interval - 1]);
-      else
-        return gint32_from_be (tz->trans.one[interval - 1]);
-    }
-  return G_MININT64;
+  if (!interval || tz->transitions == NULL || tz->transitions->len == 0)
+    return G_MININT64;
+  if (interval > tz->transitions->len)
+    interval = tz->transitions->len;
+  return (TRANSITION(interval - 1)).time;
 }
 
 inline static gint64
 interval_end (GTimeZone *tz,
-              gint       interval)
+              guint      interval)
 {
-  if (interval < tz->timecnt)
-    {
-      if (tz->version == '2')
-        return gint64_from_be (tz->trans.two[interval]) - 1;
-      else
-        return gint32_from_be (tz->trans.one[interval]) - 1;
-    }
+  if (tz->transitions && interval < tz->transitions->len)
+    return (TRANSITION(interval)).time - 1;
   return G_MAXINT64;
 }
 
 inline static gint32
 interval_offset (GTimeZone *tz,
-                 gint       interval)
+                 guint      interval)
 {
-  return gint32_from_be (interval_info (tz, interval)->tt_gmtoff);
+  g_return_val_if_fail (tz->t_info != NULL, 0);
+  return interval_info (tz, interval)->gmt_offset;
 }
 
 inline static gboolean
 interval_isdst (GTimeZone *tz,
-                gint       interval)
+                guint      interval)
 {
-  return interval_info (tz, interval)->tt_isdst;
+  g_return_val_if_fail (tz->t_info != NULL, 0);
+  return interval_info (tz, interval)->is_dst;
 }
 
-inline static guint8
-interval_abbrind (GTimeZone *tz,
-                  gint       interval)
+
+inline static gboolean
+interval_isgmt (GTimeZone *tz,
+                guint      interval)
 {
-  return interval_info (tz, interval)->tt_abbrind;
+  g_return_val_if_fail (tz->t_info != NULL, 0);
+  return interval_info (tz, interval)->is_gmt;
+}
+
+inline static gboolean
+interval_isstandard (GTimeZone *tz,
+                guint      interval)
+{
+  return interval_info (tz, interval)->is_standard;
+}
+
+inline static gchar*
+interval_abbrev (GTimeZone *tz,
+                  guint      interval)
+{
+  g_return_val_if_fail (tz->t_info != NULL, 0);
+  return interval_info (tz, interval)->abbrev;
 }
 
 inline static gint64
 interval_local_start (GTimeZone *tz,
-                      gint       interval)
+                      guint      interval)
 {
   if (interval)
     return interval_start (tz, interval) + interval_offset (tz, interval);
@@ -590,9 +663,9 @@ interval_local_start (GTimeZone *tz,
 
 inline static gint64
 interval_local_end (GTimeZone *tz,
-                    gint       interval)
+                    guint      interval)
 {
-  if (interval < tz->timecnt)
+  if (tz->transitions && interval < tz->transitions->len)
     return interval_end (tz, interval) + interval_offset (tz, interval);
 
   return G_MAXINT64;
@@ -600,9 +673,11 @@ interval_local_end (GTimeZone *tz,
 
 static gboolean
 interval_valid (GTimeZone *tz,
-                gint       interval)
+                guint      interval)
 {
-  return interval <= tz->timecnt;
+  if ( tz->transitions == NULL)
+    return interval == 0;
+  return interval <= tz->transitions->len;
 }
 
 /* g_time_zone_find_interval() {{{1 */
@@ -640,13 +715,16 @@ g_time_zone_adjust_time (GTimeZone *tz,
                          gint64    *time_)
 {
   gint i;
+  guint intervals;
 
-  if (tz->zoneinfo == NULL)
+  if (tz->transitions == NULL)
     return 0;
+
+  intervals = tz->transitions->len;
 
   /* find the interval containing *time UTC
    * TODO: this could be binary searched (or better) */
-  for (i = 0; i < tz->timecnt; i++)
+  for (i = 0; i <= intervals; i++)
     if (*time_ <= interval_end (tz, i))
       break;
 
@@ -686,7 +764,7 @@ g_time_zone_adjust_time (GTimeZone *tz,
           if (i && *time_ <= interval_local_end (tz, i - 1))
             i--;
 
-          else if (i < tz->timecnt &&
+          else if (i < intervals &&
                    *time_ >= interval_local_start (tz, i + 1))
             i++;
         }
@@ -730,11 +808,12 @@ g_time_zone_find_interval (GTimeZone *tz,
                            gint64     time_)
 {
   gint i;
+  guint intervals;
 
-  if (tz->zoneinfo == NULL)
+  if (tz->transitions == NULL)
     return 0;
-
-  for (i = 0; i < tz->timecnt; i++)
+  intervals = tz->transitions->len;
+  for (i = 0; i <= intervals; i++)
     if (time_ <= interval_end (tz, i))
       break;
 
@@ -758,7 +837,7 @@ g_time_zone_find_interval (GTimeZone *tz,
       if (i && time_ <= interval_local_end (tz, i - 1))
         i--;
 
-      else if (i < tz->timecnt && time_ >= interval_local_start (tz, i + 1))
+      else if (i < intervals && time_ >= interval_local_start (tz, i + 1))
         i++;
     }
 
@@ -787,12 +866,9 @@ const gchar *
 g_time_zone_get_abbreviation (GTimeZone *tz,
                               gint       interval)
 {
-  g_return_val_if_fail (interval_valid (tz, interval), NULL);
+  g_return_val_if_fail (interval_valid (tz, (guint)interval), NULL);
 
-  if (tz->header == NULL)
-    return "UTC";
-
-  return tz->abbrs + interval_abbrind (tz, interval);
+  return interval_abbrev (tz, (guint)interval);
 }
 
 /**
@@ -816,12 +892,9 @@ gint32
 g_time_zone_get_offset (GTimeZone *tz,
                         gint       interval)
 {
-  g_return_val_if_fail (interval_valid (tz, interval), 0);
+  g_return_val_if_fail (interval_valid (tz, (guint)interval), 0);
 
-  if (tz->header == NULL)
-    return 0;
-
-  return interval_offset (tz, interval);
+  return interval_offset (tz, (guint)interval);
 }
 
 /**
@@ -842,10 +915,10 @@ g_time_zone_is_dst (GTimeZone *tz,
 {
   g_return_val_if_fail (interval_valid (tz, interval), FALSE);
 
-  if (tz->header == NULL)
+  if (tz->transitions == NULL)
     return FALSE;
 
-  return interval_isdst (tz, interval);
+  return interval_isdst (tz, (guint)interval);
 }
 
 /* Epilogue {{{1 */
