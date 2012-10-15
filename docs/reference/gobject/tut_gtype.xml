@@ -67,8 +67,8 @@ GType g_type_register_fundamental (GType                       type_id,
       <para>
         Fundamental types are top-level types which do not derive from any other type 
         while other non-fundamental types derive from other types.
-        Upon initialization by <function><link linkend="g-type-init">g_type_init</link></function>, the type system not 
-        only initializes its internal data structures but it also registers a number of core
+        Upon initialization, the type system not only initializes its
+        internal data structures but it also registers a number of core
         types: some of these are fundamental types. Others are types derived from these 
         fundamental types.
       </para>

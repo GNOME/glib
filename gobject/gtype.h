@@ -47,7 +47,6 @@ G_BEGIN_DECLS
 #define	G_TYPE_FUNDAMENTAL_MAX		(255 << G_TYPE_FUNDAMENTAL_SHIFT)
 
 /* Constant fundamental types,
- * introduced by g_type_init().
  */
 /**
  * G_TYPE_INVALID:

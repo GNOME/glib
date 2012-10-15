@@ -33,6 +33,8 @@
 #include "gatomicarray.h"
 #include "gobject_trace.h"
 
+#include "../glib/gconstructor.h"
+
 
 /**
  * SECTION:gtype
@@ -42,9 +44,7 @@
  *
  * The GType API is the foundation of the GObject system.  It provides the
  * facilities for registering and managing all fundamental data types,
- * user-defined object and interface types.  Before using any GType
- * or GObject functions, g_type_init() must be called to initialize the
- * type system.
+ * user-defined object and interface types.
  *
  * For type creation and registration purposes, all types fall into one of
  * two categories: static or dynamic.  Static types are never loaded or
@@ -128,15 +128,8 @@
     else \
       g_error ("%s()%s`%s'", _fname, _action, _tname); \
 }G_STMT_END
-#define g_return_val_if_type_system_uninitialized(return_value) G_STMT_START{ \
-    if (G_UNLIKELY (!static_quark_type_flags))                                \
-      {                                                                       \
-        g_log (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,                            \
-               "%s: You forgot to call g_type_init()",                        \
-               G_STRLOC);                                                     \
-        return (return_value);                                                \
-      }                                                                       \
-}G_STMT_END
+#define g_assert_type_system_initialized() \
+  g_assert (static_quark_type_flags)
 
 #ifdef  G_ENABLE_DEBUG
 #define DEBUG_CODE(debug_type, code_block)  G_STMT_START {    \
@@ -2600,7 +2593,7 @@ g_type_register_fundamental (GType                       type_id,
 {
   TypeNode *node;
   
-  g_return_val_if_type_system_uninitialized (0);
+  g_assert_type_system_initialized ();
   g_return_val_if_fail (type_id > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -2717,7 +2710,7 @@ g_type_register_static (GType            parent_type,
   TypeNode *pnode, *node;
   GType type = 0;
   
-  g_return_val_if_type_system_uninitialized (0);
+  g_assert_type_system_initialized ();
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
@@ -2772,7 +2765,7 @@ g_type_register_dynamic (GType        parent_type,
   TypeNode *pnode, *node;
   GType type;
   
-  g_return_val_if_type_system_uninitialized (0);
+  g_assert_type_system_initialized ();
   g_return_val_if_fail (parent_type > 0, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (plugin != NULL, 0);
@@ -3292,7 +3285,7 @@ g_type_name (GType type)
 {
   TypeNode *node;
   
-  g_return_val_if_type_system_uninitialized (NULL);
+  g_assert_type_system_initialized ();
   
   node = lookup_type_node_I (type);
   
@@ -4262,32 +4255,55 @@ _g_type_boxed_init (GType          type,
  * @debug_flags: Bitwise combination of #GTypeDebugFlags values for
  *               debugging purposes.
  *
- * Similar to g_type_init(), but additionally sets debug flags.
+ * This function used to initialise the type system with debugging
+ * flags.  Since GLib 2.36, the type system is initialised automatically
+ * and this function does nothing.
  *
- * This function is idempotent.
+ * If you need to enable debugging features, use the GOBJECT_DEBUG
+ * environment variable.
  */
 void
 g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
 {
-  G_LOCK_DEFINE_STATIC (type_init_lock);
+  g_assert_type_system_initialized ();
+
+  if (debug_flags)
+    g_message ("g_type_init_with_debug_flags() is no longer supported.  Use the GOBJECT_DEBUG environment variable.");
+}
+
+/**
+ * g_type_init:
+ *
+ * This function used to initialise the type system.  Since GLib 2.36,
+ * the type system is initialised automatically and this function does
+ * nothing.
+ */
+void
+g_type_init (void)
+{
+  g_assert_type_system_initialized ();
+}
+
+#if defined (G_HAS_CONSTRUCTORS)
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
+#endif
+G_DEFINE_CONSTRUCTOR(gobject_init_ctor)
+#else
+# error Your platform/compiler is missing constructor support
+#endif
+
+static void
+gobject_init_ctor (void)
+{
   const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
   GType type;
 
-  G_LOCK (type_init_lock);
-  
   G_WRITE_LOCK (&type_rw_lock);
-  
-  if (static_quark_type_flags)
-    {
-      G_WRITE_UNLOCK (&type_rw_lock);
-      G_UNLOCK (type_init_lock);
-      return;
-    }
-  
+
   /* setup GObject library wide debugging flags */
-  _g_type_debug_flags = debug_flags & G_TYPE_DEBUG_MASK;
   env_string = g_getenv ("GOBJECT_DEBUG");
   if (env_string != NULL)
     {
@@ -4296,7 +4312,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
         { "signals", G_TYPE_DEBUG_SIGNALS },
       };
 
-      _g_type_debug_flags |= g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
+      _g_type_debug_flags = g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
     }
   
   /* quarks */
@@ -4364,29 +4380,6 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   /* Signal system
    */
   _g_signal_init ();
-  
-  G_UNLOCK (type_init_lock);
-}
-
-/**
- * g_type_init:
- *
- * Prior to any use of the type system, g_type_init() has to be called
- * to initialize the type system and assorted other code portions
- * (such as the various fundamental type implementations or the signal
- * system).
- *
- * This function is idempotent: If you call it multiple times, all but
- * the first calls will be silently ignored.
- *
- * There is no way to undo the effect of g_type_init().
- *
- * Since version 2.24 this also initializes the thread system
- */
-void
-g_type_init (void)
-{
-  g_type_init_with_debug_flags (0);
 }
 
 /**
@@ -4679,8 +4672,7 @@ g_type_ensure (GType type)
 {
   /* In theory, @type has already been resolved and so there's nothing
    * to do here. But this protects us in the case where the function
-   * gets inlined (as it might in g_type_init_with_debug_flags()
-   * above).
+   * gets inlined (as it might in gobject_init_ctor() above).
    */
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
