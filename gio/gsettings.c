@@ -2624,14 +2624,14 @@ g_settings_bind_with_mapping (GSettings               *settings,
       (binding->property->flags & G_PARAM_WRITABLE) == 0)
     {
       g_critical ("g_settings_bind: property '%s' on class '%s' is not "
-                  "writable", property, G_OBJECT_TYPE_NAME (object));
+                  "writable", binding->property->name, G_OBJECT_TYPE_NAME (object));
       return;
     }
   if ((flags & G_SETTINGS_BIND_SET) &&
       (binding->property->flags & G_PARAM_READABLE) == 0)
     {
       g_critical ("g_settings_bind: property '%s' on class '%s' is not "
-                  "readable", property, G_OBJECT_TYPE_NAME (object));
+                  "readable", binding->property->name, G_OBJECT_TYPE_NAME (object));
       return;
     }
 
@@ -2648,7 +2648,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
         {
           g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
                       "was specified, but property `%s' on type `%s' has "
-                      "type `%s'", property, G_OBJECT_TYPE_NAME (object),
+                      "type `%s'", binding->property->name, G_OBJECT_TYPE_NAME (object),
                       g_type_name ((binding->property->value_type)));
           return;
         }
@@ -2671,7 +2671,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
     {
       g_critical ("g_settings_bind: property '%s' on class '%s' has type "
                   "'%s' which is not compatible with type '%s' of key '%s' "
-                  "on schema '%s'", property, G_OBJECT_TYPE_NAME (object),
+                  "on schema '%s'", binding->property->name, G_OBJECT_TYPE_NAME (object),
                   g_type_name (binding->property->value_type),
                   g_variant_type_dup_string (binding->key.type), key,
                   g_settings_schema_get_id (settings->priv->schema));
@@ -2692,7 +2692,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
   if (flags & G_SETTINGS_BIND_SET)
     {
-      detailed_signal = g_strdup_printf ("notify::%s", property);
+      detailed_signal = g_strdup_printf ("notify::%s", binding->property->name);
       binding->property_handler_id =
         g_signal_connect (object, detailed_signal,
                           G_CALLBACK (g_settings_binding_property_changed),
@@ -2720,7 +2720,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
       g_settings_binding_key_changed (settings, binding->key.name, binding);
     }
 
-  binding_quark = g_settings_binding_quark (property);
+  binding_quark = g_settings_binding_quark (binding->property->name);
   g_object_set_qdata_full (object, binding_quark,
                            binding, g_settings_binding_free);
 }
