@@ -348,6 +348,51 @@ zone_info_unix (const gchar *identifier)
   return zoneinfo;
 }
 
+static void
+init_zone_from_iana_info (GTimeZone *tz)
+{
+  gsize size;
+  const struct tzhead *header = g_bytes_get_data (tz->zoneinfo, &size);
+
+  if (size < sizeof (struct tzhead) || memcmp (header, "TZif", 4))
+    {
+      g_bytes_unref (tz->zoneinfo);
+      tz->zoneinfo = NULL;
+    }
+  else
+    {
+      gint typecnt;
+      tz->version = header->tzh_version;
+      /* we trust the file completely. */
+      if (tz->version == '2')
+        tz->header = (const struct tzhead *)
+          (((const gchar *) (header + 1)) +
+           guint32_from_be(header->tzh_ttisgmtcnt) +
+           guint32_from_be(header->tzh_ttisstdcnt) +
+           8 * guint32_from_be(header->tzh_leapcnt) +
+           5 * guint32_from_be(header->tzh_timecnt) +
+           6 * guint32_from_be(header->tzh_typecnt) +
+           guint32_from_be(header->tzh_charcnt));
+      else
+        tz->header = header;
+
+      typecnt     = guint32_from_be (tz->header->tzh_typecnt);
+      tz->timecnt = guint32_from_be (tz->header->tzh_timecnt);
+      if (tz->version == '2')
+        {
+          tz->trans.two = (gconstpointer) (tz->header + 1);
+          tz->indices   = (gconstpointer) (tz->trans.two + tz->timecnt);
+        }
+      else
+        {
+          tz->trans.one = (gconstpointer) (tz->header + 1);
+          tz->indices   = (gconstpointer) (tz->trans.one + tz->timecnt);
+        }
+      tz->infos   = (gconstpointer) (tz->indices + tz->timecnt);
+      tz->abbrs   = (gconstpointer) (tz->infos + typecnt);
+    }
+}
+
 
 /* Construction {{{1 */
 /**
@@ -418,49 +463,7 @@ g_time_zone_new (const gchar *identifier)
         tz->zoneinfo = zone_info_unix (identifier);
 
       if (tz->zoneinfo != NULL)
-        {
-          gsize size;
-          const struct tzhead *header = g_bytes_get_data (tz->zoneinfo, &size);
-
-          if (size < sizeof (struct tzhead) || memcmp (header, "TZif", 4))
-            {
-              g_bytes_unref (tz->zoneinfo);
-              tz->zoneinfo = NULL;
-            }
-          else
-            {
-              gint typecnt;
-              tz->version = header->tzh_version;
-              /* we trust the file completely. */
-              if (tz->version == '2')
-                tz->header = (const struct tzhead *)
-                  (((const gchar *) (header + 1)) +
-                   guint32_from_be(header->tzh_ttisgmtcnt) +
-                   guint32_from_be(header->tzh_ttisstdcnt) +
-                   8 * guint32_from_be(header->tzh_leapcnt) +
-                   5 * guint32_from_be(header->tzh_timecnt) +
-                   6 * guint32_from_be(header->tzh_typecnt) +
-                   guint32_from_be(header->tzh_charcnt));
-              else
-                tz->header = header;
-
-              typecnt     = guint32_from_be (tz->header->tzh_typecnt);
-              tz->timecnt = guint32_from_be (tz->header->tzh_timecnt);
-              if (tz->version == '2')
-                {
-                  tz->trans.two = (gconstpointer) (tz->header + 1);
-                  tz->indices   = (gconstpointer) (tz->trans.two + tz->timecnt);
-                }
-              else
-                {
-                  tz->trans.one = (gconstpointer) (tz->header + 1);
-                  tz->indices   = (gconstpointer) (tz->trans.one + tz->timecnt);
-                }
-              tz->infos   = (gconstpointer) (tz->indices + tz->timecnt);
-              tz->abbrs   = (gconstpointer) (tz->infos + typecnt);
-            }
-        }
-
+        init_zone_from_iana_info (tz);
       if (identifier)
         g_hash_table_insert (time_zones, tz->name, tz);
     }
