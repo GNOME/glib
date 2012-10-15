@@ -400,7 +400,6 @@ main (int argc, char **argv)
   g_log_set_always_fatal (g_log_set_always_fatal (G_LOG_FATAL_MASK) |
 			  G_LOG_LEVEL_WARNING |
 			  G_LOG_LEVEL_CRITICAL);
-  g_type_init();
 
   test (TEST_TYPE_A, "foo", "TestA::foo,TestI::foo", NULL);
   test (TEST_TYPE_A, "bar", "TestA::bar", NULL);

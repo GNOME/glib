@@ -959,8 +959,6 @@ g_application_id_is_valid (const gchar *application_id)
  *
  * Creates a new #GApplication instance.
  *
- * This function calls g_type_init() for you.
- *
  * If non-%NULL, the application id must be valid.  See
  * g_application_id_is_valid().
  *
@@ -974,8 +972,6 @@ g_application_new (const gchar       *application_id,
                    GApplicationFlags  flags)
 {
   g_return_val_if_fail (application_id == NULL || g_application_id_is_valid (application_id), NULL);
-
-  g_type_init ();
 
   return g_object_new (G_TYPE_APPLICATION,
                        "application-id", application_id,

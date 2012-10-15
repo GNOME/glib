@@ -1236,7 +1236,6 @@ main (int argc, char *argv[])
   posix_compat = FALSE;
 
   /*  strip all gtester-specific args  */
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   /*  no extra parameters specified, assume we're executed from glib test suite  */ 

@@ -885,8 +885,6 @@ main (int   argc,
   GError *error = NULL;
   int i;
 
-  g_type_init ();
-
   context = g_option_context_new ("GObject performance tests");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))

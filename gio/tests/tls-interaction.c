@@ -606,7 +606,6 @@ main (int   argc,
   GPtrArray *fixtures;
   gint ret;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   fixtures = g_ptr_array_new_with_free_func (g_free);

@@ -684,8 +684,6 @@ main (int argc, char **argv)
   guint watch;
 #endif
 
-  g_type_init ();
-
   context = g_option_context_new ("lookups ...");
   g_option_context_add_main_entries (context, option_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))

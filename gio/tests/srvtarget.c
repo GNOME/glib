@@ -149,7 +149,6 @@ test_srv_target_ordering (void)
 int
 main (int argc, char **argv)
 {
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/srvtarget/srv-target-ordering", test_srv_target_ordering);

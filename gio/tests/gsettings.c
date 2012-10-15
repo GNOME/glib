@@ -2141,7 +2141,6 @@ main (int argc, char *argv[])
   if (!backend_set)
     g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_remove ("org.gtk.test.enums.xml");

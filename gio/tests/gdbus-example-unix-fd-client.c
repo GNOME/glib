@@ -116,8 +116,6 @@ main (int argc, char *argv[])
   guint watcher_id;
   GMainLoop *loop;
 
-  g_type_init ();
-
   watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                  "org.gtk.GDBus.TestServer",
                                  G_BUS_NAME_WATCHER_FLAGS_NONE,

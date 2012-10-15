@@ -303,8 +303,6 @@ main (int argc, char *argv[])
   GMainLoop *loop;
   MyObject *myobj;
 
-  g_type_init ();
-
   /* We are lazy here - we don't want to manually provide
    * the introspection data structures - so we just build
    * them from XML.

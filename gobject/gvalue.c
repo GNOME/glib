@@ -79,8 +79,6 @@
  *   GValue b = G_VALUE_INIT;
  *   const gchar *message;
  *
- *   g_type_init ();
- *
  *   /&ast; The GValue starts empty &ast;/
  *   g_assert (!G_VALUE_HOLDS_STRING (&amp;a));
  *

@@ -359,7 +359,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_type_init ();
 
   g_test_add_func ("/GObject/threaded-dynamic-ref-unref-init", test_multithreaded_dynamic_type_init);
   g_test_add_func ("/GObject/dynamic-interface-properties", test_dynamic_interface_properties);

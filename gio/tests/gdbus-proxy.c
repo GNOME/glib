@@ -912,7 +912,6 @@ main (int   argc,
   gint ret;
   GDBusNodeInfo *introspection_data = NULL;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   introspection_data = g_dbus_node_info_new_for_xml (frob_dbus_interface_xml, NULL);

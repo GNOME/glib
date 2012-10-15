@@ -235,8 +235,6 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_type_init ();
-
   g_test_add_func ("/unix-streams/file-descriptors", test_fds);
 
   return g_test_run();

@@ -135,8 +135,6 @@ main (gint   argc,
   
   root = G_TYPE_OBJECT;
 
-  g_type_init ();
-  
   for (i = 1; i < argc; i++)
     {
       if (strcmp ("-s", argv[i]) == 0)

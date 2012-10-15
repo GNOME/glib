@@ -111,8 +111,6 @@ main (int argc, char *argv[])
   gint i;
   gchar *path;
 
-  g_type_init ();
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/network-address/basic", test_basic);

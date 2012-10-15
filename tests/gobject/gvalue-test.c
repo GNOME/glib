@@ -388,7 +388,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_type_init ();
 
   g_test_add_func ("/gvalue/enum-transformation", test_enum_transformation);
   g_test_add_func ("/gvalue/gtype", test_gtype_value);

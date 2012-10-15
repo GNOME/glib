@@ -356,7 +356,6 @@ main (int   argc,
 {
   gint result;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
   
   basedir = g_get_current_dir ();

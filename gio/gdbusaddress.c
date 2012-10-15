@@ -1333,8 +1333,6 @@ g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow
   if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
     open_console_window ();
 
-  g_type_init ();
-
   loop = g_main_loop_new (NULL, FALSE);
 
   address = "nonce-tcp:";

@@ -221,7 +221,6 @@ test_cancel_multiple_concurrent (void)
 int
 main (int argc, char *argv[])
 {
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/cancellable/multiple-concurrent", test_cancel_multiple_concurrent);

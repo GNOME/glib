@@ -43,8 +43,6 @@ main (int argc, char *argv[])
       { NULL}
     };
 
-  g_type_init ();
-
   error = NULL;
   opt_name = NULL;
   opt_replace = FALSE;

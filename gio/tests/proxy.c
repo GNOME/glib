@@ -580,8 +580,6 @@ main (gint argc, gchar **argv)
   gboolean cancel = FALSE;
   ProxyTestType type = USE_RESOLVER;
 
-  g_type_init ();
-
   while (argc >= 2 && argv[1][0] == '-')
     {
       if (!strcmp (argv[1], "-s"))

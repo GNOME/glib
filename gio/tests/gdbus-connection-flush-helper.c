@@ -30,8 +30,6 @@ main (int   argc,
   GError *error;
   gboolean ret;
 
-  g_type_init ();
-
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION,
                       NULL, /* GCancellable* */

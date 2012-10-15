@@ -203,7 +203,6 @@ main (int   argc,
 {
   gint i;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   for (i = 0; cases[i].name != NULL; i++)

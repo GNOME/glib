@@ -1096,7 +1096,6 @@ main (int   argc,
   GCancellable *cancellable;
   gint result;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   /* Register stuff. The dummy g_proxy_get_default_for_protocol() call

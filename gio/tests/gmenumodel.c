@@ -1141,7 +1141,6 @@ main (int argc, char **argv)
   gboolean ret;
 
   g_test_init (&argc, &argv, NULL);
-  g_type_init ();
 
   session_bus_up ();
 

@@ -117,8 +117,6 @@ main (gint argc, gchar *argv[])
   manager = NULL;
   loop = NULL;
 
-  g_type_init ();
-
   loop = g_main_loop_new (NULL, FALSE);
 
   error = NULL;

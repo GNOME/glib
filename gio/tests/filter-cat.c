@@ -215,8 +215,6 @@ main (int argc, char *argv[])
   GFile *file;
   int i;
 
-  g_type_init ();
-
   context =
     g_option_context_new ("LOCATION... - concatenate LOCATIONS "
 			  "to standard output.");

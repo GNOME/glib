@@ -32,8 +32,6 @@ main (int argc, char *argv[])
   GError *error = NULL;
   int i;
 
-  g_type_init ();
-
   context = g_option_context_new(_("[FILE...]"));
   g_option_context_add_main_entries (context, options, GETTEXT_PACKAGE);
   

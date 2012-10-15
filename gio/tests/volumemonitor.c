@@ -164,8 +164,6 @@ main (int argc, char *argv[])
 
   g_setenv ("GIO_USE_VFS", "local", FALSE);
 
-  g_type_init ();
-
   g_test_init (&argc, &argv, NULL);
 
   monitor = g_volume_monitor_get ();

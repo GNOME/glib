@@ -772,8 +772,6 @@ main (int argc, char **argv)
   else
     return gsettings_help (FALSE, argv[1]);
 
-  g_type_init ();
-
   if (argc > 2)
     {
       gchar **parts;

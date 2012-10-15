@@ -598,8 +598,6 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_type_init ();
-
   g_test_add_func ("/type/fundamentals", test_fundamentals);
   g_test_add_func ("/type/qdata", test_type_qdata);
   g_test_add_func ("/type/query", test_type_query);

@@ -118,8 +118,6 @@ main (int   argc,
   char *string1 = "A";
   char *string2 = "B";
 
-  g_type_init ();
-  
   /* Basic check of interfaces added before class_init time
    */
   g_type_add_interface_check (string1, check_func);

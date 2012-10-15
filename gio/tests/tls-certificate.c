@@ -269,7 +269,6 @@ main (int   argc,
   Reference ref;
   GError *error = NULL;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   _g_test_tls_backend_get_type ();

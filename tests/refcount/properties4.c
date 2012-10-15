@@ -153,7 +153,6 @@ main (int argc, char **argv)
 
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
-  g_type_init ();
 
   badger1 = g_object_new (MY_TYPE_BADGER, NULL);
   badger2 = g_object_new (MY_TYPE_BADGER, NULL);

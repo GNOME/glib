@@ -185,7 +185,6 @@ main (int argc, char **argv)
   GError *error = NULL;
   int ret;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_file_get_contents (TEST_FILE, &test_file_buffer,

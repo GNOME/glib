@@ -153,8 +153,6 @@ main (int argc, char *argv[])
   GDBusProxyFlags flags;
   GDBusProxy *proxy;
 
-  g_type_init ();
-
   loop = NULL;
   proxy = NULL;
 

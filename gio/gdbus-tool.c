@@ -1948,8 +1948,6 @@ main (gint argc, gchar *argv[])
   completion_cur = NULL;
   completion_prev = NULL;
 
-  g_type_init ();
-
   if (argc < 2)
     {
       usage (&argc, &argv, FALSE);

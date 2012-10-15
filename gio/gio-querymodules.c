@@ -129,8 +129,6 @@ main (gint   argc,
 {
   int i;
 
-  g_type_init ();
-
   if (argc == 1)
     {
       g_print ("Usage: gio-querymodules <directory1> [<directory2> ...]\n");

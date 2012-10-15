@@ -180,8 +180,7 @@ main (int argc, char **argv)
 
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
-  g_type_init ();
-  
+
   test = g_object_new (G_TYPE_TEST, NULL);
 
   g_signal_connect (test, "notify::dummy", G_CALLBACK (dummy_notify), NULL);

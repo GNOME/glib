@@ -2354,7 +2354,6 @@ main (int   argc,
 {
   gint ret;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   session_bus_up ();

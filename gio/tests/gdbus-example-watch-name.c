@@ -43,8 +43,6 @@ main (int argc, char *argv[])
   GError *error;
   GBusNameWatcherFlags flags;
 
-  g_type_init ();
-
   error = NULL;
   opt_context = g_option_context_new ("g_bus_watch_name() example");
   g_option_context_set_summary (opt_context,

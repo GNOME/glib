@@ -370,7 +370,6 @@ main (int   argc,
 {
   gint ret;
 
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add ("/gdbus/connection/flush/busy", Fixture, NULL,

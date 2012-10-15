@@ -243,7 +243,6 @@ main (int    argc,
 
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
-  g_type_init ();
 
   object = g_object_new (G_TYPE_TEST, NULL);
   closure = g_cclosure_new (G_CALLBACK (test_signal_handler), TEST_POINTER2, destroy_data);

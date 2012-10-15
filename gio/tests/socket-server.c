@@ -63,8 +63,6 @@ main (int argc,
   GInputStream *istream;
   GOutputStream *ostream;
 
-  g_type_init ();
-
   context = g_option_context_new (" - Test GSocket server stuff");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))

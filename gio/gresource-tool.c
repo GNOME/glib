@@ -602,8 +602,6 @@ main (int argc, char *argv[])
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
 
-  g_type_init ();
-
   if (argc < 2)
     return cmd_help (FALSE, NULL);
 

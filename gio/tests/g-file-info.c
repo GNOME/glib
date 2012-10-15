@@ -118,7 +118,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/g-file-info/test_g_file_info", test_g_file_info);

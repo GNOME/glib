@@ -256,7 +256,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_type_init ();
 
   g_test_add_func ("/paramspec/char", test_param_spec_char);
   g_test_add_func ("/paramspec/string", test_param_spec_string);

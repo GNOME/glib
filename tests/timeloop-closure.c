@@ -187,8 +187,6 @@ main (int argc, char **argv)
   struct rusage old_usage;
   struct rusage new_usage;
 
-  g_type_init ();
-  
   if (argc > 1)
     n_children = atoi(argv[1]);
 

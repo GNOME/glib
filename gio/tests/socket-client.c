@@ -261,8 +261,6 @@ main (int argc,
   GTlsCertificate *certificate = NULL;
   gint i;
 
-  g_type_init ();
-
   address = NULL;
   connection = NULL;
 

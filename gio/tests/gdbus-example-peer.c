@@ -177,8 +177,6 @@ main (int argc, char *argv[])
 
   ret = 1;
 
-  g_type_init ();
-
   opt_address = NULL;
   opt_server = FALSE;
   opt_allow_anonymous = FALSE;

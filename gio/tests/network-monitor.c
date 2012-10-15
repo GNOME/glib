@@ -514,8 +514,6 @@ main (int argc, char **argv)
 {
   int ret;
 
-  g_type_init ();
-
   if (argc == 2 && !strcmp (argv[1], "--watch"))
     {
       do_watch_network ();

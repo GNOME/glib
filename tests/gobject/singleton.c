@@ -71,7 +71,7 @@ main (int   argc,
       char *argv[])
 {
   MySingleton *singleton, *obj;
-  g_type_init_with_debug_flags (G_TYPE_DEBUG_OBJECTS | G_TYPE_DEBUG_SIGNALS);
+
   /* create the singleton */
   singleton = g_object_new (MY_TYPE_SINGLETON, NULL);
   g_assert (singleton != NULL);
