@@ -214,29 +214,37 @@ g_time_zone_ref (GTimeZone *tz)
 
 /* fake zoneinfo creation (for RFC3339/ISO 8601 timezones) {{{1 */
 /*
- * parses strings of the form 'hh' 'hhmm' or 'hh:mm' where:
- *  - hh is 00 to 23
+ * parses strings of the form h or hh[[:]mm[[[:]ss]]] where:
+ *  - h[h] is 0 to 23
  *  - mm is 00 to 59
+ *  - ss is 00 to 59
  */
 static gboolean
 parse_time (const gchar *time_,
             gint32      *offset)
 {
-  if (*time_ < '0' || '2' < *time_)
-    return FALSE;
-
-  *offset = 10 * 60 * 60 * (*time_++ - '0');
-
   if (*time_ < '0' || '9' < *time_)
     return FALSE;
 
-  *offset += 60 * 60 * (*time_++ - '0');
-
-  if (*offset > 23 * 60 * 60)
-    return FALSE;
+  *offset = 60 * 60 * (*time_++ - '0');
 
   if (*time_ == '\0')
     return TRUE;
+
+  if (*time_ != ':')
+    {
+      if (*time_ < '0' || '9' < *time_)
+        return FALSE;
+
+      *offset *= 10;
+      *offset += 60 * 60 * (*time_++ - '0');
+
+      if (*offset > 23 * 60 * 60)
+        return FALSE;
+
+      if (*time_ == '\0')
+        return TRUE;
+    }
 
   if (*time_ == ':')
     time_++;
@@ -251,6 +259,22 @@ parse_time (const gchar *time_,
 
   *offset += 60 * (*time_++ - '0');
 
+  if (*time_ == '\0')
+    return TRUE;
+
+  if (*time_ == ':')
+    time_++;
+
+  if (*time_ < '0' || '5' < *time_)
+    return FALSE;
+
+  *offset += 10 * (*time_++ - '0');
+
+  if (*time_ < '0' || '9' < *time_)
+    return FALSE;
+
+  *offset += *time_++ - '0';
+
   return *time_ == '\0';
 }
 
@@ -263,6 +287,10 @@ parse_constant_offset (const gchar *name,
       *offset = 0;
       return TRUE;
     }
+
+  if (*name >= '0' && '9' >= *name)
+    return parse_time (name, offset);
+
   switch (*name++)
     {
     case 'Z':
