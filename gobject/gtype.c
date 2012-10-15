@@ -4261,6 +4261,8 @@ _g_type_boxed_init (GType          type,
  *
  * If you need to enable debugging features, use the GOBJECT_DEBUG
  * environment variable.
+ *
+ * Deprecated: 2.36: the type system is now initialised automatically
  */
 void
 g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
@@ -4277,6 +4279,8 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
  * This function used to initialise the type system.  Since GLib 2.36,
  * the type system is initialised automatically and this function does
  * nothing.
+ *
+ * Deprecated: 2.36: the type system is now initialised automatically
  */
 void
 g_type_init (void)

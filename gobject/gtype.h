@@ -646,12 +646,14 @@ struct _GTypeQuery
  * @G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping.
  * @G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions.
  * @G_TYPE_DEBUG_MASK: Mask covering all debug flags.
- * 
- * The <type>GTypeDebugFlags</type> enumeration values can be passed to
- * g_type_init_with_debug_flags() to trigger debugging messages during runtime.
- * Note that the messages can also be triggered by setting the
- * <envar>GOBJECT_DEBUG</envar> environment variable to a ':'-separated list of 
- * "objects" and "signals".
+ *
+ * These flags used to be passed to g_type_init_with_debug_flags() which
+ * is now deprecated.
+ *
+ * If you need to enable debugging features, use the GOBJECT_DEBUG
+ * environment variable.
+ *
+ * Deprecated: 2.36: g_type_init() is now done automatically
  */
 typedef enum	/*< skip >*/
 {
@@ -663,7 +665,9 @@ typedef enum	/*< skip >*/
 
 
 /* --- prototypes --- */
+GLIB_DEPRECATED_IN_2_36
 void                  g_type_init                    (void);
+GLIB_DEPRECATED_IN_2_36
 void                  g_type_init_with_debug_flags   (GTypeDebugFlags  debug_flags);
 const gchar *         g_type_name                    (GType            type);
 GQuark                g_type_qname                   (GType            type);
