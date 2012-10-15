@@ -244,6 +244,18 @@ g_content_type_get_icon (const gchar *type)
   return G_ICON (themed_icon);
 }
 
+GIcon *
+g_content_type_get_symbolic_icon (const gchar *type)
+{
+  return g_content_type_get_icon (type);
+}
+
+gchar *
+g_content_type_get_generic_icon_name (const gchar *type)
+{
+  return NULL;
+}
+
 gboolean
 g_content_type_can_be_executable (const gchar *type)
 {
