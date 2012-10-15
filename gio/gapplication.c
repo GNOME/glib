@@ -1347,6 +1347,8 @@ g_application_register (GApplication  *application,
 void
 g_application_hold (GApplication *application)
 {
+  g_return_if_fail (G_IS_APPLICATION (application));
+
   if (application->priv->inactivity_timeout_id)
     {
       g_source_remove (application->priv->inactivity_timeout_id);
@@ -1381,6 +1383,8 @@ inactivity_timeout_expired (gpointer data)
 void
 g_application_release (GApplication *application)
 {
+  g_return_if_fail (G_IS_APPLICATION (application));
+
   application->priv->use_count--;
 
   if (application->priv->use_count == 0 && application->priv->inactivity_timeout)
