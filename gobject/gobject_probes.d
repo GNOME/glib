@@ -7,7 +7,7 @@ provider gobject {
 	probe object__dispose__end(void*, unsigned long, unsigned int);
 	probe object__finalize(void*, unsigned long);
 	probe object__finalize__end(void*, unsigned long);
-	probe signal__new(unsigned int, char *, unsigned long)
-	probe signal__emit(unsigned int, unsigned int, void *, unsigned long)
-	probe signal__emit__end(unsigned int, unsigned int, void *, unsigned long)
+	probe signal__new(unsigned int, char *, unsigned long);
+	probe signal__emit(unsigned int, unsigned int, void *, unsigned long);
+	probe signal__emit__end(unsigned int, unsigned int, void *, unsigned long);
 };
