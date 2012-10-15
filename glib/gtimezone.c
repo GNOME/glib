@@ -305,6 +305,50 @@ zone_for_constant_offset (const gchar *name)
   return g_bytes_new_take (fake, sizeof *fake);
 }
 
+static GBytes*
+zone_info_unix (const gchar *identifier)
+{
+  gchar *filename;
+  GMappedFile *file = NULL;
+  GBytes *zoneinfo = NULL;
+
+  /* identifier can be a relative or absolute path name;
+     if relative, it is interpreted starting from /usr/share/zoneinfo
+     while the POSIX standard says it should start with :,
+     glibc allows both syntaxes, so we should too */
+  if (identifier != NULL)
+    {
+      const gchar *tzdir;
+
+      tzdir = getenv ("TZDIR");
+      if (tzdir == NULL)
+        tzdir = "/usr/share/zoneinfo";
+
+      if (*identifier == ':')
+        identifier ++;
+
+      if (g_path_is_absolute (identifier))
+        filename = g_strdup (identifier);
+      else
+        filename = g_build_filename (tzdir, identifier, NULL);
+    }
+  else
+    filename = g_strdup ("/etc/localtime");
+
+  file = g_mapped_file_new (filename, FALSE, NULL);
+  if (file != NULL)
+    {
+      zoneinfo = g_bytes_new_with_free_func (g_mapped_file_get_contents (file),
+                                             g_mapped_file_get_length (file),
+                                             (GDestroyNotify)g_mapped_file_unref,
+                                             g_mapped_file_ref (file));
+      g_mapped_file_unref (file);
+    }
+  g_free (filename);
+  return zoneinfo;
+}
+
+
 /* Construction {{{1 */
 /**
  * g_time_zone_new:
@@ -371,43 +415,7 @@ g_time_zone_new (const gchar *identifier)
       tz->zoneinfo = zone_for_constant_offset (identifier);
 
       if (tz->zoneinfo == NULL)
-        {
-          gchar *filename;
-
-          /* identifier can be a relative or absolute path name;
-             if relative, it is interpreted starting from /usr/share/zoneinfo
-             while the POSIX standard says it should start with :,
-             glibc allows both syntaxes, so we should too */
-          if (identifier != NULL)
-            {
-              const gchar *tzdir;
-
-              tzdir = getenv ("TZDIR");
-              if (tzdir == NULL)
-                tzdir = "/usr/share/zoneinfo";
-
-              if (*identifier == ':')
-                identifier ++;
-
-              if (g_path_is_absolute (identifier))
-                filename = g_strdup (identifier);
-              else
-                filename = g_build_filename (tzdir, identifier, NULL);
-            }
-          else
-            filename = g_strdup ("/etc/localtime");
-
-          file = g_mapped_file_new (filename, FALSE, NULL);
-          if (file != NULL)
-            {
-              tz->zoneinfo = g_bytes_new_with_free_func (g_mapped_file_get_contents (file),
-                                                         g_mapped_file_get_length (file),
-                                                         (GDestroyNotify)g_mapped_file_unref,
-                                                         g_mapped_file_ref (file));
-              g_mapped_file_unref (file);
-            }
-          g_free (filename);
-        }
+        tz->zoneinfo = zone_info_unix (identifier);
 
       if (tz->zoneinfo != NULL)
         {
