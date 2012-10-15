@@ -1,3 +1,22 @@
+Overview of changes from GLib 2.34.0 to 2.34.1
+==============================================
+
+* Bug fixes:
+ 631382 GTimeZone support for zoneinfo version 1
+ 685037 g_strcmp0: Returns shall include values less...
+ 685069 Leak in glib-compile-resources
+ 684882 Gsettings should spaw a warning when binding...
+ 685208 missing g_return_if_fail
+ 685608 Port gio tests from pygobject to pygi
+ 686119 dtrace, gobject_probes.d, the last three pro...
+        Fix gdb support script
+
+* Translation updates:
+ Czech
+ Italian
+ Lithuanian
+
+
 Overview of changes from GLib 2.33.14 to 2.34.0
 ===============================================
 
