@@ -174,8 +174,6 @@ main (int argc, char ** argv)
   g_debug ("[parsing] start, %d includes", 
 	   includedirs ? g_strv_length (includedirs) : 0);
 
-  g_type_init ();
-
   if (includedirs != NULL)
     for (i = 0; includedirs[i]; i++)
       g_irepository_prepend_search_path (includedirs[i]);
