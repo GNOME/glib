@@ -56,7 +56,6 @@ test_build_retrieve (void)
 int
 main(int argc, char **argv)
 {
-  g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gthash/build-retrieve", test_build_retrieve);

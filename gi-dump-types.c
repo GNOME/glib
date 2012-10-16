@@ -10,8 +10,6 @@ main (int    argc,
   GOutputStream *stdout;
   GModule *self;
 
-  g_type_init ();
-
   stdout = g_unix_output_stream_new (1, FALSE);
 
   self = g_module_open (NULL, 0);
