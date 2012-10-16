@@ -67,6 +67,11 @@ and attach the patch to that bug report.
 
 Patches should be in unified diff form. (The -up option to GNU diff.)
 
+Notes about GLib 2.36
+=====================
+
+* It is no longer necessary to call g_type_init()
+
 Notes about GLib 2.34
 =====================
 
