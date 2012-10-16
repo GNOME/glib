@@ -52,8 +52,6 @@ main (int argc, char *argv[])
 
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
-  g_type_init ();
-
   g_typelib_check_sanity ();
 
   context = g_option_context_new ("");
