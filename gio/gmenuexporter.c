@@ -556,7 +556,8 @@ g_menu_exporter_name_vanished (GDBusConnection *connection,
 {
   GMenuExporter *exporter = user_data;
 
-  g_assert (exporter->connection == connection);
+  /* connection == NULL when we get called because the connection closed */
+  g_assert (exporter->connection == connection || connection == NULL);
 
   g_hash_table_remove (exporter->remotes, name);
 }
