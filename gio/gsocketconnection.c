@@ -206,6 +206,8 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
     {
       GSource *source;
 
+      g_simple_async_result_set_check_cancellable (simple, cancellable);
+
       g_error_free (tmp_error);
       source = g_socket_create_source (connection->priv->socket,
 				       G_IO_OUT, cancellable);
