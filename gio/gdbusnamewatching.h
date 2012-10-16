@@ -49,11 +49,16 @@ typedef void (*GBusNameAppearedCallback) (GDBusConnection *connection,
 
 /**
  * GBusNameVanishedCallback:
- * @connection: The #GDBusConnection the name is being watched on.
+ * @connection: The #GDBusConnection the name is being watched on, or
+ *     %NULL.
  * @name: The name being watched.
  * @user_data: User data passed to g_bus_watch_name().
  *
  * Invoked when the name being watched is known not to have to have a owner.
+ *
+ * This is also invoked when the #GDBusConection on which the watch was
+ * established has been closed.  In that case, @connection will be
+ * %NULL.
  *
  * Since: 2.26
  */
