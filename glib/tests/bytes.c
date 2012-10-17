@@ -316,6 +316,21 @@ test_to_array_non_malloc (void)
   g_byte_array_unref (array);
 }
 
+static void
+test_null (void)
+{
+  GBytes *bytes;
+  gpointer data;
+  gsize size;
+
+  bytes = g_bytes_new (NULL, 0);
+
+  data = g_bytes_unref_to_data (bytes, &size);
+
+  g_assert (data == NULL);
+  g_assert (size == 0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -337,6 +352,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/to-array/transfered", test_to_array_transferred);
   g_test_add_func ("/bytes/to-array/two-refs", test_to_array_two_refs);
   g_test_add_func ("/bytes/to-array/non-malloc", test_to_array_non_malloc);
+  g_test_add_func ("/bytes/null", test_null);
 
   return g_test_run ();
 }
