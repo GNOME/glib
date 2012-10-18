@@ -885,6 +885,14 @@ test_non_utf8_printf (void)
       g_free (oldlocale);
       return;
     }
+  if (g_strcmp0 (g_get_codeset (), "UTF-8") == 0)
+    {
+      g_test_message ("locale ja_JP.eucjp may be available, but glib seems to think that it's equivalent to UTF-8, skipping non-UTF-8 tests.");
+      g_test_message ("This is a known issue on Darwin");
+      setlocale (LC_ALL, oldlocale);
+      g_free (oldlocale);
+      return;
+    }
 
   /* These are the outputs that ja_JP.UTF-8 generates; if everything
    * is working then ja_JP.eucjp should generate the same.
