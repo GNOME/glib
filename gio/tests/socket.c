@@ -617,7 +617,7 @@ test_timed_wait (void)
   poll_duration = g_get_monotonic_time () - start_time;
 
   g_assert_cmpint (poll_duration, >=, 98000);
-  g_assert_cmpint (poll_duration, <, 110000);
+  g_assert_cmpint (poll_duration, <, 112000);
 
   g_socket_close (client, &error);
   g_assert_no_error (error);
