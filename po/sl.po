@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-09-15 18:14+0000\n"
-"PO-Revision-Date: 2012-09-15 20:46+0100\n"
+"PO-Revision-Date: 2012-10-20 00:09+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -2829,14 +2829,14 @@ msgstr "Abstraktni naslovi vtiča domene UNIX na tem sistemu niso podprti"
 
 #: ../gio/gvolume.c:436
 msgid "volume doesn't implement eject"
-msgstr "medija ni mogoče izvreči"
+msgstr "nosilca ni mogoče izvreči"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gvolume.c:512
 msgid "volume doesn't implement eject or eject_with_operation"
-msgstr "medij ne prepozna ukaza izvrzi ali izvrzi_z_dejanjem"
+msgstr "nosilec ne prepozna ukaza izvrzi ali izvrzi_z_dejanjem"
 
 #: ../gio/gwin32appinfo.c:276
 msgid "Can't find application"
