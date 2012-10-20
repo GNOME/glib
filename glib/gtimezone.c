@@ -1305,6 +1305,9 @@ rules_from_identifier (const gchar   *identifier,
  * something that would pass as a valid value for the
  * <varname>TZ</varname> environment variable (including %NULL).
  *
+ * In Windows, @identifier can also be the unlocalized name of a time
+ * zone for standard time, for example "Pacific Standard Time".
+ *
  * Valid RFC3339 time offsets are <literal>"Z"</literal> (for UTC) or
  * <literal>"±hh:mm"</literal>.  ISO 8601 additionally specifies
  * <literal>"±hhmm"</literal> and <literal>"±hh"</literal>.  Offsets are
@@ -1337,7 +1340,9 @@ rules_from_identifier (const gchar   *identifier,
  * <varname>TZ</varname> environment variable.  This function itself is
  * independent of the value of <varname>TZ</varname>, but if @identifier
  * is %NULL then <filename>/etc/localtime</filename> will be consulted
- * to discover the correct timezone.
+ * to discover the correct time zone on Unix and the registry will be
+ * consulted or GetTimeZoneInformation() will be used to get the local
+ * time zone on Windows.
  *
  * If intervals are not available, only time zone rules from
  * <varname>TZ</varname> environment variable or other means, then they
@@ -1352,7 +1357,10 @@ rules_from_identifier (const gchar   *identifier,
  * full list of valid time offsets.  See <ulink
  * url='http://www.gnu.org/s/libc/manual/html_node/TZ-Variable.html'>The
  * GNU C Library manual</ulink> for an explanation of the possible
- * values of the <varname>TZ</varname> environment variable.
+ * values of the <varname>TZ</varname> environment variable.  See <ulink
+ * url='http://msdn.microsoft.com/en-us/library/ms912391%28v=winembedded.11%29.aspx'>
+ * Microsoft Time Zone Index Values</ulink> for the list of time zones
+ * on Windows.
  *
  * You should release the return value by calling g_time_zone_unref()
  * when you are done with it.
@@ -1412,7 +1420,45 @@ g_time_zone_new (const gchar *identifier)
           init_zone_from_iana_info (tz, zoneinfo);
           g_bytes_unref (zoneinfo);
         }
-#elif defined G_OS_WIN32
+#elif defined (G_OS_WIN32)
+      if (rules_from_windows_time_zone (identifier,
+                                        &rules, &rules_num,
+                                        &std_name, &dlt_name))
+        {
+          init_zone_from_rules (tz, rules, rules_num);
+          g_free (rules);
+          g_free (std_name);
+          g_free (dlt_name);
+        }
+    }
+
+  if (tz->t_info == NULL)
+    {
+      if (identifier)
+        zone_for_constant_offset (tz, "UTC");
+      else
+        {
+          TIME_ZONE_INFORMATION tzi;
+
+          if (GetTimeZoneInformation (&tzi) != TIME_ZONE_ID_INVALID)
+            {
+              rules = g_new0 (TimeZoneRule, 2);
+
+              rule_from_windows_time_zone_info (&rules[0], tzi.Bias,
+                                                tzi.StandardBias, tzi.DaylightBias,
+                                                tzi.StandardDate, tzi.DaylightDate);
+
+              rules[0].std_name = NULL;
+              rules[0].dlt_name = NULL;
+
+              rules[0].start_year = MIN_TZYEAR;
+              rules[1].start_year = MAX_TZYEAR;
+
+              init_zone_from_rules (tz, rules, 2);
+
+              g_free (rules);
+            }
+        }
 #endif
     }
 
