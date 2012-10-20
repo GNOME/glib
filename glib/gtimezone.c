@@ -38,6 +38,7 @@
 #include "gbytes.h"
 #include "gslice.h"
 #include "gdatetime.h"
+#include "gdate.h"
 
 /**
  * SECTION:timezone
@@ -737,6 +738,304 @@ init_zone_from_rules (GTimeZone    *gtz,
     }
 }
 
+/*
+ * parses date[/time] for parsing TZ environment variable
+ *
+ * date is either Mm.w.d, Jn or N
+ * - m is 1 to 12
+ * - w is 1 to 5
+ * - d is 0 to 6
+ * - n is 1 to 365
+ * - N is 0 to 365
+ *
+ * time is either h or hh[[:]mm[[[:]ss]]]
+ *  - h[h] is 0 to 23
+ *  - mm is 00 to 59
+ *  - ss is 00 to 59
+ */
+static gboolean
+parse_tz_boundary (const gchar  *identifier,
+                   TimeZoneDate *boundary)
+{
+  const gchar *pos;
+  gint month, week, day;
+  GDate *date;
+
+  pos = identifier;
+
+  if (*pos == 'M')                      /* Relative date */
+    {
+      pos++;
+
+      if (*pos == '\0' || *pos < '0' || '9' < *pos)
+        return FALSE;
+
+      month = *pos++ - '0';
+
+      if ((month == 1 && *pos >= '0' && '2' >= *pos) ||
+          (month == 0 && *pos >= '0' && '9' >= *pos))
+        {
+          month *= 10;
+          month += *pos++ - '0';
+        }
+
+      if (*pos++ != '.' || month == 0)
+        return FALSE;
+
+      if (*pos == '\0' || *pos < '1' || '5' < *pos)
+        return FALSE;
+
+      week = *pos++ - '0';
+
+      if (*pos++ != '.')
+        return FALSE;
+
+      if (*pos == '\0' || *pos < '0' || '6' < *pos)
+        return FALSE;
+
+      day = *pos++ - '0';
+
+      if (!day)
+        day += 7;
+
+      boundary->year = 0;
+      boundary->mon = month;
+      boundary->week = week;
+      boundary->wday = day;
+    }
+
+  else if (*pos == 'J')                 /* Julian day */
+    {
+      pos++;
+
+      day = 0;
+      while (*pos >= '0' && '9' >= *pos)
+        {
+          day *= 10;
+          day += *pos++ - '0';
+        }
+
+      if (day < 1 || 365 < day)
+        return FALSE;
+
+      date = g_date_new_julian (day);
+      boundary->year = 0;
+      boundary->mon = (int) g_date_get_month (date);
+      boundary->mday = (int) g_date_get_day (date);
+      boundary->wday = 0;
+      g_date_free (date);
+    }
+
+  else if (*pos >= '0' && '9' >= *pos)  /* Zero-based Julian day */
+    {
+      day = 0;
+      while (*pos >= '0' && '9' >= *pos)
+        {
+          day *= 10;
+          day += *pos++ - '0';
+        }
+
+      if (day < 0 || 365 < day)
+        return FALSE;
+
+      date = g_date_new_julian (day >= 59? day : day + 1);
+      boundary->year = 0;
+      boundary->mon = (int) g_date_get_month (date);
+      boundary->mday = (int) g_date_get_day (date);
+      boundary->wday = 0;
+      g_date_free (date);
+
+      /* February 29 */
+      if (day == 59)
+        boundary->mday++;
+    }
+
+  else
+    return FALSE;
+
+  /* Time */
+  boundary->isstd = FALSE;
+  boundary->isgmt = FALSE;
+
+  if (*pos == '/')
+    {
+      gint32 offset;
+
+      if (!parse_time (++pos, &offset))
+        return FALSE;
+
+      boundary->hour = offset / 3600;
+      boundary->min = (offset / 60) % 60;
+      boundary->sec = offset % 3600;
+
+      return TRUE;
+    }
+
+  else
+    {
+      boundary->hour = 2;
+      boundary->min = 0;
+      boundary->sec = 0;
+
+      return *pos == '\0';
+    }
+}
+
+/*
+ * Creates an array of TimeZoneRule from a TZ environment variable
+ * type of identifier.  Should free rules, std_name and dlt_name
+ * afterwards
+ */
+static gboolean
+rules_from_identifier (const gchar   *identifier,
+                       TimeZoneRule **rules,
+                       gint          *rules_num,
+                       gchar        **std_name,
+                       gchar        **dlt_name)
+{
+  const gchar *std_name_pos, *std_offset_pos;
+  const gchar *dlt_name_pos, *dlt_offset_pos;
+
+  const gchar *start_date_pos, *end_date_pos;
+
+  const gchar *pos;
+  gchar *buffer;
+  gboolean ret;
+
+  gint32 std_offset, dlt_offset;
+  TimeZoneDate dlt_start, dlt_end;
+
+  if (!identifier)
+    return FALSE;
+
+  pos = identifier;
+
+  std_name_pos = pos;
+
+  /* Name is alpha */
+  while ((*pos >= 'a' && 'z' >= *pos) || (*pos >= 'A' && 'Z' >= *pos))
+    pos++;
+
+  /* Offset for standard required (format 1) */
+  if (*pos == '\0')
+    return FALSE;
+
+  /* Name should be three or more alphabetic characters */
+  if (pos - identifier < 3)
+    return FALSE;
+
+  std_offset_pos = pos;
+
+  /* Standard offset */
+  while (*pos == '+' || *pos == '-' || *pos == ':' || (*pos >= '0' && '9' >= *pos))
+    pos++;
+
+  buffer = g_strndup (std_offset_pos, pos - std_offset_pos);
+  ret = parse_constant_offset (buffer, &std_offset);
+  g_free (buffer);
+
+  if (!ret)
+    return FALSE;
+
+  dlt_name_pos = pos;
+
+  /* Format 2 */
+  if (*pos != '\0')
+    {
+      /* Name is alpha */
+      while ((*pos >= 'a' && 'z' >= *pos) || (*pos >= 'A' && 'Z' >= *pos))
+        pos++;
+
+      /* Name should be three or more alphabetic characters */
+      if (pos - identifier < 3)
+        return FALSE;
+
+      dlt_offset_pos = pos;
+
+      /* Start and end required (format 2) */
+      if (*pos == '\0')
+        return FALSE;
+
+      /* Default offset is 1 hour less from standard offset */
+      if (*pos++ == ',')
+        dlt_offset = std_offset - 60 * 60;
+
+      else
+        {
+          /* Daylight offset */
+          while (*pos == '+' || *pos == '-' || *pos == ':' || (*pos >= '0' && '9' >= *pos))
+            pos++;
+
+          buffer = g_strndup (dlt_offset_pos, pos - dlt_offset_pos);
+          ret = parse_constant_offset (buffer, &dlt_offset);
+          g_free (buffer);
+
+          if (!ret)
+            return FALSE;
+
+          /* Start and end required (format 2) */
+          if (*pos++ != ',')
+            return FALSE;
+        }
+
+      /* Start date */
+      start_date_pos = pos;
+
+      while (*pos != ',' && *pos != '\0')
+        pos++;
+
+      /* End required (format 2) */
+      if (*pos == '\0')
+        return FALSE;
+
+      buffer = g_strndup (start_date_pos, pos++ - start_date_pos);
+      ret = parse_tz_boundary (buffer, &dlt_start);
+      g_free (buffer);
+
+      if (!ret)
+        return FALSE;
+
+      /* End date */
+      end_date_pos = pos;
+
+      while (*pos != '\0')
+        pos++;
+
+      buffer = g_strndup (end_date_pos, pos - end_date_pos);
+      ret = parse_tz_boundary (buffer, &dlt_end);
+      g_free (buffer);
+
+      if (!ret)
+        return FALSE;
+    }
+
+
+  *std_name = g_strndup (std_name_pos, std_offset_pos - std_name_pos);
+
+  if (dlt_name_pos != pos)
+    *dlt_name = g_strndup (dlt_name_pos, dlt_offset_pos - dlt_name_pos);
+  else
+    {
+      *dlt_name = NULL;
+      dlt_start.mon = 0;
+    }
+
+  *rules_num = 2;
+  *rules = g_new0 (TimeZoneRule, 2);
+
+  (*rules)[0].start_year = MIN_TZYEAR;
+  (*rules)[1].start_year = MAX_TZYEAR;
+
+  (*rules)[0].std_offset = -std_offset;
+  (*rules)[0].dlt_offset = -dlt_offset;
+  (*rules)[0].dlt_start  = dlt_start;
+  (*rules)[0].dlt_end = dlt_end;
+  (*rules)[0].std_name = *std_name;
+  (*rules)[0].dlt_name = *dlt_name;
+
+  return TRUE;
+}
+
 /* Construction {{{1 */
 /**
  * g_time_zone_new:
@@ -750,18 +1049,36 @@ init_zone_from_rules (GTimeZone    *gtz,
  *
  * Valid RFC3339 time offsets are <literal>"Z"</literal> (for UTC) or
  * <literal>"±hh:mm"</literal>.  ISO 8601 additionally specifies
- * <literal>"±hhmm"</literal> and <literal>"±hh"</literal>.
+ * <literal>"±hhmm"</literal> and <literal>"±hh"</literal>.  Offsets are
+ * time values to be added to Coordinated Universal Time (UTC) to get
+ * the local time.
  *
- * The <varname>TZ</varname> environment variable typically corresponds
- * to the name of a file in the zoneinfo database, but there are many
- * other possibilities.  Note that those other possibilities are not
- * currently implemented, but are planned.
+ * In Unix, the <varname>TZ</varname> environment variable typically
+ * corresponds to the name of a file in the zoneinfo database, or
+ * string in "std offset [dst [offset],start[/time],end[/time]]"
+ * (POSIX) format.  There  are  no spaces in the specification.  The
+ * name of standard and daylight savings time zone must be three or more
+ * alphabetic characters.  Offsets are time values to be added to local
+ * time to get Coordinated Universal Time (UTC) and should be
+ * <literal>"[±]hh[[:]mm[:ss]]"</literal>.  Dates are either
+ * <literal>"Jn"</literal> (Julian day with n between 1 and 365, leap
+ * years not counted), <literal>"n"</literal> (zero-based Julian day
+ * with n between 0 and 365) or <literal>"Mm.w.d"</literal> (day d
+ * (0 <= d <= 6) of week w (1 <= w <= 5) of month m (1 <= m <= 12), day
+ * 0 is a Sunday).  Times are in local wall clock time, the default is
+ * 02:00:00.
  *
  * g_time_zone_new_local() calls this function with the value of the
  * <varname>TZ</varname> environment variable.  This function itself is
  * independent of the value of <varname>TZ</varname>, but if @identifier
  * is %NULL then <filename>/etc/localtime</filename> will be consulted
  * to discover the correct timezone.
+ *
+ * If intervals are not available, only time zone rules from
+ * <varname>TZ</varname> environment variable or other means, then they
+ * will be computed from year 1900 to 2037.  If the maximum year for the
+ * rules is available and it is greater than 2037, then it will followed
+ * instead.
  *
  * See <ulink
  * url='http://tools.ietf.org/html/rfc3339#section-5.6'>RFC3339
@@ -783,6 +1100,9 @@ GTimeZone *
 g_time_zone_new (const gchar *identifier)
 {
   GTimeZone *tz = NULL;
+  TimeZoneRule *rules;
+  gint rules_num;
+  gchar *std_name, *dlt_name;
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
@@ -804,6 +1124,17 @@ g_time_zone_new (const gchar *identifier)
   tz->ref_count = 0;
 
   zone_for_constant_offset (tz, identifier);
+
+  if (tz->t_info == NULL &&
+      rules_from_identifier (identifier,
+                             &rules, &rules_num,
+                             &std_name, &dlt_name))
+    {
+      init_zone_from_rules (tz, rules, rules_num);
+      g_free (rules);
+      g_free (std_name);
+      g_free (dlt_name);
+    }
 
   if (tz->t_info == NULL)
     {
