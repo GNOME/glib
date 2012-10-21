@@ -37,6 +37,7 @@
 #include "gthread.h"
 #include "gbytes.h"
 #include "gslice.h"
+#include "gdatetime.h"
 
 /**
  * SECTION:timezone
@@ -130,6 +131,31 @@ typedef struct
   gint   info_index;
 } Transition;
 
+typedef struct
+{
+  gint     year;
+  gint     mon;
+  gint     mday;
+  gint     wday;
+  gint     week;
+  gint     hour;
+  gint     min;
+  gint     sec;
+  gboolean isstd;
+  gboolean isgmt;
+} TimeZoneDate;
+
+typedef struct
+{
+  gint         start_year;
+  gint32       std_offset;
+  gint32       dlt_offset;
+  TimeZoneDate dlt_start;
+  TimeZoneDate dlt_end;
+  const gchar *std_name;
+  const gchar *dlt_name;
+} TimeZoneRule;
+
 
 /* GTimeZone structure and lifecycle {{{1 */
 struct _GTimeZone
@@ -142,6 +168,9 @@ struct _GTimeZone
 
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
+
+#define MIN_TZYEAR 1900
+#define MAX_TZYEAR 2038
 
 /**
  * g_time_zone_unref:
@@ -459,6 +488,254 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
 }
 
 #endif
+
+static void
+find_relative_date (TimeZoneDate *buffer,
+                    GTimeZone    *tz)
+{
+  GDateTime *dt;
+  gint wday;
+
+  wday = buffer->wday;
+
+  /* Get last day if last is needed, first day otherwise */
+  dt = g_date_time_new (tz,
+                        buffer->year,
+                        buffer->mon + (buffer->week < 5? 0 : 1),
+                        buffer->week < 5? 1 : 0,
+                        buffer->hour, buffer->min, buffer->sec);
+
+  buffer->wday = g_date_time_get_day_of_week (dt);
+  buffer->mday = g_date_time_get_day_of_month (dt);
+
+  if (buffer->week < 5)
+    {
+      if (wday < buffer->wday)
+        buffer->wday -= 7;
+
+      buffer->mday += (buffer->week - 1) * 7;
+    }
+
+  else if (wday > buffer->wday)
+    buffer->wday += 7;
+
+  buffer->mday += wday - buffer->wday;
+  buffer->wday = wday;
+
+  g_date_time_unref (dt);
+}
+
+/* Offset is previous offset of local time */
+static gint64
+boundary_for_year (TimeZoneDate *boundary,
+                   gint          year,
+                   gint32        prev_offset,
+                   gint32        std_offset)
+{
+  TimeZoneDate buffer;
+  GDateTime *dt;
+  GTimeZone *tz;
+  gint64 t;
+  gint32 offset;
+  gchar *identifier;
+
+  buffer = *boundary;
+
+  if (boundary->isgmt)
+    offset = 0;
+  else if (boundary->isstd)
+    offset = std_offset;
+  else
+    offset = prev_offset;
+
+  G_UNLOCK (time_zones);
+
+  identifier = g_strdup_printf ("%+03d:%02d:%02d",
+                                (int) offset / 3600,
+                                (int) abs (offset / 60) % 60,
+                                (int) abs (offset) % 3600);
+  tz = g_time_zone_new (identifier);
+  g_free (identifier);
+
+  if (boundary->year == 0)
+    {
+      buffer.year = year;
+
+      if (buffer.wday)
+        find_relative_date (&buffer, tz);
+    }
+
+  g_assert (buffer.year == year);
+
+  dt = g_date_time_new (tz,
+                        buffer.year, buffer.mon, buffer.mday,
+                        buffer.hour, buffer.min, buffer.sec);
+  t = g_date_time_to_unix (dt);
+  g_date_time_unref (dt);
+
+  g_time_zone_unref (tz);
+
+  G_LOCK (time_zones);
+
+  return t;
+}
+
+static void
+init_zone_from_rules (GTimeZone    *gtz,
+                      TimeZoneRule *rules,
+                      gint          rules_num)
+{
+  TransitionInfo info[2];
+  Transition trans;
+  gint type_count, trans_count;
+  gint year, i, x, y;
+  gint32 last_offset;
+
+  type_count = 0;
+  trans_count = 0;
+
+  /* Last rule only contains max year */
+  for (i = 0; i < rules_num - 1; i++)
+    {
+      if (rules[i].dlt_start.mon)
+        {
+          type_count += 2;
+          trans_count += 2 * (rules[i+1].start_year - rules[i].start_year);
+        }
+      else
+        type_count++;
+    }
+
+  x = 0;
+  y = 0;
+
+  /* If standard time happens before daylight time in first rule
+   * with daylight, skip first transition so the minimum is in
+   * standard time and the first transition is in daylight time */
+  for (i = 0; i < rules_num - 1 && rules[0].dlt_start.mon == 0; i++);
+
+  if (i < rules_num -1 && rules[i].dlt_start.mon > 0 &&
+      rules[i].dlt_start.mon > rules[i].dlt_end.mon)
+    {
+      trans_count--;
+      x = -1;
+    }
+
+  gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo), type_count);
+  gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition), trans_count);
+
+  last_offset = rules[0].std_offset;
+
+  for (i = 0; i < rules_num - 1; i++)
+    {
+      if (rules[i].dlt_start.mon)
+        {
+          /* Standard */
+          info[0].gmt_offset = rules[i].std_offset;
+          info[0].is_dst = FALSE;
+          info[0].is_standard = rules[i].dlt_end.isstd;
+          info[0].is_gmt = rules[i].dlt_end.isgmt;
+
+          if (rules[i].std_name)
+            info[0].abbrev = g_strdup (rules[i].std_name);
+
+          else
+            info[0].abbrev = g_strdup_printf ("%+03d%02d",
+                                              (int) rules[i].std_offset / 3600,
+                                              (int) abs (rules[i].std_offset / 60) % 60);
+
+
+          /* Daylight */
+          info[1].gmt_offset = rules[i].dlt_offset;
+          info[1].is_dst = TRUE;
+          info[1].is_standard = rules[i].dlt_start.isstd;
+          info[1].is_gmt = rules[i].dlt_start.isgmt;
+
+          if (rules[i].dlt_name)
+            info[1].abbrev = g_strdup (rules[i].dlt_name);
+
+          else
+            info[1].abbrev = g_strdup_printf ("%+03d%02d",
+                                              (int) rules[i].dlt_offset / 3600,
+                                              (int) abs (rules[i].dlt_offset / 60) % 60);
+
+          if (rules[i].dlt_start.mon < rules[i].dlt_end.mon)
+            {
+              g_array_append_val (gtz->t_info, info[1]);
+              g_array_append_val (gtz->t_info, info[0]);
+            }
+          else
+            {
+              g_array_append_val (gtz->t_info, info[0]);
+              g_array_append_val (gtz->t_info, info[1]);
+            }
+
+          /* Transition dates */
+          for (year = rules[i].start_year; year < rules[i+1].start_year; year++)
+            {
+              if (rules[i].dlt_start.mon < rules[i].dlt_end.mon)
+                {
+                  /* Daylight Data */
+                  trans.info_index = y;
+                  trans.time = boundary_for_year (&rules[i].dlt_start, year,
+                                                  last_offset, rules[i].std_offset);
+                  g_array_insert_val (gtz->transitions, x++, trans);
+                  last_offset = rules[i].dlt_offset;
+
+                  /* Standard Data */
+                  trans.info_index = y+1;
+                  trans.time = boundary_for_year (&rules[i].dlt_end, year,
+                                                  last_offset, rules[i].std_offset);
+                  g_array_insert_val (gtz->transitions, x++, trans);
+                  last_offset = rules[i].std_offset;
+                }
+              else
+                {
+                  /* Standard Data */
+                  trans.info_index = y;
+                  trans.time = boundary_for_year (&rules[i].dlt_end, year,
+                                                  last_offset, rules[i].std_offset);
+                  if (x >= 0)
+                    g_array_insert_val (gtz->transitions, x++, trans);
+                  else
+                    x++;
+                  last_offset = rules[i].std_offset;
+
+                  /* Daylight Data */
+                  trans.info_index = y+1;
+                  trans.time = boundary_for_year (&rules[i].dlt_start, year,
+                                                  last_offset, rules[i].std_offset);
+                  g_array_insert_val (gtz->transitions, x++, trans);
+                  last_offset = rules[i].dlt_offset;
+                }
+            }
+
+          y += 2;
+        }
+      else
+        {
+          /* Standard */
+          info[0].gmt_offset = rules[i].std_offset;
+          info[0].is_dst = FALSE;
+          info[0].is_standard = FALSE;
+          info[0].is_gmt = FALSE;
+
+          if (rules[i].std_name)
+            info[0].abbrev = g_strdup (rules[i].std_name);
+
+          else
+            info[0].abbrev = g_strdup_printf ("%+03d%02d",
+                                              (int) rules[i].std_offset / 3600,
+                                              (int) abs (rules[i].std_offset / 60) % 60);
+
+          g_array_append_val (gtz->t_info, info[0]);
+
+          last_offset = rules[i].std_offset;
+
+          y++;
+        }
+    }
+}
 
 /* Construction {{{1 */
 /**
