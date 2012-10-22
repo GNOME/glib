@@ -1,3 +1,64 @@
+Overview of changes from GLib 2.34.0 to 2.35.1
+==============================================
+
+These two changes in particular may be slightly incompatible.  Please
+give feedback if they cause trouble:
+
+  * Signal handlers connected with g_signal_connect_object() are now
+    automatically disconnected on target object destruction
+
+  * The ->constructed vfunc is now called after all properties are set
+
+The remaining changes should not cause problems.
+
+  * g_type_init() is no longer necessary and has been deprecated
+
+  * GTask (the new GAsyncResult implementation) has landed 
+
+  * GLib version macros updated
+
+  * Update to Unicode 6.2
+
+  * Thread safety fixes for GFileMonitor in non-default main contexts
+
+  * GTimeZone support for old-format zoneinfo database (as on Mac OS)
+
+  * g_settings_bind() now works with non-canonical property names
+
+  * Fix crashes related to NULL connection passed to
+    GBusNameVanishedCallback and document this situation
+
+* Bugs fixed:
+ 118536 Make g_signal_connect_object'ed handlers disconnect when the data object is destroyed
+ 661767 merge/improve various bits of run-in-thread functionality
+ 682950 GFileMonitor crashing on high event count when running in different thread
+ 683642 Missing g_content_type_get_symbolic_icon
+ 684882 Gsettings should spaw a warning when binding against a low_underscored_property
+ 684909 codegen: Explicitly close output
+ 684912 Update to Unicode 6.2
+ 685037 g_strcmp0: Returns shall include values less and greater than zero
+ 685069 Leak in glib-compile-resources
+ 685208 missing g_return_if_fail
+ 685608 [Patch] Port gio tests from pygobject to pygi
+ 685697 Documentation typo in g_dbus_interface_skeleton_has_connection()
+ 685733 Call ->constructed() after all properties are set
+ 685787 gtestdbus: correct documentation typos
+ 685995 Crash in g_menu_exporter_name_vanished
+ 686091 Invalid reads in g_bytes_unref_to_data
+ 686119 dtrace, gobject_probes.d, the last three probes - semicolon missing
+ 686161 Deprecate g_type_init()
+ 686231 GBusNameVanishedCallback: document NULL connection
+ 686458 slightly increase poll duration in test_timed_wait 
+
+* Translations updated
+  Catalan (Valencian)
+  Czech
+  Danish
+  Italian
+  Lithuanian
+  Norwegian bokmål
+  Slovenian
+
 Overview of changes from GLib 2.33.14 to 2.34.0
 ===============================================
 
