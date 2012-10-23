@@ -25,14 +25,10 @@
 #include <string.h>
 
 struct _GvdbTable {
-  gint ref_count;
+  GBytes *bytes;
 
   const gchar *data;
   gsize size;
-
-  gpointer user_data;
-  GvdbRefFunc ref_user_data;
-  GDestroyNotify unref_user_data;
 
   gboolean byteswapped;
   gboolean trusted;
@@ -126,27 +122,32 @@ gvdb_table_setup_root (GvdbTable                 *file,
   file->n_hash_items = size / sizeof (struct gvdb_hash_item);
 }
 
-static GvdbTable *
-new_from_data (const void    *data,
-               gsize          data_len,
-               gboolean       trusted,
-               gpointer       user_data,
-               GvdbRefFunc    ref,
-               GDestroyNotify unref,
-               const char    *filename,
-               GError       **error)
+/**
+ * gvdb_table_new_from_bytes:
+ * @bytes: the #GBytes with the data
+ * @trusted: if the contents of @bytes are trusted
+ * @error: %NULL, or a pointer to a %NULL #GError
+ * @returns: a new #GvdbTable
+ *
+ * Creates a new #GvdbTable from the contents of @bytes.
+ *
+ * This call can fail if the header contained in @bytes is invalid.
+ *
+ * You should call gvdb_table_free() on the return result when you no
+ * longer require it.
+ **/
+GvdbTable *
+gvdb_table_new_from_bytes (GBytes    *bytes,
+                           gboolean   trusted,
+                           GError   **error)
 {
   const struct gvdb_header *header;
   GvdbTable *file;
 
   file = g_slice_new0 (GvdbTable);
-  file->data = data;
-  file->size = data_len;
+  file->bytes = g_bytes_ref (bytes);
+  file->data = g_bytes_get_data (bytes, &file->size);
   file->trusted = trusted;
-  file->ref_count = 1;
-  file->ref_user_data = ref;
-  file->unref_user_data = unref;
-  file->user_data = user_data;
 
   if (file->size < sizeof (struct gvdb_header))
     goto invalid;
@@ -171,38 +172,24 @@ new_from_data (const void    *data,
   return file;
 
 invalid:
-  if (filename)
-    g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL, "%s: invalid header", filename);
-  else
-    g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_INVAL, "invalid gvdb header");
+  g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_INVAL, "invalid gvdb header");
+
+  g_bytes_unref (file->bytes);
 
   g_slice_free (GvdbTable, file);
-
-  if (unref)
-    unref (user_data);
 
   return NULL;
 }
 
 /**
  * gvdb_table_new:
- * @filename: the path to the hash file
- * @trusted: if the contents of @filename are trusted
+ * @filename: a filename
+ * @trusted: if the contents of @bytes are trusted
  * @error: %NULL, or a pointer to a %NULL #GError
  * @returns: a new #GvdbTable
  *
- * Creates a new #GvdbTable from the contents of the file found at
- * @filename.
- *
- * The only time this function fails is if the file cannot be opened.
- * In that case, the #GError that is returned will be an error from
- * g_mapped_file_new().
- *
- * An empty or otherwise corrupted file is considered to be a valid
- * #GvdbTable with no entries.
- *
- * You should call gvdb_table_unref() on the return result when you no
- * longer require it.
+ * Creates a new #GvdbTable using the #GMappedFile for @filename as the
+ * #GBytes.
  **/
 GvdbTable *
 gvdb_table_new (const gchar  *filename,
@@ -210,52 +197,21 @@ gvdb_table_new (const gchar  *filename,
                 GError      **error)
 {
   GMappedFile *mapped;
+  GvdbTable *table;
+  GBytes *bytes;
 
-  if ((mapped = g_mapped_file_new (filename, FALSE, error)) == NULL)
+  mapped = g_mapped_file_new (filename, FALSE, error);
+  if (!mapped)
     return NULL;
 
-  return new_from_data (g_mapped_file_get_contents (mapped),
-                        g_mapped_file_get_length (mapped),
-                        trusted,
-                        mapped,
-                        (GvdbRefFunc)g_mapped_file_ref,
-                        (GDestroyNotify)g_mapped_file_unref,
-                        filename,
-                        error);
-}
+  bytes = g_mapped_file_get_bytes (mapped);
+  table = gvdb_table_new_from_bytes (bytes, trusted, error);
+  g_mapped_file_unref (mapped);
+  g_bytes_unref (bytes);
 
-/**
- * gvdb_table_new_from_data:
- * @data: the data
- * @data_len: the length of @data in bytes
- * @trusted: if the contents of @data are trusted
- * @user_data: User supplied data that owns @data
- * @ref: Ref function for @user_data
- * @unref: Unref function for @user_data
- * @returns: a new #GvdbTable
- *
- * Creates a new #GvdbTable from the data in @data.
- *
- * An empty or otherwise corrupted data is considered to be a valid
- * #GvdbTable with no entries.
- *
- * You should call gvdb_table_unref() on the return result when you no
- * longer require it.
- **/
-GvdbTable *
-gvdb_table_new_from_data (const void    *data,
-                          gsize          data_len,
-                          gboolean       trusted,
-                          gpointer       user_data,
-                          GvdbRefFunc    ref,
-                          GDestroyNotify unref,
-                          GError        **error)
-{
-  return new_from_data (data, data_len,
-                        trusted,
-                        user_data, ref, unref,
-                        NULL,
-                        error);
+  g_prefix_error (error, "%s: ", filename);
+
+  return table;
 }
 
 static gboolean
@@ -611,6 +567,7 @@ gvdb_table_value_from_item (GvdbTable                   *table,
 {
   GVariant *variant, *value;
   gconstpointer data;
+  GBytes *bytes;
   gsize size;
 
   data = gvdb_table_dereference (table, &item->value.pointer, 8, &size);
@@ -618,12 +575,11 @@ gvdb_table_value_from_item (GvdbTable                   *table,
   if G_UNLIKELY (data == NULL)
     return NULL;
 
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT,
-                                     data, size, table->trusted,
-                                     table->unref_user_data,
-                                     table->ref_user_data ? table->ref_user_data (table->user_data) : table->user_data);
+  bytes = g_bytes_new_from_bytes (table->bytes, ((gchar *) data) - table->data, size);
+  variant = g_variant_new_from_bytes (G_VARIANT_TYPE_VARIANT, bytes, table->trusted);
   value = g_variant_get_variant (variant);
   g_variant_unref (variant);
+  g_bytes_unref (bytes);
 
   return value;
 }
@@ -706,7 +662,7 @@ gvdb_table_get_raw_value (GvdbTable   *table,
  * contained in the file.  This newly-created #GvdbTable does not depend
  * on the continued existence of @file.
  *
- * You should call gvdb_table_unref() on the return result when you no
+ * You should call gvdb_table_free() on the return result when you no
  * longer require it.
  **/
 GvdbTable *
@@ -722,14 +678,11 @@ gvdb_table_get_table (GvdbTable   *file,
     return NULL;
 
   new = g_slice_new0 (GvdbTable);
-  new->user_data = file->ref_user_data ? file->ref_user_data (file->user_data) : file->user_data;
-  new->ref_user_data = file->ref_user_data;
-  new->unref_user_data = file->unref_user_data;
+  new->bytes = g_bytes_ref (file->bytes);
   new->byteswapped = file->byteswapped;
   new->trusted = file->trusted;
   new->data = file->data;
   new->size = file->size;
-  new->ref_count = 1;
 
   gvdb_table_setup_root (new, &item->value.pointer);
 
@@ -737,37 +690,16 @@ gvdb_table_get_table (GvdbTable   *file,
 }
 
 /**
- * gvdb_table_ref:
- * @file: a #GvdbTable
- * @returns: a new reference on @file
- *
- * Increases the reference count on @file.
- **/
-GvdbTable *
-gvdb_table_ref (GvdbTable *file)
-{
-  g_atomic_int_inc (&file->ref_count);
-
-  return file;
-}
-
-/**
- * gvdb_table_unref:
+ * gvdb_table_free:
  * @file: a #GvdbTable
  *
- * Decreases the reference count on @file, possibly freeing it.
- *
- * Since: 2.26
+ * Frees @file.
  **/
 void
-gvdb_table_unref (GvdbTable *file)
+gvdb_table_free (GvdbTable *file)
 {
-  if (g_atomic_int_dec_and_test (&file->ref_count))
-    {
-      if (file->unref_user_data)
-        file->unref_user_data (file->user_data);
-      g_slice_free (GvdbTable, file);
-    }
+  g_bytes_unref (file->bytes);
+  g_slice_free (GvdbTable, file);
 }
 
 /**
