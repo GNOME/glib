@@ -1487,6 +1487,7 @@ g_variant_n_children
 g_variant_get_child_value
 g_variant_get_size
 g_variant_get_data
+g_variant_get_data_as_bytes
 g_variant_store
 g_variant_is_normal_form
 g_variant_get_type
@@ -1495,6 +1496,7 @@ g_variant_is_of_type
 g_variant_is_container
 g_variant_classify
 g_variant_compare
+g_variant_new_from_bytes
 g_variant_new_boolean
 g_variant_new_byte
 g_variant_new_int16

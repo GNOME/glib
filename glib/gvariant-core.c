@@ -484,8 +484,7 @@ g_variant_alloc (const GVariantType *type,
   return value;
 }
 
-/* -- internal -- */
-/* < internal >
+/**
  * g_variant_new_from_bytes:
  * @type: a #GVariantType
  * @bytes: a #GBytes
@@ -498,6 +497,8 @@ g_variant_alloc (const GVariantType *type,
  * A reference is taken on @bytes.
  *
  * Returns: a new #GVariant with a floating reference
+ *
+ * Since: 2.36
  */
 GVariant *
 g_variant_new_from_bytes (const GVariantType *type,
@@ -534,6 +535,8 @@ g_variant_new_from_bytes (const GVariantType *type,
 
   return value;
 }
+
+/* -- internal -- */
 
 /* < internal >
  * g_variant_new_from_children:
@@ -860,6 +863,30 @@ g_variant_get_data (GVariant *value)
 
   return value->contents.serialised.data;
 }
+
+/**
+ * g_variant_get_data_as_bytes:
+ * @value: a #GVariant
+ *
+ * Returns a pointer to the serialised form of a #GVariant instance.
+ * The semantics of this function are exactly the same as
+ * g_variant_get_data(), except that the returned #GBytes holds
+ * a reference to the variant data.
+ *
+ * Returns: (transfer full): A new #GBytes representing the variant data
+ *
+ * Since: 2.36
+ */ 
+GBytes *
+g_variant_get_data_as_bytes (GVariant *value)
+{
+  g_variant_lock (value);
+  g_variant_ensure_serialised (value);
+  g_variant_unlock (value);
+
+  return g_bytes_ref (value->contents.serialised.bytes);
+}
+
 
 /**
  * g_variant_n_children:

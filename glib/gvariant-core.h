@@ -26,10 +26,6 @@
 #include <glib/gbytes.h>
 
 /* gvariant-core.c */
-G_GNUC_INTERNAL
-GVariant *              g_variant_new_from_bytes                        (const GVariantType *type,
-                                                                         GBytes             *bytes,
-                                                                         gboolean            trusted);
 
 G_GNUC_INTERNAL
 GVariant *              g_variant_new_from_children                     (const GVariantType  *type,

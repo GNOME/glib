@@ -4254,6 +4254,36 @@ test_checksum_nested (void)
 			       "(yvu)", 254, g_variant_new ("(^as)", strv), 42);
 }
 
+static void
+test_gbytes (void)
+{
+  GVariant *a;
+  GBytes *bytes;
+  GBytes *bytes2;
+  const guint8 values[5] = { 1, 2, 3, 4, 5 };
+  const guint8 *elts;
+  gsize n_elts;
+  gint i;
+
+  bytes = g_bytes_new (&values, 5);
+  a = g_variant_new_from_bytes (G_VARIANT_TYPE_BYTESTRING, bytes, TRUE);
+  g_bytes_unref (bytes);
+  n_elts = 0;
+  elts = g_variant_get_fixed_array (a, &n_elts, sizeof (guint8));
+  g_assert (n_elts == 5);
+  for (i = 0; i < 5; i++)
+    g_assert_cmpint (elts[i], ==, i + 1);
+
+  bytes2 = g_variant_get_data_as_bytes (a);
+  g_variant_unref (a);
+
+  bytes = g_bytes_new (&values, 5);
+  g_assert (g_bytes_equal (bytes, bytes2));
+
+  g_bytes_unref (bytes);
+  g_bytes_unref (bytes2);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4302,6 +4332,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/checksum-basic", test_checksum_basic);
   g_test_add_func ("/gvariant/checksum-nested", test_checksum_nested);
+
+  g_test_add_func ("/gvariant/gbytes", test_gbytes);
 
   return g_test_run ();
 }

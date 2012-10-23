@@ -29,6 +29,7 @@
 
 #include <glib/gvarianttype.h>
 #include <glib/gstring.h>
+#include <glib/gbytes.h>
 
 G_BEGIN_DECLS
 
@@ -159,6 +160,8 @@ gconstpointer                   g_variant_get_fixed_array               (GVarian
 
 gsize                           g_variant_get_size                      (GVariant             *value);
 gconstpointer                   g_variant_get_data                      (GVariant             *value);
+GLIB_AVAILABLE_IN_2_36
+GBytes *                        g_variant_get_data_as_bytes             (GVariant             *value);
 void                            g_variant_store                         (GVariant             *value,
                                                                          gpointer              data);
 
@@ -175,6 +178,11 @@ gboolean                        g_variant_equal                         (gconstp
 GVariant *                      g_variant_get_normal_form               (GVariant             *value);
 gboolean                        g_variant_is_normal_form                (GVariant             *value);
 GVariant *                      g_variant_byteswap                      (GVariant             *value);
+
+GLIB_AVAILABLE_IN_2_36
+GVariant *                      g_variant_new_from_bytes                (const GVariantType   *type,
+                                                                         GBytes               *bytes,
+                                                                         gboolean              trusted);
 GVariant *                      g_variant_new_from_data                 (const GVariantType   *type,
                                                                          gconstpointer         data,
                                                                          gsize                 size,

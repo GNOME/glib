@@ -3137,8 +3137,10 @@ g_variant_get_fixed_array
 <SUBSECTION>
 g_variant_get_size
 g_variant_get_data
+g_variant_get_data_as_bytes
 g_variant_store
 g_variant_new_from_data
+g_variant_new_from_bytes
 g_variant_byteswap
 g_variant_get_normal_form
 g_variant_is_normal_form
