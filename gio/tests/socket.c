@@ -813,6 +813,58 @@ test_unix_connection_ancillary_data (void)
 }
 #endif /* G_OS_UNIX */
 
+static void
+test_datagram_get_available (void)
+{
+  GError *err = NULL;
+  GSocket *server, *client;
+  GInetAddress *addr;
+  GSocketAddress *saddr;
+  gchar data[] = "0123456789abcdef";
+
+  server = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                                G_SOCKET_TYPE_DATAGRAM,
+                                G_SOCKET_PROTOCOL_DEFAULT,
+                                &err);
+  g_assert_no_error (err);
+  g_assert (G_IS_SOCKET (server));
+
+  client = g_socket_new (G_SOCKET_FAMILY_IPV4,
+			 G_SOCKET_TYPE_DATAGRAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &err);
+  g_assert_no_error (err);
+  g_assert (G_IS_SOCKET (client));
+
+  addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+  saddr = g_inet_socket_address_new (addr, 0);
+
+  g_socket_bind (server, saddr, TRUE, &err);
+  g_assert_no_error (err);
+  g_object_unref (saddr);
+  g_object_unref (addr);
+
+  saddr = g_socket_get_local_address (server, &err);
+  g_assert_no_error (err);
+
+  g_socket_send_to (client, saddr, data, sizeof (data), NULL, &err);
+  g_assert_no_error (err);
+
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, sizeof (data));
+
+  g_socket_send_to (client, saddr, data, sizeof (data), NULL, &err);
+  g_assert_no_error (err);
+
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, sizeof (data));
+
+  g_socket_close (server, &err);
+  g_assert_no_error (err);
+
+  g_object_unref (saddr);
+  g_object_unref (server);
+  g_object_unref (client);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -834,6 +886,7 @@ main (int   argc,
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
 #endif
+  g_test_add_func ("/socket/datagram_get_available", test_datagram_get_available);
 
   return g_test_run();
 }
