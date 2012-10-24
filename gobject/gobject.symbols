@@ -33,6 +33,7 @@ g_key_file_get_type
 g_main_loop_get_type
 g_main_context_get_type
 g_source_get_type
+g_pollfd_get_type
 g_closure_get_type
 g_value_get_type
 g_value_array_get_type
