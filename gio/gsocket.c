@@ -2368,7 +2368,10 @@ g_socket_check_connect_result (GSocket  *socket,
  * g_socket_get_available_bytes:
  * @socket: a #GSocket
  *
- * Get the amount of data pending in the OS input buffer.
+ * Get the amount of data that can be read from the socket without
+ * blocking. In the case of datagram sockets this returns the size
+ * of the first datagram and not the sum of the sizes of all currently
+ * queued datagrams.
  *
  * Returns: the number of bytes that can be read from the socket
  * without blocking or -1 on error.
@@ -2382,15 +2385,19 @@ g_socket_get_available_bytes (GSocket *socket)
   gulong avail = 0;
 #else
   gint avail = 0;
+  gsize avail_len = sizeof (avail);
 #endif
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
-#ifndef G_OS_WIN32
-  if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
+#if defined(G_OS_WIN32)
+  if (WSAIoctl (socket->priv->fd, FIONREAD, NULL, 0, &avail, sizeof (avail), 0, 0) == SOCKET_ERROR)
+    return -1;
+#elif defined(SO_NREAD)
+  if (getsockopt (socket->priv->fd, SOL_SOCKET, SO_NREAD, &avail, &avail_len) < 0)
     return -1;
 #else
-  if (ioctlsocket (socket->priv->fd, FIONREAD, &avail) == SOCKET_ERROR)
+  if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
     return -1;
 #endif
 
