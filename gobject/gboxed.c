@@ -77,6 +77,15 @@ value_free (GValue *value)
   g_free (value);
 }
 
+static GPollFD *
+pollfd_copy (GPollFD *src)
+{
+  GPollFD *dest = g_new0 (GPollFD, 1);
+  /* just a couple of integers */
+  memcpy (dest, src, sizeof (GPollFD));
+  return dest;
+}
+
 void
 _g_boxed_type_init (void)
 {
@@ -150,6 +159,7 @@ G_DEFINE_BOXED_TYPE (GKeyFile, g_key_file, g_key_file_ref, g_key_file_unref)
 G_DEFINE_BOXED_TYPE (GMainLoop, g_main_loop, g_main_loop_ref, g_main_loop_unref)
 G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_context_unref)
 G_DEFINE_BOXED_TYPE (GSource, g_source, g_source_ref, g_source_unref)
+G_DEFINE_BOXED_TYPE (GPollFD, g_pollfd, pollfd_copy, g_free)
 
 /* This one can't use G_DEFINE_BOXED_TYPE (GStrv, g_strv, g_strdupv, g_strfreev) */
 GType

@@ -228,6 +228,15 @@ typedef gsize GType;
 #define G_TYPE_SOURCE (g_source_get_type ())
 
 /**
+ * G_TYPE_POLLFD:
+ *
+ * The #GType for a boxed type holding a #GPollFD.
+ *
+ * Since: 2.36
+ */
+#define G_TYPE_POLLFD (g_pollfd_get_type ())
+
+/**
  * G_TYPE_KEY_FILE:
  *
  * The #GType for a boxed type holding a #GKeyFile.
@@ -261,6 +270,8 @@ GLIB_AVAILABLE_IN_2_30
 GType   g_main_context_get_type    (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30
 GType   g_source_get_type          (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_36
+GType   g_pollfd_get_type          (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
