@@ -901,6 +901,81 @@ test_reuse_udp (void)
   g_object_unref (sock2);
 }
 
+static void
+test_datagram_get_available (void)
+{
+  GError *err = NULL;
+  GSocket *server, *client;
+  GInetAddress *addr;
+  GSocketAddress *saddr;
+  gchar data[] = "0123456789abcdef";
+  gchar buf[34];
+  gssize nread;
+
+  server = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                                G_SOCKET_TYPE_DATAGRAM,
+                                G_SOCKET_PROTOCOL_DEFAULT,
+                                &err);
+  g_assert_no_error (err);
+  g_assert (G_IS_SOCKET (server));
+
+  client = g_socket_new (G_SOCKET_FAMILY_IPV4,
+			 G_SOCKET_TYPE_DATAGRAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &err);
+  g_assert_no_error (err);
+  g_assert (G_IS_SOCKET (client));
+
+  addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+  saddr = g_inet_socket_address_new (addr, 0);
+
+  g_socket_bind (server, saddr, TRUE, &err);
+  g_assert_no_error (err);
+  g_object_unref (saddr);
+  g_object_unref (addr);
+
+  saddr = g_socket_get_local_address (server, &err);
+  g_assert_no_error (err);
+
+  g_socket_send_to (client, saddr, data, sizeof (data), NULL, &err);
+  g_assert_no_error (err);
+
+  while (!g_socket_condition_wait (server, G_IO_IN, NULL, NULL))
+    ;
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, sizeof (data));
+
+  g_socket_send_to (client, saddr, data, sizeof (data), NULL, &err);
+  g_assert_no_error (err);
+
+  /* g_socket_condition_wait() won't help here since the socket is
+   * definitely already readable. So there's a race condition here, but
+   * at least the failure mode is passes-when-it-shouldn't, not
+   * fails-when-it-shouldn't.
+   */
+  g_usleep (100000);
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, sizeof (data));
+
+  g_assert_cmpint (sizeof (buf), >=, 2 * sizeof (data));
+  nread = g_socket_receive (server, buf, sizeof (buf), NULL, &err);
+  g_assert_cmpint (nread, ==, sizeof (data));
+  g_assert_no_error (err);
+
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, sizeof (data));
+
+  nread = g_socket_receive (server, buf, sizeof (buf), NULL, &err);
+  g_assert_cmpint (nread, ==, sizeof (data));
+  g_assert_no_error (err);
+
+  g_assert_cmpint (g_socket_get_available_bytes (server), ==, 0);
+
+  g_socket_close (server, &err);
+  g_assert_no_error (err);
+
+  g_object_unref (saddr);
+  g_object_unref (server);
+  g_object_unref (client);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -924,6 +999,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/socket/reuse/tcp", test_reuse_tcp);
   g_test_add_func ("/socket/reuse/udp", test_reuse_udp);
+  g_test_add_func ("/socket/datagram_get_available", test_datagram_get_available);
 
   return g_test_run();
 }
