@@ -30,6 +30,10 @@ G_BEGIN_DECLS
 
 GSource *_g_main_create_unix_signal_watch (int signum);
 
+#ifdef G_OS_UNIX
+GPid _g_main_fork_and_do_not_reap (void);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_MAIN_H__ */

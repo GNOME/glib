@@ -47,6 +47,7 @@
 #include "genviron.h"
 #include "gmem.h"
 #include "gmain.h"
+#include "gmain-internal.h"
 #include "gshell.h"
 #include "gstring.h"
 #include "gstrfuncs.h"
@@ -281,7 +282,7 @@ g_spawn_sync (const gchar          *working_directory,
   gint ret;
   GString *outstr = NULL;
   GString *errstr = NULL;
-  gboolean failed;
+  gboolean failed = FALSE;
   gint status;
   SyncWaitpidData waitpid_data;
   
@@ -300,7 +301,7 @@ g_spawn_sync (const gchar          *working_directory,
 
   if (standard_error)
     *standard_error = NULL;
-  
+
   if (!fork_exec_with_pipes (FALSE,
                              working_directory,
                              argv,
@@ -319,11 +320,12 @@ g_spawn_sync (const gchar          *working_directory,
                              standard_output ? &outpipe : NULL,
                              standard_error ? &errpipe : NULL,
                              error))
-    return FALSE;
+    {
+      failed = TRUE;
+      goto out;
+    }
 
   /* Read data from child. */
-  
-  failed = FALSE;
 
   if (outpipe >= 0)
     {
@@ -436,13 +438,14 @@ g_spawn_sync (const gchar          *working_directory,
     g_source_set_callback (source, (GSourceFunc)on_sync_waitpid, &waitpid_data, NULL);
     g_source_attach (source, context);
     g_source_unref (source);
-    
+
     g_main_loop_run (loop);
 
     g_main_context_unref (context);
     g_main_loop_unref (loop);
   }
   
+ out:
   if (failed)
     {
       if (outstr)
@@ -1342,7 +1345,10 @@ fork_exec_with_pipes (gboolean              intermediate_child,
   if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
-  pid = fork ();
+  if (intermediate_child)
+    pid = fork ();
+  else
+    pid = _g_main_fork_and_do_not_reap ();
 
   if (pid < 0)
     {

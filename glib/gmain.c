@@ -185,6 +185,7 @@
 typedef struct _GTimeoutSource GTimeoutSource;
 typedef struct _GChildWatchSource GChildWatchSource;
 typedef struct _GUnixSignalWatchSource GUnixSignalWatchSource;
+typedef struct _GUnixCatchallChildWatchSource GUnixCatchallChildWatchSource;
 typedef struct _GPollRec GPollRec;
 typedef struct _GSourceCallback GSourceCallback;
 
@@ -303,6 +304,12 @@ struct _GUnixSignalWatchSource
   gboolean    pending;
 };
 
+struct _GUnixCatchallChildWatchSource
+{
+  GSource     source;
+  GSList     *pending_waits;
+};
+
 struct _GPollRec
 {
   GPollFD *fd;
@@ -395,6 +402,13 @@ static gboolean g_unix_signal_watch_dispatch (GSource     *source,
 					      GSourceFunc  callback,
 					      gpointer     user_data);
 static void     g_unix_signal_watch_finalize  (GSource     *source);
+static gboolean g_unix_catchall_watch_prepare  (GSource     *source,
+					      gint        *timeout);
+static gboolean g_unix_catchall_watch_check    (GSource     *source);
+static gboolean g_unix_catchall_watch_dispatch (GSource     *source,
+					      GSourceFunc  callback,
+					      gpointer     user_data);
+static void     g_unix_catchall_watch_finalize  (GSource     *source);
 #endif
 static gboolean g_idle_prepare     (GSource     *source,
 				    gint        *timeout);
@@ -428,6 +442,13 @@ static volatile int any_unix_signal_pending;
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
 static GSList *unix_signal_watches;
 static GSList *unix_child_watches;
+static GHashTable *unix_catchall_do_not_reap; /* GPid -> UnixWaitStatus */
+static GUnixCatchallChildWatchSource *unix_catchall_child_watch;
+
+typedef struct {
+  pid_t pid;
+  gint estatus;
+} UnixWaitStatus;
 
 static GSourceFuncs g_unix_signal_funcs =
 {
@@ -435,6 +456,14 @@ static GSourceFuncs g_unix_signal_funcs =
   g_unix_signal_watch_check,
   g_unix_signal_watch_dispatch,
   g_unix_signal_watch_finalize
+};
+
+static GSourceFuncs g_unix_catchall_funcs =
+{
+  g_unix_catchall_watch_prepare,
+  g_unix_catchall_watch_check,
+  g_unix_catchall_watch_dispatch,
+  g_unix_catchall_watch_finalize
 };
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
@@ -4392,6 +4421,130 @@ wake_source (GSource *source)
   G_UNLOCK(main_context_list);
 }
 
+static inline pid_t
+safe_waitpid (pid_t wait_for,
+              int  *estatus)
+{
+  pid_t pid;
+  do
+    pid = waitpid (wait_for, estatus, WNOHANG);
+  while (pid == -1 && errno == EINTR);
+  return pid;
+}
+
+/* Here the application has explicitly requested use of waitpid(-1,
+ * ...).  The contortions below are to be sure we dispatch normal
+ * GChildWatchSource for their requested pid, only passing other pids
+ * to the catchall source.
+ */
+static void
+dispatch_sigchld_with_catchall (void)
+{
+  gboolean caught_one_catchall = FALSE;
+
+  while (TRUE)
+    {
+      gboolean give_to_catchall = TRUE;
+      UnixWaitStatus *waitstatus;
+      GSList *node;
+      int estatus;
+      pid_t pid;
+
+      pid = safe_waitpid (-1, &estatus);
+      
+      /* We're done if we have no child processes, or on an error.
+       * Ideally we'd log an error, if one somehow occurred, but we
+       * can't get ECHILD, we're handling EINTR, and the only way we'd
+       * get EINVAL is if the system didn't support WNOHANG, in which
+       * case we're screwed anyways.  Those are all of the errnos
+       * listed in the glibc manual.
+       */
+      if (pid <= 0)
+        break;
+
+      for (node = unix_child_watches; node; node = node->next)
+        {
+          GChildWatchSource *source = node->data;
+      
+          if (source->child_exited
+              || source->pid != pid)
+            continue;
+
+          source->child_status = estatus;
+          source->child_exited = TRUE;
+          give_to_catchall = FALSE;
+          wake_source ((GSource*)source);
+        }
+
+      /* This is a synchronization mechanism with gspawn.c */ 
+      waitstatus = g_hash_table_lookup (unix_catchall_do_not_reap,
+                                        GINT_TO_POINTER (pid));
+      if (waitstatus != NULL)
+        {
+          waitstatus->pid = pid; /* Setting pid = pid makes it valid */
+          waitstatus->estatus = estatus;
+          give_to_catchall = FALSE;
+        }
+
+      /* The catchall watch only gets processes that don't already
+       * have a specific child watch.
+       */
+      if (!give_to_catchall)
+        continue;
+
+      if (unix_catchall_child_watch != NULL)
+        {
+          waitstatus = g_slice_new (UnixWaitStatus);
+          waitstatus->pid = pid;
+          waitstatus->estatus = estatus;
+                  
+          unix_catchall_child_watch->pending_waits = g_slist_prepend (unix_catchall_child_watch->pending_waits, waitstatus);
+          caught_one_catchall = TRUE;
+        }
+    }
+
+  if (caught_one_catchall)
+    wake_source ((GSource *) unix_catchall_child_watch);
+}
+
+/* In this case, we have to individually scan all of the children.
+ *
+ * The docs promise that we will not reap children that we are
+ * not explicitly watching, so that ties our hands from calling
+ * waitpid(-1) - that is a separate _catchall API.  We also
+ * can't use siginfo's si_pid field since if multiple SIGCHLD
+ * arrive at the same time, one of them can be dropped (since a
+ * given UNIX signal can only be pending once).
+ */
+static void
+dispatch_sigchld_individually (void)
+{
+  GSList *node;
+
+  for (node = unix_child_watches; node; node = node->next)
+    {
+      GChildWatchSource *source = node->data;
+      pid_t pid;
+
+      if (source->child_exited)
+        continue;
+      
+      pid = safe_waitpid (source->pid, &source->child_status);
+      if (pid > 0)
+        {
+          source->child_exited = TRUE;
+          wake_source ((GSource *) source);
+        }
+      else if (pid == -1 && errno == ECHILD)
+        {
+          g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). Most likely the process is ignoring SIGCHLD, or some other thread is invoking waitpid() with a nonpositive first argument; either behavior can break applications that use g_child_watch_add()/g_spawn_sync() either directly or indirectly.");
+          source->child_exited = TRUE;
+          source->child_status = 0;
+          wake_source ((GSource *) source);
+        }
+    }
+}
+
 static void
 dispatch_unix_signals (void)
 {
@@ -4407,39 +4560,13 @@ dispatch_unix_signals (void)
     {
       unix_signal_pending[SIGCHLD] = FALSE;
 
-      /* The only way we can do this is to scan all of the children.
-       *
-       * The docs promise that we will not reap children that we are not
-       * explicitly watching, so that ties our hands from calling
-       * waitpid(-1).  We also can't use siginfo's si_pid field since if
-       * multiple SIGCHLD arrive at the same time, one of them can be
-       * dropped (since a given UNIX signal can only be pending once).
-       */
-      for (node = unix_child_watches; node; node = node->next)
+      if (unix_catchall_child_watch != NULL)
         {
-          GChildWatchSource *source = node->data;
-
-          if (!source->child_exited)
-            {
-              pid_t pid;
-              do
-                {
-                  pid = waitpid (source->pid, &source->child_status, WNOHANG);
-                  if (pid > 0)
-                    {
-                      source->child_exited = TRUE;
-                      wake_source ((GSource *) source);
-                    }
-                  else if (pid == -1 && errno == ECHILD)
-                    {
-                      g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). Most likely the process is ignoring SIGCHLD, or some other thread is invoking waitpid() with a nonpositive first argument; either behavior can break applications that use g_child_watch_add()/g_spawn_sync() either directly or indirectly.");
-                      source->child_exited = TRUE;
-                      source->child_status = 0;
-                      wake_source ((GSource *) source);
-                    }
-                }
-              while (pid == -1 && errno == EINTR);
-            }
+          dispatch_sigchld_with_catchall ();
+        }
+      else
+        {
+          dispatch_sigchld_individually ();
         }
     }
 
@@ -4482,6 +4609,14 @@ g_child_watch_check (GSource *source)
   child_watch_source = (GChildWatchSource *) source;
 
   return child_watch_source->child_exited;
+}
+
+static void
+g_child_watch_finalize (GSource *source)
+{
+  G_LOCK (unix_signal_lock);
+  unix_child_watches = g_slist_remove (unix_child_watches, source);
+  G_UNLOCK (unix_signal_lock);
 }
 
 static gboolean
@@ -4527,6 +4662,14 @@ g_unix_signal_watch_dispatch (GSource    *source,
   unix_signal_source->pending = FALSE;
 
   return again;
+}
+
+static void
+g_unix_signal_watch_finalize (GSource    *source)
+{
+  G_LOCK (unix_signal_lock);
+  unix_signal_watches = g_slist_remove (unix_signal_watches, source);
+  G_UNLOCK (unix_signal_lock);
 }
 
 static void
@@ -4577,23 +4720,121 @@ _g_main_create_unix_signal_watch (int signum)
   return source;
 }
 
+static gboolean
+g_unix_catchall_watch_prepare (GSource *source,
+                               gint    *timeout)
+{
+  gboolean res;
+  GUnixCatchallChildWatchSource *catchall_source;
+
+  catchall_source = (GUnixCatchallChildWatchSource *) source;
+
+  G_LOCK (unix_signal_lock);
+  res = catchall_source->pending_waits != NULL;
+  G_UNLOCK (unix_signal_lock);
+  return res;
+}
+
+static gboolean
+g_unix_catchall_watch_check (GSource  *source)
+{
+  return g_unix_catchall_watch_prepare (source, NULL);
+}
+
+static gboolean
+g_unix_catchall_watch_dispatch (GSource    *source, 
+                                GSourceFunc callback,
+                                gpointer    user_data)
+{
+  GUnixCatchallChildWatchSource *catchall_source;
+  GChildWatchFunc child_callback = (GChildWatchFunc) callback;
+  GSList *iter;
+  GSList *pending;
+
+  catchall_source = (GUnixCatchallChildWatchSource *) source;
+
+  if (!callback)
+    {
+      g_warning ("Unix catchall source dispatched without callback\n"
+		 "You must call g_source_set_callback().");
+      return FALSE;
+    }
+
+  G_LOCK (unix_signal_lock);
+  pending = catchall_source->pending_waits;
+  catchall_source->pending_waits = NULL;
+  G_UNLOCK (unix_signal_lock);
+
+  for (iter = pending; iter; iter = iter->next)
+    {
+      UnixWaitStatus *status = iter->data;
+
+      (child_callback) (status->pid, status->estatus, user_data);
+      
+      g_slice_free (UnixWaitStatus, status);
+    }
+
+  g_slist_free (pending);
+
+  return TRUE;
+}
+
 static void
-g_unix_signal_watch_finalize (GSource    *source)
+g_unix_catchall_watch_finalize (GSource *source)
 {
   G_LOCK (unix_signal_lock);
-  unix_signal_watches = g_slist_remove (unix_signal_watches, source);
+  g_assert (source == (GSource*)unix_catchall_child_watch);
+  unix_catchall_child_watch = NULL;
   G_UNLOCK (unix_signal_lock);
 }
 
 static void
-g_child_watch_finalize (GSource *source)
+unix_wait_status_free (gpointer data)
 {
-  G_LOCK (unix_signal_lock);
-  unix_child_watches = g_slist_remove (unix_child_watches, source);
-  G_UNLOCK (unix_signal_lock);
+  g_slice_free (UnixWaitStatus, data);
 }
 
-#endif /* G_OS_WIN32 */
+/* Used by gspawn.c to ensure that if we have a catchall child watch
+ * installed, we don't race with user code installing a specific child
+ * watch.
+ */
+GPid
+_g_main_fork_and_do_not_reap (void)
+{
+  pid_t pid;
+  int errno_saved;
+
+  G_LOCK (unix_signal_lock);
+
+  pid = fork ();
+  /* We only have special handling for fork() if a
+   * catchall child watch is installed.
+   */
+  if (unix_catchall_child_watch != NULL)
+    {
+      if (pid > 0)
+        {
+          gpointer pid_p = GINT_TO_POINTER (pid);
+          UnixWaitStatus *status;
+
+          if (unix_catchall_do_not_reap == NULL)
+            unix_catchall_do_not_reap = g_hash_table_new_full (NULL, NULL, NULL, unix_wait_status_free);
+
+          status = g_slice_new (UnixWaitStatus);
+          status->pid = -1; /* Mark as pending */
+          g_hash_table_insert (unix_catchall_do_not_reap, pid_p, status);
+        }
+      else if (pid == -1)
+        errno_saved = errno;
+    }
+
+  G_UNLOCK (unix_signal_lock);
+
+  errno = errno_saved;
+  return pid;
+}
+
+#endif /* !G_OS_WIN32 */
 
 static gboolean
 g_child_watch_dispatch (GSource    *source, 
@@ -4629,7 +4870,65 @@ g_unix_signal_handler (int signum)
   g_wakeup_signal (glib_worker_context->wakeup);
 }
 
-#endif /* !G_OS_WIN32 */
+static GSource *
+child_watch_source_new_unix (GPid  pid)
+{
+  GSource *source;
+
+  G_LOCK (unix_signal_lock);
+  ensure_unix_signal_handler_installed_unlocked (SIGCHLD);
+
+  if (pid == -1)
+    {
+      g_assert (unix_catchall_child_watch == NULL);
+      source = g_source_new (&g_unix_catchall_funcs, sizeof (GUnixCatchallChildWatchSource));
+      unix_catchall_child_watch = (GUnixCatchallChildWatchSource*)source;
+    }
+  else
+    {
+      GChildWatchSource *child_watch_source;
+      UnixWaitStatus *waitstatus;
+
+      source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
+      child_watch_source = (GChildWatchSource *)source;
+      child_watch_source->pid = pid;
+      unix_child_watches = g_slist_prepend (unix_child_watches, child_watch_source);
+
+      waitstatus = g_hash_table_lookup (unix_catchall_do_not_reap,
+                                        GINT_TO_POINTER (pid));
+      if (waitstatus != NULL && waitstatus->pid == pid)
+        {
+          child_watch_source->child_status = waitstatus->estatus;
+          g_hash_table_remove (unix_catchall_do_not_reap, GINT_TO_POINTER (pid));
+        }
+      else
+        {
+          if (safe_waitpid (pid, &child_watch_source->child_status) > 0)
+            child_watch_source->child_exited = TRUE;
+        }
+    }
+
+  G_UNLOCK (unix_signal_lock);
+  return source;
+}
+
+#else
+
+static GSource *
+child_watch_source_new_win32 (GPid  pid)
+{
+  GSource *source;
+  GChildWatchSource *child_watch_source;
+
+  source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
+  child_watch_source = (GChildWatchSource*) source;
+  child_watch_source->poll.fd = (gintptr) pid;
+  child_watch_source->poll.events = G_IO_IN;
+
+  g_source_add_poll (source, &child_watch_source->poll);
+}
+
+#endif
 
 /**
  * g_child_watch_source_new:
@@ -4655,6 +4954,15 @@ g_unix_signal_handler (int signum)
  * compatible with calling <literal>waitpid</literal> with a
  * nonpositive first argument in the application. Calling waitpid()
  * for individual pids will still work fine.
+ *
+ * Since GLib 2.36, on UNIX platforms, -1 may be given as @pid.  In
+ * this mode, the source will watch child processes of the current
+ * process which don't already have another dedicated child watch.
+ * This allows a GLib-using process to perform a function similar to
+ * to calling <literal>waitpid(-1, ...)</literal>.  There can at
+ * present be at most one instance of a source in this mode.  On
+ * Linux, it makes sense to use this together with
+ * <literal>prctl(PR_SET_CHILD_SUBREAPER)</literal>.
  * 
  * Return value: the newly-created child watch source
  *
@@ -4663,26 +4971,11 @@ g_unix_signal_handler (int signum)
 GSource *
 g_child_watch_source_new (GPid pid)
 {
-  GSource *source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
-  GChildWatchSource *child_watch_source = (GChildWatchSource *)source;
-
-  child_watch_source->pid = pid;
-
 #ifdef G_OS_WIN32
-  child_watch_source->poll.fd = (gintptr) pid;
-  child_watch_source->poll.events = G_IO_IN;
-
-  g_source_add_poll (source, &child_watch_source->poll);
-#else /* G_OS_WIN32 */
-  G_LOCK (unix_signal_lock);
-  ensure_unix_signal_handler_installed_unlocked (SIGCHLD);
-  unix_child_watches = g_slist_prepend (unix_child_watches, child_watch_source);
-  if (waitpid (pid, &child_watch_source->child_status, WNOHANG) > 0)
-    child_watch_source->child_exited = TRUE;
-  G_UNLOCK (unix_signal_lock);
-#endif /* G_OS_WIN32 */
-
-  return source;
+  return child_watch_source_new_win32 (pid);
+#else
+  return child_watch_source_new_unix (pid);
+#endif
 }
 
 /**

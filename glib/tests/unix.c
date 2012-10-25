@@ -147,6 +147,105 @@ test_sighup_add_remove (void)
 
 }
 
+typedef struct {
+  GPid regular_pid;
+  GPid catchall_pid;
+  GMainLoop *loop;
+  gboolean regular_exited;
+  gboolean catchall_exited;
+} CatchAllData;
+
+static void
+on_catchall_child (GPid   pid,
+                   gint   estatus,
+                   gpointer user_data)
+{
+  CatchAllData *data = user_data;
+  GError *local_error = NULL;
+  GError **error = &local_error;
+
+  g_assert (pid == data->catchall_pid);
+
+  g_spawn_check_exit_status (estatus, error);
+  g_assert_no_error (local_error);
+
+  data->catchall_exited = TRUE;
+  if (data->regular_exited)
+    g_main_loop_quit (data->loop);
+}
+
+static void
+on_regular_child (GPid  pid,
+                  gint  estatus,
+                  gpointer user_data)
+{
+  CatchAllData *data = user_data;
+  GError *local_error = NULL;
+  GError **error = &local_error;
+
+  g_assert (pid == data->regular_pid);
+
+  g_spawn_check_exit_status (estatus, error);
+  g_assert_no_error (local_error);
+
+  data->regular_exited = TRUE;
+  if (data->catchall_exited)
+    g_main_loop_quit (data->loop);
+}
+
+static void
+spawn_with_raw_fork (gchar  **child_argv,
+                     pid_t   *out_pid)
+{
+  pid_t pid;
+
+  pid = fork ();
+  g_assert (pid >= 0);
+  if (pid == 0)
+    {
+      execv (child_argv[0], child_argv+1);
+      g_assert_not_reached ();
+    }
+  else
+    *out_pid = pid;
+}
+
+static void
+test_catchall (void)
+{
+  GMainLoop *mainloop;
+  CatchAllData data;
+  GSource *source;
+  GPid pid;
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  char *child_args[] = { "/bin/true", "/bin/true", NULL };
+
+  memset (&data, 0, sizeof (data));
+  mainloop = g_main_loop_new (NULL, FALSE);
+  data.loop = mainloop;
+
+  source = g_child_watch_source_new (-1);
+  g_source_set_callback (source, (GSourceFunc)on_catchall_child, &data, NULL);
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  g_spawn_async (NULL, (char**)child_args, NULL, G_SPAWN_DO_NOT_REAP_CHILD,
+                 NULL, NULL, &pid, error);
+  g_child_watch_add (pid, on_regular_child, &data);
+  data.regular_pid = pid;
+
+  spawn_with_raw_fork ((char**)child_args, &pid);
+  data.catchall_pid = pid;
+
+  g_main_loop_run (mainloop);
+
+  g_source_destroy (source);
+  g_main_loop_unref (mainloop);
+
+  g_assert (data.regular_exited && data.catchall_exited);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -159,6 +258,7 @@ main (int   argc,
   g_test_add_func ("/glib-unix/sigterm", test_sigterm);
   g_test_add_func ("/glib-unix/sighup_again", test_sighup);
   g_test_add_func ("/glib-unix/sighup_add_remove", test_sighup_add_remove);
+  g_test_add_func ("/glib-unix/catchall", test_catchall);
 
   return g_test_run();
 }
