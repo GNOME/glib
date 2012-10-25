@@ -1649,12 +1649,12 @@ reencode:
 /**
  * g_io_channel_read_line:
  * @channel: a #GIOChannel
- * @str_return: The line read from the #GIOChannel, including the
+ * @str_return: (out): The line read from the #GIOChannel, including the
  *              line terminator. This data should be freed with g_free()
  *              when no longer needed. This is a nul-terminated string. 
  *              If a @length of zero is returned, this will be %NULL instead.
- * @length: (allow-none): location to store length of the read data, or %NULL
- * @terminator_pos: (allow-none): location to store position of line terminator, or %NULL
+ * @length: (allow-none) (out): location to store length of the read data, or %NULL
+ * @terminator_pos: (allow-none) (out): location to store position of line terminator, or %NULL
  * @error: A location to return an error of type #GConvertError
  *         or #GIOChannelError
  *
@@ -1913,12 +1913,12 @@ done:
 /**
  * g_io_channel_read_to_end:
  * @channel: a #GIOChannel
- * @str_return: Location to store a pointer to a string holding
- *              the remaining data in the #GIOChannel. This data should
- *              be freed with g_free() when no longer needed. This
- *              data is terminated by an extra nul character, but there 
- *              may be other nuls in the intervening data.
- * @length: location to store length of the data
+ * @str_return:  (out) (array length=length) (element-type guint8): Location to
+ *              store a pointer to a string holding the remaining data in the
+ *              #GIOChannel. This data should be freed with g_free() when no
+ *              longer needed. This data is terminated by an extra nul
+ *              character, but there may be other nuls in the intervening data.
+ * @length: (out): location to store length of the data
  * @error: location to return an error of type #GConvertError
  *         or #GIOChannelError
  *
@@ -1994,11 +1994,12 @@ g_io_channel_read_to_end (GIOChannel  *channel,
 /**
  * g_io_channel_read_chars:
  * @channel: a #GIOChannel
- * @buf: a buffer to read data into
- * @count: the size of the buffer. Note that the buffer may not be
+ * @buf: (out caller-allocates) (array length=count) (element-type guint8):
+ *     a buffer to read data into
+ * @count: (in): the size of the buffer. Note that the buffer may not be
  *     complelely filled even if there is data in the buffer if the
  *     remaining data is not a complete character.
- * @bytes_read: (allow-none): The number of bytes read. This may be
+ * @bytes_read: (allow-none) (out): The number of bytes read. This may be
  *     zero even on success if count < 6 and the channel's encoding
  *     is non-%NULL. This indicates that the next UTF-8 character is
  *     too wide for the buffer.
@@ -2174,10 +2175,10 @@ g_io_channel_read_unichar (GIOChannel  *channel,
 /**
  * g_io_channel_write_chars:
  * @channel: a #GIOChannel
- * @buf: a buffer to write data from
+ * @buf: (array) (element-type guint8): a buffer to write data from
  * @count: the size of the buffer. If -1, the buffer
  *         is taken to be a nul-terminated string.
- * @bytes_written: The number of bytes written. This can be nonzero
+ * @bytes_written: (out): The number of bytes written. This can be nonzero
  *                 even if the return value is not %G_IO_STATUS_NORMAL.
  *                 If the return value is %G_IO_STATUS_NORMAL and the
  *                 channel is blocking, this will always be equal
