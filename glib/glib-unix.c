@@ -181,11 +181,15 @@ g_unix_set_fd_nonblocking (gint       fd,
  * @signum: A signal number
  *
  * Create a #GSource that will be dispatched upon delivery of the UNIX
- * signal @signum.  Currently only <literal>SIGHUP</literal>,
- * <literal>SIGINT</literal>, and <literal>SIGTERM</literal> can
- * be monitored.  Note that unlike the UNIX default, all sources which
- * have created a watch will be dispatched, regardless of which
- * underlying thread invoked g_unix_signal_source_new().
+ * signal @signum.  In GLib versions before 2.36, only
+ * <literal>SIGHUP</literal>, <literal>SIGINT</literal>,
+ * <literal>SIGTERM</literal> can be monitored.  In GLib 2.36,
+ * <literal>SIGUSR1</literal> and <literal>SIGUSR2</literal> were
+ * added.
+ *
+ * Note that unlike the UNIX default, all sources which have created a
+ * watch will be dispatched, regardless of which underlying thread
+ * invoked g_unix_signal_source_new().
  *
  * For example, an effective use of this function is to handle <literal>SIGTERM</literal>
  * cleanly; flushing any outstanding files, and then calling
@@ -209,7 +213,8 @@ g_unix_set_fd_nonblocking (gint       fd,
 GSource *
 g_unix_signal_source_new (int signum)
 {
-  g_return_val_if_fail (signum == SIGHUP || signum == SIGINT || signum == SIGTERM, NULL);
+  g_return_val_if_fail (signum == SIGHUP || signum == SIGINT || signum == SIGTERM ||
+                        signum == SIGUSR1 || signum == SIGUSR2, NULL);
 
   return _g_main_create_unix_signal_watch (signum);
 }
