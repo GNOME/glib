@@ -149,63 +149,17 @@ if OS_WIN32
 TEST_PROGS += win32-streams
 endif
 
-io_stream_SOURCES = io-stream.c
-
 actions_SOURCES   = actions.c gdbus-sessionbus.c gdbus-sessionbus.h
 
-memory_input_stream_SOURCES	  = memory-input-stream.c
-
-memory_output_stream_SOURCES	  = memory-output-stream.c
-
-g_file_SOURCES	  = g-file.c
-
-readwrite_SOURCES	  = readwrite.c
-
-g_file_info_SOURCES	= g-file-info.c
-
-converter_stream_SOURCES	= converter-stream.c
-
-data_input_stream_SOURCES	= data-input-stream.c
-
-data_output_stream_SOURCES	= data-output-stream.c
-
-async_close_output_stream_SOURCES	= async-close-output-stream.c
-
-filter_cat_SOURCES	= filter-cat.c
-
-g_icon_SOURCES	= g-icon.c
-
-buffered_input_stream_SOURCES	= buffered-input-stream.c
-
-buffered_output_stream_SOURCES	= buffered-output-stream.c
-
-live_g_file_SOURCES	  = live-g-file.c
-
-desktop_app_info_SOURCES  = desktop-app-info.c
-
-unix_streams_SOURCES	  = unix-streams.c
 unix_streams_LDADD       = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-win32_streams_SOURCES	  = win32-streams.c
 win32_streams_LDADD      = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-unix_fd_SOURCES	  = unix-fd.c
-
-simple_async_result_SOURCES	= simple-async-result.c
-
-sleepy_stream_SOURCES		= sleepy-stream.c
-
-filter_streams_SOURCES		= filter-streams.c
-
-volumemonitor_SOURCES		= volumemonitor.c
-
-resolver_SOURCES	  = resolver.c
 resolver_LDADD		  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-socket_server_SOURCES	  = socket-server.c
 socket_server_LDADD	  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
@@ -215,33 +169,17 @@ socket_client_SOURCES	  = socket-client.c \
 socket_client_LDADD	  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-echo_server_SOURCES	  = echo-server.c
 echo_server_LDADD	  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-httpd_SOURCES		  = httpd.c
 httpd_LDADD		  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-send_data_SOURCES	  = send-data.c
 send_data_LDADD		  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-srvtarget_SOURCES	  = srvtarget.c
-
-network_address_SOURCE	  = network-address.c
-
-socket_SOURCE		  = socket.c
-
-pollable_SOURCE		  = pollable.c
-
-contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
-
-gsettings_SOURCES	  = gsettings.c
-
-gschema_compile_SOURCES	  = gschema-compile.c
 
 gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_builddir)/gio/gdbus-daemon-generated.c
 
@@ -258,8 +196,6 @@ gdbus_auth_SOURCES = gdbus-auth.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-te
 gdbus_auth_CFLAGS = $(DBUS1_CFLAGS)
 gdbus_auth_LDADD = $(LDADD) $(DBUS1_LIBS)
 endif
-
-gdbus_addresses_SOURCES = gdbus-addresses.c
 
 gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
@@ -307,8 +243,6 @@ gdbus_connection_loss_SOURCES = gdbus-connection-loss.c gdbus-sessionbus.c gdbus
 
 gdbus_connection_slow_SOURCES = gdbus-connection-slow.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
-gdbus_message_SOURCES = gdbus-message.c
-
 gdbus_names_SOURCES = gdbus-names.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
 gdbus_proxy_SOURCES = gdbus-proxy.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
@@ -337,64 +271,12 @@ gdbus_non_socket_SOURCES = \
 
 gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
-gdbus_example_watch_name_SOURCES = gdbus-example-watch-name.c
-
-gdbus_example_watch_proxy_SOURCES = gdbus-example-watch-proxy.c
-
-gdbus_example_own_name_SOURCES = gdbus-example-own-name.c
-
-gdbus_example_server_SOURCES = gdbus-example-server.c
-
-gdbus_example_unix_fd_client_SOURCES = gdbus-example-unix-fd-client.c
-
-gdbus_example_subtree_SOURCES = gdbus-example-subtree.c
-
-gdbus_example_peer_SOURCES = gdbus-example-peer.c
-
-gdbus_example_proxy_subclass_SOURCES = gdbus-example-proxy-subclass.c
-
-gdbus_example_export_SOURCES = gdbus-example-export.c
-
-gdbus_connection_flush_helper_SOURCES = gdbus-connection-flush-helper.c
-
-appinfo_SOURCES = appinfo.c
-
 resources_SOURCES = resources.c test_resources.c test_resources2.c test_resources2.h
 resources_DEPENDENCIES = test.gresource
 
-appinfo_test_SOURCES = appinfo-test.c
-
-contenttype_SOURCES = contenttype.c
-
-mimeapps_SOURCES = mimeapps.c
-
-file_SOURCES = file.c
-
-fileattributematcher_SOURCES = fileattributematcher.c
-
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbus-tests.h gdbus-tests.c
 
-gapplication_example_open_SOURCES = gapplication-example-open.c
-
-gapplication_example_cmdline_SOURCES = gapplication-example-cmdline.c
-
-gapplication_example_cmdline2_SOURCES = gapplication-example-cmdline2.c
-
-gapplication_example_cmdline3_SOURCES = gapplication-example-cmdline3.c
-
-gapplication_example_actions_SOURCES = gapplication-example-actions.c
-
-gapplication_example_dbushooks_SOURCES = gapplication-example-dbushooks.c
-
 gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
-
-proxy_test_SOURCES = proxy-test.c
-
-inet_address_SOURCES = inet-address.c
-
-permission_SOURCES = permission.c
-
-task_SOURCES = task.c
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
@@ -469,7 +351,6 @@ schema_tests = \
 	schema-tests/range.gschema.xml					\
 	schema-tests/wrong-category.gschema.xml
 
-proxy_SOURCES = proxy.c
 proxy_LDADD   = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
@@ -478,11 +359,9 @@ tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
 # -----------------------------------------------------------------------------
 
 if OS_UNIX
-gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
 gdbus_example_objectmanager_server_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
-gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
 gdbus_example_objectmanager_client_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
