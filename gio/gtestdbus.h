@@ -37,7 +37,7 @@ G_BEGIN_DECLS
     (g_test_dbus_get_type ())
 #define G_TEST_DBUS(obj) \
     (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_TEST_DBUS, \
-        GTestDbus))
+        GTestDBus))
 #define G_IS_TEST_DBUS(obj) \
     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TEST_DBUS))
 
