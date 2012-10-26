@@ -56,6 +56,7 @@ gdbus-message
 gdbus-names
 gdbus-non-socket
 gdbus-peer
+gdbus-peer-object-manager
 gdbus-proxy
 gdbus-proxy-threads
 gdbus-proxy-well-known-name

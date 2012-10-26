@@ -92,6 +92,7 @@ TEST_PROGS +=			\
 	gdbus-peer		\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
+	gdbus-peer-object-manager \
 	appinfo			\
 	contenttype		\
 	mimeapps		\
@@ -322,6 +323,8 @@ BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 gdbus_test_codegen_SOURCES  = gdbus-test-codegen.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_test_codegen_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 gdbus_test_codegen_LDADD = $(progs_ldadd)
+
+gdbus_peer_object_manager_LDADD = $(progs_ldadd)
 endif # OS_UNIX
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c

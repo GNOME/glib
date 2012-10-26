@@ -263,6 +263,7 @@ g_dbus_object_manager_client_set_property (GObject       *_object,
                                            GParamSpec    *pspec)
 {
   GDBusObjectManagerClient *manager = G_DBUS_OBJECT_MANAGER_CLIENT (_object);
+  const gchar *name;
 
   switch (prop_id)
     {
@@ -287,8 +288,9 @@ g_dbus_object_manager_client_set_property (GObject       *_object,
 
     case PROP_NAME:
       g_assert (manager->priv->name == NULL);
-      g_assert (g_dbus_is_name (g_value_get_string (value)));
-      manager->priv->name = g_value_dup_string (value);
+      name = g_value_get_string (value);
+      g_assert (name == NULL || g_dbus_is_name (name));
+      manager->priv->name = g_strdup (name);
       break;
 
     case PROP_FLAGS:
@@ -585,7 +587,7 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
  * g_dbus_object_manager_client_new_sync:
  * @connection: A #GDBusConnection.
  * @flags: Zero or more flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: The owner of the control object (unique or well-known name).
+ * @name: (allow-none): The owner of the control object (unique or well-known name), or %NULL when not using a message bus connection.
  * @object_path: The object path of the control object.
  * @get_proxy_type_func: (allow-none): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
@@ -911,7 +913,8 @@ g_dbus_object_manager_client_get_connection (GDBusObjectManagerClient *manager)
  * g_dbus_object_manager_client_get_name:
  * @manager: A #GDBusObjectManagerClient
  *
- * Gets the name that @manager is for.
+ * Gets the name that @manager is for, or %NULL if not a message bus
+ * connection.
  *
  * Returns: A unique or well-known name. Do not free, the string
  * belongs to @manager.
@@ -1096,38 +1099,41 @@ static void
 subscribe_signals (GDBusObjectManagerClient *manager,
                    const gchar *name_owner)
 {
-  GError *error;
+  GError *error = NULL;
   GVariant *ret;
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager));
   g_return_if_fail (manager->priv->signal_subscription_id == 0);
-  g_return_if_fail (g_dbus_is_unique_name (name_owner));
+  g_return_if_fail (name_owner == NULL || g_dbus_is_unique_name (name_owner));
 
-  /* the bus daemon may not implement path_prefix so gracefully
-   * handle this by using a fallback
-   */
-  manager->priv->match_rule = g_strdup_printf ("type='signal',sender='%s',path_namespace='%s'",
-                                               name_owner,
-                                               manager->priv->object_path);
-
-  error = NULL;
-  ret = g_dbus_connection_call_sync (manager->priv->connection,
-                                     "org.freedesktop.DBus",
-                                     "/org/freedeskop/DBus",
-                                     "org.freedesktop.DBus",
-                                     "AddMatch",
-                                     g_variant_new ("(s)",
-                                                    manager->priv->match_rule),
-                                     NULL, /* reply_type */
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1, /* default timeout */
-                                     NULL, /* TODO: Cancellable */
-                                     &error);
-  if (ret != NULL)
+  if (name_owner != NULL)
     {
-      /* yay, bus daemon supports path_namespace */
-      g_variant_unref (ret);
+      /* the bus daemon may not implement path_prefix so gracefully
+       * handle this by using a fallback
+       */
+      manager->priv->match_rule = g_strdup_printf ("type='signal',sender='%s',path_namespace='%s'",
+                                                   name_owner, manager->priv->object_path);
 
+      ret = g_dbus_connection_call_sync (manager->priv->connection,
+                                         "org.freedesktop.DBus",
+                                         "/org/freedeskop/DBus",
+                                         "org.freedesktop.DBus",
+                                         "AddMatch",
+                                         g_variant_new ("(s)",
+                                                        manager->priv->match_rule),
+                                         NULL, /* reply_type */
+                                         G_DBUS_CALL_FLAGS_NONE,
+                                         -1, /* default timeout */
+                                         NULL, /* TODO: Cancellable */
+                                         &error);
+
+      /* yay, bus daemon supports path_namespace */
+      if (ret != NULL)
+        g_variant_unref (ret);
+    }
+
+  if (error == NULL)
+    {
       /* still need to ask GDBusConnection for the callbacks */
       manager->priv->signal_subscription_id =
         g_dbus_connection_signal_subscribe (manager->priv->connection,
@@ -1347,7 +1353,7 @@ initable_init (GInitable     *initable,
                     manager);
 
   manager->priv->name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
-  if (manager->priv->name_owner == NULL)
+  if (manager->priv->name_owner == NULL && manager->priv->name != NULL)
     {
       /* it's perfectly fine if there's no name owner.. we're just going to
        * wait until one is ready
@@ -1355,7 +1361,7 @@ initable_init (GInitable     *initable,
     }
   else
     {
-      /* yay, we have a name owner */
+      /* yay, we can get the objects */
       g_signal_connect (manager->priv->control_proxy,
                         "g-signal",
                         G_CALLBACK (on_control_proxy_g_signal),
@@ -1418,7 +1424,7 @@ add_interfaces (GDBusObjectManagerClient *manager,
   GList *interface_added_signals, *l;
   GDBusProxy *interface_proxy;
 
-  g_return_if_fail (g_dbus_is_unique_name (name_owner));
+  g_return_if_fail (name_owner == NULL || g_dbus_is_unique_name (name_owner));
 
   g_mutex_lock (&manager->priv->lock);
 
@@ -1615,7 +1621,7 @@ process_get_all_result (GDBusObjectManagerClient *manager,
   GVariant *ifaces_and_properties;
   GVariantIter iter;
 
-  g_return_if_fail (g_dbus_is_unique_name (name_owner));
+  g_return_if_fail (name_owner == NULL || g_dbus_is_unique_name (name_owner));
 
   arg0 = g_variant_get_child_value (value, 0);
   g_variant_iter_init (&iter, arg0);
