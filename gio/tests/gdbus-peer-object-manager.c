@@ -221,7 +221,7 @@ setup (Test *test,
   if (socketpair (AF_UNIX, SOCK_STREAM, 0, pair) < 0)
     {
       g_set_error (&error, G_IO_ERROR, g_io_error_from_errno (errno),
-                   g_strerror (errno));
+                   "%s", g_strerror (errno));
       g_assert_no_error (error);
     }
 
