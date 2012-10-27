@@ -70,7 +70,10 @@ Patches should be in unified diff form. (The -up option to GNU diff.)
 Notes about GLib 2.36
 =====================
 
-* It is no longer necessary to call g_type_init()
+* It is no longer necessary to call g_type_init().  If you are
+  loading GLib as a dynamic module, you should be careful to avoid
+  unloading it, then subsequently loading it again.  This never
+  really worked before, but it is now explicitly undefined behavior.
 
 Notes about GLib 2.34
 =====================
