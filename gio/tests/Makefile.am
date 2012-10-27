@@ -436,6 +436,7 @@ noinst_LTLIBRARIES = libresourceplugin.la
 
 libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
 libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(libdir)
+libresourceplugin_la_LIBADD = $(LDADD)
 
 CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test_resources2.[ch] plugin_resources.c
 
