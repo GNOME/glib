@@ -46,7 +46,6 @@ EXTRA_DIST += 			\
 	HACKING			\
 	autogen.sh		\
 	Makefile.decl		\
-	mkinstalldirs		\
 	makefile.msc		\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
@@ -97,10 +96,6 @@ pkgconfig_DATA += gio-windows-2.0.pc
 endif
 
 $(pkgconfig_DATA): config.status
-
-# install mkinstalldirs for glib-gettextize's benefit
-gettextdir = $(datadir)/glib-2.0/gettext
-gettext_SCRIPTS = mkinstalldirs
 
 # build documentation when doing distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man --disable-maintainer-mode
