@@ -357,7 +357,15 @@ g_menu_exporter_group_subscribe (GMenuExporterGroup *group,
       group->prepared = TRUE;
 
       menu = g_hash_table_lookup (group->menus, 0);
-      g_menu_exporter_menu_prepare (menu);
+
+      /* If the group was created by a subscription and does not yet
+       * exist, it won't have a root menu...
+       *
+       * That menu will be prepared if it is ever added (due to
+       * group->prepared == TRUE).
+       */
+      if (menu)
+        g_menu_exporter_menu_prepare (menu);
     }
 
   group->subscribed++;
@@ -468,6 +476,7 @@ g_menu_exporter_remote_subscribe (GMenuExporterRemote *remote,
   count = (gsize) g_hash_table_lookup (remote->watches, GINT_TO_POINTER (group_id));
   g_hash_table_insert (remote->watches, GINT_TO_POINTER (group_id), GINT_TO_POINTER (count + 1));
 
+  /* Group will be created (as empty/unsubscribed if it does not exist) */
   group = g_menu_exporter_lookup_group (remote->exporter, group_id);
   g_menu_exporter_group_subscribe (group, builder);
 }
