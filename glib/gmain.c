@@ -4421,12 +4421,24 @@ dispatch_unix_signals (void)
 
           if (!source->child_exited)
             {
-              if (waitpid (source->pid, &source->child_status, WNOHANG) > 0)
+              pid_t pid;
+              do
                 {
-                  source->child_exited = TRUE;
-
-                  wake_source ((GSource *) source);
+                  pid = waitpid (source->pid, &source->child_status, WNOHANG);
+                  if (pid > 0)
+                    {
+                      source->child_exited = TRUE;
+                      wake_source ((GSource *) source);
+                    }
+                  else if (pid == -1 && errno == ECHILD)
+                    {
+                      g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). Most likely the process is ignoring SIGCHLD, or some other thread is invoking waitpid() with a nonpositive first argument; either behavior can break applications that use g_child_watch_add()/g_spawn_sync() either directly or indirectly.");
+                      source->child_exited = TRUE;
+                      source->child_status = 0;
+                      wake_source ((GSource *) source);
+                    }
                 }
+              while (pid == -1 && errno == EINTR);
             }
         }
     }

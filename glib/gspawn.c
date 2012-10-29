@@ -46,6 +46,7 @@
 
 #include "genviron.h"
 #include "gmem.h"
+#include "gmain.h"
 #include "gshell.h"
 #include "gstring.h"
 #include "gstrfuncs.h"
@@ -212,6 +213,21 @@ read_data (GString *str,
     }
 }
 
+typedef struct {
+  GMainLoop *loop;
+  gint *status_p;
+} SyncWaitpidData;
+
+static void
+on_sync_waitpid (GPid     pid,
+                 gint     status,
+                 gpointer user_data)
+{
+  SyncWaitpidData *data = user_data;
+  *(data->status_p) = status;
+  g_main_loop_quit (data->loop);
+}
+
 /**
  * g_spawn_sync:
  * @working_directory: (allow-none): child's current working directory, or %NULL to inherit parent's
@@ -267,6 +283,7 @@ g_spawn_sync (const gchar          *working_directory,
   GString *errstr = NULL;
   gboolean failed;
   gint status;
+  SyncWaitpidData waitpid_data;
   
   g_return_val_if_fail (argv != NULL, FALSE);
   g_return_val_if_fail (!(flags & G_SPAWN_DO_NOT_REAP_CHILD), FALSE);
@@ -399,45 +416,32 @@ g_spawn_sync (const gchar          *working_directory,
     close_and_invalidate (&outpipe);
   if (errpipe >= 0)
     close_and_invalidate (&errpipe);
-  
-  /* Wait for child to exit, even if we have
-   * an error pending.
+
+  /* Now create a temporary main context and loop, with just one
+   * waitpid source.  We used to invoke waitpid() directly here, but
+   * this way we unify with the worker thread in gmain.c.
    */
- again:
-      
-  ret = waitpid (pid, &status, 0);
+  {
+    GMainContext *context;
+    GMainLoop *loop;
+    GSource *source;
 
-  if (ret < 0)
-    {
-      if (errno == EINTR)
-        goto again;
-      else if (errno == ECHILD)
-        {
-          if (exit_status)
-            {
-              g_warning ("In call to g_spawn_sync(), exit status of a child process was requested but ECHILD was received by waitpid(). Most likely the process is ignoring SIGCHLD, or some other thread is invoking waitpid() with a nonpositive first argument; either behavior can break applications that use g_spawn_sync either directly or indirectly.");
-            }
-          else
-            {
-              /* We don't need the exit status. */
-            }
-        }
-      else
-        {
-          if (!failed) /* avoid error pileups */
-            {
-              int errsv = errno;
+    context = g_main_context_new ();
+    loop = g_main_loop_new (context, TRUE);
 
-              failed = TRUE;
-                  
-              g_set_error (error,
-                           G_SPAWN_ERROR,
-                           G_SPAWN_ERROR_READ,
-                           _("Unexpected error in waitpid() (%s)"),
-                           g_strerror (errsv));
-            }
-        }
-    }
+    waitpid_data.loop = loop;
+    waitpid_data.status_p = &status;
+    
+    source = g_child_watch_source_new (pid);
+    g_source_set_callback (source, (GSourceFunc)on_sync_waitpid, &waitpid_data, NULL);
+    g_source_attach (source, context);
+    g_source_unref (source);
+    
+    g_main_loop_run (loop);
+
+    g_main_context_unref (context);
+    g_main_loop_unref (loop);
+  }
   
   if (failed)
     {
