@@ -86,11 +86,15 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     a @timeout_ value which should be the maximum timeout (in milliseconds)
  *     which should be passed to the poll() call. The actual timeout used will
  *     be -1 if all sources returned -1, or it will be the minimum of all the
- *     @timeout_ values returned which were >= 0.
+ *     @timeout_ values returned which were >= 0.  Since 2.36 this may
+ *     be %NULL, in which case the effect is as if the function always
+ *     returns %FALSE with a timeout of -1.
  * @check: Called after all the file descriptors are polled. The source
  *     should return %TRUE if it is ready to be dispatched. Note that some
  *     time may have passed since the previous prepare function was called,
- *     so the source should be checked again here.
+ *     so the source should be checked again here.  Since 2.36 this may
+ *     be %NULL, in which case the effect is as if the function always
+ *     returns %FALSE.
  * @dispatch: Called to dispatch the event source, after it has returned
  *     %TRUE in either its @prepare or its @check function. The @dispatch
  *     function is passed in a callback function and data. The callback
