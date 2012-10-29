@@ -4639,10 +4639,10 @@ g_unix_signal_handler (int signum)
  * source is still active. Typically, you will want to call
  * g_spawn_close_pid() in the callback function for the source.
  *
- * Note further that using g_child_watch_source_new() is not 
- * compatible with calling <literal>waitpid(-1)</literal> in 
- * the application. Calling waitpid() for individual pids will
- * still work fine. 
+ * Note further that using g_child_watch_source_new() is not
+ * compatible with calling <literal>waitpid</literal> with a
+ * nonpositive first argument in the application. Calling waitpid()
+ * for individual pids will still work fine.
  * 
  * Return value: the newly-created child watch source
  *
