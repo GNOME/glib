@@ -156,7 +156,7 @@ struct _GSource
   gpointer callback_data;
   GSourceCallbackFuncs *callback_funcs;
 
-  GSourceFuncs *source_funcs;
+  const GSourceFuncs *source_funcs;
   guint ref_count;
 
   GMainContext *context;
