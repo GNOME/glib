@@ -83,16 +83,6 @@ typedef enum
   G_SEEK_END
 } GSeekType;
 
-typedef enum /*< flags >*/
-{
-  G_IO_IN	GLIB_SYSDEF_POLLIN,
-  G_IO_OUT	GLIB_SYSDEF_POLLOUT,
-  G_IO_PRI	GLIB_SYSDEF_POLLPRI,
-  G_IO_ERR	GLIB_SYSDEF_POLLERR,
-  G_IO_HUP	GLIB_SYSDEF_POLLHUP,
-  G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
-} GIOCondition;
-
 typedef enum
 {
   G_IO_FLAG_APPEND = 1 << 0,
