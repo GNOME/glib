@@ -824,7 +824,7 @@ fake_task_thread (GTask        *task,
   g_task_return_boolean (task, TRUE);
 }
 
-#define G_TASK_THREAD_POOL_SIZE 10
+#define G_TASK_THREAD_POOL_SIZE 100
 
 static void
 test_run_in_thread_priority (void)
