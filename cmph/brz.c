@@ -672,7 +672,6 @@ static cmph_uint32 brz_bmz8_search(brz_data_t *brz, const char *key, cmph_uint32
 	n = (cmph_uint32)ceil(brz->c * m);
 	h1 = hash(brz->h1[h0], key, keylen) % n;
 	h2 = hash(brz->h2[h0], key, keylen) % n;
-	mphf_bucket;
 	
 	if (h1 == h2 && ++h2 >= n) h2 = 0;
 	mphf_bucket = (cmph_uint8)(brz->g[h0][h1] + brz->g[h0][h2]); 
