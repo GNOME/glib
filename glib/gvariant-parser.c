@@ -2303,7 +2303,6 @@ parse (TokenStream  *stream,
  * @limit: (allow-none): a pointer to the end of @text, or %NULL
  * @endptr: (allow-none): a location to store the end pointer, or %NULL
  * @error: (allow-none): a pointer to a %NULL #GError pointer, or %NULL
- * @Returns: a reference to a #GVariant, or %NULL
  *
  * Parses a #GVariant from a text representation.
  *
@@ -2335,6 +2334,8 @@ parse (TokenStream  *stream,
  *
  * Officially, the language understood by the parser is "any string
  * produced by g_variant_print()".
+ *
+ * Returns: a reference to a #GVariant, or %NULL
  **/
 GVariant *
 g_variant_parse (const GVariantType  *type,

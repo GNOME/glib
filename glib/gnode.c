@@ -840,12 +840,13 @@ g_node_depth_traverse_level (GNode             *node,
  * GNodeTraverseFunc:
  * @node: a #GNode.
  * @data: user data passed to g_node_traverse().
- * @Returns: %TRUE to stop the traversal.
  *
  * Specifies the type of function passed to g_node_traverse(). The
  * function is called with each of the nodes visited, together with the
  * user data passed to g_node_traverse(). If the function returns
  * %TRUE, then the traversal is stopped.
+ *
+ * Returns: %TRUE to stop the traversal.
  **/
 void
 g_node_traverse (GNode		  *root,

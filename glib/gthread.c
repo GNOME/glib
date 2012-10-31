@@ -215,10 +215,11 @@
 /**
  * G_TRYLOCK:
  * @name: the name of the lock
- * @Returns: %TRUE, if the lock could be locked.
  *
  * Works like g_mutex_trylock(), but for a lock defined with
  * #G_LOCK_DEFINE.
+ *
+ * Returns: %TRUE, if the lock could be locked.
  */
 
 /**

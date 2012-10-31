@@ -97,18 +97,20 @@
 /**
  * g_list_previous:
  * @list: an element in a #GList.
- * @Returns: the previous element, or %NULL if there are no previous
- *           elements.
  *
  * A convenience macro to get the previous element in a #GList.
+ *
+ * Returns: the previous element, or %NULL if there are no previous
+ *          elements.
  **/
 
 /**
  * g_list_next:
  * @list: an element in a #GList.
- * @Returns: the next element, or %NULL if there are no more elements.
  *
  * A convenience macro to get the next element in a #GList.
+ *
+ * Returns: the next element, or %NULL if there are no more elements.
  **/
 
 #define _g_list_alloc()         g_slice_new (GList)
@@ -117,11 +119,12 @@
 
 /**
  * g_list_alloc:
- * @Returns: a pointer to the newly-allocated #GList element.
  *
  * Allocates space for one #GList element. It is called by
  * g_list_append(), g_list_prepend(), g_list_insert() and
  * g_list_insert_sorted() and so is rarely used on its own.
+ *
+ * Returns: a pointer to the newly-allocated #GList element.
  **/
 GList*
 g_list_alloc (void)
@@ -1126,13 +1129,14 @@ g_list_sort_real (GList    *list,
  * GCompareFunc:
  * @a: a value.
  * @b: a value to compare with.
- * @Returns: negative value if @a &lt; @b; zero if @a = @b; positive
- *           value if @a > @b.
  *
  * Specifies the type of a comparison function used to compare two
  * values.  The function should return a negative integer if the first
  * value comes before the second, 0 if they are equal, or a positive
  * integer if the first value comes after the second.
+ *
+ * Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ *          value if @a > @b.
  **/
 GList *
 g_list_sort (GList        *list,
@@ -1158,13 +1162,14 @@ g_list_sort (GList        *list,
  * @a: a value.
  * @b: a value to compare with.
  * @user_data: user data to pass to comparison function.
- * @Returns: negative value if @a &lt; @b; zero if @a = @b; positive
- *           value if @a > @b.
  *
  * Specifies the type of a comparison function used to compare two
  * values.  The function should return a negative integer if the first
  * value comes before the second, 0 if they are equal, or a positive
  * integer if the first value comes after the second.
+ *
+ * Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ *          value if @a > @b.
  **/
 GList *
 g_list_sort_with_data (GList            *list,

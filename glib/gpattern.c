@@ -168,7 +168,6 @@ g_pattern_ph_match (const gchar *match_pattern,
  *                 <emphasis>not</emphasis> g_utf8_strlen())
  * @string: the UTF-8 encoded string to match
  * @string_reversed: (allow-none): the reverse of @string or %NULL
- * @Returns: %TRUE if @string matches @pspec
  *
  * Matches a string against a compiled pattern. Passing the correct
  * length of the string given is mandatory. The reversed string can be
@@ -188,6 +187,8 @@ g_pattern_ph_match (const gchar *match_pattern,
  * only if the string doesn't contain any multibyte characters. GLib
  * offers the g_utf8_strreverse() function to reverse UTF-8 encoded
  * strings.
+ *
+ * Returns: %TRUE if @string matches @pspec
  **/
 gboolean
 g_pattern_match (GPatternSpec *pspec,
@@ -245,9 +246,10 @@ g_pattern_match (GPatternSpec *pspec,
 /**
  * g_pattern_spec_new:
  * @pattern: a zero-terminated UTF-8 encoded string
- * @Returns: a newly-allocated #GPatternSpec
  *
  * Compiles a pattern to a #GPatternSpec.
+ *
+ * Returns: a newly-allocated #GPatternSpec
  **/
 GPatternSpec*
 g_pattern_spec_new (const gchar *pattern)
@@ -376,10 +378,11 @@ g_pattern_spec_free (GPatternSpec *pspec)
  * g_pattern_spec_equal:
  * @pspec1: a #GPatternSpec
  * @pspec2: another #GPatternSpec
- * @Returns: Whether the compiled patterns are equal
  *
  * Compares two compiled pattern specs and returns whether they will
  * match the same set of strings.
+ *
+ * Returns: Whether the compiled patterns are equal
  **/
 gboolean
 g_pattern_spec_equal (GPatternSpec *pspec1,
@@ -397,11 +400,12 @@ g_pattern_spec_equal (GPatternSpec *pspec1,
  * g_pattern_match_string:
  * @pspec: a #GPatternSpec
  * @string: the UTF-8 encoded string to match
- * @Returns: %TRUE if @string matches @pspec
  *
  * Matches a string against a compiled pattern. If the string is to be
  * matched against more than one pattern, consider using
  * g_pattern_match() instead while supplying the reversed string.
+ *
+ * Returns: %TRUE if @string matches @pspec
  **/
 gboolean
 g_pattern_match_string (GPatternSpec *pspec,
@@ -417,12 +421,13 @@ g_pattern_match_string (GPatternSpec *pspec,
  * g_pattern_match_simple:
  * @pattern: the UTF-8 encoded pattern
  * @string: the UTF-8 encoded string to match
- * @Returns: %TRUE if @string matches @pspec
  *
  * Matches a string against a pattern given as a string. If this
  * function is to be called in a loop, it's more efficient to compile
  * the pattern once with g_pattern_spec_new() and call
  * g_pattern_match_string() repeatedly.
+ *
+ * Returns: %TRUE if @string matches @pspec
  **/
 gboolean
 g_pattern_match_simple (const gchar *pattern,

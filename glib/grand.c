@@ -404,10 +404,11 @@ g_rand_set_seed_array (GRand* rand, const guint32 *seed, guint seed_length)
 /**
  * g_rand_boolean:
  * @rand_: a #GRand.
- * @Returns: a random #gboolean.
  *
  * Returns a random #gboolean from @rand_. This corresponds to a
  * unbiased coin toss.
+ *
+ * Returns: a random #gboolean.
  **/
 /**
  * g_rand_int:
@@ -585,9 +586,10 @@ g_rand_double_range (GRand* rand, gdouble begin, gdouble end)
 
 /**
  * g_random_boolean:
- * @Returns: a random #gboolean.
  *
  * Returns a random #gboolean. This corresponds to a unbiased coin toss.
+ *
+ * Returns: a random #gboolean.
  **/
 /**
  * g_random_int:

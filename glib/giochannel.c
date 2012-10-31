@@ -689,12 +689,13 @@ g_io_add_watch_full (GIOChannel    *channel,
  * @source: the #GIOChannel event source
  * @condition: the condition which has been satisfied
  * @data: user data set in g_io_add_watch() or g_io_add_watch_full()
- * @Returns: the function should return %FALSE if the event source
- *           should be removed
  *
  * Specifies the type of function passed to g_io_add_watch() or
  * g_io_add_watch_full(), which is called when the requested condition
  * on a #GIOChannel is satisfied.
+ *
+ * Returns: the function should return %FALSE if the event source
+ *          should be removed
  **/
 /**
  * GIOCondition:

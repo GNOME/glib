@@ -82,10 +82,11 @@ struct _GTimer
 
 /**
  * g_timer_new:
- * @Returns: a new #GTimer.
  *
  * Creates a new timer, and starts timing (i.e. g_timer_start() is
  * implicitly called for you).
+ *
+ * Returns: a new #GTimer.
  **/
 GTimer*
 g_timer_new (void)
@@ -204,8 +205,6 @@ g_timer_continue (GTimer *timer)
  * @microseconds: return location for the fractional part of seconds
  *                elapsed, in microseconds (that is, the total number
  *                of microseconds elapsed, modulo 1000000), or %NULL
- * @Returns: seconds elapsed as a floating point value, including any
- *           fractional part.
  *
  * If @timer has been started but not stopped, obtains the time since
  * the timer was started. If @timer has been stopped, obtains the
@@ -213,6 +212,9 @@ g_timer_continue (GTimer *timer)
  * stopped. The return value is the number of seconds elapsed,
  * including any fractional part. The @microseconds out parameter is
  * essentially useless.
+ *
+ * Returns: seconds elapsed as a floating point value, including any
+ *          fractional part.
  **/
 gdouble
 g_timer_elapsed (GTimer *timer,

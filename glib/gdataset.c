@@ -678,10 +678,11 @@ g_datalist_id_set_data_full (GData	  **datalist,
  * g_dataset_id_remove_no_notify:
  * @dataset_location: the location identifying the dataset.
  * @key_id: the #GQuark ID identifying the data element.
- * @Returns: the data previously stored at @key_id, or %NULL if none.
  *
  * Removes an element, without calling its destroy notification
  * function.
+ *
+ * Returns: the data previously stored at @key_id, or %NULL if none.
  **/
 /**
  * g_dataset_remove_no_notify:
@@ -716,10 +717,11 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
  * g_datalist_id_remove_no_notify:
  * @datalist: a datalist.
  * @key_id: the #GQuark identifying a data element.
- * @Returns: the data previously stored at @key_id, or %NULL if none.
  *
  * Removes an element, without calling its destroy notification
  * function.
+ *
+ * Returns: the data previously stored at @key_id, or %NULL if none.
  **/
 /**
  * g_datalist_remove_no_notify:
@@ -746,19 +748,21 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * g_dataset_id_get_data:
  * @dataset_location: the location identifying the dataset.
  * @key_id: the #GQuark id to identify the data element.
- * @Returns: the data element corresponding to the #GQuark, or %NULL if
- *           it is not found.
  *
  * Gets the data element corresponding to a #GQuark.
+ *
+ * Returns: the data element corresponding to the #GQuark, or %NULL if
+ *          it is not found.
  **/
 /**
  * g_dataset_get_data:
  * @l: the location identifying the dataset.
  * @k: the string identifying the data element.
- * @Returns: the data element corresponding to the string, or %NULL if
- *           it is not found.
  *
  * Gets the data element corresponding to a string.
+ *
+ * Returns: the data element corresponding to the string, or %NULL if
+ *          it is not found.
  **/
 gpointer
 g_dataset_id_get_data (gconstpointer  dataset_location,
@@ -1004,10 +1008,11 @@ g_datalist_id_replace_data (GData          **datalist,
  * g_datalist_get_data:
  * @datalist: a datalist.
  * @key: the string identifying a data element.
- * @Returns: the data element, or %NULL if it is not found.
  *
  * Gets a data element, using its string identifier. This is slower than
  * g_datalist_id_get_data() because it compares strings.
+ *
+ * Returns: the data element, or %NULL if it is not found.
  **/
 gpointer
 g_datalist_get_data (GData	 **datalist,

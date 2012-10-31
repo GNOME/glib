@@ -945,12 +945,13 @@ g_tree_foreach (GTree         *tree,
  * @key: a key of a #GTree node.
  * @value: the value corresponding to the key.
  * @data: user data passed to g_tree_traverse().
- * @Returns: %TRUE to stop the traversal.
  *
  * Specifies the type of function passed to g_tree_traverse(). It is
  * passed the key and value of each node, together with the @user_data
  * parameter passed to g_tree_traverse(). If the function returns
  * %TRUE, the traversal is stopped.
+ *
+ * Returns: %TRUE to stop the traversal.
  **/
 /**
  * GTraverseType:

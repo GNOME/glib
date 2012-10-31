@@ -187,7 +187,6 @@ new_from_data (const void    *data,
  * @filename: the path to the hash file
  * @trusted: if the contents of @filename are trusted
  * @error: %NULL, or a pointer to a %NULL #GError
- * @returns: a new #GvdbTable
  *
  * Creates a new #GvdbTable from the contents of the file found at
  * @filename.
@@ -201,6 +200,8 @@ new_from_data (const void    *data,
  *
  * You should call gvdb_table_unref() on the return result when you no
  * longer require it.
+ *
+ * Returns: a new #GvdbTable
  **/
 GvdbTable *
 gvdb_table_new (const gchar  *filename,
@@ -230,7 +231,6 @@ gvdb_table_new (const gchar  *filename,
  * @user_data: User supplied data that owns @data
  * @ref: Ref function for @user_data
  * @unref: Unref function for @user_data
- * @returns: a new #GvdbTable
  *
  * Creates a new #GvdbTable from the data in @data.
  *
@@ -239,6 +239,8 @@ gvdb_table_new (const gchar  *filename,
  *
  * You should call gvdb_table_unref() on the return result when you no
  * longer require it.
+ *
+ * Returns: a new #GvdbTable
  **/
 GvdbTable *
 gvdb_table_new_from_data (const void    *data,
@@ -381,7 +383,6 @@ gvdb_table_list_from_item (GvdbTable                    *table,
  * gvdb_table_list:
  * @file: a #GvdbTable
  * @key: a string
- * @returns: a %NULL-terminated string array
  *
  * List all of the keys that appear below @key.  The nesting of keys
  * within the hash file is defined by the program that created the hash
@@ -394,6 +395,8 @@ gvdb_table_list_from_item (GvdbTable                    *table,
  *
  * You should call g_strfreev() on the return result when you no longer
  * require it.
+ *
+ * Returns: a %NULL-terminated string array
  **/
 gchar **
 gvdb_table_list (GvdbTable   *file,
@@ -444,12 +447,13 @@ gvdb_table_list (GvdbTable   *file,
  * gvdb_table_has_value:
  * @file: a #GvdbTable
  * @key: a string
- * @returns: %TRUE if @key is in the table
  *
  * Checks for a value named @key in @file.
  *
  * Note: this function does not consider non-value nodes (other hash
  * tables, for example).
+ *
+ * Returns: %TRUE if @key is in the table
  **/
 gboolean
 gvdb_table_has_value (GvdbTable    *file,
@@ -485,7 +489,6 @@ gvdb_table_value_from_item (GvdbTable                   *table,
  * gvdb_table_get_value:
  * @file: a #GvdbTable
  * @key: a string
- * @returns: a #GVariant, or %NULL
  *
  * Looks up a value named @key in @file.
  *
@@ -495,6 +498,8 @@ gvdb_table_value_from_item (GvdbTable                   *table,
  *
  * You should call g_variant_unref() on the return result when you no
  * longer require it.
+ *
+ * Returns: a #GVariant, or %NULL
  **/
 GVariant *
 gvdb_table_get_value (GvdbTable    *file,
@@ -524,12 +529,13 @@ gvdb_table_get_value (GvdbTable    *file,
  * gvdb_table_get_raw_value:
  * @table: a #GvdbTable
  * @key: a string
- * @returns: a #GVariant, or %NULL
  *
  * Looks up a value named @key in @file.
  *
  * This call is equivalent to gvdb_table_get_value() except that it
  * never byteswaps the value.
+ *
+ * Returns: a #GVariant, or %NULL
  **/
 GVariant *
 gvdb_table_get_raw_value (GvdbTable   *table,
@@ -547,7 +553,6 @@ gvdb_table_get_raw_value (GvdbTable   *table,
  * gvdb_table_get_table:
  * @file: a #GvdbTable
  * @key: a string
- * @returns: a new #GvdbTable, or %NULL
  *
  * Looks up the hash table named @key in @file.
  *
@@ -561,6 +566,8 @@ gvdb_table_get_raw_value (GvdbTable   *table,
  *
  * You should call gvdb_table_unref() on the return result when you no
  * longer require it.
+ *
+ * Returns: a new #GvdbTable, or %NULL
  **/
 GvdbTable *
 gvdb_table_get_table (GvdbTable   *file,
@@ -592,9 +599,10 @@ gvdb_table_get_table (GvdbTable   *file,
 /**
  * gvdb_table_ref:
  * @file: a #GvdbTable
- * @returns: a new reference on @file
  *
  * Increases the reference count on @file.
+ *
+ * Returns: a new reference on @file
  **/
 GvdbTable *
 gvdb_table_ref (GvdbTable *file)
@@ -626,13 +634,14 @@ gvdb_table_unref (GvdbTable *file)
 /**
  * gvdb_table_is_valid:
  * @table: a #GvdbTable
- * @returns: %TRUE if @table is still valid
  *
  * Checks if the table is still valid.
  *
  * An on-disk GVDB can be marked as invalid.  This happens when the file
  * has been replaced.  The appropriate action is typically to reopen the
  * file.
+ *
+ * Returns: %TRUE if @table is still valid
  **/
 gboolean
 gvdb_table_is_valid (GvdbTable *table)

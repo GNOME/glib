@@ -98,9 +98,10 @@
 /**
  * g_slist_next:
  * @slist: an element in a #GSList.
- * @Returns: the next element, or %NULL if there are no more elements.
  *
  * A convenience macro to get the next element in a #GSList.
+ *
+ * Returns: the next element, or %NULL if there are no more elements.
  **/
 
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
@@ -109,11 +110,12 @@
 
 /**
  * g_slist_alloc:
- * @Returns: a pointer to the newly-allocated #GSList element.
  *
  * Allocates space for one #GSList element. It is called by the
  * g_slist_append(), g_slist_prepend(), g_slist_insert() and
  * g_slist_insert_sorted() functions and so is rarely used on its own.
+ *
+ * Returns: a pointer to the newly-allocated #GSList element.
  **/
 GSList*
 g_slist_alloc (void)

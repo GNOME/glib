@@ -185,10 +185,11 @@ tuple_equal (gint fields)
 /**
  * g_relation_new:
  * @fields: the number of fields.
- * @Returns: a new #GRelation.
  *
  * Creates a new #GRelation with the given number of fields. Note that
  * currently the number of fields must be 2.
+ *
+ * Returns: a new #GRelation.
  *
  * Deprecated: 2.26: Rarely used API
  **/
@@ -375,10 +376,11 @@ g_relation_delete_tuple (gpointer tuple_key,
  * @relation: a #GRelation.
  * @key: the value to compare with.
  * @field: the field of each record to match.
- * @Returns: the number of records deleted.
  *
  * Deletes any records from a #GRelation that have the given key value
  * in the given field.
+ *
+ * Returns: the number of records deleted.
  *
  * Deprecated: 2.26: Rarely used API
  **/
@@ -439,11 +441,12 @@ g_relation_select_tuple (gpointer tuple_key,
  * @relation: a #GRelation.
  * @key: the value to compare with.
  * @field: the field of each record to match.
- * @Returns: the records (tuples) that matched.
  *
  * Returns all of the tuples which have the given key in the given
  * field. Use g_tuples_index() to access the returned records. The
  * returned records should be freed with g_tuples_destroy().
+ *
+ * Returns: the records (tuples) that matched.
  *
  * Deprecated: 2.26: Rarely used API
  **/
@@ -486,10 +489,11 @@ g_relation_select (GRelation     *relation,
  * @relation: a #GRelation.
  * @key: the value to compare with.
  * @field: the field of each record to match.
- * @Returns: the number of matches.
  *
  * Returns the number of tuples in a #GRelation that have the given
  * value in the given field.
+ *
+ * Returns: the number of matches.
  *
  * Deprecated: 2.26: Rarely used API
  **/
@@ -520,11 +524,12 @@ g_relation_count (GRelation     *relation,
  * @relation: a #GRelation.
  * @...: the fields of the record to compare. The number must match
  *       the number of fields in the #GRelation.
- * @Returns: %TRUE if a record matches.
  *
  * Returns %TRUE if a record with the given values exists in a
  * #GRelation. Note that the values are compared directly, so that, for
  * example, two copies of the same string will not match.
+ *
+ * Returns: %TRUE if a record matches.
  *
  * Deprecated: 2.26: Rarely used API
  **/
@@ -578,11 +583,12 @@ g_tuples_destroy (GTuples *tuples0)
  * @tuples: the tuple data, returned by g_relation_select().
  * @index_: the index of the record.
  * @field: the field to return.
- * @Returns: the field of the record.
  *
  * Gets a field from the records returned by g_relation_select(). It
  * returns the given field of the record at the given index. The
  * returned value should not be changed.
+ *
+ * Returns: the field of the record.
  *
  * Deprecated: 2.26: Rarely used API
  **/

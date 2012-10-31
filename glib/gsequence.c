@@ -79,13 +79,14 @@
  * @a: a #GSequenceIter
  * @b: a #GSequenceIter
  * @data: user data
- * @Returns: zero if the iterators are equal, a negative value if @a
- *           comes before @b, and a positive value if @b comes before
- *           @a.
  *
  * A #GSequenceIterCompareFunc is a function used to compare iterators.
  * It must return zero if the iterators compare equal, a negative value
  * if @a comes before @b, and a positive value if @b comes before @a.
+ *
+ * Returns: zero if the iterators are equal, a negative value if @a
+ *          comes before @b, and a positive value if @b comes before
+ *          @a.
  **/
 
 typedef struct _GSequenceNode GSequenceNode;

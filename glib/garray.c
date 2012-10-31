@@ -118,7 +118,6 @@ struct _GRealArray
  * @a: a #GArray.
  * @t: the type of the elements.
  * @i: the index of the element to return.
- * @Returns: the element of the #GArray at the index given by @i.
  *
  * Returns the element of a #GArray at the given index. The return
  * value is cast to the given type.
@@ -132,6 +131,8 @@ struct _GRealArray
  *   event = &amp;g_array_index (events, EDayViewEvent, 3);
  *  </programlisting>
  * </example>
+ *
+ * Returns: the element of the #GArray at the index given by @i.
  **/
 
 #define g_array_elt_len(array,i) ((array)->elt_size * (i))
@@ -154,9 +155,10 @@ static void  g_array_maybe_expand (GRealArray *array,
  * @clear_: %TRUE if #GArray elements should be automatically cleared
  *          to 0 when they are allocated.
  * @element_size: the size of each element in bytes.
- * @Returns: the new #GArray.
  *
  * Creates a new #GArray with a reference count of 1.
+ *
+ * Returns: the new #GArray.
  **/
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -176,12 +178,13 @@ g_array_new (gboolean zero_terminated,
  *          allocation.
  * @element_size: size of each element in the array.
  * @reserved_size: number of elements preallocated.
- * @Returns: the new #GArray.
  *
  * Creates a new #GArray with @reserved_size elements preallocated and
  * a reference count of 1. This avoids frequent reallocation, if you
  * are going to add many elements to the array. Note however that the
  * size of the array is still 0.
+ *
+ * Returns: the new #GArray.
  **/
 GArray* g_array_sized_new (gboolean zero_terminated,
 			   gboolean clear,
@@ -315,8 +318,6 @@ g_array_get_element_size (GArray *array)
  * g_array_free:
  * @array: a #GArray.
  * @free_segment: if %TRUE the actual element data is freed as well.
- * @Returns: the element data if @free_segment is %FALSE, otherwise
- *           %NULL.  The element data should be freed using g_free().
  *
  * Frees the memory allocated for the #GArray. If @free_segment is
  * %TRUE it frees the memory block holding the elements as well and
@@ -328,6 +329,9 @@ g_array_get_element_size (GArray *array)
  *
  * <note><para>If array elements contain dynamically-allocated memory,
  * they should be freed separately.</para></note>
+ *
+ * Returns: the element data if @free_segment is %FALSE, otherwise
+ *          %NULL.  The element data should be freed using g_free().
  **/
 gchar*
 g_array_free (GArray   *farray,
@@ -388,15 +392,15 @@ array_free (GRealArray     *array,
  * @array: a #GArray.
  * @data: a pointer to the elements to append to the end of the array.
  * @len: the number of elements to append.
- * @Returns: the #GArray.
  *
  * Adds @len elements onto the end of the array.
+ *
+ * Returns: the #GArray.
  **/
 /**
  * g_array_append_val:
  * @a: a #GArray.
  * @v: the value to append to the #GArray.
- * @Returns: the #GArray.
  *
  * Adds the value on to the end of the array. The array will grow in
  * size automatically if necessary.
@@ -404,6 +408,8 @@ array_free (GRealArray     *array,
  * <note><para>g_array_append_val() is a macro which uses a reference
  * to the value parameter @v. This means that you cannot use it with
  * literal values such as "27". You must use variables.</para></note>
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_append_vals (GArray       *farray,
@@ -432,19 +438,19 @@ g_array_append_vals (GArray       *farray,
  * @data: a pointer to the elements to prepend to the start of the
  *        array.
  * @len: the number of elements to prepend.
- * @Returns: the #GArray.
  *
  * Adds @len elements onto the start of the array.
  *
  * This operation is slower than g_array_append_vals() since the
  * existing elements in the array have to be moved to make space for
  * the new elements.
+ *
+ * Returns: the #GArray.
  **/
 /**
  * g_array_prepend_val:
  * @a: a #GArray.
  * @v: the value to prepend to the #GArray.
- * @Returns: the #GArray.
  *
  * Adds the value on to the start of the array. The array will grow in
  * size automatically if necessary.
@@ -456,6 +462,8 @@ g_array_append_vals (GArray       *farray,
  * <note><para>g_array_prepend_val() is a macro which uses a reference
  * to the value parameter @v. This means that you cannot use it with
  * literal values such as "27". You must use variables.</para></note>
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_prepend_vals (GArray        *farray,
@@ -486,22 +494,24 @@ g_array_prepend_vals (GArray        *farray,
  * @index_: the index to place the elements at.
  * @data: a pointer to the elements to insert.
  * @len: the number of elements to insert.
- * @Returns: the #GArray.
  *
  * Inserts @len elements into a #GArray at the given index.
+ *
+ * Returns: the #GArray.
  **/
 /**
  * g_array_insert_val:
  * @a: a #GArray.
  * @i: the index to place the element at.
  * @v: the value to insert into the array.
- * @Returns: the #GArray.
  *
  * Inserts an element into an array at the given index.
  *
  * <note><para>g_array_insert_val() is a macro which uses a reference
  * to the value parameter @v. This means that you cannot use it with
  * literal values such as "27". You must use variables.</para></note>
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_insert_vals (GArray        *farray,
@@ -532,10 +542,11 @@ g_array_insert_vals (GArray        *farray,
  * g_array_set_size:
  * @array: a #GArray.
  * @length: the new size of the #GArray.
- * @Returns: the #GArray.
  *
  * Sets the size of the array, expanding it if necessary. If the array
  * was created with @clear_ set to %TRUE, the new elements are set to 0.
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_set_size (GArray *farray,
@@ -566,10 +577,11 @@ g_array_set_size (GArray *farray,
  * g_array_remove_index:
  * @array: a #GArray.
  * @index_: the index of the element to remove.
- * @Returns: the #GArray.
  *
  * Removes the element at the given index from a #GArray. The following
  * elements are moved down one place.
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_remove_index (GArray *farray,
@@ -603,12 +615,13 @@ g_array_remove_index (GArray *farray,
  * g_array_remove_index_fast:
  * @array: a @GArray.
  * @index_: the index of the element to remove.
- * @Returns: the #GArray.
  *
  * Removes the element at the given index from a #GArray. The last
  * element in the array is used to fill in the space, so this function
  * does not preserve the order of the #GArray. But it is faster than
  * g_array_remove_index().
+ *
+ * Returns: the #GArray.
  **/
 GArray*
 g_array_remove_index_fast (GArray *farray,
@@ -643,10 +656,11 @@ g_array_remove_index_fast (GArray *farray,
  * @array: a @GArray.
  * @index_: the index of the first element to remove.
  * @length: the number of elements to remove.
- * @Returns: the #GArray.
  *
  * Removes the given number of elements starting at the given index
  * from a #GArray.  The following elements are moved to close the gap.
+ *
+ * Returns: the #GArray.
  *
  * Since: 2.4
  **/
@@ -848,9 +862,10 @@ struct _GRealPtrArray
  * g_ptr_array_index:
  * @array: a #GPtrArray.
  * @index_: the index of the pointer to return.
- * @Returns: the pointer at the given index.
  *
  * Returns the pointer at the given index of the pointer array.
+ *
+ * Returns: the pointer at the given index.
  **/
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
@@ -858,9 +873,10 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 
 /**
  * g_ptr_array_new:
- * @Returns: the new #GPtrArray.
  *
  * Creates a new #GPtrArray with a reference count of 1.
+ *
+ * Returns: the new #GPtrArray.
  **/
 GPtrArray*
 g_ptr_array_new (void)
@@ -871,12 +887,13 @@ g_ptr_array_new (void)
 /**
  * g_ptr_array_sized_new:
  * @reserved_size: number of pointers preallocated.
- * @Returns: the new #GPtrArray.
  *
  * Creates a new #GPtrArray with @reserved_size pointers preallocated
  * and a reference count of 1. This avoids frequent reallocation, if
  * you are going to add many pointers to the array. Note however that
  * the size of the array is still 0.
+ *
+ * Returns: the new #GPtrArray.
  **/
 GPtrArray*  
 g_ptr_array_sized_new (guint reserved_size)
@@ -1018,8 +1035,6 @@ g_ptr_array_unref (GPtrArray *array)
  * g_ptr_array_free:
  * @array: a #GPtrArray.
  * @free_seg: if %TRUE the actual pointer array is freed as well.
- * @Returns: the pointer array if @free_seg is %FALSE, otherwise %NULL.
- *           The pointer array should be freed using g_free().
  *
  * Frees the memory allocated for the #GPtrArray. If @free_seg is %TRUE
  * it frees the memory block holding the elements as well. Pass %FALSE
@@ -1031,6 +1046,9 @@ g_ptr_array_unref (GPtrArray *array)
  * <note><para>If array contents point to dynamically-allocated
  * memory, they should be freed separately if @free_seg is %TRUE and no
  * #GDestroyNotify function has been set for @array.</para></note>
+ *
+ * Returns: the pointer array if @free_seg is %FALSE, otherwise %NULL.
+ *          The pointer array should be freed using g_free().
  **/
 gpointer*
 g_ptr_array_free (GPtrArray *farray,
@@ -1138,12 +1156,13 @@ g_ptr_array_set_size  (GPtrArray *farray,
  * g_ptr_array_remove_index:
  * @array: a #GPtrArray.
  * @index_: the index of the pointer to remove.
- * @Returns: the pointer which was removed.
  *
  * Removes the pointer at the given index from the pointer array. The
  * following elements are moved down one place. If @array has a
  * non-%NULL #GDestroyNotify function it is called for the removed
  * element.
+ *
+ * Returns: the pointer which was removed.
  **/
 gpointer
 g_ptr_array_remove_index (GPtrArray *farray,
@@ -1177,13 +1196,14 @@ g_ptr_array_remove_index (GPtrArray *farray,
  * g_ptr_array_remove_index_fast:
  * @array: a #GPtrArray.
  * @index_: the index of the pointer to remove.
- * @Returns: the pointer which was removed.
  *
  * Removes the pointer at the given index from the pointer array. The
  * last element in the array is used to fill in the space, so this
  * function does not preserve the order of the array. But it is faster
  * than g_ptr_array_remove_index(). If @array has a non-%NULL
  * #GDestroyNotify function it is called for the removed element.
+ *
+ * Returns: the pointer which was removed.
  **/
 gpointer
 g_ptr_array_remove_index_fast (GPtrArray *farray,
@@ -1263,8 +1283,6 @@ g_ptr_array_remove_range (GPtrArray *farray,
  * g_ptr_array_remove:
  * @array: a #GPtrArray.
  * @data: the pointer to remove.
- * @Returns: %TRUE if the pointer is removed. %FALSE if the pointer is
- *           not found in the array.
  *
  * Removes the first occurrence of the given pointer from the pointer
  * array. The following elements are moved down one place. If @array
@@ -1273,6 +1291,9 @@ g_ptr_array_remove_range (GPtrArray *farray,
  *
  * It returns %TRUE if the pointer was removed, or %FALSE if the
  * pointer was not found.
+ *
+ * Returns: %TRUE if the pointer is removed. %FALSE if the pointer is
+ *          not found in the array.
  **/
 gboolean
 g_ptr_array_remove (GPtrArray *farray,
@@ -1299,7 +1320,6 @@ g_ptr_array_remove (GPtrArray *farray,
  * g_ptr_array_remove_fast:
  * @array: a #GPtrArray.
  * @data: the pointer to remove.
- * @Returns: %TRUE if the pointer was found in the array.
  *
  * Removes the first occurrence of the given pointer from the pointer
  * array. The last element in the array is used to fill in the space,
@@ -1309,6 +1329,8 @@ g_ptr_array_remove (GPtrArray *farray,
  *
  * It returns %TRUE if the pointer was removed, or %FALSE if the
  * pointer was not found.
+ *
+ * Returns: %TRUE if the pointer was found in the array.
  **/
 gboolean
 g_ptr_array_remove_fast (GPtrArray *farray,
@@ -1487,9 +1509,10 @@ g_ptr_array_foreach (GPtrArray *array,
 
 /**
  * g_byte_array_new:
- * @Returns: the new #GByteArray.
  *
  * Creates a new #GByteArray with a reference count of 1.
+ *
+ * Returns: the new #GByteArray.
  **/
 GByteArray* g_byte_array_new (void)
 {
@@ -1529,12 +1552,13 @@ g_byte_array_new_take (guint8 *data,
 /**
  * g_byte_array_sized_new:
  * @reserved_size: number of bytes preallocated.
- * @Returns: the new #GByteArray.
  *
  * Creates a new #GByteArray with @reserved_size bytes preallocated.
  * This avoids frequent reallocation, if you are going to add many
  * bytes to the array. Note however that the size of the array is still
  * 0.
+ *
+ * Returns: the new #GByteArray.
  **/
 GByteArray* g_byte_array_sized_new (guint reserved_size)
 {
@@ -1545,13 +1569,14 @@ GByteArray* g_byte_array_sized_new (guint reserved_size)
  * g_byte_array_free:
  * @array: a #GByteArray.
  * @free_segment: if %TRUE the actual byte data is freed as well.
- * @Returns: the element data if @free_segment is %FALSE, otherwise
- *           %NULL.  The element data should be freed using g_free().
  *
  * Frees the memory allocated by the #GByteArray. If @free_segment is
  * %TRUE it frees the actual byte data. If the reference count of
  * @array is greater than one, the #GByteArray wrapper is preserved but
  * the size of @array will be set to zero.
+ *
+ * Returns: the element data if @free_segment is %FALSE, otherwise
+ *          %NULL.  The element data should be freed using g_free().
  **/
 guint8*	    g_byte_array_free     (GByteArray *array,
 			           gboolean    free_segment)
@@ -1627,10 +1652,11 @@ g_byte_array_unref (GByteArray *array)
  * @array: a #GByteArray.
  * @data: the byte data to be added.
  * @len: the number of bytes to add.
- * @Returns: the #GByteArray.
  *
  * Adds the given bytes to the end of the #GByteArray. The array will
  * grow in size automatically if necessary.
+ *
+ * Returns: the #GByteArray.
  **/
 GByteArray* g_byte_array_append   (GByteArray   *array,
 				   const guint8 *data,
@@ -1646,10 +1672,11 @@ GByteArray* g_byte_array_append   (GByteArray   *array,
  * @array: a #GByteArray.
  * @data: the byte data to be added.
  * @len: the number of bytes to add.
- * @Returns: the #GByteArray.
  *
  * Adds the given data to the start of the #GByteArray. The array will
  * grow in size automatically if necessary.
+ *
+ * Returns: the #GByteArray.
  **/
 GByteArray* g_byte_array_prepend  (GByteArray   *array,
 				   const guint8 *data,
@@ -1664,9 +1691,10 @@ GByteArray* g_byte_array_prepend  (GByteArray   *array,
  * g_byte_array_set_size:
  * @array: a #GByteArray.
  * @length: the new size of the #GByteArray.
- * @Returns: the #GByteArray.
  *
  * Sets the size of the #GByteArray, expanding it if necessary.
+ *
+ * Returns: the #GByteArray.
  **/
 GByteArray* g_byte_array_set_size (GByteArray *array,
 				   guint       length)
@@ -1680,10 +1708,11 @@ GByteArray* g_byte_array_set_size (GByteArray *array,
  * g_byte_array_remove_index:
  * @array: a #GByteArray.
  * @index_: the index of the byte to remove.
- * @Returns: the #GByteArray.
  *
  * Removes the byte at the given index from a #GByteArray. The
  * following bytes are moved down one place.
+ *
+ * Returns: the #GByteArray.
  **/
 GByteArray* g_byte_array_remove_index (GByteArray *array,
 				       guint       index_)
@@ -1697,12 +1726,13 @@ GByteArray* g_byte_array_remove_index (GByteArray *array,
  * g_byte_array_remove_index_fast:
  * @array: a #GByteArray.
  * @index_: the index of the byte to remove.
- * @Returns: the #GByteArray.
  *
  * Removes the byte at the given index from a #GByteArray. The last
  * element in the array is used to fill in the space, so this function
  * does not preserve the order of the #GByteArray. But it is faster
  * than g_byte_array_remove_index().
+ *
+ * Returns: the #GByteArray.
  **/
 GByteArray* g_byte_array_remove_index_fast (GByteArray *array,
 					    guint       index_)
@@ -1717,10 +1747,11 @@ GByteArray* g_byte_array_remove_index_fast (GByteArray *array,
  * @array: a @GByteArray.
  * @index_: the index of the first byte to remove.
  * @length: the number of bytes to remove.
- * @Returns: the #GByteArray.
  *
  * Removes the given number of bytes starting at the given index from a
  * #GByteArray.  The following elements are moved to close the gap.
+ *
+ * Returns: the #GByteArray.
  *
  * Since: 2.4
  **/
