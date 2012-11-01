@@ -31,6 +31,14 @@
 
 G_MODULE_EXPORT gchar* gplugin_b_state;
 
+const gchar* g_module_check_init (GModule *module);
+void   g_module_unload (GModule *module);
+
+void gplugin_b_func (void);
+void gplugin_clash_func (void);
+void g_clash_func (void);
+void gplugin_say_boo_func (void);
+
 G_MODULE_EXPORT const gchar*
 g_module_check_init (GModule *module)
 {

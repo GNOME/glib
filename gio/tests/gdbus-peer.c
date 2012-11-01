@@ -1682,7 +1682,7 @@ codegen_service_thread_func (gpointer user_data)
 }
 
 
-gboolean
+static gboolean
 codegen_quit_mainloop_timeout (gpointer data)
 {
   g_main_loop_quit (loop);

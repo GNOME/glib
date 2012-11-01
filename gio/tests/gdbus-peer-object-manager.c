@@ -84,7 +84,7 @@ mock_interface_get_info (GDBusInterfaceSkeleton *skeleton)
   return &interface_info;
 }
 
-GVariant *
+static GVariant *
 mock_interface_get_property (GDBusConnection *connection,
                              const gchar *sender,
                              const gchar *object_path,

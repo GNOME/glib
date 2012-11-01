@@ -74,7 +74,7 @@ unref_on_idle (gpointer object)
   return FALSE;
 }
 
-gboolean
+static gboolean
 _g_object_unref_and_wait_weak_notify (gpointer object)
 {
   WeakNotifyData data;

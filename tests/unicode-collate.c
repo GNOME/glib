@@ -13,7 +13,7 @@ typedef struct {
 } Line;
   
 
-int 
+static int 
 compare_collate (const void *a, const void *b)
 {
   const Line *line_a = a;
@@ -22,7 +22,7 @@ compare_collate (const void *a, const void *b)
   return g_utf8_collate (line_a->str, line_b->str);
 }
 
-int 
+static int 
 compare_key (const void *a, const void *b)
 {
   const Line *line_a = a;

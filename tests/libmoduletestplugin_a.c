@@ -30,6 +30,12 @@
 #include	<gmodule.h>
 #include	<stdlib.h>
 
+void gplugin_a_func (void);
+void gplugin_clash_func (void);
+void g_clash_func (void);
+void gplugin_say_boo_func (void);
+void gplugin_a_module_func (GModule *module);
+
 G_MODULE_EXPORT gchar* gplugin_a_state;
 
 G_MODULE_EXPORT void

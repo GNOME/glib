@@ -11,7 +11,8 @@
 #include <string.h>
 #include <locale.h>
 
-void g_date_debug_print(GDate* d)
+static void
+g_date_debug_print (GDate* d)
 {
   if (!d) g_print("NULL!\n");
   else 

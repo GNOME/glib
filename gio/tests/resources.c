@@ -487,7 +487,7 @@ test_uri_query_info (void)
   g_resource_unref (resource);
 }
 
-void
+static void
 test_uri_file (void)
 {
   GResource *resource;
