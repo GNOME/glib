@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include "gcharset.h"
+#include "gcharsetprivate.h"
 
 #include "garray.h"
 #include "genviron.h"

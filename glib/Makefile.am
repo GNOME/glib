@@ -131,6 +131,7 @@ libglib_2_0_la_SOURCES = 	\
 	gbytes.c		\
 	gbytes.h		\
 	gcharset.c		\
+	gcharsetprivate.h	\
 	gchecksum.c		\
 	gconvert.c		\
 	gdataset.c		\

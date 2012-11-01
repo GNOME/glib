@@ -43,7 +43,7 @@
 
 #include "gconvert.h"
 
-#include "gcharset.h"
+#include "gcharsetprivate.h"
 #include "gslist.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
