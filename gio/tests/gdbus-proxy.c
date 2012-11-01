@@ -168,6 +168,8 @@ test_properties (GDBusProxy *proxy)
   GVariant *variant2;
   GVariant *result;
   gchar **names;
+  gchar *name_owner;
+  GDBusProxy *proxy2;
 
   error = NULL;
 
@@ -296,8 +298,6 @@ test_properties (GDBusProxy *proxy)
   g_assert (variant == NULL);
 
   /* Now test that G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES works - we need a new proxy for that */
-  gchar *name_owner;
-  GDBusProxy *proxy2;
   error = NULL;
   proxy2 = g_dbus_proxy_new_sync (g_dbus_proxy_get_connection (proxy),
                                   G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,

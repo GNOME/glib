@@ -699,6 +699,10 @@ static void
 check_bar_proxy (FooiGenBar *proxy,
                  GMainLoop  *thread_loop)
 {
+  const gchar *array_of_strings[3] = {"one", "two", NULL};
+  const gchar *array_of_strings_2[3] = {"one2", "two2", NULL};
+  const gchar *array_of_objpaths[3] = {"/one", "/one/two", NULL};
+  const gchar *array_of_bytestrings[3] = {"one\xff", "two\xff", NULL};
   guchar ret_val_byte;
   gboolean ret_val_boolean;
   gint16 ret_val_int16;
@@ -744,6 +748,9 @@ check_bar_proxy (FooiGenBar *proxy,
   gchar *val_finally_normal_name;
   GVariant *v;
   gchar *s;
+  const gchar *const *read_as;
+  const gchar *const *read_as2;
+  const gchar *const *read_as3;
 
   data = g_new0 (ClientData, 1);
   data->thread_loop = thread_loop;
@@ -838,10 +845,6 @@ check_bar_proxy (FooiGenBar *proxy,
   /* Try setting properties that requires memory management. This
    * is to exercise the paths that frees the references.
    */
-  const gchar *array_of_strings[3] = {"one", "two", NULL};
-  const gchar *array_of_strings_2[3] = {"one2", "two2", NULL};
-  const gchar *array_of_objpaths[3] = {"/one", "/one/two", NULL};
-  const gchar *array_of_bytestrings[3] = {"one\xff", "two\xff", NULL};
 
   g_object_set (proxy,
                 "s", "a string",
@@ -939,9 +942,6 @@ check_bar_proxy (FooiGenBar *proxy,
    * updates on them works as well (See comment for "property vfuncs"
    * in gio/gdbus-codegen/codegen.py for details)
    */
-  const gchar *const *read_as;
-  const gchar *const *read_as2;
-  const gchar *const *read_as3;
   read_as = foo_igen_bar_get_as (proxy);
   read_as2 = foo_igen_bar_get_as (proxy);
   g_assert_cmpint (g_strv_length ((gchar **) read_as), ==, 2);
