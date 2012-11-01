@@ -72,6 +72,8 @@ static void g_resource_file_file_iface_init (GFileIface *iface);
 static GFileAttributeInfoList *resource_writable_attributes = NULL;
 static GFileAttributeInfoList *resource_writable_namespaces = NULL;
 
+static GType _g_resource_file_enumerator_get_type (void);
+
 #define G_TYPE_RESOURCE_FILE_ENUMERATOR         (_g_resource_file_enumerator_get_type ())
 #define G_RESOURCE_FILE_ENUMERATOR(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_RESOURCE_FILE_ENUMERATOR, GResourceFileEnumerator))
 #define G_RESOURCE_FILE_ENUMERATOR_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_RESOURCE_FILE_ENUMERATOR, GResourceFileEnumeratorClass))

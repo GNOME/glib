@@ -94,6 +94,7 @@ typedef struct {
 
 static void g_test_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 
+static GType _g_test_proxy_resolver_get_type (void);
 #define g_test_proxy_resolver_get_type _g_test_proxy_resolver_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestProxyResolver, g_test_proxy_resolver, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
@@ -210,6 +211,7 @@ typedef struct {
   GObjectClass parent_class;
 } GProxyBaseClass;
 
+static GType _g_proxy_base_get_type (void);
 #define g_proxy_base_get_type _g_proxy_base_get_type
 G_DEFINE_ABSTRACT_TYPE (GProxyBase, g_proxy_base, G_TYPE_OBJECT)
 
@@ -313,6 +315,7 @@ typedef GProxyBaseClass GProxyAClass;
 
 static void g_proxy_a_iface_init (GProxyInterface *proxy_iface);
 
+static GType _g_proxy_a_get_type (void);
 #define g_proxy_a_get_type _g_proxy_a_get_type
 G_DEFINE_TYPE_WITH_CODE (GProxyA, g_proxy_a, g_proxy_base_get_type (),
 			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
@@ -357,6 +360,7 @@ typedef GProxyBaseClass GProxyBClass;
 
 static void g_proxy_b_iface_init (GProxyInterface *proxy_iface);
 
+static GType _g_proxy_b_get_type (void);
 #define g_proxy_b_get_type _g_proxy_b_get_type
 G_DEFINE_TYPE_WITH_CODE (GProxyB, g_proxy_b, g_proxy_base_get_type (),
 			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
@@ -665,6 +669,7 @@ create_server (ServerData *data, GCancellable *cancellable)
 typedef GResolver GFakeResolver;
 typedef GResolverClass GFakeResolverClass;
 
+static GType g_fake_resolver_get_type (void);
 G_DEFINE_TYPE (GFakeResolver, g_fake_resolver, G_TYPE_RESOLVER)
 
 static void

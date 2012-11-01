@@ -43,6 +43,7 @@ typedef struct {
 #define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
 #define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
+static GType my_test_get_type (void);
 G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT);
 
 /* --- variables --- */

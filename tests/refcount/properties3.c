@@ -31,6 +31,7 @@ struct _GTestClass
   GObjectClass parent_class;
 };
 
+static GType my_test_get_type (void);
 G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT);
 
 static volatile gboolean stopping;
