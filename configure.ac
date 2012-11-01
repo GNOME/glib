@@ -527,13 +527,6 @@ dnl when using libtool 2.x create libtool early, because it's used in configure
 m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
 
-if test "x$GCC" = "xyes"; then
-  case " $CFLAGS " in
-  *[[\ \	]]-Wall[[\ \	]]*) ;;
-  *) CFLAGS="$CFLAGS -Wall" ;;
-  esac
-fi
-
 AS_IF([test "$glib_native_win32" = "yes"], [
   if test x$enable_static = xyes -a x$enable_shared = xyes; then
     AC_MSG_ERROR([Can not build both shared and static at the same time on Windows.])
@@ -3531,6 +3524,15 @@ if test "x${enable_Bsymbolic}" = "xyes"; then
 fi
 
 AC_SUBST(GLIB_LINK_FLAGS)
+
+dnl Compiler flags; macro originates from systemd
+dnl See https://bugzilla.gnome.org/show_bug.cgi?id=608953
+CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
+   -Wall -Wstrict-prototypes -Werror=declaration-after-statement \
+   -Werror=missing-prototypes -Werror=implicit-function-declaration \
+   -Werror=pointer-arith -Werror=init-self -Werror=format-security \
+   -Werror=format=2 -Werror=missing-include-dirs])
+CFLAGS="$CFLAGS $with_cflags"
 
 #
 # Define variables corresponding to the correct include paths to use for
