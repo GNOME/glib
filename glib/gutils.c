@@ -60,6 +60,7 @@
 #include "gutils.h"
 
 #include "glib-init.h"
+#include "glib-private.h"
 #include "genviron.h"
 #include "gfileutils.h"
 #include "ggettext.h"
@@ -2416,7 +2417,7 @@ g_get_tmp_dir (void)
  * equivalent __libc_enable_secure is available).  See:
  * http://osdir.com/ml/linux.lfs.hardened/2007-04/msg00032.html
  */ 
-gboolean
+G_GNUC_INTERNAL gboolean
 g_check_setuid (void)
 {
   /* TODO: get __libc_enable_secure exported from glibc.
