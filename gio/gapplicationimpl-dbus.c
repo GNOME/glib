@@ -24,7 +24,7 @@
 #include "gactiongroup.h"
 #include "gactiongroupexporter.h"
 #include "gremoteactiongroup.h"
-#include "gdbusactiongroup.h"
+#include "gdbusactiongroup-private.h"
 #include "gapplication.h"
 #include "gfile.h"
 #include "gdbusconnection.h"
@@ -36,12 +36,6 @@
 
 #include "gapplicationcommandline.h"
 #include "gdbusmethodinvocation.h"
-
-G_GNUC_INTERNAL gboolean
-g_dbus_action_group_sync (GDBusActionGroup  *group,
-                          GCancellable      *cancellable,
-                          GError           **error);
-
 
 /* DBus Interface definition {{{1 */
 

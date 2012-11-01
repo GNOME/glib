@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include "gdbusactiongroup.h"
+#include "gdbusactiongroup-private.h"
 
 #include "gremoteactiongroup.h"
 #include "gdbusconnection.h"

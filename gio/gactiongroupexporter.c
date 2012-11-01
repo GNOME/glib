@@ -45,7 +45,7 @@
  * g_dbus_action_group_get() to obtain a #GDBusActionGroup.
  */
 
-G_GNUC_INTERNAL GVariant *
+static GVariant *
 g_action_group_describe_action (GActionGroup *action_group,
                                 const gchar  *name)
 {

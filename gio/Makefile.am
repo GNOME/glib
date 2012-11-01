@@ -174,6 +174,7 @@ application_sources = \
 	gsimpleactiongroup.c			\
 	gremoteactiongroup.c			\
 	gactiongroupexporter.c			\
+	gdbusactiongroup-private.h		\
 	gdbusactiongroup.c			\
 	gaction.c				\
 	gsimpleaction.c				\
