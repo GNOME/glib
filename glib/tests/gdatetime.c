@@ -1185,12 +1185,13 @@ test_z (void)
 {
   GTimeZone *tz;
   GDateTime *dt;
+  gchar *p;
 
   g_test_bug ("642935");
 
   tz = g_time_zone_new ("-08:00");
   dt = g_date_time_new (tz, 0, 0, 0, 0, 0, 0);
-  gchar *p = g_date_time_format (dt, "%z");
+  p = g_date_time_format (dt, "%z");
   g_assert_cmpstr (p, ==, "-0800");
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
