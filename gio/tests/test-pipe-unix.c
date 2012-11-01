@@ -27,6 +27,7 @@
 #include <gio/gio.h>
 
 #include "test-io-stream.h"
+#include "test-pipe-unix.h"
 
 #ifdef G_OS_UNIX
 #   include <gio/gunixinputstream.h>
