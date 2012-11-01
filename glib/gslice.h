@@ -85,6 +85,10 @@ gint64   g_slice_get_config	   (GSliceConfig ckey);
 GLIB_DEPRECATED_IN_2_34
 gint64*  g_slice_get_config_state  (GSliceConfig ckey, gint64 address, guint *n_values);
 
+#ifdef G_ENABLE_DEBUG
+void     g_slice_debug_tree_statistics (void);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_SLICE_H__ */
