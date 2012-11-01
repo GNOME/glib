@@ -41,7 +41,7 @@ call_counter_init (gpointer tclass)
     }
 }
 
-static void interface_per_class_init () { call_counter_init (NULL); }
+static void interface_per_class_init (void) { call_counter_init (NULL); }
 
 /* define 3 test interfaces */
 typedef GTypeInterface MyFace0Interface;

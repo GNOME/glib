@@ -38,7 +38,7 @@ struct _GResource
   GvdbTable *table;
 };
 
-static void register_lazy_static_resources ();
+static void register_lazy_static_resources (void);
 
 G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
 
