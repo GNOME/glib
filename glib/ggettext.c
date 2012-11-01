@@ -27,6 +27,7 @@
 #include "config.h"
 
 #include "ggettext.h"
+#include "glibintl.h"
 
 #include "galloca.h"
 #include "gthread.h"
