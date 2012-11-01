@@ -40,8 +40,8 @@ stamp-testmarshal.h: @REBUILD@ testmarshal.list $(glib_genmarshal)
 	&& (cmp -s xgen-gmh testmarshal.h 2>/dev/null || cp xgen-gmh testmarshal.h) \
 	&& rm -f xgen-gmh xgen-gmh~ \
 	&& echo timestamp > $@
-testmarshal.c: @REBUILD@ testmarshal.list $(glib_genmarshal)
-	$(AM_V_GEN) $(glib_genmarshal) --prefix=test_marshal $(srcdir)/testmarshal.list --body >> xgen-gmc \
+testmarshal.c: @REBUILD@ testmarshal.h testmarshal.list $(glib_genmarshal)
+	$(AM_V_GEN) (echo "#include \"testmarshal.h\""; $(glib_genmarshal) --prefix=test_marshal $(srcdir)/testmarshal.list --body) >> xgen-gmc \
 	&& cp xgen-gmc testmarshal.c \
 	&& rm -f xgen-gmc xgen-gmc~
 
