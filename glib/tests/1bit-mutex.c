@@ -21,6 +21,10 @@
 #include <glib.h>
 
 #if TEST_EMULATED_FUTEX
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+
   /* this is defined for the 1bit-mutex-emufutex test.
    *
    * we want to test the emulated futex even if futex(2) is available.
@@ -46,6 +50,8 @@
   #define G_BIT_LOCK_FORCE_FUTEX_EMULATION
 
   #include <glib/gbitlock.c>
+
+#pragma GCC diagnostic pop
 #endif
 
 volatile GThread *owners[LOCKS];
