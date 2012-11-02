@@ -11,22 +11,6 @@
 #include <string.h>
 #include <locale.h>
 
-static void
-g_date_debug_print (GDate* d)
-{
-  if (!d) g_print("NULL!\n");
-  else 
-    g_print("julian: %u (%s) DMY: %u %u %u (%s)\n",
-	    d->julian_days, 
-	    d->julian ? "valid" : "invalid",
-	    d->day,
-	    d->month,
-	    d->year,
-	    d->dmy ? "valid" : "invalid");
-  
-  fflush(stdout);
-}
-
 /* These only work in the POSIX locale, maybe C too - 
  * type POSIX into the program to check them
  */
