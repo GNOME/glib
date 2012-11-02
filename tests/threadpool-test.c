@@ -332,7 +332,7 @@ test_thread_idle_timeout (gpointer data)
 }
 
 static void
-test_thread_idle_time ()
+test_thread_idle_time (void)
 {
   guint limit = 50;
   guint interval = 10000;

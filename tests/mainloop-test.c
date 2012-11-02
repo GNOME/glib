@@ -54,7 +54,7 @@ struct _TestData
 
 static void cleanup_crawlers (GMainContext *context);
 
-gboolean
+static gboolean
 read_all (GIOChannel *channel, char *buf, gsize len)
 {
   gsize bytes_read = 0;
@@ -78,7 +78,7 @@ read_all (GIOChannel *channel, char *buf, gsize len)
   return TRUE;
 }
 
-gboolean
+static gboolean
 write_all (GIOChannel *channel, char *buf, gsize len)
 {
   gsize bytes_written = 0;
@@ -97,7 +97,7 @@ write_all (GIOChannel *channel, char *buf, gsize len)
   return TRUE;
 }
 
-gboolean
+static gboolean
 adder_callback (GIOChannel   *source,
 		GIOCondition  condition,
 		gpointer      data)
@@ -122,7 +122,7 @@ adder_callback (GIOChannel   *source,
   return TRUE;
 }
 
-gboolean
+static gboolean
 timeout_callback (gpointer data)
 {
   AddrData *addr_data = data;
@@ -132,7 +132,7 @@ timeout_callback (gpointer data)
   return TRUE;
 }
 
-gpointer
+static gpointer
 adder_thread (gpointer data)
 {
   GMainContext *context;
@@ -194,7 +194,7 @@ adder_thread (gpointer data)
   return NULL;
 }
 
-void
+static void
 io_pipe (GIOChannel **channels)
 {
   gint fds[2];
@@ -212,7 +212,7 @@ io_pipe (GIOChannel **channels)
   g_io_channel_set_close_on_unref (channels[1], TRUE);
 }
 
-void
+static void
 do_add (GIOChannel *in, gint a, gint b)
 {
   char buf1[32];
@@ -225,7 +225,7 @@ do_add (GIOChannel *in, gint a, gint b)
   write_all (in, buf2, 32);
 }
 
-gboolean
+static gboolean
 adder_response (GIOChannel   *source,
 		GIOCondition  condition,
 		gpointer      data)
@@ -261,7 +261,7 @@ adder_response (GIOChannel   *source,
   return TRUE;
 }
 
-void
+static void
 create_adder_thread (void)
 {
   GError *err = NULL;

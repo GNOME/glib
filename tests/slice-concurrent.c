@@ -37,7 +37,7 @@ struct ThreadData
   int      n_freed;
 } tdata[N_THREADS];
 
-void*
+static void *
 thread_func (void *arg)
 {
   struct ThreadData *td = arg;
@@ -45,18 +45,23 @@ thread_func (void *arg)
 /*   g_print ("Thread %d starting\n", td->thread_id); */
   for (i = 0; i < N_ALLOCS; i++)
     {
+      int bytes;
+      char *mem;
+      int f;
+      int t;
+
       if (rand() % (N_ALLOCS / 20) == 0)
 	g_print ("%c", 'a' - 1 + td->thread_id);
 
       /* allocate block of random size and randomly fill */
-      int   bytes = rand() % MAX_BLOCK_SIZE + 1;
-      char *mem = g_slice_alloc (bytes);
-      int f;
+      bytes = rand() % MAX_BLOCK_SIZE + 1;
+      mem = g_slice_alloc (bytes);
+
       for (f = 0; f < bytes; f++)
 	mem[f] = rand();
 
       /* associate block with random thread */
-      int t = rand() % N_THREADS;
+      t = rand() % N_THREADS;
       g_mutex_lock (&tdata[t].to_free_mutex);
       tdata[t].to_free[tdata[t].n_to_free] = mem;
       tdata[t].bytes_to_free[tdata[t].n_to_free] = bytes;
@@ -87,7 +92,7 @@ thread_func (void *arg)
 }
 
 int
-main()
+main (void)
 {
   int t;
 

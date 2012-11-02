@@ -112,13 +112,15 @@ int
 main (int   argc,
       char *argv[])
 {
-  GThread *threads[N_THREADS];
+  G_GNUC_UNUSED GThread *threads[N_THREADS];
   int i;
+  void *p;
+
   /* test simple initializer */
   initializer1();
   initializer1();
   /* test pointer initializer */
-  void *p = initializer2();
+  p = initializer2();
   g_assert (p == &dummy_value);
   p = initializer2();
   g_assert (p == &dummy_value);

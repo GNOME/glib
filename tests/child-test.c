@@ -51,7 +51,7 @@ gint alive;
 char *argv0;
 #endif
 
-GPid
+static GPid
 get_a_child (gint ttl)
 {
   GPid pid;
@@ -89,7 +89,7 @@ get_a_child (gint ttl)
 #endif /* G_OS_WIN32 */
 }
 
-gboolean
+static gboolean
 child_watch_callback (GPid pid, gint status, gpointer data)
 {
 #ifdef VERBOSE

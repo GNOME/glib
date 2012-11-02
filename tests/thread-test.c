@@ -277,7 +277,7 @@ test_g_static_rw_lock_thread (gpointer data)
 }
 
 static void
-test_g_static_rw_lock ()
+test_g_static_rw_lock (void)
 {
   GThread *threads[THREADS];
   guint i;
@@ -368,8 +368,8 @@ test_g_thread_once (void)
 }
 
 /* run all the tests */
-void
-run_all_tests()
+static void
+run_all_tests (void)
 {
   test_g_mutex ();
   test_g_static_rec_mutex ();
