@@ -3552,7 +3552,7 @@ test_hashing (void)
 }
 
 static void
-test_gv_byteswap ()
+test_gv_byteswap (void)
 {
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
 # define native16(x)  x, 0
