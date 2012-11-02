@@ -64,8 +64,8 @@ struct _BaseObjectClass
   GObjectClass parent_class;
 };
 
-static GType base_object_get_type ();
-static GType derived_object_get_type ();
+static GType base_object_get_type (void);
+static GType derived_object_get_type (void);
 
 /*
  * DerivedObject, the child class of DerivedObject

@@ -442,7 +442,7 @@ test_construction_setup (PerformanceTest *test)
   struct ConstructionTest *data;
 
   data = g_new0 (struct ConstructionTest, 1);
-  data->type = ((GType (*)())test->extra_data)();
+  data->type = ((GType (*)(void))test->extra_data)();
 
   return data;
 }
