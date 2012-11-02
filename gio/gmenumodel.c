@@ -195,7 +195,9 @@ typedef struct
 
 typedef GMenuLinkIterClass GMenuLinkHashIterClass;
 
-static GType g_menu_link_hash_iter_get_type (void);
+/* Strictly speaking, this is (unintentionally) ABI now, but don't use it
+ * outside GIO. bgo#687441 */
+GType g_menu_link_hash_iter_get_type (void);
 
 G_DEFINE_TYPE (GMenuLinkHashIter, g_menu_link_hash_iter, G_TYPE_MENU_LINK_ITER)
 
@@ -251,7 +253,9 @@ typedef struct
 
 typedef GMenuAttributeIterClass GMenuAttributeHashIterClass;
 
-static GType g_menu_attribute_hash_iter_get_type (void);
+/* Strictly speaking, this is (unintentionally) ABI now, but don't use it
+ * outside GIO. bgo#687441 */
+GType g_menu_attribute_hash_iter_get_type (void);
 
 G_DEFINE_TYPE (GMenuAttributeHashIter, g_menu_attribute_hash_iter, G_TYPE_MENU_ATTRIBUTE_ITER)
 
