@@ -42,6 +42,8 @@ typedef struct _TypeNameClass {
   GObjectClass parent_parent;
 } TypeNameClass;
 
+GType           type_name_get_type          (void);
+
 MY_DEFINE_TYPE (TypeName, type_name, G_TYPE_OBJECT)
 
 static void     type_name_init              (TypeName      *self)

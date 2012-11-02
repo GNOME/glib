@@ -40,6 +40,7 @@ struct _TestIfaceClass
   guint val;
 };
 
+static GType test_iface_get_type (void);
 #define TEST_TYPE_IFACE           (test_iface_get_type ())
 #define TEST_IFACE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TEST_TYPE_IFACE, TestIfaceClass))
 typedef struct _TestIface      TestIface;
@@ -61,6 +62,7 @@ test_iface_base_init (TestIfaceClass *iface)
 {
 }
 
+GType dynamic_object_get_type (void);
 #define DYNAMIC_OBJECT_TYPE (dynamic_object_get_type ())
 
 typedef GObject DynamicObject;

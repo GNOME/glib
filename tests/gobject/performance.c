@@ -150,6 +150,7 @@ run_test (PerformanceTest *test)
  * with no properties, no signals, implementing no interfaces
  *************************************************************/
 
+static GType simple_object_get_type (void);
 #define SIMPLE_TYPE_OBJECT        (simple_object_get_type ())
 typedef struct _SimpleObject      SimpleObject;
 typedef struct _SimpleObjectClass   SimpleObjectClass;
@@ -201,6 +202,12 @@ struct _TestIfaceClass
   void (*method) (TestIface *obj);
 };
 
+static GType test_iface1_get_type (void);
+static GType test_iface2_get_type (void);
+static GType test_iface3_get_type (void);
+static GType test_iface4_get_type (void);
+static GType test_iface5_get_type (void);
+
 #define TEST_TYPE_IFACE1 (test_iface1_get_type ())
 #define TEST_TYPE_IFACE2 (test_iface2_get_type ())
 #define TEST_TYPE_IFACE3 (test_iface3_get_type ())
@@ -218,6 +225,7 @@ static DEFINE_IFACE (TestIface5, test_iface5,  NULL, NULL)
  * construct properties, signals and implementing an interface.
  *************************************************************/
 
+static GType complex_object_get_type (void);
 #define COMPLEX_TYPE_OBJECT        (complex_object_get_type ())
 typedef struct _ComplexObject      ComplexObject;
 typedef struct _ComplexObjectClass ComplexObjectClass;

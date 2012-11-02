@@ -44,6 +44,7 @@ static gboolean toggle_ref3_strengthened;
 /*
  * TestObject, a parent class for TestObject
  */
+static GType test_object_get_type (void);
 #define TEST_TYPE_OBJECT          (test_object_get_type ())
 typedef struct _TestObject        TestObject;
 typedef struct _TestObjectClass   TestObjectClass;

@@ -86,7 +86,7 @@ test_signal1_accumulator (GSignalInvocationHint *ihint,
   return TRUE;
 }
 
-gchar*
+static gchar *
 test_object_signal1_callback_before (TestObject *tobject,
 				     gint        param,
 				     gpointer    data)
@@ -94,14 +94,14 @@ test_object_signal1_callback_before (TestObject *tobject,
   return g_strdup ("<before>");
 }
 
-gchar*
+static gchar *
 test_object_real_signal1 (TestObject *tobject,
 			  gint        param)
 {
   return g_strdup ("<default>");
 }
 
-gchar*
+static gchar *
 test_object_signal1_callback_after (TestObject *tobject,
 				    gint        param,
 				    gpointer    data)
@@ -109,7 +109,7 @@ test_object_signal1_callback_after (TestObject *tobject,
   return g_strdup ("<after>");
 }
 
-gboolean
+static gboolean
 test_object_signal2_callback_before (TestObject *tobject,
 				     gint        param)
 {
@@ -125,7 +125,7 @@ test_object_signal2_callback_before (TestObject *tobject,
   return FALSE;
 }
 
-gboolean
+static gboolean
 test_object_real_signal2 (TestObject *tobject,
 			  gint        param)
 {
@@ -141,7 +141,7 @@ test_object_real_signal2 (TestObject *tobject,
   return FALSE;
 }
 
-gboolean
+static gboolean
 test_object_signal2_callback_after (TestObject *tobject,
 				     gint        param)
 {

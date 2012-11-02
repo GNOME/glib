@@ -99,6 +99,12 @@ struct _TestIfaceClass
   guint val;
 };
 
+static GType test_iface1_get_type (void);
+static GType test_iface2_get_type (void);
+static GType test_iface3_get_type (void);
+static GType test_iface4_get_type (void);
+static GType test_iface5_get_type (void);
+
 #define TEST_TYPE_IFACE1 (test_iface1_get_type ())
 #define TEST_TYPE_IFACE2 (test_iface2_get_type ())
 #define TEST_TYPE_IFACE3 (test_iface3_get_type ())

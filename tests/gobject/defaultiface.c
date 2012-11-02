@@ -48,6 +48,7 @@ struct _TestStaticIfaceClass
   guint val;
 };
 
+GType test_static_iface_get_type (void);
 #define TEST_TYPE_STATIC_IFACE (test_static_iface_get_type ())
 
 static void

@@ -29,6 +29,7 @@ typedef struct {
   GObjectClass parent_class;
 } MySingletonClass;
 
+static GType my_singleton_get_type (void);
 #define MY_TYPE_SINGLETON         (my_singleton_get_type ())
 #define MY_SINGLETON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), MY_TYPE_SINGLETON, MySingleton))
 #define MY_IS_SINGLETON(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SINGLETON))
