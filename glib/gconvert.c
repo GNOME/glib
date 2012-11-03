@@ -1496,15 +1496,15 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * @utf8string:    a UTF-8 encoded string.
  * @len:           the length of the string, or -1 if the string is
  *                 nul-terminated.
- * @bytes_read:    location to store the number of bytes in the
- *                 input string that were successfully converted, or %NULL.
+ * @bytes_read:    (out) (allow-none): location to store the number of bytes in
+ *                 the input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
+ * @bytes_written: (out): the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
  * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
@@ -1514,7 +1514,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * on other platforms, this function indirectly depends on the 
  * <link linkend="setlocale">current locale</link>.
  * 
- * Return value: The converted string, or %NULL on an error.
+ * Return value: (array length=bytes_written) (element-type guint8) (transfer full):
+ *               The converted string, or %NULL on an error.
  **/
 gchar*
 g_filename_from_utf8 (const gchar *utf8string,
