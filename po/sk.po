@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-11-02 13:23+0000\n"
-"PO-Revision-Date: 2012-11-03 15:47+0000\n"
+"PO-Revision-Date: 2012-11-03 15:53+0000\n"
 "Last-Translator: Peter Mráz <etkinator@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -258,7 +258,7 @@ msgstr "Chyba pri spúšťaní príkazového riadka „%s“: "
 #: ../gio/gdbusaddress.c:1296
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr "(Toto okno zatvoríte napísaním zadaním znaku)\n"
+msgstr "(Toto okno zatvoríte zadaním ľubovolného znaku)\n"
 
 #: ../gio/gdbusaddress.c:1419
 #, c-format
