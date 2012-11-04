@@ -238,8 +238,8 @@ struct _GSignalInvocationHint
  * @signal_flags: The signal flags as passed in to g_signal_new().
  * @return_type: The return type for user callbacks.
  * @n_params: The number of parameters that user callbacks take.
- * @param_types: The individual parameter types for user callbacks, note that the
- *  effective callback signature is:
+ * @param_types: (array length=n_params): The individual parameter types for
+ *  user callbacks, note that the effective callback signature is:
  *  <programlisting>
  *  @return_type callback (#gpointer     data1,
  *  [param_types param_names,]
