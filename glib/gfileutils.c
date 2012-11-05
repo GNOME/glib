@@ -1310,7 +1310,7 @@ g_file_set_contents (const gchar  *filename,
  * get_tmp_file based on the mkstemp implementation from the GNU C library.
  * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
  */
-typedef gint (*GTmpFileCallback) (gchar *, gint, gint);
+typedef gint (*GTmpFileCallback) (const gchar *, gint, gint);
 
 static gint
 get_tmp_file (gchar            *tmpl,
@@ -1375,13 +1375,27 @@ get_tmp_file (gchar            *tmpl,
   return -1;
 }
 
+/* Some GTmpFileCallback implementations.
+ *
+ * Note: we cannot use open() or g_open() directly because even though
+ * they appear compatible, they may be vararg functions and calling
+ * varargs functions through a non-varargs type is undefined.
+ */
 static gint
-wrap_mkdir (gchar *tmpl,
-            int    flags G_GNUC_UNUSED,
-            int    mode)
+wrap_g_mkdir (const gchar *filename,
+              int          flags G_GNUC_UNUSED,
+              int          mode)
 {
   /* tmpl is in UTF-8 on Windows, thus use g_mkdir() */
-  return g_mkdir (tmpl, mode);
+  return g_mkdir (filename, mode);
+}
+
+static gint
+wrap_g_open (const gchar *filename,
+                int          flags,
+                int          mode)
+{
+  return g_open (filename, flags, mode);
 }
 
 /**
@@ -1411,7 +1425,7 @@ gchar *
 g_mkdtemp_full (gchar *tmpl,
                 gint   mode)
 {
-  if (get_tmp_file (tmpl, wrap_mkdir, 0, mode) == -1)
+  if (get_tmp_file (tmpl, wrap_g_mkdir, 0, mode) == -1)
     return NULL;
   else
     return tmpl;
@@ -1477,7 +1491,7 @@ g_mkstemp_full (gchar *tmpl,
                 gint   mode)
 {
   /* tmpl is in UTF-8 on Windows, thus use g_open() */
-  return get_tmp_file (tmpl, (GTmpFileCallback) g_open,
+  return get_tmp_file (tmpl, wrap_g_open,
                        flags | O_CREAT | O_EXCL, mode);
 }
 
@@ -1627,7 +1641,7 @@ g_file_open_tmp (const gchar  *tmpl,
   gint result;
 
   result = g_get_tmp_name (tmpl, &fulltemplate,
-                           (GTmpFileCallback) g_open,
+                           wrap_g_open,
                            O_CREAT | O_EXCL | O_RDWR | O_BINARY,
                            0600,
                            error);
@@ -1673,7 +1687,7 @@ g_dir_make_tmp (const gchar  *tmpl,
 {
   gchar *fulltemplate;
 
-  if (g_get_tmp_name (tmpl, &fulltemplate, wrap_mkdir, 0, 0700, error) == -1)
+  if (g_get_tmp_name (tmpl, &fulltemplate, wrap_g_mkdir, 0, 0700, error) == -1)
     return NULL;
   else
     return fulltemplate;
@@ -2597,13 +2611,21 @@ g_file_get_contents (const gchar  *filename,
 
 #undef g_mkstemp
 
+static gint
+wrap_libc_open (const gchar *filename,
+                int          flags,
+                int          mode)
+{
+  return open (filename, flags, mode);
+}
+
 gint
 g_mkstemp (gchar *tmpl)
 {
   /* This is the backward compatibility system codepage version,
    * thus use normal open().
    */
-  return get_tmp_file (tmpl, (GTmpFileCallback) open,
+  return get_tmp_file (tmpl, wrap_libc_open,
 		       O_RDWR | O_CREAT | O_EXCL, 0600);
 }
 
