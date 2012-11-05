@@ -2321,6 +2321,11 @@ g_format_size_for_display (goffset size)
       if (size < (goffset) MEBIBYTE_FACTOR)
         {
           displayed_size = (gdouble) size / (gdouble) KIBIBYTE_FACTOR;
+          /* Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
+           * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
+           * compatibility.  Users will not see this string unless a program is using this deprecated function.
+           * Please translate as literally as possible.
+           */
           return g_strdup_printf (_("%.1f KB"), displayed_size);
         }
       else if (size < (goffset) GIBIBYTE_FACTOR)
