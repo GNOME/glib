@@ -204,12 +204,12 @@ do_lookup_records (GTask         *task,
 {
   LookupRecordsData *lrd = task_data;
   GList *targets;
+  GError *error = NULL;
 #if defined(G_OS_UNIX)
   gint len = 512;
   gint herr;
   GByteArray *answer;
   gint rrtype;
-  GError *error = NULL;
 
   rrtype = _g_resolver_record_type_to_rrtype (lrd->record_type);
   answer = g_byte_array_new ();
