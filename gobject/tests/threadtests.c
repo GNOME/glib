@@ -25,6 +25,8 @@
 
 static volatile int mtsafe_call_counter = 0; /* multi thread safe call counter */
 static int          unsafe_call_counter = 0; /* single-threaded call counter */
+static GCond sync_cond;
+static GMutex sync_mutex;
 
 #define NUM_COUNTER_INCREMENTS 100000
 
@@ -52,10 +54,6 @@ typedef GTypeInterface MyFace1Interface;
 static GType my_face1_get_type (void);
 G_DEFINE_INTERFACE (MyFace1, my_face1, G_TYPE_OBJECT);
 static void my_face1_default_init (MyFace1Interface *iface) { call_counter_init (iface); }
-typedef GTypeInterface MyFace2Interface;
-static GType my_face2_get_type (void);
-G_DEFINE_INTERFACE (MyFace2, my_face2, G_TYPE_OBJECT);
-static void my_face2_default_init (MyFace2Interface *iface) { call_counter_init (iface); }
 
 /* define 3 test objects, adding interfaces 0 & 1, and adding interface 2 after class initialization */
 typedef GObject         MyTester0;
@@ -69,6 +67,14 @@ static void my_tester0_init (MyTester0*t) {}
 static void my_tester0_class_init (MyTester0Class*c) { call_counter_init (c); }
 typedef GObject         MyTester1;
 typedef GObjectClass    MyTester1Class;
+
+/* Disabled for now (see https://bugzilla.gnome.org/show_bug.cgi?id=687659) */
+#if 0
+typedef GTypeInterface MyFace2Interface;
+static GType my_face2_get_type (void);
+G_DEFINE_INTERFACE (MyFace2, my_face2, G_TYPE_OBJECT);
+static void my_face2_default_init (MyFace2Interface *iface) { call_counter_init (iface); }
+
 static GType my_tester1_get_type (void);
 G_DEFINE_TYPE_WITH_CODE (MyTester1, my_tester1, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (my_face0_get_type(), interface_per_class_init);
@@ -85,9 +91,6 @@ G_DEFINE_TYPE_WITH_CODE (MyTester2, my_tester2, G_TYPE_OBJECT,
                          );
 static void my_tester2_init (MyTester2*t) {}
 static void my_tester2_class_init (MyTester2Class*c) { call_counter_init (c); }
-
-static GCond sync_cond;
-static GMutex sync_mutex;
 
 static gpointer
 tester_init_thread (gpointer data)
@@ -140,6 +143,7 @@ test_threaded_class_init (void)
   /* ensure non-corrupted counter updates */
   g_assert_cmpint (g_atomic_int_get (&mtsafe_call_counter), ==, unsafe_call_counter);
 }
+#endif
 
 typedef struct {
   GObject parent;
@@ -337,7 +341,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/GObject/threaded-class-init", test_threaded_class_init);
+  /* g_test_add_func ("/GObject/threaded-class-init", test_threaded_class_init); */
   g_test_add_func ("/GObject/threaded-object-init", test_threaded_object_init);
   g_test_add_func ("/GObject/threaded-weak-ref", test_threaded_weak_ref);
 
