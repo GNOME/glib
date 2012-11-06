@@ -88,6 +88,7 @@ test_set_buffer_size (void)
 {
   GInputStream *base;
   GInputStream *in;
+  guint bufsize_prop;
   gsize size, bufsize;
 
   base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
@@ -105,8 +106,8 @@ test_set_buffer_size (void)
   g_buffered_input_stream_set_buffer_size (G_BUFFERED_INPUT_STREAM (in), 2);
   size = g_buffered_input_stream_get_buffer_size (G_BUFFERED_INPUT_STREAM (in));
   g_assert_cmpint (size, ==, bufsize);
-  g_object_get (in, "buffer-size", &size, NULL);
-  g_assert_cmpint (size, ==, bufsize);
+  g_object_get (in, "buffer-size", &bufsize_prop, NULL);
+  g_assert_cmpint (bufsize_prop, ==, bufsize);
 
   g_object_unref (in);
 
