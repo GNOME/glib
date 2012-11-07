@@ -329,6 +329,8 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 		       g_strerror (errsv));
 	  goto err_out;
 	}
+
+      g_clear_pointer (&file->priv->tmp_filename, g_free);
     }
   
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
@@ -368,6 +370,9 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
   /* A simple try to close the fd in case we fail before the actual close */
   close (file->priv->fd);
 #endif
+  if (file->priv->tmp_filename)
+    g_unlink (file->priv->tmp_filename);
+
   return FALSE;
 }
 

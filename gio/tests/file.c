@@ -466,6 +466,35 @@ test_create_delete (gconstpointer d)
   g_free (data);
 }
 
+static const gchar *replace_data =
+    "/**\n"
+    " * g_file_replace_contents_async:\n"
+    " * @file: input #GFile.\n"
+    " * @contents: string of contents to replace the file with.\n"
+    " * @length: the length of @contents in bytes.\n"
+    " * @etag: (allow-none): a new <link linkend=\"gfile-etag\">entity tag</link> for the @file, or %NULL\n"
+    " * @make_backup: %TRUE if a backup should be created.\n"
+    " * @flags: a set of #GFileCreateFlags.\n"
+    " * @cancellable: optional #GCancellable object, %NULL to ignore.\n"
+    " * @callback: a #GAsyncReadyCallback to call when the request is satisfied\n"
+    " * @user_data: the data to pass to callback function\n"
+    " * \n"
+    " * Starts an asynchronous replacement of @file with the given \n"
+    " * @contents of @length bytes. @etag will replace the document's\n"
+    " * current entity tag.\n"
+    " * \n"
+    " * When this operation has completed, @callback will be called with\n"
+    " * @user_user data, and the operation can be finalized with \n"
+    " * g_file_replace_contents_finish().\n"
+    " * \n"
+    " * If @cancellable is not %NULL, then the operation can be cancelled by\n"
+    " * triggering the cancellable object from another thread. If the operation\n"
+    " * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. \n"
+    " * \n"
+    " * If @make_backup is %TRUE, this function will attempt to \n"
+    " * make a backup of @file.\n"
+    " **/\n";
+
 typedef struct
 {
   GFile *file;
@@ -549,34 +578,7 @@ test_replace_load (void)
 
   data = g_new0 (ReplaceLoadData, 1);
   data->again = TRUE;
-  data->data =
-    "/**\n"
-    " * g_file_replace_contents_async:\n"
-    " * @file: input #GFile.\n"
-    " * @contents: string of contents to replace the file with.\n"
-    " * @length: the length of @contents in bytes.\n"
-    " * @etag: (allow-none): a new <link linkend=\"gfile-etag\">entity tag</link> for the @file, or %NULL\n"
-    " * @make_backup: %TRUE if a backup should be created.\n"
-    " * @flags: a set of #GFileCreateFlags.\n"
-    " * @cancellable: optional #GCancellable object, %NULL to ignore.\n"
-    " * @callback: a #GAsyncReadyCallback to call when the request is satisfied\n"
-    " * @user_data: the data to pass to callback function\n"
-    " * \n"
-    " * Starts an asynchronous replacement of @file with the given \n"
-    " * @contents of @length bytes. @etag will replace the document's\n"
-    " * current entity tag.\n"
-    " * \n"
-    " * When this operation has completed, @callback will be called with\n"
-    " * @user_user data, and the operation can be finalized with \n"
-    " * g_file_replace_contents_finish().\n"
-    " * \n"
-    " * If @cancellable is not %NULL, then the operation can be cancelled by\n"
-    " * triggering the cancellable object from another thread. If the operation\n"
-    " * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. \n"
-    " * \n"
-    " * If @make_backup is %TRUE, this function will attempt to \n"
-    " * make a backup of @file.\n"
-    " **/\n";
+  data->data = replace_data;
 
   data->file = g_file_new_tmp ("g_file_replace_load_XXXXXX",
 			       &iostream, NULL);
@@ -606,6 +608,81 @@ test_replace_load (void)
   g_object_unref (data->file);
   g_free (data);
   free (path);
+}
+
+static void
+test_replace_cancel (void)
+{
+  GFile *tmpdir, *file;
+  GFileOutputStream *ostream;
+  GFileEnumerator *fenum;
+  GFileInfo *info;
+  GCancellable *cancellable;
+  gchar *path;
+  gsize nwrote;
+  GError *error = NULL;
+
+  g_test_bug ("629301");
+
+  path = g_dir_make_tmp ("g_file_replace_cancel_XXXXXX", &error);
+  g_assert_no_error (error);
+  tmpdir = g_file_new_for_path (path);
+  g_free (path);
+
+  file = g_file_get_child (tmpdir, "file");
+  g_file_replace_contents (file,
+                           replace_data,
+                           strlen (replace_data),
+                           NULL, FALSE, 0, NULL,
+                           NULL, &error);
+  g_assert_no_error (error);
+
+  ostream = g_file_replace (file, NULL, TRUE, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_write_all (G_OUTPUT_STREAM (ostream),
+                             replace_data, strlen (replace_data),
+                             &nwrote, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (nwrote, ==, strlen (replace_data));
+
+  /* At this point there should be two files; the original and the
+   * temporary.
+   */
+  fenum = g_file_enumerate_children (tmpdir, NULL, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  info = g_file_enumerator_next_file (fenum, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (info != NULL);
+  g_object_unref (info);
+  info = g_file_enumerator_next_file (fenum, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (info != NULL);
+  g_object_unref (info);
+
+  g_file_enumerator_close (fenum, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (fenum);
+
+  /* Make sure the temporary gets deleted even if we cancel. */
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+  g_output_stream_close (G_OUTPUT_STREAM (ostream), cancellable, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+
+  g_object_unref (cancellable);
+  g_object_unref (ostream);
+
+  g_file_delete (file, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (file);
+
+  /* This will only succeed if the temp file was deleted. */
+  g_file_delete (tmpdir, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (tmpdir);
 }
 
 static void
@@ -655,6 +732,8 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_bug_base ("http://bugzilla.gnome.org/");
+
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/parent", test_parent);
   g_test_add_func ("/file/child", test_child);
@@ -665,6 +744,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/file/async-create-delete/25", GINT_TO_POINTER (25), test_create_delete);
   g_test_add_data_func ("/file/async-create-delete/4096", GINT_TO_POINTER (4096), test_create_delete);
   g_test_add_func ("/file/replace-load", test_replace_load);
+  g_test_add_func ("/file/replace-cancel", test_replace_cancel);
   g_test_add_func ("/file/async-delete", test_async_delete);
 
   return g_test_run ();
