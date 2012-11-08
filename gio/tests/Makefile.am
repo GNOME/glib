@@ -63,6 +63,7 @@ TEST_PROGS +=	 		\
 	inet-address		\
 	permission		\
 	task			\
+	credentials		\
 	$(NULL)
 
 if HAVE_DBUS_DAEMON
