@@ -45,6 +45,13 @@
 #include <errno.h>
 #endif
 
+#if (defined(__linux__) || \
+  defined(__FreeBSD__) || \
+  defined(__FreeBSD_kernel__) || \
+  defined(__OpenBSD__))
+#define SHOULD_HAVE_CREDENTIALS_PASSING
+#endif
+
 #include "gdbus-tests.h"
 
 #include "gdbus-example-objectmanager-generated.h"
@@ -302,6 +309,20 @@ on_new_connection (GDBusServer *server,
   //         g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
   g_ptr_array_add (data->current_connections, g_object_ref (connection));
+
+#ifdef SHOULD_HAVE_CREDENTIALS_PASSING
+    {
+      GCredentials *credentials;
+
+      credentials = g_dbus_connection_get_peer_credentials (connection);
+
+      g_assert (credentials != NULL);
+      g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
+                        getuid ());
+      g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
+                        getpid ());
+    }
+#endif
 
   /* export object on the newly established connection */
   error = NULL;
