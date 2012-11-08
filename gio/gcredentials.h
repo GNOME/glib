@@ -64,6 +64,9 @@ gboolean         g_credentials_is_same_user       (GCredentials    *credentials,
                                                    GError         **error);
 
 #ifdef G_OS_UNIX
+GLIB_AVAILABLE_IN_2_36
+pid_t            g_credentials_get_unix_pid       (GCredentials    *credentials,
+                                                   GError         **error);
 uid_t            g_credentials_get_unix_user      (GCredentials    *credentials,
                                                    GError         **error);
 gboolean         g_credentials_set_unix_user      (GCredentials    *credentials,

@@ -442,6 +442,48 @@ g_credentials_get_unix_user (GCredentials    *credentials,
 }
 
 /**
+ * g_credentials_get_unix_pid:
+ * @credentials: A #GCredentials
+ * @error: Return location for error or %NULL.
+ *
+ * Tries to get the UNIX process identifier from @credentials. This
+ * method is only available on UNIX platforms.
+ *
+ * This operation can fail if #GCredentials is not supported on the
+ * OS or if the native credentials type does not contain information
+ * about the UNIX process ID.
+ *
+ * Returns: The UNIX process ID, or -1 if @error is set.
+ *
+ * Since: 2.36
+ */
+pid_t
+g_credentials_get_unix_pid (GCredentials    *credentials,
+                            GError         **error)
+{
+  pid_t ret;
+
+  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
+#ifdef __linux__
+  ret = credentials->native.pid;
+#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+  ret = credentials->native.cmcred_pid;
+#elif defined(__OpenBSD__)
+  ret = credentials->native.pid;
+#else
+  ret = -1;
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("GCredentials does not contain a process ID on this OS"));
+#endif
+
+  return ret;
+}
+
+/**
  * g_credentials_set_unix_user:
  * @credentials: A #GCredentials.
  * @uid: The UNIX user identifier to set.
@@ -488,4 +530,5 @@ g_credentials_set_unix_user (GCredentials    *credentials,
 
   return ret;
 }
+
 #endif /* G_OS_UNIX */

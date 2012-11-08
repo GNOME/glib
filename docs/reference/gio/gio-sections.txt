@@ -2487,6 +2487,7 @@ g_credentials_set_native
 g_credentials_is_same_user
 g_credentials_get_unix_user
 g_credentials_set_unix_user
+g_credentials_get_unix_pid
 <SUBSECTION Standard>
 G_CREDENTIALS
 G_IS_CREDENTIALS
