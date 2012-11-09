@@ -1734,33 +1734,6 @@ try_make_relative (const char *path,
   return g_strdup (path);
 }
 
-static char *
-escape_trash_name (char *name)
-{
-  GString *str;
-  const gchar hex[16] = "0123456789ABCDEF";
-  
-  str = g_string_new ("");
-
-  while (*name != 0)
-    {
-      char c;
-
-      c = *name++;
-
-      if (g_ascii_isprint (c))
-	g_string_append_c (str, c);
-      else
-	{
-          g_string_append_c (str, '%');
-          g_string_append_c (str, hex[((guchar)c) >> 4]);
-          g_string_append_c (str, hex[((guchar)c) & 0xf]);
-	}
-    }
-
-  return g_string_free (str, FALSE);
-}
-
 gboolean
 _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
 {
@@ -2087,7 +2060,7 @@ g_local_file_trash (GFile         *file,
     original_name = g_strdup (local->filename);
   else
     original_name = try_make_relative (local->filename, topdir);
-  original_name_escaped = escape_trash_name (original_name);
+  original_name_escaped = g_uri_escape_string (original_name, "/", FALSE);
   
   g_free (original_name);
   g_free (topdir);
