@@ -77,7 +77,8 @@ struct _GBytes
 
 /**
  * g_bytes_new:
- * @data: (array length=size): the data to be used for the bytes
+ * @data: (transfer none) (array length=size) (element-type guint8):
+ *        the data to be used for the bytes
  * @size: the size of @data
  *
  * Creates a new #GBytes from @data.
@@ -97,7 +98,8 @@ g_bytes_new (gconstpointer data,
 
 /**
  * g_bytes_new_take:
- * @data: (transfer full) (array length=size): the data to be used for the bytes
+ * @data: (transfer full) (array length=size) (element-type guint8):
+          the data to be used for the bytes
  * @size: the size of @data
  *
  * Creates a new #GBytes from @data.
@@ -124,8 +126,9 @@ g_bytes_new_take (gpointer data,
 
 
 /**
- * g_bytes_new_static:
- * @data: (array length=size): the data to be used for the bytes
+ * g_bytes_new_static: (skip)
+ * @data: (transfer full) (array length=size) (element-type guint8):
+          the data to be used for the bytes
  * @size: the size of @data
  *
  * Creates a new #GBytes from static data.
@@ -218,7 +221,8 @@ g_bytes_new_from_bytes (GBytes  *bytes,
  *
  * This function will always return the same pointer for a given #GBytes.
  *
- * Returns: (array length=size) (type guint8): a pointer to the byte data
+ * Returns: (transfer none) (array length=size) (type guint8): a pointer to the
+ *          byte data
  *
  * Since: 2.32
  */
