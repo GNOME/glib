@@ -532,6 +532,7 @@ g_unix_output_stream_pollable_is_writable (GPollableOutputStream *stream)
 
   poll_fd.fd = unix_stream->priv->fd;
   poll_fd.events = G_IO_OUT;
+  poll_fd.revents = 0;
 
   do
     result = g_poll (&poll_fd, 1, 0);

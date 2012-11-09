@@ -577,6 +577,7 @@ g_unix_input_stream_pollable_is_readable (GPollableInputStream *stream)
 
   poll_fd.fd = unix_stream->priv->fd;
   poll_fd.events = G_IO_IN;
+  poll_fd.revents = 0;
 
   do
     result = g_poll (&poll_fd, 1, 0);
