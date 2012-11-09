@@ -70,6 +70,9 @@ write_callback (gpointer user_data)
   nwrote = g_output_stream_write (out, buf, 2, NULL, &error);
   g_assert_no_error (error);
   g_assert_cmpint (nwrote, ==, 2);
+/* Give the pipe a few ticks to propagate the write for sockets. On my
+ * iMac i7, 40 works, 30 doesn't. */
+  g_usleep (80L);
 
   check_source_readability_callback (GINT_TO_POINTER (TRUE));
 

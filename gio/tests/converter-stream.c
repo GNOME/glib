@@ -1016,6 +1016,12 @@ test_converter_pollable (void)
 	  socket_out = NULL;
 	}
 
+      /* Wait a few ticks to check for the pipe to propagate the
+       * write. Finesses the race condition in the following test,
+       * where is_readable fails because the write hasn't propagated,
+       * but the read then succeeds because it has. */
+      g_usleep (80L);
+
       is_readable = g_pollable_input_stream_is_readable (pollable_in);
       res = g_pollable_input_stream_read_nonblocking (pollable_in,
 						      inptr, 1,

@@ -3388,6 +3388,7 @@ g_socket_condition_check (GSocket      *socket,
     gint result;
     poll_fd.fd = socket->priv->fd;
     poll_fd.events = condition;
+    poll_fd.revents = 0;
 
     do
       result = g_poll (&poll_fd, 1, 0);
