@@ -197,13 +197,19 @@ free_lookup_records_data (LookupRecordsData *lrd)
 }
 
 static void
+free_records (GList *records)
+{
+  g_list_free_full (records, (GDestroyNotify) g_variant_unref);
+}
+
+static void
 do_lookup_records (GTask         *task,
                    gpointer       source_object,
                    gpointer       task_data,
                    GCancellable  *cancellable)
 {
   LookupRecordsData *lrd = task_data;
-  GList *targets;
+  GList *records;
   GError *error = NULL;
 #if defined(G_OS_UNIX)
   gint len = 512;
@@ -229,7 +235,7 @@ do_lookup_records (GTask         *task,
   }
 
   herr = h_errno;
-  targets = _g_resolver_records_from_res_query (lrd->rrname, rrtype, answer->data, len, herr, &error);
+  records = _g_resolver_records_from_res_query (lrd->rrname, rrtype, answer->data, len, herr, &error);
   g_byte_array_free (answer, TRUE);
 
 #elif defined(G_OS_WIN32)
@@ -239,15 +245,14 @@ do_lookup_records (GTask         *task,
 
   dnstype = _g_resolver_record_type_to_dnstype (lrd->record_type);
   status = DnsQuery_A (lrd->rrname, dnstype, DNS_QUERY_STANDARD, NULL, &results, NULL);
-  targets = _g_resolver_records_from_DnsQuery (lrd->rrname, dnstype, status, results, &error);
+  records = _g_resolver_records_from_DnsQuery (lrd->rrname, dnstype, status, results, &error);
   if (results != NULL)
     DnsRecordListFree (results, DnsFreeRecordList);
 #endif
 
-  if (targets)
+  if (records)
     {
-      g_task_return_pointer (task, targets,
-                             (GDestroyNotify)g_resolver_free_targets);
+      g_task_return_pointer (task, records, (GDestroyNotify) free_records);
     }
   else
     g_task_return_error (task, error);
@@ -261,7 +266,7 @@ lookup_records (GResolver              *resolver,
                 GError                **error)
 {
   GTask *task;
-  GList *targets;
+  GList *records;
   LookupRecordsData *lrd;
 
   task = g_task_new (resolver, cancellable, NULL, NULL);
@@ -273,10 +278,10 @@ lookup_records (GResolver              *resolver,
 
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_records);
-  targets = g_task_propagate_pointer (task, error);
+  records = g_task_propagate_pointer (task, error);
   g_object_unref (task);
 
-  return targets;
+  return records;
 }
 
 static void
