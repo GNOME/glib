@@ -149,6 +149,9 @@ enum
   PROP_MULTICAST_TTL
 };
 
+/* Size of the receiver cache for g_socket_receive_from() */
+#define RECV_ADDR_CACHE_SIZE 8
+
 struct _GSocketPrivate
 {
   GSocketFamily   family;
@@ -174,6 +177,13 @@ struct _GSocketPrivate
   int             selected_events;
   GList          *requested_conditions; /* list of requested GIOCondition * */
 #endif
+
+  struct {
+    GSocketAddress *addr;
+    struct sockaddr *native;
+    gint native_len;
+    guint64 last_used;
+  } recv_addr_cache[RECV_ADDR_CACHE_SIZE];
 };
 
 static int
@@ -718,6 +728,7 @@ static void
 g_socket_finalize (GObject *object)
 {
   GSocket *socket = G_SOCKET (object);
+  gint i;
 
   g_clear_error (&socket->priv->construct_error);
 
@@ -737,6 +748,15 @@ g_socket_finalize (GObject *object)
 
   g_assert (socket->priv->requested_conditions == NULL);
 #endif
+
+  for (i = 0; i < RECV_ADDR_CACHE_SIZE; i++)
+    {
+      if (socket->priv->recv_addr_cache[i].addr)
+        {
+          g_object_unref (socket->priv->recv_addr_cache[i].addr);
+          g_free (socket->priv->recv_addr_cache[i].native);
+        }
+    }
 
   if (G_OBJECT_CLASS (g_socket_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_socket_parent_class)->finalize) (object);
@@ -3898,6 +3918,60 @@ g_socket_send_message (GSocket                *socket,
 #endif
 }
 
+static GSocketAddress *
+cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len)
+{
+  GSocketAddress *saddr;
+  gint i;
+  guint64 oldest_time = G_MAXUINT64;
+  gint oldest_index = 0;
+
+  if (native_len <= 0)
+    return NULL;
+
+  saddr = NULL;
+  for (i = 0; i < RECV_ADDR_CACHE_SIZE; i++)
+    {
+      GSocketAddress *tmp = socket->priv->recv_addr_cache[i].addr;
+      gpointer tmp_native = socket->priv->recv_addr_cache[i].native;
+      gint tmp_native_len = socket->priv->recv_addr_cache[i].native_len;
+
+      if (!tmp)
+        continue;
+
+      if (tmp_native_len != native_len)
+        continue;
+
+      if (memcmp (tmp_native, native, native_len) == 0)
+        {
+          saddr = g_object_ref (tmp);
+          socket->priv->recv_addr_cache[i].last_used = g_get_monotonic_time ();
+          return saddr;
+        }
+
+      if (socket->priv->recv_addr_cache[i].last_used < oldest_time)
+        {
+          oldest_time = socket->priv->recv_addr_cache[i].last_used;
+          oldest_index = i;
+        }
+    }
+
+  saddr = g_socket_address_new_from_native (native, native_len);
+
+  if (socket->priv->recv_addr_cache[oldest_index].addr)
+    {
+      g_object_unref (socket->priv->recv_addr_cache[oldest_index].addr);
+      g_free (socket->priv->recv_addr_cache[oldest_index].native);
+    }
+
+  socket->priv->recv_addr_cache[oldest_index].native = g_memdup (native, native_len);
+  socket->priv->recv_addr_cache[oldest_index].native_len = native_len;
+  socket->priv->recv_addr_cache[oldest_index].addr = g_object_ref (saddr);
+  socket->priv->recv_addr_cache[oldest_index].last_used = g_get_monotonic_time ();
+
+  return saddr;
+}
+
 /**
  * g_socket_receive_message:
  * @socket: a #GSocket
@@ -4120,11 +4194,7 @@ g_socket_receive_message (GSocket                 *socket,
     /* decode address */
     if (address != NULL)
       {
-	if (msg.msg_namelen > 0)
-	  *address = g_socket_address_new_from_native (msg.msg_name,
-						       msg.msg_namelen);
-	else
-	  *address = NULL;
+        *address = cache_recv_address (socket, msg.msg_name, msg.msg_namelen);
       }
 
     /* decode control messages */
@@ -4257,10 +4327,7 @@ g_socket_receive_message (GSocket                 *socket,
     /* decode address */
     if (address != NULL)
       {
-	if (addrlen > 0)
-	  *address = g_socket_address_new_from_native (&addr, addrlen);
-	else
-	  *address = NULL;
+        *address = cache_recv_address (socket, &addr, addrlen);
       }
 
     /* capture the flags */
