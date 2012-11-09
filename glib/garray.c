@@ -1512,7 +1512,7 @@ g_ptr_array_foreach (GPtrArray *array,
  *
  * Creates a new #GByteArray with a reference count of 1.
  *
- * Returns: the new #GByteArray.
+ * Returns: (transfer full): the new #GByteArray.
  **/
 GByteArray* g_byte_array_new (void)
 {
@@ -1521,7 +1521,7 @@ GByteArray* g_byte_array_new (void)
 
 /**
  * g_byte_array_new_take:
- * @data: (array length=len): byte data for the array
+ * @data: (transfer full) (array length=len): byte data for the array
  * @len: length of @data
  *
  * Create byte array containing the data. The data will be owned by the array
