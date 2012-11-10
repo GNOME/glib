@@ -2400,11 +2400,7 @@ g_socket_check_connect_result (GSocket  *socket,
 gssize
 g_socket_get_available_bytes (GSocket *socket)
 {
-#ifndef G_OS_WIN32
   gulong avail = 0;
-#else
-  gint avail = 0;
-#endif
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
@@ -4322,7 +4318,7 @@ g_socket_receive_message (GSocket                 *socket,
     /* decode address */
     if (address != NULL)
       {
-        *address = cache_recv_address (socket, &addr, addrlen);
+        *address = cache_recv_address (socket, (struct sockaddr *)&addr, addrlen);
       }
 
     /* capture the flags */

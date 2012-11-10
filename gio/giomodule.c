@@ -786,6 +786,10 @@ static HMODULE gio_dll = NULL;
 
 #ifdef DLL_EXPORT
 
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD     fdwReason,
+                     LPVOID    lpvReserved);
+
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
 	 DWORD     fdwReason,

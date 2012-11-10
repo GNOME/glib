@@ -223,6 +223,10 @@ glib_init (void)
 
 #if defined (G_OS_WIN32)
 
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD     fdwReason,
+                     LPVOID    lpvReserved);
+
 HMODULE glib_dll;
 
 BOOL WINAPI

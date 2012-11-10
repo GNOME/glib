@@ -43,6 +43,7 @@
 #include "config.h"
 
 #include "glib.h"
+#include "glib-init.h"
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "gslice.h"

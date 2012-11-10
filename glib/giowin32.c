@@ -1625,7 +1625,8 @@ g_io_channel_new_file (const gchar  *filename,
     MODE_W = 1 << 1,
     MODE_A = 1 << 2,
     MODE_PLUS = 1 << 3,
-  } mode_num;
+  };
+  int mode_num;
 
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (mode != NULL, NULL);

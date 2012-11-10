@@ -2302,7 +2302,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  alt_digits = TRUE;
 	  goto next_mod;
 	case 'p':
-	  ampm = GET_AMPM (datetime);
+	  ampm = (gchar *) GET_AMPM (datetime);
 	  if (!locale_is_utf8)
 	    {
 	      ampm = tmp = g_locale_to_utf8 (ampm, -1, NULL, NULL, NULL);
@@ -2323,7 +2323,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  g_free (ampm);
 	  break;
 	case 'P':
-	  ampm = GET_AMPM (datetime);
+	  ampm = (gchar *) GET_AMPM (datetime);
 	  if (!locale_is_utf8)
 	    {
 	      ampm = tmp = g_locale_to_utf8 (ampm, -1, NULL, NULL, NULL);

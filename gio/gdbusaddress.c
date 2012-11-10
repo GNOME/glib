@@ -1272,7 +1272,7 @@ publish_session_bus (const char *address)
 }
 
 static void
-unpublish_session_bus ()
+unpublish_session_bus (void)
 {
   HANDLE init_mutex;
 
@@ -1321,6 +1321,8 @@ idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
   GMainLoop *loop = user_data;
   g_main_loop_quit (loop);
 }
+
+__declspec(dllexport) void CALLBACK g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow);
 
 __declspec(dllexport) void CALLBACK
 g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow)

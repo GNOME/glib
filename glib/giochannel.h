@@ -363,6 +363,12 @@ gint        g_io_channel_win32_get_fd (GIOChannel *channel);
  */
 GIOChannel *g_io_channel_win32_new_socket (gint socket);
 
+GLIB_DEPRECATED_FOR(g_io_channel_win32_new_socket)
+GIOChannel *g_io_channel_win32_new_stream_socket (gint socket);
+
+void        g_io_channel_win32_set_debug (GIOChannel *channel,
+                                          gboolean    flag);
+
 #endif
 
 G_END_DECLS

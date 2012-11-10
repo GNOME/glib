@@ -62,6 +62,7 @@
 #include <direct.h>
 #include <wchar.h>
 
+#ifndef GSPAWN_HELPER
 #ifdef G_SPAWN_WIN32_DEBUG
   static int debug = 1;
   #define SETUP_DEBUG() /* empty */
@@ -79,6 +80,7 @@
 	  }						\
       }							\
     G_STMT_END
+#endif
 #endif
 
 enum

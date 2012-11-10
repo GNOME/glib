@@ -1861,7 +1861,7 @@ get_module_share_dir (gconstpointer address)
 }
 
 const gchar * const *
-g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
+g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
 {
   GArray *data_dirs;
   HMODULE hmodule;

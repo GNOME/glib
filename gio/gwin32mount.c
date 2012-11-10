@@ -106,7 +106,7 @@ g_win32_mount_init (GWin32Mount *win32_mount)
 {
 }
 
-gchar *
+static gchar *
 _win32_get_displayname (const char *drive)
 {
   gunichar2 *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
@@ -194,7 +194,7 @@ g_win32_mount_get_root (GMount *mount)
   return g_file_new_for_path (win32_mount->mount_path);
 }
 
-const char *
+static const char *
 _win32_drive_type_to_icon (int type, gboolean use_symbolic)
 {
   switch (type)

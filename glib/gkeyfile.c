@@ -42,7 +42,9 @@
 #ifdef G_OS_WIN32
 #include <io.h>
 
+#undef fstat
 #define fstat(a,b) _fstati64(a,b)
+#undef stat
 #define stat _stati64
 
 #ifndef S_ISREG

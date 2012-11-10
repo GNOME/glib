@@ -10,6 +10,8 @@
  * See the included COPYING file for more information.
  */
 
+#include "config.h"
+
 /* LOCKS should be more than the number of contention
  * counters in gthread.c in order to ensure we exercise
  * the case where they overlap.

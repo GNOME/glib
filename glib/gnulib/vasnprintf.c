@@ -729,13 +729,16 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 		  {
 		    size_t maxlen;
 		    int count;
+#if HAVE_SNPRINTF
 		    int retcount;
+#endif
 
 		    maxlen = allocated - length;
 		    count = -1;
-		    retcount = 0;
 
 #if HAVE_SNPRINTF
+		    retcount = 0;
+
 #define SNPRINTF_BUF(arg) \
 		    switch (prefix_count)				    \
 		      {							    \

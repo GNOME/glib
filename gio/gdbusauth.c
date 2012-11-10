@@ -1030,6 +1030,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 #else
   local_error = NULL;
   byte = g_data_input_stream_read_byte (dis, cancellable, &local_error);
+  byte = byte; /* To avoid -Wunused-but-set-variable */
   if (local_error != NULL)
     {
       g_propagate_error (error, local_error);

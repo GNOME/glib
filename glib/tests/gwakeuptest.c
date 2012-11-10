@@ -3,7 +3,7 @@
 #include <glib/gwakeup.h>
 
 #ifdef _WIN32
-void alarm (int sec) { }
+static void alarm (int sec) { }
 #endif
 
 static gboolean

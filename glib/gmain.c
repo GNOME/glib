@@ -98,6 +98,7 @@
 
 #include "gwakeup.h"
 #include "gmain-internal.h"
+#include "glib-init.h"
 #include "glib-private.h"
 
 /**

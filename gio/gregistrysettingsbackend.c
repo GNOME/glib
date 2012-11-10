@@ -492,7 +492,7 @@ registry_cache_unref_tree (GNode *tree)
     }
 }
 
-
+#if 0
 static void
 registry_cache_dump (GNode    *cache_node,
                      gpointer  data)
@@ -515,7 +515,7 @@ registry_cache_dump (GNode    *cache_node,
   g_node_children_foreach (cache_node, G_TRAVERSE_ALL, registry_cache_dump,
                            GINT_TO_POINTER (new_depth));
 }
-
+#endif
 
 typedef struct
 {
@@ -1743,7 +1743,9 @@ watch_add_notify (GRegistryBackend *self,
   WatchThreadState  *watch = self->watch;
   GNode             *cache_node;
   RegistryCacheItem *cache_item;
+#ifdef TRACE
   DWORD              result;
+#endif
 
   g_return_val_if_fail (watch != NULL, FALSE);
   trace ("watch_add_notify: prefix %s.\n", gsettings_prefix);
@@ -1785,11 +1787,15 @@ watch_add_notify (GRegistryBackend *self,
    * one was received. If it takes > 200ms there is a possible race but the worst outcome is
    * a notification is ignored.
    */
-  result = WaitForSingleObject (watch->message_received_event, 200);
-  #ifdef TRACE
-    if (result != WAIT_OBJECT_0)
-      trace ("watch thread is slow to respond - notification may not be added.");
-  #endif
+#ifdef TRACE
+  result =
+#endif
+    WaitForSingleObject (watch->message_received_event, 200);
+#ifdef TRACE
+  if (result != WAIT_OBJECT_0)
+    trace ("watch thread is slow to respond - notification may not be added.");
+#endif
+
   LeaveCriticalSection (watch->message_lock);
 
   return TRUE;
@@ -1908,11 +1914,6 @@ g_registry_backend_unsubscribe (GSettingsBackend *backend,
 /********************************************************************************
  * Object management junk
  ********************************************************************************/
-
-GSettingsBackend *
-g_registry_backend_new (void) {
-  return g_object_new (G_TYPE_REGISTRY_BACKEND, NULL);
-}
 
 static void
 g_registry_backend_finalize (GObject *object)
