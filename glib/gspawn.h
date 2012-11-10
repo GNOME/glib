@@ -166,6 +166,8 @@ typedef void (* GSpawnChildSetupFunc) (gpointer user_data);
  * @G_SPAWN_SEARCH_PATH_FROM_ENVP: if <literal>argv[0]</literal> is not an abolute path,
  *   it will be looked for in the <envar>PATH</envar> from the passed child 
  *   environment. Since: 2.34
+ * @G_SPAWN_CLOEXEC_PIPES: On UNIX, returned pipe file descriptors will have the
+ *   close-on-exec flag set.  Since: 2.36
  *
  * Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
  */
@@ -180,7 +182,8 @@ typedef enum
   G_SPAWN_STDERR_TO_DEV_NULL     = 1 << 4,
   G_SPAWN_CHILD_INHERITS_STDIN   = 1 << 5,
   G_SPAWN_FILE_AND_ARGV_ZERO     = 1 << 6,
-  G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7
+  G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7,
+  G_SPAWN_CLOEXEC_PIPES          = 1 << 8
 } GSpawnFlags;
 
 GQuark g_spawn_error_quark (void);
