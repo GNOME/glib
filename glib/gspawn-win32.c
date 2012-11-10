@@ -45,6 +45,7 @@
 #include "config.h"
 
 #include "glib.h"
+#include "glib-private.h"
 #include "gprintfint.h"
 #include "glibintl.h"
 #include "gthread.h"
@@ -545,7 +546,6 @@ do_spawn_with_pipes (gint                 *exit_status,
   gchar *helper_process;
   CONSOLE_CURSOR_INFO cursor_info;
   wchar_t *whelper, **wargv, **wenvp;
-  extern gchar *_glib_get_dll_directory (void);
   gchar *glib_dll_directory;
 
   if (child_setup && !warned_about_child_setup)

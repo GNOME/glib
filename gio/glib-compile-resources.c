@@ -47,6 +47,10 @@
 
 #include "gconstructor_as_data.h"
 
+#ifdef G_OS_WIN32
+#include "glib/glib-private.h"
+#endif
+
 typedef struct
 {
   char *filename;
@@ -625,7 +629,6 @@ main (int argc, char **argv)
   };
 
 #ifdef G_OS_WIN32
-  extern gchar *_glib_get_locale_dir (void);
   gchar *tmp;
 #endif
 

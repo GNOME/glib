@@ -28,6 +28,7 @@
 
 #include "ggettext.h"
 #include "glibintl.h"
+#include "glib-private.h"
 
 #include "galloca.h"
 #include "gthread.h"

@@ -27,6 +27,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef G_OS_WIN32
+#include "glib/glib-private.h"
+#endif
+
 static gboolean
 contained (const gchar * const *items,
            const gchar         *item)
@@ -685,7 +689,6 @@ main (int argc, char **argv)
   const gchar *key;
 
 #ifdef G_OS_WIN32
-  extern gchar *_glib_get_locale_dir (void);
   gchar *tmp;
 #endif
 

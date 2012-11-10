@@ -30,6 +30,11 @@ gboolean                g_check_setuid                  (void);
 G_GNUC_INTERNAL
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
 
+#ifdef G_OS_WIN32
+gchar *_glib_get_dll_directory (void);
+gchar *_glib_get_locale_dir    (void);
+#endif
+
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 typedef struct {
