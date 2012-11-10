@@ -620,7 +620,7 @@ test_basename (void)
   g_free (b);
 
   b = g_path_get_basename ("///");
-  g_assert_cmpstr (b, ==, "/");
+  g_assert_cmpstr (b, ==, G_DIR_SEPARATOR_S);
   g_free (b);
 
   b = g_path_get_basename ("/a/b/c/d");

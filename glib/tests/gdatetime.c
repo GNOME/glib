@@ -678,6 +678,7 @@ test_GDateTime_new_from_unix_utc (void)
 static void
 test_GDateTime_get_utc_offset (void)
 {
+#if defined (HAVE_STRUCT_TM_TM_GMTOFF) || defined (HAVE_STRUCT_TM___TM_GMTOFF)
   GDateTime *dt;
   GTimeSpan ts;
   struct tm tm;
@@ -694,6 +695,7 @@ test_GDateTime_get_utc_offset (void)
   g_assert_cmpint (ts, ==, (tm.__tm_gmtoff * G_TIME_SPAN_SECOND));
 #endif
   g_date_time_unref (dt);
+#endif
 }
 
 static void
@@ -1209,7 +1211,7 @@ test_z (void)
 static void
 test_strftime (void)
 {
-  /* this is probably going to cause various buggy libcs to explode... */
+#ifdef __linux__
 #define TEST_FORMAT \
   "a%a A%A b%b B%B c%c C%C d%d e%e F%F g%g G%G h%h H%H I%I j%j m%m M%M " \
   "n%n p%p r%r R%R S%S t%t T%T u%u V%V w%w x%x X%X y%y Y%Y z%z Z%Z %%"
@@ -1229,6 +1231,7 @@ test_strftime (void)
       g_date_time_unref (date_time);
       g_free (dt_str);
     }
+#endif
 }
 
 static void

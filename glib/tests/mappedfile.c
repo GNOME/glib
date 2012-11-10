@@ -42,6 +42,7 @@ test_empty (void)
   g_mapped_file_free (file);
 }
 
+#ifdef G_OS_UNIX
 static void
 test_device (void)
 {
@@ -53,6 +54,7 @@ test_device (void)
   g_assert (file == NULL);
   g_error_free (error);
 }
+#endif
 
 static void
 test_nonexisting (void)
@@ -173,7 +175,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/mappedfile/basic", test_basic);
   g_test_add_func ("/mappedfile/empty", test_empty);
+#ifdef G_OS_UNIX
   g_test_add_func ("/mappedfile/device", test_device);
+#endif
   g_test_add_func ("/mappedfile/nonexisting", test_nonexisting);
   g_test_add_func ("/mappedfile/writable", test_writable);
   g_test_add_func ("/mappedfile/writable_fd", test_writable_fd);

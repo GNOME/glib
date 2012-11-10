@@ -236,6 +236,7 @@ test_find_program (void)
 {
   gchar *res;
 
+#ifdef G_OS_UNIX
   res = g_find_program_in_path ("sh");
   g_assert (res != NULL);
   g_free (res);
@@ -243,6 +244,11 @@ test_find_program (void)
   res = g_find_program_in_path ("/bin/sh");
   g_assert (res != NULL);
   g_free (res);
+#else
+  /* There's not a lot we can search for that would reliably work both
+   * on real Windows and mingw.
+   */
+#endif
 
   res = g_find_program_in_path ("this_program_does_not_exit");
   g_assert (res == NULL);
@@ -370,6 +376,7 @@ test_hostname (void)
   g_assert (name != NULL);
 }
 
+#ifdef G_OS_UNIX
 static void
 test_xdg_dirs (void)
 {
@@ -427,6 +434,7 @@ test_xdg_dirs (void)
   g_strfreev ((gchar **)dirs);
   g_free (s);
 }
+#endif
 
 static void
 test_special_dir (void)
@@ -508,6 +516,13 @@ main (int   argc,
   g_unsetenv ("TMP");
   g_unsetenv ("TEMP");
 
+  /* g_test_init() only calls g_set_prgname() if g_get_prgname()
+   * returns %NULL, but g_get_prgname() on Windows never returns NULL.
+   * So we need to do this by hand to make test_appname() work on
+   * Windows.
+   */
+  g_set_prgname (argv[0]);
+
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
@@ -526,7 +541,9 @@ main (int   argc,
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
+#ifdef G_OS_UNIX
   g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
+#endif
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);

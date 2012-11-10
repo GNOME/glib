@@ -1301,11 +1301,18 @@ test_load (void)
   GKeyFile *file;
   GError *error;
   gboolean bools[2] = { TRUE, FALSE };
+  gboolean loaded;
 
   file = g_key_file_new ();
   error = NULL;
-  g_assert (g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error));
+#ifdef G_OS_UNIX
+  /* Uses the value of $XDG_DATA_HOME we set in main() */
+  loaded = g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error);
+#else
+  loaded = g_key_file_load_from_file (file, SRCDIR "/keyfiletest.ini", 0, &error);
+#endif
   g_assert_no_error (error);
+  g_assert (loaded);
 
   g_key_file_set_locale_string (file, "test", "key4", "de", "Vierter Schlüssel");
   g_key_file_set_boolean_list (file, "test", "key5", bools, 2);
@@ -1333,7 +1340,7 @@ test_load_fail (void)
 
   file = g_key_file_new ();
   error = NULL;
-  g_assert (!g_key_file_load_from_file (file, "/", 0, &error));
+  g_assert (!g_key_file_load_from_file (file, SRCDIR "/keyfile.c", 0, &error));
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_PARSE);
   g_clear_error (&error);
   g_assert (!g_key_file_load_from_file (file, "/nosuchfile", 0, &error));
@@ -1566,7 +1573,9 @@ test_roundtrip (void)
 int
 main (int argc, char *argv[])
 {
+#ifdef G_OS_UNIX
   g_setenv ("XDG_DATA_HOME", SRCDIR, TRUE);
+#endif
 
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
