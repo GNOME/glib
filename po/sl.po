@@ -3294,7 +3294,7 @@ msgstr "Napaka med odpiranjem imenika '%s': %s"
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "Ni mogoče dodeliti %lu bajtov za branje datoteke \"%s\""
-msgstr[1] "Ni mogoče dodeliti %ld bajta za branje datoteke \"%s\""
+msgstr[1] "Ni mogoče dodeliti %lu bajta za branje datoteke \"%s\""
 msgstr[2] "Ni mogoče dodeliti %lu bajtov za branje datoteke \"%s\""
 msgstr[3] "Ni mogoče dodeliti %lu bajtov za branje datoteke \"%s\""
 
