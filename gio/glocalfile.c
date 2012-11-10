@@ -229,6 +229,11 @@ canonicalize_filename (const char *filename)
       start -= i;
       memmove (start, start+i, strlen (start+i)+1);
     }
+
+  /* Make sure we're using the canonical dir separator */
+  p++;
+  while (p < start && G_IS_DIR_SEPARATOR (*p))
+    *p++ = G_DIR_SEPARATOR;
   
   p = start;
   while (*p != 0)
