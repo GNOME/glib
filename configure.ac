@@ -2385,7 +2385,8 @@ dnl We may add other compilers here in the future...
 
 AC_CACHE_CHECK([for lock-free atomic intrinsics], glib_cv_g_atomic_lock_free, [
   AC_TRY_COMPILE([],
-                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                 [volatile int atomic = 2;\
+                  __sync_bool_compare_and_swap (&atomic, 2, 3);],
                  [glib_cv_g_atomic_lock_free=yes],
                  [glib_cv_g_atomic_lock_free=no])])
 
@@ -2393,10 +2394,20 @@ if test "$glib_cv_g_atomic_lock_free" = "no"; then
   SAVE_CFLAGS="${CFLAGS}"
   CFLAGS="-march=i486"
   AC_TRY_COMPILE([],
-                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                 [volatile int atomic = 2;\
+                  __sync_bool_compare_and_swap (&atomic, 2, 3);],
                  [AC_MSG_ERROR([GLib must be build with -march=i486 or later.])],
                  [])
   CFLAGS="${SAVE_CFLAGS}"
+fi
+
+# Some compilers support atomic operations but do not define
+# __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, like clang
+if test x"$glib_cv_g_atomic_lock_free" = xyes; then
+  AC_TRY_COMPILE([],
+                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                 [],
+                 [AC_DEFINE(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, 1, [ compiler supports atomic operations])])
 fi
 
 dnl We need a more robust approach here...
