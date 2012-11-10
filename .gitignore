@@ -17,6 +17,7 @@ TAGS
 *.sourcefiles
 *.stp
 *.exe
+*.def
 
 # autofoo stuff here
 compile
