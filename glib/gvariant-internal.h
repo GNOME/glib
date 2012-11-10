@@ -28,15 +28,16 @@
 #ifndef __G_VARIANT_INTERNAL_H__
 #define __G_VARIANT_INTERNAL_H__
 
-#ifndef GLIB_COMPILATION
-#define GLIB_COMPILATION
-#endif
+/* Hack */
+#define __GLIB_H_INSIDE__
 
 #include <glib/gvarianttype.h>
 #include <glib/gtypes.h>
 
 #include "gvariant-serialiser.h"
 #include "gvarianttypeinfo.h"
+
+#undef __GLIB_H_INSIDE__
 
 gboolean                        g_variant_format_string_scan            (const gchar          *string,
                                                                          const gchar          *limit,
