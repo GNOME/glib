@@ -150,6 +150,8 @@ case "$host" in
       LIB_EXE_MACHINE_FLAG=X64
       ;;
     esac
+
+    AC_DEFINE([_WIN32_WINNT], [0x0501], [Target the Windows XP API])
     ;;
   *)
     glib_native_win32=no
