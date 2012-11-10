@@ -424,7 +424,7 @@ slow_name_validate (GMarkupParseContext  *context,
           g_unichar_isalpha (g_utf8_get_char (p))))))
     {
       set_error (context, error, G_MARKUP_ERROR_PARSE,
-                 _("'%s' is not a valid name "), name);
+                 _("'%s' is not a valid name"), name);
       return FALSE;
     }
 
@@ -440,7 +440,7 @@ slow_name_validate (GMarkupParseContext  *context,
               g_unichar_isalpha (g_utf8_get_char (p))))))
         {
           set_error (context, error, G_MARKUP_ERROR_PARSE,
-                     _("'%s' is not a valid name: '%c' "), name, *p);
+                     _("'%s' is not a valid name: '%c'"), name, *p);
           return FALSE;
         }
     }

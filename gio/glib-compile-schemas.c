@@ -1885,7 +1885,7 @@ set_overrides (GHashTable  *schema_table,
                 {
                   fprintf (stderr, _("error parsing key `%s' in schema `%s' "
                                      "as specified in override file `%s': "
-                                     "%s.  "),
+                                     "%s."),
                            key, group, filename, error->message);
 
                   g_clear_error (&error);
