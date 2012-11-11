@@ -721,6 +721,15 @@ test_64bit (void)
    * GLib 2.2, so it's best if it continues to work.
    */
 
+  /* However, gcc doesn't know about this, so we need to disable printf
+   * format warnings...
+   */
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+_Pragma ("GCC diagnostic push")
+_Pragma ("GCC diagnostic ignored \"-Wformat\"")
+_Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
+#endif
+
   res = g_snprintf (buf, 128, "%" "lli", (gint64)123456);
   g_assert_cmpint (res, ==, 6);
   g_assert_cmpstr (buf, ==, "123456");
@@ -752,6 +761,11 @@ test_64bit (void)
   res = g_snprintf (buf, 128, "%" "ll" "X", (gint64)123456);
   g_assert_cmpint (res, ==, 5);
   g_assert_cmpstr (buf, ==, "1E240");
+
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+_Pragma ("GCC diagnostic pop")
+#endif
+
 #endif
 }
 
@@ -840,6 +854,15 @@ test_64bit2 (void)
    * GLib 2.2, so it's best if it continues to work.
    */
 
+  /* However, gcc doesn't know about this, so we need to disable printf
+   * format warnings...
+   */
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+_Pragma ("GCC diagnostic push")
+_Pragma ("GCC diagnostic ignored \"-Wformat\"")
+_Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
+#endif
+
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
       res = g_printf ("%" "lli", (gint64)123456);
@@ -911,6 +934,11 @@ test_64bit2 (void)
     }
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*1E240*");
+
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+_Pragma ("GCC diagnostic pop")
+#endif
+
 #endif
 }
 
