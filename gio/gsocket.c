@@ -260,6 +260,20 @@ _win32_unset_event_mask (GSocket *socket, int mask)
 #define win32_unset_event_mask(_socket, _mask)
 #endif
 
+/* Windows has broken prototypes... */
+#ifdef G_OS_WIN32
+#define getsockopt(sockfd, level, optname, optval, optlen) \
+  getsockopt (sockfd, level, optname, (gpointer) optval, (int*) optlen)
+#define setsockopt(sockfd, level, optname, optval, optlen) \
+  setsockopt (sockfd, level, optname, (gpointer) optval, optlen)
+#define getsockname(sockfd, addr, addrlen) \
+  getsockname (sockfd, addr, (int *)addrlen)
+#define getpeername(sockfd, addr, addrlen) \
+  getpeername (sockfd, addr, (int *)addrlen)
+#define recv(sockfd, buf, len, flags) \
+  recv (sockfd, (gpointer)buf, len, flags)
+#endif
+
 static void
 set_fd_nonblocking (int fd)
 {
@@ -1731,7 +1745,7 @@ g_socket_get_local_address (GSocket  *socket,
 			    GError  **error)
 {
   struct sockaddr_storage buffer;
-  guint32 len = sizeof (buffer);
+  guint len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
@@ -1764,7 +1778,7 @@ g_socket_get_remote_address (GSocket  *socket,
 			     GError  **error)
 {
   struct sockaddr_storage buffer;
-  guint32 len = sizeof (buffer);
+  guint len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
