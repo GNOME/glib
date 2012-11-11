@@ -735,6 +735,7 @@ test_basic (GDBusProxy *proxy)
 static void
 kill_test_service (GDBusConnection *connection)
 {
+#ifdef G_OS_UNIX
   guint pid;
   GVariant *ret;
   GError *error = NULL;
@@ -754,6 +755,9 @@ kill_test_service (GDBusConnection *connection)
   g_variant_get (ret, "(u)", &pid);
   g_variant_unref (ret);
   kill (pid, SIGTERM);
+#else
+  g_warning ("Can't kill com.example.TestService");
+#endif
 }
 
 static void
