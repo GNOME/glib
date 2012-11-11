@@ -574,7 +574,12 @@ g_test_log_send (guint         n_bytes,
         {
           g_printerr (":(");
           for (ui = 0; ui < msg->n_nums; ui++)
-            g_printerr ("%s%.16Lg", ui ? ";" : "", msg->nums[ui]);
+            {
+              if ((long double) (long) msg->nums[ui] == msg->nums[ui])
+                g_printerr ("%s%ld", ui ? ";" : "", (long) msg->nums[ui]);
+              else
+                g_printerr ("%s%.16g", ui ? ";" : "", (double) msg->nums[ui]);
+            }
           g_printerr (")");
         }
       g_printerr (":LOG*}\n");
@@ -1901,11 +1906,12 @@ g_assertion_message_cmpnum (const char     *domain,
                             char            numtype)
 {
   char *s = NULL;
+
   switch (numtype)
     {
-    case 'i':   s = g_strdup_printf ("assertion failed (%s): (%.0Lf %s %.0Lf)", expr, arg1, cmp, arg2); break;
+    case 'i':   s = g_strdup_printf ("assertion failed (%s): (%" G_GINT64_MODIFIER "i %s %" G_GINT64_MODIFIER "i)", expr, (gint64) arg1, cmp, (gint64) arg2); break;
     case 'x':   s = g_strdup_printf ("assertion failed (%s): (0x%08" G_GINT64_MODIFIER "x %s 0x%08" G_GINT64_MODIFIER "x)", expr, (guint64) arg1, cmp, (guint64) arg2); break;
-    case 'f':   s = g_strdup_printf ("assertion failed (%s): (%.9Lg %s %.9Lg)", expr, arg1, cmp, arg2); break;
+    case 'f':   s = g_strdup_printf ("assertion failed (%s): (%.9g %s %.9g)", expr, (double) arg1, cmp, (double) arg2); break;
       /* ideally use: floats=%.7g double=%.17g */
     }
   g_assertion_message (domain, file, line, func, s);
