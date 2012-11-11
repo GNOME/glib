@@ -42,7 +42,7 @@
  * #GDrive is a container class for #GVolume objects that stem from
  * the same piece of media. As such, #GDrive abstracts a drive with
  * (or without) removable media and provides operations for querying
- * whether media is available, determing whether media change is
+ * whether media is available, determining whether media change is
  * automatically detected and ejecting the media.
  *
  * If the #GDrive reports that media isn't automatically detected, one
