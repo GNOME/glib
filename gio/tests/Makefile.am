@@ -117,7 +117,6 @@ SAMPLE_PROGS = 				\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
 	gdbus-connection-flush-helper	\
-	appinfo-test			\
 	proxy				\
 	gapplication-example-open	\
 	gapplication-example-cmdline	\
@@ -142,6 +141,7 @@ SAMPLE_PROGS +=					\
 	gdbus-example-unix-fd-client 		\
 	gdbus-example-objectmanager-server 	\
 	gdbus-example-objectmanager-client 	\
+	appinfo-test				\
 	$(NULL)
 endif
 

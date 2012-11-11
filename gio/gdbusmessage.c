@@ -3275,6 +3275,8 @@ g_dbus_message_copy (GDBusMessage  *message,
   while (g_hash_table_iter_next (&iter, &header_key, (gpointer) &header_value))
     g_hash_table_insert (ret->headers, header_key, g_variant_ref (header_value));
 
+#ifdef G_OS_UNIX
  out:
+#endif
   return ret;
 }

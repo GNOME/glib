@@ -193,22 +193,23 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
                 gpointer           user_data)
 {
   GLocalDirectoryMonitor *local_monitor = user_data;
+#ifdef G_OS_UNIX
   GUnixMountEntry *mount;
+#endif
   gboolean is_mounted;
   GFile *file;
   
   /* Emulate unmount detection */
-#ifdef G_OS_WIN32
-  mount = NULL;
-  /*claim everything was mounted */
-  is_mounted = TRUE;
-#else  
+#ifdef G_OS_UNIX
   mount = g_unix_mount_at (local_monitor->dirname, NULL);
   
   is_mounted = mount != NULL;
   
   if (mount)
     g_unix_mount_free (mount);
+#else
+  /*claim everything was mounted */
+  is_mounted = TRUE;
 #endif
 
   if (local_monitor->was_mounted != is_mounted)
