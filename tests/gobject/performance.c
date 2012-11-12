@@ -730,6 +730,12 @@ property_object_get_foo (PropertyObject *self)
 {
   gint value;
 
+  if (g_property_is_direct_get (((GProperty *) property_props[PROP_PROPERTY_FOO])))
+    {
+      gpointer field_p = g_property_get_field (((GProperty *) property_props[PROP_PROPERTY_FOO]), self);
+      return (* (int *) field_p);
+    }
+
   g_property_get (((GProperty *) property_props[PROP_PROPERTY_FOO]), self, &value);
 
   return value;
@@ -745,6 +751,12 @@ static float
 property_object_get_baz (PropertyObject *self)
 {
   float value;
+
+  if (g_property_is_direct_get (((GProperty *) property_props[PROP_PROPERTY_BAZ])))
+    {
+      gpointer field_p = g_property_get_field (((GProperty *) property_props[PROP_PROPERTY_BAZ]), self);
+      return (* (float *) field_p);
+    }
 
   g_property_get (((GProperty *) property_props[PROP_PROPERTY_BAZ]), self, &value);
 

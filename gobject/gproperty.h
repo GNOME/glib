@@ -78,7 +78,10 @@ typedef enum {
   G_PROPERTY_ATOMIC         = 1 << 3,
   G_PROPERTY_COPY_SET       = 1 << 4,
   G_PROPERTY_COPY_GET       = 1 << 5,
-  G_PROPERTY_COPY           = (G_PROPERTY_COPY_SET | G_PROPERTY_COPY_GET)
+  G_PROPERTY_COPY           = (G_PROPERTY_COPY_SET | G_PROPERTY_COPY_GET),
+  G_PROPERTY_DIRECT_SET     = 1 << 6,
+  G_PROPERTY_DIRECT_GET     = 1 << 7,
+  G_PROPERTY_DIRECT         = (G_PROPERTY_DIRECT_SET | G_PROPERTY_DIRECT_GET)
 } GPropertyFlags;
 
 GLIB_AVAILABLE_IN_2_36
@@ -103,6 +106,14 @@ GLIB_AVAILABLE_IN_2_36
 gboolean        g_property_is_copy_set                  (GProperty    *property);
 GLIB_AVAILABLE_IN_2_36
 gboolean        g_property_is_copy_get                  (GProperty    *property);
+GLIB_AVAILABLE_IN_2_36
+gboolean        g_property_is_direct_set                (GProperty    *property);
+GLIB_AVAILABLE_IN_2_36
+gboolean        g_property_is_direct_get                (GProperty    *property);
+
+GLIB_AVAILABLE_IN_2_36
+gpointer        g_property_get_field                    (GProperty    *property,
+                                                         gpointer      gobject);
 
 GLIB_AVAILABLE_IN_2_36
 void            g_property_describe                     (GProperty    *property,
@@ -489,6 +500,13 @@ GParamSpec *    g_pointer_property_new  (const gchar         *name,
     { \
        g_critical (G_STRLOC ": The property " #f_n " is not readable"); \
        return (f_t) 0; \
+    } \
+\
+  if (g_property_is_direct_get (g_property) && \
+      !g_property_is_atomic (g_property)) \
+    { \
+      gpointer field_p = g_property_get_field (g_property, self); \
+      return (* (f_t *) field_p); \
     } \
 \
   if (!g_property_get (g_property, self, &retval)) \

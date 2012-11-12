@@ -615,6 +615,10 @@ g_##g_t##_property_new (const gchar         *name,      \
 \
   if (setter == NULL && getter == NULL) \
     g_return_val_if_fail (offset >= 0, NULL); \
+  if (setter == NULL) \
+    flags |= G_PROPERTY_DIRECT_SET; \
+  if (getter == NULL) \
+    flags |= G_PROPERTY_DIRECT_GET; \
 \
   prop = g_param_spec_internal (_g_##g_t##_property_get_type (), \
                                 name, NULL, NULL, \
@@ -863,6 +867,23 @@ property_flags_to_param_flags (GPropertyFlags flags)
     retval |= G_PARAM_DEPRECATED;
 
   return retval;
+}
+
+gpointer
+g_property_get_field (GProperty *property,
+                      gpointer   gobject)
+{
+  gpointer priv_p;
+
+  g_return_val_if_fail (G_IS_PROPERTY (property), NULL);
+  g_return_val_if_fail (G_IS_OBJECT (gobject), NULL);
+  g_return_val_if_fail (property->field_offset >= 0, NULL);
+
+  priv_p = get_private_pointer (gobject, property->priv_offset);
+  if (priv_p == NULL)
+    return NULL;
+
+  return G_STRUCT_MEMBER_P (priv_p, property->field_offset);
 }
 
 /* forward declaration */
@@ -1307,6 +1328,10 @@ g_enum_property_new (const gchar      *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_enum_property_get_type (),
                                 name, NULL, NULL,
@@ -1565,6 +1590,10 @@ g_flags_property_new (const gchar       *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_flags_property_get_type (),
                                 name, NULL, NULL,
@@ -1826,6 +1855,10 @@ g_float_property_new (const gchar       *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_float_property_get_type (),
                                 name, NULL, NULL,
@@ -2107,6 +2140,10 @@ g_double_property_new (const gchar        *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_double_property_get_type (),
                                 name, NULL, NULL,
@@ -2346,6 +2383,10 @@ g_string_property_new (const gchar        *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_string_property_get_type (),
                                 name, NULL, NULL,
@@ -2572,6 +2613,10 @@ g_boxed_property_new (const gchar       *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_boxed_property_get_type (),
                                 name, NULL, NULL,
@@ -2797,6 +2842,10 @@ g_object_property_new (const gchar        *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_object_property_get_type (),
                                 name, NULL, NULL,
@@ -3038,6 +3087,10 @@ g_pointer_property_new (const gchar        *name,
 
   if (setter == NULL && getter == NULL)
     g_return_val_if_fail (offset >= 0, NULL);
+  if (setter == NULL)
+    flags |= G_PROPERTY_DIRECT_SET;
+  if (getter == NULL)
+    flags |= G_PROPERTY_DIRECT_GET;
 
   prop = g_param_spec_internal (_g_pointer_property_get_type (),
                                 name, NULL, NULL,
@@ -5438,6 +5491,22 @@ g_property_is_copy_get (GProperty *property)
   g_return_val_if_fail (G_IS_PROPERTY (property), FALSE);
 
   return (property->flags & G_PROPERTY_COPY_GET) !=  0;
+}
+
+gboolean
+g_property_is_direct_set (GProperty *property)
+{
+  g_return_val_if_fail (G_IS_PROPERTY (property), FALSE);
+
+  return (property->flags & G_PROPERTY_DIRECT_SET) != 0;
+}
+
+gboolean
+g_property_is_direct_get (GProperty *property)
+{
+  g_return_val_if_fail (G_IS_PROPERTY (property), FALSE);
+
+  return (property->flags & G_PROPERTY_DIRECT_GET) != 0;
 }
 
 /**
