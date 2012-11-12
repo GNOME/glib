@@ -95,7 +95,8 @@
  * /&ast; restore floating state &ast;/
  * if (was_floating)
  *   g_object_force_floating (object);
- * g_object_unref (object); /&ast; release previously acquired reference &ast;/
+ * else
+ *   g_object_unref (object); /&ast; release previously acquired reference &ast;/
  * ]|
  */
 
