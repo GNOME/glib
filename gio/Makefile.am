@@ -222,6 +222,12 @@ platform_libadd += inotify/libinotify.la
 platform_deps += inotify/libinotify.la
 endif
 
+if HAVE_KQUEUE
+SUBDIRS += kqueue
+platform_libadd += kqueue/libkqueue.la
+platform_deps += kqueue/libkqueue.la
+endif
+
 if HAVE_FEN
 AM_CPPFLAGS += -DHAVE_FEN
 SUBDIRS += fen

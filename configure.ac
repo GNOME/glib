@@ -1713,6 +1713,17 @@ AC_CHECK_HEADERS([sys/inotify.h],
 
 AM_CONDITIONAL(HAVE_INOTIFY, [test "$inotify_support" = "yes"])
 
+dnl ****************************
+dnl ** Check for kqueue (GIO) **
+dnl ****************************
+kqueue_support=no
+AC_CHECK_HEADERS([sys/event.h],
+[
+	AC_CHECK_FUNCS(kqueue kevent, [kqueue_support=yes])
+])
+
+AM_CONDITIONAL(HAVE_KQUEUE, [test "$kqueue_support" = "yes"])
+
 dnl *********************************
 dnl ** Check for Solaris FEN (GIO) **
 dnl *********************************
@@ -3610,6 +3621,7 @@ gio/gdbus-2.0/codegen/Makefile
 gio/gdbus-2.0/codegen/config.py
 gio/xdgmime/Makefile
 gio/inotify/Makefile
+gio/kqueue/Makefile
 gio/fen/Makefile
 gio/fam/Makefile
 gio/win32/Makefile
