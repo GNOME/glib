@@ -4405,7 +4405,7 @@ gobject_init_ctor (void)
  * structures.
  *
  * Note that the accumulated size of the private structures of
- * a type and all its parent types cannot excced 64 KiB.
+ * a type and all its parent types cannot exceed 64 KiB.
  *
  * This function should be called in the type's class_init() function.
  * The private structure can be retrieved using the
