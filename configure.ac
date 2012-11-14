@@ -1219,7 +1219,7 @@ AC_FUNC_SNPRINTF_C99
 
 # Check if bcopy can be used for overlapping copies, if memmove isn't found.
 # The check is borrowed from the PERL Configure script.
-AS_IF([test "$ac_cv_func_memmove" != "yes"],
+AS_IF([test "$ac_cv_func_memmove" != "yes"], [
   AC_CACHE_CHECK(whether bcopy can handle overlapping copies,
     glib_cv_working_bcopy,[AC_TRY_RUN([
       int main() {
