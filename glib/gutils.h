@@ -84,15 +84,6 @@ G_BEGIN_DECLS
 #  define G_INLINE_FUNC
 #endif /* !G_INLINE_FUNC */
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_get_user_name g_get_user_name_utf8
-#define g_get_real_name g_get_real_name_utf8
-#define g_get_home_dir g_get_home_dir_utf8
-#define g_get_tmp_dir g_get_tmp_dir_utf8
-#endif
-#endif
-
 const gchar *         g_get_user_name        (void);
 const gchar *         g_get_real_name        (void);
 const gchar *         g_get_home_dir         (void);
@@ -253,11 +244,6 @@ int atexit (void (*)(void));
 
 #endif  /* G_DISABLE_DEPRECATED */
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_find_program_in_path g_find_program_in_path_utf8
-#endif
-#endif
 
 /* Look for an executable in PATH, following execvp() rules */
 gchar*  g_find_program_in_path  (const gchar *program);

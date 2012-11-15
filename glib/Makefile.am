@@ -325,6 +325,7 @@ glibsubinclude_HEADERS = \
 	gversion.h	\
 	gversionmacros.h \
 	gwin32.h	\
+	gwin32compat.h	\
 	gprintf.h
 
 # This is read by gobject-introspection/misc/ and gtk-doc

@@ -107,6 +107,10 @@
 #include <glib/deprecated/grel.h>
 #include <glib/deprecated/gthread.h>
 
+#ifdef G_OS_WIN32
+#include <glib/gwin32compat.h>
+#endif
+
 #undef __GLIB_H_INSIDE__
 
 #endif /* __G_LIB_H__ */

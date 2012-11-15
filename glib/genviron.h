@@ -35,14 +35,6 @@
 
 G_BEGIN_DECLS
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_getenv g_getenv_utf8
-#define g_setenv g_setenv_utf8
-#define g_unsetenv g_unsetenv_utf8
-#endif
-#endif
-
 const gchar * g_getenv           (const gchar  *variable);
 gboolean      g_setenv           (const gchar  *variable,
                                   const gchar  *value,

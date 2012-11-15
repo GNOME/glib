@@ -57,6 +57,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gwin32compat.h"
 
 #if defined(USE_LIBICONV_GNU) && !defined (_LIBICONV_H)
 #error GNU libiconv in use but included iconv.h not from libiconv

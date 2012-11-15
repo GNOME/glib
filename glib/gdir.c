@@ -41,7 +41,7 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "glibintl.h"
-
+#include "gwin32compat.h"
 
 #if defined (_MSC_VER) && !defined (HAVE_DIRENT_H)
 #include "../build/win32/dirent/dirent.h"

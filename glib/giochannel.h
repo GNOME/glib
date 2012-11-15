@@ -272,10 +272,6 @@ GIOStatus   g_io_channel_seek_position    (GIOChannel   *channel,
 					   gint64        offset,
 					   GSeekType     type,
 					   GError      **error);
-#ifdef G_OS_WIN32
-#define g_io_channel_new_file g_io_channel_new_file_utf8
-#endif
-
 GIOChannel* g_io_channel_new_file         (const gchar  *filename,
 					   const gchar  *mode,
 					   GError      **error);

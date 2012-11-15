@@ -77,15 +77,6 @@ GQuark     g_file_error_quark      (void);
 /* So other code can generate a GFileError */
 GFileError g_file_error_from_errno (gint err_no);
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_file_test g_file_test_utf8
-#define g_file_get_contents g_file_get_contents_utf8
-#define g_mkstemp g_mkstemp_utf8
-#define g_file_open_tmp g_file_open_tmp_utf8
-#endif
-#endif
-
 gboolean g_file_test         (const gchar  *filename,
                               GFileTest     test);
 gboolean g_file_get_contents (const gchar  *filename,
@@ -162,12 +153,6 @@ GLIB_DEPRECATED_FOR(g_path_get_basename)
 const gchar *g_basename         (const gchar *file_name);
 #ifndef G_DISABLE_DEPRECATED
 #define g_dirname g_path_get_dirname
-#endif
-
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_get_current_dir g_get_current_dir_utf8
-#endif
 #endif
 
 gchar *g_get_current_dir   (void);

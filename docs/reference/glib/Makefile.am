@@ -51,7 +51,8 @@ IGNORE_HFILES = \
 	gvariant-serialiser.h	\
 	gvariant-core.h		\
 	gvarianttypeinfo.h	\
-	gwakeup.h
+	gwakeup.h		\
+	gwin32compat.h
 
 # Images to copy into HTML directory
 HTML_IMAGES =  				\

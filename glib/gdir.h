@@ -34,14 +34,6 @@ G_BEGIN_DECLS
 
 typedef struct _GDir GDir;
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-/* For DLL ABI stability, keep old names for old (non-UTF-8) functionality. */
-#define g_dir_open g_dir_open_utf8
-#define g_dir_read_name g_dir_read_name_utf8
-#endif
-#endif
-
 GDir    *                g_dir_open           (const gchar  *path,
 					       guint         flags,
 					       GError      **error);
