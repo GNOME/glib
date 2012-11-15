@@ -1952,6 +1952,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
       struct ip_mreq mc_req;
 #endif
 
+      memset (&mc_req, 0, sizeof (mc_req));
       memcpy (&mc_req.imr_multiaddr, native_addr, sizeof (struct in_addr));
 
 #ifdef HAVE_IP_MREQN
@@ -1985,6 +1986,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
     {
       struct ipv6_mreq mc_req_ipv6;
 
+      memset (&mc_req_ipv6, 0, sizeof (mc_req_ipv6));
       memcpy (&mc_req_ipv6.ipv6mr_multiaddr, native_addr, sizeof (struct in6_addr));
 #ifdef HAVE_IF_NAMETOINDEX
       if (iface)
