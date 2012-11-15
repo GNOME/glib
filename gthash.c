@@ -29,7 +29,7 @@
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
-/**
+/*
  * String hashing in the typelib.  We have a set of static (fixed) strings,
  * and given one, we need to find its index number.  This problem is perfect
  * hashing: http://en.wikipedia.org/wiki/Perfect_hashing
