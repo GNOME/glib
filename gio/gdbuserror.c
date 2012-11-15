@@ -96,7 +96,10 @@
  * </programlisting></example>
  * With this setup, a D-Bus peer can transparently pass e.g. %FOO_BAR_ERROR_ANOTHER_ERROR and
  * other peers will see the D-Bus error name <literal>org.project.Foo.Bar.Error.AnotherError</literal>.
- * If the other peer is using GDBus, the peer will see also %FOO_BAR_ERROR_ANOTHER_ERROR instead
+ *
+ * If the other peer is using GDBus, and has registered the association with
+ * g_dbus_error_register_error_domain() in advance (e.g. by invoking the %FOO_BAR_ERROR quark
+ * generation itself in the previous example) the peer will see also %FOO_BAR_ERROR_ANOTHER_ERROR instead
  * of %G_IO_ERROR_DBUS_ERROR. Note that GDBus clients can still recover
  * <literal>org.project.Foo.Bar.Error.AnotherError</literal> using g_dbus_error_get_remote_error().
  *
