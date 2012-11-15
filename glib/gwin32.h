@@ -108,4 +108,18 @@ G_END_DECLS
 
 #endif	 /* G_PLATFORM_WIN32 */
 
+#ifdef G_OS_WIN32
+#ifdef _WIN64
+#define g_win32_get_package_installation_directory g_win32_get_package_installation_directory_utf8
+#define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
+#endif
+
+gchar *g_win32_get_package_installation_directory_utf8    (const gchar *package,
+                                                           const gchar *dll_name);
+gchar *g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
+                                                           const gchar *dll_name,
+                                                           const gchar *subdir);
+
+#endif /* G_OS_WIN32 */
+
 #endif /* __G_WIN32_H__ */

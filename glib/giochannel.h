@@ -371,6 +371,14 @@ void        g_io_channel_win32_set_debug (GIOChannel *channel,
 
 #endif
 
+#ifdef G_OS_WIN32
+#define g_io_channel_new_file g_io_channel_new_file_utf8
+
+GIOChannel *g_io_channel_new_file_utf8 (const gchar  *filename,
+                                        const gchar  *mode,
+                                        GError      **error);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_IOCHANNEL_H__ */

@@ -358,4 +358,18 @@ DllMain (HINSTANCE hinstDLL,						\
 
 #endif /* G_PLATFORM_WIN32 */
 
+#ifdef G_OS_WIN32
+#define g_get_user_name        g_get_user_name_utf8
+#define g_get_real_name        g_get_real_name_utf8
+#define g_get_home_dir         g_get_home_dir_utf8
+#define g_get_tmp_dir          g_get_tmp_dir_utf8
+#define g_find_program_in_path g_find_program_in_path_utf8
+
+const gchar *g_get_user_name_utf8        (void);
+const gchar *g_get_real_name_utf8        (void);
+const gchar *g_get_home_dir_utf8         (void);
+const gchar *g_get_tmp_dir_utf8          (void);
+gchar       *g_find_program_in_path_utf8 (const gchar *program);
+#endif
+
 #endif /* __G_UTILS_H__ */
