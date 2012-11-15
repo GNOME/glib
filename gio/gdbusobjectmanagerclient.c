@@ -251,7 +251,7 @@ g_dbus_object_manager_client_get_property (GObject    *_object,
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (manager, prop_id, pspec);
       break;
     }
 }
@@ -310,7 +310,7 @@ g_dbus_object_manager_client_set_property (GObject       *_object,
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (manager, prop_id, pspec);
       break;
     }
 }
