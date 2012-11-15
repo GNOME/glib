@@ -53,7 +53,7 @@
 #include "gtestutils.h"
 #include "gutils.h"
 #include "glibintl.h"
-#include "glib-unix.h"
+
 
 /**
  * SECTION:spawn
@@ -69,6 +69,8 @@ static gint g_execute (const gchar  *file,
                        gboolean search_path,
                        gboolean search_path_from_envp);
 
+static gboolean make_pipe            (gint                  p[2],
+                                      GError              **error);
 static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       const gchar          *working_directory,
                                       gchar               **argv,
@@ -80,7 +82,6 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gboolean              stderr_to_null,
                                       gboolean              child_inherits_stdin,
                                       gboolean              file_and_argv_zero,
-                                      gboolean              cloexec_pipes,
                                       GSpawnChildSetupFunc  child_setup,
                                       gpointer              user_data,
                                       GPid                 *child_pid,
@@ -311,7 +312,6 @@ g_spawn_sync (const gchar          *working_directory,
                              (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                              (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
                              (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                             (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
                              child_setup,
                              user_data,
                              &pid,
@@ -679,7 +679,6 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                                (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
                                (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
                                (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                               (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
                                child_setup,
                                user_data,
                                child_pid,
@@ -1312,7 +1311,6 @@ fork_exec_with_pipes (gboolean              intermediate_child,
                       gboolean              stderr_to_null,
                       gboolean              child_inherits_stdin,
                       gboolean              file_and_argv_zero,
-                      gboolean              cloexec_pipes,
                       GSpawnChildSetupFunc  child_setup,
                       gpointer              user_data,
                       GPid                 *child_pid,
@@ -1327,22 +1325,21 @@ fork_exec_with_pipes (gboolean              intermediate_child,
   gint stderr_pipe[2] = { -1, -1 };
   gint child_err_report_pipe[2] = { -1, -1 };
   gint child_pid_report_pipe[2] = { -1, -1 };
-  guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
   gint status;
   
-  if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
+  if (!make_pipe (child_err_report_pipe, error))
     return FALSE;
 
-  if (intermediate_child && !g_unix_open_pipe (child_pid_report_pipe, pipe_flags, error))
+  if (intermediate_child && !make_pipe (child_pid_report_pipe, error))
     goto cleanup_and_fail;
   
-  if (standard_input && !g_unix_open_pipe (stdin_pipe, pipe_flags, error))
+  if (standard_input && !make_pipe (stdin_pipe, error))
     goto cleanup_and_fail;
   
-  if (standard_output && !g_unix_open_pipe (stdout_pipe, pipe_flags, error))
+  if (standard_output && !make_pipe (stdout_pipe, error))
     goto cleanup_and_fail;
 
-  if (standard_error && !g_unix_open_pipe (stderr_pipe, FD_CLOEXEC, error))
+  if (standard_error && !make_pipe (stderr_pipe, error))
     goto cleanup_and_fail;
 
   pid = fork ();
@@ -1624,6 +1621,24 @@ fork_exec_with_pipes (gboolean              intermediate_child,
   close_and_invalidate (&stderr_pipe[1]);
 
   return FALSE;
+}
+
+static gboolean
+make_pipe (gint     p[2],
+           GError **error)
+{
+  if (pipe (p) < 0)
+    {
+      gint errsv = errno;
+      g_set_error (error,
+                   G_SPAWN_ERROR,
+                   G_SPAWN_ERROR_FAILED,
+                   _("Failed to create pipe for communicating with child process (%s)"),
+                   g_strerror (errsv));
+      return FALSE;
+    }
+  else
+    return TRUE;
 }
 
 /* Based on execvp from GNU C Library */
