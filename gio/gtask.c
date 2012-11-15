@@ -648,7 +648,8 @@ g_task_finalize (GObject *object)
 
 /**
  * g_task_new:
- * @source_object: (allow-none): the #GObject that owns this task, or %NULL.
+ * @source_object: (allow-none) (type GObject): the #GObject that owns
+ *   this task, or %NULL.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
@@ -700,7 +701,8 @@ g_task_new (gpointer              source_object,
 
 /**
  * g_task_report_error:
- * @source_object: (allow-none): the #GObject that owns this task, or %NULL.
+ * @source_object: (allow-none) (type GObject): the #GObject that owns
+ *   this task, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
  * @source_tag: an opaque pointer indicating the source of this task
@@ -734,7 +736,8 @@ g_task_report_error (gpointer             source_object,
 
 /**
  * g_task_report_new_error:
- * @source_object: (allow-none): the #GObject that owns this task, or %NULL.
+ * @source_object: (allow-none) (type GObject): the #GObject that owns
+ *   this task, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
  * @source_tag: an opaque pointer indicating the source of this task
@@ -954,7 +957,7 @@ g_task_set_source_tag (GTask    *task,
  * Gets the source object from @task. Like
  * g_async_result_get_source_object(), but does not ref the object.
  *
- * Returns: (transfer none): @task's source object, or %NULL
+ * Returns: (transfer none) (type GObject): @task's source object, or %NULL
  *
  * Since: 2.36
  */
@@ -1165,7 +1168,7 @@ g_task_return (GTask           *task,
 /**
  * GTaskThreadFunc:
  * @task: the #GTask
- * @source_object: @task's source object
+ * @source_object: (type GObject): @task's source object
  * @task_data: @task's task data
  * @cancellable: @task's #GCancellable, or %NULL
  *
@@ -1713,8 +1716,8 @@ g_task_had_error (GTask *task)
 /**
  * g_task_is_valid:
  * @result: (type Gio.AsyncResult): A #GAsyncResult
- * @source_object: (allow-none): the source object expected to be
- *   associated with the task
+ * @source_object: (allow-none) (type GObject): the source object
+ *   expected to be associated with the task
  *
  * Checks that @result is a #GTask, and that @source_object is its
  * source object (or that @source_object is %NULL and @result has no
