@@ -16,7 +16,7 @@
       <para>
         It is always a good idea to have a look at how others have handled
         similar problems before.  An examplaric conversion can be found e.g.
-        in the <ulink url="http://git.gnome.org/browse/gnome-utils/log/?h=gsettings-tutorial">gsettings-tutorial</ulink> branch of gnome-utils.
+        in the <ulink url="http://git.gnome.org/browse/archive/gnome-utils/log/?h=gsettings-tutorial">gsettings-tutorial</ulink> branch of gnome-utils.
       </para>
     </section>
 
