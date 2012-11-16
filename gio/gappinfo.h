@@ -226,13 +226,15 @@ struct _GAppLaunchContextClass
                                     GList             *files);
   void   (* launch_failed)         (GAppLaunchContext *context,
                                     const char        *startup_notify_id);
+  void   (* launched)              (GAppLaunchContext *context,
+                                    GAppInfo          *info,
+                                    GVariant          *platform_data);
 
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
   void (*_g_reserved3) (void);
   void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
 };
 
 GType              g_app_launch_context_get_type              (void) G_GNUC_CONST;

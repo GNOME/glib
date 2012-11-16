@@ -782,6 +782,14 @@ g_app_info_delete (GAppInfo *appinfo)
 }
 
 
+enum {
+  LAUNCH_FAILED,
+  LAUNCHED,
+  LAST_SIGNAL
+};
+
+guint signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
 
 struct _GAppLaunchContextPrivate {
@@ -820,6 +828,46 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
   g_type_class_add_private (klass, sizeof (GAppLaunchContextPrivate));
 
   object_class->finalize = g_app_launch_context_finalize;
+
+  /*
+   * GAppLaunchContext::launch-failed:
+   * @context: the object emitting the signal
+   * @startup_notify_id: the startup notification id for the failed launch
+   *
+   * The ::launch-failed signal is emitted when a #GAppInfo launch
+   * fails. The startup notification id is provided, so that the launcher
+   * can cancel the startup notification.
+   *
+   * Since: 2.36
+   */
+  signals[LAUNCH_FAILED] = g_signal_new ("launch-failed",
+                                         G_OBJECT_CLASS_TYPE (object_class),
+                                         G_SIGNAL_RUN_LAST,
+                                         G_STRUCT_OFFSET (GAppLaunchContextClass, launch_failed),
+                                         NULL, NULL, NULL,
+                                         G_TYPE_NONE, 1, G_TYPE_STRING);
+
+  /*
+   * GAppLaunchContext::launched:
+   * @context: the object emitting the signal
+   * @info: the #GAppInfo that was just launched
+   * @platform_data: additional platform-specific data for this launch
+   *
+   * The ::launched signal is emitted when a #GAppInfo is successfully
+   * launched. The @platform_data is an GVariant dictionary mapping
+   * strings to variants (ie a{sv}), which contains additional,
+   * platform-specific data about this launch. On UNIX, at least the
+   * "pid" and "startup-notification-id" keys will be present.
+   *
+   * Since: 2.36
+   */
+  signals[LAUNCHED] = g_signal_new ("launched",
+                                    G_OBJECT_CLASS_TYPE (object_class),
+                                    G_SIGNAL_RUN_LAST,
+                                    G_STRUCT_OFFSET (GAppLaunchContextClass, launched),
+                                    NULL, NULL, NULL,
+                                    G_TYPE_NONE, 2,
+                                    G_TYPE_APP_INFO, G_TYPE_VARIANT);
 }
 
 static void
@@ -974,13 +1022,8 @@ void
 g_app_launch_context_launch_failed (GAppLaunchContext *context,
 				    const char        *startup_notify_id)
 {
-  GAppLaunchContextClass *class;
-
   g_return_if_fail (G_IS_APP_LAUNCH_CONTEXT (context));
   g_return_if_fail (startup_notify_id != NULL);
 
-  class = G_APP_LAUNCH_CONTEXT_GET_CLASS (context);
-
-  if (class->launch_failed != NULL)
-    class->launch_failed (context, startup_notify_id);
+  g_signal_emit (context, signals[LAUNCH_FAILED], 0, startup_notify_id);
 }
