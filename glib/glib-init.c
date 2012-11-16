@@ -23,6 +23,8 @@
 
 #include "glib-init.h"
 
+#include "glib-private.h"
+#include "gtypes.h"
 #include "gutils.h"     /* for GDebugKey */
 #include "gconstructor.h"
 #include "gmem.h"       /* for g_mem_gc_friendly */
@@ -31,6 +33,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+
+/* This seems as good a place as any to make static assertions about platform
+ * assumptions we make throughout GLib. */
+
+/* We assume that data pointers are the same size as function pointers... */
+G_STATIC_ASSERT (sizeof (gpointer) == sizeof (GFunc));
+G_STATIC_ASSERT (_g_alignof (gpointer) == _g_alignof (GFunc));
+/* ... and that all function pointers are the same size. */
+G_STATIC_ASSERT (sizeof (GFunc) == sizeof (GCompareDataFunc));
+G_STATIC_ASSERT (_g_alignof (GFunc) == _g_alignof (GCompareDataFunc));
 
 /**
  * g_mem_gc_friendly:
