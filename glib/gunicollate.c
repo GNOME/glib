@@ -217,29 +217,28 @@ collate_key_to_string (UCCollationValue *key,
                        gsize             key_len)
 {
   gchar *result;
-  gsize result_len;
+  gsize result_len = 0;
+  const gsize start = 2 * sizeof (void *) / sizeof (UCCollationValue);
   gsize i;
 
-  /* Pretty smart algorithm here: ignore first eight bytes of the
-   * collation key. It doesn't produce results equivalent to
-   * UCCompareCollationKeys's, but the difference seems to be only
-   * that UCCompareCollationKeys in some cases produces 0 where our
-   * comparison gets -1 or 1. */
-
-  if (key_len * sizeof (UCCollationValue) <= 8)
+  /* The first codes should be skipped: the same string on the same
+   * system can get different values at runtime in those positions,
+   * and they do not sort correctly.  The exact size of the prefix
+   * depends on whether we are building 64 or 32 bit.
+   */
+  if (key_len <= start)
     return g_strdup ("");
 
-  result_len = 0;
-  for (i = 8; i < key_len * sizeof (UCCollationValue); i++)
-    /* there may be nul bytes, encode byteval+1 */
-    result_len += utf8_encode (NULL, *((guchar*)key + i) + 1);
+  for (i = start; i < key_len; i++)
+    result_len += utf8_encode (NULL, g_htonl (key[i] + 1));
 
   result = g_malloc (result_len + 1);
   result_len = 0;
-  for (i = 8; i < key_len * sizeof (UCCollationValue); i++)
-    result_len += utf8_encode (result + result_len, *((guchar*)key + i) + 1);
+  for (i = start; i < key_len; i++)
+    result_len += utf8_encode (result + result_len, g_htonl (key[i] + 1));
 
-  result[result_len] = 0;
+  result[result_len] = '\0';
+
   return result;
 }
 
