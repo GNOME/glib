@@ -92,6 +92,7 @@ void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...);
 /* query testing framework config */
+#define g_test_initialized()            (g_test_config_vars->test_initialized)
 #define g_test_quick()                  (g_test_config_vars->test_quick)
 #define g_test_slow()                   (!g_test_config_vars->test_quick)
 #define g_test_thorough()               (!g_test_config_vars->test_quick)

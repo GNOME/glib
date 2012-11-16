@@ -2877,6 +2877,7 @@ g_compute_hmac_for_string
 g_test_minimized_result
 g_test_maximized_result
 g_test_init
+g_test_initialized
 g_test_quick
 g_test_slow
 g_test_thorough

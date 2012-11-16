@@ -106,6 +106,16 @@
  */
 
 /**
+ * g_test_initialized:
+ *
+ * Returns %TRUE if g_test_init() has been called.
+ *
+ * Returns: %TRUE if g_test_init() has been called.
+ *
+ * Since: 2.36
+ */
+
+/**
  * g_test_quick:
  *
  * Returns %TRUE if tests are run in quick mode.
