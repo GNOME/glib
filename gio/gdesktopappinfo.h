@@ -64,6 +64,15 @@ gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
 void             g_desktop_app_info_set_desktop_env   (const char      *desktop_env);
 
+GLIB_AVAILABLE_IN_2_36
+gboolean         g_desktop_app_info_has_key           (GDesktopAppInfo *info,
+                                                       const char      *key);
+GLIB_AVAILABLE_IN_2_36
+char *           g_desktop_app_info_get_string        (GDesktopAppInfo *info,
+                                                       const char      *key);
+GLIB_AVAILABLE_IN_2_36
+gboolean         g_desktop_app_info_get_boolean       (GDesktopAppInfo *info,
+                                                       const char      *key);
 
 #ifndef G_DISABLE_DEPRECATED
 

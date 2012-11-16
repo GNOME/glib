@@ -92,6 +92,8 @@ struct _GDesktopAppInfo
   char *desktop_id;
   char *filename;
 
+  GKeyFile *keyfile;
+
   char *name;
   char *generic_name;
   char *fullname;
@@ -171,6 +173,10 @@ g_desktop_app_info_finalize (GObject *object)
 
   g_free (info->desktop_id);
   g_free (info->filename);
+
+  if (info->keyfile)
+    g_key_file_unref (info->keyfile);
+
   g_free (info->name);
   g_free (info->generic_name);
   g_free (info->fullname);
@@ -213,10 +219,10 @@ g_desktop_app_info_set_property(GObject         *object,
 }
 
 static void
-g_desktop_app_info_get_property(GObject         *object,
-				guint            prop_id,
-				GValue          *value,
-				GParamSpec      *pspec)
+g_desktop_app_info_get_property (GObject    *object,
+                                 guint       prop_id,
+                                 GValue     *value,
+                                 GParamSpec *pspec)
 {
   GDesktopAppInfo *self = G_DESKTOP_APP_INFO (object);
 
@@ -371,6 +377,8 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       info->path = NULL;
     }
 
+  info->keyfile = g_key_file_ref (key_file);
+
   return TRUE;
 }
 
@@ -379,11 +387,11 @@ g_desktop_app_info_load_file (GDesktopAppInfo *self)
 {
   GKeyFile *key_file;
   gboolean retval = FALSE;
-  
+
   g_return_val_if_fail (self->filename != NULL, FALSE);
 
   key_file = g_key_file_new ();
-  
+
   if (g_key_file_load_from_file (key_file,
 				 self->filename,
 				 G_KEY_FILE_NONE,
@@ -392,14 +400,14 @@ g_desktop_app_info_load_file (GDesktopAppInfo *self)
       retval = g_desktop_app_info_load_from_keyfile (self, key_file);
     }
 
-  g_key_file_free (key_file);
+  g_key_file_unref (key_file);
   return retval;
 }
 
 /**
  * g_desktop_app_info_new_from_keyfile:
  * @key_file: an opened #GKeyFile
- * 
+ *
  * Creates a new #GDesktopAppInfo.
  *
  * Returns: a new #GDesktopAppInfo or %NULL on error.
@@ -488,7 +496,7 @@ g_desktop_app_info_new (const char *desktop_id)
       while ((p = strchr (p, '-')) != NULL)
 	{
 	  *p = '/';
-	  
+
 	  filename = g_build_filename (dirs[i], basename, NULL);
 	  appinfo = g_desktop_app_info_new_from_filename (filename);
 	  g_free (filename);
@@ -498,7 +506,7 @@ g_desktop_app_info_new (const char *desktop_id)
 	  p++;
 	}
     }
-  
+
   g_free (basename);
   return NULL;
 
@@ -526,7 +534,10 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
 
   new_info->filename = g_strdup (info->filename);
   new_info->desktop_id = g_strdup (info->desktop_id);
-  
+
+  if (info->keyfile)
+    new_info->keyfile = g_key_file_ref (info->keyfile);
+
   new_info->name = g_strdup (info->name);
   new_info->generic_name = g_strdup (info->generic_name);
   new_info->fullname = g_strdup (info->fullname);
@@ -3442,4 +3453,74 @@ g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *info)
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
 
   return info->startup_wm_class;
+}
+
+/**
+ * g_desktop_app_info_get_string:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ *
+ * Looks up a string value in the keyfile backing @info.
+ *
+ * The @key is looked up in the "Desktop Entry" group.
+ *
+ * Returns: a newly allocated string, or %NULL if the key
+ *     is not found
+ *
+ * Since: 2.36
+ */
+char *
+g_desktop_app_info_get_string (GDesktopAppInfo *info,
+                               const char      *key)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return g_key_file_get_string (info->keyfile,
+                                G_KEY_FILE_DESKTOP_GROUP, key, NULL);
+}
+
+/**
+ * g_desktop_app_info_get_boolean:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ *
+ * Looks up a boolean value in the keyfile backing @info.
+ *
+ * The @key is looked up in the "Desktop Entry" group.
+ *
+ * Returns: the boolean value, or %FALSE if the key
+ *     is not found
+ *
+ * Since: 2.36
+ */
+gboolean
+g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
+                                const char      *key)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+
+  return g_key_file_get_boolean (info->keyfile,
+                                 G_KEY_FILE_DESKTOP_GROUP, key, NULL);
+}
+
+/**
+ * g_desktop_app_info_has_key:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ *
+ * Returns whether @key exists in the "Desktop Entry" group
+ * of the keyfile backing @info.
+ *
+ * Returns: %TRUE if the @key exists
+ *
+ * Since: 2.26
+ */
+gboolean
+g_desktop_app_info_has_key (GDesktopAppInfo *info,
+                            const char      *key)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+
+  return g_key_file_has_key (info->keyfile,
+                             G_KEY_FILE_DESKTOP_GROUP, key, NULL);
 }
