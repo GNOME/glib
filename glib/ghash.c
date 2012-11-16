@@ -34,6 +34,7 @@
 
 #include "ghash.h"
 
+#include "glib-private.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
 #include "gtestutils.h"
@@ -245,6 +246,9 @@ typedef struct
   gboolean     dummy3;
   int          version;
 } RealIter;
+
+G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
+G_STATIC_ASSERT (_g_alignof (GHashTableIter) >= _g_alignof (RealIter));
 
 /* Each table size has an associated prime modulo (the first prime
  * lower than the table size) used to find the initial bucket. Probing
