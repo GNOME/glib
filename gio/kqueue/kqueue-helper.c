@@ -512,7 +512,11 @@ _kh_start_watching (kqueue_sub *sub)
   g_assert (sub->filename != NULL);
 
   /* kqueue requires a file descriptor to monitor. Sad but true */
+#if defined (O_EVTONLY)
+  sub->fd = open (sub->filename, O_EVTONLY);
+#else
   sub->fd = open (sub->filename, O_RDONLY);
+#endif
 
   if (sub->fd == -1)
     {

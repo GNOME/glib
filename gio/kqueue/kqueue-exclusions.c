@@ -21,6 +21,7 @@
   THE SOFTWARE.
 *******************************************************************************/
 
+#include <fcntl.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include "kqueue-exclusions.h"
@@ -38,6 +39,9 @@ static gboolean ke_debug_enabled = FALSE;
 gboolean
 _ke_is_excluded (const char *full_path)
 {
+#if defined (O_EVTONLY)
+  return FALSE;
+#else
   GFile *f = NULL;
   GMount *mount = NULL;
 
@@ -57,4 +61,5 @@ _ke_is_excluded (const char *full_path)
   }
   else
     return FALSE;
+#endif
 }
