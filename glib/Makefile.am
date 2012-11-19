@@ -49,15 +49,8 @@ AM_CPPFLAGS = 				\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 
-glib.def: glib.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > $(builddir)/glib.def
-
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS_ENVIRONMENT = GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)"
-TESTS = abicheck.sh
-endif
-endif
+glib.def: glib.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile
+	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
 
 MIRRORING_TAB_SOURCE = 				\
 	glib-mirroring-tab/Makefile 		\
@@ -74,7 +67,7 @@ EXTRA_DIST += 			\
 	gen-unicode-tables.pl	\
 	gen-script-table.pl	\
 	glibconfig.h.win32.in	\
-	abicheck.sh		\
+	process-symbol-file.sh	\
 	glib.symbols		\
 	gregex.c		\
 	gregex.h		\
@@ -349,12 +342,8 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/glib.def
-
 glib_win32_res = glib-win32-res.o
 glib_win32_res_ldflag = -Wl,$(glib_win32_res)
-
-glib_def = glib.def
 
 install-def-file:
 	$(INSTALL) $(builddir)/glib.def $(DESTDIR)$(libdir)/glib-2.0.def
@@ -364,8 +353,6 @@ uninstall-def-file:
 else
 install-def-file:
 uninstall-def-file:
-
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 if USE_SYSTEM_PCRE
@@ -377,12 +364,12 @@ pcre_inc =
 endif
 
 libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD)
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) glib.def
 
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	 $(glib_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined) -export-symbols glib.def
 
 INSTALL_PROGS=
 

@@ -7,9 +7,12 @@ AM_CPPFLAGS = 				\
 	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
 	@GLIB_DEBUG_FLAGS@
 
+gthread.def: gthread.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile
+	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
+
 EXTRA_DIST +=				\
 		makefile.msc.in		\
-		gthread.def		\
+		gthread.symbols		\
 		gthread.rc.in
 
 BUILT_EXTRA_DIST = 			\
@@ -42,9 +45,6 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(srcdir)/gthread.def
-gthread_def = gthread.def
-
 install-def-file:
 	$(INSTALL) $(srcdir)/gthread.def $(DESTDIR)$(libdir)/gthread-2.0.def
 
@@ -64,11 +64,11 @@ libgthread_2_0_la_SOURCES = gthread-impl.c
 libgthread_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gthread_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined) -export-symbols gthread.def
 
 libgthread_2_0_la_LIBADD = $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(libglib)
 
-libgthread_2_0_la_DEPENDENCIES = $(gthread_win32_res) $(gthread_def)
+libgthread_2_0_la_DEPENDENCIES = $(gthread_win32_res) gthread.def
 
 gthread-win32-res.o: gthread.rc
 	$(AM_V_GEN) $(WINDRES) gthread.rc $@

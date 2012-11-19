@@ -209,16 +209,6 @@ AS_IF([test "$glib_native_win32" = "yes"], [
 ])
 AM_CONDITIONAL(MS_LIB_AVAILABLE, [test x$ms_librarian = xyes])
 
-if test "$glib_native_win32" != yes; then
-    # libtool option to control which symbols are exported
-    # right now, symbols starting with _ are not exported
-    LIBTOOL_EXPORT_OPTIONS='-export-symbols-regex "^g.*"'
-else
-    # We currently use .def files on Windows
-    LIBTOOL_EXPORT_OPTIONS=
-fi
-AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
-
 AS_IF([test "x$glib_have_carbon" = "xyes"], [
   AC_DEFINE(HAVE_CARBON, 1, [define to 1 if Carbon is available])
   LDFLAGS="$LDFLAGS -Wl,-framework,Carbon"

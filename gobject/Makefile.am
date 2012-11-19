@@ -18,14 +18,8 @@ AM_CPPFLAGS = 					\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
 
-gobject.def: gobject.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gobject.def
-
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh
-endif
-endif
+gobject.def: gobject.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile
+	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
 
 libglib = $(top_builddir)/glib/libglib-2.0.la
 
@@ -52,9 +46,6 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/gobject.def
-gobject_def = gobject.def
-
 gobject_win32_res = gobject-win32-res.o
 gobject_win32_res_ldflag = -Wl,$(gobject_win32_res)
 
@@ -66,8 +57,6 @@ uninstall-def-file:
 else
 install-def-file:
 uninstall-def-file:
-
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 # libtool stuff: set version and export symbols for resolving
@@ -75,13 +64,13 @@ libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
   $(gobject_win32_res_ldflag) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-  -export-dynamic $(no_undefined) $(export_symbols)
+  -export-dynamic $(no_undefined) -export-symbols gobject.def
 
 libgobject_2_0_la_CFLAGS = $(LIBFFI_CFLAGS)
 
 libgobject_2_0_la_LIBADD = $(libglib) $(LIBFFI_LIBS)
 
-libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
+libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) gobject.def
 
 #
 # setup source file variables
@@ -232,8 +221,7 @@ EXTRA_DIST += 			\
 	makefile.msc.in 	\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
-	glib-mkenums.in		\
-	abicheck.sh
+	glib-mkenums.in
 
 CLEANFILES += libgobject-gdb.py
 

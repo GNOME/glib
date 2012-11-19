@@ -1,6 +1,7 @@
 include $(top_srcdir)/Makefile.decl
 
 NULL =
+BUILT_SOURCES =
 
 SUBDIRS = gdbus-2.0/codegen
 
@@ -23,15 +24,8 @@ install-ms-lib:
 uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
-gio.def: gio.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gio.def.tmp && \
-	  mv $(builddir)/gio.def.tmp $(builddir)/gio.def
-
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh
-endif
-endif
+gio.def: gio.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile
+	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"			\
@@ -493,9 +487,6 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/gio.def
-gio_def = gio.def
-
 gio_win32_res = gio-win32-res.o
 gio_win32_res_ldflag = -Wl,$(gio_win32_res)
 
@@ -507,8 +498,6 @@ uninstall-def-file:
 else
 install-def-file:
 uninstall-def-file:
-
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 install-data-local: install-ms-lib install-def-file
@@ -519,7 +508,7 @@ uninstall-local: uninstall-ms-lib uninstall-def-file
 libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined) -export-symbols gio.def
 
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
@@ -527,7 +516,7 @@ libgio_2_0_la_CFLAGS = -xobjective-c
 libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation
 endif
 
-libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
+libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) gio.def $(platform_deps)
 
 gio-win32-res.o: gio.rc
 	$(WINDRES) gio.rc $@
@@ -637,7 +626,7 @@ gioinclude_HEADERS = 		\
 	gioenumtypes.h
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = 		\
+BUILT_SOURCES += 		\
 	gconstructor_as_data.h	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
@@ -651,7 +640,6 @@ EXTRA_DIST += 			\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
 	makefile.msc		\
-	abicheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
 	gconstructor_as_data.h	\

@@ -1,6 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
+BUILT_SOURCES =
+
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
 	-DG_LOG_DOMAIN=\"GModule\" 	\
@@ -8,7 +10,7 @@ AM_CPPFLAGS = 				\
 	-DG_DISABLE_DEPRECATED
 
 gmodule.def: gmodule.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > $(builddir)/gmodule.def
+	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
 
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
@@ -28,7 +30,7 @@ BUILT_EXTRA_DIST = \
 		makefile.msc	\
 		gmodule.rc
 
-BUILT_SOURCES = gmoduleconf.h
+BUILT_SOURCES += gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
 
 glibincludedir=$(includedir)/glib-2.0
@@ -61,9 +63,6 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/gmodule.def
-gmodule_def = gmodule.def
-
 gmodule_win32_res = gmodule-win32-res.o
 gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
 
@@ -82,11 +81,11 @@ libgmodule_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gmodule_win32_res_ldflag) \
 	$(G_MODULE_LDFLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined) -export-symbols gmodule.def
 
 libgmodule_2_0_la_LIBADD = $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 
-libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(gmodule_def)
+libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) gmodule.def
 
 gmodule-win32-res.o: gmodule.rc
 	$(AM_V_GEN) $(WINDRES) gmodule.rc $@
