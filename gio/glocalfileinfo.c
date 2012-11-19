@@ -1308,6 +1308,7 @@ get_thumbnail_attributes (const char *path,
         _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
       else
         {
+          g_free (filename);
           filename = g_build_filename (g_get_user_cache_dir (),
                                        "thumbnails", "fail",
                                        "gnome-thumbnail-factory",
