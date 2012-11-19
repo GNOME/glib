@@ -1680,7 +1680,6 @@ g_menu_append
 g_menu_append_item
 g_menu_append_section
 g_menu_append_submenu
-g_menu_attribute_hash_iter_get_type
 g_menu_attribute_iter_get_name
 g_menu_attribute_iter_get_next
 g_menu_attribute_iter_get_type
@@ -1709,7 +1708,6 @@ g_menu_item_set_label
 g_menu_item_set_link
 g_menu_item_set_section
 g_menu_item_set_submenu
-g_menu_link_hash_iter_get_type
 g_menu_link_iter_get_name
 g_menu_link_iter_get_next
 g_menu_link_iter_get_type
