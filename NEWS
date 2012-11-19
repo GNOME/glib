@@ -1,3 +1,87 @@
+Overview of changes from GLib 2.35.1 to 2.35.2
+==============================================
+
+Note that the incompatible change to the ->constructed() vfunc that was
+made in the last unstable release (2.35.1) has been reverted due to
+causing regressions in applications.
+
+A new incompatible change has been introduced in this version: it is no
+longer permitted to add interfaces to a class after the first
+instantiation (or more strictly: after g_type_class_ref()).  Bug #687659
+is tracking this.
+
+Two private symbols (g_menu_{attribute,link}_hash_iter_get_type) which
+were accidentally exported have also been properly hidden.  This may
+cause some tools to issue warnings about ABI mismatch.
+
+The remaining changes should be relatively harmless: 
+
+ * GIO now has kqueue support for GFileMonitor (BSDs, Mac OS)
+
+ * New g_variant_new_from_bytes() API
+
+ * UNIX signal sources now allow watching SIGUSR1 and SIGUSR2
+
+ * Many pedantic cleanups to adhere to a higher level of -W use
+
+ * GTask changes to avoid a deadlock
+
+ * many cleanups/fixes for Windows
+
+ * Boxing for GPollFD, GIOChannel, GBytes, GByteArray
+
+ * Fix URL-encoding of trashed files
+
+ * Many other docs and annotations fixes
+
+Translations:
+
+ Galician
+ Gujarati
+ Lithuanian
+ Serbian
+ Slovak
+ Slovenian
+
+Bugs closed:
+
+ 649302 Add support for GNU/FreeBSD
+ 668842 [GSocket] Add caching for the sender address in g_socket_receive_from()
+ 672924 Add annotations for g_filename_from_uri()
+ 673229 glib: Use Returns:, not @returns
+ 677062 (partial) GVariant: Make g_variant_new_from_bytes() public, add more GBytes API
+ 686185 g_date_time_format Transcoding Fails on OSX      
+ 686191 g_mutex_get_impl() should use g_atomic_pointer_get()
+ 686797 Box GPollFD to make it introspectable
+ 686810 [regression] Infinite wait in g_task_run_in_thread_sync()
+ 686822 possible dlopen()/dlclose() issue with automatic g_type_init()
+ 686839 mkinstalldirs: Move to glib-mkinstalldirs
+ 686895 file-info: catch thumbnail files in large directory as well
+ 686898 g_unix_signal_source_new: Allow SIGUSR1 and SIGUSR2
+ 686920 gdbus: Allow GDBusObjectManagerClient to work on peer connections
+ 686921 Remove some of the repetition from gio/tests/Makefile.am
+ 687075 g_spawn_sync diagnostic incorrectly complains about SIGCHLD
+ 687089 g_dbus_connection_export_menu_model(): fix a crash
+ 687098 Repeated g_timeout_add* use can lead to guint overflow
+ 687385 Add some stricter CFLAGS, fix up the code
+ 687441 ABI break in master: g_menu_attribute_hash_iter_get_type, g_menu_link_hash_iter_get_type removed
+ 687516 typo in string: KB should be kB
+ 687540 In Trash folder, Nautilus misinterprets "\n" in filename as a line break
+ 687541 GSignalQuery param_types field needs array annotation
+ 687600 gfileutils.c performs invalid cast of (varargs) open to non-vararg type
+ 687698 plural forms needed
+ 687700 ending spaces
+ 687742 Add support for internal linkage to glib-compile-resources
+ 687801 tests/buffered-input-stream: Fix size of parameter passed
+ 688109 win32 warning/error fixes
+ 688255 'make check' regressed in 138f4c1 because GMarkup error messages changed
+ 688338 [PATCH] gobject/gtype.c: Fix spelling of »exceed«
+ 688370 GDBusError documentation improvement for client-side
+ 688378 g_socket_join_multicast_group not working
+ 688518 gio-kqueue: use O_EVTONLY on MacOS
+
+
+
 Overview of changes from GLib 2.34.0 to 2.35.1
 ==============================================
 
