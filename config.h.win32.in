@@ -133,7 +133,8 @@
 /* Define to 1 if you have the `dcgettext' function. */
 #define HAVE_DCGETTEXT 1
 
-/* Define to 1 if you have the <dirent.h> header file. */
+/* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
+   */
 #ifndef _MSC_VER
 #define HAVE_DIRENT_H 1
 #else
@@ -276,6 +277,12 @@
 
 /* Define to 1 if you have the `issetugid' function. */
 /* #undef HAVE_ISSETUGID */
+
+/* Define to 1 if you have the `kevent' function. */
+/* #undef HAVE_KEVENT */
+
+/* Define to 1 if you have the `kqueue' function. */
+/* #undef HAVE_KQUEUE */
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
@@ -505,11 +512,14 @@
 /* #undef HAVE_STRLCPY */
 
 /* Define to 1 if you have the `strncasecmp' function. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
+#if !defined(__DMC__)
+#if defined(_MSC_VER)
+#define strncasecmp _strnicmp
+#endif /* _MSC_VER uses _strnicmp, which is identical to strncasecmp */
 #define HAVE_STRNCASECMP 1
-#else /* _MSC_VER or __DMC__ */
+#else /* __DMC__ */
 /* #undef HAVE_STRNCASECMP */
-#endif /* _MSC_VER or __DMC__ */
+#endif /* __DMC__ */
 
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
@@ -574,6 +584,9 @@
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
 /* #undef HAVE_SYS_DIR_H */
+
+/* Define to 1 if you have the <sys/event.h> header file. */
+/* #undef HAVE_SYS_EVENT_H */
 
 /* Define to 1 if you have the <sys/filio.h> header file. */
 /* #undef HAVE_SYS_FILIO_H */
@@ -863,11 +876,6 @@
 # endif
 #endif
 
-/* Enable large inode numbers on Mac OS X 10.5.  */
-#ifndef _DARWIN_USE_64_BIT_INODE
-# define _DARWIN_USE_64_BIT_INODE 1
-#endif
-
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
 
@@ -876,6 +884,9 @@
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
+
+/* Target the Windows XP API */
+#define _WIN32_WINNT 0x0501
 
 /* Needed to get declarations for msg_control and msg_controllen on Solaris */
 /* #undef _XOPEN_SOURCE */
