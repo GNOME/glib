@@ -33,6 +33,11 @@
 
 typedef struct _GIRealInfo GIRealInfo;
 
+/* We changed a gint32 -> gint in the structure below, which should be
+ * valid everywhere we care about.
+ */
+G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
+
 /*
  * We just use one structure for all of the info object
  * types; in general, we should be reading data directly
@@ -43,7 +48,7 @@ struct _GIRealInfo
 {
   /* Keep this part in sync with GIUnresolvedInfo below */
   gint32 type;
-  gint32 ref_count;
+  volatile gint ref_count;
   GIRepository *repository;
   GIBaseInfo *container;
 
@@ -62,7 +67,7 @@ struct _GIUnresolvedInfo
 {
   /* Keep this part in sync with GIBaseInfo above */
   gint32 type;
-  gint32 ref_count;
+  volatile gint ref_count;
   GIRepository *repository;
   GIBaseInfo *container;
 
