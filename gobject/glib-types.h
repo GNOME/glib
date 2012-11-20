@@ -245,6 +245,15 @@ typedef gsize GType;
  */
 #define G_TYPE_KEY_FILE (g_key_file_get_type ())
 
+/**
+ * G_TYPE_THREAD:
+ *
+ * The #GType for a boxed type holding a #GThread.
+ *
+ * Since: 2.36
+ */
+#define G_TYPE_THREAD (g_thread_get_type ())
+
 GType   g_date_get_type            (void) G_GNUC_CONST;
 GType   g_strv_get_type            (void) G_GNUC_CONST;
 GType   g_gstring_get_type         (void) G_GNUC_CONST;
@@ -272,6 +281,8 @@ GLIB_AVAILABLE_IN_2_30
 GType   g_source_get_type          (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_36
 GType   g_pollfd_get_type          (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_36
+GType   g_thread_get_type          (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;

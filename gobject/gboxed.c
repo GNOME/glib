@@ -161,6 +161,8 @@ G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_co
 G_DEFINE_BOXED_TYPE (GSource, g_source, g_source_ref, g_source_unref)
 G_DEFINE_BOXED_TYPE (GPollFD, g_pollfd, pollfd_copy, g_free)
 
+G_DEFINE_BOXED_TYPE (GThread, g_thread, g_thread_ref, g_thread_unref)
+
 /* This one can't use G_DEFINE_BOXED_TYPE (GStrv, g_strv, g_strdupv, g_strfreev) */
 GType
 g_strv_get_type (void)
