@@ -192,6 +192,55 @@ test_launch_context (void)
   g_object_unref (context);
 }
 
+static gboolean launched_reached;
+
+static void
+launched (GAppLaunchContext *context,
+          GAppInfo          *info,
+          GVariant          *platform_data,
+          gpointer           user_data)
+{
+  gint pid;
+
+  pid = 0;
+  g_assert (g_variant_lookup (platform_data, "pid", "i", &pid));
+  g_assert (pid != 0);
+
+  launched_reached = TRUE;
+}
+
+static void
+launch_failed (GAppLaunchContext *context,
+               const gchar       *startup_notify_id)
+{
+  g_assert_not_reached ();
+}
+
+static void
+test_launch_context_signals (void)
+{
+  GAppLaunchContext *context;
+  GAppInfo *appinfo;
+  GError *error = NULL;
+
+  context = g_app_launch_context_new ();
+  g_signal_connect (context, "launched", G_CALLBACK (launched), NULL);
+  g_signal_connect (context, "launch_failed", G_CALLBACK (launch_failed), NULL);
+  appinfo = g_app_info_create_from_commandline ("./appinfo-test --option",
+                                                "cmdline-app-test",
+                                                G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                NULL);
+
+  error = NULL;
+  g_assert (g_app_info_launch (appinfo, NULL, context, &error));
+  g_assert_no_error (error);
+
+  g_assert (launched_reached);
+
+  g_object_unref (appinfo);
+  g_object_unref (context);
+}
+
 static void
 test_tryexec (void)
 {
@@ -387,6 +436,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/show-in", test_show_in);
   g_test_add_func ("/appinfo/commandline", test_commandline);
   g_test_add_func ("/appinfo/launch-context", test_launch_context);
+  g_test_add_func ("/appinfo/launch-context-signals", test_launch_context_signals);
   g_test_add_func ("/appinfo/tryexec", test_tryexec);
   g_test_add_func ("/appinfo/associations", test_associations);
   g_test_add_func ("/appinfo/environment", test_environment);
