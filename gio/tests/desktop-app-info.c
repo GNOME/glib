@@ -350,6 +350,29 @@ cleanup_subdirs (const char *base_dir)
   g_object_unref (file);
 }
 
+static void
+test_extra_getters (void)
+{
+  GDesktopAppInfo *appinfo;
+  gchar *s;
+  gboolean b;
+
+  appinfo = g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
+  g_assert (appinfo != NULL);
+
+  g_assert (g_desktop_app_info_has_key (appinfo, "Terminal"));
+  g_assert (!g_desktop_app_info_has_key (appinfo, "Bratwurst"));
+
+  s = g_desktop_app_info_get_string (appinfo, "StartupWMClass");
+  g_assert_cmpstr (s, ==, "appinfo-class");
+  g_free (s);
+
+  b = g_desktop_app_info_get_boolean (appinfo, "Terminal");
+  g_assert (b);
+
+  g_object_unref (appinfo);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -366,6 +389,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/default", test_default);
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
   g_test_add_func ("/desktop-app-info/lastused", test_last_used);
+  g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
 
   result = g_test_run ();
 
