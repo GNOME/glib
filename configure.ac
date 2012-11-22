@@ -847,7 +847,7 @@ __attribute__ ((visibility ("default")))
      f_default (void)
 {
 }
-int main (int argc, char **argv)
+int main (void)
 {
 	f_hidden();
 	f_internal();
