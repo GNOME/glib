@@ -681,7 +681,7 @@ msgstr "%s ପାଇଁ ନାମ ଅନୁଯାୟୀ ସର୍ଭିସ ଆ�
 #: ../gio/gdbusproxy.c:1663
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr "StartServiceByName(\"%s\") ପଦ୍ଧତିରୁ ଅପ୍ରତ୍ୟାଶିତ ଉତ୍ତର %d"
+msgstr "ଅପ୍ରତ୍ୟାଶିତ ଉତ୍ତର %d StartServiceByName(\"%s\") ପଦ୍ଧତିରୁ ମିଳିଛି "
 
 #: ../gio/gdbusproxy.c:2763 ../gio/gdbusproxy.c:2900
 msgid ""
