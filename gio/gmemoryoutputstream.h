@@ -88,6 +88,8 @@ GOutputStream *g_memory_output_stream_new           (gpointer             data,
                                                      gsize                size,
                                                      GReallocFunc         realloc_function,
                                                      GDestroyNotify       destroy_function);
+GLIB_AVAILABLE_IN_2_36
+GOutputStream *g_memory_output_stream_new_resizable (void);
 gpointer       g_memory_output_stream_get_data      (GMemoryOutputStream *ostream);
 gsize          g_memory_output_stream_get_size      (GMemoryOutputStream *ostream);
 gsize          g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream);

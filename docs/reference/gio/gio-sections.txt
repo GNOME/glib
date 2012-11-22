@@ -863,6 +863,7 @@ GBufferedOutputStreamPrivate
 GReallocFunc
 GMemoryOutputStream
 g_memory_output_stream_new
+g_memory_output_stream_new_resizable
 g_memory_output_stream_get_data
 g_memory_output_stream_get_size
 g_memory_output_stream_get_data_size

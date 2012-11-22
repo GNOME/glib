@@ -382,6 +382,20 @@ g_memory_output_stream_new (gpointer       data,
 }
 
 /**
+ * g_memory_output_stream_new_resizable:
+ *
+ * Creates a new #GMemoryOutputStream, using g_realloc() and g_free()
+ * for memory allocation.
+ *
+ * Since: 2.36
+ */
+GOutputStream *
+g_memory_output_stream_new_resizable (void)
+{
+  return g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+}
+
+/**
  * g_memory_output_stream_get_data:
  * @ostream: a #GMemoryOutputStream
  *

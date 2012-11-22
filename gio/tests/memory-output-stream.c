@@ -34,7 +34,7 @@ test_truncate (void)
 
   g_test_bug ("540423");
 
-  mo = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+  mo = g_memory_output_stream_new_resizable ();
   g_assert (g_seekable_can_truncate (G_SEEKABLE (mo)));
   o = g_data_output_stream_new (mo);
   for (i = 0; i < 1000; i++)
@@ -86,7 +86,7 @@ test_data_size (void)
 
   g_test_bug ("540459");
 
-  mo = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+  mo = g_memory_output_stream_new_resizable ();
   o = g_data_output_stream_new (mo);
   g_data_output_stream_put_byte (o, 1, NULL, NULL);
   pos = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo));
