@@ -81,6 +81,8 @@
  * <listitem>Character references</listitem>
  * <listitem>Sections marked as CDATA</listitem>
  * </itemizedlist>
+ *
+ * <example id="gmarkup-example"><title>Example GMarkup parser</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../glib/tests/markup-example.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)

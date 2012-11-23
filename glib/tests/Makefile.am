@@ -62,6 +62,9 @@ markup_collect_LDADD = $(progs_ldadd)
 TEST_PROGS         += markup-escape
 markup_escape_LDADD = $(progs_ldadd)
 
+TEST_PROGS               += markup-example
+markup_example_LDADD      = $(progs_ldadd)
+
 TEST_PROGS               += markup-subparser
 markup_subparser_LDADD    = $(progs_ldadd)
 

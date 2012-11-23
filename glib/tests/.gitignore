@@ -36,6 +36,7 @@ mainloop
 mappedfile
 markup-collect
 markup-escape
+markup-example
 markup-parse
 markup-subparser
 mem-overflow
