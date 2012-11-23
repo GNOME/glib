@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-11-16 17:52+0000\n"
-"PO-Revision-Date: 2012-11-23 13:57+0530\n"
+"PO-Revision-Date: 2012-11-23 14:04+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "Language: hi\n"
@@ -1545,7 +1545,7 @@ msgid " and --strict was specified; exiting.\n"
 msgstr " और --सख्त निर्दिष्ट किया गया था, बाहर निकल रहा है.\n"
 
 #: ../gio/glib-compile-schemas.c:1890
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "error parsing key `%s' in schema `%s' as specified in override file `%s': "
 #| "%s.  "
@@ -1553,8 +1553,7 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr ""
 "पार्सिंग के दौरान त्रुटि कुंजी '%s' स्कीमा में `%s' के रूप इस ओवरराइड फ़ाइल`%"
-"s' में "
-"निर्दिष्ट: %s.  "
+"s' में निर्दिष्ट: %s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -3255,12 +3254,12 @@ msgid "Error opening directory '%s': %s"
 msgstr "निर्देशिका '%s' को खोलने में त्रुटि: %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] " %lu बाइट आबंटित नहीं किया जा सकता फ़ाइल \"%s\" को पढ़ने हेतु"
-msgstr[1] " %lu बाइट आबंटित नहीं किया जा सकता फ़ाइल \"%s\" को पढ़ने हेतु"
+msgstr[0] "फ़ाइल \"%s\" को पढ़ने हेतु%ld बाइट  आबंटित नहीं किया जा सकता"
+msgstr[1] "फ़ाइल \"%s\" को पढ़ने हेतु%ld बाइट  आबंटित नहीं किया जा सकता"
 
 #: ../glib/gfileutils.c:686
 #, c-format
@@ -3507,16 +3506,16 @@ msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "नाम में अवैध यूटीएफ़-8 एनकोडेड पाठ - वैध '%s' नहीं"
 
 #: ../glib/gmarkup.c:427
-#, fuzzy, c-format
+#, c-format
 #| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "'%s' कोई वैध नाम नहीं है"
 
 #: ../glib/gmarkup.c:443
-#, fuzzy, c-format
+#, c-format
 #| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
-msgstr "'%s' कोई वैध नाम नहीं है: '%c' "
+msgstr "'%s' कोई वैध नाम नहीं है: '%c'"
 
 #: ../glib/gmarkup.c:552
 #, c-format
