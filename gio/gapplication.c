@@ -1621,7 +1621,7 @@ g_application_run (GApplication  *application,
       status = 0;
     }
 
-  if (!application->priv->is_remote)
+  if (application->priv->is_registered && !application->priv->is_remote)
     {
       g_signal_emit (application, g_application_signals[SIGNAL_SHUTDOWN], 0);
 
