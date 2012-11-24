@@ -38,6 +38,7 @@
 #endif
 #ifdef G_OS_WIN32
 #include <io.h>
+#include <windows.h>
 #endif
 #include <errno.h>
 #include <signal.h>
@@ -51,6 +52,7 @@
 #include "gstrfuncs.h"
 #include "gtimer.h"
 #include "gslice.h"
+#include "gspawn.h"
 
 
 /**
@@ -156,9 +158,8 @@
  * g_test_undefined:
  *
  * Returns %TRUE if tests may provoke assertions and other formally-undefined
- * behaviour under g_test_trap_fork(), to verify that appropriate warnings
- * are given. It can be useful to turn this off if running tests under
- * valgrind.
+ * behaviour, to verify that appropriate warnings are given. It might, in some
+ * cases, be useful to turn this off if running tests under valgrind.
  *
  * Returns: %TRUE if tests may provoke programming errors
  */
@@ -203,18 +204,18 @@
  *     console during test runs. The actual output is still captured
  *     though to allow later tests with g_test_trap_assert_stderr().
  * @G_TEST_TRAP_INHERIT_STDIN: If this flag is given, stdin of the
- *     forked child process is shared with stdin of its parent process.
+ *     child process is shared with stdin of its parent process.
  *     It is redirected to <filename>/dev/null</filename> otherwise.
  *
- * Test traps are guards around forked tests.
+ * Test traps are guards around subprocess tests.
  * These flags determine what traps to set.
  */
 
 /**
  * g_test_trap_assert_passed:
  *
- * Assert that the last forked test passed.
- * See g_test_trap_fork().
+ * Assert that the last test subprocess passed.
+ * See g_test_trap_subprocess().
  *
  * Since: 2.16
  */
@@ -222,13 +223,13 @@
 /**
  * g_test_trap_assert_failed:
  *
- * Assert that the last forked test failed.
- * See g_test_trap_fork().
+ * Assert that the last test subprocess failed.
+ * See g_test_trap_subprocess().
  *
  * This is sometimes used to test situations that are formally considered to
  * be undefined behaviour, like inputs that fail a g_return_if_fail()
  * check. In these situations you should skip the entire test, including the
- * call to g_test_trap_fork(), unless g_test_undefined() returns %TRUE
+ * call to g_test_trap_subprocess(), unless g_test_undefined() returns %TRUE
  * to indicate that undefined behaviour may be tested.
  *
  * Since: 2.16
@@ -239,8 +240,8 @@
  * @soutpattern: a glob-style
  *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
  *
- * Assert that the stdout output of the last forked test matches
- * @soutpattern. See g_test_trap_fork().
+ * Assert that the stdout output of the last test subprocess matches
+ * @soutpattern. See g_test_trap_subprocess().
  *
  * Since: 2.16
  */
@@ -250,8 +251,8 @@
  * @soutpattern: a glob-style
  *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
  *
- * Assert that the stdout output of the last forked test
- * does not match @soutpattern. See g_test_trap_fork().
+ * Assert that the stdout output of the last test subprocess
+ * does not match @soutpattern. See g_test_trap_subprocess().
  *
  * Since: 2.16
  */
@@ -261,14 +262,15 @@
  * @serrpattern: a glob-style
  *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
  *
- * Assert that the stderr output of the last forked test
- * matches @serrpattern. See  g_test_trap_fork().
+ * Assert that the stderr output of the last test subprocess
+ * matches @serrpattern. See  g_test_trap_subprocess().
  *
- * This is sometimes used to test situations that are formally considered to
- * be undefined behaviour, like inputs that fail a g_return_if_fail()
- * check. In these situations you should skip the entire test, including the
- * call to g_test_trap_fork(), unless g_test_undefined() returns %TRUE
- * to indicate that undefined behaviour may be tested.
+ * This is sometimes used to test situations that are formally
+ * considered to be undefined behaviour, like code that hits a
+ * g_assert() or g_error(). In these situations you should skip the
+ * entire test, including the call to g_test_trap_subprocess(), unless
+ * g_test_undefined() returns %TRUE to indicate that undefined
+ * behaviour may be tested.
  *
  * Since: 2.16
  */
@@ -278,8 +280,8 @@
  * @serrpattern: a glob-style
  *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
  *
- * Assert that the stderr output of the last forked test
- * does not match @serrpattern. See g_test_trap_fork().
+ * Assert that the stderr output of the last test subprocess
+ * does not match @serrpattern. See g_test_trap_subprocess().
  *
  * Since: 2.16
  */
@@ -466,6 +468,9 @@
  */
 char *__glib_assert_msg = NULL;
 
+/* --- constants --- */
+#define G_TEST_STATUS_TIMED_OUT 1024
+
 /* --- structures --- */
 struct GTestCase
 {
@@ -503,6 +508,7 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
 
 /* --- variables --- */
 static int         test_log_fd = -1;
+static guint64     test_timeout = 0;
 static gboolean    test_mode_fatal = TRUE;
 static gboolean    g_test_run_once = TRUE;
 static gboolean    test_run_list = FALSE;
@@ -516,15 +522,18 @@ static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
-static GSList     *test_paths_skipped = NULL;
 static GTestSuite *test_suite_root = NULL;
 static int         test_trap_last_status = 0;
 static int         test_trap_last_pid = 0;
+static char       *test_trap_last_subprocess = NULL;
 static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
+static char       *test_argv0 = NULL;
+static char       *test_initial_cwd = NULL;
+static gboolean    test_in_subprocess = FALSE;
 static GTestConfig mutable_test_config_vars = {
   FALSE,        /* test_initialized */
   TRUE,         /* test_quick */
@@ -672,6 +681,10 @@ parse_args (gint    *argc_p,
   guint argc = *argc_p;
   gchar **argv = *argv_p;
   guint i, e;
+
+  test_argv0 = argv[0];
+  test_initial_cwd = g_get_current_dir ();
+
   /* parse known args */
   for (i = 1; i < argc; i++)
     {
@@ -705,6 +718,23 @@ parse_args (gint    *argc_p,
             }
           argv[i] = NULL;
         }
+      else if (strcmp ("--GTestTimeout", argv[i]) == 0 || strncmp ("--GTestTimeout=", argv[i], 15) == 0)
+        {
+          gchar *equal = argv[i] + 14;
+          if (*equal == '=')
+            test_timeout = g_ascii_strtoull (equal + 1, NULL, 0);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              test_timeout = g_ascii_strtoull (argv[i], NULL, 0);
+            }
+          argv[i] = NULL;
+        }
+      else if (strcmp ("--GTestSubprocess", argv[i]) == 0)
+        {
+          test_in_subprocess = TRUE;
+          argv[i] = NULL;
+        }
       else if (strcmp ("--GTestSkipCount", argv[i]) == 0 || strncmp ("--GTestSkipCount=", argv[i], 17) == 0)
         {
           gchar *equal = argv[i] + 16;
@@ -726,18 +756,6 @@ parse_args (gint    *argc_p,
             {
               argv[i++] = NULL;
               test_paths = g_slist_prepend (test_paths, argv[i]);
-            }
-          argv[i] = NULL;
-        }
-      else if (strcmp ("-s", argv[i]) == 0 || strncmp ("-s=", argv[i], 3) == 0)
-        {
-          gchar *equal = argv[i] + 2;
-          if (*equal == '=')
-            test_paths_skipped = g_slist_prepend (test_paths_skipped, equal + 1);
-          else if (i + 1 < argc)
-            {
-              argv[i++] = NULL;
-              test_paths_skipped = g_slist_prepend (test_paths_skipped, argv[i]);
             }
           argv[i] = NULL;
         }
@@ -814,7 +832,6 @@ parse_args (gint    *argc_p,
                   "  -m {perf|slow|thorough|quick}  Execute tests according to mode\n"
                   "  -m {undefined|no-undefined}    Execute tests according to mode\n"
                   "  -p TESTPATH                    Only start test cases matching TESTPATH\n"
-                  "  -s TESTPATH                    Skip all tests matching TESTPATH\n"
                   "  -seed=SEEDSTRING               Start tests with random seed SEEDSTRING\n"
                   "  --debug-log                    debug test logging output\n"
                   "  -q, --quiet                    Run tests quietly\n"
@@ -902,8 +919,8 @@ parse_args (gint    *argc_p,
  *             <term>undefined</term>
  *             <listitem><para>
  *               Tests for undefined behaviour, may provoke programming errors
- *               under g_test_trap_fork() to check that appropriate assertions
- *               or warnings are given
+ *               under g_test_trap_subprocess() or g_test_expect_messages() to check
+ *               that appropriate assertions or warnings are given
  *             </para></listitem>
  *           </varlistentry>
  *           <varlistentry>
@@ -1411,9 +1428,6 @@ g_test_add_vtable (const char       *testpath,
   g_return_if_fail (g_path_is_absolute (testpath));
   g_return_if_fail (fixture_test_func != NULL);
 
-  if (g_slist_find_custom (test_paths_skipped, testpath, (GCompareFunc)g_strcmp0))
-    return;
-
   suite = g_test_get_root();
   segments = g_strsplit (testpath, "/", -1);
   for (ui = 0; segments[ui] != NULL; ui++)
@@ -1557,6 +1571,60 @@ g_test_add_data_func_full (const char     *testpath,
                      (GTestFixtureFunc) data_free_func);
 }
 
+static gboolean
+g_test_suite_case_exists (GTestSuite *suite,
+                          const char *test_path)
+{
+  GSList *iter;
+  char *slash;
+  GTestCase *tc;
+
+  test_path++;
+  slash = strchr (test_path, '/');
+
+  if (slash)
+    {
+      for (iter = suite->suites; iter; iter = iter->next)
+        {
+          GTestSuite *child_suite = iter->data;
+
+          if (!strncmp (child_suite->name, test_path, slash - test_path))
+            if (g_test_suite_case_exists (child_suite, slash))
+              return TRUE;
+        }
+    }
+  else
+    {
+      for (iter = suite->cases; iter; iter = iter->next)
+        {
+          tc = iter->data;
+          if (!strcmp (tc->name, test_path))
+            return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_test_case_exists:
+ * @test_path: test case
+ *
+ * Tests if a test by the name of @test_path is registered.
+ *
+ * Returns: %TRUE if a test case named @test_name has been registered.
+ *
+ * Since: 2.36
+ */
+gboolean
+g_test_case_exists (const char *test_path)
+{
+  g_return_val_if_fail (test_path != NULL, FALSE);
+  g_return_val_if_fail (g_path_is_absolute (test_path), FALSE);
+
+  return g_test_suite_case_exists (g_test_get_root (), test_path);
+}
+
 /**
  * g_test_create_suite:
  * @suite_name: a name for the suite
@@ -1666,9 +1734,34 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
 static gboolean
 test_case_run (GTestCase *tc)
 {
-  gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
+  gchar *old_name, *old_base;
   gboolean success = TRUE;
 
+  if (strchr (tc->name, ':'))
+    {
+      GSList *iter;
+      gchar *full_name = g_strdup_printf ("%s/%s", test_run_name, tc->name);
+      gboolean found = FALSE;
+
+      for (iter = test_paths; iter; iter = iter->next)
+        {
+          if (!strcmp (full_name, iter->data))
+            {
+              found = TRUE;
+              break;
+            }
+        }
+
+      if (!found)
+        {
+          if (g_test_verbose())
+            g_print ("GTest: skipping: %s/%s\n", test_run_name, tc->name);
+          return TRUE;
+        }
+    } 
+
+  old_name = test_run_name;
+  old_base = g_strdup (test_uri_base);
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (++test_run_count <= test_skip_count)
     g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
@@ -1764,6 +1857,19 @@ g_test_run_suite_internal (GTestSuite *suite,
   return n_bad;
 }
 
+static gpointer
+test_timeout_thread (gpointer user_data)
+{
+  g_usleep (test_timeout);
+#ifdef G_OS_WIN32
+  TerminateProcess (GetCurrentProcess (), G_TEST_STATUS_TIMED_OUT);
+#else
+  kill (getpid (), SIGALRM);
+#endif
+
+  return NULL;
+}
+
 /**
  * g_test_run_suite:
  * @suite: a #GTestSuite
@@ -1782,6 +1888,7 @@ g_test_run_suite_internal (GTestSuite *suite,
 int
 g_test_run_suite (GTestSuite *suite)
 {
+  GSList *my_test_paths;
   guint n_bad = 0;
 
   g_return_val_if_fail (g_test_config_vars->test_initialized, -1);
@@ -1789,13 +1896,24 @@ g_test_run_suite (GTestSuite *suite)
 
   g_test_run_once = FALSE;
 
-  if (!test_paths)
-    test_paths = g_slist_prepend (test_paths, "");
-  while (test_paths)
+  if (test_timeout)
     {
-      const char *rest, *path = test_paths->data;
+      GThread *thread;
+
+      thread = g_thread_new ("GTestTimeout", test_timeout_thread, NULL);
+      g_thread_unref (thread);
+    }
+
+  if (test_paths)
+    my_test_paths = g_slist_copy (test_paths);
+  else
+    my_test_paths = g_slist_prepend (NULL, "");
+
+  while (my_test_paths)
+    {
+      const char *rest, *path = my_test_paths->data;
       guint l, n = strlen (suite->name);
-      test_paths = g_slist_delete_link (test_paths, test_paths);
+      my_test_paths = g_slist_delete_link (my_test_paths, my_test_paths);
       while (path[0] == '/')
         path++;
       if (!n) /* root suite, run unconditionally */
@@ -2076,7 +2194,10 @@ g_string_must_read (GString *gstring,
     goto again;
   else /* bytes < 0 */
     {
-      g_warning ("failed to read() from child process (%d): %s", test_trap_last_pid, g_strerror (errno));
+      if (test_trap_last_subprocess)
+        g_warning ("failed to read() from child process (%s): %s", test_trap_last_subprocess, g_strerror (errno));
+      else
+        g_warning ("failed to read() from child process (%d): %s", test_trap_last_pid, g_strerror (errno));
       return 1; /* ignore error after warning */
     }
 }
@@ -2101,6 +2222,8 @@ test_trap_clear (void)
 {
   test_trap_last_status = 0;
   test_trap_last_pid = 0;
+  g_free (test_trap_last_subprocess);
+  test_trap_last_subprocess = NULL;
   g_free (test_trap_last_stdout);
   test_trap_last_stdout = NULL;
   g_free (test_trap_last_stderr);
@@ -2139,8 +2262,10 @@ test_time_stamp (void)
  * @test_trap_flags: Flags to modify forking behaviour.
  *
  * Fork the current test program to execute a test case that might
- * not return or that might abort. The forked test case is aborted
- * and considered failing if its run time exceeds @usec_timeout.
+ * not return or that might abort.
+ *
+ * If @usec_timeout is non-0, the forked test case is aborted and
+ * considered failing if its run time exceeds it.
  *
  * The forking behavior can be configured with the #GTestTrapFlags flags.
  *
@@ -2159,17 +2284,19 @@ test_time_stamp (void)
  *         g_printerr ("some stderr text: semagic43\n");
  *         exit (0); /&ast; successful test run &ast;/
  *       }
- *     g_test_trap_assert_passed();
+ *     g_test_trap_assert_passed ();
  *     g_test_trap_assert_stdout ("*somagic17*");
  *     g_test_trap_assert_stderr ("*semagic43*");
  *   }
  * ]|
  *
- * This function is implemented only on Unix platforms.
- *
  * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
  *
  * Since: 2.16
+ *
+ * Deprecated: This function is implemented only on Unix platforms,
+ * and is not always reliable due to problems inherent in
+ * fork-without-exec. Use g_test_trap_subprocess() instead.
  */
 gboolean
 g_test_trap_fork (guint64        usec_timeout,
@@ -2277,7 +2404,7 @@ g_test_trap_fork (guint64        usec_timeout,
                 {
                   /* timeout reached, need to abort the child now */
                   kill_child (test_trap_last_pid, &status, 3);
-                  test_trap_last_status = 1024; /* timeout */
+                  test_trap_last_status = G_TEST_STATUS_TIMED_OUT;
                   if (0 && WIFSIGNALED (status))
                     g_printerr ("%s: child timed out and received: %s\n", G_STRFUNC, g_strsignal (WTERMSIG (status)));
                   need_wait = FALSE;
@@ -2316,11 +2443,174 @@ g_test_trap_fork (guint64        usec_timeout,
 }
 
 /**
+ * g_test_trap_subprocess:
+ * @test_name:       Test to run in a subprocess
+ * @usec_timeout:    Timeout for the subprocess test in micro seconds.
+ * @test_trap_flags: Flags to modify subprocess behaviour.
+ *
+ * Respawns the test program to run only @test_name in a subprocess.
+ * This can be used for a test case that might not return or that
+ * might abort. @test_name will normally be the name of the parent
+ * test, followed by a "<literal>:</literal>" and a name for the
+ * specific subtest; tests with names of this form will automatically
+ * be skipped in the parent process.
+ *
+ * If @usec_timeout is non-0, the test subprocess is aborted and
+ * considered failing if its run time exceeds it.
+ *
+ * The subprocess behavior can be configured with the #GTestTrapFlags
+ * flags.
+ *
+ * You can use methods such as g_test_trap_assert_passed(),
+ * g_test_trap_assert_failed(), and g_test_trap_assert_stderr() to check
+ * the results of the subprocess.
+ *
+ * If your <literal>main ()</literal> needs to behave differently in
+ * the subprocess, you can call g_test_subprocess() (after calling
+ * test_init()) to see whether you are in a subprocess.
+ *
+ * The following example tests that calling
+ * <literal>my_object_new(1000000)</literal> will abort with an error
+ * message.
+ *
+ * |[
+ *   static void
+ *   test_create_large_object_subprocess (void)
+ *   {
+ *     my_object_new (1000000);
+ *     g_assert_not_reached ();
+ *   }
+ *
+ *   static void
+ *   test_create_large_object (void)
+ *   {
+ *     g_test_trap_subprocess ("/myobject/create_large_object:subprocess", 0,
+ *                             G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+ *     g_test_trap_assert_failed ();
+ *     g_test_trap_assert_stderr ("*ERROR*too large*");
+ *   }
+ *
+ *   int
+ *   main (int argc, char **argv)
+ *   {
+ *     g_test_init (&argc, &argv, NULL);
+ *
+ *     g_test_add_func ("/myobject/create_large_object",
+ *                      test_create_large_object);
+ *     /&ast; Because of the ':' in the name, this test will not be run
+ *      &ast; by the g_test_run () call below.
+ *      &ast;/
+ *     g_test_add_func ("/myobject/create_large_object:subprocess",
+ *                      test_create_large_object_subprocess);
+ *
+ *     return g_test_run ();
+ *   }
+ * ]|
+ *
+ * Since: 2.36
+ */
+#undef g_test_trap_subprocess
+void
+g_test_trap_subprocess (const char     *test_path,
+                        guint64         usec_timeout,
+                        GTestTrapFlags  test_trap_flags)
+{
+  GError *error = NULL;
+  GPtrArray *argv;
+  char **stdout_p, **stderr_p;
+  GSpawnFlags flags;
+  int status;
+
+  if (g_test_verbose())
+    g_print ("GTest: subprocess: %s\n", test_path);
+
+  test_trap_clear ();
+  test_trap_last_subprocess = g_strdup (test_path);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, test_argv0);
+  g_ptr_array_add (argv, "-q");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, (char *)test_path);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  if (test_log_fd != -1)
+    {
+      char log_fd_buf[128];
+
+      g_ptr_array_add (argv, "--GTestLogFD");
+      g_snprintf (log_fd_buf, sizeof (log_fd_buf), "%d", test_log_fd);
+      g_ptr_array_add (argv, log_fd_buf);
+    }
+  if (usec_timeout != 0)
+    {
+      char timeout_buf[128];
+
+      g_ptr_array_add (argv, "--GTestTimeout");
+      g_snprintf (timeout_buf, sizeof (timeout_buf), "%" G_GUINT64_FORMAT, usec_timeout);
+      g_ptr_array_add (argv, timeout_buf);
+    }
+  g_ptr_array_add (argv, NULL);
+
+  if (test_trap_flags & G_TEST_TRAP_INHERIT_STDIN)
+    flags = G_SPAWN_CHILD_INHERITS_STDIN;
+  else
+    flags = 0;
+  if (test_trap_flags & G_TEST_TRAP_SILENCE_STDOUT)
+    stdout_p = &test_trap_last_stdout;
+  else
+    stdout_p = NULL;
+  if (test_trap_flags & G_TEST_TRAP_SILENCE_STDERR)
+    stderr_p = &test_trap_last_stderr;
+  else
+    stderr_p = NULL;
+
+  if (!g_spawn_sync (test_initial_cwd,
+                     (char **)argv->pdata,
+                     NULL, flags,
+                     NULL, NULL,
+                     stdout_p, stderr_p,
+                     &status, &error))
+    {
+      g_error ("g_test_trap_subprocess() failed: %s\n",
+               error->message);
+    }
+  g_ptr_array_free (argv, TRUE);
+
+#ifdef G_OS_UNIX
+  if (WIFEXITED (status))
+    test_trap_last_status = WEXITSTATUS (status);
+  else if (WIFSIGNALED (status) && WTERMSIG (status) == SIGALRM)
+    test_trap_last_status = G_TEST_STATUS_TIMED_OUT;
+  else
+    test_trap_last_status = -1;
+#else
+    test_trap_last_status = status;
+#endif
+}
+
+/**
+ * g_test_subprocess:
+ *
+ * Returns %TRUE (after g_test_init() has been called) if the test
+ * program is running under g_test_trap_subprocess().
+ *
+ * Returns: %TRUE if the test program is running under
+ * g_test_trap_subprocess().
+ *
+ * Since: 2.36
+ */
+gboolean
+g_test_subprocess (void)
+{
+  return test_in_subprocess;
+}
+
+/**
  * g_test_trap_has_passed:
  *
- * Check the result of the last g_test_trap_fork() call.
+ * Check the result of the last g_test_trap_subprocess() call.
  *
- * Returns: %TRUE if the last forked child terminated successfully.
+ * Returns: %TRUE if the last test subprocess terminated successfully.
  *
  * Since: 2.16
  */
@@ -2333,16 +2623,16 @@ g_test_trap_has_passed (void)
 /**
  * g_test_trap_reached_timeout:
  *
- * Check the result of the last g_test_trap_fork() call.
+ * Check the result of the last g_test_trap_subprocess() call.
  *
- * Returns: %TRUE if the last forked child got killed due to a fork timeout.
+ * Returns: %TRUE if the last test subprocess got killed due to a timeout.
  *
  * Since: 2.16
  */
 gboolean
 g_test_trap_reached_timeout (void)
 {
-  return 0 != (test_trap_last_status & 1024); /* timeout flag */
+  return test_trap_last_status != G_TEST_STATUS_TIMED_OUT;
 }
 
 void
@@ -2353,40 +2643,45 @@ g_test_trap_assertions (const char     *domain,
                         guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
                         const char     *pattern)
 {
-#ifdef G_OS_UNIX
   gboolean must_pass = assertion_flags == 0;
   gboolean must_fail = assertion_flags == 1;
   gboolean match_result = 0 == (assertion_flags & 1);
   const char *stdout_pattern = (assertion_flags & 2) ? pattern : NULL;
   const char *stderr_pattern = (assertion_flags & 4) ? pattern : NULL;
   const char *match_error = match_result ? "failed to match" : "contains invalid match";
-  if (test_trap_last_pid == 0)
-    g_error ("child process failed to exit after g_test_trap_fork() and before g_test_trap_assert*()");
+  char *process_id;
+
+  if (test_trap_last_pid != 0)
+    process_id = g_strdup_printf ("%d", test_trap_last_pid);
+  else if (test_trap_last_subprocess != NULL)
+    process_id = g_strdup (test_trap_last_subprocess);
+  else
+    g_error ("g_test_trap_ assertion with no trapped test");
+
   if (must_pass && !g_test_trap_has_passed())
     {
-      char *msg = g_strdup_printf ("child process (%d) of test trap failed unexpectedly", test_trap_last_pid);
+      char *msg = g_strdup_printf ("child process (%s) failed unexpectedly", process_id);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (must_fail && g_test_trap_has_passed())
     {
-      char *msg = g_strdup_printf ("child process (%d) did not fail as expected", test_trap_last_pid);
+      char *msg = g_strdup_printf ("child process (%s) did not fail as expected", process_id);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (stdout_pattern && match_result == !g_pattern_match_simple (stdout_pattern, test_trap_last_stdout))
     {
-      char *msg = g_strdup_printf ("stdout of child process (%d) %s: %s", test_trap_last_pid, match_error, stdout_pattern);
+      char *msg = g_strdup_printf ("stdout of child process (%s) %s: %s", process_id, match_error, stdout_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (stderr_pattern && match_result == !g_pattern_match_simple (stderr_pattern, test_trap_last_stderr))
     {
-      char *msg = g_strdup_printf ("stderr of child process (%d) %s: %s", test_trap_last_pid, match_error, stderr_pattern);
+      char *msg = g_strdup_printf ("stderr of child process (%s) %s: %s", process_id, match_error, stderr_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
-#endif
 }
 
 static void

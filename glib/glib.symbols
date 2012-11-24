@@ -1193,6 +1193,7 @@ g_test_add_vtable
 g_test_assert_expected_messages_internal
 g_test_bug
 g_test_bug_base
+g_test_case_exists
 g_test_config_vars
 g_test_create_case
 g_test_create_suite
@@ -1217,6 +1218,7 @@ g_test_rand_int
 g_test_rand_int_range
 g_test_run
 g_test_run_suite
+g_test_subprocess
 g_test_suite_add
 g_test_suite_add_suite
 g_test_timer_elapsed
@@ -1226,6 +1228,7 @@ g_test_trap_assertions
 g_test_trap_fork
 g_test_trap_has_passed
 g_test_trap_reached_timeout
+g_test_trap_subprocess
 g_timer_continue
 g_timer_destroy
 g_timer_elapsed
