@@ -12,27 +12,35 @@ typedef struct {
 } SchemaTest;
 
 static void
+test_schema_do_compile (gpointer data)
+{
+  SchemaTest *test = (SchemaTest *) data;
+  gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
+  gchar *path = g_build_filename (SRCDIR, "schema-tests", filename, NULL);
+  gchar *argv[] = {
+    "../glib-compile-schemas",
+    "--strict",
+    "--dry-run",
+    "--schema-file", path,
+    (gchar *)test->opt,
+    NULL
+  };
+  gchar *envp[] = { NULL };
+
+  execve (argv[0], argv, envp);
+  g_assert_not_reached ();
+}
+
+static void
 test_schema (gpointer data)
 {
   SchemaTest *test = (SchemaTest *) data;
+  gchar *child_name;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
-      gchar *path = g_build_filename (SRCDIR, "schema-tests", filename, NULL);
-      gchar *argv[] = {
-        "../glib-compile-schemas",
-        "--strict",
-        "--dry-run",
-        "--schema-file", path,
-        (gchar *)test->opt,
-        NULL
-      };
-      gchar *envp[] = { NULL };
-      execve (argv[0], argv, envp);
-      g_free (filename);
-      g_free (path);
-    }
+  child_name = g_strdup_printf ("/gschema/%s%s:do_compile", test->name, test->opt ? "/opt" : "");
+  g_test_trap_subprocess (child_name, 0, G_TEST_TRAP_SILENCE_STDERR);
+  g_free (child_name);
+
   if (test->err)
     {
       g_test_trap_assert_failed ();
@@ -135,8 +143,14 @@ main (int argc, char *argv[])
 
   for (i = 0; i < G_N_ELEMENTS (tests); ++i)
     {
-      gchar *name = g_strdup_printf ("/gschema/%s%s", tests[i].name, tests[i].opt ? "/opt" : "");
+      gchar *name;
+
+      name = g_strdup_printf ("/gschema/%s%s", tests[i].name, tests[i].opt ? "/opt" : "");
       g_test_add_data_func (name, &tests[i], (gpointer) test_schema);
+      g_free (name);
+
+      name = g_strdup_printf ("/gschema/%s%s:do_compile", tests[i].name, tests[i].opt ? "/opt" : "");
+      g_test_add_data_func (name, &tests[i], (gpointer) test_schema_do_compile);
       g_free (name);
     }
 

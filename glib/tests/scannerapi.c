@@ -59,17 +59,21 @@ test_scanner_warn (ScannerFixture *fix,
 }
 
 static void
+test_scanner_error_child (ScannerFixture *fix,
+                          gconstpointer   test_data)
+{
+  int pe = fix->scanner->parse_errors;
+  g_scanner_error (fix->scanner, "scanner-error-message-test");
+  g_assert_cmpint (fix->scanner->parse_errors, ==, pe + 1);
+  exit (0);
+}
+
+static void
 test_scanner_error (ScannerFixture *fix,
                     gconstpointer   test_data)
 {
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-    {
-      int pe = fix->scanner->parse_errors;
-      g_scanner_error (fix->scanner, "scanner-error-message-test");
-      g_assert_cmpint (fix->scanner->parse_errors, ==, pe + 1);
-      exit (0);
-    }
-  g_test_trap_assert_passed();
+  g_test_trap_subprocess ("/scanner/error:child", 0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+  g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*scanner-error-message-test*");
 }
 
@@ -135,6 +139,7 @@ main (int   argc,
 
   g_test_add ("/scanner/warn", ScannerFixture, 0, scanner_fixture_setup, test_scanner_warn, scanner_fixture_teardown);
   g_test_add ("/scanner/error", ScannerFixture, 0, scanner_fixture_setup, test_scanner_error, scanner_fixture_teardown);
+  g_test_add ("/scanner/error:child", ScannerFixture, 0, scanner_fixture_setup, test_scanner_error_child, scanner_fixture_teardown);
   g_test_add ("/scanner/symbols", ScannerFixture, 0, scanner_fixture_setup, test_scanner_symbols, scanner_fixture_teardown);
   g_test_add ("/scanner/tokens", ScannerFixture, 0, scanner_fixture_setup, test_scanner_tokens, scanner_fixture_teardown);
 

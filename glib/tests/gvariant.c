@@ -2809,24 +2809,12 @@ test_format_strings (void)
 }
 
 static void
-exit_on_abort (int signal)
+do_failed_test (const char *test,
+                const gchar *pattern)
 {
-  exit (signal);
-}
-
-static gboolean
-do_failed_test (const gchar *pattern)
-{
-  if (g_test_trap_fork (1000000, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      signal (SIGABRT, exit_on_abort);
-      return TRUE;
-    }
-
+  g_test_trap_subprocess (test, 1000000, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr (pattern);
-
-  return FALSE;
 }
 
 static void
@@ -2872,6 +2860,14 @@ check_and_free (GVariant    *value,
   g_assert_cmpstr (str, ==, valstr);
   g_variant_unref (value);
   g_free (valstr);
+}
+
+static void
+test_varargs_empty_array (void)
+{
+  g_variant_new ("(a{s*})", NULL);
+
+  g_assert_not_reached ();
 }
 
 static void
@@ -3406,8 +3402,8 @@ test_varargs (void)
     g_variant_unref (value);
     g_free (str);
 
-    if (do_failed_test ("*which type of empty array*"))
-      g_variant_new ("(a{s*})", NULL);
+    do_failed_test ("/gvariant/varargs:empty-array",
+                    "*which type of empty array*");
   }
 
   g_variant_type_info_assert_no_infos ();
@@ -3869,6 +3865,30 @@ test_parse_failures (void)
 }
 
 static void
+test_parse_bad_format_char (void)
+{
+  g_variant_new_parsed ("%z");
+
+  g_assert_not_reached ();
+}
+ 
+static void
+test_parse_bad_format_string (void)
+{
+  g_variant_new_parsed ("uint32 %i", 2);
+
+  g_assert_not_reached ();
+}
+
+static void
+test_parse_bad_args (void)
+{
+  g_variant_new_parsed ("%@i", g_variant_new_uint32 (2));
+
+  g_assert_not_reached ();
+}
+
+static void
 test_parse_positional (void)
 {
   GVariant *value;
@@ -3883,23 +3903,14 @@ test_parse_positional (void)
 
   if (g_test_undefined ())
     {
-      if (do_failed_test ("*GVariant format string*"))
-        {
-          g_variant_new_parsed ("%z");
-          abort ();
-        }
+      do_failed_test ("/gvariant/parse:bad-format-char",
+                      "*GVariant format string*");
 
-      if (do_failed_test ("*can not parse as*"))
-        {
-          g_variant_new_parsed ("uint32 %i", 2);
-          abort ();
-        }
+      do_failed_test ("/gvariant/parse:bad-format-string",
+                      "*can not parse as*");
 
-      if (do_failed_test ("*expected GVariant of type `i'*"))
-        {
-          g_variant_new_parsed ("%@i", g_variant_new_uint32 (2));
-          abort ();
-        }
+      do_failed_test ("/gvariant/parse:bad-args",
+                      "*expected GVariant of type `i'*");
     }
 }
 
@@ -4315,6 +4326,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/format-strings", test_format_strings);
   g_test_add_func ("/gvariant/invalid-varargs", test_invalid_varargs);
   g_test_add_func ("/gvariant/varargs", test_varargs);
+  g_test_add_func ("/gvariant/varargs:empty-array", test_varargs_empty_array);
   g_test_add_func ("/gvariant/valist", test_valist);
   g_test_add_func ("/gvariant/builder-memory", test_builder_memory);
   g_test_add_func ("/gvariant/hashing", test_hashing);
@@ -4322,6 +4334,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parser", test_parses);
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
+  g_test_add_func ("/gvariant/parse:bad-format-char", test_parse_bad_format_char);
+  g_test_add_func ("/gvariant/parse:bad-format-string", test_parse_bad_format_string);
+  g_test_add_func ("/gvariant/parse:bad-args", test_parse_bad_args);
   g_test_add_func ("/gvariant/floating", test_floating);
   g_test_add_func ("/gvariant/bytestring", test_bytestring);
   g_test_add_func ("/gvariant/lookup-value", test_lookup_value);

@@ -216,23 +216,25 @@ static GMemVTable array_large_size_mem_vtable = {
 };
 
 static void
-array_large_size (void)
+array_large_size_subprocess (void)
 {
-  GArray* array;
-
-  g_test_bug ("568760");
+  GArray *array;
 
   array = g_array_new (FALSE, FALSE, sizeof (char));
 
-  if (g_test_trap_fork (5 /* s */ * 1000 /* ms */ * 1000 /* µs */, 0))
-    {
-      g_mem_set_vtable (&array_large_size_mem_vtable);
-      g_array_set_size (array, 1073750016);
-      g_assert_not_reached ();
-    }
-  g_test_trap_assert_passed ();
+  g_mem_set_vtable (&array_large_size_mem_vtable);
+  g_array_set_size (array, 1073750016);
+  g_assert_not_reached ();
+}
 
-  g_array_free (array, TRUE);
+static void
+array_large_size (void)
+{
+  g_test_bug ("568760");
+
+  g_test_trap_subprocess ("/array/large-size:subprocess",
+                          5 /* s */ * 1000 /* ms */ * 1000 /* µs */, 0);
+  g_test_trap_assert_passed ();
 }
 
 static int
@@ -851,6 +853,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/remove-range", array_remove_range);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/large-size", array_large_size);
+  g_test_add_func ("/array/large-size:subprocess", array_large_size_subprocess);
   g_test_add_func ("/array/sort", array_sort);
   g_test_add_func ("/array/sort-with-data", array_sort_with_data);
   g_test_add_func ("/array/clear-func", array_clear_func);

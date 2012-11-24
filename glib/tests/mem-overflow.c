@@ -26,13 +26,48 @@
 #include "glib.h"
 #include <stdlib.h>
 
+static gsize a = G_MAXSIZE / 10 + 10;
+static gsize b = 10;
+typedef char X[10];
+
+#define MEM_OVERFLOW_TEST(name, code) \
+static void                           \
+mem_overflow_ ## name (void)          \
+{                                     \
+  gpointer p;                         \
+  code;                               \
+  g_free (p);                         \
+  exit (0);                           \
+}
+
+MEM_OVERFLOW_TEST (malloc_n_a_a, p = g_malloc_n (a, a))
+MEM_OVERFLOW_TEST (malloc_n_a_b, p = g_malloc_n (a, b))
+MEM_OVERFLOW_TEST (malloc_n_b_a, p = g_malloc_n (b, a))
+MEM_OVERFLOW_TEST (malloc_n_b_b, p = g_malloc_n (b, b))
+
+MEM_OVERFLOW_TEST (malloc0_n_a_a, p = g_malloc0_n (a, a))
+MEM_OVERFLOW_TEST (malloc0_n_a_b, p = g_malloc0_n (a, b))
+MEM_OVERFLOW_TEST (malloc0_n_b_a, p = g_malloc0_n (b, a))
+MEM_OVERFLOW_TEST (malloc0_n_b_b, p = g_malloc0_n (b, b))
+
+MEM_OVERFLOW_TEST (realloc_n_a_a, p = g_malloc (1); p = g_realloc_n (p, a, a))
+MEM_OVERFLOW_TEST (realloc_n_a_b, p = g_malloc (1); p = g_realloc_n (p, a, b))
+MEM_OVERFLOW_TEST (realloc_n_b_a, p = g_malloc (1); p = g_realloc_n (p, b, a))
+MEM_OVERFLOW_TEST (realloc_n_b_b, p = g_malloc (1); p = g_realloc_n (p, b, b))
+
+MEM_OVERFLOW_TEST (new_a, p = g_new (X, a))
+MEM_OVERFLOW_TEST (new_b, p = g_new (X, b))
+
+MEM_OVERFLOW_TEST (new0_a, p = g_new0 (X, a))
+MEM_OVERFLOW_TEST (new0_b, p = g_new0 (X, b))
+
+MEM_OVERFLOW_TEST (renew_a, p = g_malloc (1); p = g_renew (X, p, a))
+MEM_OVERFLOW_TEST (renew_b, p = g_malloc (1); p = g_renew (X, p, b))
+
 static void
 mem_overflow (void)
 {
-  gsize a = G_MAXSIZE / 10 + 10;
-  gsize b = 10;
   gpointer p, q;
-  typedef char X[10];
 
   /* "FAIL" here apparently means "fail to overflow"... */
 #define CHECK_PASS(P)	p = (P); g_assert (p == NULL);
@@ -70,65 +105,60 @@ mem_overflow (void)
   CHECK_FAIL (g_try_renew (X, q, b));
   free (p);
 
-#undef CHECK_FAIL
-#undef CHECK_PASS
-
-#define CHECK_FAIL(P)	do { \
+#define CHECK_SUBPROCESS_FAIL(name) do { \
       if (g_test_undefined ()) \
         { \
-          if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) \
-            { \
-              p = (P); \
-              exit (0); \
-            } \
-          \
+          g_test_trap_subprocess ("/mem/overflow:" #name, 0, G_TEST_TRAP_SILENCE_STDERR); \
           g_test_trap_assert_failed(); \
         } \
     } while (0)
 
-#define CHECK_PASS(P)	do { \
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR)) \
+#define CHECK_SUBPROCESS_PASS(name) do { \
+      if (g_test_undefined ()) \
         { \
-          p = (P); \
-          g_free (p); \
-          exit (0); \
+          g_test_trap_subprocess ("/mem/overflow:" #name, 0, G_TEST_TRAP_SILENCE_STDERR); \
+          g_test_trap_assert_passed(); \
         } \
-      \
-      g_test_trap_assert_passed(); \
     } while (0)
 
-  CHECK_FAIL (g_malloc_n (a, a));
-  CHECK_FAIL (g_malloc_n (a, b));
-  CHECK_FAIL (g_malloc_n (b, a));
-  CHECK_PASS (g_malloc_n (b, b));
+  CHECK_SUBPROCESS_FAIL (malloc_n_a_a);
+  CHECK_SUBPROCESS_FAIL (malloc_n_a_b);
+  CHECK_SUBPROCESS_FAIL (malloc_n_b_a);
+  CHECK_SUBPROCESS_PASS (malloc_n_b_b);
 
-  CHECK_FAIL (g_malloc0_n (a, a));
-  CHECK_FAIL (g_malloc0_n (a, b));
-  CHECK_FAIL (g_malloc0_n (b, a));
-  CHECK_PASS (g_malloc0_n (b, b));
+  CHECK_SUBPROCESS_FAIL (malloc0_n_a_a);
+  CHECK_SUBPROCESS_FAIL (malloc0_n_a_b);
+  CHECK_SUBPROCESS_FAIL (malloc0_n_b_a);
+  CHECK_SUBPROCESS_PASS (malloc0_n_b_b);
 
-  q = g_malloc (1);
-  CHECK_FAIL (g_realloc_n (q, a, a));
-  CHECK_FAIL (g_realloc_n (q, a, b));
-  CHECK_FAIL (g_realloc_n (q, b, a));
-  CHECK_PASS (g_realloc_n (q, b, b));
-  g_free (q);
+  CHECK_SUBPROCESS_FAIL (realloc_n_a_a);
+  CHECK_SUBPROCESS_FAIL (realloc_n_a_b);
+  CHECK_SUBPROCESS_FAIL (realloc_n_b_a);
+  CHECK_SUBPROCESS_PASS (realloc_n_b_b);
 
-  CHECK_FAIL (g_new (X, a));
-  CHECK_PASS (g_new (X, b));
+  CHECK_SUBPROCESS_FAIL (new_a);
+  CHECK_SUBPROCESS_PASS (new_b);
 
-  CHECK_FAIL (g_new0 (X, a));
-  CHECK_PASS (g_new0 (X, b));
+  CHECK_SUBPROCESS_FAIL (new0_a);
+  CHECK_SUBPROCESS_PASS (new0_b);
 
-  q = g_malloc (1);
-  CHECK_FAIL (g_renew (X, q, a));
-  CHECK_PASS (g_renew (X, q, b));
-  g_free (q);
+  CHECK_SUBPROCESS_FAIL (renew_a);
+  CHECK_SUBPROCESS_PASS (renew_b);
 }
 
 typedef struct
 {
 } Empty;
+
+static void
+empty_alloc_child (void)
+{
+  Empty *empty;
+
+  empty = g_new0 (Empty, 1);
+  g_assert (empty == NULL);
+  exit (0);
+}
 
 static void
 empty_alloc (void)
@@ -137,14 +167,7 @@ empty_alloc (void)
 
   g_assert_cmpint (sizeof (Empty), ==, 0);
 
-  if (g_test_trap_fork (0, 0))
-    {
-      Empty *empty;
-
-      empty = g_new0 (Empty, 1);
-      g_assert (empty == NULL);
-      exit (0);
-    }
+  g_test_trap_subprocess ("/mem/empty-alloc:child", 0, 0);
   g_test_trap_assert_passed ();
 }
 
@@ -157,7 +180,27 @@ main (int   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/mem/overflow", mem_overflow);
+  g_test_add_func ("/mem/overflow:malloc_n_a_a", mem_overflow_malloc_n_a_a);
+  g_test_add_func ("/mem/overflow:malloc_n_a_b", mem_overflow_malloc_n_a_b);
+  g_test_add_func ("/mem/overflow:malloc_n_b_a", mem_overflow_malloc_n_b_a);
+  g_test_add_func ("/mem/overflow:malloc_n_b_b", mem_overflow_malloc_n_b_b);
+  g_test_add_func ("/mem/overflow:malloc0_n_a_a", mem_overflow_malloc0_n_a_a);
+  g_test_add_func ("/mem/overflow:malloc0_n_a_b", mem_overflow_malloc0_n_a_b);
+  g_test_add_func ("/mem/overflow:malloc0_n_b_a", mem_overflow_malloc0_n_b_a);
+  g_test_add_func ("/mem/overflow:malloc0_n_b_b", mem_overflow_malloc0_n_b_b);
+  g_test_add_func ("/mem/overflow:realloc_n_a_a", mem_overflow_realloc_n_a_a);
+  g_test_add_func ("/mem/overflow:realloc_n_a_b", mem_overflow_realloc_n_a_b);
+  g_test_add_func ("/mem/overflow:realloc_n_b_a", mem_overflow_realloc_n_b_a);
+  g_test_add_func ("/mem/overflow:realloc_n_b_b", mem_overflow_realloc_n_b_b);
+  g_test_add_func ("/mem/overflow:new_a", mem_overflow_new_a);
+  g_test_add_func ("/mem/overflow:new_b", mem_overflow_new_b);
+  g_test_add_func ("/mem/overflow:new0_a", mem_overflow_new0_a);
+  g_test_add_func ("/mem/overflow:new0_b", mem_overflow_new0_b);
+  g_test_add_func ("/mem/overflow:renew_a", mem_overflow_renew_a);
+  g_test_add_func ("/mem/overflow:renew_b", mem_overflow_renew_b);
+
   g_test_add_func ("/mem/empty-alloc", empty_alloc);
+  g_test_add_func ("/mem/empty-alloc:child", empty_alloc_child);
 
   return g_test_run();
 }

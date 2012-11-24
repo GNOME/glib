@@ -83,23 +83,27 @@ test_basic (void)
  * that is not in the schema
  */
 static void
+test_unknown_key_child (void)
+{
+  GSettings *settings;
+  GVariant *value;
+
+  settings = g_settings_new ("org.gtk.test");
+  value = g_settings_get_value (settings, "no_such_key");
+
+  g_assert (value == NULL);
+
+  g_object_unref (settings);
+}
+
+static void
 test_unknown_key (void)
 {
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings;
-      GVariant *value;
-
-      settings = g_settings_new ("org.gtk.test");
-      value = g_settings_get_value (settings, "no_such_key");
-
-      g_assert (value == NULL);
-
-      g_object_unref (settings);
-    }
+  g_test_trap_subprocess ("/gsettings/unknown-key:child",
+                          0, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*does not contain*");
 }
@@ -108,20 +112,23 @@ test_unknown_key (void)
  * has not been installed
  */
 static void
+test_no_schema_child (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("no.such.schema");
+
+  g_assert (settings == NULL);
+}
+
+static void
 test_no_schema (void)
 {
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings;
-
-      settings = g_settings_new ("no.such.schema");
-
-      g_assert (settings == NULL);
-    }
-
+  g_test_trap_subprocess ("/gsettings/no-schema:child",
+                          0, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*Settings schema 'no.such.schema' is not installed*");
 }
@@ -159,20 +166,31 @@ test_wrong_type (void)
 
 /* Check errors with explicit paths */
 static void
+test_wrong_path_child (void)
+{
+  GSettings *settings G_GNUC_UNUSED;
+
+  settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
+}
+
+static void
 test_wrong_path (void)
 {
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings G_GNUC_UNUSED;
-
-      settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
-    }
-
+  g_test_trap_subprocess ("/gsettings/wrong-path:child",
+                          0, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*but path * specified by schema*");
+}
+
+static void
+test_no_path_child (void)
+{
+  GSettings *settings G_GNUC_UNUSED;
+
+  settings = g_settings_new ("org.gtk.test.no-path");
 }
 
 static void
@@ -181,13 +199,8 @@ test_no_path (void)
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      GSettings *settings G_GNUC_UNUSED;
-
-      settings = g_settings_new ("org.gtk.test.no-path");
-    }
-
+  g_test_trap_subprocess ("/gsettings/no-path:child",
+                          0, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*attempting to create schema * without a path**");
 }
@@ -1299,24 +1312,28 @@ test_directional_binding (void)
 /* Test that type mismatch is caught when creating a binding
  */
 static void
+test_typesafe_binding_child (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "string", obj, "int", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+static void
 test_typesafe_binding (void)
 {
   if (!g_test_undefined ())
     return;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      TestObject *obj;
-      GSettings *settings;
-
-      settings = g_settings_new ("org.gtk.test.binding");
-      obj = test_object_new ();
-
-      g_settings_bind (settings, "string", obj, "int", G_SETTINGS_BIND_DEFAULT);
-
-      g_object_unref (obj);
-      g_object_unref (settings);
-    }
+  g_test_trap_subprocess ("/gsettings/typesafe-binding:child",
+                          0, G_TEST_TRAP_SILENCE_STDERR);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*not compatible*");
 }
@@ -1425,36 +1442,43 @@ test_no_change_binding (void)
  * works in 'GET' mode.
  */
 static void
+test_no_read_binding_fail (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "string", obj, "no-read", 0);
+}
+
+static void
+test_no_read_binding_pass (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "string", obj, "no-read", G_SETTINGS_BIND_GET);
+
+  exit (0);
+}
+
+static void
 test_no_read_binding (void)
 {
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          TestObject *obj;
-          GSettings *settings;
-
-          settings = g_settings_new ("org.gtk.test.binding");
-          obj = test_object_new ();
-
-          g_settings_bind (settings, "string", obj, "no-read", 0);
-        }
+      g_test_trap_subprocess ("/gsettings/no-read-binding:fail",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*property*is not readable*");
     }
 
-  if (g_test_trap_fork (0, 0))
-    {
-      TestObject *obj;
-      GSettings *settings;
-
-      settings = g_settings_new ("org.gtk.test.binding");
-      obj = test_object_new ();
-
-      g_settings_bind (settings, "string", obj, "no-read", G_SETTINGS_BIND_GET);
-
-      exit (0);
-    }
+  g_test_trap_subprocess ("/gsettings/no-read-binding:pass", 0, 0);
   g_test_trap_assert_passed ();
 }
 
@@ -1462,36 +1486,43 @@ test_no_read_binding (void)
  * works in 'SET' mode.
  */
 static void
+test_no_write_binding_fail (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "string", obj, "no-write", 0);
+}
+
+static void
+test_no_write_binding_pass (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "string", obj, "no-write", G_SETTINGS_BIND_SET);
+
+  exit (0);
+}
+
+static void
 test_no_write_binding (void)
 {
   if (g_test_undefined ())
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        {
-          TestObject *obj;
-          GSettings *settings;
-
-          settings = g_settings_new ("org.gtk.test.binding");
-          obj = test_object_new ();
-
-          g_settings_bind (settings, "string", obj, "no-write", 0);
-        }
+      g_test_trap_subprocess ("/gsettings/no-write-binding:fail",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*property*is not writable*");
     }
 
-  if (g_test_trap_fork (0, 0))
-    {
-      TestObject *obj;
-      GSettings *settings;
-
-      settings = g_settings_new ("org.gtk.test.binding");
-      obj = test_object_new ();
-
-      g_settings_bind (settings, "string", obj, "no-write", G_SETTINGS_BIND_SET);
-
-      exit (0);
-    }
+  g_test_trap_subprocess ("/gsettings/no-write-binding:pass", 0, 0);
   g_test_trap_assert_passed ();
 }
 
@@ -1631,6 +1662,46 @@ test_strinfo (void)
 }
 
 static void
+test_enums_non_enum_key (void)
+{
+  GSettings *direct;
+
+  direct = g_settings_new ("org.gtk.test.enums.direct");
+  g_settings_get_enum (direct, "test");
+  g_assert_not_reached ();
+}
+
+static void
+test_enums_non_enum_value (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_set_enum (settings, "test", 42);
+  g_assert_not_reached ();
+}
+
+static void
+test_enums_range (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_set_string (settings, "test", "qux");
+  g_assert_not_reached ();
+}
+
+static void
+test_enums_non_flags (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_get_flags (settings, "test");
+  g_assert_not_reached ();
+}
+
+static void
 test_enums (void)
 {
   GSettings *settings, *direct;
@@ -1641,23 +1712,23 @@ test_enums (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_get_enum (direct, "test");
+      g_test_trap_subprocess ("/gsettings/enums:non-enum-key",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with an enum*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_enum (settings, "test", 42);
+      g_test_trap_subprocess ("/gsettings/enums:non-enum-value",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*invalid enum value 42*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_string (settings, "test", "qux");
+      g_test_trap_subprocess ("/gsettings/enums:range",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_get_flags (settings, "test");
+      g_test_trap_subprocess ("/gsettings/enums:non-flags",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with a flags*");
     }
@@ -1688,6 +1759,47 @@ test_enums (void)
 }
 
 static void
+test_flags_non_flags_key (void)
+{
+  GSettings *direct;
+
+  direct = g_settings_new ("org.gtk.test.enums.direct");
+  g_settings_get_flags (direct, "test");
+  g_assert_not_reached ();
+}
+
+static void
+test_flags_non_flags_value (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_set_flags (settings, "f-test", 0x42);
+  g_assert_not_reached ();
+}
+
+static void
+test_flags_range (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_set_strv (settings, "f-test",
+                       (const gchar **) g_strsplit ("rock", ",", 0));
+  g_assert_not_reached ();
+}
+
+static void
+test_flags_non_enum (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  g_settings_get_enum (settings, "f-test");
+  g_assert_not_reached ();
+}
+
+static void
 test_flags (void)
 {
   GSettings *settings, *direct;
@@ -1699,24 +1811,23 @@ test_flags (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_get_flags (direct, "test");
+      g_test_trap_subprocess ("/gsettings/flags:non-flags-key",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with a flags*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_flags (settings, "f-test", 0x42);
+      g_test_trap_subprocess ("/gsettings/flags:non-flags-value",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*invalid flags value 0x00000042*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_strv (settings, "f-test",
-                             (const gchar **) g_strsplit ("rock", ",", 0));
+      g_test_trap_subprocess ("/gsettings/flags:range",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_get_enum (settings, "f-test");
+      g_test_trap_subprocess ("/gsettings/flags:non-enum",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*not associated with an enum*");
     }
@@ -1760,6 +1871,26 @@ test_flags (void)
 }
 
 static void
+test_range_high (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.range");
+  g_settings_set_int (settings, "val", 45);
+  g_assert_not_reached ();
+}
+
+static void
+test_range_low (void)
+{
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.range");
+  g_settings_set_int (settings, "val", 1);
+  g_assert_not_reached ();
+}
+
+static void
 test_range (void)
 {
   GSettings *settings, *direct;
@@ -1770,13 +1901,13 @@ test_range (void)
 
   if (g_test_undefined () && !backend_set)
     {
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_int (settings, "val", 45);
+      g_test_trap_subprocess ("/gsettings/range:high",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-        g_settings_set_int (settings, "val", 1);
+      g_test_trap_subprocess ("/gsettings/range:low",
+                              0, G_TEST_TRAP_SILENCE_STDERR);
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
     }
@@ -2133,48 +2264,55 @@ main (int argc, char *argv[])
 
   setlocale (LC_ALL, "");
 
-  backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
-
-  g_setenv ("XDG_DATA_DIRS", ".", TRUE);
-  g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
-
-  if (!backend_set)
-    g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
-
   g_test_init (&argc, &argv, NULL);
 
-  g_remove ("org.gtk.test.enums.xml");
-  g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
-                                       "--template " SRCDIR "/enums.xml.template "
-                                       SRCDIR "/testenum.h",
-                                       &enums, NULL, &result, NULL));
-  g_assert (result == 0);
-  g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
-  g_free (enums);
+  if (!g_test_subprocess ())
+    {
+      backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
-  g_remove ("gschemas.compiled");
-  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
-                                       "--schema-file=org.gtk.test.enums.xml "
-                                       "--schema-file=" SRCDIR "/org.gtk.test.gschema.xml",
-                                       NULL, NULL, &result, NULL));
-  g_assert (result == 0);
+      g_setenv ("XDG_DATA_DIRS", ".", TRUE);
+      g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
 
-  g_remove ("schema-source/gschemas.compiled");
-  g_mkdir ("schema-source", 0777);
-  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=schema-source "
-                                       "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
-                                       NULL, NULL, &result, NULL));
-  g_assert (result == 0);
+      if (!backend_set)
+        g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
+
+      g_remove ("org.gtk.test.enums.xml");
+      g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
+                                           "--template " SRCDIR "/enums.xml.template "
+                                           SRCDIR "/testenum.h",
+                                           &enums, NULL, &result, NULL));
+      g_assert (result == 0);
+      g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
+      g_free (enums);
+
+      g_remove ("gschemas.compiled");
+      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
+                                           "--schema-file=org.gtk.test.enums.xml "
+                                           "--schema-file=" SRCDIR "/org.gtk.test.gschema.xml",
+                                           NULL, NULL, &result, NULL));
+      g_assert (result == 0);
+
+      g_remove ("schema-source/gschemas.compiled");
+      g_mkdir ("schema-source", 0777);
+      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=schema-source "
+                                           "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
+                                           NULL, NULL, &result, NULL));
+      g_assert (result == 0);
+    }
 
   g_test_add_func ("/gsettings/basic", test_basic);
 
   if (!backend_set)
     {
       g_test_add_func ("/gsettings/no-schema", test_no_schema);
+      g_test_add_func ("/gsettings/no-schema:child", test_no_schema_child);
       g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
+      g_test_add_func ("/gsettings/unknown-key:child", test_unknown_key_child);
       g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
       g_test_add_func ("/gsettings/wrong-path", test_wrong_path);
+      g_test_add_func ("/gsettings/wrong-path:child", test_wrong_path_child);
       g_test_add_func ("/gsettings/no-path", test_no_path);
+      g_test_add_func ("/gsettings/no-path:child", test_no_path_child);
     }
 
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
@@ -2201,16 +2339,31 @@ main (int argc, char *argv[])
   if (!backend_set)
     {
       g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
+      g_test_add_func ("/gsettings/typesafe-binding:child", test_typesafe_binding_child);
       g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
+      g_test_add_func ("/gsettings/no-read-binding:fail", test_no_read_binding_fail);
+      g_test_add_func ("/gsettings/no-read-binding:pass", test_no_read_binding_pass);
       g_test_add_func ("/gsettings/no-write-binding", test_no_write_binding);
+      g_test_add_func ("/gsettings/no-write-binding:fail", test_no_write_binding_fail);
+      g_test_add_func ("/gsettings/no-write-binding:pass", test_no_write_binding_pass);
     }
 
   g_test_add_func ("/gsettings/keyfile", test_keyfile);
   g_test_add_func ("/gsettings/child-schema", test_child_schema);
   g_test_add_func ("/gsettings/strinfo", test_strinfo);
   g_test_add_func ("/gsettings/enums", test_enums);
+  g_test_add_func ("/gsettings/enums:non-enum-key", test_enums_non_enum_key);
+  g_test_add_func ("/gsettings/enums:non-enum-value", test_enums_non_enum_value);
+  g_test_add_func ("/gsettings/enums:range", test_enums_range);
+  g_test_add_func ("/gsettings/enums:non-flags", test_enums_non_flags);
   g_test_add_func ("/gsettings/flags", test_flags);
+  g_test_add_func ("/gsettings/flags:non-flags-key", test_flags_non_flags_key);
+  g_test_add_func ("/gsettings/flags:non-flags-value", test_flags_non_flags_value);
+  g_test_add_func ("/gsettings/flags:range", test_flags_range);
+  g_test_add_func ("/gsettings/flags:non-enum", test_flags_non_enum);
   g_test_add_func ("/gsettings/range", test_range);
+  g_test_add_func ("/gsettings/range:high", test_range_high);
+  g_test_add_func ("/gsettings/range:low", test_range_low);
   g_test_add_func ("/gsettings/list-items", test_list_items);
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
