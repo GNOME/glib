@@ -1082,8 +1082,8 @@ g_assert_warning (const char *log_domain,
  *    &ast; context is already owned by another thread.
  *    &ast;/
  *   g_test_expect_message (G_LOG_DOMAIN,
- *                          G_LOG_LEVEL_CRITICIAL,
- *                          "assertion.*acquired_context.*failed");
+ *                          G_LOG_LEVEL_CRITICAL,
+ *                          "assertion*acquired_context*failed");
  *   g_main_context_push_thread_default (bad_context);
  *   g_test_assert_expected_messages ();
  * ]|
