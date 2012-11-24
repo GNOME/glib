@@ -219,6 +219,7 @@ test_non_socket (void)
       break;
     }
 
+  /* This is #ifdef G_OS_UNIX anyway, so just use g_test_trap_fork() */
   if (!g_test_trap_fork (0, 0))
     {
       /* parent */

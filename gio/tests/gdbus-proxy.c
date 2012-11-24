@@ -620,12 +620,10 @@ test_expected_interface (GDBusProxy *proxy)
   if (g_test_undefined ())
     {
       /* Also check that we complain if setting a cached property of the wrong type */
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-        {
-          g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
-        }
-      g_test_trap_assert_stderr ("*Trying to set property y of type s but according to the expected interface the type is y*");
-      g_test_trap_assert_failed();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*Trying to set property y of type s but according to the expected interface the type is y*");
+      g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+      g_test_assert_expected_messages ();
     }
 
   /* this should work, however (since the type is correct) */
@@ -636,12 +634,10 @@ test_expected_interface (GDBusProxy *proxy)
       /* Try to get the value of a property where the type we expect is different from
        * what we have in our cache (e.g. what the service returned)
        */
-      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
-        {
-          value = g_dbus_proxy_get_cached_property (proxy, "i");
-        }
-      g_test_trap_assert_stderr ("*Trying to get property i with type i but according to the expected interface the type is u*");
-      g_test_trap_assert_failed();
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*Trying to get property i with type i but according to the expected interface the type is u*");
+      value = g_dbus_proxy_get_cached_property (proxy, "i");
+      g_test_assert_expected_messages ();
     }
 
   /* Even if a property does not exist in expected_interface, looking it

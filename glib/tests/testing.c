@@ -23,8 +23,23 @@
 #include <glib.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 /* test assertion variants */
+static void
+test_assertions_bad_cmpstr (void)
+{
+  g_assert_cmpstr ("fzz", !=, "fzz");
+  exit (0);
+}
+
+static void
+test_assertions_bad_cmpint (void)
+{
+  g_assert_cmpint (4, !=, 4);
+  exit (0);
+}
+
 static void
 test_assertions (void)
 {
@@ -46,17 +61,11 @@ test_assertions (void)
   g_assert_cmpstr ("fzz", >, "faa");
   g_assert_cmpstr ("fzz", ==, "fzz");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_assert_cmpstr ("fzz", !=, "fzz");
-    }
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstr", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*assertion failed*");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_assert_cmpint (4, !=, 4);
-    }
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpint", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*assertion failed*");
 }
@@ -279,108 +288,143 @@ fatal_handler (const gchar    *log_domain,
 }
 
 static void
-test_fatal_log_handler (void)
+test_fatal_log_handler_critical_pass (void)
 {
   g_test_log_set_fatal_handler (fatal_handler, NULL);
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_str_has_prefix (NULL, "file://");
-      g_critical ("Test passing");
-      exit (0);
-    }
-  g_test_trap_assert_passed ();
-
-  g_test_log_set_fatal_handler (NULL, NULL);
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_error ("Test failing");
-  g_test_trap_assert_failed ();
-
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    g_str_has_prefix (NULL, "file://");
-  g_test_trap_assert_failed ();
+  g_str_has_prefix (NULL, "file://");
+  g_critical ("Test passing");
+  exit (0);
 }
 
 static void
-expected_messages_helper (void)
+test_fatal_log_handler_error_fail (void)
+{
+  g_error ("Test failing");
+  exit (0);
+}
+
+static void
+test_fatal_log_handler_critical_fail (void)
+{
+  g_str_has_prefix (NULL, "file://");
+  g_critical ("Test passing");
+  exit (0);
+}
+
+static void
+test_fatal_log_handler (void)
+{
+  g_test_trap_subprocess ("/misc/fatal-log-handler/subprocess/critical-pass", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("*CRITICAL*g_str_has_prefix*");
+  g_test_trap_assert_stderr ("*CRITICAL*Test passing*");
+
+  g_test_trap_subprocess ("/misc/fatal-log-handler/subprocess/error-fail", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*Test failing*");
+
+  g_test_trap_subprocess ("/misc/fatal-log-handler/subprocess/critical-fail", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*g_str_has_prefix*");
+  g_test_trap_assert_stderr_unmatched ("*CRITICAL*Test passing*");
+}
+
+static void
+test_expected_messages_warning (void)
 {
   g_warning ("This is a %d warning", g_random_int ());
   g_return_if_reached ();
 }
 
 static void
+test_expected_messages_expect_warning (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "This is a * warning");
+  test_expected_messages_warning ();
+}
+
+static void
+test_expected_messages_wrong_warning (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*should not be *");
+  test_expected_messages_warning ();
+}
+
+static void
+test_expected_messages_expected (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "This is a * warning");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*should not be reached");
+
+  test_expected_messages_warning ();
+
+  g_test_assert_expected_messages ();
+  exit (0);
+}
+
+static void
+test_expected_messages_extra_warning (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "This is a * warning");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*should not be reached");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "nope");
+
+  test_expected_messages_warning ();
+
+  /* If we don't assert, it won't notice the missing message */
+  exit (0);
+}
+
+static void
+test_expected_messages_unexpected_extra_warning (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "This is a * warning");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*should not be reached");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "nope");
+
+  test_expected_messages_warning ();
+
+  g_test_assert_expected_messages ();
+  exit (0);
+}
+
+static void
 test_expected_messages (void)
 {
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      expected_messages_helper ();
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/warning", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*This is a * warning*");
   g_test_trap_assert_stderr_unmatched ("*should not be reached*");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "This is a * warning");
-      expected_messages_helper ();
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/expect-warning", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr_unmatched ("*This is a * warning*");
   g_test_trap_assert_stderr ("*should not be reached*");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*should not be *");
-      expected_messages_helper ();
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/wrong-warning", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr_unmatched ("*should not be reached*");
   g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*should not be *WARNING*This is a * warning*");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "This is a * warning");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*should not be reached");
-      expected_messages_helper ();
-      g_test_assert_expected_messages ();
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/expected", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "This is a * warning");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*should not be reached");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "nope");
-      expected_messages_helper ();
-      /* If we don't assert, it won't notice the missing message */
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/extra-warning", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("");
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "This is a * warning");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*should not be reached");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "nope");
-      expected_messages_helper ();
-      g_test_assert_expected_messages ();
-      exit (0);
-    }
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/unexpected-extra-warning", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*nope*");
 }
@@ -489,6 +533,8 @@ main (int   argc,
   g_test_add_func ("/random-generator/rand-2", test_rand2);
   g_test_add_func ("/random-generator/random-conversions", test_random_conversions);
   g_test_add_func ("/misc/assertions", test_assertions);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpstr", test_assertions_bad_cmpstr);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpint", test_assertions_bad_cmpint);
   g_test_add_data_func ("/misc/test-data", (void*) 0xc0c0baba, test_data_test);
   g_test_add ("/misc/primetoul", Fixturetest, (void*) 0xc0cac01a, fixturetest_setup, fixturetest_test, fixturetest_teardown);
   if (g_test_perf())
@@ -514,7 +560,17 @@ main (int   argc,
   g_test_add_func ("/trap_subprocess/patterns/subprocess", test_subprocess_patterns_child);
 
   g_test_add_func ("/misc/fatal-log-handler", test_fatal_log_handler);
+  g_test_add_func ("/misc/fatal-log-handler/subprocess/critical-pass", test_fatal_log_handler_critical_pass);
+  g_test_add_func ("/misc/fatal-log-handler/subprocess/error-fail", test_fatal_log_handler_error_fail);
+  g_test_add_func ("/misc/fatal-log-handler/subprocess/critical-fail", test_fatal_log_handler_critical_fail);
+
   g_test_add_func ("/misc/expected-messages", test_expected_messages);
+  g_test_add_func ("/misc/expected-messages/subprocess/warning", test_expected_messages_warning);
+  g_test_add_func ("/misc/expected-messages/subprocess/expect-warning", test_expected_messages_expect_warning);
+  g_test_add_func ("/misc/expected-messages/subprocess/wrong-warning", test_expected_messages_wrong_warning);
+  g_test_add_func ("/misc/expected-messages/subprocess/expected", test_expected_messages_expected);
+  g_test_add_func ("/misc/expected-messages/subprocess/extra-warning", test_expected_messages_extra_warning);
+  g_test_add_func ("/misc/expected-messages/subprocess/unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
 
   g_test_add_func ("/misc/dash-p", test_dash_p);
   g_test_add_func ("/misc/dash-p/child", test_dash_p_child);

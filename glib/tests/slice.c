@@ -4,14 +4,15 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 static void
+test_slice_config_subprocess (void)
+{
+  g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
+}
+
+static void
 test_slice_config (void)
 {
-  if (!g_test_undefined ())
-    return;
-
-  if (g_test_trap_fork (1000000, G_TEST_TRAP_SILENCE_STDERR))
-    g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
-
+  g_test_trap_subprocess ("/slice/config/subprocess", 1000000, 0);
   g_test_trap_assert_failed ();
 }
 
@@ -29,6 +30,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/slice/config", test_slice_config);
+  g_test_add_func ("/slice/config/subprocess", test_slice_config_subprocess);
 
   return g_test_run ();
 }
