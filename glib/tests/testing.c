@@ -118,6 +118,70 @@ test_fork_timeout (void)
   g_assert (g_test_trap_reached_timeout());
 }
 
+static void
+test_subprocess_fail_child (void)
+{
+  g_assert_not_reached ();
+}
+
+static void
+test_subprocess_fail (void)
+{
+  g_test_trap_subprocess ("/trap_subprocess/fail/subprocess", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*test_subprocess_fail_child*should not be reached*");
+}
+
+static void
+test_subprocess_no_such_test_child (void)
+{
+  g_test_trap_subprocess ("/trap_subprocess/this-test-does-not-exist", 0, 0);
+  g_assert_not_reached ();
+}
+
+static void
+test_subprocess_no_such_test (void)
+{
+  g_test_trap_subprocess ("/trap_subprocess/no-such-test/subprocess", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*test does not exist*");
+  g_test_trap_assert_stderr_unmatched ("*should not be reached*");
+}
+
+static void
+test_subprocess_patterns_child (void)
+{
+  g_print ("some stdout text: somagic17\n");
+  g_printerr ("some stderr text: semagic43\n");
+  exit (0);
+}
+
+static void
+test_subprocess_patterns (void)
+{
+  g_test_trap_subprocess ("/trap_subprocess/patterns/subprocess", 0,  0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*somagic17*");
+  g_test_trap_assert_stderr ("*semagic43*");
+}
+
+static void
+test_subprocess_timeout_child (void)
+{
+  /* loop and sleep forever */
+  while (TRUE)
+    g_usleep (1000 * 1000);
+}
+
+static void
+test_subprocess_timeout (void)
+{
+  /* allow child to run for only a fraction of a second */
+  g_test_trap_subprocess ("/trap_subprocess/timeout/subprocess", 0.11 * 1000000, 0);
+  g_test_trap_assert_failed ();
+  g_assert (g_test_trap_reached_timeout ());
+}
+
 /* run a test with fixture setup and teardown */
 typedef struct {
   guint  seed;
@@ -321,6 +385,100 @@ test_expected_messages (void)
   g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*nope*");
 }
 
+static void
+test_dash_p_hidden (void)
+{
+  if (!g_test_subprocess ())
+    g_assert_not_reached ();
+
+  g_print ("Test /misc/dash-p/subprocess/hidden ran\n");
+}
+
+static void
+test_dash_p_hidden_sub (void)
+{
+  if (!g_test_subprocess ())
+    g_assert_not_reached ();
+
+  g_print ("Test /misc/dash-p/subprocess/hidden/sub ran\n");
+}
+
+/* The rest of the dash_p tests will get run by the toplevel test
+ * process, but they shouldn't do anything there.
+ */
+
+static void
+test_dash_p_child (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/child ran\n");
+}
+
+static void
+test_dash_p_child_sub (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/child/sub ran\n");
+}
+
+static void
+test_dash_p_child_sub2 (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/child/sub2 ran\n");
+}
+
+static void
+test_dash_p_child_sub_child (void)
+{
+  if (!g_test_subprocess ())
+    return;
+
+  g_print ("Test /misc/dash-p/child/subprocess ran\n");
+}
+
+static void
+test_dash_p (void)
+{
+  g_test_trap_subprocess ("/misc/dash-p/subprocess/hidden", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/subprocess/hidden ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden/sub ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden/sub/subprocess ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child*");
+
+  g_test_trap_subprocess ("/misc/dash-p/subprocess/hidden/sub", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/subprocess/hidden/sub ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden/subprocess ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child*");
+
+  g_test_trap_subprocess ("/misc/dash-p/child", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/child ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/child/sub ran*");
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/child/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child/subprocess ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden*");
+
+  g_test_trap_subprocess ("/misc/dash-p/child/sub", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Test /misc/dash-p/child/sub ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child/sub2 ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/child/subprocess ran*");
+  g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -335,12 +493,37 @@ main (int   argc,
   g_test_add ("/misc/primetoul", Fixturetest, (void*) 0xc0cac01a, fixturetest_setup, fixturetest_test, fixturetest_teardown);
   if (g_test_perf())
     g_test_add_func ("/misc/timer", test_timer);
+
+#ifdef G_OS_UNIX
   g_test_add_func ("/forking/fail assertion", test_fork_fail);
   g_test_add_func ("/forking/patterns", test_fork_patterns);
   if (g_test_slow())
     g_test_add_func ("/forking/timeout", test_fork_timeout);
+#endif
+
+  g_test_add_func ("/trap_subprocess/fail", test_subprocess_fail);
+  g_test_add_func ("/trap_subprocess/fail/subprocess", test_subprocess_fail_child);
+  g_test_add_func ("/trap_subprocess/no-such-test", test_subprocess_no_such_test);
+  g_test_add_func ("/trap_subprocess/no-such-test/subprocess", test_subprocess_no_such_test_child);
+  if (g_test_slow ())
+    {
+      g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
+      g_test_add_func ("/trap_subprocess/timeout/subprocess", test_subprocess_timeout_child);
+    }
+  g_test_add_func ("/trap_subprocess/patterns", test_subprocess_patterns);
+  g_test_add_func ("/trap_subprocess/patterns/subprocess", test_subprocess_patterns_child);
+
   g_test_add_func ("/misc/fatal-log-handler", test_fatal_log_handler);
   g_test_add_func ("/misc/expected-messages", test_expected_messages);
+
+  g_test_add_func ("/misc/dash-p", test_dash_p);
+  g_test_add_func ("/misc/dash-p/child", test_dash_p_child);
+  g_test_add_func ("/misc/dash-p/child/sub", test_dash_p_child_sub);
+  g_test_add_func ("/misc/dash-p/child/sub/subprocess", test_dash_p_child_sub_child);
+  g_test_add_func ("/misc/dash-p/child/sub/subprocess/child", test_dash_p_child_sub_child);
+  g_test_add_func ("/misc/dash-p/child/sub2", test_dash_p_child_sub2);
+  g_test_add_func ("/misc/dash-p/subprocess/hidden", test_dash_p_hidden);
+  g_test_add_func ("/misc/dash-p/subprocess/hidden/sub", test_dash_p_hidden_sub);
 
   return g_test_run();
 }

@@ -2907,6 +2907,7 @@ g_test_perf
 g_test_verbose
 g_test_undefined
 g_test_quiet
+g_test_subprocess
 g_test_run
 GTestFunc
 g_test_add_func
@@ -2934,7 +2935,7 @@ g_test_expect_message
 g_test_assert_expected_messages
 
 GTestTrapFlags
-g_test_trap_fork
+g_test_trap_subprocess
 g_test_trap_has_passed
 g_test_trap_reached_timeout
 g_test_trap_assert_passed
@@ -2943,6 +2944,7 @@ g_test_trap_assert_stdout
 g_test_trap_assert_stdout_unmatched
 g_test_trap_assert_stderr
 g_test_trap_assert_stderr_unmatched
+g_test_trap_fork
 
 g_test_rand_bit
 g_test_rand_int
