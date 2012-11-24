@@ -1390,7 +1390,7 @@ g_date_time_compare (gconstpointer dt1,
  *
  * Calculates the difference in time between @end and @begin.  The
  * #GTimeSpan that is returned is effectively @end - @begin (ie:
- * positive if the first simparameter is larger).
+ * positive if the first parameter is larger).
  *
  * Return value: the difference between the two #GDateTime, as a time
  *   span expressed in microseconds.
