@@ -1083,7 +1083,7 @@ g_assert_warning (const char *log_domain,
  *    &ast;/
  *   g_test_expect_message (G_LOG_DOMAIN,
  *                          G_LOG_LEVEL_CRITICAL,
- *                          "assertion.*acquired_context.*failed");
+ *                          "assertion*acquired_context*failed");
  *   g_main_context_push_thread_default (bad_context);
  *   g_test_assert_expected_messages ();
  * ]|
