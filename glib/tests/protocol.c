@@ -33,7 +33,7 @@
 static void
 debug (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_debug ("this is a regular g_debug() from the test suite");
 }
 
@@ -43,42 +43,42 @@ info (void)
 #ifdef g_info
 #error "rewrite this to use g_info()"
 #endif
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "this is a regular g_log(..., G_LOG_LEVEL_INFO, ...) from the test suite");
 }
 
 static void
 message (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_message ("this is a regular g_message() from the test suite");
 }
 
 static void
 warning (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_warning ("this is a regular g_warning() from the test suite");
 }
 
 static void
 critical (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_critical ("this is a regular g_critical() from the test suite");
 }
 
 static void
 error (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_error ("this is a regular g_error() from the test suite");
 }
 
 static void
 gtest_message (void)
 {
-  if (g_test_verbose ())
+  if (g_test_subprocess ())
     g_test_message ("this is a regular g_test_message() from the test suite");
 }
 
@@ -121,7 +121,7 @@ test_message (void)
   gchar* argv[] = {
           "./protocol",
           NULL,
-          "--verbose",
+          "--GTestSubprocess",
           "-p", "/glib/testing/protocol/debug",
           "-p", "/glib/testing/protocol/message",
           "-p", "/glib/testing/protocol/gtest-message",
@@ -241,7 +241,7 @@ test_error (void)
       gchar* argv[] = {
               "./protocol",
               NULL,
-              "--verbose",
+              "--GTestSubprocess",
               "-p", tests[i],
               NULL
       };
