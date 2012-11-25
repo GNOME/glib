@@ -6196,6 +6196,36 @@ has_valid_scheme (const char *uri)
   return *p == ':';
 }
 
+static GFile *
+new_for_cmdline_arg (const gchar *arg,
+                     const gchar *cwd)
+{
+  GFile *file;
+  char *filename;
+
+  if (g_path_is_absolute (arg))
+    return g_file_new_for_path (arg);
+
+  if (has_valid_scheme (arg))
+    return g_file_new_for_uri (arg);
+
+  if (cwd == NULL)
+    {
+      char *current_dir;
+
+      current_dir = g_get_current_dir ();
+      filename = g_build_filename (current_dir, arg, NULL);
+      g_free (current_dir);
+    }
+  else
+    filename = g_build_filename (cwd, arg, NULL);
+
+  file = g_file_new_for_path (filename);
+  g_free (filename);
+
+  return file;
+}
+
 /**
  * g_file_new_for_commandline_arg:
  * @arg: a command line string
@@ -6212,26 +6242,40 @@ has_valid_scheme (const char *uri)
 GFile *
 g_file_new_for_commandline_arg (const char *arg)
 {
-  GFile *file;
-  char *filename;
-  char *current_dir;
-
   g_return_val_if_fail (arg != NULL, NULL);
 
-  if (g_path_is_absolute (arg))
-    return g_file_new_for_path (arg);
+  return new_for_cmdline_arg (arg, NULL);
+}
 
-  if (has_valid_scheme (arg))
-    return g_file_new_for_uri (arg);
+/**
+ * g_file_new_for_commandline_arg_and_cwd:
+ * @arg: a command line string
+ * @cwd: the current working directory of the commandline
+ *
+ * Creates a #GFile with the given argument from the command line.
+ *
+ * This function is similar to g_file_new_for_commandline_arg() except
+ * that it allows for passing the current working directory as an
+ * argument instead of using the current working directory of the
+ * process.
+ *
+ * This is useful if the commandline argument was given in a context
+ * other than the invocation of the current process.
+ *
+ * See also g_application_command_line_create_file_for_arg().
+ *
+ * Returns: (transfer full): a new #GFile
+ *
+ * Since: 2.36
+ **/
+GFile *
+g_file_new_for_commandline_arg_and_cwd (const gchar *arg,
+                                        const gchar *cwd)
+{
+  g_return_val_if_fail (arg != NULL, NULL);
+  g_return_val_if_fail (cwd != NULL, NULL);
 
-  current_dir = g_get_current_dir ();
-  filename = g_build_filename (current_dir, arg, NULL);
-  g_free (current_dir);
-
-  file = g_file_new_for_path (filename);
-  g_free (filename);
-
-  return file;
+  return new_for_cmdline_arg (arg, cwd);
 }
 
 /**

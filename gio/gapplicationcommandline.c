@@ -24,6 +24,7 @@
 #include "gapplicationcommandline.h"
 
 #include "glibintl.h"
+#include "gfile.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -618,4 +619,35 @@ g_application_command_line_get_platform_data (GApplicationCommandLine *cmdline)
     return g_variant_ref (cmdline->priv->platform_data);
   else
       return NULL;
+}
+
+/**
+ * g_application_command_line_create_file_for_arg:
+ * @cmdline: a #GApplicationCommandLine
+ * @arg: an argument from @cmdline
+ *
+ * Creates a #GFile corresponding to a filename that was given as part
+ * of the invocation of @cmdline.
+ *
+ * This differs from g_file_new_for_commandline_arg() in that it
+ * resolves relative pathnames using the current working directory of
+ * the invoking process rather than the local process.
+ *
+ * Returns: (transfer full): a new #GFile
+ *
+ * Since: 2.36
+ **/
+GFile *
+g_application_command_line_create_file_for_arg (GApplicationCommandLine *cmdline,
+                                                const gchar             *arg)
+{
+  g_return_val_if_fail (arg != NULL, NULL);
+
+  if (cmdline->priv->cwd)
+    return g_file_new_for_commandline_arg_and_cwd (arg, cmdline->priv->cwd);
+
+  g_warning ("Requested creation of GFile for commandline invocation that did not send cwd. "
+             "Using cwd of local process to resolve relative path names.");
+
+  return g_file_new_for_commandline_arg (arg);
 }

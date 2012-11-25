@@ -97,6 +97,10 @@ void                    g_application_command_line_set_exit_status      (GApplic
 
 GVariant *              g_application_command_line_get_platform_data    (GApplicationCommandLine   *cmdline);
 
+GLIB_AVAILABLE_IN_2_36
+GFile *                 g_application_command_line_create_file_for_arg  (GApplicationCommandLine   *cmdline,
+                                                                         const gchar               *arg);
+
 G_END_DECLS
 
 #endif /* __G_APPLICATION_COMMAND_LINE_H__ */

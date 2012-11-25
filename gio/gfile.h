@@ -556,6 +556,9 @@ GType                   g_file_get_type                   (void) G_GNUC_CONST;
 GFile *                 g_file_new_for_path               (const char                 *path);
 GFile *                 g_file_new_for_uri                (const char                 *uri);
 GFile *                 g_file_new_for_commandline_arg    (const char                 *arg);
+GLIB_AVAILABLE_IN_2_36
+GFile *                 g_file_new_for_commandline_arg_and_cwd (const gchar           *arg,
+                                                                const gchar           *cwd);
 GLIB_AVAILABLE_IN_2_32
 GFile *                 g_file_new_tmp                    (const char                 *tmpl,
                                                            GFileIOStream             **iostream,

@@ -34,6 +34,7 @@ g_application_set_default
 g_application_set_flags
 g_application_set_inactivity_timeout
 g_application_quit
+g_application_command_line_create_file_for_arg
 g_application_command_line_get_arguments
 g_application_command_line_get_cwd
 g_application_command_line_get_environ
@@ -262,6 +263,7 @@ g_file_get_type
 g_file_new_for_path
 g_file_new_for_uri
 g_file_new_for_commandline_arg
+g_file_new_for_commandline_arg_and_cwd
 g_file_new_tmp
 g_file_parse_name
 g_file_dup
