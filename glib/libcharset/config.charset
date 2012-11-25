@@ -467,6 +467,38 @@ case "$os" in
 	# minimize the use of decomposed Unicode. Unfortunately, through the
 	# Darwin file system, decomposed UTF-8 strings are leaked into user
 	# space nevertheless.
+	#
+	# Even with those limitations, nl_langinfo does work often
+	# enough to be useful. Since setenv works only with locales
+	# provided in /usr/share/locale, the following aliases are the
+	# codesets used there.
+	echo "ARMSCII-8 ARMSCII-8"
+	echo "Big5HKSCS BIG5-HKSCS"
+	echo "Big5 BIG5"
+	echo "CP866 CP866"
+	echo "CP949 CP949"
+	echo "CP1131 CP1131"
+	echo "CP1251 CP1251"
+	echo "eucCN EUC-CN"
+	echo "eucKR EUC-KR"
+	echo "eucJP EUC-JP"
+	echo "eucjp EUC-JP"
+	echo "GB18030 GB18030"
+	echo "GB2312 GB2312"
+	echo "GBK GBK"
+#	echo "ISCII-DEV ISCII_DEV" Not supported by iconv
+	echo "ISO8859-1 ISO-8859-1"
+	echo "ISO8859-2 ISO-8859-2"
+	echo "ISO8859-4 ISO-8859-4"
+	echo "ISO8859-5 ISO-8859-5"
+	echo "ISO8859-7 ISO-8859-7"
+	echo "ISO8859-9 ISO-8859-9"
+	echo "ISO8859-13 ISO-8859-13"
+	echo "ISO8859-15 ISO-8859-15"
+	echo "KOI8-R KOI8-R"
+	echo "KOI8-U KOI8-U"
+	echo "PT154 CP154"
+	echo "SJIS SHIFT_JIS"
 	echo "* UTF-8"
 	;;
     beos*)
