@@ -3564,14 +3564,9 @@ AC_SUBST(config_h_INCLUDES)
 glib_INCLUDES='$(config_h_INCLUDES) -I$(top_builddir)/glib -I$(top_srcdir)/glib -I$(top_srcdir)'
 AC_SUBST(glib_INCLUDES)
 
-# gthread:
-#   same as glib
-gthread_INCLUDES='$(glib_INCLUDES)'
-AC_SUBST(gthread_INCLUDES)
-
 # gobject:
-#   same as gthread
-gobject_INCLUDES='$(gthread_INCLUDES)'
+#   same as glib
+gobject_INCLUDES='$(glib_INCLUDES)'
 AC_SUBST(gobject_INCLUDES)
 
 # gmodule:

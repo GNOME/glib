@@ -14,7 +14,7 @@ CLEANFILES=
 
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
-	$(gthread_INCLUDES) 			\
+	$(glib_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
 
@@ -27,7 +27,7 @@ TESTS = abicheck.sh
 endif
 endif
 
-libglib = $(top_builddir)/glib/libglib-2.0.la $(top_builddir)/gthread/libgthread-2.0.la
+libglib = $(top_builddir)/glib/libglib-2.0.la
 
 # libraries to compile and install
 lib_LTLIBRARIES = libgobject-2.0.la
