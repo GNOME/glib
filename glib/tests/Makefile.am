@@ -249,10 +249,12 @@ TEST_PROGS            += 1bit-emufutex
 
 TEST_PROGS += spawn-multithreaded
 spawn_multithreaded_SOURCES = spawn-multithreaded.c
+spawn_multithreaded_CFLAGS   = -DEXEEXT=\"$(EXEEXT)\"
 spawn_multithreaded_LDADD    = $(progs_ldadd)
 
 TEST_PROGS += spawn-singlethread
 spawn_singlethread_SOURCES = spawn-singlethread.c
+spawn_singlethread_CFLAGS   = -DEXEEXT=\"$(EXEEXT)\"
 spawn_singlethread_LDADD    = $(progs_ldadd)
 
 TEST_PROGS += gwakeup
