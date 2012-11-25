@@ -5,6 +5,7 @@ AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
 	-DSRCDIR=\""$(srcdir)"\"	\
+	-DEXEEXT=\"$(EXEEXT)\"		\
 	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
