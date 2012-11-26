@@ -1,3 +1,26 @@
+Overview of changes from GLib 2.34.2 to 2.34.3
+==============================================
+
+* Reverted the patch for 686786, which broke the build on
+  OS X and Windows
+
+* Bug fixes:
+ 673047 gunicollate is broken on OS X
+ 681685 g_date_time_format Transcoding Fails on OSX
+ 688093 Fix spelling of determining
+ 688180 GObject: Minor error in description of float...
+ 688319 gthread: add missing AVAILABLE_IN_2_32 annot...
+ 688338 Fix spelling of exceed
+ 688370 GDBusError documentation improvement for cli...
+ 688377 configure: add missing square bracket in AS_...
+ 688886 Improve the i18n documentation
+
+* Translation updates:
+ Gujarati
+ Oriya
+ Norwegian bokmål
+
+
 Overview of changes from GLib 2.34.1 to 2.34.2
 ==============================================
 
