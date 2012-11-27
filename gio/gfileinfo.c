@@ -1440,6 +1440,42 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
 
 /* Helper getters */
 /**
+ * g_file_info_get_deletion_date:
+ * @info: a #GFileInfo.
+ *
+ * Returns the #GDateTime representing the deletion date of the file, as
+ * available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+ * G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, %NULL is returned.
+ *
+ * Returns: a #GDateTime, or %NULL.
+ *
+ * Since: 2.36
+ **/
+GDateTime *
+g_file_info_get_get_deletion_date (GFileInfo *info)
+{
+  static guint32 attr = 0;
+  GFileAttributeValue *value;
+  const char *date_str;
+  GTimeVal tv;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
+
+  if (attr == 0)
+    attr = lookup_attribute (G_FILE_ATTRIBUTE_TRASH_DELETION_DATE);
+
+  value = g_file_info_find_value (info, attr);
+  date_str = _g_file_attribute_value_get_string (value);
+  if (!date_str)
+    return NULL;
+
+  if (g_time_val_from_iso8601 (date_str, &tv) == FALSE)
+    return NULL;
+
+  return g_date_time_new_from_timeval_local (&tv);
+}
+
+/**
  * g_file_info_get_file_type:
  * @info: a #GFileInfo.
  *

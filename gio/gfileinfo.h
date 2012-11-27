@@ -911,6 +911,7 @@ void               g_file_info_set_attribute_stringv     (GFileInfo  *info,
 void               g_file_info_clear_status              (GFileInfo  *info);
 
 /* Helper getters: */
+GDateTime *       g_file_info_get_get_deletion_date  (GFileInfo         *info);
 GFileType         g_file_info_get_file_type          (GFileInfo         *info);
 gboolean          g_file_info_get_is_hidden          (GFileInfo         *info);
 gboolean          g_file_info_get_is_backup          (GFileInfo         *info);
