@@ -403,6 +403,8 @@ CLEANFILES += gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc
 endif # OS_UNIX
 endif # HAVE_DBUS_DAEMON
 
+tls_interaction_SOURCES = tls-interaction.c gtesttlsbackend.c gtesttlsbackend.h
+
 # -----------------------------------------------------------------------------
 
 if OS_WIN32

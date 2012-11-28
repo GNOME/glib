@@ -69,9 +69,26 @@ struct _GTlsInteractionClass
                                                   GAsyncResult       *result,
                                                   GError            **error);
 
+  GTlsInteractionResult  (* request_certificate)        (GTlsInteraction              *interaction,
+                                                         GTlsConnection               *connection,
+                                                         GTlsCertificateRequestFlags   flags,
+                                                         GCancellable                 *cancellable,
+                                                         GError                      **error);
+
+  void                   (* request_certificate_async)  (GTlsInteraction              *interaction,
+                                                         GTlsConnection               *connection,
+                                                         GTlsCertificateRequestFlags   flags,
+                                                         GCancellable                 *cancellable,
+                                                         GAsyncReadyCallback           callback,
+                                                         gpointer                      user_data);
+
+  GTlsInteractionResult  (* request_certificate_finish) (GTlsInteraction              *interaction,
+                                                         GAsyncResult                 *result,
+                                                         GError                      **error);
+
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[24];
+  gpointer padding[21];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -82,7 +99,6 @@ GTlsInteractionResult  g_tls_interaction_invoke_ask_password (GTlsInteraction   
                                                               GTlsPassword       *password,
                                                               GCancellable       *cancellable,
                                                               GError            **error);
-
 
 GLIB_AVAILABLE_IN_ALL
 GTlsInteractionResult  g_tls_interaction_ask_password        (GTlsInteraction    *interaction,
@@ -101,6 +117,33 @@ GLIB_AVAILABLE_IN_ALL
 GTlsInteractionResult  g_tls_interaction_ask_password_finish (GTlsInteraction    *interaction,
                                                               GAsyncResult       *result,
                                                               GError            **error);
+
+GLIB_AVAILABLE_IN_2_40
+GTlsInteractionResult  g_tls_interaction_invoke_request_certificate (GTlsInteraction              *interaction,
+                                                                     GTlsConnection               *connection,
+                                                                     GTlsCertificateRequestFlags   flags,
+                                                                     GCancellable                 *cancellable,
+                                                                     GError                      **error);
+
+GLIB_AVAILABLE_IN_2_40
+GTlsInteractionResult  g_tls_interaction_request_certificate        (GTlsInteraction              *interaction,
+                                                                     GTlsConnection               *connection,
+                                                                     GTlsCertificateRequestFlags   flags,
+                                                                     GCancellable                 *cancellable,
+                                                                     GError                      **error);
+
+GLIB_AVAILABLE_IN_2_40
+void                   g_tls_interaction_request_certificate_async  (GTlsInteraction              *interaction,
+                                                                     GTlsConnection               *connection,
+                                                                     GTlsCertificateRequestFlags   flags,
+                                                                     GCancellable                 *cancellable,
+                                                                     GAsyncReadyCallback           callback,
+                                                                     gpointer                      user_data);
+
+GLIB_AVAILABLE_IN_2_40
+GTlsInteractionResult  g_tls_interaction_request_certificate_finish (GTlsInteraction              *interaction,
+                                                                     GAsyncResult                 *result,
+                                                                     GError                      **error);
 
 G_END_DECLS
 

@@ -1631,6 +1631,20 @@ typedef enum {
 } GTlsDatabaseLookupFlags;
 
 /**
+ * GTlsCertificateRequestFlags:
+ * @G_TLS_CERTIFICATE_REQUEST_NONE: No flags
+ *
+ * Flags for g_tls_interaction_request_certificate(),
+ * g_tls_interaction_request_certificate_async(), and
+ * g_tls_interaction_invoke_request_certificate().
+ *
+ * Since: 2.40
+ */
+typedef enum {
+  G_TLS_CERTIFICATE_REQUEST_NONE = 0
+} GTlsCertificateRequestFlags;
+
+/**
  * GIOModuleScopeFlags:
  * @G_IO_MODULE_SCOPE_NONE: No module scan flags
  * @G_IO_MODULE_SCOPE_BLOCK_DUPLICATES: When using this scope to load or
