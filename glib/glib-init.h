@@ -24,17 +24,17 @@
 
 #include "gmessages.h"
 
-G_GNUC_INTERNAL extern GLogLevelFlags g_log_always_fatal;
-G_GNUC_INTERNAL extern GLogLevelFlags g_log_msg_prefix;
+extern GLogLevelFlags g_log_always_fatal;
+extern GLogLevelFlags g_log_msg_prefix;
 GLIB_VAR gboolean g_mem_gc_friendly;
 
 #ifdef G_OS_WIN32
 #include <windows.h>
 
-G_GNUC_INTERNAL void g_thread_win32_thread_detach (void);
-G_GNUC_INTERNAL void g_thread_win32_init (void);
-G_GNUC_INTERNAL void g_clock_win32_init (void);
-G_GNUC_INTERNAL extern HMODULE glib_dll;
+void g_thread_win32_thread_detach (void);
+void g_thread_win32_init (void);
+void g_clock_win32_init (void);
+extern HMODULE glib_dll;
 #endif
 
 #endif /* __GLIB_INIT_H__ */

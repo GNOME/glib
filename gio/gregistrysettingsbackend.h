@@ -24,7 +24,6 @@
 
 #include <glib-object.h>
 
-G_GNUC_INTERNAL
 GType g_registry_backend_get_type (void);
 
 

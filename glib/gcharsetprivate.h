@@ -25,8 +25,7 @@
 
 G_BEGIN_DECLS
 
-G_GNUC_INTERNAL const char ** _g_charset_get_aliases (const char *canonical_name);
-;
+const char ** _g_charset_get_aliases (const char *canonical_name);
 
 G_END_DECLS
 

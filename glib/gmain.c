@@ -2485,7 +2485,7 @@ g_get_real_time (void)
 static ULONGLONG (*g_GetTickCount64) (void) = NULL;
 static guint32 g_win32_tick_epoch = 0;
 
-G_GNUC_INTERNAL void
+void
 g_clock_win32_init (void)
 {
   HMODULE kernel32;
