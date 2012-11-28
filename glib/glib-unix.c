@@ -234,6 +234,7 @@ g_unix_signal_source_new (int signum)
  *
  * Returns: An ID (greater than 0) for the event source
  *
+ * Rename to: g_unix_signal_add
  * Since: 2.30
  */
 guint
