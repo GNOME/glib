@@ -50,8 +50,10 @@ struct _GTlsServerConnectionInterface
 
 };
 
+_GIO_API
 GType                 g_tls_server_connection_get_type                 (void) G_GNUC_CONST;
 
+_GIO_API
 GIOStream *           g_tls_server_connection_new                      (GIOStream        *base_io_stream,
 									GTlsCertificate  *certificate,
 									GError          **error);

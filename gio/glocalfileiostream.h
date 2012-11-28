@@ -52,7 +52,9 @@ struct _GLocalFileIOStreamClass
   GFileIOStreamClass parent_class;
 };
 
+_GIO_API
 GType           _g_local_file_io_stream_get_type (void) G_GNUC_CONST;
+_GIO_API
 GFileIOStream * _g_local_file_io_stream_new (GLocalFileOutputStream *output_stream);
 
 G_END_DECLS

@@ -75,11 +75,16 @@ struct _GSocketService
   GSocketServicePrivate *priv;
 };
 
+_GIO_API
 GType           g_socket_service_get_type  (void);
 
+_GIO_API
 GSocketService *g_socket_service_new       (void);
+_GIO_API
 void            g_socket_service_start     (GSocketService *service);
+_GIO_API
 void            g_socket_service_stop      (GSocketService *service);
+_GIO_API
 gboolean        g_socket_service_is_active (GSocketService *service);
 
 

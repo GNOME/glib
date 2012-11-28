@@ -68,22 +68,27 @@ struct _GInitableIface
 };
 
 
+_GIO_API
 GType    g_initable_get_type   (void) G_GNUC_CONST;
 
+_GIO_API
 gboolean g_initable_init       (GInitable     *initable,
 				GCancellable  *cancellable,
 				GError       **error);
 
+_GIO_API
 gpointer g_initable_new        (GType          object_type,
 				GCancellable  *cancellable,
 				GError       **error,
 				const gchar   *first_property_name,
 				...);
+_GIO_API
 gpointer g_initable_newv       (GType          object_type,
 				guint          n_parameters,
 				GParameter    *parameters,
 				GCancellable  *cancellable,
 				GError       **error);
+_GIO_API
 GObject* g_initable_new_valist (GType          object_type,
 				const gchar   *first_property_name,
 				va_list        var_args,

@@ -77,11 +77,16 @@ struct _GDBusObjectManagerIface
                                            GDBusInterface       *interface_);
 };
 
+_GIO_API
 GType            g_dbus_object_manager_get_type        (void) G_GNUC_CONST;
+_GIO_API
 const gchar     *g_dbus_object_manager_get_object_path (GDBusObjectManager    *manager);
+_GIO_API
 GList           *g_dbus_object_manager_get_objects     (GDBusObjectManager    *manager);
+_GIO_API
 GDBusObject     *g_dbus_object_manager_get_object      (GDBusObjectManager    *manager,
                                                         const gchar           *object_path);
+_GIO_API
 GDBusInterface  *g_dbus_object_manager_get_interface   (GDBusObjectManager    *manager,
                                                         const gchar           *object_path,
                                                         const gchar           *interface_name);

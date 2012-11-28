@@ -68,9 +68,12 @@ struct _GDBusObjectProxyClass
   gpointer padding[8];
 };
 
+_GIO_API
 GType             g_dbus_object_proxy_get_type       (void) G_GNUC_CONST;
+_GIO_API
 GDBusObjectProxy *g_dbus_object_proxy_new            (GDBusConnection   *connection,
                                                       const gchar       *object_path);
+_GIO_API
 GDBusConnection  *g_dbus_object_proxy_get_connection (GDBusObjectProxy  *proxy);
 
 G_END_DECLS

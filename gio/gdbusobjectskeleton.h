@@ -74,15 +74,22 @@ struct _GDBusObjectSkeletonClass
   gpointer padding[8];
 };
 
+_GIO_API
 GType                g_dbus_object_skeleton_get_type                  (void) G_GNUC_CONST;
+_GIO_API
 GDBusObjectSkeleton *g_dbus_object_skeleton_new                       (const gchar            *object_path);
+_GIO_API
 void                 g_dbus_object_skeleton_flush                     (GDBusObjectSkeleton    *object);
+_GIO_API
 void                 g_dbus_object_skeleton_add_interface             (GDBusObjectSkeleton    *object,
                                                                        GDBusInterfaceSkeleton *interface_);
+_GIO_API
 void                 g_dbus_object_skeleton_remove_interface          (GDBusObjectSkeleton    *object,
                                                                        GDBusInterfaceSkeleton *interface_);
+_GIO_API
 void                 g_dbus_object_skeleton_remove_interface_by_name  (GDBusObjectSkeleton    *object,
                                                                        const gchar            *interface_name);
+_GIO_API
 void                 g_dbus_object_skeleton_set_object_path           (GDBusObjectSkeleton    *object,
                                                                        const gchar            *object_path);
 

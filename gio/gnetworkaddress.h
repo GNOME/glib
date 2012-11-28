@@ -53,18 +53,25 @@ struct _GNetworkAddressClass
 
 };
 
+_GIO_API
 GType               g_network_address_get_type     (void) G_GNUC_CONST;
 
+_GIO_API
 GSocketConnectable *g_network_address_new          (const gchar      *hostname,
 						    guint16           port);
+_GIO_API
 GSocketConnectable *g_network_address_parse        (const gchar      *host_and_port,
 						    guint16           default_port,
 						    GError          **error);
+_GIO_API
 GSocketConnectable *g_network_address_parse_uri    (const gchar      *uri,
     						    guint16           default_port,
 						    GError          **error);
+_GIO_API
 const gchar        *g_network_address_get_hostname (GNetworkAddress  *addr);
+_GIO_API
 guint16             g_network_address_get_port     (GNetworkAddress  *addr);
+_GIO_API
 const gchar        *g_network_address_get_scheme   (GNetworkAddress  *addr);
 
 

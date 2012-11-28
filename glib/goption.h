@@ -209,6 +209,7 @@ typedef enum
   G_OPTION_ERROR_FAILED
 } GOptionError;
 
+_GLIB_API
 GQuark g_option_error_quark (void);
 
 /**
@@ -307,61 +308,86 @@ struct _GOptionEntry
  */
 #define G_OPTION_REMAINING ""
 
+_GLIB_API
 GOptionContext *g_option_context_new              (const gchar         *parameter_string);
+_GLIB_API
 void            g_option_context_set_summary      (GOptionContext      *context,
                                                    const gchar         *summary);
+_GLIB_API
 const gchar *   g_option_context_get_summary      (GOptionContext     *context);
+_GLIB_API
 void            g_option_context_set_description  (GOptionContext      *context,
                                                    const gchar         *description);
+_GLIB_API
 const gchar *   g_option_context_get_description  (GOptionContext     *context);
+_GLIB_API
 void            g_option_context_free             (GOptionContext      *context);
+_GLIB_API
 void		g_option_context_set_help_enabled (GOptionContext      *context,
 						   gboolean		help_enabled);
+_GLIB_API
 gboolean	g_option_context_get_help_enabled (GOptionContext      *context);
+_GLIB_API
 void		g_option_context_set_ignore_unknown_options (GOptionContext *context,
 							     gboolean	     ignore_unknown);
+_GLIB_API
 gboolean        g_option_context_get_ignore_unknown_options (GOptionContext *context);
 
+_GLIB_API
 void            g_option_context_add_main_entries (GOptionContext      *context,
 						   const GOptionEntry  *entries,
 						   const gchar         *translation_domain);
+_GLIB_API
 gboolean        g_option_context_parse            (GOptionContext      *context,
 						   gint                *argc,
 						   gchar             ***argv,
 						   GError             **error);
+_GLIB_API
 void            g_option_context_set_translate_func (GOptionContext     *context,
 						     GTranslateFunc      func,
 						     gpointer            data,
 						     GDestroyNotify      destroy_notify);
+_GLIB_API
 void            g_option_context_set_translation_domain (GOptionContext  *context,
 							 const gchar     *domain);
 
+_GLIB_API
 void            g_option_context_add_group      (GOptionContext *context,
 						 GOptionGroup   *group);
+_GLIB_API
 void          g_option_context_set_main_group (GOptionContext *context,
 					       GOptionGroup   *group);
+_GLIB_API
 GOptionGroup *g_option_context_get_main_group (GOptionContext *context);
+_GLIB_API
 gchar        *g_option_context_get_help       (GOptionContext *context,
                                                gboolean        main_help,
                                                GOptionGroup   *group);
 
+_GLIB_API
 GOptionGroup *g_option_group_new                    (const gchar        *name,
 						     const gchar        *description,
 						     const gchar        *help_description,
 						     gpointer            user_data,
 						     GDestroyNotify      destroy);
+_GLIB_API
 void	      g_option_group_set_parse_hooks	    (GOptionGroup       *group,
 						     GOptionParseFunc    pre_parse_func,
 						     GOptionParseFunc	 post_parse_func);
+_GLIB_API
 void	      g_option_group_set_error_hook	    (GOptionGroup       *group,
 						     GOptionErrorFunc	 error_func);
+_GLIB_API
 void          g_option_group_free                   (GOptionGroup       *group);
+_GLIB_API
 void          g_option_group_add_entries            (GOptionGroup       *group,
 						     const GOptionEntry *entries);
+_GLIB_API
 void          g_option_group_set_translate_func     (GOptionGroup       *group,
 						     GTranslateFunc      func,
 						     gpointer            data,
 						     GDestroyNotify      destroy_notify);
+_GLIB_API
 void          g_option_group_set_translation_domain (GOptionGroup       *group,
 						     const gchar        *domain);
 

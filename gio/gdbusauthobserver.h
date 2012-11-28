@@ -35,8 +35,11 @@ G_BEGIN_DECLS
 #define G_DBUS_AUTH_OBSERVER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_AUTH_OBSERVER, GDBusAuthObserver))
 #define G_IS_DBUS_AUTH_OBSERVER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_AUTH_OBSERVER))
 
+_GIO_API
 GType              g_dbus_auth_observer_get_type                     (void) G_GNUC_CONST;
+_GIO_API
 GDBusAuthObserver *g_dbus_auth_observer_new                          (void);
+_GIO_API
 gboolean           g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
                                                                       GIOStream          *stream,
                                                                       GCredentials       *credentials);

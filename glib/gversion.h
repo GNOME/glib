@@ -41,6 +41,7 @@ GLIB_VAR const guint glib_micro_version;
 GLIB_VAR const guint glib_interface_age;
 GLIB_VAR const guint glib_binary_age;
 
+_GLIB_API
 const gchar * glib_check_version (guint required_major,
                                   guint required_minor,
                                   guint required_micro);

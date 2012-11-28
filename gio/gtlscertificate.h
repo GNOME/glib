@@ -58,22 +58,29 @@ struct _GTlsCertificateClass
   gpointer padding[8];
 };
 
+_GIO_API
 GType                 g_tls_certificate_get_type           (void) G_GNUC_CONST;
 
+_GIO_API
 GTlsCertificate      *g_tls_certificate_new_from_pem       (const gchar         *data,
 							    gssize               length,
 							    GError             **error);
 
+_GIO_API
 GTlsCertificate      *g_tls_certificate_new_from_file      (const gchar         *file,
 							    GError             **error);
+_GIO_API
 GTlsCertificate      *g_tls_certificate_new_from_files     (const gchar         *cert_file,
 							    const gchar         *key_file,
 							    GError             **error);
+_GIO_API
 GList                *g_tls_certificate_list_new_from_file (const gchar         *file,
 							    GError             **error);
 
+_GIO_API
 GTlsCertificate      *g_tls_certificate_get_issuer         (GTlsCertificate     *cert);
 
+_GIO_API
 GTlsCertificateFlags  g_tls_certificate_verify             (GTlsCertificate     *cert,
 							    GSocketConnectable  *identity,
 							    GTlsCertificate     *trusted_ca);

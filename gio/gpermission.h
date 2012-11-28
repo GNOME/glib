@@ -81,33 +81,44 @@ struct _GPermissionClass {
   gpointer reserved[16];
 };
 
+_GIO_API
 GType           g_permission_get_type           (void);
+_GIO_API
 gboolean        g_permission_acquire            (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GError              **error);
+_GIO_API
 void            g_permission_acquire_async      (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
+_GIO_API
 gboolean        g_permission_acquire_finish     (GPermission          *permission,
                                                  GAsyncResult         *result,
                                                  GError              **error);
 
+_GIO_API
 gboolean        g_permission_release            (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GError              **error);
+_GIO_API
 void            g_permission_release_async      (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
+_GIO_API
 gboolean        g_permission_release_finish     (GPermission          *permission,
                                                  GAsyncResult         *result,
                                                  GError              **error);
 
+_GIO_API
 gboolean        g_permission_get_allowed        (GPermission   *permission);
+_GIO_API
 gboolean        g_permission_get_can_acquire    (GPermission   *permission);
+_GIO_API
 gboolean        g_permission_get_can_release    (GPermission   *permission);
 
+_GIO_API
 void            g_permission_impl_update        (GPermission  *permission,
                                                  gboolean      allowed,
                                                  gboolean      can_acquire,

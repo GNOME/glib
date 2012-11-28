@@ -182,67 +182,105 @@ void                  g_value_set_char          (GValue       *value,
                                                  gchar         v_char);
 GLIB_DEPRECATED_IN_2_32_FOR(g_value_get_schar)
 gchar                 g_value_get_char          (const GValue *value);
+_GOBJECT_API
 void		      g_value_set_schar		(GValue	      *value,
 						 gint8	       v_char);
+_GOBJECT_API
 gint8		      g_value_get_schar		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_uchar		(GValue	      *value,
 						 guchar	       v_uchar);
+_GOBJECT_API
 guchar		      g_value_get_uchar		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_boolean	(GValue	      *value,
 						 gboolean      v_boolean);
+_GOBJECT_API
 gboolean	      g_value_get_boolean	(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_int		(GValue	      *value,
 						 gint	       v_int);
+_GOBJECT_API
 gint		      g_value_get_int		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_uint		(GValue	      *value,
 						 guint	       v_uint);
+_GOBJECT_API
 guint		      g_value_get_uint		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_long		(GValue	      *value,
 						 glong	       v_long);
+_GOBJECT_API
 glong		      g_value_get_long		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_ulong		(GValue	      *value,
 						 gulong	       v_ulong);
+_GOBJECT_API
 gulong		      g_value_get_ulong		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_int64		(GValue	      *value,
 						 gint64	       v_int64);
+_GOBJECT_API
 gint64		      g_value_get_int64		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_uint64	(GValue	      *value,
 						 guint64      v_uint64);
+_GOBJECT_API
 guint64		      g_value_get_uint64	(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_float		(GValue	      *value,
 						 gfloat	       v_float);
+_GOBJECT_API
 gfloat		      g_value_get_float		(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_double	(GValue	      *value,
 						 gdouble       v_double);
+_GOBJECT_API
 gdouble		      g_value_get_double	(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_string	(GValue	      *value,
 						 const gchar  *v_string);
+_GOBJECT_API
 void		      g_value_set_static_string (GValue	      *value,
 						 const gchar  *v_string);
+_GOBJECT_API
 const gchar *         g_value_get_string	(const GValue *value);
+_GOBJECT_API
 gchar*		      g_value_dup_string	(const GValue *value);
+_GOBJECT_API
 void		      g_value_set_pointer	(GValue	      *value,
 						 gpointer      v_pointer);
+_GOBJECT_API
 gpointer	      g_value_get_pointer	(const GValue *value);
+_GOBJECT_API
 GType		      g_gtype_get_type		(void);
+_GOBJECT_API
 void		      g_value_set_gtype	        (GValue	      *value,
 						 GType         v_gtype);
+_GOBJECT_API
 GType	              g_value_get_gtype	        (const GValue *value);
+_GOBJECT_API
 void		      g_value_set_variant	(GValue	      *value,
 						 GVariant     *variant);
+_GOBJECT_API
 void		      g_value_take_variant	(GValue	      *value,
 						 GVariant     *variant);
+_GOBJECT_API
 GVariant*	      g_value_get_variant	(const GValue *value);
+_GOBJECT_API
 GVariant*	      g_value_dup_variant	(const GValue *value);
 
 
 /* Convenience for registering new pointer types */
+_GOBJECT_API
 GType                 g_pointer_type_register_static (const gchar *name);
 
 /* debugging aid, describe value contents as string */
+_GOBJECT_API
 gchar*                g_strdup_value_contents   (const GValue *value);
 
 
+_GOBJECT_API
 void g_value_take_string		        (GValue		   *value,
 						 gchar		   *v_string);
 GLIB_DEPRECATED_FOR(g_value_take_string)

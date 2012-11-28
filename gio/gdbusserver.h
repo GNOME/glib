@@ -35,18 +35,26 @@ G_BEGIN_DECLS
 #define G_DBUS_SERVER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_SERVER, GDBusServer))
 #define G_IS_DBUS_SERVER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_SERVER))
 
+_GIO_API
 GType             g_dbus_server_get_type           (void) G_GNUC_CONST;
+_GIO_API
 GDBusServer      *g_dbus_server_new_sync           (const gchar       *address,
                                                     GDBusServerFlags   flags,
                                                     const gchar       *guid,
                                                     GDBusAuthObserver *observer,
                                                     GCancellable      *cancellable,
                                                     GError           **error);
+_GIO_API
 const gchar      *g_dbus_server_get_client_address (GDBusServer       *server);
+_GIO_API
 const gchar      *g_dbus_server_get_guid           (GDBusServer       *server);
+_GIO_API
 GDBusServerFlags  g_dbus_server_get_flags          (GDBusServer       *server);
+_GIO_API
 void              g_dbus_server_start              (GDBusServer       *server);
+_GIO_API
 void              g_dbus_server_stop               (GDBusServer       *server);
+_GIO_API
 gboolean          g_dbus_server_is_active          (GDBusServer       *server);
 
 G_END_DECLS

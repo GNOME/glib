@@ -96,41 +96,55 @@ struct _GActionGroupInterface
                                                         GVariant           **state);
 };
 
+_GIO_API
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;
 
+_GIO_API
 gboolean                g_action_group_has_action                       (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 gchar **                g_action_group_list_actions                     (GActionGroup *action_group);
 
+_GIO_API
 const GVariantType *    g_action_group_get_action_parameter_type        (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 const GVariantType *    g_action_group_get_action_state_type            (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 GVariant *              g_action_group_get_action_state_hint            (GActionGroup *action_group,
                                                                          const gchar  *action_name);
 
+_GIO_API
 gboolean                g_action_group_get_action_enabled               (GActionGroup *action_group,
                                                                          const gchar  *action_name);
 
+_GIO_API
 GVariant *              g_action_group_get_action_state                 (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 void                    g_action_group_change_action_state              (GActionGroup *action_group,
                                                                          const gchar  *action_name,
                                                                          GVariant     *value);
 
+_GIO_API
 void                    g_action_group_activate_action                  (GActionGroup *action_group,
                                                                          const gchar  *action_name,
                                                                          GVariant     *parameter);
 
 /* signals */
+_GIO_API
 void                    g_action_group_action_added                     (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 void                    g_action_group_action_removed                   (GActionGroup *action_group,
                                                                          const gchar  *action_name);
+_GIO_API
 void                    g_action_group_action_enabled_changed           (GActionGroup *action_group,
                                                                          const gchar  *action_name,
                                                                          gboolean      enabled);
 
+_GIO_API
 void                    g_action_group_action_state_changed             (GActionGroup *action_group,
                                                                          const gchar  *action_name,
                                                                          GVariant     *state);

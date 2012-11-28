@@ -65,13 +65,18 @@ struct _GWin32OutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType           g_win32_output_stream_get_type         (void) G_GNUC_CONST;
 
+_GIO_API
 GOutputStream * g_win32_output_stream_new              (void               *handle,
 							gboolean            close_handle);
+_GIO_API
 void            g_win32_output_stream_set_close_handle (GWin32OutputStream *stream,
 							gboolean           close_handle);
+_GIO_API
 gboolean        g_win32_output_stream_get_close_handle (GWin32OutputStream *stream);
+_GIO_API
 void           *g_win32_output_stream_get_handle       (GWin32OutputStream *stream);
 G_END_DECLS
 

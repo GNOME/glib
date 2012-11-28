@@ -31,30 +31,41 @@
 
 G_BEGIN_DECLS
 
+_GIO_API
 gboolean g_content_type_equals            (const gchar  *type1,
                                            const gchar  *type2);
+_GIO_API
 gboolean g_content_type_is_a              (const gchar  *type,
                                            const gchar  *supertype);
+_GIO_API
 gboolean g_content_type_is_unknown        (const gchar  *type);
+_GIO_API
 gchar *  g_content_type_get_description   (const gchar  *type);
+_GIO_API
 gchar *  g_content_type_get_mime_type     (const gchar  *type);
+_GIO_API
 GIcon *  g_content_type_get_icon          (const gchar  *type);
 GLIB_AVAILABLE_IN_2_34
 GIcon *  g_content_type_get_symbolic_icon (const gchar  *type);
 GLIB_AVAILABLE_IN_2_34
 gchar *  g_content_type_get_generic_icon_name (const gchar  *type);
 
+_GIO_API
 gboolean g_content_type_can_be_executable (const gchar  *type);
 
+_GIO_API
 gchar *  g_content_type_from_mime_type    (const gchar  *mime_type);
 
+_GIO_API
 gchar *  g_content_type_guess             (const gchar  *filename,
                                            const guchar *data,
                                            gsize         data_size,
                                            gboolean     *result_uncertain);
 
+_GIO_API
 gchar ** g_content_type_guess_for_tree    (GFile        *root);
 
+_GIO_API
 GList *  g_content_types_get_registered   (void);
 
 G_END_DECLS

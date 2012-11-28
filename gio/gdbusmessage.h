@@ -35,112 +35,162 @@ G_BEGIN_DECLS
 #define G_DBUS_MESSAGE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_MESSAGE, GDBusMessage))
 #define G_IS_DBUS_MESSAGE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_MESSAGE))
 
+_GIO_API
 GType                     g_dbus_message_get_type           (void) G_GNUC_CONST;
+_GIO_API
 GDBusMessage             *g_dbus_message_new                (void);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_signal         (const gchar              *path,
                                                              const gchar              *interface_,
                                                              const gchar              *signal);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_method_call    (const gchar              *name,
                                                              const gchar              *path,
                                                              const gchar              *interface_,
                                                              const gchar              *method);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_method_reply   (GDBusMessage             *method_call_message);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_method_error   (GDBusMessage             *method_call_message,
                                                              const gchar              *error_name,
                                                              const gchar              *error_message_format,
                                                              ...);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_message,
                                                                   const gchar              *error_name,
                                                                   const gchar              *error_message_format,
                                                                   va_list                   var_args);
+_GIO_API
 GDBusMessage             *g_dbus_message_new_method_error_literal (GDBusMessage             *method_call_message,
                                                                    const gchar              *error_name,
                                                                    const gchar              *error_message);
+_GIO_API
 gchar                    *g_dbus_message_print              (GDBusMessage             *message,
                                                              guint                     indent);
+_GIO_API
 gboolean                  g_dbus_message_get_locked         (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_lock               (GDBusMessage             *message);
+_GIO_API
 GDBusMessage             *g_dbus_message_copy               (GDBusMessage             *message,
                                                              GError                  **error);
+_GIO_API
 GDBusMessageByteOrder     g_dbus_message_get_byte_order     (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_byte_order     (GDBusMessage             *message,
                                                              GDBusMessageByteOrder     byte_order);
 
+_GIO_API
 GDBusMessageType          g_dbus_message_get_message_type   (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_message_type   (GDBusMessage             *message,
                                                              GDBusMessageType          type);
+_GIO_API
 GDBusMessageFlags         g_dbus_message_get_flags          (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_flags          (GDBusMessage             *message,
                                                              GDBusMessageFlags         flags);
+_GIO_API
 guint32                   g_dbus_message_get_serial         (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_serial         (GDBusMessage             *message,
                                                              guint32                   serial);
+_GIO_API
 GVariant                 *g_dbus_message_get_header         (GDBusMessage             *message,
                                                              GDBusMessageHeaderField   header_field);
+_GIO_API
 void                      g_dbus_message_set_header         (GDBusMessage             *message,
                                                              GDBusMessageHeaderField   header_field,
                                                              GVariant                 *value);
+_GIO_API
 guchar                   *g_dbus_message_get_header_fields  (GDBusMessage             *message);
+_GIO_API
 GVariant                 *g_dbus_message_get_body           (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_body           (GDBusMessage             *message,
                                                              GVariant                 *body);
+_GIO_API
 GUnixFDList              *g_dbus_message_get_unix_fd_list   (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_unix_fd_list   (GDBusMessage             *message,
                                                              GUnixFDList              *fd_list);
 
+_GIO_API
 guint32                   g_dbus_message_get_reply_serial   (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_reply_serial   (GDBusMessage             *message,
                                                              guint32                   value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_interface      (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_interface      (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_member         (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_member         (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_path           (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_path           (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_sender         (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_sender         (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_destination    (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_destination    (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_error_name     (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_error_name     (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_signature      (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_signature      (GDBusMessage             *message,
                                                              const gchar              *value);
 
+_GIO_API
 guint32                   g_dbus_message_get_num_unix_fds   (GDBusMessage             *message);
+_GIO_API
 void                      g_dbus_message_set_num_unix_fds   (GDBusMessage             *message,
                                                              guint32                   value);
 
+_GIO_API
 const gchar              *g_dbus_message_get_arg0           (GDBusMessage             *message);
 
 
+_GIO_API
 GDBusMessage             *g_dbus_message_new_from_blob      (guchar                   *blob,
                                                              gsize                     blob_len,
                                                              GDBusCapabilityFlags      capabilities,
                                                              GError                  **error);
 
+_GIO_API
 gssize                    g_dbus_message_bytes_needed       (guchar                   *blob,
                                                              gsize                     blob_len,
                                                              GError                  **error);
 
+_GIO_API
 guchar                   *g_dbus_message_to_blob            (GDBusMessage             *message,
                                                              gsize                    *out_size,
                                                              GDBusCapabilityFlags      capabilities,
                                                              GError                  **error);
 
+_GIO_API
 gboolean                  g_dbus_message_to_gerror          (GDBusMessage             *message,
                                                              GError                  **error);
 

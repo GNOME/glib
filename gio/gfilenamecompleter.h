@@ -60,14 +60,19 @@ struct _GFilenameCompleterClass
   void (*_g_reserved3) (void);
 };
 
+_GIO_API
 GType               g_filename_completer_get_type              (void) G_GNUC_CONST;
 
+_GIO_API
 GFilenameCompleter *g_filename_completer_new                   (void);
 
+_GIO_API
 char *              g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
                                                                 const char *initial_text);
+_GIO_API
 char **             g_filename_completer_get_completions       (GFilenameCompleter *completer,
                                                                 const char *initial_text);
+_GIO_API
 void                g_filename_completer_set_dirs_only         (GFilenameCompleter *completer,
                                                                 gboolean dirs_only);
 

@@ -73,6 +73,7 @@ struct _GTlsConnectionClass
   gpointer padding[8];
 };
 
+_GIO_API
 GType                 g_tls_connection_get_type                    (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED
@@ -81,38 +82,53 @@ void                  g_tls_connection_set_use_system_certdb       (GTlsConnecti
 GLIB_DEPRECATED
 gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn);
 
+_GIO_API
 void                  g_tls_connection_set_database                (GTlsConnection       *conn,
 								    GTlsDatabase         *database);
+_GIO_API
 GTlsDatabase *        g_tls_connection_get_database                (GTlsConnection       *conn);
 
+_GIO_API
 void                  g_tls_connection_set_certificate             (GTlsConnection       *conn,
                                                                     GTlsCertificate      *certificate);
+_GIO_API
 GTlsCertificate      *g_tls_connection_get_certificate             (GTlsConnection       *conn);
 
+_GIO_API
 void                  g_tls_connection_set_interaction             (GTlsConnection       *conn,
                                                                     GTlsInteraction      *interaction);
+_GIO_API
 GTlsInteraction *     g_tls_connection_get_interaction             (GTlsConnection       *conn);
 
+_GIO_API
 GTlsCertificate      *g_tls_connection_get_peer_certificate        (GTlsConnection       *conn);
+_GIO_API
 GTlsCertificateFlags  g_tls_connection_get_peer_certificate_errors (GTlsConnection       *conn);
 
+_GIO_API
 void                  g_tls_connection_set_require_close_notify    (GTlsConnection       *conn,
 								    gboolean              require_close_notify);
+_GIO_API
 gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
+_GIO_API
 void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
 								    GTlsRehandshakeMode   mode);
+_GIO_API
 GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
 
+_GIO_API
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
 								    GCancellable         *cancellable,
 								    GError              **error);
 
+_GIO_API
 void                  g_tls_connection_handshake_async             (GTlsConnection       *conn,
 								    int                   io_priority,
 								    GCancellable         *cancellable,
 								    GAsyncReadyCallback   callback,
 								    gpointer              user_data);
+_GIO_API
 gboolean              g_tls_connection_handshake_finish            (GTlsConnection       *conn,
 								    GAsyncResult         *result,
 								    GError              **error);
@@ -125,10 +141,12 @@ gboolean              g_tls_connection_handshake_finish            (GTlsConnecti
  * domains.
  */
 #define G_TLS_ERROR (g_tls_error_quark ())
+_GIO_API
 GQuark g_tls_error_quark (void);
 
 
 /*< protected >*/
+_GIO_API
 gboolean              g_tls_connection_emit_accept_certificate     (GTlsConnection       *conn,
 								    GTlsCertificate      *peer_cert,
 								    GTlsCertificateFlags  errors);

@@ -103,54 +103,73 @@ struct _GHook
 
 /* --- prototypes --- */
 /* callback maintenance functions */
+_GLIB_API
 void	 g_hook_list_init		(GHookList		*hook_list,
 					 guint			 hook_size);
+_GLIB_API
 void	 g_hook_list_clear		(GHookList		*hook_list);
+_GLIB_API
 GHook*	 g_hook_alloc			(GHookList		*hook_list);
+_GLIB_API
 void	 g_hook_free			(GHookList		*hook_list,
 					 GHook			*hook);
+_GLIB_API
 GHook *	 g_hook_ref			(GHookList		*hook_list,
 					 GHook			*hook);
+_GLIB_API
 void	 g_hook_unref			(GHookList		*hook_list,
 					 GHook			*hook);
+_GLIB_API
 gboolean g_hook_destroy			(GHookList		*hook_list,
 					 gulong			 hook_id);
+_GLIB_API
 void	 g_hook_destroy_link		(GHookList		*hook_list,
 					 GHook			*hook);
+_GLIB_API
 void	 g_hook_prepend			(GHookList		*hook_list,
 					 GHook			*hook);
+_GLIB_API
 void	 g_hook_insert_before		(GHookList		*hook_list,
 					 GHook			*sibling,
 					 GHook			*hook);
+_GLIB_API
 void	 g_hook_insert_sorted		(GHookList		*hook_list,
 					 GHook			*hook,
 					 GHookCompareFunc	 func);
+_GLIB_API
 GHook*	 g_hook_get			(GHookList		*hook_list,
 					 gulong			 hook_id);
+_GLIB_API
 GHook*	 g_hook_find			(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 GHookFindFunc		 func,
 					 gpointer		 data);
+_GLIB_API
 GHook*	 g_hook_find_data		(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 gpointer		 data);
+_GLIB_API
 GHook*	 g_hook_find_func		(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 gpointer		 func);
+_GLIB_API
 GHook*	 g_hook_find_func_data		(GHookList		*hook_list,
 					 gboolean		 need_valids,
 					 gpointer		 func,
 					 gpointer		 data);
 /* return the first valid hook, and increment its reference count */
+_GLIB_API
 GHook*	 g_hook_first_valid		(GHookList		*hook_list,
 					 gboolean		 may_be_in_call);
 /* return the next valid hook with incremented reference count, and
  * decrement the reference count of the original hook
  */
+_GLIB_API
 GHook*	 g_hook_next_valid		(GHookList		*hook_list,
 					 GHook			*hook,
 					 gboolean		 may_be_in_call);
 /* GHookCompareFunc implementation to insert hooks sorted by their id */
+_GLIB_API
 gint	 g_hook_compare_ids		(GHook			*new_hook,
 					 GHook			*sibling);
 /* convenience macros */
@@ -158,19 +177,23 @@ gint	 g_hook_compare_ids		(GHook			*new_hook,
      g_hook_insert_before ((hook_list), NULL, (hook))
 /* invoke all valid hooks with the (*GHookFunc) signature.
  */
+_GLIB_API
 void	 g_hook_list_invoke		(GHookList		*hook_list,
 					 gboolean		 may_recurse);
 /* invoke all valid hooks with the (*GHookCheckFunc) signature,
  * and destroy the hook if FALSE is returned.
  */
+_GLIB_API
 void	 g_hook_list_invoke_check	(GHookList		*hook_list,
 					 gboolean		 may_recurse);
 /* invoke a marshaller on all valid hooks.
  */
+_GLIB_API
 void	 g_hook_list_marshal		(GHookList		*hook_list,
 					 gboolean		 may_recurse,
 					 GHookMarshaller	 marshaller,
 					 gpointer		 marshal_data);
+_GLIB_API
 void	 g_hook_list_marshal_check	(GHookList		*hook_list,
 					 gboolean		 may_recurse,
 					 GHookCheckMarshaller	 marshaller,

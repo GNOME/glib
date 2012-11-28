@@ -100,20 +100,29 @@ typedef enum { /*< prefix=G_BINDING >*/
   G_BINDING_INVERT_BOOLEAN = 1 << 2
 } GBindingFlags;
 
+_GOBJECT_API
 GType                 g_binding_flags_get_type      (void) G_GNUC_CONST;
+_GOBJECT_API
 GType                 g_binding_get_type            (void) G_GNUC_CONST;
 
+_GOBJECT_API
 GBindingFlags         g_binding_get_flags           (GBinding *binding);
+_GOBJECT_API
 GObject *             g_binding_get_source          (GBinding *binding);
+_GOBJECT_API
 GObject *             g_binding_get_target          (GBinding *binding);
+_GOBJECT_API
 const gchar *         g_binding_get_source_property (GBinding *binding);
+_GOBJECT_API
 const gchar *         g_binding_get_target_property (GBinding *binding);
 
+_GOBJECT_API
 GBinding *g_object_bind_property               (gpointer               source,
                                                 const gchar           *source_property,
                                                 gpointer               target,
                                                 const gchar           *target_property,
                                                 GBindingFlags          flags);
+_GOBJECT_API
 GBinding *g_object_bind_property_full          (gpointer               source,
                                                 const gchar           *source_property,
                                                 gpointer               target,
@@ -123,6 +132,7 @@ GBinding *g_object_bind_property_full          (gpointer               source,
                                                 GBindingTransformFunc  transform_from,
                                                 gpointer               user_data,
                                                 GDestroyNotify         notify);
+_GOBJECT_API
 GBinding *g_object_bind_property_with_closures (gpointer               source,
                                                 const gchar           *source_property,
                                                 gpointer               target,

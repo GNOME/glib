@@ -70,31 +70,42 @@ struct _GApplicationCommandLineClass
   gpointer padding[12];
 };
 
+_GIO_API
 GType                   g_application_command_line_get_type             (void) G_GNUC_CONST;
 
+_GIO_API
 gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
                                                                          int                       *argc);
 
+_GIO_API
 const gchar * const *   g_application_command_line_get_environ          (GApplicationCommandLine   *cmdline);
 
+_GIO_API
 const gchar *           g_application_command_line_getenv               (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *name);
 
+_GIO_API
 const gchar *           g_application_command_line_get_cwd              (GApplicationCommandLine   *cmdline);
 
+_GIO_API
 gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *cmdline);
 
+_GIO_API
 void                    g_application_command_line_print                (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...) G_GNUC_PRINTF(2, 3);
+_GIO_API
 void                    g_application_command_line_printerr             (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...) G_GNUC_PRINTF(2, 3);
 
+_GIO_API
 int                     g_application_command_line_get_exit_status      (GApplicationCommandLine   *cmdline);
+_GIO_API
 void                    g_application_command_line_set_exit_status      (GApplicationCommandLine   *cmdline,
                                                                          int                        exit_status);
 
+_GIO_API
 GVariant *              g_application_command_line_get_platform_data    (GApplicationCommandLine   *cmdline);
 
 GLIB_AVAILABLE_IN_2_36

@@ -212,39 +212,58 @@ struct	_GScanner
   GScannerMsgFunc	msg_handler;
 };
 
+_GLIB_API
 GScanner*	g_scanner_new			(const GScannerConfig *config_templ);
+_GLIB_API
 void		g_scanner_destroy		(GScanner	*scanner);
+_GLIB_API
 void		g_scanner_input_file		(GScanner	*scanner,
 						 gint		input_fd);
+_GLIB_API
 void		g_scanner_sync_file_offset	(GScanner	*scanner);
+_GLIB_API
 void		g_scanner_input_text		(GScanner	*scanner,
 						 const	gchar	*text,
 						 guint		text_len);
+_GLIB_API
 GTokenType	g_scanner_get_next_token	(GScanner	*scanner);
+_GLIB_API
 GTokenType	g_scanner_peek_next_token	(GScanner	*scanner);
+_GLIB_API
 GTokenType	g_scanner_cur_token		(GScanner	*scanner);
+_GLIB_API
 GTokenValue	g_scanner_cur_value		(GScanner	*scanner);
+_GLIB_API
 guint		g_scanner_cur_line		(GScanner	*scanner);
+_GLIB_API
 guint		g_scanner_cur_position		(GScanner	*scanner);
+_GLIB_API
 gboolean	g_scanner_eof			(GScanner	*scanner);
+_GLIB_API
 guint		g_scanner_set_scope		(GScanner	*scanner,
 						 guint		 scope_id);
+_GLIB_API
 void		g_scanner_scope_add_symbol	(GScanner	*scanner,
 						 guint		 scope_id,
 						 const gchar	*symbol,
 						 gpointer	value);
+_GLIB_API
 void		g_scanner_scope_remove_symbol	(GScanner	*scanner,
 						 guint		 scope_id,
 						 const gchar	*symbol);
+_GLIB_API
 gpointer	g_scanner_scope_lookup_symbol	(GScanner	*scanner,
 						 guint		 scope_id,
 						 const gchar	*symbol);
+_GLIB_API
 void		g_scanner_scope_foreach_symbol	(GScanner	*scanner,
 						 guint		 scope_id,
 						 GHFunc		 func,
 						 gpointer	 user_data);
+_GLIB_API
 gpointer	g_scanner_lookup_symbol		(GScanner	*scanner,
 						 const gchar	*symbol);
+_GLIB_API
 void		g_scanner_unexp_token		(GScanner	*scanner,
 						 GTokenType	expected_token,
 						 const gchar	*identifier_spec,
@@ -252,9 +271,11 @@ void		g_scanner_unexp_token		(GScanner	*scanner,
 						 const gchar	*symbol_name,
 						 const gchar	*message,
 						 gint		 is_error);
+_GLIB_API
 void		g_scanner_error			(GScanner	*scanner,
 						 const gchar	*format,
 						 ...) G_GNUC_PRINTF (2,3);
+_GLIB_API
 void		g_scanner_warn			(GScanner	*scanner,
 						 const gchar	*format,
 						 ...) G_GNUC_PRINTF (2,3);

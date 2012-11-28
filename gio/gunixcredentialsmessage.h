@@ -70,11 +70,16 @@ struct _GUnixCredentialsMessage
   GUnixCredentialsMessagePrivate *priv;
 };
 
+_GIO_API
 GType                  g_unix_credentials_message_get_type             (void) G_GNUC_CONST;
+_GIO_API
 GSocketControlMessage *g_unix_credentials_message_new                  (void);
+_GIO_API
 GSocketControlMessage *g_unix_credentials_message_new_with_credentials (GCredentials *credentials);
+_GIO_API
 GCredentials          *g_unix_credentials_message_get_credentials      (GUnixCredentialsMessage *message);
 
+_GIO_API
 gboolean               g_unix_credentials_message_is_supported         (void);
 
 G_END_DECLS

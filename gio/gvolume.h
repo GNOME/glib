@@ -184,23 +184,35 @@ struct _GVolumeIface
   GIcon       * (* get_symbolic_icon)   (GVolume             *volume);
 };
 
+_GIO_API
 GType    g_volume_get_type              (void) G_GNUC_CONST;
 
+_GIO_API
 char *   g_volume_get_name              (GVolume              *volume);
+_GIO_API
 GIcon *  g_volume_get_icon              (GVolume              *volume);
+_GIO_API
 GIcon *  g_volume_get_symbolic_icon     (GVolume              *volume);
+_GIO_API
 char *   g_volume_get_uuid              (GVolume              *volume);
+_GIO_API
 GDrive * g_volume_get_drive             (GVolume              *volume);
+_GIO_API
 GMount * g_volume_get_mount             (GVolume              *volume);
+_GIO_API
 gboolean g_volume_can_mount             (GVolume              *volume);
+_GIO_API
 gboolean g_volume_can_eject             (GVolume              *volume);
+_GIO_API
 gboolean g_volume_should_automount      (GVolume              *volume);
+_GIO_API
 void     g_volume_mount                 (GVolume              *volume,
 					 GMountMountFlags      flags,
 					 GMountOperation      *mount_operation,
 					 GCancellable         *cancellable,
 					 GAsyncReadyCallback   callback,
 					 gpointer              user_data);
+_GIO_API
 gboolean g_volume_mount_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
@@ -215,18 +227,23 @@ GLIB_DEPRECATED_FOR(g_volume_eject_with_operation_finish)
 gboolean g_volume_eject_finish          (GVolume              *volume,
                                          GAsyncResult         *result,
                                          GError              **error);
+_GIO_API
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
+_GIO_API
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
 
+_GIO_API
 GFile *  g_volume_get_activation_root   (GVolume              *volume);
 
+_GIO_API
 void        g_volume_eject_with_operation     (GVolume             *volume,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gboolean    g_volume_eject_with_operation_finish (GVolume          *volume,
                                                GAsyncResult        *result,
                                                GError             **error);

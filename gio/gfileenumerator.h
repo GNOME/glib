@@ -96,35 +96,46 @@ struct _GFileEnumeratorClass
   void (*_g_reserved7) (void);
 };
 
+_GIO_API
 GType      g_file_enumerator_get_type          (void) G_GNUC_CONST;
 
+_GIO_API
 GFileInfo *g_file_enumerator_next_file         (GFileEnumerator      *enumerator,
 						GCancellable         *cancellable,
 						GError              **error);
+_GIO_API
 gboolean   g_file_enumerator_close             (GFileEnumerator      *enumerator,
 						GCancellable         *cancellable,
 						GError              **error);
+_GIO_API
 void       g_file_enumerator_next_files_async  (GFileEnumerator      *enumerator,
 						int                   num_files,
 						int                   io_priority,
 						GCancellable         *cancellable,
 						GAsyncReadyCallback   callback,
 						gpointer              user_data);
+_GIO_API
 GList *    g_file_enumerator_next_files_finish (GFileEnumerator      *enumerator,
 						GAsyncResult         *result,
 						GError              **error);
+_GIO_API
 void       g_file_enumerator_close_async       (GFileEnumerator      *enumerator,
 						int                   io_priority,
 						GCancellable         *cancellable,
 						GAsyncReadyCallback   callback,
 						gpointer              user_data);
+_GIO_API
 gboolean   g_file_enumerator_close_finish      (GFileEnumerator      *enumerator,
 						GAsyncResult         *result,
 						GError              **error);
+_GIO_API
 gboolean   g_file_enumerator_is_closed         (GFileEnumerator      *enumerator);
+_GIO_API
 gboolean   g_file_enumerator_has_pending       (GFileEnumerator      *enumerator);
+_GIO_API
 void       g_file_enumerator_set_pending       (GFileEnumerator      *enumerator,
 						gboolean              pending);
+_GIO_API
 GFile *    g_file_enumerator_get_container     (GFileEnumerator *enumerator);
 
 G_END_DECLS

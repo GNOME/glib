@@ -163,17 +163,28 @@ struct _GMountIface
   GIcon       * (* get_symbolic_icon)       (GMount              *mount);
 };
 
+_GIO_API
 GType       g_mount_get_type                  (void) G_GNUC_CONST;
 
+_GIO_API
 GFile     * g_mount_get_root                  (GMount              *mount);
+_GIO_API
 GFile     * g_mount_get_default_location      (GMount              *mount);
+_GIO_API
 char      * g_mount_get_name                  (GMount              *mount);
+_GIO_API
 GIcon     * g_mount_get_icon                  (GMount              *mount);
+_GIO_API
 GIcon     * g_mount_get_symbolic_icon         (GMount              *mount);
+_GIO_API
 char      * g_mount_get_uuid                  (GMount              *mount);
+_GIO_API
 GVolume   * g_mount_get_volume                (GMount              *mount);
+_GIO_API
 GDrive    * g_mount_get_drive                 (GMount              *mount);
+_GIO_API
 gboolean    g_mount_can_unmount               (GMount              *mount);
+_GIO_API
 gboolean    g_mount_can_eject                 (GMount              *mount);
 
 GLIB_DEPRECATED_FOR(g_mount_unmount_with_operation)
@@ -200,53 +211,66 @@ gboolean    g_mount_eject_finish              (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+_GIO_API
 void        g_mount_remount                   (GMount              *mount,
                                                GMountMountFlags     flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gboolean    g_mount_remount_finish            (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+_GIO_API
 void        g_mount_guess_content_type        (GMount              *mount,
                                                gboolean             force_rescan,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gchar    ** g_mount_guess_content_type_finish (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
+_GIO_API
 gchar    ** g_mount_guess_content_type_sync   (GMount              *mount,
                                                gboolean             force_rescan,
                                                GCancellable        *cancellable,
                                                GError             **error);
 
+_GIO_API
 gboolean    g_mount_is_shadowed               (GMount              *mount);
+_GIO_API
 void        g_mount_shadow                    (GMount              *mount);
+_GIO_API
 void        g_mount_unshadow                  (GMount              *mount);
 
+_GIO_API
 void        g_mount_unmount_with_operation    (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gboolean    g_mount_unmount_with_operation_finish (GMount          *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+_GIO_API
 void        g_mount_eject_with_operation      (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gboolean    g_mount_eject_with_operation_finish (GMount            *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+_GIO_API
 const gchar *g_mount_get_sort_key             (GMount              *mount);
 
 G_END_DECLS

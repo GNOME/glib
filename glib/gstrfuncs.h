@@ -87,54 +87,74 @@ GLIB_VAR const guint16 * const g_ascii_table;
 #define g_ascii_isxdigit(c) \
   ((g_ascii_table[(guchar) (c)] & G_ASCII_XDIGIT) != 0)
 
+_GLIB_API
 gchar                 g_ascii_tolower  (gchar        c) G_GNUC_CONST;
+_GLIB_API
 gchar                 g_ascii_toupper  (gchar        c) G_GNUC_CONST;
 
+_GLIB_API
 gint                  g_ascii_digit_value  (gchar    c) G_GNUC_CONST;
+_GLIB_API
 gint                  g_ascii_xdigit_value (gchar    c) G_GNUC_CONST;
 
 /* String utility functions that modify a string argument or
  * return a constant string that must not be freed.
  */
 #define	 G_STR_DELIMITERS	"_-|> <."
+_GLIB_API
 gchar*	              g_strdelimit     (gchar	     *string,
 					const gchar  *delimiters,
 					gchar	      new_delimiter);
+_GLIB_API
 gchar*	              g_strcanon       (gchar        *string,
 					const gchar  *valid_chars,
 					gchar         substitutor);
+_GLIB_API
 const gchar *         g_strerror       (gint	      errnum) G_GNUC_CONST;
+_GLIB_API
 const gchar *         g_strsignal      (gint	      signum) G_GNUC_CONST;
+_GLIB_API
 gchar *	              g_strreverse     (gchar	     *string);
+_GLIB_API
 gsize	              g_strlcpy	       (gchar	     *dest,
 					const gchar  *src,
 					gsize         dest_size);
+_GLIB_API
 gsize	              g_strlcat        (gchar	     *dest,
 					const gchar  *src,
 					gsize         dest_size);
+_GLIB_API
 gchar *               g_strstr_len     (const gchar  *haystack,
 					gssize        haystack_len,
 					const gchar  *needle);
+_GLIB_API
 gchar *               g_strrstr        (const gchar  *haystack,
 					const gchar  *needle);
+_GLIB_API
 gchar *               g_strrstr_len    (const gchar  *haystack,
 					gssize        haystack_len,
 					const gchar  *needle);
 
+_GLIB_API
 gboolean              g_str_has_suffix (const gchar  *str,
 					const gchar  *suffix);
+_GLIB_API
 gboolean              g_str_has_prefix (const gchar  *str,
 					const gchar  *prefix);
 
 /* String to/from double conversion functions */
 
+_GLIB_API
 gdouble	              g_strtod         (const gchar  *nptr,
 					gchar	    **endptr);
+_GLIB_API
 gdouble	              g_ascii_strtod   (const gchar  *nptr,
 					gchar	    **endptr);
+_GLIB_API
 guint64		      g_ascii_strtoull (const gchar *nptr,
 					gchar      **endptr,
 					guint        base);
+_GLIB_API
 gint64		      g_ascii_strtoll  (const gchar *nptr,
 					gchar      **endptr,
 					guint        base);
@@ -142,28 +162,36 @@ gint64		      g_ascii_strtoll  (const gchar *nptr,
  * g_ascii_dtostr can produce.
  * Then add 10 for good measure */
 #define G_ASCII_DTOSTR_BUF_SIZE (29 + 10)
+_GLIB_API
 gchar *               g_ascii_dtostr   (gchar        *buffer,
 					gint          buf_len,
 					gdouble       d);
+_GLIB_API
 gchar *               g_ascii_formatd  (gchar        *buffer,
 					gint          buf_len,
 					const gchar  *format,
 					gdouble       d);
 
 /* removes leading spaces */
+_GLIB_API
 gchar*                g_strchug        (gchar        *string);
 /* removes trailing spaces */
+_GLIB_API
 gchar*                g_strchomp       (gchar        *string);
 /* removes leading & trailing spaces */
 #define g_strstrip( string )	g_strchomp (g_strchug (string))
 
+_GLIB_API
 gint                  g_ascii_strcasecmp  (const gchar *s1,
 					   const gchar *s2);
+_GLIB_API
 gint                  g_ascii_strncasecmp (const gchar *s1,
 					   const gchar *s2,
 					   gsize        n);
+_GLIB_API
 gchar*                g_ascii_strdown     (const gchar *str,
 					   gssize       len) G_GNUC_MALLOC;
+_GLIB_API
 gchar*                g_ascii_strup       (const gchar *str,
 					   gssize       len) G_GNUC_MALLOC;
 
@@ -184,17 +212,24 @@ gchar*                g_strup          (gchar       *string);
 /* String utility functions that return a newly allocated string which
  * ought to be freed with g_free from the caller at some point.
  */
+_GLIB_API
 gchar*	              g_strdup	       (const gchar *str) G_GNUC_MALLOC;
+_GLIB_API
 gchar*	              g_strdup_printf  (const gchar *format,
 					...) G_GNUC_PRINTF (1, 2) G_GNUC_MALLOC;
+_GLIB_API
 gchar*	              g_strdup_vprintf (const gchar *format,
 					va_list      args) G_GNUC_MALLOC;
+_GLIB_API
 gchar*	              g_strndup	       (const gchar *str,
 					gsize        n) G_GNUC_MALLOC;  
+_GLIB_API
 gchar*	              g_strnfill       (gsize        length,  
 					gchar        fill_char) G_GNUC_MALLOC;
+_GLIB_API
 gchar*	              g_strconcat      (const gchar *string1,
 					...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
+_GLIB_API
 gchar*                g_strjoin	       (const gchar  *separator,
 					...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
 
@@ -202,6 +237,7 @@ gchar*                g_strjoin	       (const gchar  *separator,
  * sequences. Inverse of g_strescape. The recognized sequences are \b
  * \f \n \r \t \\ \" and the octal format.
  */
+_GLIB_API
 gchar*                g_strcompress    (const gchar *source) G_GNUC_MALLOC;
 
 /* Copy a string escaping nonprintable characters like in C strings.
@@ -212,9 +248,11 @@ gchar*                g_strcompress    (const gchar *source) G_GNUC_MALLOC;
  * Luckily this function wasn't used much, using NULL as second parameter
  * provides mostly identical semantics.
  */
+_GLIB_API
 gchar*                g_strescape      (const gchar *source,
 					const gchar *exceptions) G_GNUC_MALLOC;
 
+_GLIB_API
 gpointer              g_memdup	       (gconstpointer mem,
 					guint	       byte_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(2);
 
@@ -227,18 +265,25 @@ gpointer              g_memdup	       (gconstpointer mem,
  * g_strdupv() copies a NULL-terminated array of strings
  * g_strv_length() returns the length of a NULL-terminated array of strings
  */
+_GLIB_API
 gchar**	              g_strsplit       (const gchar  *string,
 					const gchar  *delimiter,
 					gint          max_tokens) G_GNUC_MALLOC;
+_GLIB_API
 gchar **	      g_strsplit_set   (const gchar *string,
 					const gchar *delimiters,
 					gint         max_tokens) G_GNUC_MALLOC;
+_GLIB_API
 gchar*                g_strjoinv       (const gchar  *separator,
 					gchar       **str_array) G_GNUC_MALLOC;
+_GLIB_API
 void                  g_strfreev       (gchar       **str_array);
+_GLIB_API
 gchar**               g_strdupv        (gchar       **str_array) G_GNUC_MALLOC;
+_GLIB_API
 guint                 g_strv_length    (gchar       **str_array);
 
+_GLIB_API
 gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 

@@ -203,46 +203,62 @@ struct _GCClosure
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 GClosure* g_cclosure_new			(GCallback	callback_func,
 						 gpointer	user_data,
 						 GClosureNotify destroy_data);
+_GOBJECT_API
 GClosure* g_cclosure_new_swap			(GCallback	callback_func,
 						 gpointer	user_data,
 						 GClosureNotify destroy_data);
+_GOBJECT_API
 GClosure* g_signal_type_cclosure_new		(GType          itype,
 						 guint          struct_offset);
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 GClosure* g_closure_ref				(GClosure	*closure);
+_GOBJECT_API
 void	  g_closure_sink			(GClosure	*closure);
+_GOBJECT_API
 void	  g_closure_unref			(GClosure	*closure);
 /* intimidating */
+_GOBJECT_API
 GClosure* g_closure_new_simple			(guint		 sizeof_closure,
 						 gpointer	 data);
+_GOBJECT_API
 void	  g_closure_add_finalize_notifier	(GClosure       *closure,
 						 gpointer	 notify_data,
 						 GClosureNotify	 notify_func);
+_GOBJECT_API
 void	  g_closure_remove_finalize_notifier	(GClosure       *closure,
 						 gpointer	 notify_data,
 						 GClosureNotify	 notify_func);
+_GOBJECT_API
 void	  g_closure_add_invalidate_notifier	(GClosure       *closure,
 						 gpointer	 notify_data,
 						 GClosureNotify	 notify_func);
+_GOBJECT_API
 void	  g_closure_remove_invalidate_notifier	(GClosure       *closure,
 						 gpointer	 notify_data,
 						 GClosureNotify	 notify_func);
+_GOBJECT_API
 void	  g_closure_add_marshal_guards		(GClosure	*closure,
 						 gpointer        pre_marshal_data,
 						 GClosureNotify	 pre_marshal_notify,
 						 gpointer        post_marshal_data,
 						 GClosureNotify	 post_marshal_notify);
+_GOBJECT_API
 void	  g_closure_set_marshal			(GClosure	*closure,
 						 GClosureMarshal marshal);
+_GOBJECT_API
 void	  g_closure_set_meta_marshal		(GClosure       *closure,
 						 gpointer	 marshal_data,
 						 GClosureMarshal meta_marshal);
+_GOBJECT_API
 void	  g_closure_invalidate			(GClosure	*closure);
+_GOBJECT_API
 void	  g_closure_invoke			(GClosure 	*closure,
 						 GValue	/*out*/	*return_value,
 						 guint		 n_param_values,
@@ -260,6 +276,7 @@ void	  g_closure_invoke			(GClosure 	*closure,
    - provide marshaller collection, virtually covering anything out there
 */
 
+_GOBJECT_API
 void g_cclosure_marshal_generic (GClosure     *closure,
                                  GValue       *return_gvalue,
                                  guint         n_param_values,
@@ -267,6 +284,7 @@ void g_cclosure_marshal_generic (GClosure     *closure,
                                  gpointer      invocation_hint,
                                  gpointer      marshal_data);
 
+_GOBJECT_API
 void g_cclosure_marshal_generic_va (GClosure *closure,
 				    GValue   *return_value,
 				    gpointer  instance,

@@ -66,9 +66,13 @@ struct _GDBusInterfaceIface
   GDBusObject          *(*dup_object) (GDBusInterface      *interface_);
 };
 
+_GIO_API
 GType                 g_dbus_interface_get_type         (void) G_GNUC_CONST;
+_GIO_API
 GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *interface_);
+_GIO_API
 GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *interface_);
+_GIO_API
 void                  g_dbus_interface_set_object       (GDBusInterface      *interface_,
                                                          GDBusObject         *object);
 GLIB_AVAILABLE_IN_2_32

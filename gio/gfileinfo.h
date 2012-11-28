@@ -829,153 +829,225 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  **/
 #define G_FILE_ATTRIBUTE_TRASH_DELETION_DATE "trash::deletion-date"  /* string */
 
+_GIO_API
 GType              g_file_info_get_type                  (void) G_GNUC_CONST;
 
+_GIO_API
 GFileInfo *        g_file_info_new                       (void);
+_GIO_API
 GFileInfo *        g_file_info_dup                       (GFileInfo  *other);
+_GIO_API
 void               g_file_info_copy_into                 (GFileInfo  *src_info,
 							  GFileInfo  *dest_info);
+_GIO_API
 gboolean           g_file_info_has_attribute             (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 gboolean           g_file_info_has_namespace             (GFileInfo  *info,
 							  const char *name_space);
+_GIO_API
 char **            g_file_info_list_attributes           (GFileInfo  *info,
 							  const char *name_space);
+_GIO_API
 gboolean           g_file_info_get_attribute_data        (GFileInfo  *info,
 							  const char *attribute,
 							  GFileAttributeType *type,
 							  gpointer   *value_pp,
 							  GFileAttributeStatus *status);
+_GIO_API
 GFileAttributeType g_file_info_get_attribute_type        (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 void               g_file_info_remove_attribute          (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 GFileAttributeStatus g_file_info_get_attribute_status    (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 gboolean           g_file_info_set_attribute_status      (GFileInfo  *info,
 							  const char *attribute,
 							  GFileAttributeStatus status);
+_GIO_API
 char *             g_file_info_get_attribute_as_string   (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 const char *       g_file_info_get_attribute_string      (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 const char *       g_file_info_get_attribute_byte_string (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 gboolean           g_file_info_get_attribute_boolean     (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 guint32            g_file_info_get_attribute_uint32      (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 gint32             g_file_info_get_attribute_int32       (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 guint64            g_file_info_get_attribute_uint64      (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 gint64             g_file_info_get_attribute_int64       (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 GObject *          g_file_info_get_attribute_object      (GFileInfo  *info,
 							  const char *attribute);
+_GIO_API
 char **            g_file_info_get_attribute_stringv     (GFileInfo  *info,
 							  const char *attribute);
 
+_GIO_API
 void               g_file_info_set_attribute             (GFileInfo  *info,
 							  const char *attribute,
 							  GFileAttributeType type,
 							  gpointer    value_p);
+_GIO_API
 void               g_file_info_set_attribute_string      (GFileInfo  *info,
 							  const char *attribute,
 							  const char *attr_value);
+_GIO_API
 void               g_file_info_set_attribute_byte_string (GFileInfo  *info,
 							  const char *attribute,
 							  const char *attr_value);
+_GIO_API
 void               g_file_info_set_attribute_boolean     (GFileInfo  *info,
 							  const char *attribute,
 							  gboolean    attr_value);
+_GIO_API
 void               g_file_info_set_attribute_uint32      (GFileInfo  *info,
 							  const char *attribute,
 							  guint32     attr_value);
+_GIO_API
 void               g_file_info_set_attribute_int32       (GFileInfo  *info,
 							  const char *attribute,
 							  gint32      attr_value);
+_GIO_API
 void               g_file_info_set_attribute_uint64      (GFileInfo  *info,
 							  const char *attribute,
 							  guint64     attr_value);
+_GIO_API
 void               g_file_info_set_attribute_int64       (GFileInfo  *info,
 							  const char *attribute,
 							  gint64      attr_value);
+_GIO_API
 void               g_file_info_set_attribute_object      (GFileInfo  *info,
 							  const char *attribute,
 							  GObject    *attr_value);
+_GIO_API
 void               g_file_info_set_attribute_stringv     (GFileInfo  *info,
 							  const char *attribute,
 							  char      **attr_value);
 
+_GIO_API
 void               g_file_info_clear_status              (GFileInfo  *info);
 
 /* Helper getters: */
 GLIB_AVAILABLE_IN_2_36
 GDateTime *       g_file_info_get_deletion_date      (GFileInfo         *info);
+_GIO_API
 GFileType         g_file_info_get_file_type          (GFileInfo         *info);
+_GIO_API
 gboolean          g_file_info_get_is_hidden          (GFileInfo         *info);
+_GIO_API
 gboolean          g_file_info_get_is_backup          (GFileInfo         *info);
+_GIO_API
 gboolean          g_file_info_get_is_symlink         (GFileInfo         *info);
+_GIO_API
 const char *      g_file_info_get_name               (GFileInfo         *info);
+_GIO_API
 const char *      g_file_info_get_display_name       (GFileInfo         *info);
+_GIO_API
 const char *      g_file_info_get_edit_name          (GFileInfo         *info);
+_GIO_API
 GIcon *           g_file_info_get_icon               (GFileInfo         *info);
+_GIO_API
 GIcon *           g_file_info_get_symbolic_icon      (GFileInfo         *info);
+_GIO_API
 const char *      g_file_info_get_content_type       (GFileInfo         *info);
+_GIO_API
 goffset           g_file_info_get_size               (GFileInfo         *info);
+_GIO_API
 void              g_file_info_get_modification_time  (GFileInfo         *info,
 						      GTimeVal          *result);
+_GIO_API
 const char *      g_file_info_get_symlink_target     (GFileInfo         *info);
+_GIO_API
 const char *      g_file_info_get_etag               (GFileInfo         *info);
+_GIO_API
 gint32            g_file_info_get_sort_order         (GFileInfo         *info);
 
+_GIO_API
 void              g_file_info_set_attribute_mask     (GFileInfo         *info,
 						      GFileAttributeMatcher *mask);
+_GIO_API
 void              g_file_info_unset_attribute_mask   (GFileInfo         *info);
 
 /* Helper setters: */
+_GIO_API
 void              g_file_info_set_file_type          (GFileInfo         *info,
 						      GFileType          type);
+_GIO_API
 void              g_file_info_set_is_hidden          (GFileInfo         *info,
 						      gboolean           is_hidden);
+_GIO_API
 void              g_file_info_set_is_symlink         (GFileInfo         *info,
 						      gboolean           is_symlink);
+_GIO_API
 void              g_file_info_set_name               (GFileInfo         *info,
 						      const char        *name);
+_GIO_API
 void              g_file_info_set_display_name       (GFileInfo         *info,
 						      const char        *display_name);
+_GIO_API
 void              g_file_info_set_edit_name          (GFileInfo         *info,
 						      const char        *edit_name);
+_GIO_API
 void              g_file_info_set_icon               (GFileInfo         *info,
 						      GIcon             *icon);
+_GIO_API
 void              g_file_info_set_symbolic_icon      (GFileInfo         *info,
 						      GIcon             *icon);
+_GIO_API
 void              g_file_info_set_content_type       (GFileInfo         *info,
 						      const char        *content_type);
+_GIO_API
 void              g_file_info_set_size               (GFileInfo         *info,
 						      goffset            size);
+_GIO_API
 void              g_file_info_set_modification_time  (GFileInfo         *info,
 						      GTimeVal          *mtime);
+_GIO_API
 void              g_file_info_set_symlink_target     (GFileInfo         *info,
 						      const char        *symlink_target);
+_GIO_API
 void              g_file_info_set_sort_order         (GFileInfo         *info,
 						      gint32             sort_order);
 
 #define G_TYPE_FILE_ATTRIBUTE_MATCHER (g_file_attribute_matcher_get_type ())
+_GIO_API
 GType g_file_attribute_matcher_get_type (void) G_GNUC_CONST;
 
+_GIO_API
 GFileAttributeMatcher *g_file_attribute_matcher_new            (const char            *attributes);
+_GIO_API
 GFileAttributeMatcher *g_file_attribute_matcher_ref            (GFileAttributeMatcher *matcher);
+_GIO_API
 void                   g_file_attribute_matcher_unref          (GFileAttributeMatcher *matcher);
+_GIO_API
 GFileAttributeMatcher *g_file_attribute_matcher_subtract       (GFileAttributeMatcher *matcher,
                                                                 GFileAttributeMatcher *subtract);
+_GIO_API
 gboolean               g_file_attribute_matcher_matches        (GFileAttributeMatcher *matcher,
 								const char            *attribute);
+_GIO_API
 gboolean               g_file_attribute_matcher_matches_only   (GFileAttributeMatcher *matcher,
 								const char            *attribute);
+_GIO_API
 gboolean               g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
 								     const char            *ns);
+_GIO_API
 const char *           g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher);
 GLIB_AVAILABLE_IN_2_32
 char *                 g_file_attribute_matcher_to_string      (GFileAttributeMatcher *matcher);

@@ -61,14 +61,21 @@ struct _GFileAttributeInfoList
 };
 
 #define G_TYPE_FILE_ATTRIBUTE_INFO_LIST (g_file_attribute_info_list_get_type ())
+_GIO_API
 GType g_file_attribute_info_list_get_type (void);
 
+_GIO_API
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
+_GIO_API
 GFileAttributeInfoList *  g_file_attribute_info_list_ref    (GFileAttributeInfoList *list);
+_GIO_API
 void                      g_file_attribute_info_list_unref  (GFileAttributeInfoList *list);
+_GIO_API
 GFileAttributeInfoList *  g_file_attribute_info_list_dup    (GFileAttributeInfoList *list);
+_GIO_API
 const GFileAttributeInfo *g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
 							     const char             *name);
+_GIO_API
 void                      g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
 							     const char             *name,
 							     GFileAttributeType      type,

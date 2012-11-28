@@ -130,14 +130,21 @@ struct _GVolumeMonitorClass
   void (*_g_reserved6) (void);
 };
 
+_GIO_API
 GType           g_volume_monitor_get_type             (void) G_GNUC_CONST;
 
+_GIO_API
 GVolumeMonitor *g_volume_monitor_get                  (void);
+_GIO_API
 GList *         g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor);
+_GIO_API
 GList *         g_volume_monitor_get_volumes          (GVolumeMonitor *volume_monitor);
+_GIO_API
 GList *         g_volume_monitor_get_mounts           (GVolumeMonitor *volume_monitor);
+_GIO_API
 GVolume *       g_volume_monitor_get_volume_for_uuid  (GVolumeMonitor *volume_monitor,
                                                        const char     *uuid);
+_GIO_API
 GMount *        g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor,
                                                        const char     *uuid);
 

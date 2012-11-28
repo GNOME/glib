@@ -40,11 +40,15 @@ typedef enum
   G_SHELL_ERROR_FAILED
 } GShellError;
 
+_GLIB_API
 GQuark g_shell_error_quark (void);
 
+_GLIB_API
 gchar*   g_shell_quote      (const gchar   *unquoted_string);
+_GLIB_API
 gchar*   g_shell_unquote    (const gchar   *quoted_string,
                              GError       **error);
+_GLIB_API
 gboolean g_shell_parse_argv (const gchar   *command_line,
                              gint          *argcp,
                              gchar       ***argvp,

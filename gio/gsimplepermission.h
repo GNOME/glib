@@ -37,7 +37,9 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_PERMISSION(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),   \
                                        G_TYPE_SIMPLE_PERMISSION))
 
+_GIO_API
 GType                   g_simple_permission_get_type            (void);
+_GIO_API
 GPermission *           g_simple_permission_new                 (gboolean allowed);
 
 G_END_DECLS

@@ -65,9 +65,13 @@ struct _GFilterInputStreamClass
 };
 
 
+_GIO_API
 GType          g_filter_input_stream_get_type              (void) G_GNUC_CONST;
+_GIO_API
 GInputStream * g_filter_input_stream_get_base_stream       (GFilterInputStream *stream);
+_GIO_API
 gboolean       g_filter_input_stream_get_close_base_stream (GFilterInputStream *stream);
+_GIO_API
 void           g_filter_input_stream_set_close_base_stream (GFilterInputStream *stream,
                                                             gboolean            close_base);
 

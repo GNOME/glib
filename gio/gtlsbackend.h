@@ -72,17 +72,25 @@ struct _GTlsBackendInterface
   GTlsDatabase * ( *get_default_database)       (GTlsBackend *backend);
 };
 
+_GIO_API
 GType          g_tls_backend_get_type                   (void) G_GNUC_CONST;
 
+_GIO_API
 GTlsBackend *  g_tls_backend_get_default                (void);
 
+_GIO_API
 GTlsDatabase * g_tls_backend_get_default_database       (GTlsBackend *backend);
 
+_GIO_API
 gboolean       g_tls_backend_supports_tls               (GTlsBackend *backend);
 
+_GIO_API
 GType          g_tls_backend_get_certificate_type       (GTlsBackend *backend);
+_GIO_API
 GType          g_tls_backend_get_client_connection_type (GTlsBackend *backend);
+_GIO_API
 GType          g_tls_backend_get_server_connection_type (GTlsBackend *backend);
+_GIO_API
 GType          g_tls_backend_get_file_database_type     (GTlsBackend *backend);
 
 G_END_DECLS

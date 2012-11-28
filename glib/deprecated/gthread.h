@@ -145,6 +145,7 @@ GLIB_DEPRECATED_IN_2_32_FOR(g_mutex_init)
 void    g_static_mutex_init           (GStaticMutex *mutex);
 GLIB_DEPRECATED_IN_2_32_FOR(g_mutex_free)
 void    g_static_mutex_free           (GStaticMutex *mutex);
+GLIB_DEPRECATED_IN_2_32_FOR(GMutex)
 GMutex *g_static_mutex_get_mutex_impl (GStaticMutex *mutex);
 
 typedef struct _GStaticRecMutex GStaticRecMutex;

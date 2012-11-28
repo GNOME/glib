@@ -53,16 +53,23 @@ struct _GNetworkServiceClass
 
 };
 
+_GIO_API
 GType                g_network_service_get_type      (void) G_GNUC_CONST;
 
+_GIO_API
 GSocketConnectable  *g_network_service_new           (const gchar     *service,
 						      const gchar     *protocol,
 						      const gchar     *domain);
 
+_GIO_API
 const gchar         *g_network_service_get_service   (GNetworkService *srv);
+_GIO_API
 const gchar         *g_network_service_get_protocol  (GNetworkService *srv);
+_GIO_API
 const gchar         *g_network_service_get_domain    (GNetworkService *srv);
+_GIO_API
 const gchar         *g_network_service_get_scheme    (GNetworkService *srv);
+_GIO_API
 void                 g_network_service_set_scheme    (GNetworkService *srv, const gchar *scheme);
 
 G_END_DECLS

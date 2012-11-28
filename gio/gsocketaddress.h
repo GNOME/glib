@@ -60,18 +60,23 @@ struct _GSocketAddressClass
 				     GError        **error);
 };
 
+_GIO_API
 GType                 g_socket_address_get_type        (void) G_GNUC_CONST;
 
+_GIO_API
 GSocketFamily         g_socket_address_get_family      (GSocketAddress *address);
 
+_GIO_API
 GSocketAddress *      g_socket_address_new_from_native (gpointer        native,
                                                         gsize           len);
 
+_GIO_API
 gboolean              g_socket_address_to_native       (GSocketAddress *address,
                                                         gpointer        dest,
                                                         gsize           destlen,
 							GError        **error);
 
+_GIO_API
 gssize                g_socket_address_get_native_size (GSocketAddress *address);
 
 G_END_DECLS

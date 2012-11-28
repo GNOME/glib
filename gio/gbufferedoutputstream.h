@@ -65,14 +65,21 @@ struct _GBufferedOutputStreamClass
 };
 
 
+_GIO_API
 GType          g_buffered_output_stream_get_type        (void) G_GNUC_CONST;
+_GIO_API
 GOutputStream* g_buffered_output_stream_new             (GOutputStream         *base_stream);
+_GIO_API
 GOutputStream* g_buffered_output_stream_new_sized       (GOutputStream         *base_stream,
 							 gsize                  size);
+_GIO_API
 gsize          g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream);
+_GIO_API
 void           g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
 							 gsize                  size);
+_GIO_API
 gboolean       g_buffered_output_stream_get_auto_grow   (GBufferedOutputStream *stream);
+_GIO_API
 void           g_buffered_output_stream_set_auto_grow   (GBufferedOutputStream *stream,
 							 gboolean               auto_grow);
 

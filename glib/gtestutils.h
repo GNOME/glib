@@ -76,18 +76,22 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                  #expr); } while (0)
 #endif /* !G_DISABLE_ASSERT */
 
+_GLIB_API
 int     g_strcmp0                       (const char     *str1,
                                          const char     *str2);
 
 /* report performance results */
+_GLIB_API
 void    g_test_minimized_result         (double          minimized_quantity,
                                          const char     *format,
                                          ...) G_GNUC_PRINTF (2, 3);
+_GLIB_API
 void    g_test_maximized_result         (double          maximized_quantity,
                                          const char     *format,
                                          ...) G_GNUC_PRINTF (2, 3);
 
 /* initialize testing framework */
+_GLIB_API
 void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...);
@@ -100,22 +104,27 @@ void    g_test_init                     (int            *argc,
 #define g_test_quiet()                  (g_test_config_vars->test_quiet)
 #define g_test_undefined()              (g_test_config_vars->test_undefined)
 /* run all tests under toplevel suite (path: /) */
+_GLIB_API
 int     g_test_run                      (void);
 /* hook up a test functions under test path */
+_GLIB_API
 void    g_test_add_func                 (const char     *testpath,
                                          GTestFunc       test_func);
 
+_GLIB_API
 void    g_test_add_data_func            (const char     *testpath,
                                          gconstpointer   test_data,
                                          GTestDataFunc   test_func);
 
 GLIB_AVAILABLE_IN_2_34
+_GLIB_API
 void    g_test_add_data_func_full       (const char     *testpath,
                                          gpointer        test_data,
                                          GTestDataFunc   test_func,
                                          GDestroyNotify  data_free_func);
 
 /* tell about failure */
+_GLIB_API
 void    g_test_fail                     (void);
 
 /* hook up a test with fixture under test path */
@@ -132,17 +141,25 @@ void    g_test_fail                     (void);
 					} G_STMT_END
 
 /* add test messages to the test report */
+_GLIB_API
 void    g_test_message                  (const char *format,
                                          ...) G_GNUC_PRINTF (1, 2);
+_GLIB_API
 void    g_test_bug_base                 (const char *uri_pattern);
+_GLIB_API
 void    g_test_bug                      (const char *bug_uri_snippet);
 /* measure test timings */
+_GLIB_API
 void    g_test_timer_start              (void);
+_GLIB_API
 double  g_test_timer_elapsed            (void); /* elapsed seconds */
+_GLIB_API
 double  g_test_timer_last               (void); /* repeat last elapsed() result */
 
 /* automatically g_free or g_object_unref upon teardown */
+_GLIB_API
 void    g_test_queue_free               (gpointer gfree_pointer);
+_GLIB_API
 void    g_test_queue_destroy            (GDestroyNotify destroy_func,
                                          gpointer       destroy_data);
 #define g_test_queue_unref(gobject)     g_test_queue_destroy (g_object_unref, gobject)
@@ -153,9 +170,12 @@ typedef enum {
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
   G_TEST_TRAP_INHERIT_STDIN     = 1 << 9
 } GTestTrapFlags;
+_GLIB_API
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
+_GLIB_API
 gboolean g_test_trap_has_passed         (void);
+_GLIB_API
 gboolean g_test_trap_reached_timeout    (void);
 #define  g_test_trap_assert_passed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0)
 #define  g_test_trap_assert_failed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 1, 0)
@@ -166,45 +186,59 @@ gboolean g_test_trap_reached_timeout    (void);
 
 /* provide seed-able random numbers for tests */
 #define  g_test_rand_bit()              (0 != (g_test_rand_int() & (1 << 15)))
+_GLIB_API
 gint32   g_test_rand_int                (void);
+_GLIB_API
 gint32   g_test_rand_int_range          (gint32          begin,
                                          gint32          end);
+_GLIB_API
 double   g_test_rand_double             (void);
+_GLIB_API
 double   g_test_rand_double_range       (double          range_start,
                                          double          range_end);
 
 /* semi-internal API */
+_GLIB_API
 GTestCase*    g_test_create_case        (const char       *test_name,
                                          gsize             data_size,
                                          gconstpointer     test_data,
                                          GTestFixtureFunc  data_setup,
                                          GTestFixtureFunc  data_test,
                                          GTestFixtureFunc  data_teardown);
+_GLIB_API
 GTestSuite*   g_test_create_suite       (const char       *suite_name);
+_GLIB_API
 GTestSuite*   g_test_get_root           (void);
+_GLIB_API
 void          g_test_suite_add          (GTestSuite     *suite,
                                          GTestCase      *test_case);
+_GLIB_API
 void          g_test_suite_add_suite    (GTestSuite     *suite,
                                          GTestSuite     *nestedsuite);
+_GLIB_API
 int           g_test_run_suite          (GTestSuite     *suite);
 
 /* internal ABI */
+_GLIB_API
 void    g_test_trap_assertions          (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
                                          guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
                                          const char     *pattern);
+_GLIB_API
 void    g_assertion_message             (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
                                          const char     *message) G_GNUC_NORETURN;
+_GLIB_API
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
                                          const char     *expr) G_GNUC_NORETURN;
+_GLIB_API
 void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *file,
                                          int             line,
@@ -213,6 +247,7 @@ void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *arg1,
                                          const char     *cmp,
                                          const char     *arg2) G_GNUC_NORETURN;
+_GLIB_API
 void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *file,
                                          int             line,
@@ -222,6 +257,7 @@ void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *cmp,
                                          long double     arg2,
                                          char            numtype) G_GNUC_NORETURN;
+_GLIB_API
 void    g_assertion_message_error       (const char     *domain,
                                          const char     *file,
                                          int             line,
@@ -230,6 +266,7 @@ void    g_assertion_message_error       (const char     *domain,
                                          const GError   *error,
                                          GQuark          error_domain,
                                          int             error_code) G_GNUC_NORETURN;
+_GLIB_API
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
                                          gconstpointer   test_data,
@@ -273,13 +310,19 @@ typedef struct {
   GSList      *msgs;
 } GTestLogBuffer;
 
+_GLIB_API
 const char*     g_test_log_type_name    (GTestLogType    log_type);
+_GLIB_API
 GTestLogBuffer* g_test_log_buffer_new   (void);
+_GLIB_API
 void            g_test_log_buffer_free  (GTestLogBuffer *tbuffer);
+_GLIB_API
 void            g_test_log_buffer_push  (GTestLogBuffer *tbuffer,
                                          guint           n_bytes,
                                          const guint8   *bytes);
+_GLIB_API
 GTestLogMsg*    g_test_log_buffer_pop   (GTestLogBuffer *tbuffer);
+_GLIB_API
 void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
 
 /**
@@ -299,13 +342,16 @@ typedef gboolean        (*GTestLogFatalFunc)    (const gchar    *log_domain,
                                                  GLogLevelFlags  log_level,
                                                  const gchar    *message,
                                                  gpointer        user_data);
+_GLIB_API
 void
 g_test_log_set_fatal_handler            (GTestLogFatalFunc log_func,
                                          gpointer          user_data);
 
+_GLIB_API
 void    g_test_expect_message                    (const gchar    *log_domain,
                                                   GLogLevelFlags  log_level,
                                                   const gchar    *pattern);
+_GLIB_API
 void    g_test_assert_expected_messages_internal (const char     *domain,
                                                   const char     *file,
                                                   int             line,

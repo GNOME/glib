@@ -43,11 +43,15 @@ struct _GDesktopAppInfoClass
 };
 
 
+_GIO_API
 GType            g_desktop_app_info_get_type          (void) G_GNUC_CONST;
 
+_GIO_API
 GDesktopAppInfo *g_desktop_app_info_new_from_filename (const char      *filename);
+_GIO_API
 GDesktopAppInfo *g_desktop_app_info_new_from_keyfile  (GKeyFile        *key_file);
 
+_GIO_API
 const char *     g_desktop_app_info_get_filename      (GDesktopAppInfo *info);
 
 GLIB_AVAILABLE_IN_2_30
@@ -64,9 +68,12 @@ gboolean         g_desktop_app_info_get_show_in       (GDesktopAppInfo *info,
 GLIB_AVAILABLE_IN_2_34
 const char *     g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *info);
 
+_GIO_API
 GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_id);
+_GIO_API
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
+_GIO_API
 void             g_desktop_app_info_set_desktop_env   (const char      *desktop_env);
 
 GLIB_AVAILABLE_IN_2_36

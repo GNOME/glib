@@ -54,6 +54,7 @@ typedef struct {
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
+_GLIB_API
 GLibPrivateVTable *glib__private__ (void);
 
 #endif /* __G_MAIN_H__ */

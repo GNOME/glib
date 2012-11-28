@@ -45,6 +45,7 @@ G_BEGIN_DECLS
 
 /* calculate a string size, guaranteed to fit format + args.
  */
+_GLIB_API
 gsize	g_printf_string_upper_bound (const gchar* format,
 				     va_list	  args);
 
@@ -82,28 +83,36 @@ typedef void            (*GLogFunc)             (const gchar   *log_domain,
 
 /* Logging mechanism
  */
+_GLIB_API
 guint           g_log_set_handler       (const gchar    *log_domain,
                                          GLogLevelFlags  log_levels,
                                          GLogFunc        log_func,
                                          gpointer        user_data);
+_GLIB_API
 void            g_log_remove_handler    (const gchar    *log_domain,
                                          guint           handler_id);
+_GLIB_API
 void            g_log_default_handler   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *message,
                                          gpointer        unused_data);
+_GLIB_API
 GLogFunc        g_log_set_default_handler (GLogFunc      log_func,
 					   gpointer      user_data);
+_GLIB_API
 void            g_log                   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,
                                          ...) G_GNUC_PRINTF (3, 4);
+_GLIB_API
 void            g_logv                  (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,
                                          va_list         args);
+_GLIB_API
 GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
                                          GLogLevelFlags  fatal_mask);
+_GLIB_API
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
 /* internal */
@@ -113,9 +122,11 @@ G_GNUC_INTERNAL void	_g_log_fallback_handler	(const gchar   *log_domain,
 						 gpointer       unused_data);
 
 /* Internal functions, used to implement the following macros */
+_GLIB_API
 void g_return_if_fail_warning (const char *log_domain,
 			       const char *pretty_function,
 			       const char *expression);
+_GLIB_API
 void g_warn_message           (const char     *domain,
                                const char     *file,
                                int             line,
@@ -233,11 +244,15 @@ g_debug (const gchar *format,
  * These are called with the complete formatted string to output.
  */
 typedef void    (*GPrintFunc)           (const gchar    *string);
+_GLIB_API
 void            g_print                 (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
+_GLIB_API
 GPrintFunc      g_set_print_handler     (GPrintFunc      func);
+_GLIB_API
 void            g_printerr              (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
+_GLIB_API
 GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 /**

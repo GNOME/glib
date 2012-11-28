@@ -45,17 +45,24 @@ G_BEGIN_DECLS
  **/
 typedef struct _GThemedIconClass   GThemedIconClass;
 
+_GIO_API
 GType  g_themed_icon_get_type                   (void) G_GNUC_CONST;
 
+_GIO_API
 GIcon *g_themed_icon_new                        (const char  *iconname);
+_GIO_API
 GIcon *g_themed_icon_new_with_default_fallbacks (const char  *iconname);
+_GIO_API
 GIcon *g_themed_icon_new_from_names             (char       **iconnames,
                                                  int          len);
+_GIO_API
 void   g_themed_icon_prepend_name               (GThemedIcon *icon,
                                                  const char  *iconname);
+_GIO_API
 void   g_themed_icon_append_name                (GThemedIcon *icon,
                                                  const char  *iconname);
 
+_GIO_API
 const gchar* const * g_themed_icon_get_names     (GThemedIcon *icon);
 
 G_END_DECLS

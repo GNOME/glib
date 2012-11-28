@@ -61,16 +61,24 @@ struct _GActionInterface
 GLIB_AVAILABLE_IN_2_30
 GType                   g_action_get_type                               (void) G_GNUC_CONST;
 
+_GIO_API
 const gchar *           g_action_get_name                               (GAction            *action);
+_GIO_API
 const GVariantType *    g_action_get_parameter_type                     (GAction            *action);
+_GIO_API
 const GVariantType *    g_action_get_state_type                         (GAction            *action);
+_GIO_API
 GVariant *              g_action_get_state_hint                         (GAction            *action);
 
+_GIO_API
 gboolean                g_action_get_enabled                            (GAction            *action);
+_GIO_API
 GVariant *              g_action_get_state                              (GAction            *action);
 
+_GIO_API
 void                    g_action_change_state                           (GAction            *action,
                                                                          GVariant           *value);
+_GIO_API
 void                    g_action_activate                               (GAction            *action,
                                                                          GVariant           *parameter);
 G_END_DECLS

@@ -159,17 +159,28 @@ struct _GDriveIface
 
 };
 
+_GIO_API
 GType    g_drive_get_type                 (void) G_GNUC_CONST;
 
+_GIO_API
 char *   g_drive_get_name                 (GDrive               *drive);
+_GIO_API
 GIcon *  g_drive_get_icon                 (GDrive               *drive);
+_GIO_API
 GIcon *  g_drive_get_symbolic_icon        (GDrive               *drive);
+_GIO_API
 gboolean g_drive_has_volumes              (GDrive               *drive);
+_GIO_API
 GList *  g_drive_get_volumes              (GDrive               *drive);
+_GIO_API
 gboolean g_drive_is_media_removable       (GDrive               *drive);
+_GIO_API
 gboolean g_drive_has_media                (GDrive               *drive);
+_GIO_API
 gboolean g_drive_is_media_check_automatic (GDrive               *drive);
+_GIO_API
 gboolean g_drive_can_poll_for_media       (GDrive               *drive);
+_GIO_API
 gboolean g_drive_can_eject                (GDrive               *drive);
 GLIB_DEPRECATED_FOR(g_drive_eject_with_operation)
 void     g_drive_eject                    (GDrive               *drive,
@@ -182,48 +193,62 @@ GLIB_DEPRECATED_FOR(g_drive_eject_with_operation_finish)
 gboolean g_drive_eject_finish             (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
+_GIO_API
 void     g_drive_poll_for_media           (GDrive               *drive,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
                                            gpointer              user_data);
+_GIO_API
 gboolean g_drive_poll_for_media_finish    (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
+_GIO_API
 char *   g_drive_get_identifier           (GDrive              *drive,
                                            const char          *kind);
+_GIO_API
 char **  g_drive_enumerate_identifiers    (GDrive              *drive);
 
+_GIO_API
 GDriveStartStopType g_drive_get_start_stop_type (GDrive        *drive);
 
+_GIO_API
 gboolean g_drive_can_start                (GDrive              *drive);
+_GIO_API
 gboolean g_drive_can_start_degraded       (GDrive              *drive);
+_GIO_API
 void     g_drive_start                    (GDrive              *drive,
                                            GDriveStartFlags     flags,
                                            GMountOperation     *mount_operation,
                                            GCancellable        *cancellable,
                                            GAsyncReadyCallback  callback,
                                            gpointer             user_data);
+_GIO_API
 gboolean g_drive_start_finish             (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
 
+_GIO_API
 gboolean g_drive_can_stop                 (GDrive               *drive);
+_GIO_API
 void     g_drive_stop                     (GDrive               *drive,
                                            GMountUnmountFlags    flags,
                                            GMountOperation      *mount_operation,
                                            GCancellable         *cancellable,
                                            GAsyncReadyCallback   callback,
                                            gpointer              user_data);
+_GIO_API
 gboolean g_drive_stop_finish              (GDrive               *drive,
                                            GAsyncResult         *result,
                                            GError              **error);
 
+_GIO_API
 void        g_drive_eject_with_operation      (GDrive              *drive,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+_GIO_API
 gboolean    g_drive_eject_with_operation_finish (GDrive            *drive,
                                                GAsyncResult        *result,
                                                GError             **error);

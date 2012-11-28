@@ -52,21 +52,28 @@ struct _GUnixSocketAddressClass
   GSocketAddressClass parent_class;
 };
 
+_GIO_API
 GType           g_unix_socket_address_get_type    (void) G_GNUC_CONST;
 
+_GIO_API
 GSocketAddress *g_unix_socket_address_new             (const gchar        *path);
 GLIB_DEPRECATED_FOR(g_unix_socket_address_new_with_type)
 GSocketAddress *g_unix_socket_address_new_abstract    (const gchar        *path,
                                                        gint                path_len);
+_GIO_API
 GSocketAddress *g_unix_socket_address_new_with_type   (const gchar            *path,
                                                        gint                    path_len,
                                                        GUnixSocketAddressType  type);
+_GIO_API
 const char *    g_unix_socket_address_get_path        (GUnixSocketAddress *address);
+_GIO_API
 gsize           g_unix_socket_address_get_path_len    (GUnixSocketAddress *address);
+_GIO_API
 GUnixSocketAddressType g_unix_socket_address_get_address_type (GUnixSocketAddress *address);
 GLIB_DEPRECATED
 gboolean        g_unix_socket_address_get_is_abstract (GUnixSocketAddress *address);
 
+_GIO_API
 gboolean        g_unix_socket_address_abstract_names_supported (void);
 
 G_END_DECLS

@@ -74,34 +74,49 @@ G_BEGIN_DECLS
 #  endif
 #endif
 #ifdef G_IMPLEMENT_INLINES
-#  define G_INLINE_FUNC
+#  define G_INLINE_FUNC _GLIB_API
 #  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
 #  define G_INLINE_FUNC static __inline __attribute__ ((unused))
 #elif defined (G_CAN_INLINE) 
 #  define G_INLINE_FUNC static inline
 #else /* can't inline */
-#  define G_INLINE_FUNC
+#  define G_INLINE_FUNC _GLIB_API
 #endif /* !G_INLINE_FUNC */
 
+_GLIB_API
 const gchar *         g_get_user_name        (void);
+_GLIB_API
 const gchar *         g_get_real_name        (void);
+_GLIB_API
 const gchar *         g_get_home_dir         (void);
+_GLIB_API
 const gchar *         g_get_tmp_dir          (void);
+_GLIB_API
 const gchar *         g_get_host_name	     (void);
+_GLIB_API
 gchar *               g_get_prgname          (void);
+_GLIB_API
 void                  g_set_prgname          (const gchar *prgname);
+_GLIB_API
 const gchar *         g_get_application_name (void);
+_GLIB_API
 void                  g_set_application_name (const gchar *application_name);
 
+_GLIB_API
 void      g_reload_user_special_dirs_cache     (void);
+_GLIB_API
 const gchar *         g_get_user_data_dir      (void);
+_GLIB_API
 const gchar *         g_get_user_config_dir    (void);
+_GLIB_API
 const gchar *         g_get_user_cache_dir     (void);
+_GLIB_API
 const gchar * const * g_get_system_data_dirs   (void);
 
 #ifdef G_OS_WIN32
 /* This functions is not part of the public GLib API */
+_GLIB_API
 const gchar * const * g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void));
 #endif
 
@@ -118,8 +133,10 @@ _g_win32_get_system_data_dirs (void)
 #define g_get_system_data_dirs _g_win32_get_system_data_dirs
 #endif
 
+_GLIB_API
 const gchar * const * g_get_system_config_dirs (void);
 
+_GLIB_API
 const gchar * g_get_user_runtime_dir (void);
 
 /**
@@ -157,6 +174,7 @@ typedef enum {
   G_USER_N_DIRECTORIES
 } GUserDirectory;
 
+_GLIB_API
 const gchar * g_get_user_special_dir (GUserDirectory directory);
 
 /**
@@ -176,19 +194,23 @@ struct _GDebugKey
 
 /* Miscellaneous utility functions
  */
+_GLIB_API
 guint                 g_parse_debug_string (const gchar     *string,
 					    const GDebugKey *keys,
 					    guint            nkeys);
 
+_GLIB_API
 gint                  g_snprintf           (gchar       *string,
 					    gulong       n,
 					    gchar const *format,
 					    ...) G_GNUC_PRINTF (3, 4);
+_GLIB_API
 gint                  g_vsnprintf          (gchar       *string,
 					    gulong       n,
 					    gchar const *format,
 					    va_list      args);
 
+_GLIB_API
 void                  g_nullify_pointer    (gpointer    *nullify_location);
 
 typedef enum
@@ -246,6 +268,7 @@ int atexit (void (*)(void));
 
 
 /* Look for an executable in PATH, following execvp() rules */
+_GLIB_API
 gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
@@ -365,10 +388,15 @@ DllMain (HINSTANCE hinstDLL,						\
 #define g_get_tmp_dir          g_get_tmp_dir_utf8
 #define g_find_program_in_path g_find_program_in_path_utf8
 
+_GLIB_API
 const gchar *g_get_user_name_utf8        (void);
+_GLIB_API
 const gchar *g_get_real_name_utf8        (void);
+_GLIB_API
 const gchar *g_get_home_dir_utf8         (void);
+_GLIB_API
 const gchar *g_get_tmp_dir_utf8          (void);
+_GLIB_API
 gchar       *g_find_program_in_path_utf8 (const gchar *program);
 #endif
 

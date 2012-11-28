@@ -112,30 +112,44 @@ struct _GNode
  */
 #define	 G_NODE_IS_LEAF(node)	(((GNode*) (node))->children == NULL)
 
+_GLIB_API
 GNode*	 g_node_new		(gpointer	   data);
+_GLIB_API
 void	 g_node_destroy		(GNode		  *root);
+_GLIB_API
 void	 g_node_unlink		(GNode		  *node);
+_GLIB_API
 GNode*   g_node_copy_deep       (GNode            *node,
 				 GCopyFunc         copy_func,
 				 gpointer          data);
+_GLIB_API
 GNode*   g_node_copy            (GNode            *node);
+_GLIB_API
 GNode*	 g_node_insert		(GNode		  *parent,
 				 gint		   position,
 				 GNode		  *node);
+_GLIB_API
 GNode*	 g_node_insert_before	(GNode		  *parent,
 				 GNode		  *sibling,
 				 GNode		  *node);
+_GLIB_API
 GNode*   g_node_insert_after    (GNode            *parent,
 				 GNode            *sibling,
 				 GNode            *node); 
+_GLIB_API
 GNode*	 g_node_prepend		(GNode		  *parent,
 				 GNode		  *node);
+_GLIB_API
 guint	 g_node_n_nodes		(GNode		  *root,
 				 GTraverseFlags	   flags);
+_GLIB_API
 GNode*	 g_node_get_root	(GNode		  *node);
+_GLIB_API
 gboolean g_node_is_ancestor	(GNode		  *node,
 				 GNode		  *descendant);
+_GLIB_API
 guint	 g_node_depth		(GNode		  *node);
+_GLIB_API
 GNode*	 g_node_find		(GNode		  *root,
 				 GTraverseType	   order,
 				 GTraverseFlags	   flags,
@@ -223,6 +237,7 @@ GNode*	 g_node_find		(GNode		  *root,
  * this function is just a high level interface to
  * low level traversal functions, optimized for speed.
  */
+_GLIB_API
 void	 g_node_traverse	(GNode		  *root,
 				 GTraverseType	   order,
 				 GTraverseFlags	   flags,
@@ -235,26 +250,37 @@ void	 g_node_traverse	(GNode		  *root,
  * adding `guint height' to struct _GNode, but then again, this is not very
  * often needed, and would make g_node_insert() more time consuming.
  */
+_GLIB_API
 guint	 g_node_max_height	 (GNode *root);
 
+_GLIB_API
 void	 g_node_children_foreach (GNode		  *node,
 				  GTraverseFlags   flags,
 				  GNodeForeachFunc func,
 				  gpointer	   data);
+_GLIB_API
 void	 g_node_reverse_children (GNode		  *node);
+_GLIB_API
 guint	 g_node_n_children	 (GNode		  *node);
+_GLIB_API
 GNode*	 g_node_nth_child	 (GNode		  *node,
 				  guint		   n);
+_GLIB_API
 GNode*	 g_node_last_child	 (GNode		  *node);
+_GLIB_API
 GNode*	 g_node_find_child	 (GNode		  *node,
 				  GTraverseFlags   flags,
 				  gpointer	   data);
+_GLIB_API
 gint	 g_node_child_position	 (GNode		  *node,
 				  GNode		  *child);
+_GLIB_API
 gint	 g_node_child_index	 (GNode		  *node,
 				  gpointer	   data);
 
+_GLIB_API
 GNode*	 g_node_first_sibling	 (GNode		  *node);
+_GLIB_API
 GNode*	 g_node_last_sibling	 (GNode		  *node);
 
 /**

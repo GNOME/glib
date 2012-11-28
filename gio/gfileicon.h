@@ -45,10 +45,13 @@ G_BEGIN_DECLS
  **/
 typedef struct _GFileIconClass   GFileIconClass;
 
+_GIO_API
 GType   g_file_icon_get_type (void) G_GNUC_CONST;
 
+_GIO_API
 GIcon * g_file_icon_new      (GFile     *file);
 
+_GIO_API
 GFile * g_file_icon_get_file (GFileIcon *icon);
 
 G_END_DECLS

@@ -43,21 +43,32 @@ typedef struct _GTimer		GTimer;
 
 #define G_USEC_PER_SEC 1000000
 
+_GLIB_API
 GTimer*  g_timer_new	         (void);
+_GLIB_API
 void	 g_timer_destroy         (GTimer      *timer);
+_GLIB_API
 void	 g_timer_start	         (GTimer      *timer);
+_GLIB_API
 void	 g_timer_stop	         (GTimer      *timer);
+_GLIB_API
 void	 g_timer_reset	         (GTimer      *timer);
+_GLIB_API
 void	 g_timer_continue        (GTimer      *timer);
+_GLIB_API
 gdouble  g_timer_elapsed         (GTimer      *timer,
 				  gulong      *microseconds);
 
+_GLIB_API
 void     g_usleep                (gulong       microseconds);
 
+_GLIB_API
 void     g_time_val_add          (GTimeVal    *time_, 
                                   glong        microseconds);
+_GLIB_API
 gboolean g_time_val_from_iso8601 (const gchar *iso_date,
 				  GTimeVal    *time_);
+_GLIB_API
 gchar*   g_time_val_to_iso8601   (GTimeVal    *time_) G_GNUC_MALLOC;
 
 G_END_DECLS

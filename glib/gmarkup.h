@@ -71,6 +71,7 @@ typedef enum
  */
 #define G_MARKUP_ERROR g_markup_error_quark ()
 
+_GLIB_API
 GQuark g_markup_error_quark (void);
 
 /**
@@ -178,37 +179,50 @@ struct _GMarkupParser
                           gpointer             user_data);
 };
 
+_GLIB_API
 GMarkupParseContext *g_markup_parse_context_new   (const GMarkupParser *parser,
                                                    GMarkupParseFlags    flags,
                                                    gpointer             user_data,
                                                    GDestroyNotify       user_data_dnotify);
+_GLIB_API
 void                 g_markup_parse_context_free  (GMarkupParseContext *context);
+_GLIB_API
 gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
                                                    const gchar         *text,
                                                    gssize               text_len,
                                                    GError             **error);
+_GLIB_API
 void                 g_markup_parse_context_push  (GMarkupParseContext *context,
                                                    const GMarkupParser *parser,
                                                    gpointer             user_data);
+_GLIB_API
 gpointer             g_markup_parse_context_pop   (GMarkupParseContext *context);
 
+_GLIB_API
 gboolean             g_markup_parse_context_end_parse (GMarkupParseContext *context,
                                                        GError             **error);
+_GLIB_API
 const gchar *        g_markup_parse_context_get_element (GMarkupParseContext *context);
+_GLIB_API
 const GSList *       g_markup_parse_context_get_element_stack (GMarkupParseContext *context);
 
 /* For user-constructed error messages, has no precise semantics */
+_GLIB_API
 void                 g_markup_parse_context_get_position (GMarkupParseContext *context,
                                                           gint                *line_number,
                                                           gint                *char_number);
+_GLIB_API
 gpointer             g_markup_parse_context_get_user_data (GMarkupParseContext *context);
 
 /* useful when saving */
+_GLIB_API
 gchar* g_markup_escape_text (const gchar *text,
                              gssize       length);
 
+_GLIB_API
 gchar *g_markup_printf_escaped (const char *format,
 				...) G_GNUC_PRINTF (1, 2);
+_GLIB_API
 gchar *g_markup_vprintf_escaped (const char *format,
 				 va_list     args);
 
@@ -225,6 +239,7 @@ typedef enum
 
 
 /* useful from start_element */
+_GLIB_API
 gboolean   g_markup_collect_attributes (const gchar         *element_name,
                                         const gchar        **attribute_names,
                                         const gchar        **attribute_values,

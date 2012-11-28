@@ -31,17 +31,23 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 void      g_bit_lock                      (volatile gint *address,
                                            gint           lock_bit);
+_GLIB_API
 gboolean  g_bit_trylock                   (volatile gint *address,
                                            gint           lock_bit);
+_GLIB_API
 void      g_bit_unlock                    (volatile gint *address,
                                            gint           lock_bit);
 
+_GLIB_API
 void      g_pointer_bit_lock              (volatile void *address,
                                            gint           lock_bit);
+_GLIB_API
 gboolean  g_pointer_bit_trylock           (volatile void *address,
                                            gint           lock_bit);
+_GLIB_API
 void      g_pointer_bit_unlock            (volatile void *address,
                                            gint           lock_bit);
 

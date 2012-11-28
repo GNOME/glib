@@ -254,24 +254,41 @@ typedef gsize GType;
  */
 #define G_TYPE_THREAD (g_thread_get_type ())
 
+_GOBJECT_API
 GType   g_date_get_type            (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_strv_get_type            (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_gstring_get_type         (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_hash_table_get_type      (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_array_get_type           (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_byte_array_get_type      (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_bytes_get_type           (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_regex_get_type           (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30
 GType   g_match_info_get_type      (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_error_get_type           (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_time_zone_get_type       (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_io_channel_get_type      (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_variant_builder_get_type (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_key_file_get_type        (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30
 GType   g_main_loop_get_type       (void) G_GNUC_CONST;

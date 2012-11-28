@@ -68,42 +68,58 @@ struct _GPtrArray
 #define g_array_insert_val(a,i,v) g_array_insert_vals (a, i, &(v), 1)
 #define g_array_index(a,t,i)      (((t*) (void *) (a)->data) [(i)])
 
+_GLIB_API
 GArray* g_array_new               (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size);
+_GLIB_API
 GArray* g_array_sized_new         (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size,
 				   guint             reserved_size);
+_GLIB_API
 gchar*  g_array_free              (GArray           *array,
 				   gboolean          free_segment);
+_GLIB_API
 GArray *g_array_ref               (GArray           *array);
+_GLIB_API
 void    g_array_unref             (GArray           *array);
+_GLIB_API
 guint   g_array_get_element_size  (GArray           *array);
+_GLIB_API
 GArray* g_array_append_vals       (GArray           *array,
 				   gconstpointer     data,
 				   guint             len);
+_GLIB_API
 GArray* g_array_prepend_vals      (GArray           *array,
 				   gconstpointer     data,
 				   guint             len);
+_GLIB_API
 GArray* g_array_insert_vals       (GArray           *array,
 				   guint             index_,
 				   gconstpointer     data,
 				   guint             len);
+_GLIB_API
 GArray* g_array_set_size          (GArray           *array,
 				   guint             length);
+_GLIB_API
 GArray* g_array_remove_index      (GArray           *array,
 				   guint             index_);
+_GLIB_API
 GArray* g_array_remove_index_fast (GArray           *array,
 				   guint             index_);
+_GLIB_API
 GArray* g_array_remove_range      (GArray           *array,
 				   guint             index_,
 				   guint             length);
+_GLIB_API
 void    g_array_sort              (GArray           *array,
 				   GCompareFunc      compare_func);
+_GLIB_API
 void    g_array_sort_with_data    (GArray           *array,
 				   GCompareDataFunc  compare_func,
 				   gpointer          user_data);
+_GLIB_API
 void    g_array_set_clear_func    (GArray           *array,
                                    GDestroyNotify    clear_func);
 
@@ -112,37 +128,55 @@ void    g_array_set_clear_func    (GArray           *array,
  * spot and shortens the array. remove_fast will again distort order.  
  */
 #define    g_ptr_array_index(array,index_) ((array)->pdata)[index_]
+_GLIB_API
 GPtrArray* g_ptr_array_new                (void);
+_GLIB_API
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
+_GLIB_API
 GPtrArray* g_ptr_array_sized_new          (guint             reserved_size);
+_GLIB_API
 GPtrArray* g_ptr_array_new_full           (guint             reserved_size,
 					   GDestroyNotify    element_free_func);
+_GLIB_API
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
 					   gboolean          free_seg);
+_GLIB_API
 GPtrArray* g_ptr_array_ref                (GPtrArray        *array);
+_GLIB_API
 void       g_ptr_array_unref              (GPtrArray        *array);
+_GLIB_API
 void       g_ptr_array_set_free_func      (GPtrArray        *array,
                                            GDestroyNotify    element_free_func);
+_GLIB_API
 void       g_ptr_array_set_size           (GPtrArray        *array,
 					   gint              length);
+_GLIB_API
 gpointer   g_ptr_array_remove_index       (GPtrArray        *array,
 					   guint             index_);
+_GLIB_API
 gpointer   g_ptr_array_remove_index_fast  (GPtrArray        *array,
 					   guint             index_);
+_GLIB_API
 gboolean   g_ptr_array_remove             (GPtrArray        *array,
 					   gpointer          data);
+_GLIB_API
 gboolean   g_ptr_array_remove_fast        (GPtrArray        *array,
 					   gpointer          data);
+_GLIB_API
 void       g_ptr_array_remove_range       (GPtrArray        *array,
 					   guint             index_,
 					   guint             length);
+_GLIB_API
 void       g_ptr_array_add                (GPtrArray        *array,
 					   gpointer          data);
+_GLIB_API
 void       g_ptr_array_sort               (GPtrArray        *array,
 					   GCompareFunc      compare_func);
+_GLIB_API
 void       g_ptr_array_sort_with_data     (GPtrArray        *array,
 					   GCompareDataFunc  compare_func,
 					   gpointer          user_data);
+_GLIB_API
 void       g_ptr_array_foreach            (GPtrArray        *array,
 					   GFunc             func,
 					   gpointer          user_data);
@@ -152,32 +186,47 @@ void       g_ptr_array_foreach            (GPtrArray        *array,
  * but type-safe.
  */
 
+_GLIB_API
 GByteArray* g_byte_array_new               (void);
+_GLIB_API
 GByteArray* g_byte_array_new_take          (guint8           *data,
                                             gsize             len);
+_GLIB_API
 GByteArray* g_byte_array_sized_new         (guint             reserved_size);
+_GLIB_API
 guint8*     g_byte_array_free              (GByteArray       *array,
 					    gboolean          free_segment);
+_GLIB_API
 GBytes*     g_byte_array_free_to_bytes     (GByteArray       *array);
+_GLIB_API
 GByteArray *g_byte_array_ref               (GByteArray       *array);
+_GLIB_API
 void        g_byte_array_unref             (GByteArray       *array);
+_GLIB_API
 GByteArray* g_byte_array_append            (GByteArray       *array,
 					    const guint8     *data,
 					    guint             len);
+_GLIB_API
 GByteArray* g_byte_array_prepend           (GByteArray       *array,
 					    const guint8     *data,
 					    guint             len);
+_GLIB_API
 GByteArray* g_byte_array_set_size          (GByteArray       *array,
 					    guint             length);
+_GLIB_API
 GByteArray* g_byte_array_remove_index      (GByteArray       *array,
 					    guint             index_);
+_GLIB_API
 GByteArray* g_byte_array_remove_index_fast (GByteArray       *array,
 					    guint             index_);
+_GLIB_API
 GByteArray* g_byte_array_remove_range      (GByteArray       *array,
 					    guint             index_,
 					    guint             length);
+_GLIB_API
 void        g_byte_array_sort              (GByteArray       *array,
 					    GCompareFunc      compare_func);
+_GLIB_API
 void        g_byte_array_sort_with_data    (GByteArray       *array,
 					    GCompareDataFunc  compare_func,
 					    gpointer          user_data);

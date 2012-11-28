@@ -84,36 +84,48 @@ struct _GBufferedInputStreamClass
 };
 
 
+_GIO_API
 GType         g_buffered_input_stream_get_type        (void) G_GNUC_CONST;
+_GIO_API
 GInputStream* g_buffered_input_stream_new             (GInputStream          *base_stream);
+_GIO_API
 GInputStream* g_buffered_input_stream_new_sized       (GInputStream          *base_stream,
 						       gsize                  size);
 
+_GIO_API
 gsize         g_buffered_input_stream_get_buffer_size (GBufferedInputStream  *stream);
+_GIO_API
 void          g_buffered_input_stream_set_buffer_size (GBufferedInputStream  *stream,
 						       gsize                  size);
+_GIO_API
 gsize         g_buffered_input_stream_get_available   (GBufferedInputStream  *stream);
+_GIO_API
 gsize         g_buffered_input_stream_peek            (GBufferedInputStream  *stream,
 						       void                  *buffer,
 						       gsize                  offset,
 						       gsize                  count);
+_GIO_API
 const void*   g_buffered_input_stream_peek_buffer     (GBufferedInputStream  *stream,
 						       gsize                 *count);
 
+_GIO_API
 gssize        g_buffered_input_stream_fill            (GBufferedInputStream  *stream,
 						       gssize                 count,
 						       GCancellable          *cancellable,
 						       GError               **error);
+_GIO_API
 void          g_buffered_input_stream_fill_async      (GBufferedInputStream  *stream,
 						       gssize                 count,
 						       int                    io_priority,
 						       GCancellable          *cancellable,
 						       GAsyncReadyCallback    callback,
 						       gpointer               user_data);
+_GIO_API
 gssize        g_buffered_input_stream_fill_finish     (GBufferedInputStream  *stream,
 						       GAsyncResult          *result,
 						       GError               **error);
 
+_GIO_API
 int           g_buffered_input_stream_read_byte       (GBufferedInputStream  *stream,
 						       GCancellable          *cancellable,
 						       GError               **error);

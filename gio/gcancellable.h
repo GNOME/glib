@@ -69,35 +69,50 @@ struct _GCancellableClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType         g_cancellable_get_type               (void) G_GNUC_CONST;
 
+_GIO_API
 GCancellable *g_cancellable_new                    (void);
 
 /* These are only safe to call inside a cancellable op */
+_GIO_API
 gboolean      g_cancellable_is_cancelled           (GCancellable  *cancellable);
+_GIO_API
 gboolean      g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
 						    GError       **error);
 
+_GIO_API
 int           g_cancellable_get_fd                 (GCancellable  *cancellable);
+_GIO_API
 gboolean      g_cancellable_make_pollfd            (GCancellable  *cancellable,
 						    GPollFD       *pollfd);
+_GIO_API
 void          g_cancellable_release_fd             (GCancellable  *cancellable);
 
+_GIO_API
 GSource *     g_cancellable_source_new             (GCancellable  *cancellable);
 
+_GIO_API
 GCancellable *g_cancellable_get_current            (void);
+_GIO_API
 void          g_cancellable_push_current           (GCancellable  *cancellable);
+_GIO_API
 void          g_cancellable_pop_current            (GCancellable  *cancellable);
+_GIO_API
 void          g_cancellable_reset                  (GCancellable  *cancellable);
+_GIO_API
 gulong        g_cancellable_connect                (GCancellable  *cancellable,
 						    GCallback      callback,
 						    gpointer       data,
 						    GDestroyNotify data_destroy_func);
+_GIO_API
 void          g_cancellable_disconnect             (GCancellable  *cancellable,
 						    gulong         handler_id);
 
 
 /* This is safe to call from another thread */
+_GIO_API
 void          g_cancellable_cancel       (GCancellable  *cancellable);
 
 G_END_DECLS

@@ -64,13 +64,18 @@ struct _GUnixOutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType           g_unix_output_stream_get_type     (void) G_GNUC_CONST;
 
+_GIO_API
 GOutputStream * g_unix_output_stream_new          (gint     fd,
                                                    gboolean close_fd);
+_GIO_API
 void            g_unix_output_stream_set_close_fd (GUnixOutputStream *stream,
                                                    gboolean           close_fd);
+_GIO_API
 gboolean        g_unix_output_stream_get_close_fd (GUnixOutputStream *stream);
+_GIO_API
 gint            g_unix_output_stream_get_fd       (GUnixOutputStream *stream);
 G_END_DECLS
 

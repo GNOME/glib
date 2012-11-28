@@ -294,57 +294,87 @@ typedef struct _GVariantType GVariantType;
 #endif
 
 /* type string checking */
+_GLIB_API
 gboolean                        g_variant_type_string_is_valid          (const gchar         *type_string);
+_GLIB_API
 gboolean                        g_variant_type_string_scan              (const gchar         *string,
                                                                          const gchar         *limit,
                                                                          const gchar        **endptr);
 
 /* create/destroy */
+_GLIB_API
 void                            g_variant_type_free                     (GVariantType        *type);
+_GLIB_API
 GVariantType *                  g_variant_type_copy                     (const GVariantType  *type);
+_GLIB_API
 GVariantType *                  g_variant_type_new                      (const gchar         *type_string);
 
 /* getters */
+_GLIB_API
 gsize                           g_variant_type_get_string_length        (const GVariantType  *type);
+_GLIB_API
 const gchar *                   g_variant_type_peek_string              (const GVariantType  *type);
+_GLIB_API
 gchar *                         g_variant_type_dup_string               (const GVariantType  *type);
 
 /* classification */
+_GLIB_API
 gboolean                        g_variant_type_is_definite              (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_container             (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_basic                 (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_maybe                 (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_array                 (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_tuple                 (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_dict_entry            (const GVariantType  *type);
+_GLIB_API
 gboolean                        g_variant_type_is_variant               (const GVariantType  *type);
 
 /* for hash tables */
+_GLIB_API
 guint                           g_variant_type_hash                     (gconstpointer        type);
+_GLIB_API
 gboolean                        g_variant_type_equal                    (gconstpointer        type1,
                                                                          gconstpointer        type2);
 
 /* subtypes */
+_GLIB_API
 gboolean                        g_variant_type_is_subtype_of            (const GVariantType  *type,
                                                                          const GVariantType  *supertype);
 
 /* type iterator interface */
+_GLIB_API
 const GVariantType *            g_variant_type_element                  (const GVariantType  *type);
+_GLIB_API
 const GVariantType *            g_variant_type_first                    (const GVariantType  *type);
+_GLIB_API
 const GVariantType *            g_variant_type_next                     (const GVariantType  *type);
+_GLIB_API
 gsize                           g_variant_type_n_items                  (const GVariantType  *type);
+_GLIB_API
 const GVariantType *            g_variant_type_key                      (const GVariantType  *type);
+_GLIB_API
 const GVariantType *            g_variant_type_value                    (const GVariantType  *type);
 
 /* constructors */
+_GLIB_API
 GVariantType *                  g_variant_type_new_array                (const GVariantType  *element);
+_GLIB_API
 GVariantType *                  g_variant_type_new_maybe                (const GVariantType  *element);
+_GLIB_API
 GVariantType *                  g_variant_type_new_tuple                (const GVariantType * const *items,
                                                                          gint                 length);
+_GLIB_API
 GVariantType *                  g_variant_type_new_dict_entry           (const GVariantType  *key,
                                                                          const GVariantType  *value);
 
 /*< private >*/
+_GLIB_API
 const GVariantType *            g_variant_type_checked_                 (const gchar *);
 
 G_END_DECLS

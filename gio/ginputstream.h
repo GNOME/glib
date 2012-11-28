@@ -111,13 +111,16 @@ struct _GInputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType    g_input_stream_get_type      (void) G_GNUC_CONST;
 
+_GIO_API
 gssize   g_input_stream_read          (GInputStream          *stream,
 				       void                  *buffer,
 				       gsize                  count,
 				       GCancellable          *cancellable,
 				       GError               **error);
+_GIO_API
 gboolean g_input_stream_read_all      (GInputStream          *stream,
 				       void                  *buffer,
 				       gsize                  count,
@@ -129,13 +132,16 @@ GBytes  *g_input_stream_read_bytes    (GInputStream          *stream,
 				       gsize                  count,
 				       GCancellable          *cancellable,
 				       GError               **error);
+_GIO_API
 gssize   g_input_stream_skip          (GInputStream          *stream,
 				       gsize                  count,
 				       GCancellable          *cancellable,
 				       GError               **error);
+_GIO_API
 gboolean g_input_stream_close         (GInputStream          *stream,
 				       GCancellable          *cancellable,
 				       GError               **error);
+_GIO_API
 void     g_input_stream_read_async    (GInputStream          *stream,
 				       void                  *buffer,
 				       gsize                  count,
@@ -143,6 +149,7 @@ void     g_input_stream_read_async    (GInputStream          *stream,
 				       GCancellable          *cancellable,
 				       GAsyncReadyCallback    callback,
 				       gpointer               user_data);
+_GIO_API
 gssize   g_input_stream_read_finish   (GInputStream          *stream,
 				       GAsyncResult          *result,
 				       GError               **error);
@@ -157,30 +164,38 @@ GLIB_AVAILABLE_IN_2_34
 GBytes  *g_input_stream_read_bytes_finish (GInputStream          *stream,
 					   GAsyncResult          *result,
 					   GError               **error);
+_GIO_API
 void     g_input_stream_skip_async    (GInputStream          *stream,
 				       gsize                  count,
 				       int                    io_priority,
 				       GCancellable          *cancellable,
 				       GAsyncReadyCallback    callback,
 				       gpointer               user_data);
+_GIO_API
 gssize   g_input_stream_skip_finish   (GInputStream          *stream,
 				       GAsyncResult          *result,
 				       GError               **error);
+_GIO_API
 void     g_input_stream_close_async   (GInputStream          *stream,
 				       int                    io_priority,
 				       GCancellable          *cancellable,
 				       GAsyncReadyCallback    callback,
 				       gpointer               user_data);
+_GIO_API
 gboolean g_input_stream_close_finish  (GInputStream          *stream,
 				       GAsyncResult          *result,
 				       GError               **error);
 
 /* For implementations: */
 
+_GIO_API
 gboolean g_input_stream_is_closed     (GInputStream          *stream);
+_GIO_API
 gboolean g_input_stream_has_pending   (GInputStream          *stream);
+_GIO_API
 gboolean g_input_stream_set_pending   (GInputStream          *stream,
 				       GError               **error);
+_GIO_API
 void     g_input_stream_clear_pending (GInputStream          *stream);
 
 G_END_DECLS

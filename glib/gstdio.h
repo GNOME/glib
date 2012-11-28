@@ -74,13 +74,17 @@ typedef struct stat GStatBuf;
 #define g_utime   utime
 #endif
 
+_GLIB_API
 int g_access (const gchar *filename,
 	      int          mode);
 
+_GLIB_API
 int g_chdir  (const gchar *path);
 
+_GLIB_API
 int g_unlink (const gchar *filename);
 
+_GLIB_API
 int g_rmdir  (const gchar *filename);
 
 #else /* ! G_OS_UNIX */
@@ -95,42 +99,56 @@ int g_rmdir  (const gchar *filename);
  * API.
  */
 
+_GLIB_API
 int g_access    (const gchar *filename,
 		 int          mode);
 
+_GLIB_API
 int g_chmod     (const gchar *filename,
 		 int          mode);
 
+_GLIB_API
 int g_open      (const gchar *filename,
                  int          flags,
                  int          mode);
 
+_GLIB_API
 int g_creat     (const gchar *filename,
                  int          mode);
 
+_GLIB_API
 int g_rename    (const gchar *oldfilename,
                  const gchar *newfilename);
 
+_GLIB_API
 int g_mkdir     (const gchar *filename,
                  int          mode);
 
+_GLIB_API
 int g_chdir     (const gchar *path);
 
+_GLIB_API
 int g_stat      (const gchar *filename,
                  GStatBuf    *buf);
 
+_GLIB_API
 int g_lstat     (const gchar *filename,
                  GStatBuf    *buf);
 
+_GLIB_API
 int g_unlink    (const gchar *filename);
 
+_GLIB_API
 int g_remove    (const gchar *filename);
 
+_GLIB_API
 int g_rmdir     (const gchar *filename);
 
+_GLIB_API
 FILE *g_fopen   (const gchar *filename,
                  const gchar *mode);
 
+_GLIB_API
 FILE *g_freopen (const gchar *filename,
                  const gchar *mode,
                  FILE        *stream);
@@ -139,6 +157,7 @@ struct utimbuf;			/* Don't need the real definition of struct utimbuf when just
 				 * including this header.
 				 */
 
+_GLIB_API
 int g_utime     (const gchar    *filename,
 		 struct utimbuf *utb);
 

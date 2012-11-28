@@ -73,7 +73,9 @@ struct _GThreadedSocketService
   GThreadedSocketServicePrivate *priv;
 };
 
+_GIO_API
 GType                   g_threaded_socket_service_get_type              (void);
+_GIO_API
 GSocketService *        g_threaded_socket_service_new                   (int max_threads);
 
 G_END_DECLS

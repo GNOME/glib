@@ -135,66 +135,98 @@ struct _GAppInfoIface
   const char ** (* get_supported_types)         (GAppInfo           *appinfo);
 };
 
+_GIO_API
 GType       g_app_info_get_type                     (void) G_GNUC_CONST;
+_GIO_API
 GAppInfo *  g_app_info_create_from_commandline      (const char           *commandline,
                                                      const char           *application_name,
                                                      GAppInfoCreateFlags   flags,
                                                      GError              **error);
+_GIO_API
 GAppInfo *  g_app_info_dup                          (GAppInfo             *appinfo);
+_GIO_API
 gboolean    g_app_info_equal                        (GAppInfo             *appinfo1,
                                                      GAppInfo             *appinfo2);
+_GIO_API
 const char *g_app_info_get_id                       (GAppInfo             *appinfo);
+_GIO_API
 const char *g_app_info_get_name                     (GAppInfo             *appinfo);
+_GIO_API
 const char *g_app_info_get_display_name             (GAppInfo             *appinfo);
+_GIO_API
 const char *g_app_info_get_description              (GAppInfo             *appinfo);
+_GIO_API
 const char *g_app_info_get_executable               (GAppInfo             *appinfo);
+_GIO_API
 const char *g_app_info_get_commandline              (GAppInfo             *appinfo);
+_GIO_API
 GIcon *     g_app_info_get_icon                     (GAppInfo             *appinfo);
+_GIO_API
 gboolean    g_app_info_launch                       (GAppInfo             *appinfo,
                                                      GList                *files,
                                                      GAppLaunchContext    *launch_context,
                                                      GError              **error);
+_GIO_API
 gboolean    g_app_info_supports_uris                (GAppInfo             *appinfo);
+_GIO_API
 gboolean    g_app_info_supports_files               (GAppInfo             *appinfo);
+_GIO_API
 gboolean    g_app_info_launch_uris                  (GAppInfo             *appinfo,
                                                      GList                *uris,
                                                      GAppLaunchContext    *launch_context,
                                                      GError              **error);
+_GIO_API
 gboolean    g_app_info_should_show                  (GAppInfo             *appinfo);
 
+_GIO_API
 gboolean    g_app_info_set_as_default_for_type      (GAppInfo             *appinfo,
                                                      const char           *content_type,
                                                      GError              **error);
+_GIO_API
 gboolean    g_app_info_set_as_default_for_extension (GAppInfo             *appinfo,
                                                      const char           *extension,
                                                      GError              **error);
+_GIO_API
 gboolean    g_app_info_add_supports_type            (GAppInfo             *appinfo,
                                                      const char           *content_type,
                                                      GError              **error);
+_GIO_API
 gboolean    g_app_info_can_remove_supports_type     (GAppInfo             *appinfo);
+_GIO_API
 gboolean    g_app_info_remove_supports_type         (GAppInfo             *appinfo,
                                                      const char           *content_type,
                                                      GError              **error);
 GLIB_AVAILABLE_IN_2_34
 const char **g_app_info_get_supported_types         (GAppInfo             *appinfo);
 
+_GIO_API
 gboolean    g_app_info_can_delete                   (GAppInfo   *appinfo);
+_GIO_API
 gboolean    g_app_info_delete                       (GAppInfo   *appinfo);
 
+_GIO_API
 gboolean    g_app_info_set_as_last_used_for_type    (GAppInfo             *appinfo,
                                                      const char           *content_type,
                                                      GError              **error);
 
+_GIO_API
 GList *   g_app_info_get_all                     (void);
+_GIO_API
 GList *   g_app_info_get_all_for_type            (const char  *content_type);
+_GIO_API
 GList *   g_app_info_get_recommended_for_type    (const gchar *content_type);
+_GIO_API
 GList *   g_app_info_get_fallback_for_type       (const gchar *content_type);
 
+_GIO_API
 void      g_app_info_reset_type_associations     (const char  *content_type);
+_GIO_API
 GAppInfo *g_app_info_get_default_for_type        (const char  *content_type,
                                                   gboolean     must_support_uris);
+_GIO_API
 GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
 
+_GIO_API
 gboolean  g_app_info_launch_default_for_uri      (const char              *uri,
                                                   GAppLaunchContext       *launch_context,
                                                   GError                 **error);
@@ -237,7 +269,9 @@ struct _GAppLaunchContextClass
   void (*_g_reserved4) (void);
 };
 
+_GIO_API
 GType              g_app_launch_context_get_type              (void) G_GNUC_CONST;
+_GIO_API
 GAppLaunchContext *g_app_launch_context_new                   (void);
 
 GLIB_AVAILABLE_IN_2_32
@@ -250,12 +284,15 @@ void               g_app_launch_context_unsetenv              (GAppLaunchContext
 GLIB_AVAILABLE_IN_2_32
 char **            g_app_launch_context_get_environment       (GAppLaunchContext *context);
 
+_GIO_API
 char *             g_app_launch_context_get_display           (GAppLaunchContext *context,
                                                                GAppInfo          *info,
                                                                GList             *files);
+_GIO_API
 char *             g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
                                                                GAppInfo          *info,
                                                                GList             *files);
+_GIO_API
 void               g_app_launch_context_launch_failed         (GAppLaunchContext *context,
                                                                const char *       startup_notify_id);
 

@@ -126,28 +126,39 @@ struct _GValue
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 GValue*         g_value_init	   	(GValue       *value,
 					 GType         g_type);
+_GOBJECT_API
 void            g_value_copy    	(const GValue *src_value,
 					 GValue       *dest_value);
+_GOBJECT_API
 GValue*         g_value_reset   	(GValue       *value);
+_GOBJECT_API
 void            g_value_unset   	(GValue       *value);
+_GOBJECT_API
 void		g_value_set_instance	(GValue	      *value,
 					 gpointer      instance);
 
 
 /* --- private --- */
+_GOBJECT_API
 gboolean	g_value_fits_pointer	(const GValue *value);
+_GOBJECT_API
 gpointer	g_value_peek_pointer	(const GValue *value);
 
 
 /* --- implementation details --- */
+_GOBJECT_API
 gboolean g_value_type_compatible	(GType		 src_type,
 					 GType		 dest_type);
+_GOBJECT_API
 gboolean g_value_type_transformable	(GType           src_type,
 					 GType           dest_type);
+_GOBJECT_API
 gboolean g_value_transform		(const GValue   *src_value,
 					 GValue         *dest_value);
+_GOBJECT_API
 void	g_value_register_transform_func	(GType		 src_type,
 					 GType		 dest_type,
 					 GValueTransform transform_func);

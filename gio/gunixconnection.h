@@ -54,16 +54,20 @@ struct _GUnixConnection
   GUnixConnectionPrivate *priv;
 };
 
+_GIO_API
 GType                   g_unix_connection_get_type                      (void);
 
+_GIO_API
 gboolean                g_unix_connection_send_fd                       (GUnixConnection      *connection,
                                                                          gint                  fd,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
+_GIO_API
 gint                    g_unix_connection_receive_fd                    (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 
+_GIO_API
 gboolean                g_unix_connection_send_credentials              (GUnixConnection      *connection,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
@@ -86,6 +90,7 @@ void                    g_unix_connection_receive_credentials_async     (GUnixCo
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
+_GIO_API
 GCredentials           *g_unix_connection_receive_credentials_finish    (GUnixConnection      *connection,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);

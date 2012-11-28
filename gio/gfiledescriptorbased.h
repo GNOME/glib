@@ -52,8 +52,10 @@ struct _GFileDescriptorBasedIface
   int (*get_fd) (GFileDescriptorBased *fd_based);
 };
 
+_GIO_API
 GType    g_file_descriptor_based_get_type     (void) G_GNUC_CONST;
 
+_GIO_API
 int      g_file_descriptor_based_get_fd       (GFileDescriptorBased *fd_based);
 
 G_END_DECLS

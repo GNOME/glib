@@ -237,23 +237,31 @@ type_name##_register_type (GTypeModule *type_module) \
   g_type_module_add_interface (type_module, g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
 
+_GOBJECT_API
 GType    g_type_module_get_type       (void) G_GNUC_CONST;
+_GOBJECT_API
 gboolean g_type_module_use            (GTypeModule          *module);
+_GOBJECT_API
 void     g_type_module_unuse          (GTypeModule          *module);
+_GOBJECT_API
 void     g_type_module_set_name       (GTypeModule          *module,
                                        const gchar          *name);
+_GOBJECT_API
 GType    g_type_module_register_type  (GTypeModule          *module,
                                        GType                 parent_type,
                                        const gchar          *type_name,
                                        const GTypeInfo      *type_info,
                                        GTypeFlags            flags);
+_GOBJECT_API
 void     g_type_module_add_interface  (GTypeModule          *module,
                                        GType                 instance_type,
                                        GType                 interface_type,
                                        const GInterfaceInfo *interface_info);
+_GOBJECT_API
 GType    g_type_module_register_enum  (GTypeModule          *module,
                                        const gchar          *name,
                                        const GEnumValue     *const_static_values);
+_GOBJECT_API
 GType    g_type_module_register_flags (GTypeModule          *module,
                                        const gchar          *name,
                                        const GFlagsValue    *const_static_values);

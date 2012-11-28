@@ -29,21 +29,30 @@
 
 G_BEGIN_DECLS
 
+_GIO_API
 GType g_srv_target_get_type (void) G_GNUC_CONST;
 #define G_TYPE_SRV_TARGET (g_srv_target_get_type ())
 
+_GIO_API
 GSrvTarget  *g_srv_target_new          (const gchar *hostname,
 				        guint16      port,
 				        guint16      priority,
 				        guint16      weight);
+_GIO_API
 GSrvTarget  *g_srv_target_copy         (GSrvTarget  *target);
+_GIO_API
 void         g_srv_target_free         (GSrvTarget  *target);
 
+_GIO_API
 const gchar *g_srv_target_get_hostname (GSrvTarget  *target);
+_GIO_API
 guint16      g_srv_target_get_port     (GSrvTarget  *target);
+_GIO_API
 guint16      g_srv_target_get_priority (GSrvTarget  *target);
+_GIO_API
 guint16      g_srv_target_get_weight   (GSrvTarget  *target);
 
+_GIO_API
 GList       *g_srv_target_list_sort    (GList       *targets);
 
 G_END_DECLS

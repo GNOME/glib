@@ -61,14 +61,20 @@ struct _GUnixFDMessage
   GUnixFDMessagePrivate *priv;
 };
 
+_GIO_API
 GType                   g_unix_fd_message_get_type                      (void) G_GNUC_CONST;
+_GIO_API
 GSocketControlMessage * g_unix_fd_message_new_with_fd_list              (GUnixFDList     *fd_list);
+_GIO_API
 GSocketControlMessage * g_unix_fd_message_new                           (void);
 
+_GIO_API
 GUnixFDList *           g_unix_fd_message_get_fd_list                   (GUnixFDMessage  *message);
 
+_GIO_API
 gint *                  g_unix_fd_message_steal_fds                     (GUnixFDMessage  *message,
                                                                          gint            *length);
+_GIO_API
 gboolean                g_unix_fd_message_append_fd                     (GUnixFDMessage  *message,
                                                                          gint             fd,
                                                                          GError         **error);

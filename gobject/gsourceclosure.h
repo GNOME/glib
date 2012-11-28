@@ -28,9 +28,11 @@
 
 G_BEGIN_DECLS
 
+_GOBJECT_API
 void g_source_set_closure        (GSource  *source,
 				  GClosure *closure);
 
+_GOBJECT_API
 void g_source_set_dummy_callback (GSource  *source);
 
 G_END_DECLS

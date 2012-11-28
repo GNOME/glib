@@ -69,15 +69,22 @@ struct _GSettings
 };
 
 
+_GIO_API
 GType                   g_settings_get_type                             (void);
 
+_GIO_API
 const gchar * const *   g_settings_list_schemas                         (void);
+_GIO_API
 const gchar * const *   g_settings_list_relocatable_schemas             (void);
+_GIO_API
 GSettings *             g_settings_new                                  (const gchar        *schema_id);
+_GIO_API
 GSettings *             g_settings_new_with_path                        (const gchar        *schema_id,
                                                                          const gchar        *path);
+_GIO_API
 GSettings *             g_settings_new_with_backend                     (const gchar        *schema_id,
                                                                          GSettingsBackend   *backend);
+_GIO_API
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema_id,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
@@ -85,81 +92,113 @@ GLIB_AVAILABLE_IN_2_32
 GSettings *             g_settings_new_full                             (GSettingsSchema    *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
+_GIO_API
 gchar **                g_settings_list_children                        (GSettings          *settings);
+_GIO_API
 gchar **                g_settings_list_keys                            (GSettings          *settings);
+_GIO_API
 GVariant *              g_settings_get_range                            (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_range_check                          (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
 
+_GIO_API
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
+_GIO_API
 GVariant *              g_settings_get_value                            (GSettings          *settings,
                                                                          const gchar        *key);
 
+_GIO_API
 gboolean                g_settings_set                                  (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar        *format,
                                                                          ...);
+_GIO_API
 void                    g_settings_get                                  (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar        *format,
                                                                          ...);
+_GIO_API
 void                    g_settings_reset                                (GSettings          *settings,
                                                                          const gchar        *key);
 
+_GIO_API
 gint                    g_settings_get_int                              (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_int                              (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
+_GIO_API
 guint                   g_settings_get_uint                             (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_uint                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          guint               value);
+_GIO_API
 gchar *                 g_settings_get_string                           (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_string                           (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar        *value);
+_GIO_API
 gboolean                g_settings_get_boolean                          (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_boolean                          (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gboolean            value);
+_GIO_API
 gdouble                 g_settings_get_double                           (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_double                           (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gdouble             value);
+_GIO_API
 gchar **                g_settings_get_strv                             (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_strv                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar *const *value);
+_GIO_API
 gint                    g_settings_get_enum                             (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_enum                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
+_GIO_API
 guint                   g_settings_get_flags                            (GSettings          *settings,
                                                                          const gchar        *key);
+_GIO_API
 gboolean                g_settings_set_flags                            (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          guint               value);
+_GIO_API
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
 
+_GIO_API
 gboolean                g_settings_is_writable                          (GSettings          *settings,
                                                                          const gchar        *name);
 
+_GIO_API
 void                    g_settings_delay                                (GSettings          *settings);
+_GIO_API
 void                    g_settings_apply                                (GSettings          *settings);
+_GIO_API
 void                    g_settings_revert                               (GSettings          *settings);
+_GIO_API
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
+_GIO_API
 void                    g_settings_sync                                 (void);
 
 /**
@@ -246,11 +285,13 @@ typedef enum
   G_SETTINGS_BIND_INVERT_BOOLEAN = (1<<4)
 } GSettingsBindFlags;
 
+_GIO_API
 void                    g_settings_bind                                 (GSettings               *settings,
                                                                          const gchar             *key,
                                                                          gpointer                 object,
                                                                          const gchar             *property,
                                                                          GSettingsBindFlags       flags);
+_GIO_API
 void                    g_settings_bind_with_mapping                    (GSettings               *settings,
                                                                          const gchar             *key,
                                                                          gpointer                 object,
@@ -260,11 +301,13 @@ void                    g_settings_bind_with_mapping                    (GSettin
                                                                          GSettingsBindSetMapping  set_mapping,
                                                                          gpointer                 user_data,
                                                                          GDestroyNotify           destroy);
+_GIO_API
 void                    g_settings_bind_writable                        (GSettings               *settings,
                                                                          const gchar             *key,
                                                                          gpointer                 object,
                                                                          const gchar             *property,
                                                                          gboolean                 inverted);
+_GIO_API
 void                    g_settings_unbind                               (gpointer                 object,
                                                                          const gchar             *property);
 
@@ -272,6 +315,7 @@ GLIB_AVAILABLE_IN_2_32
 GAction *               g_settings_create_action                        (GSettings               *settings,
                                                                          const gchar             *key);
 
+_GIO_API
 gpointer                g_settings_get_mapped                           (GSettings               *settings,
                                                                          const gchar             *key,
                                                                          GSettingsGetMapping      mapping,

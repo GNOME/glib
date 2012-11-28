@@ -76,15 +76,20 @@ struct _GFileMonitorClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType    g_file_monitor_get_type       (void) G_GNUC_CONST;
 
+_GIO_API
 gboolean g_file_monitor_cancel         (GFileMonitor      *monitor);
+_GIO_API
 gboolean g_file_monitor_is_cancelled   (GFileMonitor      *monitor);
+_GIO_API
 void     g_file_monitor_set_rate_limit (GFileMonitor      *monitor,
                                         gint               limit_msecs);
 
 
 /* For implementations */
+_GIO_API
 void     g_file_monitor_emit_event     (GFileMonitor      *monitor,
                                         GFile             *child,
                                         GFile             *other_file,

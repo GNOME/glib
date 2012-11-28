@@ -47,32 +47,46 @@ struct _GThreadPool
   gboolean exclusive;
 };
 
+_GLIB_API
 GThreadPool *   g_thread_pool_new               (GFunc            func,
                                                  gpointer         user_data,
                                                  gint             max_threads,
                                                  gboolean         exclusive,
                                                  GError         **error);
+_GLIB_API
 void            g_thread_pool_free              (GThreadPool     *pool,
                                                  gboolean         immediate,
                                                  gboolean         wait_);
+_GLIB_API
 gboolean        g_thread_pool_push              (GThreadPool     *pool,
                                                  gpointer         data,
                                                  GError         **error);
+_GLIB_API
 guint           g_thread_pool_unprocessed       (GThreadPool     *pool);
+_GLIB_API
 void            g_thread_pool_set_sort_function (GThreadPool      *pool,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+_GLIB_API
 gboolean        g_thread_pool_set_max_threads   (GThreadPool     *pool,
                                                  gint             max_threads,
                                                  GError         **error);
+_GLIB_API
 gint            g_thread_pool_get_max_threads   (GThreadPool     *pool);
+_GLIB_API
 guint           g_thread_pool_get_num_threads   (GThreadPool     *pool);
 
+_GLIB_API
 void            g_thread_pool_set_max_unused_threads (gint  max_threads);
+_GLIB_API
 gint            g_thread_pool_get_max_unused_threads (void);
+_GLIB_API
 guint           g_thread_pool_get_num_unused_threads (void);
+_GLIB_API
 void            g_thread_pool_stop_unused_threads    (void);
+_GLIB_API
 void            g_thread_pool_set_max_idle_time      (guint interval);
+_GLIB_API
 guint           g_thread_pool_get_max_idle_time      (void);
 
 G_END_DECLS

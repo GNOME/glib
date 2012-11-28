@@ -53,6 +53,7 @@ struct _GLocalFileMonitorClass
   gboolean (* is_supported) (void);
 };
 
+_GIO_API
 GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,

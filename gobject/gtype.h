@@ -669,40 +669,62 @@ GLIB_DEPRECATED_IN_2_36
 void                  g_type_init                    (void);
 GLIB_DEPRECATED_IN_2_36
 void                  g_type_init_with_debug_flags   (GTypeDebugFlags  debug_flags);
+_GOBJECT_API
 const gchar *         g_type_name                    (GType            type);
+_GOBJECT_API
 GQuark                g_type_qname                   (GType            type);
+_GOBJECT_API
 GType                 g_type_from_name               (const gchar     *name);
+_GOBJECT_API
 GType                 g_type_parent                  (GType            type);
+_GOBJECT_API
 guint                 g_type_depth                   (GType            type);
+_GOBJECT_API
 GType                 g_type_next_base               (GType            leaf_type,
 						      GType            root_type);
+_GOBJECT_API
 gboolean              g_type_is_a                    (GType            type,
 						      GType            is_a_type);
+_GOBJECT_API
 gpointer              g_type_class_ref               (GType            type);
+_GOBJECT_API
 gpointer              g_type_class_peek              (GType            type);
+_GOBJECT_API
 gpointer              g_type_class_peek_static       (GType            type);
+_GOBJECT_API
 void                  g_type_class_unref             (gpointer         g_class);
+_GOBJECT_API
 gpointer              g_type_class_peek_parent       (gpointer         g_class);
+_GOBJECT_API
 gpointer              g_type_interface_peek          (gpointer         instance_class,
 						      GType            iface_type);
+_GOBJECT_API
 gpointer              g_type_interface_peek_parent   (gpointer         g_iface);
 
+_GOBJECT_API
 gpointer              g_type_default_interface_ref   (GType            g_type);
+_GOBJECT_API
 gpointer              g_type_default_interface_peek  (GType            g_type);
+_GOBJECT_API
 void                  g_type_default_interface_unref (gpointer         g_iface);
 
 /* g_free() the returned arrays */
+_GOBJECT_API
 GType*                g_type_children                (GType            type,
 						      guint           *n_children);
+_GOBJECT_API
 GType*                g_type_interfaces              (GType            type,
 						      guint           *n_interfaces);
 
 /* per-type _static_ data */
+_GOBJECT_API
 void                  g_type_set_qdata               (GType            type,
 						      GQuark           quark,
 						      gpointer         data);
+_GOBJECT_API
 gpointer              g_type_get_qdata               (GType            type,
 						      GQuark           quark);
+_GOBJECT_API
 void		      g_type_query		     (GType	       type,
 						      GTypeQuery      *query);
 
@@ -1220,10 +1242,12 @@ struct _GTypeValueTable
 				  GTypeCValue  *collect_values,
 				  guint		collect_flags);
 };
+_GOBJECT_API
 GType g_type_register_static		(GType			     parent_type,
 					 const gchar		    *type_name,
 					 const GTypeInfo	    *info,
 					 GTypeFlags		     flags);
+_GOBJECT_API
 GType g_type_register_static_simple     (GType                       parent_type,
 					 const gchar                *type_name,
 					 guint                       class_size,
@@ -1232,32 +1256,42 @@ GType g_type_register_static_simple     (GType                       parent_type
 					 GInstanceInitFunc           instance_init,
 					 GTypeFlags	             flags);
   
+_GOBJECT_API
 GType g_type_register_dynamic		(GType			     parent_type,
 					 const gchar		    *type_name,
 					 GTypePlugin		    *plugin,
 					 GTypeFlags		     flags);
+_GOBJECT_API
 GType g_type_register_fundamental	(GType			     type_id,
 					 const gchar		    *type_name,
 					 const GTypeInfo	    *info,
 					 const GTypeFundamentalInfo *finfo,
 					 GTypeFlags		     flags);
+_GOBJECT_API
 void  g_type_add_interface_static	(GType			     instance_type,
 					 GType			     interface_type,
 					 const GInterfaceInfo	    *info);
+_GOBJECT_API
 void  g_type_add_interface_dynamic	(GType			     instance_type,
 					 GType			     interface_type,
 					 GTypePlugin		    *plugin);
+_GOBJECT_API
 void  g_type_interface_add_prerequisite (GType			     interface_type,
 					 GType			     prerequisite_type);
+_GOBJECT_API
 GType*g_type_interface_prerequisites    (GType                       interface_type,
 					 guint                      *n_prerequisites);
+_GOBJECT_API
 void     g_type_class_add_private       (gpointer                    g_class,
                                          gsize                       private_size);
+_GOBJECT_API
 gpointer g_type_instance_get_private    (GTypeInstance              *instance,
                                          GType                       private_type);
 
+_GOBJECT_API
 void      g_type_add_class_private      (GType    		     class_type,
 					 gsize    		     private_size);
+_GOBJECT_API
 gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
 					 GType			     private_type);
 
@@ -1622,48 +1656,71 @@ type_name##_get_type (void) \
       { /* custom code follows */
 
 /* --- protected (for fundamental type implementations) --- */
+_GOBJECT_API
 GTypePlugin*	 g_type_get_plugin		(GType		     type);
+_GOBJECT_API
 GTypePlugin*	 g_type_interface_get_plugin	(GType		     instance_type,
 						 GType               interface_type);
+_GOBJECT_API
 GType		 g_type_fundamental_next	(void);
+_GOBJECT_API
 GType		 g_type_fundamental		(GType		     type_id);
+_GOBJECT_API
 GTypeInstance*   g_type_create_instance         (GType               type);
+_GOBJECT_API
 void             g_type_free_instance           (GTypeInstance      *instance);
 
+_GOBJECT_API
 void		 g_type_add_class_cache_func    (gpointer	     cache_data,
 						 GTypeClassCacheFunc cache_func);
+_GOBJECT_API
 void		 g_type_remove_class_cache_func (gpointer	     cache_data,
 						 GTypeClassCacheFunc cache_func);
+_GOBJECT_API
 void             g_type_class_unref_uncached    (gpointer            g_class);
 
+_GOBJECT_API
 void             g_type_add_interface_check     (gpointer	         check_data,
 						 GTypeInterfaceCheckFunc check_func);
+_GOBJECT_API
 void             g_type_remove_interface_check  (gpointer	         check_data,
 						 GTypeInterfaceCheckFunc check_func);
 
+_GOBJECT_API
 GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 
 /*< private >*/
+_GOBJECT_API
 gboolean	 g_type_check_instance          (GTypeInstance      *instance) G_GNUC_PURE;
+_GOBJECT_API
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
+_GOBJECT_API
 gboolean         g_type_check_instance_is_a	(GTypeInstance      *instance,
 						 GType               iface_type) G_GNUC_PURE;
+_GOBJECT_API
 GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
 						 GType               is_a_type);
+_GOBJECT_API
 gboolean         g_type_check_class_is_a        (GTypeClass         *g_class,
 						 GType               is_a_type) G_GNUC_PURE;
+_GOBJECT_API
 gboolean	 g_type_check_is_value_type     (GType		     type) G_GNUC_CONST;
+_GOBJECT_API
 gboolean	 g_type_check_value             (GValue		    *value) G_GNUC_PURE;
+_GOBJECT_API
 gboolean	 g_type_check_value_holds	(GValue		    *value,
 						 GType		     type) G_GNUC_PURE;
+_GOBJECT_API
 gboolean         g_type_test_flags              (GType               type,
 						 guint               flags) G_GNUC_CONST;
 
 
 /* --- debugging functions --- */
+_GOBJECT_API
 const gchar *    g_type_name_from_instance      (GTypeInstance	*instance);
+_GOBJECT_API
 const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
 
 

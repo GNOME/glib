@@ -68,36 +68,50 @@ struct _GDataInputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType                  g_data_input_stream_get_type             (void) G_GNUC_CONST;
+_GIO_API
 GDataInputStream *     g_data_input_stream_new                  (GInputStream            *base_stream);
 
+_GIO_API
 void                   g_data_input_stream_set_byte_order       (GDataInputStream        *stream,
                                                                  GDataStreamByteOrder     order);
+_GIO_API
 GDataStreamByteOrder   g_data_input_stream_get_byte_order       (GDataInputStream        *stream);
+_GIO_API
 void                   g_data_input_stream_set_newline_type     (GDataInputStream        *stream,
                                                                  GDataStreamNewlineType   type);
+_GIO_API
 GDataStreamNewlineType g_data_input_stream_get_newline_type     (GDataInputStream        *stream);
+_GIO_API
 guchar                 g_data_input_stream_read_byte            (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 gint16                 g_data_input_stream_read_int16           (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 guint16                g_data_input_stream_read_uint16          (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 gint32                 g_data_input_stream_read_int32           (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 guint32                g_data_input_stream_read_uint32          (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 gint64                 g_data_input_stream_read_int64           (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 guint64                g_data_input_stream_read_uint64          (GDataInputStream        *stream,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 char *                 g_data_input_stream_read_line            (GDataInputStream        *stream,
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
@@ -107,11 +121,13 @@ char *                 g_data_input_stream_read_line_utf8       (GDataInputStrea
 								 gsize                   *length,
 								 GCancellable            *cancellable,
 								 GError                 **error);
+_GIO_API
 void                   g_data_input_stream_read_line_async      (GDataInputStream        *stream,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
+_GIO_API
 char *                 g_data_input_stream_read_line_finish     (GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
@@ -121,28 +137,33 @@ char *                 g_data_input_stream_read_line_finish_utf8(GDataInputStrea
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
+_GIO_API
 char *                 g_data_input_stream_read_until           (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 void                   g_data_input_stream_read_until_async     (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
+_GIO_API
 char *                 g_data_input_stream_read_until_finish    (GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
 
+_GIO_API
 char *                 g_data_input_stream_read_upto            (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gssize                   stop_chars_len,
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+_GIO_API
 void                   g_data_input_stream_read_upto_async      (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gssize                   stop_chars_len,
@@ -150,6 +171,7 @@ void                   g_data_input_stream_read_upto_async      (GDataInputStrea
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
+_GIO_API
 char *                 g_data_input_stream_read_upto_finish     (GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,

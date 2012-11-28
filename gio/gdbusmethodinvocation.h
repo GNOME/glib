@@ -35,40 +35,58 @@ G_BEGIN_DECLS
 #define G_DBUS_METHOD_INVOCATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_METHOD_INVOCATION, GDBusMethodInvocation))
 #define G_IS_DBUS_METHOD_INVOCATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_METHOD_INVOCATION))
 
+_GIO_API
 GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
+_GIO_API
 const gchar           *g_dbus_method_invocation_get_sender           (GDBusMethodInvocation *invocation);
+_GIO_API
 const gchar           *g_dbus_method_invocation_get_object_path      (GDBusMethodInvocation *invocation);
+_GIO_API
 const gchar           *g_dbus_method_invocation_get_interface_name   (GDBusMethodInvocation *invocation);
+_GIO_API
 const gchar           *g_dbus_method_invocation_get_method_name      (GDBusMethodInvocation *invocation);
+_GIO_API
 const GDBusMethodInfo *g_dbus_method_invocation_get_method_info      (GDBusMethodInvocation *invocation);
+_GIO_API
 GDBusConnection       *g_dbus_method_invocation_get_connection       (GDBusMethodInvocation *invocation);
+_GIO_API
 GDBusMessage          *g_dbus_method_invocation_get_message          (GDBusMethodInvocation *invocation);
+_GIO_API
 GVariant              *g_dbus_method_invocation_get_parameters       (GDBusMethodInvocation *invocation);
+_GIO_API
 gpointer               g_dbus_method_invocation_get_user_data        (GDBusMethodInvocation *invocation);
 
+_GIO_API
 void                   g_dbus_method_invocation_return_value         (GDBusMethodInvocation *invocation,
                                                                       GVariant              *parameters);
+_GIO_API
 void                   g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *invocation,
                                                                                 GVariant              *parameters,
                                                                                 GUnixFDList           *fd_list);
+_GIO_API
 void                   g_dbus_method_invocation_return_error         (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
                                                                       ...);
+_GIO_API
 void                   g_dbus_method_invocation_return_error_valist  (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
                                                                       va_list                var_args);
+_GIO_API
 void                   g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *message);
+_GIO_API
 void                   g_dbus_method_invocation_return_gerror        (GDBusMethodInvocation *invocation,
                                                                       const GError          *error);
+_GIO_API
 void                   g_dbus_method_invocation_take_error           (GDBusMethodInvocation *invocation,
                                                                       GError                *error);
+_GIO_API
 void                   g_dbus_method_invocation_return_dbus_error    (GDBusMethodInvocation *invocation,
                                                                       const gchar           *error_name,
                                                                       const gchar           *error_message);

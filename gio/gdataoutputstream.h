@@ -70,41 +70,53 @@ struct _GDataOutputStreamClass
 };
 
 
+_GIO_API
 GType                g_data_output_stream_get_type       (void) G_GNUC_CONST;
+_GIO_API
 GDataOutputStream *  g_data_output_stream_new            (GOutputStream         *base_stream);
 
+_GIO_API
 void                 g_data_output_stream_set_byte_order (GDataOutputStream     *stream,
 							  GDataStreamByteOrder   order);
+_GIO_API
 GDataStreamByteOrder g_data_output_stream_get_byte_order (GDataOutputStream     *stream);
 
+_GIO_API
 gboolean             g_data_output_stream_put_byte       (GDataOutputStream     *stream,
 							  guchar                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_int16      (GDataOutputStream     *stream,
 							  gint16                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_uint16     (GDataOutputStream     *stream,
 							  guint16                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_int32      (GDataOutputStream     *stream,
 							  gint32                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_uint32     (GDataOutputStream     *stream,
 							  guint32                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_int64      (GDataOutputStream     *stream,
 							  gint64                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_uint64     (GDataOutputStream     *stream,
 							  guint64                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+_GIO_API
 gboolean             g_data_output_stream_put_string     (GDataOutputStream     *stream,
 							  const char            *str,
 							  GCancellable          *cancellable,

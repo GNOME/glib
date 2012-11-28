@@ -62,14 +62,20 @@ struct _GEmblemedIconClass
   GObjectClass parent_class;
 };
 
+_GIO_API
 GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
 
+_GIO_API
 GIcon *g_emblemed_icon_new         (GIcon         *icon,
                                     GEmblem       *emblem);
+_GIO_API
 GIcon *g_emblemed_icon_get_icon    (GEmblemedIcon *emblemed);
+_GIO_API
 GList *g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed);
+_GIO_API
 void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed,
                                     GEmblem       *emblem);
+_GIO_API
 void   g_emblemed_icon_clear_emblems  (GEmblemedIcon *emblemed);
 
 G_END_DECLS

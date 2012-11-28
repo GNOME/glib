@@ -33,43 +33,57 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 GBytes *        g_bytes_new                     (gconstpointer   data,
                                                  gsize           size);
 
+_GLIB_API
 GBytes *        g_bytes_new_take                (gpointer        data,
                                                  gsize           size);
 
+_GLIB_API
 GBytes *        g_bytes_new_static              (gconstpointer   data,
                                                  gsize           size);
 
+_GLIB_API
 GBytes *        g_bytes_new_with_free_func      (gconstpointer   data,
                                                  gsize           size,
                                                  GDestroyNotify  free_func,
                                                  gpointer        user_data);
 
+_GLIB_API
 GBytes *        g_bytes_new_from_bytes          (GBytes         *bytes,
                                                  gsize           offset,
                                                  gsize           length);
 
+_GLIB_API
 gconstpointer   g_bytes_get_data                (GBytes         *bytes,
                                                  gsize          *size);
 
+_GLIB_API
 gsize           g_bytes_get_size                (GBytes         *bytes);
 
+_GLIB_API
 GBytes *        g_bytes_ref                     (GBytes         *bytes);
 
+_GLIB_API
 void            g_bytes_unref                   (GBytes         *bytes);
 
+_GLIB_API
 gpointer        g_bytes_unref_to_data           (GBytes         *bytes,
                                                  gsize          *size);
 
+_GLIB_API
 GByteArray *    g_bytes_unref_to_array          (GBytes         *bytes);
 
+_GLIB_API
 guint           g_bytes_hash                    (gconstpointer   bytes);
 
+_GLIB_API
 gboolean        g_bytes_equal                   (gconstpointer   bytes1,
                                                  gconstpointer   bytes2);
 
+_GLIB_API
 gint            g_bytes_compare                 (gconstpointer   bytes1,
                                                  gconstpointer   bytes2);
 

@@ -77,12 +77,17 @@ struct _GIconIface
                                GError **error);
 };
 
+_GIO_API
 GType    g_icon_get_type  (void) G_GNUC_CONST;
 
+_GIO_API
 guint    g_icon_hash            (gconstpointer  icon);
+_GIO_API
 gboolean g_icon_equal           (GIcon         *icon1,
                                  GIcon         *icon2);
+_GIO_API
 gchar   *g_icon_to_string       (GIcon         *icon);
+_GIO_API
 GIcon   *g_icon_new_for_string  (const gchar   *str,
                                  GError       **error);
 

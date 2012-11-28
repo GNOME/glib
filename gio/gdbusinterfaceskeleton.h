@@ -87,27 +87,41 @@ struct _GDBusInterfaceSkeletonClass
   gpointer signal_padding[8];
 };
 
+_GIO_API
 GType                        g_dbus_interface_skeleton_get_type        (void) G_GNUC_CONST;
+_GIO_API
 GDBusInterfaceSkeletonFlags  g_dbus_interface_skeleton_get_flags       (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 void                         g_dbus_interface_skeleton_set_flags       (GDBusInterfaceSkeleton      *interface_,
                                                                         GDBusInterfaceSkeletonFlags  flags);
+_GIO_API
 GDBusInterfaceInfo          *g_dbus_interface_skeleton_get_info        (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 GDBusInterfaceVTable        *g_dbus_interface_skeleton_get_vtable      (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 GVariant                    *g_dbus_interface_skeleton_get_properties  (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 void                         g_dbus_interface_skeleton_flush           (GDBusInterfaceSkeleton      *interface_);
 
+_GIO_API
 gboolean                     g_dbus_interface_skeleton_export          (GDBusInterfaceSkeleton      *interface_,
                                                                         GDBusConnection             *connection,
                                                                         const gchar                 *object_path,
                                                                         GError                     **error);
+_GIO_API
 void                         g_dbus_interface_skeleton_unexport        (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 void                g_dbus_interface_skeleton_unexport_from_connection (GDBusInterfaceSkeleton      *interface_,
                                                                         GDBusConnection             *connection);
 
+_GIO_API
 GDBusConnection             *g_dbus_interface_skeleton_get_connection  (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 GList                       *g_dbus_interface_skeleton_get_connections (GDBusInterfaceSkeleton      *interface_);
+_GIO_API
 gboolean                     g_dbus_interface_skeleton_has_connection  (GDBusInterfaceSkeleton      *interface_,
                                                                         GDBusConnection             *connection);
+_GIO_API
 const gchar                 *g_dbus_interface_skeleton_get_object_path (GDBusInterfaceSkeleton      *interface_);
 
 G_END_DECLS

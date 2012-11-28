@@ -82,17 +82,23 @@ struct _GMemoryOutputStreamClass
 typedef gpointer (* GReallocFunc) (gpointer data,
                                    gsize    size);
 
+_GIO_API
 GType          g_memory_output_stream_get_type      (void) G_GNUC_CONST;
 
+_GIO_API
 GOutputStream *g_memory_output_stream_new           (gpointer             data,
                                                      gsize                size,
                                                      GReallocFunc         realloc_function,
                                                      GDestroyNotify       destroy_function);
 GLIB_AVAILABLE_IN_2_36
 GOutputStream *g_memory_output_stream_new_resizable (void);
+_GIO_API
 gpointer       g_memory_output_stream_get_data      (GMemoryOutputStream *ostream);
+_GIO_API
 gsize          g_memory_output_stream_get_size      (GMemoryOutputStream *ostream);
+_GIO_API
 gsize          g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream);
+_GIO_API
 gpointer       g_memory_output_stream_steal_data    (GMemoryOutputStream *ostream);
 
 GLIB_AVAILABLE_IN_2_34

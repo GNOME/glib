@@ -75,18 +75,22 @@ struct _GLoadableIconIface
                                   GError             **error);
 };
 
+_GIO_API
 GType         g_loadable_icon_get_type    (void) G_GNUC_CONST;
 
+_GIO_API
 GInputStream *g_loadable_icon_load        (GLoadableIcon        *icon,
 					   int                   size,
 					   char                **type,
 					   GCancellable         *cancellable,
 					   GError              **error);
+_GIO_API
 void          g_loadable_icon_load_async  (GLoadableIcon        *icon,
 					   int                   size,
 					   GCancellable         *cancellable,
 					   GAsyncReadyCallback   callback,
 					   gpointer              user_data);
+_GIO_API
 GInputStream *g_loadable_icon_load_finish (GLoadableIcon        *icon,
 					   GAsyncResult         *res,
 					   char                **type,

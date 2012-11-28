@@ -69,30 +69,41 @@ struct _GTlsPasswordClass
   gpointer padding[4];
 };
 
+_GIO_API
 GType             g_tls_password_get_type            (void) G_GNUC_CONST;
 
+_GIO_API
 GTlsPassword *    g_tls_password_new                 (GTlsPasswordFlags  flags,
                                                       const gchar       *description);
 
+_GIO_API
 const guchar *    g_tls_password_get_value           (GTlsPassword      *password,
                                                       gsize             *length);
+_GIO_API
 void              g_tls_password_set_value           (GTlsPassword      *password,
                                                       const guchar      *value,
                                                       gssize             length);
+_GIO_API
 void              g_tls_password_set_value_full      (GTlsPassword      *password,
                                                       guchar            *value,
                                                       gssize             length,
                                                       GDestroyNotify     destroy);
 
+_GIO_API
 GTlsPasswordFlags g_tls_password_get_flags           (GTlsPassword      *password);
+_GIO_API
 void              g_tls_password_set_flags           (GTlsPassword      *password,
                                                       GTlsPasswordFlags  flags);
 
+_GIO_API
 const gchar*      g_tls_password_get_description     (GTlsPassword      *password);
+_GIO_API
 void              g_tls_password_set_description     (GTlsPassword      *password,
                                                       const gchar       *description);
 
+_GIO_API
 const gchar *     g_tls_password_get_warning         (GTlsPassword      *password);
+_GIO_API
 void              g_tls_password_set_warning         (GTlsPassword      *password,
                                                       const gchar       *warning);
 

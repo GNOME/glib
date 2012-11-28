@@ -88,12 +88,18 @@ struct _GSocketControlMessage
   GSocketControlMessagePrivate *priv;
 };
 
+_GIO_API
 GType                  g_socket_control_message_get_type     (void) G_GNUC_CONST;
+_GIO_API
 gsize                  g_socket_control_message_get_size     (GSocketControlMessage *message);
+_GIO_API
 int                    g_socket_control_message_get_level    (GSocketControlMessage *message);
+_GIO_API
 int                    g_socket_control_message_get_msg_type (GSocketControlMessage *message);
+_GIO_API
 void                   g_socket_control_message_serialize    (GSocketControlMessage *message,
 							      gpointer               data);
+_GIO_API
 GSocketControlMessage *g_socket_control_message_deserialize  (int                    level,
 							      int                    type,
 							      gsize                  size,

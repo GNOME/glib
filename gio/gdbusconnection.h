@@ -35,22 +35,27 @@ G_BEGIN_DECLS
 #define G_DBUS_CONNECTION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_CONNECTION, GDBusConnection))
 #define G_IS_DBUS_CONNECTION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_CONNECTION))
 
+_GIO_API
 GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 void              g_bus_get                    (GBusType             bus_type,
                                                 GCancellable        *cancellable,
                                                 GAsyncReadyCallback  callback,
                                                 gpointer             user_data);
+_GIO_API
 GDBusConnection  *g_bus_get_finish             (GAsyncResult        *res,
                                                 GError             **error);
+_GIO_API
 GDBusConnection  *g_bus_get_sync               (GBusType            bus_type,
                                                 GCancellable       *cancellable,
                                                 GError            **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 void             g_dbus_connection_new                        (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
@@ -58,8 +63,10 @@ void             g_dbus_connection_new                        (GIOStream        
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
+_GIO_API
 GDBusConnection *g_dbus_connection_new_finish                 (GAsyncResult           *res,
                                                                GError                **error);
+_GIO_API
 GDBusConnection *g_dbus_connection_new_sync                   (GIOStream              *stream,
                                                                const gchar            *guid,
                                                                GDBusConnectionFlags    flags,
@@ -67,14 +74,17 @@ GDBusConnection *g_dbus_connection_new_sync                   (GIOStream        
                                                                GCancellable           *cancellable,
                                                                GError                **error);
 
+_GIO_API
 void             g_dbus_connection_new_for_address            (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
                                                                GDBusAuthObserver      *observer,
                                                                GCancellable           *cancellable,
                                                                GAsyncReadyCallback     callback,
                                                                gpointer                user_data);
+_GIO_API
 GDBusConnection *g_dbus_connection_new_for_address_finish     (GAsyncResult           *res,
                                                                GError                **error);
+_GIO_API
 GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar            *address,
                                                                GDBusConnectionFlags    flags,
                                                                GDBusAuthObserver      *observer,
@@ -83,54 +93,71 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 void             g_dbus_connection_start_message_processing   (GDBusConnection    *connection);
+_GIO_API
 gboolean         g_dbus_connection_is_closed                  (GDBusConnection    *connection);
+_GIO_API
 GIOStream       *g_dbus_connection_get_stream                 (GDBusConnection    *connection);
+_GIO_API
 const gchar     *g_dbus_connection_get_guid                   (GDBusConnection    *connection);
+_GIO_API
 const gchar     *g_dbus_connection_get_unique_name            (GDBusConnection    *connection);
+_GIO_API
 GCredentials    *g_dbus_connection_get_peer_credentials       (GDBusConnection    *connection);
 
 GLIB_AVAILABLE_IN_2_34
 guint32          g_dbus_connection_get_last_serial            (GDBusConnection    *connection);
 
+_GIO_API
 gboolean         g_dbus_connection_get_exit_on_close          (GDBusConnection    *connection);
+_GIO_API
 void             g_dbus_connection_set_exit_on_close          (GDBusConnection    *connection,
                                                                gboolean            exit_on_close);
+_GIO_API
 GDBusCapabilityFlags  g_dbus_connection_get_capabilities      (GDBusConnection    *connection);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 void             g_dbus_connection_close                          (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
+_GIO_API
 gboolean         g_dbus_connection_close_finish                   (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
+_GIO_API
 gboolean         g_dbus_connection_close_sync                     (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GError             **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 void             g_dbus_connection_flush                          (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
+_GIO_API
 gboolean         g_dbus_connection_flush_finish                   (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
+_GIO_API
 gboolean         g_dbus_connection_flush_sync                     (GDBusConnection     *connection,
                                                                    GCancellable        *cancellable,
                                                                    GError             **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 gboolean         g_dbus_connection_send_message                   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
                                                                    volatile guint32    *out_serial,
                                                                    GError             **error);
+_GIO_API
 void             g_dbus_connection_send_message_with_reply        (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
@@ -139,9 +166,11 @@ void             g_dbus_connection_send_message_with_reply        (GDBusConnecti
                                                                    GCancellable        *cancellable,
                                                                    GAsyncReadyCallback  callback,
                                                                    gpointer             user_data);
+_GIO_API
 GDBusMessage    *g_dbus_connection_send_message_with_reply_finish (GDBusConnection     *connection,
                                                                    GAsyncResult        *res,
                                                                    GError             **error);
+_GIO_API
 GDBusMessage    *g_dbus_connection_send_message_with_reply_sync   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
                                                                    GDBusSendMessageFlags flags,
@@ -152,6 +181,7 @@ GDBusMessage    *g_dbus_connection_send_message_with_reply_sync   (GDBusConnecti
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+_GIO_API
 gboolean  g_dbus_connection_emit_signal                       (GDBusConnection    *connection,
                                                                const gchar        *destination_bus_name,
                                                                const gchar        *object_path,
@@ -159,6 +189,7 @@ gboolean  g_dbus_connection_emit_signal                       (GDBusConnection  
                                                                const gchar        *signal_name,
                                                                GVariant           *parameters,
                                                                GError            **error);
+_GIO_API
 void      g_dbus_connection_call                              (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -171,9 +202,11 @@ void      g_dbus_connection_call                              (GDBusConnection  
                                                                GCancellable       *cancellable,
                                                                GAsyncReadyCallback callback,
                                                                gpointer            user_data);
+_GIO_API
 GVariant *g_dbus_connection_call_finish                       (GDBusConnection    *connection,
                                                                GAsyncResult       *res,
                                                                GError            **error);
+_GIO_API
 GVariant *g_dbus_connection_call_sync                         (GDBusConnection    *connection,
                                                                const gchar        *bus_name,
                                                                const gchar        *object_path,
@@ -327,6 +360,7 @@ struct _GDBusInterfaceVTable
   gpointer padding[8];
 };
 
+_GIO_API
 guint            g_dbus_connection_register_object            (GDBusConnection            *connection,
                                                                const gchar                *object_path,
                                                                GDBusInterfaceInfo         *interface_info,
@@ -334,6 +368,7 @@ guint            g_dbus_connection_register_object            (GDBusConnection  
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
                                                                GError                    **error);
+_GIO_API
 gboolean         g_dbus_connection_unregister_object          (GDBusConnection            *connection,
                                                                guint                       registration_id);
 
@@ -455,6 +490,7 @@ struct _GDBusSubtreeVTable
   gpointer padding[8];
 };
 
+_GIO_API
 guint            g_dbus_connection_register_subtree           (GDBusConnection            *connection,
                                                                const gchar                *object_path,
                                                                const GDBusSubtreeVTable   *vtable,
@@ -462,6 +498,7 @@ guint            g_dbus_connection_register_subtree           (GDBusConnection  
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
                                                                GError                    **error);
+_GIO_API
 gboolean         g_dbus_connection_unregister_subtree         (GDBusConnection            *connection,
                                                                guint                       registration_id);
 
@@ -489,6 +526,7 @@ typedef void (*GDBusSignalCallback) (GDBusConnection  *connection,
                                      GVariant         *parameters,
                                      gpointer          user_data);
 
+_GIO_API
 guint            g_dbus_connection_signal_subscribe           (GDBusConnection     *connection,
                                                                const gchar         *sender,
                                                                const gchar         *interface_name,
@@ -499,6 +537,7 @@ guint            g_dbus_connection_signal_subscribe           (GDBusConnection  
                                                                GDBusSignalCallback  callback,
                                                                gpointer             user_data,
                                                                GDestroyNotify       user_data_free_func);
+_GIO_API
 void             g_dbus_connection_signal_unsubscribe         (GDBusConnection     *connection,
                                                                guint                subscription_id);
 
@@ -583,11 +622,13 @@ typedef GDBusMessage *(*GDBusMessageFilterFunction) (GDBusConnection *connection
                                                      gboolean         incoming,
                                                      gpointer         user_data);
 
+_GIO_API
 guint g_dbus_connection_add_filter (GDBusConnection            *connection,
                                     GDBusMessageFilterFunction  filter_function,
                                     gpointer                    user_data,
                                     GDestroyNotify              user_data_free_func);
 
+_GIO_API
 void  g_dbus_connection_remove_filter (GDBusConnection    *connection,
                                        guint               filter_id);
 

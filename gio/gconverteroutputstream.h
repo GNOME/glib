@@ -69,9 +69,12 @@ struct _GConverterOutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType                   g_converter_output_stream_get_type      (void) G_GNUC_CONST;
+_GIO_API
 GOutputStream          *g_converter_output_stream_new           (GOutputStream         *base_stream,
                                                                  GConverter            *converter);
+_GIO_API
 GConverter             *g_converter_output_stream_get_converter (GConverterOutputStream *converter_stream);
 
 G_END_DECLS

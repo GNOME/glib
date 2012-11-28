@@ -44,6 +44,7 @@ G_BEGIN_DECLS
  * next largest prime, or the highest it knows about which is about
  * MAXINT/4.
  */
+_GLIB_API
 guint	   g_spaced_primes_closest (guint num) G_GNUC_CONST;
 
 G_END_DECLS

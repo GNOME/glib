@@ -181,43 +181,67 @@ struct _GDBusNodeInfo
   GDBusAnnotationInfo **annotations;
 };
 
+_GIO_API
 const gchar        *g_dbus_annotation_info_lookup          (GDBusAnnotationInfo **annotations,
                                                             const gchar          *name);
+_GIO_API
 GDBusMethodInfo    *g_dbus_interface_info_lookup_method    (GDBusInterfaceInfo   *info,
                                                             const gchar          *name);
+_GIO_API
 GDBusSignalInfo    *g_dbus_interface_info_lookup_signal    (GDBusInterfaceInfo   *info,
                                                             const gchar          *name);
+_GIO_API
 GDBusPropertyInfo  *g_dbus_interface_info_lookup_property  (GDBusInterfaceInfo   *info,
                                                             const gchar          *name);
+_GIO_API
 void                g_dbus_interface_info_cache_build      (GDBusInterfaceInfo   *info);
+_GIO_API
 void                g_dbus_interface_info_cache_release    (GDBusInterfaceInfo   *info);
 
+_GIO_API
 void                g_dbus_interface_info_generate_xml     (GDBusInterfaceInfo   *info,
                                                             guint                 indent,
                                                             GString              *string_builder);
 
+_GIO_API
 GDBusNodeInfo      *g_dbus_node_info_new_for_xml           (const gchar          *xml_data,
                                                             GError              **error);
+_GIO_API
 GDBusInterfaceInfo *g_dbus_node_info_lookup_interface      (GDBusNodeInfo        *info,
                                                             const gchar          *name);
+_GIO_API
 void                g_dbus_node_info_generate_xml          (GDBusNodeInfo        *info,
                                                             guint                 indent,
                                                             GString              *string_builder);
 
+_GIO_API
 GDBusNodeInfo       *g_dbus_node_info_ref                  (GDBusNodeInfo        *info);
+_GIO_API
 GDBusInterfaceInfo  *g_dbus_interface_info_ref             (GDBusInterfaceInfo   *info);
+_GIO_API
 GDBusMethodInfo     *g_dbus_method_info_ref                (GDBusMethodInfo      *info);
+_GIO_API
 GDBusSignalInfo     *g_dbus_signal_info_ref                (GDBusSignalInfo      *info);
+_GIO_API
 GDBusPropertyInfo   *g_dbus_property_info_ref              (GDBusPropertyInfo    *info);
+_GIO_API
 GDBusArgInfo        *g_dbus_arg_info_ref                   (GDBusArgInfo         *info);
+_GIO_API
 GDBusAnnotationInfo *g_dbus_annotation_info_ref            (GDBusAnnotationInfo  *info);
 
+_GIO_API
 void                 g_dbus_node_info_unref                (GDBusNodeInfo        *info);
+_GIO_API
 void                 g_dbus_interface_info_unref           (GDBusInterfaceInfo   *info);
+_GIO_API
 void                 g_dbus_method_info_unref              (GDBusMethodInfo      *info);
+_GIO_API
 void                 g_dbus_signal_info_unref              (GDBusSignalInfo      *info);
+_GIO_API
 void                 g_dbus_property_info_unref            (GDBusPropertyInfo    *info);
+_GIO_API
 void                 g_dbus_arg_info_unref                 (GDBusArgInfo         *info);
+_GIO_API
 void                 g_dbus_annotation_info_unref          (GDBusAnnotationInfo  *info);
 
 /**
@@ -283,12 +307,19 @@ void                 g_dbus_annotation_info_unref          (GDBusAnnotationInfo 
  */
 #define G_TYPE_DBUS_ANNOTATION_INFO (g_dbus_annotation_info_get_type ())
 
+_GIO_API
 GType g_dbus_node_info_get_type       (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_interface_info_get_type  (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_method_info_get_type     (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_signal_info_get_type     (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_property_info_get_type   (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_arg_info_get_type        (void) G_GNUC_CONST;
+_GIO_API
 GType g_dbus_annotation_info_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

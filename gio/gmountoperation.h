@@ -98,27 +98,42 @@ struct _GMountOperationClass
   void (*_g_reserved9) (void);
 };
 
+_GIO_API
 GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
+_GIO_API
 GMountOperation * g_mount_operation_new           (void);
 
+_GIO_API
 const char *  g_mount_operation_get_username      (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_username      (GMountOperation *op,
 						   const char      *username);
+_GIO_API
 const char *  g_mount_operation_get_password      (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_password      (GMountOperation *op,
 						   const char      *password);
+_GIO_API
 gboolean      g_mount_operation_get_anonymous     (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_anonymous     (GMountOperation *op,
 						   gboolean         anonymous);
+_GIO_API
 const char *  g_mount_operation_get_domain        (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_domain        (GMountOperation *op,
 						   const char      *domain);
+_GIO_API
 GPasswordSave g_mount_operation_get_password_save (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_password_save (GMountOperation *op,
 						   GPasswordSave    save);
+_GIO_API
 int           g_mount_operation_get_choice        (GMountOperation *op);
+_GIO_API
 void          g_mount_operation_set_choice        (GMountOperation *op,
 						   int              choice);
+_GIO_API
 void          g_mount_operation_reply             (GMountOperation *op,
 						   GMountOperationResult result);
 

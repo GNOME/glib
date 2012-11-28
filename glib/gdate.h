@@ -119,11 +119,15 @@ struct _GDate
  * to get a usable object. You can also allocate a GDate statically,
  * then call g_date_clear() to initialize.
  */
+_GLIB_API
 GDate*       g_date_new                   (void);
+_GLIB_API
 GDate*       g_date_new_dmy               (GDateDay     day,
                                            GDateMonth   month,
                                            GDateYear    year);
+_GLIB_API
 GDate*       g_date_new_julian            (guint32      julian_day);
+_GLIB_API
 void         g_date_free                  (GDate       *date);
 
 /* check g_date_valid() after doing an operation that might fail, like
@@ -131,21 +135,34 @@ void         g_date_free                  (GDate       *date);
  * dates (the exceptions are the mutators, since you need those to
  * return to validity).
  */
+_GLIB_API
 gboolean     g_date_valid                 (const GDate *date);
+_GLIB_API
 gboolean     g_date_valid_day             (GDateDay     day) G_GNUC_CONST;
+_GLIB_API
 gboolean     g_date_valid_month           (GDateMonth month) G_GNUC_CONST;
+_GLIB_API
 gboolean     g_date_valid_year            (GDateYear  year) G_GNUC_CONST;
+_GLIB_API
 gboolean     g_date_valid_weekday         (GDateWeekday weekday) G_GNUC_CONST;
+_GLIB_API
 gboolean     g_date_valid_julian          (guint32 julian_date) G_GNUC_CONST;
+_GLIB_API
 gboolean     g_date_valid_dmy             (GDateDay     day,
                                            GDateMonth   month,
                                            GDateYear    year) G_GNUC_CONST;
 
+_GLIB_API
 GDateWeekday g_date_get_weekday           (const GDate *date);
+_GLIB_API
 GDateMonth   g_date_get_month             (const GDate *date);
+_GLIB_API
 GDateYear    g_date_get_year              (const GDate *date);
+_GLIB_API
 GDateDay     g_date_get_day               (const GDate *date);
+_GLIB_API
 guint32      g_date_get_julian            (const GDate *date);
+_GLIB_API
 guint        g_date_get_day_of_year       (const GDate *date);
 /* First monday/sunday is the start of week 1; if we haven't reached
  * that day, return 0. These are not ISO weeks of the year; that
@@ -153,14 +170,18 @@ guint        g_date_get_day_of_year       (const GDate *date);
  * these functions return the number of weeks, starting on the
  * corrsponding day
  */
+_GLIB_API
 guint        g_date_get_monday_week_of_year (const GDate *date);
+_GLIB_API
 guint        g_date_get_sunday_week_of_year (const GDate *date);
+_GLIB_API
 guint        g_date_get_iso8601_week_of_year (const GDate *date);
 
 /* If you create a static date struct you need to clear it to get it
  * in a sane state before use. You can clear a whole array at
  * once with the ndates argument.
  */
+_GLIB_API
 void         g_date_clear                 (GDate       *date,
                                            guint        n_dates);
 
@@ -168,76 +189,103 @@ void         g_date_clear                 (GDate       *date,
  * permits many formats but tries to catch common typos. If your data
  * needs to be strictly validated, it is not an appropriate function.
  */
+_GLIB_API
 void         g_date_set_parse             (GDate       *date,
                                            const gchar *str);
+_GLIB_API
 void         g_date_set_time_t            (GDate       *date,
 					   time_t       timet);
+_GLIB_API
 void         g_date_set_time_val          (GDate       *date,
 					   GTimeVal    *timeval);
 #ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_FOR(g_date_set_time_t)
+_GLIB_API
 void         g_date_set_time              (GDate       *date,
                                            GTime        time_);
 #endif
+_GLIB_API
 void         g_date_set_month             (GDate       *date,
                                            GDateMonth   month);
+_GLIB_API
 void         g_date_set_day               (GDate       *date,
                                            GDateDay     day);
+_GLIB_API
 void         g_date_set_year              (GDate       *date,
                                            GDateYear    year);
+_GLIB_API
 void         g_date_set_dmy               (GDate       *date,
                                            GDateDay     day,
                                            GDateMonth   month,
                                            GDateYear    y);
+_GLIB_API
 void         g_date_set_julian            (GDate       *date,
                                            guint32      julian_date);
+_GLIB_API
 gboolean     g_date_is_first_of_month     (const GDate *date);
+_GLIB_API
 gboolean     g_date_is_last_of_month      (const GDate *date);
 
 /* To go forward by some number of weeks just go forward weeks*7 days */
+_GLIB_API
 void         g_date_add_days              (GDate       *date,
                                            guint        n_days);
+_GLIB_API
 void         g_date_subtract_days         (GDate       *date,
                                            guint        n_days);
 
 /* If you add/sub months while day > 28, the day might change */
+_GLIB_API
 void         g_date_add_months            (GDate       *date,
                                            guint        n_months);
+_GLIB_API
 void         g_date_subtract_months       (GDate       *date,
                                            guint        n_months);
 
 /* If it's feb 29, changing years can move you to the 28th */
+_GLIB_API
 void         g_date_add_years             (GDate       *date,
                                            guint        n_years);
+_GLIB_API
 void         g_date_subtract_years        (GDate       *date,
                                            guint        n_years);
+_GLIB_API
 gboolean     g_date_is_leap_year          (GDateYear    year) G_GNUC_CONST;
+_GLIB_API
 guint8       g_date_get_days_in_month     (GDateMonth   month,
                                            GDateYear    year) G_GNUC_CONST;
+_GLIB_API
 guint8       g_date_get_monday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
+_GLIB_API
 guint8       g_date_get_sunday_weeks_in_year  (GDateYear    year) G_GNUC_CONST;
 
 /* Returns the number of days between the two dates.  If date2 comes
    before date1, a negative value is return. */
+_GLIB_API
 gint         g_date_days_between          (const GDate *date1,
 					   const GDate *date2);
 
 /* qsort-friendly (with a cast...) */
+_GLIB_API
 gint         g_date_compare               (const GDate *lhs,
                                            const GDate *rhs);
+_GLIB_API
 void         g_date_to_struct_tm          (const GDate *date,
                                            struct tm   *tm);
 
+_GLIB_API
 void         g_date_clamp                 (GDate *date,
 					   const GDate *min_date,
 					   const GDate *max_date);
 
 /* Swap date1 and date2's values if date1 > date2. */
+_GLIB_API
 void         g_date_order                 (GDate *date1, GDate *date2);
 
 /* Just like strftime() except you can only use date-related formats.
  *   Using a time format is undefined.
  */
+_GLIB_API
 gsize        g_date_strftime              (gchar       *s,
                                            gsize        slen,
                                            const gchar *format,

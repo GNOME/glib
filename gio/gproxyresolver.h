@@ -68,19 +68,25 @@ struct _GProxyResolverInterface {
 			      GError              **error);
 };
 
+_GIO_API
 GType		g_proxy_resolver_get_type       (void) G_GNUC_CONST;
+_GIO_API
 GProxyResolver *g_proxy_resolver_get_default    (void);
 
+_GIO_API
 gboolean        g_proxy_resolver_is_supported   (GProxyResolver       *resolver);
+_GIO_API
 gchar	      **g_proxy_resolver_lookup		(GProxyResolver       *resolver,
 						 const gchar          *uri,
 						 GCancellable         *cancellable,
 						 GError              **error);
+_GIO_API
 void		g_proxy_resolver_lookup_async   (GProxyResolver       *resolver,
 						 const gchar          *uri,
 						 GCancellable         *cancellable,
 						 GAsyncReadyCallback   callback,
 						 gpointer              user_data);
+_GIO_API
 gchar	      **g_proxy_resolver_lookup_finish  (GProxyResolver       *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);

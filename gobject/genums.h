@@ -217,23 +217,33 @@ struct _GFlagsValue
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 GEnumValue*	g_enum_get_value		(GEnumClass	*enum_class,
 						 gint		 value);
+_GOBJECT_API
 GEnumValue*	g_enum_get_value_by_name	(GEnumClass	*enum_class,
 						 const gchar	*name);
+_GOBJECT_API
 GEnumValue*	g_enum_get_value_by_nick	(GEnumClass	*enum_class,
 						 const gchar	*nick);
+_GOBJECT_API
 GFlagsValue*	g_flags_get_first_value		(GFlagsClass	*flags_class,
 						 guint		 value);
+_GOBJECT_API
 GFlagsValue*	g_flags_get_value_by_name	(GFlagsClass	*flags_class,
 						 const gchar	*name);
+_GOBJECT_API
 GFlagsValue*	g_flags_get_value_by_nick	(GFlagsClass	*flags_class,
 						 const gchar	*nick);
+_GOBJECT_API
 void            g_value_set_enum        	(GValue         *value,
 						 gint            v_enum);
+_GOBJECT_API
 gint            g_value_get_enum        	(const GValue   *value);
+_GOBJECT_API
 void            g_value_set_flags       	(GValue         *value,
 						 guint           v_flags);
+_GOBJECT_API
 guint           g_value_get_flags       	(const GValue   *value);
 
 
@@ -242,16 +252,20 @@ guint           g_value_get_flags       	(const GValue   *value);
 /* const_static_values is a NULL terminated array of enum/flags
  * values that is taken over!
  */
+_GOBJECT_API
 GType	g_enum_register_static	   (const gchar	      *name,
 				    const GEnumValue  *const_static_values);
+_GOBJECT_API
 GType	g_flags_register_static	   (const gchar	      *name,
 				    const GFlagsValue *const_static_values);
 /* functions to complete the type information
  * for enums/flags implemented by plugins
  */
+_GOBJECT_API
 void	g_enum_complete_type_info  (GType	       g_enum_type,
 				    GTypeInfo	      *info,
 				    const GEnumValue  *const_values);
+_GOBJECT_API
 void	g_flags_complete_type_info (GType	       g_flags_type,
 				    GTypeInfo	      *info,
 				    const GFlagsValue *const_values);

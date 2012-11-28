@@ -66,6 +66,7 @@ typedef enum
   G_BOOKMARK_FILE_ERROR_FILE_NOT_FOUND
 } GBookmarkFileError;
 
+_GLIB_API
 GQuark g_bookmark_file_error_quark (void);
 
 /**
@@ -76,72 +77,93 @@ GQuark g_bookmark_file_error_quark (void);
  */
 typedef struct _GBookmarkFile GBookmarkFile;
 
+_GLIB_API
 GBookmarkFile *g_bookmark_file_new                 (void);
+_GLIB_API
 void           g_bookmark_file_free                (GBookmarkFile  *bookmark);
 
+_GLIB_API
 gboolean       g_bookmark_file_load_from_file      (GBookmarkFile  *bookmark,
 						    const gchar    *filename,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_load_from_data      (GBookmarkFile  *bookmark,
 						    const gchar    *data,
 						    gsize           length,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_load_from_data_dirs (GBookmarkFile  *bookmark,
 						    const gchar    *file,
 						    gchar         **full_path,
 						    GError        **error);
+_GLIB_API
 gchar *        g_bookmark_file_to_data             (GBookmarkFile  *bookmark,
 						    gsize          *length,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 gboolean       g_bookmark_file_to_file             (GBookmarkFile  *bookmark,
 						    const gchar    *filename,
 						    GError        **error);
 
+_GLIB_API
 void           g_bookmark_file_set_title           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *title);
+_GLIB_API
 gchar *        g_bookmark_file_get_title           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 void           g_bookmark_file_set_description     (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *description);
+_GLIB_API
 gchar *        g_bookmark_file_get_description     (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 void           g_bookmark_file_set_mime_type       (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *mime_type);
+_GLIB_API
 gchar *        g_bookmark_file_get_mime_type       (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 void           g_bookmark_file_set_groups          (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar   **groups,
 						    gsize           length);
+_GLIB_API
 void           g_bookmark_file_add_group           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *group);
+_GLIB_API
 gboolean       g_bookmark_file_has_group           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *group,
 						    GError        **error);
+_GLIB_API
 gchar **       g_bookmark_file_get_groups          (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gsize          *length,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 void           g_bookmark_file_add_application     (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
 						    const gchar    *exec);
+_GLIB_API
 gboolean       g_bookmark_file_has_application     (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
 						    GError        **error);
+_GLIB_API
 gchar **       g_bookmark_file_get_applications    (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gsize          *length,
 						    GError        **error) G_GNUC_MALLOC;
+_GLIB_API
 gboolean       g_bookmark_file_set_app_info        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
@@ -149,6 +171,7 @@ gboolean       g_bookmark_file_set_app_info        (GBookmarkFile  *bookmark,
 						    gint            count,
 						    time_t          stamp,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_get_app_info        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
@@ -156,55 +179,72 @@ gboolean       g_bookmark_file_get_app_info        (GBookmarkFile  *bookmark,
 						    guint          *count,
 						    time_t         *stamp,
 						    GError        **error);
+_GLIB_API
 void           g_bookmark_file_set_is_private      (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gboolean        is_private);
+_GLIB_API
 gboolean       g_bookmark_file_get_is_private      (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error);
+_GLIB_API
 void           g_bookmark_file_set_icon            (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *href,
 						    const gchar    *mime_type);
+_GLIB_API
 gboolean       g_bookmark_file_get_icon            (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gchar         **href,
 						    gchar         **mime_type,
 						    GError        **error);
+_GLIB_API
 void           g_bookmark_file_set_added           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    time_t          added);
+_GLIB_API
 time_t         g_bookmark_file_get_added           (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error);
+_GLIB_API
 void           g_bookmark_file_set_modified        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    time_t          modified);
+_GLIB_API
 time_t         g_bookmark_file_get_modified        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error);
+_GLIB_API
 void           g_bookmark_file_set_visited         (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    time_t          visited);
+_GLIB_API
 time_t         g_bookmark_file_get_visited         (GBookmarkFile  *bookmark,
 						    const gchar    *uri, 
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_has_item            (GBookmarkFile  *bookmark,
 						    const gchar    *uri);
+_GLIB_API
 gint           g_bookmark_file_get_size            (GBookmarkFile  *bookmark);
+_GLIB_API
 gchar **       g_bookmark_file_get_uris            (GBookmarkFile  *bookmark,
 						    gsize          *length) G_GNUC_MALLOC;
+_GLIB_API
 gboolean       g_bookmark_file_remove_group        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *group,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_remove_application  (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    const gchar    *name,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_remove_item         (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    GError        **error);
+_GLIB_API
 gboolean       g_bookmark_file_move_item           (GBookmarkFile  *bookmark,
 						    const gchar    *old_uri,
 						    const gchar    *new_uri,

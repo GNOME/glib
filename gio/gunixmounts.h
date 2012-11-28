@@ -57,50 +57,83 @@ typedef struct _GUnixMountMonitorClass GUnixMountMonitorClass;
 #define G_IS_UNIX_MOUNT_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_MOUNT_MONITOR))
 #define G_IS_UNIX_MOUNT_MONITOR_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_UNIX_MOUNT_MONITOR))
 
+_GIO_API
 void           g_unix_mount_free                    (GUnixMountEntry    *mount_entry);
+_GIO_API
 void           g_unix_mount_point_free              (GUnixMountPoint    *mount_point);
+_GIO_API
 gint           g_unix_mount_compare                 (GUnixMountEntry    *mount1,
 						     GUnixMountEntry    *mount2);
+_GIO_API
 const char *   g_unix_mount_get_mount_path          (GUnixMountEntry    *mount_entry);
+_GIO_API
 const char *   g_unix_mount_get_device_path         (GUnixMountEntry    *mount_entry);
+_GIO_API
 const char *   g_unix_mount_get_fs_type             (GUnixMountEntry    *mount_entry);
+_GIO_API
 gboolean       g_unix_mount_is_readonly             (GUnixMountEntry    *mount_entry);
+_GIO_API
 gboolean       g_unix_mount_is_system_internal      (GUnixMountEntry    *mount_entry);
+_GIO_API
 gboolean       g_unix_mount_guess_can_eject         (GUnixMountEntry    *mount_entry);
+_GIO_API
 gboolean       g_unix_mount_guess_should_display    (GUnixMountEntry    *mount_entry);
+_GIO_API
 char *         g_unix_mount_guess_name              (GUnixMountEntry    *mount_entry);
+_GIO_API
 GIcon *        g_unix_mount_guess_icon              (GUnixMountEntry    *mount_entry);
+_GIO_API
 GIcon *        g_unix_mount_guess_symbolic_icon     (GUnixMountEntry    *mount_entry);
 
 
+_GIO_API
 gint           g_unix_mount_point_compare           (GUnixMountPoint    *mount1,
 						     GUnixMountPoint    *mount2);
+_GIO_API
 const char *   g_unix_mount_point_get_mount_path    (GUnixMountPoint    *mount_point);
+_GIO_API
 const char *   g_unix_mount_point_get_device_path   (GUnixMountPoint    *mount_point);
+_GIO_API
 const char *   g_unix_mount_point_get_fs_type       (GUnixMountPoint    *mount_point);
 GLIB_AVAILABLE_IN_2_32
 const char *   g_unix_mount_point_get_options       (GUnixMountPoint    *mount_point);
+_GIO_API
 gboolean       g_unix_mount_point_is_readonly       (GUnixMountPoint    *mount_point);
+_GIO_API
 gboolean       g_unix_mount_point_is_user_mountable (GUnixMountPoint    *mount_point);
+_GIO_API
 gboolean       g_unix_mount_point_is_loopback       (GUnixMountPoint    *mount_point);
+_GIO_API
 gboolean       g_unix_mount_point_guess_can_eject   (GUnixMountPoint    *mount_point);
+_GIO_API
 char *         g_unix_mount_point_guess_name        (GUnixMountPoint    *mount_point);
+_GIO_API
 GIcon *        g_unix_mount_point_guess_icon        (GUnixMountPoint    *mount_point);
+_GIO_API
 GIcon *        g_unix_mount_point_guess_symbolic_icon (GUnixMountPoint    *mount_point);
 
 
+_GIO_API
 GList *        g_unix_mount_points_get              (guint64            *time_read);
+_GIO_API
 GList *        g_unix_mounts_get                    (guint64            *time_read);
+_GIO_API
 GUnixMountEntry *g_unix_mount_at                    (const char         *mount_path,
 						     guint64            *time_read);
+_GIO_API
 gboolean       g_unix_mounts_changed_since          (guint64             time);
+_GIO_API
 gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
+_GIO_API
 GType              g_unix_mount_monitor_get_type       (void) G_GNUC_CONST;
+_GIO_API
 GUnixMountMonitor *g_unix_mount_monitor_new            (void);
+_GIO_API
 void               g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,
                                                         int                limit_msec);
 
+_GIO_API
 gboolean g_unix_is_mount_path_system_internal (const char *mount_path);
 
 G_END_DECLS

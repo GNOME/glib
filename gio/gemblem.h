@@ -45,12 +45,17 @@ G_BEGIN_DECLS
 typedef struct _GEmblem        GEmblem;
 typedef struct _GEmblemClass   GEmblemClass;
 
+_GIO_API
 GType          g_emblem_get_type        (void) G_GNUC_CONST;
 
+_GIO_API
 GEmblem       *g_emblem_new             (GIcon         *icon);
+_GIO_API
 GEmblem       *g_emblem_new_with_origin (GIcon         *icon,
                                          GEmblemOrigin  origin);
+_GIO_API
 GIcon         *g_emblem_get_icon        (GEmblem       *emblem);
+_GIO_API
 GEmblemOrigin  g_emblem_get_origin      (GEmblem       *emblem);
 
 G_END_DECLS

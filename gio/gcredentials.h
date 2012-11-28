@@ -46,26 +46,34 @@ G_BEGIN_DECLS
 
 typedef struct _GCredentialsClass   GCredentialsClass;
 
+_GIO_API
 GType            g_credentials_get_type           (void) G_GNUC_CONST;
 
+_GIO_API
 GCredentials    *g_credentials_new                (void);
 
+_GIO_API
 gchar           *g_credentials_to_string          (GCredentials    *credentials);
 
+_GIO_API
 gpointer         g_credentials_get_native         (GCredentials    *credentials,
                                                    GCredentialsType native_type);
 
+_GIO_API
 void             g_credentials_set_native         (GCredentials    *credentials,
                                                    GCredentialsType native_type,
                                                    gpointer         native);
 
+_GIO_API
 gboolean         g_credentials_is_same_user       (GCredentials    *credentials,
                                                    GCredentials    *other_credentials,
                                                    GError         **error);
 
 #ifdef G_OS_UNIX
+_GIO_API
 uid_t            g_credentials_get_unix_user      (GCredentials    *credentials,
                                                    GError         **error);
+_GIO_API
 gboolean         g_credentials_set_unix_user      (GCredentials    *credentials,
                                                    uid_t           uid,
                                                    GError         **error);

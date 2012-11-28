@@ -65,9 +65,13 @@ struct _GDBusObjectIface
 
 };
 
+_GIO_API
 GType            g_dbus_object_get_type        (void) G_GNUC_CONST;
+_GIO_API
 const gchar     *g_dbus_object_get_object_path (GDBusObject  *object);
+_GIO_API
 GList           *g_dbus_object_get_interfaces  (GDBusObject  *object);
+_GIO_API
 GDBusInterface  *g_dbus_object_get_interface   (GDBusObject  *object,
                                                 const gchar  *interface_name);
 

@@ -26,23 +26,30 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 gint                  g_printf    (gchar const *format,
                                    ...) G_GNUC_PRINTF (1, 2);
+_GLIB_API
 gint                  g_fprintf   (FILE        *file,
 				   gchar const *format,
 				   ...) G_GNUC_PRINTF (2, 3);
+_GLIB_API
 gint                  g_sprintf   (gchar       *string,
 				   gchar const *format,
 				   ...) G_GNUC_PRINTF (2, 3);
 
+_GLIB_API
 gint                  g_vprintf   (gchar const *format,
                                    va_list      args);
+_GLIB_API
 gint                  g_vfprintf  (FILE        *file,
 				   gchar const *format,
 				   va_list      args);
+_GLIB_API
 gint                  g_vsprintf  (gchar       *string,
 				   gchar const *format,
 				   va_list      args);
+_GLIB_API
 gint                  g_vasprintf (gchar      **string,
 				   gchar const *format,
 				   va_list      args);

@@ -40,10 +40,13 @@ G_BEGIN_DECLS
  **/
 #define G_IO_ERROR g_io_error_quark()
 
+_GIO_API
 GQuark       g_io_error_quark      (void);
+_GIO_API
 GIOErrorEnum g_io_error_from_errno (gint err_no);
 
 #ifdef G_OS_WIN32
+_GIO_API
 GIOErrorEnum g_io_error_from_win32_error (gint error_code);
 #endif
 

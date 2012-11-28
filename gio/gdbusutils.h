@@ -31,16 +31,24 @@
 
 G_BEGIN_DECLS
 
+_GIO_API
 gboolean g_dbus_is_guid (const gchar *string);
+_GIO_API
 gchar *g_dbus_generate_guid (void);
 
+_GIO_API
 gboolean g_dbus_is_name (const gchar *string);
+_GIO_API
 gboolean g_dbus_is_unique_name (const gchar *string);
+_GIO_API
 gboolean g_dbus_is_member_name (const gchar *string);
+_GIO_API
 gboolean g_dbus_is_interface_name (const gchar *string);
 
+_GIO_API
 void g_dbus_gvariant_to_gvalue (GVariant  *value,
                                 GValue    *out_gvalue);
+_GIO_API
 GVariant *g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
                                      const GVariantType   *type);
 

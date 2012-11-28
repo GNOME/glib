@@ -68,17 +68,25 @@ struct _GDBusObjectManagerServerClass
   gpointer padding[8];
 };
 
+_GIO_API
 GType                     g_dbus_object_manager_server_get_type            (void) G_GNUC_CONST;
+_GIO_API
 GDBusObjectManagerServer *g_dbus_object_manager_server_new                 (const gchar               *object_path);
+_GIO_API
 GDBusConnection          *g_dbus_object_manager_server_get_connection      (GDBusObjectManagerServer  *manager);
+_GIO_API
 void                      g_dbus_object_manager_server_set_connection      (GDBusObjectManagerServer  *manager,
                                                                             GDBusConnection           *connection);
+_GIO_API
 void                      g_dbus_object_manager_server_export              (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectSkeleton       *object);
+_GIO_API
 void                      g_dbus_object_manager_server_export_uniquely     (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectSkeleton       *object);
+_GIO_API
 gboolean                  g_dbus_object_manager_server_is_exported         (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectSkeleton       *object);
+_GIO_API
 gboolean                  g_dbus_object_manager_server_unexport            (GDBusObjectManagerServer  *manager,
                                                                             const gchar               *object_path);
 

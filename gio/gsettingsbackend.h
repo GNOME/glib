@@ -104,39 +104,51 @@ struct _GSettingsBackend
   GSettingsBackendPrivate *priv;
 };
 
+_GIO_API
 GType                   g_settings_backend_get_type                     (void);
 
+_GIO_API
 void                    g_settings_backend_changed                      (GSettingsBackend    *backend,
                                                                          const gchar         *key,
                                                                          gpointer             origin_tag);
+_GIO_API
 void                    g_settings_backend_path_changed                 (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gpointer             origin_tag);
+_GIO_API
 void                    g_settings_backend_flatten_tree                 (GTree               *tree,
                                                                          gchar              **path,
                                                                          const gchar       ***keys,
                                                                          GVariant          ***values);
+_GIO_API
 void                    g_settings_backend_keys_changed                 (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gchar const * const *items,
                                                                          gpointer             origin_tag);
 
+_GIO_API
 void                    g_settings_backend_path_writable_changed        (GSettingsBackend    *backend,
                                                                          const gchar         *path);
+_GIO_API
 void                    g_settings_backend_writable_changed             (GSettingsBackend    *backend,
                                                                          const gchar         *key);
+_GIO_API
 void                    g_settings_backend_changed_tree                 (GSettingsBackend    *backend,
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
 
+_GIO_API
 GSettingsBackend *      g_settings_backend_get_default                  (void);
 
+_GIO_API
 GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename,
                                                                          const gchar         *root_path,
                                                                          const gchar         *root_group);
 
+_GIO_API
 GSettingsBackend *      g_null_settings_backend_new                     (void);
 
+_GIO_API
 GSettingsBackend *      g_memory_settings_backend_new                   (void);
 
 G_END_DECLS

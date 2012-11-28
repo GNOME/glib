@@ -46,8 +46,10 @@ struct _GTlsFileDatabaseInterface
   gpointer padding[8];
 };
 
+_GIO_API
 GType                        g_tls_file_database_get_type              (void) G_GNUC_CONST;
 
+_GIO_API
 GTlsDatabase*                g_tls_file_database_new                   (const gchar  *anchors,
                                                                         GError      **error);
 

@@ -89,6 +89,8 @@
 static void stack_trace (char **args);
 #endif
 
+/* People want to hit this from their debugger... */
+_GLIB_API
 extern volatile gboolean glib_on_error_halt;
 volatile gboolean glib_on_error_halt = TRUE;
 

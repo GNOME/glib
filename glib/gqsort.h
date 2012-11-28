@@ -35,6 +35,7 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 void g_qsort_with_data (gconstpointer    pbase,
 			gint             total_elems,
 			gsize            size,

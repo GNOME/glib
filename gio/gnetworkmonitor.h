@@ -71,17 +71,21 @@ GType            g_network_monitor_get_type              (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_32
 GNetworkMonitor *g_network_monitor_get_default           (void);
 
+_GIO_API
 gboolean         g_network_monitor_get_network_available (GNetworkMonitor     *monitor);
 
+_GIO_API
 gboolean         g_network_monitor_can_reach             (GNetworkMonitor     *monitor,
 							  GSocketConnectable  *connectable,
 							  GCancellable        *cancellable,
 							  GError             **error);
+_GIO_API
 void             g_network_monitor_can_reach_async       (GNetworkMonitor     *monitor,
 							  GSocketConnectable  *connectable,
 							  GCancellable        *cancellable,
 							  GAsyncReadyCallback  callback,
 							  gpointer             user_data);
+_GIO_API
 gboolean         g_network_monitor_can_reach_finish      (GNetworkMonitor     *monitor,
 							  GAsyncResult        *result,
 							  GError             **error);

@@ -30,12 +30,17 @@ G_BEGIN_DECLS
 
 /* slices - fast allocation/release of small memory blocks
  */
+_GLIB_API
 gpointer g_slice_alloc          	(gsize	       block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+_GLIB_API
 gpointer g_slice_alloc0         	(gsize         block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+_GLIB_API
 gpointer g_slice_copy                   (gsize         block_size,
                                          gconstpointer mem_block) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+_GLIB_API
 void     g_slice_free1          	(gsize         block_size,
 					 gpointer      mem_block);
+_GLIB_API
 void     g_slice_free_chain_with_offset (gsize         block_size,
 					 gpointer      mem_chain,
 					 gsize         next_offset);
@@ -86,6 +91,7 @@ GLIB_DEPRECATED_IN_2_34
 gint64*  g_slice_get_config_state  (GSliceConfig ckey, gint64 address, guint *n_values);
 
 #ifdef G_ENABLE_DEBUG
+_GLIB_API
 void     g_slice_debug_tree_statistics (void);
 #endif
 

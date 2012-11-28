@@ -46,12 +46,16 @@ struct _GZlibCompressorClass
   GObjectClass parent_class;
 };
 
+_GIO_API
 GType            g_zlib_compressor_get_type (void) G_GNUC_CONST;
 
+_GIO_API
 GZlibCompressor *g_zlib_compressor_new (GZlibCompressorFormat format,
 					int level);
 
+_GIO_API
 GFileInfo       *g_zlib_compressor_get_file_info (GZlibCompressor *compressor);
+_GIO_API
 void             g_zlib_compressor_set_file_info (GZlibCompressor *compressor,
                                                   GFileInfo       *file_info);
 

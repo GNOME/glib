@@ -37,6 +37,7 @@
 G_BEGIN_DECLS
 
 #define G_THREAD_ERROR g_thread_error_quark ()
+_GLIB_API
 GQuark g_thread_error_quark (void);
 
 typedef enum
@@ -150,9 +151,13 @@ GThread *       g_thread_try_new                (const gchar    *name,
                                                  GThreadFunc     func,
                                                  gpointer        data,
                                                  GError        **error);
+_GLIB_API
 GThread *       g_thread_self                   (void);
+_GLIB_API
 void            g_thread_exit                   (gpointer        retval);
+_GLIB_API
 gpointer        g_thread_join                   (GThread        *thread);
+_GLIB_API
 void            g_thread_yield                  (void);
 
 
@@ -160,8 +165,11 @@ GLIB_AVAILABLE_IN_2_32
 void            g_mutex_init                    (GMutex         *mutex);
 GLIB_AVAILABLE_IN_2_32
 void            g_mutex_clear                   (GMutex         *mutex);
+_GLIB_API
 void            g_mutex_lock                    (GMutex         *mutex);
+_GLIB_API
 gboolean        g_mutex_trylock                 (GMutex         *mutex);
+_GLIB_API
 void            g_mutex_unlock                  (GMutex         *mutex);
 
 GLIB_AVAILABLE_IN_2_32
@@ -196,26 +204,34 @@ GLIB_AVAILABLE_IN_2_32
 void            g_cond_init                     (GCond          *cond);
 GLIB_AVAILABLE_IN_2_32
 void            g_cond_clear                    (GCond          *cond);
+_GLIB_API
 void            g_cond_wait                     (GCond          *cond,
                                                  GMutex         *mutex);
+_GLIB_API
 void            g_cond_signal                   (GCond          *cond);
+_GLIB_API
 void            g_cond_broadcast                (GCond          *cond);
 GLIB_AVAILABLE_IN_2_32
 gboolean        g_cond_wait_until               (GCond          *cond,
                                                  GMutex         *mutex,
                                                  gint64          end_time);
 
+_GLIB_API
 gpointer        g_private_get                   (GPrivate       *key);
+_GLIB_API
 void            g_private_set                   (GPrivate       *key,
                                                  gpointer        value);
 GLIB_AVAILABLE_IN_2_32
 void            g_private_replace               (GPrivate       *key,
                                                  gpointer        value);
 
+_GLIB_API
 gpointer        g_once_impl                     (GOnce          *once,
                                                  GThreadFunc     func,
                                                  gpointer        arg);
+_GLIB_API
 gboolean        g_once_init_enter               (volatile void  *location);
+_GLIB_API
 void            g_once_init_leave               (volatile void  *location,
                                                  gsize           result);
 

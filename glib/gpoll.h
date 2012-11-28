@@ -111,6 +111,7 @@ struct _GPollFD
 #define G_POLLFD_FORMAT "%d"
 #endif
 
+_GLIB_API
 gint g_poll (GPollFD *fds,
 	     guint    nfds,
 	     gint     timeout);

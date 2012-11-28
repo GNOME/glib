@@ -115,44 +115,56 @@ struct _GResolverClass {
 
 };
 
+_GIO_API
 GType      g_resolver_get_type                  (void) G_GNUC_CONST;
+_GIO_API
 GResolver *g_resolver_get_default               (void);
+_GIO_API
 void       g_resolver_set_default               (GResolver            *resolver);
 
+_GIO_API
 GList     *g_resolver_lookup_by_name            (GResolver            *resolver,
 						 const gchar          *hostname,
 						 GCancellable         *cancellable,
 						 GError              **error);
+_GIO_API
 void       g_resolver_lookup_by_name_async      (GResolver            *resolver,
 						 const gchar          *hostname,
 						 GCancellable         *cancellable,
 						 GAsyncReadyCallback   callback,
 						 gpointer              user_data);
+_GIO_API
 GList     *g_resolver_lookup_by_name_finish     (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
 
+_GIO_API
 void       g_resolver_free_addresses            (GList                *addresses);
 
+_GIO_API
 gchar     *g_resolver_lookup_by_address         (GResolver            *resolver,
 						 GInetAddress         *address,
 						 GCancellable         *cancellable,
 						 GError              **error);
+_GIO_API
 void       g_resolver_lookup_by_address_async   (GResolver            *resolver,
 						 GInetAddress         *address,
 						 GCancellable         *cancellable,
 						 GAsyncReadyCallback   callback,
 						 gpointer              user_data);
+_GIO_API
 gchar     *g_resolver_lookup_by_address_finish  (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
 
+_GIO_API
 GList     *g_resolver_lookup_service            (GResolver            *resolver,
 						 const gchar          *service,
 						 const gchar          *protocol,
 						 const gchar          *domain,
 						 GCancellable         *cancellable,
 						 GError              **error);
+_GIO_API
 void       g_resolver_lookup_service_async      (GResolver            *resolver,
 						 const gchar          *service,
 						 const gchar          *protocol,
@@ -160,6 +172,7 @@ void       g_resolver_lookup_service_async      (GResolver            *resolver,
 						 GCancellable         *cancellable,
 						 GAsyncReadyCallback   callback,
 						 gpointer              user_data);
+_GIO_API
 GList     *g_resolver_lookup_service_finish     (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
@@ -182,6 +195,7 @@ GList     *g_resolver_lookup_records_finish     (GResolver            *resolver,
                                                  GAsyncResult         *result,
                                                  GError              **error);
 
+_GIO_API
 void       g_resolver_free_targets              (GList                *targets);
 
 /**
@@ -192,6 +206,7 @@ void       g_resolver_free_targets              (GList                *targets);
  * error domains.
  */
 #define G_RESOLVER_ERROR (g_resolver_error_quark ())
+_GIO_API
 GQuark g_resolver_error_quark (void);
 
 G_END_DECLS

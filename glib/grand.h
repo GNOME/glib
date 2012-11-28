@@ -46,36 +46,52 @@ typedef struct _GRand           GRand;
  * double_range -> [begin..end)
  */
 
+_GLIB_API
 GRand*  g_rand_new_with_seed  (guint32  seed);
+_GLIB_API
 GRand*  g_rand_new_with_seed_array (const guint32 *seed,
 				    guint seed_length);
+_GLIB_API
 GRand*  g_rand_new            (void);
+_GLIB_API
 void    g_rand_free           (GRand   *rand_);
+_GLIB_API
 GRand*  g_rand_copy           (GRand   *rand_);
+_GLIB_API
 void    g_rand_set_seed       (GRand   *rand_,
 			       guint32  seed);
+_GLIB_API
 void	g_rand_set_seed_array (GRand   *rand_,
 			       const guint32 *seed,
 			       guint    seed_length);
 
 #define g_rand_boolean(rand_) ((g_rand_int (rand_) & (1 << 15)) != 0)
 
+_GLIB_API
 guint32 g_rand_int            (GRand   *rand_);
+_GLIB_API
 gint32  g_rand_int_range      (GRand   *rand_,
 			       gint32   begin,
 			       gint32   end);
+_GLIB_API
 gdouble g_rand_double         (GRand   *rand_);
+_GLIB_API
 gdouble g_rand_double_range   (GRand   *rand_,
 			       gdouble  begin,
 			       gdouble  end);
+_GLIB_API
 void    g_random_set_seed     (guint32  seed);
 
 #define g_random_boolean() ((g_random_int () & (1 << 15)) != 0)
 
+_GLIB_API
 guint32 g_random_int          (void);
+_GLIB_API
 gint32  g_random_int_range    (gint32   begin,
 			       gint32   end);
+_GLIB_API
 gdouble g_random_double       (void);
+_GLIB_API
 gdouble g_random_double_range (gdouble  begin,
 			       gdouble  end);
 

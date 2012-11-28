@@ -42,21 +42,30 @@ struct _GTlsClientConnectionInterface
 
 };
 
+_GIO_API
 GType                 g_tls_client_connection_get_type             (void) G_GNUC_CONST;
 
+_GIO_API
 GIOStream *           g_tls_client_connection_new                  (GIOStream               *base_io_stream,
 								    GSocketConnectable      *server_identity,
 								    GError                 **error);
 
+_GIO_API
 GTlsCertificateFlags  g_tls_client_connection_get_validation_flags (GTlsClientConnection    *conn);
+_GIO_API
 void                  g_tls_client_connection_set_validation_flags (GTlsClientConnection    *conn,
 								    GTlsCertificateFlags     flags);
+_GIO_API
 GSocketConnectable   *g_tls_client_connection_get_server_identity  (GTlsClientConnection    *conn);
+_GIO_API
 void                  g_tls_client_connection_set_server_identity  (GTlsClientConnection    *conn,
 								    GSocketConnectable      *identity);
+_GIO_API
 gboolean              g_tls_client_connection_get_use_ssl3         (GTlsClientConnection    *conn);
+_GIO_API
 void                  g_tls_client_connection_set_use_ssl3         (GTlsClientConnection    *conn,
 								    gboolean                 use_ssl3);
+_GIO_API
 GList *               g_tls_client_connection_get_accepted_cas     (GTlsClientConnection    *conn);
 
 G_END_DECLS

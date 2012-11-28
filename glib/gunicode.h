@@ -506,66 +506,99 @@ typedef enum
   G_UNICODE_SCRIPT_TAKRI                   /* Takr */
 } GUnicodeScript;
 
+_GLIB_API
 guint32        g_unicode_script_to_iso15924   (GUnicodeScript script);
+_GLIB_API
 GUnicodeScript g_unicode_script_from_iso15924 (guint32        iso15924);
 
 /* These are all analogs of the <ctype.h> functions.
  */
+_GLIB_API
 gboolean g_unichar_isalnum   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isalpha   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_iscntrl   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isdigit   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isgraph   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_islower   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isprint   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_ispunct   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isspace   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isupper   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isxdigit  (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_istitle   (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_isdefined (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_iswide    (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_iswide_cjk(gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_iszerowidth(gunichar c) G_GNUC_CONST;
+_GLIB_API
 gboolean g_unichar_ismark    (gunichar c) G_GNUC_CONST;
 
 /* More <ctype.h> functions.  These convert between the three cases.
  * See the Unicode book to understand title case.  */
+_GLIB_API
 gunichar g_unichar_toupper (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gunichar g_unichar_tolower (gunichar c) G_GNUC_CONST;
+_GLIB_API
 gunichar g_unichar_totitle (gunichar c) G_GNUC_CONST;
 
 /* If C is a digit (according to `g_unichar_isdigit'), then return its
    numeric value.  Otherwise return -1.  */
+_GLIB_API
 gint g_unichar_digit_value (gunichar c) G_GNUC_CONST;
 
+_GLIB_API
 gint g_unichar_xdigit_value (gunichar c) G_GNUC_CONST;
 
 /* Return the Unicode character type of a given character.  */
+_GLIB_API
 GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
 
 /* Return the line break property for a given character */
+_GLIB_API
 GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 
 /* Returns the combining class for a given character */
+_GLIB_API
 gint g_unichar_combining_class (gunichar uc) G_GNUC_CONST;
 
+_GLIB_API
 gboolean g_unichar_get_mirror_char (gunichar ch,
                                     gunichar *mirrored_ch);
 
+_GLIB_API
 GUnicodeScript g_unichar_get_script (gunichar ch) G_GNUC_CONST;
 
 /* Validate a Unicode character */
+_GLIB_API
 gboolean g_unichar_validate (gunichar ch) G_GNUC_CONST;
 
 /* Pairwise canonical compose/decompose */
+_GLIB_API
 gboolean g_unichar_compose (gunichar  a,
                             gunichar  b,
                             gunichar *ch);
+_GLIB_API
 gboolean g_unichar_decompose (gunichar  ch,
                               gunichar *a,
                               gunichar *b);
 
+_GLIB_API
 gsize g_unichar_fully_decompose (gunichar  ch,
                                  gboolean  compat,
                                  gunichar *result,
@@ -586,6 +619,7 @@ gsize g_unichar_fully_decompose (gunichar  ch,
 /* Compute canonical ordering of a string in-place.  This rearranges
    decomposed characters in the string according to their combining
    classes.  See the Unicode manual for more information.  */
+_GLIB_API
 void g_unicode_canonical_ordering (gunichar *string,
                                    gsize     len);
 
@@ -611,20 +645,28 @@ GLIB_VAR const gchar * const g_utf8_skip;
  */
 #define g_utf8_next_char(p) (char *)((p) + g_utf8_skip[*(const guchar *)(p)])
 
+_GLIB_API
 gunichar g_utf8_get_char           (const gchar  *p) G_GNUC_PURE;
+_GLIB_API
 gunichar g_utf8_get_char_validated (const  gchar *p,
                                     gssize        max_len) G_GNUC_PURE;
 
+_GLIB_API
 gchar*   g_utf8_offset_to_pointer (const gchar *str,
                                    glong        offset) G_GNUC_PURE;
+_GLIB_API
 glong    g_utf8_pointer_to_offset (const gchar *str,
                                    const gchar *pos) G_GNUC_PURE;
+_GLIB_API
 gchar*   g_utf8_prev_char         (const gchar *p) G_GNUC_PURE;
+_GLIB_API
 gchar*   g_utf8_find_next_char    (const gchar *p,
                                    const gchar *end) G_GNUC_PURE;
+_GLIB_API
 gchar*   g_utf8_find_prev_char    (const gchar *str,
                                    const gchar *p) G_GNUC_PURE;
 
+_GLIB_API
 glong    g_utf8_strlen            (const gchar *p,
                                    gssize       max) G_GNUC_PURE;
 
@@ -633,66 +675,82 @@ gchar   *g_utf8_substring         (const gchar *str,
                                    glong        start_pos,
                                    glong        end_pos) G_GNUC_MALLOC;
 
+_GLIB_API
 gchar   *g_utf8_strncpy           (gchar       *dest,
                                    const gchar *src,
                                    gsize        n);
 
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivalants to strchr and strrchr */
+_GLIB_API
 gchar* g_utf8_strchr  (const gchar *p,
                        gssize       len,
                        gunichar     c);
+_GLIB_API
 gchar* g_utf8_strrchr (const gchar *p,
                        gssize       len,
                        gunichar     c);
+_GLIB_API
 gchar* g_utf8_strreverse (const gchar *str,
                           gssize len);
 
+_GLIB_API
 gunichar2 *g_utf8_to_utf16     (const gchar      *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
+_GLIB_API
 gunichar * g_utf8_to_ucs4      (const gchar      *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
+_GLIB_API
 gunichar * g_utf8_to_ucs4_fast (const gchar      *str,
                                 glong             len,
                                 glong            *items_written) G_GNUC_MALLOC;
+_GLIB_API
 gunichar * g_utf16_to_ucs4     (const gunichar2  *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
+_GLIB_API
 gchar*     g_utf16_to_utf8     (const gunichar2  *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
+_GLIB_API
 gunichar2 *g_ucs4_to_utf16     (const gunichar   *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
+_GLIB_API
 gchar*     g_ucs4_to_utf8      (const gunichar   *str,
                                 glong             len,
                                 glong            *items_read,
                                 glong            *items_written,
                                 GError          **error) G_GNUC_MALLOC;
 
+_GLIB_API
 gint      g_unichar_to_utf8 (gunichar    c,
                              gchar      *outbuf);
 
+_GLIB_API
 gboolean g_utf8_validate (const gchar  *str,
                           gssize        max_len,
                           const gchar **end);
 
+_GLIB_API
 gchar *g_utf8_strup   (const gchar *str,
                        gssize       len) G_GNUC_MALLOC;
+_GLIB_API
 gchar *g_utf8_strdown (const gchar *str,
                        gssize       len) G_GNUC_MALLOC;
+_GLIB_API
 gchar *g_utf8_casefold (const gchar *str,
                         gssize       len) G_GNUC_MALLOC;
 
@@ -731,20 +789,25 @@ typedef enum {
   G_NORMALIZE_NFKC = G_NORMALIZE_ALL_COMPOSE
 } GNormalizeMode;
 
+_GLIB_API
 gchar *g_utf8_normalize (const gchar   *str,
                          gssize         len,
                          GNormalizeMode mode) G_GNUC_MALLOC;
 
+_GLIB_API
 gint   g_utf8_collate     (const gchar *str1,
                            const gchar *str2) G_GNUC_PURE;
+_GLIB_API
 gchar *g_utf8_collate_key (const gchar *str,
                            gssize       len) G_GNUC_MALLOC;
+_GLIB_API
 gchar *g_utf8_collate_key_for_filename (const gchar *str,
                                         gssize       len) G_GNUC_MALLOC;
 
 
 /* private */
 
+_GLIB_API
 gchar *_g_utf8_make_valid (const gchar *name);
 
 G_END_DECLS

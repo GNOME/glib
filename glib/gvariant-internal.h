@@ -39,10 +39,12 @@
 
 #undef __GLIB_H_INSIDE__
 
+_GLIB_API
 gboolean                        g_variant_format_string_scan            (const gchar          *string,
                                                                          const gchar          *limit,
                                                                          const gchar         **endptr);
 
+_GLIB_API
 GVariantType *                  g_variant_format_string_scan_type       (const gchar          *string,
                                                                          const gchar          *limit,
                                                                          const gchar         **endptr);

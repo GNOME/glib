@@ -34,8 +34,10 @@ G_BEGIN_DECLS
 
 typedef struct _GDBusMenuModel GDBusMenuModel;
 
+_GIO_API
 GType                   g_dbus_menu_model_get_type     (void) G_GNUC_CONST;
 
+_GIO_API
 GDBusMenuModel *        g_dbus_menu_model_get          (GDBusConnection *connection,
                                                         const gchar     *bus_name,
                                                         const gchar     *object_path);

@@ -31,24 +31,30 @@
 
 G_BEGIN_DECLS
 
+_GIO_API
 gboolean g_dbus_is_address (const gchar *string);
+_GIO_API
 gboolean g_dbus_is_supported_address (const gchar  *string,
                                       GError      **error);
 
+_GIO_API
 void                 g_dbus_address_get_stream        (const gchar          *address,
                                                        GCancellable         *cancellable,
                                                        GAsyncReadyCallback   callback,
                                                        gpointer              user_data);
 
+_GIO_API
 GIOStream           *g_dbus_address_get_stream_finish (GAsyncResult         *res,
                                                        gchar               **out_guid,
                                                        GError              **error);
 
+_GIO_API
 GIOStream           *g_dbus_address_get_stream_sync   (const gchar          *address,
                                                        gchar               **out_guid,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
 
+_GIO_API
 gchar               *g_dbus_address_get_for_bus_sync  (GBusType              bus_type,
                                                        GCancellable  *cancellable,
                                                        GError              **error);

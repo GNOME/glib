@@ -55,6 +55,7 @@ struct _GNativeVolumeMonitorClass
                                          GCancellable *cancellable);
 };
 
+_GIO_API
 GType g_native_volume_monitor_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

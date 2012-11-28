@@ -102,14 +102,19 @@ struct _GApplicationClass
   gpointer padding[9];
 };
 
+_GIO_API
 GType                   g_application_get_type                          (void) G_GNUC_CONST;
 
+_GIO_API
 gboolean                g_application_id_is_valid                       (const gchar              *application_id);
 
+_GIO_API
 GApplication *          g_application_new                               (const gchar              *application_id,
                                                                          GApplicationFlags         flags);
 
+_GIO_API
 const gchar *           g_application_get_application_id                (GApplication             *application);
+_GIO_API
 void                    g_application_set_application_id                (GApplication             *application,
                                                                          const gchar              *application_id);
 
@@ -118,11 +123,15 @@ GDBusConnection *       g_application_get_dbus_connection               (GApplic
 GLIB_AVAILABLE_IN_2_34
 const gchar *           g_application_get_dbus_object_path              (GApplication             *application);
 
+_GIO_API
 guint                   g_application_get_inactivity_timeout            (GApplication             *application);
+_GIO_API
 void                    g_application_set_inactivity_timeout            (GApplication             *application,
                                                                          guint                     inactivity_timeout);
 
+_GIO_API
 GApplicationFlags       g_application_get_flags                         (GApplication             *application);
+_GIO_API
 void                    g_application_set_flags                         (GApplication             *application,
                                                                          GApplicationFlags         flags);
 
@@ -130,23 +139,31 @@ GLIB_DEPRECATED
 void                    g_application_set_action_group                  (GApplication             *application,
                                                                          GActionGroup             *action_group);
 
+_GIO_API
 gboolean                g_application_get_is_registered                 (GApplication             *application);
+_GIO_API
 gboolean                g_application_get_is_remote                     (GApplication             *application);
 
+_GIO_API
 gboolean                g_application_register                          (GApplication             *application,
                                                                          GCancellable             *cancellable,
                                                                          GError                  **error);
 
+_GIO_API
 void                    g_application_hold                              (GApplication             *application);
+_GIO_API
 void                    g_application_release                           (GApplication             *application);
 
+_GIO_API
 void                    g_application_activate                          (GApplication             *application);
 
+_GIO_API
 void                    g_application_open                              (GApplication             *application,
                                                                          GFile                   **files,
                                                                          gint                      n_files,
                                                                          const gchar              *hint);
 
+_GIO_API
 int                     g_application_run                               (GApplication             *application,
                                                                          int                       argc,
                                                                          char                    **argv);

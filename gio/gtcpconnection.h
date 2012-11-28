@@ -57,10 +57,13 @@ struct _GTcpConnection
   GTcpConnectionPrivate *priv;
 };
 
+_GIO_API
 GType    g_tcp_connection_get_type                (void) G_GNUC_CONST;
 
+_GIO_API
 void     g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection,
 						   gboolean        graceful_disconnect);
+_GIO_API
 gboolean g_tcp_connection_get_graceful_disconnect (GTcpConnection *connection);
 
 G_END_DECLS

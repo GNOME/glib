@@ -43,10 +43,14 @@ typedef void            (*GDataForeachFunc)     (GQuark         key_id,
 
 /* Keyed Data List
  */
+_GLIB_API
 void     g_datalist_init                (GData            **datalist);
+_GLIB_API
 void     g_datalist_clear               (GData            **datalist);
+_GLIB_API
 gpointer g_datalist_id_get_data         (GData            **datalist,
 					 GQuark             key_id);
+_GLIB_API
 void     g_datalist_id_set_data_full    (GData            **datalist,
 					 GQuark             key_id,
 					 gpointer           data,
@@ -67,8 +71,10 @@ gboolean g_datalist_id_replace_data     (GData            **datalist,
                                          GDestroyNotify     destroy,
 					 GDestroyNotify    *old_destroy);
 
+_GLIB_API
 gpointer g_datalist_id_remove_no_notify (GData            **datalist,
 					 GQuark             key_id);
+_GLIB_API
 void     g_datalist_foreach             (GData            **datalist,
 					 GDataForeachFunc   func,
 					 gpointer           user_data);
@@ -82,10 +88,13 @@ void     g_datalist_foreach             (GData            **datalist,
  */
 #define G_DATALIST_FLAGS_MASK 0x3
 
+_GLIB_API
 void     g_datalist_set_flags           (GData            **datalist,
 					 guint              flags);
+_GLIB_API
 void     g_datalist_unset_flags         (GData            **datalist,
 					 guint              flags);
+_GLIB_API
 guint    g_datalist_get_flags           (GData            **datalist);
 
 #define   g_datalist_id_set_data(dl, q, d)      \
@@ -103,17 +112,23 @@ guint    g_datalist_get_flags           (GData            **datalist);
 
 /* Location Associated Keyed Data
  */
+_GLIB_API
 void      g_dataset_destroy             (gconstpointer    dataset_location);
+_GLIB_API
 gpointer  g_dataset_id_get_data         (gconstpointer    dataset_location,
                                          GQuark           key_id);
+_GLIB_API
 gpointer  g_datalist_get_data            (GData	 **datalist,
 					  const gchar *key);
+_GLIB_API
 void      g_dataset_id_set_data_full    (gconstpointer    dataset_location,
                                          GQuark           key_id,
                                          gpointer         data,
                                          GDestroyNotify   destroy_func);
+_GLIB_API
 gpointer  g_dataset_id_remove_no_notify (gconstpointer    dataset_location,
                                          GQuark           key_id);
+_GLIB_API
 void      g_dataset_foreach             (gconstpointer    dataset_location,
                                          GDataForeachFunc func,
                                          gpointer         user_data);

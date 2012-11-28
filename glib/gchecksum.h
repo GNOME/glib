@@ -63,23 +63,33 @@ typedef enum {
  */
 typedef struct _GChecksum       GChecksum;
 
+_GLIB_API
 gssize                g_checksum_type_get_length    (GChecksumType    checksum_type);
 
+_GLIB_API
 GChecksum *           g_checksum_new                (GChecksumType    checksum_type);
+_GLIB_API
 void                  g_checksum_reset              (GChecksum       *checksum);
+_GLIB_API
 GChecksum *           g_checksum_copy               (const GChecksum *checksum);
+_GLIB_API
 void                  g_checksum_free               (GChecksum       *checksum);
+_GLIB_API
 void                  g_checksum_update             (GChecksum       *checksum,
                                                      const guchar    *data,
                                                      gssize           length);
+_GLIB_API
 const gchar *         g_checksum_get_string         (GChecksum       *checksum);
+_GLIB_API
 void                  g_checksum_get_digest         (GChecksum       *checksum,
                                                      guint8          *buffer,
                                                      gsize           *digest_len);
 
+_GLIB_API
 gchar                *g_compute_checksum_for_data   (GChecksumType    checksum_type,
                                                      const guchar    *data,
                                                      gsize            length);
+_GLIB_API
 gchar                *g_compute_checksum_for_string (GChecksumType    checksum_type,
                                                      const gchar     *str,
                                                      gssize           length);

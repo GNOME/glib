@@ -28,11 +28,16 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 gboolean  g_hostname_is_non_ascii     (const gchar *hostname);
+_GLIB_API
 gboolean  g_hostname_is_ascii_encoded (const gchar *hostname);
+_GLIB_API
 gboolean  g_hostname_is_ip_address    (const gchar *hostname);
 
+_GLIB_API
 gchar    *g_hostname_to_ascii         (const gchar *hostname);
+_GLIB_API
 gchar    *g_hostname_to_unicode       (const gchar *hostname);
 
 G_END_DECLS

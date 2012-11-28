@@ -37,11 +37,17 @@ G_BEGIN_DECLS
 
 typedef struct _GAsyncQueue GAsyncQueue;
 
+_GLIB_API
 GAsyncQueue *g_async_queue_new                  (void);
+_GLIB_API
 GAsyncQueue *g_async_queue_new_full             (GDestroyNotify item_free_func);
+_GLIB_API
 void         g_async_queue_lock                 (GAsyncQueue      *queue);
+_GLIB_API
 void         g_async_queue_unlock               (GAsyncQueue      *queue);
+_GLIB_API
 GAsyncQueue *g_async_queue_ref                  (GAsyncQueue      *queue);
+_GLIB_API
 void         g_async_queue_unref                (GAsyncQueue      *queue);
 
 GLIB_DEPRECATED_FOR(g_async_queue_ref)
@@ -50,31 +56,45 @@ void         g_async_queue_ref_unlocked         (GAsyncQueue      *queue);
 GLIB_DEPRECATED_FOR(g_async_queue_unref)
 void         g_async_queue_unref_and_unlock     (GAsyncQueue      *queue);
 
+_GLIB_API
 void         g_async_queue_push                 (GAsyncQueue      *queue,
                                                  gpointer          data);
+_GLIB_API
 void         g_async_queue_push_unlocked        (GAsyncQueue      *queue,
                                                  gpointer          data);
+_GLIB_API
 void         g_async_queue_push_sorted          (GAsyncQueue      *queue,
                                                  gpointer          data,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+_GLIB_API
 void         g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
                                                  gpointer          data,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+_GLIB_API
 gpointer     g_async_queue_pop                  (GAsyncQueue      *queue);
+_GLIB_API
 gpointer     g_async_queue_pop_unlocked         (GAsyncQueue      *queue);
+_GLIB_API
 gpointer     g_async_queue_try_pop              (GAsyncQueue      *queue);
+_GLIB_API
 gpointer     g_async_queue_try_pop_unlocked     (GAsyncQueue      *queue);
+_GLIB_API
 gpointer     g_async_queue_timeout_pop          (GAsyncQueue      *queue,
                                                  guint64           timeout);
+_GLIB_API
 gpointer     g_async_queue_timeout_pop_unlocked (GAsyncQueue      *queue,
                                                  guint64           timeout);
+_GLIB_API
 gint         g_async_queue_length               (GAsyncQueue      *queue);
+_GLIB_API
 gint         g_async_queue_length_unlocked      (GAsyncQueue      *queue);
+_GLIB_API
 void         g_async_queue_sort                 (GAsyncQueue      *queue,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+_GLIB_API
 void         g_async_queue_sort_unlocked        (GAsyncQueue      *queue,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);

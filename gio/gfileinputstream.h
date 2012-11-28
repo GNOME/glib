@@ -91,18 +91,22 @@ struct _GFileInputStreamClass
   void (*_g_reserved5) (void);
 };
 
+_GIO_API
 GType      g_file_input_stream_get_type          (void) G_GNUC_CONST;
 
+_GIO_API
 GFileInfo *g_file_input_stream_query_info        (GFileInputStream     *stream,
 						  const char           *attributes,
 						  GCancellable         *cancellable,
 						  GError              **error);
+_GIO_API
 void       g_file_input_stream_query_info_async  (GFileInputStream     *stream,
 						  const char           *attributes,
 						  int                   io_priority,
 						  GCancellable         *cancellable,
 						  GAsyncReadyCallback   callback,
 						  gpointer              user_data);
+_GIO_API
 GFileInfo *g_file_input_stream_query_info_finish (GFileInputStream     *stream,
 						  GAsyncResult         *result,
 						  GError              **error);

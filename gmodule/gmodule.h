@@ -53,27 +53,34 @@ typedef const gchar* (*GModuleCheckInit) (GModule	*module);
 typedef void	     (*GModuleUnload)	 (GModule	*module);
 
 /* return TRUE if dynamic module loading is supported */
+_GMODULE_API
 gboolean	g_module_supported	   (void) G_GNUC_CONST;
 
 /* open a module `file_name' and return handle, which is NULL on error */
+_GMODULE_API
 GModule*              g_module_open          (const gchar  *file_name,
 					      GModuleFlags  flags);
 
 /* close a previously opened module, returns TRUE on success */
+_GMODULE_API
 gboolean              g_module_close         (GModule      *module);
 
 /* make a module resident so g_module_close on it will be ignored */
+_GMODULE_API
 void                  g_module_make_resident (GModule      *module);
 
 /* query the last module error as a string */
+_GMODULE_API
 const gchar *         g_module_error         (void);
 
 /* retrieve a symbol pointer from `module', returns TRUE on success */
+_GMODULE_API
 gboolean              g_module_symbol        (GModule      *module,
 					      const gchar  *symbol_name,
 					      gpointer     *symbol);
 
 /* retrieve the file name from an existing module */
+_GMODULE_API
 const gchar *         g_module_name          (GModule      *module);
 
 /* Build the actual file name containing a module. `directory' is the
@@ -87,6 +94,7 @@ const gchar *         g_module_name          (GModule      *module);
  *
  * No checks are made that the file exists, or is of correct type.
  */
+_GMODULE_API
 gchar*                g_module_build_path    (const gchar  *directory,
 					      const gchar  *module_name);
 
@@ -96,8 +104,10 @@ gchar*                g_module_build_path    (const gchar  *directory,
 #define g_module_open g_module_open_utf8
 #define g_module_name g_module_name_utf8
 
+_GMODULE_API
 GModule *    g_module_open_utf8 (const gchar  *file_name,
                                  GModuleFlags  flags);
+_GMODULE_API
 const gchar *g_module_name_utf8 (GModule      *module);
 #endif
 #endif

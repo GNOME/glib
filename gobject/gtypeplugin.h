@@ -117,13 +117,18 @@ struct _GTypePluginClass
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 GType	g_type_plugin_get_type			(void)	G_GNUC_CONST;
+_GOBJECT_API
 void	g_type_plugin_use			(GTypePlugin	 *plugin);
+_GOBJECT_API
 void	g_type_plugin_unuse			(GTypePlugin	 *plugin);
+_GOBJECT_API
 void	g_type_plugin_complete_type_info	(GTypePlugin     *plugin,
 						 GType            g_type,
 						 GTypeInfo       *info,
 						 GTypeValueTable *value_table);
+_GOBJECT_API
 void	g_type_plugin_complete_interface_info	(GTypePlugin     *plugin,
 						 GType            instance_type,
 						 GType            interface_type,

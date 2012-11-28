@@ -67,14 +67,18 @@ struct _GMemoryInputStreamClass
 };
 
 
+_GIO_API
 GType          g_memory_input_stream_get_type      (void) G_GNUC_CONST;
+_GIO_API
 GInputStream * g_memory_input_stream_new           (void);
+_GIO_API
 GInputStream * g_memory_input_stream_new_from_data (const void         *data,
                                                     gssize              len,
                                                     GDestroyNotify      destroy);
 GLIB_AVAILABLE_IN_2_34
 GInputStream * g_memory_input_stream_new_from_bytes (GBytes            *bytes);
 
+_GIO_API
 void           g_memory_input_stream_add_data      (GMemoryInputStream *stream,
                                                     const void         *data,
                                                     gssize              len,

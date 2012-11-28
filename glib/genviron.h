@@ -35,20 +35,28 @@
 
 G_BEGIN_DECLS
 
+_GLIB_API
 const gchar * g_getenv           (const gchar  *variable);
+_GLIB_API
 gboolean      g_setenv           (const gchar  *variable,
                                   const gchar  *value,
                                   gboolean      overwrite);
+_GLIB_API
 void          g_unsetenv         (const gchar  *variable);
+_GLIB_API
 gchar **      g_listenv          (void);
 
+_GLIB_API
 gchar **      g_get_environ      (void);
+_GLIB_API
 const gchar * g_environ_getenv   (gchar       **envp,
                                   const gchar  *variable);
+_GLIB_API
 gchar **      g_environ_setenv   (gchar       **envp,
                                   const gchar  *variable,
                                   const gchar  *value,
                                   gboolean      overwrite) G_GNUC_WARN_UNUSED_RESULT;
+_GLIB_API
 gchar **      g_environ_unsetenv (gchar       **envp,
                                   const gchar  *variable) G_GNUC_WARN_UNUSED_RESULT;
 
@@ -57,10 +65,13 @@ gchar **      g_environ_unsetenv (gchar       **envp,
 #define g_setenv   g_setenv_utf8
 #define g_unsetenv g_unsetenv_utf8
 
+_GLIB_API
 const gchar *g_getenv_utf8   (const gchar  *variable);
+_GLIB_API
 gboolean     g_setenv_utf8   (const gchar  *variable,
                               const gchar  *value,
                               gboolean      overwrite);
+_GLIB_API
 void         g_unsetenv_utf8 (const gchar  *variable);
 #endif
 

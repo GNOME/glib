@@ -65,9 +65,13 @@ struct _GFilterOutputStreamClass
 };
 
 
+_GIO_API
 GType           g_filter_output_stream_get_type              (void) G_GNUC_CONST;
+_GIO_API
 GOutputStream * g_filter_output_stream_get_base_stream       (GFilterOutputStream *stream);
+_GIO_API
 gboolean        g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream);
+_GIO_API
 void            g_filter_output_stream_set_close_base_stream (GFilterOutputStream *stream,
                                                               gboolean             close_base);
 

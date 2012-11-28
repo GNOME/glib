@@ -68,24 +68,32 @@ typedef void (*GBoxedFreeFunc) (gpointer boxed);
 
 
 /* --- prototypes --- */
+_GOBJECT_API
 gpointer g_boxed_copy                     (GType boxed_type,
                                            gconstpointer  src_boxed);
+_GOBJECT_API
 void     g_boxed_free                     (GType          boxed_type,
                                            gpointer       boxed);
+_GOBJECT_API
 void     g_value_set_boxed                (GValue        *value,
                                            gconstpointer  v_boxed);
+_GOBJECT_API
 void     g_value_set_static_boxed         (GValue        *value,
                                            gconstpointer  v_boxed);
+_GOBJECT_API
 void     g_value_take_boxed               (GValue        *value,
                                            gconstpointer  v_boxed);
 GLIB_DEPRECATED_FOR(g_value_take_boxed)
 void     g_value_set_boxed_take_ownership (GValue        *value,
                                            gconstpointer  v_boxed);
+_GOBJECT_API
 gpointer g_value_get_boxed                (const GValue  *value);
+_GOBJECT_API
 gpointer g_value_dup_boxed                (const GValue  *value);
 
 
 /* --- convenience --- */
+_GOBJECT_API
 GType    g_boxed_type_register_static     (const gchar   *name,
                                            GBoxedCopyFunc boxed_copy,
                                            GBoxedFreeFunc boxed_free);
@@ -106,7 +114,9 @@ GType    g_boxed_type_register_static     (const gchar   *name,
  */
 #define G_TYPE_VALUE (g_value_get_type ())
 
+_GOBJECT_API
 GType   g_closure_get_type         (void) G_GNUC_CONST;
+_GOBJECT_API
 GType   g_value_get_type           (void) G_GNUC_CONST;
 
 G_END_DECLS

@@ -31,16 +31,22 @@ G_BEGIN_DECLS
 
 typedef struct _GPatternSpec    GPatternSpec;
 
+_GLIB_API
 GPatternSpec* g_pattern_spec_new       (const gchar  *pattern);
+_GLIB_API
 void          g_pattern_spec_free      (GPatternSpec *pspec);
+_GLIB_API
 gboolean      g_pattern_spec_equal     (GPatternSpec *pspec1,
 					GPatternSpec *pspec2);
+_GLIB_API
 gboolean      g_pattern_match          (GPatternSpec *pspec,
 					guint         string_length,
 					const gchar  *string,
 					const gchar  *string_reversed);
+_GLIB_API
 gboolean      g_pattern_match_string   (GPatternSpec *pspec,
 					const gchar  *string);
+_GLIB_API
 gboolean      g_pattern_match_simple   (const gchar  *pattern,
 					const gchar  *string);
 

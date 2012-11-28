@@ -37,14 +37,20 @@ G_BEGIN_DECLS
 
 typedef struct _GStringChunk GStringChunk;
 
+_GLIB_API
 GStringChunk* g_string_chunk_new          (gsize size);
+_GLIB_API
 void          g_string_chunk_free         (GStringChunk *chunk);
+_GLIB_API
 void          g_string_chunk_clear        (GStringChunk *chunk);
+_GLIB_API
 gchar*        g_string_chunk_insert       (GStringChunk *chunk,
                                            const gchar  *string);
+_GLIB_API
 gchar*        g_string_chunk_insert_len   (GStringChunk *chunk,
                                            const gchar  *string,
                                            gssize        len);
+_GLIB_API
 gchar*        g_string_chunk_insert_const (GStringChunk *chunk,
                                            const gchar  *string);
 

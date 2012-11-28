@@ -70,19 +70,25 @@ struct _GSimpleActionGroupClass
   gpointer padding[12];
 };
 
+_GIO_API
 GType                   g_simple_action_group_get_type                  (void) G_GNUC_CONST;
 
+_GIO_API
 GSimpleActionGroup *    g_simple_action_group_new                       (void);
 
+_GIO_API
 GAction *               g_simple_action_group_lookup                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
 
+_GIO_API
 void                    g_simple_action_group_insert                    (GSimpleActionGroup *simple,
                                                                          GAction            *action);
 
+_GIO_API
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
 
+GLIB_AVAILABLE_IN_2_30
 void                    g_simple_action_group_add_entries               (GSimpleActionGroup *simple,
                                                                          const GActionEntry *entries,
                                                                          gint                n_entries,

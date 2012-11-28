@@ -83,11 +83,15 @@ struct _GIOStreamClass
   void (*_g_reserved10) (void);
 };
 
+_GIO_API
 GType          g_io_stream_get_type          (void)  G_GNUC_CONST;
 
+_GIO_API
 GInputStream * g_io_stream_get_input_stream  (GIOStream            *stream);
+_GIO_API
 GOutputStream *g_io_stream_get_output_stream (GIOStream            *stream);
 
+_GIO_API
 void           g_io_stream_splice_async      (GIOStream            *stream1,
 					      GIOStream            *stream2,
 					      GIOStreamSpliceFlags  flags,
@@ -96,26 +100,34 @@ void           g_io_stream_splice_async      (GIOStream            *stream1,
 					      GAsyncReadyCallback   callback,
 					      gpointer              user_data);
 
+_GIO_API
 gboolean       g_io_stream_splice_finish     (GAsyncResult         *result,
                                               GError              **error);
 
+_GIO_API
 gboolean       g_io_stream_close             (GIOStream            *stream,
 					      GCancellable         *cancellable,
 					      GError              **error);
 
+_GIO_API
 void           g_io_stream_close_async       (GIOStream            *stream,
 					      int                   io_priority,
 					      GCancellable         *cancellable,
 					      GAsyncReadyCallback   callback,
 					      gpointer              user_data);
+_GIO_API
 gboolean       g_io_stream_close_finish      (GIOStream            *stream,
 					      GAsyncResult         *result,
 					      GError              **error);
 
+_GIO_API
 gboolean       g_io_stream_is_closed         (GIOStream            *stream);
+_GIO_API
 gboolean       g_io_stream_has_pending       (GIOStream            *stream);
+_GIO_API
 gboolean       g_io_stream_set_pending       (GIOStream            *stream,
 					      GError              **error);
+_GIO_API
 void           g_io_stream_clear_pending     (GIOStream            *stream);
 
 G_END_DECLS
