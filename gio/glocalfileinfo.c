@@ -62,6 +62,9 @@
 #include <gfileinfo-priv.h>
 #include <gvfs.h>
 
+#ifndef G_OS_WIN32
+#include "glib-private.h"
+#endif
 #include "glibintl.h"
 
 #ifdef G_OS_WIN32
@@ -1415,6 +1418,115 @@ win32_get_file_user_info (const gchar  *filename,
 }
 #endif /* G_OS_WIN32 */
 
+#ifndef G_OS_WIN32
+/* support for '.hidden' files */
+G_LOCK_DEFINE_STATIC (hidden_cache);
+static GHashTable *hidden_cache;
+
+static gboolean
+remove_from_hidden_cache (gpointer user_data)
+{
+  G_LOCK (hidden_cache);
+  g_hash_table_remove (hidden_cache, user_data);
+  G_UNLOCK (hidden_cache);
+
+  return FALSE;
+}
+
+static GHashTable *
+read_hidden_file (const gchar *dirname)
+{
+  gchar *filename;
+  FILE *hidden;
+
+  filename = g_build_path ("/", dirname, ".hidden", NULL);
+  hidden = fopen (filename, "r");
+  g_free (filename);
+
+  if (hidden != NULL)
+    {
+      gchar buffer[PATH_MAX + 2]; /* \n\0 */
+      GHashTable *table;
+
+      table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+      while (fgets (buffer, sizeof buffer, hidden))
+        {
+          gchar *newline;
+
+          if ((newline = strchr (buffer, '\n')) != NULL)
+            {
+              *newline++ = '\0';
+
+              g_hash_table_insert (table,
+                                   g_memdup (buffer, newline - buffer),
+                                   GINT_TO_POINTER (TRUE));
+            }
+        }
+
+      fclose (hidden);
+
+      return table;
+    }
+  else
+    return NULL;
+}
+
+static void
+maybe_unref_hash_table (gpointer data)
+{
+  if (data != NULL)
+    g_hash_table_unref (data);
+}
+
+static gboolean
+file_is_hidden (const gchar *path,
+                const gchar *basename)
+{
+  gboolean result;
+  gchar *dirname;
+  gpointer table;
+
+  dirname = g_path_get_dirname (path);
+
+  G_LOCK (hidden_cache);
+
+  if G_UNLIKELY (hidden_cache == NULL)
+    hidden_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                          g_free, maybe_unref_hash_table);
+
+  if (!g_hash_table_lookup_extended (hidden_cache, dirname,
+                                     NULL, &table))
+    {
+      gchar *mydirname;
+      GSource *remove_from_cache_source;
+
+      g_hash_table_insert (hidden_cache,
+                           mydirname = g_strdup (dirname),
+                           table = read_hidden_file (dirname));
+
+      remove_from_cache_source = g_timeout_source_new_seconds (5);
+      g_source_set_priority (remove_from_cache_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (remove_from_cache_source, 
+                             remove_from_hidden_cache, 
+                             mydirname, 
+                             NULL);
+      g_source_attach (remove_from_cache_source, 
+                       GLIB_PRIVATE_CALL (g_get_worker_context) ());
+      g_source_unref (remove_from_cache_source);
+    }
+
+  result = table != NULL &&
+           GPOINTER_TO_INT (g_hash_table_lookup (table, basename));
+
+  G_UNLOCK (hidden_cache);
+
+  g_free (dirname);
+
+  return result;
+}
+#endif /* !G_OS_WIN32 */
+
 void
 _g_local_file_info_get_nostat (GFileInfo              *info,
                                const char             *basename,
@@ -1671,7 +1783,9 @@ _g_local_file_info_get (const char             *basename,
     set_info_from_stat (info, &statbuf, attribute_matcher);
 
 #ifndef G_OS_WIN32
-  if (basename != NULL && basename[0] == '.')
+  if (basename != NULL &&
+      (basename[0] == '.' ||
+       file_is_hidden (path, basename)))
     g_file_info_set_is_hidden (info, TRUE);
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&
