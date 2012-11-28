@@ -858,6 +858,12 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#if defined(__SUNPRO_C) || (__SUNPRO_C >= 0
 AC_MSG_RESULT($g_have_sunstudio_visibility)
 AM_CONDITIONAL(HAVE_SUNSTUDIO_VISIBILITY, [test x$g_have_sunstudio_visibility = xyes])
 
+dnl See https://bugzilla.gnome.org/show_bug.cgi?id=688681
+dnl First half of symbol visibility; search for "Second half of symbol
+dnl visibility" below to find the second part.
+AS_IF([test x$g_have_gnuc_visibility = x && test x$g_have_sunstudio_visibility = x], [
+  AC_MSG_ERROR([GLib does not know how to control symbol visibility on this platform])])
+
 # check for bytesex stuff
 AC_C_BIGENDIAN
 if test x$ac_cv_c_bigendian = xuniversal ; then
@@ -3531,6 +3537,17 @@ if test "x${enable_Bsymbolic}" = "xyes"; then
 fi
 
 AC_SUBST(GLIB_LINK_FLAGS)
+
+dnl See https://bugzilla.gnome.org/show_bug.cgi?id=688681
+dnl Second half of symbol visibility; search for "First half of symbol
+dnl visibility" above to find the first part.  They are separated for
+dnl the same reason the -Werror bits below are last - so we don't affect
+dnl any autoconf tests.
+GLIB_HIDDEN_VISIBILITY_CFLAGS=""
+AS_IF([test x$GCC = xyes], [GLIB_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"],
+      [test x$g_have_sunstudio_visibility != x], [GLIB_HIDDEN_VISIBILITY_CFLAGS="-xldscope=hidden"],
+      [AC_MSG_ERROR([GLib does not know how to make symbols hidden by default with this compiler])])
+AC_SUBST(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 
 dnl Compiler flags; macro originates from systemd
 dnl See https://bugzilla.gnome.org/show_bug.cgi?id=608953

@@ -65,6 +65,8 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
+gmodule_def = gmodule.def
+export_symbols = -export-symbols $(gmodule_def)
 gmodule_win32_res = gmodule-win32-res.o
 gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
 
@@ -78,12 +80,13 @@ install-def-file:
 uninstall-def-file:
 endif
 
+libgmodule_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgmodule_2_0_la_SOURCES = gmodule.c
 libgmodule_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gmodule_win32_res_ldflag) \
 	$(G_MODULE_LDFLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) -export-symbols gmodule.def
+	-export-dynamic $(no_undefined) $(export_symbols)
 
 libgmodule_2_0_la_LIBADD = $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 

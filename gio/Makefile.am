@@ -10,6 +10,8 @@ SUBDIRS += xdgmime
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
+gio_def = gio.def
+export_symbols = -export-symbols $(gio_def)
 if MS_LIB_AVAILABLE
 noinst_DATA = gio-2.0.lib
 
@@ -507,18 +509,19 @@ install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
+libgio_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) -export-symbols gio.def
+	-export-dynamic $(no_undefined) $(export_symbols)
 
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
-libgio_2_0_la_CFLAGS = -xobjective-c
+libgio_2_0_la_CFLAGS += -xobjective-c
 libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation
 endif
 
-libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) gio.def $(platform_deps)
+libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
 
 gio-win32-res.o: gio.rc
 	$(WINDRES) gio.rc $@

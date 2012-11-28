@@ -30,6 +30,8 @@ libglib = $(top_builddir)/glib/libglib-2.0.la
 lib_LTLIBRARIES = libgobject-2.0.la
 
 if OS_WIN32_AND_DLL_COMPILATION
+gobject_def = gobject.def
+export_symbols = -export-symbols $(gobject_def)
 if MS_LIB_AVAILABLE
 noinst_DATA = gobject-2.0.lib
 
@@ -67,13 +69,13 @@ libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
   $(gobject_win32_res_ldflag) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-  -export-dynamic $(no_undefined) -export-symbols gobject.def
+  -export-dynamic $(no_undefined) $(export_symbols)
 
-libgobject_2_0_la_CFLAGS = $(LIBFFI_CFLAGS)
+libgobject_2_0_la_CFLAGS = $(AM_CFLAGS) $(LIBFFI_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 
 libgobject_2_0_la_LIBADD = $(libglib) $(LIBFFI_LIBS)
 
-libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) gobject.def
+libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
 
 #
 # setup source file variables
