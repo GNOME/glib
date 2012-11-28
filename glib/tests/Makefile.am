@@ -122,7 +122,7 @@ gtester-xmllint-check: # check testreport xml with xmllint if present
 
 check-am: gtester-xmllint-check
 
-private_LDFLAGS = -pthread
+private_LDFLAGS = @G_THREAD_LIBS@
 
 endif
 

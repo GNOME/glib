@@ -743,14 +743,19 @@ g_get_user_database_entry (void)
 
         if (!pw)
           {
+#ifndef __BIONIC__
             setpwent ();
+#endif
             pw = getpwuid (getuid ());
+#ifndef __BIONIC__
             endpwent ();
+#endif
           }
         if (pw)
           {
             e.user_name = g_strdup (pw->pw_name);
 
+#ifndef __BIONIC__
             if (pw->pw_gecos && *pw->pw_gecos != '\0')
               {
                 gchar **gecos_fields;
@@ -764,6 +769,7 @@ g_get_user_database_entry (void)
                 g_strfreev (gecos_fields);
                 g_strfreev (name_parts);
               }
+#endif
 
             if (!e.home_dir)
               e.home_dir = g_strdup (pw->pw_dir);

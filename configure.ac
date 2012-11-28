@@ -166,6 +166,17 @@ esac
 
 AC_MSG_RESULT([$glib_native_win32])
 
+AC_MSG_CHECKING([for the Android])
+case $host in
+  *android*)
+    glib_native_android="yes"
+    ;;
+  *)
+    glib_native_android="no"
+    ;;
+esac
+AC_MSG_RESULT([$glib_native_android])
+
 AC_SUBST(LIB_EXE_MACHINE_FLAG)
 
 glib_have_carbon=no
@@ -932,7 +943,7 @@ AC_CHECK_FUNCS(setlocale)
 # check additional type sizes
 AC_CHECK_SIZEOF(size_t)
 
-dnl Try to figure out whether gsize, gssize should be long or int
+dnl Try to figure out whether gsize should be long or int
 AC_MSG_CHECKING([for the appropriate definition for size_t])
 
 case $ac_cv_sizeof_size_t in
@@ -988,6 +999,89 @@ int main ()
 ])
 
 AC_MSG_RESULT(unsigned $glib_size_type)
+
+AC_CHECK_SIZEOF(ssize_t)
+
+dnl Try to figure out whether gssize should be long or int
+AC_MSG_CHECKING([for the appropriate definition for ssize_t])
+
+case $ac_cv_sizeof_ssize_t in
+  $ac_cv_sizeof_short) 
+      glib_ssize_type=short
+      ;;
+  $ac_cv_sizeof_int) 
+      glib_ssize_type=int
+      ;;
+  $ac_cv_sizeof_long) 
+      glib_ssize_type=long
+      ;;
+  $ac_cv_sizeof_long_long)
+      glib_ssize_type='long long'
+      ;;
+  $ac_cv_sizeof__int64)
+      glib_ssize_type='__int64'
+      ;;
+  *)  AC_MSG_ERROR([No type matching ssize_t in size])
+      ;;
+esac
+
+dnl If int/long are the same size, we see which one produces
+dnl warnings when used in the location as ssize_t. (This matters
+dnl on Android where ssize_t is long and size_t is unsigned int)
+dnl
+AS_IF([test $ac_cv_sizeof_ssize_t = $ac_cv_sizeof_int &&
+       test $ac_cv_sizeof_ssize_t = $ac_cv_sizeof_long], [
+  GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
+#if defined(_AIX) && !defined(__GNUC__)
+#pragma options langlvl=stdc89
+#endif
+#include <stddef.h>
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+int main ()
+{
+  ssize_t s = 1;
+  int *size_int = &s;
+  return (int)*size_int;
+}
+    ]])],glib_ssize_type=int,
+      [GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
+#if defined(_AIX) && !defined(__GNUC__)
+#pragma options langlvl=stdc89
+#endif
+#include <stddef.h> 
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+int main ()
+{
+   ssize_t s = 1;
+   long *size_long = &s;
+   return (int)*size_long;
+}
+        ]])],glib_ssize_type=long)])
+])
+
+AC_MSG_RESULT($glib_ssize_type)
 
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
@@ -1071,18 +1165,20 @@ AS_IF([test $glib_native_win32 = yes], [
   AC_CHECK_HEADER([wspiapi.h], [WSPIAPI_INCLUDE="#include <wspiapi.h>"])
   AC_SUBST(WSPIAPI_INCLUDE)
 ], [
-  AC_MSG_CHECKING([if arpa/nameser_compat.h is needed])
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
-                                      #include <arpa/nameser.h>],
-                                     [int qclass = C_IN;])],
-                    [AC_MSG_RESULT([no])],
-                    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
-                                                         #include <arpa/nameser.h>
-                                                         #include <arpa/nameser_compat.h>],
-                                                        [int qclass = C_IN;])],
-                                       [AC_MSG_RESULT([yes])
-                                        NAMESER_COMPAT_INCLUDE="#include <arpa/nameser_compat.h>"],
-                                       [AC_MSG_ERROR([could not compile test program either way])])])
+  # Android does not have C_IN in public headers, we define it wherever necessary
+  AS_IF([test $glib_native_android != yes], [
+    AC_MSG_CHECKING([if arpa/nameser_compat.h is needed])
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
+                                        #include <arpa/nameser.h>],
+                                       [int qclass = C_IN;])],
+                      [AC_MSG_RESULT([no])],
+                      [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
+                                                           #include <arpa/nameser.h>
+                                                           #include <arpa/nameser_compat.h>],
+                                                          [int qclass = C_IN;])],
+                                         [AC_MSG_RESULT([yes])
+                                          NAMESER_COMPAT_INCLUDE="#include <arpa/nameser_compat.h>"],
+                                         [AC_MSG_ERROR([could not compile test program either way])])])])
   AC_SUBST(NAMESER_COMPAT_INCLUDE)
 
   # We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
@@ -1115,6 +1211,19 @@ AS_IF([test $glib_native_win32 = yes], [
   AC_CHECK_FUNC(socket, :, AC_CHECK_LIB(socket, socket,
 				        [NETWORK_LIBS="-lsocket $NETWORK_LIBS"],
 				        [AC_MSG_ERROR(Could not find socket())]))
+  save_libs="$LIBS"
+  LIBS="$LIBS $NETWORK_LIBS"
+  AC_MSG_CHECKING([for res_init])
+  AC_TRY_LINK([#include <sys/types.h>
+	       #include <netinet/in.h>
+	       #include <arpa/nameser.h>
+	       #include <resolv.h>
+              ],[
+	       res_init();
+              ],[AC_MSG_RESULT([yes])
+	         AC_DEFINE(HAVE_RES_INIT, 1, [Define to 1 if you have the 'res_init' function.])
+	      ],[AC_MSG_RESULT([no])])
+  LIBS="$save_libs"
 ])
 AC_SUBST(NETWORK_LIBS)
 
@@ -2340,6 +2449,9 @@ fi
 #  b) FreeBSD doesn't do this either.
 #
 case $host in
+  *android*)
+    G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS"
+    ;;
   *-*-freebsd*|*-*-linux*)
     G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
     ;;
@@ -2958,19 +3070,21 @@ _______EOF
 #define GLIB_SIZEOF_VOID_P $glib_void_p
 #define GLIB_SIZEOF_LONG   $glib_long
 #define GLIB_SIZEOF_SIZE_T $glib_size_t
+#define GLIB_SIZEOF_SSIZE_T $glib_ssize_t
 
 _______EOF
 
         cat >>$outfile <<_______EOF
-typedef signed $glib_size_type_define gssize;
+typedef signed $glib_ssize_type_define gssize;
 typedef unsigned $glib_size_type_define gsize;
 #define G_GSIZE_MODIFIER $gsize_modifier
-#define G_GSSIZE_FORMAT $gssize_format
+#define G_GSSIZE_MODIFIER $gssize_modifier
 #define G_GSIZE_FORMAT $gsize_format
+#define G_GSSIZE_FORMAT $gssize_format
 
 #define G_MAXSIZE	G_MAXU$glib_msize_type
-#define G_MINSSIZE	G_MIN$glib_msize_type
-#define G_MAXSSIZE	G_MAX$glib_msize_type
+#define G_MINSSIZE	G_MIN$glib_mssize_type
+#define G_MAXSSIZE	G_MAX$glib_mssize_type
 
 typedef gint64 goffset;
 #define G_MINOFFSET	G_MININT64
@@ -3136,9 +3250,9 @@ _______EOF
 #define GINT_TO_BE(val)		((gint) GINT${gintbits}_TO_BE (val))
 #define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
 #define GSIZE_TO_LE(val)	((gsize) GUINT${gsizebits}_TO_LE (val))
-#define GSSIZE_TO_LE(val)	((gssize) GINT${gsizebits}_TO_LE (val))
+#define GSSIZE_TO_LE(val)	((gssize) GINT${gssizebits}_TO_LE (val))
 #define GSIZE_TO_BE(val)	((gsize) GUINT${gsizebits}_TO_BE (val))
-#define GSSIZE_TO_BE(val)	((gssize) GINT${gsizebits}_TO_BE (val))
+#define GSSIZE_TO_BE(val)	((gssize) GINT${gssizebits}_TO_BE (val))
 #define G_BYTE_ORDER $g_byte_order
 
 #define GLIB_SYSDEF_POLLIN =$g_pollin
@@ -3298,7 +3412,9 @@ $ac_cv_sizeof___int64)
   ;;
 esac
 glib_size_t=$ac_cv_sizeof_size_t
+glib_ssize_t=$ac_cv_sizeof_ssize_t
 glib_size_type_define="$glib_size_type"
+glib_ssize_type_define="$glib_ssize_type"
 glib_void_p=$ac_cv_sizeof_void_p
 glib_long=$ac_cv_sizeof_long
 
@@ -3306,32 +3422,52 @@ case "$glib_size_type" in
 short)
   gsize_modifier='"h"'
   gsize_format='"hu"'
-  gssize_format='"hi"'
   glib_msize_type='SHRT'
   ;;
 int)
   gsize_modifier='""'
   gsize_format='"u"'
-  gssize_format='"i"'
   glib_msize_type='INT'
   ;;
 long)
   gsize_modifier='"l"'
   gsize_format='"lu"'
-  gssize_format='"li"'
   glib_msize_type='LONG'
   ;;
 "long long"|__int64)
   gsize_modifier='"I64"'
   gsize_format='"I64u"'
-  gssize_format='"I64i"'
   glib_msize_type='INT64'
+  ;;
+esac
+
+case "$glib_ssize_type" in
+short)
+  gssize_modifier='"h"'
+  gssize_format='"hi"'
+  glib_mssize_type='SHRT'
+  ;;
+int)
+  gssize_modifier='""'
+  gssize_format='"i"'
+  glib_mssize_type='INT'
+  ;;
+long)
+  gssize_modifier='"l"'
+  gssize_format='"li"'
+  glib_mssize_type='LONG'
+  ;;
+"long long"|__int64)
+  gssize_modifier='"I64"'
+  gssize_format='"I64i"'
+  glib_mssize_type='INT64'
   ;;
 esac
 
 gintbits=`expr $ac_cv_sizeof_int \* 8`
 glongbits=`expr $ac_cv_sizeof_long \* 8`
 gsizebits=`expr $ac_cv_sizeof_size_t \* 8`
+gssizebits=`expr $ac_cv_sizeof_ssize_t \* 8`
 
 case $ac_cv_sizeof_void_p in
 $ac_cv_sizeof_int)

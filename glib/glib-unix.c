@@ -23,6 +23,11 @@
 
 #include "config.h"
 
+/* To make bionic export pipe2() */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
+
 #include "glib-unix.h"
 #include "gmain-internal.h"
 

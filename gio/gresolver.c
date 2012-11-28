@@ -244,7 +244,9 @@ g_resolver_maybe_reload (GResolver *resolver)
       if (st.st_mtime != resolver->priv->resolv_conf_timestamp)
         {
           resolver->priv->resolv_conf_timestamp = st.st_mtime;
+#ifdef HAVE_RES_INIT
           res_init ();
+#endif
           g_signal_emit (resolver, signals[RELOAD], 0);
         }
     }
