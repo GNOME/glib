@@ -335,10 +335,11 @@ _g_dgettext_should_translate (void)
        *   - If locale is "C", maybe user calls setlocale(LC_ALL,"") later.
        *     Continue with old behavior of translating.
        */
-      if (0 != strcmp (default_domain, "messages") &&
+      if (!default_domain || !translator_comment || !translate_locale ||
+          (0 != strcmp (default_domain, "messages") &&
           '\0' == *translator_comment &&
           0 != strncmp (translate_locale, "en_", 3) &&
-          0 != strcmp (translate_locale, "C"))
+          0 != strcmp (translate_locale, "C")))
         should_translate = FALSE;
 
       g_once_init_leave (&translate,
