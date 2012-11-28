@@ -113,11 +113,7 @@ _g_module_self (void)
    * are required on some systems.
    */
   
-#ifdef __BIONIC__
-  handle = RTLD_DEFAULT;
-#else
   handle = dlopen (NULL, RTLD_GLOBAL | RTLD_LAZY);
-#endif
   if (!handle)
     g_module_set_error (fetch_dlerror (TRUE));
   

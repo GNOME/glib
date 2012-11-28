@@ -40,12 +40,8 @@
 
 G_DEFINE_TYPE (GTlsConsoleInteraction, g_tls_console_interaction, G_TYPE_TLS_INTERACTION);
 
-#if defined(G_OS_WIN32) || defined(__BIONIC__)
+#ifdef G_OS_WIN32
 /* win32 doesn't have getpass() */
-#include <stdio.h>
-#ifndef BUFSIZ
-#define BUFSIZ 8192
-#endif
 static gchar *
 getpass (const gchar *prompt)
 {
@@ -57,11 +53,7 @@ getpass (const gchar *prompt)
 
   for (i = 0; i < BUFSIZ - 1; ++i)
     {
-#ifdef __BIONIC__
-      buf[i] = getc (stdin);
-#else
       buf[i] = _getch ();
-#endif
       if (buf[i] == '\r')
         break;
     }

@@ -33,9 +33,7 @@
 
 #include <glib/gtypes.h>
 
-#if defined(__BIONIC__) && defined (GLIB_HAVE_ALLOCA_H)
-# include <alloca.h>
-#elif defined(__GNUC__)
+#ifdef  __GNUC__
 /* GCC does the right thing */
 # undef alloca
 # define alloca(size)   __builtin_alloca (size)

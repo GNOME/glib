@@ -202,13 +202,6 @@ free_records (GList *records)
   g_list_free_full (records, (GDestroyNotify) g_variant_unref);
 }
 
-#if defined(G_OS_UNIX)
-#ifdef __BIONIC__
-#define C_IN 1
-int res_query(const char *, int, int, u_char *, int);
-#endif
-#endif
-
 static void
 do_lookup_records (GTask         *task,
                    gpointer       source_object,

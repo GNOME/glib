@@ -1094,7 +1094,6 @@ lookup_uid_data (uid_t uid)
       if (pwbufp->pw_name != NULL && pwbufp->pw_name[0] != 0)
 	data->user_name = convert_pwd_string_to_utf8 (pwbufp->pw_name);
 
-#ifndef __BIONIC__
       gecos = pwbufp->pw_gecos;
 
       if (gecos)
@@ -1104,7 +1103,6 @@ lookup_uid_data (uid_t uid)
 	    *comma = 0;
 	  data->real_name = convert_pwd_string_to_utf8 (gecos);
 	}
-#endif
     }
 
   /* Default fallbacks */
