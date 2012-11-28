@@ -1452,7 +1452,7 @@ g_file_info_set_attribute_int64  (GFileInfo  *info,
  * Since: 2.36
  **/
 GDateTime *
-g_file_info_get_get_deletion_date (GFileInfo *info)
+g_file_info_get_deletion_date (GFileInfo *info)
 {
   static guint32 attr = 0;
   GFileAttributeValue *value;

@@ -912,7 +912,7 @@ void               g_file_info_clear_status              (GFileInfo  *info);
 
 /* Helper getters: */
 GLIB_AVAILABLE_IN_2_36
-GDateTime *       g_file_info_get_get_deletion_date  (GFileInfo         *info);
+GDateTime *       g_file_info_get_deletion_date      (GFileInfo         *info);
 GFileType         g_file_info_get_file_type          (GFileInfo         *info);
 gboolean          g_file_info_get_is_hidden          (GFileInfo         *info);
 gboolean          g_file_info_get_is_backup          (GFileInfo         *info);
