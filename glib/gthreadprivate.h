@@ -37,24 +37,18 @@ struct  _GRealThread
 };
 
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
-G_GNUC_INTERNAL
 void            g_system_thread_wait            (GRealThread  *thread);
 
-G_GNUC_INTERNAL
 GRealThread *   g_system_thread_new             (GThreadFunc   func,
                                                  gulong        stack_size,
                                                  GError      **error);
-G_GNUC_INTERNAL
 void            g_system_thread_free            (GRealThread  *thread);
 
-G_GNUC_INTERNAL
 void            g_system_thread_exit            (void);
-G_GNUC_INTERNAL
 void            g_system_thread_set_name        (const gchar  *name);
 
 
 /* gthread.c */
-G_GNUC_INTERNAL
 GThread *       g_thread_new_internal           (const gchar  *name,
                                                  GThreadFunc   proxy,
                                                  GThreadFunc   func,
@@ -62,7 +56,6 @@ GThread *       g_thread_new_internal           (const gchar  *name,
                                                  gsize         stack_size,
                                                  GError      **error);
 
-G_GNUC_INTERNAL
 gpointer        g_thread_proxy                  (gpointer      thread);
 
 #endif /* __G_THREADPRIVATE_H__ */

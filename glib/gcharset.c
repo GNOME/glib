@@ -87,7 +87,7 @@ get_alias_hash (void)
 /* As an abuse of the alias table, the following routines gets
  * the charsets that are aliases for the canonical name.
  */
-G_GNUC_INTERNAL const char **
+const char **
 _g_charset_get_aliases (const char *canonical_name)
 {
   GHashTable *alias_hash = get_alias_hash ();

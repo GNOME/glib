@@ -505,7 +505,7 @@ g_dbus_action_group_get (GDBusConnection *connection,
   return group;
 }
 
-G_GNUC_INTERNAL gboolean
+gboolean
 g_dbus_action_group_sync (GDBusActionGroup  *group,
                           GCancellable      *cancellable,
                           GError           **error)

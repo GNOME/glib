@@ -23,11 +23,8 @@
 #include <glib.h>
 #include "gwakeup.h"
 
-G_GNUC_INTERNAL
 GMainContext *          g_get_worker_context            (void);
-G_GNUC_INTERNAL
 gboolean                g_check_setuid                  (void);
-G_GNUC_INTERNAL
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
 
 #ifdef G_OS_WIN32

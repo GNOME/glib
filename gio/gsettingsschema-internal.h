@@ -41,49 +41,34 @@ typedef struct
   GVariant *default_value;
 } GSettingsSchemaKey;
 
-G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
-G_GNUC_INTERNAL
 GVariantIter *          g_settings_schema_get_value                     (GSettingsSchema  *schema,
                                                                          const gchar      *key);
-G_GNUC_INTERNAL
 gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
                                                                          const gchar      *key);
-G_GNUC_INTERNAL
 const GQuark *          g_settings_schema_list                          (GSettingsSchema  *schema,
                                                                          gint             *n_items);
-G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_string                    (GSettingsSchema  *schema,
                                                                          const gchar      *key);
 
-G_GNUC_INTERNAL
 void                    g_settings_schema_key_init                      (GSettingsSchemaKey *key,
                                                                          GSettingsSchema    *schema,
                                                                          const gchar        *name);
-G_GNUC_INTERNAL
 void                    g_settings_schema_key_clear                     (GSettingsSchemaKey *key);
-G_GNUC_INTERNAL
 gboolean                g_settings_schema_key_type_check                (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
-G_GNUC_INTERNAL
 gboolean                g_settings_schema_key_range_check               (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
-G_GNUC_INTERNAL
 GVariant *              g_settings_schema_key_range_fixup               (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
-G_GNUC_INTERNAL
 GVariant *              g_settings_schema_key_get_translated_default    (GSettingsSchemaKey *key);
 
-G_GNUC_INTERNAL
 gint                    g_settings_schema_key_to_enum                   (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
-G_GNUC_INTERNAL
 GVariant *              g_settings_schema_key_from_enum                 (GSettingsSchemaKey *key,
                                                                          gint                value);
-G_GNUC_INTERNAL
 guint                   g_settings_schema_key_to_flags                  (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
-G_GNUC_INTERNAL
 GVariant *              g_settings_schema_key_from_flags                (GSettingsSchemaKey *key,
                                                                          guint               value);
 

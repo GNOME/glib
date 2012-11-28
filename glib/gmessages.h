@@ -116,7 +116,7 @@ _GLIB_API
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
 /* internal */
-G_GNUC_INTERNAL void	_g_log_fallback_handler	(const gchar   *log_domain,
+void	_g_log_fallback_handler	(const gchar   *log_domain,
 						 GLogLevelFlags log_level,
 						 const gchar   *message,
 						 gpointer       unused_data);
