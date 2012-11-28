@@ -824,8 +824,10 @@ g_io_channel_error_from_errno (gint en)
 #endif
 
 #ifdef EOVERFLOW
+#if EOVERFLOW != EFBIG
     case EOVERFLOW:
       return G_IO_CHANNEL_ERROR_OVERFLOW;
+#endif
 #endif
 
 #ifdef EPIPE
