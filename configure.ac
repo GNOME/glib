@@ -3030,12 +3030,16 @@ _______EOF
 		cat >>$outfile <<_______EOF
 #if defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+#define G_PUBLIC_API __attribute__((visibility("default")))
 #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 #define G_GNUC_INTERNAL __hidden
+#define G_PUBLIC_API __global
 #elif defined (__GNUC__) && defined (G_HAVE_GNUC_VISIBILITY)
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
+#define G_PUBLIC_API   __attribute__((visibility("default")))
 #else
 #define G_GNUC_INTERNAL
+#define G_PUBLIC_API
 #endif 
 _______EOF
 

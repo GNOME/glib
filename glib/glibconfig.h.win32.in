@@ -203,6 +203,7 @@ typedef unsigned __int64 guintptr;
 #define G_HAVE_GROWING_STACK 0
 
 #define G_GNUC_INTERNAL
+#define G_PUBLIC_API __declspec(dllexport)
 
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_WIN32
