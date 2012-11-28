@@ -356,6 +356,7 @@ g_file_info_get_modification_time
 g_file_info_get_symlink_target
 g_file_info_get_etag
 g_file_info_get_sort_order
+g_file_info_get_deletion_date
 g_file_info_set_attribute_mask
 g_file_info_unset_attribute_mask
 g_file_info_set_file_type
