@@ -830,14 +830,19 @@ g_get_any_init_do (void)
     
     if (!pw)
       {
+#ifndef __BIONIC__
 	setpwent ();
+#endif
 	pw = getpwuid (getuid ());
+#ifndef __BIONIC__
 	endpwent ();
+#endif
       }
     if (pw)
       {
 	g_user_name = g_strdup (pw->pw_name);
 
+#ifndef __BIONIC__
 	if (pw->pw_gecos && *pw->pw_gecos != '\0') 
 	  {
 	    gchar **gecos_fields;
@@ -851,6 +856,7 @@ g_get_any_init_do (void)
 	    g_strfreev (gecos_fields);
 	    g_strfreev (name_parts);
 	  }
+#endif
 
 	if (!g_home_dir)
 	  g_home_dir = g_strdup (pw->pw_dir);
