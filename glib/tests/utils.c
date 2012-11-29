@@ -225,8 +225,8 @@ test_swap (void)
 
   g_assert_cmpint (GUINT32_SWAP_LE_BE (a32), ==, b32);
 
-  a64 = 0xaaaaaaaabbbbbbbb;
-  b64 = 0xbbbbbbbbaaaaaaaa;
+  a64 = G_GUINT64_CONSTANT(0xaaaaaaaabbbbbbbb);
+  b64 = G_GUINT64_CONSTANT(0xbbbbbbbbaaaaaaaa);
 
   g_assert_cmpint (GUINT64_SWAP_LE_BE (a64), ==, b64);
 }
