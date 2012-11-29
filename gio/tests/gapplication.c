@@ -61,6 +61,7 @@ spawn (const gchar *expected_stdout,
   gchar **args;
   va_list ap;
   GPid pid;
+  GPollFD fd;
 
   va_start (ap, first_arg);
   array = g_ptr_array_new ();
@@ -83,6 +84,14 @@ spawn (const gchar *expected_stdout,
 
   g_child_watch_add (pid, child_quit, data);
   outstanding_watches++;
+
+  /* we block until the children write to stdout to make sure
+   * they have started, as they need to be executed in order;
+   * see https://bugzilla.gnome.org/show_bug.cgi?id=664627
+   */
+  fd.fd = data->stdout_pipe;
+  fd.events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+  g_poll (&fd, 1, -1);
 }
 
 static void
@@ -102,15 +111,9 @@ basic (void)
          "exit status: 0\n",
          "./app", NULL);
 
-  /* make sure it becomes the master */
-  g_usleep (100000);
-
   /* send it some files */
   spawn ("exit status: 0\n",
          "./app", "/a", "/b", NULL);
-
-  /* make sure the commandline arrives after the files */
-  g_usleep (100000);
 
   spawn ("40 + 2 = 42\n"
          "exit status: 42\n",
