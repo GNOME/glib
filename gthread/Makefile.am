@@ -4,6 +4,8 @@ include $(top_srcdir)/Makefile.decl
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
 	-DG_LOG_DOMAIN=\"GThread\" 	\
+	-D_GTHREAD_API=G_PUBLIC_API	\
+	-D_G_API=_GTHREAD_API 		\
 	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
 	@GLIB_DEBUG_FLAGS@
 

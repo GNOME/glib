@@ -32,6 +32,8 @@ AM_CPPFLAGS = \
 	$(gmodule_INCLUDES)				\
 	$(GLIB_DEBUG_FLAGS)				\
 	-DGIO_COMPILATION				\
+	-D_GIO_API=G_PUBLIC_API				\
+	-D_G_API=_GIO_API				\
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	
 
 lib_LTLIBRARIES = libgio-2.0.la

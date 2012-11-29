@@ -47,6 +47,8 @@ AM_CPPFLAGS = 				\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
 	$(GLIB_DEBUG_FLAGS) 		\
 	-DGLIB_COMPILATION 		\
+	-D_GLIB_API=G_PUBLIC_API	\
+	-D_G_API=_GLIB_API 		\
 	-DPCRE_STATIC
 
 glib.def: glib.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile

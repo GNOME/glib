@@ -191,84 +191,84 @@
 # define GLIB_DEPRECATED_IN_2_26                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_26_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_26
-# define GLIB_DEPRECATED_IN_2_26_FOR(f)
+# define GLIB_DEPRECATED_IN_2_26                _G_API
+# define GLIB_DEPRECATED_IN_2_26_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_26
 # define GLIB_AVAILABLE_IN_2_26                 GLIB_UNAVAILABLE(2, 26)
 #else
-# define GLIB_AVAILABLE_IN_2_26
+# define GLIB_AVAILABLE_IN_2_26                 _G_API
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_28
 # define GLIB_DEPRECATED_IN_2_28                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_28_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_28
-# define GLIB_DEPRECATED_IN_2_28_FOR(f)
+# define GLIB_DEPRECATED_IN_2_28                _G_API
+# define GLIB_DEPRECATED_IN_2_28_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_28
 # define GLIB_AVAILABLE_IN_2_28                 GLIB_UNAVAILABLE(2, 28)
 #else
-# define GLIB_AVAILABLE_IN_2_28
+# define GLIB_AVAILABLE_IN_2_28                 _G_API
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_30
 # define GLIB_DEPRECATED_IN_2_30                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_30_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_30
-# define GLIB_DEPRECATED_IN_2_30_FOR(f)
+# define GLIB_DEPRECATED_IN_2_30                _G_API
+# define GLIB_DEPRECATED_IN_2_30_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_30
 # define GLIB_AVAILABLE_IN_2_30                 GLIB_UNAVAILABLE(2, 30)
 #else
-# define GLIB_AVAILABLE_IN_2_30
+# define GLIB_AVAILABLE_IN_2_30                 _G_API
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_32
 # define GLIB_DEPRECATED_IN_2_32                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_32_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_32
-# define GLIB_DEPRECATED_IN_2_32_FOR(f)
+# define GLIB_DEPRECATED_IN_2_32                _G_API
+# define GLIB_DEPRECATED_IN_2_32_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_32
 # define GLIB_AVAILABLE_IN_2_32                 GLIB_UNAVAILABLE(2, 32)
 #else
-# define GLIB_AVAILABLE_IN_2_32
+# define GLIB_AVAILABLE_IN_2_32                 _G_API
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_34
 # define GLIB_DEPRECATED_IN_2_34                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_34_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_34
-# define GLIB_DEPRECATED_IN_2_34_FOR(f)
+# define GLIB_DEPRECATED_IN_2_34                _G_API
+# define GLIB_DEPRECATED_IN_2_34_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_34
 # define GLIB_AVAILABLE_IN_2_34                 GLIB_UNAVAILABLE(2, 34)
 #else
-# define GLIB_AVAILABLE_IN_2_34
+# define GLIB_AVAILABLE_IN_2_34                 _G_API
 #endif
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_36
 # define GLIB_DEPRECATED_IN_2_36                GLIB_DEPRECATED
 # define GLIB_DEPRECATED_IN_2_36_FOR(f)         GLIB_DEPRECATED_FOR(f)
 #else
-# define GLIB_DEPRECATED_IN_2_36
-# define GLIB_DEPRECATED_IN_2_36_FOR(f)
+# define GLIB_DEPRECATED_IN_2_36                _G_API
+# define GLIB_DEPRECATED_IN_2_36_FOR(f)         _G_API
 #endif
 
 #if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_36
 # define GLIB_AVAILABLE_IN_2_36                 GLIB_UNAVAILABLE(2, 36)
 #else
-# define GLIB_AVAILABLE_IN_2_36
+# define GLIB_AVAILABLE_IN_2_36                 _G_API
 #endif
 
 #endif /*  __G_VERSION_MACROS_H__ */

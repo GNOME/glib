@@ -324,6 +324,25 @@
 #define G_UNAVAILABLE(maj,min)
 #endif
 
+#ifndef _G_API
+#define _G_API
+#endif
+#ifndef _GLIB_API
+#define _GLIB_API
+#endif
+#ifndef _GTHREAD_API
+#define _GTHREAD_API
+#endif
+#ifndef _GMODULE_API
+#define _GMODULE_API
+#endif
+#ifndef _GOBJECT_API
+#define _GOBJECT_API
+#endif
+#ifndef _GIO_API
+#define _GIO_API
+#endif
+
 /* These macros are used to mark deprecated functions in GLib headers,
  * and thus have to be exposed in installed headers. But please
  * do *not* use them in other projects. Instead, use G_DEPRECATED
@@ -331,13 +350,13 @@
  */
 
 #ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED _G_API
+#define GLIB_DEPRECATED_FOR(f) _G_API
+#define GLIB_UNAVAILABLE(maj,min) _G_API
 #else
-#define GLIB_DEPRECATED G_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED _G_API G_DEPRECATED
+#define GLIB_DEPRECATED_FOR(f) _G_API G_DEPRECATED_FOR(f)
+#define GLIB_UNAVAILABLE(maj,min) _G_API G_UNAVAILABLE(maj,min)
 #endif
 
 #endif /* __G_MACROS_H__ */

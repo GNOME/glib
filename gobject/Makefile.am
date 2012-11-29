@@ -16,7 +16,10 @@ AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
 	$(glib_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)			\
-	-DGOBJECT_COMPILATION
+	-DGOBJECT_COMPILATION			\
+	-D_GOBJECT_API=G_PUBLIC_API		\
+	-D_G_API=_GOBJECT_API			\
+	$(NULL)
 
 gobject.def: gobject.symbols $(top_builddir)/glib/glibconfig.h $(top_srcdir)/glib/process-symbol-file.sh Makefile
 	$(AM_V_GEN) env GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)" $(top_srcdir)/glib/process-symbol-file.sh $< $@
