@@ -444,6 +444,7 @@ typedef enum {
  * @G_IO_ERROR_PROXY_NEED_AUTH: Proxy server needs authentication. Since 2.26
  * @G_IO_ERROR_PROXY_NOT_ALLOWED: Proxy connection is not allowed by ruleset.
  *     Since 2.26
+ * @G_IO_ERROR_BROKEN_PIPE: Broken pipe. Since 2.36
  *
  * Error codes returned by GIO functions.
  *
@@ -492,7 +493,8 @@ typedef enum {
   G_IO_ERROR_PROXY_FAILED,
   G_IO_ERROR_PROXY_AUTH_FAILED,
   G_IO_ERROR_PROXY_NEED_AUTH,
-  G_IO_ERROR_PROXY_NOT_ALLOWED
+  G_IO_ERROR_PROXY_NOT_ALLOWED,
+  G_IO_ERROR_BROKEN_PIPE
 } GIOErrorEnum;
 
 
