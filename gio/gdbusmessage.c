@@ -66,27 +66,6 @@ struct _GMemoryBuffer
   GDataStreamByteOrder byte_order;
 };
 
-static gssize
-g_memory_buffer_read  (GMemoryBuffer *mbuf,
-		       void          **buffer,
-		       gsize          count,
-		       GError       **error)
-{
-  gssize res;
-
-  if (((gssize) count) < 0)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to %s"), G_STRFUNC);
-      return -1;
-    }
-
-  res = MIN (count, mbuf->valid_len - mbuf->pos);
-  *buffer = mbuf->data + mbuf->pos;
-  mbuf->pos += res;
-  return res;
-}
-
 static guchar
 g_memory_buffer_read_byte (GMemoryBuffer  *mbuf,
 			   GError            **error)
@@ -1384,28 +1363,17 @@ ensure_input_padding (GMemoryBuffer         *buf,
   return TRUE;
 }
 
-static gchar *
+static const gchar *
 read_string (GMemoryBuffer          *mbuf,
              gsize                  len,
              GError               **error)
 {
   gchar *str;
-  guchar nul;
-  GError *local_error;
   const gchar *end_valid;
-  gssize num_read;
-  gchar *ptr;
 
-  str = g_malloc (len + 1);
-
-  num_read = g_memory_buffer_read (mbuf,
-                                   (void **)&ptr,
-                                   len,
-                                   error);
-  if (num_read < 0)
-    goto fail;
-  if (num_read < len)
+  if (mbuf->pos + len >= mbuf->valid_len || mbuf->pos + len < mbuf->pos)
     {
+      mbuf->pos = mbuf->valid_len;
       /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
       g_set_error (error,
                    G_IO_ERROR,
@@ -1415,19 +1383,27 @@ read_string (GMemoryBuffer          *mbuf,
                                 "Wanted to read %lu byte but only got %lu",
                                 (gulong)len),
                                 (gulong)len,
-                   (gulong)num_read);
-      goto fail;
+                   (gulong)mbuf->valid_len - mbuf->pos);
+      mbuf->pos = mbuf->valid_len;
+      return NULL;
     }
 
-  memcpy (str, ptr, len);
-  local_error = NULL;
-  nul = g_memory_buffer_read_byte (mbuf, &local_error);
-  if (local_error != NULL)
+  if (mbuf->data[mbuf->pos + len] != '\0')
     {
-      g_propagate_error (error, local_error);
-      goto fail;
+      str = g_strndup (mbuf->data + mbuf->pos, len);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Expected NUL byte after the string `%s' but found byte %d"),
+                   str, mbuf->data[mbuf->pos + len]);
+      g_free (str);
+      mbuf->pos += len + 1;
+      return NULL;
     }
-  str[num_read] = '\0';
+
+  str = mbuf->data + mbuf->pos;
+  mbuf->pos += len + 1;
+
   if (!g_utf8_validate (str, -1, &end_valid))
     {
       gint offset;
@@ -1440,26 +1416,13 @@ read_string (GMemoryBuffer          *mbuf,
                    _("Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). "
                      "The valid UTF-8 string up until that point was `%s'"),
                    offset,
-                   (gint) num_read,
+                   (gint) len,
                    valid_str);
       g_free (valid_str);
-      goto fail;
-    }
-  if (nul != '\0')
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Expected NUL byte after the string `%s' but found byte %d"),
-                   str, nul);
-      goto fail;
+      return NULL;
     }
 
   return str;
-
- fail:
-  g_free (str);
-  return NULL;
 }
 
 /* if just_align==TRUE, don't read a value, just align the input stream wrt padding */
@@ -1623,7 +1586,7 @@ parse_value_from_blob (GMemoryBuffer          *buf,
       if (!just_align)
         {
           guint32 len;
-          gchar *v;
+          const gchar *v;
           len = g_memory_buffer_read_uint32 (buf, &local_error);
           if (local_error != NULL)
             goto fail;
@@ -1631,7 +1594,6 @@ parse_value_from_blob (GMemoryBuffer          *buf,
           if (v == NULL)
             goto fail;
           ret = g_variant_new_string (v);
-          g_free (v);
         }
       break;
 
@@ -1641,7 +1603,7 @@ parse_value_from_blob (GMemoryBuffer          *buf,
       if (!just_align)
         {
           guint32 len;
-          gchar *v;
+          const gchar *v;
           len = g_memory_buffer_read_uint32 (buf, &local_error);
           if (local_error != NULL)
             goto fail;
@@ -1655,11 +1617,9 @@ parse_value_from_blob (GMemoryBuffer          *buf,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value `%s' is not a valid D-Bus object path"),
                            v);
-              g_free (v);
               goto fail;
             }
           ret = g_variant_new_object_path (v);
-          g_free (v);
         }
       break;
 
@@ -1667,7 +1627,7 @@ parse_value_from_blob (GMemoryBuffer          *buf,
       if (!just_align)
         {
           guchar len;
-          gchar *v;
+          const gchar *v;
           len = g_memory_buffer_read_byte (buf, &local_error);
           if (local_error != NULL)
             goto fail;
@@ -1681,11 +1641,9 @@ parse_value_from_blob (GMemoryBuffer          *buf,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Parsed value `%s' is not a valid D-Bus signature"),
                        v);
-              g_free (v);
               goto fail;
             }
           ret = g_variant_new_signature (v);
-          g_free (v);
         }
       break;
 
@@ -1874,7 +1832,7 @@ parse_value_from_blob (GMemoryBuffer          *buf,
           if (!just_align)
             {
               guchar siglen;
-              gchar *sig;
+              const gchar *sig;
               GVariantType *variant_type;
               GVariant *value;
 
@@ -1891,11 +1849,9 @@ parse_value_from_blob (GMemoryBuffer          *buf,
                                G_IO_ERROR_INVALID_ARGUMENT,
                                _("Parsed value `%s' for variant is not a valid D-Bus signature"),
                                sig);
-                  g_free (sig);
                   goto fail;
                 }
               variant_type = g_variant_type_new (sig);
-              g_free (sig);
               value = parse_value_from_blob (buf,
                                              variant_type,
                                              FALSE,
