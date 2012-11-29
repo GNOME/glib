@@ -47,6 +47,7 @@ G_BEGIN_DECLS
  * error domains.
  */
 #define G_RESOURCE_ERROR (g_resource_error_quark ())
+GLIB_AVAILABLE_IN_2_32
 GQuark g_resource_error_quark (void);
 
 typedef struct _GStaticResource GStaticResource;
@@ -64,6 +65,7 @@ GType         g_resource_get_type            (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_32
 GResource *   g_resource_new_from_data       (GBytes                *data,
 					      GError               **error);
+GLIB_AVAILABLE_IN_2_32
 GResource *   g_resource_ref                 (GResource             *resource);
 GLIB_AVAILABLE_IN_2_32
 void          g_resource_unref               (GResource             *resource);

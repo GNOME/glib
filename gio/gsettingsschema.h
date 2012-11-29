@@ -37,11 +37,13 @@ GSettingsSchemaSource * g_settings_schema_source_ref                    (GSettin
 GLIB_AVAILABLE_IN_2_32
 void                    g_settings_schema_source_unref                  (GSettingsSchemaSource  *source);
 
+GLIB_AVAILABLE_IN_2_32
 GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (const gchar            *directory,
                                                                          GSettingsSchemaSource  *parent,
                                                                          gboolean                trusted,
                                                                          GError                **error);
 
+GLIB_AVAILABLE_IN_2_32
 GSettingsSchema *       g_settings_schema_source_lookup                 (GSettingsSchemaSource  *source,
                                                                          const gchar            *schema_id,
                                                                          gboolean                recursive);
@@ -55,7 +57,9 @@ GSettingsSchema *       g_settings_schema_ref                           (GSettin
 GLIB_AVAILABLE_IN_2_32
 void                    g_settings_schema_unref                         (GSettingsSchema        *schema);
 
+GLIB_AVAILABLE_IN_2_32
 const gchar *           g_settings_schema_get_id                        (GSettingsSchema        *schema);
+GLIB_AVAILABLE_IN_2_32
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema        *schema);
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */

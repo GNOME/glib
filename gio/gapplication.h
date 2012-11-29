@@ -151,6 +151,7 @@ int                     g_application_run                               (GApplic
                                                                          int                       argc,
                                                                          char                    **argv);
 
+GLIB_AVAILABLE_IN_2_32
 void                    g_application_quit                              (GApplication             *application);
 
 GLIB_AVAILABLE_IN_2_32

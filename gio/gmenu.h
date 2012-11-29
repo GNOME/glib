@@ -46,53 +46,69 @@ GType       g_menu_get_type                         (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_32
 GMenu *     g_menu_new                              (void);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_freeze                           (GMenu       *menu);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_insert_item                      (GMenu       *menu,
                                                      gint         position,
                                                      GMenuItem   *item);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_prepend_item                     (GMenu       *menu,
                                                      GMenuItem   *item);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_append_item                      (GMenu       *menu,
                                                      GMenuItem   *item);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_remove                           (GMenu       *menu,
                                                      gint         position);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_insert                           (GMenu       *menu,
                                                      gint         position,
                                                      const gchar *label,
                                                      const gchar *detailed_action);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_prepend                          (GMenu       *menu,
                                                      const gchar *label,
                                                      const gchar *detailed_action);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_append                           (GMenu       *menu,
                                                      const gchar *label,
                                                      const gchar *detailed_action);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_insert_section                   (GMenu       *menu,
                                                      gint         position,
                                                      const gchar *label,
                                                      GMenuModel  *section);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_prepend_section                  (GMenu       *menu,
                                                      const gchar *label,
                                                      GMenuModel  *section);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_append_section                   (GMenu       *menu,
                                                      const gchar *label,
                                                      GMenuModel  *section);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_insert_submenu                   (GMenu       *menu,
                                                      gint        position,
                                                      const gchar *label,
                                                      GMenuModel  *submenu);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_prepend_submenu                  (GMenu       *menu,
                                                      const gchar *label,
                                                      GMenuModel  *submenu);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_append_submenu                   (GMenu       *menu,
                                                      const gchar *label,
                                                      GMenuModel  *submenu);
 
 
+GLIB_AVAILABLE_IN_2_32
 GType       g_menu_item_get_type                    (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_32
 GMenuItem * g_menu_item_new                         (const gchar *label,
                                                      const gchar *detailed_action);
 
@@ -100,9 +116,11 @@ GLIB_AVAILABLE_IN_2_34
 GMenuItem * g_menu_item_new_from_model              (GMenuModel  *model,
                                                      gint         item_index);
 
+GLIB_AVAILABLE_IN_2_32
 GMenuItem * g_menu_item_new_submenu                 (const gchar *label,
                                                      GMenuModel  *submenu);
 
+GLIB_AVAILABLE_IN_2_32
 GMenuItem * g_menu_item_new_section                 (const gchar *label,
                                                      GMenuModel  *section);
 
@@ -119,29 +137,38 @@ GLIB_AVAILABLE_IN_2_34
 GMenuModel *g_menu_item_get_link                    (GMenuItem   *menu_item,
                                                      const gchar *link);
 
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_attribute_value         (GMenuItem   *menu_item,
                                                      const gchar *attribute,
                                                      GVariant    *value);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_attribute               (GMenuItem   *menu_item,
                                                      const gchar *attribute,
                                                      const gchar *format_string,
                                                      ...);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_link                    (GMenuItem   *menu_item,
                                                      const gchar *link,
                                                      GMenuModel  *model);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_label                   (GMenuItem   *menu_item,
                                                      const gchar *label);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_submenu                 (GMenuItem   *menu_item,
                                                      GMenuModel  *submenu);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_section                 (GMenuItem   *menu_item,
                                                      GMenuModel  *section);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_action_and_target_value (GMenuItem   *menu_item,
                                                      const gchar *action,
                                                      GVariant    *target_value);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_action_and_target       (GMenuItem   *menu_item,
                                                      const gchar *action,
                                                      const gchar *format_string,
                                                      ...);
+GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_detailed_action         (GMenuItem   *menu_item,
                                                      const gchar *detailed_action);
 

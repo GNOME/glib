@@ -34,8 +34,11 @@ G_BEGIN_DECLS
 
 typedef struct _GIOModuleScope GIOModuleScope;
 
+GLIB_AVAILABLE_IN_2_30
 GIOModuleScope *   g_io_module_scope_new     (GIOModuleScopeFlags  flags);
+GLIB_AVAILABLE_IN_2_30
 void               g_io_module_scope_free    (GIOModuleScope      *scope);
+GLIB_AVAILABLE_IN_2_30
 void               g_io_module_scope_block   (GIOModuleScope      *scope,
                                               const gchar         *basename);
 
@@ -59,8 +62,10 @@ GIOModule         *g_io_module_new                            (const gchar      
 void               g_io_modules_scan_all_in_directory         (const char        *dirname);
 GList             *g_io_modules_load_all_in_directory         (const gchar       *dirname);
 
+GLIB_AVAILABLE_IN_2_30
 void               g_io_modules_scan_all_in_directory_with_scope   (const gchar       *dirname,
                                                                     GIOModuleScope    *scope);
+GLIB_AVAILABLE_IN_2_30
 GList             *g_io_modules_load_all_in_directory_with_scope   (const gchar       *dirname,
                                                                     GIOModuleScope    *scope);
 

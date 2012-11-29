@@ -48,6 +48,7 @@ GSimpleAction *         g_simple_action_new_stateful                    (const g
 void                    g_simple_action_set_enabled                     (GSimpleAction      *simple,
                                                                          gboolean            enabled);
 
+GLIB_AVAILABLE_IN_2_30
 void                    g_simple_action_set_state                       (GSimpleAction      *simple,
                                                                          GVariant           *value);
 

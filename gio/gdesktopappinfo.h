@@ -50,10 +50,15 @@ GDesktopAppInfo *g_desktop_app_info_new_from_keyfile  (GKeyFile        *key_file
 
 const char *     g_desktop_app_info_get_filename      (GDesktopAppInfo *info);
 
+GLIB_AVAILABLE_IN_2_30
 const char *     g_desktop_app_info_get_generic_name  (GDesktopAppInfo *info);
+GLIB_AVAILABLE_IN_2_30
 const char *     g_desktop_app_info_get_categories    (GDesktopAppInfo *info);
+GLIB_AVAILABLE_IN_2_30
 const char * const *g_desktop_app_info_get_keywords   (GDesktopAppInfo *info);
+GLIB_AVAILABLE_IN_2_30
 gboolean         g_desktop_app_info_get_nodisplay     (GDesktopAppInfo *info);
+GLIB_AVAILABLE_IN_2_30
 gboolean         g_desktop_app_info_get_show_in       (GDesktopAppInfo *info,
                                                        const gchar     *desktop_env);
 GLIB_AVAILABLE_IN_2_34
@@ -129,6 +134,7 @@ typedef void (*GDesktopAppLaunchCallback) (GDesktopAppInfo  *appinfo,
 					   GPid              pid,
 					   gpointer          user_data);
 
+GLIB_AVAILABLE_IN_2_28
 gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
 						       GList                      *uris,
 						       GAppLaunchContext          *launch_context,

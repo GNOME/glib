@@ -39,6 +39,7 @@ gboolean g_content_type_is_unknown        (const gchar  *type);
 gchar *  g_content_type_get_description   (const gchar  *type);
 gchar *  g_content_type_get_mime_type     (const gchar  *type);
 GIcon *  g_content_type_get_icon          (const gchar  *type);
+GLIB_AVAILABLE_IN_2_34
 GIcon *  g_content_type_get_symbolic_icon (const gchar  *type);
 GLIB_AVAILABLE_IN_2_34
 gchar *  g_content_type_get_generic_icon_name (const gchar  *type);
