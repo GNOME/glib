@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-23 10:10+0200\n"
-"PO-Revision-Date: 2012-11-23 10:11+0200\n"
+"POT-Creation-Date: 2012-11-30 11:00+0200\n"
+"PO-Revision-Date: 2012-11-30 11:01+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -25,6 +25,7 @@ msgstr ""
 
 #: ../gio/gbufferedinputstream.c:427
 #: ../gio/gbufferedinputstream.c:508
+#: ../gio/gdbusmessage.c:80
 #: ../gio/ginputstream.c:185
 #: ../gio/ginputstream.c:376
 #: ../gio/ginputstream.c:615
@@ -89,9 +90,9 @@ msgstr "Not enough space in destination"
 #: ../gio/gdatainputstream.c:1294
 #: ../glib/gconvert.c:764
 #: ../glib/gconvert.c:1156
-#: ../glib/giochannel.c:1584
-#: ../glib/giochannel.c:1626
-#: ../glib/giochannel.c:2470
+#: ../glib/giochannel.c:1586
+#: ../glib/giochannel.c:1628
+#: ../glib/giochannel.c:2472
 #: ../glib/gutf8.c:841
 #: ../glib/gutf8.c:1292
 msgid "Invalid byte sequence in conversion input"
@@ -100,8 +101,8 @@ msgstr "Invalid byte sequence in conversion input"
 #: ../gio/gcharsetconverter.c:349
 #: ../glib/gconvert.c:772
 #: ../glib/gconvert.c:1081
-#: ../glib/giochannel.c:1591
-#: ../glib/giochannel.c:2482
+#: ../glib/giochannel.c:1593
+#: ../glib/giochannel.c:2484
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
@@ -116,7 +117,7 @@ msgstr "Cancellable initialization not supported"
 #: ../gio/gcharsetconverter.c:457
 #: ../glib/gconvert.c:564
 #: ../glib/gconvert.c:642
-#: ../glib/giochannel.c:1412
+#: ../glib/giochannel.c:1414
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Conversion from character set '%s' to '%s' is not supported"
@@ -472,144 +473,144 @@ msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
 
-#: ../gio/gdbusmessage.c:859
+#: ../gio/gdbusmessage.c:1291
 msgid "type is INVALID"
 msgstr "type is INVALID"
 
-#: ../gio/gdbusmessage.c:870
+#: ../gio/gdbusmessage.c:1302
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL message: PATH or MEMBER header field is missing"
 
-#: ../gio/gdbusmessage.c:881
+#: ../gio/gdbusmessage.c:1313
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 
-#: ../gio/gdbusmessage.c:893
+#: ../gio/gdbusmessage.c:1325
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 
-#: ../gio/gdbusmessage.c:906
+#: ../gio/gdbusmessage.c:1338
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 
-#: ../gio/gdbusmessage.c:914
+#: ../gio/gdbusmessage.c:1346
 msgid "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
 msgstr "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
 
-#: ../gio/gdbusmessage.c:922
+#: ../gio/gdbusmessage.c:1354
 msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 msgstr "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:998
+#: ../gio/gdbusmessage.c:1414
 #, c-format
-msgid "Wanted to read %lu byte but got EOF"
-msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Wanted to read %lu byte but got EOF"
-msgstr[1] "Wanted to read %lu bytes but got EOF"
+msgid "Wanted to read %lu bytes but only got %lu"
+msgid_plural "Wanted to read %lu byte but only got %lu"
+msgstr[0] "Wanted to read %lu bytes but only got %lu"
+msgstr[1] "Wanted to read %lu byte but only got %lu"
 
-#: ../gio/gdbusmessage.c:1025
+#: ../gio/gdbusmessage.c:1440
 #, c-format
 msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
 
-#: ../gio/gdbusmessage.c:1038
+#: ../gio/gdbusmessage.c:1453
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Expected NUL byte after the string `%s' but found byte %d"
 
-#: ../gio/gdbusmessage.c:1242
+#: ../gio/gdbusmessage.c:1656
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Parsed value `%s' is not a valid D-Bus object path"
 
-#: ../gio/gdbusmessage.c:1268
+#: ../gio/gdbusmessage.c:1682
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "'%s' is not a valid name "
 
-#: ../gio/gdbusmessage.c:1325
+#: ../gio/gdbusmessage.c:1739
 #, c-format
 msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[1] "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1483
+#: ../gio/gdbusmessage.c:1892
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Parsed value `%s' for variant is not a valid D-Bus signature"
 
-#: ../gio/gdbusmessage.c:1510
+#: ../gio/gdbusmessage.c:1918
 #, c-format
 msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 
-#: ../gio/gdbusmessage.c:1698
+#: ../gio/gdbusmessage.c:2105
 #, c-format
 msgid "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
 msgstr "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
 
-#: ../gio/gdbusmessage.c:1712
+#: ../gio/gdbusmessage.c:2118
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Invalid major protocol version. Expected 1 but found %d"
 
-#: ../gio/gdbusmessage.c:1769
+#: ../gio/gdbusmessage.c:2174
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Signature header with signature `%s' found but message body is empty"
 
-#: ../gio/gdbusmessage.c:1783
+#: ../gio/gdbusmessage.c:2188
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsed value `%s' is not a valid D-Bus signature (for body)"
 
-#: ../gio/gdbusmessage.c:1814
+#: ../gio/gdbusmessage.c:2218
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "No signature header in message but the message body is %u byte"
 msgstr[1] "No signature header in message but the message body is %u bytes"
 
-#: ../gio/gdbusmessage.c:1824
+#: ../gio/gdbusmessage.c:2228
 msgid "Cannot deserialize message: "
 msgstr "Cannot deserialize message: "
 
-#: ../gio/gdbusmessage.c:2156
+#: ../gio/gdbusmessage.c:2549
 #, c-format
 msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 
-#: ../gio/gdbusmessage.c:2297
+#: ../gio/gdbusmessage.c:2686
 #, c-format
 msgid "Message has %d file descriptors but the header field indicates %d file descriptors"
 msgstr "Message has %d file descriptors but the header field indicates %d file descriptors"
 
-#: ../gio/gdbusmessage.c:2305
+#: ../gio/gdbusmessage.c:2694
 msgid "Cannot serialize message: "
 msgstr "Cannot serialize message: "
 
-#: ../gio/gdbusmessage.c:2349
+#: ../gio/gdbusmessage.c:2738
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Message body has signature `%s' but there is no signature header"
 
-#: ../gio/gdbusmessage.c:2359
+#: ../gio/gdbusmessage.c:2748
 #, c-format
 msgid "Message body has type signature `%s' but signature in the header field is `%s'"
 msgstr "Message body has type signature `%s' but signature in the header field is `%s'"
 
-#: ../gio/gdbusmessage.c:2375
+#: ../gio/gdbusmessage.c:2764
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Message body is empty but signature in the header field is `(%s)'"
 
-#: ../gio/gdbusmessage.c:2932
+#: ../gio/gdbusmessage.c:3314
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Error return with body of type `%s'"
 
-#: ../gio/gdbusmessage.c:2940
+#: ../gio/gdbusmessage.c:3322
 msgid "Error return with empty body"
 msgstr "Error return with empty body"
 
@@ -1015,9 +1016,9 @@ msgstr "Expected a GEmblem for GEmblemedIcon"
 #: ../gio/gfile.c:5206
 #: ../gio/gfile.c:5530
 #: ../gio/gfile.c:5598
-#: ../gio/gfile.c:7214
-#: ../gio/gfile.c:7304
-#: ../gio/gfile.c:7388
+#: ../gio/gfile.c:7258
+#: ../gio/gfile.c:7348
+#: ../gio/gfile.c:7432
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -1083,12 +1084,12 @@ msgstr "Trash not supported"
 msgid "File names cannot contain '%c'"
 msgstr "File names cannot contain '%c'"
 
-#: ../gio/gfile.c:6279
+#: ../gio/gfile.c:6323
 #: ../gio/gvolume.c:364
 msgid "volume doesn't implement mount"
 msgstr "volume doesn't implement mount"
 
-#: ../gio/gfile.c:6387
+#: ../gio/gfile.c:6431
 msgid "No application is registered as handling this file"
 msgstr "No application is registered as handling this file"
 
@@ -1744,79 +1745,79 @@ msgstr "Error setting extended attribute '%s': %s"
 msgid " (invalid encoding)"
 msgstr " (invalid encoding)"
 
-#: ../gio/glocalfileinfo.c:1629
+#: ../gio/glocalfileinfo.c:1627
 #: ../gio/glocalfileoutputstream.c:843
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Error when getting information for file '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1864
+#: ../gio/glocalfileinfo.c:1862
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Error when getting information for file descriptor: %s"
 
-#: ../gio/glocalfileinfo.c:1909
+#: ../gio/glocalfileinfo.c:1907
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Invalid attribute type (uint32 expected)"
 
-#: ../gio/glocalfileinfo.c:1927
+#: ../gio/glocalfileinfo.c:1925
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Invalid attribute type (uint64 expected)"
 
-#: ../gio/glocalfileinfo.c:1946
-#: ../gio/glocalfileinfo.c:1965
+#: ../gio/glocalfileinfo.c:1944
+#: ../gio/glocalfileinfo.c:1963
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Invalid attribute type (byte string expected)"
 
-#: ../gio/glocalfileinfo.c:2000
+#: ../gio/glocalfileinfo.c:1998
 msgid "Cannot set permissions on symlinks"
 msgstr "Cannot set permissions on symlinks"
 
-#: ../gio/glocalfileinfo.c:2016
+#: ../gio/glocalfileinfo.c:2014
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error setting permissions: %s"
 
-#: ../gio/glocalfileinfo.c:2067
+#: ../gio/glocalfileinfo.c:2065
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error setting owner: %s"
 
-#: ../gio/glocalfileinfo.c:2090
+#: ../gio/glocalfileinfo.c:2088
 msgid "symlink must be non-NULL"
 msgstr "symlink must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:2100
-#: ../gio/glocalfileinfo.c:2119
-#: ../gio/glocalfileinfo.c:2130
+#: ../gio/glocalfileinfo.c:2098
+#: ../gio/glocalfileinfo.c:2117
+#: ../gio/glocalfileinfo.c:2128
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error setting symlink: %s"
 
-#: ../gio/glocalfileinfo.c:2109
+#: ../gio/glocalfileinfo.c:2107
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error setting symlink: file is not a symlink"
 
-#: ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2233
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error setting modification or access time: %s"
 
 # c-format
-#: ../gio/glocalfileinfo.c:2258
+#: ../gio/glocalfileinfo.c:2256
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:2273
+#: ../gio/glocalfileinfo.c:2271
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error setting SELinux context: %s"
 
-#: ../gio/glocalfileinfo.c:2280
+#: ../gio/glocalfileinfo.c:2278
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux is not enabled on this system"
 
-#: ../gio/glocalfileinfo.c:2372
+#: ../gio/glocalfileinfo.c:2370
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setting attribute %s not supported"
@@ -1904,7 +1905,7 @@ msgid "Error removing old file: %s"
 msgstr "Error removing old file: %s"
 
 #: ../gio/gmemoryinputstream.c:483
-#: ../gio/gmemoryoutputstream.c:734
+#: ../gio/gmemoryoutputstream.c:748
 msgid "Invalid GSeekType supplied"
 msgstr "Invalid GSeekType supplied"
 
@@ -1916,23 +1917,23 @@ msgstr "Invalid seek request"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Cannot truncate GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:530
+#: ../gio/gmemoryoutputstream.c:544
 msgid "Memory output stream not resizable"
 msgstr "Memory output stream not resizable"
 
-#: ../gio/gmemoryoutputstream.c:546
+#: ../gio/gmemoryoutputstream.c:560
 msgid "Failed to resize memory output stream"
 msgstr "Failed to resize memory output stream"
 
-#: ../gio/gmemoryoutputstream.c:634
+#: ../gio/gmemoryoutputstream.c:648
 msgid "Amount of memory required to process the write is larger than available address space"
 msgstr "Amount of memory required to process the write is larger than available address space"
 
-#: ../gio/gmemoryoutputstream.c:744
+#: ../gio/gmemoryoutputstream.c:758
 msgid "Requested seek before the beginning of the stream"
 msgstr "Requested seek before the beginning of the stream"
 
-#: ../gio/gmemoryoutputstream.c:753
+#: ../gio/gmemoryoutputstream.c:767
 msgid "Requested seek beyond the end of the stream"
 msgstr "Requested seek beyond the end of the stream"
 
@@ -3291,7 +3292,7 @@ msgstr "Error opening directory '%s': %s"
 #, c-format
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "Could not allocate %ld byte to read file \"%s\""
+msgstr[0] "Could not allocate %lu byte to read file \"%s\""
 msgstr[1] "Could not allocate %lu bytes to read file \"%s\""
 
 #: ../glib/gfileutils.c:686
@@ -3385,27 +3386,27 @@ msgstr "Failed to read the symbolic link '%s': %s"
 msgid "Symbolic links not supported"
 msgstr "Symbolic links not supported"
 
-#: ../glib/giochannel.c:1416
+#: ../glib/giochannel.c:1418
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Could not open converter from '%s' to '%s': %s"
 
-#: ../glib/giochannel.c:1761
+#: ../glib/giochannel.c:1763
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Can't do a raw read in g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1808
-#: ../glib/giochannel.c:2066
-#: ../glib/giochannel.c:2153
+#: ../glib/giochannel.c:1810
+#: ../glib/giochannel.c:2068
+#: ../glib/giochannel.c:2155
 msgid "Leftover unconverted data in read buffer"
 msgstr "Left over unconverted data in read buffer"
 
-#: ../glib/giochannel.c:1889
-#: ../glib/giochannel.c:1966
+#: ../glib/giochannel.c:1891
+#: ../glib/giochannel.c:1968
 msgid "Channel terminates in a partial character"
 msgstr "Channel terminates in a partial character"
 
-#: ../glib/giochannel.c:1952
+#: ../glib/giochannel.c:1954
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Can't do a raw read in g_io_channel_read_to_end"
 
