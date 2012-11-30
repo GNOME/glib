@@ -874,7 +874,7 @@ g_file_resolve_relative_path (GFile      *file,
  * returned.
  *
  * If the file does not exist, the %G_IO_ERROR_NOT_FOUND error will
- * be returned. If the file is not a directory, the %G_FILE_ERROR_NOTDIR
+ * be returned. If the file is not a directory, the %G_IO_ERROR_NOT_DIRECTORY
  * error will be returned. Other errors are possible too.
  *
  * Returns: (transfer full): A #GFileEnumerator if successful,
