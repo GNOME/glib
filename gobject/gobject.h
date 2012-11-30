@@ -567,16 +567,16 @@ gsize	    g_object_compat_control	      (gsize	       what,
 /* --- implementation macros --- */
 #define G_OBJECT_WARN_INVALID_PSPEC(object, pname, property_id, pspec) \
 G_STMT_START { \
-  GObject *_object = (GObject*) (object); \
-  GParamSpec *_pspec = (GParamSpec*) (pspec); \
-  guint _property_id = (property_id); \
+  GObject *_glib__object = (GObject*) (object); \
+  GParamSpec *_glib__pspec = (GParamSpec*) (pspec); \
+  guint _glib__property_id = (property_id); \
   g_warning ("%s: invalid %s id %u for \"%s\" of type `%s' in `%s'", \
              G_STRLOC, \
              (pname), \
-             _property_id, \
-             _pspec->name, \
-             g_type_name (G_PARAM_SPEC_TYPE (_pspec)), \
-             G_OBJECT_TYPE_NAME (_object)); \
+             _glib__property_id, \
+             _glib__pspec->name, \
+             g_type_name (G_PARAM_SPEC_TYPE (_glib__pspec)), \
+             G_OBJECT_TYPE_NAME (_glib__object)); \
 } G_STMT_END
 /**
  * G_OBJECT_WARN_INVALID_PROPERTY_ID:
