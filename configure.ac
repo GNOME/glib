@@ -901,6 +901,7 @@ AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
  #include <sys/param.h>
  #endif
 ])
+AC_CHECK_FUNCS(sysctlbyname)
 
 AC_CHECK_HEADERS([xlocale.h])
 
