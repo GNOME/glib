@@ -1,3 +1,12 @@
+Overview of changes from GLib 2.35.2 to 2.35.3
+==============================================
+
+This release contains an incompatible change to the g_get_home_dir()
+function.  Previously, this function would effectively ignore the HOME
+environment variable and always return the value from /etc/password.  As
+of this version, the HOME variable is used if it is set and the value
+from /etc/passwd is only used as a fallback.
+
 Overview of changes from GLib 2.35.1 to 2.35.2
 ==============================================
 

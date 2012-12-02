@@ -700,14 +700,19 @@ g_get_any_init_do (void)
       g_tmp_dir = g_strdup ("/tmp");
     }
 #endif	/* !G_OS_WIN32 */
-  
-#ifdef G_OS_WIN32
-  /* We check $HOME first for Win32, though it is a last resort for Unix
-   * where we prefer the results of getpwuid().
-   */
+
+  /* We first check HOME and use it if it is set */
   g_home_dir = g_strdup (g_getenv ("HOME"));
 
-  /* Only believe HOME if it is an absolute path and exists */
+#ifdef G_OS_WIN32
+  /* Only believe HOME if it is an absolute path and exists.
+   *
+   * We only do this check on Windows for a couple of reasons.
+   * Historically, we only did it there because we used to ignore $HOME
+   * on UNIX.  There are concerns about enabling it now on UNIX because
+   * of things like autofs.  In short, if the user has a bogus value in
+   * $HOME then they get what they pay for...
+   */
   if (g_home_dir)
     {
       if (!(g_path_is_absolute (g_home_dir) &&
@@ -717,7 +722,7 @@ g_get_any_init_do (void)
 	  g_home_dir = NULL;
 	}
     }
-  
+
   /* In case HOME is Unix-style (it happens), convert it to
    * Windows style.
    */
@@ -875,11 +880,6 @@ g_get_any_init_do (void)
 
 #endif /* !HAVE_PWD_H */
 
-#ifndef G_OS_WIN32
-  if (!g_home_dir)
-    g_home_dir = g_strdup (g_getenv ("HOME"));
-#endif
-
 #ifdef __EMX__
   /* change '\\' in %HOME% to '/' */
   g_strdelimit (g_home_dir, "\\",'/');
@@ -975,31 +975,31 @@ g_get_real_name (void)
 /**
  * g_get_home_dir:
  *
- * Gets the current user's home directory as defined in the 
- * password database.
+ * Gets the current user's home directory.
  *
- * Note that in contrast to traditional UNIX tools, this function 
- * prefers <filename>passwd</filename> entries over the <envar>HOME</envar> 
- * environment variable. 
+ * As with most UNIX tools, this function will return the value of the
+ * <envar>HOME</envar> environment variable if it is set to an existing
+ * absolute path name, falling back to the <filename>passwd</filename>
+ * file in the case that it is unset.
  *
- * One of the reasons for this decision is that applications in many 
- * cases need special handling to deal with the case where 
- * <envar>HOME</envar> is
- * <simplelist>
- *   <member>Not owned by the user</member>
- *   <member>Not writeable</member>
- *   <member>Not even readable</member>
- * </simplelist>
- * Since applications are in general <emphasis>not</emphasis> written 
- * to deal with these situations it was considered better to make 
- * g_get_home_dir() not pay attention to <envar>HOME</envar> and to 
- * return the real home directory for the user. If applications
- * want to pay attention to <envar>HOME</envar>, they can do:
- * |[
- *  const char *homedir = g_getenv ("HOME");
- *   if (!homedir)
- *      homedir = g_get_home_dir (<!-- -->);
- * ]|
+ * If the path given in <envar>HOME</envar> is non-absolute, does not
+ * exist, or is not a directory, the result is undefined.
+ *
+ * <note><para>
+ *   Before version 2.36 this function would ignore the
+ *   <envar>HOME</envar> environment variable, taking the value from the
+ *   <filename>passwd</filename> database instead.  This was changed to
+ *   increase the compatibility of GLib with other programs (and the XDG
+ *   basedir specification) and to increase testability of programs
+ *   based on GLib (by making it easier to run them from test
+ *   frameworks).
+ * </para><para>
+ *   If your program has a strong requirement for either the new or the
+ *   old behaviour (and if you don't wish to increase your GLib
+ *   dependency to ensure that the new behaviour is in effect) then you
+ *   should either directly check the <envar>HOME</envar> environment
+ *   variable yourself or unset it before calling any functions in GLib.
+ * </para></note>
  *
  * Returns: the current user's home directory
  */
