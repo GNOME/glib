@@ -694,12 +694,12 @@ accept_ready (GSocket      *accept_socket,
   socket = g_socket_accept (accept_socket, g_task_get_cancellable (task), &error);
   if (socket)
     {
-      g_task_return_pointer (task, socket, g_object_unref);
       source_object = g_object_get_qdata (G_OBJECT (accept_socket), source_quark);
       if (source_object)
 	g_object_set_qdata_full (G_OBJECT (task),
 				 source_quark,
 				 g_object_ref (source_object), g_object_unref);
+      g_task_return_pointer (task, socket, g_object_unref);
     }
   else
     {
