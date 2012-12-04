@@ -187,7 +187,11 @@ test_GDateTime_equal (void)
   g_date_time_unref (dt1);
 
   /* America/Recife is in UTC-0300 */
+#ifdef G_OS_UNIX
   tz = g_time_zone_new ("America/Recife");
+#elif defined G_OS_WIN32
+  tz = g_time_zone_new ("E. South America Standard Time");
+#endif
   dt1 = g_date_time_new (tz, 2010, 5, 24,  8, 0, 0);
   g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
@@ -607,7 +611,11 @@ test_GDateTime_new_full (void)
   g_assert_cmpint (10, ==, g_date_time_get_second (dt));
   g_date_time_unref (dt);
 
+#ifdef G_OS_UNIX
   tz = g_time_zone_new ("America/Recife");
+#elif defined G_OS_WIN32
+  tz = g_time_zone_new ("E. South America Standard Time");
+#endif
   dt = g_date_time_new (tz, 2010, 5, 24, 8, 4, 0);
   g_time_zone_unref (tz);
   g_assert_cmpint (2010, ==, g_date_time_get_year (dt));
@@ -1025,7 +1033,11 @@ test_GDateTime_dst (void)
   GTimeZone *tz;
 
   /* this date has the DST state set for Europe/London */
+#ifdef G_OS_UNIX
   tz = g_time_zone_new ("Europe/London");
+#elif defined G_OS_WIN32
+  tz = g_time_zone_new ("GMT Standard Time");
+#endif
   dt1 = g_date_time_new (tz, 2009, 8, 15, 3, 0, 1);
   g_assert (g_date_time_is_daylight_savings (dt1));
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, 3600);
@@ -1250,7 +1262,11 @@ test_find_interval (void)
   gint64 u;
   gint i1, i2;
 
+#ifdef G_OS_UNIX
   tz = g_time_zone_new ("Canada/Eastern");
+#elif defined G_OS_WIN32
+  tz = g_time_zone_new ("Eastern Standard Time");
+#endif
   dt = g_date_time_new_utc (2010, 11, 7, 1, 30, 0);
   u = g_date_time_to_unix (dt);
 
@@ -1279,7 +1295,11 @@ test_adjust_time (void)
   gint64 u, u2;
   gint i1, i2;
 
+#ifdef G_OS_UNIX
   tz = g_time_zone_new ("Canada/Eastern");
+#elif defined G_OS_WIN32
+  tz = g_time_zone_new ("Eastern Standard Time");
+#endif
   dt = g_date_time_new_utc (2010, 11, 7, 1, 30, 0);
   u = g_date_time_to_unix (dt);
   u2 = u;
