@@ -172,7 +172,8 @@ typedef enum {
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
   G_TEST_TRAP_INHERIT_STDIN     = 1 << 9
 } GTestTrapFlags;
-GLIB_AVAILABLE_IN_ALL
+
+GLIB_DEPRECATED_IN_2_38_FOR (g_test_trap_subprocess)
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
 

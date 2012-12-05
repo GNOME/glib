@@ -2384,11 +2384,13 @@ wait_for_child (GPid pid,
  *   }
  * ]|
  *
- * This function is implemented only on Unix platforms.
- *
  * Returns: %TRUE for the forked child and %FALSE for the executing parent process.
  *
  * Since: 2.16
+ *
+ * Deprecated: This function is implemented only on Unix platforms,
+ * and is not always reliable due to problems inherent in
+ * fork-without-exec. Use g_test_trap_subprocess() instead.
  */
 gboolean
 g_test_trap_fork (guint64        usec_timeout,

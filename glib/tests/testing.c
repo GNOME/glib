@@ -85,6 +85,9 @@ test_timer (void)
   g_test_maximized_result (5, "bogus-quantity: %ddummies", 5); /* simple API test */
 }
 
+#ifdef G_OS_UNIX
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 /* fork out for a failing test */
 static void
 test_fork_fail (void)
@@ -126,6 +129,9 @@ test_fork_timeout (void)
   g_test_trap_assert_failed();
   g_assert (g_test_trap_reached_timeout());
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
+#endif /* G_OS_UNIX */
 
 static void
 test_subprocess_fail_child (void)
