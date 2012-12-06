@@ -3566,6 +3566,37 @@ fi
 
 AC_SUBST(GLIB_LINK_FLAGS)
 
+dnl
+dnl Check for -fvisibility=hidden to determine if we can do GNU-style
+dnl visibility attributes for symbol export control
+dnl
+case "$host" in
+  *-*-mingw*)
+    dnl on mingw32 we do -fvisibility=hidden and __declspec(dllexport)
+    AC_DEFINE([_GLIB_EXTERN], [__attribute__((visibility("default"))) __declspec(dllexport) extern],
+              [defines how to decorate public symbols while building])
+    CFLAGS="${CFLAGS} -fvisibility=hidden"
+    ;;
+  *)
+    dnl on other compilers, check if we can do -fvisibility=hidden
+    SAVED_CFLAGS="${CFLAGS}"
+    CFLAGS="-fvisibility=hidden"
+    AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
+    AC_TRY_COMPILE([], [int main (void) { return 0; }],
+                   AC_MSG_RESULT(yes)
+                   enable_fvisibility_hidden=yes,
+                   AC_MSG_RESULT(no)
+                   enable_fvisibility_hidden=no)
+    CFLAGS="${SAVED_CFLAGS}"
+
+    AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
+      AC_DEFINE([_GLIB_EXTERN], [__attribute__((visibility("default"))) extern],
+                [defines how to decorate public symbols while building])
+      CFLAGS="${CFLAGS} -fvisibility=hidden"
+    ])
+    ;;
+esac
+
 dnl Compiler flags; macro originates from systemd
 dnl See https://bugzilla.gnome.org/show_bug.cgi?id=608953
 CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
