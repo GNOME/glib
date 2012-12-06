@@ -324,6 +324,10 @@
 #define G_UNAVAILABLE(maj,min)
 #endif
 
+#ifndef _GLIB_EXTERN
+#define _GLIB_EXTERN extern
+#endif
+
 /* These macros are used to mark deprecated functions in GLib headers,
  * and thus have to be exposed in installed headers. But please
  * do *not* use them in other projects. Instead, use G_DEPRECATED
@@ -331,13 +335,13 @@
  */
 
 #ifdef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED _GLIB_EXTERN
+#define GLIB_DEPRECATED_FOR(f) _GLIB_EXTERN
+#define GLIB_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #else
-#define GLIB_DEPRECATED G_DEPRECATED
-#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f)
-#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min)
+#define GLIB_DEPRECATED G_DEPRECATED _GLIB_EXTERN
+#define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
+#define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #endif
 
 #endif /* __G_MACROS_H__ */

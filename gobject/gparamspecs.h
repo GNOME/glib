@@ -1155,7 +1155,7 @@ GParamSpec*	g_param_spec_variant	 (const gchar        *name,
 #      endif /* !GOBJECT_COMPILATION */
 #    endif /* !GOBJECT_STATIC_COMPILATION */
 #  else /* !G_PLATFORM_WIN32 */
-#    define GOBJECT_VAR extern
+#    define GOBJECT_VAR _GLIB_EXTERN
 #  endif /* !G_PLATFORM_WIN32 */
 #endif /* GOBJECT_VAR */
 

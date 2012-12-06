@@ -477,7 +477,7 @@ G_END_DECLS
 #      endif /* !GLIB_COMPILATION */
 #    endif /* !GLIB_STATIC_COMPILATION */
 #  else /* !G_PLATFORM_WIN32 */
-#    define GLIB_VAR extern
+#    define GLIB_VAR _GLIB_EXTERN
 #  endif /* !G_PLATFORM_WIN32 */
 #endif /* GLIB_VAR */
 

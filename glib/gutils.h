@@ -74,14 +74,14 @@ G_BEGIN_DECLS
 #  endif
 #endif
 #ifdef G_IMPLEMENT_INLINES
-#  define G_INLINE_FUNC
+#  define G_INLINE_FUNC _GLIB_EXTERN
 #  undef  G_CAN_INLINE
 #elif defined (__GNUC__) 
 #  define G_INLINE_FUNC static __inline __attribute__ ((unused))
 #elif defined (G_CAN_INLINE) 
 #  define G_INLINE_FUNC static inline
 #else /* can't inline */
-#  define G_INLINE_FUNC
+#  define G_INLINE_FUNC _GLIB_EXTERN
 #endif /* !G_INLINE_FUNC */
 
 GLIB_AVAILABLE_IN_ALL
