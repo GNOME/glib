@@ -184,6 +184,7 @@
  * do *not* use them in other projects. Instead, use G_DEPRECATED
  * or define your own wrappers around it.
  */
+#define GLIB_AVAILABLE_IN_ALL
 
 /* XXX: Every new stable minor release should add a set of macros here */
 
