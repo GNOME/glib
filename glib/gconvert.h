@@ -65,6 +65,7 @@ typedef enum
  * error domains.
  */
 #define G_CONVERT_ERROR g_convert_error_quark()
+GLIB_AVAILABLE_IN_ALL
 GQuark g_convert_error_quark (void);
 
 /**
@@ -76,16 +77,20 @@ GQuark g_convert_error_quark (void);
  */
 typedef struct _GIConv *GIConv;
 
+GLIB_AVAILABLE_IN_ALL
 GIConv g_iconv_open   (const gchar  *to_codeset,
 		       const gchar  *from_codeset);
+GLIB_AVAILABLE_IN_ALL
 gsize  g_iconv        (GIConv        converter,
 		       gchar       **inbuf,
 		       gsize        *inbytes_left,
 		       gchar       **outbuf,
 		       gsize        *outbytes_left);
+GLIB_AVAILABLE_IN_ALL
 gint   g_iconv_close  (GIConv        converter);
 
 
+GLIB_AVAILABLE_IN_ALL
 gchar* g_convert               (const gchar  *str,
 				gssize        len,            
 				const gchar  *to_codeset,
@@ -93,12 +98,14 @@ gchar* g_convert               (const gchar  *str,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
 				GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar* g_convert_with_iconv    (const gchar  *str,
 				gssize        len,
 				GIConv        converter,
 				gsize        *bytes_read,     
 				gsize        *bytes_written,  
 				GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar* g_convert_with_fallback (const gchar  *str,
 				gssize        len,            
 				const gchar  *to_codeset,
@@ -111,11 +118,13 @@ gchar* g_convert_with_fallback (const gchar  *str,
 
 /* Convert between libc's idea of strings and UTF-8.
  */
+GLIB_AVAILABLE_IN_ALL
 gchar* g_locale_to_utf8   (const gchar  *opsysstring,
 			   gssize        len,            
 			   gsize        *bytes_read,     
 			   gsize        *bytes_written,  
 			   GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar* g_locale_from_utf8 (const gchar  *utf8string,
 			   gssize        len,            
 			   gsize        *bytes_read,     
@@ -125,29 +134,37 @@ gchar* g_locale_from_utf8 (const gchar  *utf8string,
 /* Convert between the operating system (or C runtime)
  * representation of file names and UTF-8.
  */
+GLIB_AVAILABLE_IN_ALL
 gchar* g_filename_to_utf8   (const gchar  *opsysstring,
 			     gssize        len,            
 			     gsize        *bytes_read,     
 			     gsize        *bytes_written,  
 			     GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar* g_filename_from_utf8 (const gchar  *utf8string,
 			     gssize        len,            
 			     gsize        *bytes_read,     
 			     gsize        *bytes_written,  
 			     GError      **error) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_from_uri (const gchar *uri,
 			    gchar      **hostname,
 			    GError     **error) G_GNUC_MALLOC;
   
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_to_uri   (const gchar *filename,
 			    const gchar *hostname,
 			    GError     **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_display_name (const gchar *filename) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gboolean g_get_filename_charsets (const gchar ***charsets);
 
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_ALL
 gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
 
 #ifdef G_OS_WIN32
@@ -156,19 +173,23 @@ gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
 #define g_filename_from_uri  g_filename_from_uri_utf8
 #define g_filename_to_uri    g_filename_to_uri_utf8
 
+GLIB_AVAILABLE_IN_ALL
 gchar* g_filename_to_utf8_utf8   (const gchar  *opsysstring,
                                   gssize        len,
                                   gsize        *bytes_read,
                                   gsize        *bytes_written,
                                   GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar* g_filename_from_utf8_utf8 (const gchar  *utf8string,
                                   gssize        len,
                                   gsize        *bytes_read,
                                   gsize        *bytes_written,
                                   GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_from_uri_utf8  (const gchar  *uri,
                                   gchar       **hostname,
                                   GError      **error) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_to_uri_utf8    (const gchar  *filename,
                                   const gchar  *hostname,
                                   GError      **error) G_GNUC_MALLOC;

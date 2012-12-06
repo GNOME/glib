@@ -28,9 +28,11 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 void g_source_set_closure        (GSource  *source,
 				  GClosure *closure);
 
+GLIB_AVAILABLE_IN_ALL
 void g_source_set_dummy_callback (GSource  *source);
 
 G_END_DECLS

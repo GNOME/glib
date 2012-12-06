@@ -130,14 +130,21 @@ struct _GVolumeMonitorClass
   void (*_g_reserved6) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_volume_monitor_get_type             (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GVolumeMonitor *g_volume_monitor_get                  (void);
+GLIB_AVAILABLE_IN_ALL
 GList *         g_volume_monitor_get_connected_drives (GVolumeMonitor *volume_monitor);
+GLIB_AVAILABLE_IN_ALL
 GList *         g_volume_monitor_get_volumes          (GVolumeMonitor *volume_monitor);
+GLIB_AVAILABLE_IN_ALL
 GList *         g_volume_monitor_get_mounts           (GVolumeMonitor *volume_monitor);
+GLIB_AVAILABLE_IN_ALL
 GVolume *       g_volume_monitor_get_volume_for_uuid  (GVolumeMonitor *volume_monitor,
                                                        const char     *uuid);
+GLIB_AVAILABLE_IN_ALL
 GMount *        g_volume_monitor_get_mount_for_uuid   (GVolumeMonitor *volume_monitor,
                                                        const char     *uuid);
 

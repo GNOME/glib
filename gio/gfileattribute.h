@@ -61,14 +61,21 @@ struct _GFileAttributeInfoList
 };
 
 #define G_TYPE_FILE_ATTRIBUTE_INFO_LIST (g_file_attribute_info_list_get_type ())
+GLIB_AVAILABLE_IN_ALL
 GType g_file_attribute_info_list_get_type (void);
 
+GLIB_AVAILABLE_IN_ALL
 GFileAttributeInfoList *  g_file_attribute_info_list_new    (void);
+GLIB_AVAILABLE_IN_ALL
 GFileAttributeInfoList *  g_file_attribute_info_list_ref    (GFileAttributeInfoList *list);
+GLIB_AVAILABLE_IN_ALL
 void                      g_file_attribute_info_list_unref  (GFileAttributeInfoList *list);
+GLIB_AVAILABLE_IN_ALL
 GFileAttributeInfoList *  g_file_attribute_info_list_dup    (GFileAttributeInfoList *list);
+GLIB_AVAILABLE_IN_ALL
 const GFileAttributeInfo *g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
 							     const char             *name);
+GLIB_AVAILABLE_IN_ALL
 void                      g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
 							     const char             *name,
 							     GFileAttributeType      type,

@@ -31,16 +31,24 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_guid (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 gchar *g_dbus_generate_guid (void);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_name (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_unique_name (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_member_name (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_interface_name (const gchar *string);
 
+GLIB_AVAILABLE_IN_ALL
 void g_dbus_gvariant_to_gvalue (GVariant  *value,
                                 GValue    *out_gvalue);
+GLIB_AVAILABLE_IN_ALL
 GVariant *g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
                                      const GVariantType   *type);
 

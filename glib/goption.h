@@ -209,6 +209,7 @@ typedef enum
   G_OPTION_ERROR_FAILED
 } GOptionError;
 
+GLIB_AVAILABLE_IN_ALL
 GQuark g_option_error_quark (void);
 
 /**
@@ -307,61 +308,86 @@ struct _GOptionEntry
  */
 #define G_OPTION_REMAINING ""
 
+GLIB_AVAILABLE_IN_ALL
 GOptionContext *g_option_context_new              (const gchar         *parameter_string);
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_set_summary      (GOptionContext      *context,
                                                    const gchar         *summary);
+GLIB_AVAILABLE_IN_ALL
 const gchar *   g_option_context_get_summary      (GOptionContext     *context);
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_set_description  (GOptionContext      *context,
                                                    const gchar         *description);
+GLIB_AVAILABLE_IN_ALL
 const gchar *   g_option_context_get_description  (GOptionContext     *context);
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_free             (GOptionContext      *context);
+GLIB_AVAILABLE_IN_ALL
 void		g_option_context_set_help_enabled (GOptionContext      *context,
 						   gboolean		help_enabled);
+GLIB_AVAILABLE_IN_ALL
 gboolean	g_option_context_get_help_enabled (GOptionContext      *context);
+GLIB_AVAILABLE_IN_ALL
 void		g_option_context_set_ignore_unknown_options (GOptionContext *context,
 							     gboolean	     ignore_unknown);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_option_context_get_ignore_unknown_options (GOptionContext *context);
 
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_add_main_entries (GOptionContext      *context,
 						   const GOptionEntry  *entries,
 						   const gchar         *translation_domain);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_option_context_parse            (GOptionContext      *context,
 						   gint                *argc,
 						   gchar             ***argv,
 						   GError             **error);
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_set_translate_func (GOptionContext     *context,
 						     GTranslateFunc      func,
 						     gpointer            data,
 						     GDestroyNotify      destroy_notify);
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_set_translation_domain (GOptionContext  *context,
 							 const gchar     *domain);
 
+GLIB_AVAILABLE_IN_ALL
 void            g_option_context_add_group      (GOptionContext *context,
 						 GOptionGroup   *group);
+GLIB_AVAILABLE_IN_ALL
 void          g_option_context_set_main_group (GOptionContext *context,
 					       GOptionGroup   *group);
+GLIB_AVAILABLE_IN_ALL
 GOptionGroup *g_option_context_get_main_group (GOptionContext *context);
+GLIB_AVAILABLE_IN_ALL
 gchar        *g_option_context_get_help       (GOptionContext *context,
                                                gboolean        main_help,
                                                GOptionGroup   *group);
 
+GLIB_AVAILABLE_IN_ALL
 GOptionGroup *g_option_group_new                    (const gchar        *name,
 						     const gchar        *description,
 						     const gchar        *help_description,
 						     gpointer            user_data,
 						     GDestroyNotify      destroy);
+GLIB_AVAILABLE_IN_ALL
 void	      g_option_group_set_parse_hooks	    (GOptionGroup       *group,
 						     GOptionParseFunc    pre_parse_func,
 						     GOptionParseFunc	 post_parse_func);
+GLIB_AVAILABLE_IN_ALL
 void	      g_option_group_set_error_hook	    (GOptionGroup       *group,
 						     GOptionErrorFunc	 error_func);
+GLIB_AVAILABLE_IN_ALL
 void          g_option_group_free                   (GOptionGroup       *group);
+GLIB_AVAILABLE_IN_ALL
 void          g_option_group_add_entries            (GOptionGroup       *group,
 						     const GOptionEntry *entries);
+GLIB_AVAILABLE_IN_ALL
 void          g_option_group_set_translate_func     (GOptionGroup       *group,
 						     GTranslateFunc      func,
 						     gpointer            data,
 						     GDestroyNotify      destroy_notify);
+GLIB_AVAILABLE_IN_ALL
 void          g_option_group_set_translation_domain (GOptionGroup       *group,
 						     const gchar        *domain);
 

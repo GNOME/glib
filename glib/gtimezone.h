@@ -54,25 +54,35 @@ typedef enum
   G_TIME_TYPE_UNIVERSAL
 } GTimeType;
 
+GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_new                                 (const gchar *identifier);
+GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_new_utc                             (void);
+GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_new_local                           (void);
 
+GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_ref                                 (GTimeZone   *tz);
+GLIB_AVAILABLE_IN_ALL
 void                    g_time_zone_unref                               (GTimeZone   *tz);
 
+GLIB_AVAILABLE_IN_ALL
 gint                    g_time_zone_find_interval                       (GTimeZone   *tz,
                                                                          GTimeType    type,
                                                                          gint64       time_);
 
+GLIB_AVAILABLE_IN_ALL
 gint                    g_time_zone_adjust_time                         (GTimeZone   *tz,
                                                                          GTimeType    type,
                                                                          gint64      *time_);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *           g_time_zone_get_abbreviation                    (GTimeZone   *tz,
                                                                          gint         interval);
+GLIB_AVAILABLE_IN_ALL
 gint32                  g_time_zone_get_offset                          (GTimeZone   *tz,
                                                                          gint         interval);
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_time_zone_is_dst                              (GTimeZone   *tz,
                                                                          gint         interval);
 

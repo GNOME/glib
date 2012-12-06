@@ -68,19 +68,25 @@ struct _GProxyResolverInterface {
 			      GError              **error);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType		g_proxy_resolver_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GProxyResolver *g_proxy_resolver_get_default    (void);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_proxy_resolver_is_supported   (GProxyResolver       *resolver);
+GLIB_AVAILABLE_IN_ALL
 gchar	      **g_proxy_resolver_lookup		(GProxyResolver       *resolver,
 						 const gchar          *uri,
 						 GCancellable         *cancellable,
 						 GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void		g_proxy_resolver_lookup_async   (GProxyResolver       *resolver,
 						 const gchar          *uri,
 						 GCancellable         *cancellable,
 						 GAsyncReadyCallback   callback,
 						 gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gchar	      **g_proxy_resolver_lookup_finish  (GProxyResolver       *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);

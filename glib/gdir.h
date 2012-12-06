@@ -34,20 +34,26 @@ G_BEGIN_DECLS
 
 typedef struct _GDir GDir;
 
+GLIB_AVAILABLE_IN_ALL
 GDir    *                g_dir_open           (const gchar  *path,
 					       guint         flags,
 					       GError      **error);
+GLIB_AVAILABLE_IN_ALL
 const gchar *            g_dir_read_name      (GDir         *dir);
+GLIB_AVAILABLE_IN_ALL
 void                     g_dir_rewind         (GDir         *dir);
+GLIB_AVAILABLE_IN_ALL
 void                     g_dir_close          (GDir         *dir);
 
 #ifdef G_OS_WIN32
 #define g_dir_open      g_dir_open_utf8
 #define g_dir_read_name g_dir_read_name_utf8
 
+GLIB_AVAILABLE_IN_ALL
 GDir        *g_dir_open_utf8      (const gchar  *path,
                                    guint         flags,
                                    GError      **error);
+GLIB_AVAILABLE_IN_ALL
 const gchar *g_dir_read_name_utf8 (GDir         *dir);
 #endif /* G_OS_WIN32 */
 

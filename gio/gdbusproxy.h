@@ -86,7 +86,9 @@ struct _GDBusProxyClass
   gpointer padding[32];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType            g_dbus_proxy_get_type                  (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_new                       (GDBusConnection     *connection,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
@@ -96,8 +98,10 @@ void             g_dbus_proxy_new                       (GDBusConnection     *co
                                                          GCancellable        *cancellable,
                                                          GAsyncReadyCallback  callback,
                                                          gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 GDBusProxy      *g_dbus_proxy_new_finish                (GAsyncResult        *res,
                                                          GError             **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusProxy      *g_dbus_proxy_new_sync                  (GDBusConnection     *connection,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
@@ -106,6 +110,7 @@ GDBusProxy      *g_dbus_proxy_new_sync                  (GDBusConnection     *co
                                                          const gchar         *interface_name,
                                                          GCancellable        *cancellable,
                                                          GError             **error);
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_new_for_bus               (GBusType             bus_type,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
@@ -115,8 +120,10 @@ void             g_dbus_proxy_new_for_bus               (GBusType             bu
                                                          GCancellable        *cancellable,
                                                          GAsyncReadyCallback  callback,
                                                          gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 GDBusProxy      *g_dbus_proxy_new_for_bus_finish        (GAsyncResult        *res,
                                                          GError             **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusProxy      *g_dbus_proxy_new_for_bus_sync          (GBusType             bus_type,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
@@ -125,24 +132,38 @@ GDBusProxy      *g_dbus_proxy_new_for_bus_sync          (GBusType             bu
                                                          const gchar         *interface_name,
                                                          GCancellable        *cancellable,
                                                          GError             **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusConnection *g_dbus_proxy_get_connection            (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 GDBusProxyFlags  g_dbus_proxy_get_flags                 (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 const gchar     *g_dbus_proxy_get_name                  (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 gchar           *g_dbus_proxy_get_name_owner            (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 const gchar     *g_dbus_proxy_get_object_path           (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 const gchar     *g_dbus_proxy_get_interface_name        (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 gint             g_dbus_proxy_get_default_timeout       (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_set_default_timeout       (GDBusProxy          *proxy,
                                                          gint                 timeout_msec);
+GLIB_AVAILABLE_IN_ALL
 GDBusInterfaceInfo *g_dbus_proxy_get_interface_info     (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_set_interface_info        (GDBusProxy           *proxy,
                                                          GDBusInterfaceInfo   *info);
+GLIB_AVAILABLE_IN_ALL
 GVariant        *g_dbus_proxy_get_cached_property       (GDBusProxy          *proxy,
                                                          const gchar         *property_name);
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_set_cached_property       (GDBusProxy          *proxy,
                                                          const gchar         *property_name,
                                                          GVariant            *value);
+GLIB_AVAILABLE_IN_ALL
 gchar          **g_dbus_proxy_get_cached_property_names (GDBusProxy          *proxy);
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_call                      (GDBusProxy          *proxy,
                                                          const gchar         *method_name,
                                                          GVariant            *parameters,
@@ -151,9 +172,11 @@ void             g_dbus_proxy_call                      (GDBusProxy          *pr
                                                          GCancellable        *cancellable,
                                                          GAsyncReadyCallback  callback,
                                                          gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 GVariant        *g_dbus_proxy_call_finish               (GDBusProxy          *proxy,
                                                          GAsyncResult        *res,
                                                          GError             **error);
+GLIB_AVAILABLE_IN_ALL
 GVariant        *g_dbus_proxy_call_sync                 (GDBusProxy          *proxy,
                                                          const gchar         *method_name,
                                                          GVariant            *parameters,
@@ -162,6 +185,7 @@ GVariant        *g_dbus_proxy_call_sync                 (GDBusProxy          *pr
                                                          GCancellable        *cancellable,
                                                          GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 void             g_dbus_proxy_call_with_unix_fd_list        (GDBusProxy          *proxy,
                                                              const gchar         *method_name,
                                                              GVariant            *parameters,
@@ -171,10 +195,12 @@ void             g_dbus_proxy_call_with_unix_fd_list        (GDBusProxy         
                                                              GCancellable        *cancellable,
                                                              GAsyncReadyCallback  callback,
                                                              gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 GVariant        *g_dbus_proxy_call_with_unix_fd_list_finish (GDBusProxy          *proxy,
                                                              GUnixFDList        **out_fd_list,
                                                              GAsyncResult        *res,
                                                              GError             **error);
+GLIB_AVAILABLE_IN_ALL
 GVariant        *g_dbus_proxy_call_with_unix_fd_list_sync   (GDBusProxy          *proxy,
                                                              const gchar         *method_name,
                                                              GVariant            *parameters,

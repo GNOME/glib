@@ -68,22 +68,27 @@ struct _GInitableIface
 };
 
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_initable_get_type   (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_initable_init       (GInitable     *initable,
 				GCancellable  *cancellable,
 				GError       **error);
 
+GLIB_AVAILABLE_IN_ALL
 gpointer g_initable_new        (GType          object_type,
 				GCancellable  *cancellable,
 				GError       **error,
 				const gchar   *first_property_name,
 				...);
+GLIB_AVAILABLE_IN_ALL
 gpointer g_initable_newv       (GType          object_type,
 				guint          n_parameters,
 				GParameter    *parameters,
 				GCancellable  *cancellable,
 				GError       **error);
+GLIB_AVAILABLE_IN_ALL
 GObject* g_initable_new_valist (GType          object_type,
 				const gchar   *first_property_name,
 				va_list        var_args,

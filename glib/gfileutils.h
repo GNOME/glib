@@ -73,20 +73,26 @@ typedef enum
   G_FILE_TEST_EXISTS        = 1 << 4
 } GFileTest;
 
+GLIB_AVAILABLE_IN_ALL
 GQuark     g_file_error_quark      (void);
 /* So other code can generate a GFileError */
+GLIB_AVAILABLE_IN_ALL
 GFileError g_file_error_from_errno (gint err_no);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_file_test         (const gchar  *filename,
                               GFileTest     test);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_file_get_contents (const gchar  *filename,
                               gchar       **contents,
                               gsize        *length,
                               GError      **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_file_set_contents (const gchar *filename,
                               const gchar *contents,
                               gssize         length,
                               GError       **error);
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_file_read_link    (const gchar  *filename,
                               GError      **error);
 
@@ -98,12 +104,15 @@ gchar   *g_mkdtemp_full       (gchar        *tmpl,
                                gint          mode);
 
 /* Wrapper / workalike for mkstemp() */
+GLIB_AVAILABLE_IN_ALL
 gint     g_mkstemp            (gchar        *tmpl);
+GLIB_AVAILABLE_IN_ALL
 gint     g_mkstemp_full       (gchar        *tmpl,
                                gint          flags,
                                gint          mode);
 
 /* Wrappers for g_mkstemp and g_mkdtemp() */
+GLIB_AVAILABLE_IN_ALL
 gint     g_file_open_tmp      (const gchar  *tmpl,
                                gchar       **name_used,
                                GError      **error);
@@ -111,16 +120,21 @@ GLIB_AVAILABLE_IN_2_30
 gchar   *g_dir_make_tmp       (const gchar  *tmpl,
                                GError      **error);
 
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_build_path         (const gchar *separator,
                                const gchar *first_element,
                                ...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_build_pathv        (const gchar  *separator,
                                gchar       **args) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_build_filename     (const gchar *first_element,
                                ...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_build_filenamev    (gchar      **args) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_ALL
 gint     g_mkdir_with_parents (const gchar *pathname,
                                gint         mode);
 
@@ -146,7 +160,9 @@ gint     g_mkdir_with_parents (const gchar *pathname,
 
 #endif /* !G_OS_WIN32 */
 
+GLIB_AVAILABLE_IN_ALL
 gboolean     g_path_is_absolute (const gchar *file_name);
+GLIB_AVAILABLE_IN_ALL
 const gchar *g_path_skip_root   (const gchar *file_name);
 
 GLIB_DEPRECATED_FOR(g_path_get_basename)
@@ -155,8 +171,11 @@ const gchar *g_basename         (const gchar *file_name);
 #define g_dirname g_path_get_dirname
 #endif
 
+GLIB_AVAILABLE_IN_ALL
 gchar *g_get_current_dir   (void);
+GLIB_AVAILABLE_IN_ALL
 gchar *g_path_get_basename (const gchar *file_name) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gchar *g_path_get_dirname  (const gchar *file_name) G_GNUC_MALLOC;
 
 #ifdef G_OS_WIN32
@@ -166,16 +185,21 @@ gchar *g_path_get_dirname  (const gchar *file_name) G_GNUC_MALLOC;
 #define g_file_open_tmp     g_file_open_tmp_utf8
 #define g_get_current_dir   g_get_current_dir_utf8
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_file_test_utf8         (const gchar  *filename,
                                    GFileTest     test);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_file_get_contents_utf8 (const gchar  *filename,
                                    gchar       **contents,
                                    gsize        *length,
                                    GError      **error);
+GLIB_AVAILABLE_IN_ALL
 gint     g_mkstemp_utf8           (gchar        *tmpl);
+GLIB_AVAILABLE_IN_ALL
 gint     g_file_open_tmp_utf8     (const gchar  *tmpl,
                                    gchar       **name_used,
                                    GError      **error);
+GLIB_AVAILABLE_IN_ALL
 gchar   *g_get_current_dir_utf8   (void);
 #endif /* G_OS_WIN32 */
 

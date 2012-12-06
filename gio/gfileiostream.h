@@ -96,21 +96,26 @@ struct _GFileIOStreamClass
   void (*_g_reserved5) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType      g_file_io_stream_get_type          (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GFileInfo *g_file_io_stream_query_info        (GFileIOStream    *stream,
 					       const char           *attributes,
 					       GCancellable         *cancellable,
 					       GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void       g_file_io_stream_query_info_async  (GFileIOStream    *stream,
 					       const char           *attributes,
 					       int                   io_priority,
 					       GCancellable         *cancellable,
 					       GAsyncReadyCallback   callback,
 					       gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 GFileInfo *g_file_io_stream_query_info_finish (GFileIOStream    *stream,
 					       GAsyncResult         *result,
 					       GError              **error);
+GLIB_AVAILABLE_IN_ALL
 char *     g_file_io_stream_get_etag          (GFileIOStream    *stream);
 
 G_END_DECLS

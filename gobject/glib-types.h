@@ -272,24 +272,41 @@ typedef gsize GType;
  */
 #define G_TYPE_CHECKSUM (g_checksum_get_type ())
 
+GLIB_AVAILABLE_IN_ALL
 GType   g_date_get_type            (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_strv_get_type            (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_gstring_get_type         (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_hash_table_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_array_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_byte_array_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_bytes_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_regex_get_type           (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30
 GType   g_match_info_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_error_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_time_zone_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_io_channel_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_variant_builder_get_type (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GType   g_key_file_get_type        (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30
 GType   g_main_loop_get_type       (void) G_GNUC_CONST;

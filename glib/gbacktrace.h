@@ -36,7 +36,9 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 void g_on_error_query (const gchar *prg_name);
+GLIB_AVAILABLE_IN_ALL
 void g_on_error_stack_trace (const gchar *prg_name);
 
 /**

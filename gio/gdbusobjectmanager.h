@@ -77,11 +77,16 @@ struct _GDBusObjectManagerIface
                                            GDBusInterface       *interface_);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType            g_dbus_object_manager_get_type        (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 const gchar     *g_dbus_object_manager_get_object_path (GDBusObjectManager    *manager);
+GLIB_AVAILABLE_IN_ALL
 GList           *g_dbus_object_manager_get_objects     (GDBusObjectManager    *manager);
+GLIB_AVAILABLE_IN_ALL
 GDBusObject     *g_dbus_object_manager_get_object      (GDBusObjectManager    *manager,
                                                         const gchar           *object_path);
+GLIB_AVAILABLE_IN_ALL
 GDBusInterface  *g_dbus_object_manager_get_interface   (GDBusObjectManager    *manager,
                                                         const gchar           *object_path,
                                                         const gchar           *interface_name);

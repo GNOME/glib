@@ -43,32 +43,45 @@ typedef gboolean (*GTraverseFunc) (gpointer  key,
 
 /* Balanced binary trees
  */
+GLIB_AVAILABLE_IN_ALL
 GTree*   g_tree_new             (GCompareFunc      key_compare_func);
+GLIB_AVAILABLE_IN_ALL
 GTree*   g_tree_new_with_data   (GCompareDataFunc  key_compare_func,
                                  gpointer          key_compare_data);
+GLIB_AVAILABLE_IN_ALL
 GTree*   g_tree_new_full        (GCompareDataFunc  key_compare_func,
                                  gpointer          key_compare_data,
                                  GDestroyNotify    key_destroy_func,
                                  GDestroyNotify    value_destroy_func);
+GLIB_AVAILABLE_IN_ALL
 GTree*   g_tree_ref             (GTree            *tree);
+GLIB_AVAILABLE_IN_ALL
 void     g_tree_unref           (GTree            *tree);
+GLIB_AVAILABLE_IN_ALL
 void     g_tree_destroy         (GTree            *tree);
+GLIB_AVAILABLE_IN_ALL
 void     g_tree_insert          (GTree            *tree,
                                  gpointer          key,
                                  gpointer          value);
+GLIB_AVAILABLE_IN_ALL
 void     g_tree_replace         (GTree            *tree,
                                  gpointer          key,
                                  gpointer          value);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_tree_remove          (GTree            *tree,
                                  gconstpointer     key);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_tree_steal           (GTree            *tree,
                                  gconstpointer     key);
+GLIB_AVAILABLE_IN_ALL
 gpointer g_tree_lookup          (GTree            *tree,
                                  gconstpointer     key);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_tree_lookup_extended (GTree            *tree,
                                  gconstpointer     lookup_key,
                                  gpointer         *orig_key,
                                  gpointer         *value);
+GLIB_AVAILABLE_IN_ALL
 void     g_tree_foreach         (GTree            *tree,
                                  GTraverseFunc	   func,
                                  gpointer	   user_data);
@@ -79,10 +92,13 @@ void     g_tree_traverse        (GTree            *tree,
                                  GTraverseType     traverse_type,
                                  gpointer          user_data);
 
+GLIB_AVAILABLE_IN_ALL
 gpointer g_tree_search          (GTree            *tree,
                                  GCompareFunc      search_func,
                                  gconstpointer     user_data);
+GLIB_AVAILABLE_IN_ALL
 gint     g_tree_height          (GTree            *tree);
+GLIB_AVAILABLE_IN_ALL
 gint     g_tree_nnodes          (GTree            *tree);
 
 G_END_DECLS

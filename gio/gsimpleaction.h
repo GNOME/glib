@@ -36,15 +36,19 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_ACTION(inst)                            (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
                                                              G_TYPE_SIMPLE_ACTION))
 
+GLIB_AVAILABLE_IN_ALL
 GType                   g_simple_action_get_type                        (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GSimpleAction *         g_simple_action_new                             (const gchar        *name,
                                                                          const GVariantType *parameter_type);
 
+GLIB_AVAILABLE_IN_ALL
 GSimpleAction *         g_simple_action_new_stateful                    (const gchar        *name,
                                                                          const GVariantType *parameter_type,
                                                                          GVariant           *state);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_simple_action_set_enabled                     (GSimpleAction      *simple,
                                                                          gboolean            enabled);
 

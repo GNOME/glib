@@ -33,7 +33,9 @@ typedef struct
 } GVariantSerialised;
 
 /* deserialisation */
+GLIB_AVAILABLE_IN_ALL
 gsize                           g_variant_serialised_n_children         (GVariantSerialised        container);
+GLIB_AVAILABLE_IN_ALL
 GVariantSerialised              g_variant_serialised_get_child          (GVariantSerialised        container,
                                                                          gsize                     index);
 
@@ -41,25 +43,32 @@ GVariantSerialised              g_variant_serialised_get_child          (GVarian
 typedef void                  (*GVariantSerialisedFiller)               (GVariantSerialised       *serialised,
                                                                          gpointer                  data);
 
+GLIB_AVAILABLE_IN_ALL
 gsize                           g_variant_serialiser_needed_size        (GVariantTypeInfo         *info,
                                                                          GVariantSerialisedFiller  gsv_filler,
                                                                          const gpointer           *children,
                                                                          gsize                     n_children);
 
+GLIB_AVAILABLE_IN_ALL
 void                            g_variant_serialiser_serialise          (GVariantSerialised        container,
                                                                          GVariantSerialisedFiller  gsv_filler,
                                                                          const gpointer           *children,
                                                                          gsize                     n_children);
 
 /* misc */
+GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialised_is_normal          (GVariantSerialised        value);
+GLIB_AVAILABLE_IN_ALL
 void                            g_variant_serialised_byteswap           (GVariantSerialised        value);
 
 /* validation of strings */
+GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialiser_is_string          (gconstpointer             data,
                                                                          gsize                     size);
+GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialiser_is_object_path     (gconstpointer             data,
                                                                          gsize                     size);
+GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialiser_is_signature       (gconstpointer             data,
                                                                          gsize                     size);
 

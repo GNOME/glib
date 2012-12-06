@@ -30,14 +30,20 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 gint                    g_atomic_int_get                      (volatile gint  *atomic);
+GLIB_AVAILABLE_IN_ALL
 void                    g_atomic_int_set                      (volatile gint  *atomic,
                                                                gint            newval);
+GLIB_AVAILABLE_IN_ALL
 void                    g_atomic_int_inc                      (volatile gint  *atomic);
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_atomic_int_dec_and_test             (volatile gint  *atomic);
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_atomic_int_compare_and_exchange     (volatile gint  *atomic,
                                                                gint            oldval,
                                                                gint            newval);
+GLIB_AVAILABLE_IN_ALL
 gint                    g_atomic_int_add                      (volatile gint  *atomic,
                                                                gint            val);
 GLIB_AVAILABLE_IN_2_30
@@ -46,15 +52,20 @@ guint                   g_atomic_int_and                      (volatile guint *a
 GLIB_AVAILABLE_IN_2_30
 guint                   g_atomic_int_or                       (volatile guint *atomic,
                                                                guint           val);
+GLIB_AVAILABLE_IN_ALL
 guint                   g_atomic_int_xor                      (volatile guint *atomic,
                                                                guint           val);
 
+GLIB_AVAILABLE_IN_ALL
 gpointer                g_atomic_pointer_get                  (volatile void  *atomic);
+GLIB_AVAILABLE_IN_ALL
 void                    g_atomic_pointer_set                  (volatile void  *atomic,
                                                                gpointer        newval);
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_atomic_pointer_compare_and_exchange (volatile void  *atomic,
                                                                gpointer        oldval,
                                                                gpointer        newval);
+GLIB_AVAILABLE_IN_ALL
 gssize                  g_atomic_pointer_add                  (volatile void  *atomic,
                                                                gssize          val);
 GLIB_AVAILABLE_IN_2_30
@@ -63,6 +74,7 @@ gsize                   g_atomic_pointer_and                  (volatile void  *a
 GLIB_AVAILABLE_IN_2_30
 gsize                   g_atomic_pointer_or                   (volatile void  *atomic,
                                                                gsize           val);
+GLIB_AVAILABLE_IN_ALL
 gsize                   g_atomic_pointer_xor                  (volatile void  *atomic,
                                                                gsize           val);
 

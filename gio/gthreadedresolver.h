@@ -43,6 +43,7 @@ typedef struct {
 
 } GThreadedResolverClass;
 
+GLIB_AVAILABLE_IN_ALL
 GType g_threaded_resolver_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

@@ -105,19 +105,27 @@ struct _GVfsClass
   void (*_g_reserved7) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                 g_vfs_get_type                  (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_vfs_is_active                 (GVfs       *vfs);
+GLIB_AVAILABLE_IN_ALL
 GFile *               g_vfs_get_file_for_path         (GVfs       *vfs,
                                                        const char *path);
+GLIB_AVAILABLE_IN_ALL
 GFile *               g_vfs_get_file_for_uri          (GVfs       *vfs,
                                                        const char *uri);
+GLIB_AVAILABLE_IN_ALL
 const gchar* const * g_vfs_get_supported_uri_schemes  (GVfs       *vfs);
 
+GLIB_AVAILABLE_IN_ALL
 GFile *               g_vfs_parse_name                (GVfs       *vfs,
                                                        const char *parse_name);
 
+GLIB_AVAILABLE_IN_ALL
 GVfs *                g_vfs_get_default               (void);
+GLIB_AVAILABLE_IN_ALL
 GVfs *                g_vfs_get_local                 (void);
 
 G_END_DECLS

@@ -58,46 +58,66 @@ struct _GInetAddressClass
   const guint8 * (*to_bytes)  (GInetAddress *address);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                 g_inet_address_get_type             (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_from_string      (const gchar          *string);
 
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_from_bytes       (const guint8         *bytes,
 							   GSocketFamily         family);
 
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_loopback         (GSocketFamily         family);
 
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_any              (GSocketFamily         family);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_equal                (GInetAddress         *address,
                                                            GInetAddress         *other_address);
 
+GLIB_AVAILABLE_IN_ALL
 gchar *               g_inet_address_to_string            (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 const guint8 *        g_inet_address_to_bytes             (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gsize                 g_inet_address_get_native_size      (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 GSocketFamily         g_inet_address_get_family           (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_any           (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_loopback      (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_link_local    (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_site_local    (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_multicast     (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_global     (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_link_local (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_node_local (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_org_local  (GInetAddress         *address);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_site_local (GInetAddress         *address);
 
 G_END_DECLS

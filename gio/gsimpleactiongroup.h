@@ -70,16 +70,21 @@ struct _GSimpleActionGroupClass
   gpointer padding[12];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                   g_simple_action_group_get_type                  (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GSimpleActionGroup *    g_simple_action_group_new                       (void);
 
+GLIB_AVAILABLE_IN_ALL
 GAction *               g_simple_action_group_lookup                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_simple_action_group_insert                    (GSimpleActionGroup *simple,
                                                                          GAction            *action);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
 

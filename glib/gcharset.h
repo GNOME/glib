@@ -29,10 +29,14 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_get_charset         (const char **charset);
+GLIB_AVAILABLE_IN_ALL
 gchar *               g_get_codeset         (void);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar * const * g_get_language_names  (void);
+GLIB_AVAILABLE_IN_ALL
 gchar **              g_get_locale_variants (const gchar *locale);
 
 G_END_DECLS

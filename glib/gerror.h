@@ -49,22 +49,28 @@ struct _GError
   gchar       *message;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GError*  g_error_new           (GQuark         domain,
                                 gint           code,
                                 const gchar   *format,
                                 ...) G_GNUC_PRINTF (3, 4);
 
+GLIB_AVAILABLE_IN_ALL
 GError*  g_error_new_literal   (GQuark         domain,
                                 gint           code,
                                 const gchar   *message);
+GLIB_AVAILABLE_IN_ALL
 GError*  g_error_new_valist    (GQuark         domain,
                                 gint           code,
                                 const gchar   *format,
                                 va_list        args) G_GNUC_PRINTF(3, 0);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_error_free          (GError        *error);
+GLIB_AVAILABLE_IN_ALL
 GError*  g_error_copy          (const GError  *error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_error_matches       (const GError  *error,
                                 GQuark         domain,
                                 gint           code);
@@ -72,12 +78,14 @@ gboolean g_error_matches       (const GError  *error,
 /* if (err) *err = g_error_new(domain, code, format, ...), also has
  * some sanity checks.
  */
+GLIB_AVAILABLE_IN_ALL
 void     g_set_error           (GError       **err,
                                 GQuark         domain,
                                 gint           code,
                                 const gchar   *format,
                                 ...) G_GNUC_PRINTF (4, 5);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_set_error_literal   (GError       **err,
                                 GQuark         domain,
                                 gint           code,
@@ -85,18 +93,22 @@ void     g_set_error_literal   (GError       **err,
 
 /* if (dest) *dest = src; also has some sanity checks.
  */
+GLIB_AVAILABLE_IN_ALL
 void     g_propagate_error     (GError       **dest,
 				GError        *src);
 
 /* if (err && *err) { g_error_free(*err); *err = NULL; } */
+GLIB_AVAILABLE_IN_ALL
 void     g_clear_error         (GError       **err);
 
 /* if (err) prefix the formatted string to the ->message */
+GLIB_AVAILABLE_IN_ALL
 void     g_prefix_error               (GError       **err,
                                        const gchar   *format,
                                        ...) G_GNUC_PRINTF (2, 3);
 
 /* g_propagate_error then g_error_prefix on dest */
+GLIB_AVAILABLE_IN_ALL
 void     g_propagate_prefixed_error   (GError       **dest,
                                        GError        *src,
                                        const gchar   *format,

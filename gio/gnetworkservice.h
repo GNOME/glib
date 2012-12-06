@@ -53,16 +53,23 @@ struct _GNetworkServiceClass
 
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                g_network_service_get_type      (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GSocketConnectable  *g_network_service_new           (const gchar     *service,
 						      const gchar     *protocol,
 						      const gchar     *domain);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar         *g_network_service_get_service   (GNetworkService *srv);
+GLIB_AVAILABLE_IN_ALL
 const gchar         *g_network_service_get_protocol  (GNetworkService *srv);
+GLIB_AVAILABLE_IN_ALL
 const gchar         *g_network_service_get_domain    (GNetworkService *srv);
+GLIB_AVAILABLE_IN_ALL
 const gchar         *g_network_service_get_scheme    (GNetworkService *srv);
+GLIB_AVAILABLE_IN_ALL
 void                 g_network_service_set_scheme    (GNetworkService *srv, const gchar *scheme);
 
 G_END_DECLS

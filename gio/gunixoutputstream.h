@@ -64,13 +64,18 @@ struct _GUnixOutputStreamClass
   void (*_g_reserved5) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_unix_output_stream_get_type     (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GOutputStream * g_unix_output_stream_new          (gint     fd,
                                                    gboolean close_fd);
+GLIB_AVAILABLE_IN_ALL
 void            g_unix_output_stream_set_close_fd (GUnixOutputStream *stream,
                                                    gboolean           close_fd);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_unix_output_stream_get_close_fd (GUnixOutputStream *stream);
+GLIB_AVAILABLE_IN_ALL
 gint            g_unix_output_stream_get_fd       (GUnixOutputStream *stream);
 G_END_DECLS
 

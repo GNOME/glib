@@ -60,6 +60,7 @@ struct _GLocalDirectoryMonitorClass
   gboolean (* is_supported) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_local_directory_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_directory_monitor_new      (const char         *dirname,

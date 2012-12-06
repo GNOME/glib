@@ -183,9 +183,12 @@ typedef enum
   G_SPAWN_SEARCH_PATH_FROM_ENVP  = 1 << 7
 } GSpawnFlags;
 
+GLIB_AVAILABLE_IN_ALL
 GQuark g_spawn_error_quark (void);
+GLIB_AVAILABLE_IN_ALL
 GQuark g_spawn_exit_error_quark (void);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_async (const gchar           *working_directory,
                         gchar                **argv,
                         gchar                **envp,
@@ -199,6 +202,7 @@ gboolean g_spawn_async (const gchar           *working_directory,
 /* Opens pipes for non-NULL standard_output, standard_input, standard_error,
  * and returns the parent's end of the pipes.
  */
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_async_with_pipes (const gchar          *working_directory,
                                    gchar               **argv,
                                    gchar               **envp,
@@ -216,6 +220,7 @@ gboolean g_spawn_async_with_pipes (const gchar          *working_directory,
  * standard output or error of the command will be placed there.
  */
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_sync         (const gchar          *working_directory,
                                gchar               **argv,
                                gchar               **envp,
@@ -227,11 +232,13 @@ gboolean g_spawn_sync         (const gchar          *working_directory,
                                gint                 *exit_status,
                                GError              **error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_sync  (const gchar          *command_line,
                                      gchar               **standard_output,
                                      gchar               **standard_error,
                                      gint                 *exit_status,
                                      GError              **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_async (const gchar          *command_line,
                                      GError              **error);
 
@@ -239,6 +246,7 @@ GLIB_AVAILABLE_IN_2_34
 gboolean g_spawn_check_exit_status (gint      exit_status,
 				    GError  **error);
 
+GLIB_AVAILABLE_IN_ALL
 void g_spawn_close_pid (GPid pid);
 
 #ifdef G_OS_WIN32
@@ -248,6 +256,7 @@ void g_spawn_close_pid (GPid pid);
 #define g_spawn_command_line_sync  g_spawn_command_line_sync_utf8
 #define g_spawn_command_line_async g_spawn_command_line_async_utf8
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_async_utf8              (const gchar           *working_directory,
                                           gchar                **argv,
                                           gchar                **envp,
@@ -256,6 +265,7 @@ gboolean g_spawn_async_utf8              (const gchar           *working_directo
                                           gpointer               user_data,
                                           GPid                  *child_pid,
                                           GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_async_with_pipes_utf8   (const gchar           *working_directory,
                                           gchar                **argv,
                                           gchar                **envp,
@@ -267,6 +277,7 @@ gboolean g_spawn_async_with_pipes_utf8   (const gchar           *working_directo
                                           gint                  *standard_output,
                                           gint                  *standard_error,
                                           GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_sync_utf8               (const gchar           *working_directory,
                                           gchar                **argv,
                                           gchar                **envp,
@@ -278,11 +289,13 @@ gboolean g_spawn_sync_utf8               (const gchar           *working_directo
                                           gint                  *exit_status,
                                           GError               **error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_sync_utf8  (const gchar           *command_line,
                                           gchar                **standard_output,
                                           gchar                **standard_error,
                                           gint                  *exit_status,
                                           GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_async_utf8 (const gchar           *command_line,
                                           GError               **error);
 #endif

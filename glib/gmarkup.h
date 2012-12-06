@@ -71,6 +71,7 @@ typedef enum
  */
 #define G_MARKUP_ERROR g_markup_error_quark ()
 
+GLIB_AVAILABLE_IN_ALL
 GQuark g_markup_error_quark (void);
 
 /**
@@ -178,6 +179,7 @@ struct _GMarkupParser
                           gpointer             user_data);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GMarkupParseContext *g_markup_parse_context_new   (const GMarkupParser *parser,
                                                    GMarkupParseFlags    flags,
                                                    gpointer             user_data,
@@ -186,33 +188,45 @@ GLIB_AVAILABLE_IN_2_36
 GMarkupParseContext *g_markup_parse_context_ref   (GMarkupParseContext *context);
 GLIB_AVAILABLE_IN_2_36
 void                 g_markup_parse_context_unref (GMarkupParseContext *context);
+GLIB_AVAILABLE_IN_ALL
 void                 g_markup_parse_context_free  (GMarkupParseContext *context);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
                                                    const gchar         *text,
                                                    gssize               text_len,
                                                    GError             **error);
+GLIB_AVAILABLE_IN_ALL
 void                 g_markup_parse_context_push  (GMarkupParseContext *context,
                                                    const GMarkupParser *parser,
                                                    gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gpointer             g_markup_parse_context_pop   (GMarkupParseContext *context);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_markup_parse_context_end_parse (GMarkupParseContext *context,
                                                        GError             **error);
+GLIB_AVAILABLE_IN_ALL
 const gchar *        g_markup_parse_context_get_element (GMarkupParseContext *context);
+GLIB_AVAILABLE_IN_ALL
 const GSList *       g_markup_parse_context_get_element_stack (GMarkupParseContext *context);
 
 /* For user-constructed error messages, has no precise semantics */
+GLIB_AVAILABLE_IN_ALL
 void                 g_markup_parse_context_get_position (GMarkupParseContext *context,
                                                           gint                *line_number,
                                                           gint                *char_number);
+GLIB_AVAILABLE_IN_ALL
 gpointer             g_markup_parse_context_get_user_data (GMarkupParseContext *context);
 
 /* useful when saving */
+GLIB_AVAILABLE_IN_ALL
 gchar* g_markup_escape_text (const gchar *text,
                              gssize       length);
 
+GLIB_AVAILABLE_IN_ALL
 gchar *g_markup_printf_escaped (const char *format,
 				...) G_GNUC_PRINTF (1, 2);
+GLIB_AVAILABLE_IN_ALL
 gchar *g_markup_vprintf_escaped (const char *format,
 				 va_list     args) G_GNUC_PRINTF(1, 0);
 
@@ -229,6 +243,7 @@ typedef enum
 
 
 /* useful from start_element */
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_markup_collect_attributes (const gchar         *element_name,
                                         const gchar        **attribute_names,
                                         const gchar        **attribute_values,

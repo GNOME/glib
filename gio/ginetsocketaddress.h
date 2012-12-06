@@ -55,12 +55,16 @@ struct _GInetSocketAddressClass
   GSocketAddressClass parent_class;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_inet_socket_address_get_type     (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GSocketAddress *g_inet_socket_address_new          (GInetAddress       *address,
 						    guint16             port);
 
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *  g_inet_socket_address_get_address  (GInetSocketAddress *address);
+GLIB_AVAILABLE_IN_ALL
 guint16         g_inet_socket_address_get_port     (GInetSocketAddress *address);
 
 GLIB_AVAILABLE_IN_2_32

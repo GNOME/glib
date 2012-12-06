@@ -31,30 +31,41 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_equals            (const gchar  *type1,
                                            const gchar  *type2);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_is_a              (const gchar  *type,
                                            const gchar  *supertype);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_is_unknown        (const gchar  *type);
+GLIB_AVAILABLE_IN_ALL
 gchar *  g_content_type_get_description   (const gchar  *type);
+GLIB_AVAILABLE_IN_ALL
 gchar *  g_content_type_get_mime_type     (const gchar  *type);
+GLIB_AVAILABLE_IN_ALL
 GIcon *  g_content_type_get_icon          (const gchar  *type);
 GLIB_AVAILABLE_IN_2_34
 GIcon *  g_content_type_get_symbolic_icon (const gchar  *type);
 GLIB_AVAILABLE_IN_2_34
 gchar *  g_content_type_get_generic_icon_name (const gchar  *type);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_can_be_executable (const gchar  *type);
 
+GLIB_AVAILABLE_IN_ALL
 gchar *  g_content_type_from_mime_type    (const gchar  *mime_type);
 
+GLIB_AVAILABLE_IN_ALL
 gchar *  g_content_type_guess             (const gchar  *filename,
                                            const guchar *data,
                                            gsize         data_size,
                                            gboolean     *result_uncertain);
 
+GLIB_AVAILABLE_IN_ALL
 gchar ** g_content_type_guess_for_tree    (GFile        *root);
 
+GLIB_AVAILABLE_IN_ALL
 GList *  g_content_types_get_registered   (void);
 
 G_END_DECLS

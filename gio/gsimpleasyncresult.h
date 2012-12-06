@@ -46,12 +46,15 @@ G_BEGIN_DECLS
 typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
 
 
+GLIB_AVAILABLE_IN_ALL
 GType               g_simple_async_result_get_type         (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
 							    gpointer                 source_tag);
+GLIB_AVAILABLE_IN_ALL
 GSimpleAsyncResult *g_simple_async_result_new_error        (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
@@ -59,26 +62,34 @@ GSimpleAsyncResult *g_simple_async_result_new_error        (GObject             
 							    gint                     code,
 							    const char              *format,
 							    ...) G_GNUC_PRINTF (6, 7);
+GLIB_AVAILABLE_IN_ALL
 GSimpleAsyncResult *g_simple_async_result_new_from_error   (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
 							    const GError            *error);
+GLIB_AVAILABLE_IN_ALL
 GSimpleAsyncResult *g_simple_async_result_new_take_error   (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
 							    GError                  *error);
 
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
                                                                gpointer                 op_res,
                                                                GDestroyNotify           destroy_op_res);
+GLIB_AVAILABLE_IN_ALL
 gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
 
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_op_res_gssize   (GSimpleAsyncResult      *simple,
                                                                gssize                   op_res);
+GLIB_AVAILABLE_IN_ALL
 gssize              g_simple_async_result_get_op_res_gssize   (GSimpleAsyncResult      *simple);
 
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_op_res_gboolean (GSimpleAsyncResult      *simple,
                                                                gboolean                 op_res);
+GLIB_AVAILABLE_IN_ALL
 gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult      *simple);
 
 
@@ -86,36 +97,48 @@ gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResul
 GLIB_AVAILABLE_IN_2_32
 void                g_simple_async_result_set_check_cancellable (GSimpleAsyncResult *simple,
                                                                  GCancellable       *check_cancellable);
+GLIB_AVAILABLE_IN_ALL
 gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult      *simple,
 								   gboolean          handle_cancellation);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult      *simple,
 							    GSimpleAsyncThreadFunc   func,
 							    int                      io_priority,
 							    GCancellable            *cancellable);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
 							    const GError            *error);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
 							    GError            *error);
+GLIB_AVAILABLE_IN_ALL
 gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
 							    GError                 **dest);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
 							    GQuark                   domain,
 							    gint                     code,
 							    const char              *format,
 							    ...) G_GNUC_PRINTF (4, 5);
+GLIB_AVAILABLE_IN_ALL
 void                g_simple_async_result_set_error_va     (GSimpleAsyncResult      *simple,
 							    GQuark                   domain,
 							    gint                     code,
 							    const char              *format,
 							    va_list                  args)
 							    G_GNUC_PRINTF(4, 0);
+GLIB_AVAILABLE_IN_ALL
 gboolean            g_simple_async_result_is_valid         (GAsyncResult            *result,
                                                             GObject                 *source,
                                                             gpointer                 source_tag);
 
+GLIB_AVAILABLE_IN_ALL
 void g_simple_async_report_error_in_idle  (GObject            *object,
 					   GAsyncReadyCallback callback,
 					   gpointer            user_data,
@@ -123,10 +146,12 @@ void g_simple_async_report_error_in_idle  (GObject            *object,
 					   gint                code,
 					   const char         *format,
 					   ...) G_GNUC_PRINTF(6, 7);
+GLIB_AVAILABLE_IN_ALL
 void g_simple_async_report_gerror_in_idle (GObject            *object,
 					   GAsyncReadyCallback callback,
 					   gpointer            user_data,
 					   const GError       *error);
+GLIB_AVAILABLE_IN_ALL
 void g_simple_async_report_take_gerror_in_idle (GObject            *object,
                                                 GAsyncReadyCallback callback,
                                                 gpointer            user_data,

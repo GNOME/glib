@@ -84,7 +84,9 @@ struct _GDBusObjectManagerClientClass
   gpointer padding[8];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                         g_dbus_object_manager_client_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 void                          g_dbus_object_manager_client_new                (GDBusConnection               *connection,
                                                                                GDBusObjectManagerClientFlags  flags,
                                                                                const gchar                   *name,
@@ -95,8 +97,10 @@ void                          g_dbus_object_manager_client_new                (G
                                                                                GCancellable                  *cancellable,
                                                                                GAsyncReadyCallback            callback,
                                                                                gpointer                       user_data);
+GLIB_AVAILABLE_IN_ALL
 GDBusObjectManager           *g_dbus_object_manager_client_new_finish         (GAsyncResult                  *res,
                                                                                GError                       **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusObjectManager           *g_dbus_object_manager_client_new_sync           (GDBusConnection               *connection,
                                                                                GDBusObjectManagerClientFlags  flags,
                                                                                const gchar                   *name,
@@ -106,6 +110,7 @@ GDBusObjectManager           *g_dbus_object_manager_client_new_sync           (G
                                                                                GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GError                       **error);
+GLIB_AVAILABLE_IN_ALL
 void                          g_dbus_object_manager_client_new_for_bus        (GBusType                       bus_type,
                                                                                GDBusObjectManagerClientFlags  flags,
                                                                                const gchar                   *name,
@@ -116,8 +121,10 @@ void                          g_dbus_object_manager_client_new_for_bus        (G
                                                                                GCancellable                  *cancellable,
                                                                                GAsyncReadyCallback            callback,
                                                                                gpointer                       user_data);
+GLIB_AVAILABLE_IN_ALL
 GDBusObjectManager           *g_dbus_object_manager_client_new_for_bus_finish (GAsyncResult                  *res,
                                                                                GError                       **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusObjectManager           *g_dbus_object_manager_client_new_for_bus_sync   (GBusType                       bus_type,
                                                                                GDBusObjectManagerClientFlags  flags,
                                                                                const gchar                   *name,
@@ -127,9 +134,13 @@ GDBusObjectManager           *g_dbus_object_manager_client_new_for_bus_sync   (G
                                                                                GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GError                       **error);
+GLIB_AVAILABLE_IN_ALL
 GDBusConnection              *g_dbus_object_manager_client_get_connection     (GDBusObjectManagerClient      *manager);
+GLIB_AVAILABLE_IN_ALL
 GDBusObjectManagerClientFlags g_dbus_object_manager_client_get_flags          (GDBusObjectManagerClient      *manager);
+GLIB_AVAILABLE_IN_ALL
 const gchar                  *g_dbus_object_manager_client_get_name           (GDBusObjectManagerClient      *manager);
+GLIB_AVAILABLE_IN_ALL
 gchar                        *g_dbus_object_manager_client_get_name_owner     (GDBusObjectManagerClient      *manager);
 
 G_END_DECLS

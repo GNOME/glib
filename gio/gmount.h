@@ -163,17 +163,28 @@ struct _GMountIface
   GIcon       * (* get_symbolic_icon)       (GMount              *mount);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType       g_mount_get_type                  (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GFile     * g_mount_get_root                  (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 GFile     * g_mount_get_default_location      (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 char      * g_mount_get_name                  (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 GIcon     * g_mount_get_icon                  (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 GIcon     * g_mount_get_symbolic_icon         (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 char      * g_mount_get_uuid                  (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 GVolume   * g_mount_get_volume                (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 GDrive    * g_mount_get_drive                 (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_can_unmount               (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_can_eject                 (GMount              *mount);
 
 GLIB_DEPRECATED_FOR(g_mount_unmount_with_operation)
@@ -200,53 +211,66 @@ gboolean    g_mount_eject_finish              (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_remount                   (GMount              *mount,
                                                GMountMountFlags     flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_remount_finish            (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_guess_content_type        (GMount              *mount,
                                                gboolean             force_rescan,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gchar    ** g_mount_guess_content_type_finish (GMount              *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
+GLIB_AVAILABLE_IN_ALL
 gchar    ** g_mount_guess_content_type_sync   (GMount              *mount,
                                                gboolean             force_rescan,
                                                GCancellable        *cancellable,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_is_shadowed               (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_shadow                    (GMount              *mount);
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_unshadow                  (GMount              *mount);
 
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_unmount_with_operation    (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_unmount_with_operation_finish (GMount          *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 void        g_mount_eject_with_operation      (GMount              *mount,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_mount_eject_with_operation_finish (GMount            *mount,
                                                GAsyncResult        *result,
                                                GError             **error);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *g_mount_get_sort_key             (GMount              *mount);
 
 G_END_DECLS

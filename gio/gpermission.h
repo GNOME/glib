@@ -81,33 +81,44 @@ struct _GPermissionClass {
   gpointer reserved[16];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_permission_get_type           (void);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_acquire            (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void            g_permission_acquire_async      (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_acquire_finish     (GPermission          *permission,
                                                  GAsyncResult         *result,
                                                  GError              **error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_release            (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void            g_permission_release_async      (GPermission          *permission,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_release_finish     (GPermission          *permission,
                                                  GAsyncResult         *result,
                                                  GError              **error);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_get_allowed        (GPermission   *permission);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_get_can_acquire    (GPermission   *permission);
+GLIB_AVAILABLE_IN_ALL
 gboolean        g_permission_get_can_release    (GPermission   *permission);
 
+GLIB_AVAILABLE_IN_ALL
 void            g_permission_impl_update        (GPermission  *permission,
                                                  gboolean      allowed,
                                                  gboolean      can_acquire,

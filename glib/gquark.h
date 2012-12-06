@@ -39,9 +39,13 @@ typedef guint32 GQuark;
 
 /* Quarks (string<->id association)
  */
+GLIB_AVAILABLE_IN_ALL
 GQuark                g_quark_try_string         (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 GQuark                g_quark_from_static_string (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 GQuark                g_quark_from_string        (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 const gchar *         g_quark_to_string          (GQuark       quark) G_GNUC_CONST;
 
 #define G_DEFINE_QUARK(QN, q_n)                                         \
@@ -56,7 +60,9 @@ q_n##_quark (void)                                                      \
   return q;                                                             \
 }
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *         g_intern_string            (const gchar *string);
+GLIB_AVAILABLE_IN_ALL
 const gchar *         g_intern_static_string     (const gchar *string);
 
 G_END_DECLS

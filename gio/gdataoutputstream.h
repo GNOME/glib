@@ -70,41 +70,53 @@ struct _GDataOutputStreamClass
 };
 
 
+GLIB_AVAILABLE_IN_ALL
 GType                g_data_output_stream_get_type       (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GDataOutputStream *  g_data_output_stream_new            (GOutputStream         *base_stream);
 
+GLIB_AVAILABLE_IN_ALL
 void                 g_data_output_stream_set_byte_order (GDataOutputStream     *stream,
 							  GDataStreamByteOrder   order);
+GLIB_AVAILABLE_IN_ALL
 GDataStreamByteOrder g_data_output_stream_get_byte_order (GDataOutputStream     *stream);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_byte       (GDataOutputStream     *stream,
 							  guchar                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int16      (GDataOutputStream     *stream,
 							  gint16                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint16     (GDataOutputStream     *stream,
 							  guint16                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int32      (GDataOutputStream     *stream,
 							  gint32                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint32     (GDataOutputStream     *stream,
 							  guint32                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int64      (GDataOutputStream     *stream,
 							  gint64                 data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint64     (GDataOutputStream     *stream,
 							  guint64                data,
 							  GCancellable          *cancellable,
 							  GError               **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_string     (GDataOutputStream     *stream,
 							  const char            *str,
 							  GCancellable          *cancellable,

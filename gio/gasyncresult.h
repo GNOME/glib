@@ -67,9 +67,12 @@ struct _GAsyncResultIface
 				   gpointer      tag);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_async_result_get_type          (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 gpointer g_async_result_get_user_data     (GAsyncResult *res);
+GLIB_AVAILABLE_IN_ALL
 GObject *g_async_result_get_source_object (GAsyncResult *res);
 
 GLIB_AVAILABLE_IN_2_34

@@ -184,23 +184,35 @@ struct _GVolumeIface
   GIcon       * (* get_symbolic_icon)   (GVolume             *volume);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_volume_get_type              (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 char *   g_volume_get_name              (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 GIcon *  g_volume_get_icon              (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 GIcon *  g_volume_get_symbolic_icon     (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 char *   g_volume_get_uuid              (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 GDrive * g_volume_get_drive             (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 GMount * g_volume_get_mount             (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_volume_can_mount             (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_volume_can_eject             (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_volume_should_automount      (GVolume              *volume);
+GLIB_AVAILABLE_IN_ALL
 void     g_volume_mount                 (GVolume              *volume,
 					 GMountMountFlags      flags,
 					 GMountOperation      *mount_operation,
 					 GCancellable         *cancellable,
 					 GAsyncReadyCallback   callback,
 					 gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_volume_mount_finish          (GVolume              *volume,
 					 GAsyncResult         *result,
 					 GError              **error);
@@ -215,18 +227,23 @@ GLIB_DEPRECATED_FOR(g_volume_eject_with_operation_finish)
 gboolean g_volume_eject_finish          (GVolume              *volume,
                                          GAsyncResult         *result,
                                          GError              **error);
+GLIB_AVAILABLE_IN_ALL
 char *   g_volume_get_identifier        (GVolume              *volume,
 					 const char           *kind);
+GLIB_AVAILABLE_IN_ALL
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
 
+GLIB_AVAILABLE_IN_ALL
 GFile *  g_volume_get_activation_root   (GVolume              *volume);
 
+GLIB_AVAILABLE_IN_ALL
 void        g_volume_eject_with_operation     (GVolume             *volume,
                                                GMountUnmountFlags   flags,
                                                GMountOperation     *mount_operation,
                                                GCancellable        *cancellable,
                                                GAsyncReadyCallback  callback,
                                                gpointer             user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean    g_volume_eject_with_operation_finish (GVolume          *volume,
                                                GAsyncResult        *result,
                                                GError             **error);

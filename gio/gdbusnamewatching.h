@@ -67,6 +67,7 @@ typedef void (*GBusNameVanishedCallback) (GDBusConnection *connection,
                                           gpointer         user_data);
 
 
+GLIB_AVAILABLE_IN_ALL
 guint g_bus_watch_name               (GBusType                  bus_type,
                                       const gchar              *name,
                                       GBusNameWatcherFlags      flags,
@@ -74,6 +75,7 @@ guint g_bus_watch_name               (GBusType                  bus_type,
                                       GBusNameVanishedCallback  name_vanished_handler,
                                       gpointer                  user_data,
                                       GDestroyNotify            user_data_free_func);
+GLIB_AVAILABLE_IN_ALL
 guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
                                       const gchar              *name,
                                       GBusNameWatcherFlags      flags,
@@ -81,17 +83,20 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
                                       GBusNameVanishedCallback  name_vanished_handler,
                                       gpointer                  user_data,
                                       GDestroyNotify            user_data_free_func);
+GLIB_AVAILABLE_IN_ALL
 guint g_bus_watch_name_with_closures (GBusType                  bus_type,
                                       const gchar              *name,
                                       GBusNameWatcherFlags      flags,
                                       GClosure                 *name_appeared_closure,
                                       GClosure                 *name_vanished_closure);
+GLIB_AVAILABLE_IN_ALL
 guint g_bus_watch_name_on_connection_with_closures (
                                       GDBusConnection          *connection,
                                       const gchar              *name,
                                       GBusNameWatcherFlags      flags,
                                       GClosure                 *name_appeared_closure,
                                       GClosure                 *name_vanished_closure);
+GLIB_AVAILABLE_IN_ALL
 void  g_bus_unwatch_name             (guint                     watcher_id);
 
 G_END_DECLS

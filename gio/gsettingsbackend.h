@@ -104,39 +104,51 @@ struct _GSettingsBackend
   GSettingsBackendPrivate *priv;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                   g_settings_backend_get_type                     (void);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_changed                      (GSettingsBackend    *backend,
                                                                          const gchar         *key,
                                                                          gpointer             origin_tag);
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_path_changed                 (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gpointer             origin_tag);
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_flatten_tree                 (GTree               *tree,
                                                                          gchar              **path,
                                                                          const gchar       ***keys,
                                                                          GVariant          ***values);
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_keys_changed                 (GSettingsBackend    *backend,
                                                                          const gchar         *path,
                                                                          gchar const * const *items,
                                                                          gpointer             origin_tag);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_path_writable_changed        (GSettingsBackend    *backend,
                                                                          const gchar         *path);
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_writable_changed             (GSettingsBackend    *backend,
                                                                          const gchar         *key);
+GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_changed_tree                 (GSettingsBackend    *backend,
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
 
+GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_settings_backend_get_default                  (void);
 
+GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename,
                                                                          const gchar         *root_path,
                                                                          const gchar         *root_group);
 
+GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_null_settings_backend_new                     (void);
 
+GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_memory_settings_backend_new                   (void);
 
 G_END_DECLS

@@ -81,14 +81,19 @@ struct _GPollableOutputStreamInterface
 				     GError                **error);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_pollable_output_stream_get_type          (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_pollable_output_stream_can_poll          (GPollableOutputStream  *stream);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_pollable_output_stream_is_writable       (GPollableOutputStream  *stream);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_pollable_output_stream_create_source     (GPollableOutputStream  *stream,
 						     GCancellable           *cancellable);
 
+GLIB_AVAILABLE_IN_ALL
 gssize   g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 						     const void             *buffer,
 						     gsize                   count,

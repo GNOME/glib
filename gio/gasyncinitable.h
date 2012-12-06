@@ -74,18 +74,22 @@ struct _GAsyncInitableIface
 			    GError             **error);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_async_initable_get_type    (void) G_GNUC_CONST;
 
 
+GLIB_AVAILABLE_IN_ALL
 void     g_async_initable_init_async       (GAsyncInitable       *initable,
 					    int                   io_priority,
 					    GCancellable         *cancellable,
 					    GAsyncReadyCallback   callback,
 					    gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_async_initable_init_finish      (GAsyncInitable       *initable,
 					    GAsyncResult         *res,
 					    GError              **error);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_async_initable_new_async        (GType                 object_type,
 					    int                   io_priority,
 					    GCancellable         *cancellable,
@@ -93,6 +97,7 @@ void     g_async_initable_new_async        (GType                 object_type,
 					    gpointer              user_data,
 					    const gchar          *first_property_name,
 					    ...);
+GLIB_AVAILABLE_IN_ALL
 void     g_async_initable_newv_async       (GType                 object_type,
 					    guint                 n_parameters,
 					    GParameter           *parameters,
@@ -100,6 +105,7 @@ void     g_async_initable_newv_async       (GType                 object_type,
 					    GCancellable         *cancellable,
 					    GAsyncReadyCallback   callback,
 					    gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 void     g_async_initable_new_valist_async (GType                 object_type,
 					    const gchar          *first_property_name,
 					    va_list               var_args,
@@ -107,6 +113,7 @@ void     g_async_initable_new_valist_async (GType                 object_type,
 					    GCancellable         *cancellable,
 					    GAsyncReadyCallback   callback,
 					    gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 GObject *g_async_initable_new_finish       (GAsyncInitable       *initable,
 					    GAsyncResult         *res,
 					    GError              **error);

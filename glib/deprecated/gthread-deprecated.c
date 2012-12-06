@@ -196,6 +196,7 @@ g_thread_get_initialized (void)
 }
 
 /* We need this for ABI compatibility */
+GLIB_AVAILABLE_IN_ALL
 void g_thread_init_glib (void);
 void g_thread_init_glib (void) { }
 

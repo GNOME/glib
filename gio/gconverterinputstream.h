@@ -69,9 +69,12 @@ struct _GConverterInputStreamClass
   void (*_g_reserved5) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                  g_converter_input_stream_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GInputStream          *g_converter_input_stream_new           (GInputStream          *base_stream,
                                                                GConverter            *converter);
+GLIB_AVAILABLE_IN_ALL
 GConverter            *g_converter_input_stream_get_converter (GConverterInputStream *converter_stream);
 
 G_END_DECLS

@@ -75,8 +75,10 @@ struct _GConverterIface
   void  (* reset)   (GConverter *converter);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType            g_converter_get_type     (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GConverterResult g_converter_convert (GConverter       *converter,
 				      const void       *inbuf,
 				      gsize             inbuf_size,
@@ -86,6 +88,7 @@ GConverterResult g_converter_convert (GConverter       *converter,
 				      gsize            *bytes_read,
 				      gsize            *bytes_written,
 				      GError          **error);
+GLIB_AVAILABLE_IN_ALL
 void             g_converter_reset   (GConverter       *converter);
 
 

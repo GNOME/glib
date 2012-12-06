@@ -98,27 +98,42 @@ struct _GMountOperationClass
   void (*_g_reserved9) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GMountOperation * g_mount_operation_new           (void);
 
+GLIB_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_username      (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_username      (GMountOperation *op,
 						   const char      *username);
+GLIB_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_password      (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_password      (GMountOperation *op,
 						   const char      *password);
+GLIB_AVAILABLE_IN_ALL
 gboolean      g_mount_operation_get_anonymous     (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_anonymous     (GMountOperation *op,
 						   gboolean         anonymous);
+GLIB_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_domain        (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_domain        (GMountOperation *op,
 						   const char      *domain);
+GLIB_AVAILABLE_IN_ALL
 GPasswordSave g_mount_operation_get_password_save (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_password_save (GMountOperation *op,
 						   GPasswordSave    save);
+GLIB_AVAILABLE_IN_ALL
 int           g_mount_operation_get_choice        (GMountOperation *op);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_set_choice        (GMountOperation *op,
 						   int              choice);
+GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_reply             (GMountOperation *op,
 						   GMountOperationResult result);
 

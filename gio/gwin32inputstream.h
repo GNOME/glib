@@ -65,13 +65,18 @@ struct _GWin32InputStreamClass
   void (*_g_reserved5) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType          g_win32_input_stream_get_type         (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GInputStream * g_win32_input_stream_new              (void              *handle,
 						      gboolean           close_handle);
+GLIB_AVAILABLE_IN_ALL
 void           g_win32_input_stream_set_close_handle (GWin32InputStream *stream,
 						      gboolean           close_handle);
+GLIB_AVAILABLE_IN_ALL
 gboolean       g_win32_input_stream_get_close_handle (GWin32InputStream *stream);
+GLIB_AVAILABLE_IN_ALL
 void          *g_win32_input_stream_get_handle       (GWin32InputStream *stream);
 
 G_END_DECLS

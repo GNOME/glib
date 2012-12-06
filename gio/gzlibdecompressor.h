@@ -46,10 +46,13 @@ struct _GZlibDecompressorClass
   GObjectClass parent_class;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType              g_zlib_decompressor_get_type (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GZlibDecompressor *g_zlib_decompressor_new (GZlibCompressorFormat format);
 
+GLIB_AVAILABLE_IN_ALL
 GFileInfo         *g_zlib_decompressor_get_file_info (GZlibDecompressor *decompressor);
 
 G_END_DECLS

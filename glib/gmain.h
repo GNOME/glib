@@ -284,130 +284,187 @@ struct _GSourceFuncs
 
 /* GMainContext: */
 
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_new       (void);
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_ref       (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 void          g_main_context_unref     (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_default   (void);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean      g_main_context_iteration (GMainContext *context,
                                         gboolean      may_block);
+GLIB_AVAILABLE_IN_ALL
 gboolean      g_main_context_pending   (GMainContext *context);
 
 /* For implementation of legacy interfaces
  */
+GLIB_AVAILABLE_IN_ALL
 GSource      *g_main_context_find_source_by_id              (GMainContext *context,
                                                              guint         source_id);
+GLIB_AVAILABLE_IN_ALL
 GSource      *g_main_context_find_source_by_user_data       (GMainContext *context,
                                                              gpointer      user_data);
+GLIB_AVAILABLE_IN_ALL
 GSource      *g_main_context_find_source_by_funcs_user_data (GMainContext *context,
                                                              GSourceFuncs *funcs,
                                                              gpointer      user_data);
 
 /* Low level functions for implementing custom main loops.
  */
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_wakeup  (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_acquire (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_release (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_is_owner (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_wait    (GMainContext *context,
                                  GCond        *cond,
                                  GMutex       *mutex);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_prepare  (GMainContext *context,
                                   gint         *priority);
+GLIB_AVAILABLE_IN_ALL
 gint     g_main_context_query    (GMainContext *context,
                                   gint          max_priority,
                                   gint         *timeout_,
                                   GPollFD      *fds,
                                   gint          n_fds);
+GLIB_AVAILABLE_IN_ALL
 gint     g_main_context_check    (GMainContext *context,
                                   gint          max_priority,
                                   GPollFD      *fds,
                                   gint          n_fds);
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_dispatch (GMainContext *context);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_set_poll_func (GMainContext *context,
                                        GPollFunc     func);
+GLIB_AVAILABLE_IN_ALL
 GPollFunc g_main_context_get_poll_func (GMainContext *context);
 
 /* Low level functions for use by source implementations
  */
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_add_poll    (GMainContext *context,
                                      GPollFD      *fd,
                                      gint          priority);
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_remove_poll (GMainContext *context,
                                      GPollFD      *fd);
 
+GLIB_AVAILABLE_IN_ALL
 gint     g_main_depth               (void);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_main_current_source      (void);
 
 /* GMainContexts for other threads
  */
+GLIB_AVAILABLE_IN_ALL
 void          g_main_context_push_thread_default (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 void          g_main_context_pop_thread_default  (GMainContext *context);
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_get_thread_default  (void);
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_context_ref_thread_default  (void);
 
 /* GMainLoop: */
 
+GLIB_AVAILABLE_IN_ALL
 GMainLoop *g_main_loop_new        (GMainContext *context,
                                    gboolean      is_running);
+GLIB_AVAILABLE_IN_ALL
 void       g_main_loop_run        (GMainLoop    *loop);
+GLIB_AVAILABLE_IN_ALL
 void       g_main_loop_quit       (GMainLoop    *loop);
+GLIB_AVAILABLE_IN_ALL
 GMainLoop *g_main_loop_ref        (GMainLoop    *loop);
+GLIB_AVAILABLE_IN_ALL
 void       g_main_loop_unref      (GMainLoop    *loop);
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_main_loop_is_running (GMainLoop    *loop);
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_main_loop_get_context (GMainLoop    *loop);
 
 /* GSource: */
 
+GLIB_AVAILABLE_IN_ALL
 GSource *g_source_new             (GSourceFuncs   *source_funcs,
                                    guint           struct_size);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_source_ref             (GSource        *source);
+GLIB_AVAILABLE_IN_ALL
 void     g_source_unref           (GSource        *source);
 
+GLIB_AVAILABLE_IN_ALL
 guint    g_source_attach          (GSource        *source,
                                    GMainContext   *context);
+GLIB_AVAILABLE_IN_ALL
 void     g_source_destroy         (GSource        *source);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_source_set_priority    (GSource        *source,
                                    gint            priority);
+GLIB_AVAILABLE_IN_ALL
 gint     g_source_get_priority    (GSource        *source);
+GLIB_AVAILABLE_IN_ALL
 void     g_source_set_can_recurse (GSource        *source,
                                    gboolean        can_recurse);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_source_get_can_recurse (GSource        *source);
+GLIB_AVAILABLE_IN_ALL
 guint    g_source_get_id          (GSource        *source);
 
+GLIB_AVAILABLE_IN_ALL
 GMainContext *g_source_get_context (GSource       *source);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_source_set_callback    (GSource        *source,
                                    GSourceFunc     func,
                                    gpointer        data,
                                    GDestroyNotify  notify);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_source_set_funcs       (GSource        *source,
                                    GSourceFuncs   *funcs);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_source_is_destroyed    (GSource        *source);
 
+GLIB_AVAILABLE_IN_ALL
 void                 g_source_set_name       (GSource        *source,
                                               const char     *name);
+GLIB_AVAILABLE_IN_ALL
 const char *         g_source_get_name       (GSource        *source);
+GLIB_AVAILABLE_IN_ALL
 void                 g_source_set_name_by_id (guint           tag,
                                               const char     *name);
 
 
 /* Used to implement g_source_connect_closure and internally*/
+GLIB_AVAILABLE_IN_ALL
 void g_source_set_callback_indirect (GSource              *source,
                                      gpointer              callback_data,
                                      GSourceCallbackFuncs *callback_funcs);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_source_add_poll            (GSource        *source,
 				       GPollFD        *fd);
+GLIB_AVAILABLE_IN_ALL
 void     g_source_remove_poll         (GSource        *source,
 				       GPollFD        *fd);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_source_add_child_source    (GSource        *source,
 				       GSource        *child_source);
+GLIB_AVAILABLE_IN_ALL
 void     g_source_remove_child_source (GSource        *source,
 				       GSource        *child_source);
 
@@ -415,6 +472,7 @@ GLIB_DEPRECATED_IN_2_28_FOR(g_source_get_time)
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
 
+GLIB_AVAILABLE_IN_ALL
 gint64   g_source_get_time         (GSource        *source);
 
  /* void g_source_connect_closure (GSource        *source,
@@ -423,62 +481,83 @@ gint64   g_source_get_time         (GSource        *source);
 
 /* Specific source types
  */
+GLIB_AVAILABLE_IN_ALL
 GSource *g_idle_source_new        (void);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_child_watch_source_new (GPid pid);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new     (guint interval);
+GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new_seconds (guint interval);
 
 /* Miscellaneous functions
  */
+GLIB_AVAILABLE_IN_ALL
 void   g_get_current_time                 (GTimeVal       *result);
+GLIB_AVAILABLE_IN_ALL
 gint64 g_get_monotonic_time               (void);
+GLIB_AVAILABLE_IN_ALL
 gint64 g_get_real_time                    (void);
 
 
 /* Source manipulation by ID */
+GLIB_AVAILABLE_IN_ALL
 gboolean g_source_remove                     (guint          tag);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_source_remove_by_user_data        (gpointer       user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_source_remove_by_funcs_user_data  (GSourceFuncs  *funcs,
                                               gpointer       user_data);
 
 /* Idles, child watchers and timeouts */
+GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add_full         (gint            priority,
                                      guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data,
                                      GDestroyNotify  notify);
+GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add              (guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data);
+GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add_seconds_full (gint            priority,
                                      guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data,
                                      GDestroyNotify  notify);
+GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add_seconds      (guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data);
+GLIB_AVAILABLE_IN_ALL
 guint    g_child_watch_add_full     (gint            priority,
                                      GPid            pid,
                                      GChildWatchFunc function,
                                      gpointer        data,
                                      GDestroyNotify  notify);
+GLIB_AVAILABLE_IN_ALL
 guint    g_child_watch_add          (GPid            pid,
                                      GChildWatchFunc function,
                                      gpointer        data);
+GLIB_AVAILABLE_IN_ALL
 guint    g_idle_add                 (GSourceFunc     function,
                                      gpointer        data);
+GLIB_AVAILABLE_IN_ALL
 guint    g_idle_add_full            (gint            priority,
                                      GSourceFunc     function,
                                      gpointer        data,
                                      GDestroyNotify  notify);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_idle_remove_by_data      (gpointer        data);
 
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_invoke_full (GMainContext   *context,
                                      gint            priority,
                                      GSourceFunc     function,
                                      gpointer        data,
                                      GDestroyNotify  notify);
+GLIB_AVAILABLE_IN_ALL
 void     g_main_context_invoke      (GMainContext   *context,
                                      GSourceFunc     function,
                                      gpointer        data);

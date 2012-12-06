@@ -29,21 +29,30 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 GType g_srv_target_get_type (void) G_GNUC_CONST;
 #define G_TYPE_SRV_TARGET (g_srv_target_get_type ())
 
+GLIB_AVAILABLE_IN_ALL
 GSrvTarget  *g_srv_target_new          (const gchar *hostname,
 				        guint16      port,
 				        guint16      priority,
 				        guint16      weight);
+GLIB_AVAILABLE_IN_ALL
 GSrvTarget  *g_srv_target_copy         (GSrvTarget  *target);
+GLIB_AVAILABLE_IN_ALL
 void         g_srv_target_free         (GSrvTarget  *target);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *g_srv_target_get_hostname (GSrvTarget  *target);
+GLIB_AVAILABLE_IN_ALL
 guint16      g_srv_target_get_port     (GSrvTarget  *target);
+GLIB_AVAILABLE_IN_ALL
 guint16      g_srv_target_get_priority (GSrvTarget  *target);
+GLIB_AVAILABLE_IN_ALL
 guint16      g_srv_target_get_weight   (GSrvTarget  *target);
 
+GLIB_AVAILABLE_IN_ALL
 GList       *g_srv_target_list_sort    (GList       *targets);
 
 G_END_DECLS

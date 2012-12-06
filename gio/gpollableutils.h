@@ -29,6 +29,7 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 GSource *g_pollable_source_new       (GObject        *pollable_stream);
 
 GLIB_AVAILABLE_IN_2_34

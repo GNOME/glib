@@ -69,30 +69,41 @@ struct _GTlsPasswordClass
   gpointer padding[4];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType             g_tls_password_get_type            (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GTlsPassword *    g_tls_password_new                 (GTlsPasswordFlags  flags,
                                                       const gchar       *description);
 
+GLIB_AVAILABLE_IN_ALL
 const guchar *    g_tls_password_get_value           (GTlsPassword      *password,
                                                       gsize             *length);
+GLIB_AVAILABLE_IN_ALL
 void              g_tls_password_set_value           (GTlsPassword      *password,
                                                       const guchar      *value,
                                                       gssize             length);
+GLIB_AVAILABLE_IN_ALL
 void              g_tls_password_set_value_full      (GTlsPassword      *password,
                                                       guchar            *value,
                                                       gssize             length,
                                                       GDestroyNotify     destroy);
 
+GLIB_AVAILABLE_IN_ALL
 GTlsPasswordFlags g_tls_password_get_flags           (GTlsPassword      *password);
+GLIB_AVAILABLE_IN_ALL
 void              g_tls_password_set_flags           (GTlsPassword      *password,
                                                       GTlsPasswordFlags  flags);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar*      g_tls_password_get_description     (GTlsPassword      *password);
+GLIB_AVAILABLE_IN_ALL
 void              g_tls_password_set_description     (GTlsPassword      *password,
                                                       const gchar       *description);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *     g_tls_password_get_warning         (GTlsPassword      *password);
+GLIB_AVAILABLE_IN_ALL
 void              g_tls_password_set_warning         (GTlsPassword      *password,
                                                       const gchar       *warning);
 

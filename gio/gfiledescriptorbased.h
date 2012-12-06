@@ -52,8 +52,10 @@ struct _GFileDescriptorBasedIface
   int (*get_fd) (GFileDescriptorBased *fd_based);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType    g_file_descriptor_based_get_type     (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 int      g_file_descriptor_based_get_fd       (GFileDescriptorBased *fd_based);
 
 G_END_DECLS

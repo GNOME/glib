@@ -29,25 +29,31 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 gsize   g_base64_encode_step    (const guchar *in,
                                  gsize         len,
                                  gboolean      break_lines,
                                  gchar        *out,
                                  gint         *state,
                                  gint         *save);
+GLIB_AVAILABLE_IN_ALL
 gsize   g_base64_encode_close   (gboolean      break_lines,
                                  gchar        *out,
                                  gint         *state,
                                  gint         *save);
+GLIB_AVAILABLE_IN_ALL
 gchar*  g_base64_encode         (const guchar *data,
                                  gsize         len) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 gsize   g_base64_decode_step    (const gchar  *in,
                                  gsize         len,
                                  guchar       *out,
                                  gint         *state,
                                  guint        *save);
+GLIB_AVAILABLE_IN_ALL
 guchar *g_base64_decode         (const gchar  *text,
                                  gsize        *out_len) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
 guchar *g_base64_decode_inplace (gchar        *text,
                                  gsize        *out_len);
 

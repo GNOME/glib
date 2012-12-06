@@ -31,17 +31,23 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_ALL
 void      g_bit_lock                      (volatile gint *address,
                                            gint           lock_bit);
+GLIB_AVAILABLE_IN_ALL
 gboolean  g_bit_trylock                   (volatile gint *address,
                                            gint           lock_bit);
+GLIB_AVAILABLE_IN_ALL
 void      g_bit_unlock                    (volatile gint *address,
                                            gint           lock_bit);
 
+GLIB_AVAILABLE_IN_ALL
 void      g_pointer_bit_lock              (volatile void *address,
                                            gint           lock_bit);
+GLIB_AVAILABLE_IN_ALL
 gboolean  g_pointer_bit_trylock           (volatile void *address,
                                            gint           lock_bit);
+GLIB_AVAILABLE_IN_ALL
 void      g_pointer_bit_unlock            (volatile void *address,
                                            gint           lock_bit);
 

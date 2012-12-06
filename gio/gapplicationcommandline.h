@@ -71,33 +71,44 @@ struct _GApplicationCommandLineClass
   gpointer padding[11];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                   g_application_command_line_get_type             (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
                                                                          int                       *argc);
 
 GInputStream *          g_application_command_line_get_stdin            (GApplicationCommandLine   *cmdline);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar * const *   g_application_command_line_get_environ          (GApplicationCommandLine   *cmdline);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *           g_application_command_line_getenv               (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *name);
 
+GLIB_AVAILABLE_IN_ALL
 const gchar *           g_application_command_line_get_cwd              (GApplicationCommandLine   *cmdline);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *cmdline);
 
+GLIB_AVAILABLE_IN_ALL
 void                    g_application_command_line_print                (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...) G_GNUC_PRINTF(2, 3);
+GLIB_AVAILABLE_IN_ALL
 void                    g_application_command_line_printerr             (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...) G_GNUC_PRINTF(2, 3);
 
+GLIB_AVAILABLE_IN_ALL
 int                     g_application_command_line_get_exit_status      (GApplicationCommandLine   *cmdline);
+GLIB_AVAILABLE_IN_ALL
 void                    g_application_command_line_set_exit_status      (GApplicationCommandLine   *cmdline,
                                                                          int                        exit_status);
 
+GLIB_AVAILABLE_IN_ALL
 GVariant *              g_application_command_line_get_platform_data    (GApplicationCommandLine   *cmdline);
 
 GLIB_AVAILABLE_IN_2_36

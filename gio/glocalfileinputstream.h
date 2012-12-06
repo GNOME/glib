@@ -51,9 +51,12 @@ struct _GLocalFileInputStreamClass
   GFileInputStreamClass parent_class;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType              _g_local_file_input_stream_get_type (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GFileInputStream *_g_local_file_input_stream_new          (int                    fd);
+GLIB_AVAILABLE_IN_ALL
 void              _g_local_file_input_stream_set_do_close (GLocalFileInputStream *in,
 							   gboolean               do_close);
 

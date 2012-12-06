@@ -96,35 +96,46 @@ struct _GFileEnumeratorClass
   void (*_g_reserved7) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType      g_file_enumerator_get_type          (void) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_ALL
 GFileInfo *g_file_enumerator_next_file         (GFileEnumerator      *enumerator,
 						GCancellable         *cancellable,
 						GError              **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_file_enumerator_close             (GFileEnumerator      *enumerator,
 						GCancellable         *cancellable,
 						GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void       g_file_enumerator_next_files_async  (GFileEnumerator      *enumerator,
 						int                   num_files,
 						int                   io_priority,
 						GCancellable         *cancellable,
 						GAsyncReadyCallback   callback,
 						gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 GList *    g_file_enumerator_next_files_finish (GFileEnumerator      *enumerator,
 						GAsyncResult         *result,
 						GError              **error);
+GLIB_AVAILABLE_IN_ALL
 void       g_file_enumerator_close_async       (GFileEnumerator      *enumerator,
 						int                   io_priority,
 						GCancellable         *cancellable,
 						GAsyncReadyCallback   callback,
 						gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_file_enumerator_close_finish      (GFileEnumerator      *enumerator,
 						GAsyncResult         *result,
 						GError              **error);
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_file_enumerator_is_closed         (GFileEnumerator      *enumerator);
+GLIB_AVAILABLE_IN_ALL
 gboolean   g_file_enumerator_has_pending       (GFileEnumerator      *enumerator);
+GLIB_AVAILABLE_IN_ALL
 void       g_file_enumerator_set_pending       (GFileEnumerator      *enumerator,
 						gboolean              pending);
+GLIB_AVAILABLE_IN_ALL
 GFile *    g_file_enumerator_get_container     (GFileEnumerator *enumerator);
 GLIB_AVAILABLE_IN_2_36
 GFile *    g_file_enumerator_get_child         (GFileEnumerator *enumerator,

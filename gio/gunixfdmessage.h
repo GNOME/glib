@@ -61,14 +61,20 @@ struct _GUnixFDMessage
   GUnixFDMessagePrivate *priv;
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                   g_unix_fd_message_get_type                      (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_ALL
 GSocketControlMessage * g_unix_fd_message_new_with_fd_list              (GUnixFDList     *fd_list);
+GLIB_AVAILABLE_IN_ALL
 GSocketControlMessage * g_unix_fd_message_new                           (void);
 
+GLIB_AVAILABLE_IN_ALL
 GUnixFDList *           g_unix_fd_message_get_fd_list                   (GUnixFDMessage  *message);
 
+GLIB_AVAILABLE_IN_ALL
 gint *                  g_unix_fd_message_steal_fds                     (GUnixFDMessage  *message,
                                                                          gint            *length);
+GLIB_AVAILABLE_IN_ALL
 gboolean                g_unix_fd_message_append_fd                     (GUnixFDMessage  *message,
                                                                          gint             fd,
                                                                          GError         **error);

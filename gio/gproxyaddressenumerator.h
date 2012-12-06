@@ -68,6 +68,7 @@ struct _GProxyAddressEnumeratorClass
   void (*_g_reserved7) (void);
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType           g_proxy_address_enumerator_get_type    (void) G_GNUC_CONST;
 
 G_END_DECLS

@@ -73,6 +73,7 @@ struct _GTlsConnectionClass
   gpointer padding[8];
 };
 
+GLIB_AVAILABLE_IN_ALL
 GType                 g_tls_connection_get_type                    (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED
@@ -81,38 +82,53 @@ void                  g_tls_connection_set_use_system_certdb       (GTlsConnecti
 GLIB_DEPRECATED
 gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_database                (GTlsConnection       *conn,
 								    GTlsDatabase         *database);
+GLIB_AVAILABLE_IN_ALL
 GTlsDatabase *        g_tls_connection_get_database                (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_certificate             (GTlsConnection       *conn,
                                                                     GTlsCertificate      *certificate);
+GLIB_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_connection_get_certificate             (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_interaction             (GTlsConnection       *conn,
                                                                     GTlsInteraction      *interaction);
+GLIB_AVAILABLE_IN_ALL
 GTlsInteraction *     g_tls_connection_get_interaction             (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_connection_get_peer_certificate        (GTlsConnection       *conn);
+GLIB_AVAILABLE_IN_ALL
 GTlsCertificateFlags  g_tls_connection_get_peer_certificate_errors (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_require_close_notify    (GTlsConnection       *conn,
 								    gboolean              require_close_notify);
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
 								    GTlsRehandshakeMode   mode);
+GLIB_AVAILABLE_IN_ALL
 GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
 								    GCancellable         *cancellable,
 								    GError              **error);
 
+GLIB_AVAILABLE_IN_ALL
 void                  g_tls_connection_handshake_async             (GTlsConnection       *conn,
 								    int                   io_priority,
 								    GCancellable         *cancellable,
 								    GAsyncReadyCallback   callback,
 								    gpointer              user_data);
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake_finish            (GTlsConnection       *conn,
 								    GAsyncResult         *result,
 								    GError              **error);
@@ -125,10 +141,12 @@ gboolean              g_tls_connection_handshake_finish            (GTlsConnecti
  * domains.
  */
 #define G_TLS_ERROR (g_tls_error_quark ())
+GLIB_AVAILABLE_IN_ALL
 GQuark g_tls_error_quark (void);
 
 
 /*< protected >*/
+GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_emit_accept_certificate     (GTlsConnection       *conn,
 								    GTlsCertificate      *peer_cert,
 								    GTlsCertificateFlags  errors);
