@@ -83,6 +83,7 @@ void                    g_simple_action_group_insert                    (GSimple
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
 
+GLIB_AVAILABLE_IN_2_30
 void                    g_simple_action_group_add_entries               (GSimpleActionGroup *simple,
                                                                          const GActionEntry *entries,
                                                                          gint                n_entries,
