@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include <glib/gvariant-core.h>
 
 #include <glib/gvariant-serialiser.h>

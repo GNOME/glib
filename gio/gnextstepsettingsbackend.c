@@ -19,6 +19,8 @@
  * Author: William Hua <william@attente.ca>
  */
 
+#include "config.h"
+
 #include "gsettingsbackendinternal.h"
 #include "gsimplepermission.h"
 #include "giomodule.h"

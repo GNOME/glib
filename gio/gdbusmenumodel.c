@@ -19,6 +19,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gdbusmenumodel.h"
 
 #include "gmenumodel.h"

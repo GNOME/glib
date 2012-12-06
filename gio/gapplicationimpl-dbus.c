@@ -19,6 +19,8 @@
  * Authors: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gapplicationimpl.h"
 
 #include "gactiongroup.h"

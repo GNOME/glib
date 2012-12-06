@@ -1,4 +1,6 @@
 /*** BEGIN file-header ***/
+#include "config.h"
+#include "gioenumtypes.h"
 #include <gio.h>
 
 /*** END file-header ***/
