@@ -58,6 +58,10 @@ typedef struct
 
 gboolean   _g_local_file_has_trash_dir        (const char             *dirname,
                                                dev_t                   dir_dev);
+#ifdef G_OS_UNIX
+gboolean   _g_local_file_is_lost_found_dir    (const char             *path,
+                                               dev_t                   path_dev);
+#endif
 void       _g_local_file_info_get_parent_info (const char             *dir,
                                                GFileAttributeMatcher  *attribute_matcher,
                                                GLocalParentFileInfo   *parent_info);

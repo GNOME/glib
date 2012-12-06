@@ -1782,6 +1782,11 @@ _g_local_file_info_get (const char             *basename,
   if (stat_ok)
     set_info_from_stat (info, &statbuf, attribute_matcher);
 
+#ifdef G_OS_UNIX
+  if (stat_ok && _g_local_file_is_lost_found_dir (path, statbuf.st_dev))
+    g_file_info_set_is_hidden (info, TRUE);
+#endif
+
 #ifndef G_OS_WIN32
   if (basename != NULL &&
       (basename[0] == '.' ||

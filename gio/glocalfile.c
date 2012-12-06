@@ -1806,6 +1806,46 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   return res;
 }
 
+#ifdef G_OS_UNIX
+gboolean
+_g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
+{
+  gboolean ret = FALSE;
+  gchar *mount_dir = NULL;
+  size_t mount_dir_len;
+  GStatBuf statbuf;
+
+  if (!g_str_has_suffix (path, "/lost+found"))
+    goto out;
+
+  mount_dir = find_mountpoint_for (path, path_dev);
+  if (mount_dir == NULL)
+    goto out;
+
+  mount_dir_len = strlen (mount_dir);
+  /* We special-case rootfs ('/') since it's the only case where
+   * mount_dir ends in '/'
+   */
+  if (mount_dir_len == 1)
+    mount_dir_len--;
+  if (mount_dir_len + strlen ("/lost+found") != strlen (path))
+    goto out;
+
+  if (g_lstat (path, &statbuf) != 0)
+    goto out;
+
+  if (!(S_ISDIR (statbuf.st_mode) &&
+        statbuf.st_uid == 0 &&
+        statbuf.st_gid == 0))
+    goto out;
+
+  ret = TRUE;
+
+ out:
+  g_free (mount_dir);
+  return ret;
+}
+#endif
 
 static gboolean
 g_local_file_trash (GFile         *file,
