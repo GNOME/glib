@@ -624,7 +624,12 @@ test_GDateTime_new_full (void)
   g_assert_cmpint (8, ==, g_date_time_get_hour (dt));
   g_assert_cmpint (4, ==, g_date_time_get_minute (dt));
   g_assert_cmpint (0, ==, g_date_time_get_second (dt));
+#ifdef G_OS_UNIX
   g_assert_cmpstr ("BRT", ==, g_date_time_get_timezone_abbreviation (dt));
+#elif defined G_OS_WIN32
+  g_assert_cmpstr ("E. South America Standard Time", ==,
+                    g_date_time_get_timezone_abbreviation (dt));
+#endif
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
 }
@@ -879,7 +884,11 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
+#ifdef G_OS_UNIX
   TEST_PRINTF ("%Z", dst);
+#elsif defined G_OS_WIN32
+  TEST_PRINTF ("%Z", "Pacific Standard Time")
+#endif
 }
 
 static void

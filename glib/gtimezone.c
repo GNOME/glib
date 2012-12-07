@@ -546,6 +546,8 @@ rule_from_windows_time_zone_info (TimeZoneRule *rule,
       rule->std_offset = -tzi->Bias * 60;
       rule->dlt_start.mon = 0;
     }
+  strncpy (rule->std_name, (gchar*)tzi->StandardName, NAME_SIZE - 1);
+  strncpy (rule->dlt_name, (gchar*)tzi->DaylightName, NAME_SIZE - 1);
 }
 
 static gchar*
@@ -639,6 +641,18 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
   subkey = g_strconcat (reg_key, key_name, NULL);
   subkey_dynamic = g_strconcat (subkey, "\\Dynamic DST", NULL);
 
+  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+                     KEY_QUERY_VALUE, &key) != ERROR_SUCCESS)
+      return 0;
+  size = sizeof tzi.StandardName;
+  if (RegQueryValueExA (key, "Std", NULL, NULL,
+                        (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
+    goto failed;
+  if (RegQueryValueExA (key, "Dlt", NULL, NULL,
+                        (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
+    goto failed;
+  
+  RegCloseKey (key);
   if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey_dynamic, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
