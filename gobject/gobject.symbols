@@ -350,6 +350,7 @@ g_type_fundamental
 g_type_fundamental_next
 g_type_get_plugin
 g_type_get_qdata
+g_type_get_type_registration_serial
 g_type_init
 g_type_init_with_debug_flags
 g_type_instance_get_private

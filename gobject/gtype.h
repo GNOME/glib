@@ -1263,6 +1263,9 @@ gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
 
 GLIB_AVAILABLE_IN_2_34
 void      g_type_ensure                 (GType                       type);
+GLIB_AVAILABLE_IN_2_36
+guint     g_type_get_type_registration_serial (void);
+
 
 /* --- GType boilerplate --- */
 /**

@@ -377,6 +377,7 @@ static IFaceCheckFunc *static_iface_check_funcs = NULL;
 static GQuark          static_quark_type_flags = 0;
 static GQuark          static_quark_iface_holder = 0;
 static GQuark          static_quark_dependants_array = 0;
+static guint           type_registration_serial = 0;
 GTypeDebugFlags	       _g_type_debug_flags = 0;
 
 /* --- type nodes --- */
@@ -391,6 +392,25 @@ lookup_type_node_I (register GType utype)
     return (TypeNode*) (utype & ~TYPE_ID_MASK);
   else
     return static_fundamental_type_nodes[utype >> G_TYPE_FUNDAMENTAL_SHIFT];
+}
+
+/**
+ * g_type_get_type_registration_serial:
+ *
+ * Returns an opaque serial number that represents the state of the set of registered
+ * types. Any time a type is registred this serial changes, which means you can
+ * cache information based on type lookups (such as g_type_from_name) and know if
+ * the cache is still valid at a later time by comparing the current serial with
+ * the one at the type lookup.
+ *
+ * Since: 2.36
+ *
+ * Returns: An unsigned int, representing the state of type registrations.
+ */
+guint
+g_type_get_type_registration_serial (void)
+{
+  return (guint)g_atomic_int_get ((gint *)&type_registration_serial);
 }
 
 static TypeNode*
@@ -490,6 +510,9 @@ type_node_any_new_W (TypeNode             *pnode,
   g_hash_table_insert (static_type_nodes_ht,
 		       (gpointer) g_quark_to_string (node->qname),
 		       (gpointer) type);
+
+  g_atomic_int_inc ((gint *)&type_registration_serial);
+
   return node;
 }
 
