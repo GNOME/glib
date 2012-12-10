@@ -1424,7 +1424,7 @@ g_checksum_type_get_length (GChecksumType checksum_type)
  * will be closed and it won't be possible to call g_checksum_update()
  * on it anymore.
  *
- * Return value: the newly created #GChecksum, or %NULL.
+ * Return value: (transfer full): the newly created #GChecksum, or %NULL.
  *   Use g_checksum_free() to free the memory allocated by it.
  *
  * Since: 2.16
@@ -1531,7 +1531,7 @@ g_checksum_free (GChecksum *checksum)
 /**
  * g_checksum_update:
  * @checksum: a #GChecksum
- * @data: buffer used to compute the checksum
+ * @data: (array length=length) (element-type guint8): buffer used to compute the checksum
  * @length: size of the buffer, or -1 if it is a null-terminated string.
  *
  * Feeds @data into an existing #GChecksum. The checksum must still be
@@ -1635,7 +1635,7 @@ g_checksum_get_string (GChecksum *checksum)
 }
 
 /**
- * g_checksum_get_digest:
+ * g_checksum_get_digest: (skip)
  * @checksum: a #GChecksum
  * @buffer: output buffer
  * @digest_len: an inout parameter. The caller initializes it to the size of @buffer.
@@ -1713,7 +1713,7 @@ g_checksum_get_digest (GChecksum  *checksum,
 /**
  * g_compute_checksum_for_data:
  * @checksum_type: a #GChecksumType
- * @data: binary blob to compute the digest of
+ * @data: (array length=length) (element-type guint8): binary blob to compute the digest of
  * @length: length of @data
  *
  * Computes the checksum for a binary @data of @length. This is a
