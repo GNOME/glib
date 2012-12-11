@@ -105,7 +105,11 @@ g_unix_open_pipe (int     *fds,
   ecode = pipe (fds);
   if (ecode == -1)
     return g_unix_set_error_from_errno (error, errno);
-  ecode = fcntl (fds[0], flags);
+
+  if (flags == 0)
+    return TRUE;
+
+  ecode = fcntl (fds[0], F_SETFD, flags);
   if (ecode == -1)
     {
       int saved_errno = errno;
@@ -113,7 +117,7 @@ g_unix_open_pipe (int     *fds,
       close (fds[1]);
       return g_unix_set_error_from_errno (error, saved_errno);
     }
-  ecode = fcntl (fds[1], flags);
+  ecode = fcntl (fds[1], F_SETFD, flags);
   if (ecode == -1)
     {
       int saved_errno = errno;
