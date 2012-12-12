@@ -60,6 +60,32 @@ g_tls_server_connection_default_init (GTlsServerConnectionInterface *iface)
 							  G_TLS_AUTHENTICATION_NONE,
 							  G_PARAM_READWRITE |
 							  G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsServerConnection:server-identity:
+   *
+   * The server identity chosen by the client via the SNI extension.
+   * If the client sends that extension in the handshake, this
+   * property will be updated when it is parsed.
+   *
+   * You can connect to #GObject::notify for this property to be
+   * notified when this is set, and then call
+   * g_tls_connection_set_certificate() to set an appropriate
+   * certificate to send in reply. Beware that the notification may be
+   * emitted in a different thread from the one that you started the
+   * handshake in (but, as long as you are not also getting or setting
+   * the certificate from another thread, it is safe to call
+   * g_tls_connection_set_certificate() from that thread).
+   *
+   * Since: 2.46
+   */
+  g_object_interface_install_property (iface,
+				       g_param_spec_string ("server-identity",
+                                                            P_("Server Identity"),
+                                                            P_("The server identity requested by the client"),
+                                                            NULL,
+                                                            G_PARAM_READABLE |
+                                                            G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -91,4 +117,25 @@ g_tls_server_connection_new (GIOStream        *base_io_stream,
 			 "certificate", certificate,
 			 NULL);
   return G_IO_STREAM (conn);
+}
+
+/**
+ * g_tls_server_connection_get_server_identity:
+ * @conn: a #GTlsServerConnection
+ *
+ * Gets the server identity requested by the client via the SNI
+ * extension, after it has been set during the handshake.
+ *
+ * Return value: the requested server identity, or %NULL if the
+ *   client didn't use SNI.
+ *
+ * Since: 2.46
+ */
+const gchar *
+g_tls_server_connection_get_server_identity (GTlsServerConnection *conn)
+{
+  if (G_TLS_SERVER_CONNECTION_GET_INTERFACE (conn)->get_server_identity)
+    return G_TLS_SERVER_CONNECTION_GET_INTERFACE (conn)->get_server_identity (conn);
+  else
+    return NULL;
 }

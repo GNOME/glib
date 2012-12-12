@@ -54,15 +54,19 @@ struct _GTlsServerConnectionInterface
 {
   GTypeInterface g_iface;
 
+  const char * (*get_server_identity) (GTlsServerConnection *);
 };
 
 GLIB_AVAILABLE_IN_ALL
-GType                 g_tls_server_connection_get_type                 (void) G_GNUC_CONST;
+GType        g_tls_server_connection_get_type            (void) G_GNUC_CONST;
 
 GLIB_AVAILABLE_IN_ALL
-GIOStream *           g_tls_server_connection_new                      (GIOStream        *base_io_stream,
-									GTlsCertificate  *certificate,
-									GError          **error);
+GIOStream *  g_tls_server_connection_new                 (GIOStream             *base_io_stream,
+                                                          GTlsCertificate       *certificate,
+                                                          GError               **error);
+
+GLIB_AVAILABLE_IN_2_46
+const gchar *g_tls_server_connection_get_server_identity (GTlsServerConnection  *conn);
 
 G_END_DECLS
 

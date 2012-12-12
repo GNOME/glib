@@ -3738,6 +3738,7 @@ g_tls_file_database_get_type
 GTlsServerConnection
 GTlsServerConnectionInterface
 g_tls_server_connection_new
+g_tls_server_connection_get_server_identity
 <SUBSECTION Standard>
 G_IS_TLS_SERVER_CONNECTION
 G_TLS_SERVER_CONNECTION
