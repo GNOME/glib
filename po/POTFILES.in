@@ -109,6 +109,7 @@ gio/gtcpconnection.c
 gio/gtcpwrapperconnection.c
 gio/gtestdbus.c
 gio/gthemedicon.c
+gio/gthreadedresolver.c
 gio/gthreadedsocketservice.c
 gio/gtlscertificate.c
 gio/gtlsclientconnection.c
