@@ -589,6 +589,37 @@ g_file_enumerator_get_container (GFileEnumerator *enumerator)
   return enumerator->priv->container;
 }
 
+/**
+ * g_file_enumerator_get_child:
+ * @enumerator: a #GFileEnumerator
+ * @info: a #GFileInfo gotten from g_file_enumerator_next_file()
+ *   or the async equivalents.
+ *
+ * Return a new #GFile which refers to the file named by @info in the source
+ * directory of @enumerator.  This function is primarily intended to be used
+ * inside loops with g_file_enumerator_next_file().
+ *
+ * This is a convenience method that's equivalent to:
+ * |[
+ *   gchar *name = g_file_info_get_name (info);
+ *   GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+ *                                    name);
+ * ]|
+ *
+ * Returns: (transfer full): a #GFile for the #GFileInfo passed it.
+ *
+ * Since: 2.36
+ */
+GFile *
+g_file_enumerator_get_child (GFileEnumerator *enumerator,
+                             GFileInfo       *info)
+{
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+
+  return g_file_get_child (enumerator->priv->container,
+                           g_file_info_get_name (info));
+}
+
 typedef struct {
   int                num_files;
   GList             *files;

@@ -513,7 +513,7 @@ traverse_recurse_dirs (GFile * parent, GFile * root)
   info = g_file_enumerator_next_file (enumerator, NULL, &error);
   while ((info) && (!error))
     {
-      descend = g_file_get_child (parent, g_file_info_get_name (info));
+      descend = g_file_enumerator_get_child (enumerator, info);
       g_assert (descend != NULL);
       relative_path = g_file_get_relative_path (root, descend);
       g_assert (relative_path != NULL);
@@ -1159,7 +1159,7 @@ cleanup_dir_recurse (GFile *parent, GFile *root)
   info = g_file_enumerator_next_file (enumerator, NULL, &error);
   while ((info) && (!error))
     {
-      descend = g_file_get_child (parent, g_file_info_get_name (info));
+      descend = g_file_enumerator_get_child (enumerator, info);
       g_assert (descend != NULL);
       relative_path = g_file_get_relative_path (root, descend);
       g_assert (relative_path != NULL);

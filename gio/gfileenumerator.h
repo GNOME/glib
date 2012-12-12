@@ -126,6 +126,9 @@ gboolean   g_file_enumerator_has_pending       (GFileEnumerator      *enumerator
 void       g_file_enumerator_set_pending       (GFileEnumerator      *enumerator,
 						gboolean              pending);
 GFile *    g_file_enumerator_get_container     (GFileEnumerator *enumerator);
+GLIB_AVAILABLE_IN_2_36
+GFile *    g_file_enumerator_get_child         (GFileEnumerator *enumerator,
+                                                GFileInfo       *info);
 
 G_END_DECLS
 
