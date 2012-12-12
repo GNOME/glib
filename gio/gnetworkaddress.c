@@ -243,6 +243,29 @@ g_network_address_set_addresses (GNetworkAddress *addr,
   addr->priv->sockaddrs = g_list_reverse (addr->priv->sockaddrs);
 }
 
+static gboolean
+g_network_address_parse_sockaddr (GNetworkAddress *addr)
+{
+  struct addrinfo hints, *res = NULL;
+  GSocketAddress *sockaddr;
+  gchar port[32];
+
+  memset (&hints, 0, sizeof (hints));
+  hints.ai_flags = AI_NUMERICHOST | AI_NUMERICSERV;
+  g_snprintf (port, sizeof (port), "%u", addr->priv->port);
+
+  if (getaddrinfo (addr->priv->hostname, port, &hints, &res) != 0)
+    return FALSE;
+
+  sockaddr = g_socket_address_new_from_native (res->ai_addr, res->ai_addrlen);
+  freeaddrinfo (res);
+  if (!sockaddr || !G_IS_INET_SOCKET_ADDRESS (sockaddr))
+    return FALSE;
+
+  addr->priv->sockaddrs = g_list_prepend (addr->priv->sockaddrs, sockaddr);
+  return TRUE;
+}
+
 /**
  * g_network_address_new:
  * @hostname: the hostname
@@ -820,6 +843,8 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
   if (addr_enum->addresses == NULL)
     {
       if (!addr_enum->addr->priv->sockaddrs)
+        g_network_address_parse_sockaddr (addr_enum->addr);
+      if (!addr_enum->addr->priv->sockaddrs)
         {
           GResolver *resolver = g_resolver_get_default ();
           GList *addresses;
@@ -848,28 +873,10 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
 }
 
 static void
-got_addresses (GObject      *source_object,
-               GAsyncResult *result,
-               gpointer      user_data)
+have_addresses (GNetworkAddressAddressEnumerator *addr_enum,
+                GTask *task, GError *error)
 {
-  GTask *task = user_data;
-  GNetworkAddressAddressEnumerator *addr_enum = g_task_get_source_object (task);
-  GResolver *resolver = G_RESOLVER (source_object);
-  GList *addresses;
-  GError *error = NULL;
   GSocketAddress *sockaddr;
-
-  if (!addr_enum->addr->priv->sockaddrs)
-    {
-      addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
-
-      if (error)
-        g_task_return_error (task, error);
-      else
-        g_network_address_set_addresses (addr_enum->addr, addresses);
-    }
-
-  g_object_unref (resolver);
 
   addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
   addr_enum->next = addr_enum->addresses;
@@ -882,9 +889,32 @@ got_addresses (GObject      *source_object,
   else
     sockaddr = NULL;
 
-  if (!error)
+  if (error)
+    g_task_return_error (task, error);
+  else
     g_task_return_pointer (task, sockaddr, g_object_unref);
   g_object_unref (task);
+}
+
+static void
+got_addresses (GObject      *source_object,
+               GAsyncResult *result,
+               gpointer      user_data)
+{
+  GTask *task = user_data;
+  GNetworkAddressAddressEnumerator *addr_enum = g_task_get_source_object (task);
+  GResolver *resolver = G_RESOLVER (source_object);
+  GList *addresses;
+  GError *error = NULL;
+
+  if (!addr_enum->addr->priv->sockaddrs)
+    {
+      addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
+
+      if (!error)
+        g_network_address_set_addresses (addr_enum->addr, addresses);
+    }
+  have_addresses (addr_enum, task, error);
 }
 
 static void
@@ -904,12 +934,18 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
     {
       if (!addr_enum->addr->priv->sockaddrs)
         {
-          GResolver *resolver = g_resolver_get_default ();
+          if (g_network_address_parse_sockaddr (addr_enum->addr))
+            have_addresses (addr_enum, task, NULL);
+          else
+            {
+              GResolver *resolver = g_resolver_get_default ();
 
-          g_resolver_lookup_by_name_async (resolver,
-                                           addr_enum->addr->priv->hostname,
-                                           cancellable,
-                                           got_addresses, task);
+              g_resolver_lookup_by_name_async (resolver,
+                                               addr_enum->addr->priv->hostname,
+                                               cancellable,
+                                               got_addresses, task);
+              g_object_unref (resolver);
+            }
           return;
         }
 

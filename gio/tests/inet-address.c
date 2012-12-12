@@ -223,6 +223,43 @@ test_socket_address (void)
 }
 
 static void
+test_scope_id (void)
+{
+  GSocketConnectable *addr;
+  GSocketAddressEnumerator *addr_enum;
+  GSocketAddress *saddr;
+  GInetSocketAddress *isaddr;
+  GInetAddress *iaddr;
+  char *tostring;
+  GError *error = NULL;
+
+  addr = g_network_address_new ("fe80::42%1", 99);
+  addr_enum = g_socket_connectable_enumerate (addr);
+  saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert (saddr != NULL);
+  g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
+
+  isaddr = G_INET_SOCKET_ADDRESS (saddr);
+  g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, 1);
+  g_assert_cmpint (g_inet_socket_address_get_port (isaddr), ==, 99);
+
+  iaddr = g_inet_socket_address_get_address (isaddr);
+  tostring = g_inet_address_to_string (iaddr);
+  g_assert_cmpstr (tostring, ==, "fe80::42");
+  g_free (tostring);
+
+  g_object_unref (saddr);
+  saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (saddr == NULL);
+
+  g_object_unref (addr_enum);
+  g_object_unref (addr);
+}
+
+static void
 test_mask_parse (void)
 {
   GInetAddressMask *mask;
@@ -355,6 +392,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/inet-address/bytes", test_bytes);
   g_test_add_func ("/inet-address/property", test_property);
   g_test_add_func ("/socket-address/basic", test_socket_address);
+  g_test_add_func ("/socket-address/scope-id", test_scope_id);
   g_test_add_func ("/address-mask/parse", test_mask_parse);
   g_test_add_func ("/address-mask/property", test_mask_property);
   g_test_add_func ("/address-mask/equal", test_mask_equal);
