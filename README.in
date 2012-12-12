@@ -86,6 +86,12 @@ Notes about GLib 2.36
   As of this version, the HOME variable is used if it is set and the
   value from /etc/passwd is only used as a fallback.
 
+* The 'flowinfo' and 'scope_id' fields of GInetSocketAddress
+  (introduced in GLib 2.32) have been fixed to be in host byte order
+  rather than network byte order. This is an incompatible change, but
+  the previous behavior was clearly broken, so it seems unlikely that
+  anyone was using it.
+
 Notes about GLib 2.34
 =====================
 

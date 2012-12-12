@@ -227,8 +227,8 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
       memset (sock, 0, sizeof (*sock));
       sock->sin6_family = AF_INET6;
       sock->sin6_port = g_htons (addr->priv->port);
-      sock->sin6_flowinfo = g_htonl (addr->priv->flowinfo);
-      sock->sin6_scope_id = g_htonl (addr->priv->scope_id);
+      sock->sin6_flowinfo = addr->priv->flowinfo;
+      sock->sin6_scope_id = addr->priv->scope_id;
       memcpy (&(sock->sin6_addr.s6_addr), g_inet_address_to_bytes (addr->priv->address), sizeof (sock->sin6_addr));
       return TRUE;
     }

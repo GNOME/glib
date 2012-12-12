@@ -657,8 +657,8 @@ test_sockaddr (void)
   sin6.sin6_family = AF_INET6;
   sin6.sin6_addr = in6addr_loopback;
   sin6.sin6_port = g_htons (42);
-  sin6.sin6_scope_id = g_htonl (17);
-  sin6.sin6_flowinfo = g_htonl (1729);
+  sin6.sin6_scope_id = 17;
+  sin6.sin6_flowinfo = 1729;
 
   saddr = g_socket_address_new_from_native (&sin6, sizeof (sin6));
   g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));

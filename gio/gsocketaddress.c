@@ -259,8 +259,8 @@ g_socket_address_new_from_native (gpointer native,
       sockaddr = g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
 			       "address", iaddr,
 			       "port", g_ntohs (addr->sin6_port),
-			       "flowinfo", g_ntohl (addr->sin6_flowinfo),
-			       "scope_id", g_ntohl (addr->sin6_scope_id),
+			       "flowinfo", addr->sin6_flowinfo,
+			       "scope_id", addr->sin6_scope_id,
 			       NULL);
       g_object_unref (iaddr);
       return sockaddr;
