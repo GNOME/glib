@@ -1348,6 +1348,8 @@ g_socket_set_ttl (GSocket  *socket,
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
+      g_socket_set_option (socket, IPPROTO_IP, IP_TTL,
+			   ttl, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
 			   ttl, &error);
     }
@@ -1499,6 +1501,8 @@ g_socket_set_multicast_loopback (GSocket    *socket,
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
+      g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
+			   loopback, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
 			   loopback, &error);
     }
@@ -1532,7 +1536,7 @@ g_socket_get_multicast_ttl (GSocket *socket)
   GError *error = NULL;
   gint value;
 
-  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+  g_return_val_if_fail (G_IS_SOCKET (socket), 0);
 
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
@@ -1583,6 +1587,8 @@ g_socket_set_multicast_ttl (GSocket  *socket,
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
+      g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
+			   ttl, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
 			   ttl, &error);
     }
@@ -1900,13 +1906,12 @@ g_socket_multicast_group_operation (GSocket       *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
   g_return_val_if_fail (socket->priv->type == G_SOCKET_TYPE_DATAGRAM, FALSE);
   g_return_val_if_fail (G_IS_INET_ADDRESS (group), FALSE);
-  g_return_val_if_fail (g_inet_address_get_family (group) == socket->priv->family, FALSE);
 
   if (!check_socket (socket, error))
     return FALSE;
 
   native_addr = g_inet_address_to_bytes (group);
-  if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
+  if (g_inet_address_get_family (group) == G_SOCKET_FAMILY_IPV4)
     {
 #ifdef HAVE_IP_MREQN
       struct ip_mreqn mc_req;
@@ -1944,7 +1949,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
       result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
 			   &mc_req, sizeof (mc_req));
     }
-  else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
+  else if (g_inet_address_get_family (group) == G_SOCKET_FAMILY_IPV6)
     {
       struct ipv6_mreq mc_req_ipv6;
 
