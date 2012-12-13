@@ -24,6 +24,10 @@
 
 #include "gasyncresult.h"
 #include "gcancellable.h"
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#include <errno.h>
+#endif
 
 /**
  * SECTION:gtask
@@ -578,6 +582,7 @@ struct _GTask {
   gpointer callback_data;
 
   GTaskThreadFunc task_func;
+  GTaskThreadKind kind;
   GMutex lock;
   GCond cond;
   gboolean return_on_cancel;
@@ -612,12 +617,16 @@ G_DEFINE_TYPE_WITH_CODE (GTask, g_task, G_TYPE_OBJECT,
                                                 g_task_async_result_iface_init);
                          g_task_thread_pool_init ();)
 
-static GThreadPool *task_pool;
+static GThreadPool *task_pool_default;
+static GThreadPool *task_pool_cpu;
+static GThreadPool *task_pool_io;
+static GThreadPool *task_pool_mixed;
 
 static void
 g_task_init (GTask *task)
 {
   task->check_cancellable = TRUE;
+  task->kind = G_TASK_THREAD_KIND_DEFAULT;
 }
 
 static void
@@ -822,6 +831,34 @@ g_task_set_priority (GTask *task,
                      gint   priority)
 {
   task->priority = priority;
+}
+
+/**
+ * g_task_set_scheduling:
+ * @task: the #GTask
+ * @priority: the <link linkend="io-priority">priority</link>
+ *   of the request.
+ * @kind: Performance characteristics of @task
+ *
+ * First, uses @priority like g_task_set_priority().  Additionally,
+ * the argument @kind allows GLib to more efficiently schedule threads
+ * created internally by #GTask.  For example, if you set
+ * %G_TASK_THREAD_KIND_CPU, the system will ensure that the number of
+ * threads does not significantly exceed the number of processors
+ * available.
+ *
+ * This function must be used before invoking g_task_run_in_thread()
+ * or similar.
+ *
+ * Since: 2.36
+ */
+void
+g_task_set_scheduling (GTask           *task,
+                       gint             priority,
+                       GTaskThreadKind  kind)
+{
+  g_task_set_priority (task, priority);
+  task->kind = kind;
 }
 
 /**
@@ -1267,12 +1304,31 @@ static void
 g_task_start_task_thread (GTask           *task,
                           GTaskThreadFunc  task_func)
 {
+  GThreadPool *pool = NULL;
+
   g_mutex_init (&task->lock);
   g_cond_init (&task->cond);
 
   g_mutex_lock (&task->lock);
 
   task->task_func = task_func;
+
+  switch (task->kind)
+    {
+    case G_TASK_THREAD_KIND_DEFAULT:
+      pool = task_pool_default;
+      break;
+    case G_TASK_THREAD_KIND_CPU:
+      pool = task_pool_cpu;
+      break;
+    case G_TASK_THREAD_KIND_IO:
+      pool = task_pool_io;
+      break;
+    case G_TASK_THREAD_KIND_MIXED:
+      pool = task_pool_mixed;
+      break;
+    }
+  g_assert (pool);
 
   if (task->cancellable)
     {
@@ -1281,7 +1337,7 @@ g_task_start_task_thread (GTask           *task,
                                                 &task->error))
         {
           task->thread_cancelled = task->thread_complete = TRUE;
-          g_thread_pool_push (task_pool, g_object_ref (task), NULL);
+          g_thread_pool_push (pool, g_object_ref (task), NULL);
           return;
         }
 
@@ -1291,7 +1347,7 @@ g_task_start_task_thread (GTask           *task,
                              task_thread_cancelled_disconnect_notify, 0);
     }
 
-  g_thread_pool_push (task_pool, g_object_ref (task), &task->error);
+  g_thread_pool_push (pool, g_object_ref (task), &task->error);
   if (task->error)
     task->thread_complete = TRUE;
 }
@@ -1299,10 +1355,19 @@ g_task_start_task_thread (GTask           *task,
 /**
  * g_task_run_in_thread:
  * @task: a #GTask
+ * @kind: Performance characteristics of @task_func
  * @task_func: a #GTaskThreadFunc
  *
  * Runs @task_func in another thread. When @task_func returns, @task's
  * #GAsyncReadyCallback will be invoked in @task's #GMainContext.
+ *
+ * The parameter @kind determines how the work will be scheduled.  If
+ * the given @task_func synchronously invokes any other GLib-based
+ * API, you must use #G_TASK_THREAD_KIND_DEFAULT.  Otherwise, there is
+ * the possibility of deadlock.
+ *
+ * For example, GLib will try to avoid running significantly more CPU
+ * bound threads than there are system processors.  IO bound threads
  *
  * This takes a ref on @task until the task completes.
  *
@@ -1762,20 +1827,51 @@ g_task_compare_priority (gconstpointer a,
   return ta->priority - tb->priority;
 }
 
+static gint
+get_nproc_onln (void)
+{
+  gint result;
+#ifdef G_OS_UNIX
+  result = sysconf (_SC_NPROCESSORS_ONLN);
+  if (G_UNLIKELY (result == -1 && errno == EINVAL))
+    return 2;
+  return result;
+#else
+  return 2;
+#endif
+}
+
+static GThreadPool *
+generic_pool_new (gint max_threads)
+{
+  GThreadPool *result = g_thread_pool_new (g_task_thread_pool_thread, NULL,
+                                           100, FALSE, NULL);
+  g_thread_pool_set_sort_function (result, g_task_compare_priority, NULL);
+  g_assert (result != NULL);
+  return result;
+}
+
 static void
 g_task_thread_pool_init (void)
 {
-  task_pool = g_thread_pool_new (g_task_thread_pool_thread, NULL,
-                                 100, FALSE, NULL);
-  g_assert (task_pool != NULL);
+  int nproc;
+  /* This number was picked out of thin air */
+  const int max_io_threads = 4;
+  /* See https://bugzilla.gnome.org/show_bug.cgi?id=687223 */
+  const int max_default_threads = 100;
 
-  g_thread_pool_set_sort_function (task_pool, g_task_compare_priority, NULL);
+  nproc = get_nproc_onln ();
+
+  task_pool_default = generic_pool_new (max_default_threads);
+  task_pool_cpu = generic_pool_new (nproc);
+  task_pool_io = generic_pool_new (max_io_threads);
+  task_pool_mixed = generic_pool_new (nproc + max_io_threads);
 }
 
 static void
 g_task_thread_pool_resort (void)
 {
-  g_thread_pool_set_sort_function (task_pool, g_task_compare_priority, NULL);
+  g_thread_pool_set_sort_function (task_pool_default, g_task_compare_priority, NULL);
 }
 
 static void

@@ -71,6 +71,10 @@ GLIB_AVAILABLE_IN_2_36
 void          g_task_set_priority          (GTask               *task,
                                             gint                 priority);
 GLIB_AVAILABLE_IN_2_36
+void          g_task_set_scheduling        (GTask               *task,
+                                            gint                 glib_priority,
+                                            GTaskThreadKind      kind);
+GLIB_AVAILABLE_IN_2_36
 void          g_task_set_check_cancellable (GTask               *task,
                                             gboolean             check_cancellable);
 GLIB_AVAILABLE_IN_2_36

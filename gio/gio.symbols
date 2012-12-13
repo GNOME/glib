@@ -1793,6 +1793,7 @@ g_task_run_in_thread
 g_task_run_in_thread_sync
 g_task_set_check_cancellable
 g_task_set_priority
+g_task_set_kind
 g_task_set_return_on_cancel
 g_task_set_source_tag
 g_task_set_task_data

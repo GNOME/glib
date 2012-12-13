@@ -520,7 +520,7 @@ g_file_output_stream_real_query_info_async (GFileOutputStream     *stream,
 
   task = g_task_new (stream, cancellable, callback, user_data);
   g_task_set_task_data (task, g_strdup (attributes), g_free);
-  g_task_set_priority (task, io_priority);
+  g_task_set_scheduling (task, io_priority, G_TASK_THREAD_KIND_IO);
   
   g_task_run_in_thread (task, query_info_async_thread);
   g_object_unref (task);

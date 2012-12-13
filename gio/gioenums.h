@@ -1655,6 +1655,24 @@ typedef enum /*< flags >*/ {
   G_TEST_DBUS_NONE = 0
 } GTestDBusFlags;
 
+/**
+ * GTaskThreadKind:
+ * @G_TASK_THREAD_KIND_DEFAULT: Work with unknown performance characteristics
+ * @G_TASK_THREAD_KIND_LOCAL_IO: Performs synchronous I/O on local files
+ * @G_TASK_THREAD_KIND_CPU: Mostly uses the processor
+ * @G_TASK_THREAD_KIND_MIXED: Alternates between IO and CPU
+ *
+ * Flags to control how a #GTask is scheduled.  
+ *
+ * Since: 2.36
+ */
+typedef enum {
+  G_TASK_THREAD_KIND_DEFAULT = 0,
+  G_TASK_THREAD_KIND_IO,
+  G_TASK_THREAD_KIND_CPU,
+  G_TASK_THREAD_KIND_MIXED
+} GTaskThreadKind;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

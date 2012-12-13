@@ -897,6 +897,22 @@ test_run_in_thread_priority (void)
   g_mutex_unlock (&fake_task_mutex);
 }
 
+static void
+test_run_in_thread_kind (void)
+{
+  GTask *task;
+  gint seq = 42;
+  
+  /* No real semantics here, we're basically just calling
+   * g_task_set_scheduling() to get basic code coverage.
+   */
+  task = g_task_new (NULL, NULL, quit_main_loop_callback, NULL);
+  g_task_set_task_data (task, &seq, NULL);
+  g_task_set_scheduling (task, G_PRIORITY_DEFAULT, G_TASK_THREAD_KIND_IO);
+  g_task_run_in_thread (task, set_sequence_number_thread);
+  g_object_unref (task);
+}
+
 /* test_return_on_cancel */
 
 GMutex roc_init_mutex, roc_finish_mutex;
@@ -1652,6 +1668,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/run-in-thread", test_run_in_thread);
   g_test_add_func ("/gtask/run-in-thread-sync", test_run_in_thread_sync);
   g_test_add_func ("/gtask/run-in-thread-priority", test_run_in_thread_priority);
+  g_test_add_func ("/gtask/run-in-thread-kind", test_run_in_thread_kind);
   g_test_add_func ("/gtask/return-on-cancel", test_return_on_cancel);
   g_test_add_func ("/gtask/return-on-cancel-sync", test_return_on_cancel_sync);
   g_test_add_func ("/gtask/return-on-cancel-atomic", test_return_on_cancel_atomic);
