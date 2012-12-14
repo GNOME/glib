@@ -571,11 +571,11 @@ copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h
 
 :DONE_GMODULECONF_H
 
-if exist ..\..\..\gio\gconstructor_as_data.h goto DONE_GCONSTRUCTOR_AS_DATA_H
+if exist ..\..\..\gio\gnetworking.h goto DONE_GNETWORKING_H
 
-perl ..\..\..\gio\data-to-c.pl ..\..\..\glib\gconstructor.h gconstructor_code > ..\..\..\gio\gconstructor_as_data.h
+copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h
 
-:DONE_GCONSTRUCTOR_AS_DATA_H
+:DONE_GNETWORKING_H
 
 </Command>
     </PreBuildEvent>

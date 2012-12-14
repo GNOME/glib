@@ -32,9 +32,9 @@ if exist ..\..\..\gmodule\gmoduleconf.h goto DONE_GMODULECONF_H&#x0D;&#x0A;
 copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;
 :DONE_GMODULECONF_H&#x0D;&#x0A;
 
-if exist ..\..\..\gio\gconstructor_as_data.h goto DONE_GCONSTRUCTOR_AS_DATA_H&#x0D;&#x0A;
-perl ..\..\..\gio\data-to-c.pl ..\..\..\glib\gconstructor.h gconstructor_code > ..\..\..\gio\gconstructor_as_data.h&#x0D;&#x0A;
-:DONE_GCONSTRUCTOR_AS_DATA_H&#x0D;&#x0A;
+if exist ..\..\..\gio\gnetworking.h goto DONE_GNETWORKING_H&#x0D;&#x0A;
+copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h&#x0D;&#x0A;
+:DONE_GNETWORKING_H&#x0D;&#x0A;
 "
 	/>
 	<UserMacro
