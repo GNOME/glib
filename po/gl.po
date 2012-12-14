@@ -3289,8 +3289,8 @@ msgstr "Produciuse un erro ao abrir o directorio «%s»: %s"
 #, c-format
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "Non foi posíbel asignar %ld byte para ler o ficheiro \"%s\""
-msgstr[1] "Non foi posíbel asignar %ld bytes para ler o ficheiro \"%s\""
+msgstr[0] "Non foi posíbel asignar %lu byte para ler o ficheiro \"%s\""
+msgstr[1] "Non foi posíbel asignar %lu bytes para ler o ficheiro \"%s\""
 
 #: ../glib/gfileutils.c:686
 #, c-format
