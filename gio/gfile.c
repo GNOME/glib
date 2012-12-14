@@ -4034,7 +4034,7 @@ g_file_set_attribute (GFile                *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: %TRUE if there was any error, %FALSE otherwise.
+ * Returns: %FALSE if there was any error, %TRUE otherwise.
  */
 gboolean
 g_file_set_attributes_from_info (GFile                *file,
