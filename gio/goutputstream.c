@@ -1148,10 +1148,10 @@ async_ready_close_flushed_callback_wrapper (GObject      *source_object,
   GTask *task = user_data;
   GError *error = NULL;
 
+  class = G_OUTPUT_STREAM_GET_CLASS (stream);
+
   if (!g_async_result_legacy_propagate_error (res, &error))
     {
-      class = G_OUTPUT_STREAM_GET_CLASS (stream);
-
       class->flush_finish (stream, res, &error);
     }
 
