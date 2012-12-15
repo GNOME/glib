@@ -584,6 +584,7 @@ struct _GTask {
   gboolean thread_cancelled;
   gboolean synchronous;
   gboolean thread_complete;
+  gboolean blocking_other_task;
 
   GError *error;
   union {
@@ -613,6 +614,8 @@ G_DEFINE_TYPE_WITH_CODE (GTask, g_task, G_TYPE_OBJECT,
                          g_task_thread_pool_init ();)
 
 static GThreadPool *task_pool;
+static GMutex task_pool_mutex;
+static GPrivate task_private = G_PRIVATE_INIT (NULL);
 
 static void
 g_task_init (GTask *task)
@@ -1208,6 +1211,15 @@ g_task_thread_complete (GTask *task)
     }
 
   task->thread_complete = TRUE;
+
+  if (task->blocking_other_task)
+    {
+      g_mutex_lock (&task_pool_mutex);
+      g_thread_pool_set_max_threads (task_pool,
+                                     g_thread_pool_get_max_threads (task_pool) - 1,
+                                     NULL);
+      g_mutex_unlock (&task_pool_mutex);
+    }
   g_mutex_unlock (&task->lock);
 
   if (task->cancellable)
@@ -1225,9 +1237,13 @@ g_task_thread_pool_thread (gpointer thread_data,
 {
   GTask *task = thread_data;
 
+  g_private_set (&task_private, task);
+
   task->task_func (task, task->source_object, task->task_data,
                    task->cancellable);
   g_task_thread_complete (task);
+
+  g_private_set (&task_private, NULL);
   g_object_unref (task);
 }
 
@@ -1294,6 +1310,18 @@ g_task_start_task_thread (GTask           *task,
   g_thread_pool_push (task_pool, g_object_ref (task), &task->error);
   if (task->error)
     task->thread_complete = TRUE;
+  else if (g_private_get (&task_private))
+    {
+      /* This thread is being spawned from another GTask thread, so
+       * bump up max-threads so we don't starve.
+       */
+      g_mutex_lock (&task_pool_mutex);
+      if (g_thread_pool_set_max_threads (task_pool,
+                                         g_thread_pool_get_max_threads (task_pool) + 1,
+                                         NULL))
+        task->blocking_other_task = TRUE;
+      g_mutex_unlock (&task_pool_mutex);
+    }
 }
 
 /**
@@ -1747,12 +1775,19 @@ g_task_compare_priority (gconstpointer a,
   const GTask *tb = b;
   gboolean a_cancelled, b_cancelled;
 
+  /* Tasks that are causing other tasks to block have higher
+   * priority.
+   */
+  if (ta->blocking_other_task && !tb->blocking_other_task)
+    return -1;
+  else if (tb->blocking_other_task && !ta->blocking_other_task)
+    return 1;
+
+  /* Let already-cancelled tasks finish right away */
   a_cancelled = (ta->check_cancellable &&
                  g_cancellable_is_cancelled (ta->cancellable));
   b_cancelled = (tb->check_cancellable &&
                  g_cancellable_is_cancelled (tb->cancellable));
-
-  /* Let already-cancelled tasks finish right away */
   if (a_cancelled && !b_cancelled)
     return -1;
   else if (b_cancelled && !a_cancelled)
@@ -1766,7 +1801,7 @@ static void
 g_task_thread_pool_init (void)
 {
   task_pool = g_thread_pool_new (g_task_thread_pool_thread, NULL,
-                                 100, FALSE, NULL);
+                                 10, FALSE, NULL);
   g_assert (task_pool != NULL);
 
   g_thread_pool_set_sort_function (task_pool, g_task_compare_priority, NULL);
