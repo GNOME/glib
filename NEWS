@@ -1,11 +1,66 @@
 Overview of changes from GLib 2.35.2 to 2.35.3
 ==============================================
 
-This release contains an incompatible change to the g_get_home_dir()
-function.  Previously, this function would effectively ignore the HOME
-environment variable and always return the value from /etc/password.  As
-of this version, the HOME variable is used if it is set and the value
-from /etc/passwd is only used as a fallback.
+* This release contains an incompatible change to the g_get_home_dir()
+ function. Previously, this function would effectively ignore the HOME
+ environment variable and always return the value from /etc/password.
+ As of this version, the HOME variable is used if it is set and the
+ value from /etc/passwd is only used as a fallback.
+
+* We now install a public "gnetworking.h" header that can be used to
+ include the relevant OS-dependent networking headers. This does not
+ really abstract away unix-vs-windows however; error codes, in
+ particular, are incompatible.
+
+* Bugs fixed in this release:
+686895 688704 602715 688377 688180 688497 688319 688886 681685 689037
+688931 688681 652650 664627 688419 684145 675516 689538 679683 689377
+142568 587806 689800 689847 629301 689982 690069 623187 690083 690163
+690346 687092 690348
+
+ 142568 Allow $HOME to override passwd entry if the user really wants
+ 587806 The file selector should honor .hidden files
+ 602715 [GChecksum] Please add support for SHA512
+ 623187 provide some support for arbitrary setsockopt()s?
+ 629301 .goutputstream files left behind when cancelling I/O
+ 652650 Optimize GDBusMessage serialization
+ 664627 /gapplication/basic test intermittently fails: cmdline re-or...
+ 675516 Win32: Don't start a DBus server when built as static library
+ 679683 replace g_test_trap_fork()
+ 684145 Current Git sources fails to cross-compile for Windows in Li...
+ 686895 file-info: catch thumbnail files in large directory as well
+ 687092 IPv6 <-> IPv4 mismatch when subscribing to multicast (send)
+ 688180 GObject: Minor error in description of floating reference
+ 688319 gthread: add missing AVAILABLE_IN_2_32 annotations
+ 688377 configure: add missing square bracket in AS_IF for memmove
+ 688419 gtask: source_object arguments and return values not annota...
+ 688497 AppInfo: Add sufficient api to port gnome-session from Egg...
+ 688681 build: Make .symbols file canonical on all platforms
+ 688704 Add boxed GType for GThread
+ 688886 Improve the i18n documentation
+ 688931 GMemoryOutputStream: Add new _resizable() constructor usab...
+ 689037 need helper for creating a GFile from a remote commandline...
+ 689377 Fix a compiler warning in GDBus
+ 689538 Source object tag set too late in gsocketlistener
+ 689800 Treat lost+found directory as a hidden file
+ 689847 Add fast repeated typename -> GType resolver
+ 689982 Make GChecksum more fully introspectable
+ 690069 g_unix_open_pipe: Add missing F_SETFD
+ 690083 gfileenumerator: Add a g_file_enumerator_get_child method
+ 690163 Add a pre-configured gio/gnetworking.h for Visual C++ builds
+ 690346 Remove an unneeded escaping in NAMESER_COMPAT_INCLUDE
+ 690348 Fix g_type_add_class_private() name in g_warning
+
+* Translation updates:
+ Assamese
+ Galician
+ Hebrew
+ Hindi
+ Kannada
+ Odia
+ Polish
+ Spanish
+
 
 Overview of changes from GLib 2.35.1 to 2.35.2
 ==============================================

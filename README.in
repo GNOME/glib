@@ -75,6 +75,12 @@ Notes about GLib 2.36
   unloading it, then subsequently loading it again.  This never
   really worked before, but it is now explicitly undefined behavior.
 
+* This release contains an incompatible change to the g_get_home_dir()
+  function.  Previously, this function would effectively ignore the HOME
+  environment variable and always return the value from /etc/password.
+  As of this version, the HOME variable is used if it is set and the
+  value from /etc/passwd is only used as a fallback.
+
 Notes about GLib 2.34
 =====================
 
