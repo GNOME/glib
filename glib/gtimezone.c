@@ -82,7 +82,7 @@
  * Since: 2.26
  **/
 
-/* zoneinfo file format {{{1 */
+/* IANA zoneinfo file format {{{1 */
 
 /* unaligned */
 typedef struct { gchar bytes[8]; } gint64_be;
@@ -101,6 +101,7 @@ static inline guint32 guint32_from_be (const guint32_be be) {
   guint32 tmp; memcpy (&tmp, &be, sizeof tmp); return GUINT32_FROM_BE (tmp);
 }
 
+/* The layout of an IANA timezone file header */
 struct tzhead
 {
   gchar      tzh_magic[4];
@@ -122,21 +123,10 @@ struct ttinfo
   guint8    tt_abbrind;
 };
 
-typedef struct
-{
-  gint32     gmt_offset;
-  gboolean   is_dst;
-  gboolean   is_standard;
-  gboolean   is_gmt;
-  gchar     *abbrev;
-} TransitionInfo;
-
-typedef struct
-{
-  gint64 time;
-  gint   info_index;
-} Transition;
-
+/* A Transition Date structure for TZ Rules, an intermediate structure
+   for parsing MSWindows and Environment-variable time zones. It
+   Generalizes MSWindows's SYSTEMTIME struct.
+ */
 typedef struct
 {
   gint     year;
@@ -147,8 +137,6 @@ typedef struct
   gint     hour;
   gint     min;
   gint     sec;
-  gboolean isstd;
-  gboolean isgmt;
 } TimeZoneDate;
 
 /* POSIX Timezone abbreviations are typically 3 or 4 characters, but
@@ -157,6 +145,10 @@ typedef struct
  */
 #define NAME_SIZE 33
 
+/* A MSWindows-style time zone transition rule. Generalizes the
+   MSWindows TIME_ZONE_INFORMATION struct. Also used to compose time
+   zones from tzset-style identifiers.
+ */
 typedef struct
 {
   gint         start_year;
@@ -168,21 +160,42 @@ typedef struct
   gchar dlt_name[NAME_SIZE];
 } TimeZoneRule;
 
+/* GTimeZone's internal representation of a Daylight Savings (Summer)
+   time interval.
+ */
+typedef struct
+{
+  gint32     gmt_offset;
+  gboolean   is_dst;
+  gboolean   is_standard;
+  gboolean   is_gmt;
+  gchar     *abbrev;
+} TransitionInfo;
 
-/* GTimeZone structure and lifecycle {{{1 */
+/* GTimeZone's representation of a transition time to or from Daylight
+   Savings (Summer) time and Standard time for the zone. */
+typedef struct
+{
+  gint64 time;
+  gint   info_index;
+} Transition;
+
+/* GTimeZone structure */
 struct _GTimeZone
 {
   gchar   *name;
-  GArray  *t_info;
-  GArray  *transitions;
+  GArray  *t_info;         /* Array of TransitionInfo */
+  GArray  *transitions;    /* Array of Transition */
   gint     ref_count;
 };
 
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 
-#define MIN_TZYEAR 1900
-#define MAX_TZYEAR 2038
+#define MIN_TZYEAR 1916 /* Daylight Savings started in WWI */
+#define MAX_TZYEAR 2999 /* And it's not likely ever to go away, but
+                           there's no point in getting carried
+                           away. */
 
 /**
  * g_time_zone_unref:
@@ -533,12 +546,8 @@ rule_from_windows_time_zone_info (TimeZoneRule *rule,
       rule->dlt_offset = -(tzi->Bias + tzi->DaylightBias) * 60;
       copy_windows_systemtime (&(tzi->DaylightDate), &(rule->dlt_start));
 
-      rule->dlt_start.isstd = FALSE;
-      rule->dlt_start.isgmt = FALSE;
       copy_windows_systemtime (&(tzi->StandardDate), &(rule->dlt_end));
 
-      rule->dlt_end.isstd = FALSE;
-      rule->dlt_end.isgmt = FALSE;
     }
 
   else
@@ -651,7 +660,7 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
   if (RegQueryValueExA (key, "Dlt", NULL, NULL,
                         (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
     goto failed;
-  
+
   RegCloseKey (key);
   if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey_dynamic, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
@@ -693,7 +702,7 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
           else
             memcpy (&regtzi_prev, &regtzi, sizeof regtzi);
 
-          register_tzi_to_tzi (&regtzi, &tzi); 
+          register_tzi_to_tzi (&regtzi, &tzi);
           rule_from_windows_time_zone_info (&(*rules)[i], &tzi);
           (*rules)[i++].start_year = year;
         }
@@ -740,94 +749,98 @@ failed:
 #endif
 
 static void
-find_relative_date (TimeZoneDate *buffer,
-                    GTimeZone    *tz)
+find_relative_date (TimeZoneDate *buffer)
 {
-  GDateTime *dt;
   gint wday;
-
+  GDate date;
+  g_date_clear (&date, 1);
   wday = buffer->wday;
 
   /* Get last day if last is needed, first day otherwise */
-  dt = g_date_time_new (tz,
-                        buffer->year,
-                        buffer->mon + (buffer->week < 5? 0 : 1),
-                        buffer->week < 5? 1 : 0,
-                        buffer->hour, buffer->min, buffer->sec);
-
-  buffer->wday = g_date_time_get_day_of_week (dt);
-  buffer->mday = g_date_time_get_day_of_month (dt);
-
-  if (buffer->week < 5)
+  if (buffer->mon == 13 || buffer->mon == 14) /* Julian Date */
     {
-      if (wday < buffer->wday)
-        buffer->wday -= 7;
-
-      buffer->mday += (buffer->week - 1) * 7;
+      g_date_set_dmy (&date, 1, 1, buffer->year);
+      if (wday >= 59 && buffer->mon == 13 && g_date_is_leap_year (buffer->year))
+        g_date_add_days (&date, wday);
+      else
+        g_date_add_days (&date, wday - 1);
+      buffer->mon = (int) g_date_get_month (&date);
+      buffer->mday = (int) g_date_get_day (&date);
+      buffer->wday = 0;
     }
+  else /* M.W.D */
+    {
+      guint days;
+      guint days_in_month = g_date_days_in_month (buffer->mon, buffer->year);
+      GDateWeekday first_wday;
 
-  else if (wday > buffer->wday)
-    buffer->wday += 7;
+      g_date_set_dmy (&date, 1, buffer->mon, buffer->year);
+      first_wday = g_date_get_weekday (&date);
 
-  buffer->mday += wday - buffer->wday;
-  buffer->wday = wday;
+      if (first_wday > wday)
+        ++(buffer->week);
+      /* week is 1 <= w <= 5, we need 0-based */
+      days = 7 * (buffer->week - 1) + wday - first_wday;
 
-  g_date_time_unref (dt);
+      while (days > days_in_month)
+        days -= 7;
+
+      g_date_add_days (&date, days);
+
+      buffer->mday = g_date_get_day (&date);
+    }
 }
 
-/* Offset is previous offset of local time */
+/* Offset is previous offset of local time. Returns 0 if month is 0 */
 static gint64
 boundary_for_year (TimeZoneDate *boundary,
                    gint          year,
-                   gint32        prev_offset,
-                   gint32        std_offset)
+                   gint32        offset)
 {
   TimeZoneDate buffer;
-  GDateTime *dt;
-  GTimeZone *tz;
-  gint64 t;
-  gint32 offset;
-  gchar *identifier;
+  GDate date;
+  const guint64 unix_epoch_start = 719163L;
+  const guint64 seconds_per_day = 86400L;
 
+  if (!boundary->mon)
+    return 0;
   buffer = *boundary;
-
-  if (boundary->isgmt)
-    offset = 0;
-  else if (boundary->isstd)
-    offset = std_offset;
-  else
-    offset = prev_offset;
-
-  G_UNLOCK (time_zones);
-
-  identifier = g_strdup_printf ("%+03d:%02d:%02d",
-                                (int) offset / 3600,
-                                (int) abs (offset / 60) % 60,
-                                (int) abs (offset) % 3600);
-  tz = g_time_zone_new (identifier);
-  g_free (identifier);
 
   if (boundary->year == 0)
     {
       buffer.year = year;
 
       if (buffer.wday)
-        find_relative_date (&buffer, tz);
+        find_relative_date (&buffer);
     }
 
   g_assert (buffer.year == year);
+  g_date_clear (&date, 1);
+  g_date_set_dmy (&date, buffer.mday, buffer.mon, buffer.year);
+  return ((g_date_get_julian (&date) - unix_epoch_start) * seconds_per_day +
+          buffer.hour * 3600 + buffer.min * 60 + buffer.sec - offset);
+}
 
-  dt = g_date_time_new (tz,
-                        buffer.year, buffer.mon, buffer.mday,
-                        buffer.hour, buffer.min, buffer.sec);
-  t = g_date_time_to_unix (dt);
-  g_date_time_unref (dt);
+static void
+fill_transition_info_from_rule (TransitionInfo *info,
+                                TimeZoneRule   *rule,
+                                gboolean        is_dst)
+{
+  gint offset = is_dst ? rule->dlt_offset : rule->std_offset;
+  gchar *name = is_dst ? rule->dlt_name : rule->std_name;
 
-  g_time_zone_unref (tz);
+  info->gmt_offset = offset;
+  info->is_dst = is_dst;
+  info->is_standard = FALSE;
+  info->is_gmt = FALSE;
 
-  G_LOCK (time_zones);
+  if (name)
+    info->abbrev = g_strdup (name);
 
-  return t;
+  else
+    info->abbrev = g_strdup_printf ("%+03d%02d",
+                                      (int) offset / 3600,
+                                      (int) abs (offset / 60) % 60);
 }
 
 static void
@@ -835,40 +848,27 @@ init_zone_from_rules (GTimeZone    *gtz,
                       TimeZoneRule *rules,
                       gint          rules_num)
 {
-  TransitionInfo info[2];
-  Transition trans;
-  gint type_count, trans_count;
-  gint year, i, x, y;
+  guint type_count = 0, trans_count = 0, info_index = 0;
+  guint ri; /* rule index */
+  gboolean skip_first_std_trans = TRUE;
   gint32 last_offset;
 
   type_count = 0;
   trans_count = 0;
 
   /* Last rule only contains max year */
-  for (i = 0; i < rules_num - 1; i++)
+  for (ri = 0; ri < rules_num - 1; ri++)
     {
-      if (rules[i].dlt_start.mon)
+      if (rules[ri].dlt_start.mon || rules[ri].dlt_end.mon)
         {
-          type_count += 2;
-          trans_count += 2 * (rules[i+1].start_year - rules[i].start_year);
+          guint rulespan = (rules[ri + 1].start_year - rules[ri].start_year);
+          guint transitions = rules[ri].dlt_start.mon > 0 ? 1 : 0;
+          transitions += rules[ri].dlt_end.mon > 0 ? 1 : 0;
+          type_count += rules[ri].dlt_start.mon > 0 ? 2 : 1;
+          trans_count += transitions * rulespan;
         }
       else
         type_count++;
-    }
-
-  x = 0;
-  y = 0;
-
-  /* If standard time happens before daylight time in first rule
-   * with daylight, skip first transition so the minimum is in
-   * standard time and the first transition is in daylight time */
-  for (i = 0; i < rules_num - 1 && rules[0].dlt_start.mon == 0; i++);
-
-  if (i < rules_num -1 && rules[i].dlt_start.mon > 0 &&
-      rules[i].dlt_start.mon > rules[i].dlt_end.mon)
-    {
-      trans_count--;
-      x = -1;
     }
 
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo), type_count);
@@ -876,115 +876,112 @@ init_zone_from_rules (GTimeZone    *gtz,
 
   last_offset = rules[0].std_offset;
 
-  for (i = 0; i < rules_num - 1; i++)
+  for (ri = 0; ri < rules_num - 1; ri++)
     {
-      if (rules[i].dlt_start.mon)
+      if ((rules[ri].std_offset || rules[ri].dlt_offset) &&
+          rules[ri].dlt_start.mon == 0 && rules[ri].dlt_end.mon == 0)
         {
+          TransitionInfo std_info;
           /* Standard */
-          info[0].gmt_offset = rules[i].std_offset;
-          info[0].is_dst = FALSE;
-          info[0].is_standard = rules[i].dlt_end.isstd;
-          info[0].is_gmt = rules[i].dlt_end.isgmt;
+          fill_transition_info_from_rule (&std_info, &(rules[ri]), FALSE);
+          g_array_append_val (gtz->t_info, std_info);
 
-          if (rules[i].std_name)
-            info[0].abbrev = g_strdup (rules[i].std_name);
-
-          else
-            info[0].abbrev = g_strdup_printf ("%+03d%02d",
-                                              (int) rules[i].std_offset / 3600,
-                                              (int) abs (rules[i].std_offset / 60) % 60);
-
-
-          /* Daylight */
-          info[1].gmt_offset = rules[i].dlt_offset;
-          info[1].is_dst = TRUE;
-          info[1].is_standard = rules[i].dlt_start.isstd;
-          info[1].is_gmt = rules[i].dlt_start.isgmt;
-
-          if (rules[i].dlt_name)
-            info[1].abbrev = g_strdup (rules[i].dlt_name);
-
-          else
-            info[1].abbrev = g_strdup_printf ("%+03d%02d",
-                                              (int) rules[i].dlt_offset / 3600,
-                                              (int) abs (rules[i].dlt_offset / 60) % 60);
-
-          if (rules[i].dlt_start.mon < rules[i].dlt_end.mon)
+          if (ri > 0 &&
+              ((rules[ri - 1].dlt_start.mon > 12 &&
+                rules[ri - 1].dlt_start.wday > rules[ri - 1].dlt_end.wday) ||
+                rules[ri - 1].dlt_start.mon > rules[ri - 1].dlt_end.mon))
             {
-              g_array_append_val (gtz->t_info, info[1]);
-              g_array_append_val (gtz->t_info, info[0]);
+              /* The previous rule was a southern hemisphere rule that
+                 starts the year with DST, so we need to add a
+                 transition to return to standard time */
+              guint year = rules[ri].start_year;
+              gint64 std_time =  boundary_for_year (&rules[ri].dlt_end,
+                                                    year, last_offset);
+              Transition std_trans = {std_time, info_index};
+              g_array_append_val (gtz->transitions, std_trans);
+
             }
+          last_offset = rules[ri].std_offset;
+          ++info_index;
+          skip_first_std_trans = TRUE;
+         }
+      else if (rules[ri].std_offset || rules[ri].dlt_offset)
+        {
+          const guint start_year = rules[ri].start_year;
+          const guint end_year = rules[ri + 1].start_year;
+          gboolean dlt_first;
+          guint year;
+          TransitionInfo std_info, dlt_info;
+          if (rules[ri].dlt_start.mon > 12)
+            dlt_first = rules[ri].dlt_start.wday > rules[ri].dlt_end.wday;
           else
-            {
-              g_array_append_val (gtz->t_info, info[0]);
-              g_array_append_val (gtz->t_info, info[1]);
-            }
+            dlt_first = rules[ri].dlt_start.mon > rules[ri].dlt_end.mon;
+          /* Standard rules are always even, because before the first
+             transition is always standard time, and 0 is even. */
+          fill_transition_info_from_rule (&std_info, &(rules[ri]), FALSE);
+          fill_transition_info_from_rule (&dlt_info, &(rules[ri]), TRUE);
 
-          /* Transition dates */
-          for (year = rules[i].start_year; year < rules[i+1].start_year; year++)
+          g_array_append_val (gtz->t_info, std_info);
+          g_array_append_val (gtz->t_info, dlt_info);
+
+          /* Transition dates. We hope that a year which ends daylight
+             time in a southern-hemisphere country (i.e., one that
+             begins the year in daylight time) will include a rule
+             which has only a dlt_end. */
+          for (year = start_year; year < end_year; year++)
             {
-              if (rules[i].dlt_start.mon < rules[i].dlt_end.mon)
+              gint32 dlt_offset = (dlt_first ? last_offset :
+                                   rules[ri].dlt_offset);
+              gint32 std_offset = (dlt_first ? rules[ri].std_offset :
+                                   last_offset);
+              /* NB: boundary_for_year returns 0 if mon == 0 */
+              gint64 std_time =  boundary_for_year (&rules[ri].dlt_end,
+                                                    year, dlt_offset);
+              gint64 dlt_time = boundary_for_year (&rules[ri].dlt_start,
+                                                   year, std_offset);
+              Transition std_trans = {std_time, info_index};
+              Transition dlt_trans = {dlt_time, info_index + 1};
+              last_offset = (dlt_first ? rules[ri].dlt_offset :
+                             rules[ri].std_offset);
+              if (dlt_first)
                 {
-                  /* Daylight Data */
-                  trans.info_index = y;
-                  trans.time = boundary_for_year (&rules[i].dlt_start, year,
-                                                  last_offset, rules[i].std_offset);
-                  g_array_insert_val (gtz->transitions, x++, trans);
-                  last_offset = rules[i].dlt_offset;
-
-                  /* Standard Data */
-                  trans.info_index = y+1;
-                  trans.time = boundary_for_year (&rules[i].dlt_end, year,
-                                                  last_offset, rules[i].std_offset);
-                  g_array_insert_val (gtz->transitions, x++, trans);
-                  last_offset = rules[i].std_offset;
+                  if (skip_first_std_trans)
+                    skip_first_std_trans = FALSE;
+                  else if (std_time)
+                    g_array_append_val (gtz->transitions, std_trans);
+                  if (dlt_time)
+                    g_array_append_val (gtz->transitions, dlt_trans);
                 }
               else
                 {
-                  /* Standard Data */
-                  trans.info_index = y;
-                  trans.time = boundary_for_year (&rules[i].dlt_end, year,
-                                                  last_offset, rules[i].std_offset);
-                  if (x >= 0)
-                    g_array_insert_val (gtz->transitions, x++, trans);
-                  else
-                    x++;
-                  last_offset = rules[i].std_offset;
-
-                  /* Daylight Data */
-                  trans.info_index = y+1;
-                  trans.time = boundary_for_year (&rules[i].dlt_start, year,
-                                                  last_offset, rules[i].std_offset);
-                  g_array_insert_val (gtz->transitions, x++, trans);
-                  last_offset = rules[i].dlt_offset;
+                  if (dlt_time)
+                    g_array_append_val (gtz->transitions, dlt_trans);
+                  if (std_time)
+                    g_array_append_val (gtz->transitions, std_trans);
                 }
             }
 
-          y += 2;
-        }
-      else
-        {
-          /* Standard */
-          info[0].gmt_offset = rules[i].std_offset;
-          info[0].is_dst = FALSE;
-          info[0].is_standard = FALSE;
-          info[0].is_gmt = FALSE;
-
-          if (rules[i].std_name)
-            info[0].abbrev = g_strdup (rules[i].std_name);
-
-          else
-            info[0].abbrev = g_strdup_printf ("%+03d%02d",
-                                              (int) rules[i].std_offset / 3600,
-                                              (int) abs (rules[i].std_offset / 60) % 60);
-
-          g_array_append_val (gtz->t_info, info[0]);
-
-          last_offset = rules[i].std_offset;
-
-          y++;
+          info_index += 2;
         }
     }
+  if (ri > 0 &&
+      ((rules[ri - 1].dlt_start.mon > 12 &&
+        rules[ri - 1].dlt_start.wday > rules[ri - 1].dlt_end.wday) ||
+       rules[ri - 1].dlt_start.mon > rules[ri - 1].dlt_end.mon))
+    {
+      /* The previous rule was a southern hemisphere rule that
+         starts the year with DST, so we need to add a
+         transition to return to standard time */
+      TransitionInfo info;
+      guint year = rules[ri].start_year;
+      Transition trans;
+      fill_transition_info_from_rule (&info, &(rules[ri - 1]), FALSE);
+      g_array_append_val (gtz->t_info, info);
+      trans.time = boundary_for_year (&rules[ri - 1].dlt_end,
+                                      year, last_offset);
+      trans.info_index = info_index;
+      g_array_append_val (gtz->transitions, trans);
+     }
 }
 
 /*
@@ -1003,108 +1000,116 @@ init_zone_from_rules (GTimeZone    *gtz,
  *  - ss is 00 to 59
  */
 static gboolean
+parse_mwd_boundary (gchar **pos, TimeZoneDate *boundary)
+{
+  gint month, week, day;
+
+  if (**pos == '\0' || **pos < '0' || '9' < **pos)
+    return FALSE;
+
+  month = *(*pos)++ - '0';
+
+  if ((month == 1 && **pos >= '0' && '2' >= **pos) ||
+      (month == 0 && **pos >= '0' && '9' >= **pos))
+    {
+      month *= 10;
+      month += *(*pos)++ - '0';
+    }
+
+  if (*(*pos)++ != '.' || month == 0)
+    return FALSE;
+
+  if (**pos == '\0' || **pos < '1' || '5' < **pos)
+    return FALSE;
+
+  week = *(*pos)++ - '0';
+
+  if (*(*pos)++ != '.')
+    return FALSE;
+
+  if (**pos == '\0' || **pos < '0' || '6' < **pos)
+    return FALSE;
+
+  day = *(*pos)++ - '0';
+
+  if (!day)
+    day += 7;
+
+  boundary->year = 0;
+  boundary->mon = month;
+  boundary->week = week;
+  boundary->wday = day;
+  return TRUE;
+}
+
+/* Different implementations of tzset interpret the Julian day field
+   differently. For example, Linux specifies that it should be 1-based
+   (1 Jan is JD 1) for both Jn and n formats, while zOS and BSD
+   specify that a Jn JD is 1-based while an n JD is 0-based. Rather
+   than trying to follow different specs, we will follow GDate's
+   practice thatIn order to keep it simple, we will follow Linux's
+   practice. */
+
+static gboolean
+parse_julian_boundary (gchar** pos, TimeZoneDate *boundary,
+                       gboolean ignore_leap)
+{
+  gint day = 0;
+  GDate date;
+
+  while (**pos >= '0' && '9' >= **pos)
+    {
+      day *= 10;
+      day += *(*pos)++ - '0';
+    }
+
+  if (day < 1 || 365 < day)
+    return FALSE;
+
+  g_date_clear (&date, 1);
+  g_date_set_julian (&date, day);
+  boundary->year = 0;
+  boundary->mon = (int) g_date_get_month (&date);
+  boundary->mday = (int) g_date_get_day (&date);
+  boundary->wday = 0;
+
+  if (!ignore_leap && day >= 59)
+    boundary->mday++;
+
+  return TRUE;
+}
+
+static gboolean
 parse_tz_boundary (const gchar  *identifier,
                    TimeZoneDate *boundary)
 {
-  const gchar *pos;
-  gint month, week, day;
-  GDate *date;
+  gchar *pos;
 
-  pos = identifier;
-
-  if (*pos == 'M')                      /* Relative date */
+  pos = (gchar*)identifier;
+  /* Month-week-weekday */
+  if (*pos == 'M')
     {
-      pos++;
-
-      if (*pos == '\0' || *pos < '0' || '9' < *pos)
+      ++pos;
+      if (!parse_mwd_boundary (&pos, boundary))
         return FALSE;
-
-      month = *pos++ - '0';
-
-      if ((month == 1 && *pos >= '0' && '2' >= *pos) ||
-          (month == 0 && *pos >= '0' && '9' >= *pos))
-        {
-          month *= 10;
-          month += *pos++ - '0';
-        }
-
-      if (*pos++ != '.' || month == 0)
-        return FALSE;
-
-      if (*pos == '\0' || *pos < '1' || '5' < *pos)
-        return FALSE;
-
-      week = *pos++ - '0';
-
-      if (*pos++ != '.')
-        return FALSE;
-
-      if (*pos == '\0' || *pos < '0' || '6' < *pos)
-        return FALSE;
-
-      day = *pos++ - '0';
-
-      if (!day)
-        day += 7;
-
-      boundary->year = 0;
-      boundary->mon = month;
-      boundary->week = week;
-      boundary->wday = day;
     }
-
-  else if (*pos == 'J')                 /* Julian day */
+  /* Julian date which ignores Feb 29 in leap years */
+  else if (*pos == 'J')
     {
-      pos++;
-
-      day = 0;
-      while (*pos >= '0' && '9' >= *pos)
-        {
-          day *= 10;
-          day += *pos++ - '0';
-        }
-
-      if (day < 1 || 365 < day)
-        return FALSE;
-
-      date = g_date_new_julian (day);
-      boundary->year = 0;
-      boundary->mon = (int) g_date_get_month (date);
-      boundary->mday = (int) g_date_get_day (date);
-      boundary->wday = 0;
-      g_date_free (date);
+      ++pos;
+      if (!parse_julian_boundary (&pos, boundary, FALSE))
+        return FALSE ;
     }
-
-  else if (*pos >= '0' && '9' >= *pos)  /* Zero-based Julian day */
+  /* Julian date which counts Feb 29 in leap years */
+  else if (*pos >= '0' && '9' >= *pos)
     {
-      day = 0;
-      while (*pos >= '0' && '9' >= *pos)
-        {
-          day *= 10;
-          day += *pos++ - '0';
-        }
-
-      if (day < 0 || 365 < day)
+      if (!parse_julian_boundary (&pos, boundary, TRUE))
         return FALSE;
-
-      date = g_date_new_julian (day >= 59? day : day + 1);
-      boundary->year = 0;
-      boundary->mon = (int) g_date_get_month (date);
-      boundary->mday = (int) g_date_get_day (date);
-      boundary->wday = 0;
-      g_date_free (date);
-
-      /* February 29 */
-      if (day == 59)
-        boundary->mday++;
     }
-
   else
     return FALSE;
 
   /* Time */
-  boundary->isstd = FALSE;
-  boundary->isgmt = FALSE;
 
   if (*pos == '/')
     {
@@ -1142,8 +1147,8 @@ create_ruleset_from_rule (TimeZoneRule **rules, TimeZoneRule *rule)
   (*rules)[0].dlt_offset = -rule->dlt_offset;
   (*rules)[0].dlt_start  = rule->dlt_start;
   (*rules)[0].dlt_end = rule->dlt_end;
-  strcpy (rule->std_name, (*rules)[0].std_name);
-  strcpy (rule->dlt_name, (*rules)[0].dlt_name);
+  strcpy ((*rules)[0].std_name, rule->std_name);
+  strcpy ((*rules)[0].dlt_name, rule->dlt_name);
   return 2;
 }
 
@@ -1174,7 +1179,7 @@ parse_identifier_boundary (gchar **pos, TimeZoneDate *target)
 
   while (**pos != ',' && **pos != '\0')
     ++(*pos);
-  buffer = g_strndup (target_pos, *pos++ - target_pos);
+  buffer = g_strndup (target_pos, *pos - target_pos);
   ret = parse_tz_boundary (buffer, target);
   g_free (buffer);
 
@@ -1191,10 +1196,6 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   while (g_ascii_isalpha (**pos))
     ++(*pos);
 
-  /* Offset for standard required (format 1) */
-  if (**pos == '\0')
-    return FALSE;
-
   /* Name should be three or more alphabetic characters */
   if (*pos - name_pos < 3)
     return FALSE;
@@ -1202,29 +1203,18 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   memset (buffer, 0, NAME_SIZE);
   /* name_pos isn't 0-terminated, so we have to limit the length expressly */
   len = *pos - name_pos > size - 1 ? size - 1 : *pos - name_pos;
-  strncpy (buffer, name_pos, len); 
+  strncpy (buffer, name_pos, len);
   return TRUE;
 }
 
 static gboolean
 parse_identifier_boundaries (gchar **pos, TimeZoneRule *tzr)
 {
-  /* Default offset is 1 hour less from standard offset */
-  if (*(*pos++) == ',')
-    {
-      tzr->dlt_offset = tzr->std_offset - 60 * 60;
-      return TRUE;
-    }
-  /* Daylight offset */
-  if (!parse_offset (pos, &(tzr->dlt_offset)))
-      return FALSE;
-
-      /* Start and end required (format 2) */
-  if (*(*pos++) != ',')
+  if (*(*pos)++ != ',')
     return FALSE;
 
   /* Start date */
-  if (!parse_identifier_boundary (pos, &(tzr->dlt_start)) || **pos != ',')
+  if (!parse_identifier_boundary (pos, &(tzr->dlt_start)) || *(*pos)++ != ',')
     return FALSE;
 
   /* End date */
@@ -1254,38 +1244,24 @@ rules_from_identifier (const gchar   *identifier,
       !parse_offset (&pos, &(tzr.std_offset)))
     return 0;
 
+  if (*pos == 0)
+    return create_ruleset_from_rule (rules, &tzr);
+
   /* Format 2 */
-  if (*pos != '\0')
-    {
-      if (!(set_tz_name (&pos, tzr.dlt_name, NAME_SIZE)))
-        return 0;
-
-#ifndef G_OS_WIN32
-      /* Start and end required (format 2) */
-      if (*pos == '\0')
-        return 0;
-#else
-      if (*pos != '\0')
-        {
-#endif
-          if (!parse_identifier_boundaries (&pos, &tzr))
-              return 0;
- 
+  if (!(set_tz_name (&pos, tzr.dlt_name, NAME_SIZE)))
+    return 0;
+  parse_offset (&pos, &(tzr.dlt_offset));
+  if (tzr.dlt_offset == 0) /* No daylight offset given, assume it's 1
+                              hour earlier that standard */
+    tzr.dlt_offset = tzr.std_offset - 3600;
+  if (*pos == '\0')
 #ifdef G_OS_WIN32
-      }
-#endif
-    }
-
-#ifdef G_OS_WIN32
-  /* If doesn't have offset for daylight then it is Windows format */
-  if (tzr.dlt_offset == 0)
+    /* Windows allows us to use the US DST boundaries if they're not given */
     {
       int i;
       guint rules_num = 0;
 
       /* Use US rules, Windows' default is Pacific Standard Time */
-      tzr.dlt_offset = tzr.std_offset - 60 * 60;
-
       if ((rules_num = rules_from_windows_time_zone ("Pacific Standard Time",
                                                      rules)))
         {
@@ -1302,7 +1278,12 @@ rules_from_identifier (const gchar   *identifier,
       else
         return 0;
     }
+#else
+  return 0;
 #endif
+  /* Start and end required (format 2) */
+  if (!parse_identifier_boundaries (&pos, &tzr))
+    return 0;
 
   return create_ruleset_from_rule (rules, &tzr);
 }
