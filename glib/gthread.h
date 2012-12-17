@@ -249,6 +249,9 @@ void            g_once_init_leave               (volatile void  *location,
   (g_once_init_leave((location), (gsize) (result)))
 #endif
 
+GLIB_AVAILABLE_IN_2_36
+guint          g_get_num_processors (void);
+
 G_END_DECLS
 
 #endif /* __G_THREAD_H__ */

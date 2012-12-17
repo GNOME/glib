@@ -26,8 +26,6 @@
 #include <glib.h>
 #include <string.h>
 
-#define N_THREADS (20)
-
 static char *echo_prog_path;
 
 static void
@@ -35,8 +33,12 @@ multithreaded_test_run (GThreadFunc function)
 {
   int i;
   GPtrArray *threads = g_ptr_array_new ();
+  guint n_threads;
 
-  for (i = 0; i < N_THREADS; i++)
+  /* Limit to 64, otherwise we may hit file descriptor limits and such */
+  n_threads = MIN (g_get_num_processors () * 2, 64);
+
+  for (i = 0; i < n_threads; i++)
     {
       GThread *thread;
 
@@ -44,7 +46,7 @@ multithreaded_test_run (GThreadFunc function)
       g_ptr_array_add (threads, thread);
     }
 
-  for (i = 0; i < N_THREADS; i++)
+  for (i = 0; i < n_threads; i++)
     {
       gpointer ret;
       ret = g_thread_join (g_ptr_array_index (threads, i));

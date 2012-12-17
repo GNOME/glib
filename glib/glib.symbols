@@ -179,6 +179,7 @@ g_completion_new
 g_completion_remove_items
 g_completion_set_compare
 g_get_filename_charsets
+g_get_num_processors
 g_convert
 g_convert_error_quark
 g_convert_with_fallback

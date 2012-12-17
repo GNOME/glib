@@ -1007,5 +1007,61 @@ g_thread_self (void)
   return (GThread*) thread;
 }
 
+/**
+ * g_get_num_processors:
+ *
+ * Determine the approximate number of threads that the system will
+ * schedule simultaneously for this process.  This is intended to be
+ * used as a parameter to g_thread_pool_new() for CPU bound tasks and
+ * similar cases.
+ *
+ * Returns: Number of schedulable threads, always greater than 0
+ *
+ * Since: 2.36
+ */
+guint
+g_get_num_processors (void)
+{
+#ifdef G_OS_WIN32
+  DWORD_PTR process_cpus;
+  DWORD_PTR system_cpus;
+
+  if (GetProcessAffinityMask (GetCurrentProcess (),
+                              &process_cpus, &system_cpus))
+    {
+      unsigned int count;
+
+      for (count = 0; process_cpus != 0; process_cpus >>= 1)
+        if (process_cpus & 1)
+          count++;
+
+      if (count > 0)
+        return count;
+    }
+#elif defined(HAVE_UNISTD_H) && defined(_SC_NPROCESSORS_ONLN)
+  {
+    int count;
+
+    count = sysconf (_SC_NPROCESSORS_ONLN);
+    if (count > 0)
+      return count;
+  }
+#elif defined HW_NCPU
+  {
+    int mib[2], count = 0;
+    size_t len;
+
+    mib[0] = CTL_HW;
+    mib[1] = HW_NCPU;
+    len = sizeof(count);
+
+    if (sysctl (mib, 2, &count, &len, NULL, 0) == 0 && count > 0)
+      return count;
+  }
+#endif
+
+  return 1; /* Fallback */
+}
+
 /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */

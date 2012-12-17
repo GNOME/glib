@@ -650,6 +650,9 @@ g_pointer_bit_lock
 g_pointer_bit_trylock
 g_pointer_bit_unlock
 
+<SUBSECTION>
+g_get_num_processors
+
 <SUBSECTION Private>
 G_LOCK_NAME
 atexit
