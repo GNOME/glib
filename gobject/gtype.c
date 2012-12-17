@@ -4671,7 +4671,7 @@ g_type_class_get_private (GTypeClass *klass,
 
       if (G_UNLIKELY (private_node->data->class.class_private_size == parent_node->data->class.class_private_size))
 	{
-	  g_warning ("g_type_instance_get_class_private() requires a prior call to g_type_class_add_class_private()");
+	  g_warning ("g_type_instance_get_class_private() requires a prior call to g_type_add_class_private()");
 	  return NULL;
 	}
 
