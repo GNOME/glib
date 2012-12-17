@@ -35,7 +35,6 @@
 
 #include "config.h"
 
-static GStaticMutex globals_lock = G_STATIC_MUTEX_INIT;
 static GIRepository *default_repository = NULL;
 static GSList *search_path = NULL;
 static GSList *override_search_path = NULL;
@@ -134,12 +133,13 @@ g_irepository_class_init (GIRepositoryClass *class)
 static void
 init_globals (void)
 {
-  g_static_mutex_lock (&globals_lock);
+  static gsize initialized = 0;
+
+  if (!g_once_init_enter (&initialized))
+    return;
 
   if (default_repository == NULL)
-    {
-      default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
-    }
+    default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
 
   if (search_path == NULL)
     {
@@ -184,7 +184,7 @@ init_globals (void)
       search_path = g_slist_reverse (search_path);
     }
 
-  g_static_mutex_unlock (&globals_lock);
+  g_once_init_leave (&initialized, 1);
 }
 
 void
