@@ -1080,7 +1080,7 @@ AS_IF([test $glib_native_win32 = yes], [
                                                          #include <arpa/nameser_compat.h>],
                                                         [int qclass = C_IN;])],
                                        [AC_MSG_RESULT([yes])
-                                        NAMESER_COMPAT_INCLUDE="\#include <arpa/nameser_compat.h>"],
+                                        NAMESER_COMPAT_INCLUDE="#include <arpa/nameser_compat.h>"],
                                        [AC_MSG_ERROR([could not compile test program either way])])])
   AC_SUBST(NAMESER_COMPAT_INCLUDE)
 
