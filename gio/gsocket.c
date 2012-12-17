@@ -4154,33 +4154,36 @@ g_socket_receive_message (GSocket                 *socket,
       GPtrArray *my_messages = NULL;
       struct cmsghdr *cmsg;
 
-      for (cmsg = CMSG_FIRSTHDR (&msg); cmsg; cmsg = CMSG_NXTHDR (&msg, cmsg))
-	{
-	  GSocketControlMessage *message;
+      if (msg.msg_controllen >= sizeof (struct cmsghdr))
+        {
+          for (cmsg = CMSG_FIRSTHDR (&msg); cmsg; cmsg = CMSG_NXTHDR (&msg, cmsg))
+            {
+              GSocketControlMessage *message;
 
-	  message = g_socket_control_message_deserialize (cmsg->cmsg_level,
-							  cmsg->cmsg_type,
-							  cmsg->cmsg_len - ((char *)CMSG_DATA (cmsg) - (char *)cmsg),
-							  CMSG_DATA (cmsg));
-	  if (message == NULL)
-	    /* We've already spewed about the problem in the
-	       deserialization code, so just continue */
-	    continue;
+              message = g_socket_control_message_deserialize (cmsg->cmsg_level,
+                                                              cmsg->cmsg_type,
+                                                              cmsg->cmsg_len - ((char *)CMSG_DATA (cmsg) - (char *)cmsg),
+                                                              CMSG_DATA (cmsg));
+              if (message == NULL)
+                /* We've already spewed about the problem in the
+                   deserialization code, so just continue */
+                continue;
 
-	  if (messages == NULL)
-	    {
-	      /* we have to do it this way if the user ignores the
-	       * messages so that we will close any received fds.
-	       */
-	      g_object_unref (message);
-	    }
-	  else
-	    {
-	      if (my_messages == NULL)
-		my_messages = g_ptr_array_new ();
-	      g_ptr_array_add (my_messages, message);
-	    }
-	}
+              if (messages == NULL)
+                {
+                  /* we have to do it this way if the user ignores the
+                   * messages so that we will close any received fds.
+                   */
+                  g_object_unref (message);
+                }
+              else
+                {
+                  if (my_messages == NULL)
+                    my_messages = g_ptr_array_new ();
+                  g_ptr_array_add (my_messages, message);
+                }
+            }
+        }
 
       if (num_messages)
 	*num_messages = my_messages != NULL ? my_messages->len : 0;
