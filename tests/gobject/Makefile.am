@@ -59,6 +59,9 @@ test_programs =					\
 	accumulator				\
 	defaultiface				\
 	dynamictype				\
+	ifacecheck				\
+	ifaceinit				\
+	ifaceinherit				\
 	override				\
 	performance				\
 	performance-threaded			\
