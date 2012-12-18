@@ -886,7 +886,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%9", NULL);
 #ifdef G_OS_UNIX
   TEST_PRINTF ("%Z", dst);
-#elsif defined G_OS_WIN32
+#elif defined G_OS_WIN32
   TEST_PRINTF ("%Z", "Pacific Standard Time")
 #endif
 }
@@ -1365,24 +1365,18 @@ test_posix_parse (void)
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
-  /*  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "PST");
-  g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, - 7 * 3600);
-  g_assert (g_time_zone_is_dst (tz, 1)); */
   g_time_zone_unref (tz);
 
+/* This fails rules_from_identifier on Unix (though not on Windows)
+ * but passes anyway because PST8PDT is a zone name.
+ */
   tz = g_time_zone_new ("PST8PDT");
-#ifdef G_OS_WIN32
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "PDT");
   g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==,- 7 * 3600);
   g_assert (g_time_zone_is_dst (tz, 1));
-#else
-  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
-  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
-  g_assert (g_time_zone_is_dst (tz, 0));
-#endif
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("PST8PDT6:32:15");
