@@ -30,7 +30,8 @@ EXTRA_DIST = \
 	gresource.vcxproj.filters \
 	install.vcxproj
 
+DISTCLEANFILES = $(EXTRA_DIST)
+
 MSVC_SLN = glib
 
 include $(top_srcdir)/build/Makefile-newvs.am
-

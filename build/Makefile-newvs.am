@@ -27,6 +27,6 @@ create_vcxproj:
 	done
 
 copy_filters:
-	cp  $(top_builddir)/build/win32/vs10/*.vcxproj.filters $(top_builddir)/build/win32/vs11/
+	cp  $(top_srcdir)/build/win32/vs10/*.vcxproj.filters $(top_builddir)/build/win32/vs11/
 
 

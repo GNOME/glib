@@ -670,6 +670,11 @@ gio-public-headers.txt: Makefile
 
 CLEANFILES = gdbus-daemon-generated.c gdbus-daemon-generated.h gio-public-headers.txt gconstructor_as_data.h
 
+
+DISTCLEANFILES = 		\
+	gioenumtypes.h		\
+	gioenumtypes.c
+
 all-local: gio-public-headers.txt
 
 gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
