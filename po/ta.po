@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-12-17 14:03+0000\n"
-"PO-Revision-Date: 2012-12-18 16:06+0530\n"
+"PO-Revision-Date: 2012-12-18 16:28+0530\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil <>\n"
 "Language: \n"
@@ -511,13 +511,13 @@ msgstr ""
 #| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu bytes but only got %lu"
 msgid_plural "Wanted to read %lu byte but only got %lu"
-msgstr[0] "%lu பைட்டுகளைப் படிக்க வேண்டியிருந்தது, ஆனால் %lu மட்டுமே கிடைத்தது"
-msgstr[1] "%lu பைட்டைப் படிக்க வேண்டியிருந்தது, ஆனால் %lu மட்டுமே கிடைத்தது"
+msgstr[0] "%lu பைட்டுகளை வாசிக்க விரும்பியது ஆனால் %lu மட்டுமே கிடைத்தது"
+msgstr[1] "%lu பைட்டை வாசிக்க விரும்பியது ஆனால் %lu மட்டுமே கிடைத்தது"
 
 #: ../gio/gdbusmessage.c:1397
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "`%s' சரத்திற்கு அடுத்து NUL பைட் எதிர்பார்க்கப்பட்டது,  ஆனால் இருந்தது %d பைட்"
+msgstr "Expected NUL byte after the string `%s' but found byte %d"
 
 #: ../gio/gdbusmessage.c:1416
 #, c-format
@@ -2459,10 +2459,9 @@ msgid "Connection in progress"
 msgstr "இணைப்பு செயலிலுள்ளது"
 
 #: ../gio/gsocket.c:2330
-#, fuzzy
 #| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
-msgstr "விடுப்பட்ட பிழையைப் பெற முடியவில்லை: %s"
+msgstr "நிலுவையிலுள்ள பிழையைப் பெற முடியவில்லை: "
 
 #: ../gio/gsocket.c:2496
 #, c-format
@@ -3210,12 +3209,12 @@ msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not allocate %ld byte to read file \"%s\""
 #| msgid_plural "Could not allocate %ld bytes to read file \"%s\""
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "கோப்பு \"%2$s\" ஐப் படிக்க %1$ld பைட்டை ஒதுக்கிட முடியவில்லை"
+msgstr[0] "கோப்பு \"%s\" ஐப் படிக்க %ld பைட்டை ஒதுக்கிட முடியவில்லை"
 msgstr[1] "கோப்பு \"%2$s\" ஐப் படிக்க %1$ld பைட்டுகளை ஒதுக்கிட முடியவில்லை"
 
 #: ../glib/gfileutils.c:686
