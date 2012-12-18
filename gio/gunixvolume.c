@@ -310,7 +310,7 @@ eject_mount_cb (GPid     pid,
       g_task_return_new_error (task,
                                G_IO_ERROR, 
                                G_IO_ERROR_FAILED,
-                               data->error_string->str);
+                               "%s", data->error_string->str);
     }
   else
     g_task_return_boolean (task, TRUE);
