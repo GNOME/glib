@@ -1186,7 +1186,7 @@ parse_identifier_boundary (gchar **pos, TimeZoneDate *target)
   return ret;
 }
 
-static boolean
+static gboolean
 set_tz_name (gchar **pos, gchar *buffer, guint size)
 {
   gchar *name_pos = *pos;
@@ -1505,8 +1505,13 @@ g_time_zone_new_local (void)
 #define TRANSITION_INFO(n)    g_array_index (tz->t_info, TransitionInfo, n)
 
 /* Internal helpers {{{1 */
-/* Note that interval 0 is *before* the first transition time, so
- * interval 1 gets transitions[0].
+/* NB: Interval 0 is before the first transition, so there's no
+ * transition structure to point to which TransitionInfo to
+ * use. Rule-based zones are set up so that TI 0 is always standard
+ * time (which is what's in effect before Daylight time got started
+ * in the early 20th century), but IANA tzfiles don't follow that
+ * convention. The tzfile documentation says to use the first
+ * standard-time (i.e., non-DST) tinfo, so that's what we do.
  */
 inline static const TransitionInfo*
 interval_info (GTimeZone *tz,
@@ -1517,7 +1522,16 @@ interval_info (GTimeZone *tz,
   if (interval && tz->transitions && interval <= tz->transitions->len)
     index = (TRANSITION(interval - 1)).info_index;
   else
-    index = 0;
+    {
+      for (index = 0; index < tz->t_info->len; index++)
+        {
+          TransitionInfo *tzinfo = &(TRANSITION_INFO(index));
+          if (!tzinfo->is_dst)
+            return tzinfo;
+        }
+      index = 0;
+    }
+
   return &(TRANSITION_INFO(index));
 }
 
