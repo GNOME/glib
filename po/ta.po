@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-12-17 14:03+0000\n"
-"PO-Revision-Date: 2012-12-18 16:28+0530\n"
+"PO-Revision-Date: 2012-12-18 16:44+0530\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil <>\n"
 "Language: \n"
@@ -3214,8 +3214,8 @@ msgstr "'%s' அடைவு திறக்கும்போது பிழ�
 #| msgid_plural "Could not allocate %ld bytes to read file \"%s\""
 msgid "Could not allocate %ld byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "கோப்பு \"%s\" ஐப் படிக்க %ld பைட்டை ஒதுக்கிட முடியவில்லை"
-msgstr[1] "கோப்பு \"%s\" ஐப் படிக்க %ld பைட்டுகளை ஒதுக்கிட முடியவில்லை"
+msgstr[0] "%lu பைட்டை ஒதுக்கிட முடியவில்லை - கோப்பு \"%s\" ஐப் படிக்க"
+msgstr[1] "%lu பைட்டுகளை ஒதுக்கிட முடியவில்லை - கோப்பு \"%s\" ஐப் படிக்க"
 
 #: ../glib/gfileutils.c:686
 #, c-format
