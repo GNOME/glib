@@ -13,10 +13,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ta\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-12-17 14:03+0000\n"
-"PO-Revision-Date: 2012-11-28 17:10+0530\n"
+"PO-Revision-Date: 2012-12-18 16:06+0530\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil <>\n"
 "Language: \n"
@@ -24,7 +24,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -146,8 +147,7 @@ msgstr "துணைபுரியாத விசை `%s' ஆனது மு�
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
-msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "முகவரி `%s' தவறானது (சரியாக ஒரு பாதை தேவைப்படுகிறது, tmpdir அல்லது சுருக்க "
 "விசைகள்)"
@@ -177,8 +177,7 @@ msgstr "முகவரியின் `%s' என்ற கூறில் க�
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
-msgstr ""
-"முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, `%2$s' இல் சமக் குறி இல்லை"
+msgstr "முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, `%2$s' இல் சமக் குறி இல்லை"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
@@ -311,8 +310,7 @@ msgstr ""
 
 #: ../gio/gdbusauth.c:512
 #, c-format
-msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 "அனைத்து கிடைக்கும் அங்கீகார நுட்பங்கள் வெளியேறப்பட்டது (முயற்சித்தது: %s) (இருப்பவை: %s)"
 
@@ -327,10 +325,8 @@ msgstr "`%s' கோப்புறைக்கான தகவலைப் ப�
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr ""
-"அடைவிலுள்ள `%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%o ஆகும்"
+msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgstr "அடைவிலுள்ள `%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%o ஆகும்"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -349,14 +345,12 @@ msgstr "கீரிங்கின் வரி %d `%s' இல் உள்ள�
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
-msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr "வரியின் முதல் டோக்கன் %d கீரிங் `%s'இல் உள்ளடக்கத்துடன் `%s' தவறானது"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
-msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr "வரியின் இரண்டாவது டோக்கன் %d கீரிங் `%s'இல் உள்ளடக்கத்துடன் `%s' தவறானது"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
@@ -403,16 +397,13 @@ msgid "Timeout was reached"
 msgstr "நேரம்முடிவு பெறப்பட்டது"
 
 #: ../gio/gdbusconnection.c:2562
-msgid ""
-"Unsupported flags encountered when constructing a client-side connection"
+msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "ஒரு கிளையன்ட் -பக்க இணைப்பை உருவாக்கும் போது ஆதரிக்கப்படாத கொடிகள் எதிர்ப்பட்டன"
 
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
-msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
-"`org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் இல்லை"
+msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+msgstr "`org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் இல்லை"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
@@ -515,18 +506,18 @@ msgstr ""
 "முன்பதியப்பட்ட மதிப்பினை பயன்படுத்துகிறது"
 
 #: ../gio/gdbusmessage.c:1382
-#, fuzzy, c-format
+#, c-format
 #| msgid "Wanted to read %lu byte but got EOF"
 #| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu bytes but only got %lu"
 msgid_plural "Wanted to read %lu byte but only got %lu"
-msgstr[0] "%lu பைட்டை வாசிக்க விரும்பியது ஆனால் EOF கிடைத்தது"
-msgstr[1] "%lu பைட்டுகளை வாசிக்க விரும்பியது ஆனால் EOF கிடைத்தது"
+msgstr[0] "%lu பைட்டுகளைப் படிக்க வேண்டியிருந்தது, ஆனால் %lu மட்டுமே கிடைத்தது"
+msgstr[1] "%lu பைட்டைப் படிக்க வேண்டியிருந்தது, ஆனால் %lu மட்டுமே கிடைத்தது"
 
 #: ../gio/gdbusmessage.c:1397
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Expected NUL byte after the string `%s' but found byte %d"
+msgstr "`%s' சரத்திற்கு அடுத்து NUL பைட் எதிர்பார்க்கப்பட்டது,  ஆனால் இருந்தது %d பைட்"
 
 #: ../gio/gdbusmessage.c:1416
 #, c-format
@@ -549,10 +540,8 @@ msgstr "பகுக்கப்பட்ட மதிப்பு '%s' ஆன�
 
 #: ../gio/gdbusmessage.c:1697
 #, c-format
-msgid ""
-"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
-msgid_plural ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
 "எதிர்கொள்ளப்பட்ட அம்புக்குறியின் நீளம் %u பைட். அதிகபட்ச நீளம் 2<<26 bytes (64 MiB)."
 msgstr[1] ""
@@ -565,8 +554,7 @@ msgstr "மாறிக்கான பகுக்கப்பட்ட மத�
 
 #: ../gio/gdbusmessage.c:1874
 #, c-format
-msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr "GVariant உடன் சர வகை `%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட பிழை"
 
 #: ../gio/gdbusmessage.c:2061
@@ -599,8 +587,7 @@ msgstr "பகுக்கப்பட்ட மதிப்பு '%s' ஆன�
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] ""
-"கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட் ஆகும்"
+msgstr[0] "கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட் ஆகும்"
 msgstr[1] ""
 "கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட்டுகள் ஆகும்"
 
@@ -610,8 +597,7 @@ msgstr "செய்தி வரிசைநீக்க முடியவி�
 
 #: ../gio/gdbusmessage.c:2505
 #, c-format
-msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "GVariant உடன் சர வகை `%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட பிழை"
 
 #: ../gio/gdbusmessage.c:2642
@@ -774,8 +760,7 @@ msgstr "பல இணைப்பு இறுதிபுள்ளிகளி�
 
 #: ../gio/gdbus-tool.c:467
 #, c-format
-msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+msgid "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr "எச்சரிக்கை: தன்னிலை தரவின் படி, முறை இடைமுகம் `%s' இல்லை\n"
 
 #: ../gio/gdbus-tool.c:476
@@ -1308,8 +1293,7 @@ msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
 #: ../gio/glib-compile-resources.c:621
-msgid ""
-"Generate output in the format selected for by the target filename extension"
+msgid "Generate output in the format selected for by the target filename extension"
 msgstr "இலக்கு கோப்புப் பெயர் நீட்சியால் தேர்ந்தெடுக்கப்பட்ட வெளியீட்டு வடிவத்தை உருவாக்கு"
 
 #: ../gio/glib-compile-resources.c:622
@@ -1412,8 +1396,7 @@ msgstr ""
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
-msgstr ""
-"சரியாக ஒரு 'வகை', 'enum' அல்லது 'கொடிகள்'  <key> இதற்கு ஒரு பண்பில் குறிப்பிடப்பட்டது"
+msgstr "சரியாக ஒரு 'வகை', 'enum' அல்லது 'கொடிகள்'  <key> இதற்கு ஒரு பண்பில் குறிப்பிடப்பட்டது"
 
 #: ../gio/glib-compile-schemas.c:980
 #, c-format
@@ -1466,8 +1449,7 @@ msgstr "ஒரு பாதையுடன் ஒரு திட்டத்த
 
 #: ../gio/glib-compile-schemas.c:1173
 #, c-format
-msgid ""
-"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> ஒரு பட்டியல், எது பட்டியலில் இல்லையோ <schema id='%s'> ஐ "
 "நீட்டிக்கிறது"
@@ -1539,8 +1521,7 @@ msgstr " மற்றும் --strict குறிப்பிடப்பட�
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
-msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr ""
 "`%s' திட்டத்தில் `%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை பகுக்கும் விசை `"
 "%s': %s.  "
@@ -2175,8 +2156,7 @@ msgstr "[PATH]"
 
 #: ../gio/gresource-tool.c:561
 msgid "  PATH      An (optional) resource path (may be partial)\n"
-msgstr ""
-"  PATH      ஒரு (விரும்பினால் பயன்படுத்தும்) வளப் பாதை (பகுதியாக இருக்கக்கூடும்)\n"
+msgstr "  PATH      ஒரு (விரும்பினால் பயன்படுத்தும்) வளப் பாதை (பகுதியாக இருக்கக்கூடும்)\n"
 
 #: ../gio/gresource-tool.c:562
 msgid "PATH"
@@ -2748,8 +2728,7 @@ msgstr "சான்றுகளுக்கு பிழையை அனுப�
 #: ../gio/gunixconnection.c:490
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
-"SO_PASSCRED ஆனது சாக்கெட்டிற்காக செயல்படுத்தப்பட்டால் பிழை சரிபார்க்கப்படுகிறது: %s"
+msgstr "SO_PASSCRED ஆனது சாக்கெட்டிற்காக செயல்படுத்தப்பட்டால் பிழை சரிபார்க்கப்படுகிறது: %s"
 
 #: ../gio/gunixconnection.c:505
 #, c-format
@@ -2757,8 +2736,7 @@ msgid "Error enabling SO_PASSCRED: %s"
 msgstr "பிழை SO_PASSCRED ஐ செயல்படுத்துகிறது: %s"
 
 #: ../gio/gunixconnection.c:534
-msgid ""
-"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "பெறும் சான்றுகளுக்காக ஆனால் பூஜ்ஜிய பைட்டுகளை வாணிப்பதற்கான ஒரு ஒற்றை பைட்டை வாசிக்க "
 "எதிர்பார்க்கிறது"
@@ -3361,10 +3339,8 @@ msgstr "ஒரு முறையான கோப்பில்லை"
 
 #: ../glib/gkeyfile.c:1158
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
 
 #: ../glib/gkeyfile.c:1215
 #, c-format
@@ -3404,8 +3380,7 @@ msgstr " '%s'மதிப்பினை உடைய '%s'விசை விச
 
 #: ../glib/gkeyfile.c:1834 ../glib/gkeyfile.c:1950 ../glib/gkeyfile.c:2319
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
 #: ../glib/gkeyfile.c:2536 ../glib/gkeyfile.c:2902
@@ -3523,10 +3498,8 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "எழுத்து குறிப்பு '%-.*s' ஒரு அனுமதிக்கப்பட்ட எழுத்தினை குறிமுறையாக்கவில்லை"
 
 #: ../glib/gmarkup.c:712
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
 
 #: ../glib/gmarkup.c:720
 #, c-format
@@ -3565,8 +3538,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1265
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
 "வரியுரு"
@@ -4118,8 +4090,7 @@ msgstr "'\\' வரியுருக்கு பின்பு உரை ம�
 #: ../glib/gshell.c:581
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
+msgstr "%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
 
 #: ../glib/gshell.c:593
 msgid "Text was empty (or contained only whitespace)"
