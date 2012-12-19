@@ -92,17 +92,14 @@ void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...);
 /* query testing framework config */
-#define  g_test_initialized()            (g_test_config_vars->test_initialized)
-#define  g_test_quick()                  (g_test_config_vars->test_quick)
-#define  g_test_slow()                   (!g_test_config_vars->test_quick)
-#define  g_test_thorough()               (!g_test_config_vars->test_quick)
-#define  g_test_perf()                   (g_test_config_vars->test_perf)
-#define  g_test_verbose()                (g_test_config_vars->test_verbose)
-#define  g_test_quiet()                  (g_test_config_vars->test_quiet)
-#define  g_test_undefined()              (g_test_config_vars->test_undefined)
-GLIB_AVAILABLE_IN_2_36
-gboolean g_test_subprocess (void);
-
+#define g_test_initialized()            (g_test_config_vars->test_initialized)
+#define g_test_quick()                  (g_test_config_vars->test_quick)
+#define g_test_slow()                   (!g_test_config_vars->test_quick)
+#define g_test_thorough()               (!g_test_config_vars->test_quick)
+#define g_test_perf()                   (g_test_config_vars->test_perf)
+#define g_test_verbose()                (g_test_config_vars->test_verbose)
+#define g_test_quiet()                  (g_test_config_vars->test_quiet)
+#define g_test_undefined()              (g_test_config_vars->test_undefined)
 /* run all tests under toplevel suite (path: /) */
 int     g_test_run                      (void);
 /* hook up a test functions under test path */
@@ -135,9 +132,6 @@ void    g_test_fail                     (void);
                                           (testpath, sizeof (Fixture), tdata, fsetup, ftest, fteardown); \
 					} G_STMT_END
 
-GLIB_AVAILABLE_IN_2_36
-gboolean g_test_case_exists             (const char *test_path);
-
 /* add test messages to the test report */
 void    g_test_message                  (const char *format,
                                          ...) G_GNUC_PRINTF (1, 2);
@@ -160,20 +154,8 @@ typedef enum {
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
   G_TEST_TRAP_INHERIT_STDIN     = 1 << 9
 } GTestTrapFlags;
-
-GLIB_DEPRECATED_IN_2_36_FOR (g_test_trap_subprocess)
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
-
-GLIB_AVAILABLE_IN_2_36
-void     g_test_trap_subprocess         (const char          *test_path,
-                                         guint64              usec_timeout,
-                                         GTestTrapFlags       test_trap_flags);
-
-#define  g_test_trap_subprocess(test_path, usec_timeout, test_trap_flags) \
-  g_assert (g_test_case_exists (test_path)); \
-  g_test_trap_subprocess (test_path, usec_timeout, test_trap_flags);
-
 gboolean g_test_trap_has_passed         (void);
 gboolean g_test_trap_reached_timeout    (void);
 #define  g_test_trap_assert_passed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0)

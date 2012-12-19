@@ -1094,7 +1094,7 @@ g_assert_warning (const char *log_domain,
  *
  * Note that you cannot use this to test g_error() messages, since
  * g_error() intentionally never returns even if the program doesn't
- * abort; use g_test_trap_subprocess() in this case.
+ * abort; use g_test_trap_fork() in this case.
  *
  * Since: 2.34
  */
