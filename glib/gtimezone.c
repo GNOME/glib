@@ -441,10 +441,10 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
   guint index;
   guint32 time_count, type_count, leap_count, isgmt_count;
   guint32  isstd_count, char_count ;
-  gpointer tz_transitions, tz_type_index, tz_ttinfo;
-  gpointer  tz_leaps, tz_isgmt, tz_isstd;
-  gchar* tz_abbrs;
-  guint timesize = sizeof (gint32), countsize = sizeof (gint32);
+  guint8 *tz_transitions, *tz_type_index, *tz_ttinfo;
+  guint8 *tz_leaps, *tz_isgmt, *tz_isstd;
+  guint8 *tz_abbrs;
+  gsize timesize = sizeof (gint32), countsize = sizeof (gint32);
   const struct tzhead *header = g_bytes_get_data (zoneinfo, &size);
 
   g_return_if_fail (size >= sizeof (struct tzhead) &&
@@ -473,7 +473,7 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
   g_assert (type_count == isgmt_count);
   g_assert (type_count == isstd_count);
 
-  tz_transitions = (gpointer)(header + 1);
+  tz_transitions = ((guint8 *) (header) + sizeof (*header));
   tz_type_index = tz_transitions + timesize * time_count;
   tz_ttinfo = tz_type_index + time_count;
   tz_abbrs = tz_ttinfo + sizeof (struct ttinfo) * type_count;
@@ -492,9 +492,9 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
       struct ttinfo info = ((struct ttinfo*)tz_ttinfo)[index];
       t_info.gmt_offset = gint32_from_be (info.tt_gmtoff);
       t_info.is_dst = info.tt_isdst ? TRUE : FALSE;
-      t_info.is_standard = ((guint8*)tz_isstd)[index] ? TRUE : FALSE;
-      t_info.is_gmt = ((guint8*)tz_isgmt)[index] ? TRUE : FALSE;
-      t_info.abbrev = g_strdup (&tz_abbrs[info.tt_abbrind]);
+      t_info.is_standard = tz_isstd[index] ? TRUE : FALSE;
+      t_info.is_gmt = tz_isgmt[index] ? TRUE : FALSE;
+      t_info.abbrev = g_strdup ((gchar *) &tz_abbrs[info.tt_abbrind]);
       g_array_append_val (gtz->t_info, t_info);
     }
 
@@ -505,7 +505,7 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
         trans.time = gint64_from_be (((gint64_be*)tz_transitions)[index]);
       else
         trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
-      trans.info_index = ((guint8*)tz_type_index)[index];
+      trans.info_index = tz_type_index[index];
       g_assert (trans.info_index >= 0);
       g_assert (trans.info_index < gtz->t_info->len);
       g_array_append_val (gtz->transitions, trans);
