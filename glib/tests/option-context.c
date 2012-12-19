@@ -124,16 +124,19 @@ test_group_captions (void)
 
       for (j = 0; j < G_N_ELEMENTS (test_name_base); ++j)
         {
+          GTestTrapFlags trap_flags = 0;
           gboolean expect_main_description = FALSE;
           gboolean expect_main_switch      = FALSE;
           gboolean expect_test_description = FALSE;
           gboolean expect_test_switch      = FALSE;
           gboolean expect_test_group       = FALSE;
 
+          if (!g_test_verbose ())
+            trap_flags |= G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR;
+
           test_name = g_strdup_printf ("/option/group/captions:%s-%d",
                                        test_name_base[j], i);
-          g_test_trap_subprocess (test_name, 0,
-                                  G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR);
+          g_test_trap_subprocess (test_name, 0, trap_flags);
           g_free (test_name);
           g_test_trap_assert_passed ();
           g_test_trap_assert_stderr ("");
