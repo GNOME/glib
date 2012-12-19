@@ -33,7 +33,8 @@
 static void
 debug (void)
 {
-  g_debug ("this is a regular g_debug() from the test suite");
+  if (g_test_verbose ())
+    g_debug ("this is a regular g_debug() from the test suite");
 }
 
 static void
@@ -42,37 +43,43 @@ info (void)
 #ifdef g_info
 #error "rewrite this to use g_info()"
 #endif
-  g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "this is a regular g_log(..., G_LOG_LEVEL_INFO, ...) from the test suite");
+  if (g_test_verbose ())
+    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "this is a regular g_log(..., G_LOG_LEVEL_INFO, ...) from the test suite");
 }
 
 static void
 message (void)
 {
-  g_message ("this is a regular g_message() from the test suite");
+  if (g_test_verbose ())
+    g_message ("this is a regular g_message() from the test suite");
 }
 
 static void
 warning (void)
 {
-  g_warning ("this is a regular g_warning() from the test suite");
+  if (g_test_verbose ())
+    g_warning ("this is a regular g_warning() from the test suite");
 }
 
 static void
 critical (void)
 {
-  g_critical ("this is a regular g_critical() from the test suite");
+  if (g_test_verbose ())
+    g_critical ("this is a regular g_critical() from the test suite");
 }
 
 static void
 error (void)
 {
-  g_error ("this is a regular g_error() from the test suite");
+  if (g_test_verbose ())
+    g_error ("this is a regular g_error() from the test suite");
 }
 
 static void
 gtest_message (void)
 {
-  g_test_message ("this is a regular g_test_message() from the test suite");
+  if (g_test_verbose ())
+    g_test_message ("this is a regular g_test_message() from the test suite");
 }
 
 static gboolean
@@ -114,9 +121,10 @@ test_message (void)
   gchar* argv[] = {
           "./protocol",
           NULL,
-          "-p", "/glib/testing/protocol:debug",
-          "-p", "/glib/testing/protocol:message",
-          "-p", "/glib/testing/protocol:gtest-message",
+          "--verbose",
+          "-p", "/glib/testing/protocol/debug",
+          "-p", "/glib/testing/protocol/message",
+          "-p", "/glib/testing/protocol/gtest-message",
           NULL
   };
   GTestLogBuffer* tlb;
@@ -221,9 +229,9 @@ static void
 test_error (void)
 {
   gchar* tests[] = {
-          "/glib/testing/protocol:warning",
-          "/glib/testing/protocol:critical",
-          "/glib/testing/protocol:error"
+          "/glib/testing/protocol/warning",
+          "/glib/testing/protocol/critical",
+          "/glib/testing/protocol/error"
   };
   gint i;
   int             messages = 0;
@@ -233,6 +241,7 @@ test_error (void)
       gchar* argv[] = {
               "./protocol",
               NULL,
+              "--verbose",
               "-p", tests[i],
               NULL
       };
@@ -330,13 +339,13 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   /* we use ourself as the testcase, these are the ones we need internally */
-  g_test_add_func ("/glib/testing/protocol:debug", debug);
-  g_test_add_func ("/glib/testing/protocol:info", info);
-  g_test_add_func ("/glib/testing/protocol:message", message);
-  g_test_add_func ("/glib/testing/protocol:warning", warning);
-  g_test_add_func ("/glib/testing/protocol:critical", critical);
-  g_test_add_func ("/glib/testing/protocol:error", error);
-  g_test_add_func ("/glib/testing/protocol:gtest-message", gtest_message);
+  g_test_add_func ("/glib/testing/protocol/debug", debug);
+  g_test_add_func ("/glib/testing/protocol/info", info);
+  g_test_add_func ("/glib/testing/protocol/message", message);
+  g_test_add_func ("/glib/testing/protocol/warning", warning);
+  g_test_add_func ("/glib/testing/protocol/critical", critical);
+  g_test_add_func ("/glib/testing/protocol/error", error);
+  g_test_add_func ("/glib/testing/protocol/gtest-message", gtest_message);
 
   /* these are the real tests */
   g_test_add_func ("/glib/testing/protocol/test-message", test_message);
