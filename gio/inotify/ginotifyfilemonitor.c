@@ -115,7 +115,7 @@ g_inotify_file_monitor_constructor (GType                  type,
   g_assert (ret_ih_startup);
 
   pair_moves = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
-  watch_hardlinks = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_WATCH_HARDLINKS;
+  watch_hardlinks = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_WATCH_HARD_LINKS;
 
   sub = _ih_sub_new (inotify_monitor->dirname,
 		     inotify_monitor->filename,
