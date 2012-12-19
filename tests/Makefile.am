@@ -5,7 +5,6 @@ SUBDIRS=gobject refcount
 AM_CPPFLAGS = \
 	$(gmodule_INCLUDES)			\
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
-	-DG_LOG_DOMAIN=\"GLib\"			\
 	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = -g

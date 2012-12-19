@@ -695,18 +695,9 @@ static void test_implementation_class_init (TestImplementationClass *class)
   g_object_class_install_property (class, 1, pspec);
 }
 
-typedef struct {
-  gint change_this_flag;
-  gint change_this_type;
-  gint use_this_flag;
-  gint use_this_type;
-} TestParamImplementData;
-
 static void
-test_param_implement_child (gconstpointer user_data)
+test_param_implement (void)
 {
-  TestParamImplementData *data = (gpointer) user_data;
-
   /* GObject oddity: GObjectClass must be initialised before we can
    * initialise a GTypeInterface.
    */
@@ -714,22 +705,6 @@ test_param_implement_child (gconstpointer user_data)
 
   /* Bring up the interface first. */
   g_type_default_interface_ref (test_interface_get_type ());
-
-  /* Copy the flags into the global vars so
-   * test_implementation_class_init() will see them.
-   */
-  change_this_flag = data->change_this_flag;
-  change_this_type = data->change_this_type;
-  use_this_flag = data->use_this_flag;
-  use_this_type = data->use_this_type;
-
-  g_type_class_ref (test_implementation_get_type ());
-}
-
-static void
-test_param_implement (void)
-{
-  gchar *test_path;
 
   for (change_this_flag = 0; change_this_flag < 16; change_this_flag++)
     for (change_this_type = 0; change_this_type < 3; change_this_type++)
@@ -746,11 +721,11 @@ test_param_implement (void)
                   continue;
               }
 
-            test_path = g_strdup_printf ("/param/implement:%d-%d-%d-%d",
-                                         change_this_flag, change_this_type,
-                                         use_this_flag, use_this_type);
-            g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR);
-            g_free (test_path);
+            if (g_test_trap_fork (G_TIME_SPAN_SECOND, G_TEST_TRAP_SILENCE_STDERR))
+              {
+                g_type_class_ref (test_implementation_get_type ());
+                exit (0);
+              }
 
             /* We want to ensure that any flags mismatch problems are reported first. */
             switch (valid_impl_flags[change_this_flag][use_this_flag])
@@ -814,9 +789,6 @@ test_param_implement (void)
 int
 main (int argc, char *argv[])
 {
-  TestParamImplementData data, *test_data;
-  gchar *test_path;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/param/value", test_param_value);
@@ -824,21 +796,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/param/qdata", test_param_qdata);
   g_test_add_func ("/param/validate", test_param_validate);
   g_test_add_func ("/param/convert", test_param_convert);
-
   g_test_add_func ("/param/implement", test_param_implement);
-  for (data.change_this_flag = 0; data.change_this_flag < 16; data.change_this_flag++)
-    for (data.change_this_type = 0; data.change_this_type < 3; data.change_this_type++)
-      for (data.use_this_flag = 0; data.use_this_flag < 16; data.use_this_flag++)
-        for (data.use_this_type = 0; data.use_this_type < 4; data.use_this_type++)
-          {
-            test_path = g_strdup_printf ("/param/implement:%d-%d-%d-%d",
-                                         data.change_this_flag, data.change_this_type,
-                                         data.use_this_flag, data.use_this_type);
-            test_data = g_memdup (&data, sizeof (TestParamImplementData));
-            g_test_add_data_func_full (test_path, test_data, test_param_implement_child, g_free);
-            g_free (test_path);
-          }
-
   g_test_add_func ("/value/transform", test_value_transform);
 
   return g_test_run ();

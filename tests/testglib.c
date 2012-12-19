@@ -552,30 +552,32 @@ test_g_parse_debug_string (void)
 static void
 log_warning_error_tests (void)
 {
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
-                         "*is a g_message test*");
-  g_message ("this is a g_message test.");
-  g_test_assert_expected_messages ();
-
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
-                         "*non-printable UTF-8*");
-  g_message ("non-printable UTF-8: \"\xc3\xa4\xda\x85\"");
-  g_test_assert_expected_messages ();
-
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
-                         "*unsafe chars*");
-  g_message ("unsafe chars: \"\x10\x11\x12\n\t\x7f\x81\x82\x83\"");
-  g_test_assert_expected_messages ();
-
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                         "*harmless warning*");
-  g_warning ("harmless warning with parameters: %d %s %#x", 42, "Boo", 12345);
-  g_test_assert_expected_messages ();
-
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "*g_print*assertion*failed*");
-  g_print (NULL);
-  g_test_assert_expected_messages ();
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_message ("this is a g_message test.");
+      g_message ("non-printable UTF-8: \"\xc3\xa4\xda\x85\"");
+      g_message ("unsafe chars: \"\x10\x11\x12\n\t\x7f\x81\x82\x83\"");
+      exit (0);
+    }
+  g_test_trap_assert_passed();
+  g_test_trap_assert_stderr ("*is a g_message test*");
+  g_test_trap_assert_stderr ("*non-printable UTF-8*");
+  g_test_trap_assert_stderr ("*unsafe chars*");
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_warning ("harmless warning with parameters: %d %s %#x", 42, "Boo", 12345);
+      exit (0);
+    }
+  g_test_trap_assert_failed(); /* we have fatal-warnings enabled */
+  g_test_trap_assert_stderr ("*harmless warning*");
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_print (NULL);
+      exit (0);
+    }
+  g_test_trap_assert_failed(); /* we have fatal-warnings enabled */
+  g_test_trap_assert_stderr ("*g_print*assertion*failed*");
+  g_test_trap_assert_stderr ("*NULL*");
 }
 
 static void

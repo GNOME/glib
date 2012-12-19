@@ -609,27 +609,36 @@ test_positional_params (void)
 }
 
 static void
-test_positional_params2_child (void)
+test_positional_params2 (void)
 {
   gint res;
 
-  res = g_printf ("%2$c %1$c\n", 'b', 'a');
-  g_assert_cmpint (res, ==, 4);
-
-  res = g_printf ("%1$*2$.*3$s\n", "abc", 5, 2);
-  g_assert_cmpint (res, ==, 6);
-
-  res = g_printf ("%1$s%1$s\n", "abc");
-  g_assert_cmpint (res, ==, 7);
-}
-
-static void
-test_positional_params2 (void)
-{
-  g_test_trap_subprocess ("/printf/test-positional-params:child",
-                          0, G_TEST_TRAP_SILENCE_STDOUT);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%2$c %1$c", 'b', 'a');
+      g_assert_cmpint (res, ==, 3);
+      exit (0);
+    }
   g_test_trap_assert_passed ();
-  g_test_trap_assert_stdout ("a b\n   ab\nabcabc\n");
+  g_test_trap_assert_stdout ("*a b*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%1$*2$.*3$s", "abc", 5, 2);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*   ab*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%1$s%1$s", "abc");
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*abcabc*");
 }
 
 static void
@@ -652,19 +661,16 @@ test_positional_params3 (void)
 }
 
 static void
-test_percent2_child (void)
+test_percent2 (void)
 {
   gint res;
 
-  res = g_printf ("%%");
-  g_assert_cmpint (res, ==, 1);
-}
-
-static void
-test_percent2 (void)
-{
-  g_test_trap_subprocess ("/printf/test-percent:child",
-                          0, G_TEST_TRAP_SILENCE_STDOUT);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%%");
+      g_assert_cmpint (res, ==, 1);
+      exit (0);
+    }
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*%*");
 }
@@ -764,41 +770,83 @@ _Pragma ("GCC diagnostic pop")
 }
 
 static void
-test_64bit2_child (void)
+test_64bit2 (void)
 {
   gint res;
 
-  res = g_printf ("%" G_GINT64_FORMAT "\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_FORMAT, (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
 
-  res = g_printf ("%" G_GINT64_FORMAT "\n", (gint64)-123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_FORMAT, (gint64)-123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*-123456*");
 
-  res = g_printf ("%" G_GUINT64_FORMAT "\n", (guint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GUINT64_FORMAT, (guint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
 
-  res = g_printf ("%" G_GINT64_MODIFIER "o\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*361100*");
 
-  res = g_printf ("%#" G_GINT64_MODIFIER "o\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" G_GINT64_MODIFIER "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0361100*");
 
-  res = g_printf ("%" G_GINT64_MODIFIER "x\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 6);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1e240*");
 
-  res = g_printf ("%#" G_GINT64_MODIFIER "x\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" G_GINT64_MODIFIER "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0x1e240*");
 
-  res = g_printf ("%" G_GINT64_MODIFIER "X\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 6);
-}
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "X", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1E240*");
 
 #ifdef G_OS_WIN32
-static void
-test_64bit2_child_win32 (void)
-{
-  gint res;
-
   /* On Win32, test that the "ll" modifier also works, for backward
    * compatibility. One really should use the G_GINT64_MODIFIER (which
    * on Win32 is the "I64" that the (msvcrt) C library's printf uses),
@@ -815,53 +863,82 @@ _Pragma ("GCC diagnostic ignored \"-Wformat\"")
 _Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
 #endif
 
-  res = g_printf ("%" "lli\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "lli", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
 
-  res = g_printf ("%" "lli\n", (gint64)-123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "lli", (gint64)-123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*-123456*");
 
-  res = g_printf ("%" "llu\n", (guint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "llu", (guint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
 
-  res = g_printf ("%" "ll" "o\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 7);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*361100*");
 
-  res = g_printf ("%#" "ll" "o\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" "ll" "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0361100*");
 
-  res = g_printf ("%" "ll" "x\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 6);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1e240*");
 
-  res = g_printf ("%#" "ll" "x\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 8);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" "ll" "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0x1e240*");
 
-  res = g_printf ("%" "ll" "X\n", (gint64)123456);
-  g_assert_cmpint (res, ==, 6);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "X", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1E240*");
 
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
 _Pragma ("GCC diagnostic pop")
 #endif
-}
-#endif
 
-static void
-test_64bit2 (void)
-{
-  g_test_trap_subprocess ("/printf/test-64bit:child",
-                          0, G_TEST_TRAP_SILENCE_STDOUT);
-  g_test_trap_assert_passed ();
-  g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
-                             "361100\n0361100\n1e240\n"
-                             "0x1e240\n1E240\n");
-
-#ifdef G_OS_WIN32
-  g_test_trap_subprocess ("/printf/test-64bit:child-win32",
-                          0, G_TEST_TRAP_SILENCE_STDOUT);
-  g_test_trap_assert_passed ();
-  g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
-                             "361100\n0361100\n1e240\n"
-                             "0x1e240\n1E240\n");
 #endif
 }
 
@@ -909,14 +986,8 @@ main (int   argc,
   g_test_add_func ("/snprintf/test-64bit", test_64bit);
 
   g_test_add_func ("/printf/test-percent", test_percent2);
-  g_test_add_func ("/printf/test-percent:child", test_percent2_child);
   g_test_add_func ("/printf/test-positional-params", test_positional_params2);
-  g_test_add_func ("/printf/test-positional-params:child", test_positional_params2_child);
   g_test_add_func ("/printf/test-64bit", test_64bit2);
-  g_test_add_func ("/printf/test-64bit:child", test_64bit2_child);
-#ifdef G_OS_WIN32
-  g_test_add_func ("/printf/test-64bit:child-win32", test_64bit2_child_win32);
-#endif
 
   g_test_add_func ("/sprintf/test-positional-params", test_positional_params3);
   g_test_add_func ("/sprintf/upper-bound", test_upper_bound);

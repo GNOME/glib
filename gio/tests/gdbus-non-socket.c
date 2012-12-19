@@ -137,7 +137,7 @@ test_non_socket (void)
   pid_t first_child;
   GVariant *ret;
   const gchar *str;
-  gboolean ok, in_child;
+  gboolean ok;
 
   error = NULL;
 
@@ -219,12 +219,7 @@ test_non_socket (void)
       break;
     }
 
-  /* This is #ifdef G_OS_UNIX anyway, so just use g_test_trap_fork() */
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-  in_child = g_test_trap_fork (0, 0);
-  G_GNUC_END_IGNORE_DEPRECATIONS;
-
-  if (!in_child)
+  if (!g_test_trap_fork (0, 0))
     {
       /* parent */
       g_object_unref (streams[0]);
