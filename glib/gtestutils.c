@@ -2203,7 +2203,6 @@ g_test_trap_fork (guint64        usec_timeout,
   test_trap_clear();
   if (pipe (stdout_pipe) < 0 || pipe (stderr_pipe) < 0 || pipe (stdtst_pipe) < 0)
     g_error ("failed to create pipes to fork test program: %s", g_strerror (errno));
-  signal (SIGCHLD, SIG_DFL);
   test_trap_last_pid = fork ();
   if (test_trap_last_pid < 0)
     g_error ("failed to fork test program: %s", g_strerror (errno));
