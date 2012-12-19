@@ -794,7 +794,11 @@ test_GDateTime_get_day_of_year (void)
 static void
 test_GDateTime_printf (void)
 {
-  gchar dst[16];
+/* 64 seems big, but one zoneinfo file, Factory, has an abbreviation
+ * that long, and it will cause the test to fail if dst isn't big
+ * enough.
+ */
+  gchar dst[64];
   struct tm tt;
   time_t t;
   gchar t_str[16];
