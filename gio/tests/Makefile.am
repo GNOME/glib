@@ -13,7 +13,9 @@ INCLUDES = 			\
 	-I$(top_builddir)/gio	\
 	-I$(top_srcdir)/gio	\
 	$(DBUS1_CFLAGS)		\
-	-DSRCDIR=\""$(srcdir)"\"
+	-DSRCDIR=\""$(srcdir)"\" \
+	-DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
+
 
 noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
 noinst_DATA = $(MISC_STUFF)
@@ -142,6 +144,7 @@ SAMPLE_PROGS +=					\
 	gdbus-example-unix-fd-client 		\
 	gdbus-example-objectmanager-server 	\
 	gdbus-example-objectmanager-client 	\
+	gdbus-test-fixture			\
 	appinfo-test				\
 	$(NULL)
 endif
@@ -369,6 +372,10 @@ gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-ob
 gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
 gdbus_peer_CFLAGS  = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_peer_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
+gdbus_test_fixture_SOURCES = gdbus-test-fixture.c
+gdbus_test_fixture_CFLAGS  = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_test_fixture_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 endif OS_UNIX
 

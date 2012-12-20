@@ -3645,6 +3645,8 @@ gio/fam/Makefile
 gio/win32/Makefile
 gio/tests/Makefile
 gio/tests/gdbus-object-manager-example/Makefile
+gio/tests/services/Makefile
+gio/tests/services/org.gtk.GDBus.Examples.ObjectManager.service
 po/Makefile.in
 docs/Makefile
 docs/reference/Makefile
