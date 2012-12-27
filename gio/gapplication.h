@@ -76,6 +76,26 @@ struct _GApplicationClass
                                                      GApplicationCommandLine   *command_line);
 
   /* vfuncs */
+
+  /**
+   * GApplicationClass::local_command_line:
+   * @application: a #GApplication
+   * @arguments: (inout) (array zero-terminated=1): array of command line arguments
+   * @exit_status: (out): exit status to fill after processing the command line.
+   *
+   * This virtual function is always invoked in the local instance. It
+   * gets passed a pointer to a %NULL-terminated copy of @argv and is
+   * expected to remove arguments that it handled (shifting up remaining
+   * arguments).
+   *
+   * The last argument to local_command_line() is a pointer to the @status
+   * variable which can used to set the exit status that is returned from
+   * g_application_run().
+   *
+   * See g_application_run() for more details on #GApplication startup.
+   *
+   * Returns: %TRUE if the commandline has been completely handled
+   */
   gboolean                  (* local_command_line)  (GApplication              *application,
                                                      gchar                   ***arguments,
                                                      int                       *exit_status);
