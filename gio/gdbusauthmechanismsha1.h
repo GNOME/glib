@@ -20,12 +20,12 @@
  * Author: David Zeuthen <davidz@redhat.com>
  */
 
+#ifndef __G_DBUS_AUTH_MECHANISM_SHA1_H__
+#define __G_DBUS_AUTH_MECHANISM_SHA1_H__
+
 #if !defined (GIO_COMPILATION)
 #error "gdbusauthmechanismsha1.h is a private header file."
 #endif
-
-#ifndef __G_DBUS_AUTH_MECHANISM_SHA1_H__
-#define __G_DBUS_AUTH_MECHANISM_SHA1_H__
 
 #include <gio/giotypes.h>
 #include <gio/gdbusauthmechanism.h>

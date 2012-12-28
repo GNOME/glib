@@ -18,12 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __G_TASK_H__
+#define __G_TASK_H__
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
-
-#ifndef __G_TASK_H__
-#define __G_TASK_H__
 
 #include <gio/giotypes.h>
 

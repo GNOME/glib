@@ -18,12 +18,12 @@
  *
  * gvaluearray.h: GLib array type holding GValues
  */
+#ifndef __G_VALUE_ARRAY_H__
+#define __G_VALUE_ARRAY_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_VALUE_ARRAY_H__
-#define __G_VALUE_ARRAY_H__
 
 #include	<gobject/gvalue.h>
 

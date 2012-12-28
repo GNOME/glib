@@ -21,12 +21,12 @@
  *         Stef Walter <stefw@collabora.co.uk>
  */
 
+#ifndef __G_BYTES_H__
+#define __G_BYTES_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_BYTES_H__
-#define __G_BYTES_H__
 
 #include <glib/gtypes.h>
 #include <glib/garray.h>

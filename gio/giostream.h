@@ -14,12 +14,12 @@
  *          Alexander Larsson <alexl@redhat.com>
  */
 
+#ifndef __G_IO_STREAM_H__
+#define __G_IO_STREAM_H__
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
-
-#ifndef __G_IO_STREAM_H__
-#define __G_IO_STREAM_H__
 
 #include <gio/ginputstream.h>
 #include <gio/goutputstream.h>

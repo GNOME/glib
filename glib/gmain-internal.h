@@ -17,12 +17,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __G_MAIN_INTERNAL_H__
+#define __G_MAIN_INTERNAL_H__
+
 #if !defined (GLIB_COMPILATION)
 #error "This is a private header"
 #endif
-
-#ifndef __G_MAIN_INTERNAL_H__
-#define __G_MAIN_INTERNAL_H__
 
 #include "gmain.h"
 

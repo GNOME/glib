@@ -20,12 +20,12 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#ifndef __G_VARIANT_H__
+#define __G_VARIANT_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_VARIANT_H__
-#define __G_VARIANT_H__
 
 #include <glib/gvarianttype.h>
 #include <glib/gstring.h>

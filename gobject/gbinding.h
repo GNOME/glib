@@ -20,12 +20,12 @@
  * Author: Emmanuele Bassi <ebassi@linux.intel.com>
  */
 
+#ifndef __G_BINDING_H__
+#define __G_BINDING_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_BINDING_H__
-#define __G_BINDING_H__
 
 #include <glib.h>
 #include <gobject/gobject.h>

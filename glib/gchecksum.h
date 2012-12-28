@@ -18,12 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __G_CHECKSUM_H__
+#define __G_CHECKSUM_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_CHECKSUM_H__
-#define __G_CHECKSUM_H__
 
 #include <glib/gtypes.h>
 #include <glib/gbytes.h>

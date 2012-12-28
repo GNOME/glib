@@ -18,12 +18,12 @@
  *
  * gparam.h: GParamSpec base class implementation
  */
+#ifndef __G_PARAM_H__
+#define __G_PARAM_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_PARAM_H__
-#define __G_PARAM_H__
 
 #include	<gobject/gvalue.h>
 

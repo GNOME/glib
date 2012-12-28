@@ -17,12 +17,12 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#ifndef __G_CLOSURE_H__
+#define __G_CLOSURE_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_CLOSURE_H__
-#define __G_CLOSURE_H__
 
 #include        <gobject/gtype.h>
 

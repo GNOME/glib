@@ -17,12 +17,12 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  */
 
+#ifndef __G_BOOKMARK_FILE_H__
+#define __G_BOOKMARK_FILE_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_BOOKMARK_FILE_H__
-#define __G_BOOKMARK_FILE_H__
 
 #include <glib/gerror.h>
 #include <time.h>

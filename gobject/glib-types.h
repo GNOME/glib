@@ -16,12 +16,12 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#ifndef __GLIB_TYPES_H__
+#define __GLIB_TYPES_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION) && !defined(GLIB_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __GLIB_TYPES_H__
-#define __GLIB_TYPES_H__
 
 #include <glib.h>
 

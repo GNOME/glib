@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef __G_REGEX_H__
+#define __G_REGEX_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_REGEX_H__
-#define __G_REGEX_H__
 
 #include <glib/gerror.h>
 #include <glib/gstring.h>

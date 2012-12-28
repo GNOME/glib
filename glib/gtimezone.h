@@ -19,12 +19,12 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#ifndef __G_TIME_ZONE_H__
+#define __G_TIME_ZONE_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_TIME_ZONE_H__
-#define __G_TIME_ZONE_H__
 
 #include <glib/gtypes.h>
 

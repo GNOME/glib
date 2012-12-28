@@ -20,12 +20,12 @@
  * Author: Stef Walter <stefw@collabora.co.uk>
  */
 
+#ifndef __G_TLS_PASSWORD_H__
+#define __G_TLS_PASSWORD_H__
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
-
-#ifndef __G_TLS_PASSWORD_H__
-#define __G_TLS_PASSWORD_H__
 
 #include <gio/giotypes.h>
 

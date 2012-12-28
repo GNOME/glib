@@ -28,12 +28,12 @@
  * not refer to variables from glibconfig.h
  */
 
+#ifndef __G_MACROS_H__
+#define __G_MACROS_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_MACROS_H__
-#define __G_MACROS_H__
 
 /* We include stddef.h to get the system's definition of NULL
  */

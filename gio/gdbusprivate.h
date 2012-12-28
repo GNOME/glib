@@ -20,12 +20,12 @@
  * Author: David Zeuthen <davidz@redhat.com>
  */
 
+#ifndef __G_DBUS_PRIVATE_H__
+#define __G_DBUS_PRIVATE_H__
+
 #if !defined (GIO_COMPILATION)
 #error "gdbusprivate.h is a private header file."
 #endif
-
-#ifndef __G_DBUS_PRIVATE_H__
-#define __G_DBUS_PRIVATE_H__
 
 #include <gio/giotypes.h>
 

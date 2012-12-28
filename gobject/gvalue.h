@@ -18,12 +18,12 @@
  *
  * gvalue.h: generic GValue functions
  */
+#ifndef __G_VALUE_H__
+#define __G_VALUE_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_VALUE_H__
-#define __G_VALUE_H__
 
 #include	<gobject/gtype.h>
 

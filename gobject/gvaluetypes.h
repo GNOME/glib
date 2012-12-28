@@ -18,12 +18,12 @@
  *
  * gvaluetypes.h: GLib default values
  */
+#ifndef __G_VALUETYPES_H__
+#define __G_VALUETYPES_H__
+
 #if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
-
-#ifndef __G_VALUETYPES_H__
-#define __G_VALUETYPES_H__
 
 #include	<gobject/gvalue.h>
 

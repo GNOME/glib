@@ -19,12 +19,12 @@
  * Authors: Ryan Lortie <desrt@desrt.ca>
  */
 
+#ifndef __G_SIMPLE_ACTION_GROUP_H__
+#define __G_SIMPLE_ACTION_GROUP_H__
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
-
-#ifndef __G_SIMPLE_ACTION_GROUP_H__
-#define __G_SIMPLE_ACTION_GROUP_H__
 
 #include "gactiongroup.h"
 #include "gactionmap.h"

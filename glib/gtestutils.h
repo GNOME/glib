@@ -18,12 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __G_TEST_UTILS_H__
+#define __G_TEST_UTILS_H__
+
 #if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib.h> can be included directly."
 #endif
-
-#ifndef __G_TEST_UTILS_H__
-#define __G_TEST_UTILS_H__
 
 #include <glib/gmessages.h>
 #include <glib/gstring.h>

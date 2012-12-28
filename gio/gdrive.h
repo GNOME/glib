@@ -21,12 +21,12 @@
  *         David Zeuthen <davidz@redhat.com>
  */
 
+#ifndef __G_DRIVE_H__
+#define __G_DRIVE_H__
+
 #if !defined (__GIO_GIO_H_INSIDE__) && !defined (GIO_COMPILATION)
 #error "Only <gio/gio.h> can be included directly."
 #endif
-
-#ifndef __G_DRIVE_H__
-#define __G_DRIVE_H__
 
 #include <gio/giotypes.h>
 
