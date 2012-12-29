@@ -1,5 +1,5 @@
 <!ELEMENT schemalist (schema|enum)* >
-<!ATTLIST schemalist gettext-domain #IMPLIED >
+<!ATTLIST schemalist gettext-domain CDATA #IMPLIED >
 
 <!ELEMENT schema (key|child|override)* >
 <!ATTLIST schema id             CDATA #REQUIRED
@@ -19,10 +19,10 @@
 <!ELEMENT value EMPTY >
 <!-- nick must be at least 2 characters long -->
 <!-- value must be parsable as a 32-bit integer -->
-<!ELEMENT value nick  #REQUIRED
-                value #REQUIRED >
+<!ATTLIST value nick  CDATA #REQUIRED
+                value CDATA #REQUIRED >
 
-<!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
+<!ELEMENT key (default|summary?|description?|range?|choices?|aliases?)* >
 <!-- name can only contain lowercase letters, numbers and '-' -->
 <!-- type must be a GVariant type string -->
 <!-- enum must be the id of an enum type that has been defined earlier -->
