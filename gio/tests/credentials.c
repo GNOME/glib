@@ -72,10 +72,6 @@ test_basic (void)
   g_assert (set);
 
   g_assert_cmpuint (g_credentials_get_unix_user (other, &error), ==, not_me);
-  g_assert_no_error (error);
-  g_assert_cmpuint (g_credentials_get_unix_pid (other, &error), ==, 1);
-  g_assert_no_error (error);
-
   g_assert (!g_credentials_is_same_user (creds, other, &error));
   g_assert_no_error (error);
 
