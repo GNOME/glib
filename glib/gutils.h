@@ -307,8 +307,6 @@ g_bit_storage (gulong number)
 }
 #endif  /* G_CAN_INLINE || __G_UTILS_C__ */
 
-G_END_DECLS
-
 #ifndef G_DISABLE_DEPRECATED
 
 /*
@@ -371,5 +369,7 @@ const gchar *g_get_home_dir_utf8         (void);
 const gchar *g_get_tmp_dir_utf8          (void);
 gchar       *g_find_program_in_path_utf8 (const gchar *program);
 #endif
+
+G_END_DECLS
 
 #endif /* __G_UTILS_H__ */
