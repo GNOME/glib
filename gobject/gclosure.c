@@ -34,7 +34,7 @@
 #include "genums.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
-#include  "gtype-private.h"
+#include "gtype-private.h"
 
 
 /**

@@ -33,7 +33,7 @@
 #include "gatomicarray.h"
 #include "gobject_trace.h"
 
-#include "../glib/gconstructor.h"
+#include "gconstructor.h"
 
 
 /**

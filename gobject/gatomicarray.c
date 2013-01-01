@@ -19,9 +19,9 @@
 
 #include "config.h"
 
-#include "gatomicarray.h"
-
 #include <string.h>
+
+#include "gatomicarray.h"
 
 /* A GAtomicArray is a growable, mutable array of data
  * generally of the form of a header of a specific size and
