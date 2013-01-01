@@ -390,10 +390,10 @@ main (int   argc,
   /* test new fundamentals */
   g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST) == g_type_fundamental_next ());
   type = g_type_register_fundamental (g_type_fundamental_next (), "FooShadow1", &info, &finfo, 0);
-  g_assert (type == G_TYPE_RESERVED_USER_FIRST);
+  g_assert (type == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST));
   g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 1) == g_type_fundamental_next ());
   type = g_type_register_fundamental (g_type_fundamental_next (), "FooShadow2", &info, &finfo, 0);
-  g_assert (type == G_TYPE_RESERVED_USER_FIRST + 1);
+  g_assert (type == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 1));
   g_assert (G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 2) == g_type_fundamental_next ());
   g_assert (g_type_from_name ("FooShadow1") == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST));
   g_assert (g_type_from_name ("FooShadow2") == G_TYPE_MAKE_FUNDAMENTAL (G_TYPE_RESERVED_USER_FIRST + 1));

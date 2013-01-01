@@ -214,16 +214,13 @@ libgobject_2_0_la_SOURCES = $(gobject_target_sources)
 #
 bin_PROGRAMS = gobject-query glib-genmarshal
 bin_SCRIPTS = glib-mkenums
-noinst_PROGRAMS = testgobject
 # source files
 gobject_query_SOURCES = gobject-query.c
 glib_genmarshal_SOURCES = glib-genmarshal.c
-testgobject_SOURCES = testgobject.c
 # link programs against libgobject
 progs_LDADD = ./libgobject-2.0.la $(libglib)
 glib_genmarshal_LDADD = $(libglib)
 gobject_query_LDADD = $(progs_LDADD)
-testgobject_LDADD = $(progs_LDADD)
 
 #
 # auxillary files

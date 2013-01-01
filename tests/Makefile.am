@@ -41,7 +41,7 @@ EXTRA_DIST +=					\
 	gen-casemap-txt.pl			\
 	iochannel-test-infile			\
 	utf8.txt				\
-	timeloop-basic.c		
+	timeloop-basic.c
 
 BUILT_EXTRA_DIST =				\
 	makefile.msc
@@ -64,7 +64,8 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	unicode-collate 	\
 	$(timeloop) 		\
 	assert-msg-test		\
-	datetime
+	datetime		\
+	testgobject
 
 TEST_PROGS		+= testglib
 testglib_SOURCES         = testglib.c
@@ -81,6 +82,7 @@ timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
 datetime_LDADD = $(libglib)
+testgobject_LDADD = $(libglib) $(libgobject)
 
 test_programs =					\
 	atomic-test				\
