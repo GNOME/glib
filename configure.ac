@@ -382,7 +382,16 @@ if test "x$PERL_PATH" = x ; then
 fi
 AC_SUBST(PERL_PATH)
 
-# Need suitable python path for greport
+# option to specify python interpreter to use; this just sets $PYTHON, so that
+# we will fallback to reading $PYTHON if --with-python is not given, and
+# python.m4 will get the expected input
+AC_ARG_WITH(python,
+            AS_HELP_STRING([--with-python=PATH],
+                           [Path to Python interpreter; searches $PATH if only a program name is given; if not given, searches for a few standard names such as "python3" or "python2"]),
+            [PYTHON="$withval"], [])
+if test x"$PYTHON" = xyes; then
+  AC_MSG_ERROR([--with-python option requires a path or program argument])
+fi
 AM_PATH_PYTHON(2.5,,PYTHON="/usr/bin/env python2.5")
 
 

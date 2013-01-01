@@ -533,6 +533,14 @@
       </para>
     </formalpara>
 
+    <formalpara>
+      <title><systemitem>--with-python</systemitem></title>
+
+      <para>
+        Allows specifying the Python interpreter to use, either as an absolute path,
+        or as a program name. GLib can be built with Python 2 (at least version 2.5)
+        or Python 3.
+      </para>
   </refsect1>
 
 </refentry>
