@@ -541,6 +541,7 @@
         or as a program name. GLib can be built with Python 2 (at least version 2.5)
         or Python 3.
       </para>
+    </formalpara>
   </refsect1>
 
 </refentry>
