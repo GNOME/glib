@@ -128,6 +128,7 @@ SAMPLE_PROGS = 				\
 	gapplication-example-actions	\
 	gapplication-example-dbushooks	\
 	gdbus-daemon			\
+	gdbus-testserver		\
 	$(NULL)
 
 if OS_UNIX
@@ -186,6 +187,8 @@ contexts_LDADD		  = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
 gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_builddir)/gio/gdbus-daemon-generated.c
+
+gdbus_testserver_SOURCES = gdbus-testserver.c
 
 if HAVE_DBUS1
 TEST_PROGS += gdbus-serialization
