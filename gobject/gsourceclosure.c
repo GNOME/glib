@@ -145,6 +145,13 @@ static GSourceCallbackFuncs closure_callback_funcs = {
   closure_callback_get
 };
 
+static void
+closure_invalidated (gpointer  user_data,
+                     GClosure *closure)
+{
+  g_source_destroy (user_data);
+}
+
 /**
  * g_source_set_closure:
  * @source: the source
@@ -175,6 +182,8 @@ g_source_set_closure (GSource  *source,
   g_closure_ref (closure);
   g_closure_sink (closure);
   g_source_set_callback_indirect (source, closure, &closure_callback_funcs);
+
+  g_closure_add_invalidate_notifier (closure, source, closure_invalidated);
 
   if (G_CLOSURE_NEEDS_MARSHAL (closure))
     {
