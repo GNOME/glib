@@ -273,8 +273,8 @@ temp_dbus_keyrings_teardown (void)
   g_assert (rmdir (temp_dbus_keyrings_dir) == 0);
 
   temp_dbus_keyrings_dir = NULL;
-  g_setenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR", NULL, TRUE);
-  g_setenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION", NULL, TRUE);
+  g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR");
+  g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION");
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
