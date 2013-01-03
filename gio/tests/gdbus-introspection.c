@@ -125,7 +125,7 @@ test_introspection_parser (void)
   g_assert_no_error (error);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
+  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver", NULL));
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
