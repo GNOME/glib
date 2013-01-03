@@ -395,7 +395,6 @@ EXTRA_DIST += \
 	appinfo-test2.desktop		\
 	appinfo-test-gnome.desktop	\
 	appinfo-test-notgnome.desktop	\
-	gdbus-testserver.py		\
 	test-codegen.xml		\
 	cert1.pem			\
 	cert2.pem			\
