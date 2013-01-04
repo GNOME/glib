@@ -4,7 +4,7 @@ BUILT_SOURCES =
 
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = gdbus-object-manager-example
+SUBDIRS = gdbus-object-manager-example services
 
 INCLUDES = 			\
 	-DG_LOG_DOMAIN=\"GLib-GIO\" \
