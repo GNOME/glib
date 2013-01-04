@@ -199,8 +199,7 @@ endif
 
 TEST_PROGS += gdbus-auth
 gdbus_auth_SOURCES = gdbus-auth.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-gdbus_auth_CFLAGS = $(DBUS1_CFLAGS)
-gdbus_auth_LDADD = $(LDADD) $(DBUS1_LIBS)
+gdbus_auth_LDADD = $(LDADD)
 
 gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 

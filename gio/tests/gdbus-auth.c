@@ -25,7 +25,6 @@
 
 #include <string.h>
 #include <unistd.h>
-#include <dbus/dbus.h>
 
 #include "gdbus-tests.h"
 
