@@ -1002,12 +1002,6 @@ check_add_interface_L (GType instance_type,
 		 NODE_NAME (node));
       return FALSE;
     }
-  if (node->data && node->data->class.class)
-    {
-      g_warning ("attempting to add an interface (%s) to class (%s) after class_init",
-                 NODE_NAME (iface), NODE_NAME (node));
-      return FALSE;
-    }
   tnode = lookup_type_node_I (NODE_PARENT_TYPE (iface));
   if (NODE_PARENT_TYPE (tnode) && !type_lookup_iface_entry_L (node, tnode))
     {
