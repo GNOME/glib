@@ -379,10 +379,14 @@ g_memory_input_stream_skip_async (GInputStream        *stream,
 {
   GTask *task;
   gssize nskipped;
+  GError *error = NULL;
 
-  nskipped = g_input_stream_skip (stream, count, cancellable, NULL);
+  nskipped = G_INPUT_STREAM_GET_CLASS (stream)->skip (stream, count, cancellable, &error);
   task = g_task_new (stream, cancellable, callback, user_data);
-  g_task_return_int (task, nskipped);
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_int (task, nskipped);
   g_object_unref (task);
 }
 
