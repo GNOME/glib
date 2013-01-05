@@ -23,17 +23,28 @@
  */
 
 #include "config.h"
+
+#if HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
+#include <errno.h>
+/* See linux.git/fs/btrfs/ioctl.h */
+#define BTRFS_IOCTL_MAGIC 0x94
+#define BTRFS_IOC_CLONE _IOW(BTRFS_IOCTL_MAGIC, 9, int)
+#endif
+
 #ifdef HAVE_SPLICE
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #endif
+
 #include <string.h>
 #include <sys/types.h>
 #ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
+
 #include "gfile.h"
 #include "gvfs.h"
 #include "gtask.h"
@@ -2905,6 +2916,64 @@ splice_stream_with_progress (GInputStream           *in,
 }
 #endif
 
+#ifdef HAVE_SYS_IOCTL_H
+static gboolean
+btrfs_reflink_with_progress (GInputStream           *in,
+                             GOutputStream          *out,
+                             GFileInfo              *info,
+                             GCancellable           *cancellable,
+                             GFileProgressCallback   progress_callback,
+                             gpointer                progress_callback_data,
+                             GError                **error)
+{
+  goffset source_size;
+  int fd_in, fd_out;
+  int ret;
+
+  fd_in = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (in));
+  fd_out = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (out));
+
+  if (progress_callback)
+    source_size = g_file_info_get_size (info);
+
+  /* Btrfs clone ioctl properties:
+   *  - Works at the inode level
+   *  - Doesn't work with directories
+   *  - Always follows symlinks (source and destination)
+   *
+   * By the time we get here, *in and *out are both regular files */
+  ret = ioctl (fd_out, BTRFS_IOC_CLONE, fd_in);
+
+  if (ret < 0)
+    {
+      if (errno == EXDEV)
+	g_set_error_literal (error, G_IO_ERROR,
+			     G_IO_ERROR_NOT_SUPPORTED,
+			     _("Copy (reflink/clone) between mounts is not supported"));
+      else if (errno == EINVAL)
+	g_set_error_literal (error, G_IO_ERROR,
+			     G_IO_ERROR_NOT_SUPPORTED,
+			     _("Copy (reflink/clone) is not supported or invalid"));
+      else
+	/* Most probably something odd happened; retry with fallback */
+	g_set_error_literal (error, G_IO_ERROR,
+			     G_IO_ERROR_NOT_SUPPORTED,
+			     _("Copy (reflink/clone) is not supported or didn't work"));
+      /* We retry with fallback for all error cases because Btrfs is currently
+       * unstable, and so we can't trust it to do clone properly.
+       * In addition, any hard errors here would cause the same failure in the
+       * fallback manual copy as well. */
+      return FALSE;
+    }
+
+  /* Make sure we send full copied size */
+  if (progress_callback)
+    progress_callback (source_size, source_size, progress_callback_data);
+
+  return TRUE;
+}
+#endif
+
 static gboolean
 file_copy_fallback (GFile                  *source,
                     GFile                  *destination,
@@ -2919,9 +2988,6 @@ file_copy_fallback (GFile                  *source,
   GFileInfo *info;
   const char *target;
   gboolean result;
-#ifdef HAVE_SPLICE
-  gboolean fallback = TRUE;
-#endif
 
   /* need to know the file type */
   info = g_file_query_info (source,
@@ -2988,6 +3054,26 @@ file_copy_fallback (GFile                  *source,
       return FALSE;
     }
 
+#ifdef HAVE_SYS_IOCTL_H
+  if (G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
+    {
+      GError *reflink_err = NULL;
+
+      result = btrfs_reflink_with_progress (in, out, info, cancellable,
+                                            progress_callback, progress_callback_data,
+                                            &reflink_err);
+
+      if (result || !g_error_matches (reflink_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+        {
+          if (!result)
+            g_propagate_error (error, reflink_err);
+          goto cleanup;
+        }
+      else
+        g_clear_error (&reflink_err);
+    }
+#endif
+
 #ifdef HAVE_SPLICE
   if (G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
     {
@@ -2999,20 +3085,20 @@ file_copy_fallback (GFile                  *source,
 
       if (result || !g_error_matches (splice_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
         {
-          fallback = FALSE;
           if (!result)
             g_propagate_error (error, splice_err);
+          goto cleanup;
         }
       else
         g_clear_error (&splice_err);
     }
 
-  if (fallback)
 #endif
-    result = copy_stream_with_progress (in, out, source, cancellable,
-                                        progress_callback, progress_callback_data,
-                                        error);
+  result = copy_stream_with_progress (in, out, source, cancellable,
+                                      progress_callback, progress_callback_data,
+                                      error);
 
+cleanup:
   /* Don't care about errors in source here */
   g_input_stream_close (in, cancellable, NULL);
 
@@ -3026,7 +3112,7 @@ file_copy_fallback (GFile                  *source,
   if (result == FALSE)
     return FALSE;
 
- copied_file:
+copied_file:
   /* Ignore errors here. Failure to copy metadata is not a hard error */
   g_file_copy_attributes (source, destination,
                           flags, cancellable, NULL);
