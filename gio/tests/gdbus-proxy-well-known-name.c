@@ -224,7 +224,7 @@ test_proxy_well_known_name (void)
    * the 'y' property should be back at 1...
    */
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
+  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver", NULL));
   /* check that we get the notify::g-name-owner signal */
   _g_assert_property_notify (p, "g-name-owner");
   /* Now we should have a name owner as well as properties */

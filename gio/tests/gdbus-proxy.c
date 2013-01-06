@@ -569,7 +569,7 @@ test_bogus_property (GDBusProxy *proxy)
 static const gchar *frob_dbus_interface_xml =
   "<node>"
   "  <interface name='com.example.Frob'>"
-  /* PairReturn() is deliberately different from gdbus-testserver.py's definition */
+  /* PairReturn() is deliberately different from gdbus-testserver's definition */
   "    <method name='PairReturn'>"
   "      <arg type='u' name='somenumber' direction='in'/>"
   "      <arg type='s' name='somestring' direction='out'/>"
@@ -583,9 +583,9 @@ static const gchar *frob_dbus_interface_xml =
   "    </method>"
   /* We deliberately only mention a single property here */
   "    <property name='y' type='y' access='readwrite'/>"
-  /* The 'i' property is deliberately different from gdbus-testserver.py's definition */
+  /* The 'i' property is deliberately different from gdbus-testserver's definition */
   "    <property name='i' type='u' access='readwrite'/>"
-  /* ::TestSignal2 is deliberately different from gdbus-testserver.py's definition */
+  /* ::TestSignal2 is deliberately different from gdbus-testserver's definition */
   "    <signal name='TestSignal2'>"
   "      <arg type='u' name='somenumber'/>"
   "    </signal>"
@@ -846,7 +846,7 @@ test_async (void)
                             NULL);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
+  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver", NULL));
 
   g_timeout_add (10000, fail_test, NULL);
   g_main_loop_run (loop);
