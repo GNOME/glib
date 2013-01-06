@@ -891,7 +891,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 #ifdef G_OS_UNIX
   TEST_PRINTF ("%Z", dst);
 #elif defined G_OS_WIN32
-  TEST_PRINTF ("%Z", "Pacific Standard Time")
+  TEST_PRINTF ("%Z", "Pacific Standard Time");
 #endif
 }
 
