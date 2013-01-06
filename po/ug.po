@@ -1694,7 +1694,7 @@ msgstr "ھۆججەت ‹%s› نىڭ ئۇچۇرىنى ئېلىۋاتقاندا �
 #: ../gio/glocalfileinfo.c:1854
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
-msgstr "ھۆججەت چۈشەندۈرگۈچ ‹%s› نىڭ ئۇچۇرىنى ئېلىۋاتقاندا خاتالىق كۆرۈلدى: %s"
+msgstr "ھۆججەت چۈشەندۈرگۈچ ئۇچۇرىنى ئېلىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/glocalfileinfo.c:1899
 msgid "Invalid attribute type (uint32 expected)"
