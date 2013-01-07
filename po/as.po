@@ -4,14 +4,14 @@
 #
 # Amitakhya Phukan <amitakhya@svn.gnome.org>, 2007, 2008.
 # Amitakhya Phukan <aphukan@fedoraproject.org>, 2009.
-# Nilamdyuti Goswami <ngoswami@redhat.com>, 2012.
+# Nilamdyuti Goswami <ngoswami@redhat.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-19 20:14+0000\n"
-"PO-Revision-Date: 2012-12-20 13:46+0530\n"
+"POT-Creation-Date: 2013-01-06 22:15+0000\n"
+"PO-Revision-Date: 2013-01-07 17:43+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -120,7 +120,6 @@ msgid "There is no GCredentials support for your platform"
 msgstr "আপোনাৰ প্লেটফৰ্মৰ বাবে কোনো GCredentials সমৰ্থন নাই"
 
 #: ../gio/gcredentials.c:480
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials ৰ এই OS ত এটা প্ৰক্ৰিয়া ID নাই"
 
@@ -1006,15 +1005,15 @@ msgstr "GEmblemedIcon encoding ত ট'কেনৰ ত্ৰুটি সংখ
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon ৰ কাৰণে এটা GEmblem প্ৰত্যাশিত"
 
-#: ../gio/gfile.c:902 ../gio/gfile.c:1141 ../gio/gfile.c:1280
-#: ../gio/gfile.c:1520 ../gio/gfile.c:1575 ../gio/gfile.c:1633
-#: ../gio/gfile.c:1717 ../gio/gfile.c:1774 ../gio/gfile.c:1838
-#: ../gio/gfile.c:1893 ../gio/gfile.c:3362 ../gio/gfile.c:3417
-#: ../gio/gfile.c:3563 ../gio/gfile.c:3605 ../gio/gfile.c:4007
-#: ../gio/gfile.c:4419 ../gio/gfile.c:4504 ../gio/gfile.c:4594
-#: ../gio/gfile.c:4691 ../gio/gfile.c:4778 ../gio/gfile.c:4879
-#: ../gio/gfile.c:5152 ../gio/gfile.c:5430 ../gio/gfile.c:5484
-#: ../gio/gfile.c:7028 ../gio/gfile.c:7118 ../gio/gfile.c:7202
+#: ../gio/gfile.c:913 ../gio/gfile.c:1152 ../gio/gfile.c:1291
+#: ../gio/gfile.c:1531 ../gio/gfile.c:1586 ../gio/gfile.c:1644
+#: ../gio/gfile.c:1728 ../gio/gfile.c:1785 ../gio/gfile.c:1849
+#: ../gio/gfile.c:1904 ../gio/gfile.c:3448 ../gio/gfile.c:3503
+#: ../gio/gfile.c:3649 ../gio/gfile.c:3691 ../gio/gfile.c:4093
+#: ../gio/gfile.c:4505 ../gio/gfile.c:4590 ../gio/gfile.c:4680
+#: ../gio/gfile.c:4777 ../gio/gfile.c:4864 ../gio/gfile.c:4965
+#: ../gio/gfile.c:5238 ../gio/gfile.c:5516 ../gio/gfile.c:5570
+#: ../gio/gfile.c:7114 ../gio/gfile.c:7204 ../gio/gfile.c:7288
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "কাৰ্য্য সমৰ্থিত নহয়"
@@ -1029,58 +1028,71 @@ msgstr "কাৰ্য্য সমৰ্থিত নহয়"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1404 ../gio/glocalfile.c:1093 ../gio/glocalfile.c:1104
+#: ../gio/gfile.c:1415 ../gio/glocalfile.c:1093 ../gio/glocalfile.c:1104
 #: ../gio/glocalfile.c:1117
 msgid "Containing mount does not exist"
 msgstr "ধাৰণকাৰী মাউন্ট উপস্থিত নাই"
 
-#: ../gio/gfile.c:2459 ../gio/glocalfile.c:2325
+#: ../gio/gfile.c:2470 ../gio/glocalfile.c:2325
 msgid "Can't copy over directory"
 msgstr "ডাইৰেকটৰিৰ ওপৰত কপি কৰা নাযাব"
 
-#: ../gio/gfile.c:2519
+#: ../gio/gfile.c:2530
 msgid "Can't copy directory over directory"
 msgstr "ডাইৰেকটৰিৰ ওপৰত ডাইৰেকটৰি কপি কৰা নাযায়"
 
-#: ../gio/gfile.c:2527 ../gio/glocalfile.c:2334
+#: ../gio/gfile.c:2538 ../gio/glocalfile.c:2334
 msgid "Target file exists"
 msgstr "লক্ষ্য ফাইল উপস্থিত আছে"
 
-#: ../gio/gfile.c:2546
+#: ../gio/gfile.c:2557
 msgid "Can't recursively copy directory"
 msgstr "ৰিকাৰ্ছিভ ভাবে ডাইৰেকটৰি কপি কৰা নাযাব"
 
-#: ../gio/gfile.c:2810
+#: ../gio/gfile.c:2821
 msgid "Splice not supported"
 msgstr "Splice সমৰ্থিত নহয়"
 
-#: ../gio/gfile.c:2814
+#: ../gio/gfile.c:2825
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "ফাইল splice কৰোতে ত্ৰুটি: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2952
+#| msgid "Move between mounts not supported"
+msgid "Copy (reflink/clone) between mounts is not supported"
+msgstr "মাউন্টসমূহৰ মাজত কপি (ৰিফ্লিঙ্ক/ক্লৌন) সমৰ্থিত নহয়"
+
+#: ../gio/gfile.c:2956
+msgid "Copy (reflink/clone) is not supported or invalid"
+msgstr "কপি (ৰিফ্লিঙ্ক/ক্লৌন) সমৰ্থিত নহয় অথবা অবৈধ"
+
+#: ../gio/gfile.c:2961
+msgid "Copy (reflink/clone) is not supported or didn't work"
+msgstr "কপি (ৰিফ্লিৃঙ্ক/ক্লৌন) সমৰ্থিত নহয় অথবা কাম নকৰিলে"
+
+#: ../gio/gfile.c:3026
 msgid "Can't copy special file"
 msgstr "বিশেষ ফাইল কপি কৰিব নোৱাৰি"
 
-#: ../gio/gfile.c:3553
+#: ../gio/gfile.c:3639
 msgid "Invalid symlink value given"
 msgstr "অৱৈধ চিমসংযোগ মান উপলব্ধ কৰা হৈছে"
 
-#: ../gio/gfile.c:3713
+#: ../gio/gfile.c:3799
 msgid "Trash not supported"
 msgstr "আবৰ্জনা সমৰ্থিত নহয়"
 
-#: ../gio/gfile.c:3764
+#: ../gio/gfile.c:3850
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ফাইলৰ নামত '%c' ব্যৱহাৰ কৰা নাযাব"
 
-#: ../gio/gfile.c:6152 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6238 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
-#: ../gio/gfile.c:6261
+#: ../gio/gfile.c:6347
 msgid "No application is registered as handling this file"
 msgstr "চিহ্নিত ফাইল ব্যৱস্থাপনাৰ উদ্দেশ্যে কোনো এপ্লিকেচন নিবন্ধিত নহয়"
 
@@ -1881,15 +1893,15 @@ msgstr "ফাইল বহিৰ্তমভাৱে পৰিবৰ্তন 
 msgid "Error removing old file: %s"
 msgstr "পুৰনি ফাইল আঁতৰাবলৈ সমস্যা: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:739
+#: ../gio/gmemoryinputstream.c:475 ../gio/gmemoryoutputstream.c:739
 msgid "Invalid GSeekType supplied"
 msgstr "অৱৈধ GSeekType উল্লিখিত হৈছে"
 
-#: ../gio/gmemoryinputstream.c:481
+#: ../gio/gmemoryinputstream.c:485
 msgid "Invalid seek request"
 msgstr "অৱৈধ seek ৰ অনুৰোধ"
 
-#: ../gio/gmemoryinputstream.c:505
+#: ../gio/gmemoryinputstream.c:509
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream ক truncate কৰিব নোৱাৰি"
 
@@ -2458,7 +2470,6 @@ msgid "Connection in progress"
 msgstr "সংযোগ চলি আছে"
 
 #: ../gio/gsocket.c:2330
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
 msgstr "পেন্ডিং ত্ৰুটি পাবলৈ ব্যৰ্থ:"
 
@@ -3446,32 +3457,32 @@ msgstr "%s%s%s%s মেপ কৰিবলে ব্যৰ্থ: mmap() ব্�
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' ফাইল খোলোঁতে ব্যৰ্থ: open() ব্যৰ্থ: %s"
 
-#: ../glib/gmarkup.c:353 ../glib/gmarkup.c:394
+#: ../glib/gmarkup.c:397 ../glib/gmarkup.c:438
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "%d শাৰীৰ %d আখৰত ত্ৰুটি:"
 
-#: ../glib/gmarkup.c:416 ../glib/gmarkup.c:499
+#: ../glib/gmarkup.c:460 ../glib/gmarkup.c:543
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "নামত অৱৈধ UTF-8 সাঙ্কেতিক লিপি - অৱৈধ '%s'"
 
-#: ../glib/gmarkup.c:427
+#: ../glib/gmarkup.c:471
 #, c-format
 msgid "'%s' is not a valid name"
 msgstr "'%s' এটা বৈধ নাম নহয়"
 
-#: ../glib/gmarkup.c:443
+#: ../glib/gmarkup.c:487
 #, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "'%s' এটা বৈধ নাম নহয়: '%c'"
 
-#: ../glib/gmarkup.c:552
+#: ../glib/gmarkup.c:596
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "%d শাৰীত ত্ৰুটি: %s"
 
-#: ../glib/gmarkup.c:636
+#: ../glib/gmarkup.c:680
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -3481,7 +3492,7 @@ msgstr ""
 "লাগিছিল "
 "(&#২৩৪; যেনে) - হয়তো সংখ্যাটো বৰ ডাঙৰ"
 
-#: ../glib/gmarkup.c:648
+#: ../glib/gmarkup.c:692
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -3492,24 +3503,24 @@ msgstr ""
 "আপুনি এটা এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে এস্কেইপ "
 "কৰক"
 
-#: ../glib/gmarkup.c:674
+#: ../glib/gmarkup.c:718
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr ""
 "আখৰৰ উল্লেখ থকা '%-.*s' এ এটা আজ্ঞা থকা আখৰক সাঙ্কেতিক লিপিলৈ পৰিবৰ্তিত নকৰে"
 
-#: ../glib/gmarkup.c:712
+#: ../glib/gmarkup.c:756
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "ৰিক্ত পদাৰ্থ '&;' দেখা গ'ল; বৈধ পদাৰ্থসমূহ হ'ল: &amp; &quot; &lt; &gt; &apos;"
 
-#: ../glib/gmarkup.c:720
+#: ../glib/gmarkup.c:764
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "পদাৰ্থৰ নাম '%-.*s' অজ্ঞাত"
 
-#: ../glib/gmarkup.c:725
+#: ../glib/gmarkup.c:769
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -3518,11 +3529,11 @@ msgstr ""
 "আপুনি এটা "
 "এম্পাৰছেন্দ আখৰ ব্যৱহাৰ কৰিছে - এম্পাৰছেন্দক &amp; হিচাপে এস্কেইপ কৰক"
 
-#: ../glib/gmarkup.c:1073
+#: ../glib/gmarkup.c:1117
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "দস্তাবেজ এটা উপাদানৰ সৈতে আৰম্ভ হ'ব লাগিব (যেনে <book>)"
 
-#: ../glib/gmarkup.c:1113
+#: ../glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -3530,7 +3541,7 @@ msgid ""
 msgstr ""
 "'%s' এটা বৈধ আখৰ নহয় '<' আখৰৰ পিছত; ইয়াৰ দ্বাৰা পদাৰ্থৰ নাম আৰম্ভ নহবও পাৰে"
 
-#: ../glib/gmarkup.c:1181
+#: ../glib/gmarkup.c:1225
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -3538,7 +3549,7 @@ msgid ""
 msgstr ""
 "ত্ৰুটি আখৰ '%s', এটা '>' আখৰ প্ৰত্যাশিত ৰিক্ত পদাৰ্থৰ টেগ '%s' শেষ কৰিবলৈ"
 
-#: ../glib/gmarkup.c:1265
+#: ../glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -3547,7 +3558,7 @@ msgstr ""
 "s' ৰ, "
 "পিছত"
 
-#: ../glib/gmarkup.c:1306
+#: ../glib/gmarkup.c:1350
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3560,7 +3571,7 @@ msgstr ""
 "অৱৈধ আখৰ "
 "ব্যৱহৃত হৈছে"
 
-#: ../glib/gmarkup.c:1350
+#: ../glib/gmarkup.c:1394
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -3570,7 +3581,7 @@ msgstr ""
 "সমান "
 "চিহ্নৰ পিছত এটা উদ্ধৃতি চিহ্নৰ প্ৰাৰম্ভিক অংশ উপস্থিতি প্ৰত্যাশিত"
 
-#: ../glib/gmarkup.c:1483
+#: ../glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -3579,7 +3590,7 @@ msgstr ""
 "'%s' আখৰৰ ব্যৱহাৰ '</' ৰ পিছত বৈধ নহয়; '%s' দ্বাৰা কোনো পদাৰ্থৰ নাম আৰম্ভ কৰা "
 "নাযাব"
 
-#: ../glib/gmarkup.c:1519
+#: ../glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -3587,27 +3598,27 @@ msgid ""
 msgstr ""
 "'%s' আখৰৰ ব্যৱহাৰ বৈধ নহয় '%s' বদ্ধ পদাৰ্থৰ নামৰ পিছত; অনুমোদিত আখৰ হ'ল '>'"
 
-#: ../glib/gmarkup.c:1530
+#: ../glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' পদাৰ্থ বদ্ধ অৱস্থাত, বৰ্তমানে কোনো পদাৰ্থ খোলা অৱস্থাত নাই"
 
-#: ../glib/gmarkup.c:1539
+#: ../glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' পদাৰ্থ বদ্ধ অৱস্থাত, বৰ্তমানে '%s' পদাৰ্থ খোলা অৱস্থাত আছে"
 
-#: ../glib/gmarkup.c:1707
+#: ../glib/gmarkup.c:1751
 msgid "Document was empty or contained only whitespace"
 msgstr "দস্তাবেজ ৰিক্ত বা অকল ৰিক্ত স্থান আছিলে"
 
-#: ../glib/gmarkup.c:1721
+#: ../glib/gmarkup.c:1765
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "খোলা ব্ৰেকেটৰ প্ৰাৰম্ভিক চিহ্নৰ '<' ঠিক পিছত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত "
 "হৈছে"
 
-#: ../glib/gmarkup.c:1729 ../glib/gmarkup.c:1774
+#: ../glib/gmarkup.c:1773 ../glib/gmarkup.c:1818
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -3616,7 +3627,7 @@ msgstr ""
 "খোলা পদাৰ্থসহ দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে - '%s' পদাৰ্থ সৰ্বশেষ খোলা "
 "হৈছিল"
 
-#: ../glib/gmarkup.c:1737
+#: ../glib/gmarkup.c:1781
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -3626,19 +3637,19 @@ msgstr ""
 "চিহ্নৰ "
 "অন্তিম অংশৰ উপস্থিতি প্ৰত্যাশিত"
 
-#: ../glib/gmarkup.c:1743
+#: ../glib/gmarkup.c:1787
 msgid "Document ended unexpectedly inside an element name"
 msgstr "পদাৰ্থৰ নামত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/gmarkup.c:1749
+#: ../glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "বৈশিষ্ট্যৰ নামত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/gmarkup.c:1754
+#: ../glib/gmarkup.c:1798
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "পদাৰ্থৰ প্ৰাৰম্ভিক টেগত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/gmarkup.c:1760
+#: ../glib/gmarkup.c:1804
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -3647,16 +3658,16 @@ msgstr ""
 "হৈছে; "
 "বৈশিষ্ট্যৰ মান অনুপস্থিত"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1811
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "বৈশিষ্ট্যৰ মানত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "'%s' পদাৰ্থৰ অন্তিম টেগত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "কোনো মন্তব্য বা প্ৰক্ৰিয়াকৰণৰ নিৰ্দেশত দস্তাবেজ অপ্ৰত্যাশিতৰূপে সমাপ্ত হৈছে"
