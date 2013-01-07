@@ -59,6 +59,7 @@ g_function_info_get_vfunc
 g_function_info_invoke
 g_invoke_error_quark
 g_interface_info_find_method
+g_interface_info_find_signal
 g_interface_info_find_vfunc
 g_interface_info_get_constant
 g_interface_info_get_iface_struct
