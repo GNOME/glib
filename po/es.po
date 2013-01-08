@@ -9,22 +9,22 @@
 # 
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011, 2012.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012., 2012.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012., 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-28 05:13+0000\n"
-"PO-Revision-Date: 2012-12-31 12:03+0100\n"
+"POT-Creation-Date: 2013-01-06 22:15+0000\n"
+"PO-Revision-Date: 2013-01-08 14:18+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
 #: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:506
@@ -175,8 +175,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
 msgstr ""
-"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene "
-"un signo de igual"
+"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene un "
+"signo de igual"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
@@ -184,8 +184,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
-"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en "
-"el elemento de dirección «%s»"
+"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en el "
+"elemento de dirección «%s»"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
@@ -339,8 +339,8 @@ msgstr "Error al obtener la información de la carpeta «%s»: %s"
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Los permisos de la carpeta «%s» están mal formados. Se esperaba el modo "
-"0700, se obtuvo 0%o"
+"Los permisos de la carpeta «%s» están mal formados. Se esperaba el modo 0700, "
+"se obtuvo 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -356,24 +356,23 @@ msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
-"formada"
+"La línea %d del depósito de claves en «%s» con contenido «%s» está mal formada"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El primer token de la línea %d del depósito de claves en «%s» con contenido "
-"«%s» está mal formado"
+"El primer token de la línea %d del depósito de claves en «%s» con contenido «%"
+"s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El segundo token de la línea %d del depósito de claves en «%s» con contenido "
-"«%s» está mal formado"
+"El segundo token de la línea %d del depósito de claves en «%s» con contenido «%"
+"s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
@@ -408,8 +407,7 @@ msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr ""
-"(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
+msgstr "(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -438,8 +436,8 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se "
-"obtuvo «%s»."
+"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
+"«%s»."
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
@@ -548,8 +546,7 @@ msgstr[1] "Se querían leer %lu bytes pero sólo se obtuvo %lu"
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
-"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte "
-"%d"
+"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte %d"
 
 #: ../gio/gdbusmessage.c:1416
 #, c-format
@@ -604,8 +601,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo "
-"el valor 0x%02x"
+"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo el "
+"valor 0x%02x"
 
 #: ../gio/gdbusmessage.c:2074
 #, c-format
@@ -647,8 +644,8 @@ msgstr "No se puede deserializar el mensaje: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"Error al serializar GVariant con el tipo de cadena «%s» al formato de "
-"mensaje de D-Bus"
+"Error al serializar GVariant con el tipo de cadena «%s» al formato de mensaje "
+"de D-Bus"
 
 #: ../gio/gdbusmessage.c:2642
 #, c-format
@@ -672,8 +669,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "El cuerpo del mensaje tiene un tipo de firma «%s» pero la firma en el campo "
 "de cabecera es «%s»"
@@ -682,8 +679,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es "
-"«(%s)»"
+"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es «(%"
+"s)»"
 
 #: ../gio/gdbusmessage.c:3270
 #, c-format
@@ -819,8 +816,7 @@ msgstr "Se especificaron varios puntos de conexión extremos"
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, la interfaz «%s» no "
-"existe\n"
+"Advertencia: según la introspección de los datos, la interfaz «%s» no existe\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
@@ -828,8 +824,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, el método «%s» no existe "
-"en la interfaz «%s»\n"
+"Advertencia: según la introspección de los datos, el método «%s» no existe en "
+"la interfaz «%s»\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -1070,15 +1066,15 @@ msgstr "Número de tokens (%d) mal formados en la codificación GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 
-#: ../gio/gfile.c:902 ../gio/gfile.c:1141 ../gio/gfile.c:1280
-#: ../gio/gfile.c:1520 ../gio/gfile.c:1575 ../gio/gfile.c:1633
-#: ../gio/gfile.c:1717 ../gio/gfile.c:1774 ../gio/gfile.c:1838
-#: ../gio/gfile.c:1893 ../gio/gfile.c:3362 ../gio/gfile.c:3417
-#: ../gio/gfile.c:3563 ../gio/gfile.c:3605 ../gio/gfile.c:4007
-#: ../gio/gfile.c:4419 ../gio/gfile.c:4504 ../gio/gfile.c:4594
-#: ../gio/gfile.c:4691 ../gio/gfile.c:4778 ../gio/gfile.c:4879
-#: ../gio/gfile.c:5152 ../gio/gfile.c:5430 ../gio/gfile.c:5484
-#: ../gio/gfile.c:7028 ../gio/gfile.c:7118 ../gio/gfile.c:7202
+#: ../gio/gfile.c:913 ../gio/gfile.c:1152 ../gio/gfile.c:1291
+#: ../gio/gfile.c:1531 ../gio/gfile.c:1586 ../gio/gfile.c:1644
+#: ../gio/gfile.c:1728 ../gio/gfile.c:1785 ../gio/gfile.c:1849
+#: ../gio/gfile.c:1904 ../gio/gfile.c:3448 ../gio/gfile.c:3503
+#: ../gio/gfile.c:3649 ../gio/gfile.c:3691 ../gio/gfile.c:4093
+#: ../gio/gfile.c:4505 ../gio/gfile.c:4590 ../gio/gfile.c:4680
+#: ../gio/gfile.c:4777 ../gio/gfile.c:4864 ../gio/gfile.c:4965
+#: ../gio/gfile.c:5238 ../gio/gfile.c:5516 ../gio/gfile.c:5570
+#: ../gio/gfile.c:7114 ../gio/gfile.c:7204 ../gio/gfile.c:7288
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1093,58 +1089,71 @@ msgstr "Operación no soportada"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1404 ../gio/glocalfile.c:1093 ../gio/glocalfile.c:1104
+#: ../gio/gfile.c:1415 ../gio/glocalfile.c:1093 ../gio/glocalfile.c:1104
 #: ../gio/glocalfile.c:1117
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: ../gio/gfile.c:2459 ../gio/glocalfile.c:2325
+#: ../gio/gfile.c:2470 ../gio/glocalfile.c:2325
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre la carpeta"
 
-#: ../gio/gfile.c:2519
+#: ../gio/gfile.c:2530
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar una carpeta sobre otra"
 
-#: ../gio/gfile.c:2527 ../gio/glocalfile.c:2334
+#: ../gio/gfile.c:2538 ../gio/glocalfile.c:2334
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
-#: ../gio/gfile.c:2546
+#: ../gio/gfile.c:2557
 msgid "Can't recursively copy directory"
 msgstr "No se puede copiar la carpeta recursivamente"
 
-#: ../gio/gfile.c:2810
+#: ../gio/gfile.c:2821
 msgid "Splice not supported"
 msgstr "La unión no  está soportada"
 
-#: ../gio/gfile.c:2814
+#: ../gio/gfile.c:2825
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Error al unir el archivo: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2952
+#| msgid "Move between mounts not supported"
+msgid "Copy (reflink/clone) between mounts is not supported"
+msgstr "Copiar (reflink/clone) entre puntos de montaje no está soportado"
+
+#: ../gio/gfile.c:2956
+msgid "Copy (reflink/clone) is not supported or invalid"
+msgstr "Copiar (reflink/clone) no está soportado o no es válido"
+
+#: ../gio/gfile.c:2961
+msgid "Copy (reflink/clone) is not supported or didn't work"
+msgstr "Copiar (reflink/clone) no está soportado o no ha funcionado"
+
+#: ../gio/gfile.c:3026
 msgid "Can't copy special file"
 msgstr "No se puede copiar el archivo especial"
 
-#: ../gio/gfile.c:3553
+#: ../gio/gfile.c:3639
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:3713
+#: ../gio/gfile.c:3799
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:3764
+#: ../gio/gfile.c:3850
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:6152 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6238 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:6261
+#: ../gio/gfile.c:6347
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -1421,8 +1430,8 @@ msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and hyphen ('-') are permitted."
 msgstr ""
-"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten "
-"nombres en minúscula, números y guión («-»)."
+"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten nombres "
+"en minúscula, números y guión («-»)."
 
 #: ../gio/glib-compile-schemas.c:809
 #, c-format
@@ -1468,8 +1477,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"se debe especificar exactamente uno de «type», «enum» o «flags» como "
-"atributo para <key>"
+"se debe especificar exactamente uno de «type», «enum» o «flags» como atributo "
+"para <key>"
 
 #: ../gio/glib-compile-schemas.c:980
 #, c-format
@@ -1534,8 +1543,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero "
-"«%s» no extiende «%s»"
+"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero «%"
+"s» no extiende «%s»"
 
 #: ../gio/glib-compile-schemas.c:1200
 #, c-format
@@ -1578,8 +1587,8 @@ msgstr "Ignorando este archivo.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo "
-"de sobrescritura «%s»"
+"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo de "
+"sobrescritura «%s»"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
 #: ../gio/glib-compile-schemas.c:1956
@@ -1962,15 +1971,15 @@ msgstr "El archivo se modificó externamente"
 msgid "Error removing old file: %s"
 msgstr "Error al eliminar el archivo antiguo: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:739
+#: ../gio/gmemoryinputstream.c:475 ../gio/gmemoryoutputstream.c:739
 msgid "Invalid GSeekType supplied"
 msgstr "Se proporcionó un GSeekType no válido"
 
-#: ../gio/gmemoryinputstream.c:481
+#: ../gio/gmemoryinputstream.c:485
 msgid "Invalid seek request"
 msgstr "Petición de búsqueda no válida"
 
-#: ../gio/gmemoryinputstream.c:505
+#: ../gio/gmemoryinputstream.c:509
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "No se puede truncar GMemoryInputStream"
 
@@ -3501,8 +3510,7 @@ msgstr ""
 #: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2690
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr ""
-"La clave «%s» en el grupo «%s» tiene el valor «%s», pero se esperaba %s"
+msgstr "La clave «%s» en el grupo «%s» tiene el valor «%s», pero se esperaba %s"
 
 #: ../glib/gkeyfile.c:3088 ../glib/gkeyfile.c:3280 ../glib/gkeyfile.c:3848
 #, c-format
@@ -3555,32 +3563,32 @@ msgstr "Falló al mapear el archivo «%s%s%s%s»: mmap() falló: %s"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Falló al abrir el archivo «%s»: open() falló: %s"
 
-#: ../glib/gmarkup.c:353 ../glib/gmarkup.c:394
+#: ../glib/gmarkup.c:397 ../glib/gmarkup.c:438
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Error en la línea %d, carácter %d: "
 
-#: ../glib/gmarkup.c:416 ../glib/gmarkup.c:499
+#: ../glib/gmarkup.c:460 ../glib/gmarkup.c:543
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Texto codificado como UTF-8 en el nombre no válido; «%s» no es válido"
 
-#: ../glib/gmarkup.c:427
+#: ../glib/gmarkup.c:471
 #, c-format
 msgid "'%s' is not a valid name"
 msgstr "«%s» no es un nombre válido"
 
-#: ../glib/gmarkup.c:443
+#: ../glib/gmarkup.c:487
 #, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "«%s» no es un nombre válido: «%c»"
 
-#: ../glib/gmarkup.c:552
+#: ../glib/gmarkup.c:596
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Error en la línea %d: %s"
 
-#: ../glib/gmarkup.c:636
+#: ../glib/gmarkup.c:680
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -3590,7 +3598,7 @@ msgstr ""
 "carácter de referencia( por ejemplo &#234;) - tal vez el dígito es demasiado "
 "grande"
 
-#: ../glib/gmarkup.c:648
+#: ../glib/gmarkup.c:692
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -3600,24 +3608,24 @@ msgstr ""
 "un carácter «&» sin pretender iniciar una entidad, escape el carácter \"&\" "
 "como &amp;"
 
-#: ../glib/gmarkup.c:674
+#: ../glib/gmarkup.c:718
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "El carácter de referencia «%-.*s» no codifica un carácter permitido"
 
-#: ../glib/gmarkup.c:712
+#: ../glib/gmarkup.c:756
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad '&;' está vacía; las entidades válidas son: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: ../glib/gmarkup.c:720
+#: ../glib/gmarkup.c:764
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "El nombre de la entidad «%-.*s» es desconocido"
 
-#: ../glib/gmarkup.c:725
+#: ../glib/gmarkup.c:769
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -3626,11 +3634,11 @@ msgstr ""
 "\"&\" sin la intención de indicar una entidad, escape el signo \"&\" como "
 "&amp;"
 
-#: ../glib/gmarkup.c:1073
+#: ../glib/gmarkup.c:1117
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El documento debe comenzar con un elemento (por ejemplo: <book>)"
 
-#: ../glib/gmarkup.c:1113
+#: ../glib/gmarkup.c:1157
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -3639,16 +3647,16 @@ msgstr ""
 "«%s» no es un carácter válido a continuación del carácter '<'; no debe "
 "iniciar un nombre de elemento"
 
-#: ../glib/gmarkup.c:1181
+#: ../glib/gmarkup.c:1225
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la "
-"etiqueta vacía del elemento «%s»"
+"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la etiqueta "
+"vacía del elemento «%s»"
 
-#: ../glib/gmarkup.c:1265
+#: ../glib/gmarkup.c:1309
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -3656,7 +3664,7 @@ msgstr ""
 "Carácter «%s» impropio, se esperaba el carácter '=' después del nombre de "
 "atributo «%s» del elemento «%s»"
 
-#: ../glib/gmarkup.c:1306
+#: ../glib/gmarkup.c:1350
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3667,25 +3675,25 @@ msgstr ""
 "etiqueta de inicio del elemento «%s» u opcionalmente un atributo; tal vez "
 "utilizó un carácter que no es válido en un nombre de atributo"
 
-#: ../glib/gmarkup.c:1350
+#: ../glib/gmarkup.c:1394
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
-"después del signo igual al darle valor al atributo «%s» del elemento «%s»"
+"Carácter «%s» impropio, se esperaba una marca de apertura de comillas después "
+"del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
-#: ../glib/gmarkup.c:1483
+#: ../glib/gmarkup.c:1527
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
-"no debe iniciar un nombre de elemento"
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  no "
+"debe iniciar un nombre de elemento"
 
-#: ../glib/gmarkup.c:1519
+#: ../glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -3694,27 +3702,27 @@ msgstr ""
 "«%s» no es un carácter válido a continuación del nombre del elemento de "
 "cierre «%s»; el carácter permitido es '>'"
 
-#: ../glib/gmarkup.c:1530
+#: ../glib/gmarkup.c:1574
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 
-#: ../glib/gmarkup.c:1539
+#: ../glib/gmarkup.c:1583
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es "
-"«%s»"
+"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es «%"
+"s»"
 
-#: ../glib/gmarkup.c:1707
+#: ../glib/gmarkup.c:1751
 msgid "Document was empty or contained only whitespace"
 msgstr "El documento estaba vacío o sólo contenía espacios en blanco"
 
-#: ../glib/gmarkup.c:1721
+#: ../glib/gmarkup.c:1765
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "El documento termina inesperadamente justo después de un '<'"
 
-#: ../glib/gmarkup.c:1729 ../glib/gmarkup.c:1774
+#: ../glib/gmarkup.c:1773 ../glib/gmarkup.c:1818
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -3723,7 +3731,7 @@ msgstr ""
 "El documento termina inesperadamente con elementos todavía abiertos - «%s» "
 "fue el último elemento abierto"
 
-#: ../glib/gmarkup.c:1737
+#: ../glib/gmarkup.c:1781
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -3732,21 +3740,21 @@ msgstr ""
 "El documento termina inesperadamente, se esperaba un carácter '>' "
 "finalizando la etiqueta <%s/>"
 
-#: ../glib/gmarkup.c:1743
+#: ../glib/gmarkup.c:1787
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El documento termina inesperadamente dentro de un nombre de elemento"
 
-#: ../glib/gmarkup.c:1749
+#: ../glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El documento termina inesperadamente dentro de un nombre de atributo"
 
-#: ../glib/gmarkup.c:1754
+#: ../glib/gmarkup.c:1798
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El documento terminó inesperadamente dentro de una etiqueta de apertura de "
 "elemento."
 
-#: ../glib/gmarkup.c:1760
+#: ../glib/gmarkup.c:1804
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -3754,18 +3762,18 @@ msgstr ""
 "El documento termina inesperadamente después de los signos igual que siguen "
 "al nombre de atributo; sin valor de atributo"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1811
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El documento termina inesperadamente dentro del valor de un atributo"
 
-#: ../glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1827
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "El documento termina inesperadamente dentro de la etiqueta de cierre del "
 "elemento «%s»"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1833
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El documento termina inesperadamente dentro de un comentario o instrucción "
@@ -4216,15 +4224,14 @@ msgstr ""
 #: ../glib/gshell.c:574
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: ../glib/gshell.c:581
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"El texto terminó antes de que se encontrase la comilla correspondiente con "
-"%c. (El texto era «%s»)"
+"El texto terminó antes de que se encontrase la comilla correspondiente con %"
+"c. (El texto era «%s»)"
 
 #: ../glib/gshell.c:593
 msgid "Text was empty (or contained only whitespace)"
@@ -4468,8 +4475,8 @@ msgstr "%.1f KB"
 
 #~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
 #~ msgstr ""
-#~ "El comando de línea «%s» finalizó con un estado de salida distinto de "
-#~ "cero %d: %s"
+#~ "El comando de línea «%s» finalizó con un estado de salida distinto de cero "
+#~ "%d: %s"
 
 #~ msgid "workspace limit for empty substrings reached"
 #~ msgstr "límite del espacio de trabajo cuando se alcanzan subcadenas vacías"
@@ -4568,8 +4575,7 @@ msgstr "%.1f KB"
 
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr ""
-#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura "
-#~ "«%s»"
+#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura «%s»"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -4705,8 +4711,8 @@ msgstr "%.1f KB"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Indica si se debe usar los valores de reserva encontrados al acortar el "
-#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los "
-#~ "ignora después del primero."
+#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los ignora "
+#~ "después del primero."
 
 #~ msgid "File descriptor"
 #~ msgstr "Descriptor del archivo"
