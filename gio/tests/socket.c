@@ -105,6 +105,12 @@ create_server (GSocketFamily family,
       fd = g_socket_get_fd (server);
       v6_only = 0;
       setsockopt (fd, IPPROTO_IPV6, IPV6_V6ONLY, &v6_only, sizeof (v6_only));
+      if (! g_socket_speaks_ipv4 (data->server))
+        {
+          g_object_unref (data->server);
+          g_slice_free (IPTestData, data);
+          return NULL;
+        }
     }
 #endif
 
@@ -547,6 +553,12 @@ test_ipv6_v4mapped (void)
   GInetAddress *iaddr;
 
   data = create_server (G_SOCKET_FAMILY_IPV6, v4mapped_server_thread, TRUE);
+
+  if (data == NULL)
+    {
+      g_test_message ("Test not run: not supported by the OS");
+      return;
+    }
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
 			 G_SOCKET_TYPE_STREAM,
