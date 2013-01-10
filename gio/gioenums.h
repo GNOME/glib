@@ -433,7 +433,7 @@ typedef enum {
  * @G_IO_ERROR_NOT_INITIALIZED: The object has not been initialized. Since 2.22
  * @G_IO_ERROR_ADDRESS_IN_USE: The requested address is already in use. Since 2.22
  * @G_IO_ERROR_PARTIAL_INPUT: Need more input to finish operation. Since 2.24
- * @G_IO_ERROR_INVALID_DATA: There input data was invalid. Since 2.24
+ * @G_IO_ERROR_INVALID_DATA: The input data was invalid. Since 2.24
  * @G_IO_ERROR_DBUS_ERROR: A remote object generated an error that
  *     doesn't correspond to a locally registered #GError error
  *     domain. Use g_dbus_error_get_remote_error() to extract the D-Bus
