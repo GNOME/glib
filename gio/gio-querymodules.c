@@ -136,6 +136,9 @@ main (gint   argc,
       return 1;
     }
 
+  /* Be defensive and ensure we're linked to GObject */
+  g_type_ensure (G_TYPE_OBJECT);
+
   for (i = 1; i < argc; i++)
     query_dir (argv[i]);
 
