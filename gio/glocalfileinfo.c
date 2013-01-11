@@ -1788,10 +1788,14 @@ _g_local_file_info_get (const char             *basename,
 #endif
 
 #ifndef G_OS_WIN32
-  if (basename != NULL &&
-      (basename[0] == '.' ||
-       file_is_hidden (path, basename)))
-    g_file_info_set_is_hidden (info, TRUE);
+  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
+					    G_FILE_ATTRIBUTE_ID_STANDARD_IS_HIDDEN))
+    {
+      if (basename != NULL &&
+          (basename[0] == '.' ||
+           file_is_hidden (path, basename)))
+        g_file_info_set_is_hidden (info, TRUE);
+    }
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&
       (stat_ok && S_ISREG (statbuf.st_mode)))
