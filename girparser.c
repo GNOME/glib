@@ -379,7 +379,8 @@ typedef struct {
 } IntegerAliasInfo;
 
 static IntegerAliasInfo integer_aliases[] = {
-  { "gchar",    SIZEOF_CHAR,      0 },
+  { "gchar",    SIZEOF_CHAR,      1 },
+  { "guchar",   SIZEOF_CHAR,      0 },
   { "gshort",   SIZEOF_SHORT,     1 },
   { "gushort",  SIZEOF_SHORT,     0 },
   { "gint",     SIZEOF_INT,       1 },
