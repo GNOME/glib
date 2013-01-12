@@ -74,6 +74,11 @@ Notes about GLib 2.36
   loading GLib as a dynamic module, you should be careful to avoid
   unloading it, then subsequently loading it again.  This never
   really worked before, but it is now explicitly undefined behavior.
+  Note that if g_type_init() was the only explicit use of a GObject
+  API and you are using linker flags such as --no-add-needed, then
+  you may have to artificially use some GObject call to keep the
+  linker from optimizing away -lgobject. We recommend to use
+  g_type_ensure (G_TYPE_OBJECT) for this purpose.
 
 * This release contains an incompatible change to the g_get_home_dir()
   function.  Previously, this function would effectively ignore the HOME
