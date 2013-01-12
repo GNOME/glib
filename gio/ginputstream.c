@@ -1136,6 +1136,11 @@ read_async_pollable (GPollableInputStream *stream,
   /* g_input_stream_real_read_async() unrefs task */
 }
 
+#define CAN_DO_NONBLOCKING_READS(stream) \
+  (G_IS_POLLABLE_INPUT_STREAM (stream) && \
+   g_pollable_input_stream_can_poll (G_POLLABLE_INPUT_STREAM (stream)))
+
+
 static void
 g_input_stream_real_read_async (GInputStream        *stream,
 				void                *buffer,
@@ -1155,8 +1160,7 @@ g_input_stream_real_read_async (GInputStream        *stream,
   op->buffer = buffer;
   op->count = count;
 
-  if (G_IS_POLLABLE_INPUT_STREAM (stream) &&
-      g_pollable_input_stream_can_poll (G_POLLABLE_INPUT_STREAM (stream)))
+  if (CAN_DO_NONBLOCKING_READS (stream))
     read_async_pollable (G_POLLABLE_INPUT_STREAM (stream), task);
   else
     g_task_run_in_thread (task, read_async_thread);
@@ -1200,8 +1204,6 @@ typedef struct {
   char buffer[8192];
   gsize count;
   gsize count_skipped;
-  gpointer user_data;
-  GAsyncReadyCallback callback;
 } SkipFallbackAsyncData;
 
 static void
@@ -1266,7 +1268,8 @@ g_input_stream_real_skip_async (GInputStream        *stream,
   task = g_task_new (stream, cancellable, callback, user_data);
   g_task_set_priority (task, io_priority);
 
-  if (class->read_async == g_input_stream_real_read_async)
+  if (class->read_async == g_input_stream_real_read_async &&
+      !CAN_DO_NONBLOCKING_READS (stream))
     {
       /* Read is thread-using async fallback.
        * Make skip use threads too, so that we can use a possible sync skip
@@ -1284,8 +1287,6 @@ g_input_stream_real_skip_async (GInputStream        *stream,
       data = g_new (SkipFallbackAsyncData, 1);
       data->count = count;
       data->count_skipped = 0;
-      data->callback = callback;
-      data->user_data = user_data;
       g_task_set_task_data (task, data, g_free);
       g_task_set_check_cancellable (task, FALSE);
       class->read_async (stream, data->buffer, MIN (8192, count), io_priority, cancellable,
