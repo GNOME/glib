@@ -806,8 +806,6 @@ gchar *g_utf8_collate_key_for_filename (const gchar *str,
 
 
 /* private */
-
-GLIB_AVAILABLE_IN_ALL
 gchar *_g_utf8_make_valid (const gchar *name);
 
 G_END_DECLS

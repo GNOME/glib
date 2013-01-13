@@ -65,6 +65,7 @@ G_BEGIN_DECLS
  * g_win32_. Or that was the idea at some time, but there is just one
  * of those:
  */
+GLIB_AVAILABLE_IN_ALL
 gint		g_win32_ftruncate	(gint		 f,
 					 guint		 size);
 #endif /* G_OS_WIN32 */
@@ -75,29 +76,34 @@ gint		g_win32_ftruncate	(gint		 f,
  * returns it as a string of the above form for use in forming file
  * names etc. The returned string should be deallocated with g_free().
  */
+GLIB_AVAILABLE_IN_ALL
 gchar* 		g_win32_getlocale  (void);
 
 /* Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The returned string should be deallocated
  * with g_free().
  */
+GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_error_message (gint error);
 
-#ifndef G_DISABLE_DEPRECATED
-
+#ifndef _WIN64
+GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_directory (const gchar *package,
 							    const gchar *dll_name);
 
+GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_subdirectory (const gchar *package,
 							       const gchar *dll_name,
 							       const gchar *subdir);
-
 #endif
 
+GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_get_package_installation_directory_of_module (gpointer hmodule);
 
+GLIB_AVAILABLE_IN_ALL
 guint		g_win32_get_windows_version (void);
 
+GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_locale_filename_from_utf8 (const gchar *utf8filename);
 
 /* As of GLib 2.14 we only support NT-based Windows */
@@ -114,8 +120,10 @@ G_END_DECLS
 #define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
 #endif
 
+GLIB_AVAILABLE_IN_ALL
 gchar *g_win32_get_package_installation_directory_utf8    (const gchar *package,
                                                            const gchar *dll_name);
+GLIB_AVAILABLE_IN_ALL
 gchar *g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
                                                            const gchar *dll_name,
                                                            const gchar *subdir);
