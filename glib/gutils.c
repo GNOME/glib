@@ -1071,7 +1071,7 @@ static gchar *g_prgname = NULL;
  * Returns: the name of the program. The returned string belongs 
  * to GLib and must not be modified or freed.
  */
-gchar*
+const gchar*
 g_get_prgname (void)
 {
   gchar* retval;
