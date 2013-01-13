@@ -78,6 +78,7 @@ typedef struct
   gint start, end;
 } SourceRef;
 
+G_GNUC_PRINTF(5, 0)
 static void
 parser_set_error_va (GError      **error,
                      SourceRef    *location,
@@ -105,6 +106,7 @@ parser_set_error_va (GError      **error,
   g_string_free (msg, TRUE);
 }
 
+G_GNUC_PRINTF(5, 6)
 static void
 parser_set_error (GError      **error,
                   SourceRef    *location,
@@ -130,6 +132,7 @@ typedef struct
 } TokenStream;
 
 
+G_GNUC_PRINTF(5, 6)
 static void
 token_stream_set_error (TokenStream  *stream,
                         GError      **error,
@@ -525,6 +528,7 @@ ast_free (AST *ast)
   ast->class->free (ast);
 }
 
+G_GNUC_PRINTF(5, 6)
 static void
 ast_set_error (AST          *ast,
                GError      **error,

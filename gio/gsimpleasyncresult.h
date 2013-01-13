@@ -110,7 +110,8 @@ void                g_simple_async_result_set_error_va     (GSimpleAsyncResult  
 							    GQuark                   domain,
 							    gint                     code,
 							    const char              *format,
-							    va_list                  args);
+							    va_list                  args)
+							    G_GNUC_PRINTF(4, 0);
 gboolean            g_simple_async_result_is_valid         (GAsyncResult            *result,
                                                             GObject                 *source,
                                                             gpointer                 source_tag);
@@ -121,7 +122,7 @@ void g_simple_async_report_error_in_idle  (GObject            *object,
 					   GQuark              domain,
 					   gint                code,
 					   const char         *format,
-					   ...);
+					   ...) G_GNUC_PRINTF(6, 7);
 void g_simple_async_report_gerror_in_idle (GObject            *object,
 					   GAsyncReadyCallback callback,
 					   gpointer            user_data,

@@ -1346,6 +1346,7 @@ handle_start_service_by_name (_GFreedesktopDBus *object,
   return TRUE;
 }
 
+G_GNUC_PRINTF(5, 6)
 static void
 return_error (Client *client, GDBusMessage *message,
 	      GQuark                 domain,

@@ -827,6 +827,7 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
  *
  * Since: 2.26
  */
+G_GNUC_PRINTF(3, 0)
 GDBusMessage *
 g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_message,
                                         const gchar              *error_name,

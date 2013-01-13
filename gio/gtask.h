@@ -61,7 +61,7 @@ void          g_task_report_new_error      (gpointer             source_object,
                                             GQuark               domain,
                                             gint                 code,
                                             const char          *format,
-                                            ...);
+                                            ...) G_GNUC_PRINTF(7, 8);
 
 GLIB_AVAILABLE_IN_2_36
 void          g_task_set_task_data         (GTask               *task,

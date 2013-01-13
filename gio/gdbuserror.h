@@ -87,12 +87,12 @@ void     g_dbus_error_set_dbus_error        (GError         **error,
                                              const gchar     *dbus_error_name,
                                              const gchar     *dbus_error_message,
                                              const gchar     *format,
-                                             ...);
+                                             ...) G_GNUC_PRINTF(4, 5);
 void     g_dbus_error_set_dbus_error_valist (GError         **error,
                                              const gchar     *dbus_error_name,
                                              const gchar     *dbus_error_message,
                                              const gchar     *format,
-                                             va_list          var_args);
+                                             va_list          var_args) G_GNUC_PRINTF(4, 0);
 gchar   *g_dbus_error_encode_gerror         (const GError    *error);
 
 G_END_DECLS

@@ -46,7 +46,7 @@ G_BEGIN_DECLS
 /* calculate a string size, guaranteed to fit format + args.
  */
 gsize	g_printf_string_upper_bound (const gchar* format,
-				     va_list	  args);
+				     va_list	  args) G_GNUC_PRINTF(1, 0);
 
 /* Log level shift offset for user defined
  * log levels (0-7 are used by GLib).
@@ -101,7 +101,7 @@ void            g_log                   (const gchar    *log_domain,
 void            g_logv                  (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
                                          const gchar    *format,
-                                         va_list         args);
+                                         va_list         args) G_GNUC_PRINTF(3, 0);
 GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
                                          GLogLevelFlags  fatal_mask);
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);

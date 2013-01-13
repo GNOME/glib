@@ -469,6 +469,7 @@ keyring_lookup_entry (const gchar  *cookie_context,
 }
 
 /* function for logging important events that the system administrator should take notice of */
+G_GNUC_PRINTF(1, 2)
 static void
 _log (const gchar *message,
       ...)

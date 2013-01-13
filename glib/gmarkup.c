@@ -403,6 +403,7 @@ set_error_literal (GMarkupParseContext  *context,
   g_propagate_error (error, tmp_error);
 }
 
+G_GNUC_PRINTF(4, 5)
 static void
 set_error (GMarkupParseContext  *context,
            GError              **error,
@@ -564,6 +565,7 @@ utf8_str (const gchar *utf8,
   return buf;
 }
 
+G_GNUC_PRINTF(5, 6)
 static void
 set_unescape_error (GMarkupParseContext  *context,
                     GError              **error,

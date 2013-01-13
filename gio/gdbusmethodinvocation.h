@@ -55,12 +55,13 @@ void                   g_dbus_method_invocation_return_error         (GDBusMetho
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
-                                                                      ...);
+                                                                      ...) G_GNUC_PRINTF(4, 5);
 void                   g_dbus_method_invocation_return_error_valist  (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
                                                                       const gchar           *format,
-                                                                      va_list                var_args);
+                                                                      va_list                var_args)
+                                                                      G_GNUC_PRINTF(4, 0);
 void                   g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation,
                                                                       GQuark                 domain,
                                                                       gint                   code,
