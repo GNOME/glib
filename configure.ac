@@ -3573,7 +3573,7 @@ CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
    -Werror=pointer-arith -Werror=init-self -Werror=format-security \
    -Werror=format=2 -Werror=missing-include-dirs])
-CFLAGS="$CFLAGS $with_cflags"
+CFLAGS="$with_cflags $CFLAGS"
 
 #
 # Define variables corresponding to the correct include paths to use for
