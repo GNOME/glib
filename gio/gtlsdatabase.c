@@ -908,8 +908,8 @@ g_tls_database_lookup_certificates_issued_by_async (GTlsDatabase           *self
  * Finish an asynchronous lookup of certificates. See
  * g_tls_database_lookup_certificates_issued_by() for more information.
  *
- * Return value: (transfer full): a newly allocated list of #GTlsCertificate objects.
- * Use g_object_unref() on each certificate, and g_list_free() on the release the list.
+ * Return value: (transfer full) (element-type GTlsCertificate): a newly allocated list of #GTlsCertificate
+ * objects. Use g_object_unref() on each certificate, and g_list_free() on the release the list.
  *
  * Since: 2.30
  */
