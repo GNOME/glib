@@ -187,7 +187,8 @@ gint                  g_snprintf           (gchar       *string,
 gint                  g_vsnprintf          (gchar       *string,
 					    gulong       n,
 					    gchar const *format,
-					    va_list      args);
+					    va_list      args)
+					    G_GNUC_PRINTF(3, 0);
 
 void                  g_nullify_pointer    (gpointer    *nullify_location);
 

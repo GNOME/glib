@@ -96,6 +96,7 @@ unichar_test (gconstpointer d)
   escape_test (&t);
 }
 
+G_GNUC_PRINTF(1, 3)
 static void
 test_format (const gchar *format,
 	     const gchar *expected,

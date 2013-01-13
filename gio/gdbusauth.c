@@ -46,6 +46,7 @@
 
 #include "glibintl.h"
 
+G_GNUC_PRINTF(1, 2)
 static void
 debug_print (const gchar *message, ...)
 {

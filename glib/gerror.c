@@ -645,6 +645,7 @@ g_clear_error (GError **err)
     }
 }
 
+G_GNUC_PRINTF(2, 0)
 static void
 g_error_add_prefix (gchar       **string,
                     const gchar  *format,

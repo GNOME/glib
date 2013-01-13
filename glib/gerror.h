@@ -60,7 +60,7 @@ GError*  g_error_new_literal   (GQuark         domain,
 GError*  g_error_new_valist    (GQuark         domain,
                                 gint           code,
                                 const gchar   *format,
-                                va_list        args);
+                                va_list        args) G_GNUC_PRINTF(3, 0);
 
 void     g_error_free          (GError        *error);
 GError*  g_error_copy          (const GError  *error);

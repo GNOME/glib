@@ -109,13 +109,15 @@ GString*     g_string_ascii_down        (GString         *string);
 GString*     g_string_ascii_up          (GString         *string);
 void         g_string_vprintf           (GString         *string,
                                          const gchar     *format,
-                                         va_list          args);
+                                         va_list          args)
+                                         G_GNUC_PRINTF(2, 0);
 void         g_string_printf            (GString         *string,
                                          const gchar     *format,
                                          ...) G_GNUC_PRINTF (2, 3);
 void         g_string_append_vprintf    (GString         *string,
                                          const gchar     *format,
-                                         va_list          args);
+                                         va_list          args)
+                                         G_GNUC_PRINTF(2, 0);
 void         g_string_append_printf     (GString         *string,
                                          const gchar     *format,
                                          ...) G_GNUC_PRINTF (2, 3);

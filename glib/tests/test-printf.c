@@ -942,6 +942,7 @@ _Pragma ("GCC diagnostic pop")
 #endif
 }
 
+G_GNUC_PRINTF(1, 2)
 static gsize
 upper_bound (const gchar *format, ...)
 {
