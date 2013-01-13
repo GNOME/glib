@@ -136,7 +136,8 @@ g_input_stream_init (GInputStream *stream)
 /**
  * g_input_stream_read:
  * @stream: a #GInputStream.
- * @buffer: a buffer to read data into (which should be at least count bytes long).
+ * @buffer: (array length=count) (element-type guint8): a buffer to
+ *     read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -213,7 +214,8 @@ g_input_stream_read  (GInputStream  *stream,
 /**
  * g_input_stream_read_all:
  * @stream: a #GInputStream.
- * @buffer: a buffer to read data into (which should be at least count bytes long).
+ * @buffer: (array length=count) (element-type guint8): a buffer to
+ *     read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
  * @bytes_read: (out): location to store the number of bytes that was read from the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
@@ -546,7 +548,8 @@ async_ready_close_callback_wrapper (GObject      *source_object,
 /**
  * g_input_stream_read_async:
  * @stream: A #GInputStream.
- * @buffer: a buffer to read data into (which should be at least count bytes long).
+ * @buffer: (array length=count) (element-type guint8): a buffer to
+ *     read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 

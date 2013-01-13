@@ -152,8 +152,8 @@ g_action_map_remove_action (GActionMap  *action_map,
 /**
  * g_action_map_add_action_entries:
  * @action_map: a #GActionMap
- * @entries: a pointer to the first item in an array of #GActionEntry
- *           structs
+ * @entries: (array length=n_entries) (element-type GActionEntry): a pointer to
+ *           the first item in an array of #GActionEntry structs
  * @n_entries: the length of @entries, or -1 if @entries is %NULL-terminated
  * @user_data: the user data for signal connections
  *

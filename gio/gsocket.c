@@ -2379,8 +2379,8 @@ g_socket_get_available_bytes (GSocket *socket)
 /**
  * g_socket_receive:
  * @socket: a #GSocket
- * @buffer: a buffer to read data into (which should be at least @size
- *     bytes long).
+ * @buffer: (array length=size) (element-type guint8): a buffer to
+ *     read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -2429,8 +2429,8 @@ g_socket_receive (GSocket       *socket,
 /**
  * g_socket_receive_with_blocking:
  * @socket: a #GSocket
- * @buffer: a buffer to read data into (which should be at least @size
- *     bytes long).
+ * @buffer: (array length=size) (element-type guint8): a buffer to
+ *     read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @blocking: whether to do blocking or non-blocking I/O
  * @cancellable: (allow-none): a %GCancellable or %NULL
