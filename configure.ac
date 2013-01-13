@@ -3572,7 +3572,7 @@ CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
    -Wall -Wstrict-prototypes -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
    -Werror=pointer-arith -Werror=init-self -Werror=format-security \
-   -Werror=format=2 -Werror=missing-include-dirs])
+   -Werror=format-nonliteral -Werror=format-y2k -Werror=missing-include-dirs])
 CFLAGS="$with_cflags $CFLAGS"
 
 #
