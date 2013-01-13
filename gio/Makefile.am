@@ -23,10 +23,6 @@ install-ms-lib:
 uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
-gio.def: gio.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gio.def.tmp && \
-	  mv $(builddir)/gio.def.tmp $(builddir)/gio.def
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
 TESTS = abicheck.sh
@@ -494,28 +490,16 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/gio.def
-gio_def = gio.def
-
 gio_win32_res = gio-win32-res.o
 gio_win32_res_ldflag = -Wl,$(gio_win32_res)
-
-install-def-file:
-	$(INSTALL) $(builddir)/gio.def $(DESTDIR)$(libdir)/gio-2.0.def
-
-uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/gio-2.0.def
 else
-install-def-file:
-uninstall-def-file:
-
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
-install-data-local: install-ms-lib install-def-file
+install-data-local: install-ms-lib
 	$(mkinstalldirs) $(DESTDIR)$(GIO_MODULE_DIR)
 
-uninstall-local: uninstall-ms-lib uninstall-def-file
+uninstall-local: uninstall-ms-lib
 
 libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \

@@ -18,9 +18,6 @@ AM_CPPFLAGS = 					\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
 
-gobject.def: gobject.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > $(builddir)/gobject.def
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
 TESTS = abicheck.sh
@@ -52,21 +49,9 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/gobject.def
-gobject_def = gobject.def
-
 gobject_win32_res = gobject-win32-res.o
 gobject_win32_res_ldflag = -Wl,$(gobject_win32_res)
-
-install-def-file:
-	$(INSTALL) $(builddir)/gobject.def $(DESTDIR)$(libdir)/gobject-2.0.def
-
-uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/gobject-2.0.def
 else
-install-def-file:
-uninstall-def-file:
-
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
@@ -81,7 +66,7 @@ libgobject_2_0_la_CFLAGS = $(LIBFFI_CFLAGS)
 
 libgobject_2_0_la_LIBADD = $(libglib) $(LIBFFI_LIBS)
 
-libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
+libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res)
 
 #
 # setup source file variables
@@ -280,9 +265,9 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin >$@
 	rm libgobject.vs10.sourcefiles.filters
 
-install-data-local: install-ms-lib install-def-file
+install-data-local: install-ms-lib
 
-uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
+uninstall-local: uninstall-ms-lib uninstall-gdb
 
 distclean-local:
 	if test $(srcdir) = .; then :; else \

@@ -49,9 +49,6 @@ AM_CPPFLAGS = 				\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 
-glib.def: glib.symbols
-	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > $(builddir)/glib.def
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
 TESTS_ENVIRONMENT = GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)"
@@ -335,36 +332,23 @@ CLEANFILES += glib-public-headers.txt
 
 all-local: glib-public-headers.txt
 
-install-data-local: install-ms-lib install-def-file
+install-data-local: install-ms-lib
 	@if test -f $(glibincludedir)/glist.h ; then					\
 	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
 	  echo "*** contents of this directory and type 'make install' again." ;	\
 	  false ;									\
 	fi
 
-uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
+uninstall-local: uninstall-ms-lib uninstall-gdb
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
-export_symbols = -export-symbols $(builddir)/glib.def
-
 glib_win32_res = glib-win32-res.o
 glib_win32_res_ldflag = -Wl,$(glib_win32_res)
-
-glib_def = glib.def
-
-install-def-file:
-	$(INSTALL) $(builddir)/glib.def $(DESTDIR)$(libdir)/glib-2.0.def
-
-uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/glib-2.0.def
 else
-install-def-file:
-uninstall-def-file:
-
 export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
