@@ -36,10 +36,10 @@ static gboolean kt_debug_enabled = FALSE;
 #define KT_W if (kt_debug_enabled) g_warning
 
 static GQueue pick_up_fds_queue = G_QUEUE_INIT;
-G_GNUC_INTERNAL G_LOCK_DEFINE (pick_up_lock);
+G_LOCK_DEFINE_STATIC (pick_up_lock);
 
 static GSList *remove_fds_list = NULL;
-G_GNUC_INTERNAL G_LOCK_DEFINE (remove_lock);
+G_LOCK_DEFINE_STATIC (remove_lock);
 
 /* GIO does not have analogues for NOTE_LINK and(?) NOTE_REVOKE, so
  * we do not ask kqueue() to watch for these events for now. */

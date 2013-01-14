@@ -35,7 +35,7 @@ static gboolean km_debug_enabled = FALSE;
 #define KM_W if (km_debug_enabled) g_warning
 
 static GSList *missing_subs_list = NULL;
-G_GNUC_INTERNAL G_LOCK_DEFINE (missing_lock);
+G_LOCK_DEFINE_STATIC (missing_lock);
 
 static volatile gboolean scan_missing_running = FALSE;
 static on_create_cb file_appeared_callback;

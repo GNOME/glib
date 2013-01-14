@@ -43,10 +43,8 @@
 static gboolean kh_debug_enabled = FALSE;
 #define KH_W if (kh_debug_enabled) g_warning
 
-G_GNUC_INTERNAL G_LOCK_DEFINE (kqueue_lock);
-
 static GHashTable *subs_hash_table = NULL;
-G_GNUC_INTERNAL G_LOCK_DEFINE (hash_lock);
+G_LOCK_DEFINE_STATIC (hash_lock);
 
 static int kqueue_descriptor = -1;
 static int kqueue_socket_pair[] = {-1, -1};
