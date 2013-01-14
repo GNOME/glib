@@ -2007,10 +2007,18 @@ g_win32_ftruncate
 <FILE>gunix</FILE>
 G_UNIX_ERROR
 g_unix_open_pipe
+g_unix_set_fd_nonblocking
+
+<SUBSECTION>
 g_unix_signal_add
 g_unix_signal_add_full
 g_unix_signal_source_new
-g_unix_set_fd_nonblocking
+
+<SUBSECTION>
+GUnixFdSourceFunc
+g_unix_fd_add
+g_unix_fd_add_full
+g_unix_fd_source_new
 
 <SUBSECTION Private>
 g_unix_error_quark

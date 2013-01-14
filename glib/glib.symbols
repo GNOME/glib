@@ -1641,6 +1641,9 @@ g_unix_set_fd_nonblocking
 g_unix_signal_add
 g_unix_signal_add_full
 g_unix_signal_source_new
+g_unix_fd_add
+g_unix_fd_add_full
+g_unix_fd_source_new
 #endif
 g_ascii_table
 g_utf8_skip

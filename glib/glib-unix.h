@@ -85,6 +85,39 @@ guint    g_unix_signal_add         (gint        signum,
                                     GSourceFunc handler,
                                     gpointer    user_data);
 
+/**
+ * GUnixFDSourceFunc:
+ * @fd: the fd that triggered the event
+ * @condition: the IO conditions reported on @fd
+ * @user_data: user data passed to g_unix_fd_add()
+ *
+ * The type of functions to be called when a UNIX fd watch source
+ * triggers.
+ *
+ * Returns: %FALSE if the source should be removed
+ **/
+typedef gboolean (*GUnixFDSourceFunc) (gint         fd,
+                                       GIOCondition condition,
+                                       gpointer     user_data);
+
+GLIB_AVAILABLE_IN_2_36
+GSource *g_unix_fd_source_new      (gint         fd,
+                                    GIOCondition condition);
+
+GLIB_AVAILABLE_IN_2_36
+guint    g_unix_fd_add_full        (gint              priority,
+                                    gint              fd,
+                                    GIOCondition      condition,
+                                    GUnixFDSourceFunc function,
+                                    gpointer          user_data,
+                                    GDestroyNotify    notify);
+
+GLIB_AVAILABLE_IN_2_36
+guint    g_unix_fd_add             (gint              fd,
+                                    GIOCondition      condition,
+                                    GUnixFDSourceFunc function,
+                                    gpointer          user_data);
+
 G_END_DECLS
 
 #endif  /* __G_UNIX_H__ */
