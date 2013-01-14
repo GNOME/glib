@@ -88,7 +88,9 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     be -1 if all sources returned -1, or it will be the minimum of all the
  *     @timeout_ values returned which were >= 0.  Since 2.36 this may
  *     be %NULL, in which case the effect is as if the function always
- *     returns %FALSE with a timeout of -1.
+ *     returns %FALSE with a timeout of -1.  If @prepare returns a
+ *     timeout and the source also has a 'ready time' set then the
+ *     nearer of the two will be used.
  * @check: Called after all the file descriptors are polled. The source
  *     should return %TRUE if it is ready to be dispatched. Note that some
  *     time may have passed since the previous prepare function was called,
@@ -462,6 +464,11 @@ GLIB_AVAILABLE_IN_ALL
 void                 g_source_set_name_by_id (guint           tag,
                                               const char     *name);
 
+GLIB_AVAILABLE_IN_2_36
+void                 g_source_set_ready_time (GSource        *source,
+                                              gint64          ready_time);
+GLIB_AVAILABLE_IN_2_36
+gint64               g_source_get_ready_time (GSource        *source);
 
 /* Used to implement g_source_connect_closure and internally*/
 GLIB_AVAILABLE_IN_ALL
