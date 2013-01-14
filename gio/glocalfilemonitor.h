@@ -53,7 +53,9 @@ struct _GLocalFileMonitorClass
   gboolean (* is_supported) (void);
 };
 
+#ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_ALL
+#endif
 GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,
