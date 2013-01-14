@@ -10,7 +10,6 @@ AM_CPPFLAGS = 				\
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
 		gmoduleconf.h.in 	\
-		gmodule.symbols		\
 		gmodule-dl.c		\
 		gmodule-dld.c		\
 		gmodule-dyld.c		\

@@ -49,13 +49,6 @@ AM_CPPFLAGS = 				\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS_ENVIRONMENT = GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)"
-TESTS = abicheck.sh
-endif
-endif
-
 MIRRORING_TAB_SOURCE = 				\
 	glib-mirroring-tab/Makefile 		\
 	glib-mirroring-tab/gen-mirroring-tab.c	\
@@ -71,8 +64,6 @@ EXTRA_DIST += 			\
 	gen-unicode-tables.pl	\
 	gen-script-table.pl	\
 	glibconfig.h.win32.in	\
-	abicheck.sh		\
-	glib.symbols		\
 	gregex.c		\
 	gregex.h		\
 	win_iconv.c		\

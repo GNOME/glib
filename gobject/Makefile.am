@@ -18,12 +18,6 @@ AM_CPPFLAGS = 					\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
 
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh
-endif
-endif
-
 libglib = $(top_builddir)/glib/libglib-2.0.la
 
 # libraries to compile and install
@@ -141,8 +135,7 @@ endif
 # their own .lo rules and don't get publically installed
 gobject_extra_sources = \
 	gmarshal.list		\
-	gmarshal.strings	\
-	gobject.symbols
+	gmarshal.strings
 
 
 #

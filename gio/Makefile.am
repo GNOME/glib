@@ -23,12 +23,6 @@ install-ms-lib:
 uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
-if OS_LINUX
-if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh
-endif
-endif
-
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"			\
 	$(gmodule_INCLUDES)				\
@@ -633,11 +627,9 @@ BUILT_SOURCES = 		\
 
 EXTRA_DIST += 			\
 	data-to-c.pl		\
-	gio.symbols		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
 	makefile.msc		\
-	abicheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
 	gconstructor_as_data.h	\
