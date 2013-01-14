@@ -66,15 +66,6 @@ assert_ten_objects (GDBusObjectManager *manager)
   g_list_free_full (objects, g_object_unref);
 }
 
-static gboolean
-quit_loop (gconstpointer data)
-{
-  GMainLoop *loop = (GMainLoop *)data;
-
-  g_main_loop_quit (loop);
-  return FALSE;
-}
-
 static void
 test_gtest_dbus (TestFixture *fixture, gconstpointer unused)
 {
