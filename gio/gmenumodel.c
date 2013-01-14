@@ -303,7 +303,7 @@ g_menu_attribute_hash_iter_class_init (GMenuAttributeHashIterClass *class)
 G_DEFINE_ABSTRACT_TYPE (GMenuModel, g_menu_model, G_TYPE_OBJECT)
 
 
-guint g_menu_model_items_changed_signal;
+static guint g_menu_model_items_changed_signal;
 
 static GMenuAttributeIter *
 g_menu_model_real_iterate_item_attributes (GMenuModel *model,

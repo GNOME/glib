@@ -1730,7 +1730,6 @@ g_menu_model_get_n_items
 g_menu_model_get_type
 g_menu_model_is_mutable
 g_menu_model_items_changed
-g_menu_model_items_changed_signal
 g_menu_model_iterate_item_attributes
 g_menu_model_iterate_item_links
 g_menu_new
