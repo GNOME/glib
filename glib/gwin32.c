@@ -575,3 +575,125 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
     }
   return retval;
 }
+
+typedef struct
+{
+  GSource source;
+
+  HANGLE  handle;
+} GWin32HandleSource;
+
+static gboolean
+g_win32_handle_source_dispatch (GSource     *source,
+                                GSourceFunc  callback,
+                                gpointer     user_data)
+{
+  GWin32HandleSource *handle_source = (GWin32HandleSource *) source;
+  GWin32HandleSourceFunc func = (GWin32HandleSourceFunc) callback;
+
+  if (!callback)
+    {
+      g_warning ("GWin32HandleSource dispatched without callback\n"
+                 "You must call g_source_set_callback().");
+      return FALSE;
+    }
+
+  return (* func) (handle_source->handle, user_data);
+}
+
+
+/**
+ * g_win32_handle_source_new:
+ * @handle: a HANDLE
+ *
+ * Creates a #GSource to watch for @handle being signalled.
+ *
+ * Returns: the newly created #GSource
+ *
+ * Since: 2.36
+ **/
+GSource *
+g_win32_handle_source_new (HANDLE handle)
+{
+  static GSourceFuncs source_funcs = {
+    NULL, NULL, g_win32_handle_source_dispatch, NULL
+  };
+  GWin32HandleSource *handle_source;
+  GSource *source;
+
+  source = g_source_new (&source_funcs, sizeof (GWin32HandleSource));
+  handle_source = (GWin32HandleSource *) source;
+
+  handle_source->handle = handle;
+
+  return source;
+}
+
+/**
+ * g_win32_handle_add_full:
+ * @priority: the priority of the source
+ * @handle: a HANDLE
+ * @function: a #GWin32HandleSourceFunc
+ * @user_data: data to pass to @function
+ * @notify: function to call when the idle is removed, or %NULL
+ *
+ * Sets a function to be called when @handle becomes signalled.
+ *
+ * This is the same as g_win32_handle_add(), except that it allows you to
+ * specify a non-default priority and a provide a #GDestroyNotify for
+ * @user_data.
+ *
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.36
+ **/
+guint
+g_win32_handle_add_full (gint                   priority,
+                         HANDLE                 handle,
+                         GWin32HandleSourceFunc function,
+                         gpointer               user_data,
+                         GDestroyNotify         notify)
+{
+  GSource *source;
+  guint id;
+
+  g_return_val_if_fail (function != NULL, 0);
+
+  source = g_win32_handle_source_new (handle);
+
+  if (priority != G_PRIORITY_DEFAULT)
+    g_source_set_priority (source, priority);
+
+  g_source_set_callback (source, (GSourceFunc) function, user_data, notify);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
+}
+
+/**
+ * g_win32_handle_add:
+ * @handle: a HANDLE
+ * @function: a #GPollFDFunc
+ * @user_data: data to pass to @function
+ *
+ * Sets a function to be called when @handle becomes signalled.
+ *
+ * The function is expected to clear whatever event caused the handle to
+ * be signalled and return %TRUE in order to be notified when it happens
+ * again.  If @function returns %FALSE then the watch will be cancelled.
+ *
+ * The return value of this function can be passed to g_source_remove()
+ * to cancel the watch at any time that it exists.
+ *
+ * Returns: the ID (greater than 0) of the event source
+ *
+ * Since: 2.36
+ **/
+guint
+g_win32_handle_add (HANDLE                 handle,
+                    GWin32HandleSourceFunc function,
+                    gpointer               user_data)
+{
+  return g_win32_handle_add_full (G_PRIORITY_DEFAULT, handle, function, user_data, NULL);
+}

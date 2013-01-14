@@ -318,10 +318,6 @@ struct _GSourcePrivate
   GSource *parent_source;
 
   gint64 ready_time;
-
-  /* This is currently only used on UNIX, but we always declare it (and
-   * let it remain empty on Windows) to avoid #ifdef all over the place.
-   */
   GSList *fds;
 };
 
@@ -2411,7 +2407,134 @@ g_source_query_unix_fd (GSource  *source,
 
   return poll_fd->revents;
 }
-#endif /* G_OS_UNIX */
+#else /* G_OS_UNIX */
+/**
+ * g_source_add_win32_handle:
+ * @source: a #GSource
+ * @handle: the HANDLE to monitor
+ * @events: an event mask
+ *
+ * Monitors @handle for the signalled state.
+ *
+ * The tag returned by this function can be used to remove the handle
+ * using g_source_remove_win32_handle().  It is not necessary to remove
+ * the handle before destroying the source; it will be cleaned up
+ * automatically.
+ *
+ * This function is only available on Windows.
+ *
+ * Returns: an opaque tag
+ *
+ * Since: 2.36
+ **/
+gpointer
+g_source_add_handle (GSource      *source,
+                     HANDLE        handle)
+{
+  GMainContext *context;
+  GPollFD *poll_fd;
+
+  g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
+
+  poll_fd = g_new (GPollFD, 1);
+  poll_fd->fd = (gssize) handle;
+  poll_fd->events = G_IO_IN;
+  poll_fd->revents = 0;
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  source->priv->fds = g_slist_prepend (source->priv->fds, poll_fd);
+
+  if (context)
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_add_poll_unlocked (context, source->priority, poll_fd);
+      UNLOCK_CONTEXT (context);
+    }
+
+  return poll_fd;
+}
+
+/**
+ * g_source_remove_win32_handle:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_win32_handle()
+ *
+ * Reverses the effect of a previous call to g_source_add_win32_handle().
+ *
+ * You only need to call this if you want to remove a handle from being
+ * watched while keeping the same source around.  In the normal case you
+ * will just want to destroy the source.
+ *
+ * This function is only available on Windows.
+ *
+ * Since: 2.36
+ **/
+void
+g_source_remove_win32_handle (GSource  *source,
+                              gpointer  tag)
+{
+  GMainContext *context;
+  GPollFD *poll_fd;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_slist_find (source->priv->fds, tag));
+
+  context = source->context;
+  poll_fd = tag;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  source->priv->fds = g_slist_remove (source->priv->fds, poll_fd);
+
+  if (context)
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_remove_poll_unlocked (context, poll_fd);
+
+      UNLOCK_CONTEXT (context);
+    }
+
+  g_free (poll_fd);
+}
+
+/**
+ * g_source_query_win32_handle:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_win32_handle()
+ *
+ * Queries the events reported for the HANDLE corresponding to @tag on
+ * @source during the last poll.
+ *
+ * The return value of this function is only defined when the function
+ * is called from the check or dispatch functions for @source.
+ *
+ * This function is only available on Windows.
+ *
+ * Returns: %TRUE if the handle is signalled
+ *
+ * Since: 2.36
+ **/
+gboolean
+g_source_query_win32_handle (GSource  *source,
+                             gpointer  tag)
+{
+  GPollFD *poll_fd;
+
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_slist_find (source->priv->fds, tag), 0);
+
+  poll_fd = tag;
+
+  return (poll_fd->revents & G_IO_IN) != 0;
+}
+
+#endif /* !G_OS_UNIX */
 
 /**
  * g_get_current_time:

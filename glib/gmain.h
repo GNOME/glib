@@ -28,6 +28,10 @@
 #include <glib/gslist.h>
 #include <glib/gthread.h>
 
+#ifndef G_OS_UNIX
+#include <windows.h>
+#endif
+
 G_BEGIN_DECLS
 
 typedef enum /*< flags >*/
@@ -485,7 +489,17 @@ void                 g_source_remove_unix_fd (GSource        *source,
 GLIB_AVAILABLE_IN_2_36
 GIOCondition         g_source_query_unix_fd  (GSource        *source,
                                               gpointer        tag);
-#endif
+#else /* G_OS_UNIX */
+GLIB_AVAILABLE_IN_2_36
+gpointer             g_source_add_win32_handle    (GSource        *source,
+                                                   HANDLE          handle);
+GLIB_AVAILABLE_IN_2_36
+void                 g_source_remove_win32_handle (GSource        *source,
+                                                   gpointer        tag);
+GLIB_AVAILABLE_IN_2_36
+gboolean             g_source_query_win32_handle  (GSource        *source,
+                                                   gpointer        tag);
+#endif /* !G_OS_UNIX */
 
 /* Used to implement g_source_connect_closure and internally*/
 GLIB_AVAILABLE_IN_ALL

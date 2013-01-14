@@ -31,7 +31,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gtypes.h>
+#include <glib/gmain.h>
 
 #ifdef G_PLATFORM_WIN32
 
@@ -127,6 +127,34 @@ GLIB_AVAILABLE_IN_ALL
 gchar *g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
                                                            const gchar *dll_name,
                                                            const gchar *subdir);
+
+/**
+ * GWin32HandleSourceFunc:
+ * @handle: the HANDLE that triggered the event
+ * @user_data: user data passed to g_win32_handle_add()
+ *
+ * The type of functions to be called when a Windows HANDLE watch source
+ * triggers.
+ *
+ * Returns: %FALSE if the source should be removed
+ **/
+typedef gboolean (*GWin32HandleSourceFunc) (HANDLE   handle,
+                                            gpointer user_data);
+
+GLIB_AVAILABLE_IN_2_36
+GSource *g_win32_handle_source_new      (HANDLE                 handle);
+
+GLIB_AVAILABLE_IN_2_36
+guint    g_win32_handle_add_full        (gint                   priority,
+                                         HANDLE                 handle,
+                                         GWin32HandleSourceFunc function,
+                                         gpointer               user_data,
+                                         GDestroyNotify         notify);
+
+GLIB_AVAILABLE_IN_2_36
+guint    g_win32_handle_add             (HANDLE                 handle,
+                                         GWin32HandleSourceFunc function,
+                                         gpointer               user_data);
 
 #endif /* G_OS_WIN32 */
 
