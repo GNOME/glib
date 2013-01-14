@@ -470,6 +470,23 @@ void                 g_source_set_ready_time (GSource        *source,
 GLIB_AVAILABLE_IN_2_36
 gint64               g_source_get_ready_time (GSource        *source);
 
+#ifdef G_OS_UNIX
+GLIB_AVAILABLE_IN_2_36
+gpointer             g_source_add_unix_fd    (GSource        *source,
+                                              gint            fd,
+                                              GIOCondition    events);
+GLIB_AVAILABLE_IN_2_36
+void                 g_source_modify_unix_fd (GSource        *source,
+                                              gpointer        tag,
+                                              GIOCondition    new_events);
+GLIB_AVAILABLE_IN_2_36
+void                 g_source_remove_unix_fd (GSource        *source,
+                                              gpointer        tag);
+GLIB_AVAILABLE_IN_2_36
+GIOCondition         g_source_query_unix_fd  (GSource        *source,
+                                              gpointer        tag);
+#endif
+
 /* Used to implement g_source_connect_closure and internally*/
 GLIB_AVAILABLE_IN_ALL
 void g_source_set_callback_indirect (GSource              *source,

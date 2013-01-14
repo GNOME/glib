@@ -318,6 +318,11 @@ struct _GSourcePrivate
   GSource *parent_source;
 
   gint64 ready_time;
+
+  /* This is currently only used on UNIX, but we always declare it (and
+   * let it remain empty on Windows) to avoid #ifdef all over the place.
+   */
+  GSList *fds;
 };
 
 typedef struct _GSourceIter
@@ -1116,6 +1121,9 @@ g_source_attach_unlocked (GSource      *source,
       tmp_list = tmp_list->next;
     }
 
+  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+    g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
+
   tmp_list = source->priv->child_sources;
   while (tmp_list)
     {
@@ -1201,6 +1209,9 @@ g_source_destroy_internal (GSource      *source,
 	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
 	      tmp_list = tmp_list->next;
 	    }
+
+          for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+            g_main_context_remove_poll_unlocked (context, tmp_list->data);
 	}
 
       while (source->priv->child_sources)
@@ -1295,12 +1306,16 @@ g_source_get_context (GSource *source)
  * @source:a #GSource 
  * @fd: a #GPollFD structure holding information about a file
  *      descriptor to watch.
- * 
+ *
  * Adds a file descriptor to the set of file descriptors polled for
  * this source. This is usually combined with g_source_new() to add an
  * event source. The event source's check function will typically test
  * the @revents field in the #GPollFD struct and return %TRUE if events need
  * to be processed.
+ *
+ * Using this API forces the linear scanning of event sources on each
+ * main loop iteration.  Newly-written event sources should try to use
+ * g_source_add_unix_fd() instead of this API.
  **/
 void
 g_source_add_poll (GSource *source,
@@ -1640,6 +1655,12 @@ g_source_set_priority_unlocked (GSource      *source,
 	      
 	      tmp_list = tmp_list->next;
 	    }
+
+          for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+            {
+              g_main_context_remove_poll_unlocked (context, tmp_list->data);
+              g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
+            }
 	}
     }
 
@@ -1969,6 +1990,8 @@ g_source_unref_internal (GSource      *source,
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
 
+      g_slist_free_full (source->priv->fds, g_free);
+
       g_slice_free (GSourcePrivate, source->priv);
       source->priv = NULL;
 
@@ -2221,6 +2244,174 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
   else
     return FALSE;
 }
+
+#ifdef G_OS_UNIX
+/**
+ * g_source_add_unix_fd:
+ * @source: a #GSource
+ * @fd: the fd to monitor
+ * @events: an event mask
+ *
+ * Monitors @fd for the IO events in @events.
+ *
+ * The tag returned by this function can be used to remove or modify the
+ * monitoring of the fd using g_source_remove_unix_fd() or
+ * g_source_modify_unix_fd().
+ *
+ * It is not necessary to remove the fd before destroying the source; it
+ * will be cleaned up automatically.
+ *
+ * As the name suggests, this function is not available on Windows.
+ *
+ * Returns: an opaque tag
+ *
+ * Since: 2.36
+ **/
+gpointer
+g_source_add_unix_fd (GSource      *source,
+                      gint          fd,
+                      GIOCondition  events)
+{
+  GMainContext *context;
+  GPollFD *poll_fd;
+
+  g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
+
+  poll_fd = g_new (GPollFD, 1);
+  poll_fd->fd = fd;
+  poll_fd->events = events;
+  poll_fd->revents = 0;
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  source->priv->fds = g_slist_prepend (source->priv->fds, poll_fd);
+
+  if (context)
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_add_poll_unlocked (context, source->priority, poll_fd);
+      UNLOCK_CONTEXT (context);
+    }
+
+  return poll_fd;
+}
+
+/**
+ * g_source_modify_unix_fd:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_unix_fd()
+ * @new_events: the new event mask to watch
+ *
+ * Updates the event mask to watch for the fd identified by @tag.
+ *
+ * @tag is the tag returned from g_source_add_unix_fd().
+ *
+ * If you want to remove a fd, don't set its event mask to zero.
+ * Instead, call g_source_remove_unix_fd().
+ *
+ * As the name suggests, this function is not available on Windows.
+ *
+ * Since: 2.36
+ **/
+void
+g_source_modify_unix_fd (GSource      *source,
+                         gpointer      tag,
+                         GIOCondition  new_events)
+{
+  GMainContext *context;
+  GPollFD *poll_fd;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_slist_find (source->priv->fds, tag));
+
+  context = source->context;
+  poll_fd = tag;
+
+  poll_fd->events = new_events;
+
+  if (context)
+    g_main_context_wakeup (context);
+}
+
+/**
+ * g_source_remove_unix_fd:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_unix_fd()
+ *
+ * Reverses the effect of a previous call to g_source_add_unix_fd().
+ *
+ * You only need to call this if you want to remove an fd from being
+ * watched while keeping the same source around.  In the normal case you
+ * will just want to destroy the source.
+ *
+ * As the name suggests, this function is not available on Windows.
+ *
+ * Since: 2.36
+ **/
+void
+g_source_remove_unix_fd (GSource  *source,
+                         gpointer  tag)
+{
+  GMainContext *context;
+  GPollFD *poll_fd;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_slist_find (source->priv->fds, tag));
+
+  context = source->context;
+  poll_fd = tag;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  source->priv->fds = g_slist_remove (source->priv->fds, poll_fd);
+
+  if (context)
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_remove_poll_unlocked (context, poll_fd);
+
+      UNLOCK_CONTEXT (context);
+    }
+
+  g_free (poll_fd);
+}
+
+/**
+ * g_source_query_unix_fd:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_unix_fd()
+ *
+ * Queries the events reported for the fd corresponding to @tag on
+ * @source during the last poll.
+ *
+ * The return value of this function is only defined when the function
+ * is called from the check or dispatch functions for @source.
+ *
+ * As the name suggests, this function is not available on Windows.
+ *
+ * Returns: the conditions reported on the fd
+ *
+ * Since: 2.36
+ **/
+GIOCondition
+g_source_query_unix_fd (GSource  *source,
+                        gpointer  tag)
+{
+  GPollFD *poll_fd;
+
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_slist_find (source->priv->fds, tag), 0);
+
+  poll_fd = tag;
+
+  return poll_fd->revents;
+}
+#endif /* G_OS_UNIX */
 
 /**
  * g_get_current_time:
@@ -2747,6 +2938,9 @@ block_source (GSource *source)
       tmp_list = tmp_list->next;
     }
 
+  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+    g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+
   if (source->priv && source->priv->child_sources)
     {
       tmp_list = source->priv->child_sources;
@@ -2763,7 +2957,7 @@ static void
 unblock_source (GSource *source)
 {
   GSList *tmp_list;
-  
+
   g_return_if_fail (SOURCE_BLOCKED (source)); /* Source already unblocked */
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
@@ -2775,6 +2969,9 @@ unblock_source (GSource *source)
       g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
       tmp_list = tmp_list->next;
     }
+
+  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+    g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
 
   if (source->priv && source->priv->child_sources)
     {
@@ -3347,6 +3544,26 @@ g_main_context_check (GMainContext *context,
           else
             result = FALSE;
 
+          if (result == FALSE)
+            {
+              GSList *tmp_list;
+
+              /* If not already explicitly flagged ready by ->check()
+               * (or if we have no check) then we can still be ready if
+               * any of our fds poll as ready.
+               */
+              for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+                {
+                  GPollFD *pollfd = tmp_list->data;
+
+                  if (pollfd->revents)
+                    {
+                      result = TRUE;
+                      break;
+                    }
+                }
+            }
+
           if (result == FALSE && source->priv->ready_time != -1)
             {
               if (!context->time_is_fresh)
@@ -3835,10 +4052,10 @@ g_main_context_poll (GMainContext *context,
  * @priority: the priority for this file descriptor which should be
  *      the same as the priority used for g_source_attach() to ensure that the
  *      file descriptor is polled whenever the results may be needed.
- * 
+ *
  * Adds a file descriptor to the set of file descriptors polled for
  * this context. This will very seldom be used directly. Instead
- * a typical event source will use g_source_add_poll() instead.
+ * a typical event source will use g_source_add_unix_fd() instead.
  **/
 void
 g_main_context_add_poll (GMainContext *context,

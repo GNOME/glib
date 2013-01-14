@@ -628,6 +628,7 @@ g_main_loop_ref
 g_main_loop_run
 g_main_loop_unref
 g_source_add_child_source
+g_source_add_unix_fd
 g_source_add_poll
 g_source_attach
 g_source_destroy
@@ -639,12 +640,15 @@ g_source_get_id
 g_source_get_name
 g_source_get_priority
 g_source_get_ready_time
+g_source_modify_unix_fd
 g_source_new
+g_source_query_unix_fd
 g_source_ref
 g_source_remove
 g_source_remove_by_funcs_user_data
 g_source_remove_by_user_data
 g_source_remove_child_source
+g_source_remove_unix_fd
 g_source_remove_poll
 g_source_set_callback
 g_source_set_callback_indirect
