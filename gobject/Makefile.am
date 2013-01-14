@@ -51,16 +51,13 @@ endif
 if OS_WIN32_AND_DLL_COMPILATION
 gobject_win32_res = gobject-win32-res.o
 gobject_win32_res_ldflag = -Wl,$(gobject_win32_res)
-else
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
-# libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
   $(gobject_win32_res_ldflag) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-  -export-dynamic $(no_undefined) $(export_symbols)
+  -export-dynamic $(no_undefined)
 
 libgobject_2_0_la_CFLAGS = $(AM_CFLAGS) $(LIBFFI_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 

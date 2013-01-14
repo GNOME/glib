@@ -492,8 +492,6 @@ endif
 if OS_WIN32_AND_DLL_COMPILATION
 gio_win32_res = gio-win32-res.o
 gio_win32_res_ldflag = -Wl,$(gio_win32_res)
-else
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 install-data-local: install-ms-lib
@@ -505,7 +503,7 @@ libgio_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined)
 
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m

@@ -348,8 +348,6 @@ endif
 if OS_WIN32_AND_DLL_COMPILATION
 glib_win32_res = glib-win32-res.o
 glib_win32_res_ldflag = -Wl,$(glib_win32_res)
-else
-export_symbols = $(LIBTOOL_EXPORT_OPTIONS)
 endif
 
 if USE_SYSTEM_PCRE
@@ -367,7 +365,7 @@ libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAW
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	 $(glib_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-	-export-dynamic $(no_undefined) $(export_symbols)
+	-export-dynamic $(no_undefined)
 
 INSTALL_PROGS=
 
