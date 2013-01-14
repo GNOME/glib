@@ -38,10 +38,11 @@ if ! type gdb >/dev/null 2>&1; then
 fi
 
 echo_v "Running gdb on assert-msg-test"
-OUT=$((echo run; echo "set print elements 0"; echo "print (char*) __glib_assert_msg") | $LIBTOOL --mode=execute gdb --batch -x /dev/stdin assert-msg-test 2> $error_out) || fail "failed to run gdb"
+OUT=$($LIBTOOL --mode=execute gdb --batch -x assert-msg-test.gdb assert-msg-test 2> $error_out) || fail "failed to run gdb"
 
 echo_v "Checking if assert message is in __glib_assert_msg"
 if ! echo "$OUT" | grep -q '^$1.*"ERROR:.*assert-msg-test.c:.*:.*main.*: assertion failed: (42 < 0)"'; then
+  echo "got: $OUT"
   fail "__glib_assert_msg does not have assertion message"
 fi
 
