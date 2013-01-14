@@ -161,7 +161,7 @@ EXTRA_DIST += \
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 gobject-public-headers.txt: Makefile
-	echo $(gobject_public_h_sources) > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN) echo $(gobject_public_h_sources) > $@.tmp && mv $@.tmp $@
 
 CLEANFILES += gobject-public-headers.txt
 
