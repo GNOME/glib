@@ -1234,7 +1234,7 @@ skip_callback_wrapper (GObject      *source_object,
                              data->buffer, MIN (8192, data->count),
                              g_task_get_priority (task),
                              g_task_get_cancellable (task),
-                             skip_callback_wrapper, data);
+                             skip_callback_wrapper, task);
 	  return;
 	}
     }
@@ -1293,7 +1293,7 @@ g_input_stream_real_skip_async (GInputStream        *stream,
       g_task_set_task_data (task, data, g_free);
       g_task_set_check_cancellable (task, FALSE);
       class->read_async (stream, data->buffer, MIN (8192, count), io_priority, cancellable,
-			 skip_callback_wrapper, data);
+			 skip_callback_wrapper, task);
     }
 
 }
