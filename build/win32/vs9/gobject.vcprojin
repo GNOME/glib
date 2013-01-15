@@ -41,7 +41,6 @@
 				AdditionalDependencies="libffi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -71,7 +70,6 @@
 				AdditionalDependencies="libffi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -105,7 +103,6 @@
 				AdditionalDependencies="libffi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -135,7 +132,6 @@
 				AdditionalDependencies="libffi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gobject.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -169,54 +165,7 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\..\..\gobject\gobject.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\gobject\gobject.symbols"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gobject.def"
-						CommandLine="$(GlibGenerateGobjectDef)"
-						Outputs="$(IntDir)/gobject.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gobject.def"
-						CommandLine="$(GlibGenerateGobjectDef)"
-						Outputs="$(IntDir)/gobject.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gobject.def"
-						CommandLine="$(GlibGenerateGobjectDef)"
-						Outputs="$(IntDir)/gobject.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gobject.def"
-						CommandLine="$(GlibGenerateGobjectDef)"
-						Outputs="$(IntDir)/gobject.def"
-					/>
-				</FileConfiguration>
-			</File>
+			<File RelativePath="..\..\..\gobject\gobject.rc" />
 		</Filter>
 	</Files>
 </VisualStudioProject>

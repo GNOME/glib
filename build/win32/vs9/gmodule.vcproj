@@ -41,7 +41,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -70,7 +69,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -103,7 +101,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -132,7 +129,6 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gmodule.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -168,54 +164,7 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\..\..\gmodule\gmodule.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\gmodule\gmodule.symbols"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDef)"
-						Outputs="$(IntDir)/gmodule.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDefW64)"
-						Outputs="$(IntDir)/gmodule.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDef)"
-						Outputs="$(IntDir)/gmodule.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDefW64)"
-						Outputs="$(IntDir)/gmodule.def"
-					/>
-				</FileConfiguration>
-			</File>
+			<File RelativePath="..\..\..\gmodule\gmodule.rc" />
 		</Filter>
 	</Files>
 </VisualStudioProject>

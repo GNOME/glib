@@ -150,7 +150,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -176,7 +175,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;pcred.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -202,7 +200,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -228,7 +225,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;pcred.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -251,7 +247,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -276,7 +271,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;pcre.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -301,7 +295,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -326,7 +319,6 @@
     <Link>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;pcre.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)glib.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -532,34 +524,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\glib\glib.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\..\glib\glib.symbols">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(GlibGenerateGlibDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">$(GlibGenerateGlibDefW64)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GlibGenerateGlibDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GlibGenerateGlibDefW64)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">$(GlibGenerateGlibDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">$(GlibGenerateGlibDefW64)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GlibGenerateGlibDef)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)glib.def;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating glib.def</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GlibGenerateGlibDefW64)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)glib.def;%(Outputs)</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

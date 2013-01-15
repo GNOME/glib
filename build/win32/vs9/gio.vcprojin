@@ -42,7 +42,6 @@
 				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -73,7 +72,6 @@
 				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -108,7 +106,6 @@
 				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -139,7 +136,6 @@
 				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\gio.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -172,54 +168,7 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\..\..\gio\gio.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\gio\gio.symbols"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gio.def"
-						CommandLine="$(GlibGenerateGioDef)"
-						Outputs="$(IntDir)/gio.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gio.def"
-						CommandLine="$(GlibGenerateGioDef)"
-						Outputs="$(IntDir)/gio.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gio.def"
-						CommandLine="$(GlibGenerateGioDef)"
-						Outputs="$(IntDir)/gio.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating gio.def"
-						CommandLine="$(GlibGenerateGioDef)"
-						Outputs="$(IntDir)/gio.def"
-					/>
-				</FileConfiguration>
-			</File>
+			<File RelativePath="..\..\..\gio\gio.rc" />
 		</Filter>
 	</Files>
 </VisualStudioProject>

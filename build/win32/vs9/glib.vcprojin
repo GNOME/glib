@@ -42,7 +42,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -75,7 +74,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib pcred.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -107,7 +105,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -140,7 +137,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib pcred.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -170,7 +166,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -203,7 +198,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib pcre.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -235,7 +229,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -268,7 +261,6 @@
 				AdditionalDependencies="ws2_32.lib winmm.lib pcre.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(IntDir)\glib.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -502,94 +494,7 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath="..\..\..\glib\glib.rc"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\glib\glib.symbols"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDef)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_ExtPCRE|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDef)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDefW64)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_ExtPCRE|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDefW64)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDef)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release_ExtPCRE|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDef)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDefW64)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release_ExtPCRE|x64"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generating glib.def"
-						CommandLine="$(GlibGenerateGlibDefW64)"
-						Outputs="$(IntDir)\glib.def"
-					/>
-				</FileConfiguration>
-			</File>
+			<File RelativePath="..\..\..\glib\glib.rc" />
 		</Filter>
 	</Files>
 </VisualStudioProject>
