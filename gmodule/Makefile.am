@@ -62,6 +62,7 @@ gmodule_win32_res = gmodule-win32-res.o
 gmodule_win32_res_ldflag = -Wl,$(gmodule_win32_res)
 endif
 
+libgmodule_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgmodule_2_0_la_SOURCES = gmodule.c
 libgmodule_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gmodule_win32_res_ldflag) \

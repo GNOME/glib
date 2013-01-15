@@ -27,12 +27,9 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#include "config.h"
+#include        <gmodule.h>
 
-#include <gmodule.h>
-
-_GLIB_EXTERN gchar* gplugin_b_state;
-gchar* gplugin_b_state;
+G_MODULE_EXPORT gchar* gplugin_b_state;
 
 const gchar* g_module_check_init (GModule *module);
 void   g_module_unload (GModule *module);
@@ -42,7 +39,7 @@ void gplugin_clash_func (void);
 void g_clash_func (void);
 void gplugin_say_boo_func (void);
 
-_GLIB_EXTERN const gchar*
+G_MODULE_EXPORT const gchar*
 g_module_check_init (GModule *module)
 {
   gplugin_b_state = "check-init";
@@ -50,31 +47,31 @@ g_module_check_init (GModule *module)
   return NULL;
 }
 
-_GLIB_EXTERN void
+G_MODULE_EXPORT void
 g_module_unload (GModule *module)
 {
   gplugin_b_state = "unloaded";
 }
 
-_GLIB_EXTERN void
+G_MODULE_EXPORT void
 gplugin_b_func (void)
 {
   gplugin_b_state = "Hello world";
 }
 
-_GLIB_EXTERN void
+G_MODULE_EXPORT void
 gplugin_clash_func (void)
 {
   gplugin_b_state = "plugin clash";
 }
 
-_GLIB_EXTERN void
+G_MODULE_EXPORT void
 g_clash_func (void)
 {
   gplugin_b_state = "global clash";
 }
 
-_GLIB_EXTERN void
+G_MODULE_EXPORT void
 gplugin_say_boo_func (void)
 {
   gplugin_b_state = "BOOH";

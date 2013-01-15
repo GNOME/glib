@@ -501,6 +501,7 @@ install-data-local: install-ms-lib
 
 uninstall-local: uninstall-ms-lib
 
+libgio_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
@@ -508,7 +509,7 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
-libgio_2_0_la_CFLAGS = -xobjective-c
+libgio_2_0_la_CFLAGS += -xobjective-c
 libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation
 endif
 

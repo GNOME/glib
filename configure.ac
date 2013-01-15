@@ -3570,6 +3570,7 @@ dnl
 dnl Check for -fvisibility=hidden to determine if we can do GNU-style
 dnl visibility attributes for symbol export control
 dnl
+GLIB_HIDDEN_VISIBILITY_CFLAGS=""
 case "$host" in
   *-*-mingw*)
     dnl on mingw32 we do -fvisibility=hidden and __declspec(dllexport)
@@ -3592,10 +3593,11 @@ case "$host" in
     AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
       AC_DEFINE([_GLIB_EXTERN], [__attribute__((visibility("default"))) extern],
                 [defines how to decorate public symbols while building])
-      CFLAGS="${CFLAGS} -fvisibility=hidden"
+      GLIB_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
     ])
     ;;
 esac
+AC_SUBST(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 
 dnl Compiler flags; macro originates from systemd
 dnl See https://bugzilla.gnome.org/show_bug.cgi?id=608953
