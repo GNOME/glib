@@ -784,7 +784,7 @@ test_proxy (void)
   g_assert_no_error (error);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver", NULL));
+  g_assert (g_spawn_command_line_async ("./gdbus-testserver", NULL));
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
@@ -846,7 +846,7 @@ test_async (void)
                             NULL);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver", NULL));
+  g_assert (g_spawn_command_line_async ("./gdbus-testserver", NULL));
 
   g_timeout_add (10000, fail_test, NULL);
   g_main_loop_run (loop);
