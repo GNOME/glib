@@ -31,7 +31,8 @@
 
 #include <gmodule.h>
 
-__attribute__((visibility("default"))) gchar* gplugin_b_state;
+_GLIB_EXTERN gchar* gplugin_b_state;
+gchar* gplugin_b_state;
 
 const gchar* g_module_check_init (GModule *module);
 void   g_module_unload (GModule *module);

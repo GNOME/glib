@@ -39,7 +39,8 @@ void g_clash_func (void);
 void gplugin_say_boo_func (void);
 void gplugin_a_module_func (GModule *module);
 
-__attribute__((visibility("default"))) gchar* gplugin_a_state;
+_GLIB_EXTERN gchar* gplugin_a_state;
+gchar* gplugin_a_state;
 
 _GLIB_EXTERN void
 gplugin_a_func (void)
