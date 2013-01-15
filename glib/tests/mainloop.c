@@ -953,7 +953,7 @@ test_unix_fd (void)
   to_read = fill_a_pipe (fds[1]);
   /* write at higher priority to keep the pipe full... */
   a = g_unix_fd_add_full (G_PRIORITY_HIGH, fds[1], G_IO_OUT, write_bytes, &to_write, NULL);
-  source_a = g_main_context_find_source_by_id (NULL, a);
+  source_a = g_source_ref (g_main_context_find_source_by_id (NULL, a));
   /* make sure no 'writes' get dispatched yet */
   while (g_main_context_iteration (NULL, FALSE));
 
