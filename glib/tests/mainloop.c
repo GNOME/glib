@@ -912,7 +912,7 @@ write_bytes (gint         fd,
     return FALSE;
 
   /* Detect if we run before we should */
-  g_assert (to_write >= 0);
+  g_assert (*to_write >= 0);
 
   limit = MIN (*to_write, sizeof zeros);
   *to_write -= write (fd, zeros, limit);
