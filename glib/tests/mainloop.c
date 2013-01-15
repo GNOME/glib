@@ -762,14 +762,14 @@ test_mainloop_overflow (void)
   g_main_context_unref (ctx);
 }
 
-static volatile gboolean ready_time_dispatched;
+static volatile gint ready_time_dispatched;
 
 static gboolean
 ready_time_dispatch (GSource     *source,
                      GSourceFunc  callback,
                      gpointer     user_data)
 {
-  ready_time_dispatched = TRUE;
+  g_atomic_int_set (&ready_time_dispatched, TRUE);
 
   g_source_set_ready_time (source, -1);
 
@@ -862,13 +862,13 @@ test_ready_time (void)
   g_source_set_ready_time (source, 0);
   loop = g_main_loop_new (NULL, FALSE);
   thread = g_thread_new ("context thread", run_context, loop);
-  while (!ready_time_dispatched);
+  while (!g_atomic_int_get (&ready_time_dispatched));
 
   /* Now let's see if it can wake up from sleeping. */
   g_usleep (G_TIME_SPAN_SECOND / 2);
-  ready_time_dispatched = FALSE;
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_source_set_ready_time (source, 0);
-  while (!ready_time_dispatched);
+  while (!g_atomic_int_get (&ready_time_dispatched));
 
   /* kill the thread */
   g_main_loop_quit (loop);
