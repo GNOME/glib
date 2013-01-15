@@ -1,3 +1,67 @@
+Overview of changes from GLib 2.35.3 to 2.35.4
+==============================================
+
+* New features:
+ - New API: g_get_num_processors
+ - New API: g_application_command_line_get_stdin
+ - New GFileMonitor flag: G_FILE_MONITOR_WATCH_HARD_LINKS
+ - Parse more timezone offset formats
+ - Better timezone support on Windows
+ - Make GParamSpec constructors introspectable
+
+* Removed or deprecated features:
+ - Disallow adding interfaces after class_init
+
+* Bug fixes:
+ 532815 gio + inotify support for hardlinks
+ 614930 add g_get_num_processors (), return the max concurrent...
+ 626497 Btrfs clone/reflink ioctl support in g_local_file_copy
+ 633117 glib fails stests if /etc/localtime is not properly set
+ 661767 merge/improve various bits of run-in-thread functionality
+ 668210 Add g_application_command_line_get_stdin()
+ 675856 Use GDbus via gobject-introspection instead dbus-python
+ 684103 make glib work with python3
+ 684723 run-assert-msg-test.sh fails
+ 686058 OpenBSD: disable ipv6_v4mapped test
+ 686128 GTimeZone should be able to parse POSIX format for...
+ 687223 cleverer GThreadPool management
+ 687659 drop support for adding interfaces after class_init
+ 687920 GCredentials should have an accessor for the process ID
+ 688681 build: Make .symbols file canonical on all platforms
+ 688829 Variable overflow in utils.c test on 32-bit machine
+ 689324 Variable scoping in gunixmounts.c
+ 689810 Include guard optimization
+ 690043 Broken link for gsettings tutorial: gnome-utils in...
+ 690084 gmarkup: Make GMarkupParseContext a boxed type
+ 690388 Check if CMSG_FIRSTHDR() returns NULL when there is...
+ 690538 gschema DTD is invalid
+ 690543 Add test coverage for testing in-tree DBus services...
+ 690670 local_command_line not introspectable/annotated
+ 690902 G_END_DECLS needs to be at the end of gutils.h
+ 690970 Unhelpful deprecation message for g_value_array_get_nth
+ 691001 building docs is broken on master branch
+ 691011 Automake-1.13 errors on obsolete AM_PROG_CC_STDC
+ 691077 gio-querymodules crashes with SIGSEGV
+ 691110 g_cond_wait() docs incomplete
+ 691489 Crash in Oscars 2013 page
+ 691558 Only check for .hidden files if standard::is-hidden...
+ 691608 Support compilation with clang 3.2
+
+* Translation updates:
+ Assamese
+ Bulgarian
+ Estonian
+ Galician
+ Greek
+ Hebrew
+ Norwegian bokmål
+ Polish
+ Slovak
+ Slovenian
+ Spanish
+ Tamil
+
+
 Overview of changes from GLib 2.35.2 to 2.35.3
 ==============================================
 
@@ -13,11 +77,6 @@ Overview of changes from GLib 2.35.2 to 2.35.3
  particular, are incompatible.
 
 * Bugs fixed in this release:
-686895 688704 602715 688377 688180 688497 688319 688886 681685 689037
-688931 688681 652650 664627 688419 684145 675516 689538 679683 689377
-142568 587806 689800 689847 629301 689982 690069 623187 690083 690163
-690346 687092 690348
-
  142568 Allow $HOME to override passwd entry if the user really wants
  587806 The file selector should honor .hidden files
  602715 [GChecksum] Please add support for SHA512
