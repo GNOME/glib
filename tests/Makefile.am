@@ -41,7 +41,8 @@ EXTRA_DIST +=					\
 	gen-casemap-txt.pl			\
 	iochannel-test-infile			\
 	utf8.txt				\
-	timeloop-basic.c
+	timeloop-basic.c			\
+	assert-msg-test.gdb
 
 BUILT_EXTRA_DIST =				\
 	makefile.msc
