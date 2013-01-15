@@ -29,16 +29,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifdef G_OS_WIN32
-#include <io.h>
-#endif
-
 #include <glib/gstdio.h>
 
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "GLib-Genmarshal"
 #include <glib.h>
 #include <glib/gprintf.h>
+
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
 /* --- defines --- */
 #define	PRG_NAME	"glib-genmarshal"
