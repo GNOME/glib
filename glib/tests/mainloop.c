@@ -762,6 +762,492 @@ test_mainloop_overflow (void)
   g_main_context_unref (ctx);
 }
 
+static volatile gboolean ready_time_dispatched;
+
+static gboolean
+ready_time_dispatch (GSource     *source,
+                     GSourceFunc  callback,
+                     gpointer     user_data)
+{
+  ready_time_dispatched = TRUE;
+
+  g_source_set_ready_time (source, -1);
+
+  return TRUE;
+}
+
+static gpointer
+run_context (gpointer user_data)
+{
+  g_main_loop_run (user_data);
+
+  return NULL;
+}
+
+static void
+test_ready_time (void)
+{
+  GThread *thread;
+  GSource *source;
+  GSourceFuncs source_funcs = {
+    NULL, NULL, ready_time_dispatch
+  };
+  GMainLoop *loop;
+
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  /* Unfortunately we can't do too many things with respect to timing
+   * without getting into trouble on slow systems or heavily loaded
+   * builders.
+   *
+   * We can test that the basics are working, though.
+   */
+
+  /* A source with no ready time set should not fire */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (!ready_time_dispatched);
+
+  /* The ready time should not have been changed */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* Of course this shouldn't change anything either */
+  g_source_set_ready_time (source, -1);
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* A source with a ready time set to tomorrow should not fire on any
+   * builder, no matter how badly loaded...
+   */
+  g_source_set_ready_time (source, g_get_monotonic_time () + G_TIME_SPAN_DAY);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (!ready_time_dispatched);
+  /* Make sure it didn't get reset */
+  g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
+
+  /* Ready time of -1 -> don't fire */
+  g_source_set_ready_time (source, -1);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (!ready_time_dispatched);
+  /* Not reset, but should still be -1 from above */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* A ready time of the current time should fire immediately */
+  g_source_set_ready_time (source, g_get_monotonic_time ());
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (ready_time_dispatched);
+  ready_time_dispatched = FALSE;
+  /* Should have gotten reset by the handler function */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* As well as one in the recent past... */
+  g_source_set_ready_time (source, g_get_monotonic_time () - G_TIME_SPAN_SECOND);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (ready_time_dispatched);
+  ready_time_dispatched = FALSE;
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* Zero is the 'official' way to get a source to fire immediately */
+  g_source_set_ready_time (source, 0);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert (ready_time_dispatched);
+  ready_time_dispatched = FALSE;
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* Now do some tests of cross-thread wakeups.
+   *
+   * Make sure it wakes up right away from the start.
+   */
+  g_source_set_ready_time (source, 0);
+  loop = g_main_loop_new (NULL, FALSE);
+  thread = g_thread_new ("context thread", run_context, loop);
+  while (!ready_time_dispatched);
+
+  /* Now let's see if it can wake up from sleeping. */
+  g_usleep (G_TIME_SPAN_SECOND / 2);
+  ready_time_dispatched = FALSE;
+  g_source_set_ready_time (source, 0);
+  while (!ready_time_dispatched);
+
+  /* kill the thread */
+  g_main_loop_quit (loop);
+  g_thread_join (thread);
+  g_main_loop_unref (loop);
+
+  g_source_destroy (source);
+}
+
+#ifdef G_OS_UNIX
+
+#include <glib-unix.h>
+#include <unistd.h>
+
+static gchar zeros[1024];
+
+static gsize
+fill_a_pipe (gint fd)
+{
+  gsize written = 0;
+  GPollFD pfd;
+
+  pfd.fd = fd;
+  pfd.events = G_IO_OUT;
+  while (g_poll (&pfd, 1, 0) == 1)
+    /* we should never see -1 here */
+    written += write (fd, zeros, sizeof zeros);
+
+  return written;
+}
+
+static gboolean
+write_bytes (gint         fd,
+             GIOCondition condition,
+             gpointer     user_data)
+{
+  gssize *to_write = user_data;
+  gint limit;
+
+  if (*to_write == 0)
+    return FALSE;
+
+  /* Detect if we run before we should */
+  g_assert (to_write >= 0);
+
+  limit = MIN (*to_write, sizeof zeros);
+  *to_write -= write (fd, zeros, limit);
+
+  return TRUE;
+}
+
+static gboolean
+read_bytes (gint         fd,
+            GIOCondition condition,
+            gpointer     user_data)
+{
+  static gchar buffer[1024];
+  gssize *to_read = user_data;
+
+  *to_read -= read (fd, buffer, sizeof buffer);
+
+  /* The loop will exit when there is nothing else to read, then we will
+   * use g_source_remove() to destroy this source.
+   */
+  return TRUE;
+}
+
+static void
+test_unix_fd (void)
+{
+  gssize to_write = -1;
+  gssize to_read;
+  gint fds[2];
+  gint a, b;
+  gint s;
+  GSource *source_a;
+  GSource *source_b;
+
+  s = pipe (fds);
+  g_assert (s == 0);
+
+  to_read = fill_a_pipe (fds[1]);
+  /* write at higher priority to keep the pipe full... */
+  a = g_unix_fd_add_full (G_PRIORITY_HIGH, fds[1], G_IO_OUT, write_bytes, &to_write, NULL);
+  source_a = g_main_context_find_source_by_id (NULL, a);
+  /* make sure no 'writes' get dispatched yet */
+  while (g_main_context_iteration (NULL, FALSE));
+
+  to_read += 128 * 1024 * 1024;
+  to_write = 128 * 1024 * 1024;
+  b = g_unix_fd_add (fds[0], G_IO_IN, read_bytes, &to_read);
+  source_b = g_source_ref (g_main_context_find_source_by_id (NULL, b));
+
+  /* Assuming the kernel isn't internally 'laggy' then there will always
+   * be either data to read or room in which to write.  That will keep
+   * the loop running until all data has been read and written.
+   */
+  while (TRUE)
+    {
+      gssize to_write_was = to_write;
+      gssize to_read_was = to_read;
+
+      if (!g_main_context_iteration (NULL, FALSE))
+        break;
+
+      /* Since the sources are at different priority, only one of them
+       * should possibly have run.
+       */
+      g_assert (to_write == to_write_was || to_read == to_read_was);
+    }
+
+  g_assert (to_write == 0);
+  g_assert (to_read == 0);
+
+  /* 'a' is already removed by itself */
+  g_assert (g_source_is_destroyed (source_a));
+  g_source_unref (source_a);
+  g_source_remove (b);
+  g_assert (g_source_is_destroyed (source_b));
+  g_source_unref (source_b);
+  close (fds[1]);
+  close (fds[0]);
+}
+
+static void
+assert_main_context_state (gint n_to_poll,
+                           ...)
+{
+  GMainContext *context;
+  gboolean consumed[10] = { };
+  GPollFD poll_fds[10];
+  gboolean immediate;
+  gint max_priority;
+  gint timeout;
+  gint n;
+  gint i, j;
+  va_list ap;
+
+  context = g_main_context_default ();
+
+  immediate = g_main_context_prepare (context, &max_priority);
+  g_assert (!immediate);
+  n = g_main_context_query (context, max_priority, &timeout, poll_fds, 10);
+  g_assert_cmpint (n, ==, n_to_poll + 1); /* one will be the gwakeup */
+
+  va_start (ap, n_to_poll);
+  for (i = 0; i < n_to_poll; i++)
+    {
+      gint expected_fd = va_arg (ap, gint);
+      GIOCondition expected_events = va_arg (ap, GIOCondition);
+      GIOCondition report_events = va_arg (ap, GIOCondition);
+
+      for (j = 0; j < n; j++)
+        if (!consumed[j] && poll_fds[j].fd == expected_fd && poll_fds[j].events == expected_events)
+          {
+            poll_fds[j].revents = report_events;
+            consumed[j] = TRUE;
+            break;
+          }
+
+      if (j == n)
+        g_error ("Unable to find fd %d (index %d) with events 0x%x\n", expected_fd, i, (guint) expected_events);
+    }
+  va_end (ap);
+
+  /* find the gwakeup, flag as non-ready */
+  for (i = 0; i < n; i++)
+    if (!consumed[i])
+      poll_fds[i].revents = 0;
+
+  if (g_main_context_check (context, max_priority, poll_fds, n))
+    g_main_context_dispatch (context);
+}
+
+static gboolean
+flag_bool (gint         fd,
+           GIOCondition condition,
+           gpointer     user_data)
+{
+  gboolean *flag = user_data;
+
+  *flag = TRUE;
+
+  return TRUE;
+}
+
+static void
+test_unix_fd_source (void)
+{
+  GSource *out_source;
+  GSource *in_source;
+  GSource *source;
+  gboolean out, in;
+  gint fds[2];
+  gint s;
+
+  assert_main_context_state (0);
+
+  s = pipe (fds);
+  g_assert (s == 0);
+
+  source = g_unix_fd_source_new (fds[1], G_IO_OUT);
+  g_source_attach (source, NULL);
+
+  /* Check that a source with no callback gets successfully detached
+   * with a warning printed.
+   */
+  g_test_expect_message ("GLib", G_LOG_LEVEL_WARNING, "*GUnixFDSource dispatched without callback*");
+  while (g_main_context_iteration (NULL, FALSE));
+  g_test_assert_expected_messages ();
+  g_assert (g_source_is_destroyed (source));
+  g_source_unref (source);
+
+  out = in = FALSE;
+  out_source = g_unix_fd_source_new (fds[1], G_IO_OUT);
+  g_source_set_callback (out_source, (GSourceFunc) flag_bool, &out, NULL);
+  g_source_attach (out_source, NULL);
+  assert_main_context_state (1,
+                             fds[1], G_IO_OUT, 0);
+  g_assert (!in && !out);
+
+  in_source = g_unix_fd_source_new (fds[0], G_IO_IN);
+  g_source_set_callback (in_source, (GSourceFunc) flag_bool, &in, NULL);
+  g_source_set_priority (in_source, G_PRIORITY_DEFAULT_IDLE);
+  g_source_attach (in_source, NULL);
+  assert_main_context_state (2,
+                             fds[0], G_IO_IN, G_IO_IN,
+                             fds[1], G_IO_OUT, G_IO_OUT);
+  /* out is higher priority so only it should fire */
+  g_assert (!in && out);
+
+  /* raise the priority of the in source to higher than out*/
+  in = out = FALSE;
+  g_source_set_priority (in_source, G_PRIORITY_HIGH);
+  assert_main_context_state (2,
+                             fds[0], G_IO_IN, G_IO_IN,
+                             fds[1], G_IO_OUT, G_IO_OUT);
+  g_assert (in && !out);
+
+  /* now, let them be equal */
+  in = out = FALSE;
+  g_source_set_priority (in_source, G_PRIORITY_DEFAULT);
+  assert_main_context_state (2,
+                             fds[0], G_IO_IN, G_IO_IN,
+                             fds[1], G_IO_OUT, G_IO_OUT);
+  g_assert (in && out);
+
+  g_source_destroy (out_source);
+  g_source_destroy (in_source);
+  close (fds[1]);
+  close (fds[0]);
+}
+
+typedef struct
+{
+  GSource parent;
+  gboolean flagged;
+} FlagSource;
+
+static gboolean
+return_true (GSource *source, GSourceFunc callback, gpointer user_data)
+{
+  FlagSource *flag_source = (FlagSource *) source;
+
+  flag_source->flagged = TRUE;
+
+  return TRUE;
+}
+
+#define assert_flagged(s) g_assert (((FlagSource *) (s))->flagged);
+#define assert_not_flagged(s) g_assert (!((FlagSource *) (s))->flagged);
+#define clear_flag(s) ((FlagSource *) (s))->flagged = 0
+
+static void
+test_source_unix_fd_api (void)
+{
+  GSourceFuncs no_funcs = {
+    NULL, NULL, return_true
+  };
+  GSource *source_a;
+  GSource *source_b;
+  gpointer tag1, tag2;
+  gint fds_a[2];
+  gint fds_b[2];
+
+  pipe (fds_a);
+  pipe (fds_b);
+
+  source_a = g_source_new (&no_funcs, sizeof (FlagSource));
+  source_b = g_source_new (&no_funcs, sizeof (FlagSource));
+
+  /* attach a source with more than one fd */
+  g_source_add_unix_fd (source_a, fds_a[0], G_IO_IN);
+  g_source_add_unix_fd (source_a, fds_a[1], G_IO_OUT);
+  g_source_attach (source_a, NULL);
+  assert_main_context_state (2,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, 0);
+  assert_not_flagged (source_a);
+
+  /* attach a higher priority source with no fds */
+  g_source_set_priority (source_b, G_PRIORITY_HIGH);
+  g_source_attach (source_b, NULL);
+  assert_main_context_state (2,
+                             fds_a[0], G_IO_IN, G_IO_IN,
+                             fds_a[1], G_IO_OUT, 0);
+  assert_flagged (source_a);
+  assert_not_flagged (source_b);
+  clear_flag (source_a);
+
+  /* add some fds to the second source, while attached */
+  tag1 = g_source_add_unix_fd (source_b, fds_b[0], G_IO_IN);
+  tag2 = g_source_add_unix_fd (source_b, fds_b[1], G_IO_OUT);
+  assert_main_context_state (4,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, G_IO_OUT,
+                             fds_b[0], G_IO_IN, 0,
+                             fds_b[1], G_IO_OUT, G_IO_OUT);
+  /* only 'b' (higher priority) should have dispatched */
+  assert_not_flagged (source_a);
+  assert_flagged (source_b);
+  clear_flag (source_b);
+
+  /* change our events on b to the same as they were before */
+  g_source_modify_unix_fd (source_b, tag1, G_IO_IN);
+  g_source_modify_unix_fd (source_b, tag2, G_IO_OUT);
+  assert_main_context_state (4,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, G_IO_OUT,
+                             fds_b[0], G_IO_IN, 0,
+                             fds_b[1], G_IO_OUT, G_IO_OUT);
+  assert_not_flagged (source_a);
+  assert_flagged (source_b);
+  clear_flag (source_b);
+
+  /* now reverse them */
+  g_source_modify_unix_fd (source_b, tag1, G_IO_OUT);
+  g_source_modify_unix_fd (source_b, tag2, G_IO_IN);
+  assert_main_context_state (4,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, G_IO_OUT,
+                             fds_b[0], G_IO_OUT, 0,
+                             fds_b[1], G_IO_IN, 0);
+  /* 'b' had no events, so 'a' can go this time */
+  assert_flagged (source_a);
+  assert_not_flagged (source_b);
+  clear_flag (source_a);
+
+  /* remove one of the fds from 'b' */
+  g_source_remove_unix_fd (source_b, tag1);
+  assert_main_context_state (3,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, 0,
+                             fds_b[1], G_IO_IN, 0);
+  assert_not_flagged (source_a);
+  assert_not_flagged (source_b);
+
+  /* remove the other */
+  g_source_remove_unix_fd (source_b, tag2);
+  assert_main_context_state (2,
+                             fds_a[0], G_IO_IN, 0,
+                             fds_a[1], G_IO_OUT, 0);
+  assert_not_flagged (source_a);
+  assert_not_flagged (source_b);
+
+  /* destroy the sources */
+  g_source_destroy (source_a);
+  g_source_destroy (source_b);
+  assert_main_context_state (0);
+
+  g_source_unref (source_a);
+  g_source_unref (source_b);
+  close (fds_a[0]);
+  close (fds_a[1]);
+  close (fds_b[0]);
+  close (fds_b[1]);
+}
+
+#endif
 
 int
 main (int argc, char *argv[])
@@ -778,6 +1264,12 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/swapping_child_sources", test_swapping_child_sources);
   g_test_add_func ("/mainloop/source_time", test_source_time);
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
+  g_test_add_func ("/mainloop/ready-time", test_ready_time);
+#ifdef G_OS_UNIX
+  g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
+  g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);
+  g_test_add_func ("/mainloop/source-unix-fd-api", test_source_unix_fd_api);
+#endif
 
   return g_test_run ();
 }
