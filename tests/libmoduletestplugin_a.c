@@ -27,8 +27,11 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#include	<gmodule.h>
-#include	<stdlib.h>
+#include "config.h"
+
+#include <glib.h>
+#include <gmodule.h>
+#include <stdlib.h>
 
 void gplugin_a_func (void);
 void gplugin_clash_func (void);
@@ -36,33 +39,33 @@ void g_clash_func (void);
 void gplugin_say_boo_func (void);
 void gplugin_a_module_func (GModule *module);
 
-G_MODULE_EXPORT gchar* gplugin_a_state;
+__attribute__((visibility("default"))) gchar* gplugin_a_state;
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 gplugin_a_func (void)
 {
   gplugin_a_state = "Hello world";
 }
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 gplugin_clash_func (void)
 {
   gplugin_a_state = "plugin clash";
 }
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 g_clash_func (void)
 {
   gplugin_a_state = "global clash";
 }
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 gplugin_say_boo_func (void)
 {
   gplugin_a_state = "BOOH";
 }
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 gplugin_a_module_func (GModule *module)
 {
   void *f = NULL;

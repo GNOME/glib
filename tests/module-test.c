@@ -27,14 +27,16 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+#include "config.h"
+
 #include <gmodule.h>
 #include <string.h>
 
 gchar* global_state;
 
-G_MODULE_EXPORT void g_clash_func (void);
+_GLIB_EXTERN void g_clash_func (void);
 
-G_MODULE_EXPORT void
+_GLIB_EXTERN void
 g_clash_func (void)
 {
   global_state = "global clash";
