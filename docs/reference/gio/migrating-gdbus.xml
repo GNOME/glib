@@ -60,6 +60,10 @@
           linkend="gio-D-Bus-Introspection-Data">Introspection
           XML</link>, dbus-glib doesn't.
         </para></listitem>
+        <listitem><para>
+          GTestDBus provides API to create isolated unit tests <link
+          linkend="gio-D-Bus-Test-Scaffolding">GDBus Test Scaffolding</link>.
+        </para></listitem>
       </itemizedlist>
     </para>
   </section>
