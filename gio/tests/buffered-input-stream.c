@@ -209,6 +209,98 @@ test_read (void)
 }
 
 static void
+return_result_cb (GObject      *object,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GAsyncResult **ret = user_data;
+
+  *ret = g_object_ref (result);
+}
+
+static void
+test_read_async (void)
+{
+  GInputStream *base;
+  GInputStream *in;
+  gchar buffer[20];
+  GError *error;
+  GAsyncResult *result;
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -1, NULL);
+  in = g_buffered_input_stream_new_sized (base, 8);
+
+  g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 0);
+
+  error = NULL;
+  result = NULL;
+  g_buffered_input_stream_fill_async (G_BUFFERED_INPUT_STREAM (in), 8,
+                                      G_PRIORITY_DEFAULT, NULL,
+                                      return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_buffered_input_stream_fill_finish (G_BUFFERED_INPUT_STREAM (in), result, &error), ==, 8);
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 8);
+
+  memset (buffer, 0, 20);
+  g_input_stream_read_async (in, &buffer, 16, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_read_finish (in, result, &error), ==, 16);
+  g_assert_cmpstr (buffer, ==, "abcdefghijklmnop");
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 0);
+
+  memset (buffer, 0, 20);
+  g_input_stream_read_async (in, &buffer, 16, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_read_finish (in, result, &error), ==, 16);
+  g_assert_cmpstr (buffer, ==, "qrstuvwxyzABCDEF");
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  memset (buffer, 0, 20);
+  g_input_stream_read_async (in, &buffer, 16, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_read_finish (in, result, &error), ==, 16);
+  g_assert_cmpstr (buffer, ==, "GHIJKLMNOPQRSTUV");
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  memset (buffer, 0, 20);
+  g_input_stream_read_async (in, &buffer, 16, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_read_finish (in, result, &error), ==, 4);
+  g_assert_cmpstr (buffer, ==, "WXYZ");
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  memset (buffer, 0, 20);
+  g_input_stream_read_async (in, &buffer, 16, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_read_finish (in, result, &error), ==, 0);
+  g_assert_no_error (error);
+  g_clear_object (&result);
+
+  g_object_unref (in);
+  g_object_unref (base);
+}
+
+static void
 test_skip (void)
 {
   GInputStream *base;
@@ -244,6 +336,76 @@ test_skip (void)
   g_assert_cmpint (g_input_stream_skip (in, 10, NULL, &error), ==, 8);
   g_assert_no_error (error);
   g_assert_cmpint (g_input_stream_skip (in, 10, NULL, &error), ==, 0);
+  g_assert_no_error (error);
+
+  g_object_unref (in);
+  g_object_unref (base);
+}
+
+static void
+test_skip_async (void)
+{
+  GInputStream *base;
+  GInputStream *in;
+  GError *error;
+  GAsyncResult *result;
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
+  in = g_buffered_input_stream_new_sized (base, 5);
+
+  error = NULL;
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'a');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'b');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'c');
+  g_assert_no_error (error);
+
+  result = NULL;
+  g_input_stream_skip_async (in, 7, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_skip_finish (in, result, &error), ==, 7);
+  g_assert_no_error (error);
+  g_clear_object (&result);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'k');
+  g_assert_no_error (error);
+
+  g_input_stream_skip_async (in, 10, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_skip_finish (in, result, &error), ==, 10);
+  g_assert_no_error (error);
+  g_clear_object (&result);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'v');
+  g_assert_no_error (error);
+
+  g_input_stream_skip_async (in, 20, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_skip_finish (in, result, &error), ==, 20);
+  g_assert_no_error (error);
+  g_clear_object (&result);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'Q');
+  g_assert_no_error (error);
+
+  g_input_stream_skip_async (in, 10, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_skip_finish (in, result, &error), ==, 8);
+  g_clear_object (&result);
+  g_assert_no_error (error);
+
+  g_input_stream_skip_async (in, 10, G_PRIORITY_DEFAULT,
+                             NULL, return_result_cb, &result);
+  while (!result)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (g_input_stream_skip_finish (in, result, &error), ==, 0);
+  g_clear_object (&result);
   g_assert_no_error (error);
 
   g_object_unref (in);
@@ -381,7 +543,9 @@ main (int   argc,
   g_test_add_func ("/buffered-input-stream/set-buffer-size", test_set_buffer_size);
   g_test_add_func ("/buffered-input-stream/read-byte", test_read_byte);
   g_test_add_func ("/buffered-input-stream/read", test_read);
+  g_test_add_func ("/buffered-input-stream/read-async", test_read_async);
   g_test_add_func ("/buffered-input-stream/skip", test_skip);
+  g_test_add_func ("/buffered-input-stream/skip-async", test_skip_async);
   g_test_add_func ("/buffered-input-stream/seek", test_seek);
   g_test_add_func ("/filter-input-stream/close", test_close);
 
