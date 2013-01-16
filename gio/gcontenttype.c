@@ -402,9 +402,8 @@ g_content_type_get_icon_internal (const gchar *type,
   char *generic_mimetype_icon = NULL;
   char *q;
   char *xdg_mimetype_icon = NULL;
-  char *legacy_mimetype_icon;
   char *xdg_mimetype_generic_icon;
-  char *icon_names[5];
+  char *icon_names[3];
   int n = 0;
   GIcon *themed_icon;
   const char *file_template;
@@ -426,24 +425,19 @@ g_content_type_get_icon_internal (const gchar *type,
   G_UNLOCK (gio_xdgmime);
   if (xdg_icon != NULL)
     xdg_mimetype_icon = g_strdup_printf (file_template, xdg_icon);
-  xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
-
-  mimetype_icon = g_strdup_printf (file_template, type);
-  if (xdg_mimetype_generic_icon)
-    generic_mimetype_icon = g_strdup_printf (file_template, xdg_mimetype_generic_icon);
-
-  while ((q = strchr (mimetype_icon, '/')) != NULL)
-    *q = '-';
-
-  /* Not all icons have migrated to the new icon theme spec, look for old names too */
-  legacy_mimetype_icon = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
 
   if (xdg_mimetype_icon)
     icon_names[n++] = xdg_mimetype_icon;
 
-  icon_names[n++] = mimetype_icon;
-  icon_names[n++] = legacy_mimetype_icon;
+  mimetype_icon = g_strdup_printf (file_template, type);
+  while ((q = strchr (mimetype_icon, '/')) != NULL)
+    *q = '-';
 
+  icon_names[n++] = mimetype_icon;
+
+  xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
+  if (xdg_mimetype_generic_icon)
+    generic_mimetype_icon = g_strdup_printf (file_template, xdg_mimetype_generic_icon);
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 
@@ -452,7 +446,6 @@ g_content_type_get_icon_internal (const gchar *type,
   g_free (xdg_mimetype_icon);
   g_free (xdg_mimetype_generic_icon);
   g_free (mimetype_icon);
-  g_free (legacy_mimetype_icon);
   g_free (generic_mimetype_icon);
 
   return themed_icon;
