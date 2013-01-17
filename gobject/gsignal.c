@@ -445,8 +445,7 @@ handler_lookup (gpointer  instance,
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
-            if (handler->sequential_number == handler_id ||
-		(closure && handler->closure == closure))
+            if (closure ? (handler->closure == closure) : (handler->sequential_number == handler_id))
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
@@ -653,7 +652,6 @@ handler_unref_R (guint    signal_id,
         }
 
       SIGNAL_UNLOCK ();
-      remove_invalid_closure_notify (handler, instance);
       g_closure_unref (handler->closure);
       SIGNAL_LOCK ();
       g_slice_free (Handler, handler);
@@ -2584,6 +2582,7 @@ g_signal_handler_disconnect (gpointer instance,
     {
       handler->sequential_number = 0;
       handler->block_count = 1;
+      remove_invalid_closure_notify (handler, instance);
       handler_unref_R (signal_id, instance, handler);
     }
   else
@@ -3736,8 +3735,10 @@ invalid_closure_notify (gpointer  instance,
   SIGNAL_LOCK ();
 
   handler = handler_lookup (instance, 0, closure, &signal_id);
-  /* GClosure removes our notifier when we're done */
-  handler->has_invalid_closure_notify = 0;
+  g_assert (handler->closure == closure);
+
+  handler->sequential_number = 0;
+  handler->block_count = 1;
   handler_unref_R (signal_id, instance, handler);
 
   SIGNAL_UNLOCK ();
