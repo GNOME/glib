@@ -233,7 +233,15 @@ again:
         }
 
       if (tz->t_info != NULL)
-        g_array_free (tz->t_info, TRUE);
+        {
+          gint idx;
+          for (idx = 0; idx < tz->t_info->len; idx++)
+            {
+              TransitionInfo *info = &g_array_index (tz->t_info, TransitionInfo, idx);
+              g_free (info->abbrev);
+            }
+          g_array_free (tz->t_info, TRUE);
+        }
       if (tz->transitions != NULL)
         g_array_free (tz->transitions, TRUE);
       g_free (tz->name);
