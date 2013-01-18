@@ -25,6 +25,7 @@ libpcre_la_CPPFLAGS = \
 	$(AM_CPPFLAGS)
 
 libpcre_la_CFLAGS = \
+	$(GLIB_HIDDEN_VISIBILITY_CFLAGS) \
 	$(PCRE_WARN_CFLAGS) \
 	$(DEP_CFLAGS) \
 	$(AM_CFLAGS)

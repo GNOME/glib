@@ -4,6 +4,7 @@ AM_CPPFLAGS = -DXDG_PREFIX=_gio_xdg
 
 noinst_LTLIBRARIES = libxdgmime.la
 
+libxdgmime_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libxdgmime_la_SOURCES = \
 	xdgmime.c 	\
 	xdgmime.h	\

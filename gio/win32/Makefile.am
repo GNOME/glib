@@ -19,6 +19,7 @@ libgiowin32_la_SOURCES =			\
 	$(NULL)
 
 libgiowin32_la_CFLAGS = \
+	$(GLIB_HIDDEN_VISIBILITY_CFLAGS)	\
 	-DG_LOG_DOMAIN=\"GLib-GIO\"	\
 	$(gio_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)		\

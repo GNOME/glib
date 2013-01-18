@@ -6,6 +6,7 @@ INCLUDES = 			\
 
 noinst_LTLIBRARIES = libcharset.la
 
+libcharset_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libcharset_la_SOURCES =    	\
 	libcharset.h		\
 	localcharset.h		\

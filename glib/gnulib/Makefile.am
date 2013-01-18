@@ -6,6 +6,7 @@ INCLUDES = $(glib_INCLUDES) -DG_LOG_DOMAIN=\"GLib\" \
 
 noinst_LTLIBRARIES = libgnulib.la
 
+libgnulib_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgnulib_la_SOURCES = 	\
 	asnprintf.c \
 	printf-args.c \
