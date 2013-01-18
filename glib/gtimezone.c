@@ -510,7 +510,6 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
       g_assert (trans.info_index < gtz->t_info->len);
       g_array_append_val (gtz->transitions, trans);
     }
-  g_bytes_unref (zoneinfo);
 }
 
 #elif defined (G_OS_WIN32)
