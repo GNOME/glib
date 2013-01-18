@@ -968,6 +968,12 @@ _g_io_modules_ensure_extension_points_registered (void)
       ep = g_io_extension_point_register (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_FILE_MONITOR);
       
+      ep = g_io_extension_point_register (G_NFS_DIRECTORY_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_DIRECTORY_MONITOR);
+
+      ep = g_io_extension_point_register (G_NFS_FILE_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_FILE_MONITOR);
+
       ep = g_io_extension_point_register (G_VOLUME_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_VOLUME_MONITOR);
       

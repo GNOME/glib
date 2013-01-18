@@ -2405,6 +2405,75 @@ g_local_file_move (GFile                  *source,
   return TRUE;
 }
 
+static gboolean
+is_remote_fs (const gchar *filename)
+{
+  const char *fsname = NULL;
+
+#ifdef USE_STATFS
+  struct statfs statfs_buffer;
+  int statfs_result = 0;
+
+#if STATFS_ARGS == 2
+  statfs_result = statfs (filename, &statfs_buffer);
+#elif STATFS_ARGS == 4
+  statfs_result = statfs (filename, &statfs_buffer, sizeof (statfs_buffer), 0);
+#endif
+
+#elif defined(USE_STATVFS)
+  struct statvfs statfs_buffer;
+
+  statfs_result = statvfs (filename, &statfs_buffer);
+#else
+  return FALSE;
+#endif
+
+  if (statfs_result == -1)
+    return FALSE;
+
+#ifdef USE_STATFS
+#if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
+  fsname = statfs_buffer.f_fstypename;
+#else
+  fsname = get_fs_type (statfs_buffer.f_type);
+#endif
+
+#elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
+  fsname = statfs_buffer.f_basetype;
+#endif
+
+  if (fsname != NULL)
+    {
+      if (strcmp (fsname, "nfs") == 0)
+        return TRUE;
+      if (strcmp (fsname, "nfs4") == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+is_remote (const gchar *filename)
+{
+  static gboolean remote_home;
+  static gsize initialized;
+  const gchar *home;
+
+  home = g_get_home_dir ();
+  if (path_has_prefix (filename, home))
+    {
+      if (g_once_init_enter (&initialized))
+        {
+          remote_home = is_remote_fs (home);
+          g_once_init_leave (&initialized, TRUE);
+        }
+      return remote_home;
+    }
+
+  return FALSE;
+}
+
 static GFileMonitor*
 g_local_file_monitor_dir (GFile             *file,
 			  GFileMonitorFlags  flags,
@@ -2412,7 +2481,7 @@ g_local_file_monitor_dir (GFile             *file,
 			  GError           **error)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return _g_local_directory_monitor_new (local_file->filename, flags, error);
+  return _g_local_directory_monitor_new (local_file->filename, flags, is_remote (local_file->filename), error);
 }
 
 static GFileMonitor*
@@ -2422,7 +2491,7 @@ g_local_file_monitor_file (GFile             *file,
 			   GError           **error)
 {
   GLocalFile* local_file = G_LOCAL_FILE(file);
-  return _g_local_file_monitor_new (local_file->filename, flags, error);
+  return _g_local_file_monitor_new (local_file->filename, flags, is_remote (local_file->filename), error);
 }
 
 static void

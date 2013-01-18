@@ -34,6 +34,7 @@ G_BEGIN_DECLS
 #define G_IS_LOCAL_FILE_MONITOR_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_LOCAL_FILE_MONITOR))
 
 #define G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME "gio-local-file-monitor"
+#define G_NFS_FILE_MONITOR_EXTENSION_POINT_NAME   "gio-nfs-file-monitor"
 
 typedef struct _GLocalFileMonitor      GLocalFileMonitor;
 typedef struct _GLocalFileMonitorClass GLocalFileMonitorClass;
@@ -60,6 +61,7 @@ GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,
                                                GFileMonitorFlags   flags,
+                                               gboolean            is_remote_fs,
                                                GError            **error);
 
 G_END_DECLS

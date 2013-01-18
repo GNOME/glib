@@ -229,14 +229,21 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
 GFileMonitor*
 _g_local_directory_monitor_new (const char         *dirname,
 				GFileMonitorFlags   flags,
+                                gboolean            is_remote_fs,
 				GError            **error)
 {
   GFileMonitor *monitor = NULL;
-  GType type;
+  GType type = G_TYPE_INVALID;
 
-  type = _g_io_module_get_default_type (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME,
-                                        "GIO_USE_FILE_MONITOR",
-                                        G_STRUCT_OFFSET (GLocalDirectoryMonitorClass, is_supported));
+  if (is_remote_fs)
+    type = _g_io_module_get_default_type (G_NFS_DIRECTORY_MONITOR_EXTENSION_POINT_NAME,
+                                          "GIO_USE_FILE_MONITOR",
+                                          G_STRUCT_OFFSET (GLocalDirectoryMonitorClass, is_supported));
+
+  if (type == G_TYPE_INVALID)
+    type = _g_io_module_get_default_type (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME,
+                                          "GIO_USE_FILE_MONITOR",
+                                          G_STRUCT_OFFSET (GLocalDirectoryMonitorClass, is_supported));
 
   if (type != G_TYPE_INVALID)
     monitor = G_FILE_MONITOR (g_object_new (type, "dirname", dirname, "flags", flags, NULL));

@@ -152,15 +152,22 @@ static void g_local_file_monitor_class_init (GLocalFileMonitorClass *klass)
 
 GFileMonitor*
 _g_local_file_monitor_new (const char         *pathname,
-			   GFileMonitorFlags   flags,
-			   GError            **error)
+                           GFileMonitorFlags   flags,
+                           gboolean            is_remote_fs,
+                           GError            **error)
 {
   GFileMonitor *monitor = NULL;
-  GType type;
+  GType type = G_TYPE_INVALID;
 
-  type = _g_io_module_get_default_type (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
-                                        "GIO_USE_FILE_MONITOR",
-                                        G_STRUCT_OFFSET (GLocalFileMonitorClass, is_supported));
+  if (is_remote_fs)
+    type = _g_io_module_get_default_type (G_NFS_FILE_MONITOR_EXTENSION_POINT_NAME,
+                                          "GIO_USE_FILE_MONITOR",
+                                          G_STRUCT_OFFSET (GLocalFileMonitorClass, is_supported));
+
+  if (type == G_TYPE_INVALID)
+    type = _g_io_module_get_default_type (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
+                                          "GIO_USE_FILE_MONITOR",
+                                          G_STRUCT_OFFSET (GLocalFileMonitorClass, is_supported));
 
   if (type != G_TYPE_INVALID)
     monitor = G_FILE_MONITOR (g_object_new (type, "filename", pathname, "flags", flags, NULL));
