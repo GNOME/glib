@@ -1023,6 +1023,10 @@ gvs_tuple_is_normal (GVariantSerialised value)
   gsize offset;
   gsize i;
 
+  /* as per the comment in gvs_tuple_get_child() */
+  if G_UNLIKELY (value.data == NULL && value.size != 0)
+    return FALSE;
+
   offset_size = gvs_get_offset_size (value.size);
   length = g_variant_type_info_n_members (value.type_info);
   offset_ptr = value.size;
