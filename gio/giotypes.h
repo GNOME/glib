@@ -478,13 +478,13 @@ typedef struct _GTestDBus GTestDBus;
  */
 typedef struct _GSubprocess                   GSubprocess;
 /**
- * GSubprocessContext:
+ * GSubprocessLauncher:
  *
  * Options for launching a child process.
  *
  * Since: 2.36
  */
-typedef struct _GSubprocessContext            GSubprocessContext;
+typedef struct _GSubprocessLauncher           GSubprocessLauncher;
 
 G_END_DECLS
 

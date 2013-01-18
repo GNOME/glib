@@ -21,29 +21,19 @@
 #ifndef __G_SUBPROCESS_CONTEXT_PRIVATE_H__
 #define __G_SUBPROCESS_CONTEXT_PRIVATE_H__
 
-#include "gsubprocesscontext.h"
+#include "gsubprocesslauncher.h"
 
 G_BEGIN_DECLS
 
-struct _GSubprocessContext
+struct _GSubprocessLauncher
 {
   GObject parent;
 
-  GSpawnFlags flags;
-  GPtrArray *argv;
-  gboolean has_argv0;
+  GSubprocessFlags flags;
   char **envp;
   char *cwd;
 
-  GSubprocessStreamDisposition stdin_disposition;
-  GSubprocessStreamDisposition stdout_disposition;
-  GSubprocessStreamDisposition stderr_disposition;
-
-  guint keep_descriptors : 1;
-  guint search_path : 1;
-  guint search_path_from_envp : 1;
-  guint unused_flags : 29;
-
+#ifdef G_OS_UNIX
   gint stdin_fd;
   gchar *stdin_path;
 
@@ -54,7 +44,9 @@ struct _GSubprocessContext
   gchar *stderr_path;
 
   GSpawnChildSetupFunc child_setup_func;
-  gpointer child_setup_data;
+  gpointer child_setup_user_data;
+  GDestroyNotify child_setup_destroy_notify;
+#endif
 };
 
 G_END_DECLS

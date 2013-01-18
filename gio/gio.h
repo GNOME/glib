@@ -124,7 +124,7 @@
 #include <gio/gsrvtarget.h>
 #include <gio/gtask.h>
 #include <gio/gsubprocess.h>
-#include <gio/gsubprocesscontext.h>
+#include <gio/gsubprocesslauncher.h>
 #include <gio/gtcpconnection.h>
 #include <gio/gtcpwrapperconnection.h>
 #include <gio/gtestdbus.h>

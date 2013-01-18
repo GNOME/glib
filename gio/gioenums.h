@@ -1659,23 +1659,25 @@ typedef enum /*< flags >*/ {
 } GTestDBusFlags;
 
 /**
- * GSubprocessStreamDisposition:
- * @G_SUBPROCESS_STREAM_DISPOSITION_NULL: Redirect to operating system's null output stream
- * @G_SUBPROCESS_STREAM_DISPOSITION_INHERIT: Keep the stream from the parent process
- * @G_SUBPROCESS_STREAM_DISPOSITION_PIPE: Open a private unidirectional channel between the processes
- * @G_SUBPROCESS_STREAM_DISPOSITION_STDERR_MERGE: Only applicable to standard error; causes it to be merged with standard output
+ * GSubprocessFlags:
+ * @G_SUBPROCESS_FLAGS_NONE: No flags.
  *
- * Flags to define the behaviour of the standard input/output/error of
- * a #GSubprocess.
+ * Flags to define the behaviour of a #GSubprocess.
  *
  * Since: 2.36
  **/
 typedef enum {
-  G_SUBPROCESS_STREAM_DISPOSITION_NULL,
-  G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
-  G_SUBPROCESS_STREAM_DISPOSITION_PIPE,
-  G_SUBPROCESS_STREAM_DISPOSITION_STDERR_MERGE
-} GSubprocessStreamDisposition;
+  G_SUBPROCESS_FLAGS_NONE                  = 0,
+  G_SUBPROCESS_FLAGS_SEARCH_PATH           = (1u << 0),
+  G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP = (1u << 1),
+  G_SUBPROCESS_FLAGS_STDIN_PIPE            = (1u << 2),
+  G_SUBPROCESS_FLAGS_STDIN_INHERIT         = (1u << 3),
+  G_SUBPROCESS_FLAGS_STDOUT_PIPE           = (1u << 4),
+  G_SUBPROCESS_FLAGS_STDOUT_SILENCE        = (1u << 5),
+  G_SUBPROCESS_FLAGS_STDERR_PIPE           = (1u << 6),
+  G_SUBPROCESS_FLAGS_STDERR_SILENCE        = (1u << 7),
+  G_SUBPROCESS_FLAGS_STDERR_MERGE          = (1u << 8)
+} GSubprocessFlags;
 
 G_END_DECLS
 

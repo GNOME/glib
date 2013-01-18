@@ -36,68 +36,68 @@ G_BEGIN_DECLS
 #define G_IS_SUBPROCESS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_SUBPROCESS))
 
 GLIB_AVAILABLE_IN_2_36
-GType            g_subprocess_get_type (void) G_GNUC_CONST;
+GType            g_subprocess_get_type                  (void) G_GNUC_CONST;
 
 /**** Core API ****/
 
 GLIB_AVAILABLE_IN_2_36
-GSubprocess *    g_subprocess_new (GSubprocessContext   *context,
-				   GError               **error);
+GSubprocess *    g_subprocess_new                       (GSubprocessFlags        flags,
+                                                         GError                **error,
+                                                         const gchar            *argv0,
+                                                         ...) G_GNUC_NULL_TERMINATED;
+GLIB_AVAILABLE_IN_2_36
+GSubprocess *    g_subprocess_newv                      (const gchar * const  *argv,
+                                                         GSubprocessFlags      flags,
+                                                         GError              **error);
 
 GLIB_AVAILABLE_IN_2_36
-GOutputStream *    g_subprocess_get_stdin_pipe (GSubprocess       *self);
+GOutputStream *    g_subprocess_get_stdin_pipe          (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-GInputStream *   g_subprocess_get_stdout_pipe (GSubprocess      *self);
+GInputStream *   g_subprocess_get_stdout_pipe           (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-GInputStream *   g_subprocess_get_stderr_pipe (GSubprocess      *self);
+GInputStream *   g_subprocess_get_stderr_pipe           (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-void             g_subprocess_wait (GSubprocess                *self,
-				    GCancellable               *cancellable,
-				    GAsyncReadyCallback         callback,
-				    gpointer                    user_data);
+GPid             g_subprocess_get_pid                   (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-gboolean         g_subprocess_wait_finish (GSubprocess                *self,
-					   GAsyncResult               *result,
-					   int                        *out_exit_status,
-					   GError                    **error);
+void             g_subprocess_request_exit              (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-gboolean         g_subprocess_wait_sync (GSubprocess   *self,
-					 int           *out_exit_status,
-					 GCancellable  *cancellable,
-					 GError       **error);
+void             g_subprocess_force_exit                (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-gboolean         g_subprocess_wait_sync_check (GSubprocess   *self,
-					       GCancellable  *cancellable,
-					       GError       **error);
+gboolean         g_subprocess_wait                      (GSubprocess          *self,
+                                                         GCancellable         *cancellable,
+                                                         GError              **error);
 
 GLIB_AVAILABLE_IN_2_36
-GPid             g_subprocess_get_pid (GSubprocess     *self);
+void             g_subprocess_wait_async                (GSubprocess          *self,
+                                                         GCancellable         *cancellable,
+                                                         GAsyncReadyCallback   callback,
+                                                         gpointer              user_data);
 
 GLIB_AVAILABLE_IN_2_36
-gboolean         g_subprocess_request_exit (GSubprocess       *self);
+gboolean         g_subprocess_wait_finish               (GSubprocess          *self,
+                                                         GAsyncResult         *result,
+                                                         GError              **error);
 
 GLIB_AVAILABLE_IN_2_36
-void             g_subprocess_force_exit (GSubprocess       *self);
-
-/** High level helpers **/
+gboolean         g_subprocess_get_successful            (GSubprocess          *self);
 
 GLIB_AVAILABLE_IN_2_36
-GSubprocess *    g_subprocess_new_simple_argl (GSubprocessStreamDisposition stdout_disposition,
-					       GSubprocessStreamDisposition stderr_disposition,
-					       GError                     **error,
-					       const char                  *first_arg,
-					       ...) G_GNUC_NULL_TERMINATED;
+gboolean         g_subprocess_get_if_exited             (GSubprocess          *self);
+
 GLIB_AVAILABLE_IN_2_36
-GSubprocess *    g_subprocess_new_simple_argv (char                       **argv,
-					       GSubprocessStreamDisposition stdout_disposition,
-					       GSubprocessStreamDisposition stderr_disposition,
-					       GError                     **error);
+gint             g_subprocess_get_exit_status           (GSubprocess          *self);
+
+GLIB_AVAILABLE_IN_2_36
+gboolean         g_subprocess_get_if_signaled           (GSubprocess          *self);
+
+GLIB_AVAILABLE_IN_2_36
+gint             g_subprocess_get_term_signal           (GSubprocess          *self);
 
 G_END_DECLS
 

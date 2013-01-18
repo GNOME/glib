@@ -38,7 +38,7 @@
 
 #include "config.h"
 #include "gsubprocess.h"
-#include "gsubprocesscontext-private.h"
+#include "gsubprocesslauncher-private.h"
 #include "gasyncresult.h"
 #include "giostream.h"
 #include "gmemoryinputstream.h"
@@ -77,7 +77,11 @@ struct _GSubprocess
 {
   GObject parent;
 
-  GSubprocessContext *context;
+  /* only used during construction */
+  GSubprocessFlags flags;
+  gchar **argv;
+
+  GSubprocessLauncher *launcher;
   GPid pid;
 
   guint pid_valid : 1;
@@ -96,7 +100,8 @@ G_DEFINE_TYPE_WITH_CODE (GSubprocess, g_subprocess, G_TYPE_OBJECT,
 enum
 {
   PROP_0,
-  PROP_CONTEXT,
+  PROP_FLAGS,
+  PROP_ARGV,
   N_PROPS
 };
 
@@ -143,27 +148,12 @@ g_subprocess_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_CONTEXT:
-      self->context = g_value_dup_object (value);
+    case PROP_FLAGS:
+      self->flags = g_value_get_flags (value);
       break;
 
-    default:
-      g_assert_not_reached ();
-    }
-}
-
-static void
-g_subprocess_get_property (GObject    *object,
-                           guint       prop_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
-{
-  GSubprocess *self = G_SUBPROCESS (object);
-
-  switch (prop_id)
-    {
-    case PROP_CONTEXT:
-      g_value_set_object (value, self->context);
+    case PROP_ARGV:
+      self->argv = g_value_dup_boxed (value);
       break;
 
     default:
@@ -177,18 +167,14 @@ g_subprocess_class_init (GSubprocessClass *class)
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
 
   gobject_class->finalize = g_subprocess_finalize;
-  gobject_class->get_property = g_subprocess_get_property;
   gobject_class->set_property = g_subprocess_set_property;
 
-  /**
-   * GSubprocess:context:
-   *
-   *
-   * Since: 2.36
-   */
-  g_subprocess_pspecs[PROP_CONTEXT] = g_param_spec_object ("context", P_("Context"), P_("Subprocess options"), G_TYPE_SUBPROCESS_CONTEXT,
-							   G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-							   G_PARAM_STATIC_STRINGS);
+  g_subprocess_pspecs[PROP_FLAGS] = g_param_spec_flags ("flags", P_("Flags"), P_("Subprocess flags"),
+                                                        G_TYPE_SUBPROCESS_FLAGS, 0, G_PARAM_WRITABLE |
+                                                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+  g_subprocess_pspecs[PROP_ARGV] = g_param_spec_boxed ("argv", P_("Arguments"), P_("Argument vector"),
+                                                       G_TYPE_STRV, G_PARAM_WRITABLE |
+                                                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (gobject_class, N_PROPS, g_subprocess_pspecs);
 }
@@ -326,92 +312,79 @@ initable_init (GInitable     *initable,
    *
    * First, stdin.
    */
-#ifdef G_OS_UNIX
-  if (self->context->stdin_fd != -1)
-    child_data.fds[0] = self->context->stdin_fd;
-  else if (self->context->stdin_path != NULL)
-    {
-      child_data.fds[0] = close_fds[0] = unix_open_file (self->context->stdin_path, 
-							 O_RDONLY, error);
-      if (child_data.fds[0] == -1)
-	goto out;
-    }
-  else
-#endif
-  if (self->context->stdin_disposition == G_SUBPROCESS_STREAM_DISPOSITION_NULL)
-    ; /* nothing */
-  else if (self->context->stdin_disposition == G_SUBPROCESS_STREAM_DISPOSITION_INHERIT)
+  if (self->flags & G_SUBPROCESS_FLAGS_STDIN_INHERIT)
     spawn_flags |= G_SPAWN_CHILD_INHERITS_STDIN;
-  else if (self->context->stdin_disposition == G_SUBPROCESS_STREAM_DISPOSITION_PIPE)
+  else if (self->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE)
     pipe_ptrs[0] = &pipe_fds[0];
-  else
-    g_assert_not_reached ();
+#ifdef G_OS_UNIX
+  else if (self->launcher)
+    {
+      if (self->launcher->stdin_fd != -1)
+        child_data.fds[0] = self->launcher->stdin_fd;
+      else if (self->launcher->stdin_path != NULL)
+        {
+          child_data.fds[0] = close_fds[0] = unix_open_file (self->launcher->stdin_path, O_RDONLY, error);
+          if (child_data.fds[0] == -1)
+            goto out;
+        }
+    }
+#endif
 
   /* Next, stdout. */
-#ifdef G_OS_UNIX
-  if (self->context->stdout_fd != -1)
-    child_data.fds[1] = self->context->stdout_fd;
-  else if (self->context->stdout_path != NULL)
-    {
-      child_data.fds[1] = close_fds[1] = unix_open_file (self->context->stdout_path, 
-							 O_CREAT | O_WRONLY, error);
-      if (child_data.fds[1] == -1)
-	goto out;
-    }
-  else
-#endif
-  if (self->context->stdout_disposition == G_SUBPROCESS_STREAM_DISPOSITION_NULL)
+  if (self->flags & G_SUBPROCESS_FLAGS_STDOUT_SILENCE)
     spawn_flags |= G_SPAWN_STDOUT_TO_DEV_NULL;
-  else if (self->context->stdout_disposition == G_SUBPROCESS_STREAM_DISPOSITION_INHERIT)
-    ; /* Nothing */
-  else if (self->context->stdout_disposition == G_SUBPROCESS_STREAM_DISPOSITION_PIPE)
+  else if (self->flags & G_SUBPROCESS_FLAGS_STDOUT_PIPE)
     pipe_ptrs[1] = &pipe_fds[1];
-  else
-    g_assert_not_reached ();
+#ifdef G_OS_UNIX
+  else if (self->launcher)
+    {
+      if (self->launcher->stdout_fd != -1)
+        child_data.fds[1] = self->launcher->stdout_fd;
+      else if (self->launcher->stdout_path != NULL)
+        {
+          child_data.fds[1] = close_fds[1] = unix_open_file (self->launcher->stdout_path,
+                                                             O_CREAT | O_WRONLY, error);
+          if (child_data.fds[1] == -1)
+            goto out;
+        }
+    }
+#endif
 
   /* Finally, stderr. */
-#ifdef G_OS_UNIX
-  if (self->context->stderr_fd != -1)
-    child_data.fds[2] = self->context->stderr_fd;
-  else if (self->context->stderr_path != NULL)
-    {
-      child_data.fds[2] = close_fds[2] = unix_open_file (self->context->stderr_path, 
-							 O_CREAT | O_WRONLY, error);
-      if (child_data.fds[2] == -1)
-	goto out;
-    }
-  else
-#endif
-  if (self->context->stderr_disposition == G_SUBPROCESS_STREAM_DISPOSITION_NULL)
+  if (self->flags & G_SUBPROCESS_FLAGS_STDERR_SILENCE)
     spawn_flags |= G_SPAWN_STDERR_TO_DEV_NULL;
-  else if (self->context->stderr_disposition == G_SUBPROCESS_STREAM_DISPOSITION_INHERIT)
-    ; /* Nothing */
-  else if (self->context->stderr_disposition == G_SUBPROCESS_STREAM_DISPOSITION_PIPE)
+  else if (self->flags & G_SUBPROCESS_FLAGS_STDERR_PIPE)
     pipe_ptrs[2] = &pipe_fds[2];
-  else if (self->context->stderr_disposition == G_SUBPROCESS_STREAM_DISPOSITION_STDERR_MERGE)
-    /* This will work because stderr gets setup after stdout. */
-    child_data.fds[2] = 1;
-  else
-    g_assert_not_reached ();
+#ifdef G_OS_UNIX
+  if (self->launcher)
+    {
+      if (self->launcher->stderr_fd != -1)
+        child_data.fds[2] = self->launcher->stderr_fd;
+      else if (self->launcher->stderr_path != NULL)
+        {
+          child_data.fds[2] = close_fds[2] = unix_open_file (self->launcher->stderr_path,
+                                                             O_CREAT | O_WRONLY, error);
+          if (child_data.fds[2] == -1)
+            goto out;
+        }
+    }
+#endif
 
-  if (self->context->keep_descriptors)
-    spawn_flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
-
-  if (self->context->search_path)
+  if (self->flags & G_SUBPROCESS_FLAGS_SEARCH_PATH)
     spawn_flags |= G_SPAWN_SEARCH_PATH;
-  else if (self->context->search_path_from_envp)
+
+  else if (self->flags & G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP)
     spawn_flags |= G_SPAWN_SEARCH_PATH_FROM_ENVP;
-  else if (!g_path_is_absolute (((gchar**)self->context->argv->pdata)[0]))
-    spawn_flags |= G_SPAWN_SEARCH_PATH;
 
+  spawn_flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
   spawn_flags |= G_SPAWN_DO_NOT_REAP_CHILD;
   spawn_flags |= G_SPAWN_CLOEXEC_PIPES;
 
-  child_data.child_setup_func = self->context->child_setup_func;
-  child_data.child_setup_data = self->context->child_setup_data;
-  success = g_spawn_async_with_pipes (self->context->cwd,
-				      (char**)self->context->argv->pdata,
-				      self->context->envp,
+  child_data.child_setup_func = self->launcher ? self->launcher->child_setup_func : NULL;
+  child_data.child_setup_data = self->launcher ? self->launcher->child_setup_user_data : NULL;
+  success = g_spawn_async_with_pipes (self->launcher ? self->launcher->cwd : NULL,
+                                      self->argv,
+                                      self->launcher ? self->launcher->envp : NULL,
                                       spawn_flags,
                                       child_setup, &child_data,
                                       &self->pid,
@@ -439,23 +412,66 @@ initable_iface_init (GInitableIface *initable_iface)
 }
 
 /**
- * g_subprocess_new:
+ * g_subprocess_new: (skip)
  *
- * Create a new process, using the parameters specified by
- * GSubprocessContext.
+ * Create a new process with the given flags and varargs argument list.
  *
- * Returns: (transfer full): A newly created %GSubprocess, or %NULL on error (and @error will be set)
+ * The argument list must be terminated with %NULL.
+ *
+ * Returns: A newly created #GSubprocess, or %NULL on error (and @error
+ *   will be set)
  *
  * Since: 2.36
  */
-GLIB_AVAILABLE_IN_2_36
 GSubprocess *
-g_subprocess_new (GSubprocessContext   *context,
-		  GError              **error)
+g_subprocess_new (GSubprocessFlags   flags,
+                  GError           **error,
+                  const gchar       *argv0,
+                  ...)
 {
-  return g_initable_new (G_TYPE_SUBPROCESS,
-                         NULL, error,
-                         "context", context,
+  GSubprocess *result;
+  GPtrArray *args;
+  const gchar *arg;
+  va_list ap;
+
+  g_return_val_if_fail (argv0 != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  args = g_ptr_array_new ();
+
+  va_start (ap, argv0);
+  g_ptr_array_add (args, (gchar *) argv0);
+  while ((arg = va_arg (ap, const gchar *)))
+    g_ptr_array_add (args, (gchar *) arg);
+
+  result = g_subprocess_newv ((const gchar * const *) args->pdata, flags, error);
+
+  g_ptr_array_free (args, TRUE);
+
+  return result;
+}
+
+/**
+ * g_subprocess_newv:
+ *
+ * Create a new process with the given flags and argument list.
+ *
+ * The argument list is expected to be %NULL-terminated.
+ *
+ * Returns: A newly created #GSubprocess, or %NULL on error (and @error
+ *   will be set)
+ *
+ * Since: 2.36
+ * Rename to: g_subprocess_new
+ */
+GSubprocess *
+g_subprocess_newv (const gchar * const  *argv,
+                   GSubprocessFlags      flags,
+                   GError              **error)
+{
+  return g_initable_new (G_TYPE_SUBPROCESS, NULL, error,
+                         "argv", argv,
+                         "flags", flags,
                          NULL);
 }
 
@@ -566,10 +582,10 @@ g_subprocess_on_child_exited (GPid       pid,
  * Since: 2.36
  */
 void
-g_subprocess_wait (GSubprocess                *self,
-		   GCancellable               *cancellable,
-		   GAsyncReadyCallback         callback,
-		   gpointer                    user_data)
+g_subprocess_wait_async (GSubprocess         *self,
+                         GCancellable        *cancellable,
+                         GAsyncReadyCallback  callback,
+                         gpointer             user_data)
 {
   GSource *source;
   GSubprocessWatchData *data;
