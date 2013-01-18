@@ -16,6 +16,10 @@ endif
 
 bin_SCRIPTS = glib-gettextize
 
+if OS_LINUX
+TESTS = check-abis.sh
+endif
+
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=g_log_domain_glib 	\
 	@GLIB_DEBUG_FLAGS@ 			\
@@ -58,7 +62,8 @@ EXTRA_DIST += 			\
 	gthread-2.0.pc.in	\
 	gio-2.0.pc.in		\
 	gio-unix-2.0.pc.in	\
-	gio-windows-2.0.pc.in
+	gio-windows-2.0.pc.in	\
+	check-abis.sh
 
 
 # These may be in the builddir too
