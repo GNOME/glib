@@ -204,8 +204,7 @@ EXTRA_DIST += 			\
 	makefile.msc.in 	\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
-	glib-mkenums.in		\
-	abicheck.sh
+	glib-mkenums.in
 
 CLEANFILES += libgobject-gdb.py
 
