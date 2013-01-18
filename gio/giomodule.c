@@ -628,8 +628,122 @@ g_io_modules_load_all_in_directory (const char *dirname)
   return g_io_modules_load_all_in_directory_with_scope (dirname, NULL);
 }
 
-GRecMutex default_modules_lock;
-GHashTable *default_modules;
+static gpointer
+try_class (GIOExtension *extension,
+           guint         is_supported_offset)
+{
+  GType type = g_io_extension_get_type (extension);
+  typedef gboolean (*verify_func) (void);
+  gpointer class;
+
+  class = g_type_class_ref (type);
+  if (!is_supported_offset || (* G_STRUCT_MEMBER(verify_func, class, is_supported_offset)) ())
+    return class;
+
+  g_type_class_unref (class);
+  return NULL;
+}
+
+/**
+ * _g_io_module_get_default_type:
+ * @extension_point: the name of an extension point
+ * @envvar: (allow-none): the name of an environment variable to
+ *     override the default implementation.
+ * @is_supported_offset: a vtable offset, or zero
+ *
+ * Retrieves the default class implementing @extension_point.
+ *
+ * If @envvar is not %NULL, and the environment variable with that
+ * name is set, then the implementation it specifies will be tried
+ * first. After that, or if @envvar is not set, all other
+ * implementations will be tried in order of decreasing priority.
+ *
+ * If @is_supported_offset is non-zero, then it is the offset into the
+ * class vtable at which there is a function that takes no arguments and
+ * returns a boolean.  This function will be called on each candidate
+ * implementation to check if it is actually usable or not.
+ *
+ * The result is cached after it is generated the first time, and
+ * the function is thread-safe.
+ *
+ * Return value: (transfer none): an object implementing
+ *     @extension_point, or %NULL if there are no usable
+ *     implementations.
+ */
+GType
+_g_io_module_get_default_type (const gchar *extension_point,
+                               const gchar *envvar,
+                               guint        is_supported_offset)
+{
+  static GRecMutex default_modules_lock;
+  static GHashTable *default_modules;
+  const char *use_this;
+  GList *l;
+  GIOExtensionPoint *ep;
+  GIOExtension *extension, *preferred;
+  gpointer impl;
+
+  g_rec_mutex_lock (&default_modules_lock);
+  if (default_modules)
+    {
+      gpointer key;
+
+      if (g_hash_table_lookup_extended (default_modules, extension_point, &key, &impl))
+        {
+          g_rec_mutex_unlock (&default_modules_lock);
+          return impl ? G_OBJECT_CLASS_TYPE (impl) : G_TYPE_INVALID;
+        }
+    }
+  else
+    {
+      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+    }
+
+  _g_io_modules_ensure_loaded ();
+  ep = g_io_extension_point_lookup (extension_point);
+
+  if (!ep)
+    {
+      g_warn_if_reached ();
+      g_rec_mutex_unlock (&default_modules_lock);
+      return G_TYPE_INVALID;
+    }
+
+  use_this = envvar ? g_getenv (envvar) : NULL;
+  if (use_this)
+    {
+      preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
+      if (preferred)
+        {
+          impl = try_class (preferred, is_supported_offset);
+          if (impl)
+            goto done;
+        }
+      else
+        g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
+    }
+  else
+    preferred = NULL;
+
+  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+    {
+      extension = l->data;
+      if (extension == preferred)
+        continue;
+
+      impl = try_class (extension, is_supported_offset);
+      if (impl)
+        goto done;
+    }
+
+  impl = NULL;
+
+ done:
+  g_hash_table_insert (default_modules, g_strdup (extension_point), impl);
+  g_rec_mutex_unlock (&default_modules_lock);
+
+  return impl ? G_OBJECT_CLASS_TYPE (impl) : G_TYPE_INVALID;
+}
 
 static gpointer
 try_implementation (GIOExtension         *extension,
@@ -684,6 +798,8 @@ _g_io_module_get_default (const gchar         *extension_point,
 			  const gchar         *envvar,
 			  GIOModuleVerifyFunc  verify_func)
 {
+  static GRecMutex default_modules_lock;
+  static GHashTable *default_modules;
   const char *use_this;
   GList *l;
   GIOExtensionPoint *ep;

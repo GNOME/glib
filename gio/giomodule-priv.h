@@ -35,6 +35,10 @@ gpointer _g_io_module_get_default (const gchar         *extension_point,
 				   const gchar         *envvar,
 				   GIOModuleVerifyFunc  verify_func);
 
+GType    _g_io_module_get_default_type (const gchar *extension_point,
+                                        const gchar *envvar,
+                                        guint        is_supported_offset);
+
 #ifdef G_PLATFORM_WIN32
 void *_g_io_win32_get_module (void);
 #endif
