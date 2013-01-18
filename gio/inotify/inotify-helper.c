@@ -55,7 +55,7 @@ static void ih_not_missing_callback (inotify_sub *sub);
  *
  * We take the lock in all public functions
  */
-G_GNUC_INTERNAL G_LOCK_DEFINE (inotify_lock);
+G_LOCK_DEFINE (inotify_lock);
 
 static GFileMonitorEvent ih_mask_to_EventFlags (guint32 mask);
 

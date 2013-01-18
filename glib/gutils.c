@@ -2422,7 +2422,7 @@ g_get_tmp_dir (void)
  * equivalent __libc_enable_secure is available).  See:
  * http://osdir.com/ml/linux.lfs.hardened/2007-04/msg00032.html
  */ 
-G_GNUC_INTERNAL gboolean
+gboolean
 g_check_setuid (void)
 {
   /* TODO: get __libc_enable_secure exported from glibc.

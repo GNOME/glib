@@ -39,7 +39,7 @@
 #define FK_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
 #endif
 
-G_GNUC_INTERNAL G_LOCK_DEFINE (fen_lock);
+G_LOCK_DEFINE (fen_lock);
 
 static ulong max_port_events = 512;
 static GList *pn_visible_list;	/* the queue of ports which don't have the max objs */
