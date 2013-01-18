@@ -149,5 +149,9 @@ g_fam_directory_monitor_register (GIOModule *module)
 				  G_TYPE_FAM_DIRECTORY_MONITOR,
 				  "fam",
 				  10);
+  g_io_extension_point_implement (G_NFS_DIRECTORY_MONITOR_EXTENSION_POINT_NAME,
+				  G_TYPE_FAM_DIRECTORY_MONITOR,
+				  "fam",
+				  10);
 }
 
