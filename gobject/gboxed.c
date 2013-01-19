@@ -95,6 +95,14 @@ pollfd_copy (GPollFD *src)
   return dest;
 }
 
+static GUuid *
+uuid_copy (GUuid *src)
+{
+  GUuid *dest = g_new (GUuid, 1);
+  memcpy (dest, src, sizeof (GUuid));
+  return dest;
+}
+
 void
 _g_boxed_type_init (void)
 {
@@ -169,6 +177,7 @@ G_DEFINE_BOXED_TYPE (GMarkupParseContext, g_markup_parse_context, g_markup_parse
 
 G_DEFINE_BOXED_TYPE (GThread, g_thread, g_thread_ref, g_thread_unref)
 G_DEFINE_BOXED_TYPE (GChecksum, g_checksum, g_checksum_copy, g_checksum_free)
+G_DEFINE_BOXED_TYPE (GUuid, g_uuid, uuid_copy, g_free)
 
 G_DEFINE_BOXED_TYPE (GOptionGroup, g_option_group, g_option_group_ref, g_option_group_unref)
 
