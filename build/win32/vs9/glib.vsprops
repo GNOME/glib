@@ -318,30 +318,6 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&
 "
 	/>
 	<UserMacro
-		Name="GlibGenerateGlibDef"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\glib.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;&quot;$(IntDir)\glib.def&quot;"
-	/>
-	<UserMacro
-		Name="GlibGenerateGlibDefW64"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\glib.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;&quot;$(IntDir)\glib.def&quot;"
-	/>
-	<UserMacro
-		Name="GlibGenerateGmoduleDef"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 ..\..\..\gmodule\gmodule.symbols &gt;&gt;&quot;$(IntDir)\gmodule.def&quot;"
-	/>
-	<UserMacro
-		Name="GlibGenerateGmoduleDefW64"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 ..\..\..\gmodule\gmodule.symbols &gt;&gt;&quot;$(IntDir)\gmodule.def&quot;"
-	/>
-	<UserMacro
-		Name="GlibGenerateGobjectDef"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\gobject.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gobject\gobject.symbols &gt;&gt;&quot;$(IntDir)\gobject.def&quot;"
-	/>
-	<UserMacro
-		Name="GlibGenerateGioDef"
-		Value="echo EXPORTS &gt;&quot;$(IntDir)\gio.def&quot; &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gio\gio.symbols &gt;&gt;&quot;$(IntDir)\gio.def&quot;"
-	/>
-	<UserMacro
 		Name="GlibLibtoolCompatibleDllPrefix"
 		Value="lib"
 	/>

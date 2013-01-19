@@ -3,7 +3,6 @@
   <PropertyGroup Label="UserMacros">
     <GlibEtcInstallRoot>..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
-    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <ApiVersion>2.0</ApiVersion>
     <GlibDoInstall>
 mkdir $(CopyDir)\bin
@@ -521,12 +520,6 @@ mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
 </GlibDoInstall>
-    <GlibGenerateGlibDef>echo EXPORTS &gt;"$(DefDir)glib.def" &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;"$(DefDir)glib.def"</GlibGenerateGlibDef>
-    <GlibGenerateGlibDefW64>echo EXPORTS &gt;"$(DefDir)glib.def" &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;"$(DefDir)glib.def"</GlibGenerateGlibDefW64>
-    <GlibGenerateGmoduleDef>echo EXPORTS &gt;"$(DefDir)gmodule.def" &amp;&amp; cl /EP -DG_OS_WIN32 ..\..\..\gmodule\gmodule.symbols &gt;&gt;"$(DefDir)gmodule.def"</GlibGenerateGmoduleDef>
-    <GlibGenerateGmoduleDefW64>echo EXPORTS &gt;"$(DefDir)gmodule.def" &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 ..\..\..\gmodule\gmodule.symbols &gt;&gt;"$(DefDir)gmodule.def"</GlibGenerateGmoduleDefW64>
-    <GlibGenerateGobjectDef>echo EXPORTS &gt;"$(DefDir)gobject.def" &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gobject\gobject.symbols &gt;&gt;"$(DefDir)gobject.def"</GlibGenerateGobjectDef>
-    <GlibGenerateGioDef>echo EXPORTS &gt;"$(DefDir)gio.def" &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gio\gio.symbols &gt;&gt;"$(DefDir)gio.def"</GlibGenerateGioDef>
     <GlibLibtoolCompatibleDllPrefix>lib</GlibLibtoolCompatibleDllPrefix>
     <GlibLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</GlibLibtoolCompatibleDllSuffix>
     <GlibSeparateVS10DllPrefix />
