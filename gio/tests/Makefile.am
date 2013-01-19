@@ -154,6 +154,10 @@ if OS_WIN32
 TEST_PROGS += win32-streams
 endif
 
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
+
 actions_SOURCES   = actions.c gdbus-sessionbus.c gdbus-sessionbus.h
 
 unix_streams_LDADD       = $(LDADD) \
