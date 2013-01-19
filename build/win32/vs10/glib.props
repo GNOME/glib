@@ -586,24 +586,6 @@ copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h
     <BuildMacro Include="GlibDoInstall">
       <Value>$(GlibDoInstall)</Value>
     </BuildMacro>
-    <BuildMacro Include="GlibGenerateGlibDef">
-      <Value>$(GlibGenerateGlibDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibGenerateGlibDefW64">
-      <Value>$(GlibGenerateGlibDefW64)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibGenerateGmoduleDef">
-      <Value>$(GlibGenerateGmoduleDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibGenerateGmoduleDefW64">
-      <Value>$(GlibGenerateGmoduleDefW64)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibGenerateGobjectDef">
-      <Value>$(GlibGenerateGobjectDef)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GlibGenerateGioDef">
-      <Value>$(GlibGenerateGioDef)</Value>
-    </BuildMacro>
     <BuildMacro Include="GlibLibtoolCompatibleDllPrefix">
       <Value>$(GlibLibtoolCompatibleDllPrefix)</Value>
     </BuildMacro>
