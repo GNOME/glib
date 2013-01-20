@@ -43,8 +43,7 @@ glib__private__ (void)
     g_get_worker_context,
 
     g_check_setuid,
-    g_main_context_new_with_next_id,
-    g_child_watch_source_new_with_flags
+    g_main_context_new_with_next_id
   };
 
   return &table;
