@@ -1377,6 +1377,15 @@ g_test_create_case (const char       *test_name,
   return tc;
 }
 
+static gint
+find_suite (gconstpointer l, gconstpointer s)
+{
+  const GTestSuite *suite = l;
+  const gchar *str = s;
+
+  return strcmp (suite->name, str);
+}
+
 /**
  * GTestFixtureFunc:
  * @fixture: the test fixture
@@ -1426,8 +1435,18 @@ g_test_add_vtable (const char       *testpath,
         continue;       /* initial or duplicate slash */
       else if (!islast)
         {
-          GTestSuite *csuite = g_test_create_suite (seg);
-          g_test_suite_add_suite (suite, csuite);
+          GSList *l;
+          GTestSuite *csuite;
+          l = g_slist_find_custom (suite->suites, seg, find_suite);
+          if (l)
+            {
+              csuite = l->data;
+            }
+          else
+            {
+              csuite = g_test_create_suite (seg);
+              g_test_suite_add_suite (suite, csuite);
+            }
           suite = csuite;
         }
       else /* islast */
