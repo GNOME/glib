@@ -124,7 +124,7 @@ void    g_test_add_data_func_full       (const char     *testpath,
                                          GDestroyNotify  data_free_func);
 
 /* tell about failure */
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_30
 void    g_test_fail                     (void);
 
 /* hook up a test with fixture under test path */
