@@ -414,6 +414,7 @@ ip_watched_dir_free (ip_watched_dir_t *dir)
   g_assert_cmpint (g_hash_table_size (dir->files_hash), ==, 0);
   g_assert (dir->subs == NULL);
   g_free (dir->path);
+  g_hash_table_unref (dir->files_hash);
   g_free (dir);
 }
 
