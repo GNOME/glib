@@ -6514,11 +6514,12 @@ load_contents_read_callback (GObject      *obj,
 
   if (read_size < 0)
     {
-      /* EOF, close the file */
       g_task_return_error (data->task, error);
-      g_input_stream_close_async (stream, 0,
-                                  g_task_get_cancellable (data->task),
-                                  load_contents_close_callback, data);
+      g_object_unref (data->task);
+
+      /* Close the file ignoring any error */
+      g_input_stream_close_async (stream, 0, NULL, NULL, NULL);
+      g_object_unref (stream);
     }
   else if (read_size == 0)
     {
