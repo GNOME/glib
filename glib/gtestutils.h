@@ -309,7 +309,9 @@ typedef enum {
   G_TEST_LOG_STOP_CASE,         /* d:status d:nforks d:elapsed */
   G_TEST_LOG_MIN_RESULT,        /* s:blurb d:result */
   G_TEST_LOG_MAX_RESULT,        /* s:blurb d:result */
-  G_TEST_LOG_MESSAGE            /* s:blurb */
+  G_TEST_LOG_MESSAGE,           /* s:blurb */
+  G_TEST_LOG_START_SUITE,
+  G_TEST_LOG_STOP_SUITE
 } GTestLogType;
 
 typedef struct {

@@ -595,6 +595,8 @@ g_test_log_type_name (GTestLogType log_type)
     case G_TEST_LOG_MIN_RESULT:         return "minperf";
     case G_TEST_LOG_MAX_RESULT:         return "maxperf";
     case G_TEST_LOG_MESSAGE:            return "message";
+    case G_TEST_LOG_START_SUITE:        return "start suite";
+    case G_TEST_LOG_STOP_SUITE:         return "stop suite";
     }
   return "???";
 }
@@ -659,6 +661,10 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_START_BINARY:
       if (g_test_verbose())
         g_print ("GTest: random seed: %s\n", string2);
+      break;
+    case G_TEST_LOG_START_SUITE:
+      break;
+    case G_TEST_LOG_STOP_SUITE:
       break;
     case G_TEST_LOG_STOP_CASE:
       if (g_test_verbose())
@@ -1911,6 +1917,8 @@ g_test_run_suite_internal (GTestSuite *suite,
 
   g_return_val_if_fail (suite != NULL, -1);
 
+  g_test_log (G_TEST_LOG_START_SUITE, suite->name, NULL, 0, NULL);
+
   while (path[0] == '/')
     path++;
   l = strlen (path);
@@ -1940,6 +1948,8 @@ g_test_run_suite_internal (GTestSuite *suite,
   g_slist_free (reversed);
   g_free (test_run_name);
   test_run_name = old_name;
+
+  g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
 
   return n_bad;
 }

@@ -130,6 +130,8 @@ test_log_msg (GTestLogMsg *msg)
       guint i;
       gchar **strv;
     case G_TEST_LOG_NONE:
+    case G_TEST_LOG_START_SUITE:
+    case G_TEST_LOG_STOP_SUITE:
       break;
     case G_TEST_LOG_ERROR:
       strv = g_strsplit (msg->strings[0], "\n", -1);
