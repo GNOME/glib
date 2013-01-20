@@ -284,7 +284,7 @@ unix_nothreads_LDADD  = $(progs_ldadd)
 TEST_PROGS      += include
 include_LDADD    = $(progs_ldadd)
 
-# some testing of gtester funcitonality
+# some testing of gtester functionality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present
 	${GTESTER} -k --quiet -o tmpsample.xml --test-arg=--gtester-selftest ${GTESTER}
