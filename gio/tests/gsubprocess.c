@@ -54,10 +54,7 @@ test_noop (void)
   GSubprocess *proc;
 
   args = get_test_subprocess_args ("noop", NULL);
-  proc = g_subprocess_new_simple_argv ((gchar**) args->pdata,
-                                       G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
-                                       G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
-                                       error);
+  proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 

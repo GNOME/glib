@@ -433,6 +433,7 @@ static volatile int any_unix_signal_pending;
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
 static GSList *unix_signal_watches;
 static GSList *unix_child_watches;
+static GSList *subprocess_watches;
 
 static GSourceFuncs g_unix_signal_funcs =
 {
@@ -4786,6 +4787,8 @@ dispatch_unix_signals (void)
   /* handle GChildWatchSource instances */
   if (unix_signal_pending[SIGCHLD])
     {
+      GSList **node_ptr;
+
       unix_signal_pending[SIGCHLD] = FALSE;
 
       /* The only way we can do this is to scan all of the children.
@@ -4820,6 +4823,29 @@ dispatch_unix_signals (void)
                     }
                 }
               while (pid == -1 && errno == EINTR);
+            }
+        }
+
+      node_ptr = &subprocess_watches;
+      while (*node_ptr)
+        {
+          SubprocessWatch *watch = (*node)->data;
+          int si_code, si_status;
+          gboolean reaped;
+
+          if (call_waitid (watch->pid, &si_code, &si_status, &reaped))
+            {
+              /* The child has quit.  Dispatch it and remove it from the
+               * list.
+               */
+              watch->callback (si_code, si_status, reaped, watch->user_data);
+              *node_ptr = g_slist_remove (*node_ptr, watch);
+              g_slice_free (SubprocessWatch, watch);
+            }
+          else
+            {
+              /* Move to the next... */
+              *node_ptr = &(*node_ptr)->next;
             }
         }
     }

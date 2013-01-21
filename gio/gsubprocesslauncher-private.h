@@ -49,6 +49,9 @@ struct _GSubprocessLauncher
 #endif
 };
 
+void g_subprocess_set_launcher (GSubprocess         *subprocess,
+                                GSubprocessLauncher *launcher);
+
 G_END_DECLS
 
 #endif

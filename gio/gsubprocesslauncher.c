@@ -43,6 +43,8 @@
 
 #include "gsubprocesslauncher-private.h"
 #include "gioenumtypes.h"
+#include "gsubprocess.h"
+#include "ginitable.h"
 
 typedef GObjectClass GSubprocessLauncherClass;
 
@@ -534,3 +536,54 @@ g_subprocess_launcher_set_child_setup (GSubprocessLauncher  *self,
   self->child_setup_destroy_notify = destroy_notify;
 }
 #endif
+
+GSubprocess *
+g_subprocess_launcher_spawn (GSubprocessLauncher  *launcher,
+                             GError              **error,
+                             const gchar          *argv0,
+                             ...)
+{
+  GSubprocess *result;
+  GPtrArray *args;
+  const gchar *arg;
+  va_list ap;
+
+  g_return_val_if_fail (argv0 != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  args = g_ptr_array_new ();
+
+  va_start (ap, argv0);
+  g_ptr_array_add (args, (gchar *) argv0);
+  while ((arg = va_arg (ap, const gchar *)))
+    g_ptr_array_add (args, (gchar *) arg);
+
+  result = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
+
+  g_ptr_array_free (args, TRUE);
+
+  return result;
+
+}
+
+GSubprocess *
+g_subprocess_launcher_spawnv (GSubprocessLauncher  *launcher,
+                              const gchar * const  *argv,
+                              GError              **error)
+{
+  GSubprocess *subprocess;
+
+  subprocess = g_object_new (G_TYPE_SUBPROCESS,
+                             "argv", argv,
+                             "flags", launcher->flags,
+                             NULL);
+  g_subprocess_set_launcher (subprocess, launcher);
+
+  if (!g_initable_init (G_INITABLE (subprocess), NULL, error))
+    {
+      g_object_unref (subprocess);
+      return NULL;
+    }
+
+  return subprocess;
+}

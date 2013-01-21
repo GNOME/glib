@@ -59,11 +59,11 @@ GInputStream *   g_subprocess_get_stdout_pipe           (GSubprocess          *s
 GLIB_AVAILABLE_IN_2_36
 GInputStream *   g_subprocess_get_stderr_pipe           (GSubprocess          *self);
 
+#ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_2_36
-GPid             g_subprocess_get_pid                   (GSubprocess          *self);
-
-GLIB_AVAILABLE_IN_2_36
-void             g_subprocess_request_exit              (GSubprocess          *self);
+void             g_subprocess_send_signal               (GSubprocess          *self,
+                                                         gint                  signal_num);
+#endif
 
 GLIB_AVAILABLE_IN_2_36
 void             g_subprocess_force_exit                (GSubprocess          *self);
@@ -83,6 +83,23 @@ GLIB_AVAILABLE_IN_2_36
 gboolean         g_subprocess_wait_finish               (GSubprocess          *self,
                                                          GAsyncResult         *result,
                                                          GError              **error);
+
+GLIB_AVAILABLE_IN_2_36
+gboolean         g_subprocess_wait_check                (GSubprocess          *self,
+                                                         GCancellable         *cancellable,
+                                                         GError              **error);
+
+GLIB_AVAILABLE_IN_2_36
+void             g_subprocess_wait_check_async          (GSubprocess          *self,
+                                                         GCancellable         *cancellable,
+                                                         GAsyncReadyCallback   callback,
+                                                         gpointer              user_data);
+
+GLIB_AVAILABLE_IN_2_36
+gboolean         g_subprocess_wait_check_finish         (GSubprocess          *self,
+                                                         GAsyncResult         *result,
+                                                         GError              **error);
+
 
 GLIB_AVAILABLE_IN_2_36
 gboolean         g_subprocess_get_successful            (GSubprocess          *self);

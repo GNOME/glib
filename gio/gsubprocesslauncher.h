@@ -44,6 +44,17 @@ GLIB_AVAILABLE_IN_2_36
 GSubprocessLauncher *   g_subprocess_launcher_new                       (void);
 
 GLIB_AVAILABLE_IN_2_36
+GSubprocess *           g_subprocess_launcher_spawn                     (GSubprocessLauncher   *self,
+                                                                         GError               **error,
+                                                                         const gchar           *argv0,
+                                                                         ...);
+
+GLIB_AVAILABLE_IN_2_36
+GSubprocess *           g_subprocess_launcher_spawnv                    (GSubprocessLauncher   *self,
+                                                                         const gchar * const   *argv,
+                                                                         GError               **error);
+
+GLIB_AVAILABLE_IN_2_36
 void                    g_subprocess_launcher_set_environ               (GSubprocessLauncher   *self,
                                                                          gchar                **environ);
 

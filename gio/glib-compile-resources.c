@@ -314,20 +314,15 @@ end_element (GMarkupParseContext  *context,
                 }
               close (fd);
 
-              proc = g_subprocess_new_simple_argl (G_SUBPROCESS_STREAM_DISPOSITION_NULL,
-                                                   G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
-                                                   error,
-                                                   xmllint,
-                                                   "--nonet", "--noblanks",
-                                                   "--output", tmp_file,
-                                                   real_file, NULL);
+              proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
+                                       xmllint, "--nonet", "--noblanks", "--output", tmp_file, real_file, NULL);
               g_free (real_file);
 	      real_file = NULL;
 
 	      if (!proc)
 		goto cleanup;
 
-	      if (!g_subprocess_wait_sync_check (proc, NULL, error))
+	      if (!g_subprocess_wait_check (proc, NULL, error))
 		{
 		  g_object_unref (proc);
                   goto cleanup;
@@ -365,15 +360,12 @@ end_element (GMarkupParseContext  *context,
                 }
               close (fd);
 
-              proc = g_subprocess_new_simple_argl (G_SUBPROCESS_STREAM_DISPOSITION_NULL,
-                                                   G_SUBPROCESS_STREAM_DISPOSITION_INHERIT,
-                                                   error,
-                                                   gdk_pixbuf_pixdata, real_file, tmp_file2,
-                                                   NULL);
+              proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
+                                       gdk_pixbuf_pixdata, real_file, tmp_file2, NULL);
               g_free (real_file);
               real_file = NULL;
 
-	      if (!g_subprocess_wait_sync_check (proc, NULL, error))
+	      if (!g_subprocess_wait_check (proc, NULL, error))
 		{
 		  g_object_unref (proc);
                   goto cleanup;
