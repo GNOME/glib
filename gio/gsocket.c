@@ -59,7 +59,7 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
-#include "gnetworking.h"
+#include "gnetworkingprivate.h"
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
 #include "gcredentials.h"
@@ -482,6 +482,55 @@ g_socket_details_from_fd (GSocket *socket)
 	       socket_strerror (errsv));
 }
 
+/* Wrapper around socket() that is shared with gnetworkmonitornetlink.c */
+gint
+g_socket (gint     domain,
+          gint     type,
+          gint     protocol,
+          GError **error)
+{
+  int fd;
+
+#ifdef SOCK_CLOEXEC
+  fd = socket (domain, type | SOCK_CLOEXEC, protocol);
+  if (fd != -1)
+    return fd;
+
+  /* It's possible that libc has SOCK_CLOEXEC but the kernel does not */
+  if (fd < 0 && errno == EINVAL)
+#endif
+    fd = socket (domain, type, protocol);
+
+  if (fd < 0)
+    {
+      int errsv = get_socket_errno ();
+
+      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+		   _("Unable to create socket: %s"), socket_strerror (errsv));
+      errno = errsv;
+      return -1;
+    }
+
+#ifndef G_OS_WIN32
+  {
+    int flags;
+
+    /* We always want to set close-on-exec to protect users. If you
+       need to so some weird inheritance to exec you can re-enable this
+       using lower level hacks with g_socket_get_fd(). */
+    flags = fcntl (fd, F_GETFD, 0);
+    if (flags != -1 &&
+	(flags & FD_CLOEXEC) == 0)
+      {
+	flags |= FD_CLOEXEC;
+	fcntl (fd, F_SETFD, flags);
+      }
+  }
+#endif
+
+  return fd;
+}
+
 static gint
 g_socket_create_socket (GSocketFamily   family,
 			GSocketType     type,
@@ -489,7 +538,6 @@ g_socket_create_socket (GSocketFamily   family,
 			GError        **error)
 {
   gint native_type;
-  gint fd;
 
   switch (type)
     {
@@ -523,39 +571,7 @@ g_socket_create_socket (GSocketFamily   family,
       return -1;
     }
 
-#ifdef SOCK_CLOEXEC
-  fd = socket (family, native_type | SOCK_CLOEXEC, protocol);
-  /* It's possible that libc has SOCK_CLOEXEC but the kernel does not */
-  if (fd < 0 && errno == EINVAL)
-#endif
-    fd = socket (family, native_type, protocol);
-
-  if (fd < 0)
-    {
-      int errsv = get_socket_errno ();
-
-      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Unable to create socket: %s"), socket_strerror (errsv));
-    }
-
-#ifndef G_OS_WIN32
-  {
-    int flags;
-
-    /* We always want to set close-on-exec to protect users. If you
-       need to so some weird inheritance to exec you can re-enable this
-       using lower level hacks with g_socket_get_fd(). */
-    flags = fcntl (fd, F_GETFD, 0);
-    if (flags != -1 &&
-	(flags & FD_CLOEXEC) == 0)
-      {
-	flags |= FD_CLOEXEC;
-	fcntl (fd, F_SETFD, flags);
-      }
-  }
-#endif
-
-  return fd;
+  return g_socket (family, native_type, protocol, error);
 }
 
 static void

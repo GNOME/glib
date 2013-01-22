@@ -89,7 +89,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
   /* We create the socket the old-school way because sockaddr_netlink
    * can't be represented as a GSocketAddress
    */
-  sockfd = socket (PF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+  sockfd = g_socket (PF_NETLINK, SOCK_RAW, NETLINK_ROUTE, NULL);
   if (sockfd == -1)
     {
       int errsv = errno;

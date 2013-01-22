@@ -34,6 +34,11 @@ gchar *  _g_uri_from_authority             (const gchar      *protocol,
 					    guint             port,
 					    const gchar      *userinfo);
 
+gint g_socket (gint     domain,
+               gint     type,
+               gint     protocol,
+               GError **error);
+
 G_END_DECLS
 
 #endif /* __G_NETWORKINGPRIVATE_H__ */
