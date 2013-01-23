@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <glib-unix.h>
 #include <gstdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -285,12 +286,13 @@ launch_test_binary (const char *binary,
   gboolean loop_pending;
   gint i = 0;
 
-  if (pipe (report_pipe) < 0)
+  if (!g_unix_open_pipe (report_pipe, FD_CLOEXEC, &error))
     {
       if (subtest_mode_fatal)
-        g_error ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
+        g_error ("Failed to open pipe for test binary: %s: %s", binary, error->message);
       else
-        g_warning ("Failed to open pipe for test binary: %s: %s", binary, g_strerror (errno));
+        g_warning ("Failed to open pipe for test binary: %s: %s", binary, error->message);
+      g_clear_error (&error);
       return FALSE;
     }
 
