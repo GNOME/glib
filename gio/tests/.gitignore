@@ -87,7 +87,7 @@ network-monitor
 org.gtk.test.enums.xml
 permission
 pollable
-plugin_resources.c
+plugin-resources.c
 proxy
 proxy-test
 readwrite
@@ -106,9 +106,9 @@ srvtarget
 task
 test.mo
 test.gresource
-test_resources.c
-test_resources2.c
-test_resources2.h
+test2-resources.c
+test3-resources.c
+test3-resources.h
 tls-certificate
 tls-interaction
 unix-fd

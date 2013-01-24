@@ -292,7 +292,7 @@ gdbus_non_socket_SOURCES = \
 
 gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
-resources_SOURCES = resources.c test_resources.c test_resources2.c test_resources2.h
+resources_SOURCES = resources.c test2-resources.c test3-resources.c test3-resources.h
 resources_DEPENDENCIES = test.gresource
 
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbus-tests.h gdbus-tests.c
@@ -458,14 +458,15 @@ else
   glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
 endif
 
-BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
-test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $<
+BUILT_SOURCES += test2-resources.c test3-resources.c test3-resources.h
 
-test_resources2.h test_resources2.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test3.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate --c-name _g_test2 --manual-register $<
+test2-resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 $<
 
-plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test4.gresource.xml)
+test3-resources.h test3-resources.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test3.gresource.xml)
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate --c-name _g_test3 --manual-register $<
+
+plugin-resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test4.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $<
 
 test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test.gresource.xml)
@@ -477,11 +478,11 @@ else
 noinst_LTLIBRARIES = libresourceplugin.la
 endif
 
-libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
+libresourceplugin_la_SOURCES = resourceplugin.c plugin-resources.c
 libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(insttestdir)
 libresourceplugin_la_LIBADD = $(LDADD)
 
-CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test_resources2.[ch] plugin_resources.c
+CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test3-resources.[ch] plugin-resources.c
 
 DISTCLEANFILES = \
 	applications/mimeinfo.cache	\
@@ -489,7 +490,7 @@ DISTCLEANFILES = \
 	de/LC_MESSAGES/test.mo		\
 	test.mo				\
 	test.gresource			\
-	test_resources.c		\
+	test2-resources.c		\
 	gsettings.store			\
 	gschemas.compiled 		\
 	schema-source/gschemas.compiled

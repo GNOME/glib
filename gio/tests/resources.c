@@ -21,7 +21,7 @@
 #include <string.h>
 #include <gio/gio.h>
 #include "gconstructor.h"
-#include "test_resources2.h"
+#include "test3-resources.h"
 
 static void
 test_resource (GResource *resource)
@@ -341,7 +341,7 @@ test_resource_manual (void)
   guint32 flags;
   GBytes *data;
 
-  found = g_resources_get_info ("/manual_loaded/test1.txt",
+  found = g_resources_get_info ("/manual_loaded/test3.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
   g_assert (found);
@@ -349,14 +349,14 @@ test_resource_manual (void)
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
 
-  data = g_resources_lookup_data ("/manual_loaded/test1.txt",
+  data = g_resources_lookup_data ("/manual_loaded/test3.txt",
 				  G_RESOURCE_LOOKUP_FLAGS_NONE,
 				  &error);
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
-  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test3\n");
   g_bytes_unref (data);
 }
 
@@ -368,17 +368,17 @@ test_resource_manual2 (void)
   gsize size;
   GError *error = NULL;
 
-  resource = _g_test2_get_resource ();
+  resource = _g_test3_get_resource ();
 
   data = g_resource_lookup_data (resource,
-                                 "/manual_loaded/test1.txt",
+                                 "/manual_loaded/test3.txt",
 				 G_RESOURCE_LOOKUP_FLAGS_NONE,
 				 &error);
   g_assert (data != NULL);
   g_assert_no_error (error);
   size = g_bytes_get_size (data);
   g_assert_cmpint (size, ==, 6);
-  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test3\n");
   g_bytes_unref (data);
 
   g_resource_unref (resource);
@@ -626,7 +626,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-  _g_test2_register_resource ();
+  _g_test3_register_resource ();
 
   g_test_add_func ("/resource/file", test_resource_file);
   g_test_add_func ("/resource/data", test_resource_data);
