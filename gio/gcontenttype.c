@@ -666,8 +666,9 @@ g_content_type_guess (const gchar  *filename,
   /* Got an extension match, and no conflicts. This is it. */
   if (n_name_mimetypes == 1)
     {
+      gchar *s = g_strdup (name_mimetypes[0]);
       G_UNLOCK (gio_xdgmime);
-      return g_strdup (name_mimetypes[0]);
+      return s;
     }
 
   if (data)
