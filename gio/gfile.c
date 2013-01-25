@@ -2982,11 +2982,11 @@ file_copy_fallback (GFile                  *source,
                     gpointer                progress_callback_data,
                     GError                **error)
 {
-  GInputStream *in;
-  GOutputStream *out;
-  GFileInfo *info;
+  gboolean ret = FALSE;
+  GInputStream *in = NULL;
+  GOutputStream *out = NULL;
+  GFileInfo *info = NULL;
   const char *target;
-  gboolean result;
 
   /* need to know the file type */
   info = g_file_query_info (source,
@@ -2994,9 +2994,8 @@ file_copy_fallback (GFile                  *source,
                             G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
                             cancellable,
                             error);
-
-  if (info == NULL)
-          return FALSE;
+  if (!info)
+    goto out;
 
   /* Maybe copy the symlink? */
   if ((flags & G_FILE_COPY_NOFOLLOW_SYMLINKS) &&
@@ -3006,16 +3005,12 @@ file_copy_fallback (GFile                  *source,
       if (target)
         {
           if (!copy_symlink (destination, flags, cancellable, target, error))
-            {
-              g_object_unref (info);
-              return FALSE;
-            }
+            goto out;
 
-          g_object_unref (info);
-          goto copied_file;
+          ret = TRUE;
+          goto out;
         }
         /* ... else fall back on a regular file copy */
-        g_object_unref (info);
     }
   /* Handle "special" files (pipes, device nodes, ...)? */
   else if (g_file_info_get_file_type (info) == G_FILE_TYPE_SPECIAL)
@@ -3023,16 +3018,14 @@ file_copy_fallback (GFile                  *source,
       /* FIXME: could try to recreate device nodes and others? */
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                            _("Can't copy special file"));
-      g_object_unref (info);
-      return FALSE;
+      goto out;
     }
+
   /* Everything else should just fall back on a regular copy. */
-  else
-    g_object_unref (info);
 
   in = open_source_for_copy (source, destination, flags, cancellable, error);
-  if (in == NULL)
-    return FALSE;
+  if (!in)
+    goto out;
 
   if (flags & G_FILE_COPY_OVERWRITE)
     {
@@ -3047,29 +3040,33 @@ file_copy_fallback (GFile                  *source,
       out = (GOutputStream *)g_file_create (destination, 0, cancellable, error);
     }
 
-  if (out == NULL)
-    {
-      g_object_unref (in);
-      return FALSE;
-    }
+  if (!out)
+    goto out;
 
 #ifdef HAVE_SYS_IOCTL_H
   if (G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
     {
       GError *reflink_err = NULL;
 
-      result = btrfs_reflink_with_progress (in, out, info, cancellable,
-                                            progress_callback, progress_callback_data,
-                                            &reflink_err);
-
-      if (result || !g_error_matches (reflink_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+      if (!btrfs_reflink_with_progress (in, out, info, cancellable,
+                                        progress_callback, progress_callback_data,
+                                        &reflink_err))
         {
-          if (!result)
-            g_propagate_error (error, reflink_err);
-          goto cleanup;
+          if (g_error_matches (reflink_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+            {
+              g_clear_error (&reflink_err);
+            }
+          else
+            {
+              g_propagate_error (error, reflink_err);
+              goto out;
+            }
         }
       else
-        g_clear_error (&reflink_err);
+        {
+          ret = TRUE;
+          goto out;
+        }
     }
 #endif
 
@@ -3078,45 +3075,60 @@ file_copy_fallback (GFile                  *source,
     {
       GError *splice_err = NULL;
 
-      result = splice_stream_with_progress (in, out, cancellable,
-                                            progress_callback, progress_callback_data,
-                                            &splice_err);
-
-      if (result || !g_error_matches (splice_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+      if (!splice_stream_with_progress (in, out, cancellable,
+                                        progress_callback, progress_callback_data,
+                                        &splice_err))
         {
-          if (!result)
-            g_propagate_error (error, splice_err);
-          goto cleanup;
+          if (g_error_matches (splice_err, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+            {
+              g_clear_error (&splice_err);
+            }
+          else
+            {
+              g_propagate_error (error, splice_err);
+              goto out;
+            }
         }
       else
-        g_clear_error (&splice_err);
+        {
+          ret = TRUE;
+          goto out;
+        }
     }
 
 #endif
-  result = copy_stream_with_progress (in, out, source, cancellable,
-                                      progress_callback, progress_callback_data,
-                                      error);
+  
+  /* A plain read/write loop */
+  if (!copy_stream_with_progress (in, out, source, cancellable,
+                                  progress_callback, progress_callback_data,
+                                  error))
+    goto out;
 
-cleanup:
-  /* Don't care about errors in source here */
-  g_input_stream_close (in, cancellable, NULL);
-
-  /* But write errors on close are bad! */
-  if (!g_output_stream_close (out, cancellable, result ? error : NULL))
-    result = FALSE;
-
-  g_object_unref (in);
-  g_object_unref (out);
-
-  if (result == FALSE)
-    return FALSE;
-
-copied_file:
+  ret = TRUE;
+ out:
   /* Ignore errors here. Failure to copy metadata is not a hard error */
-  g_file_copy_attributes (source, destination,
-                          flags, cancellable, NULL);
+  if (ret)
+    (void) g_file_copy_attributes (source, destination,
+                                   flags, cancellable, NULL);
 
-  return TRUE;
+  if (in)
+    {
+      /* Don't care about errors in source here */
+      (void) g_input_stream_close (in, cancellable, NULL);
+      g_object_unref (in);
+    }
+
+  if (out)
+    {
+      /* But write errors on close are bad! */
+      if (!g_output_stream_close (out, cancellable, ret ? error : NULL))
+        ret = FALSE;
+      g_object_unref (out);
+    }
+  
+  g_clear_object (&info);
+
+  return ret;
 }
 
 /**
