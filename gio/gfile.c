@@ -46,6 +46,9 @@
 #endif
 
 #include "gfile.h"
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
 #include "gvfs.h"
 #include "gtask.h"
 #include "gfileattribute-priv.h"
@@ -2850,12 +2853,8 @@ splice_stream_with_progress (GInputStream           *in,
   fd_in = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (in));
   fd_out = g_file_descriptor_based_get_fd (G_FILE_DESCRIPTOR_BASED (out));
 
-  if (pipe (buffer) != 0)
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                           "Pipe creation failed");
-      return FALSE;
-    }
+  if (!g_unix_open_pipe (buffer, FD_CLOEXEC, error))
+    return FALSE;
 
   total_size = -1;
   /* avoid performance impact of querying total size when it's not needed */
