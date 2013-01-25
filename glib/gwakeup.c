@@ -241,7 +241,7 @@ g_wakeup_signal (GWakeup *wakeup)
   else
     {
       do
-        write (wakeup->fds[1], &one, 1);
+        res = write (wakeup->fds[1], &one, 1);
       while (G_UNLIKELY (res == -1 && errno == EINTR));
     }
 }
