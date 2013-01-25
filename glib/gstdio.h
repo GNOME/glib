@@ -163,6 +163,10 @@ int g_utime     (const gchar    *filename,
 
 #endif /* G_OS_UNIX */
 
+GLIB_AVAILABLE_IN_2_36
+gboolean g_close (gint       fd,
+                  GError   **error);
+
 G_END_DECLS
 
 #endif /* __G_STDIO_H__ */

@@ -39,6 +39,7 @@
 #include "ginputstream.h"
 #include "gmemoryinputstream.h"
 #include "giostream.h"
+#include "glib/gstdio.h"
 #include "gsocketcontrolmessage.h"
 #include "gsocketconnection.h"
 #include "gsocketoutputstream.h"
@@ -621,7 +622,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
                     {
                       /* TODO: really want a append_steal() */
                       g_unix_fd_list_append (worker->read_fd_list, fds[n], NULL);
-                      close (fds[n]);
+                      (void) g_close (fds[n], NULL);
                     }
                 }
               g_free (fds);

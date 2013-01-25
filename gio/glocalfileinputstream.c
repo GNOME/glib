@@ -39,6 +39,7 @@
 #include "glibintl.h"
 
 #ifdef G_OS_UNIX
+#include "glib-unix.h"
 #include "gfiledescriptorbased.h"
 #endif
 
@@ -239,7 +240,6 @@ g_local_file_input_stream_close (GInputStream  *stream,
 				 GError       **error)
 {
   GLocalFileInputStream *file;
-  int res;
 
   file = G_LOCAL_FILE_INPUT_STREAM (stream);
 
@@ -249,22 +249,18 @@ g_local_file_input_stream_close (GInputStream  *stream,
   if (file->priv->fd == -1)
     return TRUE;
 
-  while (1)
+  if (!g_close (file->priv->fd, NULL))
     {
-      res = close (file->priv->fd);
-      if (res == -1)
-        {
-          int errsv = errno;
-
-          g_set_error (error, G_IO_ERROR,
-                       g_io_error_from_errno (errsv),
-                       _("Error closing file: %s"),
-                       g_strerror (errsv));
-        }
-      break;
+      int errsv = errno;
+      
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error closing file: %s"),
+                   g_strerror (errsv));
+      return FALSE;
     }
 
-  return res != -1;
+  return TRUE;
 }
 
 

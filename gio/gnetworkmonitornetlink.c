@@ -29,6 +29,7 @@
 #include "ginitable.h"
 #include "giomodule-priv.h"
 #include "glibintl.h"
+#include "glib/gstdio.h"
 #include "gnetworkingprivate.h"
 #include "gnetworkmonitor.h"
 #include "gsocket.h"
@@ -108,7 +109,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                    _("Could not create network monitor: %s"),
                    g_strerror (errno));
-      close (sockfd);
+      (void) g_close (sockfd, NULL);
       return FALSE;
     }
 
@@ -116,7 +117,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
   if (error)
     {
       g_prefix_error (error, "%s", _("Could not create network monitor: "));
-      close (sockfd);
+      (void) g_close (sockfd, NULL);
       return FALSE;
     }
 

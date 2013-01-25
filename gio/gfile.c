@@ -46,6 +46,7 @@
 #endif
 
 #include "gfile.h"
+#include "glib/gstdio.h"
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
 #endif
@@ -2843,7 +2844,7 @@ splice_stream_with_progress (GInputStream           *in,
                              gpointer                progress_callback_data,
                              GError                **error)
 {
-  int buffer[2];
+  int buffer[2] = { -1, -1 };
   gboolean res;
   goffset total_size;
   loff_t offset_in;
@@ -2907,9 +2908,17 @@ splice_stream_with_progress (GInputStream           *in,
   if (progress_callback)
     progress_callback (offset_in, total_size, progress_callback_data);
 
+  if (!g_close (buffer[0], error))
+    goto out;
+  buffer[0] = -1;
+  if (!g_close (buffer[1], error))
+    goto out;
+  buffer[1] = -1;
  out:
-  close (buffer[0]);
-  close (buffer[1]);
+  if (buffer[0] != -1)
+    (void) g_close (buffer[0], NULL);
+  if (buffer[1] != -1)
+    (void) g_close (buffer[1], NULL);
 
   return res;
 }

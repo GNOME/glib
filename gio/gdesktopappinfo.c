@@ -33,6 +33,9 @@
 
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
 #include "gfile.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
@@ -2100,7 +2103,8 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
 
   desktop_id = g_path_get_basename (filename);
 
-  close (fd);
+  /* FIXME - actually handle error */
+  (void) g_close (fd, NULL);
   
   res = g_file_set_contents (filename, data, data_size, error);
   g_free (data);

@@ -1256,6 +1256,7 @@ g_access
 g_creat
 g_chdir
 g_utime
+g_close
 
 <SUBSECTION Private>
 g_file_error_quark

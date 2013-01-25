@@ -179,7 +179,6 @@ g_unix_set_fd_nonblocking (gint       fd,
 #endif
 }
 
-
 /**
  * g_unix_signal_source_new:
  * @signum: A signal number

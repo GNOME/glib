@@ -45,6 +45,7 @@
 #include "gsocketservice.h"
 #include "gthreadedsocketservice.h"
 #include "gresolver.h"
+#include "glib/gstdio.h"
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
 #include "ginputstream.h"
@@ -878,7 +879,8 @@ try_tcp (GDBusServer  *server,
           bytes_written += ret;
           bytes_remaining -= ret;
         }
-      close (fd);
+      if (!g_close (fd, error))
+        goto out;
       file_escaped = g_uri_escape_string (server->nonce_file, "/\\", FALSE);
       server->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
                                                 host,

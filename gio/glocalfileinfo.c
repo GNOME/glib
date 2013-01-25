@@ -63,6 +63,7 @@
 #include <gvfs.h>
 
 #ifndef G_OS_WIN32
+#include "glib-unix.h"
 #include "glib-private.h"
 #endif
 #include "glibintl.h"
@@ -1260,7 +1261,7 @@ get_content_type (const char          *basename,
 	      ssize_t res;
 	      
 	      res = read (fd, sniff_buffer, sniff_length);
-	      close (fd);
+	      (void) g_close (fd, NULL);
 	      if (res >= 0)
 		{
 		  g_free (content_type);

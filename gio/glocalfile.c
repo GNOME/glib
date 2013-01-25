@@ -64,6 +64,9 @@
 #include "gioerror.h"
 #include <glib/gstdio.h>
 #include "glibintl.h"
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -1366,7 +1369,7 @@ g_local_file_read (GFile         *file,
 
   if (ret == 0 && S_ISDIR (buf.st_mode))
     {
-      close (fd);
+      (void) g_close (fd, NULL);
       g_set_error_literal (error, G_IO_ERROR,
                            G_IO_ERROR_IS_DIRECTORY,
                            _("Can't open directory"));
@@ -2056,7 +2059,7 @@ g_local_file_trash (GFile         *file,
       return FALSE;
     }
 
-  close (fd);
+  (void) g_close (fd, NULL);
 
   /* TODO: Maybe we should verify that you can delete the file from the trash
      before moving it? OTOH, that is hard, as it needs a recursive scan */

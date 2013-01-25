@@ -43,6 +43,7 @@
 
 #include "gspawn.h"
 #include "gthread.h"
+#include "glib/gstdio.h"
 
 #include "genviron.h"
 #include "gmem.h"
@@ -150,23 +151,16 @@ g_spawn_async (const gchar          *working_directory,
  * on a file descriptor twice, and another thread has
  * re-opened it since the first close)
  */
-static gint
+static void
 close_and_invalidate (gint *fd)
 {
-  gint ret;
-
   if (*fd < 0)
-    return -1;
+    return;
   else
     {
-    again:
-      ret = close (*fd);
-      if (ret == -1 && errno == EINTR)
-	goto again;
+      (void) g_close (*fd, NULL);
       *fd = -1;
     }
-
-  return ret;
 }
 
 /* Some versions of OS X define READ_OK in public headers */

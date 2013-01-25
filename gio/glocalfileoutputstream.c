@@ -222,7 +222,6 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 					  GError        **error)
 {
   GLocalFileStat final_stat;
-  int res;
 
 #ifdef HAVE_FSYNC
   if (file->priv->sync_on_close &&
@@ -246,8 +245,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
   if (_fstati64 (file->priv->fd, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
-  res = close (file->priv->fd);
-  if (res == -1)
+  if (!g_close (file->priv->fd, NULL))
     {
       int errsv = errno;
       
@@ -341,34 +339,25 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
   if (fstat (file->priv->fd, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
-  while (1)
+  if (!g_close (file->priv->fd, NULL))
     {
-      res = close (file->priv->fd);
-      if (res == -1)
-	{
-          int errsv = errno;
-
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error closing file: %s"),
-		       g_strerror (errsv));
-	}
-      break;
+      int errsv = errno;
+      
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error closing file: %s"),
+                   g_strerror (errsv));
+      goto err_out;
     }
-  
-  return res != -1;
-
-#else
-
-  return TRUE;
 
 #endif
-
+  
+  return TRUE;
  err_out:
 
 #ifndef G_OS_WIN32
   /* A simple try to close the fd in case we fail before the actual close */
-  close (file->priv->fd);
+  (void) g_close (file->priv->fd, NULL);
 #endif
   if (file->priv->tmp_filename)
     g_unlink (file->priv->tmp_filename);
@@ -938,14 +927,14 @@ handle_overwrite_open (const char    *filename,
 	      original_stat.st_gid != tmp_statbuf.st_gid ||
 	      original_stat.st_mode != tmp_statbuf.st_mode)
 	    {
-	      close (tmpfd);
+	      (void) g_close (tmpfd, NULL);
 	      g_unlink (tmp_filename);
 	      g_free (tmp_filename);
 	      goto fallback_strategy;
 	    }
 	}
 
-      close (fd);
+      (void) g_close (fd, NULL);
       *temp_filename = tmp_filename;
       return tmpfd;
     }
@@ -1014,7 +1003,7 @@ handle_overwrite_open (const char    *filename,
                                    G_IO_ERROR_CANT_CREATE_BACKUP,
                                    _("Backup file creation failed"));
 	      g_unlink (backup_filename);
-	      close (bfd);
+	      (void) g_close (bfd, NULL);
 	      g_free (backup_filename);
 	      goto err_out;
 	    }
@@ -1028,13 +1017,13 @@ handle_overwrite_open (const char    *filename,
                                G_IO_ERROR_CANT_CREATE_BACKUP,
                                _("Backup file creation failed"));
 	  g_unlink (backup_filename);
-	  close (bfd);
+          (void) g_close (bfd, NULL);
 	  g_free (backup_filename);
 	  
 	  goto err_out;
 	}
       
-      close (bfd);
+      (void) g_close (bfd, NULL);
       g_free (backup_filename);
 
       /* Seek back to the start of the file after the backup copy */
@@ -1052,7 +1041,7 @@ handle_overwrite_open (const char    *filename,
 
   if (flags & G_FILE_CREATE_REPLACE_DESTINATION)
     {
-      close (fd);
+      (void) g_close (fd, NULL);
       
       if (g_unlink (filename) != 0)
 	{
@@ -1104,7 +1093,7 @@ handle_overwrite_open (const char    *filename,
   return fd;
 
  err_out:
-  close (fd);
+  (void) g_close (fd, NULL);
  err_out2:
   return -1;
 }
