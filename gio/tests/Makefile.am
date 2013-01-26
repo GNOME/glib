@@ -62,6 +62,7 @@ TEST_PROGS +=	 		\
 	fileattributematcher	\
 	resources		\
 	proxy-test		\
+	simple-proxy		\
 	inet-address		\
 	permission		\
 	task			\

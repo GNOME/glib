@@ -153,6 +153,7 @@
       <title>DNS resolution</title>
       <xi:include href="xml/gresolver.xml"/>
       <xi:include href="xml/gproxyresolver.xml"/>
+      <xi:include href="xml/gsimpleproxyresolver.xml"/>
       <xi:include href="xml/gsocketconnectable.xml"/>
       <xi:include href="xml/gnetworkaddress.xml"/>
       <xi:include href="xml/gnetworkservice.xml"/>

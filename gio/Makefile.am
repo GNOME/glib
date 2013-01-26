@@ -403,6 +403,9 @@ libgio_2_0_la_SOURCES =		\
 	gpollableutils.c	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
+	gproxy.c		\
+	gproxyaddress.c         \
+	gproxyaddressenumerator.c \
 	gproxyresolver.c	\
 	gresolver.c		\
 	gresource.c		\
@@ -423,11 +426,9 @@ libgio_2_0_la_SOURCES =		\
 	gsocketlistener.c	\
 	gsocketoutputstream.c	\
 	gsocketoutputstream.h	\
-	gproxy.c		\
-	gproxyaddress.c         \
-	gproxyaddressenumerator.c \
 	gsocketservice.c	\
 	gsrvtarget.c		\
+	gsimpleproxyresolver.c	\
 	gtask.c			\
 	gtcpconnection.c	\
 	gtcpwrapperconnection.c \
@@ -586,6 +587,7 @@ gio_headers =			\
 	gsocketlistener.h	\
 	gsocketservice.h	\
 	gsrvtarget.h		\
+	gsimpleproxyresolver.h	\
 	gtask.h			\
 	gtcpconnection.h	\
 	gtcpwrapperconnection.h \

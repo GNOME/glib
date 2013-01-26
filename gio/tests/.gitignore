@@ -96,6 +96,7 @@ resources
 send-data
 services/org.gtk.GDBus.Examples.ObjectManager.service
 simple-async-result
+simple-proxy
 sleepy-stream
 socket
 socket-client

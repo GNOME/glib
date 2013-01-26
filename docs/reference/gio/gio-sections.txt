@@ -4002,3 +4002,23 @@ g_task_get_type
 <TITLE>gnetworking.h</TITLE>
 g_networking_init
 </SECTION>
+
+<SECTION>
+<FILE>gsimpleproxyresolver</FILE>
+<TITLE>GSimpleProxyResolver</TITLE>
+GSimpleProxyResolver
+g_simple_proxy_resolver_new
+g_simple_proxy_resolver_set_default_proxy
+g_simple_proxy_resolver_set_ignore_hosts
+g_simple_proxy_resolver_set_uri_proxy
+<SUBSECTION Standard>
+GSimpleProxyResolverClass
+GSimpleProxyResolverPrivate
+G_TYPE_SIMPLE_PROXY_RESOLVER
+G_SIMPLE_PROXY_RESOLVER
+G_IS_SIMPLE_PROXY_RESOLVER
+G_SIMPLE_PROXY_RESOLVER_CLASS
+G_IS_SIMPLE_PROXY_RESOLVER_CLASS
+G_SIMPLE_PROXY_RESOLVER_GET_CLASS
+g_simple_proxy_resolver_get_type
+</SECTION>
