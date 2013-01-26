@@ -10,6 +10,7 @@ connectable
 contenttype
 contexts
 converter-stream
+credentials
 data-input-stream
 data-output-stream
 de/
@@ -63,6 +64,8 @@ gdbus-proxy-well-known-name
 gdbus-serialization
 gdbus-test-codegen
 gdbus-test-codegen-generated*
+gdbus-test-fixture
+gdbus-testserver
 gdbus-threading
 g-file
 g-file-info
@@ -91,6 +94,7 @@ readwrite
 resolver
 resources
 send-data
+services/org.gtk.GDBus.Examples.ObjectManager.service
 simple-async-result
 sleepy-stream
 socket

@@ -59,6 +59,7 @@ spawn-test
 testgdate
 testgdateparser
 testglib
+testgobject
 testingbase64
 testmarshal.c
 testmarshal.h
