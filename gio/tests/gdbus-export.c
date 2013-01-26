@@ -846,6 +846,7 @@ test_dispatch_thread_func (gpointer user_data)
   g_assert (g_variant_is_of_type (inner, G_VARIANT_TYPE_STRING));
   g_assert_cmpstr (g_variant_get_string (inner, NULL), ==, "Property `PropertyUno' Is What It Is!");
   g_variant_unref (value);
+  g_variant_unref (inner);
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
