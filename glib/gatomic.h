@@ -31,7 +31,7 @@
 G_BEGIN_DECLS
 
 GLIB_AVAILABLE_IN_ALL
-gint                    g_atomic_int_get                      (volatile gint  *atomic);
+gint                    g_atomic_int_get                      (const volatile gint *atomic);
 GLIB_AVAILABLE_IN_ALL
 void                    g_atomic_int_set                      (volatile gint  *atomic,
                                                                gint            newval);
@@ -57,7 +57,7 @@ guint                   g_atomic_int_xor                      (volatile guint *a
                                                                guint           val);
 
 GLIB_AVAILABLE_IN_ALL
-gpointer                g_atomic_pointer_get                  (volatile void  *atomic);
+gpointer                g_atomic_pointer_get                  (const volatile void *atomic);
 GLIB_AVAILABLE_IN_ALL
 void                    g_atomic_pointer_set                  (volatile void  *atomic,
                                                                gpointer        newval);

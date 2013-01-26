@@ -111,7 +111,7 @@
  * Since: 2.4
  **/
 gint
-(g_atomic_int_get) (volatile gint *atomic)
+(g_atomic_int_get) (const volatile gint *atomic)
 {
   return g_atomic_int_get (atomic);
 }
@@ -316,9 +316,9 @@ guint
  * Since: 2.4
  **/
 gpointer
-(g_atomic_pointer_get) (volatile void *atomic)
+(g_atomic_pointer_get) (const volatile void *atomic)
 {
-  return g_atomic_pointer_get ((volatile gpointer *) atomic);
+  return g_atomic_pointer_get ((const volatile gpointer *) atomic);
 }
 
 /**
@@ -477,7 +477,7 @@ gsize
  * http://msdn.microsoft.com/en-us/library/ms684122(v=vs.85).aspx
  */
 gint
-(g_atomic_int_get) (volatile gint *atomic)
+(g_atomic_int_get) (const volatile gint *atomic)
 {
   MemoryBarrier ();
   return *atomic;
@@ -541,9 +541,9 @@ guint
 
 
 gpointer
-(g_atomic_pointer_get) (volatile void *atomic)
+(g_atomic_pointer_get) (const volatile void *atomic)
 {
-  volatile gpointer *ptr = atomic;
+  const volatile gpointer *ptr = atomic;
 
   MemoryBarrier ();
   return *ptr;
