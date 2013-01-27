@@ -41,6 +41,7 @@
 #include <gio/gnetworkaddress.h>
 #include <gio/gnetworkservice.h>
 #include <gio/gproxy.h>
+#include <gio/gproxyresolver.h>
 #include <gio/gsocketaddress.h>
 #include <gio/gtcpconnection.h>
 #include <gio/gtcpwrapperconnection.h>
@@ -94,7 +95,8 @@ enum
   PROP_TIMEOUT,
   PROP_ENABLE_PROXY,
   PROP_TLS,
-  PROP_TLS_VALIDATION_FLAGS
+  PROP_TLS_VALIDATION_FLAGS,
+  PROP_PROXY_RESOLVER
 };
 
 struct _GSocketClientPrivate
@@ -108,6 +110,7 @@ struct _GSocketClientPrivate
   GHashTable *app_proxies;
   gboolean tls;
   GTlsCertificateFlags tls_validation_flags;
+  GProxyResolver *proxy_resolver;
 };
 
 static GSocket *
@@ -227,8 +230,8 @@ g_socket_client_finalize (GObject *object)
 {
   GSocketClient *client = G_SOCKET_CLIENT (object);
 
-  if (client->priv->local_address)
-    g_object_unref (client->priv->local_address);
+  g_clear_object (&client->priv->local_address);
+  g_clear_object (&client->priv->proxy_resolver);
 
   if (G_OBJECT_CLASS (g_socket_client_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_socket_client_parent_class)->finalize) (object);
@@ -278,6 +281,10 @@ g_socket_client_get_property (GObject    *object,
 	g_value_set_flags (value, g_socket_client_get_tls_validation_flags (client));
 	break;
 
+      case PROP_PROXY_RESOLVER:
+	g_value_set_object (value, g_socket_client_get_proxy_resolver (client));
+	break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -323,6 +330,10 @@ g_socket_client_set_property (GObject      *object,
 
     case PROP_TLS_VALIDATION_FLAGS:
       g_socket_client_set_tls_validation_flags (client, g_value_get_flags (value));
+      break;
+
+    case PROP_PROXY_RESOLVER:
+      g_socket_client_set_proxy_resolver (client, g_value_get_object (value));
       break;
 
     default:
@@ -579,6 +590,8 @@ g_socket_client_get_enable_proxy (GSocketClient *client)
  * #GProxyResolver to determine if a proxy protocol such as SOCKS is
  * needed, and automatically do the necessary proxy negotiation.
  *
+ * See also g_socket_client_set_proxy_resolver().
+ *
  * Since: 2.26
  */
 void
@@ -684,6 +697,64 @@ g_socket_client_set_tls_validation_flags (GSocketClient        *client,
       client->priv->tls_validation_flags = flags;
       g_object_notify (G_OBJECT (client), "tls-validation-flags");
     }
+}
+
+/**
+ * g_socket_client_get_proxy_resolver:
+ * @client: a #GSocketClient.
+ *
+ * Gets the #GProxyResolver being used by @client. Normally, this will
+ * be the resolver returned by g_proxy_resolver_get_default(), but you
+ * can override it with g_socket_client_set_proxy_resolver().
+ *
+ * Returns: (transfer none): The #GProxyResolver being used by
+ *   @client.
+ *
+ * Since: 2.36
+ */
+GProxyResolver *
+g_socket_client_get_proxy_resolver (GSocketClient *client)
+{
+  if (client->priv->proxy_resolver)
+    return client->priv->proxy_resolver;
+  else
+    return g_proxy_resolver_get_default ();
+}
+
+/**
+ * g_socket_client_set_proxy_resolver:
+ * @client: a #GSocketClient.
+ * @proxy_resolver: (allow-none): a #GProxyResolver, or %NULL for the
+ *   default.
+ *
+ * Overrides the #GProxyResolver used by @client. You can call this if
+ * you want to use specific proxies, rather than using the system
+ * default proxy settings.
+ *
+ * Note that whether or not the proxy resolver is actually used
+ * depends on the setting of #GSocketClient:enable-proxy, which is not
+ * changed by this function (but which is %TRUE by default)
+ *
+ * Since: 2.36
+ */
+void
+g_socket_client_set_proxy_resolver (GSocketClient  *client,
+                                    GProxyResolver *proxy_resolver)
+{
+  /* We have to be careful to avoid calling
+   * g_proxy_resolver_get_default() until we're sure we need it,
+   * because trying to load the default proxy resolver module will
+   * break some test programs that aren't expecting it (eg,
+   * tests/gsettings).
+   */
+
+  if (client->priv->proxy_resolver)
+    g_object_unref (client->priv->proxy_resolver);
+
+  client->priv->proxy_resolver = proxy_resolver;
+
+  if (client->priv->proxy_resolver)
+    g_object_ref (client->priv->proxy_resolver);
 }
 
 static void
@@ -881,6 +952,22 @@ g_socket_client_class_init (GSocketClientClass *class)
 						       G_PARAM_CONSTRUCT |
 						       G_PARAM_READWRITE |
 						       G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GSocketClient:proxy-resolver:
+   *
+   * The proxy resolver to use
+   *
+   * Since: 2.36
+   */
+  g_object_class_install_property (gobject_class, PROP_PROXY_RESOLVER,
+                                   g_param_spec_object ("proxy-resolver",
+                                                        P_("Proxy resolver"),
+                                                        P_("The proxy resolver to use"),
+                                                        G_TYPE_PROXY_RESOLVER,
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -936,7 +1023,15 @@ g_socket_client_connect (GSocketClient       *client,
   last_error = NULL;
 
   if (can_use_proxy (client))
-    enumerator = g_socket_connectable_proxy_enumerate (connectable);
+    {
+      enumerator = g_socket_connectable_proxy_enumerate (connectable);
+      if (client->priv->proxy_resolver &&
+          G_IS_PROXY_ADDRESS_ENUMERATOR (enumerator))
+        {
+          g_object_set (G_OBJECT (enumerator), "proxy-resolver",
+                        client->priv->proxy_resolver);
+        }
+    }
   else
     enumerator = g_socket_connectable_enumerate (connectable);
 
@@ -1605,9 +1700,17 @@ g_socket_client_connect_async (GSocketClient       *client,
   data->connectable = g_object_ref (connectable);
 
   if (can_use_proxy (client))
+    {
       data->enumerator = g_socket_connectable_proxy_enumerate (connectable);
+      if (client->priv->proxy_resolver &&
+          G_IS_PROXY_ADDRESS_ENUMERATOR (data->enumerator))
+        {
+          g_object_set (G_OBJECT (data->enumerator), "proxy-resolver",
+                        client->priv->proxy_resolver);
+        }
+    }
   else
-      data->enumerator = g_socket_connectable_enumerate (connectable);
+    data->enumerator = g_socket_connectable_enumerate (connectable);
 
   data->task = g_task_new (client, cancellable, callback, user_data);
   g_task_set_task_data (data->task, data, (GDestroyNotify)g_socket_client_async_connect_data_free);

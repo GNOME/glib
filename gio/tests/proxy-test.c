@@ -26,7 +26,7 @@
 /* Overview:
  *
  * We have an echo server, two proxy servers, two GProxy
- * implementations, and a GProxyResolver implementation.
+ * implementations, and two GProxyResolver implementations.
  *
  * The echo server runs at @server.server_addr (on
  * @server.server_port).
@@ -42,9 +42,10 @@
  * hostname resolution (but it just ignores the hostname and always
  * connects to @server_addr anyway).
  *
- * The GProxyResolver (GTestProxyResolver) looks at its URI and
- * returns [ "direct://" ] for "simple://" URIs, and [ proxy_a.uri,
- * proxy_b.uri ] for other URIs.
+ * The default GProxyResolver (GTestProxyResolver) looks at its URI
+ * and returns [ "direct://" ] for "simple://" URIs, and [
+ * proxy_a.uri, proxy_b.uri ] for other URIs. The other GProxyResolver
+ * (GTestAltProxyResolver) always returns [ proxy_a.uri ].
  */
 
 typedef struct {
@@ -163,7 +164,7 @@ g_test_proxy_resolver_lookup_async (GProxyResolver      *resolver,
   GTask *task;
   gchar **proxies;
 
-  proxies = g_test_proxy_resolver_lookup (resolver, uri, cancellable, &error);
+  proxies = g_proxy_resolver_lookup (resolver, uri, cancellable, &error);
 
   task = g_task_new (resolver, NULL, callback, user_data);
   if (proxies == NULL)
@@ -194,6 +195,56 @@ g_test_proxy_resolver_iface_init (GProxyResolverInterface *iface)
   iface->lookup = g_test_proxy_resolver_lookup;
   iface->lookup_async = g_test_proxy_resolver_lookup_async;
   iface->lookup_finish = g_test_proxy_resolver_lookup_finish;
+}
+
+/****************************/
+/* Alternate GProxyResolver */
+/****************************/
+
+typedef GTestProxyResolver GTestAltProxyResolver;
+typedef GTestProxyResolverClass GTestAltProxyResolverClass;
+
+static void g_test_alt_proxy_resolver_iface_init (GProxyResolverInterface *iface);
+
+static GType _g_test_alt_proxy_resolver_get_type (void);
+#define g_test_alt_proxy_resolver_get_type _g_test_alt_proxy_resolver_get_type
+G_DEFINE_TYPE_WITH_CODE (GTestAltProxyResolver, g_test_alt_proxy_resolver, g_test_proxy_resolver_get_type (),
+			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
+						g_test_alt_proxy_resolver_iface_init);
+                         )
+
+static void
+g_test_alt_proxy_resolver_init (GTestProxyResolver *resolver)
+{
+}
+
+static gchar **
+g_test_alt_proxy_resolver_lookup (GProxyResolver  *resolver,
+                                  const gchar     *uri,
+                                  GCancellable    *cancellable,
+                                  GError         **error)
+{
+  gchar **proxies;
+
+  proxies = g_new (gchar *, 2);
+
+  proxies[0] = g_strdup (proxy_a.uri);
+  proxies[1] = NULL;
+
+  last_proxies = g_strdupv (proxies);
+
+  return proxies;
+}
+
+static void
+g_test_alt_proxy_resolver_class_init (GTestProxyResolverClass *resolver_class)
+{
+}
+
+static void
+g_test_alt_proxy_resolver_iface_init (GProxyResolverInterface *iface)
+{
+  iface->lookup = g_test_alt_proxy_resolver_lookup;
 }
 
 
@@ -1093,6 +1144,98 @@ test_dns (gpointer fixture,
   teardown_test (NULL, NULL);
 }
 
+static void
+assert_override (GSocketConnection *conn)
+{
+  g_assert_cmpint (g_strv_length (last_proxies), ==, 1);
+  g_assert_cmpstr (last_proxies[0], ==, proxy_a.uri);
+
+  if (conn)
+    g_assert_no_error (proxy_a.last_error);
+  else
+    g_assert_error (proxy_a.last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+}
+
+static void
+test_override (gpointer fixture,
+               gconstpointer user_data)
+{
+  GProxyResolver *alt_resolver;
+  GSocketConnection *conn;
+  GError *error = NULL;
+  gchar *uri;
+
+  g_assert (g_socket_client_get_proxy_resolver (client) == g_proxy_resolver_get_default ());
+  alt_resolver = g_object_new (g_test_alt_proxy_resolver_get_type (), NULL);
+  g_socket_client_set_proxy_resolver (client, alt_resolver);
+  g_assert (g_socket_client_get_proxy_resolver (client) == alt_resolver);
+
+  /* Alt proxy resolver always returns Proxy A, so alpha:// should
+   * succeed, and simple:// and beta:// should fail.
+   */
+
+  /* simple */
+  uri = g_strdup_printf ("simple://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+  assert_override (conn);
+  teardown_test (NULL, NULL);
+
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_error, &error);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+  assert_override (conn);
+  g_free (uri);
+  teardown_test (NULL, NULL);
+
+  /* alpha */
+  uri = g_strdup_printf ("alpha://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_assert_no_error (error);
+  assert_override (conn);
+  do_echo_test (conn);
+  g_clear_object (&conn);
+  teardown_test (NULL, NULL);
+
+  conn = NULL;
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_conn, &conn);
+  while (conn == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  assert_override (conn);
+  do_echo_test (conn);
+  g_clear_object (&conn);
+  g_free (uri);
+  teardown_test (NULL, NULL);
+
+  /* beta */
+  uri = g_strdup_printf ("beta://127.0.0.1:%u", server.server_port);
+  conn = g_socket_client_connect_to_uri (client, uri, 0, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+  assert_override (conn);
+  teardown_test (NULL, NULL);
+
+  g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
+					async_got_error, &error);
+  while (error == NULL)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+  assert_override (conn);
+  g_free (uri);
+  teardown_test (NULL, NULL);
+
+  g_assert (g_socket_client_get_proxy_resolver (client) == alt_resolver);
+  g_socket_client_set_proxy_resolver (client, NULL);
+  g_assert (g_socket_client_get_proxy_resolver (client) == g_proxy_resolver_get_default ());
+  g_object_unref (alt_resolver);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1132,6 +1275,7 @@ main (int   argc,
   g_test_add_vtable ("/proxy/multiple_sync", 0, NULL, setup_test, test_multiple_sync, teardown_test);
   g_test_add_vtable ("/proxy/multiple_async", 0, NULL, setup_test, test_multiple_async, teardown_test);
   g_test_add_vtable ("/proxy/dns", 0, NULL, setup_test, test_dns, teardown_test);
+  g_test_add_vtable ("/proxy/override", 0, NULL, setup_test, test_override, teardown_test);
 
   result = g_test_run();
 

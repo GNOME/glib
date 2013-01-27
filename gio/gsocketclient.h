@@ -117,6 +117,11 @@ GTlsCertificateFlags    g_socket_client_get_tls_validation_flags        (GSocket
 GLIB_AVAILABLE_IN_ALL
 void                    g_socket_client_set_tls_validation_flags        (GSocketClient        *client,
 									 GTlsCertificateFlags  flags);
+GLIB_AVAILABLE_IN_2_36
+GProxyResolver         *g_socket_client_get_proxy_resolver              (GSocketClient        *client);
+GLIB_AVAILABLE_IN_2_36
+void                    g_socket_client_set_proxy_resolver              (GSocketClient        *client,
+                                                                         GProxyResolver       *proxy_resolver);
 
 GLIB_AVAILABLE_IN_ALL
 GSocketConnection *     g_socket_client_connect                         (GSocketClient        *client,

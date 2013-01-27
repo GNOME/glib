@@ -47,7 +47,8 @@ enum
 {
   PROP_0,
   PROP_URI,
-  PROP_CONNECTABLE
+  PROP_CONNECTABLE,
+  PROP_PROXY_RESOLVER
 };
 
 struct _GProxyAddressEnumeratorPrivate
@@ -60,6 +61,7 @@ struct _GProxyAddressEnumeratorPrivate
   GList              *dest_ips;
 
   /* Proxy enumeration */
+  GProxyResolver           *proxy_resolver;
   gchar			  **proxies;
   gchar			  **next_proxy;
   GSocketAddressEnumerator *addr_enum;
@@ -180,8 +182,7 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 
   if (priv->proxies == NULL)
     {
-      GProxyResolver *resolver = g_proxy_resolver_get_default ();
-      priv->proxies = g_proxy_resolver_lookup (resolver,
+      priv->proxies = g_proxy_resolver_lookup (priv->proxy_resolver,
 					       priv->dest_uri,
 					       cancellable,
 					       error);
@@ -530,8 +531,7 @@ g_proxy_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
 
   if (priv->proxies == NULL)
     {
-      GProxyResolver *resolver = g_proxy_resolver_get_default ();
-      g_proxy_resolver_lookup_async (resolver,
+      g_proxy_resolver_lookup_async (priv->proxy_resolver,
 				     priv->dest_uri,
 				     cancellable,
 				     proxy_lookup_cb,
@@ -584,6 +584,10 @@ g_proxy_address_enumerator_get_property (GObject        *object,
 
       case PROP_CONNECTABLE:
 	g_value_set_object (value, priv->connectable);
+	break;
+
+      case PROP_PROXY_RESOLVER:
+	g_value_set_object (value, priv->proxy_resolver);
 	break;
 
       default:
@@ -643,6 +647,15 @@ g_proxy_address_enumerator_set_property (GObject        *object,
 	  priv->connectable = g_value_dup_object (value);
 	  break;
 
+      case PROP_PROXY_RESOLVER:
+          if (priv->proxy_resolver)
+            g_object_unref (priv->proxy_resolver);
+          priv->proxy_resolver = g_value_get_object (value);
+          if (!priv->proxy_resolver)
+            priv->proxy_resolver = g_proxy_resolver_get_default ();
+          g_object_ref (priv->proxy_resolver);
+          break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -655,6 +668,9 @@ g_proxy_address_enumerator_finalize (GObject *object)
 
   if (priv->connectable)
     g_object_unref (priv->connectable);
+
+  if (priv->proxy_resolver)
+    g_object_unref (priv->proxy_resolver);
 
   g_free (priv->dest_uri);
   g_free (priv->dest_hostname);
@@ -720,4 +736,21 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GProxyAddressEnumerator:proxy-resolver:
+   *
+   * The proxy resolver to use.
+   *
+   * Since: 2.36
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_PROXY_RESOLVER,
+                                   g_param_spec_object ("proxy-resolver",
+                                                        P_("Proxy resolver"),
+                                                        P_("The proxy resolver to use."),
+                                                        G_TYPE_PROXY_RESOLVER,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_STATIC_STRINGS));
 }
