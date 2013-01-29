@@ -930,7 +930,7 @@ struct _MamanBaz
 {
   GObject parent_instance;
 
-  int instance_member;
+  gint instance_member;
 };
 
 struct _MamanBazClass
@@ -1173,22 +1173,20 @@ struct _MamanBaz
 enum
 {
   PROP_0,
-
   PROP_NAME
 };
 
 static void
 maman_baz_set_property (GObject      *object,
-                        guint         property_id,
+                        guint         prop_id,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
   MamanBaz *baz = MAMAN_BAZ (object);
-  GObject *obj;
 
   switch (prop_id)
     {
-    case ARG_NAME:
+    case PROP_NAME:
       g_free (baz->name);
       baz->name = g_value_dup_string (value);
       break;
@@ -1209,7 +1207,7 @@ maman_baz_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case ARG_NAME:
+    case PROP_NAME:
       g_value_set_string (value, baz->name);
       break;
 
