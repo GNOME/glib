@@ -1215,6 +1215,55 @@ test_iter_replace (void)
   g_hash_table_unref (h);
 }
 
+static void
+replace_first_character (gchar *string)
+{
+  string[0] = 'b';
+}
+
+static void
+test_set_insert_corruption (void)
+{
+  GHashTable *hash_table =
+    g_hash_table_new_full (g_str_hash, g_str_equal,
+        (GDestroyNotify) replace_first_character, NULL);
+  GHashTableIter iter;
+  gchar a[] = "foo";
+  gchar b[] = "foo";
+  gpointer key, value;
+
+  g_test_bug ("692815");
+
+  g_hash_table_insert (hash_table, a, a);
+  g_assert (g_hash_table_contains (hash_table, "foo"));
+
+  g_hash_table_insert (hash_table, b, b);
+
+  g_assert_cmpuint (g_hash_table_size (hash_table), ==, 1);
+  g_hash_table_iter_init (&iter, hash_table);
+  if (!g_hash_table_iter_next (&iter, &key, &value))
+    g_assert_not_reached();
+
+  /* per the documentation to g_hash_table_insert(), 'b' has now been freed,
+   * and the sole key in 'hash_table' should be 'a'.
+   */
+  g_assert (key != b);
+  g_assert (key == a);
+
+  g_assert_cmpstr (b, ==, "boo");
+
+  /* g_hash_table_insert() also says that the value should now be 'b',
+   * which is probably not what the caller intended but is precisely what they
+   * asked for.
+   */
+  g_assert (value == b);
+
+  /* even though the hash has now been de-set-ified: */
+  g_assert (g_hash_table_contains (hash_table, "foo"));
+
+  g_hash_table_unref (hash_table);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1241,6 +1290,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/destroy-modify", test_destroy_modify);
   g_test_add_func ("/hash/consistency", test_internal_consistency);
   g_test_add_func ("/hash/iter-replace", test_iter_replace);
+  g_test_add_func ("/hash/set-insert-corruption", test_set_insert_corruption);
 
   return g_test_run ();
 
