@@ -172,18 +172,18 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_method_prototype(i, m, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(m.doc_string, True)))
+        self.out.write('%s\n'%(self.expand_paras(m.doc_string, True)))
         if m.in_args or m.out_args:
             self.out.write('<variablelist role="params">\n')
             for a in m.in_args:
                 self.out.write('<varlistentry>\n'%())
                 self.out.write('  <term><literal>IN %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('  <listitem>%s</listitem>\n'%(self.expand_paras(a.doc_string, True)))
                 self.out.write('</varlistentry>\n'%())
             for a in m.out_args:
                 self.out.write('<varlistentry>\n'%())
                 self.out.write('  <term><literal>OUT %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('  <listitem>%s</listitem>\n'%(self.expand_paras(a.doc_string, True)))
                 self.out.write('</varlistentry>\n'%())
             self.out.write('</variablelist>\n')
         if len(m.since) > 0:
@@ -199,13 +199,13 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_signal_prototype(i, s, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(s.doc_string, True)))
+        self.out.write('%s\n'%(self.expand_paras(s.doc_string, True)))
         if s.args:
             self.out.write('<variablelist role="params">\n')
             for a in s.args:
                 self.out.write('<varlistentry>\n'%())
                 self.out.write('  <term><literal>%s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('  <listitem>%s</listitem>\n'%(self.expand_paras(a.doc_string, True)))
                 self.out.write('</varlistentry>\n'%())
             self.out.write('</variablelist>\n')
         if len(s.since) > 0:
@@ -221,7 +221,7 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_property_prototype(i, p, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(p.doc_string, True)))
+        self.out.write('%s\n'%(self.expand_paras(p.doc_string, True)))
         if len(p.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(p.since))
         if p.deprecated:
@@ -238,6 +238,12 @@ class DocbookCodeGenerator:
             s = re.sub('@[a-zA-Z0-9_]*', lambda m: '<parameter>' + m.group(0)[1:] + '</parameter>', s)
             # replace e.g. %TRUE with <constant>TRUE</constant>
             s = re.sub('%[a-zA-Z0-9_]*', lambda m: '<constant>' + m.group(0)[1:] + '</constant>', s)
+        return s
+
+    def expand_paras(self, s, expandParamsAndConstants):
+        s = self.expand(s, expandParamsAndConstants).strip()
+        if not s.startswith("<para"):
+            s = "<para>%s</para>" % s
         return s
 
     def generate_expand_dicts(self):
@@ -292,7 +298,7 @@ class DocbookCodeGenerator:
 
             self.out.write('<refsect1 role="desc" id="gdbus-interface-%s">\n'%(utils.dots_to_hyphens(i.name)))
             self.out.write('  <title role="desc.title">Description</title>\n'%())
-            self.out.write('  <para>%s</para>\n'%(self.expand(i.doc_string, True)))
+            self.out.write('  %s\n'%(self.expand_paras(i.doc_string, True)))
             if len(i.since) > 0:
                 self.out.write('  <para role="since">Since %s</para>\n'%(i.since))
             if i.deprecated:
