@@ -173,18 +173,19 @@ class DocbookCodeGenerator:
         self.print_method_prototype(i, m, in_synopsis=False)
         self.out.write('</programlisting>\n')
         self.out.write('<para>%s</para>\n'%(self.expand(m.doc_string, True)))
-        self.out.write('<variablelist role="params">\n')
-        for a in m.in_args:
-            self.out.write('<varlistentry>\n'%())
-            self.out.write('  <term><literal>IN %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
-            self.out.write('</varlistentry>\n'%())
-        for a in m.out_args:
-            self.out.write('<varlistentry>\n'%())
-            self.out.write('  <term><literal>OUT %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
-            self.out.write('</varlistentry>\n'%())
-        self.out.write('</variablelist>\n')
+        if m.in_args or m.out_args:
+            self.out.write('<variablelist role="params">\n')
+            for a in m.in_args:
+                self.out.write('<varlistentry>\n'%())
+                self.out.write('  <term><literal>IN %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
+                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('</varlistentry>\n'%())
+            for a in m.out_args:
+                self.out.write('<varlistentry>\n'%())
+                self.out.write('  <term><literal>OUT %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
+                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('</varlistentry>\n'%())
+            self.out.write('</variablelist>\n')
         if len(m.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(m.since))
         if m.deprecated:
@@ -199,13 +200,14 @@ class DocbookCodeGenerator:
         self.print_signal_prototype(i, s, in_synopsis=False)
         self.out.write('</programlisting>\n')
         self.out.write('<para>%s</para>\n'%(self.expand(s.doc_string, True)))
-        self.out.write('<variablelist role="params">\n')
-        for a in s.args:
-            self.out.write('<varlistentry>\n'%())
-            self.out.write('  <term><literal>%s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
-            self.out.write('</varlistentry>\n'%())
-        self.out.write('</variablelist>\n')
+        if s.args:
+            self.out.write('<variablelist role="params">\n')
+            for a in s.args:
+                self.out.write('<varlistentry>\n'%())
+                self.out.write('  <term><literal>%s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
+                self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
+                self.out.write('</varlistentry>\n'%())
+            self.out.write('</variablelist>\n')
         if len(s.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(s.since))
         if s.deprecated:
