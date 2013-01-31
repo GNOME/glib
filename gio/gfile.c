@@ -3762,6 +3762,7 @@ g_file_delete_async (GFile               *file,
  * Finishes deleting a file started with g_file_delete_async().
  *
  * Virtual: delete_file_finish
+ * Returns: %TRUE if the file was deleted. %FALSE otherwise.
  * Since: 2.34
  **/
 gboolean
@@ -3797,6 +3798,7 @@ g_file_delete_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
+ * Virtual: trash
  * Returns: %TRUE on successful trash, %FALSE otherwise.
  */
 gboolean
