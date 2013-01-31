@@ -2831,6 +2831,11 @@ start_element_handler (GMarkupParseContext *context,
 				 attribute_names, attribute_values,
 				 ctx, error))
 	goto out;
+      else if (strcmp (element_name, "instance-parameter") == 0)
+        {
+          state_switch (ctx, STATE_PASSTHROUGH);
+          goto out;
+        }
       else if (strcmp (element_name, "c:include") == 0)
 	{
 	  state_switch (ctx, STATE_C_INCLUDE);
