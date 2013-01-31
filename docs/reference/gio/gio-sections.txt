@@ -131,6 +131,8 @@ g_file_delete
 g_file_delete_async
 g_file_delete_finish
 g_file_trash
+g_file_trash_async
+g_file_trash_finish
 g_file_copy
 g_file_copy_async
 g_file_copy_finish
