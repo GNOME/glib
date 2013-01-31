@@ -43,6 +43,16 @@ G_BEGIN_DECLS
 #define G_MENU_ATTRIBUTE_ACTION "action"
 
 /**
+ * G_MENU_ATTRIBUTE_ACTION_NAMESPACE:
+ *
+ * The menu item attribute that holds the namespace for all action names in
+ * menus that are linked from this item.
+ *
+ * Since: 2.36
+ **/
+#define G_MENU_ATTRIBUTE_ACTION_NAMESPACE "action-namespace"
+
+/**
  * G_MENU_ATTRIBUTE_TARGET:
  *
  * The menu item attribute which holds the target with which the item's action
