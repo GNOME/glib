@@ -744,7 +744,7 @@ g_menu_exporter_method_call (GDBusConnection       *connection,
  * The implemented D-Bus API should be considered private.
  * It is subject to change in the future.
  *
- * An object path can only have one action group exported on it. If this
+ * An object path can only have one menu model exported on it. If this
  * constraint is violated, the export will fail and 0 will be
  * returned (with @error set accordingly).
  *
