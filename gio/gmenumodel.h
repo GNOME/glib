@@ -28,11 +28,63 @@
 
 G_BEGIN_DECLS
 
+/**
+ * G_MENU_ATTRIBUTE_ACTION:
+ *
+ * The menu item attribute which holds the action name of the item.  Action
+ * names are namespaced with an identifier for the action group in which the
+ * action resides. For example, "win." for window-specific actions and "app."
+ * for application-wide actions.
+ *
+ * See also g_menu_model_get_item_attribute() and g_menu_item_set_attribute().
+ *
+ * Since: 2.32
+ **/
 #define G_MENU_ATTRIBUTE_ACTION "action"
+
+/**
+ * G_MENU_ATTRIBUTE_TARGET:
+ *
+ * The menu item attribute which holds the target with which the item's action
+ * will be activated.
+ *
+ * See also g_menu_item_set_action_and_target()
+ *
+ * Since: 2.32
+ **/
 #define G_MENU_ATTRIBUTE_TARGET "target"
+
+/**
+ * G_MENU_ATTRIBUTE_LABEL:
+ *
+ * The menu item attribute which holds the label of the item.
+ *
+ * Since: 2.32
+ **/
 #define G_MENU_ATTRIBUTE_LABEL "label"
 
+/**
+ * G_MENU_LINK_SUBMENU:
+ *
+ * The name of the link that associates a menu item with a submenu.
+ *
+ * See also g_menu_item_set_link().
+ *
+ * Since: 2.32
+ **/
 #define G_MENU_LINK_SUBMENU "submenu"
+
+/**
+ * G_MENU_LINK_SUBMENU:
+ *
+ * The name of the link that associates a menu item with a section.  The linked
+ * menu will usually be shown in place of the menu item, using the item's label
+ * as a header.
+ *
+ * See also g_menu_item_set_link().
+ *
+ * Since: 2.32
+ **/
 #define G_MENU_LINK_SECTION "section"
 
 #define G_TYPE_MENU_MODEL                                   (g_menu_model_get_type ())
