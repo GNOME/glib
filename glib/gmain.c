@@ -1735,6 +1735,12 @@ g_source_get_priority (GSource *source)
  * Dispatching the source does not reset the ready time.  You should do
  * so yourself, from the source dispatch function.
  *
+ * Note that if you have a pair of sources where the ready time of one
+ * suggests that it will be delivered first but the priority for the
+ * other suggests that it would be delivered first, and the ready time
+ * for both sources is reached during the same main context iteration
+ * then the order of dispatch is undefined.
+ *
  * Since: 2.36
  **/
 void
