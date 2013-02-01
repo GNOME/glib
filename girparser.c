@@ -341,6 +341,9 @@ state_switch (ParseContext *ctx, ParseState newstate)
   g_assert (ctx->state != newstate);
   ctx->prev_state = ctx->state;
   ctx->state = newstate;
+
+  if (ctx->state == STATE_PASSTHROUGH)
+    ctx->unknown_depth = 1;
 }
 
 static GIrNode *
@@ -724,10 +727,7 @@ introspectable_prelude (GMarkupParseContext *context,
   if (introspectable)
     state_switch (ctx, new_state);
   else
-    {
-      state_switch (ctx, STATE_PASSTHROUGH);
-      ctx->unknown_depth = 1;
-    }
+    state_switch (ctx, STATE_PASSTHROUGH);
 
   return introspectable;
 }
@@ -2751,7 +2751,6 @@ start_element_handler (GMarkupParseContext *context,
       if (strcmp (element_name, "doc") == 0)
         {
           state_switch (ctx, STATE_PASSTHROUGH);
-          ctx->unknown_depth = 1;
           goto out;
         }
       break;
@@ -3014,7 +3013,6 @@ start_element_handler (GMarkupParseContext *context,
 		    ctx->file_path, line_number, char_number, element_name,
 		    ctx->state);
       state_switch (ctx, STATE_PASSTHROUGH);
-      ctx->unknown_depth = 1;
     }
 
  out:
