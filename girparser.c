@@ -95,7 +95,6 @@ typedef enum
   STATE_ALIAS,           /* 30 */
   STATE_TYPE,
   STATE_ATTRIBUTE,
-  STATE_DOC,
   STATE_PASSTHROUGH
 } ParseState;
 
@@ -2117,22 +2116,6 @@ end_type (ParseContext *ctx)
 }
 
 static gboolean
-start_doc (GMarkupParseContext *context,
-	   const gchar         *element_name,
-	   const gchar        **attribute_names,
-	   const gchar        **attribute_values,
-	   ParseContext       *ctx,
-	   GError             **error)
-{
-  if (strcmp (element_name, "doc") != 0)
-    return FALSE;
-
-  state_switch (ctx, STATE_DOC);
-
-  return TRUE;
-}
-
-static gboolean
 start_attribute (GMarkupParseContext *context,
                  const gchar         *element_name,
                  const gchar        **attribute_names,
@@ -2765,9 +2748,12 @@ start_element_handler (GMarkupParseContext *context,
 			       attribute_names, attribute_values,
 			       ctx, error))
 	goto out;
-      else if (start_doc (context, element_name, attribute_names,
-			  attribute_values, ctx, error))
-	goto out;
+      if (strcmp (element_name, "doc") == 0)
+        {
+          state_switch (ctx, STATE_PASSTHROUGH);
+          ctx->unknown_depth = 1;
+          goto out;
+        }
       break;
 
     case 'e':
@@ -3408,13 +3394,6 @@ end_element_handler (GMarkupParseContext *context,
 	}
     case STATE_ATTRIBUTE:
       if (strcmp ("attribute", element_name) == 0)
-        {
-          state_switch (ctx, ctx->prev_state);
-        }
-      break;
-
-    case STATE_DOC:
-      if (strcmp ("doc", element_name) == 0)
         {
           state_switch (ctx, ctx->prev_state);
         }
