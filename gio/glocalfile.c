@@ -2408,6 +2408,16 @@ g_local_file_move (GFile                  *source,
   return TRUE;
 }
 
+#ifdef G_OS_WIN32
+
+static gboolean
+is_remote (const gchar *filename)
+{
+  return FALSE;
+}
+
+#else
+
 static gboolean
 is_remote_fs (const gchar *filename)
 {
@@ -2476,6 +2486,7 @@ is_remote (const gchar *filename)
 
   return FALSE;
 }
+#endif /* !G_OS_WIN32 */
 
 static GFileMonitor*
 g_local_file_monitor_dir (GFile             *file,
