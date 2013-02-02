@@ -64,6 +64,7 @@ test_default_handler (void)
 {
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_error ("message1");
       exit (0);
     }
@@ -72,6 +73,7 @@ test_default_handler (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_critical ("message2");
       exit (0);
     }
@@ -80,6 +82,7 @@ test_default_handler (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_warning ("message3");
       exit (0);
     }
@@ -88,6 +91,7 @@ test_default_handler (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_message ("message4");
       exit (0);
     }
@@ -96,6 +100,7 @@ test_default_handler (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "message5");
       exit (0);
     }
@@ -105,6 +110,7 @@ test_default_handler (void)
   g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_log ("bar", G_LOG_LEVEL_INFO, "message5");
       exit (0);
     }
@@ -113,6 +119,7 @@ test_default_handler (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_log ("baz", G_LOG_LEVEL_DEBUG, "message6");
       exit (0);
     }
@@ -122,6 +129,7 @@ test_default_handler (void)
   g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
       g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
       g_log ("baz", G_LOG_LEVEL_DEBUG, "6");
@@ -133,6 +141,7 @@ test_default_handler (void)
   g_unsetenv ("G_MESSAGES_DEBUG");
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
     {
+      g_log_set_default_handler (g_log_default_handler, NULL);
       g_log (G_LOG_DOMAIN, 1<<10, "message7");
       exit (0);
     }
