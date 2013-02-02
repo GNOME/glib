@@ -633,6 +633,7 @@ g_test_log (GTestLogType lbit,
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MESSAGE:
+    case G_TEST_LOG_ERROR:
       if (g_test_verbose())
         g_print ("(MSG: %s)\n", string1);
       break;
