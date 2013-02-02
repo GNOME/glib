@@ -349,6 +349,33 @@
  */
 
 /**
+ * g_assert_true:
+ * @expr: the expression to check
+ *
+ * Debugging macro to check that an expression is true.
+ *
+ * Since: 2.38
+ */
+
+/**
+ * g_assert_false:
+ * @expr: the expression to check
+ *
+ * Debugging macro to check an expression is false.
+ *
+ * Since: 2.38
+ */
+
+/**
+ * g_assert_null:
+ * @expr: the expression to check
+ *
+ * Debugging macro to check an expression is %NULL.
+ *
+ * Since: 2.38
+ */
+
+/**
  * g_assert_cmpstr:
  * @s1: a string (may be %NULL)
  * @cmp: The comparison operator to use.
