@@ -2218,7 +2218,11 @@ g_assertion_message_expr (const char     *domain,
                           const char     *func,
                           const char     *expr)
 {
-  char *s = g_strconcat ("assertion failed: (", expr, ")", NULL);
+  char *s;
+  if (!expr)
+    s = g_strdup ("code should not be reached");
+  else
+    s = g_strconcat ("assertion failed: (", expr, ")", NULL);
   g_assertion_message (domain, file, line, func, s);
   g_free (s);
 }
