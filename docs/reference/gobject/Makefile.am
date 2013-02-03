@@ -33,11 +33,12 @@ IGNORE_HFILES = \
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
-INCLUDES = \
+AM_CPPFLAGS = 				\
 	-I$(srcdir) 			\
 	$(gobject_INCLUDES) 		\
 	$(GLIB_DEBUG_FLAGS)
-GTKDOC_LIBS = \
+
+GTKDOC_LIBS = 					\
 	$(top_builddir)/glib/libglib-2.0.la	\
 	$(top_builddir)/gobject/libgobject-2.0.la
 

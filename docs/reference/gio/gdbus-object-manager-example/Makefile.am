@@ -17,16 +17,16 @@ HFILE_GLOB=$(top_builddir)/gio/tests/gdbus-object-manager-example/*.h
 CFILE_GLOB=$(top_builddir)/gio/tests/gdbus-object-manager-example/*.c
 
 # Headers to ignore
-IGNORE_HFILES=				\
+IGNORE_HFILES =				\
 	$(NULL)
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
-INCLUDES = \
+AM_CPPFLAGS = 				\
 	$(gio_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)
 
-GTKDOC_LIBS = \
+GTKDOC_LIBS = 						\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\

@@ -3,7 +3,6 @@ include $(top_srcdir)/Makefile.decl
 NULL =
 bin_SCRIPTS =
 CLEANFILES =
-EXTRA_DIST =
 
 codegendir = $(datadir)/glib-2.0/codegen
 codegen_PYTHON =						\

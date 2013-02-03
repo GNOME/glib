@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES =					\
+AM_CPPFLAGS =					\
 	$(gmodule_INCLUDES)			\
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
 	$(GLIB_DEBUG_FLAGS)

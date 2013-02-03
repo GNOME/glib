@@ -1,9 +1,10 @@
 include $(top_srcdir)/Makefile.decl
 
 AM_CPPFLAGS = 					\
-	-DG_LOG_DOMAIN=\"GLib-GObject\"
-
-INCLUDES = -g $(gobject_INCLUDES) $(GLIB_DEBUG_FLAGS)
+	-g					\
+	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
+	$(gobject_INCLUDES)			\
+	$(GLIB_DEBUG_FLAGS)
 
 if CROSS_COMPILING
   glib_genmarshal=$(GLIB_GENMARSHAL)

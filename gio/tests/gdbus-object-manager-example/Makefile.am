@@ -4,7 +4,7 @@ CLEANFILES =
 
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = 			\
+AM_CPPFLAGS = 			\
 	-g 			\
 	$(gio_INCLUDES)		\
 	$(GLIB_DEBUG_FLAGS)	\

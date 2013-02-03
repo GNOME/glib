@@ -1,8 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = 			\
-	-DLIBDIR=\"$(libdir)\" $(config_h_INCLUDES)
+AM_CPPFLAGS = 				\
+	-DLIBDIR=\"$(libdir)\" 		\
+	$(config_h_INCLUDES)
 
 noinst_LTLIBRARIES = libcharset.la
 

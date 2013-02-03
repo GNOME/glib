@@ -6,14 +6,14 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS = gdbus-object-manager-example services
 
-INCLUDES = 			\
-	-DG_LOG_DOMAIN=\"GLib-GIO\" \
-	$(gio_INCLUDES)		\
-	$(GLIB_DEBUG_FLAGS)	\
-	-I$(top_builddir)/gio	\
-	-I$(top_srcdir)/gio	\
-	$(DBUS1_CFLAGS)		\
-	-DSRCDIR=\""$(srcdir)"\" \
+AM_CPPFLAGS = 				\
+	-DG_LOG_DOMAIN=\"GLib-GIO\" 	\
+	$(gio_INCLUDES)			\
+	$(GLIB_DEBUG_FLAGS)		\
+	-I$(top_builddir)/gio		\
+	-I$(top_srcdir)/gio		\
+	$(DBUS1_CFLAGS)			\
+	-DSRCDIR=\""$(srcdir)"\" 	\
 	-DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
 
 
