@@ -380,7 +380,7 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
 }
 
 /**
- * g_application_command_line_get_stdin_data:
+ * g_application_command_line_get_stdin:
  * @cmdline: a #GApplicationCommandLine
  *
  * Gets the stdin of the invoking process.
