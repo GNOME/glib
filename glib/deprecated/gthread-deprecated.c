@@ -590,7 +590,7 @@ g_static_mutex_get_mutex_impl (GStaticMutex* mutex)
  * <note><para>Calling g_static_mutex_free() on a locked mutex may
  * result in undefined behaviour.</para></note>
  *
- * Deprecated: 2.32: Use g_mutex_free()
+ * Deprecated: 2.32: Use g_mutex_clear()
  */
 void
 g_static_mutex_free (GStaticMutex* mutex)
