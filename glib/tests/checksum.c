@@ -18,8 +18,8 @@
  * string is intentionally more than twice that length.
  */
 
-#define FIXED_STR               "The quick brown fox jumps over the lazy dog. Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs. How razorback-jumping frogs can level six piqued gymnasts!"
-#define FIXED_LEN               (strlen (FIXED_STR))
+static const char FIXED_STR[] = "The quick brown fox jumps over the lazy dog. Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs. How razorback-jumping frogs can level six piqued gymnasts!";
+#define FIXED_LEN (strlen (FIXED_STR))
 
 const char *MD5_sums[] = {
   "d41d8cd98f00b204e9800998ecf8427e",
