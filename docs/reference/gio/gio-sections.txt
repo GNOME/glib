@@ -673,7 +673,9 @@ GWin32InputStreamPrivate
 GMemoryInputStream
 g_memory_input_stream_new
 g_memory_input_stream_new_from_data
+g_memory_input_stream_new_from_bytes
 g_memory_input_stream_add_data
+g_memory_input_stream_add_bytes
 <SUBSECTION Standard>
 GMemoryInputStreamClass
 G_MEMORY_INPUT_STREAM
@@ -870,6 +872,7 @@ g_memory_output_stream_get_data
 g_memory_output_stream_get_size
 g_memory_output_stream_get_data_size
 g_memory_output_stream_steal_data
+g_memory_output_stream_steal_as_bytes
 <SUBSECTION Standard>
 GMemoryOutputStreamClass
 G_MEMORY_OUTPUT_STREAM
@@ -2969,6 +2972,7 @@ GApplicationCommandLineClass
 g_application_command_line_get_arguments
 g_application_command_line_get_cwd
 g_application_command_line_get_environ
+g_application_command_line_get_stdin
 g_application_command_line_create_file_for_arg
 g_application_command_line_getenv
 g_application_command_line_get_is_remote
@@ -3887,6 +3891,11 @@ g_resource_lookup_data
 g_resource_open_stream
 g_resource_enumerate_children
 g_resource_get_info
+
+<SUBSECTION Static>
+g_static_resource_init
+g_static_resource_fini
+g_static_resource_get_resource
 
 <SUBSECTION Global>
 g_resources_register

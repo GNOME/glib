@@ -217,8 +217,9 @@ g_memory_input_stream_new_from_data (const void     *data,
  * @bytes: a #GBytes
  *
  * Creates a new #GMemoryInputStream with data from the given @bytes.
- * 
+ *
  * Returns: new #GInputStream read from @bytes
+ *
  * Since: 2.34
  **/
 GInputStream *
