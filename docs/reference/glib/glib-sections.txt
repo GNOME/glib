@@ -2016,7 +2016,7 @@ g_unix_signal_add_full
 g_unix_signal_source_new
 
 <SUBSECTION>
-GUnixFdSourceFunc
+GUnixFDSourceFunc
 g_unix_fd_add
 g_unix_fd_add_full
 g_unix_fd_source_new
