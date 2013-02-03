@@ -908,6 +908,7 @@ g_io_channel_win32_get_fd
 g_io_channel_error_quark
 g_io_watch_funcs
 G_IO_FLAG_IS_WRITEABLE
+g_io_channel_error_quark
 </SECTION>
 
 <SECTION>
@@ -1110,6 +1111,7 @@ g_spawn_command_line_sync
 g_spawn_close_pid
 <SUBSECTION Private>
 g_spawn_error_quark
+g_spawn_exit_error_quark
 </SECTION>
 
 <SECTION>
