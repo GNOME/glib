@@ -68,9 +68,9 @@ _g_assert_property_notify_run (gpointer     object,
                                  G_CALLBACK (on_property_notify),
                                  &data);
   g_free (s);
-  timeout_id = g_timeout_add (30 * 1000,
-                              on_property_notify_timeout,
-                              &data);
+  timeout_id = g_timeout_add_seconds (30,
+                                      on_property_notify_timeout,
+                                      &data);
   g_main_loop_run (data.loop);
   g_signal_handler_disconnect (object, handler_id);
   g_source_remove (timeout_id);
@@ -117,9 +117,9 @@ _g_assert_signal_received_run (gpointer     object,
                                          signal_name,
                                          G_CALLBACK (on_signal_received),
                                          &data);
-  timeout_id = g_timeout_add (30 * 1000,
-                              on_signal_received_timeout,
-                              &data);
+  timeout_id = g_timeout_add_seconds (30,
+                                      on_signal_received_timeout,
+                                      &data);
   g_main_loop_run (data.loop);
   g_signal_handler_disconnect (object, handler_id);
   g_source_remove (timeout_id);

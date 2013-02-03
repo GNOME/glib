@@ -176,7 +176,7 @@ main (int argc, char *argv[])
 #endif
 
   alive = 2;
-  g_timeout_add (30000, quit_loop, main_loop);
+  g_timeout_add_seconds (30, quit_loop, main_loop);
 
 #ifdef TEST_THREAD
   g_thread_create (test_thread, GINT_TO_POINTER (10), FALSE, NULL);
