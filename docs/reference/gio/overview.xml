@@ -333,6 +333,19 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
     </formalpara>
 
     <formalpara>
+      <title><envar>GIO_USE_FILE_MONITOR</envar></title>
+
+      <para>
+        This variable can be set to the name of a #GFileMonitor
+        implementation to override the default for debugging purposes.
+        The #GFileMonitor implementation for local files that is included
+        in GIO on Linux has the name "inotify", others that are built
+        are built as modules (depending on the platform) are called
+        "fam" and "fen".
+      </para>
+    </formalpara>
+
+    <formalpara>
       <title><envar>GIO_USE_VOLUME_MONITOR</envar></title>
 
       <para>
