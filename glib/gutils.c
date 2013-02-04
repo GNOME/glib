@@ -581,7 +581,6 @@ static	gchar	*g_tmp_dir = NULL;
 static	gchar	*g_user_name = NULL;
 static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
-static	gchar	*g_host_name = NULL;
 
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
@@ -648,8 +647,6 @@ get_windows_directory_root (void)
 static void
 g_get_any_init_do (void)
 {
-  gchar hostname[100];
-
   g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
 
   if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
@@ -879,16 +876,6 @@ g_get_any_init_do (void)
   if (!g_real_name)
     g_real_name = g_strdup ("Unknown");
 
-  {
-#ifndef G_OS_WIN32
-    gboolean hostname_fail = (gethostname (hostname, sizeof (hostname)) == -1);
-#else
-    DWORD size = sizeof (hostname);
-    gboolean hostname_fail = (!GetComputerName (hostname, &size));
-#endif
-    g_host_name = g_strdup (hostname_fail ? "localhost" : hostname);
-  }
-
 #ifdef G_OS_WIN32
   g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
   g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
@@ -1042,8 +1029,24 @@ g_get_tmp_dir (void)
 const gchar *
 g_get_host_name (void)
 {
-  g_get_any_init_locked ();
-  return g_host_name;
+  static gchar *hostname;
+
+  if (g_once_init_enter (&hostname))
+    {
+      gboolean failed;
+      gchar tmp[100];
+
+#ifndef G_OS_WIN32
+      failed = (gethostname (tmp, sizeof (tmp)) == -1);
+#else
+      DWORD size = sizeof (tmp);
+      failed = (!GetComputerName (tmp, &size));
+#endif
+
+      g_once_init_leave (&hostname, g_strdup (failed ? "localhost" : tmp));
+    }
+
+  return hostname;
 }
 
 G_LOCK_DEFINE_STATIC (g_prgname);
