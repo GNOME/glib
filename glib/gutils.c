@@ -1208,13 +1208,12 @@ g_get_user_data_dir (void)
 #endif
       if (!data_dir || !data_dir[0])
 	{
-	  g_get_any_init ();
+          const gchar *home_dir = g_get_home_dir ();
 
-	  if (g_home_dir)
-	    data_dir = g_build_filename (g_home_dir, ".local", 
-					 "share", NULL);
+          if (home_dir)
+            data_dir = g_build_filename (home_dir, ".local", "share", NULL);
 	  else
-	    data_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".local", "share", NULL);
+            data_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".local", "share", NULL);
 	}
 
       g_user_data_dir = data_dir;
@@ -1244,12 +1243,12 @@ g_init_user_config_dir (void)
 #endif
       if (!config_dir || !config_dir[0])
 	{
-	  g_get_any_init ();
+          const gchar *home_dir = g_get_home_dir ();
 
-	  if (g_home_dir)
-	    config_dir = g_build_filename (g_home_dir, ".config", NULL);
+          if (home_dir)
+            config_dir = g_build_filename (home_dir, ".config", NULL);
 	  else
-	    config_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".config", NULL);
+            config_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".config", NULL);
 	}
 
       g_user_config_dir = config_dir;
@@ -1327,12 +1326,12 @@ g_get_user_cache_dir (void)
 #endif
       if (!cache_dir || !cache_dir[0])
 	{
-	  g_get_any_init ();
-	
-	  if (g_home_dir)
-	    cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
+          const gchar *home_dir = g_get_home_dir ();
+
+          if (home_dir)
+            cache_dir = g_build_filename (home_dir, ".cache", NULL);
 	  else
-	    cache_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".cache", NULL);
+            cache_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".cache", NULL);
 	}
       g_user_cache_dir = cache_dir;
     }
@@ -1662,8 +1661,7 @@ load_user_special_dirs (void)
       
       if (is_relative)
         {
-          g_get_any_init ();
-          g_user_special_dirs[directory] = g_build_filename (g_home_dir, d, NULL);
+          g_user_special_dirs[directory] = g_build_filename (g_get_home_dir (), d, NULL);
         }
       else
 	g_user_special_dirs[directory] = g_strdup (d);
@@ -1769,12 +1767,7 @@ g_get_user_special_dir (GUserDirectory directory)
 
       /* Special-case desktop for historical compatibility */
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
-        {
-          g_get_any_init ();
-
-          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] =
-            g_build_filename (g_home_dir, "Desktop", NULL);
-        }
+        g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (g_get_home_dir (), "Desktop", NULL);
     }
 
   G_UNLOCK (g_utils_global);
