@@ -577,7 +577,6 @@ g_find_program_in_path (const gchar *program)
 
 G_LOCK_DEFINE_STATIC (g_utils_global);
 
-static	gchar	*g_tmp_dir = NULL;
 static	gchar	*g_user_name = NULL;
 static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
@@ -647,47 +646,6 @@ get_windows_directory_root (void)
 static void
 g_get_any_init_do (void)
 {
-  g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
-
-  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    {
-      g_free (g_tmp_dir);
-      g_tmp_dir = g_strdup (g_getenv ("TMP"));
-    }
-
-  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    {
-      g_free (g_tmp_dir);
-      g_tmp_dir = g_strdup (g_getenv ("TEMP"));
-    }
-
-#ifdef G_OS_WIN32
-  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    {
-      g_free (g_tmp_dir);
-      g_tmp_dir = get_windows_directory_root ();
-    }
-#else
- 
-#ifdef P_tmpdir
-  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    {
-      gsize k;
-      g_free (g_tmp_dir);
-      g_tmp_dir = g_strdup (P_tmpdir);
-      k = strlen (g_tmp_dir);
-      if (k > 1 && G_IS_DIR_SEPARATOR (g_tmp_dir[k - 1]))
-	g_tmp_dir[k - 1] = '\0';
-    }
-#endif
-  
-  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
-    {
-      g_free (g_tmp_dir);
-      g_tmp_dir = g_strdup ("/tmp");
-    }
-#endif	/* !G_OS_WIN32 */
-
   /* We first check HOME and use it if it is set */
   g_home_dir = g_strdup (g_getenv ("HOME"));
 
@@ -875,33 +833,12 @@ g_get_any_init_do (void)
     g_user_name = g_strdup ("somebody");
   if (!g_real_name)
     g_real_name = g_strdup ("Unknown");
-
-#ifdef G_OS_WIN32
-  g_tmp_dir_cp = g_locale_from_utf8 (g_tmp_dir, -1, NULL, NULL, NULL);
-  g_user_name_cp = g_locale_from_utf8 (g_user_name, -1, NULL, NULL, NULL);
-  g_real_name_cp = g_locale_from_utf8 (g_real_name, -1, NULL, NULL, NULL);
-
-  if (!g_tmp_dir_cp)
-    g_tmp_dir_cp = g_strdup ("\\");
-  if (!g_user_name_cp)
-    g_user_name_cp = g_strdup ("somebody");
-  if (!g_real_name_cp)
-    g_real_name_cp = g_strdup ("Unknown");
-
-  /* home_dir might be NULL, unlike tmp_dir, user_name and
-   * real_name.
-   */
-  if (g_home_dir)
-    g_home_dir_cp = g_locale_from_utf8 (g_home_dir, -1, NULL, NULL, NULL);
-  else
-    g_home_dir_cp = NULL;
-#endif /* G_OS_WIN32 */
 }
 
 static inline void
 g_get_any_init (void)
 {
-  if (!g_tmp_dir)
+  if (!g_user_name)
     g_get_any_init_do ();
 }
 
@@ -1002,8 +939,57 @@ g_get_home_dir (void)
 const gchar *
 g_get_tmp_dir (void)
 {
-  g_get_any_init_locked ();
-  return g_tmp_dir;
+  static gchar *tmp_dir;
+
+  if (g_once_init_enter (&tmp_dir))
+    {
+      gchar *tmp;
+
+      tmp = g_strdup (g_getenv ("TMPDIR"));
+
+      if (tmp == NULL || *tmp == '\0')
+        {
+          g_free (tmp);
+          tmp = g_strdup (g_getenv ("TMP"));
+        }
+
+      if (tmp == NULL || *tmp == '\0')
+        {
+          g_free (tmp);
+          tmp = g_strdup (g_getenv ("TEMP"));
+        }
+
+#ifdef G_OS_WIN32
+      if (tmp == NULL || *tmp == '\0')
+        {
+          g_free (tmp);
+          tmp = get_windows_directory_root ();
+        }
+#else
+
+#ifdef P_tmpdir
+      if (tmp == NULL || *tmp == '\0')
+        {
+          gsize k;
+          g_free (tmp);
+          tmp = g_strdup (P_tmpdir);
+          k = strlen (tmp);
+          if (k > 1 && G_IS_DIR_SEPARATOR (tmp[k - 1]))
+            tmp[k - 1] = '\0';
+        }
+#endif
+
+      if (tmp == NULL || *tmp == '\0')
+        {
+          g_free (tmp);
+          tmp = g_strdup ("/tmp");
+        }
+#endif /* !G_OS_WIN32 */
+
+      g_once_init_leave (&tmp_dir, tmp);
+    }
+
+  return tmp_dir;
 }
 
 /**
@@ -1228,8 +1214,7 @@ g_get_user_data_dir (void)
 	    data_dir = g_build_filename (g_home_dir, ".local", 
 					 "share", NULL);
 	  else
-	    data_dir = g_build_filename (g_tmp_dir, g_user_name, ".local", 
-					 "share", NULL);
+	    data_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".local", "share", NULL);
 	}
 
       g_user_data_dir = data_dir;
@@ -1264,7 +1249,7 @@ g_init_user_config_dir (void)
 	  if (g_home_dir)
 	    config_dir = g_build_filename (g_home_dir, ".config", NULL);
 	  else
-	    config_dir = g_build_filename (g_tmp_dir, g_user_name, ".config", NULL);
+	    config_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".config", NULL);
 	}
 
       g_user_config_dir = config_dir;
@@ -1347,7 +1332,7 @@ g_get_user_cache_dir (void)
 	  if (g_home_dir)
 	    cache_dir = g_build_filename (g_home_dir, ".cache", NULL);
 	  else
-	    cache_dir = g_build_filename (g_tmp_dir, g_user_name, ".cache", NULL);
+	    cache_dir = g_build_filename (g_get_tmp_dir (), g_user_name, ".cache", NULL);
 	}
       g_user_cache_dir = cache_dir;
     }
