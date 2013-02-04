@@ -252,6 +252,23 @@ gboolean   g_markup_collect_attributes (const gchar         *element_name,
                                         const gchar         *first_attr,
                                         ...);
 
+GLIB_AVAILABLE_IN_2_36
+void            g_markup_string_parser_start            (GMarkupParseContext  *context,
+                                                         gboolean              translatable,
+                                                         const gchar          *gettext_domain,
+                                                         const gchar          *gettext_context,
+                                                         GError              **error);
+GLIB_AVAILABLE_IN_2_36
+gchar *         g_markup_string_parser_end              (GMarkupParseContext  *context);
+
+
+GLIB_AVAILABLE_IN_2_36
+void            g_markup_parser_reject_text             (GMarkupParseContext  *context,
+                                                         const gchar          *text,
+                                                         gsize                 text_len,
+                                                         gpointer              user_data,
+                                                         GError              **error);
+
 G_END_DECLS
 
 #endif /* __G_MARKUP_H__ */

@@ -37,6 +37,7 @@
 #include "gtestutils.h"
 #include "glibintl.h"
 #include "gthread.h"
+#include "ggettext.h"
 
 /**
  * SECTION:markup
@@ -2864,4 +2865,362 @@ failure:
   va_end (ap);
 
   return FALSE;
+}
+
+static void
+g_markup_string_parser_start_element (GMarkupParseContext  *context,
+                                      const gchar          *element_name,
+                                      const gchar         **attribute_names,
+                                      const gchar         **attribute_values,
+                                      gpointer              user_data,
+                                      GError              **error)
+{
+  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+               "Only text may appear inside element <%s> (not <%s>)",
+               g_markup_parse_context_get_element (context), element_name);
+}
+
+typedef struct
+{
+  GString *str;
+  gboolean translatable;
+  gchar *context;
+  gchar *domain;
+} StringParserState;
+
+static void
+g_markup_string_parser_text (GMarkupParseContext  *context,
+                             const gchar          *text,
+                             gsize                 text_len,
+                             gpointer              user_data,
+                             GError              **error)
+{
+  StringParserState *state = user_data;
+
+  g_string_append_len (state->str, text, text_len);
+}
+
+static void
+g_markup_string_parser_error (GMarkupParseContext *context,
+                              GError              *error,
+                              gpointer             user_data)
+{
+  StringParserState *state = user_data;
+
+  g_string_free (state->str, TRUE);
+  g_free (state->context);
+  g_free (state->domain);
+
+  g_slice_free (StringParserState, state);
+}
+
+/**
+ * g_markup_string_parser_start:
+ * @context: a #GMarkupParseContext
+ * @translatable: if the text is meant to be translatable
+ * @gettext_domain: the gettext domain for translation
+ * @gettext_context: the gettext context for translation
+ * @error: the #GError passed into your 'start_element'.
+ *
+ * Starts reading an all-text section inside of an element from an
+ * invocation of a #GMarkupParser 'start_element' function.
+ *
+ * In many cases you probably want to parse the arguments of the tag
+ * starting the text section to determine appropriate values for
+ * @translatable, @gettext_domain and particularly @gettext_context.
+ *
+ * If @translatable is true then the text will be translated according
+ * to @gettext_domain and @gettext_context.  Whitespace is normalised
+ * according to (FIXME: some rules... probably the ones intltool already
+ * knows about) before translation (if any) occurs.
+ *
+ * There may not be nested tags in the text section.  If any are
+ * encountered then an error is generated (and the next and final call
+ * that your #GMarkupParser will receive is to its 'error' handler, if
+ * any).
+ *
+ * You should call g_markup_string_parser_end() in the corresponding
+ * 'end_element' invocation (ie: the one called immediately after, with
+ * the same @element_name).
+ *
+ * If you intend to parse all of the text sections in your document type
+ * using this function then you should probably use
+ * g_markup_parser_reject_text() as the 'text' handler in your
+ * #GMarkupParser vtable.
+ *
+ * Consider an example parser to parse a file of the following form:
+ *
+ * |[
+ * <![CDATA[
+ *  <attrlist gettext-domain='myapp'>
+ *    <attribute name='identifier'>
+ *      myapp
+ *    </attribute>
+ *    <attribute name='label' translatable='yes'
+ *               comment='This is the text in the main window'>
+ *      Hello world!
+ *    </attribute>
+ *    <attribute name='24-hour-time' context='24 hour time'>
+ *      false
+ *    </attribute>
+ *  </attrlist>
+ * ]]>
+ * ]|
+ *
+ * with the corresponding <literal>myapp.po</literal> fragment:
+ * |[
+ *  # This is the text in the main window
+ *  #: file.xml:7
+ *  msgid "Hello world!"
+ *  msgstr ""
+ *
+ *  #: file.xml:10
+ *  msgctxt "24 hour time"
+ *  msgid "false"
+ *  msgstr ""
+ * ]|
+ *
+ * The code for the parser follows:
+ *
+ * |[
+ *  typedef struct
+ *  {
+ *    // For the file
+ *    gchar *gettext_domain;
+ *
+ *    // For the current <attribute/>
+ *    gchar *name;
+ *  } ParserState;
+ *
+ *  void
+ *  start_element (GMarkupParseContext  *context,
+ *                 const gchar          *element_name,
+ *                 const gchar         **attribute_names,
+ *                 const gchar         **attribute_values,
+ *                 gpointer              user_data,
+ *                 GError              **error)
+ *  {
+ *    ParserState *state = user_data;
+ *    const GSList *element_stack;
+ *    const gchar *container;
+ *
+ *    element_stack = g_markup_parse_context_get_element_stack (context);
+ *    container = element_stack->next ? element_stack->next->data : NULL;
+ *
+ *    if (container == NULL)
+ *      {
+ *        if (g_str_equal (element_name, "attrlist"))
+ *          {
+ *            g_markup_collect_attributes (element_name, attribute_names, attribute_values, error,
+ *                                         G_MARKUP_COLLECT_STRDUP | G_MARKUP_COLLECT_OPTIONAL,
+ *                                           "gettext-domain", &state->gettext_domain,
+ *                                         G_MARKUP_COLLECT_INVALID);
+ *            return;
+ *          }
+ *      }
+ *
+ *    else if (g_str_equal (container, "attrlist"))
+ *      {
+ *        if (g_str_equal (element_name, "attribute"))
+ *          {
+ *            const gchar *gettext_context;
+ *            gboolean translatable;
+ *
+ *            if (g_markup_collect_attributes (element_name, attribute_names, attribute_values, error,
+ *                                             G_MARKUP_COLLECT_STRDUP,
+ *                                               "name", &state->name,
+ *                                             G_MARKUP_COLLECT_OPTIONAL | G_MARKUP_COLLECT_BOOLEAN,
+ *                                               "translatable", &translatable,
+ *                                             G_MARKUP_COLLECT_OPTIONAL | G_MARKUP_COLLECT_STRING,
+ *                                               "context", &gettext_context,
+ *                                             G_MARKUP_COLLECT_OPTIONAL | G_MARKUP_COLLECT_STRING,
+ *                                               "comment", NULL, // just for translators; ignore here
+ *                                             G_MARKUP_COLLECT_INVALID))
+ *              {
+ *                g_markup_string_parser_start (context, translatable, state->gettext_domain, gettext_context, error);
+ *              }
+ *            return;
+ *          }
+ *      }
+ *
+ *    if (container)
+ *      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+ *                   _("Element <%s> not allowed inside <%s>"),
+ *                   element_name, container);
+ *    else
+ *      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+ *                   _("Element <%s> not allowed at the top level"), element_name);
+ *  }
+ *
+ *  void
+ *  end_element (GMarkupParseContext  *context,
+ *               const gchar          *element_name,
+ *               gpointer              user_data,
+ *               GError              **error)
+ *  {
+ *    ParserState *state = user_data;
+ *
+ *    if (g_str_equal (element_name, "attrlist"))
+ *      {
+ *        g_clear_pointer (&state->gettext_domain, g_free);
+ *      }
+ *
+ *    else if (g_str_equal (element_name, "attribute"))
+ *      {
+ *        gchar *value;
+ *
+ *        value = g_markup_string_parser_end (context);
+ *        g_print ("Got '%s'='%s'\n", state->name, value);
+ *        g_clear_pointer (&state->name, g_free);
+ *        g_free (value);
+ *      }
+ *  }
+ *
+ *  static void
+ *  error (GMarkupParseContext *context,
+ *         GError              *error,
+ *         gpointer             user_data)
+ *  {
+ *    ParserState *state = user_data;
+ *
+ *    g_clear_pointer (&state->gettext_domain, g_free);
+ *    g_clear_pointer (&state->name, g_free);
+ *  }
+ *
+ * static GMarkupParser parser_vtable = {
+ *   start_element,
+ *   end_element,
+ *   g_markup_parser_reject_text,
+ *   NULL, // passthrough
+ *   error
+ * };
+ * ]|
+ *
+ * Since: 2.36
+ **/
+void
+g_markup_string_parser_start (GMarkupParseContext  *context,
+                              gboolean              translatable,
+                              const gchar          *gettext_domain,
+                              const gchar          *gettext_context,
+                              GError              **error)
+{
+  static const GMarkupParser parser = {
+    g_markup_string_parser_start_element,
+    NULL,
+    g_markup_string_parser_text,
+    NULL,
+    g_markup_string_parser_error
+  };
+  StringParserState *state;
+
+  if (translatable && gettext_domain == NULL)
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_MISSING_ATTRIBUTE,
+                   "translation was requested for <%s> but no gettext domain was given",
+                   g_markup_parse_context_get_element (context));
+      return;
+    }
+
+  state = g_slice_new (StringParserState);
+  state->str = g_string_new (NULL);
+  state->domain = g_strdup (gettext_domain);
+  state->context = g_strdup (gettext_context);
+  state->translatable = translatable;
+
+  g_markup_parse_context_push (context, &parser, state);
+}
+
+/**
+ * g_markup_string_parser_end:
+ * @context: the #GMarkupParseContext
+ *
+ * Collect the result of an instance of the built-in #GMarkup string
+ * subparser.
+ *
+ * This should be called from the 'end_element' invocation that is
+ * run immediately after the 'start_element' invocation that called
+ * g_markup_string_parser_start().
+ *
+ * The resulting string will have been whitespace normalised and
+ * translated, if applicable.
+ *
+ * Returns: the string that was read from the markup
+ *
+ * Since: 2.36
+ **/
+gchar *
+g_markup_string_parser_end (GMarkupParseContext *context)
+{
+  StringParserState *state = g_markup_parse_context_pop (context);
+  const gchar *translated;
+  gchar *result;
+
+  /* TODO: whitespace normalisation before translation? */
+
+  if (state->translatable)
+    {
+      if (state->context)
+        translated = g_dpgettext2 (state->domain, state->context, state->str->str);
+      else
+        translated = g_dgettext (state->domain, state->str->str);
+    }
+  else
+    translated = state->str->str;
+
+  if (translated != state->str->str)
+    {
+      g_string_free (state->str, TRUE);
+      result = g_strdup (translated);
+    }
+  else
+    result = g_string_free (state->str, FALSE);
+
+  g_free (state->context);
+  g_free (state->domain);
+
+  g_slice_free (StringParserState, state);
+
+  return result;
+}
+
+/**
+ * g_markup_parser_reject_text:
+ * @context: do not call this function directly
+ * @text: do not call this function directly
+ * @text_len: do not call this function directly
+ * @user_data: do not call this function directly
+ * @error: do not call this function directly
+ *
+ * This function is not designed to be used directly.  Rather, it should
+ * be used as the 'text' callback in the #GMarkupParser vtable if your
+ * parser is not interested in parsing any text.
+ *
+ * This is useful for document types where no text is valid (ie: only
+ * elements are allowed) or for parsers that want to parse all text
+ * sections using subparsers (with g_markup_string_parser_text() for
+ * example).
+ *
+ * The function will reject any text that does not consist entirely of
+ * whitespace characters, issuing an appropriate warning via #GError.
+ *
+ * Since: 2.36
+ **/
+void
+g_markup_parser_reject_text (GMarkupParseContext  *context,
+                             const gchar          *text,
+                             gsize                 text_len,
+                             gpointer              user_data,
+                             GError              **error)
+{
+  gsize i;
+
+  for (i = 0; i < text_len; i++)
+    if (!g_ascii_isspace (text[i]))
+      {
+        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                     "text may not appear inside <%s>",
+                     g_markup_parse_context_get_element (context));
+        break;
+      }
 }
