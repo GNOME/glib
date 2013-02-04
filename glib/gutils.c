@@ -583,16 +583,6 @@ static	gchar	*g_real_name = NULL;
 static	gchar	*g_home_dir = NULL;
 static	gchar	*g_host_name = NULL;
 
-#ifdef G_OS_WIN32
-/* System codepage versions of the above, kept at file level so that they,
- * too, are produced only once.
- */
-static	gchar	*g_tmp_dir_cp = NULL;
-static	gchar	*g_user_name_cp = NULL;
-static	gchar	*g_real_name_cp = NULL;
-static	gchar	*g_home_dir_cp = NULL;
-#endif
-
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
 static  gchar   *g_user_cache_dir = NULL;
@@ -2360,59 +2350,22 @@ g_format_size_for_display (goffset size)
 
 /* Binary compatibility versions. Not for newly compiled code. */
 
-#undef g_find_program_in_path
+_GLIB_EXTERN const gchar *g_get_user_name_utf8        (void);
+_GLIB_EXTERN const gchar *g_get_real_name_utf8        (void);
+_GLIB_EXTERN const gchar *g_get_home_dir_utf8         (void);
+_GLIB_EXTERN const gchar *g_get_tmp_dir_utf8          (void);
+_GLIB_EXTERN gchar       *g_find_program_in_path_utf8 (const gchar *program);
 
-gchar*
-g_find_program_in_path (const gchar *program)
+gchar *
+g_find_program_in_path_utf8 (const gchar *program)
 {
-  gchar *utf8_program = g_locale_to_utf8 (program, -1, NULL, NULL, NULL);
-  gchar *utf8_retval = g_find_program_in_path_utf8 (utf8_program);
-  gchar *retval;
-
-  g_free (utf8_program);
-  if (utf8_retval == NULL)
-    return NULL;
-  retval = g_locale_from_utf8 (utf8_retval, -1, NULL, NULL, NULL);
-  g_free (utf8_retval);
-
-  return retval;
+  return g_find_program_in_path (program);
 }
 
-#undef g_get_user_name
-
-const gchar *
-g_get_user_name (void)
-{
-  g_get_any_init_locked ();
-  return g_user_name_cp;
-}
-
-#undef g_get_real_name
-
-const gchar *
-g_get_real_name (void)
-{
-  g_get_any_init_locked ();
-  return g_real_name_cp;
-}
-
-#undef g_get_home_dir
-
-const gchar *
-g_get_home_dir (void)
-{
-  g_get_any_init_locked ();
-  return g_home_dir_cp;
-}
-
-#undef g_get_tmp_dir
-
-const gchar *
-g_get_tmp_dir (void)
-{
-  g_get_any_init_locked ();
-  return g_tmp_dir_cp;
-}
+const gchar *g_get_user_name_utf8 (void) { return g_get_user_name (); }
+const gchar *g_get_real_name_utf8 (void) { return g_get_real_name (); }
+const gchar *g_get_home_dir_utf8 (void) { return g_get_home_dir (); }
+const gchar *g_get_tmp_dir (void) { return g_get_tmp_dir (); }
 
 #endif
 
