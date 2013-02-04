@@ -577,9 +577,12 @@ g_find_program_in_path (const gchar *program)
 
 G_LOCK_DEFINE_STATIC (g_utils_global);
 
-static	gchar	*g_user_name = NULL;
-static	gchar	*g_real_name = NULL;
-static	gchar	*g_home_dir = NULL;
+typedef struct
+{
+  gchar *user_name;
+  gchar *real_name;
+  gchar *home_dir;
+} UserDatabaseEntry;
 
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
@@ -643,213 +646,162 @@ get_windows_directory_root (void)
 #endif
 
 /* HOLDS: g_utils_global_lock */
-static void
-g_get_any_init_do (void)
+static UserDatabaseEntry *
+g_get_user_database_entry (void)
 {
-  /* We first check HOME and use it if it is set */
-  g_home_dir = g_strdup (g_getenv ("HOME"));
+  static UserDatabaseEntry *entry;
 
-#ifdef G_OS_WIN32
-  /* Only believe HOME if it is an absolute path and exists.
-   *
-   * We only do this check on Windows for a couple of reasons.
-   * Historically, we only did it there because we used to ignore $HOME
-   * on UNIX.  There are concerns about enabling it now on UNIX because
-   * of things like autofs.  In short, if the user has a bogus value in
-   * $HOME then they get what they pay for...
-   */
-  if (g_home_dir)
+  if (g_once_init_enter (&entry))
     {
-      if (!(g_path_is_absolute (g_home_dir) &&
-	    g_file_test (g_home_dir, G_FILE_TEST_IS_DIR)))
-	{
-	  g_free (g_home_dir);
-	  g_home_dir = NULL;
-	}
-    }
+      static UserDatabaseEntry e;
 
-  /* In case HOME is Unix-style (it happens), convert it to
-   * Windows style.
-   */
-  if (g_home_dir)
-    {
-      gchar *p;
-      while ((p = strchr (g_home_dir, '/')) != NULL)
-	*p = '\\';
-    }
-
-  if (!g_home_dir)
-    {
-      /* USERPROFILE is probably the closest equivalent to $HOME? */
-      if (g_getenv ("USERPROFILE") != NULL)
-	g_home_dir = g_strdup (g_getenv ("USERPROFILE"));
-    }
-
-  if (!g_home_dir)
-    g_home_dir = get_special_folder (CSIDL_PROFILE);
-  
-  if (!g_home_dir)
-    g_home_dir = get_windows_directory_root ();
-#endif /* G_OS_WIN32 */
-  
 #ifdef HAVE_PWD_H
-  {
-    struct passwd *pw = NULL;
-    gpointer buffer = NULL;
-    gint error;
-    gchar *logname;
+      {
+        struct passwd *pw = NULL;
+        gpointer buffer = NULL;
+        gint error;
+        gchar *logname;
 
 #  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
-    struct passwd pwd;
-#    ifdef _SC_GETPW_R_SIZE_MAX  
-    /* This reurns the maximum length */
-    glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
-    
-    if (bufsize < 0)
-      bufsize = 64;
+        struct passwd pwd;
+#    ifdef _SC_GETPW_R_SIZE_MAX
+        /* This reurns the maximum length */
+        glong bufsize = sysconf (_SC_GETPW_R_SIZE_MAX);
+
+        if (bufsize < 0)
+          bufsize = 64;
 #    else /* _SC_GETPW_R_SIZE_MAX */
-    glong bufsize = 64;
+        glong bufsize = 64;
 #    endif /* _SC_GETPW_R_SIZE_MAX */
 
-    logname = (gchar *) g_getenv ("LOGNAME");
-        
-    do
-      {
-	g_free (buffer);
-	/* we allocate 6 extra bytes to work around a bug in 
-	 * Mac OS < 10.3. See #156446
-	 */
-	buffer = g_malloc (bufsize + 6);
-	errno = 0;
-	
+        logname = (gchar *) g_getenv ("LOGNAME");
+
+        do
+          {
+            g_free (buffer);
+            /* we allocate 6 extra bytes to work around a bug in
+             * Mac OS < 10.3. See #156446
+             */
+            buffer = g_malloc (bufsize + 6);
+            errno = 0;
+
 #    ifdef HAVE_POSIX_GETPWUID_R
-	if (logname) {
-	  error = getpwnam_r (logname, &pwd, buffer, bufsize, &pw);
-	  if (!pw || (pw->pw_uid != getuid ())) {
-	    /* LOGNAME is lying, fall back to looking up the uid */
-	    error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	  }
-	} else {
-	  error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
-	}
-	error = error < 0 ? errno : error;
+            if (logname) {
+              error = getpwnam_r (logname, &pwd, buffer, bufsize, &pw);
+              if (!pw || (pw->pw_uid != getuid ())) {
+                /* LOGNAME is lying, fall back to looking up the uid */
+                error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+              }
+            } else {
+              error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
+            }
+            error = error < 0 ? errno : error;
 #    else /* HAVE_NONPOSIX_GETPWUID_R */
-   /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
+       /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
 #      if defined(_AIX) || defined(__hpux)
-	error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	pw = error == 0 ? &pwd : NULL;
+            error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+            pw = error == 0 ? &pwd : NULL;
 #      else /* !_AIX */
-	if (logname) {
-	  pw = getpwnam_r (logname, &pwd, buffer, bufsize);
-	  if (!pw || (pw->pw_uid != getuid ())) {
-	    /* LOGNAME is lying, fall back to looking up the uid */
-	    pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	  }
-	} else {
-	  pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-	}
-	error = pw ? 0 : errno;
-#      endif /* !_AIX */            
+            if (logname) {
+              pw = getpwnam_r (logname, &pwd, buffer, bufsize);
+              if (!pw || (pw->pw_uid != getuid ())) {
+                /* LOGNAME is lying, fall back to looking up the uid */
+                pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+              }
+            } else {
+              pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
+            }
+            error = pw ? 0 : errno;
+#      endif /* !_AIX */
 #    endif /* HAVE_NONPOSIX_GETPWUID_R */
-	
-	if (!pw)
-	  {
-	    /* we bail out prematurely if the user id can't be found
-	     * (should be pretty rare case actually), or if the buffer
-	     * should be sufficiently big and lookups are still not
-	     * successful.
-	     */
-	    if (error == 0 || error == ENOENT)
-	      {
-		g_warning ("getpwuid_r(): failed due to unknown user id (%lu)",
-			   (gulong) getuid ());
-		break;
-	      }
-	    if (bufsize > 32 * 1024)
-	      {
-		g_warning ("getpwuid_r(): failed due to: %s.",
-			   g_strerror (error));
-		break;
-	      }
-	    
-	    bufsize *= 2;
-	  }
-      }
-    while (!pw);
+
+            if (!pw)
+              {
+                /* we bail out prematurely if the user id can't be found
+                 * (should be pretty rare case actually), or if the buffer
+                 * should be sufficiently big and lookups are still not
+                 * successful.
+                 */
+                if (error == 0 || error == ENOENT)
+                  {
+                    g_warning ("getpwuid_r(): failed due to unknown user id (%lu)",
+                               (gulong) getuid ());
+                    break;
+                  }
+                if (bufsize > 32 * 1024)
+                  {
+                    g_warning ("getpwuid_r(): failed due to: %s.",
+                               g_strerror (error));
+                    break;
+                  }
+
+                bufsize *= 2;
+              }
+          }
+        while (!pw);
 #  endif /* HAVE_POSIX_GETPWUID_R || HAVE_NONPOSIX_GETPWUID_R */
-    
-    if (!pw)
-      {
-	setpwent ();
-	pw = getpwuid (getuid ());
-	endpwent ();
+
+        if (!pw)
+          {
+            setpwent ();
+            pw = getpwuid (getuid ());
+            endpwent ();
+          }
+        if (pw)
+          {
+            e.user_name = g_strdup (pw->pw_name);
+
+            if (pw->pw_gecos && *pw->pw_gecos != '\0')
+              {
+                gchar **gecos_fields;
+                gchar **name_parts;
+
+                /* split the gecos field and substitute '&' */
+                gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
+                name_parts = g_strsplit (gecos_fields[0], "&", 0);
+                pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
+                e.real_name = g_strjoinv (pw->pw_name, name_parts);
+                g_strfreev (gecos_fields);
+                g_strfreev (name_parts);
+              }
+
+            if (!e.home_dir)
+              e.home_dir = g_strdup (pw->pw_dir);
+          }
+        g_free (buffer);
       }
-    if (pw)
-      {
-	g_user_name = g_strdup (pw->pw_name);
 
-	if (pw->pw_gecos && *pw->pw_gecos != '\0') 
-	  {
-	    gchar **gecos_fields;
-	    gchar **name_parts;
-
-	    /* split the gecos field and substitute '&' */
-	    gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
-	    name_parts = g_strsplit (gecos_fields[0], "&", 0);
-	    pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
-	    g_real_name = g_strjoinv (pw->pw_name, name_parts);
-	    g_strfreev (gecos_fields);
-	    g_strfreev (name_parts);
-	  }
-
-	if (!g_home_dir)
-	  g_home_dir = g_strdup (pw->pw_dir);
-      }
-    g_free (buffer);
-  }
-  
 #else /* !HAVE_PWD_H */
-  
+
 #ifdef G_OS_WIN32
-  {
-    guint len = UNLEN+1;
-    wchar_t buffer[UNLEN+1];
-    
-    if (GetUserNameW (buffer, (LPDWORD) &len))
       {
-	g_user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
-	g_real_name = g_strdup (g_user_name);
+        guint len = UNLEN+1;
+        wchar_t buffer[UNLEN+1];
+
+        if (GetUserNameW (buffer, (LPDWORD) &len))
+          {
+            e.user_name = g_utf16_to_utf8 (buffer, -1, NULL, NULL, NULL);
+            e.real_name = g_strdup (e.user_name);
+          }
       }
-  }
 #endif /* G_OS_WIN32 */
 
 #endif /* !HAVE_PWD_H */
 
 #ifdef __EMX__
-  /* change '\\' in %HOME% to '/' */
-  g_strdelimit (g_home_dir, "\\",'/');
+      /* change '\\' in %HOME% to '/' */
+      g_strdelimit (e.home_dir, "\\",'/');
 #endif
-  if (!g_user_name)
-    g_user_name = g_strdup ("somebody");
-  if (!g_real_name)
-    g_real_name = g_strdup ("Unknown");
-}
+      if (!e.user_name)
+        e.user_name = g_strdup ("somebody");
+      if (!e.real_name)
+        e.real_name = g_strdup ("Unknown");
 
-static inline void
-g_get_any_init (void)
-{
-  if (!g_user_name)
-    g_get_any_init_do ();
-}
+      g_once_init_leave (&entry, &e);
+    }
 
-static inline void
-g_get_any_init_locked (void)
-{
-  G_LOCK (g_utils_global);
-  g_get_any_init ();
-  G_UNLOCK (g_utils_global);
+  return entry;
 }
-
 
 /**
  * g_get_user_name:
@@ -864,8 +816,11 @@ g_get_any_init_locked (void)
 const gchar *
 g_get_user_name (void)
 {
-  g_get_any_init_locked ();
-  return g_user_name;
+  UserDatabaseEntry *entry;
+
+  entry = g_get_user_database_entry ();
+
+  return entry->user_name;
 }
 
 /**
@@ -882,8 +837,11 @@ g_get_user_name (void)
 const gchar *
 g_get_real_name (void)
 {
-  g_get_any_init_locked ();
-  return g_real_name;
+  UserDatabaseEntry *entry;
+
+  entry = g_get_user_database_entry ();
+
+  return entry->real_name;
 }
 
 /**
@@ -920,8 +878,77 @@ g_get_real_name (void)
 const gchar *
 g_get_home_dir (void)
 {
-  g_get_any_init_locked ();
-  return g_home_dir;
+  static gchar *home_dir;
+
+  if (g_once_init_enter (&home_dir))
+    {
+      gchar *tmp;
+
+      /* We first check HOME and use it if it is set */
+      tmp = g_strdup (g_getenv ("HOME"));
+
+#ifdef G_OS_WIN32
+      /* Only believe HOME if it is an absolute path and exists.
+       *
+       * We only do this check on Windows for a couple of reasons.
+       * Historically, we only did it there because we used to ignore $HOME
+       * on UNIX.  There are concerns about enabling it now on UNIX because
+       * of things like autofs.  In short, if the user has a bogus value in
+       * $HOME then they get what they pay for...
+       */
+      if (tmp)
+        {
+          if (!(g_path_is_absolute (tmp) &&
+                g_file_test (tmp, G_FILE_TEST_IS_DIR)))
+            {
+              g_free (tmp);
+              tmp = NULL;
+            }
+        }
+
+      /* In case HOME is Unix-style (it happens), convert it to
+       * Windows style.
+       */
+      if (tmp)
+        {
+          gchar *p;
+          while ((p = strchr (tmp, '/')) != NULL)
+            *p = '\\';
+        }
+
+      if (!tmp)
+        {
+          /* USERPROFILE is probably the closest equivalent to $HOME? */
+          if (g_getenv ("USERPROFILE") != NULL)
+            tmp = g_strdup (g_getenv ("USERPROFILE"));
+        }
+
+      if (!tmp)
+        tmp = get_special_folder (CSIDL_PROFILE);
+
+      if (!tmp)
+        tmp = get_windows_directory_root ();
+#endif /* G_OS_WIN32 */
+
+      if (!tmp)
+        {
+          /* If we didn't get it from any of those methods, we will have
+           * to read the user database entry.
+           */
+          UserDatabaseEntry *entry;
+
+          entry = g_get_user_database_entry ();
+
+          /* Strictly speaking, we should copy this, but we know that
+           * neither will ever be freed, so don't bother...
+           */
+          tmp = entry->home_dir;
+        }
+
+      g_once_init_leave (&home_dir, tmp);
+    }
+
+  return home_dir;
 }
 
 /**
