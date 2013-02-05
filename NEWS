@@ -1,3 +1,27 @@
+Overview of changes from GLib 2.35.6 to 2.35.7
+==============================================
+
+This is a quick follow-up release with a few bug fixes.
+
+* Fix the build on systems with strict linkers by adding -pthread back
+  to the LDFLAGS for a testcase.
+
+* Re-enable native atomic operations on some buggy versions of clang
+  that ship as part of the MacOS X SDK.
+
+* Make G_IO_FLAG_IS_WRITEABLE an enum again (the #define broke bindings)
+
+* a small docs fix
+
+* Bugs fixed:
+ 657045
+ 636683
+ 682818
+ 693105
+
+* Translations:
+ Italian
+
 Overview of changes from GLib 2.35.4 to 2.35.6
 ==============================================
 
