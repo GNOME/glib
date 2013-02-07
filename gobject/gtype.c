@@ -2440,6 +2440,14 @@ type_data_unref_U (TypeNode *node,
 		     NODE_NAME (node));
 	  return;
 	}
+      else
+        {
+          /* This is the last reference of a type from a plugin.  We are
+           * experimentally disabling support for unloading type
+           * plugins, so don't allow the last ref to drop.
+           */
+          return;
+        }
 
       g_assert (current > 0);
 
