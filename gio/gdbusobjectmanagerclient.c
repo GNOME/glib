@@ -1352,6 +1352,11 @@ initable_init (GInitable     *initable,
                     G_CALLBACK (on_notify_g_name_owner),
                     manager);
 
+  g_signal_connect (manager->priv->control_proxy,
+                    "g-signal",
+                    G_CALLBACK (on_control_proxy_g_signal),
+                    manager);
+
   manager->priv->name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
   if (manager->priv->name_owner == NULL && manager->priv->name != NULL)
     {
@@ -1362,10 +1367,6 @@ initable_init (GInitable     *initable,
   else
     {
       /* yay, we can get the objects */
-      g_signal_connect (manager->priv->control_proxy,
-                        "g-signal",
-                        G_CALLBACK (on_control_proxy_g_signal),
-                        manager);
       subscribe_signals (manager,
                          manager->priv->name_owner);
       value = g_dbus_proxy_call_sync (manager->priv->control_proxy,
