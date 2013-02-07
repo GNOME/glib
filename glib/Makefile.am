@@ -360,14 +360,19 @@ libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 INSTALL_PROGS=
 
 if ENABLE_DTRACE
-glib_probes.h: glib_probes.d Makefile
+DTCOMPILE = $(patsubst -W%,,$(LTCOMPILE))
+DTCFLAGS = $(patsubst -W%,,$(CFLAGS))
+
+glib_probes.h: glib_probes.d
 	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
 	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
-glib_probes.o: glib_probes.d Makefile
-	$(AM_V_GEN) $(DTRACE) -G -s $< -o $@
-BUILT_SOURCES += glib_probes.h glib_probes.o
+
+glib_probes.lo: glib_probes.d
+	$(AM_V_GEN) env CC="$(DTCOMPILE)" CFLAGS="$(DTCFLAGS)" $(DTRACE) -G -s $< -o $@
+
+BUILT_SOURCES += glib_probes.h glib_probes.lo
 CLEANFILES += glib_probes.h glib_probes.h.tmp
-libglib_2_0_la_LIBADD += glib_probes.o
+libglib_2_0_la_LIBADD += glib_probes.lo
 endif
 
 if ENABLE_SYSTEMTAP

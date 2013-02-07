@@ -109,14 +109,19 @@ gobject_c_sources = \
 	gvaluetypes.c
 
 if ENABLE_DTRACE
-gobject_probes.h: gobject_probes.d Makefile
+DTCOMPILE = $(patsubst -W%,,$(LTCOMPILE))
+DTCFLAGS = $(patsubst -W%,,$(CFLAGS))
+
+gobject_probes.h: gobject_probes.d
 	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
 	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
-gobject_probes.o: gobject_probes.d Makefile
-	$(AM_V_GEN) $(DTRACE) -G -s $< -o $@
-BUILT_SOURCES += gobject_probes.h gobject_probes.o
+
+gobject_probes.lo: gobject_probes.d
+	$(AM_V_GEN) env CC="$(DTCOMPILE)" CFLAGS="$(DTCFLAGS)" $(DTRACE) -G -s $< -o $@
+
+BUILT_SOURCES += gobject_probes.h gobject_probes.lo
 CLEANFILES += gobject_probes.h
-libgobject_2_0_la_LIBADD += gobject_probes.o
+libgobject_2_0_la_LIBADD += gobject_probes.lo
 endif
 
 if ENABLE_SYSTEMTAP
