@@ -1073,10 +1073,12 @@ AS_IF([test $glib_native_win32 = yes], [
   AC_SUBST(WSPIAPI_INCLUDE)
 ], [
   AC_MSG_CHECKING([if arpa/nameser_compat.h is needed])
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>],
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
+                                      #include <arpa/nameser.h>],
                                      [int qclass = C_IN;])],
                     [AC_MSG_RESULT([no])],
-                    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <arpa/nameser.h>
+                    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <sys/types.h>
+                                                         #include <arpa/nameser.h>
                                                          #include <arpa/nameser_compat.h>],
                                                         [int qclass = C_IN;])],
                                        [AC_MSG_RESULT([yes])
