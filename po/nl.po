@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the glib package.
 # Dirk-Jan C. Binnema <djcb@djcbsoftware.nl> 2001
 # Tino Meinen <a.t.meinen@chello.nl> 2002–2008
-# Wouter Bolsterlee <wbolster@gnome.org>, 2008–2011
+# Wouter Bolsterlee <wbolster@gnome.org>, 2008–2013
 # Rachid <rachidbm@ubuntu.com>, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-03 18:51+0000\n"
-"PO-Revision-Date: 2012-06-05 23:44+0200\n"
-"Last-Translator: Rachid <rachidbm@ubuntu.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-09 17:50+0100\n"
+"PO-Revision-Date: 2013-02-09 17:49+0100\n"
+"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,6 @@ msgstr "GCredentials wordt niet ondersteund op uw platform"
 
 #: ../gio/gcredentials.c:480
 #, fuzzy
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials is niet geïmplementeerd op dit besturingssysteem"
 
@@ -165,15 +164,11 @@ msgstr "Fout in adres ‘%s’ - het family-attribuut is onjuist gevormd"
 
 #: ../gio/gdbusaddress.c:454
 #, fuzzy, c-format
-#| msgid "Address element `%s', does not contain a colon (:)"
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "Adreselement ‘%s’ bevat geen dubbele punt (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, fuzzy, c-format
-#| msgid ""
-#| "Key/Value pair %d, `%s', in address element `%s', does not contain an "
-#| "equal sign"
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
@@ -256,7 +251,6 @@ msgstr "Het opgegeven adres is leeg"
 
 #: ../gio/gdbusaddress.c:1030
 #, fuzzy, c-format
-#| msgid "Cannot spawn a message bus without a machine-id: "
 msgid "Cannot spawn a message bus when setuid"
 msgstr "Kan geen message-bus starten zonder machine-ID: "
 
@@ -898,7 +892,7 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:1418
 msgid "Print XML"
-msgstr "XML afdrukken"
+msgstr "XML tonen"
 
 #: ../gio/gdbus-tool.c:1419
 msgid "Introspect children"
@@ -906,7 +900,7 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:1420
 msgid "Only print properties"
-msgstr "Alleen printeigenschappen"
+msgstr "Alleen eigenschappen tonen"
 
 # Ugh, anglicisme :(  (Wouter Bolsterlee)
 #: ../gio/gdbus-tool.c:1511
@@ -1079,7 +1073,6 @@ msgstr "Fout bij splicen van bestand: %s"
 # (nog) niet mogelijk/niet ondersteund
 #: ../gio/gfile.c:2960
 #, fuzzy
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Verplaatsen tussen aankoppelpunten is niet mogelijk"
 
@@ -1147,12 +1140,12 @@ msgstr "Ongeldige invoergegevens voor GFileIcon"
 #: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
 #: ../gio/gfileoutputstream.c:503
 msgid "Stream doesn't support query_info"
-msgstr "Datastroom ondersteunt query_info niet"
+msgstr "Gegevensstroom ondersteunt query_info niet"
 
 #: ../gio/gfileinputstream.c:331 ../gio/gfileiostream.c:383
 #: ../gio/gfileoutputstream.c:377
 msgid "Seek not supported on stream"
-msgstr "Zoeken binnen datastroom niet mogelijk"
+msgstr "Zoeken binnen gegevensstroom niet mogelijk"
 
 #: ../gio/gfileinputstream.c:375
 msgid "Truncate not allowed on input stream"
@@ -1160,7 +1153,7 @@ msgstr "Afkappen is niet toegestaan op een invoerdatastroom"
 
 #: ../gio/gfileiostream.c:459 ../gio/gfileoutputstream.c:453
 msgid "Truncate not supported on stream"
-msgstr "Afkappen wordt niet ondersteund op een datastroom"
+msgstr "Afkappen wordt niet ondersteund op een gegevensstroom"
 
 #: ../gio/gicon.c:284
 #, c-format
@@ -1195,7 +1188,6 @@ msgstr "Type %s implementeert from_tokens() op de GIcon-interface niet"
 
 #: ../gio/gicon.c:428
 #, fuzzy
-#| msgid "Can't handle the supplied version the icon encoding"
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "Kan de opgegeven versie in de pictogram-codering niet verwerken"
 
@@ -1241,7 +1233,7 @@ msgstr "Invoerdatastroom begrijpt de opdracht ‘lezen’ niet"
 #: ../gio/ginputstream.c:1033 ../gio/giostream.c:301
 #: ../gio/goutputstream.c:1350
 msgid "Stream has outstanding operation"
-msgstr "Datastroom is nog bezig"
+msgstr "Gegevensstroom is nog bezig"
 
 #: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
 #, c-format
@@ -1281,7 +1273,6 @@ msgstr "Aanmaken van tijdelijk bestand mislukt: %s"
 # openen/lezen
 #: ../gio/glib-compile-resources.c:340
 #, fuzzy, c-format
-#| msgid "Error compressing file %s"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1290,7 +1281,6 @@ msgstr "Fout bij comprimeren van bestand: %s"
 # openen/lezen
 #: ../gio/glib-compile-resources.c:396
 #, fuzzy, c-format
-#| msgid "Error compressing file %s"
 msgid ""
 "Error processing input file with to-pixdata:\n"
 "%s"
@@ -1310,16 +1300,16 @@ msgstr "Fout bij comprimeren van bestand: %s"
 #: ../gio/glib-compile-resources.c:494 ../gio/glib-compile-schemas.c:1571
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "er mag geen tekst staan binnen <%s>"
 
 #: ../gio/glib-compile-resources.c:619
 msgid "name of the output file"
-msgstr ""
+msgstr "naam van uitvoerbestand"
 
 #: ../gio/glib-compile-resources.c:619 ../gio/glib-compile-resources.c:650
 #: ../gio/gresource-tool.c:482 ../gio/gresource-tool.c:548
 msgid "FILE"
-msgstr ""
+msgstr "BESTAND"
 
 #: ../gio/glib-compile-resources.c:620
 msgid ""
@@ -1339,7 +1329,7 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:622
 msgid "Generate source header"
-msgstr ""
+msgstr "Bronheader genereren"
 
 #: ../gio/glib-compile-resources.c:623
 msgid "Generate sourcecode used to link in the resource file into your code"
@@ -1511,7 +1501,6 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1463
 #, fuzzy, c-format
-#| msgid "Element <%s> not allowed at toplevel"
 msgid "Element <%s> not allowed at the top level"
 msgstr "Element <%s> is niet toegestaan op het hoogste niveau"
 
@@ -2043,10 +2032,9 @@ msgstr "Kon geen netwerkstatus verkrijgen: "
 msgid "Output stream doesn't implement write"
 msgstr "schrijven wordt niet ondersteund door de uitvoerdatastroom"
 
-# bronstroom/datastroom van de bron
 #: ../gio/goutputstream.c:425 ../gio/goutputstream.c:956
 msgid "Source stream is already closed"
-msgstr "Datastroom is al gesloten"
+msgstr "Brongegevensstroom is al gesloten"
 
 #: ../gio/gresource.c:291 ../gio/gresource.c:539 ../gio/gresource.c:556
 #: ../gio/gresource.c:677 ../gio/gresource.c:746 ../gio/gresource.c:807
@@ -2063,7 +2051,6 @@ msgstr ""
 
 #: ../gio/gresourcefile.c:653
 #, fuzzy, c-format
-#| msgid "Target file is a directory"
 msgid "The resource at '%s' is not a directory"
 msgstr "Doelbestand is geen map"
 
@@ -2078,7 +2065,6 @@ msgstr ""
 
 #: ../gio/gresource-tool.c:476 ../gio/gresource-tool.c:544
 #, fuzzy
-#| msgid "COMMAND"
 msgid "[COMMAND]"
 msgstr "OPDRACHT"
 
@@ -2229,7 +2215,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:137
 #, c-format
 msgid "No such key '%s'\n"
-msgstr "Geen sleutel zoals ‘%s’\n"
+msgstr "Sleutel ‘%s’ niet gevonden\n"
 
 #: ../gio/gsettings-tool.c:502
 #, c-format
@@ -2431,13 +2417,11 @@ msgstr "Fout bij het koppelen aan adres: %s"
 
 #: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
 #, fuzzy, c-format
-#| msgid "Error launching application: %s"
 msgid "Error joining multicast group: %s"
 msgstr "Fout bij opstarten van het programma: %s"
 
 #: ../gio/gsocket.c:1958 ../gio/gsocket.c:1995
 #, fuzzy, c-format
-#| msgid "Error launching application: %s"
 msgid "Error leaving multicast group: %s"
 msgstr "Fout bij opstarten van het programma: %s"
 
@@ -2456,7 +2440,6 @@ msgstr "Verbinding bezig"
 
 #: ../gio/gsocket.c:2346
 #, fuzzy
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
 msgstr "Kan fout niet verkrijgen: %s"
 
@@ -2495,7 +2478,6 @@ msgstr "Fout bij versturen van bericht: %s"
 
 #: ../gio/gsocket.c:3821
 #, fuzzy
-#| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage wordt niet ondersteund op windows"
 
@@ -2535,7 +2517,6 @@ msgstr "Onbekende fout bij verbinden"
 
 #: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1478
 #, fuzzy
-#| msgid "Proxy protocol '%s' is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Proxy-protocol ‘%s’ wordt niet ondersteund."
 
@@ -2673,7 +2654,6 @@ msgstr "Fout bij het verwijderen van bestand: %s"
 
 #: ../gio/gtlscertificate.c:248
 #, fuzzy
-#| msgid "Could not parse PEM-encoded private key"
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Kon PEM-gecodeerde privésleutel niet verwerken"
 
@@ -2854,7 +2834,7 @@ msgstr "Ongeldige gecomprimeerde gegevens"
 
 #: ../gio/tests/gdbus-daemon.c:18
 msgid "Address to listen on"
-msgstr ""
+msgstr "Adres om op te luisteren"
 
 #: ../gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
@@ -2862,11 +2842,11 @@ msgstr ""
 
 #: ../gio/tests/gdbus-daemon.c:20
 msgid "Print address"
-msgstr ""
+msgstr "Adres tonen"
 
 #: ../gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
-msgstr ""
+msgstr "Adres tonen in shell-modus"
 
 #: ../gio/tests/gdbus-daemon.c:28
 msgid "Run a dbus service"
@@ -2875,7 +2855,7 @@ msgstr "Een dbus-service uitvoeren"
 #: ../gio/tests/gdbus-daemon.c:42
 #, c-format
 msgid "Wrong args\n"
-msgstr "Verkeerde args\n"
+msgstr "Verkeerde argumenten\n"
 
 #: ../glib/gbookmarkfile.c:760
 #, c-format
@@ -3232,7 +3212,6 @@ msgstr "Fout bij openen van map ‘%s’: %s"
 # Allocatie van %lu bytes om bestand "%s" te lezen is mislukt<
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, fuzzy, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] ""
@@ -3500,13 +3479,11 @@ msgstr "Ongeldige UTF-8-gecodeerde tekst - niet geldig ‘%s’"
 
 #: ../glib/gmarkup.c:472
 #, fuzzy, c-format
-#| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "‘%s’ is geen geldige naam"
 
 #: ../glib/gmarkup.c:488
 #, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
 msgstr "‘%s’ is geen geldige naam: ‘%c’"
 
@@ -3801,7 +3778,7 @@ msgstr "te korte UTF-8"
 
 #: ../glib/gregex.c:305
 msgid "recursion loop"
-msgstr ""
+msgstr "recursie-loop"
 
 #: ../glib/gregex.c:309
 msgid "unknown error"
@@ -3818,7 +3795,6 @@ msgstr "\\c aan het einde van het patroon"
 # onbekend/niet herkend
 #: ../glib/gregex.c:335
 #, fuzzy
-#| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "onbekend teken volgt na \\"
 
@@ -3854,7 +3830,6 @@ msgstr "onverwachte herhaling"
 
 #: ../glib/gregex.c:360
 #, fuzzy
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "onbekend teken na (?"
 
@@ -3878,7 +3853,6 @@ msgstr "ontbrekend sluithaakje ) na commentaar"
 # te groot/te lang
 #: ../glib/gregex.c:375
 #, fuzzy
-#| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "reguliere expressie te groot"
 
@@ -3952,7 +3926,7 @@ msgstr "\\C niet toegestaan in ‘lookbehind assertion’"
 
 #: ../glib/gregex.c:431
 msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-msgstr ""
+msgstr "Escapes \\L, \\l, \\N{name}, \\U, en \\u worden niet ondersteund"
 
 #: ../glib/gregex.c:434
 msgid "recursive call could loop indefinitely"
@@ -4010,9 +3984,6 @@ msgstr "inconsistente NEWLINE-opties"
 
 #: ../glib/gregex.c:476
 #, fuzzy
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -4039,13 +4010,11 @@ msgstr ""
 # afsluiter/afsluitteken
 #: ../glib/gregex.c:492
 #, fuzzy
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr "afsluitteken ontbreekt in naam subpatroon"
 
 #: ../glib/gregex.c:495
 #, fuzzy
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "cijfer verwacht"
 
@@ -4055,7 +4024,6 @@ msgstr ""
 
 #: ../glib/gregex.c:501
 #, fuzzy
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "twee genoemde subpatronen hebben dezelfde naam"
 
@@ -4069,9 +4037,6 @@ msgstr ""
 
 #: ../glib/gregex.c:510
 #, fuzzy
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\g wordt niet gevolgd door een naam tussen haakjes, of getal niet gelijk "
@@ -4079,7 +4044,6 @@ msgstr ""
 
 #: ../glib/gregex.c:513
 #, fuzzy
-#| msgid "Seek not supported on base stream"
 msgid "\\N is not supported in a class"
 msgstr "Zoeken binnen datastroom niet mogelijk"
 
@@ -4093,7 +4057,6 @@ msgstr ""
 
 #: ../glib/gregex.c:522
 #, fuzzy
-#| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
 msgstr "lettertekenwaarde in de reeks \\x{...} is te groot"
 
@@ -4113,7 +4076,6 @@ msgstr ""
 
 #: ../glib/gregex.c:1331
 #, fuzzy
-#| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr ""
 "PCRE-bibliotheek is gecompileerd zonder ondersteuning voor UTF8-eigenschappen"
@@ -4212,22 +4174,22 @@ msgstr ""
 #: ../glib/gspawn.c:853 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr ""
+msgstr "Dochterproces eindigde met code %ld"
 
 #: ../glib/gspawn.c:861
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr ""
+msgstr "Dochterproces afgesloten met signaal %ld"
 
 #: ../glib/gspawn.c:868
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr ""
+msgstr "Dochterproces gestopt met signaal %ld"
 
 #: ../glib/gspawn.c:875
 #, c-format
 msgid "Child process exited abnormally"
-msgstr ""
+msgstr "Dochterproces eindigde niet normaal"
 
 #: ../glib/gspawn.c:1280 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
