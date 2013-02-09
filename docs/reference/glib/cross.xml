@@ -92,7 +92,7 @@ chmod a-w win32.cache   # prevent configure from changing it
 	</para>
       </formalpara>
       <formalpara>
-         <title>glib_cv_sane_realloc=[yes/np]</title>
+         <title>glib_cv_sane_realloc=[yes/no]</title>
 
          <para>  
             Whether your <function>realloc()</function> conforms to ANSI C 
