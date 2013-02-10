@@ -893,7 +893,6 @@ AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([sys/uio.h sys/mkdev.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([sys/prctl.h])
-AC_CHECK_HEADERS([sys/ioctl.h])
 
 AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
 [#if HAVE_SYS_PARAM_H

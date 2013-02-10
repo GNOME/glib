@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#if HAVE_SYS_IOCTL_H
+#ifdef __linux__
 #include <sys/ioctl.h>
 #include <errno.h>
 /* See linux.git/fs/btrfs/ioctl.h */
@@ -2924,7 +2924,7 @@ splice_stream_with_progress (GInputStream           *in,
 }
 #endif
 
-#ifdef HAVE_SYS_IOCTL_H
+#ifdef __linux__
 static gboolean
 btrfs_reflink_with_progress (GInputStream           *in,
                              GOutputStream          *out,
@@ -3052,7 +3052,7 @@ file_copy_fallback (GFile                  *source,
   if (!out)
     goto out;
 
-#ifdef HAVE_SYS_IOCTL_H
+#ifdef __linux__
   if (G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
     {
       GError *reflink_err = NULL;
