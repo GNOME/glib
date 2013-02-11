@@ -1280,7 +1280,6 @@ _g_get_unix_mount_points (void)
   GList *return_list;
 #ifdef HAVE_SYS_SYSCTL_H
   int usermnt = 0;
-  size_t len = sizeof(usermnt);
   struct stat sb;
 #endif
   
@@ -1291,10 +1290,15 @@ _g_get_unix_mount_points (void)
   
 #ifdef HAVE_SYS_SYSCTL_H
 #if defined(HAVE_SYSCTLBYNAME)
-  sysctlbyname ("vfs.usermount", &usermnt, &len, NULL, 0);
+  {
+    size_t len = sizeof(usermnt);
+
+    sysctlbyname ("vfs.usermount", &usermnt, &len, NULL, 0);
+  }
 #elif defined(CTL_VFS) && defined(VFS_USERMOUNT)
   {
     int mib[2];
+    size_t len = sizeof(usermnt);
     
     mib[0] = CTL_VFS;
     mib[1] = VFS_USERMOUNT;
@@ -1303,6 +1307,7 @@ _g_get_unix_mount_points (void)
 #elif defined(CTL_KERN) && defined(KERN_USERMOUNT)
   {
     int mib[2];
+    size_t len = sizeof(usermnt);
     
     mib[0] = CTL_KERN;
     mib[1] = KERN_USERMOUNT;
