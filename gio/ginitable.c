@@ -130,7 +130,8 @@ g_initable_init (GInitable     *initable,
  * similar to g_object_new() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
- * Return value: (transfer full): a newly allocated #GObject, or %NULL on error
+ * Return value: (type GObject.Object) (transfer full): a newly allocated
+ *      #GObject, or %NULL on error
  *
  * Since: 2.22
  */
@@ -166,7 +167,8 @@ g_initable_new (GType          object_type,
  * similar to g_object_newv() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
- * Return value: (transfer full): a newly allocated #GObject, or %NULL on error
+ * Return value: (type GObject.Object) (transfer full): a newly allocated
+ *      #GObject, or %NULL on error
  *
  * Since: 2.22
  */
@@ -206,7 +208,8 @@ g_initable_newv (GType          object_type,
  * similar to g_object_new_valist() but also initializes the object
  * and returns %NULL, setting an error on failure.
  *
- * Return value: (transfer full): a newly allocated #GObject, or %NULL on error
+ * Return value: (type GObject.Object) (transfer full): a newly allocated
+ *      #GObject, or %NULL on error
  *
  * Since: 2.22
  */
