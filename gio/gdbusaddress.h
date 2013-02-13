@@ -31,6 +31,9 @@
 
 G_BEGIN_DECLS
 
+GLIB_AVAILABLE_IN_2_36
+gchar *g_dbus_address_escape_value (const gchar *string);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_address (const gchar *string);
 GLIB_AVAILABLE_IN_ALL

@@ -1586,3 +1586,50 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
 
   return ret;
 }
+
+/**
+ * g_dbus_address_escape_value:
+ * @string: an unescaped string to be included in a D-Bus address
+ *  as the value in a key-value pair
+ *
+ * Escape @string so it can appear in a D-Bus address as the value
+ * part of a key-value pair.
+ *
+ * For instance, if @string is <code>/run/bus-for-:0</code>,
+ * this function would return <code>/run/bus-for-%3A0</code>,
+ * which could be used in a D-Bus address like
+ * <code>unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-%3A0</code>.
+ *
+ * Returns: (transfer full): a copy of @string with all
+ *  non-optionally-escaped bytes escaped
+ *
+ * Since: 2.36
+ */
+gchar *
+g_dbus_address_escape_value (const gchar *string)
+{
+  GString *s;
+  gsize i;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  /* There will often not be anything needing escaping at all. */
+  s = g_string_sized_new (strlen (string));
+
+  /* D-Bus address escaping is mostly the same as URI escaping... */
+  g_string_append_uri_escaped (s, string, "\\/", FALSE);
+
+  /* ... but '~' is an unreserved character in URIs, but a
+   * non-optionally-escaped character in D-Bus addresses. */
+  for (i = 0; i < s->len; i++)
+    {
+      if (G_UNLIKELY (s->str[i] == '~'))
+        {
+          s->str[i] = '%';
+          g_string_insert (s, i + 1, "7E");
+          i += 2;
+        }
+    }
+
+  return g_string_free (s, FALSE);
+}
