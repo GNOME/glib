@@ -67,6 +67,18 @@ g_enum_info_get_n_values (GIEnumInfo *info)
   return blob->n_values;
 }
 
+/**
+ * g_enum_info_get_error_domain:
+ * @info: a #GIEnumInfo
+ *
+ * Obtain the string form of the quark for the error domain associated with
+ * this enum, if any.
+ *
+ * Returns: (transfer none): the string form of the error domain associated
+ * with this enum, or %NULL.
+ *
+ * Since: 1.29.17
+ */
 const gchar *
 g_enum_info_get_error_domain (GIEnumInfo *info)
 {
