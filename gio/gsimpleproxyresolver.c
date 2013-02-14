@@ -344,6 +344,8 @@ g_simple_proxy_resolver_lookup (GProxyResolver  *proxy_resolver,
 
   if (!proxy)
     proxy = priv->default_proxy;
+  if (!proxy)
+    proxy = "direct://";
 
   if (!strncmp (proxy, "socks://", 8))
     {
