@@ -85,7 +85,7 @@ G_BEGIN_DECLS
 #define G_MENU_LINK_SUBMENU "submenu"
 
 /**
- * G_MENU_LINK_SUBMENU:
+ * G_MENU_LINK_SECTION:
  *
  * The name of the link that associates a menu item with a section.  The linked
  * menu will usually be shown in place of the menu item, using the item's label
