@@ -172,6 +172,10 @@ GLIB_AVAILABLE_IN_2_32
 void        g_menu_item_set_detailed_action         (GMenuItem   *menu_item,
                                                      const gchar *detailed_action);
 
+GLIB_AVAILABLE_IN_2_36
+void        g_menu_item_set_icon                    (GMenuItem   *menu_item,
+                                                     GIcon       *icon);
+
 G_END_DECLS
 
 #endif /* __G_MENU_H__ */

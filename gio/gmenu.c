@@ -25,6 +25,8 @@
 
 #include <string.h>
 
+#include "gicon.h"
+
 /**
  * SECTION:gmenu
  * @title: GMenu
@@ -1333,4 +1335,38 @@ g_menu_item_new_from_model (GMenuModel *model,
     }
 
   return menu_item;
+}
+
+/**
+ * g_menu_item_set_icon:
+ * @menu_item: a #GMenuItem
+ * @icon: a #GIcon, or %NULL
+ *
+ * Sets (or unsets) the icon on @menu_item.
+ *
+ * This call is the same as calling g_icon_serialize() and using the
+ * result as the value to g_menu_item_set_attribute_value() for the
+ * "icon" attribute.
+ *
+ * If @icon is %NULL then the icon is unset.
+ *
+ * Since: 2.36
+ **/
+void
+g_menu_item_set_icon (GMenuItem *menu_item,
+                      GIcon     *icon)
+{
+  GVariant *value;
+
+  g_return_if_fail (G_IS_MENU_ITEM (menu_item));
+  g_return_if_fail (G_IS_ICON (icon));
+
+  if (icon != NULL)
+    value = g_icon_serialize (icon);
+  else
+    value = NULL;
+
+  g_menu_item_set_attribute_value (menu_item, "icon", value);
+  if (value)
+    g_variant_unref (value);
 }

@@ -349,6 +349,23 @@ g_emblem_from_tokens (gchar  **tokens,
   return G_ICON (emblem);
 }
 
+static GVariant *
+g_emblem_serialize (GIcon *icon)
+{
+  GEmblem *emblem = G_EMBLEM (icon);
+  GVariant *icon_data;
+  GVariant *result;
+
+  icon_data = g_icon_serialize (emblem->icon);
+  if (!icon_data)
+    return NULL;
+
+  result = g_variant_new ("(vu)", icon_data, emblem->origin);
+  g_variant_unref (icon_data);
+
+  return result;
+}
+
 static void
 g_emblem_iface_init (GIconIface *iface)
 {
@@ -356,4 +373,5 @@ g_emblem_iface_init (GIconIface *iface)
   iface->equal = g_emblem_equal;
   iface->to_tokens = g_emblem_to_tokens;
   iface->from_tokens = g_emblem_from_tokens;
+  iface->serialize = g_emblem_serialize;
 }

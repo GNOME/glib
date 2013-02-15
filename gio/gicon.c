@@ -28,6 +28,7 @@
 #include "gthemedicon.h"
 #include "gfileicon.h"
 #include "gemblemedicon.h"
+#include "gbytesicon.h"
 #include "gfile.h"
 #include "gioerror.h"
 
@@ -446,4 +447,119 @@ g_icon_new_for_string (const gchar   *str,
     }
 
   return icon;
+}
+
+GVariant *
+g_icon_serialize (GIcon *icon)
+{
+  GIconInterface *iface;
+  GVariant *result;
+
+  iface = G_ICON_GET_IFACE (icon);
+
+  if (iface->serialize)
+    result = (* iface->serialize) (icon);
+  else 
+    result = NULL;
+
+  if (result)
+    g_variant_take_ref (result);
+  else
+    {
+      gchar *str;
+
+      /* try this: will get the file and themed cases too. */
+      str = g_icon_to_string (icon);
+      if (str)
+        {
+          result = g_variant_ref_sink (g_variant_new_string (str));
+          g_free (str);
+        }
+    }
+
+  return result;
+}
+
+GIcon *
+g_icon_deserialize (GVariant *value)
+{
+  if (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+    return g_icon_new_for_string (g_variant_get_string (value, NULL), NULL);
+
+  else if (g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING))
+    {
+      GBytes *bytes;
+      GIcon *icon;
+
+      bytes = g_variant_get_data_as_bytes (value);
+      icon = g_bytes_icon_new (bytes);
+      g_bytes_unref (bytes);
+
+      return icon;
+    }
+
+  else if (g_variant_is_of_type (value, G_VARIANT_TYPE("(vav)")))
+    {
+      GVariantIter *emblems;
+      GVariant *emblem_data;
+      GVariant *icon_data;
+      GIcon *emblemed;
+      GIcon *icon;
+
+      g_variant_get (value, "(vav)", &icon_data, &emblems);
+      icon = g_icon_deserialize (icon_data);
+
+      if (icon)
+        {
+          emblemed = g_emblemed_icon_new (icon, NULL);
+
+          while (g_variant_iter_loop (emblems, "v", &emblem_data))
+            {
+              GIcon *emblem;
+
+              emblem = g_icon_deserialize (emblem_data);
+              if (emblem)
+		{
+                  if (G_IS_EMBLEM (emblem))
+                    g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (emblemed), G_EMBLEM (emblem));
+                  g_object_unref (emblem);
+		}
+            }
+
+          g_object_unref (icon);
+        }
+      else
+        emblemed = NULL;
+
+      g_variant_iter_free (emblems);
+      g_variant_unref (icon_data);
+
+      return emblemed;
+    }
+
+  else if (g_variant_is_of_type (value, G_VARIANT_TYPE ("(vu)")))
+    {
+      GVariant *icon_data;
+      GIcon *emblem;
+      GIcon *icon;
+      guint origin;
+
+      g_variant_get (value, "(vu)", &icon_data, &origin);
+      icon = g_icon_deserialize (icon_data);
+
+      if (icon)
+        {
+          emblem = G_ICON (g_emblem_new_with_origin (icon, origin));
+          g_object_unref (icon);
+        }
+      else
+        emblem = NULL;
+
+      g_variant_unref (icon_data);
+
+      return emblem;
+    }
+
+  else
+    return NULL;
 }
