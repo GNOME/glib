@@ -1028,8 +1028,9 @@ g_socket_client_connect (GSocketClient       *client,
       if (client->priv->proxy_resolver &&
           G_IS_PROXY_ADDRESS_ENUMERATOR (enumerator))
         {
-          g_object_set (G_OBJECT (enumerator), "proxy-resolver",
-                        client->priv->proxy_resolver);
+          g_object_set (G_OBJECT (enumerator),
+                        "proxy-resolver", client->priv->proxy_resolver,
+                        NULL);
         }
     }
   else
@@ -1705,8 +1706,9 @@ g_socket_client_connect_async (GSocketClient       *client,
       if (client->priv->proxy_resolver &&
           G_IS_PROXY_ADDRESS_ENUMERATOR (data->enumerator))
         {
-          g_object_set (G_OBJECT (data->enumerator), "proxy-resolver",
-                        client->priv->proxy_resolver);
+          g_object_set (G_OBJECT (data->enumerator),
+                        "proxy-resolver", client->priv->proxy_resolver,
+                        NULL);
         }
     }
   else
