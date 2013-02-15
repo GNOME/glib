@@ -64,7 +64,7 @@ struct _GAsyncResultIface
   GObject * (* get_source_object) (GAsyncResult *res);
 
   gboolean  (* is_tagged)         (GAsyncResult *res,
-				   gpointer      tag);
+				   gpointer      source_tag);
 };
 
 GLIB_AVAILABLE_IN_ALL

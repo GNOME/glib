@@ -211,7 +211,7 @@ struct _GMenuAttributeIterClass
   GObjectClass parent_class;
 
   gboolean      (*get_next) (GMenuAttributeIter  *iter,
-                             const gchar        **out_type,
+                             const gchar        **out_name,
                              GVariant           **value);
 };
 
@@ -253,7 +253,7 @@ struct _GMenuLinkIterClass
   GObjectClass parent_class;
 
   gboolean      (*get_next) (GMenuLinkIter  *iter,
-                             const gchar   **out_name,
+                             const gchar   **out_link,
                              GMenuModel    **value);
 };
 
