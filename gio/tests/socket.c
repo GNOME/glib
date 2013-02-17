@@ -824,6 +824,83 @@ test_unix_connection_ancillary_data (void)
 }
 #endif /* G_OS_UNIX */
 
+static void
+test_reuse_tcp (void)
+{
+  GSocket *sock1, *sock2;
+  GError *error = NULL;
+  GInetAddress *iaddr;
+  GSocketAddress *addr;
+
+  sock1 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                        G_SOCKET_TYPE_STREAM,
+                        G_SOCKET_PROTOCOL_DEFAULT,
+                        &error);
+  g_assert_no_error (error);
+
+  iaddr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
+  addr = g_inet_socket_address_new (iaddr, 0);
+  g_object_unref (iaddr);
+  g_socket_bind (sock1, addr, TRUE, &error);
+  g_object_unref (addr);
+  g_assert_no_error (error);
+
+  g_socket_listen (sock1, &error);
+  g_assert_no_error (error);
+
+  sock2 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                        G_SOCKET_TYPE_STREAM,
+                        G_SOCKET_PROTOCOL_DEFAULT,
+                        &error);
+  g_assert_no_error (error);
+
+  addr = g_socket_get_local_address (sock1, &error);
+  g_assert_no_error (error);
+  g_socket_bind (sock2, addr, TRUE, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_ADDRESS_IN_USE);
+  g_object_unref (addr);
+
+  g_object_unref (sock1);
+  g_object_unref (sock2);
+}
+
+static void
+test_reuse_udp (void)
+{
+  GSocket *sock1, *sock2;
+  GError *error = NULL;
+  GInetAddress *iaddr;
+  GSocketAddress *addr;
+
+  sock1 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                        G_SOCKET_TYPE_DATAGRAM,
+                        G_SOCKET_PROTOCOL_DEFAULT,
+                        &error);
+  g_assert_no_error (error);
+
+  iaddr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
+  addr = g_inet_socket_address_new (iaddr, 0);
+  g_object_unref (iaddr);
+  g_socket_bind (sock1, addr, TRUE, &error);
+  g_object_unref (addr);
+  g_assert_no_error (error);
+
+  sock2 = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                        G_SOCKET_TYPE_DATAGRAM,
+                        G_SOCKET_PROTOCOL_DEFAULT,
+                        &error);
+  g_assert_no_error (error);
+
+  addr = g_socket_get_local_address (sock1, &error);
+  g_assert_no_error (error);
+  g_socket_bind (sock2, addr, TRUE, &error);
+  g_object_unref (addr);
+  g_assert_no_error (error);
+
+  g_object_unref (sock1);
+  g_object_unref (sock2);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -845,6 +922,8 @@ main (int   argc,
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
 #endif
+  g_test_add_func ("/socket/reuse/tcp", test_reuse_tcp);
+  g_test_add_func ("/socket/reuse/udp", test_reuse_udp);
 
   return g_test_run();
 }

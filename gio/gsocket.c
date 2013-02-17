@@ -1853,14 +1853,20 @@ g_socket_listen (GSocket  *socket,
  * In certain situations, you may also want to bind a socket that will be
  * used to initiate connections, though this is not normally required.
  *
- * @allow_reuse should be %TRUE for server sockets (sockets that you will
- * eventually call g_socket_accept() on), and %FALSE for client sockets.
- * (Specifically, if it is %TRUE, then g_socket_bind() will set the
- * %SO_REUSEADDR flag on the socket, allowing it to bind @address even if
- * that address was previously used by another socket that has not yet been
- * fully cleaned-up by the kernel. Failing to set this flag on a server
- * socket may cause the bind call to return %G_IO_ERROR_ADDRESS_IN_USE if
- * the server program is stopped and then immediately restarted.)
+ * If @socket is a TCP socket, then @allow_reuse controls the setting
+ * of the <literal>SO_REUSEADDR</literal> socket option; normally it
+ * should be %TRUE for server sockets (sockets that you will
+ * eventually call g_socket_accept() on), and %FALSE for client
+ * sockets. (Failing to set this flag on a server socket may cause
+ * g_socket_bind() to return %G_IO_ERROR_ADDRESS_IN_USE if the server
+ * program is stopped and then immediately restarted.)
+ *
+ * If @socket is a UDP socket, then @allow_reuse determines whether or
+ * not other UDP sockets can be bound to the same address at the same
+ * time. In particular, you can have several UDP sockets bound to the
+ * same address, and they will all receive all of the multicast and
+ * broadcast packets sent to that address. (The behavior of unicast
+ * UDP packets to an address with multiple listeners is not defined.)
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
@@ -1873,26 +1879,47 @@ g_socket_bind (GSocket         *socket,
 	       GError         **error)
 {
   struct sockaddr_storage addr;
+  gboolean so_reuseaddr;
+#ifdef SO_REUSEPORT
+  gboolean so_reuseport;
+#endif
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && G_IS_SOCKET_ADDRESS (address), FALSE);
 
   if (!check_socket (socket, error))
     return FALSE;
 
-  /* SO_REUSEADDR on Windows means something else and is not what we want.
-     It always allows the unix variant of SO_REUSEADDR anyway */
-#ifndef G_OS_WIN32
-  {
-    reuse_address = !!reuse_address;
-    /* Ignore errors here, the only likely error is "not supported", and
-       this is a "best effort" thing mainly */
-    g_socket_set_option (socket, SOL_SOCKET, SO_REUSEADDR,
-			 reuse_address, NULL);
-  }
-#endif
-
   if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
     return FALSE;
+
+  /* On Windows, SO_REUSEADDR has the semantics we want for UDP
+   * sockets, but has nasty side effects we don't want for TCP
+   * sockets.
+   *
+   * On other platforms, we set SO_REUSEPORT, if it exists, for
+   * UDP sockets, and SO_REUSEADDR for all sockets, hoping that
+   * if SO_REUSEPORT doesn't exist, then SO_REUSEADDR will have
+   * the desired semantics on UDP (as it does on Linux, although
+   * Linux has SO_REUSEPORT too as of 3.9).
+   */
+
+#ifdef G_OS_WIN32
+  so_reuseaddr = reuse_address && (socket->priv->type == G_SOCKET_TYPE_DATAGRAM);
+#else
+  so_reuseaddr = !!reuse_address;
+#endif
+
+#ifdef SO_REUSEPORT
+  so_reuseport = reuse_address && (socket->priv->type == G_SOCKET_TYPE_DATAGRAM);
+#endif
+
+  /* Ignore errors here, the only likely error is "not supported", and
+   * this is a "best effort" thing mainly.
+   */
+  g_socket_set_option (socket, SOL_SOCKET, SO_REUSEADDR, so_reuseaddr, NULL);
+#ifdef SO_REUSEPORT
+  g_socket_set_option (socket, SOL_SOCKET, SO_REUSEPORT, so_reuseport, NULL);
+#endif
 
   if (bind (socket->priv->fd, (struct sockaddr *) &addr,
 	    g_socket_address_get_native_size (address)) < 0)
