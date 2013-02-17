@@ -895,14 +895,14 @@ g_socket_class_init (GSocketClass *klass)
   /**
    * GSocket:broadcast:
    *
-   * Whether the socket should allow sending to and receiving from broadcast addresses.
+   * Whether the socket should allow sending to broadcast addresses.
    *
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_BROADCAST,
 				   g_param_spec_boolean ("broadcast",
 							 P_("Broadcast"),
-							 P_("Whether to allow sending to and receiving from broadcast addresses"),
+							 P_("Whether to allow sending to broadcast addresses"),
 							 FALSE,
 							 G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
@@ -1387,7 +1387,7 @@ g_socket_set_ttl (GSocket  *socket,
  *
  * Gets the broadcast setting on @socket; if %TRUE,
  * it is possible to send packets to broadcast
- * addresses or receive from broadcast addresses.
+ * addresses.
  *
  * Returns: the broadcast setting on @socket
  *
@@ -1415,11 +1415,11 @@ g_socket_get_broadcast (GSocket *socket)
 /**
  * g_socket_set_broadcast:
  * @socket: a #GSocket.
- * @broadcast: whether @socket should allow sending to and receiving
- *     from broadcast addresses
+ * @broadcast: whether @socket should allow sending to broadcast
+ *     addresses
  *
- * Sets whether @socket should allow sending to and receiving from
- * broadcast addresses. This is %FALSE by default.
+ * Sets whether @socket should allow sending to broadcast addresses.
+ * This is %FALSE by default.
  *
  * Since: 2.32
  */
