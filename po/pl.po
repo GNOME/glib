@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-03 00:20+0100\n"
-"PO-Revision-Date: 2013-02-03 00:21+0100\n"
+"POT-Creation-Date: 2013-02-17 16:45+0100\n"
+"PO-Revision-Date: 2013-02-17 16:46+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1245,7 +1245,7 @@ msgstr "Adres posiada bity ustawione poza długością przedrostka"
 #: ../gio/ginetaddressmask.c:304
 #, c-format
 msgid "Could not parse '%s' as IP address mask"
-msgstr "nie można przetworzyć \"%s\" jako maskę adresu IP"
+msgstr "Nie można przetworzyć \"%s\" jako maskę adresu IP"
 
 #: ../gio/ginetsocketaddress.c:206 ../gio/ginetsocketaddress.c:223
 #: ../gio/gunixsocketaddress.c:221
@@ -1960,15 +1960,15 @@ msgstr "Plik został zmieniony poza programem"
 msgid "Error removing old file: %s"
 msgstr "Błąd podczas usuwania starego pliku: %s"
 
-#: ../gio/gmemoryinputstream.c:475 ../gio/gmemoryoutputstream.c:739
+#: ../gio/gmemoryinputstream.c:476 ../gio/gmemoryoutputstream.c:739
 msgid "Invalid GSeekType supplied"
 msgstr "Podano nieprawidłowy obiekt GSeekType"
 
-#: ../gio/gmemoryinputstream.c:485
+#: ../gio/gmemoryinputstream.c:486
 msgid "Invalid seek request"
 msgstr "Nieprawidłowe żądanie wyszukiwania"
 
-#: ../gio/gmemoryinputstream.c:509
+#: ../gio/gmemoryinputstream.c:510
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Nie można skrócić GMemoryInputStream"
 
@@ -2047,7 +2047,7 @@ msgid "mount doesn't implement synchronous content type guessing"
 msgstr ""
 "montowany obiekt nie obsługuje synchronicznego rozpoznania typu zawartości"
 
-#: ../gio/gnetworkaddress.c:322
+#: ../gio/gnetworkaddress.c:345
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Nazwa komputera \"%s\" zawiera \"[\", ale nie \"]\""
@@ -2273,12 +2273,12 @@ msgstr "Podano pustą ścieżkę.\n"
 #: ../gio/gsettings-tool.c:104
 #, c-format
 msgid "Path must begin with a slash (/)\n"
-msgstr "ścieżka musi rozpoczynać się od ukośnika (/)\n"
+msgstr "Ścieżka musi rozpoczynać się od ukośnika (/)\n"
 
 #: ../gio/gsettings-tool.c:110
 #, c-format
 msgid "Path must end with a slash (/)\n"
-msgstr "ścieżka musi kończyć się ukośnikiem (/)\n"
+msgstr "Ścieżka musi kończyć się ukośnikiem (/)\n"
 
 #: ../gio/gsettings-tool.c:116
 #, c-format
@@ -2599,29 +2599,29 @@ msgstr ""
 "g_socket_get_credentials nie jest zaimplementowane dla tego systemu "
 "operacyjnego"
 
-#: ../gio/gsocketclient.c:174
+#: ../gio/gsocketclient.c:177
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "Nie można połączyć z serwerem pośrednika %s: "
 
-#: ../gio/gsocketclient.c:188
+#: ../gio/gsocketclient.c:191
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "Nie można połączyć z %s: "
 
-#: ../gio/gsocketclient.c:190
+#: ../gio/gsocketclient.c:193
 msgid "Could not connect: "
 msgstr "Nie można połączyć: "
 
-#: ../gio/gsocketclient.c:976 ../gio/gsocketclient.c:1540
+#: ../gio/gsocketclient.c:1072 ../gio/gsocketclient.c:1636
 msgid "Unknown error on connect"
 msgstr "Nieznany błąd połączenia"
 
-#: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1478
+#: ../gio/gsocketclient.c:1125 ../gio/gsocketclient.c:1574
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Pośredniczenie przez połączenie nie będące TCP nie jest obsługiwana."
 
-#: ../gio/gsocketclient.c:1055 ../gio/gsocketclient.c:1499
+#: ../gio/gsocketclient.c:1151 ../gio/gsocketclient.c:1595
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokół pośrednika \"%s\" nie jest obsługiwany."
@@ -3788,62 +3788,62 @@ msgstr ""
 "Nastąpił nieoczekiwany koniec dokumentu wewnątrz komentarza lub instrukcji "
 "przetwarzania"
 
-#: ../glib/goption.c:742
+#: ../glib/goption.c:754
 msgid "Usage:"
 msgstr "Użycie:"
 
-#: ../glib/goption.c:742
+#: ../glib/goption.c:754
 msgid "[OPTION...]"
 msgstr "[OPCJA...]"
 
-#: ../glib/goption.c:848
+#: ../glib/goption.c:864
 msgid "Help Options:"
 msgstr "Opcje pomocy:"
 
-#: ../glib/goption.c:849
+#: ../glib/goption.c:865
 msgid "Show help options"
 msgstr "Wyświetla opcje pomocy"
 
-#: ../glib/goption.c:855
+#: ../glib/goption.c:871
 msgid "Show all help options"
 msgstr "Wyświetla wszystkie opcje pomocy"
 
-#: ../glib/goption.c:917
+#: ../glib/goption.c:933
 msgid "Application Options:"
 msgstr "Opcje programu:"
 
-#: ../glib/goption.c:979 ../glib/goption.c:1049
+#: ../glib/goption.c:997 ../glib/goption.c:1067
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nie można przetworzyć wartości całkowitej \"%s\" dla %s"
 
-#: ../glib/goption.c:989 ../glib/goption.c:1057
+#: ../glib/goption.c:1007 ../glib/goption.c:1075
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Wartość całkowita \"%s\" dla %s jest spoza dopuszczalnego zakresu"
 
-#: ../glib/goption.c:1014
+#: ../glib/goption.c:1032
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nie można przetworzyć podwójnej wartości liczbowej \"%s\" dla %s"
 
-#: ../glib/goption.c:1022
+#: ../glib/goption.c:1040
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "Podwójna wartość liczbowa \"%s\" dla %s jest spoza dopuszczalnego zakresu"
 
-#: ../glib/goption.c:1285 ../glib/goption.c:1364
+#: ../glib/goption.c:1303 ../glib/goption.c:1382
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Błąd podczas przetwarzania opcji %s"
 
-#: ../glib/goption.c:1395 ../glib/goption.c:1508
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Brak parametru dla %s"
 
-#: ../glib/goption.c:1961
+#: ../glib/goption.c:1979
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nieznana opcja %s"
