@@ -7,14 +7,14 @@
 # Translated on 2006-01-31 by Slobodan D. Sredojević <slobo@akrep.be>
 # Miloš Popović <gpopac@gmail.com>, 2010.
 # Branko Kokanović <branko.kokanovic@gmail.com>, 2010.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-06 22:15+0000\n"
-"PO-Revision-Date: 2013-01-18 22:56+0200\n"
+"POT-Creation-Date: 2013-01-24 23:17+0000\n"
+"PO-Revision-Date: 2013-02-18 10:33+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -26,8 +26,8 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:506
-#: ../gio/ginputstream.c:184 ../gio/ginputstream.c:375
-#: ../gio/ginputstream.c:612 ../gio/ginputstream.c:830
+#: ../gio/ginputstream.c:185 ../gio/ginputstream.c:377
+#: ../gio/ginputstream.c:615 ../gio/ginputstream.c:833
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:732
 #: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
 #, c-format
@@ -43,7 +43,7 @@ msgstr "Nije podržavano premotavanje osnovnog toka"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Ne mogu da skratim ulazni tok u Gmeđumemoriji"
 
-#: ../gio/gbufferedinputstream.c:990 ../gio/ginputstream.c:1020
+#: ../gio/gbufferedinputstream.c:990 ../gio/ginputstream.c:1023
 #: ../gio/giostream.c:291 ../gio/goutputstream.c:1340
 msgid "Stream is already closed"
 msgstr "Tok je već zatvoren"
@@ -85,7 +85,7 @@ msgstr "Neispravan niz bajtova u ulazu koji pretvaram"
 msgid "Error during conversion: %s"
 msgstr "Greška prilikom pretvaranja: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:975
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:991
 msgid "Cancellable initialization not supported"
 msgstr "Nije podržano pokretanje uz mogućnost otkazivanja"
 
@@ -124,7 +124,6 @@ msgid "There is no GCredentials support for your platform"
 msgstr "Nemate podršku za Guverenja na ovoj platformi"
 
 #: ../gio/gcredentials.c:480
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "Guverenja ne sadrže IB procesa na ovom operativnom sistemu"
 
@@ -301,15 +300,15 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "Nepoznat tip magistrale %d"
 
-#: ../gio/gdbusauth.c:297
+#: ../gio/gdbusauth.c:298
 msgid "Unexpected lack of content trying to read a line"
 msgstr "Neočekivani nedostatak sadržaja pri čitanju linije"
 
-#: ../gio/gdbusauth.c:341
+#: ../gio/gdbusauth.c:342
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Neočekivani nedostatak sadržaja pri (sigurnom) čitanju linije"
 
-#: ../gio/gdbusauth.c:512
+#: ../gio/gdbusauth.c:513
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -317,7 +316,7 @@ msgstr ""
 "Istrošeni su svi dostupni mehanizmi prijavljivanja (pokušano: %s) (dostupno: "
 "%s)"
 
-#: ../gio/gdbusauth.c:1174
+#: ../gio/gdbusauth.c:1175
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Poništeno preko GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -344,19 +343,19 @@ msgstr "Greška prilikom obrazovanja direktorijuma „%s“: %s"
 msgid "Error opening keyring `%s' for reading: "
 msgstr "Greška prilikom otvaranja priveska ključeva „%s“ za čitanje: "
 
-#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
+#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr "Linija %d priveska ključeva na „%s“ sa sadržajem „%s“ nije ispravna"
 
-#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
+#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 "Prvi token linije %d priveska ključeva na „%s“ sa sadržajem „%s“ nije ispravan"
 
-#: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
+#: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
@@ -369,32 +368,32 @@ msgstr ""
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr "Nisam našao kolačić sa identifikacijom %d u privesku ključeva na „%s“"
 
-#: ../gio/gdbusauthmechanismsha1.c:536
+#: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
 msgid "Error deleting stale lock file `%s': %s"
 msgstr "Greška pri brisanju zaostale datoteke zaključavanja „%s“: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:568
+#: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
 msgid "Error creating lock file `%s': %s"
 msgstr "Greška pri pravljenju datoteke zaključavanja „%s“: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:598
+#: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Greška prilikom zatvaranja (nepovezane) datoteke zaključavanja „%s“: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:608
+#: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Greška prilikom odvezivanju datoteke zaključavanja „%s“: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:685
+#: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
 msgstr "Greška prilikom otvaranja priveska ključeva „%s“ za pisanje: "
 
-#: ../gio/gdbusauthmechanismsha1.c:882
+#: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Dodatno, otpuštanje ključa sa „%s“ takođe nije uspelo: %s) "
@@ -485,28 +484,28 @@ msgstr "Metod „%s“ na interfejsu „%s“ sa potpisom „%s“ ne postoji"
 msgid "A subtree is already exported for %s"
 msgstr "Poddrvo je već izvezeno za %s"
 
-#: ../gio/gdbusmessage.c:1270
+#: ../gio/gdbusmessage.c:1271
 msgid "type is INVALID"
 msgstr "vrsta je NEISPRAVNA"
 
-#: ../gio/gdbusmessage.c:1281
+#: ../gio/gdbusmessage.c:1282
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "Poruka POZIVA_METODA: nedostaju polja zaglavlja PUTANJA ili ČLAN"
 
-#: ../gio/gdbusmessage.c:1292
+#: ../gio/gdbusmessage.c:1293
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "Poruka REZULTAT_METODA: nedostaje polje zaglavlja ODGOVORI_SERIJSKI"
 
-#: ../gio/gdbusmessage.c:1304
+#: ../gio/gdbusmessage.c:1305
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr ""
 "Poruka GREŠKE: nedostaju polja zaglavlja ODGOVORI_SERIJSKI ili NAZIV_GREŠKE"
 
-#: ../gio/gdbusmessage.c:1317
+#: ../gio/gdbusmessage.c:1318
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "Poruka SIGNALA: nedostaju polja zaglavlja PUTANJA, SUČELJE ili ČLAN"
 
-#: ../gio/gdbusmessage.c:1325
+#: ../gio/gdbusmessage.c:1326
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -514,7 +513,7 @@ msgstr ""
 "Poruka SIGNALA: polje zaglavlja PUTANJA koristi rezervisanu vrednost „/org/"
 "freedesktop/DBus/Local“"
 
-#: ../gio/gdbusmessage.c:1333
+#: ../gio/gdbusmessage.c:1334
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -522,10 +521,8 @@ msgstr ""
 "Poruka SIGNALA: polje zaglavlja SUČELJE koristi rezervisanu vrednost „org."
 "freedesktop.DBus.Local“"
 
-#: ../gio/gdbusmessage.c:1382
+#: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu byte but got EOF"
-#| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu bytes but only got %lu"
 msgid_plural "Wanted to read %lu byte but only got %lu"
 msgstr[0] "Pokušah da čitam %lu bajt, ali dobih samo %lu"
@@ -533,12 +530,12 @@ msgstr[1] "Pokušah da čitam %lu bajta, ali dobih samo %lu"
 msgstr[2] "Pokušah da čitam %lu bajtova, ali dobih samo %lu"
 msgstr[3] "Pokušah da čitam jedan bajt, ali dobih samo %lu"
 
-#: ../gio/gdbusmessage.c:1397
+#: ../gio/gdbusmessage.c:1398
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Očekivao sam NUL bajt posle niske „%s“, ali sam našao bajt %d"
 
-#: ../gio/gdbusmessage.c:1416
+#: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -547,17 +544,17 @@ msgstr ""
 "Očekivah ispravnu UTF-8 nisku, ali nađoh neispravne bajtove na bajt pomeraju "
 "%d (dužina niske je %d). Ispravna niska do tog dela je bila „%s“"
 
-#: ../gio/gdbusmessage.c:1618
+#: ../gio/gdbusmessage.c:1619
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Raščlanjena vrednost „%s“ nije ispravna putanja objekta D-magistrale"
 
-#: ../gio/gdbusmessage.c:1642
+#: ../gio/gdbusmessage.c:1643
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Raščlanjena vrednost „%s“ nije ispravan potpis D-magistrale"
 
-#: ../gio/gdbusmessage.c:1697
+#: ../gio/gdbusmessage.c:1698
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -574,13 +571,13 @@ msgstr[3] ""
 "Naišao sam na niz dužine jednog bajta. Najveća dužina je 2<<26 bajtova (64 "
 "MiB)."
 
-#: ../gio/gdbusmessage.c:1850
+#: ../gio/gdbusmessage.c:1851
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "Raščlanjena vrednost „%s“ za varijantu nije ispravan potpis D-magistrale"
 
-#: ../gio/gdbusmessage.c:1874
+#: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
@@ -588,7 +585,7 @@ msgstr ""
 "Greška pri deserijalizaciji Gvarijanta sa niskom vrste „%s“ iz žičanog "
 "formata D-magistrale"
 
-#: ../gio/gdbusmessage.c:2061
+#: ../gio/gdbusmessage.c:2062
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -597,23 +594,23 @@ msgstr ""
 "Neispravna vrednost za krajnjost. Očekivao sam 0x6c („l“) ili 0x42 („Bd) ali "
 "sam našao vrednost 0x%02x"
 
-#: ../gio/gdbusmessage.c:2074
+#: ../gio/gdbusmessage.c:2075
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Neispravna glavno izdanje protokola. Očekivano 1, ali nađeno %d"
 
-#: ../gio/gdbusmessage.c:2130
+#: ../gio/gdbusmessage.c:2131
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Potpis zaglavlja sa potpisom „%s“ je nađen, ali je telo poruke prazno"
 
-#: ../gio/gdbusmessage.c:2144
+#: ../gio/gdbusmessage.c:2145
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 "Raščlanjena vrednost „%s“ nije ispravan potpis D-magistrale (za telo poruke)"
 
-#: ../gio/gdbusmessage.c:2174
+#: ../gio/gdbusmessage.c:2175
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -622,11 +619,11 @@ msgstr[1] "Nema zaglavlja potpisa u poruci, ali telo poruke ima %u bajta"
 msgstr[2] "Nema zaglavlja potpisa u poruci, ali telo poruke ima %u bajtova"
 msgstr[3] "Nema zaglavlja potpisa u poruci, ali telo poruke ima jedan bajt"
 
-#: ../gio/gdbusmessage.c:2184
+#: ../gio/gdbusmessage.c:2185
 msgid "Cannot deserialize message: "
 msgstr "Ne mogu da deserijalizujem poruku: "
 
-#: ../gio/gdbusmessage.c:2505
+#: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
@@ -634,7 +631,7 @@ msgstr ""
 "Greška pri serijalizaciji Gvarijanta sa niskom vrste „%s“ iz žičanog formata "
 "D-magistrale"
 
-#: ../gio/gdbusmessage.c:2642
+#: ../gio/gdbusmessage.c:2643
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -643,33 +640,33 @@ msgstr ""
 "Poruka ima %d opisivača datoteke, ali zaglavlje ukazuje na %d opisivača "
 "datoteke"
 
-#: ../gio/gdbusmessage.c:2650
+#: ../gio/gdbusmessage.c:2651
 msgid "Cannot serialize message: "
 msgstr "Ne mogu da serijalizujem poruku: "
 
-#: ../gio/gdbusmessage.c:2694
+#: ../gio/gdbusmessage.c:2695
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Telo poruke ima potpis „%s“, ali nedostaje zaglavlje potpisa"
 
-#: ../gio/gdbusmessage.c:2704
+#: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `"
 "%s'"
 msgstr "Telo poruke ima tip potpisa „%s“, ali potpis u polju zaglavlja je „%s“"
 
-#: ../gio/gdbusmessage.c:2720
+#: ../gio/gdbusmessage.c:2721
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Telo poruke je prazno,,, ali je potpis u polju zaglavlja „(%s)“"
 
-#: ../gio/gdbusmessage.c:3270
+#: ../gio/gdbusmessage.c:3271
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Dobijena je greška sa telom poruke tipa „%s“"
 
-#: ../gio/gdbusmessage.c:3278
+#: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
 msgstr "Dobijena je greška sa praznim telom poruke"
 
@@ -680,7 +677,7 @@ msgstr "Ne mogu da dobavim profil fizičkih delova: %s"
 
 #: ../gio/gdbusprivate.c:2113
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Ne mogu da učitam „/var/lib/dbus/machine-id“ ili „/etc/machine-id:“ "
+msgstr "Ne mogu da učitam „/var/lib/dbus/machine-id“ ili „/etc/machine-id“: "
 
 #: ../gio/gdbusproxy.c:1640
 #, c-format
@@ -1054,7 +1051,7 @@ msgstr "Očekivano je GEmblem za ikonicu GEmblema"
 #: ../gio/gfile.c:4505 ../gio/gfile.c:4590 ../gio/gfile.c:4680
 #: ../gio/gfile.c:4777 ../gio/gfile.c:4864 ../gio/gfile.c:4965
 #: ../gio/gfile.c:5238 ../gio/gfile.c:5516 ../gio/gfile.c:5570
-#: ../gio/gfile.c:7114 ../gio/gfile.c:7204 ../gio/gfile.c:7288
+#: ../gio/gfile.c:7115 ../gio/gfile.c:7205 ../gio/gfile.c:7289
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Radnja nije podržana"
@@ -1100,7 +1097,6 @@ msgid "Error splicing file: %s"
 msgstr "Greška prilikom deljenja datoteke: %s"
 
 #: ../gio/gfile.c:2952
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Nije podržano umnožavanje (reflink/clone) između montiranih uređaja"
 
@@ -1239,7 +1235,7 @@ msgstr "Nema dovoljno mesta za adresu utičnice"
 msgid "Unsupported socket address"
 msgstr "Nije podržana adresa utičnice"
 
-#: ../gio/ginputstream.c:193
+#: ../gio/ginputstream.c:194
 msgid "Input stream doesn't implement read"
 msgstr "Ulazni tok ne podržava čitanje"
 
@@ -1249,7 +1245,7 @@ msgstr "Ulazni tok ne podržava čitanje"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1030 ../gio/giostream.c:301
+#: ../gio/ginputstream.c:1033 ../gio/giostream.c:301
 #: ../gio/goutputstream.c:1350
 msgid "Stream has outstanding operation"
 msgstr "Tok radi jako dobro"
@@ -1650,7 +1646,7 @@ msgstr "ne radim ništa.\n"
 msgid "removed existing output file.\n"
 msgstr "uklonjena postojeća izlazna datoteka.\n"
 
-#: ../gio/glocaldirectorymonitor.c:288
+#: ../gio/glocaldirectorymonitor.c:252
 msgid "Unable to find default local directory monitor type"
 msgstr "Ne mogu da nađem podrazumevanu vrstu monitora za lokalni direktorijum"
 
@@ -1796,70 +1792,70 @@ msgstr " (neispravno kodiranje)"
 msgid "Error when getting information for file '%s': %s"
 msgstr "Greška prilikom dobavljanja podataka za datoteku „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1981
+#: ../gio/glocalfileinfo.c:1985
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Greška prilikom dobavljanja podataka za opisnika datoteke: %s"
 
-#: ../gio/glocalfileinfo.c:2026
+#: ../gio/glocalfileinfo.c:2030
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Nije ispravna vrsta osobine („uint32“ je očekivano)"
 
-#: ../gio/glocalfileinfo.c:2044
+#: ../gio/glocalfileinfo.c:2048
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Nije ispravna vrsta osobine („uint64“ je očekivano)"
 
-#: ../gio/glocalfileinfo.c:2063 ../gio/glocalfileinfo.c:2082
+#: ../gio/glocalfileinfo.c:2067 ../gio/glocalfileinfo.c:2086
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Nije ispravna vrsta osobine (očekivana je niska bitova)"
 
-#: ../gio/glocalfileinfo.c:2117
+#: ../gio/glocalfileinfo.c:2121
 msgid "Cannot set permissions on symlinks"
 msgstr "Ne mogu da postavim ovlašćenja za simboličke veze"
 
-#: ../gio/glocalfileinfo.c:2133
+#: ../gio/glocalfileinfo.c:2137
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Greška prilikom postavljanja ovlašćenja: %s"
 
-#: ../gio/glocalfileinfo.c:2184
+#: ../gio/glocalfileinfo.c:2188
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Greška prilikom postavljanja vlasnika: %s"
 
-#: ../gio/glocalfileinfo.c:2207
+#: ../gio/glocalfileinfo.c:2211
 msgid "symlink must be non-NULL"
 msgstr "simboličke veze moraju biti različite od NULL"
 
-#: ../gio/glocalfileinfo.c:2217 ../gio/glocalfileinfo.c:2236
-#: ../gio/glocalfileinfo.c:2247
+#: ../gio/glocalfileinfo.c:2221 ../gio/glocalfileinfo.c:2240
+#: ../gio/glocalfileinfo.c:2251
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Greška prilikom postavljanja simboličke veze: %s"
 
-#: ../gio/glocalfileinfo.c:2226
+#: ../gio/glocalfileinfo.c:2230
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Greška pri postavljanju simboličke veze: datoteka nije simbolička veza"
 
-#: ../gio/glocalfileinfo.c:2352
+#: ../gio/glocalfileinfo.c:2356
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Greška pri postavljanju datuma izmene ili pristupa: %s"
 
-#: ../gio/glocalfileinfo.c:2375
+#: ../gio/glocalfileinfo.c:2379
 msgid "SELinux context must be non-NULL"
 msgstr "SELinuks kontekst ne sme biti NULL"
 
-#: ../gio/glocalfileinfo.c:2390
+#: ../gio/glocalfileinfo.c:2394
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Greška prilikom postavljanja SELinuks konteksta: %s"
 
-#: ../gio/glocalfileinfo.c:2397
+#: ../gio/glocalfileinfo.c:2401
 msgid "SELinux is not enabled on this system"
 msgstr "SELinuks nije uključen na vašem sistemu"
 
-#: ../gio/glocalfileinfo.c:2489
+#: ../gio/glocalfileinfo.c:2493
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Nije podržano postavljanje osobine %s"
@@ -1882,7 +1878,7 @@ msgstr "Greška prilikom pretrage unutar datoteke: %s"
 msgid "Error closing file: %s"
 msgstr "Greška prilikom zatvaranja datoteke: %s"
 
-#: ../gio/glocalfilemonitor.c:212
+#: ../gio/glocalfilemonitor.c:176
 msgid "Unable to find default local file monitor type"
 msgstr "Ne mogu da pronađem podrazumevanu, lokalnu vrstu monitora datoteke"
 
@@ -2376,7 +2372,7 @@ msgstr ""
 "  list-relocatable-schemas  Navodi premestljive šeme\n"
 "  list-keys                 Navodi ključeve u šemi\n"
 "  list-children             Navodi proistekle iz šeme\n"
-"  list-recursively          Navodi ključeve i vrednosti, rekurzivno\n"
+"  list-recursively          Navodi ključeve i vrednosti, dubinski\n"
 "  range                     Propituje opseg ključa\n"
 "  get                       Nabavlja vrednost ključa\n"
 "  set                       Podešava vrednost ključa\n"
@@ -2444,7 +2440,7 @@ msgstr "Neispravna utičnica, pokretanje nije uspelo zbog: %s"
 msgid "Socket is already closed"
 msgstr "Utičnica je već zatvorena"
 
-#: ../gio/gsocket.c:334 ../gio/gsocket.c:3509 ../gio/gsocket.c:3564
+#: ../gio/gsocket.c:334 ../gio/gsocket.c:3525 ../gio/gsocket.c:3580
 msgid "Socket I/O timed out"
 msgstr "Isteklo vreme za U/I utičnice"
 
@@ -2453,112 +2449,111 @@ msgstr "Isteklo vreme za U/I utičnice"
 msgid "creating GSocket from fd: %s"
 msgstr "pravim GUtičnicu iz fd-a: %s"
 
-#: ../gio/gsocket.c:515 ../gio/gsocket.c:522 ../gio/gsocket.c:538
+#: ../gio/gsocket.c:509 ../gio/gsocket.c:563 ../gio/gsocket.c:570
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Ne mogu da napravim utičnicu: %s"
 
-#: ../gio/gsocket.c:515
+#: ../gio/gsocket.c:563
 msgid "Unknown family was specified"
 msgstr "Zadata je nepoznata porodica"
 
-#: ../gio/gsocket.c:522
+#: ../gio/gsocket.c:570
 msgid "Unknown protocol was specified"
 msgstr "Zadat je nepoznati protokol"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1728
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ne mogu da dobijem lokalnu adresu: %s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1771
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ne mogu da dobijem udaljenu adresu: %s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1832
 #, c-format
 msgid "could not listen: %s"
 msgstr "ne mogu da slušam: %s"
 
-#: ../gio/gsocket.c:1888
+#: ../gio/gsocket.c:1904
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "greška pri povezivanju na adresu: %s"
 
-#: ../gio/gsocket.c:1941 ../gio/gsocket.c:1978
+#: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Greška prilikom pristupanja grupi višestrukog emitovanja: %s"
 
-#: ../gio/gsocket.c:1942 ../gio/gsocket.c:1979
+#: ../gio/gsocket.c:1958 ../gio/gsocket.c:1995
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Greška prilikom napuštanja grupe višestrukog emitovanja: %s"
 
-#: ../gio/gsocket.c:1943
+#: ../gio/gsocket.c:1959
 msgid "No support for source-specific multicast"
 msgstr "Nema podrške za posebno višestruko emitovanje izvora"
 
-#: ../gio/gsocket.c:2162
+#: ../gio/gsocket.c:2178
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "greška u prihvatanju veze: %s"
 
-#: ../gio/gsocket.c:2283
+#: ../gio/gsocket.c:2299
 msgid "Connection in progress"
 msgstr "Povezivanje je u toku"
 
-#: ../gio/gsocket.c:2330
-#| msgid "Unable to get pending error: %s"
+#: ../gio/gsocket.c:2346
 msgid "Unable to get pending error: "
 msgstr "Ne mogu da dobijem grešku na čekanju: "
 
-#: ../gio/gsocket.c:2496
+#: ../gio/gsocket.c:2512
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Greška u primanju podataka: %s"
 
-#: ../gio/gsocket.c:2674
+#: ../gio/gsocket.c:2690
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Greška u slanju podataka: %s"
 
-#: ../gio/gsocket.c:2788
+#: ../gio/gsocket.c:2804
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Ne mogu da ugasim utičnicu: %s"
 
-#: ../gio/gsocket.c:2867
+#: ../gio/gsocket.c:2883
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Greška u zatvaranju utičnice: %s"
 
-#: ../gio/gsocket.c:3502
+#: ../gio/gsocket.c:3518
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čekam uslov utičnice: %s"
 
-#: ../gio/gsocket.c:3780 ../gio/gsocket.c:3861
+#: ../gio/gsocket.c:3796 ../gio/gsocket.c:3877
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Greška pri slanju poruke: %s"
 
-#: ../gio/gsocket.c:3805
+#: ../gio/gsocket.c:3821
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Poruka upravljanja Gutičnicom nije podržana na Vindouzu"
 
-#: ../gio/gsocket.c:4139 ../gio/gsocket.c:4274
+#: ../gio/gsocket.c:4155 ../gio/gsocket.c:4290
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Greška pri primanju poruke: %s"
 
-#: ../gio/gsocket.c:4356
+#: ../gio/gsocket.c:4372
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Ne mogu da dobijem grešku na čekanju: %s"
 
-#: ../gio/gsocket.c:4375
+#: ../gio/gsocket.c:4391
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_utičnica_dobavlja_uverenja nije primenjena za ovaj operativni sistem"
 
@@ -2813,7 +2808,7 @@ msgstr "Greška prilikom čitanja iz opisivača datoteke: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Greška prilikom zatvaranja opisnika datoteke: %s"
 
-#: ../gio/gunixmounts.c:1979 ../gio/gunixmounts.c:2032
+#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2036
 msgid "Filesystem root"
 msgstr "Koreni sistem datoteka"
 
@@ -3266,12 +3261,14 @@ msgstr "Greška pri otvaranju direktorijuma „%s“: %s"
 # bug: plural-forms
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, c-format
-msgid "Could not allocate %ld byte to read file \"%s\""
+#| msgid "Could not allocate %ld byte to read file \"%s\""
+#| msgid_plural "Could not allocate %lu bytes to read file \"%s\""
+msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
-msgstr[1] "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
-msgstr[2] "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
-msgstr[3] "Ne mogu da obezbedim %lu bajtova za čitanje datoteke „%s“"
+msgstr[0] "Ne mogu da dodelim %lu bajt za čitanje datoteke „%s“"
+msgstr[1] "Ne mogu da dodelim %lu bajta za čitanje datoteke „%s“"
+msgstr[2] "Ne mogu da dodelim %lu bajtova za čitanje datoteke „%s“"
+msgstr[3] "Ne mogu da dodelim jedan bajt za čitanje datoteke „%s“"
 
 #: ../glib/gfileutils.c:686
 #, c-format
@@ -3505,32 +3502,32 @@ msgstr "Ne mogu da mapiram datoteku „%s%s%s%s“: neuspešan mmap(): %s"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Ne mogu da otvorim datoteku „%s“: neuspešan open(): %s"
 
-#: ../glib/gmarkup.c:397 ../glib/gmarkup.c:438
+#: ../glib/gmarkup.c:397 ../glib/gmarkup.c:439
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Greška u %d. redu, %d. znak: "
 
-#: ../glib/gmarkup.c:460 ../glib/gmarkup.c:543
+#: ../glib/gmarkup.c:461 ../glib/gmarkup.c:544
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Neispravan UTF-8 tekst u imenu — „%s“ nije ispravno"
 
-#: ../glib/gmarkup.c:471
+#: ../glib/gmarkup.c:472
 #, c-format
 msgid "'%s' is not a valid name"
 msgstr "„%s“ nije ispravan naziv"
 
-#: ../glib/gmarkup.c:487
+#: ../glib/gmarkup.c:488
 #, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "„%s“ nije ispravan naziv: „%c“"
 
-#: ../glib/gmarkup.c:596
+#: ../glib/gmarkup.c:598
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Greška u %d. redu: %s"
 
-#: ../glib/gmarkup.c:680
+#: ../glib/gmarkup.c:682
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -3539,7 +3536,7 @@ msgstr ""
 "Nisam uspeo da raščlanim „%-.*s“, što je trebalo da predstavlja cifru unutar "
 "znakovne reference (na primer &#234;) — možda je cifra prevelika"
 
-#: ../glib/gmarkup.c:692
+#: ../glib/gmarkup.c:694
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -3549,24 +3546,24 @@ msgstr ""
 "koristili ampersand bez namere da započnete entitet — naznačite ampersand sa "
 "&amp;"
 
-#: ../glib/gmarkup.c:718
+#: ../glib/gmarkup.c:720
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Znakovna referenca „%-.*s“ ne predstavlja dozvoljeni znak"
 
-#: ../glib/gmarkup.c:756
+#: ../glib/gmarkup.c:758
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Uočen prazan entitet „&;“; prihvatljivi entiteti su &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: ../glib/gmarkup.c:764
+#: ../glib/gmarkup.c:766
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Ime entiteta „%-.*s“ nije poznato"
 
-#: ../glib/gmarkup.c:769
+#: ../glib/gmarkup.c:771
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -3574,11 +3571,11 @@ msgstr ""
 "Entitet se ne završava tačka-zapetom; najverovatnije ste koristili ampersand "
 "bez namere da započnete entitet — naznačite ampersand sa &amp;"
 
-#: ../glib/gmarkup.c:1117
+#: ../glib/gmarkup.c:1119
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument mora početi elementom (npr. <knjiga>)"
 
-#: ../glib/gmarkup.c:1157
+#: ../glib/gmarkup.c:1159
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -3587,7 +3584,7 @@ msgstr ""
 "„%s“ ne predstavlja ispravan znak nakon znaka „<“; naziv elementa ne može "
 "njime početi"
 
-#: ../glib/gmarkup.c:1225
+#: ../glib/gmarkup.c:1227
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -3596,14 +3593,14 @@ msgstr ""
 "Čudan znak „%s“, a očekivan je „>“ znak radi okončanja oznake praznog "
 "elementa „%s“"
 
-#: ../glib/gmarkup.c:1309
+#: ../glib/gmarkup.c:1311
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Čudan znak „%s“, očekivan je „=“ posle imena atributa „%s“ elementa „%s“"
 
-#: ../glib/gmarkup.c:1350
+#: ../glib/gmarkup.c:1352
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3614,7 +3611,7 @@ msgstr ""
 "elementa „%s“, ili možda atribut; možda ste koristili neispravan znak u "
 "imenu atributa"
 
-#: ../glib/gmarkup.c:1394
+#: ../glib/gmarkup.c:1396
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -3623,7 +3620,7 @@ msgstr ""
 "Čudan znak „%s“, očekivan je početni navodnik nakon znaka jednakosti pri "
 "dodeli vrednosti atributa „%s“ elementa „%s“"
 
-#: ../glib/gmarkup.c:1527
+#: ../glib/gmarkup.c:1529
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -3631,7 +3628,7 @@ msgid ""
 msgstr ""
 "„%s“ nije ispravan znak nakon niza „</“; „%s“ ne može započeti naziv elementa"
 
-#: ../glib/gmarkup.c:1563
+#: ../glib/gmarkup.c:1565
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -3640,26 +3637,26 @@ msgstr ""
 "„%s“ nije ispravan znak nakon imena zatvorenog elementa „%s“; dozvoljeni znak "
 "je „>“"
 
-#: ../glib/gmarkup.c:1574
+#: ../glib/gmarkup.c:1576
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element „%s“ je zatvoren, nema trenutno otvorenih elemenata"
 
-#: ../glib/gmarkup.c:1583
+#: ../glib/gmarkup.c:1585
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Element „%s“ je zatvoren, a trenutno otvoren element je „%s“"
 
-#: ../glib/gmarkup.c:1751
+#: ../glib/gmarkup.c:1753
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prazan ili sadrži samo beline"
 
-#: ../glib/gmarkup.c:1765
+#: ../glib/gmarkup.c:1767
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Dokument završen neočekivano neposredno nakon otvorene kosougle zagrade „<“"
 
-#: ../glib/gmarkup.c:1773 ../glib/gmarkup.c:1818
+#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1820
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -3668,7 +3665,7 @@ msgstr ""
 "Dokument završen neočekivano sa otvorenim elementima — „%s“ je poslednje "
 "otvoren element"
 
-#: ../glib/gmarkup.c:1781
+#: ../glib/gmarkup.c:1783
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -3677,19 +3674,19 @@ msgstr ""
 "Dokument je završen neočekivano, a očekivana je zatvorena kosougla zagrada "
 "koja zatvara oznaku <%s/>"
 
-#: ../glib/gmarkup.c:1787
+#: ../glib/gmarkup.c:1789
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument završen neočekivano usred imena elementa"
 
-#: ../glib/gmarkup.c:1793
+#: ../glib/gmarkup.c:1795
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument završen neočekivano usred imena atributa"
 
-#: ../glib/gmarkup.c:1798
+#: ../glib/gmarkup.c:1800
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument završen neočekivano usred početne oznake elementa."
 
-#: ../glib/gmarkup.c:1804
+#: ../glib/gmarkup.c:1806
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -3697,16 +3694,16 @@ msgstr ""
 "Dokument završen neočekivano nakon znaka jednakosti posle imena atributa; "
 "vrednost atributa nije navedena"
 
-#: ../glib/gmarkup.c:1811
+#: ../glib/gmarkup.c:1813
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument završen neočekivano usred vrednosti atributa"
 
-#: ../glib/gmarkup.c:1827
+#: ../glib/gmarkup.c:1829
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokument završen neočekivano usred završne oznake elementa „%s“"
 
-#: ../glib/gmarkup.c:1833
+#: ../glib/gmarkup.c:1835
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument završen neočekivano usred primedbe ili uputa za obradu"
 
