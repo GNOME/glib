@@ -251,7 +251,11 @@ g_network_address_parse_sockaddr (GNetworkAddress *addr)
   gchar port[32];
 
   memset (&hints, 0, sizeof (hints));
-  hints.ai_flags = AI_NUMERICHOST | AI_NUMERICSERV;
+  hints.ai_flags = AI_NUMERICHOST
+#ifdef AI_NUMERICSERV
+    | AI_NUMERICSERV
+#endif
+    ;
   g_snprintf (port, sizeof (port), "%u", addr->priv->port);
 
   if (getaddrinfo (addr->priv->hostname, port, &hints, &res) != 0)
