@@ -99,6 +99,14 @@ static gboolean g_output_stream_real_close_finish  (GOutputStream             *s
 static gboolean g_output_stream_internal_close     (GOutputStream             *stream,
                                                     GCancellable              *cancellable,
                                                     GError                   **error);
+static void     g_output_stream_internal_close_async (GOutputStream           *stream,
+                                                      int                      io_priority,
+                                                      GCancellable            *cancellable,
+                                                      GAsyncReadyCallback      callback,
+                                                      gpointer                 data);
+static gboolean g_output_stream_internal_close_finish (GOutputStream          *stream,
+                                                       GAsyncResult           *result,
+                                                       GError                **error);
 
 static void
 g_output_stream_dispose (GObject *object)
@@ -1113,8 +1121,6 @@ async_ready_close_callback_wrapper (GObject      *source_object,
                            error ? NULL : &error);
     }
 
-  g_output_stream_clear_pending (stream);
-
   if (error != NULL)
     g_task_return_error (task, error);
   else
@@ -1150,6 +1156,28 @@ async_ready_close_flushed_callback_wrapper (GObject      *source_object,
                       async_ready_close_callback_wrapper, task);
 }
 
+static void
+real_close_async_cb (GObject      *source_object,
+                     GAsyncResult *res,
+                     gpointer      user_data)
+{
+  GOutputStream *stream = G_OUTPUT_STREAM (source_object);
+  GTask *task = user_data;
+  GError *error = NULL;
+  gboolean ret;
+
+  g_output_stream_clear_pending (stream);
+
+  ret = g_output_stream_internal_close_finish (stream, res, &error);
+
+  if (error != NULL)
+    g_task_return_error (task, error);
+  else
+    g_task_return_boolean (task, ret);
+
+  g_object_unref (task);
+}
+
 /**
  * g_output_stream_close_async:
  * @stream: A #GOutputStream.
@@ -1176,7 +1204,6 @@ g_output_stream_close_async (GOutputStream       *stream,
                              GAsyncReadyCallback  callback,
                              gpointer             user_data)
 {
-  GOutputStreamClass *class;
   GTask *task;
   GError *error = NULL;
 
@@ -1186,6 +1213,34 @@ g_output_stream_close_async (GOutputStream       *stream,
   g_task_set_source_tag (task, g_output_stream_close_async);
   g_task_set_priority (task, io_priority);
 
+  if (!g_output_stream_set_pending (stream, &error))
+    {
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
+
+  g_output_stream_internal_close_async (stream, io_priority, cancellable,
+                                        real_close_async_cb, task);
+}
+
+/* Must always be called inside
+ * g_output_stream_set_pending()/g_output_stream_clear_pending().
+ */
+void
+g_output_stream_internal_close_async (GOutputStream       *stream,
+                                      int                  io_priority,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
+{
+  GOutputStreamClass *class;
+  GTask *task;
+
+  task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_output_stream_internal_close_async);
+  g_task_set_priority (task, io_priority);
+
   if (stream->priv->closed)
     {
       g_task_return_boolean (task, TRUE);
@@ -1193,13 +1248,6 @@ g_output_stream_close_async (GOutputStream       *stream,
       return;
     }
 
-  if (!g_output_stream_set_pending (stream, &error))
-    {
-      g_task_return_error (task, error);
-      g_object_unref (task);
-      return;
-    }
-  
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
   stream->priv->closing = TRUE;
 
@@ -1219,6 +1267,18 @@ g_output_stream_close_async (GOutputStream       *stream,
       class->flush_async (stream, io_priority, cancellable,
                           async_ready_close_flushed_callback_wrapper, task);
     }
+}
+
+static gboolean
+g_output_stream_internal_close_finish (GOutputStream  *stream,
+                                       GAsyncResult   *result,
+                                       GError        **error)
+{
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
+  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
+  g_return_val_if_fail (g_async_result_is_tagged (result, g_output_stream_internal_close_async), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 /**
