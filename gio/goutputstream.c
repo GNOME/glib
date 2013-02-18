@@ -876,12 +876,6 @@ g_output_stream_write_bytes_finish (GOutputStream  *stream,
   return g_task_propagate_int (G_TASK (result), error);
 }
 
-typedef struct {
-  GInputStream *source;
-  gpointer user_data;
-  GAsyncReadyCallback callback;
-} SpliceUserData;
-
 static void
 async_ready_splice_callback_wrapper (GObject      *source_object,
                                      GAsyncResult *res,
