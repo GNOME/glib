@@ -3268,7 +3268,7 @@ msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "Ne mogu da dodelim %lu bajt za čitanje datoteke „%s“"
 msgstr[1] "Ne mogu da dodelim %lu bajta za čitanje datoteke „%s“"
 msgstr[2] "Ne mogu da dodelim %lu bajtova za čitanje datoteke „%s“"
-msgstr[3] "Ne mogu da dodelim jedan bajt za čitanje datoteke „%s“"
+msgstr[3] "Ne mogu da dodelim %lu bajt za čitanje datoteke „%s“"
 
 #: ../glib/gfileutils.c:686
 #, c-format
