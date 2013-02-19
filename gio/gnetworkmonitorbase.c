@@ -30,6 +30,7 @@
 #include "gnetworkmonitor.h"
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
+#include "gtask.h"
 #include "glibintl.h"
 
 static void g_network_monitor_base_iface_init (GNetworkMonitorInterface *iface);
@@ -159,16 +160,36 @@ g_network_monitor_base_class_init (GNetworkMonitorBaseClass *monitor_class)
 }
 
 static gboolean
+g_network_monitor_base_can_reach_sockaddr (GNetworkMonitorBase *base,
+                                           GSocketAddress *sockaddr)
+{
+  GInetAddress *iaddr;
+  int i;
+
+  if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
+    return FALSE;
+
+  iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (sockaddr));
+  for (i = 0; i < base->priv->networks->len; i++)
+    {
+      if (g_inet_address_mask_matches (base->priv->networks->pdata[i], iaddr))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
                                   GSocketConnectable   *connectable,
                                   GCancellable         *cancellable,
                                   GError              **error)
 {
-  GNetworkMonitorBasePrivate *priv = G_NETWORK_MONITOR_BASE (monitor)->priv;
+  GNetworkMonitorBase *base = G_NETWORK_MONITOR_BASE (monitor);
   GSocketAddressEnumerator *enumerator;
   GSocketAddress *addr;
 
-  if (priv->networks->len == 0)
+  if (base->priv->networks->len == 0)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
                            _("Network unreachable"));
@@ -184,8 +205,8 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
       return FALSE;
     }
 
-  if (priv->have_ipv4_default_route &&
-      priv->have_ipv6_default_route)
+  if (base->priv->have_ipv4_default_route &&
+      base->priv->have_ipv6_default_route)
     {
       g_object_unref (enumerator);
       g_object_unref (addr);
@@ -194,21 +215,11 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
 
   while (addr)
     {
-      if (G_IS_INET_SOCKET_ADDRESS (addr))
+      if (g_network_monitor_base_can_reach_sockaddr (base, addr))
         {
-          GInetAddress *iaddr;
-          int i;
-
-          iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
-          for (i = 0; i < priv->networks->len; i++)
-            {
-              if (g_inet_address_mask_matches (priv->networks->pdata[i], iaddr))
-                {
-                  g_object_unref (addr);
-                  g_object_unref (enumerator);
-                  return TRUE;
-                }
-            }
+          g_object_unref (addr);
+          g_object_unref (enumerator);
+          return TRUE;
         }
 
       g_object_unref (addr);
@@ -225,9 +236,92 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
 }
 
 static void
+can_reach_async_got_address (GObject      *object,
+                             GAsyncResult *result,
+                             gpointer      user_data)
+{
+  GSocketAddressEnumerator *enumerator = G_SOCKET_ADDRESS_ENUMERATOR (object);
+  GTask *task = user_data;
+  GNetworkMonitorBase *base = g_task_get_source_object (task);
+  GSocketAddress *addr;
+  GError *error = NULL;
+
+  addr = g_socket_address_enumerator_next_finish (enumerator, result, &error);
+  if (!addr)
+    {
+      if (error)
+        {
+          /* Either the user cancelled, or DNS resolution failed */
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          return;
+        }
+      else
+        {
+          /* Resolved all addresses, none matched */
+          g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
+                                   _("Host unreachable"));
+          g_object_unref (task);
+          return;
+        }
+    }
+
+  if (g_network_monitor_base_can_reach_sockaddr (base, addr))
+    {
+      g_object_unref (addr);
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
+      return;
+    }
+  g_object_unref (addr);
+
+  g_socket_address_enumerator_next_async (enumerator,
+                                          g_task_get_cancellable (task),
+                                          can_reach_async_got_address, task);
+}
+
+static void
+g_network_monitor_base_can_reach_async (GNetworkMonitor     *monitor,
+                                        GSocketConnectable  *connectable,
+                                        GCancellable        *cancellable,
+                                        GAsyncReadyCallback  callback,
+                                        gpointer             user_data)
+{
+  GTask *task;
+  GSocketAddressEnumerator *enumerator;
+
+  task = g_task_new (monitor, cancellable, callback, user_data);
+
+  if (G_NETWORK_MONITOR_BASE (monitor)->priv->networks->len == 0)
+    {
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
+                               _("Network unreachable"));
+      g_object_unref (task);
+      return;
+    }
+
+  enumerator = g_socket_connectable_proxy_enumerate (connectable);
+  g_socket_address_enumerator_next_async (enumerator, cancellable,
+                                          can_reach_async_got_address, task);
+  g_object_unref (enumerator);
+}
+
+static gboolean
+g_network_monitor_base_can_reach_finish (GNetworkMonitor  *monitor,
+                                         GAsyncResult     *result,
+                                         GError          **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, monitor), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
+static void
 g_network_monitor_base_iface_init (GNetworkMonitorInterface *monitor_iface)
 {
   monitor_iface->can_reach = g_network_monitor_base_can_reach;
+  monitor_iface->can_reach_async = g_network_monitor_base_can_reach_async;
+  monitor_iface->can_reach_finish = g_network_monitor_base_can_reach_finish;
 
   network_changed_signal = g_signal_lookup ("network-changed", G_TYPE_NETWORK_MONITOR);
 }
