@@ -441,6 +441,8 @@ copy ..\..\..\gio\gsimpleactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gsimplepermission.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gsimpleproxyresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gsocket.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gsocketaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio

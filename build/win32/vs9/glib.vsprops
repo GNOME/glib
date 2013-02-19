@@ -274,6 +274,7 @@ copy ..\..\..\gio\gsimpleasyncresult.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 copy ..\..\..\gio\gsimpleaction.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleactiongroup.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimplepermission.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gsimpleproxyresolver.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocket.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddressenumerator.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
