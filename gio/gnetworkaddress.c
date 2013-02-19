@@ -65,6 +65,8 @@ struct _GNetworkAddressPrivate {
   guint16 port;
   GList *sockaddrs;
   gchar *scheme;
+
+  gint64 resolver_serial;
 };
 
 enum {
@@ -226,7 +228,8 @@ g_network_address_get_property (GObject    *object,
 
 static void
 g_network_address_set_addresses (GNetworkAddress *addr,
-                                 GList           *addresses)
+                                 GList           *addresses,
+                                 guint64          resolver_serial)
 {
   GList *a;
   GSocketAddress *sockaddr;
@@ -241,6 +244,8 @@ g_network_address_set_addresses (GNetworkAddress *addr,
     }
   g_list_free (addresses);
   addr->priv->sockaddrs = g_list_reverse (addr->priv->sockaddrs);
+
+  addr->priv->resolver_serial = resolver_serial;
 }
 
 static gboolean
@@ -846,26 +851,39 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
 
   if (addr_enum->addresses == NULL)
     {
-      if (!addr_enum->addr->priv->sockaddrs)
-        g_network_address_parse_sockaddr (addr_enum->addr);
-      if (!addr_enum->addr->priv->sockaddrs)
+      GNetworkAddress *addr = addr_enum->addr;
+      GResolver *resolver = g_resolver_get_default ();
+      gint64 serial = g_resolver_get_serial (resolver);
+
+      if (addr->priv->resolver_serial != 0 &&
+          addr->priv->resolver_serial != serial)
         {
-          GResolver *resolver = g_resolver_get_default ();
+          /* Resolver has reloaded, discard cached addresses */
+          g_list_free_full (addr->priv->sockaddrs, g_object_unref);
+          addr->priv->sockaddrs = NULL;
+        }
+
+      if (!addr->priv->sockaddrs)
+        g_network_address_parse_sockaddr (addr);
+      if (!addr->priv->sockaddrs)
+        {
           GList *addresses;
 
           addresses = g_resolver_lookup_by_name (resolver,
-                                                 addr_enum->addr->priv->hostname,
+                                                 addr->priv->hostname,
                                                  cancellable, error);
-          g_object_unref (resolver);
-
           if (!addresses)
-            return NULL;
+            {
+              g_object_unref (resolver);
+              return NULL;
+            }
 
-          g_network_address_set_addresses (addr_enum->addr, addresses);
+          g_network_address_set_addresses (addr, addresses, serial);
         }
           
-      addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
+      addr_enum->addresses = addr->priv->sockaddrs;
       addr_enum->next = addr_enum->addresses;
+      g_object_unref (resolver);
     }
 
   if (addr_enum->next == NULL)
@@ -916,7 +934,10 @@ got_addresses (GObject      *source_object,
       addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
 
       if (!error)
-        g_network_address_set_addresses (addr_enum->addr, addresses);
+        {
+          g_network_address_set_addresses (addr_enum->addr, addresses,
+                                           g_resolver_get_serial (resolver));
+        }
     }
   have_addresses (addr_enum, task, error);
 }
@@ -936,25 +957,36 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
 
   if (addr_enum->addresses == NULL)
     {
-      if (!addr_enum->addr->priv->sockaddrs)
+      GNetworkAddress *addr = addr_enum->addr;
+      GResolver *resolver = g_resolver_get_default ();
+      gint64 serial = g_resolver_get_serial (resolver);
+
+      if (addr->priv->resolver_serial != 0 &&
+          addr->priv->resolver_serial != serial)
         {
-          if (g_network_address_parse_sockaddr (addr_enum->addr))
+          /* Resolver has reloaded, discard cached addresses */
+          g_list_free_full (addr->priv->sockaddrs, g_object_unref);
+          addr->priv->sockaddrs = NULL;
+        }
+
+      if (!addr->priv->sockaddrs)
+        {
+          if (g_network_address_parse_sockaddr (addr))
             have_addresses (addr_enum, task, NULL);
           else
             {
-              GResolver *resolver = g_resolver_get_default ();
-
               g_resolver_lookup_by_name_async (resolver,
-                                               addr_enum->addr->priv->hostname,
+                                               addr->priv->hostname,
                                                cancellable,
                                                got_addresses, task);
-              g_object_unref (resolver);
             }
+          g_object_unref (resolver);
           return;
         }
 
-      addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
+      addr_enum->addresses = addr->priv->sockaddrs;
       addr_enum->next = addr_enum->addresses;
+      g_object_unref (resolver);
     }
 
   if (addr_enum->next)

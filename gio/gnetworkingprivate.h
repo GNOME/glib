@@ -34,6 +34,8 @@ gchar *  _g_uri_from_authority             (const gchar      *protocol,
 					    guint             port,
 					    const gchar      *userinfo);
 
+guint64  g_resolver_get_serial             (GResolver        *resolver);
+
 gint g_socket (gint     domain,
                gint     type,
                gint     protocol,

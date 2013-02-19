@@ -846,6 +846,20 @@ g_resolver_lookup_records_finish (GResolver     *resolver,
     lookup_records_finish (resolver, result, error);
 }
 
+guint64
+g_resolver_get_serial (GResolver *resolver)
+{
+  g_return_val_if_fail (G_IS_RESOLVER (resolver), 0);
+
+  g_resolver_maybe_reload (resolver);
+
+#ifdef G_OS_UNIX
+  return (guint64) resolver->priv->resolv_conf_timestamp;
+#else
+  return 1;
+#endif
+}
+
 /**
  * g_resolver_error_quark:
  *
