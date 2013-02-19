@@ -1,3 +1,38 @@
+Overview of changes from GLib 2.35.7 to 2.35.8
+==============================================
+
+This release contains one major change that may cause problems: type
+modules are now never unloaded.  This is implemented by (effectively)
+leaking the last reference on dynamic types.  Some testcases that check
+for unloading of types have been observed to be broken by this change,
+but we know of no actual cases of "real code" breaking.  Please report
+any problems.
+
+Other changes:
+ * A couple of build fixes for Solaris
+ * Fix signal emission for GDBusObjectManagerClient
+ * annotations fixes
+ * new API: g_dbus_address_escape_value()
+ * GSocketClient: add proxy-resolver property
+ * GSimpleProxyResolver: new simple GProxyResolver class
+ * documentation fixes
+ * gnetworkaddress: preserve IPv6 scope ID in IP literals
+
+Bugs fixed:
+ 691105 Allow GSocketClient to override GProxyResolver for per client proxy settings.
+ 692827 configure test fails for arpa_nameser.h
+ 692829 new Btrfs support causes build failure on Solaris
+ 693285 GDBusObjectManagerClient: won't emit object-added|removed if name-owner arrives later
+ 693502 Cross-compiling documentation: typo (np -> no)
+ 693673 add g_dbus_address_escape_value()
+ 693694 gio: Fix annotations on g_[async_]initable_new() and friends 
+
+Translations:
+ Dutch
+ Galician
+ Polish
+ Serbian
+
 Overview of changes from GLib 2.35.6 to 2.35.7
 ==============================================
 
