@@ -168,10 +168,6 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
   GSocketAddressEnumerator *enumerator;
   GSocketAddress *addr;
 
-  if (priv->have_ipv4_default_route &&
-      priv->have_ipv6_default_route)
-    return TRUE;
-
   if (priv->networks->len == 0)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
@@ -186,6 +182,14 @@ g_network_monitor_base_can_reach (GNetworkMonitor      *monitor,
       /* Either the user cancelled, or DNS resolution failed */
       g_object_unref (enumerator);
       return FALSE;
+    }
+
+  if (priv->have_ipv4_default_route &&
+      priv->have_ipv6_default_route)
+    {
+      g_object_unref (enumerator);
+      g_object_unref (addr);
+      return TRUE;
     }
 
   while (addr)
