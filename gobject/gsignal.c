@@ -1157,7 +1157,8 @@ g_signal_stop_emission_by_name (gpointer     instance,
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
 	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+                   G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
 	  Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
@@ -1177,7 +1178,8 @@ g_signal_stop_emission_by_name (gpointer     instance,
 	}
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+               G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 }
 
@@ -2348,7 +2350,8 @@ g_signal_connect_closure (gpointer     instance,
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
 	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+                   G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
 	  Handler *handler = handler_new (after);
@@ -2368,7 +2371,8 @@ g_signal_connect_closure (gpointer     instance,
 	}
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+               G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 
   return handler_seq_no;
@@ -2447,7 +2451,8 @@ g_signal_connect_data (gpointer       instance,
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
 	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-	g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+                   G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
 	  Handler *handler = handler_new (after);
@@ -2466,7 +2471,8 @@ g_signal_connect_data (gpointer       instance,
         }
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+               G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 
   return handler_seq_no;
@@ -3399,12 +3405,15 @@ g_signal_emit_by_name (gpointer     instance,
 {
   GQuark detail = 0;
   guint signal_id;
+  GType itype;
 
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (detailed_signal != NULL);
 
+  itype = G_TYPE_FROM_INSTANCE (instance);
+
   SIGNAL_LOCK ();
-  signal_id = signal_parse_name (detailed_signal, G_TYPE_FROM_INSTANCE (instance), &detail, TRUE);
+  signal_id = signal_parse_name (detailed_signal, itype, &detail, TRUE);
   SIGNAL_UNLOCK ();
 
   if (signal_id)
@@ -3416,7 +3425,8 @@ g_signal_emit_by_name (gpointer     instance,
       va_end (var_args);
     }
   else
-    g_warning ("%s: signal name `%s' is invalid for instance `%p'", G_STRLOC, detailed_signal, instance);
+    g_warning ("%s: signal name `%s' is invalid for instance `%p' of type `%s'",
+               G_STRLOC, detailed_signal, instance, g_type_name (itype));
 }
 
 static gboolean
