@@ -3127,6 +3127,7 @@ g_signal_emit_valist (gpointer instance,
       )
     {
       HandlerList* hlist = handler_list_lookup (node->signal_id, instance);
+      Handler *fastpath_handler = NULL;
       Handler *l;
       GClosure *closure = NULL;
       gboolean fastpath = TRUE;
@@ -3159,6 +3160,7 @@ g_signal_emit_valist (gpointer instance,
 		}
 	      else
 		{
+                  fastpath_handler = l;
 		  closure = l->closure;
 		  if (l->after)
 		    run_type = G_SIGNAL_RUN_LAST;
@@ -3207,6 +3209,9 @@ g_signal_emit_valist (gpointer instance,
 	  emission.chain_type = instance_type;
 	  emission_push (&g_recursive_emissions, &emission);
 
+          if (fastpath_handler)
+            handler_ref (fastpath_handler);
+
 	  SIGNAL_UNLOCK ();
 
 	  TRACE(GOBJECT_SIGNAL_EMIT(signal_id, detail, instance, instance_type));
@@ -3227,13 +3232,15 @@ g_signal_emit_valist (gpointer instance,
 				    node->n_params,
 				    node->param_types);
 	      accumulate (&emission.ihint, &emission_return, &accu, accumulator);
-	      g_object_unref (instance);
 	    }
 
 	  SIGNAL_LOCK ();
 
 	  emission.chain_type = G_TYPE_NONE;
 	  emission_pop (&g_recursive_emissions, &emission);
+
+          if (fastpath_handler)
+            handler_unref_R (signal_id, instance, fastpath_handler);
 
 	  SIGNAL_UNLOCK ();
 
@@ -3266,6 +3273,9 @@ g_signal_emit_valist (gpointer instance,
 	    }
 	  
 	  TRACE(GOBJECT_SIGNAL_EMIT_END(signal_id, detail, instance, instance_type));
+
+          if (closure != NULL)
+            g_object_unref (instance);
 
 	  return;
 	}
