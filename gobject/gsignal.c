@@ -3286,6 +3286,7 @@ g_signal_emit_valist (gpointer instance,
 	  return;
 	}
     }
+  SIGNAL_UNLOCK ();
 
   n_params = node->n_params;
   signal_return_type = node->return_type;
@@ -3299,7 +3300,6 @@ g_signal_emit_valist (gpointer instance,
       GType ptype = node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       gboolean static_scope = node->param_types[i] & G_SIGNAL_TYPE_STATIC_SCOPE;
 
-      SIGNAL_UNLOCK ();
       G_VALUE_COLLECT_INIT (param_values + i, ptype,
 			    var_args,
 			    static_scope ? G_VALUE_NOCOPY_CONTENTS : 0,
@@ -3317,9 +3317,7 @@ g_signal_emit_valist (gpointer instance,
 
 	  return;
 	}
-      SIGNAL_LOCK ();
     }
-  SIGNAL_UNLOCK ();
 
   instance_and_params->g_type = 0;
   g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
