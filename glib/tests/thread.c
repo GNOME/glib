@@ -136,6 +136,12 @@ test_thread4 (void)
   GError *error;
   gint ret;
 
+  /* Linux CAP_SYS_RESOURCE overrides RLIMIT_NPROC, and probably similar
+   * things are true on other systems.
+   */
+  if (getuid () == 0 || geteuid () == 0)
+    return;
+
   getrlimit (RLIMIT_NPROC, &nl);
   nl.rlim_cur = 1;
 
