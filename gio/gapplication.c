@@ -1531,9 +1531,12 @@ g_application_open (GApplication  *application,
  * non-zero then the default main context is iterated until the use count
  * falls to zero, at which point 0 is returned.
  *
- * If the %G_APPLICATION_IS_SERVICE flag is set, then the exiting at
- * use count of zero is delayed for a while (ie: the instance stays
- * around to provide its <emphasis>service</emphasis> to others).
+ * If the %G_APPLICATION_IS_SERVICE flag is set, then the service will
+ * run for as much as 10 seconds with a use count of zero while waiting
+ * for the message that caused the activation to arrive.  After that,
+ * if the use count falls to zero the application will exit immediately,
+ * except in the case that g_application_set_inactivity_timeout() is in
+ * use.
  *
  * Returns: the exit status
  *

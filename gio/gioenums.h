@@ -1339,8 +1339,9 @@ typedef enum
  * GApplicationFlags:
  * @G_APPLICATION_FLAGS_NONE: Default
  * @G_APPLICATION_IS_SERVICE: Run as a service. In this mode, registration
- *      fails if the service is already running, and the application will
- *      stay around for a while when the use count falls to zero.
+ *      fails if the service is already running, and the application
+ *      will initially wait up to 10 seconds for an initial activation
+ *      message to arrive.
  * @G_APPLICATION_IS_LAUNCHER: Don't try to become the primary instance.
  * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in
  *     the primary instance). Note that this flag only affects the default
