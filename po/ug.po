@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-18 21:59+0000\n"
-"PO-Revision-Date: 2011-08-09 10:42+0600\n"
-"Last-Translator: Sahran <sahran.ug@gmail.com>\n"
+"POT-Creation-Date: 2013-01-24 23:17+0000\n"
+"PO-Revision-Date: 2013-02-22 22:21+0900\n"
+"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -30,12 +30,10 @@ msgstr "%s ئۇزاتقان ساناق سان قىممەت بەك چوڭ"
 
 #: ../gio/gbufferedinputstream.c:899 ../gio/gbufferedoutputstream.c:581
 #: ../gio/gdataoutputstream.c:568
-#| msgid "Seek not supported on stream"
 msgid "Seek not supported on base stream"
 msgstr "ئاساسىي ‫ئېقىم يۆتكىلىش(Seek) نى قوللىمايدۇ"
 
 #: ../gio/gbufferedinputstream.c:945
-#| msgid "Cannot truncate GMemoryInputStream"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "ئېقىم GBufferedInputStream نى قىسقارتقىلى بولمىدى"
 
@@ -45,7 +43,6 @@ msgid "Stream is already closed"
 msgstr "‫ئېقىم ئاللىقاچان تاقالغان"
 
 #: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
-#| msgid "Truncate not supported on stream"
 msgid "Truncate not supported on base stream"
 msgstr "ئاساسىي ‫ئېقىم قىسقارتىش(Truncate) نى قوللىمايدۇ"
 
@@ -82,7 +79,7 @@ msgstr "ئايلاندۇرۇپ كىرگۈزۈشتە ئىناۋەتسىز باي�
 msgid "Error during conversion: %s"
 msgstr "ئايلاندۇرۇۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:975
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:991
 msgid "Cancellable initialization not supported"
 msgstr "فورماتلاشنى ئىناۋەتسىز قىلىشقا بولمايدۇ"
 
@@ -121,9 +118,8 @@ msgid "There is no GCredentials support for your platform"
 msgstr "سىستېمىڭىز GCredentials نى قوللىمايدۇ"
 
 #: ../gio/gcredentials.c:480
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr ""
+msgstr "مەزكۇر مەشغۇلات سىستېمىسىدا GCredentials نىڭ ئىجرا كىملىكى يوق"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -158,15 +154,11 @@ msgstr "`%s' ئادرېستا خاتالىق بار - ئائىلە (family) خا
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-#| msgid "Address element `%s', does not contain a colon (:)"
 msgid "Address element `%s' does not contain a colon (:)"
 msgstr "ئادرېس ئېلېمېنتى `%s' قوش چېكىت (:) نى ئۆز ئىچىگە ئالمايدۇ"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
-#| msgid ""
-#| "Key/Value pair %d, `%s', in address element `%s', does not contain an "
-#| "equal sign"
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
@@ -236,7 +228,6 @@ msgstr "بېرىلگەن ئادرېس بوش"
 
 #: ../gio/gdbusaddress.c:1030
 #, c-format
-#| msgid "Cannot spawn a message bus without a machine-id: "
 msgid "Cannot spawn a message bus when setuid"
 msgstr ""
 
@@ -257,7 +248,7 @@ msgstr "بۇ كۆزنەكنى ئېتىش ئۈچۈن خالىغان بىر ھەر
 #: ../gio/gdbusaddress.c:1421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
+msgstr "ئەڭگىمە dbus ئىجرا بولمىغان ۋە ئاپتوماتىك قوزغىتىش مەغلۇپ بولدى"
 
 #: ../gio/gdbusaddress.c:1442
 #, c-format
@@ -309,7 +300,7 @@ msgstr "مۇندەرىجە ‹%s› نىڭ ئۇچۇرىنى ئېلىۋاتقان
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr "`%s' مۇندەرىجە ھوقۇقى خاتالىقى. 0700 نى ئۈمىد قىلىدۇ ئەمما 0%o ئېرىشتى"
+msgstr "`%s' مۇندەرىجە ئىمتىيازى خاتالىقى. 0700 نى ئۈمىد قىلىدۇ ئەمما 0%o ئېرىشتى"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -490,11 +481,9 @@ msgstr "سىگنال ئۇچۇرى: INTERFACE بېشى سۆز بۆلىكى قال
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu byte but got EOF"
-#| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu bytes but only got %lu"
 msgid_plural "Wanted to read %lu byte but only got %lu"
-msgstr[0] ""
+msgstr[0] "%lu بايتنى ئوقۇشنى ئۈمىد قىلغان ئەمما %lu نىلا ئوقۇدى"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
@@ -580,7 +569,7 @@ msgstr "D-Bus سىزىق فورماتىدا تىپ تېكىستى `%s' نى ئى
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr ""
+msgstr "ئۇچۇردا %d ھۆججەت چۈشەندۈرۈش بەلگىسى بار ئەمما باش قىسمى %d ھۆججەت چۈشەندۈرۈشىنى كۆرسەتتى"
 
 #: ../gio/gdbusmessage.c:2651
 msgid "Cannot serialize message: "
@@ -614,7 +603,6 @@ msgstr "بوش گەۋدىگە قايتقاندا خاتالىق كۆرۈلدى"
 
 #: ../gio/gdbusprivate.c:2068
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to get Hardware profile: %s"
 msgstr ""
 
@@ -780,7 +768,6 @@ msgstr "خاتالىق: سىگنال بەلگىلەنمىگەن.\n"
 
 #: ../gio/gdbus-tool.c:636
 #, c-format
-#| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr ""
 
@@ -986,7 +973,7 @@ msgstr "GEmblemedIcon ئۈچۈن بىر GEmblem ئۈمىد قىلىندى"
 #: ../gio/gfile.c:4505 ../gio/gfile.c:4590 ../gio/gfile.c:4680
 #: ../gio/gfile.c:4777 ../gio/gfile.c:4864 ../gio/gfile.c:4965
 #: ../gio/gfile.c:5238 ../gio/gfile.c:5516 ../gio/gfile.c:5570
-#: ../gio/gfile.c:7114 ../gio/gfile.c:7204 ../gio/gfile.c:7288
+#: ../gio/gfile.c:7115 ../gio/gfile.c:7205 ../gio/gfile.c:7289
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "مەشغۇلاتنى قوللىمايدۇ"
@@ -1032,17 +1019,16 @@ msgid "Error splicing file: %s"
 msgstr "ھۆججەت جىپسىلىغاندا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/gfile.c:2952
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
-msgstr ""
+msgstr "ئېگەرلەشلەر ئارىسىدا كۆچۈرۈش(reflink/clone) نى قوللىمايدۇ"
 
 #: ../gio/gfile.c:2956
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
+msgstr "كۆچۈرۈش(reflink/clone) نى قوللىمايدۇ ياكى ئىناۋەتسىز"
 
 #: ../gio/gfile.c:2961
 msgid "Copy (reflink/clone) is not supported or didn't work"
-msgstr ""
+msgstr "كۆچۈرۈش(reflink/clone) نى قوللىمايدۇ ياكى ئىشلىمىدى"
 
 #: ../gio/gfile.c:3026
 msgid "Can't copy special file"
@@ -1141,7 +1127,6 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "%s تىپ GIcon ئېغىزنىڭ from_tokens() ئۇسۇلىنى ئەمەلگە ئاشۇرالمىدى"
 
 #: ../gio/gicon.c:428
-#| msgid "Can't handle the supplied version the icon encoding"
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "تەمىنلەنگەن سىنبەلگە كودلاش نەشرىنى بىر تەرەپ قىلالمىدى"
 
@@ -1224,7 +1209,6 @@ msgstr "ۋاقىتلىق ھۆججەت قۇرۇش مەغلۇپ بولدى: %s"
 
 #: ../gio/glib-compile-resources.c:340
 #, c-format
-#| msgid "Error seeking in file: %s"
 msgid ""
 "Error processing input file with xmllint:\n"
 "%s"
@@ -1279,7 +1263,7 @@ msgstr ""
 
 #: ../gio/glib-compile-resources.c:622
 msgid "Generate source header"
-msgstr ""
+msgstr "مەنبە ماۋزۇسىنى ھاسىللاش"
 
 #: ../gio/glib-compile-resources.c:623
 msgid "Generate sourcecode used to link in the resource file into your code"
@@ -1311,7 +1295,7 @@ msgstr ""
 #: ../gio/glib-compile-resources.c:669
 #, c-format
 msgid "You should give exactly one file name\n"
-msgstr ""
+msgstr "سىز پەقەت ۋە پەقەت بىرلا ھۆججەت ئاتى بېرىشىڭىز لازىم\n"
 
 #: ../gio/glib-compile-schemas.c:778
 msgid "empty names are not permitted"
@@ -1324,25 +1308,20 @@ msgstr "ئىناۋەتسىز ئات ‹%s›: ئات چوقۇم كىچىك ھە�
 
 #: ../gio/glib-compile-schemas.c:800
 #, c-format
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, "
-#| "numbers and dash ('-') are permitted."
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and hyphen ('-') are permitted."
-msgstr ""
+msgstr "ئىناۋەتسىز ئات '%s': ئىناۋەتسىز ھەرپ ب'%c'؛ پەقەت كىچىك ھەرپ، رەقەم ۋە سىزىق('-') نىلا ئىشلىتىشكە بولىدۇ."
 
 #: ../gio/glib-compile-schemas.c:809
 #, c-format
-#| msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
-msgstr ""
+msgstr "ئىناۋەتسىز ئات ‹%s›:  ئىككى تۇتاش سىزىق ('--')نى ئىشلىتىشكە يول قويمايدۇ."
 
 #: ../gio/glib-compile-schemas.c:818
 #, c-format
-#| msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
-msgstr ""
+msgstr "ئىناۋەتسىز ئات ‹%s›:  ئەڭ ئاخىرقى ھەرپ سىزىق ('-') بولماسلىقى لازىم."
 
 #: ../gio/glib-compile-schemas.c:826
 #, c-format
@@ -1356,7 +1335,7 @@ msgstr "<child name='%s'> ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:921
 msgid "cannot add keys to a 'list-of' schema"
-msgstr ""
+msgstr "'list-of' لايىھىگە كۇنۇپكا قوشالمىدى"
 
 #: ../gio/glib-compile-schemas.c:932
 #, c-format
@@ -1408,15 +1387,13 @@ msgstr "<schema id='%s'>ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:1129
 #, c-format
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> مەۋجۇت بولمىغان لايىھە '%s' نى كېڭەيتتى"
 
 #: ../gio/glib-compile-schemas.c:1145
 #, c-format
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> تېخى مەۋجۇت بولمىغان لايىھە  '%s' نىڭ تىزىمى"
 
 #: ../gio/glib-compile-schemas.c:1153
 #, c-format
@@ -1458,9 +1435,8 @@ msgstr "<%s id='%s'> ئاللىقاچان بەلگىلەنگەن"
 
 #: ../gio/glib-compile-schemas.c:1463
 #, c-format
-#| msgid "Element <%s> not allowed at toplevel"
 msgid "Element <%s> not allowed at the top level"
-msgstr ""
+msgstr "يۇقىرى قەۋەتتە <%s> ئېلېمېنتقا يول قويۇلمايدۇ"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1757 ../gio/glib-compile-schemas.c:1828
@@ -1498,9 +1474,6 @@ msgstr " ھەمدە --strict بەلگىلەندى؛ چېكىنىۋاتىدۇ.\n"
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
-#| msgid ""
-#| "error parsing key `%s' in schema `%s' as specified in override file `%s': "
-#| "%s.  "
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr "%3$s قاپلاش ھۆججىتىدە بەلگىلەنگەن  `%2$s' دىكى %1$s كۇنۇپكىنى تەھلىل قىلىشتا خاتالىق كۆرۈلدى: %4$s"
@@ -1512,9 +1485,6 @@ msgstr "بۇ كۇنۇپكىنى قاپلاشقا پەرۋا قىلمايدۇ.\n"
 
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
-#| msgid ""
-#| "override for key `%s' in schema `%s' in override file `%s' is out of the "
-#| "range given in the schema"
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is outside the "
 "range given in the schema"
@@ -1571,7 +1541,7 @@ msgstr "ھېچنېمە قىلما.\n"
 msgid "removed existing output file.\n"
 msgstr "مەۋجۇت چىقارغان ھۆججەت چىقىرىۋېتىلدى.\n"
 
-#: ../gio/glocaldirectorymonitor.c:288
+#: ../gio/glocaldirectorymonitor.c:252
 msgid "Unable to find default local directory monitor type"
 msgstr "كۆڭۈلدىكى يەرلىك مۇندەرىجە كۆزەتكۈچ تىپىنى تاپالمىدى"
 
@@ -1736,12 +1706,12 @@ msgstr "ئىناۋەتسىز خاسلىق تىپى (بايتلىق تېكىست 
 
 #: ../gio/glocalfileinfo.c:2121
 msgid "Cannot set permissions on symlinks"
-msgstr "بەلگە ئۇلانما ھوقۇقىنى تەڭشىيەلمەيدۇ"
+msgstr "بەلگە ئۇلانمىنىڭ ئىمتىيازىنى بەلگىلىگىلى بولمايدۇ"
 
 #: ../gio/glocalfileinfo.c:2137
 #, c-format
 msgid "Error setting permissions: %s"
-msgstr "ھوقۇقلىرىنى بېكىتىۋاتقاندا خاتالىق كۆرۈلدى: %s"
+msgstr "ئىمتىيازلارنى بېكىتىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/glocalfileinfo.c:2188
 #, c-format
@@ -1803,7 +1773,7 @@ msgstr "ھۆججەتتە ئورۇن بەلگىلەۋاتقاندا خاتالى�
 msgid "Error closing file: %s"
 msgstr "ھۆججەتنى يېپىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/glocalfilemonitor.c:212
+#: ../gio/glocalfilemonitor.c:176
 msgid "Unable to find default local file monitor type"
 msgstr "كۆڭۈلدىكى يەرلىك ھۆججەت كۆزەتكۈچ تىپىنى تاپالمايدۇ"
 
@@ -1981,17 +1951,17 @@ msgstr "مەنبە ئېقىم ئاللىبۇرۇن يېپىلغان"
 #: ../gio/gresourcefile.c:555 ../gio/gresourcefile.c:657
 #, c-format
 msgid "The resource at '%s' does not exist"
-msgstr ""
+msgstr "‹%s'› يەردىكى مەنبە مەۋجۇت ئەمەس"
 
 #: ../gio/gresource.c:456
 #, c-format
 msgid "The resource at '%s' failed to decompress"
-msgstr ""
+msgstr "‹%s'› يەردىكى مەنبەنى يېيىش مەغلۇپ بولدى"
 
 #: ../gio/gresourcefile.c:653
 #, c-format
 msgid "The resource at '%s' is not a directory"
-msgstr ""
+msgstr "‹%s'› يەردىكى مەنبە مۇندەرىجە ئەمەس"
 
 #: ../gio/gresourcefile.c:861
 msgid "Input stream doesn't implement seek"
@@ -2063,7 +2033,8 @@ msgid ""
 "\n"
 "Use 'gresource help COMMAND' to get detailed help.\n"
 "\n"
-msgstr ""
+msgstr "تەپسىلىي ياردەمگە ئېرىشىش ئۈچۈن ‹gresource help COMMAND› نى ئىشلىتىڭ.\n"
+"\n"
 
 #: ../gio/gresource-tool.c:535
 #, c-format
@@ -2073,7 +2044,11 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "ئىشلىتىش ئۇسۇلى:\n"
+"gresource %s%s%s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
 msgid "Arguments:\n"
@@ -2268,7 +2243,11 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "ئىشلىتىش ئۇسۇلى:\n"
+"gsettings [--schemadir SCHEMADIR] %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:645
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
@@ -2311,7 +2290,7 @@ msgstr "ئىناۋەتسىز ئوقۇر، دەسلەپلەشتۈرەلمىگەن
 msgid "Socket is already closed"
 msgstr "ئوقۇر تاقالغان"
 
-#: ../gio/gsocket.c:334 ../gio/gsocket.c:3509 ../gio/gsocket.c:3564
+#: ../gio/gsocket.c:334 ../gio/gsocket.c:3525 ../gio/gsocket.c:3580
 msgid "Socket I/O timed out"
 msgstr "ئوقۇر I/O مۆھلىتى ئۆتتى"
 
@@ -2320,114 +2299,111 @@ msgstr "ئوقۇر I/O مۆھلىتى ئۆتتى"
 msgid "creating GSocket from fd: %s"
 msgstr "ھۆججەت چۈشەندۈرۈش بەلگىسىدىن GSocket قۇرۇۋاتىدۇ: %s"
 
-#: ../gio/gsocket.c:515 ../gio/gsocket.c:522 ../gio/gsocket.c:538
+#: ../gio/gsocket.c:509 ../gio/gsocket.c:563 ../gio/gsocket.c:570
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "ئوقۇر قۇرالمايدۇ: %s"
 
-#: ../gio/gsocket.c:515
-#| msgid "Unknown protocol was specified"
+#: ../gio/gsocket.c:563
 msgid "Unknown family was specified"
 msgstr ""
 
-#: ../gio/gsocket.c:522
+#: ../gio/gsocket.c:570
 msgid "Unknown protocol was specified"
 msgstr "نامەلۇم كېلىشىم بەلگىلەندى"
 
-#: ../gio/gsocket.c:1712
+#: ../gio/gsocket.c:1728
 #, c-format
 msgid "could not get local address: %s"
 msgstr "يەرلىك ئادرېسقا ئېرىشەلمىدى: %s"
 
-#: ../gio/gsocket.c:1755
+#: ../gio/gsocket.c:1771
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "يىراقتىكى ئادرېسقا ئېرىشەلمىدى: %s"
 
-#: ../gio/gsocket.c:1816
+#: ../gio/gsocket.c:1832
 #, c-format
 msgid "could not listen: %s"
 msgstr "تىڭشىيالمىدى: %s"
 
-#: ../gio/gsocket.c:1888
+#: ../gio/gsocket.c:1904
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "ئادرېسقا باغلاۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:1941 ../gio/gsocket.c:1978
+#: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr ""
 
-#: ../gio/gsocket.c:1942 ../gio/gsocket.c:1979
+#: ../gio/gsocket.c:1958 ../gio/gsocket.c:1995
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr ""
 
-#: ../gio/gsocket.c:1943
+#: ../gio/gsocket.c:1959
 msgid "No support for source-specific multicast"
 msgstr ""
 
-#: ../gio/gsocket.c:2162
+#: ../gio/gsocket.c:2178
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "باغلىنىشنى قوبۇل قىلىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:2283
+#: ../gio/gsocket.c:2299
 msgid "Connection in progress"
 msgstr "باغلىنىۋاتىدۇ"
 
-#: ../gio/gsocket.c:2330
-#| msgid "Unable to get pending error: %s"
+#: ../gio/gsocket.c:2346
 msgid "Unable to get pending error: "
-msgstr ""
+msgstr "ھەل بولمىغان خاتالىققا ئېرىشكىلى بولمىدى: %s "
 
-#: ../gio/gsocket.c:2496
+#: ../gio/gsocket.c:2512
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "سانلىق-مەلۇمات قوبۇل قىلىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:2674
+#: ../gio/gsocket.c:2690
 #, c-format
 msgid "Error sending data: %s"
 msgstr "سانلىق-مەلۇمات يوللاۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:2788
+#: ../gio/gsocket.c:2804
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "ئوقۇرنى تاقىغىلى بولمىدى: %s"
 
-#: ../gio/gsocket.c:2867
+#: ../gio/gsocket.c:2883
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "سوكېتنى يېپىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:3502
+#: ../gio/gsocket.c:3518
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "ئوقۇر ھالىتىنى كۈتۈۋاتىدۇ: %s"
 
-#: ../gio/gsocket.c:3780 ../gio/gsocket.c:3861
+#: ../gio/gsocket.c:3796 ../gio/gsocket.c:3877
 #, c-format
 msgid "Error sending message: %s"
 msgstr "ئۇچۇر يوللاۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:3805
-#| msgid "GSocketControlMessage not supported on windows"
+#: ../gio/gsocket.c:3821
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "windows تا GSocketControlMessage نى ئىشلەتكىلى بولمايدۇ"
 
-#: ../gio/gsocket.c:4139 ../gio/gsocket.c:4274
+#: ../gio/gsocket.c:4155 ../gio/gsocket.c:4290
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "ئۇچۇر قوبۇل قىلىۋاتقاندا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gsocket.c:4356
+#: ../gio/gsocket.c:4372
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "ھەل بولمىغان خاتالىققا ئېرىشەلمەيدۇ: %s"
 
-#: ../gio/gsocket.c:4375
+#: ../gio/gsocket.c:4391
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "بۇ مەشغۇلات سىستېمىسىدا g_socket_get_credentials ئەمەلگە ئاشمىغان"
 
@@ -2450,7 +2426,6 @@ msgid "Unknown error on connect"
 msgstr "باغلانغاندا نامەلۇم خاتالىق كۆرۈلدى"
 
 #: ../gio/gsocketclient.c:1029 ../gio/gsocketclient.c:1478
-#| msgid "Trying to proxy over non-TCP connection is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "TCP باشلىنىشتىن باشقىلىرىدا ۋاكالەتچىنى ئىشلەتكىلى بولمايدۇ."
 
@@ -2676,7 +2651,7 @@ msgstr "ھۆججەت چۈشەندۈرگۈچتىن ئوقۇشتا خاتالىق 
 msgid "Error closing file descriptor: %s"
 msgstr "ھۆججەت چۈشەندۈرگۈچنى يېپىشتا خاتالىق كۆرۈلدى: %s"
 
-#: ../gio/gunixmounts.c:1979 ../gio/gunixmounts.c:2032
+#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2036
 msgid "Filesystem root"
 msgstr "ھۆججەت سىستېمىسى غولى"
 
@@ -2686,7 +2661,6 @@ msgid "Error writing to file descriptor: %s"
 msgstr "ھۆججەت چۈشەندۈرگۈچكە يېزىشتا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-#| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "بۇ سىستېما ئابستراكت unix دائىرە ئوقۇر ئادرېسىنى قوللىمايدۇ"
 
@@ -2763,22 +2737,21 @@ msgid "Ignored, for compat with GTestDbus"
 msgstr ""
 
 #: ../gio/tests/gdbus-daemon.c:20
-#| msgid "Print help"
 msgid "Print address"
-msgstr ""
+msgstr "ئادرېسىنى بېسىش"
 
 #: ../gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
-msgstr ""
+msgstr "ئادرېسىنى shell ھالەتتە باسىدۇ"
 
 #: ../gio/tests/gdbus-daemon.c:28
 msgid "Run a dbus service"
-msgstr ""
+msgstr "بىر دانە dbus مۇلازىمىتىنى ئىجرا قىلىدۇ"
 
 #: ../gio/tests/gdbus-daemon.c:42
 #, c-format
 msgid "Wrong args\n"
-msgstr ""
+msgstr "خاتا پارامېتىرلار\n"
 
 #: ../glib/gbookmarkfile.c:760
 #, c-format
@@ -3127,8 +3100,9 @@ msgstr "مۇندەرىجە ‹%s› نى ئېچىۋاتقاندا خاتالىق
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
-msgid "Could not allocate %ld byte to read file \"%s\""
+#| msgid "Could not allocate %ld byte to read file \"%s\""
+#| msgid_plural "Could not allocate %lu bytes to read file \"%s\""
+msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "%lu بايت تەقسىملىيەلمىدى(ھۆججەت «%s» نى ئوقۇش ئۈچۈن)"
 
@@ -3372,13 +3346,11 @@ msgstr "ئىناۋەتسىز UTF-8 بىلەن كودلانغان تېكىست ئ
 
 #: ../glib/gmarkup.c:472
 #, c-format
-#| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "‹%s› ئىناۋەتلىك ئات ئەمەس"
 
 #: ../glib/gmarkup.c:488
 #, c-format
-#| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
 msgstr "‹%s› ئىناۋەتلىك ئات ئەمەس: '%c'"
 
@@ -3654,7 +3626,6 @@ msgid "\\c at end of pattern"
 msgstr "\\c ئىپادە ئاخىرىدا"
 
 #: ../glib/gregex.c:335
-#| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "\\ نىڭ كەينىدىكى ھەرپنى تونۇغىلى بولمىدى"
 
@@ -3687,7 +3658,6 @@ msgid "unexpected repeat"
 msgstr "تاسادىپىي تەكرارلىق"
 
 #: ../glib/gregex.c:360
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "(? نىڭ ياكى (?- كەينىدە تونۇيالمايدىغان ھەرپ بار"
 
@@ -3708,7 +3678,6 @@ msgid "missing ) after comment"
 msgstr "ئىزاھاتتىن كېيىن ) كەم"
 
 #: ../glib/gregex.c:375
-#| msgid "regular expression too large"
 msgid "regular expression is too large"
 msgstr "مۇنتىزىم ئىپادە بەك چوڭ"
 
@@ -3828,9 +3797,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "زىددىيەتلىك NEWLINE تاللانما"
 
 #: ../glib/gregex.c:476
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -3846,19 +3812,17 @@ msgstr ""
 
 #: ../glib/gregex.c:486
 msgid "(*VERB) not recognized"
-msgstr ""
+msgstr "(*VERB)  نى تونۇمايدۇ"
 
 #: ../glib/gregex.c:489
 msgid "number is too big"
 msgstr "سان بەك چوڭ"
 
 #: ../glib/gregex.c:492
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr ""
 
 #: ../glib/gregex.c:495
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "(?+ نىڭ كەينىدە رەقەم بولۇشى كېرەك"
 
@@ -3867,7 +3831,6 @@ msgid "] is an invalid data character in JavaScript compatibility mode"
 msgstr ""
 
 #: ../glib/gregex.c:501
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr ""
 
@@ -3880,14 +3843,10 @@ msgid "\\c must be followed by an ASCII character"
 msgstr ""
 
 #: ../glib/gregex.c:510
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 
 #: ../glib/gregex.c:513
-#| msgid "URIs not supported"
 msgid "\\N is not supported in a class"
 msgstr ""
 
@@ -3900,7 +3859,6 @@ msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr ""
 
 #: ../glib/gregex.c:522
-#| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
 msgstr "\\u.... قاتارىدىكى ھەرپنىڭ قىممىتى بەك چوڭ"
 
@@ -3918,7 +3876,6 @@ msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE ئامبار تەرجىمە قىلغاندا UTF8 خاسلىق قوللاشنى ئۆز ئىچىگە ئالمىغان"
 
 #: ../glib/gregex.c:1331
-#| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr ""
 
