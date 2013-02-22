@@ -2062,6 +2062,72 @@ g_typelib_error_quark (void)
   return quark;
 }
 
+static GSList *library_paths;
+
+/**
+ * g_irepository_prepend_library_path:
+ * @directory: (type filename): a single directory to scan for shared libraries
+ *
+ * Prepends @directory to the search path that is used to
+ * search shared libraries referenced by imported namespaces.
+ * Multiple calls to this function all contribute to the final
+ * list of paths.
+ * The list of paths is unique and shared for all #GIRepository
+ * instances across the process, but it doesn't affect namespaces
+ * imported before the call.
+ *
+ * If the library is not found in the directories configured
+ * in this way, loading will fall back to the system library
+ * path (ie. LD_LIBRARY_PATH and DT_RPATH in ELF systems).
+ * See the documentation of your dynamic linker for full details.
+ *
+ * Since: 1.35.8
+ */
+void
+g_irepository_prepend_library_path (const char *directory)
+{
+  library_paths = g_slist_prepend (library_paths,
+                                   g_strdup (directory));
+}
+
+/* Note on the GModule flags used by this function:
+
+ * Glade's autoconnect feature and OpenGL's extension mechanism
+ * as used by Clutter rely on g_module_open(NULL) to work as a means of
+ * accessing the app's symbols. This keeps us from using
+ * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
+ * in general libraries are not expecting multiple copies of
+ * themselves and are not expecting to be unloaded. So we just
+ * load modules globally for now.
+ */
+static GModule *
+load_one_shared_library (const char *shlib)
+{
+  GSList *p;
+  GModule *m;
+
+  if (!g_path_is_absolute (shlib))
+    {
+      /* First try in configured library paths */
+      for (p = library_paths; p; p = p->next)
+        {
+          char *path = g_build_filename (p->data, shlib, NULL);
+
+          m = g_module_open (path, G_MODULE_BIND_LAZY);
+
+          g_free (path);
+          if (m != NULL)
+            return m;
+        }
+    }
+
+  /* Then try loading from standard paths */
+  /* Do not attempt to fix up shlib to replace .la with .so:
+     it's done by GModule anyway.
+  */
+  return g_module_open (shlib, G_MODULE_BIND_LAZY);
+}
+
 static void
 _g_typelib_do_dlopen (GITypelib *typelib)
 {
@@ -2091,30 +2157,7 @@ _g_typelib_do_dlopen (GITypelib *typelib)
         {
           GModule *module;
 
-          /* Glade's autoconnect feature and OpenGL's extension mechanism
-           * as used by Clutter rely on g_module_open(NULL) to work as a means of
-           * accessing the app's symbols. This keeps us from using
-           * G_MODULE_BIND_LOCAL. BIND_LOCAL may have other issues as well;
-           * in general libraries are not expecting multiple copies of
-           * themselves and are not expecting to be unloaded. So we just
-           * load modules globally for now.
-           */
-
-          module = g_module_open (shlibs[i], G_MODULE_BIND_LAZY);
-
-          if (module == NULL)
-            {
-              GString *shlib_full = g_string_new (shlibs[i]);
-
-              module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
-              if (module == NULL)
-                {
-                  g_string_overwrite (shlib_full, strlen (shlib_full->str)-2, SHLIB_SUFFIX);
-                  module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
-                }
-
-              g_string_free (shlib_full, TRUE);
-            }
+          module = load_one_shared_library (shlibs[i]);
 
           if (module == NULL)
             {

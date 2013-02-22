@@ -90,6 +90,7 @@ typedef enum
 GType         g_irepository_get_type      (void) G_GNUC_CONST;
 GIRepository *g_irepository_get_default   (void);
 void          g_irepository_prepend_search_path (const char *directory);
+void          g_irepository_prepend_library_path (const char *directory);
 GSList *      g_irepository_get_search_path     (void);
 const char *  g_irepository_load_typelib  (GIRepository *repository,
 					   GITypelib     *typelib,

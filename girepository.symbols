@@ -134,6 +134,7 @@ g_irepository_get_typelib_path
 g_irepository_get_version
 g_irepository_is_registered
 g_irepository_load_typelib
+g_irepository_prepend_library_path
 g_irepository_prepend_search_path
 g_irepository_require
 g_irepository_require_private
