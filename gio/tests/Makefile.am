@@ -19,6 +19,7 @@ AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 test_programs = \
 	async-close-output-stream		\
+	async-splice-output-stream		\
 	buffered-input-stream			\
 	buffered-output-stream			\
 	cancellable				\
