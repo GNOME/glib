@@ -25,6 +25,7 @@
 #include "glibintl.h"
 
 #include "ginputstream.h"
+#include "gioprivate.h"
 #include "gseekable.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
@@ -1041,6 +1042,28 @@ g_input_stream_clear_pending (GInputStream *stream)
   stream->priv->pending = FALSE;
 }
 
+/**
+ * g_input_stream_async_read_is_via_threads:
+ * @stream: input stream
+ *
+ * Checks if an input stream's read_async function uses threads.
+ *
+ * Returns: %TRUE if @stream's read_async function uses threads.
+ **/
+gboolean
+g_input_stream_async_read_is_via_threads (GInputStream *stream)
+{
+  GInputStreamClass *class;
+
+  g_return_val_if_fail (G_IS_INPUT_STREAM (stream), FALSE);
+
+  class = G_INPUT_STREAM_GET_CLASS (stream);
+
+  return (class->read_async == g_input_stream_real_read_async &&
+      !(G_IS_POLLABLE_INPUT_STREAM (stream) &&
+        g_pollable_input_stream_can_poll (G_POLLABLE_INPUT_STREAM (stream))));
+}
+
 /********************************************
  *   Default implementation of async ops    *
  ********************************************/
@@ -1128,10 +1151,6 @@ read_async_pollable (GPollableInputStream *stream,
   /* g_input_stream_real_read_async() unrefs task */
 }
 
-#define CAN_DO_NONBLOCKING_READS(stream) \
-  (G_IS_POLLABLE_INPUT_STREAM (stream) && \
-   g_pollable_input_stream_can_poll (G_POLLABLE_INPUT_STREAM (stream)))
-
 
 static void
 g_input_stream_real_read_async (GInputStream        *stream,
@@ -1152,7 +1171,7 @@ g_input_stream_real_read_async (GInputStream        *stream,
   op->buffer = buffer;
   op->count = count;
 
-  if (CAN_DO_NONBLOCKING_READS (stream))
+  if (!g_input_stream_async_read_is_via_threads (stream))
     read_async_pollable (G_POLLABLE_INPUT_STREAM (stream), task);
   else
     g_task_run_in_thread (task, read_async_thread);
@@ -1260,8 +1279,7 @@ g_input_stream_real_skip_async (GInputStream        *stream,
   task = g_task_new (stream, cancellable, callback, user_data);
   g_task_set_priority (task, io_priority);
 
-  if (class->read_async == g_input_stream_real_read_async &&
-      !CAN_DO_NONBLOCKING_READS (stream))
+  if (g_input_stream_async_read_is_via_threads (stream))
     {
       /* Read is thread-using async fallback.
        * Make skip use threads too, so that we can use a possible sync skip

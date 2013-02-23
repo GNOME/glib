@@ -381,6 +381,7 @@ libgio_2_0_la_SOURCES =		\
 	giomodule-priv.h	\
 	gioscheduler.c 		\
 	giostream.c		\
+	gioprivate.h		\
 	gloadableicon.c 	\
 	gmount.c 		\
 	gmemoryinputstream.c 	\
