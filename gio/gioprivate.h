@@ -22,10 +22,12 @@
 #define __G_IO_PRIVATE_H__
 
 #include "ginputstream.h"
+#include "goutputstream.h"
 
 G_BEGIN_DECLS
 
 gboolean g_input_stream_async_read_is_via_threads (GInputStream *stream);
+gboolean g_output_stream_async_write_is_via_threads (GOutputStream *stream);
 
 G_END_DECLS
 

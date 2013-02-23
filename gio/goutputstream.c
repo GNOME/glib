@@ -27,6 +27,7 @@
 #include "gtask.h"
 #include "ginputstream.h"
 #include "gioerror.h"
+#include "gioprivate.h"
 #include "glibintl.h"
 #include "gpollableoutputstream.h"
 
@@ -1352,6 +1353,28 @@ g_output_stream_clear_pending (GOutputStream *stream)
   stream->priv->pending = FALSE;
 }
 
+/**
+ * g_output_stream_async_write_is_via_threads:
+ * @stream: a #GOutputStream.
+ *
+ * Checks if an ouput stream's write_async function uses threads.
+ *
+ * Returns: %TRUE if @stream's write_async function uses threads.
+ **/
+gboolean
+g_output_stream_async_write_is_via_threads (GOutputStream *stream)
+{
+  GOutputStreamClass *class;
+
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
+
+  class = G_OUTPUT_STREAM_GET_CLASS (stream);
+
+  return (class->write_async == g_output_stream_real_write_async &&
+      !(G_IS_POLLABLE_OUTPUT_STREAM (stream) &&
+        g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (stream))));
+}
+
 
 /********************************************
  *   Default implementation of async ops    *
@@ -1456,8 +1479,7 @@ g_output_stream_real_write_async (GOutputStream       *stream,
   op->buffer = buffer;
   op->count_requested = count;
 
-  if (G_IS_POLLABLE_OUTPUT_STREAM (stream) &&
-      g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (stream)))
+  if (!g_output_stream_async_write_is_via_threads (stream))
     write_async_pollable (G_POLLABLE_OUTPUT_STREAM (stream), task);
   else
     g_task_run_in_thread (task, write_async_thread);
