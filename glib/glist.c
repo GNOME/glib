@@ -32,6 +32,7 @@
 
 #include "glist.h"
 #include "gslice.h"
+#include "gmessages.h"
 
 #include "gtestutils.h"
 
@@ -420,6 +421,34 @@ g_list_concat (GList *list1, GList *list2)
   return list1;
 }
 
+static inline GList*
+_g_list_remove_link (GList *list,
+		     GList *link)
+{
+  if (link->prev)
+    {
+      if (link->prev->next == link)
+        link->prev->next = link->next;
+      else
+        g_warning ("corrupted double-linked list detected");
+    }
+  if (link->next)
+    {
+      if (link->next->prev == link)
+        link->next->prev = link->prev;
+      else
+        g_warning ("corrupted double-linked list detected");
+    }
+
+  if (link == list)
+    list = list->next;
+
+  link->next = NULL;
+  link->prev = NULL;
+
+  return list;
+}
+
 /**
  * g_list_remove:
  * @list: a #GList
@@ -436,7 +465,7 @@ g_list_remove (GList	     *list,
 	       gconstpointer  data)
 {
   GList *tmp;
-  
+
   tmp = list;
   while (tmp)
     {
@@ -444,16 +473,9 @@ g_list_remove (GList	     *list,
 	tmp = tmp->next;
       else
 	{
-	  if (tmp->prev)
-	    tmp->prev->next = tmp->next;
-	  if (tmp->next)
-	    tmp->next->prev = tmp->prev;
-	  
-	  if (list == tmp)
-	    list = list->next;
-	  
+          list = _g_list_remove_link (list, tmp);
 	  _g_list_free1 (tmp);
-	  
+
 	  break;
 	}
     }
@@ -465,9 +487,9 @@ g_list_remove (GList	     *list,
  * @list: a #GList
  * @data: data to remove
  *
- * Removes all list nodes with data equal to @data. 
- * Returns the new head of the list. Contrast with 
- * g_list_remove() which removes only the first node 
+ * Removes all list nodes with data equal to @data.
+ * Returns the new head of the list. Contrast with
+ * g_list_remove() which removes only the first node
  * matching the given data.
  *
  * Returns: new head of @list
@@ -497,27 +519,6 @@ g_list_remove_all (GList	*list,
 	  tmp = next;
 	}
     }
-  return list;
-}
-
-static inline GList*
-_g_list_remove_link (GList *list,
-		     GList *link)
-{
-  if (link)
-    {
-      if (link->prev)
-	link->prev->next = link->next;
-      if (link->next)
-	link->next->prev = link->prev;
-      
-      if (link == list)
-	list = list->next;
-      
-      link->next = NULL;
-      link->prev = NULL;
-    }
-  
   return list;
 }
 

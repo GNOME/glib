@@ -1,4 +1,5 @@
 #include <glib.h>
+#include <stdlib.h>
 
 #define SIZE       50
 #define NUMBER_MIN 0000
@@ -488,6 +489,31 @@ test_position (void)
   g_list_free (ll);
 }
 
+static void
+test_double_free (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GList *list, *link;
+      GList  intruder = { NULL, (gpointer)0xDEADBEEF, (gpointer)0xDEADBEEF };
+
+      list = NULL;
+      list = g_list_append (list, "a");
+      link = list = g_list_append (list, "b");
+      list = g_list_append (list, "c");
+
+      list = g_list_remove_link (list, link);
+      link->prev = list;
+      link->next = &intruder;
+      list = g_list_remove_link (list, link);
+
+      g_list_free (list);
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*corrupted double-linked list detected*");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -516,6 +542,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/delete-link", test_delete_link);
   g_test_add_func ("/list/prepend", test_prepend);
   g_test_add_func ("/list/position", test_position);
+  g_test_add_func ("/list/double-free", test_double_free);
 
   return g_test_run ();
 }
