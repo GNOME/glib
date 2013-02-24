@@ -347,11 +347,11 @@ void
 g_test_log_set_fatal_handler            (GTestLogFatalFunc log_func,
                                          gpointer          user_data);
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_34
 void    g_test_expect_message                    (const gchar    *log_domain,
                                                   GLogLevelFlags  log_level,
                                                   const gchar    *pattern);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_34
 void    g_test_assert_expected_messages_internal (const char     *domain,
                                                   const char     *file,
                                                   int             line,
