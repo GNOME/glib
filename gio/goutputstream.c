@@ -96,7 +96,7 @@ static void     g_output_stream_real_close_async   (GOutputStream             *s
 static gboolean g_output_stream_real_close_finish  (GOutputStream             *stream,
 						    GAsyncResult              *result,
 						    GError                   **error);
-static gboolean _g_output_stream_close_internal    (GOutputStream             *stream,
+static gboolean g_output_stream_internal_close     (GOutputStream             *stream,
                                                     GCancellable              *cancellable,
                                                     GError                   **error);
 
@@ -502,7 +502,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
-      res = _g_output_stream_close_internal (stream, cancellable, error);
+      res = g_output_stream_internal_close (stream, cancellable, error);
     }
 
   if (res)
@@ -514,9 +514,9 @@ g_output_stream_real_splice (GOutputStream             *stream,
 /* Must always be called inside
  * g_output_stream_set_pending()/g_output_stream_clear_pending(). */
 static gboolean
-_g_output_stream_close_internal (GOutputStream  *stream,
-                                 GCancellable   *cancellable,
-                                 GError        **error)
+g_output_stream_internal_close (GOutputStream  *stream,
+                                GCancellable   *cancellable,
+                                GError        **error)
 {
   GOutputStreamClass *class;
   gboolean res;
@@ -613,7 +613,7 @@ g_output_stream_close (GOutputStream  *stream,
   if (!g_output_stream_set_pending (stream, error))
     return FALSE;
 
-  res = _g_output_stream_close_internal (stream, cancellable, error);
+  res = g_output_stream_internal_close (stream, cancellable, error);
 
   g_output_stream_clear_pending (stream);
   
