@@ -33,7 +33,7 @@ test_unichar_validate (void)
   g_assert (g_unichar_validate ('j'));
   g_assert (g_unichar_validate (8356));
   g_assert (g_unichar_validate (8356));
-  g_assert (!g_unichar_validate (0xfdd1));
+  g_assert (g_unichar_validate (0xfdd1));
   g_assert (g_unichar_validate (917760));
   g_assert (!g_unichar_validate (0x110000));
 }

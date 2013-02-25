@@ -104,22 +104,14 @@
  * a point above 0x0010ffff, since UTF-16 couldn't represent it.
  * 
  * The second check covers surrogate pairs (category Cs).
- * 
- * The last two checks cover "Noncharacter": defined as:
- *   "A code point that is permanently reserved for
- *    internal use, and that should never be interchanged. In
- *    Unicode 3.1, these consist of the values U+nFFFE and U+nFFFF
- *    (where n is from 0 to 10_16) and the values U+FDD0..U+FDEF."
  *
  * @param Char the character
  */
 #define UNICODE_VALID(Char)                   \
     ((Char) < 0x110000 &&                     \
-     (((Char) & 0xFFFFF800) != 0xD800) &&     \
-     ((Char) < 0xFDD0 || (Char) > 0xFDEF) &&  \
-     ((Char) & 0xFFFE) != 0xFFFE)
-   
-     
+     (((Char) & 0xFFFFF800) != 0xD800))
+
+    
 static const gchar utf8_skip_data[256] = {
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
