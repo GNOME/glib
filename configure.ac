@@ -3616,12 +3616,18 @@ AC_SUBST(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 
 dnl Compiler flags; macro originates from systemd
 dnl See https://bugzilla.gnome.org/show_bug.cgi?id=608953
-CC_CHECK_FLAGS_APPEND([with_cflags], [CFLAGS], [\
+AC_ARG_ENABLE(compile-warnings,
+              [AS_HELP_STRING([--disable-compile-warnings],
+                              [Don't use builtin compiler warnings])],,
+			      enable_compile_warnings=yes)
+AS_IF([test "x$enable_compile_warnings" = xyes], [
+  CC_CHECK_FLAGS_APPEND([GLIB_WARN_CFLAGS], [CFLAGS], [\
    -Wall -Wstrict-prototypes -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
    -Werror=pointer-arith -Werror=init-self -Werror=format-security \
    -Werror=format=2 -Werror=missing-include-dirs])
-CFLAGS="$with_cflags $CFLAGS"
+])
+AC_SUBST(GLIB_WARN_CFLAGS)
 
 #
 # Define variables corresponding to the correct include paths to use for

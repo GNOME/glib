@@ -18,6 +18,8 @@ AM_CPPFLAGS = 					\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 libglib = $(top_builddir)/glib/libglib-2.0.la
 
 # libraries to compile and install

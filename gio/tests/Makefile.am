@@ -16,6 +16,7 @@ AM_CPPFLAGS = 				\
 	-DSRCDIR=\""$(srcdir)"\" 	\
 	-DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
 noinst_DATA = $(MISC_STUFF)
@@ -198,7 +199,7 @@ gdbus_testserver_SOURCES = gdbus-testserver.c
 if HAVE_DBUS1
 TEST_PROGS += gdbus-serialization
 gdbus_serialization_SOURCES = gdbus-serialization.c gdbus-tests.h gdbus-tests.c
-gdbus_serialization_CFLAGS = $(DBUS1_CFLAGS)
+gdbus_serialization_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
 gdbus_serialization_LDADD = $(LDADD) $(DBUS1_LIBS)
 endif
 
@@ -368,18 +369,18 @@ tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
 # -----------------------------------------------------------------------------
 
 if OS_UNIX
-gdbus_example_objectmanager_server_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_example_objectmanager_server_CFLAGS   = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
-gdbus_example_objectmanager_client_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_example_objectmanager_client_CFLAGS   = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
-gdbus_peer_CFLAGS  = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_peer_CFLAGS  = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_peer_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 gdbus_test_fixture_SOURCES = gdbus-test-fixture.c
-gdbus_test_fixture_CFLAGS  = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_test_fixture_CFLAGS  = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_test_fixture_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 endif OS_UNIX

@@ -7,6 +7,8 @@ AM_CPPFLAGS = 				\
 	@GLIB_DEBUG_FLAGS@ 		\
 	-DG_DISABLE_DEPRECATED
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
 		gmoduleconf.h.in 	\

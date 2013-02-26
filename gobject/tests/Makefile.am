@@ -6,6 +6,8 @@ AM_CPPFLAGS = 					\
 	$(gobject_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 if CROSS_COMPILING
   glib_genmarshal=$(GLIB_GENMARSHAL)
 else

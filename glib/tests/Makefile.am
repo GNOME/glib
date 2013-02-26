@@ -7,6 +7,8 @@ AM_CPPFLAGS = 				\
 	-DSRCDIR=\""$(srcdir)"\"	\
 	$(GLIB_DEBUG_FLAGS)
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 LDADD = $(top_builddir)/glib/libglib-2.0.la -lm
 
 TEST_PROGS += 				\

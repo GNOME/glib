@@ -7,6 +7,8 @@ AM_CPPFLAGS = 				\
 	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
 	@GLIB_DEBUG_FLAGS@
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 EXTRA_DIST +=				\
 		makefile.msc.in		\
 		gthread.def		\

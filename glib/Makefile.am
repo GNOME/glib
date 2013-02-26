@@ -49,6 +49,8 @@ AM_CPPFLAGS = 				\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 MIRRORING_TAB_SOURCE = 				\
 	glib-mirroring-tab/Makefile 		\
 	glib-mirroring-tab/gen-mirroring-tab.c	\

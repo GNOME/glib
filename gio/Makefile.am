@@ -30,6 +30,8 @@ AM_CPPFLAGS = \
 	-DGIO_COMPILATION				\
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	
 
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
 lib_LTLIBRARIES = libgio-2.0.la
 
 gdbus_headers = 			\
