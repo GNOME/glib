@@ -467,10 +467,72 @@ gsize
 #elif defined (G_PLATFORM_WIN32)
 
 #include <windows.h>
-#if !defined(_M_AMD64) && !defined (_M_IA64) && !defined(_M_X64)
+#if !defined(_M_AMD64) && !defined (_M_IA64) && !defined(_M_X64) && !(defined _MSC_VER && _MSC_VER <= 1200)
 #define InterlockedAnd _InterlockedAnd
 #define InterlockedOr _InterlockedOr
 #define InterlockedXor _InterlockedXor
+#endif
+
+#if !defined (_MSC_VER) || _MSC_VER <= 1200
+#include "gmessages.h"
+/* Inlined versions for older compiler */
+static LONG
+_gInterlockedAnd (volatile guint *atomic,
+                  guint           val)
+{
+  LONG i, j;
+
+  j = *atomic;
+  do {
+    i = j;
+    j = InterlockedCompareExchange(atomic, i & val, i);
+  } while (i != j);
+
+  return j;
+}
+#define InterlockedAnd(a,b) _gInterlockedAnd(a,b)
+static LONG
+_gInterlockedOr (volatile guint *atomic,
+                 guint           val)
+{
+  LONG i, j;
+
+  j = *atomic;
+  do {
+    i = j;
+    j = InterlockedCompareExchange(atomic, i | val, i);
+  } while (i != j);
+
+  return j;
+}
+#define InterlockedOr(a,b) _gInterlockedOr(a,b)
+static LONG
+_gInterlockedXor (volatile guint *atomic,
+                  guint           val)
+{
+  LONG i, j;
+
+  j = *atomic;
+  do {
+    i = j;
+    j = InterlockedCompareExchange(atomic, i ^ val, i);
+  } while (i != j);
+
+  return j;
+}
+#define InterlockedXor(a,b) _gInterlockedXor(a,b)
+#endif
+
+/* mingw32 does not have MemoryBarrier.
+ * MemoryBarrier may be defined as a macro or a function.
+ * Just make a failsafe version for ourselves. */
+#ifdef MemoryBarrier
+#define _GMemoryBarrier MemoryBarrier
+#else
+static inline void _GMemoryBarrier (void) {
+  long dummy = 0;
+  InterlockedExchange (&dummy, 1);
+}
 #endif
 
 /*
@@ -479,7 +541,7 @@ gsize
 gint
 (g_atomic_int_get) (const volatile gint *atomic)
 {
-  MemoryBarrier ();
+  _GMemoryBarrier ();
   return *atomic;
 }
 
@@ -488,7 +550,7 @@ void
                     gint           newval)
 {
   *atomic = newval;
-  MemoryBarrier ();
+  _GMemoryBarrier ();
 }
 
 void
@@ -545,7 +607,7 @@ gpointer
 {
   const volatile gpointer *ptr = atomic;
 
-  MemoryBarrier ();
+  _GMemoryBarrier ();
   return *ptr;
 }
 
@@ -556,7 +618,7 @@ void
   volatile gpointer *ptr = atomic;
 
   *ptr = newval;
-  MemoryBarrier ();
+  _GMemoryBarrier ();
 }
 
 gboolean
