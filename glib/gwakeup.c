@@ -22,7 +22,7 @@
 #include "config.h"
 
 
-/* gwakeup.h is special -- GIO and some test cases include it.  As such,
+/* gwakeup.c is special -- GIO and some test cases include it.  As such,
  * it cannot include other glib headers without triggering the single
  * includes warnings.  We have to manually include its dependencies here
  * (and at all other use sites).
