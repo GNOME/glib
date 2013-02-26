@@ -2373,7 +2373,7 @@ dnl
 dnl We can currently support the atomic ops natively when building GLib
 dnl with recent versions of GCC or MSVC.  MSVC doesn't run ./configure,
 dnl so we skip that case here and define G_ATOMIC_LOCK_FREE exactly when
-dnl we are using GCC.
+dnl we are using GCC (and not mingw*).
 dnl
 dnl Note that the atomic ops are only available with GCC on x86 when
 dnl using -march=i486 or higher.  If we detect that the atomic ops are
@@ -2385,31 +2385,44 @@ dnl the user had the wrong build environment.
 dnl We may add other compilers here in the future...
 
 AC_CACHE_CHECK([for lock-free atomic intrinsics], glib_cv_g_atomic_lock_free, [
-  AC_TRY_COMPILE([],
-                 [volatile int atomic = 2;\
-                  __sync_bool_compare_and_swap (&atomic, 2, 3);],
-                 [glib_cv_g_atomic_lock_free=yes],
-                 [glib_cv_g_atomic_lock_free=no])])
+  case $host in
+    *-*-mingw*)
+      glib_cv_g_atomic_lock_free=yes
+      ;;
+    *)
+      AC_TRY_COMPILE([],
+                     [volatile int atomic = 2;\
+                      __sync_bool_compare_and_swap (&atomic, 2, 3);],
+                     [glib_cv_g_atomic_lock_free=yes],
+                     [glib_cv_g_atomic_lock_free=no])
+      if test "$glib_cv_g_atomic_lock_free" = "no"; then
+        SAVE_CFLAGS="${CFLAGS}"
+        CFLAGS="-march=i486"
+        AC_TRY_COMPILE([],
+                       [volatile int atomic = 2;\
+                        __sync_bool_compare_and_swap (&atomic, 2, 3);],
+                       [AC_MSG_ERROR([GLib must be build with -march=i486 or later.])],
+                       [])
+        CFLAGS="${SAVE_CFLAGS}"
+      fi
+      ;;
+  esac])
 
-if test "$glib_cv_g_atomic_lock_free" = "no"; then
-  SAVE_CFLAGS="${CFLAGS}"
-  CFLAGS="-march=i486"
-  AC_TRY_COMPILE([],
-                 [volatile int atomic = 2;\
-                  __sync_bool_compare_and_swap (&atomic, 2, 3);],
-                 [AC_MSG_ERROR([GLib must be build with -march=i486 or later.])],
-                 [])
-  CFLAGS="${SAVE_CFLAGS}"
-fi
 
-# Some compilers support atomic operations but do not define
-# __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, like clang
-if test x"$glib_cv_g_atomic_lock_free" = xyes; then
-  AC_TRY_COMPILE([],
-                 [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
-                 [],
-                 [AC_DEFINE(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, 1, [ compiler supports atomic operations])])
-fi
+case $host in
+  *-*-mingw*)
+    ;;
+  *)
+    # Some compilers support atomic operations but do not define
+    # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, like clang
+    if test x"$glib_cv_g_atomic_lock_free" = xyes; then
+      AC_TRY_COMPILE([],
+                     [__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4;],
+                     [],
+                     [AC_DEFINE(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4, 1, [ compiler supports atomic operations])])
+    fi
+    ;;
+ esac
 
 dnl We need a more robust approach here...
 case $host_cpu in
