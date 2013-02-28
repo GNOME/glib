@@ -344,8 +344,18 @@ g_base64_decode_step (const gchar  *in,
   /* convert 4 base64 bytes to 3 normal bytes */
   v=*save;
   i=*state;
-  inptr = (const guchar *)in;
+
   last[0] = last[1] = 0;
+
+  /* we use the sign in the state to determine if we got a padding character
+     in the previous sequence */
+  if (i < 0)
+    {
+      i = -i;
+      last[0] = '=';
+    }
+
+  inptr = (const guchar *)in;
   while (inptr < inend)
     {
       c = *inptr++;
@@ -369,7 +379,7 @@ g_base64_decode_step (const gchar  *in,
     }
 
   *save = v;
-  *state = i;
+  *state = last[0] == '=' ? -i : i;
 
   return outptr - out;
 }

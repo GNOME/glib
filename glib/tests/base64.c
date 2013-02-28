@@ -408,14 +408,12 @@ main (int argc, char *argv[])
   g_test_add_func ("/base64/decode-inplace", test_base64_decode_inplace);
   g_test_add_func ("/base64/encode-decode", test_base64_encode_decode);
 
-  /*
   g_test_add_data_func ("/base64/incremental/smallblock/1", GINT_TO_POINTER(1),
                         test_base64_decode_smallblock);
   g_test_add_data_func ("/base64/incremental/smallblock/2", GINT_TO_POINTER(2),
                         test_base64_decode_smallblock);
   g_test_add_data_func ("/base64/incremental/smallblock/3", GINT_TO_POINTER(3),
                         test_base64_decode_smallblock);
-  */
   g_test_add_data_func ("/base64/incremental/smallblock/4", GINT_TO_POINTER(4),
                         test_base64_decode_smallblock);
 
