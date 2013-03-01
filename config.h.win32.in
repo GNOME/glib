@@ -896,6 +896,9 @@
 /* Needed to get declarations for msg_control and msg_controllen on Solaris */
 /* #undef __EXTENSIONS__ */
 
+/* compiler supports atomic operations */
+/* #undef __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 */
+
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
 
