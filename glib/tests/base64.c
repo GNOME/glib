@@ -332,6 +332,48 @@ test_base64_encode_decode (void)
     }
 }
 
+static void
+test_base64_decode_smallblock (gconstpointer blocksize_p)
+{
+  const guint blocksize = GPOINTER_TO_UINT (blocksize_p);
+  guint i;
+
+  for (i = 0; ok_100_encode_strs[i]; i++)
+    {
+      const char *str = ok_100_encode_strs[i];
+      const char *p;
+      gsize len = strlen (str);
+      gint state = 0;
+      guint save = 0;
+      guchar *decoded;
+      gsize decoded_size = 0;
+      guchar *decoded_atonce;
+      gsize decoded_atonce_size = 0;
+
+      decoded = g_malloc (len / 4 * 3 + 3);
+
+      p = str;
+      while (len > 0)
+        {
+          int chunk_len = MIN (blocksize, len);
+          gsize size = g_base64_decode_step (p, chunk_len,
+                                             decoded + decoded_size,
+                                             &state, &save);
+          decoded_size += size;
+          len -= chunk_len;
+          p += chunk_len;
+        }
+
+      decoded_atonce = g_base64_decode (str, &decoded_atonce_size);
+
+      g_assert_cmpint (decoded_size, ==, decoded_atonce_size);
+      g_assert (memcmp (decoded, decoded_atonce, decoded_size) == 0);
+      
+      g_free (decoded);
+      g_free (decoded_atonce);
+    }
+}
+
 
 int
 main (int argc, char *argv[])
@@ -365,6 +407,17 @@ main (int argc, char *argv[])
   g_test_add_func ("/base64/decode", test_base64_decode);
   g_test_add_func ("/base64/decode-inplace", test_base64_decode_inplace);
   g_test_add_func ("/base64/encode-decode", test_base64_encode_decode);
+
+  /*
+  g_test_add_data_func ("/base64/incremental/smallblock/1", GINT_TO_POINTER(1),
+                        test_base64_decode_smallblock);
+  g_test_add_data_func ("/base64/incremental/smallblock/2", GINT_TO_POINTER(2),
+                        test_base64_decode_smallblock);
+  g_test_add_data_func ("/base64/incremental/smallblock/3", GINT_TO_POINTER(3),
+                        test_base64_decode_smallblock);
+  */
+  g_test_add_data_func ("/base64/incremental/smallblock/4", GINT_TO_POINTER(4),
+                        test_base64_decode_smallblock);
 
   return g_test_run ();
 }
