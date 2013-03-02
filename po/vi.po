@@ -2,7 +2,7 @@
 # Copyright © 2010 GNOME i18n Project for Vietnamese.
 # T.M.Thanh <tmthanh@yahoo.com>, 2002.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2010.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2012.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2013.
 #
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-01 14:23+0000\n"
-"PO-Revision-Date: 2013-03-02 20:37+0700\n"
+"PO-Revision-Date: 2013-03-02 20:41+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -119,10 +119,8 @@ msgid "There is no GCredentials support for your platform"
 msgstr "Không có hỗ trợ GCredentials trên hệ điều hành của bạn"
 
 #: ../gio/gcredentials.c:480
-#, fuzzy
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr "GCredentials không được hỗ trợ trên hệ điều hành này"
+msgstr "GCredentials không chứa ID tiến trình trên hệ điều hành này"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -238,10 +236,9 @@ msgid "The given address is empty"
 msgstr "Địa chỉ rỗng"
 
 #: ../gio/gdbusaddress.c:1030
-#, fuzzy, c-format
-#| msgid "Cannot spawn a message bus without a machine-id: "
+#, c-format
 msgid "Cannot spawn a message bus when setuid"
-msgstr "Không thể tạo tuyến thông điệp mà không có machine-id: "
+msgstr "Không thể tạo tuyến thông điệp với setuid"
 
 #: ../gio/gdbusaddress.c:1037
 msgid "Cannot spawn a message bus without a machine-id: "
@@ -510,12 +507,10 @@ msgstr ""
 "DBus.Local"
 
 #: ../gio/gdbusmessage.c:1383
-#, fuzzy, c-format
-#| msgid "Wanted to read %lu byte but got EOF"
-#| msgid_plural "Wanted to read %lu bytes but got EOF"
+#, c-format
 msgid "Wanted to read %lu bytes but only got %lu"
 msgid_plural "Wanted to read %lu byte but only got %lu"
-msgstr[0] "Muốn đọc %lu byte nhưng nhận được EOF"
+msgstr[0] "Cần đọc %lu byte nhưng chỉ nhận được %lu"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
@@ -1067,18 +1062,16 @@ msgid "Error splicing file: %s"
 msgstr "Gặp lỗi khi nối bện tập tin: %s"
 
 #: ../gio/gfile.c:2960
-#, fuzzy
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
-msgstr "Không hỗ trợ chức năng di chuyển giữa các bộ lắp"
+msgstr "Chép (reflink/clone) giữa các điểm gắn kết không được hỗ trợ"
 
 #: ../gio/gfile.c:2964
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
+msgstr "Chép (reflink/clone) không được hỗ trợ hoặc không hợp lệ"
 
 #: ../gio/gfile.c:2969
 msgid "Copy (reflink/clone) is not supported or didn't work"
-msgstr ""
+msgstr "Chép (reflink/clone) không được hỗ trợ hoặc không chạy"
 
 #: ../gio/gfile.c:3029
 msgid "Can't copy special file"
@@ -1334,7 +1327,7 @@ msgstr "Không tự động tạo và đăng ký tài nguyên"
 
 #: ../gio/glib-compile-resources.c:626
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
-msgstr ""
+msgstr "Không xuất hàm; khai báo là G_GNUC_INTERNAL"
 
 #: ../gio/glib-compile-resources.c:627
 msgid "C identifier name used for the generated source code"
@@ -1544,15 +1537,12 @@ msgid " and --strict was specified; exiting.\n"
 msgstr "và có dùng --strict; thoát.\n"
 
 #: ../gio/glib-compile-schemas.c:1890
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key `%s' in schema `%s' as specified in override file `%s': "
-#| "%s.  "
+#, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr ""
 "lỗi phân tích khoá `%s' trong schema `%s' như xác định trong tập tin ghi đè `"
-"%s': %s.  "
+"%s': %s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -2491,10 +2481,8 @@ msgid "Connection in progress"
 msgstr "Kết nối đang hình thành"
 
 #: ../gio/gsocket.c:2346
-#, fuzzy
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
-msgstr "Không thể lấy lỗi đang chờ: %s"
+msgstr "Không thể lấy lỗi đang chờ: "
 
 #: ../gio/gsocket.c:2512
 #, c-format
@@ -3243,11 +3231,10 @@ msgid "Error opening directory '%s': %s"
 msgstr "Lỗi khi mở thư mục '%s': %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
-#, fuzzy, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
+#, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "Không thẻ cấp phát %lu bytes để đọc tập tin \"%s\""
+msgstr[0] "Không thể cấp phát %lu byte để đọc tập tin \"%s\""
 
 #: ../glib/gfileutils.c:686
 #, c-format
@@ -3492,14 +3479,12 @@ msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Văn bản được mã hoá UTF-8 không hợp lệ '%s'"
 
 #: ../glib/gmarkup.c:472
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name "
+#, c-format
 msgid "'%s' is not a valid name"
 msgstr "'%s' không phải là tên hợp lệ"
 
 #: ../glib/gmarkup.c:488
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c' "
+#, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "'%s' không phải là tên hợp lệ: '%c'"
 
