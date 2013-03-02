@@ -425,6 +425,9 @@ static inline GList*
 _g_list_remove_link (GList *list,
 		     GList *link)
 {
+  if (link == NULL)
+    return list;
+
   if (link->prev)
     {
       if (link->prev->next == link)
