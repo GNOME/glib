@@ -23,6 +23,7 @@
 #include <glib/glib.h>
 #include <gio/gio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <string.h>
@@ -53,6 +54,8 @@ enum StructureExtraFlags
   TEST_OPEN = 1 << 15,
   TEST_OVERWRITE = 1 << 16,
   TEST_INVALID_SYMLINK = 1 << 17,
+  TEST_HIDDEN = 1 << 18,
+  TEST_DOT_HIDDEN = 1 << 19,
 };
 
 struct StructureItem
@@ -100,6 +103,11 @@ static const struct StructureItem sample_struct[] = {
     {"not_exists4",			NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, TEST_HANDLE_SPECIAL, TEST_NOT_EXISTS | TEST_APPEND},
     {"dir_no-execute/file",	NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, TEST_HANDLE_SPECIAL, TEST_DELETE_NORMAL | TEST_DELETE_FAILURE | TEST_NOT_EXISTS | TEST_OPEN},
 	{"lost_symlink",		"nowhere",	G_FILE_TYPE_SYMBOLIC_LINK, G_FILE_CREATE_NONE, 0, 0, TEST_COPY | TEST_DELETE_NORMAL | TEST_OPEN | TEST_INVALID_SYMLINK},
+    {"dir_hidden",		NULL,	G_FILE_TYPE_DIRECTORY,	G_FILE_CREATE_NONE, 0, 0, 0},
+    {"dir_hidden/.hidden",		NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, TEST_HANDLE_SPECIAL, 0},
+    {"dir_hidden/.a-hidden-file",	NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, 0, TEST_HIDDEN},
+    {"dir_hidden/file-in-.hidden1",	NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, 0, TEST_HIDDEN | TEST_DOT_HIDDEN},
+    {"dir_hidden/file-in-.hidden2",	NULL,	G_FILE_TYPE_REGULAR,	G_FILE_CREATE_NONE, 0, 0, TEST_HIDDEN | TEST_DOT_HIDDEN},
   };
 
 static gboolean test_suite;
@@ -243,6 +251,24 @@ test_create_structure (gconstpointer test_data)
 	  g_assert_no_error (error);
 	}
 
+      if ((item.extra_flags & TEST_DOT_HIDDEN) == TEST_DOT_HIDDEN)
+	{
+	  gchar *dir, *path, *basename;
+	  FILE *f;
+
+	  dir = g_path_get_dirname (item.filename);
+	  basename = g_path_get_basename (item.filename);
+	  path = g_build_filename (test_data, dir, ".hidden", NULL);
+
+	  f = fopen (path, "a");
+	  fprintf (f, "%s\n", basename);
+	  fclose (f);
+
+	  g_free (dir);
+	  g_free (path);
+	  g_free (basename);
+	}
+
       g_object_unref (child);
     }
 
@@ -303,6 +329,7 @@ test_attributes (struct StructureItem item, GFileInfo * info)
   gboolean utf8_valid;
   gboolean has_attr;
   gboolean is_symlink;
+  gboolean is_hidden;
   gboolean can_read, can_write;
 
   /*  standard::type  */
@@ -380,6 +407,15 @@ test_attributes (struct StructureItem item, GFileInfo * info)
     {
       symlink_target = g_file_info_get_symlink_target (info);
       g_assert_cmpstr (symlink_target, ==, item.link_to);
+    }
+
+  /*  standard::is-hidden  */
+  if ((item.extra_flags & TEST_HIDDEN) == TEST_HIDDEN)
+    {
+      is_hidden =
+	g_file_info_get_attribute_boolean (info,
+					   G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
+      g_assert_cmpint (is_hidden, ==, TRUE);
     }
 }
 
