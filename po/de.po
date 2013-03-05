@@ -1128,7 +1128,7 @@ msgstr "Ungültiger Wert für symbolische Verknüpfung angegeben"
 
 #: ../gio/gfile.c:3819
 msgid "Trash not supported"
-msgstr "Müll nicht unterstützt"
+msgstr "Papierkorb nicht unterstützt"
 
 #: ../gio/gfile.c:3870
 #, c-format
@@ -1715,20 +1715,20 @@ msgstr "Fehler beim Entfernen der Datei: %s"
 #: ../gio/glocalfile.c:1880
 #, c-format
 msgid "Error trashing file: %s"
-msgstr "Fehler beim Verschieben der Datei in den Müll: %s"
+msgstr "Fehler beim Verschieben der Datei in den Papierkorb: %s"
 
 #: ../gio/glocalfile.c:1903
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Müll-Ordner %s konnte nicht angelegt werden: %s"
+msgstr "Papierkorb-Ordner %s konnte nicht angelegt werden: %s"
 
 #: ../gio/glocalfile.c:1924
 msgid "Unable to find toplevel directory for trash"
-msgstr "Elternordner für den Müll konnte nicht gefunden werden"
+msgstr "Elternordner für den Papierkorb konnte nicht gefunden werden"
 
 #: ../gio/glocalfile.c:2003 ../gio/glocalfile.c:2023
 msgid "Unable to find or create trash directory"
-msgstr "Müll-Ordner konnte nicht gefunden oder angelegt werden"
+msgstr "Papierkorb-Ordner konnte nicht gefunden oder angelegt werden"
 
 #: ../gio/glocalfile.c:2057
 #, c-format
@@ -1739,7 +1739,7 @@ msgstr "Löschprotokoll-Datei konnte nicht angelegt werden: %s"
 #: ../gio/glocalfile.c:2178
 #, c-format
 msgid "Unable to trash file: %s"
-msgstr "Datei konnte nicht in den Müll verschoben werden: %s"
+msgstr "Datei konnte nicht in den Papierkorb verschoben werden: %s"
 
 #: ../gio/glocalfile.c:2179 ../glib/gregex.c:280
 msgid "internal error"
