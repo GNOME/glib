@@ -328,7 +328,7 @@ test_environment (void)
   env = g_app_launch_context_get_environment (ctx);
 
   g_assert (g_environ_getenv (env, "FOO") == NULL);
-  g_assert (g_environ_getenv (env, "BAR") == NULL);
+  g_assert (g_environ_getenv (env, "BLA") == NULL);
   g_assert_cmpstr (g_environ_getenv (env, "PATH"), ==, path);
 
   g_strfreev (env);
