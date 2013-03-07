@@ -85,7 +85,7 @@ struct _GDBusMethodInvocation
   gchar           *object_path;
   gchar           *interface_name;
   gchar           *method_name;
-  const GDBusMethodInfo *method_info;
+  GDBusMethodInfo *method_info;
   GDBusConnection *connection;
   GDBusMessage    *message;
   GVariant        *parameters;
@@ -103,6 +103,8 @@ g_dbus_method_invocation_finalize (GObject *object)
   g_free (invocation->object_path);
   g_free (invocation->interface_name);
   g_free (invocation->method_name);
+  if (invocation->method_info)
+      g_dbus_method_info_unref (invocation->method_info);
   g_object_unref (invocation->connection);
   g_object_unref (invocation->message);
   g_variant_unref (invocation->parameters);
@@ -328,7 +330,8 @@ _g_dbus_method_invocation_new (const gchar           *sender,
   invocation->object_path = g_strdup (object_path);
   invocation->interface_name = g_strdup (interface_name);
   invocation->method_name = g_strdup (method_name);
-  invocation->method_info = g_dbus_method_info_ref ((GDBusMethodInfo *)method_info);
+  if (method_info)
+    invocation->method_info = g_dbus_method_info_ref ((GDBusMethodInfo *)method_info);
   invocation->connection = g_object_ref (connection);
   invocation->message = g_object_ref (message);
   invocation->parameters = g_variant_ref (parameters);
