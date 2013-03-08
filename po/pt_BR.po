@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-05 16:28+0000\n"
-"PO-Revision-Date: 2013-03-01 06:55-0300\n"
+"POT-Creation-Date: 2013-03-08 08:48+0000\n"
+"PO-Revision-Date: 2013-03-08 10:37-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -536,8 +536,8 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-msgid "Wanted to read %lu bytes but only got %lu"
-msgid_plural "Wanted to read %lu byte but only got %lu"
+msgid "Wanted to read %lu byte but only got %lu"
+msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Ao tentar ler %lu byte obteve-se %lu"
 msgstr[1] "Ao tentar ler %lu bytes obteve-se %lu"
 
