@@ -523,25 +523,13 @@ _gInterlockedXor (volatile guint *atomic,
 #define InterlockedXor(a,b) _gInterlockedXor(a,b)
 #endif
 
-/* mingw32 does not have MemoryBarrier.
- * MemoryBarrier may be defined as a macro or a function.
- * Just make a failsafe version for ourselves. */
-#ifdef MemoryBarrier
-#define _GMemoryBarrier MemoryBarrier
-#else
-static inline void _GMemoryBarrier (void) {
-  long dummy = 0;
-  InterlockedExchange (&dummy, 1);
-}
-#endif
-
 /*
  * http://msdn.microsoft.com/en-us/library/ms684122(v=vs.85).aspx
  */
 gint
 (g_atomic_int_get) (const volatile gint *atomic)
 {
-  _GMemoryBarrier ();
+  MemoryBarrier ();
   return *atomic;
 }
 
@@ -550,7 +538,7 @@ void
                     gint           newval)
 {
   *atomic = newval;
-  _GMemoryBarrier ();
+  MemoryBarrier ();
 }
 
 void
@@ -607,7 +595,7 @@ gpointer
 {
   const volatile gpointer *ptr = atomic;
 
-  _GMemoryBarrier ();
+  MemoryBarrier ();
   return *ptr;
 }
 
@@ -618,7 +606,7 @@ void
   volatile gpointer *ptr = atomic;
 
   *ptr = newval;
-  _GMemoryBarrier ();
+  MemoryBarrier ();
 }
 
 gboolean
