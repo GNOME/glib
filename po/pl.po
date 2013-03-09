@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 20:46+0100\n"
-"PO-Revision-Date: 2013-03-08 20:47+0100\n"
+"POT-Creation-Date: 2013-03-09 19:40+0100\n"
+"PO-Revision-Date: 2013-03-09 19:41+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -2461,6 +2461,11 @@ msgstr "  KLUCZ     Klucz w schemacie\n"
 #: ../gio/gsettings-tool.c:666
 msgid "  VALUE     The value to set\n"
 msgstr "  WARTOŚĆ   Wartość do ustawienia\n"
+
+#: ../gio/gsettings-tool.c:725
+#, c-format
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Nie można wczytać schematów z %s: %s\n"
 
 #: ../gio/gsettings-tool.c:784
 #, c-format
