@@ -722,7 +722,7 @@ main (int argc, char **argv)
 
       if (schema_source == NULL)
         {
-          g_printerr ("Could not load schemas from %s: %s\n", argv[2], error->message);
+          g_printerr (_("Could not load schemas from %s: %s\n"), argv[2], error->message);
           g_clear_error (&error);
 
           return 1;
