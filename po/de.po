@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-07 21:45+0000\n"
-"PO-Revision-Date: 2013-03-08 17:05+0100\n"
+"POT-Creation-Date: 2013-03-09 14:58+0000\n"
+"PO-Revision-Date: 2013-03-10 17:03+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -2452,6 +2452,12 @@ msgstr "  SCHLÜSSEL Der Schlüssel innerhalb des Schemas\n"
 #: ../gio/gsettings-tool.c:666
 msgid "  VALUE     The value to set\n"
 msgstr "  WERT      Der zu setzende Wert\n"
+
+#: ../gio/gsettings-tool.c:725
+#, c-format
+#| msgid "Could not open converter from '%s' to '%s'"
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Schemata von »%s« konnten nicht geladen werden: %s\n"
 
 #: ../gio/gsettings-tool.c:784
 #, c-format
