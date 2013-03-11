@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-07 21:45+0000\n"
-"PO-Revision-Date: 2013-03-09 11:35+0300\n"
+"POT-Creation-Date: 2013-03-09 14:58+0000\n"
+"PO-Revision-Date: 2013-03-11 17:25+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "Language: el\n"
@@ -547,8 +547,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu bytes but only got %lu"
-#| msgid_plural "Wanted to read %lu byte but only got %lu"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Απαίτηση για ανάγνωση %lu ψηφιολέξης αλλά ελήφθη μόνο %lu"
@@ -1132,19 +1130,19 @@ msgid "Error splicing file: %s"
 msgstr "Σφάλμα αρμολόγησης αρχείου: %s"
 
 #: ../gio/gfile.c:2960
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
-"Δεν υποστηρίζεται η αντιγραφή (συνδέσμου αναφοράς/κλώνου) μεταξύ "
-"προσαρτήσεων"
+"Δεν υποστηρίζεται η αντιγραφή (συνδέσμου αναφοράς/κλώνου) μεταξύ προσαρτήσεων"
 
 #: ../gio/gfile.c:2964
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή είναι άκυρη"
+msgstr ""
+"Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή είναι άκυρη"
 
 #: ../gio/gfile.c:2969
 msgid "Copy (reflink/clone) is not supported or didn't work"
-msgstr "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή δεν δούλεψε"
+msgstr ""
+"Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή δεν δούλεψε"
 
 #: ../gio/gfile.c:3029
 msgid "Can't copy special file"
@@ -2494,6 +2492,12 @@ msgstr "  KEY       Το κλειδί στο σχήμα\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     Η τιμή που θα ορισθεί\n"
 
+#: ../gio/gsettings-tool.c:725
+#, c-format
+#| msgid "Could not open converter from '%s' to '%s'"
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Αδυναμία φόρτωσης διατάξεων από %s: %s\n"
+
 #: ../gio/gsettings-tool.c:784
 #, c-format
 msgid "Empty schema name given\n"
@@ -3353,8 +3357,6 @@ msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
 #
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, c-format
-#| msgid "Could not allocate %ld byte to read file \"%s\""
-#| msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "Αδύνατη η διάθεση %lu ψηφιολέξης για ανάγνωση αρχείου \"%s\""
