@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-08 00:49+0100\n"
-"PO-Revision-Date: 2013-03-08 00:49+0200\n"
+"POT-Creation-Date: 2013-03-11 21:53+0100\n"
+"PO-Revision-Date: 2013-03-11 21:54+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -2454,6 +2454,11 @@ msgstr "  KEY       A clave nun esquema\n"
 #: ../gio/gsettings-tool.c:666
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     O valor a estabelecer\n"
+
+#: ../gio/gsettings-tool.c:725
+#, c-format
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Non foi posíbel cargar os esquemas desde %s a %s\n"
 
 #: ../gio/gsettings-tool.c:784
 #, c-format
