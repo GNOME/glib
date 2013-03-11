@@ -38,7 +38,7 @@ const gchar *myapp_data =
   "Encoding=UTF-8\n"
   "Version=1.0\n"
   "Type=Application\n"
-  "Exec=my_app %f\n"
+  "Exec=true %f\n"
   "Name=my app\n";
 
 const gchar *myapp2_data =
@@ -46,7 +46,7 @@ const gchar *myapp2_data =
   "Encoding=UTF-8\n"
   "Version=1.0\n"
   "Type=Application\n"
-  "Exec=my_app2 %f\n"
+  "Exec=sleep %f\n"
   "Name=my app 2\n";
 
 const gchar *myapp3_data =
@@ -54,7 +54,7 @@ const gchar *myapp3_data =
   "Encoding=UTF-8\n"
   "Version=1.0\n"
   "Type=Application\n"
-  "Exec=my_app3 %f\n"
+  "Exec=sleep 1\n"
   "Name=my app 3\n";
 
 const gchar *myapp4_data =
@@ -62,7 +62,7 @@ const gchar *myapp4_data =
   "Encoding=UTF-8\n"
   "Version=1.0\n"
   "Type=Application\n"
-  "Exec=my_app4 %f\n"
+  "Exec=echo %f\n"
   "Name=my app 4\n"
   "MimeType=image/bmp;";
 
@@ -71,9 +71,17 @@ const gchar *myapp5_data =
   "Encoding=UTF-8\n"
   "Version=1.0\n"
   "Type=Application\n"
-  "Exec=my_app5 %f\n"
+  "Exec=true %f\n"
   "Name=my app 5\n"
   "MimeType=image/bmp;x-scheme-handler/ftp;";
+
+const gchar *nosuchapp_data =
+  "[Desktop Entry]\n"
+  "Encoding=UTF-8\n"
+  "Version=1.0\n"
+  "Type=Application\n"
+  "Exec=no_such_application %f\n"
+  "Name=no such app\n";
 
 const gchar *defaults_data =
   "[Default Applications]\n"
@@ -154,6 +162,12 @@ setup (void)
   name = g_build_filename (apphome, "myapp5.desktop", NULL);
   g_test_message ("creating '%s'\n", name);
   g_file_set_contents (name, myapp5_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
+  name = g_build_filename (apphome, "nosuchapp.desktop", NULL);
+  g_test_message ("creating '%s'\n", name);
+  g_file_set_contents (name, nosuchapp_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
@@ -577,6 +591,17 @@ test_scheme_handler (void)
   g_object_unref (info5);
 }
 
+/* test that g_app_info_* ignores desktop files with nonexisting executables
+ */
+static void
+test_mime_ignore_nonexisting (void)
+{
+  GAppInfo *appinfo;
+
+  appinfo = (GAppInfo*)g_desktop_app_info_new ("nosuchapp.desktop");
+  g_assert (appinfo == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -589,6 +614,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/mime/file", test_mime_file);
   g_test_add_func ("/appinfo/mime/scheme-handler", test_scheme_handler);
   g_test_add_func ("/appinfo/mime/default-last-used", test_mime_default_last_used);
+  g_test_add_func ("/appinfo/mime/ignore-nonexisting", test_mime_ignore_nonexisting);
 
   return g_test_run ();
 }
