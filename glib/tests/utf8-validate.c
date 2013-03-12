@@ -72,7 +72,7 @@ Test test[] = {
   /* last sequence of each length */
   { "\x7f", -1, 1, TRUE },
   { "\xdf\xbf", -1, 2, TRUE },
-  { "\xef\xbf\xbf", -1, 0, FALSE },
+  { "\xef\xbf\xbf", -1, 3, TRUE },
   { "\xf7\xbf\xbf\xbf", -1, 0, FALSE },
   { "\xfb\xbf\xbf\xbf\xbf", -1, 0, FALSE },
   { "\xfd\xbf\xbf\xbf\xbf\xbf", -1, 0, FALSE },
@@ -80,7 +80,7 @@ Test test[] = {
   { "\xed\x9f\xbf", -1, 3, TRUE },
   { "\xee\x80\x80", -1, 3, TRUE },
   { "\xef\xbf\xbd", -1, 3, TRUE },
-  { "\xf4\x8f\xbf\xbf", -1, 0, FALSE },
+  { "\xf4\x8f\xbf\xbf", -1, 4, TRUE },
   { "\xf4\x90\x80\x80", -1, 0, FALSE },
   /* malformed sequences */
   /* continuation bytes */
@@ -267,8 +267,6 @@ Test test[] = {
   { "\x20\xed\xae\x80\xed\xbf\xbf\x20", -1, 1, FALSE },
   { "\x20\xed\xaf\xbf\xed\xb0\x80\x20", -1, 1, FALSE },
   { "\x20\xed\xaf\xbf\xed\xbf\xbf\x20", -1, 1, FALSE },
-  { "\x20\xef\xbf\xbe\x20", -1, 1, FALSE },
-  { "\x20\xef\xbf\xbf\x20", -1, 1, FALSE },
 
   { NULL, }
 };
