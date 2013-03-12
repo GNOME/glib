@@ -35,11 +35,11 @@ __gsettings() {
           choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nreset-recursively\nwritable\nmonitor'
           ;;
         list-keys|list-children|list-recursively|reset-recursively)
-          choices="$(gsettings $schemadir list-schemas)"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
+          choices="$(gsettings $schemadir list-schemas 2> /dev/null)"$'\n'"$(gsettings $schemadir list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
 
         get|range|set|reset|writable|monitor|describe)
-          choices="$(gsettings $schemadir list-schemas | sed -e 's.$. .')"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
+          choices="$(gsettings $schemadir list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$(gsettings $schemadir list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
       esac
       ;;
