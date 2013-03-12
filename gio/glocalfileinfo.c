@@ -1437,35 +1437,30 @@ remove_from_hidden_cache (gpointer user_data)
 static GHashTable *
 read_hidden_file (const gchar *dirname)
 {
+  gchar *contents = NULL;
   gchar *filename;
-  FILE *hidden;
 
   filename = g_build_path ("/", dirname, ".hidden", NULL);
-  hidden = fopen (filename, "r");
+  g_file_get_contents (filename, &contents, NULL, NULL);
   g_free (filename);
 
-  if (hidden != NULL)
+  if (contents != NULL)
     {
-      gchar buffer[PATH_MAX + 2]; /* \n\0 */
       GHashTable *table;
+      gchar **lines;
+      gint i;
 
       table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-      while (fgets (buffer, sizeof buffer, hidden))
-        {
-          gchar *newline;
+      lines = g_strsplit (contents, "\n", 0);
+      g_free (contents);
 
-          if ((newline = strchr (buffer, '\n')) != NULL)
-            {
-              *newline++ = '\0';
+      for (i = 0; lines[i]; i++)
+        /* hash table takes the individual strings... */
+        g_hash_table_add (table, lines[i]);
 
-              g_hash_table_insert (table,
-                                   g_memdup (buffer, newline - buffer),
-                                   GINT_TO_POINTER (TRUE));
-            }
-        }
-
-      fclose (hidden);
+      /* ... so we only free the container. */
+      g_free (lines);
 
       return table;
     }
@@ -1517,8 +1512,7 @@ file_is_hidden (const gchar *path,
       g_source_unref (remove_from_cache_source);
     }
 
-  result = table != NULL &&
-           GPOINTER_TO_INT (g_hash_table_lookup (table, basename));
+  result = table != NULL && g_hash_table_contains (table, basename);
 
   G_UNLOCK (hidden_cache);
 
