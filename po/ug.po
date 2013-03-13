@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-13 20:32+0900\n"
+"PO-Revision-Date: 2013-03-13 20:46+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -2382,12 +2382,12 @@ msgstr "ئادرېسقا باغلاۋاتقاندا خاتالىق كۆرۈلد�
 #: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
 #, c-format
 msgid "Error joining multicast group: %s"
-msgstr "multicast گۇرۇپپىسىغا قوشۇلۇشتا خاتالىق كۆرۈلدى:"
+msgstr "multicast گۇرۇپپىسىغا قوشۇلۇشتا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/gsocket.c:1958 ../gio/gsocket.c:1995
 #, c-format
 msgid "Error leaving multicast group: %s"
-msgstr "multicast گۇرۇپپىسىدىن ئايرىلىشتا خاتالىق كۆرۈلدى"
+msgstr "multicast گۇرۇپپىسىدىن ئايرىلىشتا خاتالىق كۆرۈلدى: %s"
 
 #: ../gio/gsocket.c:1959
 msgid "No support for source-specific multicast"
@@ -3328,7 +3328,7 @@ msgstr "ئاچقۇچ ھۆججەتنىڭ «%2$s» گۇرۇپپىسىدىكى ئا
 #: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2690
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr "گۇرۇپپا ‹%2$s› دىكى ئاچقۇچ ‹%$1s› نىڭ قىممىتى ‹%$3s› ئىكەن، ‹%$4s› بولسا بولاتتى"
+msgstr "ئاچقۇچ ‹%s› (گۇرۇپپا ‹%s› دىكى)  نىڭ قىممىتى ‹%s› ئىكەن، ‹%s› بولسا بولاتتى"
 
 #: ../glib/gkeyfile.c:3088 ../glib/gkeyfile.c:3280 ../glib/gkeyfile.c:3848
 #, c-format
