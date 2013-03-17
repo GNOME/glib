@@ -389,7 +389,9 @@ g_base64_decode_step (const gchar  *in,
  * @text: zero-terminated string with base64 text to decode
  * @out_len: (out): The length of the decoded data is written here
  *
- * Decode a sequence of Base-64 encoded text into binary data
+ * Decode a sequence of Base-64 encoded text into binary data.  Note
+ * that the returned binary data is not necessarily zero-terminated,
+ * so it should not be used as a character string.
  *
  * Return value: (transfer full) (array length=out_len) (element-type guint8):
  *               newly allocated buffer containing the binary data
