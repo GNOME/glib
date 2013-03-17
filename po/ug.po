@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-13 20:46+0900\n"
+"POT-Creation-Date: 2013-03-13 11:48+0000\n"
+"PO-Revision-Date: 2013-03-17 13:51+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -481,8 +481,6 @@ msgstr "سىگنال ئۇچۇرى: INTERFACE بېشى سۆز بۆلىكى قال
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu bytes but only got %lu"
-#| msgid_plural "Wanted to read %lu byte but only got %lu"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu بايتنى ئوقۇشنى ئۈمىد قىلغان ئەمما %lu نىلا ئوقۇدى"
@@ -1271,7 +1269,7 @@ msgstr "مەنبە ماۋزۇسىنى ھاسىللاش"
 
 #: ../gio/glib-compile-resources.c:623
 msgid "Generate sourcecode used to link in the resource file into your code"
-msgstr ""
+msgstr "كود ئىچىگە بايلىق ھۆججىتىنىڭ ئۇلانمىسىنى ئىپادىلەيدىغان مەنبە كودى ھاسىللاش"
 
 #: ../gio/glib-compile-resources.c:624
 msgid "Generate dependency list"
@@ -2315,7 +2313,6 @@ msgstr "  VALUE     تەڭشەيدىغان قىممەت\n"
 
 #: ../gio/gsettings-tool.c:725
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s نىڭدىن لايىھىلەرنى ئوقۇغىلى بولمىدى: %s\n"
 
@@ -3873,7 +3870,7 @@ msgstr "(?+ نىڭ كەينىدە رەقەم بولۇشى كېرەك"
 
 #: ../glib/gregex.c:498
 msgid "] is an invalid data character in JavaScript compatibility mode"
-msgstr ""
+msgstr "JavaScript بىلەن ماسلىشىشچان ھالەتتە ] بولسا ئىناۋەتسىز ھەرپ"
 
 #: ../glib/gregex.c:501
 msgid "different names for subpatterns of the same number are not allowed"
@@ -3893,7 +3890,7 @@ msgstr ""
 
 #: ../glib/gregex.c:513
 msgid "\\N is not supported in a class"
-msgstr ""
+msgstr "تىپ(class) تا \\N نى ئىشلەتكىلى بولمايدۇ"
 
 #: ../glib/gregex.c:516
 msgid "too many forward references"
@@ -3922,7 +3919,7 @@ msgstr "PCRE ئامبار تەرجىمە قىلغاندا UTF8 خاسلىق قو
 
 #: ../glib/gregex.c:1331
 msgid "PCRE library is compiled with incompatible options"
-msgstr ""
+msgstr "بۇ PCRE ئامبىرى نۇرغۇن زىت(incompatible) تاللانمىلار بىلەن يۇغۇرۇلغان"
 
 #: ../glib/gregex.c:1390
 #, c-format
