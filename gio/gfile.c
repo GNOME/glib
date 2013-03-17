@@ -3106,7 +3106,7 @@ file_copy_fallback (GFile                  *source,
     }
 
 #endif
-  
+
   /* A plain read/write loop */
   if (!copy_stream_with_progress (in, out, source, cancellable,
                                   progress_callback, progress_callback_data,
@@ -3115,11 +3115,6 @@ file_copy_fallback (GFile                  *source,
 
   ret = TRUE;
  out:
-  /* Ignore errors here. Failure to copy metadata is not a hard error */
-  if (ret)
-    (void) g_file_copy_attributes (source, destination,
-                                   flags, cancellable, NULL);
-
   if (in)
     {
       /* Don't care about errors in source here */
@@ -3134,7 +3129,13 @@ file_copy_fallback (GFile                  *source,
         ret = FALSE;
       g_object_unref (out);
     }
-  
+
+  /* Ignore errors here. Failure to copy metadata is not a hard error */
+  if (ret)
+    (void) g_file_copy_attributes (source, destination,
+                                   flags, cancellable, NULL);
+
+
   g_clear_object (&info);
 
   return ret;

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
+#ifdef G_OS_UNIX
+#include <sys/stat.h>
+#endif
 
 static void
 test_basic (void)
@@ -727,6 +730,59 @@ test_async_delete (void)
   g_object_unref (file);
 }
 
+#ifdef G_OS_UNIX
+static void
+test_copy_preserve_mode (void)
+{
+  GFile *tmpfile;
+  GFile *dest_tmpfile;
+  GFileInfo *dest_info;
+  GFileIOStream *iostream;
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  guint32 romode = S_IFREG | 0600;
+  guint32 dest_mode;
+
+  tmpfile = g_file_new_tmp ("tmp-copy-preserve-modeXXXXXX",
+                            &iostream, error);
+  g_assert_no_error (local_error);
+  g_io_stream_close ((GIOStream*)iostream, NULL, error);
+  g_assert_no_error (local_error);
+  g_clear_object (&iostream);
+
+  g_file_set_attribute (tmpfile, G_FILE_ATTRIBUTE_UNIX_MODE, G_FILE_ATTRIBUTE_TYPE_UINT32,
+                        &romode, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                        NULL, error);
+  g_assert_no_error (local_error);
+
+  dest_tmpfile = g_file_new_tmp ("tmp-copy-preserve-modeXXXXXX",
+                                 &iostream, error);
+  g_assert_no_error (local_error);
+  g_io_stream_close ((GIOStream*)iostream, NULL, error);
+  g_assert_no_error (local_error);
+  g_clear_object (&iostream);
+
+  g_file_copy (tmpfile, dest_tmpfile, G_FILE_COPY_OVERWRITE | G_FILE_COPY_NOFOLLOW_SYMLINKS | G_FILE_COPY_ALL_METADATA,
+               NULL, NULL, NULL, error);
+  g_assert_no_error (local_error);
+
+  dest_info = g_file_query_info (dest_tmpfile, G_FILE_ATTRIBUTE_UNIX_MODE, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                 NULL, error);
+  g_assert_no_error (local_error);
+
+  dest_mode = g_file_info_get_attribute_uint32 (dest_info, G_FILE_ATTRIBUTE_UNIX_MODE);
+  
+  g_assert_cmpint (dest_mode, ==, romode);
+
+  (void) g_file_delete (tmpfile, NULL, NULL);
+  (void) g_file_delete (dest_tmpfile, NULL, NULL);
+  
+  g_clear_object (&tmpfile);
+  g_clear_object (&dest_tmpfile);
+  g_clear_object (&dest_info);
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -746,6 +802,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/replace-load", test_replace_load);
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
   g_test_add_func ("/file/async-delete", test_async_delete);
+#ifdef G_OS_UNIX
+  g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
+#endif
 
   return g_test_run ();
 }
