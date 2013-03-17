@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-07 21:45+0000\n"
+"POT-Creation-Date: 2013-03-09 14:58+0000\n"
 "PO-Revision-Date: 2012-09-14 13:26+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -2431,6 +2431,11 @@ msgstr "  КЛЮЧ      Ключ у схеме\n"
 #: ../gio/gsettings-tool.c:666
 msgid "  VALUE     The value to set\n"
 msgstr "  ЗНАЧЭННЕ  Патрэбнае значэнне ключа\n"
+
+#: ../gio/gsettings-tool.c:725
+#, c-format
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Не ўдалося загрузіць схемы з %s: %s\n"
 
 #: ../gio/gsettings-tool.c:784
 #, c-format
