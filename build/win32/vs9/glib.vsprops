@@ -285,6 +285,7 @@ copy ..\..\..\gio\gsocketcontrolmessage.h $(CopyDir)\include\glib-$(ApiVersion)\
 copy ..\..\..\gio\gsocketlistener.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsrvtarget.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gtask.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtcpconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtcpwrapperconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtestdbus.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;

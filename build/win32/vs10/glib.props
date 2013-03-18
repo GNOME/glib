@@ -463,6 +463,8 @@ copy ..\..\..\gio\gsocketservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gsrvtarget.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gtask.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gtcpconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gtcpwrapperconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio
