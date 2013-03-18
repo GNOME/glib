@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-22 00:55+0000\n"
-"PO-Revision-Date: 2013-02-22 22:25+0000\n"
+"POT-Creation-Date: 2013-03-13 13:41+0000\n"
+"PO-Revision-Date: 2013-03-12 12:06+0100\n"
 "Last-Translator: Ján Kyselica <kyselica.jan@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -72,7 +72,7 @@ msgstr "Nedostatok miesta v cieli"
 #: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:854
 #: ../gio/gdatainputstream.c:1264 ../glib/gconvert.c:764
 #: ../glib/gconvert.c:1156 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
-#: ../glib/giochannel.c:2472 ../glib/gutf8.c:841 ../glib/gutf8.c:1292
+#: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 
@@ -528,10 +528,11 @@ msgstr ""
 "freedesktop.DBus.Local"
 
 # MČ: Asi bude tre dať rozdeliť reťazec, nenapadá mi, ako by sa druhá časť dala preložiť neutrálne. Jedna vec je istá, pri druhom reťazci môže byť ozískaných“ len nula, keďže iba to je menej ako jedna. Prípadne všade použiť „získaných“, malo by to narobiť najmenej problémov.
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=695234
 #: ../gio/gdbusmessage.c:1383
 #, fuzzy, c-format
-msgid "Wanted to read %lu bytes but only got %lu"
-msgid_plural "Wanted to read %lu byte but only got %lu"
+msgid "Wanted to read %lu byte but only got %lu"
+msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Potrebných %lu bajtov na čítanie, no získaných iba %lu"
 msgstr[1] "Potrebný %lu bajt na čítanie, no získaný iba %lu"
 msgstr[2] "Potrebné %lu bajty na čítanie, no získané iba %lu"
@@ -965,38 +966,38 @@ msgstr "Cesta objektu na sledovanie"
 msgid "Monitor a remote object."
 msgstr "Sledovať vzdialený objekt."
 
-#: ../gio/gdesktopappinfo.c:594 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:625 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: ../gio/gdesktopappinfo.c:1007
+#: ../gio/gdesktopappinfo.c:1038
 msgid "Desktop file didn't specify Exec field"
 msgstr "V súbore desktop nie je určené pole Exec"
 
-#: ../gio/gdesktopappinfo.c:1295
+#: ../gio/gdesktopappinfo.c:1326
 msgid "Unable to find terminal required for application"
 msgstr "Nepodarilo sa nájsť terminál vyžadovaný pre aplikáciu"
 
-#: ../gio/gdesktopappinfo.c:1597
+#: ../gio/gdesktopappinfo.c:1628
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Nedá sa vytvoriť používateľský konfiguračný priečinok aplikácie %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1601
+#: ../gio/gdesktopappinfo.c:1632
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nedá sa vytvoriť používateľský konfiguračný priečinok MIME %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1841 ../gio/gdesktopappinfo.c:1865
+#: ../gio/gdesktopappinfo.c:1872 ../gio/gdesktopappinfo.c:1896
 msgid "Application information lacks an identifier"
 msgstr "V informáciách o aplikácii chýba identifikátor"
 
-#: ../gio/gdesktopappinfo.c:2097
+#: ../gio/gdesktopappinfo.c:2128
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nedá sa vytvoriť používateľský desktop súbor %s"
 
-#: ../gio/gdesktopappinfo.c:2221
+#: ../gio/gdesktopappinfo.c:2252
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Vlastná definícia pre %s"
@@ -1826,80 +1827,80 @@ msgstr "Neplatný názov rozšíreného atribútu"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Chyba pri nastavovaní rozšíreného atribútu „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (neplatné kódovanie)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Chyba pri získavaní informácií pre súbor „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Chyba pri získavaní informácií pre popisovač súboru: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neplatný typ atribútu (očakávané uint32)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neplatný typ atribútu (očakávané uint64)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neplatný typ atribútu (očakávaný bajtový reťazec)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "Pre symbolické odkazy sa nedajú nastaviť oprávnenia"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Chyba pri nastavovaní oprávnení: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Chyba pri nastavovaní vlastníka: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "symbolický odkaz nesmie byť NULL"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Chyba pri nastavovaní symbolického odkazu: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Chyba pri nastavovaní symbolického odkazu: súbor nie je symbolický odkaz"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Chyba pri nastavovaní času prístupu alebo zmeny: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "Kontext pre SELinux nesmie byť NULL"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Chyba pri nastavovaní kontextu pre SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nie je na tomto systéme povolený"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Nastavovanie atribútu %s nie je podporované"
@@ -2477,6 +2478,11 @@ msgstr "  KĽÚČ      Kľúč vo vnútri schémy\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  HODNOTA   Hodnota, ktorá sa má nastaviť\n"
 
+#: ../gio/gsettings-tool.c:725
+#, c-format
+msgid "Could not load schemas from %s: %s\n"
+msgstr "Nepodarilo sa načítať schémy z %s: %s\n"
+
 #: ../gio/gsettings-tool.c:784
 #, c-format
 msgid "Empty schema name given\n"
@@ -2811,6 +2817,7 @@ msgid "The password entered is incorrect."
 msgstr "Zadané heslo je nesprávne."
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=695233
 #: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
 #, fuzzy, c-format
 msgid "Expecting 1 control message, got %d"
@@ -2821,6 +2828,7 @@ msgid "Unexpected type of ancillary data"
 msgstr "Neočakávaný typ doplnkových údajov"
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=695233
 #: ../gio/gunixconnection.c:190
 #, fuzzy, c-format
 msgid "Expecting one fd, but got %d\n"
@@ -3051,8 +3059,8 @@ msgstr "Žiadna aplikácia s názvom „%s“ nezaregistrovala záložku pre „
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Zlyhalo rozvinutie spustiteľného riadka „%s“ o identifikátor URI „%s“"
 
-#: ../glib/gconvert.c:803 ../glib/gutf8.c:837 ../glib/gutf8.c:1047
-#: ../glib/gutf8.c:1184 ../glib/gutf8.c:1288
+#: ../glib/gconvert.c:803 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
+#: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
 msgid "Partial character sequence at end of input"
 msgstr "Čiastočná sekvencia znakov na konci vstupu"
 
@@ -4348,16 +4356,16 @@ msgstr ""
 "Neočakávaná chyba v g_io_channel_win32_poll() pri čítaní údajov z dcérskeho "
 "procesu"
 
-#: ../glib/gutf8.c:915
+#: ../glib/gutf8.c:907
 msgid "Character out of range for UTF-8"
 msgstr "Znak mimo rozsah UTF-8"
 
-#: ../glib/gutf8.c:1015 ../glib/gutf8.c:1024 ../glib/gutf8.c:1154
-#: ../glib/gutf8.c:1163 ../glib/gutf8.c:1302 ../glib/gutf8.c:1398
+#: ../glib/gutf8.c:1007 ../glib/gutf8.c:1016 ../glib/gutf8.c:1146
+#: ../glib/gutf8.c:1155 ../glib/gutf8.c:1294 ../glib/gutf8.c:1390
 msgid "Invalid sequence in conversion input"
 msgstr "Neplatná sekvencia na vstupe prevodu"
 
-#: ../glib/gutf8.c:1313 ../glib/gutf8.c:1409
+#: ../glib/gutf8.c:1305 ../glib/gutf8.c:1401
 msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
 
