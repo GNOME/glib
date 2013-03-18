@@ -794,7 +794,7 @@ b_method_to_call (B *obj, int a)
   <title>How to define and implement interfaces</title>
 
   <sect1 id="howto-interface-define">
-    <title>How to define an interface</title>
+    <title>Defining interfaces</title>
   
   <para>
     The bulk of interface definition has already been shown in <xref linkend="gtype-non-instantiable-classed"/>
@@ -901,7 +901,7 @@ maman_ibaz_do_something (MamanIbaz *self)
   </sect1>
   
   <sect1 id="howto-interface-implement">
-    <title>How to implement an interface</title>
+    <title>Implementing interfaces</title>
   
     <para>
       Once the interface is defined, implementing it is rather trivial.
