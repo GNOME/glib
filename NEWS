@@ -13,12 +13,46 @@ reasons).
  694253 occasional /gdbus/unref-pending test failure
  694350 Add type names to gsignal warnings
  694757 Use separate GLIB_WARN_CFLAGS that can be overridden ext...
+ 568405 Which is the correct replacement for g_strncasecmp, if...
+ 630284 g_hash_table_get_keys docs
+ 659428 docs: Small clean-up of howto subsection headers
+ 675333 Cannot forget association in Open With dialog: program...
+ 694669 consider unicode corrigendum #9
+ 694843 g_base64_decode_step () produces invalid data
+ 695147 Don't use PATH_MAX as it's not guaranteed to be defined
+ 695191 Commit f641699 broke /appinfo/mime/api test case
+ 695339 Swapped msgid plural forms for translation
+ 695376 GDBusMethodInvocation leak and potential crash
+ 695425 Untranslatable message in gsettings-tool
+ 695887 Improvements to GObject API documentation
+ 695925 GUINT32/64_SWAP_LE_BE macros do not enclose val argume...
+ 696015 PATCH Add doc warning to g_base64_decode()
 
 * Translation updates:
+ Assamese
+ Belarusian
  Brazilian Portuguese
+ Catalan
+ Catalan (Valencian)
+ Danish
+ French
+ Galician
+ German
+ Greek
+ Gujarati
+ Italian
+ Korean
+ Latvian
+ Lithuanian
+ Polish
+ Portuguese
  Punjabi
+ Serbian
  Simplified Chinese
  Slovak
+ Slovenian
+ Spanish
+ Thai
  Traditional Chinese
  Uyghur
  Vietnamese
