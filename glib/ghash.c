@@ -1617,8 +1617,8 @@ g_hash_table_size (GHashTable *hash_table)
  * g_hash_table_get_keys:
  * @hash_table: a #GHashTable
  *
- * Retrieves every key inside @hash_table. The returned data
- * is valid until @hash_table is modified.
+ * Retrieves every key inside @hash_table. The returned data is valid
+ * until changes to the hash release those keys.
  *
  * Return value: a #GList containing all the keys inside the hash
  *     table. The content of the list is owned by the hash table and
