@@ -198,55 +198,17 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
 }
 
 DirEntry *
-g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
-				  gboolean   fastpass,
-				  GType      gtype)
+g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
+				       const gchar *gtype_name)
 {
   Header *header = (Header *)typelib->data;
-  guint n_entries = header->n_local_entries;
-  const char *gtype_name = g_type_name (gtype);
-  DirEntry *entry;
   guint i;
-  const char *c_prefix;
 
-  /* There is a corner case regarding GdkRectangle.  GdkRectangle is a
-     boxed type, but it is just an alias to boxed struct
-     CairoRectangleInt.  Scanner automatically converts all references
-     to GdkRectangle to CairoRectangleInt, so GdkRectangle does not
-     appear in the typelibs at all, although user code might query it.
-     So if we get such query, we also change it to lookup of
-     CairoRectangleInt.
-     https://bugzilla.gnome.org/show_bug.cgi?id=655423 */
-  if (!fastpass && !strcmp (gtype_name, "GdkRectangle"))
-    gtype_name = "CairoRectangleInt";
-
-  /* Inside each typelib, we include the "C prefix" which acts as
-   * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
-   * Given the assumption that GTypes for a library also use the
-   * C prefix, we know we can skip examining a typelib if our
-   * target type does not have this typelib's C prefix.
-   *
-   * However, not every class library necessarily conforms to this,
-   * e.g. Clutter has Cogl inside it.  So, we split this into two
-   * passes.  First we try a lookup, skipping things which don't
-   * have the prefix.  If that fails then we try a global lookup,
-   * ignoring the prefix.
-   *
-   * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
-   */
-  c_prefix = g_typelib_get_string (typelib, header->c_prefix);
-  if (fastpass && c_prefix != NULL)
-    {
-      if (g_ascii_strncasecmp (c_prefix, gtype_name, strlen (c_prefix)) != 0)
-	return NULL;
-    }
-
-  for (i = 1; i <= n_entries; i++)
+  for (i = 1; i <= header->n_local_entries; i++)
     {
       RegisteredTypeBlob *blob;
       const char *type;
-
-      entry = g_typelib_get_dir_entry (typelib, i);
+      DirEntry *entry = g_typelib_get_dir_entry (typelib, i);
       if (!BLOB_IS_REGISTERED_TYPE (entry))
 	continue;
 
@@ -259,6 +221,44 @@ g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
 	return entry;
     }
   return NULL;
+}
+
+gboolean
+g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
+				     const gchar *gtype_name)
+{
+  Header *header = (Header *)typelib->data;
+  const char *c_prefix;
+  gchar **prefixes;
+  gchar **prefix;
+  gboolean ret = FALSE;
+
+  c_prefix = g_typelib_get_string (typelib, header->c_prefix);
+  if (c_prefix == NULL)
+    return FALSE;
+
+  /* c_prefix is a comma separated string of supported prefixes
+   * in the typelib.
+   * We match the specified gtype_name if the gtype_name starts
+   * with the prefix, and is followed by a capital letter.
+   * For example, a typelib offering the 'Gdk' prefix does match
+   * GdkX11Cursor, however a typelib offering the 'G' prefix does not.
+   */
+  prefixes = g_strsplit (c_prefix, ",", 0);
+  for (prefix = prefixes; *prefix; prefix++)
+    {
+      size_t len = strlen (*prefix);
+      if (strncmp (*prefix, gtype_name, len))
+        continue;
+
+      if (strlen (gtype_name) > len && g_ascii_isupper (gtype_name[len]))
+        {
+          ret = TRUE;
+          break;
+        }
+    }
+  g_strfreev(prefixes);
+  return ret;
 }
 
 DirEntry *

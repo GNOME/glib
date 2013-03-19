@@ -593,28 +593,39 @@ g_irepository_get_info (GIRepository *repository,
 }
 
 typedef struct {
-  GIRepository *repository;
-  GType type;
-
-  gboolean fastpass;
+  const gchar *gtype_name;
   GITypelib *result_typelib;
-  DirEntry *result;
+  gboolean found_prefix;
 } FindByGTypeData;
 
-static void
-find_by_gtype_foreach (gpointer key,
-		       gpointer value,
-		       gpointer datap)
+static DirEntry *
+find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
 {
-  GITypelib *typelib = (GITypelib*)value;
-  FindByGTypeData *data = datap;
+  GHashTableIter iter;
+  gpointer key, value;
+  DirEntry *ret;
 
-  if (data->result != NULL)
-    return;
+  g_hash_table_iter_init (&iter, table);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      GITypelib *typelib = (GITypelib*)value;
+      if (check_prefix)
+        {
+          if (!g_typelib_matches_gtype_name_prefix (typelib, data->gtype_name))
+            continue;
 
-  data->result = g_typelib_get_dir_entry_by_gtype (typelib, data->fastpass, data->type);
-  if (data->result)
-    data->result_typelib = typelib;
+          data->found_prefix = TRUE;
+        }
+
+      ret = g_typelib_get_dir_entry_by_gtype_name (typelib, data->gtype_name);
+      if (ret)
+        {
+          data->result_typelib = typelib;
+          return ret;
+        }
+    }
+
+  return NULL;
 }
 
 /**
@@ -637,6 +648,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 {
   FindByGTypeData data;
   GIBaseInfo *cached;
+  DirEntry *entry;
 
   repository = get_repository (repository);
 
@@ -646,30 +658,55 @@ g_irepository_find_by_gtype (GIRepository *repository,
   if (cached != NULL)
     return g_base_info_ref (cached);
 
-  data.repository = repository;
-  data.fastpass = TRUE;
-  data.type = gtype;
+  data.gtype_name = g_type_name (gtype);
   data.result_typelib = NULL;
-  data.result = NULL;
+  data.found_prefix = FALSE;
 
-  g_hash_table_foreach (repository->priv->typelibs, find_by_gtype_foreach, &data);
-  if (data.result == NULL)
-    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_gtype_foreach, &data);
+  /* There is a corner case regarding GdkRectangle.  GdkRectangle is a
+   * boxed type, but it is just an alias to boxed struct
+   * CairoRectangleInt.  Scanner automatically converts all references
+   * to GdkRectangle to CairoRectangleInt, so GdkRectangle does not
+   * appear in the typelibs at all, although user code might query it.
+   * So if we get such query, we also change it to lookup of
+   * CairoRectangleInt.
+   * https://bugzilla.gnome.org/show_bug.cgi?id=655423
+   */
+  if (G_UNLIKELY (!strcmp (data.gtype_name, "GdkRectangle")))
+    data.gtype_name = "CairoRectangleInt";
 
-  /* We do two passes; see comment in find_interface */
-  if (data.result == NULL)
+  /* Inside each typelib, we include the "C prefix" which acts as
+   * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
+   * Given the assumption that GTypes for a library also use the
+   * C prefix, we know we can skip examining a typelib if our
+   * target type does not have this typelib's C prefix. Use this
+   * assumption as our first attempt at locating the DirEntry.
+   */
+  entry = find_by_gtype (repository->priv->typelibs, &data, TRUE);
+  if (entry == NULL)
+    entry = find_by_gtype (repository->priv->lazy_typelibs, &data, TRUE);
+
+  /* If we have no result, but we did find a typelib claiming to
+   * offer bindings for such a prefix, bail out now on the assumption
+   * that a more exhaustive search would not produce any results.
+   */
+  if (entry == NULL && data.found_prefix)
+      return NULL;
+
+  /* Not ever class library necessarily specifies a correct c_prefix,
+   * so take a second pass. This time we will try a global lookup,
+   * ignoring prefixes.
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
+   */
+  if (entry == NULL)
+    entry = find_by_gtype (repository->priv->typelibs, &data, FALSE);
+  if (entry == NULL)
+    entry = find_by_gtype (repository->priv->lazy_typelibs, &data, FALSE);
+
+  if (entry != NULL)
     {
-      data.fastpass = FALSE;
-      g_hash_table_foreach (repository->priv->typelibs, find_by_gtype_foreach, &data);
-    }
-  if (data.result == NULL)
-    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_gtype_foreach, &data);
-
-  if (data.result != NULL)
-    {
-      cached = _g_info_new_full (data.result->blob_type,
+      cached = _g_info_new_full (entry->blob_type,
 				 repository,
-				 NULL, data.result_typelib, data.result->offset);
+				 NULL, data.result_typelib, entry->offset);
 
       g_hash_table_insert (repository->priv->info_by_gtype,
 			   (gpointer) gtype,

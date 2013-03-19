@@ -1126,12 +1126,14 @@ DirEntry *g_typelib_get_dir_entry (GITypelib *typelib,
 DirEntry *g_typelib_get_dir_entry_by_name (GITypelib *typelib,
 					   const char *name);
 
-DirEntry *g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
-					    gboolean   fastpass,
-					    GType      gtype);
+DirEntry *g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
+						 const gchar *gtype_name);
 
 DirEntry *g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 						   GQuark     error_domain);
+
+gboolean  g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
+					       const gchar *gtype_name);
 
 void      g_typelib_check_sanity (void);
 
