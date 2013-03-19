@@ -62,7 +62,7 @@ VALID
 000007ff
 
 ï¿¿
-NOTUNICODE
+VALID
 0000ffff
 
 ÷¿¿¿
@@ -96,7 +96,7 @@ VALID
 0010fffd
 
 ô¿¿
-NOTUNICODE
+VALID
 0010ffff
 
 ô€€
@@ -278,16 +278,6 @@ dbff dc00
 í¯¿í¿¿
 NOTUNICODE
 dbff dfff
-
-# Other illegal code positions
-
-ï¿¾
-NOTUNICODE
-fffe
-
-ï¿¿
-NOTUNICODE
-ffff
 
 ################
 #
