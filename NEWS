@@ -4,7 +4,7 @@ Overview of changes from GLib 2.35.8 to 2.35.9
 This release drops the old codepage ABI from gutils.c. This is a
 source-compatible change and only breaks ABI with respect to truly
 ancient binaries (and those binaries are already broken for other
-reasons).
+reasons).  This change only affects Windows.
 
 * Bugs fixed:
  682896 glib doesn't build on mingw32
