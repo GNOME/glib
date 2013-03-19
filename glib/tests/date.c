@@ -130,18 +130,6 @@ test_parse (void)
   g_assert_cmpint (g_date_get_day (d), ==, 10);
   g_assert_cmpint (g_date_get_year (d), ==, 2000);
 
-  g_date_set_parse (d, "10 10 2010");
-  g_assert (g_date_valid (d));
-  g_assert_cmpint (g_date_get_month (d), ==, 10);
-  g_assert_cmpint (g_date_get_day (d), ==, 10);
-  g_assert_cmpint (g_date_get_year (d), ==, 2010);
-
-  g_date_set_parse (d, "10 March 2010");
-  g_assert (g_date_valid (d));
-  g_assert_cmpint (g_date_get_month (d), ==, 3);
-  g_assert_cmpint (g_date_get_day (d), ==, 10);
-  g_assert_cmpint (g_date_get_year (d), ==, 2010);
-
   g_date_free (d);
 }
 
