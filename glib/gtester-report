@@ -306,20 +306,20 @@ class HTMLReportWriter(ReportWriter):
     if binary.success_cases:
       oklink = 'href="javascript:toggle_display (\'ResultTable\', \'tr\', \'b%u_\', \'success\')"' % self.bcounter
     if real_cases != 0:
-	self.oprint ('<a %s>ER</a>\n' % erlink)
-	self.oprint ('<a %s>OK</a>\n' % oklink)
-	self.oprint ('</td>\n')
-	perc = binary.success_cases * 100.0 / real_cases
-	pcolor = {
-	  100 : 'bgcolor="lightgreen"',
-	  0   : 'bgcolor="red"',
-	}.get (int (perc), 'bgcolor="yellow"')
-	self.oprint ('<td align="right" %s>%.2f%%</td>\n' % (pcolor, perc))
-	self.oprint ('</tr>\n')
+        self.oprint ('<a %s>ER</a>\n' % erlink)
+        self.oprint ('<a %s>OK</a>\n' % oklink)
+        self.oprint ('</td>\n')
+        perc = binary.success_cases * 100.0 / real_cases
+        pcolor = {
+          100 : 'bgcolor="lightgreen"',
+          0   : 'bgcolor="red"',
+        }.get (int (perc), 'bgcolor="yellow"')
+        self.oprint ('<td align="right" %s>%.2f%%</td>\n' % (pcolor, perc))
+        self.oprint ('</tr>\n')
     else:
-	self.oprint ('Empty\n')
-	self.oprint ('</td>\n')
-	self.oprint ('</tr>\n')
+        self.oprint ('Empty\n')
+        self.oprint ('</td>\n')
+        self.oprint ('</tr>\n')
     for tc in binary.testcases:
       self.handle_testcase (tc, binary)
   def handle_totals (self):
@@ -464,7 +464,7 @@ def parse_opts():
             " Needs python-subunit]")
     options, files = parser.parse_args()
     if options.version:
-        print parser.epilog
+        print(parser.epilog)
         return None, None
     if len(files) != 1:
         parser.error("Must supply a log file to parse.")
