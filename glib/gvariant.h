@@ -369,7 +369,7 @@ void                            g_variant_get_va                        (GVarian
                                                                          const gchar          *format_string,
                                                                          const gchar         **endptr,
                                                                          va_list              *app);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_34
 gboolean                        g_variant_check_format_string           (GVariant             *value,
                                                                          const gchar          *format_string,
                                                                          gboolean              copy_only);
