@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-14 16:22+0530\n"
+"POT-Creation-Date: 2013-03-14 10:58+0000\n"
+"PO-Revision-Date: 2013-03-22 16:26+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -41,7 +41,6 @@ msgstr "%s ને ખૂબ મોટી ગણક કિંમત પસાર 
 
 #: ../gio/gbufferedinputstream.c:899 ../gio/gbufferedoutputstream.c:581
 #: ../gio/gdataoutputstream.c:568
-#| msgid "Seek not supported on stream"
 msgid "Seek not supported on base stream"
 msgstr "સીક એ મૂળ સ્ટ્રીમ પર આધારભૂત નથી"
 
@@ -55,7 +54,6 @@ msgid "Stream is already closed"
 msgstr "સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગયેલ છે"
 
 #: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
-#| msgid "Truncate not supported on stream"
 msgid "Truncate not supported on base stream"
 msgstr "ટ્રન્કેટ એ મૂળ સ્ટ્રીમ પર આધારભૂત નથી"
 
@@ -131,10 +129,9 @@ msgid "There is no GCredentials support for your platform"
 msgstr "તમારાં પ્લેટફોર્મ માટે GCredentials આધાર નથી"
 
 #: ../gio/gcredentials.c:480
-#, fuzzy
 #| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr "GCredentials એ આ OS પર અમલીકરણ થયેલ નથી"
+msgstr "GCredentials એ આ OS પર પ્રક્રિયા ID ને સમાવતુ નથી"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -173,7 +170,6 @@ msgstr "સરનામાં ઘટક `%s' વિરામચિહ્ન (:) 
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
-#| msgid "Address element `%s', does not contain a colon (:)"
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
 "sign"
@@ -497,13 +493,13 @@ msgstr ""
 "વાપરી રહ્યા છે"
 
 #: ../gio/gdbusmessage.c:1383
-#, fuzzy, c-format
+#, c-format
 #| msgid "Wanted to read %lu byte but got EOF"
 #| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
-msgstr[0] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ EOF મળ્યુ"
-msgstr[1] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ EOF મળ્યુ"
+msgstr[0] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ %lu મળ્યુ"
+msgstr[1] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ %lu મળ્યુ"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
@@ -796,7 +792,6 @@ msgstr "ભૂલ: સંકેત સ્પષ્ટ થયેલ નથી.\n"
 
 #: ../gio/gdbus-tool.c:636
 #, c-format
-#| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "ભૂલ: સંકેત સંપૂર્ણ ગુણવત્તાવાળું નામ હોવુ જ જોઇએ.\n"
 
@@ -1048,18 +1043,17 @@ msgid "Error splicing file: %s"
 msgstr "ફાઈલ ને જોડવામાં ભૂલ: %s"
 
 #: ../gio/gfile.c:2960
-#, fuzzy
 #| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
-msgstr "માઉન્ટો વચ્ચે ખસેડવાનું આધારભૂત નથી"
+msgstr "નકલ (સંદર્ભકડી/ક્લોન) માઉન્ટ વચ્ચે આધારભૂત નથી"
 
 #: ../gio/gfile.c:2964
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
+msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા અયોગ્ય છે"
 
 #: ../gio/gfile.c:2969
 msgid "Copy (reflink/clone) is not supported or didn't work"
-msgstr ""
+msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા કામ કરતી નથી"
 
 #: ../gio/gfile.c:3029
 msgid "Can't copy special file"
@@ -1313,7 +1307,7 @@ msgstr "સ્ત્રોતને આપમેળે બનાવી અને
 
 #: ../gio/glib-compile-resources.c:626
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
-msgstr ""
+msgstr "વિધેયોનો નિકાસ કરો નહિં; તેઓને G_GNUC_INTERNAL રજૂ કરો"
 
 #: ../gio/glib-compile-resources.c:627
 msgid "C identifier name used for the generated source code"
@@ -1518,8 +1512,8 @@ msgstr " અને --strict સ્પષ્ટ થયેલ હતુ; અસ્
 #, c-format
 msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr ""
-"ઓવરરાઇડ ફાઇલ `%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના `%s' માં કી `%s'નું પદચ્છેદન કરી રહ્યા હોય "
-"ત્યારે ભૂલ: %s."
+"ઓવરરાઇડ ફાઇલ `%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના `%s' માં કી `%s'નું પદચ્છેદન કરી રહ્યા "
+"હોય ત્યારે ભૂલ: %s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -1532,7 +1526,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is outside the "
 "range given in the schema"
 msgstr ""
-"ઓવરરાઇડ ફાઇલ `%s' માં યોજના `%s' માં કી `%s' માટે ઓવરરાઇડ યોજનામાં આપેલ સીમાની બહાર છે"
+"ઓવરરાઇડ ફાઇલ `%s' માં યોજના `%s' માં કી `%s' માટે ઓવરરાઇડ યોજનામાં આપેલ સીમાની "
+"બહાર છે"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
@@ -1564,8 +1559,8 @@ msgid ""
 "and the cache file is called gschemas.compiled."
 msgstr ""
 "યોજના કેશમાં બધી GSettings યોજનાને કમ્પાઇલ કરો.\n"
-"યોજના ફાઇલો પાસે ઍક્સટેન્શન .gschema.xml હોવુ જરૂરી છે અને કેશ ફાઇલ એ gschemas.compiled "
-"તરીકે બોલાવાય છે."
+"યોજના ફાઇલો પાસે ઍક્સટેન્શન .gschema.xml હોવુ જરૂરી છે અને કેશ ફાઇલ એ gschemas."
+"compiled તરીકે બોલાવાય છે."
 
 #: ../gio/glib-compile-schemas.c:2047
 #, c-format
@@ -1724,79 +1719,79 @@ msgstr "અયોગ્ય વિસ્તૃત લક્ષણ નામ"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "વિસ્તૃત લક્ષણ '%s' સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (અયોગ્ય સંગ્રહપદ્ધતિ)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "જ્યારે ફાઇલ '%s' માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ : %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "જ્યારે ફાઇલ વર્ણનકર્તા માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint32 ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint64 ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (બાઈટ શબ્દમાળા ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "સંકેત કડીઓ પર પરવાનગીઓને સુયોજિત કરી શકાતી નથી"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "પરવાનગીઓ સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "માલિક સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "સાંકેતિક કડી non-NULL જ હોવી જોઈએ"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: ફાઈલ સાંકેતિક કડી નથી"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "બદલાવ અથવા પ્રવેશ સમય ને સુયોજન કરતી વખતે ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux સંદર્ભ non-NULL જ હોવી જોઈએ"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux સંદર્ભ ને સુયોજન કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux એ આ સિસ્ટમ પર સક્રિય થયેલ નથી"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "લક્ષણ %s સુયોજીત કરવાનું આધારભૂત નથી"
@@ -2365,10 +2360,10 @@ msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     સુયોજિત કરવા માટે કિંમત\n"
 
 #: ../gio/gsettings-tool.c:725
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
-msgstr "'%s' માંથી '%s' માટેનો પરીવર્તક ખોલી શકતો નથી"
+msgstr "%s માંથી યોજનાને લાવી શક્યા નહિં: %s\n"
 
 #: ../gio/gsettings-tool.c:784
 #, c-format
@@ -2454,10 +2449,9 @@ msgid "Connection in progress"
 msgstr "જોડાણ પ્રગતિમાં છે"
 
 #: ../gio/gsocket.c:2346
-#, fuzzy
 #| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
-msgstr "પેન્ડિંગ ભૂલ ને મેળવવામાં અસમર્થ: %s"
+msgstr "પેન્ડિંગ ભૂલ ને મેળવવામાં અસમર્થ: "
 
 #: ../gio/gsocket.c:2512
 #, c-format
@@ -2764,7 +2758,6 @@ msgid "Error writing to file descriptor: %s"
 msgstr "ફાઈલ વર્ણનકર્તામાં લખી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gunixsocketaddress.c:244
-#| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Abstract unix ડોમેઇન સરનામાંઓ આ સિસ્ટમ પર આધારભૂત નથી"
 
@@ -3203,12 +3196,12 @@ msgid "Error opening directory '%s': %s"
 msgstr "'%s' ડિરેક્ટરી ખોલતા ભૂલ: %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
-#, fuzzy, c-format
+#, c-format
 #| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "%lu બાઈટ \"%s\" ફાઈલ વાંચવા માટે આપવામાં આવતા નથી"
-msgstr[1] "%lu બાઈટ \"%s\" ફાઈલ વાંચવા માટે આપવામાં આવતા નથી"
+msgstr[0] "%lu બાઈટ \"%s\" ફાઈલ વાંચવા માટે ફાળવી શક્યા નહિં"
+msgstr[1] "%lu બાઈટ \"%s\" ફાઈલો વાંચવા માટે ફાળવી શક્યા નહિં"
 
 #: ../glib/gfileutils.c:686
 #, c-format
@@ -3378,9 +3371,6 @@ msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેન�
 
 #: ../glib/gkeyfile.c:2536 ../glib/gkeyfile.c:2902
 #, c-format
-#| msgid ""
-#| "Key file contains key '%s' in group '%s' which has value that cannot be "
-#| "interpreted."
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
@@ -3390,12 +3380,10 @@ msgstr ""
 
 #: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2690
 #, c-format
-#| msgid ""
-#| "Key file contains key '%s' in group '%s' which has value that cannot be "
-#| "interpreted."
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
-"કી  '%s' કી જૂથ '%s'પાસે કિંમત '%s'છે કે જ્યાં %s ઇચ્છા રાખી રહ્યુ હતુ ઈન્ટરપ્રીટ કરી શકાતી ."
+"કી  '%s' કી જૂથ '%s'પાસે કિંમત '%s'છે કે જ્યાં %s ઇચ્છા રાખી રહ્યુ હતુ ઈન્ટરપ્રીટ કરી "
+"શકાતી ."
 
 #: ../glib/gkeyfile.c:3088 ../glib/gkeyfile.c:3280 ../glib/gkeyfile.c:3848
 #, c-format
@@ -3433,13 +3421,11 @@ msgstr "કિંમત '%s' બુલિયન તરીકે ઈન્ટર�
 
 #: ../glib/gmappedfile.c:130
 #, c-format
-#| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
 msgstr "ફાઇલ '%s%s%s%s' નાં ગુણધર્મને મેળવવામાં નિષ્ફળતા: fstat() નિષ્ફળ: %s"
 
 #: ../glib/gmappedfile.c:196
 #, c-format
-#| msgid "Failed to map file '%s': mmap() failed: %s"
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "%s%s%s%s નું માપન કરવામાં નિષ્ફળતા: mmap() નિષ્ફળ: %s"
 
@@ -3460,13 +3446,11 @@ msgstr "નામ માં અયોગ્ય UTF-8 સંગ્રહપદ્
 
 #: ../glib/gmarkup.c:472
 #, c-format
-#| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "'%s' એ યોગ્ય નામ નથી"
 
 #: ../glib/gmarkup.c:488
 #, c-format
-#| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
 msgstr "'%s' એ યોગ્ય નામ નથી: '%c'"
 
@@ -3754,7 +3738,6 @@ msgid "\\c at end of pattern"
 msgstr "\\c ભાતના અંતે"
 
 #: ../glib/gregex.c:335
-#| msgid "unrecognized character follows \\"
 msgid "unrecognized character following \\"
 msgstr "નહિં ઓળખાયેલ અક્ષર અનુસરે છે \\"
 
@@ -3787,7 +3770,6 @@ msgid "unexpected repeat"
 msgstr "અનિચ્છનિય પુનરાવર્તન"
 
 #: ../glib/gregex.c:360
-#| msgid "unrecognized character after (?"
 msgid "unrecognized character after (? or (?-"
 msgstr "(? અથવા (?- પછી નહિં ઓળખાતો અક્ષર"
 
@@ -3927,9 +3909,6 @@ msgid "inconsistent NEWLINE options"
 msgstr "વિચલ NEWLINE વિકલ્પો"
 
 #: ../glib/gregex.c:476
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -3953,12 +3932,10 @@ msgid "number is too big"
 msgstr "નંબર ઘણો મોટો છે"
 
 #: ../glib/gregex.c:492
-#| msgid "missing terminator in subpattern name"
 msgid "missing subpattern name after (?&"
 msgstr "(?& પછી ગુમ થયેલ ઉપભાત નામ"
 
 #: ../glib/gregex.c:495
-#| msgid "digit expected"
 msgid "digit expected after (?+"
 msgstr "(?+ પછી ઈચ્છિત અંક"
 
@@ -3967,7 +3944,6 @@ msgid "] is an invalid data character in JavaScript compatibility mode"
 msgstr "JavaScript સુસંગત સ્થિતિમાં ] એ અયોગ્ય માહિતી અક્ષર છે"
 
 #: ../glib/gregex.c:501
-#| msgid "two named subpatterns have the same name"
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "એજ નંબરનાં ઉપભાત માટે વિવિધ નામોને પરવાનગી આપેલ નથી"
 
@@ -3980,9 +3956,6 @@ msgid "\\c must be followed by an ASCII character"
 msgstr "\\c એ ASCII અક્ષર દ્દારા અનુસરવુ જ જોઇએ"
 
 #: ../glib/gregex.c:510
-#| msgid ""
-#| "\\g is not followed by a braced name or an optionally braced non-zero "
-#| "number"
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\g એ કૌંસવાળા નામ દ્વારા અનુસરવામાં આવતું નથી કે વૈકલ્પિક રીતે કૌંસવાળા બિન-શૂન્ય નંબરથી"
@@ -4000,7 +3973,6 @@ msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "(*MARK), (*PRUNE), (*SKIP), અથવા (*THEN) માં નામ ઘણુ લાંબુ છે"
 
 #: ../glib/gregex.c:522
-#| msgid "character value in \\x{...} sequence is too large"
 msgid "character value in \\u.... sequence is too large"
 msgstr "\\u માં અક્ષર કિંમત.... ક્રમાંકન ઘણુ લાંબુ છે"
 
