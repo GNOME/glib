@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-22 18:08+0530\n"
+"PO-Revision-Date: 2013-03-22 18:21+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -529,7 +529,7 @@ msgstr ""
 #| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
-msgstr[0] "%lu ବାଇଟ ପଢ଼ିବା ପାଇଁ ଚାହୁଁଛି କିନ୍ତୁ  କେବଳ %lu ମିଲିଲା"
+msgstr[0] "%lu  ବାଇଟ ପଢ଼ିବା ପାଇଁ ଚାହୁଁଛି କିନ୍ତୁ  କେବଳ %lu ମିଲିଲା"
 msgstr[1] "%lu ବାଇଟ ପଢ଼ିବା ପାଇଁ ଚାହୁଁଛି କିନ୍ତୁ  କେବଳ %lu ମିଲିଲା"
 
 #: ../gio/gdbusmessage.c:1398
@@ -3361,7 +3361,7 @@ msgstr "'%s' ଫାଇଲ କୁ ବନ୍ଦ କରିବା ରେ ଅସଫ�
 #: ../glib/gfileutils.c:1282
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "ଅବସ୍ଥିତ '%s' ଫାଇଲ କାଢି ହେଲା ନାହଁି: g_unlink ଅସଫଳ %s"
+msgstr "ଅବସ୍ଥିତ '%s' ଫାଇଲ କାଢି ହେଲା ନାହିଁ: g_unlink ଅସଫଳ %s"
 
 #: ../glib/gfileutils.c:1556
 #, c-format
@@ -3402,7 +3402,7 @@ msgstr "ଆଂଶିକ ଅକ୍ଷର ରେ ଚାନେଲର ସମାପ�
 
 #: ../glib/giochannel.c:1954
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr "g_io_channel_read_to_end େର ଅଂସସାଧିତ ପଠନ କରିହେଲା ନାହିଁ"
+msgstr "g_io_channel_read_to_end ରେ ଅଂସସାଧିତ ପଠନ କରିହେଲା ନାହିଁ"
 
 #: ../glib/gkeyfile.c:722
 msgid "Valid key file could not be found in search dirs"
@@ -3444,12 +3444,12 @@ msgstr "ମୂଖ୍ଯ ଫାଇଲ ଟି ଗୋଟିଏ ଅସହାୟକ �
 #: ../glib/gkeyfile.c:3540 ../glib/gkeyfile.c:3770 ../glib/gkeyfile.c:3837
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା କୌଣସି ସମୂହ ନାହିଁ"
+msgstr "ମୂଖ୍ଯ ଫାଇଲ ରେ '%s' ନାମ ଥିବା କୌଣସି ସମୂହ ନାହିଁ"
 
 #: ../glib/gkeyfile.c:1707
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr "ମୂଖ୍ଯ ଫାଇଲ େର '%s' ନାମ ଥିବା  କୌଣସି ଚାବିକାଠି ନାହିଁ"
+msgstr "ମୂଖ୍ଯ ଫାଇଲ ରେ '%s' ନାମ ଥିବା  କୌଣସି ଚାବିକାଠି ନାହିଁ"
 
 #: ../glib/gkeyfile.c:1814 ../glib/gkeyfile.c:1930
 #, c-format
