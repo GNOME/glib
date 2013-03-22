@@ -1174,7 +1174,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_CHAR
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecChar),	/* instance_size */
       16,			/* n_preallocs */
       param_char_init,		/* instance_init */
@@ -1192,7 +1192,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_UCHAR
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecUChar), /* instance_size */
       16,                       /* n_preallocs */
       param_uchar_init,         /* instance_init */
@@ -1210,7 +1210,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_BOOLEAN
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecBoolean), /* instance_size */
       16,                         /* n_preallocs */
       NULL,			  /* instance_init */
@@ -1228,7 +1228,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_INT
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecInt),   /* instance_size */
       16,                       /* n_preallocs */
       param_int_init,           /* instance_init */
@@ -1246,7 +1246,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_UINT
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecUInt),  /* instance_size */
       16,                       /* n_preallocs */
       param_uint_init,          /* instance_init */
@@ -1264,7 +1264,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_LONG
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecLong),  /* instance_size */
       16,                       /* n_preallocs */
       param_long_init,          /* instance_init */
@@ -1282,7 +1282,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_ULONG
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecULong), /* instance_size */
       16,                       /* n_preallocs */
       param_ulong_init,         /* instance_init */
@@ -1300,7 +1300,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_INT64
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecInt64),  /* instance_size */
       16,                       /* n_preallocs */
       param_int64_init,         /* instance_init */
@@ -1318,7 +1318,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_UINT64
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecUInt64), /* instance_size */
       16,                       /* n_preallocs */
       param_uint64_init,        /* instance_init */
@@ -1336,7 +1336,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_UNICHAR
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecUnichar), /* instance_size */
       16,                        /* n_preallocs */
       param_unichar_init,	 /* instance_init */
@@ -1354,7 +1354,7 @@ _g_param_spec_types_init (void)
  /* G_TYPE_PARAM_ENUM
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecEnum),  /* instance_size */
       16,                       /* n_preallocs */
       param_enum_init,          /* instance_init */
@@ -1372,7 +1372,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_FLAGS
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecFlags),	/* instance_size */
       16,			/* n_preallocs */
       param_flags_init,		/* instance_init */
@@ -1390,7 +1390,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_FLOAT
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecFloat), /* instance_size */
       16,                       /* n_preallocs */
       param_float_init,         /* instance_init */
@@ -1408,7 +1408,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_DOUBLE
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecDouble),	/* instance_size */
       16,				/* n_preallocs */
       param_double_init,		/* instance_init */
@@ -1426,7 +1426,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_STRING
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecString),	/* instance_size */
       16,				/* n_preallocs */
       param_string_init,		/* instance_init */
@@ -1444,7 +1444,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_PARAM
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecParam),	/* instance_size */
       16,			/* n_preallocs */
       param_param_init,		/* instance_init */
@@ -1462,7 +1462,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_BOXED
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecBoxed),	/* instance_size */
       4,			/* n_preallocs */
       param_boxed_init,		/* instance_init */
@@ -1480,7 +1480,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_POINTER
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecPointer),  /* instance_size */
       0,                           /* n_preallocs */
       param_pointer_init,	   /* instance_init */
@@ -1498,7 +1498,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_VALUE_ARRAY
    */
   {
-    static /* const */ GParamSpecTypeInfo pspec_info = {
+    /* const */ GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecValueArray),	/* instance_size */
       0,				/* n_preallocs */
       param_value_array_init,		/* instance_init */
@@ -1517,7 +1517,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_OBJECT
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecObject), /* instance_size */
       16,                        /* n_preallocs */
       param_object_init,	 /* instance_init */
@@ -1535,7 +1535,7 @@ _g_param_spec_types_init (void)
   /* G_TYPE_PARAM_OVERRIDE
    */
   {
-    static const GParamSpecTypeInfo pspec_info = {
+    const GParamSpecTypeInfo pspec_info = {
       sizeof (GParamSpecOverride), /* instance_size */
       16,                        /* n_preallocs */
       param_override_init,	 /* instance_init */
