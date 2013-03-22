@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-22 18:21+0530\n"
+"PO-Revision-Date: 2013-03-22 18:26+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -3290,8 +3290,8 @@ msgstr "%s' ଡିରେକ୍ଟୋରି ଖୋଲିବାରେ ତ୍ରୁ
 #| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "\"%s\" ଫାଇଲ ପଢିବା ପାଇଁ %lu ବାଇଟ୍ ବାଣ୍ଟିହେଲା ନାହିଁ"
-msgstr[1] "\"%s\" ଫାଇଲ ପଢିବା ପାଇଁ %lu ବାଇଟ୍ ବାଣ୍ଟିହେଲା ନାହିଁ"
+msgstr[0] "%lu ବାଇଟ୍‌କୁ \"%s\" ଫାଇଲ ପଢିବା ପାଇଁ  ବାଣ୍ଟିହେଲା ନାହିଁ"
+msgstr[1] "%lu ବାଇଟ୍‌କୁ \"%s\" ଫାଇଲ ପଢିବା ପାଇଁ  ବାଣ୍ଟିହେଲା ନାହିଁ"
 
 #: ../glib/gfileutils.c:686
 #, c-format
