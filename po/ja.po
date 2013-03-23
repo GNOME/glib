@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 15:21+0000\n"
-"PO-Revision-Date: 2013-03-10 01:38+0900\n"
+"POT-Creation-Date: 2013-03-14 10:58+0000\n"
+"PO-Revision-Date: 2013-03-14 22:37+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -1174,7 +1174,7 @@ msgstr "Stream has outstanding operation"
 #: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
-msgstr "要素 <%s> は <%s> 中では使えません"
+msgstr "要素 <%s> は <%s> 内に含められません"
 
 #: ../gio/glib-compile-resources.c:149
 #, c-format
@@ -1233,7 +1233,7 @@ msgstr "ファイルをオープンする際にエラー: %s"
 #: ../gio/glib-compile-resources.c:494 ../gio/glib-compile-schemas.c:1571
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr "<%s> 中では文字列は出現しません"
+msgstr "文字列は <%s> 内に含められません"
 
 #: ../gio/glib-compile-resources.c:619
 #, fuzzy
@@ -1297,50 +1297,46 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:778
 msgid "empty names are not permitted"
-msgstr "空の名前は許されていません"
+msgstr "空の名前は使用できません"
 
 #: ../gio/glib-compile-schemas.c:788
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr "正しくない名前 '%s': 名前は小文字で始まっていなければなりません"
+msgstr "不正な名前 '%s': 名前の先頭は小文字のみが使用できます"
 
 #: ../gio/glib-compile-schemas.c:800
-#, fuzzy, c-format
-#| msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and dash ('-') are permitted."
+#, c-format
 msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and hyphen ('-') are permitted."
-msgstr "正しくない名前 '%s': 正しくない文字 '%c' があります。小文字、数字、およびダッシュ ('-') のみが許可されている文字です"
+msgstr "不正な名前 '%s': 不正な文字 '%c': 小文字、数字、およびハイフン ('-') のみが使用できます"
 
 #: ../gio/glib-compile-schemas.c:809
-#, fuzzy, c-format
-#| msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+#, c-format
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
-msgstr "正しくない名前 '%s': 2つ連続するダッシュ ('--') は許可されません"
+msgstr "不正な名前 '%s': 連続するハイフン ('--') は使用できません"
 
 #: ../gio/glib-compile-schemas.c:818
-#, fuzzy, c-format
-#| msgid "invalid name '%s': the last character may not be a dash ('-')."
+#, c-format
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
-msgstr "正しくない名前 '%s': 最後の文字はダッシュ ('-') ではいけません。"
+msgstr "不正な名前 '%s': 名前の末尾にハイフン ('-') は使用できません"
 
 #: ../gio/glib-compile-schemas.c:826
-#, fuzzy, c-format
+#, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "正しくない名前 '%s': 最大長は 32 です"
+msgstr "不正な名前 '%s': 最大長は 1024 です"
 
 #: ../gio/glib-compile-schemas.c:895
 #, c-format
 msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> は既に指定されています"
+msgstr "<child name='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:921
-#, fuzzy
 msgid "cannot add keys to a 'list-of' schema"
-msgstr "キーを 'list-of' スキーマに追加することができません"
+msgstr "'list-of' 属性を持つスキーマにキーを追加できません"
 
 #: ../gio/glib-compile-schemas.c:932
 #, c-format
 msgid "<key name='%s'> already specified"
-msgstr "<key name='%s'> は既に指定されています"
+msgstr "<key name='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:950
 #, c-format
@@ -1350,7 +1346,7 @@ msgstr "<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠
 #: ../gio/glib-compile-schemas.c:961
 #, c-format
 msgid "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to <key>"
-msgstr "<key> の属性としては、'type'、'enum'、あるいは 'flags' のうち一つだけが指定できます"
+msgstr "<key> の属性としては、'type'、'enum'、あるいは 'flags' のどれかひとつだけが指定できます"
 
 #: ../gio/glib-compile-schemas.c:980
 #, c-format
@@ -1364,44 +1360,42 @@ msgstr "正しくない GVariant 型の文字列 '%s'"
 
 #: ../gio/glib-compile-schemas.c:1025
 msgid "<override> given but schema isn't extending anything"
-msgstr "<override> が指定されましたが、スキーマはまだ何も拡張していません"
+msgstr "<override> が指定されましたが、スキーマは何も拡張していません"
 
 #: ../gio/glib-compile-schemas.c:1038
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr "上書きする <key name='%s'> がありません"
+msgstr "オーバーライドする <key name='%s'> がありません"
 
 #: ../gio/glib-compile-schemas.c:1046
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> は既に指定されています"
+msgstr "<override name='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:1117
 #, c-format
 msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> は既に指定されています"
+msgstr "<schema id='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:1129
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
-msgstr "<schema id='%s'> がまだ存在していないスキーマ '%s' を拡張しています"
+msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' を拡張しています"
 
 #: ../gio/glib-compile-schemas.c:1145
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
 msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' のリストです"
 
 #: ../gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "Can not be a list of a schema with a path"
-msgstr ""
+msgstr "path 属性を持つスキーマのリストにはなれません"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
 msgid "Can not extend a schema with a path"
-msgstr ""
+msgstr "path 属性を持つスキーマを拡張できません"
 
 #: ../gio/glib-compile-schemas.c:1173
 #, c-format
@@ -1411,98 +1405,97 @@ msgstr "<schema id='%s'> はリストですが、リストではない <schema i
 #: ../gio/glib-compile-schemas.c:1183
 #, c-format
 msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' does not extend '%s'"
-msgstr ""
+msgstr "<schema id='%s' list-of='%s'> は <schema id='%s' list-of='%s'> を拡張していますが、'%s' は '%s' を拡張してません"
 
 #: ../gio/glib-compile-schemas.c:1200
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
-msgstr "パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはなりません"
+msgstr "パスを指定する場合、その先頭および末尾はスラッシュでなければなりません"
 
 #: ../gio/glib-compile-schemas.c:1207
 #, c-format
 msgid "the path of a list must end with ':/'"
-msgstr ""
+msgstr "リストのパスの末尾は ':/' でなければなりません"
 
 #: ../gio/glib-compile-schemas.c:1239
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> は既に指定されています"
+msgstr "<%s id='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:1463
-#, fuzzy, c-format
-#| msgid "Element <%s> not allowed at toplevel"
+#, c-format
 msgid "Element <%s> not allowed at the top level"
-msgstr "要素 <%s> はトップレベルでは使えません"
+msgstr "要素 <%s> はトップレベルでは使用できません"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1757 ../gio/glib-compile-schemas.c:1828
 #: ../gio/glib-compile-schemas.c:1904
 #, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr ""
+msgstr "--strict が指定されました。終了します。\n"
 
 #: ../gio/glib-compile-schemas.c:1765
 #, c-format
 msgid "This entire file has been ignored.\n"
-msgstr ""
+msgstr "このファイルを無視しました。\n"
 
 #: ../gio/glib-compile-schemas.c:1824
 #, c-format
 msgid "Ignoring this file.\n"
-msgstr ""
+msgstr "このファイルを無視します。\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr ""
+msgstr "オーバーライドファイル `%3$s' で指定されたスキーマ `%2$s' のキー `%1$s' は存在しません"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
 #: ../gio/glib-compile-schemas.c:1956
 #, c-format
 msgid "; ignoring override for this key.\n"
-msgstr ""
+msgstr "。このキーのオーバーライドを無視します。\n"
 
 #: ../gio/glib-compile-schemas.c:1874 ../gio/glib-compile-schemas.c:1932
 #: ../gio/glib-compile-schemas.c:1960
 #, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr ""
+msgstr "。--strict が指定されました。終了します。\n"
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
-msgstr ""
+msgstr "オーバーライドファイル `%3$s' で指定されたスキーマ `%2$s' のキー `%1$s' のパースでエラー発生: %4$s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr ""
+msgstr "このキーのオーバーライドを無視します。\n"
 
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid "override for key `%s' in schema `%s' in override file `%s' is outside the range given in the schema"
-msgstr ""
+msgstr "オーバーライドファイル `%3$s' で指定されたスキーマ `%2$s' のキー `%1$s' のオーバーライド値が、スキーマで定義された有効な範囲内にありません"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
-msgstr ""
+msgstr "オーバーライドファイル `%3$s' で指定されたスキーマ `%2$s' のキー `%1$s' のオーバーライド値が、スキーマで定義された有効な範囲内にありません"
 
 #: ../gio/glib-compile-schemas.c:1999
 msgid "where to store the gschemas.compiled file"
-msgstr ""
+msgstr "gschemas.compiled の出力先を指定する"
 
 #: ../gio/glib-compile-schemas.c:2000
 msgid "Abort on any errors in schemas"
-msgstr ""
+msgstr "スキーマ内にエラーを検出すれば処理を中止する"
 
 #: ../gio/glib-compile-schemas.c:2001
 msgid "Do not write the gschema.compiled file"
-msgstr ""
+msgstr "gschema.compiled を生成しない"
 
 #: ../gio/glib-compile-schemas.c:2002
 msgid "Do not enforce key name restrictions"
-msgstr ""
+msgstr "キー名の制約を強制しない"
 
 #: ../gio/glib-compile-schemas.c:2031
 msgid ""
@@ -1510,26 +1503,29 @@ msgid ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
+"すべての GSettings スキーマファイルをコンパイルして、スキーマキャッシュを生成します。\n"
+"スキーマファイルの拡張子は .gschema.xml でなければなりません。\n"
+"キャッシュファイルの名称は gschemas.compiled となります。"
 
 #: ../gio/glib-compile-schemas.c:2047
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr ""
+msgstr "ディレクトリ名をひとつだけ指定してください\n"
 
 #: ../gio/glib-compile-schemas.c:2086
 #, c-format
 msgid "No schema files found: "
-msgstr ""
+msgstr "スキーマファイルが見つかりません: "
 
 #: ../gio/glib-compile-schemas.c:2089
 #, c-format
 msgid "doing nothing.\n"
-msgstr ""
+msgstr "何もしません。\n"
 
 #: ../gio/glib-compile-schemas.c:2092
 #, c-format
 msgid "removed existing output file.\n"
-msgstr ""
+msgstr "既存の出力ファイル (gschemas.compiled) を削除しました。\n"
 
 #: ../gio/glocaldirectorymonitor.c:252
 msgid "Unable to find default local directory monitor type"
@@ -1669,79 +1665,79 @@ msgstr "拡張属性の名前が無効です"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "'%s' という拡張属性をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (無効なエンコーディング)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "ファイル '%s' の情報を取得する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "ファイルディスクリプターの情報を取得する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "属性の種類が無効です (uint32 型を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "属性の種類が無効です (uint64 型を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "属性の種類が無効です (バイト型の文字列を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "シンボリックリンクにはアクセス権をセットできません"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "アクセス権をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "所有者をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "シンボリックリンクを NULL にしないでください"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "シンボリックリンクをセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "最終更新日時、あるいは最終アクセス日時をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux のコンテキストを NULL にしないでください"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux のコンテキストを指定する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "このシステムでは SELinux が有効になっていません"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s という属性値はセットできません"
