@@ -2221,7 +2221,8 @@ class CodeGenerator:
                      '{\n'
                      '  _%s_skeleton_handle_method_call,\n'
                      '  _%s_skeleton_handle_get_property,\n'
-                     '  _%s_skeleton_handle_set_property\n'
+                     '  _%s_skeleton_handle_set_property,\n'
+                     '  {NULL}\n'
                      '};\n'
                      '\n'%(i.name_lower, i.name_lower, i.name_lower, i.name_lower))
 
