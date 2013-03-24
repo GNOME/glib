@@ -59,6 +59,7 @@
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "gcleanup.h"
 
 /**
  * SECTION:threads
@@ -1002,6 +1003,7 @@ g_thread_self (void)
       thread = g_slice_new0 (GRealThread);
       thread->ref_count = 1;
 
+      G_CLEANUP_ADD (&g_thread_specific_private, g_private_reset);
       g_private_set (&g_thread_specific_private, thread);
     }
 

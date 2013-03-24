@@ -100,6 +100,7 @@
 #include "gmain-internal.h"
 #include "glib-init.h"
 #include "glib-private.h"
+#include "gcleanup.h"
 
 /**
  * SECTION:main
@@ -410,7 +411,9 @@ static gboolean g_idle_dispatch    (GSource     *source,
 
 static void block_source (GSource *source);
 
+static GThread      *glib_worker_thread;
 static GMainContext *glib_worker_context;
+static gboolean      glib_worker_quit_requested;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
@@ -653,6 +656,7 @@ g_main_context_default (void)
       if (_g_main_poll_debug)
 	g_print ("default context=%p\n", default_main_context);
 #endif
+      G_CLEANUP_ADD (default_main_context, g_main_context_unref);
     }
 
   G_UNLOCK (main_loop);
@@ -2718,6 +2722,7 @@ get_dispatch (void)
   if (!dispatch)
     {
       dispatch = g_slice_new0 (GMainDispatch);
+      G_CLEANUP_ADD (&depth_private, g_private_reset);
       g_private_set (&depth_private, dispatch);
     }
 
@@ -5470,7 +5475,7 @@ g_main_context_invoke_full (GMainContext   *context,
 static gpointer
 glib_worker_main (gpointer data)
 {
-  while (TRUE)
+  while (!glib_worker_quit_requested)
     {
       g_main_context_iteration (glib_worker_context, TRUE);
 
@@ -5480,7 +5485,24 @@ glib_worker_main (gpointer data)
 #endif
     }
 
-  return NULL; /* worst GCC warning message ever... */
+  return NULL;
+}
+
+static gboolean
+return_false (gpointer user_data)
+{
+  return FALSE;
+}
+
+static void
+glib_worker_kill (void)
+{
+  glib_worker_quit_requested = TRUE;
+  g_main_context_invoke (glib_worker_context, return_false, NULL);
+  g_thread_join (glib_worker_thread);
+  glib_worker_thread = NULL;
+  g_main_context_unref (glib_worker_context);
+  glib_worker_context = NULL;
 }
 
 GMainContext *
@@ -5499,10 +5521,13 @@ g_get_worker_context (void)
       pthread_sigmask (SIG_SETMASK, &all, &prev_mask);
 #endif
       glib_worker_context = g_main_context_new ();
-      g_thread_new ("gmain", glib_worker_main, NULL);
+      glib_worker_thread = g_thread_new ("gmain", glib_worker_main, NULL);
 #ifdef G_OS_UNIX
       pthread_sigmask (SIG_SETMASK, &prev_mask, NULL);
 #endif
+
+      G_CLEANUP_ADD_FUNC (glib_worker_kill);
+
       g_once_init_leave (&initialised, TRUE);
     }
 

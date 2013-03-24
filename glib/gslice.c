@@ -52,6 +52,7 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
+#include "gcleanup.h"
 
 #include "valgrind.h"
 
@@ -523,6 +524,7 @@ thread_memory_from_self (void)
       tmem = g_malloc0 (sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines);
       tmem->magazine1 = (Magazine*) (tmem + 1);
       tmem->magazine2 = &tmem->magazine1[n_magazines];
+      G_CLEANUP_ADD (&private_thread_memory, g_private_reset);
       g_private_set (&private_thread_memory, tmem);
     }
   return tmem;

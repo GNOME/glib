@@ -26,6 +26,9 @@
 
 #include <stdlib.h>
 
+/* As good a place as any to put this... */
+G_CLEANUP_DEFINE
+
 typedef struct _GCleanupNode GCleanupNode;
 struct _GCleanupNode
 {

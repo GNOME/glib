@@ -50,6 +50,7 @@
 #include "gthread.h"
 #include "gunicode.h"
 #include "gfileutils.h"
+#include "gcleanup.h"
 
 #include "glibintl.h"
 
@@ -1023,6 +1024,7 @@ g_get_filename_charsets (const gchar ***filename_charsets)
   if (!cache)
     {
       cache = g_new0 (GFilenameCharsetCache, 1);
+      G_CLEANUP_ADD (&cache_private, g_private_reset);
       g_private_set (&cache_private, cache);
     }
 

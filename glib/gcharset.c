@@ -28,6 +28,7 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
+#include "gcleanup.h"
 #ifdef G_OS_WIN32
 #include "gwin32.h"
 #endif
@@ -186,6 +187,7 @@ g_get_charset (const char **charset)
   if (!cache)
     {
       cache = g_new0 (GCharsetCache, 1);
+      G_CLEANUP_ADD (&cache_private, g_private_reset);
       g_private_set (&cache_private, cache);
     }
 
@@ -240,7 +242,11 @@ read_aliases (gchar *file)
   char buf[256];
 
   if (!alias_table)
-    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
+    {
+      alias_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+      G_CLEANUP_ADD (alias_table, g_hash_table_unref);
+    }
+
   fp = fopen (file,"r");
   if (!fp)
     return;
@@ -560,6 +566,7 @@ g_get_language_names (void)
   if (!cache)
     {
       cache = g_new0 (GLanguageNamesCache, 1);
+      G_CLEANUP_ADD (&cache_private, g_private_reset);
       g_private_set (&cache_private, cache);
     }
 

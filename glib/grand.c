@@ -55,6 +55,7 @@
 #include "gmem.h"
 #include "gtestutils.h"
 #include "gthread.h"
+#include "gcleanup.h"
 
 #ifdef G_OS_WIN32
 #include <stdlib.h>
@@ -603,7 +604,10 @@ get_global_random (void)
 
   /* called while locked */
   if (!global_random)
-    global_random = g_rand_new ();
+    {
+      global_random = g_rand_new ();
+      G_CLEANUP_ADD (global_random, g_rand_free);
+    }
 
   return global_random;
 }
