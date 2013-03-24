@@ -1029,6 +1029,10 @@ class CodeGenerator:
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
+        self.c.write('typedef %sIface %sInterface;\n'%(i.camel_name, i.camel_name))
+        self.c.write('G_DEFINE_INTERFACE (%s, %s, G_TYPE_OBJECT);\n'%(i.camel_name, i.name_lower))
+        self.c.write('\n')
+
         self.c.write('static void\n'
                      '%s_default_init (%sIface *iface)\n'
                      '{\n'%(i.name_lower, i.camel_name));
@@ -1174,10 +1178,6 @@ class CodeGenerator:
 
         self.c.write('}\n'
                      '\n')
-
-        self.c.write('typedef %sIface %sInterface;\n'%(i.camel_name, i.camel_name))
-        self.c.write('G_DEFINE_INTERFACE (%s, %s, G_TYPE_OBJECT);\n'%(i.camel_name, i.name_lower))
-        self.c.write('\n')
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -2660,6 +2660,9 @@ class CodeGenerator:
                 %(self.namespace, self.namespace), False))
         self.c.write('\n')
 
+        self.c.write('typedef %sObjectIface %sObjectInterface;\n'%(self.namespace, self.namespace))
+        self.c.write('G_DEFINE_INTERFACE_WITH_CODE (%sObject, %sobject, G_TYPE_OBJECT, g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_DBUS_OBJECT));\n'%(self.namespace, self.ns_lower))
+        self.c.write('\n')
         self.c.write('static void\n'
                      '%sobject_default_init (%sObjectIface *iface)\n'
                      '{\n'
@@ -2679,10 +2682,6 @@ class CodeGenerator:
                          %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper))
         self.c.write('}\n'
                      '\n')
-
-        self.c.write('typedef %sObjectIface %sObjectInterface;\n'%(self.namespace, self.namespace))
-        self.c.write('G_DEFINE_INTERFACE_WITH_CODE (%sObject, %sobject, G_TYPE_OBJECT, g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_DBUS_OBJECT));\n'%(self.namespace, self.ns_lower))
-        self.c.write('\n')
 
         for i in self.ifaces:
             self.c.write(self.docbook_gen.expand(
