@@ -797,6 +797,10 @@ g_get_user_database_entry (void)
       if (!e.real_name)
         e.real_name = g_strdup ("Unknown");
 
+      G_CLEANUP (e.user_name, g_free);
+      G_CLEANUP (e.real_name, g_free);
+      G_CLEANUP (e.home_dir, g_free);
+
       g_once_init_leave (&entry, &e);
     }
 
@@ -944,6 +948,11 @@ g_get_home_dir (void)
            */
           tmp = entry->home_dir;
         }
+      else
+        /* Only free this during cleanup if it's not from the user
+         * entry, because the user entry does its own freeing...
+         */
+        G_CLEANUP (tmp, g_free);
 
       g_once_init_leave (&home_dir, tmp);
     }
@@ -1009,6 +1018,8 @@ g_get_tmp_dir (void)
         }
 #endif /* !G_OS_WIN32 */
 
+      G_CLEANUP (tmp, g_free);
+
       g_once_init_leave (&tmp_dir, tmp);
     }
 
@@ -1044,6 +1055,7 @@ g_get_host_name (void)
     {
       gboolean failed;
       gchar tmp[100];
+      gchar *result;
 
 #ifndef G_OS_WIN32
       failed = (gethostname (tmp, sizeof (tmp)) == -1);
@@ -1052,7 +1064,10 @@ g_get_host_name (void)
       failed = (!GetComputerName (tmp, &size));
 #endif
 
-      g_once_init_leave (&hostname, g_strdup (failed ? "localhost" : tmp));
+      result = g_strdup (failed ? "localhost" : tmp);
+      G_CLEANUP (result, g_free);
+
+      g_once_init_leave (&hostname, result);
     }
 
   return hostname;
@@ -1060,6 +1075,13 @@ g_get_host_name (void)
 
 G_LOCK_DEFINE_STATIC (g_prgname);
 static gchar *g_prgname = NULL;
+
+static void
+cleanup_prgname (void)
+{
+  g_free (g_prgname);
+  g_prgname = NULL;
+}
 
 /**
  * g_get_prgname:
@@ -1097,6 +1119,7 @@ g_get_prgname (void)
 	  if (utf8_buf)
 	    {
 	      g_prgname = g_path_get_basename (utf8_buf);
+              G_CLEANUP_FUNC (cleanup_prgname);
 	      g_free (utf8_buf);
 	    }
 	}
@@ -1112,14 +1135,21 @@ g_get_prgname (void)
  * g_set_prgname:
  * @prgname: the name of the program.
  *
- * Sets the name of the program. This name should <emphasis>not</emphasis> 
- * be localized, contrast with g_set_application_name(). Note that for 
- * thread-safety reasons this function can only be called once.
+ * Sets the name of the program. This name should <emphasis>not</emphasis>
+ * be localized, contrast with g_set_application_name(). Note that for
+ * thread-safety reasons if this function is called more than once or is
+ * called after g_get_prgname() has been called, memory will be leaked.
  */
 void
 g_set_prgname (const gchar *prgname)
 {
   G_LOCK (g_prgname);
+  /* We want to use remove here because this is a leak and we want that
+   * to show up in valgrind, so we should _not_ free the original string
+   * during cleanup.
+   */
+  if (!g_prgname)
+    G_CLEANUP_FUNC (cleanup_prgname);
   g_free (g_prgname);
   g_prgname = g_strdup (prgname);
   G_UNLOCK (g_prgname);
@@ -1185,7 +1215,10 @@ g_set_application_name (const gchar *application_name)
   if (g_application_name)
     already_set = TRUE;
   else
-    g_application_name = g_strdup (application_name);
+    {
+      g_application_name = g_strdup (application_name);
+      G_CLEANUP (g_application_name, g_free);
+    }
   G_UNLOCK (g_application_name);
 
   if (already_set)
@@ -1239,6 +1272,7 @@ g_get_user_data_dir (void)
             data_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".local", "share", NULL);
 	}
 
+      G_CLEANUP (data_dir, g_free);
       g_user_data_dir = data_dir;
     }
   else
@@ -1274,6 +1308,7 @@ g_init_user_config_dir (void)
             config_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".config", NULL);
 	}
 
+      G_CLEANUP (config_dir, g_free);
       g_user_config_dir = config_dir;
     }
 }
@@ -1356,6 +1391,7 @@ g_get_user_cache_dir (void)
 	  else
             cache_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".cache", NULL);
 	}
+      G_CLEANUP (cache_dir, g_free);
       g_user_cache_dir = cache_dir;
     }
   else
@@ -1392,13 +1428,14 @@ const gchar *
 g_get_user_runtime_dir (void)
 {
 #ifndef G_OS_WIN32
-  static const gchar *runtime_dir;
+  static gchar *runtime_dir;
   static gsize initialised;
 
   if (g_once_init_enter (&initialised))
     {
       runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
-      
+      if (runtime_dir)
+        G_CLEANUP (runtime_dir, g_free);
       g_once_init_leave (&initialised, 1);
     }
 
@@ -1752,6 +1789,17 @@ g_reload_user_special_dirs_cache (void)
   G_UNLOCK (g_utils_global);
 }
 
+static void
+cleanup_user_special_dirs (void)
+{
+  gint i;
+
+  for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+    g_free (g_user_special_dirs[i]);
+
+  g_free (g_user_special_dirs);
+}
+
 /**
  * g_get_user_special_dir:
  * @directory: the logical id of special directory
@@ -1784,6 +1832,7 @@ g_get_user_special_dir (GUserDirectory directory)
   if (G_UNLIKELY (g_user_special_dirs == NULL))
     {
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
+      G_CLEANUP_FUNC (cleanup_user_special_dirs);
 
       load_user_special_dirs ();
 

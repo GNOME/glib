@@ -38,6 +38,7 @@ AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
 	$(pcre_inc) 			\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
+	-DG_CLEANUP_SCOPE=glib_cleanup	\
 	$(GLIB_DEBUG_FLAGS) 		\
 	-DGLIB_COMPILATION 		\
 	-DPCRE_STATIC

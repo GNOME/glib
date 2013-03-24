@@ -59,6 +59,7 @@
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "gcleanup.h"
 
 /**
  * SECTION:threads

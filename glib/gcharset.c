@@ -28,6 +28,7 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
+#include "gcleanup.h"
 #ifdef G_OS_WIN32
 #include "gwin32.h"
 #endif
@@ -240,7 +241,11 @@ read_aliases (gchar *file)
   char buf[256];
 
   if (!alias_table)
-    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
+    {
+      alias_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+      G_CLEANUP (alias_table, g_hash_table_unref);
+    }
+
   fp = fopen (file,"r");
   if (!fp)
     return;

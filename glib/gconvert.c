@@ -50,6 +50,7 @@
 #include "gthread.h"
 #include "gunicode.h"
 #include "gfileutils.h"
+#include "gcleanup.h"
 
 #include "glibintl.h"
 

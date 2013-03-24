@@ -52,6 +52,7 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
+#include "gcleanup.h"
 
 #include "valgrind.h"
 

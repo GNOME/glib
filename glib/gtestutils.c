@@ -999,6 +999,35 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+static void
+g_test_case_free (GTestCase *test_case)
+{
+  g_free (test_case->name);
+  g_slice_free (GTestCase, test_case);
+}
+
+static void
+g_test_suite_free (GTestSuite *suite)
+{
+  g_free (suite->name);
+  g_slist_free_full (suite->suites, (GDestroyNotify) g_test_suite_free);
+  g_slist_free_full (suite->cases, (GDestroyNotify) g_test_case_free);
+  g_slice_free (GTestSuite, suite);
+}
+
+static void
+g_test_cleanup (void)
+{
+  g_clear_pointer (&test_run_rand, g_rand_free);
+
+  if (test_suite_root)
+    g_test_suite_free (test_suite_root);
+
+  g_free (test_trap_last_stdout);
+  g_free (test_trap_last_stderr);
+  g_free (test_uri_base);
+}
+
 /**
  * g_test_init:
  * @argc: Address of the @argc parameter of the main() function.
@@ -1157,6 +1186,8 @@ g_test_init (int    *argc,
   test_built_files_dir = g_getenv ("G_TEST_BUILDDIR");
   if (!test_built_files_dir)
     test_built_files_dir = test_argv0_dirname;
+
+  G_CLEANUP_FUNC (g_test_cleanup);
 }
 
 static void
