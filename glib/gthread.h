@@ -84,13 +84,19 @@ struct _GRecMutex
   guint i[2];
 };
 
-#define G_PRIVATE_INIT(notify) { NULL, (notify), { NULL, NULL } }
+#if defined(G_CLEANUP_SCOPE) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_40
+#define G_PRIVATE_INIT(notify) { NULL, (notify), G_CLEANUP_SCOPE, { NULL } }
+#else
+#define G_PRIVATE_INIT(notify) { NULL, (notify), NULL, { NULL } }
+#endif
+
 struct _GPrivate
 {
   /*< private >*/
   gpointer       p;
   GDestroyNotify notify;
-  gpointer future[2];
+  gpointer       cleanup;
+  gpointer future[1];
 };
 
 typedef enum

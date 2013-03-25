@@ -26,6 +26,7 @@
 /* we know we are deprecated here, no need for warnings */
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
+#include "gcleanup.h"
 #include "gmessages.h"
 #include "gslice.h"
 #include "gmain.h"
@@ -1429,6 +1430,13 @@ g_static_private_set (GStaticPrivate *private_key,
   node->owner = private_key;
 }
 
+static void
+cleanup_free_indices (void)
+{
+  g_slist_free (g_thread_free_indices);
+  g_thread_free_indices = NULL;
+}
+
 /**
  * g_static_private_free:
  * @private_key: a #GStaticPrivate to be freed
@@ -1443,6 +1451,7 @@ g_static_private_set (GStaticPrivate *private_key,
 void
 g_static_private_free (GStaticPrivate *private_key)
 {
+  static gboolean cleanup_pushed = FALSE;
   guint idx = private_key->index;
 
   if (!idx)
@@ -1455,6 +1464,11 @@ g_static_private_free (GStaticPrivate *private_key)
    * the same index.
    */
   G_LOCK (g_thread);
+  if (!cleanup_pushed)
+    {
+      G_CLEANUP_FUNC_IN (cleanup_free_indices, G_CLEANUP_PHASE_GRAVEYARD);
+      cleanup_pushed = TRUE;
+    }
   g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
                                            GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
