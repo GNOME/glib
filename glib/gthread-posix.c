@@ -47,6 +47,7 @@
 #include "gslice.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
+#include "gcleanup.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -126,7 +127,9 @@ g_mutex_get_impl (GMutex *mutex)
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_mutex_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&mutex->p, NULL, impl))
+      if (g_atomic_pointer_compare_and_exchange (&mutex->p, NULL, impl))
+        G_CLEANUP_ADD (impl, g_mutex_impl_free);
+      else
         g_mutex_impl_free (impl);
       impl = mutex->p;
     }
@@ -295,7 +298,9 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_rec_mutex_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&rec_mutex->p, NULL, impl))
+      if (g_atomic_pointer_compare_and_exchange (&rec_mutex->p, NULL, impl))
+        G_CLEANUP_ADD (impl, g_rec_mutex_impl_free);
+      else
         g_rec_mutex_impl_free (impl);
       impl = rec_mutex->p;
     }
@@ -455,7 +460,9 @@ g_rw_lock_get_impl (GRWLock *lock)
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_rw_lock_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&lock->p, NULL, impl))
+      if (g_atomic_pointer_compare_and_exchange (&lock->p, NULL, impl))
+        G_CLEANUP_ADD (impl, g_rw_lock_impl_free);
+      else
         g_rw_lock_impl_free (impl);
       impl = lock->p;
     }
@@ -672,7 +679,9 @@ g_cond_get_impl (GCond *cond)
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_cond_impl_new ();
-      if (!g_atomic_pointer_compare_and_exchange (&cond->p, NULL, impl))
+      if (g_atomic_pointer_compare_and_exchange (&cond->p, NULL, impl))
+        G_CLEANUP_ADD (impl, g_cond_impl_free);
+      else
         g_cond_impl_free (impl);
       impl = cond->p;
     }
@@ -990,7 +999,11 @@ g_private_get_impl (GPrivate *key)
   if G_UNLIKELY (impl == NULL)
     {
       impl = g_private_impl_new (key->notify);
-      if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+      if (g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+        {
+          G_CLEANUP_ADD (impl, g_private_impl_free);
+        }
+      else
         {
           g_private_impl_free (impl);
           impl = key->p;
