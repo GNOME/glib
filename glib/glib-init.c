@@ -203,6 +203,8 @@ g_debug_init (void)
 {
   const GDebugKey keys[] = {
     { "gc-friendly", 1 },
+    { "cleanup", 2 },
+    /* warning: G_LOG_LEVEL_ERROR is 4, so you'd better not use that one next... */
     {"fatal-warnings",  G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL },
     {"fatal-criticals", G_LOG_LEVEL_CRITICAL }
   };
@@ -213,6 +215,7 @@ g_debug_init (void)
   g_log_always_fatal |= flags & G_LOG_LEVEL_MASK;
 
   g_mem_gc_friendly = flags & 1;
+  g_cleanup_enabled = (flags & 2) != 0;
 }
 
 static void

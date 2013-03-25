@@ -40,6 +40,7 @@
 #include <glib/gbytes.h>
 #include <glib/gcharset.h>
 #include <glib/gchecksum.h>
+#include <glib/gcleanup.h>
 #include <glib/gconstructor.h>
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>

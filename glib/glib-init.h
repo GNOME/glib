@@ -26,6 +26,7 @@
 
 extern GLogLevelFlags g_log_always_fatal;
 extern GLogLevelFlags g_log_msg_prefix;
+gboolean g_cleanup_enabled;
 
 #ifdef G_OS_WIN32
 #include <windows.h>
