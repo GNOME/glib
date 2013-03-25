@@ -1273,7 +1273,9 @@ test_unix_fd_source (void)
   g_assert (in && out);
 
   g_source_destroy (out_source);
+  g_source_unref (out_source);
   g_source_destroy (in_source);
+  g_source_unref (in_source);
   close (fds[1]);
   close (fds[0]);
 }
