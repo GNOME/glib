@@ -107,14 +107,14 @@ GLIB_AVAILABLE_IN_ALL
 void                    g_socket_client_set_enable_proxy                (GSocketClient        *client,
     									 gboolean	      enable);
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_28
 gboolean                g_socket_client_get_tls                         (GSocketClient        *client);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_28
 void                    g_socket_client_set_tls                         (GSocketClient        *client,
 									 gboolean              tls);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_28
 GTlsCertificateFlags    g_socket_client_get_tls_validation_flags        (GSocketClient        *client);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_28
 void                    g_socket_client_set_tls_validation_flags        (GSocketClient        *client,
 									 GTlsCertificateFlags  flags);
 GLIB_AVAILABLE_IN_2_36
@@ -140,7 +140,7 @@ GSocketConnection *     g_socket_client_connect_to_service              (GSocket
 									 const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_26
 GSocketConnection *     g_socket_client_connect_to_uri                  (GSocketClient        *client,
 									 const gchar          *uri,
 									 guint16               default_port,
