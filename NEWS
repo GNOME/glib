@@ -1,3 +1,35 @@
+Overview of changes fron GLib 2.35.9 to 2.36.0
+==============================================
+
+This release contains only small bugfixes and translations updates.
+
+ - g_file_copy(): fix bug where attributes were not applied properly to
+   the destination file
+
+ - fix some 'available since' annotations
+
+ - fix gdbus-codegen to produce more pedantically-correct code
+
+* Bugs fixed:
+ 696108 gdbus-codegen: avoid warnings in generated code
+ 696014 g_file_copy(): Ensure G_FILE_COPY_OVERWRITE preserves permissions
+
+* Translations updated:
+ Basque
+ Czech
+ Gujarati
+ Hindi
+ Hungarian
+ Japanese
+ Malayalam
+ Marathi
+ Odia
+ Punjabi
+ Russian
+ Tadjik
+ Tamil
+ Telugu
+
 Overview of changes from GLib 2.35.8 to 2.35.9
 ==============================================
 
