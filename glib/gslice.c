@@ -446,11 +446,9 @@ g_slice_init_nomessage (void)
       allocator->slab_stack = g_new0 (SlabInfo*, MAX_SLAB_INDEX (allocator));
     }
 
-  g_mutex_init (&allocator->magazine_mutex);
   allocator->mutex_counter = 0;
   allocator->stamp_counter = MAX_STAMP_COUNTER; /* force initial update */
   allocator->last_stamp = 0;
-  g_mutex_init (&allocator->slab_mutex);
   allocator->color_accu = 0;
   magazine_cache_update_stamp();
   /* values cached for performance reasons */
