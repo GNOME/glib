@@ -224,6 +224,8 @@ void            g_private_set                   (GPrivate       *key,
 GLIB_AVAILABLE_IN_2_32
 void            g_private_replace               (GPrivate       *key,
                                                  gpointer        value);
+GLIB_AVAILABLE_IN_2_36
+void            g_private_reset                 (GPrivate       *key);
 
 GLIB_AVAILABLE_IN_ALL
 gpointer        g_once_impl                     (GOnce          *once,

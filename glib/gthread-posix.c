@@ -1070,6 +1070,31 @@ g_private_replace (GPrivate *key,
     g_thread_abort (status, "pthread_setspecific");
 }
 
+/**
+ * g_private_reset:
+ * @key: a #GPrivate
+ *
+ * Unsets the thread local variable @key to have the value @value in the
+ * current thread.  If the previous value was non-%NULL then the
+ * #GDestroyNotify handler for @key is run on it.
+ *
+ * Since: 2.32
+ **/
+void
+g_private_reset (GPrivate *key)
+{
+  pthread_key_t *impl = g_private_get_impl (key);
+  gpointer old;
+  gint status;
+
+  old = pthread_getspecific (*impl);
+  if (old && key->notify)
+    key->notify (old);
+
+  if G_UNLIKELY ((status = pthread_setspecific (*impl, NULL)) != 0)
+    g_thread_abort (status, "pthread_setspecific");
+}
+
 /* {{{1 GThread */
 
 #define posix_check_err(err, name) G_STMT_START{			\

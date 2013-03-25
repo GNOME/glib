@@ -408,6 +408,18 @@ g_private_replace (GPrivate *key,
   TlsSetValue (impl, value);
 }
 
+void
+g_private_reset (GPrivate *key)
+{
+  DWORD impl = g_private_get_impl (key);
+  gpointer old;
+
+  old = TlsGetValue (impl);
+  if (old && key->notify)
+    key->notify (old);
+  TlsSetValue (impl, NULL);
+}
+
 /* {{{1 GThread */
 
 #define win32_check_for_error(what) G_STMT_START{			\
