@@ -640,6 +640,9 @@ g_task_finalize (GObject *object)
   if (task->result_destroy && task->result.pointer)
     task->result_destroy (task->result.pointer);
 
+  if (task->error)
+      g_error_free (task->error);
+
   if (G_TASK_IS_THREADED (task))
     {
       g_mutex_clear (&task->lock);
