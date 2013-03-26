@@ -35,7 +35,7 @@
  * @include: gio/gio.h
  *
  * #GTlsFileDatabase is implemented by #GTlsDatabase objects which load
- * their certificate information from a file. It is in interface which
+ * their certificate information from a file. It is an interface which
  * TLS library specific subtypes implement.
  *
  * Since: 2.30
