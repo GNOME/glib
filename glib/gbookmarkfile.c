@@ -1889,7 +1889,7 @@ g_bookmark_file_load_from_data_dirs (GBookmarkFile  *bookmark,
 /**
  * g_bookmark_file_to_data:
  * @bookmark: a #GBookmarkFile
- * @length: (allow-none): return location for the length of the returned string, or %NULL
+ * @length: (allow-none) (out): return location for the length of the returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * This function outputs @bookmark as a string.
@@ -2079,13 +2079,13 @@ g_bookmark_file_has_item (GBookmarkFile *bookmark,
 /**
  * g_bookmark_file_get_uris:
  * @bookmark: a #GBookmarkFile
- * @length: (allow-none): return location for the number of returned URIs, or %NULL
+ * @length: (allow-none) (out): return location for the number of returned URIs, or %NULL
  *
  * Returns all URIs of the bookmarks in the bookmark file @bookmark.
  * The array of returned URIs will be %NULL-terminated, so @length may
  * optionally be %NULL.
  *
- * Return value: a newly allocated %NULL-terminated array of strings.
+ * Return value: (array length=length) (transfer full): a newly allocated %NULL-terminated array of strings.
  *   Use g_strfreev() to free it.
  *
  * Since: 2.12
@@ -2914,7 +2914,7 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
  * g_bookmark_file_get_groups:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @length: (allow-none): return location for the length of the returned string, or %NULL
+ * @length: (allow-none) (out): return location for the length of the returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Retrieves the list of group names of the bookmark for @uri.
@@ -2925,7 +2925,7 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
  * The returned array is %NULL terminated, so @length may optionally
  * be %NULL.
  *
- * Return value: a newly allocated %NULL-terminated array of group names.
+ * Return value: (array length=length) (transfer full): a newly allocated %NULL-terminated array of group names.
  *   Use g_strfreev() to free it.
  *
  * Since: 2.12
@@ -3339,9 +3339,9 @@ expand_exec_line (const gchar *exec_fmt,
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
  * @name: an application's name
- * @exec: (allow-none): location for the command line of the application, or %NULL
- * @count: (allow-none): return location for the registration count, or %NULL
- * @stamp: (allow-none): return location for the last registration time, or %NULL
+ * @exec: (allow-none) (out): return location for the command line of the application, or %NULL
+ * @count: (allow-none) (out): return location for the registration count, or %NULL
+ * @stamp: (allow-none) (out): return location for the last registration time, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Gets the registration informations of @app_name for the bookmark for
@@ -3439,7 +3439,7 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
  * g_bookmark_file_get_applications:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @length: (allow-none): return location of the length of the returned list, or %NULL
+ * @length: (allow-none) (out): return location of the length of the returned list, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Retrieves the names of the applications that have registered the
@@ -3448,7 +3448,7 @@ g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
  * In the event the URI cannot be found, %NULL is returned and
  * @error is set to #G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
  *
- * Return value: a newly allocated %NULL-terminated array of strings.
+ * Return value: (array length=length) (transfer full): a newly allocated %NULL-terminated array of strings.
  *   Use g_strfreev() to free it.
  *
  * Since: 2.12
@@ -3659,8 +3659,8 @@ g_bookmark_file_set_icon (GBookmarkFile *bookmark,
  * g_bookmark_file_get_icon:
  * @bookmark: a #GBookmarkFile
  * @uri: a valid URI
- * @href: (allow-none): return location for the icon's location or %NULL
- * @mime_type: (allow-none): return location for the icon's MIME type or %NULL
+ * @href: (allow-none) (out): return location for the icon's location or %NULL
+ * @mime_type: (allow-none) (out): return location for the icon's MIME type or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Gets the icon of the bookmark for @uri.
