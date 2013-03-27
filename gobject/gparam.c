@@ -1506,3 +1506,60 @@ g_value_dup_param (const GValue *value)
 
   return value->data[0].v_pointer ? g_param_spec_ref (value->data[0].v_pointer) : NULL;
 }
+
+static void
+g_param_spec_free_default (gpointer data)
+{
+  GValue *value = data;
+
+  g_value_unset (value);
+  g_slice_free (GValue, value);
+}
+
+/**
+ * g_param_get_default_value:
+ * @param: a #GParamSpec
+ *
+ * Gets the default value of @param as a pointer to a #GValue.
+ *
+ * The #GValue will remain value for the life of @param.
+ *
+ * Returns: a pointer to a #GValue which must not be modified
+ *
+ * Since: 2.38
+ **/
+const GValue *
+g_param_spec_get_default_value (GParamSpec *pspec)
+{
+  static gsize default_value_quark;
+  const GValue *result;
+
+  if (g_once_init_enter (&default_value_quark))
+    g_once_init_leave (&default_value_quark, g_quark_from_static_string ("GParamSpec default value qdata"));
+
+  result = g_param_spec_get_qdata (pspec, default_value_quark);
+
+  if (!result)
+    {
+      GValue *value;
+
+      value = g_slice_new0 (GValue);
+      g_value_init (value, pspec->value_type);
+      g_param_value_set_default (pspec, value);
+      if (!g_datalist_id_replace_data (&pspec->qdata, default_value_quark,
+                                       NULL, value, g_param_spec_free_default, NULL))
+        {
+          /* Atomic replace of NULL with the value didn't work which
+           * means that someone beat us to it.  Free our value and use
+           * theirs.
+           */
+          g_param_spec_free_default (value);
+          result = g_param_spec_get_qdata (pspec, default_value_quark);
+          g_assert (result != NULL);
+        }
+      else
+        result = value;
+    }
+
+  return result;
+}
