@@ -1586,6 +1586,202 @@ object_in_construction_list (GObject *object)
   return in_construction;
 }
 
+static gpointer
+g_object_new_with_custom_constructor (GObjectClass          *class,
+                                      GObjectConstructParam *params,
+                                      guint                  n_params)
+{
+  GObjectNotifyQueue *nqueue = NULL;
+  gboolean newly_constructed;
+  GObjectConstructParam *cparams;
+  GObject *object;
+  GValue *cvalues;
+  gint n_cparams;
+  gint cvals_used;
+  GSList *node;
+  gint i;
+
+  /* If we have ->constructed() then we have to do a lot more work.
+   * It's possible that this is a singleton and it's also possible
+   * that the user's constructor() will attempt to modify the values
+   * that we pass in, so we'll need to allocate copies of them.
+   * It's also possible that the user may attempt to call
+   * g_object_set() from inside of their constructor, so we need to
+   * add ourselves to a list of objects for which that is allowed
+   * while their constructor() is running.
+   */
+
+  /* Create the array of GObjectConstructParams for constructor() */
+  n_cparams = g_slist_length (class->construct_properties);
+  cparams = g_new (GObjectConstructParam, n_cparams);
+  cvalues = g_new0 (GValue, n_cparams);
+  cvals_used = 0;
+  i = 0;
+
+  /* As above, we may find the value in the passed-in params list.
+   *
+   * If we have the value passed in then we can use the GValue from
+   * it directly because it is safe to modify.  If we use the
+   * default value from the class, we had better not pass that in
+   * and risk it being modified, so we create a new one.
+   * */
+  for (node = class->construct_properties; node; node = node->next)
+    {
+      GParamSpec *pspec;
+      GValue *value;
+      gint j;
+
+      pspec = node->data;
+      value = NULL; /* to silence gcc... */
+
+      for (j = 0; j < n_params; j++)
+        if (params[j].pspec == pspec)
+          {
+            value = params[j].value;
+            break;
+          }
+
+      if (j == n_params)
+        {
+          value = &cvalues[cvals_used++];
+          g_value_init (value, pspec->value_type);
+          g_param_value_set_default (pspec, value);
+        }
+
+      cparams[i].pspec = pspec;
+      cparams[i].value = value;
+      i++;
+    }
+
+  /* construct object from construction parameters */
+  object = class->constructor (class->g_type_class.g_type, n_cparams, cparams);
+  /* free construction values */
+  g_free (cparams);
+  while (cvals_used--)
+    g_value_unset (&cvalues[cvals_used]);
+  g_free (cvalues);
+
+  /* g_object_init() will have added us to the construction_objects
+   * list.  Check if we're in it (and remove us) in order to find
+   * out if we were newly-constructed or this is an already-existing
+   * singleton (in which case we should not do 'constructed').
+   */
+  G_LOCK (construction_mutex);
+  newly_constructed = slist_maybe_remove (&construction_objects, object);
+  G_UNLOCK (construction_mutex);
+
+  if (CLASS_HAS_PROPS (class))
+    {
+      /* If this object was newly_constructed then g_object_init()
+       * froze the queue.  We need to freeze it here in order to get
+       * the handle so that we can thaw it below (otherwise it will
+       * be frozen forever).
+       *
+       * We also want to do a freeze if we have any params to set,
+       * even on a non-newly_constructed object.
+       *
+       * It's possible that we have the case of non-newly created
+       * singleton and all of the passed-in params were construct
+       * properties so n_params > 0 but we will actually set no
+       * properties.  This is a pretty lame case to optimise, so
+       * just ignore it and freeze anyway.
+       */
+      if (newly_constructed || n_params)
+        nqueue = g_object_notify_queue_freeze (object, FALSE);
+
+      /* Remember: if it was newly_constructed then g_object_init()
+       * already did a freeze, so we now have two.  Release one.
+       */
+      if (newly_constructed)
+        g_object_notify_queue_thaw (object, nqueue);
+    }
+
+  /* run 'constructed' handler if there is a custom one */
+  if (newly_constructed && CLASS_HAS_CUSTOM_CONSTRUCTED (class))
+    class->constructed (object);
+
+  /* set remaining properties */
+  for (i = 0; i < n_params; i++)
+    if (~params[i].pspec->flags & G_PARAM_CONSTRUCT)
+      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+
+  /* If nqueue is non-NULL then we are frozen.  Thaw it. */
+  if (nqueue)
+    g_object_notify_queue_thaw (object, nqueue);
+
+  return object;
+}
+
+static gpointer
+g_object_new_internal (GObjectClass          *class,
+                       GObjectConstructParam *params,
+                       guint                  n_params)
+{
+  GObjectNotifyQueue *nqueue = NULL;
+  GObject *object;
+
+  if G_UNLIKELY (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
+    return g_object_new_with_custom_constructor (class, params, n_params);
+
+  object = (GObject *) g_type_create_instance (class->g_type_class.g_type);
+
+  if (CLASS_HAS_PROPS (class))
+    {
+      GSList *node;
+
+      /* This will have been setup in g_object_init() */
+      nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);
+      g_assert (nqueue != NULL);
+
+      /* We will set exactly n_construct_properties construct
+       * properties, but they may come from either the class default
+       * values or the passed-in parameter list.
+       */
+      for (node = class->construct_properties; node; node = node->next)
+        {
+          const GValue *value;
+          GParamSpec *pspec;
+          gint j;
+
+          pspec = node->data;
+          value = NULL; /* to silence gcc... */
+
+          for (j = 0; j < n_params; j++)
+            if (params[j].pspec == pspec)
+              {
+                value = params[j].value;
+                break;
+              }
+
+          if (j == n_params)
+            value = g_param_spec_get_default_value (pspec);
+
+          object_set_property (object, pspec, value, nqueue);
+        }
+    }
+
+  /* run 'constructed' handler if there is a custom one */
+  if (CLASS_HAS_CUSTOM_CONSTRUCTED (class))
+    class->constructed (object);
+
+  if (nqueue)
+    {
+      gint i;
+
+      /* Set remaining properties.  The construct properties will
+       * already have been taken, so set only the non-construct
+       * ones.
+       */
+      for (i = 0; i < n_params; i++)
+        if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
+          object_set_property (object, params[i].pspec, params[i].value, nqueue);
+
+      g_object_notify_queue_thaw (object, nqueue);
+    }
+
+  return object;
+}
+
 /**
  * g_object_newv:
  * @object_type: the type id of the #GObject subtype to instantiate
@@ -1603,160 +1799,75 @@ object_in_construction_list (GObject *object)
  */
 gpointer
 g_object_newv (GType       object_type,
-	       guint       n_parameters,
-	       GParameter *parameters)
+               guint       n_parameters,
+               GParameter *parameters)
 {
-  GObjectConstructParam *cparams = NULL, *oparams;
-  GObjectNotifyQueue *nqueue = NULL; /* shouldn't be initialized, just to silence compiler */
-  GObject *object;
   GObjectClass *class, *unref_class = NULL;
-  GSList *slist;
-  guint n_total_cparams = 0, n_cparams = 0, n_oparams = 0, n_cvalues;
-  GValue *cvalues;
-  GList *clist = NULL;
-  gboolean newly_constructed;
-  guint i;
+  GObject *object;
 
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
+  g_return_val_if_fail (n_parameters == 0 || parameters != NULL, NULL);
 
+  /* Try to avoid thrashing the ref_count if we don't need to (since
+   * it's a locked operation).
+   */
   class = g_type_class_peek_static (object_type);
+
   if (!class)
     class = unref_class = g_type_class_ref (object_type);
-  for (slist = class->construct_properties; slist; slist = slist->next)
+
+  if (n_parameters)
     {
-      clist = g_list_prepend (clist, slist->data);
-      n_total_cparams += 1;
-    }
+      GObjectConstructParam *cparams;
+      guint i, j;
 
-  if (n_parameters == 0 && n_total_cparams == 0)
-    {
-      /* This is a simple object with no construct properties, and
-       * no properties are being set, so short circuit the parameter
-       * handling. This speeds up simple object construction.
-       */
-      oparams = NULL;
-      object = class->constructor (object_type, 0, NULL);
-      goto did_construction;
-    }
+      cparams = g_newa (GObjectConstructParam, n_parameters);
+      j = 0;
 
-  /* collect parameters, sort into construction and normal ones */
-  oparams = g_new (GObjectConstructParam, n_parameters);
-  cparams = g_new (GObjectConstructParam, n_total_cparams);
-  for (i = 0; i < n_parameters; i++)
-    {
-      GValue *value = &parameters[i].value;
-      GParamSpec *pspec = g_param_spec_pool_lookup (pspec_pool,
-						    parameters[i].name,
-						    object_type,
-						    TRUE);
-      if (!pspec)
-	{
-	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRFUNC,
-		     g_type_name (object_type),
-		     parameters[i].name);
-	  continue;
-	}
-      if (!(pspec->flags & G_PARAM_WRITABLE))
-	{
-	  g_warning ("%s: property `%s' of object class `%s' is not writable",
-		     G_STRFUNC,
-		     pspec->name,
-		     g_type_name (object_type));
-	  continue;
-	}
-      if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-	{
-	  GList *list = g_list_find (clist, pspec);
+      for (i = 0; i < n_parameters; i++)
+        {
+          GParamSpec *pspec;
+          gint k;
 
-	  if (!list)
-	    {
-	      g_warning ("%s: construct property \"%s\" for object `%s' can't be set twice",
-                         G_STRFUNC, pspec->name, g_type_name (object_type));
-	      continue;
-	    }
-	  cparams[n_cparams].pspec = pspec;
-	  cparams[n_cparams].value = value;
-	  n_cparams++;
-	  if (!list->prev)
-	    clist = list->next;
-	  else
-	    list->prev->next = list->next;
-	  if (list->next)
-	    list->next->prev = list->prev;
-	  g_list_free_1 (list);
-	}
-      else
-	{
-	  oparams[n_oparams].pspec = pspec;
-	  oparams[n_oparams].value = value;
-	  n_oparams++;
-	}
-    }
+          pspec = g_param_spec_pool_lookup (pspec_pool, parameters[i].name, object_type, TRUE);
 
-  /* set remaining construction properties to default values */
-  n_cvalues = n_total_cparams - n_cparams;
-  cvalues = g_new (GValue, n_cvalues);
-  while (clist)
-    {
-      GList *tmp = clist->next;
-      GParamSpec *pspec = clist->data;
-      GValue *value = cvalues + n_total_cparams - n_cparams - 1;
+          if G_UNLIKELY (!pspec)
+            {
+              g_critical ("%s: object class `%s' has no property named `%s'",
+                          G_STRFUNC, g_type_name (object_type), parameters[i].name);
+              continue;
+            }
 
-      value->g_type = 0;
-      g_value_init (value, pspec->value_type);
-      g_param_value_set_default (pspec, value);
+          if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
+            {
+              g_critical ("%s: property `%s' of object class `%s' is not writable",
+                          G_STRFUNC, pspec->name, g_type_name (object_type));
+              continue;
+            }
 
-      cparams[n_cparams].pspec = pspec;
-      cparams[n_cparams].value = value;
-      n_cparams++;
+          if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+            {
+              for (k = 0; k < j; k++)
+                if (cparams[k].pspec == pspec)
+                    break;
+              if G_UNLIKELY (k != j)
+                {
+                  g_critical ("%s: construct property `%s' for type `%s' cannot be set twice",
+                              G_STRFUNC, parameters[i].name, g_type_name (object_type));
+                  continue;
+                }
+            }
 
-      g_list_free_1 (clist);
-      clist = tmp;
-    }
+          cparams[j].pspec = pspec;
+          cparams[j].value = &parameters[i].value;
+          j++;
+        }
 
-  /* construct object from construction parameters */
-  object = class->constructor (object_type, n_total_cparams, cparams);
-  /* free construction values */
-  g_free (cparams);
-  while (n_cvalues--)
-    g_value_unset (cvalues + n_cvalues);
-  g_free (cvalues);
-
- did_construction:
-  if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
-    {
-      /* adjust freeze_count according to g_object_init() and remaining properties */
-      G_LOCK (construction_mutex);
-      newly_constructed = slist_maybe_remove (&construction_objects, object);
-      G_UNLOCK (construction_mutex);
+      object = g_object_new_internal (class, cparams, j);
     }
   else
-    newly_constructed = TRUE;
-
-  if (CLASS_HAS_PROPS (class))
-    {
-      if (newly_constructed || n_oparams)
-	nqueue = g_object_notify_queue_freeze (object, FALSE);
-      if (newly_constructed)
-	g_object_notify_queue_thaw (object, nqueue);
-    }
-
-  /* run 'constructed' handler if there is a custom one */
-  if (newly_constructed && CLASS_HAS_CUSTOM_CONSTRUCTED (class))
-    class->constructed (object);
-
-  /* set remaining properties */
-  for (i = 0; i < n_oparams; i++)
-    object_set_property (object, oparams[i].pspec, oparams[i].value, nqueue);
-  g_free (oparams);
-
-  if (CLASS_HAS_PROPS (class))
-    {
-      /* release our own freeze count and handle notifications */
-      if (newly_constructed || n_oparams)
-	g_object_notify_queue_thaw (object, nqueue);
-    }
+    /* Fast case: no properties passed in. */
+    object = g_object_new_internal (class, NULL, 0);
 
   if (unref_class)
     g_type_class_unref (unref_class);
@@ -1779,67 +1890,109 @@ g_object_newv (GType       object_type,
  * Returns: a new instance of @object_type
  */
 GObject*
-g_object_new_valist (GType	  object_type,
-		     const gchar *first_property_name,
-		     va_list	  var_args)
+g_object_new_valist (GType        object_type,
+                     const gchar *first_property_name,
+                     va_list      var_args)
 {
-  GObjectClass *class;
-  GParameter *params;
-  const gchar *name;
+  GObjectClass *class, *unref_class = NULL;
   GObject *object;
-  guint n_params = 0, n_alloced_params = 16;
-  
+
   g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
 
-  if (!first_property_name)
-    return g_object_newv (object_type, 0, NULL);
+  /* Try to avoid thrashing the ref_count if we don't need to (since
+   * it's a locked operation).
+   */
+  class = g_type_class_peek_static (object_type);
 
-  class = g_type_class_ref (object_type);
+  if (!class)
+    class = unref_class = g_type_class_ref (object_type);
 
-  params = g_new0 (GParameter, n_alloced_params);
-  name = first_property_name;
-  while (name)
+  if (first_property_name)
     {
-      gchar *error = NULL;
-      GParamSpec *pspec = g_param_spec_pool_lookup (pspec_pool,
-						    name,
-						    object_type,
-						    TRUE);
-      if (!pspec)
-	{
-	  g_warning ("%s: object class `%s' has no property named `%s'",
-		     G_STRFUNC,
-		     g_type_name (object_type),
-		     name);
-	  break;
-	}
-      if (n_params >= n_alloced_params)
-	{
-	  n_alloced_params += 16;
-	  params = g_renew (GParameter, params, n_alloced_params);
-	  memset (params + n_params, 0, 16 * (sizeof *params));
-	}
-      params[n_params].name = name;
-      G_VALUE_COLLECT_INIT (&params[n_params].value, pspec->value_type,
-			    var_args, 0, &error);
-      if (error)
-	{
-	  g_warning ("%s: %s", G_STRFUNC, error);
-	  g_free (error);
-          g_value_unset (&params[n_params].value);
-	  break;
-	}
-      n_params++;
-      name = va_arg (var_args, gchar*);
+      GObjectConstructParam stack_params[16];
+      GObjectConstructParam *params;
+      const gchar *name;
+      gint n_params = 0;
+
+      name = first_property_name;
+      params = stack_params;
+
+      do
+        {
+          gchar *error = NULL;
+          GParamSpec *pspec;
+          gint i;
+
+          pspec = g_param_spec_pool_lookup (pspec_pool, name, object_type, TRUE);
+
+          if G_UNLIKELY (!pspec)
+            {
+              g_critical ("%s: object class `%s' has no property named `%s'",
+                          G_STRFUNC, g_type_name (object_type), name);
+              /* Can't continue because arg list will be out of sync. */
+              break;
+            }
+
+          if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
+            {
+              g_critical ("%s: property `%s' of object class `%s' is not writable",
+                          G_STRFUNC, pspec->name, g_type_name (object_type));
+              break;
+            }
+
+          if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+            {
+              for (i = 0; i < n_params; i++)
+                if (params[i].pspec == pspec)
+                    break;
+              if G_UNLIKELY (i != n_params)
+                {
+                  g_critical ("%s: property `%s' for type `%s' cannot be set twice",
+                              G_STRFUNC, name, g_type_name (object_type));
+                  break;
+                }
+            }
+
+          if (n_params == 16)
+            {
+              params = g_new (GObjectConstructParam, n_params + 1);
+              memcpy (params, stack_params, sizeof stack_params);
+            }
+          else if (n_params > 16)
+            params = g_renew (GObjectConstructParam, params, n_params + 1);
+
+          params[n_params].pspec = pspec;
+          params[n_params].value = g_newa (GValue, 1);
+          memset (params[n_params].value, 0, sizeof (GValue));
+
+          G_VALUE_COLLECT_INIT (params[n_params].value, pspec->value_type, var_args, 0, &error);
+
+          if (error)
+            {
+              g_critical ("%s: %s", G_STRFUNC, error);
+              g_value_unset (params[n_params].value);
+              g_free (error);
+              break;
+            }
+
+          n_params++;
+        }
+      while ((name = va_arg (var_args, const gchar *)));
+
+      object = g_object_new_internal (class, params, n_params);
+
+      while (n_params--)
+        g_value_unset (params[n_params].value);
+
+      if (params != stack_params)
+        g_free (params);
     }
+  else
+    /* Fast case: no properties passed in. */
+    object = g_object_new_internal (class, NULL, 0);
 
-  object = g_object_newv (object_type, n_params, params);
-
-  while (n_params--)
-    g_value_unset (&params[n_params].value);
-  g_free (params);
-
-  g_type_class_unref (class);
+  if (unref_class)
+    g_type_class_unref (unref_class);
 
   return object;
 }
