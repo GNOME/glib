@@ -472,6 +472,14 @@ g_resolver_records_from_res_query (const gchar      *rrname,
         records = g_list_prepend (records, record);
     }
 
+  if (records == NULL)
+    {
+      g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                   _("No DNS record of the requested type for '%s'"), rrname);
+
+      return NULL;
+    }
+  else
     return records;
 }
 
@@ -616,7 +624,15 @@ g_resolver_records_from_DnsQuery (const gchar  *rrname,
         records = g_list_prepend (records, g_variant_ref_sink (record));
     }
 
-  return records;
+  if (records == NULL)
+    {
+      g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                   _("No DNS record of the requested type for '%s'"), rrname);
+
+      return NULL;
+    }
+  else
+    return records;
 }
 
 #endif
