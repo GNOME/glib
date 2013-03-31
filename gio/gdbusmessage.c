@@ -1384,7 +1384,7 @@ read_string (GMemoryBuffer          *mbuf,
                                 "Wanted to read %lu bytes but only got %lu",
                                 (gulong)len),
                                 (gulong)len,
-                   (gulong)mbuf->valid_len - mbuf->pos);
+                   (gulong)(mbuf->valid_len - mbuf->pos));
       mbuf->pos = mbuf->valid_len;
       return NULL;
     }
