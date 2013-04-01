@@ -1059,6 +1059,57 @@ param_override_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+param_default_init (GParamSpec *pspec)
+{
+  /* GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec); */
+}
+
+static void
+param_default_finalize (GParamSpec *pspec)
+{
+  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_OVERRIDE));
+
+  if (dspec->implementation)
+    {
+      g_param_spec_unref (dspec->implementation);
+      dspec->implementation = NULL;
+    }
+
+  g_value_unset (&dspec->default_value);
+
+  parent_class->finalize (pspec);
+}
+
+static void
+param_default_set_default (GParamSpec *pspec,
+                           GValue     *value)
+{
+  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+
+  g_value_copy (&dpspec->default_value, value);
+}
+
+static gboolean
+param_default_validate (GParamSpec *pspec,
+                        GValue     *value)
+{
+  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+
+  return g_param_value_validate (dspec->implementation, value);
+}
+
+static gint
+param_default_values_cmp (GParamSpec   *pspec,
+                          const GValue *value1,
+                          const GValue *value2)
+{
+  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+
+  return g_param_values_cmp (dspec->implementation, value1, value2);
+}
+
+static void
 param_gtype_init (GParamSpec *pspec)
 {
 }
@@ -1166,7 +1217,7 @@ GType *g_param_spec_types = NULL;
 void
 _g_param_spec_types_init (void)	
 {
-  const guint n_types = 23;
+  const guint n_types = 24;
   GType type, *spec_types, *spec_types_bound;
 
   g_param_spec_types = g_new0 (GType, n_types);
@@ -1587,6 +1638,24 @@ _g_param_spec_types_init (void)
     type = g_param_type_register_static (g_intern_static_string ("GParamVariant"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_VARIANT);
+  }
+
+  /* G_TYPE_PARAM_DEFAULT
+   */
+  {
+    static const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecDefault), /* instance_size */
+      16,                         /* n_preallocs */
+      param_default_init,         /* instance_init */
+      G_TYPE_NONE,                /* value_type */
+      param_default_finalize,     /* finalize */
+      param_default_set_default,  /* value_set_default */
+      param_default_validate,     /* value_validate */
+      param_default_values_cmp,   /* values_cmp */
+    };
+    type = g_param_type_register_static (g_intern_static_string ("GParamDefault"), &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_DEFAULT);
   }
 
   g_assert (spec_types == spec_types_bound);

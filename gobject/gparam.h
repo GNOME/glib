@@ -252,8 +252,10 @@ struct _GParamSpecClass
   gint          (*values_cmp)           (GParamSpec   *pspec,
 					 const GValue *value1,
 					 const GValue *value2);
+  gboolean      (*value_is_valid)       (GParamSpec   *pspec,
+                                         const GValue *value);
   /*< private >*/
-  gpointer	  dummy[4];
+  gpointer	  dummy[3];
 };
 /**
  * GParameter:

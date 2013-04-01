@@ -583,6 +583,33 @@ G_BEGIN_DECLS
  * Since: 2.26
  */
 #define G_PARAM_SPEC_VARIANT(pspec)         (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_VARIANT, GParamSpecVariant))
+/**
+ * G_TYPE_PARAM_DEFAULT:
+ *
+ * The #GType of #GParamSpecDefault.
+ *
+ * Since: 2.38
+ */
+#define G_TYPE_PARAM_DEFAULT                (g_param_spec_types[23])
+/**
+ * G_IS_PARAM_SPEC_DEFAULT:
+ * @pspec: a #GParamSpec
+ *
+ * Checks whether the given #GParamSpec is of type %G_TYPE_PARAM_DEFAULT.
+ *
+ * Since: 2.38
+ * Returns: %TRUE on success.
+ */
+#define G_IS_PARAM_SPEC_DEFAULT(pspec)      (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_DEFAULT))
+/**
+ * G_PARAM_SPEC_DEFAULT:
+ * @pspec: a #GParamSpec
+ *
+ * Casts a #GParamSpec into a #GParamSpecDefault.
+ *
+ * Since: 2.38
+ */
+#define G_PARAM_SPEC_DEFAULT(pspec)       (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_DEFAULT, GParamSpecDefault))
 
 /* --- typedefs & structures --- */
 typedef struct _GParamSpecChar       GParamSpecChar;
@@ -608,6 +635,7 @@ typedef struct _GParamSpecObject     GParamSpecObject;
 typedef struct _GParamSpecOverride   GParamSpecOverride;
 typedef struct _GParamSpecGType      GParamSpecGType;
 typedef struct _GParamSpecVariant    GParamSpecVariant;
+typedef struct _GParamSpecDefault    GParamSpecDefault;
 
 /**
  * GParamSpecChar:
@@ -956,6 +984,7 @@ struct _GParamSpecGType
   GParamSpec    parent_instance;
   GType         is_a_type;
 };
+
 /**
  * GParamSpecVariant:
  * @parent_instance: private #GParamSpec portion
@@ -965,6 +994,35 @@ struct _GParamSpecGType
  * A #GParamSpec derived structure that contains the meta data for #GVariant properties.
  *
  * Since: 2.26
+ */
+struct _GParamSpecVariant
+{
+  GParamSpec    parent_instance;
+  GVariantType *type;
+  GVariant     *default_value;
+
+  /*< private >*/
+  gpointer      padding[4];
+};
+
+/**
+ * GParamSpecDefault:
+ *
+ * This type of #GParamSpec does not define a new property but changes
+ * the default value for an existing property.
+ *
+ * It is used in subclasses of the class which the property is
+ * associated with to change the default value for all instances of the
+ * subclass.
+ *
+ * g_param_set_default() will get the modified default value.  As with
+ * #GParamSpecOverride, g_param_spec_get_redirect_target() will find the
+ * highest-level #GParamSpec for the property (ie: the one that defines
+ * the interface).  If you want to find the #GParamSpec defined by the
+ * type to which the g_object_set_property() call will be delivered, use
+ * g_param_spec_get_implementation().
+ *
+ * Since: 2.38
  */
 struct _GParamSpecVariant
 {

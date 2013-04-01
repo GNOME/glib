@@ -654,6 +654,40 @@ g_param_value_validate (GParamSpec *pspec,
   return FALSE;
 }
 
+#if 0
+gboolean
+g_param_value_is_valid (GParamSpec   *pspec,
+                        const GValue *value)
+{
+  GParamSpecClass *class;
+  gboolean valid;
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
+  g_return_val_if_fail (G_IS_VALUE (value), FALSE);
+
+  if (value->g_type != pspec->value_type)
+    return FALSE;
+
+  class = G_PARAM_SPEC_GET_CLASS (pspec);
+
+  if (class->value_is_valid == NULL)
+    {
+      /* Need to emulate this the slow way... */
+      GValue copy = { 0, };
+      gboolean valid;
+
+      g_value_init (&copy, value->g_type);
+      g_value_copy (value, &copy);
+      valid = !g_param_value_validate (pspec, value);
+      g_value_unset (copy);
+    }
+  else
+    valid = class->value_is_valid (pspec, value);
+
+  return valid;
+}
+#endif
+
 /**
  * g_param_value_convert:
  * @pspec: a valid #GParamSpec
