@@ -23,6 +23,7 @@
 
 #include "gmenu.h"
 
+#include "gaction.h"
 #include <string.h>
 
 /**
@@ -1056,14 +1057,8 @@ g_menu_item_set_action_and_target (GMenuItem   *menu_item,
  *
  * Sets the "action" and possibly the "target" attribute of @menu_item.
  *
- * If @detailed_action contains a double colon ("::") then it is used as
- * a separator between an action name and a target string.  In this
- * case, this call is equivalent to calling
- * g_menu_item_set_action_and_target() with the part before the "::" and
- * with a string-type #GVariant containing the part following the "::".
- *
- * If @detailed_action doesn't contain "::" then the action is set to
- * the given string (verbatim) and the target value is unset.
+ * The format of @detailed_action is the same format parsed by
+ * g_action_parse_detailed_name().
  *
  * See g_menu_item_set_action_and_target() or
  * g_menu_item_set_action_and_target_value() for more flexible (but
@@ -1078,21 +1073,17 @@ void
 g_menu_item_set_detailed_action (GMenuItem   *menu_item,
                                  const gchar *detailed_action)
 {
-  const gchar *sep;
+  GError *error = NULL;
+  GVariant *target;
+  gchar *name;
 
-  sep = strstr (detailed_action, "::");
+  if (!g_action_parse_detailed_name (detailed_action, &name, &target, &error))
+    g_error ("g_menu_item_set_detailed_action: %s", error->message);
 
-  if (sep != NULL)
-    {
-      gchar *action;
-
-      action = g_strndup (detailed_action, sep - detailed_action);
-      g_menu_item_set_action_and_target (menu_item, action, "s", sep + 2);
-      g_free (action);
-    }
-
-  else
-    g_menu_item_set_action_and_target_value (menu_item, detailed_action, NULL);
+  g_menu_item_set_action_and_target_value (menu_item, name, target);
+  if (target)
+    g_variant_unref (target);
+  g_free (name);
 }
 
 /**

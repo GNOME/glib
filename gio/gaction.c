@@ -23,6 +23,8 @@
 #include "gaction.h"
 #include "glibintl.h"
 
+#include <string.h>
+
 G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 
 /**
@@ -388,4 +390,102 @@ g_action_activate (GAction  *action,
 
   if (parameter != NULL)
     g_variant_unref (parameter);
+}
+
+/**
+ * g_action_parse_detailed_name:
+ * @detailed_name: a detailed action name
+ * @action_name: (out): the action name
+ * @target_value: (out): the target value, or %NULL for no target
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Parses a detailed action name into its separate name and target
+ * components.
+ *
+ * Detailed action names can have three formats.
+ *
+ * The first format is used to represent an action name with no target
+ * value and consists of just an action name containing no whitespace
+ * nor the characters ':', '(' or ')'.  For example: "app.action".
+ *
+ * The second format is used to represent an action with a string-typed
+ * target value.  The action name and target value are separated by a
+ * double colon ("::").  For example: "app.action::target".
+ *
+ * The third format is used to represent an action with an
+ * arbitrarily-typed target value.  The target value follows the action
+ * name, surrounded in parens.  For example: "app.action(42)".  The
+ * target value is parsed using g_variant_parse().  If a tuple-typed
+ * value is desired, it must be specified in the same way, resulting in
+ * two sets of parens, for example: "app.action((1,2,3))".
+ *
+ * Returns: %TRUE if successful, else %FALSE with @error set
+ *
+ * Since: 2.38
+ **/
+gboolean
+g_action_parse_detailed_name (const gchar  *detailed_name,
+                              gchar       **action_name,
+                              GVariant    **target_value,
+                              GError      **error)
+{
+  const gchar *target;
+  gsize target_len;
+  gsize base_len;
+
+  /* We decide which format we have based on which we see first between
+   * '::' '(' and '\0'.
+   */
+
+  if (*detailed_name == '\0' || *detailed_name == ' ')
+    goto bad_fmt;
+
+  base_len = strcspn (detailed_name, ": ()");
+  target = detailed_name + base_len;
+  target_len = strlen (target);
+
+  switch (target[0])
+    {
+    case ' ':
+    case ')':
+      goto bad_fmt;
+
+    case ':':
+      if (target[1] != ':')
+        goto bad_fmt;
+
+      *target_value = g_variant_ref_sink (g_variant_new_string (target + 2));
+      break;
+
+    case '(':
+      {
+        if (target[target_len - 1] != ')')
+          goto bad_fmt;
+
+        *target_value = g_variant_parse (NULL, target + 1, target + target_len - 1, NULL, error);
+        if (*target_value == NULL)
+          goto bad_fmt;
+      }
+      break;
+
+    case '\0':
+      *target_value = NULL;
+      break;
+    }
+
+  *action_name = g_strndup (detailed_name, base_len);
+
+  return TRUE;
+
+bad_fmt:
+  if (error)
+    {
+      if (*error == NULL)
+        g_set_error (error, G_VARIANT_PARSE_ERROR, G_VARIANT_PARSE_ERROR_FAILED,
+                     "Detailed action name '%s' has invalid format", detailed_name);
+      else
+        g_prefix_error (error, "Detailed action name '%s' has invalid format: ", detailed_name);
+    }
+
+  return FALSE;
 }

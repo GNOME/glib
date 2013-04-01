@@ -3093,6 +3093,9 @@ g_action_get_state
 g_action_change_state
 g_action_activate
 
+<SUBSECTION>
+g_action_parse_detailed_name
+
 <SUBSECTION Standard>
 g_action_get_type
 G_TYPE_ACTION

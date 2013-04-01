@@ -1,5 +1,6 @@
 #include <gio/gio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "gdbus-sessionbus.h"
 
@@ -387,6 +388,79 @@ test_entries (void)
   g_object_unref (actions);
 }
 
+static void
+test_parse_detailed (void)
+{
+  struct {
+    const gchar *detailed;
+    const gchar *expected_name;
+    const gchar *expected_target;
+    const gchar *expected_error;
+  } testcases[] = {
+    { "abc",              "abc",    NULL,       NULL },
+    { " abc",             NULL,     NULL,       "invalid format" },
+    { " abc",             NULL,     NULL,       "invalid format" },
+    { "abc:",             NULL,     NULL,       "invalid format" },
+    { ":abc",             NULL,     NULL,       "invalid format" },
+    { "abc(",             NULL,     NULL,       "invalid format" },
+    { "abc)",             NULL,     NULL,       "invalid format" },
+    { "(abc",             NULL,     NULL,       "invalid format" },
+    { ")abc",             NULL,     NULL,       "invalid format" },
+    { "abc::xyz",         "abc",    "'xyz'",    NULL },
+    { "abc('xyz')",       "abc",    "'xyz'",    NULL },
+    { "abc(42)",          "abc",    "42",       NULL },
+    { "abc(int32 42)",    "abc",    "42",       NULL },
+    { "abc(@i 42)",       "abc",    "42",       NULL },
+    { "abc (42)",         NULL,     NULL,       "invalid format" },
+    { "abc(42abc)",       NULL,     NULL,       "invalid character in number" },
+    { "abc(42, 4)",       "abc",    "(42, 4)",  "expected end of input" },
+    { "abc(42,)",         "abc",    "(42,)",    "expected end of input" }
+  };
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (testcases); i++)
+    {
+      GError *error = NULL;
+      GVariant *target;
+      gboolean success;
+      gchar *name;
+
+      success = g_action_parse_detailed_name (testcases[i].detailed, &name, &target, &error);
+      g_assert (success == (error == NULL));
+      if (success && testcases[i].expected_error)
+        g_error ("Unexpected success on '%s'.  Expected error containing '%s'",
+                 testcases[i].detailed, testcases[i].expected_error);
+
+      if (!success && !testcases[i].expected_error)
+        g_error ("Unexpected failure on '%s': %s", testcases[i].detailed, error->message);
+
+      if (!success)
+        {
+          if (!strstr (error->message, testcases[i].expected_error))
+            g_error ("Failure message '%s' for string '%s' did not contained expected substring '%s'",
+                     error->message, testcases[i].detailed, testcases[i].expected_error);
+
+          g_error_free (error);
+          continue;
+        }
+
+      g_assert_cmpstr (name, ==, testcases[i].expected_name);
+      g_assert ((target == NULL) == (testcases[i].expected_target == NULL));
+      if (target)
+        {
+          GVariant *expected;
+
+          expected = g_variant_parse (NULL, testcases[i].expected_target, NULL, NULL, NULL);
+          g_assert (expected);
+
+          g_assert (g_variant_equal (expected, target));
+          g_variant_unref (expected);
+          g_variant_unref (target);
+        }
+
+      g_free (name);
+    }
+}
 
 GHashTable *activation_counts;
 
@@ -839,6 +913,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
+  g_test_add_func ("/actions/parse-detailed", test_parse_detailed);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
