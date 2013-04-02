@@ -841,8 +841,8 @@ g_hash_table_insert_node (GHashTable *hash_table,
 {
   gboolean already_exists;
   guint old_hash;
-  gpointer key_to_free;
-  gpointer value_to_free;
+  gpointer key_to_free = NULL;
+  gpointer value_to_free = NULL;
 
   old_hash = hash_table->hashes[node_index];
   already_exists = HASH_IS_REAL (old_hash);
