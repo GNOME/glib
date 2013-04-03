@@ -196,6 +196,11 @@ GApplication *          g_application_get_default                       (void);
 GLIB_AVAILABLE_IN_2_32
 void                    g_application_set_default                       (GApplication             *application);
 
+GLIB_AVAILABLE_IN_2_38
+void                    g_application_mark_busy                         (GApplication             *application);
+GLIB_AVAILABLE_IN_2_38
+void                    g_application_unmark_busy                       (GApplication             *application);
+
 G_END_DECLS
 
 #endif /* __G_APPLICATION_H__ */

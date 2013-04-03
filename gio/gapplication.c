@@ -239,6 +239,7 @@ struct _GApplicationPrivate
   guint              inactivity_timeout_id;
   guint              inactivity_timeout;
   guint              use_count;
+  guint              busy_count;
 
   guint              is_registered : 1;
   guint              is_remote : 1;
@@ -1848,6 +1849,63 @@ g_application_quit (GApplication *application)
   g_return_if_fail (G_IS_APPLICATION (application));
 
   application->priv->must_quit_now = TRUE;
+}
+
+/**
+ * g_application_mark_busy:
+ * @application: a #GApplication
+ *
+ * Increases the busy count of @application.
+ *
+ * Use this function to indicate that the application is busy, for instance
+ * while a long running operation is pending.
+ *
+ * The busy state will be exposed to other processes, so a session shell will
+ * use that information to indicate the state to the user (e.g. with a
+ * spinner).
+ *
+ * To cancel the busy indication, use g_application_unmark_busy().
+ *
+ * Since: 2.38
+ **/
+void
+g_application_mark_busy (GApplication *application)
+{
+  gboolean was_busy;
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+
+  was_busy = (application->priv->busy_count > 0);
+  application->priv->busy_count++;
+
+  if (!was_busy)
+    g_application_impl_set_busy_state (application->priv->impl, TRUE);
+}
+
+/**
+ * g_application_unmark_busy:
+ * @application: a #GApplication
+ *
+ * Decreases the busy count of @application.
+ *
+ * When the busy count reaches zero, the new state will be propagated
+ * to other processes.
+ *
+ * This function must only be called to cancel the effect of a previous
+ * call to g_application_mark_busy().
+ *
+ * Since: 2.38
+ **/
+void
+g_application_unmark_busy (GApplication *application)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (application->priv->busy_count > 0);
+
+  application->priv->busy_count--;
+
+  if (application->priv->busy_count == 0)
+    g_application_impl_set_busy_state (application->priv->impl, FALSE);
 }
 
 /* Epilogue {{{1 */

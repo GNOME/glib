@@ -67,6 +67,7 @@ static const gchar org_gtk_Application_xml[] =
         "<arg type='a{sv}' name='platform-data' direction='in'/>"
         "<arg type='i' name='exit-status' direction='out'/>"
       "</method>"
+    "<property name='Busy' type='b' access='read'/>"
     "</interface>"
   "</node>";
 
@@ -99,6 +100,7 @@ struct _GApplicationImpl
 
   gboolean         properties_live;
   gboolean         primary;
+  gboolean         busy;
   GApplication    *app;
 };
 
@@ -106,6 +108,46 @@ struct _GApplicationImpl
 static GApplicationCommandLine *
 g_dbus_command_line_new (GDBusMethodInvocation *invocation);
 
+static GVariant *
+g_application_impl_get_property (GDBusConnection *connection,
+                                 const gchar  *sender,
+                                 const gchar  *object_path,
+                                 const gchar  *interface_name,
+                                 const gchar  *property_name,
+                                 GError      **error,
+                                 gpointer      user_data)
+{
+  GApplicationImpl *impl = user_data;
+
+  if (strcmp (property_name, "Busy") == 0)
+    return g_variant_new_boolean (impl->busy);
+
+  g_assert_not_reached ();
+
+  return NULL;
+}
+
+static void
+send_property_change (GApplicationImpl *impl)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+  g_variant_builder_add (&builder,
+                         "{sv}",
+                         "Busy", g_variant_new_boolean (impl->busy));
+
+  g_dbus_connection_emit_signal (impl->session_bus,
+                                 NULL,
+                                 impl->object_path,
+                                 "org.freedesktop.DBus.Properties",
+                                 "PropertiesChanged",
+                                 g_variant_new ("(sa{sv}as)",
+                                                "org.gtk.Application",
+                                                &builder,
+                                                NULL),
+                                 NULL);
+}
 
 static void
 g_application_impl_method_call (GDBusConnection       *connection,
@@ -229,6 +271,8 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_method_call,
+    g_application_impl_get_property,
+    NULL /* set_property */
   };
   GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
   GVariant *reply;
@@ -349,6 +393,17 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
                               "ReleaseName", g_variant_new ("(s)", impl->bus_name),
                               NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
       impl->primary = FALSE;
+    }
+}
+
+void
+g_application_impl_set_busy_state (GApplicationImpl *impl,
+                                   gboolean          busy)
+{
+  if (impl->busy != busy)
+    {
+      impl->busy = busy;
+      send_property_change (impl);
     }
 }
 

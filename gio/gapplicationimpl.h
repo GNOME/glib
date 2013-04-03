@@ -39,3 +39,6 @@ void                    g_application_impl_flush                        (GApplic
 GDBusConnection *       g_application_impl_get_dbus_connection          (GApplicationImpl   *impl);
 
 const gchar *           g_application_impl_get_dbus_object_path         (GApplicationImpl   *impl);
+
+void                    g_application_impl_set_busy_state               (GApplicationImpl   *impl,
+                                                                         gboolean            busy);

@@ -2953,6 +2953,9 @@ g_application_open
 g_application_run
 g_application_set_default
 g_application_get_default
+<SUBSECTION>
+g_application_mark_busy
+g_application_unmark_busy
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
 G_APPLICATION
