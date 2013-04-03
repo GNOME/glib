@@ -149,6 +149,15 @@ output_list (const gchar * const *list)
 }
 
 static void
+gsettings_print_version (GSettings   *settings,
+                         const gchar *key,
+                         const gchar *value)
+{
+  g_print ("%d.%d.%d\n", glib_major_version, glib_minor_version,
+           glib_micro_version);
+}
+
+static void
 gsettings_list_schemas (GSettings   *settings,
                         const gchar *key,
                         const gchar *value)
@@ -530,6 +539,12 @@ gsettings_help (gboolean     requested,
       synopsis = "[COMMAND]";
     }
 
+  else if (strcmp (command, "--version") == 0)
+    {
+      description = _("Print version information and exit");
+      synopsis = "";
+    }
+
   else if (strcmp (command, "list-schemas") == 0)
     {
       description = _("List the installed (non-relocatable) schemas");
@@ -735,6 +750,9 @@ main (int argc, char **argv)
 
   if (strcmp (argv[1], "help") == 0)
     return gsettings_help (TRUE, argv[2]);
+
+  else if (argc == 2 && strcmp (argv[1], "--version") == 0)
+    function = gsettings_print_version;
 
   else if (argc == 2 && strcmp (argv[1], "list-schemas") == 0)
     function = gsettings_list_schemas;

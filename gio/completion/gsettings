@@ -21,7 +21,7 @@ __gsettings() {
 
   case "$((${COMP_CWORD}-$coffset))" in
     1)
-      choices=$'--schemadir\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nreset-recursively \nwritable \nmonitor'
+      choices=$'--schemadir\n--version\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nreset-recursively \nwritable \nmonitor'
       ;;
 
     2)
