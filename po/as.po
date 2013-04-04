@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-12 18:21+0530\n"
+"POT-Creation-Date: 2013-04-04 01:49+0000\n"
+"PO-Revision-Date: 2013-04-04 13:26+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -501,8 +501,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu bytes but only got %lu"
-#| msgid_plural "Wanted to read %lu byte but only got %lu"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu বাইট পঢ়িবৰ ইচ্ছা আছিল কিন্তু %lu প্ৰাপ্ত হল"
@@ -1010,12 +1008,12 @@ msgstr "GEmblemedIcon ৰ কাৰণে এটা GEmblem প্ৰত্য�
 #: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
 #: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
 #: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
+#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
+#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
+#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
+#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
+#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "কাৰ্য্য সমৰ্থিত নহয়"
@@ -1076,24 +1074,24 @@ msgstr "কপি (ৰিফ্লিৃঙ্ক/ক্লৌন) সমৰ্�
 msgid "Can't copy special file"
 msgstr "বিশেষ ফাইল কপি কৰিব নোৱাৰি"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3660
 msgid "Invalid symlink value given"
 msgstr "অৱৈধ চিমসংযোগ মান উপলব্ধ কৰা হৈছে"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3820
 msgid "Trash not supported"
 msgstr "আবৰ্জনা সমৰ্থিত নহয়"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:3871
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ফাইলৰ নামত '%c' ব্যৱহাৰ কৰা নাযাব"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6368
 msgid "No application is registered as handling this file"
 msgstr "চিহ্নিত ফাইল ব্যৱস্থাপনাৰ উদ্দেশ্যে কোনো এপ্লিকেচন নিবন্ধিত নহয়"
 
@@ -1745,79 +1743,79 @@ msgstr "অবৈধ সম্প্ৰসাৰিত বৈশিষ্টৰ 
 msgid "Error setting extended attribute '%s': %s"
 msgstr "সম্প্ৰসাৰিত বৈশিষ্ট নিৰ্ধাৰণ কৰোঁতে ত্ৰুটি '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (অৱৈধ এনক'ডিং)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "ফাইল '%s' ৰ বাবে তথ্য প্ৰাপ্ত কৰোতে ত্ৰুটি: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "ফাইল বিৱৰকৰ বাবে তথ্য প্ৰাপ্ত কৰোতে ত্ৰুটি: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "অবৈধ বৈশিষ্টৰ ধৰণ (প্ৰত্যাশিত uint32)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "অবৈধ বৈশিষ্টৰ ধৰণ (প্ৰত্যাশিত uint64)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "অবৈধ বৈশিষ্টৰ ধৰণ (প্ৰত্যাশিত byte স্ট্ৰিং)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "চিমসংযোগসমূহত সন্মতি নিৰ্ধাৰণ কৰিব নোৱাৰি"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "অনুমতি নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "গৰাকী নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "চিমসংযোগ NULL হ'ব নোৱাৰে"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "চিমসংযোগ নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr "চিমসংযোগ নিৰ্ধাৰণ কৰিবলৈ ত্ৰুটি: ফাইল চিমসংযোগ নহয়"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "পৰিবৰ্তন বা অভিগমৰ সময় নিৰ্ধাৰণ কৰিবলৈ সমস্যা: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux ৰ সন্দৰ্ভ NULL হ'ব নোৱাৰে"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux ৰ সন্দৰ্ভ নিৰ্ধাৰণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "এই চিস্টেমত SELinux সক্ৰিয় কৰা নাই"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s বৈশিষ্টৰ মান নিৰ্ধাৰণ সমৰ্থিত নহয়"
@@ -2035,7 +2033,7 @@ msgstr "'%s' ৰ সম্পদ এটা ডাইৰেকটৰি নহয়
 msgid "Input stream doesn't implement seek"
 msgstr "ইনপুট স্ট্ৰিমে সন্ধান প্ৰণয়ন নকৰে"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:538
 msgid "Print help"
 msgstr "প্ৰিন্ট সহায়"
 
@@ -2086,7 +2084,7 @@ msgstr "stdout লে এটা সম্পদ ফাইল নিষ্কা�
 msgid "FILE PATH"
 msgstr "FILE PATH"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:624
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2138,7 +2136,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:657
 msgid "Arguments:\n"
 msgstr "তৰ্কসমূহ:\n"
 
@@ -2146,7 +2144,7 @@ msgstr "তৰ্কসমূহ:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION   এটা (বৈকল্পিক) elf অংশ নাম\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:664
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   বিৱৰণ কৰিবলে (বিকল্প) কমান্ড\n"
 
@@ -2218,33 +2216,37 @@ msgstr "পথত দুটা কাষৰীয়া স্লেশ থাক�
 msgid "No such key '%s'\n"
 msgstr "এনে কোনো কি '%s' নাই\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "প্ৰদান কৰা মান বৈধ বিস্তাৰৰ বাহিৰ\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:544
+msgid "Print version information and exit"
+msgstr "সংস্কৰণ তথ্য প্ৰিন্ট কৰক আৰু প্ৰস্থান কৰক"
+
+#: ../gio/gsettings-tool.c:550
 msgid "List the installed (non-relocatable) schemas"
 msgstr "ইনস্টল (অৱস্থিত কৰিব নোৱাৰা) স্কিমাসমূহ তালিকাভুক্ত কৰক"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:556
 msgid "List the installed relocatable schemas"
 msgstr "ইনস্টল থকা পুনৰ অৱস্থিত কৰিব পৰা স্কিমাসমূহ তালিকাভুক্ত কৰক"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:562
 msgid "List the keys in SCHEMA"
 msgstr "কিসমূহক SCHEMA ত তালিকাভুক্ত কৰক"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:563 ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:568
 msgid "List the children of SCHEMA"
 msgstr "SCHEMA সন্তানসমূহ তালিকাভুক্ত কৰক"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:574
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2252,44 +2254,44 @@ msgstr ""
 "কি আৰু মানসমূহ তালিকাভুক্ত কৰক, বাৰংবাৰভাৱে\n"
 "যদি কোনো SCHEMA দিয়া হোৱা নাই, সকলো কি তালিকাভুক্ত কৰক\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:576
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:581
 msgid "Get the value of KEY"
 msgstr "KEY ৰ মান প্ৰাপ্ত কৰক"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:582 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600 ../gio/gsettings-tool.c:612
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:587
 msgid "Query the range of valid values for KEY"
 msgstr "KEY ৰ বাবে বৈধ মানসমূহৰ বিস্তাৰক প্ৰশ্ন কৰক"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:593
 msgid "Set the value of KEY to VALUE"
 msgstr "KEY ৰ মান VALUE লে সংহতি কৰক"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:599
 msgid "Reset KEY to its default value"
 msgstr "KEY ক ইয়াৰ অবিকল্পিত মানলে পুনৰসংহতি কৰক"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:605
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "SCHEMA ত থকা সকলো কিক সিহতৰ অবিকল্পিতসমূহলে পুনৰসংহতি কৰক"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:611
 msgid "Check if KEY is writable"
 msgstr "নিৰীক্ষণ কৰক KEY লিখাযোগ্য হয় নে"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2299,11 +2301,11 @@ msgstr ""
 "যদি কোনো কি ধাৰ্য্য কৰা নহয়, SCHEMA ত থকা সকলো কি মনিটৰ কৰক।\n"
 "মনিটৰিং বন্ধ কৰিবলে ^C ব্যৱহাৰ কৰক।\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:620
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:632
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2348,7 +2350,7 @@ msgstr ""
 "বিৱৰিত সহায়ৰ বাবে 'gsettings help COMMAND' ব্যৱহাৰ কৰক।\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:654
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2363,11 +2365,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:660
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR অতিৰিক্ত স্কিমাসমূহ সন্ধান কৰিবলে এটা ডাইৰেকটৰি\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:668
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2375,25 +2377,24 @@ msgstr ""
 "  SCHEMA    স্কিমাৰ নাম\n"
 "  PATH      পথ, পুনৰ অৱস্থান কৰিব পৰা স্কিমাসমূহৰ বাবে\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:673
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY      স্কিমাৰ ভিতৰত (বিকল্প) কি\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       স্কিমাৰ ভিতৰত কি\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:681
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     সংহতি কৰিবলে মান\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:740
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s ৰ পৰা স্কিমাসমূহ ল'ড কৰিব পৰা নগল: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:802
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "ৰিক্ত স্কিমা নাম দিয়া হৈছে\n"
@@ -2666,17 +2667,18 @@ msgstr "'%s' বিশ্লেষণ কৰোঁতে ত্ৰুটি: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' ক ওলোটা ভাবে বুজিবলৈ ত্ৰুটি: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:478
+#: ../gio/gthreadedresolver.c:579 ../gio/gthreadedresolver.c:630
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' ৰ বাবে অনুৰোধ কৰা ধৰণৰ কোনো DNS ৰেকৰ্ড নাই"
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:584
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "'%s' ক অস্থায়ীভাবে বুজিব পৰা নাযায়"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:589
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "'%s' বুজিব লওঁতে ত্ৰুটি"
