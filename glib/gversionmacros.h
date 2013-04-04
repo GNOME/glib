@@ -100,10 +100,10 @@
 /**
  * GLIB_VERSION_2_38:
  *
- * A macro that evaluates to the 2.36 version of GLib, in a format
+ * A macro that evaluates to the 2.38 version of GLib, in a format
  * that can be used by the C pre-processor.
  *
- * Since: 2.36
+ * Since: 2.38
  */
 #define GLIB_VERSION_2_38       (G_ENCODE_VERSION (2, 38))
 
