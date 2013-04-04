@@ -1007,8 +1007,10 @@ check_add_interface_L (GType instance_type,
       g_warning ("attempting to add an interface (%s) to class (%s) after class_init",
                  NODE_NAME (iface), NODE_NAME (node));
 
-      /* See https://bugzilla.gnome.org/show_bug.cgi?id=697229 */
-      if (!g_str_has_prefix (NODE_NAME (node), "gtkmm__CustomObject_"))
+      /* See https://bugzilla.gnome.org/show_bug.cgi?id=697229,
+       * https://bugzilla.gnome.org/show_bug.cgi?id=687659
+       */
+      if (!g_str_has_prefix (NODE_NAME (node), "gtkmm__CustomObject_") && !strstr (NODE_NAME (node), "_gtksharp_"))
         return FALSE;
     }
   tnode = lookup_type_node_I (NODE_PARENT_TYPE (iface));
