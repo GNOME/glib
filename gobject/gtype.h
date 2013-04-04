@@ -1406,7 +1406,7 @@ guint     g_type_get_type_registration_serial (void);
  *                                        (GClassInitFunc) gtk_gadget_class_intern_init,
  *                                        sizeof (GtkGadget),
  *                                        (GInstanceInitFunc) gtk_gadget_init,
- *                                        (GTypeFlags) flags);
+ *                                        0);
  *       {
  *         const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
