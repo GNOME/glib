@@ -545,18 +545,44 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
  * g_param_spec_get_redirect_target:
  * @pspec: a #GParamSpec
  *
- * If the paramspec redirects operations to another paramspec,
- * returns that paramspec. Redirect is used typically for
- * providing a new implementation of a property in a derived
- * type while preserving all the properties from the parent
- * type. Redirection is established by creating a property
- * of type #GParamSpecOverride. See g_object_class_override_property()
- * for an example of the use of this capability.
+ * Finds a #GParamSpec that is somehow related to @pspec.
+ *
+ * This function is confusing and annoying and has many caveats.  You
+ * should probably not use it.  Just about the only thing that it is
+ * useful for is to ascertain the type of #GParamSpec that originally
+ * defined an interface and in that case what you probably really want
+ * to know anyway can be obtained with G_PARAM_SPEC_VALUE_TYPE().
+ *
+ * For most #GParamSpec types this function returns %NULL.
+ *
+ * For #GParamSpecOverride, this function returns the highest-level
+ * #GParamSpec from which the chain of overrides derives.  This is not,
+ * however, the same as finding the #GParamSpec that originally defined
+ * the interface that @pspec is implementing because it's possible to
+ * directly create a new #GParamSpec and install it on an interface that
+ * already has the same type of parameter, without #GParamSpecOverride,
+ * in which case this function will return %NULL.  There is no general
+ * mechanism for answering the question of "what class or interface is
+ * this property defined on?" and in some cases it's possible that a
+ * property is defined in multiple places.  One example is two
+ * properties of the same name and compatible types defined on two
+ * separate interfaces, both of which are implemented by an object.
+ * Another example is a property defined as read-only by a parent class
+ * and then having writability added by a subclass, in which case the
+ * 'readable' and 'writable' parts of the property are split across two
+ * separate interfaces.
+ *
+ * For #GParamSpecDefault, this function returns the highest-level
+ * #GParamSpec from which the chain of overrides of its corresponding
+ * implementation #GParamSpec derives.  For #GParamSpecDefault you are
+ * probably more interested in using g_param_spec_get_implementation(),
+ * which returns the @pspec defined by the class which is implementing
+ * the property (ie: the class that will receive the property get/set
+ * calls).
  *
  * Since: 2.4
  *
- * Returns: (transfer none): paramspec to which requests on this
- *          paramspec should be redirected, or %NULL if none.
+ * Returns: (transfer none): a #GParamSpec as above, or %NULL
  */
 GParamSpec*
 g_param_spec_get_redirect_target (GParamSpec *pspec)
@@ -567,10 +593,58 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
     {
       GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
 
+      /* No need to recurse: overridden was already fully-dereferenced
+       * when the GParmaSpecOverride was created.
+       */
       return ospec->overridden;
+    }
+  else if (G_IS_PARAM_SPEC_DEFAULT (pspec))
+    {
+      GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
+      GParamSpec *override;
+
+      override = g_param_spec_get_redirect_target (dspec->implementation);
+
+      return override ? override : dspec->implementation;
     }
   else
     return NULL;
+}
+
+/**
+ * g_param_spec_get_implementation:
+ * @pspec: a #GParamSpec
+ *
+ * Gets the #GParamSpec defined by the class which implements the
+ * property described by @pspec.
+ *
+ * This is the class that will receive the property get/set calls when
+ * the parameter is used.
+ *
+ * In most cases, this function will just return @pspec itself.  The
+ * case where this is not true is if @pspec is a #GParamSpecDefault.  In
+ * that case, @pspec was defined by a subclass of the class that
+ * actually implements the property in order to override its default
+ * value; the original @pspec defined by the implementing class will be
+ * returned.
+ *
+ * Returns: (transfer none): the implementation #GParamSpec
+ *
+ * Since: 2.38
+ */
+GParamSpec *
+g_param_spec_get_implementation (GParamSpec *pspec)
+{
+  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
+
+  if (G_IS_PARAM_SPEC_DEFAULT (pspec))
+    {
+      GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
+
+      pspec = dspec->implementation;
+    }
+
+  return pspec;
 }
 
 /**

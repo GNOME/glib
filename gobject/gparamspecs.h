@@ -1024,14 +1024,14 @@ struct _GParamSpecVariant
  *
  * Since: 2.38
  */
-struct _GParamSpecVariant
+struct _GParamSpecDefault
 {
   GParamSpec    parent_instance;
-  GVariantType *type;
-  GVariant     *default_value;
+  GParamSpec   *implementation;
+  GValue        default_value;
 
   /*< private >*/
-  gpointer      padding[4];
+  gpointer      padding[2];
 };
 
 /* --- GParamSpec prototypes --- */
@@ -1192,6 +1192,9 @@ GParamSpec*	g_param_spec_variant	 (const gchar        *name,
 					  const GVariantType *type,
 					  GVariant           *default_value,
 					  GParamFlags         flags);
+GLIB_AVAILABLE_IN_2_38
+GParamSpec*     g_param_spec_default     (GParamSpec         *implementation,
+                                          const GValue       *new_value);
 
 /* --- internal --- */
 /* We prefix variable declarations so they can

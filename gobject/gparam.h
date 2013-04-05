@@ -298,6 +298,8 @@ gpointer        g_param_spec_steal_qdata	(GParamSpec    *pspec,
 						 GQuark         quark);
 GLIB_AVAILABLE_IN_ALL
 GParamSpec*     g_param_spec_get_redirect_target (GParamSpec   *pspec);
+GLIB_AVAILABLE_IN_2_38
+GParamSpec*     g_param_spec_get_implementation  (GParamSpec   *pspec);
 
 GLIB_AVAILABLE_IN_ALL
 void		g_param_value_set_default	(GParamSpec    *pspec,

@@ -1067,7 +1067,7 @@ param_default_init (GParamSpec *pspec)
 static void
 param_default_finalize (GParamSpec *pspec)
 {
-  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
   GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_OVERRIDE));
 
   if (dspec->implementation)
@@ -1085,16 +1085,16 @@ static void
 param_default_set_default (GParamSpec *pspec,
                            GValue     *value)
 {
-  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
 
-  g_value_copy (&dpspec->default_value, value);
+  g_value_copy (&dspec->default_value, value);
 }
 
 static gboolean
 param_default_validate (GParamSpec *pspec,
                         GValue     *value)
 {
-  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
 
   return g_param_value_validate (dspec->implementation, value);
 }
@@ -1104,7 +1104,7 @@ param_default_values_cmp (GParamSpec   *pspec,
                           const GValue *value1,
                           const GValue *value2)
 {
-  GParamSpecDefault *dspec = G_PARAM_SPEC_OVERRIDE (pspec);
+  GParamSpecDefault *dspec = G_PARAM_SPEC_DEFAULT (pspec);
 
   return g_param_values_cmp (dspec->implementation, value1, value2);
 }
@@ -2588,4 +2588,45 @@ g_param_spec_variant (const gchar        *name,
     vspec->default_value = g_variant_ref_sink (default_value);
 
   return G_PARAM_SPEC (vspec);
+}
+
+GParamSpec *
+g_param_spec_default (GParamSpec   *implementation,
+                      const GValue *new_value)
+{
+  GParamSpecDefault *dspec;
+  GParamSpec *pspec;
+  GValue my_copy;
+
+  g_return_val_if_fail (G_IS_PARAM_SPEC (implementation), NULL);
+  g_return_val_if_fail (G_VALUE_HOLDS (new_value, G_PARAM_SPEC_VALUE_TYPE (implementation)), NULL);
+
+  while (TRUE)
+    {
+      GParamSpec *indirect = g_param_spec_get_implementation (implementation);
+      if (indirect)
+        implementation = indirect;
+      else
+        break;
+    }
+
+  g_value_copy (new_value, &my_copy);
+  if (g_param_value_validate (implementation, &my_copy))
+    {
+      gchar *new_str = g_strdup_value_contents (new_value);
+
+      g_critical ("%s: invalid new default value (%s) given for the override to property `%s' of type `%s'",
+                  G_STRFUNC, new_str, implementation->name, g_type_name (G_PARAM_SPEC_VALUE_TYPE (implementation)));
+      g_value_unset (&my_copy);
+      g_free (new_str);
+      return NULL;
+    }
+
+  dspec = g_param_spec_internal (G_TYPE_PARAM_DEFAULT, implementation->name, NULL, NULL, implementation->flags);
+  pspec = G_PARAM_SPEC (dspec);
+  pspec->value_type = G_PARAM_SPEC_VALUE_TYPE (implementation);
+  dspec->implementation = g_param_spec_ref (implementation);
+  dspec->default_value = my_copy;
+
+  return pspec;
 }
