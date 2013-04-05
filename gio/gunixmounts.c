@@ -2317,7 +2317,6 @@ _resolve_dev_root (void)
         {
           dev_t root_dev = statbuf.st_dev;
           FILE *f;
-          char buf[1024];
       
           /* see if device with similar major:minor as /dev/root is mention
            * in /etc/mtab (it usually is) 
@@ -2328,6 +2327,7 @@ _resolve_dev_root (void)
 	      struct mntent *entp;
 #ifdef HAVE_GETMNTENT_R        
               struct mntent ent;
+              char buf[1024];
               while ((entp = getmntent_r (f, &ent, buf, sizeof (buf))) != NULL) 
                 {
 #else
