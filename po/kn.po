@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-26 18:22+0000\n"
-"PO-Revision-Date: 2013-04-05 16:18+0530\n"
+"PO-Revision-Date: 2013-04-05 16:19+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: en_US\n"
@@ -1262,7 +1262,7 @@ msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು <%s> ಒಳಗೆ ಇರಲು �
 #: ../gio/glib-compile-resources.c:149
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
-msgstr "<s> ಘಟಕವು ಮೇಲ್ಭಾಗದಲ್ಲಿ ಇರಲು ಅನುಮತಿ ಇಲ್ಲ"
+msgstr "<%s> ಘಟಕವು ಮೇಲ್ಭಾಗದಲ್ಲಿ ಇರಲು ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../gio/glib-compile-resources.c:239
 #, c-format
