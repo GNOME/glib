@@ -774,9 +774,11 @@ _g_get_unix_mount_points (void)
           (strcmp (mntent->mnt_dir, "none") == 0))
 	continue;
 
+#ifdef HAVE_HASMNTOPT
       /* We ignore bind fstab entries, as we ignore bind mounts anyway */
       if (hasmntopt (mntent, "bind"))
         continue;
+#endif
 
       mount_entry = g_new0 (GUnixMountPoint, 1);
       mount_entry->mount_path = g_strdup (mntent->mnt_dir);
