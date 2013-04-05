@@ -682,7 +682,7 @@ gsize
 static pthread_mutex_t g_atomic_lock = PTHREAD_MUTEX_INITIALIZER;
 
 gint
-(g_atomic_int_get) (volatile gint *atomic)
+(g_atomic_int_get) (const volatile gint *atomic)
 {
   gint value;
 
@@ -797,9 +797,9 @@ guint
 
 
 gpointer
-(g_atomic_pointer_get) (volatile void *atomic)
+(g_atomic_pointer_get) (const volatile void *atomic)
 {
-  volatile gpointer *ptr = atomic;
+  const volatile gpointer *ptr = atomic;
   gpointer value;
 
   pthread_mutex_lock (&g_atomic_lock);
