@@ -223,19 +223,67 @@ g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
   return NULL;
 }
 
+typedef struct {
+  const char *s;
+  const char *separator;
+  GString buf;
+} StrSplitIter;
+
+static void
+strsplit_iter_init (StrSplitIter  *iter,
+                    const char    *s,
+                    const char    *separator)
+{
+  iter->s = s;
+  iter->separator = separator;
+  iter->buf.str = NULL;
+  iter->buf.len = 0;
+  iter->buf.allocated_len = 0;
+}
+
+static gboolean
+strsplit_iter_next (StrSplitIter  *iter,
+                    char         **out_val)
+{
+  const char *s = iter->s;
+  const char *next;
+  gsize len;
+
+  if (!s)
+    return FALSE;
+  next = strstr (s, iter->separator);
+  iter->s = next;
+  if (next)
+    len = next - s;
+  else
+    len = strlen (s);
+  g_string_overwrite_len (&iter->buf, 0, s, (gssize)len);
+  *out_val = iter->buf.str;
+  return TRUE;
+}
+
+static void
+strsplit_iter_clear (StrSplitIter  *iter)
+{
+  g_free (iter->buf.str);
+}
+
 gboolean
 g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
 				     const gchar *gtype_name)
 {
   Header *header = (Header *)typelib->data;
   const char *c_prefix;
-  gchar **prefixes;
-  gchar **prefix;
+  gchar *prefix;
   gboolean ret = FALSE;
+  StrSplitIter split_iter;
+  gsize gtype_name_len;
 
   c_prefix = g_typelib_get_string (typelib, header->c_prefix);
   if (c_prefix == NULL)
     return FALSE;
+
+  gtype_name_len = strlen (gtype_name);
 
   /* c_prefix is a comma separated string of supported prefixes
    * in the typelib.
@@ -244,20 +292,24 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
    * For example, a typelib offering the 'Gdk' prefix does match
    * GdkX11Cursor, however a typelib offering the 'G' prefix does not.
    */
-  prefixes = g_strsplit (c_prefix, ",", 0);
-  for (prefix = prefixes; *prefix; prefix++)
+  strsplit_iter_init (&split_iter, c_prefix, ",");
+  while (strsplit_iter_next (&split_iter, &prefix))
     {
-      size_t len = strlen (*prefix);
-      if (strncmp (*prefix, gtype_name, len))
+      size_t len = strlen (prefix);
+
+      if (gtype_name_len < len)
         continue;
 
-      if (strlen (gtype_name) > len && g_ascii_isupper (gtype_name[len]))
+      if (strncmp (prefix, gtype_name, len) != 0)
+        continue;
+
+      if (g_ascii_isupper (gtype_name[len]))
         {
           ret = TRUE;
           break;
         }
     }
-  g_strfreev(prefixes);
+  strsplit_iter_clear (&split_iter);
   return ret;
 }
 
