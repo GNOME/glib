@@ -226,6 +226,7 @@ g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
 typedef struct {
   const char *s;
   const char *separator;
+  gsize sep_len;
   GString buf;
 } StrSplitIter;
 
@@ -236,6 +237,7 @@ strsplit_iter_init (StrSplitIter  *iter,
 {
   iter->s = s;
   iter->separator = separator;
+  iter->sep_len = strlen (separator);
   iter->buf.str = NULL;
   iter->buf.len = 0;
   iter->buf.allocated_len = 0;
@@ -254,7 +256,7 @@ strsplit_iter_next (StrSplitIter  *iter,
   next = strstr (s, iter->separator);
   if (next)
     {
-      iter->s = next + 1;
+      iter->s = next + iter->sep_len;
       len = next - s;
     }
   else
@@ -262,8 +264,15 @@ strsplit_iter_next (StrSplitIter  *iter,
       iter->s = NULL;
       len = strlen (s);
     }
-  g_string_overwrite_len (&iter->buf, 0, s, (gssize)len);
-  *out_val = iter->buf.str;
+  if (len == 0)
+    {
+      *out_val = "";
+    }
+  else
+    {
+      g_string_overwrite_len (&iter->buf, 0, s, (gssize)len);
+      *out_val = iter->buf.str;
+    }
   return TRUE;
 }
 
