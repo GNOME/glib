@@ -3246,6 +3246,7 @@ typedef struct
   gchar *member;
   gchar *object_path;
   gchar *arg0;
+  GDBusSignalFlags flags;
   GArray *subscribers;
 } SignalData;
 
@@ -3273,17 +3274,17 @@ signal_data_free (SignalData *signal_data)
 }
 
 static gchar *
-args_to_rule (const gchar *sender,
-              const gchar *interface_name,
-              const gchar *member,
-              const gchar *object_path,
-              const gchar *arg0,
-              gboolean     negate)
+args_to_rule (const gchar      *sender,
+              const gchar      *interface_name,
+              const gchar      *member,
+              const gchar      *object_path,
+              const gchar      *arg0,
+              GDBusSignalFlags  flags)
 {
   GString *rule;
 
   rule = g_string_new ("type='signal'");
-  if (negate)
+  if (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE)
     g_string_prepend_c (rule, '-');
   if (sender != NULL)
     g_string_append_printf (rule, ",sender='%s'", sender);
@@ -3293,8 +3294,16 @@ args_to_rule (const gchar *sender,
     g_string_append_printf (rule, ",member='%s'", member);
   if (object_path != NULL)
     g_string_append_printf (rule, ",path='%s'", object_path);
+
   if (arg0 != NULL)
-    g_string_append_printf (rule, ",arg0='%s'", arg0);
+    {
+      if (flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH)
+        g_string_append_printf (rule, ",arg0path='%s'", arg0);
+      else if (flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE)
+        g_string_append_printf (rule, ",arg0namespace='%s'", arg0);
+      else
+        g_string_append_printf (rule, ",arg0='%s'", arg0);
+    }
 
   return g_string_free (rule, FALSE);
 }
@@ -3417,6 +3426,11 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * tracking the name owner of the well-known name and use that when
  * processing the received signal.
  *
+ * If one of %G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE or
+ * %G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH are given, @arg0 is
+ * interpreted as part of a namespace or path.  The first argument
+ * of a signal is matched against that part as specified by D-Bus.
+ *
  * Returns: A subscription identifier that can be used with g_dbus_connection_signal_unsubscribe().
  *
  * Since: 2.26
@@ -3456,6 +3470,8 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   g_return_val_if_fail (object_path == NULL || g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (callback != NULL, 0);
   g_return_val_if_fail (check_initialized (connection), 0);
+  g_return_val_if_fail (!((flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH) && (flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE)), 0);
+  g_return_val_if_fail (!(arg0 == NULL && (flags & (G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH | G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE))), 0);
 
   CONNECTION_LOCK (connection);
 
@@ -3467,8 +3483,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    * the usual way, but the '-' prevents the match rule from ever
    * actually being send to the bus (either for add or remove).
    */
-  rule = args_to_rule (sender, interface_name, member, object_path, arg0,
-                       (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE) != 0);
+  rule = args_to_rule (sender, interface_name, member, object_path, arg0, flags);
 
   if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
     sender_unique_name = sender;
@@ -3498,6 +3513,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   signal_data->member                = g_strdup (member);
   signal_data->object_path           = g_strdup (object_path);
   signal_data->arg0                  = g_strdup (arg0);
+  signal_data->flags                 = flags;
   signal_data->subscribers           = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
   g_array_append_val (signal_data->subscribers, subscriber);
 
@@ -3733,6 +3749,43 @@ signal_instance_free (SignalInstance *signal_instance)
   g_free (signal_instance);
 }
 
+static gboolean
+namespace_rule_matches (const gchar *namespace,
+                        const gchar *name)
+{
+  gint len_namespace;
+  gint len_name;
+
+  len_namespace = strlen (namespace);
+  len_name = strlen (name);
+
+  if (len_name < len_namespace)
+    return FALSE;
+
+  if (memcmp (namespace, name, len_namespace) != 0)
+    return FALSE;
+
+  return len_namespace == len_name || name[len_namespace] == '.';
+}
+
+static gboolean
+path_rule_matches (const gchar *path_a,
+                   const gchar *path_b)
+{
+  gint len_a, len_b;
+
+  len_a = strlen (path_a);
+  len_b = strlen (path_b);
+
+  if (len_a < len_b && path_a[len_a - 1] != '/')
+    return FALSE;
+
+  if (len_b < len_a && path_b[len_b - 1] != '/')
+    return FALSE;
+
+  return memcmp (path_a, path_b, MIN (len_a, len_b)) == 0;
+}
+
 /* called in GDBusWorker thread WITH lock held */
 static void
 schedule_callbacks (GDBusConnection *connection,
@@ -3786,8 +3839,24 @@ schedule_callbacks (GDBusConnection *connection,
       if (signal_data->object_path != NULL && g_strcmp0 (signal_data->object_path, path) != 0)
         continue;
 
-      if (signal_data->arg0 != NULL && g_strcmp0 (signal_data->arg0, arg0) != 0)
-        continue;
+      if (signal_data->arg0 != NULL)
+        {
+          if (arg0 == NULL)
+            continue;
+
+          if (signal_data->flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE)
+            {
+              if (!namespace_rule_matches (signal_data->arg0, arg0))
+                continue;
+            }
+          else if (signal_data->flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH)
+            {
+              if (!path_rule_matches (signal_data->arg0, arg0))
+                continue;
+            }
+          else if (!g_str_equal (signal_data->arg0, arg0))
+            continue;
+        }
 
       for (m = 0; m < signal_data->subscribers->len; m++)
         {

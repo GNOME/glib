@@ -713,6 +713,83 @@ test_connection_signals (void)
   session_bus_down ();
 }
 
+static void
+test_match_rule (GDBusConnection  *connection,
+                 GDBusSignalFlags  flags,
+                 gchar            *arg0_rule,
+                 gchar            *arg0,
+                 gboolean          should_match)
+{
+  guint subscription_ids[2];
+  gint emissions = 0;
+  gint matches = 0;
+  GError *error = NULL;
+
+  subscription_ids[0] = g_dbus_connection_signal_subscribe (connection,
+                                                            NULL, "org.gtk.ExampleInterface", "Foo", "/",
+                                                            NULL,
+                                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                                            test_connection_signal_handler,
+                                                            &emissions, NULL);
+  subscription_ids[1] = g_dbus_connection_signal_subscribe (connection,
+                                                            NULL, "org.gtk.ExampleInterface", "Foo", "/",
+                                                            arg0_rule,
+                                                            flags,
+                                                            test_connection_signal_handler,
+                                                            &matches, NULL);
+  g_assert_cmpint (subscription_ids[0], !=, 0);
+  g_assert_cmpint (subscription_ids[1], !=, 0);
+
+  g_dbus_connection_emit_signal (connection,
+                                 NULL, "/", "org.gtk.ExampleInterface",
+                                 "Foo", g_variant_new ("(s)", arg0),
+                                 &error);
+  g_assert_no_error (error);
+
+  /* synchronously ping a non-existent method to make sure the signals are dispatched */
+  g_dbus_connection_call_sync (connection, "org.gtk.ExampleInterface", "/", "org.gtk.ExampleInterface",
+                               "Bar", g_variant_new ("()"), G_VARIANT_TYPE_UNIT, G_DBUS_CALL_FLAGS_NONE,
+                               -1, NULL, NULL);
+
+  while (g_main_context_iteration (NULL, FALSE))
+    ;
+
+  g_assert_cmpint (emissions, ==, 1);
+  g_assert_cmpint (matches, ==, should_match ? 1 : 0);
+
+  g_dbus_connection_signal_unsubscribe (connection, subscription_ids[0]);
+  g_dbus_connection_signal_unsubscribe (connection, subscription_ids[1]);
+}
+
+static void
+test_connection_signal_match_rules (void)
+{
+  GDBusConnection *con;
+
+  session_bus_up ();
+  con = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_NONE, "foo", "foo", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_NONE, "foo", "bar", FALSE);
+
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE, "org.gtk", "", FALSE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE, "org.gtk", "org", FALSE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE, "org.gtk", "org.gtk", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE, "org.gtk", "org.gtk.Example", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE, "org.gtk", "org.gtk+", FALSE);
+
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/", "/", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/", "", FALSE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/org/gtk/Example", "/org/gtk/Example", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/org/gtk/", "/org/gtk/Example", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/org/gtk/Example", "/org/gtk/", TRUE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/org/gtk/Example", "/org/gtk", FALSE);
+  test_match_rule (con, G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH, "/org/gtk+", "/org/gtk", FALSE);
+
+  g_object_unref (con);
+  session_bus_down ();
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 typedef struct
@@ -1153,6 +1230,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/life-cycle", test_connection_life_cycle);
   g_test_add_func ("/gdbus/connection/send", test_connection_send);
   g_test_add_func ("/gdbus/connection/signals", test_connection_signals);
+  g_test_add_func ("/gdbus/connection/signal-match-rules", test_connection_signal_match_rules);
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
   g_test_add_func ("/gdbus/connection/serials", test_connection_serials);
   return g_test_run();
