@@ -63,6 +63,9 @@ GLIB_AVAILABLE_IN_2_32
 void        g_menu_remove                           (GMenu       *menu,
                                                      gint         position);
 
+GLIB_AVAILABLE_IN_2_38
+void        g_menu_remove_all                       (GMenu       *menu);
+
 GLIB_AVAILABLE_IN_2_32
 void        g_menu_insert                           (GMenu       *menu,
                                                      gint         position,

@@ -486,6 +486,29 @@ g_menu_remove (GMenu *menu,
   g_menu_model_items_changed (G_MENU_MODEL (menu), position, 1, 0);
 }
 
+/**
+ * g_menu_remove_all:
+ * @menu: a #GMenu
+ *
+ * Removes all items in the menu.
+ *
+ * Since: 2.38
+ **/
+void
+g_menu_remove_all (GMenu *menu)
+{
+  gint i, n;
+
+  g_return_if_fail (G_IS_MENU (menu));
+  n = menu->items->len;
+
+  for (i = 0; i < n; i++)
+    g_menu_clear_item (&g_array_index (menu->items, struct item, i));
+  g_array_set_size (menu->items, 0);
+
+  g_menu_model_items_changed (G_MENU_MODEL (menu), 0, n, 0);
+}
+
 static void
 g_menu_finalize (GObject *object)
 {

@@ -3773,6 +3773,7 @@ g_menu_prepend_submenu
 
 <SUBSECTION>
 g_menu_remove
+g_menu_remove_all
 
 <SUBSECTION>
 GMenuItem
