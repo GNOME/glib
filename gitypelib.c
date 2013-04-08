@@ -252,11 +252,16 @@ strsplit_iter_next (StrSplitIter  *iter,
   if (!s)
     return FALSE;
   next = strstr (s, iter->separator);
-  iter->s = next;
   if (next)
-    len = next - s;
+    {
+      iter->s = next + 1;
+      len = next - s;
+    }
   else
-    len = strlen (s);
+    {
+      iter->s = NULL;
+      len = strlen (s);
+    }
   g_string_overwrite_len (&iter->buf, 0, s, (gssize)len);
   *out_val = iter->buf.str;
   return TRUE;
