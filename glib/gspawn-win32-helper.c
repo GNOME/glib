@@ -341,7 +341,7 @@ main (int ignored_argc, char **ignored_argv)
           fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (i));
 
   /* ...so we won't get the nasty off-by-1 file descriptor leak */
-  g_slist_append (fd_toclose, NULL);
+  fd_toclose = g_slist_append (fd_toclose, NULL);
   last_item = g_slist_last (fd_toclose);
 
   /* now close all the file descriptors as necessary */
