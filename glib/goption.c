@@ -723,7 +723,7 @@ g_option_context_get_help (GOptionContext *context,
                            GOptionGroup   *group)
 {
   GList *list;
-  gint max_length, len;
+  gint max_length = 0, len;
   gint i;
   GOptionEntry *entry;
   GHashTable *shadow_map;
@@ -822,12 +822,15 @@ g_option_context_get_help (GOptionContext *context,
 
   list = context->groups;
 
-  max_length = _g_utf8_strwidth ("-?, --help");
-
-  if (list)
+  if (context->help_enabled)
     {
-      len = _g_utf8_strwidth ("--help-all");
-      max_length = MAX (max_length, len);
+      max_length = _g_utf8_strwidth ("-?, --help");
+
+      if (list)
+        {
+          len = _g_utf8_strwidth ("--help-all");
+          max_length = MAX (max_length, len);
+        }
     }
 
   if (context->main_group)
@@ -840,9 +843,12 @@ g_option_context_get_help (GOptionContext *context,
     {
       GOptionGroup *g = list->data;
 
-      /* First, we check the --help-<groupname> options */
-      len = _g_utf8_strwidth ("--help-") + _g_utf8_strwidth (g->name);
-      max_length = MAX (max_length, len);
+      if (context->help_enabled)
+        {
+          /* First, we check the --help-<groupname> options */
+          len = _g_utf8_strwidth ("--help-") + _g_utf8_strwidth (g->name);
+          max_length = MAX (max_length, len);
+        }
 
       /* Then we go through the entries */
       len = calculate_max_length (g, aliases);
@@ -854,7 +860,7 @@ g_option_context_get_help (GOptionContext *context,
   /* Add a bit of padding */
   max_length += 4;
 
-  if (!group)
+  if (!group && context->help_enabled)
     {
       list = context->groups;
 
