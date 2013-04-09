@@ -66,6 +66,9 @@
 #ifdef HAVE_SYS_PRCTL_H
 #include <sys/prctl.h>
 #endif
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 static void
 g_thread_abort (gint         status,

@@ -2177,14 +2177,20 @@ AS_IF([test x$have_threads = xposix], [
 	  ])
 
 	  g_threads_impl="POSIX"
+          AC_DEFINE([THREADS_POSIX], [1], [Use pthreads])
 	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
           CPPFLAGS="$glib_save_CPPFLAGS"
 ], [test x$have_threads = xwin32], [
+           AC_DEFINE([THREADS_WIN32], [1], [Use w32 threads])
 	   g_threads_impl="WIN32"
 ], [
+           AC_DEFINE([THREADS_NONE], [1], [Use no threads])
 	   g_threads_impl="NONE"
            G_THREAD_LIBS=error
 ])
+AM_CONDITIONAL(THREADS_POSIX, [test "$g_threads_impl" = "POSIX"])
+AM_CONDITIONAL(THREADS_WIN32, [test "$g_threads_impl" = "WIN32"])
+AM_CONDITIONAL(THREADS_NONE, [test "$g_threads_impl" = "NONE"])
 
 if test "x$G_THREAD_LIBS" = xerror; then
         AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)

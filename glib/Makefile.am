@@ -214,10 +214,12 @@ if OS_UNIX
 libglib_2_0_la_SOURCES += glib-unix.c
 endif
 
-if OS_WIN32
+if THREADS_WIN32
 libglib_2_0_la_SOURCES += gthread-win32.c
 else
+if THREADS_POSIX
 libglib_2_0_la_SOURCES += gthread-posix.c
+endif
 endif
 
 EXTRA_libglib_2_0_la_SOURCES = \
