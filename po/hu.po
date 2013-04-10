@@ -4,19 +4,21 @@
 #
 # Szabolcs Varga <shirokuma at shirokuma dot hu>, 2005.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013.
+# Balázs Úr <urbalazs at gmail dot com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-21 00:22+0100\n"
-"PO-Revision-Date: 2013-03-21 00:21+0100\n"
-"Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-04-04 01:49+0000\n"
+"PO-Revision-Date: 2013-04-10 23:33+0200\n"
+"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:506
@@ -1028,12 +1030,12 @@ msgstr "Egy GEmblem kellene a GEmblemedIconhoz"
 #: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
 #: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
 #: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
+#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
+#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
+#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
+#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
+#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
@@ -1094,24 +1096,24 @@ msgstr "A másolás (reflink/clone) nem támogatott vagy nem működött"
 msgid "Can't copy special file"
 msgstr "A speciális fájl nem másolható"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3660
 msgid "Invalid symlink value given"
 msgstr "Érvénytelen szimbolikus link érték került megadásra"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3820
 msgid "Trash not supported"
 msgstr "A Kuka nem támogatott"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:3871
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6368
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
@@ -2063,7 +2065,7 @@ msgstr "Az erőforrás nem könyvtár itt: „%s”"
 msgid "Input stream doesn't implement seek"
 msgstr "A bemeneti adatfolyam nem valósítja meg a pozícionálást"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:538
 msgid "Print help"
 msgstr "Súgó kiírása"
 
@@ -2117,7 +2119,7 @@ msgstr "Erőforrásfájl kibontása a szabványos kimenetre"
 msgid "FILE PATH"
 msgstr "FÁJL ÚTVONAL"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:624
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2169,7 +2171,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:657
 msgid "Arguments:\n"
 msgstr "Argumentumok:\n"
 
@@ -2177,7 +2179,7 @@ msgstr "Argumentumok:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SZAKASZ   Egy elhagyható elf szakasznév\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:664
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  PARANCS   A megmagyarázandó (elhagyható) parancs\n"
 
@@ -2250,33 +2252,37 @@ msgstr "Az útvonal nem tartalmazhat két szomszédos osztásjelet (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Nincs „%s” kulcs\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "A megadott érték kívül esik az érvényes tartományon\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:544
+msgid "Print version information and exit"
+msgstr "Verzióinformációk kiírása és kilépés"
+
+#: ../gio/gsettings-tool.c:550
 msgid "List the installed (non-relocatable) schemas"
 msgstr "A telepített (át nem helyezhető) sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:556
 msgid "List the installed relocatable schemas"
 msgstr "A telepített áthelyezhető sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:562
 msgid "List the keys in SCHEMA"
 msgstr "A SÉMA kulcsainak felsorolása"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:563 ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH]"
 msgstr "SÉMA[:ÚTVONAL]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:568
 msgid "List the children of SCHEMA"
 msgstr "A SÉMA gyermekeinek felsorolása"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:574
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2284,44 +2290,44 @@ msgstr ""
 "Kulcsok és értékek rekurzív felsorolása\n"
 "Ha nincs megadva SÉMA, az összes kulcs felsorolása\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:576
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SÉMA[:ÚTVONAL]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:581
 msgid "Get the value of KEY"
 msgstr "A KULCS értékének lekérése"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:582 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600 ../gio/gsettings-tool.c:612
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SÉMA[:ÚTVONAL] KULCS"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:587
 msgid "Query the range of valid values for KEY"
 msgstr "A KULCS érvényes értékeinek tartományának lekérése"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:593
 msgid "Set the value of KEY to VALUE"
 msgstr "A KULCS értékének beállítása az ÉRTÉKRE"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SÉMA[:ÚTVONAL] KULCS ÉRTÉK"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:599
 msgid "Reset KEY to its default value"
 msgstr "A KULCS visszaállítása az alapértékére"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:605
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "A SÉMA minden kulcsának visszaállítása az alapértékekre"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:611
 msgid "Check if KEY is writable"
 msgstr "A KULCS írhatóságának ellenőrzése"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2331,11 +2337,11 @@ msgstr ""
 "Ha nincs megadva KULCS, akkor a SÉMA összes kulcsának figyelése.\n"
 "A figyelés befejezéséhez nyomja meg a ^C kombinációt.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:620
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SÉMA[:ÚTVONAL] [KULCS]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:632
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2379,7 +2385,7 @@ msgstr ""
 "Részletes segítségért adja ki a „gsettings help PARANCS” parancsot.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:654
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2394,11 +2400,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:660
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SÉMAKVT    További sémák keresése ebben a könyvtárban\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:668
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2406,24 +2412,24 @@ msgstr ""
 "  SÉMA      A séma neve\n"
 "  ÚTVONAL   Az áthelyezhető sémák útvonala\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:673
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KULCS     A sémán belüli (elhagyható) kulcs\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The key within the schema\n"
 msgstr "  KULCS     A sémán belüli kulcs\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:681
 msgid "  VALUE     The value to set\n"
 msgstr "  ÉRTÉK     A beállítandó érték\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:740
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nem lehet sémákat betölteni ebből: %s: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:802
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Üres sémanevet adott meg\n"
@@ -2695,17 +2701,18 @@ msgstr "Hiba a(z) „%s” feloldása közben: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Hiba a(z) „%s” fájl fordított feloldása közben: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:478
+#: ../gio/gthreadedresolver.c:579 ../gio/gthreadedresolver.c:630
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Nincs kért típusú DNS-rekord ehhez: „%s”"
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:584
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Ideiglenesen nem oldható fel: „%s”"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:589
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Hiba a(z) „%s” feloldása közben"
