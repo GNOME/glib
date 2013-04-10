@@ -520,12 +520,16 @@ g_main_context_unref (GMainContext *context)
   main_context_list = g_slist_remove (main_context_list, context);
   G_UNLOCK (main_context_list);
 
+  /* g_source_iter_next() assumes the context is locked. */
+  LOCK_CONTEXT (context);
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
       source->context = NULL;
-      g_source_destroy_internal (source, context, FALSE);
+      g_source_destroy_internal (source, context, TRUE);
     }
+  UNLOCK_CONTEXT (context);
+
   for (sl_iter = context->source_lists; sl_iter; sl_iter = sl_iter->next)
     {
       list = sl_iter->data;
