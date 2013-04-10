@@ -2017,6 +2017,65 @@ test_help_no_options (void)
 }
 
 static void
+test_help_no_help_options (void)
+{
+  GOptionContext *context;
+  GOptionGroup *group;
+  gchar *str;
+  gchar *arg = NULL;
+  gchar **sarr = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Test tests", "Argument to use in test" },
+    { "test2", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_NONE, NULL, "Tests also", NULL },
+    { "frob", 0, 0, G_OPTION_ARG_NONE, NULL, "Main frob", NULL },
+    { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &sarr, "Rest goes here", "REST" },
+    { NULL }
+  };
+  GOptionEntry group_entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Group test", "Group test arg" },
+    { "frob", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_NONE, NULL, "Group frob", NULL },
+    { NULL }
+  };
+
+  g_test_bug ("697652");
+
+  context = g_option_context_new ("blabla");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "Summary");
+  g_option_context_set_description (context, "Description");
+  g_option_context_set_help_enabled (context, FALSE);
+
+  group = g_option_group_new ("group1", "Group1-description", "Group1-help", NULL, NULL);
+  g_option_group_add_entries (group, group_entries);
+
+  g_option_context_add_group (context, group);
+
+  str = g_option_context_get_help (context, FALSE, NULL);
+  g_assert (strstr (str, "blabla") != NULL);
+  g_assert (strstr (str, "Test tests") != NULL);
+  g_assert (strstr (str, "Argument to use in test") != NULL);
+  g_assert (strstr (str, "Tests also") == NULL);
+  g_assert (strstr (str, "REST") != NULL);
+  g_assert (strstr (str, "Summary") != NULL);
+  g_assert (strstr (str, "Description") != NULL);
+  g_assert (strstr (str, "Help Options") == NULL);
+  g_assert (strstr (str, "--help") == NULL);
+  g_assert (strstr (str, "--help-all") == NULL);
+  g_assert (strstr (str, "--help-group1") == NULL);
+  g_assert (strstr (str, "Group1-description") != NULL);
+  g_assert (strstr (str, "Group1-help") == NULL);
+  g_assert (strstr (str, "Group test arg") != NULL);
+  g_assert (strstr (str, "Group frob") != NULL);
+  g_assert (strstr (str, "Main frob") != NULL);
+  g_assert (strstr (str, "--frob") != NULL);
+  g_assert (strstr (str, "--group1-test") != NULL);
+  g_assert (strstr (str, "--group1-frob") == NULL);
+  g_free (str);
+
+  g_option_context_free (context);
+}
+
+static void
 set_bool (gpointer data)
 {
   gboolean *b = data;
@@ -2230,6 +2289,7 @@ main (int   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
   g_test_add_func ("/option/help/options", test_help);
   g_test_add_func ("/option/help/no-options", test_help_no_options);
+  g_test_add_func ("/option/help/no-help-options", test_help_no_help_options);
 
   g_test_add_func ("/option/basic", test_basic);
   g_test_add_func ("/option/group/captions", test_group_captions);
