@@ -164,7 +164,7 @@ GIOChannel *g_io_channel_ref    (GIOChannel    *channel);
 GLIB_AVAILABLE_IN_ALL
 void        g_io_channel_unref  (GIOChannel    *channel);
 
-GLIB_DEPRECATED_FOR(g_io_channel_read_for)
+GLIB_DEPRECATED_FOR(g_io_channel_read_chars)
 GIOError    g_io_channel_read   (GIOChannel    *channel,
                                  gchar         *buf,
                                  gsize          count,
