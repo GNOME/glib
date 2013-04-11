@@ -400,7 +400,7 @@
       </para>
       <para>
         These options can be used to explicitly control whether
-        an implementation fo the printf() family should be included or not.
+        an implementation of the printf() family should be included or not.
       </para>
     </formalpara>
 
