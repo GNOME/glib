@@ -40,7 +40,7 @@ How to cross-compile GLib
       </para>
       <para>
         As an example of using a cache file, to cross compile for
-        the "MingW32" Win32 runtine environment on a Linux system,
+        the "MingW32" Win32 runtime environment on a Linux system,
         create a file 'win32.cache' with the following contents:
       </para>
       <programlisting> 
