@@ -184,7 +184,7 @@ How to run and debug your GLib application
         <term>debug-blocks</term>
         <listitem><para>Using this option (present since GLib 2.13) engages
           extra code which performs sanity checks on the released memory
-          slices. Invalid slice adresses or slice sizes will be reported and
+          slices. Invalid slice addresses or slice sizes will be reported and
           lead to a program halt. This option is for debugging scenarios.
           In particular, client packages sporting their own test suite should
           <emphasis>always enable this option when running tests</emphasis>.
