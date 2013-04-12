@@ -498,7 +498,7 @@ g_variant_alloc (const GVariantType *type,
  *
  * A reference is taken on @bytes.
  *
- * Returns: a new #GVariant with a floating reference
+ * Returns: (transfer none): a new #GVariant with a floating reference
  *
  * Since: 2.36
  */
