@@ -294,7 +294,7 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
   gsize gtype_name_len;
 
   c_prefix = g_typelib_get_string (typelib, header->c_prefix);
-  if (c_prefix == NULL)
+  if (c_prefix == NULL || strlen (c_prefix) == 0)
     return FALSE;
 
   gtype_name_len = strlen (gtype_name);
