@@ -2872,6 +2872,9 @@ start_element_handler (GMarkupParseContext *context,
 	  version = find_attribute ("version", attribute_names, attribute_values);
 	  shared_library = find_attribute ("shared-library", attribute_names, attribute_values);
 	  cprefix = find_attribute ("c:identifier-prefixes", attribute_names, attribute_values);
+          /* Backwards compatibility; vala currently still generates this */
+          if (cprefix == NULL)
+            cprefix = find_attribute ("c:prefix", attribute_names, attribute_values);
 
 	  if (name == NULL)
 	    MISSING_ATTRIBUTE (context, error, element_name, "name");
