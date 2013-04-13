@@ -12,9 +12,9 @@ check_symbols () {
 	fi
 }
 
-allowed="^_init$|^_fini$|^g_"
+allowed="^_init$|^_fini$|^_ftext$|^g_"
 allowed_in_libglib="${allowed}|^glib__private__$|^glib_gettext$|^glib_pgettext$|^glib_check_version$"
-allowed_in_libgthread='^_init$|^_fini$|^g_thread_init$|^g_thread_init_with_errorcheck_mutexes$'
+allowed_in_libgthread='^_init$|^_fini$|^_ftext$|^g_thread_init$|^g_thread_init_with_errorcheck_mutexes$'
 
 check_symbols glib/.libs/libglib-2.0.so "$allowed_in_libglib"
 check_symbols gthread/.libs/libgthread-2.0.so "$allowed_in_libgthread"
