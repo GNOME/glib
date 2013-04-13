@@ -1295,6 +1295,7 @@ g_date_time_new (GTimeZone *tz,
 {
   GDateTime *datetime;
   gint64 full_time;
+  gint64 usec;
 
   g_return_val_if_fail (tz != NULL, NULL);
 
@@ -1322,10 +1323,20 @@ g_date_time_new (GTimeZone *tz,
                                                 G_TIME_TYPE_STANDARD,
                                                 &full_time);
 
+  /* This is the correct way to convert a scaled FP value to integer.
+   * If this surprises you, please observe that (int)(1.000001 * 1e6)
+   * is 1000000.  This is not a problem with precision, it's just how
+   * FP numbers work.
+   * See https://bugzilla.gnome.org/show_bug.cgi?id=697715. */
+  usec = seconds * USEC_PER_SECOND;
+  if ((usec + 1) * 1e-6 <= seconds) {
+    usec++;
+  }
+
   full_time += UNIX_EPOCH_START * SEC_PER_DAY;
   datetime->days = full_time / SEC_PER_DAY;
   datetime->usec = (full_time % SEC_PER_DAY) * USEC_PER_SECOND;
-  datetime->usec += ((int) (seconds * USEC_PER_SECOND)) % USEC_PER_SECOND;
+  datetime->usec += usec % USEC_PER_SECOND;
 
   return datetime;
 }

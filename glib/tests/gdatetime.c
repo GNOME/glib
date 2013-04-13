@@ -2083,6 +2083,21 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 }
 
+static void
+test_GDateTime_floating_point (void)
+{
+  GDateTime *dt;
+  GTimeZone *tz;
+
+  g_test_bug ("697715");
+
+  tz = g_time_zone_new ("-03:00");
+  dt = g_date_time_new (tz, 2010, 5, 24,  8, 0, 1.000001);
+  g_time_zone_unref (tz);
+  g_assert_cmpint (g_date_time_get_microsecond (dt), ==, 1);
+  g_date_time_unref (dt);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -2140,6 +2155,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
   g_test_add_func ("/GTimeZone/no-header", test_no_header);
   g_test_add_func ("/GTimeZone/posix-parse", test_posix_parse);
+  g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
 
   return g_test_run ();
 }
