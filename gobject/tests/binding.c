@@ -570,6 +570,37 @@ binding_same_object (void)
   g_object_unref (source);
 }
 
+static void
+binding_unbind (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+
+
+  g_object_set (source, "foo", 42, NULL);
+  g_assert_cmpint (source->foo, ==, target->bar);
+
+  g_object_set (target, "bar", 47, NULL);
+  g_assert_cmpint (source->foo, !=, target->bar);
+
+  g_binding_unbind (binding);
+  g_assert (binding != NULL);
+
+  g_object_set (source, "foo", 0, NULL);
+  g_assert_cmpint (source->foo, !=, target->bar);
+
+  g_object_unref (source);
+  g_object_unref (target);
+  g_object_unref (binding);
+  g_assert (binding == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -586,6 +617,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/sync-create", binding_sync_create);
   g_test_add_func ("/binding/invert-boolean", binding_invert_boolean);
   g_test_add_func ("/binding/same-object", binding_same_object);
+  g_test_add_func ("/binding/unbind", binding_unbind);
 
   return g_test_run ();
 }

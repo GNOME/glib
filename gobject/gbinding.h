@@ -115,6 +115,8 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_binding_get_source_property (GBinding *binding);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_binding_get_target_property (GBinding *binding);
+GLIB_AVAILABLE_IN_2_38
+void                  g_binding_unbind              (GBinding *binding);
 
 GLIB_AVAILABLE_IN_ALL
 GBinding *g_object_bind_property               (gpointer               source,

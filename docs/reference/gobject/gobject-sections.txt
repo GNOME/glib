@@ -935,6 +935,7 @@ g_binding_get_source_property
 g_binding_get_target
 g_binding_get_target_property
 g_binding_get_flags
+g_binding_release
 <SUBSECTION>
 g_object_bind_property
 GBindingTransformFunc

@@ -96,6 +96,11 @@
  * either one of the #GObject instances it refers to are finalized, or when
  * the #GBinding instance loses its last reference.
  *
+ * <note><para>Bindings for languages with garbage collection can use
+ * g_binding_unbind() to explicitly release a binding between the source
+ * and target properties, instead of relying on the last reference on the
+ * binding, source, and target instances to drop.</para></note>
+ *
  * #GBinding is available since GObject 2.26
  */
 
@@ -244,6 +249,8 @@ weak_unbind (gpointer  user_data,
 
       g_object_weak_unref (binding->source, weak_unbind, user_data);
       remove_binding_qdata (binding->source, binding);
+
+      binding->source_notify = 0;
       binding->source = NULL;
     }
 
@@ -257,6 +264,8 @@ weak_unbind (gpointer  user_data,
 
       g_object_weak_unref (binding->target, weak_unbind, user_data);
       remove_binding_qdata (binding->target, binding);
+
+      binding->target_notify = 0;
       binding->target = NULL;
     }
 
@@ -431,35 +440,7 @@ g_binding_finalize (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
 
-  /* dispose of the transformation data */
-  if (binding->notify != NULL)
-    {
-      binding->notify (binding->transform_data);
-
-      binding->transform_data = NULL;
-      binding->notify = NULL;
-    }
-
-  /* we need this in case the source and target instance are still
-   * valid, and it was the GBinding that was unreferenced
-   */
-  if (binding->source != NULL)
-    {
-      if (binding->source_notify != 0)
-        g_signal_handler_disconnect (binding->source, binding->source_notify);
-
-      g_object_weak_unref (binding->source, weak_unbind, binding);
-      remove_binding_qdata (binding->source, binding);
-    }
-
-  if (binding->target != NULL)
-    {
-      if (binding->target_notify != 0)
-        g_signal_handler_disconnect (binding->target, binding->target_notify);
-
-      g_object_weak_unref (binding->target, weak_unbind, binding);
-      remove_binding_qdata (binding->target, binding);
-    }
+  g_binding_unbind (binding);
 
   G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
 }
@@ -769,6 +750,56 @@ g_binding_get_target_property (GBinding *binding)
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
   return binding->target_property;
+}
+
+/**
+ * g_binding_unbind:
+ * @binding: a #GBinding
+ *
+ * Explicitly releases the binding between the source and the target
+ * property expressed by @binding.
+ *
+ * This function does not change the reference count of @binding.
+ *
+ * Since: 2.38
+ */
+void
+g_binding_unbind (GBinding *binding)
+{
+  g_return_if_fail (G_IS_BINDING (binding));
+
+  /* dispose of the transformation data */
+  if (binding->notify != NULL)
+    {
+      binding->notify (binding->transform_data);
+
+      binding->transform_data = NULL;
+      binding->notify = NULL;
+    }
+
+  if (binding->source != NULL)
+    {
+      if (binding->source_notify != 0)
+        g_signal_handler_disconnect (binding->source, binding->source_notify);
+
+      g_object_weak_unref (binding->source, weak_unbind, binding);
+      remove_binding_qdata (binding->source, binding);
+
+      binding->source_notify = 0;
+      binding->source = NULL;
+    }
+
+  if (binding->target != NULL)
+    {
+      if (binding->target_notify != 0)
+        g_signal_handler_disconnect (binding->target, binding->target_notify);
+
+      g_object_weak_unref (binding->target, weak_unbind, binding);
+      remove_binding_qdata (binding->target, binding);
+
+      binding->target_notify = 0;
+      binding->target = NULL;
+    }
 }
 
 /**
