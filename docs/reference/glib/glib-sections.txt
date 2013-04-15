@@ -2566,6 +2566,8 @@ g_ptr_array_set_size
 g_ptr_array_index
 g_ptr_array_free
 g_ptr_array_foreach
+g_ptr_array_find
+g_ptr_array_find_with_equal_func
 
 </SECTION>
 

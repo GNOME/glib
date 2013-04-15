@@ -182,6 +182,15 @@ GLIB_AVAILABLE_IN_ALL
 void       g_ptr_array_foreach            (GPtrArray        *array,
 					   GFunc             func,
 					   gpointer          user_data);
+GLIB_AVAILABLE_IN_2_54
+gboolean   g_ptr_array_find               (GPtrArray        *haystack,
+                                           gconstpointer     needle,
+                                           guint            *index_);
+GLIB_AVAILABLE_IN_2_54
+gboolean   g_ptr_array_find_with_equal_func (GPtrArray     *haystack,
+                                             gconstpointer  needle,
+                                             GEqualFunc     equal_func,
+                                             guint         *index_);
 
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,

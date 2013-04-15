@@ -34,6 +34,7 @@
 #include "garray.h"
 
 #include "gbytes.h"
+#include "ghash.h"
 #include "gslice.h"
 #include "gmem.h"
 #include "gtestutils.h"
@@ -1509,6 +1510,81 @@ g_ptr_array_foreach (GPtrArray *array,
 
   for (i = 0; i < array->len; i++)
     (*func) (array->pdata[i], user_data);
+}
+
+/**
+ * g_ptr_array_find: (skip)
+ * @haystack: pointer array to be searched
+ * @needle: pointer to look for
+ * @index_: (optional) (out caller-allocates): return location for the index of
+ *    the element, if found
+ *
+ * Checks whether @needle exists in @haystack. If the element is found, %TRUE is
+ * returned and the element’s index is returned in @index_ (if non-%NULL).
+ * Otherwise, %FALSE is returned and @index_ is undefined. If @needle exists
+ * multiple times in @haystack, the index of the first instance is returned.
+ *
+ * This does pointer comparisons only. If you want to use more complex equality
+ * checks, such as string comparisons, use g_ptr_array_find_with_equal_func().
+ *
+ * Returns: %TRUE if @needle is one of the elements of @haystack
+ * Since: 2.54
+ */
+gboolean
+g_ptr_array_find (GPtrArray     *haystack,
+                  gconstpointer  needle,
+                  guint         *index_)
+{
+  return g_ptr_array_find_with_equal_func (haystack, needle, NULL, index_);
+}
+
+/**
+ * g_ptr_array_find_with_equal_func: (skip)
+ * @haystack: pointer array to be searched
+ * @needle: pointer to look for
+ * @equal_func: (nullable): the function to call for each element, which should
+ *    return %TRUE when the desired element is found; or %NULL to use pointer
+ *    equality
+ * @index_: (optional) (out caller-allocates): return location for the index of
+ *    the element, if found
+ *
+ * Checks whether @needle exists in @haystack, using the given @equal_func.
+ * If the element is found, %TRUE is returned and the element’s index is
+ * returned in @index_ (if non-%NULL). Otherwise, %FALSE is returned and @index_
+ * is undefined. If @needle exists multiple times in @haystack, the index of
+ * the first instance is returned.
+ *
+ * @equal_func is called with the element from the array as its first parameter,
+ * and @needle as its second parameter. If @equal_func is %NULL, pointer
+ * equality is used.
+ *
+ * Returns: %TRUE if @needle is one of the elements of @haystack
+ * Since: 2.54
+ */
+gboolean
+g_ptr_array_find_with_equal_func (GPtrArray     *haystack,
+                                  gconstpointer  needle,
+                                  GEqualFunc     equal_func,
+                                  guint         *index_)
+{
+  guint i;
+
+  g_return_val_if_fail (haystack != NULL, FALSE);
+
+  if (equal_func == NULL)
+    equal_func = g_direct_equal;
+
+  for (i = 0; i < haystack->len; i++)
+    {
+      if (equal_func (g_ptr_array_index (haystack, i), needle))
+        {
+          if (index_ != NULL)
+            *index_ = i;
+          return TRUE;
+        }
+    }
+
+  return FALSE;
 }
 
 /**
