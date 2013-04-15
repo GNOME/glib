@@ -1380,6 +1380,7 @@ g_strconcat
 g_strjoin
 g_strjoinv
 g_strv_length
+g_strv_contains
 
 <SUBSECTION>
 g_strerror

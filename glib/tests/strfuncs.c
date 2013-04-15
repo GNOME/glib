@@ -1461,6 +1461,24 @@ test_transliteration (void)
   g_free (out);
 }
 
+static void
+test_strv_contains (void)
+{
+  static const gchar *strv_simple[] = { "hello", "there", NULL };
+  static const gchar *strv_dupe[] = { "dupe", "dupe", NULL };
+  static const gchar *strv_empty[] = { NULL };
+
+  g_assert_true (g_strv_contains (strv_simple, "hello"));
+  g_assert_true (g_strv_contains (strv_simple, "there"));
+  g_assert_false (g_strv_contains (strv_simple, "non-existent"));
+  g_assert_false (g_strv_contains (strv_simple, ""));
+
+  g_assert_true (g_strv_contains (strv_dupe, "dupe"));
+
+  g_assert_false (g_strv_contains (strv_empty, "empty!"));
+  g_assert_false (g_strv_contains (strv_empty, ""));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1496,6 +1514,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strsignal", test_strsignal);
   g_test_add_func ("/strfuncs/strup", test_strup);
   g_test_add_func ("/strfuncs/transliteration", test_transliteration);
+  g_test_add_func ("/strfuncs/strv-contains", test_strv_contains);
 
   return g_test_run();
 }

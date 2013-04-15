@@ -3077,3 +3077,30 @@ one_matched:
 
   return matched;
 }
+
+/**
+ * g_strv_contains:
+ * @strv: a %NULL-terminated array of strings
+ * @str: a string
+ *
+ * Checks if @strv contains @str. @strv must not be %NULL.
+ *
+ * Returns: %TRUE if @str is an element of @strv, according to g_str_equal().
+ *
+ * Since: 2.44
+ */
+gboolean
+g_strv_contains (const gchar * const *strv,
+                 const gchar         *str)
+{
+  g_return_val_if_fail (strv != NULL, FALSE);
+  g_return_val_if_fail (str != NULL, FALSE);
+
+  for (; *strv != NULL; strv++)
+    {
+      if (g_str_equal (str, *strv))
+        return TRUE;
+    }
+
+  return FALSE;
+}
