@@ -2354,7 +2354,7 @@ g_format_size_for_display (goffset size)
     }
 }
 
-#if defined (G_OS_WIN32) && !defined (_WIN64)
+#if defined (G_OS_WIN32)
 
 /* Binary compatibility versions. Not for newly compiled code. */
 
