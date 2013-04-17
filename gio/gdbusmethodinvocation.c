@@ -166,6 +166,11 @@ g_dbus_method_invocation_get_object_path (GDBusMethodInvocation *invocation)
  *
  * Gets the name of the D-Bus interface the method was invoked on.
  *
+ * If this method call is a property Get, Set or GetAll call that has
+ * been redirected to the method call handler then
+ * "org.freedesktop.DBus.Properties" will be returned.  See
+ * #GDBusInterfaceVTable for more information.
+ *
  * Returns: A string. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
@@ -182,6 +187,11 @@ g_dbus_method_invocation_get_interface_name (GDBusMethodInvocation *invocation)
  * @invocation: A #GDBusMethodInvocation.
  *
  * Gets information about the method call, if any.
+ *
+ * If this method invocation is a property Get, Set or GetAll call that
+ * has been redirected to the method call handler then %NULL will be
+ * returned.  See g_dbus_method_invocation_get_property_info() and
+ * #GDBusInterfaceVTable for more information.
  *
  * Returns: A #GDBusMethodInfo or %NULL. Do not free, it is owned by @invocation.
  *
@@ -200,6 +210,15 @@ g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
  *
  * Gets information about the property that this method call is for, if
  * any.
+ *
+ * This will only be set in the case of an invocation in response to a
+ * property Get or Set call that has been directed to the method call
+ * handler for an object on account of its property_get() or
+ * property_set() vtable pointers being unset.
+ *
+ * See #GDBusInterfaceVTable for more information.
+ *
+ * If the call was GetAll, %NULL will be returned.
  *
  * Returns: (transfer none): a #GDBusPropertyInfo or %NULL
  *

@@ -4272,17 +4272,8 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                    &property_name,
                    NULL);
 
-
-  if (is_get)
-    {
-      if (vtable == NULL || vtable->get_property == NULL)
-        goto out;
-    }
-  else
-    {
-      if (vtable == NULL || vtable->set_property == NULL)
-        goto out;
-    }
+  if (vtable == NULL)
+    goto out;
 
   /* Check that the property exists - if not fail with org.freedesktop.DBus.Error.InvalidArgs
    */
@@ -4348,6 +4339,32 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
         }
 
       g_variant_unref (value);
+    }
+
+  /* If the vtable pointer for get_property() resp. set_property() is
+   * NULL then dispatch the call via the method_call() handler.
+   */
+  if (is_get)
+    {
+      if (vtable->get_property == NULL)
+        {
+          schedule_method_call (connection, message, registration_id, subtree_registration_id,
+                                interface_info, NULL, property_info, g_dbus_message_get_body (message),
+                                vtable, main_context, user_data);
+          handled = TRUE;
+          goto out;
+        }
+    }
+  else
+    {
+      if (vtable->set_property == NULL)
+        {
+          schedule_method_call (connection, message, registration_id, subtree_registration_id,
+                                interface_info, NULL, property_info, g_dbus_message_get_body (message),
+                                vtable, main_context, user_data);
+          handled = TRUE;
+          goto out;
+        }
     }
 
   /* ok, got the property info - call user code in an idle handler */
@@ -4538,8 +4555,20 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
 
   handled = FALSE;
 
-  if (vtable == NULL || vtable->get_property == NULL)
+  if (vtable == NULL)
     goto out;
+
+  /* If the vtable pointer for get_property() is NULL, then dispatch the
+   * call via the method_call() handler.
+   */
+  if (vtable->get_property == NULL)
+    {
+      schedule_method_call (connection, message, registration_id, subtree_registration_id,
+                            interface_info, NULL, NULL, g_dbus_message_get_body (message),
+                            vtable, main_context, user_data);
+      handled = TRUE;
+      goto out;
+    }
 
   /* ok, got the property info - call user in an idle handler */
   property_get_all_data = g_new0 (PropertyGetAllData, 1);

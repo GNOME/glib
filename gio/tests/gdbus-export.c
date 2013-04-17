@@ -1526,6 +1526,181 @@ test_registered_interfaces (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_async_method_call (GDBusConnection       *connection,
+                        const gchar           *sender,
+                        const gchar           *object_path,
+                        const gchar           *interface_name,
+                        const gchar           *method_name,
+                        GVariant              *parameters,
+                        GDBusMethodInvocation *invocation,
+                        gpointer               user_data)
+{
+  const GDBusPropertyInfo *property;
+
+  /* Strictly speaking, this function should also expect to receive
+   * method calls not on the org.freedesktop.DBus.Properties interface,
+   * but we don't do any during this testcase, so assert that.
+   */
+  g_assert_cmpstr (interface_name, ==, "org.freedesktop.DBus.Properties");
+  g_assert (g_dbus_method_invocation_get_method_info (invocation) == NULL);
+
+  property = g_dbus_method_invocation_get_property_info (invocation);
+
+  /* Do a whole lot of asserts to make sure that invalid calls are still
+   * getting properly rejected by GDBusConnection and that our
+   * environment is as we expect it to be.
+   */
+  if (g_str_equal (method_name, "Get"))
+    {
+      const gchar *iface_name, *prop_name;
+
+      g_variant_get (parameters, "(&s&s)", &iface_name, &prop_name);
+      g_assert_cmpstr (iface_name, ==, "org.example.Foo");
+      g_assert (property != NULL);
+      g_assert_cmpstr (prop_name, ==, property->name);
+      g_assert (property->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE);
+      g_dbus_method_invocation_return_value (invocation, g_variant_new ("(v)", g_variant_new_string (prop_name)));
+    }
+
+  else if (g_str_equal (method_name, "Set"))
+    {
+      const gchar *iface_name, *prop_name;
+      GVariant *value;
+
+      g_variant_get (parameters, "(&s&sv)", &iface_name, &prop_name, &value);
+      g_assert_cmpstr (iface_name, ==, "org.example.Foo");
+      g_assert (property != NULL);
+      g_assert_cmpstr (prop_name, ==, property->name);
+      g_assert (property->flags & G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE);
+      g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE (property->signature)));
+      g_dbus_method_invocation_return_value (invocation, g_variant_new ("()"));
+      g_variant_unref (value);
+    }
+
+  else if (g_str_equal (method_name, "GetAll"))
+    {
+      const gchar *iface_name;
+
+      g_variant_get (parameters, "(&s)", &iface_name);
+      g_assert_cmpstr (iface_name, ==, "org.example.Foo");
+      g_assert (property == NULL);
+      g_dbus_method_invocation_return_value (invocation,
+                                             g_variant_new_parsed ("({ 'PropertyUno': < 'uno' >,"
+                                                                   "   'NotWritable': < 'notwrite' > },)"));
+    }
+
+  else
+    g_assert_not_reached ();
+}
+
+static gint outstanding_cases;
+
+static void
+ensure_result_cb (GObject      *source,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GDBusConnection *connection = G_DBUS_CONNECTION (source);
+  GVariant *reply;
+
+  reply = g_dbus_connection_call_finish (connection, result, NULL);
+
+  if (user_data == NULL)
+    {
+      /* Expected an error */
+      g_assert (reply == NULL);
+    }
+  else
+    {
+      /* Expected a reply of a particular format. */
+      gchar *str;
+
+      g_assert (reply != NULL);
+      str = g_variant_print (reply, TRUE);
+      g_assert_cmpstr (str, ==, (const gchar *) user_data);
+      g_free (str);
+
+      g_variant_unref (reply);
+    }
+
+  g_assert_cmpint (outstanding_cases, >, 0);
+  outstanding_cases--;
+}
+
+static void
+test_async_case (GDBusConnection *connection,
+                 const gchar     *expected_reply,
+                 const gchar     *method,
+                 const gchar     *format_string,
+                 ...)
+{
+  va_list ap;
+
+  va_start (ap, format_string);
+
+  g_dbus_connection_call (connection, g_dbus_connection_get_unique_name (connection), "/foo",
+                          "org.freedesktop.DBus.Properties", method, g_variant_new_va (format_string, NULL, &ap),
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, ensure_result_cb, (gpointer) expected_reply);
+
+  va_end (ap);
+
+  outstanding_cases++;
+}
+
+static void
+test_async_properties (void)
+{
+  GError *error = NULL;
+  guint registration_id;
+  static const GDBusInterfaceVTable vtable = {
+    test_async_method_call, NULL, NULL
+  };
+
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (c != NULL);
+
+  registration_id = g_dbus_connection_register_object (c,
+                                                       "/foo",
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
+                                                       &vtable, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (registration_id);
+
+  test_async_case (c, NULL, "random", "()");
+
+  /* Test a variety of error cases */
+  test_async_case (c, NULL, "Get", "(si)", "wrong signature", 5);
+  test_async_case (c, NULL, "Get", "(ss)", "org.example.WrongInterface", "zzz");
+  test_async_case (c, NULL, "Get", "(ss)", "org.example.Foo", "NoSuchProperty");
+  test_async_case (c, NULL, "Get", "(ss)", "org.example.Foo", "NotReadable");
+
+  test_async_case (c, NULL, "Set", "(si)", "wrong signature", 5);
+  test_async_case (c, NULL, "Set", "(ssv)", "org.example.WrongInterface", "zzz", g_variant_new_string (""));
+  test_async_case (c, NULL, "Set", "(ssv)", "org.example.Foo", "NoSuchProperty", g_variant_new_string (""));
+  test_async_case (c, NULL, "Set", "(ssv)", "org.example.Foo", "NotWritable", g_variant_new_string (""));
+  test_async_case (c, NULL, "Set", "(ssv)", "org.example.Foo", "PropertyUno", g_variant_new_object_path ("/wrong"));
+
+  test_async_case (c, NULL, "GetAll", "(si)", "wrong signature", 5);
+  test_async_case (c, NULL, "GetAll", "(s)", "org.example.WrongInterface");
+
+  /* Now do the proper things */
+  test_async_case (c, "(<'PropertyUno'>,)", "Get", "(ss)", "org.example.Foo", "PropertyUno");
+  test_async_case (c, "(<'NotWritable'>,)", "Get", "(ss)", "org.example.Foo", "NotWritable");
+  test_async_case (c, "()", "Set", "(ssv)", "org.example.Foo", "PropertyUno", g_variant_new_string (""));
+  test_async_case (c, "()", "Set", "(ssv)", "org.example.Foo", "NotReadable", g_variant_new_string (""));
+  test_async_case (c, "({'PropertyUno': <'uno'>, 'NotWritable': <'notwrite'>},)", "GetAll", "(s)", "org.example.Foo");
+
+  while (outstanding_cases)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_dbus_connection_unregister_object (c, registration_id);
+  g_object_unref (c);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1541,6 +1716,7 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/object-registration", test_object_registration);
   g_test_add_func ("/gdbus/registered-interfaces", test_registered_interfaces);
+  g_test_add_func ("/gdbus/async-properties", test_async_properties);
 
   /* TODO: check that we spit out correct introspection data */
   /* TODO: check that registering a whole subtree works */
