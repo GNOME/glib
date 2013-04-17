@@ -4841,6 +4841,7 @@ schedule_method_call (GDBusConnection            *connection,
                       guint                       subtree_registration_id,
                       const GDBusInterfaceInfo   *interface_info,
                       const GDBusMethodInfo      *method_info,
+                      const GDBusPropertyInfo    *property_info,
                       GVariant                   *parameters,
                       const GDBusInterfaceVTable *vtable,
                       GMainContext               *main_context,
@@ -4854,6 +4855,7 @@ schedule_method_call (GDBusConnection            *connection,
                                               g_dbus_message_get_interface (message),
                                               g_dbus_message_get_member (message),
                                               method_info,
+                                              property_info,
                                               connection,
                                               message,
                                               parameters,
@@ -4950,7 +4952,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
 
   /* schedule the call in idle */
   schedule_method_call (connection, message, registration_id, subtree_registration_id,
-                        interface_info, method_info, parameters,
+                        interface_info, method_info, NULL, parameters,
                         vtable, main_context, user_data);
   g_variant_unref (parameters);
   handled = TRUE;

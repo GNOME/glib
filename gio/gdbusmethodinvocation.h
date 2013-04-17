@@ -47,6 +47,8 @@ GLIB_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_method_name      (GDBusMethodInvocation *invocation);
 GLIB_AVAILABLE_IN_ALL
 const GDBusMethodInfo *g_dbus_method_invocation_get_method_info      (GDBusMethodInvocation *invocation);
+GLIB_AVAILABLE_IN_2_38
+const GDBusPropertyInfo *g_dbus_method_invocation_get_property_info  (GDBusMethodInvocation *invocation);
 GLIB_AVAILABLE_IN_ALL
 GDBusConnection       *g_dbus_method_invocation_get_connection       (GDBusMethodInvocation *invocation);
 GLIB_AVAILABLE_IN_ALL

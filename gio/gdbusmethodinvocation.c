@@ -86,6 +86,7 @@ struct _GDBusMethodInvocation
   gchar           *interface_name;
   gchar           *method_name;
   GDBusMethodInfo *method_info;
+  GDBusPropertyInfo *property_info;
   GDBusConnection *connection;
   GDBusMessage    *message;
   GVariant        *parameters;
@@ -194,6 +195,24 @@ g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
 }
 
 /**
+ * g_dbus_method_invocation_get_property_info:
+ * @invocation: A #GDBusMethodInvocation
+ *
+ * Gets information about the property that this method call is for, if
+ * any.
+ *
+ * Returns: (transfer none): a #GDBusPropertyInfo or %NULL
+ *
+ * Since: 2.38
+ */
+const GDBusPropertyInfo *
+g_dbus_method_invocation_get_property_info (GDBusMethodInvocation *invocation)
+{
+  g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
+  return invocation->property_info;
+}
+
+/**
  * g_dbus_method_invocation_get_method_name:
  * @invocation: A #GDBusMethodInvocation.
  *
@@ -293,6 +312,7 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
  * @interface_name: The name of the D-Bus interface the method was invoked on.
  * @method_name: The name of the method that was invoked.
  * @method_info: (allow-none): Information about the method call or %NULL.
+ * @property_info: (allow-none): Information about the property or %NULL.
  * @connection: The #GDBusConnection the method was invoked on.
  * @message: The D-Bus message as a #GDBusMessage.
  * @parameters: The parameters as a #GVariant tuple.
@@ -305,15 +325,16 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
  * Since: 2.26
  */
 GDBusMethodInvocation *
-_g_dbus_method_invocation_new (const gchar           *sender,
-                               const gchar           *object_path,
-                               const gchar           *interface_name,
-                               const gchar           *method_name,
-                               const GDBusMethodInfo *method_info,
-                               GDBusConnection       *connection,
-                               GDBusMessage          *message,
-                               GVariant              *parameters,
-                               gpointer               user_data)
+_g_dbus_method_invocation_new (const gchar             *sender,
+                               const gchar             *object_path,
+                               const gchar             *interface_name,
+                               const gchar             *method_name,
+                               const GDBusMethodInfo   *method_info,
+                               const GDBusPropertyInfo *property_info,
+                               GDBusConnection         *connection,
+                               GDBusMessage            *message,
+                               GVariant                *parameters,
+                               gpointer                 user_data)
 {
   GDBusMethodInvocation *invocation;
 
@@ -332,6 +353,8 @@ _g_dbus_method_invocation_new (const gchar           *sender,
   invocation->method_name = g_strdup (method_name);
   if (method_info)
     invocation->method_info = g_dbus_method_info_ref ((GDBusMethodInfo *)method_info);
+  if (property_info)
+    invocation->property_info = g_dbus_property_info_ref ((GDBusPropertyInfo *)property_info);
   invocation->connection = g_object_ref (connection);
   invocation->message = g_object_ref (message);
   invocation->parameters = g_variant_ref (parameters);
