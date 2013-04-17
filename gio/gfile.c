@@ -5320,21 +5320,10 @@ open_read_async_thread (GTask         *task,
                         gpointer       task_data,
                         GCancellable  *cancellable)
 {
-  GFileIface *iface;
   GFileInputStream *stream;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (object);
-
-  if (iface->read_fn == NULL)
-    {
-      g_task_return_new_error (task, G_IO_ERROR,
-                               G_IO_ERROR_NOT_SUPPORTED,
-                               _("Operation not supported"));
-      return;
-    }
-
-  stream = iface->read_fn (G_FILE (object), cancellable, &error);
+  stream = g_file_read (G_FILE (object), cancellable, &error);
   if (stream)
     g_task_return_pointer (task, stream, g_object_unref);
   else
@@ -5372,14 +5361,11 @@ append_to_async_thread (GTask         *task,
                         gpointer       task_data,
                         GCancellable  *cancellable)
 {
-  GFileIface *iface;
   GFileCreateFlags *data = task_data;
   GFileOutputStream *stream;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (source_object);
-
-  stream = iface->append_to (G_FILE (source_object), *data, cancellable, &error);
+  stream = g_file_append_to (G_FILE (source_object), *data, cancellable, &error);
   if (stream)
     g_task_return_pointer (task, stream, g_object_unref);
   else
@@ -5424,14 +5410,11 @@ create_async_thread (GTask         *task,
                      gpointer       task_data,
                      GCancellable  *cancellable)
 {
-  GFileIface *iface;
   GFileCreateFlags *data = task_data;
   GFileOutputStream *stream;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (source_object);
-
-  stream = iface->create (G_FILE (source_object), *data, cancellable, &error);
+  stream = g_file_create (G_FILE (source_object), *data, cancellable, &error);
   if (stream)
     g_task_return_pointer (task, stream, g_object_unref);
   else
@@ -5492,14 +5475,11 @@ replace_async_thread (GTask         *task,
                       gpointer       task_data,
                       GCancellable  *cancellable)
 {
-  GFileIface *iface;
   GFileOutputStream *stream;
   ReplaceAsyncData *data = task_data;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (source_object);
-
-  stream = iface->replace (G_FILE (source_object),
+  stream = g_file_replace (G_FILE (source_object),
                            data->etag,
                            data->make_backup,
                            data->flags,
@@ -5554,15 +5534,9 @@ delete_async_thread (GTask        *task,
                      gpointer      task_data,
                      GCancellable *cancellable)
 {
-  GFile *file = object;
-  GFileIface *iface;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (object);
-
-  if (iface->delete_file (file,
-                          cancellable,
-                          &error))
+  if (g_file_delete (G_FILE (object), cancellable, &error))
     g_task_return_boolean (task, TRUE);
   else
     g_task_return_error (task, error);
@@ -5638,20 +5612,10 @@ open_readwrite_async_thread (GTask        *task,
                              gpointer      task_data,
                              GCancellable *cancellable)
 {
-  GFileIface *iface;
   GFileIOStream *stream;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (object);
-
-  if (iface->open_readwrite == NULL)
-    {
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("Operation not supported"));
-      return;
-    }
-
-  stream = iface->open_readwrite (G_FILE (object), cancellable, &error);
+  stream = g_file_open_readwrite (G_FILE (object), cancellable, &error);
 
   if (stream == NULL)
     g_task_return_error (task, error);
@@ -5691,21 +5655,11 @@ create_readwrite_async_thread (GTask        *task,
                                gpointer      task_data,
                                GCancellable *cancellable)
 {
-  GFileIface *iface;
   GFileCreateFlags *data = task_data;
   GFileIOStream *stream;
   GError *error = NULL;
 
-  iface = G_FILE_GET_IFACE (object);
-
-  if (iface->create_readwrite == NULL)
-    {
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("Operation not supported"));
-      return;
-    }
-
-  stream = iface->create_readwrite (G_FILE (object), *data, cancellable, &error);
+  stream = g_file_create_readwrite (G_FILE (object), *data, cancellable, &error);
 
   if (stream == NULL)
     g_task_return_error (task, error);
@@ -5764,14 +5718,11 @@ replace_readwrite_async_thread (GTask        *task,
                                 gpointer      task_data,
                                 GCancellable *cancellable)
 {
-  GFileIface *iface;
   GFileIOStream *stream;
   GError *error = NULL;
   ReplaceRWAsyncData *data = task_data;
 
-  iface = G_FILE_GET_IFACE (object);
-
-  stream = iface->replace_readwrite (G_FILE (object),
+  stream = g_file_replace_readwrite (G_FILE (object),
                                      data->etag,
                                      data->make_backup,
                                      data->flags,
