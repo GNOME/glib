@@ -4511,15 +4511,10 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
                                               gpointer                    user_data)
 {
   gboolean handled;
-  const char *interface_name;
   GSource *idle_source;
   PropertyGetAllData *property_get_all_data;
 
   handled = FALSE;
-
-  g_variant_get (g_dbus_message_get_body (message),
-                 "(&s)",
-                 &interface_name);
 
   if (vtable == NULL || vtable->get_property == NULL)
     goto out;
