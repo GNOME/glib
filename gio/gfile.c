@@ -233,6 +233,14 @@ static void               g_file_real_trash_async                 (GFile        
 static gboolean           g_file_real_trash_finish                (GFile                  *file,
                                                                    GAsyncResult           *res,
                                                                    GError                **error);
+static void               g_file_real_make_directory_async        (GFile                  *file,
+                                                                   int                     io_priority,
+                                                                   GCancellable           *cancellable,
+                                                                   GAsyncReadyCallback     callback,
+                                                                   gpointer                user_data);
+static gboolean           g_file_real_make_directory_finish       (GFile                  *file,
+                                                                   GAsyncResult           *res,
+                                                                   GError                **error);
 static void               g_file_real_open_readwrite_async        (GFile                  *file,
                                                                    int                  io_priority,
                                                                    GCancellable           *cancellable,
@@ -335,6 +343,8 @@ g_file_default_init (GFileIface *iface)
   iface->delete_file_finish = g_file_real_delete_finish;
   iface->trash_async = g_file_real_trash_async;
   iface->trash_finish = g_file_real_trash_finish;
+  iface->make_directory_async = g_file_real_make_directory_async;
+  iface->make_directory_finish = g_file_real_make_directory_finish;
   iface->open_readwrite_async = g_file_real_open_readwrite_async;
   iface->open_readwrite_finish = g_file_real_open_readwrite_finish;
   iface->create_readwrite_async = g_file_real_create_readwrite_async;
@@ -3539,6 +3549,68 @@ g_file_make_directory (GFile         *file,
 }
 
 /**
+ * g_file_make_directory_async:
+ * @file: input #GFile
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request
+ * @cancellable: (allow-none): optional #GCancellable object,
+ *     %NULL to ignore
+ * @callback: a #GAsyncReadyCallback to call
+ *     when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Asynchronously creates a directory.
+ *
+ * Virtual: make_directory_async
+ * Since: 2.38
+ */
+void
+g_file_make_directory_async (GFile               *file,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
+{
+  GFileIface *iface;
+
+  g_return_if_fail (G_IS_FILE (file));
+
+  iface = G_FILE_GET_IFACE (file);
+  (* iface->make_directory_async) (file,
+                                   io_priority,
+                                   cancellable,
+                                   callback,
+                                   user_data);
+}
+
+/**
+ * g_file_make_directory_finish:
+ * @file: input #GFile
+ * @result: a #GAsyncResult
+ * @error: a #GError, or %NULL
+ *
+ * Finishes an asynchronous directory creation, started with
+ * g_file_make_directory_async().
+ *
+ * Virtual: make_directory_finish
+ * Returns: %TRUE on successful directory creation, %FALSE otherwise.
+ * Since: 2.38
+ */
+gboolean
+g_file_make_directory_finish (GFile         *file,
+                              GAsyncResult  *result,
+                              GError       **error)
+{
+  GFileIface *iface;
+
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+
+  iface = G_FILE_GET_IFACE (file);
+  return (* iface->make_directory_finish) (file, result, error);
+}
+
+/**
  * g_file_make_directory_with_parents:
  * @file: input #GFile
  * @cancellable: (allow-none): optional #GCancellable object,
@@ -5600,6 +5672,45 @@ static gboolean
 g_file_real_trash_finish (GFile         *file,
                           GAsyncResult  *res,
                           GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (res, file), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (res), error);
+}
+
+static void
+make_directory_async_thread (GTask        *task,
+                             gpointer      object,
+                             gpointer      task_data,
+                             GCancellable *cancellable)
+{
+  GError *error = NULL;
+
+  if (g_file_make_directory (G_FILE (object), cancellable, &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, error);
+}
+
+static void
+g_file_real_make_directory_async (GFile               *file,
+                                  int                  io_priority,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
+{
+  GTask *task;
+
+  task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_priority (task, io_priority);
+  g_task_run_in_thread (task, make_directory_async_thread);
+  g_object_unref (task);
+}
+
+static gboolean
+g_file_real_make_directory_finish (GFile         *file,
+                                   GAsyncResult  *res,
+                                   GError       **error)
 {
   g_return_val_if_fail (g_task_is_valid (res, file), FALSE);
 

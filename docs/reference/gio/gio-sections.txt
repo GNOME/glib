@@ -138,6 +138,8 @@ g_file_copy_async
 g_file_copy_finish
 g_file_move
 g_file_make_directory
+g_file_make_directory_async
+g_file_make_directory_finish
 g_file_make_directory_with_parents
 g_file_make_symbolic_link
 g_file_query_settable_attributes
