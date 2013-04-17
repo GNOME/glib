@@ -418,6 +418,65 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
       g_variant_type_free (type);
     }
 
+  /* property_info is only non-NULL if set that way from
+   * GDBusConnection, so this must be the case of async property
+   * handling on either 'Get', 'Set' or 'GetAll'.
+   */
+  if (invocation->property_info != NULL)
+    {
+      if (g_str_equal (invocation->method_name, "Get"))
+        {
+          GVariant *nested;
+
+          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(v)")))
+            {
+              g_warning ("Type of return value for property 'Get' call should be '(v)' but got '%s'",
+                         g_variant_get_type_string (parameters));
+              goto out;
+            }
+
+          /* Go deeper and make sure that the value inside of the
+           * variant matches the property type.
+           */
+          g_variant_get (parameters, "(v)", &nested);
+          if (!g_str_equal (g_variant_get_type_string (nested), invocation->property_info->signature))
+            {
+              g_warning ("Value returned from property 'Get' call for '%s' should be '%s' but is '%s'",
+                         invocation->property_info->name, invocation->property_info->signature,
+                         g_variant_get_type_string (nested));
+            }
+          g_variant_unref (nested);
+        }
+
+      else if (g_str_equal (invocation->method_name, "GetAll"))
+        {
+          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))
+            {
+              g_warning ("Type of return value for property 'GetAll' call should be '(a{sv})' but got '%s'",
+                         g_variant_get_type_string (parameters));
+              goto out;
+            }
+
+          /* Could iterate the list of properties and make sure that all
+           * of them are actually on the interface and with the correct
+           * types, but let's not do that for now...
+           */
+        }
+
+      else if (g_str_equal (invocation->method_name, "Set"))
+        {
+          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE_UNIT))
+            {
+              g_warning ("Type of return value for property 'Set' call should be '()' but got '%s'",
+                         g_variant_get_type_string (parameters));
+              goto out;
+            }
+        }
+
+      else
+        g_assert_not_reached ();
+    }
+
   if (G_UNLIKELY (_g_dbus_debug_return ()))
     {
       _g_dbus_debug_print_lock ();
