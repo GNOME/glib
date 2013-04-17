@@ -743,13 +743,7 @@ g_get_user_database_entry (void)
 
         if (!pw)
           {
-#ifndef __BIONIC__
-            setpwent ();
-#endif
             pw = getpwuid (getuid ());
-#ifndef __BIONIC__
-            endpwent ();
-#endif
           }
         if (pw)
           {
