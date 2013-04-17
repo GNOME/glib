@@ -507,6 +507,18 @@ static gboolean handle_generic_unlocked (GDBusConnection *connection,
 static void purge_all_signal_subscriptions (GDBusConnection *connection);
 static void purge_all_filters (GDBusConnection *connection);
 
+static void schedule_method_call (GDBusConnection            *connection,
+                                  GDBusMessage               *message,
+                                  guint                       registration_id,
+                                  guint                       subtree_registration_id,
+                                  const GDBusInterfaceInfo   *interface_info,
+                                  const GDBusMethodInfo      *method_info,
+                                  const GDBusPropertyInfo    *property_info,
+                                  GVariant                   *parameters,
+                                  const GDBusInterfaceVTable *vtable,
+                                  GMainContext               *main_context,
+                                  gpointer                    user_data);
+
 #define _G_ENSURE_LOCK(name) do {                                       \
     if (G_UNLIKELY (G_TRYLOCK(name)))                                   \
       {                                                                 \
@@ -4822,6 +4834,48 @@ call_in_idle_cb (gpointer user_data)
 }
 
 /* called in GDBusWorker thread with connection's lock held */
+static void
+schedule_method_call (GDBusConnection            *connection,
+                      GDBusMessage               *message,
+                      guint                       registration_id,
+                      guint                       subtree_registration_id,
+                      const GDBusInterfaceInfo   *interface_info,
+                      const GDBusMethodInfo      *method_info,
+                      GVariant                   *parameters,
+                      const GDBusInterfaceVTable *vtable,
+                      GMainContext               *main_context,
+                      gpointer                    user_data)
+{
+  GDBusMethodInvocation *invocation;
+  GSource *idle_source;
+
+  invocation = _g_dbus_method_invocation_new (g_dbus_message_get_sender (message),
+                                              g_dbus_message_get_path (message),
+                                              g_dbus_message_get_interface (message),
+                                              g_dbus_message_get_member (message),
+                                              method_info,
+                                              connection,
+                                              message,
+                                              parameters,
+                                              user_data);
+
+  /* TODO: would be nicer with a real MethodData like we already
+   * have PropertyData and PropertyGetAllData... */
+  g_object_set_data (G_OBJECT (invocation), "g-dbus-interface-vtable", (gpointer) vtable);
+  g_object_set_data (G_OBJECT (invocation), "g-dbus-registration-id", GUINT_TO_POINTER (registration_id));
+  g_object_set_data (G_OBJECT (invocation), "g-dbus-subtree-registration-id", GUINT_TO_POINTER (subtree_registration_id));
+
+  idle_source = g_idle_source_new ();
+  g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (idle_source,
+                         call_in_idle_cb,
+                         invocation,
+                         g_object_unref);
+  g_source_attach (idle_source, main_context);
+  g_source_unref (idle_source);
+}
+
+/* called in GDBusWorker thread with connection's lock held */
 static gboolean
 validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                          GDBusMessage               *message,
@@ -4832,11 +4886,9 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                          GMainContext               *main_context,
                                          gpointer                    user_data)
 {
-  GDBusMethodInvocation *invocation;
-  const GDBusMethodInfo *method_info;
+  GDBusMethodInfo *method_info;
   GDBusMessage *reply;
   GVariant *parameters;
-  GSource *idle_source;
   gboolean handled;
   GVariantType *in_type;
 
@@ -4897,32 +4949,10 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   g_variant_type_free (in_type);
 
   /* schedule the call in idle */
-  invocation = _g_dbus_method_invocation_new (g_dbus_message_get_sender (message),
-                                              g_dbus_message_get_path (message),
-                                              g_dbus_message_get_interface (message),
-                                              g_dbus_message_get_member (message),
-                                              method_info,
-                                              connection,
-                                              message,
-                                              parameters,
-                                              user_data);
+  schedule_method_call (connection, message, registration_id, subtree_registration_id,
+                        interface_info, method_info, parameters,
+                        vtable, main_context, user_data);
   g_variant_unref (parameters);
-
-  /* TODO: would be nicer with a real MethodData like we already
-   * have PropertyData and PropertyGetAllData... */
-  g_object_set_data (G_OBJECT (invocation), "g-dbus-interface-vtable", (gpointer) vtable);
-  g_object_set_data (G_OBJECT (invocation), "g-dbus-registration-id", GUINT_TO_POINTER (registration_id));
-  g_object_set_data (G_OBJECT (invocation), "g-dbus-subtree-registration-id", GUINT_TO_POINTER (subtree_registration_id));
-
-  idle_source = g_idle_source_new ();
-  g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
-  g_source_set_callback (idle_source,
-                         call_in_idle_cb,
-                         invocation,
-                         g_object_unref);
-  g_source_attach (idle_source, main_context);
-  g_source_unref (idle_source);
-
   handled = TRUE;
 
  out:
