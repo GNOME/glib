@@ -381,6 +381,33 @@ ensure_builtin_icon_types (void)
   g_type_ensure (G_TYPE_EMBLEM);
 }
 
+/* handles the 'simple' cases: GFileIcon and GThemedIcon */
+static GIcon *
+g_icon_new_for_string_simple (const gchar *str)
+{
+  gchar *scheme;
+  GIcon *icon;
+
+  if (str[0] == '.')
+    return NULL;
+
+  /* handle special GFileIcon and GThemedIcon cases */
+  scheme = g_uri_parse_scheme (str);
+  if (scheme != NULL || str[0] == '/' || str[0] == G_DIR_SEPARATOR)
+    {
+      GFile *location;
+      location = g_file_new_for_commandline_arg (str);
+      icon = g_file_icon_new (location);
+      g_object_unref (location);
+    }
+  else
+    icon = g_themed_icon_new (str);
+
+  g_free (scheme);
+
+  return icon;
+}
+
 /**
  * g_icon_new_for_string:
  * @str: A string obtained via g_icon_to_string().
@@ -402,48 +429,30 @@ GIcon *
 g_icon_new_for_string (const gchar   *str,
                        GError       **error)
 {
-  GIcon *icon;
+  GIcon *icon = NULL;
 
   g_return_val_if_fail (str != NULL, NULL);
 
+  icon = g_icon_new_for_string_simple (str);
+  if (icon)
+    return icon;
+
   ensure_builtin_icon_types ();
 
-  icon = NULL;
-
-  if (*str == '.')
+  if (g_str_has_prefix (str, G_ICON_SERIALIZATION_MAGIC0))
     {
-      if (g_str_has_prefix (str, G_ICON_SERIALIZATION_MAGIC0))
-	{
-	  gchar **tokens;
-	  
-	  /* handle tokenized encoding */
-	  tokens = g_strsplit (str + sizeof (G_ICON_SERIALIZATION_MAGIC0) - 1, " ", 0);
-	  icon = g_icon_new_from_tokens (tokens, error);
-	  g_strfreev (tokens);
-	}
-      else
-	g_set_error_literal (error,
-			     G_IO_ERROR,
-			     G_IO_ERROR_INVALID_ARGUMENT,
-			     _("Can't handle the supplied version of the icon encoding"));
+      gchar **tokens;
+
+      /* handle tokenized encoding */
+      tokens = g_strsplit (str + sizeof (G_ICON_SERIALIZATION_MAGIC0) - 1, " ", 0);
+      icon = g_icon_new_from_tokens (tokens, error);
+      g_strfreev (tokens);
     }
   else
-    {
-      gchar *scheme;
-
-      /* handle special GFileIcon and GThemedIcon cases */
-      scheme = g_uri_parse_scheme (str);
-      if (scheme != NULL || str[0] == '/' || str[0] == G_DIR_SEPARATOR)
-        {
-          GFile *location;
-          location = g_file_new_for_commandline_arg (str);
-          icon = g_file_icon_new (location);
-          g_object_unref (location);
-        }
-      else
-	icon = g_themed_icon_new (str);
-      g_free (scheme);
-    }
+    g_set_error_literal (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_INVALID_ARGUMENT,
+                         _("Can't handle the supplied version of the icon encoding"));
 
   return icon;
 }
