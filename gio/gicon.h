@@ -75,6 +75,8 @@ struct _GIconIface
                                gint     num_tokens,
                                gint     version,
                                GError **error);
+
+  GVariant *  (* serialize)   (GIcon   *icon);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -90,6 +92,11 @@ gchar   *g_icon_to_string       (GIcon         *icon);
 GLIB_AVAILABLE_IN_ALL
 GIcon   *g_icon_new_for_string  (const gchar   *str,
                                  GError       **error);
+
+GLIB_AVAILABLE_IN_2_38
+GVariant * g_icon_serialize     (GIcon         *icon);
+GLIB_AVAILABLE_IN_2_38
+GIcon *    g_icon_deserialize   (GVariant      *value);
 
 G_END_DECLS
 

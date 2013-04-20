@@ -197,11 +197,21 @@ g_bytes_icon_equal (GIcon *icon1,
   return g_bytes_equal (bytes1->bytes, bytes2->bytes);
 }
 
+static GVariant *
+g_bytes_icon_serialize (GIcon *icon)
+{
+  GBytesIcon *bytes_icon = G_BYTES_ICON (icon);
+
+  return g_variant_new ("(sv)", "bytes",
+                        g_variant_new_from_bytes (G_VARIANT_TYPE_BYTESTRING, bytes_icon->bytes, TRUE));
+}
+
 static void
 g_bytes_icon_icon_iface_init (GIconIface *iface)
 {
   iface->hash = g_bytes_icon_hash;
   iface->equal = g_bytes_icon_equal;
+  iface->serialize = g_bytes_icon_serialize;
 }
 
 static GInputStream *

@@ -28,8 +28,11 @@
 #include "gthemedicon.h"
 #include "gfileicon.h"
 #include "gemblemedicon.h"
+#include "gbytesicon.h"
 #include "gfile.h"
 #include "gioerror.h"
+#include "gioenumtypes.h"
+#include "gvfs.h"
 
 #include "glibintl.h"
 
@@ -49,17 +52,27 @@
  * #GIcon does not provide the actual pixmap for the icon as this is out 
  * of GIO's scope, however implementations of #GIcon may contain the name 
  * of an icon (see #GThemedIcon), or the path to an icon (see #GLoadableIcon). 
- * 
+ *
  * To obtain a hash of a #GIcon, see g_icon_hash().
- * 
+ *
  * To check if two #GIcons are equal, see g_icon_equal().
  *
- * For serializing a #GIcon, use g_icon_to_string() and
- * g_icon_new_for_string().
+ * For serializing a #GIcon, use g_icon_serialize() and
+ * g_icon_deserialize().
+ *
+ * If you want to consume #GIcon (for example, in a toolkit) you must
+ * be prepared to handle at least the three following cases:
+ * #GLoadableIcon, #GThemedIcon and #GEmblemedIcon.  It may also make
+ * sense to have fast-paths for other cases (like handling #GdkPixbuf
+ * directly, for example) but all compliant #GIcon implementations
+ * outside of GIO must implement #GLoadableIcon.
  *
  * If your application or library provides one or more #GIcon
- * implementations you need to ensure that each #GType is registered
- * with the type system prior to calling g_icon_new_for_string().
+ * implementations you need to ensure that your new implementation also
+ * implements #GLoadableIcon.  Additionally, you must provide an
+ * implementation of g_icon_serialize() that gives a result that is
+ * understood by g_icon_deserialize(), yielding one of the built-in icon
+ * types.
  **/
 
 typedef GIconIface GIconInterface;
@@ -455,4 +468,196 @@ g_icon_new_for_string (const gchar   *str,
                          _("Can't handle the supplied version of the icon encoding"));
 
   return icon;
+}
+
+static GEmblem *
+g_icon_deserialize_emblem (GVariant *value)
+{
+  GVariant *emblem_metadata;
+  GVariant *emblem_data;
+  const gchar *origin_nick;
+  GIcon *emblem_icon;
+  GEmblem *emblem;
+
+  g_variant_get (value, "(v@a{sv})", &emblem_data, &emblem_metadata);
+
+  emblem = NULL;
+
+  emblem_icon = g_icon_deserialize (emblem_data);
+  if (emblem_icon != NULL)
+    {
+      /* Check if we should create it with an origin. */
+      if (g_variant_lookup (emblem_metadata, "origin", "&s", &origin_nick))
+        {
+          GEnumClass *origin_class;
+          GEnumValue *origin_value;
+
+          origin_class = g_type_class_ref (G_TYPE_EMBLEM_ORIGIN);
+          origin_value = g_enum_get_value_by_nick (origin_class, origin_nick);
+          if (origin_value)
+            emblem = g_emblem_new_with_origin (emblem_icon, origin_value->value);
+          g_type_class_unref (origin_class);
+        }
+
+      /* We didn't create it with an origin, so do it without. */
+      if (emblem == NULL)
+        emblem = g_emblem_new (emblem_icon);
+
+      g_object_unref (emblem_icon);
+    }
+
+  g_variant_unref (emblem_metadata);
+  g_variant_unref (emblem_data);
+
+  return emblem;
+}
+
+static GIcon *
+g_icon_deserialize_emblemed (GVariant *value)
+{
+  GVariantIter *emblems;
+  GVariant *icon_data;
+  GIcon *main_icon;
+  GIcon *icon;
+
+  g_variant_get (value, "(va(va{sv}))", &icon_data, &emblems);
+  main_icon = g_icon_deserialize (icon_data);
+
+  if (main_icon)
+    {
+      GVariant *emblem_data;
+
+      icon = g_emblemed_icon_new (main_icon, NULL);
+
+      while ((emblem_data = g_variant_iter_next_value (emblems)))
+        {
+          GEmblem *emblem;
+
+          emblem = g_icon_deserialize_emblem (emblem_data);
+
+          if (emblem)
+            {
+              g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon), emblem);
+              g_object_unref (emblem);
+            }
+
+          g_variant_unref (emblem_data);
+        }
+
+      g_object_unref (main_icon);
+    }
+
+  g_variant_iter_free (emblems);
+  g_variant_unref (icon_data);
+
+  return icon;
+}
+
+GIcon *
+g_icon_deserialize (GVariant *value)
+{
+  const gchar *tag;
+  GVariant *val;
+  GIcon *icon;
+
+  g_return_val_if_fail (value != NULL, NULL);
+  g_return_val_if_fail (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING) ||
+                        g_variant_is_of_type (value, G_VARIANT_TYPE ("(sv)")), NULL);
+
+  /* Handle some special cases directly so that people can hard-code
+   * stuff into GMenuModel xml files without resorting to using GVariant
+   * text format to describe one of the explicitly-tagged possibilities
+   * below.
+   */
+  if (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+    return g_icon_new_for_string_simple (g_variant_get_string (value, NULL));
+
+  /* Otherwise, use the tagged union format */
+  g_variant_get (value, "(&sv)", &tag, &val);
+
+  icon = NULL;
+
+  if (g_str_equal (tag, "file") && g_variant_is_of_type (val, G_VARIANT_TYPE_STRING))
+    {
+      GFile *file;
+
+      file = g_file_new_for_commandline_arg (g_variant_get_string (val, NULL));
+      icon = g_file_icon_new (file);
+      g_object_unref (file);
+    }
+  else if (g_str_equal (tag, "themed") && g_variant_is_of_type (val, G_VARIANT_TYPE_STRING_ARRAY))
+    {
+      const gchar **names;
+      gsize size;
+
+      names = g_variant_get_strv (val, &size);
+      icon = g_themed_icon_new_from_names ((gchar **) names, size);
+      g_free (names);
+    }
+  else if (g_str_equal (tag, "bytes") && g_variant_is_of_type (val, G_VARIANT_TYPE_BYTESTRING))
+    {
+      GBytes *bytes;
+
+      bytes = g_variant_get_data_as_bytes (val);
+      icon = g_bytes_icon_new (bytes);
+      g_bytes_unref (bytes);
+    }
+  else if (g_str_equal (tag, "emblem") && g_variant_is_of_type (val, G_VARIANT_TYPE ("(va{sv})")))
+    {
+      GEmblem *emblem;
+
+      emblem = g_icon_deserialize_emblem (val);
+      if (emblem)
+        icon = G_ICON (emblem);
+    }
+  else if (g_str_equal (tag, "emblemed") && g_variant_is_of_type (val, G_VARIANT_TYPE ("(va(va{sv}))")))
+    {
+      icon = g_icon_deserialize_emblemed (val);
+    }
+  else if (g_str_equal (tag, "gvfs"))
+    {
+      GVfsClass *class;
+      GVfs *vfs;
+
+      vfs = g_vfs_get_default ();
+      class = G_VFS_GET_CLASS (vfs);
+      if (class->deserialize_icon)
+        icon = (* class->deserialize_icon) (vfs, val);
+    }
+
+  g_variant_unref (val);
+
+  return icon;
+}
+
+GVariant *
+g_icon_serialize (GIcon *icon)
+{
+  GIconInterface *iface;
+  GVariant *result;
+
+  iface = G_ICON_GET_IFACE (icon);
+
+  if (!iface->serialize)
+    {
+      g_critical ("g_icon_serialize() on icon type `%s' is not implemented", G_OBJECT_TYPE_NAME (icon));
+      return NULL;
+    }
+
+  result = (* iface->serialize) (icon);
+
+  if (result)
+    {
+      g_variant_take_ref (result);
+
+      if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(sv)")))
+        {
+          g_critical ("g_icon_serialize() on icon type `%s' returned GVariant of type `%s' but it must return "
+                      "one with type `(sv)'", G_OBJECT_TYPE_NAME (icon), g_variant_get_type_string (result));
+          g_variant_unref (result);
+          result = NULL;
+        }
+    }
+
+  return result;
 }

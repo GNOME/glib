@@ -256,6 +256,14 @@ g_file_icon_from_tokens (gchar  **tokens,
   return icon;
 }
 
+static GVariant *
+g_file_icon_serialize (GIcon *icon)
+{
+  GFileIcon *file_icon = G_FILE_ICON (icon);
+
+  return g_variant_new ("(sv)", "file", g_variant_new_take_string (g_file_get_uri (file_icon->file)));
+}
+
 static void
 g_file_icon_icon_iface_init (GIconIface *iface)
 {
@@ -263,6 +271,7 @@ g_file_icon_icon_iface_init (GIconIface *iface)
   iface->equal = g_file_icon_equal;
   iface->to_tokens = g_file_icon_to_tokens;
   iface->from_tokens = g_file_icon_from_tokens;
+  iface->serialize = g_file_icon_serialize;
 }
 
 

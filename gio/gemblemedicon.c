@@ -413,6 +413,54 @@ g_emblemed_icon_from_tokens (gchar  **tokens,
   return NULL;
 }
 
+static GVariant *
+g_emblemed_icon_serialize (GIcon *icon)
+{
+  GEmblemedIcon *emblemed_icon = G_EMBLEMED_ICON (icon);
+  GVariantBuilder builder;
+  GVariant *icon_data;
+  GList *node;
+
+  icon_data = g_icon_serialize (emblemed_icon->priv->icon);
+  if (!icon_data)
+    return NULL;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(va(va{sv}))"));
+
+  g_variant_builder_add (&builder, "v", icon_data);
+  g_variant_unref (icon_data);
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(va{sv})"));
+  for (node = emblemed_icon->priv->emblems; node != NULL; node = node->next)
+    {
+      icon_data = g_icon_serialize (node->data);
+      if (icon_data)
+        {
+          /* We know how emblems serialise, so do a tweak here to
+           * reduce some of the variant wrapping and redundant storage
+           * of 'emblem' over and again...
+           */
+          if (g_variant_is_of_type (icon_data, G_VARIANT_TYPE ("(sv)")))
+            {
+              const gchar *name;
+              GVariant *content;
+
+              g_variant_get (icon_data, "(&sv)", &name, &content);
+
+              if (g_str_equal (name, "emblem") && g_variant_is_of_type (content, G_VARIANT_TYPE ("(va{sv})")))
+                g_variant_builder_add (&builder, "@(va{sv})", content);
+
+              g_variant_unref (content);
+            }
+
+          g_variant_unref (icon_data);
+        }
+    }
+  g_variant_builder_close (&builder);
+
+  return g_variant_new ("(sv)", "emblemed", g_variant_builder_end (&builder));
+}
+
 static void
 g_emblemed_icon_icon_iface_init (GIconIface *iface)
 {
@@ -420,4 +468,5 @@ g_emblemed_icon_icon_iface_init (GIconIface *iface)
   iface->equal = g_emblemed_icon_equal;
   iface->to_tokens = g_emblemed_icon_to_tokens;
   iface->from_tokens = g_emblemed_icon_from_tokens;
+  iface->serialize = g_emblemed_icon_serialize;
 }

@@ -512,6 +512,14 @@ g_themed_icon_from_tokens (gchar  **tokens,
   return icon;
 }
 
+static GVariant *
+g_themed_icon_serialize (GIcon *icon)
+{
+  GThemedIcon *themed_icon = G_THEMED_ICON (icon);
+
+  return g_variant_new ("(sv)", "themed", g_variant_new ("^as", themed_icon->names));
+}
+
 static void
 g_themed_icon_icon_iface_init (GIconIface *iface)
 {
@@ -519,4 +527,5 @@ g_themed_icon_icon_iface_init (GIconIface *iface)
   iface->equal = g_themed_icon_equal;
   iface->to_tokens = g_themed_icon_to_tokens;
   iface->from_tokens = g_themed_icon_from_tokens;
+  iface->serialize = g_themed_icon_serialize;
 }

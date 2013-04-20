@@ -95,6 +95,8 @@ struct _GVfsClass
   void                  (* local_file_moved)          (GVfs       *vfs,
 						       const char *source,
 						       const char *dest);
+  GIcon *               (* deserialize_icon)          (GVfs       *vfs,
+                                                       GVariant   *value);
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
@@ -102,7 +104,6 @@ struct _GVfsClass
   void (*_g_reserved4) (void);
   void (*_g_reserved5) (void);
   void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
 };
 
 GLIB_AVAILABLE_IN_ALL

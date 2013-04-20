@@ -28,7 +28,7 @@
 #include <string.h>
 
 static void
-test_g_icon_serialize (void)
+test_g_icon_to_string (void)
 {
   GIcon *icon;
   GIcon *icon2;
@@ -248,6 +248,125 @@ test_g_icon_serialize (void)
 }
 
 static void
+test_g_icon_serialize (void)
+{
+  GIcon *icon;
+  GIcon *icon2;
+  GIcon *icon3;
+  GIcon *icon4;
+  GIcon *icon5;
+  GEmblem *emblem1;
+  GEmblem *emblem2;
+  GFile *location;
+  GVariant *data;
+  gint origin;
+  GIcon *i;
+
+  /* Check that we can deserialize from well-known specified formats */
+  data = g_variant_new_string ("network-server%");
+  icon = g_icon_deserialize (g_variant_ref_sink (data));
+  g_variant_unref (data);
+  icon2 = g_themed_icon_new ("network-server%");
+  g_assert (g_icon_equal (icon, icon2));
+  g_object_unref (icon);
+  g_object_unref (icon2);
+
+  data = g_variant_new_string ("/path/to/somewhere.png");
+  icon = g_icon_deserialize (g_variant_ref_sink (data));
+  g_variant_unref (data);
+  location = g_file_new_for_commandline_arg ("/path/to/somewhere.png");
+  icon2 = g_file_icon_new (location);
+  g_assert (g_icon_equal (icon, icon2));
+  g_object_unref (icon);
+  g_object_unref (icon2);
+  g_object_unref (location);
+
+  data = g_variant_new_string ("/path/to/somewhere with whitespace.png");
+  icon = g_icon_deserialize (g_variant_ref_sink (data));
+  g_variant_unref (data);
+  location = g_file_new_for_commandline_arg ("/path/to/somewhere with whitespace.png");
+  icon2 = g_file_icon_new (location);
+  g_assert (g_icon_equal (icon, icon2));
+  g_object_unref (location);
+  g_object_unref (icon2);
+  location = g_file_new_for_commandline_arg ("/path/to/somewhere%20with%20whitespace.png");
+  icon2 = g_file_icon_new (location);
+  g_assert (!g_icon_equal (icon, icon2));
+  g_object_unref (location);
+  g_object_unref (icon2);
+  g_object_unref (icon);
+
+  data = g_variant_new_string ("sftp:///path/to/somewhere.png");
+  icon = g_icon_deserialize (g_variant_ref_sink (data));
+  g_variant_unref (data);
+  location = g_file_new_for_commandline_arg ("sftp:///path/to/somewhere.png");
+  icon2 = g_file_icon_new (location);
+  g_assert (g_icon_equal (icon, icon2));
+  g_object_unref (icon);
+  g_object_unref (icon2);
+  g_object_unref (location);
+
+  /* Check that GThemedIcon serialization works */
+
+  icon = g_themed_icon_new ("network-server");
+  g_themed_icon_append_name (G_THEMED_ICON (icon), "computer");
+  data = g_icon_serialize (icon);
+  icon2 = g_icon_deserialize (data);
+  g_assert (g_icon_equal (icon, icon2));
+  g_variant_unref (data);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+
+  icon = g_themed_icon_new ("icon name with whitespace");
+  g_themed_icon_append_name (G_THEMED_ICON (icon), "computer");
+  data = g_icon_serialize (icon);
+  icon2 = g_icon_deserialize (data);
+  g_assert (g_icon_equal (icon, icon2));
+  g_variant_unref (data);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+
+  icon = g_themed_icon_new_with_default_fallbacks ("network-server-xyz");
+  g_themed_icon_append_name (G_THEMED_ICON (icon), "computer");
+  data = g_icon_serialize (icon);
+  icon2 = g_icon_deserialize (data);
+  g_assert (g_icon_equal (icon, icon2));
+  g_variant_unref (data);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+
+  /* Check that GEmblemedIcon serialization works */
+
+  icon = g_themed_icon_new ("face-smirk");
+  icon2 = g_themed_icon_new ("emblem-important");
+  g_themed_icon_append_name (G_THEMED_ICON (icon2), "emblem-shared");
+  location = g_file_new_for_uri ("file:///some/path/somewhere.png");
+  icon3 = g_file_icon_new (location);
+  g_object_unref (location);
+  emblem1 = g_emblem_new_with_origin (icon2, G_EMBLEM_ORIGIN_DEVICE);
+  emblem2 = g_emblem_new_with_origin (icon3, G_EMBLEM_ORIGIN_LIVEMETADATA);
+  icon4 = g_emblemed_icon_new (icon, emblem1);
+  g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon4), emblem2);
+  data = g_icon_serialize (icon4);
+  icon5 = g_icon_deserialize (data);
+  g_assert (g_icon_equal (icon4, icon5));
+
+  g_object_get (emblem1, "origin", &origin, "icon", &i, NULL);
+  g_assert (origin == G_EMBLEM_ORIGIN_DEVICE);
+  g_assert (i == icon2);
+  g_object_unref (i);
+
+  g_object_unref (emblem1);
+  g_object_unref (emblem2);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+  g_object_unref (icon3);
+  g_object_unref (icon4);
+  g_object_unref (icon5);
+  g_variant_unref (data);
+}
+
+static void
 test_themed_icon (void)
 {
   GIcon *icon1, *icon2, *icon3;
@@ -373,6 +492,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/icons/to-string", test_g_icon_to_string);
   g_test_add_func ("/icons/serialize", test_g_icon_serialize);
   g_test_add_func ("/icons/themed", test_themed_icon);
   g_test_add_func ("/icons/emblemed", test_emblemed_icon);
