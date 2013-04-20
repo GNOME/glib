@@ -74,6 +74,21 @@ G_BEGIN_DECLS
 #define G_MENU_ATTRIBUTE_LABEL "label"
 
 /**
+ * G_MENU_ATTRIBUTE_ICON:
+ *
+ * The menu item attribute which holds the icon of the item.
+ *
+ * The icon is stored in the format returned by g_icon_serialize().
+ *
+ * This attribute is intended only to represent 'noun' icons such as
+ * favicons for a webpage, or application icons.  It should not be used
+ * for 'verbs' (ie: stock icons).
+ *
+ * Since: 2.38
+ **/
+#define G_MENU_ATTRIBUTE_ICON "icon"
+
+/**
  * G_MENU_LINK_SUBMENU:
  *
  * The name of the link that associates a menu item with a submenu.

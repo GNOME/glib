@@ -3800,6 +3800,7 @@ g_menu_item_new_from_model
 
 <SUBSECTION>
 g_menu_item_set_label
+g_menu_item_set_icon
 g_menu_item_set_action_and_target_value
 g_menu_item_set_action_and_target
 g_menu_item_set_detailed_action
@@ -3836,8 +3837,9 @@ g_menu_model_get_n_items
 
 <SUBSECTION>
 G_MENU_ATTRIBUTE_ACTION
-G_MENU_ATTRIBUTE_LABEL
 G_MENU_ATTRIBUTE_TARGET
+G_MENU_ATTRIBUTE_LABEL
+G_MENU_ATTRIBUTE_ICON
 G_MENU_LINK_SECTION
 G_MENU_LINK_SUBMENU
 
