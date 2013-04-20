@@ -22,7 +22,6 @@
 #include "config.h"
 
 #include "gsimpleaction.h"
-#include "gactiongroup.h"
 #include "gactionmap.h"
 #include "gaction.h"
 
@@ -55,7 +54,7 @@
  * Since: 2.32
  **/
 
-G_DEFINE_INTERFACE (GActionMap, g_action_map, G_TYPE_ACTION_GROUP)
+G_DEFINE_INTERFACE (GActionMap, g_action_map, G_TYPE_OBJECT)
 
 static void
 g_action_map_default_init (GActionMapInterface *iface)
