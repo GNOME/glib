@@ -424,6 +424,8 @@ g_desktop_app_info_load_file (GDesktopAppInfo *self)
 
   g_return_val_if_fail (self->filename != NULL, FALSE);
 
+  self->desktop_id = g_path_get_basename (self->filename);
+
   key_file = g_key_file_new ();
 
   if (g_key_file_load_from_file (key_file,
