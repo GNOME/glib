@@ -4258,6 +4258,7 @@ static void
 test_gbytes (void)
 {
   GVariant *a;
+  GVariant *tuple;
   GBytes *bytes;
   GBytes *bytes2;
   const guint8 values[5] = { 1, 2, 3, 4, 5 };
@@ -4279,9 +4280,19 @@ test_gbytes (void)
 
   bytes = g_bytes_new (&values, 5);
   g_assert (g_bytes_equal (bytes, bytes2));
+  g_bytes_unref (bytes);
+  g_bytes_unref (bytes2);
+
+  tuple = g_variant_new_parsed ("['foo', 'bar']");
+  bytes = g_variant_get_data_as_bytes (tuple); /* force serialisation */
+  a = g_variant_get_child_value (tuple, 1);
+  bytes2 = g_variant_get_data_as_bytes (a);
+  g_assert (!g_bytes_equal (bytes, bytes2));
 
   g_bytes_unref (bytes);
   g_bytes_unref (bytes2);
+  g_variant_unref (a);
+  g_variant_unref (tuple);
 }
 
 int

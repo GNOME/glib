@@ -882,11 +882,24 @@ g_variant_get_data (GVariant *value)
 GBytes *
 g_variant_get_data_as_bytes (GVariant *value)
 {
+  const gchar *bytes_data;
+  const gchar *data;
+  gsize bytes_size;
+  gsize size;
+
   g_variant_lock (value);
   g_variant_ensure_serialised (value);
   g_variant_unlock (value);
 
-  return g_bytes_ref (value->contents.serialised.bytes);
+  bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
+  data = value->contents.serialised.data;
+  size = value->size;
+
+  if (data == bytes_data && size == bytes_size)
+    return g_bytes_ref (value->contents.serialised.bytes);
+  else
+    return g_bytes_new_from_bytes (value->contents.serialised.bytes,
+                                   data - bytes_data, size);
 }
 
 
