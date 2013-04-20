@@ -97,6 +97,7 @@
         <title>Icons</title>
         <xi:include href="xml/gicon.xml"/>
         <xi:include href="xml/gfileicon.xml"/>
+        <xi:include href="xml/gbytesicon.xml"/>
         <xi:include href="xml/gloadableicon.xml"/>
         <xi:include href="xml/gthemedicon.xml"/>
         <xi:include href="xml/gemblemedicon.xml"/>

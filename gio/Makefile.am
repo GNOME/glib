@@ -339,6 +339,7 @@ libgio_2_0_la_SOURCES =		\
 	gasyncresult.c 		\
 	gbufferedinputstream.c 	\
 	gbufferedoutputstream.c \
+	gbytesicon.c		\
 	gcancellable.c 		\
 	gcharsetconverter.c	\
 	gconverter.c		\
@@ -519,6 +520,7 @@ gio_headers =			\
 	gasyncresult.h 		\
 	gbufferedinputstream.h 	\
 	gbufferedoutputstream.h \
+	gbytesicon.h		\
 	gcancellable.h 		\
 	gcontenttype.h 		\
 	gcharsetconverter.h	\

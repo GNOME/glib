@@ -515,6 +515,20 @@ g_file_icon_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gbytesicon</FILE>
+<TITLE>GBytesIcon</TITLE>
+GBytesIcon
+g_bytes_icon_new
+g_bytes_icon_get_bytes
+<SUBSECTION Standard>
+G_BYTES_ICON
+G_IS_BYTES_ICON
+G_TYPE_BYTES_ICON
+<SUBSECTION Private>
+g_bytes_icon_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gemblemedicon</FILE>
 <TITLE>GEmblemedIcon</TITLE>
 GEmblemedIcon

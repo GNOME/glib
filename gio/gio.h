@@ -38,6 +38,7 @@
 #include <gio/gasyncresult.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
+#include <gio/gbytesicon.h>
 #include <gio/gcancellable.h>
 #include <gio/gcharsetconverter.h>
 #include <gio/gcontenttype.h>
