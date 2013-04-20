@@ -3108,6 +3108,7 @@ g_variant_new_uint64
 g_variant_new_handle
 g_variant_new_double
 g_variant_new_string
+g_variant_new_take_string
 g_variant_new_object_path
 g_variant_is_object_path
 g_variant_new_signature

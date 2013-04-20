@@ -1274,6 +1274,42 @@ g_variant_new_string (const gchar *string)
 }
 
 /**
+ * g_variant_new_take_string: (skip)
+ * @string: a normal utf8 nul-terminated string
+ *
+ * Creates a string #GVariant with the contents of @string.
+ *
+ * @string must be valid utf8.
+ *
+ * This function consumes @string.  g_free() will be called on @string
+ * when it is no longer required.
+ *
+ * You must not modify or access @string in any other way after passing
+ * it to this function.  It is even possible that @string is immediately
+ * freed.
+ *
+ * Returns: (transfer none): a floating reference to a new string
+ *   #GVariant instance
+ *
+ * Since: 2.38
+ **/
+GVariant *
+g_variant_new_take_string (gchar *string)
+{
+  GVariant *value;
+  GBytes *bytes;
+
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (g_utf8_validate (string, -1, NULL), NULL);
+
+  bytes = g_bytes_new_take (string, strlen (string) + 1);
+  value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
+  g_bytes_unref (bytes);
+
+  return value;
+}
+
+/**
  * g_variant_new_object_path:
  * @object_path: a normal C nul-terminated string
  *
