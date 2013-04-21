@@ -185,7 +185,7 @@ g_application_impl_method_call (GDBusConnection       *connection,
       GFile **files;
       gint n, i;
 
-      g_variant_get (parameters, "(@ass@a{sv})",
+      g_variant_get (parameters, "(@as&s@a{sv})",
                      &array, &hint, &platform_data);
 
       n = g_variant_n_children (array);
