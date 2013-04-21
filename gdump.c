@@ -38,6 +38,9 @@
 #include <string.h>
 
 static void
+escaped_printf (GOutputStream *out, const char *fmt, ...) G_GNUC_PRINTF (2, 3);
+
+static void
 escaped_printf (GOutputStream *out, const char *fmt, ...)
 {
   char *str;
