@@ -8,6 +8,7 @@ gio/gasyncinitable.c
 gio/gasyncresult.c
 gio/gbufferedinputstream.c
 gio/gbufferedoutputstream.c
+gio/gbytesicon.c
 gio/gcancellable.c
 gio/gcharsetconverter.c
 gio/gcontenttype.c
