@@ -23,6 +23,7 @@
 
 #include "config.h"
 
+#include "../glib/valgrind.h"
 #include <string.h>
 
 #include "gtype.h"
@@ -1765,90 +1766,6 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
     }
 }
 
-/* Assumes type's class already exists
- */
-static inline size_t
-type_total_instance_size_I (TypeNode *node)
-{
-  gsize total_instance_size;
-
-  total_instance_size = node->data->instance.instance_size;
-  if (node->data->instance.private_size != 0)
-    total_instance_size = ALIGN_STRUCT (total_instance_size) + node->data->instance.private_size;
-
-  return total_instance_size;
-}
-
-/* --- type structure creation/destruction --- */
-typedef struct {
-  gpointer instance;
-  gpointer class;
-} InstanceRealClass;
-
-static gint
-instance_real_class_cmp (gconstpointer p1,
-                         gconstpointer p2)
-{
-  const InstanceRealClass *irc1 = p1;
-  const InstanceRealClass *irc2 = p2;
-  guint8 *i1 = irc1->instance;
-  guint8 *i2 = irc2->instance;
-  return G_BSEARCH_ARRAY_CMP (i1, i2);
-}
-
-G_LOCK_DEFINE_STATIC (instance_real_class);
-static GBSearchArray *instance_real_class_bsa = NULL;
-static GBSearchConfig instance_real_class_bconfig = {
-  sizeof (InstanceRealClass),
-  instance_real_class_cmp,
-  0,
-};
-
-static inline void
-instance_real_class_set (gpointer    instance,
-                         GTypeClass *class)
-{
-  InstanceRealClass key;
-  key.instance = instance;
-  key.class = class;
-  G_LOCK (instance_real_class);
-  if (!instance_real_class_bsa)
-    instance_real_class_bsa = g_bsearch_array_create (&instance_real_class_bconfig);
-  instance_real_class_bsa = g_bsearch_array_replace (instance_real_class_bsa, &instance_real_class_bconfig, &key);
-  G_UNLOCK (instance_real_class);
-}
-
-static inline void
-instance_real_class_remove (gpointer instance)
-{
-  InstanceRealClass key, *node;
-  guint index;
-  key.instance = instance;
-  G_LOCK (instance_real_class);
-  node = g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key);
-  index = g_bsearch_array_get_index (instance_real_class_bsa, &instance_real_class_bconfig, node);
-  instance_real_class_bsa = g_bsearch_array_remove (instance_real_class_bsa, &instance_real_class_bconfig, index);
-  if (!g_bsearch_array_get_n_nodes (instance_real_class_bsa))
-    {
-      g_bsearch_array_free (instance_real_class_bsa, &instance_real_class_bconfig);
-      instance_real_class_bsa = NULL;
-    }
-  G_UNLOCK (instance_real_class);
-}
-
-static inline GTypeClass*
-instance_real_class_get (gpointer instance)
-{
-  InstanceRealClass key, *node;
-  GTypeClass *class;
-  key.instance = instance;
-  G_LOCK (instance_real_class);
-  node = instance_real_class_bsa ? g_bsearch_array_lookup (instance_real_class_bsa, &instance_real_class_bconfig, &key) : NULL;
-  class = node ? node->class : NULL;
-  G_UNLOCK (instance_real_class);
-  return class;
-}
-
 /**
  * g_type_create_instance: (skip)
  * @type: An instantiatable type to create an instance for.
@@ -1876,8 +1793,11 @@ g_type_create_instance (GType type)
   TypeNode *node;
   GTypeInstance *instance;
   GTypeClass *class;
-  guint i, total_size;
-  
+  gchar *allocated;
+  gint private_size;
+  gint ivar_size;
+  guint i;
+
   node = lookup_type_node_I (type);
   if (!node || !node->is_instantiatable)
     {
@@ -1892,12 +1812,41 @@ g_type_create_instance (GType type)
     }
   
   class = g_type_class_ref (type);
-  total_size = type_total_instance_size_I (node);
 
-  instance = g_slice_alloc0 (total_size);
+  /* We allocate the 'private' areas before the normal instance data, in
+   * reverse order.  This allows the private area of a particular class
+   * to always be at a constant relative address to the instance data.
+   * If we stored the private data after the instance data this would
+   * not be the case (since a subclass that added more instance
+   * variables would push the private data further along).
+   *
+   * This presents problems for valgrindability, of course, so we do a
+   * workaround for that case.  We identify the start of the object to
+   * valgrind as an allocated block (so that pointers to objects show up
+   * as 'reachable' instead of 'possibly lost').  We then add an extra
+   * pointer at the end of the object, after all instance data, back to
+   * the start of the private area so that it is also recorded as
+   * reachable.
+   */
+  private_size = node->data->instance.private_size;
+  ivar_size = node->data->instance.instance_size;
 
-  if (node->data->instance.private_size)
-    instance_real_class_set (instance, class);
+  if (private_size && RUNNING_ON_VALGRIND)
+    {
+      /* Allocate one extra pointer size... */
+      allocated = g_slice_alloc0 (private_size + ivar_size + sizeof (gpointer));
+      /* ... and point it back to the start of the block. */
+      *(gpointer *) (allocated + private_size + ivar_size) = allocated;
+
+      /* Tell valgrind that it should treat the object itself as such */
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, ivar_size + sizeof (gpointer), 0, TRUE);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated, private_size, 0, TRUE);
+    }
+  else
+    allocated = g_slice_alloc0 (private_size + ivar_size);
+
+  instance = (GTypeInstance *) (allocated + private_size);
+
   for (i = node->n_supers; i > 0; i--)
     {
       TypeNode *pnode;
@@ -1909,8 +1858,6 @@ g_type_create_instance (GType type)
 	  pnode->data->instance.instance_init (instance, class);
 	}
     }
-  if (node->data->instance.private_size)
-    instance_real_class_remove (instance);
 
   instance->g_class = class;
   if (node->data->instance.instance_init)
@@ -1936,7 +1883,10 @@ g_type_free_instance (GTypeInstance *instance)
 {
   TypeNode *node;
   GTypeClass *class;
-  
+  gchar *allocated;
+  gint private_size;
+  gint ivar_size;
+
   g_return_if_fail (instance != NULL && instance->g_class != NULL);
   
   class = instance->g_class;
@@ -1956,10 +1906,29 @@ g_type_free_instance (GTypeInstance *instance)
     }
   
   instance->g_class = NULL;
-#ifdef G_ENABLE_DEBUG  
-  memset (instance, 0xaa, type_total_instance_size_I (node));
+  private_size = node->data->instance.private_size;
+  ivar_size = node->data->instance.instance_size;
+  allocated = ((gchar *) instance) - private_size;
+
+#ifdef G_ENABLE_DEBUG
+  memset (allocated, 0xaa, ivar_size + private_size);
 #endif
-  g_slice_free1 (type_total_instance_size_I (node), instance);
+
+  /* See comment in g_type_create_instance() about what's going on here.
+   * We're basically unwinding what we put into motion there.
+   */
+  if (private_size && RUNNING_ON_VALGRIND)
+    {
+      /* Clear out the extra pointer... */
+      *(gpointer *) (allocated + private_size + ivar_size) = NULL;
+      /* ... and ensure we include it in the size we free. */
+      g_slice_free1 (private_size + ivar_size + sizeof (gpointer), allocated);
+
+      VALGRIND_FREELIKE_BLOCK (allocated, 0);
+      VALGRIND_FREELIKE_BLOCK (instance, 0);
+    }
+  else
+    g_slice_free1 (private_size + ivar_size, allocated);
 
   g_type_class_unref (class);
 }
@@ -4504,7 +4473,6 @@ g_type_class_add_private (gpointer g_class,
 {
   GType instance_type = ((GTypeClass *)g_class)->g_type;
   TypeNode *node = lookup_type_node_I (instance_type);
-  gsize offset;
 
   g_return_if_fail (private_size > 0);
   g_return_if_fail (private_size <= 0xffff);
@@ -4528,11 +4496,8 @@ g_type_class_add_private (gpointer g_class,
   
   G_WRITE_LOCK (&type_rw_lock);
 
-  offset = ALIGN_STRUCT (node->data->instance.private_size);
-
-  g_assert (offset + private_size <= 0xffff);
-
-  node->data->instance.private_size = offset + private_size;
+  node->data->instance.private_size = ALIGN_STRUCT (node->data->instance.private_size + private_size);
+  g_assert (node->data->instance.private_size <= 0xffff);
   
   G_WRITE_UNLOCK (&type_rw_lock);
 }
@@ -4541,61 +4506,19 @@ gpointer
 g_type_instance_get_private (GTypeInstance *instance,
 			     GType          private_type)
 {
-  TypeNode *instance_node;
-  TypeNode *private_node;
-  TypeNode *parent_node;
-  GTypeClass *class;
-  gsize offset;
+  TypeNode *node;
 
   g_return_val_if_fail (instance != NULL && instance->g_class != NULL, NULL);
 
-  /* while instances are initialized, their class pointers change,
-   * so figure the instances real class first
-   */
-  class = instance_real_class_get (instance);
-  if (!class)
-    class = instance->g_class;
-
-  instance_node = lookup_type_node_I (class->g_type);
-  if (G_UNLIKELY (!instance_node || !instance_node->is_instantiatable))
+  node = lookup_type_node_I (private_type);
+  if (G_UNLIKELY (!node || !node->is_instantiatable))
     {
       g_warning ("instance of invalid non-instantiatable type `%s'",
-		 type_descriptive_name_I (instance->g_class->g_type));
+                 type_descriptive_name_I (instance->g_class->g_type));
       return NULL;
     }
 
-  private_node = lookup_type_node_I (private_type);
-  if (G_UNLIKELY (!private_node || !NODE_IS_ANCESTOR (private_node, instance_node)))
-    {
-      g_warning ("attempt to retrieve private data for invalid type '%s'",
-		 type_descriptive_name_I (private_type));
-      return NULL;
-    }
-
-  /* Note that we don't need a read lock, since instance existing
-   * means that the instance class and all parent classes
-   * exist, so the node->data, node->data->instance.instance_size,
-   * and node->data->instance.private_size are not going to be changed.
-   * for any of the relevant types.
-   */
-
-  offset = ALIGN_STRUCT (instance_node->data->instance.instance_size);
-
-  if (NODE_PARENT_TYPE (private_node))
-    {
-      parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
-      g_assert (parent_node->data && NODE_REFCOUNT (parent_node) > 0);
-
-      if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
-	{
-	  g_warning ("g_type_instance_get_private() requires a prior call to g_type_class_add_private()");
-	  return NULL;
-	}
-
-      offset += ALIGN_STRUCT (parent_node->data->instance.private_size);
-    }
-
-  return G_STRUCT_MEMBER_P (instance, offset);
+  return ((gchar *) instance) - node->data->instance.private_size;
 }
 
 /**
