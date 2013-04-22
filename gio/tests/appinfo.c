@@ -97,7 +97,7 @@ test_basic (void)
 
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
 
-  g_assert (g_app_info_get_id (appinfo) == NULL);
+  g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test.desktop");
   g_assert_cmpstr (g_app_info_get_executable (appinfo), ==, "./appinfo-test");
 
   icon = g_app_info_get_icon (appinfo);
@@ -107,7 +107,7 @@ test_basic (void)
   g_object_unref (icon2);
 
   appinfo2 = g_app_info_dup (appinfo);
-  g_assert (g_app_info_get_id (appinfo) == g_app_info_get_id (appinfo2));
+  g_assert_cmpstr (g_app_info_get_id (appinfo), ==, g_app_info_get_id (appinfo2));
   g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, g_app_info_get_commandline (appinfo2));
 
   g_object_unref (appinfo);
