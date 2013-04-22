@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-11 16:28+0100\n"
+"POT-Creation-Date: 2013-04-04 01:49+0000\n"
+"PO-Revision-Date: 2013-04-22 17:33+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -537,8 +537,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu bytes but only got %lu"
-#| msgid_plural "Wanted to read %lu byte but only got %lu"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Se quería leer %lu byte pero sólo se obtuvo %lu"
@@ -1071,12 +1069,12 @@ msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 #: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
 #: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
 #: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
+#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
+#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
+#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
+#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
+#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -1137,24 +1135,24 @@ msgstr "Copiar (reflink/clone) no está soportado o no ha funcionado"
 msgid "Can't copy special file"
 msgstr "No se puede copiar el archivo especial"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3660
 msgid "Invalid symlink value given"
 msgstr "El valor del enlace simbólico dado no es válido"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3820
 msgid "Trash not supported"
 msgstr "No se soporta mover a la papelera"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:3871
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6368
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -1820,80 +1818,80 @@ msgstr "Nombre extendido del atributo no válido"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error al establecer el atributo extendido «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Error al obtener la información del archivo «%s»: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Error al obtener la información del descriptor del archivo: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "No se pueden establecer permisos en enlaces simbólicos"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error al establecer permisos: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error al establecer el propietario: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "el enlace simbólico debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error al establecer el enlace simbólico: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "El contexto SELinux debe ser no nulo"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error al establecer el contexto SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux no está activado en este sistema"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -2119,7 +2117,7 @@ msgstr "El recurso en «%s» no es una carpeta"
 msgid "Input stream doesn't implement seek"
 msgstr "El flujo de entrada no implementa la búsqueda"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:538
 msgid "Print help"
 msgstr "Imprimir ayuda"
 
@@ -2170,7 +2168,7 @@ msgstr "Extraer un archivo de recursos a stdout"
 msgid "FILE PATH"
 msgstr "ARCHIVO RUTA"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:624
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2222,7 +2220,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:657
 msgid "Arguments:\n"
 msgstr "Argumentos:\n"
 
@@ -2230,7 +2228,7 @@ msgstr "Argumentos:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECCIÓN   El nombre de sección (opcional) de un elf\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:664
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMANDO   El comando (opcional) que explicar\n"
 
@@ -2303,33 +2301,37 @@ msgstr "La ruta no debe contener dos barras adyacentes (//)\n"
 msgid "No such key '%s'\n"
 msgstr "No existe la clave «%s»\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "El valor proporcionado está fuera del rango válido\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:544
+msgid "Print version information and exit"
+msgstr "Mostrar información de la versión y salir"
+
+#: ../gio/gsettings-tool.c:550
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Listar los esquemas instalados (no reubicables)"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:556
 msgid "List the installed relocatable schemas"
 msgstr "Listar los esquemas reubicables instalados"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:562
 msgid "List the keys in SCHEMA"
 msgstr "Listar las claves en el ESQUEMA"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:563 ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:RUTA]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:568
 msgid "List the children of SCHEMA"
 msgstr "Listar los hijos del ESQUEMA"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:574
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2337,45 +2339,45 @@ msgstr ""
 "Listar las claves y valores recursivamente\n"
 "Si no se proporciona un ESQUEMA, listar todas las claves\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:576
 msgid "[SCHEMA[:PATH]]"
 msgstr "[ESQUEMA[:RUTA]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:581
 msgid "Get the value of KEY"
 msgstr "Obtener el valor de la CLAVE"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:582 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600 ../gio/gsettings-tool.c:612
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:RUTA] CLAVE"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:587
 msgid "Query the range of valid values for KEY"
 msgstr "Consultar el rango de valores válidos para la CLAVE"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:593
 msgid "Set the value of KEY to VALUE"
 msgstr "Establecer el valor de la CLAVE a VALOR"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:RUTA] CLAVE VALOR"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:599
 msgid "Reset KEY to its default value"
 msgstr "Restablecer la CLAVE a su valor predeterminado"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:605
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr ""
 "Restablecer todas las claves en un ESQUEMA a sus valores predeterminados"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:611
 msgid "Check if KEY is writable"
 msgstr "Comprobar si la CLAVE se puede escribir"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2385,11 +2387,11 @@ msgstr ""
 "Si no se especifica una CLAVE, monitorizar todas las claves en el ESQUEMA.\n"
 "Use ^C para detener la monitorización.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:620
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:RUTA] [CLAVE]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:632
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2434,7 +2436,7 @@ msgstr ""
 "Use «gsettings help COMANDO» para obtener una ayuda detallada.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:654
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2449,11 +2451,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:660
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  CARPETA_ESQUEMA: una carpeta para buscar esquemas adicionales\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:668
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2461,25 +2463,24 @@ msgstr ""
 "  SCHEMA      El nombre del esquema\n"
 "  RUTA        La ruta, para esquemas reubicables\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:673
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  CLAVE      La clave (opcional) para el esquema\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The key within the schema\n"
 msgstr "  CLAVE      La clave para el esquema\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:681
 msgid "  VALUE     The value to set\n"
 msgstr "  VALOR     El valor para establecer\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:740
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "No se pudieron cargar los esquemas de %s: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:802
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Se proporcionó un nombre de esquema vacío\n"
@@ -2758,17 +2759,18 @@ msgstr "Error al resolver «%s»: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Error al resolver «%s» de forma invertida: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:478
+#: ../gio/gthreadedresolver.c:579 ../gio/gthreadedresolver.c:630
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "No hay un registro de DNS del tipo solicitado para «%s»"
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:584
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "No se puede resolver «%s» temporalmente"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:589
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Error al resolver «%s»"
