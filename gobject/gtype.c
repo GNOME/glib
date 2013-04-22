@@ -4701,3 +4701,13 @@ g_type_ensure (GType type)
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
 }
+
+gboolean
+g_type_is_in_init (GType type)
+{
+  TypeNode *node;
+
+  node = lookup_type_node_I (type);
+
+  return node->data->class.init_state != INITIALIZED;
+}
