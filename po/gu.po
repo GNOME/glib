@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-14 10:58+0000\n"
-"PO-Revision-Date: 2013-03-22 16:26+0530\n"
+"POT-Creation-Date: 2013-04-04 01:49+0000\n"
+"PO-Revision-Date: 2013-04-22 15:52+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -129,7 +129,6 @@ msgid "There is no GCredentials support for your platform"
 msgstr "તમારાં પ્લેટફોર્મ માટે GCredentials આધાર નથી"
 
 #: ../gio/gcredentials.c:480
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials એ આ OS પર પ્રક્રિયા ID ને સમાવતુ નથી"
 
@@ -494,8 +493,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu byte but got EOF"
-#| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ %lu મળ્યુ"
@@ -992,12 +989,12 @@ msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 #: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
 #: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
 #: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
+#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
+#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
+#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
+#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
+#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
@@ -1043,7 +1040,6 @@ msgid "Error splicing file: %s"
 msgstr "ફાઈલ ને જોડવામાં ભૂલ: %s"
 
 #: ../gio/gfile.c:2960
-#| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) માઉન્ટ વચ્ચે આધારભૂત નથી"
 
@@ -1059,24 +1055,24 @@ msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભ�
 msgid "Can't copy special file"
 msgstr "વિશિષ્ટ ફાઇલ ની નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3660
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3820
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:3871
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6368
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
 
@@ -2008,7 +2004,7 @@ msgstr "'%s' પર સ્ત્રોત ડિરેક્ટરી નથી"
 msgid "Input stream doesn't implement seek"
 msgstr "ઈનપુટ સ્ટ્રીમ વાંચનને અમલમાં મૂકતું નથી"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:538
 msgid "Print help"
 msgstr "મદદને છાપો"
 
@@ -2059,7 +2055,7 @@ msgstr "stdout માં સ્ત્રોત ફાઇલનો અર્ક �
 msgid "FILE PATH"
 msgstr "FILE PATH"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:624
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2111,7 +2107,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:657
 msgid "Arguments:\n"
 msgstr "દલીલો:\n"
 
@@ -2119,7 +2115,7 @@ msgstr "દલીલો:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION    (વૈકલ્પિક) elf વિભાગ નામ\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:664
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   વર્ણન કરવા માટે  (વૈકલ્પિક) આદેશ\n"
 
@@ -2191,33 +2187,37 @@ msgstr "પાથ એ બે નજીક સ્લૅશ (//) ને સમા�
 msgid "No such key '%s'\n"
 msgstr "આવી કી '%s' નથી\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "પૂરી પાડેલ કિંમત માન્ય સીમાની બહાર છે\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:544
+msgid "Print version information and exit"
+msgstr "આવૃત્તિ જાણકારીને છાપો અને બહાર નીકળો"
+
+#: ../gio/gsettings-tool.c:550
 msgid "List the installed (non-relocatable) schemas"
 msgstr "સ્થાપિત થયેલ (પુન:સ્થિત ન કરાય) તેવી યોજનાની યાદી"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:556
 msgid "List the installed relocatable schemas"
 msgstr "સ્થાપિત થયેલ પુન:સ્થિત કરી શકાય તેવી યોજનાની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:562
 msgid "List the keys in SCHEMA"
 msgstr "SCHEMA માં કીઓની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:563 ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:568
 msgid "List the children of SCHEMA"
 msgstr "SCHEMA નાં બાળકોની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:574
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2225,44 +2225,44 @@ msgstr ""
 "કીઓ અને કિંમતોની યાદી, પુનરાવર્તીત\n"
 "જો SCHEMA આપેલ ન હોય તો, બધી કીઓની યાદી કરો\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:576
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:581
 msgid "Get the value of KEY"
 msgstr "KEY ની કિંમતને મેળવો"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:582 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600 ../gio/gsettings-tool.c:612
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:587
 msgid "Query the range of valid values for KEY"
 msgstr "KEY માટે માન્ય કિંમતોની સીમાની ક્વેરી કરો"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:593
 msgid "Set the value of KEY to VALUE"
 msgstr "VALUE માટે KEY ની કિંમત સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:599
 msgid "Reset KEY to its default value"
 msgstr "તેની મૂળભૂત કિંમતમાં KEY ને પુન:સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:605
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "તેનાં મૂળભૂતોમાં SCHEMA માં બધા કીઓને પુન:સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:611
 msgid "Check if KEY is writable"
 msgstr "ચકાસો જો KEY લખી શકાય તેમ છે"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2272,11 +2272,11 @@ msgstr ""
 "જો KEY સ્પષ્ટ થયેલ ન હોય તો, SCHEMA માં બધી કીઓને મોનિટર કરો.\n"
 "મોનિટર કરવાનું બંધ રાખવા માટે ^C વાપરો.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:620
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:632
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2320,7 +2320,7 @@ msgstr ""
 "વિગત થયેલ મદદને મેળવવા માટે 'gsettings help COMMAND' વાપરો.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:654
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2335,11 +2335,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:660
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  વધારાની યોજના શોધવા માટે SCHEMADIR ડિરેક્ટરી\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:668
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2347,25 +2347,24 @@ msgstr ""
 "  SCHEMA    યોજનાનું નામ\n"
 "  PATH      પુન:સ્થિત યોજનાઓ માટે પાથ\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:673
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       યોજનામાં (વૈકલ્પિક) કી\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       યોજનામાં કી\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:681
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     સુયોજિત કરવા માટે કિંમત\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:740
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s માંથી યોજનાને લાવી શક્યા નહિં: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:802
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "ખાલી યોજના નામ આપેલ છે\n"
@@ -2449,7 +2448,6 @@ msgid "Connection in progress"
 msgstr "જોડાણ પ્રગતિમાં છે"
 
 #: ../gio/gsocket.c:2346
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
 msgstr "પેન્ડિંગ ભૂલ ને મેળવવામાં અસમર્થ: "
 
@@ -2637,17 +2635,18 @@ msgstr "'%s' ને સુધારી રહ્યા હોય ત્યાર
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' ને વિપરીત-સુધારી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:478
+#: ../gio/gthreadedresolver.c:579 ../gio/gthreadedresolver.c:630
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' માટે સૂચિત પ્રકારનો DNS અહેવાલ નથી"
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:584
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "'%s' ને સુધારવા માટે થોડા વખત અસમર્થ"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:589
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "'%s' ને સુધારી રહ્યા હોય ત્યારે ભૂલ"
@@ -3197,7 +3196,6 @@ msgstr "'%s' ડિરેક્ટરી ખોલતા ભૂલ: %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "%lu બાઈટ \"%s\" ફાઈલ વાંચવા માટે ફાળવી શક્યા નહિં"
