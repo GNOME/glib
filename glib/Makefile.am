@@ -208,7 +208,8 @@ libglib_2_0_la_SOURCES = 	\
 	gwakeup.h		\
 	gwakeup.c		\
 	gprintf.c		\
-	gprintfint.h
+	gprintfint.h		\
+	valgrind.h
 
 if OS_UNIX
 libglib_2_0_la_SOURCES += glib-unix.c
