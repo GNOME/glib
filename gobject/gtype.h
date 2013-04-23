@@ -1294,6 +1294,8 @@ void      g_type_add_class_private      (GType    		     class_type,
 GLIB_AVAILABLE_IN_ALL
 gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
 					 GType			     private_type);
+GLIB_AVAILABLE_IN_2_38
+gint      g_type_class_get_instance_private_offset (gpointer         g_class);
 
 GLIB_AVAILABLE_IN_2_34
 void      g_type_ensure                 (GType                       type);

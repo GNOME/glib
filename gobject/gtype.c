@@ -4529,6 +4529,54 @@ g_type_instance_get_private (GTypeInstance *instance,
 }
 
 /**
+ * g_type_class_get_instance_private_offset: (skip)
+ * @g_class: a #GTypeClass
+ *
+ * Gets the offset of the private data for instances of @g_class.
+ *
+ * This is how many bytes you should add to the instance pointer of a
+ * class in order to get the private data for the type represented by
+ * @g_class.
+ *
+ * You can only call this function after you have registered a private
+ * data area for @g_class using g_type_class_add_private().
+ *
+ * Returns: the offset, in bytes
+ *
+ * Since: 2.38
+ **/
+gint
+g_type_class_get_instance_private_offset (gpointer g_class)
+{
+  GType instance_type;
+  guint16 parent_size;
+  TypeNode *node;
+
+  g_assert (g_class != NULL);
+
+  instance_type = ((GTypeClass *) g_class)->g_type;
+  node = lookup_type_node_I (instance_type);
+
+  g_assert (node != NULL);
+  g_assert (node->is_instantiatable);
+
+  if (NODE_PARENT_TYPE (node))
+    {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+
+      parent_size = pnode->data->instance.private_size;
+    }
+  else
+    parent_size = 0;
+
+  if (node->data->instance.private_size == parent_size)
+    g_error ("g_type_class_get_instance_private_offset() called on class %s but it has no private data",
+             g_type_name (instance_type));
+
+  return -(gint) node->data->instance.private_size;
+}
+
+/**
  * g_type_add_class_private:
  * @class_type: GType of an classed type.
  * @private_size: size of private structure.
