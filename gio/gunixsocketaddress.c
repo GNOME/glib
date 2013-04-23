@@ -117,26 +117,15 @@ g_unix_socket_address_set_property (GObject      *object,
       break;
 
     case PROP_ABSTRACT:
-      /* If the caller already set PROP_ADDRESS_TYPE, don't let the
-       * default value of PROP_ABSTRACT overwrite it.
-       */
-      if (address->priv->address_type != G_UNIX_SOCKET_ADDRESS_INVALID)
-	return;
-
+      /* Only set it if it's not the default... */
       if (g_value_get_boolean (value))
-	address->priv->address_type = G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED;
-      else
-	address->priv->address_type = G_UNIX_SOCKET_ADDRESS_PATH;
+       address->priv->address_type = G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED;
       break;
 
     case PROP_ADDRESS_TYPE:
-      /* If the caller already set PROP_ABSTRACT, don't let the
-       * default value of PROP_ADDRESS_TYPE overwrite it.
-       */
-      if (address->priv->address_type != G_UNIX_SOCKET_ADDRESS_INVALID)
-	return;
-
-      address->priv->address_type = g_value_get_enum (value);
+      /* Only set it if it's not the default... */
+      if (g_value_get_enum (value) != G_UNIX_SOCKET_ADDRESS_PATH)
+        address->priv->address_type = g_value_get_enum (value);
       break;
 
     default:
@@ -322,7 +311,7 @@ g_unix_socket_address_init (GUnixSocketAddress *address)
 
   memset (address->priv->path, 0, sizeof (address->priv->path));
   address->priv->path_len = -1;
-  address->priv->address_type = G_UNIX_SOCKET_ADDRESS_INVALID;
+  address->priv->address_type = G_UNIX_SOCKET_ADDRESS_PATH;
 }
 
 /**
