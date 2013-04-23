@@ -99,6 +99,7 @@ simple-async-result
 simple-proxy
 sleepy-stream
 socket
+socket-address
 socket-client
 socket-server
 srvtarget

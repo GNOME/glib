@@ -142,6 +142,7 @@ TEST_PROGS += 			\
 	gapplication 		\
 	basic-application	\
 	gdbus-test-codegen 	\
+	socket-address		\
 	$(NULL)
 SAMPLE_PROGS +=					\
 	gdbus-example-unix-fd-client 		\
