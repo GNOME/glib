@@ -12,3 +12,4 @@ threadtests
 valuearray
 private
 marshalers.[ch]
+property

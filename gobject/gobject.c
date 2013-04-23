@@ -32,6 +32,7 @@
 #include "gsignal.h"
 #include "gparamspecs.h"
 #include "gvaluetypes.h"
+#include "gproperty.h"
 #include "gobject_trace.h"
 #include "gconstructor.h"
 
@@ -561,6 +562,9 @@ g_object_class_install_property (GObjectClass *class,
 
   install_property_internal (G_OBJECT_CLASS_TYPE (class), property_id, pspec);
 
+  if (G_IS_PROPERTY (pspec))
+    _g_property_set_installed ((GProperty *) pspec, class, G_OBJECT_CLASS_TYPE (class));
+
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_append (class->construct_properties, pspec);
 
@@ -668,9 +672,9 @@ g_object_class_install_properties (GObjectClass  *oclass,
 
       g_return_if_fail (pspec != NULL);
 
-      if (pspec->flags & G_PARAM_WRITABLE)
+      if (!G_IS_PROPERTY (pspec) && (pspec->flags & G_PARAM_WRITABLE) != 0)
         g_return_if_fail (oclass->set_property != NULL);
-      if (pspec->flags & G_PARAM_READABLE)
+      if (!G_IS_PROPERTY (pspec) && (pspec->flags & G_PARAM_READABLE) != 0)
         g_return_if_fail (oclass->get_property != NULL);
       g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
       if (pspec->flags & G_PARAM_CONSTRUCT)
@@ -680,6 +684,9 @@ g_object_class_install_properties (GObjectClass  *oclass,
 
       oclass->flags |= CLASS_HAS_PROPS_FLAG;
       install_property_internal (oclass_type, i, pspec);
+
+      if (G_IS_PROPERTY (pspec))
+        _g_property_set_installed ((GProperty *) pspec, oclass, G_OBJECT_CLASS_TYPE (oclass));
 
       if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
         oclass->construct_properties = g_slist_append (oclass->construct_properties, pspec);
@@ -1296,8 +1303,11 @@ object_get_property (GObject     *object,
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
     pspec = redirect;    
-  
-  class->get_property (object, param_id, value, pspec);
+
+  if (G_IS_PROPERTY (pspec))
+    g_property_get_value ((GProperty *) pspec, object, value);
+  else
+    class->get_property (object, param_id, value, pspec);
 }
 
 static inline void
@@ -1358,15 +1368,27 @@ object_set_property (GObject             *object,
     }
   else
     {
-      GParamSpec *notify_pspec;
+      if (G_IS_PROPERTY (pspec))
+        {
+          /* if the setter did not emit change the property then we don't
+           * need to notify either; if it did, the notify_queue_add() will
+           * just be a no-op
+           */
+          g_property_set_value ((GProperty *) pspec, object, &tmp_value);
+        }
+      else
+        {
+          GParamSpec *notify_pspec;
 
-      class->set_property (object, param_id, &tmp_value, pspec);
+          class->set_property (object, param_id, &tmp_value, pspec);
 
-      notify_pspec = get_notify_pspec (pspec);
+          notify_pspec = get_notify_pspec (pspec);
 
-      if (notify_pspec != NULL)
-        g_object_notify_queue_add (object, nqueue, notify_pspec);
+          if (notify_pspec != NULL)
+            g_object_notify_queue_add (object, nqueue, notify_pspec);
+        }
     }
+
   g_value_unset (&tmp_value);
 }
 
