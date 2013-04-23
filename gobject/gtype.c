@@ -1826,21 +1826,25 @@ g_type_create_instance (GType type)
    * as 'reachable' instead of 'possibly lost').  We then add an extra
    * pointer at the end of the object, after all instance data, back to
    * the start of the private area so that it is also recorded as
-   * reachable.
+   * reachable.  We also add extra private space at the start because
+   * valgrind doesn't seem to like us claiming to have allocated an
+   * address that it saw allocated by malloc().
    */
   private_size = node->data->instance.private_size;
   ivar_size = node->data->instance.instance_size;
 
   if (private_size && RUNNING_ON_VALGRIND)
     {
+      private_size += ALIGN_STRUCT (1);
+
       /* Allocate one extra pointer size... */
       allocated = g_slice_alloc0 (private_size + ivar_size + sizeof (gpointer));
-      /* ... and point it back to the start of the block. */
-      *(gpointer *) (allocated + private_size + ivar_size) = allocated;
+      /* ... and point it back to the start of the private data. */
+      *(gpointer *) (allocated + private_size + ivar_size) = allocated + ALIGN_STRUCT (1);
 
       /* Tell valgrind that it should treat the object itself as such */
       VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, ivar_size + sizeof (gpointer), 0, TRUE);
-      VALGRIND_MALLOCLIKE_BLOCK (allocated, private_size, 0, TRUE);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
     }
   else
     allocated = g_slice_alloc0 (private_size + ivar_size);
@@ -1919,12 +1923,15 @@ g_type_free_instance (GTypeInstance *instance)
    */
   if (private_size && RUNNING_ON_VALGRIND)
     {
+      private_size += ALIGN_STRUCT (1);
+      allocated -= ALIGN_STRUCT (1);
+
       /* Clear out the extra pointer... */
       *(gpointer *) (allocated + private_size + ivar_size) = NULL;
       /* ... and ensure we include it in the size we free. */
       g_slice_free1 (private_size + ivar_size + sizeof (gpointer), allocated);
 
-      VALGRIND_FREELIKE_BLOCK (allocated, 0);
+      VALGRIND_FREELIKE_BLOCK (allocated + ALIGN_STRUCT (1), 0);
       VALGRIND_FREELIKE_BLOCK (instance, 0);
     }
   else
