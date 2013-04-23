@@ -480,6 +480,7 @@ g_param_spec_ref
 g_param_spec_unref
 g_param_spec_sink
 g_param_spec_ref_sink
+g_param_spec_get_default_value
 g_param_value_set_default
 g_param_value_defaults
 g_param_value_validate

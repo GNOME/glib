@@ -786,6 +786,21 @@ test_param_implement (void)
           }
 }
 
+static void
+test_param_default (void)
+{
+  GParamSpec *param;
+  const GValue *def;
+
+  param = g_param_spec_int ("my-int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
+  def = g_param_spec_get_default_value (param);
+
+  g_assert (G_VALUE_HOLDS (def, G_TYPE_INT));
+  g_assert_cmpint (g_value_get_int (def), ==, 10);
+
+  g_param_spec_unref (param);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -798,6 +813,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/param/convert", test_param_convert);
   g_test_add_func ("/param/implement", test_param_implement);
   g_test_add_func ("/value/transform", test_value_transform);
+  g_test_add_func ("/param/default", test_param_default);
 
   return g_test_run ();
 }

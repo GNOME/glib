@@ -80,6 +80,13 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 						 GTypeCValue    *collect_values,
 						 guint           collect_flags);
 
+typedef struct
+{
+  GValue default_value;
+} GParamSpecPrivate;
+
+static gint g_param_private_offset;
+#define PRIV(inst) (&G_STRUCT_MEMBER(GParamSpecPrivate, (inst), g_param_private_offset))
 
 /* --- functions --- */
 void
@@ -147,6 +154,9 @@ g_param_spec_class_init (GParamSpecClass *class,
   class->value_set_default = NULL;
   class->value_validate = NULL;
   class->values_cmp = NULL;
+
+  g_type_class_add_private (class, sizeof (GParamSpecPrivate));
+  g_param_private_offset = g_type_class_get_instance_private_offset (class);
 }
 
 static void
@@ -168,6 +178,11 @@ g_param_spec_init (GParamSpec      *pspec,
 static void
 g_param_spec_finalize (GParamSpec *pspec)
 {
+  GParamSpecPrivate *priv = PRIV (pspec);
+
+  if (priv->default_value.g_type)
+    g_value_reset (&priv->default_value);
+
   g_datalist_clear (&pspec->qdata);
 
   if (!(pspec->flags & G_PARAM_STATIC_NICK))
@@ -1505,4 +1520,51 @@ g_value_dup_param (const GValue *value)
   g_return_val_if_fail (G_VALUE_HOLDS_PARAM (value), NULL);
 
   return value->data[0].v_pointer ? g_param_spec_ref (value->data[0].v_pointer) : NULL;
+}
+
+/**
+ * g_param_get_default_value:
+ * @param: a #GParamSpec
+ *
+ * Gets the default value of @param as a pointer to a #GValue.
+ *
+ * The #GValue will remain value for the life of @param.
+ *
+ * Returns: a pointer to a #GValue which must not be modified
+ *
+ * Since: 2.38
+ **/
+const GValue *
+g_param_spec_get_default_value (GParamSpec *pspec)
+{
+  GParamSpecPrivate *priv = PRIV (pspec);
+
+  /* We use the type field of the GValue as the key for the once because
+   * it will be zero before it is initialised and non-zero after.  We
+   * have to take care that we don't write a non-zero value to the type
+   * field before we are completely done, however, because then another
+   * thread could come along and find the value partially-initialised.
+   *
+   * In order to accomplish this we store the default value in a
+   * stack-allocated GValue.  We then set the type field in that value
+   * to zero and copy the contents into place.  We then end by storing
+   * the type as the last step in order to ensure that we're completely
+   * done before a g_once_init_enter() could take the fast path in
+   * another thread.
+   */
+  if (g_once_init_enter (&priv->default_value.g_type))
+    {
+      GValue default_value = G_VALUE_INIT;
+
+      g_value_init (&default_value, pspec->value_type);
+      g_param_value_set_default (pspec, &default_value);
+
+      /* store all but the type */
+      default_value.g_type = 0;
+      priv->default_value = default_value;
+
+      g_once_init_leave (&priv->default_value.g_type, pspec->value_type);
+    }
+
+  return &priv->default_value;
 }
