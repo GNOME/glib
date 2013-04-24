@@ -2076,35 +2076,22 @@ g_object_constructed (GObject *object)
   /* empty default impl to allow unconditional upchaining */
 }
 
-/**
- * g_object_set_valist: (skip)
- * @object: a #GObject
- * @first_property_name: name of the first property to set
- * @var_args: value for the first property, followed optionally by more
- *  name/value pairs, followed by %NULL
- *
- * Sets properties on an object.
- */
-void
-g_object_set_valist (GObject	 *object,
-		     const gchar *first_property_name,
-		     va_list	  var_args)
+static inline void
+object_set_valist_internal (GObject    *object,
+                            const char *first_property_name,
+                            va_list    *var_args)
 {
   GObjectNotifyQueue *nqueue;
   const gchar *name;
-  
-  g_return_if_fail (G_IS_OBJECT (object));
-  
+
   g_object_ref (object);
   nqueue = g_object_notify_queue_freeze (object, FALSE);
-  
+
   name = first_property_name;
   while (name)
     {
-      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
-      gchar *error = NULL;
-      
+
       pspec = g_param_spec_pool_lookup (pspec_pool,
 					name,
 					G_OBJECT_TYPE (object),
@@ -2132,23 +2119,132 @@ g_object_set_valist (GObject	 *object,
           break;
         }
 
-      G_VALUE_COLLECT_INIT (&value, pspec->value_type, var_args,
-			    0, &error);
-      if (error)
-	{
-	  g_warning ("%s: %s", G_STRFUNC, error);
-	  g_free (error);
+      if (G_IS_PROPERTY (pspec))
+        {
+          gboolean res;
+
+          res = g_property_set_va ((GProperty *) pspec, object,
+                                   G_PROPERTY_COLLECT_COPY | G_PROPERTY_COLLECT_REF,
+                                   var_args);
+          if (!res)
+            break;
+        }
+      else
+        {
+          GValue value = G_VALUE_INIT;
+          gchar *error = NULL;
+
+          G_VALUE_COLLECT_INIT (&value, pspec->value_type, *var_args, 0, &error);
+          if (error)
+            {
+              g_warning ("%s: %s", G_STRFUNC, error);
+              g_free (error);
+              g_value_unset (&value);
+              break;
+            }
+
+          object_set_property (object, pspec, &value, nqueue);
           g_value_unset (&value);
-	  break;
-	}
-      
-      object_set_property (object, pspec, &value, nqueue);
-      g_value_unset (&value);
-      
+        }
+
       name = va_arg (var_args, gchar*);
     }
 
   g_object_notify_queue_thaw (object, nqueue);
+  g_object_unref (object);
+}
+
+/**
+ * g_object_set_valist: (skip)
+ * @object: a #GObject
+ * @first_property_name: name of the first property to set
+ * @var_args: value for the first property, followed optionally by more
+ *  name/value pairs, followed by %NULL
+ *
+ * Sets properties on an object.
+ */
+void
+g_object_set_valist (GObject	 *object,
+		     const gchar *first_property_name,
+		     va_list	  var_args)
+{
+  va_list va_copy;
+
+  g_return_if_fail (G_IS_OBJECT (object));
+
+  G_VA_COPY (va_copy, var_args);
+  object_set_valist_internal (object, first_property_name, &va_copy);
+  va_end (va_copy);
+}
+
+static inline void
+object_get_valist_internal (GObject    *object,
+                            const char *first_property_name,
+                            va_list    *var_args)
+{
+  const char *name = first_property_name;
+
+  g_object_ref (object);
+
+  while (name != NULL)
+    {
+      GParamSpec *pspec;
+
+      pspec = g_param_spec_pool_lookup (pspec_pool,
+					name,
+					G_OBJECT_TYPE (object),
+					TRUE);
+      if (!pspec)
+	{
+	  g_warning ("%s: object class '%s' has no property named '%s'",
+		     G_STRFUNC,
+		     G_OBJECT_TYPE_NAME (object),
+		     name);
+	  break;
+	}
+      if (!(pspec->flags & G_PARAM_READABLE))
+	{
+	  g_warning ("%s: property '%s' of object class '%s' is not readable",
+		     G_STRFUNC,
+		     pspec->name,
+		     G_OBJECT_TYPE_NAME (object));
+	  break;
+	}
+
+      if (G_IS_PROPERTY (pspec))
+        {
+          gboolean res;
+
+          res = g_property_get_va ((GProperty *) pspec, object,
+                                   G_PROPERTY_COLLECT_COPY | G_PROPERTY_COLLECT_REF,
+                                   var_args);
+          if (!res)
+            break;
+        }
+      else
+        {
+          GValue value = G_VALUE_INIT;
+          gchar *error;
+      
+          g_value_init (&value, pspec->value_type);
+      
+          object_get_property (object, pspec, &value);
+      
+          G_VALUE_LCOPY (&value, *var_args, 0, &error);
+          if (error)
+            {
+              g_warning ("%s: %s", G_STRFUNC, error);
+              g_free (error);
+              g_value_unset (&value);
+              break;
+            }
+      
+          g_value_unset (&value);
+        }
+      
+      name = va_arg (*var_args, gchar*);
+    }
+  
   g_object_unref (object);
 }
 
@@ -2172,60 +2268,13 @@ g_object_get_valist (GObject	 *object,
 		     const gchar *first_property_name,
 		     va_list	  var_args)
 {
-  const gchar *name;
-  
+  va_list va_copy;
+
   g_return_if_fail (G_IS_OBJECT (object));
-  
-  g_object_ref (object);
-  
-  name = first_property_name;
-  
-  while (name)
-    {
-      GValue value = G_VALUE_INIT;
-      GParamSpec *pspec;
-      gchar *error;
-      
-      pspec = g_param_spec_pool_lookup (pspec_pool,
-					name,
-					G_OBJECT_TYPE (object),
-					TRUE);
-      if (!pspec)
-	{
-	  g_warning ("%s: object class '%s' has no property named '%s'",
-		     G_STRFUNC,
-		     G_OBJECT_TYPE_NAME (object),
-		     name);
-	  break;
-	}
-      if (!(pspec->flags & G_PARAM_READABLE))
-	{
-	  g_warning ("%s: property '%s' of object class '%s' is not readable",
-		     G_STRFUNC,
-		     pspec->name,
-		     G_OBJECT_TYPE_NAME (object));
-	  break;
-	}
-      
-      g_value_init (&value, pspec->value_type);
-      
-      object_get_property (object, pspec, &value);
-      
-      G_VALUE_LCOPY (&value, var_args, 0, &error);
-      if (error)
-	{
-	  g_warning ("%s: %s", G_STRFUNC, error);
-	  g_free (error);
-	  g_value_unset (&value);
-	  break;
-	}
-      
-      g_value_unset (&value);
-      
-      name = va_arg (var_args, gchar*);
-    }
-  
-  g_object_unref (object);
+
+  G_VA_COPY (va_copy, var_args);
+  object_get_valist_internal (object, first_property_name, &va_copy);
+  va_end (va_copy);
 }
 
 /**
@@ -2248,7 +2297,7 @@ g_object_set (gpointer     _object,
   g_return_if_fail (G_IS_OBJECT (object));
   
   va_start (var_args, first_property_name);
-  g_object_set_valist (object, first_property_name, var_args);
+  object_set_valist_internal (object, first_property_name, &var_args);
   va_end (var_args);
 }
 
@@ -2299,7 +2348,7 @@ g_object_get (gpointer     _object,
   g_return_if_fail (G_IS_OBJECT (object));
   
   va_start (var_args, first_property_name);
-  g_object_get_valist (object, first_property_name, var_args);
+  object_get_valist_internal (object, first_property_name, &var_args);
   va_end (var_args);
 }
 
