@@ -177,6 +177,12 @@ test_object_init (TestObject *self)
 {
 }
 
+G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, gboolean, bool_val)
+
+G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, gboolean, bool_val)
+
+/* test units start here */
+
 static void
 check_notify_emission (GObject *object,
                        GParamSpec *pspec,
@@ -297,6 +303,29 @@ gproperty_default_init (void)
   g_object_unref (obj);
 }
 
+static void
+gproperty_accessors_get_set (void)
+{
+  TestObject *obj = g_object_new (test_object_get_type (), NULL);
+  gboolean did_emit_notify = FALSE;
+
+  g_signal_connect (obj, "notify::bool-val", G_CALLBACK (check_notify_emission), &did_emit_notify);
+
+  test_object_set_bool_val (obj, TRUE);
+
+  g_assert (did_emit_notify);
+  g_assert (test_object_get_bool_val (obj));
+
+  did_emit_notify = FALSE;
+
+  test_object_set_bool_val (obj, FALSE);
+
+  g_assert (did_emit_notify);
+  g_assert (!test_object_get_bool_val (obj));
+
+  g_object_unref (obj);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -309,6 +338,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gproperty/object-get", gproperty_object_get);
   g_test_add_func ("/gproperty/explicit-set", gproperty_explicit_set);
   g_test_add_func ("/gproperty/default/init", gproperty_default_init);
+  g_test_add_func ("/gproperty/accessors/get-set", gproperty_accessors_get_set);
 
   return g_test_run ();
 }
