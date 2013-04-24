@@ -553,6 +553,16 @@ g_icon_deserialize_emblemed (GVariant *value)
   return icon;
 }
 
+/**
+ * g_icon_deserialize:
+ * @value: a #GVariant created with g_icon_serialize()
+ *
+ * Deserializes a #GIcon previously serialized using g_icon_serialize().
+ *
+ * Returns: (transfer full): a #GIcon, or %NULL when deserialization fails.
+ *
+ * Since: 2.38
+ */
 GIcon *
 g_icon_deserialize (GVariant *value)
 {
@@ -630,6 +640,20 @@ g_icon_deserialize (GVariant *value)
   return icon;
 }
 
+/**
+ * g_icon_serialize:
+ * @icon: a #GIcon
+ *
+ * Serializes a #GIcon into a #GVariant. An equivalent #GIcon can be retrieved
+ * back by calling g_icon_deserialize() on the returned value.
+ * As serialization will avoid using raw icon data when possible, it only
+ * makes sense to transfer the #GVariant between processes on the same machine,
+ * (as opposed to over the network), and within the same file system namespace.
+ *
+ * Returns: (transfer full): a #GVariant, or %NULL when serialization fails.
+ *
+ * Since: 2.38
+ */
 GVariant *
 g_icon_serialize (GIcon *icon)
 {

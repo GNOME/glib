@@ -448,6 +448,8 @@ g_icon_hash
 g_icon_equal
 g_icon_to_string
 g_icon_new_for_string
+g_icon_serialize
+g_icon_deserialize
 <SUBSECTION Standard>
 G_ICON
 G_IS_ICON
