@@ -5,10 +5,11 @@ typedef struct _TestObjectPrivate       TestObjectPrivate;
 typedef struct _TestObjectClass         TestObjectClass;
 
 typedef enum {
-  TEST_ENUM_UNSET,
   TEST_ENUM_ONE,
   TEST_ENUM_TWO,
-  TEST_ENUM_THREE
+  TEST_ENUM_THREE,
+
+  TEST_ENUM_UNSET = -1
 } TestEnum;
 
 struct _TestObject
@@ -27,14 +28,17 @@ struct _TestObjectPrivate
 
   double double_val;
 
-  char *str_val;
+  char *string_val;
 
   gboolean bool_val;
 
   TestEnum enum_val;
-  guint enum_val_set : 1;
+  gboolean enum_val_set;
 
   guint8 with_default;
+
+  float width;
+  float height;
 };
 
 GType test_enum_get_type (void);
@@ -64,28 +68,12 @@ test_enum_get_type (void)
 
 G_DEFINE_TYPE_WITH_PRIVATE (TestObject, test_object, G_TYPE_OBJECT)
 
-enum
-{
-  PROP_0,
-
-  PROP_INTEGER_VAL,
-  PROP_DOUBLE_VAL,
-  PROP_STRING_VAL,
-  PROP_BOOL_VAL,
-  PROP_ENUM_VAL,
-  PROP_WITH_DEFAULT,
-
-  LAST_PROP
-};
-
-static GParamSpec *test_object_properties[LAST_PROP] = { NULL, };
-
 static void
 test_object_finalize (GObject *gobject)
 {
   TestObjectPrivate *priv = test_object_get_instance_private ((TestObject *) gobject);
 
-  g_free (priv->str_val);
+  g_free (priv->string_val);
 
   if (priv->enum_val != TEST_ENUM_UNSET)
     g_assert (priv->enum_val_set);
@@ -94,8 +82,8 @@ test_object_finalize (GObject *gobject)
 }
 
 static gboolean
-test_object_set_enum_val (gpointer obj,
-                          gint     val)
+test_object_set_enum_val_internal (gpointer obj,
+                                   gint     val)
 {
   TestObjectPrivate *priv = test_object_get_instance_private (obj);
 
@@ -126,60 +114,73 @@ test_object_class_init (TestObjectClass *klass)
   gobject_class->constructed = test_object_constructed;
   gobject_class->finalize = test_object_finalize;
 
-  test_object_properties[PROP_INTEGER_VAL] =
-    g_int_property_new ("integer-val",
-                        G_PROPERTY_READWRITE,
-                        G_STRUCT_OFFSET (TestObjectPrivate, integer_val),
-                        NULL, NULL);
-
-  test_object_properties[PROP_DOUBLE_VAL] =
-    g_double_property_new ("double-val",
-                           G_PROPERTY_READWRITE,
-                           G_STRUCT_OFFSET (TestObjectPrivate, double_val),
-                           NULL, NULL);
-
-  test_object_properties[PROP_STRING_VAL] =
-    g_string_property_new ("string-val",
-                           G_PROPERTY_READWRITE | G_PROPERTY_COPY_SET,
-                           G_STRUCT_OFFSET (TestObjectPrivate, str_val),
-                           NULL, NULL);
-
-  test_object_properties[PROP_BOOL_VAL] =
-    g_boolean_property_new ("bool-val",
-                            G_PROPERTY_READWRITE,
-                            G_STRUCT_OFFSET (TestObjectPrivate, bool_val),
-                            NULL, NULL);
-
-  test_object_properties[PROP_ENUM_VAL] =
-    g_enum_property_new ("enum-val",
-                         G_PROPERTY_READWRITE,
-                         G_STRUCT_OFFSET (TestObjectPrivate, enum_val),
-                         test_object_set_enum_val,
-                         NULL);
-  g_property_set_prerequisite ((GProperty *) test_object_properties[PROP_ENUM_VAL],
-                               test_enum_get_type ());
-  g_property_set_default ((GProperty *) test_object_properties[PROP_ENUM_VAL],
-                          TEST_ENUM_UNSET);
-
-  test_object_properties[PROP_WITH_DEFAULT] =
-    g_uint8_property_new ("with-default",
-                          G_PROPERTY_READWRITE,
-                          G_STRUCT_OFFSET (TestObjectPrivate, with_default),
-                          NULL,
-                          NULL);
-  g_property_set_default ((GProperty *) test_object_properties[PROP_WITH_DEFAULT], 255);
-
-  g_object_class_install_properties (gobject_class, LAST_PROP, test_object_properties);
+  G_DEFINE_PROPERTIES (TestObject, test_object, klass,
+                       G_DEFINE_PROPERTY (TestObject,
+                                          int,
+                                          integer_val,
+                                          G_PROPERTY_READWRITE)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          double,
+                                          double_val,
+                                          G_PROPERTY_READWRITE)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          string,
+                                          string_val,
+                                          G_PROPERTY_READWRITE | G_PROPERTY_COPY_SET)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          boolean,
+                                          bool_val,
+                                          G_PROPERTY_READWRITE)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          float,
+                                          width,
+                                          G_PROPERTY_READWRITE)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          float,
+                                          height,
+                                          G_PROPERTY_READWRITE)
+                       G_DEFINE_PROPERTY_EXTENDED (TestObject,
+                                                   enum,
+                                                   enum_val,
+                                                   G_STRUCT_OFFSET (TestObjectPrivate, enum_val),
+                                                   test_object_set_enum_val_internal,
+                                                   NULL,
+                                                   G_PROPERTY_READWRITE,
+                                                   G_PROPERTY_DEFAULT (TEST_ENUM_UNSET)
+                                                   g_property_set_prerequisite (g_property, test_enum_get_type ());)
+                       G_DEFINE_PROPERTY (TestObject,
+                                          boolean,
+                                          enum_val_set,
+                                          G_PROPERTY_READABLE);
+                       G_DEFINE_PROPERTY_WITH_CODE (TestObject,
+                                                    uint8,
+                                                    with_default,
+                                                    G_PROPERTY_READWRITE,
+                                                    G_PROPERTY_DEFAULT (255)
+                                                    G_PROPERTY_DESCRIBE ("With Default",
+                                                                         "A property with a default value")))
 }
 
 static void
 test_object_init (TestObject *self)
 {
+  TestObjectPrivate *priv = test_object_get_private (self);
+
+  g_assert (priv->enum_val == TEST_ENUM_UNSET);
+  g_assert (!priv->enum_val_set);
 }
 
 G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, gboolean, bool_val)
+G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, float, width)
+G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, float, height)
+G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, TestEnum, enum_val)
+G_DECLARE_PROPERTY_GET (TestObject, test_object, gboolean, enum_val_set)
 
 G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, gboolean, bool_val)
+G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, float, width)
+G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, float, height)
+G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, TestEnum, enum_val)
+G_DEFINE_PROPERTY_INDIRECT_GET (TestObject, test_object, gboolean, enum_val_set)
 
 /* test units start here */
 
@@ -206,7 +207,7 @@ gproperty_construct (void)
 
   g_assert_cmpint (priv->integer_val, ==, 42);
   g_assert (priv->bool_val);
-  g_assert_cmpstr (priv->str_val, ==, "Hello, world");
+  g_assert_cmpstr (priv->string_val, ==, "Hello, world");
   g_assert_cmpfloat ((float) priv->double_val, ==, 3.14159f);
 
   g_object_unref (obj);
@@ -223,14 +224,14 @@ gproperty_object_set (void)
   g_signal_connect (obj, "notify::string-val", G_CALLBACK (check_notify_emission), &did_emit_notify);
 
   g_object_set (obj, "string-val", "Hello!", NULL);
-  g_assert_cmpstr (priv->str_val, ==, "Hello!");
+  g_assert_cmpstr (priv->string_val, ==, "Hello!");
 
   g_assert (did_emit_notify);
 
   did_emit_notify = FALSE;
 
   g_object_set (obj, "string-val", "Hello!", NULL);
-  g_assert_cmpstr (priv->str_val, ==, "Hello!");
+  g_assert_cmpstr (priv->string_val, ==, "Hello!");
 
   g_assert (!did_emit_notify);
 
@@ -264,23 +265,18 @@ gproperty_explicit_set (void)
   gboolean did_emit_notify = FALSE;
   TestEnum enum_val;
 
-  TestObjectPrivate *priv =
-    g_type_instance_get_private ((GTypeInstance *) obj, test_object_get_type ());
-
   g_signal_connect (obj, "notify::enum-val", G_CALLBACK (check_notify_emission), &did_emit_notify);
 
   g_object_set (obj, "enum-val", TEST_ENUM_THREE, NULL);
-  g_assert_cmpint (priv->enum_val, ==, TEST_ENUM_THREE);
-  g_assert (priv->enum_val_set);
-
+  g_assert_cmpint (test_object_get_enum_val (obj), ==, TEST_ENUM_THREE);
+  g_assert (test_object_get_enum_val_set (obj));
   g_assert (did_emit_notify);
 
   did_emit_notify = FALSE;
-  g_object_set (obj, "enum-val", TEST_ENUM_THREE, NULL);
-  g_assert (!did_emit_notify);
-
+  test_object_set_enum_val (obj, TEST_ENUM_THREE);
   g_object_get (obj, "enum-val", &enum_val, NULL);
   g_assert_cmpint (enum_val, ==, TEST_ENUM_THREE);
+  g_assert (!did_emit_notify);
 
   g_object_unref (obj);
 }

@@ -1661,10 +1661,12 @@ static void     type_name##_class_intern_init (gpointer klass) \
 
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
 \
-static void     type_name##_init              (TypeName        *self); \
-static void     type_name##_class_init        (TypeName##Class *klass); \
-static gpointer type_name##_parent_class = NULL; \
-static gint     TypeName##_private_offset; \
+static void         type_name##_init            (TypeName        *self); \
+static void         type_name##_class_init      (TypeName##Class *klass); \
+static gpointer     type_name##_parent_class = NULL; \
+static gint         TypeName##_private_offset; \
+static GParamSpec **type_name##_properties G_GNUC_UNUSED; \
+static guint        type_name##_properties_len G_GNUC_UNUSED; \
 \
 _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
 \

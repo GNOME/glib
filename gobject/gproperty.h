@@ -431,7 +431,259 @@ void            g_property_set_installed       (GProperty *property,
 void            g_property_init_default        (GProperty *property,
                                                 gpointer   object);
 
+/* property generation */
 
+/**
+ * G_PROPERTY_DESCRIBE:
+ * @p_nick: a human readable, translatable name for the property
+ * @p_blurb: a human readable, translatable description for the property
+ *
+ * Sets the property nick and blurb using two static strings.
+ *
+ * This macro can only be called inside %G_DEFINE_PROPERTY_EXTENDED.
+ *
+ * Since: 2.38
+ */
+#define G_PROPERTY_DESCRIBE(p_nick, p_blurb) \
+  { \
+    GParamSpec *__g_param_spec = (GParamSpec *) g_property; \
+    g_param_spec_set_static_nick (__g_param_spec, p_nick); \
+    g_param_spec_set_static_blurb (__g_param_spec, p_blurb); \
+  }
+
+/**
+ * G_PROPERTY_DEFAULT:
+ * @p_val: the default value of the property
+ *
+ * Sets the default value for the property.
+ *
+ * This macro can only be called inside %G_DEFINE_PROPERTY_EXTENDED.
+ *
+ * Since: 2.38
+ */
+#define G_PROPERTY_DEFAULT(p_val) \
+  g_property_set_default (g_property, p_val);
+
+/**
+ * G_PROPERTY_RANGE:
+ * @p_min: the minimum value of the valid range for the property
+ * @p_max: the maximum value of the valid range for the property
+ *
+ * Sets the range of valid values for the property.
+ *
+ * This macro can only be called inside %G_DEFINE_PROPERTY_EXTENDED.
+ *
+ * Since: 2.38
+ */
+#define G_PROPERTY_RANGE(p_min, p_max) \
+  g_property_set_range (g_property, p_min, p_max);
+
+/**
+ * G_PROPERTY_PREREQUISITE:
+ * @type: the prerequisite type for the property
+ *
+ * Sets the prerequisite type for enumeration, flags, boxed,
+ * and object properties.
+ *
+ * This macro can only be called inside %G_DEFINE_PROPERTY_EXTENDED.
+ *
+ * Since: 2.38
+ */
+#define G_PROPERTY_PREREQUISITE(type) \
+  g_property_set_prerequisite (g_property, type);
+
+#define _G_DEFINE_PROPERTIES_BEGIN() \
+  { \
+    GPtrArray *g_define_properties = g_ptr_array_new (); \
+    g_ptr_array_add (g_define_properties, NULL);
+
+#define _G_DEFINE_PROPERTIES_END(T_N, t_n, g_class) \
+    t_n##_properties_len = g_define_properties->len; \
+    t_n##_properties = (GParamSpec **) g_ptr_array_free (g_define_properties, FALSE); \
+    g_object_class_install_properties (G_OBJECT_CLASS (g_class), \
+                                       t_n##_properties_len, \
+                                       t_n##_properties); \
+  }
+
+/**
+ * G_DEFINE_PROPERTIES:
+ * @T_N: the name of the type, in CamelCase
+ * @t_n: the name of the type, in lower case, with spaces replaced by underscores
+ * @g_class: a pointer to the class structure of the type
+ * @_C_: a list of G_DEFINE_PROPERTY_EXTENDED calls
+ *
+ * Defines a list of properties and installs them on the class.
+ *
+ * Note that this macro can only be used with types defined using
+ * G_DEFINE_TYPE_* macros, as it depends on variables defined by
+ * those macros.
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTIES(T_N, t_n, g_class, _C_) \
+  _G_DEFINE_PROPERTIES_BEGIN() \
+  { _C_; } \
+  _G_DEFINE_PROPERTIES_END(T_N, t_n, g_class)
+
+#define _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN(T_N, c_type, name, flags) \
+{ \
+  GProperty *g_property = (GProperty *) \
+    g_##c_type##_property_new (#name, flags, \
+                               G_STRUCT_OFFSET (T_N##Private, name), \
+                               NULL, \
+                               NULL);
+#define _G_DEFINE_PROPERTY_EXTENDED_BEGIN(T_N, c_type, name, offset, setterFunc, getterFunc, flags) \
+{ \
+  GProperty *g_property = (GProperty *) \
+    g_##c_type##_property_new (#name, flags, \
+                               offset, \
+                               setterFunc, \
+                               getterFunc);
+#define _G_DEFINE_PROPERTY_EXTENDED_END \
+  g_ptr_array_add (g_define_properties, g_property); \
+}
+
+/**
+ * G_DEFINE_PROPERTY_EXTENDED:
+ * @T_N: the name of the type, in CamelCase
+ * @c_type: the C type of the property, in lower case, minus the "g" if the type
+ *   is defined by GLib; for instance "int" for "gint", "uint8" for "guint8",
+ *   "boolean" for "gboolean"; strings stored in a gchar* are defined as "string"
+ * @name: the name of the property, in lower case, with '-' replaced by '_'
+ * @offset: the offset of the field in the structure that stores the property, or 0
+ * @setterFunc: the explicit setter function, or %NULL for direct access
+ * @getterFunc: the explicit getter function, or %NULL for direct access
+ * @flags: #GPropertyFlags for the property
+ * @_C_: custom code to be called after the property has been defined; the
+ *   GProperty instance is available under the "g_property" variable
+ *
+ * The most generic property definition macro.
+ *
+ * |[
+ *   G_DEFINE_PROPERTY_EXTENDED (GtkGadget,
+ *                               int,
+ *                               width,
+ *                               G_STRUCT_OFFSET (GtkGadgetPrivate, width),
+ *                               NULL, NULL,
+ *                               G_PROPERTY_READWRITE,
+ *                               G_PROPERTY_RANGE (0, G_MAXINT))
+ * ]|
+ * expands to
+ * |[
+ *   {
+ *     GProperty *g_property =
+ *       g_int_property_new ("width", G_PROPERTY_READWRITE,
+ *                           G_STRUCT_OFFSET (GtkGadgetPrivate, width),
+ *                           NULL, NULL);
+ *     g_property_set_range (g_property, 0, G_MAXINT);
+ *     gtk_gadget_properties[PROP_GtkGadget_width] = g_property;
+ *   }
+ * ]|
+ *
+ * This macro should only be used with G_DEFINE_PROPERTIES() as it depends
+ * on variables and functions defined by that macro.
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTY_EXTENDED(T_N, c_type, name, offset, setterFunc, getterFunc, flags, _C_) \
+  _G_DEFINE_PROPERTY_EXTENDED_BEGIN (T_N, c_type, name, offset, setterFunc, getterFunc, flags) \
+  { _C_; } \
+  _G_DEFINE_PROPERTY_EXTENDED_END
+
+/**
+ * G_DEFINE_PROPERTY_WITH_CODE:
+ * @T_N: the name of the type, in CamelCase
+ * @c_type: the C type of the property, in lower case, minus the "g" if the type
+ *   is defined by GLib; for instance "int" for "gint", "uint8" for "guint8",
+ *   "boolean" for "gboolean"; strings stored in a gchar* are defined as "string"
+ * @name: the name of the property, in lower case, with '-' replaced by '_'; the
+ *   name of the property must exist as a member of the per-instance private data
+ *   structure of the type name
+ * @flags: #GPropertyFlags for the property
+ * @_C_: custom code to be called after the property has been defined; the
+ *   GProperty instance is available under the "g_property" variable
+ *
+ * A variant of G_DEFINE_PROPERTY_EXTENDED() that only allows properties
+ * with direct access, stored on the per-instance private data structure
+ * for the given type.
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTY_WITH_CODE(T_N, c_type, name, flags, _C_) \
+  _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN (T_N, c_type, name, flags) \
+  { _C_; } \
+  _G_DEFINE_PROPERTY_EXTENDED_END
+
+/**
+ * G_DEFINE_PROPERTY_WITH_DEFAULT:
+ * @T_N: the name of the type, in CamelCase
+ * @c_type: the C type of the property, in lower case, minus the "g" if the type
+ *   is defined by GLib; for instance "int" for "gint", "uint8" for "guint8",
+ *   "boolean" for "gboolean"; strings stored in a gchar* are defined as "string"
+ * @name: the name of the property, in lower case, with '-' replaced by '_'; the
+ *   name of the property must exist as a member of the per-instance private data
+ *   structure of the type name
+ * @flags: #GPropertyFlags for the property
+ * @defVal: the default value of the property
+ *
+ * A convenience macro for defining a direct access property with a default
+ * value.
+ *
+ * See G_DEFINE_PROPERTY_WITH_CODE() and G_PROPERTY_DEFAULT().
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTY_WITH_DEFAULT(T_N, c_type, name, flags, defVal) \
+  _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN (T_N, c_type, name, flags) \
+  G_PROPERTY_DEFAULT (defVal) \
+  _G_DEFINE_PROPERTY_EXTENDED_END
+
+/**
+ * G_DEFINE_PROPERTY_WITH_RANGE:
+ * @T_N: the name of the type, in CamelCase
+ * @c_type: the C type of the property, in lower case, minus the "g" if the type
+ *   is defined by GLib; for instance "int" for "gint", "uint8" for "guint8",
+ *   "boolean" for "gboolean"; strings stored in a gchar* are defined as "string"
+ * @name: the name of the property, in lower case, with '-' replaced by '_'; the
+ *   name of the property must exist as a member of the per-instance private data
+ *   structure of the type name
+ * @flags: #GPropertyFlags for the property
+ * @minVal: the minimum value of the property
+ * @maxVal: the maximum value of the property
+ *
+ * A convenience macro for defining a direct access property with a range
+ * of valid values.
+ *
+ * See G_DEFINE_PROPERTY_WITH_CODE() and G_PROPERTY_RANGE().
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTY_WITH_RANGE(T_N, c_type, name, flags, minVal, maxVal) \
+  _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN (T_N, c_type, name, flags) \
+  G_PROPERTY_RANGE (minVal, maxVal) \
+  _G_DEFINE_PROPERTY_EXTENDED_END
+
+/**
+ * G_DEFINE_PROPERTY:
+ * @T_N: the name of the type, in CamelCase
+ * @c_type: the C type of the property, in lower case, minus the "g" if the type
+ *   is defined by GLib; for instance "int" for "gint", "uint8" for "guint8",
+ *   "boolean" for "gboolean"; strings stored in a gchar* are defined as "string"
+ * @name: the name of the property, in lower case, with '-' replaced by '_'; the
+ *   name of the property must exist as a member of the per-instance private data
+ *   structure of the type name
+ * @flags: #GPropertyFlags for the property
+ *
+ * A convenience macro for defining a direct access property.
+ *
+ * See G_DEFINE_PROPERTY_WITH_CODE() and G_DEFINE_PROPERTY_EXTENDED() if
+ * you need more flexibility.
+ *
+ * Since: 2.38
+ */
+#define G_DEFINE_PROPERTY(T_N, c_type, name, flags) \
+  _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN (T_N, c_type, name, flags) \
+  _G_DEFINE_PROPERTY_EXTENDED_END
 
 /* accessors generation */
 #define _G_DECLARE_PROPERTY_GETTER(T_n, t_n, f_t, f_n)  f_t t_n##_get_##f_n (T_n *self)
@@ -456,9 +708,19 @@ void            g_property_init_default        (GProperty *property,
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (self, t_n##_get_type ()), (f_t) 0); \
 \
   { \
-    GObjectClass *_self_class; \
-    _self_class = G_OBJECT_GET_CLASS (self); \
-    g_property = (GProperty *) g_object_class_find_property (_self_class, #f_n); \
+    const char *pname = g_property_canonicalize_name (#f_n); \
+    int i; \
+\
+    for (i = 1; i < t_n##_properties_len; i++) \
+      { \
+        GParamSpec *pspec = t_n##_properties[i]; \
+        if (pspec != NULL && pspec->name == pname) \
+          { \
+            g_property = (GProperty *) pspec; \
+            break; \
+          } \
+      } \
+\
     if (G_UNLIKELY (g_property == NULL)) \
       { \
         g_critical (G_STRLOC ": No property " #f_n " found for class %s", \
@@ -466,18 +728,6 @@ void            g_property_init_default        (GProperty *property,
         return (f_t) 0; \
       } \
   } \
-\
-  if (!G_IS_PROPERTY (g_property)) \
-    { \
-      g_critical (G_STRLOC ": Property " #f_n " is not a GProperty"); \
-      return (f_t) 0; \
-    } \
-\
-  if (!g_property_is_readable (g_property)) \
-    { \
-       g_critical (G_STRLOC ": The property " #f_n " is not readable"); \
-       return (f_t) 0; \
-    } \
 \
   if (!g_property_get (g_property, self, &retval)) \
     { \
@@ -501,27 +751,25 @@ void            g_property_init_default        (GProperty *property,
   g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (self, t_n##_get_type ())); \
 \
   { \
-    GObjectClass *_self_class; \
-    _self_class = G_OBJECT_GET_CLASS (self); \
-    g_property = (GProperty *) g_object_class_find_property (_self_class, #f_n); \
+    const char *pname = g_property_canonicalize_name (#f_n); \
+    int i; \
+\
+    for (i = 1; i < t_n##_properties_len; i++) \
+      { \
+        GParamSpec *pspec = t_n##_properties[i]; \
+        if (pspec != NULL && pspec->name == pname) \
+          { \
+            g_property = (GProperty *) pspec; \
+            break; \
+          } \
+      } \
+\
     if (G_UNLIKELY (g_property == NULL)) \
       { \
         g_critical (G_STRLOC ": No property " #f_n " found for class %s", G_OBJECT_TYPE_NAME (self)); \
         return; \
       } \
   } \
-\
-  if (!G_IS_PROPERTY (g_property)) \
-    { \
-      g_critical (G_STRLOC ": Property " #f_n " is not a GProperty"); \
-      return; \
-    } \
-\
-  if (!g_property_is_writable (g_property)) \
-    { \
-       g_critical (G_STRLOC ": The property " #f_n " is not writable"); \
-       return; \
-    } \
 \
   if (!g_property_set (g_property, self, value)) \
     return; \
@@ -590,9 +838,8 @@ _G_DECLARE_PROPERTY_GETTER (T_n, t_n, f_t, f_n);
  * @_C_: C code that should be called after the property has been set
  *
  * Defines the setter function for a @field_name property in the
- * class @TypeName, with the possibility of calling custom code.
- *
- * This macro should only be used in C source files.
+ * class @TypeName, with the possibility of calling custom code, for
+ * instance:
  *
  * |[
  * G_DEFINE_PROPERTY_SET_WITH_CODE (ClutterActor, clutter_actor,
@@ -633,9 +880,15 @@ _G_DEFINE_PROPERTY_SETTER_END
  * class @T_n, with the possibility of calling custom code.
  *
  * This macro will directly access the field on the private
- * data structure.
+ * data structure, and should only be used if the property
+ * has been defined to use an offset instead of an explicit
+ * getter. Use G_DEFINE_PROPERTY_COMPUTED_GET_WITH_CODE() if
+ * you have an internal getter function.
  *
  * This macro should only be used in C source files.
+ *
+ * Note that this macro should be used with types defined using G_DEFINE_TYPE_*
+ * macros, as it depends on variables and functions defined by those macros.
  *
  * Since: 2.38
  */
@@ -662,6 +915,9 @@ _G_DEFINE_PROPERTY_GETTER_END
  *
  * This macro should only be used in C source files.
  *
+ * Note that this macro should be used with types defined using G_DEFINE_TYPE_*
+ * macros, as it depends on variables and functions defined by those macros.
+ *
  * Since: 2.38
  */
 #define G_DEFINE_PROPERTY_INDIRECT_GET_WITH_CODE(T_n, t_n, f_t, f_n, _C_) \
@@ -682,6 +938,9 @@ _G_DEFINE_PROPERTY_GETTER_END
  * Defines the setter function for a @field_name property in the
  * class @TypeName. This macro should only be used in C source files.
  *
+ * Note that this macro should be used with types defined using G_DEFINE_TYPE_*
+ * macros, as it depends on variables and functions defined by those macros.
+ *
  * See also: %G_DEFINE_PROPERTY_SET_WITH_CODE
  *
  * Since: 2.38
@@ -700,6 +959,9 @@ _G_DEFINE_PROPERTY_GETTER_END
  * Defines the getter function for a @field_name property in the
  * class @TypeName. This macro should only be used in C source files.
  *
+ * Note that this macro should be used with types defined using G_DEFINE_TYPE_*
+ * macros, as it depends on variables and functions defined by those macros.
+ *
  * See also %G_DEFINE_PROPERTY_GET_WITH_CODE.
  *
  * Since: 2.38
@@ -717,6 +979,9 @@ _G_DEFINE_PROPERTY_GETTER_END
  *
  * Defines the getter function for a @field_name property in the
  * class @TypeName. This macro should only be used in C source files.
+ *
+ * Note that this macro should be used with types defined using G_DEFINE_TYPE_*
+ * macros, as it depends on variables and functions defined by those macros.
  *
  * See also %G_DEFINE_PROPERTY_COMPUTED_GET_WITH_CODE.
  *
@@ -754,17 +1019,19 @@ _G_DEFINE_PROPERTY_GETTER_END
  *
  *   priv = clutter_actor_get_instance_private (self);
  *
- *   if (priv->margin_top == value)
- *     return;
+ *   if (priv->margin_top != value)
+ *     {
+ *       priv->value = value;
  *
- *   priv->value = value;
- *
- *   g_object_notify (G_OBJECT (self), "margin-top");
+ *       g_object_notify (G_OBJECT (self), "margin-top");
+ *     }
  * }
  *
  * int
  * clutter_actor_get_margin_top (ClutterActor *self)
  * {
+ *   ClutterActorPrivate *priv;
+ *
  *   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (self, clutter_actor_get_type ()), 0);
  *
  *   priv = clutter_actor_get_instance_private (self);
@@ -781,6 +1048,10 @@ _G_DEFINE_PROPERTY_GETTER_END
  * %G_DEFINE_PROPERTY_GET and %G_DEFINE_PROPERTY_SET macros, along with their
  * %G_DEFINE_PROPERTY_GET_WITH_CODE and %G_DEFINE_PROPERTY_SET_WITH_CODE
  * variants.
+ *
+ * Note that this macro should only be used with types defined using
+ * G_DEFINE_TYPE_* macros, as it depends on variable and functions defined
+ * by those macros.
  *
  * Since: 2.38
  */
