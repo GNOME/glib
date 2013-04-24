@@ -284,6 +284,56 @@ g_param_spec_ref_sink (GParamSpec *pspec)
 }
 
 /**
+ * g_param_spec_set_static_nick:
+ * @pspec: a valid #GParamSpec
+ * @nick: a static string with a human readable name for the @pspec
+ *
+ * Sets the "nick" of a #GParamSpec, unless one has been already specified.
+ *
+ * The passed string must be static.
+ *
+ * Since: 2.38
+ */
+void
+g_param_spec_set_static_nick (GParamSpec *pspec,
+                              const char *nick)
+{
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (nick != NULL);
+
+  if (pspec->_nick != NULL)
+    return;
+
+  pspec->_nick = (gchar *) nick;
+  pspec->flags |= G_PARAM_STATIC_NICK;
+}
+
+/**
+ * g_param_spec_set_static_blurb:
+ * @pspec: a valid #GParamSpec
+ * @blurb: a static string with a human readable description for the @pspec
+ *
+ * Sets the "blurb" of a #GParamSpec, unless one has been already specified.
+ *
+ * The passed string must be static.
+ *
+ * Since: 2.38
+ */
+void
+g_param_spec_set_static_blurb (GParamSpec *pspec,
+                               const char *blurb)
+{
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (blurb != NULL);
+
+  if (pspec->_blurb != NULL)
+    return;
+
+  pspec->_blurb = (gchar *) blurb;
+  pspec->flags |= G_PARAM_STATIC_BLURB;
+}
+
+/**
  * g_param_spec_get_name:
  * @pspec: a valid #GParamSpec
  *

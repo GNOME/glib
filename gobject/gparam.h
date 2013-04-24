@@ -321,6 +321,12 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *   g_param_spec_get_nick           (GParamSpec    *pspec);
 GLIB_AVAILABLE_IN_ALL
 const gchar *   g_param_spec_get_blurb          (GParamSpec    *pspec);
+GLIB_AVAILABLE_IN_2_38
+void            g_param_spec_set_static_nick    (GParamSpec    *pspec,
+                                                 const char    *nick);
+GLIB_AVAILABLE_IN_2_38
+void            g_param_spec_set_static_blurb   (GParamSpec    *pspec,
+                                                 const char    *blurb);
 GLIB_AVAILABLE_IN_ALL
 void            g_value_set_param               (GValue	       *value,
 						 GParamSpec    *param);
