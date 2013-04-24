@@ -355,6 +355,8 @@ struct _GProperty
 #define g_value_get_uint16      g_value_get_uint
 #define g_value_get_uint32      g_value_get_uint
 
+static GType g_property_default_value_key = G_TYPE_INVALID;
+
 static GParamFlags
 property_flags_to_param_flags (GPropertyFlags flags)
 {
@@ -397,6 +399,23 @@ g_property_create (GType           pspec_type,
   prop->is_installed = FALSE;
 
   return prop;
+}
+
+static inline void
+g_property_ensure_prop_id (GProperty *property)
+{
+  char *prop_id;
+
+  if (G_LIKELY (property->prop_id != 0))
+    return;
+
+  prop_id = g_strconcat ("-g-property-",
+                         G_PARAM_SPEC (property)->name,
+                         NULL);
+
+  property->prop_id = g_quark_from_string (prop_id);
+
+  g_free (prop_id);
 }
 
 #define DEFINE_PROPERTY_INTEGER(G_t, g_t, c_t, G_T, minVal, maxVal) \
@@ -2610,14 +2629,7 @@ _g_property_set_installed (GProperty *property,
         property->priv_offset = g_type_class_get_instance_private_offset (g_class);
     }
 
-  if (property->prop_id == 0)
-    {
-      gchar *prop_id = g_strconcat ("-g-property-id-",
-                                    G_PARAM_SPEC (property)->name,
-                                    NULL);
-      property->prop_id = g_quark_from_string (prop_id);
-      g_free (prop_id);
-    }
+  g_property_ensure_prop_id (property);
 
   property->is_installed = TRUE;
 }
@@ -3341,6 +3353,397 @@ g_property_get_range (GProperty *property,
   va_end (var_args);
 
   return retval;
+}
+
+static void
+value_unset_and_free (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    {
+      GValue *value = data;
+
+      g_value_unset (value);
+      g_free (value);
+    }
+}
+
+static inline void
+g_property_set_default_value_internal (GProperty *property,
+                                       GValue    *value)
+{
+  GHashTable *default_values;
+
+  g_property_ensure_prop_id (property);
+
+  default_values = g_param_spec_get_qdata (G_PARAM_SPEC (property),
+                                           property->prop_id);
+  if (default_values == NULL)
+    {
+      default_values = g_hash_table_new_full (NULL, NULL,
+                                              NULL,
+                                              value_unset_and_free);
+      g_param_spec_set_qdata_full (G_PARAM_SPEC (property),
+                                   property->prop_id,
+                                   default_values,
+                                   (GDestroyNotify) g_hash_table_unref);
+    }
+
+  g_hash_table_replace (default_values,
+                        GSIZE_TO_POINTER (g_property_default_value_key),
+                        value);
+}
+
+static inline const GValue *
+g_property_get_default_value_internal (GProperty *property,
+                                       GType      gtype)
+{
+  GHashTable *default_values;
+  const GValue *default_value = NULL;
+  GType iter;
+
+  if (property->prop_id == 0)
+    return NULL;
+
+  default_values = g_param_spec_get_qdata (G_PARAM_SPEC (property),
+                                           property->prop_id);
+  if (default_values == NULL)
+    return NULL;
+
+  /* we look for overridden default values on ourselves and our parent
+   * classes first...*/
+  iter = gtype;
+  while (iter != G_TYPE_INVALID && default_value == NULL)
+    {
+      default_value = g_hash_table_lookup (default_values, GSIZE_TO_POINTER (iter));
+
+      iter = g_type_parent (iter);
+    }
+
+  /* ...as well as on our interfaces... */
+  if (default_value == NULL)
+    {
+      GType *ifaces = NULL;
+      guint n_ifaces = 0;
+
+      ifaces = g_type_interfaces (gtype, &n_ifaces);
+      while (n_ifaces-- && default_value == NULL)
+        {
+          iter = ifaces[n_ifaces];
+          default_value = g_hash_table_lookup (default_values, GSIZE_TO_POINTER (iter));
+        }
+
+      g_free (ifaces);
+    }
+
+  /* ...and if we fail, we pick the default value set by the class that
+   * installed the property first
+   */
+  if (default_value == NULL)
+    {
+      default_value = g_hash_table_lookup (default_values, GSIZE_TO_POINTER (g_property_default_value_key));
+    }
+
+  return default_value;
+}
+
+static inline void
+g_property_override_default_value_internal (GProperty *property,
+                                            GType      class_type,
+                                            GValue    *value)
+{
+  GHashTable *default_values;
+
+  g_property_ensure_prop_id (property);
+
+  default_values = g_param_spec_get_qdata (G_PARAM_SPEC (property),
+                                           property->prop_id);
+  if (default_values == NULL)
+    {
+      default_values = g_hash_table_new_full (NULL, NULL,
+                                              NULL,
+                                              value_unset_and_free);
+      g_param_spec_set_qdata_full (G_PARAM_SPEC (property),
+                                   property->prop_id,
+                                   default_values,
+                                   (GDestroyNotify) g_hash_table_unref);
+    }
+
+  g_hash_table_replace (default_values,
+                        GSIZE_TO_POINTER (class_type),
+                        value);
+}
+
+/**
+ * g_property_set_default_value:
+ * @property: a #GProperty
+ * @value: the default value of the property
+ *
+ * Sets the default value of @property using @value.
+ *
+ * This function will copy the passed #GValue, transforming it into the
+ * type required by the @property using the #GValue transformation rules
+ * if necessary.
+ *
+ * Since: 2.38
+ */
+void
+g_property_set_default_value (GProperty    *property,
+                              const GValue *value)
+{
+  GValue *default_value;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (value != NULL);
+
+  default_value = g_new0 (GValue, 1);
+  g_value_init (default_value, G_PARAM_SPEC (property)->value_type);
+
+  if (!g_value_transform (value, default_value))
+    {
+      g_critical (G_STRLOC ": Unable to transform a value of type '%s' "
+                  "into a value of type '%s'",
+                  g_type_name (G_VALUE_TYPE (value)),
+                  g_type_name (G_VALUE_TYPE (default_value)));
+      return;
+    }
+
+  /* will take ownership of the GValue */
+  g_property_set_default_value_internal (property, default_value);
+}
+
+/**
+ * g_property_get_default_value:
+ * @property: a #GProperty
+ * @gobject: a #GObject
+ * @value: a #GValue
+ *
+ * Retrieves the default value of @property using the type of
+ * the @object instance, and places it into @value.
+ *
+ * The default value takes into account eventual overrides installed by the
+ * class of @gobject.
+ *
+ * This function will initialize @value to the type of the property,
+ * if @value is not initialized; otherwise, it will obey #GValue
+ * transformation rules between the type of the property and the type
+ * of the passed #GValue.
+ *
+ * Since: 2.38
+ */
+void
+g_property_get_default_value (GProperty *property,
+                              gpointer   gobject,
+                              GValue    *value)
+{
+  const GValue *default_value;
+  GType gtype;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (G_IS_OBJECT (gobject));
+
+  gtype = G_OBJECT_TYPE (gobject);
+  default_value = g_property_get_default_value_internal (property, gtype);
+
+  /* initialize the GValue */
+  if (!G_IS_VALUE (value))
+    {
+      g_value_init (value, G_PARAM_SPEC (property)->value_type);
+
+      if (default_value != NULL)
+        g_value_copy (default_value, value);
+    }
+  else
+    {
+      if (default_value == NULL)
+        return;
+
+      if (!g_value_transform (default_value, value))
+        {
+          g_critical (G_STRLOC ": Unable to transform a value of type '%s' "
+                      "into a value of type '%s'",
+                      g_type_name (G_VALUE_TYPE (default_value)),
+                      g_type_name (G_VALUE_TYPE (value)));
+        }
+    }
+}
+
+/**
+ * g_property_override_default_value:
+ * @property: a #GProperty
+ * @class_type: the type that is overriding the default value of @property
+ * @value: a #GValue containing the new default value
+ *
+ * Overrides the default value of @property for the class of @class_type.
+ *
+ * This function should be called by sub-classes that desire overriding
+ * the default value of @property.
+ *
+ * Since: 2.38
+ */
+void
+g_property_override_default_value (GProperty    *property,
+                                   GType         class_type,
+                                   const GValue *value)
+{
+  GValue *default_value;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (class_type != G_TYPE_INVALID);
+  g_return_if_fail (value != NULL);
+
+  default_value = g_new0 (GValue, 1);
+  g_value_init (default_value, G_PARAM_SPEC (property)->value_type);
+
+  if (!g_value_transform (value, default_value))
+    {
+      g_critical (G_STRLOC ": Unable to transform a value of type '%s' "
+                  "into a value of type '%s'",
+                  g_type_name (G_VALUE_TYPE (value)),
+                  g_type_name (G_VALUE_TYPE (default_value)));
+      return;
+    }
+
+  /* will take ownership of the GValue */
+  g_property_override_default_value_internal (property, class_type, default_value);
+}
+
+/**
+ * g_property_set_default:
+ * @property: a #GProperty
+ * @...: the default value for the property
+ *
+ * Sets the default value of @property.
+ *
+ * This function is for the convenience of the C API users; language
+ * bindings should use the equivalent g_property_set_default_value()
+ * instead.
+ *
+ * Since: 2.38
+ */
+void
+g_property_set_default (GProperty *property,
+                        ...)
+{
+  va_list var_args;
+  GValue *value;
+  char *error;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+
+  va_start (var_args, property);
+
+  value = g_new0 (GValue, 1);
+  G_VALUE_COLLECT_INIT (value, G_PARAM_SPEC (property)->value_type, var_args, 0, &error);
+  if (error != NULL)
+    {
+      g_critical (G_STRLOC ": %s", error);
+      g_free (error);
+      g_value_unset (value);
+      g_free (value);
+    }
+  else
+    {
+      /* takes ownership of the GValue */
+      g_property_set_default_value_internal (property, value);
+    }
+
+  va_end (var_args);
+}
+
+/**
+ * g_property_get_default:
+ * @property: a #GProperty
+ * @gobject: a #GObject
+ * @...: return location for the default value
+ *
+ * Retrieves the default value of @property for the given @gobject instance.
+ *
+ * The default value takes into account eventual overrides installed by the
+ * class of @gobject.
+ *
+ * Since: 2.38
+ */
+void
+g_property_get_default (GProperty *property,
+                        gpointer   gobject,
+                        ...)
+{
+  const GValue *default_value;
+  GValue value = G_VALUE_INIT;
+  char *error = NULL;
+  va_list var_args;
+  GType gtype;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (G_IS_OBJECT (gobject));
+
+  g_value_init (&value, G_PARAM_SPEC (property)->value_type);
+
+  gtype = G_OBJECT_TYPE (gobject);
+  default_value = g_property_get_default_value_internal (property, gtype);
+  if (default_value != NULL)
+    g_value_copy (default_value, &value);
+
+  va_start (var_args, gobject);
+
+  G_VALUE_LCOPY (&value, var_args, 0, &error);
+  if (error != NULL)
+    {
+      g_warning (G_STRLOC ": %s", error);
+      g_free (error);
+    }
+
+  va_end (var_args);
+  g_value_unset (&value);
+}
+
+/**
+ * g_property_override_default:
+ * @property: a #GProperty
+ * @class_type: the type that is overriding the default value of @property
+ * @...: the default value for the property
+ *
+ * Overrides the default value of @property for the class of @class_type.
+ *
+ * This function should be called by sub-classes that desire overriding
+ * the default value of @property.
+ *
+ * This function is for the convenience of the C API users; language
+ * bindings should use the equivalent g_property_override_default_value()
+ * instead.
+ *
+ * Since: 2.38
+ */
+void
+g_property_override_default (GProperty *property,
+                             GType      class_type,
+                             ...)
+{
+  va_list var_args;
+  GValue *value;
+  char *error;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (class_type != G_TYPE_INVALID);
+
+  va_start (var_args, class_type);
+
+  value = g_new0 (GValue, 1);
+  G_VALUE_COLLECT_INIT (value, G_PARAM_SPEC (property)->value_type, var_args, 0, &error);
+  if (error != NULL)
+    {
+      g_critical (G_STRLOC ": %s", error);
+      g_free (error);
+      g_value_unset (value);
+      g_free (value);
+    }
+  else
+    {
+      /* takes ownership of the GValue */
+      g_property_override_default_value_internal (property, class_type, value);
+    }
+
+  va_end (var_args);
 }
 
 /**
@@ -4117,6 +4520,20 @@ g_property_get_value (GProperty *property,
   g_value_unset (value_p);
 }
 
+void
+g_property_init_default (GProperty *property,
+                         gpointer   gobject)
+{
+  const GValue *default_value;
+
+  g_return_if_fail (G_IS_PROPERTY (property));
+  g_return_if_fail (G_IS_OBJECT (gobject));
+
+  default_value = g_property_get_default_value_internal (property, G_OBJECT_TYPE (gobject));
+  if (default_value != NULL)
+    g_property_set_value_internal (property, gobject, default_value);
+}
+
 /**
  * g_property_get_value_type:
  * @property: a #GProperty
@@ -4555,12 +4972,25 @@ property_values_cmp (GParamSpec   *pspec,
 }
 
 static void
+property_value_set_default (GParamSpec *pspec,
+                            GValue     *value)
+{
+  const GValue *v;
+
+  v = g_property_get_default_value_internal ((GProperty *) pspec, G_TYPE_INVALID);
+
+  if (v != NULL)
+    g_value_copy (v, value);
+}
+
+static void
 property_class_init (GParamSpecClass *klass)
 {
   klass->value_type = G_TYPE_INVALID;
 
   klass->value_validate = property_validate;
   klass->values_cmp = property_values_cmp;
+  klass->value_set_default = property_value_set_default;
 
   klass->finalize = property_finalize;
 }

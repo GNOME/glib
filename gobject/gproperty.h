@@ -118,7 +118,31 @@ void            g_property_set_range                    (GProperty    *property,
 GLIB_AVAILABLE_IN_2_38
 gboolean        g_property_get_range                    (GProperty    *property,
                                                          ...);
-
+GLIB_AVAILABLE_IN_2_38
+void            g_property_set_default_value            (GProperty    *property,
+                                                         const GValue *value);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_get_default_value            (GProperty    *property,
+                                                         gpointer      gobject,
+                                                         GValue       *value);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_override_default_value       (GProperty    *property,
+                                                         GType         gtype,
+                                                         const GValue *value);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_set_default                  (GProperty    *property,
+                                                         ...);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_get_default                  (GProperty    *property,
+                                                         gpointer      gobject,
+                                                         ...);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_override_default             (GProperty    *property,
+                                                         GType         gtype,
+                                                         ...);
+GLIB_AVAILABLE_IN_2_38
+void            g_property_init_default                 (GProperty    *property,
+                                                         gpointer      gobject);
 GLIB_AVAILABLE_IN_2_38
 void            g_property_set_prerequisite             (GProperty    *property,
                                                          ...);

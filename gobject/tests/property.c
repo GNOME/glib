@@ -33,6 +33,8 @@ struct _TestObjectPrivate
 
   TestEnum enum_val;
   guint enum_val_set : 1;
+
+  guint8 with_default;
 };
 
 GType test_enum_get_type (void);
@@ -71,6 +73,7 @@ enum
   PROP_STRING_VAL,
   PROP_BOOL_VAL,
   PROP_ENUM_VAL,
+  PROP_WITH_DEFAULT,
 
   LAST_PROP
 };
@@ -145,6 +148,14 @@ test_object_class_init (TestObjectClass *klass)
   g_property_set_prerequisite ((GProperty *) test_object_properties[PROP_ENUM_VAL],
                                test_enum_get_type ());
 
+  test_object_properties[PROP_WITH_DEFAULT] =
+    g_uint8_property_new ("with-default",
+                          G_PROPERTY_READWRITE,
+                          G_STRUCT_OFFSET (TestObjectPrivate, with_default),
+                          NULL,
+                          NULL);
+  g_property_set_default ((GProperty *) test_object_properties[PROP_WITH_DEFAULT], 255);
+
   g_object_class_install_properties (gobject_class, LAST_PROP, test_object_properties);
 }
 
@@ -154,6 +165,8 @@ test_object_init (TestObject *self)
   TestObjectPrivate *priv = test_object_get_private (self);
 
   priv->enum_val = TEST_ENUM_UNSET;
+
+  g_property_init_default ((GProperty *) test_object_properties[PROP_WITH_DEFAULT], self);
 }
 
 static void
@@ -258,6 +271,24 @@ gproperty_explicit_set (void)
   g_object_unref (obj);
 }
 
+static void
+gproperty_default_init (void)
+{
+  TestObject *obj = g_object_new (test_object_get_type (), NULL);
+  guint8 with_default = 0;
+
+  g_object_get (obj, "with-default", &with_default, NULL);
+  g_assert_cmpint (with_default, ==, 255);
+
+  g_object_unref (obj);
+
+  obj = g_object_new (test_object_get_type (), "with-default", 128, NULL);
+  g_object_get (obj, "with-default", &with_default, NULL);
+  g_assert_cmpint (with_default, ==, 128);
+
+  g_object_unref (obj);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -269,6 +300,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gproperty/object-set", gproperty_object_set);
   g_test_add_func ("/gproperty/object-get", gproperty_object_get);
   g_test_add_func ("/gproperty/explicit-set", gproperty_explicit_set);
+  g_test_add_func ("/gproperty/default/init", gproperty_default_init);
 
   return g_test_run ();
 }
