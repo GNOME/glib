@@ -34,7 +34,7 @@ create_app_info (const char *name)
   GAppInfo *info;
 
   error = NULL;
-  info = g_app_info_create_from_commandline ("/usr/bin/true blah",
+  info = g_app_info_create_from_commandline ("true blah",
                                              name,
                                              G_APP_INFO_CREATE_NONE,
                                              &error);
