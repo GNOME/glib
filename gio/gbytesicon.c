@@ -110,7 +110,7 @@ g_bytes_icon_finalize (GObject *object)
 
   icon = G_BYTES_ICON (object);
 
-  g_object_unref (icon->bytes);
+  g_bytes_unref (icon->bytes);
 
   G_OBJECT_CLASS (g_bytes_icon_parent_class)->finalize (object);
 }
