@@ -1661,6 +1661,18 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
     g_value_unset (&cvalues[cvals_used]);
   g_free (cvalues);
 
+  /* There is code in the wild that relies on being able to return NULL
+   * from its custom constructor.  This was never a supported operation
+   * and will leak memory, but since the code is already out there...
+   */
+  if (object == NULL)
+    {
+      g_critical ("Custom constructor for class %s returned NULL (which is invalid).  Unable to remove object "
+                  "from construction_objects list, so memory was probably just leaked.  Please use GInitable "
+                  "instead.", G_OBJECT_CLASS_NAME (class));
+      return NULL;
+    }
+
   /* g_object_init() will have added us to the construction_objects
    * list.  Check if we're in it (and remove us) in order to find
    * out if we were newly-constructed or this is an already-existing
