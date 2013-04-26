@@ -50,72 +50,17 @@
 /* notes on macros:
  * having G_DISABLE_CHECKS defined disables use of glib_mem_profiler_table and
  * g_mem_profile().
- * REALLOC_0_WORKS is defined if g_realloc (NULL, x) works.
- * SANE_MALLOC_PROTOS is defined if the systems malloc() and friends functions
- * match the corresponding GLib prototypes, keep configure.ac and gmem.h in sync here.
- * g_mem_gc_friendly is TRUE, freed memory should be 0-wiped.
+ * If g_mem_gc_friendly is TRUE, freed memory should be 0-wiped.
  */
-
-/* --- malloc wrappers --- */
-#ifndef	REALLOC_0_WORKS
-static gpointer
-standard_realloc (gpointer mem,
-		  gsize    n_bytes)
-{
-  if (!mem)
-    return malloc (n_bytes);
-  else
-    return realloc (mem, n_bytes);
-}
-#endif	/* !REALLOC_0_WORKS */
-
-#ifdef SANE_MALLOC_PROTOS
-#  define standard_malloc	malloc
-#  ifdef REALLOC_0_WORKS
-#    define standard_realloc	realloc
-#  endif /* REALLOC_0_WORKS */
-#  define standard_free		free
-#  define standard_calloc	calloc
-#  define standard_try_malloc	malloc
-#  define standard_try_realloc	realloc
-#else	/* !SANE_MALLOC_PROTOS */
-static gpointer
-standard_malloc (gsize n_bytes)
-{
-  return malloc (n_bytes);
-}
-#  ifdef REALLOC_0_WORKS
-static gpointer
-standard_realloc (gpointer mem,
-		  gsize    n_bytes)
-{
-  return realloc (mem, n_bytes);
-}
-#  endif /* REALLOC_0_WORKS */
-static void
-standard_free (gpointer mem)
-{
-  free (mem);
-}
-static gpointer
-standard_calloc (gsize n_blocks,
-		 gsize n_bytes)
-{
-  return calloc (n_blocks, n_bytes);
-}
-#define	standard_try_malloc	standard_malloc
-#define	standard_try_realloc	standard_realloc
-#endif	/* !SANE_MALLOC_PROTOS */
-
 
 /* --- variables --- */
 static GMemVTable glib_mem_vtable = {
-  standard_malloc,
-  standard_realloc,
-  standard_free,
-  standard_calloc,
-  standard_try_malloc,
-  standard_try_realloc,
+  malloc,
+  realloc,
+  free,
+  calloc,
+  malloc,
+  realloc,
 };
 
 /**
@@ -629,8 +574,8 @@ profiler_log (ProfilerJob job,
   g_mutex_lock (&gmem_profile_mutex);
   if (!profile_data)
     {
-      profile_data = standard_calloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8, 
-                                      sizeof (profile_data[0]));
+      profile_data = calloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8, 
+                             sizeof (profile_data[0]));
       if (!profile_data)	/* memory system kiddin' me, eh? */
 	{
 	  g_mutex_unlock (&gmem_profile_mutex);
@@ -762,7 +707,7 @@ profiler_try_malloc (gsize n_bytes)
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
 
-  p = standard_malloc (sizeof (gsize) * 2 + n_bytes);
+  p = malloc (sizeof (gsize) * 2 + n_bytes);
 
   if (p)
     {
@@ -800,7 +745,7 @@ profiler_calloc (gsize n_blocks,
     G_BREAKPOINT ();
 #endif  /* G_ENABLE_DEBUG */
   
-  p = standard_calloc (1, sizeof (gsize) * 2 + l);
+  p = calloc (1, sizeof (gsize) * 2 + l);
 
   if (p)
     {
@@ -844,7 +789,7 @@ profiler_free (gpointer mem)
 		    TRUE);
       memset (p + 2, 0xaa, p[1]);
 
-      /* for all those that miss standard_free (p); in this place, yes,
+      /* for all those that miss free (p); in this place, yes,
        * we do leak all memory when profiling, and that is intentional
        * to catch double frees. patch submissions are futile.
        */
@@ -876,7 +821,7 @@ profiler_try_realloc (gpointer mem,
     }
   else
     {
-      p = standard_realloc (mem ? p : NULL, sizeof (gsize) * 2 + n_bytes);
+      p = realloc (mem ? p : NULL, sizeof (gsize) * 2 + n_bytes);
 
       if (p)
 	{

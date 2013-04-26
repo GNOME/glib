@@ -672,33 +672,6 @@ AS_IF([test x$glib_native_win32 != xyes && test x$ac_cv_sizeof_long_long = x8], 
 
 AC_C_CONST
 
-dnl ok, here we try to check whether the systems prototypes for
-dnl malloc and friends actually match the prototypes provided
-dnl by gmem.h (keep in sync). i currently only know how to check
-dnl this reliably with gcc (-Werror), improvements for other
-dnl compilers are apprechiated.
-SANE_MALLOC_PROTOS=no
-AC_MSG_CHECKING([if malloc() and friends prototypes are gmem.h compatible])
-glib_save_CFLAGS=$CFLAGS
-AS_IF([test "x$GCC" = "xyes"], [
-  CFLAGS="$CFLAGS -Werror"
-  AC_TRY_COMPILE([#include <stdlib.h>], [
-    void* (*my_calloc_p)  (size_t, size_t) = calloc;
-    void* (*my_malloc_p)  (size_t)         = malloc;
-    void  (*my_free_p)    (void*)          = free;
-    void* (*my_realloc_p) (void*, size_t)  = realloc;
-    my_calloc_p = 0;
-    my_malloc_p = 0;
-    my_free_p = 0;
-    my_realloc_p = 0;
-  ],
-    AC_DEFINE(SANE_MALLOC_PROTOS, 1, 
-      [Define if you have correct malloc prototypes])
-    SANE_MALLOC_PROTOS=yes)
-])
-AC_MSG_RESULT($SANE_MALLOC_PROTOS)
-CFLAGS=$glib_save_CFLAGS
-
 dnl
 dnl check in which direction the stack grows
 dnl
@@ -1383,20 +1356,6 @@ AS_IF([test "$gtk_ok" = "yes"], [
 	AC_DEFINE(NO_FD_SET,1,[didn't find fd_set])
 	AC_MSG_RESULT(no)
     fi
-])
-
-dnl *** check for sane realloc() ***
-AC_CACHE_CHECK([whether realloc (NULL,) will work],glib_cv_sane_realloc,[
-        AC_TRY_RUN([#include <stdlib.h>
-        int main() {
-          return realloc (0, sizeof (int)) == 0;
-        }],
-        [glib_cv_sane_realloc=yes],
-        [glib_cv_sane_realloc=no],
-	[glib_cv_sane_realloc=yes])
-])
-AS_IF([test x$glib_cv_sane_realloc = xyes], [
-  AC_DEFINE(REALLOC_0_WORKS,1,[whether realloc (NULL,) works])
 ])
 
 dnl Check for nl_langinfo and CODESET
