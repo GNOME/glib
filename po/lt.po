@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-09 17:20+0200\n"
+"POT-Creation-Date: 2013-04-23 19:00+0000\n"
+"PO-Revision-Date: 2013-04-27 22:44+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -521,8 +521,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu bytes but only got %lu"
-#| msgid_plural "Wanted to read %lu byte but only got %lu"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Norėta nuskaityti %lu baitą, bet gauta tik %lu"
@@ -1046,12 +1044,12 @@ msgstr "Tikėtasi GEmblem skirto GEmblemedIcon"
 #: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
 #: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
 #: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
+#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
+#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
+#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
+#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
+#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operacija nepalaikoma"
@@ -1112,24 +1110,24 @@ msgstr "Kopijavimas (reflink/clone) nepalaikomas arba nesuveikė"
 msgid "Can't copy special file"
 msgstr "Nepavyksta nukopijuoti specialaus failo"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3660
 msgid "Invalid symlink value given"
 msgstr "Netaisyklinga simbolinės nuorodos reikšmė"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3820
 msgid "Trash not supported"
 msgstr "Šiukšlės nepalaikomos"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:3871
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Failų varduose negali būti '%c'"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "skirsnis nepalaiko prijungimo"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6368
 msgid "No application is registered as handling this file"
 msgstr "Nėra programos, priregistruotos kaip skaitančios šį failą"
 
@@ -1784,79 +1782,79 @@ msgstr "netaisyklingas išplėstinio atributo pavadinimas"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Klaida nurodant išplėstinį atributą „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1542
 msgid " (invalid encoding)"
 msgstr " (netaisyklinga koduotė)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Klaida gaunant informaciją apie failą „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1980
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Klaida gaunant informaciją failo aprašymui: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2025
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Klaidingas atributo tipas (tikimasi uint32)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Klaidingas atributo tipas (tikimasi uint64)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Klaidingas atributo tipas (tikimasi baitų sekos)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2116
 msgid "Cannot set permissions on symlinks"
 msgstr "Simbolinėms nuorodoms teisių nustatyti negalima"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2132
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Klaida nustatant teises: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2183
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Klaida nustatant savininką: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2206
 msgid "symlink must be non-NULL"
 msgstr "Simbolinė nuoroda turi būti netuščia"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
+#: ../gio/glocalfileinfo.c:2246
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Klaida nustatant simbolinę nuorodą: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2225
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Klaida nustatant simbolinę nuorodą: failas nėra simbolinė nuoroda"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2351
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Klaida nustatant pakeitimo arba prieigos laiką: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2374
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux kontekstas būti nelygus NULL"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2389
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Klaida nustatant SELinux kontekstą: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2396
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux šioje sistemoje neįjungtas"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2488
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Atributo %s nustatymas nepalaikomas"
@@ -2432,7 +2430,6 @@ msgstr "  REIKŠMĖ   Reikšmė, kurią nustatyti\n"
 
 #: ../gio/gsettings-tool.c:725
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nepavyko atverti schemų iš „%s“: „%s“\n"
 
@@ -3730,53 +3727,53 @@ msgstr "Naudojimas:"
 msgid "[OPTION...]"
 msgstr "[PARINKTIS…]"
 
-#: ../glib/goption.c:864
+#: ../glib/goption.c:870
 msgid "Help Options:"
 msgstr "Pagalbos parinktys:"
 
-#: ../glib/goption.c:865
+#: ../glib/goption.c:871
 msgid "Show help options"
 msgstr "Rodyti pagalbos parinktis"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:877
 msgid "Show all help options"
 msgstr "Rodyti visas pagalbos parinktis"
 
-#: ../glib/goption.c:933
+#: ../glib/goption.c:939
 msgid "Application Options:"
 msgstr "Programos parinktys:"
 
-#: ../glib/goption.c:997 ../glib/goption.c:1067
+#: ../glib/goption.c:1003 ../glib/goption.c:1073
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nepavyko apdoroti sveikosios reikšmės „%s“, reikalingos %s"
 
-#: ../glib/goption.c:1007 ../glib/goption.c:1075
+#: ../glib/goption.c:1013 ../glib/goption.c:1081
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Sveikoji reikšmė „%s“, reikalinga %s, viršija ribas"
 
-#: ../glib/goption.c:1032
+#: ../glib/goption.c:1038
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nepavyko apdoroti dvigubos reikšmės „%s“, reikalingos %s"
 
-#: ../glib/goption.c:1040
+#: ../glib/goption.c:1046
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Dviguboji reikšmė „%s“, reikalinga %s, viršija ribas"
 
-#: ../glib/goption.c:1303 ../glib/goption.c:1382
+#: ../glib/goption.c:1309 ../glib/goption.c:1388
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Klaida apdorojant parinktį %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1526
+#: ../glib/goption.c:1419 ../glib/goption.c:1532
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s trūksta argumento"
 
-#: ../glib/goption.c:1979
+#: ../glib/goption.c:1985
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nežinoma parinktis %s"
@@ -4171,80 +4168,85 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Tekstas buvo tuščias arba turėjo vien tik tarpo simbolius)"
 
-#: ../glib/gspawn.c:203
+#: ../glib/gspawn.c:202
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nepavyko gauti duomenis iš antrinio proceso (%s)"
 
-#: ../glib/gspawn.c:362
+#: ../glib/gspawn.c:345
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Netikėta klaida tarp select() funkcijos duomenų gavimo iš antrinio proceso "
 "(%s) metu"
 
-#: ../glib/gspawn.c:853 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:430
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "Netikėta klaida funkcijoje waitpid() (%s)"
+
+#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Vaikinis procesas išėjo su kodu %ld"
 
-#: ../glib/gspawn.c:861
+#: ../glib/gspawn.c:857
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Vaikinis procesas nutrauktas signalu %ld"
 
-#: ../glib/gspawn.c:868
+#: ../glib/gspawn.c:864
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Vaikinis procesas sustabdytas signalu %ld"
 
-#: ../glib/gspawn.c:875
+#: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Vaikinis procesas išėjo nenormaliai"
 
-#: ../glib/gspawn.c:1280 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nepavyko perskaityti duomenų iš antrinio konvejerio (%s)"
 
-#: ../glib/gspawn.c:1348
+#: ../glib/gspawn.c:1344
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nepavyko atskirti (%s)"
 
-#: ../glib/gspawn.c:1496 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1492 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nepavyko pakeisti į aplanką „%s“ (%s)"
 
-#: ../glib/gspawn.c:1506
+#: ../glib/gspawn.c:1502
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 
-#: ../glib/gspawn.c:1516
+#: ../glib/gspawn.c:1512
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nepavyko perimti antrinio proceso (%s) išvedimo arba įvedimo"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1521
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nepavyko atskirti antrinio proceso (%s)"
 
-#: ../glib/gspawn.c:1533
+#: ../glib/gspawn.c:1529
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nežinoma klaida vykdant antrinį procesą „%s“"
 
-#: ../glib/gspawn.c:1557
+#: ../glib/gspawn.c:1553
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Nepavyko perskaityti reikiamo duomenų kiekio iš antrinio pid konvejerio (%s)"
 
-#: ../glib/gspawn.c:1630 ../glib/gspawn-win32.c:300
+#: ../glib/gspawn.c:1626 ../glib/gspawn-win32.c:300
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
