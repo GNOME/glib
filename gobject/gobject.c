@@ -950,6 +950,16 @@ g_object_interface_list_properties (gpointer      g_iface,
   return pspecs;
 }
 
+static inline gboolean
+object_in_construction_list (GObject *object)
+{
+  gboolean in_construction;
+  G_LOCK (construction_mutex);
+  in_construction = g_slist_find (construction_objects, object) != NULL;
+  G_UNLOCK (construction_mutex);
+  return in_construction;
+}
+
 static void
 g_object_init (GObject		*object,
 	       GObjectClass	*class)
@@ -1021,6 +1031,12 @@ g_object_real_dispose (GObject *object)
 static void
 g_object_finalize (GObject *object)
 {
+  if (object_in_construction_list (object))
+    {
+      g_error ("object %s %p finalized while still in-construction",
+               G_OBJECT_TYPE_NAME (object), object);
+    }
+
   g_datalist_clear (&object->qdata);
   
 #ifdef	G_ENABLE_DEBUG
@@ -1582,16 +1598,6 @@ slist_maybe_remove (GSList       **slist,
       node = last->next;
     }
   return FALSE;
-}
-
-static inline gboolean
-object_in_construction_list (GObject *object)
-{
-  gboolean in_construction;
-  G_LOCK (construction_mutex);
-  in_construction = g_slist_find (construction_objects, object) != NULL;
-  G_UNLOCK (construction_mutex);
-  return in_construction;
 }
 
 static gpointer
