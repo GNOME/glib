@@ -73,6 +73,26 @@ static const gchar org_gtk_Application_xml[] =
 
 static GDBusInterfaceInfo *org_gtk_Application;
 
+static const gchar org_freedesktop_Application_xml[] =
+  "<node>"
+    "<interface name='org.freedesktop.Application'>"
+      "<method name='Activate'>"
+        "<arg type='a{sv}' name='platform-data' direction='in'/>"
+      "</method>"
+      "<method name='Open'>"
+        "<arg type='as' name='uris' direction='in'/>"
+        "<arg type='a{sv}' name='platform-data' direction='in'/>"
+      "</method>"
+      "<method name='ActivateAction'>"
+        "<arg type='s' name='action-name' direction='in'/>"
+        "<arg type='av' name='parameter' direction='in'/>"
+        "<arg type='a{sv}' name='platform-data' direction='in'/>"
+      "</method>"
+    "</interface>"
+  "</node>";
+
+static GDBusInterfaceInfo *org_freedesktop_Application;
+
 static const gchar org_gtk_private_CommandLine_xml[] =
   "<node>"
     "<interface name='org.gtk.private.CommandLine'>"
@@ -96,6 +116,7 @@ struct _GApplicationImpl
 
   gchar           *object_path;
   guint            object_id;
+  guint            fdo_object_id;
   guint            actions_id;
 
   gboolean         properties_live;
@@ -168,7 +189,10 @@ g_application_impl_method_call (GDBusConnection       *connection,
     {
       GVariant *platform_data;
 
+      /* Completely the same for both freedesktop and gtk interfaces */
+
       g_variant_get (parameters, "(@a{sv})", &platform_data);
+
       class->before_emit (impl->app, platform_data);
       g_signal_emit_by_name (impl->app, "activate");
       class->after_emit (impl->app, platform_data);
@@ -185,8 +209,14 @@ g_application_impl_method_call (GDBusConnection       *connection,
       GFile **files;
       gint n, i;
 
-      g_variant_get (parameters, "(@as&s@a{sv})",
-                     &array, &hint, &platform_data);
+      /* freedesktop interface has no hint parameter */
+      if (g_str_equal (interface_name, "org.freedesktop.Application"))
+        {
+          g_variant_get (parameters, "(@as@a{sv})", &array, &platform_data);
+          hint = "";
+        }
+      else
+        g_variant_get (parameters, "(@as&s@a{sv})", &array, &hint, &platform_data);
 
       n = g_variant_n_children (array);
       files = g_new (GFile *, n + 1);
@@ -220,6 +250,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
       GVariant *platform_data;
       int status;
 
+      /* Only on the GtkApplication interface */
+
       cmdline = g_dbus_command_line_new (invocation);
       platform_data = g_variant_get_child_value (parameters, 2);
       class->before_emit (impl->app, platform_data);
@@ -228,6 +260,28 @@ g_application_impl_method_call (GDBusConnection       *connection,
       class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
       g_object_unref (cmdline);
+    }
+  else if (g_str_equal (method_name, "ActivateAction"))
+    {
+      GVariant *parameter = NULL;
+      GVariant *platform_data;
+      GVariantIter *iter;
+      const gchar *name;
+
+      /* Only on the freedesktop interface */
+
+      g_variant_get (parameters, "(&sav@a{sv})", &name, &iter, &platform_data);
+      g_variant_iter_next (iter, "v", &parameter);
+      g_variant_iter_free (iter);
+
+      class->before_emit (impl->app, platform_data);
+      g_action_group_activate_action (impl->exported_actions, name, parameter);
+      class->after_emit (impl->app, platform_data);
+
+      if (parameter)
+        g_variant_unref (parameter);
+
+      g_variant_unref (platform_data);
     }
   else
     g_assert_not_reached ();
@@ -290,6 +344,14 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
       g_assert (org_gtk_Application != NULL);
       g_dbus_interface_info_ref (org_gtk_Application);
       g_dbus_node_info_unref (info);
+
+      info = g_dbus_node_info_new_for_xml (org_freedesktop_Application_xml, &error);
+      if G_UNLIKELY (info == NULL)
+        g_error ("%s", error->message);
+      org_freedesktop_Application = g_dbus_node_info_lookup_interface (info, "org.freedesktop.Application");
+      g_assert (org_freedesktop_Application != NULL);
+      g_dbus_interface_info_ref (org_freedesktop_Application);
+      g_dbus_node_info_unref (info);
     }
 
   /* We could possibly have been D-Bus activated as a result of incoming
@@ -310,6 +372,12 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
                                                        org_gtk_Application, &vtable, impl, NULL, error);
 
   if (impl->object_id == 0)
+    return FALSE;
+
+  impl->fdo_object_id = g_dbus_connection_register_object (impl->session_bus, impl->object_path,
+                                                           org_freedesktop_Application, &vtable, impl, NULL, error);
+
+  if (impl->fdo_object_id == 0)
     return FALSE;
 
   impl->actions_id = g_dbus_connection_export_action_group (impl->session_bus, impl->object_path,
@@ -378,6 +446,12 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
     {
       g_dbus_connection_unregister_object (impl->session_bus, impl->object_id);
       impl->object_id = 0;
+    }
+
+  if (impl->fdo_object_id)
+    {
+      g_dbus_connection_unregister_object (impl->session_bus, impl->fdo_object_id);
+      impl->fdo_object_id = 0;
     }
 
   if (impl->actions_id)
