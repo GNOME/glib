@@ -305,6 +305,7 @@ gboolean  g_key_file_remove_group           (GKeyFile             *key_file,
 #define G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY   "StartupNotify"
 #define G_KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS "StartupWMClass"
 #define G_KEY_FILE_DESKTOP_KEY_URL              "URL"
+#define G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE "DBusActivatable"
 
 #define G_KEY_FILE_DESKTOP_TYPE_APPLICATION     "Application"
 #define G_KEY_FILE_DESKTOP_TYPE_LINK            "Link"

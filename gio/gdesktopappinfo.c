@@ -19,6 +19,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         Ryan Lortie <desrt@desrt.ca>
  */
 
 #include "config.h"
@@ -94,6 +95,7 @@ struct _GDesktopAppInfo
 
   char *desktop_id;
   char *filename;
+  char *app_id;
 
   GKeyFile *keyfile;
 
@@ -197,6 +199,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->categories);
   g_free (info->startup_wm_class);
   g_strfreev (info->mime_types);
+  g_free (info->app_id);
   
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -290,6 +293,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   char *type;
   char *try_exec;
   char *exec;
+  gboolean bus_activatable;
 
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
@@ -375,6 +379,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->categories = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_CATEGORIES, NULL);
   info->startup_wm_class = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, STARTUP_WM_CLASS_KEY, NULL);
   info->mime_types = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
+  bus_activatable = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE, NULL);
   
   info->icon = NULL;
   if (info->icon_name)
@@ -409,6 +414,25 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     {
       g_free (info->path);
       info->path = NULL;
+    }
+
+  if (bus_activatable)
+    {
+      gchar *basename;
+      gchar *last_dot;
+
+      basename = g_path_get_basename (info->filename);
+      last_dot = strrchr (basename, '.');
+
+      if (last_dot && g_str_equal (last_dot, ".desktop"))
+        {
+          *last_dot = '\0';
+
+          if (g_dbus_is_interface_name (basename))
+            info->app_id = g_strdup (basename);
+        }
+
+      g_free (basename);
     }
 
   info->keyfile = g_key_file_ref (key_file);
@@ -590,6 +614,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->exec = g_strdup (info->exec);
   new_info->binary = g_strdup (info->binary);
   new_info->path = g_strdup (info->path);
+  new_info->app_id = g_strdup (info->app_id);
   new_info->hidden = info->hidden;
   new_info->terminal = info->terminal;
   new_info->startup_notify = info->startup_notify;
@@ -1276,29 +1301,26 @@ notify_desktop_launch (GDBusConnection  *session_bus,
 #define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
 
 static gboolean
-_g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
-					  GList                      *uris,
-					  GAppLaunchContext          *launch_context,
-					  GSpawnFlags                 spawn_flags,
-					  GSpawnChildSetupFunc        user_setup,
-					  gpointer                    user_setup_data,
-					  GDesktopAppLaunchCallback   pid_callback,
-					  gpointer                    pid_callback_data,
-					  GError                     **error)
+g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
+                                           GDBusConnection            *session_bus,
+                                           GList                      *uris,
+                                           GAppLaunchContext          *launch_context,
+                                           GSpawnFlags                 spawn_flags,
+                                           GSpawnChildSetupFunc        user_setup,
+                                           gpointer                    user_setup_data,
+                                           GDesktopAppLaunchCallback   pid_callback,
+                                           gpointer                    pid_callback_data,
+                                           GError                    **error)
 {
-  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  GDBusConnection *session_bus;
   gboolean completed = FALSE;
   GList *old_uris;
   char **argv, **envp;
   int argc;
   ChildSetupData data;
 
-  g_return_val_if_fail (appinfo != NULL, FALSE);
+  g_return_val_if_fail (info != NULL, FALSE);
 
   argv = NULL;
-
-  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   if (launch_context)
     envp = g_app_launch_context_get_environment (launch_context);
@@ -1357,7 +1379,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
           GList *launched_files = create_files_for_uris (launched_uris);
 
           display = g_app_launch_context_get_display (launch_context,
-                                                      appinfo,
+                                                      G_APP_INFO (info),
                                                       launched_files);
           if (display)
             envp = g_environ_setenv (envp, "DISPLAY", display, TRUE);
@@ -1365,7 +1387,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
           if (info->startup_notify)
             {
               sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
-                                                                  appinfo,
+                                                                  G_APP_INFO (info),
                                                                   launched_files);
               envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
             }
@@ -1425,9 +1447,116 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
     }
   while (uris != NULL);
 
-  /* TODO - need to handle the process exiting immediately
-   * after launching an app.  See http://bugzilla.gnome.org/606960
+  completed = TRUE;
+
+ out:
+  g_strfreev (argv);
+  g_strfreev (envp);
+
+  return completed;
+}
+
+static gchar *
+object_path_from_appid (const gchar *app_id)
+{
+  gchar *path;
+  gint i, n;
+
+  n = strlen (app_id);
+  path = g_malloc (n + 2);
+
+  path[0] = '/';
+
+  for (i = 0; i < n; i++)
+    if (app_id[i] != '.')
+      path[i + 1] = app_id[i];
+    else
+      path[i + 1] = '/';
+
+  path[i + 1] = '\0';
+
+  return path;
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
+                                          GDBusConnection    *session_bus,
+                                          GList              *uris,
+                                          GAppLaunchContext  *launch_context)
+{
+  GVariantBuilder builder;
+  gchar *object_path;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+
+  if (uris)
+    {
+      GList *iter;
+
+      g_variant_builder_open (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+      for (iter = uris; iter; iter = iter->next)
+        g_variant_builder_add (&builder, "s", iter->data);
+      g_variant_builder_close (&builder);
+    }
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE_VARDICT);
+
+  if (launch_context)
+    {
+      GList *launched_files = create_files_for_uris (uris);
+
+      if (info->startup_notify)
+        {
+          gchar *sn_id;
+
+          sn_id = g_app_launch_context_get_startup_notify_id (launch_context, G_APP_INFO (info), launched_files);
+          g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_take_string (sn_id));
+        }
+
+      g_list_free_full (launched_files, g_object_unref);
+    }
+
+  g_variant_builder_close (&builder);
+
+  /* This is non-blocking API.  Similar to launching via fork()/exec()
+   * we don't wait around to see if the program crashed during startup.
+   * This is what startup-notification's job is...
    */
+  object_path = object_path_from_appid (info->app_id);
+  g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
+                          uris ? "Open" : "Activate", g_variant_builder_end (&builder),
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+  g_free (object_path);
+
+  return TRUE;
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
+                                         GList                      *uris,
+                                         GAppLaunchContext          *launch_context,
+                                         GSpawnFlags                 spawn_flags,
+                                         GSpawnChildSetupFunc        user_setup,
+                                         gpointer                    user_setup_data,
+                                         GDesktopAppLaunchCallback   pid_callback,
+                                         gpointer                    pid_callback_data,
+                                         GError                     **error)
+{
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+  GDBusConnection *session_bus;
+  gboolean success = TRUE;
+
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  if (session_bus && info->app_id)
+    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context);
+  else
+    success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, uris, launch_context,
+                                                         spawn_flags, user_setup, user_setup_data,
+                                                         pid_callback, pid_callback_data, error);
+
   if (session_bus != NULL)
     {
       /* This asynchronous flush holds a reference until it completes,
@@ -1435,16 +1564,10 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
        * the connection if we were the initial owner.
        */
       g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+      g_object_unref (session_bus);
     }
 
-  completed = TRUE;
-
- out:
-  g_clear_object (&session_bus);
-  g_strfreev (argv);
-  g_strfreev (envp);
-
-  return completed;
+  return success;
 }
 
 static gboolean
@@ -1453,11 +1576,11 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 				GAppLaunchContext  *launch_context,
 				GError            **error)
 {
-  return _g_desktop_app_info_launch_uris_internal (appinfo, uris,
-						   launch_context,
-						   _SPAWN_FLAGS_DEFAULT,
-						   NULL, NULL, NULL, NULL,
-						   error);
+  return g_desktop_app_info_launch_uris_internal (appinfo, uris,
+                                                  launch_context,
+                                                  _SPAWN_FLAGS_DEFAULT,
+                                                  NULL, NULL, NULL, NULL,
+                                                  error);
 }
 
 static gboolean
@@ -1525,15 +1648,15 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * launch applications.  Ordinary applications should use
  * g_app_info_launch_uris().
  *
- * In contrast to g_app_info_launch_uris(), all processes created will
- * always be run directly as children as if by the UNIX fork()/exec()
- * calls.
+ * If the application is launched via traditional UNIX fork()/exec()
+ * then @spawn_flags, @user_setup and @user_setup_data are used for the
+ * call to g_spawn_async().  Additionally, @pid_callback (with
+ * @pid_callback_data) will be called to inform about the PID of the
+ * created process.
  *
- * This guarantee allows additional control over the exact environment
- * of the child processes, which is provided via a setup function
- * @user_setup, as well as the process identifier of each child process
- * via @pid_callback. See g_spawn_async() for more information about the
- * semantics of the @user_setup function.
+ * If application launching occurs via some other mechanism (eg: D-Bus
+ * activation) then @spawn_flags, @user_setup, @user_setup_data,
+ * @pid_callback and @pid_callback_data are ignored.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  */
@@ -1548,15 +1671,15 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
 					   gpointer                    pid_callback_data,
 					   GError                    **error)
 {
-  return _g_desktop_app_info_launch_uris_internal ((GAppInfo*)appinfo,
-						   uris,
-						   launch_context,
-						   spawn_flags,
-						   user_setup,
-						   user_setup_data,
-						   pid_callback,
-						   pid_callback_data,
-						   error);
+  return g_desktop_app_info_launch_uris_internal ((GAppInfo*)appinfo,
+                                                  uris,
+                                                  launch_context,
+                                                  spawn_flags,
+                                                  user_setup,
+                                                  user_setup_data,
+                                                  pid_callback,
+                                                  pid_callback_data,
+                                                  error);
 }
 
 /**
