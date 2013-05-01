@@ -549,6 +549,7 @@ g_desktop_app_info_new (const char *desktop_id)
  found:
   g_free (basename);
   
+  g_free (appinfo->desktop_id);
   appinfo->desktop_id = g_strdup (desktop_id);
 
   if (g_desktop_app_info_get_is_hidden (appinfo))
