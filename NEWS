@@ -1,3 +1,71 @@
+Overview of changes fron GLib 2.36.0 to 2.37.0
+==============================================
+
+* The syntax for detailed action names has been documented,
+  and a parser API for them is now provided
+
+* GApplication has gained a busy state. This feature is intended for
+  clients that want to signal a desktop shell their busy state, for
+  instance because a long-running operation is pending.
+
+* GLib can now be built with the bionic C library
+
+* GIcon can now be serialized to a GVariant
+
+* Bugs fixed:
+ 548353 Finish implementing GFile interface (mostly asynchron...
+ 645881 Full port of glib-2.28.1 onto Android-ARM
+ 665445 Glib mistakes nl_langinfo() from plibc for the real t...
+ 672018 Need API to set global application state (busy, count...
+ 687659 drop support for adding interfaces after class_init
+ 688820 GIcon is a bad interface
+ 688954 extend 'detailed action' syntax, provide parser
+ 689223 Fix compilation on Android with the bionic C library
+ 695156 Add support for arg0namespace matching in signal_subs...
+ 696108 gdbus-codegen: avoid warnings in generated code
+ 696629 fix sed(1) usage
+ 696652 GTask won't free its error member variable on finalize
+ 696857 GThreadedResolver: set an error if no records could b...
+ 696973 Compiling 2.36.0 for win64 fails in gdbusmessage.c
+ 697131 No --version
+ 697160 [PATCH] gmacros: Mark G_UNAVAILABLE() functions as de...
+ 697229 Custom Interface implementations will be broken with ...
+ 697250 Documentation glitch of G_DEFINE_TYPE_EXTENDED causes...
+ 697365 Fix usage of hasmntopt in gunixmounts.c
+ 697367 Remove warning on gio/gunixmounts.c
+ 697386 Except const argument with atomic is not lock free
+ 697595 g_main_context_unref unlocks a mutex twice
+ 697601 reduce GMenuModel D-Bus traffic
+ 697626 Allow posix threads to be used on w32
+ 697652 Help options generated even when help disabled
+ 697771 fix a typo of "fo" to "of" in building.xml
+ 697887 GVariant: fix transfer annotation
+ 697942 abicheck.sh fails on mips
+ 698056 rewrite g_object_new()
+ 698081 Pidgin hangs in g_spawn_command_line_sync
+ 698455 GVariant: add new g_variant_new_take_string() API
+ 698457 g_variant_get_data_as_bytes() always returns toplevel...
+ 698478 gactionmap: don't require GActionGroup
+ 698595 the valgrind/priv-before-instance bug
+ 698655 desktop-app-info test relies on true being in /usr/bin/
+ 698686 GUnixSocketAddress: fix construct parameter issue
+ 698716 Use of g_mem_set_vtable() breaks after gobject automa...
+ 698999 bytesicon: fix a memory leak
+ 699001 bytesicon: don't use g_object_unref() on GBytes
+ 699361 gio: fix small leak
+
+* Translation updates:
+ Assamese
+ Gujarati
+ Hungarian
+ Italian
+ Kannada
+ Norwegian bokmål
+ Polish
+ Spanish
+ Tamil
+
+
 Overview of changes fron GLib 2.35.9 to 2.36.0
 ==============================================
 
