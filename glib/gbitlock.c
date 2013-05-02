@@ -32,8 +32,8 @@
 
 #include "gthreadprivate.h"
 
-#undef HAVE_FUTEX
 #ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
+#undef HAVE_FUTEX
 #endif
 
 #ifndef HAVE_FUTEX
