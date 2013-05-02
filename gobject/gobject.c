@@ -176,7 +176,7 @@ static void	g_object_dispatch_properties_changed	(GObject	*object,
 static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 
-static void object_interface_check_properties           (gpointer        func_data,
+static void object_interface_check_properties           (gpointer        check_data,
 							 gpointer        g_iface);
 
 /* --- typedefs --- */
@@ -1366,7 +1366,7 @@ object_set_property (GObject             *object,
 }
 
 static void
-object_interface_check_properties (gpointer func_data,
+object_interface_check_properties (gpointer check_data,
 				   gpointer g_iface)
 {
   GTypeInterface *iface_class = g_iface;
