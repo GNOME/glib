@@ -708,7 +708,7 @@ nego_reply_read_cb (GObject      *source,
   
   if (data->offset == data->length)
     {
-      GError *error;
+      GError *error = NULL;
       gboolean must_auth = FALSE;
       gboolean has_auth = data->username || data->password;
 
