@@ -290,6 +290,7 @@ binding_default (void)
                                     target, "bar",
                                     G_BINDING_DEFAULT);
 
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
   g_assert ((BindingSource *) g_binding_get_source (binding) == source);
   g_assert ((BindingTarget *) g_binding_get_target (binding) == target);
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
@@ -309,6 +310,7 @@ binding_default (void)
 
   g_object_unref (source);
   g_object_unref (target);
+  g_assert (binding == NULL);
 }
 
 static void
@@ -321,6 +323,7 @@ binding_bidirectional (void)
   binding = g_object_bind_property (source, "foo",
                                     target, "bar",
                                     G_BINDING_BIDIRECTIONAL);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
   g_object_set (source, "foo", 42, NULL);
   g_assert_cmpint (source->foo, ==, target->bar);
@@ -335,6 +338,7 @@ binding_bidirectional (void)
 
   g_object_unref (source);
   g_object_unref (target);
+  g_assert (binding == NULL);
 }
 
 static void
@@ -358,6 +362,8 @@ binding_transform_default (void)
   binding = g_object_bind_property (source, "foo",
                                     target, "value",
                                     G_BINDING_BIDIRECTIONAL);
+
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
   g_object_get (binding,
                 "source", &src,
@@ -384,6 +390,7 @@ binding_transform_default (void)
 
   g_object_unref (target);
   g_object_unref (source);
+  g_assert (binding == NULL);
 }
 
 static void
@@ -457,7 +464,10 @@ binding_chain (void)
 
   /* A -> B, B -> C */
   binding_1 = g_object_bind_property (a, "foo", b, "foo", G_BINDING_BIDIRECTIONAL);
+  g_object_add_weak_pointer (G_OBJECT (binding_1), (gpointer *) &binding_1);
+
   binding_2 = g_object_bind_property (b, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
+  g_object_add_weak_pointer (G_OBJECT (binding_2), (gpointer *) &binding_2);
 
   /* verify the chain */
   g_object_set (a, "foo", 42, NULL);
@@ -466,7 +476,9 @@ binding_chain (void)
 
   /* unbind A -> B and B -> C */
   g_object_unref (binding_1);
+  g_assert (binding_1 == NULL);
   g_object_unref (binding_2);
+  g_assert (binding_2 == NULL);
 
   /* bind A -> C directly */
   binding_2 = g_object_bind_property (a, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
@@ -554,11 +566,12 @@ binding_same_object (void)
                                         "foo", 100,
                                         "bar", 50,
                                         NULL);
-  GBinding *binding G_GNUC_UNUSED;
+  GBinding *binding;
 
   binding = g_object_bind_property (source, "foo",
                                     source, "bar",
                                     G_BINDING_BIDIRECTIONAL);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
   g_object_set (source, "foo", 10, NULL);
   g_assert_cmpint (source->foo, ==, 10);
@@ -568,6 +581,7 @@ binding_same_object (void)
   g_assert_cmpint (source->bar, ==, 30);
 
   g_object_unref (source);
+  g_assert (binding == NULL);
 }
 
 static void
@@ -581,7 +595,6 @@ binding_unbind (void)
                                     target, "bar",
                                     G_BINDING_DEFAULT);
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-
 
   g_object_set (source, "foo", 42, NULL);
   g_assert_cmpint (source->foo, ==, target->bar);
