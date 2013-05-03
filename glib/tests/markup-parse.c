@@ -250,6 +250,7 @@ test_parse (gconstpointer d)
   const gchar *filename = d;
   gchar *expected_file;
   gchar *expected;
+  GError *error = NULL;
   gint res;
 
   depth = 0;
@@ -263,11 +264,10 @@ test_parse (gconstpointer d)
     g_assert_cmpint (res, ==, 1);
 
   expected_file = get_expected_filename (filename);
-  if (g_file_get_contents (expected_file, &expected, NULL, NULL))
-    {
-      g_assert_cmpstr (string->str, ==, expected);
-      g_free (expected);
-    }
+  g_file_get_contents (expected_file, &expected, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (string->str, ==, expected);
+  g_free (expected);
   g_free (expected_file);
 
   g_string_free (string, TRUE);
