@@ -74,19 +74,25 @@ static void
 test_writable (void)
 {
   GMappedFile *file;
-  GError *error;
+  GError *error = NULL;
   gchar *contents;
+  gsize len;
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
+  char *srcpath;
+  gchar *tmp_copy_path;
 
-  if (access (SRCDIR "/4096-random-bytes", W_OK) != 0)
-    {
-      g_test_message ("Skipping writable mapping test");
-      return;
-    }
+  srcpath = g_build_filename (SRCDIR, "4096-random-bytes", NULL);
+  tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
 
-  error = NULL;
-  file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
+  g_file_get_contents (srcpath, &contents, &len, &error);
+  g_assert_no_error (error);
+  g_file_set_contents (tmp_copy_path, contents, len, &error);
+  g_assert_no_error (error);
+  
+  g_free (contents);
+
+  file = g_mapped_file_new (tmp_copy_path, TRUE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
@@ -98,33 +104,42 @@ test_writable (void)
   g_mapped_file_free (file);
 
   error = NULL;
-  file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
+  file = g_mapped_file_new (tmp_copy_path, FALSE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
   g_assert (strncmp (contents, old, strlen (old)) == 0);
 
   g_mapped_file_free (file);
+
+  g_free (srcpath);
+  g_free (tmp_copy_path);
 }
 
 static void
 test_writable_fd (void)
 {
   GMappedFile *file;
-  GError *error;
+  GError *error = NULL;
   gchar *contents;
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
+  gsize len;
   int fd;
+  char *srcpath;
+  gchar *tmp_copy_path;
 
-  if (access (SRCDIR "/4096-random-bytes", W_OK) != 0)
-    {
-      g_test_message ("Skipping writable mapping test");
-      return;
-    }
+  srcpath = g_build_filename (SRCDIR, "4096-random-bytes", NULL);
+  tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
 
-  error = NULL;
-  fd = g_open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
+  g_file_get_contents (srcpath, &contents, &len, &error);
+  g_assert_no_error (error);
+  g_file_set_contents (tmp_copy_path, contents, len, &error);
+  g_assert_no_error (error);
+  
+  g_free (contents);
+
+  fd = g_open (tmp_copy_path, O_RDWR, 0);
   g_assert (fd != -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
@@ -139,7 +154,7 @@ test_writable_fd (void)
   close (fd);
 
   error = NULL;
-  fd = g_open (SRCDIR "/4096-random-bytes", O_RDWR, 0);
+  fd = g_open (tmp_copy_path, O_RDWR, 0);
   g_assert (fd != -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
@@ -149,6 +164,8 @@ test_writable_fd (void)
 
   g_mapped_file_free (file);
 
+  g_free (srcpath);
+  g_free (tmp_copy_path);
 }
 
 static void
