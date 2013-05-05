@@ -92,6 +92,13 @@ prefix stripped (e.g. THE_XENUM).
 </varlistentry>
 
 <varlistentry>
+<term>@ENUMPREFIX@</term>
+<listitem><para>
+The prefix of the enum name (e.g. PREFIX).
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term>@VALUENAME@</term>
 <listitem><para>
 The enum value name currently being processed with words uppercase and
