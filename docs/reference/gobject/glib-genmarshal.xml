@@ -265,6 +265,14 @@ Skip source location remarks in generated comments.
 </varlistentry>
 
 <varlistentry>
+<term><option>--stdinc</option></term>
+<listitem><para>
+Use the standard marshallers of the GObject library, and include
+<filename>gmarshal.h</filename> in generated header files.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--nostdinc</option></term>
 <listitem><para>
 Do not use the standard marshallers of the GObject library, and skip
