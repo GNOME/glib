@@ -47,6 +47,7 @@ enum
 {
   PROP_0,
   PROP_URI,
+  PROP_DEFAULT_PORT,
   PROP_CONNECTABLE,
   PROP_PROXY_RESOLVER
 };
@@ -55,23 +56,24 @@ struct _GProxyAddressEnumeratorPrivate
 {
   /* Destination address */
   GSocketConnectable *connectable;
-  gchar		     *dest_uri;
-  gchar		     *dest_hostname;
-  guint16	      dest_port;
+  gchar              *dest_uri;
+  guint16             default_port;
+  gchar              *dest_hostname;
+  guint16             dest_port;
   GList              *dest_ips;
 
   /* Proxy enumeration */
   GProxyResolver           *proxy_resolver;
-  gchar			  **proxies;
-  gchar			  **next_proxy;
+  gchar                   **proxies;
+  gchar                   **next_proxy;
   GSocketAddressEnumerator *addr_enum;
   GSocketAddress           *proxy_address;
   const gchar              *proxy_uri;
-  gchar			   *proxy_type;
-  gchar			   *proxy_username;
-  gchar			   *proxy_password;
+  gchar                    *proxy_type;
+  gchar                    *proxy_username;
+  gchar                    *proxy_password;
   gboolean                  supports_hostname;
-  GList			   *next_dest_ip;
+  GList                    *next_dest_ip;
   GError                   *last_error;
 };
 
@@ -570,94 +572,94 @@ g_proxy_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
 }
 
 static void
+g_proxy_address_enumerator_constructed (GObject *object)
+{
+  GProxyAddressEnumeratorPrivate *priv = GET_PRIVATE (object);
+  GSocketConnectable *conn;
+  guint port;
+
+  if (priv->dest_uri)
+    {
+      conn = g_network_address_parse_uri (priv->dest_uri, priv->default_port, NULL);
+      if (conn)
+        {
+          g_object_get (conn,
+                        "hostname", &priv->dest_hostname,
+                        "port", &port,
+                        NULL);
+          priv->dest_port = port;
+
+          g_object_unref (conn);
+        }
+      else
+        g_warning ("Invalid URI '%s'", priv->dest_uri);
+    }
+
+  G_OBJECT_CLASS (g_proxy_address_enumerator_parent_class)->constructed (object);
+}
+
+static void
 g_proxy_address_enumerator_get_property (GObject        *object,
-					 guint           property_id,
-					 GValue         *value,
-					 GParamSpec     *pspec)
+                                         guint           property_id,
+                                         GValue         *value,
+                                         GParamSpec     *pspec)
 {
   GProxyAddressEnumeratorPrivate *priv = GET_PRIVATE (object);
   switch (property_id)
     {
-      case PROP_URI:
-	g_value_set_string (value, priv->dest_uri);
-	break;
+    case PROP_URI:
+      g_value_set_string (value, priv->dest_uri);
+      break;
 
-      case PROP_CONNECTABLE:
-	g_value_set_object (value, priv->connectable);
-	break;
+    case PROP_DEFAULT_PORT:
+      g_value_set_uint (value, priv->default_port);
+      break;
 
-      case PROP_PROXY_RESOLVER:
-	g_value_set_object (value, priv->proxy_resolver);
-	break;
+    case PROP_CONNECTABLE:
+      g_value_set_object (value, priv->connectable);
+      break;
 
-      default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    case PROP_PROXY_RESOLVER:
+      g_value_set_object (value, priv->proxy_resolver);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
 static void
 g_proxy_address_enumerator_set_property (GObject        *object,
-					 guint           property_id,
-					 const GValue   *value,
-					 GParamSpec     *pspec)
+                                         guint           property_id,
+                                         const GValue   *value,
+                                         GParamSpec     *pspec)
 {
   GProxyAddressEnumeratorPrivate *priv = GET_PRIVATE (object);
   switch (property_id)
     {
-      case PROP_URI:
-	  {
-	    const gchar *uri;
+    case PROP_URI:
+      priv->dest_uri = g_value_dup_string (value);
+      break;
 
-	    g_free (priv->dest_hostname);
-	    priv->dest_hostname = NULL;
-	    priv->dest_port = 0;
+    case PROP_DEFAULT_PORT:
+      priv->default_port = g_value_get_uint (value);
+      break;
 
-	    g_free (priv->dest_uri);
-	    priv->dest_uri = NULL;
+    case PROP_CONNECTABLE:
+      priv->connectable = g_value_dup_object (value);
+      break;
 
-	    uri = g_value_get_string (value);
+    case PROP_PROXY_RESOLVER:
+      if (priv->proxy_resolver)
+        g_object_unref (priv->proxy_resolver);
+      priv->proxy_resolver = g_value_get_object (value);
+      if (!priv->proxy_resolver)
+        priv->proxy_resolver = g_proxy_resolver_get_default ();
+      g_object_ref (priv->proxy_resolver);
+      break;
 
-	    if (uri)
-	      {
-		GSocketConnectable *conn;
-
-		conn = g_network_address_parse_uri (uri, 0, NULL);
-		if (conn)
-		  {
-		    guint port;
-
-		    priv->dest_uri = g_strdup (uri);
-		    
-		    g_object_get (conn,
-				  "hostname", &priv->dest_hostname,
-				  "port", &port,
-				  NULL);
-
-		    priv->dest_port = port;
-		    g_object_unref (conn);
-		  }
-		else
-		  g_warning ("Invalid URI '%s'", uri);
-	      }
-
-	    break;
-	  }
-
-      case PROP_CONNECTABLE:
-	  priv->connectable = g_value_dup_object (value);
-	  break;
-
-      case PROP_PROXY_RESOLVER:
-          if (priv->proxy_resolver)
-            g_object_unref (priv->proxy_resolver);
-          priv->proxy_resolver = g_value_get_object (value);
-          if (!priv->proxy_resolver)
-            priv->proxy_resolver = g_proxy_resolver_get_default ();
-          g_object_ref (priv->proxy_resolver);
-          break;
-
-      default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
 }
 
@@ -709,6 +711,7 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
   g_type_class_add_private (enumerator_class,
 			    sizeof (GProxyAddressEnumeratorPrivate));
 
+  object_class->constructed = g_proxy_address_enumerator_constructed;
   object_class->set_property = g_proxy_address_enumerator_set_property;
   object_class->get_property = g_proxy_address_enumerator_get_property;
   object_class->finalize = g_proxy_address_enumerator_finalize;
@@ -726,6 +729,24 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GProxyAddressEnumerator:default-port:
+   *
+   * The default port to use if #GProxyAddressEnumerator:uri does not
+   * specify one.
+   *
+   * Since: 2.38
+   */
+  g_object_class_install_property (object_class,
+				   PROP_DEFAULT_PORT,
+				   g_param_spec_uint ("default-port",
+                                                      P_("Default port"),
+                                                      P_("The default port to use if uri does not specify one"),
+                                                      0, 65535, 0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class,
 				   PROP_CONNECTABLE,

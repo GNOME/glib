@@ -734,14 +734,17 @@ g_fake_resolver_lookup_by_name (GResolver     *resolver,
 				GCancellable  *cancellable,
 				GError       **error)
 {
-  /* This is only ever called with lookups that are expected to
-   * fail.
-   */
-  g_set_error (error,
-	       G_RESOLVER_ERROR,
-	       G_RESOLVER_ERROR_NOT_FOUND,
-	       "Not found");
-  return NULL;
+  if (!strcmp (hostname, "example.com"))
+    return g_list_prepend (NULL, g_inet_address_new_from_string ("127.0.0.1"));
+  else
+    {
+      /* Anything else is expected to fail. */
+      g_set_error (error,
+                   G_RESOLVER_ERROR,
+                   G_RESOLVER_ERROR_NOT_FOUND,
+                   "Not found");
+      return NULL;
+    }
 }
 
 static void
@@ -751,10 +754,24 @@ g_fake_resolver_lookup_by_name_async (GResolver           *resolver,
 				      GAsyncReadyCallback  callback,
 				      gpointer             user_data)
 {
-  g_task_report_new_error (resolver, callback, user_data,
-			   g_fake_resolver_lookup_by_name_async,
-			   G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-			   "Not found");
+  GTask *task;
+
+  task = g_task_new (resolver, cancellable, callback, user_data);
+
+  if (!strcmp (hostname, "example.com"))
+    {
+      GList *result;
+
+      result = g_list_prepend (NULL, g_inet_address_new_from_string ("127.0.0.1"));
+      g_task_return_pointer (task, result, (GDestroyNotify) g_resolver_free_addresses);
+    }
+  else
+    {
+      g_task_return_new_error (task,
+                               G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                               "Not found");
+    }
+  g_object_unref (task);
 }
 
 static GList *
@@ -1236,6 +1253,69 @@ test_override (gpointer fixture,
   g_object_unref (alt_resolver);
 }
 
+static void
+assert_destination_port (GSocketAddressEnumerator *etor,
+                         guint16                   port)
+{
+  GSocketAddress *addr;
+  GProxyAddress *paddr;
+  GError *error = NULL;
+
+  while ((addr = g_socket_address_enumerator_next (etor, NULL, &error)))
+    {
+      g_assert_no_error (error);
+
+      g_assert (G_IS_PROXY_ADDRESS (addr));
+      paddr = G_PROXY_ADDRESS (addr);
+      g_assert_cmpint (g_proxy_address_get_destination_port (paddr), ==, port);
+      g_object_unref (addr);
+    }
+  g_assert_no_error (error);
+}
+
+static void
+test_proxy_enumerator_ports (void)
+{
+  GSocketAddressEnumerator *etor;
+
+  etor = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+                       "uri", "http://example.com/",
+                       NULL);
+  assert_destination_port (etor, 0);
+  g_object_unref (etor);
+
+  /* Have to call this to clear last_proxies so the next call to
+   * g_test_proxy_resolver_lookup() won't assert.
+   */
+  teardown_test (NULL, NULL);
+
+  etor = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+                       "uri", "http://example.com:8080/",
+                       NULL);
+  assert_destination_port (etor, 8080);
+  g_object_unref (etor);
+
+  teardown_test (NULL, NULL);
+
+  etor = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+                       "uri", "http://example.com/",
+                       "default-port", 80,
+                       NULL);
+  assert_destination_port (etor, 80);
+  g_object_unref (etor);
+
+  teardown_test (NULL, NULL);
+
+  etor = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+                       "uri", "http://example.com:8080/",
+                       "default-port", 80,
+                       NULL);
+  assert_destination_port (etor, 8080);
+  g_object_unref (etor);
+
+  teardown_test (NULL, NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1276,6 +1356,7 @@ main (int   argc,
   g_test_add_vtable ("/proxy/multiple_async", 0, NULL, setup_test, test_multiple_async, teardown_test);
   g_test_add_vtable ("/proxy/dns", 0, NULL, setup_test, test_dns, teardown_test);
   g_test_add_vtable ("/proxy/override", 0, NULL, setup_test, test_override, teardown_test);
+  g_test_add_func ("/proxy/enumerator-ports", test_proxy_enumerator_ports);
 
   result = g_test_run();
 
