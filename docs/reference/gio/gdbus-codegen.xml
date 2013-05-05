@@ -27,11 +27,13 @@
 <refsynopsisdiv>
   <cmdsynopsis>
     <command>gdbus-codegen</command>
+    <arg><option>-h</option>, <option>--help</option></arg>
     <arg><option>--interface-prefix</option> <replaceable>org.project.Prefix</replaceable></arg>
     <arg><option>--generate-c-code</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
     <arg><option>--c-generate-object-manager</option></arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
+    <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
         <option>--annotate</option>
@@ -134,6 +136,24 @@
     The following options are supported:
   </para>
   <variablelist>
+
+    <varlistentry>
+      <term><option>-h</option>, <option>--help</option></term>
+      <listitem>
+        <para>
+          Show help and exit.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--xml-files</option> <replaceable>FILE</replaceable></term>
+      <listitem>
+        <para>
+          The D-Bus introspection XML file.
+        </para>
+      </listitem>
+    </varlistentry>
 
     <varlistentry>
       <term><option>--interface-prefix</option> <replaceable>org.project.Prefix.</replaceable></term>
