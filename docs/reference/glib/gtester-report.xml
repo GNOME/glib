@@ -54,6 +54,13 @@ print version information and exit
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>-s</option>, <option>--subunit</option></term>
+<listitem><para>
+Output subunit. Needs python-subunit.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 
