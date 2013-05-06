@@ -7,10 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef SRCDIR
-#define SRCDIR "."
-#endif
-
 #define TEST_URI_0 	"file:///abc/defgh/ijklmnopqrstuvwxyz"
 #define TEST_URI_1 	"file:///test/uri/1"
 #define TEST_URI_2 	"file:///test/uri/2"

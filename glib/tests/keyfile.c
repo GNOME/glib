@@ -1389,10 +1389,6 @@ test_non_utf8 (void)
   g_key_file_free (file);
 }
 
-#ifndef SRCDIR
-#define SRCDIR "."
-#endif
-
 static void
 test_page_boundary (void)
 {

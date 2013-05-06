@@ -6,10 +6,6 @@
 #include <stdio.h>
 #include <glib.h>
 
-#ifndef SRCDIR
-#define SRCDIR "."
-#endif
-
 static int depth = 0;
 static GString *string;
 
