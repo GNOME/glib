@@ -1,6 +1,8 @@
 include $(top_srcdir)/Makefile.decl
 NULL =
 
+insttestdir=$(pkglibexecdir)/installed-tests
+
 bookmark_test_files = \
 	bookmarks/fail-01.xbel \
 	bookmarks/fail-02.xbel \
@@ -65,7 +67,12 @@ AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 LDADD = $(top_builddir)/glib/libglib-2.0.la -lm
 
-TEST_PROGS += 				\
+TEST_PROGS +=				\
+	1bit-emufutex			\
+	gwakeup				\
+	$(NULL)
+
+all_test_programs = 			\
 	array-test			\
 	asyncqueue			\
 	atomic				\
@@ -86,7 +93,6 @@ TEST_PROGS += 				\
 	fileutils			\
 	gdatetime			\
 	gvariant			\
-	gwakeup				\
 	hash				\
 	hmac				\
 	hook				\
@@ -137,11 +143,43 @@ TEST_PROGS += 				\
 	unicode				\
 	uri				\
 	1bit-mutex			\
-	1bit-emufutex			\
 	642026				\
 	642026-ec
 
-noinst_PROGRAMS = $(TEST_PROGS) test-spawn-echo
+if OS_UNIX
+all_test_programs += unix
+all_test_programs += include
+endif
+
+extra_test_binaries = test-spawn-echo
+
+if BUILD_MODULAR_TESTS
+TEST_PROGS += $(all_test_programs)
+noinst_PROGRAMS = $(TEST_PROGS) $(extra_test_binaries)
+endif
+
+if BUILDOPT_INSTALL_TESTS
+insttest_PROGRAMS = $(all_test_programs) $(extra_test_binaries)
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(all_test_programs:=.test)
+
+testdatadir=$(insttestdir)
+testdata_DATA = $(test_files)
+
+testdata_SCRIPTS = $(test_script_files)
+
+bookmarksdir=$(insttestdir)/bookmarks
+bookmarks_DATA = $(bookmark_test_files)
+
+markupsdir=$(insttestdir)/markups
+markups_DATA = $(all_markup_test_files)
+endif
+
+%.test: % Makefile
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	 echo 'Type=session' >> $@.tmp; \
+	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 mv $@.tmp $@)
 
 atomic_CFLAGS  = $(AM_CFLAGS)
 if HAVE_GCC
@@ -163,9 +201,6 @@ gwakeup_fallback_CFLAGS = $(AM_CFLAGS) -DTEST_EVENTFD_FALLBACK
 endif
 
 if OS_UNIX
-
-TEST_PROGS += unix
-TEST_PROGS += include
 
 # some testing of gtester functionality
 XMLLINT = xmllint

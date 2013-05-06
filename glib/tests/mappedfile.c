@@ -11,14 +11,19 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+static const gchar *datapath;
+
 static void
 test_basic (void)
 {
   GMappedFile *file;
   GError *error;
+  gchar *path;
 
   error = NULL;
-  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
+  path = g_build_filename (datapath, "empty", NULL);
+  file = g_mapped_file_new (path, FALSE, &error);
+  g_free (path);
   g_assert_no_error (error);
 
   g_mapped_file_ref (file);
@@ -32,9 +37,12 @@ test_empty (void)
 {
   GMappedFile *file;
   GError *error;
+  gchar *path;
 
   error = NULL;
-  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
+  path = g_build_filename (datapath, "empty", NULL);
+  file = g_mapped_file_new (path, FALSE, &error);
+  g_free (path);
   g_assert_no_error (error);
 
   g_assert (g_mapped_file_get_contents (file) == NULL);
@@ -82,7 +90,7 @@ test_writable (void)
   char *srcpath;
   gchar *tmp_copy_path;
 
-  srcpath = g_build_filename (SRCDIR, "4096-random-bytes", NULL);
+  srcpath = g_build_filename (datapath, "4096-random-bytes", NULL);
   tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
 
   g_file_get_contents (srcpath, &contents, &len, &error);
@@ -129,7 +137,7 @@ test_writable_fd (void)
   char *srcpath;
   gchar *tmp_copy_path;
 
-  srcpath = g_build_filename (SRCDIR, "4096-random-bytes", NULL);
+  srcpath = g_build_filename (datapath, "4096-random-bytes", NULL);
   tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
 
   g_file_get_contents (srcpath, &contents, &len, &error);
@@ -174,9 +182,12 @@ test_gbytes (void)
   GMappedFile *file;
   GBytes *bytes;
   GError *error;
+  gchar *path;
 
   error = NULL;
-  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
+  path = g_build_filename (datapath, "empty", NULL);
+  file = g_mapped_file_new (path, FALSE, &error);
+  g_free (path);
   g_assert_no_error (error);
 
   bytes = g_mapped_file_get_bytes (file);
@@ -189,6 +200,11 @@ test_gbytes (void)
 int
 main (int argc, char *argv[])
 {
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/mappedfile/basic", test_basic);

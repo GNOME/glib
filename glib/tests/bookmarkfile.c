@@ -268,6 +268,7 @@ main (int argc, char *argv[])
   GError *error;
   const gchar *name;
   gchar *path;
+  const gchar *datapath;
 
   g_test_init (&argc, &argv, NULL);
 
@@ -278,12 +279,18 @@ main (int argc, char *argv[])
     }
 
   error = NULL;
-  dir = g_dir_open (SRCDIR "/bookmarks", 0, &error);
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+  path = g_build_filename (datapath, "bookmarks", NULL);
+  dir = g_dir_open (path, 0, &error);
+  g_free (path);
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
       path = g_strdup_printf ("/bookmarks/parse/%s", name);
-      g_test_add_data_func_full (path, g_build_filename (SRCDIR, "bookmarks", name, NULL),
+      g_test_add_data_func_full (path, g_build_filename (datapath, "bookmarks", name, NULL),
                                  test_file, g_free);
       g_free (path);
     }

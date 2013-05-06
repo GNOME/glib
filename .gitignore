@@ -18,6 +18,7 @@ TAGS
 *.stp
 *.exe
 *.def
+*.test
 
 # autofoo stuff here
 compile

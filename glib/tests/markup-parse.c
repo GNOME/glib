@@ -8,6 +8,7 @@
 
 static int depth = 0;
 static GString *string;
+static const gchar *datapath;
 
 static void
 indent (int extra)
@@ -277,6 +278,11 @@ main (int argc, char *argv[])
   const gchar *name;
   gchar *path;
 
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+
   g_setenv ("LANG", "en_US.utf-8", TRUE);
   setlocale (LC_ALL, "");
 
@@ -292,7 +298,9 @@ main (int argc, char *argv[])
     }
 
   error = NULL;
-  dir = g_dir_open (SRCDIR "/markups", 0, &error);
+  path = g_build_filename (datapath, "markups", NULL);
+  dir = g_dir_open (path, 0, &error);
+  g_free (path);
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
@@ -300,7 +308,7 @@ main (int argc, char *argv[])
         continue;
 
       path = g_strdup_printf ("/markup/parse/%s", name);
-      g_test_add_data_func_full (path, g_build_filename (SRCDIR, "markups", name, NULL),
+      g_test_add_data_func_full (path, g_build_filename (datapath, "markups", name, NULL),
                                  test_parse, g_free);
       g_free (path);
     }

@@ -30,6 +30,8 @@
 #define pipe(fds) _pipe(fds, 4096, _O_BINARY)
 #endif
 
+static const char *argv0;
+
 static void
 debug (void)
 {
@@ -119,7 +121,7 @@ static void
 test_message (void)
 {
   gchar* argv[] = {
-          "./protocol",
+          argv0,
           NULL,
           "--GTestSubprocess",
           "-p", "/glib/testing/protocol/debug",
@@ -239,7 +241,7 @@ test_error (void)
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       gchar* argv[] = {
-              "./protocol",
+              argv0,
               NULL,
               "--GTestSubprocess",
               "-p", tests[i],
@@ -336,6 +338,8 @@ int
 main (int   argc,
       char**argv)
 {
+  argv0 = argv[0];
+
   g_test_init (&argc, &argv, NULL);
 
   /* we use ourself as the testcase, these are the ones we need internally */
