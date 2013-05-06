@@ -2171,7 +2171,7 @@
  * format function the same as they would have been for the unmodified
  * string).
  *
- * Place the attribute after the function declaration, just after the
+ * Place the attribute after the function declaration, just before the
  * semicolon.
  *
  * See the GNU C documentation for more details.
