@@ -334,7 +334,8 @@ g_value_array_remove (GValueArray *value_array,
  * Sort @value_array using @compare_func to compare the elements according to
  * the semantics of #GCompareFunc.
  *
- * The current implementation uses Quick-Sort as sorting algorithm.
+ * The current implementation uses the same sorting algorithm as standard
+ * C qsort() function.
  *
  * Returns: (transfer none): the #GValueArray passed in as @value_array
  *
@@ -363,7 +364,8 @@ g_value_array_sort (GValueArray *value_array,
  * Sort @value_array using @compare_func to compare the elements according
  * to the semantics of #GCompareDataFunc.
  *
- * The current implementation uses Quick-Sort as sorting algorithm.
+ * The current implementation uses the same sorting algorithm as standard
+ * C qsort() function.
  *
  * Rename to: g_value_array_sort
  * Returns: (transfer none): the #GValueArray passed in as @value_array
