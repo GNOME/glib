@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: glib.master.te\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-09 14:58+0000\n"
-"PO-Revision-Date: 2013-03-22 21:06+0530\n"
+"POT-Creation-Date: 2013-04-23 18:39+0000\n"
+"PO-Revision-Date: 2013-05-09 17:27+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <Fedora-trans-te@redhat.com>\n"
 "Language: te\n"
@@ -128,7 +128,6 @@ msgid "There is no GCredentials support for your platform"
 msgstr "మీ వేదిక ఎటువంటి GCredentials మద్దతు ఉంది"
 
 #: ../gio/gcredentials.c:480
-#| msgid "GCredentials is not implemented on this OS"
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials ఈ OS పైన ప్రోసెస్ ఐడి కలిగివుండదు"
 
@@ -270,7 +269,7 @@ msgstr "సమావేశంలో నడుస్తోంది లేదు 
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "సెషన్ బస్సు చిరునామా (ఈ OS కోసం అమలు కాలేదు) కనుగొనలేదు"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
+#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6826
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -279,7 +278,7 @@ msgstr ""
 "చరరాశి DBUS_STARTER_BUS_TYPE పర్యావరణం నుంచి బస్సు చిరునామా కనుగొనలేదు - "
 "తెలియని విలువ `%s '"
 
-#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
+#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -403,73 +402,73 @@ msgstr ""
 "ఒక క్లయింట్-వైపు కనెక్షన్ నిర్మించడానికి ఉన్నప్పుడు మద్దతు లేని జెండాలు "
 "ఎదుర్కొంది"
 
-#: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
+#: ../gio/gdbusconnection.c:4134 ../gio/gdbusconnection.c:4450
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "మార్గం%s వద్ద వస్తువు మీద అటువంటి ఇంటర్ఫేస్ `org.freedesktop.DBus.Properties '"
 
-#: ../gio/gdbusconnection.c:4136
+#: ../gio/gdbusconnection.c:4205
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "సెట్టింగ్లో లోపం ఆస్తి `%s ': ఊహించినది రకం`%s' కానీ వచ్చింది `%s '"
 
-#: ../gio/gdbusconnection.c:4231
+#: ../gio/gdbusconnection.c:4300
 #, c-format
 msgid "No such property `%s'"
 msgstr "అటువంటి ఆస్తి `%s '"
 
-#: ../gio/gdbusconnection.c:4243
+#: ../gio/gdbusconnection.c:4312
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "ఆస్తి `%s 'రీడబుల్ కాదు"
 
-#: ../gio/gdbusconnection.c:4254
+#: ../gio/gdbusconnection.c:4323
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "ఆస్తి `%s 'వ్రైటబుల్ కాదు"
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
+#: ../gio/gdbusconnection.c:4393 ../gio/gdbusconnection.c:6269
 #, c-format
 msgid "No such interface `%s'"
 msgstr "అటువంటి ఇంటర్ఫేస్ `%s '"
 
-#: ../gio/gdbusconnection.c:4508
+#: ../gio/gdbusconnection.c:4577
 msgid "No such interface"
 msgstr "అటువంటి ఇంటర్ఫేస్"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
+#: ../gio/gdbusconnection.c:4795 ../gio/gdbusconnection.c:6775
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "అటువంటి ఇంటర్ఫేస్ `%s 'మార్గం%s వద్ద వస్తువు న"
 
-#: ../gio/gdbusconnection.c:4781
+#: ../gio/gdbusconnection.c:4850
 #, c-format
 msgid "No such method `%s'"
 msgstr "అటువంటి పద్ధతి `%s'"
 
-#: ../gio/gdbusconnection.c:4812
+#: ../gio/gdbusconnection.c:4881
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "సందేశం యొక్క పద్ధతి, `%s ', సరిపోలడం లేదు అంచనా రకం`%s'"
 
-#: ../gio/gdbusconnection.c:5032
+#: ../gio/gdbusconnection.c:5101
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "ఒక వస్తువు ఇప్పటికే %s వద్ద ఇంటర్ఫేస్ %s కోసం ఎగుమతి ఉంది"
 
-#: ../gio/gdbusconnection.c:5230
+#: ../gio/gdbusconnection.c:5299
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "పద్ధతి `%s 'తిరిగి రకం`%s', కానీ అంచనా `%s'"
 
-#: ../gio/gdbusconnection.c:6311
+#: ../gio/gdbusconnection.c:6380
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "పద్ధతి `%s 'ఇంటర్ఫేస్ న`%s' సంతకం `%s 'లేదు తో"
 
-#: ../gio/gdbusconnection.c:6430
+#: ../gio/gdbusconnection.c:6499
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "ఒక subtree ఇప్పటికే %s కోసం ఎగుమతి ఉంది"
@@ -514,8 +513,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1383
 #, c-format
-#| msgid "Wanted to read %lu byte but got EOF"
-#| msgid_plural "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu బైట్ చదవడానికి కావలెను కానీ %lu వచ్చింది"
@@ -935,38 +932,38 @@ msgstr "పర్యవేక్షించుటకు వస్తువు �
 msgid "Monitor a remote object."
 msgstr "ఒక మారుమూల వస్తువు పర్యవేక్షించడానికి"
 
-#: ../gio/gdesktopappinfo.c:625 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:627 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "నామములేని"
 
-#: ../gio/gdesktopappinfo.c:1038
+#: ../gio/gdesktopappinfo.c:1040
 msgid "Desktop file didn't specify Exec field"
 msgstr "డెస్కుటాప్ దస్త్రము Exec క్షేత్రమును తెలుపలేదు"
 
-#: ../gio/gdesktopappinfo.c:1326
+#: ../gio/gdesktopappinfo.c:1328
 msgid "Unable to find terminal required for application"
 msgstr "అనువర్తనంకు కావలిసిన ‍టెర్మినల్‌ను కనుగొనలేక పోయింది"
 
-#: ../gio/gdesktopappinfo.c:1628
+#: ../gio/gdesktopappinfo.c:1630
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "వినియోగదారి అనువర్తన ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: ../gio/gdesktopappinfo.c:1632
+#: ../gio/gdesktopappinfo.c:1634
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "వినియోగదారి MIME ఆకృతీకరణ సంచయం %sను సృష్టించలేకపోయింది: %s"
 
-#: ../gio/gdesktopappinfo.c:1872 ../gio/gdesktopappinfo.c:1896
+#: ../gio/gdesktopappinfo.c:1874 ../gio/gdesktopappinfo.c:1898
 msgid "Application information lacks an identifier"
 msgstr "దరఖాస్తు సమాచారం ఒక గుర్తించే లేదు"
 
-#: ../gio/gdesktopappinfo.c:2128
+#: ../gio/gdesktopappinfo.c:2130
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "వినియోగదారి డెస్కుటాప్ దస్త్రమును సృష్టించలేకపోయింది %s"
 
-#: ../gio/gdesktopappinfo.c:2252
+#: ../gio/gdesktopappinfo.c:2254
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s కొరకు మలిచిన నిర్వచనము"
@@ -1024,15 +1021,14 @@ msgstr "GEmblemedIcon ఎన్కోడింగ్‌నందు టోకె
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon కొరకు GEmblem కావలసివుంది"
 
-#: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
-#: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
-#: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:937 ../gio/gfile.c:1176 ../gio/gfile.c:1315
+#: ../gio/gfile.c:1555 ../gio/gfile.c:1610 ../gio/gfile.c:1668
+#: ../gio/gfile.c:1752 ../gio/gfile.c:1809 ../gio/gfile.c:1873
+#: ../gio/gfile.c:1928 ../gio/gfile.c:3489 ../gio/gfile.c:3544
+#: ../gio/gfile.c:3752 ../gio/gfile.c:3794 ../gio/gfile.c:4260
+#: ../gio/gfile.c:4672 ../gio/gfile.c:4757 ../gio/gfile.c:4847
+#: ../gio/gfile.c:4944 ../gio/gfile.c:5031 ../gio/gfile.c:5132
+#: ../gio/gfile.c:7311 ../gio/gfile.c:7401 ../gio/gfile.c:7485
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
@@ -1047,71 +1043,70 @@ msgstr "ఆపరేషన్ మద్దతీయబడలేదు"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1419 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
+#: ../gio/gfile.c:1439 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
 #: ../gio/glocalfile.c:1120
 msgid "Containing mount does not exist"
 msgstr "వినియోగదారికి దృగ్గోచరమగు మౌంట్ లేదు"
 
-#: ../gio/gfile.c:2474 ../gio/glocalfile.c:2328
+#: ../gio/gfile.c:2494 ../gio/glocalfile.c:2328
 msgid "Can't copy over directory"
 msgstr "డైరెక్టరీనందు నకలు తీయలేదు"
 
-#: ../gio/gfile.c:2534
+#: ../gio/gfile.c:2554
 msgid "Can't copy directory over directory"
 msgstr "డైరెక్టరీని డైరెక్టరీకి నకలు తీయలేము"
 
-#: ../gio/gfile.c:2542 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2562 ../gio/glocalfile.c:2337
 msgid "Target file exists"
 msgstr "లక్ష్యపు దస్త్రము వుంది"
 
-#: ../gio/gfile.c:2561
+#: ../gio/gfile.c:2581
 msgid "Can't recursively copy directory"
 msgstr "డైరెక్టరీని పునరావృతముగా నకలుతీయలేదు"
 
-#: ../gio/gfile.c:2825
+#: ../gio/gfile.c:2845
 msgid "Splice not supported"
 msgstr "అతుకుపెట్టు మద్దతు లేదు "
 
-#: ../gio/gfile.c:2829
+#: ../gio/gfile.c:2849
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "లోపం splicing ఫైలు: %s"
 
-#: ../gio/gfile.c:2960
-#| msgid "Move between mounts not supported"
+#: ../gio/gfile.c:2980
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "నకలు తీయుట (reflink/clone) మౌంట్స్ మద్యన తోడ్పాటునీయదు"
 
-#: ../gio/gfile.c:2964
+#: ../gio/gfile.c:2984
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "నకలు తీయుట (reflink/clone) తోడ్పాటు లేదు లేదా చెల్లనిది"
 
-#: ../gio/gfile.c:2969
+#: ../gio/gfile.c:2989
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "నకలు తీయుట (reflink/clone) తోడ్పాటు లేదు లేదా పనిచేయుటలేదు"
 
-#: ../gio/gfile.c:3029
+#: ../gio/gfile.c:3049
 msgid "Can't copy special file"
 msgstr "ప్రత్యేక దస్త్రమును నకలుతీయలేదు"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3742
 msgid "Invalid symlink value given"
 msgstr "చెల్లని సిమ్‌లింక్ విలువ యివ్వబడినది"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3904
 msgid "Trash not supported"
 msgstr "ట్రాష్ మద్దతీయలేదు"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:4017
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "దస్త్రము నామములు '%c'ని కలిగిలేవు"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6434 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "వాల్యూమ్ మౌంట్‌ను చేయలేకపోయింది"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6543
 msgid "No application is registered as handling this file"
 msgstr "ఈ దస్త్రము సంబాలించుతున్నట్లు యెటువంటి అనువర్తనము నమోదుకాలేదు"
 
@@ -1156,37 +1151,37 @@ msgstr "ట్రంకేట్ ఇన్‌పుట్ స్ట్రీమ�
 msgid "Truncate not supported on stream"
 msgstr "స్ట్రీమ్‌పైన ట్రంకేట్ మద్దతీయుటలేదు"
 
-#: ../gio/gicon.c:284
+#: ../gio/gicon.c:297
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "తప్పుడు సంఖ్యా టోకెన్లు (%d)"
 
-#: ../gio/gicon.c:304
+#: ../gio/gicon.c:317
 #, c-format
 msgid "No type for class name %s"
 msgstr "క్లాస్ నామము %s కొరకు ఏ రకములేదు"
 
-#: ../gio/gicon.c:314
+#: ../gio/gicon.c:327
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "రకము %s GIcon యింటర్‌ఫేస్‌ను తయారుచేయలేదు"
 
-#: ../gio/gicon.c:325
+#: ../gio/gicon.c:338
 #, c-format
 msgid "Type %s is not classed"
 msgstr "రకము %s వర్గీకరించబడలేదు"
 
-#: ../gio/gicon.c:339
+#: ../gio/gicon.c:352
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "తప్పుగావున్న వర్షన్ సంఖ్య: %s"
 
-#: ../gio/gicon.c:353
+#: ../gio/gicon.c:366
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "GIcon యింటర్ఫేస్ పైన రకము %s అనునది from_tokens()ను తయారుచేయలేదు"
 
-#: ../gio/gicon.c:428
+#: ../gio/gicon.c:468
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "ప్రతిమ యెన్కోడింగ్ యొక్క పంపిణీచేయబడిన వర్షన్‌ను సంభాలించలేదు"
 
@@ -1209,7 +1204,7 @@ msgid "Could not parse '%s' as IP address mask"
 msgstr "'%s' ను IP చిరునామా మాస్కువలె పార్స్ చేయలేకపోయింది"
 
 #: ../gio/ginetsocketaddress.c:206 ../gio/ginetsocketaddress.c:223
-#: ../gio/gunixsocketaddress.c:221
+#: ../gio/gunixsocketaddress.c:210
 msgid "Not enough space for socket address"
 msgstr "సాకెట్ చిరునామా కొరకు సరిపోవునంత జాగాలేదు"
 
@@ -1551,9 +1546,6 @@ msgstr " మరియు కఠినమైన పేర్కొన్న �
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
-#| msgid ""
-#| "error parsing key `%s' in schema `%s' as specified in override file `%s': "
-#| "%s.  "
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
 msgstr ""
@@ -1767,79 +1759,79 @@ msgstr "పొడిగించిన యాట్రిబ్యూట్ చ�
 msgid "Error setting extended attribute '%s': %s"
 msgstr "పొడిగించిన యాట్రిబ్యూట్ అమర్చుటలో దోషము '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1548
+#: ../gio/glocalfileinfo.c:1544
 msgid " (invalid encoding)"
 msgstr " (చెల్లని యెన్కోడింగ్)"
 
-#: ../gio/glocalfileinfo.c:1740 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:837
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "ఫైలు '%s' కొరకు సమాచారంను పొందుటలో దోషం: %s"
 
-#: ../gio/glocalfileinfo.c:1986
+#: ../gio/glocalfileinfo.c:1982
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "ఫైల్ వివరణి కొరకు సమాచారంను పొందుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2031
+#: ../gio/glocalfileinfo.c:2027
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint32 అనుకోబడినది)"
 
-#: ../gio/glocalfileinfo.c:2049
+#: ../gio/glocalfileinfo.c:2045
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (uint64 అనుకోబడినది)"
 
-#: ../gio/glocalfileinfo.c:2068 ../gio/glocalfileinfo.c:2087
+#: ../gio/glocalfileinfo.c:2064 ../gio/glocalfileinfo.c:2083
 msgid "Invalid attribute type (byte string expected)"
 msgstr "చెల్లని యాట్రిబ్యూట్ రకము (బైట్ స్ట్రింగ్ అనుకోబడినది)"
 
-#: ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2118
 msgid "Cannot set permissions on symlinks"
 msgstr "సిమ్‌లింకుల నందు అనుమతులను అమర్చలేదు"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2134
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "అనుమతులను అమర్చుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2189
+#: ../gio/glocalfileinfo.c:2185
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "యజమానిని అమర్చుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2212
+#: ../gio/glocalfileinfo.c:2208
 msgid "symlink must be non-NULL"
 msgstr "సిమ్‌లింకు తప్పక NULL-కాకూడదు"
 
-#: ../gio/glocalfileinfo.c:2222 ../gio/glocalfileinfo.c:2241
-#: ../gio/glocalfileinfo.c:2252
+#: ../gio/glocalfileinfo.c:2218 ../gio/glocalfileinfo.c:2237
+#: ../gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2231
+#: ../gio/glocalfileinfo.c:2227
 msgid "Error setting symlink: file is not a symlink"
 msgstr "సింమ్‌లింకు అమర్చుటలో దోషము: దస్త్రము సిమ్‌లింకు కాదు"
 
-#: ../gio/glocalfileinfo.c:2357
+#: ../gio/glocalfileinfo.c:2353
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "సవరణ లేదా యాక్సెస్ సమయం అమర్చుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2380
+#: ../gio/glocalfileinfo.c:2376
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux సందర్భం తప్పక NULL-కాకూడదు"
 
-#: ../gio/glocalfileinfo.c:2395
+#: ../gio/glocalfileinfo.c:2391
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux సందర్భం అమర్చుటలో దోషము: %s"
 
-#: ../gio/glocalfileinfo.c:2402
+#: ../gio/glocalfileinfo.c:2398
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ఈ సిస్టమ్‌పైన చేతనపరచ బడిలేదు"
 
-#: ../gio/glocalfileinfo.c:2494
+#: ../gio/glocalfileinfo.c:2490
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "యాట్రిబ్యూట్ %sను అమర్చుట మద్దతీయుటలేదు"
@@ -2057,7 +2049,7 @@ msgstr "'%s' వద్దగల వనరు డైరెక్టరీ కా�
 msgid "Input stream doesn't implement seek"
 msgstr "ఇన్‌పుట్ స్ట్రీమ్ సీక్‌ను అభివృద్ది చేయుటలేదు"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:538
 msgid "Print help"
 msgstr "సహాయం ముద్రణ"
 
@@ -2108,7 +2100,7 @@ msgstr "వనరు ఫైలును stdout పైనకు తెమ్మ�
 msgid "FILE PATH"
 msgstr "ఫైల్ పాత్"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:624
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2158,7 +2150,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:657
 msgid "Arguments:\n"
 msgstr "వాదనలు:\n"
 
@@ -2166,7 +2158,7 @@ msgstr "వాదనలు:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION   ఒక (ఐచ్చిక) elf విభాగం పేరు\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:664
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "కమాండ్ (ఐచ్ఛిక) ఆదేశం వివరించటానికి \n"
 
@@ -2238,33 +2230,37 @@ msgstr "పాత్ రెండు సమీప slashes (/ /) ఉండకూ�
 msgid "No such key '%s'\n"
 msgstr "'%s' వంటి కీ లేదు\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "యివ్వబడిన విలువ చెల్లుబాటు అయ్యే పరిధి బయట ఉంది\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:544
+msgid "Print version information and exit"
+msgstr "వర్షన్ సమాచారం ముద్రించి నిష్క్రమించు"
+
+#: ../gio/gsettings-tool.c:550
 msgid "List the installed (non-relocatable) schemas"
 msgstr "వ్యవస్థాపిత (non-relocatable) స్కీమాస్ జాబితా"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:556
 msgid "List the installed relocatable schemas"
 msgstr "ఇన్స్టాల్ relocatable స్కీమాస్ జాబితా"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:562
 msgid "List the keys in SCHEMA"
 msgstr "స్కీమ లో కీలను జాబితా"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:563 ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:606
 msgid "SCHEMA[:PATH]"
 msgstr "షెడ్యూల్ [: PATH]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:568
 msgid "List the children of SCHEMA"
 msgstr "స్కీమ పిల్లలకు జాబితా"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:574
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2272,44 +2268,44 @@ msgstr ""
 "జాబితా కీలు మరియు విలువలు, పునరావృతంగా \n"
 "సంఖ్య స్కీమ ఇవ్వబడుతుంది ఒకవేళ అన్ని కీలను జాబితా\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:576
 msgid "[SCHEMA[:PATH]]"
 msgstr "[చార్ట్ [: PATH]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:581
 msgid "Get the value of KEY"
 msgstr "కీ విలువ పొందండి"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:582 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600 ../gio/gsettings-tool.c:612
 msgid "SCHEMA[:PATH] KEY"
 msgstr "షెడ్యూల్ [: PATH] KEY"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:587
 msgid "Query the range of valid values for KEY"
 msgstr "కీ కోసం చెల్లుబాటు అయ్యే విలువలు పరిధి విచారిస్తారు"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:593
 msgid "Set the value of KEY to VALUE"
 msgstr "VALUE కీ యొక్క విలువ అమర్చు"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "స్కీమ [: PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:599
 msgid "Reset KEY to its default value"
 msgstr "దాని సాధారణ విలువ కీ రీసెట్"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:605
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "స్కీమ వారి లకు అన్ని కీలను రీసెట్"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:611
 msgid "Check if KEY is writable"
 msgstr "KEY రైటబుల్ ఉంటే తనిఖీ"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:617
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2319,11 +2315,11 @@ msgstr ""
 "ఏ KEY పేర్కొన్న ఉంటే, స్కీమ అన్ని కీలను మానిటర్.\n"
 "వాడుక ^ సి పర్యవేక్షణ ఆపడానికి.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:620
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:632
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2367,7 +2363,7 @@ msgstr ""
 "విశదీకృత సహాయం కొరకు 'gsettings help COMMAND' వుపయోగించు.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:654
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2382,11 +2378,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:660
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR అదనపు స్కీమాలను అన్వేషించుటకు వొక డైరక్టరీ\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:668
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2394,25 +2390,24 @@ msgstr ""
 "  స్కీమ యొక్క పథకం పేరు\n"
 "  PATH మార్గం, relocatable స్కీమాస్ కోసం \n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:673
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "స్కీమ లోపల కీ (ఆప్షనల్) కీలక \n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The key within the schema\n"
 msgstr "స్కీమ లోపల KEY కీలక \n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:681
 msgid "  VALUE     The value to set\n"
 msgstr "అమర్చవలసిన విలువ VALUE\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:740
 #, c-format
-#| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s నుండి స్కీమాలను లోడు చేయలేదు: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:802
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "ఖాళీ స్కీమ పేరు ఇవ్వబడింది \n"
@@ -2496,7 +2491,6 @@ msgid "Connection in progress"
 msgstr "అనుసంధానము పురోగతిలోవుంది"
 
 #: ../gio/gsocket.c:2346
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
 msgstr "వాయిదావున్న దోషమును పొందలేక పోయింది:"
 
@@ -2684,17 +2678,18 @@ msgstr "'%s' పరిష్కరించుటలో దోషము: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "వ్యతిరేక-పరిష్కారములో దోషము '%s': %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:614
+#: ../gio/gthreadedresolver.c:715 ../gio/gthreadedresolver.c:766
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' కోసం అభ్యర్ధన రకం సంఖ్య DNS రికార్డు "
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:720
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "తాత్కాలికంగా '%s' పరిష్కరించలేదు"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:725
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "%s పరిష్కరించుటలో దోషము"
@@ -2799,7 +2794,7 @@ msgstr "ఫైలు వివరిణి నుండి చదువుటల
 msgid "Error closing file descriptor: %s"
 msgstr "ఫైల్ వివరిణిని మూయుటలో దోషం: %s"
 
-#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2036
+#: ../gio/gunixmounts.c:1985 ../gio/gunixmounts.c:2038
 msgid "Filesystem root"
 msgstr "దస్త్రవ్యవస్థ రూట్"
 
@@ -2808,7 +2803,7 @@ msgstr "దస్త్రవ్యవస్థ రూట్"
 msgid "Error writing to file descriptor: %s"
 msgstr "ఫైల్ వివరిణికి వ్రాయుటలో దోషం: %s"
 
-#: ../gio/gunixsocketaddress.c:244
+#: ../gio/gunixsocketaddress.c:233
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
 "ఆబ్‌స్ట్రాక్టు యునిక్సు డొమైన్ సాకెట్ చిరునామాలకు ఈ సిస్టమ్ నందు తోడ్పాటులేదు"
@@ -3250,7 +3245,6 @@ msgstr " వివరణ తెరచుటలో దోషం '%s': %s"
 
 #: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
 #, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "%lu బైటుని ఫైలు  \"%s\" చదువుటకు ఇవ్వలేము"
@@ -3506,13 +3500,11 @@ msgstr "నామమునందు చెల్లని UTF-8 ఎన్కో�
 
 #: ../glib/gmarkup.c:472
 #, c-format
-#| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "'%s' చెల్లునటువంటి పేరు కాదు "
 
 #: ../glib/gmarkup.c:488
 #, c-format
-#| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
 msgstr "'%s' చెల్లునటువంటి పేరు కాదు: '%c'"
 
@@ -3710,53 +3702,53 @@ msgstr "వినిమయం:"
 msgid "[OPTION...]"
 msgstr "[ఇచ్చాపూర్వరకం...]"
 
-#: ../glib/goption.c:864
+#: ../glib/goption.c:870
 msgid "Help Options:"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలు:"
 
-#: ../glib/goption.c:865
+#: ../glib/goption.c:871
 msgid "Show help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలను చూపించుట"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:877
 msgid "Show all help options"
 msgstr "సహాయ ఇచ్ఛాపూర్వకాలన్నింటని చూపించుట"
 
-#: ../glib/goption.c:933
+#: ../glib/goption.c:939
 msgid "Application Options:"
 msgstr "కార్యక్షేత్ర ఇచ్ఛాపూర్వకాలు :"
 
-#: ../glib/goption.c:997 ../glib/goption.c:1067
+#: ../glib/goption.c:1003 ../glib/goption.c:1073
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "పూర్ణాంకం విలువ %sను %s కొరకు పార్స్‍ చేయలేదు"
 
-#: ../glib/goption.c:1007 ../glib/goption.c:1075
+#: ../glib/goption.c:1013 ../glib/goption.c:1081
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr " పూర్ణాంకం విలువ '%s' లో విస్రృతి లో లేని %s "
 
-#: ../glib/goption.c:1032
+#: ../glib/goption.c:1038
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "డబుల్ విలువ '%s'ను %sకొరకు పార్శ్‍‌చేయలేదు"
 
-#: ../glib/goption.c:1040
+#: ../glib/goption.c:1046
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "డబుల్ విలువ '%s' అనునది %sకొరకు వ్యాప్తిలో లేదు"
 
-#: ../glib/goption.c:1303 ../glib/goption.c:1382
+#: ../glib/goption.c:1309 ../glib/goption.c:1388
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ఐచ్చికం పార్శింగ్‌లో దోషము %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1526
+#: ../glib/goption.c:1419 ../glib/goption.c:1532
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s కొరకు తప్పిపోయిన ఆర్గుమెంట్"
 
-#: ../glib/goption.c:1979
+#: ../glib/goption.c:1985
 #, c-format
 msgid "Unknown option %s"
 msgstr "తెలియని  ఇచ్ఛాపూర్వకము %s"
@@ -4148,79 +4140,84 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "పాఠం ఏమి లేదు (లేక ఒక వైట్ స్పేస్ కలదు)"
 
-#: ../glib/gspawn.c:203
+#: ../glib/gspawn.c:202
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) శిశు కార్యం నుండి వివరము చదువుటలో విఫలమయినావు "
 
-#: ../glib/gspawn.c:362
+#: ../glib/gspawn.c:345
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 " శిశు కార్యం (%s) నుండి పాఠం చదువుటలో సెలెక్ట్() లో ఊహించని దోషం కలదు.  "
 
-#: ../glib/gspawn.c:853 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:430
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
+
+#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "%ld కోడ్‌ తో చైల్డ్ ప్రోసెస్ నిష్క్రమించెను"
 
-#: ../glib/gspawn.c:861
+#: ../glib/gspawn.c:857
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "సంకేతం %ld తో చెల్డ్ ప్రోసెస్ అంతంచేయబడెను"
 
-#: ../glib/gspawn.c:868
+#: ../glib/gspawn.c:864
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "సంకేతం %ld తో చైల్డ్ ప్రోసెస్ ఆపివేయబడెను"
 
-#: ../glib/gspawn.c:875
+#: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "చైల్డ్ ప్రోసెస్ అసహజంగా నిష్క్రమించెను"
 
-#: ../glib/gspawn.c:1280 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr " శిశు పైప్ నుండి చదువుటలో విఫలమయినావు(%s)"
 
-#: ../glib/gspawn.c:1348
+#: ../glib/gspawn.c:1344
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) ఫోర్క్ విఫలమయినది  "
 
-#: ../glib/gspawn.c:1496 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1492 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr " '%s' (%s) వివరణ మార్చుటలో విఫలమయినావు  "
 
-#: ../glib/gspawn.c:1506
+#: ../glib/gspawn.c:1502
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో విఫలమయినావు (%s)"
 
-#: ../glib/gspawn.c:1516
+#: ../glib/gspawn.c:1512
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "ఎగుబడికి రిడైరెక్ట్ చేయుటలో విఫలమైనది లేక శిశు కార్యం యొక్క దిగుబడి  (%s)"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1521
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr " (%s) శిశుకార్యం యెక్క ఫోర్క్ విఫలమయినది "
 
-#: ../glib/gspawn.c:1533
+#: ../glib/gspawn.c:1529
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr " \"%s\" శిశుకార్యం నిర్వర్తించుటలో తెలియని ధోషం కలదు  "
 
-#: ../glib/gspawn.c:1557
+#: ../glib/gspawn.c:1553
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "శిశు పిడ్ పైప్ (%s) నుండి సరిపడునంత చదువుటలో విఫలమైనావు.  "
 
-#: ../glib/gspawn.c:1630 ../glib/gspawn-win32.c:300
+#: ../glib/gspawn.c:1626 ../glib/gspawn-win32.c:300
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) శిశు కార్యం తో తెలియచేయుటకు పైప్ ను సృష్టించుటలో విఫలమైనావు "
@@ -4377,9 +4374,6 @@ msgstr "%.1f KB"
 #~ msgstr ""
 #~ "ఊహించని ఎంపికను పొడవు SO_PASSCRED ఎనేబుల్ ఒకవేళ చూడ్డంలోకరంటు ప్లగ్గు పెట్టే చోటు. "
 #~ "ఆశించబడింది%d బైట్లు,%d వచ్చింది"
-
-#~ msgid "Unexpected error in waitpid() (%s)"
-#~ msgstr "వెయిట్ పిడ్() లో ఊహించని దోషం కలదు(%s)"
 
 #~ msgid "Abnormal program termination spawning command line `%s': %s"
 #~ msgstr "అసాధారణ కార్యక్రమం ముగింపు ఆవిర్భావానికి కారణమైంది కమాండ్ లైన్ `%s ':%s"
