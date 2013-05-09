@@ -1284,9 +1284,15 @@ GType*g_type_interface_prerequisites    (GType                       interface_t
 GLIB_AVAILABLE_IN_ALL
 void     g_type_class_add_private       (gpointer                    g_class,
                                          gsize                       private_size);
+GLIB_AVAILABLE_IN_2_38
+gint     g_type_add_instance_private    (GType                       class_type,
+                                         gsize                       private_size);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_type_instance_get_private    (GTypeInstance              *instance,
                                          GType                       private_type);
+GLIB_AVAILABLE_IN_2_38
+void     g_type_class_adjust_private_offset (gpointer                g_class,
+                                             gint                   *private_size_or_offset);
 
 GLIB_AVAILABLE_IN_ALL
 void      g_type_add_class_private      (GType    		     class_type,
@@ -1335,6 +1341,22 @@ guint     g_type_get_type_registration_serial (void);
  */
 #define G_DEFINE_TYPE_WITH_CODE(TN, t_n, T_P, _C_)	    _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, 0) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
 /**
+ * G_DEFINE_TYPE_WITH_PRIVATE:
+ * @TN: The name of the new type, in Camel case.
+ * @t_n: The name of the new type, in lowercase, with words 
+ *  separated by '_'.
+ * @T_P: The #GType of the parent type.
+ * 
+ * A convenience macro for type implementations, which declares a 
+ * class initialization function, an instance initialization function (see #GTypeInfo for information about 
+ * these), a static variable named @t_n<!-- -->_parent_class pointing to the parent class, and adds private
+ * instance data to the type. Furthermore, it defines a *_get_type() function. See G_DEFINE_TYPE_EXTENDED()
+ * for an example.
+ * 
+ * Since: 2.38
+ */
+#define G_DEFINE_TYPE_WITH_PRIVATE(TN, t_n, T_P)            G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, G_ADD_PRIVATE (TN))
+/**
  * G_DEFINE_ABSTRACT_TYPE:
  * @TN: The name of the new type, in Camel case.
  * @t_n: The name of the new type, in lowercase, with words 
@@ -1364,6 +1386,19 @@ guint     g_type_get_type_registration_serial (void);
  * Since: 2.4
  */
 #define G_DEFINE_ABSTRACT_TYPE_WITH_CODE(TN, t_n, T_P, _C_) _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+/**
+ * G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE:
+ * @TN: The name of the new type, in Camel case.
+ * @t_n: The name of the new type, in lowercase, with words 
+ *  separated by '_'.
+ *
+ * @T_P: The #GType of the parent type.
+ * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines an abstract type. 
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ * 
+ * Since: 2.4
+ */
+#define G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(TN, t_n, T_P)   G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, G_ADD_PRIVATE (TN))
 /**
  * G_DEFINE_TYPE_EXTENDED:
  * @TN: The name of the new type, in Camel case.
@@ -1487,15 +1522,84 @@ guint     g_type_get_type_registration_serial (void);
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
 
+/**
+ * G_ADD_PRIVATE:
+ * @TypeName: the name of the type in CamelCase
+ *
+ * A convenience macro to ease adding private data to instances of a new type
+ * in the @_C_ section of G_DEFINE_TYPE_WITH_CODE() or
+ * G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
+ *
+ * For instance:
+ *
+ * |[
+ *   typedef struct _MyObject MyObject;
+ *   typedef struct _MyObjectClass MyObjectClass;
+ *
+ *   typedef struct {
+ *     gint foo;
+ *     gint bar;
+ *   } MyObjectPrivate;
+ *
+ *   G_DEFINE_TYPE_WITH_CODE (MyObject, my_object, G_TYPE_OBJECT,
+ *                            G_ADD_PRIVATE (MyObject))
+ * ]|
+ *
+ * Will add MyObjectPrivate as the private data to any instance of the MyObject
+ * type.
+ *
+ * G_DEFINE_TYPE_* macros will automatically create a private function
+ * based on the arguments to this macro, which can be used to safely
+ * retrieve the private data from an instance of the type; for instance:
+ *
+ * |[
+ *   gint
+ *   my_object_get_foo (MyObject *obj)
+ *   {
+ *     MyObjectPrivate *priv = my_object_get_private (obj);
+ *
+ *     return priv->foo;
+ *   }
+ *
+ *   void
+ *   my_object_set_bar (MyObject *obj,
+ *                      gint      bar)
+ *   {
+ *     MyObjectPrivate *priv = my_object_get_private (obj);
+ *
+ *     if (priv->bar != bar)
+ *       priv->bar = bar;
+ *   }
+ * ]|
+ *
+ * Note that this macro can only be used together with the G_DEFINE_TYPE_*
+ * macros, since it depends on variable names from those macros.
+ *
+ * Since: 2.38
+ */
+#define G_ADD_PRIVATE(TypeName) { \
+  TypeName##_private_offset = \
+    g_type_add_instance_private (g_define_type_id, sizeof (TypeName##Private)); \
+}
+
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
 \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
 static gpointer type_name##_parent_class = NULL; \
+static gint     TypeName##_private_offset; \
 static void     type_name##_class_intern_init (gpointer klass) \
 { \
   type_name##_parent_class = g_type_class_peek_parent (klass); \
+  if (TypeName##_private_offset != 0) \
+    g_type_class_adjust_private_offset (klass, &TypeName##_private_offset); \
   type_name##_class_init ((TypeName##Class*) klass); \
+} \
+\
+static inline gpointer \
+type_name##_get_private (TypeName *self) \
+{ \
+  return (G_STRUCT_MEMBER_P (self, TypeName##_private_offset)); \
 } \
 \
 GType \

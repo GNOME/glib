@@ -19,6 +19,7 @@ test_programs = \
 	reference			\
 	valuearray			\
 	type				\
+	private				\
 	$(NULL)
 
 # -----------------------------------------------------------------------------
