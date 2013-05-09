@@ -1539,6 +1539,13 @@ g_application_open (GApplication  *application,
  * except in the case that g_application_set_inactivity_timeout() is in
  * use.
  *
+ * This function sets the prgname (g_set_prgname()), if not already set,
+ * to the basename of argv[0].  Since 2.38, if %G_APPLICATION_IS_SERVICE
+ * is specified, the prgname is set to the application ID.  The main
+ * impact of this is is that the wmclass of windows created by Gtk+ will
+ * be set accordingly, which helps the window manager determine which
+ * application is showing the window.
+ *
  * Returns: the exit status
  *
  * Since: 2.28
@@ -1561,13 +1568,20 @@ g_application_run (GApplication  *application,
     arguments[i] = g_strdup (argv[i]);
   arguments[i] = NULL;
 
-  if (g_get_prgname () == NULL && argc > 0)
+  if (g_get_prgname () == NULL)
     {
-      gchar *prgname;
+      if (application->priv->flags & G_APPLICATION_IS_SERVICE)
+        {
+          g_set_prgname (application->priv->id);
+        }
+      else if (argc > 0)
+        {
+          gchar *prgname;
 
-      prgname = g_path_get_basename (argv[0]);
-      g_set_prgname (prgname);
-      g_free (prgname);
+          prgname = g_path_get_basename (argv[0]);
+          g_set_prgname (prgname);
+          g_free (prgname);
+        }
     }
 
   if (!G_APPLICATION_GET_CLASS (application)
