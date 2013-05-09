@@ -10,4 +10,5 @@ reference
 signals
 threadtests
 valuearray
+private
 marshalers.[ch]

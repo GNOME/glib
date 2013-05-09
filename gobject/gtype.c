@@ -4509,6 +4509,111 @@ g_type_class_add_private (gpointer g_class,
   G_WRITE_UNLOCK (&type_rw_lock);
 }
 
+/* semi-private, called only by the G_ADD_PRIVATE macro */
+gint
+g_type_add_instance_private (GType class_gtype,
+                             gsize private_size)
+{
+  TypeNode *node = lookup_type_node_I (class_gtype);
+
+  g_return_val_if_fail (private_size > 0, 0);
+  g_return_val_if_fail (private_size <= 0xffff, 0);
+
+  if (!node || !node->is_classed || !node->is_instantiatable || !node->data)
+    {
+      g_warning ("cannot add private field to invalid (non-instantiatable) type '%s'",
+		 type_descriptive_name_I (class_gtype));
+      return 0;
+    }
+
+  if (node->plugin != NULL)
+    {
+      g_warning ("cannot use g_type_add_instance_private() with dynamic type '%s'",
+                 type_descriptive_name_I (class_gtype));
+      return 0;
+    }
+
+  /* in the future, we want to register the private data size of a type
+   * directly from the get_type() implementation so that we can take full
+   * advantage of the type definition macros that we already have.
+   *
+   * unfortunately, this does not behave correctly if a class in the middle
+   * of the type hierarchy uses the "old style" of private data registration
+   * from the class_init() implementation, as the private data offset is not
+   * going to be known until the full class hierarchy is initialized.
+   *
+   * in order to transition our code to the Glorious New Future™, we proceed
+   * with a two-step implementation: first, we provide this new function to
+   * register the private data size in the get_type() implementation and we
+   * hide it behind a macro. the function will return the private size, instead
+   * of the offset, which will be stored inside a static variable defined by
+   * the G_DEFINE_TYPE_EXTENDED macro. the G_DEFINE_TYPE_EXTENDED macro will
+   * check the variable and call g_type_class_add_instance_private(), which
+   * will use the data size and actually register the private data, then
+   * return the computed offset of the private data, which will be stored
+   * inside the static variable, so we can use it to retrieve the pointer
+   * to the private data structure.
+   *
+   * once all our code has been migrated to the new idiomatic form of private
+   * data registration, we will change the g_type_add_instance_private()
+   * function to actually perform the registration and return the offset
+   * of the private data; g_type_class_add_instance_private() already checks
+   * if the passed argument is negative (meaning that it's an offset in the
+   * GTypeInstance allocation) and becomes a no-op if that's the case. this
+   * should make the migration fully transparent even if we're effectively
+   * copying this macro into everybody's code.
+   */
+  return private_size;
+}
+
+/* semi-private function, should only be used by G_DEFINE_TYPE_EXTENDED */
+void
+g_type_class_adjust_private_offset (gpointer  g_class,
+                                    gint     *private_size_or_offset)
+{
+  GType class_gtype = ((GTypeClass *) g_class)->g_type;
+  TypeNode *node = lookup_type_node_I (class_gtype);
+
+  g_return_if_fail (private_size_or_offset != NULL);
+
+  /* if we have been passed the offset instead of the private data size,
+   * then we consider this as a no-op, and just return the value. see the
+   * comment in g_type_add_instance_private() for the full explanation.
+   */
+  if (*private_size_or_offset > 0)
+    g_return_if_fail (*private_size_or_offset <= 0xffff);
+  else
+    return;
+
+  if (!node || !node->is_classed || !node->is_instantiatable || !node->data)
+    {
+      g_warning ("cannot add private field to invalid (non-instantiatable) type '%s'",
+		 type_descriptive_name_I (class_gtype));
+      *private_size_or_offset = 0;
+      return;
+    }
+
+  if (NODE_PARENT_TYPE (node))
+    {
+      TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
+      if (node->data->instance.private_size != pnode->data->instance.private_size)
+	{
+	  g_warning ("g_type_add_instance_private() called multiple times for the same type");
+          *private_size_or_offset = 0;
+	  return;
+	}
+    }
+
+  G_WRITE_LOCK (&type_rw_lock);
+
+  node->data->instance.private_size = ALIGN_STRUCT (node->data->instance.private_size + *private_size_or_offset);
+  g_assert (node->data->instance.private_size <= 0xffff);
+
+  *private_size_or_offset = -(gint) node->data->instance.private_size;
+
+  G_WRITE_UNLOCK (&type_rw_lock);
+}
+
 gpointer
 g_type_instance_get_private (GTypeInstance *instance,
 			     GType          private_type)
