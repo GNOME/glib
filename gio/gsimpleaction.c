@@ -144,6 +144,8 @@ g_simple_action_change_state (GAction  *action,
  * property.  Instead, they should call g_action_change_state() to
  * request the change.
  *
+ * If the @value GVariant is floating, it is consumed.
+ *
  * Since: 2.30
  **/
 void

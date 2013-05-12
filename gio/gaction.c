@@ -374,6 +374,8 @@ g_action_get_enabled (GAction *action)
  * the parameter type given at construction time).  If the parameter
  * type was %NULL then @parameter must also be %NULL.
  *
+ * If the @parameter GVariant is floating, it is consumed.
+ *
  * Since: 2.28
  **/
 void
