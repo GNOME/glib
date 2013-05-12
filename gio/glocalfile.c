@@ -187,6 +187,11 @@ g_local_file_init (GLocalFile *local)
 {
 }
 
+const char *
+_g_local_file_get_filename (GLocalFile *file)
+{
+  return file->filename;
+}
 
 static char *
 canonicalize_filename (const char *filename)
@@ -1396,8 +1401,8 @@ g_local_file_create (GFile             *file,
 		     GError           **error)
 {
   return _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
-					     FALSE,
-					     flags, cancellable, error);
+                                             FALSE, flags, NULL,
+                                             cancellable, error);
 }
 
 static GFileOutputStream *
@@ -1409,9 +1414,9 @@ g_local_file_replace (GFile             *file,
 		      GError           **error)
 {
   return _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
-					      FALSE,
-					      etag, make_backup, flags,
-					      cancellable, error);
+                                              FALSE,
+                                              etag, make_backup, flags, NULL,
+                                              cancellable, error);
 }
 
 static GFileIOStream *
@@ -1443,7 +1448,7 @@ g_local_file_create_readwrite (GFile                      *file,
   GFileIOStream *res;
 
   output = _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
-					       TRUE, flags,
+					       TRUE, flags, NULL,
 					       cancellable, error);
   if (output == NULL)
     return NULL;
@@ -1465,9 +1470,9 @@ g_local_file_replace_readwrite (GFile                      *file,
   GFileIOStream *res;
 
   output = _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
-						TRUE,
-						etag, make_backup, flags,
-						cancellable, error);
+                                                TRUE,
+                                                etag, make_backup, flags, NULL,
+                                                cancellable, error);
   if (output == NULL)
     return NULL;
 

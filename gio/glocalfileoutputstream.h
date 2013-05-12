@@ -67,6 +67,7 @@ GFileOutputStream * _g_local_file_output_stream_open     (const char       *file
 GFileOutputStream * _g_local_file_output_stream_create   (const char       *filename,
 							  gboolean          readable,
                                                           GFileCreateFlags  flags,
+                                                          GFileInfo        *reference_info,
                                                           GCancellable     *cancellable,
                                                           GError          **error);
 GFileOutputStream * _g_local_file_output_stream_append   (const char       *filename,
@@ -78,6 +79,7 @@ GFileOutputStream * _g_local_file_output_stream_replace  (const char       *file
                                                           const char       *etag,
                                                           gboolean          create_backup,
                                                           GFileCreateFlags  flags,
+                                                          GFileInfo        *reference_info,
                                                           GCancellable     *cancellable,
                                                           GError          **error);
 

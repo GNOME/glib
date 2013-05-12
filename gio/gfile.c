@@ -60,6 +60,7 @@
 #include "gfileoutputstream.h"
 #include "glocalfileoutputstream.h"
 #include "glocalfileiostream.h"
+#include "glocalfile.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
 #include "gioerror.h"
@@ -3099,7 +3100,28 @@ file_copy_fallback (GFile                  *source,
       do_set_attributes = TRUE;
     }
 
-  if (flags & G_FILE_COPY_OVERWRITE)
+  /* In the local file path, we pass down the source info which
+   * includes things like unix::mode, to ensure that the target file
+   * is not created with different permissions from the source file.
+   *
+   * If a future API like g_file_replace_with_info() is added, switch
+   * this code to use that.
+   */
+  if (G_IS_LOCAL_FILE (destination))
+    {
+      if (flags & G_FILE_COPY_OVERWRITE)
+        out = (GOutputStream*)_g_local_file_output_stream_replace (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
+                                                                   FALSE, NULL,
+                                                                   flags & G_FILE_COPY_BACKUP,
+                                                                   G_FILE_CREATE_REPLACE_DESTINATION,
+                                                                   info,
+                                                                   cancellable, error);
+      else
+        out = (GOutputStream*)_g_local_file_output_stream_create (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
+                                                                  FALSE, 0, info,
+                                                                  cancellable, error);
+    }
+  else if (flags & G_FILE_COPY_OVERWRITE)
     {
       out = (GOutputStream *)g_file_replace (destination,
                                              NULL,
