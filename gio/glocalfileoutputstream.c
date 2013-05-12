@@ -37,6 +37,7 @@
 #include "gioerror.h"
 #include "gcancellable.h"
 #include "glocalfileoutputstream.h"
+#include "gfileinfo.h"
 #include "glocalfileinfo.h"
 
 #ifdef G_OS_UNIX
@@ -590,10 +591,23 @@ _g_local_file_output_stream_open  (const char        *filename,
   return G_FILE_OUTPUT_STREAM (stream);
 }
 
+static gint
+mode_from_flags_or_info (GFileCreateFlags   flags,
+                         GFileInfo         *reference_info)
+{
+  if (flags & G_FILE_CREATE_PRIVATE)
+    return 0600;
+  else if (reference_info && g_file_info_has_attribute (reference_info, "unix::mode"))
+    return g_file_info_get_attribute_uint32 (reference_info, "unix::mode") & (~S_IFMT);
+  else
+    return 0666;
+}
+
 GFileOutputStream *
 _g_local_file_output_stream_create  (const char        *filename,
 				     gboolean          readable,
 				     GFileCreateFlags   flags,
+                                     GFileInfo         *reference_info,
 				     GCancellable      *cancellable,
 				     GError           **error)
 {
@@ -605,10 +619,7 @@ _g_local_file_output_stream_create  (const char        *filename,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return NULL;
 
-  if (flags & G_FILE_CREATE_PRIVATE)
-    mode = 0600;
-  else
-    mode = 0666;
+  mode = mode_from_flags_or_info (flags, reference_info);
 
   open_flags = O_CREAT | O_EXCL | O_BINARY;
   if (readable)
@@ -769,6 +780,7 @@ handle_overwrite_open (const char    *filename,
 		       gboolean       create_backup,
 		       char         **temp_filename,
 		       GFileCreateFlags flags,
+                       GFileInfo       *reference_info,
 		       GCancellable  *cancellable,
 		       GError       **error)
 {
@@ -780,10 +792,7 @@ handle_overwrite_open (const char    *filename,
   int res;
   int mode;
 
-  if (flags & G_FILE_CREATE_PRIVATE)
-    mode = 0600;
-  else
-    mode = 0666;
+  mode = mode_from_flags_or_info (flags, reference_info);
 
   /* We only need read access to the original file if we are creating a backup.
    * We also add O_CREATE to avoid a race if the file was just removed */
@@ -1104,6 +1113,7 @@ _g_local_file_output_stream_replace (const char        *filename,
 				     const char        *etag,
 				     gboolean           create_backup,
 				     GFileCreateFlags   flags,
+                                     GFileInfo         *reference_info,
 				     GCancellable      *cancellable,
 				     GError           **error)
 {
@@ -1119,10 +1129,7 @@ _g_local_file_output_stream_replace (const char        *filename,
 
   temp_file = NULL;
 
-  if (flags & G_FILE_CREATE_PRIVATE)
-    mode = 0600;
-  else
-    mode = 0666;
+  mode = mode_from_flags_or_info (flags, reference_info);
   sync_on_close = FALSE;
 
   /* If the file doesn't exist, create it */
@@ -1137,8 +1144,9 @@ _g_local_file_output_stream_replace (const char        *filename,
     {
       /* The file already exists */
       fd = handle_overwrite_open (filename, readable, etag,
-				  create_backup, &temp_file,
-				  flags, cancellable, error);
+                                  create_backup, &temp_file,
+                                  flags, reference_info,
+                                  cancellable, error);
       if (fd == -1)
 	return NULL;
 
