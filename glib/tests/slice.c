@@ -1,7 +1,7 @@
 #include <glib.h>
 
 /* We test deprecated functionality here */
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 static void
 test_slice_config_subprocess (void)
