@@ -2151,12 +2151,9 @@ test_trap_clear (void)
 {
   test_trap_last_status = 0;
   test_trap_last_pid = 0;
-  g_free (test_trap_last_subprocess);
-  test_trap_last_subprocess = NULL;
-  g_free (test_trap_last_stdout);
-  test_trap_last_stdout = NULL;
-  g_free (test_trap_last_stderr);
-  test_trap_last_stderr = NULL;
+  g_clear_pointer (&test_trap_last_subprocess, g_free);
+  g_clear_pointer (&test_trap_last_stdout, g_free);
+  g_clear_pointer (&test_trap_last_stderr, g_free);
 }
 
 #ifdef G_OS_UNIX
