@@ -125,13 +125,13 @@ void	_g_log_fallback_handler	(const gchar   *log_domain,
 GLIB_AVAILABLE_IN_ALL
 void g_return_if_fail_warning (const char *log_domain,
 			       const char *pretty_function,
-			       const char *expression);
+			       const char *expression) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void g_warn_message           (const char     *domain,
                                const char     *file,
                                int             line,
                                const char     *func,
-                               const char     *warnexpr);
+                               const char     *warnexpr) G_ANALYZER_NORETURN;
 GLIB_DEPRECATED
 void g_assert_warning         (const char *log_domain,
 			       const char *file,
@@ -143,7 +143,8 @@ void g_assert_warning         (const char *log_domain,
 #ifndef G_LOG_DOMAIN
 #define G_LOG_DOMAIN    ((gchar*) 0)
 #endif  /* G_LOG_DOMAIN */
-#ifdef G_HAVE_ISO_VARARGS
+
+#if defined(G_HAVE_ISO_VARARGS) && !G_ANALYZER_ANALYZING
 /* for(;;) ; so that GCC knows that control doesn't go past g_error().
  * Put space before ending semicolon to avoid C++ build warnings.
  */
@@ -166,7 +167,7 @@ void g_assert_warning         (const char *log_domain,
 #define g_debug(...)    g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_DEBUG,    \
                                __VA_ARGS__)
-#elif defined(G_HAVE_GNUC_VARARGS)
+#elif defined(G_HAVE_GNUC_VARARGS)  && !G_ANALYZER_ANALYZING
 #define g_error(format...)    G_STMT_START {                 \
                                 g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_ERROR,    \
@@ -189,7 +190,7 @@ void g_assert_warning         (const char *log_domain,
 #else   /* no varargs macros */
 static void
 g_error (const gchar *format,
-         ...)
+         ...) G_ANALYZER_NORETURN
 {
   va_list args;
   va_start (args, format);
@@ -209,7 +210,7 @@ g_message (const gchar *format,
 }
 static void
 g_critical (const gchar *format,
-            ...)
+            ...) G_ANALYZER_NORETURN
 {
   va_list args;
   va_start (args, format);

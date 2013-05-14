@@ -158,6 +158,19 @@
 #endif  /* !__GNUC__ */
 #endif  /* !G_DISABLE_DEPRECATED */
 
+/* Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html */
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+
+#if __has_feature(attribute_analyzer_noreturn)
+#define G_ANALYZER_ANALYZING 1
+#define G_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+#else
+#define G_ANALYZER_ANALYZING 0
+#define G_ANALYZER_NORETURN
+#endif
+
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
