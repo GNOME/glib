@@ -435,12 +435,53 @@ on_target_notify (GObject    *gobject,
   g_value_unset (&target_value);
 }
 
+static inline void
+g_binding_unbind_internal (GBinding *binding,
+                           gboolean  unref_binding)
+{
+  /* dispose of the transformation data */
+  if (binding->notify != NULL)
+    {
+      binding->notify (binding->transform_data);
+
+      binding->transform_data = NULL;
+      binding->notify = NULL;
+    }
+
+  if (binding->source != NULL)
+    {
+      if (binding->source_notify != 0)
+        g_signal_handler_disconnect (binding->source, binding->source_notify);
+
+      g_object_weak_unref (binding->source, weak_unbind, binding);
+      remove_binding_qdata (binding->source, binding);
+
+      binding->source_notify = 0;
+      binding->source = NULL;
+    }
+
+  if (binding->target != NULL)
+    {
+      if (binding->target_notify != 0)
+        g_signal_handler_disconnect (binding->target, binding->target_notify);
+
+      g_object_weak_unref (binding->target, weak_unbind, binding);
+      remove_binding_qdata (binding->target, binding);
+
+      binding->target_notify = 0;
+      binding->target = NULL;
+    }
+
+  if (unref_binding)
+    g_object_unref (binding);
+}
+
 static void
 g_binding_finalize (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
 
-  g_binding_unbind (binding);
+  g_binding_unbind_internal (binding, FALSE);
 
   G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
 }
@@ -759,7 +800,10 @@ g_binding_get_target_property (GBinding *binding)
  * Explicitly releases the binding between the source and the target
  * property expressed by @binding.
  *
- * This function does not change the reference count of @binding.
+ * <note>This function will release the reference that is being held on
+ * the @binding instance; if you want to hold on to the #GBinding instance
+ * after calling g_binding_unbind(), you will need to hold a reference
+ * to it.</note>
  *
  * Since: 2.38
  */
@@ -768,38 +812,7 @@ g_binding_unbind (GBinding *binding)
 {
   g_return_if_fail (G_IS_BINDING (binding));
 
-  /* dispose of the transformation data */
-  if (binding->notify != NULL)
-    {
-      binding->notify (binding->transform_data);
-
-      binding->transform_data = NULL;
-      binding->notify = NULL;
-    }
-
-  if (binding->source != NULL)
-    {
-      if (binding->source_notify != 0)
-        g_signal_handler_disconnect (binding->source, binding->source_notify);
-
-      g_object_weak_unref (binding->source, weak_unbind, binding);
-      remove_binding_qdata (binding->source, binding);
-
-      binding->source_notify = 0;
-      binding->source = NULL;
-    }
-
-  if (binding->target != NULL)
-    {
-      if (binding->target_notify != 0)
-        g_signal_handler_disconnect (binding->target, binding->target_notify);
-
-      g_object_weak_unref (binding->target, weak_unbind, binding);
-      remove_binding_qdata (binding->target, binding);
-
-      binding->target_notify = 0;
-      binding->target = NULL;
-    }
+  g_binding_unbind_internal (binding, TRUE);
 }
 
 /**
