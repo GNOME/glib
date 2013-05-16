@@ -210,10 +210,10 @@ add_binding_qdata (GObject  *gobject,
 
       g_object_set_qdata_full (gobject, quark_gbinding,
                                bindings,
-                               (GDestroyNotify) g_hash_table_destroy);
+                               (GDestroyNotify) g_hash_table_unref);
     }
 
-  g_hash_table_insert (bindings, binding, GUINT_TO_POINTER (1));
+  g_hash_table_add (bindings, binding);
 }
 
 static inline void
@@ -223,7 +223,8 @@ remove_binding_qdata (GObject  *gobject,
   GHashTable *bindings;
 
   bindings = g_object_get_qdata (gobject, quark_gbinding);
-  g_hash_table_remove (bindings, binding);
+  if (binding != NULL)
+    g_hash_table_remove (bindings, binding);
 }
 
 /* the basic assumption is that if either the source or the target
