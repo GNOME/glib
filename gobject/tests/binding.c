@@ -590,15 +590,13 @@ binding_unbind (void)
   g_assert_cmpint (source->foo, !=, target->bar);
 
   g_binding_unbind (binding);
-  g_assert (binding != NULL);
+  g_assert (binding == NULL);
 
   g_object_set (source, "foo", 0, NULL);
   g_assert_cmpint (source->foo, !=, target->bar);
 
   g_object_unref (source);
   g_object_unref (target);
-  g_object_unref (binding);
-  g_assert (binding == NULL);
 }
 
 int
