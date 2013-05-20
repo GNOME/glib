@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+static const gchar *datapath;
+
 static void
 test_g_icon_to_string (void)
 {
@@ -465,8 +467,11 @@ test_file_icon (void)
   GError *error;
   GInputStream *stream;
   gchar *str;
+  gchar *path;
 
-  file = g_file_new_for_path (SRCDIR "/g-icon.c");
+  path = g_strconcat (datapath, "/g-icon.c", NULL);
+
+  file = g_file_new_for_path (path);
   icon = g_file_icon_new (file);
   g_object_unref (file);
 
@@ -484,12 +489,19 @@ test_file_icon (void)
 
   g_object_unref (icon);
   g_object_unref (icon2);
+
+  g_free (path);
 }
 
 int
 main (int   argc,
       char *argv[])
 {
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/icons/to-string", test_g_icon_to_string);

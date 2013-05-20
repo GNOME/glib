@@ -4,6 +4,8 @@ BUILT_SOURCES =
 
 include $(top_srcdir)/Makefile.decl
 
+insttestdir = $(pkglibexecdir)/installed-tests
+
 SUBDIRS = gdbus-object-manager-example services
 
 AM_CPPFLAGS = 				\
@@ -28,7 +30,7 @@ LDADD     = 					\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
 
-TEST_PROGS +=	 		\
+test_progs =	 		\
 	io-stream		\
 	memory-input-stream 	\
 	memory-output-stream 	\
@@ -69,6 +71,8 @@ TEST_PROGS +=	 		\
 	task			\
 	credentials		\
 	$(NULL)
+
+TEST_PROGS += $(test_progs)
 
 if HAVE_DBUS_DAEMON
 TEST_PROGS +=			\
@@ -289,83 +293,104 @@ gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbu
 
 gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
 
+TESTS_ENVIRONMENT = \
+	GLIB_MKENUMS=../../gobject/glib-mkenums \
+	GLIB_COMPILE_SCHEMAS=../glib-compile-schemas
+
 schema_tests = \
-	schema-tests/array-default-not-in-choices.gschema.xml		\
-	schema-tests/bad-choice.gschema.xml				\
-	schema-tests/bad-key.gschema.xml				\
-	schema-tests/bad-key2.gschema.xml				\
-	schema-tests/bad-key3.gschema.xml				\
-	schema-tests/bad-key4.gschema.xml				\
-	schema-tests/bad-type.gschema.xml				\
-	schema-tests/bare-alias.gschema.xml				\
-	schema-tests/choice-alias.gschema.xml				\
-	schema-tests/choice-bad.gschema.xml				\
-	schema-tests/choice-badtype.gschema.xml				\
-	schema-tests/choice-invalid-alias.gschema.xml			\
-	schema-tests/choice-missing-value.gschema.xml			\
-	schema-tests/choice-shadowed-alias.gschema.xml			\
-	schema-tests/choice-upside-down.gschema.xml			\
-	schema-tests/choice.gschema.xml					\
-	schema-tests/choices-wrong-type.gschema.xml			\
-	schema-tests/default-in-aliases.gschema.xml			\
-	schema-tests/default-not-in-choices.gschema.xml			\
-	schema-tests/default-out-of-range.gschema.xml			\
-	schema-tests/empty-key.gschema.xml				\
-	schema-tests/enum-with-aliases.gschema.xml			\
-	schema-tests/enum-with-bad-default.gschema.xml			\
-	schema-tests/enum-with-chained-alias.gschema.xml		\
-	schema-tests/enum-with-choice.gschema.xml			\
-	schema-tests/enum-with-invalid-alias.gschema.xml		\
-	schema-tests/enum-with-repeated-alias.gschema.xml		\
-	schema-tests/enum-with-repeated-nick.gschema.xml		\
-	schema-tests/enum-with-repeated-value.gschema.xml		\
-	schema-tests/enum-with-shadow-alias.gschema.xml			\
-	schema-tests/enum.gschema.xml					\
-	schema-tests/flags-aliased-default.gschema.xml			\
-	schema-tests/flags-bad-default.gschema.xml			\
-	schema-tests/flags-more-than-one-bit.gschema.xml		\
-	schema-tests/flags-with-enum-attr.gschema.xml			\
-	schema-tests/flags-with-enum-tag.gschema.xml			\
-	schema-tests/extend-and-shadow-indirect.gschema.xml		\
-	schema-tests/extend-and-shadow.gschema.xml			\
-	schema-tests/extend-missing.gschema.xml				\
-	schema-tests/extend-nonlist.gschema.xml				\
-	schema-tests/extend-self.gschema.xml				\
-	schema-tests/extend-wrong-list-indirect.gschema.xml		\
-	schema-tests/extend-wrong-list.gschema.xml			\
-	schema-tests/extending.gschema.xml				\
-	schema-tests/from-docs.gschema.xml				\
-	schema-tests/incomplete-list.gschema.xml			\
-	schema-tests/inherit-gettext-domain.gschema.xml			\
-	schema-tests/invalid-path.gschema.xml				\
-	schema-tests/key-in-list-indirect.gschema.xml			\
-	schema-tests/key-in-list.gschema.xml				\
-	schema-tests/list-of-missing.gschema.xml			\
-	schema-tests/missing-quotes.gschema.xml				\
-	schema-tests/no-default.gschema.xml				\
-	schema-tests/overflow.gschema.xml				\
-	schema-tests/override-missing.gschema.xml			\
-	schema-tests/override-range-error.gschema.xml			\
-	schema-tests/override-then-key.gschema.xml			\
-	schema-tests/override-twice.gschema.xml				\
-	schema-tests/override-type-error.gschema.xml			\
-	schema-tests/override.gschema.xml				\
-	schema-tests/range-badtype.gschema.xml				\
-	schema-tests/range-default-high.gschema.xml			\
-	schema-tests/range-default-low.gschema.xml			\
-	schema-tests/range-high-default.gschema.xml			\
-	schema-tests/range-low-default.gschema.xml			\
-	schema-tests/range-missing-max.gschema.xml			\
-	schema-tests/range-missing-min.gschema.xml			\
-	schema-tests/range-parse-error.gschema.xml			\
-	schema-tests/range-wrong-type.gschema.xml			\
-	schema-tests/range.gschema.xml					\
-	schema-tests/wrong-category.gschema.xml
+	array-default-not-in-choices.gschema.xml	\
+	bad-choice.gschema.xml				\
+	bad-key.gschema.xml				\
+	bad-key2.gschema.xml				\
+	bad-key3.gschema.xml				\
+	bad-key4.gschema.xml				\
+	bad-type.gschema.xml				\
+	bare-alias.gschema.xml				\
+	choice-alias.gschema.xml			\
+	choice-bad.gschema.xml				\
+	choice-badtype.gschema.xml			\
+	choice-invalid-alias.gschema.xml		\
+	choice-missing-value.gschema.xml		\
+	choice-shadowed-alias.gschema.xml		\
+	choice-upside-down.gschema.xml			\
+	choice.gschema.xml				\
+	choices-wrong-type.gschema.xml			\
+	default-in-aliases.gschema.xml			\
+	default-not-in-choices.gschema.xml		\
+	default-out-of-range.gschema.xml		\
+	empty-key.gschema.xml				\
+	enum-with-aliases.gschema.xml			\
+	enum-with-bad-default.gschema.xml		\
+	enum-with-chained-alias.gschema.xml		\
+	enum-with-choice.gschema.xml			\
+	enum-with-invalid-alias.gschema.xml		\
+	enum-with-repeated-alias.gschema.xml		\
+	enum-with-repeated-nick.gschema.xml		\
+	enum-with-repeated-value.gschema.xml		\
+	enum-with-shadow-alias.gschema.xml		\
+	enum.gschema.xml				\
+	flags-aliased-default.gschema.xml		\
+	flags-bad-default.gschema.xml			\
+	flags-more-than-one-bit.gschema.xml		\
+	flags-with-enum-attr.gschema.xml		\
+	flags-with-enum-tag.gschema.xml			\
+	extend-and-shadow-indirect.gschema.xml		\
+	extend-and-shadow.gschema.xml			\
+	extend-missing.gschema.xml			\
+	extend-nonlist.gschema.xml			\
+	extend-self.gschema.xml				\
+	extend-wrong-list-indirect.gschema.xml		\
+	extend-wrong-list.gschema.xml			\
+	extending.gschema.xml				\
+	from-docs.gschema.xml				\
+	incomplete-list.gschema.xml			\
+	inherit-gettext-domain.gschema.xml		\
+	invalid-path.gschema.xml			\
+	key-in-list-indirect.gschema.xml		\
+	key-in-list.gschema.xml				\
+	list-of-missing.gschema.xml			\
+	missing-quotes.gschema.xml				\
+	no-default.gschema.xml				\
+	overflow.gschema.xml				\
+	override-missing.gschema.xml			\
+	override-range-error.gschema.xml		\
+	override-then-key.gschema.xml			\
+	override-twice.gschema.xml			\
+	override-type-error.gschema.xml			\
+	override.gschema.xml				\
+	range-badtype.gschema.xml			\
+	range-default-high.gschema.xml			\
+	range-default-low.gschema.xml			\
+	range-high-default.gschema.xml			\
+	range-low-default.gschema.xml			\
+	range-missing-max.gschema.xml			\
+	range-missing-min.gschema.xml			\
+	range-parse-error.gschema.xml			\
+	range-wrong-type.gschema.xml			\
+	range.gschema.xml				\
+	wrong-category.gschema.xml			\
+	$(NULL)
+
+schema_test_files = $(addprefix schema-tests/,$(schema_tests))
 
 proxy_LDADD   = $(LDADD) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
 tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
+
+cert_tests = 			\
+	cert1.pem		\
+	cert2.pem		\
+	cert3.pem		\
+	cert-key.pem		\
+	cert-list.pem		\
+	key8.pem		\
+	key-cert.pem		\
+	key.pem			\
+	nothing.pem		\
+	$(NULL)
+
+cert_test_files = $(addprefix cert-tests/,$(cert_tests))
 
 # -----------------------------------------------------------------------------
 
@@ -395,22 +420,14 @@ EXTRA_DIST += \
 	testenum.h			\
 	enums.xml.template		\
 	de.po				\
-	$(schema_tests)			\
+	$(schema_test_files)		\
 	org.gtk.schemasourcecheck.gschema.xml \
 	appinfo-test.desktop		\
 	appinfo-test2.desktop		\
 	appinfo-test-gnome.desktop	\
 	appinfo-test-notgnome.desktop	\
 	test-codegen.xml		\
-	cert1.pem			\
-	cert2.pem			\
-	cert3.pem			\
-	key.pem				\
-	key8.pem			\
-	key-cert.pem			\
-	cert-key.pem			\
-	cert-list.pem			\
-	nothing.pem			\
+	$(cert_test_files)		\
 	test.gresource.xml		\
 	test1.txt			\
 	test2.gresource.xml		\
@@ -446,10 +463,14 @@ plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resource
 test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $<
 
+if BUILDOPT_INSTALL_TESTS
+insttest_LTLIBRARIES = libresourceplugin.la
+else
 noinst_LTLIBRARIES = libresourceplugin.la
+endif
 
 libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
-libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(libdir)
+libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(insttestdir)
 libresourceplugin_la_LIBADD = $(LDADD)
 
 CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test_resources2.[ch] plugin_resources.c
@@ -467,3 +488,36 @@ DISTCLEANFILES = \
 
 distclean-local:
 	rm -rf xdgdatahome xdgdatadir
+
+test_files = 					\
+	contexts.c				\
+	g-icon.c				\
+	enums.xml.template			\
+	testenum.h				\
+	org.gtk.test.gschema.xml		\
+	org.gtk.schemasourcecheck.gschema.xml 	\
+	test.gresource				\
+	$(NULL)
+
+if BUILDOPT_INSTALL_TESTS
+insttest_PROGRAMS = $(test_progs)
+
+schematestdir = $(insttestdir)/schema-tests
+schematest_DATA = $(schema_test_files)
+
+certtestdir = $(insttestdir)/cert-tests
+certtest_DATA = $(cert_test_files)
+
+testdatadir = $(insttestdir)
+testdata_DATA = $(test_files)
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(test_progs:=.test)
+
+%.test: % Makefile
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	 echo 'Type=session' >> $@.tmp; \
+	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 mv $@.tmp $@)
+
+endif
