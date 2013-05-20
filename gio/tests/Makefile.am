@@ -72,10 +72,8 @@ test_progs =	 		\
 	credentials		\
 	$(NULL)
 
-TEST_PROGS += $(test_progs)
-
 if HAVE_DBUS_DAEMON
-TEST_PROGS +=			\
+test_progs +=			\
 	actions 		\
 	gdbus-connection	\
 	gdbus-connection-loss	\
@@ -93,9 +91,8 @@ TEST_PROGS +=			\
 	$(NULL)
 endif
 
-
 if OS_UNIX
-TEST_PROGS +=			\
+test_progs +=			\
 	gdbus-close-pending	\
 	gdbus-connection-flush	\
 	gdbus-peer		\
@@ -125,7 +122,6 @@ SAMPLE_PROGS = 				\
 	gdbus-example-subtree		\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
-	gdbus-connection-flush-helper	\
 	proxy				\
 	gapplication-example-open	\
 	gapplication-example-cmdline	\
@@ -134,11 +130,15 @@ SAMPLE_PROGS = 				\
 	gapplication-example-actions	\
 	gapplication-example-dbushooks	\
 	gdbus-daemon			\
+	$(NULL)
+
+other_progs = 				\
 	gdbus-testserver		\
+	gdbus-connection-flush-helper	\
 	$(NULL)
 
 if OS_UNIX
-TEST_PROGS += 			\
+test_progs += 			\
 	live-g-file		\
 	desktop-app-info	\
 	unix-fd 		\
@@ -148,12 +148,16 @@ TEST_PROGS += 			\
 	gdbus-test-codegen 	\
 	socket-address		\
 	$(NULL)
+
+other_progs +=					\
+	appinfo-test				\
+	$(NULL)
+
 SAMPLE_PROGS +=					\
 	gdbus-example-unix-fd-client 		\
 	gdbus-example-objectmanager-server 	\
 	gdbus-example-objectmanager-client 	\
 	gdbus-test-fixture			\
-	appinfo-test				\
 	$(NULL)
 endif
 
@@ -202,13 +206,13 @@ gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_buil
 gdbus_testserver_SOURCES = gdbus-testserver.c
 
 if HAVE_DBUS1
-TEST_PROGS += gdbus-serialization
+test_progs += gdbus-serialization
 gdbus_serialization_SOURCES = gdbus-serialization.c gdbus-tests.h gdbus-tests.c
 gdbus_serialization_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
 gdbus_serialization_LDADD = $(LDADD) $(DBUS1_LIBS)
 endif
 
-TEST_PROGS += gdbus-auth
+test_progs += gdbus-auth
 gdbus_auth_SOURCES = gdbus-auth.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_auth_LDADD = $(LDADD)
 
@@ -292,6 +296,8 @@ resources_DEPENDENCIES = test.gresource
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbus-tests.h gdbus-tests.c
 
 gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
+
+TEST_PROGS += $(test_progs)
 
 TESTS_ENVIRONMENT = \
 	GLIB_MKENUMS=../../gobject/glib-mkenums \
@@ -497,10 +503,14 @@ test_files = 					\
 	org.gtk.test.gschema.xml		\
 	org.gtk.schemasourcecheck.gschema.xml 	\
 	test.gresource				\
+	appinfo-test.desktop			\
+	appinfo-test2.desktop			\
+	appinfo-test-gnome.desktop		\
+	appinfo-test-notgnome.desktop		\
 	$(NULL)
 
 if BUILDOPT_INSTALL_TESTS
-insttest_PROGRAMS = $(test_progs)
+insttest_PROGRAMS = $(test_progs) $(other_progs)
 
 schematestdir = $(insttestdir)/schema-tests
 schematest_DATA = $(schema_test_files)

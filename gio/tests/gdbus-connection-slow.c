@@ -28,6 +28,8 @@
 
 #include "gdbus-tests.h"
 
+static const gchar *datapath;
+
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
@@ -86,9 +88,11 @@ test_connection_flush (void)
       gboolean ret;
       gint exit_status;
       guint timeout_mainloop_id;
+      gchar *path;
 
       error = NULL;
-      ret = g_spawn_command_line_sync ("./gdbus-connection-flush-helper",
+      path = g_build_filename (datapath, "gdbus-connection-flush-helper", NULL);
+      ret = g_spawn_command_line_sync (path,
                                        NULL, /* stdout */
                                        NULL, /* stderr */
                                        &exit_status,
@@ -97,6 +101,7 @@ test_connection_flush (void)
       g_spawn_check_exit_status (exit_status, &error);
       g_assert_no_error (error);
       g_assert (ret);
+      g_free (path);
 
       timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
       g_main_loop_run (loop);
@@ -169,11 +174,14 @@ static void
 test_connection_large_message (void)
 {
   guint watcher_id;
+  gchar *path;
 
   session_bus_up ();
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async ("./gdbus-testserver", NULL));
+  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  g_assert (g_spawn_command_line_async (path, NULL));
+  g_free (path);
 
   watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
                                  "com.example.TestService",
@@ -194,6 +202,11 @@ int
 main (int   argc,
       char *argv[])
 {
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */

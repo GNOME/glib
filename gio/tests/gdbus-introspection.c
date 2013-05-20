@@ -26,6 +26,8 @@
 
 #include "gdbus-tests.h"
 
+static const gchar *datapath;
+
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
@@ -107,6 +109,7 @@ test_introspection_parser (void)
   GDBusProxy *proxy;
   GDBusConnection *connection;
   GError *error;
+  gchar *path;
 
   error = NULL;
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
@@ -125,7 +128,9 @@ test_introspection_parser (void)
   g_assert_no_error (error);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async ("./gdbus-testserver", NULL));
+  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  g_assert (g_spawn_command_line_async (path, NULL));
+  g_free (path);
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
@@ -302,6 +307,11 @@ main (int   argc,
       char *argv[])
 {
   gint ret;
+
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
 
   g_test_init (&argc, &argv, NULL);
 

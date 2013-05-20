@@ -28,6 +28,8 @@
 
 #include "gdbus-tests.h"
 
+const gchar *datapath;
+
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
@@ -919,6 +921,7 @@ test_connection_filter (void)
   FilterEffects effects;
   GVariant *result;
   const gchar *s;
+  gchar *path;
 
   memset (&data, '\0', sizeof (FilterData));
 
@@ -1001,7 +1004,10 @@ test_connection_filter (void)
   g_assert_cmpint (data.num_outgoing, ==, 4);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async ("./gdbus-testserver", NULL));
+  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  g_assert (g_spawn_command_line_async (path, NULL));
+  g_free (path);
+
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
                                                           "org.freedesktop.DBus", /* sender */
@@ -1220,6 +1226,11 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
