@@ -45,3 +45,19 @@ CLEANFILES = marshalers.h marshalers.c
 ifaceproperties_SOURCES = ifaceproperties.c testcommon.h
 
 EXTRA_DIST += marshalers.list
+
+if BUILDOPT_INSTALL_TESTS
+insttestdir = $(pkglibexecdir)/installed-tests
+insttest_PROGRAMS = $(TEST_PROGS)
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(TEST_PROGS:=.test)
+
+%.test: % Makefile
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	 echo 'Type=session' >> $@.tmp; \
+	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 mv $@.tmp $@)
+
+
+endif
