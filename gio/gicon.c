@@ -664,7 +664,7 @@ g_icon_serialize (GIcon *icon)
 
   if (!iface->serialize)
     {
-      g_critical ("g_icon_serialize() on icon type `%s' is not implemented", G_OBJECT_TYPE_NAME (icon));
+      g_critical ("g_icon_serialize() on icon type '%s' is not implemented", G_OBJECT_TYPE_NAME (icon));
       return NULL;
     }
 
@@ -676,8 +676,8 @@ g_icon_serialize (GIcon *icon)
 
       if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(sv)")))
         {
-          g_critical ("g_icon_serialize() on icon type `%s' returned GVariant of type `%s' but it must return "
-                      "one with type `(sv)'", G_OBJECT_TYPE_NAME (icon), g_variant_get_type_string (result));
+          g_critical ("g_icon_serialize() on icon type '%s' returned GVariant of type '%s' but it must return "
+                      "one with type '(sv)'", G_OBJECT_TYPE_NAME (icon), g_variant_get_type_string (result));
           g_variant_unref (result);
           result = NULL;
         }

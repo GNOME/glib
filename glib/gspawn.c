@@ -1718,9 +1718,9 @@ g_execute (const gchar *file,
 
       if (path == NULL)
 	{
-	  /* There is no `PATH' in the environment.  The default
+	  /* There is no 'PATH' in the environment.  The default
 	   * search path in libc is the current directory followed by
-	   * the path `confstr' returns for `_CS_PATH'.
+	   * the path 'confstr' returns for '_CS_PATH'.
            */
 
           /* In GLib we put . last, for security, and don't use the
@@ -1751,7 +1751,7 @@ g_execute (const gchar *file,
 
 	  if (p == path)
 	    /* Two adjacent colons, or a colon at the beginning or the end
-             * of `PATH' means to search the current directory.
+             * of 'PATH' means to search the current directory.
              */
 	    startp = name + 1;
 	  else
@@ -1769,7 +1769,7 @@ g_execute (const gchar *file,
 	  switch (errno)
 	    {
 	    case EACCES:
-	      /* Record the we got a `Permission denied' error.  If we end
+	      /* Record the we got a 'Permission denied' error.  If we end
                * up finding no executable we can use, we want to diagnose
                * that we did find one but were denied access.
                */

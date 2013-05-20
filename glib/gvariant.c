@@ -1160,13 +1160,13 @@ g_variant_get_fixed_array (GVariant *value,
     {
       if (array_element_size)
         g_critical ("g_variant_get_fixed_array: assertion "
-                    "`g_variant_array_has_fixed_size (value, element_size)' "
+                    "'g_variant_array_has_fixed_size (value, element_size)' "
                     "failed: array size %"G_GSIZE_FORMAT" does not match "
                     "given element_size %"G_GSIZE_FORMAT".",
                     array_element_size, element_size);
       else
         g_critical ("g_variant_get_fixed_array: assertion "
-                    "`g_variant_array_has_fixed_size (value, element_size)' "
+                    "'g_variant_array_has_fixed_size (value, element_size)' "
                     "failed: array does not have fixed size.");
     }
 
@@ -3943,10 +3943,10 @@ valid_format_string (const gchar *format_string,
   if G_UNLIKELY (type == NULL || (single && *endptr != '\0'))
     {
       if (single)
-        g_critical ("`%s' is not a valid GVariant format string",
+        g_critical ("'%s' is not a valid GVariant format string",
                     format_string);
       else
-        g_critical ("`%s' does not have a valid GVariant format "
+        g_critical ("'%s' does not have a valid GVariant format "
                     "string as a prefix", format_string);
 
       if (type != NULL)
@@ -3963,8 +3963,8 @@ valid_format_string (const gchar *format_string,
       fragment = g_strndup (format_string, endptr - format_string);
       typestr = g_variant_type_dup_string (type);
 
-      g_critical ("the GVariant format string `%s' has a type of "
-                  "`%s' but the given value has a type of `%s'",
+      g_critical ("the GVariant format string '%s' has a type of "
+                  "'%s' but the given value has a type of '%s'",
                   fragment, typestr, g_variant_get_type_string (value));
 
       g_variant_type_free (type);
@@ -4117,14 +4117,14 @@ g_variant_valist_new_nnp (const gchar **str,
 
           if G_UNLIKELY (!g_variant_type_is_array (type))
             g_error ("g_variant_new: expected array GVariantBuilder but "
-                     "the built value has type `%s'",
+                     "the built value has type '%s'",
                      g_variant_get_type_string (value));
 
           type = g_variant_type_element (type);
 
           if G_UNLIKELY (!g_variant_type_is_subtype_of (type, (GVariantType *) *str))
             g_error ("g_variant_new: expected GVariantBuilder array element "
-                     "type `%s' but the built value has element type `%s'",
+                     "type '%s' but the built value has element type '%s'",
                      g_variant_type_dup_string ((GVariantType *) *str),
                      g_variant_get_type_string (value) + 1);
 
@@ -4188,8 +4188,8 @@ g_variant_valist_new_nnp (const gchar **str,
 
     case '@':
       if G_UNLIKELY (!g_variant_is_of_type (ptr, (GVariantType *) *str))
-        g_error ("g_variant_new: expected GVariant of type `%s' but "
-                 "received value has type `%s'",
+        g_error ("g_variant_new: expected GVariant of type '%s' but "
+                 "received value has type '%s'",
                  g_variant_type_dup_string ((GVariantType *) *str),
                  g_variant_get_type_string (ptr));
 
@@ -4202,16 +4202,16 @@ g_variant_valist_new_nnp (const gchar **str,
 
     case '?':
       if G_UNLIKELY (!g_variant_type_is_basic (g_variant_get_type (ptr)))
-        g_error ("g_variant_new: format string `?' expects basic-typed "
-                 "GVariant, but received value has type `%s'",
+        g_error ("g_variant_new: format string '?' expects basic-typed "
+                 "GVariant, but received value has type '%s'",
                  g_variant_get_type_string (ptr));
 
       return ptr;
 
     case 'r':
       if G_UNLIKELY (!g_variant_type_is_tuple (g_variant_get_type (ptr)))
-        g_error ("g_variant_new: format string `r` expects tuple-typed "
-                 "GVariant, but received value has type `%s'",
+        g_error ("g_variant_new: format string 'r' expects tuple-typed "
+                 "GVariant, but received value has type '%s'",
                  g_variant_get_type_string (ptr));
 
       return ptr;

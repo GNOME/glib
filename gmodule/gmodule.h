@@ -56,7 +56,7 @@ typedef void	     (*GModuleUnload)	 (GModule	*module);
 GLIB_AVAILABLE_IN_ALL
 gboolean	g_module_supported	   (void) G_GNUC_CONST;
 
-/* open a module `file_name' and return handle, which is NULL on error */
+/* open a module 'file_name' and return handle, which is NULL on error */
 GLIB_AVAILABLE_IN_ALL
 GModule*              g_module_open          (const gchar  *file_name,
 					      GModuleFlags  flags);
@@ -73,7 +73,7 @@ void                  g_module_make_resident (GModule      *module);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_module_error         (void);
 
-/* retrieve a symbol pointer from `module', returns TRUE on success */
+/* retrieve a symbol pointer from 'module', returns TRUE on success */
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_module_symbol        (GModule      *module,
 					      const gchar  *symbol_name,
@@ -83,13 +83,13 @@ gboolean              g_module_symbol        (GModule      *module,
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_module_name          (GModule      *module);
 
-/* Build the actual file name containing a module. `directory' is the
+/* Build the actual file name containing a module. 'directory' is the
  * directory where the module file is supposed to be, or NULL or empty
  * in which case it should either be in the current directory or, on
  * some operating systems, in some standard place, for instance on the
  * PATH. Hence, to be absoultely sure to get the correct module,
  * always pass in a directory. The file name consists of the directory,
- * if supplied, and `module_name' suitably decorated according to
+ * if supplied, and 'module_name' suitably decorated according to
  * the operating system's conventions (for instance lib*.so or *.dll).
  *
  * No checks are made that the file exists, or is of correct type.

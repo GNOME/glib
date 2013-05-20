@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     {
       if (input[0] == '\n') 
         {
-          g_print("Enter a date to parse and press enter, or type `POSIX':\n");
+          g_print("Enter a date to parse and press enter, or type 'POSIX':\n");
           continue;
         }
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
           while (*s) {
             g_date_set_parse(d, *s);
             
-            g_print("POSIXy parse test `%s' ...", *s);
+            g_print("POSIXy parse test '%s' ...", *s);
 
             if (!g_date_valid(d))
               {
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
               {
                 gchar buf[256];
                 
-                g_date_strftime(buf,100," parsed `%x' (%B %d %Y)\n",
+                g_date_strftime(buf,100," parsed '%x' (%B %d %Y)\n",
                                 d);
                 g_print("%s", buf);
               }
@@ -85,7 +85,7 @@ int main(int argc, char** argv)
             {
               gchar buf[256];
               
-              g_date_strftime(buf,100,"Parsed: `%x' (%B %d %Y)\n",
+              g_date_strftime(buf,100,"Parsed: '%x' (%B %d %Y)\n",
                               d);
               g_print("%s", buf);
             }

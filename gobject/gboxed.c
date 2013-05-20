@@ -256,7 +256,7 @@ boxed_proxy_lcopy_value (const GValue *value,
   gpointer *boxed_p = collect_values[0].v_pointer;
 
   if (!boxed_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
   if (!value->data[0].v_pointer)
     *boxed_p = NULL;
@@ -375,7 +375,7 @@ g_boxed_copy (GType         boxed_type,
 
       /* double check and grouse if things went wrong */
       if (dest_value.data[1].v_ulong)
-	g_warning ("the copy_value() implementation of type `%s' seems to make use of reserved GValue fields",
+	g_warning ("the copy_value() implementation of type '%s' seems to make use of reserved GValue fields",
 		   g_type_name (boxed_type));
 
       dest_boxed = dest_value.data[0].v_pointer;

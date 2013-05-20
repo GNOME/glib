@@ -809,14 +809,14 @@ value_param_collect_value (GValue      *value,
       GParamSpec *param = collect_values[0].v_pointer;
 
       if (param->g_type_instance.g_class == NULL)
-	return g_strconcat ("invalid unclassed param spec pointer for value type `",
+	return g_strconcat ("invalid unclassed param spec pointer for value type '",
 			    G_VALUE_TYPE_NAME (value),
 			    "'",
 			    NULL);
       else if (!g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_VALUE_TYPE (value)))
-	return g_strconcat ("invalid param spec type `",
+	return g_strconcat ("invalid param spec type '",
 			    G_PARAM_SPEC_TYPE_NAME (param),
-			    "' for value type `",
+			    "' for value type '",
 			    G_VALUE_TYPE_NAME (value),
 			    "'",
 			    NULL);
@@ -837,7 +837,7 @@ value_param_lcopy_value (const GValue *value,
   GParamSpec **param_p = collect_values[0].v_pointer;
 
   if (!param_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
   if (!value->data[0].v_pointer)
     *param_p = NULL;
@@ -973,7 +973,7 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
       if (g_hash_table_remove (pool->hash_table, pspec))
 	g_param_spec_unref (pspec);
       else
-	g_warning (G_STRLOC ": attempt to remove unknown pspec `%s' from pool", pspec->name);
+	g_warning (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
       g_mutex_unlock (&pool->mutex);
     }
   else

@@ -93,7 +93,7 @@ on_handle_hello_world (FooiGenBar             *object,
                        gpointer                user_data)
 {
   gchar *response;
-  response = g_strdup_printf ("Word! You said `%s'. I'm Skeleton, btw!", greeting);
+  response = g_strdup_printf ("Word! You said '%s'. I'm Skeleton, btw!", greeting);
   foo_igen_bar_complete_hello_world (object, invocation, response);
   g_free (response);
   return TRUE;
@@ -120,7 +120,7 @@ on_handle_test_primitive_types (FooiGenBar            *object,
   gchar *s1;
   gchar *s2;
   gchar *s3;
-  s1 = g_strdup_printf ("Word! You said `%s'. Rock'n'roll!", val_string);
+  s1 = g_strdup_printf ("Word! You said '%s'. Rock'n'roll!", val_string);
   s2 = g_strdup_printf ("/modified%s", val_objpath);
   s3 = g_strdup_printf ("assgit%s", val_signature);
   foo_igen_bar_complete_test_primitive_types (object,

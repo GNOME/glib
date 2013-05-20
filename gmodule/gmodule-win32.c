@@ -84,7 +84,7 @@ _g_module_open (const gchar *file_name,
   g_free (wfilename);
       
   if (!handle)
-    set_error ("`%s': ", file_name);
+    set_error ("'%s': ", file_name);
 
   return handle;
 }

@@ -1626,7 +1626,7 @@ class CodeGenerator:
                          '  error = NULL;\n'
                          '  if (!g_dbus_proxy_call_finish (proxy, res, &error))\n'
                          '    {\n'
-                         '      g_warning ("Error setting property `%%s\' on interface %s: %%s (%%s, %%d)",\n'
+                         '      g_warning ("Error setting property \'%%s\' on interface %s: %%s (%%s, %%d)",\n'
                          '                 info->parent_struct.name, \n'
                          '                 error->message, g_quark_to_string (error->domain), error->code);\n'
                          '      g_error_free (error);\n'

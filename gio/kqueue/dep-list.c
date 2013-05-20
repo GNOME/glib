@@ -75,7 +75,7 @@ dep_list* dl_create (char *path, ino_t inode)
  * Create a shallow copy of a list.
  *
  * A shallow copy is a copy of a structure, but not the copy of the
- * contents. All data pointers (`path' in our case) of a list and its
+ * contents. All data pointers ('path' in our case) of a list and its
  * shallow copy will point to the same memory.
  *
  * @param[in] dl A pointer to list to make a copy. May be NULL.
@@ -222,9 +222,9 @@ error:
  * will be removed from the both lists. Items are comapred by a filename.
  * 
  * @param[in,out] before A pointer to a pointer to a list. Will contain items
- *     which were not found in the `after' list.
+ *     which were not found in the 'after' list.
  * @param[in,out] after  A pointer to a pointer to a list. Will containt items
- *     which were not found in the `before' list.
+ *     which were not found in the 'before' list.
  **/
 void
 dl_diff (dep_list **before, dep_list **after)

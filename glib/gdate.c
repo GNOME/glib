@@ -1096,7 +1096,7 @@ g_date_prepare_to_parse (const gchar      *str,
             ++i;
           }
         DEBUG_MSG (("**Order: %s, %s, %s", strings[0], strings[1], strings[2]));
-        DEBUG_MSG (("**Sample date in this locale: `%s'", buf));
+        DEBUG_MSG (("**Sample date in this locale: '%s'", buf));
       }
 #endif
     }
@@ -1137,7 +1137,7 @@ g_date_set_parse (GDate       *d,
 
   g_date_prepare_to_parse (str, &pt);
   
-  DEBUG_MSG (("Found %d ints, `%d' `%d' `%d' and written out month %d", 
+  DEBUG_MSG (("Found %d ints, '%d' '%d' '%d' and written out month %d",
 	      pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month));
   
   

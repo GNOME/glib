@@ -1553,7 +1553,7 @@ g_checksum_update (GChecksum    *checksum,
 
   if (checksum->digest_str)
     {
-      g_warning ("The checksum `%s' has been closed and cannot be updated "
+      g_warning ("The checksum '%s' has been closed and cannot be updated "
                  "anymore.",
                  checksum->digest_str);
       return;

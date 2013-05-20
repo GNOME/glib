@@ -476,7 +476,7 @@ g_application_impl_register (GApplication        *application,
       if (flags & G_APPLICATION_IS_SERVICE)
         {
           g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-                       "Unable to acquire bus name `%s'", appid);
+                       "Unable to acquire bus name '%s'", appid);
           g_application_impl_destroy (impl);
 
           return NULL;

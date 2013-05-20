@@ -375,7 +375,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed",	\
+		"file %s: line %d: assertion '%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\
@@ -387,7 +387,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
        {							\
 	 g_log (G_LOG_DOMAIN,					\
 		G_LOG_LEVEL_CRITICAL,				\
-		"file %s: line %d: assertion `%s' failed",	\
+		"file %s: line %d: assertion '%s' failed",	\
 		__FILE__,					\
 		__LINE__,					\
 		#expr);						\

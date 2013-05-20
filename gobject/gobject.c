@@ -508,7 +508,7 @@ install_property_internal (GType       g_type,
 {
   if (g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type, FALSE))
     {
-      g_warning ("When installing property: type `%s' already has a property named `%s'",
+      g_warning ("When installing property: type '%s' already has a property named '%s'",
 		 g_type_name (g_type),
 		 pspec->name);
       return;
@@ -1170,7 +1170,7 @@ g_object_notify (GObject     *object,
 				    TRUE);
 
   if (!pspec)
-    g_warning ("%s: object class `%s' has no property named `%s'",
+    g_warning ("%s: object class '%s' has no property named '%s'",
 	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
@@ -1336,7 +1336,7 @@ object_set_property (GObject             *object,
   /* provide a copy to work from, convert (if necessary) and validate */
   g_value_init (&tmp_value, pspec->value_type);
   if (!g_value_transform (value, &tmp_value))
-    g_warning ("unable to set property `%s' of type `%s' from value of type `%s'",
+    g_warning ("unable to set property '%s' of type '%s' from value of type '%s'",
 	       pspec->name,
 	       g_type_name (pspec->value_type),
 	       G_VALUE_TYPE_NAME (value));
@@ -1344,7 +1344,7 @@ object_set_property (GObject             *object,
     {
       gchar *contents = g_strdup_value_contents (value);
 
-      g_warning ("value \"%s\" of type `%s' is invalid or out of range for property `%s' of type `%s'",
+      g_warning ("value \"%s\" of type '%s' is invalid or out of range for property '%s' of type '%s'",
 		 contents,
 		 G_VALUE_TYPE_NAME (value),
 		 pspec->name,
@@ -1845,14 +1845,14 @@ g_object_newv (GType       object_type,
 
           if G_UNLIKELY (!pspec)
             {
-              g_critical ("%s: object class `%s' has no property named `%s'",
+              g_critical ("%s: object class '%s' has no property named '%s'",
                           G_STRFUNC, g_type_name (object_type), parameters[i].name);
               continue;
             }
 
           if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
             {
-              g_critical ("%s: property `%s' of object class `%s' is not writable",
+              g_critical ("%s: property '%s' of object class '%s' is not writable",
                           G_STRFUNC, pspec->name, g_type_name (object_type));
               continue;
             }
@@ -1864,7 +1864,7 @@ g_object_newv (GType       object_type,
                     break;
               if G_UNLIKELY (k != j)
                 {
-                  g_critical ("%s: construct property `%s' for type `%s' cannot be set twice",
+                  g_critical ("%s: construct property '%s' for type '%s' cannot be set twice",
                               G_STRFUNC, parameters[i].name, g_type_name (object_type));
                   continue;
                 }
@@ -1939,7 +1939,7 @@ g_object_new_valist (GType        object_type,
 
           if G_UNLIKELY (!pspec)
             {
-              g_critical ("%s: object class `%s' has no property named `%s'",
+              g_critical ("%s: object class '%s' has no property named '%s'",
                           G_STRFUNC, g_type_name (object_type), name);
               /* Can't continue because arg list will be out of sync. */
               break;
@@ -1947,7 +1947,7 @@ g_object_new_valist (GType        object_type,
 
           if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
             {
-              g_critical ("%s: property `%s' of object class `%s' is not writable",
+              g_critical ("%s: property '%s' of object class '%s' is not writable",
                           G_STRFUNC, pspec->name, g_type_name (object_type));
               break;
             }
@@ -1959,7 +1959,7 @@ g_object_new_valist (GType        object_type,
                     break;
               if G_UNLIKELY (i != n_params)
                 {
-                  g_critical ("%s: property `%s' for type `%s' cannot be set twice",
+                  g_critical ("%s: property '%s' for type '%s' cannot be set twice",
                               G_STRFUNC, name, g_type_name (object_type));
                   break;
                 }
@@ -2084,7 +2084,7 @@ g_object_set_valist (GObject	 *object,
 					TRUE);
       if (!pspec)
 	{
-	  g_warning ("%s: object class `%s' has no property named `%s'",
+	  g_warning ("%s: object class '%s' has no property named '%s'",
 		     G_STRFUNC,
 		     G_OBJECT_TYPE_NAME (object),
 		     name);
@@ -2092,7 +2092,7 @@ g_object_set_valist (GObject	 *object,
 	}
       if (!(pspec->flags & G_PARAM_WRITABLE))
 	{
-	  g_warning ("%s: property `%s' of object class `%s' is not writable",
+	  g_warning ("%s: property '%s' of object class '%s' is not writable",
 		     G_STRFUNC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (object));
@@ -2100,7 +2100,7 @@ g_object_set_valist (GObject	 *object,
 	}
       if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
         {
-          g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
+          g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                      G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
           break;
         }
@@ -2165,7 +2165,7 @@ g_object_get_valist (GObject	 *object,
 					TRUE);
       if (!pspec)
 	{
-	  g_warning ("%s: object class `%s' has no property named `%s'",
+	  g_warning ("%s: object class '%s' has no property named '%s'",
 		     G_STRFUNC,
 		     G_OBJECT_TYPE_NAME (object),
 		     name);
@@ -2173,7 +2173,7 @@ g_object_get_valist (GObject	 *object,
 	}
       if (!(pspec->flags & G_PARAM_READABLE))
 	{
-	  g_warning ("%s: property `%s' of object class `%s' is not readable",
+	  g_warning ("%s: property '%s' of object class '%s' is not readable",
 		     G_STRFUNC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (object));
@@ -2304,17 +2304,17 @@ g_object_set_property (GObject	    *object,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
   if (!pspec)
-    g_warning ("%s: object class `%s' has no property named `%s'",
+    g_warning ("%s: object class '%s' has no property named '%s'",
 	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_WRITABLE))
-    g_warning ("%s: property `%s' of object class `%s' is not writable",
+    g_warning ("%s: property '%s' of object class '%s' is not writable",
                G_STRFUNC,
                pspec->name,
                G_OBJECT_TYPE_NAME (object));
   else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
-    g_warning ("%s: construct property \"%s\" for object `%s' can't be set after construction",
+    g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
     object_set_property (object, pspec, value, nqueue);
@@ -2357,12 +2357,12 @@ g_object_get_property (GObject	   *object,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
   if (!pspec)
-    g_warning ("%s: object class `%s' has no property named `%s'",
+    g_warning ("%s: object class '%s' has no property named '%s'",
 	       G_STRFUNC,
 	       G_OBJECT_TYPE_NAME (object),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_READABLE))
-    g_warning ("%s: property `%s' of object class `%s' is not readable",
+    g_warning ("%s: property '%s' of object class '%s' is not readable",
                G_STRFUNC,
                pspec->name,
                G_OBJECT_TYPE_NAME (object));
@@ -2379,7 +2379,7 @@ g_object_get_property (GObject	   *object,
 	}
       else if (!g_value_type_transformable (pspec->value_type, G_VALUE_TYPE (value)))
 	{
-	  g_warning ("%s: can't retrieve property `%s' of type `%s' as value of type `%s'",
+	  g_warning ("%s: can't retrieve property '%s' of type '%s' as value of type '%s'",
 		     G_STRFUNC, pspec->name,
 		     g_type_name (pspec->value_type),
 		     G_VALUE_TYPE_NAME (value));
@@ -3671,14 +3671,14 @@ g_value_object_collect_value (GValue	  *value,
       GObject *object = collect_values[0].v_pointer;
       
       if (object->g_type_instance.g_class == NULL)
-	return g_strconcat ("invalid unclassed object pointer for value type `",
+	return g_strconcat ("invalid unclassed object pointer for value type '",
 			    G_VALUE_TYPE_NAME (value),
 			    "'",
 			    NULL);
       else if (!g_value_type_compatible (G_OBJECT_TYPE (object), G_VALUE_TYPE (value)))
-	return g_strconcat ("invalid object type `",
+	return g_strconcat ("invalid object type '",
 			    G_OBJECT_TYPE_NAME (object),
-			    "' for value type `",
+			    "' for value type '",
 			    G_VALUE_TYPE_NAME (value),
 			    "'",
 			    NULL);
@@ -3700,7 +3700,7 @@ g_value_object_lcopy_value (const GValue *value,
   GObject **object_p = collect_values[0].v_pointer;
   
   if (!object_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
 
   if (!value->data[0].v_pointer)
     *object_p = NULL;

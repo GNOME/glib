@@ -401,7 +401,7 @@ hexdecode (const gchar  *str,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_FAILED,
-                       "Error hexdecoding string `%s' around position %d",
+                       "Error hexdecoding string '%s' around position %d",
                        str, n);
           goto out;
         }
@@ -523,7 +523,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
                        "stream", auth->priv->stream,
                        "credentials", credentials_that_were_sent,
                        NULL);
-  debug_print ("CLIENT: Trying mechanism `%s'", _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
+  debug_print ("CLIENT: Trying mechanism '%s'", _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
   g_ptr_array_add (attempted_auth_mechs, (gpointer) _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
 
   /* the auth mechanism may not be supported
@@ -531,7 +531,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
    */
   if (!_g_dbus_auth_mechanism_is_supported (mech))
     {
-      debug_print ("CLIENT: Mechanism `%s' says it is not supported", _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
+      debug_print ("CLIENT: Mechanism '%s' says it is not supported", _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
       g_object_unref (mech);
       mech = NULL;
       goto again;
@@ -541,14 +541,14 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
   initial_response = _g_dbus_auth_mechanism_client_initiate (mech,
                                                              &initial_response_len);
 #if 0
-  g_printerr ("using auth mechanism with name `%s' of type `%s' with initial response `%s'\n",
+  g_printerr ("using auth mechanism with name '%s' of type '%s' with initial response '%s'\n",
               _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype),
               g_type_name (G_TYPE_FROM_INSTANCE (mech)),
               initial_response);
 #endif
   if (initial_response != NULL)
     {
-      //g_printerr ("initial_response = `%s'\n", initial_response);
+      //g_printerr ("initial_response = '%s'\n", initial_response);
       encoded = hexencode (initial_response);
       s = g_strdup_printf ("AUTH %s %s\r\n",
                            _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype),
@@ -560,7 +560,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
     {
       s = g_strdup_printf ("AUTH %s\r\n", _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype));
     }
-  debug_print ("CLIENT: writing `%s'", s);
+  debug_print ("CLIENT: writing '%s'", s);
   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
     {
       g_object_unref (mech);
@@ -648,7 +648,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
       if (G_UNLIKELY (_g_dbus_debug_authentication ()))
         {
           s = g_credentials_to_string (credentials);
-          debug_print ("CLIENT: sent credentials `%s'", s);
+          debug_print ("CLIENT: sent credentials '%s'", s);
           g_free (s);
         }
     }
@@ -661,7 +661,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 
   /* Get list of supported authentication mechanisms */
   s = "AUTH\r\n";
-  debug_print ("CLIENT: writing `%s'", s);
+  debug_print ("CLIENT: writing '%s'", s);
   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
     goto out;
   state = CLIENT_STATE_WAITING_FOR_REJECT;
@@ -683,7 +683,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "In WaitingForReject: Expected `REJECTED am1 am2 ... amN', got `%s'",
+                           "In WaitingForReject: Expected 'REJECTED am1 am2 ... amN', got '%s'",
                            line);
               g_free (line);
               goto out;
@@ -693,7 +693,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               supported_auth_mechs = g_strsplit (line + sizeof ("REJECTED ") - 1, " ", 0);
 #if 0
               for (n = 0; supported_auth_mechs != NULL && supported_auth_mechs[n] != NULL; n++)
-                g_printerr ("supported_auth_mechs[%d] = `%s'\n", n, supported_auth_mechs[n]);
+                g_printerr ("supported_auth_mechs[%d] = '%s'\n", n, supported_auth_mechs[n]);
 #endif
             }
           g_free (line);
@@ -717,7 +717,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
           if (line == NULL)
             goto out;
-          debug_print ("CLIENT: WaitingForOK, read `%s'", line);
+          debug_print ("CLIENT: WaitingForOK, read '%s'", line);
           if (g_str_has_prefix (line, "OK "))
             {
               if (!g_dbus_is_guid (line + 3))
@@ -725,7 +725,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                   g_set_error (error,
                                G_IO_ERROR,
                                G_IO_ERROR_FAILED,
-                               "Invalid OK response `%s'",
+                               "Invalid OK response '%s'",
                                line);
                   g_free (line);
                   goto out;
@@ -736,7 +736,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               if (offered_capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING)
                 {
                   s = "NEGOTIATE_UNIX_FD\r\n";
-                  debug_print ("CLIENT: writing `%s'", s);
+                  debug_print ("CLIENT: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     goto out;
                   state = CLIENT_STATE_WAITING_FOR_AGREE_UNIX_FD;
@@ -744,7 +744,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               else
                 {
                   s = "BEGIN\r\n";
-                  debug_print ("CLIENT: writing `%s'", s);
+                  debug_print ("CLIENT: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     goto out;
                   /* and we're done! */
@@ -761,7 +761,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "In WaitingForOk: unexpected response `%s'",
+                           "In WaitingForOk: unexpected response '%s'",
                            line);
               g_free (line);
               goto out;
@@ -773,13 +773,13 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
           if (line == NULL)
             goto out;
-          debug_print ("CLIENT: WaitingForAgreeUnixFD, read=`%s'", line);
+          debug_print ("CLIENT: WaitingForAgreeUnixFD, read='%s'", line);
           if (g_strcmp0 (line, "AGREE_UNIX_FD") == 0)
             {
               g_free (line);
               negotiated_capabilities |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
               s = "BEGIN\r\n";
-              debug_print ("CLIENT: writing `%s'", s);
+              debug_print ("CLIENT: writing '%s'", s);
               if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                 goto out;
               /* and we're done! */
@@ -787,10 +787,10 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
             }
           else if (g_str_has_prefix (line, "ERROR") && (line[5] == 0 || g_ascii_isspace (line[5])))
             {
-              //g_strstrip (line + 5); g_debug ("bah, no unix_fd: `%s'", line + 5);
+              //g_strstrip (line + 5); g_debug ("bah, no unix_fd: '%s'", line + 5);
               g_free (line);
               s = "BEGIN\r\n";
-              debug_print ("CLIENT: writing `%s'", s);
+              debug_print ("CLIENT: writing '%s'", s);
               if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                 goto out;
               /* and we're done! */
@@ -802,7 +802,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "In WaitingForAgreeUnixFd: unexpected response `%s'",
+                           "In WaitingForAgreeUnixFd: unexpected response '%s'",
                            line);
               g_free (line);
               goto out;
@@ -814,7 +814,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
           if (line == NULL)
             goto out;
-          debug_print ("CLIENT: WaitingForData, read=`%s'", line);
+          debug_print ("CLIENT: WaitingForData, read='%s'", line);
           if (g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
@@ -845,7 +845,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                   s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                   g_free (encoded_data);
                   g_free (data);
-                  debug_print ("CLIENT: writing `%s'", s);
+                  debug_print ("CLIENT: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     {
                       g_free (s);
@@ -867,7 +867,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "In WaitingForData: unexpected response `%s'",
+                           "In WaitingForData: unexpected response '%s'",
                            line);
               g_free (line);
               goto out;
@@ -990,7 +990,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_FAILED,
-                   "The given guid `%s' is not valid",
+                   "The given guid '%s' is not valid",
                    guid);
       goto out;
     }
@@ -1042,7 +1042,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
       if (G_UNLIKELY (_g_dbus_debug_authentication ()))
         {
           s = g_credentials_to_string (credentials);
-          debug_print ("SERVER: received credentials `%s'", s);
+          debug_print ("SERVER: received credentials '%s'", s);
           g_free (s);
         }
     }
@@ -1059,13 +1059,13 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
         case SERVER_STATE_WAITING_FOR_AUTH:
           debug_print ("SERVER: WaitingForAuth");
           line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
-          debug_print ("SERVER: WaitingForAuth, read `%s'", line);
+          debug_print ("SERVER: WaitingForAuth, read '%s'", line);
           if (line == NULL)
             goto out;
           if (g_strcmp0 (line, "AUTH") == 0)
             {
               s = get_auth_mechanisms (auth, allow_anonymous, "REJECTED ", "\r\n", " ");
-              debug_print ("SERVER: writing `%s'", s);
+              debug_print ("SERVER: writing '%s'", s);
               if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                 {
                   g_free (s);
@@ -1102,14 +1102,14 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                   g_set_error (error,
                                G_IO_ERROR,
                                G_IO_ERROR_FAILED,
-                               "Unexpected line `%s' while in WaitingForAuth state",
+                               "Unexpected line '%s' while in WaitingForAuth state",
                                line);
                   g_strfreev (tokens);
                   goto out;
                 }
 
               /* TODO: record that the client has attempted to use this mechanism */
-              //g_debug ("client is trying `%s'", mech_name);
+              //g_debug ("client is trying '%s'", mech_name);
 
               auth_mech_to_use_gtype = find_mech_by_name (auth, mech_name);
               if ((auth_mech_to_use_gtype == (GType) 0) ||
@@ -1118,7 +1118,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                   /* We don't support this auth mechanism */
                   g_strfreev (tokens);
                   s = get_auth_mechanisms (auth, allow_anonymous, "REJECTED ", "\r\n", " ");
-                  debug_print ("SERVER: writing `%s'", s);
+                  debug_print ("SERVER: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     {
                       g_free (s);
@@ -1178,7 +1178,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                       else
                         {
                           s = g_strdup_printf ("OK %s\r\n", guid);
-                          debug_print ("SERVER: writing `%s'", s);
+                          debug_print ("SERVER: writing '%s'", s);
                           if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                             {
                               g_free (s);
@@ -1191,7 +1191,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 
                     case G_DBUS_AUTH_MECHANISM_STATE_REJECTED:
                       s = get_auth_mechanisms (auth, allow_anonymous, "REJECTED ", "\r\n", " ");
-                      debug_print ("SERVER: writing `%s'", s);
+                      debug_print ("SERVER: writing '%s'", s);
                       if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                         {
                           g_free (s);
@@ -1215,7 +1215,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                         s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                         g_free (encoded_data);
                         g_free (data);
-                        debug_print ("SERVER: writing `%s'", s);
+                        debug_print ("SERVER: writing '%s'", s);
                         if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                           {
                             g_free (s);
@@ -1238,7 +1238,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "Unexpected line `%s' while in WaitingForAuth state",
+                           "Unexpected line '%s' while in WaitingForAuth state",
                            line);
               g_free (line);
               goto out;
@@ -1248,7 +1248,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
         case SERVER_STATE_WAITING_FOR_DATA:
           debug_print ("SERVER: WaitingForData");
           line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
-          debug_print ("SERVER: WaitingForData, read `%s'", line);
+          debug_print ("SERVER: WaitingForData, read '%s'", line);
           if (line == NULL)
             goto out;
           if (g_str_has_prefix (line, "DATA "))
@@ -1278,7 +1278,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
-                           "Unexpected line `%s' while in WaitingForData state",
+                           "Unexpected line '%s' while in WaitingForData state",
                            line);
               g_free (line);
             }
@@ -1297,7 +1297,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                                                     &line_length,
                                                     cancellable,
                                                     error);
-          debug_print ("SERVER: WaitingForBegin, read `%s'", line);
+          debug_print ("SERVER: WaitingForBegin, read '%s'", line);
           if (line == NULL)
             goto out;
           if (g_strcmp0 (line, "BEGIN") == 0)
@@ -1314,24 +1314,24 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                 {
                   negotiated_capabilities |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
                   s = "AGREE_UNIX_FD\r\n";
-                  debug_print ("SERVER: writing `%s'", s);
+                  debug_print ("SERVER: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     goto out;
                 }
               else
                 {
                   s = "ERROR \"fd passing not offered\"\r\n";
-                  debug_print ("SERVER: writing `%s'", s);
+                  debug_print ("SERVER: writing '%s'", s);
                   if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                     goto out;
                 }
             }
           else
             {
-              g_debug ("Unexpected line `%s' while in WaitingForBegin state", line);
+              g_debug ("Unexpected line '%s' while in WaitingForBegin state", line);
               g_free (line);
               s = "ERROR \"Unknown Command\"\r\n";
-              debug_print ("SERVER: writing `%s'", s);
+              debug_print ("SERVER: writing '%s'", s);
               if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                 goto out;
             }

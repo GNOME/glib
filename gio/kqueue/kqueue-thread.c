@@ -215,7 +215,7 @@ _kqueue_thread_func (void *arg)
 
   for (;;)
     {
-      /* TODO: Provide more items in the `eventlist' to kqueue(2).
+      /* TODO: Provide more items in the 'eventlist' to kqueue(2).
        * Currently the backend takes notifications from the kernel one
        * by one, i.e. there will be a lot of system calls and context
        * switches when the application will monitor a lot of files with

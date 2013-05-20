@@ -424,9 +424,9 @@ g_find_program_in_path (const gchar *program)
 #if defined(G_OS_UNIX) || defined(G_OS_BEOS)
   if (path == NULL)
     {
-      /* There is no `PATH' in the environment.  The default
+      /* There is no 'PATH' in the environment.  The default
        * search path in GNU libc is the current directory followed by
-       * the path `confstr' returns for `_CS_PATH'.
+       * the path 'confstr' returns for '_CS_PATH'.
        */
       
       /* In GLib we put . last, for security, and don't use the
@@ -510,7 +510,7 @@ g_find_program_in_path (const gchar *program)
 
       if (p == path)
         /* Two adjacent colons, or a colon at the beginning or the end
-         * of `PATH' means to search the current directory.
+         * of 'PATH' means to search the current directory.
          */
         startp = name + 1;
       else

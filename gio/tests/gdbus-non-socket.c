@@ -106,7 +106,7 @@ pokee_method_call (GDBusConnection       *connection,
   g_assert_cmpstr (method_name, ==, "Poke");
 
   g_variant_get (parameters, "(&s)", &str);
-  ret = g_strdup_printf ("You poked me with: `%s'", str);
+  ret = g_strdup_printf ("You poked me with: '%s'", str);
   g_dbus_method_invocation_return_value (invocation, g_variant_new ("(s)", ret));
   g_free (ret);
 }
@@ -269,7 +269,7 @@ test_non_socket (void)
                                      &error);
   g_assert_no_error (error);
   g_variant_get (ret, "(&s)", &str);
-  g_assert_cmpstr (str, ==, "You poked me with: `I am the POKER!'");
+  g_assert_cmpstr (str, ==, "You poked me with: 'I am the POKER!'");
   g_variant_unref (ret);
 
   g_object_unref (connection);

@@ -137,7 +137,7 @@ foo_method_call (GDBusConnection       *connection,
       const gchar *input;
       gchar *output;
       g_variant_get (parameters, "(&s)", &input);
-      output = g_strdup_printf ("You passed the string `%s'. Jolly good!", input);
+      output = g_strdup_printf ("You passed the string '%s'. Jolly good!", input);
       g_dbus_method_invocation_return_value (invocation, g_variant_new ("(s)", output));
       g_free (output);
     }
@@ -160,7 +160,7 @@ foo_get_property (GDBusConnection       *connection,
 {
   GVariant *ret;
   gchar *s;
-  s = g_strdup_printf ("Property `%s' Is What It Is!", property_name);
+  s = g_strdup_printf ("Property '%s' Is What It Is!", property_name);
   ret = g_variant_new_string (s);
   g_free (s);
   return ret;
@@ -181,7 +181,7 @@ foo_set_property (GDBusConnection       *connection,
   g_set_error (error,
                G_DBUS_ERROR,
                G_DBUS_ERROR_SPAWN_FILE_INVALID,
-               "Returning some error instead of writing the value `%s' to the property `%s'",
+               "Returning some error instead of writing the value '%s' to the property '%s'",
                property_name, s);
   g_free (s);
   return FALSE;
@@ -774,7 +774,7 @@ test_dispatch_thread_func (gpointer user_data)
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(s)")));
   g_variant_get (value, "(&s)", &value_str);
-  g_assert_cmpstr (value_str, ==, "You passed the string `winwinwin'. Jolly good!");
+  g_assert_cmpstr (value_str, ==, "You passed the string 'winwinwin'. Jolly good!");
   g_variant_unref (value);
 
   error = NULL;
@@ -799,7 +799,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   NULL,
                                   &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Type of message, `(s)', does not match expected type `()'");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Type of message, '(s)', does not match expected type '()'");
   g_error_free (error);
   g_assert (value == NULL);
 
@@ -812,7 +812,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   NULL,
                                   &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such method `NonExistantMethod'");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such method 'NonExistantMethod'");
   g_error_free (error);
   g_assert (value == NULL);
 
@@ -844,7 +844,7 @@ test_dispatch_thread_func (gpointer user_data)
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(v)")));
   g_variant_get (value, "(v)", &inner);
   g_assert (g_variant_is_of_type (inner, G_VARIANT_TYPE_STRING));
-  g_assert_cmpstr (g_variant_get_string (inner, NULL), ==, "Property `PropertyUno' Is What It Is!");
+  g_assert_cmpstr (g_variant_get_string (inner, NULL), ==, "Property 'PropertyUno' Is What It Is!");
   g_variant_unref (value);
   g_variant_unref (inner);
 
@@ -860,7 +860,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such property `ThisDoesntExist'");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: No such property 'ThisDoesntExist'");
   g_error_free (error);
 
   error = NULL;
@@ -875,7 +875,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property `NotReadable' is not readable");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property 'NotReadable' is not readable");
   g_error_free (error);
 
   error = NULL;
@@ -891,7 +891,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_SPAWN_FILE_INVALID);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.Spawn.FileInvalid: Returning some error instead of writing the value `NotReadable' to the property `'But Writable you are!''");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.Spawn.FileInvalid: Returning some error instead of writing the value 'NotReadable' to the property ''But Writable you are!''");
   g_error_free (error);
 
   error = NULL;
@@ -907,7 +907,7 @@ test_dispatch_thread_func (gpointer user_data)
                                   &error);
   g_assert (value == NULL);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS);
-  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property `NotWritable' is not writable");
+  g_assert_cmpstr (error->message, ==, "GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Property 'NotWritable' is not writable");
   g_error_free (error);
 
   error = NULL;
@@ -923,7 +923,7 @@ test_dispatch_thread_func (gpointer user_data)
   g_assert (value != NULL);
   g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE ("(a{sv})")));
   s = g_variant_print (value, TRUE);
-  g_assert_cmpstr (s, ==, "({'PropertyUno': <\"Property `PropertyUno' Is What It Is!\">, 'NotWritable': <\"Property `NotWritable' Is What It Is!\">},)");
+  g_assert_cmpstr (s, ==, "({'PropertyUno': <\"Property 'PropertyUno' Is What It Is!\">, 'NotWritable': <\"Property 'NotWritable' Is What It Is!\">},)");
   g_free (s);
   g_variant_unref (value);
 

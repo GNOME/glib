@@ -164,7 +164,7 @@ _g_module_symbol (gpointer     handle,
       
       if (strcmp (name, "_end") == 0)
         {
-	  msg = g_strdup_printf ("unmatched symbol name `%s'", symbol_name);
+	  msg = g_strdup_printf ("unmatched symbol name '%s'", symbol_name);
           g_module_set_error (msg);
 	  g_free (msg);
 	  

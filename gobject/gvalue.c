@@ -177,12 +177,12 @@ g_value_init (GValue *value,
       value_table->value_init (value);
     }
   else if (G_VALUE_TYPE (value))
-    g_warning ("%s: cannot initialize GValue with type `%s', the value has already been initialized as `%s'",
+    g_warning ("%s: cannot initialize GValue with type '%s', the value has already been initialized as '%s'",
 	       G_STRLOC,
 	       g_type_name (g_type),
 	       g_type_name (G_VALUE_TYPE (value)));
   else /* !G_TYPE_IS_VALUE (g_type) */
-    g_warning ("%s: cannot initialize GValue with type `%s', %s",
+    g_warning ("%s: cannot initialize GValue with type '%s', %s",
 	       G_STRLOC,
 	       g_type_name (g_type),
 	       g_type_value_table_peek (g_type) ?
@@ -450,7 +450,7 @@ g_value_register_transform_func (GType           src_type,
 
 #if 0 /* let transform function replacement be a valid operation */
   if (g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry))
-    g_warning ("reregistering value transformation function (%p) for `%s' to `%s'",
+    g_warning ("reregistering value transformation function (%p) for '%s' to '%s'",
 	       transform_func,
 	       g_type_name (src_type),
 	       g_type_name (dest_type));

@@ -332,7 +332,7 @@ token_stream_require (TokenStream  *stream,
     {
       token_stream_set_error (stream, error, FALSE,
                               G_VARIANT_PARSE_ERROR_UNEXPECTED_TOKEN,
-                              "expected `%s'%s", token, purpose);
+                              "expected '%s'%s", token, purpose);
       return FALSE;
     }
 
@@ -558,7 +558,7 @@ ast_type_error (AST                 *ast,
   typestr = g_variant_type_dup_string (type);
   ast_set_error (ast, error, NULL,
                  G_VARIANT_PARSE_ERROR_TYPE_ERROR,
-                 "can not parse as value of type `%s'",
+                 "can not parse as value of type '%s'",
                  typestr);
   g_free (typestr);
 
@@ -944,7 +944,7 @@ array_parse (TokenStream  *stream,
 
       if (need_comma &&
           !token_stream_require (stream, ",",
-                                 " or `]' to follow array element",
+                                 " or ']' to follow array element",
                                  error))
         goto error;
 
@@ -1083,7 +1083,7 @@ tuple_parse (TokenStream  *stream,
 
       if (need_comma &&
           !token_stream_require (stream, ",",
-                                 " or `)' to follow tuple element",
+                                 " or ')' to follow tuple element",
                                  error))
         goto error;
 
@@ -1386,7 +1386,7 @@ dictionary_parse (TokenStream  *stream,
   only_one = token_stream_consume (stream, ",");
   if (!only_one &&
       !token_stream_require (stream, ":",
-                             " or `,' to follow dictionary entry key",
+                             " or ',' to follow dictionary entry key",
                              error))
     goto error;
 
@@ -1412,7 +1412,7 @@ dictionary_parse (TokenStream  *stream,
       AST *child;
 
       if (!token_stream_require (stream, ",",
-                                 " or `}' to follow dictionary entry", error))
+                                 " or '}' to follow dictionary entry", error))
         goto error;
 
       child = parse (stream, app, error);
@@ -1793,7 +1793,7 @@ number_overflow (AST                 *ast,
 {
   ast_set_error (ast, error, NULL,
                  G_VARIANT_PARSE_ERROR_NUMBER_OUT_OF_RANGE,
-                 "number out of range for type `%c'",
+                 "number out of range for type '%c'",
                  g_variant_type_peek_string (type)[0]);
   return NULL;
 }

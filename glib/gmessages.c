@@ -652,7 +652,7 @@ g_log_remove_handler (const gchar *log_domain,
 	}
     } 
   g_mutex_unlock (&g_messages_lock);
-  g_warning ("%s: could not find handler with id `%d' for domain \"%s\"",
+  g_warning ("%s: could not find handler with id '%d' for domain \"%s\"",
 	     G_STRLOC, handler_id, log_domain);
 }
 
@@ -1033,7 +1033,7 @@ g_return_if_fail_warning (const char *log_domain,
 {
   g_log (log_domain,
 	 G_LOG_LEVEL_CRITICAL,
-	 "%s: assertion `%s' failed",
+	 "%s: assertion '%s' failed",
 	 pretty_function,
 	 expression);
 }

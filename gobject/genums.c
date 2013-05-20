@@ -156,7 +156,7 @@ value_flags_enum_lcopy_value (const GValue *value,
   gint *int_p = collect_values[0].v_pointer;
   
   if (!int_p)
-    return g_strdup_printf ("value location for `%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
   
   *int_p = value->data[0].v_long;
   

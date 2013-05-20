@@ -557,7 +557,7 @@ gunichar g_unichar_tolower (gunichar c) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 gunichar g_unichar_totitle (gunichar c) G_GNUC_CONST;
 
-/* If C is a digit (according to `g_unichar_isdigit'), then return its
+/* If C is a digit (according to 'g_unichar_isdigit'), then return its
    numeric value.  Otherwise return -1.  */
 GLIB_AVAILABLE_IN_ALL
 gint g_unichar_digit_value (gunichar c) G_GNUC_CONST;

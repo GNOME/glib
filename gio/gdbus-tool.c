@@ -225,7 +225,7 @@ print_paths (GDBusConnection *c,
     }
   g_variant_get (result, "(&s)", &xml_data);
 
-  //g_printerr ("xml=`%s'", xml_data);
+  //g_printerr ("xml='%s'", xml_data);
 
   error = NULL;
   node = g_dbus_node_info_new_for_xml (xml_data, &error);
@@ -237,7 +237,7 @@ print_paths (GDBusConnection *c,
       goto out;
     }
 
-  //g_printerr ("bar `%s'\n", path);
+  //g_printerr ("bar '%s'\n", path);
 
   if (node->interfaces != NULL)
     g_print ("%s \n", path);
@@ -246,7 +246,7 @@ print_paths (GDBusConnection *c,
     {
       gchar *s;
 
-      //g_printerr ("foo `%s'\n", node->nodes[n].path);
+      //g_printerr ("foo '%s'\n", node->nodes[n].path);
 
       if (g_strcmp0 (path, "/") == 0)
         s = g_strdup_printf ("/%s", node->nodes[n]->path);
@@ -464,7 +464,7 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   if (interface_info == NULL)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   _("Warning: According to introspection data, interface `%s' does not exist\n"),
+                   _("Warning: According to introspection data, interface '%s' does not exist\n"),
                    interface_name);
       goto out;
     }
@@ -473,7 +473,7 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   if (method_info == NULL)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   _("Warning: According to introspection data, method `%s' does not exist on interface `%s'\n"),
+                   _("Warning: According to introspection data, method '%s' does not exist on interface '%s'\n"),
                    method_name,
                    interface_name);
       goto out;
@@ -916,7 +916,7 @@ handle_call (gint        *argc,
   s = strrchr (opt_call_method, '.');
   if (!request_completion && s == NULL)
     {
-      g_printerr (_("Error: Method name `%s' is invalid\n"), opt_call_method);
+      g_printerr (_("Error: Method name '%s' is invalid\n"), opt_call_method);
       goto out;
     }
   method_name = g_strdup (s + 1);
@@ -981,7 +981,7 @@ handle_call (gint        *argc,
               if (type != NULL)
                 {
                   s = g_variant_type_dup_string (type);
-                  g_printerr (_("Error parsing parameter %d of type `%s': %s\n"),
+                  g_printerr (_("Error parsing parameter %d of type '%s': %s\n"),
                               n,
                               s,
                               error->message);
@@ -1030,7 +1030,7 @@ handle_call (gint        *argc,
                                    g_variant_type_peek_string (type),
                                    g_variant_type_get_string_length (type));
             }
-          g_printerr ("(According to introspection data, you need to pass `%s')\n", s->str);
+          g_printerr ("(According to introspection data, you need to pass '%s')\n", s->str);
           g_string_free (s, TRUE);
         }
       goto out;
@@ -2039,7 +2039,7 @@ main (gint argc, gchar *argv[])
       completion_debug ("completion_point=%d", completion_point);
       completion_debug ("----");
       completion_debug (" 0123456789012345678901234567890123456789012345678901234567890123456789");
-      completion_debug ("`%s'", completion_line);
+      completion_debug ("'%s'", completion_line);
       completion_debug (" %*s^",
                          completion_point, "");
       completion_debug ("----");
@@ -2073,8 +2073,8 @@ main (gint argc, gchar *argv[])
             }
         }
 #if 0
-      completion_debug (" cur=`%s'", completion_cur);
-      completion_debug ("prev=`%s'", completion_prev);
+      completion_debug (" cur='%s'", completion_cur);
+      completion_debug ("prev='%s'", completion_prev);
 #endif
 
       argc = completion_argc;
@@ -2094,7 +2094,7 @@ main (gint argc, gchar *argv[])
         }
       else
         {
-          g_printerr ("Unknown command `%s'\n", command);
+          g_printerr ("Unknown command '%s'\n", command);
           usage (&argc, &argv, FALSE);
           goto out;
         }

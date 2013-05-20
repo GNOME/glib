@@ -1127,7 +1127,7 @@ g_settings_get_enum (GSettings   *settings,
 
   if (!skey.is_enum)
     {
-      g_critical ("g_settings_get_enum() called on key `%s' which is not "
+      g_critical ("g_settings_get_enum() called on key '%s' which is not "
                   "associated with an enumerated type", skey.name);
       g_settings_schema_key_clear (&skey);
       return -1;
@@ -1183,15 +1183,15 @@ g_settings_set_enum (GSettings   *settings,
 
   if (!skey.is_enum)
     {
-      g_critical ("g_settings_set_enum() called on key `%s' which is not "
+      g_critical ("g_settings_set_enum() called on key '%s' which is not "
                   "associated with an enumerated type", skey.name);
       return FALSE;
     }
 
   if (!(variant = g_settings_schema_key_from_enum (&skey, value)))
     {
-      g_critical ("g_settings_set_enum(): invalid enum value %d for key `%s' "
-                  "in schema `%s'.  Doing nothing.", value, skey.name,
+      g_critical ("g_settings_set_enum(): invalid enum value %d for key '%s' "
+                  "in schema '%s'.  Doing nothing.", value, skey.name,
                   g_settings_schema_get_id (skey.schema));
       g_settings_schema_key_clear (&skey);
       return FALSE;
@@ -1240,7 +1240,7 @@ g_settings_get_flags (GSettings   *settings,
 
   if (!skey.is_flags)
     {
-      g_critical ("g_settings_get_flags() called on key `%s' which is not "
+      g_critical ("g_settings_get_flags() called on key '%s' which is not "
                   "associated with a flags type", skey.name);
       g_settings_schema_key_clear (&skey);
       return -1;
@@ -1297,7 +1297,7 @@ g_settings_set_flags (GSettings   *settings,
 
   if (!skey.is_flags)
     {
-      g_critical ("g_settings_set_flags() called on key `%s' which is not "
+      g_critical ("g_settings_set_flags() called on key '%s' which is not "
                   "associated with a flags type", skey.name);
       return FALSE;
     }
@@ -1305,7 +1305,7 @@ g_settings_set_flags (GSettings   *settings,
   if (!(variant = g_settings_schema_key_from_flags (&skey, value)))
     {
       g_critical ("g_settings_set_flags(): invalid flags value 0x%08x "
-                  "for key `%s' in schema `%s'.  Doing nothing.",
+                  "for key '%s' in schema '%s'.  Doing nothing.",
                   value, skey.name, g_settings_schema_get_id (skey.schema));
       g_settings_schema_key_clear (&skey);
       return FALSE;
@@ -1523,7 +1523,7 @@ g_settings_get_mapped (GSettings           *settings,
 
   if (!mapping (NULL, &result, user_data))
     g_error ("The mapping function given to g_settings_get_mapped() for key "
-             "`%s' in schema `%s' returned FALSE when given a NULL value.",
+             "'%s' in schema '%s' returned FALSE when given a NULL value.",
              key, g_settings_schema_get_id (settings->priv->schema));
 
  okay:
@@ -2402,7 +2402,7 @@ g_settings_binding_key_changed (GSettings   *settings,
           !binding->get_mapping (&value, variant, binding->user_data))
         {
           /* flag translation errors with a warning */
-          g_warning ("Translated default `%s' for key `%s' in schema `%s' "
+          g_warning ("Translated default '%s' for key '%s' in schema '%s' "
                      "was rejected by the binding mapping function",
                      binding->key.unparsed, binding->key.name,
                      g_settings_schema_get_id (binding->key.schema));
@@ -2415,7 +2415,7 @@ g_settings_binding_key_changed (GSettings   *settings,
     {
       variant = g_variant_ref (binding->key.default_value);
       if (!binding->get_mapping (&value, variant, binding->user_data))
-        g_error ("The schema default value for key `%s' in schema `%s' "
+        g_error ("The schema default value for key '%s' in schema '%s' "
                  "was rejected by the binding mapping function.",
                  binding->key.name, g_settings_schema_get_id (binding->key.schema));
     }
@@ -2453,8 +2453,8 @@ g_settings_binding_property_changed (GObject          *object,
 
       if (!g_settings_schema_key_type_check (&binding->key, variant))
         {
-          g_critical ("binding mapping function for key `%s' returned "
-                      "GVariant of type `%s' when type `%s' was requested",
+          g_critical ("binding mapping function for key '%s' returned "
+                      "GVariant of type '%s' when type '%s' was requested",
                       binding->key.name, g_variant_get_type_string (variant),
                       g_variant_type_dup_string (binding->key.type));
           return;
@@ -2462,8 +2462,8 @@ g_settings_binding_property_changed (GObject          *object,
 
       if (!g_settings_schema_key_range_check (&binding->key, variant))
         {
-          g_critical ("GObject property `%s' on a `%s' object is out of "
-                      "schema-specified range for key `%s' of `%s': %s",
+          g_critical ("GObject property '%s' on a '%s' object is out of "
+                      "schema-specified range for key '%s' of '%s': %s",
                       binding->property->name, g_type_name (binding->property->owner_type),
                       binding->key.name, g_settings_schema_get_id (binding->key.schema),
                       g_variant_print (variant, TRUE));
@@ -2647,8 +2647,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
       if (binding->property->value_type != G_TYPE_BOOLEAN)
         {
           g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
-                      "was specified, but property `%s' on type `%s' has "
-                      "type `%s'", binding->property->name, G_OBJECT_TYPE_NAME (object),
+                      "was specified, but property '%s' on type '%s' has "
+                      "type '%s'", binding->property->name, G_OBJECT_TYPE_NAME (object),
                       g_type_name ((binding->property->value_type)));
           return;
         }
@@ -2656,8 +2656,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
       if (!g_variant_type_equal (binding->key.type, G_VARIANT_TYPE_BOOLEAN))
         {
           g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
-                      "was specified, but key `%s' on schema `%s' has "
-                      "type `%s'", key, g_settings_schema_get_id (settings->priv->schema),
+                      "was specified, but key '%s' on schema '%s' has "
+                      "type '%s'", key, g_settings_schema_get_id (settings->priv->schema),
                       g_variant_type_dup_string (binding->key.type));
           return;
         }

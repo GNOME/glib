@@ -1001,7 +1001,7 @@ invalidated_property_get_cb (GDBusConnection *connection,
 
   if (!g_variant_is_of_type (value, G_VARIANT_TYPE ("(v)")))
     {
-      g_warning ("Expected type `(v)' for Get() reply, got `%s'", g_variant_get_type_string (value));
+      g_warning ("Expected type '(v)' for Get() reply, got '%s'", g_variant_get_type_string (value));
       goto out;
     }
 
@@ -1081,7 +1081,7 @@ on_properties_changed (GDBusConnection *connection,
 
   if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sa{sv}as)")))
     {
-      g_warning ("Value for PropertiesChanged signal with type `%s' does not match `(sa{sv}as)'",
+      g_warning ("Value for PropertiesChanged signal with type '%s' does not match '(sa{sv}as)'",
                  g_variant_get_type_string (parameters));
       G_UNLOCK (properties_lock);
       goto out;
@@ -1173,7 +1173,7 @@ process_get_all_reply (GDBusProxy *proxy,
 
   if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(a{sv})")))
     {
-      g_warning ("Value for GetAll reply with type `%s' does not match `(a{sv})'",
+      g_warning ("Value for GetAll reply with type '%s' does not match '(a{sv})'",
                  g_variant_get_type_string (result));
       goto out;
     }

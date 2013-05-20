@@ -377,7 +377,7 @@ class GTestCase(object):
     """A representation of a gtester test result as a pyunit TestCase."""
 
     def __init__(self, case, binary):
-        """Create a GTestCase for case `case` from binary program `binary`."""
+        """Create a GTestCase for case 'case' from binary program 'binary'."""
         self._case = case
         self._binary = binary
         # the name of the case - e.g. /dbusmenu/glib/objects/menuitem/props_boolstr

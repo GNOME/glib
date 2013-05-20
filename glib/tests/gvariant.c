@@ -2844,7 +2844,7 @@ test_invalid_varargs (void)
 
   value = g_variant_new ("y", 'a');
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "*type of `q' but * has a type of `y'*");
+                         "*type of 'q' but * has a type of 'y'*");
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                          "*valid_format_string*");
   g_variant_get (value, "q");
@@ -3749,7 +3749,7 @@ test_parse_failures (void)
     "[1, 2,",                   "6:",              "expected value",
     "",                         "0:",              "expected value",
     "(1, 2,",                   "6:",              "expected value",
-    "<1",                       "2:",              "expected `>'",
+    "<1",                       "2:",              "expected '>'",
     "[]",                       "0-2:",            "unable to infer",
     "(,",                       "1:",              "expected value",
     "[4,'']",                   "1-2,3-5:",        "common type",
@@ -3763,7 +3763,7 @@ test_parse_failures (void)
     "just [4, '']",             "6-7,9-11:",       "common type",
     "[[4,'']]",                 "2-3,4-6:",        "common type",
     "([4,''],)",                "2-3,4-6:",        "common type",
-    "(4)",                      "2:",              "`,'",
+    "(4)",                      "2:",              "','",
     "{}",                       "0-2:",            "unable to infer",
     "{[1,2],[3,4]}",            "0-13:",           "basic types",
     "{[1,2]:[3,4]}",            "0-13:",           "basic types",
@@ -3783,12 +3783,12 @@ test_parse_failures (void)
     "@i ()",                    "3-5:",            "can not parse as",
     "@ai (4,)",                 "4-8:",            "can not parse as",
     "@(i) []",                  "5-7:",            "can not parse as",
-    "(5 5)",                    "3:",              "expected `,'",
-    "[5 5]",                    "3:",              "expected `,' or `]'",
-    "(5, 5 5)",                 "6:",              "expected `,' or `)'",
-    "[5, 5 5]",                 "6:",              "expected `,' or `]'",
+    "(5 5)",                    "3:",              "expected ','",
+    "[5 5]",                    "3:",              "expected ',' or ']'",
+    "(5, 5 5)",                 "6:",              "expected ',' or ')'",
+    "[5, 5 5]",                 "6:",              "expected ',' or ']'",
     "<@i []>",                  "4-6:",            "can not parse as",
-    "<[5 5]>",                  "4:",              "expected `,' or `]'",
+    "<[5 5]>",                  "4:",              "expected ',' or ']'",
     "{[4,''],5}",               "2-3,4-6:",        "common type",
     "{5,[4,'']}",               "4-5,6-8:",        "common type",
     "@i {1,2}",                 "3-8:",            "can not parse as",
@@ -3797,20 +3797,20 @@ test_parse_failures (void)
     "@ai {}",                   "4-6:",            "can not parse as",
     "{@i '': 5}",               "4-6:",            "can not parse as",
     "{5: @i ''}",               "7-9:",            "can not parse as",
-    "{<4,5}",                   "3:",              "expected `>'",
-    "{4,<5}",                   "5:",              "expected `>'",
-    "{4,5,6}",                  "4:",              "expected `}'",
-    "{5 5}",                    "3:",              "expected `:' or `,'",
-    "{4: 5: 6}",                "5:",              "expected `,' or `}'",
-    "{4:5,<6:7}",               "7:",              "expected `>'",
-    "{4:5,6:<7}",               "9:",              "expected `>'",
-    "{4:5,6 7}",                "7:",              "expected `:'",
+    "{<4,5}",                   "3:",              "expected '>'",
+    "{4,<5}",                   "5:",              "expected '>'",
+    "{4,5,6}",                  "4:",              "expected '}'",
+    "{5 5}",                    "3:",              "expected ':' or ','",
+    "{4: 5: 6}",                "5:",              "expected ',' or '}'",
+    "{4:5,<6:7}",               "7:",              "expected '>'",
+    "{4:5,6:<7}",               "9:",              "expected '>'",
+    "{4:5,6 7}",                "7:",              "expected ':'",
     "@o 'foo'",                 "3-8:",            "object path",
     "@g 'zzz'",                 "3-8:",            "signature",
     "@i true",                  "3-7:",            "can not parse as",
     "@z 4",                     "0-2:",            "invalid type",
     "@a* []",                   "0-3:",            "definite",
-    "@ai [3 3]",                "7:",              "expected `,' or `]'",
+    "@ai [3 3]",                "7:",              "expected ',' or ']'",
     "18446744073709551616",     "0-20:",           "too big for any type",
     "-18446744073709551616",    "0-21:",           "too big for any type",
     "byte 256",                 "5-8:",            "out of range for type",
@@ -3853,11 +3853,11 @@ test_parse_failures (void)
       g_assert (value == NULL);
 
       if (!strstr (error->message, test[i+2]))
-        g_error ("test %d: Can't find `%s' in `%s'", i / 3,
+        g_error ("test %d: Can't find '%s' in '%s'", i / 3,
                  test[i+2], error->message);
 
       if (!g_str_has_prefix (error->message, test[i+1]))
-        g_error ("test %d: Expected location `%s' in `%s'", i / 3,
+        g_error ("test %d: Expected location '%s' in '%s'", i / 3,
                  test[i+1], error->message);
 
       g_error_free (error);
@@ -3910,7 +3910,7 @@ test_parse_positional (void)
                       "*can not parse as*");
 
       do_failed_test ("/gvariant/parse/subprocess/bad-args",
-                      "*expected GVariant of type `i'*");
+                      "*expected GVariant of type 'i'*");
     }
 }
 

@@ -852,7 +852,7 @@ _g_signals_destroy (GType itype)
       if (node->itype == itype)
         {
           if (node->destroyed)
-            g_warning (G_STRLOC ": signal \"%s\" of type `%s' already destroyed",
+            g_warning (G_STRLOC ": signal \"%s\" of type '%s' already destroyed",
                        node->name,
                        type_debug_name (node->itype));
           else
@@ -890,7 +890,7 @@ g_signal_stop_emission (gpointer instance,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (node && detail && !(node->flags & G_SIGNAL_DETAILED))
     {
-      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
       SIGNAL_UNLOCK ();
       return;
     }
@@ -902,17 +902,17 @@ g_signal_stop_emission (gpointer instance,
       if (emission)
         {
           if (emission->state == EMISSION_HOOK)
-            g_warning (G_STRLOC ": emission of signal \"%s\" for instance `%p' cannot be stopped from emission hook",
+            g_warning (G_STRLOC ": emission of signal \"%s\" for instance '%p' cannot be stopped from emission hook",
                        node->name, instance);
           else if (emission->state == EMISSION_RUN)
             emission->state = EMISSION_STOP;
         }
       else
-        g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance `%p'",
+        g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance '%p'",
                    node->name, instance);
     }
   else
-    g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+    g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
   SIGNAL_UNLOCK ();
 }
 
@@ -964,19 +964,19 @@ g_signal_add_emission_hook (guint               signal_id,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || node->destroyed)
     {
-      g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+      g_warning ("%s: invalid signal id '%u'", G_STRLOC, signal_id);
       SIGNAL_UNLOCK ();
       return 0;
     }
   if (node->flags & G_SIGNAL_NO_HOOKS) 
     {
-      g_warning ("%s: signal id `%u' does not support emission hooks (G_SIGNAL_NO_HOOKS flag set)", G_STRLOC, signal_id);
+      g_warning ("%s: signal id '%u' does not support emission hooks (G_SIGNAL_NO_HOOKS flag set)", G_STRLOC, signal_id);
       SIGNAL_UNLOCK ();
       return 0;
     }
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
-      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
       SIGNAL_UNLOCK ();
       return 0;
     }
@@ -1026,7 +1026,7 @@ g_signal_remove_emission_hook (guint  signal_id,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || node->destroyed)
     {
-      g_warning ("%s: invalid signal id `%u'", G_STRLOC, signal_id);
+      g_warning ("%s: invalid signal id '%u'", G_STRLOC, signal_id);
       goto out;
     }
   else if (!node->emission_hooks || !g_hook_destroy (node->emission_hooks, hook_id))
@@ -1155,9 +1155,9 @@ g_signal_stop_emission_by_name (gpointer     instance,
       SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
       
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
-	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+	g_warning ("%s: signal '%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+        g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
@@ -1167,18 +1167,18 @@ g_signal_stop_emission_by_name (gpointer     instance,
 	  if (emission)
 	    {
 	      if (emission->state == EMISSION_HOOK)
-		g_warning (G_STRLOC ": emission of signal \"%s\" for instance `%p' cannot be stopped from emission hook",
+		g_warning (G_STRLOC ": emission of signal \"%s\" for instance '%p' cannot be stopped from emission hook",
 			   node->name, instance);
 	      else if (emission->state == EMISSION_RUN)
 		emission->state = EMISSION_STOP;
 	    }
 	  else
-	    g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance `%p'",
+	    g_warning (G_STRLOC ": no emission of signal \"%s\" to stop for instance '%p'",
 		       node->name, instance);
 	}
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+    g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 }
@@ -1213,13 +1213,13 @@ g_signal_lookup (const gchar *name,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id `%"G_GSIZE_FORMAT"'",
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
 		   name, itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for non instantiatable type `%s'",
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for non instantiatable type '%s'",
 		   name, g_type_name (itype));
       else if (!g_type_class_peek (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" of unloaded type `%s'",
+	g_warning (G_STRLOC ": unable to lookup signal \"%s\" of unloaded type '%s'",
 		   name, g_type_name (itype));
     }
   
@@ -1271,13 +1271,13 @@ g_signal_list_ids (GType  itype,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_warning (G_STRLOC ": unable to list signals for invalid type id `%"G_GSIZE_FORMAT"'",
+	g_warning (G_STRLOC ": unable to list signals for invalid type id '%"G_GSIZE_FORMAT"'",
 		   itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype) && !G_TYPE_IS_INTERFACE (itype))
-	g_warning (G_STRLOC ": unable to list signals of non instantiatable type `%s'",
+	g_warning (G_STRLOC ": unable to list signals of non instantiatable type '%s'",
 		   g_type_name (itype));
       else if (!g_type_class_peek (itype) && !G_TYPE_IS_INTERFACE (itype))
-	g_warning (G_STRLOC ": unable to list signals of unloaded type `%s'",
+	g_warning (G_STRLOC ": unable to list signals of unloaded type '%s'",
 		   g_type_name (itype));
     }
   
@@ -1619,7 +1619,7 @@ g_signal_newv (const gchar       *signal_name,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (node && !node->destroyed)
     {
-      g_warning (G_STRLOC ": signal \"%s\" already exists in the `%s' %s",
+      g_warning (G_STRLOC ": signal \"%s\" already exists in the '%s' %s",
                  name,
                  type_debug_name (node->itype),
                  G_TYPE_IS_INTERFACE (node->itype) ? "interface" : "class ancestry");
@@ -1629,7 +1629,7 @@ g_signal_newv (const gchar       *signal_name,
     }
   if (node && node->itype != itype)
     {
-      g_warning (G_STRLOC ": signal \"%s\" for type `%s' was previously created for type `%s'",
+      g_warning (G_STRLOC ": signal \"%s\" for type '%s' was previously created for type '%s'",
                  name,
                  type_debug_name (itype),
                  type_debug_name (node->itype));
@@ -1640,7 +1640,7 @@ g_signal_newv (const gchar       *signal_name,
   for (i = 0; i < n_params; i++)
     if (!G_TYPE_IS_VALUE (param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
-	g_warning (G_STRLOC ": parameter %d of type `%s' for signal \"%s::%s\" is not a value type",
+	g_warning (G_STRLOC ": parameter %d of type '%s' for signal \"%s::%s\" is not a value type",
 		   i + 1, type_debug_name (param_types[i]), type_debug_name (itype), name);
 	g_free (name);
 	SIGNAL_UNLOCK ();
@@ -1648,7 +1648,7 @@ g_signal_newv (const gchar       *signal_name,
       }
   if (return_type != G_TYPE_NONE && !G_TYPE_IS_VALUE (return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     {
-      g_warning (G_STRLOC ": return value of type `%s' for signal \"%s::%s\" is not a value type",
+      g_warning (G_STRLOC ": return value of type '%s' for signal \"%s::%s\" is not a value type",
 		 type_debug_name (return_type), type_debug_name (itype), name);
       g_free (name);
       SIGNAL_UNLOCK ();
@@ -1657,7 +1657,7 @@ g_signal_newv (const gchar       *signal_name,
   if (return_type != G_TYPE_NONE &&
       (signal_flags & (G_SIGNAL_RUN_FIRST | G_SIGNAL_RUN_LAST | G_SIGNAL_RUN_CLEANUP)) == G_SIGNAL_RUN_FIRST)
     {
-      g_warning (G_STRLOC ": signal \"%s::%s\" has return type `%s' and is only G_SIGNAL_RUN_FIRST",
+      g_warning (G_STRLOC ": signal \"%s::%s\" has return type '%s' and is only G_SIGNAL_RUN_FIRST",
 		 type_debug_name (itype), name, type_debug_name (return_type));
       g_free (name);
       SIGNAL_UNLOCK ();
@@ -1884,7 +1884,7 @@ signal_destroy_R (SignalNode *signal_node)
     for (emission = (node.flags & G_SIGNAL_NO_RECURSE) ? g_restart_emissions : g_recursive_emissions;
          emission; emission = emission->next)
       if (emission->ihint.signal_id == node.signal_id)
-        g_critical (G_STRLOC ": signal \"%s\" being destroyed is currently in emission (instance `%p')",
+        g_critical (G_STRLOC ": signal \"%s\" being destroyed is currently in emission (instance '%p')",
                     node.name, emission->instance);
   }
 #endif
@@ -1943,13 +1943,13 @@ g_signal_override_class_closure (guint     signal_id,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   node_check_deprecated (node);
   if (!g_type_is_a (instance_type, node->itype))
-    g_warning ("%s: type `%s' cannot be overridden for signal id `%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
+    g_warning ("%s: type '%s' cannot be overridden for signal id '%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
   else
     {
       ClassClosure *cc = signal_find_class_closure (node, instance_type);
       
       if (cc && cc->instance_type == instance_type)
-	g_warning ("%s: type `%s' is already overridden for signal id `%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
+	g_warning ("%s: type '%s' is already overridden for signal id '%u'", G_STRLOC, type_debug_name (instance_type), signal_id);
       else
 	signal_add_class_closure (node, instance_type, class_closure);
     }
@@ -2048,10 +2048,10 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
 	    }
 	}
       else
-	g_warning ("%s: signal id `%u' cannot be chained from current emission stage for instance `%p'", G_STRLOC, node->signal_id, instance);
+	g_warning ("%s: signal id '%u' cannot be chained from current emission stage for instance '%p'", G_STRLOC, node->signal_id, instance);
     }
   else
-    g_warning ("%s: no signal is currently being emitted for instance `%p'", G_STRLOC, instance);
+    g_warning ("%s: no signal is currently being emitted for instance '%p'", G_STRLOC, instance);
 
   if (closure)
     {
@@ -2120,10 +2120,10 @@ g_signal_chain_from_overridden_handler (gpointer instance,
 	    }
 	}
       else
-	g_warning ("%s: signal id `%u' cannot be chained from current emission stage for instance `%p'", G_STRLOC, node->signal_id, instance);
+	g_warning ("%s: signal id '%u' cannot be chained from current emission stage for instance '%p'", G_STRLOC, node->signal_id, instance);
     }
   else
-    g_warning ("%s: no signal is currently being emitted for instance `%p'", G_STRLOC, instance);
+    g_warning ("%s: no signal is currently being emitted for instance '%p'", G_STRLOC, instance);
 
   if (closure)
     {
@@ -2285,9 +2285,9 @@ g_signal_connect_closure_by_id (gpointer  instance,
   if (node)
     {
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
-	g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+	g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
       else if (!g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
-	g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+	g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
       else
 	{
 	  Handler *handler = handler_new (after);
@@ -2307,7 +2307,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	}
     }
   else
-    g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+    g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
   SIGNAL_UNLOCK ();
   
   return handler_seq_no;
@@ -2348,9 +2348,9 @@ g_signal_connect_closure (gpointer     instance,
       SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
 
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
-	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+	g_warning ("%s: signal '%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+        g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
@@ -2371,7 +2371,7 @@ g_signal_connect_closure (gpointer     instance,
 	}
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+    g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 
@@ -2449,9 +2449,9 @@ g_signal_connect_data (gpointer       instance,
       node_check_deprecated (node);
 
       if (detail && !(node->flags & G_SIGNAL_DETAILED))
-	g_warning ("%s: signal `%s' does not support details", G_STRLOC, detailed_signal);
+	g_warning ("%s: signal '%s' does not support details", G_STRLOC, detailed_signal);
       else if (!g_type_is_a (itype, node->itype))
-        g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+        g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
@@ -2471,7 +2471,7 @@ g_signal_connect_data (gpointer       instance,
         }
     }
   else
-    g_warning ("%s: signal `%s' is invalid for instance `%p' of type `%s'",
+    g_warning ("%s: signal '%s' is invalid for instance '%p' of type '%s'",
                G_STRLOC, detailed_signal, instance, g_type_name (itype));
   SIGNAL_UNLOCK ();
 
@@ -2512,7 +2512,7 @@ g_signal_handler_block (gpointer instance,
       handler->block_count += 1;
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance '%p' has no handler with id '%lu'", G_STRLOC, instance, handler_id);
   SIGNAL_UNLOCK ();
 }
 
@@ -2551,10 +2551,10 @@ g_signal_handler_unblock (gpointer instance,
       if (handler->block_count)
         handler->block_count -= 1;
       else
-        g_warning (G_STRLOC ": handler `%lu' of instance `%p' is not blocked", handler_id, instance);
+        g_warning (G_STRLOC ": handler '%lu' of instance '%p' is not blocked", handler_id, instance);
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance '%p' has no handler with id '%lu'", G_STRLOC, instance, handler_id);
   SIGNAL_UNLOCK ();
 }
 
@@ -2590,7 +2590,7 @@ g_signal_handler_disconnect (gpointer instance,
       handler_unref_R (signal_id, instance, handler);
     }
   else
-    g_warning ("%s: instance `%p' has no handler with id `%lu'", G_STRLOC, instance, handler_id);
+    g_warning ("%s: instance '%p' has no handler with id '%lu'", G_STRLOC, instance, handler_id);
   SIGNAL_UNLOCK ();
 }
 
@@ -2923,7 +2923,7 @@ g_signal_has_handler_pending (gpointer instance,
       
       if (!(node->flags & G_SIGNAL_DETAILED))
 	{
-	  g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+	  g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
 	  SIGNAL_UNLOCK ();
 	  return FALSE;
 	}
@@ -2983,21 +2983,21 @@ g_signal_emitv (const GValue *instance_and_params,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
-      g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+      g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
       SIGNAL_UNLOCK ();
       return;
     }
 #ifdef G_ENABLE_DEBUG
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
-      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
       SIGNAL_UNLOCK ();
       return;
     }
   for (i = 0; i < node->n_params; i++)
     if (!G_TYPE_CHECK_VALUE_TYPE (param_values + i, node->param_types[i] & ~G_SIGNAL_TYPE_STATIC_SCOPE))
       {
-	g_critical ("%s: value for `%s' parameter %u for signal \"%s\" is of type `%s'",
+	g_critical ("%s: value for '%s' parameter %u for signal \"%s\" is of type '%s'",
 		    G_STRLOC,
 		    type_debug_name (node->param_types[i]),
 		    i,
@@ -3010,7 +3010,7 @@ g_signal_emitv (const GValue *instance_and_params,
     {
       if (!return_value)
 	{
-	  g_critical ("%s: return value `%s' for signal \"%s\" is (NULL)",
+	  g_critical ("%s: return value '%s' for signal \"%s\" is (NULL)",
 		      G_STRLOC,
 		      type_debug_name (node->return_type),
 		      node->name);
@@ -3019,7 +3019,7 @@ g_signal_emitv (const GValue *instance_and_params,
 	}
       else if (!node->accumulator && !G_TYPE_CHECK_VALUE_TYPE (return_value, node->return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE))
 	{
-	  g_critical ("%s: return value `%s' for signal \"%s\" is of type `%s'",
+	  g_critical ("%s: return value '%s' for signal \"%s\" is of type '%s'",
 		      G_STRLOC,
 		      type_debug_name (node->return_type),
 		      node->name,
@@ -3109,14 +3109,14 @@ g_signal_emit_valist (gpointer instance,
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (!node || !g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
-      g_warning ("%s: signal id `%u' is invalid for instance `%p'", G_STRLOC, signal_id, instance);
+      g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
       SIGNAL_UNLOCK ();
       return;
     }
 #ifndef G_DISABLE_CHECKS
   if (detail && !(node->flags & G_SIGNAL_DETAILED))
     {
-      g_warning ("%s: signal id `%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
+      g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
       SIGNAL_UNLOCK ();
       return;
     }
@@ -3425,7 +3425,7 @@ g_signal_emit_by_name (gpointer     instance,
       va_end (var_args);
     }
   else
-    g_warning ("%s: signal name `%s' is invalid for instance `%p' of type `%s'",
+    g_warning ("%s: signal name '%s' is invalid for instance '%p' of type '%s'",
                G_STRLOC, detailed_signal, instance, g_type_name (itype));
 }
 

@@ -135,10 +135,10 @@
  *     library function.
  * @G_FILE_ERROR_PIPE: Broken pipe; there is no process reading from the
  *     other end of a pipe. Every library function that returns this
- *     error code also generates a `SIGPIPE' signal; this signal
+ *     error code also generates a 'SIGPIPE' signal; this signal
  *     terminates the program if not handled or blocked. Thus, your
  *     program will never actually see this code unless it has handled
- *     or blocked `SIGPIPE'.
+ *     or blocked 'SIGPIPE'.
  * @G_FILE_ERROR_AGAIN: Resource temporarily unavailable; the call might
  *     work if you try again later.
  * @G_FILE_ERROR_INTR: Interrupted function call; an asynchronous signal

@@ -471,15 +471,15 @@ guess_category_value (const gchar *category_name)
 {
   const gchar *retval;
 
-  /* The highest priority value is the `LANGUAGE' environment
+  /* The highest priority value is the 'LANGUAGE' environment
      variable.  This is a GNU extension.  */
   retval = g_getenv ("LANGUAGE");
   if ((retval != NULL) && (retval[0] != '\0'))
     return retval;
 
-  /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
-     methods of looking to `LC_ALL', `LC_xxx', and `LANG'.  On some
-     systems this can be done by the `setlocale' function itself.  */
+  /* 'LANGUAGE' is not set.  So we have to proceed with the POSIX
+     methods of looking to 'LC_ALL', 'LC_xxx', and 'LANG'.  On some
+     systems this can be done by the 'setlocale' function itself.  */
 
   /* Setting of LC_ALL overwrites all other.  */
   retval = g_getenv ("LC_ALL");

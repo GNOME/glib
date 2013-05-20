@@ -367,7 +367,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
         {
           gchar *type_string = g_variant_type_dup_string (type);
 
-          g_warning ("Type of return value is incorrect: expected `%s', got `%s''",
+          g_warning ("Type of return value is incorrect: expected '%s', got '%s''",
 		     type_string, g_variant_get_type_string (parameters));
           g_variant_type_free (type);
           g_free (type_string);
@@ -651,7 +651,7 @@ g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,
       g_print ("========================================================================\n"
                "GDBus-debug:Return:\n"
                " >>>> METHOD ERROR %s\n"
-               "      message `%s'\n"
+               "      message '%s'\n"
                "      in response to %s.%s()\n"
                "      on object %s\n"
                "      to name %s\n"

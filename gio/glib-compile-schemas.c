@@ -1861,8 +1861,8 @@ set_overrides (GHashTable  *schema_table,
 
               if (state == NULL)
                 {
-                  fprintf (stderr, _("No such key `%s' in schema `%s' as "
-                                     "specified in override file `%s'"),
+                  fprintf (stderr, _("No such key '%s' in schema '%s' as "
+                                     "specified in override file '%s'"),
                            key, group, filename);
 
                   if (!strict)
@@ -1887,8 +1887,8 @@ set_overrides (GHashTable  *schema_table,
 
               if (value == NULL)
                 {
-                  fprintf (stderr, _("error parsing key `%s' in schema `%s' "
-                                     "as specified in override file `%s': "
+                  fprintf (stderr, _("error parsing key '%s' in schema '%s' "
+                                     "as specified in override file '%s': "
                                      "%s."),
                            key, group, filename, error->message);
 
@@ -1915,8 +1915,8 @@ set_overrides (GHashTable  *schema_table,
                       g_variant_compare (value, state->maximum) > 0)
                     {
                       fprintf (stderr,
-                               _("override for key `%s' in schema `%s' in "
-                                 "override file `%s' is outside the range "
+                               _("override for key '%s' in schema '%s' in "
+                                 "override file '%s' is outside the range "
                                  "given in the schema"),
                                key, group, filename);
 
@@ -1943,8 +1943,8 @@ set_overrides (GHashTable  *schema_table,
                   if (!is_valid_choices (value, state->strinfo))
                     {
                       fprintf (stderr,
-                               _("override for key `%s' in schema `%s' in "
-                                 "override file `%s' is not in the list "
+                               _("override for key '%s' in schema '%s' in "
+                                 "override file '%s' is not in the list "
                                  "of valid choices"),
                                key, group, filename);
 

@@ -232,8 +232,8 @@ GNode*	 g_node_find		(GNode		  *root,
 #define	g_node_append_data(parent, data)			\
      g_node_insert_before ((parent), NULL, g_node_new (data))
 
-/* traversal function, assumes that `node' is root
- * (only traverses `node' and its subtree).
+/* traversal function, assumes that 'node' is root
+ * (only traverses 'node' and its subtree).
  * this function is just a high level interface to
  * low level traversal functions, optimized for speed.
  */
@@ -245,9 +245,9 @@ void	 g_node_traverse	(GNode		  *root,
 				 GNodeTraverseFunc func,
 				 gpointer	   data);
 
-/* return the maximum tree height starting with `node', this is an expensive
+/* return the maximum tree height starting with 'node', this is an expensive
  * operation, since we need to visit all nodes. this could be shortened by
- * adding `guint height' to struct _GNode, but then again, this is not very
+ * adding 'guint height' to struct _GNode, but then again, this is not very
  * often needed, and would make g_node_insert() more time consuming.
  */
 GLIB_AVAILABLE_IN_ALL

@@ -206,7 +206,7 @@ test_cleanup (void)
   g_markup_parse_context_parse (context, XML, -1, NULL);
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "g_markup_parse_context_end_parse: assertion `context->state != STATE_ERROR' failed");
+                         "g_markup_parse_context_end_parse: assertion 'context->state != STATE_ERROR' failed");
   g_markup_parse_context_end_parse (context, NULL);
   g_test_assert_expected_messages ();
 

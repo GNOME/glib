@@ -147,7 +147,7 @@ is_valid_unix (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Unsupported key `%s' in address entry `%s'"),
+                       _("Unsupported key '%s' in address entry '%s'"),
                        key,
                        address_entry);
           goto out;
@@ -174,7 +174,7 @@ is_valid_unix (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"),
+                   _("Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"),
                    address_entry);
       goto out;
     }
@@ -187,7 +187,7 @@ is_valid_unix (const gchar  *address_entry,
   g_set_error (error,
                G_IO_ERROR,
                G_IO_ERROR_INVALID_ARGUMENT,
-               _("Meaningless key/value pair combination in address entry `%s'"),
+               _("Meaningless key/value pair combination in address entry '%s'"),
                address_entry);
 
  out:
@@ -235,7 +235,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Unsupported key `%s' in address entry `%s'"),
+                       _("Unsupported key '%s' in address entry '%s'"),
                        key,
                        address_entry);
           goto out;
@@ -250,7 +250,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error in address `%s' - the port attribute is malformed"),
+                       _("Error in address '%s' - the port attribute is malformed"),
                        address_entry);
           goto out;
         }
@@ -261,7 +261,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error in address `%s' - the family attribute is malformed"),
+                   _("Error in address '%s' - the family attribute is malformed"),
                    address_entry);
       goto out;
     }
@@ -316,7 +316,7 @@ is_valid_tcp (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Unsupported key `%s' in address entry `%s'"),
+                       _("Unsupported key '%s' in address entry '%s'"),
                        key,
                        address_entry);
           goto out;
@@ -331,7 +331,7 @@ is_valid_tcp (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error in address `%s' - the port attribute is malformed"),
+                       _("Error in address '%s' - the port attribute is malformed"),
                        address_entry);
           goto out;
         }
@@ -342,7 +342,7 @@ is_valid_tcp (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error in address `%s' - the family attribute is malformed"),
+                   _("Error in address '%s' - the family attribute is malformed"),
                    address_entry);
       goto out;
     }
@@ -451,7 +451,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Address element `%s' does not contain a colon (:)"),
+                   _("Address element '%s' does not contain a colon (:)"),
                    address_entry);
       goto out;
     }
@@ -472,7 +472,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Key/Value pair %d, `%s', in address element `%s' does not contain an equal sign"),
+                       _("Key/Value pair %d, '%s', in address element '%s' does not contain an equal sign"),
                        n,
                        kv_pair,
                        address_entry);
@@ -486,7 +486,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"),
+                       _("Error unescaping key or value in Key/Value pair %d, '%s', in address element '%s'"),
                        n,
                        kv_pair,
                        address_entry);
@@ -564,8 +564,8 @@ g_dbus_address_connect (const gchar   *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error in address `%s' - the unix transport requires exactly one of the "
-                         "keys `path' or `abstract' to be set"),
+                       _("Error in address '%s' - the unix transport requires exactly one of the "
+                         "keys 'path' or 'abstract' to be set"),
                        address_entry);
         }
       else if (path != NULL)
@@ -600,7 +600,7 @@ g_dbus_address_connect (const gchar   *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error in address `%s' - the host attribute is missing or malformed"),
+                       _("Error in address '%s' - the host attribute is missing or malformed"),
                        address_entry);
           goto out;
         }
@@ -614,7 +614,7 @@ g_dbus_address_connect (const gchar   *address_entry,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Error in address `%s' - the port attribute is missing or malformed"),
+                       _("Error in address '%s' - the port attribute is missing or malformed"),
                        address_entry);
           goto out;
         }
@@ -628,7 +628,7 @@ g_dbus_address_connect (const gchar   *address_entry,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Error in address `%s' - the noncefile attribute is missing or malformed"),
+                           _("Error in address '%s' - the noncefile attribute is missing or malformed"),
                            address_entry);
               goto out;
             }
@@ -657,7 +657,7 @@ g_dbus_address_connect (const gchar   *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Unknown or unsupported transport `%s' for address `%s'"),
+                   _("Unknown or unsupported transport '%s' for address '%s'"),
                    transport_name,
                    address_entry);
     }
@@ -693,7 +693,7 @@ g_dbus_address_connect (const gchar   *address_entry,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Error opening nonce file `%s': %s"),
+                           _("Error opening nonce file '%s': %s"),
                            nonce_file,
                            g_strerror (errno));
               g_object_unref (ret);
@@ -711,7 +711,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                   g_set_error (error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
-                               _("Error reading from nonce file `%s': %s"),
+                               _("Error reading from nonce file '%s': %s"),
                                nonce_file,
                                g_strerror (errno));
                 }
@@ -720,7 +720,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                   g_set_error (error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
-                               _("Error reading from nonce file `%s', expected 16 bytes, got %d"),
+                               _("Error reading from nonce file '%s', expected 16 bytes, got %d"),
                                nonce_file,
                                (gint) num_bytes_read);
                 }
@@ -738,7 +738,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                                           cancellable,
                                           error))
             {
-              g_prefix_error (error, _("Error writing contents of nonce file `%s' to stream:"), nonce_file);
+              g_prefix_error (error, _("Error writing contents of nonce file '%s' to stream:"), nonce_file);
               g_object_unref (ret);
               ret = NULL;
               goto out;
@@ -1058,7 +1058,7 @@ get_session_address_dbus_launch (GError **error)
   if (G_UNLIKELY (_g_dbus_debug_address ()))
     {
       _g_dbus_debug_print_lock ();
-      g_print ("GDBus-debug:Address: Running `%s' to get bus address (possibly autolaunching)\n", command_line);
+      g_print ("GDBus-debug:Address: Running '%s' to get bus address (possibly autolaunching)\n", command_line);
       old_dbus_verbose = g_strdup (g_getenv ("DBUS_VERBOSE"));
       restore_dbus_verbose = TRUE;
       g_setenv ("DBUS_VERBOSE", "1", TRUE);
@@ -1076,7 +1076,7 @@ get_session_address_dbus_launch (GError **error)
 
   if (!g_spawn_check_exit_status (exit_status, error))
     {
-      g_prefix_error (error, _("Error spawning command line `%s': "), command_line);
+      g_prefix_error (error, _("Error spawning command line '%s': "), command_line);
       goto out;
     }
 
@@ -1431,7 +1431,7 @@ get_session_address_platform_specific (GError **error)
 {
   gchar *ret;
 #if defined (G_OS_UNIX) || defined(G_OS_WIN32)
-  /* need to handle OS X in a different way since `dbus-launch --autolaunch' probably won't work there */
+  /* need to handle OS X in a different way since 'dbus-launch --autolaunch' probably won't work there */
   ret = get_session_address_dbus_launch (error);
 #else
   /* TODO: implement for OS X */
@@ -1478,7 +1478,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
     {
       guint n;
       _g_dbus_debug_print_lock ();
-      g_print ("GDBus-debug:Address: In g_dbus_address_get_for_bus_sync() for bus type `%s'\n",
+      g_print ("GDBus-debug:Address: In g_dbus_address_get_for_bus_sync() for bus type '%s'\n",
                _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type));
       for (n = 0; n < 3; n++)
         {
@@ -1494,7 +1494,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
           v = g_getenv (k);
           g_print ("GDBus-debug:Address: env var %s", k);
           if (v != NULL)
-            g_print ("=`%s'\n", v);
+            g_print ("='%s'\n", v);
           else
             g_print (" is not set\n");
         }
@@ -1539,7 +1539,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
                            _("Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable"
-                             " - unknown value `%s'"),
+                             " - unknown value '%s'"),
                            starter_bus);
             }
           else
@@ -1568,13 +1568,13 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       _g_dbus_debug_print_lock ();
       if (ret != NULL)
         {
-          g_print ("GDBus-debug:Address: Returning address `%s' for bus type `%s'\n",
+          g_print ("GDBus-debug:Address: Returning address '%s' for bus type '%s'\n",
                    ret,
                    _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type));
         }
       else
         {
-          g_print ("GDBus-debug:Address: Cannot look-up address bus type `%s': %s\n",
+          g_print ("GDBus-debug:Address: Cannot look-up address bus type '%s': %s\n",
                    _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type),
                    local_error ? local_error->message : "");
         }

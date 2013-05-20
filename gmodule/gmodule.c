@@ -852,7 +852,7 @@ g_module_symbol (GModule     *module,
     {
       gchar *error;
 
-      error = g_strconcat ("`", symbol_name, "': ", module_error, NULL);
+      error = g_strconcat ("'", symbol_name, "': ", module_error, NULL);
       g_module_set_error (error);
       g_free (error);
       *symbol = NULL;

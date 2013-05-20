@@ -90,7 +90,7 @@ G_BEGIN_DECLS
                                __FILE__,                                \
                                __LINE__,                                \
                                G_STRFUNC,                               \
-                               "Signal `" signal_name "' does not "     \
+                               "Signal '" signal_name "' does not "     \
                                "exist on object");                      \
         }                                                               \
       if (_g_assert_signal_received_run (object, signal_name))          \
@@ -99,7 +99,7 @@ G_BEGIN_DECLS
                                __FILE__,                                \
                                __LINE__,                                \
                                G_STRFUNC,                               \
-                               "Timed out waiting for signal `"         \
+                               "Timed out waiting for signal '"         \
                                signal_name "'");                        \
         }                                                               \
     }                                                                   \

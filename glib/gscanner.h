@@ -152,8 +152,8 @@ struct	_GScannerConfig
   guint		scan_binary : 1;
   guint		scan_octal : 1;
   guint		scan_float : 1;
-  guint		scan_hex : 1;			/* `0x0ff0' */
-  guint		scan_hex_dollar : 1;		/* `$0ff0' */
+  guint		scan_hex : 1;			/* '0x0ff0' */
+  guint		scan_hex_dollar : 1;		/* '$0ff0' */
   guint		scan_string_sq : 1;		/* string: 'anything' */
   guint		scan_string_dq : 1;		/* string: "\\-escapes!\n" */
   guint		numbers_2_int : 1;		/* bin, octal, hex => int */
