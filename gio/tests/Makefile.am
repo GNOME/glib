@@ -419,6 +419,13 @@ endif OS_UNIX
 
 # -----------------------------------------------------------------------------
 
+desktop_test_files = \
+	appinfo-test.desktop			\
+	appinfo-test2.desktop			\
+	appinfo-test-gnome.desktop		\
+	appinfo-test-notgnome.desktop		\
+	$(NULL)
+
 EXTRA_DIST += \
 	socket-common.c			\
 	org.gtk.test.gschema		\
@@ -434,6 +441,7 @@ EXTRA_DIST += \
 	test3.gresource.xml		\
 	test3.txt			\
 	test4.gresource.xml		\
+	$(desktop_test_files)		\
 	$(NULL)
 
 MISC_STUFF = test.mo test.gresource
@@ -491,15 +499,12 @@ distclean-local:
 test_files = 					\
 	contexts.c				\
 	g-icon.c				\
+	file.c					\
 	enums.xml.template			\
 	testenum.h				\
 	org.gtk.test.gschema.xml		\
 	org.gtk.schemasourcecheck.gschema.xml 	\
 	test.gresource				\
-	appinfo-test.desktop			\
-	appinfo-test2.desktop			\
-	appinfo-test-gnome.desktop		\
-	appinfo-test-notgnome.desktop		\
 	$(NULL)
 EXTRA_DIST += $(test_files)
 
@@ -523,5 +528,15 @@ testmeta_DATA = $(test_progs:=.test)
 	 echo 'Type=session' >> $@.tmp; \
 	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
 	 mv $@.tmp $@)
+
+%.desktop.insttest: %.desktop
+	sed -e s,Exec=./appinfo-test,Exec=$(insttestdir)/appinfo-test, < $< >$@.tmp && mv $@.tmp $@
+
+installed_desktop_test_files = $(desktop_test_files:.desktop=.desktop.insttest)
+install-data-local: $(installed_desktop_test_files)
+	for x in $(desktop_test_files); do \
+	  install -m 0644 $${x}.insttest $(DESTDIR)$(testdatadir)/$$x; \
+	done
+	install -d -m 0755 $(DESTDIR)$(testdatadir)/schema-tests
 
 endif

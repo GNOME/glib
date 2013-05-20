@@ -1,5 +1,6 @@
 
 #include <locale.h>
+#include <string.h>
 
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -113,7 +114,7 @@ test_basic (void)
   g_free (path);
 
   g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test.desktop");
-  g_assert_cmpstr (g_app_info_get_executable (appinfo), ==, "./appinfo-test");
+  g_assert (strstr (g_app_info_get_executable (appinfo), "appinfo-test") != NULL);
 
   icon = g_app_info_get_icon (appinfo);
   g_assert (G_IS_THEMED_ICON (icon));

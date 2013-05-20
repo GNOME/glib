@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #endif
 
+static const gchar *datapath;
+
 static void
 test_basic (void)
 {
@@ -79,16 +81,19 @@ test_child (void)
 static void
 test_type (void)
 {
+  GFile *datapath_f;
   GFile *file;
   GFileType type;
   GError *error = NULL;
 
-  file = g_file_new_for_path (SRCDIR "/file.c");
+  datapath_f = g_file_new_for_path (datapath);
+
+  file = g_file_get_child (datapath_f, "g-icon.c");
   type = g_file_query_file_type (file, 0, NULL);
   g_assert_cmpint (type, ==, G_FILE_TYPE_REGULAR);
   g_object_unref (file);
 
-  file = g_file_new_for_path (SRCDIR "/schema-tests");
+  file = g_file_get_child (datapath_f, "schema-tests");
   type = g_file_query_file_type (file, 0, NULL);
   g_assert_cmpint (type, ==, G_FILE_TYPE_DIRECTORY);
 
@@ -96,6 +101,8 @@ test_type (void)
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY);
   g_error_free (error);
   g_object_unref (file);
+
+  g_object_unref (datapath_f);
 }
 
 
@@ -786,6 +793,11 @@ test_copy_preserve_mode (void)
 int
 main (int argc, char *argv[])
 {
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
