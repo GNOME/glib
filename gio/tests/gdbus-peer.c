@@ -62,6 +62,8 @@ static gboolean is_unix = TRUE;
 static gboolean is_unix = FALSE;
 #endif
 
+static const gchar *datapath;
+
 static gchar *tmp_address = NULL;
 static gchar *test_guid = NULL;
 static GMainLoop *service_loop = NULL;
@@ -186,6 +188,7 @@ test_interface_method_call (GDBusConnection       *connection,
       error = NULL;
 
       fd = g_open (path, O_RDONLY, 0);
+      g_assert (fd != -1);
       g_unix_fd_list_append (fd_list, fd, &error);
       g_assert_no_error (error);
       close (fd);
@@ -759,12 +762,13 @@ test_peer (void)
     gsize len;
     gchar *buf2;
     gsize len2;
+    char *testfile = g_build_filename (datapath, "file.c", NULL);
 
     method_call_message = g_dbus_message_new_method_call (NULL, /* name */
                                                           "/org/gtk/GDBus/PeerTestObject",
                                                           "org.gtk.GDBus.PeerTestInterface",
                                                           "OpenFile");
-    g_dbus_message_set_body (method_call_message, g_variant_new ("(s)", "/etc/hosts"));
+    g_dbus_message_set_body (method_call_message, g_variant_new ("(s)", testfile));
     error = NULL;
     method_reply_message = g_dbus_connection_send_message_with_reply_sync (c,
                                                                            method_call_message,
@@ -792,7 +796,7 @@ test_peer (void)
     close (fd);
 
     error = NULL;
-    g_file_get_contents ("/etc/hosts",
+    g_file_get_contents (testfile,
                          &buf2,
                          &len2,
                          &error);
@@ -801,6 +805,7 @@ test_peer (void)
     g_assert (memcmp (buf, buf2, len) == 0);
     g_free (buf2);
     g_free (buf);
+    g_free (testfile);
   }
 #else
   error = NULL;
@@ -1821,6 +1826,11 @@ main (int   argc,
   gint ret;
   GDBusNodeInfo *introspection_data = NULL;
   gchar *tmpdir = NULL;
+
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
 
   g_test_init (&argc, &argv, NULL);
 
