@@ -521,7 +521,8 @@ testdatadir = $(insttestdir)
 testdata_DATA = $(test_files)
 
 testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-testmeta_DATA = $(test_progs:=.test)
+xfail_tests = desktop-app-info.test
+testmeta_DATA = $(filter-out $(xfail_tests),$(test_progs:=.test))
 
 %.test: % Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
