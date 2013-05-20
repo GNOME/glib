@@ -966,7 +966,7 @@ g_logv (const gchar   *log_domain,
                 && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
             }
 
-          if ((test_level & G_LOG_FLAG_FATAL) && exit_on_fatal)
+          if ((test_level & G_LOG_FLAG_FATAL) && exit_on_fatal && !masquerade_fatal)
             {
               _g_log_abort ();
             }
