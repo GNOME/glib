@@ -6,6 +6,8 @@
 #include "gdbus-tests.h"
 #include "gdbus-sessionbus.h"
 
+static const gchar *datapath;
+
 static gint outstanding_watches;
 static GMainLoop *main_loop;
 
@@ -65,7 +67,7 @@ spawn (const gchar *expected_stdout,
 
   va_start (ap, first_arg);
   array = g_ptr_array_new ();
-  g_ptr_array_add (array, g_strdup ("./basic-application"));
+  g_ptr_array_add (array, g_build_filename (datapath, "basic-application", NULL));
   for (arg = first_arg; arg; arg = va_arg (ap, const gchar *))
     g_ptr_array_add (array, g_strdup (arg));
   g_ptr_array_add (array, NULL);
@@ -320,7 +322,8 @@ nodbus_activate (GApplication *app)
 static void
 test_nodbus (void)
 {
-  gchar *argv[] = { "./unimportant", NULL };
+  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
   app = g_application_new ("org.gtk.Unimportant", G_APPLICATION_FLAGS_NONE);
@@ -329,6 +332,7 @@ test_nodbus (void)
   g_object_unref (app);
 
   g_assert (nodbus_activated);
+  g_free (binpath);
 }
 
 static gboolean noappid_activated;
@@ -348,7 +352,8 @@ noappid_activate (GApplication *app)
 static void
 test_noappid (void)
 {
-  gchar *argv[] = { "./unimportant", NULL };
+  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
   app = g_application_new (NULL, G_APPLICATION_FLAGS_NONE);
@@ -357,6 +362,7 @@ test_noappid (void)
   g_object_unref (app);
 
   g_assert (noappid_activated);
+  g_free (binpath);
 }
 
 
@@ -385,7 +391,8 @@ static void
 test_quit (void)
 {
   GDBusConnection *c;
-  gchar *argv[] = { "./unimportant", NULL };
+  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
   session_bus_up ();
@@ -401,6 +408,7 @@ test_quit (void)
   g_assert (quit_activated);
 
   session_bus_down ();
+  g_free (binpath);
 }
 
 static void
@@ -439,7 +447,8 @@ on_activate (GApplication *app)
 static void
 test_actions (void)
 {
-  gchar *argv[] = { "./unimportant", NULL };
+  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
   g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
@@ -449,6 +458,7 @@ test_actions (void)
   g_signal_connect (app, "activate", G_CALLBACK (on_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
+  g_free (binpath);
 }
 
 typedef GApplication TestLocCmdApp;
@@ -493,7 +503,8 @@ test_loc_cmd_app_class_init (TestLocCmdAppClass *klass)
 static void
 test_local_command_line (void)
 {
-  gchar *argv[] = { "./unimportant", "-invalid", NULL };
+  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  gchar *argv[] = { binpath, "-invalid", NULL };
   GApplication *app;
 
   g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
@@ -504,11 +515,16 @@ test_local_command_line (void)
                       NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
+  g_free (binpath);
 }
 
 int
 main (int argc, char **argv)
 {
+  if (g_getenv ("G_TEST_DATA"))
+    datapath = g_getenv ("G_TEST_DATA");
+  else
+    datapath = SRCDIR;
   g_test_init (&argc, &argv, NULL);
 
   g_test_dbus_unset ();
