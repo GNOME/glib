@@ -423,15 +423,8 @@ EXTRA_DIST += \
 	socket-common.c			\
 	org.gtk.test.gschema		\
 	org.gtk.test.gschema.xml	\
-	testenum.h			\
-	enums.xml.template		\
 	de.po				\
 	$(schema_test_files)		\
-	org.gtk.schemasourcecheck.gschema.xml \
-	appinfo-test.desktop		\
-	appinfo-test2.desktop		\
-	appinfo-test-gnome.desktop	\
-	appinfo-test-notgnome.desktop	\
 	test-codegen.xml		\
 	$(cert_test_files)		\
 	test.gresource.xml		\
@@ -508,6 +501,7 @@ test_files = 					\
 	appinfo-test-gnome.desktop		\
 	appinfo-test-notgnome.desktop		\
 	$(NULL)
+EXTRA_DIST += $(test_files)
 
 if BUILDOPT_INSTALL_TESTS
 insttest_PROGRAMS = $(test_progs) $(other_progs)
