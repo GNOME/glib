@@ -223,6 +223,9 @@ g_bytes_icon_load (GLoadableIcon  *icon,
 {
   GBytesIcon *bytes_icon = G_BYTES_ICON (icon);
 
+  if (type)
+    *type = NULL;
+
   return g_memory_input_stream_new_from_bytes (bytes_icon->bytes);
 }
 

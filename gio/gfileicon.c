@@ -288,6 +288,9 @@ g_file_icon_load (GLoadableIcon  *icon,
   stream = g_file_read (file_icon->file,
 			cancellable,
 			error);
+
+  if (stream && type)
+    *type = NULL;
   
   return G_INPUT_STREAM (stream);
 }
