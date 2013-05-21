@@ -118,79 +118,79 @@ msgstr "Neatendata frua flufino"
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Nesubtenata ŝlosilo `%s' en adresenigo `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Nesubtenata ŝlosilo '%s' en adresenigo '%s'"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"Adreso `%s' estas malvalida (bezonas precize unu el 'path', 'tmpdir' aŭ "
+"Adreso '%s' estas malvalida (bezonas precize unu el 'path', 'tmpdir' aŭ "
 "'abstract' ŝlosiloj) "
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "Sensignifa ŝlosilo/valoro parokombinaĵo en adresa enigo `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "Sensignifa ŝlosilo/valoro parokombinaĵo en adresa enigo '%s'"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Eraro en adreso `%s' - la 'port' atributo estas misformita"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Eraro en adreso '%s' - la 'port' atributo estas misformita"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Eraro en adreso `%s' - la 'family' atributo estas misformita"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Eraro en adreso '%s' - la 'family' atributo estas misformita"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
-msgstr "Adresa elemento `%s', ne havas dupunkton (:)"
+msgid "Address element '%s', does not contain a colon (:)"
+msgstr "Adresa elemento '%s', ne havas dupunkton (:)"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 msgstr ""
-"Ŝlosilo/valoro paro %d, `%s', en adresa elemento `%s', ne havas egalsignon"
+"Ŝlosilo/valoro paro %d, '%s', en adresa elemento '%s', ne havas egalsignon"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Eraro dum malkodŝanĝo de la ŝlosilo aŭ la valoro en ŝlosilo/valoro paro %d, `"
-"%s', en adresa elemento `%s'"
+"Eraro dum malkodŝanĝo de la ŝlosilo aŭ la valoro en ŝlosilo/valoro paro %d, '"
+"%s', en adresa elemento '%s'"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Eraro en adreso `%s' - la uniksa transporto bezonas precize unu de la "
-"ŝlosiloj `path' aŭ `abstract' esti agordita"
+"Eraro en adreso '%s' - la uniksa transporto bezonas precize unu de la "
+"ŝlosiloj 'path' aŭ 'abstract' esti agordita"
 
 #: ../gio/gdbusaddress.c:595
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "Eraro en adreso `%s' - la 'host' atributo mankas aŭ estas misformita"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "Eraro en adreso '%s' - la 'host' atributo mankas aŭ estas misformita"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
-"Eraro en adreso `%s' - la 'port' atributo estas maka aŭ estas misformita"
+"Eraro en adreso '%s' - la 'port' atributo estas maka aŭ estas misformita"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
-"Eraro en adreso `%s' - la 'noncefile' atributo mankas aŭ estas misformita"
+"Eraro en adreso '%s' - la 'noncefile' atributo mankas aŭ estas misformita"
 
 #: ../gio/gdbusaddress.c:644
 msgid "Error auto-launching: "
@@ -198,28 +198,28 @@ msgstr "Eraro dum aŭtolanĉo:"
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "Nekonata aŭ nesubtenata transporto `%s' por adreso `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "Nekonata aŭ nesubtenata transporto '%s' por adreso '%s'"
 
 #: ../gio/gdbusaddress.c:688
 #, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "Eraro dum malfermo de dosiero 'nonce' `%s': %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "Eraro dum malfermo de dosiero 'nonce' '%s': %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "Eraro dum legado de dosiero 'nonce' `%s':%s"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "Eraro dum legado de dosiero 'nonce' '%s':%s"
 
 #: ../gio/gdbusaddress.c:715
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "Eraro dum legado de dosiero nonce `%s', 16 baitoj atendita, akirita %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgstr "Eraro dum legado de dosiero nonce '%s', 16 baitoj atendita, akirita %d"
 
 #: ../gio/gdbusaddress.c:733
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Eraro dum skribado de enhavo de dosiero nonce `%s' al la fluo:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Eraro dum skribado de enhavo de dosiero nonce '%s' al la fluo:"
 
 #: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
@@ -231,18 +231,18 @@ msgstr "Ne eblas starti mesaĝan buson sen maŝino-identigo:"
 
 #: ../gio/gdbusaddress.c:1057
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "Eraro dum starto de la komanda linio `%s':"
+msgid "Error spawning command line '%s': "
+msgstr "Eraro dum starto de la komanda linio '%s':"
 
 #: ../gio/gdbusaddress.c:1068
 #, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "Nenormala programfiniĝo dum starto de komanda linio `%s': %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
+msgstr "Nenormala programfiniĝo dum starto de komanda linio '%s': %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr "Komanda linio `%s' elirinta kun nenula elira kodo %d: %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
+msgstr "Komanda linio '%s' elirinta kun nenula elira kodo %d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -255,10 +255,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Ne eblas determi busadreson per DBUS_STARTER_BUS_TYPE medivariablo - "
-"nekonata valoron `%s'"
+"nekonata valoron '%s'"
 
 #: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6697
 msgid ""
@@ -294,82 +294,82 @@ msgstr "Resignita per GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "Eraro dum akiro de informo de dosierujo `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "Eraro dum akiro de informo de dosierujo '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Permesoj sur dosierujo `%s' estas misformitaj. Atendita reĝimo 0700, akirita "
+"Permesoj sur dosierujo '%s' estas misformitaj. Atendita reĝimo 0700, akirita "
 "0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Eraro dum kreo de la dosierujo `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Eraro dum kreo de la dosierujo '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Eraro dum malfermo de la ŝlosiloringo `%s' por legi:"
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Eraro dum malfermo de la ŝlosiloringo '%s' por legi:"
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "Linio %d de la ŝlosiloringo al `%s' kun enhavo `%s' estas misformita"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "Linio %d de la ŝlosiloringo al '%s' kun enhavo '%s' estas misformita"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Unua ĵetono de linio %d de la ŝlosiloringo al `%s' kun enhavo `%s' estas "
+"Unua ĵetono de linio %d de la ŝlosiloringo al '%s' kun enhavo '%s' estas "
 "misformita"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Dua ĵetono de linio %d de la ŝlosiloringo al `%s' kun enhavo `%s' estas "
+"Dua ĵetono de linio %d de la ŝlosiloringo al '%s' kun enhavo '%s' estas "
 "misformita"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Ne trovas kuketon kun identigo %d en la ŝlosiloringo ĉe `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Ne trovas kuketon kun identigo %d en la ŝlosiloringo ĉe '%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "Eraro dum forigo de la malnova ŝlosdosiero `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "Eraro dum forigo de la malnova ŝlosdosiero '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "Eraro dum kreo de la ŝlosdosiero `%s':%s"
+msgid "Error creating lock file '%s': %s"
+msgstr "Eraro dum kreo de la ŝlosdosiero '%s':%s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Eraro dum fermo de la (malligita) ŝlosdosiero `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "Eraro dum fermo de la (malligita) ŝlosdosiero '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "Eraro dum malligado de la ŝlosdosiero `%s':%s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "Eraro dum malligado de la ŝlosdosiero '%s':%s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "Eraro dum malfermo de ŝlosiringo `%s' por skribi: "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "Eraro dum malfermo de ŝlosiringo '%s' por skribi: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Cetere, liberigo de la seruro por `%s' ankaŭ ne sukcesis: %s)"
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Cetere, liberigo de la seruro por '%s' ankaŭ ne sukcesis: %s)"
 
 #: ../gio/gdbusconnection.c:594 ../gio/gdbusconnection.c:2402
 msgid "The connection is closed"
@@ -387,35 +387,35 @@ msgstr "Nesubtenataj flagoj renkontitaj dum kreo de klientflanka konekto"
 #: ../gio/gdbusconnection.c:4026 ../gio/gdbusconnection.c:4342
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Neniu tia interfaco `org.freedesktop.DBus.Properties' en objekto en vojo %s"
+"Neniu tia interfaco 'org.freedesktop.DBus.Properties' en objekto en vojo %s"
 
 #: ../gio/gdbusconnection.c:4097
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Eraro dum agordado de la atributo `%s': Atendita tipo `%s' sed akiris `%s'"
+"Eraro dum agordado de la atributo '%s': Atendita tipo '%s' sed akiris '%s'"
 
 #: ../gio/gdbusconnection.c:4192
 #, c-format
-msgid "No such property `%s'"
-msgstr "Neniu tia atributo `%s'"
+msgid "No such property '%s'"
+msgstr "Neniu tia atributo '%s'"
 
 #: ../gio/gdbusconnection.c:4204
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Atributo `%s' ne estas legebla"
+msgid "Property '%s' is not readable"
+msgstr "Atributo '%s' ne estas legebla"
 
 #: ../gio/gdbusconnection.c:4215
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Atributo `%s' ne estas skribebla"
+msgid "Property '%s' is not writable"
+msgstr "Atributo '%s' ne estas skribebla"
 
 #: ../gio/gdbusconnection.c:4285 ../gio/gdbusconnection.c:6131
 #, c-format
-msgid "No such interface `%s'"
-msgstr "Neniu tia interfaco `%s' "
+msgid "No such interface '%s'"
+msgstr "Neniu tia interfaco '%s' "
 
 #: ../gio/gdbusconnection.c:4469
 msgid "No such interface"
@@ -423,18 +423,18 @@ msgstr "Neniu tia interfaco"
 
 #: ../gio/gdbusconnection.c:4690 ../gio/gdbusconnection.c:6637
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "Neniu tia interfaco `%s' sur objekto en vojo %s"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Neniu tia interfaco '%s' sur objekto en vojo %s"
 
 #: ../gio/gdbusconnection.c:4742
 #, c-format
-msgid "No such method `%s'"
-msgstr "Neniu tia metodo `%s'"
+msgid "No such method '%s'"
+msgstr "Neniu tia metodo '%s'"
 
 #: ../gio/gdbusconnection.c:4773
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "Tipo de mesaĝo, `%s', ne kongruas kun la atendita tipo `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Tipo de mesaĝo, '%s', ne kongruas kun la atendita tipo '%s'"
 
 #: ../gio/gdbusconnection.c:4993
 #, c-format
@@ -443,13 +443,13 @@ msgstr "Objekto jam estas elportita por la interfaco %s ĉe %s"
 
 #: ../gio/gdbusconnection.c:5191
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "Metodo `%s' redonis tipo `%s', sed estis atendata `%s' `"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Metodo '%s' redonis tipo '%s', sed estis atendata '%s' '"
 
 #: ../gio/gdbusconnection.c:6242
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "Metodo `%s' sur interfaco `%s' kun subskribo `%s' ne existas"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Metodo '%s' sur interfaco '%s' kun subskribo '%s' ne existas"
 
 #: ../gio/gdbusconnection.c:6361
 #, c-format
@@ -503,25 +503,25 @@ msgstr[1] "Volis legi %lu bajtoj sed akiris EOF"
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Atendis validan UTF-8 ĉenon sed trovitaj nevalidaj bajtoj ĉe bajto deŝovo %d "
-"(longeco de ĉeno estas %d). La valida UTF-8 ĉeno ĝis tiu punkto estis `%s' "
+"(longeco de ĉeno estas %d). La valida UTF-8 ĉeno ĝis tiu punkto estis '%s' "
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Atendita NUL bajto post la ĉeno `%s' sed trovita bajto %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "Atendita NUL bajto post la ĉeno '%s' sed trovita bajto %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "Analizita valoro `%s' ne estas valida D-Bus objektovojo"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "Analizita valoro '%s' ne estas valida D-Bus objektovojo"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Analizita valoro `%s' ne estas valida D-Busa subskribo"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Analizita valoro '%s' ne estas valida D-Busa subskribo"
 
 #: ../gio/gdbusmessage.c:1324
 #, c-format
@@ -538,15 +538,15 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "Analizita valoro `%s' por variaĵo ne estas valida D-Busa subskribo"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "Analizita valoro '%s' por variaĵo ne estas valida D-Busa subskribo"
 
 #: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Eraro dum malseriigo de GVariant kun tipo ĉeno `%s' de la D-Buso dratoformo"
+"Eraro dum malseriigo de GVariant kun tipo ĉeno '%s' de la D-Buso dratoformo"
 
 #: ../gio/gdbusmessage.c:1705
 #, c-format
@@ -564,15 +564,15 @@ msgstr "Nevalida ĉefprotokolo versio. Atendita 1 sed trovita %d"
 
 #: ../gio/gdbusmessage.c:1776
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"Subskriba kapo kun subskribo `%s' estis trovita sed korpo de mesaĝo estas "
+"Subskriba kapo kun subskribo '%s' estis trovita sed korpo de mesaĝo estas "
 "malplena"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Analizita valoro `%s' ne estas valida D-Bus subskribo (por korpo)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "Analizita valoro '%s' ne estas valida D-Bus subskribo (por korpo)"
 
 #: ../gio/gdbusmessage.c:1821
 #, c-format
@@ -590,9 +590,9 @@ msgstr "Ne eblas malseriigi mesaĝon:"
 #: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"Eraro dum seriigo de GVariant kun tipoĉeno `%s' al la D-Buso dratoformo"
+"Eraro dum seriigo de GVariant kun tipoĉeno '%s' al la D-Buso dratoformo"
 
 #: ../gio/gdbusmessage.c:2304
 #, c-format
@@ -608,25 +608,25 @@ msgstr "Ne eblas seriigi mesaĝon: "
 
 #: ../gio/gdbusmessage.c:2356
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Korpo de mesaĝo havas subskribon `%s' sed ne estas iu subskribokapo"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "Korpo de mesaĝo havas subskribon '%s' sed ne estas iu subskribokapo"
 
 #: ../gio/gdbusmessage.c:2366
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
-msgstr "Korpo de mesaĝo havas tipon `%s' sed tipo en la mesaĝokapo estas `%s'"
+msgstr "Korpo de mesaĝo havas tipon '%s' sed tipo en la mesaĝokapo estas '%s'"
 
 #: ../gio/gdbusmessage.c:2382
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Korpo de mesaĝo estas malplena sed tipo en la masaĝokapo estas `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "Korpo de mesaĝo estas malplena sed tipo en la masaĝokapo estas '(%s)'"
 
 #: ../gio/gdbusmessage.c:2939
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "Erara reveno kun korpo de tipo `%s'"
+msgid "Error return with body of type '%s'"
+msgstr "Erara reveno kun korpo de tipo '%s'"
 
 #: ../gio/gdbusmessage.c:2947
 msgid "Error return with empty body"
@@ -664,18 +664,18 @@ msgstr "Ne eblas specifi 'nonce'-dosieron dum kreo de servilo"
 
 #: ../gio/gdbusserver.c:872
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Eraro dum skribo de 'nonce'-dosiero ĉe `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Eraro dum skribo de 'nonce'-dosiero ĉe '%s': %s"
 
 #: ../gio/gdbusserver.c:1038
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "La ĉeno `%s' ne estas valida D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "La ĉeno '%s' ne estas valida D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1078
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Ne eblas aŭskulti sur nesubtenata transporto `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Ne eblas aŭskulti sur nesubtenata transporto '%s'"
 
 #: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
@@ -747,16 +747,16 @@ msgstr "Multoblaj konektaj finpunktoj specifitaj"
 #: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "Averto: Laŭ introspekta datumaro, interfaco `%s' ne ekzistas\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "Averto: Laŭ introspekta datumaro, interfaco '%s' ne ekzistas\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Averto: Laŭ introspekta datumaro, metodo `%s' ne ekzistas sur interfaco `"
+"Averto: Laŭ introspekta datumaro, metodo '%s' ne ekzistas sur interfaco '"
 "%s'\n"
 
 #: ../gio/gdbus-tool.c:534
@@ -859,13 +859,13 @@ msgstr "Eraro: Metodonomo ne estas specifita\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Eraro: Metodonomo`%s' estas nevalida\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Eraro: Metodonomo'%s' estas nevalida\n"
 
 #: ../gio/gdbus-tool.c:974
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Eraro dum sintaksa analizo de la parametro %d de tipo `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Eraro dum sintaksa analizo de la parametro %d de tipo '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
@@ -1473,10 +1473,10 @@ msgstr "Ignoras ĉi tiun dosieron.\n"
 
 #: ../gio/glib-compile-schemas.c:1854
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Neniu tia ŝlosilo `%s' en skemo `%s' kiel estas specifite en superrego-"
-"dosiero `%s'"
+"Neniu tia ŝlosilo '%s' en skemo '%s' kiel estas specifite en superrego-"
+"dosiero '%s'"
 
 #: ../gio/glib-compile-schemas.c:1860 ../gio/glib-compile-schemas.c:1918
 #: ../gio/glib-compile-schemas.c:1946
@@ -1493,11 +1493,11 @@ msgstr " kaj --strict estis specifita; eliranta.\n"
 #: ../gio/glib-compile-schemas.c:1880
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
-"Eraro dum sintaksa analizo de la ŝlosilo `%s' en skemo `%s' kiel estas "
-"specifita en superrego-dosiero `%s': %s."
+"Eraro dum sintaksa analizo de la ŝlosilo '%s' en skemo '%s' kiel estas "
+"specifita en superrego-dosiero '%s': %s."
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
@@ -1507,19 +1507,19 @@ msgstr "Ignoras superregon por ĉi tiu ŝlosilo.\n"
 #: ../gio/glib-compile-schemas.c:1908
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 msgstr ""
-"superrego por ŝlosilo `%s' en skemo `%s' en superrego-dosiero `%s' ne estas "
+"superrego por ŝlosilo '%s' en skemo '%s' en superrego-dosiero '%s' ne estas "
 "en la intervalo donita en la skemo"
 
 #: ../gio/glib-compile-schemas.c:1936
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"superrego por ŝlosilo `%s' en skemo `%s' en superrego-dosiero `%s' ne estas "
+"superrego por ŝlosilo '%s' en skemo '%s' en superrego-dosiero '%s' ne estas "
 "en la listo de la validaj elektoj"
 
 #: ../gio/glib-compile-schemas.c:1989
@@ -1712,7 +1712,7 @@ msgstr " (nevalida kodoprezento)"
 #: ../gio/glocalfileinfo.c:1527 ../gio/glocalfileoutputstream.c:843
 #, c-format
 msgid "Error when getting information for file '%s': %s"
-msgstr "Eraro dum akiro de informo de dosiero `%s': %s"
+msgstr "Eraro dum akiro de informo de dosiero '%s': %s"
 
 #: ../gio/glocalfileinfo.c:1779
 #, c-format
@@ -4216,7 +4216,7 @@ msgstr "%.1f KB"
 #~ msgstr "Ĉi tiu opcio estos forigita baldaŭ."
 
 #~ msgid "Error stating file '%s': %s"
-#~ msgstr "Eraro dum funkcivoko de stati() sur dosierujo `%s': %s"
+#~ msgstr "Eraro dum funkcivoko de stati() sur dosierujo '%s': %s"
 
 #~ msgid "SOCKSv4 implementation limits username to %i characters"
 #~ msgstr "SOCKSv4 realigo limigas uzantonomon al %i karaktroj"

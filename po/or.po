@@ -142,77 +142,77 @@ msgstr "ଅପ୍ରତ୍ୟାଶିତ ପ୍ରାରମ୍ଭିକ ଧା�
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "ଠିକଣା ଭରଣ `%s' ରେ ଅସମର୍ଥିତ କି `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "ଠିକଣା ଭରଣ '%s' ରେ ଅସମର୍ଥିତ କି '%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"ଠିକଣା `%s' ଟି ଅବୈଧ ଅଟେ (କେବଳ ଗୋଟିଏ ପଥ ଆବଶ୍ୟକ, tmpdir କିମ୍ବା କଢ଼ାଯାଇଥିବା "
+"ଠିକଣା '%s' ଟି ଅବୈଧ ଅଟେ (କେବଳ ଗୋଟିଏ ପଥ ଆବଶ୍ୟକ, tmpdir କିମ୍ବା କଢ଼ାଯାଇଥିବା "
 "କିଗୁଡ଼ିକ)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "ଠିକଣା ଭରଣ `%s' ରେ ଅର୍ଥହୀନ କି/ମୂଲ୍ୟ ଯୁଗଳ"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "ଠିକଣା ଭରଣ '%s' ରେ ଅର୍ଥହୀନ କି/ମୂଲ୍ୟ ଯୁଗଳ"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "ଠିକଣା `%s' ରେ ତ୍ରୁଟି - ପୋର୍ଟ ଗୁଣଧର୍ମଟି ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "ଠିକଣା '%s' ରେ ତ୍ରୁଟି - ପୋର୍ଟ ଗୁଣଧର୍ମଟି ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "ଠିକଣା `%s' ରେ ତ୍ରୁଟି - ପରିବାର ଗୁଣଧର୍ମଟି ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "ଠିକଣା '%s' ରେ ତ୍ରୁଟି - ପରିବାର ଗୁଣଧର୍ମଟି ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "ଠିକଣା ଉପାଦନ `%s' ରେ କୌଣସି କଲନ (:) ନଥାଏ"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "ଠିକଣା ଉପାଦନ '%s' ରେ କୌଣସି କଲନ (:) ନଥାଏ"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
-msgstr "କି/ମୂଲ୍ୟ ଯୁଗଳ  %d, `%s', ଠିକଣା ଉପାଦାନ `%s' ରେ ସମାନ ଚିହ୍ନ ଧାରଣ କରିନଥାଏ"
+msgstr "କି/ମୂଲ୍ୟ ଯୁଗଳ  %d, '%s', ଠିକଣା ଉପାଦାନ '%s' ରେ ସମାନ ଚିହ୍ନ ଧାରଣ କରିନଥାଏ"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"କି/ମୂଲ୍ୟ ଯୁଗଳ %d, `%s' ରେ କି କିମ୍ବା ମୂଲ୍ୟକୁ ନଛଡ଼ାଇବାରେ ତ୍ରୁଟି, ଠିକଣା ଉପାଦାନ`%"
+"କି/ମୂଲ୍ୟ ଯୁଗଳ %d, '%s' ରେ କି କିମ୍ବା ମୂଲ୍ୟକୁ ନଛଡ଼ାଇବାରେ ତ୍ରୁଟି, ଠିକଣା ଉପାଦାନ'%"
 "s' ରେ"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"ଠିକଣା `%s' ରେ ତ୍ରୁଟି - unix ପରିବହନ `path' ଅଥବା `abstract' କିଗୁଡ଼ିକ ମଧ୍ଯରୁ "
+"ଠିକଣା '%s' ରେ ତ୍ରୁଟି - unix ପରିବହନ 'path' ଅଥବା 'abstract' କିଗୁଡ଼ିକ ମଧ୍ଯରୁ "
 "ଗୋଟିଏକୁ ସେଟ "
 "କରିବା ପାଇଁ ଆବଶ୍ୟକ କରିଥାଏ"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "ଠିକଣା `%s' ରେ ତ୍ରୁଟି - ହୋଷ୍ଟ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "ଠିକଣା '%s' ରେ ତ୍ରୁଟି - ହୋଷ୍ଟ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "ଠିକଣା `%s' ରେ ତ୍ରୁଟି - ପୋର୍ଟ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "ଠିକଣା '%s' ରେ ତ୍ରୁଟି - ପୋର୍ଟ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr "ଠିକଣା `%s' ରେ ତ୍ରୁଟି - ନୋନସ ଫାଇଲ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgstr "ଠିକଣା '%s' ରେ ତ୍ରୁଟି - ନୋନସ ଫାଇଲ ଗୁଣଧର୍ମ ନାହିଁ କିମ୍ବା ତ୍ରୁଟିଯୁକ୍ତ"
 
 #: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
@@ -220,27 +220,27 @@ msgstr "ସ୍ୱୟଂ-ଆରମ୍ଭ କରିବାରେ ତ୍ରୁଟି
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "ଠିକଣା  `%s' ପାଇଁ ଅଜଣା କିମ୍ବା ଅସମର୍ଥିତ ପରିବହନ `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "ଠିକଣା  '%s' ପାଇଁ ଅଜଣା କିମ୍ବା ଅସମର୍ଥିତ ପରିବହନ '%s'"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "ଫାଇଲ '%s' କୁ ଖୋଲିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "ନୋନସ ଫାଇଲ '%s' ରୁ ପଢିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "ନୋନସ ଫାଇଲ '%s' ରୁ ପଢିବାରେ ତ୍ରୁଟି,16 ବାଇଟ ଆଶାକରାଯାଇଥାଏ, %d ପାଇଅଛି"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "ନୋନସ ଫାଇଲ '%s' ର ବିଷୟବସ୍ତୁକୁ ଧାରାରେ ଲେଖିବାରେ ତ୍ରୁଟି:"
 
 #: ../gio/gdbusaddress.c:960
@@ -258,7 +258,7 @@ msgstr "ତନ୍ତ୍ର-id ବିନା କୌଣସି ସନ୍ଦେଶକ
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "ନିର୍ଦ୍ଦେଶ '%s' କୁ ଉତ୍ପନ୍ନ କରିବାରେ ତ୍ରୁଟି:"
 
 #: ../gio/gdbusaddress.c:1296
@@ -281,10 +281,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE ପରିବେଶ ପ୍ରାଚଳରୁ ବସ ଠିକଣାକୁ ନିର୍ଦ୍ଧାରଣ କରିପାରିବେ ନାହିଁ- "
-"ଅଜଣା ମୂଲ୍ୟ `"
+"ଅଜଣା ମୂଲ୍ୟ '"
 "%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
@@ -321,80 +321,80 @@ msgstr "GDBusAuthObserver::authorize-authenticated-peer ମାଧ୍ଯମରେ
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "`%s' ଡିରେକ୍ଟୋରି ପାଇଁ ସୂଚନା ପାଇବାରେ ତ୍ରୁଟି: %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "'%s' ଡିରେକ୍ଟୋରି ପାଇଁ ସୂଚନା ପାଇବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"ଡିରେକ୍ଟୋରୀ `%s' ଉପରେ ଅନୁମତିଗୁଡ଼ିକ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି। ଆଶାକରାଯାଇଥିବା ଧାରା 0700, "
+"ଡିରେକ୍ଟୋରୀ '%s' ଉପରେ ଅନୁମତିଗୁଡ଼ିକ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି। ଆଶାକରାଯାଇଥିବା ଧାରା 0700, "
 "ମିଳିଛି 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "ଡିରେକ୍ଟୋରି  `%s' କୁ ନିର୍ମାଣ କରିବାରେ ତ୍ରୁଟି: %s"
+msgid "Error creating directory '%s': %s"
+msgstr "ଡିରେକ୍ଟୋରି  '%s' କୁ ନିର୍ମାଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "ପଢ଼ିବା ପାଇଁ  କିରିଙ୍ଗ `%s' କୁ ଖୋଲିବାରେ ତ୍ରୁଟି: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "ପଢ଼ିବା ପାଇଁ  କିରିଙ୍ଗ '%s' କୁ ଖୋଲିବାରେ ତ୍ରୁଟି: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "କିରିଙ୍ଗ ର %d ଧାଡ଼ି  `%s' ଠାରେ ବିଷୟବସ୍ତୁ `%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "କିରିଙ୍ଗ ର %d ଧାଡ଼ି  '%s' ଠାରେ ବିଷୟବସ୍ତୁ '%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ଅଟେ"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"କିରିଙ୍ଗର ଧାଡ଼ି %d ର ପ୍ରଥମ ଟକେନ `%s' ରେ ବିଷୟବସ୍ତୁ `%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି"
+"କିରିଙ୍ଗର ଧାଡ଼ି %d ର ପ୍ରଥମ ଟକେନ '%s' ରେ ବିଷୟବସ୍ତୁ '%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"କିରିଙ୍ଗର ଧାଡ଼ି %d ର ଦ୍ୱିତୀୟ ଟକେନ `%s' ରେ ବିଷୟବସ୍ତୁ `%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି"
+"କିରିଙ୍ଗର ଧାଡ଼ି %d ର ଦ୍ୱିତୀୟ ଟକେନ '%s' ରେ ବିଷୟବସ୍ତୁ '%s' ସହିତ ତ୍ରୁଟିଯୁକ୍ତ ହୋଇଛି"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "id %d ସହିତ `%s' ରେ ଥିବା କିରିଙ୍ଗରେ କୁକି ମିଳିଲା ନାହିଁ"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "id %d ସହିତ '%s' ରେ ଥିବା କିରିଙ୍ଗରେ କୁକି ମିଳିଲା ନାହିଁ"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "ଷ୍ଟେଲ ଲକ ଫାଇଲ '%s' କୁ ଅପସାରଣ କରିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "ଲକ ଫାଇଲ `%s' ନିର୍ମାଣ କରିବାେର ତ୍ରୁଟି: %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "ଲକ ଫାଇଲ '%s' ନିର୍ମାଣ କରିବାେର ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "ଲକ ଫାଇଲ (ଅସଂଯୁକ୍ତ) `%s' କୁ ବନ୍ଦ କରିବାରେ ତ୍ରୁଟି: %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "ଲକ ଫାଇଲ (ଅସଂଯୁକ୍ତ) '%s' କୁ ବନ୍ଦ କରିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "ଲକ ଫାଇଲ `%s' କୁ ଅସଂଯୁକ୍ତ କରିବାରେ ତ୍ରୁଟି: %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "ଲକ ଫାଇଲ '%s' କୁ ଅସଂଯୁକ୍ତ କରିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "ଲେଖିବା ପାଇଁ କିରିଙ୍ଗ `%s' କୁ  ଖୋଲିବାରେ ତ୍ରୁଟି:"
+msgid "Error opening keyring '%s' for writing: "
+msgstr "ଲେଖିବା ପାଇଁ କିରିଙ୍ଗ '%s' କୁ  ଖୋଲିବାରେ ତ୍ରୁଟି:"
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(ଅତିରିକ୍ତ ଭାବରେ, `%s' ପାଇଁ ମଧ୍ଯ ତାଲାକୁ ଖୋଲିବାରେ ବିଫଳ: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(ଅତିରିକ୍ତ ଭାବରେ, '%s' ପାଇଁ ମଧ୍ଯ ତାଲାକୁ ଖୋଲିବାରେ ବିଫଳ: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -413,36 +413,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4134 ../gio/gdbusconnection.c:4450
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"ପଥ %s ରେ ବସ୍ତୁ ଉପରେ ଏପରି କୋଣସି ଅନ୍ତରାପୃଷ୍ଠ `org.freedesktop.DBus.Properties' "
+"ପଥ %s ରେ ବସ୍ତୁ ଉପରେ ଏପରି କୋଣସି ଅନ୍ତରାପୃଷ୍ଠ 'org.freedesktop.DBus.Properties' "
 "ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:4205
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"ଗୁଣଧର୍ମ `%s' ସେଟ କରିବାରେ ତ୍ରୁଟି: ଆଶାକରାଯାଇଥିବା ପ୍ରକାର `%s' କିନ୍ତୁ `%s' ପାଇଛି"
+"ଗୁଣଧର୍ମ '%s' ସେଟ କରିବାରେ ତ୍ରୁଟି: ଆଶାକରାଯାଇଥିବା ପ୍ରକାର '%s' କିନ୍ତୁ '%s' ପାଇଛି"
 
 #: ../gio/gdbusconnection.c:4300
 #, c-format
-msgid "No such property `%s'"
-msgstr "`%s' ପରି କୌଣସି ଗୁଣଧର୍ମ ନାହିଁ"
+msgid "No such property '%s'"
+msgstr "'%s' ପରି କୌଣସି ଗୁଣଧର୍ମ ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:4312
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "`%s' ବିଶେଷତାଗୁଡିକ ପଢ଼ିବା ଯୋଗ୍ୟ ନୁହିଁ"
+msgid "Property '%s' is not readable"
+msgstr "'%s' ବିଶେଷତାଗୁଡିକ ପଢ଼ିବା ଯୋଗ୍ୟ ନୁହିଁ"
 
 #: ../gio/gdbusconnection.c:4323
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "`%s' ବିଶେଷତାଗୁଡିକ ଲେଖିବା ଯୋଗ୍ୟ ନୁହିଁ"
+msgid "Property '%s' is not writable"
+msgstr "'%s' ବିଶେଷତାଗୁଡିକ ଲେଖିବା ଯୋଗ୍ୟ ନୁହିଁ"
 
 #: ../gio/gdbusconnection.c:4393 ../gio/gdbusconnection.c:6269
 #, c-format
-msgid "No such interface `%s'"
-msgstr "`%s' ପରି କୌଣସି ଅନ୍ତରାପୃଷ୍ଠ ନାହିଁ"
+msgid "No such interface '%s'"
+msgstr "'%s' ପରି କୌଣସି ଅନ୍ତରାପୃଷ୍ଠ ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:4577
 msgid "No such interface"
@@ -450,18 +450,18 @@ msgstr "ଏପରି କୌଣସି ଅନ୍ତରାପୃଷ୍ଠ ନାହ
 
 #: ../gio/gdbusconnection.c:4795 ../gio/gdbusconnection.c:6775
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "%s ପଥରେ ବସ୍ତୁ ଉପରେ `%s' ପରି କୌଣସି ଅନ୍ତରାପୃଷ୍ଠ ନାହିଁ"
+msgid "No such interface '%s' on object at path %s"
+msgstr "%s ପଥରେ ବସ୍ତୁ ଉପରେ '%s' ପରି କୌଣସି ଅନ୍ତରାପୃଷ୍ଠ ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:4850
 #, c-format
-msgid "No such method `%s'"
-msgstr "`%s' ପରି କୌଣସି ପଦ୍ଧତି ନାହିଁ"
+msgid "No such method '%s'"
+msgstr "'%s' ପରି କୌଣସି ପଦ୍ଧତି ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:4881
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "ସନ୍ଦେଶ ପ୍ରକାର, `%s', ଆଶା କରାଯାଇଥିବା ପ୍ରକାର `%s' ସହିତ ମିଶୁ ନାହିଁ"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "ସନ୍ଦେଶ ପ୍ରକାର, '%s', ଆଶା କରାଯାଇଥିବା ପ୍ରକାର '%s' ସହିତ ମିଶୁ ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:5101
 #, c-format
@@ -470,13 +470,13 @@ msgstr "ଅନ୍ତରାପୃଷ୍ଠ %s ପାଇଁ %s ରେ ଗୋଟି
 
 #: ../gio/gdbusconnection.c:5299
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "ପଦ୍ଧତି `%s' ପ୍ରକାର `%s' ଫେରାଇଥାଏ, କିନ୍ତୁ `%s' କୁ ଆଶାକରିଥାଏ"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "ପଦ୍ଧତି '%s' ପ୍ରକାର '%s' ଫେରାଇଥାଏ, କିନ୍ତୁ '%s' କୁ ଆଶାକରିଥାଏ"
 
 #: ../gio/gdbusconnection.c:6380
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "ଅନ୍ତରାପୃଷ୍ଠ `%s' ଉପରେ ହସ୍ତାକ୍ଷର `%s' ସହିତ `%s' ପଦ୍ଧତି  ଅବସ୍ଥିତ ନାହିଁ"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "ଅନ୍ତରାପୃଷ୍ଠ '%s' ଉପରେ ହସ୍ତାକ୍ଷର '%s' ସହିତ '%s' ପଦ୍ଧତି  ଅବସ୍ଥିତ ନାହିଁ"
 
 #: ../gio/gdbusconnection.c:6499
 #, c-format
@@ -531,29 +531,29 @@ msgstr[1] "%lu ବାଇଟ ପଢ଼ିବା ପାଇଁ ଚାହୁଁଛ�
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "ବାକ୍ୟଖଣ୍ଡ `%s' ପରେ ଶୂନ୍ୟ ବାଇଟ ଆଶାକରାଯାଇଥିଲା କିନ୍ତୁ ବାଇଟ %d ମିଳିଲା"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "ବାକ୍ୟଖଣ୍ଡ '%s' ପରେ ଶୂନ୍ୟ ବାଇଟ ଆଶାକରାଯାଇଥିଲା କିନ୍ତୁ ବାଇଟ %d ମିଳିଲା"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "ବୈଧ UTF-8 ବାକ୍ୟଖଣ୍ଡ ଆଶାକରାଯାଇଥିଲା କିନ୍ତୁ ବାଇଟ ଅଫସେଟ %d ରେ ଅବୈଧ ବାଇଟ "
 "ମିଳିଲା(ବାକ୍ୟଖଣ୍ଡର "
 "ଲମ୍ବ ହେଉଛି %d)। ସେହି ବିନ୍ଦୁ ପର୍ଯ୍ୟନ୍ତ ଉଠିଥିବା ବାକ୍ୟଖଣ୍ଡଟି ହେଉଛି ବୈଧ UTF-8 "
-"ବାକ୍ୟଖଣ୍ଡ `%s'"
+"ବାକ୍ୟଖଣ୍ଡ '%s'"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ `%s' ଟି ଏକ ବୈଧ D-Bus ବସ୍ତୁ ପଥ ନୁହଁ"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ '%s' ଟି ଏକ ବୈଧ D-Bus ବସ୍ତୁ ପଥ ନୁହଁ"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ `%s' ଟି ଏକ ବୈଧ D-Bus ହସ୍ତାକ୍ଷର ନୁହଁ"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ '%s' ଟି ଏକ ବୈଧ D-Bus ହସ୍ତାକ୍ଷର ନୁହଁ"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
@@ -570,14 +570,14 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "ପ୍ରାଚଳ ପାଇଁ ବିଶ୍ଳଷିତ ମୂଲ୍ୟ `%s' ଟି ଏକ ବୈଧ D-ବସ ହସ୍ତାକ୍ଷର ନୁହଁ"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "ପ୍ରାଚଳ ପାଇଁ ବିଶ୍ଳଷିତ ମୂଲ୍ୟ '%s' ଟି ଏକ ବୈଧ D-ବସ ହସ୍ତାକ୍ଷର ନୁହଁ"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
-msgstr "D-Bus ତାରମୟ ଶୈଳୀରୁ`%s' ପ୍ରକାରର ବାକ୍ୟଖଣ୍ଡ ସହିତ ତ୍ରୁଟି କ୍ରମଭଙ୍ଗ GVariant"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
+msgstr "D-Bus ତାରମୟ ଶୈଳୀରୁ'%s' ପ୍ରକାରର ବାକ୍ୟଖଣ୍ଡ ସହିତ ତ୍ରୁଟି କ୍ରମଭଙ୍ଗ GVariant"
 
 #: ../gio/gdbusmessage.c:2062
 #, c-format
@@ -595,13 +595,13 @@ msgstr "ଅବୈଧ ମୂଖ୍ୟ ପ୍ରଟୋକଲ ସଂସ୍କରଣ
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "ହସ୍ତାକ୍ଷର `%s' ସହିତ ହସ୍ତାକ୍ଷର ଶୀର୍ଷକ ମିଳିଛି କିନ୍ତୁ ସନ୍ଦେଶ ଖାଲିଅଛି"
+msgid "Signature header with signature '%s' found but message body is empty"
+msgstr "ହସ୍ତାକ୍ଷର '%s' ସହିତ ହସ୍ତାକ୍ଷର ଶୀର୍ଷକ ମିଳିଛି କିନ୍ତୁ ସନ୍ଦେଶ ଖାଲିଅଛି"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ `%s' ଟି ଏକ ବୈଧ D-Bus ହସ୍ତାକ୍ଷର ନୁହଁ (ସନ୍ଦେଶ ପାଇଁ)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "ବିଶ୍ଳେଷିତ ମୂଲ୍ୟ '%s' ଟି ଏକ ବୈଧ D-Bus ହସ୍ତାକ୍ଷର ନୁହଁ (ସନ୍ଦେଶ ପାଇଁ)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
@@ -617,9 +617,9 @@ msgstr "ସନ୍ଦେଶକୁ କ୍ରମହୀନ କରିପାରିବ�
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"D-Bus ତାରମୟ ଶୈଳୀରୁ`%s' ପ୍ରକାରର ବାକ୍ୟଖଣ୍ଡ ସହିତ GVariant କୁ କ୍ରମରେ ରଖିବାରେ "
+"D-Bus ତାରମୟ ଶୈଳୀରୁ'%s' ପ୍ରକାରର ବାକ୍ୟଖଣ୍ଡ ସହିତ GVariant କୁ କ୍ରମରେ ରଖିବାରେ "
 "ତ୍ରୁଟି"
 
 #: ../gio/gdbusmessage.c:2643
@@ -638,26 +638,26 @@ msgstr "ସନ୍ଦେଶକୁ କ୍ରମରେ ସଜାଇପାରିବ�
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର `%s' ଅଛି କିନ୍ତୁ ସେଠାରେ କୌଣସି ହସ୍ତାକ୍ଷର ଶୀର୍ଷକ ନାହିଁ"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର '%s' ଅଛି କିନ୍ତୁ ସେଠାରେ କୌଣସି ହସ୍ତାକ୍ଷର ଶୀର୍ଷକ ନାହିଁ"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର ପ୍ରକାର `%s' ଅଛି କିନ୍ତୁ ଶୀର୍ଷକରେ ଥିବା ହସ୍ତାକ୍ଷରଟି ହେଉଛି `%s'"
+"ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର ପ୍ରକାର '%s' ଅଛି କିନ୍ତୁ ଶୀର୍ଷକରେ ଥିବା ହସ୍ତାକ୍ଷରଟି ହେଉଛି '%s'"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "ସନ୍ଦେଶଟି ଖାଲି ଅଛି କିନ୍ତୁ ଶୀର୍ଷକରେ ଥିବା ହସ୍ତାକ୍ଷରଟି ହେଉଛି `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "ସନ୍ଦେଶଟି ଖାଲି ଅଛି କିନ୍ତୁ ଶୀର୍ଷକରେ ଥିବା ହସ୍ତାକ୍ଷରଟି ହେଉଛି '(%s)'"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "`%s' ପ୍ରକାରର ସନ୍ଦେଶରେ ତ୍ରୁଟି ଦେଖାଦେଇଛି"
+msgid "Error return with body of type '%s'"
+msgstr "'%s' ପ୍ରକାରର ସନ୍ଦେଶରେ ତ୍ରୁଟି ଦେଖାଦେଇଛି"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -702,18 +702,18 @@ msgstr "ଏକ ସର୍ଭର ନିର୍ମାଣ କରିବା ସମୟ�
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "ନୋନସ ଫାଇଲକୁ  `%s' ରେ ଲେଖିବାରେ ତ୍ରୁଟି: %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "ନୋନସ ଫାଇଲକୁ  '%s' ରେ ଲେଖିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "'%s' ବାକ୍ୟଖଣ୍ଡଟି ଗୋଟିଏ ବୈଧ  D-Bus GUID ନୁହଁ"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "ଅସମର୍ଥିତ ପରିବହନ `%s' ଉପରେ ଶୁଣିପାରିବେ ନାହିଁ"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "ଅସମର୍ଥିତ ପରିବହନ '%s' ଉପରେ ଶୁଣିପାରିବେ ନାହିଁ"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -786,16 +786,16 @@ msgstr "ଏକାଧିକ ସଂଯୋଗ ଶେଷବିନ୍ଦୁଗୁଡ�
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "ଚେତାବନୀ: ଆତ୍ମନିରୀକ୍ଷଣ ତଥ୍ୟ ଅନୁସାରେ, ଅନ୍ତରାପୃଷ୍ଠ `%s' ଅବସ୍ଥିତ ନାହିଁ\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "ଚେତାବନୀ: ଆତ୍ମନିରୀକ୍ଷଣ ତଥ୍ୟ ଅନୁସାରେ, ଅନ୍ତରାପୃଷ୍ଠ '%s' ଅବସ୍ଥିତ ନାହିଁ\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"ଚେତାବନୀ: ଆତ୍ମନିରୀକ୍ଷଣ ତଥ୍ୟ ଅନୁସାରେ, ପଦ୍ଧତି `%s' ଅନ୍ତରାପୃଷ୍ଠ `%s' ଉପରେ ଅବସ୍ଥିତ "
+"ଚେତାବନୀ: ଆତ୍ମନିରୀକ୍ଷଣ ତଥ୍ୟ ଅନୁସାରେ, ପଦ୍ଧତି '%s' ଅନ୍ତରାପୃଷ୍ଠ '%s' ଉପରେ ଅବସ୍ଥିତ "
 "ନାହିଁ\n"
 
 #: ../gio/gdbus-tool.c:538
@@ -903,13 +903,13 @@ msgstr "ତ୍ରୁଟି: ପଦ୍ଧତି ନାମ ଉଲ୍ଲେଖ ହ�
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "ତ୍ରୁଟି: ପଦ୍ଧତି ନାମ `%s' ଟି ଅବୈଧ ଅଟେ\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "ତ୍ରୁଟି: ପଦ୍ଧତି ନାମ '%s' ଟି ଅବୈଧ ଅଟେ\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "ପ୍ରାଚଳ %d କୁ `%s' ପ୍ରକାରରେ ବିଶ୍ଳେଷଣ କରିବାରେ ତ୍ରୁଟି: %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "ପ୍ରାଚଳ %d କୁ '%s' ପ୍ରକାରରେ ବିଶ୍ଳେଷଣ କରିବାରେ ତ୍ରୁଟି: %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1552,9 +1552,9 @@ msgstr "ଏହି ଫାଇଲକୁ ଅଗ୍ରାହ୍ୟ କରୁଅଛି
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"ଏପରି କୌଣସି କି `%s' ଯୋଜନା `%s' ରେ ଉଲ୍ଲିଖିତ ଭାବରେ ନବଲିଖନ ଫାଇଲ `%s' ରେ ଉଲ୍ଲେଖ "
+"ଏପରି କୌଣସି କି '%s' ଯୋଜନା '%s' ରେ ଉଲ୍ଲିଖିତ ଭାବରେ ନବଲିଖନ ଫାଇଲ '%s' ରେ ଉଲ୍ଲେଖ "
 "ହୋଇନାହିଁ"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
@@ -1572,8 +1572,8 @@ msgstr " ଏବଂ --strict କୁ ଉଲ୍ଲେଖ କରାଯାଇଛି; 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
-msgstr "କି `%s' କୁ ଯୋଜନା `%s' ରେ ନବଲିଖନ ଫାଇଲ `%s' ଭାବରେ ଉଲ୍ଲେଖ ହୋଇନାହିଁ: %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
+msgstr "କି '%s' କୁ ଯୋଜନା '%s' ରେ ନବଲିଖନ ଫାଇଲ '%s' ଭାବରେ ଉଲ୍ଲେଖ ହୋଇନାହିଁ: %s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -1583,18 +1583,18 @@ msgstr "ଏହି କି ପାଇଁ ନବଲିଖନକୁ ଅଗ୍ରା�
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"କି `%s' ପାଇଁ ଯୋଜନା `%s' ରେ ନବଲିଖନ ଫାଇଲ `%s' କୁ ପ୍ରଦତ୍ତ ସୀମା ବାହାରେ ନବଲିଖନ"
+"କି '%s' ପାଇଁ ଯୋଜନା '%s' ରେ ନବଲିଖନ ଫାଇଲ '%s' କୁ ପ୍ରଦତ୍ତ ସୀମା ବାହାରେ ନବଲିଖନ"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"କି `%s' ପାଇଁ ଯୋଜନା `%s' ରେ ନବଲିଖନ ଫାଇଲ `%s' କୁ ପ୍ରଦତ୍ତ ସୀମା ବାହାରେ ନବଲିଖନ "
+"କି '%s' ପାଇଁ ଯୋଜନା '%s' ରେ ନବଲିଖନ ଫାଇଲ '%s' କୁ ପ୍ରଦତ୍ତ ସୀମା ବାହାରେ ନବଲିଖନ "
 "ତାଲିକାରେ "
 "ବୈଧ ପସନ୍ଦ ଭାବରେ ନାହିଁ"
 

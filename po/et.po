@@ -96,81 +96,81 @@ msgid "Unexpected early end-of-stream"
 msgstr "Ootamatult varajane voolõpp"
 
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Toetamata võti \"%s\" aadressikirjes \"%s\""
 
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr ""
 
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr ""
 
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr ""
 
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr ""
 
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
 
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
 
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
 
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 
 msgid "Error auto-launching: "
 msgstr "Viga automaatsel käivitamisel: "
 
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr ""
 
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Viga nonce faili '%s' avamisel: %s"
 
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Viga nonce failist '%s' lugemisel: %s"
 
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "Viga nonce failist '%s' lugemisel, oodati 16 baiti, saadi %d"
 
 #, fuzzy, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Viga faili kirjutamisel: %s"
 
 msgid "The given address is empty"
@@ -184,7 +184,7 @@ msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 
 #, fuzzy, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Viga failist '%s' lugemisel: %s"
 
 #, c-format
@@ -202,7 +202,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 
 msgid ""
@@ -229,62 +229,62 @@ msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 
 #, fuzzy, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Viga kataloogi '%s' avamisel: %s"
 
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Viga kataloogi `%s' loomisel: %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Viga kataloogi '%s' loomisel: %s"
 
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Viga võtmerõnga `%s' avamisel lugemiseks: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Viga võtmerõnga '%s' avamisel lugemiseks: "
 
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Rida %d võtmerõngas kohas '%s' sisuga '%s' on vigane"
 
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Küpsist id-ga %d võtmerõngas kohas '%s' ei leitud"
 
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Viga iganenud lukufaili '%s' kustutamisel: %s"
 
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Viga lukufaili '%s' loomisel: %s"
 
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Viga (kustutatud) lukufaili '%s' sulgemisel: %s"
 
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Viga lukufaili '%s' kustutamisel: %s"
 
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Viga võtmerõnga '%s' avamisel kirjutamiseks:"
 
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr ""
 
 msgid "The connection is closed"
@@ -299,42 +299,42 @@ msgstr ""
 
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Omadust '%s' pole"
 
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Omadus `%s' pole loetav"
+msgid "Property '%s' is not readable"
+msgstr "Omadus '%s' pole loetav"
 
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Omadus `%s' pole kirjutatav"
+msgid "Property '%s' is not writable"
+msgstr "Omadus '%s' pole kirjutatav"
 
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Liidest '%s' pole"
 
 msgid "No such interface"
 msgstr "Sellist liidest pole"
 
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Objektil asukohas %s pole liidest '%s'"
 
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Meetodit '%s' pole"
 
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr ""
 
 #, c-format
@@ -342,11 +342,11 @@ msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr ""
 
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr ""
 
 #, fuzzy, c-format
@@ -385,21 +385,21 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr ""
 
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Analüüsitud väärtus \"%s\" pole korrektne D-Busi objekti rada"
 
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Analüüsitud väärtus \"%s\" pole korrektne D-Busi signatuur"
 
 #, c-format
@@ -411,12 +411,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
 
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 
 #, c-format
@@ -430,11 +430,11 @@ msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 
 #, c-format
@@ -448,7 +448,7 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 
 #, c-format
@@ -461,21 +461,21 @@ msgid "Cannot serialize message: "
 msgstr ""
 
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 
 #, fuzzy, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Viga faili kirjutamisel: %s"
 
 msgid "Error return with empty body"
@@ -508,15 +508,15 @@ msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 
 #, fuzzy, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Viga faili kirjutamisel: %s"
 
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "String `%s' pole korrektne D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "String '%s' pole korrektne D-Bus GUID"
 
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr ""
 
 msgid "COMMAND"
@@ -567,13 +567,13 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
 
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 
 msgid "Optional destination for signal (unique name)"
@@ -657,11 +657,11 @@ msgid "Error: Method name is not specified\n"
 msgstr "Viga: meetodi nimi on määramata\n"
 
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Viga: vigane meetodi nimi \"%s\"\n"
 
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Viga \"%2$s\" tüüpi parameetri %1$d analüüsimisel: %3$s\n"
 
 msgid "Destination name to introspect"
@@ -1128,7 +1128,7 @@ msgid "Ignoring this file.\n"
 msgstr "Seda faili ignoreeritakse.\n"
 
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 
 #, c-format
@@ -1141,7 +1141,7 @@ msgstr ""
 
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 
 #, c-format
@@ -1150,13 +1150,13 @@ msgstr ""
 
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 
@@ -1889,7 +1889,7 @@ msgstr "Proksimine mitte-TCP ühenduse kaudu pole toetatud."
 
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "Proksi protokoll `%s' pole toetatud."
+msgstr "Proksi protokoll '%s' pole toetatud."
 
 msgid "Listener is already closed"
 msgstr "Kuulaja on juba suletud"
@@ -3290,7 +3290,7 @@ msgstr "%.1f KB"
 #~ msgid "Unexpected error in waitpid() (%s)"
 #~ msgstr "Ootamatu viga funktsioonis waitpid() (%s)"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr "Käsk '%s' väljus mitteväljumise olekuga %d: %s"
 
 #~ msgid "No service record for '%s'"

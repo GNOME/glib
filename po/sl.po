@@ -132,81 +132,81 @@ msgstr "Nepričakovan prezgodnji konec pretoka"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Nepodprt ključ  `%s' v vnosu naslova  `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Nepodprt ključ  '%s' v vnosu naslova  '%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"Naslov `%s' je nepravilen (zahtevana je pot, začasna mapa ali abstraktni "
+"Naslov '%s' je nepravilen (zahtevana je pot, začasna mapa ali abstraktni "
 "ključ)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "Nesmiselna kombinacija za par ključ/vrednost v vnosu naslova `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "Nesmiselna kombinacija za par ključ/vrednost v vnosu naslova '%s'"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Napaka v naslovu `%s' - atribut vrat je nepravilno oblikovan"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Napaka v naslovu '%s' - atribut vrat je nepravilno oblikovan"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Napaka v naslovu `%s' - atribut družine je nepravilno oblikovan"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Napaka v naslovu '%s' - atribut družine je nepravilno oblikovan"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "Predmet naslova `%s' ne vsebuje dvopičja (:)"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "Predmet naslova '%s' ne vsebuje dvopičja (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
-"Par ključ/vrednost %d, `%s', v predmetu naslova `%s', ne vsebuje enačaja"
+"Par ključ/vrednost %d, '%s', v predmetu naslova '%s', ne vsebuje enačaja"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Napaka, neubežni ključ ali vrednost v paru ključ/vrednost %d, `%s', v "
-"predmetu naslova `%s'"
+"Napaka, neubežni ključ ali vrednost v paru ključ/vrednost %d, '%s', v "
+"predmetu naslova '%s'"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Napaka v naslovu `%s' - unix prenos zahteva enega izmed ključev `path' ali "
-"`abstract' nastavljen"
+"Napaka v naslovu '%s' - unix prenos zahteva enega izmed ključev 'path' ali "
+"'abstract' nastavljen"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
-"Napaka v naslovu `%s' - atribut host manjka ali pa je nepravilno oblikovan"
+"Napaka v naslovu '%s' - atribut host manjka ali pa je nepravilno oblikovan"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
-"Napaka v naslovu `%s' - manjka atribut vrat ali pa ali je nepravilno "
+"Napaka v naslovu '%s' - manjka atribut vrat ali pa ali je nepravilno "
 "oblikovan"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
-"Napaka v naslovu `%s' - atribut noncefile manjka ali pa je nepravilno "
+"Napaka v naslovu '%s' - atribut noncefile manjka ali pa je nepravilno "
 "oblikovan"
 
 #: ../gio/gdbusaddress.c:652
@@ -215,30 +215,30 @@ msgstr "Napaka samodejnega zaganjanja:"
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "Neznan ali nepodprt prenos `%s' za naslov `%s' "
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "Neznan ali nepodprt prenos '%s' za naslov '%s' "
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "Napaka med odpiranjem enkratne datoteke `%s': %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "Napaka med odpiranjem enkratne datoteke '%s': %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "Napaka med branjem iz enkratne datoteke `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "Napaka med branjem iz enkratne datoteke '%s': %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
-"Napaka med branjem iz datoteke nonce `%s'; pričakovanih 16 bajtov, dobljenih "
+"Napaka med branjem iz datoteke nonce '%s'; pričakovanih 16 bajtov, dobljenih "
 "pa %d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Napaka med pisanjem vsebine datoteke nonce `%s' v pretok:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Napaka med pisanjem vsebine datoteke nonce '%s' v pretok:"
 
 #: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
@@ -255,8 +255,8 @@ msgstr "Ni mogoče oživiti vodila sporočila brez predmeta machine-id:"
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "Napaka med oživljanjem ukazne vrstice `%s': "
+msgid "Error spawning command line '%s': "
+msgstr "Napaka med oživljanjem ukazne vrstice '%s': "
 
 #: ../gio/gdbusaddress.c:1296
 #, c-format
@@ -277,10 +277,10 @@ msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Ni mogoče določiti naslova vodila iz okoljske spremenljivke "
-"DBUS_STARTER_BUS_TYPE - neznana vrednost `%s'"
+"DBUS_STARTER_BUS_TYPE - neznana vrednost '%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
 msgid ""
@@ -317,81 +317,81 @@ msgstr "Prekinjeno s strani GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "Napaka med pridobivanjem mape `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "Napaka med pridobivanjem mape '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Dovoljenja na mapi `%s' so nepravilna. Pričakovana 0700, dobljena pa 0%o"
+"Dovoljenja na mapi '%s' so nepravilna. Pričakovana 0700, dobljena pa 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Napaka med ustvarjanjem mape `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Napaka med ustvarjanjem mape '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Napaka med odpiranjem zbirke ključev `%s' za branje:"
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Napaka med odpiranjem zbirke ključev '%s' za branje:"
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "Vrstica %d zbirke ključev `%s' z vsebino `%s' je neustrezno oblikovana"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "Vrstica %d zbirke ključev '%s' z vsebino '%s' je neustrezno oblikovana"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Prvi žeton vrstice %d zbirke ključev pri `%s' z vsebino `%s' je neustrezno "
+"Prvi žeton vrstice %d zbirke ključev pri '%s' z vsebino '%s' je neustrezno "
 "oblikovan"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Drugi žeton vrstice %d zbirke ključev pri `%s' z vsebino `%s' je neustrezno "
+"Drugi žeton vrstice %d zbirke ključev pri '%s' z vsebino '%s' je neustrezno "
 "oblikovana"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Piškota z id %d v zbirki ključev `%s' ni mogoče najti"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Piškota z id %d v zbirki ključev '%s' ni mogoče najti"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "Napaka brisanja stare datoteke zaklepa `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "Napaka brisanja stare datoteke zaklepa '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "Napaka med ustvarjanjem datoteke `%s': %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "Napaka med ustvarjanjem datoteke '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Napaka med zapiranjem (nepovezane) zaklepne datoteke `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "Napaka med zapiranjem (nepovezane) zaklepne datoteke '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "Napaka med razvezovanjem datoteke zaklepa `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "Napaka med razvezovanjem datoteke zaklepa '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "Napaka med odpiranjem zbirke ključev `%s' za branje: "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "Napaka med odpiranjem zbirke ključev '%s' za branje: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(V nadaljevanju je spodletelo tudi sproščanje zaklepa `%s': %s)"
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(V nadaljevanju je spodletelo tudi sproščanje zaklepa '%s': %s)"
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -411,36 +411,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4134 ../gio/gdbusconnection.c:4450
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Vmesnik `org.freedesktop.DBus.Properties' na predmetu na poti %s ne obstaja"
+"Vmesnik 'org.freedesktop.DBus.Properties' na predmetu na poti %s ne obstaja"
 
 #: ../gio/gdbusconnection.c:4205
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Napaka med nastavljanjem lastnosti `%s': pričakovana je vrsta `%s', dobljena "
-"pa `%s'"
+"Napaka med nastavljanjem lastnosti '%s': pričakovana je vrsta '%s', dobljena "
+"pa '%s'"
 
 #: ../gio/gdbusconnection.c:4300
 #, c-format
-msgid "No such property `%s'"
-msgstr "Lastnost `%s' ne obstaja"
+msgid "No such property '%s'"
+msgstr "Lastnost '%s' ne obstaja"
 
 #: ../gio/gdbusconnection.c:4312
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Lastnosti `%s' ni berljiva"
+msgid "Property '%s' is not readable"
+msgstr "Lastnosti '%s' ni berljiva"
 
 #: ../gio/gdbusconnection.c:4323
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Lastnost `%s' ni zapisljiva"
+msgid "Property '%s' is not writable"
+msgstr "Lastnost '%s' ni zapisljiva"
 
 #: ../gio/gdbusconnection.c:4393 ../gio/gdbusconnection.c:6269
 #, c-format
-msgid "No such interface `%s'"
-msgstr "Vmesnik `%s' ne obstaja"
+msgid "No such interface '%s'"
+msgstr "Vmesnik '%s' ne obstaja"
 
 #: ../gio/gdbusconnection.c:4577
 msgid "No such interface"
@@ -448,18 +448,18 @@ msgstr "Vmesnik ne obstaja"
 
 #: ../gio/gdbusconnection.c:4795 ../gio/gdbusconnection.c:6775
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "Vmesnik `%s' na predmetu na poti %s ne obstaja"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Vmesnik '%s' na predmetu na poti %s ne obstaja"
 
 #: ../gio/gdbusconnection.c:4850
 #, c-format
-msgid "No such method `%s'"
-msgstr "Način `%s' ne obstaja"
+msgid "No such method '%s'"
+msgstr "Način '%s' ne obstaja"
 
 #: ../gio/gdbusconnection.c:4881
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "Vrsta sporočila `%s' se ne sklada s pričakovano vrsto `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Vrsta sporočila '%s' se ne sklada s pričakovano vrsto '%s'"
 
 #: ../gio/gdbusconnection.c:5101
 #, c-format
@@ -468,13 +468,13 @@ msgstr "Za vmesnik %s pri %s je predmet že izvožen"
 
 #: ../gio/gdbusconnection.c:5299
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "Način `%s' je vrnil vrsto `%s', pričakovana pa je vrsta `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Način '%s' je vrnil vrsto '%s', pričakovana pa je vrsta '%s'"
 
 #: ../gio/gdbusconnection.c:6380
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "Način `%s' na vmesniku `%s' s podpisom `%s' ne obstaja"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Način '%s' na vmesniku '%s' s podpisom '%s' ne obstaja"
 
 #: ../gio/gdbusconnection.c:6499
 #, c-format
@@ -529,27 +529,27 @@ msgstr[3] "Med poskusom branja %lu bajtov so bili prejeti le %lu."
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Po nizu `%s' je pričakovan bajt NUL, vendar je bil zaznan %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "Po nizu '%s' je pričakovan bajt NUL, vendar je bil zaznan %d"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Pričakovan veljaven UTF-8 niz, vendar je najdenih nepravilno število bajtov "
-"na bajtnem odmiku %d (dolžina niza %d). Do takrat veljaven UTF-8 niz je `%s'"
+"na bajtnem odmiku %d (dolžina niza %d). Do takrat veljaven UTF-8 niz je '%s'"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "Razčlenjena vrednost `%s' ni veljavna pot predmeta vodila D-Bus"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "Razčlenjena vrednost '%s' ni veljavna pot predmeta vodila D-Bus"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Razčlenjena vrednost `%s' ni veljaven podpis vodila D-Bus"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Razčlenjena vrednost '%s' ni veljaven podpis vodila D-Bus"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
@@ -572,15 +572,15 @@ msgstr[3] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "Razčlenjena vrednost `%s' ni veljaven podpis vodila D-Bus"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "Razčlenjena vrednost '%s' ni veljaven podpis vodila D-Bus"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Napaka med ločevanjem GVariant iz zaporedja z vrsto niza `%s' iz D-Bus žične "
+"Napaka med ločevanjem GVariant iz zaporedja z vrsto niza '%s' iz D-Bus žične "
 "oblike "
 
 #: ../gio/gdbusmessage.c:2062
@@ -601,14 +601,14 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"Glava podpisa s podpisom `%s' je najdena, vendar je telo sporočila prazno"
+"Glava podpisa s podpisom '%s' je najdena, vendar je telo sporočila prazno"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Razčlenjena vrednost `%s' ni veljaven podpis vodila D-Bus (za telo)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "Razčlenjena vrednost '%s' ni veljaven podpis vodila D-Bus (za telo)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
@@ -630,9 +630,9 @@ msgstr "Sporočila ni mogoče ločiti iz zaporedja:"
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"Napaka pri združevanju GVariant v zaporedje z vrsto niza `%s' v D-Bus žično "
+"Napaka pri združevanju GVariant v zaporedje z vrsto niza '%s' v D-Bus žično "
 "obliko"
 
 #: ../gio/gdbusmessage.c:2643
@@ -648,26 +648,26 @@ msgstr "Sporočila ni bilo mogoče združiti v zaporedje:"
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Telo sporočila ima podpis `%s', vendar v glavi ni podpisa"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "Telo sporočila ima podpis '%s', vendar v glavi ni podpisa"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"Telo sporočila ima podpis vrste `%s', vendar je podpis v polju glave `%s' "
+"Telo sporočila ima podpis vrste '%s', vendar je podpis v polju glave '%s' "
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Telo sporočila je prazno, vendar je v polju glave podpis `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "Telo sporočila je prazno, vendar je v polju glave podpis '(%s)'"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "Napaka vrnjena s telesom vrste `%s'"
+msgid "Error return with body of type '%s'"
+msgstr "Napaka vrnjena s telesom vrste '%s'"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -710,18 +710,18 @@ msgstr "Med ustvarjanjem strežnika ni mogoče določiti enkratne datoteke"
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Napaka med zapisovanjem enkratne datoteke na `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Napaka med zapisovanjem enkratne datoteke na '%s': %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "Niz `%s' ni veljaven D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "Niz '%s' ni veljaven D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Na nepodprtem načinu prenosa `%s' ni mogoče poslušati"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Na nepodprtem načinu prenosa '%s' ni mogoče poslušati"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -793,17 +793,17 @@ msgstr "Določenih je več povezav končne točke"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "Opozorilo: na osnovi podatkov samopregleda, vmesnik `%s' ne obstaja\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "Opozorilo: na osnovi podatkov samopregleda, vmesnik '%s' ne obstaja\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Opozorilo: na osnovi podatkov samopregleda, način `%s' ne obstaja na "
-"vmesniku `%s'\n"
+"Opozorilo: na osnovi podatkov samopregleda, način '%s' ne obstaja na "
+"vmesniku '%s'\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -910,13 +910,13 @@ msgstr "Napaka: ime načina ni določeno\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Napaka: ime načina `%s' ni veljavno\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Napaka: ime načina '%s' ni veljavno\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Napaka med razčlenjevanjem parametra %d vrste `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Napaka med razčlenjevanjem parametra %d vrste '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1550,9 +1550,9 @@ msgstr "Datoteka je prezrta.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Ključ `%s' v shemi `%s' kot je določen v datoteki prepisa `%s' ne obstaja"
+"Ključ '%s' v shemi '%s' kot je določen v datoteki prepisa '%s' ne obstaja"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
 #: ../gio/glib-compile-schemas.c:1956
@@ -1569,10 +1569,10 @@ msgstr " in --strict sta določena, končanje.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"napaka razčlenjevanja ključa `%s' v shemi `%s', kot je določeno v datoteki "
-"prepisa `%s': %s.  "
+"napaka razčlenjevanja ključa '%s' v shemi '%s', kot je določeno v datoteki "
+"prepisa '%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -1582,19 +1582,19 @@ msgstr "Prepis za ta ključ je prezrt.\n"
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"prepis za ključ `%s' v shemi `%s' v datoteki prepisa `%s' ni v obsegu, "
+"prepis za ključ '%s' v shemi '%s' v datoteki prepisa '%s' ni v obsegu, "
 "podanem v shemi"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"prepis za ključ `%s' v shemi `%s' v datoteki prepisa `%s' ni v seznamu "
+"prepis za ključ '%s' v shemi '%s' v datoteki prepisa '%s' ni v seznamu "
 "veljavnih možnosti"
 
 #: ../gio/glib-compile-schemas.c:1999

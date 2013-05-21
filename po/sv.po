@@ -134,64 +134,64 @@ msgstr "Oväntat tidig end-of-stream"
 #: ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Nyckeln \"%s\" stöds inte i adressposten \"%s\""
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
-msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgid "Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "Adressen \"%s\" är ogiltig (behöver exakt en av sökväg, temporärkatalog eller abstrakta nycklar)"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "Betydelselös kombination av nyckel/värde-par i adressposten \"%s\""
 
 #: ../gio/gdbusaddress.c:245
 #: ../gio/gdbusaddress.c:326
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Fel i adressen \"%s\" - portattributet är felformulerat"
 
 #: ../gio/gdbusaddress.c:256
 #: ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Fel i adressen \"%s\" - familjeattributet är felformulerat"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
+msgid "Address element '%s', does not contain a colon (:)"
 msgstr "Adresselementet \"%s\" innehåller inte ett kolontecken (:)"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
-msgid "Key/Value pair %d, `%s', in address element `%s', does not contain an equal sign"
+msgid "Key/Value pair %d, '%s', in address element '%s', does not contain an equal sign"
 msgstr "Nyckel/Värde-par %d, \"%s\", i adresselementet \"%s\", innehåler inte ett lika med-tecken"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
-msgid "Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"
+msgid "Error unescaping key or value in Key/Value pair %d, '%s', in address element '%s'"
 msgstr "Fel vid borttagning av escape i nyckel eller värde i Nyckel/Värde-par %d, \"%s\", i adresselementet \"%s\""
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
-msgid "Error in address `%s' - the unix transport requires exactly one of the keys `path' or `abstract' to be set"
+msgid "Error in address '%s' - the unix transport requires exactly one of the keys 'path' or 'abstract' to be set"
 msgstr "Fel i adressen \"%s\" - unix-transporten kräver att exakt en av nycklarna \"path\" eller \"abstract\" har ställts in"
 
 #: ../gio/gdbusaddress.c:595
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr "Fel i adressen \"%s\" - värdattributet saknas eller är felformulerat"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr "Fel i adressen \"%s\" - portattributet saknas eller är felformulerat"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr "Fel i adressen \"%s\" - attributet för noncefilen saknas eller är felformulerad"
 
 #: ../gio/gdbusaddress.c:644
@@ -200,27 +200,27 @@ msgstr "Fel vid automatisk körning: "
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "Okänd transport \"%s\" eller stöds inte för adressen \"%s\""
 
 #: ../gio/gdbusaddress.c:688
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Fel vid öppning av nonce-filen \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Fel vid läsning från nonce-filen \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:715
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "Fel vid läsning från nonce-filen \"%s\", förväntade 16 byte, fick %d"
 
 #: ../gio/gdbusaddress.c:733
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Fel vid skrivning av innehåll i nonce-filen \"%s\" till ström:"
 
 #: ../gio/gdbusaddress.c:952
@@ -233,17 +233,17 @@ msgstr "Kan inte starta en meddelandebuss utan ett maskin-id: "
 
 #: ../gio/gdbusaddress.c:1058
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Fel vid körning av kommandoraden \"%s\": "
 
 #: ../gio/gdbusaddress.c:1069
 #, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
 msgstr "Onormal programterminering startar kommandoraden \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:1083
 #, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
 msgstr "Kommandoraden \"%s\" avslutades med icke-noll-status %d: %s"
 
 #: ../gio/gdbusaddress.c:1156
@@ -254,7 +254,7 @@ msgstr "Kan inte fastställa adress för sessionsbuss (inte implementerat för d
 #: ../gio/gdbusaddress.c:1255
 #: ../gio/gdbusconnection.c:6705
 #, c-format
-msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value '%s'"
 msgstr "Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE - okänt värde \"%s\""
 
 #: ../gio/gdbusaddress.c:1264
@@ -286,75 +286,75 @@ msgstr "Avbröts via GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Fel vid hämtning av information för katalogen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgid "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr "Rättigheter på katalogen \"%s\" är felformulerad. Förväntade rättigheten 0700, fick 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Fel vid skapandet av katalogen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Fel vid öppnandet av nyckelringen \"%s\" för läsning: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406
 #: ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Rad %d av nyckelringen vid \"%s\" med innehåll \"%s\" är felformulerad"
 
 #: ../gio/gdbusauthmechanismsha1.c:420
 #: ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
-msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Första token på rad %d av nyckelringen i \"%s\" med innehållet \"%s\" är felformulerad"
 
 #: ../gio/gdbusauthmechanismsha1.c:435
 #: ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
-msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Andra token på rad %d av nyckelringen i \"%s\" med innehållet \"%s\" är felformulerad"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Hittade inte kaka med id %d i nyckelringen vid \"%s\""
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Fel vid borttagning av gamla låsfilen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Fel vid skapandet av låsfilen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Fel vid stängning av (avlänkad) låsfilen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Fel vid avlänkning av låsfilen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Fel vid öppning av nyckelringen \"%s\" för skrivning: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(I tillägg misslyckades även upplåsningen för \"%s\": %s) "
 
 #: ../gio/gdbusconnection.c:594
@@ -373,33 +373,33 @@ msgstr "Flaggor som inte stöds påträffades vid konstruktion av en anslutning 
 #: ../gio/gdbusconnection.c:4015
 #: ../gio/gdbusconnection.c:4331
 #, c-format
-msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Inget sådant gränssnitt \"org.freedesktop.DBus.Properties\" på objekt med sökvägen %s"
 
 #: ../gio/gdbusconnection.c:4086
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "Fel vid inställning av egenskapen \"%s\": Förväntade typen \"%s\" men fick \"%s\""
 
 #: ../gio/gdbusconnection.c:4181
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Ingen sådan egenskap \"%s\""
 
 #: ../gio/gdbusconnection.c:4193
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "Egenskapen \"%s\" är inte läsbar"
 
 #: ../gio/gdbusconnection.c:4204
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "Egenskapen \"%s\" är inte skrivbar"
 
 #: ../gio/gdbusconnection.c:4274
 #: ../gio/gdbusconnection.c:6148
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Inget sådan gränssnitt \"%s\""
 
 #: ../gio/gdbusconnection.c:4458
@@ -409,17 +409,17 @@ msgstr "Inget sådant gränssnitt"
 #: ../gio/gdbusconnection.c:4676
 #: ../gio/gdbusconnection.c:6654
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Inget sådant gränssnitt \"%s\" på objekt med sökvägen %s"
 
 #: ../gio/gdbusconnection.c:4731
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Ingen sådan metod \"%s\""
 
 #: ../gio/gdbusconnection.c:4762
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Typ av meddelande, \"%s\", matchar inte förväntade typen \"%s\""
 
 #: ../gio/gdbusconnection.c:4982
@@ -429,12 +429,12 @@ msgstr "Ett objekt är redan exporterat för gränssnittet %s vid %s"
 
 #: ../gio/gdbusconnection.c:5180
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoden \"%s\" returnerade typen \"%s\", men förväntade \"%s\""
 
 #: ../gio/gdbusconnection.c:6259
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoden \"%s\" på gränssnittet \"%s\" med signaturen \"%s\" finns inte"
 
 #: ../gio/gdbusconnection.c:6378
@@ -479,22 +479,22 @@ msgstr[1] "Ville läsa %lu byte men fick EOF (slut på fil)"
 
 #: ../gio/gdbusmessage.c:1025
 #, c-format
-msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
+msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr "Förväntade giltig UTF-8-sträng men hittade ogiltiga byte vid byte-offset %d (längd av strängen är %d). Den giltiga UTF-8-strängen fram till den punkten var \"%s\""
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "Förväntade NUL byte efter strängen \"%s\" men hittade byte %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-objektsökväg"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-signatur "
 
 #: ../gio/gdbusmessage.c:1324
@@ -506,12 +506,12 @@ msgstr[1] "Påträffade array med längden %u byte. Maximal längd är 2<<26 byt
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Tolkat värde \"%s\" för variant är inte en giltig D-Bus-signatur"
 
 #: ../gio/gdbusmessage.c:1517
 #, c-format
-msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgid "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr "Fel vid deserialisering av GVariant med typsträngen \"%s\" från D-Bus-wireformatet"
 
 #: ../gio/gdbusmessage.c:1705
@@ -526,12 +526,12 @@ msgstr "Ogiltig större protokollversion. Förväntade 1 men hittade %d"
 
 #: ../gio/gdbusmessage.c:1776
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "Signaturrubrik med signaturen \"%s\" hittades med meddelandetexten är tom"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-signatur (för kropp)"
 
 #: ../gio/gdbusmessage.c:1821
@@ -547,7 +547,7 @@ msgstr "Kan inte deserialisera meddelande: "
 
 #: ../gio/gdbusmessage.c:2163
 #, c-format
-msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr "Fel vid serialisering av GVariant med typsträngen \"%s\" till D-Bus-wireformatet"
 
 #: ../gio/gdbusmessage.c:2304
@@ -561,22 +561,22 @@ msgstr "Kan inte serialisera meddelandet: "
 
 #: ../gio/gdbusmessage.c:2356
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr "Meddelandetexten har signaturen \"%s\" men det finns ingen signaturrubrik"
 
 #: ../gio/gdbusmessage.c:2366
 #, c-format
-msgid "Message body has type signature `%s' but signature in the header field is `%s'"
+msgid "Message body has type signature '%s' but signature in the header field is '%s'"
 msgstr "Meddelandetexten har typsignaturen \"%s\" men signaturen i rubrikfältet är \"%s\""
 
 #: ../gio/gdbusmessage.c:2382
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Meddelandetexten är tom men signaturen i rubrikfältet är \"(%s)\""
 
 #: ../gio/gdbusmessage.c:2939
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Fel returnerades med meddelande av typen \"%s\""
 
 #: ../gio/gdbusmessage.c:2947
@@ -612,17 +612,17 @@ msgstr "Kan inte ange nonce-filen när en server skapas"
 
 #: ../gio/gdbusserver.c:872
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Fel vid skrivning av nonce-fil i \"%s\": %s"
 
 #: ../gio/gdbusserver.c:1038
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "Strängen \"%s\" är inte ett giltigt D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1078
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Kan inte lyssna på transport som inte stöds \"%s\""
 
 #: ../gio/gdbus-tool.c:88
@@ -700,12 +700,12 @@ msgstr "Flera anslutningsändpunkter har angivits"
 
 #: ../gio/gdbus-tool.c:463
 #, c-format
-msgid "Warning: According to introspection data, interface `%s' does not exist\n"
+msgid "Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr "Varning: Enligt introspektionsdata finns inte gränssnittet \"%s\"\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
-msgid "Warning: According to introspection data, method `%s' does not exist on interface `%s'\n"
+msgid "Warning: According to introspection data, method '%s' does not exist on interface '%s'\n"
 msgstr "Varning: Enligt introspektionsdata finns inte metoden \"%s\" på gränssnittet \"%s\"\n"
 
 #: ../gio/gdbus-tool.c:534
@@ -816,12 +816,12 @@ msgstr "Fel: Metodnamnet är inte angivet\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Fel: Metodnamnet \"%s\" är ogiltigt\n"
 
 #: ../gio/gdbus-tool.c:974
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Fel vid tolkning av parameter %d av typen \"%s\": %s\n"
 
 #: ../gio/gdbus-tool.c:1406
@@ -1445,7 +1445,7 @@ msgstr "Ignorerar denna fil.\n"
 
 #: ../gio/glib-compile-schemas.c:1854
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr "Ingen sådan nyckel \"%s\" i schemat \"%s\" som angetts i åsidosättningsfilen \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1860
@@ -1464,7 +1464,7 @@ msgstr " och --strict angavs; avslutar.\n"
 
 #: ../gio/glib-compile-schemas.c:1880
 #, c-format
-msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s.  "
+msgid "error parsing key '%s' in schema '%s' as specified in override file '%s': %s.  "
 msgstr "fel vid tolkning av nyckeln \"%s\" i schemat \"%s\" som angetts i åsidosättningsfilen \"%s\": %s.  "
 
 #: ../gio/glib-compile-schemas.c:1890
@@ -1474,12 +1474,12 @@ msgstr "Ignorerar åsidosättning för denna nyckel.\n"
 
 #: ../gio/glib-compile-schemas.c:1908
 #, c-format
-msgid "override for key `%s' in schema `%s' in override file `%s' is out of the range given in the schema"
+msgid "override for key '%s' in schema '%s' in override file '%s' is out of the range given in the schema"
 msgstr "åsidosättning för nyckeln \"%s\" i schemat \"%s\" i åsidosättningsfilen \"%s\" är utanför intervallet som anges i schemat"
 
 #: ../gio/glib-compile-schemas.c:1936
 #, c-format
-msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
+msgid "override for key '%s' in schema '%s' in override file '%s' is not in the list of valid choices"
 msgstr "åsidosättning för nyckeln \"%s\" i schemat \"%s\" i åsidosättningsfilen \"%s\" finns inte i listan över giltiga val"
 
 #: ../gio/glib-compile-schemas.c:1989
@@ -4233,7 +4233,7 @@ msgstr "%.1f KB"
 #~ msgid "pm"
 #~ msgstr "pm"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
 #~ msgstr "Typ av returvärde är felaktigt, fick \"%s\", förväntade \"%s\""
 
 #~ msgid ""
@@ -4370,12 +4370,6 @@ msgstr "%.1f KB"
 #~ msgid "Could not change file mode: Child terminated abnormally"
 #~ msgstr "Kunde inte byta filläge: Barnet avslutades onormalt"
 
-#~ msgid "Conversion from character set `%s' to `%s' is not supported"
-#~ msgstr "Konvertering från teckentabellen \"%s\" till \"%s\" stöds inte"
-
-#~ msgid "Could not open converter from `%s' to `%s': %s"
-#~ msgstr "Kunde inte öppna konverteraren från \"%s\" till \"%s\": %s"
-
 #~ msgid ""
 #~ "Failed to parse '%s', which should have been a digit inside a character "
 #~ "reference (&#234; for example) - perhaps the digit is too large"
@@ -4396,5 +4390,5 @@ msgstr "%.1f KB"
 #~ msgstr "Kanalinställningsflaggor stöds inte"
 
 #~ msgid ""
-#~ "The hostname of the URI `%s' is contains invalidly escaped characters"
+#~ "The hostname of the URI '%s' is contains invalidly escaped characters"
 #~ msgstr "Värdnamnet för URI:n \"%s\" innehåller felaktigt inbäddade tecken"

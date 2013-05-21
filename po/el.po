@@ -138,84 +138,84 @@ msgstr "Αναπάντεχο πρόωρο τέλος ροής"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Ανυποστήρικτο κλειδί `%s' στην εισαγωγή διεύθυνσης`%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Ανυποστήρικτο κλειδί '%s' στην εισαγωγή διεύθυνσης'%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"Η διεύθυνση `%s' είναι άκυρη (χρειάζεται ακριβώς μια διαδρομή, tmpdir ή "
+"Η διεύθυνση '%s' είναι άκυρη (χρειάζεται ακριβώς μια διαδρομή, tmpdir ή "
 "αφηρημένα κλειδιά)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr ""
-"Συνδυασμός χωρίς νόημα ζευγαριού κλειδιού/τιμής στην εισαγόμενη διεύθυνση `"
+"Συνδυασμός χωρίς νόημα ζευγαριού κλειδιού/τιμής στην εισαγόμενη διεύθυνση '"
 "%s'"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Σφάλμα στη διεύθυνση `%s' - η ιδιότητα θύρας είναι κακοδιατυπωμένη"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Σφάλμα στη διεύθυνση '%s' - η ιδιότητα θύρας είναι κακοδιατυπωμένη"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Σφάλμα στη διεύθυνση `%s' - η ιδιότητα ομάδας είναι κακοδιατυπωμένη"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Σφάλμα στη διεύθυνση '%s' - η ιδιότητα ομάδας είναι κακοδιατυπωμένη"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "Το στοιχείο διευθύνσεως `%s' δεν περιέχει διπλή στιγμή (:)"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "Το στοιχείο διευθύνσεως '%s' δεν περιέχει διπλή στιγμή (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
-"Το δίδυμο κλειδί/τιμή %d, `%s', στο στοιχείο διεύθυνσης`%s' δεν περιέχει τον "
+"Το δίδυμο κλειδί/τιμή %d, '%s', στο στοιχείο διεύθυνσης'%s' δεν περιέχει τον "
 "τελεστή ίσον"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Σφάλμα στη μη διαφυγή του κλειδιού ή της τιμής στο δίδυμο κλειδί/τιμή %d, `"
-"%s', στο στοιχείο διεύθυνσης `%s'"
+"Σφάλμα στη μη διαφυγή του κλειδιού ή της τιμής στο δίδυμο κλειδί/τιμή %d, '"
+"%s', στο στοιχείο διεύθυνσης '%s'"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Σφάλμα στη διεύθυνση `%s' – ο μεταφορέας unix απαιτεί ακριβώς ένα από τα "
-"κλειδιά `path' ή `abstract' να οριστούν"
+"Σφάλμα στη διεύθυνση '%s' – ο μεταφορέας unix απαιτεί ακριβώς ένα από τα "
+"κλειδιά 'path' ή 'abstract' να οριστούν"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση `%s' - η ιδιότητα οικοδεσπότη λείπει ή είναι "
+"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα οικοδεσπότη λείπει ή είναι "
 "κακοδιατυπωμένη"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση `%s' - η ιδιότητα θύρας λείπει ή είναι κακοδιατυπωμένη"
+"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα θύρας λείπει ή είναι κακοδιατυπωμένη"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση `%s' - η ιδιότητα του παρόντος αρχείου λείπει ή είναι "
+"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα του παρόντος αρχείου λείπει ή είναι "
 "κακοδιατυπωμένη"
 
 #
@@ -225,33 +225,33 @@ msgstr "Σφάλμα αυτόματης εκκίνησης: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "Άγνωστη ή ανυποστήρικτη μεταφορά `%s' για τη διεύθυνση `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "Άγνωστη ή ανυποστήρικτη μεταφορά '%s' για τη διεύθυνση '%s'"
 
 #
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "Σφάλμα ανοίγματος παρόντος αρχείου `%s': %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "Σφάλμα ανοίγματος παρόντος αρχείου '%s': %s"
 
 #
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "Σφάλμα ανάγνωσης από το παρόν αρχείο `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "Σφάλμα ανάγνωσης από το παρόν αρχείο '%s': %s"
 
 #
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
-"Σφάλμα ανάγνωσης από το παρόν αρχείο `%s', αναμενόμενες 16 bytes, "
+"Σφάλμα ανάγνωσης από το παρόν αρχείο '%s', αναμενόμενες 16 bytes, "
 "παραλήφθηκαν %d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Σφάλμα εγγραφής περιεχομένου του παρόντος αρχείου `%s' στην ροή:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Σφάλμα εγγραφής περιεχομένου του παρόντος αρχείου '%s' στην ροή:"
 
 #: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
@@ -269,8 +269,8 @@ msgstr "Αδύνατη η δημιουργία διαύλου μηνυμάτων
 #
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "Σφάλμα δημιουργίας στη γραμμή εντολών `%s': "
+msgid "Error spawning command line '%s': "
+msgstr "Σφάλμα δημιουργίας στη γραμμή εντολών '%s': "
 
 #: ../gio/gdbusaddress.c:1296
 #, c-format
@@ -294,10 +294,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Αδύνατος ο καθορισμός της διεύθυνση διαύλου από την μεταβλητή περιβάλλοντος "
-"DBUS_STARTER_BUS_TYPE - άγνωστη τιμή `%s'"
+"DBUS_STARTER_BUS_TYPE - άγνωστη τιμή '%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
@@ -338,89 +338,89 @@ msgstr "Ακυρώθηκε μέσω του GDBusAuthObserver::authorize-authenti
 #
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "Σφάλμα λήψης πληροφορίας του καταλόγου `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "Σφάλμα λήψης πληροφορίας του καταλόγου '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Δικαιώματα στον κατάλογο `%s' είναι κακοδιατυπωμένα. Αναμενόμενη κατάσταση "
+"Δικαιώματα στον κατάλογο '%s' είναι κακοδιατυπωμένα. Αναμενόμενη κατάσταση "
 "0700, ελήφθη 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Σφάλμα δημιουργίας καταλόγου `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Σφάλμα δημιουργίας καταλόγου '%s': %s"
 
 #
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Σφάλμα ανοίγματος της κλειδοθήκης `%s' για ανάγνωση: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Σφάλμα ανοίγματος της κλειδοθήκης '%s' για ανάγνωση: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Η γραμμή %d από την κλειδοθήκη στο `%s' με το περιεχόμενο `%s' είναι "
+"Η γραμμή %d από την κλειδοθήκη στο '%s' με το περιεχόμενο '%s' είναι "
 "κακοδιατυπωμένη"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Το πρώτο σημείο της γραμμής %d της κλειδοθήκης στο `%s' με περιεχόμενο `%s' "
+"Το πρώτο σημείο της γραμμής %d της κλειδοθήκης στο '%s' με περιεχόμενο '%s' "
 "είναι κακοδιατυπωμένο"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Το δεύτερο διακριτικό της γραμμής %d της κλειδοθήκης στο `%s' με περιεχόμενο "
-"`%s' είναι κακοδιατυπωμένο"
+"Το δεύτερο διακριτικό της γραμμής %d της κλειδοθήκης στο '%s' με περιεχόμενο "
+"'%s' είναι κακοδιατυπωμένο"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Δεν βρήκε το μπισκότο με ταυτότητα %d στη κλειδοθήκη στο `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Δεν βρήκε το μπισκότο με ταυτότητα %d στη κλειδοθήκη στο '%s'"
 
 #
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "Σφάλμα διαγραφής ξεπερασμένου αρχείου κλειδαριών `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "Σφάλμα διαγραφής ξεπερασμένου αρχείου κλειδαριών '%s': %s"
 
 #
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "Σφάλμα δημιουργίας αρχείου κλειδαριών `%s': %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "Σφάλμα δημιουργίας αρχείου κλειδαριών '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Σφάλμα στο κλείσιμο (αποσυνδεμένου) αρχείου κλειδαριών `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "Σφάλμα στο κλείσιμο (αποσυνδεμένου) αρχείου κλειδαριών '%s': %s"
 
 #
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "Σφάλμα αποσύνδεσης αρχείου κλειδαριών `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "Σφάλμα αποσύνδεσης αρχείου κλειδαριών '%s': %s"
 
 #
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "Σφάλμα στο άνοιγμα της κλειδοθήκης `%s' για εγγραφή: "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "Σφάλμα στο άνοιγμα της κλειδοθήκης '%s' για εγγραφή: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Επιπλέον, απελευθερώνοντας το κλείδωμα για `%s' απέτυχε επίσης: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Επιπλέον, απελευθερώνοντας το κλείδωμα για '%s' απέτυχε επίσης: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -439,36 +439,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Καμία τέτοια διεπαφή `org.freedesktop.DBus.Properties' στο αντικείμενο στη "
+"Καμία τέτοια διεπαφή 'org.freedesktop.DBus.Properties' στο αντικείμενο στη "
 "διαδρομή %s"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Σφάλμα ρύθμισης της ιδιότητας`%s': Αναμενόμενος τύπος `%s' αλλά βρήκε `%s'"
+"Σφάλμα ρύθμισης της ιδιότητας'%s': Αναμενόμενος τύπος '%s' αλλά βρήκε '%s'"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
-msgstr "Δεν υπάρχει η ιδιότητα `%s'"
+msgid "No such property '%s'"
+msgstr "Δεν υπάρχει η ιδιότητα '%s'"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Η ιδιότητα `%s' δεν είναι αναγνώσιμη"
+msgid "Property '%s' is not readable"
+msgstr "Η ιδιότητα '%s' δεν είναι αναγνώσιμη"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Η ιδιότητα `%s' δεν είναι εγγράψιμη"
+msgid "Property '%s' is not writable"
+msgstr "Η ιδιότητα '%s' δεν είναι εγγράψιμη"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
-msgstr "Δεν υπάρχει η διεπαφή`%s'"
+msgid "No such interface '%s'"
+msgstr "Δεν υπάρχει η διεπαφή'%s'"
 
 #: ../gio/gdbusconnection.c:4508
 msgid "No such interface"
@@ -476,18 +476,18 @@ msgstr "Δεν υπάρχει τέτοια διεπαφή"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "Δεν υπάρχει η διεπαφή `%s' στο αντικείμενο στην διαδρομή %s"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Δεν υπάρχει η διεπαφή '%s' στο αντικείμενο στην διαδρομή %s"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
-msgstr "Δεν υπάρχει η μέθοδος `%s'"
+msgid "No such method '%s'"
+msgstr "Δεν υπάρχει η μέθοδος '%s'"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "Ο τύπος μηνύματος, `%s', δεν ταιριάζει με τον αναμενόμενο τύπο `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Ο τύπος μηνύματος, '%s', δεν ταιριάζει με τον αναμενόμενο τύπο '%s'"
 
 #: ../gio/gdbusconnection.c:5032
 #, c-format
@@ -496,13 +496,13 @@ msgstr "Ένα αντικείμενο έχει εξαχθεί ήδη για τη
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "Η μέθοδος `%s' επέστρεψε τον τύπο `%s', αλλά αναμενόταν `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Η μέθοδος '%s' επέστρεψε τον τύπο '%s', αλλά αναμενόταν '%s'"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "Η μέθοδος `%s' στη διεπαφή `%s' με υπογραφή `%s' δεν υπάρχει"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Η μέθοδος '%s' στη διεπαφή '%s' με υπογραφή '%s' δεν υπάρχει"
 
 #: ../gio/gdbusconnection.c:6430
 #, c-format
@@ -554,29 +554,29 @@ msgstr[1] "Απαίτηση για ανάγνωση %lu ψηφιολέξεων �
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr ""
-"Αναμενόμενo byte NUL μετά από το αλφαριθμητικό `%s' αλλά βρέθηκε byte %d"
+"Αναμενόμενo byte NUL μετά από το αλφαριθμητικό '%s' αλλά βρέθηκε byte %d"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Αναμενόταν έγκυρο αλφαριθμητικό UTF-8 αλλά βρέθηκαν άκυρα bytes στη "
 "μετατόπιση byte %d (μήκος του αλφαριθμητικού %d). Το έγκυρο UTF-8 "
-"αλφαριθμητικό μέχρι εκείνο το σημείο ήταν `%s'"
+"αλφαριθμητικό μέχρι εκείνο το σημείο ήταν '%s'"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "Η αναλυμένη τιμή `%s' δεν είναι αποδεκτή διαδρομή αντικειμένου D-Bus"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "Η αναλυμένη τιμή '%s' δεν είναι αποδεκτή διαδρομή αντικειμένου D-Bus"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Η αναλυμένη τιμή `%s' δεν είναι έγκυρη υπογραφή D-Bus"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Η αναλυμένη τιμή '%s' δεν είναι έγκυρη υπογραφή D-Bus"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
@@ -591,16 +591,16 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
-"Η αναλυμένη τιμή `%s' για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
+"Η αναλυμένη τιμή '%s' για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Σφάλμα αποσειριοποίησης GVariant με τον τύπο αλφαριθμητικού `%s' από τη "
+"Σφάλμα αποσειριοποίησης GVariant με τον τύπο αλφαριθμητικού '%s' από τη "
 "μορφή καλωδίου D-Bus"
 
 #: ../gio/gdbusmessage.c:2062
@@ -619,15 +619,15 @@ msgstr "Άκυρη κύρια έκδοση πρωτοκόλλου. Αναμεν�
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"Η κεφαλίδα υπογραφών με υπογραφή `%s' βρέθηκε αλλά το σώμα του μηνύματος "
+"Η κεφαλίδα υπογραφών με υπογραφή '%s' βρέθηκε αλλά το σώμα του μηνύματος "
 "είναι κενό"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Η αναλυμένη τιμή `%s' δεν είναι αποδεκτή υπογραφή D-Bus (για το σώμα)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "Η αναλυμένη τιμή '%s' δεν είναι αποδεκτή υπογραφή D-Bus (για το σώμα)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
@@ -647,9 +647,9 @@ msgstr "Αδυναμία αποσειριοποίησης μηνύματος: "
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"Σφάλμα στην σειριακή διάταξη GVariant με τύπο αλφαριθμητικού `%s' στην μορφή "
+"Σφάλμα στην σειριακή διάταξη GVariant με τύπο αλφαριθμητικού '%s' στην μορφή "
 "δικτυώματος D-Bus"
 
 #: ../gio/gdbusmessage.c:2643
@@ -667,30 +667,30 @@ msgstr "Αδυναμία σειριακής διάταξης μηνύματος:
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
-"Το σώμα του μηνύματος έχει υπογραφή `%s' αλλά δεν υπάρχει κεφαλίδα υπογραφής"
+"Το σώμα του μηνύματος έχει υπογραφή '%s' αλλά δεν υπάρχει κεφαλίδα υπογραφής"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"Το σώμα του μηνύματος έχει την υπογραφή τύπου `%s' αλλά η υπογραφή στο πεδίο "
-"κεφαλίδας είναι `%s'"
+"Το σώμα του μηνύματος έχει την υπογραφή τύπου '%s' αλλά η υπογραφή στο πεδίο "
+"κεφαλίδας είναι '%s'"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
-"Το σώμα του μηνύματος είναι κενό αλλά η υπογραφή στο πεδίο κεφαλίδας είναι `"
+"Το σώμα του μηνύματος είναι κενό αλλά η υπογραφή στο πεδίο κεφαλίδας είναι '"
 "(%s)'"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "Σφάλμα επιστροφής με σώμα τύπου`%s'"
+msgid "Error return with body of type '%s'"
+msgstr "Σφάλμα επιστροφής με σώμα τύπου'%s'"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -736,18 +736,18 @@ msgstr ""
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Σφάλμα εγγραφής στο παρόν αρχείο στο `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Σφάλμα εγγραφής στο παρόν αρχείο στο '%s': %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "Το αλφαριθμητικό `%s' δεν είναι αποδεκτό D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "Το αλφαριθμητικό '%s' δεν είναι αποδεκτό D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Αδυναμία ακρόασης στην ανυποστήρικτη μεταφορά `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Αδυναμία ακρόασης στην ανυποστήρικτη μεταφορά '%s'"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -821,19 +821,19 @@ msgstr "Διευκρινίστηκαν πολλαπλά σημεία τέλου�
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
-"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η διεπαφή `%s' δεν "
+"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η διεπαφή '%s' δεν "
 "υπάρχει\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η μέθοδος `%s' δεν "
-"υπάρχει στη διεπαφή `%s'\n"
+"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η μέθοδος '%s' δεν "
+"υπάρχει στη διεπαφή '%s'\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -942,14 +942,14 @@ msgstr "Σφάλμα: αδιευκρίνιστο όνομα μεθόδου\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Σφάλμα: Το όνομα μεθόδου `%s' είναι άκυρο\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Σφάλμα: Το όνομα μεθόδου '%s' είναι άκυρο\n"
 
 #
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Σφάλμα στην ανάλυσης παραμέτρου %d του τύπου `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Σφάλμα στην ανάλυσης παραμέτρου %d του τύπου '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1599,10 +1599,10 @@ msgstr "Παράβλεψη αυτού του αρχείου.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Δεν υπάρχει τέτοιο κλειδί `%s' στο σχήμα `%s' όπως ορίζεται στο αρχείο "
-"αντικατάστασης `%s'"
+"Δεν υπάρχει τέτοιο κλειδί '%s' στο σχήμα '%s' όπως ορίζεται στο αρχείο "
+"αντικατάστασης '%s'"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
 #: ../gio/glib-compile-schemas.c:1956
@@ -1619,10 +1619,10 @@ msgstr " και ορίστηκε το --strict· έξοδος.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"σφάλμα ανάλυσης κλειδιού `%s' στο σχήμα `%s' όπως ορίστηκε στο αρχείο "
-"αντικατάστασης `%s': %s."
+"σφάλμα ανάλυσης κλειδιού '%s' στο σχήμα '%s' όπως ορίστηκε στο αρχείο "
+"αντικατάστασης '%s': %s."
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -1632,19 +1632,19 @@ msgstr "Παράβλεψη αντικατάστασης για αυτό το κ�
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"η αντικατάσταση για το κλειδί `%s' στο σχήμα `%s' στο αρχείο αντικατάστασης `"
+"η αντικατάσταση για το κλειδί '%s' στο σχήμα '%s' στο αρχείο αντικατάστασης '"
 "%s' είναι εκτός της εμβέλειας που έχει δοθεί στο σχήμα"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"η αντικατάσταση για το κλειδί`%s' στο σχήμα `%s' στο αρχείο αντικατάστασης `"
+"η αντικατάσταση για το κλειδί'%s' στο σχήμα '%s' στο αρχείο αντικατάστασης '"
 "%s' δεν είναι στον κατάλογο έγκυρων επιλογών"
 
 #: ../gio/glib-compile-schemas.c:1999
@@ -4528,14 +4528,14 @@ msgstr "%.1f KB"
 #~ msgid "Unexpected error in waitpid() (%s)"
 #~ msgstr "Απρόσμενο σφάλμα στη waitpid() (%s)"
 
-#~ msgid "Abnormal program termination spawning command line `%s': %s"
+#~ msgid "Abnormal program termination spawning command line '%s': %s"
 #~ msgstr ""
 #~ "Ανώμαλος τερματισμός προγράμματος κατά την δημιουργία της γραμμής εντολών "
-#~ "`%s': %s"
+#~ "'%s': %s"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr ""
-#~ "Η γραμμή εντολών `%s' τερματίστηκε με κατάσταση εξόδου διαφορετική από το "
+#~ "Η γραμμή εντολών '%s' τερματίστηκε με κατάσταση εξόδου διαφορετική από το "
 #~ "μηδέν %d: %s"
 
 #~ msgid "workspace limit for empty substrings reached"
@@ -4602,9 +4602,9 @@ msgstr "%.1f KB"
 #~ msgid "pm"
 #~ msgstr "μμ"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
 #~ msgstr ""
-#~ "Ο τύπος της τιμής επιστροφής είναι ανακριβής, δόθηκε `%s', αναμενόταν `%s'"
+#~ "Ο τύπος της τιμής επιστροφής είναι ανακριβής, δόθηκε '%s', αναμενόταν '%s'"
 
 #~ msgid ""
 #~ "Trying to set property %s of type %s but according to the expected "
@@ -4660,8 +4660,8 @@ msgstr "%.1f KB"
 #~ "Παρακολούθηση του KEY για αλλαγές και εκτύπωση των αλλαγμένων τιμών.\n"
 #~ "Η παρακολούθηση θα συνεχιστεί έως ότου ολοκληρωθεί η διαδικασία."
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
-#~ msgstr "Δεν υπάρχει το σχήμα `%s' όπως ορίζεται στο αρχείο παράκαμψης `%s'"
+#~ msgid "No such schema '%s' specified in override file '%s'"
+#~ msgstr "Δεν υπάρχει το σχήμα '%s' όπως ορίζεται στο αρχείο παράκαμψης '%s'"
 
 #, fuzzy
 #~ msgid "Do not give error for empty directory"

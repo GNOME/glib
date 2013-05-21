@@ -105,7 +105,7 @@ msgstr "ரத்துசெய்யக்கூடிய துவக்க�
 #: ../glib/gconvert.c:642 ../glib/giochannel.c:1414
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "வரியுரு வகை `%s' இலிருந்து `%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
+msgstr "வரியுரு வகை '%s' இலிருந்து '%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
 
 #: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:568
 #: ../glib/gconvert.c:646
@@ -146,80 +146,80 @@ msgstr "எதிர்ப்பார்க்கப்படாத முட�
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "துணைபுரியாத விசை `%s' ஆனது முகவரி உள்ளிடு `%s' இல் உள்ளது"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "துணைபுரியாத விசை '%s' ஆனது முகவரி உள்ளிடு '%s' இல் உள்ளது"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"முகவரி `%s' தவறானது (சரியாக ஒரு பாதை தேவைப்படுகிறது, tmpdir அல்லது சுருக்க "
+"முகவரி '%s' தவறானது (சரியாக ஒரு பாதை தேவைப்படுகிறது, tmpdir அல்லது சுருக்க "
 "விசைகள்)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "முகவரி உள்ளிடு `%s' இல் அர்த்தமற்ற விசை/மதிப்பு ஜோடி கலவை"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "முகவரி உள்ளிடு '%s' இல் அர்த்தமற்ற விசை/மதிப்பு ஜோடி கலவை"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "முகவரி `%s' இல் பிழை - துறை பண்பு தவறானது"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "முகவரி '%s' இல் பிழை - துறை பண்பு தவறானது"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "முகவரி `%s' இல் பிழை - குடும்ப பண்பு தவறானது"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "முகவரி '%s' இல் பிழை - குடும்ப பண்பு தவறானது"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "முகவரியின் `%s' என்ற கூறில் கோலன் (:) இல்லை"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "முகவரியின் '%s' என்ற கூறில் கோலன் (:) இல்லை"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
-"முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, `%2$s' இல் சமக் குறி "
+"முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, '%2$s' இல் சமக் குறி "
 "இல்லை"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"பிழை தப்பிக்காத விசை அல்லது விசையின் மதிப்பு/மதிப்பு ஜோடி %d, `%s', உருப்படி "
-"முகவரியில்`%s'"
+"பிழை தப்பிக்காத விசை அல்லது விசையின் மதிப்பு/மதிப்பு ஜோடி %d, '%s', உருப்படி "
+"முகவரியில்'%s'"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"முகவரியில் பிழை `%s' - யுனிக்ஸ் போக்குவரத்துசரியாக விசைகளின் ஒரு `பாதை' "
+"முகவரியில் பிழை '%s' - யுனிக்ஸ் போக்குவரத்துசரியாக விசைகளின் ஒரு 'பாதை' "
 "அல்லது "
-"`தடுத்தல்' போன்றவற்றை அமைக்க கோருகிறது"
+"'தடுத்தல்' போன்றவற்றை அமைக்க கோருகிறது"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "முகவரி `%s' இல் பிழை - புரவலன் பண்பு விடுபட்டது அல்லது தவறானது"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "முகவரி '%s' இல் பிழை - புரவலன் பண்பு விடுபட்டது அல்லது தவறானது"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "முகவரி `%s' இல் பிழை - துறை பண்பு விடுபட்டது அல்லது தவறானது"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "முகவரி '%s' இல் பிழை - துறை பண்பு விடுபட்டது அல்லது தவறானது"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
-"முகவரி `%s' இல் பிழை - நினைவுக்குறியீடுகோப்பு பண்பு விடுபட்டது அல்லது தவறானது"
+"முகவரி '%s' இல் பிழை - நினைவுக்குறியீடுகோப்பு பண்பு விடுபட்டது அல்லது தவறானது"
 
 #: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
@@ -227,31 +227,31 @@ msgstr "தானியக்க-துவக்கத்தில் பிழ�
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "`%s' முகவரிக்கான தெரியாத அல்லது துணைபுரியாத போக்குவரத்து `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "'%s' முகவரிக்கான தெரியாத அல்லது துணைபுரியாத போக்குவரத்து '%s'"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "தற்போதைய கோப்பு '%s' ஐ திறக்கும் பிழை: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "தற்சமய கோப்பு '%s' இலிருந்து வாசிக்கும் பிழை: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
-"தற்சமய கோப்பு `%s' இலிருந்து பிழை வாசிக்கிறது, 16 பைட்டுகள் "
+"தற்சமய கோப்பு '%s' இலிருந்து பிழை வாசிக்கிறது, 16 பைட்டுகள் "
 "எதிர்பார்க்கப்பட்டது, %d "
 "பெறப்பட்டது"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "தற்சமய கோப்பு `%s' ஐ ஸ்ட்ரெம்மிற்கு உள்ளடக்கங்களை எழுதும் பிழை:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "தற்சமய கோப்பு '%s' ஐ ஸ்ட்ரெம்மிற்கு உள்ளடக்கங்களை எழுதும் பிழை:"
 
 #: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
@@ -268,8 +268,8 @@ msgstr "ஒரு கணினி-குறியீடு இல்லாமல
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "பிழை ஸ்பேனிங் கட்டளை வரி `%s': "
+msgid "Error spawning command line '%s': "
+msgstr "பிழை ஸ்பேனிங் கட்டளை வரி '%s': "
 
 #: ../gio/gdbusaddress.c:1296
 #, c-format
@@ -292,10 +292,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE சூழல் மாறியிலிருந்து பஸ் முகவரியை வரையறுக்க முடியாது- "
-"தெரியாத மதிப்பு `%s'"
+"தெரியாத மதிப்பு '%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
 msgid ""
@@ -338,79 +338,79 @@ msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "`%s' கோப்புறைக்கான தகவலைப் பெறுகையில் பிழை: %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "'%s' கோப்புறைக்கான தகவலைப் பெறுகையில் பிழை: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"அடைவிலுள்ள `%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%"
+"அடைவிலுள்ள '%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%"
 "o ஆகும்"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "பிழை உருவாக்கும் அடைவு `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "பிழை உருவாக்கும் அடைவு '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "திறக்கும் கீரிங் `%s' க்காக வாசிப்பத்தில் பிழை: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "திறக்கும் கீரிங் '%s' க்காக வாசிப்பத்தில் பிழை: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "கீரிங்கின் வரி %d `%s' இல் உள்ளடக்கத்துடன் `%s' தவறானது"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "கீரிங்கின் வரி %d '%s' இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "வரியின் முதல் டோக்கன் %d கீரிங் `%s'இல் உள்ளடக்கத்துடன் `%s' தவறானது"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "வரியின் முதல் டோக்கன் %d கீரிங் '%s'இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"வரியின் இரண்டாவது டோக்கன் %d கீரிங் `%s'இல் உள்ளடக்கத்துடன் `%s' தவறானது"
+"வரியின் இரண்டாவது டோக்கன் %d கீரிங் '%s'இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "id %d உடன்  `%s' விசைரிங்கில் குக்கீயை தேட முடியவில்லை"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "id %d உடன்  '%s' விசைரிங்கில் குக்கீயை தேட முடியவில்லை"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "பிழை அழிக்கும் பழைய பூட்டு கோப்பு `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "பிழை அழிக்கும் பழைய பூட்டு கோப்பு '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "பிழை உருவாக்கும் பூட்டு கோப்பு '%s' : %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "பிழை மூடும் (இணைப்பில்லாத) பூட்டு கோப்பு `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "பிழை மூடும் (இணைப்பில்லாத) பூட்டு கோப்பு '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "பிழை இணைப்பு நீக்கும் பூட்டு கோப்பு '%s' : %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "எழுதுவதற்காக பிழை திறக்கும் கீரிங் `%s' : "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "எழுதுவதற்காக பிழை திறக்கும் கீரிங் '%s' : "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(கூடுதலாக, `%s' க்காக வெளியிடும் பூட்டும் தொல்வியுற்றது: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(கூடுதலாக, '%s' க்காக வெளியிடும் பூட்டும் தொல்வியுற்றது: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -430,37 +430,37 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4134 ../gio/gdbusconnection.c:4450
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"`org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் "
+"'org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் "
 "இல்லை"
 
 #: ../gio/gdbusconnection.c:4205
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"பிழை அமைக்கும் பண்பு `%s': எதிர்பார்க்கப்பட்ட வகை `%s' ஆனால் கிடைத்தது `%s' "
+"பிழை அமைக்கும் பண்பு '%s': எதிர்பார்க்கப்பட்ட வகை '%s' ஆனால் கிடைத்தது '%s' "
 "ஆகும்"
 
 #: ../gio/gdbusconnection.c:4300
 #, c-format
-msgid "No such property `%s'"
-msgstr "`%s' போன்ற பண்பு எதுவும் இல்லை"
+msgid "No such property '%s'"
+msgstr "'%s' போன்ற பண்பு எதுவும் இல்லை"
 
 #: ../gio/gdbusconnection.c:4312
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "பண்பு '%s' ஐ வாசிக்க முடியவில்லை"
 
 #: ../gio/gdbusconnection.c:4323
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "பண்பு '%s' ஐ எழுத முடியவில்லை"
 
 #: ../gio/gdbusconnection.c:4393 ../gio/gdbusconnection.c:6269
 #, c-format
-msgid "No such interface `%s'"
-msgstr "`%s' போன்ற இடைமுகம் இல்லை"
+msgid "No such interface '%s'"
+msgstr "'%s' போன்ற இடைமுகம் இல்லை"
 
 #: ../gio/gdbusconnection.c:4577
 msgid "No such interface"
@@ -468,18 +468,18 @@ msgstr "இது போன்ற இடைமுகம் இல்லை"
 
 #: ../gio/gdbusconnection.c:4795 ../gio/gdbusconnection.c:6775
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "`%s' பொருளில்  பாதை %s போன்ற இடைமுகம் இல்லை"
+msgid "No such interface '%s' on object at path %s"
+msgstr "'%s' பொருளில்  பாதை %s போன்ற இடைமுகம் இல்லை"
 
 #: ../gio/gdbusconnection.c:4850
 #, c-format
-msgid "No such method `%s'"
-msgstr "`%s' போன்ற முறை இல்லை"
+msgid "No such method '%s'"
+msgstr "'%s' போன்ற முறை இல்லை"
 
 #: ../gio/gdbusconnection.c:4881
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "செய்தியின் வகை, `%s', எதிர்பார்க்கப்பட வகை `%s' க்கு பொருந்தவில்லை"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "செய்தியின் வகை, '%s', எதிர்பார்க்கப்பட வகை '%s' க்கு பொருந்தவில்லை"
 
 #: ../gio/gdbusconnection.c:5101
 #, c-format
@@ -488,13 +488,13 @@ msgstr "இடைமுகம் %s க்காக %s இல் ஏற்கன
 
 #: ../gio/gdbusconnection.c:5299
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "முறை `%s' திரும்பிய வகை `%s', ஆனால் எதிர்பார்க்கப்பட்டது `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "முறை '%s' திரும்பிய வகை '%s', ஆனால் எதிர்பார்க்கப்பட்டது '%s'"
 
 #: ../gio/gdbusconnection.c:6380
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "இடைமுகத்தில் `%s' முறை `%s' உடன் கையெழுத்து `%s' இல்லை"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "இடைமுகத்தில் '%s' முறை '%s' உடன் கையெழுத்து '%s' இல்லை"
 
 #: ../gio/gdbusconnection.c:6499
 #, c-format
@@ -549,27 +549,27 @@ msgstr[1] "%lu பைட்டுகளை வாசிக்க விரும
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "Expected NUL byte after the string '%s' but found byte %d"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "எதிர்பார்க்கப்பட்ட சரியான UTF-8 சரம் ஆனால்தவறான கைட்டுகள் பைட் ஆஃப்செட் %d "
 "இல் கிடைத்தது "
-"(சரத்தின் நீளம் %d). சரியான UTF-8 சரமானது `%s' புள்ளி இருக்கும் வரை"
+"(சரத்தின் நீளம் %d). சரியான UTF-8 சரமானது '%s' புள்ளி இருக்கும் வரை"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus பொருள் பாதை இல்லை"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்து இல்லை"
 
 #: ../gio/gdbusmessage.c:1698
@@ -587,16 +587,16 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
-"மாறிக்கான பகுக்கப்பட்ட மதிப்பு `%s' ஆனது ஒரு சரியான D-Bus கையெழுத்திற்கு இல்லை"
+"மாறிக்கான பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்திற்கு இல்லை"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"GVariant உடன் சர வகை `%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
+"GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
 "பிழை"
 
 #: ../gio/gdbusmessage.c:2062
@@ -616,15 +616,15 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"கையெழுத்து தலைப்பு கையெழுத்து `%s' உடன் காணப்பட்டது ஆனால் செய்தியின் "
+"கையெழுத்து தலைப்பு கையெழுத்து '%s' உடன் காணப்பட்டது ஆனால் செய்தியின் "
 "மூயப்பகுதி "
 "காலியாக உள்ளது"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 "பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்து இல்லை (மையத்திற்கு)"
 
@@ -646,9 +646,9 @@ msgstr "செய்தி வரிசைநீக்க முடியவி�
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"GVariant உடன் சர வகை `%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
+"GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
 "பிழை"
 
 #: ../gio/gdbusmessage.c:2643
@@ -667,30 +667,30 @@ msgstr "செய்தியை வரிசைப்படுத்த மு�
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
-"செய்திப் பகுதி கையெழுத்து `%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு இல்லை"
+"செய்திப் பகுதி கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு இல்லை"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"செய்திப் பகுதி வகை கையெழுத்து `%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு "
+"செய்திப் பகுதி வகை கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு "
 "புலம் '%s' "
 "இல் உள்ளது"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 "செய்திப் பகுதி காலியாக உள்ளது ஆனால் கையெழுத்து தலைப்பு புலம் '(%s)' இல் உள்ளது"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "வகை மையத்துடன் `%s' திரும்பும் பிழை"
+msgid "Error return with body of type '%s'"
+msgstr "வகை மையத்துடன் '%s' திரும்பும் பிழை"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -736,18 +736,18 @@ msgstr ""
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "`%s' இல் பிழை எழுதும் தற்சமய கோப்பு: %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "'%s' இல் பிழை எழுதும் தற்சமய கோப்பு: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "சரம் '%s' ஒரு சரியான D-Bus GUID இல்லை"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "துணைபுரியாத போக்குவரத்து `%s' ஐ கவனிக்க முடியவில்லை"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "துணைபுரியாத போக்குவரத்து '%s' ஐ கவனிக்க முடியவில்லை"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -819,15 +819,15 @@ msgstr "பல இணைப்பு இறுதிபுள்ளிகளி�
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "எச்சரிக்கை: தன்னிலை தரவின் படி, முறை இடைமுகம் `%s' இல்லை\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "எச்சரிக்கை: தன்னிலை தரவின் படி, முறை இடைமுகம் '%s' இல்லை\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
-msgstr "எச்சரிக்கை: தன்னிலை தரவின் படி, முறை `%s' இடைமுகம் `%s' இல் இல்லை\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
+msgstr "எச்சரிக்கை: தன்னிலை தரவின் படி, முறை '%s' இடைமுகம் '%s' இல் இல்லை\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -934,13 +934,13 @@ msgstr "பிழை: முறைப் பெயர் குறிப்ப�
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "பிழை: முறை பெயர் `%s' தவறானது\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "பிழை: முறை பெயர் '%s' தவறானது\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "பிழை பகுக்கும் அளவுரு %d வகை `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "பிழை பகுக்கும் அளவுரு %d வகை '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1586,9 +1586,9 @@ msgstr "இந்த கோப்பை புறக்கணிக்கிற�
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"`%s' திட்டத்தில் `%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பு `%s' இல் விசை "
+"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பு '%s' இல் விசை "
 "எதுவும் "
 "இல்லை"
 
@@ -1607,10 +1607,10 @@ msgstr " மற்றும் --strict குறிப்பிடப்பட�
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"`%s' திட்டத்தில் `%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை "
-"பகுக்கும் விசை `"
+"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை "
+"பகுக்கும் விசை '"
 "%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1900
@@ -1621,20 +1621,20 @@ msgstr "புறக்கணிப்பதற்கான இந்த வி�
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"ஓவர்ரைடு கோப்பு `%s' இல் உள்ள திட்டம் `%s' இல் உள்ள விசை`%s'திட்டத்தில் "
+"ஓவர்ரைடு கோப்பு '%s' இல் உள்ள திட்டம் '%s' இல் உள்ள விசை'%s'திட்டத்தில் "
 "கொடுக்கப்பட்டுள்ள "
 "வரம்புக்கு வெளியே உள்ளது"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"`%s' திட்டத்திற்கான விசையை புறக்கணித்து `%s' புறக்கணிப்பு கோப்பில் `%s' ஆனது "
+"'%s' திட்டத்திற்கான விசையை புறக்கணித்து '%s' புறக்கணிப்பு கோப்பில் '%s' ஆனது "
 "சரியான "
 "தேர்வுகளின் பட்டியலில் இல்லை"
 
@@ -3060,22 +3060,22 @@ msgstr "URI '%s' \"கோப்பு\"திட்டத்தை பயன்�
 #: ../glib/gconvert.c:1881
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "உள்ளமைக் கோப்பு வலை முகவரி `%s' இல் ஓர் `#' இல்லாமல் இருக்கலாம்"
+msgstr "உள்ளமைக் கோப்பு வலை முகவரி '%s' இல் ஓர் '#' இல்லாமல் இருக்கலாம்"
 
 #: ../glib/gconvert.c:1898
 #, c-format
 msgid "The URI '%s' is invalid"
-msgstr "`%s' செல்லுபடியாகாத வலை முகவரி"
+msgstr "'%s' செல்லுபடியாகாத வலை முகவரி"
 
 #: ../glib/gconvert.c:1910
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "`%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
+msgstr "'%s' வலை முகவரியின் விருந்தோம்புப்-பெயர் செல்லுபடியாகாதது"
 
 #: ../glib/gconvert.c:1926
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "வலை முகவரி `%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
+msgstr "வலை முகவரி '%s' இல் செல்லுபடியாகாத 'விடுபடு' வரியுருகள்"
 
 #: ../glib/gconvert.c:2021
 #, c-format
@@ -4213,7 +4213,7 @@ msgstr "மேற்களித்த உரை ஓர் \" -உடன் த�
 
 #: ../glib/gshell.c:178
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
-msgstr "`கட்டளை வடியில் அல்லது வேறு மேற்களித்த உரையில் பொருத்தமற்ற \" "
+msgstr "'கட்டளை வடியில் அல்லது வேறு மேற்களித்த உரையில் பொருத்தமற்ற \" "
 
 #: ../glib/gshell.c:574
 #, c-format
@@ -4480,12 +4480,12 @@ msgstr "%.1f KB"
 #~ "Key file contains key '%s' which has value that cannot be interpreted."
 #~ msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
-#~ msgid "Abnormal program termination spawning command line `%s': %s"
-#~ msgstr "அசாதாரண நிரல் முடிவு கட்டளை வரி `%s'ஐ ஸ்பேனிங் செய்கிறது: %s"
+#~ msgid "Abnormal program termination spawning command line '%s': %s"
+#~ msgstr "அசாதாரண நிரல் முடிவு கட்டளை வரி '%s'ஐ ஸ்பேனிங் செய்கிறது: %s"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr ""
-#~ "கட்டளை வரி `%s' ஆனது பூஜ்ஜியமில்லாத வெளியேறு நிலை %d உடன் வெளியேறியது: %s"
+#~ "கட்டளை வரி '%s' ஆனது பூஜ்ஜியமில்லாத வெளியேறு நிலை %d உடன் வெளியேறியது: %s"
 
 #~ msgid "This option will be removed soon."
 #~ msgstr "இந்த விருப்பமானது விரைவில் நீக்கப்படும்."

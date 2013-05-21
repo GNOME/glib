@@ -131,43 +131,43 @@ msgstr "Ustekabeko korronte-amaiera azkarregia"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Onartu gabeko '%s' gakoa helbidearen '%s' sarreran"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "'%s' helbidea baliogabea da (gako hauetariko bat behar du: 'path' (bide-"
 "izena), 'tmpdir' (aldi baterako direktorioa) edo 'abstract' (abstraktua))"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr ""
 "Zentzurik gabeko gakoa/balioa bikotearen konbinazioa '%s' helbidearen "
 "sarreran"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Errorea '%s' helbidean - atakaren atributua gaizki osatuta dago"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Errorea '%s' helbidean - familiaren atributua gaizki osatuta dago"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr "'%s' helbidearen elementuak ez dauka bi punturik (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
 "%d. gakoa/balioa bikoteak, '%s', '%s' helbidearen elementuan, ez dauka "
@@ -176,8 +176,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "Errorea gakoa edo balioa iheseko modutik kentzean %d. gakoa/balioa bikotean, "
 "'%s', '%s' helbidearen elementuan"
@@ -185,28 +185,28 @@ msgstr ""
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Errorea '%s' helbidean - unix-eko garraioak 'path' edo 'abstract' "
 "gakoetariko bat behar du hain zuzen."
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - ostalariaren atributua falta da edo gaizki osatuta "
 "dago"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - atakaren atributua falta da edo gaizki osatuta dago"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - izendapenaren fitxategiaren atributua falta da edo "
 "gaizki osatuta dago"
@@ -217,29 +217,29 @@ msgstr "Errorea automatikoki abiaraztean: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "'%2$s' helbidearen '%1$s' garraioa ezezaguna edo onartu gabea"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategia irekitzean: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategitik irakurtzean: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
 "Errorea '%s' izendapeneko fitxategitik irakurtzean: 16 byte espero ziren, "
 "baina %d lortu dira"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Errorea '%s' izendapeneko fitxategiko edukia korrontean idaztean:"
 
 #: ../gio/gdbusaddress.c:960
@@ -257,7 +257,7 @@ msgstr "Ezin da mezuaren deia abiarazi makinaren IDrik gabe: "
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Errorea '%s' komando-lerroa abiaraztean: "
 
 #: ../gio/gdbusaddress.c:1296
@@ -281,7 +281,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Ezin da bus-aren helbidea zehaztua inguruneko DBUS_STARTER_BUS_TYPE "
 "aldagaitik. '%s' balio ezezaguna"
@@ -321,30 +321,30 @@ msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Errorea '%s' direktorioaren informazioa eskuratzean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "'%s' direktorioko baimenak gaizki osatuta. 0700 modua espero zen, baina 0%o "
 "lortuta"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Errorea '%s' direktorioa sortzean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Errorea '%s' gako sorta irakurtzeko irekitzean: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroa ('%3$s' edukiarekin) gaizki osatuta "
 "dago"
@@ -352,7 +352,7 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroko aurreneko tokena ('%3$s' "
 "edukiarekin) gaizki osatuta dago"
@@ -360,44 +360,44 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroko bigarren tokena ('%3$s' edukiarekin) "
 "gaizki osatuta dago"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Ez da %d IDko cookie-rik aurkitu '%s'(e)ngo gako sortan"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Errorea blokeoaren '%s' fitxategi zaharkitua ezabatzean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Errorea blokeoko '%s' fitxategia sortzean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Errorea blokeoko (estekatu gabeko) '%s' fitxategia ixtean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Errorea blokeoko '%s' fitxategia desestekatzean: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Errorea '%s' gako sorta idazteko irekitzean: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Gainera, '%s'(r)en blokeoa askatzeak ere huts egin du: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
@@ -417,35 +417,35 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Ez dago 'org.freedesktop.DBus.Properties' bezalako interfazerik '%s' bide-"
 "izeneko objektuan"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Errorea '%s' propietatea ezartzean: '%s' mota espero zen, baina '%s' lortu da"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Ez dago '%s' bezalako propietaterik"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "%s propietatea ez da irakurgarria"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "%s propietatea ez da idazgarria"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Ez dago '%s' bezalako interfazerik"
 
 #: ../gio/gdbusconnection.c:4508
@@ -454,17 +454,17 @@ msgstr "Ez dago halako interfazerik"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Ez dago '%s' bezalako interfazerik '%s' bide-izeneko objektuan"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Ez dago '%s' bezalako metodorik"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "'%s' mezu mota ez dator bat espero zen '%s' motarekin"
 
 #: ../gio/gdbusconnection.c:5032
@@ -474,12 +474,12 @@ msgstr "Jadanik objektu bat esportatuta dago %s interfazearentzako %s(e)n"
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "'%s' metodoak '%s' mota itzuli du, baina '%s' espero zen"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr ""
 "'%2$s' interfazeko '%1$s' metodoa '%3$s' sinadurarekin ez da existitzen"
 
@@ -533,7 +533,7 @@ msgstr[1] "%lu byte irakurtzea nahi ziren, baina %lu lortu da"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr ""
 "NUL bytea espero zen '%s' katearen ondoren, baina '%d' bytea aurkitu da"
 
@@ -541,7 +541,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Baliozko UTF-8 katea espero zen, baina baliogabeko byte batzuk aurkitu dira "
 "byteen %d desplazamenduan (katearen luzera: %d). Ordurarteko baliozko UTF-8 "
@@ -549,13 +549,13 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr ""
 "Analizatutako '%s' balioa ez da baliozko D-Bus objektuaren bide-izen bat"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Analizatutako '%s' balioa ez da baliozko D-Bus sinadura"
 
 #: ../gio/gdbusmessage.c:1698
@@ -573,14 +573,14 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "Analizatutako '%s' balioa aldagaiarentzat ez da baliozko D-Bus sinadura bat"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Errorea GVariant deserializatzean '%s' kate motarekin D-Bus konexioko "
 "formatutik"
@@ -602,14 +602,14 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 "Sinaduraren goiburua '%s' sinadurarekin aurkitu da, baina gorputza hutsik "
 "dago"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 "Analizatutako '%s' balioa ez da baliozko D-Bus sinadura (gorputzarentzako)"
 
@@ -629,7 +629,7 @@ msgstr "Ezin da mezua deserializatu: "
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Errorea GVariant serializatzean '%s' kate motarekin D-Bus konexioaren "
 "formatura"
@@ -649,14 +649,14 @@ msgstr "Ezin da mezua serializatu: "
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 "Mezuaren gorputzak '%s' sinadura du, baina ez dago sinaduraren goibururik"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "Mezuaren gorputzak '%s' sinadura mota du, baina goiburuaren eremuko sinadura "
@@ -664,13 +664,13 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 "Mezuaren gorputza hutsik dago, baina goiburuaren eremuko sinadura '(%s)' da"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Errorearen itzulera '%s' motako gorputzarekin "
 
 #: ../gio/gdbusmessage.c:3279
@@ -714,17 +714,17 @@ msgstr "Ezin da izendapeneko fitxategia zehaztu zerbitzari bat sortzean"
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategian idaztean: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "'%s' katea ez da baliozko D-Bus GUID bat"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Ezin da onartu gabeko '%s' garraioa entzun"
 
 #: ../gio/gdbus-tool.c:92
@@ -798,15 +798,15 @@ msgstr "Konexioaren hainbat amaierako puntu zehaztu dira"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
 "Abisua: introspekzioko datuen arabera, '%s' interfazea ez da existitzen\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Abisua: introspekzioko datuen arabera, '%s' metodoa ez da existitzen '%s' "
 "interfazean\n"
@@ -916,12 +916,12 @@ msgstr "Errorea: metodoaren izena ez dago zehaztuta\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Errorea: '%s' metodoaren izena baliogabea da\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Errorea '%2$s' motako %1$d parametroa analizatzean: %3$s\n"
 
 #: ../gio/gdbus-tool.c:1416
@@ -1565,7 +1565,7 @@ msgstr "Fitxategi honi ezikusi egiten.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Ez dago '%s' bezalako gakorik '%s' eskeman gainidazteko '%s' fitxategian "
 "ageri den bezala"
@@ -1585,7 +1585,7 @@ msgstr " eta --strict zehaztu da; irtetzen.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 "errorea '%2$s' eskemako '%1$s' gakoa analizatzean gainidazteko '%3$s' "
 "fitxategian ageri den bezala: %4$s."
@@ -1598,7 +1598,7 @@ msgstr "Gainidazketari ezikusi egiten gako honentzako.\n"
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 "gainidazteko '%3$s' fitxategiko '%2$s' eskemako '%1$s' gakoa gainidaztea "
@@ -1607,7 +1607,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "gainidazteko '%3$s' fitxategiko '%2$s' eskemako '%1$s' gakoa gainidaztea ez "
@@ -3407,7 +3407,7 @@ msgstr "Esteka sinbolikoak ez dira onartzen"
 #: ../glib/giochannel.c:1418
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Ezin izan da `%s'(e)tik `%s'(e)rako bihurtzailea ireki: %s"
+msgstr "Ezin izan da '%s'(e)tik '%s'(e)rako bihurtzailea ireki: %s"
 
 #: ../glib/giochannel.c:1763
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -4435,10 +4435,10 @@ msgstr[1] "%s byte"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#~ msgid "Abnormal program termination spawning command line `%s': %s"
+#~ msgid "Abnormal program termination spawning command line '%s': %s"
 #~ msgstr "Ustekabeko programaren amaiera '%s' komando-lerroa abiaraztean: %s"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr "'%s' komando-lerroa zero ez den %d egoerarekin irten da: %s"
 
 #~ msgid "No service record for '%s'"
@@ -4502,7 +4502,7 @@ msgstr "%.1f KB"
 #~ msgid "Error writing to unix: %s"
 #~ msgstr "Errorea UNIXen idaztean: %s"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
 #~ msgstr ""
 #~ "Itzulerako balioaren mota ez da zuzena: '%s' jaso da, baina '%s' espero "
 #~ "zen"
@@ -4514,7 +4514,7 @@ msgstr "%.1f KB"
 #~ "'%2$s' motaren '%1$s' propietatea ezartzen saiatzen, baina espero zen "
 #~ "interfazearen arabera, mota '%3$s' da"
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgid "No such schema '%s' specified in override file '%s'"
 #~ msgstr ""
 #~ "Ez da '%s' bezalako eskemarik zehaztu gainidazketako '%s' fitxategian"
 

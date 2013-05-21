@@ -1506,41 +1506,41 @@ msgstr "Flux terminat neașteptat de repede"
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Cheie „%s” nesuportată în intrarea de adresă „%s”"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "Adresa „%s” nu este validă (e nevoie de exact o cale, un dosar temporar sau "
 "o cheie abstractă)"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "Pereche cheie/valoare fără sens în intrarea de adresă „%s”"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Eroare în adresa „%s” - atributul port este greșit"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Eroare în adresa „%s” - atributul familie este greșit"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
+msgid "Address element '%s', does not contain a colon (:)"
 msgstr "Elementul de adresă „%s” nu conține două puncte (:)"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 msgstr ""
 "Perechea cheie/valoare %d, „%s”, in elementul de adresă „%s”, nu conține un "
@@ -1549,8 +1549,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "Eroare la conversia din format „escaped” a cheii sau valorii din perechea "
 "Cheie/Valoare %d, „%s”, în elementul de adresă „%s”"
@@ -1558,25 +1558,25 @@ msgstr ""
 #: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Eroare în adresa „%s” - transportul unix necesită exact una din cheile "
 "„path” sau „abstract” să fie setată"
 
 #: ../gio/gdbusaddress.c:595
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr "Eroare în adresa „%s” - atributul gazdă este greșit"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr "Eroare la adresa „%s” - atributul port este greșit sau lipsește"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr "Eroare în adresa „%s” - atributul noncefile este greșit sau lipsește"
 
 #: ../gio/gdbusaddress.c:644
@@ -1585,29 +1585,29 @@ msgstr "Eroare la auto-lansare: "
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "Transport „%s” necunoscut sau nesuportat pentru adresa „%s”"
 
 #: ../gio/gdbusaddress.c:688
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Eroare la deschiderea fișierului nonce „%s”: %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Eroare la citirea fișierului nonce „%s”: %s"
 
 #: ../gio/gdbusaddress.c:715
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
 "Eroare la citirea fișierului nonce „%s”, se așteptau 16 octeți, s-au primit "
 "%d"
 
 #: ../gio/gdbusaddress.c:733
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Eroare la scrierea conținutului fișierului nonce „%s” în flux:"
 
 #: ../gio/gdbusaddress.c:951
@@ -1621,17 +1621,17 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1057
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Eroare la lansarea liniei de comandă „%s”: "
 
 #: ../gio/gdbusaddress.c:1068
 #, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
 msgstr "Eroare la lansarea liniei de comandă „%s” s-a terminat anormal: %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
 msgstr "Linia de comandă „%s” s-a încheiat cu un cod non-zero de eroare %d: %s"
 
 #: ../gio/gdbusaddress.c:1155
@@ -1645,7 +1645,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Nu s-a putut determina adresa magistralei din variabila de mediu "
 "DBUS_STARTER_BUS_TYPE - valoare necunoscută „%s”"
@@ -1687,35 +1687,35 @@ msgstr "Anulat via GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error statting directory `%s': %s"
+msgid "Error statting directory '%s': %s"
 msgstr "Eroare la aflarea statisticilor despre dosarul „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Permisiunile dosarul „%s” sunt greșite. Se aștepta modul 0700, s-a găsit 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Eroare la crearea dosarului „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Eroare la deschiderea fișierului „%s” pentru citire: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Linia %d a inelului de chei de la „%s” cu conținutul „%s” este greșită"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Primul element al liniei %d a inelului de chei de la „%s” cu conținutul „%s” "
 "este greșit"
@@ -1723,46 +1723,46 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Al doilea element al liniei %d a inelului de chei de la „%s” cu conținutul "
 "„%s” este greșit"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr ""
 "Nu s-a găsit un cookie cu identificatorul %d în inelul de chei de la „%s”"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Eroare la ștergerea fișierului de blocare învechit „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Eroare la citirea fișierului de blocare „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr ""
 "Eroare la închiderea fișierului de blocare (fără legături deschise) „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Eroare la ștergerea fișierului fișierului de blocare „%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Eroare la deschiderea pentru scriere a inelului de chei „%s”: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(În plus, a eșuat și deblocarea fișierului de blocare „%s”: %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
@@ -1784,36 +1784,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Nu există interfața „org.freedesktop.DBus.Properties” în obiectul aflat la "
 "calea %s"
 
 #: ../gio/gdbusconnection.c:3841
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Eroare la setarea proprietății „%s”: Se aștepta tipul „%s”, dar s-a primit "
 "„%s”"
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Nu există proprietatea „%s”"
 
 #: ../gio/gdbusconnection.c:3948
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "Proprietatea „%s” nu poate fi citită"
 
 #: ../gio/gdbusconnection.c:3959
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "Proprietatea „%s” nu poate fi scrisă"
 
 #: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Nu există interfața „%s”"
 
 #: ../gio/gdbusconnection.c:4213
@@ -1822,17 +1822,17 @@ msgstr "Nu există interfața"
 
 #: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Nu există proprietatea „%s” în obiectul de la calea %s"
 
 #: ../gio/gdbusconnection.c:4484
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Nu există metoda „%s”"
 
 #: ../gio/gdbusconnection.c:4515
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Tipul mesajului, „%s”, nu se potrivește cu cel așteptat „%s”"
 
 #: ../gio/gdbusconnection.c:4734
@@ -1842,12 +1842,12 @@ msgstr "Există deja un obiect exportat pentru interfața %s de la %s"
 
 #: ../gio/gdbusconnection.c:4932
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoda „%s” a întors tipul „%s”, dar se aștepta „%s”"
 
 #: ../gio/gdbusconnection.c:5964
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoda „%s” din interfața „%s” cu semnătura „%s” nu există"
 
 #: ../gio/gdbusconnection.c:6082
@@ -1907,24 +1907,24 @@ msgstr[2] "S-a încercat să se citească %lu octeți, dar s-a întâlnit EOF"
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Se aștepta un șir UTF-8 valid, dar s-au găsit octeți nevalizi la poziția %d "
 "(lungimea șirului este %d). Șirul UTF-8 valid până la acel punct a fost „%s”"
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "Se aștepta un octet NUL după șirul „%s”, dar s-a octetul „%d”"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Valoarea parsată „%s” nu este o cale de obiect D-Bus validă"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă"
 
 #: ../gio/gdbusmessage.c:1324
@@ -1945,13 +1945,13 @@ msgstr[2] ""
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă"
 
 #: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Eroare la deserializarea GVariant cu șirul-tip „%s” din formatul de rețea D-"
 "Bus"
@@ -1972,12 +1972,12 @@ msgstr "Versiune majoră de protocol nevalidă. Se aștepta 1 dar s-a găsit %d"
 
 #: ../gio/gdbusmessage.c:1776
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "S-a găsit un antet cu semnătura „%s”, dar corpul mesajului este vid"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă (pentru corp)"
 
 #: ../gio/gdbusmessage.c:1821
@@ -1998,7 +1998,7 @@ msgstr "Nu se poate deserializa mesajul:"
 #: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Eroare la serializarea GVariant cu șirul-tip „%s” în formatul de rețea D-Bus"
 
@@ -2015,26 +2015,26 @@ msgstr "Nu se poate serializa mesajul:"
 
 #: ../gio/gdbusmessage.c:2355
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 "Corpul mesajului are semnătura „%s”, dar nu există nicio semnătură de antet"
 
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "Corpul mesajului are semnătura „%s”, dar semnătura din câmpul antet este „%s”"
 
 #: ../gio/gdbusmessage.c:2381
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Corpul mesajului este vid, dar semnătura din câmpul antet este „(%s)”"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Rezultat de eroare cu corp de tipul „%s”"
 
 #: ../gio/gdbusmessage.c:2946
@@ -2073,17 +2073,17 @@ msgstr "Nu se poate specifica un fișier nonce când se creează un server"
 
 #: ../gio/gdbusserver.c:875
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Eroare la citirea fișierului nonce la „%s”: %s"
 
 #: ../gio/gdbusserver.c:1042
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "Șirul „%s” nu este un GUID D-Bus valid"
 
 #: ../gio/gdbusserver.c:1082
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Nu se poate asculta pe transportul nesuportat „%s”"
 
 #: ../gio/gdbus-tool.c:88
@@ -2156,15 +2156,15 @@ msgstr "Mai multe capete de conexiune specificate"
 #: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
 "Avertisment: Conform datelor de introspecție, interfața „%s” nu există\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Avertisment: Conform datelor de introspecție, metoda „%s” nu există în "
 "interfața „%s”\n"
@@ -2272,12 +2272,12 @@ msgstr "Eroare: numele metodei nu a fost specificat\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Eroare: numele metodei „%s” nu este valid\n"
 
 #: ../gio/gdbus-tool.c:974
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Eroare la parsarea parametrului %d cu tipul „%s”: %s\n"
 
 #: ../gio/gdbus-tool.c:1406
@@ -2761,7 +2761,7 @@ msgstr "Se ignoră acest fișier.\n"
 
 #: ../gio/glib-compile-schemas.c:1803
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Nu există cheia „%s” în schema „%s” specificată în fișierul de suprascriere "
 "„%s”"
@@ -2781,7 +2781,7 @@ msgstr "și --strict a fost specificat; se iese.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
 "eroare la parsarea cheii „%s” în schema „%s” specificată în fișierul de "
@@ -2795,7 +2795,7 @@ msgstr "Se ignoră suprascrierea pentru această cheie.\n"
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 msgstr ""
 "suprascrierea cheii „%s” în schema „%s” din fișierul de suprascriere „%s” nu "
@@ -2804,7 +2804,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "suprascrierea cheii „%s” în schema „%s” din fișierul de suprascriere „%s” nu "
@@ -3940,7 +3940,7 @@ msgstr "Date comprimate nevalid"
 #~ msgid "pm"
 #~ msgstr "pm"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
 #~ msgstr ""
 #~ "Tipul valorii rezultatului nu este corect, s-a primit „%s”, se aștepta "
 #~ "„%s”"
@@ -3952,7 +3952,7 @@ msgstr "Date comprimate nevalid"
 #~ "S-a încercat setarea proprietății %s cu tipul %s, dar conform interfeței "
 #~ "așteptate tipul este %s"
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgid "No such schema '%s' specified in override file '%s'"
 #~ msgstr "Nu există schema „%s” specificată în fișierul de suprascriere „%s”"
 
 #~ msgid ""
@@ -4009,5 +4009,5 @@ msgstr "Date comprimate nevalid"
 #~ msgid "Error writing first 16 bytes of message to socket: "
 #~ msgstr "Eroare la scrierea primilor 16 octeți ai mesajului în socket: "
 
-#~ msgid "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
+#~ msgid "The nonce-file '%s' was %lu bytes. Expected 16 bytes."
 #~ msgstr "Fișierul nonce „%s” are %lu octeți. Se așteptau exact 16 octeți."

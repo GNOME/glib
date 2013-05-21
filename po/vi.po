@@ -129,76 +129,76 @@ msgstr "Kết thúc luồng sớm bất thường"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Khoá không hỗ trợ `%s' ở đầu nhập địa chỉ `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Khoá không hỗ trợ '%s' ở đầu nhập địa chỉ '%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"Địa chỉ `%s' không hợp lệ (cần chính xác một đường dẫn, tmpdir hoặc khoá "
+"Địa chỉ '%s' không hợp lệ (cần chính xác một đường dẫn, tmpdir hoặc khoá "
 "tổng quát)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "Cặp khoá/giá trị vô nghĩa ở địa chỉ `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "Cặp khoá/giá trị vô nghĩa ở địa chỉ '%s'"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Lỗi ở địa chỉ `%s' - thuộc tính cổng bị hư"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Lỗi ở địa chỉ '%s' - thuộc tính cổng bị hư"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Lỗi ở địa chỉ `%s' - thuộc tính họ (family) bị hư"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Lỗi ở địa chỉ '%s' - thuộc tính họ (family) bị hư"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "Thành phần địa chỉ `%s' không chứ dấu hai chấm (:)"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "Thành phần địa chỉ '%s' không chứ dấu hai chấm (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
-msgstr "Cặp khoá/giá trị %d, `%s' ở địa chỉ `%s' không chứa dấu bằng"
+msgstr "Cặp khoá/giá trị %d, '%s' ở địa chỉ '%s' không chứa dấu bằng"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Lỗi unescape khoá hoặc giá trị trong cặp khoá/giá trị %d, `%s', ở địa chỉ `"
+"Lỗi unescape khoá hoặc giá trị trong cặp khoá/giá trị %d, '%s', ở địa chỉ '"
 "%s'"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Lỗi ở địa chỉ `%s' - phương thức vận chuyển unix cần đặt chính xác một trong "
-"những khoá `path' hoặc `abstract'"
+"Lỗi ở địa chỉ '%s' - phương thức vận chuyển unix cần đặt chính xác một trong "
+"những khoá 'path' hoặc 'abstract'"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "Lỗi ở địa chỉ `%s' - thuộc tính máy thiếu hoặc bị hư"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "Lỗi ở địa chỉ '%s' - thuộc tính máy thiếu hoặc bị hư"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "Lỗi ở địa chỉ `%s' - thuộc tính cổng thiếu hoặc bị hư"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "Lỗi ở địa chỉ '%s' - thuộc tính cổng thiếu hoặc bị hư"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr "Lỗi ở địa chỉ `%s' - thuộc tính noncefile thiếu hoặc bị hư"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgstr "Lỗi ở địa chỉ '%s' - thuộc tính noncefile thiếu hoặc bị hư"
 
 #: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
@@ -206,30 +206,30 @@ msgstr "Lỗi tự động khởi động: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr ""
-"Phương thức vận chuyển `%s' cho địa chỉ `%s' không được hỗ trợ, hoặc không "
+"Phương thức vận chuyển '%s' cho địa chỉ '%s' không được hỗ trợ, hoặc không "
 "nhận ra"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "Gặp lỗi khi mở nonce-file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "Gặp lỗi khi mở nonce-file '%s': %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Gặp lỗi khi đọc nonce-file '%s': %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "Gặp lỗi khi đọc nonce-file '%s', cần 16 byte, nhận %d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Lỗi ghi nội dung nonce-file `%s' vào luồng:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Lỗi ghi nội dung nonce-file '%s' vào luồng:"
 
 #: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
@@ -246,7 +246,7 @@ msgstr "Không thể tạo tuyến thông điệp mà không có machine-id: "
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Lỗi chạy dòng lệnh '%s':"
 
 #: ../gio/gdbusaddress.c:1296
@@ -270,10 +270,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Không thể xác định địa chỉ tuyến từ biến môi trường DBUS_STARTER_BUS_TYPE - "
-"giá trị lạ `%s'"
+"giá trị lạ '%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
@@ -308,78 +308,78 @@ msgstr "Đã huỷ thông qua GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Gặp lỗi khi lấy thông tin thư mục '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Quyền của thư mục `%s' bị hư. Giá trị là 0%o trong khi lẽ ra phải là 0700."
+"Quyền của thư mục '%s' bị hư. Giá trị là 0%o trong khi lẽ ra phải là 0700."
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Lỗi tạo thư mục `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Lỗi tạo thư mục '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Lỗi mở keyring `%s' để đọc: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Lỗi mở keyring '%s' để đọc: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "Dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "Dòng %d của keyring tại '%s' với nội dung '%s' bị hư"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Token đầu tiên của dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
+"Token đầu tiên của dòng %d của keyring tại '%s' với nội dung '%s' bị hư"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "Token thứ hai của dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "Token thứ hai của dòng %d của keyring tại '%s' với nội dung '%s' bị hư"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Không tìm thấy cookie với id %d trong keyring ở `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Không tìm thấy cookie với id %d trong keyring ở '%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Lỗi khi xoá tập tin khoá không dùng nữa '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Gặp lỗi khi tạo tập tin khoá '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Gặp lỗi khi đóng (unlink) tập tin khoá `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "Gặp lỗi khi đóng (unlink) tập tin khoá '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Gặp lỗi xoá tập tin khoá '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Gặp lỗi khi mở keyring '%s' để ghi: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Ngoài ra, giải phóng khoá cho `%s' cũng thất bại: %s)"
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Ngoài ra, giải phóng khoá cho '%s' cũng thất bại: %s)"
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -397,35 +397,35 @@ msgstr "Phát hiện cờ không hỗ trợ khi tạo kết nối phía client"
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Không có giao diện `org.freedesktop.DBus.Properties' trên đối tượng tại "
+"Không có giao diện 'org.freedesktop.DBus.Properties' trên đối tượng tại "
 "đường dẫn %s"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr "Lỗi đặt thuộc tính `%s': nhận được `%s' trong khi lẽ ra phải là `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
+msgstr "Lỗi đặt thuộc tính '%s': nhận được '%s' trong khi lẽ ra phải là '%s'"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
-msgstr "Không có thuộc tính `%s'"
+msgid "No such property '%s'"
+msgstr "Không có thuộc tính '%s'"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Thuộc tính `%s' không đọc được"
+msgid "Property '%s' is not readable"
+msgstr "Thuộc tính '%s' không đọc được"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Thuộc tính `%s' không ghi được"
+msgid "Property '%s' is not writable"
+msgstr "Thuộc tính '%s' không ghi được"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
-msgstr "Không có giao diện `%s'"
+msgid "No such interface '%s'"
+msgstr "Không có giao diện '%s'"
 
 #: ../gio/gdbusconnection.c:4508
 msgid "No such interface"
@@ -433,18 +433,18 @@ msgstr "Không có giao diện như vậy"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "Không có giao diện `%s' trên đối tượng tại đường dẫn %s"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Không có giao diện '%s' trên đối tượng tại đường dẫn %s"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
-msgstr "Không có phương thức `%s'"
+msgid "No such method '%s'"
+msgstr "Không có phương thức '%s'"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "Kiểu thông điệp, `%s', không khớp với kiểu đang cần `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Kiểu thông điệp, '%s', không khớp với kiểu đang cần '%s'"
 
 #: ../gio/gdbusconnection.c:5032
 #, c-format
@@ -453,13 +453,13 @@ msgstr "Đối tượng đã được xuất cho giao diện %s tại %s rồi"
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "Phương thức `%s' trả về kiểu `%s', nhưng đang muốn `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Phương thức '%s' trả về kiểu '%s', nhưng đang muốn '%s'"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "Phương thức `%s' trên giao diện `%s' với ký hiệu `%s' không tồn tại"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Phương thức '%s' trên giao diện '%s' với ký hiệu '%s' không tồn tại"
 
 #: ../gio/gdbusconnection.c:6430
 #, c-format
@@ -514,28 +514,28 @@ msgstr[0] "Cần đọc %lu byte nhưng chỉ nhận được %lu"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Chờ byte NUL sau chuỗi `%s' nhưng lại nhận byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "Chờ byte NUL sau chuỗi '%s' nhưng lại nhận byte %d"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Muốn chuỗi UTF-8 hợp lệ nhưng nhận được dãy byte không hợp lệ từ vị trí %d "
-"(độ dài chuỗi là %d). Chuỗi UTF-8 hợp lệ dài nhất là `%s'"
+"(độ dài chuỗi là %d). Chuỗi UTF-8 hợp lệ dài nhất là '%s'"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr ""
-"Giá trị đã phân tích `%s' không phải là đường dẫn đối tượng D-Bus hợp lệ"
+"Giá trị đã phân tích '%s' không phải là đường dẫn đối tượng D-Bus hợp lệ"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Giá trị đã phân tích '%s' không phải là ký hiệu D-Bus hợp lệ"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
@@ -547,15 +547,15 @@ msgstr[0] "Phát hiện mảng dài %u byte. Độ dài tối đa là 2<<26 byte
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
-"Giá trị đã phân tích `%s' cho biến thể không phải là ký hiệu D-Bus hợp lệ"
+"Giá trị đã phân tích '%s' cho biến thể không phải là ký hiệu D-Bus hợp lệ"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
-msgstr "Lỗi thôi tuần tự hoá GVariant với kiểu chuỗi `%s' từ định dạng D-Bus"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
+msgstr "Lỗi thôi tuần tự hoá GVariant với kiểu chuỗi '%s' từ định dạng D-Bus"
 
 #: ../gio/gdbusmessage.c:2062
 #, c-format
@@ -573,14 +573,14 @@ msgstr "Phiên bản chính của phương thức không hợp lệ. Chờ 1 nh�
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "Ký hiệu header `%s' nhưng phần thân trống rỗng"
+msgid "Signature header with signature '%s' found but message body is empty"
+msgstr "Ký hiệu header '%s' nhưng phần thân trống rỗng"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr ""
-"Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ (cho phần thân)"
+"Giá trị đã phân tích '%s' không phải là ký hiệu D-Bus hợp lệ (cho phần thân)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
@@ -597,8 +597,8 @@ msgstr "Không thể bỏ tuần tự hoá thông điệp: "
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
-msgstr "Lỗi tuần tự hoá GVariant với kiểu chuỗi `%s' sang định dạng D-Bus"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
+msgstr "Lỗi tuần tự hoá GVariant với kiểu chuỗi '%s' sang định dạng D-Bus"
 
 #: ../gio/gdbusmessage.c:2643
 #, c-format
@@ -614,25 +614,25 @@ msgstr "Không thể tuần tự hoá thông điệp: "
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Phần thân thông điệp có ký hiệu `%s' nhưng không có header ký hiệu"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "Phần thân thông điệp có ký hiệu '%s' nhưng không có header ký hiệu"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
-msgstr "Phần thân thông điệp có ký hiệu `%s' nhưng header lại có ký hiệu `%s'"
+msgstr "Phần thân thông điệp có ký hiệu '%s' nhưng header lại có ký hiệu '%s'"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Thân thông điệp trống rỗng như ký hiệu trong header là `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "Thân thông điệp trống rỗng như ký hiệu trong header là '(%s)'"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "Lỗi tra ề thân của kiểu `%s'"
+msgid "Error return with body of type '%s'"
+msgstr "Lỗi tra ề thân của kiểu '%s'"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -675,18 +675,18 @@ msgstr "Không thể xác định nonce-file khi tạo máy chủ"
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Lỗi ghi nonce-file tại `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Lỗi ghi nonce-file tại '%s': %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "Chuỗi '%s' không phải là D-BUS GUID hợp lệ"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Không thể listen trên phương thức vận chuyển không hỗ trợ `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Không thể listen trên phương thức vận chuyển không hỗ trợ '%s'"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -758,17 +758,17 @@ msgstr "Xác định nhiều đầu nối"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "Chú ý: theo dữ liệu introspection, giao diện `%s' không tồn tại\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "Chú ý: theo dữ liệu introspection, giao diện '%s' không tồn tại\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Chú ý: theo dữ liệu introspection, phương thức `%s' không tồn tại trên giao "
-"diện `%s'\n"
+"Chú ý: theo dữ liệu introspection, phương thức '%s' không tồn tại trên giao "
+"diện '%s'\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -875,13 +875,13 @@ msgstr "Lỗi: chưa xác định tên phương thức\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Lỗi: tên phương thức `%s' không hợp lệ\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Lỗi: tên phương thức '%s' không hợp lệ\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Lỗi phân tích tham số %d kiểu `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Lỗi phân tích tham số %d kiểu '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1519,9 +1519,9 @@ msgstr "Bỏ qua tập tin này.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Không có khoá `%s' trong schema `%s' như được xác định trong tập tin ghi đè `"
+"Không có khoá '%s' trong schema '%s' như được xác định trong tập tin ghi đè '"
 "%s'"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
@@ -1539,9 +1539,9 @@ msgstr "và có dùng --strict; thoát.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"lỗi phân tích khoá `%s' trong schema `%s' như xác định trong tập tin ghi đè `"
+"lỗi phân tích khoá '%s' trong schema '%s' như xác định trong tập tin ghi đè '"
 "%s': %s."
 
 #: ../gio/glib-compile-schemas.c:1900
@@ -1552,19 +1552,19 @@ msgstr "Bỏ qua ghi đè khoá này.\n"
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"ghi đè khoá `%s' trong schema `%s' trong tập tin ghi đè `%s' ngoài phạm vi "
+"ghi đè khoá '%s' trong schema '%s' trong tập tin ghi đè '%s' ngoài phạm vi "
 "schema"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"ghi đè khoá `%s' trong schema `%s' trong tập tin ghi đè `%s' không nằm trong "
+"ghi đè khoá '%s' trong schema '%s' trong tập tin ghi đè '%s' không nằm trong "
 "danh sách lựa chọn hợp lệ"
 
 #: ../gio/glib-compile-schemas.c:1999
@@ -4352,11 +4352,11 @@ msgstr "%.1f KB"
 #~ msgid "Unexpected error in waitpid() (%s)"
 #~ msgstr "Lỗi không mong muốn trong waitpid() (%s)"
 
-#~ msgid "Abnormal program termination spawning command line `%s': %s"
-#~ msgstr "Chương trình kết thúc bất thường khi chạy lệnh `%s: %s"
+#~ msgid "Abnormal program termination spawning command line '%s': %s"
+#~ msgstr "Chương trình kết thúc bất thường khi chạy lệnh '%s: %s"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
-#~ msgstr "Lệnh `%s' thoát với mã khác không %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
+#~ msgstr "Lệnh '%s' thoát với mã khác không %d: %s"
 
 #~ msgid "workspace limit for empty substrings reached"
 #~ msgstr "vùng làm việc không thể chứa chuỗi con rỗng nữa"
@@ -4415,8 +4415,8 @@ msgstr "%.1f KB"
 #~ msgid "pm"
 #~ msgstr "pm"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
-#~ msgstr "Kiểu giá trị trả về không đúng, nhận `%s' nhưng muốn `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
+#~ msgstr "Kiểu giá trị trả về không đúng, nhận '%s' nhưng muốn '%s'"
 
 #~ msgid ""
 #~ "Trying to set property %s of type %s but according to the expected "
@@ -4425,8 +4425,8 @@ msgstr "%.1f KB"
 #~ "Thử đặt thuộc tính %s của kiểu %s nhưng theo giao diện muốn dùng thì kiểu "
 #~ "là %s"
 
-#~ msgid "The nonce-file `%s' was %"
-#~ msgstr "nonce-file `%s' là %"
+#~ msgid "The nonce-file '%s' was %"
+#~ msgstr "nonce-file '%s' là %"
 
 #~ msgid "Encountered array of length %"
 #~ msgstr "Bắt gặp mảng dài %"

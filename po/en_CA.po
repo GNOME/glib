@@ -1478,78 +1478,78 @@ msgstr "Unexpected early end-of-stream"
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Unsupported key '%s' in address entry '%s'"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "Meaningless key/value pair combination in address entry '%s'"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Error in address '%s' - the port attribute is malformed"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Error in address '%s' - the family attribute is malformed"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
-msgstr "Address element `%s', does not contain a colon (:)"
+msgid "Address element '%s', does not contain a colon (:)"
+msgstr "Address element '%s', does not contain a colon (:)"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 msgstr ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 
 #: ../gio/gdbusaddress.c:595
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "Error in address '%s' - the host attribute is missing or malformed"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "Error in address '%s' - the port attribute is missing or malformed"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
-"Error in address `%s' - the noncefile attribute is missing or malformed"
+"Error in address '%s' - the noncefile attribute is missing or malformed"
 
 #: ../gio/gdbusaddress.c:644
 msgid "Error auto-launching: "
@@ -1557,28 +1557,28 @@ msgstr "Error auto-launching: "
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "Unknown or unsupported transport '%s' for address '%s'"
 
 #: ../gio/gdbusaddress.c:688
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Error opening nonce file '%s': %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Error reading from nonce file '%s': %s"
 
 #: ../gio/gdbusaddress.c:715
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgstr "Error reading from nonce file '%s', expected 16 bytes, got %d"
 
 #: ../gio/gdbusaddress.c:733
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Error writing contents of nonce file '%s' to stream:"
 
 #: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
@@ -1590,18 +1590,18 @@ msgstr "Cannot spawn a message bus without a machine-id: "
 
 #: ../gio/gdbusaddress.c:1057
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
+msgstr "Error spawning command line '%s': "
 
 #: ../gio/gdbusaddress.c:1068
 #, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "Abnormal program termination spawning command line `%s': %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
+msgstr "Abnormal program termination spawning command line '%s': %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr "Command line `%s' exited with non-zero exit status %d: %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
+msgstr "Command line '%s' exited with non-zero exit status %d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -1612,10 +1612,10 @@ msgstr "Cannot determine session bus address (not implemented for this OS)"
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 
 #: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
@@ -1651,79 +1651,79 @@ msgstr "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error statting directory `%s': %s"
-msgstr "Error statting directory `%s': %s"
+msgid "Error statting directory '%s': %s"
+msgstr "Error statting directory '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Error creating directory '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "Error opening keyring '%s' for reading: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "Line %d of the keyring at '%s' with content '%s' is malformed"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Didn't find cookie with id %d in the keyring at '%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "Error deleting stale lock file '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "Error creating lock file '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "Error closing (unlinked) lock file '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "Error unlinking lock file '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "Error opening keyring '%s' for writing: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Additionally, releasing the lock for '%s' also failed: %s) "
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1743,34 +1743,34 @@ msgstr ""
 #: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 
 #: ../gio/gdbusconnection.c:3841
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
+msgstr "Error setting property '%s': Expected type '%s' but got '%s'"
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
-msgid "No such property `%s'"
-msgstr "No such property `%s'"
+msgid "No such property '%s'"
+msgstr "No such property '%s'"
 
 #: ../gio/gdbusconnection.c:3948
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
+msgstr "Property '%s' is not readable"
 
 #: ../gio/gdbusconnection.c:3959
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
+msgstr "Property '%s' is not writable"
 
 #: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
-msgid "No such interface `%s'"
-msgstr "No such interface `%s'"
+msgid "No such interface '%s'"
+msgstr "No such interface '%s'"
 
 #: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
@@ -1778,18 +1778,18 @@ msgstr "No such interface"
 
 #: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
+msgstr "No such interface '%s' on object at path %s"
 
 #: ../gio/gdbusconnection.c:4484
 #, c-format
-msgid "No such method `%s'"
-msgstr "No such method `%s'"
+msgid "No such method '%s'"
+msgstr "No such method '%s'"
 
 #: ../gio/gdbusconnection.c:4515
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Type of message, '%s', does not match expected type '%s'"
 
 #: ../gio/gdbusconnection.c:4734
 #, c-format
@@ -1798,13 +1798,13 @@ msgstr "An object is already exported for the interface %s at %s"
 
 #: ../gio/gdbusconnection.c:4932
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Method '%s' returned type '%s', but expected '%s'"
 
 #: ../gio/gdbusconnection.c:5964
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Method '%s' on interface '%s' with signature '%s' does not exist"
 
 #: ../gio/gdbusconnection.c:6082
 #, c-format
@@ -1858,25 +1858,25 @@ msgstr[1] "Wanted to read %lu bytes but got EOF"
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "Expected NUL byte after the string '%s' but found byte %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "Parsed value '%s' is not a valid D-Bus object path"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Parsed value '%s' is not a valid D-Bus signature"
 
 #: ../gio/gdbusmessage.c:1324
 #, c-format
@@ -1891,15 +1891,15 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "Parsed value '%s' for variant is not a valid D-Bus signature"
 
 #: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 
 #: ../gio/gdbusmessage.c:1705
 #, c-format
@@ -1917,13 +1917,13 @@ msgstr "Invalid major protocol version. Expected 1 but found %d"
 
 #: ../gio/gdbusmessage.c:1776
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
+msgstr "Signature header with signature '%s' found but message body is empty"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "Parsed value '%s' is not a valid D-Bus signature (for body)"
 
 #: ../gio/gdbusmessage.c:1821
 #, c-format
@@ -1939,9 +1939,9 @@ msgstr "Cannot deserialize message: "
 #: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 
 #: ../gio/gdbusmessage.c:2303
 #, c-format
@@ -1958,27 +1958,27 @@ msgstr "Cannot serialize message: "
 
 #: ../gio/gdbusmessage.c:2355
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "Message body has signature '%s' but there is no signature header"
 
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 
 #: ../gio/gdbusmessage.c:2381
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "Message body is empty but signature in the header field is '(%s)'"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
+msgstr "Error return with body of type '%s'"
 
 #: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
@@ -2016,18 +2016,18 @@ msgstr "Cannot specify nonce file when creating a server"
 
 #: ../gio/gdbusserver.c:875
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Error writing nonce file at '%s': %s"
 
 #: ../gio/gdbusserver.c:1042
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "The string '%s' is not a valid D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1082
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Cannot listen on unsupported transport '%s'"
 
 #: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
@@ -2099,18 +2099,18 @@ msgstr "Multiple connection endpoints specified"
 #: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
@@ -2212,13 +2212,13 @@ msgstr "Error: Method name is not specified\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Error: Method name '%s' is invalid\n"
 
 #: ../gio/gdbus-tool.c:974
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Error parsing parameter %d of type '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
@@ -2698,8 +2698,8 @@ msgstr "Ignoring this file.\n"
 
 #: ../gio/glib-compile-schemas.c:1803
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+msgstr "No such key '%s' in schema '%s' as specified in override file '%s'"
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
 #: ../gio/glib-compile-schemas.c:1895
@@ -2716,10 +2716,10 @@ msgstr " and --strict was specified; exiting.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 
 #: ../gio/glib-compile-schemas.c:1839
@@ -2730,19 +2730,19 @@ msgstr "Ignoring override for this key.\n"
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 msgstr ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 
 #: ../gio/glib-compile-schemas.c:1939

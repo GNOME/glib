@@ -130,41 +130,41 @@ msgstr "Неочаквано ранен край на поток"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Неподдържан ключ „%s“ в адрес „%s“"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "Адресът „%s“ е грешен (трябва да съдържа само едно от следните: път, "
 "временна директория или абстрактни ключове)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "Безсмислена комбинация от ключ и стойност в адреса „%s“"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Грешка в адреса „%s“ — портът е неправилен"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Грешка в адреса „%s“ — атрибутът „family“ е неправилен"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr "Елементът на адреса „%s“ не съдържа двоеточие („:“)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
 "Двойката ключ/стойност %d, „%s“ в адресния елемент „%s“ не съдържа знак за "
@@ -173,8 +173,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "Грешка при декодиране на ключа или стойността в двойката %d, „%s“ в адресния "
 "елемент „%s“"
@@ -182,25 +182,25 @@ msgstr ""
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Грешка в адреса „%s“ — транспортът „unix“ изисква точно един от ключовете "
 "„path“ или „abstract“"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr "Грешка в адреса „%s“ — името на хост липсва или е грешен"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr "Грешка в адреса „%s“ — портът липсва или е грешен"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr "Грешка в адреса „%s“ — атрибутът „noncefile“ липсва или е грешен"
 
 #: ../gio/gdbusaddress.c:652
@@ -209,29 +209,29 @@ msgstr "Грешка при автоматично стартиране: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "Непознат или неподдържан транспорт „%s“ за адрес „%s“"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Грешка при отваряне на моментен файл „%s“: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Грешка при четене на моментен файл „%s“: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
 "Грешка при четене на моментен файл „%s“, очакват се 16 байта, а са получени "
 "%d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Грешка при запис на съдържанието на моментен файл „%s“ в поток:"
 
 #: ../gio/gdbusaddress.c:960
@@ -253,7 +253,7 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Грешка при изпълняване на външна команда „%s“: "
 
 #: ../gio/gdbusaddress.c:1296
@@ -279,7 +279,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Адресът на шината не може да се определи от променливата на обкръжението "
 "DBUS_STARTER_BUS_TYPE — непозната стойност „%s“"
@@ -319,79 +319,79 @@ msgstr "Прекъсване чрез GDBusAuthObserver::authorize-authenticated
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Грешка при получаване на информация за папка „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Правата за достъп до папката „%s“ са повредени. Очакван режим 0700, получен "
 "0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Грешка при създаване на папка „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Грешка при отваряне на ключодържателя „%s“ за четене: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Ред %d на ключодържателя „%s“, съдържащ „%s“, е повреден"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Първата лексема на ред %d на ключодържателя „%s“, съдържащ „%s“, е повреден"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Втората лексема на ред %d на ключодържателя „%s“, съдържащ „%s“, е повреден"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Не е намерена бисквитка с идентификатор %d в ключодържателя в „%s“"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Грешка при изтриване на остарелия файл за синхронизация „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Грешка при създаване на файла за синхронизация „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Грешка при затваряне на изтрития файл за синхронизация „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Грешка при изтриване на файла за синхронизация „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Грешка при отваряне на ключодържателя „%s“ за запис: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Допълнително, отключването на „%s“ бе също неуспешно: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
@@ -410,33 +410,33 @@ msgstr "Неподдържани флагове при създаване на �
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Обектът в %s няма интерфейс „org.freedesktop.DBus.Properties“"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Грешка при промяна на свойството „%s“: Очакван е вид „%s“, а е получен „%s“"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Липсва свойство „%s“"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "Свойството „%s“ не поддържа четене"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "Свойството „%s“ не поддържа запис"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Липсва интерфейс „%s“"
 
 #: ../gio/gdbusconnection.c:4508
@@ -445,17 +445,17 @@ msgstr "Липсва такъв интерфейс"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Липсва интерфейс „%s“ към обекта в %s"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Липсва метод „%s“"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Видът на съобщението („%s“) не съвпада с очаквания („%s“)"
 
 #: ../gio/gdbusconnection.c:5032
@@ -465,12 +465,12 @@ msgstr "Вече е наличен обект за интерфейса %s в %s
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Методът „%s“ върна тип „%s“, а се очаква „%s“"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Не съществува метод „%s“ на интерфейса „%s“ със сигнатура „%s“"
 
 #: ../gio/gdbusconnection.c:6430
@@ -526,14 +526,14 @@ msgstr[1] "При опит за четене на %lu байта бяха пол
 
 #: ../gio/gdbusmessage.c:1397
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "След низа „%s“ се очаква байт NUL, а не %d"
 
 #: ../gio/gdbusmessage.c:1416
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Очаква се низ, кодиран в UTF-8, а са получени неправилни байтове при "
 "отместване %d (дължината на низа е %d). Декодираният от UTF-8 низ до тази "
@@ -541,12 +541,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1618
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Запазената стойност „%s“ не е допустим път до обект в D-Bus"
 
 #: ../gio/gdbusmessage.c:1642
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Прочетената стойност „%s“ не е допустима сигнатура в D-Bus"
 
 #: ../gio/gdbusmessage.c:1697
@@ -562,13 +562,13 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1850
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Прочетената вариантна стойност „%s“ не е допустима сигнатура в D-Bus"
 
 #: ../gio/gdbusmessage.c:1874
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Грешка при разчитане на GVariant от вид „%s“ от машинния формат на D-Bus"
 
@@ -588,14 +588,14 @@ msgstr "Недопустима главна версия на протокола
 
 #: ../gio/gdbusmessage.c:2130
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 "Открита е сигнатурна заглавна част със сигнатура „%s“, обаче тялото на "
 "съобщението е празно"
 
 #: ../gio/gdbusmessage.c:2144
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Разчетената стойност „%s“ не е допустима сигнатура в D-Bus (за тяло)"
 
 #: ../gio/gdbusmessage.c:2174
@@ -613,7 +613,7 @@ msgstr "Неуспешно декодиране на съобщение: "
 #: ../gio/gdbusmessage.c:2505
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr "Грешка при кодиране на GVariant от вид „%s“ в машинния формат на D-Bus"
 
 #: ../gio/gdbusmessage.c:2642
@@ -630,14 +630,14 @@ msgstr "Неуспешно кодиране на съобщението:"
 
 #: ../gio/gdbusmessage.c:2694
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 "Тялото на съобщението има сигнатура „%s“, но няма заглавна част със сигнатури"
 
 #: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "Тялото на съобщението има сигнатура за тип „%s“, но полето в заглавната част "
@@ -645,14 +645,14 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2720
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 "Тялото на съобщението е празно, а сигнатурата в полето на заглавната част е "
 "„(%s)“"
 
 #: ../gio/gdbusmessage.c:3270
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Връщане на грешка с тяло от вид „%s“"
 
 #: ../gio/gdbusmessage.c:3278
@@ -697,17 +697,17 @@ msgstr "Не може да се задава моментен файл при с
 
 #: ../gio/gdbusserver.c:873
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Грешка при запис в моментен файл „%s“: %s"
 
 #: ../gio/gdbusserver.c:1041
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "Низът „%s“ не е допустим глобален идентификатор в D-Bus"
 
 #: ../gio/gdbusserver.c:1081
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Невъзможно е да се чака за връзки по неподдържан транспорт „%s“"
 
 #: ../gio/gdbus-tool.c:92
@@ -781,14 +781,14 @@ msgstr "Указани са множество точки за връзка"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr "Предупреждение: Според анализа интерфейсът „%s“ не съществува\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Предупреждение: Според анализа методът „%s“ не се предлага от интерфейса "
 "„%s“\n"
@@ -898,12 +898,12 @@ msgstr "Грешка: Не е указано име на метод\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Грешка: „%s“ не е допустимо име на метод\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Грешка при анализ на параметър %d от вид „%s“: %s\n"
 
 #: ../gio/gdbus-tool.c:1416
@@ -1540,7 +1540,7 @@ msgstr "Пренебрегване на файла.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Липсва ключ „%s“ в схемата „%s“, указан във файла за предефиниране „%s“"
 
@@ -1559,7 +1559,7 @@ msgstr "и е указано „--strict“, излизане.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 "грешка при анализиране на ключа „%s“ от схемата „%s“, указан във файла за "
 "предефиниране „%s“ — %s."
@@ -1572,7 +1572,7 @@ msgstr "Пренебрегване на предефинирането на кл
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "
@@ -1581,7 +1581,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "

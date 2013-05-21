@@ -1501,78 +1501,78 @@ msgstr "Հոսքի անսպասելի վաղաժամ ավարտ"
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Չաջակցվող `%s' բանալի `%s' հասցեում"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "Չաջակցվող '%s' բանալի '%s' հասցեում"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"`%s' հասցեն անվավեր է (պետք է ուղիներից ճիշտ մեկը, tmpdir կամ աբստրակտ "
+"'%s' հասցեն անվավեր է (պետք է ուղիներից ճիշտ մեկը, tmpdir կամ աբստրակտ "
 "բանալիներ)"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "Բանալի/արժեք զույգի անիմաստ համադրություն `%s' հասցեում"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "Բանալի/արժեք զույգի անիմաստ համադրություն '%s' հասցեում"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "Սխալ `%s' հասցեում - port-ի ատրիբուտը սխալ է"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "Սխալ '%s' հասցեում - port-ի ատրիբուտը սխալ է"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "Սխալ `%s' հասցեում - family-ի ատրիբուտը սխալ է"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "Սխալ '%s' հասցեում - family-ի ատրիբուտը սխալ է"
 
 #: ../gio/gdbusaddress.c:446
 #, c-format
-msgid "Address element `%s', does not contain a colon (:)"
-msgstr "`%s' հասցեի էլեմենտը չի պարունակում (:) երկու կետ"
+msgid "Address element '%s', does not contain a colon (:)"
+msgstr "'%s' հասցեի էլեմենտը չի պարունակում (:) երկու կետ"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 msgstr ""
-"%d, `%s' բանալի/արժեք զույգը `%s' հասցեի տարրում չի պարունակում հավասարման "
+"%d, '%s' բանալի/արժեք զույգը '%s' հասցեի տարրում չի պարունակում հավասարման "
 "նշան"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Բանալու կամ արժեքի կոդավորման սխալ %d Բանալի/Արժեք զույգում, `%s', `%s' "
+"Բանալու կամ արժեքի կոդավորման սխալ %d Բանալի/Արժեք զույգում, '%s', '%s' "
 "հասցեի տարրում"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"Սխալ `%s' հասցեում - unix-ի փոխադրումը պահանջում է տեղադրված լինի "
-"բանալիներից ճիշտ մեկը՝ `path' կամ `abstract'"
+"Սխալ '%s' հասցեում - unix-ի փոխադրումը պահանջում է տեղադրված լինի "
+"բանալիներից ճիշտ մեկը՝ 'path' կամ 'abstract'"
 
 #: ../gio/gdbusaddress.c:595
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "Սխալ `%s' հասցեում - host ատրիբուտը բացակայում է կամ սխալ է"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "Սխալ '%s' հասցեում - host ատրիբուտը բացակայում է կամ սխալ է"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "Սխալ `%s' հասցեում - port ատրիբուտը բացակայում է կամ սխալ է"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "Սխալ '%s' հասցեում - port ատրիբուտը բացակայում է կամ սխալ է"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr "Սխալ `%s' հասցեում - noncefile ատրիբուտը բացակայում է կամ սխալ է"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgstr "Սխալ '%s' հասցեում - noncefile ատրիբուտը բացակայում է կամ սխալ է"
 
 #: ../gio/gdbusaddress.c:644
 msgid "Error auto-launching: "
@@ -1580,28 +1580,28 @@ msgstr "Չհաջողվեց ավտոմատ կերպով հաստատել կապ�
 
 #: ../gio/gdbusaddress.c:652
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "Չհայտնաբերված կամ չաջակցվող `%s' փոխադրում `%s' հասցեի համար"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "Չհայտնաբերված կամ չաջակցվող '%s' փոխադրում '%s' հասցեի համար"
 
 #: ../gio/gdbusaddress.c:688
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "'%s' ֆայլը բացելու սխալ․ %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "`%s' ֆայլը կարդալու սխալ %s․"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "'%s' ֆայլը կարդալու սխալ %s․"
 
 #: ../gio/gdbusaddress.c:715
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "`%s' ֆայլը կարդալու սխալ, սպասվում էր 16 բայթ, ստացվել է %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgstr "'%s' ֆայլը կարդալու սխալ, սպասվում էր 16 բայթ, ստացվել է %d"
 
 #: ../gio/gdbusaddress.c:733
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Չի հաջողվել գրել `%s' file-ի պարունակությունը հոսքում․"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "Չի հաջողվել գրել '%s' file-ի պարունակությունը հոսքում․"
 
 #: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
@@ -1614,18 +1614,18 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1057
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "`%s' հրամանային տողի բազմացման սխալ․"
+msgid "Error spawning command line '%s': "
+msgstr "'%s' հրամանային տողի բազմացման սխալ․"
 
 #: ../gio/gdbusaddress.c:1068
 #, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "Ծրագրի ոչ նորմալ ավարտ `%s' հրամանային տողը բազմացնելիս․ %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
+msgstr "Ծրագրի ոչ նորմալ ավարտ '%s' հրամանային տողը բազմացնելիս․ %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr "`%s' հրամանային տողը ավարտվել է ոչ զրոյական %d կարգավիճակով․ %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
+msgstr "'%s' հրամանային տողը ավարտվել է ոչ զրոյական %d կարգավիճակով․ %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -1638,10 +1638,10 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Չի հաջողվել որոշել կապուղու հասցեն  DBUS_STARTER_BUS_TYPE միջավայրային "
-"փոփոխականից - անհայտ արժեք `%s'"
+"փոփոխականից - անհայտ արժեք '%s'"
 
 #: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
@@ -1678,81 +1678,81 @@ msgstr "Անջատվել է GDBusAuthObserver -ով։։հաստատված-վավ
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error statting directory `%s': %s"
+msgid "Error statting directory '%s': %s"
 msgstr "'%s' պանակը բացելու սխալ. %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"`%s' պանակի թույլտվությունները սխալ են։ Սպասվում էր 0700 ռեժիմ, ստացվել է 0%o"
+"'%s' պանակի թույլտվությունները սխալ են։ Սպասվում էր 0700 ռեժիմ, ստացվել է 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "'%s' պանակ ստեղծելու սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Կարդալու համար նախատեսված '%s' ֆայլը բացելու սխալ․"
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "keyring-ի %d տողը `%s' -ում, որի պարունակությունը `%s' է, սխալ է"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "keyring-ի %d տողը '%s' -ում, որի պարունակությունը '%s' է, սխալ է"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"%d տողի առաջին բառանիշը `%s' - ում, որի պարունակությունը `%s' է, սխալ է"
+"%d տողի առաջին բառանիշը '%s' - ում, որի պարունակությունը '%s' է, սխալ է"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"keyring-ի %d տողի երկրորդ բառանիշը `%s' -ում, որի պարունակությունը `%s' է, "
+"keyring-ի %d տողի երկրորդ բառանիշը '%s' -ում, որի պարունակությունը '%s' է, "
 "սխալ է"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "Չի գտնվել %d id-ով cookie `%s' keyring-ում"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "Չի գտնվել %d id-ով cookie '%s' keyring-ում"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "'%s' արգելափակման ֆայլը ջնջելու սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "'%s' արգելափակման ֆայլի ստեղծման սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr ""
 "'%s' արգելափակման (հղում չպարունակող) ֆայլի փակման ժամանակ առաջացած սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "'%s' արգելափակման ֆայլի կապերն անջատելու սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Գրելու համար նախատեսված '%s' ֆայլը բացելու սխալ․"
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Լրացուցիչ, `%s' - ի արգելափակման թողարկումը ևս ձախողվել է․ %s)"
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Լրացուցիչ, '%s' - ի արգելափակման թողարկումը ևս ձախողվել է․ %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1771,37 +1771,37 @@ msgstr "Հանդիպել են չաջակցվող դրոշներ client-side մի
 #: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Գոյություն չունի `org.freedesktop.DBus.Properties' ինտերֆեյս %s ուղու վրա "
+"Գոյություն չունի 'org.freedesktop.DBus.Properties' ինտերֆեյս %s ուղու վրա "
 "գտնվող օբյեկտի համար"
 
 #: ../gio/gdbusconnection.c:3841
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Տեղի է ունեցել սխալ`%s' հատկությունը սահմանելիս․ Սպասվում էր `%s' տիպը , "
-"բայց ստացվել է`%s'"
+"Տեղի է ունեցել սխալ'%s' հատկությունը սահմանելիս․ Սպասվում էր '%s' տիպը , "
+"բայց ստացվել է'%s'"
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
-msgid "No such property `%s'"
-msgstr "`%s' հատկությունը գոյություն չունի  "
+msgid "No such property '%s'"
+msgstr "'%s' հատկությունը գոյություն չունի  "
 
 #: ../gio/gdbusconnection.c:3948
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "`%s' հատկությունը կարդացվող չէ"
+msgid "Property '%s' is not readable"
+msgstr "'%s' հատկությունը կարդացվող չէ"
 
 #: ../gio/gdbusconnection.c:3959
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "`%s' հատկությունը գրվող չէ"
+msgid "Property '%s' is not writable"
+msgstr "'%s' հատկությունը գրվող չէ"
 
 #: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
-msgid "No such interface `%s'"
-msgstr "Գոյություն չունի `%s' ինտերֆեյս"
+msgid "No such interface '%s'"
+msgstr "Գոյություն չունի '%s' ինտերֆեյս"
 
 #: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
@@ -1809,18 +1809,18 @@ msgstr "Այդպիսի ինտերֆեյս գոյություն չունի"
 
 #: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "Գոյություն չունի `%s' ինտերֆեյս %s ուղու վրա գտնվող օբյեկտի համար"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Գոյություն չունի '%s' ինտերֆեյս %s ուղու վրա գտնվող օբյեկտի համար"
 
 #: ../gio/gdbusconnection.c:4484
 #, c-format
-msgid "No such method `%s'"
-msgstr "Այդպիսի `%s' մեթոդ գոյություն չունի "
+msgid "No such method '%s'"
+msgstr "Այդպիսի '%s' մեթոդ գոյություն չունի "
 
 #: ../gio/gdbusconnection.c:4515
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "`%s' հաղորդագրության տիպը չի համապատասխանում `%s' սպասվող տիպին"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "'%s' հաղորդագրության տիպը չի համապատասխանում '%s' սպասվող տիպին"
 
 #: ../gio/gdbusconnection.c:4734
 #, c-format
@@ -1829,13 +1829,13 @@ msgstr "Օբյեկտը արդեն արտածվել է  %s ինտերֆեյսի �
 
 #: ../gio/gdbusconnection.c:4932
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "`%s'մեթեդը վերադարձնում է `%s' տիպը, բայց սպասվում էր `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "'%s'մեթեդը վերադարձնում է '%s' տիպը, բայց սպասվում էր '%s'"
 
 #: ../gio/gdbusconnection.c:5964
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "`%s' մեթոդը `%s' ինտերֆեյսի վրա `%s' նկարագրությամբ գոյություն չունի"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "'%s' մեթոդը '%s' ինտերֆեյսի վրա '%s' նկարագրությամբ գոյություն չունի"
 
 #: ../gio/gdbusconnection.c:6082
 #, c-format
@@ -1895,26 +1895,26 @@ msgstr[1] "Ցանկանում է կարդալ %lu բայթ, բայց ստացվ�
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Սպասվում է վավերական UTF-8 տող, բայց գտնվել է անվավեր բայթեր %d տեղաշարժի "
-"վրա (տողի երկարությունը %d է)։ Վավերական UTF-8 տող, որի համար մինչ այդ կետը `"
+"վրա (տողի երկարությունը %d է)։ Վավերական UTF-8 տող, որի համար մինչ այդ կետը '"
 "%s' էր։"
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "`%s' տողից հետո սպասվում էր NUL բայթ, բայց գտնվել է %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "'%s' տողից հետո սպասվում էր NUL բայթ, բայց գտնվել է %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "`%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր ճանապարհ չէ"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "'%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր ճանապարհ չէ"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "`%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր նկարագրություն չէ"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "'%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր նկարագրություն չէ"
 
 #: ../gio/gdbusmessage.c:1324
 #, fuzzy, c-format
@@ -1931,16 +1931,16 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr ""
-"`%s' վերլուծված արժեքը տարբերակի համար D-Bus օբյեկտի վավեր նկարագրություն չէ"
+"'%s' վերլուծված արժեքը տարբերակի համար D-Bus օբյեկտի վավեր նկարագրություն չէ"
 
 #: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Սխալ D-Bus լարի ֆորմատից `%s' տիպի տողով GVariant-ի զուգահեռացման ժամանակ"
+"Սխալ D-Bus լարի ֆորմատից '%s' տիպի տողով GVariant-ի զուգահեռացման ժամանակ"
 
 #: ../gio/gdbusmessage.c:1705
 #, c-format
@@ -1958,16 +1958,16 @@ msgstr "Հիմնական պրոտոկոլի ավավեր տարբերակ։ Սպ
 
 #: ../gio/gdbusmessage.c:1776
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"Գտնվել է `%s' նկարագրությամբ նկարագրության գլխամասը, բայց հաղորդագրության "
+"Գտնվել է '%s' նկարագրությամբ նկարագրության գլխամասը, բայց հաղորդագրության "
 "մարմինը դատարկ է"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr ""
-"Վերլուծված `%s' արժեքը վավեր D-Bus նկարագրությաություն չէ (մարմնի համար)"
+"Վերլուծված '%s' արժեքը վավեր D-Bus նկարագրությաություն չէ (մարմնի համար)"
 
 #: ../gio/gdbusmessage.c:1821
 #, fuzzy, c-format
@@ -1987,8 +1987,8 @@ msgstr "Չի հաջողվել զուգահեռացնել հաղորդագրու�
 #: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
-msgstr "Սխալ `%s' տիպի տողով GVariant-ը D-Bus լարի ֆորմատի փոխելիս"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
+msgstr "Սխալ '%s' տիպի տողով GVariant-ը D-Bus լարի ֆորմատի փոխելիս"
 
 #: ../gio/gdbusmessage.c:2303
 #, fuzzy, c-format
@@ -2003,30 +2003,30 @@ msgstr "Չի հաջողվել հաջորդական ձևով ներկայացնե
 
 #: ../gio/gdbusmessage.c:2355
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
-"Հաղորդագրության մարմինն ունի `%s' նկարագրություն, բայց գոյություն չունի "
+"Հաղորդագրության մարմինն ունի '%s' նկարագրություն, բայց գոյություն չունի "
 "նկարագրության գլխամաս"
 
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"Հաղորդագրության մարմինն ունի տիպի `%s' նկարագրություն, բայց  նկարագրությունը "
-"գլխամասային դաշտում `%s' է"
+"Հաղորդագրության մարմինն ունի տիպի '%s' նկարագրություն, բայց  նկարագրությունը "
+"գլխամասային դաշտում '%s' է"
 
 #: ../gio/gdbusmessage.c:2381
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 "Հաղորդագրության մարմինը դատարկ է, բայց  նկարագրությունը գլխամասային դաշտում "
-"(`%s') է"
+"('%s') է"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "'%s' տիպի մարմնով ֆայլի վերադարձման սխալ"
 
 #: ../gio/gdbusmessage.c:2946
@@ -2065,18 +2065,18 @@ msgstr "Չի հաջողվել նշել nonce ֆայլ սերվեր ստեղծե�
 
 #: ../gio/gdbusserver.c:875
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "Ֆայլը գրելու սխալ `%s' - ում․ %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "Ֆայլը գրելու սխալ '%s' - ում․ %s"
 
 #: ../gio/gdbusserver.c:1042
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "`%s' տողը վավեր D-Bus GUID չէ"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "'%s' տողը վավեր D-Bus GUID չէ"
 
 #: ../gio/gdbusserver.c:1082
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Չի կարող լսել `%s' չաջակցվող փոխադրումը"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Չի կարող լսել '%s' չաջակցվող փոխադրումը"
 
 #: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
@@ -2148,17 +2148,17 @@ msgstr "Նշված են կապի բազմակի վերջնակետեր"
 #: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
-"Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s' ինտերֆեյսը գոյություն չունի\n"
+"Զգուշացում․ Հաշվի առնելով զննում տվյալը, '%s' ինտերֆեյսը գոյություն չունի\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s'մեթոդը գոյություն չունի `%s' "
+"Զգուշացում․ Հաշվի առնելով զննում տվյալը, '%s'մեթոդը գոյություն չունի '%s' "
 "ինտերֆեյսի համար\n"
 
 #: ../gio/gdbus-tool.c:534
@@ -2264,13 +2264,13 @@ msgstr "Սխալ․ Մեթոդի անունը նշված չէ\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Սխալ․ Մեթոդի `%s' անունը անվավեր է\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Սխալ․ Մեթոդի '%s' անունը անվավեր է\n"
 
 #: ../gio/gdbus-tool.c:974
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "%d պարամետրի վերլուծման սխալ, որը `%s' տիպի է․ %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "%d պարամետրի վերլուծման սխալ, որը '%s' տիպի է․ %s\n"
 
 #: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
@@ -2753,10 +2753,10 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1803
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Գոյություն չունի `%s' բանալի '%s' սխեմայում, ինչպես սահմանված է նորից "
-"վերագրվող `%s' ֆայլում"
+"Գոյություն չունի '%s' բանալի '%s' սխեմայում, ինչպես սահմանված է նորից "
+"վերագրվող '%s' ֆայլում"
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
 #: ../gio/glib-compile-schemas.c:1895
@@ -2773,11 +2773,11 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1829
 #, fuzzy, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
-"Գոյություն չունի `%s' բանալի '%s' սխեմայում, ինչպես սահմանված է նորից "
-"վերագրվող `%s' ֆայլում"
+"Գոյություն չունի '%s' բանալի '%s' սխեմայում, ինչպես սահմանված է նորից "
+"վերագրվող '%s' ֆայլում"
 
 #: ../gio/glib-compile-schemas.c:1839
 #, c-format
@@ -2787,19 +2787,19 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 msgstr ""
-"վերագրելու համար `%s' բանալին `%s' սխեմայում `%s' վերագրվող ֆայլում "
+"վերագրելու համար '%s' բանալին '%s' սխեմայում '%s' վերագրվող ֆայլում "
 "սխեմայում տրված սահմաններից դուրս է"
 
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"վերագրելու համար `%s' բանալին `%s' սխեմայում `%s' վերագրվող ֆայլում վավեր "
+"վերագրելու համար '%s' բանալին '%s' սխեմայում '%s' վերագրվող ֆայլում վավեր "
 "ընտրությունների ցուցակում չէ"
 
 #: ../gio/glib-compile-schemas.c:1939
@@ -3274,7 +3274,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:65 ../gio/gsettings-tool.c:82
 #, fuzzy, c-format
 msgid "No such schema '%s'\n"
-msgstr "Գոյություն չունի `%s' ինտերֆեյս"
+msgstr "Գոյություն չունի '%s' ինտերֆեյս"
 
 #: ../gio/gsettings-tool.c:77
 #, c-format
@@ -3304,7 +3304,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:131
 #, fuzzy, c-format
 msgid "No such key '%s'\n"
-msgstr "`%s' հատկությունը գոյություն չունի  "
+msgstr "'%s' հատկությունը գոյություն չունի  "
 
 #: ../gio/gsettings-tool.c:504
 #, c-format
@@ -3601,7 +3601,7 @@ msgstr "Ոչ TCP  կապի միջոցով փորձել պրոքսիի սահմա
 #: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1277
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "`%s' պրոքսի պրոտոկոլը չի աջակցվում"
+msgstr "'%s' պրոքսի պրոտոկոլը չի աջակցվում"
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
@@ -3892,8 +3892,8 @@ msgstr "Ավելի շատ մուտքային տվյալների կարիք կա"
 msgid "Invalid compressed data"
 msgstr "Անվավեր սեղմված տվյալներ"
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
-#~ msgstr "Վերադարձվող արժեքի տիպը անվավեր է, ստացվել է `%s', սպասվում էր `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
+#~ msgstr "Վերադարձվող արժեքի տիպը անվավեր է, ստացվել է '%s', սպասվում էր '%s'"
 
 #~ msgid ""
 #~ "Trying to set property %s of type %s but according to the expected "
@@ -3902,8 +3902,8 @@ msgstr "Անվավեր սեղմված տվյալներ"
 #~ "Փորձում է սահմանել %s հատկությունը %s տիպում, բայց հաշվի առնելով ստացված "
 #~ "ինտերֆեյսը տիպը %s է"
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
-#~ msgstr "Գոյություն չունի `%s' սխեմա սահմանված վերագրվող `%s' ֆայլում"
+#~ msgid "No such schema '%s' specified in override file '%s'"
+#~ msgstr "Գոյություն չունի '%s' սխեմա սահմանված վերագրվող '%s' ֆայլում"
 
 #~ msgid ""
 #~ "Commands:\n"

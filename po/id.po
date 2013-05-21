@@ -126,41 +126,41 @@ msgstr "Akhir stream terlalu dini, tak diharapkan"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Kunci '%s' tak didukung pada entri alamat '%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "Alamat '%s' tak valid (perlu hanya salah satu dari path, tmpdir, atau kunci "
 "abstrak)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "Kombinasi pasangan kunci/nilai tanpa arti di entri alamat '%s'"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Galat di alamat '%s' - atribut port salah bentuk"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Galat di alamat '%s' - atribut family salah bentuk"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr "Elemen alamat '%s' tak memuat titik dua (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
 "Pasangan kunci/nilai %d, '%s', di elemen alamat '%s' tak memuat tanda sama "
@@ -169,8 +169,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "Galat saat membongkar kunci atau nilai dalam pasangan Key/Value %d, '%s', "
 "dalam elemen alamat '%s'"
@@ -178,25 +178,25 @@ msgstr ""
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Galat di alamat '%s' - transport unix memerlukan hanya satu dari kunci "
-"`path' atau `abstract' untuk ditata"
+"'path' atau 'abstract' untuk ditata"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr "Galat di alamat '%s' - atribut host hilang atau salah bentuk"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr "Galat di alamat '%s' - atribut portt hilang atau salah bentuk"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr "Galat di alamat '%s' - atribut berkas nonce hilang atau salah bentuk"
 
 #: ../gio/gdbusaddress.c:652
@@ -205,27 +205,27 @@ msgstr "Galat saat meluncurkan otomatis: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "Transport '%s' tak dikenal atau tak didukung bagi alamat '%s'"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Galat saat membuka berkas nonce '%s': %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Galat saat membaca berkas nonce '%s': %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "Galat saat membaca berkas nonce '%s', berharap 16 bita, mendapat %d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Galat saat menulis isi dari berkas nonce '%s' ke stream:"
 
 #: ../gio/gdbusaddress.c:960
@@ -244,7 +244,7 @@ msgstr "Tidak bisa spawn suatu bus pesan tanpa id-mesin: "
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Galat saat spawn baris perintah '%s': "
 
 #: ../gio/gdbusaddress.c:1296
@@ -267,7 +267,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE - nilai tak dikenal '%s'"
@@ -308,35 +308,35 @@ msgstr "Dibatalkan melalui GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Galat ketika mengambil informasi untuk direktori '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Ijin pada direktori '%s' salah bentuk. Diharapkan mode 0700, diperoleh 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Galat membuat direktori '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Galat saat membuka gantungan kunci '%s' untuk dibaca: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "Baris %d dari gantungan kunci pada '%s' dengan isi '%s' salah bentuk"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Token pertama dari baris %d dari gantungan kunci pada '%s' dengan isi '%s' "
 "salah bentuk"
@@ -344,44 +344,44 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "Token kedua dari baris %d dari gantungan kunci pada '%s' dengan isi '%s' "
 "salah bentuk"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Tak menemukan cookie dengan id %d dalam gantungan kunci pada '%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Galat saat menghapus berkas kunci yang basi '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Galat saat membuat berkas kunci '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Galat saat menutup berkas kunci (tak terkait) '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Galat saat membuka kait berkas kunci '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Galat saat membuka gantungan kunci '%s' untuk ditulisi: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Selain itu, melepas kunci bagi '%s' juga gagal: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
@@ -401,34 +401,34 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Tidak ada antarmuka `org.freedesktop.DBus.Properties' pada objek di lokasi %s"
+"Tidak ada antarmuka 'org.freedesktop.DBus.Properties' pada objek di lokasi %s"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Galat menata properti '%s': Tipe yang diharapkan '%s' tapi diperoleh '%s'"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Tak ada properti '%s'"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "Properti '%s' tidak dapat dibaca"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "Properti '%s' tidak dapat ditulisi"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Tak ada antar muka '%s'"
 
 #: ../gio/gdbusconnection.c:4508
@@ -437,17 +437,17 @@ msgstr "Tak ada antar muka begitu"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Tak ada antar muka '%s' pada objek di lokasi %s"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Tak ada metoda '%s'"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Tipe pesan '%s' tak cocok dengan tipe yang diharapkan '%s'"
 
 #: ../gio/gdbusconnection.c:5032
@@ -457,12 +457,12 @@ msgstr "Suatu objek telah diekspor bagi antar muka %s pada %s"
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoda '%s' mengembalikan tipe '%s', tapi yang diharapkan '%s'"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoda '%s' pada antar muka '%s' dengan tanda tangan '%s' tak ada"
 
 #: ../gio/gdbusconnection.c:6430
@@ -516,7 +516,7 @@ msgstr[0] "Ingin membaca %lu bita tapi memperoleh EOF"
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Berharap string UTF-8 yang valid tapi menjumpai bita tak valid pada lokasi "
 "%d (panjang string adalah %d). String UTF-8 yang valid sampai titik itu "
@@ -524,17 +524,17 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "Mengharapkan bita NUL setelah string '%s' tapi menemui bita %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Nilai terurai '%s' bukan lokasi objek D-Bus yang valid"
 
 #: ../gio/gdbusmessage.c:1268
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Nilai terurai '%s' bukan tanda tangan D-Bus yang valid"
 
 #: ../gio/gdbusmessage.c:1325
@@ -549,13 +549,13 @@ msgstr[0] ""
 
 #: ../gio/gdbusmessage.c:1483
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Nilai terurai '%s' bagi varian bukan tanda tangan D-Bus yang valid"
 
 #: ../gio/gdbusmessage.c:1510
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Galat saat deserialisasi GVariant dengan type string '%s' dari format kabel "
 "D-Bus"
@@ -576,13 +576,13 @@ msgstr "Versi protokol mayor tak valid. Berharap 1 tapi menemui %d"
 
 #: ../gio/gdbusmessage.c:1769
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 "Header tanda tangan dengan tanda tangan '%s' ditemukan tapi body pesan kosong"
 
 #: ../gio/gdbusmessage.c:1783
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Nilai terurai '%s' bukan tanda tangan D-Bus yang valid (bagi body)"
 
 #: ../gio/gdbusmessage.c:1814
@@ -600,7 +600,7 @@ msgstr "Tidak bisa men-deserialisasi pesan: "
 #: ../gio/gdbusmessage.c:2156
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Kesalahan serialisasi GVariant dengan type string '%s' ke format kabel D-Bus"
 
@@ -619,13 +619,13 @@ msgstr "Tidak bisa men-serialisasi pesan: "
 
 #: ../gio/gdbusmessage.c:2349
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr "Body pesan punya tanda tangan '%s' tapi tak ada header tanda tangan"
 
 #: ../gio/gdbusmessage.c:2359
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "Body pesan memiliki tanda tangan tipe '%s' tapi tanda tangan di ruas header "
@@ -633,12 +633,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2375
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Body pesan kosong tapi tanda tangan pada ruas header adalah '(%s)'"
 
 #: ../gio/gdbusmessage.c:2932
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Galat balikan dengan body bertipe '%s'"
 
 #: ../gio/gdbusmessage.c:2940
@@ -682,17 +682,17 @@ msgstr "Tidak dapat menyatakan berkas nonce ketika membuat suatu server"
 
 #: ../gio/gdbusserver.c:873
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Galat saat menulis berkas nonce pada '%s': %s"
 
 #: ../gio/gdbusserver.c:1041
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "String '%s' bukan suatu GUID D-Bus yang valid"
 
 #: ../gio/gdbusserver.c:1081
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Tidak dapat mendengarkan pada transport yang tak didukung '%s'"
 
 #: ../gio/gdbus-tool.c:88
@@ -766,14 +766,14 @@ msgstr "Telah dinyatakan titik ujung sambungan berganda"
 #: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr "Peringatan: Menurut data introspeksi, antar muka '%s' tak ada\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Peringatan: Menurut data introspeksi, metoda '%s' tak ada pada antar muka "
 "'%s'\n"
@@ -883,13 +883,13 @@ msgstr "Galat: Nama metoda tak dinyatakan\n"
 
 #: ../gio/gdbus-tool.c:915
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Galat: Nama metoda '%s' tak valid\n"
 
 #: ../gio/gdbus-tool.c:980
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Galat ketika mengurai parameter ke-%d dari jenis `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "Galat ketika mengurai parameter ke-%d dari jenis '%s': %s\n"
 
 #: ../gio/gdbus-tool.c:1412
 msgid "Destination name to introspect"
@@ -1512,7 +1512,7 @@ msgstr "Mengabaikan berkas ini.\n"
 
 #: ../gio/glib-compile-schemas.c:1860
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Tak ada kunci '%s' dalam skema '%s' sebagaimana dinyatakan di berkas penimpa "
 "'%s'"
@@ -1532,7 +1532,7 @@ msgstr " dan --strict dinyatakan; keluar.\n"
 #: ../gio/glib-compile-schemas.c:1886
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
 "galat mengurai kunci '%s' dalam skema '%s' sebagaimana dinyatakan di berkas "
@@ -1546,7 +1546,7 @@ msgstr "Mengabaikan penimpaan bagi kunci ini.\n"
 #: ../gio/glib-compile-schemas.c:1914
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 "penimpa bagi kunci '%s' dalam skema '%s' di berkas penimpa '%s' di luar "
@@ -1555,7 +1555,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1942
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "penimpa bagi kunci '%s' dalam skema '%s' di berkas penimpa '%s' tak ada di "

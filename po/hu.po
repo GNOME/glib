@@ -132,49 +132,49 @@ msgstr "Váratlan korai adatfolyam vége"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Nem támogatott „%s” kulcs a(z) „%s” címbejegyzésben"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "A(z) „%s” cím érvénytelen (csak az útvonal, tmp könyvtár vagy absztrakt "
 "kulcs egyike lehet)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "Értelmetlen kulcs/érték párkombináció a(z) „%s” címbejegyzésben"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Hiba a(z) „%s” címben – a port attribútum rosszul formázott"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "Hiba a(z) „%s” címben – a család attribútum rosszul formázott"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr "A(z) „%s” címelem nem tartalmaz kettőspontot (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr "%d. kulcspár: „%s” a(z) „%s” címelemben nem tartalmaz egyenlőségjelet"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "Hiba a(z) „%3$s” címelemben található a(z) %1$d. kulcspárban lévő „%2$s” "
 "kulcs vagy érték értelmezésekor."
@@ -182,27 +182,27 @@ msgstr ""
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Hiba a(z) „%s” címben – a unix szállítás a „path” vagy „abstract” kulcsok "
 "pontosan egyikének jelenlétét igényli"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a host attribútum hiányzik vagy rosszul formázott"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a port attribútum hiányzik vagy rosszul formázott"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a noncefile attribútum hiányzik vagy rosszul "
 "formázott"
@@ -213,29 +213,29 @@ msgstr "Hiba az automatikus indításkor: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "Ismeretlen vagy nem támogatott szállítás („%s”) a címhez („%s”)"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "Hiba a(z) „%s” ideiglenes fájl megnyitásakor: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "Hiba a(z) „%s” ideiglenes fájl olvasása közben: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
 "Hiba a(z) „%s” ideiglenes fájl olvasása közben, a várt 16 bájt helyett %d "
 "érkezett"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "Hiba az ideiglenes fájl („%s”) tartalmának írásakor az adatfolyamba:"
 
 #: ../gio/gdbusaddress.c:960
@@ -253,7 +253,7 @@ msgstr "Nem indítható üzenetbusz gépazonosító nélkül: "
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "Hiba a(z) „%s” parancssor indításakor: "
 
 #: ../gio/gdbusaddress.c:1296
@@ -276,7 +276,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "Nem határozható meg a busz címe a DBUS_STARTER_BUS_TYPE környezeti "
 "változóból – ismeretlen „%s” érték"
@@ -317,36 +317,36 @@ msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "Hiba a(z) „%s” könyvtár információinak lekérésekor: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "A(z) „%s” könyvtár jogosultságai rosszul formázottak. A várt 0700 mód "
 "helyett 0%o érkezett."
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "Hiba a(z) „%s” könyvtár létrehozásakor: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "Hiba a(z) „%s” kulcstartó megnyitásakor olvasásra: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sora rosszul formázott"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sorának első egysége rosszul "
 "formázott"
@@ -354,44 +354,44 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sorának második egysége "
 "rosszul formázott"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "Nem található %d azonosítójú süti a kulcstartóban itt: „%s ”"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "Hiba az elavult „%s” zárolásfájl törlése közben: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "Hiba a(z) „%s” zárolási fájl létrehozásakor: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "Hiba a (törölt) „%s” zárolási fájl lezárásakor: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "Hiba a(z) „%s” zárolási fájl törlésekor: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "Hiba a(z) „%s” kulcstartó írásra való megnyitásakor: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Ezen kívül a(z) „%s” zárolásának feloldása is meghiúsult: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
@@ -411,36 +411,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Nincs „org.freedesktop.DBus.Properties” felület a(z) %s útvonalon lévő "
 "objektumon"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Hiba a(z) „%s” tulajdonság beállításakor: a várt „%s” típus helyett „%s” "
 "érkezett"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "Nincs „%s” tulajdonság"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "A tulajdonság („%s”) nem olvasható"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "A tulajdonság („%s”) nem írható"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "Nincs „%s” felület"
 
 #: ../gio/gdbusconnection.c:4508
@@ -449,17 +449,17 @@ msgstr "Nincs ilyen felület"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "Nincs „%s” felület a(z) %s útvonalon lévő objektumon"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "Nincs „%s” metódus"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Az üzenet „%s” típusa nem felel meg a várt „%s” típusnak"
 
 #: ../gio/gdbusconnection.c:5032
@@ -469,12 +469,12 @@ msgstr "Már exportálva van egy objektum a(z) %s felülethez itt: %s"
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "A metódus („%s”) a(z) „%s” típust adta vissza a várt „%s” helyett"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "A metódus („%s”) nem létezik a(z) „%s” felületen „%s” aláírással"
 
 #: ../gio/gdbusconnection.c:6430
@@ -527,14 +527,14 @@ msgstr[1] "Az olvasandó %lu bájt helyett csak %lu érkezett"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "A(z) „%s” karakterlánc után várt NULL bájt helyett %d bájt található"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "A várt érvényes UTF-8 karakterlánc helyett érvénytelen bájtok találhatók a"
 "(z) %d bájteltolásnál (a karakterlánc hossza: %d). Az érvényes UTF-8 "
@@ -542,12 +542,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "A feldolgozott „%s” érték nem érvényes D-Bus objektumútvonal"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "A feldolgozott „%s” érték nem érvényes D-Bus aláírás"
 
 #: ../gio/gdbusmessage.c:1698
@@ -563,13 +563,13 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "A változat feldolgozott „%s” értéke nem érvényes D-Bus aláírás"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Hiba a(z) „%s” típusú GVariant visszafejtésekor a D-Bus átviteli formátumból"
 
@@ -589,12 +589,12 @@ msgstr "Érvénytelen fő protokollverzió. A várt 1 helyett %d található"
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "Aláírásfejléc található „%s” aláírással, de az üzenettörzs üres"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "A feldolgozott „%s” érték nem érvényes D-Bus aláírás (a törzshöz)"
 
 #: ../gio/gdbusmessage.c:2175
@@ -611,7 +611,7 @@ msgstr "Nem fejthető sorba az üzenet: "
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Hiba a(z) „%s” típusú GVariant sorbafejtésekor a D-Bus átviteli formátumba"
 
@@ -629,13 +629,13 @@ msgstr "Az üzenet nem fejthető sorba: "
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr "Az üzenettörzs „%s” aláírással rendelkezik, de nincs aláírásfejléc"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "Az üzenettörzs „%s” típusaláírással rendelkezik, de az aláírásfejlécben lévő "
@@ -643,12 +643,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Az üzenettörzs üres, de az aláírásfejlécben lévő aláírás: „%s”"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "Hiba került visszaadásra a(z) „%s” típusú törzzsel"
 
 #: ../gio/gdbusmessage.c:3279
@@ -692,17 +692,17 @@ msgstr "Kiszolgáló létrehozásakor nem adható meg az ideiglenes fájl"
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "Hiba az ideiglenes fájl („%s”) írásakor: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "A(z) „%s” karakterlánc nem érvényes D-Bus GUID"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Nem figyelhető a nem támogatott „%s” szállítás"
 
 #: ../gio/gdbus-tool.c:92
@@ -775,15 +775,15 @@ msgstr "Több kapcsolatvégpontot adott meg"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
 "Figyelmeztetés: a betekintési adatok szerint a(z) „%s” felület nem létezik\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Figyelmeztetés: a betekintési adatok szerint a felületen („%2$s”) nem "
 "létezik „%1$s” metódus\n"
@@ -893,12 +893,12 @@ msgstr "Hiba: a metódusnév nincs megadva\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Hiba: a metódusnév („%s”) érvénytelen\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Hiba a(z) „%2$s” típusú %1$d. paraméter feldolgozásakor: %3$s\n"
 
 #: ../gio/gdbus-tool.c:1416
@@ -1539,7 +1539,7 @@ msgstr "Fájl figyelmen kívül hagyása.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Nincs „%s” kulcs a(z) „%s” sémában a(z) „%s” felülbírálási fájlban megadott "
 "módon"
@@ -1559,7 +1559,7 @@ msgstr " és a --strict meg lett adva, kilépés.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 "hiba a(z) „%s” kulcs feldolgozásakor a(z) „%s” sémában a(z) „%s” "
 "felülbírálási fájlban megadott módon: %s. "
@@ -1572,7 +1572,7 @@ msgstr "Kulcs felülbírálásának figyelmen kívül hagyása.\n"
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 "a(z) „%2$s” séma „%1$s” kulcsának felülbírálása a(z) „%3$s” felülbírálási "
@@ -1581,7 +1581,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "a(z) „%2$s” séma „%1$s” kulcsának felülbírálása a(z) „%3$s” felülbírálási "

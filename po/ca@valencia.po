@@ -132,42 +132,42 @@ msgstr "No s'esperava un final de flux tan prompte"
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "No es permet la clau «%s» en l'entrada de l'adreça «%s»"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "L'adreça «%s» no és vàlida (ha de ser, o bé un camí, o bé un tmpdir -"
 "directori temporal-, o bé unes claus abstractes)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
+msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "L'entrada d'adreça «%s» té una parella clau/valor que no té sentit"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
+msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "Hi ha un error a l'adreça «%s»: l'atribut del port no està ben format"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
+msgid "Error in address '%s' - the family attribute is malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: l'atribut de la família no està ben format"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
+msgid "Address element '%s' does not contain a colon (:)"
 msgstr "L'element d'adreça «%s» no conté dos punts (:)"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
 "La parella de clau/valor %d, «%s», a l'element d'adreça «%s», no conté un "
@@ -176,8 +176,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
 "S'ha produït un error en suprimir l'escapament d'una clau o d'un valor en la "
 "parella clau/valor %d, «%s», de l'element d'adreça «%s»"
@@ -185,8 +185,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: el transport unix requereix que hi haja "
 "establerta exactament una clau, o bé de tipus «path» (camí), o bé de tipus "
@@ -194,20 +194,20 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: manca o està mal format l'atribut del nom "
 "d'ordinador"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: manca o està mal format l'atribut del port "
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: l'atribut noncefile no existeix o està mal "
 "format "
@@ -218,30 +218,30 @@ msgstr "S'ha produït un error en executar-se automàticament: "
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr ""
 "El transport «%s» per a l'adreça «%s» és desconegut o no està implementat"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
+msgid "Error opening nonce file '%s': %s"
 msgstr "S'ha produït un error en obrir el fitxer nonce «%s»: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
+msgid "Error reading from nonce file '%s': %s"
 msgstr "S'ha produït un error en llegir el fitxer nonce «%s»: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
 "S'ha produït un error en llegir el fitxer nonce «%s»: s'esperaven 16 bytes "
 "però se n'han obtingut %d"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
+msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr ""
 "S'ha produït un error en escriure els continguts del fitxer nonce «%s» al "
 "flux:"
@@ -264,7 +264,7 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
+msgid "Error spawning command line '%s': "
 msgstr "S'ha produït un error en engendrar la línia d'ordes «%s»: "
 
 #: ../gio/gdbusaddress.c:1296
@@ -290,7 +290,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "No es pot determinar l'adreça del bus a través de la variable d'entorn "
 "«DBUS_STARTER_BUS_TYPE»: conté un valor desconegut «%s»"
@@ -333,30 +333,30 @@ msgstr ""
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
+msgid "Error when getting information for directory '%s': %s"
 msgstr "S'ha produït un error en obtindre la informació del directori «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Els permisos del directori «%s» no estan ben formats. S'esperava el mode "
 "0700 però s'ha obtingut el 0%o."
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
+msgid "Error creating directory '%s': %s"
 msgstr "S'ha produït un error en crear el directori «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
+msgid "Error opening keyring '%s' for reading: "
 msgstr "S'ha produït un error en obrir l'anell de claus «%s» per llegir-lo: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "La línia %d de l'anell de claus a «%s» amb el contingut «%s» no està ben "
 "formada"
@@ -364,7 +364,7 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "El primer testimoni de la línia %d de l'anell de claus a «%s» amb el "
 "contingut «%s» no està ben format"
@@ -372,47 +372,47 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
 "El segon testimoni de la línia %d de l'anell de claus a «%s» amb el "
 "contingut «%s» no està ben format"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr ""
 "No s'ha trobat la galeta amb l'identificador %d a l'anell de claus a «%s»"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
+msgid "Error deleting stale lock file '%s': %s"
 msgstr "S'ha produït un suprimir el fitxer de blocatge antic «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
+msgid "Error creating lock file '%s': %s"
 msgstr "S'ha produït un error en crear el fitxer de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr ""
 "S'ha produït un error en tancar el fitxer (no enllaçat) de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
+msgid "Error unlinking lock file '%s': %s"
 msgstr "S'ha produït un error en desenllaçar el fitxer de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr ""
 "S'ha produït un error en obrir l'anell de claus «%s» per a escriptura: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr ""
 "(A més a més, l'alliberació del blocatge per a «%s» també ha fallat: %s)"
 
@@ -434,36 +434,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "No existeix la interfície «org.freedesktop.DBus.Properties» en l'objecte al "
 "camí %s"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "S'ha produït un error en establir la propietat «%s»: s'esperava el tipus "
 "«%s» però s'ha obtingut el «%s»"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
+msgid "No such property '%s'"
 msgstr "No existeix la propietat «%s»"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
+msgid "Property '%s' is not readable"
 msgstr "La propietat «%s» no és de lectura"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
+msgid "Property '%s' is not writable"
 msgstr "La propietat «%s» no és d'escriptura"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
+msgid "No such interface '%s'"
 msgstr "No existeix la interfície «%s»"
 
 #: ../gio/gdbusconnection.c:4508
@@ -472,17 +472,17 @@ msgstr "No existeix la interfície"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
+msgid "No such interface '%s' on object at path %s"
 msgstr "No existeix la interfície «%s» en l'objecte al camí %s"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
+msgid "No such method '%s'"
 msgstr "No existeix el mètode «%s»"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
+msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "El tipus de missatge «%s» no correspon al tipus «%s» que s'esperava"
 
 #: ../gio/gdbusconnection.c:5032
@@ -492,12 +492,12 @@ msgstr "Ja hi ha un objecte exportat per a la interfície %s a %s"
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
+msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "El mètode «%s» ha retornat un tipus «%s» però s'esperava «%s»"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "No existeix el mètode «%s» a la interfície «%s» amb la signatura «%s»"
 
 #: ../gio/gdbusconnection.c:6430
@@ -552,7 +552,7 @@ msgstr[1] "Es volien llegir %lu bytes però només s'han rebut %lu"
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr ""
 "S'esperava el byte «NUL» després de la cadena «%s» però s'ha trobat el byte "
 "%d"
@@ -561,7 +561,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "S'esperava una cadena UTF-8 vàlida però s'han trobat bytes no vàlids a "
 "l'òfset %d (la llargada de la cadena és %d). La cadena UTF-8 vàlida fins "
@@ -569,12 +569,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "El valor analitzat «%s» no és un camí d'objecte D-Bus vàlid"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "El valor analitzat «%s» no és una signatura D-Bus vàlida"
 
 #: ../gio/gdbusmessage.c:1698
@@ -592,13 +592,13 @@ msgstr[1] ""
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "El valor analitzat «%s» per variant no és una signatura D-Bus vàlida"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "S'ha produït un error en convertir a estructura de dades la GVariant amb el "
 "tipus de cadena «%s» del format de cable D-Bus"
@@ -619,14 +619,14 @@ msgstr "Versió major del protocol no vàlida. S'esperava 1 però s'ha trobat %d
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
+msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 "S'ha trobat la capçalera de la signatura amb la signatura «%s», però el cos "
 "és buit"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "El valor analitzat «%s» no és una signatura de D-Bus vàlida (pel cos)"
 
 #: ../gio/gdbusmessage.c:2175
@@ -647,7 +647,7 @@ msgstr "No s'ha pogut tornar a convertir el missatge a estructura de dades: "
 #: ../gio/gdbusmessage.c:2506
 #, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "No s'ha pogut convertir a seqüència de bits la GVariant de tipus cadena «%s» "
 "al format de cable D-Bus"
@@ -667,7 +667,7 @@ msgstr "No s'ha pogut convertir a seqüència de bits el missatge: "
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
+msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 "El cos del missatge té la signatura «%s» però no hi ha cap capçalera de "
 "signatura"
@@ -675,7 +675,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
 "El cos del missatge té el tipus de signatura «%s» però la signatura en el "
@@ -683,14 +683,14 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
 "El cos del missatge és buit però la signatura en el camp de la capçalera és "
 "«(%s)»"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "S'ha retornat un error amb el cos de tipus «%s»"
 
 #: ../gio/gdbusmessage.c:3279
@@ -738,17 +738,17 @@ msgstr "No es pot especificar el fitxer «nonce» quan es crea un servidor"
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
+msgid "Error writing nonce file at '%s': %s"
 msgstr "S'ha produït un error en escriure el fitxer «nonce» a «%s»: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
+msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "La cadena «%s» no és un GUID vàlid de D-Bus"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
+msgid "Cannot listen on unsupported transport '%s'"
 msgstr "No es pot escoltar «%s», és un transport desconegut"
 
 #: ../gio/gdbus-tool.c:92
@@ -821,15 +821,15 @@ msgstr "S'han especificat més d'un punt final de connexió"
 #: ../gio/gdbus-tool.c:467
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
 "Avís: d'acord amb les dades d'introspecció no existeix la interfície «%s»\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
 "Avís: d'acord amb les dades d'introspecció no existeix el mètode «%s» a la "
 "interfície «%s»\n"
@@ -939,12 +939,12 @@ msgstr "Error: no s'ha especificat el nom del mètode\n"
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
+msgid "Error: Method name '%s' is invalid\n"
 msgstr "Error: el nom del mètode «%s» no és vàlid\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr ""
 "S'ha produït un error en analitzar el paràmetre %d del tipus «%s»: %s\n"
 
@@ -1600,7 +1600,7 @@ msgstr "S'està ignorant este fitxer.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "No existeix la clau «%s» en l'esquema «%s» tal com especifica el fitxer de "
 "sobreescriptura «%s»"
@@ -1620,7 +1620,7 @@ msgstr " i s'havia especificat «--strict», se ix.\n"
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 "s'ha produït un error en analitzar la clau «%s» en l'esquema «%s» tal com "
 "especifica el fitxer de sobreescriptura «%s»: %s."
@@ -1633,7 +1633,7 @@ msgstr "S'està ignorant la sobreescriptura d'esta clau.\n"
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
 "la sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
@@ -1642,7 +1642,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
 "la sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
@@ -4512,12 +4512,12 @@ msgstr "%.1f KB"
 #~ msgid "Unexpected error in waitpid() (%s)"
 #~ msgstr "S'ha produït un error inesperat en waitpid() (%s)"
 
-#~ msgid "Abnormal program termination spawning command line `%s': %s"
+#~ msgid "Abnormal program termination spawning command line '%s': %s"
 #~ msgstr ""
 #~ "El programa ha finalitzat de manera anòmala quan generava la línia "
 #~ "d'ordres «%s»: %s"
 
-#~ msgid "Command line `%s' exited with non-zero exit status %d: %s"
+#~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr ""
 #~ "La línia d'ordres «%s» ha acabat amb un estat de sortida diferent de zero "
 #~ "(%d): %s"
@@ -4583,7 +4583,7 @@ msgstr "%.1f KB"
 #~ msgid "pm"
 #~ msgstr "p. m."
 
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
 #~ msgstr ""
 #~ "El tipus de valor de retorn no és correcte, s'ha obtingut el «%s» i "
 #~ "s'esperava el «%s»"
@@ -4643,7 +4643,7 @@ msgstr "%.1f KB"
 #~ "passi.\n"
 #~ "El seguiment estarà actiu fins que no es finalitzi el procés."
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgid "No such schema '%s' specified in override file '%s'"
 #~ msgstr ""
 #~ "No existeix l'esquema especificat «%s» dins del fitxer de sobreescriptura "
 #~ "«%s»"
@@ -4750,9 +4750,6 @@ msgstr "%.1f KB"
 #~ msgstr ""
 #~ "No s'ha pogut canviar el mode del fitxer: el fill ha finalitzat "
 #~ "anormalment"
-
-#~ msgid "Conversion from character set `%s' to `%s' is not supported"
-#~ msgstr "No se es pot fer la conversió del joc de caràcters «%s» a «%s»"
 
 #~ msgid "Incorrect message size"
 #~ msgstr "Mida incorrecta del missatge"

@@ -573,7 +573,7 @@ msgstr "Sembolik bağlar desteklenmiyor"
 #: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "`%s'-`%s' dönüştürücüsü açılamıyor: %s"
+msgstr "'%s'-'%s' dönüştürücüsü açılamıyor: %s"
 
 #: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -1492,78 +1492,78 @@ msgstr "Beklenmeyen erken akış-sonu"
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:311
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "`%2$s' adres girdisinde desteklenmeyen anahtar `%1$s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "'%2$s' adres girdisinde desteklenmeyen anahtar '%1$s'"
 
 #: ../gio/gdbusaddress.c:169
 #, fuzzy, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"`%s' adresi geçersiz (tam olarak bir yol, tmpdir veya soyut anahtarlar "
+"'%s' adresi geçersiz (tam olarak bir yol, tmpdir veya soyut anahtarlar "
 "gerekiyor)"
 
 #: ../gio/gdbusaddress.c:182
 #, fuzzy, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "`%s' adres girdisinde anlamsız anahtar/değer kombinasyonu"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "'%s' adres girdisinde anlamsız anahtar/değer kombinasyonu"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, fuzzy, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "`%s' adresinde hata - `port' özniteliği kusurlu"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "'%s' adresinde hata - 'port' özniteliği kusurlu"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, fuzzy, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "`%s' adresinde hata - `family' özniteliği kusurlu"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "'%s' adresinde hata - 'family' özniteliği kusurlu"
 
 #: ../gio/gdbusaddress.c:446
 #, fuzzy, c-format
-msgid "Address element `%s', does not contain a colon (:)"
-msgstr "Adress öğesi `%s', iki nokta (:) içermiyor"
+msgid "Address element '%s', does not contain a colon (:)"
+msgstr "Adress öğesi '%s', iki nokta (:) içermiyor"
 
 #: ../gio/gdbusaddress.c:467
 #, fuzzy, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s', does not contain an equal "
 "sign"
 msgstr ""
-"Adres öğesi `%3$s' içerisindeki %1$d, `%2$s' Anahtar/Değer çifti, eşittir "
+"Adres öğesi '%3$s' içerisindeki %1$d, '%2$s' Anahtar/Değer çifti, eşittir "
 "işareti içermiyor"
 
 #: ../gio/gdbusaddress.c:481
 #, fuzzy, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
 msgstr ""
-"Adres öğesi `%3$s' içerisindeki %1$d, `%2$s' Anahtar/Değer çiftindeki "
+"Adres öğesi '%3$s' içerisindeki %1$d, '%2$s' Anahtar/Değer çiftindeki "
 "anahtar ya da değeri açmada hata"
 
 #: ../gio/gdbusaddress.c:559
 #, fuzzy, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"`%s' adresinde hata - unix transport, `path' veya `abstract' anahtarlarından "
+"'%s' adresinde hata - unix transport, 'path' veya 'abstract' anahtarlarından "
 "tam olarak bir tanesine değer atanmış olmasını gereksinir."
 
 #: ../gio/gdbusaddress.c:595
 #, fuzzy, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "`%s' adresinde hata - host özniteliği eksik ya da kusurlu"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "'%s' adresinde hata - host özniteliği eksik ya da kusurlu"
 
 #: ../gio/gdbusaddress.c:609
 #, fuzzy, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "`%s' adresinde hata - port özniteliği eksik ya da kusurlu"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "'%s' adresinde hata - port özniteliği eksik ya da kusurlu"
 
 #: ../gio/gdbusaddress.c:623
 #, fuzzy, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr "`%s' adresinde hata - noncefile özniteliği eksik ya da kusurlu"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgstr "'%s' adresinde hata - noncefile özniteliği eksik ya da kusurlu"
 
 #: ../gio/gdbusaddress.c:644
 #, fuzzy
@@ -1572,28 +1572,28 @@ msgstr "Kendiliğinden çalışmada hata:"
 
 #: ../gio/gdbusaddress.c:652
 #, fuzzy, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "`%2$s' adresi için bilinmeyen ya da desteklenmeyen transport `%1$s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "'%2$s' adresi için bilinmeyen ya da desteklenmeyen transport '%1$s'"
 
 #: ../gio/gdbusaddress.c:688
 #, fuzzy, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "`%s' nonce dosyası açılırken hata: %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "'%s' nonce dosyası açılırken hata: %s"
 
 #: ../gio/gdbusaddress.c:706
 #, fuzzy, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "`%s' nonce dosyası okunurken hata: %s"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "'%s' nonce dosyası okunurken hata: %s"
 
 #: ../gio/gdbusaddress.c:715
 #, fuzzy, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "`%s' nonce dosyasından okunurken hata, beklenen 16 bayt, alınan %d"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgstr "'%s' nonce dosyasından okunurken hata, beklenen 16 bayt, alınan %d"
 
 #: ../gio/gdbusaddress.c:733
 #, fuzzy, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "`%s' nonce dosyasının içeriğini akışa yazma hatası:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "'%s' nonce dosyasının içeriğini akışa yazma hatası:"
 
 #: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
@@ -1606,18 +1606,18 @@ msgstr "machine-id olmadan mesaj veriyolu meydana getirilemiyor:"
 
 #: ../gio/gdbusaddress.c:1057
 #, fuzzy, c-format
-msgid "Error spawning command line `%s': "
-msgstr "`%s' komut satırını meydana getirmede hata:"
+msgid "Error spawning command line '%s': "
+msgstr "'%s' komut satırını meydana getirmede hata:"
 
 #: ../gio/gdbusaddress.c:1068
 #, fuzzy, c-format
-msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "`%s' komut satırın meydana getirirken program olağan dışı sonlandı: %s"
+msgid "Abnormal program termination spawning command line '%s': %s"
+msgstr "'%s' komut satırın meydana getirirken program olağan dışı sonlandı: %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, fuzzy, c-format
-msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr "Komut satırı `%s', sıfır olmayan bir durum ile kapandı %d: %s"
+msgid "Command line '%s' exited with non-zero exit status %d: %s"
+msgstr "Komut satırı '%s', sıfır olmayan bir durum ile kapandı %d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, fuzzy, c-format
@@ -1630,10 +1630,10 @@ msgstr ""
 #, fuzzy, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkeninden veriyolu adresi belirlenemiyor - "
-"bilinmeyen değer `%s'"
+"bilinmeyen değer '%s'"
 
 #: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 #, fuzzy
@@ -1673,81 +1673,81 @@ msgstr "GDBusAuthObserver::authorize-authenticated-peer üzerinden iptal edildi"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, fuzzy, c-format
-msgid "Error statting directory `%s': %s"
-msgstr "`%s' dizininin bilgilerini almada (stat) hata: %s"
+msgid "Error statting directory '%s': %s"
+msgstr "'%s' dizininin bilgilerini almada (stat) hata: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, fuzzy, c-format
 msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"`%s' dizini üzerindeki izinler kusurlu. Beklenen kip 0700, elde edilen 0%o"
+"'%s' dizini üzerindeki izinler kusurlu. Beklenen kip 0700, elde edilen 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, fuzzy, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "Dizin oluşturmada hata: `%s': %s"
+msgid "Error creating directory '%s': %s"
+msgstr "Dizin oluşturmada hata: '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, fuzzy, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "`%s' anahtarlığı okuma için açılırken hata: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "'%s' anahtarlığı okuma için açılırken hata: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, fuzzy, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "`%2$s' konumundaki anahtarlığın `%3$s' içerikli %1$d. satırı kusurlu"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "'%2$s' konumundaki anahtarlığın '%3$s' içerikli %1$d. satırı kusurlu"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, fuzzy, c-format
 msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+"First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"`%2$s' konumundaki anahtarlığın, `%3$s' içerikli %1$d. satırındaki ilk simge "
+"'%2$s' konumundaki anahtarlığın, '%3$s' içerikli %1$d. satırındaki ilk simge "
 "kusurlu"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, fuzzy, c-format
 msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr ""
-"`%2$s' konumundaki anahtarlığın, `%3$s' içerikli %1$d. satırındaki ikinci "
+"'%2$s' konumundaki anahtarlığın, '%3$s' içerikli %1$d. satırındaki ikinci "
 "simge kusurlu"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, fuzzy, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "`%2$s konumundaki anahtarlıkta %1$d kimlikli çerez bulunamadı'"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "'%2$s konumundaki anahtarlıkta %1$d kimlikli çerez bulunamadı'"
 
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, fuzzy, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "Eskimiş kilit dosyası `%s' silinirken hata: %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "Eskimiş kilit dosyası '%s' silinirken hata: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "Kilit dosyası `%s' oluşturulurken hata: %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "Kilit dosyası '%s' oluşturulurken hata: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, fuzzy, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "(Bağı kaldırılmış) kilit dosyası `%s' kapatılırken hata: %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "(Bağı kaldırılmış) kilit dosyası '%s' kapatılırken hata: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, fuzzy, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "`%s' kilit dosyasının bağı kaldırılırken hata: %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "'%s' kilit dosyasının bağı kaldırılırken hata: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, fuzzy, c-format
-msgid "Error opening keyring `%s' for writing: "
+msgid "Error opening keyring '%s' for writing: "
 msgstr "'%s' anahtarlığını, yazma için açarken hata:"
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, fuzzy, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Ayrıca, `%s' kilit dosyasını serbest bırakma da başarısız oldu: %s)"
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(Ayrıca, '%s' kilit dosyasını serbest bırakma da başarısız oldu: %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1767,34 +1767,34 @@ msgstr ""
 #: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, fuzzy, c-format
 msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"%s konumundaki nesnede `org.freedesktop.DBus.Properties' gibi bir arayüz yok"
+"%s konumundaki nesnede 'org.freedesktop.DBus.Properties' gibi bir arayüz yok"
 
 #: ../gio/gdbusconnection.c:3841
 #, fuzzy, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr "`%s' özelliği ayarlanırken hata: Beklenen tür `%s', elde edilen `%s'"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
+msgstr "'%s' özelliği ayarlanırken hata: Beklenen tür '%s', elde edilen '%s'"
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
-msgid "No such property `%s'"
-msgstr "`%s' gibi bir özellik yok"
+msgid "No such property '%s'"
+msgstr "'%s' gibi bir özellik yok"
 
 #: ../gio/gdbusconnection.c:3948
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "`%s' özelliği okunabilir değil"
+msgid "Property '%s' is not readable"
+msgstr "'%s' özelliği okunabilir değil"
 
 #: ../gio/gdbusconnection.c:3959
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "`%s' özelliği yazılabilir değil"
+msgid "Property '%s' is not writable"
+msgstr "'%s' özelliği yazılabilir değil"
 
 #: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
-msgid "No such interface `%s'"
-msgstr "`%s' gibi bir arabirim yok"
+msgid "No such interface '%s'"
+msgstr "'%s' gibi bir arabirim yok"
 
 #: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
@@ -1802,18 +1802,18 @@ msgstr "Böyle bir arabirim yok"
 
 #: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "%2$s yolundaki nesnede `%1$s' gibi bir arabirim yok"
+msgid "No such interface '%s' on object at path %s"
+msgstr "%2$s yolundaki nesnede '%1$s' gibi bir arabirim yok"
 
 #: ../gio/gdbusconnection.c:4484
 #, c-format
-msgid "No such method `%s'"
-msgstr "`%s' gibi bir yöntem yok"
+msgid "No such method '%s'"
+msgstr "'%s' gibi bir yöntem yok"
 
 #: ../gio/gdbusconnection.c:4515
 #, fuzzy, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "`%s' mesajının türü, beklenen `%s' türü ile örtüşmüyor"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "'%s' mesajının türü, beklenen '%s' türü ile örtüşmüyor"
 
 #: ../gio/gdbusconnection.c:4734
 #, c-format
@@ -1822,13 +1822,13 @@ msgstr "%2$s konumundaki %1$s arabirimi için bir nesne zaten dışa aktarıldı
 
 #: ../gio/gdbusconnection.c:4932
 #, fuzzy, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "`%s' yöntemi `%s' türü döndürdü, fakat `%s' bekleniyordu"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "'%s' yöntemi '%s' türü döndürdü, fakat '%s' bekleniyordu"
 
 #: ../gio/gdbusconnection.c:5964
 #, fuzzy, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "`%s' imzalı arayüz `%s' üzerindeki `%s' yöntemi mevcut değil"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "'%s' imzalı arayüz '%s' üzerindeki '%s' yöntemi mevcut değil"
 
 #: ../gio/gdbusconnection.c:6082
 #, c-format
@@ -1883,26 +1883,26 @@ msgstr[0] "%lu bayt okumak istendi fakat EOF alındı"
 #, fuzzy, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "Geçerli bir UTF-8 dizgesi bekleniyordu fakat %d bayt ofsetinde "
 "geçersizbaytlar bulunda (dizge uzunluğu %d). Bu noktaya kadar geçerli olan "
-"dizge `%s'"
+"dizge '%s'"
 
 #: ../gio/gdbusmessage.c:1038
 #, fuzzy, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "`%s' dizgesinden sonra NUL bayt bekleniyordu, fakat %d baytı bulundu"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "'%s' dizgesinden sonra NUL bayt bekleniyordu, fakat %d baytı bulundu"
 
 #: ../gio/gdbusmessage.c:1242
 #, fuzzy, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "Ayrıştırılan değer `%s', geçerli bir D-Bus nesne yolu değil"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "Ayrıştırılan değer '%s', geçerli bir D-Bus nesne yolu değil"
 
 #: ../gio/gdbusmessage.c:1268
 #, fuzzy, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "Ayrıştırılan değer `%s', geçerli bir D-Bus imzası değil"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "Ayrıştırılan değer '%s', geçerli bir D-Bus imzası değil"
 
 #: ../gio/gdbusmessage.c:1324
 #, fuzzy, c-format
@@ -1916,15 +1916,15 @@ msgstr[0] ""
 
 #: ../gio/gdbusmessage.c:1490
 #, fuzzy, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "Varyant için ayrıştırılmış değer `%s' geçerli bir D-Bus imzası değil"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "Varyant için ayrıştırılmış değer '%s' geçerli bir D-Bus imzası değil"
 
 #: ../gio/gdbusmessage.c:1517
 #, fuzzy, c-format
 msgid ""
-"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"`%s' tür dizgeli GVariant, D-Bus wire biçiminden geri dönüştürülürken hata"
+"'%s' tür dizgeli GVariant, D-Bus wire biçiminden geri dönüştürülürken hata"
 
 #: ../gio/gdbusmessage.c:1705
 #, fuzzy, c-format
@@ -1942,13 +1942,13 @@ msgstr "Geçersiz protokol baş sürümü. 1 bekleniyordu, fakat %d bulundu"
 
 #: ../gio/gdbusmessage.c:1776
 #, fuzzy, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "`%s' imzalı bir imza başlığı bulundu, fakat mesaj gövdesi boş"
+msgid "Signature header with signature '%s' found but message body is empty"
+msgstr "'%s' imzalı bir imza başlığı bulundu, fakat mesaj gövdesi boş"
 
 #: ../gio/gdbusmessage.c:1790
 #, fuzzy, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Ayrıştırılan değer `%s' geçerli bir D-Bus imzası değil (gövde için)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "Ayrıştırılan değer '%s' geçerli bir D-Bus imzası değil (gövde için)"
 
 #: ../gio/gdbusmessage.c:1821
 #, fuzzy, c-format
@@ -1964,8 +1964,8 @@ msgstr "Mesaj geri dönüştürülemiyor: "
 #: ../gio/gdbusmessage.c:2163
 #, fuzzy, c-format
 msgid ""
-"Error serializing GVariant with type string `%s' to the D-Bus wire format"
-msgstr "`%s' tür dizgeli GVariant, D-Bus wire biçimine dönüştürülürken hata"
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
+msgstr "'%s' tür dizgeli GVariant, D-Bus wire biçimine dönüştürülürken hata"
 
 #: ../gio/gdbusmessage.c:2303
 #, fuzzy, c-format
@@ -1981,25 +1981,25 @@ msgstr "Mesaj dönüştürülemiyor: "
 
 #: ../gio/gdbusmessage.c:2355
 #, fuzzy, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Mesaj gövdesi `%s' imzasına sahip, fakat imza başlığı bulunmamakta"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "Mesaj gövdesi '%s' imzasına sahip, fakat imza başlığı bulunmamakta"
 
 #: ../gio/gdbusmessage.c:2365
 #, fuzzy, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
 msgstr ""
-"Mesaj gövdesi `%s' tür imzasına sahip, fakat başlık alanındaki imza `%s'"
+"Mesaj gövdesi '%s' tür imzasına sahip, fakat başlık alanındaki imza '%s'"
 
 #: ../gio/gdbusmessage.c:2381
 #, fuzzy, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Mesaj gövdesi boş, fakat başlık alanındaki imza `(%s)'"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "Mesaj gövdesi boş, fakat başlık alanındaki imza '(%s)'"
 
 #: ../gio/gdbusmessage.c:2938
 #, fuzzy, c-format
-msgid "Error return with body of type `%s'"
+msgid "Error return with body of type '%s'"
 msgstr "%s türünden bir gövdeyle dönüş hatası"
 
 #: ../gio/gdbusmessage.c:2946
@@ -2041,18 +2041,18 @@ msgstr "Bir sunucu oluşturulurken nonce dosyası belirtilemez"
 
 #: ../gio/gdbusserver.c:875
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "`%s' konumundaki nonce dosyasına yazma hatası: %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "'%s' konumundaki nonce dosyasına yazma hatası: %s"
 
 #: ../gio/gdbusserver.c:1042
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "`%s' dizgesi, geçerli bir D-Bus GUID değil"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "'%s' dizgesi, geçerli bir D-Bus GUID değil"
 
 #: ../gio/gdbusserver.c:1082
 #, fuzzy, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "Desteklenmeyen transport `%s' üzerinden dinlenemiyor"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "Desteklenmeyen transport '%s' üzerinden dinlenemiyor"
 
 #: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
@@ -2123,16 +2123,16 @@ msgstr "Birden fazla bağlantı uç noktası belirtildi"
 #: ../gio/gdbus-tool.c:463
 #, fuzzy, c-format
 msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "Uyarı: İçgözlem verisine göre, `%s' arayüzü bulunmuyor\n"
+"Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "Uyarı: İçgözlem verisine göre, '%s' arayüzü bulunmuyor\n"
 
 #: ../gio/gdbus-tool.c:472
 #, fuzzy, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"Uyarı: İçgözlem verisine göre, `%s' yöntemi `%s' arayüzü üzerinde mevcut "
+"Uyarı: İçgözlem verisine göre, '%s' yöntemi '%s' arayüzü üzerinde mevcut "
 "değil\n"
 
 #: ../gio/gdbus-tool.c:534
@@ -2239,13 +2239,13 @@ msgstr "Hata: Yöntem adı belirtilmedi\n"
 
 #: ../gio/gdbus-tool.c:909
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Hata: Yöntem adı `%s' geçersiz\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "Hata: Yöntem adı '%s' geçersiz\n"
 
 #: ../gio/gdbus-tool.c:974
 #, fuzzy, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "`%2$s' türünden olan %1$d parametresini ayrıştırmada hata: %3$s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "'%2$s' türünden olan %1$d parametresini ayrıştırmada hata: %3$s\n"
 
 #: ../gio/gdbus-tool.c:1406
 #, fuzzy
@@ -2731,9 +2731,9 @@ msgstr "Bu dosya gözardı ediliyor.\n"
 
 #: ../gio/glib-compile-schemas.c:1803
 #, fuzzy, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"`%3$s' üzerine yazma dosyasında belirtilen `%2$s' şemasında `%1$s'anahtarı "
+"'%3$s' üzerine yazma dosyasında belirtilen '%2$s' şemasında '%1$s'anahtarı "
 "yok."
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
@@ -2751,10 +2751,10 @@ msgstr " ve --strict belirtilmiş; çıkılıyor.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, fuzzy, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"error parsing key '%s' in schema '%s' as specified in override file '%s': "
 "%s.  "
 msgstr ""
-"`%3$s' üzerine yazma dosyasında belirtilen `%2$s' şemasındaki `%1$s' "
+"'%3$s' üzerine yazma dosyasında belirtilen '%2$s' şemasındaki '%1$s' "
 "anahtarını ayrıştırmada hata: %4$s.  "
 
 #: ../gio/glib-compile-schemas.c:1839
@@ -2765,19 +2765,19 @@ msgstr "Bu anahtar için üzerine yazma gözardı ediliyor.\n"
 #: ../gio/glib-compile-schemas.c:1857
 #, fuzzy, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"override for key '%s' in schema '%s' in override file '%s' is out of the "
 "range given in the schema"
 msgstr ""
-"`%3$s' üzerine yazma dosyasındaki `%2$s' şemasının `%1$s' anahtarının "
+"'%3$s' üzerine yazma dosyasındaki '%2$s' şemasının '%1$s' anahtarının "
 "üzerine yazma, şemada verilen aralığın dışında"
 
 #: ../gio/glib-compile-schemas.c:1885
 #, fuzzy, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"`%3$s' üzerine yazma dosyasındaki `%2$s' şemasının `%1$s' anahtarının "
+"'%3$s' üzerine yazma dosyasındaki '%2$s' şemasının '%1$s' anahtarının "
 "üzerine yazma, geçerli seçenekler listesinde değil"
 
 #: ../gio/glib-compile-schemas.c:1939
@@ -3918,8 +3918,8 @@ msgstr "Geçersiz sıkıştırılmış veri"
 #~ msgstr "ös"
 
 #, fuzzy
-#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
-#~ msgstr "Dönüş değerinin türü yanlış, `%s' mevcut, fakat `%s' bekleniyordu"
+#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
+#~ msgstr "Dönüş değerinin türü yanlış, '%s' mevcut, fakat '%s' bekleniyordu"
 
 #, fuzzy
 #~ msgid ""

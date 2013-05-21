@@ -139,71 +139,71 @@ msgstr "સ્ટ્રીમનો-અંત અનિચ્છનીય રી
 #: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
 #: ../gio/gdbusaddress.c:319
 #, c-format
-msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "સરનામાં નોંધણી `%s' માં બિનઆધારભૂત કી `%s'"
+msgid "Unsupported key '%s' in address entry '%s'"
+msgstr "સરનામાં નોંધણી '%s' માં બિનઆધારભૂત કી '%s'"
 
 #: ../gio/gdbusaddress.c:177
 #, c-format
-msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
-msgstr "સરનામું `%s' અમાન્ય છે (ફક્ત એક પાથની જરૂર છે, tmpdir અથવા ઍબસ્ટ્રેક કી)"
+msgid "Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgstr "સરનામું '%s' અમાન્ય છે (ફક્ત એક પાથની જરૂર છે, tmpdir અથવા ઍબસ્ટ્રેક કી)"
 
 #: ../gio/gdbusaddress.c:190
 #, c-format
-msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr "સરનામાં નોંધણી `%s' માં મતલબવગરની કી/કિંમત જોડી સંયોજન"
+msgid "Meaningless key/value pair combination in address entry '%s'"
+msgstr "સરનામાં નોંધણી '%s' માં મતલબવગરની કી/કિંમત જોડી સંયોજન"
 
 #: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
 #, c-format
-msgid "Error in address `%s' - the port attribute is malformed"
-msgstr "સરનામું `%s' માં ભૂલ - પોર્ટ ગુણધર્મ મેલફોર્મ થયેલ છે"
+msgid "Error in address '%s' - the port attribute is malformed"
+msgstr "સરનામું '%s' માં ભૂલ - પોર્ટ ગુણધર્મ મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
 #, c-format
-msgid "Error in address `%s' - the family attribute is malformed"
-msgstr "સરનામું `%s' માં ભૂલ - કુટુંબ ગુણધર્મ મેલફોર્મ થયેલ છે"
+msgid "Error in address '%s' - the family attribute is malformed"
+msgstr "સરનામું '%s' માં ભૂલ - કુટુંબ ગુણધર્મ મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:454
 #, c-format
-msgid "Address element `%s' does not contain a colon (:)"
-msgstr "સરનામાં ઘટક `%s' વિરામચિહ્ન (:) ને સમાવતુ નથી"
+msgid "Address element '%s' does not contain a colon (:)"
+msgstr "સરનામાં ઘટક '%s' વિરામચિહ્ન (:) ને સમાવતુ નથી"
 
 #: ../gio/gdbusaddress.c:475
 #, c-format
 msgid ""
-"Key/Value pair %d, `%s', in address element `%s' does not contain an equal "
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
-msgstr "કી/કિંમત જોડી %d, `%s', સરનામાં ઘટક `%s' માં સરખા ચિહ્નને સમાવાતુ નથી"
+msgstr "કી/કિંમત જોડી %d, '%s', સરનામાં ઘટક '%s' માં સરખા ચિહ્નને સમાવાતુ નથી"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
-msgstr "કી/કિંમત જોડી %d, `%s', સરનામાં ઘટક `%s' માં કી અથવા કિંમતને નીકાળતી ન વખતે ભૂલ"
+"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
+"'%s'"
+msgstr "કી/કિંમત જોડી %d, '%s', સરનામાં ઘટક '%s' માં કી અથવા કિંમતને નીકાળતી ન વખતે ભૂલ"
 
 #: ../gio/gdbusaddress.c:567
 #, c-format
 msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
+"Error in address '%s' - the unix transport requires exactly one of the keys "
+"'path' or 'abstract' to be set"
 msgstr ""
-"સરનામાં `%s' માં ભૂલ - unix પરિવહન સુયોજિત કરવા માટે `path' અથવા `abstract' નાં "
+"સરનામાં '%s' માં ભૂલ - unix પરિવહન સુયોજિત કરવા માટે 'path' અથવા 'abstract' નાં "
 "એકની જરૂર છે"
 
 #: ../gio/gdbusaddress.c:603
 #, c-format
-msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr "સરનામાં `%s' માં ભૂલ - યજમાન ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
+msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgstr "સરનામાં '%s' માં ભૂલ - યજમાન ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:617
 #, c-format
-msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr "સરનામાં `%s' માં ભૂલ - પોર્ટ ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
+msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgstr "સરનામાં '%s' માં ભૂલ - પોર્ટ ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:631
 #, c-format
-msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr "સરનામાં `%s' માં ભૂલ - noncefile ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
+msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgstr "સરનામાં '%s' માં ભૂલ - noncefile ગુણધર્મ ગેરહાજર અથવા મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
@@ -211,28 +211,28 @@ msgstr "સ્વયં શરૂ કરી રહ્યા હોય ત્ય�
 
 #: ../gio/gdbusaddress.c:660
 #, c-format
-msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr "સરનામું `%s' માટે અજ્ઞાત અથવા બિનઆધારભૂત ટ્રાન્સપોર્ટ `%s'"
+msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgstr "સરનામું '%s' માટે અજ્ઞાત અથવા બિનઆધારભૂત ટ્રાન્સપોર્ટ '%s'"
 
 #: ../gio/gdbusaddress.c:696
 #, c-format
-msgid "Error opening nonce file `%s': %s"
-msgstr "nonce ફાઇલ `%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error opening nonce file '%s': %s"
+msgstr "nonce ફાઇલ '%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusaddress.c:714
 #, c-format
-msgid "Error reading from nonce file `%s': %s"
-msgstr "nonce ફાઇલ `%s' માંથી વાંચી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error reading from nonce file '%s': %s"
+msgstr "nonce ફાઇલ '%s' માંથી વાંચી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusaddress.c:723
 #, c-format
-msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "nonce ફાઇલ `%s' માંથી વાંચી રહ્યા હોય ત્યારે ભૂલ, ઇચ્છિત 16 બાઇટ છે, %d મળ્યુ"
+msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgstr "nonce ફાઇલ '%s' માંથી વાંચી રહ્યા હોય ત્યારે ભૂલ, ઇચ્છિત 16 બાઇટ છે, %d મળ્યુ"
 
 #: ../gio/gdbusaddress.c:741
 #, c-format
-msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "સ્ટ્રીમમાં nonce ફાઇલ `%s' નાં સમાવિષ્ટોને લખી રહ્યા હોય ત્યારે ભૂલ:"
+msgid "Error writing contents of nonce file '%s' to stream:"
+msgstr "સ્ટ્રીમમાં nonce ફાઇલ '%s' નાં સમાવિષ્ટોને લખી રહ્યા હોય ત્યારે ભૂલ:"
 
 #: ../gio/gdbusaddress.c:960
 msgid "The given address is empty"
@@ -249,8 +249,8 @@ msgstr "મશીન-id વગર સંદેશા બસ સ્પૉન ક�
 
 #: ../gio/gdbusaddress.c:1079
 #, c-format
-msgid "Error spawning command line `%s': "
-msgstr "આદેશ વાક્ય `%s' સ્પૉન કરી રહ્યા હોય ત્યારે ભૂલ: "
+msgid "Error spawning command line '%s': "
+msgstr "આદેશ વાક્ય '%s' સ્પૉન કરી રહ્યા હોય ત્યારે ભૂલ: "
 
 #: ../gio/gdbusaddress.c:1296
 #, c-format
@@ -271,10 +271,10 @@ msgstr "સત્ર બસ સરનામાંને નક્કી કર�
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
+"- unknown value '%s'"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE પર્યાવરણ ચલમાંથી બસ સરનામું નક્કી કરી શકાતુ નથી - અજ્ઞાત કિંમત "
-"`%s'"
+"'%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
 msgid ""
@@ -306,73 +306,73 @@ msgstr "GDBusAuthObserver::authorize-authenticated-peer મારફતે ર�
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error when getting information for directory `%s': %s"
-msgstr "જ્યારે ડિરેક્ટરી `%s' માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ : %s"
+msgid "Error when getting information for directory '%s': %s"
+msgstr "જ્યારે ડિરેક્ટરી '%s' માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ : %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr "ડિરેક્ટરી `%s' પર પરવાનગીઓ મેલફોર્મ થયેલ છે. ઇચ્છિત સ્થિતિ 0700, 0%o મળ્યુ"
+msgid "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
+msgstr "ડિરેક્ટરી '%s' પર પરવાનગીઓ મેલફોર્મ થયેલ છે. ઇચ્છિત સ્થિતિ 0700, 0%o મળ્યુ"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
-msgid "Error creating directory `%s': %s"
-msgstr "ડિરેક્ટરી `%s' ને બનાવી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error creating directory '%s': %s"
+msgstr "ડિરેક્ટરી '%s' ને બનાવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
-msgid "Error opening keyring `%s' for reading: "
-msgstr "વાંચવા માટે કીરીંગ `%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: "
+msgid "Error opening keyring '%s' for reading: "
+msgstr "વાંચવા માટે કીરીંગ '%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
 #, c-format
-msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "કીરીંગનું વાક્ય %d એ સમાવિષ્ટ `%s' સાથે `%s' પર મેલફોર્મ થયેલ છે"
+msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "કીરીંગનું વાક્ય %d એ સમાવિષ્ટ '%s' સાથે '%s' પર મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
 #, c-format
-msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "કીરીંગના વાક્ય %d ની પ્રથમ ટોકન એ સમાવિષ્ટ `%s' સાથે `%s' પર  મેલફોર્મ થયેલ છે"
+msgid "First token of line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "કીરીંગના વાક્ય %d ની પ્રથમ ટોકન એ સમાવિષ્ટ '%s' સાથે '%s' પર  મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
 #, c-format
-msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr "કીરીંગનું વાક્ય %d ની બીજી ટોકન સમાવિષ્ટ `%s' સાથે `%s' પર મેલફોર્મ થયેલ છે"
+msgid "Second token of line %d of the keyring at '%s' with content '%s' is malformed"
+msgstr "કીરીંગનું વાક્ય %d ની બીજી ટોકન સમાવિષ્ટ '%s' સાથે '%s' પર મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr "id %d સાથે `%s' પર કીરીંગમાં કુકી શોધી ન હતી"
+msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgstr "id %d સાથે '%s' પર કીરીંગમાં કુકી શોધી ન હતી"
 
 #: ../gio/gdbusauthmechanismsha1.c:537
 #, c-format
-msgid "Error deleting stale lock file `%s': %s"
-msgstr "સ્ટૅલ તાળુ ફાઇલ `%s' ને કાઢી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error deleting stale lock file '%s': %s"
+msgstr "સ્ટૅલ તાળુ ફાઇલ '%s' ને કાઢી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, c-format
-msgid "Error creating lock file `%s': %s"
-msgstr "તાળુ ફાઇલ `%s' ને બનાવી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error creating lock file '%s': %s"
+msgstr "તાળુ ફાઇલ '%s' ને બનાવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:599
 #, c-format
-msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "(કડી ન થયેલ) તાળુ ફાઇલ `%s' ને બંધ કરી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error closing (unlinked) lock file '%s': %s"
+msgstr "(કડી ન થયેલ) તાળુ ફાઇલ '%s' ને બંધ કરી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:609
 #, c-format
-msgid "Error unlinking lock file `%s': %s"
-msgstr "તાળુ ફાઇલ `%s' કડી ન કરી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error unlinking lock file '%s': %s"
+msgstr "તાળુ ફાઇલ '%s' કડી ન કરી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:686
 #, c-format
-msgid "Error opening keyring `%s' for writing: "
-msgstr "લખવા માટે કીરીંગ `%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: "
+msgid "Error opening keyring '%s' for writing: "
+msgstr "લખવા માટે કીરીંગ '%s' ને ખોલી રહ્યા હોય ત્યારે ભૂલ: "
 
 #: ../gio/gdbusauthmechanismsha1.c:883
 #, c-format
-msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(વધુમાં, `%s' માટે તાળુ ખોલી રહ્યા હોય ત્યારે પણ નિષ્ફળતા: %s) "
+msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgstr "(વધુમાં, '%s' માટે તાળુ ખોલી રહ્યા હોય ત્યારે પણ નિષ્ફળતા: %s) "
 
 #: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
 msgid "The connection is closed"
@@ -388,33 +388,33 @@ msgstr "બિનઆધારભૂત ફ્લેગ મળ્યો જ્ય
 
 #: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
 #, c-format
-msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr "પાથ %s પર ઓબ્જેક્ટ પર આવો ઇન્ટરફેસ `org.freedesktop.DBus.Properties' નથી"
+msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
+msgstr "પાથ %s પર ઓબ્જેક્ટ પર આવો ઇન્ટરફેસ 'org.freedesktop.DBus.Properties' નથી"
 
 #: ../gio/gdbusconnection.c:4136
 #, c-format
-msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr "ગુણધર્મ `%s' સુયોજિત કરતી વખતે ભૂલ: ઇચ્છિત પ્રકાર `%s' પરંતુt `%s' મળ્યુ"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
+msgstr "ગુણધર્મ '%s' સુયોજિત કરતી વખતે ભૂલ: ઇચ્છિત પ્રકાર '%s' પરંતુt '%s' મળ્યુ"
 
 #: ../gio/gdbusconnection.c:4231
 #, c-format
-msgid "No such property `%s'"
-msgstr "આવો પ્રૉપર્ટી `%s' નથી"
+msgid "No such property '%s'"
+msgstr "આવો પ્રૉપર્ટી '%s' નથી"
 
 #: ../gio/gdbusconnection.c:4243
 #, c-format
-msgid "Property `%s' is not readable"
-msgstr "ગુણધર્મ `%s' વાંચી શકાય તેમ નથી"
+msgid "Property '%s' is not readable"
+msgstr "ગુણધર્મ '%s' વાંચી શકાય તેમ નથી"
 
 #: ../gio/gdbusconnection.c:4254
 #, c-format
-msgid "Property `%s' is not writable"
-msgstr "ગુણધર્મ `%s' લખી શકાય તેમ નથી"
+msgid "Property '%s' is not writable"
+msgstr "ગુણધર્મ '%s' લખી શકાય તેમ નથી"
 
 #: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
 #, c-format
-msgid "No such interface `%s'"
-msgstr "આવો ઇન્ટરફેસ `%s' નથી"
+msgid "No such interface '%s'"
+msgstr "આવો ઇન્ટરફેસ '%s' નથી"
 
 #: ../gio/gdbusconnection.c:4508
 msgid "No such interface"
@@ -422,18 +422,18 @@ msgstr "આવો ઇન્ટરફેસ નથી"
 
 #: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
 #, c-format
-msgid "No such interface `%s' on object at path %s"
-msgstr "પાથ %s પર ઑબ્જેક્ટ પર આવો ઇન્ટરફેસ `%s' નથી"
+msgid "No such interface '%s' on object at path %s"
+msgstr "પાથ %s પર ઑબ્જેક્ટ પર આવો ઇન્ટરફેસ '%s' નથી"
 
 #: ../gio/gdbusconnection.c:4781
 #, c-format
-msgid "No such method `%s'"
-msgstr "આવી પદ્દતિ `%s' નથી"
+msgid "No such method '%s'"
+msgstr "આવી પદ્દતિ '%s' નથી"
 
 #: ../gio/gdbusconnection.c:4812
 #, c-format
-msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr "સંદેશા `%s' નો પ્રકાર, ઇચ્છિત પ્રકાર `%s' બંધબેસતુ નથી"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "સંદેશા '%s' નો પ્રકાર, ઇચ્છિત પ્રકાર '%s' બંધબેસતુ નથી"
 
 #: ../gio/gdbusconnection.c:5032
 #, c-format
@@ -442,13 +442,13 @@ msgstr "ઓબ્જેક્ટ એ %s પર ઇન્ટરફેસ %s મ�
 
 #: ../gio/gdbusconnection.c:5230
 #, c-format
-msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr "પદ્દતિ `%s' ને પ્રકાર `%s' પાછો મળેલ થે, પરંતુ ઇચ્છિત `%s' છે"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "પદ્દતિ '%s' ને પ્રકાર '%s' પાછો મળેલ થે, પરંતુ ઇચ્છિત '%s' છે"
 
 #: ../gio/gdbusconnection.c:6311
 #, c-format
-msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr "હસ્તાક્ષર `%s' સાથે ઇન્ટરફેસ `%s' પર પદ્દતિ `%s' અસ્તિત્વ ધરાવતુ નથી"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "હસ્તાક્ષર '%s' સાથે ઇન્ટરફેસ '%s' પર પદ્દતિ '%s' અસ્તિત્વ ધરાવતુ નથી"
 
 #: ../gio/gdbusconnection.c:6430
 #, c-format
@@ -500,27 +500,27 @@ msgstr[1] "%lu બાઇટને વાંચવાની ઇચ્છા ર�
 
 #: ../gio/gdbusmessage.c:1398
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found byte %d"
-msgstr "શબ્દમાળા `%s' પછી ઇચ્છિત NUL બાઇટ પરંતુ બાઇટ %d મળ્યુ"
+msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgstr "શબ્દમાળા '%s' પછી ઇચ્છિત NUL બાઇટ પરંતુ બાઇટ %d મળ્યુ"
 
 #: ../gio/gdbusmessage.c:1417
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
 "ઇચ્છિત માન્ય UTF-8 શબ્દમાળા પરંતુ બાઇટ ઓફસેટ %d પર અમાન્ય બાઇટ મળ્યુ (શબ્દમાળાની લંબાઇ "
-"%d  છે). માન્ય UTF-8 શબ્દમાળા ત્યાં સુધી છે કે બિંદુ `%s' હતુ"
+"%d  છે). માન્ય UTF-8 શબ્દમાળા ત્યાં સુધી છે કે બિંદુ '%s' હતુ"
 
 #: ../gio/gdbusmessage.c:1619
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr "પદચ્છેદન થયેલ કિંમત `%s' એ યોગ્ય D-Bus ઓબ્જેક્ટ પાથ નથી"
+msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgstr "પદચ્છેદન થયેલ કિંમત '%s' એ યોગ્ય D-Bus ઓબ્જેક્ટ પાથ નથી"
 
 #: ../gio/gdbusmessage.c:1643
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "પદચ્છેદન થયેલ `%s' એ યોગ્ય D-Bus હસ્તાક્ષર નથી"
+msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgstr "પદચ્છેદન થયેલ '%s' એ યોગ્ય D-Bus હસ્તાક્ષર નથી"
 
 #: ../gio/gdbusmessage.c:1698
 #, c-format
@@ -531,14 +531,14 @@ msgstr[1] "લંબાઇ %u બાઇટની મળેલ એરે. મહ�
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
-msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "પદચ્છેદન કિંમત `%s' ભિન્નતા માટે માન્ય D-Bus હસ્તાક્ષર નથી"
+msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgstr "પદચ્છેદન કિંમત '%s' ભિન્નતા માટે માન્ય D-Bus હસ્તાક્ષર નથી"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
-msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgid "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર `%s' સાથે GVariant ને ક્રમમાં ન કરી રહ્યા હોય "
+"D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર '%s' સાથે GVariant ને ક્રમમાં ન કરી રહ્યા હોય "
 "ત્યારે ભૂલ"
 
 #: ../gio/gdbusmessage.c:2062
@@ -555,13 +555,13 @@ msgstr "અયોગ્ય મુખ્ય પ્રોટોકોલ આવૃ
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
-msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "હસ્તાક્ષર `%s' સાથે હસ્તાક્ષર હેડર મળ્યુ પરંતુ સંદેશા બૉડી ખાલી છે"
+msgid "Signature header with signature '%s' found but message body is empty"
+msgstr "હસ્તાક્ષર '%s' સાથે હસ્તાક્ષર હેડર મળ્યુ પરંતુ સંદેશા બૉડી ખાલી છે"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
-msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "પદચ્છેદન કિંમત `%s' એ માન્ય D-Bus હસ્તાક્ષર નથી (બૉડી માટે)"
+msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgstr "પદચ્છેદન કિંમત '%s' એ માન્ય D-Bus હસ્તાક્ષર નથી (બૉડી માટે)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
@@ -576,9 +576,9 @@ msgstr "સંદેશા ક્રમમાં કરી શકાતુ ન�
 
 #: ../gio/gdbusmessage.c:2506
 #, c-format
-msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
-"D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર `%s' સાથે GVariant ને ક્રમમાં કરી રહ્યા હોય ત્યારે "
+"D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર '%s' સાથે GVariant ને ક્રમમાં કરી રહ્યા હોય ત્યારે "
 "ભૂલ"
 
 #: ../gio/gdbusmessage.c:2643
@@ -595,25 +595,25 @@ msgstr "સંદેશાને ક્રમમાં કરી શકાતુ
 
 #: ../gio/gdbusmessage.c:2695
 #, c-format
-msgid "Message body has signature `%s' but there is no signature header"
-msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર `%s' છે પરંતુ ત્યાં હસ્તાક્ષર હેડર નથી"
+msgid "Message body has signature '%s' but there is no signature header"
+msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર '%s' છે પરંતુ ત્યાં હસ્તાક્ષર હેડર નથી"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
+"Message body has type signature '%s' but signature in the header field is '"
 "%s'"
-msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર પ્રકાર `%s' છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર `%s' છે"
+msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર પ્રકાર '%s' છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર '%s' છે"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
-msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "સંદેશા બૉડી એ ખાલી છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર `(%s)' છે"
+msgid "Message body is empty but signature in the header field is '(%s)'"
+msgstr "સંદેશા બૉડી એ ખાલી છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર '(%s)' છે"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
-msgid "Error return with body of type `%s'"
-msgstr "પ્રકાર `%s' નાં બૉડી સાથે પાછુ લાવતી વખતે ભૂલ"
+msgid "Error return with body of type '%s'"
+msgstr "પ્રકાર '%s' નાં બૉડી સાથે પાછુ લાવતી વખતે ભૂલ"
 
 #: ../gio/gdbusmessage.c:3279
 msgid "Error return with empty body"
@@ -656,18 +656,18 @@ msgstr "nonce ફાઇલને સ્પષ્ટ કરી શકાતુ �
 
 #: ../gio/gdbusserver.c:874
 #, c-format
-msgid "Error writing nonce file at `%s': %s"
-msgstr "`%s' પર nonce ફાઇલને લખી રહ્યા હોય ત્યારે ભૂલ: %s"
+msgid "Error writing nonce file at '%s': %s"
+msgstr "'%s' પર nonce ફાઇલને લખી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gdbusserver.c:1043
 #, c-format
-msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "શબ્દમાળા `%s' એ યોગ્ય D-Bus GUID નથી"
+msgid "The string '%s' is not a valid D-Bus GUID"
+msgstr "શબ્દમાળા '%s' એ યોગ્ય D-Bus GUID નથી"
 
 #: ../gio/gdbusserver.c:1083
 #, c-format
-msgid "Cannot listen on unsupported transport `%s'"
-msgstr "બિનઆધારભૂત ટ્રાન્સપોર્ટ `%s' પર સાંભળી શકાતુ નથી"
+msgid "Cannot listen on unsupported transport '%s'"
+msgstr "બિનઆધારભૂત ટ્રાન્સપોર્ટ '%s' પર સાંભળી શકાતુ નથી"
 
 #: ../gio/gdbus-tool.c:92
 msgid "COMMAND"
@@ -738,16 +738,16 @@ msgstr "ઘણાં જોડાણ એન્ડપોઇંટ સ્પષ્
 
 #: ../gio/gdbus-tool.c:467
 #, c-format
-msgid "Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr "ચેતવણી: આત્મનિરીક્ષણ માહિતીને અનુસાર, ઇન્ટરફેસ `%s' અસ્તિત્વમાં નથી\n"
+msgid "Warning: According to introspection data, interface '%s' does not exist\n"
+msgstr "ચેતવણી: આત્મનિરીક્ષણ માહિતીને અનુસાર, ઇન્ટરફેસ '%s' અસ્તિત્વમાં નથી\n"
 
 #: ../gio/gdbus-tool.c:476
 #, c-format
 msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
+"Warning: According to introspection data, method '%s' does not exist on "
+"interface '%s'\n"
 msgstr ""
-"ચેતવણી: આત્મનિરીક્ષણ માહિતીને અનુસાર, પદ્દતિ `%s' એ ઇન્ટરફેસ `%s' પર અસ્તિત્વમાં નથી\n"
+"ચેતવણી: આત્મનિરીક્ષણ માહિતીને અનુસાર, પદ્દતિ '%s' એ ઇન્ટરફેસ '%s' પર અસ્તિત્વમાં નથી\n"
 
 #: ../gio/gdbus-tool.c:538
 msgid "Optional destination for signal (unique name)"
@@ -854,13 +854,13 @@ msgstr "ભૂલ: પદ્દતિ નામ સ્પષ્ટ થયેલ 
 
 #: ../gio/gdbus-tool.c:919
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "ભૂલ: પદ્દતિ નામ `%s' અયોગ્ય છે\n"
+msgid "Error: Method name '%s' is invalid\n"
+msgstr "ભૂલ: પદ્દતિ નામ '%s' અયોગ્ય છે\n"
 
 #: ../gio/gdbus-tool.c:984
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "પરિમાણ %d પ્રકાર `%s' નાં પદચ્છેદન કરતી વખતે ભૂલ: %s\n"
+msgid "Error parsing parameter %d of type '%s': %s\n"
+msgstr "પરિમાણ %d પ્રકાર '%s' નાં પદચ્છેદન કરતી વખતે ભૂલ: %s\n"
 
 #: ../gio/gdbus-tool.c:1416
 msgid "Destination name to introspect"
@@ -1489,8 +1489,8 @@ msgstr "આ ફાઇલને અવગણી રહ્યા છે.\n"
 
 #: ../gio/glib-compile-schemas.c:1864
 #, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr "ફાઇલ `%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના `%s' માં આવી કી `%s' નથી"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+msgstr "ફાઇલ '%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના '%s' માં આવી કી '%s' નથી"
 
 #: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
 #: ../gio/glib-compile-schemas.c:1956
@@ -1506,9 +1506,9 @@ msgstr " અને --strict સ્પષ્ટ થયેલ હતુ; અસ્
 
 #: ../gio/glib-compile-schemas.c:1890
 #, c-format
-msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s."
+msgid "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"ઓવરરાઇડ ફાઇલ `%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના `%s' માં કી `%s'નું પદચ્છેદન કરી રહ્યા "
+"ઓવરરાઇડ ફાઇલ '%s' માં સ્પષ્ટ થયેલ પ્રમાણે યોજના '%s' માં કી '%s'નું પદચ્છેદન કરી રહ્યા "
 "હોય ત્યારે ભૂલ: %s."
 
 #: ../gio/glib-compile-schemas.c:1900
@@ -1519,18 +1519,18 @@ msgstr "આ કી માટે ઉપર લખવાનું અવગણી 
 #: ../gio/glib-compile-schemas.c:1918
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"ઓવરરાઇડ ફાઇલ `%s' માં યોજના `%s' માં કી `%s' માટે ઓવરરાઇડ યોજનામાં આપેલ સીમાની "
+"ઓવરરાઇડ ફાઇલ '%s' માં યોજના '%s' માં કી '%s' માટે ઓવરરાઇડ યોજનામાં આપેલ સીમાની "
 "બહાર છે"
 
 #: ../gio/glib-compile-schemas.c:1946
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
-msgstr "ઓવરરાઇડ ફાઇલ `%s' માં યોજના `%s' માં કી `%s' માટે ઓવરરાઇડ માન્ય પસંદગીની યાદીમાં છે"
+msgstr "ઓવરરાઇડ ફાઇલ '%s' માં યોજના '%s' માં કી '%s' માટે ઓવરરાઇડ માન્ય પસંદગીની યાદીમાં છે"
 
 #: ../gio/glib-compile-schemas.c:1999
 msgid "where to store the gschemas.compiled file"
