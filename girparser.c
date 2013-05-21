@@ -2748,7 +2748,8 @@ start_element_handler (GMarkupParseContext *context,
 			       attribute_names, attribute_values,
 			       ctx, error))
 	goto out;
-      if (strcmp (element_name, "doc") == 0)
+      if (strcmp ("doc", element_name) == 0 || strcmp ("doc-deprecated", element_name) == 0 ||
+          strcmp ("doc-stability", element_name) == 0 || strcmp ("doc-version", element_name) == 0)
         {
           state_switch (ctx, STATE_PASSTHROUGH);
           goto out;
