@@ -1,5 +1,7 @@
 include $(top_srcdir)/Makefile.decl
 
+insttestdir = $(pkglibexecdir)/installed-tests
+
 SUBDIRS=gobject refcount
 
 AM_CPPFLAGS = \
@@ -129,6 +131,29 @@ TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	MALLOC_CHECK_=2	\
         MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 
+test_data = 				\
+	iochannel-test-infile		\
+	casemap.txt			\
+	casefold.txt			\
+	utf8.txt			\
+	$(NULL)
+
+if BUILDOPT_INSTALL_TESTS
+insttest_PROGRAMS = $(test_programs)
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(test_programs:=.test)
+
+insttest_DATA = $(test_data)
+
+%.test: % Makefile
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	 echo 'Type=session' >> $@.tmp; \
+	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 mv $@.tmp $@)
+
+endif
+
 progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
 thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
 module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
@@ -166,14 +191,18 @@ type_test_LDADD = $(progs_ldadd)
 unicode_encoding_LDADD = $(progs_ldadd)
 unicode_caseconv_LDADD = $(progs_ldadd)
 
+if BUILDOPT_INSTALL_TESTS
+insttest_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
+else
 noinst_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
+endif
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
-libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
+libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(insttestdir)
 libmoduletestplugin_a_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
-libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(libdir)
+libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(insttestdir)
 libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 dist-hook: $(BUILT_EXTRA_DIST)

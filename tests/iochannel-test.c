@@ -11,6 +11,8 @@
 
 #define BUFFER_SIZE 1024
 
+static const gchar *datapath;
+
 static void
 test_small_writes (void)
 {
@@ -58,16 +60,18 @@ gint main (gint argc, gchar * argv[])
     GError *gerr = NULL;
     GString *buffer;
     char *filename;
-    char *srcdir = getenv ("srcdir");
     gint rlength = 0;
     glong wlength = 0;
     gsize length_out;
     const gchar encoding[] = "EUC-JP";
     GIOStatus status;
 
-    if (!srcdir)
-      srcdir = ".";
-    filename = g_strconcat (srcdir, G_DIR_SEPARATOR_S, "iochannel-test-infile", NULL);
+    if (g_getenv ("G_TEST_DATA"))
+      datapath = g_getenv ("G_TEST_DATA");
+    else
+      datapath = ".";
+
+    filename = g_build_filename (datapath, "iochannel-test-infile", NULL);
   
     setbuf (stdout, NULL); /* For debugging */
 

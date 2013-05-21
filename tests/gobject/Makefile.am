@@ -60,16 +60,18 @@ test_programs =					\
 	defaultiface				\
 	dynamictype				\
 	override				\
-	performance				\
-	performance-threaded			\
 	singleton				\
 	references
+
+performance_programs = 				\
+	performance				\
+	performance-threaded
 
 performance_LDADD = $(libgobject) $(libgthread)
 performance_threaded_LDADD = $(libgobject) $(libgthread)
 check_PROGRAMS = $(test_programs)
 
-TESTS = $(test_programs)
+TESTS = $(test_programs) $(performance_programs)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset \
 	MALLOC_CHECK_=2	\

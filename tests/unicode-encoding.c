@@ -308,7 +308,7 @@ process (gint      line,
 int
 main (int argc, char **argv)
 {
-  gchar *srcdir = getenv ("srcdir");
+  const gchar *srcdir;
   gchar *testfile;
   gchar *contents;
   GError *error = NULL;
@@ -321,7 +321,9 @@ main (int argc, char **argv)
   GArray *ucs4;
   Status status = VALID;	/* Quiet GCC */
 
-  if (!srcdir)
+  if (g_getenv ("G_TEST_DATA"))
+    srcdir = g_getenv ("G_TEST_DATA");
+  else
     srcdir = ".";
   
   testfile = g_strconcat (srcdir, G_DIR_SEPARATOR_S "utf8.txt", NULL);
