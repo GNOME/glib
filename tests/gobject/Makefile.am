@@ -75,6 +75,20 @@ TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	MALLOC_CHECK_=2	\
 	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 
+if BUILDOPT_INSTALL_TESTS
+insttestdir = $(pkglibexecdir)/installed-tests
+insttest_PROGRAMS = $(test_programs)
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(test_programs:=.test)
+
+%.test: % Makefile
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	 echo 'Type=session' >> $@.tmp; \
+	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 mv $@.tmp $@)
+endif
+
 ########################################################################
 
 EXTRA_DIST += 		  \
@@ -94,3 +108,5 @@ distclean-local:
 	if test $(srcdir) = .; then :; else	\
 	    rm -f $(BUILT_EXTRA_DIST);		\
 	fi
+
+
