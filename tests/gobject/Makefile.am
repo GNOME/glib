@@ -70,6 +70,7 @@ performance_programs = 				\
 performance_LDADD = $(libgobject) $(libgthread)
 performance_threaded_LDADD = $(libgobject) $(libgthread)
 check_PROGRAMS = $(test_programs)
+noinst_PROGRAMS = $(performance_programs)
 
 TESTS = $(test_programs) $(performance_programs)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \

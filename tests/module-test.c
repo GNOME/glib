@@ -79,7 +79,6 @@ main (int   arg,
       char *argv[])
 {
   GModule *module_self, *module_a, *module_b;
-  gchar *dir;
   gchar *plugin_a, *plugin_b;
   SimpleFunc f_a, f_b, f_self;
   GModuleFunc gmod_f;
@@ -94,8 +93,6 @@ main (int   arg,
 
   plugin_a = g_build_filename (datapath, "libmoduletestplugin_a", NULL);
   plugin_b = g_build_filename (datapath, "libmoduletestplugin_b", NULL);
-
-  g_free (dir);
 
   /* module handles */
   
