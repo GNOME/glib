@@ -28,7 +28,8 @@
 
 #include "gdbus-tests.h"
 
-const gchar *datapath;
+const gchar *srcdir;
+const gchar *builddir;
 
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
@@ -1004,7 +1005,7 @@ test_connection_filter (void)
   g_assert_cmpint (data.num_outgoing, ==, 4);
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  path = g_build_filename (builddir, "gdbus-testserver", NULL);
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
@@ -1228,9 +1229,12 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    srcdir = builddir = g_getenv ("G_TEST_DATA");
   else
-    datapath = SRCDIR;
+    {
+      srcdir = SRCDIR;
+      builddir = ".";
+    }
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);

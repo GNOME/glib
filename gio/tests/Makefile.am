@@ -136,6 +136,7 @@ other_progs = 				\
 	gdbus-testserver		\
 	gdbus-connection-flush-helper	\
 	$(NULL)
+noinst_PROGRAMS += $(other_progs)
 
 if OS_UNIX
 test_progs += 			\
