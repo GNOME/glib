@@ -66,6 +66,8 @@ static const gchar *datapath;
 
 static gchar *tmp_address = NULL;
 static gchar *test_guid = NULL;
+static GMutex service_loop_lock;
+static GCond service_loop_cond;
 static GMainLoop *service_loop = NULL;
 static GDBusServer *server = NULL;
 static GMainLoop *loop = NULL;
@@ -344,6 +346,33 @@ on_new_connection (GDBusServer *server,
   return TRUE;
 }
 
+static void
+create_service_loop (GMainContext *service_context)
+{
+  g_assert (service_loop == NULL);
+  g_mutex_lock (&service_loop_lock);
+  service_loop = g_main_loop_new (service_context, FALSE);
+  g_cond_broadcast (&service_loop_cond);
+  g_mutex_unlock (&service_loop_lock);
+}
+
+static void
+teardown_service_loop (void)
+{
+  g_mutex_lock (&service_loop_lock);
+  g_clear_pointer (&service_loop, g_main_loop_unref);
+  g_mutex_unlock (&service_loop_lock);
+}
+
+static void
+await_service_loop (void)
+{
+  g_mutex_lock (&service_loop_lock);
+  while (service_loop == NULL)
+    g_cond_wait (&service_loop_cond, &service_loop_lock);
+  g_mutex_unlock (&service_loop_lock);
+}
+
 static gpointer
 service_thread_func (gpointer user_data)
 {
@@ -399,12 +428,12 @@ service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  service_loop = g_main_loop_new (service_context, FALSE);
+  create_service_loop (service_context);
   g_main_loop_run (service_loop);
 
   g_main_context_pop_thread_default (service_context);
 
-  g_main_loop_unref (service_loop);
+  teardown_service_loop ();
   g_main_context_unref (service_context);
 
   /* test code specifically unrefs the server - see below */
@@ -494,12 +523,12 @@ service_thread_func (gpointer data)
                     data);
   g_socket_service_start (service);
 
-  service_loop = g_main_loop_new (service_context, FALSE);
+  create_service_loop (service_context);
   g_main_loop_run (service_loop);
 
   g_main_context_pop_thread_default (service_context);
 
-  g_main_loop_unref (service_loop);
+  teardown_service_loop ();
   g_main_context_unref (service_context);
 
   g_object_unref (address);
@@ -649,12 +678,10 @@ test_peer (void)
   g_assert (c == NULL);
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
-  service_loop = NULL;
   service_thread = g_thread_new ("test_peer",
                                  service_thread_func,
                                  &data);
-  while (service_loop == NULL)
-    g_thread_yield ();
+  await_service_loop ();
   g_assert (server != NULL);
 
   /* bring up a connection and accept it */
@@ -1213,12 +1240,12 @@ nonce_tcp_service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  service_loop = g_main_loop_new (service_context, FALSE);
+  create_service_loop (service_context);
   g_main_loop_run (service_loop);
 
   g_main_context_pop_thread_default (service_context);
 
-  g_main_loop_unref (service_loop);
+  teardown_service_loop ();
   g_main_context_unref (service_context);
 
   /* test code specifically unrefs the server - see below */
@@ -1244,14 +1271,11 @@ test_nonce_tcp (void)
 
   error = NULL;
   server = NULL;
-  service_loop = NULL;
   service_thread = g_thread_new ("nonce-tcp-service",
                                  nonce_tcp_service_thread_func,
                                  &data);
-  while (service_loop == NULL)
-    g_thread_yield ();
+  await_service_loop ();
   g_assert (server != NULL);
-
 
   /* bring up a connection and accept it */
   data.accept_connection = TRUE;
@@ -1532,12 +1556,12 @@ tcp_anonymous_service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  service_loop = g_main_loop_new (service_context, FALSE);
+  create_service_loop (service_context);
   g_main_loop_run (service_loop);
 
   g_main_context_pop_thread_default (service_context);
 
-  g_main_loop_unref (service_loop);
+  teardown_service_loop ();
   g_main_context_unref (service_context);
 
   return NULL;
@@ -1552,12 +1576,10 @@ test_tcp_anonymous (void)
   GError *error;
 
   seen_connection = FALSE;
-  service_loop = NULL;
   service_thread = g_thread_new ("tcp-anon-service",
                                  tcp_anonymous_service_thread_func,
                                  &seen_connection);
-  while (service_loop == NULL)
-    g_thread_yield ();
+  await_service_loop ();
   g_assert (server != NULL);
 
   error = NULL;
@@ -1690,14 +1712,14 @@ codegen_service_thread_func (gpointer user_data)
                     G_CALLBACK (codegen_on_new_connection),
                     animal);
 
-  service_loop = g_main_loop_new (service_context, FALSE);
+  create_service_loop (service_context);
   g_main_loop_run (service_loop);
 
   g_object_unref (animal);
 
   g_main_context_pop_thread_default (service_context);
 
-  g_main_loop_unref (service_loop);
+  teardown_service_loop ();
   g_main_context_unref (service_context);
 
   g_dbus_server_stop (codegen_server);
@@ -1725,12 +1747,10 @@ codegen_test_peer (void)
   GVariant            *value;
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
-  service_loop = NULL;
   service_thread = g_thread_new ("codegen_test_peer",
                                  codegen_service_thread_func,
                                  NULL);
-  while (service_loop == NULL)
-    g_thread_yield ();
+  await_service_loop ();
   g_assert (codegen_server != NULL);
 
   /* Get an animal 1 ...  */
