@@ -2252,7 +2252,7 @@ child_read (GIOChannel *io, GIOCondition cond, gpointer user_data)
   GIOStatus status;
   gsize nread, nwrote, total;
   gchar buf[4096];
-  int echo_fd = -1;
+  FILE *echo_file = NULL;
 
   status = g_io_channel_read_chars (io, buf, sizeof (buf), &nread, NULL);
   if (status == G_IO_STATUS_ERROR || status == G_IO_STATUS_EOF)
@@ -2273,25 +2273,22 @@ child_read (GIOChannel *io, GIOCondition cond, gpointer user_data)
     {
       g_string_append_len (data->stdout_str, buf, nread);
       if (data->echo_stdout)
-        echo_fd = STDOUT_FILENO;
+        echo_file = stdout;
     }
   else
     {
       g_string_append_len (data->stderr_str, buf, nread);
       if (data->echo_stderr)
-        echo_fd = STDERR_FILENO;
+        echo_file = stderr;
     }
 
-  if (echo_fd != -1)
+  if (echo_file)
     {
       for (total = 0; total < nread; total += nwrote)
         {
-          do
-            nwrote = write (echo_fd, buf + total, nread - total);
-          while (nwrote == -1 && errno == EINTR);
-          if (nwrote == -1)
+          nwrote = fwrite (buf + total, 1, nread - total, echo_file);
+          if (nwrote == 0)
             g_error ("write failed: %s", g_strerror (errno));
-          total += nwrote;
         }
     }
 
