@@ -33,6 +33,8 @@ static void
 push_value (gint value)
 {
   g_mutex_lock (&mutex);
+  while (next != 0)
+    g_cond_wait (&cond, &mutex);
   next = value;
   if (g_test_verbose ())
     g_print ("Thread %p producing next value: %d\n", g_thread_self (), value);
@@ -57,6 +59,7 @@ pop_value (void)
     }
   value = next;
   next = 0;
+  g_cond_broadcast (&cond);
   if (g_test_verbose ())
     g_print ("Thread %p consuming value %d\n", g_thread_self (), value);
   g_mutex_unlock (&mutex);
@@ -76,11 +79,9 @@ produce_values (gpointer data)
     {
       total += i;
       push_value (i);
-      g_usleep (1000);
     }
 
   push_value (-1);
-  g_usleep (1000);
   push_value (-1);
 
   if (g_test_verbose ())
