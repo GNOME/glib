@@ -337,6 +337,7 @@ libgio_2_0_la_SOURCES =		\
 	gasynchelper.h 		\
 	gasyncinitable.c	\
 	gasyncresult.c 		\
+	gbinaryencoder.c	\
 	gbufferedinputstream.c 	\
 	gbufferedoutputstream.c \
 	gbytesicon.c		\
@@ -359,6 +360,7 @@ libgio_2_0_la_SOURCES =		\
 	gemblem.c 		\
 	gemblemedicon.h		\
 	gemblemedicon.c		\
+	gencoder.c		\
 	gfile.c 		\
 	gfileattribute.c 	\
 	gfileattribute-priv.h 	\
@@ -385,6 +387,7 @@ libgio_2_0_la_SOURCES =		\
 	giomodule-priv.h	\
 	gioscheduler.c 		\
 	giostream.c		\
+	gkeyfileencoder.c	\
 	gloadableicon.c 	\
 	gmount.c 		\
 	gmemoryinputstream.c 	\
@@ -415,6 +418,7 @@ libgio_2_0_la_SOURCES =		\
 	gresourcefile.c		\
 	gresourcefile.h		\
 	gseekable.c 		\
+	gserializable.c		\
 	gsimpleasyncresult.c 	\
 	gsimplepermission.c 	\
 	gsocket.c		\
@@ -518,6 +522,7 @@ gio_headers =			\
 	gappinfo.h 		\
 	gasyncinitable.h	\
 	gasyncresult.h 		\
+	gbinaryencoder.h	\
 	gbufferedinputstream.h 	\
 	gbufferedoutputstream.h \
 	gbytesicon.h		\
@@ -532,6 +537,7 @@ gio_headers =			\
 	gdrive.h 		\
 	gemblem.h 		\
 	gemblemedicon.h		\
+	gencoder.h		\
 	gfile.h 		\
 	gfileattribute.h 	\
 	gfileenumerator.h 	\
@@ -557,6 +563,7 @@ gio_headers =			\
 	giomodule.h 		\
 	gioscheduler.h 		\
 	giostream.h		\
+	gkeyfileencoder.h	\
 	gloadableicon.h 	\
 	gmount.h 		\
 	gmemoryinputstream.h 	\
@@ -579,6 +586,7 @@ gio_headers =			\
 	gresolver.h		\
 	gresource.h		\
 	gseekable.h 		\
+	gserializable.h		\
 	gsimpleasyncresult.h 	\
 	gsimplepermission.h 	\
 	gsocket.h		\

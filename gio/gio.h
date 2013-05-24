@@ -36,6 +36,7 @@
 #include <gio/gapplicationcommandline.h>
 #include <gio/gasyncinitable.h>
 #include <gio/gasyncresult.h>
+#include <gio/gbinaryencoder.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
 #include <gio/gbytesicon.h>
@@ -62,6 +63,7 @@
 #include <gio/gdbusutils.h>
 #include <gio/gdrive.h>
 #include <gio/gemblemedicon.h>
+#include <gio/gencoder.h>
 #include <gio/gfileattribute.h>
 #include <gio/gfileenumerator.h>
 #include <gio/gfile.h>
@@ -86,6 +88,7 @@
 #include <gio/giomodule.h>
 #include <gio/gioscheduler.h>
 #include <gio/giostream.h>
+#include <gio/gkeyfileencoder.h>
 #include <gio/gloadableicon.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
@@ -107,6 +110,7 @@
 #include <gio/gresolver.h>
 #include <gio/gresource.h>
 #include <gio/gseekable.h>
+#include <gio/gserializable.h>
 #include <gio/gsettingsschema.h>
 #include <gio/gsettings.h>
 #include <gio/gsimpleaction.h>
