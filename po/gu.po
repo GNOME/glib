@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-04 01:49+0000\n"
-"PO-Revision-Date: 2013-04-22 15:52+0530\n"
+"POT-Creation-Date: 2013-05-24 01:50+0000\n"
+"PO-Revision-Date: 2013-05-24 13:21+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -267,7 +267,7 @@ msgstr "સત્ર dbus ચાલી રહ્યુ નથી, અને auto
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "સત્ર બસ સરનામાંને નક્કી કરી શકાતુ નથી (આ OS માટે અમલીકરણ થયેલ નથી)"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
+#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6826
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -276,7 +276,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE પર્યાવરણ ચલમાંથી બસ સરનામું નક્કી કરી શકાતુ નથી - અજ્ઞાત કિંમત "
 "'%s'"
 
-#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
+#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -386,71 +386,71 @@ msgstr "સમયસમાપ્તિ પહોંચી ગઇ"
 msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "બિનઆધારભૂત ફ્લેગ મળ્યો જ્યારે ક્લાઇન્ટ બાજુનું જોડાણને બંધારિત કરી રહ્યા હોય"
 
-#: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
+#: ../gio/gdbusconnection.c:4134 ../gio/gdbusconnection.c:4450
 #, c-format
 msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "પાથ %s પર ઓબ્જેક્ટ પર આવો ઇન્ટરફેસ 'org.freedesktop.DBus.Properties' નથી"
 
-#: ../gio/gdbusconnection.c:4136
+#: ../gio/gdbusconnection.c:4205
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "ગુણધર્મ '%s' સુયોજિત કરતી વખતે ભૂલ: ઇચ્છિત પ્રકાર '%s' પરંતુt '%s' મળ્યુ"
 
-#: ../gio/gdbusconnection.c:4231
+#: ../gio/gdbusconnection.c:4300
 #, c-format
 msgid "No such property '%s'"
 msgstr "આવો પ્રૉપર્ટી '%s' નથી"
 
-#: ../gio/gdbusconnection.c:4243
+#: ../gio/gdbusconnection.c:4312
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "ગુણધર્મ '%s' વાંચી શકાય તેમ નથી"
 
-#: ../gio/gdbusconnection.c:4254
+#: ../gio/gdbusconnection.c:4323
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "ગુણધર્મ '%s' લખી શકાય તેમ નથી"
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
+#: ../gio/gdbusconnection.c:4393 ../gio/gdbusconnection.c:6269
 #, c-format
 msgid "No such interface '%s'"
 msgstr "આવો ઇન્ટરફેસ '%s' નથી"
 
-#: ../gio/gdbusconnection.c:4508
+#: ../gio/gdbusconnection.c:4577
 msgid "No such interface"
 msgstr "આવો ઇન્ટરફેસ નથી"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
+#: ../gio/gdbusconnection.c:4795 ../gio/gdbusconnection.c:6775
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "પાથ %s પર ઑબ્જેક્ટ પર આવો ઇન્ટરફેસ '%s' નથી"
 
-#: ../gio/gdbusconnection.c:4781
+#: ../gio/gdbusconnection.c:4850
 #, c-format
 msgid "No such method '%s'"
 msgstr "આવી પદ્દતિ '%s' નથી"
 
-#: ../gio/gdbusconnection.c:4812
+#: ../gio/gdbusconnection.c:4881
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "સંદેશા '%s' નો પ્રકાર, ઇચ્છિત પ્રકાર '%s' બંધબેસતુ નથી"
 
-#: ../gio/gdbusconnection.c:5032
+#: ../gio/gdbusconnection.c:5101
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "ઓબ્જેક્ટ એ %s પર ઇન્ટરફેસ %s માટે પહેલેથી જ નિકાસ થયેલ છે"
 
-#: ../gio/gdbusconnection.c:5230
+#: ../gio/gdbusconnection.c:5299
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "પદ્દતિ '%s' ને પ્રકાર '%s' પાછો મળેલ થે, પરંતુ ઇચ્છિત '%s' છે"
 
-#: ../gio/gdbusconnection.c:6311
+#: ../gio/gdbusconnection.c:6380
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "હસ્તાક્ષર '%s' સાથે ઇન્ટરફેસ '%s' પર પદ્દતિ '%s' અસ્તિત્વ ધરાવતુ નથી"
 
-#: ../gio/gdbusconnection.c:6430
+#: ../gio/gdbusconnection.c:6499
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "સબટ્રી પહેલેથી %s માટે નિકાસ થયેલ છે"
@@ -601,8 +601,8 @@ msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '"
-"%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર પ્રકાર '%s' છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર '%s' છે"
 
 #: ../gio/gdbusmessage.c:2721
@@ -898,38 +898,38 @@ msgstr "મોનિટર કરવા માટે ઑબ્જેક્ટ �
 msgid "Monitor a remote object."
 msgstr "દૂરસ્થ ઑબ્જેક્ટને મોનિટર કરો."
 
-#: ../gio/gdesktopappinfo.c:625 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:628 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "શીર્ષકવીહિન"
 
-#: ../gio/gdesktopappinfo.c:1038
+#: ../gio/gdesktopappinfo.c:1041
 msgid "Desktop file didn't specify Exec field"
 msgstr "ડેસ્કટોપ ફાઈલે Exec ક્ષેત્ર સ્પષ્ટ કરેલ નથી"
 
-#: ../gio/gdesktopappinfo.c:1326
+#: ../gio/gdesktopappinfo.c:1329
 msgid "Unable to find terminal required for application"
 msgstr "કાર્યક્રમ માટે જરૂરી ટર્મિનલ શોધવામાં અસમર્થ"
 
-#: ../gio/gdesktopappinfo.c:1628
+#: ../gio/gdesktopappinfo.c:1631
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "વપરાશકર્તા કાર્યક્રમ રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: ../gio/gdesktopappinfo.c:1632
+#: ../gio/gdesktopappinfo.c:1635
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "વપરાશકર્તા MIME રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: ../gio/gdesktopappinfo.c:1872 ../gio/gdesktopappinfo.c:1896
+#: ../gio/gdesktopappinfo.c:1875 ../gio/gdesktopappinfo.c:1899
 msgid "Application information lacks an identifier"
 msgstr "કાર્યક્રમ જાણકારીને ઓળખકર્તાનો અભાવ છે"
 
-#: ../gio/gdesktopappinfo.c:2128
+#: ../gio/gdesktopappinfo.c:2131
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "વપરાશકર્તા ડેસ્કટોપ ફાઈલ %s બનાવી શકતા નથી"
 
-#: ../gio/gdesktopappinfo.c:2252
+#: ../gio/gdesktopappinfo.c:2255
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s માટે વૈવિધ્યપૂર્ણ વ્યાખ્યા"
@@ -986,15 +986,14 @@ msgstr "GEmblemedIcon એનકોડીંગ માં ટોકનો (%d) �
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 
-#: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
-#: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
-#: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3469 ../gio/gfile.c:3524
-#: ../gio/gfile.c:3670 ../gio/gfile.c:3712 ../gio/gfile.c:4114
-#: ../gio/gfile.c:4526 ../gio/gfile.c:4611 ../gio/gfile.c:4701
-#: ../gio/gfile.c:4798 ../gio/gfile.c:4885 ../gio/gfile.c:4986
-#: ../gio/gfile.c:5259 ../gio/gfile.c:5537 ../gio/gfile.c:5591
-#: ../gio/gfile.c:7136 ../gio/gfile.c:7226 ../gio/gfile.c:7310
+#: ../gio/gfile.c:937 ../gio/gfile.c:1176 ../gio/gfile.c:1315
+#: ../gio/gfile.c:1555 ../gio/gfile.c:1610 ../gio/gfile.c:1668
+#: ../gio/gfile.c:1752 ../gio/gfile.c:1809 ../gio/gfile.c:1873
+#: ../gio/gfile.c:1928 ../gio/gfile.c:3489 ../gio/gfile.c:3544
+#: ../gio/gfile.c:3752 ../gio/gfile.c:3794 ../gio/gfile.c:4260
+#: ../gio/gfile.c:4672 ../gio/gfile.c:4757 ../gio/gfile.c:4847
+#: ../gio/gfile.c:4944 ../gio/gfile.c:5031 ../gio/gfile.c:5132
+#: ../gio/gfile.c:7311 ../gio/gfile.c:7401 ../gio/gfile.c:7485
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
@@ -1009,70 +1008,70 @@ msgstr "પ્રક્રિયા આધારભૂત નથી"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1419 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
+#: ../gio/gfile.c:1439 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
 #: ../gio/glocalfile.c:1120
 msgid "Containing mount does not exist"
 msgstr "સમાવનાર માઉન્ટ અસ્તિત્વમાં નથી"
 
-#: ../gio/gfile.c:2474 ../gio/glocalfile.c:2328
+#: ../gio/gfile.c:2494 ../gio/glocalfile.c:2328
 msgid "Can't copy over directory"
 msgstr "ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2534
+#: ../gio/gfile.c:2554
 msgid "Can't copy directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2542 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2562 ../gio/glocalfile.c:2337
 msgid "Target file exists"
 msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથી"
 
-#: ../gio/gfile.c:2561
+#: ../gio/gfile.c:2581
 msgid "Can't recursively copy directory"
 msgstr "પુનરાવર્તિત રીતે ડિરેક્ટરીની નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2825
+#: ../gio/gfile.c:2845
 msgid "Splice not supported"
 msgstr "જોડવાનું આધારભૂત નથી"
 
-#: ../gio/gfile.c:2829
+#: ../gio/gfile.c:2849
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "ફાઈલ ને જોડવામાં ભૂલ: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2980
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) માઉન્ટ વચ્ચે આધારભૂત નથી"
 
-#: ../gio/gfile.c:2964
+#: ../gio/gfile.c:2984
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા અયોગ્ય છે"
 
-#: ../gio/gfile.c:2969
+#: ../gio/gfile.c:2989
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા કામ કરતી નથી"
 
-#: ../gio/gfile.c:3029
+#: ../gio/gfile.c:3049
 msgid "Can't copy special file"
 msgstr "વિશિષ્ટ ફાઇલ ની નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:3660
+#: ../gio/gfile.c:3742
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: ../gio/gfile.c:3820
+#: ../gio/gfile.c:3904
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: ../gio/gfile.c:3871
+#: ../gio/gfile.c:4017
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: ../gio/gfile.c:6259 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6434 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: ../gio/gfile.c:6368
+#: ../gio/gfile.c:6543
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
 
@@ -1117,37 +1116,37 @@ msgstr "ઈનપુટ સ્ટ્રીમ પર કાપવાનું �
 msgid "Truncate not supported on stream"
 msgstr "સ્ટ્રીમ પર કાપવાનું માન્ય નથી"
 
-#: ../gio/gicon.c:284
+#: ../gio/gicon.c:297
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "ટોકનો (%d) નાં ખોટા નંબર"
 
-#: ../gio/gicon.c:304
+#: ../gio/gicon.c:317
 #, c-format
 msgid "No type for class name %s"
 msgstr "વર્ગ નામ %s માટે પ્રકાર નથી"
 
-#: ../gio/gicon.c:314
+#: ../gio/gicon.c:327
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "પ્રકાર %s એ GIcon ઇન્ટરફેસ ને અમલમાં મૂકતો નથી"
 
-#: ../gio/gicon.c:325
+#: ../gio/gicon.c:338
 #, c-format
 msgid "Type %s is not classed"
 msgstr "પ્રકાર %s એ વર્ગ થયેલ નથી"
 
-#: ../gio/gicon.c:339
+#: ../gio/gicon.c:352
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "મેલફોર્મ થયેલ આવૃત્તિ નંબર: %s"
 
-#: ../gio/gicon.c:353
+#: ../gio/gicon.c:366
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "પ્રકાર %s એ GIcon ઇન્ટરફેસ પર tokens() માંથી અમલીકરણ થતુ નથી (_t)"
 
-#: ../gio/gicon.c:428
+#: ../gio/gicon.c:468
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "આઇકોન એનકોડીંગ ની પૂરી પાડેલ આવૃત્તિ ને સંભાળી શકાતી નથી"
 
@@ -1170,7 +1169,7 @@ msgid "Could not parse '%s' as IP address mask"
 msgstr "IP સરનામાં માસ્ક તરીકે '%s' નુ પદચ્છેદન કરી શક્યા નહિં"
 
 #: ../gio/ginetsocketaddress.c:206 ../gio/ginetsocketaddress.c:223
-#: ../gio/gunixsocketaddress.c:221
+#: ../gio/gunixsocketaddress.c:210
 msgid "Not enough space for socket address"
 msgstr "સોકેટ સરનામાં માટે પૂરતી જગ્યા નથી"
 
@@ -1606,9 +1605,7 @@ msgid "Can't rename file, filename already exists"
 msgstr "ફાઈલનું નામ બદલી શકતા નથી, ફાઈલનામ પહેલાથી જ હાજર છે"
 
 #: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
 msgid "Invalid filename"
 msgstr "અયોગ્ય ફાઈલનામ"
 
@@ -1683,9 +1680,9 @@ msgstr "ફાઈલ ખસેડવામાં ભૂલ: %s"
 msgid "Can't move directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર ખસેડી શકતા નથી"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "બેકઅપ ફાઈલ બનાવટ નિષ્ફળ"
 
@@ -1715,91 +1712,91 @@ msgstr "અયોગ્ય વિસ્તૃત લક્ષણ નામ"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "વિસ્તૃત લક્ષણ '%s' સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:1542
+#: ../gio/glocalfileinfo.c:1544
 msgid " (invalid encoding)"
 msgstr " (અયોગ્ય સંગ્રહપદ્ધતિ)"
 
-#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "જ્યારે ફાઇલ '%s' માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ : %s"
 
-#: ../gio/glocalfileinfo.c:1980
+#: ../gio/glocalfileinfo.c:1982
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "જ્યારે ફાઇલ વર્ણનકર્તા માટે જાણકારીને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2025
+#: ../gio/glocalfileinfo.c:2027
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint32 ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2043
+#: ../gio/glocalfileinfo.c:2045
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (uint64 ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
+#: ../gio/glocalfileinfo.c:2064 ../gio/glocalfileinfo.c:2083
 msgid "Invalid attribute type (byte string expected)"
 msgstr "અયોગ્ય લક્ષણ પ્રકાર (બાઈટ શબ્દમાળા ઈચ્છિત)"
 
-#: ../gio/glocalfileinfo.c:2116
+#: ../gio/glocalfileinfo.c:2118
 msgid "Cannot set permissions on symlinks"
 msgstr "સંકેત કડીઓ પર પરવાનગીઓને સુયોજિત કરી શકાતી નથી"
 
-#: ../gio/glocalfileinfo.c:2132
+#: ../gio/glocalfileinfo.c:2134
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "પરવાનગીઓ સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2183
+#: ../gio/glocalfileinfo.c:2185
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "માલિક સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2206
+#: ../gio/glocalfileinfo.c:2208
 msgid "symlink must be non-NULL"
 msgstr "સાંકેતિક કડી non-NULL જ હોવી જોઈએ"
 
-#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
-#: ../gio/glocalfileinfo.c:2246
+#: ../gio/glocalfileinfo.c:2218 ../gio/glocalfileinfo.c:2237
+#: ../gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2225
+#: ../gio/glocalfileinfo.c:2227
 msgid "Error setting symlink: file is not a symlink"
 msgstr "સાંકેતિક કડી સુયોજીત કરવામાં ભૂલ: ફાઈલ સાંકેતિક કડી નથી"
 
-#: ../gio/glocalfileinfo.c:2351
+#: ../gio/glocalfileinfo.c:2353
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "બદલાવ અથવા પ્રવેશ સમય ને સુયોજન કરતી વખતે ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2374
+#: ../gio/glocalfileinfo.c:2376
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux સંદર્ભ non-NULL જ હોવી જોઈએ"
 
-#: ../gio/glocalfileinfo.c:2389
+#: ../gio/glocalfileinfo.c:2391
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux સંદર્ભ ને સુયોજન કરવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileinfo.c:2396
+#: ../gio/glocalfileinfo.c:2398
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux એ આ સિસ્ટમ પર સક્રિય થયેલ નથી"
 
-#: ../gio/glocalfileinfo.c:2488
+#: ../gio/glocalfileinfo.c:2490
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "લક્ષણ %s સુયોજીત કરવાનું આધારભૂત નથી"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ફાઈલમાંથી વાંચવામાં ભૂલ: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
 #: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ફાઈલમાં પહોંચવામાં ભૂલ: %s"
@@ -1815,7 +1812,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "મૂળભૂત સ્થાનિક ફાઈલ મોનીટર પ્રકાર શોધવામાં અસમર્થ"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ફાઈલમાં લખવામાં ભૂલ: %s"
@@ -1835,31 +1832,30 @@ msgstr "બેકઅપ નકલ બનાવવામાં ભૂલ: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "કામચલાઉ ફાઈલનું નામ બદલવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ફાઈલ કાપવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "ફાઈલ '%s' ખોલવામાં ભૂલ: %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "લક્ષ્ય ફાઈલ ડિરેક્ટરી છે"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "લક્ષ્ય ફાઈલ નિયમિત ફાઈલ નથી"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "ફાઈલ બાહ્ય રીતે સુધારેલ હતી"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "જૂની ફાઇલને દૂર કરવા દરમ્યાન ભૂલ: %s"
@@ -2635,18 +2631,18 @@ msgstr "'%s' ને સુધારી રહ્યા હોય ત્યાર
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' ને વિપરીત-સુધારી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:478
-#: ../gio/gthreadedresolver.c:579 ../gio/gthreadedresolver.c:630
+#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:614
+#: ../gio/gthreadedresolver.c:715 ../gio/gthreadedresolver.c:766
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' માટે સૂચિત પ્રકારનો DNS અહેવાલ નથી"
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:584
+#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:720
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "'%s' ને સુધારવા માટે થોડા વખત અસમર્થ"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:589
+#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:725
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "'%s' ને સુધારી રહ્યા હોય ત્યારે ભૂલ"
@@ -2690,49 +2686,55 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "દાખલ થયેલ પાસવર્ડ ખોટો છે."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
 #, c-format
+#| msgid "Expecting 1 control message, got %d"
 msgid "Expecting 1 control message, got %d"
-msgstr "૧ નિયંત્રણ સંદેશાની ઇચ્છા રાખી રહ્યા છે, %d મળ્યુ"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "૧ નિયંત્રણ સંદેશાની ઇચ્છા રાખી રહ્યા છે, %d મળ્યુ"
+msgstr[1] "૧ નિયંત્રણ સંદેશાની ઇચ્છા રાખી રહ્યા છે, %d મળ્યુ"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "ગૌણ માહિતીનો અનચ્છિનીય પ્રકાર"
 
-#: ../gio/gunixconnection.c:190
+#: ../gio/gunixconnection.c:193
 #, c-format
+#| msgid "Expecting one fd, but got %d\n"
 msgid "Expecting one fd, but got %d\n"
-msgstr "એક fd ની ઇચ્છા રાખી રહ્યા છે, પરંતુ %d મળ્યુ\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "એક fd ની ઇચ્છા રાખી રહ્યા છે, પરંતુ %d મળ્યુ\n"
+msgstr[1] "એક fd ની ઇચ્છા રાખી રહ્યા છે, પરંતુ %d મળ્યુ\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "મેળવેલ અયોગ્ય fd"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "શ્રેયને મોકલતી વખતે ભૂલ: "
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "ચકાસી કરી રહ્યા હોય ત્યારે ભૂલ જો SO_PASSCRED સોકેટ માટે સક્રિય થયેલ છે: %s"
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED ને સક્રિય કરતી વખતે ભૂલ: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "શ્રેયને પ્રાપ્ત કરવા માટે એકજ બાઇટને વાંચવાની ઇચ્છા રાખી રહ્યા છે પરંતુ શૂન્ય બાઇટ વાંચે છે"
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "નિયંત્રણ સંદેશાની ઇચ્છા રાખી રહ્યા નથી, પરંતુ %d મળ્યુ"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "જ્યારે SO_PASSCRED નિષ્ક્રિય કરી રહ્યા હોય ત્યારે ભૂલ: %s"
@@ -2747,7 +2749,7 @@ msgstr "ફાઇલ વર્ણનકર્તામાંથી વાંચ�
 msgid "Error closing file descriptor: %s"
 msgstr "ફાઈલ વર્ણનકર્તાને બંધ કરી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2036
+#: ../gio/gunixmounts.c:1985 ../gio/gunixmounts.c:2038
 msgid "Filesystem root"
 msgstr "ફાઈલસિસ્ટમ રુટ"
 
@@ -2756,7 +2758,7 @@ msgstr "ફાઈલસિસ્ટમ રુટ"
 msgid "Error writing to file descriptor: %s"
 msgstr "ફાઈલ વર્ણનકર્તામાં લખી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../gio/gunixsocketaddress.c:244
+#: ../gio/gunixsocketaddress.c:233
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Abstract unix ડોમેઇન સરનામાંઓ આ સિસ્ટમ પર આધારભૂત નથી"
 
@@ -3628,53 +3630,53 @@ msgstr "વપરાશ:"
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:864
+#: ../glib/goption.c:870
 msgid "Help Options:"
 msgstr "મદદ વિકલ્પો:"
 
-#: ../glib/goption.c:865
+#: ../glib/goption.c:871
 msgid "Show help options"
 msgstr "મદદ વિકલ્પો બતાવો"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:877
 msgid "Show all help options"
 msgstr "બધા મદદ વિકલ્પો બતાવો"
 
-#: ../glib/goption.c:933
+#: ../glib/goption.c:939
 msgid "Application Options:"
 msgstr "કાર્યક્રમ વિકલ્પો:"
 
-#: ../glib/goption.c:997 ../glib/goption.c:1067
+#: ../glib/goption.c:1003 ../glib/goption.c:1073
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "પૂર્ણાંક કિંમત '%s' ને %s માટે પદચ્છેદન કરી શકતા નથી"
 
-#: ../glib/goption.c:1007 ../glib/goption.c:1075
+#: ../glib/goption.c:1013 ../glib/goption.c:1081
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ %s માટે મર્યાદા બહાર છે"
 
-#: ../glib/goption.c:1032
+#: ../glib/goption.c:1038
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "બમણી કિંમત '%s' ને %s માટે પદચ્છેદિત કરી શકતા નથી"
 
-#: ../glib/goption.c:1040
+#: ../glib/goption.c:1046
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "બમણી કિંમત '%s' જે %s માટે છે તે વિસ્તારની બહાર છે"
 
-#: ../glib/goption.c:1303 ../glib/goption.c:1382
+#: ../glib/goption.c:1309 ../glib/goption.c:1388
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ભૂલ પદચ્છેદન વિકલ્પ %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1526
+#: ../glib/goption.c:1419 ../glib/goption.c:1532
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 
-#: ../glib/goption.c:1979
+#: ../glib/goption.c:1985
 #, c-format
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"
@@ -4064,77 +4066,82 @@ msgstr "%c માટે અવતરણ ચિહ્ન મળે તે પહ�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "વાક્ય ખાલી છે (અથવા તેમાં ફક્ત ખાલી જગ્યા છે)"
 
-#: ../glib/gspawn.c:203
+#: ../glib/gspawn.c:202
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "(%s) બાળપ્રક્રિયામાંથી માહિતી વાંચવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:362
+#: ../glib/gspawn.c:345
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "(%s)બાળપ્રક્રિયામાંથી માહિતી વાંચતી વખતે select() માં આવતી અણધારી ભૂલ"
 
-#: ../glib/gspawn.c:853 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:430
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "(%s) waitpid() માં અાવતી અણાધારી ભૂલ"
+
+#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "કોડ %ld સાથે બાળ પ્રક્રિયા બહાર નીકળી ગઇ"
 
-#: ../glib/gspawn.c:861
+#: ../glib/gspawn.c:857
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "બાળ પ્રક્રિયા સંકેત %ld દ્દારા મરેલ છે"
 
-#: ../glib/gspawn.c:868
+#: ../glib/gspawn.c:864
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "બાળ પ્રક્રિયા સંકેત %ld દ્દારા બંધ થયેલ છે"
 
-#: ../glib/gspawn.c:875
+#: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "બાળ પ્રક્રિયા અસાધારણ રીતે બહાર નીકળી ગઇ"
 
-#: ../glib/gspawn.c:1280 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "બાળ પાઈપ (%s)માંથી વાંચવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:1348
+#: ../glib/gspawn.c:1344
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) બાળપ્રક્રિયા બનાવવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:1496 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1492 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ડિરેક્ટરી બદલવામાં નિષ્ફળ(%s)"
 
-#: ../glib/gspawn.c:1506
+#: ../glib/gspawn.c:1502
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "\"%s\"બાળપ્રક્રિયા ચલાવવામાં નિષ્ફળ (%s)"
 
-#: ../glib/gspawn.c:1516
+#: ../glib/gspawn.c:1512
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "બાળપ્રક્રિયા (%s)ના ઈનપુટ અથવા આઉટપુટને ફરીથી દિશા આપવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1521
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "બાળપ્રક્રિયા (%s)ની બાળપ્રક્રિયા બનાવવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:1533
+#: ../glib/gspawn.c:1529
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "\"%s\" બાળપ્રક્રિયા ચલાવતી વખતની અજ્ઞાત ભૂલ"
 
-#: ../glib/gspawn.c:1557
+#: ../glib/gspawn.c:1553
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "(%s)બાળ pid પાઈપમાંથી જરુરી માહિતી વાંચવામાં નિષ્ફળ"
 
-#: ../glib/gspawn.c:1630 ../glib/gspawn-win32.c:300
+#: ../glib/gspawn.c:1626 ../glib/gspawn-win32.c:300
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr " (%s) બાળપ્રક્રિયા સાથે સંપર્ક માટે પાઈપ બનાવવામાં નિષ્ફળ"
@@ -4288,9 +4295,6 @@ msgstr "%.1f KB"
 #~ msgstr ""
 #~ "અનિચ્છનીય વિકલ્પ લંબાઇ જ્યારે ચકાસી રહ્યા હોય જો SO_PASSCRED સોકેટ માટે સક્રિય થયેલ "
 #~ "છે. ઇચ્છિત %d bytes, %d મળ્યું"
-
-#~ msgid "Unexpected error in waitpid() (%s)"
-#~ msgstr "(%s) waitpid() માં અાવતી અણાધારી ભૂલ"
 
 #~ msgid "workspace limit for empty substrings reached"
 #~ msgstr "ખાલી શબ્દમાળાઓ માટે કાર્યસ્થળ મર્યાદાએ પહોંચી ગયા"
