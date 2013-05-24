@@ -146,7 +146,7 @@ testmeta_DATA = $(test_programs:=.test)
 
 insttest_DATA = $(test_data)
 
-%.test: Makefile
+%.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	 echo 'Type=session' >> $@.tmp; \
 	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \

@@ -526,7 +526,7 @@ xfail_tests = desktop-app-info.test
 developer_only_tests = gsettings.test
 testmeta_DATA = $(filter-out $(xfail_tests) $(developer_only_tests),$(test_progs:=.test))
 
-%.test: Makefile
+%.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	 echo 'Type=session' >> $@.tmp; \
 	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \

@@ -175,7 +175,7 @@ markupsdir=$(insttestdir)/markups
 markups_DATA = $(all_markup_test_files)
 endif
 
-%.test: Makefile
+%.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	 echo 'Type=session' >> $@.tmp; \
 	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
