@@ -53,7 +53,7 @@ insttest_PROGRAMS = $(TEST_PROGS)
 testmetadir = $(datadir)/installed-tests/$(PACKAGE)
 testmeta_DATA = $(TEST_PROGS:=.test)
 
-%.test: % Makefile
+%.test: Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	 echo 'Type=session' >> $@.tmp; \
 	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
