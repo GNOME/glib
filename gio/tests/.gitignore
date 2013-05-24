@@ -16,6 +16,7 @@ data-output-stream
 de/
 desktop-app-info
 echo-server
+encoder
 file
 fileattributematcher
 filter-cat
@@ -94,6 +95,7 @@ readwrite
 resolver
 resources
 send-data
+serializable
 services/org.gtk.GDBus.Examples.ObjectManager.service
 simple-async-result
 simple-proxy

@@ -70,6 +70,8 @@ test_progs =	 		\
 	permission		\
 	task			\
 	credentials		\
+	encoder			\
+	serializable		\
 	$(NULL)
 
 if HAVE_DBUS_DAEMON
