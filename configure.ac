@@ -1126,7 +1126,7 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for MSG_* constants])
 fi
 
-AC_CHECK_FUNCS(getprotobyname_r endservent if_nametoindex)
+AC_CHECK_FUNCS(getprotobyname_r endservent if_nametoindex if_indextoname)
 
 AS_IF([test $glib_native_win32 = yes], [
   # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for

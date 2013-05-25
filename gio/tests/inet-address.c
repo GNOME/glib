@@ -20,7 +20,10 @@
  * if advised of the possibility of such damage.
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
+#include <gio/gnetworking.h>
 
 static void
 test_parse (void)
@@ -230,10 +233,26 @@ test_scope_id (void)
   GSocketAddress *saddr;
   GInetSocketAddress *isaddr;
   GInetAddress *iaddr;
-  char *tostring;
+  char *str, *tostring;
   GError *error = NULL;
+  int index;
+#ifdef HAVE_IF_INDEXTONAME
+  char ifname[IF_NAMESIZE] = { 0 };
+#endif
 
-  addr = g_network_address_new ("fe80::42%1", 99);
+#ifdef HAVE_IF_INDEXTONAME
+  for (index = 1; index < 255; index++) {
+    if (if_indextoname (1, ifname))
+      break;
+  }
+  g_assert_cmpstr (ifname, !=, "");
+  str = g_strdup_printf ("fe80::42%%%s", ifname);
+#else
+  index = 1;
+  str = g_strdup ("fe80::42%1");
+#endif
+
+  addr = g_network_address_new (str, 99);
   addr_enum = g_socket_connectable_enumerate (addr);
   saddr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
   g_assert_no_error (error);
@@ -242,7 +261,7 @@ test_scope_id (void)
   g_assert (G_IS_INET_SOCKET_ADDRESS (saddr));
 
   isaddr = G_INET_SOCKET_ADDRESS (saddr);
-  g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, 1);
+  g_assert_cmpint (g_inet_socket_address_get_scope_id (isaddr), ==, index);
   g_assert_cmpint (g_inet_socket_address_get_port (isaddr), ==, 99);
 
   iaddr = g_inet_socket_address_get_address (isaddr);
@@ -257,6 +276,7 @@ test_scope_id (void)
 
   g_object_unref (addr_enum);
   g_object_unref (addr);
+  g_free (str);
 }
 
 static void
