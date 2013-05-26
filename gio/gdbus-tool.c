@@ -1017,8 +1017,11 @@ handle_call (gint        *argc,
                                         &error);
   if (result == NULL)
     {
-      g_printerr (_("Error: %s\n"), error->message);
-      g_error_free (error);
+      if (error)
+        {
+          g_printerr (_("Error: %s\n"), error->message);
+          g_error_free (error);
+        }
       if (in_signature_types != NULL)
         {
           GString *s;
