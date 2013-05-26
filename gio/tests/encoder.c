@@ -1,34 +1,35 @@
 #include <gio/gio.h>
 
-static void
-encoder_binary (void)
+static GBytes *
+encode_data (GEncoder *encoder)
 {
-  GEncoder *encoder = g_binary_encoder_new ();
   GError *error = NULL;
   GBytes *buffer;
-  gboolean bool_value;
-  char *str_value;
-
-  g_object_add_weak_pointer (G_OBJECT (encoder), (gpointer *) &encoder);
 
   g_encoder_add_key_bool (encoder, "BoolValue", TRUE);
   g_encoder_add_key_string (encoder, "StringValue", "Hello");
+  g_encoder_add_key_double (encoder, "DoubleValue", 3.14159);
 
   buffer = g_encoder_write_to_bytes (encoder, &error);
   g_assert_no_error (error);
   g_assert (buffer != NULL);
-
-  g_object_unref (encoder);
-  g_assert (encoder == NULL);
 
   if (g_test_verbose ())
     g_print ("*** buffer (len: %d) = ***\n%s\n",
              (int) g_bytes_get_size (buffer),
              (const char *) g_bytes_get_data (buffer, NULL));
 
-  encoder = g_binary_encoder_new ();
+  return buffer;
+}
 
-  g_object_add_weak_pointer (G_OBJECT (encoder), (gpointer *) &encoder);
+static void
+decode_data (GEncoder *encoder,
+             GBytes   *buffer)
+{
+  GError *error = NULL;
+  gboolean bool_value;
+  char *str_value;
+  double dbl_value;
 
   g_encoder_read_from_bytes (encoder, buffer, &error);
   g_assert_no_error (error);
@@ -40,45 +41,58 @@ encoder_binary (void)
   g_assert_cmpstr (str_value, ==, "Hello");
   g_free (str_value);
 
-  g_bytes_unref (buffer);
+  g_encoder_get_key_double (encoder, "DoubleValue", &dbl_value);
+  g_assert_cmpfloat ((float) dbl_value, ==, 3.14159f);
+}
 
+static void
+encoder_binary (void)
+{
+  GEncoder *encoder, *decoder;
+  GBytes *buffer;
+
+  encoder = g_binary_encoder_new ();
+  buffer = encode_data (encoder);
   g_object_unref (encoder);
-  g_assert (encoder == NULL);
+
+  decoder = g_binary_encoder_new ();
+  decode_data (decoder, buffer);
+  g_object_unref (decoder);
+  g_bytes_unref (buffer);
 }
 
 static void
 encoder_keyfile (void)
 {
-  GEncoder *encoder = g_keyfile_encoder_new ();
-  GError *error = NULL;
+  GEncoder *encoder, *decoder;
   GBytes *buffer;
-  gboolean res;
-
-  g_keyfile_encoder_set_section_name (G_KEYFILE_ENCODER (encoder), "Test");
-  g_encoder_add_key_bool (encoder, "BoolValue", TRUE);
-
-  buffer = g_encoder_write_to_bytes (encoder, &error);
-  g_assert_no_error (error);
-  g_assert (buffer != NULL);
-
-  g_object_unref (encoder);
-
-  if (g_test_verbose ())
-    g_print ("*** buffer (len: %d) = ***\n%s",
-             (int) g_bytes_get_size (buffer),
-             (const char *) g_bytes_get_data (buffer, NULL));
 
   encoder = g_keyfile_encoder_new ();
   g_keyfile_encoder_set_section_name (G_KEYFILE_ENCODER (encoder), "Test");
-
-  g_encoder_read_from_bytes (encoder, buffer, &error);
-  g_assert_no_error (error);
-
-  g_encoder_get_key_bool (encoder, "BoolValue", &res);
-  g_assert (res);
-
-  g_bytes_unref (buffer);
+  buffer = encode_data (encoder);
   g_object_unref (encoder);
+
+  decoder = g_keyfile_encoder_new ();
+  g_keyfile_encoder_set_section_name (G_KEYFILE_ENCODER (decoder), "Test");
+  decode_data (decoder, buffer);
+  g_object_unref (decoder);
+  g_bytes_unref (buffer);
+}
+
+static void
+encoder_markup (void)
+{
+  GEncoder *encoder, *decoder;
+  GBytes *buffer;
+
+  encoder = g_markup_encoder_new ();
+  buffer = encode_data (encoder);
+  g_object_unref (encoder);
+
+  decoder = g_markup_encoder_new ();
+  decode_data (decoder, buffer);
+  g_object_unref (decoder);
+  g_bytes_unref (buffer);
 }
 
 int
@@ -88,6 +102,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/encoder/binary", encoder_binary);
   g_test_add_func ("/encoder/key-file", encoder_keyfile);
+  g_test_add_func ("/encoder/markup", encoder_markup);
 
   return g_test_run ();
 }

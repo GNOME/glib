@@ -389,6 +389,7 @@ libgio_2_0_la_SOURCES =		\
 	giostream.c		\
 	gkeyfileencoder.c	\
 	gloadableicon.c 	\
+	gmarkupencoder.c	\
 	gmount.c 		\
 	gmemoryinputstream.c 	\
 	gmemoryoutputstream.c 	\
@@ -565,6 +566,7 @@ gio_headers =			\
 	giostream.h		\
 	gkeyfileencoder.h	\
 	gloadableicon.h 	\
+	gmarkupencoder.h	\
 	gmount.h 		\
 	gmemoryinputstream.h 	\
 	gmemoryoutputstream.h 	\

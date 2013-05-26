@@ -50,6 +50,7 @@ typedef struct _GEncoder                      GEncoder;
 typedef struct _GSerializable                 GSerializable;
 typedef struct _GBinaryEncoder                GBinaryEncoder;
 typedef struct _GKeyfileEncoder               GKeyfileEncoder;
+typedef struct _GMarkupEncoder                GMarkupEncoder;
 
 typedef struct _GSimpleActionGroup            GSimpleActionGroup;
 typedef struct _GRemoteActionGroup            GRemoteActionGroup;

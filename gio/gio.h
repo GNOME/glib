@@ -90,6 +90,7 @@
 #include <gio/giostream.h>
 #include <gio/gkeyfileencoder.h>
 #include <gio/gloadableicon.h>
+#include <gio/gmarkupencoder.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gmount.h>
