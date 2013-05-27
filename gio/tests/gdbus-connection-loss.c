@@ -26,7 +26,7 @@
 
 #include "gdbus-tests.h"
 
-static const gchar *datapath;
+static const gchar *binpath;
 
 /* all tests rely on a global connection */
 static GDBusConnection *c = NULL;
@@ -117,9 +117,9 @@ main (int   argc,
   gchar *path;
 
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    binpath = g_getenv ("G_TEST_DATA");
   else
-    datapath = SRCDIR;
+    binpath = ".";
 
   g_test_init (&argc, &argv, NULL);
 
@@ -129,7 +129,7 @@ main (int   argc,
   session_bus_up ();
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  path = g_build_filename (binpath, "gdbus-testserver", NULL);
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
