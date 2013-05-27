@@ -203,12 +203,8 @@ main (int   argc,
   echo_script_path = g_build_filename (dirname, "echo-script", NULL);
   if (!g_file_test (echo_script_path, G_FILE_TEST_EXISTS))
     {
-      gchar *tmp;
-      /* strip .libs */
-      tmp = g_path_get_dirname (dirname);
       g_free (echo_script_path);
-      echo_script_path = g_build_filename (tmp, "echo-script", NULL);
-      g_free (tmp);
+      echo_script_path = g_build_filename (SRCDIR, "echo-script", NULL);
     }
   g_free (dirname);
 
