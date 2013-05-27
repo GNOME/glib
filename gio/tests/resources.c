@@ -23,7 +23,7 @@
 #include "gconstructor.h"
 #include "test_resources2.h"
 
-const gchar *datapath;
+const gchar *datapath, *libpath;
 
 static void
 test_resource (GResource *resource)
@@ -408,7 +408,7 @@ test_resource_module (void)
     {
       char *path;
 
-      path = g_build_filename (datapath, "libresourceplugin",  NULL);
+      path = g_build_filename (libpath, "libresourceplugin",  NULL);
       module = g_io_module_new (path);
       g_free (path);
 
@@ -642,9 +642,15 @@ main (int   argc,
       char *argv[])
 {
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    {
+      datapath = g_getenv ("G_TEST_DATA");
+      libpath = g_getenv ("G_TEST_DATA");
+    }
   else
-    datapath = SRCDIR;
+    {
+      datapath = SRCDIR;
+      libpath = ".libs";
+    }
 
   g_test_init (&argc, &argv, NULL);
 
