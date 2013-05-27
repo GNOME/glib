@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.master.or\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-23 18:39+0000\n"
-"PO-Revision-Date: 2013-05-10 12:07+0530\n"
+"POT-Creation-Date: 2013-05-27 07:59+0000\n"
+"PO-Revision-Date: 2013-05-27 18:07+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -284,8 +284,8 @@ msgid ""
 "- unknown value '%s'"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE ପରିବେଶ ପ୍ରାଚଳରୁ ବସ ଠିକଣାକୁ ନିର୍ଦ୍ଧାରଣ କରିପାରିବେ ନାହିଁ- "
-"ଅଜଣା ମୂଲ୍ୟ '"
-"%s'"
+"ଅଜଣା ମୂଲ୍ୟ "
+"'%s'"
 
 #: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6835
 msgid ""
@@ -644,8 +644,8 @@ msgstr "ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର '%s' ଅଛି କ�
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '"
-"%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr ""
 "ସନ୍ଦେଶରେ ହସ୍ତାକ୍ଷର ପ୍ରକାର '%s' ଅଛି କିନ୍ତୁ ଶୀର୍ଷକରେ ଥିବା ହସ୍ତାକ୍ଷରଟି ହେଉଛି '%s'"
 
@@ -742,13 +742,13 @@ msgstr ""
 "କରନ୍ତୁ।\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1020
-#: ../gio/gdbus-tool.c:1453
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1456
 #, c-format
 msgid "Error: %s\n"
 msgstr "ତ୍ରୁଟି: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1469
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "ଆତ୍ମନିରୀକ୍ଷଣ XML କୁ ବିଶ୍ଳେଷଣ କରିବାରେ ତ୍ରୁଟି: %s\n"
@@ -814,8 +814,8 @@ msgstr "ସଂକେତ ଏବଂ ଅନ୍ତରାପୃଷ୍ଠ ନାମ"
 msgid "Emit a signal."
 msgstr "ଏକ ସଂକେତକୁ ବନ୍ଦ କରନ୍ତୁ।"
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1559
-#: ../gio/gdbus-tool.c:1791
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
+#: ../gio/gdbus-tool.c:1794
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "ସଂଯୋଗ କରିବାରେ ତ୍ରୁଟି: %s\n"
@@ -825,8 +825,8 @@ msgstr "ସଂଯୋଗ କରିବାରେ ତ୍ରୁଟି: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "ତ୍ରୁଟି: ବସ୍ତୁ ପ୍ରକାର ଉଲ୍ଲେଖ ହୋଇନାହିଁ।\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1617
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
+#: ../gio/gdbus-tool.c:1853
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "ତ୍ରୁଟି: '%s' ଟି ଗୋଟିଏ ବୈଧ ବସ୍ତୁ ପଥ ନୁହଁ\n"
@@ -886,12 +886,12 @@ msgstr "ସମୟ ସମାପ୍ତି ସେକଣ୍ଡରେ"
 msgid "Invoke a method on a remote object."
 msgstr "ସୁଦୂର ବସ୍ତୁ ଉପରେ ଏକ ପଦ୍ଧତିକୁ ପ୍ରୟୋଗ କରନ୍ତୁ"
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1578 ../gio/gdbus-tool.c:1810
+#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "ତ୍ରୁଟି: ଲକ୍ଷ୍ଯସ୍ଥଳ ଉଲ୍ଲେଖ ହୋଇନାହିଁ\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1597
+#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "ତ୍ରୁଟି: ବସ୍ତୁ ପଥ ଉଲ୍ଲେଖ ହୋଇନାହିଁ\n"
@@ -911,74 +911,74 @@ msgstr "ତ୍ରୁଟି: ପଦ୍ଧତି ନାମ '%s' ଟି ଅବୈ�
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "ପ୍ରାଚଳ %d କୁ '%s' ପ୍ରକାରରେ ବିଶ୍ଳେଷଣ କରିବାରେ ତ୍ରୁଟି: %s\n"
 
-#: ../gio/gdbus-tool.c:1416
+#: ../gio/gdbus-tool.c:1419
 msgid "Destination name to introspect"
 msgstr "ଆତ୍ମନୀରିକ୍ଷଣ କରିବାକୁ ଲକ୍ଷ୍ଯସ୍ଥଳ ନାମ"
 
-#: ../gio/gdbus-tool.c:1417
+#: ../gio/gdbus-tool.c:1420
 msgid "Object path to introspect"
 msgstr "ଆତ୍ମନୀରିକ୍ଷଣ କରିବାକୁ ବସ୍ତୁ ପଥ"
 
-#: ../gio/gdbus-tool.c:1418
+#: ../gio/gdbus-tool.c:1421
 msgid "Print XML"
 msgstr "XML ମୁଦ୍ରଣ କରନ୍ତୁ"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1422
 msgid "Introspect children"
 msgstr "ନିର୍ଭରକକୁ ଆତ୍ମନୀରିକ୍ଷଣ କରନ୍ତୁ"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1423
 msgid "Only print properties"
 msgstr "କେବଳ ମୁଦ୍ରଣ ଗୁଣଧର୍ମଗୁଡ଼ିକ"
 
-#: ../gio/gdbus-tool.c:1511
+#: ../gio/gdbus-tool.c:1514
 msgid "Introspect a remote object."
 msgstr "ସୁଦୂର ବସ୍ତୁର ଆତ୍ମନିରୀକ୍ଷଣ କରନ୍ତୁ।"
 
-#: ../gio/gdbus-tool.c:1709
+#: ../gio/gdbus-tool.c:1712
 msgid "Destination name to monitor"
 msgstr "ନିରୀକ୍ଷଣ କରିବା ପାଇଁ ଲକ୍ଷ୍ଯସ୍ଥଳ ନାମ"
 
-#: ../gio/gdbus-tool.c:1710
+#: ../gio/gdbus-tool.c:1713
 msgid "Object path to monitor"
 msgstr "ନିରୀକ୍ଷଣ କରିବା ପାଇଁ ବସ୍ତୁ ପଥ"
 
-#: ../gio/gdbus-tool.c:1743
+#: ../gio/gdbus-tool.c:1746
 msgid "Monitor a remote object."
 msgstr "ଏକ ସୁଦୂର ବସ୍ତୁକୁ ନିରୀକ୍ଷଣ କରନ୍ତୁ"
 
-#: ../gio/gdesktopappinfo.c:627 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:628 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "ବେନାମୀ"
 
-#: ../gio/gdesktopappinfo.c:1040
+#: ../gio/gdesktopappinfo.c:1041
 msgid "Desktop file didn't specify Exec field"
 msgstr "ଡେସ୍କଟପ ଫାଇଲ Exec କ୍ଷେତ୍ର ଉଲ୍ଲେଖ କରିନଥିଲା"
 
-#: ../gio/gdesktopappinfo.c:1328
+#: ../gio/gdesktopappinfo.c:1329
 msgid "Unable to find terminal required for application"
 msgstr "ପ୍ରୟୋଗ ପାଇଁ ଆବଶ୍ୟକ ଟର୍ମିନାଲ ଖୋଜିବାରେ ଅସମର୍ଥ"
 
-#: ../gio/gdesktopappinfo.c:1630
+#: ../gio/gdesktopappinfo.c:1631
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ଚାଳକ ପ୍ରୟୋଗ ବିନ୍ୟାସ ଫୋଲଡର %s କୁ ନିର୍ମାଣ କରିପାରିବେ ନାହିଁ: %s"
 
-#: ../gio/gdesktopappinfo.c:1634
+#: ../gio/gdesktopappinfo.c:1635
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ଚାଳକ MIME ବିନ୍ୟାସିତ ଫୋଲଡର %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ: %s"
 
-#: ../gio/gdesktopappinfo.c:1874 ../gio/gdesktopappinfo.c:1898
+#: ../gio/gdesktopappinfo.c:1875 ../gio/gdesktopappinfo.c:1899
 msgid "Application information lacks an identifier"
 msgstr "ପ୍ରୟୋଗ ସୂଚନାରେ ଏକ ପରିଚାୟକର ଅଭାବ"
 
-#: ../gio/gdesktopappinfo.c:2130
+#: ../gio/gdesktopappinfo.c:2131
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ଚାଳକ ଡେସ୍କଟପ ଫାଇଲ %s ନିର୍ମାଣ କରିପାରିବ ନାହିଁ"
 
-#: ../gio/gdesktopappinfo.c:2254
+#: ../gio/gdesktopappinfo.c:2255
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ପାଇଁ ଇଚ୍ଛାରୂପୀ ପରିଭାଷା"
@@ -1672,9 +1672,7 @@ msgid "Can't rename file, filename already exists"
 msgstr "ଫାଇଲର ନାମ ବଦଳାଯାଇପାରିବେ ନାହିଁ, ଫାଇଲ ନାମ ପୂର୍ବରୁ ଅବସ୍ଥିତ"
 
 #: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
 msgid "Invalid filename"
 msgstr "ଅବୈଧ ଫାଇଲ ନାମ"
 
@@ -1749,9 +1747,9 @@ msgstr "ଫାଇଲ ଘୁଞ୍ଚାଇବାରେ ତ୍ରୁଟି: %s"
 msgid "Can't move directory over directory"
 msgstr "ଡିରେକ୍ଟୋରୀ ଉପରେ ଡିରେକ୍ଟୋରୀକୁ ଘୁଞ୍ଚାଇପାରିବେ ନାହିଁ"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "ନକଲ ସଂରକ୍ଷଣ ଫାଇଲ ନିର୍ମାଣ ଅସଫଳ ହେଲା"
 
@@ -1785,7 +1783,7 @@ msgstr "ଅନୁଲଗ୍ନ ଗୁଣ '%s'କୁ ବିନ୍ୟାସ କର�
 msgid " (invalid encoding)"
 msgstr " (ଅବୈଧ ସାଙ୍କେତିକରଣ)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "ଫାଇଲ '%s' ପାଇଁ  ସୂଚନା ପାଇବାରେ ତ୍ରୁଟି: %s"
@@ -1858,14 +1856,14 @@ msgstr "SELinux ଏହି ତନ୍ତ୍ରରେ ସକ୍ରିୟ ହୋଇ�
 msgid "Setting attribute %s not supported"
 msgstr "ଗୁଣ %s ବିନ୍ୟାସ କରିବା ସମର୍ଥିତ ନୁହଁ"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ଫାଇଲରୁ ପଢିବାରେ ତ୍ରୁଟି: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
 #: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ଫାଇଲଭିତରେ ଅନୁସନ୍ଧାନ କରିବାରେ ତ୍ରୁଟି: %s"
@@ -1881,7 +1879,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ସ୍ଥାନୀୟ ଫାଇଲ ମନିଟର ପ୍ରକାର ଖୋଜିବାରେ ଅସମର୍ଥ"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ଫାଇଲଭିତରେ ଲେଖିବାରେ ତ୍ରୁଟି: %s"
@@ -1901,31 +1899,30 @@ msgstr "ନକଲ ସଂରକ୍ଷଣ ନକଲ ନିର୍ମାଣରେ �
 msgid "Error renaming temporary file: %s"
 msgstr "ଅସ୍ଥାୟୀ ଫାଇଲର ନାମ ବଦଳାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ଫାଇଲ ବିଚ୍ଛିନ୍ନ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "ଫାଇଲ '%s' ଖୋଲିବାରେ ତ୍ରୁଟି: %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲଟି ଗୋଟିଏ ଡିରେକ୍ଟୋରୀ ଅଟେ"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "ଲକ୍ଷ୍ୟ ଫାଇଲଟି ଗୋଟିଏ ନିୟମିତ ଫାଇଲ ନୁହେଁ"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "ଫାଇଲଟି ବାହାରୁ ପରିବର୍ତ୍ତିତ"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "ପୁରୁଣା ଫାଇଲକୁ ଅପସାରଣରେ ତ୍ରୁଟି: %s"
@@ -2770,50 +2767,56 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "ଦିଆଯାଇଥିବା ପ୍ରବେଶ ସଂକେତଟି ଠିକ ନୁହଁ।"
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
 #, c-format
+#| msgid "Expecting 1 control message, got %d"
 msgid "Expecting 1 control message, got %d"
-msgstr "1 ନିୟନ୍ତ୍ରଣ ସନ୍ଦେଶକୁ ଆଶାକରୁଅଛି, %d ପାଇଲି"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "1 ନିୟନ୍ତ୍ରଣ ସନ୍ଦେଶକୁ ଆଶାକରୁଅଛି, %d ପାଇଲି"
+msgstr[1] "1 ନିୟନ୍ତ୍ରଣ ସନ୍ଦେଶକୁ ଆଶାକରୁଅଛି, %d ପାଇଲି"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "ସହାୟକ ତଥ୍ୟର ଅପ୍ରତ୍ୟାଶିତ ପ୍ରକାର"
 
-#: ../gio/gunixconnection.c:190
+#: ../gio/gunixconnection.c:193
 #, c-format
+#| msgid "Expecting one fd, but got %d\n"
 msgid "Expecting one fd, but got %d\n"
-msgstr "ଗୋଟିଏ fd ଆଶାକରୁଅଛି, କିନ୍ତୁ %d ପାଇଲି\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "ଗୋଟିଏ fd ଆଶାକରୁଅଛି, କିନ୍ତୁ %d ପାଇଲି\n"
+msgstr[1] "ଗୋଟିଏ fd ଆଶାକରୁଅଛି, କିନ୍ତୁ %d ପାଇଲି\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "ଅବୈଧ fd ଗ୍ରହଣ କରିଛି"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "ଅଧିକାରଗୁଡ଼ିକୁ ପଠାଇବାରେ ତ୍ରୁଟି: "
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "ଯଦି SO_PASSCRED କୁ ସକେଟ ପାଇଁ ସକ୍ରିୟ କରାଗଲେ ଯାଞ୍ଚ ତ୍ରୁଟି ହେବ: %s"
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED କୁ ସକ୍ରିୟ କରିବାରେ ତ୍ରୁଟି: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "ଅଧିକାର ଗ୍ରହଣ ପାଇଁ ଏକ ବାଇଟ ପଢ଼ିବାକୁ ଆଶାକରାଯାଇଥାଏ କିନ୍ତୁ ଶୂନ୍ୟ ବାଇଟ ପଢ଼ିଥାଏ"
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "ନିୟନ୍ତ୍ରଣ ସନ୍ଦେଶକୁ ଆଶାକରିନଥାଏ, %d ପାଇଲି"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED କୁ ନିଷ୍କ୍ରିୟ କରିବାରେ ତ୍ରୁଟି: %s"
