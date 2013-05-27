@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master.ta\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-23 18:39+0000\n"
-"PO-Revision-Date: 2013-04-26 11:40+0000\n"
+"POT-Creation-Date: 2013-05-27 07:59+0000\n"
+"PO-Revision-Date: 2013-05-27 15:30+0000\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil <>\n"
 "Language: ta\n"
@@ -674,8 +674,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '"
-"%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr ""
 "செய்திப் பகுதி வகை கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு "
 "புலம் '%s' "
@@ -775,13 +775,13 @@ msgstr ""
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1020
-#: ../gio/gdbus-tool.c:1453
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1456
 #, c-format
 msgid "Error: %s\n"
 msgstr "பிழை: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1469
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "பிழை பகுக்கும் உள்ளாய்வு XML: %s\n"
@@ -845,8 +845,8 @@ msgstr "சிக்னல் மற்றும் இடைமுக பெய
 msgid "Emit a signal."
 msgstr "ஒரு சிக்னலை வெளியிடு."
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1559
-#: ../gio/gdbus-tool.c:1791
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
+#: ../gio/gdbus-tool.c:1794
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "பிழை இணைக்கிறது: %s\n"
@@ -856,8 +856,8 @@ msgstr "பிழை இணைக்கிறது: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "பிழை: பொருள் பாதை குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1617
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
+#: ../gio/gdbus-tool.c:1853
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "பிழை: %s ஒரு சரியான பெயர் பாதை இல்லை\n"
@@ -917,12 +917,12 @@ msgstr "விநாடிகள் நேரம் முடிந்தது"
 msgid "Invoke a method on a remote object."
 msgstr "ஒரு தொலை பொருளில் ஒரு முறை செயலாற்றுகிறது."
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1578 ../gio/gdbus-tool.c:1810
+#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "பிழை: இலக்கு குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1597
+#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "பிழை: பொருள் பாதை குறிப்பிடப்படவில்லை\n"
@@ -942,74 +942,74 @@ msgstr "பிழை: முறை பெயர் '%s' தவறானது\n"
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "பிழை பகுக்கும் அளவுரு %d வகை '%s': %s\n"
 
-#: ../gio/gdbus-tool.c:1416
+#: ../gio/gdbus-tool.c:1419
 msgid "Destination name to introspect"
 msgstr "உள்ளாய்விற்கு இலக்கு பெயர்"
 
-#: ../gio/gdbus-tool.c:1417
+#: ../gio/gdbus-tool.c:1420
 msgid "Object path to introspect"
 msgstr "உள்ளாய்விற்கு பொருள் பாதை"
 
-#: ../gio/gdbus-tool.c:1418
+#: ../gio/gdbus-tool.c:1421
 msgid "Print XML"
 msgstr "XML ஐ அச்சிடு"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1422
 msgid "Introspect children"
 msgstr "உள்ளாய்வு குழந்தை"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1423
 msgid "Only print properties"
 msgstr "அச்சு பண்புகள் மட்டும்"
 
-#: ../gio/gdbus-tool.c:1511
+#: ../gio/gdbus-tool.c:1514
 msgid "Introspect a remote object."
 msgstr "ஒரு தொலை பொருளை உள்ளாயவும்."
 
-#: ../gio/gdbus-tool.c:1709
+#: ../gio/gdbus-tool.c:1712
 msgid "Destination name to monitor"
 msgstr "கணிப்பதற்கான இலக்கு பெயர்"
 
-#: ../gio/gdbus-tool.c:1710
+#: ../gio/gdbus-tool.c:1713
 msgid "Object path to monitor"
 msgstr "கணிப்பதற்கான பொருள் பாதை"
 
-#: ../gio/gdbus-tool.c:1743
+#: ../gio/gdbus-tool.c:1746
 msgid "Monitor a remote object."
 msgstr "ஒரு தொலை பொருளை கணிக்கவும்."
 
-#: ../gio/gdesktopappinfo.c:627 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:628 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "பெயரில்லாதது"
 
-#: ../gio/gdesktopappinfo.c:1040
+#: ../gio/gdesktopappinfo.c:1041
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: ../gio/gdesktopappinfo.c:1328
+#: ../gio/gdesktopappinfo.c:1329
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: ../gio/gdesktopappinfo.c:1630
+#: ../gio/gdesktopappinfo.c:1631
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: ../gio/gdesktopappinfo.c:1634
+#: ../gio/gdesktopappinfo.c:1635
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: ../gio/gdesktopappinfo.c:1874 ../gio/gdesktopappinfo.c:1898
+#: ../gio/gdesktopappinfo.c:1875 ../gio/gdesktopappinfo.c:1899
 msgid "Application information lacks an identifier"
 msgstr "பயன்பாட்டு தகவல் ஒரு அடையாளங்காட்டியை இல்லாமல் செய்கிறது"
 
-#: ../gio/gdesktopappinfo.c:2130
+#: ../gio/gdesktopappinfo.c:2131
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: ../gio/gdesktopappinfo.c:2254
+#: ../gio/gdesktopappinfo.c:2255
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"
@@ -1610,8 +1610,8 @@ msgid ""
 "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
 "'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை "
-"பகுக்கும் விசை '"
-"%s': %s.  "
+"பகுக்கும் விசை "
+"'%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1900
 #, c-format
@@ -1713,9 +1713,7 @@ msgid "Can't rename file, filename already exists"
 msgstr "கோப்பை மறுபெயரிட முடியவில்லை, கோப்புபெயர் ஏற்கனவே உள்ளது"
 
 #: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
 msgid "Invalid filename"
 msgstr "தவறான கோப்பு பெயர்"
 
@@ -1790,9 +1788,9 @@ msgstr "பிழை நகர்த்தும் கோப்பு: %s"
 msgid "Can't move directory over directory"
 msgstr "அடைவில் அடைவை நகர்த்த முடியவில்லை"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "பின்சேமிப்பு கோப்பு உருவாக்க முடியவில்லை"
 
@@ -1826,7 +1824,7 @@ msgstr "விரிவான அளவுரு'%s' அமைப்பதில
 msgid " (invalid encoding)"
 msgstr " (தவறான குறிமுறை)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "கோப்பு '%s' க்கான தகவலைப் பெறூம் போது பிழை: %s"
@@ -1899,14 +1897,14 @@ msgstr "SELinux இந்த கணினியில் செயல்பட�
 msgid "Setting attribute %s not supported"
 msgstr "அளவுரு %s ஐ அமைப்பதில் ஆதரவு கிடையாது"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "கோப்பிலிருந்து வாசிக்கும் போது பிழை: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
 #: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "கோப்பை பார்க்கும் போது பிழை: %s"
@@ -1922,7 +1920,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "முன்னிருப்பு உள்ளமை கோப்பு மானிட்டர் வகையை தேட முடியவில்லை"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "பிழையை எழுதும் கோப்பு: %s"
@@ -1942,31 +1940,30 @@ msgstr "பின்சேமிப்பு நகலை உருவாக்�
 msgid "Error renaming temporary file: %s"
 msgstr "மறுபெயரிடப்பட்ட தற்காலிக கோப்பில் பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' பிழையை திறக்கும் கோப்பு: %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "இலக்கு கோப்பு ஒரு அடைவில்லை"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "இலக்கு கோப்பு ஒரு நிரந்தர கோப்பு இல்லை"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "இந்த கோப்பு வெளியார்ந்து மாற்றப்பட்டுள்ளது"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "பிழையை நீக்கும் பழைய கோப்பு: %s"
@@ -2808,41 +2805,47 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "உள்ளிடப்பட்ட கடவுச்சொல் தவறானது."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
 #, c-format
+#| msgid "Expecting 1 control message, got %d"
 msgid "Expecting 1 control message, got %d"
-msgstr "1 கட்டுப்பாட்டு செய்தியை எதிர்ப்பார்க்கிறது, %dஐ பெறுகிறது"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "1 கட்டுப்பாட்டு செய்தியை எதிர்ப்பார்க்கிறது, %d ஐ பெற்றது"
+msgstr[1] "1 கட்டுப்பாட்டு செய்தியை எதிர்ப்பார்க்கிறது, %d ஐ பெற்றது"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "எதிர்ப்பார்க்கப்படாத துணை தரவு வகை"
 
-#: ../gio/gunixconnection.c:190
+#: ../gio/gunixconnection.c:193
 #, c-format
+#| msgid "Expecting one fd, but got %d\n"
 msgid "Expecting one fd, but got %d\n"
-msgstr "ஒரு fdஐ எதிர்பார்க்கிறது, ஆனால் %dஐ பெற்றது\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "ஒரு fd ஐ எதிர்பார்க்கிறது, ஆனால் %d ஐ பெற்றது\n"
+msgstr[1] "ஒரு fd ஐ எதிர்பார்க்கிறது, ஆனால் %dஐ  பெற்றது\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "தவறான fd பெறப்பட்டது"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "சான்றுகளுக்கு பிழையை அனுப்புகிறது:"
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr ""
 "SO_PASSCRED ஆனது சாக்கெட்டிற்காக செயல்படுத்தப்பட்டால் பிழை "
 "சரிபார்க்கப்படுகிறது: %s"
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "பிழை SO_PASSCRED ஐ செயல்படுத்துகிறது: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
@@ -2850,12 +2853,12 @@ msgstr ""
 "வாசிக்க "
 "எதிர்பார்க்கிறது"
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "கட்டுப்பாட்டு செய்தியை எதிர்ப்பார்க்கப்படவில்லை, %dஐ பெறுகிறது"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED செயல்நீக்கும் போது பிழை: %s"
