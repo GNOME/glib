@@ -408,6 +408,9 @@
 /* Define to 1 if you have the `readlink' function. */
 /* #undef HAVE_READLINK */
 
+/* Define to 1 if you have the 'res_init' function. */
+/* #undef HAVE_RES_INIT */
+
 /* Define to 1 if you have the <sched.h> header file. */
 /* #undef HAVE_SCHED_H */
 
@@ -585,17 +588,11 @@
 /* Define to 1 if you have the <sys/event.h> header file. */
 /* #undef HAVE_SYS_EVENT_H */
 
-/* Define to 1 if you have the <sys/event.h> header file. */
-/* #undef HAVE_SYS_EVENT_H */
-
 /* Define to 1 if you have the <sys/filio.h> header file. */
 /* #undef HAVE_SYS_FILIO_H */
 
 /* Define to 1 if you have the <sys/inotify.h> header file. */
 /* #undef HAVE_SYS_INOTIFY_H */
-
-/* Define to 1 if you have the <sys/ioctl.h> header file. */
-/* #undef HAVE_SYS_IOCTL_H */
 
 /* Define to 1 if you have the <sys/mkdev.h> header file. */
 /* #undef HAVE_SYS_MKDEV_H */
@@ -788,13 +785,6 @@
 /* whether realloc (NULL,) works */
 #define REALLOC_0_WORKS 1
 
-/* Define if you have correct malloc prototypes */
-#ifndef _MSC_VER
-#define SANE_MALLOC_PROTOS 1
-#else /* _MSC_VER */
-/* #undef SANE_MALLOC_PROTOS */
-#endif /* _MSC_VER */
-
 /* The size of `char', as computed by sizeof. */
 #define SIZEOF_CHAR 1
 
@@ -844,6 +834,15 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
+
+/* Use no threads */
+/* #undef THREADS_NONE */
+
+/* Use pthreads */
+/* #undef THREADS_POSIX */
+
+/* Use w32 threads */
+#define THREADS_WIN32 1
 
 /* Using GNU libiconv */
 /* #undef USE_LIBICONV_GNU */
