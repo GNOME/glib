@@ -26,7 +26,7 @@
 
 #include "gdbus-tests.h"
 
-static const gchar *datapath;
+static const gchar *binpath;
 
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
@@ -101,7 +101,7 @@ test_proxy_well_known_name (void)
   g_assert (g_dbus_proxy_get_cached_property_names (ap) == NULL);
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  path = g_build_filename (binpath, "gdbus-testserver", NULL);
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
@@ -229,7 +229,7 @@ test_proxy_well_known_name (void)
    * the 'y' property should be back at 1...
    */
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_build_filename (datapath, "gdbus-testserver", NULL);
+  path = g_build_filename (binpath, "gdbus-testserver", NULL);
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
@@ -268,9 +268,9 @@ main (int   argc,
   gint ret;
 
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    binpath = g_getenv ("G_TEST_DATA");
   else
-    datapath = SRCDIR;
+    binpath = ".";
 
   g_test_init (&argc, &argv, NULL);
 
