@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-23 18:39+0000\n"
-"PO-Revision-Date: 2013-05-14 15:25+0530\n"
+"POT-Creation-Date: 2013-05-27 07:59+0000\n"
+"PO-Revision-Date: 2013-05-28 18:27+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: en_US\n"
@@ -653,8 +653,8 @@ msgstr "ಸಂದೇಶದ ಮುಖ್ಯ ಭಾಗವು '%s' ಸಹಿಯನ�
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '"
-"%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr ""
 "ಸಂದೇಶದ ಮುಖ್ಯಭಾಗವು '%s' ಬಗೆಯ ಸಹಿಯನ್ನು ಹೊಂದಿದೆ ಆದರೆ ತಲೆಬರಹ ಸ್ಥಳದಲ್ಲಿರುವ ಸಹಿಯು '%"
 "s' "
@@ -754,13 +754,13 @@ msgstr ""
 "ಪ್ರತಿಯೊಂದು ಆಜ್ಞೆಯಲ್ಲಿನ ನೆರವನ್ನು ನೋಡಲು \"%s COMMAND --help\" ಅನ್ನು ಬಳಸಿ.\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1020
-#: ../gio/gdbus-tool.c:1453
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1456
 #, c-format
 msgid "Error: %s\n"
 msgstr "ದೋಷ: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1469
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "ಅಂತರ್-ವಿಮರ್ಶೆ XML ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡುವಲ್ಲಿ ದೋಷ: %s\n"
@@ -827,8 +827,8 @@ msgstr "ಸಂಕೇತ ಮತ್ತು ಸಂಪರ್ಕಸಾಧನದ ಹೆ
 msgid "Emit a signal."
 msgstr "ಒಂದು ಸಂಜ್ಞೆಯನ್ನು ಹೊಮ್ಮಿಸು."
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1559
-#: ../gio/gdbus-tool.c:1791
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
+#: ../gio/gdbus-tool.c:1794
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "ಸಂಪರ್ಕ ಸಾಧಿಸುವಲ್ಲಿ ದೋಷ: %s\n"
@@ -838,8 +838,8 @@ msgstr "ಸಂಪರ್ಕ ಸಾಧಿಸುವಲ್ಲಿ ದೋಷ: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "ದೋಷ: ವಸ್ತುವಿನ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ.\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1617
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
+#: ../gio/gdbus-tool.c:1853
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "ದೋಷ: %s ಎನ್ನುವುದು ಒಂದು ಮಾನ್ಯವಾದ ಮಾರ್ಗವಾಗಿಲ್ಲ\n"
@@ -899,12 +899,12 @@ msgstr "ಕಾಲತೀರಿಕೆ ಸೆಕೆಂಡುಗಳು"
 msgid "Invoke a method on a remote object."
 msgstr "ದೂರಸ್ಥ ಆಬ್ಜೆಕ್ಸಿನಲ್ಲಿ ವಿಧಾನವನ್ನು ರದ್ದುಗೊಳಿಸು"
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1578 ../gio/gdbus-tool.c:1810
+#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "ದೋಷ: ಗುರಿಯನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1597
+#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "ದೋಷ: ಆಬ್ಜೆಕ್ಟ್‍ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ\n"
@@ -924,74 +924,74 @@ msgstr "ದೋಷ: '%s' ವಿಧಾನದ ಹೆಸರನ್ನು ಅಮಾನ
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "%d ನಿಯತಾಂಕವನ್ನು ('%s' ಎಂಬ ಬಗೆ) ಪಾರ್ಸ್ ಮಾಡುವಲ್ಲಿ ದೋಷ: %s\n"
 
-#: ../gio/gdbus-tool.c:1416
+#: ../gio/gdbus-tool.c:1419
 msgid "Destination name to introspect"
 msgstr "ಅಂತರ-ಪರಿಶೀಲಿಸಬೇಕಿರುವ ಗುರಿಯ ಹೆಸರು"
 
-#: ../gio/gdbus-tool.c:1417
+#: ../gio/gdbus-tool.c:1420
 msgid "Object path to introspect"
 msgstr "ಅಂತರ-ಪರಿಶೀಲಿಸಲು ಆಬ್ಜೆಕ್ಟ್‍ ಮಾರ್ಗ"
 
-#: ../gio/gdbus-tool.c:1418
+#: ../gio/gdbus-tool.c:1421
 msgid "Print XML"
 msgstr "ಮುದ್ರಣ XML"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1422
 msgid "Introspect children"
 msgstr "ಉಪಅಂಶದ ಅಂತರ್-ಪರಿಶೀಲನೆ"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1423
 msgid "Only print properties"
 msgstr "ಕೇವಲ ಗುಣಗಳನ್ನು ಮಾತ್ರ ಮುದ್ರಿಸು"
 
-#: ../gio/gdbus-tool.c:1511
+#: ../gio/gdbus-tool.c:1514
 msgid "Introspect a remote object."
 msgstr "ಒಂದು ದೂರಸ್ಥ ಆಬ್ಜೆಕ್ಟನ್ನು ಅಂತರ-ಪರಿಶೀಲಿಸು"
 
-#: ../gio/gdbus-tool.c:1709
+#: ../gio/gdbus-tool.c:1712
 msgid "Destination name to monitor"
 msgstr "ನೋಡಿಕೊಳ್ಳಬೇಕಿರುವ ಗುರಿಯ ಹೆಸರು"
 
-#: ../gio/gdbus-tool.c:1710
+#: ../gio/gdbus-tool.c:1713
 msgid "Object path to monitor"
 msgstr "ನೋಡಿಕೊಳ್ಳಬೇಕಿರುವ ಆಬ್ಜೆಕ್ಟಿನ ಹೆಸರು"
 
-#: ../gio/gdbus-tool.c:1743
+#: ../gio/gdbus-tool.c:1746
 msgid "Monitor a remote object."
 msgstr "ನೋಡಿಕೊಳ್ಳಬೇಕಿರುವ ದೂರಸ್ಥ ಆಬ್ಜೆಕ್ಟ್‍"
 
-#: ../gio/gdesktopappinfo.c:627 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:628 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "ಹೆಸರಿಸಲಾಗದ"
 
-#: ../gio/gdesktopappinfo.c:1040
+#: ../gio/gdesktopappinfo.c:1041
 msgid "Desktop file didn't specify Exec field"
 msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
-#: ../gio/gdesktopappinfo.c:1328
+#: ../gio/gdesktopappinfo.c:1329
 msgid "Unable to find terminal required for application"
 msgstr "ಅನ್ವಯಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಟರ್ಮಿನಲ್‍ ಅನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: ../gio/gdesktopappinfo.c:1630
+#: ../gio/gdesktopappinfo.c:1631
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ ಅನ್ವಯ ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: ../gio/gdesktopappinfo.c:1634
+#: ../gio/gdesktopappinfo.c:1635
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: ../gio/gdesktopappinfo.c:1874 ../gio/gdesktopappinfo.c:1898
+#: ../gio/gdesktopappinfo.c:1875 ../gio/gdesktopappinfo.c:1899
 msgid "Application information lacks an identifier"
 msgstr "ಅನ್ವಯದ ಮಾಹಿತಿಯಲ್ಲಿ ಐಡೆಂಟಿಫಯರ್ ಇಲ್ಲ"
 
-#: ../gio/gdesktopappinfo.c:2130
+#: ../gio/gdesktopappinfo.c:2131
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: ../gio/gdesktopappinfo.c:2254
+#: ../gio/gdesktopappinfo.c:2255
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -1690,9 +1690,7 @@ msgid "Can't rename file, filename already exists"
 msgstr "ಕಡತವನ್ನು ಮರುಹೆಸರಿಸಲಾಗಿಲ್ಲ, ಕಡತವು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
 #: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
 msgid "Invalid filename"
 msgstr "ಅಮಾನ್ಯ ಕಡತದ ಹೆಸರು"
 
@@ -1767,9 +1765,9 @@ msgstr "ಕಡತವನ್ನು ಸ್ಥಳಾಂತರಿಸುವಲ್ಲ�
 msgid "Can't move directory over directory"
 msgstr "ಕೋಶವನ್ನು ಇನ್ನೊಂದು ಕೋಶಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "ಬ್ಯಾಕ್ ಕಡತವನ್ನು ನಿರ್ಮಿಸುವಲ್ಲಿ ವಿಫಲತೆ"
 
@@ -1803,7 +1801,7 @@ msgstr "ವಿಸ್ತರಿಸಲ್ಪಟ್ಟ ವೈಶಿಷ್ಟ್ಯ '
 msgid " (invalid encoding)"
 msgstr " (ಅಮಾನ್ಯ ಸಂಕೇತಿಕರಣ)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "'%s' ಕಡತಕ್ಕಾಗಿ ಮಾಹಿತಿಯನ್ನು ಪಡೆದುಕೊಳ್ಳುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
@@ -1876,14 +1874,14 @@ msgstr "ಈ ಗಣಕದಲ್ಲಿ SELinux ಶಕ್ತವಾಗಿಲ್ಲ"
 msgid "Setting attribute %s not supported"
 msgstr "%s ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಹೊಂದಿಸುವುದು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ಕಡತದಿಂದ ಓದುವಲ್ಲಿ ದೋಷ: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
 #: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ಕಡತದಲ್ಲಿ ಕೋರುವಾಗ ದೋಷ: %s"
@@ -1899,7 +1897,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "ಪೂರ್ವನಿಯೋಜಿತವಾದ ಸ್ಥಳೀಯ ಕಡತ ಮೇಲ್ವಿಚಾರಕದ ಬಗೆಯನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಿಲ್ಲ"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ಕಡತಕ್ಕೆ ಬರೆಯುವಲ್ಲಿ ದೋಷ: %s"
@@ -1919,31 +1917,30 @@ msgstr "ಬ್ಯಾಕ್ಅಪ್ ಪ್ರತಿಯನ್ನು ನಿರ್�
 msgid "Error renaming temporary file: %s"
 msgstr "ತಾತ್ಕಾಲಿಕ ಕಡತದ ಹೆಸರನ್ನು ಬದಲಾಯಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ಕಡತವನ್ನು ಟ್ರಂಕೇಟ್‍ ಮಾಡುವಲ್ಲಿ ಲಿ ದೋಷ: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' ಕಡತವನ್ನು ತೆರೆಯುವಲ್ಲಿ ದೋಷ: %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "ಸೂಚಿತ ಕಡತವು ಒಂದು ಕೋಶವಾಗಿದೆ"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "ಸೂಚಿತ ಕಡತವು ಒಂದು ಸಾಮಾನ್ಯ ಕಡತವಲ್ಲ"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "ಕಡತವು ಹೊರಗಿನಿಂದ ಮಾರ್ಪಡಿಸಲ್ಪಟ್ಟಿದೆ"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "ಹಳೆಯ ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕುವಲ್ಲಿ ದೋಷ: %s"
@@ -2787,39 +2784,45 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "ನಮೂದಿಸಲಾದ ಗುಪ್ತಪದವು ಸರಿಯಾಗಿಲ್ಲ."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
 #, c-format
+#| msgid "Expecting 1 control message, got %d"
 msgid "Expecting 1 control message, got %d"
-msgstr "1 ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, %d ಅನ್ನು ಪಡೆಯಲಾಗಿದೆ"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "1 ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, %d ಪಡೆಯಲಾಗಿದೆ"
+msgstr[1] "1 ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, %d ಪಡೆಯಲಾಗಿದೆ"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "ಅನಿರೀಕ್ಷಿತ ಬಗೆಯ ಪೂರಕ ದತ್ತಾಂಶ"
 
-#: ../gio/gunixconnection.c:190
+#: ../gio/gunixconnection.c:193
 #, c-format
+#| msgid "Expecting one fd, but got %d\n"
 msgid "Expecting one fd, but got %d\n"
-msgstr "ಒಂದು fd ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, ಆದರೆ %d ಅನ್ನು ಪಡೆಯಲಾಗಿದೆ\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "ಒಂದು fd ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, ಆದರೆ %d ಪಡೆಯಲಾಗಿದೆ\n"
+msgstr[1] "ಒಂದು fd ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು, ಆದರೆ %d ಪಡೆಯಲಾಗಿದೆ\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "ಅಮಾನ್ಯವಾದ fd ಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "ರುಜುವಾತುಗಳನ್ನು ಕಳುಹಿಸುವಲ್ಲಿ ದೋಷ: "
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "SO_PASSCRED ಅನ್ನು ಸಾಕೆಟ್‌ಗಾಗಿ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದ್ದರೆ ದೋಷ: %s"
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ದೋಷ: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
@@ -2827,12 +2830,12 @@ msgstr ""
 "ಸೊನ್ನೆ "
 "ಬೈಟ್‌ಗಳನ್ನು ಓದಲಾಗಿದೆ"
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "ನಿಯಂತ್ರಣ ಸಂದೇಶವನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿರಲಿಲ್ಲ, ಆದರೆ %d ಅನ್ನು ಪಡೆಯಲಾಗಿದೆ"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ದೋಷ: %s"
