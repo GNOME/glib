@@ -224,7 +224,7 @@ main (int   argc,
   if (g_getenv ("G_TEST_DATA"))
     binpath = g_getenv ("G_TEST_DATA");
   else
-    binpath = ".";
+    binpath = BUILDDIR;
 
   g_test_init (&argc, &argv, NULL);
 

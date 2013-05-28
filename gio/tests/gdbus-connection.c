@@ -1233,7 +1233,7 @@ main (int   argc,
   else
     {
       srcdir = SRCDIR;
-      builddir = ".";
+      builddir = BUILDDIR;
     }
 
   /* all the tests rely on a shared main loop */

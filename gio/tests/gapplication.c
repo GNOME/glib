@@ -7,6 +7,7 @@
 #include "gdbus-sessionbus.h"
 
 static const gchar *datapath;
+static const gchar *binpath;
 
 static gint outstanding_watches;
 static GMainLoop *main_loop;
@@ -67,7 +68,7 @@ spawn (const gchar *expected_stdout,
 
   va_start (ap, first_arg);
   array = g_ptr_array_new ();
-  g_ptr_array_add (array, g_build_filename (datapath, "basic-application", NULL));
+  g_ptr_array_add (array, g_build_filename (binpath, "basic-application", NULL));
   for (arg = first_arg; arg; arg = va_arg (ap, const gchar *))
     g_ptr_array_add (array, g_strdup (arg));
   g_ptr_array_add (array, NULL);
@@ -522,9 +523,13 @@ int
 main (int argc, char **argv)
 {
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    datapath = binpath = g_getenv ("G_TEST_DATA");
   else
-    datapath = SRCDIR;
+    {
+      datapath = SRCDIR;
+      binpath = BUILDDIR;
+    }
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_dbus_unset ();

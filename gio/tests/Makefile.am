@@ -16,6 +16,7 @@ AM_CPPFLAGS = 				\
 	-I$(top_srcdir)/gio		\
 	$(DBUS1_CFLAGS)			\
 	-DSRCDIR=\""$(srcdir)"\" 	\
+	-DBUILDDIR=\""$(abs_builddir)"\" 	\
 	-DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
 
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)

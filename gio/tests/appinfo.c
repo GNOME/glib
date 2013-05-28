@@ -6,6 +6,7 @@
 #include <gio/gdesktopappinfo.h>
 
 static const gchar *datapath;
+static const gchar *binpath;
 
 static void
 test_launch (void)
@@ -165,7 +166,7 @@ test_commandline (void)
   gchar *cmdline;
   gchar *cmdline_out;
 
-  cmdline = g_strconcat (datapath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
   cmdline_out = g_strconcat (cmdline, " %u", NULL);
 
   error = NULL;
@@ -211,7 +212,7 @@ test_launch_context (void)
   gchar *str;
   gchar *cmdline;
 
-  cmdline = g_strconcat (datapath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
 
   context = g_app_launch_context_new ();
   appinfo = g_app_info_create_from_commandline (cmdline,
@@ -263,7 +264,7 @@ test_launch_context_signals (void)
   GError *error = NULL;
   gchar *cmdline;
 
-  cmdline = g_strconcat (datapath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
 
   context = g_app_launch_context_new ();
   g_signal_connect (context, "launched", G_CALLBACK (launched), NULL);
@@ -312,7 +313,7 @@ test_associations (void)
   GList *list;
   gchar *cmdline;
 
-  cmdline = g_strconcat (datapath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
   appinfo = g_app_info_create_from_commandline (cmdline,
                                                 "cmdline-app-test",
                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
@@ -485,9 +486,12 @@ int
 main (int argc, char *argv[])
 {
   if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
+    datapath = binpath = g_getenv ("G_TEST_DATA");
   else
-    datapath = SRCDIR;
+    {
+      datapath = SRCDIR;
+      binpath = BUILDDIR;
+    }
 
   g_test_init (&argc, &argv, NULL);
 
