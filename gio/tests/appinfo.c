@@ -5,9 +5,6 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
-static const gchar *datapath;
-static const gchar *binpath;
-
 static void
 test_launch (void)
 {
@@ -15,12 +12,12 @@ test_launch (void)
   GError *error;
   GFile *file;
   GList *l;
-  gchar *path;
+  const gchar *path;
+  gchar *uri;
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (appinfo != NULL);
-  g_free (path);
 
   error = NULL;
   g_assert (g_app_info_launch (appinfo, NULL, NULL, &error));
@@ -29,9 +26,7 @@ test_launch (void)
   g_assert (g_app_info_launch_uris (appinfo, NULL, NULL, &error));
   g_assert_no_error (error);
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
   file = g_file_new_for_path (path);
-  g_free (path);
   l = NULL;
   l = g_list_append (l, file);
 
@@ -41,14 +36,14 @@ test_launch (void)
   g_object_unref (file);
 
   l = NULL;
-  path = g_strconcat ("file://", datapath, "/appinfo-test.desktop", NULL);
-  l = g_list_append (l, path);
+  uri = g_strconcat ("file://", g_test_get_dir (G_TEST_DISTED), "/appinfo-test.desktop", NULL);
+  l = g_list_append (l, uri);
   l = g_list_append (l, "file:///etc/group#adm");
 
   g_assert (g_app_info_launch_uris (appinfo, l, NULL, &error));
   g_assert_no_error (error);
   g_list_free (l);
-  g_free (path);
+  g_free (uri);
 
   g_object_unref (appinfo);
 }
@@ -58,15 +53,14 @@ test_locale (const char *locale)
 {
   GAppInfo *appinfo;
   const gchar *orig;
-  gchar *path;
+  const gchar *path;
 
   orig = setlocale (LC_ALL, NULL);
   g_setenv ("LANGUAGE", locale, TRUE);
   setlocale (LC_ALL, "");
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-  g_free (path);
 
   if (g_strcmp0 (locale, "C") == 0)
     {
@@ -108,11 +102,10 @@ test_basic (void)
   GAppInfo *appinfo;
   GAppInfo *appinfo2;
   GIcon *icon, *icon2;
-  gchar *path;
+  const gchar *path;
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-  g_free (path);
 
   g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test.desktop");
   g_assert (strstr (g_app_info_get_executable (appinfo), "appinfo-test") != NULL);
@@ -135,27 +128,24 @@ static void
 test_show_in (void)
 {
   GAppInfo *appinfo;
-  gchar *path;
+  const gchar *path;
 
   g_desktop_app_info_set_desktop_env ("GNOME");
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
-  g_free (path);
 
-  path = g_build_filename (datapath, "appinfo-test-gnome.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test-gnome.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
-  g_free (path);
 
-  path = g_build_filename (datapath, "appinfo-test-notgnome.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test-notgnome.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (!g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
-  g_free (path);
 }
 
 static void
@@ -166,7 +156,7 @@ test_commandline (void)
   gchar *cmdline;
   gchar *cmdline_out;
 
-  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
   cmdline_out = g_strconcat (cmdline, " %u", NULL);
 
   error = NULL;
@@ -212,7 +202,7 @@ test_launch_context (void)
   gchar *str;
   gchar *cmdline;
 
-  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
 
   context = g_app_launch_context_new ();
   appinfo = g_app_info_create_from_commandline (cmdline,
@@ -264,7 +254,7 @@ test_launch_context_signals (void)
   GError *error = NULL;
   gchar *cmdline;
 
-  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
 
   context = g_app_launch_context_new ();
   g_signal_connect (context, "launched", G_CALLBACK (launched), NULL);
@@ -290,14 +280,12 @@ static void
 test_tryexec (void)
 {
   GAppInfo *appinfo;
-  gchar *path;
+  const gchar *path;
 
-  path = g_build_filename (datapath, "appinfo-test2.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test2.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
 
   g_assert (appinfo == NULL);
-
-  g_free (path);
 }
 
 /* Test that we can set an appinfo as default for a mime type or
@@ -313,7 +301,7 @@ test_associations (void)
   GList *list;
   gchar *cmdline;
 
-  cmdline = g_strconcat (binpath, "/appinfo-test --option", NULL);
+  cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
   appinfo = g_app_info_create_from_commandline (cmdline,
                                                 "cmdline-app-test",
                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
@@ -413,16 +401,15 @@ test_startup_wm_class (void)
 {
   GDesktopAppInfo *appinfo;
   const char *wm_class;
-  gchar *path;
+  const gchar *path;
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
   wm_class = g_desktop_app_info_get_startup_wm_class (appinfo);
 
   g_assert_cmpstr (wm_class, ==, "appinfo-class");
 
   g_object_unref (appinfo);
-  g_free (path);
 }
 
 static void
@@ -430,9 +417,9 @@ test_supported_types (void)
 {
   GAppInfo *appinfo;
   const char * const *content_types;
-  gchar *path;
+  const gchar *path;
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   appinfo = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
   content_types = g_app_info_get_supported_types (appinfo);
 
@@ -440,7 +427,6 @@ test_supported_types (void)
   g_assert_cmpstr (content_types[0], ==, "image/png");
 
   g_object_unref (appinfo);
-  g_free (path);
 }
 
 static void
@@ -453,16 +439,15 @@ test_from_keyfile (void)
   gchar **keywords;
   const gchar *file;
   const gchar *name;
-  gchar *path;
+  const gchar *path;
 
-  path = g_build_filename (datapath, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
   kf = g_key_file_new ();
   g_key_file_load_from_file (kf, path, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
   info = g_desktop_app_info_new_from_keyfile (kf);
   g_key_file_free (kf);
   g_assert (info != NULL);
-  g_free (path);
 
   g_object_get (info, "filename", &file, NULL);
   g_assert (file == NULL);
@@ -485,14 +470,6 @@ test_from_keyfile (void)
 int
 main (int argc, char *argv[])
 {
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = binpath = g_getenv ("G_TEST_DATA");
-  else
-    {
-      datapath = SRCDIR;
-      binpath = BUILDDIR;
-    }
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/appinfo/basic", test_basic);

@@ -8,7 +8,6 @@
 
 #include "testenum.h"
 
-static const gchar *datapath;
 static gboolean backend_set;
 
 /* These tests rely on the schemas in org.gtk.test.gschema.xml
@@ -2248,11 +2247,6 @@ main (int argc, char *argv[])
 
   setlocale (LC_ALL, "");
 
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = SRCDIR;
-
   g_test_init (&argc, &argv, NULL);
 
   if (!g_test_subprocess ())
@@ -2263,7 +2257,7 @@ main (int argc, char *argv[])
 
       backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
-      g_setenv ("XDG_DATA_DIRS", datapath, TRUE);
+      g_setenv ("XDG_DATA_DIRS", g_test_get_dir (G_TEST_DISTED), TRUE);
       g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
 
       if (!backend_set)
@@ -2274,7 +2268,8 @@ main (int argc, char *argv[])
       else
         glib_mkenums = "glib-mkenums";
 
-      cmdline = g_strdup_printf ("%s --template %s/enums.xml.template %s/testenum.h", glib_mkenums, datapath, datapath);
+      cmdline = g_strdup_printf ("%s --template %s/enums.xml.template %s/testenum.h", glib_mkenums,
+                                g_test_get_dir (G_TEST_DISTED), g_test_get_dir (G_TEST_DISTED));
 
       g_assert (g_spawn_command_line_sync (cmdline, &enums, NULL, &result, NULL));
       g_assert (result == 0);
@@ -2288,7 +2283,7 @@ main (int argc, char *argv[])
       else
         glib_compile_schemas = "glib-compile-schemas";
 
-      cmdline = g_strdup_printf ("%s --targetdir=. --schema-file=org.gtk.test.enums.xml --schema-file=%s/org.gtk.test.gschema.xml", glib_compile_schemas, datapath);
+      cmdline = g_strdup_printf ("%s --targetdir=. --schema-file=org.gtk.test.enums.xml --schema-file=%s/org.gtk.test.gschema.xml", glib_compile_schemas, g_test_get_dir (G_TEST_DISTED));
       g_assert (g_spawn_command_line_sync (cmdline, NULL, NULL, &result, NULL));
       g_assert (result == 0);
       g_free (cmdline);
@@ -2296,7 +2291,7 @@ main (int argc, char *argv[])
       g_mkdir ("schema-source", 0777);
       g_remove ("schema-source/gschemas.compiled");
 
-      cmdline = g_strdup_printf ("%s --targetdir=schema-source --schema-file=%s/org.gtk.schemasourcecheck.gschema.xml", glib_compile_schemas, datapath);
+      cmdline = g_strdup_printf ("%s --targetdir=schema-source --schema-file=%s/org.gtk.schemasourcecheck.gschema.xml", glib_compile_schemas, g_test_get_dir (G_TEST_DISTED));
       g_assert (g_spawn_command_line_sync (cmdline, NULL, NULL, &result, NULL));
       g_assert (result == 0);
       g_free (cmdline);
