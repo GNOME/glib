@@ -259,6 +259,8 @@ copy ..\..\..\gio\gbufferedinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\g
 
 copy ..\..\..\gio\gbufferedoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gbytesicon.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gcancellable.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gcharsetconverter.h $(CopyDir)\include\glib-$(ApiVersion)\gio

@@ -183,6 +183,7 @@ copy ..\..\..\gio\gasyncinitable.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0
 copy ..\..\..\gio\gasyncresult.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gbytesicon.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gcancellable.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gcharsetconverter.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gcontenttype.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
