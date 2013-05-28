@@ -465,11 +465,8 @@ test_file_icon (void)
   GError *error;
   GInputStream *stream;
   gchar *str;
-  gchar *path;
 
-  path = g_test_build_filename (G_TEST_DISTED, "g-icon.c", NULL);
-
-  file = g_file_new_for_path (path);
+  file = g_file_new_for_path (g_test_get_filename (G_TEST_DISTED, "g-icon.c", NULL));
   icon = g_file_icon_new (file);
   g_object_unref (file);
 
@@ -487,8 +484,6 @@ test_file_icon (void)
 
   g_object_unref (icon);
   g_object_unref (icon2);
-
-  g_free (path);
 }
 
 int

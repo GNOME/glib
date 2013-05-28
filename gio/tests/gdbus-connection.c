@@ -919,7 +919,6 @@ test_connection_filter (void)
   FilterEffects effects;
   GVariant *result;
   const gchar *s;
-  gchar *path;
 
   memset (&data, '\0', sizeof (FilterData));
 
@@ -1002,9 +1001,7 @@ test_connection_filter (void)
   g_assert_cmpint (data.num_outgoing, ==, 4);
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_test_build_filename (G_TEST_BUILT, "gdbus-testserver", NULL);
-  g_assert (g_spawn_command_line_async (path, NULL));
-  g_free (path);
+  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,

@@ -143,18 +143,15 @@ test_resource_file (void)
 {
   GResource *resource;
   GError *error = NULL;
-  gchar *path;
 
   resource = g_resource_load ("not-there", &error);
   g_assert (resource == NULL);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
-  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
-  resource = g_resource_load (path, &error);
+  resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
   g_assert (resource != NULL);
   g_assert_no_error (error);
-  g_free (path);
 
   test_resource (resource);
   g_resource_unref (resource);
@@ -169,12 +166,10 @@ test_resource_data (void)
   char *content;
   gsize content_size;
   GBytes *data;
-  gchar *path;
 
-  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
-  loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
+  loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
+                                     &content, &content_size, NULL);
   g_assert (loaded_file);
-  g_free (path);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
@@ -199,13 +194,10 @@ test_resource_registered (void)
   char **children;
   GInputStream *in;
   char buffer[128];
-  gchar *path;
 
-  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
-  resource = g_resource_load (path, &error);
+  resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
   g_assert (resource != NULL);
   g_assert_no_error (error);
-  g_free (path);
 
   found = g_resources_get_info ("/test1.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -404,11 +396,8 @@ test_resource_module (void)
 
   if (g_module_supported ())
     {
-      char *path;
-
-      path = g_test_build_filename (G_TEST_BUILT, "libresourceplugin",  NULL);
-      module = g_io_module_new (path);
-      g_free (path);
+      /* For in-tree, this will find the .la file and use it to get to the .so in .libs/ */
+      module = g_io_module_new (g_test_get_filename (G_TEST_BUILT, "libresourceplugin",  NULL));
 
       error = NULL;
 
@@ -461,13 +450,11 @@ test_uri_query_info (void)
   GBytes *data;
   GFile *file;
   GFileInfo *info;
-  gchar *path;
   const char *content_type;
 
-  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
-  loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
+  loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
+                                     &content, &content_size, NULL);
   g_assert (loaded_file);
-  g_free (path);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);
@@ -514,12 +501,10 @@ test_uri_file (void)
   gchar buf[1024];
   gboolean ret;
   gssize skipped;
-  gchar *path;
 
-  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
-  loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
+  loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
+                                     &content, &content_size, NULL);
   g_assert (loaded_file);
-  g_free (path);
 
   data = g_bytes_new_take (content, content_size);
   resource = g_resource_new_from_data (data, &error);

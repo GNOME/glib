@@ -60,7 +60,6 @@ test_proxy_well_known_name (void)
   gchar **property_names;
   GVariant *variant;
   GVariant *result;
-  gchar *path;
 
   session_bus_up ();
 
@@ -99,9 +98,7 @@ test_proxy_well_known_name (void)
   g_assert (g_dbus_proxy_get_cached_property_names (ap) == NULL);
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_test_build_filename (G_TEST_BUILT, "gdbus-testserver", NULL);
-  g_assert (g_spawn_command_line_async (path, NULL));
-  g_free (path);
+  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   /* check that we get the notify::g-name-owner signal */
   _g_assert_property_notify (p, "g-name-owner");
@@ -227,9 +224,7 @@ test_proxy_well_known_name (void)
    * the 'y' property should be back at 1...
    */
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_test_build_filename (G_TEST_BUILT, "gdbus-testserver", NULL);
-  g_assert (g_spawn_command_line_async (path, NULL));
-  g_free (path);
+  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   /* check that we get the notify::g-name-owner signal */
   _g_assert_property_notify (p, "g-name-owner");

@@ -61,6 +61,7 @@ test_connection_flush (void)
   GError *error;
   guint n;
   guint signal_handler_id;
+  const gchar *flush_helper;
 
   session_bus_up ();
 
@@ -81,16 +82,15 @@ test_connection_flush (void)
                                                           NULL);
   g_assert_cmpint (signal_handler_id, !=, 0);
 
+  flush_helper = g_test_get_filename (G_TEST_BUILT, "gdbus-connection-flush-helper", NULL);
   for (n = 0; n < 50; n++)
     {
       gboolean ret;
       gint exit_status;
       guint timeout_mainloop_id;
-      gchar *path;
 
       error = NULL;
-      path = g_test_build_filename (G_TEST_BUILT, "gdbus-connection-flush-helper", NULL);
-      ret = g_spawn_command_line_sync (path,
+      ret = g_spawn_command_line_sync (flush_helper,
                                        NULL, /* stdout */
                                        NULL, /* stderr */
                                        &exit_status,
@@ -99,7 +99,6 @@ test_connection_flush (void)
       g_spawn_check_exit_status (exit_status, &error);
       g_assert_no_error (error);
       g_assert (ret);
-      g_free (path);
 
       timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
       g_main_loop_run (loop);
@@ -186,15 +185,12 @@ static void
 test_connection_large_message (void)
 {
   guint watcher_id;
-  gchar *path;
   guint timeout_id;
 
   session_bus_up ();
 
   /* this is safe; testserver will exit once the bus goes away */
-  path = g_test_build_filename (G_TEST_BUILT, "gdbus-testserver", NULL);
-  g_assert (g_spawn_command_line_async (path, NULL));
-  g_free (path);
+  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   timeout_id = g_timeout_add_seconds (LARGE_MESSAGE_TIMEOUT_SECONDS,
                                       large_message_timeout_cb,

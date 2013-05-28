@@ -1337,13 +1337,10 @@ test_load_fail (void)
 {
   GKeyFile *file;
   GError *error;
-  gchar *path;
 
   file = g_key_file_new ();
   error = NULL;
-  path = g_test_build_filename (G_TEST_DISTED, "keyfile.c", NULL);
-  g_assert (!g_key_file_load_from_file (file, path, 0, &error));
-  g_free (path);
+  g_assert (!g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DISTED, "keyfile.c", NULL), 0, &error));
   g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_PARSE);
   g_clear_error (&error);
   g_assert (!g_key_file_load_from_file (file, "/nosuchfile", 0, &error));
@@ -1398,7 +1395,6 @@ test_page_boundary (void)
   GKeyFile *file;
   GError *error;
   gint i;
-  gchar *path;
 
 #define GROUP "main_section"
 #define KEY_PREFIX "fill_abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvw_"
@@ -1411,9 +1407,7 @@ test_page_boundary (void)
   file = g_key_file_new ();
 
   error = NULL;
-  path = g_test_build_filename (G_TEST_DISTED, "pages.ini", NULL);
-  g_key_file_load_from_file (file, path, G_KEY_FILE_NONE, &error);
-  g_free (path);
+  g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DISTED, "pages.ini", NULL), G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   for (i = FIRST_KEY; i <= LAST_KEY; i++)
@@ -1578,7 +1572,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
 #ifdef G_OS_UNIX
-  g_setenv ("XDG_DATA_HOME", g_test_build_filename (G_TEST_DISTED, ".", NULL), TRUE);
+  g_setenv ("XDG_DATA_HOME", g_test_get_dir (G_TEST_DISTED), TRUE);
 #endif
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
