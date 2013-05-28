@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-01 09:19+0000\n"
-"PO-Revision-Date: 2013-05-01 20:07+0100\n"
+"POT-Creation-Date: 2013-05-28 12:58+0000\n"
+"PO-Revision-Date: 2013-05-28 22:24+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -224,7 +224,7 @@ msgid "Error opening nonce file '%s': %s"
 msgstr "Napaka med odpiranjem enkratne datoteke '%s': %s"
 
 #: ../gio/gdbusaddress.c:714
-#, c-format
+#, fuzzy, c-format
 msgid "Error reading from nonce file '%s': %s"
 msgstr "Napaka med branjem iz enkratne datoteke '%s': %s"
 
@@ -654,8 +654,8 @@ msgstr "Telo sporočila ima podpis '%s', vendar v glavi ni podpisa"
 #: ../gio/gdbusmessage.c:2705
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '"
-"%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr ""
 "Telo sporočila ima podpis vrste '%s', vendar je podpis v polju glave '%s' "
 
@@ -749,13 +749,13 @@ msgstr ""
 "Uporabite \"%s COMMAND --help\" za pomoč o posameznem ukazu.\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1020
-#: ../gio/gdbus-tool.c:1453
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1456
 #, c-format
 msgid "Error: %s\n"
 msgstr "Napaka: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1469
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Napaka med samopreverjanjem XML: %s\n"
@@ -821,8 +821,8 @@ msgstr "Ime signala in vmesnika"
 msgid "Emit a signal."
 msgstr "Oddaj signal."
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1559
-#: ../gio/gdbus-tool.c:1791
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
+#: ../gio/gdbus-tool.c:1794
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Napaka med povezovanjem: %s\n"
@@ -832,8 +832,8 @@ msgstr "Napaka med povezovanjem: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "Napaka: pot predmeta ni določena.\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1617
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
+#: ../gio/gdbus-tool.c:1853
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Napaka: %s ni veljavna pot predmeta\n"
@@ -893,12 +893,12 @@ msgstr "Časovni zamik v sekundah"
 msgid "Invoke a method on a remote object."
 msgstr "Skliči način na oddaljenem predmetu."
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1578 ../gio/gdbus-tool.c:1810
+#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Napaka: cilj ni določen\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1597
+#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Napaka: pot predmeta ni določena\n"
@@ -918,39 +918,39 @@ msgstr "Napaka: ime načina '%s' ni veljavno\n"
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Napaka med razčlenjevanjem parametra %d vrste '%s': %s\n"
 
-#: ../gio/gdbus-tool.c:1416
+#: ../gio/gdbus-tool.c:1419
 msgid "Destination name to introspect"
 msgstr "Samopreverjanje ciljnega imena"
 
-#: ../gio/gdbus-tool.c:1417
+#: ../gio/gdbus-tool.c:1420
 msgid "Object path to introspect"
 msgstr "Samopreverjanje poti predmeta"
 
-#: ../gio/gdbus-tool.c:1418
+#: ../gio/gdbus-tool.c:1421
 msgid "Print XML"
 msgstr "Natisni XML"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1422
 msgid "Introspect children"
 msgstr "Samopreverjanje podrejenih predmetov"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1423
 msgid "Only print properties"
 msgstr "Natisni le lastnosti"
 
-#: ../gio/gdbus-tool.c:1511
+#: ../gio/gdbus-tool.c:1514
 msgid "Introspect a remote object."
 msgstr "Samopreverjanje oddaljenega predmeta."
 
-#: ../gio/gdbus-tool.c:1709
+#: ../gio/gdbus-tool.c:1712
 msgid "Destination name to monitor"
 msgstr "Nadzor ciljnega imena"
 
-#: ../gio/gdbus-tool.c:1710
+#: ../gio/gdbus-tool.c:1713
 msgid "Object path to monitor"
 msgstr "Nadzor poti predmeta"
 
-#: ../gio/gdbus-tool.c:1743
+#: ../gio/gdbus-tool.c:1746
 msgid "Monitor a remote object."
 msgstr "Nadzoruj oddaljeni predmet."
 
@@ -1571,7 +1571,7 @@ msgstr " in --strict sta določena, končanje.\n"
 msgid ""
 "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"napaka razčlenjevanja ključa '%s' v shemi '%s', kot je določeno v datoteki "
+"napaka razčlenjevanja ključa '%s' v shemi '%s' kot je določen v datoteki "
 "prepisa '%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1900
@@ -1671,9 +1671,7 @@ msgid "Can't rename file, filename already exists"
 msgstr "Ni mogoče preimenovati datoteke, izbrano ime že obstaja"
 
 #: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
 msgid "Invalid filename"
 msgstr "Neveljavno ime datoteke"
 
@@ -1748,9 +1746,9 @@ msgstr "Napaka med premikanjem datoteke: %s"
 msgid "Can't move directory over directory"
 msgstr "Ni mogoče premakniti mape čez mapo"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "Ustvarjanje varnostne kopije je spodletelo."
 
@@ -1784,7 +1782,7 @@ msgstr "Napaka med določanjem razširjenega atributa '%s': %s"
 msgid " (invalid encoding)"
 msgstr " (neveljavni nabor znakov)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Napaka med pridobivanjem podatkov za datoteko '%s': %s"
@@ -1858,14 +1856,14 @@ msgstr "Na tem sistemu SELinux ni omogočen"
 msgid "Setting attribute %s not supported"
 msgstr "Določanje atributa %s ni podprto"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Napaka med branjem iz datoteke: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
 #: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Napaka med iskanjem v datoteki: %s"
@@ -1881,7 +1879,7 @@ msgid "Unable to find default local file monitor type"
 msgstr "Ni mogoče najti privzete krajevne datoteke nadzora"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:713
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Napaka med pisanjem v datoteko: %s"
@@ -1901,31 +1899,30 @@ msgstr "Napaka med ustvarjanjem varnostne kopije: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Napaka med preimenovanjem začasne datoteke: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Napaka med obrezovanjem datoteke: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Napaka med odpiranjem datoteke '%s': %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "Ciljna datoteka je mapa"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "Ciljna datoteka ni običajna datoteka"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "Datoteka je bila zunanje spremenjena"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Napaka med odstranjevanjem datoteke: %s"
@@ -2760,51 +2757,59 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "Vneseno geslo je nepravilno."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr "Pričakovano eno nadzorno sporočilo, prejetih %d"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "Pričakovano eno nadzorno sporočilo, prejetih pa je %d sporočil"
+msgstr[1] "Pričakovano eno nadzorno sporočilo, prejeto pa je %d sporočilo"
+msgstr[2] "Pričakovano eno nadzorno sporočilo, prejeti pa sta %d sporočili"
+msgstr[3] "Pričakovano eno nadzorno sporočilo, prejeta pa so %d sporočila"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "Nepričakovana vrsta dodatnih podatkov"
 
-#: ../gio/gunixconnection.c:190
+#: ../gio/gunixconnection.c:193
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr "Pričakovan en fd, pridobljenih %d\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "Pričakovan en fd, prejetih pa je %d\n"
+msgstr[1] "Pričakovan en fd, prejet pa je %d\n"
+msgstr[2] "Pričakovan en fd, prejeta pa sta %d\n"
+msgstr[3] "Pričakovan en fd, prejetih pa so %d\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "Prejet neveljaven fd"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "Napaka med pošiljanjem poveril:"
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Napaka med preverjanjem ali je predmet O_PASSCRED omogočen za vtič: %s"
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Napaka omogočanja predmeta SO_PASSCRED: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Pri prejemanju poveril je pričakovano branje enega bajta, vendar se je "
 "prebralo nič bajtov"
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Nadzorno sporočilo ni pričakovano, vendar pa je prejeto %d"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Napaka med onemogočanjem SO_PASSCRED: %s"
