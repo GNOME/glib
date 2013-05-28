@@ -178,7 +178,7 @@ endif
 %.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	 echo 'Type=session' >> $@.tmp; \
-	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
+	 echo 'Exec=$(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
 	 mv $@.tmp $@)
 
 atomic_CFLAGS  = $(AM_CFLAGS)
