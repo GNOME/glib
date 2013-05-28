@@ -23,8 +23,6 @@
 #include "gconstructor.h"
 #include "test_resources2.h"
 
-const gchar *datapath, *libpath;
-
 static void
 test_resource (GResource *resource)
 {
@@ -152,7 +150,7 @@ test_resource_file (void)
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
-  path = g_build_filename (datapath, "test.gresource", NULL);
+  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
   resource = g_resource_load (path, &error);
   g_assert (resource != NULL);
   g_assert_no_error (error);
@@ -173,7 +171,7 @@ test_resource_data (void)
   GBytes *data;
   gchar *path;
 
-  path = g_build_filename (datapath, "test.gresource", NULL);
+  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
   loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
   g_assert (loaded_file);
   g_free (path);
@@ -203,7 +201,7 @@ test_resource_registered (void)
   char buffer[128];
   gchar *path;
 
-  path = g_build_filename (datapath, "test.gresource", NULL);
+  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
   resource = g_resource_load (path, &error);
   g_assert (resource != NULL);
   g_assert_no_error (error);
@@ -408,7 +406,7 @@ test_resource_module (void)
     {
       char *path;
 
-      path = g_build_filename (libpath, "libresourceplugin",  NULL);
+      path = g_test_build_filename (G_TEST_BUILT, "libresourceplugin",  NULL);
       module = g_io_module_new (path);
       g_free (path);
 
@@ -466,7 +464,7 @@ test_uri_query_info (void)
   gchar *path;
   const char *content_type;
 
-  path = g_build_filename (datapath, "test.gresource", NULL);
+  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
   loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
   g_assert (loaded_file);
   g_free (path);
@@ -518,7 +516,7 @@ test_uri_file (void)
   gssize skipped;
   gchar *path;
 
-  path = g_build_filename (datapath, "test.gresource", NULL);
+  path = g_test_build_filename (G_TEST_BUILT, "test.gresource", NULL);
   loaded_file = g_file_get_contents (path, &content, &content_size, NULL);
   g_assert (loaded_file);
   g_free (path);
@@ -641,17 +639,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  if (g_getenv ("G_TEST_DATA"))
-    {
-      datapath = g_getenv ("G_TEST_DATA");
-      libpath = g_getenv ("G_TEST_DATA");
-    }
-  else
-    {
-      datapath = SRCDIR;
-      libpath = ".libs";
-    }
-
   g_test_init (&argc, &argv, NULL);
 
   _g_test2_register_resource ();

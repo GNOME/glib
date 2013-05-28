@@ -7,8 +7,6 @@
 #include <sys/stat.h>
 #endif
 
-static const gchar *datapath;
-
 static void
 test_basic (void)
 {
@@ -85,8 +83,11 @@ test_type (void)
   GFile *file;
   GFileType type;
   GError *error = NULL;
+  gchar *datapath;
 
+  datapath = g_test_build_filename (G_TEST_DISTED, ".", NULL);
   datapath_f = g_file_new_for_path (datapath);
+  g_free (datapath);
 
   file = g_file_get_child (datapath_f, "g-icon.c");
   type = g_file_query_file_type (file, 0, NULL);
@@ -793,11 +794,6 @@ test_copy_preserve_mode (void)
 int
 main (int argc, char *argv[])
 {
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = SRCDIR;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");

@@ -6,9 +6,6 @@
 #include "gdbus-tests.h"
 #include "gdbus-sessionbus.h"
 
-static const gchar *datapath;
-static const gchar *binpath;
-
 static gint outstanding_watches;
 static GMainLoop *main_loop;
 
@@ -68,7 +65,7 @@ spawn (const gchar *expected_stdout,
 
   va_start (ap, first_arg);
   array = g_ptr_array_new ();
-  g_ptr_array_add (array, g_build_filename (binpath, "basic-application", NULL));
+  g_ptr_array_add (array, g_test_build_filename (G_TEST_BUILT, "basic-application", NULL));
   for (arg = first_arg; arg; arg = va_arg (ap, const gchar *))
     g_ptr_array_add (array, g_strdup (arg));
   g_ptr_array_add (array, NULL);
@@ -323,7 +320,7 @@ nodbus_activate (GApplication *app)
 static void
 test_nodbus (void)
 {
-  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
@@ -353,7 +350,7 @@ noappid_activate (GApplication *app)
 static void
 test_noappid (void)
 {
-  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
@@ -392,7 +389,7 @@ static void
 test_quit (void)
 {
   GDBusConnection *c;
-  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
@@ -448,7 +445,7 @@ on_activate (GApplication *app)
 static void
 test_actions (void)
 {
-  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, NULL };
   GApplication *app;
 
@@ -504,7 +501,7 @@ test_loc_cmd_app_class_init (TestLocCmdAppClass *klass)
 static void
 test_local_command_line (void)
 {
-  char *binpath = g_build_filename (datapath, "unimportant", NULL);
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, "-invalid", NULL };
   GApplication *app;
 
@@ -522,14 +519,6 @@ test_local_command_line (void)
 int
 main (int argc, char **argv)
 {
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = binpath = g_getenv ("G_TEST_DATA");
-  else
-    {
-      datapath = SRCDIR;
-      binpath = BUILDDIR;
-    }
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_dbus_unset ();

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const gchar *datapath;
 static const gchar *test_file;
 
 char *test_file_buffer;
@@ -187,14 +186,9 @@ main (int argc, char **argv)
   GError *error = NULL;
   int ret;
 
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = SRCDIR;
-
   g_test_init (&argc, &argv, NULL);
 
-  test_file = g_strconcat (datapath, "/contexts.c", NULL);
+  test_file = g_test_build_filename (G_TEST_DISTED, "contexts.c", NULL);
   g_file_get_contents (test_file, &test_file_buffer,
 		       &test_file_size, &error);
   g_assert_no_error (error);

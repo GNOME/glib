@@ -27,8 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const gchar *datapath;
-
 static void
 test_g_icon_to_string (void)
 {
@@ -469,7 +467,7 @@ test_file_icon (void)
   gchar *str;
   gchar *path;
 
-  path = g_strconcat (datapath, "/g-icon.c", NULL);
+  path = g_test_build_filename (G_TEST_DISTED, "g-icon.c", NULL);
 
   file = g_file_new_for_path (path);
   icon = g_file_icon_new (file);
@@ -497,11 +495,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = SRCDIR;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/icons/to-string", test_g_icon_to_string);

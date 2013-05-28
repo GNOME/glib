@@ -62,8 +62,6 @@ static gboolean is_unix = TRUE;
 static gboolean is_unix = FALSE;
 #endif
 
-static const gchar *datapath;
-
 static gchar *tmp_address = NULL;
 static gchar *test_guid = NULL;
 static GMutex service_loop_lock;
@@ -789,7 +787,7 @@ test_peer (void)
     gsize len;
     gchar *buf2;
     gsize len2;
-    char *testfile = g_build_filename (datapath, "file.c", NULL);
+    char *testfile = g_test_build_filename (G_TEST_DISTED, "file.c", NULL);
 
     method_call_message = g_dbus_message_new_method_call (NULL, /* name */
                                                           "/org/gtk/GDBus/PeerTestObject",
@@ -1846,11 +1844,6 @@ main (int   argc,
   gint ret;
   GDBusNodeInfo *introspection_data = NULL;
   gchar *tmpdir = NULL;
-
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = SRCDIR;
 
   g_test_init (&argc, &argv, NULL);
 
