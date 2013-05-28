@@ -2916,6 +2916,9 @@ g_test_add_data_func
 g_test_add_data_func_full
 g_test_add
 
+GTestFileType
+g_test_build_filename
+
 g_test_fail
 g_test_message
 g_test_bug_base

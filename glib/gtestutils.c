@@ -562,6 +562,9 @@ static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
 static char       *test_argv0 = NULL;
+static char       *test_argv0_dirname;
+static const char *test_disted_files_dir;
+static const char *test_built_files_dir;
 static char       *test_initial_cwd = NULL;
 static gboolean    test_in_subprocess = FALSE;
 static GTestConfig mutable_test_config_vars = {
@@ -1034,6 +1037,25 @@ g_test_init (int    *argc,
   /* report program start */
   g_log_set_default_handler (gtest_default_log_handler, NULL);
   g_test_log (G_TEST_LOG_START_BINARY, g_get_prgname(), test_run_seedstr, 0, NULL);
+
+  test_argv0_dirname = g_path_get_dirname (test_argv0);
+
+  /* Make sure we get the real dirname that the test was run from */
+  if (g_str_has_suffix (test_argv0_dirname, "/.libs"))
+    {
+      gchar *tmp;
+      tmp = g_path_get_dirname (test_argv0_dirname);
+      g_free (test_argv0_dirname);
+      test_argv0_dirname = tmp;
+    }
+
+  test_disted_files_dir = g_getenv ("G_TEST_SRCDIR");
+  if (!test_disted_files_dir)
+    test_disted_files_dir = test_argv0_dirname;
+
+  test_built_files_dir = g_getenv ("G_TEST_BUILDDIR");
+  if (!test_built_files_dir)
+    test_built_files_dir = test_argv0_dirname;
 }
 
 static void
@@ -2879,6 +2901,82 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
   g_strfreev (tmsg->strings);
   g_free (tmsg->nums);
   g_free (tmsg);
+}
+
+/**
+ * g_test_build_filename:
+ * @file_type: the type of file (built vs. disted)
+ * @first_path: the first segment of the pathname
+ * ...: NULL terminated additional path segments
+ *
+ * Creates the pathname to a data file that is required for a test.
+ *
+ * This function is conceptually similar to g_build_filename() except
+ * that the first argument has been replaced with a #GTestFileType
+ * argument.
+ *
+ * The data file should either have been disted with the module
+ * containing the test (%G_TEST_DISTED) or built as part of the build
+ * system of that module (%G_TEST_BUILT).
+ *
+ * In order for this function to work in srcdir != builddir situations,
+ * the G_TEST_SRCDIR and G_TEST_BUILDDIR environment variables need to
+ * have been defined.  As of 2.38, this is done by the Makefile.decl
+ * included in GLib.  Please ensure that your copy is up to date before
+ * using this function.
+ *
+ * In case neither variable is set, this function will fall back to
+ * using the dirname portion of argv[0], possibly removing ".libs".
+ * This allows for casual running of tests directly from the commandline
+ * in the srcdir == builddir case and should also support running of
+ * installed tests, assuming the data files have been installed in the
+ * same relative path as the test binary.
+ *
+ * Returns: the path of the file, to be freed using g_free()
+ *
+ * Since: 2.38
+ **/
+/**
+ * GTestFileType:
+ * @G_TEST_DISTED: a file that was included in the distribution tarball
+ * @G_TEST_BUILT: a file that was built on the compiling machine
+ *
+ * The type of file to return the filename for, when used with
+ * g_test_build_filename().
+ *
+ * Since: 2.38
+ **/
+gchar *
+g_test_build_filename (GTestFileType  file_type,
+                       const gchar   *first_path,
+                       ...)
+{
+  const gchar *pathv[16];
+  gint num_path_segments;
+  va_list ap;
+
+  g_assert (g_test_initialized ());
+
+  if (file_type == G_TEST_DISTED)
+    pathv[0] = test_disted_files_dir;
+  else if (file_type == G_TEST_BUILT)
+    pathv[0] = test_built_files_dir;
+  else
+    g_assert_not_reached ();
+
+  pathv[1] = first_path;
+
+  va_start (ap, first_path);
+  for (num_path_segments = 2; num_path_segments < G_N_ELEMENTS (pathv); num_path_segments++)
+    {
+      pathv[num_path_segments] = va_arg (ap, const char *);
+      if (pathv[num_path_segments] == NULL)
+        break;
+    }
+
+  g_assert_cmpint (num_path_segments, <, G_N_ELEMENTS (pathv));
+
+  return g_build_filenamev ((gchar **) pathv);
 }
 
 /* --- macros docs START --- */
