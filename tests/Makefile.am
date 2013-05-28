@@ -8,6 +8,7 @@ AM_CPPFLAGS = \
 	$(gmodule_INCLUDES)			\
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
 	-DG_LOG_DOMAIN=\"GLib\"			\
+	-DSRCDIR=\"$(srcdir)\"			\
 	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = -g

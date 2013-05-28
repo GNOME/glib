@@ -324,7 +324,7 @@ main (int argc, char **argv)
   if (g_getenv ("G_TEST_DATA"))
     srcdir = g_getenv ("G_TEST_DATA");
   else
-    srcdir = ".";
+    srcdir = SRCDIR;
   
   testfile = g_strconcat (srcdir, G_DIR_SEPARATOR_S "utf8.txt", NULL);
   

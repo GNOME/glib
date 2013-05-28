@@ -69,7 +69,7 @@ gint main (gint argc, gchar * argv[])
     if (g_getenv ("G_TEST_DATA"))
       datapath = g_getenv ("G_TEST_DATA");
     else
-      datapath = ".";
+      datapath = SRCDIR;
 
     filename = g_build_filename (datapath, "iochannel-test-infile", NULL);
   
