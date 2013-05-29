@@ -374,7 +374,7 @@ void    g_test_assert_expected_messages_internal (const char     *domain,
 
 typedef enum
 {
-  G_TEST_DISTED,
+  G_TEST_DIST,
   G_TEST_BUILT
 } GTestFileType;
 

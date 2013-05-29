@@ -2918,7 +2918,7 @@ g_test_build_filename_va (GTestFileType  file_type,
   const gchar *pathv[16];
   gint num_path_segments;
 
-  if (file_type == G_TEST_DISTED)
+  if (file_type == G_TEST_DIST)
     pathv[0] = test_disted_files_dir;
   else if (file_type == G_TEST_BUILT)
     pathv[0] = test_built_files_dir;
@@ -2941,7 +2941,7 @@ g_test_build_filename_va (GTestFileType  file_type,
 
 /**
  * g_test_build_filename:
- * @file_type: the type of file (built vs. disted)
+ * @file_type: the type of file (built vs. distributed)
  * @first_path: the first segment of the pathname
  * ...: NULL terminated additional path segments
  *
@@ -2951,8 +2951,8 @@ g_test_build_filename_va (GTestFileType  file_type,
  * that the first argument has been replaced with a #GTestFileType
  * argument.
  *
- * The data file should either have been disted with the module
- * containing the test (%G_TEST_DISTED) or built as part of the build
+ * The data file should either have been distributed with the module
+ * containing the test (%G_TEST_DIST) or built as part of the build
  * system of that module (%G_TEST_BUILT).
  *
  * In order for this function to work in srcdir != builddir situations,
@@ -2974,11 +2974,25 @@ g_test_build_filename_va (GTestFileType  file_type,
  **/
 /**
  * GTestFileType:
- * @G_TEST_DISTED: a file that was included in the distribution tarball
+ * @G_TEST_DIST: a file that was included in the distribution tarball
  * @G_TEST_BUILT: a file that was built on the compiling machine
  *
  * The type of file to return the filename for, when used with
  * g_test_build_filename().
+ *
+ * These two options correspond rather directly to the 'dist' and
+ * 'built' terminology that automake uses and are explicitly used to
+ * distinguish between the 'srcdir' and 'builddir' being separate.  All
+ * files in your project should either be dist (in the
+ * <literal>DIST_EXTRA</literal> or <literal>dist_schema_DATA</literal>
+ * sense, in which case they will always be in the srcdir) or built (in
+ * the <literal>BUILT_SOURCES</literal> sense, in which case they will
+ * always be in the builddir).
+ *
+ * Note: as a general rule of automake, files that are generated only as
+ * part of the build-from-git process (but then are distributed with the
+ * tarball) always go in srcdir (even if doing a srcdir != builddir
+ * build from git) and are considered as distributed files.
  *
  * Since: 2.38
  **/
@@ -3001,7 +3015,7 @@ g_test_build_filename (GTestFileType  file_type,
 
 /**
  * g_test_get_dir:
- * @file_type: the type of file (built vs. disted)
+ * @file_type: the type of file (built vs. distributed)
  *
  * Gets the pathname of the directory containing test files of the type
  * specified by @file_type.
@@ -3018,7 +3032,7 @@ g_test_get_dir (GTestFileType file_type)
 {
   g_assert (g_test_initialized ());
 
-  if (file_type == G_TEST_DISTED)
+  if (file_type == G_TEST_DIST)
     return test_disted_files_dir;
   else if (file_type == G_TEST_BUILT)
     return test_built_files_dir;
@@ -3028,7 +3042,7 @@ g_test_get_dir (GTestFileType file_type)
 
 /**
  * g_test_get_filename:
- * @file_type: the type of file (built vs. disted)
+ * @file_type: the type of file (built vs. distributed)
  * @first_path: the first segment of the pathname
  * ...: NULL terminated additional path segments
  *

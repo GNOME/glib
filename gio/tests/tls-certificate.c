@@ -43,7 +43,7 @@ pem_parser (const Reference *ref)
   GError *error = NULL;
 
   /* Check PEM parsing in certificate, private key order. */
-  g_file_get_contents (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert-key.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-key.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (pem);
 
@@ -70,7 +70,7 @@ pem_parser (const Reference *ref)
   g_free (pem);
 
   /* Check PEM parsing in private key, certificate order */
-  g_file_get_contents (g_test_get_filename (G_TEST_DISTED, "cert-tests", "key-cert.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (pem);
 
@@ -92,7 +92,7 @@ pem_parser (const Reference *ref)
   g_object_unref (cert);
 
   /* Check certificate only PEM */
-  g_file_get_contents (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert1.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (pem);
 
@@ -113,7 +113,7 @@ pem_parser (const Reference *ref)
   g_object_unref (cert);
 
   /* Check error with private key only PEM */
-  g_file_get_contents (g_test_get_filename (G_TEST_DISTED, "cert-tests", "key.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (pem);
 
@@ -132,7 +132,7 @@ from_file (const Reference *ref)
   const gchar *parsed_key_pem = NULL;
   GError *error = NULL;
 
-  cert = g_tls_certificate_new_from_file (g_test_get_filename (G_TEST_DISTED, "cert-tests", "key-cert.pem", NULL),
+  cert = g_tls_certificate_new_from_file (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
                                           &error);
   g_assert_no_error (error);
   g_assert (cert);
@@ -158,8 +158,8 @@ from_files (const Reference *ref)
   const gchar *parsed_key_pem = NULL;
   GError *error = NULL;
 
-  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert1.pem", NULL),
-                                           g_test_get_filename (G_TEST_DISTED, "cert-tests", "key.pem", NULL),
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
                                            &error);
   g_assert_no_error (error);
   g_assert (cert);
@@ -177,16 +177,16 @@ from_files (const Reference *ref)
   g_object_unref (cert);
 
   /* Missing private key */
-  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert1.pem", NULL),
-                                           g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert2.pem", NULL),
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "cert2.pem", NULL),
                                            &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
   g_assert (cert == NULL);
 
   /* Missing certificate */
-  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DISTED, "cert-tests", "key.pem", NULL),
-                                           g_test_get_filename (G_TEST_DISTED, "cert-tests", "key.pem", NULL),
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
                                            &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
@@ -195,8 +195,8 @@ from_files (const Reference *ref)
   /* Using this method twice with a file containing both private key and
    * certificate as a way to inforce private key presence is a fair use
    */
-  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DISTED, "cert-tests", "key-cert.pem", NULL),
-                                           g_test_get_filename (G_TEST_DISTED, "cert-tests", "key-cert.pem", NULL),
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
                                            &error);
   g_assert_no_error (error);
   g_assert (cert);
@@ -212,8 +212,8 @@ from_files_pkcs8 (const Reference *ref)
   const gchar *parsed_key_pem = NULL;
   GError *error = NULL;
 
-  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert1.pem", NULL),
-                                           g_test_get_filename (G_TEST_DISTED, "cert-tests", "key8.pem", NULL),
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key8.pem", NULL),
                                            &error);
   g_assert_no_error (error);
   g_assert (cert);
@@ -238,7 +238,7 @@ list_from_file (const Reference *ref)
   GError *error = NULL;
   int i;
 
-  list = g_tls_certificate_list_new_from_file (g_test_get_filename (G_TEST_DISTED, "cert-tests", "cert-list.pem", NULL),
+  list = g_tls_certificate_list_new_from_file (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-list.pem", NULL),
                                                &error);
   g_assert_no_error (error);
   g_assert_cmpint (g_list_length (list), ==, 3);
@@ -259,7 +259,7 @@ list_from_file (const Reference *ref)
   g_list_free_full (list, g_object_unref);
 
   /* Empty list is not an error */
-  list = g_tls_certificate_list_new_from_file (g_test_get_filename (G_TEST_DISTED, "cert-tests", "nothing.pem", NULL),
+  list = g_tls_certificate_list_new_from_file (g_test_get_filename (G_TEST_DIST, "cert-tests", "nothing.pem", NULL),
                                                &error);
   g_assert_no_error (error);
   g_assert_cmpint (g_list_length (list), ==, 0);
@@ -279,27 +279,27 @@ main (int   argc,
   _g_test_tls_backend_get_type ();
 
   /* Load reference PEM */
-  path = g_test_build_filename (G_TEST_DISTED, "cert-tests", "cert1.pem", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[0], NULL, &error);
   g_assert_no_error (error);
   g_assert (ref.cert_pems[0]);
   g_free (path);
-  path = g_test_build_filename (G_TEST_DISTED, "cert-tests", "cert2.pem", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert2.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[1], NULL, &error);
   g_assert_no_error (error);
   g_assert (ref.cert_pems[1]);
   g_free (path);
-  path = g_test_build_filename (G_TEST_DISTED, "cert-tests", "cert3.pem", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert3.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[2], NULL, &error);
   g_assert_no_error (error);
   g_assert (ref.cert_pems[2]);
   g_free (path);
-  path = g_test_build_filename (G_TEST_DISTED, "cert-tests", "key.pem", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL);
   g_file_get_contents (path, &ref.key_pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (ref.key_pem);
   g_free (path);
-  path = g_test_build_filename (G_TEST_DISTED, "cert-tests", "key8.pem", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key8.pem", NULL);
   g_file_get_contents (path, &ref.key8_pem, NULL, &error);
   g_assert_no_error (error);
   g_assert (ref.key8_pem);

@@ -188,7 +188,7 @@ main (int argc, char **argv)
 
   g_test_init (&argc, &argv, NULL);
 
-  test_file = g_test_build_filename (G_TEST_DISTED, "contexts.c", NULL);
+  test_file = g_test_build_filename (G_TEST_DIST, "contexts.c", NULL);
   g_file_get_contents (test_file, &test_file_buffer,
 		       &test_file_size, &error);
   g_assert_no_error (error);

@@ -84,7 +84,7 @@ test_type (void)
   GFileType type;
   GError *error = NULL;
 
-  datapath_f = g_file_new_for_path (g_test_get_dir (G_TEST_DISTED));
+  datapath_f = g_file_new_for_path (g_test_get_dir (G_TEST_DIST));
 
   file = g_file_get_child (datapath_f, "g-icon.c");
   type = g_file_query_file_type (file, 0, NULL);

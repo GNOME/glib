@@ -787,7 +787,7 @@ test_peer (void)
     gsize len;
     gchar *buf2;
     gsize len2;
-    const char *testfile = g_test_get_filename (G_TEST_DISTED, "file.c", NULL);
+    const char *testfile = g_test_get_filename (G_TEST_DIST, "file.c", NULL);
 
     method_call_message = g_dbus_message_new_method_call (NULL, /* name */
                                                           "/org/gtk/GDBus/PeerTestObject",

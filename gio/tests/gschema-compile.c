@@ -18,7 +18,7 @@ test_schema_do_compile (gpointer data)
 {
   SchemaTest *test = (SchemaTest *) data;
   gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
-  gchar *path = g_test_build_filename (G_TEST_DISTED, "schema-tests", filename, NULL);
+  gchar *path = g_test_build_filename (G_TEST_DIST, "schema-tests", filename, NULL);
   gchar *argv[] = {
     (gchar*)glib_compile_schemas,
     "--strict",

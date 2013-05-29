@@ -278,14 +278,14 @@ main (int argc, char *argv[])
     }
 
   error = NULL;
-  path = g_test_build_filename (G_TEST_DISTED, "bookmarks", NULL);
+  path = g_test_build_filename (G_TEST_DIST, "bookmarks", NULL);
   dir = g_dir_open (path, 0, &error);
   g_free (path);
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
       path = g_strdup_printf ("/bookmarks/parse/%s", name);
-      g_test_add_data_func_full (path, g_test_build_filename (G_TEST_DISTED, "bookmarks", name, NULL),
+      g_test_add_data_func_full (path, g_test_build_filename (G_TEST_DIST, "bookmarks", name, NULL),
                                  test_file, g_free);
       g_free (path);
     }

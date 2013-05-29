@@ -466,7 +466,7 @@ test_file_icon (void)
   GInputStream *stream;
   gchar *str;
 
-  file = g_file_new_for_path (g_test_get_filename (G_TEST_DISTED, "g-icon.c", NULL));
+  file = g_file_new_for_path (g_test_get_filename (G_TEST_DIST, "g-icon.c", NULL));
   icon = g_file_icon_new (file);
   g_object_unref (file);
 

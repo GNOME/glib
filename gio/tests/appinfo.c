@@ -15,7 +15,7 @@ test_launch (void)
   const gchar *path;
   gchar *uri;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (appinfo != NULL);
 
@@ -36,7 +36,7 @@ test_launch (void)
   g_object_unref (file);
 
   l = NULL;
-  uri = g_strconcat ("file://", g_test_get_dir (G_TEST_DISTED), "/appinfo-test.desktop", NULL);
+  uri = g_strconcat ("file://", g_test_get_dir (G_TEST_DIST), "/appinfo-test.desktop", NULL);
   l = g_list_append (l, uri);
   l = g_list_append (l, "file:///etc/group#adm");
 
@@ -59,7 +59,7 @@ test_locale (const char *locale)
   g_setenv ("LANGUAGE", locale, TRUE);
   setlocale (LC_ALL, "");
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
 
   if (g_strcmp0 (locale, "C") == 0)
@@ -104,7 +104,7 @@ test_basic (void)
   GIcon *icon, *icon2;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
 
   g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test.desktop");
@@ -132,17 +132,17 @@ test_show_in (void)
 
   g_desktop_app_info_set_desktop_env ("GNOME");
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test-gnome.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-gnome.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test-notgnome.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-notgnome.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (!g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
@@ -282,7 +282,7 @@ test_tryexec (void)
   GAppInfo *appinfo;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test2.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test2.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
 
   g_assert (appinfo == NULL);
@@ -403,7 +403,7 @@ test_startup_wm_class (void)
   const char *wm_class;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
   wm_class = g_desktop_app_info_get_startup_wm_class (appinfo);
 
@@ -419,7 +419,7 @@ test_supported_types (void)
   const char * const *content_types;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
   content_types = g_app_info_get_supported_types (appinfo);
 
@@ -441,7 +441,7 @@ test_from_keyfile (void)
   const gchar *name;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_DISTED, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   kf = g_key_file_new ();
   g_key_file_load_from_file (kf, path, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
