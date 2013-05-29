@@ -504,6 +504,117 @@ test_boxed_variantbuilder (void)
   g_value_unset (&value);
 }
 
+static void
+test_boxed_timezone (void)
+{
+  GTimeZone *z, *z2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_TIME_ZONE);
+  g_assert (G_VALUE_HOLDS_BOXED (&value));
+
+  z = g_time_zone_new_utc ();
+  g_value_take_boxed (&value, z);
+
+  z2 = g_value_get_boxed (&value);
+  g_assert (z == z2);
+
+  z2 = g_value_dup_boxed (&value);
+  g_assert (z == z2);  /* timezone uses ref/unref for copy/free */
+  g_time_zone_unref (z2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_pollfd (void)
+{
+  GPollFD *p, *p2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_POLLFD);
+  g_assert (G_VALUE_HOLDS_BOXED (&value));
+
+  p = g_new (GPollFD, 1);
+  g_value_take_boxed (&value, p);
+
+  p2 = g_value_get_boxed (&value);
+  g_assert (p == p2);
+
+  p2 = g_value_dup_boxed (&value);
+  g_assert (p != p2);
+  g_free (p2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_markup (void)
+{
+  GMarkupParseContext *c, *c2;
+  const GMarkupParser parser = { 0 };
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_MARKUP_PARSE_CONTEXT);
+  g_assert (G_VALUE_HOLDS_BOXED (&value));
+
+  c = g_markup_parse_context_new (&parser, 0, NULL, NULL);
+  g_value_take_boxed (&value, c);
+
+  c2 = g_value_get_boxed (&value);
+  g_assert (c == c2);
+
+  c2 = g_value_dup_boxed (&value);
+  g_assert (c == c2);
+  g_markup_parse_context_unref (c2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_thread (void)
+{
+  GThread *t, *t2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_THREAD);
+  g_assert (G_VALUE_HOLDS_BOXED (&value));
+
+  t = g_thread_self ();
+  g_value_take_boxed (&value, t);
+
+  t2 = g_value_get_boxed (&value);
+  g_assert (t == t2);
+
+  t2 = g_value_dup_boxed (&value);
+  g_assert (t == t2);
+  g_thread_unref (t2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_checksum (void)
+{
+  GChecksum *c, *c2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_CHECKSUM);
+  g_assert (G_VALUE_HOLDS_BOXED (&value));
+
+  c = g_checksum_new (G_CHECKSUM_SHA512);
+  g_value_take_boxed (&value, c);
+
+  c2 = g_value_get_boxed (&value);
+  g_assert (c == c2);
+
+  c2 = g_value_dup_boxed (&value);
+  g_assert (c != c2);
+  g_checksum_free (c2);
+
+  g_value_unset (&value);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -528,6 +639,11 @@ main (int argc, char *argv[])
   g_test_add_func ("/boxed/maincontext", test_boxed_maincontext);
   g_test_add_func ("/boxed/source", test_boxed_source);
   g_test_add_func ("/boxed/variantbuilder", test_boxed_variantbuilder);
+  g_test_add_func ("/boxed/timezone", test_boxed_timezone);
+  g_test_add_func ("/boxed/pollfd", test_boxed_pollfd);
+  g_test_add_func ("/boxed/markup", test_boxed_markup);
+  g_test_add_func ("/boxed/thread", test_boxed_thread);
+  g_test_add_func ("/boxed/checksum", test_boxed_checksum);
 
   return g_test_run ();
 }

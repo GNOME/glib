@@ -1,4 +1,5 @@
 include $(top_srcdir)/Makefile.decl
+NULL =
 
 AM_CPPFLAGS = 					\
 	-g					\
@@ -29,7 +30,9 @@ TEST_PROGS += 		\
 	properties	\
 	reference	\
 	ifaceproperties	\
-	valuearray
+	valuearray	\
+	type		\
+	$(NULL)
 
 signals_SOURCES = signals.c marshalers.c
 
