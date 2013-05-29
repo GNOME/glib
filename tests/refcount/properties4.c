@@ -151,6 +151,7 @@ int
 main (int argc, char **argv)
 {
   MyBadger * badger1, * badger2;
+  gpointer test;
 
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
@@ -161,6 +162,9 @@ main (int argc, char **argv)
   g_object_set (badger1, "mama", badger2, NULL);
   g_assert_cmpuint (badger1->mama_notify_count, ==, 1);
   g_assert_cmpuint (badger2->mama_notify_count, ==, 1);
+  g_object_get (badger1, "mama", &test, NULL);
+  g_assert (test == badger2);
+  g_object_unref (test);
 
   g_object_unref (badger1);
   g_object_unref (badger2);

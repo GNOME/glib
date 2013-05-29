@@ -193,5 +193,7 @@ main (int argc, char **argv)
 
   g_assert (count == test->dummy);
 
+  g_object_unref (test);
+
   return 0;
 }

@@ -183,6 +183,8 @@ run_thread (GTest * test)
       }
   }
 
+  g_object_unref (test);
+
   return NULL;
 }
 

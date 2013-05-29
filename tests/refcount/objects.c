@@ -150,6 +150,9 @@ main (int argc, char **argv)
     g_thread_join (thread);
   }
 
+  g_object_unref (test1);
+  g_object_unref (test2);
+
   g_print ("stopped\n");
 
   return 0;
