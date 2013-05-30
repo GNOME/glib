@@ -1118,15 +1118,18 @@ g_source_attach_unlocked (GSource      *source,
   source->ref_count++;
   source_add_to_context (source, context);
 
-  tmp_list = source->poll_fds;
-  while (tmp_list)
+  if (!SOURCE_BLOCKED (source))
     {
-      g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
-      tmp_list = tmp_list->next;
-    }
+      tmp_list = source->poll_fds;
+      while (tmp_list)
+        {
+          g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
+          tmp_list = tmp_list->next;
+        }
 
-  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
-    g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
+      for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+        g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
+    }
 
   tmp_list = source->priv->child_sources;
   while (tmp_list)
@@ -2941,15 +2944,18 @@ block_source (GSource *source)
 
   source->flags |= G_SOURCE_BLOCKED;
 
-  tmp_list = source->poll_fds;
-  while (tmp_list)
+  if (source->context)
     {
-      g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
-      tmp_list = tmp_list->next;
-    }
+      tmp_list = source->poll_fds;
+      while (tmp_list)
+        {
+          g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+          tmp_list = tmp_list->next;
+        }
 
-  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
-    g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+      for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+        g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+    }
 
   if (source->priv && source->priv->child_sources)
     {
