@@ -1,4 +1,3 @@
-include $(top_srcdir)/Makefile.decl
 NULL =
 
 # The name of the module.
