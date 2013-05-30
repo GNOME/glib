@@ -546,6 +546,8 @@ g_icon_deserialize_emblemed (GVariant *value)
 
       g_object_unref (main_icon);
     }
+  else
+    icon = NULL;
 
   g_variant_iter_free (emblems);
   g_variant_unref (icon_data);
