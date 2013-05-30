@@ -430,7 +430,6 @@ desktop_test_files = \
 
 EXTRA_DIST += \
 	socket-common.c			\
-	org.gtk.test.gschema		\
 	org.gtk.test.gschema.xml	\
 	de.po				\
 	$(schema_test_files)		\
