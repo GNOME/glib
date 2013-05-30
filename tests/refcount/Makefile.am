@@ -1,17 +1,12 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-AM_CPPFLAGS =					\
-	$(gmodule_INCLUDES) 			\
-	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
-	$(GLIB_DEBUG_FLAGS)
+LDADD = $(top_builddir)/glib/libglib-2.0.la $(top_builddir)/gobject/libgobject-2.0.la
+AM_CPPFLAGS = $(gmodule_INCLUDES) $(GLIB_DEBUG_FLAGS)
+DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS
+AM_CFLAGS = -g
 
-libglib = $(top_builddir)/glib/libglib-2.0.la
-libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
-libgobject = $(top_builddir)/gobject/libgobject-2.0.la
-
-LDADD = $(libglib) $(libgobject)
-
-test_programs = 				\
+# These are not gtester tests, so handle them manually
+TESTS = \
 	closures				\
 	objects					\
 	objects2				\
@@ -22,9 +17,11 @@ test_programs = 				\
 	signal1					\
 	signal2					\
 	signal3					\
-	signal4
+	signal4					\
+	$(NULL)
 
-
+TESTS_ENVIRONMENT = srcdir=$(srcdir) \
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
 
 signal1_SOURCES = signals.c
 signal1_CFLAGS = -DTESTNUM=1 $(AM_CFLAGS)
@@ -35,10 +32,4 @@ signal3_CFLAGS = -DTESTNUM=3 $(AM_CFLAGS)
 signal4_SOURCES = signals.c
 signal4_CFLAGS = -DTESTNUM=4 $(AM_CFLAGS)
 
-check_PROGRAMS = $(test_programs)
-
-all: $(check_PROGRAMS)
-
-TESTS = $(test_programs)
-TESTS_ENVIRONMENT = srcdir=$(srcdir) \
-	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
+check_PROGRAMS += $(TESTS)

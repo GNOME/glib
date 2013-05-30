@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
@@ -22,11 +22,11 @@ EXTRA_DIST +=				\
 		gmoduleconf.h.win32 	\
 		gmodule.rc.in
 
-BUILT_EXTRA_DIST = \
+BUILT_EXTRA_DIST += \
 		makefile.msc	\
 		gmodule.rc
 
-BUILT_SOURCES = gmoduleconf.h
+BUILT_SOURCES += gmoduleconf.h
 gmoduleconf.h:	gmoduleconf.h.in
 
 glibincludedir=$(includedir)/glib-2.0
@@ -41,7 +41,7 @@ lib_LTLIBRARIES = libgmodule-2.0.la
 
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
-noinst_DATA = gmodule-2.0.lib
+noinst_DATA += gmodule-2.0.lib
 
 install_ms_lib_cmd = $(INSTALL) gmodule-2.0.lib $(DESTDIR)$(libdir)
 uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/gmodule-2.0.lib

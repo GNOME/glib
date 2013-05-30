@@ -1,8 +1,6 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-NULL =
-
-noinst_LTLIBRARIES = libgiowin32.la
+noinst_LTLIBRARIES += libgiowin32.la
 
 libgiowin32_la_SOURCES =			\
 	gwin32directorymonitor.c		\

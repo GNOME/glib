@@ -1,9 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
-
-BUILT_SOURCES =
-DISTCLEANFILES =
-CLEANFILES =
+include $(top_srcdir)/glib.mk
 
 #
 # Generate glibconfig.h
@@ -35,11 +31,8 @@ else
 MAYBE_PCRE = pcre 
 endif
 
-SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre .
+SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
-if BUILD_MODULAR_TESTS
-SUBDIRS += tests 
-endif
 
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
@@ -77,7 +70,7 @@ EXTRA_DIST += 			\
 CLEANFILES += libglib-gdb.py
 
 # These may be in the builddir too
-BUILT_EXTRA_DIST = 		\
+BUILT_EXTRA_DIST += 		\
 	makefile.msc		\
 	glibconfig.h.win32	\
 	glib.rc
@@ -86,7 +79,7 @@ lib_LTLIBRARIES = libglib-2.0.la
 
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
-noinst_DATA = glib-2.0.lib
+noinst_DATA += glib-2.0.lib
 
 install_ms_lib_cmd = $(INSTALL) glib-2.0.lib $(DESTDIR)$(libdir)
 uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/glib-2.0.lib

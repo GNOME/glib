@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
@@ -8,7 +8,7 @@ AM_CPPFLAGS = 				\
 	-DG_DISABLE_DEPRECATED 		\
 	-DGLIB_COMPILATION
 
-noinst_LTLIBRARIES = libgnulib.la
+noinst_LTLIBRARIES += libgnulib.la
 
 libgnulib_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libgnulib_la_SOURCES = 	\

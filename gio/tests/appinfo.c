@@ -15,6 +15,12 @@ test_launch (void)
   const gchar *path;
   gchar *uri;
 
+  if (!g_getenv ("DISPLAY"))
+    {
+      g_printerr ("No DISPLAY.  Skipping test.  ");
+      return;
+    }
+
   path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (appinfo != NULL);

@@ -1126,7 +1126,7 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("<schema id='%s'> extends not-yet-existing "
+                       _("<schema id='%s'> extends not yet existing "
                          "schema '%s'"), id, extends_name);
           return;
         }
@@ -1142,7 +1142,7 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("<schema id='%s'> is list of not-yet-existing "
+                       _("<schema id='%s'> is list of not yet existing "
                          "schema '%s'"), id, list_of);
           return;
         }

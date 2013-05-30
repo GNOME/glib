@@ -1,8 +1,6 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-NULL =
-
-noinst_LTLIBRARIES = libkqueue.la
+noinst_LTLIBRARIES += libkqueue.la
 
 libkqueue_la_SOURCES = \
        gkqueuefilemonitor.c \

@@ -91,7 +91,7 @@ test_type (void)
   g_assert_cmpint (type, ==, G_FILE_TYPE_REGULAR);
   g_object_unref (file);
 
-  file = g_file_get_child (datapath_f, "schema-tests");
+  file = g_file_get_child (datapath_f, "cert-tests");
   type = g_file_query_file_type (file, 0, NULL);
   g_assert_cmpint (type, ==, G_FILE_TYPE_DIRECTORY);
 

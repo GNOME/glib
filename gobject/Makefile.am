@@ -2,15 +2,9 @@
 # Copyright (C) 1997,98,99,2000 Tim Janik and Red Hat, Inc.
 #
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-SUBDIRS = .
-if BUILD_MODULAR_TESTS
-SUBDIRS += tests 
-endif
-
-BUILT_SOURCES=
-CLEANFILES=
+SUBDIRS = . tests
 
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
@@ -27,7 +21,7 @@ lib_LTLIBRARIES = libgobject-2.0.la
 
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
-noinst_DATA = gobject-2.0.lib
+noinst_DATA += gobject-2.0.lib
 
 install_ms_lib_cmd = $(INSTALL) gobject-2.0.lib $(DESTDIR)$(libdir)
 uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/gobject-2.0.lib
@@ -210,7 +204,7 @@ EXTRA_DIST += 			\
 
 CLEANFILES += libgobject-gdb.py
 
-BUILT_EXTRA_DIST = \
+BUILT_EXTRA_DIST += \
 	makefile.msc		\
 	gobject.rc
 

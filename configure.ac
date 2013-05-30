@@ -254,16 +254,8 @@ AC_ARG_ENABLE(rebuilds,
               [AS_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
-AC_ARG_ENABLE(modular_tests,
-              AS_HELP_STRING([--disable-modular-tests],
-                             [Disable build of test programs (default: no)]),,
-              [enable_modular_tests=yes])
-AC_ARG_ENABLE(installed_tests,
-              AS_HELP_STRING([--enable-installed-tests],
-                             [Install test programs (default: no)]),,
-              [enable_installed_tests=no])
-AM_CONDITIONAL(BUILD_MODULAR_TESTS, test x$enable_modular_tests = xyes || test x$enable_installed_tests=xyes)
-AM_CONDITIONAL(BUILDOPT_INSTALL_TESTS, test x$enable_installed_tests = xyes)
+
+GLIB_TESTS
 
 AC_MSG_CHECKING([whether to enable garbage collector friendliness])
 AS_IF([test "x$enable_gc_friendly" = "xyes"], [
@@ -2710,7 +2702,7 @@ dnl ******************************************************************
 
 AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
 
-AS_IF([ test $cross_compiling = yes && test x$enable_modular_tests = xyes], [
+AS_IF([ test $cross_compiling = yes ], [
   AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
   if test x$GLIB_GENMARSHAL = xno; then
     AC_MSG_ERROR(Could not find a glib-genmarshal in your PATH)
@@ -3653,14 +3645,12 @@ AC_CHECK_ALIGNOF([unsigned long])
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 #
 # 1.2.14 required for dbus_message_set_serial
-AS_IF([ test x$enable_modular_tests = xyes], [
-   PKG_CHECK_MODULES(DBUS1,
-                     dbus-1 >= 1.2.14,
-                     [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
-                     have_dbus1=no)
-   AC_SUBST(DBUS1_CFLAGS)
-   AC_SUBST(DBUS1_LIBS)
-])
+PKG_CHECK_MODULES(DBUS1,
+     dbus-1 >= 1.2.14,
+     [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
+     have_dbus1=no)
+AC_SUBST(DBUS1_CFLAGS)
+AC_SUBST(DBUS1_LIBS)
 AM_CONDITIONAL(HAVE_DBUS1, [test "x$have_dbus1" = "xyes"])
 
 AC_CHECK_PROGS([DBUS_DAEMON], [dbus-daemon])

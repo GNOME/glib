@@ -1,4 +1,4 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 installed_m4= glib-2.0.m4 glib-gettext.m4 gsettings.m4
 
