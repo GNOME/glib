@@ -30,8 +30,6 @@
 #include <gmodule.h>
 #include <string.h>
 
-static const gchar *datapath;
-
 gchar* global_state;
 
 G_MODULE_EXPORT void g_clash_func (void);
@@ -75,24 +73,21 @@ test_states (const gchar *global, const gchar *gplugin_a,
 static SimpleFunc plugin_clash_func = NULL;
 
 int
-main (int   arg,
-      char *argv[])
+main (int    argc,
+      char **argv)
 {
   GModule *module_self, *module_a, *module_b;
   gchar *plugin_a, *plugin_b;
   SimpleFunc f_a, f_b, f_self;
   GModuleFunc gmod_f;
 
+  g_test_init (&argc, &argv, NULL);
+
   if (!g_module_supported ())
     g_error ("dynamic modules not supported");
 
-  if (g_getenv ("G_TEST_DATA"))
-    datapath = g_getenv ("G_TEST_DATA");
-  else
-    datapath = ".";
-
-  plugin_a = g_build_filename (datapath, "libmoduletestplugin_a", NULL);
-  plugin_b = g_build_filename (datapath, "libmoduletestplugin_b", NULL);
+  plugin_a = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_a", NULL);
+  plugin_b = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_b", NULL);
 
   /* module handles */
   

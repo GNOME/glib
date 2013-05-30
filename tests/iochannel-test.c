@@ -11,8 +11,6 @@
 
 #define BUFFER_SIZE 1024
 
-static const gchar *datapath;
-
 static void
 test_small_writes (void)
 {
@@ -66,13 +64,10 @@ gint main (gint argc, gchar * argv[])
     const gchar encoding[] = "EUC-JP";
     GIOStatus status;
 
-    if (g_getenv ("G_TEST_DATA"))
-      datapath = g_getenv ("G_TEST_DATA");
-    else
-      datapath = SRCDIR;
+    g_test_init (&argc, &argv, NULL);
 
-    filename = g_build_filename (datapath, "iochannel-test-infile", NULL);
-  
+    filename = g_test_build_filename (G_TEST_DIST, "iochannel-test-infile", NULL);
+
     setbuf (stdout, NULL); /* For debugging */
 
     gio_r = g_io_channel_new_file (filename, "r", &gerr);
