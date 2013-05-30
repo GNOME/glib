@@ -60,7 +60,7 @@ CXX_TEST =
 endif
 
 if ENABLE_TIMELOOP
-timeloop = timeloop timeloop-closure
+timeloop = timeloop
 endif
 noinst_PROGRAMS = $(TEST_PROGS)	\
 	testgdate 		\
@@ -69,8 +69,7 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	unicode-collate 	\
 	$(timeloop) 		\
 	assert-msg-test		\
-	datetime		\
-	testgobject
+	datetime
 
 TEST_PROGS		+= testglib
 testglib_SOURCES         = testglib.c
@@ -84,10 +83,8 @@ unicode_collate_LDADD = $(libglib)
 assert_msg_test_LDADD = $(libglib)
 if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
-timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
 datetime_LDADD = $(libglib)
-testgobject_LDADD = $(libglib) $(libgobject)
 
 test_programs =					\
 	atomic-test				\

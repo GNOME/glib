@@ -70,7 +70,11 @@ performance_programs = 				\
 performance_LDADD = $(libgobject) $(libgthread)
 performance_threaded_LDADD = $(libgobject) $(libgthread)
 check_PROGRAMS = $(test_programs)
-noinst_PROGRAMS = $(performance_programs)
+noinst_PROGRAMS = $(performance_programs) testgobject
+
+if ENABLE_TIMELOOP
+noinst_PROGRAMS += timeloop-closure
+endif
 
 TESTS = $(test_programs) $(performance_programs)
 TESTS_ENVIRONMENT = srcdir=$(srcdir) \
