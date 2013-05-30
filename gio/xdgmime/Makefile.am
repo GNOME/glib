@@ -1,8 +1,8 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 AM_CPPFLAGS = -DXDG_PREFIX=_gio_xdg
 
-noinst_LTLIBRARIES = libxdgmime.la
+noinst_LTLIBRARIES += libxdgmime.la
 
 libxdgmime_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libxdgmime_la_SOURCES = \

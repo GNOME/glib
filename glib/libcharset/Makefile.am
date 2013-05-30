@@ -1,11 +1,11 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 AM_CPPFLAGS = 				\
 	-DLIBDIR=\"$(libdir)\" 		\
 	$(config_h_INCLUDES)
 
-noinst_LTLIBRARIES = libcharset.la
+noinst_LTLIBRARIES += libcharset.la
 
 libcharset_la_CFLAGS = $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
 libcharset_la_SOURCES =    	\
@@ -63,4 +63,4 @@ SUFFIXES = .sed .sin
 	$(AM_V_GEN) $(SED) -e '/^#/d' -e 's/@''PACKAGE''@/@PACKAGE@/g' $< > t-$@
 	@mv t-$@ $@
 
-CLEANFILES = charset.alias ref-add.sed ref-del.sed
+CLEANFILES += charset.alias ref-add.sed ref-del.sed

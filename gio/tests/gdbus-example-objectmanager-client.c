@@ -1,5 +1,5 @@
 
-#include "gdbus-example-objectmanager-generated.h"
+#include "gdbus-object-manager-example/gdbus-example-objectmanager-generated.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 

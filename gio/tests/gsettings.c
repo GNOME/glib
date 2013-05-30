@@ -660,14 +660,20 @@ test_l10n (void)
   str = NULL;
 
   setlocale (LC_MESSAGES, "de_DE");
-  str = g_settings_get_string (settings, "error-message");
+  /* Only do the test if translation is actually working... */
+  if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
+    {
+      str = g_settings_get_string (settings, "error-message");
+
+      g_assert_cmpstr (str, ==, "Unbenannt");
+      g_object_unref (settings);
+      g_free (str);
+      str = NULL;
+    }
+  else
+    g_printerr ("warning: translation is not working... skipping test. ");
+
   setlocale (LC_MESSAGES, locale);
-
-  g_assert_cmpstr (str, ==, "Unbenannt");
-  g_object_unref (settings);
-  g_free (str);
-  str = NULL;
-
   g_free (locale);
 }
 
@@ -701,14 +707,20 @@ test_l10n_context (void)
   str = NULL;
 
   setlocale (LC_MESSAGES, "de_DE");
-  g_settings_get (settings, "backspace", "s", &str);
+  /* Only do the test if translation is actually working... */
+  if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
+    {
+      g_settings_get (settings, "backspace", "s", &str);
+
+      g_assert_cmpstr (str, ==, "Löschen");
+      g_object_unref (settings);
+      g_free (str);
+      str = NULL;
+    }
+  else
+    g_printerr ("warning: translation is not working... skipping test.  ");
+
   setlocale (LC_MESSAGES, locale);
-
-  g_assert_cmpstr (str, ==, "Löschen");
-  g_object_unref (settings);
-  g_free (str);
-  str = NULL;
-
   g_free (locale);
 }
 
@@ -1578,24 +1590,6 @@ test_child_schema (void)
   g_object_unref (settings);
 }
 
-static gboolean
-glib_translations_work (void)
-{
-  gboolean works;
-  gchar *locale;
-  gchar *orig = "Unnamed";
-
-  locale = g_strdup (setlocale (LC_MESSAGES, NULL));
-  if (!setlocale (LC_MESSAGES, "de"))
-    works = FALSE;
-  else
-    works = dgettext ("glib20", orig) != orig;
-  setlocale (LC_MESSAGES, locale);
-  g_free (locale);
-
-  return works;
-}
-
 #include "../strinfo.c"
 
 static void
@@ -2316,11 +2310,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
 
-  if (glib_translations_work ())
-    {
-      g_test_add_func ("/gsettings/l10n", test_l10n);
-      g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
-    }
+  g_test_add_func ("/gsettings/l10n", test_l10n);
+  g_test_add_func ("/gsettings/l10n-context", test_l10n_context);
 
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);

@@ -1,310 +1,107 @@
-
-NULL =
-BUILT_SOURCES =
-
-include $(top_srcdir)/Makefile.decl
-
-insttestdir = $(pkglibexecdir)/installed-tests
+include $(top_srcdir)/glib.mk
+test_ltlibraries =
 
 SUBDIRS = gdbus-object-manager-example services
 
-AM_CPPFLAGS = 				\
-	-DG_LOG_DOMAIN=\"GLib-GIO\" 	\
-	$(gio_INCLUDES)			\
-	$(GLIB_DEBUG_FLAGS)		\
-	-I$(top_builddir)/gio		\
-	-I$(top_srcdir)/gio		\
-	$(DBUS1_CFLAGS)			\
-	-DSRCDIR=\""$(srcdir)"\" 	\
-	-DBUILDDIR=\""$(abs_builddir)"\" 	\
-	-DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
-
-AM_CFLAGS = $(GLIB_WARN_CFLAGS)
-
-noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
-noinst_DATA = $(MISC_STUFF)
-
-LDADD     = 					\
-	$(top_builddir)/glib/libglib-2.0.la 		\
-	$(top_builddir)/gthread/libgthread-2.0.la	\
+LDADD = \
+	$(top_builddir)/glib/libglib-2.0.la		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
+AM_CPPFLAGS = $(gio_INCLUDES) $(GLIB_DEBUG_FLAGS) -I$(top_builddir)/gio -I$(top_srcdir)/gio
+DEFS = -DG_LOG_DOMAIN=\"GLib-GIO\" -DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
+AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
-test_progs =	 		\
-	io-stream		\
-	memory-input-stream 	\
-	memory-output-stream 	\
-	readwrite		\
-	g-file 			\
-	g-file-info 		\
-	converter-stream	\
-	data-input-stream 	\
-	data-output-stream 	\
-	g-icon			\
-	buffered-input-stream	\
-	buffered-output-stream	\
-	sleepy-stream		\
-	filter-streams		\
-	volumemonitor		\
-	simple-async-result	\
-	srvtarget		\
-	contexts		\
-	gsettings		\
-	gschema-compile		\
-	async-close-output-stream \
-	gdbus-addresses		\
-	network-address		\
-	gdbus-message		\
-	socket			\
-	pollable		\
-	tls-certificate		\
-	tls-interaction		\
-	cancellable		\
-	vfs			\
-	network-monitor		\
-	fileattributematcher	\
-	resources		\
-	proxy-test		\
-	simple-proxy		\
-	inet-address		\
-	permission		\
-	task			\
-	credentials		\
+# -----------------------------------------------------------------------------
+#  Test programs buildable on all platforms
+
+test_programs = \
+	io-stream				\
+	memory-input-stream			\
+	memory-output-stream			\
+	readwrite				\
+	g-file					\
+	g-file-info				\
+	converter-stream			\
+	data-input-stream			\
+	data-output-stream			\
+	g-icon					\
+	buffered-input-stream			\
+	buffered-output-stream			\
+	sleepy-stream				\
+	filter-streams				\
+	volumemonitor				\
+	simple-async-result			\
+	srvtarget				\
+	contexts				\
+	gschema-compile				\
+	async-close-output-stream		\
+	gdbus-addresses				\
+	network-address				\
+	gdbus-message				\
+	socket					\
+	pollable				\
+	tls-interaction				\
+	cancellable				\
+	vfs					\
+	network-monitor				\
+	fileattributematcher			\
+	proxy-test				\
+	simple-proxy				\
+	inet-address				\
+	permission				\
+	task					\
+	credentials				\
 	$(NULL)
 
-if HAVE_DBUS_DAEMON
-test_progs +=			\
-	actions 		\
-	gdbus-connection	\
-	gdbus-connection-loss	\
-	gdbus-connection-slow	\
-	gdbus-names		\
-	gdbus-proxy		\
-	gdbus-proxy-threads	\
-	gdbus-proxy-well-known-name \
-	gdbus-introspection	\
-	gdbus-threading		\
-	gdbus-export		\
-	gdbus-error		\
-	gdbus-bz627724		\
-	gmenumodel		\
-	$(NULL)
-endif
-
-if OS_UNIX
-test_progs +=			\
-	gdbus-close-pending	\
-	gdbus-connection-flush	\
-	gdbus-peer		\
-	gdbus-exit-on-close	\
-	gdbus-non-socket	\
-	gdbus-peer-object-manager \
-	appinfo			\
-	contenttype		\
-	mimeapps		\
-	file			\
-	$(NULL)
-endif
-
-SAMPLE_PROGS = 				\
-	resolver			\
-	socket-server			\
-	socket-client			\
-	echo-server			\
-	httpd				\
-	send-data			\
-	filter-cat			\
-	gdbus-example-export		\
-	gdbus-example-own-name		\
-	gdbus-example-watch-name	\
-	gdbus-example-watch-proxy	\
-	gdbus-example-server		\
-	gdbus-example-subtree		\
-	gdbus-example-peer		\
-	gdbus-example-proxy-subclass	\
-	proxy				\
-	gapplication-example-open	\
-	gapplication-example-cmdline	\
-	gapplication-example-cmdline2	\
-	gapplication-example-cmdline3	\
-	gapplication-example-actions	\
-	gapplication-example-dbushooks	\
-	gdbus-daemon			\
+uninstalled_test_programs = \
 	$(NULL)
 
-other_progs = 				\
-	gdbus-testserver		\
-	gdbus-connection-flush-helper	\
-	$(NULL)
-noinst_PROGRAMS += $(other_progs)
-
-if OS_UNIX
-test_progs += 			\
-	live-g-file		\
-	desktop-app-info	\
-	unix-fd 		\
-	unix-streams 		\
-	gapplication 		\
-	basic-application	\
-	gdbus-test-codegen 	\
-	socket-address		\
+dist_test_data = \
+	org.gtk.test.gschema.xml		\
+	org.gtk.schemasourcecheck.gschema.xml	\
+	testenum.h				\
+	enums.xml.template			\
+	contexts.c				\
+	g-icon.c				\
 	$(NULL)
 
-other_progs +=					\
-	appinfo-test				\
+test_data = \
+	test.gresource				\
 	$(NULL)
 
-SAMPLE_PROGS +=					\
-	gdbus-example-unix-fd-client 		\
-	gdbus-example-objectmanager-server 	\
-	gdbus-example-objectmanager-client 	\
-	gdbus-test-fixture			\
-	$(NULL)
-endif
-
-if OS_WIN32
-TEST_PROGS += win32-streams
-endif
-
-if PLATFORM_WIN32
-no_undefined = -no-undefined
-endif
-
-actions_SOURCES   = actions.c gdbus-sessionbus.c gdbus-sessionbus.h
-
-unix_streams_LDADD       = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-win32_streams_LDADD      = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-resolver_LDADD		  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-socket_server_LDADD	  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-socket_client_SOURCES	  = socket-client.c \
-                            gtlsconsoleinteraction.c \
-                            gtlsconsoleinteraction.h
-socket_client_LDADD	  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-echo_server_LDADD	  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-httpd_LDADD		  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-send_data_LDADD		  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-contexts_LDADD		  = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-gdbus_daemon_SOURCES = gdbus-daemon.c $(top_srcdir)/gio/gdbusdaemon.c $(top_builddir)/gio/gdbus-daemon-generated.c
-
-gdbus_testserver_SOURCES = gdbus-testserver.c
-
-if HAVE_DBUS1
-test_progs += gdbus-serialization
-gdbus_serialization_SOURCES = gdbus-serialization.c gdbus-tests.h gdbus-tests.c
-gdbus_serialization_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
-gdbus_serialization_LDADD = $(LDADD) $(DBUS1_LIBS)
-endif
-
-test_progs += gdbus-auth
-gdbus_auth_SOURCES = gdbus-auth.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-gdbus_auth_LDADD = $(LDADD)
-
-gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_close_pending_SOURCES = gdbus-close-pending.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-if OS_UNIX
-gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
-	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
-		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
-		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
-		--interface-prefix org.project. \
-		--generate-c-code gdbus-test-codegen-generated \
-		--c-generate-object-manager \
-		--c-namespace Foo_iGen \
-		--generate-docbook gdbus-test-codegen-generated-doc \
-		--annotate "org.project.Bar" Key1 Value1 \
-		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
-		--annotate "org.project.Bar.HelloWorld()" Key3 Value3 \
-		--annotate "org.project.Bar::TestSignal" Key4 Value4 \
-		--annotate "org.project.Bar:ay" Key5 Value5 \
-		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6 \
-		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 \
-		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
-		$(srcdir)/test-codegen.xml \
-		$(NULL)
-
-BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
-
-gdbus_test_codegen_SOURCES  = gdbus-test-codegen.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-gdbus_test_codegen_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
-
-endif # OS_UNIX
-
-gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_connection_flush_SOURCES = \
-	gdbus-connection-flush.c \
-	test-io-stream.c \
-	test-io-stream.h \
-	test-pipe-unix.c \
-	test-pipe-unix.h \
+uninstalled_test_extra_programs = \
+	resolver				\
+	socket-server				\
+	echo-server				\
+	httpd					\
+	send-data				\
+	filter-cat				\
+	gdbus-example-export			\
+	gdbus-example-own-name			\
+	gdbus-example-watch-name		\
+	gdbus-example-watch-proxy		\
+	gdbus-example-server			\
+	gdbus-example-subtree			\
+	gdbus-example-peer			\
+	gdbus-example-proxy-subclass		\
+	proxy					\
+	gapplication-example-open		\
+	gapplication-example-cmdline		\
+	gapplication-example-cmdline2		\
+	gapplication-example-cmdline3		\
+	gapplication-example-actions		\
+	gapplication-example-dbushooks		\
 	$(NULL)
 
-gdbus_connection_loss_SOURCES = gdbus-connection-loss.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_connection_slow_SOURCES = gdbus-connection-slow.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_names_SOURCES = gdbus-names.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_proxy_SOURCES = gdbus-proxy.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_proxy_threads_SOURCES = gdbus-proxy-threads.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_proxy_well_known_name_SOURCES = gdbus-proxy-well-known-name.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_introspection_SOURCES = gdbus-introspection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_threading_SOURCES = gdbus-threading.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_export_SOURCES = gdbus-export.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_error_SOURCES = gdbus-error.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-gdbus_non_socket_SOURCES = \
-	gdbus-non-socket.c \
-	gdbus-tests.c \
-	gdbus-tests.h \
-	test-io-stream.c \
-	test-io-stream.h \
-	test-pipe-unix.c \
-	test-pipe-unix.h \
+test_extra_programs = \
+	gdbus-testserver			\
+	gdbus-connection-flush-helper		\
 	$(NULL)
 
-gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
-
-resources_SOURCES = resources.c test_resources.c test_resources2.c test_resources2.h
-resources_DEPENDENCIES = test.gresource
-
-gapplication_SOURCES = gapplication.c gdbus-sessionbus.h gdbus-sessionbus.c gdbus-tests.h gdbus-tests.c
-
-gmenumodel_SOURCES = gmenumodel.c gdbus-sessionbus.h gdbus-sessionbus.c
-
-TEST_PROGS += $(test_progs)
-
-TESTS_ENVIRONMENT = \
-	GLIB_MKENUMS=../../gobject/glib-mkenums \
-	GLIB_COMPILE_SCHEMAS=../glib-compile-schemas
-
+# We need this indirection in order to save automake from itself
+dist_test_data += $(schema_data_files)
+schema_data_files = $(addprefix schema-tests/,$(schema_tests))
 schema_tests = \
 	array-default-not-in-choices.gschema.xml	\
 	bad-choice.gschema.xml				\
@@ -357,7 +154,7 @@ schema_tests = \
 	key-in-list-indirect.gschema.xml		\
 	key-in-list.gschema.xml				\
 	list-of-missing.gschema.xml			\
-	missing-quotes.gschema.xml				\
+	missing-quotes.gschema.xml			\
 	no-default.gschema.xml				\
 	overflow.gschema.xml				\
 	override-missing.gschema.xml			\
@@ -379,78 +176,249 @@ schema_tests = \
 	wrong-category.gschema.xml			\
 	$(NULL)
 
-schema_test_files = $(addprefix schema-tests/,$(schema_tests))
-
-proxy_LDADD   = $(LDADD) \
-	$(top_builddir)/gthread/libgthread-2.0.la
-
-tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
-
-cert_tests = 			\
-	cert1.pem		\
-	cert2.pem		\
-	cert3.pem		\
-	cert-key.pem		\
-	cert-list.pem		\
-	key8.pem		\
-	key-cert.pem		\
-	key.pem			\
-	nothing.pem		\
+test_programs += tls-certificate
+tls_certificate_SOURCES = \
+	tls-certificate.c			\
+	gtesttlsbackend.c			\
+	gtesttlsbackend.h
+dist_test_data += $(cert_data_files)
+cert_data_files = $(addprefix cert-tests/,$(cert_tests))
+cert_tests = \
+	cert1.pem	\
+	cert2.pem	\
+	cert3.pem	\
+	cert-key.pem	\
+	cert-list.pem	\
+	key8.pem	\
+	key-cert.pem	\
+	key.pem		\
+	nothing.pem	\
 	$(NULL)
 
-cert_test_files = $(addprefix cert-tests/,$(cert_tests))
+uninstalled_test_extra_programs += socket-client
+socket_client_SOURCES = \
+	socket-client.c				\
+	gtlsconsoleinteraction.c		\
+	gtlsconsoleinteraction.h
+
+uninstalled_test_extra_programs += gdbus-daemon
+nodist_gdbus_daemon_SOURCES = \
+	$(top_builddir)/gio/gdbus-daemon-generated.c
+gdbus_daemon_SOURCES = \
+	gdbus-daemon.c				\
+	$(top_srcdir)/gio/gdbusdaemon.c
+
+test_programs += gsettings
+gsettings_DEPENDENCIES = test.mo
+CLEANFILES += test.mo de/LC_MESSAGES/test.mo
+test.mo: de.po
+	$(AM_V_GEN) $(MSGFMT) -o test.mo $(srcdir)/de.po; \
+	$(MKDIR_P) de/LC_MESSAGES; \
+	cp -f test.mo de/LC_MESSAGES
+# Generated while running the testcase itself...
+CLEANFILES += \
+	org.gtk.test.enums.xml		\
+	gsettings.store			\
+	gschemas.compiled		\
+	schema-source/gschemas.compiled
 
 # -----------------------------------------------------------------------------
+#  Test programs buildable on UNIX only
 
 if OS_UNIX
-gdbus_example_objectmanager_server_CFLAGS   = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
-gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+test_programs += \
+	live-g-file				\
+	unix-fd					\
+	unix-streams				\
+	basic-application			\
+	gdbus-test-codegen			\
+	socket-address				\
+	gdbus-peer-object-manager		\
+	contenttype				\
+	file					\
+	$(NULL)
 
-gdbus_example_objectmanager_client_CFLAGS   = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
-gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+# Uninstalled because of the check-for-executable logic in DesktopAppInfo unable to find the installed executable
+uninstalled_test_programs += \
+	appinfo					\
+	desktop-app-info			\
+	$(NULL)
 
-gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
-gdbus_peer_CFLAGS  = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
-gdbus_peer_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
-
-gdbus_test_fixture_SOURCES = gdbus-test-fixture.c
-gdbus_test_fixture_CFLAGS  = $(AM_CFLAGS) -I$(top_builddir)/gio/tests/gdbus-object-manager-example
-gdbus_test_fixture_LDADD   = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
-
-endif OS_UNIX
-
-# -----------------------------------------------------------------------------
-
-desktop_test_files = \
+test_data += \
 	appinfo-test.desktop			\
 	appinfo-test2.desktop			\
 	appinfo-test-gnome.desktop		\
 	appinfo-test-notgnome.desktop		\
+	file.c					\
 	$(NULL)
 
-EXTRA_DIST += \
-	socket-common.c			\
-	org.gtk.test.gschema.xml	\
-	de.po				\
-	$(schema_test_files)		\
-	test-codegen.xml		\
-	$(cert_test_files)		\
-	test.gresource.xml		\
-	test1.txt			\
-	test2.gresource.xml		\
-	test2.txt			\
-	test3.gresource.xml		\
-	test3.txt			\
-	test4.gresource.xml		\
-	$(desktop_test_files)		\
+test_extra_programs += \
+	appinfo-test				\
 	$(NULL)
 
-MISC_STUFF = test.mo test.gresource
+uninstalled_test_extra_programs += \
+	gdbus-example-unix-fd-client		\
+	$(NULL)
 
-test.mo: de.po
-	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
-	$(MKDIR_P) de/LC_MESSAGES; \
-	cp -f test.mo de/LC_MESSAGES
+test_programs += mimeapps
+clean-local: clean-mimeapps
+clean-mimeapps:
+	rm -rf xdgdatadir xdgdatahome
+
+test_programs += gdbus-connection-flush
+gdbus_connection_flush_SOURCES = \
+	gdbus-connection-flush.c		\
+	test-io-stream.c			\
+	test-io-stream.h			\
+	test-pipe-unix.c			\
+	test-pipe-unix.h
+
+test_programs += gdbus-exit-on-close
+gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c $(gdbus_tests_sources) $(gdbus_sessionbus_sources)
+
+test_programs += gdbus-non-socket
+gdbus_non_socket_SOURCES = \
+	gdbus-non-socket.c			\
+	gdbus-tests.c				\
+	gdbus-tests.h				\
+	test-io-stream.c			\
+	test-io-stream.h			\
+	test-pipe-unix.c			\
+	test-pipe-unix.h
+
+# These three are manual-run tests because they need a session bus but don't bring one up themselves
+uninstalled_test_extra_programs += gdbus-example-objectmanager-client
+gdbus_example_objectmanager_client_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
+uninstalled_test_extra_programs += gdbus-example-objectmanager-server
+gdbus_example_objectmanager_server_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
+uninstalled_test_extra_programs += gdbus-test-fixture
+gdbus_test_fixture_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
+# This is peer to peer so it doesn't need a session bus (so we can run it normally)
+test_programs += gdbus-peer
+gdbus_peer_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
+endif # OS_UNIX
+
+# -----------------------------------------------------------------------------
+#  Test programs that need to bring up a session bus (requires dbus-daemon)
+
+if HAVE_DBUS_DAEMON
+gdbus_sessionbus_sources = gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+
+test_programs += \
+	gapplication				\
+	actions					\
+	gdbus-auth				\
+	gdbus-connection			\
+	gdbus-close-pending			\
+	gdbus-bz627724				\
+	gdbus-connection-loss			\
+	gdbus-connection-slow			\
+	gdbus-names				\
+	gdbus-proxy				\
+	gdbus-proxy-threads			\
+	gdbus-proxy-well-known-name		\
+	gdbus-introspection			\
+	gdbus-threading				\
+	gdbus-export				\
+	gdbus-error				\
+	gmenumodel				\
+	$(NULL)
+
+gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
+gapplication_SOURCES                     = $(gdbus_sessionbus_sources) gapplication.c
+actions_SOURCES                          = $(gdbus_sessionbus_sources) actions.c
+gdbus_auth_SOURCES                       = $(gdbus_sessionbus_sources) gdbus-auth.c
+gdbus_connection_SOURCES                 = $(gdbus_sessionbus_sources) gdbus-connection.c
+gdbus_close_pending_SOURCES              = $(gdbus_sessionbus_sources) gdbus-close-pending.c
+gdbus_bz627724_SOURCES                   = $(gdbus_sessionbus_sources) gdbus-bz627724.c
+gdbus_connection_loss_SOURCES            = $(gdbus_sessionbus_sources) gdbus-connection-loss.c
+gdbus_connection_slow_SOURCES            = $(gdbus_sessionbus_sources) gdbus-connection-slow.c
+gdbus_names_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-names.c
+gdbus_proxy_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-proxy.c
+gdbus_proxy_threads_SOURCES              = $(gdbus_sessionbus_sources) gdbus-proxy-threads.c
+gdbus_proxy_well_known_name_SOURCES      = $(gdbus_sessionbus_sources) gdbus-proxy-well-known-name.c
+gdbus_introspection_SOURCES              = $(gdbus_sessionbus_sources) gdbus-introspection.c
+gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
+gdbus_export_SOURCES                     = $(gdbus_sessionbus_sources) gdbus-export.c
+gdbus_error_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-error.c
+gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
+
+if OS_UNIX
+gdbus_test_codegen_SOURCES               = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
+nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+
+gdbus-test-codegen.o: gdbus-test-codegen-generated.h
+gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-prefix org.project. \
+		--generate-c-code gdbus-test-codegen-generated \
+		--c-generate-object-manager \
+		--c-namespace Foo_iGen \
+		--generate-docbook gdbus-test-codegen-generated-doc \
+		--annotate "org.project.Bar" Key1 Value1 \
+		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
+		--annotate "org.project.Bar.HelloWorld()" Key3 Value3 \
+		--annotate "org.project.Bar::TestSignal" Key4 Value4 \
+		--annotate "org.project.Bar:ay" Key5 Value5 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 \
+		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
+		$(srcdir)/test-codegen.xml \
+		$(NULL)
+
+CLEANFILES += gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
+endif # OS_UNIX
+endif # HAVE_DBUS_DAEMON
+
+# -----------------------------------------------------------------------------
+
+if OS_WIN32
+test_programs += win32-streams
+endif
+
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+endif
+
+if HAVE_DBUS1
+test_programs += gdbus-serialization
+gdbus_serialization_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
+gdbus_serialization_LDADD = $(LDADD) $(DBUS1_LIBS)
+gdbus_serialization_SOURCES = \
+	gdbus-serialization.c			\
+	gdbus-tests.h				\
+	gdbus-tests.c
+endif
+
+# -----------------------------------------------------------------------------
+#  The resources test is a bit more complicated...
+
+test_programs += resources
+resources_SOURCES = resources.c
+nodist_resources_SOURCES = test_resources.c test_resources2.c test_resources2.h
+resources_DEPENDENCIES = test.gresource
+
+test_ltlibraries += libresourceplugin.la
+libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
+libresourceplugin_la_LDFLAGS = -avoid-version -module -export-dynamic $(no_undefined)
+libresourceplugin_la_LIBADD = $(LDADD)
+
+# libtool contains a bug whereby the created .la file doesn't contain the correct dlname='' in the case that
+# you're building a library but not installing it.  This is apparently because the only considered use for an
+# uninstalled library is as a convenience library for linking (despite the fact that we give -module).  The lack
+# of dlname='' in the .la trips up libltdl and GModule as well.  We can trick libtool into believing that we
+# will install the module by giving it a bogus -rpath for the uninstalled cases.
+#
+# See http://lists.gnu.org/archive/html/bug-libtool/2013-05/msg00009.html
+if !ENABLE_INSTALLED_TESTS
+libresourceplugin_la_LDFLAGS += -rpath /
+endif
 
 if CROSS_COMPILING
   glib_compile_resources=$(GLIB_COMPILE_RESOURCES)
@@ -458,7 +426,7 @@ else
   glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
 endif
 
-BUILT_SOURCES += test_resources.c test_resources2.c test_resources2.h
+resources.o: test_resources2.h
 test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $<
 
@@ -471,75 +439,6 @@ plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resource
 test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $<
 
-if BUILDOPT_INSTALL_TESTS
-insttest_LTLIBRARIES = libresourceplugin.la
-else
-noinst_LTLIBRARIES = libresourceplugin.la
-endif
+EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.gresource.xml test3.txt test4.gresource.xml
 
-libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
-libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(insttestdir)
-libresourceplugin_la_LIBADD = $(LDADD)
-
-CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test_resources2.[ch] plugin_resources.c
-
-DISTCLEANFILES = \
-	applications/mimeinfo.cache	\
-	org.gtk.test.enums.xml		\
-	de/LC_MESSAGES/test.mo		\
-	test.mo				\
-	test.gresource			\
-	test_resources.c		\
-	gsettings.store			\
-	gschemas.compiled 		\
-	schema-source/gschemas.compiled
-
-distclean-local:
-	rm -rf xdgdatahome xdgdatadir
-
-test_files = 					\
-	contexts.c				\
-	g-icon.c				\
-	file.c					\
-	enums.xml.template			\
-	testenum.h				\
-	org.gtk.test.gschema.xml		\
-	org.gtk.schemasourcecheck.gschema.xml 	\
-	test.gresource				\
-	$(NULL)
-EXTRA_DIST += $(test_files)
-
-if BUILDOPT_INSTALL_TESTS
-insttest_PROGRAMS = $(test_progs) $(other_progs)
-
-schematestdir = $(insttestdir)/schema-tests
-schematest_DATA = $(schema_test_files)
-
-certtestdir = $(insttestdir)/cert-tests
-certtest_DATA = $(cert_test_files)
-
-testdatadir = $(insttestdir)
-testdata_DATA = $(test_files)
-
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-xfail_tests = desktop-app-info.test
-developer_only_tests = gsettings.test
-testmeta_DATA = $(filter-out $(xfail_tests) $(developer_only_tests),$(test_progs:=.test))
-
-%.test: %$(EXEEXT) Makefile
-	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
-	 echo 'Type=session' >> $@.tmp; \
-	 echo 'Exec=$(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
-	 mv $@.tmp $@)
-
-%.desktop.insttest: %.desktop
-	sed -e s,Exec=./appinfo-test,Exec=$(insttestdir)/appinfo-test, < $< >$@.tmp && mv $@.tmp $@
-
-installed_desktop_test_files = $(desktop_test_files:.desktop=.desktop.insttest)
-install-data-local: $(installed_desktop_test_files)
-	for x in $(desktop_test_files); do \
-	  install -m 0644 $${x}.insttest $(DESTDIR)$(testdatadir)/$$x; \
-	done
-	install -d -m 0755 $(DESTDIR)$(testdatadir)/schema-tests
-
-endif
+CLEANFILES += test_resources.c test_resources2.[ch] plugin_resources.c test.gresource

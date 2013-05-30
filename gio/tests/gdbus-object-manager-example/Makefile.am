@@ -1,24 +1,14 @@
-NULL =
-BUILT_SOURCES =
-CLEANFILES =
+include $(top_srcdir)/glib.mk
 
-include $(top_srcdir)/Makefile.decl
-
-AM_CPPFLAGS = 			\
-	-g 			\
-	$(gio_INCLUDES)		\
-	$(GLIB_DEBUG_FLAGS)	\
-	-I$(top_builddir)/gio	\
-	-I$(top_srcdir)/gio	\
-	-DSRCDIR=\""$(srcdir)"\"
+AM_CPPFLAGS = -g $(gio_INCLUDES) $(GLIB_DEBUG_FLAGS) -I$(top_builddir)/gio -I$(top_srcdir)/gio
 
 # ------------------------------------------------------------------------
 
-GDBUS_GENERATED = 										\
-	gdbus-example-objectmanager-generated.h 						\
-	gdbus-example-objectmanager-generated.c 						\
+GDBUS_GENERATED = \
+	gdbus-example-objectmanager-generated.h							\
+	gdbus-example-objectmanager-generated.c							\
 	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml    \
-	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml 	\
+	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml	\
 	$(NULL)
 
 $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
@@ -33,11 +23,19 @@ $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml Makefile $(top_builddir)/gi
 		$< \
 		$(NULL)
 
-BUILT_SOURCES += $(GDBUS_GENERATED)
+test_ltlibraries = libgdbus-example-objectmanager.la
 
-noinst_LTLIBRARIES = libgdbus-example-objectmanager.la
-libgdbus_example_objectmanager_la_SOURCES  = gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-libgdbus_example_objectmanager_la_LIBADD   = 		\
+if ENABLE_GTK_DOC
+# The docs pull these in, so we need them even if not doing 'make check'
+BUILT_SOURCES += $(GDBUS_GENERATED)
+noinst_LTLIBRARIES += libgdbus-example-objectmanager.la
+endif
+
+nodist_libgdbus_example_objectmanager_la_SOURCES = \
+	gdbus-example-objectmanager-generated.h		\
+	gdbus-example-objectmanager-generated.c
+
+libgdbus_example_objectmanager_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
@@ -47,4 +45,3 @@ libgdbus_example_objectmanager_la_LIBADD   = 		\
 EXTRA_DIST += gdbus-example-objectmanager.xml
 
 CLEANFILES += $(GDBUS_GENERATED)
-

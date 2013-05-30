@@ -1,6 +1,4 @@
-include $(top_srcdir)/Makefile.decl
-
-NULL =
+include $(top_srcdir)/glib.mk
 
 SUBDIRS = gdbus-2.0/codegen
 
@@ -10,7 +8,7 @@ endif
 
 if OS_WIN32_AND_DLL_COMPILATION
 if MS_LIB_AVAILABLE
-noinst_DATA = gio-2.0.lib
+noinst_DATA += gio-2.0.lib
 
 install_ms_lib_cmd = $(INSTALL) gio-2.0.lib $(DESTDIR)$(libdir)
 uninstall_ms_lib_cmd = -rm $(DESTDIR)$(libdir)/gio-2.0.lib
@@ -233,7 +231,7 @@ platform_libadd += win32/libgiowin32.la
 platform_deps += win32/libgiowin32.la
 endif
 
-SUBDIRS += .
+SUBDIRS += . tests
 
 if HAVE_FAM
 SUBDIRS += fam
@@ -325,10 +323,6 @@ giowin32include_HEADERS = \
 	gwin32outputstream.h \
 	$(NULL)
 
-endif
-
-if BUILD_MODULAR_TESTS
-SUBDIRS += tests 
 endif
 
 libgio_2_0_la_SOURCES =		\
@@ -622,7 +616,7 @@ gioinclude_HEADERS = 		\
 	gioenumtypes.h
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = 		\
+BUILT_SOURCES += 		\
 	gconstructor_as_data.h	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
@@ -642,17 +636,17 @@ EXTRA_DIST += 			\
 	gnetworking.h.win32	\
 	$(NULL)
 
-BUILT_EXTRA_DIST = 		\
+BUILT_EXTRA_DIST += 		\
 	gio.rc
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 gio-public-headers.txt: Makefile
 	$(AM_V_GEN) echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
-CLEANFILES = gdbus-daemon-generated.c gdbus-daemon-generated.h gio-public-headers.txt gconstructor_as_data.h
+CLEANFILES += gdbus-daemon-generated.c gdbus-daemon-generated.h gio-public-headers.txt gconstructor_as_data.h
 
 
-DISTCLEANFILES = 		\
+DISTCLEANFILES += 		\
 	gioenumtypes.h		\
 	gioenumtypes.c
 

@@ -1,8 +1,6 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-NULL =
-
-noinst_LTLIBRARIES = libinotify.la
+noinst_LTLIBRARIES += libinotify.la
 
 libinotify_la_SOURCES = 		\
 	inotify-kernel.c 		\

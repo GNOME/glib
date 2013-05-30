@@ -1,13 +1,39 @@
-include $(top_srcdir)/Makefile.decl
-NULL =
+include $(top_srcdir)/glib.mk
 
-AM_CPPFLAGS = 					\
-	-g					\
-	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
-	$(gobject_INCLUDES)			\
-	$(GLIB_DEBUG_FLAGS)
-
+LDADD = ../libgobject-2.0.la $(top_builddir)/glib/libglib-2.0.la
+AM_CPPFLAGS = -g $(gobject_INCLUDES) $(GLIB_DEBUG_FLAGS)
+DEFS = -DG_LOG_DOMAIN=\"GLib-GObject\"
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+
+# -----------------------------------------------------------------------------
+
+test_programs = \
+	qdata				\
+	boxed				\
+	enums				\
+	param				\
+	threadtests			\
+	dynamictests			\
+	binding				\
+	properties			\
+	reference			\
+	valuearray			\
+	type				\
+	$(NULL)
+
+# -----------------------------------------------------------------------------
+
+test_programs += ifaceproperties
+ifaceproperties_SOURCES = ifaceproperties.c testcommon.h
+
+# -----------------------------------------------------------------------------
+
+test_programs += signals
+signals_SOURCES = signals.c
+nodist_signals_SOURCES = marshalers.c marshalers.h
+signals.o: marshalers.h
+CLEANFILES += marshalers.h marshalers.c
+EXTRA_DIST += marshalers.list
 
 if CROSS_COMPILING
   glib_genmarshal=$(GLIB_GENMARSHAL)
@@ -15,52 +41,8 @@ else
   glib_genmarshal=$(top_builddir)/gobject/glib-genmarshal
 endif
 
-noinst_PROGRAMS  = $(TEST_PROGS)
-LDADD = ../libgobject-2.0.la $(top_builddir)/gthread/libgthread-2.0.la $(top_builddir)/glib/libglib-2.0.la
-
-TEST_PROGS += 		\
-	qdata		\
-	boxed		\
-	enums		\
-	param		\
-	signals		\
-	threadtests	\
-	dynamictests	\
-	binding		\
-	properties	\
-	reference	\
-	ifaceproperties	\
-	valuearray	\
-	type		\
-	$(NULL)
-
-signals_SOURCES = signals.c marshalers.c
-
 marshalers.h: Makefile.am marshalers.list
 	$(AM_V_GEN) $(glib_genmarshal) --prefix=test $(srcdir)/marshalers.list --header --valist-marshallers > marshalers.h
 
 marshalers.c: Makefile.am marshalers.list
 	$(AM_V_GEN) (echo "#include \"marshalers.h\""; $(glib_genmarshal) --prefix=test $(srcdir)/marshalers.list --body --valist-marshallers) > $@.tmp && mv $@.tmp $@
-
-BUILT_SOURCES = marshalers.h marshalers.c
-CLEANFILES = marshalers.h marshalers.c
-
-ifaceproperties_SOURCES = ifaceproperties.c testcommon.h
-
-EXTRA_DIST += marshalers.list
-
-if BUILDOPT_INSTALL_TESTS
-insttestdir = $(pkglibexecdir)/installed-tests
-insttest_PROGRAMS = $(TEST_PROGS)
-
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-testmeta_DATA = $(TEST_PROGS:=.test)
-
-%.test: %$(EXEEXT) Makefile
-	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
-	 echo 'Type=session' >> $@.tmp; \
-	 echo 'Exec=$(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
-	 mv $@.tmp $@)
-
-
-endif

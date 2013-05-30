@@ -1,18 +1,13 @@
 ## Process this file with automake to produce Makefile.in
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
 # http://people.gnome.org/~walters/docs/build-api.txt
 .buildapi-allow-builddir:
 
 ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
 
-SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs
+SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests
 DIST_SUBDIRS = $(SUBDIRS) build
-if BUILD_MODULAR_TESTS
-SUBDIRS += tests 
-else
-DIST_SUBDIRS += tests
-endif
 
 bin_SCRIPTS = glib-gettextize
 
@@ -49,7 +44,7 @@ EXTRA_DIST += 			\
 	README.win32		\
 	HACKING			\
 	autogen.sh		\
-	Makefile.decl		\
+	glib.mk		\
 	makefile.msc		\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
@@ -67,7 +62,7 @@ EXTRA_DIST += 			\
 
 
 # These may be in the builddir too
-BUILT_EXTRA_DIST = 		\
+BUILT_EXTRA_DIST += 		\
 	README			\
 	INSTALL			\
 	ChangeLog		\
@@ -105,7 +100,7 @@ $(pkgconfig_DATA): config.status
 # build documentation when doing distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man --disable-maintainer-mode
 
-DISTCLEANFILES = config.lt
+DISTCLEANFILES += config.lt
 
 distclean-local: lcov-clean
 	if test $(srcdir) = .; then :; else \

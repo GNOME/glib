@@ -1,8 +1,6 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-NULL =
 bin_SCRIPTS =
-CLEANFILES =
 
 codegendir = $(datadir)/glib-2.0/codegen
 codegen_PYTHON =						\

@@ -1,95 +1,30 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-insttestdir = $(pkglibexecdir)/installed-tests
+SUBDIRS = gobject refcount
 
-SUBDIRS=gobject refcount
-
-AM_CPPFLAGS = \
-	$(gmodule_INCLUDES)			\
-	-DGLIB_DISABLE_DEPRECATION_WARNINGS	\
-	-DG_LOG_DOMAIN=\"GLib\"			\
-	-DSRCDIR=\"$(srcdir)\"			\
-	$(GLIB_DEBUG_FLAGS)
-
+LDADD = $(top_builddir)/glib/libglib-2.0.la
+AM_CPPFLAGS = $(gmodule_INCLUDES) $(GLIB_DEBUG_FLAGS)
+DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS -DG_LOG_DOMAIN=\"GLib\"
 AM_CFLAGS = -g
 
-EFENCE=
+# Some random programs that appear not to be testcases and not used from any testcases
+check_PROGRAMS += \
+	testgdateparser				\
+	unicode-normalize			\
+	$(NULL)
 
-libglib = $(top_builddir)/glib/libglib-2.0.la
-libgthread = $(top_builddir)/gthread/libgthread-2.0.la
-libgmodule = $(top_builddir)/gmodule/libgmodule-2.0.la
-libgobject = $(top_builddir)/gobject/libgobject-2.0.la
+# So far, this is the only gtester-ified testcase here
+test_programs = \
+	testglib				\
+	$(NULL)
 
-libadd_libgmodule = $(libgmodule)
-libadd_libglib = $(libglib)
-if PLATFORM_WIN32
-no_undefined = -no-undefined
-
-module_test_exp = module-test.exp
-
-module-test.exp: module-test.o
-	$(DLLTOOL) --output-exp module-test.exp module-test.o
-
-spawn_test_win32_gui = spawn-test-win32-gui
-
-spawn_test_win32_gui_LDFLAGS = -mwindows
-
-endif
-
-EXTRA_DIST +=					\
-	$(test_scripts)				\
-	makefile.msc.in				\
-	casefold.txt				\
-	casemap.txt				\
-	gen-casefold-txt.pl			\
-	gen-casemap-txt.pl			\
-	iochannel-test-infile			\
-	utf8.txt				\
-	timeloop-basic.c			\
-	assert-msg-test.gdb
-
-BUILT_EXTRA_DIST =				\
-	makefile.msc
-
-if HAVE_CXX
-CXX_TEST = cxx-test
-cxx_test_LDADD = $(progs_ldadd)
-cxx_test_SOURCES = cxx-test.C
-else
-CXX_TEST =
-endif
-
-if ENABLE_TIMELOOP
-timeloop = timeloop
-endif
-noinst_PROGRAMS = $(TEST_PROGS)	\
-	testgdate 		\
-	testgdateparser 	\
-	unicode-normalize 	\
-	unicode-collate 	\
-	$(timeloop) 		\
-	assert-msg-test		\
-	datetime
-
-TEST_PROGS		+= testglib
-testglib_SOURCES         = testglib.c
-testglib_LDADD		 = $(libglib)
-
-
-testgdate_LDADD = $(libglib)
-testgdateparser_LDADD = $(libglib)
-unicode_normalize_LDADD = $(libglib)
-unicode_collate_LDADD = $(libglib)
-assert_msg_test_LDADD = $(libglib)
-if ENABLE_TIMELOOP
-timeloop_LDADD = $(libglib)
-endif
-datetime_LDADD = $(libglib)
-
-test_programs =					\
+# These are not yet gtester-ified, so mark them as for 'installed' only so we
+# don't run them under the framework.  We will handle them manually below.
+installed_test_programs = \
+	testgdate				\
+	datetime				\
 	atomic-test				\
 	bit-test				\
-	$(CXX_TEST)				\
 	child-test				\
 	completion-test				\
 	dirname-test				\
@@ -99,122 +34,124 @@ test_programs =					\
 	iochannel-test				\
 	mainloop-test				\
 	mapping-test				\
-	module-test				\
 	onceinit				\
 	asyncqueue-test				\
 	qsort-test				\
 	relation-test				\
-	slice-test				\
-	slice-color				\
 	slice-concurrent			\
 	slice-threadinit			\
 	sources					\
 	spawn-test				\
-	$(spawn_test_win32_gui)			\
 	thread-test				\
 	threadpool-test				\
 	type-test				\
 	unicode-caseconv			\
-	unicode-encoding
-
-test_scripts = run-collate-tests.sh run-assert-msg-test.sh
-
-test_script_support_programs = unicode-collate
-
-check_PROGRAMS = $(test_programs) $(test_script_support_programs)
-
-TESTS = $(test_programs) $(test_scripts)
-TESTS_ENVIRONMENT = srcdir=$(srcdir) \
-	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset \
-	MALLOC_CHECK_=2	\
-        MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
-
-test_data = 				\
-	iochannel-test-infile		\
-	casemap.txt			\
-	casefold.txt			\
-	utf8.txt			\
+	unicode-encoding			\
 	$(NULL)
 
-if BUILDOPT_INSTALL_TESTS
-insttest_PROGRAMS = $(test_programs)
+test_extra_programs = \
+	slice-test				\
+	slice-color				\
+	assert-msg-test				\
+	unicode-collate				\
+	$(NULL)
 
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-testmeta_DATA = $(test_programs:=.test)
+# These don't appear to work installed and we don't want to run them under gtester either...
+dist_uninstalled_test_extra_scripts = \
+	run-collate-tests.sh			\
+	run-assert-msg-test.sh			\
+	$(NULL)
 
-insttest_DATA = $(test_data)
+test_data = \
+	iochannel-test-infile			\
+	casemap.txt				\
+	casefold.txt				\
+	utf8.txt				\
+	$(NULL)
 
-%.test: %$(EXEEXT) Makefile
-	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
-	 echo 'Type=session' >> $@.tmp; \
-	 echo 'Exec=env G_TEST_DATA=$(pkglibexecdir)/installed-tests $(pkglibexecdir)/installed-tests/$<' >> $@.tmp; \
-	 mv $@.tmp $@)
+# Run the 'installed' tests manually in-tree.
+# This will cause them to be built even if installed tests are disabled.
+check_PROGRAMS += $(installed_test_programs) $(installed_test_extra_programs)
+check_SCRIPTS += $(installed_test_scripts)
+TESTS = $(installed_test_programs) $(dist_uninstalled_test_extra_scripts)
+TESTS_ENVIRONMENT = \
+	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset	\
+	MALLOC_CHECK_=2						\
+	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 
-endif
-
-progs_ldadd = $(EFENCE) $(libglib) $(EFENCE)
-thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
-module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
-
-atomic_test_LDADD = $(progs_ldadd)
-bit_test_LDADD = $(progs_ldadd)
-child_test_LDADD = $(thread_ldadd)
-completion_test_LDADD = $(progs_ldadd)
-dirname_test_LDADD = $(progs_ldadd)
-file_test_LDADD = $(progs_ldadd)
-env_test_LDADD = $(progs_ldadd)
-gio_test_LDADD = $(progs_ldadd)
-iochannel_test_LDADD = $(progs_ldadd)
-mainloop_test_LDADD = $(thread_ldadd)
-mapping_test_LDADD = $(progs_ldadd)
-module_test_LDADD = $(module_ldadd) $(module_test_exp)
+test_programs += module-test
+module_test_DEPENDENCIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
+module_test_LDADD = $(LDADD) $(top_builddir)/gmodule/libgmodule-2.0.la
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
-onceinit_LDADD = $(thread_ldadd)
-asyncqueue_test_LDADD = $(thread_ldadd)
-qsort_test_LDADD = $(progs_ldadd)
-relation_test_LDADD = $(progs_ldadd)
 slice_test_SOURCES = slice-test.c memchunks.c
-slice_test_LDADD = $(thread_ldadd)
 slice_color_SOURCES = slice-color.c memchunks.c
-slice_color_LDADD = $(thread_ldadd)
-slice_concurrent_SOURCES = slice-concurrent.c
-slice_concurrent_LDADD = $(thread_ldadd)
-slice_threadinit_SOURCES = slice-threadinit.c
-slice_threadinit_LDADD = $(thread_ldadd)
-sources_LDADD = $(progs_ldadd)
-spawn_test_LDADD = $(progs_ldadd)
-thread_test_LDADD = $(thread_ldadd)
-threadpool_test_LDADD = $(thread_ldadd)
-type_test_LDADD = $(progs_ldadd)
-unicode_encoding_LDADD = $(progs_ldadd)
-unicode_caseconv_LDADD = $(progs_ldadd)
+slice_threadinit_LDADD = $(LDADD) $(top_builddir)/gthread/libgthread-2.0.la
 
-if BUILDOPT_INSTALL_TESTS
-insttest_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
-else
-noinst_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
-endif
+test_ltlibraries = libmoduletestplugin_a.la libmoduletestplugin_b.la
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
-libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(insttestdir)
+libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined)
 libmoduletestplugin_a_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
-libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined) -rpath $(insttestdir)
+libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined)
 libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) $(libadd_libgmodule) $(libadd_libglib)
 
-dist-hook: $(BUILT_EXTRA_DIST)
-	files='$(BUILT_EXTRA_DIST)'; 				\
-	for f in $$files; do 					\
-	  if test -f $$f; then d=.; else d=$(srcdir); fi; 	\
-	  cp $$d/$$f $(distdir) || exit 1; done
-	mkdir $(distdir)/collate;          			\
-	for f in $(srcdir)/collate/* ; do  			\
-          if test -f $$f; then cp $$f $(distdir)/collate; fi; done
+if !ENABLE_INSTALLED_TESTS
+# see http://lists.gnu.org/archive/html/bug-libtool/2013-05/msg00009.html and gio/tests/Makefile.am
+libmoduletestplugin_a_la_LDFLAGS += -rpath /
+libmoduletestplugin_b_la_LDFLAGS += -rpath /
+endif
 
-DISTCLEANFILES =		\
-	iochannel-test-outfile 	\
-	file-test-get-contents 	\
-	maptest 		\
-	mapchild 		\
+dist-hook: $(BUILT_EXTRA_DIST)
+	files='$(BUILT_EXTRA_DIST)';				\
+	for f in $$files; do					\
+	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
+	  cp $$d/$$f $(distdir) || exit 1;			\
+	done
+	mkdir $(distdir)/collate;				\
+	for f in $(srcdir)/collate/* ; do			\
+	  if test -f $$f; then cp $$f $(distdir)/collate; fi;	\
+	done
+
+if HAVE_CXX
+installed_test_programs += cxx-test
+cxx_test_SOURCES = cxx-test.C
+endif
+
+if ENABLE_TIMELOOP
+installed_test_programs += timeloop
+endif
+
+if PLATFORM_WIN32
+no_undefined = -no-undefined
+
+module_test_exp = module-test.exp
+
+module-test.exp: module-test.o
+	$(DLLTOOL) --output-exp module-test.exp module-test.o
+
+installed_test_programs += spawn-test-win32-gui
+
+spawn_test_win32_gui_LDFLAGS = -mwindows
+
+endif
+
+EXTRA_DIST += \
+	$(test_scripts)				\
+	makefile.msc.in				\
+	gen-casefold-txt.pl			\
+	gen-casemap-txt.pl			\
+	iochannel-test-infile			\
+	timeloop-basic.c			\
+	assert-msg-test.gdb
+
+BUILT_EXTRA_DIST +=				\
+	makefile.msc
+
+DISTCLEANFILES +=		\
+	iochannel-test-outfile	\
+	file-test-get-contents	\
+	maptest		\
+	mapchild		\
 	collate.out

@@ -1,6 +1,6 @@
-include $(top_srcdir)/Makefile.decl
+include $(top_srcdir)/glib.mk
 
-noinst_LTLIBRARIES = libpcre.la
+noinst_LTLIBRARIES += libpcre.la
 
 libpcre_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GRegex\" \
