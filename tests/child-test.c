@@ -164,9 +164,6 @@ main (int argc, char *argv[])
     }
 #endif
 
-#ifdef TEST_THREAD
-  g_thread_init (NULL);
-#endif
   main_loop = g_main_loop_new (NULL, FALSE);
 
 #ifdef G_OS_WIN32

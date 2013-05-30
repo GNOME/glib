@@ -398,13 +398,11 @@ recurser_start (gpointer data)
   return TRUE;
 }
 
-int 
+int
 main (int   argc,
       char *argv[])
 {
   gint i;
-
-  g_thread_init (NULL);
 
   context_array = g_ptr_array_new ();
 

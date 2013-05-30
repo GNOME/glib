@@ -452,8 +452,6 @@ test_check_start_and_stop (gpointer user_data)
 int
 main (int argc, char *argv[])
 {
-  g_thread_init (NULL);
-
   DEBUG_MSG (("Starting... (in one second)"));
   g_timeout_add (1000, test_check_start_and_stop, NULL);
 

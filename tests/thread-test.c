@@ -382,7 +382,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_thread_init (NULL);
   run_all_tests ();
 
   /* Now we rerun all tests, but this time we fool the system into

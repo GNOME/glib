@@ -185,8 +185,6 @@ main (int argc, char *argv[])
   gint   sort_interval;
   gchar *msg G_GNUC_UNUSED;
 
-  g_thread_init (NULL);
-
   basic_tests ();
 
   PRINT_MSG (("creating async queue..."));

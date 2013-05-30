@@ -357,9 +357,6 @@ main (int   argc,
       return 0;
     }
 
-  if (n_threads)
-    g_thread_init (NULL);
-
   if (argc > 1)
     {
       for (i = 1; i < argc; i++)

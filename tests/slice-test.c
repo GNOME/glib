@@ -264,8 +264,6 @@ main (int   argc,
       seedp = &seed32;
     }
 
-  g_thread_init (NULL);
-
   if (argc <= 1)
     usage();
 
