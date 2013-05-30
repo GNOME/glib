@@ -144,6 +144,7 @@ typedef void (* GSpawnChildSetupFunc) (gpointer user_data);
 
 /**
  * GSpawnFlags:
+ * @G_SPAWN_DEFAULT: no flags, default behaviour
  * @G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will be
  *   inherited by the child; otherwise all descriptors except stdin/stdout/stderr
  *   will be closed before calling exec() in the child.
@@ -171,6 +172,7 @@ typedef void (* GSpawnChildSetupFunc) (gpointer user_data);
  */
 typedef enum
 {
+  G_SPAWN_DEFAULT                = 0,
   G_SPAWN_LEAVE_DESCRIPTORS_OPEN = 1 << 0,
   G_SPAWN_DO_NOT_REAP_CHILD      = 1 << 1,
   /* look for argv[0] in the path i.e. use execvp() */

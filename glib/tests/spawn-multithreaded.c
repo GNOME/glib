@@ -72,7 +72,7 @@ test_spawn_sync_multithreaded_instance (gpointer data)
   g_ptr_array_add (argv, arg);
   g_ptr_array_add (argv, NULL);
 
-  g_spawn_sync (NULL, (char**)argv->pdata, NULL, 0, NULL, NULL, &stdout_str, NULL, &estatus, &error);
+  g_spawn_sync (NULL, (char**)argv->pdata, NULL, G_SPAWN_DEFAULT, NULL, NULL, &stdout_str, NULL, &estatus, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (arg, ==, stdout_str);
   g_free (arg);
