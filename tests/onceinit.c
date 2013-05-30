@@ -124,8 +124,6 @@ main (int   argc,
   g_assert (p == &dummy_value);
   p = initializer2();
   g_assert (p == &dummy_value);
-  /* setup threads */
-  g_thread_init (NULL);
   /* start multiple threads for initializer3() */
   g_mutex_lock (&tmutex);
   for (i = 0; i < N_THREADS; i++)
