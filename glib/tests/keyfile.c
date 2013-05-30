@@ -1309,7 +1309,7 @@ test_load (void)
   /* Uses the value of $XDG_DATA_HOME we set in main() */
   loaded = g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error);
 #else
-  loaded = g_key_file_load_from_file (file, SRCDIR "/keyfiletest.ini", 0, &error);
+  loaded = g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DIST, "keyfiletest.ini", NULL), 0, &error);
 #endif
   g_assert_no_error (error);
   g_assert (loaded);

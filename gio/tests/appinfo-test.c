@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   g_assert_cmpint (pid_from_env, ==, getpid ());
 
   envvar = g_getenv ("GIO_LAUNCHED_DESKTOP_FILE");
-  g_assert_cmpstr (envvar, ==, SRCDIR "/appinfo-test.desktop");
+  g_assert_cmpstr (envvar, ==, g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL));
 
   return 0;
 }

@@ -12,7 +12,6 @@ int main (int argc, char **argv)
   FILE *infile;
   char buffer[1024];
   char **strings;
-  const char *srcdir;
   char *filename;
   const char *locale;
   const char *test;
@@ -21,12 +20,9 @@ int main (int argc, char **argv)
   char *current_locale = setlocale (LC_CTYPE, NULL);
   gint result = 0;
 
-  if (g_getenv ("G_TEST_DATA"))
-    srcdir = g_getenv ("G_TEST_DATA");
-  else
-    srcdir = SRCDIR;
+  g_test_init (&argc, &argv, NULL);
 
-  filename = g_strconcat (srcdir, G_DIR_SEPARATOR_S, "casemap.txt", NULL);
+  filename = g_test_build_filename (G_TEST_DIST, "casemap.txt", NULL);
 
   infile = fopen (filename, "r");
   if (!infile)
@@ -96,7 +92,7 @@ int main (int argc, char **argv)
   fclose (infile);
 
   g_free (filename);
-  filename = g_strconcat (srcdir, G_DIR_SEPARATOR_S, "casefold.txt", NULL);
+  filename = g_test_build_filename (G_TEST_DIST, "casefold.txt", NULL);
   
   infile = fopen (filename, "r");
   if (!infile)

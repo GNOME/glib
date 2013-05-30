@@ -357,7 +357,7 @@ test_extra_getters (void)
   gchar *s;
   gboolean b;
 
-  appinfo = g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL));
   g_assert (appinfo != NULL);
 
   g_assert (g_desktop_app_info_has_key (appinfo, "Terminal"));

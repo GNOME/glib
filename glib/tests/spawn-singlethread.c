@@ -204,7 +204,7 @@ main (int   argc,
   if (!g_file_test (echo_script_path, G_FILE_TEST_EXISTS))
     {
       g_free (echo_script_path);
-      echo_script_path = g_build_filename (SRCDIR, "echo-script", NULL);
+      echo_script_path = g_test_build_filename (G_TEST_DIST, "echo-script", NULL);
     }
   g_free (dirname);
 
