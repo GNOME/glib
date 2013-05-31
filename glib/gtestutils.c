@@ -3074,7 +3074,7 @@ g_test_get_filename (GTestFileType  file_type,
 
   g_assert (g_test_initialized ());
   if (test_filename_free_list == NULL)
-    g_error ("g_test_get_filename() can only be used within testcase funcitons");
+    g_error ("g_test_get_filename() can only be used within testcase functions");
 
   va_start (ap, first_path);
   result = g_test_build_filename_va (file_type, first_path, ap);
