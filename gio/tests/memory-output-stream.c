@@ -122,6 +122,7 @@ test_properties (void)
   gsize data_size_prop;
   gpointer data_fun;
   gpointer data_prop;
+  gpointer func;
 
   g_test_bug ("605733");
 
@@ -144,6 +145,15 @@ test_properties (void)
   data_fun = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
   g_object_get (mo, "data", &data_prop, NULL);
   g_assert_cmphex (GPOINTER_TO_SIZE (data_fun), ==, GPOINTER_TO_SIZE (data_prop));
+
+  g_object_get (mo, "realloc-function", &func, NULL);
+  g_assert (func == g_realloc);
+  g_object_get (mo, "destroy-function", &func, NULL);
+  g_assert (func == g_free);
+
+  data_size_fun = g_memory_output_stream_get_size (G_MEMORY_OUTPUT_STREAM (mo));
+  g_object_get (mo, "size", &data_size_prop, NULL);
+  g_assert_cmpint (data_size_fun, ==, data_size_prop);
 
   g_object_unref (o);
   g_object_unref (mo);
