@@ -274,9 +274,6 @@ gdbus_connection_flush_SOURCES = \
 	test-pipe-unix.c			\
 	test-pipe-unix.h
 
-test_programs += gdbus-exit-on-close
-gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c $(gdbus_tests_sources) $(gdbus_sessionbus_sources)
-
 test_programs += gdbus-non-socket
 gdbus_non_socket_SOURCES = \
 	gdbus-non-socket.c			\
@@ -316,6 +313,7 @@ test_programs += \
 	gdbus-auth				\
 	gdbus-connection			\
 	gdbus-bz627724				\
+	gdbus-exit-on-close			\
 	gdbus-connection-loss			\
 	gdbus-connection-slow			\
 	gdbus-names				\
@@ -332,6 +330,7 @@ test_programs += \
 	$(NULL)
 
 gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
+gdbus_exit_on_close_SOURCES              = $(gdbus_sessionbus_sources) gdbus-exit-on-close.c
 gapplication_SOURCES                     = $(gdbus_sessionbus_sources) gapplication.c
 actions_SOURCES                          = $(gdbus_sessionbus_sources) actions.c
 gdbus_auth_SOURCES                       = $(gdbus_sessionbus_sources) gdbus-auth.c
