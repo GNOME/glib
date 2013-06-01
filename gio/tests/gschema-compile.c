@@ -5,8 +5,6 @@
 #include <gio/gio.h>
 #include <gstdio.h>
 
-const gchar *glib_compile_schemas;
-
 typedef struct {
   const gchar *name;
   const gchar *opt;
@@ -20,7 +18,7 @@ test_schema_do_compile (gpointer data)
   gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
   gchar *path = g_test_build_filename (G_TEST_DIST, "schema-tests", filename, NULL);
   gchar *argv[] = {
-    (gchar*)glib_compile_schemas,
+    "../glib-compile-schemas",
     "--strict",
     "--dry-run",
     "--schema-file", path,
@@ -140,11 +138,6 @@ main (int argc, char *argv[])
   guint i;
 
   setlocale (LC_ALL, "");
-
-  if (g_getenv ("GLIB_COMPILE_SCHEMAS"))
-    glib_compile_schemas = g_getenv ("GLIB_COMPILE_SCHEMAS");
-  else
-    glib_compile_schemas = "/usr/bin/glib-compile-schemas";
 
   g_test_init (&argc, &argv, NULL);
 

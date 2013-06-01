@@ -2245,51 +2245,37 @@ main (int argc, char *argv[])
 
   if (!g_test_subprocess ())
     {
-      const gchar *glib_mkenums;
-      const gchar *glib_compile_schemas;
-      gchar *cmdline;
-
       backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
-      g_setenv ("XDG_DATA_DIRS", g_test_get_dir (G_TEST_DIST), TRUE);
+      g_setenv ("XDG_DATA_DIRS", ".", TRUE);
       g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
 
       if (!backend_set)
         g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
-      if (g_getenv ("GLIB_MKENUMS"))
-        glib_mkenums = g_getenv ("GLIB_MKENUMS");
-      else
-        glib_mkenums = "glib-mkenums";
-
-      cmdline = g_strdup_printf ("%s --template %s/enums.xml.template %s/testenum.h", glib_mkenums,
-                                g_test_get_dir (G_TEST_DIST), g_test_get_dir (G_TEST_DIST));
-
-      g_assert (g_spawn_command_line_sync (cmdline, &enums, NULL, &result, NULL));
+      g_remove ("org.gtk.test.enums.xml");
+      g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
+                                           "--template " SRCDIR "/enums.xml.template "
+                                           SRCDIR "/testenum.h",
+                                           &enums, NULL, &result, NULL));
       g_assert (result == 0);
       g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
       g_free (enums);
 
-      g_free (cmdline);
-
-      if (g_getenv ("GLIB_COMPILE_SCHEMAS"))
-        glib_compile_schemas = g_getenv ("GLIB_COMPILE_SCHEMAS");
-      else
-        glib_compile_schemas = "glib-compile-schemas";
-
-      cmdline = g_strdup_printf ("%s --targetdir=. --schema-file=org.gtk.test.enums.xml --schema-file=%s/org.gtk.test.gschema.xml", glib_compile_schemas, g_test_get_dir (G_TEST_DIST));
-      g_assert (g_spawn_command_line_sync (cmdline, NULL, NULL, &result, NULL));
+      g_remove ("gschemas.compiled");
+      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
+                                           "--schema-file=org.gtk.test.enums.xml "
+                                           "--schema-file=" SRCDIR "/org.gtk.test.gschema.xml",
+                                           NULL, NULL, &result, NULL));
       g_assert (result == 0);
-      g_free (cmdline);
 
-      g_mkdir ("schema-source", 0777);
       g_remove ("schema-source/gschemas.compiled");
-
-      cmdline = g_strdup_printf ("%s --targetdir=schema-source --schema-file=%s/org.gtk.schemasourcecheck.gschema.xml", glib_compile_schemas, g_test_get_dir (G_TEST_DIST));
-      g_assert (g_spawn_command_line_sync (cmdline, NULL, NULL, &result, NULL));
+      g_mkdir ("schema-source", 0777);
+      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=schema-source "
+                                           "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
+                                           NULL, NULL, &result, NULL));
       g_assert (result == 0);
-      g_free (cmdline);
-    }
+   }
 
   g_test_add_func ("/gsettings/basic", test_basic);
 
