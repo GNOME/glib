@@ -48,10 +48,6 @@ else
 test-nonrecursive:
 endif
 
-if OS_WIN32
-TESTS += $(addsuffix .exe, $(TEST_PROGS))
-endif
-
 # test-report: run tests in subdirs and generate report
 # perf-report: run tests in subdirs with -m perf and generate report
 # full-report: like test-report: with -m perf and -m slow
@@ -166,6 +162,11 @@ check-local: test-nonrecursive
 # we use test -z "$(TEST_PROGS)" above, so make sure we have no extra whitespace...
 TEST_PROGS += $(strip $(test_programs) $(test_scripts) $(uninstalled_test_programs) $(uninstalled_test_scripts) \
                       $(dist_test_scripts) $(dist_uninstalled_test_scripts))
+
+if OS_WIN32
+TESTS += $(test_programs) $(test_scripts) $(uninstalled_test_programs) $(uninstalled_test_scripts) \
+         $(dist_test_scripts) $(dist_uninstalled_test_scripts)
+endif
 
 # Note: build even the installed-only targets during 'make check' to ensure that they still work.
 # We need to do a bit of trickery here and manage disting via EXTRA_DIST instead of using dist_ prefixes to
