@@ -31,6 +31,7 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <glib/glib-unix.h>
 #include "gioerror.h"
 #include "gsimpleasyncresult.h"
 #include "gunixinputstream.h"
@@ -510,14 +511,22 @@ g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
 					    GCancellable         *cancellable)
 {
   GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (stream);
-  GSource *inner_source, *pollable_source;
+  GSource *inner_source, *cancellable_source, *pollable_source;
 
   pollable_source = g_pollable_source_new (G_OBJECT (stream));
 
-  inner_source = _g_fd_source_new (unix_stream->priv->fd, G_IO_IN, cancellable);
+  inner_source = g_unix_fd_source_new (unix_stream->priv->fd, G_IO_IN);
   g_source_set_dummy_callback (inner_source);
   g_source_add_child_source (pollable_source, inner_source);
   g_source_unref (inner_source);
+
+  if (cancellable)
+    {
+      cancellable_source = g_cancellable_source_new (cancellable);
+      g_source_set_dummy_callback (cancellable_source);
+      g_source_add_child_source (pollable_source, cancellable_source);
+      g_source_unref (cancellable_source);
+    }
 
   return pollable_source;
 }

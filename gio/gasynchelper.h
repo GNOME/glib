@@ -31,14 +31,6 @@
 
 G_BEGIN_DECLS
 
-typedef gboolean (*GFDSourceFunc) (int          fd,
-				   GIOCondition condition,
-				   gpointer     user_data);
-
-GSource *_g_fd_source_new      (int              fd,
-				gushort          events,
-				GCancellable    *cancellable);
-
 #ifdef G_OS_WIN32
 gboolean _g_win32_overlap_wait_result (HANDLE           hfile,
                                        OVERLAPPED      *overlap,
