@@ -65,6 +65,26 @@ MEM_OVERFLOW_TEST (renew_a, p = g_malloc (1); p = g_renew (X, p, a))
 MEM_OVERFLOW_TEST (renew_b, p = g_malloc (1); p = g_renew (X, p, b))
 
 static void
+mem_overflow_malloc_0 (void)
+{
+  gpointer p;
+
+  p = g_malloc (0);
+  g_assert (p == NULL);
+}
+
+static void
+mem_overflow_realloc_0 (void)
+{
+  gpointer p;
+
+  p = g_malloc (10);
+  g_assert (p != NULL);
+  p = g_realloc (p, 0);
+  g_assert (p == NULL);
+}
+
+static void
 mem_overflow (void)
 {
   gpointer p, q;
@@ -144,6 +164,9 @@ mem_overflow (void)
 
   CHECK_SUBPROCESS_FAIL (renew_a);
   CHECK_SUBPROCESS_PASS (renew_b);
+
+  CHECK_SUBPROCESS_PASS (malloc_0);
+  CHECK_SUBPROCESS_PASS (realloc_0);
 }
 
 typedef struct
@@ -198,6 +221,8 @@ main (int   argc,
   g_test_add_func ("/mem/overflow/subprocess/new0_b", mem_overflow_new0_b);
   g_test_add_func ("/mem/overflow/subprocess/renew_a", mem_overflow_renew_a);
   g_test_add_func ("/mem/overflow/subprocess/renew_b", mem_overflow_renew_b);
+  g_test_add_func ("/mem/overflow/subprocess/malloc_0", mem_overflow_malloc_0);
+  g_test_add_func ("/mem/overflow/subprocess/realloc_0", mem_overflow_realloc_0);
 
   g_test_add_func ("/mem/empty-alloc", empty_alloc);
   g_test_add_func ("/mem/empty-alloc/subprocess", empty_alloc_subprocess);
