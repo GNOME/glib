@@ -97,6 +97,7 @@ test_progs +=			\
 	gdbus-close-pending	\
 	gdbus-connection-flush	\
 	gdbus-peer		\
+	gdbus-overflow		\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-peer-object-manager \
@@ -523,7 +524,7 @@ testdata_DATA = $(test_files)
 
 testmetadir = $(datadir)/installed-tests/$(PACKAGE)
 xfail_tests = desktop-app-info.test
-developer_only_tests = gsettings.test
+developer_only_tests = gsettings.test gdbus-overflow.test
 testmeta_DATA = $(filter-out $(xfail_tests) $(developer_only_tests),$(test_progs:=.test))
 
 %.test: %$(EXEEXT) Makefile
