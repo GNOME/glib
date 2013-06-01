@@ -5,6 +5,11 @@ AM_CPPFLAGS = -g $(glib_INCLUDES) $(GLIB_DEBUG_FLAGS)
 DEFS = -DG_LOG_DOMAIN=\"GLib\" -DEXEEXT=\"$(EXEEXT)\"
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
+# These tests corrupt the gcov bookkeeping, so we
+# skip them. See bug 682133
+spawn_singlethread_LDFLAGS = $(patsubst -lgcov,,$(LDFLAGS))
+spawn_multithreaded_LDFLAGS = $(patsubst -lgcov,,$(LDFLAGS))
+
 # -----------------------------------------------------------------------------
 
 dist_test_data = \
