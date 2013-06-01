@@ -315,6 +315,9 @@ g_unix_fd_source_dispatch (GSource     *source,
   return (* func) (fd_source->fd, g_source_query_unix_fd (source, fd_source->tag), user_data);
 }
 
+GSourceFuncs g_unix_fd_source_funcs = {
+  NULL, NULL, g_unix_fd_source_dispatch, NULL
+};
 
 /**
  * g_unix_fd_source_new:
@@ -334,13 +337,10 @@ GSource *
 g_unix_fd_source_new (gint         fd,
                       GIOCondition condition)
 {
-  static GSourceFuncs source_funcs = {
-    NULL, NULL, g_unix_fd_source_dispatch, NULL
-  };
   GUnixFDSource *fd_source;
   GSource *source;
 
-  source = g_source_new (&source_funcs, sizeof (GUnixFDSource));
+  source = g_source_new (&g_unix_fd_source_funcs, sizeof (GUnixFDSource));
   fd_source = (GUnixFDSource *) source;
 
   fd_source->fd = fd;

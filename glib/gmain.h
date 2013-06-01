@@ -605,6 +605,10 @@ void     g_main_context_invoke      (GMainContext   *context,
 GLIB_VAR GSourceFuncs g_timeout_funcs;
 GLIB_VAR GSourceFuncs g_child_watch_funcs;
 GLIB_VAR GSourceFuncs g_idle_funcs;
+#ifdef G_OS_UNIX
+GLIB_VAR GSourceFuncs g_unix_signal_funcs;
+GLIB_VAR GSourceFuncs g_unix_fd_source_funcs;
+#endif
 
 G_END_DECLS
 

@@ -434,7 +434,7 @@ G_LOCK_DEFINE_STATIC (unix_signal_lock);
 static GSList *unix_signal_watches;
 static GSList *unix_child_watches;
 
-static GSourceFuncs g_unix_signal_funcs =
+GSourceFuncs g_unix_signal_funcs =
 {
   g_unix_signal_watch_prepare,
   g_unix_signal_watch_check,

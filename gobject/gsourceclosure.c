@@ -25,6 +25,9 @@
 #include "gmarshal.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
 
 G_DEFINE_BOXED_TYPE (GIOChannel, g_io_channel, g_io_channel_ref, g_io_channel_unref)
 
@@ -76,6 +79,37 @@ io_watch_closure_callback (GIOChannel   *channel,
   return result;
 }
 
+#ifdef G_OS_UNIX
+static gboolean
+g_unix_fd_source_closure_callback (int           fd,
+                                   GIOCondition  condition,
+                                   gpointer      data)
+{
+  GClosure *closure = data;
+
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params[0], G_TYPE_INT);
+  g_value_set_int (&params[0], fd);
+
+  g_value_init (&params[1], G_TYPE_IO_CONDITION);
+  g_value_set_flags (&params[1], condition);
+
+  g_closure_invoke (closure, &result_value, 2, params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return result;
+}
+#endif
+
 static gboolean
 source_closure_callback (gpointer data)
 {
@@ -105,7 +139,14 @@ closure_callback_get (gpointer     cb_data,
     {
       if (source->source_funcs == &g_io_watch_funcs)
 	closure_callback = (GSourceFunc)io_watch_closure_callback;
+#ifdef G_OS_UNIX
+      else if (source->source_funcs == &g_unix_fd_source_funcs)
+        closure_callback = (GSourceFunc)g_unix_fd_source_closure_callback;
+#endif
       else if (source->source_funcs == &g_timeout_funcs ||
+#ifdef G_OS_UNIX
+               source->source_funcs == &g_unix_signal_funcs ||
+#endif
 	       source->source_funcs == &g_idle_funcs)
 	closure_callback = source_closure_callback;
     }
@@ -146,6 +187,10 @@ g_source_set_closure (GSource  *source,
   g_return_if_fail (closure != NULL);
 
   if (!source->source_funcs->closure_callback &&
+#ifdef G_OS_UNIX
+      source->source_funcs != &g_unix_fd_source_funcs &&
+      source->source_funcs != &g_unix_signal_funcs &&
+#endif
       source->source_funcs != &g_io_watch_funcs &&
       source->source_funcs != &g_timeout_funcs &&
       source->source_funcs != &g_idle_funcs)
