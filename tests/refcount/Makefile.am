@@ -6,7 +6,7 @@ DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS
 AM_CFLAGS = -g
 
 # These are not gtester tests, so handle them manually
-TESTS = \
+TESTS += \
 	closures				\
 	objects					\
 	objects2				\
