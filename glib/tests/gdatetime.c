@@ -550,8 +550,8 @@ test_GDateTime_diff (void)
 #define TEST_DIFF(y,m,d,y2,m2,d2,u) G_STMT_START { \
   GDateTime *dt1, *dt2; \
   GTimeSpan  ts = 0; \
-  dt1 = g_date_time_new_local (y, m, d, 0, 0, 0); \
-  dt2 = g_date_time_new_local (y2, m2, d2, 0, 0, 0); \
+  dt1 = g_date_time_new_utc (y, m, d, 0, 0, 0); \
+  dt2 = g_date_time_new_utc (y2, m2, d2, 0, 0, 0); \
   ts = g_date_time_difference (dt2, dt1); \
   g_assert_cmpint (ts, ==, u); \
   g_date_time_unref (dt1); \
