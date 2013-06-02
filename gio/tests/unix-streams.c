@@ -328,6 +328,8 @@ test_basic (void)
   g_assert (!g_unix_input_stream_get_close_fd (is));
   g_assert_cmpint (g_unix_input_stream_get_fd (is), ==, 0);
 
+  g_assert (!g_input_stream_has_pending (G_INPUT_STREAM (is)));
+
   g_object_unref (is);
 
   os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (1, TRUE));
@@ -341,6 +343,8 @@ test_basic (void)
   g_unix_output_stream_set_close_fd (os, FALSE);
   g_assert (!g_unix_output_stream_get_close_fd (os));
   g_assert_cmpint (g_unix_output_stream_get_fd (os), ==, 1);
+
+  g_assert (!g_output_stream_has_pending (G_OUTPUT_STREAM (os)));
 
   g_object_unref (os);
 }
