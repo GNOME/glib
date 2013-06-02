@@ -118,7 +118,6 @@ test_parse_name (void)
   file = g_file_parse_name ("~foo");
   name = g_file_get_parse_name (file);
   g_assert (name != NULL);
-  g_print (name);
   g_object_unref (file);
   g_free (name);
 }
