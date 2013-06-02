@@ -602,6 +602,19 @@ test_mime_ignore_nonexisting (void)
   g_assert (appinfo == NULL);
 }
 
+static void
+test_all (void)
+{
+  GList *all, *l;
+
+  all = g_app_info_get_all ();
+
+  for (l = all; l; l = l->next)
+    g_assert (G_IS_APP_INFO (l->data));
+
+  g_list_free_full (all, g_object_unref);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -615,6 +628,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/mime/scheme-handler", test_scheme_handler);
   g_test_add_func ("/appinfo/mime/default-last-used", test_mime_default_last_used);
   g_test_add_func ("/appinfo/mime/ignore-nonexisting", test_mime_ignore_nonexisting);
+  g_test_add_func ("/appinfo/all", test_all);
 
   return g_test_run ();
 }
