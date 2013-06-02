@@ -13,6 +13,10 @@ test_write (void)
 
   g_assert_cmpint (g_buffered_output_stream_get_buffer_size (G_BUFFERED_OUTPUT_STREAM (out)), ==, 4096);
   g_assert (!g_buffered_output_stream_get_auto_grow (G_BUFFERED_OUTPUT_STREAM (out)));
+  g_object_set (out, "auto-grow", TRUE, NULL);
+  g_assert (g_buffered_output_stream_get_auto_grow (G_BUFFERED_OUTPUT_STREAM (out)));
+  g_object_set (out, "auto-grow", FALSE, NULL);
+
   g_buffered_output_stream_set_buffer_size (G_BUFFERED_OUTPUT_STREAM (out), 16);
   g_assert_cmpint (g_buffered_output_stream_get_buffer_size (G_BUFFERED_OUTPUT_STREAM (out)), ==, 16);
 
@@ -54,6 +58,8 @@ test_grow (void)
   g_object_get (out, "buffer-size", &size, "auto-grow", &grow, NULL);
   g_assert_cmpint (size, ==, 16);
   g_assert (grow);
+
+  g_assert (g_seekable_can_seek (G_SEEKABLE (out)));
 
   error = NULL;
   g_assert_cmpint (g_output_stream_write (out, buffer, 10, NULL, &error), ==, 10);
