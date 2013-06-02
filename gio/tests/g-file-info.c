@@ -69,6 +69,7 @@ test_g_file_info (void)
   GFileInfo *info_dup;
   GFileInfo *info_copy;
   char **attr_list;
+  GFileAttributeMatcher *matcher;
   
   info = g_file_info_new ();
   
@@ -100,15 +101,32 @@ test_g_file_info (void)
   g_file_info_copy_into (info_dup, info_copy);
   g_assert (info_copy != NULL);
   test_assigned_values (info_copy);
-	
+
   /*  Test remove attribute */
   g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
   g_file_info_set_attribute_int32 (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER, 10);
   g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == TRUE);
-	
+
+  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INT32);
+  g_assert (g_file_info_get_attribute_status (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) != G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING);
+
   g_file_info_remove_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
   g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
-	
+  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INVALID);
+
+  matcher = g_file_attribute_matcher_new (G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                          G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+
+  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
+  g_assert (g_file_attribute_matcher_matches_only (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == FALSE);
+  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
+
+  g_file_info_set_attribute_mask (info, matcher);
+  g_file_attribute_matcher_unref (matcher);
+
+  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
+  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
+
   g_object_unref (info);
   g_object_unref (info_dup);
   g_object_unref (info_copy);
