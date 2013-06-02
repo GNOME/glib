@@ -405,12 +405,26 @@ g_inet_address_new_from_string (const gchar *string)
   g_networking_init ();
 
 #ifdef G_OS_WIN32
-  memset (&sa, 0, sizeof (sa));
-  len = sizeof (sa);
-  if (WSAStringToAddress ((LPTSTR) string, AF_INET, NULL, (LPSOCKADDR) &sa, &len) == 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&sin->sin_addr, AF_INET);
-  else if (WSAStringToAddress ((LPTSTR) string, AF_INET6, NULL, (LPSOCKADDR) &sa, &len) == 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&sin6->sin6_addr, AF_INET6);
+  /* We need to make sure to not pass a string of the form
+   * "IPv4addr:port" or "[IPv6addr]:port" to WSAStringToAddress(),
+   * since it would accept them (returning both the address and the
+   * port), but we only want to accept standalone IP addresses. (In
+   * the IPv6 case, WINE actually only checks for the ']', not the
+   * '[', which is why we do the same here.)
+   */
+  if (!strchr (string, ':'))
+    {
+      len = sizeof (sa);
+      if (WSAStringToAddress ((LPTSTR) string, AF_INET, NULL, (LPSOCKADDR) &sa, &len) == 0)
+        return g_inet_address_new_from_bytes ((guint8 *)&sin->sin_addr, AF_INET);
+    }
+
+  if (!strchr (string, ']'))
+    {
+      len = sizeof (sa);
+      if (WSAStringToAddress ((LPTSTR) string, AF_INET6, NULL, (LPSOCKADDR) &sa, &len) == 0)
+        return g_inet_address_new_from_bytes ((guint8 *)&sin6->sin6_addr, AF_INET6);
+    }
 
 #else /* !G_OS_WIN32 */
 
@@ -529,20 +543,19 @@ g_inet_address_to_string (GInetAddress *address)
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), NULL);
 
 #ifdef G_OS_WIN32
+  memset (&sa, 0, sizeof (sa));
   sa.ss_family = address->priv->family;
   if (address->priv->family == AF_INET)
     {
       addrlen = sizeof (*sin);
       memcpy (&sin->sin_addr, &address->priv->addr.ipv4,
 	      sizeof (sin->sin_addr));
-      sin->sin_port = 0;
     }
   else
     {
       addrlen = sizeof (*sin6);
       memcpy (&sin6->sin6_addr, &address->priv->addr.ipv6,
 	      sizeof (sin6->sin6_addr));
-      sin6->sin6_port = 0;
     }
   if (WSAAddressToString ((LPSOCKADDR) &sa, addrlen, NULL, buffer, &buflen) != 0)
     return NULL;
