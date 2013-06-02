@@ -150,18 +150,3 @@ im_scan_missing (gpointer user_data)
       return TRUE;
     }
 }
-
-
-/* inotify_lock must be held */
-void
-_im_diag_dump (GIOChannel *ioc)
-{
-  GList *l;
-  g_io_channel_write_chars (ioc, "missing list:\n", -1, NULL, NULL);
-  for (l = missing_sub_list; l; l = l->next)
-    {
-      inotify_sub *sub = l->data;
-      g_io_channel_write_chars (ioc, sub->dirname, -1, NULL, NULL);
-      g_io_channel_write_chars (ioc, "\n", -1, NULL, NULL);
-    }
-}

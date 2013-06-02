@@ -257,25 +257,6 @@ ik_event_new (char *buffer)
   return event;
 }
 
-ik_event_t *
-_ik_event_new_dummy (const char *name, 
-                     gint32      wd, 
-                     guint32     mask)
-{
-  ik_event_t *event = g_new0 (ik_event_t, 1);
-  event->wd = wd;
-  event->mask = mask;
-  event->cookie = 0;
-  if (name)
-    event->name = g_strdup (name);
-  else
-    event->name = g_strdup("");
-  
-  event->len = strlen (event->name);
-  
-  return event;
-}
-
 void
 _ik_event_free (ik_event_t *event)
 {
@@ -326,98 +307,6 @@ _ik_ignore (const char *path,
   
   return 0;
 }
-
-void
-_ik_move_stats (guint32 *matches, 
-                guint32 *misses)
-{
-  if (matches)
-    *matches = ik_move_matches;
-  
-  if (misses)
-    *misses = ik_move_misses;
-}
-
-const char *
-_ik_mask_to_string (guint32 mask)
-{
-  gboolean is_dir = mask & IN_ISDIR;
-  mask &= ~IN_ISDIR;
-  
-  if (is_dir)
-    {
-      switch (mask)
-	{
-	case IN_ACCESS:
-	  return "ACCESS (dir)";
-	case IN_MODIFY:
-	  return "MODIFY (dir)";
-	case IN_ATTRIB:
-	  return "ATTRIB (dir)";
-	case IN_CLOSE_WRITE:
-	  return "CLOSE_WRITE (dir)";
-	case IN_CLOSE_NOWRITE:
-	  return "CLOSE_NOWRITE (dir)"; 
-	case IN_OPEN:
-	  return "OPEN (dir)";
-	case IN_MOVED_FROM:
-	  return "MOVED_FROM (dir)";
-	case IN_MOVED_TO:
-	  return "MOVED_TO (dir)";
-	case IN_DELETE:
-	  return "DELETE (dir)";
-	case IN_CREATE:
-	  return "CREATE (dir)";
-	case IN_DELETE_SELF:
-	  return "DELETE_SELF (dir)";
-	case IN_UNMOUNT:
-	  return "UNMOUNT (dir)";
-	case IN_Q_OVERFLOW:
-	  return "Q_OVERFLOW (dir)";
-	case IN_IGNORED:
-	  return "IGNORED (dir)";
-	default:
-	  return "UNKNOWN_EVENT (dir)";
-	}
-    }
-  else
-    {
-      switch (mask)
-	{
-	case IN_ACCESS:
-	  return "ACCESS";
-	case IN_MODIFY:
-	  return "MODIFY";
-	case IN_ATTRIB:
-	  return "ATTRIB";
-	case IN_CLOSE_WRITE:
-	  return "CLOSE_WRITE";
-	case IN_CLOSE_NOWRITE:
-	  return "CLOSE_NOWRITE";
-	case IN_OPEN:
-	  return "OPEN";
-	case IN_MOVED_FROM:
-	  return "MOVED_FROM";
-	case IN_MOVED_TO:
-	  return "MOVED_TO";
-	case IN_DELETE:
-	  return "DELETE";
-	case IN_CREATE:
-	  return "CREATE";
-	case IN_DELETE_SELF:
-	  return "DELETE_SELF";
-	case IN_UNMOUNT:
-	  return "UNMOUNT";
-	case IN_Q_OVERFLOW:
-	  return "Q_OVERFLOW";
-	case IN_IGNORED:
-	  return "IGNORED";
-	default:
-	  return "UNKNOWN_EVENT";
-	}
-    }
-}
-
 
 static void
 ik_read_events (gsize  *buffer_size_out, 
@@ -480,27 +369,37 @@ ik_read_callback (gpointer user_data)
 }
 
 static gboolean
-g_timeval_lt (GTimeVal *val1, 
+g_timeval_lt (GTimeVal *val1,
               GTimeVal *val2)
 {
   if (val1->tv_sec < val2->tv_sec)
     return TRUE;
-  
+
   if (val1->tv_sec > val2->tv_sec)
     return FALSE;
-  
+
   /* val1->tv_sec == val2->tv_sec */
   if (val1->tv_usec < val2->tv_usec)
     return TRUE;
-  
+
   return FALSE;
 }
 
 static gboolean
-g_timeval_eq (GTimeVal *val1, 
+g_timeval_le (GTimeVal *val1,
               GTimeVal *val2)
 {
-  return (val1->tv_sec == val2->tv_sec) && (val1->tv_usec == val2->tv_usec);
+  if (val1->tv_sec < val2->tv_sec)
+    return TRUE;
+
+  if (val1->tv_sec > val2->tv_sec)
+    return FALSE;
+
+  /* val1->tv_sec == val2->tv_sec */
+  if (val1->tv_usec <= val2->tv_usec)
+    return TRUE;
+
+  return FALSE;
 }
 
 static void
@@ -512,15 +411,15 @@ ik_pair_events (ik_event_internal_t *event1,
   g_assert (event1->event->cookie == event2->event->cookie);
   /* We shouldn't pair an event that already is paired */
   g_assert (event1->pair == NULL && event2->pair == NULL);
-  
+
   /* Pair the internal structures and the ik_event_t structures */
   event1->pair = event2;
   event1->event->pair = event2->event;
   event2->event->is_second_in_pair = TRUE;
-  
+
   if (g_timeval_lt (&event1->hold_until, &event2->hold_until))
     event1->hold_until = event2->hold_until;
-  
+
   event2->hold_until = event1->hold_until;
 }
 
@@ -549,8 +448,7 @@ ik_event_ready (ik_event_internal_t *event)
   return
     event->event->cookie == 0 ||
     event->pair != NULL ||
-    g_timeval_lt (&event->hold_until, &tv) ||
-    g_timeval_eq (&event->hold_until, &tv);
+    g_timeval_le (&event->hold_until, &tv);
 }
 
 static void
