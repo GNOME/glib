@@ -180,7 +180,7 @@ gboolean g_test_trap_fork               (guint64              usec_timeout,
 typedef enum {
   G_TEST_SUBPROCESS_INHERIT_STDIN  = 1 << 0,
   G_TEST_SUBPROCESS_INHERIT_STDOUT = 1 << 1,
-  G_TEST_SUBPROCESS_INHERIT_STDERR = 1 << 2,
+  G_TEST_SUBPROCESS_INHERIT_STDERR = 1 << 2
 } GTestSubprocessFlags;
 
 GLIB_AVAILABLE_IN_2_38
