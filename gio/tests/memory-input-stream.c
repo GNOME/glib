@@ -263,6 +263,28 @@ test_read_bytes (void)
   g_object_unref (stream);
 }
 
+static void
+test_from_bytes (void)
+{
+  gchar data[4096], buffer[4096];
+  GBytes *bytes;
+  GError *error = NULL;
+  GInputStream *stream;
+  gint i;
+
+  for (i = 0; i < 4096; i++)
+    data[i] = 1 + i % 255;
+
+  bytes = g_bytes_new_static (data, 4096);
+  stream = g_memory_input_stream_new_from_bytes (bytes);
+  g_assert (g_input_stream_read (stream, buffer, 2048, NULL, &error) == 2048);
+  g_assert_no_error (error);
+  g_assert (strncmp (data, buffer, 2048) == 0);
+
+  g_object_unref (stream);
+  g_bytes_unref (bytes);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -274,6 +296,7 @@ main (int   argc,
   g_test_add_func ("/memory-input-stream/seek", test_seek);
   g_test_add_func ("/memory-input-stream/truncate", test_truncate);
   g_test_add_func ("/memory-input-stream/read-bytes", test_read_bytes);
+  g_test_add_func ("/memory-input-stream/from-bytes", test_from_bytes);
 
   return g_test_run();
 }
