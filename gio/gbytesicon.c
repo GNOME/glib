@@ -189,7 +189,7 @@ g_bytes_icon_hash (GIcon *icon)
 
 static gboolean
 g_bytes_icon_equal (GIcon *icon1,
-                   GIcon *icon2)
+                    GIcon *icon2)
 {
   GBytesIcon *bytes1 = G_BYTES_ICON (icon1);
   GBytesIcon *bytes2 = G_BYTES_ICON (icon2);
