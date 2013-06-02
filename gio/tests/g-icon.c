@@ -369,11 +369,12 @@ test_g_icon_serialize (void)
 static void
 test_themed_icon (void)
 {
-  GIcon *icon1, *icon2, *icon3;
+  GIcon *icon1, *icon2, *icon3, *icon4;
   const gchar *const *names;
   const gchar *names2[] = { "first", "testicon", "last", NULL };
   gchar *str;
   gboolean fallbacks;
+  GVariant *variant;
 
   icon1 = g_themed_icon_new ("testicon");
 
@@ -401,18 +402,26 @@ test_themed_icon (void)
   g_assert (g_icon_equal (icon2, icon3));
   g_free (str);
 
+  variant = g_icon_serialize (icon3);
+  icon4 = g_icon_deserialize (variant);
+  g_assert (g_icon_equal (icon3, icon4));
+  g_assert (g_icon_hash (icon3) == g_icon_hash (icon4));
+  g_variant_unref (variant);
+
   g_object_unref (icon1);
   g_object_unref (icon2);
   g_object_unref (icon3);
+  g_object_unref (icon4);
 }
 
 static void
 test_emblemed_icon (void)
 {
-  GIcon *icon1, *icon2, *icon3, *icon4;
+  GIcon *icon;
+  GIcon *icon1, *icon2, *icon3, *icon4, *icon5;
   GEmblem *emblem, *emblem1, *emblem2;
   GList *emblems;
-  GIcon *icon;
+  GVariant *variant;
 
   icon1 = g_themed_icon_new ("testicon");
   icon2 = g_themed_icon_new ("testemblem");
@@ -430,6 +439,12 @@ test_emblemed_icon (void)
   g_assert_cmpint (g_list_length (emblems), ==, 2);
 
   g_assert (!g_icon_equal (icon3, icon4));
+
+  variant = g_icon_serialize (icon4);
+  icon5 = g_icon_deserialize (variant);
+  g_assert (g_icon_equal (icon4, icon5));
+  g_assert (g_icon_hash (icon4) == g_icon_hash (icon5));
+  g_variant_unref (variant);
 
   emblem = emblems->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
@@ -451,9 +466,45 @@ test_emblemed_icon (void)
   g_object_unref (icon2);
   g_object_unref (icon3);
   g_object_unref (icon4);
+  g_object_unref (icon5);
 
   g_object_unref (emblem1);
   g_object_unref (emblem2);
+}
+
+static void
+load_cb (GObject      *source_object,
+         GAsyncResult *res,
+         gpointer      data)
+{
+  GLoadableIcon *icon = G_LOADABLE_ICON (source_object);
+  GMainLoop *loop = data;
+  GError *error = NULL;
+  GInputStream *stream;
+
+  stream = g_loadable_icon_load_finish (icon, res, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_INPUT_STREAM (stream));
+  g_object_unref (stream);
+  g_main_loop_quit (loop);
+}
+
+static void
+loadable_icon_tests (GLoadableIcon *icon)
+{
+  GError *error = NULL;
+  GInputStream *stream;
+  GMainLoop *loop;
+
+  stream = g_loadable_icon_load (icon, 20, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (G_IS_INPUT_STREAM (stream));
+  g_object_unref (stream);
+
+  loop = g_main_loop_new (NULL, FALSE);
+  g_loadable_icon_load_async (icon, 20, NULL, load_cb, loop);
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
 }
 
 static void
@@ -462,28 +513,72 @@ test_file_icon (void)
   GFile *file;
   GIcon *icon;
   GIcon *icon2;
-  GError *error;
-  GInputStream *stream;
+  GIcon *icon3;
+  GIcon *icon4;
   gchar *str;
+  GVariant *variant;
 
   file = g_file_new_for_path (g_test_get_filename (G_TEST_DIST, "g-icon.c", NULL));
   icon = g_file_icon_new (file);
   g_object_unref (file);
 
-  error = NULL;
-  stream = g_loadable_icon_load (G_LOADABLE_ICON (icon), 20, NULL, NULL, &error);
-  g_assert (stream != NULL);
-  g_assert_no_error (error);
-
-  g_object_unref (stream);
+  loadable_icon_tests (G_LOADABLE_ICON (icon));
 
   str = g_icon_to_string (icon);
   icon2 = g_icon_new_for_string (str, NULL);
   g_assert (g_icon_equal (icon, icon2));
   g_free (str);
 
+  file = g_file_new_for_path ("/\1\2\3/\244");
+  icon4 = g_file_icon_new (file);
+
+  variant = g_icon_serialize (icon4);
+  icon3 = g_icon_deserialize (variant);
+  g_assert (g_icon_equal (icon4, icon3));
+  g_assert (g_icon_hash (icon4) == g_icon_hash (icon3));
+  g_variant_unref (variant);
+
   g_object_unref (icon);
   g_object_unref (icon2);
+  g_object_unref (icon3);
+  g_object_unref (icon4);
+}
+
+static void
+test_bytes_icon (void)
+{
+  GBytes *bytes;
+  GBytes *bytes2;
+  GIcon *icon;
+  GIcon *icon2;
+  GIcon *icon3;
+  GVariant *variant;
+  const gchar *data = "1234567890987654321";
+
+  bytes = g_bytes_new_static (data, strlen (data));
+  icon = g_bytes_icon_new (bytes);
+  icon2 = g_bytes_icon_new (bytes);
+
+  g_assert (g_bytes_icon_get_bytes (G_BYTES_ICON (icon)) == bytes);
+  g_assert (g_icon_equal (icon, icon2));
+  g_assert (g_icon_hash (icon) == g_icon_hash (icon2));
+
+  g_object_get (icon, "bytes", &bytes2, NULL);
+  g_assert (bytes == bytes2);
+  g_bytes_unref (bytes2);
+
+  variant = g_icon_serialize (icon);
+  icon3 = g_icon_deserialize (variant);
+  g_assert (g_icon_equal (icon, icon3));
+  g_assert (g_icon_hash (icon) == g_icon_hash (icon3));
+
+  loadable_icon_tests (G_LOADABLE_ICON (icon));
+
+  g_variant_unref (variant);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+  g_object_unref (icon3);
+  g_bytes_unref (bytes);
 }
 
 int
@@ -497,6 +592,7 @@ main (int   argc,
   g_test_add_func ("/icons/themed", test_themed_icon);
   g_test_add_func ("/icons/emblemed", test_emblemed_icon);
   g_test_add_func ("/icons/file", test_file_icon);
+  g_test_add_func ("/icons/bytes", test_bytes_icon);
 
   return g_test_run();
 }
