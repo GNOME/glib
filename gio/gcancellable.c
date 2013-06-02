@@ -713,7 +713,6 @@ static GSourceFuncs cancellable_source_funcs =
   cancellable_source_dispatch,
   cancellable_source_finalize,
   (GSourceFunc)cancellable_source_closure_callback,
-  (GSourceDummyMarshal)g_cclosure_marshal_generic,
 };
 
 /**

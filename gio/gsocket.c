@@ -3231,7 +3231,6 @@ static GSourceFuncs socket_source_funcs =
   socket_source_dispatch,
   socket_source_finalize,
   (GSourceFunc)socket_source_closure_callback,
-  (GSourceDummyMarshal)g_cclosure_marshal_generic,
 };
 
 static GSource *

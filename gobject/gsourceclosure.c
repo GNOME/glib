@@ -48,31 +48,6 @@ g_io_condition_get_type (void)
   return etype;
 }
 
-/* We need to hand-write this marshaler, since it doesn't have an
- * instance object.
- */
-static void
-source_closure_marshal_BOOLEAN__VOID (GClosure     *closure,
-				      GValue       *return_value,
-				      guint         n_param_values,
-				      const GValue *param_values,
-				      gpointer      invocation_hint,
-				      gpointer      marshal_data)
-{
-  GSourceFunc callback;
-  GCClosure *cc = (GCClosure*) closure;
-  gboolean v_return;
-
-  g_return_if_fail (return_value != NULL);
-  g_return_if_fail (n_param_values == 0);
-
-  callback = (GSourceFunc) (marshal_data ? marshal_data : cc->callback);
-
-  v_return = callback (closure->data);
-
-  g_value_set_boolean (return_value, v_return);
-}
-
 static gboolean
 io_watch_closure_callback (GIOChannel   *channel,
 			   GIOCondition  condition,
@@ -188,16 +163,10 @@ g_source_set_closure (GSource  *source,
   if (G_CLOSURE_NEEDS_MARSHAL (closure))
     {
       GClosureMarshal marshal = (GClosureMarshal)source->source_funcs->closure_marshal;
-      if (!marshal)
-	{
-	  if (source->source_funcs == &g_idle_funcs ||
-	      source->source_funcs == &g_timeout_funcs)
-	    marshal = source_closure_marshal_BOOLEAN__VOID;
-	  else if (source->source_funcs == &g_io_watch_funcs)
-	    marshal = g_cclosure_marshal_BOOLEAN__FLAGS;
-	}
       if (marshal)
 	g_closure_set_marshal (closure, marshal);
+      else
+        g_closure_set_marshal (closure, g_cclosure_marshal_generic);
     }
 }
 
