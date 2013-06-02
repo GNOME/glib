@@ -52,6 +52,7 @@ test_programs = \
 	permission				\
 	task					\
 	credentials				\
+	monitor					\
 	$(NULL)
 
 uninstalled_test_programs = \
