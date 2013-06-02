@@ -995,6 +995,8 @@ test_attributes (void)
   g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE("a(si)")));
   g_variant_unref (v);
 
+  g_menu_remove_all (menu);
+
   g_object_unref (menu);
   g_object_unref (item);
 }
@@ -1116,6 +1118,9 @@ test_menuitem (void)
   GMenu *menu;
   GMenu *submenu;
   GMenuItem *item;
+  GIcon *icon;
+  gboolean b;
+  gchar *s;
 
   menu = g_menu_new ();
   submenu = g_menu_new ();
@@ -1124,6 +1129,20 @@ test_menuitem (void)
   g_menu_item_set_attribute (item, "attribute", "b", TRUE);
   g_menu_item_set_link (item, G_MENU_LINK_SUBMENU, G_MENU_MODEL (submenu));
   g_menu_append_item (menu, item);
+
+  icon = g_themed_icon_new ("bla");
+  g_menu_item_set_icon (item, icon);
+  g_object_unref (icon);
+
+  g_assert (g_menu_item_get_attribute (item, "attribute", "b", &b));
+  g_assert (b);
+
+  g_menu_item_set_action_and_target (item, "action", "(bs)", TRUE, "string");
+  g_assert (g_menu_item_get_attribute (item, "target", "(bs)", &b, &s));
+  g_assert (b);
+  g_assert_cmpstr (s, ==, "string");
+  g_free (s);
+
   g_object_unref (item);
 
   item = g_menu_item_new_from_model (G_MENU_MODEL (menu), 0);
