@@ -628,6 +628,7 @@ typedef struct {
   GSource       source;
 
   GCancellable *cancellable;
+  guint         cancelled_handler;
 } GCancellableSource;
 
 static void
@@ -636,25 +637,8 @@ cancellable_source_cancelled (GCancellable *cancellable,
 {
   GSource *source = user_data;
 
-  g_main_context_wakeup (g_source_get_context (source));
-}
-
-static gboolean
-cancellable_source_prepare (GSource *source,
-			    gint    *timeout)
-{
-  GCancellableSource *cancellable_source = (GCancellableSource *)source;
-
-  *timeout = -1;
-  return g_cancellable_is_cancelled (cancellable_source->cancellable);
-}
-
-static gboolean
-cancellable_source_check (GSource *source)
-{
-  GCancellableSource *cancellable_source = (GCancellableSource *)source;
-
-  return g_cancellable_is_cancelled (cancellable_source->cancellable);
+  if (!g_source_is_destroyed (source))
+    g_source_set_ready_time (source, 0);
 }
 
 static gboolean
@@ -665,6 +649,7 @@ cancellable_source_dispatch (GSource     *source,
   GCancellableSourceFunc func = (GCancellableSourceFunc)callback;
   GCancellableSource *cancellable_source = (GCancellableSource *)source;
 
+  g_source_set_ready_time (source, -1);
   return (*func) (cancellable_source->cancellable, user_data);
 }
 
@@ -675,9 +660,8 @@ cancellable_source_finalize (GSource *source)
 
   if (cancellable_source->cancellable)
     {
-      g_signal_handlers_disconnect_by_func (cancellable_source->cancellable,
-					    G_CALLBACK (cancellable_source_cancelled),
-					    cancellable_source);
+      g_cancellable_disconnect (cancellable_source->cancellable,
+                                cancellable_source->cancelled_handler);
       g_object_unref (cancellable_source->cancellable);
     }
 }
@@ -708,8 +692,8 @@ cancellable_source_closure_callback (GCancellable *cancellable,
 
 static GSourceFuncs cancellable_source_funcs =
 {
-  cancellable_source_prepare,
-  cancellable_source_check,
+  NULL,
+  NULL,
   cancellable_source_dispatch,
   cancellable_source_finalize,
   (GSourceFunc)cancellable_source_closure_callback,
@@ -744,9 +728,11 @@ g_cancellable_source_new (GCancellable *cancellable)
   if (cancellable)
     {
       cancellable_source->cancellable = g_object_ref (cancellable);
-      g_signal_connect (cancellable, "cancelled",
-			G_CALLBACK (cancellable_source_cancelled),
-			source);
+      cancellable_source->cancelled_handler =
+          g_cancellable_connect (cancellable,
+                                 G_CALLBACK (cancellable_source_cancelled),
+                                 source,
+                                 NULL);
     }
 
   return source;
