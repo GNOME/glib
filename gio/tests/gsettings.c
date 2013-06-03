@@ -427,6 +427,7 @@ test_delay_apply (void)
   GSettings *settings;
   GSettings *settings2;
   gchar *str;
+  gboolean writable;
 
   settings = g_settings_new ("org.gtk.test");
   settings2 = g_settings_new ("org.gtk.test");
@@ -447,6 +448,9 @@ test_delay_apply (void)
 
   g_assert (changed_cb_called);
   g_assert (!changed_cb_called2);
+
+  writable = g_settings_is_writable (settings, "greeting");
+  g_assert (writable);
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
@@ -482,6 +486,13 @@ test_delay_apply (void)
   g_assert (!g_settings_get_has_unapplied (settings));
   g_assert (!g_settings_get_has_unapplied (settings2));
 
+  g_settings_reset (settings, "greeting");
+  g_settings_apply (settings);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
   g_object_unref (settings2);
   g_object_unref (settings);
 }
@@ -500,6 +511,10 @@ test_delay_revert (void)
   settings2 = g_settings_new ("org.gtk.test");
 
   g_settings_set (settings2, "greeting", "s", "top o' the morning");
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "top o' the morning");
+  g_free (str);
 
   g_settings_delay (settings);
 
@@ -1531,6 +1546,13 @@ test_no_write_binding (void)
   g_test_trap_assert_passed ();
 }
 
+static void
+key_changed_cb (GSettings *settings, const gchar *key, gpointer data)
+{
+  gboolean *b = data;
+  (*b) = TRUE;
+}
+
 /*
  * Test that using a keyfile works
  */
@@ -1541,6 +1563,11 @@ test_keyfile (void)
   GSettings *settings;
   GKeyFile *keyfile;
   gchar *str;
+  gboolean writable;
+  GError *error = NULL;
+  gchar *data;
+  gsize len;
+  gboolean called = FALSE;
 
   g_remove ("gsettings.store");
 
@@ -1548,16 +1575,46 @@ test_keyfile (void)
   settings = g_settings_new_with_backend ("org.gtk.test", kf_backend);
   g_object_unref (kf_backend);
 
+  g_settings_reset (settings, "greeting");
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
+  writable = g_settings_is_writable (settings, "greeting");
+  g_assert (writable);
   g_settings_set (settings, "greeting", "s", "see if this works");
+
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "see if this works");
+  g_free (str);
+
+  g_settings_delay (settings);
+  g_settings_set (settings, "farewell", "s", "cheerio");
+  g_settings_apply (settings);
 
   keyfile = g_key_file_new ();
   g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
 
   str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert_cmpstr (str, ==, "'see if this works'");
-
   g_free (str);
+
+  str = g_key_file_get_string (keyfile, "tests", "farewell", NULL);
+  g_assert_cmpstr (str, ==, "'cheerio'");
+  g_free (str);
+
+  g_signal_connect (settings, "changed::greeting", G_CALLBACK (key_changed_cb), &called);
+
+  g_key_file_set_string (keyfile, "tests", "greeting", "howdy");
+  data = g_key_file_to_data (keyfile, &len, NULL);
+  g_file_set_contents ("gsettings.store", data, len, &error);
+  g_assert_no_error (error);
+  while (!called)
+    g_main_context_iteration (NULL, FALSE);
+
   g_key_file_free (keyfile);
+  g_free (data);
+
   g_object_unref (settings);
 }
 
@@ -2233,6 +2290,47 @@ test_actions (void)
   g_object_unref (toggle);
 }
 
+static void
+test_null_backend (void)
+{
+  GSettingsBackend *backend;
+  GSettings *settings;
+  gchar *str;
+  gboolean writable;
+
+  backend = g_null_settings_backend_new ();
+  settings = g_settings_new_with_backend ("org.gtk.test", backend);
+
+  g_object_get (settings, "schema", &str, NULL);
+  g_assert_cmpstr (str, ==, "org.gtk.test");
+  g_free (str);
+
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
+  g_settings_set (settings, "greeting", "s", "goodbye world");
+  g_settings_get (settings, "greeting", "s", &str);
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
+  writable = g_settings_is_writable (settings, "greeting");
+  g_assert (!writable);
+
+  g_object_unref (settings);
+  g_object_unref (backend);
+}
+
+static void
+test_memory_backend (void)
+{
+  GSettingsBackend *backend;
+
+  backend = g_memory_settings_backend_new ();
+  g_assert (G_IS_SETTINGS_BACKEND (backend));
+  g_object_unref (backend);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2344,6 +2442,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/get-range", test_get_range);
   g_test_add_func ("/gsettings/schema-source", test_schema_source);
   g_test_add_func ("/gsettings/actions", test_actions);
+  g_test_add_func ("/gsettings/null-backend", test_null_backend);
+  g_test_add_func ("/gsettings/memory-backend", test_memory_backend);
 
   result = g_test_run ();
 
