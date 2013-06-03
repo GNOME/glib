@@ -1059,6 +1059,13 @@ write_to_temp_file (const gchar  *contents,
   if (length > 0)
     {
       gsize n_written;
+
+#ifdef HAVE_POSIX_FALLOCATE
+      /* We do this on a 'best effort' basis... It may not be supported
+       * on the underlying filesystem.
+       */
+      (void) posix_fallocate (fd, 0, length);
+#endif
       
       errno = 0;
 
