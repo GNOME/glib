@@ -1056,7 +1056,7 @@ AC_MSG_RESULT($glib_ssize_type)
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
 AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid getresuid)
-AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat)
+AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat posix_fallocate)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(splice)
 AC_CHECK_FUNCS(prlimit)
