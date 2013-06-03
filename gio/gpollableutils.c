@@ -42,20 +42,6 @@ typedef struct {
 } GPollableSource;
 
 static gboolean
-pollable_source_prepare (GSource *source,
-			 gint    *timeout)
-{
-  *timeout = -1;
-  return FALSE;
-}
-
-static gboolean
-pollable_source_check (GSource *source)
-{
-  return FALSE;
-}
-
-static gboolean
 pollable_source_dispatch (GSource     *source,
 			  GSourceFunc  callback,
 			  gpointer     user_data)
@@ -100,8 +86,8 @@ pollable_source_closure_callback (GObject  *stream,
 
 static GSourceFuncs pollable_source_funcs =
 {
-  pollable_source_prepare,
-  pollable_source_check,
+  NULL,
+  NULL,
   pollable_source_dispatch,
   pollable_source_finalize,
   (GSourceFunc)pollable_source_closure_callback,
