@@ -1033,7 +1033,6 @@ write_to_temp_file (const gchar  *contents,
 {
   gchar *tmp_name;
   gchar *retval;
-  FILE *file;
   gint fd;
 
   retval = NULL;
@@ -1049,49 +1048,37 @@ write_to_temp_file (const gchar  *contents,
       goto out;
     }
 
-  errno = 0;
-  file = fdopen (fd, "wb");
-  if (!file)
-    {
-      format_error_message (err, tmp_name, _("Failed to open file '%s' for writing: fdopen() failed: %s"));
-      close (fd);
-      g_unlink (tmp_name);
-
-      goto out;
-    }
-
+#ifdef HAVE_POSIX_FALLOCATE
   if (length > 0)
     {
-      gsize n_written;
-
-#ifdef HAVE_POSIX_FALLOCATE
       /* We do this on a 'best effort' basis... It may not be supported
        * on the underlying filesystem.
        */
       (void) posix_fallocate (fd, 0, length);
+    }
 #endif
+  while (length > 0)
+    {
+      gssize s;
 
-      errno = 0;
+      s = write (fd, contents, length);
 
-      n_written = fwrite (contents, 1, length, file);
-
-      if (n_written < length)
+      if (s < 0)
         {
-          format_error_message (err, tmp_name, _("Failed to write file '%s': fwrite() failed: %s"));
-          fclose (file);
+          if (errno == EINTR)
+            continue;
+
+          format_error_message (err, tmp_name, _("Failed to write file '%s': write() failed: %s"));
+          close (fd);
           g_unlink (tmp_name);
+
           goto out;
         }
-    }
 
-  errno = 0;
-  if (fflush (file) != 0)
-    {
-      format_error_message (err, tmp_name, _("Failed to write file '%s': fflush() failed: %s"));
-      fclose (file);
-      g_unlink (tmp_name);
+      g_assert (s <= length);
 
-      goto out;
+      contents += s;
+      length -= s;
     }
 
 #ifdef BTRFS_SUPER_MAGIC
@@ -1119,10 +1106,10 @@ write_to_temp_file (const gchar  *contents,
      * the new and the old file on some filesystems. (I.E. those that don't
      * guarantee the data is written to the disk before the metadata.)
      */
-    if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fileno (file)) != 0)
+    if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fd) != 0)
       {
         format_error_message (err, tmp_name, _("Failed to write file '%s': fsync() failed: %s"));
-        fclose (file);
+        close (fd);
         g_unlink (tmp_name);
 
         goto out;
@@ -1135,9 +1122,8 @@ write_to_temp_file (const gchar  *contents,
 #endif
 
   errno = 0;
-  if (fclose (file) == EOF)
+  if (g_close (fd, err))
     {
-      format_error_message (err, tmp_name, _("Failed to close file '%s': fclose() failed: %s"));
       g_unlink (tmp_name);
 
       goto out;
