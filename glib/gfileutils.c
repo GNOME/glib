@@ -1122,7 +1122,7 @@ write_to_temp_file (const gchar  *contents,
 #endif
 
   errno = 0;
-  if (g_close (fd, err))
+  if (!g_close (fd, err))
     {
       g_unlink (tmp_name);
 
