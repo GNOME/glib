@@ -219,8 +219,7 @@ static void
 add_network (GNetworkMonitorNetlink *nl,
              GSocketFamily           family,
              gint                    dest_len,
-             guint8                 *dest,
-             guint8                 *gateway)
+             guint8                 *dest)
 {
   GInetAddress *dest_addr;
   GInetAddressMask *network;
@@ -246,8 +245,7 @@ static void
 remove_network (GNetworkMonitorNetlink *nl,
                 GSocketFamily           family,
                 gint                    dest_len,
-                guint8                 *dest,
-                guint8                 *gateway)
+                guint8                 *dest)
 {
   GInetAddress *dest_addr;
   GInetAddressMask *network;
@@ -306,7 +304,7 @@ read_netlink_messages (GSocket      *socket,
   struct rtmsg *rtmsg;
   struct rtattr *attr;
   gsize attrlen;
-  guint8 *dest, *gateway;
+  guint8 *dest, *gateway, *oif;
   gboolean retval = TRUE;
 
   iv.buffer = NULL;
@@ -368,22 +366,24 @@ read_netlink_messages (GSocket      *socket,
 
           attrlen = NLMSG_PAYLOAD (msg, sizeof (struct rtmsg));
           attr = RTM_RTA (rtmsg);
-          dest = gateway = NULL;
+          dest = gateway = oif = NULL;
           while (RTA_OK (attr, attrlen))
             {
               if (attr->rta_type == RTA_DST)
                 dest = RTA_DATA (attr);
               else if (attr->rta_type == RTA_GATEWAY)
                 gateway = RTA_DATA (attr);
+              else if (attr->rta_type == RTA_OIF)
+                oif = RTA_DATA (attr);
               attr = RTA_NEXT (attr, attrlen);
             }
 
-          if (dest || gateway)
+          if (dest || gateway || oif)
             {
               if (msg->nlmsg_type == RTM_NEWROUTE)
-                add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
+                add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest);
               else
-                remove_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest, gateway);
+                remove_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest);
               queue_request_dump (nl);
             }
           break;
