@@ -1048,13 +1048,13 @@ write_to_temp_file (const gchar  *contents,
       goto out;
     }
 
-#ifdef HAVE_POSIX_FALLOCATE
+#ifdef HAVE_FALLOCATE
   if (length > 0)
     {
       /* We do this on a 'best effort' basis... It may not be supported
        * on the underlying filesystem.
        */
-      (void) posix_fallocate (fd, 0, length);
+      (void) fallocate (fd, 0, 0, length);
     }
 #endif
   while (length > 0)
