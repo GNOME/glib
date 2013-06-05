@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.master.or\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-01 04:05+0000\n"
-"PO-Revision-Date: 2013-06-03 13:47+0530\n"
+"POT-Creation-Date: 2013-06-03 21:50+0000\n"
+"PO-Revision-Date: 2013-06-05 13:07+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "Language: or\n"
@@ -1474,13 +1474,11 @@ msgstr "<schema id='%s'> ପୂର୍ବରୁ ଉଲ୍ଲେଖ କରାଯ�
 
 #: ../gio/glib-compile-schemas.c:1129
 #, c-format
-#| msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> ଅନୁଲମ୍ବଗୁଡ଼ିକରେ ଏପର୍ଯ୍ୟନ୍ତ ଯୋଜନା '%s' ନାହିଁ"
 
 #: ../gio/glib-compile-schemas.c:1145
 #, c-format
-#| msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr ""
 "<schema id='%s'> ଟି ହେଉଛି ଏପର୍ଯ୍ୟନ୍ତ ଅନୁଲମ୍ବିତ ହୋଇନଥିବା ଯୋଜନା '%s' ର ତାଲିକା"
@@ -3325,57 +3323,43 @@ msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: fdopen() ଅସ
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' ଫାଇଲ ରୁ '%s' ନାମ ବଦଳାଇ ବାରେ ଅସଫଳ: g_rename() ଅସଫଳ: %s"
 
-#: ../glib/gfileutils.c:1035 ../glib/gfileutils.c:1593
+#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1554
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' ଫାଇଲ ସ୍ରୁଷ୍ଟି କରିବାରେ ଅସଫଳ: %s"
 
-#: ../glib/gfileutils.c:1049
+#: ../glib/gfileutils.c:1071
 #, c-format
-msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "'%s' ଫାଇଲ କୁ େଲଖନ ପାଇଁ ଖୋଲିବାରେ ଅସଫଳ: fdopen() ଅସଫଳ: %s"
+#| msgid "Failed to write file '%s': fwrite() failed: %s"
+msgid "Failed to write file '%s': write() failed: %s"
+msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: write() ବିଫଳ ହୋଇଛି: %s"
 
-#: ../glib/gfileutils.c:1074
-#, c-format
-msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: fwrite() ଅସଫଳ: %s"
-
-#: ../glib/gfileutils.c:1093
-#, c-format
-msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: fflush() ଅସଫଳ: %s"
-
-#: ../glib/gfileutils.c:1137
+#: ../glib/gfileutils.c:1111
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: fsync() ଅସଫଳ: %s"
 
-#: ../glib/gfileutils.c:1161
-#, c-format
-msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "'%s' ଫାଇଲ କୁ ବନ୍ଦ କରିବା ରେ ଅସଫଳ: fclose() ଅସଫଳ: %s"
-
-#: ../glib/gfileutils.c:1282
+#: ../glib/gfileutils.c:1243
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ଅବସ୍ଥିତ '%s' ଫାଇଲ କାଢି ହେଲା ନାହିଁ: g_unlink ଅସଫଳ %s"
 
-#: ../glib/gfileutils.c:1556
+#: ../glib/gfileutils.c:1517
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' ନମୁନା ଟି ଅବୈଧ ଅଟେ, '%s' ଧାରଣ କରିବା ଉଚିତ ନୁହେଁ"
 
-#: ../glib/gfileutils.c:1569
+#: ../glib/gfileutils.c:1530
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' ନମୁନା ଟି XXXXXXକୁ ଧାରଣ କରିନାହିଁ"
 
-#: ../glib/gfileutils.c:2097
+#: ../glib/gfileutils.c:2058
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ପଢିବାରେ ଅସଫଳ: %s"
 
-#: ../glib/gfileutils.c:2118
+#: ../glib/gfileutils.c:2079
 msgid "Symbolic links not supported"
 msgstr "ପ୍ରତିକାତ୍ମକ ସଂୟୋଗ ଅସହାୟକ"
 
@@ -4410,6 +4394,15 @@ msgstr[1] "%s ବାଇଟ"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+#~ msgstr "'%s' ଫାଇଲ କୁ େଲଖନ ପାଇଁ ଖୋଲିବାରେ ଅସଫଳ: fdopen() ଅସଫଳ: %s"
+
+#~ msgid "Failed to write file '%s': fflush() failed: %s"
+#~ msgstr "'%s' ଫାଇଲ ଖୋଲିବାରେ ଅସଫଳ: fflush() ଅସଫଳ: %s"
+
+#~ msgid "Failed to close file '%s': fclose() failed: %s"
+#~ msgstr "'%s' ଫାଇଲ କୁ ବନ୍ଦ କରିବା ରେ ଅସଫଳ: fclose() ଅସଫଳ: %s"
 
 #~ msgid "Incomplete data received for '%s'"
 #~ msgstr "'%s' ପାଇଁ ଅସମ୍ପୂର୍ଣ୍ଣ ତଥ୍ୟ ଗ୍ରହଣ ହୋଇଛି"
