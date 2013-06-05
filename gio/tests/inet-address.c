@@ -54,10 +54,20 @@ test_parse (void)
 
   addr = g_inet_address_new_from_string ("::1::2");
   g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("2001:1:2:3:4:5:6:7]");
+  g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("[2001:1:2:3:4:5:6:7");
+  g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("[2001:1:2:3:4:5:6:7]");
+  g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("[2001:1:2:3:4:5:6:7]:80");
+  g_assert (addr == NULL);
   addr = g_inet_address_new_from_string ("0:1:2:3:4:5:6:7:8:9");
   g_assert (addr == NULL);
   addr = g_inet_address_new_from_string ("::FFFFFFF");
   g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("204.152.189.116:80");
+  g_assert (addr != NULL);
 }
 
 static void
