@@ -425,8 +425,10 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
  *
  * Argument specified is a comma-separated pair of filenames; i.e. of
  * the form "input.txt,output.xml".  The input file should be a
- * UTF-8 Unix-line-ending text file, with each line containing the name
- * of a GType _get_type function.
+ * UTF-8 Unix-line-ending text file, with each line containing either
+ * "get-type:" followed by the name of a GType _get_type function, or
+ * "error-quark:" followed by the name of an error quark function.  No
+ * extra whitespace is allowed.
  *
  * The output file should already exist, but be empty.  This function will
  * overwrite its contents.
