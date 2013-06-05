@@ -58,7 +58,9 @@ EXTRA_DIST += 			\
 	gio-2.0.pc.in		\
 	gio-unix-2.0.pc.in	\
 	gio-windows-2.0.pc.in	\
-	check-abis.sh
+	check-abis.sh		\
+	gtk-doc.make		\
+	$(NULL)
 
 
 # These may be in the builddir too
@@ -67,7 +69,7 @@ BUILT_EXTRA_DIST += 		\
 	INSTALL			\
 	ChangeLog		\
 	config.h.win32		\
-	gtk-doc.make
+	$(NULL)
 
 CONFIGURE_DEPENDENCIES = acglib.m4
 
