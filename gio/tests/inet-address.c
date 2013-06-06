@@ -66,6 +66,8 @@ test_parse (void)
   g_assert (addr == NULL);
   addr = g_inet_address_new_from_string ("::FFFFFFF");
   g_assert (addr == NULL);
+  addr = g_inet_address_new_from_string ("204.152.189.116:80");
+  g_assert (addr == NULL);
 }
 
 static void
