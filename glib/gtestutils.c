@@ -496,6 +496,7 @@
  * analysis systems like Apport and ABRT to fish out assertion messages from
  * core dumps, instead of having to catch them on screen output.
  */
+GLIB_VAR char *__glib_assert_msg;
 char *__glib_assert_msg = NULL;
 
 /* --- constants --- */
