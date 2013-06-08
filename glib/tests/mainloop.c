@@ -878,6 +878,34 @@ test_ready_time (void)
   g_source_destroy (source);
 }
 
+static void
+test_wakeup(void)
+{
+  GMainContext *ctx;
+  int i;
+
+  ctx = g_main_context_new ();
+
+  /* run a random large enough number of times because 
+   * main contexts tend to wake up a few times after creation.
+   */
+  for (i = 0; i < 100; i++)
+    {
+      /* This is the invariant we care about:
+       * g_main_context_wakeup(ctx,) ensures that the next call to
+       * g_main_context_iteration (ctx, TRUE) returns and doesn't
+       * block.
+       * This is important in threaded apps where we might not know
+       * if the thread calls g_main_context_wakeup() before or after
+       * we enter g_main_context_iteration().
+       */
+      g_main_context_wakeup (ctx);
+      g_main_context_iteration (ctx, TRUE);
+    }
+
+  g_main_context_unref (ctx);
+}
+
 #ifdef G_OS_UNIX
 
 #include <glib-unix.h>
@@ -1265,6 +1293,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/source_time", test_source_time);
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
+  g_test_add_func ("/mainloop/wakeup", test_wakeup);
 #ifdef G_OS_UNIX
   g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
   g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);
