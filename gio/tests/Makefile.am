@@ -17,42 +17,42 @@ AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 #  Test programs buildable on all platforms
 
 test_programs = \
+	async-close-output-stream		\
+	buffered-input-stream			\
+	buffered-output-stream			\
+	cancellable				\
+	contexts				\
+	converter-stream			\
+	credentials				\
+	data-input-stream			\
+	data-output-stream			\
+	fileattributematcher			\
+	filter-streams				\
+	g-file					\
+	g-file-info				\
+	g-icon					\
+	gdbus-addresses				\
+	gdbus-message				\
+	inet-address				\
 	io-stream				\
 	memory-input-stream			\
 	memory-output-stream			\
-	readwrite				\
-	g-file					\
-	g-file-info				\
-	converter-stream			\
-	data-input-stream			\
-	data-output-stream			\
-	g-icon					\
-	buffered-input-stream			\
-	buffered-output-stream			\
-	sleepy-stream				\
-	filter-streams				\
-	volumemonitor				\
-	simple-async-result			\
-	srvtarget				\
-	contexts				\
-	async-close-output-stream		\
-	gdbus-addresses				\
-	network-address				\
-	gdbus-message				\
-	socket					\
-	pollable				\
-	tls-interaction				\
-	cancellable				\
-	vfs					\
-	network-monitor				\
-	fileattributematcher			\
-	proxy-test				\
-	simple-proxy				\
-	inet-address				\
-	permission				\
-	task					\
-	credentials				\
 	monitor					\
+	network-address				\
+	network-monitor				\
+	permission				\
+	pollable				\
+	proxy-test				\
+	readwrite				\
+	simple-async-result			\
+	simple-proxy				\
+	sleepy-stream				\
+	socket					\
+	srvtarget				\
+	task					\
+	tls-interaction				\
+	vfs					\
+	volumemonitor				\
 	$(NULL)
 
 uninstalled_test_programs = \
@@ -68,32 +68,32 @@ test_data = \
 	$(NULL)
 
 uninstalled_test_extra_programs = \
-	resolver				\
-	socket-server				\
 	echo-server				\
-	httpd					\
-	send-data				\
 	filter-cat				\
-	gdbus-example-export			\
-	gdbus-example-own-name			\
-	gdbus-example-watch-name		\
-	gdbus-example-watch-proxy		\
-	gdbus-example-server			\
-	gdbus-example-subtree			\
-	gdbus-example-peer			\
-	gdbus-example-proxy-subclass		\
-	proxy					\
-	gapplication-example-open		\
+	gapplication-example-actions		\
 	gapplication-example-cmdline		\
 	gapplication-example-cmdline2		\
 	gapplication-example-cmdline3		\
-	gapplication-example-actions		\
 	gapplication-example-dbushooks		\
+	gapplication-example-open		\
+	gdbus-example-export			\
+	gdbus-example-own-name			\
+	gdbus-example-peer			\
+	gdbus-example-proxy-subclass		\
+	gdbus-example-server			\
+	gdbus-example-subtree			\
+	gdbus-example-watch-name		\
+	gdbus-example-watch-proxy		\
+	httpd					\
+	proxy					\
+	resolver				\
+	send-data				\
+	socket-server				\
 	$(NULL)
 
 test_extra_programs = \
-	gdbus-testserver			\
 	gdbus-connection-flush-helper		\
+	gdbus-testserver			\
 	$(NULL)
 
 dist_uninstalled_test_data += $(addprefix schema-tests/,$(schema_tests))
@@ -129,11 +129,6 @@ schema_tests = \
 	enum-with-repeated-value.gschema.xml		\
 	enum-with-shadow-alias.gschema.xml		\
 	enum.gschema.xml				\
-	flags-aliased-default.gschema.xml		\
-	flags-bad-default.gschema.xml			\
-	flags-more-than-one-bit.gschema.xml		\
-	flags-with-enum-attr.gschema.xml		\
-	flags-with-enum-tag.gschema.xml			\
 	extend-and-shadow-indirect.gschema.xml		\
 	extend-and-shadow.gschema.xml			\
 	extend-missing.gschema.xml			\
@@ -142,6 +137,11 @@ schema_tests = \
 	extend-wrong-list-indirect.gschema.xml		\
 	extend-wrong-list.gschema.xml			\
 	extending.gschema.xml				\
+	flags-aliased-default.gschema.xml		\
+	flags-bad-default.gschema.xml			\
+	flags-more-than-one-bit.gschema.xml		\
+	flags-with-enum-attr.gschema.xml		\
+	flags-with-enum-tag.gschema.xml			\
 	from-docs.gschema.xml				\
 	incomplete-list.gschema.xml			\
 	inherit-gettext-domain.gschema.xml		\
@@ -209,14 +209,14 @@ gdbus_daemon_SOURCES = \
 
 if OS_UNIX
 test_programs += \
-	live-g-file				\
-	unix-fd					\
-	unix-streams				\
 	basic-application			\
-	socket-address				\
-	gdbus-peer-object-manager		\
 	contenttype				\
 	file					\
+	gdbus-peer-object-manager		\
+	live-g-file				\
+	socket-address				\
+	unix-fd					\
+	unix-streams				\
 	$(NULL)
 
 # Uninstalled because of the check-for-executable logic in DesktopAppInfo unable to find the installed executable
@@ -226,10 +226,10 @@ uninstalled_test_programs += \
 	$(NULL)
 
 dist_test_data += \
-	appinfo-test.desktop			\
-	appinfo-test2.desktop			\
 	appinfo-test-gnome.desktop		\
 	appinfo-test-notgnome.desktop		\
+	appinfo-test.desktop			\
+	appinfo-test2.desktop			\
 	file.c					\
 	$(NULL)
 
@@ -309,47 +309,47 @@ if HAVE_DBUS_DAEMON
 gdbus_sessionbus_sources = gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 
 test_programs += \
-	gapplication				\
 	actions					\
+	gapplication				\
 	gdbus-auth				\
-	gdbus-connection			\
 	gdbus-bz627724				\
-	gdbus-exit-on-close			\
+	gdbus-close-pending			\
+	gdbus-connection			\
 	gdbus-connection-loss			\
 	gdbus-connection-slow			\
+	gdbus-error				\
+	gdbus-exit-on-close			\
+	gdbus-export				\
+	gdbus-introspection			\
 	gdbus-names				\
 	gdbus-proxy				\
 	gdbus-proxy-threads			\
 	gdbus-proxy-well-known-name		\
-	gdbus-introspection			\
-	gdbus-threading				\
-	gdbus-export				\
 	gdbus-test-codegen			\
-	gdbus-close-pending			\
-	gdbus-error				\
+	gdbus-threading				\
 	gmenumodel				\
 	$(NULL)
 
 gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
-gdbus_exit_on_close_SOURCES              = $(gdbus_sessionbus_sources) gdbus-exit-on-close.c
-gapplication_SOURCES                     = $(gdbus_sessionbus_sources) gapplication.c
 actions_SOURCES                          = $(gdbus_sessionbus_sources) actions.c
+gapplication_SOURCES                     = $(gdbus_sessionbus_sources) gapplication.c
 gdbus_auth_SOURCES                       = $(gdbus_sessionbus_sources) gdbus-auth.c
-gdbus_connection_SOURCES                 = $(gdbus_sessionbus_sources) gdbus-connection.c
 gdbus_bz627724_SOURCES                   = $(gdbus_sessionbus_sources) gdbus-bz627724.c
+gdbus_close_pending_SOURCES              = $(gdbus_sessionbus_sources) gdbus-close-pending.c
+gdbus_connection_SOURCES                 = $(gdbus_sessionbus_sources) gdbus-connection.c
 gdbus_connection_loss_SOURCES            = $(gdbus_sessionbus_sources) gdbus-connection-loss.c
 gdbus_connection_slow_SOURCES            = $(gdbus_sessionbus_sources) gdbus-connection-slow.c
+gdbus_error_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-error.c
+gdbus_exit_on_close_SOURCES              = $(gdbus_sessionbus_sources) gdbus-exit-on-close.c
+gdbus_export_SOURCES                     = $(gdbus_sessionbus_sources) gdbus-export.c
+gdbus_introspection_SOURCES              = $(gdbus_sessionbus_sources) gdbus-introspection.c
 gdbus_names_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-names.c
 gdbus_proxy_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-proxy.c
 gdbus_proxy_threads_SOURCES              = $(gdbus_sessionbus_sources) gdbus-proxy-threads.c
 gdbus_proxy_well_known_name_SOURCES      = $(gdbus_sessionbus_sources) gdbus-proxy-well-known-name.c
-gdbus_introspection_SOURCES              = $(gdbus_sessionbus_sources) gdbus-introspection.c
-gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
-gdbus_export_SOURCES                     = $(gdbus_sessionbus_sources) gdbus-export.c
-gdbus_error_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-error.c
-gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
-gdbus_close_pending_SOURCES              = $(gdbus_sessionbus_sources) gdbus-close-pending.c
 gdbus_test_codegen_SOURCES               = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
+gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
+gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
 nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 
 gdbus-test-codegen.o: gdbus-test-codegen-generated.h
