@@ -13,6 +13,7 @@ converter-stream
 credentials
 data-input-stream
 data-output-stream
+dbus-appinfo
 de/
 desktop-app-info
 echo-server
