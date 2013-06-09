@@ -1,3 +1,19 @@
+Overview of changes fron GLib 2.36.2 to 2.36.3
+==============================================
+
+* Bug fixes:
+ 692848 Fix property example in gobject tutorial
+ 696857 GThreadedResolver: set an error if no records could be found
+ 697849 spelling fixes of 'runtine' and 'adresses' in cross.xml a...
+ 699779 G_GNUC_FORMAT: documentation error
+ 699959 g_file_copy(): Ensure we create private files by default
+ 701560 various improvements for g_file_set_contents()
+ 701680 GFileEnumerator: Add some documentation about ordering
+
+* Translation updates:
+ Kannada
+
+
 Overview of changes fron GLib 2.36.1 to 2.36.2
 ==============================================
 
