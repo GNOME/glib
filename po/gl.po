@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-02 00:24+0200\n"
-"PO-Revision-Date: 2013-06-02 00:25+0200\n"
+"POT-Creation-Date: 2013-06-10 10:30+0200\n"
+"PO-Revision-Date: 2013-06-10 10:30+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -56,7 +56,7 @@ msgstr "Non se permite truncar no fluxo base"
 
 #: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1885
 #: ../gio/gdbusconnection.c:1977 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2172 ../gio/gsimpleasyncresult.c:843
+#: ../gio/glocalfile.c:2177 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -962,40 +962,40 @@ msgstr "Ruta do obxecto a monitorizar"
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
-#: ../gio/gdesktopappinfo.c:628 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:653 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Sen nome"
 
-#: ../gio/gdesktopappinfo.c:1041
+#: ../gio/gdesktopappinfo.c:1066
 msgid "Desktop file didn't specify Exec field"
 msgstr "O ficheiro de escritorio non especificou o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:1329
+#: ../gio/gdesktopappinfo.c:1351
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel atopar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1631
+#: ../gio/gdesktopappinfo.c:1754
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1635
+#: ../gio/gdesktopappinfo.c:1758
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1875 ../gio/gdesktopappinfo.c:1899
+#: ../gio/gdesktopappinfo.c:1998 ../gio/gdesktopappinfo.c:2022
 msgid "Application information lacks an identifier"
 msgstr "A información do aplicativo carece dun identificador"
 
-#: ../gio/gdesktopappinfo.c:2131
+#: ../gio/gdesktopappinfo.c:2254
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:2255
+#: ../gio/gdesktopappinfo.c:2378
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -1055,14 +1055,14 @@ msgstr ""
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Esperábase un GEmblem para o GEmblemedIcon"
 
-#: ../gio/gfile.c:937 ../gio/gfile.c:1176 ../gio/gfile.c:1315
-#: ../gio/gfile.c:1555 ../gio/gfile.c:1610 ../gio/gfile.c:1668
-#: ../gio/gfile.c:1752 ../gio/gfile.c:1809 ../gio/gfile.c:1873
-#: ../gio/gfile.c:1928 ../gio/gfile.c:3489 ../gio/gfile.c:3544
-#: ../gio/gfile.c:3752 ../gio/gfile.c:3794 ../gio/gfile.c:4260
-#: ../gio/gfile.c:4672 ../gio/gfile.c:4757 ../gio/gfile.c:4847
-#: ../gio/gfile.c:4944 ../gio/gfile.c:5031 ../gio/gfile.c:5132
-#: ../gio/gfile.c:7311 ../gio/gfile.c:7401 ../gio/gfile.c:7485
+#: ../gio/gfile.c:938 ../gio/gfile.c:1177 ../gio/gfile.c:1316
+#: ../gio/gfile.c:1556 ../gio/gfile.c:1611 ../gio/gfile.c:1669
+#: ../gio/gfile.c:1753 ../gio/gfile.c:1810 ../gio/gfile.c:1874
+#: ../gio/gfile.c:1929 ../gio/gfile.c:3559 ../gio/gfile.c:3614
+#: ../gio/gfile.c:3822 ../gio/gfile.c:3864 ../gio/gfile.c:4330
+#: ../gio/gfile.c:4742 ../gio/gfile.c:4827 ../gio/gfile.c:4917
+#: ../gio/gfile.c:5014 ../gio/gfile.c:5101 ../gio/gfile.c:5202
+#: ../gio/gfile.c:7381 ../gio/gfile.c:7471 ../gio/gfile.c:7555
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación non permitida"
@@ -1077,83 +1077,83 @@ msgstr "Operación non permitida"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1439 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
-#: ../gio/glocalfile.c:1120
+#: ../gio/gfile.c:1440 ../gio/glocalfile.c:1101 ../gio/glocalfile.c:1112
+#: ../gio/glocalfile.c:1125
 msgid "Containing mount does not exist"
 msgstr "O punto de montaxe contido non existe"
 
-#: ../gio/gfile.c:2494 ../gio/glocalfile.c:2328
+#: ../gio/gfile.c:2495 ../gio/glocalfile.c:2333
 msgid "Can't copy over directory"
 msgstr "Non é posíbel copiar sobre o directorio"
 
-#: ../gio/gfile.c:2554
+#: ../gio/gfile.c:2555
 msgid "Can't copy directory over directory"
 msgstr "Non é posíbel copiar un directorio sobre o directorio"
 
-#: ../gio/gfile.c:2562 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2563 ../gio/glocalfile.c:2342
 msgid "Target file exists"
 msgstr "O ficheiro de destino xa existe"
 
-#: ../gio/gfile.c:2581
+#: ../gio/gfile.c:2582
 msgid "Can't recursively copy directory"
 msgstr "Non é posíbel copiar o directorio recursivamente"
 
-#: ../gio/gfile.c:2845
+#: ../gio/gfile.c:2864
 msgid "Splice not supported"
 msgstr "Non se admite a unión"
 
-#: ../gio/gfile.c:2849
+#: ../gio/gfile.c:2868
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Produciuse un erro ao empalmar o ficheiro: %s"
 
-#: ../gio/gfile.c:2980
+#: ../gio/gfile.c:2999
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Copiar (reflink/clonar) entre montaxes non é compatíbel"
 
-#: ../gio/gfile.c:2984
+#: ../gio/gfile.c:3003
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Copiar (reflink/clone) non é compatíbel ou non é válido"
 
-#: ../gio/gfile.c:2989
+#: ../gio/gfile.c:3008
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Copiar (reflink/clone) non é compatíbel ou non funciona"
 
-#: ../gio/gfile.c:3049
+#: ../gio/gfile.c:3071
 msgid "Can't copy special file"
 msgstr "Non é posíbel copiar o ficheiro especial"
 
-#: ../gio/gfile.c:3742
+#: ../gio/gfile.c:3812
 msgid "Invalid symlink value given"
 msgstr "O valor da ligazón simbólica dada non é válido"
 
-#: ../gio/gfile.c:3904
+#: ../gio/gfile.c:3974
 msgid "Trash not supported"
 msgstr "O Lixo non é compatíbel"
 
-#: ../gio/gfile.c:4017
+#: ../gio/gfile.c:4087
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Os nomes de ficheiro non poden conter '%c'"
 
-#: ../gio/gfile.c:6434 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6504 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "o volume non implementa o montado"
 
-#: ../gio/gfile.c:6543
+#: ../gio/gfile.c:6613
 msgid "No application is registered as handling this file"
 msgstr "Non hai ningún aplicativo rexistrado para manexar este ficheiro"
 
-#: ../gio/gfileenumerator.c:204
+#: ../gio/gfileenumerator.c:218
 msgid "Enumerator is closed"
 msgstr "O enumerador está pechado"
 
-#: ../gio/gfileenumerator.c:211 ../gio/gfileenumerator.c:270
-#: ../gio/gfileenumerator.c:367 ../gio/gfileenumerator.c:467
+#: ../gio/gfileenumerator.c:225 ../gio/gfileenumerator.c:284
+#: ../gio/gfileenumerator.c:384 ../gio/gfileenumerator.c:484
 msgid "File enumerator has outstanding operation"
 msgstr "O enumerador do ficheiro ten unha operación excepcional"
 
-#: ../gio/gfileenumerator.c:358 ../gio/gfileenumerator.c:458
+#: ../gio/gfileenumerator.c:375 ../gio/gfileenumerator.c:475
 msgid "File enumerator is already closed"
 msgstr "O enumerador do ficheiro xa está pechado"
 
@@ -1669,117 +1669,117 @@ msgstr ""
 "Non é posíbel atopar o tipo de monitorización do directorio local "
 "predeterminado"
 
-#: ../gio/glocalfile.c:597 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:602 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "O nome do ficheiro non é válido %s"
 
-#: ../gio/glocalfile.c:974
+#: ../gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Produciuse un erro ao obter a información do sistema de ficheiros: %s"
 
-#: ../gio/glocalfile.c:1142
+#: ../gio/glocalfile.c:1147
 msgid "Can't rename root directory"
 msgstr "Non é posíbel renomear o directorio raíz"
 
-#: ../gio/glocalfile.c:1162 ../gio/glocalfile.c:1188
+#: ../gio/glocalfile.c:1167 ../gio/glocalfile.c:1193
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Produciuse un erro ao renomear o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1171
+#: ../gio/glocalfile.c:1176
 msgid "Can't rename file, filename already exists"
 msgstr "Non é posíbel renomear o ficheiro, o ficheiro xa existe"
 
-#: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:557
+#: ../gio/glocalfile.c:1189 ../gio/glocalfile.c:2206 ../gio/glocalfile.c:2235
+#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:558
 msgid "Invalid filename"
 msgstr "O nome do ficheiro non é válido"
 
-#: ../gio/glocalfile.c:1351 ../gio/glocalfile.c:1375
+#: ../gio/glocalfile.c:1356 ../gio/glocalfile.c:1380
 msgid "Can't open directory"
 msgstr "Non é posíbel abrir o directorio"
 
-#: ../gio/glocalfile.c:1359
+#: ../gio/glocalfile.c:1364
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Produciuse un erro ao abrir o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1500
+#: ../gio/glocalfile.c:1505
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Produciuse un erro ao retirar o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1880
+#: ../gio/glocalfile.c:1885
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Produciuse un erro ao mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1903
+#: ../gio/glocalfile.c:1908
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Non é posíbel crear o directorio do lixo %s: %s"
 
-#: ../gio/glocalfile.c:1924
+#: ../gio/glocalfile.c:1929
 msgid "Unable to find toplevel directory for trash"
 msgstr "Non é posíbel atopar o directorio de nivel superior para o lixo"
 
-#: ../gio/glocalfile.c:2003 ../gio/glocalfile.c:2023
+#: ../gio/glocalfile.c:2008 ../gio/glocalfile.c:2028
 msgid "Unable to find or create trash directory"
 msgstr "Non é posíbel atopar ou crear o directorio do lixo"
 
-#: ../gio/glocalfile.c:2057
+#: ../gio/glocalfile.c:2062
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Non é posíbel crear a información de lixo para o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2086 ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2171
-#: ../gio/glocalfile.c:2178
+#: ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2096 ../gio/glocalfile.c:2176
+#: ../gio/glocalfile.c:2183
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Non é posíbel mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2179 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2184 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "erro interno"
 
-#: ../gio/glocalfile.c:2205
+#: ../gio/glocalfile.c:2210
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Produciuse un erro ao crear o directorio: %s"
 
-#: ../gio/glocalfile.c:2234
+#: ../gio/glocalfile.c:2239
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "O sistema de ficheiros non é compatíbel coas ligazóns simbólicas"
 
-#: ../gio/glocalfile.c:2238
+#: ../gio/glocalfile.c:2243
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Produciuse un erro ao crear a ligazón simbolica: %s"
 
-#: ../gio/glocalfile.c:2300 ../gio/glocalfile.c:2394
+#: ../gio/glocalfile.c:2305 ../gio/glocalfile.c:2399
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Produciuse un erro ao mover o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2323
+#: ../gio/glocalfile.c:2328
 msgid "Can't move directory over directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:925
-#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
-#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
+#: ../gio/glocalfile.c:2355 ../gio/glocalfileoutputstream.c:934
+#: ../gio/glocalfileoutputstream.c:948 ../gio/glocalfileoutputstream.c:963
+#: ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:993
 msgid "Backup file creation failed"
 msgstr "Fallou a creación do ficheiro de seguranza"
 
-#: ../gio/glocalfile.c:2369
+#: ../gio/glocalfile.c:2374
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Produciuse un erro ao retirar o ficheiro obxectivo: %s"
 
-#: ../gio/glocalfile.c:2383
+#: ../gio/glocalfile.c:2388
 msgid "Move between mounts not supported"
 msgstr "Non se permite mover entre puntos de montaxe"
 
@@ -1804,7 +1804,7 @@ msgstr "Produciuse un erro ao estabelecer o atributo estendido «%s»: %s"
 msgid " (invalid encoding)"
 msgstr " (codificación non válida)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:803
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Produciuse un erro ao obter a información do ficheiro «%s»: %s"
@@ -1880,20 +1880,20 @@ msgstr "SELinux non está activado neste sistema"
 msgid "Setting attribute %s not supported"
 msgstr "Non se permite estabelecer o atributo %s "
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:692
+#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:703
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Produciuse un erro ao ler do ficheiro: %s"
 
 #: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
-#: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1002
+#: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:465
+#: ../gio/glocalfileoutputstream.c:1011
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Produciuse un erro ao buscar no ficheiro: %s"
 
-#: ../gio/glocalfileinputstream.c:258 ../gio/glocalfileoutputstream.c:254
-#: ../gio/glocalfileoutputstream.c:348
+#: ../gio/glocalfileinputstream.c:258 ../gio/glocalfileoutputstream.c:255
+#: ../gio/glocalfileoutputstream.c:349
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Produciuse un erro ao pechar o ficheiro: %s"
@@ -1904,52 +1904,52 @@ msgstr ""
 "Non é posíbel atopar o tipo de monitorización do ficheiro local "
 "predeterminado"
 
-#: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:713
+#: ../gio/glocalfileoutputstream.c:203 ../gio/glocalfileoutputstream.c:235
+#: ../gio/glocalfileoutputstream.c:724
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Produciuse un erro ao escribir no ficheiro: %s"
 
-#: ../gio/glocalfileoutputstream.c:281
+#: ../gio/glocalfileoutputstream.c:282
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr ""
 "Produciuse un erro ao retirar a ligazón da copia de seguranza antiga: %s"
 
-#: ../gio/glocalfileoutputstream.c:295 ../gio/glocalfileoutputstream.c:308
+#: ../gio/glocalfileoutputstream.c:296 ../gio/glocalfileoutputstream.c:309
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Produciuse un erro ao crear a copia de seguranza: %s"
 
-#: ../gio/glocalfileoutputstream.c:326
+#: ../gio/glocalfileoutputstream.c:327
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Produciuse un erro ao renomear o ficheiro temporal: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1053
+#: ../gio/glocalfileoutputstream.c:511 ../gio/glocalfileoutputstream.c:1062
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Produciuse un erro ao truncar o ficheiro: %s"
 
-#: ../gio/glocalfileoutputstream.c:563 ../gio/glocalfileoutputstream.c:785
-#: ../gio/glocalfileoutputstream.c:1034
+#: ../gio/glocalfileoutputstream.c:564 ../gio/glocalfileoutputstream.c:794
+#: ../gio/glocalfileoutputstream.c:1043
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Produciuse un erro ao abrir o ficheiro «%s»: %s"
 
-#: ../gio/glocalfileoutputstream.c:816
+#: ../gio/glocalfileoutputstream.c:825
 msgid "Target file is a directory"
 msgstr "O ficheiro destino é un directorio"
 
-#: ../gio/glocalfileoutputstream.c:821
+#: ../gio/glocalfileoutputstream.c:830
 msgid "Target file is not a regular file"
 msgstr "O ficheiro destino non é un ficheiro normal"
 
-#: ../gio/glocalfileoutputstream.c:833
+#: ../gio/glocalfileoutputstream.c:842
 msgid "The file was externally modified"
 msgstr "O ficheiro foi modificado externamente"
 
-#: ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfileoutputstream.c:1027
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Produciuse un erro ao retirar o ficheiro antigo: %s"
@@ -3355,60 +3355,43 @@ msgstr ""
 "Produciuse un erro ao renomear o ficheiro «%s» como «%s»: g_rename() fallou: "
 "%s"
 
-#: ../glib/gfileutils.c:1035 ../glib/gfileutils.c:1593
+#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1561
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Produciuse un erro ao crear o ficheiro «%s»: %s"
 
-#: ../glib/gfileutils.c:1049
-#, c-format
-msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr ""
-"Produciuse un erro ao abrir o ficheiro «%s» para escritura: fdopen() fallou: "
-"%s"
+#: ../glib/gfileutils.c:1071
+#, fuzzy, c-format
+msgid "Failed to write file '%s': write() failed: %s"
+msgstr "Produciuse un erro ao escribir o ficheiro «%s»: write() fallou: %s"
 
-#: ../glib/gfileutils.c:1074
-#, c-format
-msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Produciuse un erro ao escribir o ficheiro «%s»: fwrite() fallou: %s"
-
-#: ../glib/gfileutils.c:1093
-#, c-format
-msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "Produciuse un erro ao escribir o ficheiro «%s»: fflush() fallou: %s"
-
-#: ../glib/gfileutils.c:1137
+#: ../glib/gfileutils.c:1118
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Produciuse un erro ao escribir o ficheiro «%s»: fsync() fallou: %s"
 
-#: ../glib/gfileutils.c:1161
-#, c-format
-msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Produciuse un erro ao pechar o ficheiro «%s»: fclose() fallou: %s"
-
-#: ../glib/gfileutils.c:1282
+#: ../glib/gfileutils.c:1250
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Non foi posíbel retirar o ficheiro existente «%s»: g_unlink() fallou: %s"
 
-#: ../glib/gfileutils.c:1556
+#: ../glib/gfileutils.c:1524
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "O modelo «%s» non é válido, non debería conter «%s»"
 
-#: ../glib/gfileutils.c:1569
+#: ../glib/gfileutils.c:1537
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "O modelo «%s» non contén XXXXXX"
 
-#: ../glib/gfileutils.c:2097
+#: ../glib/gfileutils.c:2065
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Produciuse un erro ao ler a ligazón simbólica «%s»: %s"
 
-#: ../glib/gfileutils.c:2118
+#: ../glib/gfileutils.c:2086
 msgid "Symbolic links not supported"
 msgstr "As ligazóns simbólicas non se admiten"
 
@@ -4456,6 +4439,17 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+#~ msgstr ""
+#~ "Produciuse un erro ao abrir o ficheiro «%s» para escritura: fdopen() "
+#~ "fallou: %s"
+
+#~ msgid "Failed to write file '%s': fflush() failed: %s"
+#~ msgstr "Produciuse un erro ao escribir o ficheiro «%s»: fflush() fallou: %s"
+
+#~ msgid "Failed to close file '%s': fclose() failed: %s"
+#~ msgstr "Produciuse un erro ao pechar o ficheiro «%s»: fclose() fallou: %s"
 
 #~ msgid "Incomplete data received for '%s'"
 #~ msgstr "Datos recibidos incompletos para «%s»"
