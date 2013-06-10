@@ -139,7 +139,8 @@ g_uri_unescape_segment (const char *escaped_string,
 /**
  * g_uri_unescape_string:
  * @escaped_string: an escaped string to be unescaped.
- * @illegal_characters: an optional string of illegal characters not to be allowed.
+ * @illegal_characters: (allow-none): a string of illegal characters not to be
+ *      allowed, or %NULL.
  * 
  * Unescapes a whole escaped string.
  * 
