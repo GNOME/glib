@@ -4473,6 +4473,10 @@ gobject_init_ctor (void)
  * ]|
  *
  * Since: 2.4
+ *
+ * Deprecated: 2.38: Use the G_ADD_PRIVATE() macro when defining the type using
+ *   the G_DEFINE_TYPE_WITH_CODE() macro, or use G_DEFINE_TYPE_WITH_PRIVATE()
+ *   instead.
  */
 void
 g_type_class_add_private (gpointer g_class,
