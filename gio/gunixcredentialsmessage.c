@@ -69,8 +69,7 @@ enum
   PROP_CREDENTIALS
 };
 
-G_DEFINE_TYPE (GUnixCredentialsMessage, g_unix_credentials_message, G_TYPE_SOCKET_CONTROL_MESSAGE);
-
+G_DEFINE_TYPE_WITH_PRIVATE (GUnixCredentialsMessage, g_unix_credentials_message, G_TYPE_SOCKET_CONTROL_MESSAGE)
 static gsize
 g_unix_credentials_message_get_size (GSocketControlMessage *message)
 {
@@ -215,9 +214,7 @@ g_unix_credentials_message_finalize (GObject *object)
 static void
 g_unix_credentials_message_init (GUnixCredentialsMessage *message)
 {
-  message->priv = G_TYPE_INSTANCE_GET_PRIVATE (message,
-                                               G_TYPE_UNIX_CREDENTIALS_MESSAGE,
-                                               GUnixCredentialsMessagePrivate);
+  message->priv = g_unix_credentials_message_get_private (message);
 }
 
 static void
@@ -277,8 +274,6 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
 {
   GSocketControlMessageClass *scm_class;
   GObjectClass *gobject_class;
-
-  g_type_class_add_private (class, sizeof (GUnixCredentialsMessagePrivate));
 
   gobject_class = G_OBJECT_CLASS (class);
   gobject_class->get_property = g_unix_credentials_message_get_property;

@@ -36,17 +36,6 @@
 static void g_network_monitor_base_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_base_initable_iface_init (GInitableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorBase, g_network_monitor_base, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                g_network_monitor_base_initable_iface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
-                                                g_network_monitor_base_iface_init)
-                         _g_io_modules_ensure_extension_points_registered ();
-                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-                                                         g_define_type_id,
-                                                         "base",
-                                                         0))
-
 enum
 {
   PROP_0,
@@ -70,13 +59,22 @@ static guint network_changed_signal = 0;
 
 static void queue_network_changed (GNetworkMonitorBase *monitor);
 
+G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorBase, g_network_monitor_base, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GNetworkMonitorBase)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_network_monitor_base_initable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
+                                                g_network_monitor_base_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "base",
+                                                         0))
+
 static void
 g_network_monitor_base_init (GNetworkMonitorBase *monitor)
 {
-  monitor->priv = G_TYPE_INSTANCE_GET_PRIVATE (monitor,
-                                               G_TYPE_NETWORK_MONITOR_BASE,
-                                               GNetworkMonitorBasePrivate);
-
+  monitor->priv = g_network_monitor_base_get_private (monitor);
   monitor->priv->networks = g_ptr_array_new_with_free_func (g_object_unref);
   monitor->priv->context = g_main_context_get_thread_default ();
   if (monitor->priv->context)
@@ -149,8 +147,6 @@ static void
 g_network_monitor_base_class_init (GNetworkMonitorBaseClass *monitor_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (monitor_class);
-
-  g_type_class_add_private (monitor_class, sizeof (GNetworkMonitorBasePrivate));
 
   gobject_class->constructed  = g_network_monitor_base_constructed;
   gobject_class->get_property = g_network_monitor_base_get_property;

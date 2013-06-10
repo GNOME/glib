@@ -42,22 +42,18 @@
 #include "gnetworking.h"
 #include "gioerror.h"
 
-
-
-G_DEFINE_TYPE (GUnixFDList, g_unix_fd_list, G_TYPE_OBJECT)
-
 struct _GUnixFDListPrivate
 {
   gint *fds;
   gint nfd;
 };
 
+G_DEFINE_TYPE_WITH_PRIVATE (GUnixFDList, g_unix_fd_list, G_TYPE_OBJECT)
+
 static void
 g_unix_fd_list_init (GUnixFDList *list)
 {
-  list->priv = G_TYPE_INSTANCE_GET_PRIVATE (list,
-                                               G_TYPE_UNIX_FD_LIST,
-                                               GUnixFDListPrivate);
+  list->priv = g_unix_fd_list_get_private (list);
 }
 
 static void
@@ -79,7 +75,6 @@ g_unix_fd_list_class_init (GUnixFDListClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  g_type_class_add_private (class, sizeof (GUnixFDListPrivate));
   object_class->finalize = g_unix_fd_list_finalize;
 }
 

@@ -55,7 +55,7 @@ struct _GCancellablePrivate
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GCancellable, g_cancellable, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GCancellable, g_cancellable, G_TYPE_OBJECT)
 
 static GPrivate current_cancellable;
 static GMutex cancellable_mutex;
@@ -76,8 +76,6 @@ static void
 g_cancellable_class_init (GCancellableClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GCancellablePrivate));
 
   gobject_class->finalize = g_cancellable_finalize;
 
@@ -153,9 +151,7 @@ g_cancellable_class_init (GCancellableClass *klass)
 static void
 g_cancellable_init (GCancellable *cancellable)
 {
-  cancellable->priv = G_TYPE_INSTANCE_GET_PRIVATE (cancellable,
-					           G_TYPE_CANCELLABLE,
-					           GCancellablePrivate);
+  cancellable->priv = g_cancellable_get_private (cancellable);
 }
 
 /**

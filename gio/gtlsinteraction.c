@@ -103,7 +103,7 @@ struct _GTlsInteractionPrivate {
   GMainContext *context;
 };
 
-G_DEFINE_TYPE (GTlsInteraction, g_tls_interaction, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GTlsInteraction, g_tls_interaction, G_TYPE_OBJECT)
 
 typedef struct {
   GMutex mutex;
@@ -185,8 +185,7 @@ invoke_closure_wait_and_free (InvokeClosure *closure,
 static void
 g_tls_interaction_init (GTlsInteraction *interaction)
 {
-  interaction->priv = G_TYPE_INSTANCE_GET_PRIVATE (interaction, G_TYPE_TLS_INTERACTION,
-                                                   GTlsInteractionPrivate);
+  interaction->priv = g_tls_interaction_get_private (interaction);
   interaction->priv->context = g_main_context_ref_thread_default ();
 }
 
@@ -206,8 +205,6 @@ g_tls_interaction_class_init (GTlsInteractionClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->finalize = g_tls_interaction_finalize;
-
-  g_type_class_add_private (klass, sizeof (GTlsInteractionPrivate));
 }
 
 static gboolean

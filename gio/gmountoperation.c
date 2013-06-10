@@ -51,8 +51,6 @@
  * passed, see each method taking a #GMountOperation for details.
  */
 
-G_DEFINE_TYPE (GMountOperation, g_mount_operation, G_TYPE_OBJECT);
-
 enum {
   ASK_PASSWORD,
   ASK_QUESTION,
@@ -83,6 +81,8 @@ enum {
   PROP_PASSWORD_SAVE,
   PROP_CHOICE
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GMountOperation, g_mount_operation, G_TYPE_OBJECT)
 
 static void 
 g_mount_operation_set_property (GObject      *object,
@@ -253,8 +253,6 @@ static void
 g_mount_operation_class_init (GMountOperationClass *klass)
 {
   GObjectClass *object_class;
-  
-  g_type_class_add_private (klass, sizeof (GMountOperationPrivate));
  
   object_class = G_OBJECT_CLASS (klass);
   object_class->finalize = g_mount_operation_finalize;
@@ -513,9 +511,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 static void
 g_mount_operation_init (GMountOperation *operation)
 {
-  operation->priv = G_TYPE_INSTANCE_GET_PRIVATE (operation,
-						 G_TYPE_MOUNT_OPERATION,
-						 GMountOperationPrivate);
+  operation->priv = g_mount_operation_get_private (operation);
 }
 
 /**

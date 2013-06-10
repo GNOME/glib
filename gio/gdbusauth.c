@@ -104,7 +104,7 @@ enum
   PROP_STREAM
 };
 
-G_DEFINE_TYPE (GDBusAuth, _g_dbus_auth, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GDBusAuth, _g_dbus_auth, G_TYPE_OBJECT)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -166,8 +166,6 @@ _g_dbus_auth_class_init (GDBusAuthClass *klass)
 {
   GObjectClass *gobject_class;
 
-  g_type_class_add_private (klass, sizeof (GDBusAuthPrivate));
-
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->get_property = _g_dbus_auth_get_property;
   gobject_class->set_property = _g_dbus_auth_set_property;
@@ -226,8 +224,7 @@ mech_compare_func (Mechanism *a, Mechanism *b)
 static void
 _g_dbus_auth_init (GDBusAuth *auth)
 {
-  auth->priv = G_TYPE_INSTANCE_GET_PRIVATE (auth, G_TYPE_DBUS_AUTH, GDBusAuthPrivate);
-
+  auth->priv = _g_dbus_auth_get_private (auth);
 }
 
 static void

@@ -58,28 +58,6 @@
 #define O_BINARY 0
 #endif
 
-
-#ifdef G_OS_UNIX
-static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
-#endif
-
-#define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
-#ifdef G_OS_UNIX
-G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_file_descriptor_based_iface_init)
-                           );
-#else
-G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,);
-#endif
-
-
-/* Some of the file replacement code was based on the code from gedit,
- * relicenced to LGPL with permissions from the authors.
- */
-
-#define BACKUP_EXTENSION "~"
-
 struct _GLocalFileOutputStreamPrivate {
   char *tmp_filename;
   char *original_filename;
@@ -89,6 +67,28 @@ struct _GLocalFileOutputStreamPrivate {
   guint do_close : 1;
   int fd;
 };
+
+#ifdef G_OS_UNIX
+static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
+#endif
+
+#define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
+#ifdef G_OS_UNIX
+G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GLocalFileOutputStream)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+						g_file_descriptor_based_iface_init))
+#else
+G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GLocalFileOutputStream))
+#endif
+
+
+/* Some of the file replacement code was based on the code from gedit,
+ * relicenced to LGPL with permissions from the authors.
+ */
+
+#define BACKUP_EXTENSION "~"
 
 static gssize     g_local_file_output_stream_write        (GOutputStream      *stream,
 							   const void         *buffer,
@@ -134,16 +134,13 @@ g_local_file_output_stream_finalize (GObject *object)
   G_OBJECT_CLASS (g_local_file_output_stream_parent_class)->finalize (object);
 }
 
-
 static void
 g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GOutputStreamClass *stream_class = G_OUTPUT_STREAM_CLASS (klass);
   GFileOutputStreamClass *file_stream_class = G_FILE_OUTPUT_STREAM_CLASS (klass);
-  
-  g_type_class_add_private (klass, sizeof (GLocalFileOutputStreamPrivate));
-  
+
   gobject_class->finalize = g_local_file_output_stream_finalize;
 
   stream_class->write_fn = g_local_file_output_stream_write;
@@ -168,9 +165,7 @@ g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 static void
 g_local_file_output_stream_init (GLocalFileOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_LOCAL_FILE_OUTPUT_STREAM,
-					      GLocalFileOutputStreamPrivate);
+  stream->priv = g_local_file_output_stream_get_private (stream);
   stream->priv->do_close = TRUE;
 }
 

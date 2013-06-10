@@ -57,7 +57,6 @@
  * A UNIX-domain (local) socket address, corresponding to a
  * <type>struct sockaddr_un</type>.
  */
-G_DEFINE_TYPE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS);
 
 enum
 {
@@ -78,6 +77,8 @@ struct _GUnixSocketAddressPrivate
   gsize path_len; /* Not including any terminating zeros */
   GUnixSocketAddressType address_type;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS)
 
 static void
 g_unix_socket_address_set_property (GObject      *object,
@@ -248,8 +249,6 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GSocketAddressClass *gsocketaddress_class = G_SOCKET_ADDRESS_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GUnixSocketAddressPrivate));
-
   gobject_class->set_property = g_unix_socket_address_set_property;
   gobject_class->get_property = g_unix_socket_address_get_property;
 
@@ -305,9 +304,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 static void
 g_unix_socket_address_init (GUnixSocketAddress *address)
 {
-  address->priv = G_TYPE_INSTANCE_GET_PRIVATE (address,
-					       G_TYPE_UNIX_SOCKET_ADDRESS,
-					       GUnixSocketAddressPrivate);
+  address->priv = g_unix_socket_address_get_private (address);
 
   memset (address->priv->path, 0, sizeof (address->priv->path));
   address->priv->path_len = -1;

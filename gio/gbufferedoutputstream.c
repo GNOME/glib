@@ -124,6 +124,7 @@ static gboolean g_buffered_output_stream_truncate            (GSeekable       *s
 G_DEFINE_TYPE_WITH_CODE (GBufferedOutputStream,
 			 g_buffered_output_stream,
 			 G_TYPE_FILTER_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GBufferedOutputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
 						g_buffered_output_stream_seekable_iface_init))
 
@@ -133,8 +134,6 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
 {
   GObjectClass *object_class;
   GOutputStreamClass *ostream_class;
- 
-  g_type_class_add_private (klass, sizeof (GBufferedOutputStreamPrivate));
 
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_buffered_output_stream_get_property;
@@ -345,10 +344,7 @@ g_buffered_output_stream_finalize (GObject *object)
 static void
 g_buffered_output_stream_init (GBufferedOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-                                              G_TYPE_BUFFERED_OUTPUT_STREAM,
-                                              GBufferedOutputStreamPrivate);
-
+  stream->priv = g_buffered_output_stream_get_private (stream);
 }
 
 static void

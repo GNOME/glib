@@ -126,11 +126,6 @@ static gboolean g_socket_initable_init       (GInitable       *initable,
 					      GCancellable    *cancellable,
 					      GError         **error);
 
-G_DEFINE_TYPE_WITH_CODE (GSocket, g_socket, G_TYPE_OBJECT,
-			 g_networking_init ();
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_socket_initable_iface_init));
-
 enum
 {
   PROP_0,
@@ -186,6 +181,12 @@ struct _GSocketPrivate
     guint64 last_used;
   } recv_addr_cache[RECV_ADDR_CACHE_SIZE];
 };
+
+G_DEFINE_TYPE_WITH_CODE (GSocket, g_socket, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GSocket)
+			 g_networking_init ();
+			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+						g_socket_initable_iface_init));
 
 static int
 get_socket_errno (void)
@@ -786,8 +787,6 @@ g_socket_class_init (GSocketClass *klass)
   signal (SIGPIPE, SIG_IGN);
 #endif
 
-  g_type_class_add_private (klass, sizeof (GSocketPrivate));
-
   gobject_class->finalize = g_socket_finalize;
   gobject_class->constructed = g_socket_constructed;
   gobject_class->set_property = g_socket_set_property;
@@ -963,7 +962,7 @@ g_socket_initable_iface_init (GInitableIface *iface)
 static void
 g_socket_init (GSocket *socket)
 {
-  socket->priv = G_TYPE_INSTANCE_GET_PRIVATE (socket, G_TYPE_SOCKET, GSocketPrivate);
+  socket->priv = g_socket_get_private (socket);
 
   socket->priv->fd = -1;
   socket->priv->blocking = TRUE;

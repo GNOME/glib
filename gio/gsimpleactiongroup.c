@@ -45,6 +45,7 @@ static void g_simple_action_group_iface_init (GActionGroupInterface *);
 static void g_simple_action_group_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GSimpleActionGroup,
   g_simple_action_group, G_TYPE_OBJECT,
+  G_ADD_PRIVATE (GSimpleActionGroup)
   G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
                          g_simple_action_group_iface_init);
   G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP,
@@ -251,9 +252,7 @@ g_simple_action_group_finalize (GObject *object)
 static void
 g_simple_action_group_init (GSimpleActionGroup *simple)
 {
-  simple->priv = G_TYPE_INSTANCE_GET_PRIVATE (simple,
-                                              G_TYPE_SIMPLE_ACTION_GROUP,
-                                              GSimpleActionGroupPrivate);
+  simple->priv = g_simple_action_group_get_private (simple);
   simple->priv->table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                g_free, g_object_unref);
 }
@@ -264,8 +263,6 @@ g_simple_action_group_class_init (GSimpleActionGroupClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = g_simple_action_group_finalize;
-
-  g_type_class_add_private (class, sizeof (GSimpleActionGroupPrivate));
 }
 
 static void

@@ -29,9 +29,14 @@
 #include "giostream.h"
 #include "glibintl.h"
 
+struct _GTcpConnectionPrivate
+{
+  guint graceful_disconnect : 1;
+};
 
 G_DEFINE_TYPE_WITH_CODE (GTcpConnection, g_tcp_connection,
 			 G_TYPE_SOCKET_CONNECTION,
+                         G_ADD_PRIVATE (GTcpConnection)
   g_socket_connection_factory_register_type (g_define_type_id,
 					     G_SOCKET_FAMILY_IPV4,
 					     G_SOCKET_TYPE_STREAM,
@@ -59,11 +64,6 @@ static void     g_tcp_connection_close_async (GIOStream            *stream,
 					      GAsyncReadyCallback   callback,
 					      gpointer              user_data);
 
-struct _GTcpConnectionPrivate
-{
-  guint graceful_disconnect : 1;
-};
-
 
 enum
 {
@@ -74,9 +74,7 @@ enum
 static void
 g_tcp_connection_init (GTcpConnection *connection)
 {
-  connection->priv = G_TYPE_INSTANCE_GET_PRIVATE (connection,
-                                                  G_TYPE_TCP_CONNECTION,
-                                                  GTcpConnectionPrivate);
+  connection->priv = g_tcp_connection_get_private (connection);
   connection->priv->graceful_disconnect = FALSE;
 }
 
@@ -124,8 +122,6 @@ g_tcp_connection_class_init (GTcpConnectionClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GIOStreamClass *stream_class = G_IO_STREAM_CLASS (class);
-
-  g_type_class_add_private (class, sizeof (GTcpConnectionPrivate));
 
   gobject_class->set_property = g_tcp_connection_set_property;
   gobject_class->get_property = g_tcp_connection_get_property;

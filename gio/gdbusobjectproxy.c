@@ -62,7 +62,8 @@ enum
 static void dbus_object_interface_init (GDBusObjectIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusObjectProxy, g_dbus_object_proxy, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, dbus_object_interface_init));
+                         G_ADD_PRIVATE (GDBusObjectProxy)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, dbus_object_interface_init))
 
 static void
 g_dbus_object_proxy_finalize (GObject *object)
@@ -177,16 +178,12 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
-
-  g_type_class_add_private (klass, sizeof (GDBusObjectProxyPrivate));
 }
 
 static void
 g_dbus_object_proxy_init (GDBusObjectProxy *proxy)
 {
-  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy,
-                                             G_TYPE_DBUS_OBJECT_PROXY,
-                                             GDBusObjectProxyPrivate);
+  proxy->priv = g_dbus_object_proxy_get_private (proxy);
   g_mutex_init (&proxy->priv->lock);
   proxy->priv->map_name_to_iface = g_hash_table_new_full (g_str_hash,
                                                           g_str_equal,

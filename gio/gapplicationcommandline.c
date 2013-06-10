@@ -39,8 +39,6 @@
 #include "gwin32inputstream.h"
 #endif
 
-G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJECT)
-
 /**
  * SECTION:gapplicationcommandline
  * @title: GApplicationCommandLine
@@ -155,6 +153,8 @@ struct _GApplicationCommandLinePrivate
   gchar **environ;
   gint exit_status;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJECT)
 
 /* All subclasses represent remote invocations of some kind. */
 #define IS_REMOTE(cmdline) (G_TYPE_FROM_INSTANCE (cmdline) != \
@@ -282,10 +282,7 @@ g_application_command_line_finalize (GObject *object)
 static void
 g_application_command_line_init (GApplicationCommandLine *cmdline)
 {
-  cmdline->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (cmdline,
-                                 G_TYPE_APPLICATION_COMMAND_LINE,
-                                 GApplicationCommandLinePrivate);
+  cmdline->priv = g_application_command_line_get_private (cmdline);
 }
 
 static void
@@ -340,8 +337,6 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
                           P_("TRUE if this is a remote commandline"),
                           FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
-
-  g_type_class_add_private (class, sizeof (GApplicationCommandLinePrivate));
 }
 
 

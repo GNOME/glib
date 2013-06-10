@@ -63,17 +63,15 @@ static void g_data_input_stream_get_property (GObject      *object,
 					      GValue       *value,
 					      GParamSpec   *pspec);
 
-G_DEFINE_TYPE (GDataInputStream,
-               g_data_input_stream,
-               G_TYPE_BUFFERED_INPUT_STREAM)
+G_DEFINE_TYPE_WITH_PRIVATE (GDataInputStream,
+                            g_data_input_stream,
+                            G_TYPE_BUFFERED_INPUT_STREAM)
 
 
 static void
 g_data_input_stream_class_init (GDataInputStreamClass *klass)
 {
   GObjectClass *object_class;
-
-  g_type_class_add_private (klass, sizeof (GDataInputStreamPrivate));
 
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_data_input_stream_get_property;
@@ -169,10 +167,7 @@ g_data_input_stream_get_property (GObject    *object,
 static void
 g_data_input_stream_init (GDataInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-                                              G_TYPE_DATA_INPUT_STREAM,
-                                              GDataInputStreamPrivate);
-
+  stream->priv = g_data_input_stream_get_private (stream);
   stream->priv->byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
   stream->priv->newline_type = G_DATA_STREAM_NEWLINE_TYPE_LF;
 }

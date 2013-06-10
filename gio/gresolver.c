@@ -77,6 +77,7 @@ struct _GResolverPrivate {
  * to get the default resolver.
  */
 G_DEFINE_TYPE_WITH_CODE (GResolver, g_resolver, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GResolver)
 			 g_networking_init ();)
 
 static GList *
@@ -152,8 +153,6 @@ g_resolver_class_init (GResolverClass *resolver_class)
   resolver_class->lookup_service_async = g_resolver_real_lookup_service_async;
   resolver_class->lookup_service_finish = g_resolver_real_lookup_service_finish;
 
-  g_type_class_add_private (resolver_class, sizeof (GResolverPrivate));
-
   /**
    * GResolver::reload:
    * @resolver: a #GResolver
@@ -178,7 +177,7 @@ g_resolver_init (GResolver *resolver)
   struct stat st;
 #endif
 
-  resolver->priv = G_TYPE_INSTANCE_GET_PRIVATE (resolver, G_TYPE_RESOLVER, GResolverPrivate);
+  resolver->priv = g_resolver_get_private (resolver);
 
 #ifdef G_OS_UNIX
   if (stat (_PATH_RESCONF, &st) == 0)

@@ -85,13 +85,14 @@ static GFileInfo *g_file_io_stream_real_query_info_finish (GFileIOStream    *str
 							   GAsyncResult         *result,
 							   GError              **error);
 
-G_DEFINE_TYPE_WITH_CODE (GFileIOStream, g_file_io_stream, G_TYPE_IO_STREAM,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_file_io_stream_seekable_iface_init));
-
 struct _GFileIOStreamPrivate {
   GAsyncReadyCallback outstanding_callback;
 };
+
+G_DEFINE_TYPE_WITH_CODE (GFileIOStream, g_file_io_stream, G_TYPE_IO_STREAM,
+                         G_ADD_PRIVATE (GFileIOStream)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+						g_file_io_stream_seekable_iface_init))
 
 static void
 g_file_io_stream_seekable_iface_init (GSeekableIface *iface)
@@ -106,9 +107,7 @@ g_file_io_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_file_io_stream_init (GFileIOStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_FILE_IO_STREAM,
-					      GFileIOStreamPrivate);
+  stream->priv = g_file_io_stream_get_private (stream);
 }
 
 /**
@@ -654,8 +653,6 @@ g_file_io_stream_real_query_info_finish (GFileIOStream     *stream,
 static void
 g_file_io_stream_class_init (GFileIOStreamClass *klass)
 {
-  g_type_class_add_private (klass, sizeof (GFileIOStreamPrivate));
-
   klass->tell = g_file_io_stream_real_tell;
   klass->can_seek = g_file_io_stream_real_can_seek;
   klass->seek = g_file_io_stream_real_seek;

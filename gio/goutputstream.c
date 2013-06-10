@@ -45,14 +45,14 @@
  * All of these functions have async variants too.
  **/
 
-G_DEFINE_ABSTRACT_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);
-
 struct _GOutputStreamPrivate {
   guint closed : 1;
   guint pending : 1;
   guint closing : 1;
   GAsyncReadyCallback outstanding_callback;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GOutputStream, g_output_stream, G_TYPE_OBJECT)
 
 static gssize   g_output_stream_real_splice        (GOutputStream             *stream,
 						    GInputStream              *source,
@@ -100,12 +100,6 @@ static gboolean _g_output_stream_close_internal    (GOutputStream             *s
                                                     GError                   **error);
 
 static void
-g_output_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_output_stream_parent_class)->finalize (object);
-}
-
-static void
 g_output_stream_dispose (GObject *object)
 {
   GOutputStream *stream;
@@ -122,10 +116,7 @@ static void
 g_output_stream_class_init (GOutputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
-  g_type_class_add_private (klass, sizeof (GOutputStreamPrivate));
-  
-  gobject_class->finalize = g_output_stream_finalize;
+
   gobject_class->dispose = g_output_stream_dispose;
 
   klass->splice = g_output_stream_real_splice;
@@ -143,9 +134,7 @@ g_output_stream_class_init (GOutputStreamClass *klass)
 static void
 g_output_stream_init (GOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_OUTPUT_STREAM,
-					      GOutputStreamPrivate);
+  stream->priv = g_output_stream_get_private (stream);
 }
 
 /**

@@ -47,7 +47,10 @@
 #include <io.h>
 #endif
 
-
+struct _GLocalFileInputStreamPrivate {
+  int fd;
+  guint do_close : 1;
+};
 
 #ifdef G_OS_UNIX
 static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);
@@ -56,17 +59,13 @@ static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIfac
 #define g_local_file_input_stream_get_type _g_local_file_input_stream_get_type
 #ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GLocalFileInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_file_descriptor_based_iface_init)
-);
+						g_file_descriptor_based_iface_init))
 #else
-G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,);
+G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GLocalFileInputStream))
 #endif
-
-struct _GLocalFileInputStreamPrivate {
-  int fd;
-  guint do_close : 1;
-};
 
 static gssize     g_local_file_input_stream_read       (GInputStream      *stream,
 							void              *buffer,
@@ -95,12 +94,6 @@ static GFileInfo *g_local_file_input_stream_query_info (GFileInputStream  *strea
 static int        g_local_file_input_stream_get_fd     (GFileDescriptorBased *stream);
 #endif
 
-static void
-g_local_file_input_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_local_file_input_stream_parent_class)->finalize (object);
-}
-
 void
 _g_local_file_input_stream_set_do_close (GLocalFileInputStream *in,
 					  gboolean do_close)
@@ -111,13 +104,8 @@ _g_local_file_input_stream_set_do_close (GLocalFileInputStream *in,
 static void
 g_local_file_input_stream_class_init (GLocalFileInputStreamClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
   GFileInputStreamClass *file_stream_class = G_FILE_INPUT_STREAM_CLASS (klass);
-  
-  g_type_class_add_private (klass, sizeof (GLocalFileInputStreamPrivate));
-  
-  gobject_class->finalize = g_local_file_input_stream_finalize;
 
   stream_class->read_fn = g_local_file_input_stream_read;
   stream_class->skip = g_local_file_input_stream_skip;
@@ -139,9 +127,7 @@ g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 static void
 g_local_file_input_stream_init (GLocalFileInputStream *info)
 {
-  info->priv = G_TYPE_INSTANCE_GET_PRIVATE (info,
-					    G_TYPE_LOCAL_FILE_INPUT_STREAM,
-					    GLocalFileInputStreamPrivate);
+  info->priv = g_local_file_input_stream_get_private (info);
   info->priv->do_close = TRUE;
 }
 

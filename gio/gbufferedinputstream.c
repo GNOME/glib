@@ -136,6 +136,7 @@ static void compact_buffer (GBufferedInputStream *stream);
 G_DEFINE_TYPE_WITH_CODE (GBufferedInputStream,
 			 g_buffered_input_stream,
 			 G_TYPE_FILTER_INPUT_STREAM,
+                         G_ADD_PRIVATE (GBufferedInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
 						g_buffered_input_stream_seekable_iface_init))
 
@@ -145,8 +146,6 @@ g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
   GObjectClass *object_class;
   GInputStreamClass *istream_class;
   GBufferedInputStreamClass *bstream_class;
-
-  g_type_class_add_private (klass, sizeof (GBufferedInputStreamPrivate));
 
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_buffered_input_stream_get_property;
@@ -317,9 +316,7 @@ g_buffered_input_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_buffered_input_stream_init (GBufferedInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-                                              G_TYPE_BUFFERED_INPUT_STREAM,
-                                              GBufferedInputStreamPrivate);
+  stream->priv = g_buffered_input_stream_get_private (stream);
 }
 
 

@@ -30,8 +30,6 @@
 #include "gasyncresult.h"
 #include "gtask.h"
 
-G_DEFINE_ABSTRACT_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
-
 /**
  * SECTION:giostream
  * @short_description: Base class for implementing read/write streams
@@ -92,11 +90,7 @@ static gboolean g_io_stream_real_close_finish (GIOStream            *stream,
 					       GAsyncResult         *result,
 					       GError              **error);
 
-static void
-g_io_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_io_stream_parent_class)->finalize (object);
-}
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GIOStream, g_io_stream, G_TYPE_OBJECT)
 
 static void
 g_io_stream_dispose (GObject *object)
@@ -114,9 +108,7 @@ g_io_stream_dispose (GObject *object)
 static void
 g_io_stream_init (GIOStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_IO_STREAM,
-					      GIOStreamPrivate);
+  stream->priv = g_io_stream_get_private (stream);
 }
 
 static void
@@ -151,9 +143,6 @@ g_io_stream_class_init (GIOStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GIOStreamPrivate));
-
-  gobject_class->finalize = g_io_stream_finalize;
   gobject_class->dispose = g_io_stream_dispose;
   gobject_class->get_property = g_io_stream_get_property;
 

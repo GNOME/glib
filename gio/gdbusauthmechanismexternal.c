@@ -77,7 +77,7 @@ static void                     mechanism_client_shutdown           (GDBusAuthMe
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-G_DEFINE_TYPE (GDBusAuthMechanismExternal, _g_dbus_auth_mechanism_external, G_TYPE_DBUS_AUTH_MECHANISM);
+G_DEFINE_TYPE_WITH_PRIVATE (GDBusAuthMechanismExternal, _g_dbus_auth_mechanism_external, G_TYPE_DBUS_AUTH_MECHANISM)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -95,8 +95,6 @@ _g_dbus_auth_mechanism_external_class_init (GDBusAuthMechanismExternalClass *kla
 {
   GObjectClass *gobject_class;
   GDBusAuthMechanismClass *mechanism_class;
-
-  g_type_class_add_private (klass, sizeof (GDBusAuthMechanismExternalPrivate));
 
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = _g_dbus_auth_mechanism_external_finalize;
@@ -123,9 +121,7 @@ _g_dbus_auth_mechanism_external_class_init (GDBusAuthMechanismExternalClass *kla
 static void
 _g_dbus_auth_mechanism_external_init (GDBusAuthMechanismExternal *mechanism)
 {
-  mechanism->priv = G_TYPE_INSTANCE_GET_PRIVATE (mechanism,
-                                                 G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL,
-                                                 GDBusAuthMechanismExternalPrivate);
+  mechanism->priv = _g_dbus_auth_mechanism_external_get_private (mechanism);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

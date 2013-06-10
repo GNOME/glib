@@ -32,6 +32,15 @@
 #include "gioerror.h"
 #include "gfiledescriptorbased.h"
 
+struct _GSocketInputStreamPrivate
+{
+  GSocket *socket;
+
+  /* pending operation metadata */
+  gpointer buffer;
+  gsize count;
+};
+
 static void g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
 #ifdef G_OS_UNIX
 static void g_socket_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
@@ -41,11 +50,13 @@ static void g_socket_input_stream_file_descriptor_based_iface_init (GFileDescrip
 
 #ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GSocketInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_input_stream_file_descriptor_based_iface_init)
 			 )
 #else
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GSocketInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
 			 )
 #endif
@@ -54,15 +65,6 @@ enum
 {
   PROP_0,
   PROP_SOCKET
-};
-
-struct _GSocketInputStreamPrivate
-{
-  GSocket *socket;
-
-  /* pending operation metadata */
-  gpointer buffer;
-  gsize count;
 };
 
 static void
@@ -111,8 +113,7 @@ g_socket_input_stream_finalize (GObject *object)
   if (stream->priv->socket)
     g_object_unref (stream->priv->socket);
 
-  if (G_OBJECT_CLASS (g_socket_input_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_socket_input_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_socket_input_stream_parent_class)->finalize (object);
 }
 
 static gssize
@@ -183,8 +184,6 @@ g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GInputStreamClass *ginputstream_class = G_INPUT_STREAM_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GSocketInputStreamPrivate));
-
   gobject_class->finalize = g_socket_input_stream_finalize;
   gobject_class->get_property = g_socket_input_stream_get_property;
   gobject_class->set_property = g_socket_input_stream_set_property;
@@ -218,11 +217,11 @@ g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 static void
 g_socket_input_stream_init (GSocketInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream, G_TYPE_SOCKET_INPUT_STREAM, GSocketInputStreamPrivate);
+  stream->priv = g_socket_input_stream_get_private (stream);
 }
 
 GSocketInputStream *
 _g_socket_input_stream_new (GSocket *socket)
 {
-  return G_SOCKET_INPUT_STREAM (g_object_new (G_TYPE_SOCKET_INPUT_STREAM, "socket", socket, NULL));
+  return g_object_new (G_TYPE_SOCKET_INPUT_STREAM, "socket", socket, NULL);
 }

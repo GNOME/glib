@@ -788,13 +788,13 @@ enum {
   LAST_SIGNAL
 };
 
-guint signals[LAST_SIGNAL] = { 0 };
-
-G_DEFINE_TYPE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT);
-
 struct _GAppLaunchContextPrivate {
   char **envp;
 };
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJECT)
 
 /**
  * g_app_launch_context_new:
@@ -824,8 +824,6 @@ static void
 g_app_launch_context_class_init (GAppLaunchContextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GAppLaunchContextPrivate));
 
   object_class->finalize = g_app_launch_context_finalize;
 
@@ -873,7 +871,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
 static void
 g_app_launch_context_init (GAppLaunchContext *context)
 {
-  context->priv = G_TYPE_INSTANCE_GET_PRIVATE (context, G_TYPE_APP_LAUNCH_CONTEXT, GAppLaunchContextPrivate);
+  context->priv = g_app_launch_context_get_private (context);
 }
 
 /**

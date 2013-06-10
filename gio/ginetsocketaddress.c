@@ -46,15 +46,6 @@
  * An IPv4 or IPv6 socket address, corresponding to a <type>struct
  * sockaddr_in</type> or <type>struct sockaddr_in6</type>.
  */
-G_DEFINE_TYPE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS);
-
-enum {
-  PROP_0,
-  PROP_ADDRESS,
-  PROP_PORT,
-  PROP_FLOWINFO,
-  PROP_SCOPE_ID
-};
 
 struct _GInetSocketAddressPrivate
 {
@@ -64,24 +55,24 @@ struct _GInetSocketAddressPrivate
   guint32       scope_id;
 };
 
-static void
-g_inet_socket_address_finalize (GObject *object)
-{
-  GInetSocketAddress *address G_GNUC_UNUSED = G_INET_SOCKET_ADDRESS (object);
+G_DEFINE_TYPE_WITH_PRIVATE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS)
 
-  if (G_OBJECT_CLASS (g_inet_socket_address_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_inet_socket_address_parent_class)->finalize) (object);
-}
+enum {
+  PROP_0,
+  PROP_ADDRESS,
+  PROP_PORT,
+  PROP_FLOWINFO,
+  PROP_SCOPE_ID
+};
 
 static void
 g_inet_socket_address_dispose (GObject *object)
 {
-  GInetSocketAddress *address G_GNUC_UNUSED = G_INET_SOCKET_ADDRESS (object);
+  GInetSocketAddress *address = G_INET_SOCKET_ADDRESS (object);
 
-  g_object_unref (address->priv->address);
+  g_clear_object (&(address->priv->address));
 
-  if (G_OBJECT_CLASS (g_inet_socket_address_parent_class)->dispose)
-    (*G_OBJECT_CLASS (g_inet_socket_address_parent_class)->dispose) (object);
+  G_OBJECT_CLASS (g_inet_socket_address_parent_class)->dispose (object);
 }
 
 static void
@@ -246,9 +237,6 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GSocketAddressClass *gsocketaddress_class = G_SOCKET_ADDRESS_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GInetSocketAddressPrivate));
-
-  gobject_class->finalize = g_inet_socket_address_finalize;
   gobject_class->dispose = g_inet_socket_address_dispose;
   gobject_class->set_property = g_inet_socket_address_set_property;
   gobject_class->get_property = g_inet_socket_address_get_property;
@@ -317,9 +305,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
 static void
 g_inet_socket_address_init (GInetSocketAddress *address)
 {
-  address->priv = G_TYPE_INSTANCE_GET_PRIVATE (address,
-                                               G_TYPE_INET_SOCKET_ADDRESS,
-                                               GInetSocketAddressPrivate);
+  address->priv = g_inet_socket_address_get_private (address);
 }
 
 /**

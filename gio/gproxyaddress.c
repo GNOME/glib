@@ -43,7 +43,6 @@
  *
  * Since: 2.26
  **/
-G_DEFINE_TYPE (GProxyAddress, g_proxy_address, G_TYPE_INET_SOCKET_ADDRESS);
 
 enum
 {
@@ -67,6 +66,8 @@ struct _GProxyAddressPrivate
   gchar 	 *dest_hostname;
   guint16 	  dest_port;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GProxyAddress, g_proxy_address, G_TYPE_INET_SOCKET_ADDRESS)
 
 static void
 g_proxy_address_finalize (GObject *object)
@@ -180,8 +181,6 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GProxyAddressPrivate));
-
   gobject_class->finalize = g_proxy_address_finalize;
   gobject_class->set_property = g_proxy_address_set_property;
   gobject_class->get_property = g_proxy_address_get_property;
@@ -276,9 +275,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 static void
 g_proxy_address_init (GProxyAddress *proxy)
 {
-  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy,
-					     G_TYPE_PROXY_ADDRESS,
-					     GProxyAddressPrivate);
+  proxy->priv = g_proxy_address_get_private (proxy);
   proxy->priv->protocol = NULL;
   proxy->priv->username = NULL;
   proxy->priv->password = NULL;

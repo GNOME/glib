@@ -84,8 +84,6 @@ struct _GFileInputStreamPrivate {
 static void
 g_file_input_stream_class_init (GFileInputStreamClass *klass)
 {
-  g_type_class_add_private (klass, sizeof (GFileInputStreamPrivate));
-
   klass->query_info_async = g_file_input_stream_real_query_info_async;
   klass->query_info_finish = g_file_input_stream_real_query_info_finish;
 }
@@ -103,9 +101,7 @@ g_file_input_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_file_input_stream_init (GFileInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_FILE_INPUT_STREAM,
-					      GFileInputStreamPrivate);
+  stream->priv = g_file_input_stream_get_private (stream);
 }
 
 /**

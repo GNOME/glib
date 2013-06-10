@@ -77,19 +77,18 @@ static GFileInfo *g_file_output_stream_real_query_info_finish (GFileOutputStream
 							       GAsyncResult         *result,
 							       GError              **error);
 
-G_DEFINE_TYPE_WITH_CODE (GFileOutputStream, g_file_output_stream, G_TYPE_OUTPUT_STREAM,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_file_output_stream_seekable_iface_init));
-
 struct _GFileOutputStreamPrivate {
   GAsyncReadyCallback outstanding_callback;
 };
 
+G_DEFINE_TYPE_WITH_CODE (GFileOutputStream, g_file_output_stream, G_TYPE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GFileOutputStream)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+						g_file_output_stream_seekable_iface_init));
+
 static void
 g_file_output_stream_class_init (GFileOutputStreamClass *klass)
 {
-  g_type_class_add_private (klass, sizeof (GFileOutputStreamPrivate));
-
   klass->query_info_async = g_file_output_stream_real_query_info_async;
   klass->query_info_finish = g_file_output_stream_real_query_info_finish;
 }
@@ -107,9 +106,7 @@ g_file_output_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_file_output_stream_init (GFileOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_FILE_OUTPUT_STREAM,
-					      GFileOutputStreamPrivate);
+  stream->priv = g_file_output_stream_get_private (stream);
 }
 
 /**

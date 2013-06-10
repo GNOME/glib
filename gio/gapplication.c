@@ -278,6 +278,7 @@ static guint g_application_signals[NR_SIGNALS];
 static void g_application_action_group_iface_init (GActionGroupInterface *);
 static void g_application_action_map_iface_init (GActionMapInterface *);
 G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
+ G_ADD_PRIVATE (GApplication)
  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP, g_application_action_group_iface_init)
  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_MAP, g_application_action_map_iface_init))
 
@@ -692,9 +693,7 @@ g_application_finalize (GObject *object)
 static void
 g_application_init (GApplication *application)
 {
-  application->priv = G_TYPE_INSTANCE_GET_PRIVATE (application,
-                                                   G_TYPE_APPLICATION,
-                                                   GApplicationPrivate);
+  application->priv = g_application_get_private (application);
 
   application->priv->actions = g_application_exported_actions_new (application);
 
@@ -845,8 +844,6 @@ g_application_class_init (GApplicationClass *class)
                   g_signal_accumulator_first_wins, NULL,
                   NULL,
                   G_TYPE_INT, 1, G_TYPE_APPLICATION_COMMAND_LINE);
-
-  g_type_class_add_private (class, sizeof (GApplicationPrivate));
 }
 
 static GVariant *

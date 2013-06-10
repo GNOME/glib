@@ -43,18 +43,6 @@
 static void g_network_monitor_netlink_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_netlink_initable_iface_init (GInitableIface *iface);
 
-#define g_network_monitor_netlink_get_type _g_network_monitor_netlink_get_type
-G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorNetlink, g_network_monitor_netlink, G_TYPE_NETWORK_MONITOR_BASE,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
-                                                g_network_monitor_netlink_iface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                g_network_monitor_netlink_initable_iface_init)
-                         _g_io_modules_ensure_extension_points_registered ();
-                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-                                                         g_define_type_id,
-                                                         "netlink",
-                                                         20))
-
 struct _GNetworkMonitorNetlinkPrivate
 {
   GSocket *sock;
@@ -69,12 +57,23 @@ static gboolean read_netlink_messages (GSocket             *socket,
 static gboolean request_dump (GNetworkMonitorNetlink  *nl,
                               GError                 **error);
 
+#define g_network_monitor_netlink_get_type _g_network_monitor_netlink_get_type
+G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorNetlink, g_network_monitor_netlink, G_TYPE_NETWORK_MONITOR_BASE,
+                         G_ADD_PRIVATE (GNetworkMonitorNetlink)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
+                                                g_network_monitor_netlink_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_network_monitor_netlink_initable_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "netlink",
+                                                         20))
+
 static void
 g_network_monitor_netlink_init (GNetworkMonitorNetlink *nl)
 {
-  nl->priv = G_TYPE_INSTANCE_GET_PRIVATE (nl,
-                                          G_TYPE_NETWORK_MONITOR_NETLINK,
-                                          GNetworkMonitorNetlinkPrivate);
+  nl->priv = g_network_monitor_netlink_get_private (nl);
 }
 
 
@@ -450,8 +449,6 @@ static void
 g_network_monitor_netlink_class_init (GNetworkMonitorNetlinkClass *nl_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (nl_class);
-
-  g_type_class_add_private (nl_class, sizeof (GNetworkMonitorNetlinkPrivate));
 
   gobject_class->finalize  = g_network_monitor_netlink_finalize;
 }

@@ -65,6 +65,7 @@ struct _GSimpleProxyResolverPrivate {
 static void g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GSimpleProxyResolver, g_simple_proxy_resolver, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GSimpleProxyResolver)
                          G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
                                                 g_simple_proxy_resolver_iface_init))
 
@@ -96,9 +97,7 @@ g_simple_proxy_resolver_finalize (GObject *object)
 static void
 g_simple_proxy_resolver_init (GSimpleProxyResolver *resolver)
 {
-  resolver->priv = G_TYPE_INSTANCE_GET_PRIVATE (resolver,
-                                                G_TYPE_SIMPLE_PROXY_RESOLVER,
-                                                GSimpleProxyResolverPrivate);
+  resolver->priv = g_simple_proxy_resolver_get_private (resolver);
   resolver->priv->uri_proxies = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                        g_free, g_free);
 }
@@ -402,8 +401,6 @@ static void
 g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (resolver_class);
-
-  g_type_class_add_private (resolver_class, sizeof (GSimpleProxyResolverPrivate));
 
   object_class->get_property = g_simple_proxy_resolver_get_property;
   object_class->set_property = g_simple_proxy_resolver_set_property;
