@@ -102,9 +102,15 @@ g_type_ensure
 g_type_get_type_registration_serial
 
 G_DEFINE_TYPE
+G_DEFINE_TYPE_WITH_PRIVATE
 G_DEFINE_TYPE_WITH_CODE
 G_DEFINE_ABSTRACT_TYPE
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE
+G_ADD_PRIVATE
+G_PRIVATE_OFFSET
+G_PRIVATE_FIELD
+G_PRIVATE_FIELD_P
 G_DEFINE_INTERFACE
 G_DEFINE_INTERFACE_WITH_CODE
 G_IMPLEMENT_INTERFACE
@@ -124,6 +130,8 @@ g_type_check_class_is_a
 g_type_check_is_value_type
 g_type_check_value
 g_type_check_value_holds
+g_type_class_adjust_private_offset
+g_type_add_instance_private
 g_type_instance_get_private
 g_type_class_get_instance_private_offset
 g_type_class_get_private
