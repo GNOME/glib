@@ -543,7 +543,7 @@ g_object_class_install_property (GObjectClass *class,
     g_error ("Attempt to add property %s::%s to class after it was derived", G_OBJECT_CLASS_NAME (class), pspec->name);
 
   if (!g_type_is_in_init (G_OBJECT_CLASS_TYPE (class)))
-    g_critical ("Attempt to add property %s::%s after class was initialised", G_OBJECT_CLASS_NAME (class), pspec->name);
+    g_warning ("Attempt to add property %s::%s after class was initialised", G_OBJECT_CLASS_NAME (class), pspec->name);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
 
@@ -656,7 +656,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
              G_OBJECT_CLASS_NAME (oclass));
 
   if (!g_type_is_in_init (G_OBJECT_CLASS_TYPE (oclass)))
-    g_critical ("Attempt to add properties %s after it was initialised", G_OBJECT_CLASS_NAME (oclass));
+    g_warning ("Attempt to add properties to %s after it was initialised", G_OBJECT_CLASS_NAME (oclass));
 
   oclass_type = G_OBJECT_CLASS_TYPE (oclass);
   parent_type = g_type_parent (oclass_type);
