@@ -187,10 +187,10 @@ static void initable_iface_init       (GInitableIface *initable_iface);
 static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusProxy, g_dbus_proxy, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GDBusProxy)
                          G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
-                         );
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init))
 
 static void
 g_dbus_proxy_dispose (GObject *object)
@@ -633,14 +633,12 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                          G_TYPE_STRING,
                                          G_TYPE_VARIANT);
 
-
-  g_type_class_add_private (klass, sizeof (GDBusProxyPrivate));
 }
 
 static void
 g_dbus_proxy_init (GDBusProxy *proxy)
 {
-  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy, G_TYPE_DBUS_PROXY, GDBusProxyPrivate);
+  proxy->priv = g_dbus_proxy_get_private (proxy);
   proxy->priv->signal_subscription_data = g_slice_new0 (SignalSubscriptionData);
   proxy->priv->signal_subscription_data->ref_count = 1;
   proxy->priv->signal_subscription_data->proxy = proxy;

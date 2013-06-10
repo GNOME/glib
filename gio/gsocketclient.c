@@ -75,8 +75,6 @@
  */
 
 
-G_DEFINE_TYPE (GSocketClient, g_socket_client, G_TYPE_OBJECT);
-
 enum
 {
   EVENT,
@@ -112,6 +110,8 @@ struct _GSocketClientPrivate
   GTlsCertificateFlags tls_validation_flags;
   GProxyResolver *proxy_resolver;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GSocketClient, g_socket_client, G_TYPE_OBJECT)
 
 static GSocket *
 create_socket (GSocketClient  *client,
@@ -199,9 +199,7 @@ clarify_connect_error (GError             *error,
 static void
 g_socket_client_init (GSocketClient *client)
 {
-  client->priv = G_TYPE_INSTANCE_GET_PRIVATE (client,
-					      G_TYPE_SOCKET_CLIENT,
-					      GSocketClientPrivate);
+  client->priv = g_socket_client_get_private (client);
   client->priv->type = G_SOCKET_TYPE_STREAM;
   client->priv->app_proxies = g_hash_table_new_full (g_str_hash,
 						     g_str_equal,
@@ -233,8 +231,7 @@ g_socket_client_finalize (GObject *object)
   g_clear_object (&client->priv->local_address);
   g_clear_object (&client->priv->proxy_resolver);
 
-  if (G_OBJECT_CLASS (g_socket_client_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_socket_client_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_socket_client_parent_class)->finalize (object);
 
   g_hash_table_unref (client->priv->app_proxies);
 }
@@ -761,8 +758,6 @@ static void
 g_socket_client_class_init (GSocketClientClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-
-  g_type_class_add_private (class, sizeof (GSocketClientPrivate));
 
   gobject_class->finalize = g_socket_client_finalize;
   gobject_class->set_property = g_socket_client_set_property;

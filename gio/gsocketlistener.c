@@ -56,8 +56,6 @@
  * Since: 2.22
  */
 
-G_DEFINE_TYPE (GSocketListener, g_socket_listener, G_TYPE_OBJECT);
-
 enum
 {
   PROP_0,
@@ -74,6 +72,8 @@ struct _GSocketListenerPrivate
   int                 listen_backlog;
   guint               closed : 1;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GSocketListener, g_socket_listener, G_TYPE_OBJECT)
 
 static void
 g_socket_listener_finalize (GObject *object)
@@ -136,8 +136,6 @@ g_socket_listener_class_init (GSocketListenerClass *klass)
 {
   GObjectClass *gobject_class G_GNUC_UNUSED = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GSocketListenerPrivate));
-
   gobject_class->finalize = g_socket_listener_finalize;
   gobject_class->set_property = g_socket_listener_set_property;
   gobject_class->get_property = g_socket_listener_get_property;
@@ -156,9 +154,7 @@ g_socket_listener_class_init (GSocketListenerClass *klass)
 static void
 g_socket_listener_init (GSocketListener *listener)
 {
-  listener->priv = G_TYPE_INSTANCE_GET_PRIVATE (listener,
-						G_TYPE_SOCKET_LISTENER,
-						GSocketListenerPrivate);
+  listener->priv = g_socket_listener_get_private (listener);
   listener->priv->sockets =
     g_ptr_array_new_with_free_func ((GDestroyNotify) g_object_unref);
   listener->priv->listen_backlog = 10;

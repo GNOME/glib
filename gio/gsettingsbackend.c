@@ -33,8 +33,6 @@
 #include <glibintl.h>
 
 
-G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
-
 typedef struct _GSettingsBackendClosure GSettingsBackendClosure;
 typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
 
@@ -43,6 +41,8 @@ struct _GSettingsBackendPrivate
   GSettingsBackendWatch *watches;
   GMutex lock;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
 /* For g_settings_backend_sync_default(), we only want to actually do
  * the sync if the backend already exists.  This avoids us creating an
@@ -906,9 +906,7 @@ ignore_subscription (GSettingsBackend *backend,
 static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
-  backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
-                                               G_TYPE_SETTINGS_BACKEND,
-                                               GSettingsBackendPrivate);
+  backend->priv = g_settings_backend_get_private (backend);
   g_mutex_init (&backend->priv->lock);
 }
 
@@ -921,8 +919,6 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   class->unsubscribe = ignore_subscription;
 
   gobject_class->finalize = g_settings_backend_finalize;
-
-  g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
 }
 
 static void

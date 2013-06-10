@@ -39,8 +39,6 @@
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
 
-G_DEFINE_TYPE (GProxyAddressEnumerator, g_proxy_address_enumerator, G_TYPE_SOCKET_ADDRESS_ENUMERATOR);
-
 #define GET_PRIVATE(o) (G_PROXY_ADDRESS_ENUMERATOR (o)->priv)
 
 enum
@@ -76,6 +74,8 @@ struct _GProxyAddressEnumeratorPrivate
   GList                    *next_dest_ip;
   GError                   *last_error;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GProxyAddressEnumerator, g_proxy_address_enumerator, G_TYPE_SOCKET_ADDRESS_ENUMERATOR)
 
 static void
 save_userinfo (GProxyAddressEnumeratorPrivate *priv,
@@ -697,9 +697,7 @@ g_proxy_address_enumerator_finalize (GObject *object)
 static void
 g_proxy_address_enumerator_init (GProxyAddressEnumerator *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    G_TYPE_PROXY_ADDRESS_ENUMERATOR,
-					    GProxyAddressEnumeratorPrivate);
+  self->priv = g_proxy_address_enumerator_get_private (self);
 }
 
 static void
@@ -707,9 +705,6 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
 {
   GObjectClass *object_class = G_OBJECT_CLASS (proxy_enumerator_class);
   GSocketAddressEnumeratorClass *enumerator_class = G_SOCKET_ADDRESS_ENUMERATOR_CLASS (proxy_enumerator_class);
-
-  g_type_class_add_private (enumerator_class,
-			    sizeof (GProxyAddressEnumeratorPrivate));
 
   object_class->constructed = g_proxy_address_enumerator_constructed;
   object_class->set_property = g_proxy_address_enumerator_set_property;

@@ -46,13 +46,13 @@
  * All of these functions have async variants too.
  **/
 
-G_DEFINE_ABSTRACT_TYPE (GInputStream, g_input_stream, G_TYPE_OBJECT);
-
 struct _GInputStreamPrivate {
   guint closed : 1;
   guint pending : 1;
   GAsyncReadyCallback outstanding_callback;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GInputStream, g_input_stream, G_TYPE_OBJECT)
 
 static gssize   g_input_stream_real_skip         (GInputStream         *stream,
 						  gsize                 count,
@@ -87,12 +87,6 @@ static gboolean g_input_stream_real_close_finish (GInputStream         *stream,
 						  GError              **error);
 
 static void
-g_input_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_input_stream_parent_class)->finalize (object);
-}
-
-static void
 g_input_stream_dispose (GObject *object)
 {
   GInputStream *stream;
@@ -111,9 +105,6 @@ g_input_stream_class_init (GInputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
-  g_type_class_add_private (klass, sizeof (GInputStreamPrivate));
-  
-  gobject_class->finalize = g_input_stream_finalize;
   gobject_class->dispose = g_input_stream_dispose;
   
   klass->skip = g_input_stream_real_skip;
@@ -128,9 +119,7 @@ g_input_stream_class_init (GInputStreamClass *klass)
 static void
 g_input_stream_init (GInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_INPUT_STREAM,
-					      GInputStreamPrivate);
+  stream->priv = g_input_stream_get_private (stream);
 }
 
 /**

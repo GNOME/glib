@@ -33,6 +33,14 @@
 #include "glibintl.h"
 #include "gnetworkingprivate.h"
 
+struct _GInetAddressPrivate
+{
+  GSocketFamily family;
+  union {
+    struct in_addr ipv4;
+    struct in6_addr ipv6;
+  } addr;
+};
 
 /**
  * SECTION:ginetaddress
@@ -57,16 +65,8 @@
  */
 
 G_DEFINE_TYPE_WITH_CODE (GInetAddress, g_inet_address, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GInetAddress)
 			 g_networking_init ();)
-
-struct _GInetAddressPrivate
-{
-  GSocketFamily family;
-  union {
-    struct in_addr ipv4;
-    struct in6_addr ipv6;
-  } addr;
-};
 
 enum
 {
@@ -180,8 +180,6 @@ static void
 g_inet_address_class_init (GInetAddressClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GInetAddressPrivate));
 
   gobject_class->set_property = g_inet_address_set_property;
   gobject_class->get_property = g_inet_address_get_property;
@@ -369,9 +367,7 @@ g_inet_address_class_init (GInetAddressClass *klass)
 static void
 g_inet_address_init (GInetAddress *address)
 {
-  address->priv = G_TYPE_INSTANCE_GET_PRIVATE (address,
-                                               G_TYPE_INET_ADDRESS,
-                                               GInetAddressPrivate);
+  address->priv = g_inet_address_get_private (address);
 }
 
 /**

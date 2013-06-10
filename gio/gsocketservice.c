@@ -65,19 +65,18 @@
 #include "gsocketlistener.h"
 #include "gsocketconnection.h"
 
-
-static guint g_socket_service_incoming_signal;
-
-G_DEFINE_TYPE (GSocketService, g_socket_service, G_TYPE_SOCKET_LISTENER);
-
-G_LOCK_DEFINE_STATIC(active);
-
 struct _GSocketServicePrivate
 {
   GCancellable *cancellable;
   guint active : 1;
   guint outstanding_accept : 1;
 };
+
+static guint g_socket_service_incoming_signal;
+
+G_LOCK_DEFINE_STATIC(active);
+
+G_DEFINE_TYPE_WITH_PRIVATE (GSocketService, g_socket_service, G_TYPE_SOCKET_LISTENER)
 
 static void g_socket_service_ready (GObject      *object,
 				    GAsyncResult *result,
@@ -94,9 +93,7 @@ g_socket_service_real_incoming (GSocketService    *service,
 static void
 g_socket_service_init (GSocketService *service)
 {
-  service->priv = G_TYPE_INSTANCE_GET_PRIVATE (service,
-					       G_TYPE_SOCKET_SERVICE,
-					       GSocketServicePrivate);
+  service->priv = g_socket_service_get_private (service);
   service->priv->cancellable = g_cancellable_new ();
   service->priv->active = TRUE;
 }
@@ -243,8 +240,6 @@ g_socket_service_class_init (GSocketServiceClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GSocketListenerClass *listener_class = G_SOCKET_LISTENER_CLASS (class);
-
-  g_type_class_add_private (class, sizeof (GSocketServicePrivate));
 
   gobject_class->finalize = g_socket_service_finalize;
   listener_class->changed = g_socket_service_changed;

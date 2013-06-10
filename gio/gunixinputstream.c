@@ -63,21 +63,22 @@ enum {
   PROP_CLOSE_FD
 };
 
-static void g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
-static void g_unix_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
-						g_unix_input_stream_pollable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_unix_input_stream_file_descriptor_based_iface_init)
-			 )
-
 struct _GUnixInputStreamPrivate {
   int fd;
   guint close_fd : 1;
   guint is_pipe_or_socket : 1;
 };
+
+static void g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
+static void g_unix_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GUnixInputStream)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
+						g_unix_input_stream_pollable_iface_init)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+						g_unix_input_stream_file_descriptor_based_iface_init)
+			 )
 
 static void     g_unix_input_stream_set_property (GObject              *object,
 						  guint                 prop_id,
@@ -119,22 +120,13 @@ static GSource *g_unix_input_stream_pollable_create_source (GPollableInputStream
 							    GCancellable         *cancellable);
 
 static void
-g_unix_input_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_unix_input_stream_parent_class)->finalize (object);
-}
-
-static void
 g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
-  
-  g_type_class_add_private (klass, sizeof (GUnixInputStreamPrivate));
 
   gobject_class->get_property = g_unix_input_stream_get_property;
   gobject_class->set_property = g_unix_input_stream_set_property;
-  gobject_class->finalize = g_unix_input_stream_finalize;
 
   stream_class->read_fn = g_unix_input_stream_read;
   stream_class->close_fn = g_unix_input_stream_close;
@@ -246,10 +238,7 @@ g_unix_input_stream_get_property (GObject    *object,
 static void
 g_unix_input_stream_init (GUnixInputStream *unix_stream)
 {
-  unix_stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (unix_stream,
-						   G_TYPE_UNIX_INPUT_STREAM,
-						   GUnixInputStreamPrivate);
-
+  unix_stream->priv = g_unix_input_stream_get_private (unix_stream);
   unix_stream->priv->fd = -1;
   unix_stream->priv->close_fd = TRUE;
 }

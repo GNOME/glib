@@ -1570,6 +1570,7 @@ class CodeGenerator:
         self.c.write('static void %s_proxy_iface_init (%sIface *iface);\n'
                      '\n'%(i.name_lower, i.camel_name))
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
+        self.c.write('                         G_ADD_PRIVATE (%sProxy)\n'%(i.camel_name))
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
 
         # finalize
@@ -1794,20 +1795,18 @@ class CodeGenerator:
         self.c.write('static void\n'
                      '%s_proxy_init (%sProxy *proxy)\n'
                      '{\n'
-                     '  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy, %sTYPE_%s_PROXY, %sProxyPrivate);\n'
+                     '  proxy->priv = %s_proxy_get_private (proxy);\n'
                      '  g_dbus_proxy_set_interface_info (G_DBUS_PROXY (proxy), %s_interface_info ());\n'
                      '}\n'
                      '\n'
                      %(i.name_lower, i.camel_name,
-                       i.ns_upper, i.name_upper, i.camel_name,
+                       i.name_lower,
                        i.name_lower))
         self.c.write('static void\n'
                      '%s_proxy_class_init (%sProxyClass *klass)\n'
                      '{\n'
                      '  GObjectClass *gobject_class;\n'
                      '  GDBusProxyClass *proxy_class;\n'
-                     '\n'
-                     '  g_type_class_add_private (klass, sizeof (%sProxyPrivate));\n'
                      '\n'
                      '  gobject_class = G_OBJECT_CLASS (klass);\n'
                      '  gobject_class->finalize     = %s_proxy_finalize;\n'
@@ -1818,7 +1817,6 @@ class CodeGenerator:
                      '  proxy_class->g_signal = %s_proxy_g_signal;\n'
                      '  proxy_class->g_properties_changed = %s_proxy_g_properties_changed;\n'
                      '\n'%(i.name_lower, i.camel_name,
-                           i.camel_name,
                            i.name_lower, i.name_lower, i.name_lower, i.name_lower, i.name_lower))
         if len(i.properties) > 0:
             self.c.write('\n'
@@ -2341,6 +2339,7 @@ class CodeGenerator:
                      %(i.name_lower, i.camel_name))
 
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
+        self.c.write('                         G_ADD_PRIVATE (%sSkeleton)\n'%(i.camel_name))
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
 
         # finalize
@@ -2534,8 +2533,9 @@ class CodeGenerator:
         self.c.write('static void\n'
                      '%s_skeleton_init (%sSkeleton *skeleton)\n'
                      '{\n'
-                     '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
-                     %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.camel_name))
+                     '  skeleton->priv = %s_skeleton_get_private (skeleton);\n'
+                     %(i.name_lower, i.camel_name,
+                       i.name_lower))
         self.c.write('  g_mutex_init (&skeleton->priv->lock);\n')
         self.c.write('  skeleton->priv->context = g_main_context_ref_thread_default ();\n')
         if len(i.properties) > 0:
@@ -2571,11 +2571,9 @@ class CodeGenerator:
                      '  GObjectClass *gobject_class;\n'
                      '  GDBusInterfaceSkeletonClass *skeleton_class;\n'
                      '\n'
-                     '  g_type_class_add_private (klass, sizeof (%sSkeletonPrivate));\n'
-                     '\n'
                      '  gobject_class = G_OBJECT_CLASS (klass);\n'
                      '  gobject_class->finalize = %s_skeleton_finalize;\n'
-                     %(i.name_lower, i.camel_name, i.camel_name, i.name_lower))
+                     %(i.name_lower, i.camel_name, i.name_lower))
         if len(i.properties) > 0:
             self.c.write('  gobject_class->get_property = %s_skeleton_get_property;\n'
                          '  gobject_class->set_property = %s_skeleton_set_property;\n'

@@ -49,17 +49,18 @@
  * Since: 2.32
  */
 
-static void     g_inet_address_mask_initable_iface_init (GInitableIface  *iface);
-
-G_DEFINE_TYPE_WITH_CODE (GInetAddressMask, g_inet_address_mask, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_inet_address_mask_initable_iface_init));
-
 struct _GInetAddressMaskPrivate
 {
   GInetAddress *addr;
   guint         length;
 };
+
+static void     g_inet_address_mask_initable_iface_init (GInitableIface  *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GInetAddressMask, g_inet_address_mask, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GInetAddressMask)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+						g_inet_address_mask_initable_iface_init))
 
 enum
 {
@@ -137,8 +138,6 @@ static void
 g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GInetAddressMaskPrivate));
 
   gobject_class->set_property = g_inet_address_mask_set_property;
   gobject_class->get_property = g_inet_address_mask_get_property;
@@ -238,9 +237,7 @@ g_inet_address_mask_initable_iface_init (GInitableIface  *iface)
 static void
 g_inet_address_mask_init (GInetAddressMask *mask)
 {
-  mask->priv = G_TYPE_INSTANCE_GET_PRIVATE (mask,
-					    G_TYPE_INET_ADDRESS_MASK,
-					    GInetAddressMaskPrivate);
+  mask->priv = g_inet_address_mask_get_private (mask);
 }
 
 /**

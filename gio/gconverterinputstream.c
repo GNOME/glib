@@ -99,17 +99,15 @@ static void g_converter_input_stream_pollable_iface_init  (GPollableInputStreamI
 G_DEFINE_TYPE_WITH_CODE (GConverterInputStream,
 			 g_converter_input_stream,
 			 G_TYPE_FILTER_INPUT_STREAM,
+                         G_ADD_PRIVATE (GConverterInputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
-						g_converter_input_stream_pollable_iface_init);
-			 )
+						g_converter_input_stream_pollable_iface_init))
 
 static void
 g_converter_input_stream_class_init (GConverterInputStreamClass *klass)
 {
   GObjectClass *object_class;
   GInputStreamClass *istream_class;
-
-  g_type_class_add_private (klass, sizeof (GConverterInputStreamPrivate));
 
   object_class = G_OBJECT_CLASS (klass);
   object_class->get_property = g_converter_input_stream_get_property;
@@ -207,9 +205,7 @@ g_converter_input_stream_get_property (GObject    *object,
 static void
 g_converter_input_stream_init (GConverterInputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-					      G_TYPE_CONVERTER_INPUT_STREAM,
-					      GConverterInputStreamPrivate);
+  stream->priv = g_converter_input_stream_get_private (stream);
 }
 
 /**

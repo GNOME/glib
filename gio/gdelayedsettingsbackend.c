@@ -37,9 +37,9 @@ struct _GDelayedSettingsBackendPrivate
   gpointer owner;
 };
 
-G_DEFINE_TYPE (GDelayedSettingsBackend,
-               g_delayed_settings_backend,
-               G_TYPE_SETTINGS_BACKEND)
+G_DEFINE_TYPE_WITH_PRIVATE (GDelayedSettingsBackend,
+                            g_delayed_settings_backend,
+                            G_TYPE_SETTINGS_BACKEND)
 
 static gboolean
 invoke_notify_unapplied (gpointer data)
@@ -428,8 +428,6 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   GSettingsBackendClass *backend_class = G_SETTINGS_BACKEND_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  g_type_class_add_private (class, sizeof (GDelayedSettingsBackendPrivate));
-
   backend_class->read = g_delayed_settings_backend_read;
   backend_class->write = g_delayed_settings_backend_write;
   backend_class->write_tree = g_delayed_settings_backend_write_tree;
@@ -445,10 +443,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
 static void
 g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
 {
-  delayed->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (delayed, G_TYPE_DELAYED_SETTINGS_BACKEND,
-                                 GDelayedSettingsBackendPrivate);
-
+  delayed->priv = g_delayed_settings_backend_get_private (delayed);
   delayed->priv->delayed = g_settings_backend_create_tree ();
   g_mutex_init (&delayed->priv->lock);
 }

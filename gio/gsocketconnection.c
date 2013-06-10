@@ -60,8 +60,6 @@
  * Since: 2.22
  */
 
-G_DEFINE_TYPE (GSocketConnection, g_socket_connection, G_TYPE_IO_STREAM);
-
 enum
 {
   PROP_NONE,
@@ -88,6 +86,8 @@ static void     g_socket_connection_close_async   (GIOStream            *stream,
 static gboolean g_socket_connection_close_finish  (GIOStream            *stream,
 						   GAsyncResult         *result,
 						   GError              **error);
+
+G_DEFINE_TYPE_WITH_PRIVATE (GSocketConnection, g_socket_connection, G_TYPE_IO_STREAM)
 
 static GInputStream *
 g_socket_connection_get_input_stream (GIOStream *io_stream)
@@ -399,8 +399,6 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GIOStreamClass *stream_class = G_IO_STREAM_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GSocketConnectionPrivate));
-
   gobject_class->set_property = g_socket_connection_set_property;
   gobject_class->get_property = g_socket_connection_get_property;
   gobject_class->constructed = g_socket_connection_constructed;
@@ -427,9 +425,7 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
 static void
 g_socket_connection_init (GSocketConnection *connection)
 {
-  connection->priv = G_TYPE_INSTANCE_GET_PRIVATE (connection,
-                                                  G_TYPE_SOCKET_CONNECTION,
-                                                  GSocketConnectionPrivate);
+  connection->priv = g_socket_connection_get_private (connection);
 }
 
 static gboolean

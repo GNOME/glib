@@ -42,18 +42,17 @@
 #include "gtcpconnection.h"
 #include "glibintl.h"
 
-G_DEFINE_TYPE (GTcpWrapperConnection,
-	       g_tcp_wrapper_connection, G_TYPE_TCP_CONNECTION);
+struct _GTcpWrapperConnectionPrivate
+{
+  GIOStream *base_io_stream;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (GTcpWrapperConnection, g_tcp_wrapper_connection, G_TYPE_TCP_CONNECTION)
 
 enum
 {
   PROP_NONE,
   PROP_BASE_IO_STREAM
-};
-
-struct _GTcpWrapperConnectionPrivate
-{
-  GIOStream *base_io_stream;
 };
 
 static GInputStream *
@@ -127,8 +126,6 @@ g_tcp_wrapper_connection_class_init (GTcpWrapperConnectionClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GIOStreamClass *stream_class = G_IO_STREAM_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GTcpWrapperConnectionPrivate));
-
   gobject_class->set_property = g_tcp_wrapper_connection_set_property;
   gobject_class->get_property = g_tcp_wrapper_connection_get_property;
   gobject_class->finalize = g_tcp_wrapper_connection_finalize;
@@ -150,9 +147,7 @@ g_tcp_wrapper_connection_class_init (GTcpWrapperConnectionClass *klass)
 static void
 g_tcp_wrapper_connection_init (GTcpWrapperConnection *connection)
 {
-  connection->priv = G_TYPE_INSTANCE_GET_PRIVATE (connection,
-                                                  G_TYPE_TCP_WRAPPER_CONNECTION,
-                                                  GTcpWrapperConnectionPrivate);
+  connection->priv = g_tcp_wrapper_connection_get_private (connection);
 }
 
 /**

@@ -91,7 +91,8 @@ static void     skeleton_intercept_handle_method_call              (GDBusConnect
 
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GDBusInterfaceSkeleton, g_dbus_interface_skeleton, G_TYPE_OBJECT,
-                                  G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_interface_init));
+                                  G_ADD_PRIVATE (GDBusInterfaceSkeleton)
+                                  G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_interface_init))
 
 static void
 g_dbus_interface_skeleton_finalize (GObject *object)
@@ -253,14 +254,12 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
                   G_TYPE_BOOLEAN,
                   1,
                   G_TYPE_DBUS_METHOD_INVOCATION);
-
-  g_type_class_add_private (klass, sizeof (GDBusInterfaceSkeletonPrivate));
 }
 
 static void
 g_dbus_interface_skeleton_init (GDBusInterfaceSkeleton *interface)
 {
-  interface->priv = G_TYPE_INSTANCE_GET_PRIVATE (interface, G_TYPE_DBUS_INTERFACE_SKELETON, GDBusInterfaceSkeletonPrivate);
+  interface->priv = g_dbus_interface_skeleton_get_private (interface);
   g_mutex_init (&interface->priv->lock);
 }
 

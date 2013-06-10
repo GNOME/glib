@@ -36,6 +36,15 @@
 #include "glibintl.h"
 #include "gfiledescriptorbased.h"
 
+struct _GSocketOutputStreamPrivate
+{
+  GSocket *socket;
+
+  /* pending operation metadata */
+  gconstpointer buffer;
+  gsize count;
+};
+
 static void g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
 #ifdef G_OS_UNIX
 static void g_socket_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
@@ -45,11 +54,13 @@ static void g_socket_output_stream_file_descriptor_based_iface_init (GFileDescri
 
 #ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GSocketOutputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_output_stream_file_descriptor_based_iface_init)
 			 )
 #else
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GSocketOutputStream)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
 			 )
 #endif
@@ -58,15 +69,6 @@ enum
 {
   PROP_0,
   PROP_SOCKET
-};
-
-struct _GSocketOutputStreamPrivate
-{
-  GSocket *socket;
-
-  /* pending operation metadata */
-  gconstpointer buffer;
-  gsize count;
 };
 
 static void
@@ -115,8 +117,7 @@ g_socket_output_stream_finalize (GObject *object)
   if (stream->priv->socket)
     g_object_unref (stream->priv->socket);
 
-  if (G_OBJECT_CLASS (g_socket_output_stream_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_socket_output_stream_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_socket_output_stream_parent_class)->finalize (object);
 }
 
 static gssize
@@ -187,8 +188,6 @@ g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GOutputStreamClass *goutputstream_class = G_OUTPUT_STREAM_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GSocketOutputStreamPrivate));
-
   gobject_class->finalize = g_socket_output_stream_finalize;
   gobject_class->get_property = g_socket_output_stream_get_property;
   gobject_class->set_property = g_socket_output_stream_set_property;
@@ -222,11 +221,11 @@ g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *ifac
 static void
 g_socket_output_stream_init (GSocketOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream, G_TYPE_SOCKET_OUTPUT_STREAM, GSocketOutputStreamPrivate);
+  stream->priv = g_socket_output_stream_get_private (stream);
 }
 
 GSocketOutputStream *
 _g_socket_output_stream_new (GSocket *socket)
 {
-  return G_SOCKET_OUTPUT_STREAM (g_object_new (G_TYPE_SOCKET_OUTPUT_STREAM, "socket", socket, NULL));
+  return g_object_new (G_TYPE_SOCKET_OUTPUT_STREAM, "socket", socket, NULL);
 }

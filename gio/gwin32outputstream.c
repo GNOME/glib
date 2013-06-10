@@ -57,13 +57,12 @@ enum {
   PROP_CLOSE_HANDLE
 };
 
-G_DEFINE_TYPE (GWin32OutputStream, g_win32_output_stream, G_TYPE_OUTPUT_STREAM);
-
-
 struct _GWin32OutputStreamPrivate {
   HANDLE handle;
   gboolean close_handle;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GWin32OutputStream, g_win32_output_stream, G_TYPE_OUTPUT_STREAM)
 
 static void     g_win32_output_stream_set_property (GObject              *object,
 						    guint                 prop_id,
@@ -84,22 +83,13 @@ static gboolean g_win32_output_stream_close        (GOutputStream        *stream
 
 
 static void
-g_win32_output_stream_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (g_win32_output_stream_parent_class)->finalize (object);
-}
-
-static void
 g_win32_output_stream_class_init (GWin32OutputStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GOutputStreamClass *stream_class = G_OUTPUT_STREAM_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GWin32OutputStreamPrivate));
-
   gobject_class->get_property = g_win32_output_stream_get_property;
   gobject_class->set_property = g_win32_output_stream_set_property;
-  gobject_class->finalize = g_win32_output_stream_finalize;
 
   stream_class->write_fn = g_win32_output_stream_write;
   stream_class->close_fn = g_win32_output_stream_close;
@@ -184,10 +174,7 @@ g_win32_output_stream_get_property (GObject    *object,
 static void
 g_win32_output_stream_init (GWin32OutputStream *win32_stream)
 {
-  win32_stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (win32_stream,
-						    G_TYPE_WIN32_OUTPUT_STREAM,
-						    GWin32OutputStreamPrivate);
-
+  win32_stream->priv = g_win32_output_stream_get_private (win32_stream);
   win32_stream->priv->handle = NULL;
   win32_stream->priv->close_handle = TRUE;
 }

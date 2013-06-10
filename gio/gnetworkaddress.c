@@ -90,6 +90,7 @@ static GSocketAddressEnumerator *g_network_address_connectable_enumerate        
 static GSocketAddressEnumerator	*g_network_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkAddress, g_network_address, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GNetworkAddress)
                          G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
                                                 g_network_address_connectable_iface_init))
 
@@ -117,8 +118,6 @@ static void
 g_network_address_class_init (GNetworkAddressClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  g_type_class_add_private (klass, sizeof (GNetworkAddressPrivate));
 
   gobject_class->set_property = g_network_address_set_property;
   gobject_class->get_property = g_network_address_get_property;
@@ -161,8 +160,7 @@ g_network_address_connectable_iface_init (GSocketConnectableIface *connectable_i
 static void
 g_network_address_init (GNetworkAddress *addr)
 {
-  addr->priv = G_TYPE_INSTANCE_GET_PRIVATE (addr, G_TYPE_NETWORK_ADDRESS,
-                                            GNetworkAddressPrivate);
+  addr->priv = g_network_address_get_private (addr);
 }
 
 static void

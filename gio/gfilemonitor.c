@@ -62,11 +62,6 @@ enum {
   LAST_SIGNAL
 };
 
-/* work around a limitation of the aliasing foo */
-#undef g_file_monitor
-
-G_DEFINE_ABSTRACT_TYPE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT);
-
 typedef struct {
   GFile *file;
   guint32 last_sent_change_time; /* 0 == not sent */
@@ -96,6 +91,11 @@ enum {
   PROP_RATE_LIMIT,
   PROP_CANCELLED
 };
+
+/* work around a limitation of the aliasing foo */
+#undef g_file_monitor
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT)
 
 static void
 g_file_monitor_set_property (GObject      *object,
@@ -210,9 +210,7 @@ static void
 g_file_monitor_class_init (GFileMonitorClass *klass)
 {
   GObjectClass *object_class;
-  
-  g_type_class_add_private (klass, sizeof (GFileMonitorPrivate));
-  
+
   object_class = G_OBJECT_CLASS (klass);
   object_class->finalize = g_file_monitor_finalize;
   object_class->dispose = g_file_monitor_dispose;
@@ -267,9 +265,7 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
 static void
 g_file_monitor_init (GFileMonitor *monitor)
 {
-  monitor->priv = G_TYPE_INSTANCE_GET_PRIVATE (monitor,
-					       G_TYPE_FILE_MONITOR,
-					       GFileMonitorPrivate);
+  monitor->priv = g_file_monitor_get_private (monitor);
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);

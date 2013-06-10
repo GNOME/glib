@@ -119,6 +119,7 @@ static GSource *g_memory_output_stream_create_source     (GPollableOutputStream 
 static void g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GMemoryOutputStream, g_memory_output_stream, G_TYPE_OUTPUT_STREAM,
+                         G_ADD_PRIVATE (GMemoryOutputStream)
                          G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
                                                 g_memory_output_stream_seekable_iface_init);
                          G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
@@ -130,8 +131,6 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
 {
   GOutputStreamClass *ostream_class;
   GObjectClass *gobject_class;
-
-  g_type_class_add_private (klass, sizeof (GMemoryOutputStreamPrivate));
 
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->set_property = g_memory_output_stream_set_property;
@@ -326,9 +325,7 @@ g_memory_output_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_memory_output_stream_init (GMemoryOutputStream *stream)
 {
-  stream->priv = G_TYPE_INSTANCE_GET_PRIVATE (stream,
-                                              G_TYPE_MEMORY_OUTPUT_STREAM,
-                                              GMemoryOutputStreamPrivate);
+  stream->priv = g_memory_output_stream_get_private (stream);
   stream->priv->pos = 0;
   stream->priv->valid_len = 0;
 }

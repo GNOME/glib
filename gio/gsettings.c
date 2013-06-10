@@ -265,7 +265,7 @@ enum
 
 static guint g_settings_signals[N_SIGNALS];
 
-G_DEFINE_TYPE (GSettings, g_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GSettings, g_settings, G_TYPE_OBJECT)
 
 /* Signals {{{1 */
 static gboolean
@@ -603,10 +603,7 @@ g_settings_finalize (GObject *object)
 static void
 g_settings_init (GSettings *settings)
 {
-  settings->priv = G_TYPE_INSTANCE_GET_PRIVATE (settings,
-                                                G_TYPE_SETTINGS,
-                                                GSettingsPrivate);
-
+  settings->priv = g_settings_get_private (settings);
   settings->priv->main_context = g_main_context_ref_thread_default ();
 }
 
@@ -622,8 +619,6 @@ g_settings_class_init (GSettingsClass *class)
   object_class->get_property = g_settings_get_property;
   object_class->constructed = g_settings_constructed;
   object_class->finalize = g_settings_finalize;
-
-  g_type_class_add_private (object_class, sizeof (GSettingsPrivate));
 
   /**
    * GSettings::changed:

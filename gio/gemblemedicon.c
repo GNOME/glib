@@ -61,6 +61,7 @@ static GParamSpec *properties[NUM_PROPERTIES] = { NULL, };
 static void g_emblemed_icon_icon_iface_init (GIconIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GEmblemedIcon, g_emblemed_icon, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GEmblemedIcon)
                          G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
                          g_emblemed_icon_icon_iface_init))
 
@@ -133,16 +134,12 @@ g_emblemed_icon_class_init (GEmblemedIconClass *klass)
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (gobject_class, NUM_PROPERTIES, properties);
-
-  g_type_class_add_private (klass, sizeof (GEmblemedIconPrivate));
 }
 
 static void
 g_emblemed_icon_init (GEmblemedIcon *emblemed)
 {
-  emblemed->priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (emblemed, G_TYPE_EMBLEMED_ICON,
-                                 GEmblemedIconPrivate);
+  emblemed->priv = g_emblemed_icon_get_private (emblemed);
 }
 
 /**

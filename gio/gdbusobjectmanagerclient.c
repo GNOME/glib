@@ -174,6 +174,7 @@ static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface
 static void dbus_object_manager_interface_init (GDBusObjectManagerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusObjectManagerClient, g_dbus_object_manager_client, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GDBusObjectManagerClient)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT_MANAGER, dbus_object_manager_interface_init));
@@ -564,16 +565,12 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_TYPE_DBUS_PROXY,
                   G_TYPE_VARIANT,
                   G_TYPE_STRV);
-
-  g_type_class_add_private (klass, sizeof (GDBusObjectManagerClientPrivate));
 }
 
 static void
 g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
 {
-  manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager,
-                                               G_TYPE_DBUS_OBJECT_MANAGER_CLIENT,
-                                               GDBusObjectManagerClientPrivate);
+  manager->priv = g_dbus_object_manager_client_get_private (manager);
   g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_object_proxy = g_hash_table_new_full (g_str_hash,
                                                                           g_str_equal,

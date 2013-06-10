@@ -60,8 +60,6 @@
  * using the following functions.
  **/
 
-G_DEFINE_ABSTRACT_TYPE (GPermission, g_permission, G_TYPE_OBJECT)
-
 struct _GPermissionPrivate
 {
   gboolean allowed;
@@ -75,6 +73,8 @@ enum  {
   PROP_CAN_ACQUIRE,
   PROP_CAN_RELEASE
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GPermission, g_permission, G_TYPE_OBJECT)
 
 /**
  * g_permission_acquire:
@@ -375,9 +375,7 @@ g_permission_get_property (GObject *object, guint prop_id,
 static void
 g_permission_init (GPermission *permission)
 {
-  permission->priv = G_TYPE_INSTANCE_GET_PRIVATE (permission,
-                                                  G_TYPE_PERMISSION,
-                                                  GPermissionPrivate);
+  permission->priv = g_permission_get_private (permission);
 }
 
 static gboolean
@@ -464,6 +462,4 @@ g_permission_class_init (GPermissionClass *class)
                            P_("If calling g_permission_release() makes sense"),
                            FALSE,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
-
-  g_type_class_add_private (class, sizeof (GPermissionPrivate));
 }

@@ -706,14 +706,14 @@ g_menu_model_items_changed (GMenuModel *model,
   g_signal_emit (model, g_menu_model_items_changed_signal, 0, position, removed, added);
 }
 
-G_DEFINE_ABSTRACT_TYPE (GMenuAttributeIter, g_menu_attribute_iter, G_TYPE_OBJECT)
-
 struct _GMenuAttributeIterPrivate
 {
   GQuark name;
   GVariant *value;
   gboolean valid;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GMenuAttributeIter, g_menu_attribute_iter, G_TYPE_OBJECT)
 
 /**
  * g_menu_attribute_iter_get_next:
@@ -851,7 +851,7 @@ g_menu_attribute_iter_finalize (GObject *object)
 static void
 g_menu_attribute_iter_init (GMenuAttributeIter *iter)
 {
-  iter->priv = G_TYPE_INSTANCE_GET_PRIVATE (iter, G_TYPE_MENU_ATTRIBUTE_ITER, GMenuAttributeIterPrivate);
+  iter->priv = g_menu_attribute_iter_get_private (iter);
 }
 
 static void
@@ -860,11 +860,7 @@ g_menu_attribute_iter_class_init (GMenuAttributeIterClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = g_menu_attribute_iter_finalize;
-
-  g_type_class_add_private (class, sizeof (GMenuAttributeIterPrivate));
 }
-
-G_DEFINE_ABSTRACT_TYPE (GMenuLinkIter, g_menu_link_iter, G_TYPE_OBJECT)
 
 struct _GMenuLinkIterPrivate
 {
@@ -872,6 +868,8 @@ struct _GMenuLinkIterPrivate
   GMenuModel *value;
   gboolean valid;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GMenuLinkIter, g_menu_link_iter, G_TYPE_OBJECT)
 
 /**
  * g_menu_link_iter_get_next:
@@ -1007,7 +1005,7 @@ g_menu_link_iter_finalize (GObject *object)
 static void
 g_menu_link_iter_init (GMenuLinkIter *iter)
 {
-  iter->priv = G_TYPE_INSTANCE_GET_PRIVATE (iter, G_TYPE_MENU_LINK_ITER, GMenuLinkIterPrivate);
+  iter->priv = g_menu_link_iter_get_private (iter);
 }
 
 static void
@@ -1016,6 +1014,4 @@ g_menu_link_iter_class_init (GMenuLinkIterClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = g_menu_link_iter_finalize;
-
-  g_type_class_add_private (class, sizeof (GMenuLinkIterPrivate));
 }

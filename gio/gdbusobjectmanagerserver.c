@@ -99,7 +99,8 @@ enum
 static void dbus_object_manager_interface_init (GDBusObjectManagerIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusObjectManagerServer, g_dbus_object_manager_server, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT_MANAGER, dbus_object_manager_interface_init));
+                         G_ADD_PRIVATE (GDBusObjectManagerServer)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT_MANAGER, dbus_object_manager_interface_init))
 
 static void g_dbus_object_manager_server_constructed (GObject *object);
 
@@ -220,16 +221,12 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
-
-  g_type_class_add_private (klass, sizeof (GDBusObjectManagerServerPrivate));
 }
 
 static void
 g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
 {
-  manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager,
-                                               G_TYPE_DBUS_OBJECT_MANAGER_SERVER,
-                                               GDBusObjectManagerServerPrivate);
+  manager->priv = g_dbus_object_manager_server_get_private (manager);
   g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_data = g_hash_table_new_full (g_str_hash,
                                                                   g_str_equal,

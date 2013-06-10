@@ -65,13 +65,12 @@ struct _GTlsPasswordPrivate
   gchar *warning;
 };
 
-G_DEFINE_TYPE (GTlsPassword, g_tls_password, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GTlsPassword, g_tls_password, G_TYPE_OBJECT)
 
 static void
 g_tls_password_init (GTlsPassword *password)
 {
-  password->priv = G_TYPE_INSTANCE_GET_PRIVATE (password, G_TYPE_TLS_PASSWORD,
-						GTlsPasswordPrivate);
+  password->priv = g_tls_password_get_private (password);
 }
 
 static const guchar *
@@ -194,8 +193,6 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
   gobject_class->get_property = g_tls_password_get_property;
   gobject_class->set_property = g_tls_password_set_property;
   gobject_class->finalize = g_tls_password_finalize;
-
-  g_type_class_add_private (klass, sizeof (GTlsPasswordPrivate));
 
   g_object_class_install_property (gobject_class, PROP_FLAGS,
 				   g_param_spec_flags ("flags",

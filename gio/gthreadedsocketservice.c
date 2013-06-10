@@ -50,12 +50,18 @@
 #include "gthreadedsocketservice.h"
 #include "glibintl.h"
 
+struct _GThreadedSocketServicePrivate
+{
+  GThreadPool *thread_pool;
+  int max_threads;
+  gint job_count;
+};
 
 static guint g_threaded_socket_service_run_signal;
 
-G_DEFINE_TYPE (GThreadedSocketService,
-	       g_threaded_socket_service,
-	       G_TYPE_SOCKET_SERVICE);
+G_DEFINE_TYPE_WITH_PRIVATE (GThreadedSocketService,
+                            g_threaded_socket_service,
+                            G_TYPE_SOCKET_SERVICE)
 
 enum
 {
@@ -63,15 +69,7 @@ enum
   PROP_MAX_THREADS
 };
 
-
 G_LOCK_DEFINE_STATIC(job_count);
-
-struct _GThreadedSocketServicePrivate
-{
-  GThreadPool *thread_pool;
-  int max_threads;
-  gint job_count;
-};
 
 typedef struct
 {
@@ -136,9 +134,7 @@ g_threaded_socket_service_incoming (GSocketService    *service,
 static void
 g_threaded_socket_service_init (GThreadedSocketService *service)
 {
-  service->priv = G_TYPE_INSTANCE_GET_PRIVATE (service,
-					       G_TYPE_THREADED_SOCKET_SERVICE,
-					       GThreadedSocketServicePrivate);
+  service->priv = g_threaded_socket_service_get_private (service);
   service->priv->max_threads = 10;
 }
 
@@ -211,8 +207,6 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GSocketServiceClass *ss_class = &class->parent_class;
-
-  g_type_class_add_private (class, sizeof (GThreadedSocketServicePrivate));
 
   gobject_class->constructed = g_threaded_socket_service_constructed;
   gobject_class->finalize = g_threaded_socket_service_finalize;

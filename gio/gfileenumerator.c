@@ -29,6 +29,14 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
+struct _GFileEnumeratorPrivate {
+  /* TODO: Should be public for subclasses? */
+  GFile *container;
+  guint closed : 1;
+  guint pending : 1;
+  GAsyncReadyCallback outstanding_callback;
+  GError *outstanding_error;
+};
 
 /**
  * SECTION:gfileenumerator
@@ -64,16 +72,7 @@
  * 
  **/ 
 
-G_DEFINE_TYPE (GFileEnumerator, g_file_enumerator, G_TYPE_OBJECT);
-
-struct _GFileEnumeratorPrivate {
-  /* TODO: Should be public for subclasses? */
-  GFile *container;
-  guint closed : 1;
-  guint pending : 1;
-  GAsyncReadyCallback outstanding_callback;
-  GError *outstanding_error;
-};
+G_DEFINE_TYPE_WITH_PRIVATE (GFileEnumerator, g_file_enumerator, G_TYPE_OBJECT)
 
 enum {
   PROP_0,
@@ -150,9 +149,7 @@ static void
 g_file_enumerator_class_init (GFileEnumeratorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
-  g_type_class_add_private (klass, sizeof (GFileEnumeratorPrivate));
-  
+
   gobject_class->set_property = g_file_enumerator_set_property;
   gobject_class->dispose = g_file_enumerator_dispose;
   gobject_class->finalize = g_file_enumerator_finalize;
@@ -175,9 +172,7 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
 static void
 g_file_enumerator_init (GFileEnumerator *enumerator)
 {
-  enumerator->priv = G_TYPE_INSTANCE_GET_PRIVATE (enumerator,
-						  G_TYPE_FILE_ENUMERATOR,
-						  GFileEnumeratorPrivate);
+  enumerator->priv = g_file_enumerator_get_private (enumerator);
 }
 
 /**

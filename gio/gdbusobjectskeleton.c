@@ -69,7 +69,8 @@ static guint signals[LAST_SIGNAL] = {0};
 static void dbus_object_interface_init (GDBusObjectIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusObjectSkeleton, g_dbus_object_skeleton, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, dbus_object_interface_init));
+                         G_ADD_PRIVATE (GDBusObjectSkeleton)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, dbus_object_interface_init))
 
 
 static void
@@ -196,14 +197,12 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
                   2,
                   G_TYPE_DBUS_INTERFACE_SKELETON,
                   G_TYPE_DBUS_METHOD_INVOCATION);
-
-  g_type_class_add_private (klass, sizeof (GDBusObjectSkeletonPrivate));
 }
 
 static void
 g_dbus_object_skeleton_init (GDBusObjectSkeleton *object)
 {
-  object->priv = G_TYPE_INSTANCE_GET_PRIVATE (object, G_TYPE_DBUS_OBJECT_SKELETON, GDBusObjectSkeletonPrivate);
+  object->priv = g_dbus_object_skeleton_get_private (object);
   g_mutex_init (&object->priv->lock);
   object->priv->map_name_to_iface = g_hash_table_new_full (g_str_hash,
                                                            g_str_equal,

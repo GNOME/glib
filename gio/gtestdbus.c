@@ -431,14 +431,12 @@ enum
   PROP_FLAGS,
 };
 
-G_DEFINE_TYPE (GTestDBus, g_test_dbus, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GTestDBus, g_test_dbus, G_TYPE_OBJECT)
 
 static void
 g_test_dbus_init (GTestDBus *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE ((self), G_TYPE_TEST_DBUS,
-      GTestDBusPrivate);
-
+  self->priv = g_test_dbus_get_private (self);
   self->priv->service_dirs = g_ptr_array_new_with_free_func (g_free);
 }
 
@@ -511,8 +509,6 @@ g_test_dbus_class_init (GTestDBusClass *klass)
   object_class->finalize = g_test_dbus_finalize;
   object_class->get_property = g_test_dbus_get_property;
   object_class->set_property = g_test_dbus_set_property;
-
-  g_type_class_add_private (object_class, sizeof (GTestDBusPrivate));
 
   /**
    * GTestDBus:flags:
