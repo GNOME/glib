@@ -86,9 +86,14 @@ typedef struct
 } GParamSpecPrivate;
 
 static gint g_param_private_offset;
-#define PRIV(inst) (&G_STRUCT_MEMBER(GParamSpecPrivate, (inst), g_param_private_offset))
 
 /* --- functions --- */
+static inline GParamSpecPrivate *
+g_param_spec_get_private (GParamSpec *pspec)
+{
+  return &G_STRUCT_MEMBER (GParamSpecPrivate, pspec, g_param_private_offset);
+}
+
 void
 _g_param_type_init (void)
 {
@@ -132,6 +137,7 @@ _g_param_type_init (void)
    */
   type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParam"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
+  g_param_private_offset = g_type_add_instance_private (type, sizeof (GParamSpecPrivate));
   g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
 }
 
@@ -155,8 +161,7 @@ g_param_spec_class_init (GParamSpecClass *class,
   class->value_validate = NULL;
   class->values_cmp = NULL;
 
-  g_type_class_add_private (class, sizeof (GParamSpecPrivate));
-  g_param_private_offset = g_type_class_get_instance_private_offset (class);
+  g_type_class_adjust_private_offset (class, &g_param_private_offset);
 }
 
 static void
@@ -178,7 +183,7 @@ g_param_spec_init (GParamSpec      *pspec,
 static void
 g_param_spec_finalize (GParamSpec *pspec)
 {
-  GParamSpecPrivate *priv = PRIV (pspec);
+  GParamSpecPrivate *priv = g_param_spec_get_private (pspec);
 
   if (priv->default_value.g_type)
     g_value_reset (&priv->default_value);
@@ -1537,7 +1542,7 @@ g_value_dup_param (const GValue *value)
 const GValue *
 g_param_spec_get_default_value (GParamSpec *pspec)
 {
-  GParamSpecPrivate *priv = PRIV (pspec);
+  GParamSpecPrivate *priv = g_param_spec_get_private (pspec);
 
   /* We use the type field of the GValue as the key for the once because
    * it will be zero before it is initialised and non-zero after.  We
