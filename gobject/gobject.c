@@ -563,7 +563,7 @@ g_object_class_install_property (GObjectClass *class,
   install_property_internal (G_OBJECT_CLASS_TYPE (class), property_id, pspec);
 
   if (G_IS_PROPERTY (pspec))
-    _g_property_set_installed ((GProperty *) pspec, class, G_OBJECT_CLASS_TYPE (class));
+    g_property_set_installed ((GProperty *) pspec, class, G_OBJECT_CLASS_TYPE (class));
 
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_append (class->construct_properties, pspec);
@@ -686,7 +686,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
       install_property_internal (oclass_type, i, pspec);
 
       if (G_IS_PROPERTY (pspec))
-        _g_property_set_installed ((GProperty *) pspec, oclass, G_OBJECT_CLASS_TYPE (oclass));
+        g_property_set_installed ((GProperty *) pspec, oclass, G_OBJECT_CLASS_TYPE (oclass));
 
       if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
         oclass->construct_properties = g_slist_append (oclass->construct_properties, pspec);
@@ -1711,6 +1711,20 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
+      GParamSpec **pspecs;
+      guint n_pspecs, i;
+
+      /* initialize all properties that have a default */
+      pspecs = g_object_class_list_properties (class, &n_pspecs);
+
+      for (i = 0; i < n_pspecs; i++)
+        {
+          if (G_IS_PROPERTY (pspecs[i]))
+            g_property_init_default ((GProperty *) pspecs[i], object);
+        }
+
+      g_free (pspecs);
+
       /* If this object was newly_constructed then g_object_init()
        * froze the queue.  We need to freeze it here in order to get
        * the handle so that we can thaw it below (otherwise it will
@@ -1767,6 +1781,19 @@ g_object_new_internal (GObjectClass          *class,
   if (CLASS_HAS_PROPS (class))
     {
       GSList *node;
+      GParamSpec **pspecs;
+      guint n_pspecs, i;
+
+      /* initialize all properties that have a default */
+      pspecs = g_object_class_list_properties (class, &n_pspecs);
+
+      for (i = 0; i < n_pspecs; i++)
+        {
+          if (G_IS_PROPERTY (pspecs[i]))
+            g_property_init_default ((GProperty *) pspecs[i], object);
+        }
+
+      g_free (pspecs);
 
       /* This will have been setup in g_object_init() */
       nqueue = g_datalist_id_get_data (&object->qdata, quark_notify_queue);

@@ -2605,9 +2605,9 @@ g_pointer_property_get_value (GProperty *property,
  * the property.
  */
 void
-_g_property_set_installed (GProperty *property,
-                           gpointer   g_class,
-                           GType      class_gtype)
+g_property_set_installed (GProperty *property,
+                          gpointer   g_class,
+                          GType      class_gtype)
 {
   if (property->field_offset >= 0)
     {

@@ -109,10 +109,21 @@ test_object_set_enum_val (gpointer obj,
 }
 
 static void
+test_object_constructed (GObject *gobject)
+{
+  TestObject *self = (TestObject *) gobject;
+  TestObjectPrivate *priv = test_object_get_instance_private (self);
+
+  g_assert (priv->enum_val == TEST_ENUM_UNSET);
+  g_assert (!priv->enum_val_set);
+}
+
+static void
 test_object_class_init (TestObjectClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->constructed = test_object_constructed;
   gobject_class->finalize = test_object_finalize;
 
   test_object_properties[PROP_INTEGER_VAL] =
@@ -147,6 +158,8 @@ test_object_class_init (TestObjectClass *klass)
                          NULL);
   g_property_set_prerequisite ((GProperty *) test_object_properties[PROP_ENUM_VAL],
                                test_enum_get_type ());
+  g_property_set_default ((GProperty *) test_object_properties[PROP_ENUM_VAL],
+                          TEST_ENUM_UNSET);
 
   test_object_properties[PROP_WITH_DEFAULT] =
     g_uint8_property_new ("with-default",
@@ -162,11 +175,6 @@ test_object_class_init (TestObjectClass *klass)
 static void
 test_object_init (TestObject *self)
 {
-  TestObjectPrivate *priv = test_object_get_private (self);
-
-  priv->enum_val = TEST_ENUM_UNSET;
-
-  g_property_init_default ((GProperty *) test_object_properties[PROP_WITH_DEFAULT], self);
 }
 
 static void

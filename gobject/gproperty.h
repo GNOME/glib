@@ -141,9 +141,6 @@ void            g_property_override_default             (GProperty    *property,
                                                          GType         gtype,
                                                          ...);
 GLIB_AVAILABLE_IN_2_38
-void            g_property_init_default                 (GProperty    *property,
-                                                         gpointer      gobject);
-GLIB_AVAILABLE_IN_2_38
 void            g_property_set_prerequisite             (GProperty    *property,
                                                          ...);
 
@@ -428,9 +425,12 @@ GParamSpec *    g_pointer_property_new  (const gchar         *name,
 
 
 /* private API */
-void            _g_property_set_installed       (GProperty           *property,
-                                                 gpointer             g_class,
-                                                 GType                class_gtype);
+void            g_property_set_installed       (GProperty *property,
+                                                gpointer   g_class,
+                                                GType      class_gtype);
+void            g_property_init_default        (GProperty *property,
+                                                gpointer   object);
+
 
 G_END_DECLS
 
