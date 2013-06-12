@@ -217,7 +217,7 @@ typedef struct _GMainDispatch GMainDispatch;
 struct _GMainDispatch
 {
   gint depth;
-  GSList *dispatching_sources; /* stack of current sources */
+  GSource *source;
 };
 
 #ifdef G_MAIN_POLL_DEBUG
@@ -2849,7 +2849,7 @@ GSource *
 g_main_current_source (void)
 {
   GMainDispatch *dispatch = get_dispatch ();
-  return dispatch->dispatching_sources ? dispatch->dispatching_sources->data : NULL;
+  return dispatch->source;
 }
 
 /**
@@ -3022,7 +3022,7 @@ g_main_dispatch (GMainContext *context)
 	  gboolean (*dispatch) (GSource *,
 				GSourceFunc,
 				gpointer);
-	  GSList current_source_link;
+          GSource *prev_source;
 
 	  dispatch = source->source_funcs->dispatch;
 	  cb_funcs = source->callback_funcs;
@@ -3042,26 +3042,17 @@ g_main_dispatch (GMainContext *context)
 
 	  UNLOCK_CONTEXT (context);
 
-	  current->depth++;
-	  /* The on-stack allocation of the GSList is unconventional, but
-	   * we know that the lifetime of the link is bounded to this
-	   * function as the link is kept in a thread specific list and
-	   * not manipulated outside of this function and its descendants.
-	   * Avoiding the overhead of a g_slist_alloc() is useful as many
-	   * applications do little more than dispatch events.
-	   *
-	   * This is a performance hack - do not revert to g_slist_prepend()!
-	   */
-	  current_source_link.data = source;
-	  current_source_link.next = current->dispatching_sources;
-	  current->dispatching_sources = &current_source_link;
-	  need_destroy = ! dispatch (source,
-				     callback,
-				     user_data);
-	  g_assert (current->dispatching_sources == &current_source_link);
-	  current->dispatching_sources = current_source_link.next;
-	  current->depth--;
-	  
+          /* These operations are safe because 'current' is thread-local
+           * and not modified from anywhere but this function.
+           */
+          prev_source = current->source;
+          current->depth++;
+
+          need_destroy = !(* dispatch) (source, callback, user_data);
+
+          current->source = prev_source;
+          current->depth--;
+
 	  if (cb_funcs)
 	    cb_funcs->unref (cb_data);
 
