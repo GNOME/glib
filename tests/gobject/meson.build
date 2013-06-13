@@ -8,6 +8,7 @@ gobject_tests = [
   ['signals'],
   ['singleton'],
   ['references'],
+  ['testgobject'],
 ]
 
 # We cannot use gnome.genmarshal() here

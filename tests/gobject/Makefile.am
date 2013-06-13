@@ -22,6 +22,7 @@ installed_test_programs = \
 	signals					\
 	singleton				\
 	references				\
+	testgobject				\
 	$(NULL)
 
 # Don't install these ones, and keep them out of 'make check' because they take too long...
@@ -43,6 +44,7 @@ accumulator_SOURCES = accumulator.c testmarshal.c testmarshal.h
 signals_SOURCES = signals.c
 defaultiface_SOURCES = defaultiface.c testmodule.c testmodule.h
 dynamictype_SOURCES = dynamictype.c testmodule.c testmodule.h
+testgobject_SOURCES = testgobject.c
 
 if ENABLE_TIMELOOP
 installed_test_programs += timeloop-closure
