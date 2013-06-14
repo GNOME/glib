@@ -174,11 +174,11 @@
 #endif
 
 /* Provide a string identifying the current function, non-concatenatable */
-#if defined (__GNUC__)
+#if defined (__GNUC__) && defined (__cplusplus)
 #  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 19901L
 #  define G_STRFUNC     ((const char*) (__func__))
-#elif defined(_MSC_VER) && (_MSC_VER > 1300)
+#elif defined (__GNUC__) || (defined(_MSC_VER) && (_MSC_VER > 1300))
 #  define G_STRFUNC     ((const char*) (__FUNCTION__))
 #else
 #  define G_STRFUNC     ((const char*) ("???"))
