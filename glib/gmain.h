@@ -27,6 +27,7 @@
 #include <glib/gpoll.h>
 #include <glib/gslist.h>
 #include <glib/gthread.h>
+#include <glib/gvariant.h>
 
 G_BEGIN_DECLS
 
@@ -600,6 +601,33 @@ GLIB_AVAILABLE_IN_ALL
 void     g_main_context_invoke      (GMainContext   *context,
                                      GSourceFunc     function,
                                      gpointer        data);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_source_set_dispatch_data                      (GSource            *source,
+                                                                         GVariant           *dispatch_data);
+
+GLIB_AVAILABLE_IN_2_38
+GVariant *              g_main_get_dispatch_data                        (void);
+
+GLIB_AVAILABLE_IN_2_38
+gboolean                g_main_lookup_dispatch_data                     (const gchar        *key,
+                                                                         const gchar        *format_string,
+                                                                         ...);
+GLIB_AVAILABLE_IN_2_38
+GVariant *              g_main_lookup_dispatch_data_value               (const gchar        *key,
+                                                                         const GVariantType *expected_type);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_main_push_dispatch_data                       (const gchar        *key,
+                                                                         const gchar        *format_string,
+                                                                         ...);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_main_push_dispatch_data_value                 (const gchar        *key,
+                                                                         GVariant           *value);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_main_pop_dispatch_data                        (const gchar        *key);
 
 /* Hook for GClosure / GSource integration. Don't touch */
 GLIB_VAR GSourceFuncs g_timeout_funcs;

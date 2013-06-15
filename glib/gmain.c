@@ -218,6 +218,7 @@ struct _GMainDispatch
 {
   gint depth;
   GSource *source;
+  GVariant *dispatch_data;
 };
 
 #ifdef G_MAIN_POLL_DEBUG
@@ -316,6 +317,8 @@ struct _GSourcePrivate
 {
   GSList *child_sources;
   GSource *parent_source;
+
+  GVariant *dispatch_data;
 
   gint64 ready_time;
 
@@ -861,6 +864,8 @@ g_source_new (GSourceFuncs *source_funcs,
   source->flags = G_HOOK_FLAG_ACTIVE;
 
   source->priv->ready_time = -1;
+
+  source->priv->dispatch_data = g_main_get_dispatch_data ();
 
   /* NULL/0 initialization for all other fields */
   
@@ -1925,6 +1930,33 @@ g_source_set_name_by_id (guint           tag,
   g_source_set_name (source, name);
 }
 
+/**
+ * g_source_set_dispatch_data:
+ * @source: a #GSource
+ * @dispatch_data: the new dispatch data for the source
+ *
+ * Sets the dispatch data for @source.
+ *
+ * @dispatch_data is a #GVariant of an undefined type.  It is only valid
+ * to pass a #GVariant that you received from an earlier call to
+ * g_main_get_dispatch_data().
+ *
+ * By default, when creating a source, the dispatch data is initially
+ * set to the value of g_main_get_dispatch_data() at the time
+ * g_source_new() is called.
+ *
+ * Dispatch data can be queried during the dispatch of @source by
+ * calling g_main_lookup_dispatch_data().
+ *
+ * Since: 2.38
+ **/
+void
+g_source_set_dispatch_data (GSource  *source,
+                            GVariant *dispatch_data)
+{
+  g_variant_unref (source->priv->dispatch_data);
+  source->priv->dispatch_data = g_variant_ref_sink (dispatch_data);
+}
 
 /**
  * g_source_ref:
@@ -2001,6 +2033,8 @@ g_source_unref_internal (GSource      *source,
       source->poll_fds = NULL;
 
       g_slist_free_full (source->priv->fds, g_free);
+
+      g_variant_unref (source->priv->dispatch_data);
 
       g_slice_free (GSourcePrivate, source->priv);
       source->priv = NULL;
@@ -2707,6 +2741,22 @@ get_dispatch (void)
   if (!dispatch)
     {
       dispatch = g_slice_new0 (GMainDispatch);
+      /* dispatch_data can be snapped up at any point by creating a new
+       * source, and we must support push and pop operations on it, so
+       * we want a sort of refcounted stack/linked-list.
+       *
+       * we can use GVariant with the Lisp-ish cons/car/cdr (or
+       * cons/head/tail if you prefer) pattern to accomplish exactly
+       * this, using triv as the nul node (which we set as the initial
+       * value).
+       *
+       * each item we add (other than the first) will have the type
+       * ({sv}v), thus effectively forming a dictionary-via-linked-list.
+       *
+       * this is quite convenient considering that GVariant is also the
+       * type of the things that we want to hold...
+       */
+      dispatch->dispatch_data = g_variant_ref_sink (g_variant_new ("()"));
       g_private_set (&depth_private, dispatch);
     }
 
@@ -3023,6 +3073,7 @@ g_main_dispatch (GMainContext *context)
 				GSourceFunc,
 				gpointer);
           GSource *prev_source;
+          GVariant *prev_dispatch_data;
 
 	  dispatch = source->source_funcs->dispatch;
 	  cb_funcs = source->callback_funcs;
@@ -3045,12 +3096,15 @@ g_main_dispatch (GMainContext *context)
           /* These operations are safe because 'current' is thread-local
            * and not modified from anywhere but this function.
            */
+          prev_dispatch_data = current->dispatch_data;
           prev_source = current->source;
+          current->dispatch_data = source->priv->dispatch_data;
           current->source = source;
           current->depth++;
 
           need_destroy = !(* dispatch) (source, callback, user_data);
 
+          current->dispatch_data = prev_dispatch_data;
           current->source = prev_source;
           current->depth--;
 
@@ -5481,4 +5535,153 @@ g_get_worker_context (void)
     }
 
   return glib_worker_context;
+}
+
+/**
+ * g_main_get_dispatch_data:
+ *
+ * Gets a serialised form of the current state of the dispatch data.
+ *
+ * The only thing that you can do with this is to hold it for a while
+ * and pass it to g_source_set_dispatch_data() in the future.
+ *
+ * By default, new sources get their dispatch data from
+ * g_main_get_dispatch_data() at the time they are created.
+ *
+ * You may want to do this function separately if a source is indirectly
+ * being created in the future in response to the current dispatch.
+ *
+ * Returns: (transfer full): the current dispatch data, serialised
+ *
+ * Since: 2.38
+ **/
+GVariant *
+g_main_get_dispatch_data (void)
+{
+  GMainDispatch *current = get_dispatch ();
+  return current->dispatch_data;
+}
+
+/**
+ * g_main_lookup_dispatch_data:
+ * @key: the key for the dispatch data
+ * @format_string: the format string to use
+ * @...: arguments, as per @format_string
+ *
+ * Looks up dispatch data.
+ *
+ * Dispatch data is data associated with the event currently being
+ * dispatched from the mainloop.  For example, this could be the
+ * timestamp of the input event that caused this dispatch.
+ *
+ * Using dispatch data is a useful alternative to managing this sort of
+ * information without passing it through every function explicitly.
+ *
+ * You can push additional pieces of dispatch data using
+ * g_main_push_dispatch_data().
+ *
+ * Returns: %TRUE if the dispatch data was found
+ *
+ * Since: 2.38
+ **/
+gboolean
+g_main_lookup_dispatch_data (const gchar *key,
+                             const gchar *format_string,
+                             ...)
+{
+  GVariant *value;
+  va_list ap;
+
+  value = g_main_lookup_dispatch_data_value (key, NULL);
+
+  if (value == NULL)
+    return FALSE;
+
+  if (!g_variant_check_format_string (value, format_string, FALSE))
+    {
+      g_variant_unref (value);
+      return FALSE;
+    }
+
+  va_start (ap, format_string);
+  g_variant_get_va (value, format_string, NULL, &ap);
+  va_end (ap);
+
+  g_variant_unref (value);
+
+  return TRUE;
+}
+
+GVariant *
+g_main_lookup_dispatch_data_value (const gchar        *key,
+                                   const GVariantType *expected_type)
+{
+  GMainDispatch *current = get_dispatch ();
+  GVariant *node;
+
+  /* The "guts" of our linked-list-lookup algorithm... */
+  node = g_variant_ref (current->dispatch_data);
+
+  while (g_variant_is_of_type (node, G_VARIANT_TYPE ("({sv}v)")))
+    {
+      GVariant *value, *rest;
+      const gchar *nodekey;
+
+      g_variant_get (node, "({&sv}v)", &nodekey, &value, &rest);
+      g_variant_unref (node);
+
+      if (g_str_equal (nodekey, key))
+        {
+          g_variant_unref (rest);
+
+          if (expected_type && !g_variant_is_of_type (value, expected_type))
+            g_clear_pointer (&value, g_variant_unref);
+
+          return value;
+        }
+
+      node = rest;
+    }
+
+  g_variant_unref (node);
+
+  return NULL;
+}
+
+void
+g_main_push_dispatch_data (const gchar *key,
+                           const gchar *format_string,
+                           ...)
+{
+  va_list ap;
+
+  va_start (ap, format_string);
+  g_main_push_dispatch_data_value (key, g_variant_new_va (format_string, NULL, &ap));
+  va_end (ap);
+}
+
+void
+g_main_push_dispatch_data_value (const gchar *key,
+                                 GVariant    *value)
+{
+  GMainDispatch *current = get_dispatch ();
+  GVariant *new;
+
+  new = g_variant_new ("({sv}v)", key, value, current->dispatch_data);
+  g_variant_unref (current->dispatch_data);
+  current->dispatch_data = g_variant_ref_sink (new);
+}
+
+void
+g_main_pop_dispatch_data (const gchar *key)
+{
+  GMainDispatch *current = get_dispatch ();
+  const gchar *top_key;
+  GVariant *rest;
+
+  g_return_if_fail (g_variant_is_of_type (current->dispatch_data, G_VARIANT_TYPE ("({sv}v)")));
+  g_variant_get (current->dispatch_data, "({sv}v)", &top_key, NULL, &rest);
+  g_return_if_fail (g_str_equal (key, top_key));
+  g_variant_unref (current->dispatch_data);
+  current->dispatch_data = rest;
 }
