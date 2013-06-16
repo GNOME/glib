@@ -2714,6 +2714,7 @@ g_test_trap_assertions (const char     *domain,
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
+  g_free (process_id);
 }
 
 static void
