@@ -44,5 +44,5 @@ endif
 marshalers.h: Makefile.am marshalers.list
 	$(AM_V_GEN) $(glib_genmarshal) --prefix=test $(srcdir)/marshalers.list --header --valist-marshallers > marshalers.h
 
-marshalers.c: Makefile.am marshalers.list
+marshalers.c: Makefile.am marshalers.h marshalers.list
 	$(AM_V_GEN) (echo "#include \"marshalers.h\""; $(glib_genmarshal) --prefix=test $(srcdir)/marshalers.list --body --valist-marshallers) > $@.tmp && mv $@.tmp $@
