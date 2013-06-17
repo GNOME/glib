@@ -1004,25 +1004,47 @@ rename_file (const char  *old_name,
   return TRUE;
 }
 
+static char *
+format_error_message (const gchar  *filename,
+                      const gchar  *format_string) G_GNUC_FORMAT(2);
+
+static char *
+format_error_message (const gchar  *filename,
+                      const gchar  *format_string)
+{
+  gint saved_errno = errno;
+  gchar *display_name;
+  gchar *msg;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
+  display_name = g_filename_display_name (filename);
+  msg = g_strdup_printf (format_string, display_name, g_strerror (saved_errno));
+  g_free (display_name);
+
+#pragma GCC diagnostic pop
+
+  return msg;
+}
+
 /* format string must have two '%s':
  *
  *   - the place for the filename
  *   - the place for the strerror
  */
 static void
-format_error_message (GError      **error,
-                      const gchar  *filename,
-                      const gchar  *format_string)
+set_file_error (GError      **error,
+                const gchar  *filename,
+                const gchar  *format_string)
+                      
 {
-  gint saved_errno = errno;
-  gchar *display_name;
+  int saved_errno = errno;
+  char *msg = format_error_message (filename, format_string);
 
-  display_name = g_filename_display_name (filename);
-
-  g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
-               format_string, display_name, g_strerror (saved_errno));
-
-  g_free (display_name);
+  g_set_error_literal (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
+                       msg);
+  g_free (msg);
 }
 
 static gchar *
@@ -1044,7 +1066,7 @@ write_to_temp_file (const gchar  *contents,
 
   if (fd == -1)
     {
-      format_error_message (err, tmp_name, _("Failed to create file '%s': %s"));
+      set_file_error (err, tmp_name, _("Failed to create file '%s': %s"));
       goto out;
     }
 
@@ -1068,7 +1090,7 @@ write_to_temp_file (const gchar  *contents,
           if (errno == EINTR)
             continue;
 
-          format_error_message (err, tmp_name, _("Failed to write file '%s': write() failed: %s"));
+          set_file_error (err, tmp_name, _("Failed to write file '%s': write() failed: %s"));
           close (fd);
           g_unlink (tmp_name);
 
@@ -1108,7 +1130,7 @@ write_to_temp_file (const gchar  *contents,
      */
     if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fd) != 0)
       {
-        format_error_message (err, tmp_name, _("Failed to write file '%s': fsync() failed: %s"));
+        set_file_error (err, tmp_name, _("Failed to write file '%s': fsync() failed: %s"));
         close (fd);
         g_unlink (tmp_name);
 
