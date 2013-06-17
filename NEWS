@@ -1,3 +1,47 @@
+Overview of changes from GLib 2.37.1 to 2.37.2
+==============================================
+
+* The GLib test utilities have grown some file-related APIs
+  to support tests that can be used installed and uninstalled.
+
+* Installing properties after class initialization is deprecated,
+  and will trigger a warning.
+
+* GApplication:
+ - Support org.freedesktop.Application, including D-Bus activation
+   from desktop files
+ - Set prgname to appid for services
+
+* Bugs fixed:
+ 549783 gtester lacks framework for tests with data files
+ 692848 Fix property example in gobject tutorial
+ 698018 Add an explicit g_binding_release()
+ 698614 GObject: prevent installing properties after init
+ 699259 add org.freedesktop.Application support to GIO
+ 699959 g_file_copy(): Ensure we create private files by default
+ 700123 Test failure: g_inet_socket_address_get_scope_id
+ 700725 GIcon: NULLify the `type' out param in the sync methods too
+ 701401 gtest: add function for testing for WINE
+ 701456 Error in gnome/glib/gio/tests/file.c
+ 701474 Error building glibmm due to extra comma in glib/gtestutils.h
+ 701560 various improvements for g_file_set_contents()
+ 701680 GFileEnumerator: Add some documentation about ordering
+ 701878 Check wakeup() before iteration(TRUE) doesn't block
+
+* Translations:
+ Assamese
+ Czech
+ Galician
+ Gujarati
+ Kannada
+ Marathi
+ Odia
+ Polish
+ Slovenian
+ Spanish
+ Telugu
+
+
 Overview of changes from GLib 2.37.0 to 2.37.1
 ==============================================
 
