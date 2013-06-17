@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     3000, 3001, 3002, 3998, 3999, 4000, 4001, 4002, 4003
   };
   guint n_check_years = sizeof(check_years)/sizeof(GDateYear);
-  guint i;
+  guint i, k;
   gboolean discontinuity;
 
   g_print("checking GDate...");
@@ -159,7 +159,8 @@ int main(int argc, char** argv)
   discontinuity = TRUE;
   y      = check_years[0];
   prev_y = G_DATE_BAD_YEAR;
-  while (i < n_check_years) 
+g_print ("testing %d years\n", n_check_years);
+  while (i < n_check_years)
     {
       guint32 first_day_of_year = G_DATE_BAD_JULIAN;
       guint16 days_in_year = g_date_is_leap_year(y) ? 366 : 365;
@@ -198,7 +199,6 @@ int main(int argc, char** argv)
 
 	  while (day <= dim) 
 	    {
-	      guint i;
               GDate tmp;
 
 	      TEST("DMY triplet is valid", g_date_valid_dmy(day,m,y));
@@ -318,24 +318,24 @@ int main(int argc, char** argv)
 
 	      /*************** Increments ***********/
 
-              i = 1;
-              while (i < 402) /* Need to get 400 year increments in */ 
+              k = 1;
+              while (k < 402) /* Need to get 400 year increments in */ 
                 {
 	      
                   /***** Days ******/
                   tmp = *d;
-                  g_date_add_days(d, i);
+                  g_date_add_days(d, k);
 
                   TEST("Adding days gives a value greater than previous",
                        g_date_compare(d, &tmp) > 0);
 
-                  g_date_subtract_days(d, i);
+                  g_date_subtract_days(d, k);
                   TEST("Forward days then backward days returns us to current day",
                        g_date_get_day(d) == day);
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -344,7 +344,7 @@ int main(int argc, char** argv)
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -353,24 +353,24 @@ int main(int argc, char** argv)
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
                   /******* Months ********/
 
                   tmp = *d;
-                  g_date_add_months(d, i);
+                  g_date_add_months(d, k);
                   TEST("Adding months gives a larger value",
                        g_date_compare(d, &tmp) > 0);
-                  g_date_subtract_months(d, i);
+                  g_date_subtract_months(d, k);
 
                   TEST("Forward months then backward months returns us to current month",
                        g_date_get_month(d) == m);
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -379,7 +379,7 @@ int main(int argc, char** argv)
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -393,7 +393,7 @@ int main(int argc, char** argv)
 		      
                       if (failed) 
                         {
-                          g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                          g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                           g_date_debug_print(d);
                         }
                     }
@@ -406,19 +406,19 @@ int main(int argc, char** argv)
                   /******* Years ********/
 
                   tmp = *d;
-                  g_date_add_years(d, i);
+                  g_date_add_years(d, k);
 
                   TEST("Adding years gives a larger value",
                        g_date_compare(d,&tmp) > 0);
 		      
-                  g_date_subtract_years(d, i);
+                  g_date_subtract_years(d, k);
 
                   TEST("Forward years then backward years returns us to current month",
                        g_date_get_month(d) == m);
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -427,7 +427,7 @@ int main(int argc, char** argv)
 
                   if (failed) 
                     {
-                      g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                      g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                       g_date_debug_print(d);
                     }
 
@@ -438,7 +438,7 @@ int main(int argc, char** argv)
 		      
                       if (failed) 
                         {
-                          g_print("  (increment %u, dmy %u %u %u) ", i, day, m, y);
+                          g_print("  (increment %u, dmy %u %u %u) ", k, day, m, y);
                           g_date_debug_print(d);
                         }
                     }
@@ -447,7 +447,7 @@ int main(int argc, char** argv)
                       g_date_set_day(d, day); /* reset */
                     }
 
-                  i += 10;
+                  k += 10;
                 }
 
 	      /*****  increment test relative to our local Julian count */
@@ -492,6 +492,8 @@ int main(int argc, char** argv)
 	}
       g_print(" done\n");
       ++i;
+      if (i == n_check_years)
+        break;
       prev_y = y;
       y = check_years[i];
       if (prev_y == G_DATE_BAD_YEAR || 
