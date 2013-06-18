@@ -58,51 +58,22 @@
  *   int height;
  * };
  *
- * /&ast; identifiers for each property in the array &ast;/
- * enum { PROP_0, PROP_X, PROP_Y, PROP_WIDTH, PROP_HEIGHT, LAST_PROP };
- *
- * /&ast; an array of properties &ast;/
- * static GParamSpec *test_object_properties[LAST_PROP] = { 0, };
- *
  * static void
  * test_object_class_init (TestObjectClass *klass)
  * {
- *   g_type_class_add_private (klass, sizeof (TestObjectPrivate));
- *
- *   test_object_properties[PROP_X] =
- *     g_int_property_new ("x", G_PROPERTY_READWRITE,
- *                         G_STRUCT_OFFSET (TestObjectPrivate, x),
- *                         NULL,
- *                         NULL);
- *
- *   test_object_properties[PROP_Y] =
- *     g_int_property_new ("y", G_PROPERTY_READWRITE,
- *                         G_STRUCT_OFFSET (TestObjectPrivate, y),
- *                         NULL,
- *                         NULL);
- *
- *   test_object_properties[PROP_WIDTH] =
- *     g_int_property_new ("width", G_PROPERTY_READWRITE,
- *                         G_STRUCT_OFFSET (TestObjectPrivate, width),
- *                         NULL,
- *                         NULL);
- *
- *   test_object_properties[PROP_HEIGHT] =
- *     g_int_property_new ("height", G_PROPERTY_READWRITE,
- *                         G_STRUCT_OFFSET (TestObjectPrivate, height),
- *                         NULL,
- *                         NULL);
- *
- *   g_object_class_install_properties (G_OBJECT_CLASS (klass),
- *                                      G_N_ELEMENTS (test_object_properties),
- *                                      test_object_properties);
+ *   G_DEFINE_PROPERTIES (TestObject, test_object, klass,
+ *     G_DEFINE_PROPERTY (TestObject, int, x, G_PROPERTY_READWRITE)
+ *     G_DEFINE_PROPERTY (TestObject, int, y, G_PROPERTY_READWRITE)
+ *     G_DEFINE_PROPERTY (TestObject, int, width, G_PROPERTY_READWRITE)
+ *     G_DEFINE_PROPERTY (TestObject, int, height, G_PROPERTY_READWRITE))
  * }
  * ]|
  *   <para>The main differences with the #GParamSpec creation and installation
  *   code are:</para>
  *
  *   <itemizedlist>
- *     <listitem><para>the constructors take the same parameters</para></listitem>
+ *     <listitem><para>the #GProperty constructors take the same number
+ *     and types of parameters</para></listitem>
  *     <listitem><para>there are not #GObject set_property and get_property
  *     virtual function assignments</para></listitem>
  *     <listitem><para>all properties use direct access of the member in the
@@ -111,8 +82,8 @@
  *
  *   <refsect3>
  *     <title>Setting and getting values</title>
- *     <para>Writing accessors for properties defined using #GProperties is
- *     a simple case of calling g_property_set() or g_property_get(), for
+ *     <para>Writing generic accessors for properties defined using #GProperty
+ *     is a simple case of calling g_property_set() or g_property_get(), for
  *     instance the code below is the simplest form of setter and getter
  *     pair for the "x" property as defined above:</para>
  * |[
@@ -164,21 +135,14 @@
  *     <para>The range is set using g_property_set_range():</para>
  *
  * |[
- *     test_object_properties[PROP_WIDTH] =
- *       g_int_property_new ("width", G_PROPERTY_READWRITE,
- *                           G_STRUCT_OFFSET (TestObjectPrivate, width),
- *                           NULL, NULL);
- *     g_property_set_range (G_PROPERTY (test_object_properties[PROP_WIDTH]),
- *                           0.0,     /&ast; minimum value &ast;/
- *                           G_MAXINT /&ast; maximum value &ast;/)
- *
- *     test_object_properties[PROP_HEIGHT] =
- *       g_int_property_new ("height", G_PROPERTY_READWRITE,
- *                           G_STRUCT_OFFSET (TestObjectPrivate, height),
- *                           NULL, NULL);
- *     g_property_set_range (G_PROPERTY (test_object_properties[PROP_HEIGHT]),
- *                           0.0,     /&ast; minimum value &ast;/
- *                           G_MAXINT /&ast; maximum value &ast;/)
+ *     G_DEFINE_PROPERTY_WITH_RANGE (TestObject, int, width,
+ *                                   G_PROPERTY_READWRITE,
+ *                                   0,       /&ast; minimum value &ast;/
+ *                                   G_MAXINT /&ast; maximum value &ast;/)
+ *     G_DEFINE_PROPERTY_WITH_RANGE (TestObject, int, height,
+ *                                   G_PROPERTY_READWRITE,
+ *                                   0,       /&ast; minimum value &ast;/
+ *                                   G_MAXINT /&ast; maximum value &ast;/)
  * ]|
  *
  *     <para>The example above keeps the "width" and "height" properties as
@@ -222,12 +186,12 @@
  *     and a getter function when creating a #GProperty:</para>
  *
  * |[
- *     test_object_property[PROP_COMPLEX] =
- *       g_object_property_new ("complex", G_PROPERTY_READWRITE, -1,
- *                              test_object_set_complex,
- *                              test_object_get_complex);
- *     g_property_set_prerequisite (G_PROPERTY (test_object_property[PROP_COMPLEX]),
- *                                  TEST_TYPE_COMPLEX);
+ *     G_DEFINE_PROPERTY_EXTENDED (TestObject, object, complex,
+ *                                 0, /&ast; no offset &ast;/
+ *                                 test_object_set_complex_internal,
+ *                                 test_object_get_complex_internal,
+ *                                 G_PROPERTY_READWRITE,
+ *                                 G_PROPERTY_PREREQUISITE (TEST_TYPE_COMPLEX))
  * ]|
  *
  *     <para>The accessors can be public or private functions. The implementation
@@ -238,8 +202,8 @@
  *
  * |[
  *   static gboolean
- *   test_object_set_complex (gpointer self_,
- *                            gpointer value_)
+ *   test_object_set_complex_internal (gpointer self_,
+ *                                     gpointer value_)
  *   {
  *     TestObject *self = self_;
  *     TestComplex *value = value_;
@@ -271,16 +235,17 @@
  *     field, and provide either the setter or the getter function:</para>
  *
  * |[
- *     test_object_property[PROP_WIDTH] =
- *       g_int_property_new ("width", G_PROPERTY_READWRITE | G_PROPERTY_COPY_SET,
- *                           G_STRUCT_OFFSET (TestObjectPrivate, width),
- *                           test_object_set_width, /&ast; explicit setter &ast;/
- *                           NULL                   /&ast; implicit getter &ast;/);
+ *     G_DEFINE_PROPERTY_EXTENDED (TestObject, int, width,
+ *                                 G_PRIVATE_OFFSET (TestObject, width),
+ *                                 test_object_set_width_internal /&ast; explicit &ast;/
+ *                                 NULL,                          /&ast; implicit &ast;/
+ *                                 G_PROPERTY_READWRITE,
+ *                                 G_PROPERTY_RANGE (0, G_MAXINT))
  * ]|
  *
  *     <para>Calling g_property_set() using the "width" property in the example
- *     above will result in calling test_object_set_width(); calling, instead,
- *     g_property_get() using the "width" property will result in accessing
+ *     above will result in calling test_object_set_width_internal(); calling,
+ *     instead, g_property_get() using the "width" property will result in accessing
  *     the width structure member.</para>
  *
  *     <warning><para>You must not call g_property_set() inside the implementation
