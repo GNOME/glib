@@ -337,8 +337,7 @@ struct _GProperty
   guint is_installed : 1;
 
   guint16 type_size;
-  guint16 field_offset;
-  gint priv_offset;
+  gint field_offset;
 
   GQuark prop_id;
 };
@@ -596,12 +595,11 @@ g_##g_t##_property_set_value (GProperty *property, \
       if (retval) \
         g_object_notify_by_pspec (gobject, (GParamSpec *) property); \
     } \
-  else if (property->field_offset >= 0) \
+  else if (property->field_offset != 0) \
     { \
-      gpointer priv_p, field_p; \
+      gpointer field_p; \
 \
-      priv_p = get_private_pointer (property, gobject); \
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset); \
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset); \
 \
       if ((* (c_t *) field_p) != value) \
         { \
@@ -630,13 +628,9 @@ g_##g_t##_property_get_value (GProperty *property, \
     { \
       return ((G##G_t##Property *) property)->getter (gobject); \
     } \
-  else if (property->field_offset >= 0) \
+  else if (property->field_offset != 0) \
     { \
-      gpointer priv_p; \
-\
-      priv_p = get_private_pointer (property, gobject); \
-\
-      return G_STRUCT_MEMBER (c_t, priv_p, property->field_offset); \
+      return G_STRUCT_MEMBER (c_t, gobject, property->field_offset); \
     } \
   else \
     { \
@@ -645,13 +639,6 @@ g_##g_t##_property_get_value (GProperty *property, \
                   G_PARAM_SPEC (property)->name); \
       return (c_t) 0; \
     } \
-}
-
-static inline gpointer
-get_private_pointer (GProperty *property,
-                     gpointer   instance)
-{
-  return G_STRUCT_MEMBER_P (instance, property->priv_offset);
 }
 
 /**
@@ -1076,12 +1063,11 @@ g_enum_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (gint *) field_p) != value)
         {
@@ -1108,13 +1094,9 @@ g_enum_property_get_value (GProperty *property,
     {
       return ((GEnumProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
-
-      priv_p = get_private_pointer (property, gobject);
-
-      return G_STRUCT_MEMBER (gint, priv_p, property->field_offset);
+      return G_STRUCT_MEMBER (gint, gobject, property->field_offset);
     }
   else
     {
@@ -1300,12 +1282,11 @@ g_flags_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (guint *) field_p) != value)
         {
@@ -1332,13 +1313,9 @@ g_flags_property_get_value (GProperty *property,
     {
       return ((GFlagsProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
-
-      priv_p = get_private_pointer (property, gobject);
-
-      return G_STRUCT_MEMBER (guint, priv_p, property->field_offset);
+      return G_STRUCT_MEMBER (guint, gobject, property->field_offset);
     }
   else
     {
@@ -1544,12 +1521,11 @@ g_float_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (gfloat *) field_p) != value)
         {
@@ -1576,13 +1552,9 @@ g_float_property_get_value (GProperty *property,
     {
       return ((GFloatProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
-
-      priv_p = get_private_pointer (property, gobject);
-
-      return G_STRUCT_MEMBER (gfloat, priv_p, property->field_offset);
+      return G_STRUCT_MEMBER (gfloat, gobject, property->field_offset);
     }
   else
     {
@@ -1788,12 +1760,11 @@ g_double_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (gdouble *) field_p) != value)
         {
@@ -1820,13 +1791,9 @@ g_double_property_get_value (GProperty *property,
     {
       return ((GDoubleProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
-
-      priv_p = get_private_pointer (property, gobject);
-
-      return G_STRUCT_MEMBER (gdouble, priv_p, property->field_offset);
+      return G_STRUCT_MEMBER (gdouble, gobject, property->field_offset);
     }
   else
     {
@@ -1959,13 +1926,12 @@ g_string_property_set_value (GProperty   *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
       gchar *str;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       str = (* (gpointer *) field_p);
 
@@ -2000,13 +1966,12 @@ g_string_property_get_value (GProperty *property,
     {
       return ((GStringProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
       gchar *retval;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if (property->flags & G_PROPERTY_COPY_GET)
         retval = g_strdup ((* (gpointer *) field_p));
@@ -2149,13 +2114,12 @@ g_boxed_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
       gpointer old_value;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if (property->flags & G_PROPERTY_COPY_SET)
         {
@@ -2192,13 +2156,12 @@ g_boxed_property_get_value (GProperty *property,
     {
       return ((GBoxedProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
       gpointer value;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if (property->flags & G_PROPERTY_COPY_GET)
         value = g_boxed_copy (((GParamSpec *) property)->value_type, (* (gpointer *) field_p));
@@ -2343,15 +2306,14 @@ g_object_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
       gpointer obj;
 
       g_return_val_if_fail (value == NULL || G_IS_OBJECT (value), FALSE);
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (gpointer *) field_p) == value)
         return FALSE;
@@ -2395,13 +2357,11 @@ g_object_property_get_value (GProperty *property,
     {
       return ((GObjectProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
       GObject *obj;
 
-      priv_p = g_type_instance_get_private (gobject, G_OBJECT_TYPE (gobject));
-      obj = &G_STRUCT_MEMBER (GObject, priv_p, property->field_offset);
+      obj = &G_STRUCT_MEMBER (GObject, gobject, property->field_offset);
 
       if (property->flags & G_PROPERTY_COPY_GET)
         {
@@ -2543,12 +2503,11 @@ g_pointer_property_set_value (GProperty *property,
       if (retval)
         g_object_notify_by_pspec (gobject, (GParamSpec *) property);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p, field_p;
+      gpointer field_p;
 
-      priv_p = get_private_pointer (property, gobject);
-      field_p = G_STRUCT_MEMBER_P (priv_p, property->field_offset);
+      field_p = G_STRUCT_MEMBER_P (gobject, property->field_offset);
 
       if ((* (gpointer *) field_p) != value)
         {
@@ -2575,13 +2534,9 @@ g_pointer_property_get_value (GProperty *property,
     {
       return ((GPointerProperty *) property)->getter (gobject);
     }
-  else if (property->field_offset >= 0)
+  else if (property->field_offset != 0)
     {
-      gpointer priv_p;
-
-      priv_p = get_private_pointer (property, gobject);
-
-      return G_STRUCT_MEMBER (gpointer, priv_p, property->field_offset);
+      return G_STRUCT_MEMBER (gpointer, gobject, property->field_offset);
     }
   else
     {
@@ -2609,7 +2564,7 @@ g_property_set_installed (GProperty *property,
                           gpointer   g_class,
                           GType      class_gtype)
 {
-  if (property->field_offset >= 0)
+  if (property->field_offset != 0)
     {
       gboolean is_interface = G_TYPE_IS_INTERFACE (class_gtype);
 
@@ -2622,11 +2577,8 @@ g_property_set_installed (GProperty *property,
                       G_PARAM_SPEC (property)->name,
                       g_type_name (class_gtype));
 
-          property->field_offset = -1;
-          property->priv_offset = 0;
+          property->field_offset = 0;
         }
-      else
-        property->priv_offset = g_type_class_get_instance_private_offset (g_class);
     }
 
   g_property_ensure_prop_id (property);
@@ -5002,8 +4954,7 @@ property_init (GParamSpec *pspec)
 
   pspec->value_type = G_TYPE_INVALID;
 
-  property->field_offset = -1;
-  property->priv_offset = 0;
+  property->field_offset = 0;
 }
 
 GType

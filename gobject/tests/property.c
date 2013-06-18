@@ -142,7 +142,7 @@ test_object_class_init (TestObjectClass *klass)
                        G_DEFINE_PROPERTY_EXTENDED (TestObject,
                                                    enum,
                                                    enum_val,
-                                                   G_STRUCT_OFFSET (TestObjectPrivate, enum_val),
+                                                   G_PRIVATE_OFFSET (TestObject, enum_val),
                                                    test_object_set_enum_val_internal,
                                                    NULL,
                                                    G_PROPERTY_READWRITE,

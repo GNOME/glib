@@ -529,7 +529,7 @@ void            g_property_init_default        (GProperty *property,
 { \
   GProperty *g_property = (GProperty *) \
     g_##c_type##_property_new (#name, flags, \
-                               G_STRUCT_OFFSET (T_N##Private, name), \
+                               G_PRIVATE_OFFSET (T_N, name), \
                                NULL, \
                                NULL);
 #define _G_DEFINE_PROPERTY_EXTENDED_BEGIN(T_N, c_type, name, offset, setterFunc, getterFunc, flags) \
@@ -563,7 +563,7 @@ void            g_property_init_default        (GProperty *property,
  *   G_DEFINE_PROPERTY_EXTENDED (GtkGadget,
  *                               int,
  *                               width,
- *                               G_STRUCT_OFFSET (GtkGadgetPrivate, width),
+ *                               G_PRIVATE_OFFSET (GtkGadget, width),
  *                               NULL, NULL,
  *                               G_PROPERTY_READWRITE,
  *                               G_PROPERTY_RANGE (0, G_MAXINT))
@@ -573,7 +573,7 @@ void            g_property_init_default        (GProperty *property,
  *   {
  *     GProperty *g_property =
  *       g_int_property_new ("width", G_PROPERTY_READWRITE,
- *                           G_STRUCT_OFFSET (GtkGadgetPrivate, width),
+ *                           G_PRIVATE_OFFSET (GtkGadget, width),
  *                           NULL, NULL);
  *     g_property_set_range (g_property, 0, G_MAXINT);
  *     gtk_gadget_properties[PROP_GtkGadget_width] = g_property;
