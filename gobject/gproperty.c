@@ -279,6 +279,41 @@
  *     </itemizedlist>
  *   </refsect3>
  *
+ *   <refsect3>
+ *     <title>Property and accessor generation macros</title>
+ *     <para>#GProperty provides a set of macros that allow to easily
+ *     add properties to a #GObject type, as well as generating the
+ *     public setter and getter pair of accessors to those
+ *     properties.</para>
+ *     <para>The G_DEFINE_PROPERTIES() and G_DEFINE_PROPERTY() macros
+ *     abstract most of the boilerplate necessary to create properties
+ *     and installing them on a #GObjectClass; the simplest form of
+ *     the G_DEFINE_PROPERTY() macro assumes that the properties are
+ *     going to be stored in the private data of an instance, and that
+ *     the property's value is going to be directly accessed. It is
+ *     also possible to use the variants of G_DEFINE_PROPERTY() to
+ *     specify a range, or a default value for the property, or to
+ *     execute custom code after the property has been created.</para>
+ *     <para>The G_DEFINE_PROPERTY_EXTENDED(), on the other hand,
+ *     allows specifying all the details of a property, including
+ *     explicit setter and getter functions, or the offset of the
+ *     property storage.</para>
+ *     <para>The G_DEFINE_PROPERTY_SET() and G_DEFINE_PROPERTY_GET()
+ *     macros define a public setter and getter functions, respectively,
+ *     that will automatically and safely access the property.</para>
+ *     <para>The G_DEFINE_PROPERTY_GET() macro generates code that
+ *     will directly access the property storage, for performance
+ *     purposes, whereas the G_DEFINE_PROPERTY_SET() macro will generate
+ *     code that will call g_property_set(). If you need to access the
+ *     property using g_property_get(), you can use the
+ *     G_DEFINE_PROPERTY_INDIRECT_GET() macro, instead.</para>
+ *     <para>Both macros have a WITH_CODE variant that allows injecting
+ *     custom code inside the accessors.</para>
+ *     <para>For convenience, there is also a G_DEFINE_PROPERTY_GET_SET()
+ *     macro, which provides a short-hand for defining both getter and
+ *     setter functions.</para>
+ *   </refsect3>
+ *
  * </refsect2>
  */
 
