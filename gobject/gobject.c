@@ -892,6 +892,96 @@ g_object_class_override_property (GObjectClass *oclass,
 }
 
 /**
+ * g_object_class_override_property_default_value:
+ * @oclass: a #GObjectClass
+ * @property_name: the name of the property
+ * @value: the new default value of the property
+ *
+ * Overrides the default value of @property_name on the class @oclass.
+ *
+ * Since: 2.38
+ */
+void
+g_object_class_override_property_default_value (GObjectClass *oclass,
+                                                const gchar  *property_name,
+                                                const GValue *value)
+{
+  GParamSpec *pspec;
+
+  g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
+  g_return_if_fail (property_name != NULL);
+  g_return_if_fail (value != NULL);
+
+  pspec = g_object_class_find_property (oclass, property_name);
+  if (!G_IS_PROPERTY (pspec))
+    {
+      g_critical ("The property %s::%s is not a GProperty, and its default "
+                  "value cannot be overridden",
+                  G_OBJECT_CLASS_NAME (oclass),
+                  property_name);
+      return;
+    }
+
+  g_property_override_default_value (G_PROPERTY (pspec),
+                                     G_OBJECT_CLASS_TYPE (oclass),
+                                     value);
+}
+
+/**
+ * g_object_class_override_property_default_value:
+ * @oclass: a #GObjectClass
+ * @property_name: the name of the property
+ * @...: the new default value of the property
+ *
+ * Overrides the default value of @property_name on the class @oclass.
+ *
+ * Since: 2.38
+ */
+void
+g_object_class_override_property_default (GObjectClass *oclass,
+                                          const gchar  *property_name,
+                                          ...)
+{
+  GValue value = G_VALUE_INIT;
+  gchar *error = NULL;
+  GParamSpec *pspec;
+  va_list args;
+
+  g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
+  g_return_if_fail (property_name != NULL);
+
+  pspec = g_object_class_find_property (oclass, property_name);
+  if (!G_IS_PROPERTY (pspec))
+    {
+      g_critical ("The property %s::%s is not a GProperty, and its default "
+                  "value cannot be overridden",
+                  G_OBJECT_CLASS_NAME (oclass),
+                  property_name);
+      return;
+    }
+
+  va_start (args, property_name);
+
+  G_VALUE_COLLECT_INIT (&value, pspec->value_type, args, 0, &error);
+  if (error)
+    {
+      g_warning ("%s: %s", G_STRFUNC, error);
+      g_free (error);
+      g_value_unset (&value);
+      va_end (args);
+      return;
+    }
+
+  va_end (args);
+
+  g_property_override_default_value (G_PROPERTY (pspec),
+                                     G_OBJECT_CLASS_TYPE (oclass),
+                                     &value);
+
+  g_value_unset (&value);
+}
+
+/**
  * g_object_class_list_properties:
  * @oclass: a #GObjectClass
  * @n_properties: (out): return location for the length of the returned array

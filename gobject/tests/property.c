@@ -75,6 +75,9 @@ test_object_finalize (GObject *gobject)
 
   g_free (priv->string_val);
 
+  if (priv->enum_val_set)
+    g_assert (priv->enum_val != TEST_ENUM_UNSET);
+
   if (priv->enum_val != TEST_ENUM_UNSET)
     g_assert (priv->enum_val_set);
 
@@ -147,7 +150,7 @@ test_object_class_init (TestObjectClass *klass)
                                                    NULL,
                                                    G_PROPERTY_READWRITE,
                                                    G_PROPERTY_DEFAULT (TEST_ENUM_UNSET)
-                                                   g_property_set_prerequisite (g_property, test_enum_get_type ());)
+                                                   G_PROPERTY_PREREQUISITE (test_enum_get_type ()))
                        G_DEFINE_PROPERTY (TestObject,
                                           boolean,
                                           enum_val_set,
@@ -164,10 +167,6 @@ test_object_class_init (TestObjectClass *klass)
 static void
 test_object_init (TestObject *self)
 {
-  TestObjectPrivate *priv = test_object_get_private (self);
-
-  g_assert (priv->enum_val == TEST_ENUM_UNSET);
-  g_assert (!priv->enum_val_set);
 }
 
 G_DECLARE_PROPERTY_GET_SET (TestObject, test_object, gboolean, bool_val)
@@ -181,6 +180,48 @@ G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, float, width)
 G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, float, height)
 G_DEFINE_PROPERTY_GET_SET (TestObject, test_object, TestEnum, enum_val)
 G_DEFINE_PROPERTY_INDIRECT_GET (TestObject, test_object, gboolean, enum_val_set)
+
+typedef struct {
+  TestObject parent_instance;
+} TestDerived;
+
+typedef struct {
+  TestObjectClass parent_class;
+} TestDerivedClass;
+
+GType test_derived_get_type (void);
+
+G_DEFINE_TYPE (TestDerived, test_derived, test_object_get_type ())
+
+static void
+test_derived_constructed (GObject *gobject)
+{
+  TestObject *self = (TestObject *) gobject;
+  TestObjectPrivate *priv = test_object_get_instance_private (self);
+
+  g_assert (priv->enum_val == TEST_ENUM_TWO);
+  g_assert (priv->enum_val_set);
+
+  /* do not chain up, or we trigger the assert */
+}
+
+static void
+test_derived_class_init (TestDerivedClass *klass)
+{
+  G_OBJECT_CLASS (klass)->constructed = test_derived_constructed;
+
+  g_object_class_override_property_default (G_OBJECT_CLASS (klass),
+                                            "enum-val",
+                                            TEST_ENUM_TWO);
+  g_object_class_override_property_default (G_OBJECT_CLASS (klass),
+                                            "with-default",
+                                            128);
+}
+
+static void
+test_derived_init (TestDerived *self)
+{
+}
 
 /* test units start here */
 
@@ -284,15 +325,41 @@ gproperty_explicit_set (void)
 static void
 gproperty_default_init (void)
 {
-  TestObject *obj = g_object_new (test_object_get_type (), NULL);
+  TestObject *obj;
   guint8 with_default = 0;
 
+  obj = g_object_new (test_object_get_type (), NULL);
   g_object_get (obj, "with-default", &with_default, NULL);
   g_assert_cmpint (with_default, ==, 255);
 
   g_object_unref (obj);
 
   obj = g_object_new (test_object_get_type (), "with-default", 128, NULL);
+  g_object_get (obj, "with-default", &with_default, NULL);
+  g_assert_cmpint (with_default, ==, 128);
+
+  g_object_unref (obj);
+}
+
+static void
+gproperty_default_override (void)
+{
+  TestObject *obj;
+  guint8 with_default = 0;
+
+  if (g_test_verbose ())
+    g_print ("*** Base type ***\n");
+
+  obj = g_object_new (test_object_get_type (), NULL);
+  g_object_get (obj, "with-default", &with_default, NULL);
+  g_assert_cmpint (with_default, ==, 255);
+
+  g_object_unref (obj);
+
+  if (g_test_verbose ())
+    g_print ("*** Derived type ***\n");
+
+  obj = g_object_new (test_derived_get_type (), NULL);
   g_object_get (obj, "with-default", &with_default, NULL);
   g_assert_cmpint (with_default, ==, 128);
 
@@ -334,6 +401,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gproperty/object-get", gproperty_object_get);
   g_test_add_func ("/gproperty/explicit-set", gproperty_explicit_set);
   g_test_add_func ("/gproperty/default/init", gproperty_default_init);
+  g_test_add_func ("/gproperty/default/override", gproperty_default_override);
   g_test_add_func ("/gproperty/accessors/get-set", gproperty_accessors_get_set);
 
   return g_test_run ();

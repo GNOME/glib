@@ -412,6 +412,15 @@ GLIB_AVAILABLE_IN_ALL
 GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
 						 guint       *n_properties_p);
 
+GLIB_AVAILABLE_IN_2_38
+void        g_object_class_override_property_default (GObjectClass *oclass,
+                                                      const gchar  *property_name,
+                                                      ...);
+GLIB_AVAILABLE_IN_2_38
+void        g_object_class_override_property_default_value (GObjectClass *oclass,
+                                                            const gchar  *property_name,
+                                                            const GValue *value);
+
 GLIB_AVAILABLE_IN_ALL
 GType       g_object_get_type                 (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
