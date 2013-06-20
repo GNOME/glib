@@ -34,4 +34,8 @@ EXTRA_DIST = \
 	glib-compile-resources.vcxproj.filters \
 	gresource.vcxproj \
 	gresource.vcxproj.filters \
+	gio-querymodules.vcxproj \
+	gio-querymodules.vcxproj.filters \
+	gdbus.vcxproj \
+	gdbus.vcxproj.filters \
 	install.vcxproj 

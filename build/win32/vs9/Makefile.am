@@ -18,4 +18,6 @@ EXTRA_DIST = \
 	gsettings.vcproj \
 	glib-compile-resources.vcproj \
 	gresource.vcproj \
+	gio-querymodules.vcproj \
+	gdbus.vcproj \
 	install.vcproj

@@ -21,6 +21,10 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-compile-resources.exe $
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gresource.exe $(CopyDir)\bin
 
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gio-querymodules.exe $(CopyDir)\bin
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gdbus.exe $(CopyDir)\bin
+
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib
 
