@@ -1088,16 +1088,9 @@ write_to_temp_file (const gchar  *contents,
     /* On Linux, on btrfs, skip the fsync since rename-over-existing is
      * guaranteed to be atomic and this is the only case in which we
      * would fsync() anyway.
-     *
-     * ext3 and ext4 are also safe in this respect under the default
-     * mount options (and if someone picks non-default options to
-     * improve their performance at the cost of reliability, who are we
-     * to argue?)
-     *
-     * Note: EXT[234]_SUPER_MAGIC are equal.
      */
 
-    if (fstatfs (fd, &buf) == 0 && (buf.f_type == BTRFS_SUPER_MAGIC || buf.f_type == EXT3_SUPER_MAGIC))
+    if (fstatfs (fd, &buf) == 0 && buf.f_type == BTRFS_SUPER_MAGIC)
       goto no_fsync;
   }
 #endif
