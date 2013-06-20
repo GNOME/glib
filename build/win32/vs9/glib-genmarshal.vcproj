@@ -51,7 +51,7 @@
 			Name="Release|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -107,7 +107,7 @@
 			Name="Release|x64"
 			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
