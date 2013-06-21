@@ -226,7 +226,7 @@ read_data (GString *str,
  * passing %NULL for @standard_output and @standard_error.
  *
  * If @exit_status is non-%NULL, the platform-specific exit status of
- * the child is stored there; see the doucumentation of
+ * the child is stored there; see the documentation of
  * g_spawn_check_exit_status() for how to use and interpret this.
  * Note that it is invalid to pass %G_SPAWN_DO_NOT_REAP_CHILD in
  * @flags.
