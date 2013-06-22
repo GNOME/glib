@@ -4195,20 +4195,6 @@ invoke_set_property_in_idle_cb (gpointer _data)
                  NULL,
                  &value);
 
-  /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the type
-   * of the given value is wrong
-   */
-  if (g_strcmp0 (g_variant_get_type_string (value), data->property_info->signature) != 0)
-    {
-      reply = g_dbus_message_new_method_error (data->message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
-                                               _("Error setting property '%s': Expected type '%s' but got '%s'"),
-                                               data->property_info->name,
-                                               data->property_info->signature,
-                                               g_variant_get_type_string (value));
-      goto out;
-    }
-
   if (!data->vtable->set_property (data->connection,
                                    g_dbus_message_get_sender (data->message),
                                    g_dbus_message_get_path (data->message),
@@ -4232,7 +4218,6 @@ invoke_set_property_in_idle_cb (gpointer _data)
       reply = g_dbus_message_new_method_reply (data->message);
     }
 
- out:
   g_assert (reply != NULL);
   g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
@@ -4326,6 +4311,31 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
       g_object_unref (reply);
       handled = TRUE;
       goto out;
+    }
+
+  if (!is_get)
+    {
+      GVariant *value;
+
+      /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the type
+       * of the given value is wrong
+       */
+      g_variant_get_child (g_dbus_message_get_body (message), 2, "v", &value);
+      if (g_strcmp0 (g_variant_get_type_string (value), property_info->signature) != 0)
+        {
+          reply = g_dbus_message_new_method_error (message,
+                                                   "org.freedesktop.DBus.Error.InvalidArgs",
+                                                   _("Error setting property '%s': Expected type '%s' but got '%s'"),
+                                                   property_name, property_info->signature,
+                                                   g_variant_get_type_string (value));
+          g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
+          g_variant_unref (value);
+          g_object_unref (reply);
+          handled = TRUE;
+          goto out;
+        }
+
+      g_variant_unref (value);
     }
 
   /* ok, got the property info - call user code in an idle handler */
