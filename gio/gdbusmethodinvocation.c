@@ -444,6 +444,8 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
               g_warning ("Value returned from property 'Get' call for '%s' should be '%s' but is '%s'",
                          invocation->property_info->name, invocation->property_info->signature,
                          g_variant_get_type_string (nested));
+              g_variant_unref (nested);
+              goto out;
             }
           g_variant_unref (nested);
         }
