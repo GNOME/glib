@@ -1599,6 +1599,43 @@ guint     g_type_get_type_registration_serial (void);
 #define G_PRIVATE_OFFSET(TypeName, field) \
   (TypeName##_private_offset + (G_STRUCT_OFFSET (TypeName##Private, field)))
 
+/**
+ * G_PRIVATE_FIELD_P:
+ * @TypeName: the name of the type in CamelCase
+ * @inst: the instance of @TypeName you wish to access
+ * @field_name: the name of the field in the private data structure
+ *
+ * Evaluates to a pointer to the @field_name inside the @inst private data
+ * structure for @TypeName.
+ *
+ * Note that this macro can only be used together with the G_DEFINE_TYPE_*
+ * and G_ADD_PRIVATE() macros, since it depends on variable names from
+ * those macros.
+ *
+ * Since: 2.38
+ */
+#define G_PRIVATE_FIELD_P(TypeName, inst, field_name) \
+  G_STRUCT_MEMBER_P (inst, G_PRIVATE_OFFSET (TypeName, field_name))
+
+/**
+ * G_PRIVATE_FIELD:
+ * @TypeName: the name of the type in CamelCase
+ * @inst: the instance of @TypeName you wish to access
+ * @field_type: the type of the field in the private data structure
+ * @field_name: the name of the field in the private data structure
+ *
+ * Evaluates to the @field_name inside the @inst private data
+ * structure for @TypeName.
+ *
+ * Note that this macro can only be used together with the G_DEFINE_TYPE_*
+ * and G_ADD_PRIVATE() macros, since it depends on variable names from
+ * those macros.
+ *
+ * Since: 2.38
+ */
+#define G_PRIVATE_FIELD(TypeName, inst, field_type, field_name) \
+  G_STRUCT_MEMBER (field_type, inst, G_PRIVATE_OFFSET (TypeName, field_name))
+
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
 \
 static void     type_name##_init              (TypeName        *self); \
