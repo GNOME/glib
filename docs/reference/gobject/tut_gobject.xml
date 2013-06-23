@@ -495,254 +495,179 @@ void g_object_run_dispose         (GObject     *object);
       One of GObject's nice features is its generic get/set mechanism for object
       properties. When an object
       is instantiated, the object's class_init handler should be used to register
-      the object's properties with <function><link linkend="g-object-class-install-properties">g_object_class_install_properties</link></function>
-      (implemented in <filename>gobject.c</filename>).
+      the object's properties with the <function>G_DEFINE_PROPERTIES</function>
+      macro.
     </para>
   
     <para>
       The best way to understand how object properties work is by looking at a real example
       on how it is used:
 <informalexample><programlisting>
-/************************************************/
-/* Implementation                               */
-/************************************************/
+typedef struct {
+  char *name;
+  gint age;
+} PersonPrivate;
 
-enum
-{
-  PROP_0,
-
-  PROP_MAMAN_NAME,
-  PROP_PAPA_NUMBER,
-
-  N_PROPERTIES
-};
-
-static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
+G_DEFINE_TYPE_WITH_PRIVATE (Person, person, G_TYPE_OBJECT)
 
 static void
-maman_bar_set_property (GObject      *object,
-                        guint         property_id,
-                        const GValue *value,
-                        GParamSpec   *pspec)
+person_finalize (GObject *gobject)
 {
-  MamanBar *self = MAMAN_BAR (object);
+  PersonPrivate *priv = person_get_instance_private ((Person *) gobject);
 
-  switch (property_id)
-    {
-    case PROP_MAMAN_NAME:
-      g_free (self-&gt;priv-&gt;name);
-      self-&gt;priv-&gt;name = g_value_dup_string (value);
-      g_print ("maman: %s\n", self-&gt;priv-&gt;name);
-      break;
+  g_free (priv->name);
 
-    case PROP_PAPA_NUMBER:
-      self-&gt;priv-&gt;papa_number = g_value_get_uchar (value);
-      g_print ("papa: &percnt;u\n", self-&gt;priv-&gt;papa_number);
-      break;
-
-    default:
-      /* We don't have any other property... */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
+  G_OBJECT_CLASS (person_parent_class)->finalize (gobject);
 }
 
 static void
-maman_bar_get_property (GObject    *object,
-                        guint       property_id,
-                        GValue     *value,
-                        GParamSpec *pspec)
+person_class_init (PersonClass *klass)
 {
-  MamanBar *self = MAMAN_BAR (object);
+  G_OBJECT_CLASS (klass)->finalize = person_finalize;
 
-  switch (property_id)
-    {
-    case PROP_MAMAN_NAME:
-      g_value_set_string (value, self-&gt;priv-&gt;name);
-      break;
-
-    case PROP_PAPA_NUMBER:
-      g_value_set_uchar (value, self-&gt;priv-&gt;papa_number);
-      break;
-
-    default:
-      /* We don't have any other property... */
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
+  G_DEFINE_PROPERTIES (Person, person, klass,
+                       G_DEFINE_PROPERTY (Person, string, name, G_PROPERTY_READWRITE | G_PROPERTY_COPY_SET)
+                       G_DEFINE_PROPERTY (Person, uint, age, G_PROPERTY_READWRITE))
 }
-
-static void
-maman_bar_class_init (MamanBarClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-  gobject_class-&gt;set_property = maman_bar_set_property;
-  gobject_class-&gt;get_property = maman_bar_get_property;
-
-  obj_properties[PROP_NAME] =
-    g_param_spec_string ("maman-name",
-                         "Maman construct prop",
-                         "Set maman's name",
-                         "no-name-set" /* default value */,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
-
-  obj_properties[PROP_NUMBER] =
-    g_param_spec_uchar ("papa-number",
-                        "Number of current Papa",
-                        "Set/Get papa's number",
-                        0  /* minimum value */,
-                        10 /* maximum value */,
-                        2  /* default value */,
-                        G_PARAM_READWRITE);
-
-  g_object_class_install_properties (gobject_class,
-                                     N_PROPERTIES,
-                                     obj_properties);
-}
-
-/************************************************/
-/* Use                                          */
-/************************************************/
-
-GObject *bar;
-GValue val = G_VALUE_INIT;
-
-bar = g_object_new (MAMAN_TYPE_SUBBAR, NULL);
-
-g_value_init (&amp;val, G_TYPE_CHAR);
-g_value_set_char (&amp;val, 11);
-
-g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
-
-g_value_unset (&amp;val);
 </programlisting></informalexample>
-      The client code just above looks simple but a lot of things happen under the hood:
-    </para>
-  
-    <para>
-      <function><link linkend="g-object-set-property">g_object_set_property</link></function> first ensures a property
-      with this name was registered in bar's class_init handler. If so it walks the class hierarchy,
-      from bottom, most derived type, to top, fundamental type to find the class
-      which registered that property. It then tries to convert the user-provided GValue
-      into a GValue whose type is that of the associated property.
-    </para>
-  
-    <para>
-      If the user provides a signed char GValue, as is shown
-      here, and if the object's property was registered as an unsigned int, 
-      <function><link linkend="g-value-transform">g_value_transform</link></function> will try to transform the input signed char into
-      an unsigned int. Of course, the success of the transformation depends on the availability
-      of the required transform function. In practice, there will almost always be a transformation
-      <footnote>
-        <para>Its behaviour might not be what you expect but it is up to you to actually avoid
-          relying on these transformations.
-        </para>
-      </footnote>
-      which matches and conversion will be carried out if needed.
-    </para>
-  
-    <para>
-      After transformation, the <link linkend="GValue"><type>GValue</type></link> is validated by 
-      <function><link linkend="g-param-value-validate">g_param_value_validate</link></function> which makes sure the user's
-      data stored in the <link linkend="GValue"><type>GValue</type></link> matches the characteristics specified by
-      the property's <link linkend="GParamSpec"><type>GParamSpec</type></link>.
-      Here, the <link linkend="GParamSpec"><type>GParamSpec</type></link> we 
-      provided in class_init has a validation function which makes sure that the GValue
-      contains a value which respects the minimum and maximum bounds of the 
-      <link linkend="GParamSpec"><type>GParamSpec</type></link>. In the example above, the client's GValue does not
-      respect these constraints (it is set to 11, while the maximum is 10). As such, the
-      <function><link linkend="g-object-set-property">g_object_set_property</link></function> function will return with an error.
-    </para>
-  
-    <para>
-      If the user's GValue had been set to a valid value, <function><link linkend="g-object-set-property">g_object_set_property</link></function>
-      would have proceeded with calling the object's set_property class method. Here, since our
-      implementation of Foo did override this method, the code path would jump to
-      <function>foo_set_property</function> after having retrieved from the 
-      <link linkend="GParamSpec"><type>GParamSpec</type></link> the <emphasis>param_id</emphasis>
-      <footnote>
-        <para>
-          It should be noted that the param_id used here need only to uniquely identify each 
-          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <type>FooClass</type> such that the switch
-          used in the set and get methods actually works. Of course, this locally-unique 
-          integer is purely an optimization: it would have been possible to use a set of 
-          <emphasis>if (strcmp (a, b) == 0) {} else if (strcmp (a, b) == 0) {}</emphasis> statements.
-        </para>
-      </footnote>
-      which had been stored by
-      <function><link linkend="g-object-class-install-property">g_object_class_install_property</link></function>.
-    </para>
-  
-    <para>
-      Once the property has been set by the object's set_property class method, the code path
-      returns to <function><link linkend="g-object-set-property">g_object_set_property</link></function> which makes sure that
-      the "notify" signal is emitted on the object's instance with the changed property as
-      parameter unless notifications were frozen by <function><link linkend="g-object-freeze-notify">g_object_freeze_notify</link></function>.
-    </para>
-  
-    <para>
-      <function><link linkend="g-object-thaw-notify">g_object_thaw_notify</link></function> can be used to re-enable notification of 
-      property modifications through the "notify" signal. It is important to remember that
-      even if properties are changed while property change notification is frozen, the "notify"
-      signal will be emitted once for each of these changed properties as soon as the property
-      change notification is thawed: no property change is lost for the "notify" signal. Signal
-      can only be delayed by the notification freezing mechanism.
-    </para>
-    
-    <para>
-      It sounds like a tedious task to set up GValues every time when one wants to modify a property.
-      In practice one will rarely do this. The functions <function><link linkend="g-object-set-property">g_object_set_property</link></function>
-      and <function><link linkend="g-object-get-property">g_object_get_property</link></function>
-      are meant to be used by language bindings. For application there is an easier way and
-      that is described next.
+      The code above will add two properties, <emphasis>name</emphasis> and
+      <emphasis>age</emphasis> to the <emphasis>Person</emphasis> class;
+      the name property is a string, and the age property is a generic unsigned
+      integer. Both properties are readable and writable. Additionally, the name
+      property is implemented by copying the string passed to the setter, but
+      the get function will return a pointer. By default, the properties will
+      be stored inside the private data structure on a Person instance, using
+      the given field name.
     </para>
 
-    <sect2 id="gobject-multi-properties">
-      <title>Accessing multiple properties at once</title>
-  
-      <para>
-        It is interesting to note that the <function><link linkend="g-object-set">g_object_set</link></function> and 
-        <function><link linkend="g-object-set-valist">g_object_set_valist</link></function> (vararg version) functions can be used to set
-        multiple properties at once. The client code shown above can then be re-written as:
-<programlisting>
-MamanBar *foo;
-foo = /* */;
-g_object_set (G_OBJECT (foo),
-              "papa-number", 2, 
-              "maman-name", "test", 
+    <para>
+      Once we define the properties, their types, their access semantics,
+      and their visibility, we can access them through the generic GObject
+      API:
+<informalexample><programlisting>
+Person *person;
+
+person = g_object_new (person_get_type (), NULL);
+
+g_object_set (person,
+              "name", "Rupert S. Monkey",
+              "age", 33,
               NULL);
-</programlisting>
-        This saves us from managing the GValues that we were needing to handle when using
-        <function><link linkend="g-object-set-property">g_object_set_property</link></function>.
-        The code above will trigger one notify signal emission for each property modified.
-      </para>
-    
-      <para>
-        Of course, the _get versions are also available: <function><link linkend="g-object-get">g_object_get</link></function>
-        and <function><link linkend="g-object-get-valist">g_object_get_valist</link></function> (vararg version) can be used to get numerous
-        properties at once.
-      </para>
-      
-      <para>
-        These high level functions have one drawback - they don't provide a return result.
-        One should pay attention to the argument types and ranges when using them.
-        A known source of errors is to e.g. pass a gfloat instead of a gdouble and thus
-        shifting all subsequent parameters by four bytes. Also forgetting the terminating
-        NULL will lead to unexpected behaviour.
-      </para>
-    
-      <para>
-        Really attentive readers now understand how <function><link linkend="g-object-new">g_object_new</link></function>,
-        <function><link linkend="g-object-newv">g_object_newv</link></function> and <function><link linkend="g-object-new-valist">g_object_new_valist</link></function> 
-        work: they parse the user-provided variable number of parameters and invoke
-        <function><link linkend="g-object-set">g_object_set</link></function> on the parameters only after the object has been successfully constructed.
-        Of course, the "notify" signal will be emitted for each property set.
-      </para>
-    
-    </sect2>
+</programlisting></informalexample>
+      The code above will set the two properties on the <emphasis>person</emphasis>
+      instance.
+    </para>
 
-<!-- @todo tell here about how to pass use handle properties in derived classes -->
+    <para>
+      It should be noted that using the generic GObject API should not be the
+      common pattern for setting properties in C. The generic API uses variadic
+      arguments, which have side effects in terms of error handling, type
+      inference, and argument termination; those side effects can lead to
+      hard to track bugs. One option to avoid the variadic arguments API is to
+      use the GValue-based one, e.g.
+<informalexample><programlisting>
+GValue name_value = G_VALUE_INIT;
+GValue age_value = G_VALUE_INIT;
+
+g_value_init (&amp;name_value, G_TYPE_STRING);
+g_value_set_string (&amp;name_value, "Rupert S. Monkey");
+
+g_value_init (&amp;age_value, G_TYPE_INT);
+g_value_set_int (&amp;age_value, 33);
+
+g_object_set_property (G_OBJECT (person), "name", &amp;name_value);
+g_object_set_property (G_OBJECT (person), "age", &amp;age_value);
+
+g_value_unset (&amp;name_value);
+g_value_unset (&amp;age_value);
+</programlisting></informalexample>
+      But, as you can see from the example above, the amount of code necessary
+      balloons rapidly out of control.
+    </para>
+
+    <para>
+      The preferred way to access properties on a GObject is to use accessor
+      functions, which guarantee type safety when compiling code, and avoid
+      large amounts of code. For instance:
+<informalexample><programlisting>
+void
+person_set_name (Person *person, const char *name)
+{
+  GProperty *property;
+
+  property = g_object_class_find_property (G_OBJECT_GET_CLASS (person), "name");
+  g_property_set (property, person, name);
+}
+
+const char *
+person_get_name (Person *person)
+{
+  PersonPrivate *priv = person_get_instance_private (person);
+
+  return priv->name;
+}
+</programlisting></informalexample>
+    </para>
+
+    <para>
+      GObject provides pre-processor macros to simplify the developer's job at
+      creating these functions, which result in cleaner and simpler code; for
+      instance, the example above can be effectively replaced by a single
+      macro:
+<informalexample><programlisting>
+G_DEFINE_PROPERTY_GET_SET (Person, person, const char *, name)
+</programlisting></informalexample>
+      The macro above will generate both the get function and the set one.
+    </para>
+
+    <sect2>
+      <title>Property notification and binding</title>
+
+      <para>
+        Every time a property is set to a new value, GObject will emit a signal
+        called <emphasis>notify</emphasis>; this signal can be used to update
+        ancillary code every time the state of an instance changes; for instance,
+        it is possible to update the text field of a GUI with the content of the
+        person's name, if the Person instance is changed by another part of the
+        GUI, or by another source.
+      </para>
+
+      <para>
+        The notification signal is detailed with the name of the property which
+        has changed, so it's possible to subscribe to changes to specific
+        properties, for instance:
+<informalexample><programlisting>
+static void
+on_name_change (GObject *gobject,
+                GParamSpec *pspec,
+                gpointer user_data)
+{
+  Person *person = (Person *) gobject;
+  GtkLabel *label = user_data;
+
+  gtk_label_set_text (label, person_get_name (person));
+}
+
+  ...
+  g_signal_connect (person, "notify::name", G_CALLBACK (on_name_change), ui_label);
+  ...
+</programlisting></informalexample>
+        The code above will update the contents of a GtkLabel using the name
+        property every time the property changes.
+      </para>
+
+      <para>
+        It is also possible to use the property bindings to tie together a
+        property on a source instance and a property on a target instance.
+        In the example above, we could bind together the name property on a
+        Person instance to the text property on a GtkLabel instance:
+<informalexample><programlisting>
+g_object_bind_property (person, "name", label, "text", G_BINDING_DEFAULT);
+</programlisting></informalexample>
+        Thus removing the need to have an explicit function doing so.
+      </para>
+
+    </sect2>
 
   </sect1>
 
