@@ -365,7 +365,7 @@ typedef gboolean  (*GDBusInterfaceSetPropertyFunc) (GDBusConnection       *conne
  * your @method_call function.  Note that the required return type of
  * the <literal>'Get'</literal> call is <literal>(v)</literal>, not the
  * type of the property.  <literal>'GetAll'</literal> expects a return
- * value of type <literal>a{sv}<literal>.
+ * value of type <literal>a{sv}</literal>.
  *
  * If you have writable properties specified in your interface info, you
  * must ensure that you either provide a non-%NULL @set_property()
