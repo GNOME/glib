@@ -443,7 +443,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
 static void
 g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
 {
-  delayed->priv = g_delayed_settings_backend_get_private (delayed);
+  delayed->priv = g_delayed_settings_backend_get_instance_private (delayed);
   delayed->priv->delayed = g_settings_backend_create_tree ();
   g_mutex_init (&delayed->priv->lock);
 }

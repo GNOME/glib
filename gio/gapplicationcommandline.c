@@ -282,7 +282,7 @@ g_application_command_line_finalize (GObject *object)
 static void
 g_application_command_line_init (GApplicationCommandLine *cmdline)
 {
-  cmdline->priv = g_application_command_line_get_private (cmdline);
+  cmdline->priv = g_application_command_line_get_instance_private (cmdline);
 }
 
 static void

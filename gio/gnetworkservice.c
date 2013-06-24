@@ -166,7 +166,7 @@ g_network_service_connectable_iface_init (GSocketConnectableIface *connectable_i
 static void
 g_network_service_init (GNetworkService *srv)
 {
-  srv->priv = g_network_service_get_private (srv);
+  srv->priv = g_network_service_get_instance_private (srv);
 }
 
 static void

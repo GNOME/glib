@@ -275,7 +275,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 static void
 g_proxy_address_init (GProxyAddress *proxy)
 {
-  proxy->priv = g_proxy_address_get_private (proxy);
+  proxy->priv = g_proxy_address_get_instance_private (proxy);
   proxy->priv->protocol = NULL;
   proxy->priv->username = NULL;
   proxy->priv->password = NULL;

@@ -157,7 +157,7 @@ g_data_output_stream_get_property (GObject    *object,
 static void
 g_data_output_stream_init (GDataOutputStream *stream)
 {
-  stream->priv = g_data_output_stream_get_private (stream);
+  stream->priv = g_data_output_stream_get_instance_private (stream);
   stream->priv->byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
 }
 

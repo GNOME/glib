@@ -638,7 +638,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
 static void
 g_dbus_proxy_init (GDBusProxy *proxy)
 {
-  proxy->priv = g_dbus_proxy_get_private (proxy);
+  proxy->priv = g_dbus_proxy_get_instance_private (proxy);
   proxy->priv->signal_subscription_data = g_slice_new0 (SignalSubscriptionData);
   proxy->priv->signal_subscription_data->ref_count = 1;
   proxy->priv->signal_subscription_data->proxy = proxy;

@@ -172,7 +172,7 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
 static void
 g_file_enumerator_init (GFileEnumerator *enumerator)
 {
-  enumerator->priv = g_file_enumerator_get_private (enumerator);
+  enumerator->priv = g_file_enumerator_get_instance_private (enumerator);
 }
 
 /**

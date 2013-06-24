@@ -148,7 +148,7 @@ g_filter_output_stream_get_property (GObject    *object,
   GFilterOutputStreamPrivate *priv;
 
   filter_stream = G_FILTER_OUTPUT_STREAM (object);
-  priv = g_filter_output_stream_get_private (filter_stream);
+  priv = g_filter_output_stream_get_instance_private (filter_stream);
 
   switch (prop_id)
     {
@@ -221,7 +221,7 @@ g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream)
 
   g_return_val_if_fail (G_IS_FILTER_OUTPUT_STREAM (stream), FALSE);
 
-  priv = g_filter_output_stream_get_private (stream);
+  priv = g_filter_output_stream_get_instance_private (stream);
 
   return priv->close_base;
 }
@@ -243,7 +243,7 @@ g_filter_output_stream_set_close_base_stream (GFilterOutputStream *stream,
 
   close_base = !!close_base;
 
-  priv = g_filter_output_stream_get_private (stream);
+  priv = g_filter_output_stream_get_instance_private (stream);
 
   if (priv->close_base != close_base)
     {
@@ -296,7 +296,7 @@ g_filter_output_stream_close (GOutputStream  *stream,
                               GError        **error)
 {
   GFilterOutputStream *filter_stream = G_FILTER_OUTPUT_STREAM (stream);
-  GFilterOutputStreamPrivate *priv = g_filter_output_stream_get_private (filter_stream);
+  GFilterOutputStreamPrivate *priv = g_filter_output_stream_get_instance_private (filter_stream);
   gboolean res = TRUE;
 
   if (priv->close_base)

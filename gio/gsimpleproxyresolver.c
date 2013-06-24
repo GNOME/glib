@@ -97,7 +97,7 @@ g_simple_proxy_resolver_finalize (GObject *object)
 static void
 g_simple_proxy_resolver_init (GSimpleProxyResolver *resolver)
 {
-  resolver->priv = g_simple_proxy_resolver_get_private (resolver);
+  resolver->priv = g_simple_proxy_resolver_get_instance_private (resolver);
   resolver->priv->uri_proxies = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                        g_free, g_free);
 }

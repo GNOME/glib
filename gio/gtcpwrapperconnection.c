@@ -147,7 +147,7 @@ g_tcp_wrapper_connection_class_init (GTcpWrapperConnectionClass *klass)
 static void
 g_tcp_wrapper_connection_init (GTcpWrapperConnection *connection)
 {
-  connection->priv = g_tcp_wrapper_connection_get_private (connection);
+  connection->priv = g_tcp_wrapper_connection_get_instance_private (connection);
 }
 
 /**

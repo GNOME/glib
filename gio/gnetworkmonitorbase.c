@@ -74,7 +74,7 @@ G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorBase, g_network_monitor_base, G_TYPE_OBJ
 static void
 g_network_monitor_base_init (GNetworkMonitorBase *monitor)
 {
-  monitor->priv = g_network_monitor_base_get_private (monitor);
+  monitor->priv = g_network_monitor_base_get_instance_private (monitor);
   monitor->priv->networks = g_ptr_array_new_with_free_func (g_object_unref);
   monitor->priv->context = g_main_context_get_thread_default ();
   if (monitor->priv->context)

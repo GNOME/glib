@@ -142,7 +142,7 @@ _g_dbus_auth_mechanism_sha1_class_init (GDBusAuthMechanismSha1Class *klass)
 static void
 _g_dbus_auth_mechanism_sha1_init (GDBusAuthMechanismSha1 *mechanism)
 {
-  mechanism->priv = _g_dbus_auth_mechanism_sha1_get_private (mechanism);
+  mechanism->priv = _g_dbus_auth_mechanism_sha1_get_instance_private (mechanism);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

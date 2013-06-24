@@ -114,7 +114,7 @@ _g_dbus_auth_mechanism_anon_class_init (GDBusAuthMechanismAnonClass *klass)
 static void
 _g_dbus_auth_mechanism_anon_init (GDBusAuthMechanismAnon *mechanism)
 {
-  mechanism->priv = _g_dbus_auth_mechanism_anon_get_private (mechanism);
+  mechanism->priv = _g_dbus_auth_mechanism_anon_get_instance_private (mechanism);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

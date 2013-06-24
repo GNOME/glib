@@ -237,7 +237,7 @@ g_inet_address_mask_initable_iface_init (GInitableIface  *iface)
 static void
 g_inet_address_mask_init (GInetAddressMask *mask)
 {
-  mask->priv = g_inet_address_mask_get_private (mask);
+  mask->priv = g_inet_address_mask_get_instance_private (mask);
 }
 
 /**

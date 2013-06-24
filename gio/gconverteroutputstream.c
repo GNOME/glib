@@ -221,7 +221,7 @@ g_converter_output_stream_get_property (GObject    *object,
 static void
 g_converter_output_stream_init (GConverterOutputStream *stream)
 {
-  stream->priv = g_converter_output_stream_get_private (stream);
+  stream->priv = g_converter_output_stream_get_instance_private (stream);
 }
 
 /**

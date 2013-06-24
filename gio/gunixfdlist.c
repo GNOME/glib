@@ -53,7 +53,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GUnixFDList, g_unix_fd_list, G_TYPE_OBJECT)
 static void
 g_unix_fd_list_init (GUnixFDList *list)
 {
-  list->priv = g_unix_fd_list_get_private (list);
+  list->priv = g_unix_fd_list_get_instance_private (list);
 }
 
 static void

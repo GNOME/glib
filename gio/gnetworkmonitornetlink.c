@@ -73,7 +73,7 @@ G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorNetlink, g_network_monitor_netlink, G_TY
 static void
 g_network_monitor_netlink_init (GNetworkMonitorNetlink *nl)
 {
-  nl->priv = g_network_monitor_netlink_get_private (nl);
+  nl->priv = g_network_monitor_netlink_get_instance_private (nl);
 }
 
 

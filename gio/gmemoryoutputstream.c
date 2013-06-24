@@ -325,7 +325,7 @@ g_memory_output_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_memory_output_stream_init (GMemoryOutputStream *stream)
 {
-  stream->priv = g_memory_output_stream_get_private (stream);
+  stream->priv = g_memory_output_stream_get_instance_private (stream);
   stream->priv->pos = 0;
   stream->priv->valid_len = 0;
 }

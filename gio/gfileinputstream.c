@@ -102,7 +102,7 @@ g_file_input_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_file_input_stream_init (GFileInputStream *stream)
 {
-  stream->priv = g_file_input_stream_get_private (stream);
+  stream->priv = g_file_input_stream_get_instance_private (stream);
 }
 
 /**

@@ -134,7 +134,7 @@ g_threaded_socket_service_incoming (GSocketService    *service,
 static void
 g_threaded_socket_service_init (GThreadedSocketService *service)
 {
-  service->priv = g_threaded_socket_service_get_private (service);
+  service->priv = g_threaded_socket_service_get_instance_private (service);
   service->priv->max_threads = 10;
 }
 

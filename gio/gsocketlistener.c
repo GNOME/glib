@@ -154,7 +154,7 @@ g_socket_listener_class_init (GSocketListenerClass *klass)
 static void
 g_socket_listener_init (GSocketListener *listener)
 {
-  listener->priv = g_socket_listener_get_private (listener);
+  listener->priv = g_socket_listener_get_instance_private (listener);
   listener->priv->sockets =
     g_ptr_array_new_with_free_func ((GDestroyNotify) g_object_unref);
   listener->priv->listen_backlog = 10;

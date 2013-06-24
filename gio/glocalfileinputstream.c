@@ -127,7 +127,7 @@ g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 static void
 g_local_file_input_stream_init (GLocalFileInputStream *info)
 {
-  info->priv = g_local_file_input_stream_get_private (info);
+  info->priv = g_local_file_input_stream_get_instance_private (info);
   info->priv->do_close = TRUE;
 }
 

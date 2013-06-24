@@ -134,7 +134,7 @@ g_output_stream_class_init (GOutputStreamClass *klass)
 static void
 g_output_stream_init (GOutputStream *stream)
 {
-  stream->priv = g_output_stream_get_private (stream);
+  stream->priv = g_output_stream_get_instance_private (stream);
 }
 
 /**

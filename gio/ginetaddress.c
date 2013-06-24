@@ -367,7 +367,7 @@ g_inet_address_class_init (GInetAddressClass *klass)
 static void
 g_inet_address_init (GInetAddress *address)
 {
-  address->priv = g_inet_address_get_private (address);
+  address->priv = g_inet_address_get_instance_private (address);
 }
 
 /**

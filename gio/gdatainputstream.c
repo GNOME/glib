@@ -167,7 +167,7 @@ g_data_input_stream_get_property (GObject    *object,
 static void
 g_data_input_stream_init (GDataInputStream *stream)
 {
-  stream->priv = g_data_input_stream_get_private (stream);
+  stream->priv = g_data_input_stream_get_instance_private (stream);
   stream->priv->byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
   stream->priv->newline_type = G_DATA_STREAM_NEWLINE_TYPE_LF;
 }

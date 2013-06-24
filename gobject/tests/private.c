@@ -26,7 +26,7 @@ test_object_class_init (TestObjectClass *klass)
 static void
 test_object_init (TestObject *self)
 {
-  TestObjectPrivate *priv = test_object_get_private (self);
+  TestObjectPrivate *priv = test_object_get_instance_private (self);
 
   if (g_test_verbose ())
     g_print ("Offset of %sPrivate for type '%s': %d\n",
@@ -41,7 +41,7 @@ test_object_init (TestObject *self)
 static int
 test_object_get_dummy_0 (TestObject *self)
 {
-  TestObjectPrivate *priv = test_object_get_private (self);
+  TestObjectPrivate *priv = test_object_get_instance_private (self);
 
   return priv->dummy_0;
 }
@@ -49,7 +49,7 @@ test_object_get_dummy_0 (TestObject *self)
 static float
 test_object_get_dummy_1 (TestObject *self)
 {
-  TestObjectPrivate *priv = test_object_get_private (self);
+  TestObjectPrivate *priv = test_object_get_instance_private (self);
 
   return priv->dummy_1;
 }
@@ -74,7 +74,7 @@ G_DEFINE_TYPE_WITH_CODE (TestDerived, test_derived, test_object_get_type (),
 static void
 test_derived_finalize (GObject *obj)
 {
-  TestDerivedPrivate *priv = test_derived_get_private ((TestDerived *) obj);
+  TestDerivedPrivate *priv = test_derived_get_instance_private ((TestDerived *) obj);
 
   g_free (priv->dummy_2);
 
@@ -90,7 +90,7 @@ test_derived_class_init (TestDerivedClass *klass)
 static void
 test_derived_init (TestDerived *self)
 {
-  TestDerivedPrivate *priv = test_derived_get_private (self);
+  TestDerivedPrivate *priv = test_derived_get_instance_private (self);
 
   if (g_test_verbose ())
     g_print ("Offset of %sPrivate for type '%s': %d\n",
@@ -104,7 +104,7 @@ test_derived_init (TestDerived *self)
 static const char *
 test_derived_get_dummy_2 (TestDerived *self)
 {
-  TestDerivedPrivate *priv = test_derived_get_private (self);
+  TestDerivedPrivate *priv = test_derived_get_instance_private (self);
 
   return priv->dummy_2;
 }
@@ -178,7 +178,7 @@ test_mixed_derived_class_init (TestMixedDerivedClass *klass)
 static void
 test_mixed_derived_init (TestMixedDerived *self)
 {
-  TestMixedDerivedPrivate *priv = test_mixed_derived_get_private (self);
+  TestMixedDerivedPrivate *priv = test_mixed_derived_get_instance_private (self);
 
   if (g_test_verbose ())
     g_print ("Offset of %sPrivate for type '%s': %d\n",
@@ -192,7 +192,7 @@ test_mixed_derived_init (TestMixedDerived *self)
 static gint64
 test_mixed_derived_get_dummy_4 (TestMixedDerived *self)
 {
-  TestMixedDerivedPrivate *priv = test_mixed_derived_get_private (self);
+  TestMixedDerivedPrivate *priv = test_mixed_derived_get_instance_private (self);
 
   return priv->dummy_4;
 }

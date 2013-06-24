@@ -570,7 +570,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
 static void
 g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
 {
-  manager->priv = g_dbus_object_manager_client_get_private (manager);
+  manager->priv = g_dbus_object_manager_client_get_instance_private (manager);
   g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_object_proxy = g_hash_table_new_full (g_str_hash,
                                                                           g_str_equal,

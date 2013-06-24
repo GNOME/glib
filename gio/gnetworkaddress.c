@@ -160,7 +160,7 @@ g_network_address_connectable_iface_init (GSocketConnectableIface *connectable_i
 static void
 g_network_address_init (GNetworkAddress *addr)
 {
-  addr->priv = g_network_address_get_private (addr);
+  addr->priv = g_network_address_get_instance_private (addr);
 }
 
 static void

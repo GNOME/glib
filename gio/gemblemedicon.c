@@ -139,7 +139,7 @@ g_emblemed_icon_class_init (GEmblemedIconClass *klass)
 static void
 g_emblemed_icon_init (GEmblemedIcon *emblemed)
 {
-  emblemed->priv = g_emblemed_icon_get_private (emblemed);
+  emblemed->priv = g_emblemed_icon_get_instance_private (emblemed);
 }
 
 /**

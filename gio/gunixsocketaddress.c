@@ -304,7 +304,7 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 static void
 g_unix_socket_address_init (GUnixSocketAddress *address)
 {
-  address->priv = g_unix_socket_address_get_private (address);
+  address->priv = g_unix_socket_address_get_instance_private (address);
 
   memset (address->priv->path, 0, sizeof (address->priv->path));
   address->priv->path_len = -1;

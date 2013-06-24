@@ -224,7 +224,7 @@ mech_compare_func (Mechanism *a, Mechanism *b)
 static void
 _g_dbus_auth_init (GDBusAuth *auth)
 {
-  auth->priv = _g_dbus_auth_get_private (auth);
+  auth->priv = _g_dbus_auth_get_instance_private (auth);
 }
 
 static void

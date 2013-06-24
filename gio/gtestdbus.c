@@ -436,7 +436,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GTestDBus, g_test_dbus, G_TYPE_OBJECT)
 static void
 g_test_dbus_init (GTestDBus *self)
 {
-  self->priv = g_test_dbus_get_private (self);
+  self->priv = g_test_dbus_get_instance_private (self);
   self->priv->service_dirs = g_ptr_array_new_with_free_func (g_free);
 }
 

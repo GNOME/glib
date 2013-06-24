@@ -252,7 +252,7 @@ g_simple_action_group_finalize (GObject *object)
 static void
 g_simple_action_group_init (GSimpleActionGroup *simple)
 {
-  simple->priv = g_simple_action_group_get_private (simple);
+  simple->priv = g_simple_action_group_get_instance_private (simple);
   simple->priv->table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                g_free, g_object_unref);
 }

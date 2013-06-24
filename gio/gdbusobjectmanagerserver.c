@@ -226,7 +226,7 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
 static void
 g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
 {
-  manager->priv = g_dbus_object_manager_server_get_private (manager);
+  manager->priv = g_dbus_object_manager_server_get_instance_private (manager);
   g_mutex_init (&manager->priv->lock);
   manager->priv->map_object_path_to_data = g_hash_table_new_full (g_str_hash,
                                                                   g_str_equal,

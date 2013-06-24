@@ -906,7 +906,7 @@ ignore_subscription (GSettingsBackend *backend,
 static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
-  backend->priv = g_settings_backend_get_private (backend);
+  backend->priv = g_settings_backend_get_instance_private (backend);
   g_mutex_init (&backend->priv->lock);
 }
 

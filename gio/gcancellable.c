@@ -151,7 +151,7 @@ g_cancellable_class_init (GCancellableClass *klass)
 static void
 g_cancellable_init (GCancellable *cancellable)
 {
-  cancellable->priv = g_cancellable_get_private (cancellable);
+  cancellable->priv = g_cancellable_get_instance_private (cancellable);
 }
 
 /**

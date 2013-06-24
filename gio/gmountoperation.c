@@ -511,7 +511,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 static void
 g_mount_operation_init (GMountOperation *operation)
 {
-  operation->priv = g_mount_operation_get_private (operation);
+  operation->priv = g_mount_operation_get_instance_private (operation);
 }
 
 /**

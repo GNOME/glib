@@ -265,7 +265,7 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
 static void
 g_file_monitor_init (GFileMonitor *monitor)
 {
-  monitor->priv = g_file_monitor_get_private (monitor);
+  monitor->priv = g_file_monitor_get_instance_private (monitor);
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);

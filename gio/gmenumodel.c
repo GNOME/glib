@@ -851,7 +851,7 @@ g_menu_attribute_iter_finalize (GObject *object)
 static void
 g_menu_attribute_iter_init (GMenuAttributeIter *iter)
 {
-  iter->priv = g_menu_attribute_iter_get_private (iter);
+  iter->priv = g_menu_attribute_iter_get_instance_private (iter);
 }
 
 static void
@@ -1005,7 +1005,7 @@ g_menu_link_iter_finalize (GObject *object)
 static void
 g_menu_link_iter_init (GMenuLinkIter *iter)
 {
-  iter->priv = g_menu_link_iter_get_private (iter);
+  iter->priv = g_menu_link_iter_get_instance_private (iter);
 }
 
 static void

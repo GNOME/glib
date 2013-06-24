@@ -1556,7 +1556,7 @@ guint     g_type_get_type_registration_serial (void);
  *   gint
  *   my_object_get_foo (MyObject *obj)
  *   {
- *     MyObjectPrivate *priv = my_object_get_private (obj);
+ *     MyObjectPrivate *priv = my_object_get_instance_private (obj);
  *
  *     return priv->foo;
  *   }
@@ -1565,7 +1565,7 @@ guint     g_type_get_type_registration_serial (void);
  *   my_object_set_bar (MyObject *obj,
  *                      gint      bar)
  *   {
- *     MyObjectPrivate *priv = my_object_get_private (obj);
+ *     MyObjectPrivate *priv = my_object_get_instance_private (obj);
  *
  *     if (priv->bar != bar)
  *       priv->bar = bar;
@@ -1651,7 +1651,7 @@ static void     type_name##_class_intern_init (gpointer klass) \
 } \
 \
 static inline gpointer \
-type_name##_get_private (TypeName *self) \
+type_name##_get_instance_private (TypeName *self) \
 { \
   return (G_STRUCT_MEMBER_P (self, TypeName##_private_offset)); \
 } \

@@ -165,7 +165,7 @@ g_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
 static void
 g_local_file_output_stream_init (GLocalFileOutputStream *stream)
 {
-  stream->priv = g_local_file_output_stream_get_private (stream);
+  stream->priv = g_local_file_output_stream_get_instance_private (stream);
   stream->priv->do_close = TRUE;
 }
 

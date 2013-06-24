@@ -316,7 +316,7 @@ g_buffered_input_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_buffered_input_stream_init (GBufferedInputStream *stream)
 {
-  stream->priv = g_buffered_input_stream_get_private (stream);
+  stream->priv = g_buffered_input_stream_get_instance_private (stream);
 }
 
 

@@ -697,7 +697,7 @@ g_proxy_address_enumerator_finalize (GObject *object)
 static void
 g_proxy_address_enumerator_init (GProxyAddressEnumerator *self)
 {
-  self->priv = g_proxy_address_enumerator_get_private (self);
+  self->priv = g_proxy_address_enumerator_get_instance_private (self);
 }
 
 static void

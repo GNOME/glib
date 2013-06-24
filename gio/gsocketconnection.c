@@ -425,7 +425,7 @@ g_socket_connection_class_init (GSocketConnectionClass *klass)
 static void
 g_socket_connection_init (GSocketConnection *connection)
 {
-  connection->priv = g_socket_connection_get_private (connection);
+  connection->priv = g_socket_connection_get_instance_private (connection);
 }
 
 static gboolean

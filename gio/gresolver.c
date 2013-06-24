@@ -177,7 +177,7 @@ g_resolver_init (GResolver *resolver)
   struct stat st;
 #endif
 
-  resolver->priv = g_resolver_get_private (resolver);
+  resolver->priv = g_resolver_get_instance_private (resolver);
 
 #ifdef G_OS_UNIX
   if (stat (_PATH_RESCONF, &st) == 0)

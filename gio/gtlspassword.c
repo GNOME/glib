@@ -70,7 +70,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GTlsPassword, g_tls_password, G_TYPE_OBJECT)
 static void
 g_tls_password_init (GTlsPassword *password)
 {
-  password->priv = g_tls_password_get_private (password);
+  password->priv = g_tls_password_get_instance_private (password);
 }
 
 static const guchar *

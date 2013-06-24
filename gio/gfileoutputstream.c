@@ -106,7 +106,7 @@ g_file_output_stream_seekable_iface_init (GSeekableIface *iface)
 static void
 g_file_output_stream_init (GFileOutputStream *stream)
 {
-  stream->priv = g_file_output_stream_get_private (stream);
+  stream->priv = g_file_output_stream_get_instance_private (stream);
 }
 
 /**

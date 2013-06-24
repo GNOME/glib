@@ -871,7 +871,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
 static void
 g_app_launch_context_init (GAppLaunchContext *context)
 {
-  context->priv = g_app_launch_context_get_private (context);
+  context->priv = g_app_launch_context_get_instance_private (context);
 }
 
 /**

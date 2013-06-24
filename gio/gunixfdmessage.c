@@ -181,7 +181,7 @@ g_unix_fd_message_get_property (GObject *object, guint prop_id,
 static void
 g_unix_fd_message_init (GUnixFDMessage *message)
 {
-  message->priv = g_unix_fd_message_get_private (message);
+  message->priv = g_unix_fd_message_get_instance_private (message);
 }
 
 static void

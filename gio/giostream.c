@@ -108,7 +108,7 @@ g_io_stream_dispose (GObject *object)
 static void
 g_io_stream_init (GIOStream *stream)
 {
-  stream->priv = g_io_stream_get_private (stream);
+  stream->priv = g_io_stream_get_instance_private (stream);
 }
 
 static void

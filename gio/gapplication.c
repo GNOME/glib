@@ -693,7 +693,7 @@ g_application_finalize (GObject *object)
 static void
 g_application_init (GApplication *application)
 {
-  application->priv = g_application_get_private (application);
+  application->priv = g_application_get_instance_private (application);
 
   application->priv->actions = g_application_exported_actions_new (application);
 

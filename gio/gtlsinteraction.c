@@ -185,7 +185,7 @@ invoke_closure_wait_and_free (InvokeClosure *closure,
 static void
 g_tls_interaction_init (GTlsInteraction *interaction)
 {
-  interaction->priv = g_tls_interaction_get_private (interaction);
+  interaction->priv = g_tls_interaction_get_instance_private (interaction);
   interaction->priv->context = g_main_context_ref_thread_default ();
 }
 

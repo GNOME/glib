@@ -344,7 +344,7 @@ g_buffered_output_stream_finalize (GObject *object)
 static void
 g_buffered_output_stream_init (GBufferedOutputStream *stream)
 {
-  stream->priv = g_buffered_output_stream_get_private (stream);
+  stream->priv = g_buffered_output_stream_get_instance_private (stream);
 }
 
 static void

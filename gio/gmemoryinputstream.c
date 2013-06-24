@@ -164,7 +164,7 @@ g_memory_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 static void
 g_memory_input_stream_init (GMemoryInputStream *stream)
 {
-  stream->priv = g_memory_input_stream_get_private (stream);
+  stream->priv = g_memory_input_stream_get_instance_private (stream);
 }
 
 /**

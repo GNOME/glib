@@ -174,7 +174,7 @@ g_win32_output_stream_get_property (GObject    *object,
 static void
 g_win32_output_stream_init (GWin32OutputStream *win32_stream)
 {
-  win32_stream->priv = g_win32_output_stream_get_private (win32_stream);
+  win32_stream->priv = g_win32_output_stream_get_instance_private (win32_stream);
   win32_stream->priv->handle = NULL;
   win32_stream->priv->close_handle = TRUE;
 }

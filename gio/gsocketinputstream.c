@@ -217,7 +217,7 @@ g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
 static void
 g_socket_input_stream_init (GSocketInputStream *stream)
 {
-  stream->priv = g_socket_input_stream_get_private (stream);
+  stream->priv = g_socket_input_stream_get_instance_private (stream);
 }
 
 GSocketInputStream *

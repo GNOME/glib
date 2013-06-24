@@ -119,7 +119,7 @@ g_input_stream_class_init (GInputStreamClass *klass)
 static void
 g_input_stream_init (GInputStream *stream)
 {
-  stream->priv = g_input_stream_get_private (stream);
+  stream->priv = g_input_stream_get_instance_private (stream);
 }
 
 /**

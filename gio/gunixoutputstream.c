@@ -223,7 +223,7 @@ g_unix_output_stream_get_property (GObject    *object,
 static void
 g_unix_output_stream_init (GUnixOutputStream *unix_stream)
 {
-  unix_stream->priv = g_unix_output_stream_get_private (unix_stream);
+  unix_stream->priv = g_unix_output_stream_get_instance_private (unix_stream);
   unix_stream->priv->fd = -1;
   unix_stream->priv->close_fd = TRUE;
 }

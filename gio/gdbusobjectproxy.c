@@ -183,7 +183,7 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
 static void
 g_dbus_object_proxy_init (GDBusObjectProxy *proxy)
 {
-  proxy->priv = g_dbus_object_proxy_get_private (proxy);
+  proxy->priv = g_dbus_object_proxy_get_instance_private (proxy);
   g_mutex_init (&proxy->priv->lock);
   proxy->priv->map_name_to_iface = g_hash_table_new_full (g_str_hash,
                                                           g_str_equal,

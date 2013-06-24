@@ -221,7 +221,7 @@ g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *ifac
 static void
 g_socket_output_stream_init (GSocketOutputStream *stream)
 {
-  stream->priv = g_socket_output_stream_get_private (stream);
+  stream->priv = g_socket_output_stream_get_instance_private (stream);
 }
 
 GSocketOutputStream *

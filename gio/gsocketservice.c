@@ -93,7 +93,7 @@ g_socket_service_real_incoming (GSocketService    *service,
 static void
 g_socket_service_init (GSocketService *service)
 {
-  service->priv = g_socket_service_get_private (service);
+  service->priv = g_socket_service_get_instance_private (service);
   service->priv->cancellable = g_cancellable_new ();
   service->priv->active = TRUE;
 }

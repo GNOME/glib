@@ -259,7 +259,7 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
 static void
 g_dbus_interface_skeleton_init (GDBusInterfaceSkeleton *interface)
 {
-  interface->priv = g_dbus_interface_skeleton_get_private (interface);
+  interface->priv = g_dbus_interface_skeleton_get_instance_private (interface);
   g_mutex_init (&interface->priv->lock);
 }
 

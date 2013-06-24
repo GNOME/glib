@@ -74,7 +74,7 @@ enum
 static void
 g_tcp_connection_init (GTcpConnection *connection)
 {
-  connection->priv = g_tcp_connection_get_private (connection);
+  connection->priv = g_tcp_connection_get_instance_private (connection);
   connection->priv->graceful_disconnect = FALSE;
 }
 

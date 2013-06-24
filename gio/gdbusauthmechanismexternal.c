@@ -121,7 +121,7 @@ _g_dbus_auth_mechanism_external_class_init (GDBusAuthMechanismExternalClass *kla
 static void
 _g_dbus_auth_mechanism_external_init (GDBusAuthMechanismExternal *mechanism)
 {
-  mechanism->priv = _g_dbus_auth_mechanism_external_get_private (mechanism);
+  mechanism->priv = _g_dbus_auth_mechanism_external_get_instance_private (mechanism);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

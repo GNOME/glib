@@ -962,7 +962,7 @@ g_socket_initable_iface_init (GInitableIface *iface)
 static void
 g_socket_init (GSocket *socket)
 {
-  socket->priv = g_socket_get_private (socket);
+  socket->priv = g_socket_get_instance_private (socket);
 
   socket->priv->fd = -1;
   socket->priv->blocking = TRUE;

@@ -305,7 +305,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
 static void
 g_inet_socket_address_init (GInetSocketAddress *address)
 {
-  address->priv = g_inet_socket_address_get_private (address);
+  address->priv = g_inet_socket_address_get_instance_private (address);
 }
 
 /**

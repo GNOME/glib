@@ -1795,7 +1795,7 @@ class CodeGenerator:
         self.c.write('static void\n'
                      '%s_proxy_init (%sProxy *proxy)\n'
                      '{\n'
-                     '  proxy->priv = %s_proxy_get_private (proxy);\n'
+                     '  proxy->priv = %s_proxy_get_instance_private (proxy);\n'
                      '  g_dbus_proxy_set_interface_info (G_DBUS_PROXY (proxy), %s_interface_info ());\n'
                      '}\n'
                      '\n'
@@ -2533,7 +2533,7 @@ class CodeGenerator:
         self.c.write('static void\n'
                      '%s_skeleton_init (%sSkeleton *skeleton)\n'
                      '{\n'
-                     '  skeleton->priv = %s_skeleton_get_private (skeleton);\n'
+                     '  skeleton->priv = %s_skeleton_get_instance_private (skeleton);\n'
                      %(i.name_lower, i.camel_name,
                        i.name_lower))
         self.c.write('  g_mutex_init (&skeleton->priv->lock);\n')

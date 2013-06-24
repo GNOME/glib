@@ -375,7 +375,7 @@ g_permission_get_property (GObject *object, guint prop_id,
 static void
 g_permission_init (GPermission *permission)
 {
-  permission->priv = g_permission_get_private (permission);
+  permission->priv = g_permission_get_instance_private (permission);
 }
 
 static gboolean

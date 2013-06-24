@@ -603,7 +603,7 @@ g_settings_finalize (GObject *object)
 static void
 g_settings_init (GSettings *settings)
 {
-  settings->priv = g_settings_get_private (settings);
+  settings->priv = g_settings_get_instance_private (settings);
   settings->priv->main_context = g_main_context_ref_thread_default ();
 }
 

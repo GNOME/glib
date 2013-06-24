@@ -202,7 +202,7 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
 static void
 g_dbus_object_skeleton_init (GDBusObjectSkeleton *object)
 {
-  object->priv = g_dbus_object_skeleton_get_private (object);
+  object->priv = g_dbus_object_skeleton_get_instance_private (object);
   g_mutex_init (&object->priv->lock);
   object->priv->map_name_to_iface = g_hash_table_new_full (g_str_hash,
                                                            g_str_equal,

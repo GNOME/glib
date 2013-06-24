@@ -214,7 +214,7 @@ g_unix_credentials_message_finalize (GObject *object)
 static void
 g_unix_credentials_message_init (GUnixCredentialsMessage *message)
 {
-  message->priv = g_unix_credentials_message_get_private (message);
+  message->priv = g_unix_credentials_message_get_instance_private (message);
 }
 
 static void
