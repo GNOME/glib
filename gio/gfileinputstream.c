@@ -73,13 +73,14 @@ static GFileInfo *g_file_input_stream_real_query_info_finish (GFileInputStream  
 							      GError              **error);
 
 
-G_DEFINE_TYPE_WITH_CODE (GFileInputStream, g_file_input_stream, G_TYPE_INPUT_STREAM,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_file_input_stream_seekable_iface_init))
-
 struct _GFileInputStreamPrivate {
   GAsyncReadyCallback outstanding_callback;
 };
+
+G_DEFINE_TYPE_WITH_CODE (GFileInputStream, g_file_input_stream, G_TYPE_INPUT_STREAM,
+                         G_ADD_PRIVATE (GFileInputStream)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+						g_file_input_stream_seekable_iface_init))
 
 static void
 g_file_input_stream_class_init (GFileInputStreamClass *klass)
