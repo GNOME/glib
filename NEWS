@@ -1,3 +1,27 @@
+Overview of changes from GLib 2.37.2 to 2.37.3
+==============================================
+
+* add a new API for instance private data: G_DEFINE_TYPE_WITH_PRIVATE
+
+* fix timestamps in tarball to prevent automake from being required to
+  build the unmodified source
+
+* add new D-Bus API for async property handling
+
+* add back fsync() on ext4 for g_file_set_contents() after it was
+  discovered that despite statements in the ext4 documentation
+  suggesting that this is safe, it is not safe.
+
+* Translations:
+ Italian
+ Norwegian bokmål
+
+* Bugs fixed:
+ 698375 - D-Bus async properties
+ 700350 - timestamp issue
+ 701560 - fsync issue (fixed again)
+ 700035 - new API for instance private data
+
 Overview of changes from GLib 2.37.1 to 2.37.2
 ==============================================
 
