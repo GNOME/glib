@@ -200,6 +200,7 @@ maman_bar_init (MamanBar *self)
   self->priv = maman_bar_get_instance_private (self);
   self->priv->hsize = 42;
 }
+</programlisting>
           </para></listitem>
       </itemizedlist>
     </para>
