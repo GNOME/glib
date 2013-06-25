@@ -195,21 +195,20 @@
  * ]|
  *
  *     <para>The accessors can be public or private functions. The implementation
- *     of the setter function should not explicitly emit a notification when the
- *     property changes: returning %TRUE if the value was modified will result in
- *     a #GObject::notify signal being automatically emitted. An example of a
- *     setter is:</para>
+ *     of the setter function should explicitly emit a notification when the
+ *     property changes. An example of an explicit setter is:</para>
  *
  * |[
- *   static gboolean
+ *   static void
  *   test_object_set_complex_internal (gpointer self_,
  *                                     gpointer value_)
  *   {
  *     TestObject *self = self_;
  *     TestComplex *value = value_;
  *
+ *     /&ast; no need to perform any work if the value is the same &ast;/
  *     if (self->priv->complex == value)
- *       return FALSE;
+ *       return;
  *
  *     if (self->priv->complex != NULL)
  *       {
@@ -227,7 +226,7 @@
  *
  *     test_object_queue_foo (self);
  *
- *     return TRUE;
+ *     g_object_notify (self, "complex");
  *   }
  * ]|
  *
@@ -590,10 +589,9 @@ g_##g_t##_property_set_value (GProperty *property, \
 \
   if (((G##G_t##Property *) property)->setter != NULL) \
     { \
-      retval = ((G##G_t##Property *) property)->setter (gobject, value); \
+      ((G##G_t##Property *) property)->setter (gobject, value); \
 \
-      if (retval) \
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property); \
+      retval = FALSE; \
     } \
   else if (property->field_offset != 0) \
     { \
@@ -604,8 +602,6 @@ g_##g_t##_property_set_value (GProperty *property, \
       if ((* (c_t *) field_p) != value) \
         { \
           (* (c_t *) field_p) = value; \
-\
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property); \
 \
           retval = TRUE; \
         } \
@@ -1058,10 +1054,9 @@ g_enum_property_set_value (GProperty *property,
 
   if (((GEnumProperty *) property)->setter != NULL)
     {
-      retval = ((GEnumProperty *) property)->setter (gobject, value);
+      ((GEnumProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -1072,8 +1067,6 @@ g_enum_property_set_value (GProperty *property,
       if ((* (gint *) field_p) != value)
         {
           (* (gint *) field_p) = value;
-
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
           retval = TRUE;
         }
@@ -1277,10 +1270,9 @@ g_flags_property_set_value (GProperty *property,
 
   if (((GFlagsProperty *) property)->setter != NULL)
     {
-      retval = ((GFlagsProperty *) property)->setter (gobject, value);
+      ((GFlagsProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -1291,8 +1283,6 @@ g_flags_property_set_value (GProperty *property,
       if ((* (guint *) field_p) != value)
         {
           (* (guint *) field_p) = value;
-
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
           retval = TRUE;
         }
@@ -1516,10 +1506,9 @@ g_float_property_set_value (GProperty *property,
 
   if (((GFloatProperty *) property)->setter != NULL)
     {
-      retval = ((GFloatProperty *) property)->setter (gobject, value);
+      ((GFloatProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -1530,8 +1519,6 @@ g_float_property_set_value (GProperty *property,
       if ((* (gfloat *) field_p) != value)
         {
           (* (gfloat *) field_p) = value;
-
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
           retval = TRUE;
         }
@@ -1755,10 +1742,9 @@ g_double_property_set_value (GProperty *property,
 
   if (((GDoubleProperty *) property)->setter != NULL)
     {
-      retval = ((GDoubleProperty *) property)->setter (gobject, value);
+      ((GDoubleProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -1769,8 +1755,6 @@ g_double_property_set_value (GProperty *property,
       if ((* (gdouble *) field_p) != value)
         {
           (* (gdouble *) field_p) = value;
-
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
           retval = TRUE;
         }
@@ -1921,10 +1905,9 @@ g_string_property_set_value (GProperty   *property,
 
   if (((GStringProperty *) property)->setter != NULL)
     {
-      retval = ((GStringProperty *) property)->setter (gobject, value);
+      ((GStringProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -1945,8 +1928,6 @@ g_string_property_set_value (GProperty   *property,
         }
       else
         (* (gpointer *) field_p) = (gpointer) value;
-
-      g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
       retval = TRUE;
     }
@@ -2109,10 +2090,9 @@ g_boxed_property_set_value (GProperty *property,
 
   if (((GBoxedProperty *) property)->setter != NULL)
     {
-      retval = ((GBoxedProperty *) property)->setter (gobject, value);
+      ((GBoxedProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -2135,8 +2115,6 @@ g_boxed_property_set_value (GProperty *property,
         }
       else
         (* (gpointer *) field_p) = value;
-
-      g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
       retval = TRUE;
     }
@@ -2301,10 +2279,9 @@ g_object_property_set_value (GProperty *property,
 
   if (((GObjectProperty *) property)->setter != NULL)
     {
-      retval = ((GObjectProperty *) property)->setter (gobject, value);
+      ((GObjectProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -2336,8 +2313,6 @@ g_object_property_set_value (GProperty *property,
         }
       else
         (* (gpointer *) field_p) = value;
-
-      g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
       retval = TRUE;
     }
@@ -2498,10 +2473,9 @@ g_pointer_property_set_value (GProperty *property,
 
   if (((GPointerProperty *) property)->setter != NULL)
     {
-      retval = ((GPointerProperty *) property)->setter (gobject, value);
+      ((GPointerProperty *) property)->setter (gobject, value);
 
-      if (retval)
-        g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+      retval = FALSE;
     }
   else if (property->field_offset != 0)
     {
@@ -2512,8 +2486,6 @@ g_pointer_property_set_value (GProperty *property,
       if ((* (gpointer *) field_p) != value)
         {
           (* (gpointer *) field_p) = value;
-
-          g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
           retval = TRUE;
         }
@@ -3841,6 +3813,9 @@ g_property_set_va (GProperty             *property,
       break;
     }
 
+  if (retval)
+    g_object_notify_by_pspec (gobject, (GParamSpec *) property);
+
   g_object_unref (gobject);
 
   return retval;
@@ -4220,6 +4195,9 @@ g_property_set_value_internal (GProperty    *property,
       g_critical (G_STRLOC ": Invalid type %s", g_type_name (G_VALUE_TYPE (value)));
       break;
     }
+
+  if (res)
+    g_object_notify_by_pspec (gobject, (GParamSpec *) property);
 
   g_object_unref (gobject);
 

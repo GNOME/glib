@@ -1215,27 +1215,26 @@ static inline void
 g_object_notify_by_spec_internal (GObject    *object,
 				  GParamSpec *pspec)
 {
+  GObjectNotifyQueue *nqueue;
   GParamSpec *notify_pspec;
 
   notify_pspec = get_notify_pspec (pspec);
+  if (notify_pspec == NULL)
+    return;
 
-  if (notify_pspec != NULL)
+  /* conditional freeze: only increase freeze count if already frozen */
+  nqueue = g_object_notify_queue_freeze (object, TRUE);
+
+  if (nqueue != NULL)
     {
-      GObjectNotifyQueue *nqueue;
-
-      /* conditional freeze: only increase freeze count if already frozen */
-      nqueue = g_object_notify_queue_freeze (object, TRUE);
-
-      if (nqueue != NULL)
-        {
-          /* we're frozen, so add to the queue and release our freeze */
-          g_object_notify_queue_add (object, nqueue, notify_pspec);
-          g_object_notify_queue_thaw (object, nqueue);
-        }
-      else
-        /* not frozen, so just dispatch the notification directly */
-        G_OBJECT_GET_CLASS (object)
-          ->dispatch_properties_changed (object, 1, &notify_pspec);
+      /* we're frozen, so add to the queue and release our freeze */
+       g_object_notify_queue_add (object, nqueue, notify_pspec);
+       g_object_notify_queue_thaw (object, nqueue);
+    }
+  else
+    {
+      /* not frozen, so just dispatch the notification directly */
+      G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, 1, &notify_pspec);
     }
 }
 

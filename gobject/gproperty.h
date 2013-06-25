@@ -199,87 +199,87 @@ gboolean        g_property_get_va       (GProperty             *property,
                                          va_list               *app);
 
 /* per-type specific accessors */
-typedef gboolean      (* GPropertyBooleanSet)   (gpointer       gobject,
+typedef void          (* GPropertyBooleanSet)   (gpointer       gobject,
                                                  gboolean       value);
 typedef gboolean      (* GPropertyBooleanGet)   (gpointer       gobject);
 
-typedef gboolean      (* GPropertyIntSet)       (gpointer       gobject,
+typedef void          (* GPropertyIntSet)       (gpointer       gobject,
                                                  gint           value);
 typedef gint          (* GPropertyIntGet)       (gpointer       gobject);
 
-typedef gboolean      (* GPropertyInt8Set)      (gpointer       gobject,
+typedef void          (* GPropertyInt8Set)      (gpointer       gobject,
                                                  gint8          value);
 typedef gint8         (* GPropertyInt8Get)      (gpointer       gobject);
 
-typedef gboolean      (* GPropertyInt16Set)     (gpointer       gobject,
+typedef void          (* GPropertyInt16Set)     (gpointer       gobject,
                                                  gint16         value);
 typedef gint16        (* GPropertyInt16Get)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyInt32Set)     (gpointer       gobject,
+typedef void          (* GPropertyInt32Set)     (gpointer       gobject,
                                                  gint32         value);
 typedef gint32        (* GPropertyInt32Get)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyInt64Set)     (gpointer       gobject,
+typedef void          (* GPropertyInt64Set)     (gpointer       gobject,
                                                  gint64         value);
 typedef gint64        (* GPropertyInt64Get)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyLongSet)      (gpointer       gobject,
+typedef void          (* GPropertyLongSet)      (gpointer       gobject,
                                                  glong          value);
 typedef glong         (* GPropertyLongGet)      (gpointer       gobject);
 
-typedef gboolean      (* GPropertyUIntSet)      (gpointer       gobject,
+typedef void          (* GPropertyUIntSet)      (gpointer       gobject,
                                                  guint          value);
 typedef guint         (* GPropertyUIntGet)      (gpointer       gobject);
 
-typedef gboolean      (* GPropertyUInt8Set)     (gpointer       gobject,
+typedef void          (* GPropertyUInt8Set)     (gpointer       gobject,
                                                  guint8         value);
 typedef guint8        (* GPropertyUInt8Get)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyUInt16Set)    (gpointer       gobject,
+typedef void          (* GPropertyUInt16Set)    (gpointer       gobject,
                                                  guint16        value);
 typedef guint16       (* GPropertyUInt16Get)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyUInt32Set)    (gpointer       gobject,
+typedef void          (* GPropertyUInt32Set)    (gpointer       gobject,
                                                  guint32        value);
 typedef guint32       (* GPropertyUInt32Get)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyUInt64Set)    (gpointer       gobject,
+typedef void          (* GPropertyUInt64Set)    (gpointer       gobject,
                                                  guint64        value);
 typedef guint64       (* GPropertyUInt64Get)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyULongSet)     (gpointer       gobject,
+typedef void          (* GPropertyULongSet)     (gpointer       gobject,
                                                  gulong         value);
 typedef gulong        (* GPropertyULongGet)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyEnumSet)      (gpointer       gobject,
+typedef void          (* GPropertyEnumSet)      (gpointer       gobject,
                                                  gint           value);
 typedef gint          (* GPropertyEnumGet)      (gpointer       gobject);
 
-typedef gboolean      (* GPropertyFlagsSet)     (gpointer       gobject,
+typedef void          (* GPropertyFlagsSet)     (gpointer       gobject,
                                                  guint          value);
 typedef guint         (* GPropertyFlagsGet)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyFloatSet)     (gpointer       gobject,
+typedef void          (* GPropertyFloatSet)     (gpointer       gobject,
                                                  gfloat         value);
 typedef gfloat        (* GPropertyFloatGet)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyDoubleSet)    (gpointer       gobject,
+typedef void          (* GPropertyDoubleSet)    (gpointer       gobject,
                                                  gdouble        value);
 typedef gdouble       (* GPropertyDoubleGet)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyStringSet)    (gpointer       gobject,
+typedef void          (* GPropertyStringSet)    (gpointer       gobject,
                                                  const char    *value);
 typedef const char *  (* GPropertyStringGet)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyBoxedSet)     (gpointer       gobject,
+typedef void          (* GPropertyBoxedSet)     (gpointer       gobject,
                                                  gpointer       value);
 typedef gpointer      (* GPropertyBoxedGet)     (gpointer       gobject);
 
-typedef gboolean      (* GPropertyObjectSet)    (gpointer       gobject,
+typedef void          (* GPropertyObjectSet)    (gpointer       gobject,
                                                  gpointer       value);
 typedef gpointer      (* GPropertyObjectGet)    (gpointer       gobject);
 
-typedef gboolean      (* GPropertyPointerSet)   (gpointer       gobject,
+typedef void          (* GPropertyPointerSet)   (gpointer       gobject,
                                                  gpointer       value);
 typedef gpointer      (* GPropertyPointerGet)   (gpointer       gobject);
 
@@ -747,6 +747,7 @@ void            g_property_init_default        (GProperty *property,
 #define _G_DEFINE_PROPERTY_SETTER_BEGIN(T_n, t_n, f_t, f_n) \
 { \
   GProperty *g_property = NULL; \
+  GObject *g_object; \
 \
   g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (self, t_n##_get_type ())); \
 \
@@ -771,12 +772,20 @@ void            g_property_init_default        (GProperty *property,
       } \
   } \
 \
+  g_object = G_OBJECT (self); \
+  g_object_freeze_notify (g_object); \
+\
   if (!g_property_set (g_property, self, value)) \
-    return; \
+    { \
+      g_object_thaw_notify (g_object); \
+      return; \
+    } \
 \
   { /* custom code follows */
 #define _G_DEFINE_PROPERTY_SETTER_END           \
   }/* following custom code */                  \
+\
+  g_object_thaw_notify (g_object); \
 }
 
 /**

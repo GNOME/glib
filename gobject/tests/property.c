@@ -84,19 +84,20 @@ test_object_finalize (GObject *gobject)
   G_OBJECT_CLASS (test_object_parent_class)->finalize (gobject);
 }
 
-static gboolean
+static void
 test_object_set_enum_val_internal (gpointer obj,
                                    gint     val)
 {
   TestObjectPrivate *priv = test_object_get_instance_private (obj);
 
   if (priv->enum_val == val)
-    return FALSE;
+    return;
 
   priv->enum_val = val;
   priv->enum_val_set = val != TEST_ENUM_UNSET;
 
-  return TRUE;
+  g_object_notify (obj, "enum-val");
+  g_object_notify (obj, "enum-val-set");
 }
 
 static void
@@ -303,21 +304,26 @@ static void
 gproperty_explicit_set (void)
 {
   TestObject *obj = g_object_new (test_object_get_type (), NULL);
-  gboolean did_emit_notify = FALSE;
+  gboolean did_emit_notify_1 = FALSE;
+  gboolean did_emit_notify_2 = FALSE;
   TestEnum enum_val;
 
-  g_signal_connect (obj, "notify::enum-val", G_CALLBACK (check_notify_emission), &did_emit_notify);
+  g_signal_connect (obj, "notify::enum-val", G_CALLBACK (check_notify_emission), &did_emit_notify_1);
+  g_signal_connect (obj, "notify::enum-val-set", G_CALLBACK (check_notify_emission), &did_emit_notify_2);
 
   g_object_set (obj, "enum-val", TEST_ENUM_THREE, NULL);
   g_assert_cmpint (test_object_get_enum_val (obj), ==, TEST_ENUM_THREE);
   g_assert (test_object_get_enum_val_set (obj));
-  g_assert (did_emit_notify);
+  g_assert (did_emit_notify_1);
+  g_assert (did_emit_notify_2);
 
-  did_emit_notify = FALSE;
+  did_emit_notify_1 = FALSE;
+  did_emit_notify_2 = FALSE;
   test_object_set_enum_val (obj, TEST_ENUM_THREE);
   g_object_get (obj, "enum-val", &enum_val, NULL);
   g_assert_cmpint (enum_val, ==, TEST_ENUM_THREE);
-  g_assert (!did_emit_notify);
+  g_assert (!did_emit_notify_1);
+  g_assert (!did_emit_notify_2);
 
   g_object_unref (obj);
 }
