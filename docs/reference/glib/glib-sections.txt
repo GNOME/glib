@@ -2940,6 +2940,7 @@ g_test_expect_message
 g_test_assert_expected_messages
 
 GTestTrapFlags
+GTestSubprocessFlags
 g_test_trap_subprocess
 g_test_trap_has_passed
 g_test_trap_reached_timeout

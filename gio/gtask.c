@@ -46,7 +46,7 @@
  *     Eventually, you will call a method such as
  *     g_task_return_pointer() or g_task_return_error(), which will
  *     save the value you give it and then invoke the task's callback
- *     function (waiting until the next next iteration of the main
+ *     function (waiting until the next iteration of the main
  *     loop first, if necessary). The caller will pass the #GTask back
  *     to the operation's finish function (as a #GAsyncResult), and
  *     you can use g_task_propagate_pointer() or the like to extract

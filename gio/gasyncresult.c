@@ -62,7 +62,7 @@
  * |[
  * void _theoretical_frobnitz_async (Theoretical         *t,
  *                                   GCancellable        *c,
- *                                   GAsyncReadyCallback *cb,
+ *                                   GAsyncReadyCallback  cb,
  *                                   gpointer             u);
  *
  * gboolean _theoretical_frobnitz_finish (Theoretical   *t,
