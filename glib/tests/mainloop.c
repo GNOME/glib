@@ -568,6 +568,52 @@ test_swapping_child_sources (void)
   g_main_context_unref (ctx);
 }
 
+static gboolean
+add_source_callback (gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+  GSource *self = g_main_current_source (), *child;
+  GIOChannel *io;
+
+  /* It doesn't matter whether this is a valid fd or not; it never
+   * actually gets polled; the test is just checking that
+   * g_source_add_child_source() doesn't crash.
+   */
+  io = g_io_channel_unix_new (0);
+  child = g_io_create_watch (io, G_IO_IN);
+  g_source_add_child_source (self, child);
+  g_source_unref (child);
+  g_io_channel_unref (io);
+
+  g_main_loop_quit (loop);
+  return FALSE;
+}
+
+static void
+test_blocked_child_sources (void)
+{
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *source;
+
+  g_test_bug ("701283");
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  source = g_idle_source_new ();
+  g_source_set_callback (source, add_source_callback, loop, NULL);
+  g_source_attach (source, ctx);
+
+  g_main_loop_run (loop);
+
+  g_source_destroy (source);
+  g_source_unref (source);
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
 typedef struct {
   GMainContext *ctx;
   GMainLoop *loop;
@@ -721,7 +767,6 @@ add_idle_source (GMainContext *ctx,
   return source;
 }
 
-/* https://bugzilla.gnome.org/show_bug.cgi?id=687098 */
 static void
 test_mainloop_overflow (void)
 {
@@ -730,6 +775,8 @@ test_mainloop_overflow (void)
   GSource *source;
   TestOverflowData data;
   guint i;
+
+  g_test_bug ("687098");
 
   memset (&data, 0, sizeof (data));
 
@@ -1281,6 +1328,7 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/maincontext/basic", test_maincontext_basic);
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
@@ -1290,6 +1338,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
   g_test_add_func ("/mainloop/recursive_child_sources", test_recursive_child_sources);
   g_test_add_func ("/mainloop/swapping_child_sources", test_swapping_child_sources);
+  g_test_add_func ("/mainloop/blocked_child_sources", test_blocked_child_sources);
   g_test_add_func ("/mainloop/source_time", test_source_time);
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
