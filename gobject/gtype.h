@@ -1636,19 +1636,37 @@ guint     g_type_get_type_registration_serial (void);
 #define G_PRIVATE_FIELD(TypeName, inst, field_type, field_name) \
   G_STRUCT_MEMBER (field_type, inst, G_PRIVATE_OFFSET (TypeName, field_name))
 
-#define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
-\
-static void     type_name##_init              (TypeName        *self); \
-static void     type_name##_class_init        (TypeName##Class *klass); \
-static gpointer type_name##_parent_class = NULL; \
-static gint     TypeName##_private_offset; \
+/* we need to have this macro under conditional expansion, as it references
+ * a function that has been added in 2.38. see bug:
+ * https://bugzilla.gnome.org/show_bug.cgi?id=703191
+ */
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38
+#define _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
 static void     type_name##_class_intern_init (gpointer klass) \
 { \
   type_name##_parent_class = g_type_class_peek_parent (klass); \
   if (TypeName##_private_offset != 0) \
     g_type_class_adjust_private_offset (klass, &TypeName##_private_offset); \
   type_name##_class_init ((TypeName##Class*) klass); \
-} \
+}
+
+#else
+#define _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
+static void     type_name##_class_intern_init (gpointer klass) \
+{ \
+  type_name##_parent_class = g_type_class_peek_parent (klass); \
+  type_name##_class_init ((TypeName##Class*) klass); \
+}
+#endif /* GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38 */
+
+#define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
+\
+static void     type_name##_init              (TypeName        *self); \
+static void     type_name##_class_init        (TypeName##Class *klass); \
+static gpointer type_name##_parent_class = NULL; \
+static gint     TypeName##_private_offset; \
+\
+_G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
 \
 static inline gpointer \
 type_name##_get_instance_private (TypeName *self) \
