@@ -497,18 +497,17 @@ void            g_property_init_default        (GProperty *property,
     GPtrArray *g_define_properties = g_ptr_array_new (); \
     g_ptr_array_add (g_define_properties, NULL);
 
-#define _G_DEFINE_PROPERTIES_END(T_N, t_n, g_class) \
-    t_n##_properties_len = g_define_properties->len; \
-    t_n##_properties = (GParamSpec **) g_ptr_array_free (g_define_properties, FALSE); \
+#define _G_DEFINE_PROPERTIES_END(TypeName, g_class) \
+    TypeName##_properties_len = g_define_properties->len; \
+    TypeName##_properties = (GParamSpec **) g_ptr_array_free (g_define_properties, FALSE); \
     g_object_class_install_properties (G_OBJECT_CLASS (g_class), \
-                                       t_n##_properties_len, \
-                                       t_n##_properties); \
+                                       TypeName##_properties_len, \
+                                       TypeName##_properties); \
   }
 
 /**
  * G_DEFINE_PROPERTIES:
  * @T_N: the name of the type, in CamelCase
- * @t_n: the name of the type, in lower case, with spaces replaced by underscores
  * @g_class: a pointer to the class structure of the type
  * @_C_: a list of G_DEFINE_PROPERTY_EXTENDED calls
  *
@@ -520,10 +519,10 @@ void            g_property_init_default        (GProperty *property,
  *
  * Since: 2.38
  */
-#define G_DEFINE_PROPERTIES(T_N, t_n, g_class, _C_) \
+#define G_DEFINE_PROPERTIES(T_N, g_class, _C_) \
   _G_DEFINE_PROPERTIES_BEGIN() \
   { _C_; } \
-  _G_DEFINE_PROPERTIES_END(T_N, t_n, g_class)
+  _G_DEFINE_PROPERTIES_END(T_N, g_class)
 
 #define _G_DEFINE_DIRECT_PROPERTY_EXTENDED_BEGIN(T_N, c_type, name, flags) \
 { \
@@ -711,9 +710,9 @@ void            g_property_init_default        (GProperty *property,
     const char *pname = g_property_canonicalize_name (#f_n); \
     int i; \
 \
-    for (i = 1; i < t_n##_properties_len; i++) \
+    for (i = 1; i < T_N##_properties_len; i++) \
       { \
-        GParamSpec *pspec = t_n##_properties[i]; \
+        GParamSpec *pspec = T_N##_properties[i]; \
         if (pspec != NULL && pspec->name == pname) \
           { \
             g_property = (GProperty *) pspec; \
@@ -755,9 +754,9 @@ void            g_property_init_default        (GProperty *property,
     const char *pname = g_property_canonicalize_name (#f_n); \
     int i; \
 \
-    for (i = 1; i < t_n##_properties_len; i++) \
+    for (i = 1; i < T_N##_properties_len; i++) \
       { \
-        GParamSpec *pspec = t_n##_properties[i]; \
+        GParamSpec *pspec = T_N##_properties[i]; \
         if (pspec != NULL && pspec->name == pname) \
           { \
             g_property = (GProperty *) pspec; \

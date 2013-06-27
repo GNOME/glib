@@ -118,7 +118,7 @@ test_object_class_init (TestObjectClass *klass)
   gobject_class->constructed = test_object_constructed;
   gobject_class->finalize = test_object_finalize;
 
-  G_DEFINE_PROPERTIES (TestObject, test_object, klass,
+  G_DEFINE_PROPERTIES (TestObject, klass,
                        G_DEFINE_PROPERTY (TestObject,
                                           int,
                                           integer_val,

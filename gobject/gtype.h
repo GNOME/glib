@@ -1665,8 +1665,8 @@ static void         type_name##_init            (TypeName        *self); \
 static void         type_name##_class_init      (TypeName##Class *klass); \
 static gpointer     type_name##_parent_class = NULL; \
 static gint         TypeName##_private_offset; \
-static GParamSpec **type_name##_properties G_GNUC_UNUSED; \
-static guint        type_name##_properties_len G_GNUC_UNUSED; \
+static GParamSpec **TypeName##_properties G_GNUC_UNUSED; \
+static guint        TypeName##_properties_len G_GNUC_UNUSED; \
 \
 _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
 \
