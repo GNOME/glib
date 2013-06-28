@@ -3148,6 +3148,21 @@ G_SIMPLE_ACTION
 </SECTION>
 
 <SECTION>
+<FILE>gpropertyaction</FILE>
+<TITLE>GPropertyAction</TITLE>
+GPropertyAction
+
+<SUBSECTION>
+g_property_action_new
+
+<SUBSECTION Standard>
+g_property_action_get_type
+G_TYPE_PROPERTY_ACTION
+G_IS_PROPERTY_ACTION
+G_PROPERTY_ACTION
+</SECTION>
+
+<SECTION>
 <FILE>gsimpleactiongroup</FILE>
 <TITLE>GSimpleActionGroup</TITLE>
 GSimpleActionGroup

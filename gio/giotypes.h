@@ -52,6 +52,7 @@ typedef struct _GRemoteActionGroup            GRemoteActionGroup;
 typedef struct _GDBusActionGroup              GDBusActionGroup;
 typedef struct _GActionMap                    GActionMap;
 typedef struct _GActionGroup                  GActionGroup;
+typedef struct _GPropertyAction               GPropertyAction;
 typedef struct _GSimpleAction                 GSimpleAction;
 typedef struct _GAction                       GAction;
 typedef struct _GApplication                  GApplication;

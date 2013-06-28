@@ -904,6 +904,178 @@ test_bug679509 (void)
   session_bus_down ();
 }
 
+static gchar *state_change_log;
+
+static void
+state_changed (GActionGroup *group,
+               const gchar  *action_name,
+               GVariant     *value,
+               gpointer      user_data)
+{
+  GString *string;
+
+  g_assert (!state_change_log);
+
+  string = g_string_new (action_name);
+  g_string_append_c (string, ':');
+  g_variant_print_string (value, string, TRUE);
+  state_change_log = g_string_free (string, FALSE);
+}
+
+static void
+verify_changed (const gchar *log_entry)
+{
+  g_assert_cmpstr (state_change_log, ==, log_entry);
+  g_clear_pointer (&state_change_log, g_free);
+}
+
+static void
+ensure_state (GSimpleActionGroup *group,
+              const gchar        *action_name,
+              const gchar        *expected)
+{
+  GVariant *value;
+  gchar *printed;
+
+  value = g_action_group_get_action_state (G_ACTION_GROUP (group), action_name);
+  printed = g_variant_print (value, TRUE);
+  g_variant_unref (value);
+
+  g_assert_cmpstr (printed, ==, expected);
+  g_free (printed);
+}
+
+static void
+test_property_actions (void)
+{
+  GSimpleActionGroup *group;
+  GPropertyAction *action;
+  GSocketClient *client;
+  GApplication *app;
+
+  group = g_simple_action_group_new ();
+  g_signal_connect (group, "action-state-changed", G_CALLBACK (state_changed), NULL);
+
+  client = g_socket_client_new ();
+  app = g_application_new ("org.gtk.test", 0);
+
+  /* string... */
+  action = g_property_action_new ("app-id", app, "application-id");
+  g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
+  g_object_unref (action);
+
+  /* uint... */
+  action = g_property_action_new ("keepalive", app, "inactivity-timeout");
+  g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
+  g_object_unref (action);
+
+  /* bool... */
+  action = g_property_action_new ("tls", client, "tls");
+  g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
+  g_object_unref (action);
+
+  /* enum... */
+  action = g_property_action_new ("type", client, "type");
+  g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
+  g_object_unref (action);
+
+  /* the objects should be held alive by the actions... */
+  g_object_unref (client);
+  g_object_unref (app);
+
+  ensure_state (group, "app-id", "'org.gtk.test'");
+  ensure_state (group, "keepalive", "uint32 0");
+  ensure_state (group, "tls", "false");
+  ensure_state (group, "type", "'stream'");
+
+  verify_changed (NULL);
+
+  /* some string tests... */
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test2"));
+  verify_changed ("app-id:'org.gtk.test2'");
+  g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test2");
+  ensure_state (group, "app-id", "'org.gtk.test2'");
+
+  g_action_group_activate_action (G_ACTION_GROUP (group), "app-id", g_variant_new ("s", "org.gtk.test3"));
+  verify_changed ("app-id:'org.gtk.test3'");
+  g_assert_cmpstr (g_application_get_application_id (app), ==, "org.gtk.test3");
+  ensure_state (group, "app-id", "'org.gtk.test3'");
+
+  g_application_set_application_id (app, "org.gtk.test");
+  verify_changed ("app-id:'org.gtk.test'");
+  ensure_state (group, "app-id", "'org.gtk.test'");
+
+  /* uint tests */
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 1234));
+  verify_changed ("keepalive:uint32 1234");
+  g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 1234);
+  ensure_state (group, "keepalive", "uint32 1234");
+
+  g_action_group_activate_action (G_ACTION_GROUP (group), "keepalive", g_variant_new ("u", 5678));
+  verify_changed ("keepalive:uint32 5678");
+  g_assert_cmpuint (g_application_get_inactivity_timeout (app), ==, 5678);
+  ensure_state (group, "keepalive", "uint32 5678");
+
+  g_application_set_inactivity_timeout (app, 0);
+  verify_changed ("keepalive:uint32 0");
+  ensure_state (group, "keepalive", "uint32 0");
+
+  /* bool tests */
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "tls", g_variant_new ("b", TRUE));
+  verify_changed ("tls:true");
+  g_assert (g_socket_client_get_tls (client));
+  ensure_state (group, "tls", "true");
+
+  /* test toggle true->false */
+  g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
+  verify_changed ("tls:false");
+  g_assert (!g_socket_client_get_tls (client));
+  ensure_state (group, "tls", "false");
+
+  /* and now back false->true */
+  g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
+  verify_changed ("tls:true");
+  g_assert (g_socket_client_get_tls (client));
+  ensure_state (group, "tls", "true");
+
+  g_socket_client_set_tls (client, FALSE);
+  verify_changed ("tls:false");
+  ensure_state (group, "tls", "false");
+
+  /* enum tests */
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "type", g_variant_new ("s", "datagram"));
+  verify_changed ("type:'datagram'");
+  g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
+  ensure_state (group, "type", "'datagram'");
+
+  g_action_group_activate_action (G_ACTION_GROUP (group), "type", g_variant_new ("s", "stream"));
+  verify_changed ("type:'stream'");
+  g_assert_cmpint (g_socket_client_get_socket_type (client), ==, G_SOCKET_TYPE_STREAM);
+  ensure_state (group, "type", "'stream'");
+
+  g_socket_client_set_socket_type (client, G_SOCKET_TYPE_SEQPACKET);
+  verify_changed ("type:'seqpacket'");
+  ensure_state (group, "type", "'seqpacket'");
+
+  /* Check some error cases... */
+  g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*non-existent*");
+  action = g_property_action_new ("foo", app, "xyz");
+  g_test_assert_expected_messages ();
+  g_object_unref (action);
+
+  g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*writable*");
+  action = g_property_action_new ("foo", app, "is-registered");
+  g_test_assert_expected_messages ();
+  g_object_unref (action);
+
+  g_test_expect_message ("GLib-GIO", G_LOG_LEVEL_CRITICAL, "*type 'GSocketAddress'*");
+  action = g_property_action_new ("foo", client, "local-address");
+  g_test_assert_expected_messages ();
+  g_object_unref (action);
+
+  g_object_unref (group);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -916,7 +1088,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/parse-detailed", test_parse_detailed);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
-  g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
+  g_test_add_func ("/actions/property", test_property_actions);
 
   return g_test_run ();
 }

@@ -145,6 +145,7 @@ application_headers = \
 	gactiongroupexporter.h		\
 	gdbusactiongroup.h		\
 	gaction.h			\
+	gpropertyaction.h		\
 	gsimpleaction.h			\
 					\
 	gmenumodel.h			\
@@ -167,6 +168,7 @@ application_sources = \
 	gdbusactiongroup-private.h		\
 	gdbusactiongroup.c			\
 	gaction.c				\
+	gpropertyaction.c			\
 	gsimpleaction.c				\
 						\
 	gmenumodel.c				\
