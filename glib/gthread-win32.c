@@ -198,6 +198,7 @@ void
 g_rec_mutex_clear (GRecMutex *mutex)
 {
   g_rec_mutex_impl_free (mutex->p);
+  mutex->p = NULL;
 }
 
 void

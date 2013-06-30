@@ -362,6 +362,7 @@ void
 g_rec_mutex_clear (GRecMutex *rec_mutex)
 {
   g_rec_mutex_impl_free (rec_mutex->p);
+  rec_mutex->p = NULL;
 }
 
 /**
@@ -519,6 +520,7 @@ void
 g_rw_lock_clear (GRWLock *rw_lock)
 {
   g_rw_lock_impl_free (rw_lock->p);
+  rw_lock->p = NULL;
 }
 
 /**
@@ -723,6 +725,7 @@ void
 g_cond_clear (GCond *cond)
 {
   g_cond_impl_free (cond->p);
+  cond->p = NULL;
 }
 
 /**
