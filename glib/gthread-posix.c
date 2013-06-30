@@ -184,12 +184,13 @@ g_mutex_init (GMutex *mutex)
  * Calling g_mutex_clear() on a locked mutex leads to undefined
  * behaviour.
  *
- * Sine: 2.32
+ * Since: 2.32
  */
 void
 g_mutex_clear (GMutex *mutex)
 {
   g_mutex_impl_free (mutex->p);
+  mutex->p = NULL;
 }
 
 /**
