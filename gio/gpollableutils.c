@@ -28,7 +28,7 @@
 
 /**
  * SECTION:gpollableutils
- * @short_description: #GPollableInputStream / #GPollableOutputStream utilities
+ * @short_description: Utilities for pollable streams
  * @include: gio/gio.h
  *
  * Utility functions for #GPollableInputStream and

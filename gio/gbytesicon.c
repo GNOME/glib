@@ -34,7 +34,7 @@
 
 /**
  * SECTION:gbytesicon
- * @short_description: An icon stored in memory as a #GBytes
+ * @short_description: An icon stored in memory as a GBytes
  * @include: gio/gio.h
  * @see_also: #GIcon, #GLoadableIcon, #GBytes
  *

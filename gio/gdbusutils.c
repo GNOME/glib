@@ -32,7 +32,7 @@
 /**
  * SECTION:gdbusutils
  * @title: D-Bus Utilities
- * @short_description: Various utilities related to D-Bus.
+ * @short_description: Various utilities related to D-Bus
  * @include: gio/gio.h
  *
  * Various utility routines related to D-Bus.

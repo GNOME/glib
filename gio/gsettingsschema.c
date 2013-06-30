@@ -32,7 +32,7 @@
 
 /**
  * SECTION:gsettingsschema
- * @short_description: introspecting and controlling the loading of
+ * @short_description: Introspecting and controlling the loading of
  *                     GSettings schemas
  *
  * The #GSettingsSchemaSource and #GSettingsSchema APIs provide a

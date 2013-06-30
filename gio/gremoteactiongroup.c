@@ -29,7 +29,7 @@
 /**
  * SECTION:gremoteactiongroup
  * @title: GRemoteActionGroup
- * @short_description: a #GActionGroup that interacts with other processes
+ * @short_description: A GActionGroup that interacts with other processes
  *
  * The GRemoteActionGroup interface is implemented by #GActionGroup
  * instances that either transmit action invocations to other processes

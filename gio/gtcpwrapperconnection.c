@@ -23,7 +23,7 @@
 /**
  * SECTION:gtcpwrapperconnection
  * @title: GTcpWrapperConnection
- * @short_description: wrapper for non-GSocketConnection-based, GSocket-based GIOStreams
+ * @short_description: Wrapper for non-GSocketConnection-based, GSocket-based GIOStreams
  * @see_also: #GSocketConnection.
  *
  * A #GTcpWrapperConnection can be used to wrap a #GIOStream that is
