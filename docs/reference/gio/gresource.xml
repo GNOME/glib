@@ -33,14 +33,14 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gresource</command>
-    <arg choice="opt">--section SECTION</arg>
+    <arg choice="opt">--section <replaceable>SECTION</replaceable></arg>
     <arg choice="plain">details</arg>
     <arg choice="plain"><replaceable>FILE</replaceable></arg>
     <arg choice="opt"><replaceable>PATH</replaceable></arg>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gresource</command>
-    <arg choice="opt">--section SECTION</arg>
+    <arg choice="opt">--section <replaceable>SECTION</replaceable></arg>
     <arg choice="plain">extract</arg>
     <arg choice="plain"><replaceable>FILE</replaceable></arg>
     <arg choice="plain"><replaceable>PATH</replaceable></arg>
