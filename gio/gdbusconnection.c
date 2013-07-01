@@ -4538,6 +4538,21 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
   return FALSE;
 }
 
+static gboolean
+interface_has_readable_properties (GDBusInterfaceInfo *interface_info)
+{
+  gint i;
+
+  if (!interface_info->properties)
+    return FALSE;
+
+  for (i = 0; interface_info->properties[i]; i++)
+    if (interface_info->properties[i]->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE)
+      return TRUE;
+
+  return FALSE;
+}
+
 /* called in any thread with connection's lock held */
 static gboolean
 validate_and_maybe_schedule_property_get_all (GDBusConnection            *connection,
@@ -4558,10 +4573,11 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
   if (vtable == NULL)
     goto out;
 
-  /* If the vtable pointer for get_property() is NULL, then dispatch the
-   * call via the method_call() handler.
+  /* If the vtable pointer for get_property() is NULL but we have a
+   * non-zero number of readable properties, then dispatch the call via
+   * the method_call() handler.
    */
-  if (vtable->get_property == NULL)
+  if (vtable->get_property == NULL && interface_has_readable_properties (interface_info))
     {
       schedule_method_call (connection, message, registration_id, subtree_registration_id,
                             interface_info, NULL, NULL, g_dbus_message_get_body (message),

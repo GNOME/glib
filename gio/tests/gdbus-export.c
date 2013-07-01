@@ -122,6 +122,15 @@ static const GDBusInterfaceInfo foo_interface_info =
   NULL,
 };
 
+/* Foo2 is just Foo without the properties */
+static const GDBusInterfaceInfo foo2_interface_info =
+{
+  -1,
+  "org.example.Foo2",
+  (GDBusMethodInfo **) &foo_method_info_pointers,
+  (GDBusSignalInfo **) &foo_signal_info_pointers,
+};
+
 static void
 foo_method_call (GDBusConnection       *connection,
                  const gchar           *sender,
@@ -1547,6 +1556,12 @@ test_async_method_call (GDBusConnection       *connection,
 
   property = g_dbus_method_invocation_get_property_info (invocation);
 
+  /* We should never be seeing any property calls on the com.example.Bar
+   * interface because it doesn't export any properties.
+   *
+   * In each case below make sure the interface is org.example.Foo.
+   */
+
   /* Do a whole lot of asserts to make sure that invalid calls are still
    * getting properly rejected by GDBusConnection and that our
    * environment is as we expect it to be.
@@ -1652,7 +1667,7 @@ static void
 test_async_properties (void)
 {
   GError *error = NULL;
-  guint registration_id;
+  guint registration_id, registration_id2;
   static const GDBusInterfaceVTable vtable = {
     test_async_method_call, NULL, NULL
   };
@@ -1665,6 +1680,12 @@ test_async_properties (void)
                                                        "/foo",
                                                        (GDBusInterfaceInfo *) &foo_interface_info,
                                                        &vtable, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (registration_id);
+  registration_id2 = g_dbus_connection_register_object (c,
+                                                        "/foo",
+                                                        (GDBusInterfaceInfo *) &foo2_interface_info,
+                                                        &vtable, NULL, NULL, &error);
   g_assert_no_error (error);
   g_assert (registration_id);
 
@@ -1685,6 +1706,11 @@ test_async_properties (void)
   test_async_case (c, NULL, "GetAll", "(si)", "wrong signature", 5);
   test_async_case (c, NULL, "GetAll", "(s)", "org.example.WrongInterface");
 
+  /* Make sure that we get no unexpected async property calls for com.example.Foo2 */
+  test_async_case (c, NULL, "Get", "(ss)", "org.example.Foo2", "zzz");
+  test_async_case (c, NULL, "Set", "(ssv)", "org.example.Foo2", "zzz", g_variant_new_string (""));
+  test_async_case (c, "(@a{sv} {},)", "GetAll", "(s)", "org.example.Foo2");
+
   /* Now do the proper things */
   test_async_case (c, "(<'PropertyUno'>,)", "Get", "(ss)", "org.example.Foo", "PropertyUno");
   test_async_case (c, "(<'NotWritable'>,)", "Get", "(ss)", "org.example.Foo", "NotWritable");
@@ -1696,6 +1722,7 @@ test_async_properties (void)
     g_main_context_iteration (NULL, TRUE);
 
   g_dbus_connection_unregister_object (c, registration_id);
+  g_dbus_connection_unregister_object (c, registration_id2);
   g_object_unref (c);
 }
 
