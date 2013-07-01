@@ -1395,6 +1395,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
             }
           else if (grandchild_pid == 0)
             {
+              close_and_invalidate (&child_pid_report_pipe[1]);
               do_exec (child_err_report_pipe[1],
                        stdin_pipe[0],
                        stdout_pipe[1],
