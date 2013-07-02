@@ -23,6 +23,8 @@
 
 #include <glib-object.h>
 
+G_BEGIN_DECLS
+
 typedef struct _GSettingsSchemaSource                       GSettingsSchemaSource;
 typedef struct _GSettingsSchema                             GSettingsSchema;
 
@@ -61,5 +63,7 @@ GLIB_AVAILABLE_IN_2_32
 const gchar *           g_settings_schema_get_id                        (GSettingsSchema        *schema);
 GLIB_AVAILABLE_IN_2_32
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema        *schema);
+
+G_END_DECLS
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */
