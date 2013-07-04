@@ -859,8 +859,17 @@ g_cond_wait_until (GCond  *cond,
   ts.tv_sec = end_time / 1000000;
   ts.tv_nsec = (end_time % 1000000) * 1000;
 
+#if defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC)
+  if ((status = pthread_cond_timedwait_monotonic (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
+    return TRUE;
+#elif defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC_NP)
+  if ((status = pthread_cond_timedwait_monotonic_np (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
+    return TRUE;
+#else
+  /* Pray that the cond is actually using the monotonic clock */
   if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
     return TRUE;
+#endif
 
   if G_UNLIKELY (status != ETIMEDOUT)
     g_thread_abort (status, "pthread_cond_timedwait");
