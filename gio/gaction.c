@@ -395,6 +395,37 @@ g_action_activate (GAction  *action,
 }
 
 /**
+ * g_action_name_is_valid:
+ * @action_name: an potential action name
+ *
+ * Checks if @action_name is valid.
+ *
+ * @action_name is valid if it consists only of alphanumeric characters,
+ * plus '-' and '.'.  The empty string is not a valid action name.
+ *
+ * It is an error to call this function with a non-utf8 @action_name.
+ * @action_name must not be %NULL.
+ *
+ * Returns: %TRUE if @action_name is valid
+ *
+ * Since: 2.38
+ **/
+gboolean
+g_action_name_is_valid (const gchar *action_name)
+{
+  gchar c;
+  gint i;
+
+  g_return_if_fail (action_name != NULL);
+
+  for (i = 0; (c = action_name[i]); i++)
+    if (!g_ascii_isalnum (c) && c != '.' && c != '-')
+      return FALSE;
+
+  return i > 0;
+}
+
+/**
  * g_action_parse_detailed_name:
  * @detailed_name: a detailed action name
  * @action_name: (out): the action name
@@ -410,16 +441,21 @@ g_action_activate (GAction  *action,
  * value and consists of just an action name containing no whitespace
  * nor the characters ':', '(' or ')'.  For example: "app.action".
  *
- * The second format is used to represent an action with a string-typed
- * target value.  The action name and target value are separated by a
- * double colon ("::").  For example: "app.action::target".
+ * The second format is used to represent an action with a target value
+ * that is a non-empty string consisting only of alphanumerics, plus '-'
+ * and '.'.  In that case, the action name and target value are
+ * separated by a double colon ("::").  For example:
+ * "app.action::target".
  *
- * The third format is used to represent an action with an
- * arbitrarily-typed target value.  The target value follows the action
+ * The third format is used to represent an action with any type of
+ * target value, including strings.  The target value follows the action
  * name, surrounded in parens.  For example: "app.action(42)".  The
  * target value is parsed using g_variant_parse().  If a tuple-typed
  * value is desired, it must be specified in the same way, resulting in
- * two sets of parens, for example: "app.action((1,2,3))".
+ * two sets of parens, for example: "app.action((1,2,3))".  A string
+ * target can be specified this way as well: "app.action('target')".
+ * For strings, this third format must be used if * target value is
+ * empty or contains characters other than alphanumerics, '-' and '.'.
  *
  * Returns: %TRUE if successful, else %FALSE with @error set
  *
@@ -435,7 +471,11 @@ g_action_parse_detailed_name (const gchar  *detailed_name,
   gsize target_len;
   gsize base_len;
 
-  /* We decide which format we have based on which we see first between
+  /* For historical (compatibility) reasons, this function accepts some
+   * cases of invalid action names as long as they don't interfere with
+   * the separation of the action from the target value.
+   *
+   * We decide which format we have based on which we see first between
    * '::' '(' and '\0'.
    */
 
@@ -490,4 +530,52 @@ bad_fmt:
     }
 
   return FALSE;
+}
+
+/**
+ * g_action_print_detailed_name:
+ * @action_name: a valid action name
+ * @target_value: (allow-none): a #GVariant target value, or %NULL
+ *
+ * Formats a detailed action name from @action_name and @target_value.
+ *
+ * It is an error to call this function with an invalid action name.
+ *
+ * This function is the opposite of
+ * g_action_parse_detailed_action_name().  It will produce a string that
+ * can be parsed back to the @action_name and @target_value by that
+ * function.
+ *
+ * See that function for the types of strings that will be printed by
+ * this function.
+ *
+ * Returns: a detailed format string
+ *
+ * Since: 2.38
+ **/
+gchar *
+g_action_print_detailed_name (const gchar *action_name,
+                              GVariant    *target_value)
+{
+  g_return_if_fail (g_action_name_is_valid (action_name));
+
+  if (target_value == NULL)
+    return g_strdup (action_name);
+
+  if (g_variant_is_of_type (target_value, G_VARIANT_TYPE_STRING))
+    {
+      const gchar *str = g_variant_get_string (target_value, NULL);
+
+      if (g_action_name_is_valid (str))
+        return g_strconcat (action_name, "::", str, NULL);
+    }
+
+  {
+    GString *result = g_string_new (action_name);
+    g_string_append_c (result, '(');
+    g_variant_print_string (target_value, result, TRUE);
+    g_string_append_c (result, ')');
+
+    return g_string_free (result, FALSE);
+  }
 }

@@ -82,11 +82,19 @@ GLIB_AVAILABLE_IN_ALL
 void                    g_action_activate                               (GAction            *action,
                                                                          GVariant           *parameter);
 
+GLIB_AVAILABLE_IN_2_28
+gboolean                g_action_name_is_valid                          (const gchar        *action_name);
+
 GLIB_AVAILABLE_IN_2_38
 gboolean                g_action_parse_detailed_name                    (const gchar        *detailed_name,
                                                                          gchar             **action_name,
                                                                          GVariant          **target_value,
                                                                          GError            **error);
+
+GLIB_AVAILABLE_IN_2_38
+gchar *                 g_action_print_detailed_name                    (const gchar        *action_name,
+                                                                         GVariant           *parameter);
+
 G_END_DECLS
 
 #endif /* __G_ACTION_H__ */

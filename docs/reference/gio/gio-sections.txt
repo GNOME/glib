@@ -3107,6 +3107,7 @@ GAction
 GActionInterface
 
 <SUBSECTION>
+g_action_name_is_valid
 g_action_get_name
 g_action_get_parameter_type
 g_action_get_state_type
@@ -3122,6 +3123,7 @@ g_action_activate
 
 <SUBSECTION>
 g_action_parse_detailed_name
+g_action_print_detailed_name
 
 <SUBSECTION Standard>
 g_action_get_type
