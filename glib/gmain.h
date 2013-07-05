@@ -149,7 +149,8 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  * Specifies the type of function passed to g_timeout_add(),
  * g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
  *
- * Returns: %FALSE if the source should be removed
+ * Returns: %FALSE if the source should be removed. #G_SOURCE_CONTINUE and
+ * #G_SOURCE_REMOVE are more memorable names for the return value.
  */
 typedef gboolean (*GSourceFunc)       (gpointer user_data);
 

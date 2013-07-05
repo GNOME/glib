@@ -1396,7 +1396,7 @@ guint     g_type_get_type_registration_serial (void);
  * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines an abstract type. 
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
- * Since: 2.4
+ * Since: 2.38
  */
 #define G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(TN, t_n, T_P)   G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, G_ADD_PRIVATE (TN))
 /**

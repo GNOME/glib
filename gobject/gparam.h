@@ -138,7 +138,7 @@ G_BEGIN_DECLS
  *  Since 2.26
  * 
  * Through the #GParamFlags flag values, certain aspects of parameters
- * can be configured.
+ * can be configured. See also #G_PARAM_READWRITE and #G_PARAM_STATIC_STRINGS.
  */
 typedef enum
 {

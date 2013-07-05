@@ -372,7 +372,7 @@ typedef enum
  * @G_REGEX_MATCH_PARTIAL_HARD: Turns on the partial matching feature. In contrast to
  *     to #G_REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a partial match
  *     is found, without continuing to search for a possible complete match. See
- *     see g_match_info_is_partial_match() for more information. Since: 2.34
+ *     g_match_info_is_partial_match() for more information. Since: 2.34
  * @G_REGEX_MATCH_NOTEMPTY_ATSTART: Like #G_REGEX_MATCH_NOTEMPTY, but only applied to
  *     the start of the matched string. For anchored
  *     patterns this can only happen for pattern containing "\K". Since: 2.34
