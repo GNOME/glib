@@ -1,3 +1,18 @@
+Overview of changes from GLib 2.37.3 to 2.37.4
+==============================================
+
+* Bugs fixed:
+ 701283 g_source_add_child_source() segfault
+ 702147 inconsistency of G_STRFUNC
+ 703191 new private macros interact poorly with versioning macros
+ 703254 Doc: various fixes
+ 703407 g_spawn_async() keeps child_pid_report_pipe open in child process
+ 703437 GDBusConnection: be more careful with async GetAll
+ 703478 Missing G_BEGIN/END_DECLS in gsettingsschema.h
+
+* Translation updates:
+ Catalan
+
 Overview of changes from GLib 2.37.2 to 2.37.3
 ==============================================
 
