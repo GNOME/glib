@@ -550,9 +550,22 @@ g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver  *resolver,
   g_object_notify (G_OBJECT (resolver), "default-proxy");
 }
 
+/**
+ * g_simple_proxy_resolver_set_ignore_hosts:
+ * @resolver: a #GSimpleProxyResolver
+ * @ignore_hosts: %NULL-terminated list of hosts/IP addresses
+ *     to not use a proxy for
+ *
+ * Sets the list of ignored hosts.
+ *
+ * See #GSimpleProxyResolver:ignore-hosts for more details on how the
+ * @ignore_hosts argument is interpreted.
+ *
+ * Since: 2.36
+ */
 void
-g_simple_proxy_resolver_set_ignore_hosts  (GSimpleProxyResolver  *resolver,
-                                           gchar                **ignore_hosts)
+g_simple_proxy_resolver_set_ignore_hosts (GSimpleProxyResolver  *resolver,
+                                          gchar                **ignore_hosts)
 {
   g_return_if_fail (G_IS_SIMPLE_PROXY_RESOLVER (resolver));
 
