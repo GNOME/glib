@@ -2944,7 +2944,7 @@ g_test_build_filename_va (GTestFileType  file_type,
  * g_test_build_filename:
  * @file_type: the type of file (built vs. distributed)
  * @first_path: the first segment of the pathname
- * ...: NULL terminated additional path segments
+ * @...: %NULL-terminated additional path segments
  *
  * Creates the pathname to a data file that is required for a test.
  *
@@ -3045,7 +3045,7 @@ g_test_get_dir (GTestFileType file_type)
  * g_test_get_filename:
  * @file_type: the type of file (built vs. distributed)
  * @first_path: the first segment of the pathname
- * ...: NULL terminated additional path segments
+ * @...: %NULL-terminated additional path segments
  *
  * Gets the pathname to a data file that is required for a test.
  *
