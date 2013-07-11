@@ -226,6 +226,7 @@ uninstalled_test_programs += \
 	$(NULL)
 
 dist_test_data += \
+	appinfo-test-actions.desktop		\
 	appinfo-test-gnome.desktop		\
 	appinfo-test-notgnome.desktop		\
 	appinfo-test.desktop			\

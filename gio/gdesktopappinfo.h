@@ -86,6 +86,18 @@ GLIB_AVAILABLE_IN_2_36
 gboolean         g_desktop_app_info_get_boolean       (GDesktopAppInfo *info,
                                                        const char      *key);
 
+GLIB_AVAILABLE_IN_2_38
+const gchar * const *   g_desktop_app_info_list_actions                 (GDesktopAppInfo   *info);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_desktop_app_info_launch_action                (GDesktopAppInfo   *info,
+                                                                         const gchar       *action_name,
+                                                                         GAppLaunchContext *launch_context);
+
+GLIB_AVAILABLE_IN_2_38
+gchar *                 g_desktop_app_info_get_action_name              (GDesktopAppInfo   *info,
+                                                                         const gchar       *action_name);
+
 #ifndef G_DISABLE_DEPRECATED
 
 #define G_TYPE_DESKTOP_APP_INFO_LOOKUP           (g_desktop_app_info_lookup_get_type ())

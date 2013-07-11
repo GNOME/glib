@@ -1518,6 +1518,10 @@ g_desktop_app_info_get_boolean
 g_desktop_app_info_has_key
 GDesktopAppLaunchCallback
 g_desktop_app_info_launch_uris_as_manager
+<SUBSECTION>
+g_desktop_app_info_list_actions
+g_desktop_app_info_get_action_name
+g_desktop_app_info_launch_action
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO

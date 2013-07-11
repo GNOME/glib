@@ -115,6 +115,7 @@ struct _GDesktopAppInfo
   char *categories;
   char *startup_wm_class;
   char **mime_types;
+  char **actions;
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -200,6 +201,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->startup_wm_class);
   g_strfreev (info->mime_types);
   g_free (info->app_id);
+  g_strfreev (info->actions);
   
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -380,7 +382,12 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->startup_wm_class = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, STARTUP_WM_CLASS_KEY, NULL);
   info->mime_types = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   bus_activatable = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE, NULL);
-  
+  info->actions = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ACTIONS, NULL, NULL);
+
+  /* Remove the special-case: no Actions= key just means 0 extra actions */
+  if (info->actions == NULL)
+    info->actions = g_new0 (gchar *, 0 + 1);
+ 
   info->icon = NULL;
   if (info->icon_name)
     {
@@ -1050,17 +1057,18 @@ expand_macro (char              macro,
 
 static gboolean
 expand_application_parameters (GDesktopAppInfo   *info,
+                               const gchar       *exec_line,
 			       GList            **uris,
 			       int               *argc,
 			       char            ***argv,
 			       GError           **error)
 {
   GList *uri_list = *uris;
-  const char *p = info->exec;
+  const char *p = exec_line;
   GString *expanded_exec;
   gboolean res;
 
-  if (info->exec == NULL)
+  if (exec_line == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            _("Desktop file didn't specify Exec field"));
@@ -1303,6 +1311,7 @@ notify_desktop_launch (GDBusConnection  *session_bus,
 static gboolean
 g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                            GDBusConnection            *session_bus,
+                                           const gchar                *exec_line,
                                            GList                      *uris,
                                            GAppLaunchContext          *launch_context,
                                            GSpawnFlags                 spawn_flags,
@@ -1335,8 +1344,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       char *display, *sn_id;
 
       old_uris = uris;
-      if (!expand_application_parameters (info, &uris,
-                                          &argc, &argv, error))
+      if (!expand_application_parameters (info, exec_line, &uris, &argc, &argv, error))
         goto out;
 
       /* Get the subset of URIs we're launching with this process */
@@ -1478,6 +1486,33 @@ object_path_from_appid (const gchar *app_id)
   return path;
 }
 
+static GVariant *
+g_desktop_app_info_make_platform_data (GDesktopAppInfo   *info,
+                                       GList             *uris,
+                                       GAppLaunchContext *launch_context)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+
+  if (launch_context)
+    {
+      GList *launched_files = create_files_for_uris (uris);
+
+      if (info->startup_notify)
+        {
+          gchar *sn_id;
+
+          sn_id = g_app_launch_context_get_startup_notify_id (launch_context, G_APP_INFO (info), launched_files);
+          g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_take_string (sn_id));
+        }
+
+      g_list_free_full (launched_files, g_object_unref);
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
 static gboolean
 g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
                                           GDBusConnection    *session_bus,
@@ -1501,24 +1536,7 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
       g_variant_builder_close (&builder);
     }
 
-  g_variant_builder_open (&builder, G_VARIANT_TYPE_VARDICT);
-
-  if (launch_context)
-    {
-      GList *launched_files = create_files_for_uris (uris);
-
-      if (info->startup_notify)
-        {
-          gchar *sn_id;
-
-          sn_id = g_app_launch_context_get_startup_notify_id (launch_context, G_APP_INFO (info), launched_files);
-          g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_take_string (sn_id));
-        }
-
-      g_list_free_full (launched_files, g_object_unref);
-    }
-
-  g_variant_builder_close (&builder);
+  g_variant_builder_add_value (&builder, g_desktop_app_info_make_platform_data (info, uris, launch_context));
 
   /* This is non-blocking API.  Similar to launching via fork()/exec()
    * we don't wait around to see if the program crashed during startup.
@@ -1553,7 +1571,7 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   if (session_bus && info->app_id)
     g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context);
   else
-    success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, uris, launch_context,
+    success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
                                                          pid_callback, pid_callback_data, error);
 
@@ -3698,4 +3716,157 @@ g_desktop_app_info_has_key (GDesktopAppInfo *info,
 
   return g_key_file_has_key (info->keyfile,
                              G_KEY_FILE_DESKTOP_GROUP, key, NULL);
+}
+
+/**
+ * g_desktop_app_info_list_actions:
+ * @info: a #GDesktopAppInfo
+ *
+ * Returns the list of "additional application actions" supported on the
+ * desktop file, as per the desktop file specification.
+ *
+ * As per the specification, this is the list of actions that are
+ * explicitly listed in the "Actions" key of the [Desktop Entry] group.
+ *
+ * Similar to g_app_info_get_all(), this returns all listed actions and
+ * ignores <literal>OnlyShowIn</literal> or <literal>NotShowIn</literal>
+ * keys.  Use g_desktop_app_info_should_show_action() to determine if an
+ * action should actually be shown.
+ *
+ * Returns: (array zero-terminated=1) (element-type utf8) (transfer none): a list of strings, always non-%NULL
+ *
+ * Since: 2.38
+ **/
+const gchar * const *
+g_desktop_app_info_list_actions (GDesktopAppInfo *info)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return (const gchar **) info->actions;
+}
+
+static gboolean
+app_info_has_action (GDesktopAppInfo *info,
+                     const gchar     *action_name)
+{
+  gint i;
+
+  for (i = 0; info->actions[i]; i++)
+    if (g_str_equal (info->actions[i], action_name))
+      return TRUE;
+
+  return FALSE;
+}
+
+/**
+ * g_desktop_app_info_get_action_name:
+ * @info: a #GDesktopAppInfo
+ * @action_name: the name of the action as from
+ *   g_desktop_app_info_list_actions()
+ *
+ * Gets the user-visible display name of the "additional application
+ * action" specified by @action_name.
+ *
+ * This corresponds to the "Name" key within the keyfile group for the
+ * action.
+ *
+ * Returns: (transfer full): the locale-specific action name
+ *
+ * Since: 2.38
+ */
+gchar *
+g_desktop_app_info_get_action_name (GDesktopAppInfo *info,
+                                    const gchar     *action_name)
+{
+  gchar *group_name;
+  gchar *result;
+
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+  g_return_val_if_fail (action_name != NULL, NULL);
+  g_return_if_fail (app_info_has_action (info, action_name));
+
+  group_name = g_strdup_printf ("Desktop Action %s", action_name);
+  result = g_key_file_get_locale_string (info->keyfile, group_name, "Name", NULL, NULL);
+  g_free (group_name);
+
+  /* The spec says that the Name field must be given.
+   *
+   * If it's not, let's follow the behaviour of our get_name()
+   * implementation above and never return %NULL.
+   */
+  if (result == NULL)
+    result = g_strdup (_("Unnamed"));
+
+  return result;
+}
+
+/**
+ * g_desktop_app_info_launch_action:
+ * @info: a #GDesktopAppInfo
+ * @action_name: the name of the action as from
+ *   g_desktop_app_info_list_actions()
+ * @launch_context: (allow-none): a #GAppLaunchContext
+ *
+ * Activates the named application action.
+ *
+ * You may only call this function on action names that were
+ * returned from g_desktop_app_info_list_actions().
+ *
+ * Note that if the main entry of the desktop file indicates that the
+ * application supports startup notification, and @launch_context is
+ * non-%NULL, then startup notification will be used when activating the
+ * action (and as such, invocation of the action on the receiving side
+ * must signal the end of startup notification when it is completed).
+ * This is the expected behaviour of applications declaring additional
+ * actions, as per the desktop file specification.
+ *
+ * As with g_app_info_launch() there is no way to detect failures that
+ * occur while using this function.
+ *
+ * Since: 2.38
+ */
+void
+g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
+                                  const gchar       *action_name,
+                                  GAppLaunchContext *launch_context)
+{
+  GDBusConnection *session_bus;
+
+  g_return_if_fail (G_IS_DESKTOP_APP_INFO (info));
+  g_return_if_fail (action_name != NULL);
+  g_return_if_fail (app_info_has_action (info, action_name));
+
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  if (session_bus && info->app_id)
+    {
+      gchar *object_path;
+
+      object_path = object_path_from_appid (info->app_id);
+      g_dbus_connection_call (session_bus, info->app_id, object_path,
+                              "org.freedesktop.Application", "ActivateAction",
+                              g_variant_new ("(sav@a{sv})", action_name, NULL,
+                                             g_desktop_app_info_make_platform_data (info, NULL, launch_context)),
+                              NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+      g_free (object_path);
+    }
+  else
+    {
+      gchar *group_name;
+      gchar *exec_line;
+
+      group_name = g_strdup_printf ("Desktop Action %s", action_name);
+      exec_line = g_key_file_get_string (info->keyfile, group_name, "Exec", NULL);
+      g_free (group_name);
+
+      if (exec_line)
+        g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
+                                                   _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL, NULL);
+    }
+
+  if (session_bus != NULL)
+    {
+      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+      g_object_unref (session_bus);
+    }
 }

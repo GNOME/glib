@@ -24,6 +24,7 @@
 #include <gio/gdesktopappinfo.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 static char *basedir;
 
@@ -373,6 +374,82 @@ test_extra_getters (void)
   g_object_unref (appinfo);
 }
 
+static void
+wait_for_file (const gchar *want_this,
+               const gchar *but_not_this,
+               const gchar *or_this)
+{
+  gint retries = 600;
+
+  /* I hate time-based conditions in tests, but this will wait up to one
+   * whole minute for "touch file" to finish running.  I think it should
+   * be OK.
+   *
+   * 600 * 100ms = 60 seconds.
+   */
+  while (access (want_this, F_OK) != 0)
+    {
+      g_usleep (100000); /* 100ms */
+      g_assert (retries);
+      retries--;
+    }
+
+  g_assert (access (but_not_this, F_OK) != 0);
+  g_assert (access (or_this, F_OK) != 0);
+
+  unlink (want_this);
+  unlink (but_not_this);
+  unlink (or_this);
+}
+
+static void
+test_actions (void)
+{
+  const gchar * const *actions;
+  GDesktopAppInfo *appinfo;
+  gchar *name;
+
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
+  g_assert (appinfo != NULL);
+
+  actions = g_desktop_app_info_list_actions (appinfo);
+  g_assert_cmpstr (actions[0], ==, "frob");
+  g_assert_cmpstr (actions[1], ==, "tweak");
+  g_assert_cmpstr (actions[2], ==, "twiddle");
+  g_assert_cmpstr (actions[3], ==, "broken");
+  g_assert_cmpstr (actions[4], ==, NULL);
+
+  name = g_desktop_app_info_get_action_name (appinfo, "frob");
+  g_assert_cmpstr (name, ==, "Frobnicate");
+  g_free (name);
+
+  name = g_desktop_app_info_get_action_name (appinfo, "tweak");
+  g_assert_cmpstr (name, ==, "Tweak");
+  g_free (name);
+
+  name = g_desktop_app_info_get_action_name (appinfo, "twiddle");
+  g_assert_cmpstr (name, ==, "Twiddle");
+  g_free (name);
+
+  name = g_desktop_app_info_get_action_name (appinfo, "broken");
+  g_assert (name != NULL);
+  g_assert (g_utf8_validate (name, -1, NULL));
+  g_free (name);
+
+  unlink ("frob"); unlink ("tweak"); unlink ("twiddle");
+
+  g_desktop_app_info_launch_action (appinfo, "frob", NULL);
+  wait_for_file ("frob", "tweak", "twiddle");
+
+  g_desktop_app_info_launch_action (appinfo, "tweak", NULL);
+  wait_for_file ("tweak", "frob", "twiddle");
+
+  g_desktop_app_info_launch_action (appinfo, "twiddle", NULL);
+  wait_for_file ("twiddle", "frob", "tweak");
+
+  g_object_unref (appinfo);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -390,6 +467,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
   g_test_add_func ("/desktop-app-info/lastused", test_last_used);
   g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
+  g_test_add_func ("/desktop-app-info/actions", test_actions);
 
   result = g_test_run ();
 
