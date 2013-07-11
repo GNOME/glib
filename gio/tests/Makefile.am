@@ -232,7 +232,7 @@ dist_test_data += \
 	appinfo-test.desktop			\
 	appinfo-test2.desktop			\
 	file.c					\
-	org.gtk.test.dbus-appinfo.desktop	\
+	org.gtk.test.dbusappinfo.desktop	\
 	$(NULL)
 
 test_extra_programs += \
