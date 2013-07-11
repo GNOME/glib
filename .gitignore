@@ -19,6 +19,8 @@ TAGS
 *.exe
 *.def
 *.test
+*.log
+*.trs
 
 # autofoo stuff here
 compile
@@ -37,6 +39,7 @@ glib-gettextize
 glib-zip
 gtk-doc.make
 py-compile
+test-driver
 
 INSTALL
 README
