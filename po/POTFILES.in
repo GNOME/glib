@@ -84,6 +84,7 @@ gio/gpermission.c
 gio/gpollableinputstream.c
 gio/gpollableoutputstream.c
 gio/gpollfilemonitor.c
+gio/gpropertyaction.c
 gio/gproxyaddress.c
 gio/gproxyaddressenumerator.c
 gio/gresolver.c
