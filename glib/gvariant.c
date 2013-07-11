@@ -1310,6 +1310,44 @@ g_variant_new_take_string (gchar *string)
 }
 
 /**
+ * g_variant_new_printf: (skip)
+ * @format_string: a printf-style format string
+ * @...: arguments for @format_string
+ *
+ * Creates a string-type GVariant using printf formatting.
+ *
+ * This is similar to calling g_strdup_printf() and then
+ * g_variant_new_string() but it saves a temporary variable and an
+ * unnecessary copy.
+ *
+ * Returns: (transfer none): a floating reference to a new string
+ *   #GVariant instance
+ *
+ * Since: 2.38
+ **/
+GVariant *
+g_variant_new_printf (const gchar *format_string,
+                      ...)
+{
+  GVariant *value;
+  GBytes *bytes;
+  gchar *string;
+  va_list ap;
+
+  g_return_val_if_fail (format_string != NULL, NULL);
+
+  va_start (ap, format_string);
+  string = g_strdup_vprintf (format_string, ap);
+  va_end (ap);
+
+  bytes = g_bytes_new_take (string, strlen (string) + 1);
+  value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
+  g_bytes_unref (bytes);
+
+  return value;
+}
+
+/**
  * g_variant_new_object_path:
  * @object_path: a normal C nul-terminated string
  *

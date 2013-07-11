@@ -103,6 +103,9 @@ GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_string                    (const gchar          *string);
 GLIB_AVAILABLE_IN_2_38
 GVariant *                      g_variant_new_take_string               (gchar                *string);
+GLIB_AVAILABLE_IN_2_38
+GVariant *                      g_variant_new_printf                    (const gchar          *format_string,
+                                                                         ...) G_GNUC_PRINTF (1, 2);
 GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_object_path               (const gchar          *object_path);
 GLIB_AVAILABLE_IN_ALL

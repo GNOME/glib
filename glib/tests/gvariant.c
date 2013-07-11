@@ -2717,6 +2717,26 @@ test_container (void)
 }
 
 static void
+test_string (void)
+{
+  /* Test some different methods of creating strings */
+  GVariant *v;
+
+  v = g_variant_new_string ("foo");
+  g_assert_cmpstr (g_variant_get_string (v, NULL), ==, "foo");
+  g_variant_unref (v);
+
+
+  v = g_variant_new_take_string (g_strdup ("foo"));
+  g_assert_cmpstr (g_variant_get_string (v, NULL), ==, "foo");
+  g_variant_unref (v);
+
+  v = g_variant_new_printf ("%s %d", "foo", 123);
+  g_assert_cmpstr (g_variant_get_string (v, NULL), ==, "foo 123");
+  g_variant_unref (v);
+}
+
+static void
 test_utf8 (void)
 {
   const gchar invalid[] = "hello\xffworld";
@@ -4332,6 +4352,7 @@ main (int argc, char **argv)
       g_free (testname);
     }
 
+  g_test_add_func ("/gvariant/string", test_string);
   g_test_add_func ("/gvariant/utf8", test_utf8);
   g_test_add_func ("/gvariant/containers", test_containers);
   g_test_add_func ("/gvariant/format-strings", test_format_strings);
