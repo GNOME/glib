@@ -4006,6 +4006,8 @@ valid_format_string (const gchar *format_string,
                   fragment, typestr, g_variant_get_type_string (value));
 
       g_variant_type_free (type);
+      g_free (fragment);
+      g_free (typestr);
 
       return FALSE;
     }
