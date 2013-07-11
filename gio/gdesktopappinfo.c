@@ -3728,11 +3728,6 @@ g_desktop_app_info_has_key (GDesktopAppInfo *info,
  * As per the specification, this is the list of actions that are
  * explicitly listed in the "Actions" key of the [Desktop Entry] group.
  *
- * Similar to g_app_info_get_all(), this returns all listed actions and
- * ignores <literal>OnlyShowIn</literal> or <literal>NotShowIn</literal>
- * keys.  Use g_desktop_app_info_should_show_action() to determine if an
- * action should actually be shown.
- *
  * Returns: (array zero-terminated=1) (element-type utf8) (transfer none): a list of strings, always non-%NULL
  *
  * Since: 2.38
