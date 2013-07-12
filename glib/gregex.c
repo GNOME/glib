@@ -874,19 +874,11 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * stops at the partial match.
  * When both #G_REGEX_MATCH_PARTIAL_SOFT and #G_REGEX_MATCH_PARTIAL_HARD
  * are set, the latter takes precedence.
- * See <ulink>man:pcrepartial</ulink> for more information on partial matching.
  *
- * Because of the way certain internal optimizations are implemented
- * the partial matching algorithm cannot be used with all patterns.
- * So repeated single characters such as "a{2,4}" and repeated single
- * meta-sequences such as "\d+" are not permitted if the maximum number
- * of occurrences is greater than one. Optional items such as "\d?"
- * (where the maximum is one) are permitted. Quantifiers with any values
- * are permitted after parentheses, so the invalid examples above can be
- * coded thus "(a){2,4}" and "(\d)+". If #G_REGEX_MATCH_PARTIAL or 
- * #G_REGEX_MATCH_PARTIAL_HARD is set
- * for a pattern that does not conform to the restrictions, matching
- * functions return an error.
+ * There were formerly some restrictions on the pattern for partial matching.
+ * The restrictions no longer apply.
+ *
+ * See <ulink>man:pcrepartial</ulink> for more information on partial matching.
  *
  * Returns: %TRUE if the match was partial, %FALSE otherwise
  *
