@@ -416,7 +416,7 @@ g_action_name_is_valid (const gchar *action_name)
   gchar c;
   gint i;
 
-  g_return_if_fail (action_name != NULL);
+  g_return_val_if_fail (action_name != NULL, FALSE);
 
   for (i = 0; (c = action_name[i]); i++)
     if (!g_ascii_isalnum (c) && c != '.' && c != '-')
@@ -557,7 +557,7 @@ gchar *
 g_action_print_detailed_name (const gchar *action_name,
                               GVariant    *target_value)
 {
-  g_return_if_fail (g_action_name_is_valid (action_name));
+  g_return_val_if_fail (g_action_name_is_valid (action_name), NULL);
 
   if (target_value == NULL)
     return g_strdup (action_name);
