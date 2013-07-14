@@ -282,6 +282,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
         g_variant_unref (parameter);
 
       g_variant_unref (platform_data);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
     }
   else
     g_assert_not_reached ();
