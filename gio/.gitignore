@@ -14,3 +14,4 @@ gnetworking.h
 gresource
 gschema-compile
 gsettings
+gapplication

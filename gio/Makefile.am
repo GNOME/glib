@@ -720,8 +720,17 @@ gdbus_LDADD = libgio-2.0.la \
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la
 
+# ------------------------------------------------------------------------
+# gapplication(1) tool
+bin_PROGRAMS += gapplication
+gapplication_SOURCES = gapplication-tool.c
+gapplication_LDADD = libgio-2.0.la \
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(top_builddir)/gobject/libgobject-2.0.la
+
 completiondir = $(datadir)/bash-completion/completions
 completion_DATA = \
+	completion/gapplication				\
 	completion/gdbus				\
 	completion/gsettings				\
 	completion/gresource

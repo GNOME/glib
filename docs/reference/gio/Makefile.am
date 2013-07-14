@@ -146,6 +146,7 @@ man_MANS =
 if ENABLE_MAN
 
 man_MANS +=			\
+	gapplication.1		\
 	gio-querymodules.1	\
 	glib-compile-schemas.1	\
 	glib-compile-resources.1	\
