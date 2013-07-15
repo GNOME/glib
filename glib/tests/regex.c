@@ -2084,6 +2084,24 @@ test_explicit_crlf (void)
   g_regex_unref (regex);
 }
 
+static void
+test_max_lookbehind (void)
+{
+  GRegex *regex;
+
+  regex = g_regex_new ("abc", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_max_lookbehind (regex), ==, 0);
+  g_regex_unref (regex);
+
+  regex = g_regex_new ("\\babc", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_max_lookbehind (regex), ==, 1);
+  g_regex_unref (regex);
+
+  regex = g_regex_new ("(?<=123)abc", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_max_lookbehind (regex), ==, 3);
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2102,6 +2120,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/recursion", test_recursion);
   g_test_add_func ("/regex/multiline", test_multiline);
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
+  g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);

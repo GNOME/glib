@@ -454,6 +454,8 @@ GLIB_AVAILABLE_IN_ALL
 gint		  g_regex_get_capture_count	(const GRegex        *regex);
 GLIB_AVAILABLE_IN_ALL
 gboolean          g_regex_get_has_cr_or_lf      (const GRegex        *regex);
+GLIB_AVAILABLE_IN_2_38
+gint              g_regex_get_max_lookbehind    (const GRegex        *regex);
 GLIB_AVAILABLE_IN_ALL
 gint		  g_regex_get_string_number	(const GRegex        *regex, 
 						 const gchar         *name);

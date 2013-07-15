@@ -1018,6 +1018,7 @@ g_regex_get_pattern
 g_regex_get_max_backref
 g_regex_get_capture_count
 g_regex_get_has_cr_or_lf
+g_regex_get_max_lookbehind
 g_regex_get_string_number
 g_regex_get_compile_flags
 g_regex_get_match_flags

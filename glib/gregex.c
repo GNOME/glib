@@ -1520,6 +1520,29 @@ g_regex_get_has_cr_or_lf (const GRegex *regex)
 }
 
 /**
+ * g_regex_get_max_lookbehind:
+ * @regex: a #GRegex structure
+ *
+ * Gets the number of characters in the longest lookbehind assertion in the
+ * pattern. This information is useful when doing multi-segment matching using
+ * the partial matching facilities.
+ *
+ * Returns: the number of characters in the longest lookbehind assertion.
+ *
+ * Since: 2.38
+ */
+gint
+g_regex_get_max_lookbehind (const GRegex *regex)
+{
+  gint max_lookbehind;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+                 PCRE_INFO_MAXLOOKBEHIND, &max_lookbehind);
+
+  return max_lookbehind;
+}
+
+/**
  * g_regex_get_compile_flags:
  * @regex: a #GRegex
  *
