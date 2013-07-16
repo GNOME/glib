@@ -65,6 +65,7 @@ test_error (void)
 }
 
 static gboolean sig_received = FALSE;
+static int sig_counter = 0;
 
 static gboolean
 on_sig_received (gpointer user_data)
@@ -72,6 +73,7 @@ on_sig_received (gpointer user_data)
   GMainLoop *loop = user_data;
   g_main_loop_quit (loop);
   sig_received = TRUE;
+  sig_counter ++;
   return G_SOURCE_REMOVE;
 }
 
@@ -92,6 +94,17 @@ exit_mainloop (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
+static gboolean
+on_sig_received_2 (gpointer data)
+{
+  GMainLoop *loop = data;
+
+  sig_counter ++;
+  if (sig_counter == 2)
+    g_main_loop_quit (loop);
+  return G_SOURCE_REMOVE;
+}
+
 static void
 test_signal (int signum)
 {
@@ -101,6 +114,7 @@ test_signal (int signum)
   mainloop = g_main_loop_new (NULL, FALSE);
 
   sig_received = FALSE;
+  sig_counter = 0;
   g_unix_signal_add (signum, on_sig_received, mainloop);
   kill (getpid (), signum);
   g_assert (!sig_received);
@@ -114,8 +128,19 @@ test_signal (int signum)
   g_timeout_add (500, exit_mainloop, mainloop);
   g_main_loop_run (mainloop);
   g_assert (!sig_received);
-  g_main_loop_unref (mainloop);
 
+  /* Ensure that two sources for the same signal get it */
+  sig_counter = 0;
+  g_unix_signal_add (signum, on_sig_received_2, mainloop);
+  g_unix_signal_add (signum, on_sig_received_2, mainloop);
+  id = g_timeout_add (500, sig_not_received, mainloop);
+
+  kill (getpid (), signum);
+  g_main_loop_run (mainloop);
+  g_assert_cmpint (sig_counter, ==, 2);
+  g_source_remove (id);
+
+  g_main_loop_unref (mainloop);
 }
 
 static void
@@ -147,6 +172,48 @@ test_sighup_add_remove (void)
 
 }
 
+static gboolean
+nested_idle (gpointer data)
+{
+  GMainLoop *parent, *nested;
+  GMainContext *context;
+  GSource *source;
+
+  context = g_main_context_new ();
+  nested = g_main_loop_new (context, FALSE);
+
+  source = g_unix_signal_source_new (SIGHUP);
+  g_source_set_callback (source, on_sig_received, nested, NULL);
+  g_source_attach (source, context);
+
+  kill (getpid (), SIGHUP);
+  g_main_loop_run (nested);
+  g_assert_cmpint (sig_counter, ==, 1);
+
+  g_main_loop_unref (nested);
+  g_main_context_unref (context);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_sighup_nested (void)
+{
+  GMainLoop *mainloop;
+
+  mainloop = g_main_loop_new (NULL, FALSE);
+
+  sig_counter = 0;
+  sig_received = FALSE;
+  g_unix_signal_add (SIGHUP, on_sig_received, mainloop);
+  g_idle_add (nested_idle, mainloop);
+
+  g_main_loop_run (mainloop);
+  g_assert_cmpint (sig_counter, ==, 2);
+
+  g_main_loop_unref (mainloop);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -159,6 +226,7 @@ main (int   argc,
   g_test_add_func ("/glib-unix/sigterm", test_sigterm);
   g_test_add_func ("/glib-unix/sighup_again", test_sighup);
   g_test_add_func ("/glib-unix/sighup_add_remove", test_sighup_add_remove);
+  g_test_add_func ("/glib-unix/sighup_nested", test_sighup_nested);
 
   return g_test_run();
 }

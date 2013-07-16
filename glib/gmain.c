@@ -4828,8 +4828,6 @@ dispatch_unix_signals (void)
   /* handle GChildWatchSource instances */
   if (unix_signal_pending[SIGCHLD])
     {
-      unix_signal_pending[SIGCHLD] = FALSE;
-
       /* The only way we can do this is to scan all of the children.
        *
        * The docs promise that we will not reap children that we are not
@@ -4875,13 +4873,14 @@ dispatch_unix_signals (void)
         {
           if (unix_signal_pending[source->signum])
             {
-              unix_signal_pending[source->signum] = FALSE;
               source->pending = TRUE;
 
               wake_source ((GSource *) source);
             }
         }
     }
+
+  memset ((void*)unix_signal_pending, 0, sizeof (unix_signal_pending));
 
   G_UNLOCK(unix_signal_lock);
 }
@@ -4994,7 +4993,6 @@ _g_main_create_unix_signal_watch (int signum)
   unix_signal_watches = g_slist_prepend (unix_signal_watches, unix_signal_source);
   if (unix_signal_pending[signum])
     unix_signal_source->pending = TRUE;
-  unix_signal_pending[signum] = FALSE;
   G_UNLOCK (unix_signal_lock);
 
   return source;
