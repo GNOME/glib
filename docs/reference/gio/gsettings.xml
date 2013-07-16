@@ -116,6 +116,10 @@ so e.g. a string
 must include explicit quotes: "'foo'". This format is also used when printing
 out values.
 </para>
+<para>
+Note that gsettings needs a D-Bus session bus connection to write changes to
+the dconf database.
+</para>
 </refsect1>
 
 <refsect1><title>Commands</title>
