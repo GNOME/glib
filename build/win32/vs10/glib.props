@@ -421,6 +421,8 @@ copy ..\..\..\gio\gpollableoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\
 
 copy ..\..\..\gio\gpollableutils.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gpropertyaction.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gproxy.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gproxyaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio

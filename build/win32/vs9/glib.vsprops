@@ -264,6 +264,7 @@ copy ..\..\..\gio\gpermission.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&
 copy ..\..\..\gio\gpollableinputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpollableoutputstream.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpollableutils.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gpropertyaction.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxy.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddress.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gproxyaddressenumerator.h $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
