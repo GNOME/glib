@@ -25,6 +25,8 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gio-querymodules.exe $(CopyD
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gdbus.exe $(CopyDir)\bin
 
+copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen
+
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib
 
@@ -529,6 +531,11 @@ mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
+
+
+mkdir $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen
+
+copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen
 </GlibDoInstall>
     <GlibLibtoolCompatibleDllPrefix>lib</GlibLibtoolCompatibleDllPrefix>
     <GlibLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</GlibLibtoolCompatibleDllSuffix>
