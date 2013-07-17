@@ -51,6 +51,31 @@ g_io_condition_get_type (void)
   return etype;
 }
 
+/* We need to hand-write this marshaler, since it doesn't have an
+ * instance object.
+ */
+static void
+source_closure_marshal_BOOLEAN__VOID (GClosure     *closure,
+				      GValue       *return_value,
+				      guint         n_param_values,
+				      const GValue *param_values,
+				      gpointer      invocation_hint,
+				      gpointer      marshal_data)
+{
+  GSourceFunc callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gboolean v_return;
+
+  g_return_if_fail (return_value != NULL);
+  g_return_if_fail (n_param_values == 0);
+
+  callback = (GSourceFunc) (marshal_data ? marshal_data : cc->callback);
+
+  v_return = callback (closure->data);
+
+  g_value_set_boolean (return_value, v_return);
+}
+
 static gboolean
 io_watch_closure_callback (GIOChannel   *channel,
 			   GIOCondition  condition,
@@ -68,6 +93,35 @@ io_watch_closure_callback (GIOChannel   *channel,
 		     
   g_value_init (&params[1], G_TYPE_IO_CONDITION);
   g_value_set_flags (&params[1], condition);
+
+  g_closure_invoke (closure, &result_value, 2, params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return result;
+}
+
+static gboolean
+g_child_watch_closure_callback (GPid     pid,
+                                gint     status,
+                                gpointer data)
+{
+  GClosure *closure = data;
+
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params[0], G_TYPE_ULONG);
+  g_value_set_ulong (&params[0], pid);
+
+  g_value_init (&params[1], G_TYPE_INT);
+  g_value_set_int (&params[1], status);
 
   g_closure_invoke (closure, &result_value, 2, params, NULL);
 
@@ -138,7 +192,9 @@ closure_callback_get (gpointer     cb_data,
   if (!closure_callback)
     {
       if (source->source_funcs == &g_io_watch_funcs)
-	closure_callback = (GSourceFunc)io_watch_closure_callback;
+        closure_callback = (GSourceFunc)io_watch_closure_callback;
+      else if (source->source_funcs == &g_child_watch_funcs)
+        closure_callback = (GSourceFunc)g_child_watch_closure_callback;
 #ifdef G_OS_UNIX
       else if (source->source_funcs == &g_unix_fd_source_funcs)
         closure_callback = (GSourceFunc)g_unix_fd_source_closure_callback;
@@ -147,8 +203,8 @@ closure_callback_get (gpointer     cb_data,
 #ifdef G_OS_UNIX
                source->source_funcs == &g_unix_signal_funcs ||
 #endif
-	       source->source_funcs == &g_idle_funcs)
-	closure_callback = source_closure_callback;
+               source->source_funcs == &g_idle_funcs)
+        closure_callback = source_closure_callback;
     }
 
   *func = closure_callback;
@@ -191,6 +247,7 @@ g_source_set_closure (GSource  *source,
       source->source_funcs != &g_unix_fd_source_funcs &&
       source->source_funcs != &g_unix_signal_funcs &&
 #endif
+      source->source_funcs != &g_child_watch_funcs &&
       source->source_funcs != &g_io_watch_funcs &&
       source->source_funcs != &g_timeout_funcs &&
       source->source_funcs != &g_idle_funcs)
@@ -210,6 +267,12 @@ g_source_set_closure (GSource  *source,
       GClosureMarshal marshal = (GClosureMarshal)source->source_funcs->closure_marshal;
       if (marshal)
 	g_closure_set_marshal (closure, marshal);
+      else if (source->source_funcs == &g_idle_funcs ||
+#ifdef G_OS_UNIX
+               source->source_funcs == &g_unix_signal_funcs ||
+#endif
+               source->source_funcs == &g_timeout_funcs)
+	g_closure_set_marshal (closure, source_closure_marshal_BOOLEAN__VOID);
       else
         g_closure_set_marshal (closure, g_cclosure_marshal_generic);
     }

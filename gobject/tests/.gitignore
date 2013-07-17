@@ -1,5 +1,6 @@
 binding
 boxed
+closure
 dynamictests
 enums
 ifaceproperties
