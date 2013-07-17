@@ -63,6 +63,7 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-compile-resourc
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gresource.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio-querymodules.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.exe $(CopyDir)\bin&#x0D;&#x0A;
+copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen&#x0D;&#x0A;
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib&#x0D;&#x0A;
 copy ..\..\..\msvc_recommended_pragmas.h $(CopyDir)\include\glib-$(ApiVersion)&#x0D;&#x0A;
@@ -319,6 +320,9 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-$(ApiVersion).lib 
 
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#x0A;
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#x0A;
+
+mkdir $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen&#x0D;&#x0A;
+copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen&#x0D;&#x0A;
 "
 	/>
 	<UserMacro
