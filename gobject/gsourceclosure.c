@@ -117,8 +117,14 @@ g_child_watch_closure_callback (GPid     pid,
 
   g_value_init (&result_value, G_TYPE_BOOLEAN);
 
+#ifdef G_OS_UNIX
   g_value_init (&params[0], G_TYPE_ULONG);
   g_value_set_ulong (&params[0], pid);
+#endif
+#ifdef G_OS_WIN32
+  g_value_init (&params[0], G_TYPE_POINTER);
+  g_value_set_pointer (&params[0], pid);
+#endif
 
   g_value_init (&params[1], G_TYPE_INT);
   g_value_set_int (&params[1], status);
