@@ -104,7 +104,7 @@ test_closure_child (void)
   GError *error = NULL;
   gchar *argv[3];
 
-  g_assert (getenv ("DO_NOT_ACCIDENTALLY_RECURSE") == NULL);
+  g_assert (g_getenv ("DO_NOT_ACCIDENTALLY_RECURSE") == NULL);
   g_setenv ("DO_NOT_ACCIDENTALLY_RECURSE", "1", TRUE);
 
   if (g_path_is_absolute (g_get_prgname ()))
