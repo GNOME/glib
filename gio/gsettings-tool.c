@@ -513,7 +513,11 @@ gsettings_set (GSettings   *settings,
       exit (1);
     }
 
-  g_settings_set_value (settings, key, new);
+  if (!g_settings_set_value (settings, key, new))
+    {
+      g_printerr (_("The key is not writable\n"));
+      exit (1);
+    }
 
   g_settings_sync ();
 
