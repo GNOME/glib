@@ -899,7 +899,9 @@ g_bus_unown_name (guint owner_id)
   if (client != NULL)
     {
       /* Release the name if needed */
-      if (client->needs_release && client->connection != NULL)
+      if (client->needs_release &&
+          client->connection != NULL &&
+          !g_dbus_connection_is_closed (client->connection))
         {
           GVariant *result;
           GError *error;
