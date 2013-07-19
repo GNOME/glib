@@ -3746,6 +3746,7 @@ test_parses (void)
     const gchar *tests[] = { "inf", "-inf", "nan" };
     GVariant *value;
     gchar *printed;
+    gchar *printed_down;
     gint i;
 
     for (i = 0; i < G_N_ELEMENTS (tests); i++)
@@ -3753,8 +3754,11 @@ test_parses (void)
         GError *error = NULL;
         value = g_variant_parse (NULL, tests[i], NULL, NULL, &error);
         printed = g_variant_print (value, FALSE);
-        g_assert (g_str_has_prefix (printed, tests[i]));
+        /* Canonicalize to lowercase; https://bugzilla.gnome.org/show_bug.cgi?id=704585 */
+        printed_down = g_ascii_strdown (printed, -1);
+        g_assert (g_str_has_prefix (printed_down, tests[i]));
         g_free (printed);
+        g_free (printed_down);
         g_variant_unref (value);
       }
   }
