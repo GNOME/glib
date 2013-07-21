@@ -24,7 +24,6 @@ test_source (GSource *one, GCallback quit_callback)
   g_main_loop_run (loop);
 
   g_source_destroy (one);
-  g_closure_unref (closure);
   g_main_loop_unref (loop);
 }
 
