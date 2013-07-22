@@ -165,7 +165,7 @@ test_closure_fd (void)
 static gboolean
 send_usr1 (gpointer user_data)
 {
-  kill (0, SIGUSR1);
+  kill (getpid (), SIGUSR1);
   return FALSE;
 }
 
