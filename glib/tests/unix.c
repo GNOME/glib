@@ -65,6 +65,7 @@ test_error (void)
 }
 
 static gboolean sig_received = FALSE;
+static gboolean sig_timeout = FALSE;
 static int sig_counter = 0;
 
 static gboolean
@@ -78,11 +79,11 @@ on_sig_received (gpointer user_data)
 }
 
 static gboolean
-sig_not_received (gpointer data)
+on_sig_timeout (gpointer data)
 {
   GMainLoop *loop = data;
-  (void) loop;
-  g_error ("Timed out waiting for signal");
+  g_main_loop_quit (loop);
+  sig_timeout = TRUE;
   return G_SOURCE_REMOVE;
 }
 
@@ -118,7 +119,7 @@ test_signal (int signum)
   g_unix_signal_add (signum, on_sig_received, mainloop);
   kill (getpid (), signum);
   g_assert (!sig_received);
-  id = g_timeout_add (5000, sig_not_received, mainloop);
+  id = g_timeout_add (5000, on_sig_timeout, mainloop);
   g_main_loop_run (mainloop);
   g_assert (sig_received);
   sig_received = FALSE;
@@ -133,7 +134,7 @@ test_signal (int signum)
   sig_counter = 0;
   g_unix_signal_add (signum, on_sig_received_2, mainloop);
   g_unix_signal_add (signum, on_sig_received_2, mainloop);
-  id = g_timeout_add (500, sig_not_received, mainloop);
+  id = g_timeout_add (5000, on_sig_timeout, mainloop);
 
   kill (getpid (), signum);
   g_main_loop_run (mainloop);
