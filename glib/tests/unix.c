@@ -158,18 +158,15 @@ test_sigterm (void)
 static void
 test_sighup_add_remove (void)
 {
-  GMainLoop *mainloop;
   guint id;
-
-  mainloop = g_main_loop_new (NULL, FALSE);
+  struct sigaction action;
 
   sig_received = FALSE;
-  id = g_unix_signal_add (SIGHUP, on_sig_received, mainloop);
+  id = g_unix_signal_add (SIGHUP, on_sig_received, NULL);
   g_source_remove (id);
-  kill (getpid (), SIGHUP);
-  g_assert (!sig_received);
-  g_main_loop_unref (mainloop);
 
+  sigaction (SIGHUP, NULL, &action);
+  g_assert (action.sa_handler == SIG_DFL);
 }
 
 static gboolean

@@ -428,6 +428,7 @@ static volatile sig_atomic_t any_unix_signal_pending;
 static volatile int unix_signal_pending[NSIG];
 static volatile int any_unix_signal_pending;
 #endif
+static volatile guint unix_signal_refcount[NSIG];
 
 /* Guards all the data below */
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
@@ -4952,28 +4953,32 @@ g_unix_signal_watch_dispatch (GSource    *source,
 }
 
 static void
-ensure_unix_signal_handler_installed_unlocked (int signum)
+ref_unix_signal_handler_unlocked (int signum)
 {
-  static sigset_t installed_signal_mask;
-  static gboolean initialized;
-  struct sigaction action;
-
-  if (!initialized)
+  /* Ensure we have the worker context */
+  g_get_worker_context ();
+  unix_signal_refcount[signum]++;
+  if (unix_signal_refcount[signum] == 1)
     {
-      sigemptyset (&installed_signal_mask);
-      g_get_worker_context ();
-      initialized = TRUE;
+      struct sigaction action;
+      action.sa_handler = g_unix_signal_handler;
+      sigemptyset (&action.sa_mask);
+      action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+      sigaction (signum, &action, NULL);
     }
+}
 
-  if (sigismember (&installed_signal_mask, signum))
-    return;
-
-  sigaddset (&installed_signal_mask, signum);
-
-  action.sa_handler = g_unix_signal_handler;
-  sigemptyset (&action.sa_mask);
-  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-  sigaction (signum, &action, NULL);
+static void
+unref_unix_signal_handler_unlocked (int signum)
+{
+  unix_signal_refcount[signum]--;
+  if (unix_signal_refcount[signum] == 0)
+    {
+      struct sigaction action;
+      action.sa_handler = SIG_DFL;
+      sigemptyset (&action.sa_mask);
+      sigaction (signum, &action, NULL);
+    }
 }
 
 GSource *
@@ -4989,7 +4994,7 @@ _g_main_create_unix_signal_watch (int signum)
   unix_signal_source->pending = FALSE;
 
   G_LOCK (unix_signal_lock);
-  ensure_unix_signal_handler_installed_unlocked (signum);
+  ref_unix_signal_handler_unlocked (signum);
   unix_signal_watches = g_slist_prepend (unix_signal_watches, unix_signal_source);
   if (unix_signal_pending[signum])
     unix_signal_source->pending = TRUE;
@@ -5001,7 +5006,12 @@ _g_main_create_unix_signal_watch (int signum)
 static void
 g_unix_signal_watch_finalize (GSource    *source)
 {
+  GUnixSignalWatchSource *unix_signal_source;
+
+  unix_signal_source = (GUnixSignalWatchSource *) source;
+
   G_LOCK (unix_signal_lock);
+  unref_unix_signal_handler_unlocked (unix_signal_source->signum);
   unix_signal_watches = g_slist_remove (unix_signal_watches, source);
   G_UNLOCK (unix_signal_lock);
 }
@@ -5011,6 +5021,7 @@ g_child_watch_finalize (GSource *source)
 {
   G_LOCK (unix_signal_lock);
   unix_child_watches = g_slist_remove (unix_child_watches, source);
+  unref_unix_signal_handler_unlocked (SIGCHLD);
   G_UNLOCK (unix_signal_lock);
 }
 
@@ -5096,7 +5107,7 @@ g_child_watch_source_new (GPid pid)
   g_source_add_poll (source, &child_watch_source->poll);
 #else /* G_OS_WIN32 */
   G_LOCK (unix_signal_lock);
-  ensure_unix_signal_handler_installed_unlocked (SIGCHLD);
+  ref_unix_signal_handler_unlocked (SIGCHLD);
   unix_child_watches = g_slist_prepend (unix_child_watches, child_watch_source);
   if (waitpid (pid, &child_watch_source->child_status, WNOHANG) > 0)
     child_watch_source->child_exited = TRUE;
