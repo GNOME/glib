@@ -169,6 +169,16 @@ send_usr1 (gpointer user_data)
   return FALSE;
 }
 
+static gboolean
+closure_quit_callback (gpointer     user_data)
+{
+  GMainLoop *loop = user_data;
+
+  g_main_loop_quit (loop);
+
+  return TRUE;
+}
+
 static void
 test_closure_signal (void)
 {
@@ -177,7 +187,7 @@ test_closure_signal (void)
   g_idle_add_full (G_PRIORITY_LOW, send_usr1, NULL, NULL);
 
   source = g_unix_signal_source_new (SIGUSR1);
-  test_source (source, G_CALLBACK (fd_quit_callback));
+  test_source (source, G_CALLBACK (closure_quit_callback));
   g_source_unref (source);
 }
 #endif
