@@ -2842,7 +2842,6 @@ typedef struct {
   GList *dirs;                       /* mimeinfo.cache and defaults.list */
   GHashTable *global_defaults_cache; /* global results of defaults.list lookup and validation */
   time_t last_stat_time;
-  guint should_ping_mime_monitor : 1;
 } MimeInfoCache;
 
 static MimeInfoCache *mime_info_cache = NULL;
@@ -2940,9 +2939,6 @@ mime_info_cache_dir_init (MimeInfoCacheDir *dir)
   if (g_stat (filename, &buf) < 0)
     goto error;
   
-  if (dir->mime_info_cache_timestamp > 0) 
-    mime_info_cache->should_ping_mime_monitor = TRUE;
-  
   dir->mime_info_cache_timestamp = buf.st_mtime;
   
   g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &load_error);
@@ -3026,9 +3022,6 @@ mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
   filename = g_build_filename (dir->path, "defaults.list", NULL);
   if (g_stat (filename, &buf) < 0)
     goto error;
-
-  if (dir->defaults_list_timestamp > 0) 
-    mime_info_cache->should_ping_mime_monitor = TRUE;
 
   dir->defaults_list_timestamp = buf.st_mtime;
 
@@ -3116,9 +3109,6 @@ mime_info_cache_dir_init_mimeapps_list (MimeInfoCacheDir *dir)
   filename = g_build_filename (dir->path, "mimeapps.list", NULL);
   if (g_stat (filename, &buf) < 0)
     goto error;
-
-  if (dir->mimeapps_list_timestamp > 0) 
-    mime_info_cache->should_ping_mime_monitor = TRUE;
 
   dir->mimeapps_list_timestamp = buf.st_mtime;
 
@@ -3348,13 +3338,7 @@ mime_info_cache_init (void)
 	  mime_info_cache->last_stat_time = now;
 	}
     }
-  
-  if (mime_info_cache->should_ping_mime_monitor)
-    {
-      /* g_idle_add (emit_mime_changed, NULL); */
-      mime_info_cache->should_ping_mime_monitor = FALSE;
-    }
-  
+
   G_UNLOCK (mime_info_cache);
 }
 
