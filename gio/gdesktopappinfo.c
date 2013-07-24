@@ -139,35 +139,48 @@ G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
 G_LOCK_DEFINE_STATIC (g_desktop_env);
 static gchar *g_desktop_env = NULL;
 
-static gpointer
-search_path_init (gpointer data)
+typedef struct
 {
-  char **args = NULL;
-  const char * const *data_dirs;
-  const char *user_data_dir;
-  int i, length, j;
+  gchar                      *path;
+} DesktopFileDir;
 
-  data_dirs = g_get_system_data_dirs ();
-  length = g_strv_length ((char **) data_dirs);
-  
-  args = g_new (char *, length + 2);
-  
-  j = 0;
-  user_data_dir = g_get_user_data_dir ();
-  args[j++] = g_build_filename (user_data_dir, "applications", NULL);
-  for (i = 0; i < length; i++)
-    args[j++] = g_build_filename (data_dirs[i],
-				  "applications", NULL);
-  args[j++] = NULL;
-  
-  return args;
-}
-  
-static const char * const *
-get_applications_search_path (void)
+static DesktopFileDir *desktop_file_dirs;
+static guint           n_desktop_file_dirs;
+
+static void
+desktop_file_dir_create (GArray      *array,
+                         const gchar *data_dir)
 {
-  static GOnce once_init = G_ONCE_INIT;
-  return g_once (&once_init, search_path_init, NULL);
+  DesktopFileDir dir = { 0, };
+
+  dir.path = g_build_filename (data_dir, "applications", NULL);
+
+  g_array_append_val (array, dir);
+}
+
+static void
+desktop_file_dirs_refresh (void)
+{
+  if (g_once_init_enter (&desktop_file_dirs))
+    {
+      const char * const *data_dirs;
+      GArray *tmp;
+      gint i;
+
+      tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
+
+      /* Highest priority: the user's ~/.local/share/applications */
+      desktop_file_dir_create (tmp, g_get_user_data_dir ());
+
+      /* Following that, XDG_DATA_DIRS/applications, in order */
+      data_dirs = g_get_system_data_dirs ();
+      for (i = 0; data_dirs[i]; i++)
+        desktop_file_dir_create (tmp, data_dirs[i]);
+
+      n_desktop_file_dirs = tmp->len;
+
+      g_once_init_leave (&desktop_file_dirs, (DesktopFileDir *) g_array_free (tmp, FALSE));
+    }
 }
 
 static void
@@ -540,20 +553,20 @@ GDesktopAppInfo *
 g_desktop_app_info_new (const char *desktop_id)
 {
   GDesktopAppInfo *appinfo;
-  const char * const *dirs;
   char *basename;
   int i;
 
-  dirs = get_applications_search_path ();
+  desktop_file_dirs_refresh ();
 
   basename = g_strdup (desktop_id);
   
-  for (i = 0; dirs[i] != NULL; i++)
+  for (i = 0; i < n_desktop_file_dirs; i++)
     {
+      const gchar *path = desktop_file_dirs[i].path;
       char *filename;
       char *p;
 
-      filename = g_build_filename (dirs[i], desktop_id, NULL);
+      filename = g_build_filename (path, desktop_id, NULL);
       appinfo = g_desktop_app_info_new_from_filename (filename);
       g_free (filename);
       if (appinfo != NULL)
@@ -564,7 +577,7 @@ g_desktop_app_info_new (const char *desktop_id)
 	{
 	  *p = '/';
 
-	  filename = g_build_filename (dirs[i], basename, NULL);
+	  filename = g_build_filename (path, basename, NULL);
 	  appinfo = g_desktop_app_info_new_from_filename (filename);
 	  g_free (filename);
 	  if (appinfo != NULL)
@@ -2794,21 +2807,20 @@ get_apps_from_dir (GHashTable *apps,
 GList *
 g_app_info_get_all (void)
 {
-  const char * const *dirs;
   GHashTable *apps;
   GHashTableIter iter;
   gpointer value;
   int i;
   GList *infos;
 
-  dirs = get_applications_search_path ();
+  desktop_file_dirs_refresh ();
 
   apps = g_hash_table_new_full (g_str_hash, g_str_equal,
 				g_free, NULL);
 
-  
-  for (i = 0; dirs[i] != NULL; i++)
-    get_apps_from_dir (apps, dirs[i], "");
+
+  for (i = 0; i < n_desktop_file_dirs; i++)
+    get_apps_from_dir (apps, desktop_file_dirs[i].path, "");
 
 
   infos = NULL;
@@ -3259,18 +3271,17 @@ mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
 static void
 mime_info_cache_init_dir_lists (void)
 {
-  const char * const *dirs;
   int i;
-  
+
   mime_info_cache = mime_info_cache_new ();
-  
-  dirs = get_applications_search_path ();
-  
-  for (i = 0; dirs[i] != NULL; i++)
+
+  desktop_file_dirs_refresh ();
+
+  for (i = 0; i < n_desktop_file_dirs; i++)
     {
       MimeInfoCacheDir *dir;
       
-      dir = mime_info_cache_dir_new (dirs[i]);
+      dir = mime_info_cache_dir_new (desktop_file_dirs[i].path);
       
       if (dir != NULL)
 	{
