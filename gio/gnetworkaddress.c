@@ -254,6 +254,7 @@ g_network_address_parse_sockaddr (GNetworkAddress *addr)
   gchar port[32];
 
   memset (&hints, 0, sizeof (hints));
+  hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags = AI_NUMERICHOST
 #ifdef AI_NUMERICSERV
     | AI_NUMERICSERV
