@@ -352,6 +352,75 @@ test_invoke (void)
   g_main_context_unref (ctx);
 }
 
+/* We can't use timeout sources here because on slow or heavily-loaded
+ * machines, the test program might not get enough cycles to hit the
+ * timeouts at the expected times. So instead we define a source that
+ * is based on the number of GMainContext iterations.
+ */
+
+static gint counter;
+static gint64 last_counter_update;
+
+typedef struct {
+  GSource source;
+  gint    interval;
+  gint    timeout;
+} CounterSource;
+
+static gboolean
+counter_source_prepare (GSource *source,
+                        gint    *timeout)
+{
+  CounterSource *csource = (CounterSource *)source;
+  gint64 now;
+
+  now = g_source_get_time (source);
+  if (now != last_counter_update)
+    {
+      last_counter_update = now;
+      counter++;
+    }
+
+  *timeout = 1;
+  return counter >= csource->timeout;
+}
+
+static gboolean
+counter_source_dispatch (GSource    *source,
+                         GSourceFunc callback,
+                         gpointer    user_data)
+{
+  CounterSource *csource = (CounterSource *) source;
+  gboolean again;
+
+  again = callback (user_data);
+
+  if (again)
+    csource->timeout = counter + csource->interval;
+
+  return again;
+}
+
+static GSourceFuncs counter_source_funcs = {
+  counter_source_prepare,
+  NULL,
+  counter_source_dispatch,
+  NULL,
+};
+
+static GSource *
+counter_source_new (gint interval)
+{
+  GSource *source = g_source_new (&counter_source_funcs, sizeof (CounterSource));
+  CounterSource *csource = (CounterSource *) source;
+
+  csource->interval = interval;
+  csource->timeout = counter + interval;
+
+  return source;
+}
+
+
 static gboolean
 run_inner_loop (gpointer user_data)
 {
@@ -362,7 +431,7 @@ run_inner_loop (gpointer user_data)
   a++;
 
   inner = g_main_loop_new (ctx, FALSE);
-  timeout = g_timeout_source_new (100);
+  timeout = counter_source_new (100);
   g_source_set_callback (timeout, quit_loop, inner, NULL);
   g_source_attach (timeout, ctx);
   g_source_unref (timeout);
@@ -385,16 +454,16 @@ test_child_sources (void)
 
   a = b = c = 0;
 
-  parent = g_timeout_source_new (2000);
+  parent = counter_source_new (2000);
   g_source_set_callback (parent, run_inner_loop, ctx, NULL);
   g_source_set_priority (parent, G_PRIORITY_LOW);
   g_source_attach (parent, ctx);
 
-  child_b = g_timeout_source_new (250);
+  child_b = counter_source_new (250);
   g_source_set_callback (child_b, count_calls, &b, NULL);
   g_source_add_child_source (parent, child_b);
 
-  child_c = g_timeout_source_new (330);
+  child_c = counter_source_new (330);
   g_source_set_callback (child_c, count_calls, &c, NULL);
   g_source_set_priority (child_c, G_PRIORITY_HIGH);
   g_source_add_child_source (parent, child_c);
@@ -408,7 +477,7 @@ test_child_sources (void)
   g_assert_cmpint (g_source_get_priority (child_b), ==, G_PRIORITY_DEFAULT);
   g_assert_cmpint (g_source_get_priority (child_c), ==, G_PRIORITY_DEFAULT);
 
-  end = g_timeout_source_new (1050);
+  end = counter_source_new (1050);
   g_source_set_callback (end, quit_loop, loop, NULL);
   g_source_attach (end, ctx);
   g_source_unref (end);
@@ -463,20 +532,20 @@ test_recursive_child_sources (void)
 
   a = b = c = 0;
 
-  parent = g_timeout_source_new (500);
+  parent = counter_source_new (500);
   g_source_set_callback (parent, count_calls, &a, NULL);
 
-  child_b = g_timeout_source_new (220);
+  child_b = counter_source_new (220);
   g_source_set_callback (child_b, count_calls, &b, NULL);
   g_source_add_child_source (parent, child_b);
 
-  child_c = g_timeout_source_new (430);
+  child_c = counter_source_new (430);
   g_source_set_callback (child_c, count_calls, &c, NULL);
   g_source_add_child_source (child_b, child_c);
 
   g_source_attach (parent, ctx);
 
-  end = g_timeout_source_new (2010);
+  end = counter_source_new (2010);
   g_source_set_callback (end, (GSourceFunc)g_main_loop_quit, loop, NULL);
   g_source_attach (end, ctx);
   g_source_unref (end);
@@ -484,15 +553,15 @@ test_recursive_child_sources (void)
   g_main_loop_run (loop);
 
   /* Sequence of events:
-   * 220 b (b = 440, a = 720)
-   * 430 c (c = 860, b = 650, a = 930)
-   * 650 b (b = 870, a = 1150)
-   * 860 c (c = 1290, b = 1080, a = 1360)
-   * 1080 b (b = 1300, a = 1580)
-   * 1290 c (c = 1720, b = 1510, a = 1790)
-   * 1510 b (b = 1730, a = 2010)
-   * 1720 c (c = 2150, b = 1940, a = 2220)
-   * 1940 b (b = 2160, a = 2440)
+   *  220 b (b -> 440, a -> 720)
+   *  430 c (c -> 860, b -> 650, a -> 930)
+   *  650 b (b -> 870, a -> 1150)
+   *  860 c (c -> 1290, b -> 1080, a -> 1360)
+   * 1080 b (b -> 1300, a -> 1580)
+   * 1290 c (c -> 1720, b -> 1510, a -> 1790)
+   * 1510 b (b -> 1730, a -> 2010)
+   * 1720 c (c -> 2150, b -> 1940, a -> 2220)
+   * 1940 b (b -> 2160, a -> 2440)
    */
 
   g_assert_cmpint (a, ==, 9);
@@ -552,12 +621,12 @@ test_swapping_child_sources (void)
   ctx = g_main_context_new ();
   loop = g_main_loop_new (ctx, FALSE);
 
-  data.parent = g_timeout_source_new (50);
+  data.parent = counter_source_new (50);
   data.loop = loop;
   g_source_set_callback (data.parent, swap_sources, &data, NULL);
   g_source_attach (data.parent, ctx);
 
-  data.old_child = g_timeout_source_new (100);
+  data.old_child = counter_source_new (100);
   g_source_add_child_source (data.parent, data.old_child);
   g_source_set_callback (data.old_child, assert_not_reached_callback, NULL, NULL);
 
