@@ -2840,7 +2840,6 @@ typedef struct {
 
 typedef struct {
   GList *dirs;                       /* mimeinfo.cache and defaults.list */
-  GHashTable *global_defaults_cache; /* global results of defaults.list lookup and validation */
   time_t last_stat_time;
 } MimeInfoCache;
 
@@ -2892,22 +2891,6 @@ mime_info_cache_dir_out_of_date (MimeInfoCacheDir *dir,
 }
 
 /* Call with lock held */
-static gboolean
-remove_all (gpointer  key,
-	    gpointer  value,
-	    gpointer  user_data)
-{
-  return TRUE;
-}
-
-
-static void
-mime_info_cache_blow_global_cache (void)
-{
-  g_hash_table_foreach_remove (mime_info_cache->global_defaults_cache,
-			       remove_all, NULL);
-}
-
 static void
 mime_info_cache_dir_init (MimeInfoCacheDir *dir)
 {
@@ -3312,7 +3295,6 @@ mime_info_cache_update_dir_lists (void)
       MimeInfoCacheDir *dir = (MimeInfoCacheDir *) tmp->data;
 
       /* No need to do this if we had file monitors... */
-      mime_info_cache_blow_global_cache ();
       mime_info_cache_dir_init (dir);
       mime_info_cache_dir_init_defaults_list (dir);
       mime_info_cache_dir_init_mimeapps_list (dir);
@@ -3346,12 +3328,9 @@ static MimeInfoCache *
 mime_info_cache_new (void)
 {
   MimeInfoCache *cache;
-  
+
   cache = g_new0 (MimeInfoCache, 1);
-  
-  cache->global_defaults_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
-							(GDestroyNotify) g_free,
-							(GDestroyNotify) g_free);
+
   return cache;
 }
 
@@ -3360,9 +3339,8 @@ mime_info_cache_free (MimeInfoCache *cache)
 {
   if (cache == NULL)
     return;
-  
+
   g_list_free_full (cache->dirs, (GDestroyNotify) mime_info_cache_dir_free);
-  g_hash_table_destroy (cache->global_defaults_cache);
   g_free (cache);
 }
 
