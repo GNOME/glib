@@ -59,55 +59,39 @@ g_inotify_directory_monitor_finalize (GObject *object)
       inotify_monitor->sub = NULL;
     }
 
-  if (G_OBJECT_CLASS (g_inotify_directory_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_inotify_directory_monitor_parent_class)->finalize) (object);
+  G_OBJECT_CLASS (g_inotify_directory_monitor_parent_class)->finalize (object);
 }
 
-static GObject *
-g_inotify_directory_monitor_constructor (GType type,
-					 guint n_construct_properties,
-					 GObjectConstructParam *construct_properties)
+static void
+g_inotify_directory_monitor_start (GLocalDirectoryMonitor *local_monitor)
 {
-  GObject *obj;
-  GInotifyDirectoryMonitorClass *klass;
-  GObjectClass *parent_class;
-  GInotifyDirectoryMonitor *inotify_monitor;
+  GInotifyDirectoryMonitor *inotify_monitor = G_INOTIFY_DIRECTORY_MONITOR (local_monitor);
   const gchar *dirname = NULL;
   inotify_sub *sub = NULL;
   gboolean ret_ih_startup; /* return value of _ih_startup, for asserting */
   gboolean pair_moves;
-  
-  klass = G_INOTIFY_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_INOTIFY_DIRECTORY_MONITOR));
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
-  obj = parent_class->constructor (type,
-                                   n_construct_properties,
-                                   construct_properties);
 
-  inotify_monitor = G_INOTIFY_DIRECTORY_MONITOR (obj);
-
-  dirname = G_LOCAL_DIRECTORY_MONITOR (obj)->dirname;
+  dirname = local_monitor->dirname;
   g_assert (dirname != NULL);
 
-  /* Will never fail as is_supported() should be called before instanciating
+  /* Will never fail as is_supported() should be called before instantiating
    * anyway */
   /* assert on return value */
   ret_ih_startup = _ih_startup();
   g_assert (ret_ih_startup);
 
-  pair_moves = G_LOCAL_DIRECTORY_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED;
+  pair_moves = local_monitor->flags & G_FILE_MONITOR_SEND_MOVED;
 
   sub = _ih_sub_new (dirname, NULL, pair_moves, FALSE, inotify_monitor);
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard */
   g_assert (sub != NULL);
-  
+
   /* _ih_sub_add allways returns TRUE, see gio/inotify/inotify-helper.c line 109
    * g_assert (_ih_sub_add (sub)); */
   _ih_sub_add(sub);
 
   inotify_monitor->sub = sub;
-
-  return obj;
 }
 
 static gboolean
@@ -122,13 +106,13 @@ g_inotify_directory_monitor_class_init (GInotifyDirectoryMonitorClass* klass)
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   GFileMonitorClass *directory_monitor_class = G_FILE_MONITOR_CLASS (klass);
   GLocalDirectoryMonitorClass *local_directory_monitor_class = G_LOCAL_DIRECTORY_MONITOR_CLASS (klass);
-  
+
   gobject_class->finalize = g_inotify_directory_monitor_finalize;
-  gobject_class->constructor = g_inotify_directory_monitor_constructor;
   directory_monitor_class->cancel = g_inotify_directory_monitor_cancel;
 
   local_directory_monitor_class->mount_notify = TRUE;
   local_directory_monitor_class->is_supported = g_inotify_directory_monitor_is_supported;
+  local_directory_monitor_class->start = g_inotify_directory_monitor_start;
 }
 
 static void
