@@ -121,7 +121,7 @@ g_local_directory_monitor_constructor (GType                  type,
   local_monitor->dirname = g_strdup (dirname);
   local_monitor->flags = flags;
 
-  if (!klass->mount_notify &&
+  if (!G_LOCAL_DIRECTORY_MONITOR_GET_CLASS (local_monitor)->mount_notify &&
       (flags & G_FILE_MONITOR_WATCH_MOUNTS))
     {
 #ifdef G_OS_WIN32
