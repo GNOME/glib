@@ -31,6 +31,8 @@
 #include "inotify-kernel.h"
 #include <sys/inotify.h>
 
+#include "glib-private.h"
+
 /* Timings for pairing MOVED_TO / MOVED_FROM events */
 #define PROCESS_EVENTS_TIME 1000 /* 1000 milliseconds (1 hz) */
 #define DEFAULT_HOLD_UNTIL_TIME 0 /* 0 millisecond */
@@ -116,6 +118,7 @@ ik_source_check (GSource *source)
 
   if (pending_count < MAX_PENDING_COUNT)
     {
+      GSource *timeout_source;
       unsigned int pending;
       
       if (ioctl (inotify_instance_fd, FIONREAD, &pending) == -1)
@@ -146,8 +149,12 @@ ik_source_check (GSource *source)
       ik_poll_fd_enabled = FALSE;
       /* Set a timeout to re-add the PollFD to the source */
       g_source_ref (source);
-      g_timeout_add (TIMEOUT_MILLISECONDS, ik_source_timeout, source);
-      
+
+      timeout_source = g_timeout_source_new (TIMEOUT_MILLISECONDS);
+      g_source_set_callback (timeout_source, ik_source_timeout, source, NULL);
+      g_source_attach (timeout_source, glib__private__ ()->g_get_worker_context ());
+      g_source_unref (timeout_source);
+
       return FALSE;
     }
 
@@ -211,7 +218,7 @@ gboolean _ik_startup (void (*cb)(ik_event_t *event))
   g_source_set_name (source, "GIO Inotify");
   g_source_add_poll (source, &ik_poll_fd);
   g_source_set_callback (source, ik_read_callback, NULL, NULL);
-  g_source_attach (source, NULL);
+  g_source_attach (source, glib__private__ ()->g_get_worker_context ());
   g_source_unref (source);
 
   cookie_hash = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -359,8 +366,13 @@ ik_read_callback (gpointer user_data)
   /* If the event process callback is off, turn it back on */
   if (!process_eq_running && events)
     {
+      GSource *timeout_source;
+
       process_eq_running = TRUE;
-      g_timeout_add (PROCESS_EVENTS_TIME, ik_process_eq_callback, NULL);
+      timeout_source = g_timeout_source_new (PROCESS_EVENTS_TIME);
+      g_source_set_callback (timeout_source, ik_process_eq_callback, NULL, NULL);
+      g_source_attach (timeout_source, glib__private__ ()->g_get_worker_context ());
+      g_source_unref (timeout_source);
     }
   
   G_UNLOCK (inotify_lock);

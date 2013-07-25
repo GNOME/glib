@@ -27,6 +27,7 @@
 #include <glib.h>
 #include "inotify-missing.h"
 #include "inotify-path.h"
+#include "glib-private.h"
 
 #define SCAN_MISSING_TIME 4 /* 1/4 Hz */
 
@@ -70,8 +71,13 @@ _im_add (inotify_sub *sub)
   /* If the timeout is turned off, we turn it back on */
   if (!scan_missing_running)
     {
+      GSource *source;
+
       scan_missing_running = TRUE;
-      g_timeout_add_seconds (SCAN_MISSING_TIME, im_scan_missing, NULL);
+      source = g_timeout_source_new_seconds (SCAN_MISSING_TIME);
+      g_source_set_callback (source, im_scan_missing, NULL, NULL);
+      g_source_attach (source, glib__private__ ()->g_get_worker_context ());
+      g_source_unref (source);
     }
 }
 
