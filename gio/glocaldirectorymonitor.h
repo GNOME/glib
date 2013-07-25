@@ -60,6 +60,7 @@ struct _GLocalDirectoryMonitorClass
   gboolean mount_notify;
 
   gboolean (* is_supported) (void);
+  void     (* start)        (GLocalDirectoryMonitor *local_monitor);
 };
 
 #ifdef G_OS_UNIX
@@ -71,6 +72,7 @@ GFileMonitor * _g_local_directory_monitor_new      (const char         *dirname,
                                                     GFileMonitorFlags   flags,
                                                     gboolean            is_remote_fs,
                                                     GError            **error);
+void            g_local_directory_monitor_start    (GLocalDirectoryMonitor *local_monitor);
 
 G_END_DECLS
 

@@ -69,83 +69,56 @@ g_local_directory_monitor_set_property (GObject      *object,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
+  GLocalDirectoryMonitor *local_monitor = G_LOCAL_DIRECTORY_MONITOR (object);
+
   switch (property_id)
-  {
+    {
     case PROP_DIRNAME:
-      /* Do nothing */
+      local_monitor->dirname = g_value_dup_string (value);
       break;
+
     case PROP_FLAGS:
-      /* Do nothing */
+      local_monitor->flags = g_value_get_flags (value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
-  }
+    }
 }
 
-static GObject *
-g_local_directory_monitor_constructor (GType                  type,
-                                       guint                  n_construct_properties,
-                                       GObjectConstructParam *construct_properties)
+void
+g_local_directory_monitor_start (GLocalDirectoryMonitor *local_monitor)
 {
-  GObject *obj;
-  GLocalDirectoryMonitorClass *klass;
-  GObjectClass *parent_class;
-  GLocalDirectoryMonitor *local_monitor;
-  GFileMonitorFlags  flags = 0;
-  const gchar *dirname = NULL;
-  gint i;
-  
-  klass = G_LOCAL_DIRECTORY_MONITOR_CLASS (g_type_class_peek (G_TYPE_LOCAL_DIRECTORY_MONITOR));
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
-  obj = parent_class->constructor (type,
-                                   n_construct_properties,
-                                   construct_properties);
+  GLocalDirectoryMonitorClass *class;
 
-  local_monitor = G_LOCAL_DIRECTORY_MONITOR (obj);
+  class = G_LOCAL_DIRECTORY_MONITOR_GET_CLASS (local_monitor);
 
-  for (i = 0; i < n_construct_properties; i++)
-    {
-      if (strcmp ("dirname", g_param_spec_get_name (construct_properties[i].pspec)) == 0)
-        {
-          g_warn_if_fail (G_VALUE_HOLDS_STRING (construct_properties[i].value));
-          dirname = g_value_get_string (construct_properties[i].value);
-        }
-      if (strcmp ("flags", g_param_spec_get_name (construct_properties[i].pspec)) == 0)
-        {
-          g_warn_if_fail (G_VALUE_HOLDS_FLAGS (construct_properties[i].value));
-          flags = g_value_get_flags (construct_properties[i].value);
-        }
-    }
-
-  local_monitor->dirname = g_strdup (dirname);
-  local_monitor->flags = flags;
-
-  if (!G_LOCAL_DIRECTORY_MONITOR_GET_CLASS (local_monitor)->mount_notify &&
-      (flags & G_FILE_MONITOR_WATCH_MOUNTS))
+  if (!class->mount_notify && (local_monitor->flags & G_FILE_MONITOR_WATCH_MOUNTS))
     {
 #ifdef G_OS_WIN32
       /*claim everything was mounted */
       local_monitor->was_mounted = TRUE;
 #else
       GUnixMountEntry *mount;
-      
+
       /* Emulate unmount detection */
-      
+
       mount = g_unix_mount_at (local_monitor->dirname, NULL);
-      
+
       local_monitor->was_mounted = mount != NULL;
-      
+
       if (mount)
         g_unix_mount_free (mount);
 
       local_monitor->mount_monitor = g_unix_mount_monitor_new ();
       g_signal_connect_object (local_monitor->mount_monitor, "mounts-changed",
-			       G_CALLBACK (mounts_changed), local_monitor, 0);
+                               G_CALLBACK (mounts_changed), local_monitor, 0);
 #endif
     }
 
-  return obj;
+  if (class->start)
+    class->start (local_monitor);
 }
 
 static void
@@ -153,10 +126,9 @@ g_local_directory_monitor_class_init (GLocalDirectoryMonitorClass* klass)
 {
   GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
   GFileMonitorClass *file_monitor_class = G_FILE_MONITOR_CLASS (klass);
-  
+
   gobject_class->finalize = g_local_directory_monitor_finalize;
   gobject_class->set_property = g_local_directory_monitor_set_property;
-  gobject_class->constructor = g_local_directory_monitor_constructor;
 
   file_monitor_class->cancel = g_local_directory_monitor_cancel;
 
@@ -250,6 +222,9 @@ _g_local_directory_monitor_new (const char         *dirname,
   else
     g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                          _("Unable to find default local directory monitor type"));
+
+  if (monitor)
+    g_local_directory_monitor_start (G_LOCAL_DIRECTORY_MONITOR (monitor));
 
   return monitor;
 }
