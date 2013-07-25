@@ -200,9 +200,11 @@ mounts_changed (GUnixMountMonitor *mount_monitor,
 
 GFileMonitor*
 _g_local_directory_monitor_new (const char         *dirname,
-				GFileMonitorFlags   flags,
+                                GFileMonitorFlags   flags,
+                                GMainContext       *context,
                                 gboolean            is_remote_fs,
-				GError            **error)
+                                gboolean            do_start,
+                                GError            **error)
 {
   GFileMonitor *monitor = NULL;
   GType type = G_TYPE_INVALID;
@@ -218,12 +220,12 @@ _g_local_directory_monitor_new (const char         *dirname,
                                           G_STRUCT_OFFSET (GLocalDirectoryMonitorClass, is_supported));
 
   if (type != G_TYPE_INVALID)
-    monitor = G_FILE_MONITOR (g_object_new (type, "dirname", dirname, "flags", flags, NULL));
+    monitor = G_FILE_MONITOR (g_object_new (type, "dirname", dirname, "flags", flags, "context", context, NULL));
   else
     g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                          _("Unable to find default local directory monitor type"));
 
-  if (monitor)
+  if (monitor && do_start)
     g_local_directory_monitor_start (G_LOCAL_DIRECTORY_MONITOR (monitor));
 
   return monitor;

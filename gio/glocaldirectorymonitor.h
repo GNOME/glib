@@ -70,9 +70,16 @@ GType           g_local_directory_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_directory_monitor_new      (const char         *dirname,
                                                     GFileMonitorFlags   flags,
+                                                    GMainContext       *context,
                                                     gboolean            is_remote_fs,
+                                                    gboolean            do_start,
                                                     GError            **error);
 void            g_local_directory_monitor_start    (GLocalDirectoryMonitor *local_monitor);
+
+/* Actually in glocalfile.c */
+GLocalDirectoryMonitor *  g_local_directory_monitor_new_in_worker (const char         *pathname,
+                                                                   GFileMonitorFlags   flags,
+                                                                   GError            **error);
 
 G_END_DECLS
 

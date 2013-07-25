@@ -122,7 +122,9 @@ static void g_local_file_monitor_class_init (GLocalFileMonitorClass *klass)
 GFileMonitor*
 _g_local_file_monitor_new (const char         *pathname,
                            GFileMonitorFlags   flags,
+                           GMainContext       *context,
                            gboolean            is_remote_fs,
+                           gboolean            do_start,
                            GError            **error)
 {
   GFileMonitor *monitor = NULL;
@@ -139,12 +141,12 @@ _g_local_file_monitor_new (const char         *pathname,
                                           G_STRUCT_OFFSET (GLocalFileMonitorClass, is_supported));
 
   if (type != G_TYPE_INVALID)
-    monitor = G_FILE_MONITOR (g_object_new (type, "filename", pathname, "flags", flags, NULL));
+    monitor = G_FILE_MONITOR (g_object_new (type, "filename", pathname, "flags", flags, "context", context, NULL));
   else
     g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                          _("Unable to find default local file monitor type"));
 
-  if (monitor)
+  if (monitor && do_start)
     g_local_file_monitor_start (G_LOCAL_FILE_MONITOR (monitor));
 
   return monitor;

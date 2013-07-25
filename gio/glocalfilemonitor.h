@@ -63,9 +63,16 @@ GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
 GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,
                                                GFileMonitorFlags   flags,
+                                               GMainContext       *context,
                                                gboolean            is_remote_fs,
+                                               gboolean            do_start,
                                                GError            **error);
 void            g_local_file_monitor_start    (GLocalFileMonitor  *local_monitor);
+
+/* Actually in glocalfile.c */
+GLocalFileMonitor *  g_local_file_monitor_new_in_worker (const char         *pathname,
+                                                         GFileMonitorFlags   flags,
+                                                         GError            **error);
 
 G_END_DECLS
 
