@@ -89,7 +89,8 @@ struct _GFileMonitorPrivate {
 enum {
   PROP_0,
   PROP_RATE_LIMIT,
-  PROP_CANCELLED
+  PROP_CANCELLED,
+  PROP_CONTEXT
 };
 
 /* work around a limitation of the aliasing foo */
@@ -111,6 +112,12 @@ g_file_monitor_set_property (GObject      *object,
     {
     case PROP_RATE_LIMIT:
       g_file_monitor_set_rate_limit (monitor, g_value_get_int (value));
+      break;
+
+    case PROP_CONTEXT:
+      monitor->priv->context = g_value_dup_boxed (value);
+      if (monitor->priv->context == NULL)
+        monitor->priv->context = g_main_context_ref_thread_default ();
       break;
 
     default:
@@ -260,6 +267,14 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
                                                          FALSE,
                                                          G_PARAM_READABLE|
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
+
+  g_object_class_install_property (object_class,
+                                   PROP_CONTEXT,
+                                   g_param_spec_boxed ("context",
+                                                       P_("Context"),
+                                                       P_("The main context to dispatch from"),
+                                                       G_TYPE_MAIN_CONTEXT, G_PARAM_WRITABLE |
+                                                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -269,7 +284,6 @@ g_file_monitor_init (GFileMonitor *monitor)
   monitor->priv->rate_limit_msec = DEFAULT_RATE_LIMIT_MSECS;
   monitor->priv->rate_limiter = g_hash_table_new_full (g_file_hash, (GEqualFunc)g_file_equal,
 						       NULL, (GDestroyNotify) rate_limiter_free);
-  monitor->priv->context = g_main_context_ref_thread_default ();
   g_mutex_init (&monitor->priv->mutex);
 }
 
