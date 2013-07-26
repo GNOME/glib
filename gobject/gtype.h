@@ -1353,6 +1353,9 @@ guint     g_type_get_type_registration_serial (void);
  * instance data to the type. Furthermore, it defines a *_get_type() function. See G_DEFINE_TYPE_EXTENDED()
  * for an example.
  * 
+ * Note that private structs added with this macros must have a struct
+ * name of the form <repaceable>@TN</replaceable>Private.
+ *
  * Since: 2.38
  */
 #define G_DEFINE_TYPE_WITH_PRIVATE(TN, t_n, T_P)            G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, G_ADD_PRIVATE (TN))
@@ -1574,6 +1577,9 @@ guint     g_type_get_type_registration_serial (void);
  *
  * Note that this macro can only be used together with the G_DEFINE_TYPE_*
  * macros, since it depends on variable names from those macros.
+ *
+ * Also note that private structs added with these macros must have a struct
+ * name of the form <repaceable>TypeName</replaceable>Private.
  *
  * Since: 2.38
  */
