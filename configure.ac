@@ -111,6 +111,7 @@ AC_SUBST(LT_CURRENT_MINUS_AGE)
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
+AC_USE_SYSTEM_EXTENSIONS
 
 AM_CONDITIONAL(HAVE_GCC, [test "$GCC" = "yes"])
 
@@ -230,11 +231,6 @@ if test "x$glib_have_cocoa" = "xyes"; then
   AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
   LDFLAGS="$LDFLAGS -Wl,-framework,Foundation"
 fi
-
-gl_GLIBC21
-AS_IF([test "x$GLIBC21" = "xyes"], [
-  AC_DEFINE([_GNU_SOURCE], 1, [Make all glibc extensions visible])
-])
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
