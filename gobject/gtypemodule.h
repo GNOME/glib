@@ -180,11 +180,16 @@ static void     type_name##_class_init        (TypeName##Class *klass); \
 static void     type_name##_class_finalize    (TypeName##Class *klass); \
 static gpointer type_name##_parent_class = NULL; \
 static GType    type_name##_type_id = 0; \
-static void     type_name##_class_intern_init (gpointer klass) \
+static gint     TypeName##_private_offset; \
+\
+_G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
+\
+static inline gpointer \
+type_name##_get_instance_private (TypeName *self) \
 { \
-  type_name##_parent_class = g_type_class_peek_parent (klass); \
-  type_name##_class_init ((TypeName##Class*) klass); \
+  return (G_STRUCT_MEMBER_P (self, TypeName##_private_offset)); \
 } \
+\
 GType \
 type_name##_get_type (void) \
 { \
@@ -235,6 +240,10 @@ type_name##_register_type (GTypeModule *type_module) \
     (GInterfaceInitFunc) iface_init, NULL, NULL      \
   }; \
   g_type_module_add_interface (type_module, g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
+}
+
+#define G_ADD_PRIVATE_DYNAMIC(TypeName)         { \
+  TypeName##_private_offset = sizeof (TypeNamePrivate); \
 }
 
 GLIB_AVAILABLE_IN_ALL
