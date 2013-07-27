@@ -49,6 +49,7 @@
 #include "gappinfo.h"
 #include "glocaldirectorymonitor.h"
 
+#include "dfi-reader.h"
 
 /**
  * SECTION:gdesktopappinfo
@@ -86,6 +87,12 @@ static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mi
 static void     mime_info_cache_reload                (const char       *dir);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
+
+static GDesktopAppInfo *
+g_desktop_app_info_new_from_index (const struct dfi_index         *dfi,
+                                   const struct dfi_pointer_array *array,
+                                   guint                           app_num,
+                                   const gchar                    *desktop_id);
 
 /**
  * GDesktopAppInfo:
@@ -149,6 +156,7 @@ typedef struct
   GLocalDirectoryMonitor     *monitor;
   GHashTable                 *app_names;
   gboolean                    is_setup;
+  struct dfi_index           *dfi;
 } DesktopFileDir;
 
 static DesktopFileDir *desktop_file_dirs;
@@ -489,6 +497,80 @@ desktop_file_dir_unindexed_get_all (DesktopFileDir *dir,
     }
 }
 
+/* Support for indexed DesktopFileDirs {{{2 */
+
+#if 0
+enum
+{
+  DFI_ID_THIS_LOCALE,
+
+  DFI_ID_Desktop_Entry,
+
+  DFI_ID_Name,
+  DFI_ID_Keywords,
+  DFI_ID_GenericName,
+  DFI_ID_X_GNOME_FullName,
+  DFI_ID_Comment,
+
+  N_DFI_IDS
+};
+#endif
+
+static void
+desktop_file_dir_indexed_init (DesktopFileDir *dir)
+{
+  const struct dfi_string_list *app_names;
+  guint n_app_names, i;
+
+  dir->app_names = g_hash_table_new (g_str_hash, g_str_equal);
+  app_names = dfi_index_get_app_names (dir->dfi);
+  n_app_names = dfi_string_list_get_length (app_names);
+
+  for (i = 0; i < n_app_names; i++)
+    g_hash_table_insert (dir->app_names,
+                         (gchar *) dfi_string_list_get_string_at_index (app_names, dir->dfi, i),
+                         GUINT_TO_POINTER (i));
+}
+
+static GDesktopAppInfo *
+desktop_file_dir_indexed_get_app (DesktopFileDir *dir,
+                                  const gchar    *desktop_id)
+{
+  gpointer value;
+  guint app_num;
+
+  if (!g_hash_table_lookup_extended (dir->app_names, desktop_id, NULL, &value))
+    return NULL;
+
+  app_num = GPOINTER_TO_UINT (value);
+
+  return g_desktop_app_info_new_from_index (dir->dfi, dfi_index_get_desktop_files (dir->dfi), app_num, desktop_id);
+}
+
+static void
+desktop_file_dir_indexed_get_all (DesktopFileDir *dir,
+                                  GHashTable     *apps)
+{
+  const struct dfi_pointer_array *desktop_files;
+  guint i, n_desktop_files;
+
+  desktop_files = dfi_index_get_desktop_files (dir->dfi);
+
+  n_desktop_files = dfi_pointer_array_get_length (desktop_files, dir->dfi);
+  for (i = 0; i < n_desktop_files; i++)
+    {
+      const gchar *app_name;
+
+      app_name = dfi_pointer_array_get_item_key (desktop_files, dir->dfi, i);
+
+      if (desktop_file_dir_app_name_is_masked (dir, app_name))
+        continue;
+
+      add_to_table_if_appropriate (apps, app_name,
+                                   g_desktop_app_info_new_from_index (dir->dfi, desktop_files, i, app_name));
+    }
+}
+
 /* DesktopFileDir "API" {{{2 */
 
 /*< internal >
@@ -532,6 +614,12 @@ desktop_file_dir_reset (DesktopFileDir *dir)
       dir->app_names = NULL;
     }
 
+  if (dir->dfi)
+    {
+      dfi_index_free (dir->dfi);
+      dir->dfi = NULL;
+    }
+
   dir->is_setup = FALSE;
 }
 
@@ -557,7 +645,12 @@ desktop_file_dir_init (DesktopFileDir *dir)
       g_local_directory_monitor_start (dir->monitor);
     }
 
-  desktop_file_dir_unindexed_init (dir);
+  dir->dfi = dfi_index_new (dir->path);
+
+  if (dir->dfi)
+    desktop_file_dir_indexed_init (dir);
+  else
+    desktop_file_dir_unindexed_init (dir);
 
   dir->is_setup = TRUE;
 }
@@ -580,7 +673,10 @@ desktop_file_dir_get_app (DesktopFileDir *dir,
   if (!dir->app_names)
     return NULL;
 
-  return desktop_file_dir_unindexed_get_app (dir, desktop_id);
+  if (dir->dfi)
+    return desktop_file_dir_indexed_get_app (dir, desktop_id);
+  else
+    return desktop_file_dir_unindexed_get_app (dir, desktop_id);
 }
 
 /*< internal >
@@ -596,7 +692,10 @@ static void
 desktop_file_dir_get_all (DesktopFileDir *dir,
                           GHashTable     *apps)
 {
-  desktop_file_dir_unindexed_get_all (dir, apps);
+  if (dir->dfi)
+    desktop_file_dir_indexed_get_all (dir, apps);
+  else
+    desktop_file_dir_unindexed_get_all (dir, apps);
 }
 
 /* Lock/unlock and global setup API {{{2 */
@@ -1101,6 +1200,67 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->startup_notify = info->startup_notify;
 
   return G_APP_INFO (new_info);
+}
+
+
+static GDesktopAppInfo *
+g_desktop_app_info_new_from_index (const struct dfi_index         *dfi,
+                                   const struct dfi_pointer_array *array,
+                                   guint                           app_num,
+                                   const gchar                    *desktop_id)
+{
+  const struct dfi_keyfile *keyfile;
+  GDesktopAppInfo *appinfo;
+  guint n_groups, i;
+  GString *string;
+  GKeyFile *kf;
+
+  keyfile = dfi_keyfile_from_pointer (dfi, dfi_pointer_array_get_pointer (array, app_num));
+
+  /* What is the least efficient possible way of doing this?  Let's see... */
+  string = g_string_new (NULL);
+
+  n_groups = dfi_keyfile_get_n_groups (keyfile);
+  for (i = 0; i < n_groups; i++)
+    {
+      const gchar *group_name;
+      guint start, end;
+      guint j;
+
+      group_name = dfi_keyfile_get_group_name (keyfile, dfi, i);
+      g_string_append_printf (string, "[%s]\n", group_name);
+
+      dfi_keyfile_get_group_range (keyfile, i, &start, &end);
+
+      for (j = start; j < end; j++)
+        {
+          const gchar *key, *locale, *value;
+
+          dfi_keyfile_get_item (keyfile, dfi, j, &key, &locale, &value);
+
+          if (locale[0])
+            g_string_append_printf (string, "%s[%s]=%s\n", key, locale, value);
+          else
+            g_string_append_printf (string, "%s=%s\n", key, value);
+        }
+    }
+
+  kf = g_key_file_new ();
+  g_key_file_load_from_data (kf, string->str, string->len, G_KEY_FILE_NONE, NULL);
+  g_string_free (string, TRUE);
+
+  appinfo = g_object_new (G_TYPE_DESKTOP_APP_INFO, "filename", desktop_id, NULL);
+
+  if (!g_desktop_app_info_load_from_keyfile (appinfo, kf))
+    {
+      g_object_unref (appinfo);
+      g_key_file_free (kf);
+      return NULL;
+    }
+
+  g_key_file_free (kf);
+
+  return appinfo;
 }
 
 /* GAppInfo interface implementation functions {{{2 */
