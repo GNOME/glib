@@ -240,7 +240,7 @@ SUBDIRS += fam
 endif
 
 if OS_UNIX
-appinfo_sources += gdesktopappinfo.c
+appinfo_sources += gdesktopappinfo.c dfi-reader.c
 platform_libadd += xdgmime/libxdgmime.la $(RESOLVER_LIBADD)
 platform_deps += xdgmime/libxdgmime.la
 unix_sources = \
