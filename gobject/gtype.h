@@ -1354,7 +1354,7 @@ guint     g_type_get_type_registration_serial (void);
  * for an example.
  * 
  * Note that private structs added with this macros must have a struct
- * name of the form <repaceable>@TN</replaceable>Private.
+ * name of the form <replaceable>@TN</replaceable>Private.
  *
  * Since: 2.38
  */
@@ -1579,7 +1579,7 @@ guint     g_type_get_type_registration_serial (void);
  * macros, since it depends on variable names from those macros.
  *
  * Also note that private structs added with these macros must have a struct
- * name of the form <repaceable>TypeName</replaceable>Private.
+ * name of the form <replaceable>TypeName</replaceable>Private.
  *
  * Since: 2.38
  */
