@@ -434,33 +434,6 @@ AS_IF([ test x"$glib_native_win32" = xyes], [
   fi
 ])
 
-AC_ARG_ENABLE(iconv-cache, 
-              [AS_HELP_STRING([--enable-iconv-cache=@<:@yes/no/auto@:>@],
-                              [cache iconv descriptors [default=auto]])],,
-              [enable_iconv_cache=auto])
-
-AC_MSG_CHECKING([whether to cache iconv descriptors])
-case $enable_iconv_cache in
-  auto)
-    if test $ac_cv_gnu_library_2_1 = yes; then
-      enable_iconv_cache=no
-    else 
-      enable_iconv_cache=yes
-    fi
-  ;;
-  yes|no) 
-  ;;
-  *) AC_MSG_ERROR([Value given to --enable-iconv-cache must be one of yes, no or auto])
-  ;;
-esac
-
-if test $enable_iconv_cache = yes; then
-   AC_DEFINE(NEED_ICONV_CACHE,1,[Do we cache iconv descriptors])
-fi
-
-AC_MSG_RESULT($enable_iconv_cache)
-
-
 dnl
 dnl zlib support
 dnl
