@@ -76,7 +76,7 @@ _im_add (inotify_sub *sub)
       scan_missing_running = TRUE;
       source = g_timeout_source_new_seconds (SCAN_MISSING_TIME);
       g_source_set_callback (source, im_scan_missing, NULL, NULL);
-      g_source_attach (source, glib__private__ ()->g_get_worker_context ());
+      g_source_attach (source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
       g_source_unref (source);
     }
 }

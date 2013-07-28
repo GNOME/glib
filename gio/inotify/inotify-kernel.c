@@ -152,7 +152,7 @@ ik_source_check (GSource *source)
 
       timeout_source = g_timeout_source_new (TIMEOUT_MILLISECONDS);
       g_source_set_callback (timeout_source, ik_source_timeout, source, NULL);
-      g_source_attach (timeout_source, glib__private__ ()->g_get_worker_context ());
+      g_source_attach (timeout_source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
       g_source_unref (timeout_source);
 
       return FALSE;
@@ -218,7 +218,7 @@ gboolean _ik_startup (void (*cb)(ik_event_t *event))
   g_source_set_name (source, "GIO Inotify");
   g_source_add_poll (source, &ik_poll_fd);
   g_source_set_callback (source, ik_read_callback, NULL, NULL);
-  g_source_attach (source, glib__private__ ()->g_get_worker_context ());
+  g_source_attach (source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
   g_source_unref (source);
 
   cookie_hash = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -371,7 +371,7 @@ ik_read_callback (gpointer user_data)
       process_eq_running = TRUE;
       timeout_source = g_timeout_source_new (PROCESS_EVENTS_TIME);
       g_source_set_callback (timeout_source, ik_process_eq_callback, NULL, NULL);
-      g_source_attach (timeout_source, glib__private__ ()->g_get_worker_context ());
+      g_source_attach (timeout_source, GLIB_PRIVATE_CALL (g_get_worker_context ()));
       g_source_unref (timeout_source);
     }
   
