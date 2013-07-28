@@ -2440,6 +2440,7 @@ is_remote_fs (const gchar *filename)
 
 #elif defined(USE_STATVFS)
   struct statvfs statfs_buffer;
+  int statfs_result = 0;
 
   statfs_result = statvfs (filename, &statfs_buffer);
 #else
