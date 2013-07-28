@@ -172,6 +172,7 @@ struct _GSocketPrivate
   int             current_errors;
   int             selected_events;
   GList          *requested_conditions; /* list of requested GIOCondition * */
+  GMutex          win32_source_lock;
 #endif
 
   struct {
@@ -759,6 +760,7 @@ g_socket_finalize (GObject *object)
     }
 
   g_assert (socket->priv->requested_conditions == NULL);
+  g_mutex_clear (&socket->priv->win32_source_lock);
 #endif
 
   for (i = 0; i < RECV_ADDR_CACHE_SIZE; i++)
@@ -970,6 +972,7 @@ g_socket_init (GSocket *socket)
   socket->priv->construct_error = NULL;
 #ifdef G_OS_WIN32
   socket->priv->event = WSA_INVALID_EVENT;
+  g_mutex_init (&socket->priv->win32_source_lock);
 #endif
 }
 
@@ -3074,24 +3077,28 @@ static void
 add_condition_watch (GSocket      *socket,
 		     GIOCondition *condition)
 {
+  g_mutex_lock (&socket->priv->win32_source_lock);
   g_assert (g_list_find (socket->priv->requested_conditions, condition) == NULL);
 
   socket->priv->requested_conditions =
     g_list_prepend (socket->priv->requested_conditions, condition);
 
   update_select_events (socket);
+  g_mutex_unlock (&socket->priv->win32_source_lock);
 }
 
 static void
 remove_condition_watch (GSocket      *socket,
 			GIOCondition *condition)
 {
+  g_mutex_lock (&socket->priv->win32_source_lock);
   g_assert (g_list_find (socket->priv->requested_conditions, condition) != NULL);
 
   socket->priv->requested_conditions =
     g_list_remove (socket->priv->requested_conditions, condition);
 
   update_select_events (socket);
+  g_mutex_unlock (&socket->priv->win32_source_lock);
 }
 
 static GIOCondition
