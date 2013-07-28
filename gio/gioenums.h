@@ -211,6 +211,29 @@ typedef enum {
   G_FILE_CREATE_REPLACE_DESTINATION = (1 << 1)
 } GFileCreateFlags;
 
+/**
+ * GFileMeasureFlags:
+ * @G_FILE_MEASURE_NONE: No flags set.
+ * @G_FILE_MEASURE_REPORT_ANY_ERROR: Report any error encountered
+ *   while traversing the directory tree.  Normally errors are only
+ *   reported for the toplevel file.
+ * @G_FILE_MEASURE_APPARENT_SIZE: Tally usage based on apparent file
+ *   sizes.  Normally, the block-size is used, if available, as this is a
+ *   more accurate representation of disk space used.
+ *   Compare with '<literal>du --apparent-size</literal>'.
+ * @G_FILE_MEASURE_NO_XDEV: Do not cross mount point boundaries.
+ *   Compare with '<literal>du -x</literal>'.
+ *
+ * Flags that can be used with g_file_measure_disk_usage().
+ *
+ * Since: 2.38
+ **/
+typedef enum {
+  G_FILE_MEASURE_NONE                 = 0,
+  G_FILE_MEASURE_REPORT_ANY_ERROR     = (1 << 1),
+  G_FILE_MEASURE_APPARENT_SIZE        = (1 << 2),
+  G_FILE_MEASURE_NO_XDEV              = (1 << 3)
+} GFileMeasureFlags;
 
 /**
  * GMountMountFlags:

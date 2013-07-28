@@ -316,6 +316,30 @@ static gboolean           g_file_real_copy_finish                 (GFile        
                                                                    GAsyncResult           *res,
                                                                    GError                **error);
 
+static gboolean           g_file_real_measure_disk_usage          (GFile                         *file,
+                                                                   GFileMeasureFlags              flags,
+                                                                   GCancellable                  *cancellable,
+                                                                   GFileMeasureProgressCallback   progress_callback,
+                                                                   gpointer                       progress_data,
+                                                                   guint64                       *disk_usage,
+                                                                   guint64                       *num_dirs,
+                                                                   guint64                       *num_files,
+                                                                   GError                       **error);
+static void               g_file_real_measure_disk_usage_async    (GFile                         *file,
+                                                                   GFileMeasureFlags              flags,
+                                                                   gint                           io_priority,
+                                                                   GCancellable                  *cancellable,
+                                                                   GFileMeasureProgressCallback   progress_callback,
+                                                                   gpointer                       progress_data,
+                                                                   GAsyncReadyCallback            callback,
+                                                                   gpointer                       user_data);
+static gboolean           g_file_real_measure_disk_usage_finish   (GFile                         *file,
+                                                                   GAsyncResult                  *result,
+                                                                   guint64                       *disk_usage,
+                                                                   guint64                       *num_dirs,
+                                                                   guint64                       *num_files,
+                                                                   GError                       **error);
+
 typedef GFileIface GFileInterface;
 G_DEFINE_INTERFACE (GFile, g_file, G_TYPE_OBJECT)
 
@@ -357,6 +381,9 @@ g_file_default_init (GFileIface *iface)
   iface->set_attributes_from_info = g_file_real_set_attributes_from_info;
   iface->copy_async = g_file_real_copy_async;
   iface->copy_finish = g_file_real_copy_finish;
+  iface->measure_disk_usage = g_file_real_measure_disk_usage;
+  iface->measure_disk_usage_async = g_file_real_measure_disk_usage_async;
+  iface->measure_disk_usage_finish = g_file_real_measure_disk_usage_finish;
 }
 
 
@@ -7334,6 +7361,280 @@ g_file_replace_contents_finish (GFile         *file,
     }
 
   return TRUE;
+}
+
+gboolean
+g_file_real_measure_disk_usage (GFile                         *file,
+                                GFileMeasureFlags              flags,
+                                GCancellable                  *cancellable,
+                                GFileMeasureProgressCallback   progress_callback,
+                                gpointer                       progress_data,
+                                guint64                       *disk_usage,
+                                guint64                       *num_dirs,
+                                guint64                       *num_files,
+                                GError                       **error)
+{
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       "Operation not supported for the current backend.");
+  return FALSE;
+}
+
+typedef struct
+{
+  GFileMeasureFlags             flags;
+  GFileMeasureProgressCallback  progress_callback;
+  gpointer                      progress_data;
+} MeasureTaskData;
+
+typedef struct
+{
+  guint64 disk_usage;
+  guint64 num_dirs;
+  guint64 num_files;
+} MeasureResult;
+
+typedef struct
+{
+  GFileMeasureProgressCallback callback;
+  gpointer                     user_data;
+  gboolean                     reporting;
+  guint64                      current_size;
+  guint64                      num_dirs;
+  guint64                      num_files;
+} MeasureProgress;
+
+static gboolean
+measure_disk_usage_invoke_progress (gpointer user_data)
+{
+  MeasureProgress *progress = user_data;
+
+  (* progress->callback) (progress->reporting,
+                          progress->current_size, progress->num_dirs, progress->num_files,
+                          progress->user_data);
+
+  return FALSE;
+}
+
+static void
+measure_disk_usage_progress (gboolean reporting,
+                             guint64  current_size,
+                             guint64  num_dirs,
+                             guint64  num_files,
+                             gpointer user_data)
+{
+  MeasureProgress progress;
+  GTask *task = user_data;
+  MeasureTaskData *data;
+
+  data = g_task_get_task_data (task);
+
+  progress.callback = data->progress_callback;
+  progress.user_data = data->progress_data;
+  progress.reporting = reporting;
+  progress.current_size = current_size;
+  progress.num_dirs = num_dirs;
+  progress.num_files = num_files;
+
+  g_main_context_invoke_full (g_task_get_context (task),
+                              g_task_get_priority (task),
+                              measure_disk_usage_invoke_progress,
+                              g_memdup (&progress, sizeof progress),
+                              g_free);
+}
+
+static void
+measure_disk_usage_thread (GTask        *task,
+                           gpointer      source_object,
+                           gpointer      task_data,
+                           GCancellable *cancellable)
+{
+  MeasureTaskData *data = task_data;
+  GError *error = NULL;
+  MeasureResult result;
+
+  if (g_file_measure_disk_usage (source_object, data->flags, cancellable,
+                                 measure_disk_usage_progress, task,
+                                 &result.disk_usage, &result.num_dirs, &result.num_files,
+                                 &error))
+    g_task_return_pointer (task, g_memdup (&result, sizeof result), g_free);
+  else
+    g_task_return_error (task, error);
+}
+
+static void
+g_file_real_measure_disk_usage_async (GFile                        *file,
+                                      GFileMeasureFlags             flags,
+                                      gint                          io_priority,
+                                      GCancellable                 *cancellable,
+                                      GFileMeasureProgressCallback  progress_callback,
+                                      gpointer                      progress_data,
+                                      GAsyncReadyCallback           callback,
+                                      gpointer                      user_data)
+{
+  MeasureTaskData data;
+  GTask *task;
+
+  data.flags = flags;
+  data.progress_callback = progress_callback;
+  data.progress_data = progress_data;
+
+  task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_task_data (task, g_memdup (&data, sizeof data), g_free);
+  g_task_set_priority (task, io_priority);
+
+  g_task_run_in_thread (task, measure_disk_usage_thread);
+  g_object_unref (task);
+}
+
+static gboolean
+g_file_real_measure_disk_usage_finish (GFile         *file,
+                                       GAsyncResult  *result,
+                                       guint64       *disk_usage,
+                                       guint64       *num_dirs,
+                                       guint64       *num_files,
+                                       GError       **error)
+{
+  guint64 *reported_usage;
+
+  g_return_val_if_fail (g_task_is_valid (result, file), FALSE);
+
+  reported_usage = g_task_propagate_pointer (G_TASK (result), error);
+
+  if (reported_usage == NULL)
+    return FALSE;
+
+  if (disk_usage)
+    *disk_usage = *reported_usage;
+
+  g_free (reported_usage);
+
+  return TRUE;
+}
+
+/**
+ * g_file_measure_disk_usage:
+ * @file: a #GFile
+ * @flags: #GFileMeasureFlags
+ * @cancellable: (allow-none): optional #GCancellable
+ * @progress_callback: (allow-none): a #GFileMeasureProgressCallback
+ * @progress_data: user_data for @progress_callback
+ * @disk_usage: (allow-none) (out): the number of bytes of disk space used
+ * @num_dirs: (allow-none) (out): the number of directories encountered
+ * @num_files: (allow-none) (out): the number of non-directories encountered
+ * @error: (allow-none): %NULL, or a pointer to a %NULL #GError pointer
+ *
+ * Recursively measures the disk usage of @file.
+ *
+ * This is essentially an analog of the '<literal>du</literal>' command,
+ * but it also reports the number of directories and non-directory files
+ * encountered (including things like symbolic links).
+ *
+ * By default, errors are only reported against the toplevel file
+ * itself.  Errors found while recursing are silently ignored, unless
+ * %G_FILE_DISK_USAGE_REPORT_ALL_ERRORS is given in @flags.
+ *
+ * The returned size, @disk_usage, is in bytes and should be formatted
+ * with g_format_size() in order to get something reasonable for showing
+ * in a user interface.
+ *
+ * @progress_callback and @progress_data can be given to request
+ * periodic progress updates while scanning.  See the documentation for
+ * #GFileMeasureProgressCallback for information about when and how the
+ * callback will be invoked.
+ *
+ * Returns: %TRUE if successful, with the out parameters set.
+ *          %FALSE otherwise, with @error set.
+ *
+ * Since: 2.38
+ **/
+gboolean
+g_file_measure_disk_usage (GFile                         *file,
+                           GFileMeasureFlags              flags,
+                           GCancellable                  *cancellable,
+                           GFileMeasureProgressCallback   progress_callback,
+                           gpointer                       progress_data,
+                           guint64                       *disk_usage,
+                           guint64                       *num_dirs,
+                           guint64                       *num_files,
+                           GError                       **error)
+{
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  return G_FILE_GET_IFACE (file)->measure_disk_usage (file, flags, cancellable,
+                                                      progress_callback, progress_data,
+                                                      disk_usage, num_dirs, num_files,
+                                                      error);
+}
+
+/**
+ * g_file_measure_disk_usage_async:
+ * @file: a #GFile
+ * @flags: #GFileMeasureFlags
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request
+ * @cancellable: (allow-none): optional #GCancellable
+ * @progress_callback: (allow-none): a #GFileMeasureProgressCallback
+ * @progress_data: user_data for @progress_callback
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when complete
+ * @user_data: the data to pass to callback function
+ *
+ * Recursively measures the disk usage of @file.
+ *
+ * This is the asynchronous version of g_file_measure_disk_usage().  See
+ * there for more information.
+ *
+ * Since: 2.38
+ **/
+void
+g_file_measure_disk_usage_async (GFile                        *file,
+                                 GFileMeasureFlags             flags,
+                                 gint                          io_priority,
+                                 GCancellable                 *cancellable,
+                                 GFileMeasureProgressCallback  progress_callback,
+                                 gpointer                      progress_data,
+                                 GAsyncReadyCallback           callback,
+                                 gpointer                      user_data)
+{
+  g_return_if_fail (G_IS_FILE (file));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  return G_FILE_GET_IFACE (file)->measure_disk_usage_async (file, flags, io_priority, cancellable,
+                                                            progress_callback, progress_data,
+                                                            callback, user_data);
+}
+
+/**
+ * g_file_measure_disk_usage_finish:
+ * @file: a #GFile
+ * @result: the #GAsyncResult passed to your #GAsyncReadyCallback
+ * @disk_usage: (allow-none) (out): the number of bytes of disk space used
+ * @num_dirs: (allow-none) (out): the number of directories encountered
+ * @num_files: (allow-none) (out): the number of non-directories encountered
+ * @error: (allow-none): %NULL, or a pointer to a %NULL #GError pointer
+ *
+ * Collects the results from an earlier call to
+ * g_file_measure_disk_usage_async().  See g_file_measure_disk_usage() for
+ * more information.
+ *
+ * Returns: %TRUE if successful, with the out parameters set.
+ *          %FALSE otherwise, with @error set.
+ *
+ * Since: 2.38
+ **/
+gboolean
+g_file_measure_disk_usage_finish (GFile         *file,
+                                  GAsyncResult  *result,
+                                  guint64       *disk_usage,
+                                  guint64       *num_dirs,
+                                  guint64       *num_files,
+                                  GError       **error)
+{
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  return G_FILE_GET_IFACE (file)->measure_disk_usage_finish (file, result, disk_usage, num_dirs, num_files, error);
 }
 
 /**

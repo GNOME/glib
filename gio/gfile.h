@@ -561,6 +561,30 @@ struct _GFileIface
   gboolean            (* poll_mountable_finish)       (GFile                *file,
                                                        GAsyncResult         *result,
                                                        GError              **error);
+
+  gboolean            (* measure_disk_usage)          (GFile                         *file,
+                                                       GFileMeasureFlags              flags,
+                                                       GCancellable                  *cancellable,
+                                                       GFileMeasureProgressCallback   progress_callback,
+                                                       gpointer                       progress_data,
+                                                       guint64                       *disk_usage,
+                                                       guint64                       *num_dirs,
+                                                       guint64                       *num_files,
+                                                       GError                       **error);
+  void                (* measure_disk_usage_async)    (GFile                         *file,
+                                                       GFileMeasureFlags              flags,
+                                                       gint                           io_priority,
+                                                       GCancellable                  *cancellable,
+                                                       GFileMeasureProgressCallback   progress_callback,
+                                                       gpointer                       progress_data,
+                                                       GAsyncReadyCallback            callback,
+                                                       gpointer                       user_data);
+  gboolean            (* measure_disk_usage_finish)   (GFile                         *file,
+                                                       GAsyncResult                  *result,
+                                                       guint64                       *disk_usage,
+                                                       guint64                       *num_dirs,
+                                                       guint64                       *num_files,
+                                                       GError                       **error);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -1084,6 +1108,35 @@ GFileMonitor*           g_file_monitor                    (GFile                
 							   GFileMonitorFlags       flags,
 							   GCancellable           *cancellable,
 							   GError                **error);
+
+GLIB_AVAILABLE_IN_2_38
+gboolean                g_file_measure_disk_usage         (GFile                         *file,
+                                                           GFileMeasureFlags              flags,
+                                                           GCancellable                  *cancellable,
+                                                           GFileMeasureProgressCallback   progress_callback,
+                                                           gpointer                       progress_data,
+                                                           guint64                       *disk_usage,
+                                                           guint64                       *num_dirs,
+                                                           guint64                       *num_files,
+                                                           GError                       **error);
+
+GLIB_AVAILABLE_IN_2_38
+void                    g_file_measure_disk_usage_async   (GFile                         *file,
+                                                           GFileMeasureFlags              flags,
+                                                           gint                           io_priority,
+                                                           GCancellable                  *cancellable,
+                                                           GFileMeasureProgressCallback   progress_callback,
+                                                           gpointer                       progress_data,
+                                                           GAsyncReadyCallback            callback,
+                                                           gpointer                       user_data);
+
+GLIB_AVAILABLE_IN_2_38
+gboolean                g_file_measure_disk_usage_finish  (GFile                         *file,
+                                                           GAsyncResult                  *result,
+                                                           guint64                       *disk_usage,
+                                                           guint64                       *num_dirs,
+                                                           guint64                       *num_files,
+                                                           GError                       **error);
 
 GLIB_AVAILABLE_IN_ALL
 void                    g_file_start_mountable            (GFile                      *file,

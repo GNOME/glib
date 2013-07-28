@@ -27,6 +27,7 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <dirent.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -2514,6 +2515,293 @@ g_local_file_monitor_file (GFile             *file,
   return _g_local_file_monitor_new (local_file->filename, flags, is_remote (local_file->filename), error);
 }
 
+
+/* Here is the GLocalFile implementation of g_file_measure_disk_usage().
+ *
+ * If available, we use fopenat() in preference to filenames for
+ * efficiency and safety reasons.  We know that fopenat() is available
+ * based on if AT_FDCWD is defined.  POSIX guarantees that this will be
+ * defined as a macro.
+ *
+ * We use a linked list of stack-allocated GSList nodes in order to be
+ * able to reconstruct the filename for error messages.  We actually
+ * pass the filename to operate on through the top node of the list.
+ *
+ * In case we're using openat(), this top filename will be a basename
+ * which should be opened in the directory which has also had its fd
+ * passed along.  If we're not using openat() then it will be a full
+ * absolute filename.
+ */
+
+static gboolean
+g_local_file_measure_size_error (GFileMeasureFlags   flags,
+                                 gint                saved_errno,
+                                 GSList             *name,
+                                 GError            **error)
+{
+  /* Only report an error if we were at the toplevel or if the caller
+   * requested reporting of all errors.
+   */
+  if ((name->next == NULL) || (flags & G_FILE_MEASURE_REPORT_ANY_ERROR))
+    {
+      GString *filename;
+      GSList *node;
+
+      /* Skip some work if there is no error return */
+      if (!error)
+        return FALSE;
+
+#ifdef AT_FDCWD
+      /* If using openat() we need to rebuild the filename for the message */
+      filename = g_string_new (name->data);
+      for (node = name->next; node; node = node->next)
+        {
+          g_string_prepend_c (filename, G_DIR_SEPARATOR);
+          g_string_prepend (filename, node->data);
+        }
+
+      g_string_prepend (filename, "file://");
+#else
+      /* Otherwise, we already have it, so just use it. */
+      node = name;
+      filename = g_string_new ("file://");
+      g_string_append (filename, node->data);
+#endif
+
+      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (saved_errno),
+                   _("Could not determine the disk usage of %s: %s"),
+                   filename->str, g_strerror (saved_errno));
+
+      g_string_free (filename, TRUE);
+
+      return FALSE;
+    }
+
+  else
+    /* We're not reporting this error... */
+    return TRUE;
+}
+
+typedef struct
+{
+  GFileMeasureFlags  flags;
+  dev_t              contained_on;
+  GCancellable      *cancellable;
+
+  GFileMeasureProgressCallback progress_callback;
+  gpointer                     progress_data;
+
+  guint64 disk_usage;
+  guint64 num_dirs;
+  guint64 num_files;
+
+  guint64 last_progress_report;
+} MeasureState;
+
+static gboolean
+g_local_file_measure_size_of_contents (gint           fd,
+                                       GSList        *dir_name,
+                                       MeasureState  *state,
+                                       GError       **error);
+
+static gboolean
+g_local_file_measure_size_of_file (gint           parent_fd,
+                                   GSList        *name,
+                                   MeasureState  *state,
+                                   GError       **error)
+{
+  struct stat buf;
+
+  if (g_cancellable_set_error_if_cancelled (state->cancellable, error))
+    return FALSE;
+
+#if defined (AT_FDCWD)
+  if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
+#elif defined (HAVE_LSTAT)
+  if (lstat (name->data, &buf) != 0)
+#else
+  if (stat (name->data, &buf) != 0)
+#endif
+    return g_local_file_measure_size_error (state->flags, errno, name, error);
+
+  if (name->next)
+    {
+      /* If not at the toplevel, check for a device boundary. */
+
+      if (state->flags & G_FILE_MEASURE_NO_XDEV)
+        if (state->contained_on != buf.st_dev)
+          return TRUE;
+    }
+  else
+    {
+      /* If, however, this is the toplevel, set the device number so
+       * that recursive invocations can compare against it.
+       */
+      state->contained_on = buf.st_dev;
+    }
+
+#if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
+  if (~state->flags & G_FILE_MEASURE_APPARENT_SIZE)
+    state->disk_usage += buf.st_blocks * G_GUINT64_CONSTANT (512);
+  else
+#endif
+    state->disk_usage += buf.st_size;
+
+  if (S_ISDIR (buf.st_mode))
+    state->num_dirs++;
+  else
+    state->num_files++;
+
+  if (state->progress_callback)
+    {
+      /* We could attempt to do some cleverness here in order to avoid
+       * calling clock_gettime() so much, but we're doing stats and opens
+       * all over the place already...
+       */
+      if (state->last_progress_report)
+        {
+          guint64 now;
+
+          now = g_get_monotonic_time ();
+
+          if (state->last_progress_report + 200 * G_TIME_SPAN_MILLISECOND < now)
+            {
+              (* state->progress_callback) (TRUE,
+                                            state->disk_usage, state->num_dirs, state->num_files,
+                                            state->progress_data);
+              state->last_progress_report = now;
+            }
+        }
+      else
+        {
+          /* We must do an initial report to inform that more reports
+           * will be coming.
+           */
+          (* state->progress_callback) (TRUE, 0, 0, 0, state->progress_data);
+          state->last_progress_report = g_get_monotonic_time ();
+        }
+    }
+
+  if (S_ISDIR (buf.st_mode))
+    {
+      int dir_fd = -1;
+
+      if (g_cancellable_set_error_if_cancelled (state->cancellable, error))
+        return FALSE;
+
+#ifdef AT_FDCWD
+      dir_fd = openat (parent_fd, name->data, O_RDONLY | O_DIRECTORY);
+      if (dir_fd < 0)
+        return g_local_file_measure_size_error (state->flags, errno, name, error);
+#endif
+
+      if (!g_local_file_measure_size_of_contents (dir_fd, name, state, error))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+g_local_file_measure_size_of_contents (gint           fd,
+                                       GSList        *dir_name,
+                                       MeasureState  *state,
+                                       GError       **error)
+{
+  gboolean success = TRUE;
+  struct dirent *entry;
+  DIR *dirp;
+
+#ifdef AT_FDCWD
+  dirp = fdopendir (fd);
+#else
+  dirp = opendir (dir_name->data);
+#endif
+
+  if (dirp == NULL)
+    {
+      gint saved_errno = errno;
+
+#ifdef AT_FDCWD
+      close (fd);
+#endif
+
+      return g_local_file_measure_size_error (state->flags, saved_errno, dir_name, error);
+    }
+
+  while (success && (entry = readdir (dirp)))
+    {
+      gchar *name = entry->d_name;
+      GSList node;
+
+      node.next = dir_name;
+#ifdef AT_FDCWD
+      node.data = name;
+#else
+      node.data = g_build_filename (dir_name->data, name, NULL);
+#endif
+
+      /* skip '.' and '..' */
+      if (name[0] == '.' &&
+          (name[1] == '\0' ||
+           (name[1] == '.' && name[2] == '\0')))
+        continue;
+
+      success = g_local_file_measure_size_of_file (fd, &node, state, error);
+
+#ifndef AT_FDCWD
+      g_free (node.data);
+#endif
+    }
+
+  closedir (dirp);
+
+  return success;
+}
+
+static gboolean
+g_local_file_measure_disk_usage (GFile                         *file,
+                                 GFileMeasureFlags              flags,
+                                 GCancellable                  *cancellable,
+                                 GFileMeasureProgressCallback   progress_callback,
+                                 gpointer                       progress_data,
+                                 guint64                       *disk_usage,
+                                 guint64                       *num_dirs,
+                                 guint64                       *num_files,
+                                 GError                       **error)
+{
+  GLocalFile *local_file = G_LOCAL_FILE (file);
+  MeasureState state = { 0, };
+  gint root_fd = -1;
+  GSList node;
+
+  state.flags = flags;
+  state.cancellable = cancellable;
+  state.progress_callback = progress_callback;
+  state.progress_data = progress_data;
+
+#ifdef AT_FDCWD
+  root_fd = AT_FDCWD;
+#endif
+
+  node.data = local_file->filename;
+  node.next = NULL;
+
+  if (!g_local_file_measure_size_of_file (root_fd, &node, &state, error))
+    return FALSE;
+
+  if (disk_usage)
+    *disk_usage = state.disk_usage;
+
+  if (num_dirs)
+    *num_dirs = state.num_dirs;
+
+  if (num_files)
+    *num_files = state.num_files;
+
+  return TRUE;
+}
+
 static void
 g_local_file_file_iface_init (GFileIface *iface)
 {
@@ -2556,6 +2844,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->move = g_local_file_move;
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
+  iface->measure_disk_usage = g_local_file_measure_disk_usage;
 
   iface->supports_thread_contexts = TRUE;
 }
