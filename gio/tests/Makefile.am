@@ -69,6 +69,7 @@ test_data = \
 	$(NULL)
 
 uninstalled_test_extra_programs = \
+	gio-du					\
 	echo-server				\
 	filter-cat				\
 	gapplication-example-actions		\
