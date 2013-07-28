@@ -173,7 +173,7 @@ test_sighup_add_remove (void)
 static gboolean
 nested_idle (gpointer data)
 {
-  GMainLoop *parent, *nested;
+  GMainLoop *nested;
   GMainContext *context;
   GSource *source;
 
