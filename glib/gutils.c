@@ -954,12 +954,19 @@ g_get_home_dir (void)
 /**
  * g_get_tmp_dir:
  *
- * Gets the directory to use for temporary files. This is found from 
- * inspecting the environment variables <envar>TMPDIR</envar>, 
- * <envar>TMP</envar>, and <envar>TEMP</envar> in that order. If none 
- * of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. 
- * The encoding of the returned string is system-defined. On Windows, 
- * it is always UTF-8. The return value is never %NULL or the empty string.
+ * Gets the directory to use for temporary files.
+ *
+ * On UNIX, this is taken from the <envar>TMPDIR</envar> environment
+ * variable.  If the variable is not set, <literal>P_tmpdir</literal> is
+ * used, as defined by the system C library.  Failing that, a hard-coded
+ * default of "/tmp" is returned.
+ *
+ * On Windows, the <envar>TEMP</envar> environment variable is used,
+ * with the root directory of the Windows installation (eg: "C:\") used
+ * as a default.
+ *
+ * The encoding of the returned string is system-defined. On Windows, it
+ * is always UTF-8. The return value is never %NULL or the empty string.
  *
  * Returns: the directory to use for temporary files.
  */
@@ -972,27 +979,16 @@ g_get_tmp_dir (void)
     {
       gchar *tmp;
 
-      tmp = g_strdup (g_getenv ("TMPDIR"));
-
-      if (tmp == NULL || *tmp == '\0')
-        {
-          g_free (tmp);
-          tmp = g_strdup (g_getenv ("TMP"));
-        }
-
-      if (tmp == NULL || *tmp == '\0')
-        {
-          g_free (tmp);
-          tmp = g_strdup (g_getenv ("TEMP"));
-        }
-
 #ifdef G_OS_WIN32
+      tmp = g_strdup (g_getenv ("TEMP"));
+
       if (tmp == NULL || *tmp == '\0')
         {
           g_free (tmp);
           tmp = get_windows_directory_root ();
         }
-#else
+#else /* G_OS_WIN32 */
+      tmp = g_strdup (g_getenv ("TMPDIR"));
 
 #ifdef P_tmpdir
       if (tmp == NULL || *tmp == '\0')
@@ -1004,7 +1000,7 @@ g_get_tmp_dir (void)
           if (k > 1 && G_IS_DIR_SEPARATOR (tmp[k - 1]))
             tmp[k - 1] = '\0';
         }
-#endif
+#endif /* P_tmpdir */
 
       if (tmp == NULL || *tmp == '\0')
         {
