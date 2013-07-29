@@ -141,6 +141,22 @@ struct _GMenuModel
   GMenuModelPrivate *priv;
 };
 
+/**
+ * GMenuModelClass::get_item_attributes:
+ * @model: the #GMenuModel to query
+ * @item_index: The #GMenuItem to query
+ * @attributes: (out) (element-type utf8 GLib.Variant): Attributes on the item
+ *
+ * Gets all the attributes associated with the item in the menu model.
+ */
+/**
+ * GMenuModelClass::get_item_links:
+ * @model: the #GMenuModel to query
+ * @item_index: The #GMenuItem to query
+ * @attributes: (out) (element-type utf8 GLib.MenuModel): Links from the item
+ *
+ * Gets all the links associated with the item in the menu model.
+ */
 struct _GMenuModelClass
 {
   GObjectClass parent_class;
