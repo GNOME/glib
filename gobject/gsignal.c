@@ -1965,7 +1965,7 @@ g_signal_override_class_closure (guint     signal_id,
  *
  * Overrides the class closure (i.e. the default handler) for the
  * given signal for emissions on instances of @instance_type with
- * callabck @class_handler. @instance_type must be derived from the
+ * callback @class_handler. @instance_type must be derived from the
  * type to which the signal belongs.
  *
  * See g_signal_chain_from_overridden() and
