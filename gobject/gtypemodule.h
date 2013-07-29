@@ -243,7 +243,7 @@ type_name##_register_type (GTypeModule *type_module) \
 }
 
 #define G_ADD_PRIVATE_DYNAMIC(TypeName)         { \
-  TypeName##_private_offset = sizeof (TypeNamePrivate); \
+  TypeName##_private_offset = sizeof (TypeName##Private); \
 }
 
 GLIB_AVAILABLE_IN_ALL
