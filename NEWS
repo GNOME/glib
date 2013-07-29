@@ -1,3 +1,60 @@
+Overview of changes from GLib 2.37.4 to 2.37.5
+==============================================
+
+* Implement the Desktop Action specification: In the case that the
+  application is a GApplication and DBusActivatable, actions from the
+  desktop file are translated into GActions that have been added to
+  the  application with g_action_map_add_action().
+
+* GPropertyAction is a new type of GAction that represents the value
+  of a property on an object, and allows to change the value when
+  activated.
+
+* GNetworkMonitorNetlink can now handle default routes via a device.
+
+* The gsettings tool now reports failure to write a key (e.g. because
+  the key was locked down)
+
+* Miscellaneous new api:
+ - g_variant_new_printf
+ - g_action_print_detailed_name
+ - g_regex_get_max_lookbehind
+
+* Bugs fixed:
+ 664444 Support additional application actions in .desktop files
+ 684123 glib build only tries -D_GNU_SOURCE if glibc is detected
+ 689794 support incremental matching
+ 699259 add org.freedesktop.Application support to GIO
+ 700460 rewrite tests to not rely on precise timing of timeouts
+ 701511 updates to various GSource types
+ 701609 gnetworkmonitornetlink: handle default route via device
+ 703270 add GPropertyAction
+ 704157 GAction: add function for printing detailed names
+ 704250 Doc: various fixes
+ 704267 regression gsourceclosure: segfault in gedit file chooser
+ 704322 glib-unix: fix handling of multiple signal source for the...
+ 704424 No error when failing to override a locked key
+ 704447 Fix build/use of g_child_watch_closure_callback on Windows
+ 704523 g_thread_create_full() can dereference NULL pointer
+ 704543 Add implementations for G_GNUC_*_IGNORE_DEPRECATIONS for ...
+ 704567 gdbusnameowning: Don't spew an error if we're releasing a...
+ 704585 libc printf can give mixed-case strings for NaN and Inf
+ 704587 FTBFS: statfs_result is undeclared for statvfs()
+ 704699 gmain: Reset signal handlers to default when source is
+ 704704 AI_NUMERICSERV cannot be used with ai_socktype = 0
+ 704873 inotify: don't assume mainloop is running
+ 704999 glib/convert.test crashing due to lack of iconv cache
+ 704931 GMenuModel: add annotations to virtual functions
+
+* Translation updates:
+ Assamese
+ Czech
+ German
+ Gujarati
+ Spanish
+ Tamil
+
+
 Overview of changes from GLib 2.37.3 to 2.37.4
 ==============================================
 
