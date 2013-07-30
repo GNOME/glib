@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-23 13:44+0000\n"
-"PO-Revision-Date: 2013-07-25 13:18+0530\n"
+"POT-Creation-Date: 2013-07-30 13:13+0000\n"
+"PO-Revision-Date: 2013-07-30 22:40+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -69,14 +69,14 @@ msgid "Not enough space in destination"
 msgstr "গন্তব্যত পৰ্যাপ্ত স্থান নাই"
 
 #: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:849
-#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:764
-#: ../glib/gconvert.c:1156 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
+#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:467
+#: ../glib/gconvert.c:859 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
 #: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
 msgid "Invalid byte sequence in conversion input"
 msgstr "সলনি কৰাৰ ইনপুটত অৱৈধ byte ক্ৰম"
 
-#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:772
-#: ../glib/gconvert.c:1081 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
+#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:475
+#: ../glib/gconvert.c:784 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "সলনি কৰাৰ সময়ত ত্ৰুটি: %s"
@@ -85,14 +85,13 @@ msgstr "সলনি কৰাৰ সময়ত ত্ৰুটি: %s"
 msgid "Cancellable initialization not supported"
 msgstr "বাতিল কৰিব পৰা আৰম্ভ সমৰ্থিত নহয়"
 
-#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:564
-#: ../glib/gconvert.c:642 ../glib/giochannel.c:1414
+#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:347
+#: ../glib/giochannel.c:1414
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "আখৰৰ সংহতি '%s' ৰ পৰা '%s' লৈ সলনি কৰাৰ সমৰ্থন নাই"
 
-#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:568
-#: ../glib/gconvert.c:646
+#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:351
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ৰ পৰা '%s' লৈ সলনি কৰা পৰিৱৰ্তকক খোলিব নোৱাৰি"
@@ -1973,7 +1972,7 @@ msgstr "mount দ্বাৰা সামগ্ৰীৰ ধৰণ অনুম
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "mount দ্বাৰা সুসংগতভাবে সামগ্ৰীৰ ধৰণ অনুমান কৰা সম্ভৱ নহয়"
 
-#: ../gio/gnetworkaddress.c:352
+#: ../gio/gnetworkaddress.c:353
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "হস্টনাম  '%s' এ  '[' কিন্তু নহয় ']' অন্তৰ্ভুক্ত কৰে"
@@ -2524,8 +2523,9 @@ msgstr "সম্বাদ পাওঁতে ত্ৰুটি: %s"
 
 #: ../gio/gsocket.c:4357
 #, c-format
-msgid "Unable to get pending error: %s"
-msgstr "পেন্ডিং ত্ৰুটি পাবলৈ ব্যৰ্থ: %s"
+#| msgid "Unable to create socket: %s"
+msgid "Unable to read socket credentials: %s"
+msgstr "চকেট তথ্যসমূহ পঢ়িবলৈ অক্ষম: %s"
 
 #: ../gio/gsocket.c:4376
 msgid "g_socket_get_credentials not implemented for this OS"
@@ -2960,47 +2960,47 @@ msgstr "'%s' নামৰ কোনো এপ্লিকেচনে '%s' ৰ �
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec শাৰী '%s', য'ত URI '%s' আছে, বিস্তৃত কৰাত ব্যৰ্থ"
 
-#: ../glib/gconvert.c:803 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
+#: ../glib/gconvert.c:506 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
 #: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
 msgid "Partial character sequence at end of input"
 msgstr "ইনপুটৰ অন্তত অসম্পূৰ্ণ আখৰৰ ক্ৰম"
 
-#: ../glib/gconvert.c:1053
+#: ../glib/gconvert.c:756
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "fallback '%s' ক codeset '%s' লৈ সলনি কৰিব নোৱাৰি"
 
-#: ../glib/gconvert.c:1871
+#: ../glib/gconvert.c:1574
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "\"file\" আঁচনি ব্যৱহাৰ কৰা URI '%s' এটা সম্পূৰ্ণ URI নহয়"
 
-#: ../glib/gconvert.c:1881
+#: ../glib/gconvert.c:1584
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "স্থানিক ফাইলৰ URI '%s' ত এটা '#' থাকিব নোৱাৰে"
 
-#: ../glib/gconvert.c:1898
+#: ../glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' অৱৈধ"
 
-#: ../glib/gconvert.c:1910
+#: ../glib/gconvert.c:1613
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI '%s' ৰ হস্টনাম অৱৈধ"
 
-#: ../glib/gconvert.c:1926
+#: ../glib/gconvert.c:1629
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' ত অৱৈধভাবে মুক্তি পোৱা আখৰ আছে"
 
-#: ../glib/gconvert.c:2021
+#: ../glib/gconvert.c:1724
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' পথৰ নাম এটা সম্পূৰ্ণ পথৰ নাম নহয়"
 
-#: ../glib/gconvert.c:2031
+#: ../glib/gconvert.c:1734
 msgid "Invalid hostname"
 msgstr "অৱৈধ হস্টনাম"
 
@@ -4338,6 +4338,9 @@ msgstr[1] "%s বাইটসমূহ"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Unable to get pending error: %s"
+#~ msgstr "পেন্ডিং ত্ৰুটি পাবলৈ ব্যৰ্থ: %s"
 
 #~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 #~ msgstr "'%s' ফাইল লিখিবৰ বাবে খোলাত ব্যৰ্থ: fdopen() ব্যৰ্থ: %s"
