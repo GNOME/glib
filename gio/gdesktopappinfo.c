@@ -3778,7 +3778,7 @@ g_desktop_app_info_get_action_name (GDesktopAppInfo *info,
 
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
   g_return_val_if_fail (action_name != NULL, NULL);
-  g_return_if_fail (app_info_has_action (info, action_name));
+  g_return_val_if_fail (app_info_has_action (info, action_name), NULL);
 
   group_name = g_strdup_printf ("Desktop Action %s", action_name);
   result = g_key_file_get_locale_string (info->keyfile, group_name, "Name", NULL, NULL);
