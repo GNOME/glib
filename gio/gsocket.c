@@ -4354,7 +4354,7 @@ g_socket_get_credentials (GSocket   *socket,
         g_set_error (error,
                      G_IO_ERROR,
                      socket_io_error_from_errno (errsv),
-                     _("Unable to get pending error: %s"),
+                     _("Unable to read socket credentials: %s"),
                      socket_strerror (errsv));
       }
     else
