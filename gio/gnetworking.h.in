@@ -34,6 +34,7 @@
 #include <windns.h>
 #include <mswsock.h>
 @WSPIAPI_INCLUDE@
+#include <iphlpapi.h>
 
 #else /* !G_OS_WIN32 */
 

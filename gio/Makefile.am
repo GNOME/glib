@@ -316,7 +316,7 @@ win32_more_sources_for_vcproj = \
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi -lws2_32 -ldnsapi
+platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
 
 giowin32includedir=$(includedir)/gio-win32-2.0/gio
