@@ -153,7 +153,7 @@ struct _GMenuModel
  * GMenuModelClass::get_item_links:
  * @model: the #GMenuModel to query
  * @item_index: The #GMenuItem to query
- * @attributes: (out) (element-type utf8 GLib.MenuModel): Links from the item
+ * @links: (out) (element-type utf8 GLib.MenuModel): Links from the item
  *
  * Gets all the links associated with the item in the menu model.
  */
