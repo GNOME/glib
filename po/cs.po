@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-19 23:44+0000\n"
-"PO-Revision-Date: 2013-06-10 21:26+0200\n"
+"POT-Creation-Date: 2013-08-01 18:45+0000\n"
+"PO-Revision-Date: 2013-07-03 18:05+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -76,14 +76,14 @@ msgid "Not enough space in destination"
 msgstr "Cíl nemá dostatek místa"
 
 #: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:849
-#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:764
-#: ../glib/gconvert.c:1156 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
+#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:467
+#: ../glib/gconvert.c:859 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
 #: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 
-#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:772
-#: ../glib/gconvert.c:1081 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
+#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:475
+#: ../glib/gconvert.c:784 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
@@ -92,14 +92,13 @@ msgstr "Chyba při převodu: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Zrušitelné spuštění není podporováno"
 
-#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:564
-#: ../glib/gconvert.c:642 ../glib/giochannel.c:1414
+#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:347
+#: ../glib/giochannel.c:1414
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Převod ze znakové sady „%s“ do „%s“ není podporován"
 
-#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:568
-#: ../glib/gconvert.c:646
+#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:351
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nelze otevřít převaděč z „%s“ do „%s“"
@@ -1205,11 +1204,11 @@ msgstr "Nelze zpracovat „%s“ jak masku adresy IP"
 #: ../gio/ginetsocketaddress.c:197 ../gio/ginetsocketaddress.c:214
 #: ../gio/gunixsocketaddress.c:211
 msgid "Not enough space for socket address"
-msgstr "Adresa socketu nemá dostatek místa"
+msgstr "Adresa soketu nemá dostatek místa"
 
 #: ../gio/ginetsocketaddress.c:229
 msgid "Unsupported socket address"
-msgstr "Nepodporovaná adresa socketu"
+msgstr "Nepodporovaná adresa soketu"
 
 #: ../gio/ginputstream.c:183
 msgid "Input stream doesn't implement read"
@@ -1994,7 +1993,7 @@ msgstr "připojené neprovádí odhad typu obsahu"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "připojené neprovádí synchronní odhad typu obsahu"
 
-#: ../gio/gnetworkaddress.c:352
+#: ../gio/gnetworkaddress.c:353
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Název počítače „%s“ obsahuje „[“, ale nikoliv „]“"
@@ -2424,20 +2423,20 @@ msgstr "Poskytnut prázdný název schématu\n"
 
 #: ../gio/gsocket.c:312
 msgid "Invalid socket, not initialized"
-msgstr "Neplatný socket, nebyl spuštěn"
+msgstr "Neplatný soket, nebyl spuštěn"
 
 #: ../gio/gsocket.c:319
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "Neplatný socket, spuštění selhalo kvůli: %s"
+msgstr "Neplatný soket, spuštění selhalo kvůli: %s"
 
 #: ../gio/gsocket.c:327
 msgid "Socket is already closed"
-msgstr "Socket je již ukončen"
+msgstr "Soket je již ukončen"
 
 #: ../gio/gsocket.c:335 ../gio/gsocket.c:3510 ../gio/gsocket.c:3565
 msgid "Socket I/O timed out"
-msgstr "Časový limit V/V socketu vypršel"
+msgstr "Časový limit V/V soketu vypršel"
 
 #: ../gio/gsocket.c:482
 #, c-format
@@ -2447,7 +2446,7 @@ msgstr "vytváří se GSocket z fd: %s"
 #: ../gio/gsocket.c:510 ../gio/gsocket.c:564 ../gio/gsocket.c:571
 #, c-format
 msgid "Unable to create socket: %s"
-msgstr "Nelze vytvořit socket: %s"
+msgstr "Nelze vytvořit soket: %s"
 
 #: ../gio/gsocket.c:564
 msgid "Unknown family was specified"
@@ -2517,17 +2516,17 @@ msgstr "Chyba při odesílání dat: %s"
 #: ../gio/gsocket.c:2803
 #, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "Nelze ukončit socket: %s"
+msgstr "Nelze ukončit soket: %s"
 
 #: ../gio/gsocket.c:2882
 #, c-format
 msgid "Error closing socket: %s"
-msgstr "Chyba při zavírání socketu: %s"
+msgstr "Chyba při zavírání soketu: %s"
 
 #: ../gio/gsocket.c:3503
 #, c-format
 msgid "Waiting for socket condition: %s"
-msgstr "Čeká se na stav socketu: %s"
+msgstr "Čeká se na stav soketu: %s"
 
 #: ../gio/gsocket.c:3781 ../gio/gsocket.c:3862
 #, c-format
@@ -2545,8 +2544,8 @@ msgstr "Chyba při získávání zprávy: %s"
 
 #: ../gio/gsocket.c:4357
 #, c-format
-msgid "Unable to get pending error: %s"
-msgstr "Nelze získat nevyřízenou chybu: %s"
+msgid "Unable to read socket credentials: %s"
+msgstr "Nelze číst pověření k soketu: %s"
 
 #: ../gio/gsocket.c:4376
 msgid "g_socket_get_credentials not implemented for this OS"
@@ -2586,7 +2585,7 @@ msgstr "Naslouchající je již uzavřen"
 
 #: ../gio/gsocketlistener.c:228
 msgid "Added socket is closed"
-msgstr "Přidaný socket je uzavřen"
+msgstr "Přidaný soket je uzavřen"
 
 #: ../gio/gsocks4aproxy.c:120
 #, c-format
@@ -2777,7 +2776,7 @@ msgstr "Chyba při odesílání přihlašovacích údajů: "
 #: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr "Chyba při kontrole, zda je SO_PASSCRED povoleno u socketu: %s"
+msgstr "Chyba při kontrole, zda je SO_PASSCRED povoleno u soketu: %s"
 
 #: ../gio/gunixconnection.c:511
 #, c-format
@@ -2823,7 +2822,7 @@ msgstr "Chyba při zápisu do popisovače souboru: %s"
 #: ../gio/gunixsocketaddress.c:234
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
-"V tomto systému nejsou podporovány abstraktní adresy socketů domén UNIX"
+"V tomto systému nejsou podporovány abstraktní adresy soketů domén UNIX"
 
 #: ../gio/gvolume.c:439
 msgid "volume doesn't implement eject"
@@ -2984,47 +2983,47 @@ msgstr "Žádná aplikace s názvem „%s“ nezaregistrovala záložku „%s“
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Nelze rozšířit řádek exec „%s“ pomocí URI „%s“"
 
-#: ../glib/gconvert.c:803 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
+#: ../glib/gconvert.c:506 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
 #: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
 msgid "Partial character sequence at end of input"
 msgstr "Částečná posloupnost znaků na konci vstupu"
 
-#: ../glib/gconvert.c:1053
+#: ../glib/gconvert.c:756
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nelze převést ukončení „%s“ do znakové sady „%s“"
 
-#: ../glib/gconvert.c:1871
+#: ../glib/gconvert.c:1574
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI „%s“ není absolutní URI používající schéma „file“"
 
-#: ../glib/gconvert.c:1881
+#: ../glib/gconvert.c:1584
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI „%s“ místního souboru nesmí obsahovat „#“"
 
-#: ../glib/gconvert.c:1898
+#: ../glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI „%s“ je neplatné"
 
-#: ../glib/gconvert.c:1910
+#: ../glib/gconvert.c:1613
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Název počítače v URI „%s“ je neplatný"
 
-#: ../glib/gconvert.c:1926
+#: ../glib/gconvert.c:1629
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI „%s“ obsahuje nesprávně změněné znaky"
 
-#: ../glib/gconvert.c:2021
+#: ../glib/gconvert.c:1724
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "„%s“ není absolutní cestou"
 
-#: ../glib/gconvert.c:2031
+#: ../glib/gconvert.c:1734
 msgid "Invalid hostname"
 msgstr "Neplatný název počítače"
 
@@ -4046,70 +4045,70 @@ msgstr "název je příliš dlouhý v (*MARK), (*PRUNE), (*SKIP) nebo (*THEN)"
 msgid "character value in \\u.... sequence is too large"
 msgstr "znaková hodnota v posloupnosti \\u.... je příliš vysoká"
 
-#: ../glib/gregex.c:745 ../glib/gregex.c:1899
+#: ../glib/gregex.c:745 ../glib/gregex.c:1914
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Chyba při porovnávání regulárního výrazu %s: %s"
 
-#: ../glib/gregex.c:1319
+#: ../glib/gregex.c:1311
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Knihovna PCRE byla přeložena bez podpory UTF-8"
 
-#: ../glib/gregex.c:1323
+#: ../glib/gregex.c:1315
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Knihovna PCRE byla přeložena bez podpory vlastností UTF-8"
 
-#: ../glib/gregex.c:1331
+#: ../glib/gregex.c:1323
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Knihovna PCRE je přeložena s nekompatibilními volbami"
 
-#: ../glib/gregex.c:1390
+#: ../glib/gregex.c:1382
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Chyba při kompilaci regulárního výrazu %s na znaku %d: %s"
 
-#: ../glib/gregex.c:1432
+#: ../glib/gregex.c:1424
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Chyba při optimalizaci regulárního výrazu %s: %s"
 
-#: ../glib/gregex.c:2331
+#: ../glib/gregex.c:2346
 msgid "hexadecimal digit or '}' expected"
 msgstr "očekáváno číslo nebo „}“"
 
-#: ../glib/gregex.c:2347
+#: ../glib/gregex.c:2362
 msgid "hexadecimal digit expected"
 msgstr "očekáváno šestnáctkové číslo"
 
-#: ../glib/gregex.c:2387
+#: ../glib/gregex.c:2402
 msgid "missing '<' in symbolic reference"
 msgstr "v symbolickém odkazu chybí „<“"
 
-#: ../glib/gregex.c:2396
+#: ../glib/gregex.c:2411
 msgid "unfinished symbolic reference"
 msgstr "neukončený symbolický odkaz"
 
-#: ../glib/gregex.c:2403
+#: ../glib/gregex.c:2418
 msgid "zero-length symbolic reference"
 msgstr "symbolický odkaz o nulové délce"
 
-#: ../glib/gregex.c:2414
+#: ../glib/gregex.c:2429
 msgid "digit expected"
 msgstr "očekáváno číslo"
 
-#: ../glib/gregex.c:2432
+#: ../glib/gregex.c:2447
 msgid "illegal symbolic reference"
 msgstr "nedovolený symbolický odkaz"
 
-#: ../glib/gregex.c:2494
+#: ../glib/gregex.c:2509
 msgid "stray final '\\'"
 msgstr "osamocené koncové „\\“"
 
-#: ../glib/gregex.c:2498
+#: ../glib/gregex.c:2513
 msgid "unknown escape sequence"
 msgstr "neznámá posloupnost pro změnu"
 
-#: ../glib/gregex.c:2508
+#: ../glib/gregex.c:2523
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Chyba při analyzování náhradního textu „%s“ na znaku %lu: %s"
