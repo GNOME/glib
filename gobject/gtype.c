@@ -4496,7 +4496,7 @@ g_type_class_add_private (gpointer g_class,
       TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
       if (node->data->instance.private_size != pnode->data->instance.private_size)
 	{
-	  g_warning ("g_type_add_private() called multiple times for the same type");
+	  g_warning ("g_type_class_add_private() called multiple times for the same type");
 	  return;
 	}
     }
