@@ -67,6 +67,13 @@ test_object_finalize (GObject *gobject)
 {
   g_free (((TestObject *) gobject)->baz);
 
+  /* When the ref_count of an object is zero it is still
+   * possible to notify the property, but it should do
+   * nothing and silenty quit (bug #705570)
+   */
+  g_object_notify (gobject, "foo");
+  g_object_notify_by_pspec (gobject, properties[PROP_BAR]);
+
   G_OBJECT_CLASS (test_object_parent_class)->finalize (gobject);
 }
 

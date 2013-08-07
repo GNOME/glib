@@ -1238,6 +1238,9 @@ g_object_notify_by_pspec (GObject    *object,
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
 
+  if (g_atomic_int_get (&object->ref_count) == 0)
+    return;
+
   g_object_ref (object);
   g_object_notify_by_spec_internal (object, pspec);
   g_object_unref (object);
