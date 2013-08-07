@@ -1,3 +1,35 @@
+Overview of changes fron GLib 2.36.2 to 2.36.4
+==============================================
+
+This change addresses a major issue: despite assurances in the
+documentation for the ext4 filesystem, it is still unsafe to omit a call
+to fsync() when doing atomic replaces, as per g_file_set_contents().
+Some patches have gone into the kernel already, but we are putting the
+fsync() back for safety reasons.
+
+There have also been win32 improvements and a fix where
+GNetworkMonitor failed to detect the connection with some VPN
+configurations.
+
+Translation updates:
+ Assamese
+ Brazilian Portuguese
+ Catalan
+ Czech
+ Galician
+ German
+ Indonesian
+ Kannada
+ Lithuanian
+ Marathi
+ Polish
+ Punjabi
+ Russian
+ Serbian
+ Slovenian
+ Spanish
+
+
 Overview of changes fron GLib 2.36.2 to 2.36.3
 ==============================================
 
