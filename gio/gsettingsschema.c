@@ -701,7 +701,61 @@ g_settings_schema_list (GSettingsSchema *schema,
 
       for (i = 0; i < len; i++)
         if (list[i][0] != '.')
-          schema->items[j++] = g_quark_from_string (list[i]);
+          {
+            if (g_str_has_suffix (list[i], "/"))
+              {
+                /* This is a child.  Check to make sure that
+                 * instantiating the child would actually work before we
+                 * return it from list() and cause a crash.
+                 */
+                GSettingsSchemaSource *source;
+                GVariant *child_schema;
+                GvdbTable *child_table;
+
+                child_schema = gvdb_table_get_raw_value (schema->table, list[i]);
+                if (!child_schema)
+                  continue;
+
+                child_table = NULL;
+
+                for (source = schema_sources; source; source = source->parent)
+                  if ((child_table = gvdb_table_get_table (source->table, g_variant_get_string (child_schema, NULL))))
+                    break;
+
+                g_variant_unref (child_schema);
+
+                /* Schema is not found -> don't add it to the list */
+                if (child_table == NULL)
+                  continue;
+
+                /* Make sure the schema is relocatable or at the
+                 * expected path
+                 */
+                if (gvdb_table_has_value (child_table, ".path"))
+                  {
+                    GVariant *path;
+                    gchar *expected;
+                    gboolean same;
+
+                    path = gvdb_table_get_raw_value (child_table, ".path");
+                    expected = g_strconcat (schema->path, list[i], NULL);
+                    same = g_str_equal (expected, g_variant_get_string (path, NULL));
+                    g_variant_unref (path);
+                    g_free (expected);
+
+                    if (!same)
+                      {
+                        gvdb_table_unref (child_table);
+                        continue;
+                      }
+                  }
+
+                gvdb_table_unref (child_table);
+                /* Else, it's good... */
+              }
+
+            schema->items[j++] = g_quark_from_string (list[i]);
+          }
       schema->n_items = j;
 
       g_strfreev (list);
