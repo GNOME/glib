@@ -155,8 +155,17 @@ g_themed_icon_constructed (GObject *object)
       const char *p;
       char *dashp;
       char *last;
+      gboolean is_symbolic;
+      char *name;
+      char **names;
 
-      p = themed->names[0];
+      is_symbolic = g_str_has_suffix (themed->names[0], "-symbolic");
+      if (is_symbolic)
+        name = g_strndup (themed->names[0], strlen (themed->names[0]) - 9);
+      else
+        name = g_strdup (themed->names[0]);
+
+      p = name;
       while (*p)
         {
           if (*p == '-')
@@ -164,17 +173,31 @@ g_themed_icon_constructed (GObject *object)
           p++;
         }
 
-      last = g_strdup (themed->names[0]);
+      last = name;
 
       g_strfreev (themed->names);
 
-      themed->names = g_new (char *, dashes + 1 + 1);
-      themed->names[i++] = last;
+      names = g_new (char *, dashes + 1 + 1);
+      names[i++] = last;
 
       while ((dashp = strrchr (last, '-')) != NULL)
-        themed->names[i++] = last = g_strndup (last, dashp - last);
+        names[i++] = last = g_strndup (last, dashp - last);
 
-      themed->names[i++] = NULL;
+      names[i++] = NULL;
+
+      if (is_symbolic)
+        {
+          themed->names = g_new (char *, dashes + 1 + 1);
+          for (i = 0; names[i] != NULL; i++)
+            themed->names[i] = g_strconcat (names[i], "-symbolic", NULL);
+
+          themed->names[i] = NULL;
+          g_strfreev (names);
+        }
+      else
+        {
+          themed->names = names;
+        }
     }
 }
 
