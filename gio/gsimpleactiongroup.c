@@ -309,6 +309,8 @@ g_simple_action_group_new (void)
  * Returns: (transfer none): a #GAction, or %NULL
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.38: Use g_action_map_lookup_action()
  */
 GAction *
 g_simple_action_group_lookup (GSimpleActionGroup *simple,
@@ -332,6 +334,8 @@ g_simple_action_group_lookup (GSimpleActionGroup *simple,
  * The action group takes its own reference on @action.
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.38: Use g_action_map_add_action()
  **/
 void
 g_simple_action_group_insert (GSimpleActionGroup *simple,
@@ -352,6 +356,8 @@ g_simple_action_group_insert (GSimpleActionGroup *simple,
  * If no action of this name is in the group then nothing happens.
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.38: Use g_action_map_remove_action()
  **/
 void
 g_simple_action_group_remove (GSimpleActionGroup *simple,
@@ -375,6 +381,8 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
  * and adding them to the action group.
  *
  * Since: 2.30
+ *
+ * Deprecated: 2.38: Use g_action_map_add_action_entries()
  **/
 void
 g_simple_action_group_add_entries (GSimpleActionGroup *simple,
