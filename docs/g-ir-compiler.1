@@ -6,17 +6,12 @@ g-ir-compiler \- typelib compiler.
 [OPTION...] GIRFILE
 .SH DESCRIPTION
 g-ir-compiler converts one or more GIR files into one or more typelib. 
-It can either emit the raw typelib blob (default behavior) or C code
-(--code). The output will be written to standard output unless the --output 
+The output will be written to standard output unless the --output 
 is specified.
 .SH OPTIONS
 .TP
 .B \---help
 Show help options
-.TP
-.B \, ---code
-Emit C code which is suitable for including in a shared library instead
-of a raw typelib.
 .TP
 .B \, ---output=FILENAME
 Save the resulting output in FILENAME.
@@ -26,10 +21,6 @@ Show verbose messages
 .TP
 .B \---debug                       
 Show debug messages
-.TP
-.B \---no-init
-Do not include an initialization snippet to register the typelib in the
-respository. This can only be used if --code is also specified.
 .TP
 .B \---includedir=DIRECTORY
 Adds a directory which will be used to find includes inside the GIR format.
