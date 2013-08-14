@@ -36,7 +36,6 @@
 #include "girparser.h"
 #include "gitypelib-internal.h"
 
-gboolean no_init = FALSE;
 gchar **includedirs = NULL;
 gchar **input = NULL;
 gchar *output = NULL;
@@ -129,7 +128,6 @@ static void log_handler (const gchar *log_domain,
 
 static GOptionEntry options[] = 
 {
-  { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL }, 
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
   { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" }, 
