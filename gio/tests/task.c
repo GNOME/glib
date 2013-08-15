@@ -651,6 +651,21 @@ test_return_if_cancelled (void)
 
 /* test_run_in_thread */
 
+static GMutex run_in_thread_mutex;
+static GCond run_in_thread_cond;
+
+static void
+task_weak_notify (gpointer  user_data,
+                  GObject  *ex_task)
+{
+  gboolean *weak_notify_ran = user_data;
+
+  g_mutex_lock (&run_in_thread_mutex);
+  *weak_notify_ran = TRUE;
+  g_cond_signal (&run_in_thread_cond);
+  g_mutex_unlock (&run_in_thread_mutex);
+}
+
 static void
 run_in_thread_callback (GObject      *object,
                         GAsyncResult *result,
@@ -689,7 +704,11 @@ run_in_thread_thread (GTask        *task,
 
   g_assert (g_thread_self () != main_thread);
 
+  g_mutex_lock (&run_in_thread_mutex);
   *thread_ran = TRUE;
+  g_cond_signal (&run_in_thread_cond);
+  g_mutex_unlock (&run_in_thread_mutex);
+
   g_task_return_int (task, magic);
 }
 
@@ -698,25 +717,32 @@ test_run_in_thread (void)
 {
   GTask *task;
   volatile gboolean thread_ran = FALSE;
+  volatile gboolean weak_notify_ran = FALSE;
   gboolean done = FALSE;
 
   task = g_task_new (NULL, NULL, run_in_thread_callback, &done);
-  g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_object_weak_ref (G_OBJECT (task), task_weak_notify, (gpointer)&weak_notify_ran);
 
   g_task_set_task_data (task, (gpointer)&thread_ran, NULL);
   g_task_run_in_thread (task, run_in_thread_thread);
   g_object_unref (task);
 
+  g_mutex_lock (&run_in_thread_mutex);
   while (!thread_ran)
-    g_usleep (100);
+    g_cond_wait (&run_in_thread_cond, &run_in_thread_mutex);
+  g_mutex_unlock (&run_in_thread_mutex);
 
   g_assert (done == FALSE);
-  g_assert (task != NULL);
+  g_assert (weak_notify_ran == FALSE);
 
   g_main_loop_run (loop);
 
   g_assert (done == TRUE);
-  g_assert (task == NULL);
+
+  g_mutex_lock (&run_in_thread_mutex);
+  while (!weak_notify_ran)
+    g_cond_wait (&run_in_thread_cond, &run_in_thread_mutex);
+  g_mutex_unlock (&run_in_thread_mutex);
 }
 
 /* test_run_in_thread_sync */
@@ -1042,6 +1068,7 @@ test_return_on_cancel (void)
   GTask *task;
   GCancellable *cancellable;
   volatile ThreadState thread_state;
+  volatile gboolean weak_notify_ran = FALSE;
   gboolean callback_ran;
 
   cancellable = g_cancellable_new ();
@@ -1079,6 +1106,7 @@ test_return_on_cancel (void)
   callback_ran = FALSE;
   thread_state = THREAD_STARTING;
   task = g_task_new (NULL, cancellable, return_on_cancel_callback, &callback_ran);
+  g_object_weak_ref (G_OBJECT (task), task_weak_notify, (gpointer)&weak_notify_ran);
   g_task_set_return_on_cancel (task, TRUE);
 
   g_task_set_task_data (task, (gpointer)&thread_state, NULL);
@@ -1099,14 +1127,17 @@ test_return_on_cancel (void)
   g_assert (thread_state == THREAD_RUNNING);
   g_assert (callback_ran == TRUE);
 
+  g_assert (weak_notify_ran == FALSE);
+
   while (thread_state == THREAD_RUNNING)
     g_cond_wait (&roc_finish_cond, &roc_finish_mutex);
   g_mutex_unlock (&roc_finish_mutex);
 
   g_assert (thread_state == THREAD_CANCELLED);
-  /* We can't g_assert (task == NULL) here because it won't become NULL
-   * until a little bit after roc_finish_cond is signaled.
-   */
+  g_mutex_lock (&run_in_thread_mutex);
+  while (!weak_notify_ran)
+    g_cond_wait (&run_in_thread_cond, &run_in_thread_mutex);
+  g_mutex_unlock (&run_in_thread_mutex);
 
   g_cancellable_reset (cancellable);
 
