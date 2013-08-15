@@ -1400,7 +1400,15 @@ get_session_address_dbus_launch (GError **error)
 	  wcscat (args, rundll_path);
 	  wcscat (args, L"\" ");
 	  wcscat (args, gio_path_short);
+#ifdef _MSC_VER
+#if defined(_WIN64) || defined(_M_X64) || defined(_M_AMD64)
+	  wcscat (args, L",g_win32_run_session_bus");
+#else
+	  wcscat (args, L",_g_win32_run_session_bus@16");
+#endif
+#else
 	  wcscat (args, L",g_win32_run_session_bus@16");
+#endif
 
 	  res = CreateProcessW (rundll_path, args,
 				0, 0, FALSE,
