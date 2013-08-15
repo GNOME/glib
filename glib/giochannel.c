@@ -2117,7 +2117,7 @@ g_io_channel_read_chars (GIOChannel  *channel,
 /**
  * g_io_channel_read_unichar:
  * @channel: a #GIOChannel
- * @thechar: a location to return a character
+ * @thechar: (out): a location to return a character
  * @error: a location to return an error of type #GConvertError
  *         or #GIOChannelError
  *
