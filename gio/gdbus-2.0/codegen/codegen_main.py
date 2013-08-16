@@ -166,7 +166,7 @@ def codegen_main():
 
     all_ifaces = []
     for fname in args:
-        f = open(fname)
+        f = open(fname, 'rb')
         xml_data = f.read()
         f.close()
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
