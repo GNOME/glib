@@ -767,9 +767,6 @@
    */
 #define LT_OBJDIR ".libs/"
 
-/* Do we cache iconv descriptors */
-#define NEED_ICONV_CACHE 1
-
 /* didn't find fd_set */
 #define NO_FD_SET 1
 
