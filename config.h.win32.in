@@ -159,6 +159,9 @@
 /* we have the eventfd(2) system call */
 /* #undef HAVE_EVENTFD */
 
+/* Define to 1 if you have the `fallocate' function. */
+/* #undef HAVE_FALLOCATE */
+
 /* Define if we have FAM */
 /* #undef HAVE_FAM */
 
@@ -231,6 +234,12 @@
 /* Define to 1 if you have the `hasmntopt' function. */
 /* #undef HAVE_HASMNTOPT */
 
+/* Define to 1 if you have the `if_indextoname' function. */
+/* This is available on Windows, but the catch is that this will require */
+/* Windows Vista/Server 2008, so disabled for now-please see */
+/* http://msdn.microsoft.com/en-us/library/windows/desktop/bb408408%28v=vs.85%29.aspx */
+/* #undef HAVE_IF_INDEXTONAME */
+
 /* Define to 1 if you have the `if_nametoindex' function. */
 /* This is available on Windows, but the catch is that this will require */
 /* Windows Vista/Server 2008, so disabled for now-please see */
@@ -284,7 +293,7 @@
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
 
-/* Have nl_langinfo (_NL_CTYPE_OUTDIGITn_WC) */
+/* Have nl_langinfo (_NL_CTYPE_OUTDIGITn_MB) */
 /* #undef HAVE_LANGINFO_OUTDIGIT */
 
 /* Have nl_langinfo (PM_STR) */
@@ -398,6 +407,12 @@
 
 /* Have function pthread_condattr_setclock */
 /* #undef HAVE_PTHREAD_CONDATTR_SETCLOCK */
+
+/* Have function pthread_cond_timedwait_monotonic */
+/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC */
+
+/* Have function pthread_cond_timedwait_monotonic_np */
+/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC_NP */
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #define HAVE_PTRDIFF_T 1
@@ -856,7 +871,29 @@
 /* Define to use statvfs() */
 /* #undef USE_STATVFS */
 
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+/* # undef _ALL_SOURCE */
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+/* # undef _GNU_SOURCE */
+#endif
+/* Enable threading extensions on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+/* # undef _POSIX_PTHREAD_SEMANTICS */
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+/* # undef _TANDEM_SOURCE */
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+/* # undef __EXTENSIONS__ */
+#endif
+
 /* using the system-supplied PCRE library */
+/* This is defined in the *_PCRE configurations */
 /* #undef USE_SYSTEM_PCRE */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
@@ -871,6 +908,11 @@
 # endif
 #endif
 
+/* Enable large inode numbers on Mac OS X 10.5.  */
+#ifndef _DARWIN_USE_64_BIT_INODE
+/* # define _DARWIN_USE_64_BIT_INODE 1 */
+#endif
+
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
 
@@ -882,6 +924,16 @@
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
+
+/* Define to 1 if on MINIX. */
+/* #undef _MINIX */
+
+/* Define to 2 if the system does not provide POSIX.1 features except with
+   this defined. */
+/* #undef _POSIX_1_SOURCE */
+
+/* Define to 1 if you need to in order for `stat' and other things to work. */
+/* #undef _POSIX_SOURCE */
 
 /* Target the Windows XP API */
 #define _WIN32_WINNT 0x0501
