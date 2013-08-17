@@ -537,6 +537,11 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
                                                  gpointer        unused_data);
 
 
+typedef enum {
+  G_TEST_RUN_SUCCESS,
+  G_TEST_RUN_FAILURE
+} GTestResult;
+
 /* --- variables --- */
 static int         test_log_fd = -1;
 static gboolean    test_mode_fatal = TRUE;
@@ -548,7 +553,7 @@ static gchar      *test_run_name = "";
 static GSList    **test_filename_free_list;
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
-static guint       test_run_success = FALSE;
+static GTestResult test_run_success = G_TEST_RUN_FAILURE;
 static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
@@ -1572,7 +1577,7 @@ g_test_add_vtable (const char       *testpath,
 void
 g_test_fail (void)
 {
-  test_run_success = FALSE;
+  test_run_success = G_TEST_RUN_FAILURE;
 }
 
 /**
@@ -1824,7 +1829,7 @@ test_case_run (GTestCase *tc)
 {
   gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
   GSList **old_free_list, *filename_free_list = NULL;
-  gboolean success = TRUE;
+  gboolean success = G_TEST_RUN_SUCCESS;
 
   old_free_list = test_filename_free_list;
   test_filename_free_list = &filename_free_list;
@@ -1866,7 +1871,7 @@ test_case_run (GTestCase *tc)
       void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
-      test_run_success = TRUE;
+      test_run_success = G_TEST_RUN_SUCCESS;
       g_test_log_set_fatal_handler (NULL, NULL);
       g_timer_start (test_run_timer);
       fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
@@ -1888,8 +1893,8 @@ test_case_run (GTestCase *tc)
         g_free (fixture);
       g_timer_stop (test_run_timer);
       success = test_run_success;
-      test_run_success = FALSE;
-      largs[0] = success ? 0 : 1; /* OK */
+      test_run_success = G_TEST_RUN_FAILURE;
+      largs[0] = success; /* OK */
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
@@ -1904,7 +1909,7 @@ test_case_run (GTestCase *tc)
   g_free (test_uri_base);
   test_uri_base = old_base;
 
-  return success;
+  return success == G_TEST_RUN_SUCCESS;
 }
 
 static int
