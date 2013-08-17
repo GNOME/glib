@@ -1,4 +1,5 @@
-include $(top_srcdir)/glib.mk
+include $(top_srcdir)/glib-tap.mk
+
 dist_uninstalled_test_data =
 test_ltlibraries =
 

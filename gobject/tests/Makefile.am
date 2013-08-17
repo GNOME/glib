@@ -1,4 +1,4 @@
-include $(top_srcdir)/glib.mk
+include $(top_srcdir)/glib-tap.mk
 
 LDADD = ../libgobject-2.0.la $(top_builddir)/glib/libglib-2.0.la
 AM_CPPFLAGS = -g $(gobject_INCLUDES) $(GLIB_DEBUG_FLAGS)
