@@ -570,6 +570,7 @@ static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
+static gboolean    test_tap_log = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
 static char       *test_argv0 = NULL;
 static char       *test_argv0_dirname;
@@ -658,7 +659,7 @@ g_test_log (GTestLogType lbit,
             guint        n_args,
             long double *largs)
 {
-  gboolean fail = lbit == G_TEST_LOG_STOP_CASE && largs[0] != G_TEST_RUN_SUCCESS;
+  gboolean fail;
   GTestLogMsg msg;
   gchar *astrings[3] = { NULL, NULL, NULL };
   guint8 *dbuffer;
@@ -667,32 +668,67 @@ g_test_log (GTestLogType lbit,
   switch (lbit)
     {
     case G_TEST_LOG_START_BINARY:
-      if (g_test_verbose())
+      if (test_tap_log)
+        g_print ("# random seed: %s\n", string2);
+      else if (g_test_verbose())
         g_print ("GTest: random seed: %s\n", string2);
       break;
     case G_TEST_LOG_START_SUITE:
+      if (test_tap_log)
+        {
+          if (string1[0] != 0)
+            g_print ("# Start of %s tests\n", string1);
+        }
       break;
     case G_TEST_LOG_STOP_SUITE:
+      if (test_tap_log)
+        {
+          if (string1[0] != 0)
+            g_print ("# End of %s tests\n", string1);
+          else
+            g_print ("1..%d\n", test_run_count);
+        }
       break;
     case G_TEST_LOG_STOP_CASE:
-      if (g_test_verbose())
+      fail = largs[0] != G_TEST_RUN_SUCCESS && largs[0] != G_TEST_RUN_SKIPPED;
+      if (test_tap_log)
+        {
+          g_print ("%s %d %s", fail ? "not ok" : "ok", test_run_count, string1);
+          if (largs[0] == G_TEST_RUN_INCOMPLETE)
+            g_print (" # TODO %s\n", string2 ? string2 : "");
+          else if (largs[0] == G_TEST_RUN_SKIPPED)
+            g_print (" # SKIP %s\n", string2 ? string2 : "");
+          else
+            g_print ("\n");
+        }
+      else if (g_test_verbose())
         g_print ("GTest: result: %s\n", fail ? "FAIL" : "OK");
       else if (!g_test_quiet())
         g_print ("%s\n", fail ? "FAIL" : "OK");
       if (fail && test_mode_fatal)
-        abort();
+        {
+          if (test_tap_log)
+            g_print ("Bail out!\n");
+          abort();
+        }
       break;
     case G_TEST_LOG_MIN_RESULT:
-      if (g_test_verbose())
+      if (test_tap_log)
+        g_print ("# min perf: %s\n", string1);
+      else if (g_test_verbose())
         g_print ("(MINPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MAX_RESULT:
-      if (g_test_verbose())
+      if (test_tap_log)
+        g_print ("# max perf: %s\n", string1);
+      else if (g_test_verbose())
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MESSAGE:
     case G_TEST_LOG_ERROR:
-      if (g_test_verbose())
+      if (test_tap_log)
+        g_print ("# %s\n", string1);
+      else if (g_test_verbose())
         g_print ("(MSG: %s)\n", string1);
       break;
     default: ;
@@ -712,7 +748,9 @@ g_test_log (GTestLogType lbit,
   switch (lbit)
     {
     case G_TEST_LOG_START_CASE:
-      if (g_test_verbose())
+      if (test_tap_log)
+        ;
+      else if (g_test_verbose())
         g_print ("GTest: run: %s\n", string1);
       else if (!g_test_quiet())
         g_print ("%s: ", string1);
@@ -754,6 +792,11 @@ parse_args (gint    *argc_p,
       else if (strcmp (argv[i], "--debug-log") == 0)
         {
           test_debug_log = TRUE;
+          argv[i] = NULL;
+        }
+      else if (strcmp (argv[i], "--tap") == 0)
+        {
+          test_tap_log = TRUE;
           argv[i] = NULL;
         }
       else if (strcmp ("--GTestLogFD", argv[i]) == 0 || strncmp ("--GTestLogFD=", argv[i], 13) == 0)
