@@ -354,6 +354,12 @@
  *
  * Debugging macro to check that an expression is true.
  *
+ * If the assertion fails (i.e. the expression is not true),
+ * an error message is logged and the application is either
+ * terminated or the testcase marked as failed.
+ *
+ * See g_test_set_nonfatal_assertions().
+ *
  * Since: 2.38
  */
 
@@ -363,6 +369,12 @@
  *
  * Debugging macro to check an expression is false.
  *
+ * If the assertion fails (i.e. the expression is not false),
+ * an error message is logged and the application is either
+ * terminated or the testcase marked as failed.
+ *
+ * See g_test_set_nonfatal_assertions().
+ *
  * Since: 2.38
  */
 
@@ -371,6 +383,12 @@
  * @expr: the expression to check
  *
  * Debugging macro to check an expression is %NULL.
+ *
+ * If the assertion fails (i.e. the expression is not %NULL),
+ * an error message is logged and the application is either
+ * terminated or the testcase marked as failed.
+ *
+ * See g_test_set_nonfatal_assertions().
  *
  * Since: 2.38
  */
@@ -382,12 +400,13 @@
  *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
  * @s2: another string (may be %NULL)
  *
- * Debugging macro to terminate the application with a warning
- * message if a string comparison fails. The strings are compared
- * using g_strcmp0().
+ * Debugging macro to compare two strings. If the comparison fails,
+ * an error message is logged and the application is either terminated
+ * or the testcase marked as failed.
+ * The strings are compared using g_strcmp0().
  *
  * The effect of <literal>g_assert_cmpstr (s1, op, s2)</literal> is
- * the same as <literal>g_assert (g_strcmp0 (s1, s2) op 0)</literal>.
+ * the same as <literal>g_assert_true (g_strcmp0 (s1, s2) op 0)</literal>.
  * The advantage of this macro is that it can produce a message that
  * includes the actual values of @s1 and @s2.
  *
@@ -405,11 +424,10 @@
  *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
  * @n2: another integer
  *
- * Debugging macro to terminate the application with a warning
- * message if an integer comparison fails.
+ * Debugging macro to compare two integers.
  *
  * The effect of <literal>g_assert_cmpint (n1, op, n2)</literal> is
- * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -423,11 +441,10 @@
  *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
  * @n2: another unsigned integer
  *
- * Debugging macro to terminate the application with a warning
- * message if an unsigned integer comparison fails.
+ * Debugging macro to compare two unsigned integers.
  *
  * The effect of <literal>g_assert_cmpuint (n1, op, n2)</literal> is
- * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -441,8 +458,7 @@
  *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
  * @n2: another unsigned integer
  *
- * Debugging macro to terminate the application with a warning
- * message if an unsigned integer comparison fails.
+ * Debugging macro to compare to unsigned integers.
  *
  * This is a variant of g_assert_cmpuint() that displays the numbers
  * in hexadecimal notation in the message.
@@ -457,11 +473,10 @@
  *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
  * @n2: another floating point number
  *
- * Debugging macro to terminate the application with a warning
- * message if a floating point number comparison fails.
+ * Debugging macro to compare two floating point numbers.
  *
  * The effect of <literal>g_assert_cmpfloat (n1, op, n2)</literal> is
- * the same as <literal>g_assert (n1 op n2)</literal>. The advantage
+ * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -472,11 +487,10 @@
  * g_assert_no_error:
  * @err: a #GError, possibly %NULL
  *
- * Debugging macro to terminate the application with a warning
- * message if a method has returned a #GError.
+ * Debugging macro to check that a #GError is not set.
  *
  * The effect of <literal>g_assert_no_error (err)</literal> is
- * the same as <literal>g_assert (err == NULL)</literal>. The advantage
+ * the same as <literal>g_assert_true (err == NULL)</literal>. The advantage
  * of this macro is that it can produce a message that includes
  * the error message and code.
  *
@@ -489,11 +503,11 @@
  * @dom: the expected error domain (a #GQuark)
  * @c: the expected error code
  *
- * Debugging macro to terminate the application with a warning
- * message if a method has not returned the correct #GError.
+ * Debugging macro to check that a method has returned
+ * the correct #GError.
  *
  * The effect of <literal>g_assert_error (err, dom, c)</literal> is
- * the same as <literal>g_assert (err != NULL &amp;&amp; err->domain
+ * the same as <literal>g_assert_true (err != NULL &amp;&amp; err->domain
  * == dom &amp;&amp; err->code == c)</literal>. The advantage of this
  * macro is that it can produce a message that includes the incorrect
  * error message and code.
