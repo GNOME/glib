@@ -133,6 +133,8 @@ GLIB_AVAILABLE_IN_2_38
 void    g_test_incomplete               (const gchar *msg);
 GLIB_AVAILABLE_IN_2_38
 void    g_test_skip                     (const gchar *msg);
+GLIB_AVAILABLE_IN_2_38
+gboolean g_test_failed                  (void);
 
 /* hook up a test with fixture under test path */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \

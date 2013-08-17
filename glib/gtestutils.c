@@ -1632,6 +1632,30 @@ g_test_skip (const gchar *msg)
 }
 
 /**
+ * g_test_failed:
+ *
+ * Returns whether a test has already failed. This will
+ * be the case when g_test_fail(), g_test_incomplete()
+ * or g_test_skip() have been called, but also if an
+ * assertion has failed.
+ *
+ * This can be useful to return early from a test if
+ * continuing after a failed assertion might be harmful.
+ *
+ * The return value of this function is only meaningful
+ * if it is called from inside a test function.
+ *
+ * Returns: %TRUE if the test has failed
+ *
+ * Since: 2.38
+ */
+gboolean
+g_test_failed (void)
+{
+  return test_run_success != G_TEST_RUN_SUCCESS;
+}
+
+/**
  * GTestFunc:
  *
  * The type used for test case functions.
