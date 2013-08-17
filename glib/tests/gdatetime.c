@@ -812,7 +812,6 @@ test_GDateTime_printf (void)
   gchar dst[64];
   struct tm tt;
   time_t t;
-  gchar t_str[16];
 
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
 GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
@@ -855,7 +854,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   tt.tm_min = 0;
   tt.tm_hour = 0;
   t = mktime (&tt);
-  g_sprintf (t_str, "%ld", t);
 
   TEST_PRINTF ("%a", "Sat");
   TEST_PRINTF ("%A", "Saturday");
@@ -887,7 +885,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF_TIME (13, 13, 13, "%r", "01:13:13 PM");
   TEST_PRINTF ("%R", "00:00");
   TEST_PRINTF_TIME (13, 13, 31, "%R", "13:13");
-  //TEST_PRINTF ("%s", t_str);
   TEST_PRINTF ("%S", "00");
   TEST_PRINTF ("%t", "	");
   TEST_PRINTF ("%u", "6");
