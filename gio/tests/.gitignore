@@ -57,6 +57,7 @@ gdbus-introspection
 gdbus-message
 gdbus-names
 gdbus-non-socket
+gdbus-overflow
 gdbus-peer
 gdbus-peer-object-manager
 gdbus-proxy
@@ -83,6 +84,7 @@ live-g-file
 memory-input-stream
 memory-output-stream
 mimeapps
+monitor
 network-address
 network-monitor
 org.gtk.test.enums.xml

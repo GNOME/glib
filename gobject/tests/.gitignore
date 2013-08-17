@@ -10,6 +10,7 @@ qdata
 reference
 signals
 threadtests
+type
 valuearray
 private
 marshalers.[ch]
