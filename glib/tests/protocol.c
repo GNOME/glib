@@ -121,7 +121,7 @@ static void
 test_message (void)
 {
   gchar* argv[] = {
-          argv0,
+          (gchar*)argv0,
           NULL,
           "--GTestSubprocess",
           "-p", "/glib/testing/protocol/debug",
@@ -241,7 +241,7 @@ test_error (void)
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       gchar* argv[] = {
-              argv0,
+              (gchar*)argv0,
               NULL,
               "--GTestSubprocess",
               "-p", tests[i],
