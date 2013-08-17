@@ -129,6 +129,10 @@ void    g_test_add_data_func_full       (const char     *testpath,
 /* tell about failure */
 GLIB_AVAILABLE_IN_2_30
 void    g_test_fail                     (void);
+GLIB_AVAILABLE_IN_2_38
+void    g_test_incomplete               (const gchar *msg);
+GLIB_AVAILABLE_IN_2_38
+void    g_test_skip                     (const gchar *msg);
 
 /* hook up a test with fixture under test path */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \

@@ -539,7 +539,9 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
 
 typedef enum {
   G_TEST_RUN_SUCCESS,
-  G_TEST_RUN_FAILURE
+  G_TEST_RUN_SKIPPED,
+  G_TEST_RUN_FAILURE,
+  G_TEST_RUN_INCOMPLETE
 } GTestResult;
 
 /* --- variables --- */
@@ -554,6 +556,7 @@ static GSList    **test_filename_free_list;
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
 static GTestResult test_run_success = G_TEST_RUN_FAILURE;
+static gchar      *test_run_msg = NULL;
 static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
@@ -655,7 +658,7 @@ g_test_log (GTestLogType lbit,
             guint        n_args,
             long double *largs)
 {
-  gboolean fail = lbit == G_TEST_LOG_STOP_CASE && largs[0] != 0;
+  gboolean fail = lbit == G_TEST_LOG_STOP_CASE && largs[0] != G_TEST_RUN_SUCCESS;
   GTestLogMsg msg;
   gchar *astrings[3] = { NULL, NULL, NULL };
   guint8 *dbuffer;
@@ -1581,6 +1584,54 @@ g_test_fail (void)
 }
 
 /**
+ * g_test_incomplete:
+ * @msg: (allow-none): explanation
+ *
+ * Indicates that a test failed because of some incomplete
+ * functionality. This function can be called multiple times
+ * from the same test.
+ *
+ * Calling this function will not stop the test from running, you
+ * need to return from the test function yourself. So you can
+ * produce additional diagnostic messages or even continue running
+ * the test.
+ *
+ * If not called from inside a test, this function does nothing.
+ *
+ * Since: 2.38
+ */
+void
+g_test_incomplete (const gchar *msg)
+{
+  test_run_success = G_TEST_RUN_INCOMPLETE;
+  g_free (test_run_msg);
+  test_run_msg = g_strdup (msg);
+}
+
+/**
+ * g_test_skip:
+ * @msg: (allow-none): explanation
+ *
+ * Indicates that a test was skipped.
+ *
+ * Calling this function will not stop the test from running, you
+ * need to return from the test function yourself. So you can
+ * produce additional diagnostic messages or even continue running
+ * the test.
+ *
+ * If not called from inside a test, this function does nothing.
+ *
+ * Since: 2.38
+ */
+void
+g_test_skip (const gchar *msg)
+{
+  test_run_success = G_TEST_RUN_SKIPPED;
+  g_free (test_run_msg);
+  test_run_msg = g_strdup (msg);
+}
+
+/**
  * GTestFunc:
  *
  * The type used for test case functions.
@@ -1872,6 +1923,7 @@ test_case_run (GTestCase *tc)
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
       test_run_success = G_TEST_RUN_SUCCESS;
+      g_clear_pointer (&test_run_msg, g_free);
       g_test_log_set_fatal_handler (NULL, NULL);
       g_timer_start (test_run_timer);
       fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
@@ -1897,7 +1949,8 @@ test_case_run (GTestCase *tc)
       largs[0] = success; /* OK */
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
-      g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
+      g_test_log (G_TEST_LOG_STOP_CASE, test_run_name, test_run_msg, G_N_ELEMENTS (largs), largs);
+      g_clear_pointer (&test_run_msg, g_free);
       g_timer_destroy (test_run_timer);
     }
 
