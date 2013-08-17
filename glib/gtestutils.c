@@ -598,6 +598,7 @@ static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
 static gboolean    test_tap_log = FALSE;
+static gboolean    test_nonfatal_assertions = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
 static char       *test_argv0 = NULL;
 static char       *test_argv0_dirname;
@@ -1726,6 +1727,31 @@ g_test_failed (void)
 }
 
 /**
+ * g_test_set_nonfatal_assertions:
+ *
+ * Changes the behaviour of g_assert_cmpstr(), g_assert_cmpint(),
+ * g_assert_cmpuint(), g_assert_cmphex(), g_assert_cmpfloat(),
+ * g_assert_true(), g_assert_false(), g_assert_null(), g_assert_no_error(),
+ * g_assert_error(), g_test_assert_expected_messages() and the various
+ * g_test_trap_assert_*() macros to not abort to program, but instead
+ * call g_test_fail() and continue.
+ *
+ * Note that the g_assert_not_reached() and g_assert() are not
+ * affected by this.
+ *
+ * This function can only be called after g_test_init().
+ *
+ * Since: 2.38
+ */
+void
+g_test_set_nonfatal_assertions (void)
+{
+  if (!g_test_config_vars->test_initialized)
+    g_error ("g_test_set_nonfatal_assertions called without g_test_init");
+  test_nonfatal_assertions = TRUE;
+}
+
+/**
  * GTestFunc:
  *
  * The type used for test case functions.
@@ -2252,6 +2278,7 @@ g_assertion_message_expr (const char     *domain,
     s = g_strconcat ("assertion failed: (", expr, ")", NULL);
   g_assertion_message (domain, file, line, func, s);
   g_free (s);
+  abort ();
 }
 
 void

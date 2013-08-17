@@ -148,6 +148,8 @@ GLIB_AVAILABLE_IN_2_38
 void    g_test_skip                     (const gchar *msg);
 GLIB_AVAILABLE_IN_2_38
 gboolean g_test_failed                  (void);
+GLIB_AVAILABLE_IN_2_38
+void    g_test_set_nonfatal_assertions  (void);
 
 /* hook up a test with fixture under test path */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \
@@ -265,7 +267,7 @@ void    g_assertion_message             (const char     *domain,
                                          const char     *file,
                                          int             line,
                                          const char     *func,
-                                         const char     *message) G_GNUC_NORETURN;
+                                         const char     *message);
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
@@ -280,7 +282,7 @@ void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *expr,
                                          const char     *arg1,
                                          const char     *cmp,
-                                         const char     *arg2) G_GNUC_NORETURN;
+                                         const char     *arg2);
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *file,
@@ -290,7 +292,7 @@ void    g_assertion_message_cmpnum      (const char     *domain,
                                          long double     arg1,
                                          const char     *cmp,
                                          long double     arg2,
-                                         char            numtype) G_GNUC_NORETURN;
+                                         char            numtype);
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_error       (const char     *domain,
                                          const char     *file,
@@ -299,7 +301,7 @@ void    g_assertion_message_error       (const char     *domain,
                                          const char     *expr,
                                          const GError   *error,
                                          GQuark          error_domain,
-                                         int             error_code) G_GNUC_NORETURN;
+                                         int             error_code);
 GLIB_AVAILABLE_IN_ALL
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
