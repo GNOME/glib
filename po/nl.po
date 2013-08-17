@@ -1699,7 +1699,7 @@ msgstr "Fout bij het aanmaken van map: %s"
 #: ../gio/glocalfile.c:2234
 #, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "Bestandssysteem ondersteund geen symbolische verwijzingen"
+msgstr "Bestandssysteem ondersteunt geen symbolische verwijzingen"
 
 #: ../gio/glocalfile.c:2238
 #, c-format
