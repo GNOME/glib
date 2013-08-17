@@ -128,6 +128,17 @@ test_GDateTime_new_from_unix (void)
 }
 
 static void
+test_GDateTime_invalid (void)
+{
+  GDateTime *dt;
+
+  g_test_bug ("702674");
+
+  dt = g_date_time_new_utc (2013, -2147483647, 31, 17, 15, 48);
+  g_assert (dt == NULL);
+}
+
+static void
 test_GDateTime_compare (void)
 {
   GDateTime *dt1, *dt2;
@@ -1233,7 +1244,7 @@ test_z (void)
   g_test_bug ("642935");
 
   tz = g_time_zone_new ("-08:00");
-  dt = g_date_time_new (tz, 0, 0, 0, 0, 0, 0);
+  dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
   p = g_date_time_format (dt, "%z");
   g_assert_cmpstr (p, ==, "-0800");
   g_date_time_unref (dt);
@@ -1540,6 +1551,7 @@ main (gint   argc,
 
   /* GDateTime Tests */
 
+  g_test_add_func ("/GDateTime/invalid", test_GDateTime_invalid);
   g_test_add_func ("/GDateTime/add_days", test_GDateTime_add_days);
   g_test_add_func ("/GDateTime/add_full", test_GDateTime_add_full);
   g_test_add_func ("/GDateTime/add_hours", test_GDateTime_add_hours);

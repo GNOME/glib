@@ -948,6 +948,14 @@ g_date_time_new (GTimeZone *tz,
   GDateTime *datetime;
   gint64 full_time;
 
+  if (year < 1 || year > 9999 ||
+      month < 1 || month > 12 ||
+      day < 1 || day > 31 ||
+      hour < 0 || hour > 23 ||
+      minute < 0 || minute > 59 ||
+      seconds < 0.0 || seconds >= 60.0)
+    return NULL;
+
   datetime = g_date_time_alloc (tz);
   datetime->days = ymd_to_days (year, month, day);
   datetime->usec = (hour   * USEC_PER_HOUR)
