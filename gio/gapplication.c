@@ -1750,9 +1750,9 @@ g_application_lookup_action (GActionMap  *action_map,
 {
   GApplication *application = G_APPLICATION (action_map);
 
-  g_return_val_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions), NULL);
+  g_return_val_if_fail (G_IS_ACTION_MAP (application->priv->actions), NULL);
 
-  return g_simple_action_group_lookup (G_SIMPLE_ACTION_GROUP (application->priv->actions), action_name);
+  return g_action_map_lookup_action (G_ACTION_MAP (application->priv->actions), action_name);
 }
 
 static void
@@ -1761,9 +1761,9 @@ g_application_add_action (GActionMap *action_map,
 {
   GApplication *application = G_APPLICATION (action_map);
 
-  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions));
+  g_return_if_fail (G_IS_ACTION_MAP (application->priv->actions));
 
-  g_simple_action_group_insert (G_SIMPLE_ACTION_GROUP (application->priv->actions), action);
+  g_action_map_add_action (G_ACTION_MAP (application->priv->actions), action);
 }
 
 static void
@@ -1772,9 +1772,9 @@ g_application_remove_action (GActionMap  *action_map,
 {
   GApplication *application = G_APPLICATION (action_map);
 
-  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (application->priv->actions));
+  g_return_if_fail (G_IS_ACTION_MAP (application->priv->actions));
 
-  g_simple_action_group_remove (G_SIMPLE_ACTION_GROUP (application->priv->actions), action_name);
+  g_action_map_remove_action (G_ACTION_MAP (application->priv->actions), action_name);
 }
 
 static void
