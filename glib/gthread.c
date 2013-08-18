@@ -802,7 +802,7 @@ g_thread_proxy (gpointer data)
 
 /**
  * g_thread_new:
- * @name: a name for the new thread
+ * @name: (allow-none): an (optional) name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  *
@@ -813,6 +813,7 @@ g_thread_proxy (gpointer data)
  * with g_thread_join().
  *
  * The @name can be useful for discriminating threads in a debugger.
+ * It is not used for other purposes and does not have to be unique.
  * Some systems restrict the length of @name to 16 bytes.
  *
  * If the thread can not be created the program aborts. See
@@ -843,7 +844,7 @@ g_thread_new (const gchar *name,
 
 /**
  * g_thread_try_new:
- * @name: a name for the new thread
+ * @name: (allow-none): an (optional) name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  * @error: return location for error, or %NULL
