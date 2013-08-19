@@ -615,6 +615,9 @@ _g_uri_parse_authority (const char  *uri,
   if (host)
     *host = g_uri_unescape_segment (start, p - 1, NULL);
 
+  if (c == ']')
+    c = *p++;
+
   if (c == ':')
     {
       /* Decode pot:
