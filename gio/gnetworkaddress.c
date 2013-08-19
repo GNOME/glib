@@ -561,6 +561,8 @@ _g_uri_parse_authority (const char  *uri,
   /* If IPv6 or IPvFuture */
   if (*p == '[')
     {
+      gboolean has_scope_id = FALSE, has_bad_scope_id = FALSE;
+
       start++;
       p++;
       while (1)
@@ -570,6 +572,14 @@ _g_uri_parse_authority (const char  *uri,
 	  if (c == ']')
 	    break;
 
+          if (c == '%' && !has_scope_id)
+            {
+              has_scope_id = TRUE;
+              if (p[0] != '2' || p[1] != '5')
+                has_bad_scope_id = TRUE;
+              continue;
+            }
+
 	  /* unreserved /  sub-delims */
 	  if (!(g_ascii_isalnum (c) ||
 		strchr (G_URI_OTHER_UNRESERVED, c) ||
@@ -578,6 +588,16 @@ _g_uri_parse_authority (const char  *uri,
 		c == '.'))
 	    goto error;
 	}
+
+      if (host)
+        {
+          if (has_bad_scope_id)
+            *host = g_strndup (start, p - start - 1);
+          else
+            *host = g_uri_unescape_segment (start, p - 1, NULL);
+        }
+
+      c = *p++;
     }
   else
     {
@@ -610,17 +630,14 @@ _g_uri_parse_authority (const char  *uri,
 		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c)))
 	    goto error;
 	}
+
+      if (host)
+        *host = g_uri_unescape_segment (start, p - 1, NULL);
     }
-
-  if (host)
-    *host = g_uri_unescape_segment (start, p - 1, NULL);
-
-  if (c == ']')
-    c = *p++;
 
   if (c == ':')
     {
-      /* Decode pot:
+      /* Decode port:
        *  port          = *DIGIT
        */
       guint tmp = 0;
