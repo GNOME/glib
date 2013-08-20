@@ -1,3 +1,48 @@
+Overview of changes from GLib 2.37.5 to 2.37.6
+==============================================
+
+* Tests using the g_test facilities can now generate TAP output
+
+* Bugs fixed:
+ 680926 generic type fallback logic is broken for -symbolic
+ 684327 setting null icon to icon list
+ 689245 GSocket unable to reuse (address,port) on Mac OS X
+ 692125 Support TAP as GTest output format
+ 693335 build: fix dtrace-related warnings
+ 696633 gdbus-codegen trips over unicode chars when using python 3.x
+ 696970 Compiling 2.36.0 for win64 fails
+ 697185 GSocket – Allow specifying the multicast interface from...
+ 700268 Add support for using the clang analyzer
+ 701318 Add G_SPAWN_DEFAULT to GSpawnFlags
+ 701529 glib/tests/gdatetime: use UTC time in test_GDateTime_diff()
+ 701800 a new approach to reporting critical errors
+ 702674 g_date_time_new_utc crash
+ 704165 GLib.IOChannel read_unichar() fails
+ 705075 Simplify g_get_tmp_dir()
+ 705152 Race in glib/task.test
+ 705398 gtype: Fix typo in g_type_class_add_private() error message
+ 705570 Check ref_count in g_object_notify_by_pspec
+ 705600 Deprecate GSimpleActionGroup functions?
+
+* Updated translations:
+ Assamese
+ Brazilian Portuguese
+ Czech
+ Dutch
+ Galician
+ Gujarati
+ Hebrew
+ Italian
+ Lithuanian
+ Marathi
+ Norwegian bokmål
+ Russian
+ Slovenian
+ Spanish
+ Thai
+ Traditional Chinese
+
+
 Overview of changes from GLib 2.37.4 to 2.37.5
 ==============================================
 
