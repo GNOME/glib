@@ -46,6 +46,7 @@ EXTRA_DIST += 			\
 	autogen.sh		\
 	glib.mk			\
 	glib-tap.mk		\
+	tap-test		\
 	makefile.msc		\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
