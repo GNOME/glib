@@ -1,5 +1,11 @@
 # GLIB - Library of useful C routines
 
+TESTS_ENVIRONMENT= \
+	G_TEST_SRCDIR="$(abs_srcdir)" 		\
+	G_TEST_BUILDDIR="$(abs_builddir)" 	\
+	G_DEBUG=gc-friendly 			\
+	MALLOC_CHECK_=2 			\
+	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
 LOG_COMPILER = $(top_srcdir)/tap-test
 
