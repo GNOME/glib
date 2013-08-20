@@ -175,6 +175,7 @@ test_programs += \
 
 # some testing of gtester functionality
 XMLLINT = xmllint
+GTESTER = $(top_builddir)/glib/gtester
 
 gtester-xmllint-check: # check testreport xml with xmllint if present
 	${GTESTER} -k --quiet -o tmpsample.xml --test-arg=--gtester-selftest ${GTESTER}

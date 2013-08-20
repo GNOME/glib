@@ -44,7 +44,8 @@ EXTRA_DIST += 			\
 	README.win32		\
 	HACKING			\
 	autogen.sh		\
-	glib.mk		\
+	glib.mk			\
+	glib-tap.mk		\
 	makefile.msc		\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
