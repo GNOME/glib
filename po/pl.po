@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-20 20:29+0200\n"
-"PO-Revision-Date: 2013-08-20 20:30+0200\n"
+"POT-Creation-Date: 2013-08-20 23:27+0200\n"
+"PO-Revision-Date: 2013-08-20 23:28+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -3107,7 +3107,7 @@ msgstr "PM"
 #: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %-d %b %Y, %T"
+msgstr "%a %e %b %Y, %H∶%M∶%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:213
@@ -3119,13 +3119,13 @@ msgstr "%e %b %Y"
 #: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr "%H:%M:%S"
+msgstr "%H∶%M∶%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:219
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%I:%M:%S %p"
+msgstr "%I∶%M∶%S %p"
 
 #: ../glib/gdatetime.c:232
 msgctxt "full month name"
