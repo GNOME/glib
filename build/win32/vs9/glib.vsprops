@@ -50,6 +50,10 @@ copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h&#x0D;&#x0A;
 		Value="2.0"
 	/>
 	<UserMacro
+		Name="GLibBundledPCREDefines"
+		Value="PCRE_STATIC;LINK_SIZE=2;MAX_NAME_SIZE=32;MAX_NAME_COUNT=10000;NEWLINE=-1;POSIX_MALLOC_THRESHOLD=10;MATCH_LIMIT=10000000;MATCH_LIMIT_RECURSION=10000000;SUPPORT_UCP;SUPPORT_UTF;SUPPORT_UTF8"
+	/>
+	<UserMacro
 		Name="GlibDoInstall"
 		Value="
 mkdir $(CopyDir)&#x0D;&#x0A;
