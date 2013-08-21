@@ -39,7 +39,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -103,7 +103,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib"
+				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
