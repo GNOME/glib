@@ -890,7 +890,7 @@
 #endif
 
 /* using the system-supplied PCRE library */
-/* This is defined in the *_PCRE configurations */
+/* This is defined in the *_PCRE MSVC project configs */
 /* #undef USE_SYSTEM_PCRE */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
@@ -914,10 +914,11 @@
 /* #undef _FILE_OFFSET_BITS */
 
 /* defines how to decorate public symbols while building */
-#define _GLIB_EXTERN __declspec (dllexport)
-
-/* Make all glibc extensions visible */
-/* #undef _GNU_SOURCE */
+#ifdef _MSC_VER
+#define _GLIB_EXTERN __declspec (dllexport) extern
+#else
+#define _GLIB_EXTERN __attribute__((visibility("default"))) __declspec (dllexport) extern
+#endif
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
