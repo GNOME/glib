@@ -925,7 +925,7 @@ g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
   resolver_class->lookup_records_async     = lookup_records_async;
   resolver_class->lookup_records_finish    = lookup_records_finish;
 
-  /* Initialize _g_resolver_addrinfo_hints */
+  /* Initialize addrinfo_hints */
 #ifdef AI_ADDRCONFIG
   addrinfo_hints.ai_flags |= AI_ADDRCONFIG;
 #endif

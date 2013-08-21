@@ -247,29 +247,17 @@ g_network_address_set_addresses (GNetworkAddress *addr,
 static gboolean
 g_network_address_parse_sockaddr (GNetworkAddress *addr)
 {
-  struct addrinfo hints, *res = NULL;
   GSocketAddress *sockaddr;
-  gchar port[32];
 
-  memset (&hints, 0, sizeof (hints));
-  hints.ai_socktype = SOCK_STREAM;
-  hints.ai_flags = AI_NUMERICHOST
-#ifdef AI_NUMERICSERV
-    | AI_NUMERICSERV
-#endif
-    ;
-  g_snprintf (port, sizeof (port), "%u", addr->priv->port);
-
-  if (getaddrinfo (addr->priv->hostname, port, &hints, &res) != 0)
+  sockaddr = g_inet_socket_address_new_from_string (addr->priv->hostname,
+                                                    addr->priv->port);
+  if (sockaddr)
+    {
+      addr->priv->sockaddrs = g_list_prepend (addr->priv->sockaddrs, sockaddr);
+      return TRUE;
+    }
+  else
     return FALSE;
-
-  sockaddr = g_socket_address_new_from_native (res->ai_addr, res->ai_addrlen);
-  freeaddrinfo (res);
-  if (!sockaddr || !G_IS_INET_SOCKET_ADDRESS (sockaddr))
-    return FALSE;
-
-  addr->priv->sockaddrs = g_list_prepend (addr->priv->sockaddrs, sockaddr);
-  return TRUE;
 }
 
 /**

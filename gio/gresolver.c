@@ -283,6 +283,43 @@ remove_duplicates (GList *addrs)
     }
 }
 
+/* Note that this does not follow the "FALSE means @error is set"
+ * convention. The return value tells the caller whether it should
+ * return @addrs and @error to the caller right away, or if it should
+ * continue and trying to resolve the name as a hostname.
+ */
+static gboolean
+handle_ip_address (const char  *hostname,
+                   GList      **addrs,
+                   GError     **error)
+{
+  GInetAddress *addr;
+  struct in_addr ip4addr;
+
+  addr = g_inet_address_new_from_string (hostname);
+  if (addr)
+    {
+      *addrs = g_list_append (NULL, addr);
+      return TRUE;
+    }
+
+  *addrs = NULL;
+
+  /* Reject non-standard IPv4 numbers-and-dots addresses.
+   * g_inet_address_new_from_string() will have accepted any "real" IP
+   * address, so if inet_aton() succeeds, then it's an address we want
+   * to reject.
+   */
+  if (inet_aton (hostname, &ip4addr))
+    {
+      g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                   _("Error resolving '%s': %s"),
+                   hostname, gai_strerror (EAI_NODATA));
+      return TRUE;
+    }
+
+  return FALSE;
+}
 
 /**
  * g_resolver_lookup_by_name:
@@ -328,7 +365,6 @@ g_resolver_lookup_by_name (GResolver     *resolver,
                            GCancellable  *cancellable,
                            GError       **error)
 {
-  GInetAddress *addr;
   GList *addrs;
   gchar *ascii_hostname = NULL;
 
@@ -336,9 +372,8 @@ g_resolver_lookup_by_name (GResolver     *resolver,
   g_return_val_if_fail (hostname != NULL, NULL);
 
   /* Check if @hostname is just an IP address */
-  addr = g_inet_address_new_from_string (hostname);
-  if (addr)
-    return g_list_append (NULL, addr);
+  if (handle_ip_address (hostname, &addrs, error))
+    return addrs;
 
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
@@ -375,22 +410,24 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
                                  GAsyncReadyCallback  callback,
                                  gpointer             user_data)
 {
-  GInetAddress *addr;
   gchar *ascii_hostname = NULL;
+  GList *addrs;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_RESOLVER (resolver));
   g_return_if_fail (hostname != NULL);
 
   /* Check if @hostname is just an IP address */
-  addr = g_inet_address_new_from_string (hostname);
-  if (addr)
+  if (handle_ip_address (hostname, &addrs, &error))
     {
       GTask *task;
 
       task = g_task_new (resolver, cancellable, callback, user_data);
       g_task_set_source_tag (task, g_resolver_lookup_by_name_async);
-      g_task_return_pointer (task, g_list_append (NULL, addr),
-                             (GDestroyNotify) g_resolver_free_addresses);
+      if (addrs)
+        g_task_return_pointer (task, addrs, (GDestroyNotify) g_resolver_free_addresses);
+      else
+        g_task_return_error (task, error);
       g_object_unref (task);
       return;
     }

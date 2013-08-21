@@ -54,21 +54,24 @@ struct _GInetSocketAddressClass
 };
 
 GLIB_AVAILABLE_IN_ALL
-GType           g_inet_socket_address_get_type     (void) G_GNUC_CONST;
+GType           g_inet_socket_address_get_type        (void) G_GNUC_CONST;
 
 GLIB_AVAILABLE_IN_ALL
-GSocketAddress *g_inet_socket_address_new          (GInetAddress       *address,
-						    guint16             port);
+GSocketAddress *g_inet_socket_address_new             (GInetAddress       *address,
+                                                       guint16             port);
+GLIB_AVAILABLE_IN_2_40
+GSocketAddress *g_inet_socket_address_new_from_string (const char         *address,
+                                                       guint               port);
 
 GLIB_AVAILABLE_IN_ALL
-GInetAddress *  g_inet_socket_address_get_address  (GInetSocketAddress *address);
+GInetAddress *  g_inet_socket_address_get_address     (GInetSocketAddress *address);
 GLIB_AVAILABLE_IN_ALL
-guint16         g_inet_socket_address_get_port     (GInetSocketAddress *address);
+guint16         g_inet_socket_address_get_port        (GInetSocketAddress *address);
 
 GLIB_AVAILABLE_IN_2_32
-guint32         g_inet_socket_address_get_flowinfo (GInetSocketAddress *address);
+guint32         g_inet_socket_address_get_flowinfo    (GInetSocketAddress *address);
 GLIB_AVAILABLE_IN_2_32
-guint32         g_inet_socket_address_get_scope_id (GInetSocketAddress *address);
+guint32         g_inet_socket_address_get_scope_id    (GInetSocketAddress *address);
 
 G_END_DECLS
 

@@ -329,6 +329,80 @@ g_inet_socket_address_new (GInetAddress *address,
 }
 
 /**
+ * g_inet_socket_address_new_from_string:
+ * @address: the string form of an IP address
+ * @port: a port number
+ *
+ * Creates a new #GInetSocketAddress for @address and @port.
+ *
+ * If @address is an IPv6 address, it can also contain a scope ID
+ * (separated from the address by a "<literal>%</literal>").
+ *
+ * Returns: a new #GInetSocketAddress, or %NULL if @address cannot be
+ * parsed.
+ *
+ * Since: 2.40
+ */
+GSocketAddress *
+g_inet_socket_address_new_from_string (const char *address,
+                                       guint       port)
+{
+  static struct addrinfo *hints, hints_struct;
+  GSocketAddress *saddr;
+  GInetAddress *iaddr;
+  struct addrinfo *res;
+  gint status;
+
+  if (strchr (address, ':'))
+    {
+      /* IPv6 address (or it's invalid). We use getaddrinfo() because
+       * it will handle parsing a scope_id as well.
+       */
+
+      if (G_UNLIKELY (g_once_init_enter (&hints)))
+        {
+          hints_struct.ai_socktype = SOCK_STREAM;
+          hints_struct.ai_flags = AI_NUMERICHOST;
+          g_once_init_leave (&hints, &hints_struct);
+        }
+
+      status = getaddrinfo (address, NULL, hints, &res);
+      if (status != 0)
+        return NULL;
+
+      if (res->ai_family == AF_INET6 &&
+          res->ai_addrlen == sizeof (struct sockaddr_in6))
+        {
+          ((struct sockaddr_in6 *)res->ai_addr)->sin6_port = g_htons (port);
+          saddr = g_socket_address_new_from_native (res->ai_addr, res->ai_addrlen);
+        }
+      else
+        saddr = NULL;
+
+      freeaddrinfo (res);
+    }
+  else
+    {
+      /* IPv4 (or invalid). We don't want to use getaddrinfo() here,
+       * because it accepts the stupid "IPv4 numbers-and-dots
+       * notation" addresses that are never used for anything except
+       * phishing. Since we don't have to worry about scope IDs for
+       * IPv4, we can just use g_inet_address_new_from_string().
+       */
+      iaddr = g_inet_address_new_from_string (address);
+      if (!iaddr)
+        return NULL;
+
+      g_warn_if_fail (g_inet_address_get_family (iaddr) == G_SOCKET_FAMILY_IPV4);
+
+      saddr = g_inet_socket_address_new (iaddr, port);
+      g_object_unref (iaddr);
+    }
+
+  return saddr;
+}
+
+/**
  * g_inet_socket_address_get_address:
  * @address: a #GInetSocketAddress
  *

@@ -113,6 +113,108 @@ test_parse_host (gconstpointer d)
     g_error_free (error);
 }
 
+typedef struct {
+  const gchar *input;
+  gboolean valid_parse, valid_resolve, valid_ip;
+} ResolveTest;
+
+static ResolveTest address_tests[] = {
+  { "192.168.1.2",         TRUE,  TRUE,  TRUE },
+  { "fe80::42",            TRUE,  TRUE,  TRUE },
+
+  /* GResolver accepts this by ignoring the scope ID. This was not
+   * intentional, but it's best to not "fix" it at this point.
+   */
+  { "fe80::42%1",          TRUE,  TRUE,  FALSE },
+
+  /* g_network_address_parse() accepts these, but they are not
+   * (just) IP addresses.
+   */
+  { "192.168.1.2:80",      TRUE,  FALSE, FALSE },
+  { "[fe80::42]",          TRUE,  FALSE, FALSE },
+  { "[fe80::42]:80",       TRUE,  FALSE, FALSE },
+
+  /* These should not be considered IP addresses by anyone. */
+  { "192.168.258",         FALSE, FALSE, FALSE },
+  { "192.11010306",        FALSE, FALSE, FALSE },
+  { "3232235778",          FALSE, FALSE, FALSE },
+  { "0300.0250.0001.0001", FALSE, FALSE, FALSE },
+  { "0xC0.0xA8.0x01.0x02", FALSE, FALSE, FALSE },
+  { "0xc0.0xa8.0x01.0x02", FALSE, FALSE, FALSE },
+  { "0xc0a80102",          FALSE, FALSE, FALSE }
+};
+
+static void
+test_resolve_address (gconstpointer d)
+{
+  const ResolveTest *test = d;
+  GSocketConnectable *connectable;
+  GSocketAddressEnumerator *addr_enum;
+  GSocketAddress *addr;
+  GError *error = NULL;
+
+  g_assert_cmpint (test->valid_ip, ==, g_hostname_is_ip_address (test->input));
+
+  connectable = g_network_address_parse (test->input, 1234, &error);
+  g_assert_no_error (error);
+
+  addr_enum = g_socket_connectable_enumerate (connectable);
+  addr = g_socket_address_enumerator_next (addr_enum, NULL, &error);
+  g_object_unref (addr_enum);
+  g_object_unref (connectable);
+
+  if (addr)
+    {
+      g_assert_true (test->valid_parse);
+      g_assert_true (G_IS_INET_SOCKET_ADDRESS (addr));
+      g_object_unref (addr);
+    }
+  else
+    {
+      g_assert_false (test->valid_parse);
+      g_assert_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
+      g_error_free (error);
+      return;
+    }
+}
+
+/* Technically this should be in a GResolver test program, but we don't
+ * have one of those since it's mostly impossible to test programmatically.
+ * So it goes here so it can share the tests.
+ */
+static void
+test_resolve_address_gresolver (gconstpointer d)
+{
+  const ResolveTest *test = d;
+  GResolver *resolver;
+  GList *addrs;
+  GInetAddress *iaddr;
+  GError *error = NULL;
+
+  resolver = g_resolver_get_default ();
+  addrs = g_resolver_lookup_by_name (resolver, test->input, NULL, &error);
+  g_object_unref (resolver);
+
+  if (addrs)
+    {
+      g_assert_true (test->valid_resolve);
+      g_assert_cmpint (g_list_length (addrs), ==, 1);
+
+      iaddr = addrs->data;
+      g_assert_true (G_IS_INET_ADDRESS (iaddr));
+
+      g_object_unref (iaddr);
+      g_list_free (addrs);
+    }
+  else
+    {
+      g_assert_false (test->valid_resolve);
+      g_assert_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
+      g_error_free (error);
+      return;
+    }
+}
+
 #define SCOPE_ID_TEST_ADDR "fe80::42"
 #define SCOPE_ID_TEST_PORT 99
 
@@ -249,6 +351,20 @@ main (int argc, char *argv[])
     {
       path = g_strdup_printf ("/network-address/parse-uri/%d", i);
       g_test_add_data_func (path, &uri_tests[i], test_parse_uri);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (address_tests); i++)
+    {
+      path = g_strdup_printf ("/network-address/resolve-address/%d", i);
+      g_test_add_data_func (path, &address_tests[i], test_resolve_address);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (address_tests); i++)
+    {
+      path = g_strdup_printf ("/gresolver/resolve-address/%d", i);
+      g_test_add_data_func (path, &address_tests[i], test_resolve_address_gresolver);
       g_free (path);
     }
 

@@ -1714,6 +1714,7 @@ g_socket_address_get_type
 <TITLE>GInetSocketAddress</TITLE>
 GInetSocketAddress
 g_inet_socket_address_new
+g_inet_socket_address_new_from_string
 g_inet_socket_address_get_address
 g_inet_socket_address_get_port
 g_inet_socket_address_get_flowinfo
