@@ -21,7 +21,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -32,7 +32,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\gmodule;..\..\..\gio"
-				PreprocessorDefinitions="_DEBUG;GIO_COMPILATION"
+				PreprocessorDefinitions="_DEBUG;$(GioInBuildMacro)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -50,7 +50,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -58,7 +58,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\gmodule;..\..\..\gio"
-				PreprocessorDefinitions="_DEBUG;GIO_COMPILATION"
+				PreprocessorDefinitions="_DEBUG;$(GioInBuildMacro)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -79,7 +79,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -92,7 +92,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\..\gmodule;..\..\..\gio"
-				PreprocessorDefinitions="GIO_COMPILATION"
+				PreprocessorDefinitions="$(GioInBuildMacro)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -111,7 +111,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -119,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\..\gmodule;..\..\..\gio"
-				PreprocessorDefinitions="GIO_COMPILATION"
+				PreprocessorDefinitions="$(GioInBuildMacro)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"

@@ -20,7 +20,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -28,7 +28,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
-				PreprocessorDefinitions="_DEBUG;G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;GIO_COMPILATION;DLL_EXPORT"
+				PreprocessorDefinitions="_DEBUG;$(GioBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -39,7 +39,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
+				AdditionalDependencies="zlib1d.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -52,7 +52,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -60,7 +60,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
-				PreprocessorDefinitions="G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;GIO_COMPILATION;DLL_EXPORT"
+				PreprocessorDefinitions="$(GioBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
+				AdditionalDependencies="zlib1.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -84,7 +84,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -92,7 +92,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
-				PreprocessorDefinitions="_DEBUG;G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;GIO_COMPILATION;DLL_EXPORT"
+				PreprocessorDefinitions="_DEBUG;$(GioBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -103,7 +103,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
+				AdditionalDependencies="zlib1d.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -116,7 +116,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets=".\glib.vsprops"
+			InheritedPropertySheets=".\glib-build-defines.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -124,7 +124,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../gio,../../../gmodule"
-				PreprocessorDefinitions="G_LOG_DOMAIN=\&quot;GLib-GIO\&quot;;GIO_COMPILATION;DLL_EXPORT"
+				PreprocessorDefinitions="$(GioBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -133,7 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1.lib ws2_32.lib shlwapi.lib dnsapi.lib iphlpapi.lib"
+				AdditionalDependencies="zlib1.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"

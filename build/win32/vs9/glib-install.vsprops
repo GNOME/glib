@@ -2,57 +2,9 @@
 <VisualStudioPropertySheet
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="glibprops"
-	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin"
-	IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)\"
+	Name="glibinstallprops"
+	InheritedPropertySheets=".\glib-version-paths.vsprops"
 	>
-	<Tool
-		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="..\..\..;..\..\..\glib;$(GlibEtcInstallRoot)\include"
-		PreprocessorDefinitions="HAVE_CONFIG_H"
-		ForcedIncludeFiles="msvc_recommended_pragmas.h"
-	/>
-	<Tool
-		Name="VCLinkerTool"
-		AdditionalDependencies="intl.lib"
-		AdditionalLibraryDirectories="$(GlibEtcInstallRoot)\lib"
-	/>
-	<Tool
-		Name="VCPreBuildEventTool"
-		CommandLine="
-if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
-copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
-:DONE_CONFIG_H&#x0D;&#x0A;
-
-if exist ..\..\..\glib\glibconfig.h goto DONE_GLIBCONFIG_H&#x0D;&#x0A;
-copy ..\..\..\glib\glibconfig.h.win32 ..\..\..\glib\glibconfig.h&#x0D;&#x0A;
-:DONE_GLIBCONFIG_H&#x0D;&#x0A;
-
-if exist ..\..\..\gmodule\gmoduleconf.h goto DONE_GMODULECONF_H&#x0D;&#x0A;
-copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#x0A;
-:DONE_GMODULECONF_H&#x0D;&#x0A;
-
-if exist ..\..\..\gio\gnetworking.h goto DONE_GNETWORKING_H&#x0D;&#x0A;
-copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h&#x0D;&#x0A;
-:DONE_GNETWORKING_H&#x0D;&#x0A;
-"
-	/>
-	<UserMacro
-		Name="GlibEtcInstallRoot"
-		Value="..\..\..\..\vs9\$(PlatformName)"
-	/>
-	<UserMacro
-		Name="CopyDir"
-		Value="$(GlibEtcInstallRoot)"
-	/>
-	<UserMacro
-		Name="ApiVersion"
-		Value="2.0"
-	/>
-	<UserMacro
-		Name="GLibBundledPCREDefines"
-		Value="PCRE_STATIC;LINK_SIZE=2;MAX_NAME_SIZE=32;MAX_NAME_COUNT=10000;NEWLINE=-1;POSIX_MALLOC_THRESHOLD=10;MATCH_LIMIT=10000000;MATCH_LIMIT_RECURSION=10000000;SUPPORT_UCP;SUPPORT_UTF;SUPPORT_UTF8"
-	/>
 	<UserMacro
 		Name="GlibDoInstall"
 		Value="
@@ -330,31 +282,5 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&
 mkdir $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen&#x0D;&#x0A;
 copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen&#x0D;&#x0A;
 "
-	/>
-	<UserMacro
-		Name="GlibLibtoolCompatibleDllPrefix"
-		Value="lib"
-	/>
-	<UserMacro
-		Name="GlibLibtoolCompatibleDllSuffix"
-		Value="-$(ApiVersion)-0"
-	/>
-	<UserMacro
-		Name="GlibSeparateVS9DllPrefix"
-		Value=""
-	/>
-	<UserMacro
-		Name="GlibSeparateVS9DllSuffix"
-		Value="-2-vs9"
-	/>
-	<!-- Change these two to GlibLibtoolCompatibleDllPrefix and
-	GlibLibtoolCompatibleDllSuffix if that is what you want -->
-	<UserMacro
-		Name="GlibDllPrefix"
-		Value="$(GlibSeparateVS9DllPrefix)"
-	/>
-	<UserMacro
-		Name="GlibDllSuffix"
-		Value="$(GlibSeparateVS9DllSuffix)"
 	/>
 </VisualStudioPropertySheet>
