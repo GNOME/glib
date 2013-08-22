@@ -1394,8 +1394,8 @@ guint     g_type_get_type_registration_serial (void);
  * @TN: The name of the new type, in Camel case.
  * @t_n: The name of the new type, in lowercase, with words 
  *  separated by '_'.
- *
  * @T_P: The #GType of the parent type.
+ *
  * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines an abstract type. 
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
