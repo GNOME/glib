@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-14 10:58+0000\n"
-"PO-Revision-Date: 2013-03-14 22:37+0900\n"
+"POT-Creation-Date: 2013-08-22 14:15+0000\n"
+"PO-Revision-Date: 2013-08-16 22:25+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -37,42 +37,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../gio/gbufferedinputstream.c:427 ../gio/gbufferedinputstream.c:506
-#: ../gio/ginputstream.c:185 ../gio/ginputstream.c:377
-#: ../gio/ginputstream.c:615 ../gio/ginputstream.c:833
-#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:732
+#: ../gio/gbufferedinputstream.c:424 ../gio/gbufferedinputstream.c:503
+#: ../gio/ginputstream.c:174 ../gio/ginputstream.c:366
+#: ../gio/ginputstream.c:604 ../gio/ginputstream.c:822
+#: ../gio/goutputstream.c:192 ../gio/goutputstream.c:721
 #: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s に引き渡した値が大きすぎます"
 
-#: ../gio/gbufferedinputstream.c:899 ../gio/gbufferedoutputstream.c:581
-#: ../gio/gdataoutputstream.c:568
+#: ../gio/gbufferedinputstream.c:896 ../gio/gbufferedoutputstream.c:577
+#: ../gio/gdataoutputstream.c:564
 #, fuzzy
 #| msgid "Seek not supported on stream"
 msgid "Seek not supported on base stream"
 msgstr "ストリーム上のシークはサポートしていません"
 
-#: ../gio/gbufferedinputstream.c:945
+#: ../gio/gbufferedinputstream.c:942
 #, fuzzy
 #| msgid "Cannot truncate GMemoryInputStream"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "GMemoryInputStream を切りつめることはできません"
 
-#: ../gio/gbufferedinputstream.c:990 ../gio/ginputstream.c:1023
-#: ../gio/giostream.c:291 ../gio/goutputstream.c:1334
+#: ../gio/gbufferedinputstream.c:987 ../gio/ginputstream.c:1012
+#: ../gio/giostream.c:280 ../gio/goutputstream.c:1323
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: ../gio/gbufferedoutputstream.c:618 ../gio/gdataoutputstream.c:598
+#: ../gio/gbufferedoutputstream.c:614 ../gio/gdataoutputstream.c:594
 #, fuzzy
 #| msgid "Truncate not supported on stream"
 msgid "Truncate not supported on base stream"
 msgstr "ストリーム上での切りつめはサポートしていません"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1885
-#: ../gio/gdbusconnection.c:1977 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2172 ../gio/gsimpleasyncresult.c:843
+#: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
+#: ../gio/glocalfile.c:2177 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -90,31 +90,30 @@ msgstr "入力に不完全なバイトの並びがあります"
 msgid "Not enough space in destination"
 msgstr "変換先に充分な空きがありません"
 
-#: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:854
-#: ../gio/gdatainputstream.c:1264 ../glib/gconvert.c:764
-#: ../glib/gconvert.c:1156 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
+#: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:849
+#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:467
+#: ../glib/gconvert.c:859 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
 #: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
 msgid "Invalid byte sequence in conversion input"
 msgstr "変換する入力に無効なバイトの並びがあります"
 
-#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:772
-#: ../glib/gconvert.c:1081 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
+#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:475
+#: ../glib/gconvert.c:784 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "変換中にエラー: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:991
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:993
 msgid "Cancellable initialization not supported"
 msgstr "キャンセル可能な初期化はサポートされていません"
 
-#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:564
-#: ../glib/gconvert.c:642 ../glib/giochannel.c:1414
+#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:347
+#: ../glib/giochannel.c:1414
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "'%s' から '%s' という文字集合への変換はサポートしていません"
 
-#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:568
-#: ../glib/gconvert.c:646
+#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:351
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' から '%s' への変換処理を開けませんでした"
@@ -147,7 +146,7 @@ msgstr "このプラットフォームでは　GCredentials はサポートさ�
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials はこのOSでは実装されていません"
 
-#: ../gio/gdatainputstream.c:311
+#: ../gio/gdatainputstream.c:306
 msgid "Unexpected early end-of-stream"
 msgstr "想定していたよりも早くストリームの最後に到達しました"
 
@@ -267,194 +266,194 @@ msgstr "コマンドライン '%s' の spawn 時にエラー: "
 msgid "(Type any character to close this window)\n"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1421
+#: ../gio/gdbusaddress.c:1429
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1442
+#: ../gio/gdbusaddress.c:1450
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "セッションバスのアドレスを決定できません (このOSでは実装されていません)"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6757
+#: ../gio/gdbusaddress.c:1549 ../gio/gdbusconnection.c:6908
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value '%s'"
 msgstr "DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%s'"
 
-#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6766
+#: ../gio/gdbusaddress.c:1558 ../gio/gdbusconnection.c:6917
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr "DBUS_STARTER_BUS_TYPE 環境変数が設定されていないため、バスアドレスを決定できません"
 
-#: ../gio/gdbusaddress.c:1560
+#: ../gio/gdbusaddress.c:1568
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "不明なバスの種類 %d"
 
-#: ../gio/gdbusauth.c:298
+#: ../gio/gdbusauth.c:295
 msgid "Unexpected lack of content trying to read a line"
 msgstr "行を読みこもうとしましたが内容が意図せず欠落しています"
 
-#: ../gio/gdbusauth.c:342
+#: ../gio/gdbusauth.c:339
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "(安全に)行を読みこもうとしましたが内容が意図せず欠落しています"
 
-#: ../gio/gdbusauth.c:513
+#: ../gio/gdbusauth.c:510
 #, c-format
 msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr "すべての利用可能な認証メカニズムを試し尽くしました (試行: %s) (利用可能: %s)"
 
-#: ../gio/gdbusauth.c:1175
+#: ../gio/gdbusauth.c:1172
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "GDBusAuthObserver::authorize-authenticated-peer 経由でキャンセルされました"
 
-#: ../gio/gdbusauthmechanismsha1.c:266
+#: ../gio/gdbusauthmechanismsha1.c:262
 #, c-format
 msgid "Error when getting information for directory '%s': %s"
 msgstr "ディレクトリ '%s' の情報を取得する際にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:278
+#: ../gio/gdbusauthmechanismsha1.c:274
 #, c-format
 msgid "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr "ディレクトリ '%s' が不正なパーミッションです。0700 モードを期待しましたが、0%o でした"
 
-#: ../gio/gdbusauthmechanismsha1.c:299
+#: ../gio/gdbusauthmechanismsha1.c:295
 #, c-format
 msgid "Error creating directory '%s': %s"
 msgstr "ディレクトリ'%s' を生成する際にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:382
+#: ../gio/gdbusauthmechanismsha1.c:378
 #, c-format
 msgid "Error opening keyring '%s' for reading: "
 msgstr "ファイル '%s' をオープンする際にエラー: "
 
-#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:719
+#: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目が不正です"
 
-#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:733
+#: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:729
 #, c-format
 msgid "First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の最初のトークンが不正です"
 
-#: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:747
+#: ../gio/gdbusauthmechanismsha1.c:431 ../gio/gdbusauthmechanismsha1.c:743
 #, c-format
 msgid "Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です"
 
-#: ../gio/gdbusauthmechanismsha1.c:459
+#: ../gio/gdbusauthmechanismsha1.c:455
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "'%2$s' のキーリング中の id %1$d のクッキーを見つけられませんでした"
 
-#: ../gio/gdbusauthmechanismsha1.c:537
+#: ../gio/gdbusauthmechanismsha1.c:533
 #, c-format
 msgid "Error deleting stale lock file '%s': %s"
 msgstr "stale したロックファイル '%s' の削除中にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:569
+#: ../gio/gdbusauthmechanismsha1.c:565
 #, c-format
 msgid "Error creating lock file '%s': %s"
 msgstr "ロックファイル '%s' の作成中にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:599
+#: ../gio/gdbusauthmechanismsha1.c:595
 #, c-format
 msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "(unlink した)ロックファイル '%s' を閉じる際にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:609
+#: ../gio/gdbusauthmechanismsha1.c:605
 #, c-format
 msgid "Error unlinking lock file '%s': %s"
 msgstr "ロックファイル '%s' を unlink する際にエラー: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:686
+#: ../gio/gdbusauthmechanismsha1.c:682
 #, c-format
 msgid "Error opening keyring '%s' for writing: "
 msgstr "キーリング '%s' を書き込み用にオープンする際にエラー: "
 
-#: ../gio/gdbusauthmechanismsha1.c:883
+#: ../gio/gdbusauthmechanismsha1.c:879
 #, c-format
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(さらに、'%s' のロックの解放も失敗しました: %s) "
 
-#: ../gio/gdbusconnection.c:597 ../gio/gdbusconnection.c:2440
+#: ../gio/gdbusconnection.c:609 ../gio/gdbusconnection.c:2452
 msgid "The connection is closed"
 msgstr "接続が閉じています"
 
-#: ../gio/gdbusconnection.c:1930
+#: ../gio/gdbusconnection.c:1942
 msgid "Timeout was reached"
 msgstr "タイムアウトしました"
 
-#: ../gio/gdbusconnection.c:2562
+#: ../gio/gdbusconnection.c:2574
 msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭遇しました"
 
-#: ../gio/gdbusconnection.c:4065 ../gio/gdbusconnection.c:4381
+#: ../gio/gdbusconnection.c:4146 ../gio/gdbusconnection.c:4489
 #, c-format
 msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "パス %s のオブジェクト上にインターフェース 'org.freedesktop.DBus.Properties' がありません"
 
-#: ../gio/gdbusconnection.c:4136
-#, c-format
-msgid "Error setting property '%s': Expected type '%s' but got '%s'"
-msgstr "プロパティ '%s' の設定時にエラー: 期待した型は '%s' ですが '%s' でした"
-
-#: ../gio/gdbusconnection.c:4231
+#: ../gio/gdbusconnection.c:4288
 #, c-format
 msgid "No such property '%s'"
 msgstr "'%s' というプロパティが存在しません"
 
-#: ../gio/gdbusconnection.c:4243
+#: ../gio/gdbusconnection.c:4300
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "プロパティ '%s' が読み込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:4254
+#: ../gio/gdbusconnection.c:4311
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "プロパティ '%s' が書き込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:4324 ../gio/gdbusconnection.c:6200
+#: ../gio/gdbusconnection.c:4331
+#, c-format
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
+msgstr "プロパティ '%s' の設定時にエラー: 期待した型は '%s' ですが '%s' でした"
+
+#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6351
 #, c-format
 msgid "No such interface '%s'"
 msgstr "'%s' というインターフェースがありません"
 
-#: ../gio/gdbusconnection.c:4508
+#: ../gio/gdbusconnection.c:4639
 msgid "No such interface"
 msgstr "そのようなインターフェースがありません"
 
-#: ../gio/gdbusconnection.c:4726 ../gio/gdbusconnection.c:6706
+#: ../gio/gdbusconnection.c:4857 ../gio/gdbusconnection.c:6857
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "パス %2$s のオブジェクト上にインターフェース '%1$s' がありません"
 
-#: ../gio/gdbusconnection.c:4781
+#: ../gio/gdbusconnection.c:4954
 #, c-format
 msgid "No such method '%s'"
 msgstr "'%s' というメソッドがありません"
 
-#: ../gio/gdbusconnection.c:4812
+#: ../gio/gdbusconnection.c:4985
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "メッセージの型 '%s' は期待した型 '%s' に一致しません"
 
-#: ../gio/gdbusconnection.c:5032
+#: ../gio/gdbusconnection.c:5183
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s のインターフェース %1$s にオブジェクトは既にエクスポートされています"
 
-#: ../gio/gdbusconnection.c:5230
+#: ../gio/gdbusconnection.c:5381
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "メソッド '%s' は '%s' 型を返しましたが、'%s' を期待していました"
 
-#: ../gio/gdbusconnection.c:6311
+#: ../gio/gdbusconnection.c:6462
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "シグネチャ '%3$s' を持ったインターフェース '%2$s' にメソッド '%1$s' が存在しません"
 
-#: ../gio/gdbusconnection.c:6430
+#: ../gio/gdbusconnection.c:6581
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "サブツリーは既に %s に export されています"
@@ -607,17 +606,17 @@ msgstr "ファイルをゴミ箱へ移動できません: %s"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "/var/lib/dbus/machine-id を読みこめません: "
 
-#: ../gio/gdbusproxy.c:1640
+#: ../gio/gdbusproxy.c:1638
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "%s を StartServiceByName で呼び出そうとしてエラー: "
 
-#: ../gio/gdbusproxy.c:1663
+#: ../gio/gdbusproxy.c:1661
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "StartServiceByName(\"%2$s\") メソッドから期待してない応答 %1$d"
 
-#: ../gio/gdbusproxy.c:2763 ../gio/gdbusproxy.c:2900
+#: ../gio/gdbusproxy.c:2761 ../gio/gdbusproxy.c:2898
 msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr "メソッドを起動できません: proxy がオーナーの無い既知の名前で、G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START フラグで proxy が作成されていました"
 
@@ -669,13 +668,13 @@ msgstr ""
 "\"%s COMMAND --help\" を使えば、それぞれのコマンドのヘルプを表示できます。\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1020
-#: ../gio/gdbus-tool.c:1453
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1456
 #, c-format
 msgid "Error: %s\n"
 msgstr "エラー: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1469
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "イントロスペクション XML の解析中にエラー: %s\n"
@@ -738,8 +737,8 @@ msgstr "メソッドとインターフェースの名前"
 msgid "Emit a signal."
 msgstr ""
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1559
-#: ../gio/gdbus-tool.c:1791
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
+#: ../gio/gdbus-tool.c:1794
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "接続中にエラー: %s\n"
@@ -749,8 +748,8 @@ msgstr "接続中にエラー: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "エラー: オブジェクトパスが指定されていません\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1617
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
+#: ../gio/gdbus-tool.c:1853
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "エラー: %s は妥当なオブジェクトのパス名ではありません\n"
@@ -811,12 +810,12 @@ msgstr "タイムアウトしました"
 msgid "Invoke a method on a remote object."
 msgstr "リモートオブジェクトでメソッドを起動します。"
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1578 ../gio/gdbus-tool.c:1810
+#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "エラー: 対象が指定されていません\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1597
+#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "エラー: オブジェクトパスが指定されていません\n"
@@ -836,74 +835,75 @@ msgstr "エラー: メソッド名 '%s' が正しくありません\n"
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "型 %2$s のパラメーター %1$d を解析中にエラー: %3$s\n"
 
-#: ../gio/gdbus-tool.c:1416
+#: ../gio/gdbus-tool.c:1419
 msgid "Destination name to introspect"
 msgstr "イントロスペクトする対象の名前"
 
-#: ../gio/gdbus-tool.c:1417
+#: ../gio/gdbus-tool.c:1420
 msgid "Object path to introspect"
 msgstr "イントロスペクトするオブジェクトパス"
 
-#: ../gio/gdbus-tool.c:1418
+#: ../gio/gdbus-tool.c:1421
 msgid "Print XML"
 msgstr "XML を表示"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1422
 msgid "Introspect children"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1423
 msgid "Only print properties"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1511
+#: ../gio/gdbus-tool.c:1514
 msgid "Introspect a remote object."
 msgstr "リモートオブジェクトをイントロスペクト。"
 
-#: ../gio/gdbus-tool.c:1709
+#: ../gio/gdbus-tool.c:1712
 msgid "Destination name to monitor"
 msgstr "モニターする対象の名前"
 
-#: ../gio/gdbus-tool.c:1710
+#: ../gio/gdbus-tool.c:1713
 msgid "Object path to monitor"
 msgstr "モニターするオブジェクトパス"
 
-#: ../gio/gdbus-tool.c:1743
+#: ../gio/gdbus-tool.c:1746
 msgid "Monitor a remote object."
 msgstr "リモートのオブジェクトをモニターします。"
 
-#: ../gio/gdesktopappinfo.c:625 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:660 ../gio/gdesktopappinfo.c:3793
+#: ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "名前なし"
 
-#: ../gio/gdesktopappinfo.c:1038
+#: ../gio/gdesktopappinfo.c:1074
 msgid "Desktop file didn't specify Exec field"
 msgstr "デスクトップ・ファイルで Exec 項目を指定してませんでした"
 
-#: ../gio/gdesktopappinfo.c:1326
+#: ../gio/gdesktopappinfo.c:1359
 msgid "Unable to find terminal required for application"
 msgstr "アプリケーションで必要な端末が見つかりませんでした"
 
-#: ../gio/gdesktopappinfo.c:1628
+#: ../gio/gdesktopappinfo.c:1772
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ユーザーのアプリケーション設定フォルダー %s を生成できません: %s"
 
-#: ../gio/gdesktopappinfo.c:1632
+#: ../gio/gdesktopappinfo.c:1776
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ユーザーの MIME 型設定フォルダー %s を生成できません: %s"
 
-#: ../gio/gdesktopappinfo.c:1872 ../gio/gdesktopappinfo.c:1896
+#: ../gio/gdesktopappinfo.c:2016 ../gio/gdesktopappinfo.c:2040
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:2128
+#: ../gio/gdesktopappinfo.c:2272
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ユーザーのデスクトップ・ファイル %s を生成できません"
 
-#: ../gio/gdesktopappinfo.c:2252
+#: ../gio/gdesktopappinfo.c:2396
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s に対する独自の設定"
@@ -946,29 +946,28 @@ msgstr "バージョン %d の GEmblem のエンコーディングはサポー�
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "GEmblem のエンコーディングにあるトークンの数 (%d) が間違っています"
 
-#: ../gio/gemblemedicon.c:367
+#: ../gio/gemblemedicon.c:364
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "バージョン %d の GEmblemedIcon のエンコーディングはサポートしていません"
 
-#: ../gio/gemblemedicon.c:377
+#: ../gio/gemblemedicon.c:374
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "GEmblemedIcon のエンコーディングにあるトークンの数 (%d) が間違っています"
 
-#: ../gio/gemblemedicon.c:400
+#: ../gio/gemblemedicon.c:397
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon に対する GEmblem を想定していました"
 
-#: ../gio/gfile.c:917 ../gio/gfile.c:1156 ../gio/gfile.c:1295
-#: ../gio/gfile.c:1535 ../gio/gfile.c:1590 ../gio/gfile.c:1648
-#: ../gio/gfile.c:1732 ../gio/gfile.c:1789 ../gio/gfile.c:1853
-#: ../gio/gfile.c:1908 ../gio/gfile.c:3468 ../gio/gfile.c:3523
-#: ../gio/gfile.c:3669 ../gio/gfile.c:3711 ../gio/gfile.c:4113
-#: ../gio/gfile.c:4525 ../gio/gfile.c:4610 ../gio/gfile.c:4700
-#: ../gio/gfile.c:4797 ../gio/gfile.c:4884 ../gio/gfile.c:4985
-#: ../gio/gfile.c:5258 ../gio/gfile.c:5536 ../gio/gfile.c:5590
-#: ../gio/gfile.c:7135 ../gio/gfile.c:7225 ../gio/gfile.c:7309
+#: ../gio/gfile.c:938 ../gio/gfile.c:1177 ../gio/gfile.c:1316
+#: ../gio/gfile.c:1556 ../gio/gfile.c:1611 ../gio/gfile.c:1669
+#: ../gio/gfile.c:1753 ../gio/gfile.c:1810 ../gio/gfile.c:1874
+#: ../gio/gfile.c:1929 ../gio/gfile.c:3559 ../gio/gfile.c:3614
+#: ../gio/gfile.c:3822 ../gio/gfile.c:3864 ../gio/gfile.c:4330
+#: ../gio/gfile.c:4742 ../gio/gfile.c:4827 ../gio/gfile.c:4917
+#: ../gio/gfile.c:5014 ../gio/gfile.c:5101 ../gio/gfile.c:5202
+#: ../gio/gfile.c:7381 ../gio/gfile.c:7471 ../gio/gfile.c:7555
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
@@ -983,85 +982,85 @@ msgstr "サポートしていない操作です"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1419 ../gio/glocalfile.c:1096 ../gio/glocalfile.c:1107
-#: ../gio/glocalfile.c:1120
+#: ../gio/gfile.c:1440 ../gio/glocalfile.c:1101 ../gio/glocalfile.c:1112
+#: ../gio/glocalfile.c:1125
 msgid "Containing mount does not exist"
 msgstr "マウントを含んでいるものはありません"
 
-#: ../gio/gfile.c:2474 ../gio/glocalfile.c:2328
+#: ../gio/gfile.c:2495 ../gio/glocalfile.c:2333
 msgid "Can't copy over directory"
 msgstr "ディレクトリ全体をコピーできません"
 
-#: ../gio/gfile.c:2534
+#: ../gio/gfile.c:2555
 msgid "Can't copy directory over directory"
 msgstr "ディレクトリからディレクトリへコピーできません"
 
-#: ../gio/gfile.c:2542 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2563 ../gio/glocalfile.c:2342
 msgid "Target file exists"
 msgstr "対象となるファイルが存在しています"
 
-#: ../gio/gfile.c:2561
+#: ../gio/gfile.c:2582
 msgid "Can't recursively copy directory"
 msgstr "ディレクトリを再帰的にコピーできません"
 
-#: ../gio/gfile.c:2825
+#: ../gio/gfile.c:2864
 msgid "Splice not supported"
 msgstr "splice はサポートしていません"
 
-#: ../gio/gfile.c:2829
+#: ../gio/gfile.c:2868
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "ファイルを splice する際にエラー: %s"
 
-#: ../gio/gfile.c:2960
+#: ../gio/gfile.c:2999
 #, fuzzy
 #| msgid "Move between mounts not supported"
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "マウント間の移動はサポートしていません"
 
-#: ../gio/gfile.c:2964
+#: ../gio/gfile.c:3003
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr ""
 
-#: ../gio/gfile.c:2969
+#: ../gio/gfile.c:3008
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr ""
 
-#: ../gio/gfile.c:3029
+#: ../gio/gfile.c:3071
 msgid "Can't copy special file"
 msgstr "特別なファイルはコピーできません"
 
-#: ../gio/gfile.c:3659
+#: ../gio/gfile.c:3812
 msgid "Invalid symlink value given"
 msgstr "指定したシンボリックリンクは間違っています"
 
-#: ../gio/gfile.c:3819
+#: ../gio/gfile.c:3974
 msgid "Trash not supported"
 msgstr "ゴミ箱はサポートしていません"
 
-#: ../gio/gfile.c:3870
+#: ../gio/gfile.c:4087
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ファイル名に '%c' を含めることはできません"
 
-#: ../gio/gfile.c:6258 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6504 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "ボリュームはマウントを実装していません"
 
-#: ../gio/gfile.c:6367
+#: ../gio/gfile.c:6613
 msgid "No application is registered as handling this file"
 msgstr "このファイルを扱うアプリケーションが登録されていません"
 
-#: ../gio/gfileenumerator.c:204
+#: ../gio/gfileenumerator.c:213
 msgid "Enumerator is closed"
 msgstr "Enumerator は閉じています"
 
-#: ../gio/gfileenumerator.c:211 ../gio/gfileenumerator.c:270
-#: ../gio/gfileenumerator.c:367 ../gio/gfileenumerator.c:467
+#: ../gio/gfileenumerator.c:220 ../gio/gfileenumerator.c:279
+#: ../gio/gfileenumerator.c:379 ../gio/gfileenumerator.c:479
 msgid "File enumerator has outstanding operation"
 msgstr "File enumerator has outstanding operation"
 
-#: ../gio/gfileenumerator.c:358 ../gio/gfileenumerator.c:458
+#: ../gio/gfileenumerator.c:370 ../gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
 msgstr "ファイルの Enumerator は既に閉じています"
 
@@ -1074,89 +1073,89 @@ msgstr "バージョン %d の GFileIcon のエンコーディングはサポー
 msgid "Malformed input data for GFileIcon"
 msgstr "GFileIcon の入力データが間違っています"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:400
-#: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
-#: ../gio/gfileoutputstream.c:503
+#: ../gio/gfileinputstream.c:151 ../gio/gfileinputstream.c:397
+#: ../gio/gfileiostream.c:169 ../gio/gfileoutputstream.c:166
+#: ../gio/gfileoutputstream.c:500
 msgid "Stream doesn't support query_info"
 msgstr "ストリームは query_info をサポートしていません"
 
-#: ../gio/gfileinputstream.c:331 ../gio/gfileiostream.c:383
-#: ../gio/gfileoutputstream.c:377
+#: ../gio/gfileinputstream.c:328 ../gio/gfileiostream.c:382
+#: ../gio/gfileoutputstream.c:374
 msgid "Seek not supported on stream"
 msgstr "ストリーム上のシークはサポートしていません"
 
-#: ../gio/gfileinputstream.c:375
+#: ../gio/gfileinputstream.c:372
 msgid "Truncate not allowed on input stream"
 msgstr "入力ストリームを切りつめることはできません"
 
-#: ../gio/gfileiostream.c:459 ../gio/gfileoutputstream.c:453
+#: ../gio/gfileiostream.c:458 ../gio/gfileoutputstream.c:450
 msgid "Truncate not supported on stream"
 msgstr "ストリーム上での切りつめはサポートしていません"
 
-#: ../gio/gicon.c:284
+#: ../gio/gicon.c:297
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "トークンの数 (%d) が間違っています"
 
-#: ../gio/gicon.c:304
+#: ../gio/gicon.c:317
 #, c-format
 msgid "No type for class name %s"
 msgstr "%s というクラス名の型がありません"
 
-#: ../gio/gicon.c:314
+#: ../gio/gicon.c:327
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "%s という型は GIcon のインターフェースを実装していません"
 
-#: ../gio/gicon.c:325
+#: ../gio/gicon.c:338
 #, c-format
 msgid "Type %s is not classed"
 msgstr "%s という型がクラスになっていません"
 
-#: ../gio/gicon.c:339
+#: ../gio/gicon.c:352
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "バージョン番号が間違っています: %s"
 
-#: ../gio/gicon.c:353
+#: ../gio/gicon.c:366
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "%s という型は GIcon のインターフェースで from_tokens() を実装していません"
 
-#: ../gio/gicon.c:428
+#: ../gio/gicon.c:468
 #, fuzzy
 #| msgid "Can't handle the supplied version the icon encoding"
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "提供したバージョンの Icon のエンコーディングはサポートしていません"
 
-#: ../gio/ginetaddressmask.c:184
+#: ../gio/ginetaddressmask.c:183
 msgid "No address specified"
 msgstr ""
 
-#: ../gio/ginetaddressmask.c:192
+#: ../gio/ginetaddressmask.c:191
 #, c-format
 msgid "Length %u is too long for address"
 msgstr ""
 
-#: ../gio/ginetaddressmask.c:225
+#: ../gio/ginetaddressmask.c:224
 msgid "Address has bits set beyond prefix length"
 msgstr ""
 
-#: ../gio/ginetaddressmask.c:304
+#: ../gio/ginetaddressmask.c:301
 #, fuzzy, c-format
 msgid "Could not parse '%s' as IP address mask"
 msgstr "ローカルのアドレスを取得できませんでした: %s"
 
-#: ../gio/ginetsocketaddress.c:206 ../gio/ginetsocketaddress.c:223
-#: ../gio/gunixsocketaddress.c:221
+#: ../gio/ginetsocketaddress.c:197 ../gio/ginetsocketaddress.c:214
+#: ../gio/gunixsocketaddress.c:211
 msgid "Not enough space for socket address"
 msgstr "ソケット・アドレスを作成するために充分な空きがありません"
 
-#: ../gio/ginetsocketaddress.c:238
+#: ../gio/ginetsocketaddress.c:229
 msgid "Unsupported socket address"
 msgstr "サポートしていないソケット・アドレスです"
 
-#: ../gio/ginputstream.c:194
+#: ../gio/ginputstream.c:183
 msgid "Input stream doesn't implement read"
 msgstr "入力ストリームで読み込みを実装していません"
 
@@ -1166,8 +1165,8 @@ msgstr "入力ストリームで読み込みを実装していません"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1033 ../gio/giostream.c:301
-#: ../gio/goutputstream.c:1344
+#: ../gio/ginputstream.c:1022 ../gio/giostream.c:290
+#: ../gio/goutputstream.c:1333
 msgid "Stream has outstanding operation"
 msgstr "Stream has outstanding operation"
 
@@ -1378,13 +1377,15 @@ msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> は既に定義されています"
 
 #: ../gio/glib-compile-schemas.c:1129
-#, c-format
-msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
+#, fuzzy, c-format
+#| msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' を拡張しています"
 
 #: ../gio/glib-compile-schemas.c:1145
-#, c-format
-msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
+#, fuzzy, c-format
+#| msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' のリストです"
 
 #: ../gio/glib-compile-schemas.c:1153
@@ -1531,120 +1532,118 @@ msgstr "既存の出力ファイル (gschemas.compiled) を削除しました。
 msgid "Unable to find default local directory monitor type"
 msgstr "ローカル・ディレクトリを監視するデフォルト・モニターの種類が見つかりません"
 
-#: ../gio/glocalfile.c:597 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:602 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ファイル名が無効です: %s"
 
-#: ../gio/glocalfile.c:974
+#: ../gio/glocalfile.c:979
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "ファイルシステムの情報を取得する際にエラー: %s"
 
-#: ../gio/glocalfile.c:1142
+#: ../gio/glocalfile.c:1147
 msgid "Can't rename root directory"
 msgstr "ルート・ディレクトリの名前は変更できません"
 
-#: ../gio/glocalfile.c:1162 ../gio/glocalfile.c:1188
+#: ../gio/glocalfile.c:1167 ../gio/glocalfile.c:1193
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "ファイル名を変更する際にエラー: %s"
 
-#: ../gio/glocalfile.c:1171
+#: ../gio/glocalfile.c:1176
 #, fuzzy
 msgid "Can't rename file, filename already exists"
 msgstr "ファイル名を変更できません (既に存在しているため)"
 
-#: ../gio/glocalfile.c:1184 ../gio/glocalfile.c:2201 ../gio/glocalfile.c:2230
-#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:575
-#: ../gio/glocalfileoutputstream.c:628 ../gio/glocalfileoutputstream.c:673
-#: ../gio/glocalfileoutputstream.c:1161
+#: ../gio/glocalfile.c:1189 ../gio/glocalfile.c:2206 ../gio/glocalfile.c:2235
+#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:553
 msgid "Invalid filename"
 msgstr "無効なファイル名です"
 
-#: ../gio/glocalfile.c:1351 ../gio/glocalfile.c:1375
+#: ../gio/glocalfile.c:1356 ../gio/glocalfile.c:1380
 msgid "Can't open directory"
 msgstr "ディレクトリをオープンできません"
 
-#: ../gio/glocalfile.c:1359
+#: ../gio/glocalfile.c:1364
 #, c-format
 msgid "Error opening file: %s"
 msgstr "ファイルをオープンする際にエラー: %s"
 
-#: ../gio/glocalfile.c:1500
+#: ../gio/glocalfile.c:1505
 #, c-format
 msgid "Error removing file: %s"
 msgstr "ファイルを削除する際にエラー: %s"
 
-#: ../gio/glocalfile.c:1880
+#: ../gio/glocalfile.c:1885
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "ファイルをゴミ箱へ移動する際にエラー: %s"
 
-#: ../gio/glocalfile.c:1903
+#: ../gio/glocalfile.c:1908
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "ゴミ箱のディレクトリ (%s) の生成に失敗しました: %s"
 
-#: ../gio/glocalfile.c:1924
+#: ../gio/glocalfile.c:1929
 msgid "Unable to find toplevel directory for trash"
 msgstr "ゴミ箱のトップレベルなディレクトリが見つかりません"
 
-#: ../gio/glocalfile.c:2003 ../gio/glocalfile.c:2023
+#: ../gio/glocalfile.c:2008 ../gio/glocalfile.c:2028
 msgid "Unable to find or create trash directory"
 msgstr "ゴミ箱ディレクトリが存在しないか生成できません"
 
-#: ../gio/glocalfile.c:2057
+#: ../gio/glocalfile.c:2062
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "ゴミ箱の情報ファイルを生成できません: %s"
 
-#: ../gio/glocalfile.c:2086 ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2171
-#: ../gio/glocalfile.c:2178
+#: ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2096 ../gio/glocalfile.c:2176
+#: ../gio/glocalfile.c:2183
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ファイルをゴミ箱へ移動できません: %s"
 
-#: ../gio/glocalfile.c:2179 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2184 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "内部エラー"
 
-#: ../gio/glocalfile.c:2205
+#: ../gio/glocalfile.c:2210
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "ディレクトリを生成する際にエラー: %s"
 
-#: ../gio/glocalfile.c:2234
+#: ../gio/glocalfile.c:2239
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "シンボリックリンクをファイルシステムがサポートしていません"
 
-#: ../gio/glocalfile.c:2238
+#: ../gio/glocalfile.c:2243
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "シンボリックリンクを生成する際にエラー: %s"
 
-#: ../gio/glocalfile.c:2300 ../gio/glocalfile.c:2394
+#: ../gio/glocalfile.c:2305 ../gio/glocalfile.c:2399
 #, c-format
 msgid "Error moving file: %s"
 msgstr "ファイルを移動する際にエラー: %s"
 
-#: ../gio/glocalfile.c:2323
+#: ../gio/glocalfile.c:2328
 msgid "Can't move directory over directory"
 msgstr "ディレクトリからディレクトリへ移動できません"
 
-#: ../gio/glocalfile.c:2350 ../gio/glocalfileoutputstream.c:959
-#: ../gio/glocalfileoutputstream.c:973 ../gio/glocalfileoutputstream.c:988
-#: ../gio/glocalfileoutputstream.c:1004 ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfile.c:2355 ../gio/glocalfileoutputstream.c:929
+#: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
+#: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
 msgid "Backup file creation failed"
 msgstr "バックアップ・ファイルの生成に失敗しました"
 
-#: ../gio/glocalfile.c:2369
+#: ../gio/glocalfile.c:2374
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "対象となるファイルを削除する際にエラー: %s"
 
-#: ../gio/glocalfile.c:2383
+#: ../gio/glocalfile.c:2388
 msgid "Move between mounts not supported"
 msgstr "マウント間の移動はサポートしていません"
 
@@ -1665,97 +1664,97 @@ msgstr "拡張属性の名前が無効です"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "'%s' という拡張属性をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:1542
+#: ../gio/glocalfileinfo.c:1544
 msgid " (invalid encoding)"
 msgstr " (無効なエンコーディング)"
 
-#: ../gio/glocalfileinfo.c:1734 ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:807
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "ファイル '%s' の情報を取得する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:1980
+#: ../gio/glocalfileinfo.c:1982
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "ファイルディスクリプターの情報を取得する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2025
+#: ../gio/glocalfileinfo.c:2027
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "属性の種類が無効です (uint32 型を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2043
+#: ../gio/glocalfileinfo.c:2045
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "属性の種類が無効です (uint64 型を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2062 ../gio/glocalfileinfo.c:2081
+#: ../gio/glocalfileinfo.c:2064 ../gio/glocalfileinfo.c:2083
 msgid "Invalid attribute type (byte string expected)"
 msgstr "属性の種類が無効です (バイト型の文字列を想定していた)"
 
-#: ../gio/glocalfileinfo.c:2116
+#: ../gio/glocalfileinfo.c:2118
 msgid "Cannot set permissions on symlinks"
 msgstr "シンボリックリンクにはアクセス権をセットできません"
 
-#: ../gio/glocalfileinfo.c:2132
+#: ../gio/glocalfileinfo.c:2134
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "アクセス権をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2183
+#: ../gio/glocalfileinfo.c:2185
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "所有者をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2206
+#: ../gio/glocalfileinfo.c:2208
 msgid "symlink must be non-NULL"
 msgstr "シンボリックリンクを NULL にしないでください"
 
-#: ../gio/glocalfileinfo.c:2216 ../gio/glocalfileinfo.c:2235
-#: ../gio/glocalfileinfo.c:2246
+#: ../gio/glocalfileinfo.c:2218 ../gio/glocalfileinfo.c:2237
+#: ../gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "シンボリックリンクをセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2225
+#: ../gio/glocalfileinfo.c:2227
 msgid "Error setting symlink: file is not a symlink"
 msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
-#: ../gio/glocalfileinfo.c:2351
+#: ../gio/glocalfileinfo.c:2353
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "最終更新日時、あるいは最終アクセス日時をセットする際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2374
+#: ../gio/glocalfileinfo.c:2376
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux のコンテキストを NULL にしないでください"
 
-#: ../gio/glocalfileinfo.c:2389
+#: ../gio/glocalfileinfo.c:2391
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux のコンテキストを指定する際にエラー: %s"
 
-#: ../gio/glocalfileinfo.c:2396
+#: ../gio/glocalfileinfo.c:2398
 msgid "SELinux is not enabled on this system"
 msgstr "このシステムでは SELinux が有効になっていません"
 
-#: ../gio/glocalfileinfo.c:2488
+#: ../gio/glocalfileinfo.c:2490
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s という属性値はセットできません"
 
-#: ../gio/glocalfileinputstream.c:186 ../gio/glocalfileoutputstream.c:726
+#: ../gio/glocalfileinputstream.c:172 ../gio/glocalfileoutputstream.c:698
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "ファイルから読み込む際にエラー: %s"
 
-#: ../gio/glocalfileinputstream.c:217 ../gio/glocalfileinputstream.c:229
-#: ../gio/glocalfileinputstream.c:336 ../gio/glocalfileoutputstream.c:464
-#: ../gio/glocalfileoutputstream.c:1036
+#: ../gio/glocalfileinputstream.c:203 ../gio/glocalfileinputstream.c:215
+#: ../gio/glocalfileinputstream.c:322 ../gio/glocalfileoutputstream.c:460
+#: ../gio/glocalfileoutputstream.c:1006
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "ファイルでシークする際にエラー: %s"
 
-#: ../gio/glocalfileinputstream.c:258 ../gio/glocalfileoutputstream.c:254
-#: ../gio/glocalfileoutputstream.c:348
+#: ../gio/glocalfileinputstream.c:244 ../gio/glocalfileoutputstream.c:250
+#: ../gio/glocalfileoutputstream.c:344
 #, c-format
 msgid "Error closing file: %s"
 msgstr "ファイルを閉じる際にエラー: %s"
@@ -1764,85 +1763,84 @@ msgstr "ファイルを閉じる際にエラー: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "ローカルファイルを監視するデフォルト・モニターの種類が見つかりません"
 
-#: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:234
-#: ../gio/glocalfileoutputstream.c:747
+#: ../gio/glocalfileoutputstream.c:198 ../gio/glocalfileoutputstream.c:230
+#: ../gio/glocalfileoutputstream.c:719
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "ファイルに書き込む際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:281
+#: ../gio/glocalfileoutputstream.c:277
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "古いバックアップのリンクを削除する際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:295 ../gio/glocalfileoutputstream.c:308
+#: ../gio/glocalfileoutputstream.c:291 ../gio/glocalfileoutputstream.c:304
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "バックアップのコピーを生成する際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:326
+#: ../gio/glocalfileoutputstream.c:322
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "作業用のファイル名を変更する際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:510 ../gio/glocalfileoutputstream.c:1087
+#: ../gio/glocalfileoutputstream.c:506 ../gio/glocalfileoutputstream.c:1057
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "ファイルを切りつめる際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:581 ../gio/glocalfileoutputstream.c:634
-#: ../gio/glocalfileoutputstream.c:679 ../gio/glocalfileoutputstream.c:819
-#: ../gio/glocalfileoutputstream.c:1068 ../gio/glocalfileoutputstream.c:1167
+#: ../gio/glocalfileoutputstream.c:559 ../gio/glocalfileoutputstream.c:789
+#: ../gio/glocalfileoutputstream.c:1038
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' というファイルをオープンする際にエラー: %s"
 
-#: ../gio/glocalfileoutputstream.c:850
+#: ../gio/glocalfileoutputstream.c:820
 msgid "Target file is a directory"
 msgstr "対象となるファイルはディレクトリです"
 
-#: ../gio/glocalfileoutputstream.c:855
+#: ../gio/glocalfileoutputstream.c:825
 msgid "Target file is not a regular file"
 msgstr "対象となるファイルは通常のファイルではありません"
 
-#: ../gio/glocalfileoutputstream.c:867
+#: ../gio/glocalfileoutputstream.c:837
 msgid "The file was externally modified"
 msgstr "ファイルが外部で変更されました"
 
-#: ../gio/glocalfileoutputstream.c:1052
+#: ../gio/glocalfileoutputstream.c:1022
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "古いファイルを削除する際にエラー: %s"
 
-#: ../gio/gmemoryinputstream.c:476 ../gio/gmemoryoutputstream.c:739
+#: ../gio/gmemoryinputstream.c:473 ../gio/gmemoryoutputstream.c:736
 msgid "Invalid GSeekType supplied"
 msgstr "不正な GSeekType が指定されました"
 
-#: ../gio/gmemoryinputstream.c:486
+#: ../gio/gmemoryinputstream.c:483
 msgid "Invalid seek request"
 msgstr "無効なシークの要求です"
 
-#: ../gio/gmemoryinputstream.c:510
+#: ../gio/gmemoryinputstream.c:507
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream を切りつめることはできません"
 
-#: ../gio/gmemoryoutputstream.c:544
+#: ../gio/gmemoryoutputstream.c:541
 msgid "Memory output stream not resizable"
 msgstr "メモリ出力ストリームの大きさは変更できません"
 
-#: ../gio/gmemoryoutputstream.c:560
+#: ../gio/gmemoryoutputstream.c:557
 msgid "Failed to resize memory output stream"
 msgstr "メモリ出力ストリームの大きさを変更できませんでした"
 
-#: ../gio/gmemoryoutputstream.c:648
+#: ../gio/gmemoryoutputstream.c:645
 msgid "Amount of memory required to process the write is larger than available address space"
 msgstr "書き込むプロセスに必要なメモリの量が利用可能なアドレススペースより大きいです"
 
-#: ../gio/gmemoryoutputstream.c:749
+#: ../gio/gmemoryoutputstream.c:746
 msgid "Requested seek before the beginning of the stream"
 msgstr "ストリームの先端より前へシークするようリクエストされました"
 
-#: ../gio/gmemoryoutputstream.c:758
+#: ../gio/gmemoryoutputstream.c:755
 msgid "Requested seek beyond the end of the stream"
 msgstr "ストリームの最後を越えてシークするようリクエストされました"
 
@@ -1896,39 +1894,39 @@ msgstr "mount にはメディアの種類を推測するような実装はあり
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "mount には同期させてメディアの種類を推測するような実装はありません"
 
-#: ../gio/gnetworkaddress.c:354
+#: ../gio/gnetworkaddress.c:353
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "ホスト名 '%s' に '[' が含まれていますが ']' がありません"
 
-#: ../gio/gnetworkmonitorbase.c:195 ../gio/gnetworkmonitorbase.c:298
+#: ../gio/gnetworkmonitorbase.c:191 ../gio/gnetworkmonitorbase.c:294
 msgid "Network unreachable"
 msgstr ""
 
-#: ../gio/gnetworkmonitorbase.c:233 ../gio/gnetworkmonitorbase.c:263
+#: ../gio/gnetworkmonitorbase.c:229 ../gio/gnetworkmonitorbase.c:259
 msgid "Host unreachable"
 msgstr ""
 
-#: ../gio/gnetworkmonitornetlink.c:98 ../gio/gnetworkmonitornetlink.c:110
-#: ../gio/gnetworkmonitornetlink.c:129
+#: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
+#: ../gio/gnetworkmonitornetlink.c:128
 #, fuzzy, c-format
 msgid "Could not create network monitor: %s"
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
-#: ../gio/gnetworkmonitornetlink.c:119
+#: ../gio/gnetworkmonitornetlink.c:118
 msgid "Could not create network monitor: "
 msgstr ""
 
-#: ../gio/gnetworkmonitornetlink.c:177
+#: ../gio/gnetworkmonitornetlink.c:176
 #, fuzzy
 msgid "Could not get network status: "
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
-#: ../gio/goutputstream.c:212 ../gio/goutputstream.c:464
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:453
 msgid "Output stream doesn't implement write"
 msgstr "出力ストリームは書き込みを実装していません"
 
-#: ../gio/goutputstream.c:425 ../gio/goutputstream.c:950
+#: ../gio/goutputstream.c:414 ../gio/goutputstream.c:939
 msgid "Source stream is already closed"
 msgstr "ソース・ストリームは既に閉じています"
 
@@ -1955,7 +1953,7 @@ msgstr "対象となるファイルはディレクトリです"
 msgid "Input stream doesn't implement seek"
 msgstr "入力ストリームで読み込みを実装していません"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:529
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:542
 msgid "Print help"
 msgstr "ヘルプを表示する"
 
@@ -2001,7 +1999,7 @@ msgstr ""
 msgid "FILE PATH"
 msgstr "PATH"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:609
+#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:628
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -2041,7 +2039,7 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:642
+#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:661
 msgid "Arguments:\n"
 msgstr "引数:\n"
 
@@ -2049,7 +2047,7 @@ msgstr "引数:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr ""
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:649
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:668
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   対象のコマンド (任意)\n"
 
@@ -2120,33 +2118,42 @@ msgstr "パスには連続するスラッシュ (//) を含められません\n"
 msgid "No such key '%s'\n"
 msgstr "キー '%s' は存在しません\n"
 
-#: ../gio/gsettings-tool.c:502
+#: ../gio/gsettings-tool.c:511
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "指定した値は有効な範囲内にありません\n"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:518
+#, c-format
+msgid "The key is not writable\n"
+msgstr "指定のキーは書き込み可能ではありません\n"
+
+#: ../gio/gsettings-tool.c:548
+msgid "Print version information and exit"
+msgstr "バージョン情報を表示して終了する"
+
+#: ../gio/gsettings-tool.c:554
 msgid "List the installed (non-relocatable) schemas"
 msgstr "インストール済みの (再配置可能でない) スキーマの一覧を表示する"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:560
 msgid "List the installed relocatable schemas"
 msgstr "インストール済みの再配置可能なスキーマの一覧を表示する"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:566
 msgid "List the keys in SCHEMA"
 msgstr "SCHEMA 内のキーの一覧を表示する"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:610
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:572
 msgid "List the children of SCHEMA"
 msgstr "SCHEMA のサブスキーマの一覧を表示する"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:578
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2154,44 +2161,44 @@ msgstr ""
 "キーと値の一覧を再帰的に表示する\n"
 "SCHEMA を指定しない場合、すべてのキーにたいして一覧を表示する\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:580
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:585
 msgid "Get the value of KEY"
 msgstr "KEY の値を取得する"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:586 ../gio/gsettings-tool.c:592
+#: ../gio/gsettings-tool.c:604 ../gio/gsettings-tool.c:616
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:591
 msgid "Query the range of valid values for KEY"
 msgstr "KEY の値の有効な範囲を確認する"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:597
 msgid "Set the value of KEY to VALUE"
 msgstr "KEY の値を VALUE に設定する"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:598
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:603
 msgid "Reset KEY to its default value"
 msgstr "KEY をデフォルト値にリセットする"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:609
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "SCHEMA 内のすべてのキーをデフォルト値にリセットする"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:615
 msgid "Check if KEY is writable"
 msgstr "KEY が書き込み可能か確認する"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:621
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2201,11 +2208,11 @@ msgstr ""
 "KEY を指定しない場合、SCHEMA 内のすべてのキーを監視する。\n"
 "^C で監視を止める。\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:624
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:636
 msgid ""
 "Usage:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
@@ -2249,7 +2256,7 @@ msgstr ""
 "詳細なヘルプを参照するには 'gsettings help COMMAND' を実行します。\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:658
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2264,11 +2271,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:645
+#: ../gio/gsettings-tool.c:664
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR 追加スキーマを検索するディレクトリ\n"
 
-#: ../gio/gsettings-tool.c:653
+#: ../gio/gsettings-tool.c:672
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2276,160 +2283,161 @@ msgstr ""
 "  SCHEMA    スキーマ名\n"
 "  PATH      再配置可能なスキーマの場合、そのパス\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:677
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       スキーマ内のキー (任意)\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:681
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       スキーマ内のキー\n"
 
-#: ../gio/gsettings-tool.c:666
+#: ../gio/gsettings-tool.c:685
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     設定する値\n"
 
-#: ../gio/gsettings-tool.c:725
+#: ../gio/gsettings-tool.c:744
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "'%s' からスキーマを読み込めませんでした: %s\n"
 
-#: ../gio/gsettings-tool.c:784
+#: ../gio/gsettings-tool.c:806
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "スキーマ名が空です\n"
 
-#: ../gio/gsocket.c:311
+#: ../gio/gsocket.c:313
 msgid "Invalid socket, not initialized"
 msgstr "無効なソケットです。初期化されていません"
 
-#: ../gio/gsocket.c:318
+#: ../gio/gsocket.c:320
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "無効なソケットです。初期化に失敗しました: %s"
 
-#: ../gio/gsocket.c:326
+#: ../gio/gsocket.c:328
 msgid "Socket is already closed"
 msgstr "ソースは既に閉じられています"
 
-#: ../gio/gsocket.c:334 ../gio/gsocket.c:3525 ../gio/gsocket.c:3580
+#: ../gio/gsocket.c:336 ../gio/gsocket.c:3603 ../gio/gsocket.c:3658
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: ../gio/gsocket.c:481
+#: ../gio/gsocket.c:483
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "ファイルディスクリプター GSocket を作成: %s"
 
-#: ../gio/gsocket.c:509 ../gio/gsocket.c:563 ../gio/gsocket.c:570
+#: ../gio/gsocket.c:511 ../gio/gsocket.c:565 ../gio/gsocket.c:572
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "ソケットを作成できません: %s"
 
-#: ../gio/gsocket.c:563
+#: ../gio/gsocket.c:565
 #, fuzzy
 msgid "Unknown family was specified"
 msgstr "不明なプロトコルが指定されました"
 
-#: ../gio/gsocket.c:570
+#: ../gio/gsocket.c:572
 msgid "Unknown protocol was specified"
 msgstr "不明なプロトコルが指定されました"
 
-#: ../gio/gsocket.c:1728
+#: ../gio/gsocket.c:1730
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ローカルのアドレスを取得できませんでした: %s"
 
-#: ../gio/gsocket.c:1771
+#: ../gio/gsocket.c:1773
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "リモートのアドレスを取得できませんでした: %s"
 
-#: ../gio/gsocket.c:1832
+#: ../gio/gsocket.c:1834
 #, c-format
 msgid "could not listen: %s"
 msgstr "listen できませんでした: %s"
 
-#: ../gio/gsocket.c:1904
+#: ../gio/gsocket.c:1933
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "アドレスに bind 時にエラー: %s"
 
-#: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, fuzzy, c-format
 msgid "Error joining multicast group: %s"
 msgstr "アプリケーションを起動する際にエラー: %s"
 
-#: ../gio/gsocket.c:1958 ../gio/gsocket.c:1995
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, fuzzy, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "アプリケーションを起動する際にエラー: %s"
 
-#: ../gio/gsocket.c:1959
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr ""
 
-#: ../gio/gsocket.c:2178
+#: ../gio/gsocket.c:2266
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接続を accept する時にエラー: %s"
 
-#: ../gio/gsocket.c:2299
+#: ../gio/gsocket.c:2387
 msgid "Connection in progress"
 msgstr "接続中"
 
-#: ../gio/gsocket.c:2346
+#: ../gio/gsocket.c:2434
 #, fuzzy
 #| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
 msgstr "エラーをペンディングできません: %s"
 
-#: ../gio/gsocket.c:2512
+#: ../gio/gsocket.c:2600
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "データの受信時にエラー: %s"
 
-#: ../gio/gsocket.c:2690
+#: ../gio/gsocket.c:2778
 #, c-format
 msgid "Error sending data: %s"
 msgstr "データの送信時にエラー: %s"
 
-#: ../gio/gsocket.c:2804
+#: ../gio/gsocket.c:2892
 #, fuzzy, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "ソケットを作成できません: %s"
 
-#: ../gio/gsocket.c:2883
+#: ../gio/gsocket.c:2971
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "ソケットを閉じる際にエラー: %s"
 
-#: ../gio/gsocket.c:3518
+#: ../gio/gsocket.c:3596
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "ソケットの指定された状態を wait: %s"
 
-#: ../gio/gsocket.c:3796 ../gio/gsocket.c:3877
+#: ../gio/gsocket.c:3874 ../gio/gsocket.c:3955
 #, c-format
 msgid "Error sending message: %s"
 msgstr "メッセージを送信中にエラー: %s"
 
-#: ../gio/gsocket.c:3821
+#: ../gio/gsocket.c:3899
 #, fuzzy
 #| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage は Windows ではサポートされていません"
 
-#: ../gio/gsocket.c:4155 ../gio/gsocket.c:4290
+#: ../gio/gsocket.c:4233 ../gio/gsocket.c:4368
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "メッセージを受信中にエラー: %s"
 
-#: ../gio/gsocket.c:4372
-#, c-format
-msgid "Unable to get pending error: %s"
-msgstr "エラーをペンディングできません: %s"
+#: ../gio/gsocket.c:4450
+#, fuzzy, c-format
+#| msgid "Unable to create socket: %s"
+msgid "Unable to read socket credentials: %s"
+msgstr "ソケットを作成できません: %s"
 
-#: ../gio/gsocket.c:4391
+#: ../gio/gsocket.c:4469
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 
@@ -2448,26 +2456,26 @@ msgstr "'%s' から '%s' へ変換するコンバーターを開けませんで�
 msgid "Could not connect: "
 msgstr "listen できませんでした: %s"
 
-#: ../gio/gsocketclient.c:1072 ../gio/gsocketclient.c:1636
+#: ../gio/gsocketclient.c:1067 ../gio/gsocketclient.c:1631
 msgid "Unknown error on connect"
 msgstr "接続時に原因不明のエラー"
 
-#: ../gio/gsocketclient.c:1125 ../gio/gsocketclient.c:1574
+#: ../gio/gsocketclient.c:1120 ../gio/gsocketclient.c:1569
 #, fuzzy
 #| msgid "Proxy protocol '%s' is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "プロキシのプロトコル '%s' がサポートされていません"
 
-#: ../gio/gsocketclient.c:1151 ../gio/gsocketclient.c:1595
+#: ../gio/gsocketclient.c:1146 ../gio/gsocketclient.c:1590
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "プロキシのプロトコル '%s' がサポートされていません"
 
-#: ../gio/gsocketlistener.c:191
+#: ../gio/gsocketlistener.c:187
 msgid "Listener is already closed"
 msgstr "受信を待つ Listener は既に閉じています"
 
-#: ../gio/gsocketlistener.c:232
+#: ../gio/gsocketlistener.c:228
 msgid "Added socket is closed"
 msgstr "追加されたソケットは閉じています"
 
@@ -2555,7 +2563,7 @@ msgstr ""
 msgid "Unknown SOCKSv5 proxy error."
 msgstr ""
 
-#: ../gio/gthemedicon.c:498
+#: ../gio/gthemedicon.c:521
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "バージョン %d の GThemedIcon のエンコーディングはサポートしていません"
@@ -2570,17 +2578,18 @@ msgstr "'%s' の解決中にエラー: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' の逆引き中にエラー: %s"
 
-#: ../gio/gthreadedresolver.c:397 ../gio/gthreadedresolver.c:571
+#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:614
+#: ../gio/gthreadedresolver.c:715 ../gio/gthreadedresolver.c:766
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr ""
 
-#: ../gio/gthreadedresolver.c:402 ../gio/gthreadedresolver.c:576
+#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:720
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "一時的に '%s' を解決することができません"
 
-#: ../gio/gthreadedresolver.c:407 ../gio/gthreadedresolver.c:581
+#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:725
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "'%s' の解決時にエラー"
@@ -2605,84 +2614,88 @@ msgstr ""
 msgid "Could not parse PEM-encoded certificate"
 msgstr ""
 
-#: ../gio/gtlspassword.c:114
+#: ../gio/gtlspassword.c:113
 msgid "This is the last chance to enter the password correctly before your access is locked out."
 msgstr ""
 
-#: ../gio/gtlspassword.c:116
+#: ../gio/gtlspassword.c:115
 msgid "Several password entered have been incorrect, and your access will be locked out after further failures."
 msgstr ""
 
-#: ../gio/gtlspassword.c:118
+#: ../gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
 msgstr ""
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:548
-#, c-format
+#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
+#, fuzzy, c-format
+#| msgid "Expecting 1 control message, got %d"
 msgid "Expecting 1 control message, got %d"
-msgstr "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
+msgid_plural "Expecting 1 control message, got %d"
+msgstr[0] "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
 
-#: ../gio/gunixconnection.c:172 ../gio/gunixconnection.c:558
+#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
 msgid "Unexpected type of ancillary data"
 msgstr "想定してない種類の補助データです"
 
-#: ../gio/gunixconnection.c:190
-#, c-format
+#: ../gio/gunixconnection.c:193
+#, fuzzy, c-format
+#| msgid "Expecting one fd, but got %d\n"
 msgid "Expecting one fd, but got %d\n"
-msgstr "ファイルディスクリプターを一つ待ち受けていましたが、%d 受信しました\n"
+msgid_plural "Expecting one fd, but got %d\n"
+msgstr[0] "ファイルディスクリプターを一つ待ち受けていましたが、%d 受信しました\n"
 
-#: ../gio/gunixconnection.c:206
+#: ../gio/gunixconnection.c:212
 msgid "Received invalid fd"
 msgstr "無効なファイルディスクリプターを受けとりました"
 
-#: ../gio/gunixconnection.c:342
+#: ../gio/gunixconnection.c:348
 msgid "Error sending credentials: "
 msgstr "クレデンシャル送信時にエラー: "
 
-#: ../gio/gunixconnection.c:490
+#: ../gio/gunixconnection.c:496
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr ""
 
-#: ../gio/gunixconnection.c:505
+#: ../gio/gunixconnection.c:511
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED を有効にする際にエラー: %s"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 
-#: ../gio/gunixconnection.c:572
+#: ../gio/gunixconnection.c:580
 #, fuzzy, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
 
-#: ../gio/gunixconnection.c:596
+#: ../gio/gunixconnection.c:604
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr ""
 
-#: ../gio/gunixinputstream.c:382 ../gio/gunixinputstream.c:403
+#: ../gio/gunixinputstream.c:372 ../gio/gunixinputstream.c:393
 #, fuzzy, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
-#: ../gio/gunixinputstream.c:436 ../gio/gunixoutputstream.c:422
+#: ../gio/gunixinputstream.c:426 ../gio/gunixoutputstream.c:412
 #, fuzzy, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
-#: ../gio/gunixmounts.c:1983 ../gio/gunixmounts.c:2036
+#: ../gio/gunixmounts.c:1985 ../gio/gunixmounts.c:2038
 msgid "Filesystem root"
 msgstr "ファイルシステムのルート"
 
-#: ../gio/gunixoutputstream.c:368 ../gio/gunixoutputstream.c:389
+#: ../gio/gunixoutputstream.c:358 ../gio/gunixoutputstream.c:379
 #, fuzzy, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
-#: ../gio/gunixsocketaddress.c:244
+#: ../gio/gunixsocketaddress.c:234
 #, fuzzy
 #| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
@@ -2720,17 +2733,17 @@ msgstr "win32 で組み合わせの変更はサポートしていません"
 msgid "Association creation not supported on win32"
 msgstr "win32 で組み合わせの生成はサポートしていません"
 
-#: ../gio/gwin32inputstream.c:355
+#: ../gio/gwin32inputstream.c:343
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "ハンドルから読み込む際にエラー: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:375
+#: ../gio/gwin32inputstream.c:375 ../gio/gwin32outputstream.c:362
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "ハンドルを閉じる際にエラー: %s"
 
-#: ../gio/gwin32outputstream.c:343
+#: ../gio/gwin32outputstream.c:330
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "ハンドルに書き込む際にエラー: %s"
@@ -2849,47 +2862,47 @@ msgstr "アプリケーションの '%s' は '%s' というブックマークを
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "コマンドラインの '%s' を '%s' という URI に展開できませんでした"
 
-#: ../glib/gconvert.c:803 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
+#: ../glib/gconvert.c:506 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
 #: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
 msgid "Partial character sequence at end of input"
 msgstr "入力の最後に不完全な文字シーケンスがあります"
 
-#: ../glib/gconvert.c:1053
+#: ../glib/gconvert.c:756
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "フォールバック '%s' を '%s' という文字集合に変換できません"
 
-#: ../glib/gconvert.c:1871
+#: ../glib/gconvert.c:1574
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' は \"file\" スキームの絶対 URI ではありません"
 
-#: ../glib/gconvert.c:1881
+#: ../glib/gconvert.c:1584
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "'#' を含んだ '%s' はローカルファイルの URI としては正しくありません"
 
-#: ../glib/gconvert.c:1898
+#: ../glib/gconvert.c:1601
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' という URI は正しくありません"
 
-#: ../glib/gconvert.c:1910
+#: ../glib/gconvert.c:1613
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI に含まれる '%s' というホスト名は間違っています"
 
-#: ../glib/gconvert.c:1926
+#: ../glib/gconvert.c:1629
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' という URI に無効なエスケープ文字が含まれています"
 
-#: ../glib/gconvert.c:2021
+#: ../glib/gconvert.c:1724
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' は絶対パスではありません"
 
-#: ../glib/gconvert.c:2031
+#: ../glib/gconvert.c:1734
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
@@ -3166,57 +3179,43 @@ msgstr "'%s' を開けません: fdopen() に失敗しました: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "'%s' から '%s' にファイル名を変更できません: g_rename() に失敗しました: %s"
 
-#: ../glib/gfileutils.c:1035 ../glib/gfileutils.c:1593
+#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1554
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' というファイルを生成できませんでした: %s"
 
-#: ../glib/gfileutils.c:1049
-#, c-format
-msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "'%s' を書き込みモードで開けませんでした: fdopen() に失敗しました: %s"
-
-#: ../glib/gfileutils.c:1074
-#, c-format
-msgid "Failed to write file '%s': fwrite() failed: %s"
+#: ../glib/gfileutils.c:1071
+#, fuzzy, c-format
+#| msgid "Failed to write file '%s': fwrite() failed: %s"
+msgid "Failed to write file '%s': write() failed: %s"
 msgstr "'%s' への書き込みに失敗しました: fwrite() に失敗しました: %s"
 
-#: ../glib/gfileutils.c:1093
-#, c-format
-msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "'%s' への書き込みに失敗しました: fflush() に失敗しました: %s"
-
-#: ../glib/gfileutils.c:1137
+#: ../glib/gfileutils.c:1111
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "'%s' への書き込みに失敗しました: fsync() に失敗しました: %s"
 
-#: ../glib/gfileutils.c:1161
-#, c-format
-msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "'%s' をクローズできません: fclose() に失敗しました: %s"
-
-#: ../glib/gfileutils.c:1282
+#: ../glib/gfileutils.c:1243
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: %s"
 
-#: ../glib/gfileutils.c:1556
+#: ../glib/gfileutils.c:1517
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' というテンプレートは間違っています ('%s' を含めないこと)"
 
-#: ../glib/gfileutils.c:1569
+#: ../glib/gfileutils.c:1530
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' というテンプレートに XXXXXX が含まれていません"
 
-#: ../glib/gfileutils.c:2097
+#: ../glib/gfileutils.c:2058
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "シンボリックリンク '%s' の読み込みが失敗: %s"
 
-#: ../glib/gfileutils.c:2118
+#: ../glib/gfileutils.c:2079
 msgid "Symbolic links not supported"
 msgstr "シンボリックリンクはサポートしていません"
 
@@ -3513,53 +3512,53 @@ msgstr "用法:"
 msgid "[OPTION...]"
 msgstr "[オプション...]"
 
-#: ../glib/goption.c:864
+#: ../glib/goption.c:870
 msgid "Help Options:"
 msgstr "ヘルプのオプション:"
 
-#: ../glib/goption.c:865
+#: ../glib/goption.c:871
 msgid "Show help options"
 msgstr "ヘルプのオプションを表示する"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:877
 msgid "Show all help options"
 msgstr "ヘルプのオプションをすべて表示する"
 
-#: ../glib/goption.c:933
+#: ../glib/goption.c:939
 msgid "Application Options:"
 msgstr "アプリケーションのオプション:"
 
-#: ../glib/goption.c:997 ../glib/goption.c:1067
+#: ../glib/goption.c:1003 ../glib/goption.c:1073
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "%2$s の整数値 '%1$s' を解析できません"
 
-#: ../glib/goption.c:1007 ../glib/goption.c:1075
+#: ../glib/goption.c:1013 ../glib/goption.c:1081
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "%2$s の整数値 '%1$s' は範囲外の値です"
 
-#: ../glib/goption.c:1032
+#: ../glib/goption.c:1038
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "%2$s の実数値 '%1$s' を解析できません"
 
-#: ../glib/goption.c:1040
+#: ../glib/goption.c:1046
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "%2$s の実数値 '%1$s' は範囲外の値です"
 
-#: ../glib/goption.c:1303 ../glib/goption.c:1382
+#: ../glib/goption.c:1309 ../glib/goption.c:1388
 #, c-format
 msgid "Error parsing option %s"
 msgstr "オプション %s の解析中にエラー"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1526
+#: ../glib/goption.c:1419 ../glib/goption.c:1532
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s の引数がありません"
 
-#: ../glib/goption.c:1979
+#: ../glib/goption.c:1985
 #, c-format
 msgid "Unknown option %s"
 msgstr "%s は不明なオプションです"
@@ -3875,72 +3874,72 @@ msgstr ""
 msgid "character value in \\u.... sequence is too large"
 msgstr "\\x{...} の中にある文字値が大きすぎます"
 
-#: ../glib/gregex.c:745 ../glib/gregex.c:1899
+#: ../glib/gregex.c:745 ../glib/gregex.c:1914
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "正規表現 %s でマッチングしている際にエラー: %s"
 
-#: ../glib/gregex.c:1319
+#: ../glib/gregex.c:1311
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "お使いの PCRE ライブラリは UTF-8 をサポートしていません"
 
-#: ../glib/gregex.c:1323
+#: ../glib/gregex.c:1315
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "お使いの PCRE ライブラリは UTF-8 のプロパティをサポートしていません"
 
-#: ../glib/gregex.c:1331
+#: ../glib/gregex.c:1323
 #, fuzzy
 #| msgid "PCRE library is compiled without UTF8 properties support"
 msgid "PCRE library is compiled with incompatible options"
 msgstr "お使いの PCRE ライブラリは UTF-8 のプロパティをサポートしていません"
 
-#: ../glib/gregex.c:1390
+#: ../glib/gregex.c:1382
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "正規表現 %s をコンパイルする際にエラー (%d 文字目): %s"
 
-#: ../glib/gregex.c:1432
+#: ../glib/gregex.c:1424
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "正規表現 %s を最適化する際にエラー: %s"
 
-#: ../glib/gregex.c:2331
+#: ../glib/gregex.c:2346
 msgid "hexadecimal digit or '}' expected"
 msgstr "16進数の数値または '}' を想定していました"
 
-#: ../glib/gregex.c:2347
+#: ../glib/gregex.c:2362
 msgid "hexadecimal digit expected"
 msgstr "16進数の数値を想定していました"
 
-#: ../glib/gregex.c:2387
+#: ../glib/gregex.c:2402
 msgid "missing '<' in symbolic reference"
 msgstr "シンボル参照の中に '<' がありません"
 
-#: ../glib/gregex.c:2396
+#: ../glib/gregex.c:2411
 msgid "unfinished symbolic reference"
 msgstr "中途半端なシンボル参照です"
 
-#: ../glib/gregex.c:2403
+#: ../glib/gregex.c:2418
 msgid "zero-length symbolic reference"
 msgstr "サイズが0のシンボル参照です"
 
-#: ../glib/gregex.c:2414
+#: ../glib/gregex.c:2429
 msgid "digit expected"
 msgstr "数値を想定していました"
 
-#: ../glib/gregex.c:2432
+#: ../glib/gregex.c:2447
 msgid "illegal symbolic reference"
 msgstr "シンボル参照が間違っています"
 
-#: ../glib/gregex.c:2494
+#: ../glib/gregex.c:2509
 msgid "stray final '\\'"
 msgstr "最後の '\\' に対応するシンボルがありません"
 
-#: ../glib/gregex.c:2498
+#: ../glib/gregex.c:2513
 msgid "unknown escape sequence"
 msgstr "不明なエスケープ・シーケンスです"
 
-#: ../glib/gregex.c:2508
+#: ../glib/gregex.c:2523
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "代替文字列 \"%s\" の %lu 文字目を解析する際にエラー: %s"
@@ -3967,77 +3966,82 @@ msgstr "%c に対応する引用記号の前でテキストが終了していま
 msgid "Text was empty (or contained only whitespace)"
 msgstr "テキストが空です (あるいは空白のみ)"
 
-#: ../glib/gspawn.c:203
+#: ../glib/gspawn.c:202
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "子プロセスからデータを読めません (%s)"
 
-#: ../glib/gspawn.c:362
+#: ../glib/gspawn.c:345
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "子プロセスからデータを読み出す際に select() で想定外のエラー (%s)"
 
-#: ../glib/gspawn.c:853 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:430
+#, c-format
+msgid "Unexpected error in waitpid() (%s)"
+msgstr "waitpid() で想定外のエラー (%s)"
+
+#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr ""
 
-#: ../glib/gspawn.c:861
+#: ../glib/gspawn.c:857
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr ""
 
-#: ../glib/gspawn.c:868
+#: ../glib/gspawn.c:864
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr ""
 
-#: ../glib/gspawn.c:875
+#: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process exited abnormally"
 msgstr ""
 
-#: ../glib/gspawn.c:1280 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "子のパイプからデータを取得できませんでした (%s)"
 
-#: ../glib/gspawn.c:1348
+#: ../glib/gspawn.c:1344
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失敗 (%s)"
 
-#: ../glib/gspawn.c:1496 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1493 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' というディレクトリへ移動できませんでした (%s)"
 
-#: ../glib/gspawn.c:1506
+#: ../glib/gspawn.c:1503
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "%s を子プロセスとして起動できませんでした: %s"
 
-#: ../glib/gspawn.c:1516
+#: ../glib/gspawn.c:1513
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "子プロセスの出力または入力をリダイレクトできません (%s)"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1522
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "子プロセスを fork できません (%s)"
 
-#: ../glib/gspawn.c:1533
+#: ../glib/gspawn.c:1530
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "子プロセスの実行時に不明なエラー \"%s\""
 
-#: ../glib/gspawn.c:1557
+#: ../glib/gspawn.c:1554
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "子プロセスのパイプから十分なデータを取得できません (%s)"
 
-#: ../glib/gspawn.c:1630 ../glib/gspawn-win32.c:300
+#: ../glib/gspawn.c:1627 ../glib/gspawn-win32.c:300
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "子プロセスとの通信用のパイプを作成できませんでした (%s)"
@@ -4095,74 +4099,74 @@ msgstr "変換する入力で無効なシーケンスがあります"
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 の範囲外の文字です"
 
-#: ../glib/gutils.c:2183 ../glib/gutils.c:2210 ../glib/gutils.c:2314
+#: ../glib/gutils.c:2179 ../glib/gutils.c:2206 ../glib/gutils.c:2310
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u バイト"
 
-#: ../glib/gutils.c:2189
+#: ../glib/gutils.c:2185
 #, fuzzy, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KB"
 
-#: ../glib/gutils.c:2191
+#: ../glib/gutils.c:2187
 #, fuzzy, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2194
+#: ../glib/gutils.c:2190
 #, fuzzy, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2197
+#: ../glib/gutils.c:2193
 #, fuzzy, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2200
+#: ../glib/gutils.c:2196
 #, fuzzy, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2203
+#: ../glib/gutils.c:2199
 #, fuzzy, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EB"
 
-#: ../glib/gutils.c:2216
+#: ../glib/gutils.c:2212
 #, fuzzy, c-format
 msgid "%.1f kB"
 msgstr "%.1f KB"
 
-#: ../glib/gutils.c:2219 ../glib/gutils.c:2332
+#: ../glib/gutils.c:2215 ../glib/gutils.c:2328
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2222 ../glib/gutils.c:2337
+#: ../glib/gutils.c:2218 ../glib/gutils.c:2333
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2224 ../glib/gutils.c:2342
+#: ../glib/gutils.c:2220 ../glib/gutils.c:2338
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2227 ../glib/gutils.c:2347
+#: ../glib/gutils.c:2223 ../glib/gutils.c:2343
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2230 ../glib/gutils.c:2352
+#: ../glib/gutils.c:2226 ../glib/gutils.c:2348
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2267
+#: ../glib/gutils.c:2263
 #, fuzzy, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4173,13 +4177,22 @@ msgstr[0] "%u バイト"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2327
+#: ../glib/gutils.c:2323
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#~ msgid "Unexpected error in waitpid() (%s)"
-#~ msgstr "waitpid() で想定外のエラー (%s)"
+#~ msgid "Unable to get pending error: %s"
+#~ msgstr "エラーをペンディングできません: %s"
+
+#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
+#~ msgstr "'%s' を書き込みモードで開けませんでした: fdopen() に失敗しました: %s"
+
+#~ msgid "Failed to write file '%s': fflush() failed: %s"
+#~ msgstr "'%s' への書き込みに失敗しました: fflush() に失敗しました: %s"
+
+#~ msgid "Failed to close file '%s': fclose() failed: %s"
+#~ msgstr "'%s' をクローズできません: fclose() に失敗しました: %s"
 
 #~ msgid "Abnormal program termination spawning command line '%s': %s"
 #~ msgstr "コマンドライン '%s' の起動が異常終了しました: %s"
@@ -4260,9 +4273,6 @@ msgstr "%.1f KB"
 
 #~ msgid "Specify the path for the schema"
 #~ msgstr "スキーマのパスを指定してください"
-
-#~ msgid "Key %s is not writable\n"
-#~ msgstr "キー %s が書き込み可能ではありません\n"
 
 #, fuzzy
 #~ msgid "Do not give error for empty directory"
