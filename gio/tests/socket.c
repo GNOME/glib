@@ -100,11 +100,7 @@ create_server (GSocketFamily family,
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   if (v4mapped)
     {
-      int fd, v6_only;
-
-      fd = g_socket_get_fd (server);
-      v6_only = 0;
-      setsockopt (fd, IPPROTO_IPV6, IPV6_V6ONLY, &v6_only, sizeof (v6_only));
+      g_socket_set_option (data->server, IPPROTO_IPV6, IPV6_V6ONLY, FALSE, NULL);
       if (! g_socket_speaks_ipv4 (data->server))
         {
           g_object_unref (data->server);
