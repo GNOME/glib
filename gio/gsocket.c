@@ -2457,24 +2457,44 @@ g_socket_check_connect_result (GSocket  *socket,
  *
  * Get the amount of data pending in the OS input buffer.
  *
+ * If @socket is a UDP or SCTP socket, this will return the size of
+ * just the next packet, even if additional packets are buffered after
+ * that one.
+ *
+ * Note that on Windows, this function is rather inefficient in the
+ * UDP case, and so if you know any plausible upper bound on the size
+ * of the incoming packet, it is better to just do a
+ * g_socket_receive() with a buffer of that size, rather than calling
+ * g_socket_get_available_bytes() first and then doing a receive of
+ * exactly the right size.
+ *
  * Returns: the number of bytes that can be read from the socket
- * without blocking or -1 on error.
+ * without blocking or truncating, or -1 on error.
  *
  * Since: 2.32
  */
 gssize
 g_socket_get_available_bytes (GSocket *socket)
 {
-  gulong avail = 0;
+#ifdef G_OS_WIN32
+  const gint bufsize = 64 * 1024;
+  static guchar *buf = NULL;
+#endif
+  gint avail;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
-#ifndef G_OS_WIN32
+#if defined (SO_NREAD)
+  if (!g_socket_get_option (socket, SOL_SOCKET, SO_NREAD, &avail, NULL))
+      return -1;
+#elif !defined (G_OS_WIN32)
   if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
-    return -1;
+    avail = -1;
 #else
-  if (ioctlsocket (socket->priv->fd, FIONREAD, &avail) == SOCKET_ERROR)
-    return -1;
+  if (G_UNLIKELY (g_once_init_enter (&buf)))
+    g_once_init_leave (&buf, g_malloc (bufsize));
+
+  avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
 #endif
 
   return avail;
