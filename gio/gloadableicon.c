@@ -122,7 +122,8 @@ g_loadable_icon_load_async (GLoadableIcon       *icon,
  * g_loadable_icon_load_finish:
  * @icon: a #GLoadableIcon.
  * @res: a #GAsyncResult.
- * @type: a location to store the type of the loaded icon, %NULL to ignore.
+ * @type: (out) (allow-none): a location to store the type of the
+ *        loaded icon, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
