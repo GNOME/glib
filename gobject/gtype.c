@@ -4503,8 +4503,9 @@ g_type_class_add_private (gpointer g_class,
   
   G_WRITE_LOCK (&type_rw_lock);
 
-  node->data->instance.private_size = ALIGN_STRUCT (node->data->instance.private_size + private_size);
-  g_assert (node->data->instance.private_size <= 0xffff);
+  private_size = ALIGN_STRUCT (node->data->instance.private_size + private_size);
+  g_assert (private_size <= 0xffff);
+  node->data->instance.private_size = private_size;
   
   G_WRITE_UNLOCK (&type_rw_lock);
 }
@@ -4573,6 +4574,7 @@ g_type_class_adjust_private_offset (gpointer  g_class,
 {
   GType class_gtype = ((GTypeClass *) g_class)->g_type;
   TypeNode *node = lookup_type_node_I (class_gtype);
+  gssize private_size;
 
   g_return_if_fail (private_size_or_offset != NULL);
 
@@ -4606,8 +4608,9 @@ g_type_class_adjust_private_offset (gpointer  g_class,
 
   G_WRITE_LOCK (&type_rw_lock);
 
-  node->data->instance.private_size = ALIGN_STRUCT (node->data->instance.private_size + *private_size_or_offset);
-  g_assert (node->data->instance.private_size <= 0xffff);
+  private_size = ALIGN_STRUCT (node->data->instance.private_size + *private_size_or_offset);
+  g_assert (private_size <= 0xffff);
+  node->data->instance.private_size = private_size;
 
   *private_size_or_offset = -(gint) node->data->instance.private_size;
 
