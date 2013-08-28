@@ -634,6 +634,7 @@ gsettings_help (gboolean     requested,
     {
       g_string_append (string,
       _("Usage:\n"
+        "  gsettings --version\n"
         "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
         "\n"
         "Commands:\n"
