@@ -3331,7 +3331,7 @@ socket_source_new (GSocket      *socket,
     }
 #endif
 
-  condition |= G_IO_HUP | G_IO_ERR;
+  condition |= G_IO_HUP | G_IO_ERR | G_IO_NVAL;
 
   source = g_source_new (&socket_source_funcs, sizeof (GSocketSource));
   g_source_set_name (source, "GSocket");
