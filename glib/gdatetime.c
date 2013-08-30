@@ -2090,6 +2090,59 @@ g_date_time_to_utc (GDateTime *datetime)
 
 /* Format {{{1 */
 
+static gboolean
+format_z (GString *outstr,
+          gint     offset,
+          guint    colons)
+{
+  gint hours;
+  gint minutes;
+  gint seconds;
+
+  hours = offset / 3600;
+  minutes = ABS (offset) / 60 % 60;
+  seconds = ABS (offset) % 60;
+
+  switch (colons)
+    {
+    case 0:
+      g_string_append_printf (outstr, "%+03d%02d",
+                              hours,
+                              minutes);
+      break;
+
+    case 1:
+      g_string_append_printf (outstr, "%+03d:%02d",
+                              hours,
+                              minutes);
+      break;
+
+    case 2:
+      g_string_append_printf (outstr, "%+03d:%02d:%02d",
+                              hours,
+                              minutes,
+                              seconds);
+      break;
+
+    case 3:
+      g_string_append_printf (outstr, "%+03d", hours);
+
+      if (minutes != 0 || seconds != 0)
+        {
+          g_string_append_printf (outstr, ":%02d", minutes);
+
+          if (seconds != 0)
+            g_string_append_printf (outstr, ":%02d", seconds);
+        }
+      break;
+
+    default:
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 format_number (GString  *str,
                gboolean  use_alt_digits,
@@ -2185,6 +2238,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 			   gboolean     locale_is_utf8)
 {
   guint     len;
+  guint     colons;
   gchar    *tmp;
   gunichar  c;
   gboolean  alt_digits = FALSE;
@@ -2219,6 +2273,7 @@ g_date_time_format_locale (GDateTime   *datetime,
       if (!*format)
 	break;
 
+      colons = 0;
       alt_digits = FALSE;
       pad_set = FALSE;
 
@@ -2414,17 +2469,15 @@ g_date_time_format_locale (GDateTime   *datetime,
 			 g_date_time_get_year (datetime));
 	  break;
 	case 'z':
-	  if (datetime->tz != NULL)
-	    {
-	      gint64 offset = g_date_time_get_utc_offset (datetime)
-		/ USEC_PER_SECOND;
-
-	      g_string_append_printf (outstr, "%+03d%02d",
-				      (int) offset / 3600,
-				      (int) abs(offset) / 60 % 60);
-	    }
-	  else
-	    g_string_append (outstr, "+0000");
+	  {
+	    gint64 offset;
+	    if (datetime->tz != NULL)
+	      offset = g_date_time_get_utc_offset (datetime) / USEC_PER_SECOND;
+	    else
+	      offset = 0;
+	    if (!format_z (outstr, (int) offset, colons))
+	      return FALSE;
+	  }
 	  break;
 	case 'Z':
 	  tz = g_date_time_get_timezone_abbreviation (datetime);
@@ -2452,6 +2505,12 @@ g_date_time_format_locale (GDateTime   *datetime,
 	case '0':
 	  pad_set = TRUE;
 	  pad = "0";
+	  goto next_mod;
+	case ':':
+	  /* Colons are only allowed before 'z' */
+	  if (*format && *format != 'z' && *format != ':')
+	    return FALSE;
+	  colons++;
 	  goto next_mod;
 	default:
 	  return FALSE;
@@ -2674,7 +2733,23 @@ g_date_time_format_locale (GDateTime   *datetime,
  *  <varlistentry><term>
  *    <literal>\%z</literal>:
  *   </term><listitem><simpara>
- *    the time-zone as hour offset from UTC
+ *    the time zone as an offset from UTC (+hhmm)
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
+ *    <literal>\%:z</literal>:
+ *   </term><listitem><simpara>
+ *    the time zone as an offset from UTC (+hh:mm). This is a gnulib strftime extension. Since: 2.38
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
+ *    <literal>\%::z</literal>:
+ *   </term><listitem><simpara>
+ *    the time zone as an offset from UTC (+hh:mm:ss). This is a gnulib strftime extension. Since: 2.38
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
+ *    <literal>\%:::z</literal>:
+ *   </term><listitem><simpara>
+ *    the time zone as an offset from UTC, with : to necessary precision
+ *    (e.g., -04, +05:30). This is a gnulib strftime extension. Since: 2.38
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>\%Z</literal>:
