@@ -466,7 +466,9 @@ g_value_register_transform_func (GType           src_type,
  * @dest_type: Target type.
  *
  * Check whether g_value_transform() is able to transform values
- * of type @src_type into values of type @dest_type.
+ * of type @src_type into values of type @dest_type. Note that for
+ * the types to be transformable, they must be compatible and a
+ * transform function must be registered.
  *
  * Returns: %TRUE if the transformation is possible, %FALSE otherwise.
  */
