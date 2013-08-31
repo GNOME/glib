@@ -373,6 +373,14 @@ test_expected_messages_expected (void)
 }
 
 static void
+test_expected_messages_null_domain (void)
+{
+  g_test_expect_message (NULL, G_LOG_LEVEL_WARNING, "no domain");
+  g_log (NULL, G_LOG_LEVEL_WARNING, "no domain");
+  g_test_assert_expected_messages ();
+}
+
+static void
 test_expected_messages_extra_warning (void)
 {
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
@@ -423,6 +431,10 @@ test_expected_messages (void)
   g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*should not be *WARNING*This is a * warning*");
 
   g_test_trap_subprocess ("/misc/expected-messages/subprocess/expected", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("");
+
+  g_test_trap_subprocess ("/misc/expected-messages/subprocess/null-domain", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("");
 
@@ -575,6 +587,7 @@ main (int   argc,
   g_test_add_func ("/misc/expected-messages/subprocess/expect-warning", test_expected_messages_expect_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/wrong-warning", test_expected_messages_wrong_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/expected", test_expected_messages_expected);
+  g_test_add_func ("/misc/expected-messages/subprocess/null-domain", test_expected_messages_null_domain);
   g_test_add_func ("/misc/expected-messages/subprocess/extra-warning", test_expected_messages_extra_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
 

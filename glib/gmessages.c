@@ -894,7 +894,7 @@ g_logv (const gchar   *log_domain,
 
       expected_messages = g_slist_delete_link (expected_messages,
                                                expected_messages);
-      if (strcmp (expected->log_domain, log_domain) == 0 &&
+      if (g_strcmp0 (expected->log_domain, log_domain) == 0 &&
           ((log_level & expected->log_level) == expected->log_level) &&
           g_pattern_match_simple (expected->pattern, msg))
         {
@@ -1080,7 +1080,7 @@ g_assert_warning (const char *log_domain,
 
 /**
  * g_test_expect_message:
- * @log_domain: the log domain of the message
+ * @log_domain: (allow-none): the log domain of the message
  * @log_level: the log level of the message
  * @pattern: a glob-style
  *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
@@ -1123,7 +1123,6 @@ g_test_expect_message (const gchar    *log_domain,
 {
   GTestExpectedMessage *expected;
 
-  g_return_if_fail (log_domain != NULL);
   g_return_if_fail (log_level != 0);
   g_return_if_fail (pattern != NULL);
 
