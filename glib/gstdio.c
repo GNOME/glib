@@ -848,6 +848,8 @@ g_utime (const gchar    *filename,
  * function over the call provided by the system; on Unix, it will
  * attempt to correctly handle %EINTR, which has platform-specific
  * semantics.
+ *
+ * Since: 2.36
  */
 gboolean
 g_close (gint       fd,
