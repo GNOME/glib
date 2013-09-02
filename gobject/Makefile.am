@@ -45,6 +45,7 @@ endif
 
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
 libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
+  $(GOBJECT_LINK_FLAGS) \
   $(gobject_win32_res_ldflag) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
   -export-dynamic $(no_undefined)

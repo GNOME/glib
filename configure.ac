@@ -3469,6 +3469,40 @@ fi
 AC_SUBST(GLIB_LINK_FLAGS)
 
 dnl
+dnl Check for -z,nodelete linker flag: the type system assumes that
+dnl libgobject stays loaded for the lifetime of the process.
+dnl Since ld.bfd does not treat wrong -z options as fatal by default,
+dnl we also try to check for the --fatal-warnings linker flag if
+dnl auto-detecting.
+dnl
+
+AC_ARG_ENABLE([znodelete],
+              [AS_HELP_STRING([--disable-znodelete],
+                              [avoid linking with -z,nodelete])],,
+              [SAVED_LDFLAGS="${LDFLAGS}"
+               AC_MSG_CHECKING([for --fatal-warnings linker flag])
+               LDFLAGS=-Wl,--fatal-warnings
+               AC_TRY_LINK([], [int main (void) { return 0; }],
+                           AC_MSG_RESULT(yes)
+                           [ldflags_fatal=-Wl,--fatal-warnings],
+                           AC_MSG_RESULT(no)
+                           ldflags_fatal=)
+               AC_MSG_CHECKING([for -z,nodelete linker flag])
+               LDFLAGS="$ldflags_fatal -Wl,-z,nodelete"
+               AC_TRY_LINK([], [int main (void) { return 0; }],
+                           AC_MSG_RESULT(yes)
+                           enable_znodelete=yes,
+                           AC_MSG_RESULT(no)
+                           enable_znodelete=no)
+               LDFLAGS="${SAVED_LDFLAGS}"])
+
+if test "x${enable_znodelete}" = "xyes"; then
+  GOBJECT_LINK_FLAGS=-Wl,-z,nodelete
+fi
+
+AC_SUBST(GOBJECT_LINK_FLAGS)
+
+dnl
 dnl Check for -fvisibility=hidden to determine if we can do GNU-style
 dnl visibility attributes for symbol export control
 dnl
