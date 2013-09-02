@@ -2620,6 +2620,10 @@ g_signal_handler_is_connected (gpointer instance,
   return connected;
 }
 
+/**
+ * g_signal_handlers_destroy:
+ * @instance: (type GObject.Object): The instance where a signal handler is sought.
+ */
 void
 g_signal_handlers_destroy (gpointer instance)
 {
