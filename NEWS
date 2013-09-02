@@ -1,3 +1,29 @@
+Overview of changes from GLib 2.37.6 to 2.37.7
+==============================================
+
+* GDateTime now supports %:z formatting variations
+  for timezones. This is a GNU date extension.
+
+* Bugs fixed:
+ 685387 Segfault with GObject.signal_handler_is_connected()...
+ 686786 g_socket_get_available_bytes() returns wrong value ...
+ 705027 GSocket GSource not threadsafe on Windows
+ 706469 Fix G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE documentation
+ 706706 Fix Gir annotations on g_loadable_icon_load_finish
+ 706888 gtype: fix a no-op assertion
+ 706958 configure.ac: fix atomic opts detection
+ 707092 "File Utilities" page for GLib documentation doesn'...
+ 707151 gdatetime: Extend the '%z' timezone format
+
+* Translation updates:
+ Catalan
+ Hungarian
+ Japanese
+ Polish
+ Slovak
+ Tamil
+
+
 Overview of changes from GLib 2.37.5 to 2.37.6
 ==============================================
 
