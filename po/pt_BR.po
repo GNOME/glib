@@ -20,16 +20,16 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-30 13:13+0000\n"
-"PO-Revision-Date: 2013-07-30 12:37-0300\n"
-"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"POT-Creation-Date: 2013-09-09 14:46+0000\n"
+"PO-Revision-Date: 2013-09-09 11:55-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ../gio/gbufferedinputstream.c:424 ../gio/gbufferedinputstream.c:503
 #: ../gio/ginputstream.c:174 ../gio/ginputstream.c:366
@@ -60,7 +60,7 @@ msgstr "Não há suporte para truncar fluxo base"
 
 #: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2177 ../gio/gsimpleasyncresult.c:843
+#: ../gio/glocalfile.c:2178 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -91,7 +91,7 @@ msgstr "Sequência de bytes inválida na entrada de conversão"
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:990
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:993
 msgid "Cancellable initialization not supported"
 msgstr "Sem suporte a inicialização cancelável"
 
@@ -273,19 +273,19 @@ msgstr "Erro ao chamar a linha de comandos \"%s\": "
 msgid "(Type any character to close this window)\n"
 msgstr "(Digite qualquer tecla para fechar esta janela)\n"
 
-#: ../gio/gdbusaddress.c:1421
+#: ../gio/gdbusaddress.c:1429
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "A sessão dbus não está em execução, e o início automático falhou"
 
-#: ../gio/gdbusaddress.c:1442
+#: ../gio/gdbusaddress.c:1450
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Não foi possível determinar o endereço de barramento da sessão (sem "
 "implementação para este SO)"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6908
+#: ../gio/gdbusaddress.c:1549 ../gio/gdbusconnection.c:6908
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -294,7 +294,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento da variável de ambiente "
 "DBUS_STARTER_BUS_TYPE, o valor \"%s\" é desconhecido"
 
-#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6917
+#: ../gio/gdbusaddress.c:1558 ../gio/gdbusconnection.c:6917
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -302,7 +302,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento porque a variável de "
 "ambiente DBUS_STARTER_BUS_TYPE não está definida"
 
-#: ../gio/gdbusaddress.c:1560
+#: ../gio/gdbusaddress.c:1568
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "O tipo de barramento %d é desconhecido"
@@ -1070,14 +1070,14 @@ msgstr "Número inválido de tokens (%d) na codificação GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Esperado um GEmblem para o GEmblemedIcon"
 
-#: ../gio/gfile.c:938 ../gio/gfile.c:1177 ../gio/gfile.c:1316
-#: ../gio/gfile.c:1556 ../gio/gfile.c:1611 ../gio/gfile.c:1669
-#: ../gio/gfile.c:1753 ../gio/gfile.c:1810 ../gio/gfile.c:1874
-#: ../gio/gfile.c:1929 ../gio/gfile.c:3559 ../gio/gfile.c:3614
-#: ../gio/gfile.c:3822 ../gio/gfile.c:3864 ../gio/gfile.c:4330
-#: ../gio/gfile.c:4742 ../gio/gfile.c:4827 ../gio/gfile.c:4917
-#: ../gio/gfile.c:5014 ../gio/gfile.c:5101 ../gio/gfile.c:5202
-#: ../gio/gfile.c:7381 ../gio/gfile.c:7471 ../gio/gfile.c:7555
+#: ../gio/gfile.c:965 ../gio/gfile.c:1204 ../gio/gfile.c:1343
+#: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
+#: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3586 ../gio/gfile.c:3641
+#: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4357
+#: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
+#: ../gio/gfile.c:7682 ../gio/gfile.c:7772 ../gio/gfile.c:7856
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operação sem suporte"
@@ -1092,70 +1092,70 @@ msgstr "Operação sem suporte"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1440 ../gio/glocalfile.c:1101 ../gio/glocalfile.c:1112
-#: ../gio/glocalfile.c:1125
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1102 ../gio/glocalfile.c:1113
+#: ../gio/glocalfile.c:1126
 msgid "Containing mount does not exist"
 msgstr "Ponto de montagem contido não existe"
 
-#: ../gio/gfile.c:2495 ../gio/glocalfile.c:2333
+#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2334
 msgid "Can't copy over directory"
 msgstr "Não é possível copiar sobre diretório"
 
-#: ../gio/gfile.c:2555
+#: ../gio/gfile.c:2582
 msgid "Can't copy directory over directory"
 msgstr "Não é possível copiar diretório sobre diretório"
 
-#: ../gio/gfile.c:2563 ../gio/glocalfile.c:2342
+#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2343
 msgid "Target file exists"
 msgstr "Arquivo alvo existe"
 
-#: ../gio/gfile.c:2582
+#: ../gio/gfile.c:2609
 msgid "Can't recursively copy directory"
 msgstr "Não é possível copiar o diretório recursivamente"
 
-#: ../gio/gfile.c:2864
+#: ../gio/gfile.c:2891
 msgid "Splice not supported"
 msgstr "Não há suporte a união de arquivos"
 
-#: ../gio/gfile.c:2868
+#: ../gio/gfile.c:2895
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Erro ao unir o arquivo: %s"
 
-#: ../gio/gfile.c:2999
+#: ../gio/gfile.c:3026
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Não há suporte a copiar (reflink/clone) entre montagens"
 
-#: ../gio/gfile.c:3003
+#: ../gio/gfile.c:3030
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Não há suporte a copiar (reflink/clone) ou é inválido"
 
-#: ../gio/gfile.c:3008
+#: ../gio/gfile.c:3035
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Não há suporte a copiar (reflink/clone) ou não funcionou"
 
-#: ../gio/gfile.c:3071
+#: ../gio/gfile.c:3098
 msgid "Can't copy special file"
 msgstr "Não é possível copiar o arquivo especial"
 
-#: ../gio/gfile.c:3812
+#: ../gio/gfile.c:3839
 msgid "Invalid symlink value given"
 msgstr "Fornecido valor inválido de link simbólico"
 
-#: ../gio/gfile.c:3974
+#: ../gio/gfile.c:4001
 msgid "Trash not supported"
 msgstr "Não há suporte para lixeira"
 
-#: ../gio/gfile.c:4087
+#: ../gio/gfile.c:4114
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Nomes de arquivo não podem conter \"%c\""
 
-#: ../gio/gfile.c:6504 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6531 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "volume não implementa montagem"
 
-#: ../gio/gfile.c:6613
+#: ../gio/gfile.c:6640
 msgid "No application is registered as handling this file"
 msgstr "Nenhum aplicativo está registrado como manipulador deste arquivo"
 
@@ -1677,119 +1677,124 @@ msgstr "arquivo de saída existente removido.\n"
 msgid "Unable to find default local directory monitor type"
 msgstr "Não é possível localizar o tipo de diretório monitor local padrão"
 
-#: ../gio/glocalfile.c:602 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:603 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nome de arquivo inválido: %s"
 
-#: ../gio/glocalfile.c:979
+#: ../gio/glocalfile.c:980
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Erro ao obter informações do sistema de arquivos: %s"
 
-#: ../gio/glocalfile.c:1147
+#: ../gio/glocalfile.c:1148
 msgid "Can't rename root directory"
 msgstr "Não é possível renomear o diretório root"
 
-#: ../gio/glocalfile.c:1167 ../gio/glocalfile.c:1193
+#: ../gio/glocalfile.c:1168 ../gio/glocalfile.c:1194
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Erro ao renomear arquivo: %s"
 
-#: ../gio/glocalfile.c:1176
+#: ../gio/glocalfile.c:1177
 msgid "Can't rename file, filename already exists"
 msgstr "Não é possível renomear o arquivo, o nome do arquivo já existe"
 
-#: ../gio/glocalfile.c:1189 ../gio/glocalfile.c:2206 ../gio/glocalfile.c:2235
-#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1190 ../gio/glocalfile.c:2207 ../gio/glocalfile.c:2236
+#: ../gio/glocalfile.c:2396 ../gio/glocalfileoutputstream.c:553
 msgid "Invalid filename"
 msgstr "Nome de arquivo inválido"
 
-#: ../gio/glocalfile.c:1356 ../gio/glocalfile.c:1380
+#: ../gio/glocalfile.c:1357 ../gio/glocalfile.c:1381
 msgid "Can't open directory"
 msgstr "Não é possível abrir diretório"
 
-#: ../gio/glocalfile.c:1364
+#: ../gio/glocalfile.c:1365
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Erro ao abrir arquivo: %s"
 
-#: ../gio/glocalfile.c:1505
+#: ../gio/glocalfile.c:1506
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Erro ao remover arquivo: %s"
 
-#: ../gio/glocalfile.c:1885
+#: ../gio/glocalfile.c:1886
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Erro ao mover arquivo para a lixeira: %s"
 
-#: ../gio/glocalfile.c:1908
+#: ../gio/glocalfile.c:1909
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Não é possível criar o diretório da lixeira %s: %s"
 
-#: ../gio/glocalfile.c:1929
+#: ../gio/glocalfile.c:1930
 msgid "Unable to find toplevel directory for trash"
 msgstr "Não é possível localizar diretório de nível superior para a lixeira"
 
-#: ../gio/glocalfile.c:2008 ../gio/glocalfile.c:2028
+#: ../gio/glocalfile.c:2009 ../gio/glocalfile.c:2029
 msgid "Unable to find or create trash directory"
 msgstr "Não é possível localizar ou criar o diretório da lixeira"
 
-#: ../gio/glocalfile.c:2062
+#: ../gio/glocalfile.c:2063
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Não é possível criar o arquivo de informações da lixeira: %s"
 
-#: ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2096 ../gio/glocalfile.c:2176
-#: ../gio/glocalfile.c:2183
+#: ../gio/glocalfile.c:2092 ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2177
+#: ../gio/glocalfile.c:2184
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Não é possível mover arquivo para a lixeira: %s"
 
-#: ../gio/glocalfile.c:2184 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2185 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "erro interno"
 
-#: ../gio/glocalfile.c:2210
+#: ../gio/glocalfile.c:2211
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Erro ao criar o diretório: %s"
 
-#: ../gio/glocalfile.c:2239
+#: ../gio/glocalfile.c:2240
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "O sistema de arquivos não tem suporte a links simbólicos"
 
-#: ../gio/glocalfile.c:2243
+#: ../gio/glocalfile.c:2244
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Erro ao criar link simbólico: %s"
 
-#: ../gio/glocalfile.c:2305 ../gio/glocalfile.c:2399
+#: ../gio/glocalfile.c:2306 ../gio/glocalfile.c:2400
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Erro ao mover arquivo: %s"
 
-#: ../gio/glocalfile.c:2328
+#: ../gio/glocalfile.c:2329
 msgid "Can't move directory over directory"
 msgstr "Não é possível mover diretório sobre diretório"
 
-#: ../gio/glocalfile.c:2355 ../gio/glocalfileoutputstream.c:929
+#: ../gio/glocalfile.c:2356 ../gio/glocalfileoutputstream.c:929
 #: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
 #: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
 msgid "Backup file creation failed"
 msgstr "Falha ao criar arquivo de backup"
 
-#: ../gio/glocalfile.c:2374
+#: ../gio/glocalfile.c:2375
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Erro ao remover arquivo alvo: %s"
 
-#: ../gio/glocalfile.c:2388
+#: ../gio/glocalfile.c:2389
 msgid "Move between mounts not supported"
 msgstr "Não há suporte a mover entre montagens"
+
+#: ../gio/glocalfile.c:2572
+#, c-format
+msgid "Could not determine the disk usage of %s: %s"
+msgstr "Não foi possível determinar a utilização de disco de %s: %s"
 
 #: ../gio/glocalfileinfo.c:722
 msgid "Attribute value must be non-NULL"
@@ -2472,133 +2477,133 @@ msgstr "Não foi possível carregar esquemas de %s: %s\n"
 msgid "Empty schema name given\n"
 msgstr "Nome de esquema vazio\n"
 
-#: ../gio/gsocket.c:312
+#: ../gio/gsocket.c:313
 msgid "Invalid socket, not initialized"
 msgstr "Soquete inválido, não inicializado"
 
-#: ../gio/gsocket.c:319
+#: ../gio/gsocket.c:320
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Soquete inválido, inicialização falhou devido a: %s"
 
-#: ../gio/gsocket.c:327
+#: ../gio/gsocket.c:328
 msgid "Socket is already closed"
 msgstr "O soquete já está fechado"
 
-#: ../gio/gsocket.c:335 ../gio/gsocket.c:3510 ../gio/gsocket.c:3565
+#: ../gio/gsocket.c:336 ../gio/gsocket.c:3623 ../gio/gsocket.c:3678
 msgid "Socket I/O timed out"
 msgstr "Tempo de E/S do soquete foi esgotado"
 
-#: ../gio/gsocket.c:482
+#: ../gio/gsocket.c:483
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "criando GSocket a partir do fd: %s"
 
-#: ../gio/gsocket.c:510 ../gio/gsocket.c:564 ../gio/gsocket.c:571
+#: ../gio/gsocket.c:511 ../gio/gsocket.c:565 ../gio/gsocket.c:572
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Não é possível criar soquete: %s"
 
-#: ../gio/gsocket.c:564
+#: ../gio/gsocket.c:565
 msgid "Unknown family was specified"
 msgstr "Foi especificada uma família desconhecida"
 
-#: ../gio/gsocket.c:571
+#: ../gio/gsocket.c:572
 msgid "Unknown protocol was specified"
 msgstr "Foi especificado um protocolo desconhecido"
 
-#: ../gio/gsocket.c:1727
+#: ../gio/gsocket.c:1730
 #, c-format
 msgid "could not get local address: %s"
 msgstr "não foi possível obter endereço local: %s"
 
-#: ../gio/gsocket.c:1770
+#: ../gio/gsocket.c:1773
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "não foi possível obter endereço remoto: %s"
 
-#: ../gio/gsocket.c:1831
+#: ../gio/gsocket.c:1834
 #, c-format
 msgid "could not listen: %s"
 msgstr "não foi possível escutar: %s"
 
-#: ../gio/gsocket.c:1903
+#: ../gio/gsocket.c:1933
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Erro ao vincular ao endereço: %s"
 
-#: ../gio/gsocket.c:1956 ../gio/gsocket.c:1993
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Erro ao entrar no grupo multicast: %s"
 
-#: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Erro ao sair do grupo multicast: %s"
 
-#: ../gio/gsocket.c:1958
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "Não há suporte para multicast com uma origem específica"
 
-#: ../gio/gsocket.c:2177
+#: ../gio/gsocket.c:2266
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Erro ao aceitar a conexão: %s"
 
-#: ../gio/gsocket.c:2298
+#: ../gio/gsocket.c:2387
 msgid "Connection in progress"
 msgstr "Conexão em progresso"
 
-#: ../gio/gsocket.c:2345
+#: ../gio/gsocket.c:2434
 msgid "Unable to get pending error: "
 msgstr "Não é possível obter erro pendente: "
 
-#: ../gio/gsocket.c:2511
+#: ../gio/gsocket.c:2620
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Erro ao receber dados: %s"
 
-#: ../gio/gsocket.c:2689
+#: ../gio/gsocket.c:2798
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Erro ao enviar dados: %s"
 
-#: ../gio/gsocket.c:2803
+#: ../gio/gsocket.c:2912
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Não é possível encerrar soquete: %s"
 
-#: ../gio/gsocket.c:2882
+#: ../gio/gsocket.c:2991
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Erro ao fechar soquete: %s"
 
-#: ../gio/gsocket.c:3503
+#: ../gio/gsocket.c:3616
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Aguardando pela condição do soquete: %s"
 
-#: ../gio/gsocket.c:3781 ../gio/gsocket.c:3862
+#: ../gio/gsocket.c:3894 ../gio/gsocket.c:3975
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Erro ao enviar mensagem: %s"
 
-#: ../gio/gsocket.c:3806
+#: ../gio/gsocket.c:3919
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Não há suporte a GSocketControlMessage no Windows"
 
-#: ../gio/gsocket.c:4140 ../gio/gsocket.c:4275
+#: ../gio/gsocket.c:4253 ../gio/gsocket.c:4388
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Erro ao receber mensagem: %s"
 
-#: ../gio/gsocket.c:4357
+#: ../gio/gsocket.c:4470
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Não é possível ler as credenciais do soquete: %s"
 
-#: ../gio/gsocket.c:4376
+#: ../gio/gsocket.c:4489
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials não está implementado para este SO"
 
@@ -2725,7 +2730,7 @@ msgstr "Proxy SOCKSv5 sem suporte ao tipo de endereço fornecido."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Erro de proxy SOCKSv5 desconhecido."
 
-#: ../gio/gthemedicon.c:498
+#: ../gio/gthemedicon.c:521
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Não é possível lidar com a versão %d da codificação GThemedIcon"
@@ -4341,75 +4346,75 @@ msgstr "Sequência inválida na conversão da entrada"
 msgid "Character out of range for UTF-16"
 msgstr "Caractere fora do limite para UTF-16"
 
-#: ../glib/gutils.c:2183 ../glib/gutils.c:2210 ../glib/gutils.c:2314
+#: ../glib/gutils.c:2179 ../glib/gutils.c:2206 ../glib/gutils.c:2310
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gutils.c:2189
+#: ../glib/gutils.c:2185
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2191
+#: ../glib/gutils.c:2187
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2194
+#: ../glib/gutils.c:2190
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2197
+#: ../glib/gutils.c:2193
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2200
+#: ../glib/gutils.c:2196
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2203
+#: ../glib/gutils.c:2199
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2216
+#: ../glib/gutils.c:2212
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2219 ../glib/gutils.c:2332
+#: ../glib/gutils.c:2215 ../glib/gutils.c:2328
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2222 ../glib/gutils.c:2337
+#: ../glib/gutils.c:2218 ../glib/gutils.c:2333
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2224 ../glib/gutils.c:2342
+#: ../glib/gutils.c:2220 ../glib/gutils.c:2338
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2227 ../glib/gutils.c:2347
+#: ../glib/gutils.c:2223 ../glib/gutils.c:2343
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2230 ../glib/gutils.c:2352
+#: ../glib/gutils.c:2226 ../glib/gutils.c:2348
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2267
+#: ../glib/gutils.c:2263
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4421,7 +4426,7 @@ msgstr[1] "%s bytes"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2327
+#: ../glib/gutils.c:2323
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
