@@ -72,7 +72,7 @@ report_progress (gboolean reporting,
 int
 main (int argc, char **argv)
 {
-  GFileMeasureProgressCallback progress;
+  GFileMeasureProgressCallback progress = NULL;
   GFileMeasureFlags flags = 0;
   gint i;
 
