@@ -121,7 +121,7 @@ static char SCOPE_ID_TEST_IFNAME[IF_NAMESIZE];
 static int SCOPE_ID_TEST_INDEX;
 #else
 #define SCOPE_ID_TEST_IFNAME "1"
-#define SCOPE_ID_TEST_IFINDEX 1
+#define SCOPE_ID_TEST_INDEX 1
 #endif
 
 static void
