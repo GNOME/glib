@@ -1745,7 +1745,7 @@ msgstr "Přesunování mezi připojeními není podporováno"
 #: ../gio/glocalfile.c:2572
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
-msgstr "Nelze zjistit využití disku %s: %s\n"
+msgstr "Nelze zjistit využití disku %s: %s"
 
 #: ../gio/glocalfileinfo.c:722
 msgid "Attribute value must be non-NULL"
