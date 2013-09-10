@@ -46,8 +46,8 @@ enum {
 struct _GCancellablePrivate
 {
   guint cancelled : 1;
-  guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
+  GThread *cancelled_running_thread;
 
   guint fd_refcount;
   GWakeup *wakeup;
@@ -260,7 +260,8 @@ g_cancellable_reset (GCancellable *cancellable)
 
   priv = cancellable->priv;
 
-  while (priv->cancelled_running)
+  while (priv->cancelled_running_thread != NULL &&
+         priv->cancelled_running_thread != g_thread_self ())
     {
       priv->cancelled_running_waiting = TRUE;
       g_cond_wait (&cancellable_cond, &cancellable_mutex);
@@ -492,7 +493,7 @@ g_cancellable_cancel (GCancellable *cancellable)
     }
 
   priv->cancelled = TRUE;
-  priv->cancelled_running = TRUE;
+  priv->cancelled_running_thread = g_thread_self ();
 
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
@@ -504,7 +505,7 @@ g_cancellable_cancel (GCancellable *cancellable)
 
   g_mutex_lock (&cancellable_mutex);
 
-  priv->cancelled_running = FALSE;
+  priv->cancelled_running_thread = NULL;
   if (priv->cancelled_running_waiting)
     g_cond_broadcast (&cancellable_cond);
   priv->cancelled_running_waiting = FALSE;
@@ -557,6 +558,8 @@ g_cancellable_connect (GCancellable   *cancellable,
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
 
+      g_mutex_unlock (&cancellable_mutex);
+
       _callback = (void *)callback;
       id = 0;
 
@@ -571,9 +574,10 @@ g_cancellable_connect (GCancellable   *cancellable,
                                   callback, data,
                                   (GClosureNotify) data_destroy_func,
                                   0);
+
+      g_mutex_unlock (&cancellable_mutex);
     }
 
-  g_mutex_unlock (&cancellable_mutex);
 
   return id;
 }
@@ -584,16 +588,19 @@ g_cancellable_connect (GCancellable   *cancellable,
  * @handler_id: Handler id of the handler to be disconnected, or %0.
  *
  * Disconnects a handler from a cancellable instance similar to
- * g_signal_handler_disconnect().  Additionally, in the event that a
- * signal handler is currently running, this call will block until the
- * handler has finished.  Calling this function from a
- * #GCancellable::cancelled signal handler will therefore result in a
- * deadlock.
+ * g_signal_handler_disconnect(). Additionally, in the event that a
+ * signal handler is currently running on a different thread, this
+ * call will block until the handler has finished.
  *
  * This avoids a race condition where a thread cancels at the
  * same time as the cancellable operation is finished and the
  * signal handler is removed. See #GCancellable::cancelled for
  * details on how to use this.
+ *
+ * Note, since 2.38 it is safe to call this function from a
+ * #GCancellable::cancelled signal handler, something which would
+ * previously have caused a deadlock. However, it is not a good idea
+ * to disconnect a signal handler from inside its *own* signal handler.
  *
  * If @cancellable is %NULL or @handler_id is %0 this function does
  * nothing.
@@ -613,7 +620,8 @@ g_cancellable_disconnect (GCancellable  *cancellable,
 
   priv = cancellable->priv;
 
-  while (priv->cancelled_running)
+  while (priv->cancelled_running_thread != NULL &&
+         priv->cancelled_running_thread != g_thread_self ())
     {
       priv->cancelled_running_waiting = TRUE;
       g_cond_wait (&cancellable_cond, &cancellable_mutex);
