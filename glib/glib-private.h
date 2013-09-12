@@ -33,6 +33,9 @@ GLIB_AVAILABLE_IN_ALL
 gchar *_glib_get_locale_dir    (void);
 #endif
 
+GDir * g_dir_open_with_errno (const gchar *path, guint flags);
+GDir * g_dir_new_from_dirp (gpointer dirp);
+
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 typedef struct {
@@ -49,6 +52,11 @@ typedef struct {
 
   gboolean              (* g_check_setuid)              (void);
   GMainContext *        (* g_main_context_new_with_next_id) (guint next_id);
+
+  GDir *                (* g_dir_open_with_errno)       (const gchar *path,
+                                                         guint        flags);
+  GDir *                (* g_dir_new_from_dirp)         (gpointer dirp);
+
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 

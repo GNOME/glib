@@ -30,6 +30,10 @@
 
 #include <glib/gerror.h>
 
+#ifdef G_OS_UNIX
+#include <dirent.h>
+#endif
+
 G_BEGIN_DECLS
 
 typedef struct _GDir GDir;
