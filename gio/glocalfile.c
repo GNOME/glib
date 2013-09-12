@@ -27,7 +27,9 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
+#if G_OS_UNIX
 #include <dirent.h>
+#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -68,6 +70,7 @@
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
 #endif
+#include "glib-private.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -2556,16 +2559,24 @@ g_local_file_measure_size_error (GFileMeasureFlags   flags,
       filename = g_string_new (name->data);
       for (node = name->next; node; node = node->next)
         {
-          g_string_prepend_c (filename, G_DIR_SEPARATOR);
-          g_string_prepend (filename, node->data);
-        }
+          gchar *utf8;
 
-      g_string_prepend (filename, "file://");
+          g_string_prepend_c (filename, G_DIR_SEPARATOR);
+          utf8 = g_filename_display_name (node->data);
+          g_string_prepend (filename, utf8);
+          g_free (utf8);
+        }
 #else
-      /* Otherwise, we already have it, so just use it. */
-      node = name;
-      filename = g_string_new ("file://");
-      g_string_append (filename, node->data);
+      {
+        gchar *utf8;
+
+        /* Otherwise, we already have it, so just use it. */
+        node = name;
+        filename = g_string_new (NULL);
+        utf8 = g_filename_display_name (node->data);
+        g_string_append (filename, utf8);
+        g_free (utf8);
+      }
 #endif
 
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (saved_errno),
@@ -2617,10 +2628,8 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #if defined (AT_FDCWD)
   if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
-#elif defined (HAVE_LSTAT)
-  if (lstat (name->data, &buf) != 0)
 #else
-  if (stat (name->data, &buf) != 0)
+  if (g_lstat (name->data, &buf) != 0)
 #endif
     return g_local_file_measure_size_error (state->flags, errno, name, error);
 
@@ -2709,16 +2718,21 @@ g_local_file_measure_size_of_contents (gint           fd,
                                        GError       **error)
 {
   gboolean success = TRUE;
-  struct dirent *entry;
-  DIR *dirp;
+  const gchar *name;
+  GDir *dir;
 
 #ifdef AT_FDCWD
-  dirp = fdopendir (fd);
+  {
+    /* If this fails, we want to preserve the errno from fopendir() */
+    DIR *dirp;
+    dirp = fdopendir (fd);
+    dir = dirp ? GLIB_PRIVATE_CALL(g_dir_new_from_dirp) (dirp) : NULL;
+  }
 #else
-  dirp = opendir (dir_name->data);
+  dir = GLIB_PRIVATE_CALL(g_dir_open_with_errno) (dir_name->data, 0);
 #endif
 
-  if (dirp == NULL)
+  if (dir == NULL)
     {
       gint saved_errno = errno;
 
@@ -2729,23 +2743,16 @@ g_local_file_measure_size_of_contents (gint           fd,
       return g_local_file_measure_size_error (state->flags, saved_errno, dir_name, error);
     }
 
-  while (success && (entry = readdir (dirp)))
+  while (success && (name = g_dir_read_name (dir)))
     {
-      gchar *name = entry->d_name;
       GSList node;
 
       node.next = dir_name;
 #ifdef AT_FDCWD
-      node.data = name;
+      node.data = (gchar *) name;
 #else
       node.data = g_build_filename (dir_name->data, name, NULL);
 #endif
-
-      /* skip '.' and '..' */
-      if (name[0] == '.' &&
-          (name[1] == '\0' ||
-           (name[1] == '.' && name[2] == '\0')))
-        continue;
 
       success = g_local_file_measure_size_of_file (fd, &node, state, error);
 
@@ -2754,7 +2761,7 @@ g_local_file_measure_size_of_contents (gint           fd,
 #endif
     }
 
-  closedir (dirp);
+  g_dir_close (dir);
 
   return success;
 }
