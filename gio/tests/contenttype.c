@@ -23,7 +23,6 @@ test_guess (void)
   res = g_content_type_guess ("foo.txt", NULL, 0, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert (g_content_type_equals (expected, res));
-  g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
