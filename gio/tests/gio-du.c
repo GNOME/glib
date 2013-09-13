@@ -6,6 +6,21 @@ static gint     option_format_size;
 
 static gint     outstanding_asyncs;
 
+#ifdef G_OS_WIN32
+typedef struct {
+  int newmode;
+} _startupinfo;
+
+#ifndef _MSC_VER
+
+extern void __wgetmainargs(int *argc,
+			   wchar_t ***wargv,
+			   wchar_t ***wenviron,
+			   int expand_wildcards,
+			   _startupinfo *startupinfo);
+#endif
+#endif
+
 static void
 print_result (const gchar *filename,
               guint64      disk_usage,
@@ -75,8 +90,17 @@ main (int argc, char **argv)
   GFileMeasureProgressCallback progress = NULL;
   GFileMeasureFlags flags = 0;
   gint i;
+#ifdef G_OS_WIN32
+  int wargc;
+  wchar_t **wargv, **wenvp;
+  _startupinfo si = { 0 };
+
+  __wgetmainargs (&wargc, &wargv, &wenvp, 0, &si);
+#endif
 
   setlocale (LC_ALL, "");
+
+
 
   for (i = 1; argv[i] && argv[i][0] == '-'; i++)
     {
@@ -112,32 +136,42 @@ main (int argc, char **argv)
       return 1;
     }
 
+#ifdef G_OS_WIN32
+  while (wargv[i])
+  {
+    gchar *argv_utf8 = g_utf16_to_utf8 (wargv[i], -1, NULL, NULL, NULL);
+#else
   while (argv[i])
+  {
+    gchar *argv_utf8 = argv[i];
+#endif
+    GFile *file = g_file_new_for_commandline_arg (argv_utf8);
+
+    if (option_use_async)
     {
-      GFile *file = g_file_new_for_commandline_arg (argv[i]);
-
-      if (option_use_async)
-        {
-          g_file_measure_disk_usage_async (file, flags, G_PRIORITY_DEFAULT, NULL,
-                                           progress, argv[1], async_ready_func, argv[i]);
-          outstanding_asyncs++;
-        }
-      else
-        {
-          GError *error = NULL;
-          guint64 disk_usage;
-          guint64 num_dirs;
-          guint64 num_files;
-
-          g_file_measure_disk_usage (file, flags, NULL, progress, argv[1],
-                                     &disk_usage, &num_dirs, &num_files, &error);
-          print_result (argv[i], disk_usage, num_dirs, num_files, error, '\n');
-        }
-
-      g_object_unref (file);
-
-      i++;
+      g_file_measure_disk_usage_async (file, flags, G_PRIORITY_DEFAULT, NULL,
+                                       progress, argv[1], async_ready_func, argv_utf8);
+      outstanding_asyncs++;
     }
+    else
+    {
+      GError *error = NULL;
+      guint64 disk_usage;
+      guint64 num_dirs;
+      guint64 num_files;
+
+      g_file_measure_disk_usage (file, flags, NULL, progress, argv[1],
+                                 &disk_usage, &num_dirs, &num_files, &error);
+      print_result (argv_utf8, disk_usage, num_dirs, num_files, error, '\n');
+    }
+
+    g_object_unref (file);
+#ifdef G_OS_WIN32
+    g_free (argv_utf8);
+#endif
+
+    i++;
+  }
 
   while (outstanding_asyncs)
     g_main_context_iteration (NULL, TRUE);
