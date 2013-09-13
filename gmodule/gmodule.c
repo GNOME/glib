@@ -811,7 +811,7 @@ g_module_error (void)
  * g_module_symbol:
  * @module: a #GModule
  * @symbol_name: the name of the symbol to find
- * @symbol: returns the pointer to the symbol value
+ * @symbol: (out): returns the pointer to the symbol value
  *
  * Gets a symbol pointer from a module, such as one exported
  * by #G_MODULE_EXPORT. Note that a valid symbol can be %NULL.
@@ -902,7 +902,7 @@ g_module_name (GModule *module)
 
 /**
  * g_module_build_path:
- * @directory: the directory where the module is. This can be %NULL
+ * @directory: (allow-none): the directory where the module is. This can be %NULL
  *     or the empty string to indicate that the standard platform-specific
  *     directories will be used, though that is not recommended
  * @module_name: the name of the module
