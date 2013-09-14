@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-27 15:01+0000\n"
-"PO-Revision-Date: 2013-09-04 00:28+0900\n"
+"POT-Creation-Date: 2013-09-11 19:37+0000\n"
+"PO-Revision-Date: 2013-09-14 22:45+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -56,7 +56,7 @@ msgstr "기반 스트림에서 자르기를 지원하지 않습니다"
 
 #: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2177 ../gio/gsimpleasyncresult.c:843
+#: ../gio/glocalfile.c:2178 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -653,14 +653,11 @@ msgstr "%s에 대해 StartServiceByName 호출이 실패했습니다: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr " StartServiceByName(\"%2$s\") 메소드에서 예상치 못한 응답 %1$d번"
 
-# FIXME: 무슨 뜻?
 #: ../gio/gdbusproxy.c:2761 ../gio/gdbusproxy.c:2898
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
-msgstr ""
-"메소드를 호출할 수 없습니다. 프록시는 소유자 없는 알려진 이름이고 프록시가 "
-"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START 플래그를 포함해 만들어졌습니다"
+msgstr "메소드를 호출할 수 없습니다. 프록시는 소유자 없는 알려진 이름이고 프록시가 G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START 플래그를 갖고 만들어졌습니다"
 
 #: ../gio/gdbusserver.c:709
 msgid "Abstract name space not supported"
@@ -1005,14 +1002,14 @@ msgstr "GEmblemedIcon 인코딩에서 토큰 수가 잘못되었습니다 (%d개
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon에 GEmblem이 없습니다"
 
-#: ../gio/gfile.c:938 ../gio/gfile.c:1177 ../gio/gfile.c:1316
-#: ../gio/gfile.c:1556 ../gio/gfile.c:1611 ../gio/gfile.c:1669
-#: ../gio/gfile.c:1753 ../gio/gfile.c:1810 ../gio/gfile.c:1874
-#: ../gio/gfile.c:1929 ../gio/gfile.c:3559 ../gio/gfile.c:3614
-#: ../gio/gfile.c:3822 ../gio/gfile.c:3864 ../gio/gfile.c:4330
-#: ../gio/gfile.c:4742 ../gio/gfile.c:4827 ../gio/gfile.c:4917
-#: ../gio/gfile.c:5014 ../gio/gfile.c:5101 ../gio/gfile.c:5202
-#: ../gio/gfile.c:7381 ../gio/gfile.c:7471 ../gio/gfile.c:7555
+#: ../gio/gfile.c:965 ../gio/gfile.c:1204 ../gio/gfile.c:1343
+#: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
+#: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3586 ../gio/gfile.c:3641
+#: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4357
+#: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
+#: ../gio/gfile.c:7682 ../gio/gfile.c:7772 ../gio/gfile.c:7856
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "동작을 지원하지 않습니다"
@@ -1027,71 +1024,71 @@ msgstr "동작을 지원하지 않습니다"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1440 ../gio/glocalfile.c:1101 ../gio/glocalfile.c:1112
-#: ../gio/glocalfile.c:1125
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1102 ../gio/glocalfile.c:1113
+#: ../gio/glocalfile.c:1126
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: ../gio/gfile.c:2495 ../gio/glocalfile.c:2333
+#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2334
 msgid "Can't copy over directory"
 msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 
-#: ../gio/gfile.c:2555
+#: ../gio/gfile.c:2582
 msgid "Can't copy directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 복사할 수 없습니다"
 
-#: ../gio/gfile.c:2563 ../gio/glocalfile.c:2342
+#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2343
 msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
-#: ../gio/gfile.c:2582
+#: ../gio/gfile.c:2609
 msgid "Can't recursively copy directory"
 msgstr "디렉터리를 재귀적으로 복사할 수 없습니다"
 
-#: ../gio/gfile.c:2864
+#: ../gio/gfile.c:2891
 msgid "Splice not supported"
 msgstr "잇기를 지원하지 않습니다"
 
-#: ../gio/gfile.c:2868
+#: ../gio/gfile.c:2895
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "파일 쪼개기 오류: %s"
 
 # reflink/clone은 btrfs에서 임시 복사하는 걸 말한다
-#: ../gio/gfile.c:2999
+#: ../gio/gfile.c:3026
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "다른 마운트 사이에 복사(참조링크/클론)는 지원하지 않습니다"
 
-#: ../gio/gfile.c:3003
+#: ../gio/gfile.c:3030
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "복사(참조링크/클론)를 지원하지 않거나 잘못되었습니다"
 
-#: ../gio/gfile.c:3008
+#: ../gio/gfile.c:3035
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "복사(참조링크/클론)를 지원하지 않거나 동작하지 않았습니다."
 
-#: ../gio/gfile.c:3071
+#: ../gio/gfile.c:3098
 msgid "Can't copy special file"
 msgstr "특수 파일은 복사할 수 없습니다"
 
-#: ../gio/gfile.c:3812
+#: ../gio/gfile.c:3839
 msgid "Invalid symlink value given"
 msgstr "잘못된 심볼릭 링크 값이 주어졌습니다"
 
-#: ../gio/gfile.c:3974
+#: ../gio/gfile.c:4001
 msgid "Trash not supported"
 msgstr "휴지통을 지원하지 않습니다"
 
-#: ../gio/gfile.c:4087
+#: ../gio/gfile.c:4114
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "파일 이름에 '%c' 문자가 들어갈 수 없습니다"
 
-#: ../gio/gfile.c:6504 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6531 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "볼륨이 mount를 구현하지 않았습니다"
 
-#: ../gio/gfile.c:6613
+#: ../gio/gfile.c:6640
 msgid "No application is registered as handling this file"
 msgstr "이 파일을 처리하는 프로그램을 아무 것도 등록하지 않았습니다"
 
@@ -1181,7 +1178,7 @@ msgstr "주소의 길이 %u이(가) 너무 깁니다"
 
 #: ../gio/ginetaddressmask.c:224
 msgid "Address has bits set beyond prefix length"
-msgstr "주소에 접두 길이 이전에 지정된 비트를 포함하고 있습니다"
+msgstr "주소에 접두어 길이보다 긴 비트 데이터가 들어 있습니다"
 
 #: ../gio/ginetaddressmask.c:301
 #, c-format
@@ -1615,119 +1612,124 @@ msgstr "현재 출력 파일을 제거합니다.\n"
 msgid "Unable to find default local directory monitor type"
 msgstr "기본 로컬 디렉터리 감시자 형식을 찾을 수 없습니다"
 
-#: ../gio/glocalfile.c:602 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:603 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"
 
-#: ../gio/glocalfile.c:979
+#: ../gio/glocalfile.c:980
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1147
+#: ../gio/glocalfile.c:1148
 msgid "Can't rename root directory"
 msgstr "루트 디렉터리의 이름을 바꿀 수 없습니다"
 
-#: ../gio/glocalfile.c:1167 ../gio/glocalfile.c:1193
+#: ../gio/glocalfile.c:1168 ../gio/glocalfile.c:1194
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "파일 이름 바꾸기 오류: %s"
 
-#: ../gio/glocalfile.c:1176
+#: ../gio/glocalfile.c:1177
 msgid "Can't rename file, filename already exists"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: ../gio/glocalfile.c:1189 ../gio/glocalfile.c:2206 ../gio/glocalfile.c:2235
-#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1190 ../gio/glocalfile.c:2207 ../gio/glocalfile.c:2236
+#: ../gio/glocalfile.c:2396 ../gio/glocalfileoutputstream.c:553
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: ../gio/glocalfile.c:1356 ../gio/glocalfile.c:1380
+#: ../gio/glocalfile.c:1357 ../gio/glocalfile.c:1381
 msgid "Can't open directory"
 msgstr "디렉터리를 열 수 없습니다"
 
-#: ../gio/glocalfile.c:1364
+#: ../gio/glocalfile.c:1365
 #, c-format
 msgid "Error opening file: %s"
 msgstr "파일 열기 오류: %s"
 
-#: ../gio/glocalfile.c:1505
+#: ../gio/glocalfile.c:1506
 #, c-format
 msgid "Error removing file: %s"
 msgstr "파일 제거 오류: %s"
 
-#: ../gio/glocalfile.c:1885
+#: ../gio/glocalfile.c:1886
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "파일 버리기 오류: %s"
 
-#: ../gio/glocalfile.c:1908
+#: ../gio/glocalfile.c:1909
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉터리(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:1929
+#: ../gio/glocalfile.c:1930
 msgid "Unable to find toplevel directory for trash"
 msgstr "휴지통의 상위 디렉터리를 찾을 수 없습니다"
 
-#: ../gio/glocalfile.c:2008 ../gio/glocalfile.c:2028
+#: ../gio/glocalfile.c:2009 ../gio/glocalfile.c:2029
 msgid "Unable to find or create trash directory"
 msgstr "휴지통 디렉터리를 찾을 수 없거나 만들 수 없습니다"
 
-#: ../gio/glocalfile.c:2062
+#: ../gio/glocalfile.c:2063
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2096 ../gio/glocalfile.c:2176
-#: ../gio/glocalfile.c:2183
+#: ../gio/glocalfile.c:2092 ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2177
+#: ../gio/glocalfile.c:2184
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "파일을 버릴 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:2184 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2185 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "내부 오류"
 
-#: ../gio/glocalfile.c:2210
+#: ../gio/glocalfile.c:2211
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "디렉터리를 만드는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2239
+#: ../gio/glocalfile.c:2240
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "파일 시스템이 심볼릭 링크를 지원하지 않습니다"
 
-#: ../gio/glocalfile.c:2243
+#: ../gio/glocalfile.c:2244
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "심볼릭 링크를 만드는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2305 ../gio/glocalfile.c:2399
+#: ../gio/glocalfile.c:2306 ../gio/glocalfile.c:2400
 #, c-format
 msgid "Error moving file: %s"
 msgstr "파일 옮기는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2328
+#: ../gio/glocalfile.c:2329
 msgid "Can't move directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 옮길 수 없습니다"
 
-#: ../gio/glocalfile.c:2355 ../gio/glocalfileoutputstream.c:929
+#: ../gio/glocalfile.c:2356 ../gio/glocalfileoutputstream.c:929
 #: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
 #: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: ../gio/glocalfile.c:2374
+#: ../gio/glocalfile.c:2375
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 제거하는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2388
+#: ../gio/glocalfile.c:2389
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
+
+#: ../gio/glocalfile.c:2572
+#, c-format
+msgid "Could not determine the disk usage of %s: %s"
+msgstr "%s의 디스크 사용량을 알아낼 수 없습니다: %s"
 
 #: ../gio/glocalfileinfo.c:722
 msgid "Attribute value must be non-NULL"
@@ -2078,7 +2080,7 @@ msgstr ""
 "자원을 세부적으로 나열합니다\n"
 "<섹션>이 주어졌다면 이 섹션의 자원만 나열합니다\n"
 "<경로>가 주어졌다면 일치하는 자원만 나열합니다\n"
-"세부사항에는 섹션, 크기, 압축을 포함합니다"
+"세부사항에는 섹션, 크기, 압축이 있습니다"
 
 #: ../gio/gresource-tool.c:506
 msgid "Extract a resource file to stdout"
@@ -2420,7 +2422,7 @@ msgstr "올바른 소켓이 아닙니다. 초기화가 다음 이유로 실패�
 msgid "Socket is already closed"
 msgstr "소켓을 이미 닫았습니다"
 
-#: ../gio/gsocket.c:336 ../gio/gsocket.c:3603 ../gio/gsocket.c:3658
+#: ../gio/gsocket.c:336 ../gio/gsocket.c:3623 ../gio/gsocket.c:3678
 msgid "Socket I/O timed out"
 msgstr "소켓 입출력 시간 제한이 넘었습니다"
 
@@ -2489,51 +2491,51 @@ msgstr "연결이 진행 중입니다"
 msgid "Unable to get pending error: "
 msgstr "밀린 오류를 알아낼 수 없습니다: "
 
-#: ../gio/gsocket.c:2600
+#: ../gio/gsocket.c:2620
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "데이터를 받는데 오류: %s"
 
-#: ../gio/gsocket.c:2778
+#: ../gio/gsocket.c:2798
 #, c-format
 msgid "Error sending data: %s"
 msgstr "데이터를 보내는데 오류: %s"
 
-#: ../gio/gsocket.c:2892
+#: ../gio/gsocket.c:2912
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "소켓을 닫을 수 없습니다: %s"
 
-#: ../gio/gsocket.c:2971
+#: ../gio/gsocket.c:2991
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "소켓을 닫는데 오류: %s"
 
-#: ../gio/gsocket.c:3596
+#: ../gio/gsocket.c:3616
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "소켓 조건을 기다리는 중: %s"
 
-#: ../gio/gsocket.c:3874 ../gio/gsocket.c:3955
+#: ../gio/gsocket.c:3894 ../gio/gsocket.c:3975
 #, c-format
 msgid "Error sending message: %s"
 msgstr "메시지를 보내는 중 오류: %s"
 
-#: ../gio/gsocket.c:3899
+#: ../gio/gsocket.c:3919
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "윈도우에서는 GSocketControlMessage를 지원하지 않습니다"
 
-#: ../gio/gsocket.c:4233 ../gio/gsocket.c:4368
+#: ../gio/gsocket.c:4253 ../gio/gsocket.c:4388
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "메시지를 받는데 오류: %s"
 
-#: ../gio/gsocket.c:4450
+#: ../gio/gsocket.c:4470
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "소켓 암호 데이터를 읽을 수 없습니다: %s"
 
-#: ../gio/gsocket.c:4469
+#: ../gio/gsocket.c:4489
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials가 이 OS에서 구현되지 않았습니다"
 
