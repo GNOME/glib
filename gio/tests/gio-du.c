@@ -150,7 +150,7 @@ main (int argc, char **argv)
     if (option_use_async)
     {
       g_file_measure_disk_usage_async (file, flags, G_PRIORITY_DEFAULT, NULL,
-                                       progress, argv[1], async_ready_func, argv_utf8);
+                                       progress, argv_utf8, async_ready_func, argv_utf8);
       outstanding_asyncs++;
     }
     else
@@ -160,7 +160,7 @@ main (int argc, char **argv)
       guint64 num_dirs;
       guint64 num_files;
 
-      g_file_measure_disk_usage (file, flags, NULL, progress, argv[1],
+      g_file_measure_disk_usage (file, flags, NULL, progress, argv_utf8,
                                  &disk_usage, &num_dirs, &num_files, &error);
       print_result (argv_utf8, disk_usage, num_dirs, num_files, error, '\n');
     }
