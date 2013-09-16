@@ -1,3 +1,30 @@
+Overview of changes from GLib 2.37.7 to 2.37.92
+===============================================
+
+* new API g_file_measure_disk_usage() similar to du(1)
+
+* minor fixes
+
+* Translation updates:
+ Assamese
+ Belarusian
+ Brazilian Portuguese
+ Catalan
+ Czech
+ Galician
+ German
+ Hungarian
+ Indonesian
+ Italian
+ Korean
+ Korean
+ Latvian
+ Lithuanian
+ Polish
+ Serbian
+ Slovenian
+ Spanish
+
 Overview of changes from GLib 2.37.6 to 2.37.7
 ==============================================
 
