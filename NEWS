@@ -1,3 +1,10 @@
+Overview of changes from GLib 2.37.92 to 2.37.93
+================================================
+
+* a couple of bugfixes in the new g_file_measure_disk_usage() API
+
+* updated Traditional Chinese translation
+
 Overview of changes from GLib 2.37.7 to 2.37.92
 ===============================================
 
