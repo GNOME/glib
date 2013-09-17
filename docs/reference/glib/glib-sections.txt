@@ -3232,6 +3232,7 @@ g_variant_new_parsed_va
 g_variant_new_parsed
 
 <SUBSECTION Private>
+g_variant_parse_error_quark
 g_variant_parser_get_error_quark
 g_variant_type_checked_
 </SECTION>

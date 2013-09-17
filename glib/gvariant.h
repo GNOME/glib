@@ -323,10 +323,13 @@ typedef enum
   G_VARIANT_PARSE_ERROR_UNTERMINATED_STRING_CONSTANT,
   G_VARIANT_PARSE_ERROR_VALUE_EXPECTED
 } GVariantParseError;
-#define G_VARIANT_PARSE_ERROR (g_variant_parser_get_error_quark ())
+#define G_VARIANT_PARSE_ERROR (g_variant_parse_error_quark ())
+
+GLIB_DEPRECATED_IN_2_38_FOR(g_variant_parse_error_quark)
+GQuark                          g_variant_parser_get_error_quark        (void);
 
 GLIB_AVAILABLE_IN_ALL
-GQuark                          g_variant_parser_get_error_quark        (void);
+GQuark                          g_variant_parse_error_quark             (void);
 
 GLIB_AVAILABLE_IN_ALL
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);

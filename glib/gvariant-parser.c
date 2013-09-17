@@ -71,7 +71,16 @@
  *
  * Error codes returned by parsing text-format GVariants.
  **/
-G_DEFINE_QUARK (g-variant-parse-error-quark, g_variant_parser_get_error)
+G_DEFINE_QUARK (g-variant-parse-error-quark, g_variant_parse_error)
+
+/**
+ * Deprecated: Use g_variant_parse_error_quark() instead.
+ */
+GQuark
+g_variant_parser_get_error_quark (void)
+{
+  return g_variant_parse_error_quark ();
+}
 
 typedef struct
 {
