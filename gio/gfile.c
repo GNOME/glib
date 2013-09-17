@@ -7453,7 +7453,7 @@ measure_disk_usage_thread (GTask        *task,
   MeasureResult result;
 
   if (g_file_measure_disk_usage (source_object, data->flags, cancellable,
-                                 measure_disk_usage_progress, task,
+                                 data->progress_callback ? measure_disk_usage_progress : NULL, task,
                                  &result.disk_usage, &result.num_dirs, &result.num_files,
                                  &error))
     g_task_return_pointer (task, g_memdup (&result, sizeof result), g_free);
