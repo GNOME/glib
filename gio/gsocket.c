@@ -499,7 +499,7 @@ g_socket (gint     domain,
     return fd;
 
   /* It's possible that libc has SOCK_CLOEXEC but the kernel does not */
-  if (fd < 0 && errno == EINVAL)
+  if (fd < 0 && (errno == EINVAL || errno == EPROTOTYPE))
 #endif
     fd = socket (domain, type, protocol);
 
