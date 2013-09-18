@@ -63,6 +63,7 @@
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
 #include "gcredentials.h"
+#include "gcredentialsprivate.h"
 #include "glibintl.h"
 
 /**
@@ -4447,21 +4448,23 @@ g_socket_get_credentials (GSocket   *socket,
 
   ret = NULL;
 
-#if defined(__linux__) || defined(__OpenBSD__)
+#if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
   {
-    socklen_t optlen;
-#if defined(__linux__)
-    struct ucred native_creds;
-    optlen = sizeof (struct ucred);
-#elif defined(__OpenBSD__)
-    struct sockpeercred native_creds;
-    optlen = sizeof (struct sockpeercred);
-#endif
+    guint8 native_creds_buf[G_CREDENTIALS_NATIVE_SIZE];
+    socklen_t optlen = sizeof (native_creds_buf);
+
     if (getsockopt (socket->priv->fd,
                     SOL_SOCKET,
                     SO_PEERCRED,
-                    (void *)&native_creds,
-                    &optlen) != 0)
+                    native_creds_buf,
+                    &optlen) == 0)
+      {
+        ret = g_credentials_new ();
+        g_credentials_set_native (ret,
+                                  G_CREDENTIALS_NATIVE_TYPE,
+                                  native_creds_buf);
+      }
+    else
       {
         int errsv = get_socket_errno ();
         g_set_error (error,
@@ -4469,17 +4472,6 @@ g_socket_get_credentials (GSocket   *socket,
                      socket_io_error_from_errno (errsv),
                      _("Unable to read socket credentials: %s"),
                      socket_strerror (errsv));
-      }
-    else
-      {
-        ret = g_credentials_new ();
-        g_credentials_set_native (ret,
-#if defined(__linux__)
-                                  G_CREDENTIALS_TYPE_LINUX_UCRED,
-#elif defined(__OpenBSD__)
-                                  G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED,
-#endif
-                                  &native_creds);
       }
   }
 #else

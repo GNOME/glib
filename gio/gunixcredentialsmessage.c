@@ -36,16 +36,6 @@
 #include "config.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
-#ifdef __linux__
-#define G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-#define G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
-#else
-/* TODO: please add support for your UNIX flavor */
-#define G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 0
-#endif
-
-/* ---------------------------------------------------------------------------------------------------- */
 
 #include <fcntl.h>
 #include <errno.h>
@@ -54,6 +44,7 @@
 
 #include "gunixcredentialsmessage.h"
 #include "gcredentials.h"
+#include "gcredentialsprivate.h"
 #include "gnetworking.h"
 
 #include "glibintl.h"
@@ -70,13 +61,12 @@ enum
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUnixCredentialsMessage, g_unix_credentials_message, G_TYPE_SOCKET_CONTROL_MESSAGE)
+
 static gsize
 g_unix_credentials_message_get_size (GSocketControlMessage *message)
 {
-#ifdef __linux__
-  return sizeof (struct ucred);
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-  return sizeof (struct cmsgcred);
+#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+  return G_CREDENTIALS_NATIVE_SIZE;
 #else
   return 0;
 #endif
@@ -85,9 +75,7 @@ g_unix_credentials_message_get_size (GSocketControlMessage *message)
 static int
 g_unix_credentials_message_get_level (GSocketControlMessage *message)
 {
-#ifdef __linux__
-  return SOL_SOCKET;
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
   return SOL_SOCKET;
 #else
   return 0;
@@ -97,10 +85,12 @@ g_unix_credentials_message_get_level (GSocketControlMessage *message)
 static int
 g_unix_credentials_message_get_msg_type (GSocketControlMessage *message)
 {
-#ifdef __linux__
+#if G_CREDENTIALS_USE_LINUX_UCRED
   return SCM_CREDENTIALS;
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+#elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   return SCM_CREDS;
+#elif G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+  #error "G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED is set but there is no msg_type defined for this platform"
 #else
   return 0;
 #endif
@@ -112,91 +102,53 @@ g_unix_credentials_message_deserialize (gint     level,
                                         gsize    size,
                                         gpointer data)
 {
+#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
   GSocketControlMessage *message;
+  GCredentials *credentials;
 
-  message = NULL;
+  if (level != SOL_SOCKET || type != g_unix_credentials_message_get_msg_type (NULL))
+    return NULL;
 
-#ifdef __linux__
-  {
-    GCredentials *credentials;
-    struct ucred *ucred;
+  if (size != G_CREDENTIALS_NATIVE_SIZE)
+    {
+      g_warning ("Expected a credentials struct of %" G_GSIZE_FORMAT " bytes but "
+                 "got %" G_GSIZE_FORMAT " bytes of data",
+                 G_CREDENTIALS_NATIVE_SIZE, size);
+      return NULL;
+    }
 
-    if (level != SOL_SOCKET || type != SCM_CREDENTIALS)
-      goto out;
+  credentials = g_credentials_new ();
+  g_credentials_set_native (credentials, G_CREDENTIALS_NATIVE_TYPE, data);
 
-    if (size != sizeof (struct ucred))
-      {
-        g_warning ("Expected a struct ucred (%" G_GSIZE_FORMAT " bytes) but "
-                   "got %" G_GSIZE_FORMAT " bytes of data",
-                   sizeof (struct ucred),
-                   size);
-        goto out;
-      }
+  if (g_credentials_get_unix_user (credentials, NULL) == (uid_t) -1)
+    {
+      /* This happens on Linux if the remote side didn't pass the credentials */
+      g_object_unref (credentials);
+      return NULL;
+    }
 
-    ucred = data;
-
-    if (ucred->uid == (uid_t)-1 &&
-	ucred->gid == (gid_t)-1)
-      {
-	/* This happens if the remote side didn't pass the credentials */
-	goto out;
-      }
-
-    credentials = g_credentials_new ();
-    g_credentials_set_native (credentials, G_CREDENTIALS_TYPE_LINUX_UCRED, ucred);
-    message = g_unix_credentials_message_new_with_credentials (credentials);
-    g_object_unref (credentials);
- out:
-    ;
-  }
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-  {
-    GCredentials *credentials;
-    struct cmsgcred *cred;
-
-    if (level != SOL_SOCKET || type != SCM_CREDS)
-      {
-        goto out;
-      }
-    if (size < sizeof *cred)
-      {
-        g_warning ("Expected a struct cmsgcred (%" G_GSIZE_FORMAT " bytes) but "
-                   "got %" G_GSIZE_FORMAT " bytes of data",
-                   CMSG_LEN (sizeof *cred),
-                   size);
-        goto out;
-      }
-
-    cred = data;
-
-    credentials = g_credentials_new ();
-    g_credentials_set_native (credentials, G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED, cred);
-    message = g_unix_credentials_message_new_with_credentials (credentials);
-    g_object_unref (credentials);
- out:
-    ;
-  }
-#endif
+  message = g_unix_credentials_message_new_with_credentials (credentials);
+  g_object_unref (credentials);
 
   return message;
+
+#else /* !G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED */
+
+  return NULL;
+#endif
 }
 
 static void
 g_unix_credentials_message_serialize (GSocketControlMessage *_message,
                                       gpointer               data)
 {
+#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
   GUnixCredentialsMessage *message = G_UNIX_CREDENTIALS_MESSAGE (_message);
-#ifdef __linux__
-  memcpy (data,
-          g_credentials_get_native (message->priv->credentials,
-                                    G_CREDENTIALS_TYPE_LINUX_UCRED),
-          sizeof (struct ucred));
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-  memcpy (data,
-          g_credentials_get_native (message->priv->credentials,
-                                    G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED),
-          sizeof (struct cmsgcred));
 
+  memcpy (data,
+          g_credentials_get_native (message->priv->credentials,
+                                    G_CREDENTIALS_NATIVE_TYPE),
+          G_CREDENTIALS_NATIVE_SIZE);
 #endif
 }
 
@@ -324,7 +276,11 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
 gboolean
 g_unix_credentials_message_is_supported (void)
 {
-  return G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED;
+#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+  return TRUE;
+#else
+  return FALSE;
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

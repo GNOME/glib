@@ -38,17 +38,11 @@
 #include <gio/gnetworking.h>
 #include <gio/gunixsocketaddress.h>
 #include <gio/gunixfdlist.h>
+#include <gio/gcredentialsprivate.h>
 
 #ifdef G_OS_UNIX
 #include <gio/gunixconnection.h>
 #include <errno.h>
-#endif
-
-#if (defined(__linux__) || \
-  defined(__FreeBSD__) || \
-  defined(__FreeBSD_kernel__) || \
-  defined(__OpenBSD__))
-#define SHOULD_HAVE_CREDENTIALS_PASSING
 #endif
 
 #include "gdbus-tests.h"
@@ -312,7 +306,7 @@ on_new_connection (GDBusServer *server,
 
   g_ptr_array_add (data->current_connections, g_object_ref (connection));
 
-#ifdef SHOULD_HAVE_CREDENTIALS_PASSING
+#if G_CREDENTIALS_SUPPORTED
     {
       GCredentials *credentials;
 
@@ -844,9 +838,8 @@ test_peer (void)
   g_error_free (error);
 #endif /* G_OS_UNIX */
 
-  /* Check that g_socket_get_credentials() work - this really should
-   * be in a GSocket-specific test suite but no such test suite exists
-   * right now.
+  /* Check that g_socket_get_credentials() work - (though this really
+   * should be in socket.c)
    */
   {
     GSocket *socket;
@@ -855,30 +848,15 @@ test_peer (void)
     g_assert (G_IS_SOCKET (socket));
     error = NULL;
     credentials = g_socket_get_credentials (socket, &error);
-#ifdef __linux__
-    {
-      struct ucred *native_creds;
-      g_assert_no_error (error);
-      g_assert (G_IS_CREDENTIALS (credentials));
-      native_creds = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_LINUX_UCRED);
-      g_assert (native_creds != NULL);
-      g_assert (native_creds->uid == getuid ());
-      g_assert (native_creds->gid == getgid ());
-      g_assert (native_creds->pid == getpid ());
-    }
-    g_object_unref (credentials);
-#elif defined (__OpenBSD__)
-    {
-      struct sockpeercred *native_creds;
-      g_assert_no_error (error);
-      g_assert (G_IS_CREDENTIALS (credentials));
-      native_creds = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED);
-      g_assert (native_creds != NULL);
-      g_assert (native_creds->uid == getuid ());
-      g_assert (native_creds->gid == getgid ());
-      g_assert (native_creds->pid == getpid ());
-    }
-    g_object_unref (credentials);
+
+#if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
+    g_assert_no_error (error);
+    g_assert (G_IS_CREDENTIALS (credentials));
+
+    g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
+                      getuid ());
+    g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
+                      getpid ());
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
     g_assert (credentials == NULL);
