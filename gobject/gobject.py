@@ -171,6 +171,14 @@ class SignalFrame:
 
         return s
 
+    def get_detailed_signal_from_frame(self, frame, signal):
+        detail = self.read_var (frame, "detail")
+        detail = glib.g_quark_to_string (detail)
+        if detail is not None:
+            return signal + ":" + detail
+        else:
+            return detail
+
     def describe (self, stream, full):
         instances = []
         signals = []
@@ -182,11 +190,8 @@ class SignalFrame:
                 node = self.read_var (frame, "node")
                 if node:
                     signal = node["name"].string()
-                    detail = self.read_var (frame, "detail")
-                    detail = glib.g_quark_to_string (detail)
-                    if detail != None:
-                        signal = signal + ":" + detail
-                    self.append (signals, signal)
+                    signal = self.get_detailed_signal_from_frame(frame, signal)
+                    self.append(signals, signal)
 
             if name == "g_signal_emitv":
                 instance_and_params = self.read_var (frame, "instance_and_params")
@@ -196,10 +201,7 @@ class SignalFrame:
                 id = self.read_var (frame, "signal_id")
                 signal = get_signal_name (id)
                 if signal:
-                    detail = self.read_var (frame, "detail")
-                    detail = glib.g_quark_to_string (detail)
-                    if detail != None:
-                        signal = signal + ":" + detail
+                    signal = self.get_detailed_signal_from_frame(frame, signal)
                     self.append (signals, signal)
 
             if name == "g_signal_emit_valist" or name == "g_signal_emit":
@@ -207,10 +209,7 @@ class SignalFrame:
                 id = self.read_var (frame, "signal_id")
                 signal = get_signal_name (id)
                 if signal:
-                    detail = self.read_var (frame, "detail")
-                    detail = glib.g_quark_to_string (detail)
-                    if detail != None:
-                        signal = signal + ":" + detail
+                    signal = self.get_detailed_signal_from_frame(frame, signal)
                     self.append (signals, signal)
 
             if name == "g_signal_emit_by_name":
