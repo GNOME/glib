@@ -94,21 +94,21 @@ def pretty_printer_lookup (val):
     return None
 
 def get_signal_name (id):
-  if id == None:
+    if id == None:
+        return None
+    id = long(id)
+    if id == 0:
+        return None
+    val = read_global_var ("g_signal_nodes")
+    max_s = read_global_var ("g_n_signal_nodes")
+    max_s = long(max_s)
+    if id < max_s:
+        return val[id]["name"].string()
     return None
-  id = long(id)
-  if id == 0:
-    return None
-  val = read_global_var ("g_signal_nodes")
-  max_s = read_global_var ("g_n_signal_nodes")
-  max_s = long(max_s)
-  if id < max_s:
-    return val[id]["name"].string()
-  return None
 
 class GFrameWrapper:
     def __init__ (self, frame):
-        self.frame = frame;
+        self.frame = frame
 
     def name (self):
         name = self.frame.name()
@@ -145,7 +145,7 @@ class DummyFrame:
 class SignalFrame:
     def __init__ (self, frames):
         self.frame = frames[-1]
-        self.frames = frames;
+        self.frames = frames
 
     def name (self):
         return "signal-emission"
