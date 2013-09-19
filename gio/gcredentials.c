@@ -59,8 +59,9 @@
  * man page for details. This corresponds to
  * %G_CREDENTIALS_TYPE_LINUX_UCRED.
  *
- * On FreeBSD, the native credential type is a <type>struct cmsgcred</type>.
- * This corresponds to %G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
+ * On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native
+ * credential type is a <type>struct cmsgcred</type>. This corresponds
+ * to %G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
  *
  * On OpenBSD, the native credential type is a <type>struct sockpeercred</type>.
  * This corresponds to %G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED.
