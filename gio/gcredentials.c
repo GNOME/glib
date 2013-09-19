@@ -65,6 +65,10 @@
  *
  * On OpenBSD, the native credential type is a <type>struct sockpeercred</type>.
  * This corresponds to %G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED.
+ *
+ * On Solaris (including OpenSolaris and its derivatives), the native
+ * credential type is a <type>ucred_t</type>. This corresponds to
+ * %G_CREDENTIALS_TYPE_SOLARIS_UCRED.
  */
 
 /**
@@ -86,6 +90,8 @@ struct _GCredentials
   struct cmsgcred native;
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   struct sockpeercred native;
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  ucred_t *native;
 #else
   #ifdef __GNUC__
   #warning Please add GCredentials support for your OS
@@ -111,7 +117,11 @@ G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT);
 static void
 g_credentials_finalize (GObject *object)
 {
-  G_GNUC_UNUSED GCredentials *credentials = G_CREDENTIALS (object);
+#if G_CREDENTIALS_USE_SOLARIS_UCRED
+  GCredentials *credentials = G_CREDENTIALS (object);
+
+  ucred_free (credentials->native);
+#endif
 
   if (G_OBJECT_CLASS (g_credentials_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_credentials_parent_class)->finalize (object);
@@ -143,6 +153,8 @@ g_credentials_init (GCredentials *credentials)
   credentials->native.pid = getpid ();
   credentials->native.uid = geteuid ();
   credentials->native.gid = getegid ();
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  credentials->native = ucred_get (P_MYID);
 #endif
 }
 
@@ -214,6 +226,19 @@ g_credentials_to_string (GCredentials *credentials)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  g_string_append (ret, "solaris-ucred:");
+  {
+    id_t id;
+    if ((id = ucred_getpid (credentials->native)) != -1)
+      g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) id);
+    if ((id = ucred_geteuid (credentials->native)) != -1)
+      g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) id);
+    if ((id = ucred_getegid (credentials->native)) != -1)
+      g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) id);
+    if (ret->str[ret->len - 1] == ',')
+      ret->str[ret->len - 1] = '\0';
+  }
 #else
   g_string_append (ret, "unknown");
 #endif
@@ -259,6 +284,9 @@ g_credentials_is_same_user (GCredentials  *credentials,
     ret = TRUE;
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   if (credentials->native.uid == other_credentials->native.uid)
+    ret = TRUE;
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  if (ucred_geteuid (credentials->native) == ucred_geteuid (other_credentials->native))
     ret = TRUE;
 #else
   g_set_error_literal (error,
@@ -334,7 +362,9 @@ g_credentials_get_native (GCredentials     *credentials,
   if (!credentials_native_type_check (native_type, "get"))
     return NULL;
 
-#if G_CREDENTIALS_SUPPORTED
+#if G_CREDENTIALS_USE_SOLARIS_UCRED
+  return credentials->native;
+#elif G_CREDENTIALS_SUPPORTED
   return &credentials->native;
 #else
   g_assert_not_reached ();
@@ -364,7 +394,9 @@ g_credentials_set_native (GCredentials     *credentials,
   if (!credentials_native_type_check (native_type, "set"))
     return;
 
-#if G_CREDENTIALS_SUPPORTED
+#if G_CREDENTIALS_USE_SOLARIS_UCRED
+  memcpy (credentials->native, native, ucred_size ());
+#elif G_CREDENTIALS_SUPPORTED
   memcpy (&credentials->native, native, sizeof (credentials->native));
 #else
   g_assert_not_reached ();
@@ -405,6 +437,8 @@ g_credentials_get_unix_user (GCredentials    *credentials,
   ret = credentials->native.cmcred_euid;
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   ret = credentials->native.uid;
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  ret = ucred_geteuid (credentials->native);
 #else
   ret = -1;
   g_set_error_literal (error,
@@ -447,6 +481,8 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
   ret = credentials->native.cmcred_pid;
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   ret = credentials->native.pid;
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  ret = ucred_getpid (credentials->native);
 #else
   ret = -1;
   g_set_error_literal (error,
@@ -469,7 +505,8 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
  *
  * This operation can fail if #GCredentials is not supported on the
  * OS or if the native credentials type does not contain information
- * about the UNIX user.
+ * about the UNIX user. It can also fail if the OS does not allow the
+ * use of "spoofed" credentials.
  *
  * Returns: %TRUE if @uid was set, %FALSE if error is set.
  *
@@ -496,11 +533,18 @@ g_credentials_set_unix_user (GCredentials    *credentials,
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   credentials->native.uid = uid;
   ret = TRUE;
+#elif !G_CREDENTIALS_SPOOFING_SUPPORTED
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_PERMISSION_DENIED,
+                       _("Credentials spoofing is not possible on this OS"));
+  ret = FALSE;
 #else
   g_set_error_literal (error,
                        G_IO_ERROR,
                        G_IO_ERROR_NOT_SUPPORTED,
                        _("GCredentials is not implemented on this OS"));
+  ret = FALSE;
 #endif
 
   return ret;

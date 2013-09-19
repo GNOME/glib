@@ -4449,6 +4449,8 @@ g_socket_get_credentials (GSocket   *socket,
   ret = NULL;
 
 #if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
+
+#ifdef SO_PEERCRED
   {
     guint8 native_creds_buf[G_CREDENTIALS_NATIVE_SIZE];
     socklen_t optlen = sizeof (native_creds_buf);
@@ -4464,17 +4466,37 @@ g_socket_get_credentials (GSocket   *socket,
                                   G_CREDENTIALS_NATIVE_TYPE,
                                   native_creds_buf);
       }
-    else
+  }
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+  {
+    ucred_t *ucred = NULL;
+
+    if (getpeerucred (socket->priv->fd, &ucred) == 0)
       {
-        int errsv = get_socket_errno ();
-        g_set_error (error,
-                     G_IO_ERROR,
-                     socket_io_error_from_errno (errsv),
-                     _("Unable to read socket credentials: %s"),
-                     socket_strerror (errsv));
+        ret = g_credentials_new ();
+        g_credentials_set_native (ret,
+                                  G_CREDENTIALS_TYPE_SOLARIS_UCRED,
+                                  ucred);
+        ucred_free (ucred);
       }
   }
 #else
+  #error "G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED is set but this is no code for this platform"
+#endif
+
+  if (!ret)
+    {
+      int errsv = get_socket_errno ();
+
+      g_set_error (error,
+                   G_IO_ERROR,
+                   socket_io_error_from_errno (errsv),
+                   _("Unable to read socket credentials: %s"),
+                   socket_strerror (errsv));
+    }
+
+#else
+
   g_set_error_literal (error,
                        G_IO_ERROR,
                        G_IO_ERROR_NOT_SUPPORTED,

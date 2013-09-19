@@ -59,12 +59,22 @@ test_basic (void)
   g_assert_no_error (error);
 
   set = g_credentials_set_unix_user (other, not_me, &error);
+#if G_CREDENTIALS_SPOOFING_SUPPORTED
   g_assert_no_error (error);
   g_assert (set);
 
   g_assert_cmpuint (g_credentials_get_unix_user (other, &error), ==, not_me);
   g_assert (!g_credentials_is_same_user (creds, other, &error));
   g_assert_no_error (error);
+#else
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
+  g_assert (!set);
+  g_clear_error (&error);
+
+  g_assert_cmpuint (g_credentials_get_unix_user (other, &error), ==, geteuid ());
+  g_assert (g_credentials_is_same_user (creds, other, &error));
+  g_assert_no_error (error);
+#endif
 
   stringified = g_credentials_to_string (creds);
   g_test_message ("%s", stringified);
@@ -97,6 +107,14 @@ test_basic (void)
 
           g_assert_cmpuint (native->uid, ==, geteuid ());
           g_assert_cmpuint (native->pid, ==, getpid ());
+        }
+#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+        {
+          ucred_t *native = g_credentials_get_native (creds,
+              G_CREDENTIALS_TYPE_SOLARIS_UCRED);
+
+          g_assert_cmpuint (ucred_geteuid (native), ==, geteuid ());
+          g_assert_cmpuint (ucred_getpid (native), ==, getpid ());
         }
 #else
 #error "G_CREDENTIALS_SUPPORTED is set but there is no test for this platform"
