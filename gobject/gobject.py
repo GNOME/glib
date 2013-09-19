@@ -160,16 +160,8 @@ class SignalFrame:
     def or_join_array (self, array):
         if len(array) == 0:
             return "???"
-
-        v = {}
-        for i in range(len(array)):
-            v[str(array[i])] = 1
-        array = v.keys()
-        s = array[0]
-        for i in range(1, len(array)):
-            s = s + " or %s"%array[i]
-
-        return s
+        else:
+            return ' or '.join(set(array))
 
     def get_detailed_signal_from_frame(self, frame, signal):
         detail = self.read_var (frame, "detail")
