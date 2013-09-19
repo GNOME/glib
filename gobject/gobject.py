@@ -106,29 +106,6 @@ def get_signal_name (id):
         return val[id]["name"].string()
     return None
 
-class GFrameWrapper:
-    def __init__ (self, frame):
-        self.frame = frame
-
-    def name (self):
-        name = self.frame.name()
-        if name and name.startswith("IA__"):
-            return name[4:]
-        return name
-
-    def __getattr__ (self, name):
-        return getattr (self.frame, name)
-
-# Monkey patch FrameWrapper to avoid IA__ in symbol names
-if HAVE_GDB_BACKTRACE:
-    old__init__ = gdb.command.backtrace.FrameWrapper.__init__
-    def monkey_patched_init(self, frame):
-        name = frame.name()
-        if name and name.startswith("IA__"):
-            frame = GFrameWrapper(frame)
-        old__init__(self,frame)
-    gdb.command.backtrace.FrameWrapper.__init__ = monkey_patched_init
-
 class DummyFrame:
     def __init__ (self, frame):
         self.frame = frame
