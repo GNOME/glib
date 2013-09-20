@@ -31,7 +31,6 @@
 #include "girepository.h"
 #include "gitypelib-internal.h"
 #include "girepository-private.h"
-#include "glib-compat.h"
 
 #include "config.h"
 
