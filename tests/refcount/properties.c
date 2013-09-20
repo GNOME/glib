@@ -183,8 +183,6 @@ run_thread (GTest * test)
       }
   }
 
-  g_object_unref (test);
-
   return NULL;
 }
 
@@ -200,6 +198,7 @@ main (int argc, char **argv)
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
   test_objects = g_array_new (FALSE, FALSE, sizeof (GTest *));
+  g_array_set_clear_func (test_objects, (GDestroyNotify) g_object_unref);
 
   for (i = 0; i < n_threads; i++) {
     GTest *test;
@@ -246,6 +245,7 @@ main (int argc, char **argv)
 
     g_assert (test->count == test->dummy);
   }
+  g_array_free (test_objects, TRUE);
 
   return 0;
 }
