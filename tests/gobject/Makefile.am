@@ -19,6 +19,7 @@ installed_test_programs = \
 	defaultiface				\
 	dynamictype				\
 	override				\
+	signals					\
 	singleton				\
 	references				\
 	$(NULL)
@@ -39,6 +40,7 @@ TESTS_ENVIRONMENT = \
 	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 
 accumulator_SOURCES = accumulator.c testmarshal.c testmarshal.h
+signals_SOURCES = signals.c
 defaultiface_SOURCES = defaultiface.c testmodule.c testmodule.h
 dynamictype_SOURCES = dynamictype.c testmodule.c testmodule.h
 
