@@ -133,10 +133,10 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                g_settings_set_int                              (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_32
 guint                   g_settings_get_uint                             (GSettings          *settings,
                                                                          const gchar        *key);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_32
 gboolean                g_settings_set_uint                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          guint               value);
