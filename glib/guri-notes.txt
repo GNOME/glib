@@ -1,0 +1,220 @@
+aaa/aaas (rfc3588):
+aaa://host[:port][;transport=tcp][;protocol=diameter]
+  technically violates 3986, since ";" could appear in authority
+
+acap (rfc2244): 
+acap://[user[;AUTH=mech]@]host[:port]/data
+
+cap (rfc4324):
+cap://host[:port][/data]
+
+cid/mid (rfc2392):
+cid:content-id-data
+mid:message-id-data[/content-id-data]
+
+crid (rfc4078):
+crid://host/data
+
+data (rfc2397):
+data:[type/subtype][;attr=value]*[;base64],data
+
+dav (rfc4918):
+dav:data
+opaquelocktoken:uuid[path]
+
+dict (rfc2229):
+dict://[user[;authmech]@]host[:port]/d:word[:database[:nth]]
+dict://[user[;authmech]@]host[:port]/m:word[:database[:strategy[:nth]]]
+
+dns (rfc4501):
+dns:[//host[:port]/]name[?[attr=value[;attr=value]*]]
+
+file (rfc1738):
+file://[host]/path
+
+ftp (rfc1738):
+ftp://[user[:pass]@]host[:port][/path[;type=type]]
+
+geo (draft...):
+geo:data
+
+go (rfc3368):
+go:[//host[:port]?]data[;attr=[type,]value]*
+
+gopher (rfc4266):
+gopher://host[:port]/path
+
+h323 (rfc3508):
+h323:[user@]host[:port][;params]*
+
+http (rfc 2616):
+http://host[:port][/path[?query]]
+
+https (rfc 2818):
+https://host[:port][/path[?query]]
+
+iax (rfc 5456):
+iax:[user@]host[:port][/number[?context]]
+
+icap (rfc3507):
+icap://[userinfo@]host[:port]/path[?query]
+
+im (rfc3860):
+im:mailbox[?[header=value[;header=value]*]]
+
+imap (rfc5092):
+imap://[user[;AUTH=mech]@]host[:port][/[mailbox[validity]]]
+imap://[user[;AUTH=mech]@]host[:port]/mailbox[validity]?search
+imap://[user[;AUTH=mech]@]host[:port]/mailbox[validity]uid[sect][part][auth]
+
+info (rfc4452):
+info:namespace/identifier[#fragment]
+
+ipp (rfc3510):
+ipp://host[:port][/path[?query]]
+
+iris (rfc3981, 3983, 4992, 4993):
+iris[.transport]:urn/[method]/[userinfo@]host[:port][/class/name]
+
+ldap (rfc4516):
+ldap://[host[:port]][/dn[?[attrs][?[scope][?[filter][?exts]]]]]
+
+mailto (rfc2368):
+mailto:mailbox[?[header=value[;header=value]*]]
+
+msrp (rfc4975):
+msrp://authority[/id];tcp[;attr=value]*
+msrps://authority[/id];tcp[;attr=value]*
+  technically violates 3986, since ";" could appear in authority
+
+mtqp (rfc3887):
+mtqp://authority/track/id/secret
+
+mupdate (rfc3656):
+based on imap
+
+news/nntp (rfc5538):
+news:[//authority/]article-or-groups
+nntp://authority/group[/article]
+
+nfs (rfc2224):
+nfs://host[:port][path]
+
+pop (rfc2384):
+pop://[[user][;auth=mech]@]host[:port]
+
+pres (rfc3859):
+pres:mailbox[?[header=value[;header=value]*]]
+
+rtsp (rfc2326):
+rtsp://host[:port][path]
+rtspu://host[:port][path]
+
+service (rfc2609):
+service:... (possibly including authority)
+
+shttp (rfc2660):
+http-ish
+
+sieve (draft...):
+sieve://authority[path]
+
+sip (3261)
+sip:[user[:pass]@]host[:port][;name=val]*[?hname=hval[&hname=hval]*]
+sips:[user[:pass]@]host[:port][;name=val]*[?hname=hval[&hname=hval]*]
+
+sms (5724)
+sms:phone[,phone]*[?name=val[&name=val]*]
+
+snmp (4088)
+snmp://[userinfo@]host[:port][/context...]
+
+soap.beep (4227)
+standard
+
+tag (4151)
+tag:host-or-email,8601date:data[#fragment]
+
+tel (3966)
+tel:number[;attr=value]*
+
+telnet (4248)
+telnet://[user[:pass]@]host[:port][/]
+
+tftp (3617)
+tftp://host/file[;mode=type]
+
+tip (2371)
+tip://host[:port]/path?trans
+
+tv (2838)
+tv:dnsid
+
+urn (2141)
+urn:data
+
+vemmi (2122)
+vemmi://host[:port]/service[;attr=val]*
+
+xmlrpc.beep (3529)
+standard
+
+xmpp (5122)
+xmpp:[//node@host[/]][[node@]host[/resource]][?query[;attr=val]*][#fragment]
+
+x39.50 (2056)
+z39.50r://host[:port][/[database[?docid]][;esn=data][;rs=data]]
+z39.50s://host[:port][/[database[?docid]][;esn=data][;rs=data]]
+
+
+
+HTML5 rules:
+ - strip leading and trailing spaces
+ - chars less than U+0020 or greater than U+007F in unreserved
+ - U+0022, U+003C, U+003E, U+005B..E, U+0060, U+007B..D in unreserved
+   (   "      <       >     [ \ ] ^      `    { | } ~   )
+ - Allow single % except in hostname
+ - Allow # in fragment
+ - if host has non-UTF8 %-encoded, fail
+ - if host fails IDNA ToASCII, fail
+ - forcibly %-encode all reserved/non-ASCII path chars
+ - re-encode query to the URL's encoding (from enclosing doc) and
+   %-encode. replace unencodable chars with '?'
+ - if fully-resolved URI uses authority, replace all \ with /
+
+
+gvfs and EUri both allow '@' in username
+EUri does "parameters", but seems unused
+hide_password in to_string
+CamelURL does hide_auth too
+CamelURL does params and uses them
+CamelURL special-cases file URLs on win32 (via g_filename_to/from_uri)
+
+
+http://www.freedesktop.org/wiki/Specifications/file-uri-spec says:
+  non-ASCII chars are %-encoded
+  URIs are in filesystem encoding, NOT UTF-8
+  accept "file:/path" for compat
+http://blogs.msdn.com/ie/archive/2006/12/06/file-uris-in-windows.aspx:
+  IE allows "file://" + windows path (eg, "file://D:\blah blah\bl%h")
+  file://// == file://
+  don't use %-encoding for non-ASCII, just use non-ASCII.
+    (http://en.wikipedia.org/wiki/File_URI_scheme contradicts this?)
+  IE allows "|" instead of ":" for drive separator, but very deprecated
+  MUST NOT use %-encoding where not required
+
+Bug 489862 - Basic URI operations
+https://bugzilla.gnome.org/show_bug.cgi?id=489862
+
+Bug 620417 - g_uri_unescape_string cannot unescape %00
+https://bugzilla.gnome.org/show_bug.cgi?id=620417
+
+Bug 611687 - gconvert g_filename_to_uri doesn't do what the documentation says
+https://bugzilla.gnome.org/show_bug.cgi?id=611687
+
+Bug 550110 - RFC: g_uri_is_valid (from GStreamer gst_uri_is_valid)
+https://bugzilla.gnome.org/show_bug.cgi?id=550110
+
+Add fireball URI matcher
+(make sure it does email addresses too)
+
