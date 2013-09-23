@@ -122,7 +122,7 @@ g_cancellable_class_init (GCancellableClass *klass)
    *     if (cancellable)
    *       id = g_cancellable_connect (cancellable,
    *     			      G_CALLBACK (cancelled_handler)
-   *     			      data, NULL);
+   *     			      my_data, NULL);
    *
    *     /<!-- -->* cancellable operation here... *<!-- -->/
    *
