@@ -58,7 +58,7 @@ async_ready_func (GObject      *source,
                   GAsyncResult *result,
                   gpointer      user_data)
 {
-  const gchar *filename = user_data;
+  gchar *filename = user_data;
   GError *error = NULL;
   guint64 disk_usage;
   guint64 num_dirs;
@@ -67,6 +67,7 @@ async_ready_func (GObject      *source,
   g_file_measure_disk_usage_finish (G_FILE (source), result, &disk_usage, &num_dirs, &num_files, &error);
   print_result (filename, disk_usage, num_dirs, num_files, error, '\n');
   outstanding_asyncs--;
+  g_free (filename);
 }
 
 static void
@@ -143,7 +144,7 @@ main (int argc, char **argv)
 #else
   while (argv[i])
   {
-    gchar *argv_utf8 = argv[i];
+    gchar *argv_utf8 = g_strdup (argv[i]);
 #endif
     GFile *file = g_file_new_for_commandline_arg (argv_utf8);
 
@@ -163,12 +164,10 @@ main (int argc, char **argv)
       g_file_measure_disk_usage (file, flags, NULL, progress, argv_utf8,
                                  &disk_usage, &num_dirs, &num_files, &error);
       print_result (argv_utf8, disk_usage, num_dirs, num_files, error, '\n');
+      g_free (argv_utf8);
     }
 
     g_object_unref (file);
-#ifdef G_OS_WIN32
-    g_free (argv_utf8);
-#endif
 
     i++;
   }

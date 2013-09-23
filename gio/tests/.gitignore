@@ -69,6 +69,7 @@ gdbus-test-codegen-generated*
 gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
+gio-du
 g-file
 g-file-info
 g-icon
