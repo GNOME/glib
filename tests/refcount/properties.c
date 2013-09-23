@@ -189,63 +189,46 @@ run_thread (GTest * test)
 int
 main (int argc, char **argv)
 {
+#define N_THREADS 5
+  GThread *test_threads[N_THREADS];
+  GTest *test_objects[N_THREADS];
   gint i;
-  GArray *test_objects;
-  GArray *test_threads;
-  const gint n_threads = 5;
 
   g_print ("START: %s\n", argv[0]);
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
-  test_objects = g_array_new (FALSE, FALSE, sizeof (GTest *));
-  g_array_set_clear_func (test_objects, (GDestroyNotify) g_object_unref);
-
-  for (i = 0; i < n_threads; i++) {
+  for (i = 0; i < N_THREADS; i++) {
     GTest *test;
-    
+
     test = g_object_new (G_TYPE_TEST, NULL);
-    g_array_append_val (test_objects, test);
+    test_objects[i] = test;
 
     g_assert (test->count == test->dummy);
     g_signal_connect (test, "notify::dummy", G_CALLBACK (dummy_notify), NULL);
   }
-    
-  test_threads = g_array_new (FALSE, FALSE, sizeof (GThread *));
 
   stopping = FALSE;
 
-  for (i = 0; i < n_threads; i++) {
-    GThread *thread;
-    GTest *test;
+  for (i = 0; i < N_THREADS; i++)
+    test_threads[i] = g_thread_create ((GThreadFunc) run_thread, test_objects[i], TRUE, NULL);
 
-    test = g_array_index (test_objects, GTest *, i);
-
-    thread = g_thread_create ((GThreadFunc) run_thread, test, TRUE, NULL);
-    g_array_append_val (test_threads, thread);
-  }
   g_usleep (3000000);
 
   stopping = TRUE;
   g_print ("\nstopping\n");
 
   /* join all threads */
-  for (i = 0; i < n_threads; i++) {
-    GThread *thread;
-
-    thread = g_array_index (test_threads, GThread *, i);
-    g_thread_join (thread);
-  }
+  for (i = 0; i < N_THREADS; i++)
+    g_thread_join (test_threads[i]);
 
   g_print ("stopped\n");
 
-  for (i = 0; i < n_threads; i++) {
-    GTest *test;
-
-    test = g_array_index (test_objects, GTest *, i);
+  for (i = 0; i < N_THREADS; i++) {
+    GTest *test = test_objects[i];
 
     g_assert (test->count == test->dummy);
+    g_object_unref (test);
   }
-  g_array_free (test_objects, TRUE);
 
   return 0;
 }
