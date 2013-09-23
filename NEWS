@@ -1,3 +1,132 @@
+What's new in Glib 2.38
+========================
+
+ * Application support
+
+  - GIO now provides an implementation of Desktop Actions from the
+    desktop entry specification
+
+  - GApplication now implements the org.freedesktop.Application
+    interface as per the desktop entry specification, allowing for
+    standards-based D-Bus launching of GLib-based applications
+
+  - GDesktopAppInfo now supports DBusActivatable as per the desktop
+    entry specification, allowing GLib-based applications to use D-Bus
+    to launch other applications
+
+  - GApplication now has a "busy" flag that can be set on an application
+    to allow the shell to show that it is busy
+
+ * GObject
+
+  - the private offset for a given class type is now always constant.
+    This was done by reorganising the memory layout of instances so that
+    the private data comes before the "official" pointer for the object
+    (ie: at a negative offset).  Valgrind macros were added to mitigate
+    any problems that this may have caused.
+
+  - a new G_DEFINE_TYPE_WITH_PRIVATE has been added along with a
+    generated function *_get_instance_private() that can now serve as an
+    equally-performing alternative to ->priv pointers in instances
+    (allowing memory savings)
+
+  - new G_PRIVATE_FIELD, G_PRIVATE_FIELD_P and G_PRIVATE_OFFSET macros
+    provide a convenient method of converting between named variables in
+    private structures and their (now constant) offsets
+
+  - installing properties on a GObjectClass must now be done from
+    class_init.  It is no longer valid to install them after class_init
+    has returned.
+
+  - it is now possible to manually break a GObject property binding
+    without destroying one of the objects involved
+
+ * Icons
+
+  - the requirements for implementing the GIcon interface have changed
+    in order to make it possible to consume all implementations of GIcon
+    with a finite number of cases
+
+  - a new GBytesIcon type was added for an icon represented by an
+    in-memory binary blob in a known image format (ideally png).
+
+  - new APIs g_icon_serialize() and g_icon_deserialize() replace the old
+    to/from_string APIs and will always work, irrespective of which
+    types have been initialised in the calling process, allowing for a
+    serialised GdkPixbuf to be deserialised in a process that doesn't
+    have GdkPixbuf
+
+  - support for icons has been added to GMenuModel using the new APIs
+
+ * Actions and menus
+
+  - GPropertyAction provides a convenient way of creating a stateful
+    property corresponding to a property on a GObject, such as the
+    "visible-child-name" property of a GtkStack
+
+  - new API g_menu_remove_all()
+
+  - we now have established rules about what is a "valid" action name
+    and an API to check them
+
+  - a new API for converting detailed action names to and from the
+    split-out name and parameter value (as GVariant)
+
+  - for backwards compatibility, invalid action names can still be used
+    with most functions, but this is not recommended
+
+ * Other GIO
+
+  - GDBus now supports services that wish to handle some of all
+    properties on an interface asynchronously, without requiring the
+    service to reimplement the entire org.freedesktop.DBus.Properties
+    interface
+
+  - GFile now has a new _measure_disk_usage() (and async) API for
+    recursively determining the amount of disk space used by a
+    particular directory (akin to 'du').
+
+  - asynchronous version of g_file_trash() and g_file_make_directory()
+    have been added
+
+ * Other new API
+
+  - GRegex has a new function to query the maximum lookbehind length to
+    allow for regexp matching on streams
+
+  - GVariant has two new APIs for constructing strings that allow
+    avoiding copies in some cases: g_variant_new_take_string() and
+    g_variant_new_printf()
+
+ * Testing
+
+  - we can now generate TAP output
+
+  - new support functions for simplifying the process of dealing with
+    data files for srcdir != builddir and installed test cases
+
+  - g_test_trap_subprocess() provides a portable alternative to
+    g_test_trap_fork()
+
+ * Other
+
+  - GLib now builds on Android against the bionic C library
+
+Overview of changes from GLib 2.37.93 to 2.38.0
+================================================
+
+* fix the documentation for GSourceFuncs
+
+* fix compilation on OS X/ppc64
+
+Bugs fixed: 708445, 647145
+
+Translations updated:
+ Danish
+ French
+ Portuguese
+ Punjabi
+
 Overview of changes from GLib 2.37.92 to 2.37.93
 ================================================
 

@@ -30,8 +30,8 @@ m4_define(glib_configure_ac)
 # <mclasen> on the unstable (ie master), interface age = 0
 
 m4_define([glib_major_version], [2])
-m4_define([glib_minor_version], [37])
-m4_define([glib_micro_version], [93])
+m4_define([glib_minor_version], [38])
+m4_define([glib_micro_version], [0])
 m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
