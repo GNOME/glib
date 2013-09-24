@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.31.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-17 19:34+0800\n"
+"POT-Creation-Date: 2013-09-24 19:01+0800\n"
 "PO-Revision-Date: 2013-09-13 10:02+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -287,7 +287,7 @@ msgstr "未預期的內容缺乏嘗試（安全的）讀取行"
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr "竭盡所有可用的驗證機制 (已嘗試：%s) (可用：%s)"
+msgstr "竭盡所有可用的核對機制 (已嘗試：%s) (可用：%s)"
 
 #: ../gio/gdbusauth.c:1172
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -981,7 +981,7 @@ msgstr "預期為 GEmblemedIcon 的 GEmblem"
 #: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4357
 #: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
 #: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
-#: ../gio/gfile.c:7682 ../gio/gfile.c:7772 ../gio/gfile.c:7856
+#: ../gio/gfile.c:7688 ../gio/gfile.c:7778 ../gio/gfile.c:7862
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -2559,13 +2559,13 @@ msgstr "伺服器不是 SOCKSv5 代理伺服器。"
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr "SOCKv5 代理伺服器要求驗證。"
+msgstr "SOCKv5 代理伺服器要求核對。"
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
-msgstr "SOCKSv5 代理需要的驗證方式尚未被 GLib 支援。"
+msgstr "SOCKSv5 代理需要的核對方式尚未被 GLib 支援。"
 
 #: ../gio/gsocks5proxy.c:208
 msgid "Username or password is too long for SOCKSv5 protocol."
@@ -2573,7 +2573,7 @@ msgstr "使用者名稱或密碼對 SOCKSv5 通訊協定來說太長了。"
 
 #: ../gio/gsocks5proxy.c:238
 msgid "SOCKSv5 authentication failed due to wrong username or password."
-msgstr "SOCKSv5 驗證由於錯誤的使用者名稱或密碼失敗了。"
+msgstr "SOCKSv5 核對由於錯誤的使用者名稱或密碼失敗了。"
 
 #: ../gio/gsocks5proxy.c:288
 #, c-format
