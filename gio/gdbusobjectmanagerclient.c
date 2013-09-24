@@ -1113,7 +1113,7 @@ subscribe_signals (GDBusObjectManagerClient *manager,
 
       ret = g_dbus_connection_call_sync (manager->priv->connection,
                                          "org.freedesktop.DBus",
-                                         "/org/freedeskop/DBus",
+                                         "/org/freedesktop/DBus",
                                          "org.freedesktop.DBus",
                                          "AddMatch",
                                          g_variant_new ("(s)",
@@ -1198,7 +1198,7 @@ maybe_unsubscribe_signals (GDBusObjectManagerClient *manager)
        */
       g_dbus_connection_call (manager->priv->connection,
                               "org.freedesktop.DBus",
-                              "/org/freedeskop/DBus",
+                              "/org/freedesktop/DBus",
                               "org.freedesktop.DBus",
                               "RemoveMatch",
                               g_variant_new ("(s)",
