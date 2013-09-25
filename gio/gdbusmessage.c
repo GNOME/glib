@@ -3468,10 +3468,10 @@ g_dbus_message_print (GDBusMessage *message,
                                           statbuf.st_mode);
                   g_string_append_printf (fs, "%s" "ino=%" G_GUINT64_FORMAT, fs->len > 0 ? "," : "",
                                           (guint64) statbuf.st_ino);
-                  g_string_append_printf (fs, "%s" "uid=%d", fs->len > 0 ? "," : "",
-                                          statbuf.st_uid);
-                  g_string_append_printf (fs, "%s" "gid=%d", fs->len > 0 ? "," : "",
-                                          statbuf.st_gid);
+                  g_string_append_printf (fs, "%s" "uid=%u", fs->len > 0 ? "," : "",
+                                          (guint) statbuf.st_uid);
+                  g_string_append_printf (fs, "%s" "gid=%u", fs->len > 0 ? "," : "",
+                                          (guint) statbuf.st_gid);
                   g_string_append_printf (fs, "%s" "rdev=%d:%d", fs->len > 0 ? "," : "",
                                           major (statbuf.st_rdev), minor (statbuf.st_rdev));
                   g_string_append_printf (fs, "%s" "size=%" G_GUINT64_FORMAT, fs->len > 0 ? "," : "",

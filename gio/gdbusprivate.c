@@ -2155,7 +2155,7 @@ write_message_print_transport_debug (gssize bytes_written,
   _g_dbus_debug_print_lock ();
   g_print ("========================================================================\n"
            "GDBus-debug:Transport:\n"
-           "  >>>> WROTE %" G_GSIZE_FORMAT " bytes of message with serial %d and\n"
+           "  >>>> WROTE %" G_GSSIZE_FORMAT " bytes of message with serial %d and\n"
            "       size %" G_GSIZE_FORMAT " from offset %" G_GSIZE_FORMAT " on a %s\n",
            bytes_written,
            g_dbus_message_get_serial (data->message),
@@ -2206,7 +2206,7 @@ read_message_print_transport_debug (gssize bytes_read,
     _g_dbus_debug_print_lock ();
   g_print ("========================================================================\n"
            "GDBus-debug:Transport:\n"
-           "  <<<< READ %" G_GSIZE_FORMAT " bytes of message with serial %d and\n"
+           "  <<<< READ %" G_GSSIZE_FORMAT " bytes of message with serial %d and\n"
            "       size %d to offset %" G_GSIZE_FORMAT " from a %s\n",
            bytes_read,
            serial,
