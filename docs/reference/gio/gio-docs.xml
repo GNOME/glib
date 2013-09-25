@@ -83,6 +83,7 @@
         <title>File types and applications</title>
         <xi:include href="xml/gcontenttype.xml"/>
         <xi:include href="xml/gappinfo.xml"/>
+        <xi:include href="xml/gappinfomonitor.xml"/>
         <xi:include href="xml/gdesktopappinfo.xml"/>
     </chapter>
     <chapter id="volume_mon">

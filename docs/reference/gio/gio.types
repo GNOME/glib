@@ -4,6 +4,7 @@ g_action_group_get_type
 g_action_map_get_type
 g_simple_action_group_get_type
 g_app_info_get_type
+g_app_info_monitor_get_type
 g_app_launch_context_get_type
 g_application_get_type
 g_async_initable_get_type

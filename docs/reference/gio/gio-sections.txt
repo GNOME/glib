@@ -1399,6 +1399,19 @@ GAppLaunchContextPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gappinfomonitor</FILE>
+<TITLE>GAppInfoMonitor</TITLE>
+GAppInfoMonitor
+g_app_info_monitor_get
+<SUBSECTION Standard>
+GAppInfoMonitor
+G_APP_INFO_MONITOR
+G_IS_APP_INFO_MONITOR
+<SUBSECTION Private>
+g_app_info_monitor_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gmountoperation</FILE>
 <TITLE>GMountOperation</TITLE>
 GAskPasswordFlags
