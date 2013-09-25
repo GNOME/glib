@@ -869,11 +869,10 @@ expand_macro_single (char macro, char *uri)
 {
   GFile *file;
   char *result = NULL;
-  char *path, *name;
+  char *path = NULL;
+  char *name;
 
   file = g_file_new_for_uri (uri);
-  path = g_file_get_path (file);
-  g_object_unref (file);
   
   switch (macro)
     {
@@ -883,11 +882,13 @@ expand_macro_single (char macro, char *uri)
       break;
     case 'f':
     case 'F':
+      path = g_file_get_path (file);
       if (path)
 	result = g_shell_quote (path);
       break;
     case 'd':
     case 'D':
+      path = g_file_get_path (file);
       if (path)
         {
           name = g_path_get_dirname (path);
@@ -897,6 +898,7 @@ expand_macro_single (char macro, char *uri)
       break;
     case 'n':
     case 'N':
+      path = g_file_get_path (file);
       if (path)
         {
           name = g_path_get_basename (path);
@@ -906,6 +908,7 @@ expand_macro_single (char macro, char *uri)
       break;
     }
 
+  g_object_unref (file);
   g_free (path);
   
   return result;
