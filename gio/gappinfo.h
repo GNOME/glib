@@ -296,6 +296,20 @@ GLIB_AVAILABLE_IN_ALL
 void               g_app_launch_context_launch_failed         (GAppLaunchContext *context,
                                                                const char *       startup_notify_id);
 
+#define G_TYPE_APP_INFO_MONITOR                             (g_app_info_monitor_get_type ())
+#define G_APP_INFO_MONITOR(inst)                            (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
+                                                             G_TYPE_APP_INFO_MONITOR, GAppInfoMonitor))
+#define G_IS_APP_INFO_MONITOR(inst)                         (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
+                                                             G_TYPE_APP_INFO_MONITOR))
+
+typedef struct _GAppInfoMonitor                             GAppInfoMonitor;
+
+GLIB_AVAILABLE_IN_2_40
+GType                   g_app_info_monitor_get_type                     (void);
+
+GLIB_AVAILABLE_IN_2_40
+GAppInfoMonitor *       g_app_info_monitor_get                          (void);
+
 G_END_DECLS
 
 #endif /* __G_APP_INFO_H__ */

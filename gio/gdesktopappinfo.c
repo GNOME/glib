@@ -48,6 +48,7 @@
 #include "glibintl.h"
 #include "giomodule-priv.h"
 #include "gappinfo.h"
+#include "gappinfoprivate.h"
 #include "glocaldirectorymonitor.h"
 
 #include "dfi-reader.h"
@@ -330,6 +331,9 @@ desktop_file_dir_changed (GFileMonitor      *monitor,
   desktop_file_dir_reset (dir);
 
   g_mutex_unlock (&desktop_file_dir_lock);
+
+  /* Notify anyone else who may be interested */
+  g_app_info_monitor_fire ();
 }
 
 /* Internal utility functions {{{2 */
