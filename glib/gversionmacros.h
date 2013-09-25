@@ -110,7 +110,7 @@
 /**
  * GLIB_VERSION_2_40:
  *
- * A macro that evaluates to the 2.38 version of GLib, in a format
+ * A macro that evaluates to the 2.40 version of GLib, in a format
  * that can be used by the C pre-processor.
  *
  * Since: 2.40
