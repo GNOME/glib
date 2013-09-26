@@ -1225,6 +1225,18 @@ AS_IF([test "$ac_cv_func_statfs" = yes], [
       AC_MSG_ERROR([unable to determine number of arguments to statfs()])])])
 ])
 
+dnl
+dnl open takes O_DIRECTORY as an option
+dnl
+AC_MSG_CHECKING([open() option O_DIRECTORY])
+AC_TRY_COMPILE([#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>],
+[open(0, O_DIRECTORY, 0);],[
+	AC_MSG_RESULT([yes])
+	AC_DEFINE(HAVE_OPEN_O_DIRECTORY, 1, [open option O_DIRECTORY])],[
+	AC_MSG_RESULT([no])])
+
 #
 # Check whether to use an included printf
 #

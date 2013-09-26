@@ -2699,7 +2699,11 @@ g_local_file_measure_size_of_file (gint           parent_fd,
         return FALSE;
 
 #ifdef AT_FDCWD
-      dir_fd = openat (parent_fd, name->data, O_RDONLY | O_DIRECTORY);
+#ifdef HAVE_OPEN_O_DIRECTORY
+      dir_fd = openat (parent_fd, name->data, O_RDONLY|O_DIRECTORY);
+#else
+      dir_fd = openat (parent_fd, name->data, O_RDONLY);
+#endif
       if (dir_fd < 0)
         return g_local_file_measure_size_error (state->flags, errno, name, error);
 #endif
