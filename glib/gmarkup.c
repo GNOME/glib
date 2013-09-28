@@ -2428,8 +2428,11 @@ g_markup_vprintf_escaped (const gchar *format,
   /* Use them to format the arguments
    */
   G_VA_COPY (args2, args);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 
   output1 = g_strdup_vprintf (format1->str, args);
+
   if (!output1)
     {
       va_end (args2);
@@ -2440,7 +2443,7 @@ g_markup_vprintf_escaped (const gchar *format,
   va_end (args2);
   if (!output2)
     goto cleanup;
-
+#pragma GCC diagnostic pop
   result = g_string_new (NULL);
 
   /* Iterate through the original format string again,

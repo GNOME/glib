@@ -2273,7 +2273,10 @@ g_format_size_full (guint64          size,
 #endif
 
       g_string_append (string, " (");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
       g_string_append_printf (string, translated_format, formatted_number);
+#pragma GCC diagnostic pop
       g_free (formatted_number);
       g_string_append (string, ")");
     }

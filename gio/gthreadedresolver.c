@@ -543,7 +543,10 @@ g_resolver_records_from_res_query (const gchar      *rrname,
           format = _("Error resolving '%s'");
         }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
       g_set_error (error, G_RESOLVER_ERROR, errnum, format, rrname);
+#pragma GCC diagnostic pop
       return NULL;
     }
 
