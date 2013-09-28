@@ -11,4 +11,5 @@ paramspec-test
 performance
 performance-threaded
 references
+signals
 singleton
