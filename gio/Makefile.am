@@ -560,7 +560,6 @@ gio_headers =			\
 	gmountoperation.h 	\
 	gnativevolumemonitor.h 	\
 	gnetworkaddress.h	\
-	gnetworking.h		\
 	gnetworkmonitor.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
@@ -616,6 +615,10 @@ gioincludedir=$(includedir)/glib-2.0/gio/
 gioinclude_HEADERS = 		\
 	$(gio_headers)		\
 	gioenumtypes.h
+
+nodist_gioinclude_HEADERS =	\
+	gnetworking.h		\
+	$(NULL)
 
 # these sources (also mentioned above) are generated.
 BUILT_SOURCES += 		\
