@@ -909,7 +909,10 @@ g_ascii_formatd (gchar       *buffer,
   locale_t old_locale;
 
   old_locale = uselocale (get_C_locale ());
-  _g_snprintf (buffer, buf_len, format, d);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+   _g_snprintf (buffer, buf_len, format, d);
+#pragma GCC diagnostic pop
   uselocale (old_locale);
 
   return buffer;

@@ -423,7 +423,9 @@ g_content_type_get_icon_internal (const gchar *type,
   G_LOCK (gio_xdgmime);
   xdg_icon = xdg_mime_get_icon (type);
   G_UNLOCK (gio_xdgmime);
-  if (xdg_icon != NULL)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+   if (xdg_icon != NULL)
     xdg_mimetype_icon = g_strdup_printf (file_template, xdg_icon);
 
   if (xdg_mimetype_icon)
@@ -438,6 +440,7 @@ g_content_type_get_icon_internal (const gchar *type,
   xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
   if (xdg_mimetype_generic_icon)
     generic_mimetype_icon = g_strdup_printf (file_template, xdg_mimetype_generic_icon);
+#pragma GCC diagnostic pop
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 
