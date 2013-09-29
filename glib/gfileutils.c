@@ -1008,6 +1008,9 @@ static char *
 format_error_message (const gchar  *filename,
                       const gchar  *format_string) G_GNUC_FORMAT(2);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 static char *
 format_error_message (const gchar  *filename,
                       const gchar  *format_string)
@@ -1016,17 +1019,14 @@ format_error_message (const gchar  *filename,
   gchar *display_name;
   gchar *msg;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-
   display_name = g_filename_display_name (filename);
   msg = g_strdup_printf (format_string, display_name, g_strerror (saved_errno));
   g_free (display_name);
 
-#pragma GCC diagnostic pop
-
   return msg;
 }
+
+#pragma GCC diagnostic pop
 
 /* format string must have two '%s':
  *

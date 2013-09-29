@@ -881,6 +881,9 @@ g_ascii_dtostr (gchar       *buffer,
   return g_ascii_formatd (buffer, buf_len, "%.17g", d);
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 /**
  * g_ascii_formatd:
  * @buffer: A buffer to place the resulting string in
@@ -909,10 +912,7 @@ g_ascii_formatd (gchar       *buffer,
   locale_t old_locale;
 
   old_locale = uselocale (get_C_locale ());
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
    _g_snprintf (buffer, buf_len, format, d);
-#pragma GCC diagnostic pop
   uselocale (old_locale);
 
   return buffer;
@@ -991,6 +991,7 @@ g_ascii_formatd (gchar       *buffer,
   return buffer;
 #endif
 }
+#pragma GCC diagnostic pop
 
 #define ISSPACE(c)              ((c) == ' ' || (c) == '\f' || (c) == '\n' || \
                                  (c) == '\r' || (c) == '\t' || (c) == '\v')

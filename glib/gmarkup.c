@@ -2366,6 +2366,9 @@ find_conversion (const char  *format,
  *
  * Since: 2.4
  */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 gchar *
 g_markup_vprintf_escaped (const gchar *format,
                           va_list      args)
@@ -2428,8 +2431,6 @@ g_markup_vprintf_escaped (const gchar *format,
   /* Use them to format the arguments
    */
   G_VA_COPY (args2, args);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 
   output1 = g_strdup_vprintf (format1->str, args);
 
@@ -2443,7 +2444,6 @@ g_markup_vprintf_escaped (const gchar *format,
   va_end (args2);
   if (!output2)
     goto cleanup;
-#pragma GCC diagnostic pop
   result = g_string_new (NULL);
 
   /* Iterate through the original format string again,
@@ -2494,6 +2494,8 @@ g_markup_vprintf_escaped (const gchar *format,
   else
     return NULL;
 }
+
+#pragma GCC diagnostic pop
 
 /**
  * g_markup_printf_escaped:
