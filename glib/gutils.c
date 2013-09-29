@@ -2148,6 +2148,9 @@ g_format_size (guint64 size)
  * Flags to modify the format of the string returned by g_format_size_full().
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 /**
  * g_format_size_full:
  * @size: a size in bytes
@@ -2273,16 +2276,15 @@ g_format_size_full (guint64          size,
 #endif
 
       g_string_append (string, " (");
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
       g_string_append_printf (string, translated_format, formatted_number);
-#pragma GCC diagnostic pop
       g_free (formatted_number);
       g_string_append (string, ")");
     }
 
   return g_string_free (string, FALSE);
 }
+
+#pragma GCC diagnostic pop
 
 /**
  * g_format_size_for_display:
