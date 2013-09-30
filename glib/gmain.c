@@ -3053,6 +3053,7 @@ g_main_dispatch (GMainContext *context)
            * and not modified from anywhere but this function.
            */
           prev_source = current->source;
+          current->source = source;
           current->depth++;
 
           need_destroy = !(* dispatch) (source, callback, user_data);
