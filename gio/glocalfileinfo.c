@@ -1253,7 +1253,10 @@ get_content_type (const char          *basename,
       content_type = g_content_type_guess (basename, NULL, 0, &result_uncertain);
       
 #ifndef G_OS_WIN32
-      if (!fast && result_uncertain && path != NULL)
+      /* Don't sniff zero-length files in order to avoid reading files
+       * that appear normal but are not (eg: files in /proc and /sys)
+       */
+      if (!fast && result_uncertain && path != NULL && statbuf && statbuf->st_size != 0)
 	{
 	  guchar sniff_buffer[4096];
 	  gsize sniff_length;
