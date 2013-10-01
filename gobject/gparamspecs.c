@@ -1626,6 +1626,8 @@ g_param_spec_char (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (cspec == NULL)
+    return NULL;
   
   cspec->minimum = minimum;
   cspec->maximum = maximum;
@@ -1666,6 +1668,8 @@ g_param_spec_uchar (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (uspec == NULL)
+    return NULL;
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1705,6 +1709,8 @@ g_param_spec_boolean (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (bspec == NULL)
+    return NULL;
   
   bspec->default_value = default_value;
   
@@ -1745,6 +1751,8 @@ g_param_spec_int (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (ispec == NULL)
+    return NULL;
   
   ispec->minimum = minimum;
   ispec->maximum = maximum;
@@ -1787,6 +1795,8 @@ g_param_spec_uint (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (uspec == NULL)
+    return NULL;
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1829,6 +1839,8 @@ g_param_spec_long (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (lspec == NULL)
+    return NULL;
   
   lspec->minimum = minimum;
   lspec->maximum = maximum;
@@ -1872,6 +1884,8 @@ g_param_spec_ulong (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (uspec == NULL)
+    return NULL;
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1914,6 +1928,8 @@ g_param_spec_int64 (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (lspec == NULL)
+    return NULL;
   
   lspec->minimum = minimum;
   lspec->maximum = maximum;
@@ -1957,6 +1973,8 @@ g_param_spec_uint64 (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (uspec == NULL)
+    return NULL;
   
   uspec->minimum = minimum;
   uspec->maximum = maximum;
@@ -1995,6 +2013,8 @@ g_param_spec_unichar (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (uspec == NULL)
+    return NULL;
   
   uspec->default_value = default_value;
   
@@ -2039,6 +2059,8 @@ g_param_spec_enum (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (espec == NULL)
+    return NULL;
   
   espec->enum_class = enum_class;
   espec->default_value = default_value;
@@ -2085,6 +2107,8 @@ g_param_spec_flags (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (fspec == NULL)
+    return NULL;
   
   fspec->flags_class = flags_class;
   fspec->default_value = default_value;
@@ -2127,6 +2151,8 @@ g_param_spec_float (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (fspec == NULL)
+    return NULL;
   
   fspec->minimum = minimum;
   fspec->maximum = maximum;
@@ -2170,6 +2196,8 @@ g_param_spec_double (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (dspec == NULL)
+    return NULL;
   
   dspec->minimum = minimum;
   dspec->maximum = maximum;
@@ -2204,6 +2232,9 @@ g_param_spec_string (const gchar *name,
 						   nick,
 						   blurb,
 						   flags);
+  if (sspec == NULL)
+    return NULL;
+
   g_free (sspec->default_value);
   sspec->default_value = g_strdup (default_value);
   
@@ -2241,6 +2272,9 @@ g_param_spec_param (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (pspec == NULL)
+    return NULL;
+
   G_PARAM_SPEC (pspec)->value_type = param_type;
   
   return G_PARAM_SPEC (pspec);
@@ -2278,6 +2312,9 @@ g_param_spec_boxed (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (bspec == NULL)
+    return NULL;
+
   G_PARAM_SPEC (bspec)->value_type = boxed_type;
   
   return G_PARAM_SPEC (bspec);
@@ -2309,6 +2346,9 @@ g_param_spec_pointer (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (pspec == NULL)
+    return NULL;
+
   return G_PARAM_SPEC (pspec);
 }
 
@@ -2344,6 +2384,8 @@ g_param_spec_gtype (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (tspec == NULL)
+    return NULL;
 
   tspec->is_a_type = is_a_type;
 
@@ -2385,6 +2427,9 @@ g_param_spec_value_array (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (aspec == NULL)
+    return NULL;
+
   if (element_spec)
     {
       aspec->element_spec = g_param_spec_ref (element_spec);
@@ -2425,6 +2470,9 @@ g_param_spec_object (const gchar *name,
 				 nick,
 				 blurb,
 				 flags);
+  if (ospec == NULL)
+    return NULL;
+
   G_PARAM_SPEC (ospec)->value_type = object_type;
   
   return G_PARAM_SPEC (ospec);
@@ -2466,6 +2514,8 @@ g_param_spec_override (const gchar *name,
   pspec = g_param_spec_internal (G_TYPE_PARAM_OVERRIDE,
 				 name, NULL, NULL,
 				 overridden->flags);
+  if (pspec == NULL)
+    return NULL;
   
   pspec->value_type = G_PARAM_SPEC_VALUE_TYPE (overridden);
   G_PARAM_SPEC_OVERRIDE (pspec)->overridden = g_param_spec_ref (overridden);
@@ -2513,6 +2563,8 @@ g_param_spec_variant (const gchar        *name,
                                  nick,
                                  blurb,
                                  flags);
+  if (vspec == NULL)
+    return NULL;
 
   vspec->type = g_variant_type_copy (type);
   if (default_value)
