@@ -297,26 +297,18 @@ g_output_stream_write_all (GOutputStream  *stream,
  * @cancellable: (allow-none): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
- * Tries to write the data from @bytes into the stream. Will block
- * during the operation.
+ * A wrapper function for g_output_stream_write() which takes a
+ * #GBytes as input.  This can be more convenient for use by language
+ * bindings or in other cases where the refcounted nature of #GBytes
+ * is helpful over a bare pointer interface.
  *
- * If @bytes is 0-length, returns 0 and does nothing. A #GBytes larger
- * than %G_MAXSSIZE will cause a %G_IO_ERROR_INVALID_ARGUMENT error.
- *
- * On success, the number of bytes written to the stream is returned.
- * It is not an error if this is not the same as the requested size, as it
- * can happen e.g. on a partial I/O error, or if there is not enough
- * storage in the stream. All writes block until at least one byte
- * is written or an error occurs; 0 is never returned (unless
- * the size of @bytes is 0).
- *
- * If @cancellable is not %NULL, then the operation can be cancelled by
- * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
- * operation was partially finished when the operation was cancelled the
- * partial result will be returned, without an error.
- *
- * On error -1 is returned and @error is set accordingly.
+ * However, note that this function <emphasis>may</emphasis> still
+ * perform partial writes, just like g_output_stream_write().  If that
+ * occurs, to continue writing, you will need to create a new #GBytes
+ * containing just the remaining bytes, using
+ * g_bytes_new_from_bytes().  Passing the same #GBytes instance
+ * multiple times potentially can result in duplicated data in the
+ * output stream.
  *
  * Return value: Number of bytes written, or -1 on error
  **/
@@ -799,29 +791,17 @@ write_bytes_callback (GObject      *stream,
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
- * Request an asynchronous write of the data in @bytes to the stream.
- * When the operation is finished @callback will be called. You can
- * then call g_output_stream_write_bytes_finish() to get the result of
- * the operation.
+ * This function is similar to g_output_stream_write_async(), but
+ * takes a #GBytes as input.  Due to the refcounted nature of #GBytes,
+ * this allows the stream to avoid taking a copy of the data.
  *
- * During an async request no other sync and async calls are allowed,
- * and will result in %G_IO_ERROR_PENDING errors.
- *
- * A #GBytes larger than %G_MAXSSIZE will cause a
- * %G_IO_ERROR_INVALID_ARGUMENT error.
- *
- * On success, the number of bytes written will be passed to the
- * @callback. It is not an error if this is not the same as the
- * requested size, as it can happen e.g. on a partial I/O error,
- * but generally we try to write as many bytes as requested.
- *
- * You are guaranteed that this method will never fail with
- * %G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the
- * method will just wait until this changes.
- *
- * Any outstanding I/O request with higher priority (lower numerical
- * value) will be executed before an outstanding request with lower
- * priority. Default priority is %G_PRIORITY_DEFAULT.
+ * However, note that this function <emphasis>may</emphasis> still
+ * perform partial writes, just like g_output_stream_write_async().
+ * If that occurs, to continue writing, you will need to create a new
+ * #GBytes containing just the remaining bytes, using
+ * g_bytes_new_from_bytes().  Passing the same #GBytes instance
+ * multiple times potentially can result in duplicated data in the
+ * output stream.
  *
  * For the synchronous, blocking version of this function, see
  * g_output_stream_write_bytes().
