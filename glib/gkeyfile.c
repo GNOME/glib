@@ -4372,3 +4372,41 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
 
   return g_string_free (string, FALSE);
 }
+
+/**
+ * g_key_file_save_to_file:
+ * @key_file: a #GKeyFile
+ * @filename: the name of the file to write to
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Writes the contents of @key_file to @filename using
+ * g_file_set_contents().
+ *
+ * This function can fail for any of the reasons that
+ * g_file_set_contents() may fail.
+ *
+ * Returns: %TRUE if successful, else %FALSE with @error set
+ *
+ * Since: 2.40
+ */
+gboolean
+g_key_file_save_to_file (GKeyFile     *key_file,
+                         const gchar  *filename,
+                         GError      **error)
+{
+  gchar *contents;
+  gboolean success;
+  gsize length;
+
+  g_return_val_if_fail (key_file != NULL, FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  contents = g_key_file_to_data (key_file, &length, NULL);
+  g_assert (contents != NULL);
+
+  success = g_file_set_contents (filename, contents, length, error);
+  g_free (contents);
+
+  return success;
+}

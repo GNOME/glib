@@ -1822,6 +1822,7 @@ g_key_file_load_from_data
 g_key_file_load_from_data_dirs
 g_key_file_load_from_dirs
 g_key_file_to_data
+g_key_file_save_to_file
 g_key_file_get_start_group
 g_key_file_get_groups
 g_key_file_get_keys
