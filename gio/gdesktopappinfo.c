@@ -423,7 +423,10 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       info->path = NULL;
     }
 
-  if (bus_activatable)
+  /* Can only be DBusActivatable if we know the filename, which means
+   * that this won't work for the load-from-keyfile case.
+   */
+  if (bus_activatable && info->filename)
     {
       gchar *basename;
       gchar *last_dot;
