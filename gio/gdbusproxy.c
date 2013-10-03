@@ -1725,7 +1725,8 @@ async_initable_init_second_async (GAsyncInitable      *initable,
     }
   else
     {
-      if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START)
+      if ((proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START) ||
+          (proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION))
         {
           async_init_call_get_name_owner (data);
         }
@@ -2039,9 +2040,9 @@ initable_iface_init (GInitableIface *initable_iface)
  * to handle signals from the remote object.
  *
  * If @name is a well-known name and the
- * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
- * owner currently exists, the message bus will be requested to launch
- * a name owner for the name.
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
+ * flags aren't set and no name owner currently exists, the message bus
+ * will be requested to launch a name owner for the name.
  *
  * This is a failable asynchronous constructor - when the proxy is
  * ready, @callback will be invoked and you can use
@@ -2136,9 +2137,9 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * to handle signals from the remote object.
  *
  * If @name is a well-known name and the
- * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
- * owner currently exists, the message bus will be requested to launch
- * a name owner for the name.
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
+ * flags aren't set and no name owner currently exists, the message bus
+ * will be requested to launch a name owner for the name.
  *
  * This is a synchronous failable constructor. See g_dbus_proxy_new()
  * and g_dbus_proxy_new_finish() for the asynchronous version.
