@@ -51,13 +51,16 @@ typedef struct _GBinding        GBinding;
 /**
  * GBindingTransformFunc:
  * @binding: a #GBinding
- * @source_value: the value of the source property
- * @target_value: the value of the target property
+ * @from_value: the #GValue containing the value to transform
+ * @to_value: the #GValue in which to store the transformed value
  * @user_data: data passed to the transform function
  *
- * A function to be called to transform the source property of @source
- * from @source_value into the target property of @target
- * using @target_value.
+ * A function to be called to transform @from_value to @to_value. If
+ * this is the @transform_to function of a binding, then @from_value
+ * is the @source_property on the @source object, and @to_value is the
+ * @target_property on the @target object. If this is the
+ * @transform_from function of a %G_BINDING_BIDIRECTIONAL binding,
+ * then those roles are reversed.
  *
  * Return value: %TRUE if the transformation was successful, and %FALSE
  *   otherwise
@@ -65,8 +68,8 @@ typedef struct _GBinding        GBinding;
  * Since: 2.26
  */
 typedef gboolean (* GBindingTransformFunc) (GBinding     *binding,
-                                            const GValue *source_value,
-                                            GValue       *target_value,
+                                            const GValue *from_value,
+                                            GValue       *to_value,
                                             gpointer      user_data);
 
 /**

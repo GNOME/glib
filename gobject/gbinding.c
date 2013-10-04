@@ -360,8 +360,8 @@ on_source_notify (GObject    *gobject,
                   GBinding   *binding)
 {
   const gchar *p_name;
-  GValue source_value = G_VALUE_INIT;
-  GValue target_value = G_VALUE_INIT;
+  GValue from_value = G_VALUE_INIT;
+  GValue to_value = G_VALUE_INIT;
   gboolean res;
 
   if (binding->is_frozen)
@@ -372,27 +372,27 @@ on_source_notify (GObject    *gobject,
   if (p_name != binding->source_property)
     return;
 
-  g_value_init (&source_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
-  g_value_init (&target_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
+  g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
+  g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
 
-  g_object_get_property (binding->source, binding->source_pspec->name, &source_value);
+  g_object_get_property (binding->source, binding->source_pspec->name, &from_value);
 
   res = binding->transform_s2t (binding,
-                                &source_value,
-                                &target_value,
+                                &from_value,
+                                &to_value,
                                 binding->transform_data);
   if (res)
     {
       binding->is_frozen = TRUE;
 
-      g_param_value_validate (binding->target_pspec, &target_value);
-      g_object_set_property (binding->target, binding->target_pspec->name, &target_value);
+      g_param_value_validate (binding->target_pspec, &to_value);
+      g_object_set_property (binding->target, binding->target_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;
     }
 
-  g_value_unset (&source_value);
-  g_value_unset (&target_value);
+  g_value_unset (&from_value);
+  g_value_unset (&to_value);
 }
 
 static void
@@ -401,8 +401,8 @@ on_target_notify (GObject    *gobject,
                   GBinding   *binding)
 {
   const gchar *p_name;
-  GValue source_value = G_VALUE_INIT;
-  GValue target_value = G_VALUE_INIT;
+  GValue from_value = G_VALUE_INIT;
+  GValue to_value = G_VALUE_INIT;
   gboolean res;
 
   if (binding->is_frozen)
@@ -413,27 +413,27 @@ on_target_notify (GObject    *gobject,
   if (p_name != binding->target_property)
     return;
 
-  g_value_init (&source_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
-  g_value_init (&target_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
+  g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
+  g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
 
-  g_object_get_property (binding->target, binding->target_pspec->name, &source_value);
+  g_object_get_property (binding->target, binding->target_pspec->name, &from_value);
 
   res = binding->transform_t2s (binding,
-                                &source_value,
-                                &target_value,
+                                &from_value,
+                                &to_value,
                                 binding->transform_data);
   if (res)
     {
       binding->is_frozen = TRUE;
 
-      g_param_value_validate (binding->source_pspec, &target_value);
-      g_object_set_property (binding->source, binding->source_pspec->name, &target_value);
+      g_param_value_validate (binding->source_pspec, &to_value);
+      g_object_set_property (binding->source, binding->source_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;
     }
 
-  g_value_unset (&source_value);
-  g_value_unset (&target_value);
+  g_value_unset (&from_value);
+  g_value_unset (&to_value);
 }
 
 static inline void

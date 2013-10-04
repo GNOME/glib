@@ -237,44 +237,44 @@ binding_target_init (BindingTarget *self)
 
 static gboolean
 celsius_to_fahrenheit (GBinding     *binding,
-                       const GValue *source_value,
-                       GValue       *target_value,
+                       const GValue *from_value,
+                       GValue       *to_value,
                        gpointer      user_data G_GNUC_UNUSED)
 {
   gdouble celsius, fahrenheit;
 
-  g_assert (G_VALUE_HOLDS (source_value, G_TYPE_DOUBLE));
-  g_assert (G_VALUE_HOLDS (target_value, G_TYPE_DOUBLE));
+  g_assert (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
+  g_assert (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
 
-  celsius = g_value_get_double (source_value);
+  celsius = g_value_get_double (from_value);
   fahrenheit = (9 * celsius / 5) + 32.0;
 
   if (g_test_verbose ())
     g_print ("Converting %.2fC to %.2fF\n", celsius, fahrenheit);
 
-  g_value_set_double (target_value, fahrenheit);
+  g_value_set_double (to_value, fahrenheit);
 
   return TRUE;
 }
 
 static gboolean
 fahrenheit_to_celsius (GBinding     *binding,
-                       const GValue *source_value,
-                       GValue       *target_value,
+                       const GValue *from_value,
+                       GValue       *to_value,
                        gpointer      user_data G_GNUC_UNUSED)
 {
   gdouble celsius, fahrenheit;
 
-  g_assert (G_VALUE_HOLDS (source_value, G_TYPE_DOUBLE));
-  g_assert (G_VALUE_HOLDS (target_value, G_TYPE_DOUBLE));
+  g_assert (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
+  g_assert (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
 
-  fahrenheit = g_value_get_double (source_value);
+  fahrenheit = g_value_get_double (from_value);
   celsius = 5 * (fahrenheit - 32.0) / 9;
 
   if (g_test_verbose ())
     g_print ("Converting %.2fF to %.2fC\n", fahrenheit, celsius);
 
-  g_value_set_double (target_value, celsius);
+  g_value_set_double (to_value, celsius);
 
   return TRUE;
 }
