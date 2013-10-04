@@ -878,6 +878,7 @@ AC_STRUCT_DIRENT_D_TYPE
 AM_LANGINFO_CODESET
 AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
 AC_CHECK_FUNCS(setlocale)
+gl_GLIBC21
 
 # check additional type sizes
 AC_CHECK_SIZEOF(size_t)
