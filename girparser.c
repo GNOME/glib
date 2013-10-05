@@ -2301,9 +2301,9 @@ start_glib_signal (GMarkupParseContext *context,
   signal->run_first = FALSE;
   signal->run_last = FALSE;
   signal->run_cleanup = FALSE;
-  if (when == NULL || strcmp (when, "LAST") == 0)
+  if (when == NULL || g_ascii_strcasecmp (when, "LAST") == 0)
     signal->run_last = TRUE;
-  else if (strcmp (when, "FIRST") == 0)
+  else if (g_ascii_strcasecmp (when, "FIRST") == 0)
     signal->run_first = TRUE;
   else
     signal->run_cleanup = TRUE;
