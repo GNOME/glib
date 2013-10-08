@@ -678,7 +678,7 @@ g_memory_output_stream_close_finish (GOutputStream  *stream,
                                      GAsyncResult   *result,
                                      GError        **error)
 {
-  g_return_val_if_fail (g_task_is_valid (result, stream), -1);
+  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
 
   return g_task_propagate_boolean (G_TASK (result), error);
 }
