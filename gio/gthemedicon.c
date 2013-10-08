@@ -187,12 +187,15 @@ g_themed_icon_constructed (GObject *object)
 
       if (is_symbolic)
         {
-          themed->names = g_new (char *, dashes + 1 + 1);
+          themed->names = g_new (char *, 2 * dashes + 3);
           for (i = 0; names[i] != NULL; i++)
-            themed->names[i] = g_strconcat (names[i], "-symbolic", NULL);
+            {
+              themed->names[i] = g_strconcat (names[i], "-symbolic", NULL);
+              themed->names[dashes + 1 + i] = names[i];
+            }
 
-          themed->names[i] = NULL;
-          g_strfreev (names);
+          themed->names[dashes + 1 + i] = NULL;
+          g_free (names);
         }
       else
         {
