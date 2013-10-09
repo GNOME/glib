@@ -76,6 +76,7 @@ test_programs = \
 	regex				\
 	rwlock				\
 	scannerapi			\
+	search-utils			\
 	sequence			\
 	shell				\
 	slice				\

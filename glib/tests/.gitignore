@@ -53,6 +53,7 @@ rec-mutex
 regex
 rwlock
 scannerapi
+search-utils
 sequence
 shell
 slice
