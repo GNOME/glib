@@ -450,6 +450,243 @@ test_actions (void)
   g_object_unref (appinfo);
 }
 
+static gchar *
+run_apps (const gchar *command,
+          const gchar *arg,
+          gboolean     with_usr,
+          gboolean     with_home,
+          const gchar *locale_name,
+          const gchar *language)
+{
+  gboolean success;
+  gchar **envp;
+  gchar **argv;
+  gint status;
+  gchar *out;
+
+  argv = g_new (gchar *, 4);
+  argv[0] = g_test_build_filename (G_TEST_BUILT, "apps", NULL);
+  argv[1] = g_strdup (command);
+  argv[2] = g_strdup (arg);
+  argv[3] = NULL;
+
+  envp = g_get_environ ();
+
+  if (with_usr)
+    {
+      gchar *tmp = g_test_build_filename (G_TEST_DIST, "desktop-files", "usr", NULL);
+      envp = g_environ_setenv (envp, "XDG_DATA_DIRS", tmp, TRUE);
+      g_free (tmp);
+    }
+  else
+    envp = g_environ_setenv (envp, "XDG_DATA_DIRS", "/does-not-exist", TRUE);
+
+  if (with_home)
+    {
+      gchar *tmp = g_test_build_filename (G_TEST_DIST, "desktop-files", "home", NULL);
+      envp = g_environ_setenv (envp, "XDG_DATA_HOME", tmp, TRUE);
+      g_free (tmp);
+    }
+  else
+    envp = g_environ_setenv (envp, "XDG_DATA_HOME", "/does-not-exist", TRUE);
+
+  if (locale_name)
+    envp = g_environ_setenv (envp, "LC_ALL", locale_name, TRUE);
+  else
+    envp = g_environ_setenv (envp, "LC_ALL", "C", TRUE);
+
+  if (language)
+    envp = g_environ_setenv (envp, "LANGUAGE", language, TRUE);
+  else
+    envp = g_environ_unsetenv (envp, "LANGUAGE");
+
+  success = g_spawn_sync (NULL, argv, envp, 0, NULL, NULL, &out, NULL, &status, NULL);
+  g_assert (success);
+  g_assert (status == 0);
+
+  g_strfreev (envp);
+  g_strfreev (argv);
+
+  return out;
+}
+
+static void
+assert_strings_equivalent (const gchar *expected,
+                           const gchar *result)
+{
+  gchar **expected_words;
+  gchar **result_words;
+  gint i, j;
+
+  expected_words = g_strsplit (expected, " ", 0);
+  result_words = g_strsplit (result, " ", 0);
+
+  for (i = 0; expected_words[i]; i++)
+    {
+      for (j = 0; result_words[j]; j++)
+        if (g_str_equal (expected_words[i], result_words[j]))
+          goto got_it;
+
+      g_error ("Unable to find expected string '%s' in result '%s'", expected_words[i], result);
+got_it:
+      continue;
+    }
+
+  g_assert_cmpint (g_strv_length (expected_words), ==, g_strv_length (result_words));
+  g_strfreev (expected_words);
+  g_strfreev (result_words);
+}
+
+static void
+assert_list (const gchar *expected,
+             gboolean     with_usr,
+             gboolean     with_home,
+             const gchar *locale_name,
+             const gchar *language)
+{
+  gchar *result;
+
+  result = run_apps ("list", NULL, with_usr, with_home, locale_name, language);
+  g_strchomp (result);
+  assert_strings_equivalent (expected, result);
+  g_free (result);
+}
+
+static void
+assert_info (const gchar *desktop_id,
+             const gchar *expected,
+             gboolean     with_usr,
+             gboolean     with_home,
+             const gchar *locale_name,
+             const gchar *language)
+{
+  gchar *result;
+
+  result = run_apps ("show-info", desktop_id, with_usr, with_home, locale_name, language);
+  g_assert_cmpstr (result, ==, expected);
+  g_free (result);
+}
+
+static void
+assert_search (const gchar *search_string,
+               const gchar *expected,
+               gboolean     with_usr,
+               gboolean     with_home,
+               const gchar *locale_name,
+               const gchar *language)
+{
+  gchar **expected_lines;
+  gchar **result_lines;
+  gchar *result;
+  gint i;
+
+  expected_lines = g_strsplit (expected, "\n", -1);
+  result = run_apps ("search", search_string, with_usr, with_home, locale_name, language);
+  result_lines = g_strsplit (result, "\n", -1);
+  g_assert_cmpint (g_strv_length (expected_lines), ==, g_strv_length (result_lines));
+  for (i = 0; expected_lines[i]; i++)
+    assert_strings_equivalent (expected_lines[i], result_lines[i]);
+  g_strfreev (expected_lines);
+  g_strfreev (result_lines);
+  g_free (result);
+}
+
+#define ALL_USR_APPS  "evince-previewer.desktop nautilus-classic.desktop gnome-font-viewer.desktop "         \
+                      "baobab.desktop yelp.desktop eog.desktop cheese.desktop gnome-clocks.desktop "         \
+                      "gnome-contacts.desktop kde4-kate.desktop gcr-prompter.desktop totem.desktop "         \
+                      "gnome-terminal.desktop nautilus-autorun-software.desktop gcr-viewer.desktop "         \
+                      "nautilus-connect-server.desktop kde4-dolphin.desktop gnome-music.desktop "            \
+                      "kde4-konqbrowser.desktop gucharmap.desktop kde4-okular.desktop nautilus.desktop "     \
+                      "gedit.desktop evince.desktop file-roller.desktop dconf-editor.desktop glade.desktop"
+#define HOME_APPS     "epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop"
+#define ALL_HOME_APPS HOME_APPS " eog.desktop"
+
+static void
+test_search (void)
+{
+  assert_list ("", FALSE, FALSE, NULL, NULL);
+  assert_list (ALL_USR_APPS, TRUE, FALSE, NULL, NULL);
+  assert_list (ALL_HOME_APPS, FALSE, TRUE, NULL, NULL);
+  assert_list (ALL_USR_APPS " " HOME_APPS, TRUE, TRUE, NULL, NULL);
+
+  /* The user has "installed" their own version of eog.desktop which
+   * calls it "Eye of GNOME".  Do some testing based on that.
+   *
+   * We should always find "Pictures" keyword no matter where we look.
+   */
+  assert_search ("Picture", "eog.desktop\n", TRUE, TRUE, NULL, NULL);
+  assert_search ("Picture", "eog.desktop\n", TRUE, FALSE, NULL, NULL);
+  assert_search ("Picture", "eog.desktop\n", FALSE, TRUE, NULL, NULL);
+  assert_search ("Picture", "", FALSE, FALSE, NULL, NULL);
+
+  /* We should only find it called "eye of gnome" when using the user's
+   * directory.
+   */
+  assert_search ("eye gnome", "", TRUE, FALSE, NULL, NULL);
+  assert_search ("eye gnome", "eog.desktop\n", FALSE, TRUE, NULL, NULL);
+  assert_search ("eye gnome", "eog.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* We should only find it called "image viewer" when _not_ using the
+   * user's directory.
+   */
+  assert_search ("image viewer", "eog.desktop\n", TRUE, FALSE, NULL, NULL);
+  assert_search ("image viewer", "", FALSE, TRUE, NULL, NULL);
+  assert_search ("image viewer", "", TRUE, TRUE, NULL, NULL);
+
+  /* Obvious multi-word search */
+  assert_search ("gno hel", "yelp.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* Repeated search terms should do nothing... */
+  assert_search ("files file fil fi f", "nautilus.desktop\n"
+                                        "gedit.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* "con" will match "connect" and "contacts" on name but dconf only on
+   * the "config" keyword
+   */
+  assert_search ("con", "nautilus-connect-server.desktop gnome-contacts.desktop\n"
+                        "dconf-editor.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* "gnome" will match "eye of gnome" from the user's directory, plus
+   * matching "GNOME Clocks" X-GNOME-FullName.  It's only a comment on
+   * yelp and gnome-contacts, though.
+   */
+  assert_search ("gnome", "eog.desktop\n"
+                          "gnome-clocks.desktop\n"
+                          "yelp.desktop gnome-contacts.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* "gnome con" will match only gnome contacts; via the name for
+   * "contacts" and the comment for "gnome"
+   */
+  assert_search ("gnome con", "gnome-contacts.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* make sure we get the correct kde4- prefix on the application IDs
+   * from subdirectories
+   */
+  assert_search ("konq", "kde4-konqbrowser.desktop\n", TRUE, TRUE, NULL, NULL);
+  assert_search ("kate", "kde4-kate.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* make sure we can lookup apps by name properly */
+  assert_info ("kde4-kate.desktop",
+               "kde4-kate.desktop\n"
+               "Kate\n"
+               "Kate\n"
+               "nil\n", TRUE, TRUE, NULL, NULL);
+
+  assert_info ("nautilus.desktop",
+               "nautilus.desktop\n"
+               "Files\n"
+               "Files\n"
+               "Access and organize files\n", TRUE, TRUE, NULL, NULL);
+
+  /* make sure localised searching works properly */
+  assert_search ("foliumi", "kde4-konqbrowser.desktop\n"
+                            "nautilus.desktop\n"
+                            "eog.desktop\n", TRUE, FALSE, "en_US.UTF-8", "eo");
+  /* the user's eog.desktop has no translations... */
+  assert_search ("foliumi", "kde4-konqbrowser.desktop\n"
+                            "nautilus.desktop\n", TRUE, TRUE, "en_US.UTF-8", "eo");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -457,17 +694,18 @@ main (int   argc,
   gint result;
 
   g_test_init (&argc, &argv, NULL);
-  
+
   basedir = g_get_current_dir ();
   g_setenv ("XDG_DATA_HOME", basedir, TRUE);
   cleanup_subdirs (basedir);
-  
+
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
   g_test_add_func ("/desktop-app-info/lastused", test_last_used);
   g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
   g_test_add_func ("/desktop-app-info/actions", test_actions);
+  g_test_add_func ("/desktop-app-info/search", test_search);
 
   result = g_test_run ();
 

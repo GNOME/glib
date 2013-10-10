@@ -240,6 +240,7 @@ dist_test_data += \
 
 test_extra_programs += \
 	appinfo-test				\
+	apps					\
 	$(NULL)
 
 uninstalled_test_extra_programs += \

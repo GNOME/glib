@@ -905,7 +905,9 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
 
       while (mie)
         {
-          add_token_result (mie->app_name, mie->match_category);
+          if (!desktop_file_dir_app_name_is_masked (dir, mie->app_name))
+            add_token_result (mie->app_name, mie->match_category);
+
           mie = mie->next;
         }
     }
