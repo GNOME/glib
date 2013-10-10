@@ -31,9 +31,21 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_TYPE_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GITypeInfo.
+ */
 #define GI_IS_TYPE_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
 
+/**
+ * G_TYPE_TAG_IS_BASIC
+ * @tag: a type tag
+ *
+ * Checks if @tag is a basic type.
+ */
 #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY || tag == GI_TYPE_TAG_UNICHAR)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);

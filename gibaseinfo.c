@@ -71,6 +71,17 @@ _g_info_new_full (GIInfoType     type,
   return (GIBaseInfo*)info;
 }
 
+/**
+ * g_info_new:
+ * @type: TODO
+ * @container: TODO
+ * @typelib: TODO
+ * @offset: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 GIBaseInfo *
 g_info_new (GIInfoType     type,
             GIBaseInfo    *container,
@@ -169,8 +180,8 @@ _g_type_info_init (GIBaseInfo *info,
 
 /**
  * SECTION:gibaseinfo
- * @Short_description: Base struct for all GITypelib structs
- * @Title: GIBaseInfo
+ * @title: GIBaseInfo
+ * @short_description: Base struct for all GITypelib structs
  *
  * GIBaseInfo is the common base struct of all other *Info structs
  * accessible through the #GIRepository API.
@@ -209,7 +220,6 @@ _g_type_info_init (GIBaseInfo *info,
  *    +----<link linkend="gi-GITypeInfo">GITypeInfo</link>
  * </synopsis>
  * </refsect1>
- *
  */
 
 /**

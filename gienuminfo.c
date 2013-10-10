@@ -28,8 +28,8 @@
 
 /**
  * SECTION:gienuminfo
- * @Short_description: Structs representing an enumeration and its values
- * @Title: GIEnumInfo
+ * @title: GIEnumInfo
+ * @short_description: Structs representing an enumeration and its values
  *
  * A GIEnumInfo represents an enumeration and a GIValueInfo struct represents a value
  * of an enumeration. The GIEnumInfo contains a set of values and a type
@@ -46,13 +46,13 @@
  */
 
 /**
-* g_enum_info_get_n_values:
-* @info: a #GIEnumInfo
-*
-* Obtain the number of values this enumeration contains.
-*
-* Returns: the number of enumeration values
-*/
+ * g_enum_info_get_n_values:
+ * @info: a #GIEnumInfo
+ *
+ * Obtain the number of values this enumeration contains.
+ *
+ * Returns: the number of enumeration values
+ */
 gint
 g_enum_info_get_n_values (GIEnumInfo *info)
 {
@@ -76,7 +76,6 @@ g_enum_info_get_n_values (GIEnumInfo *info)
  *
  * Returns: (transfer none): the string form of the error domain associated
  * with this enum, or %NULL.
- *
  * Since: 1.29.17
  */
 const gchar *
@@ -131,7 +130,6 @@ g_enum_info_get_value (GIEnumInfo *info,
  * Obtain the number of methods that this enum type has.
  *
  * Returns: number of methods
- *
  * Since: 1.29.17
  */
 gint
@@ -157,7 +155,6 @@ g_enum_info_get_n_methods (GIEnumInfo *info)
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
- *
  * Since: 1.29.17
  */
 GIFunctionInfo *
@@ -189,12 +186,12 @@ g_enum_info_get_method (GIEnumInfo *info,
  *
  * Obtain the tag of the type used for the enum in the C ABI. This will
  * will be a signed or unsigned integral type.
-
+ *
  * Note that in the current implementation the width of the type is
  * computed correctly, but the signed or unsigned nature of the type
  * may not match the sign of the type used by the C compiler.
  *
- * Return Value: the storage type for the enumeration
+ * Returns: the storage type for the enumeration
  */
 GITypeTag
 g_enum_info_get_storage_type (GIEnumInfo *info)

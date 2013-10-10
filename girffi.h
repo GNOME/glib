@@ -27,6 +27,15 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GIFFIClosureCallback:
+ * @Param1: TODO
+ * @Param2: TODO
+ * @Param3: TODO
+ * @Param4: TODO
+ *
+ * TODO
+ */
 typedef void (*GIFFIClosureCallback) (ffi_cif *,
                                       void *,
                                       void **,
@@ -35,7 +44,9 @@ typedef void (*GIFFIClosureCallback) (ffi_cif *,
 /**
  * GIFunctionInvoker:
  * @cif: the cif
- * @native_address: the native adress
+ * @native_address: the native address
+ *
+ * TODO
  */
 typedef struct _GIFunctionInvoker GIFunctionInvoker;
 
@@ -46,6 +57,11 @@ struct _GIFunctionInvoker {
   gpointer padding[3];
 };
 
+/**
+ * GIFFIReturnValue:
+ *
+ * TODO
+ */
 typedef GIArgument GIFFIReturnValue;
 
 ffi_type *    gi_type_tag_get_ffi_type            (GITypeTag type_tag, gboolean is_pointer);

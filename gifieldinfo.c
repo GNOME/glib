@@ -29,13 +29,13 @@
 
 /**
  * SECTION:gifieldinfo
- * @Short_description: Struct representing a struct or union field
- * @Title: GIFieldInfo
+ * @title: GIFieldInfo
+ * @short_description: Struct representing a struct or union field
  *
  * A GIFieldInfo struct represents a field of a struct (see #GIStructInfo),
  * union (see #GIUnionInfo) or an object (see #GIObjectInfo). The GIFieldInfo
  * is fetched by calling g_struct_info_get_field(), g_union_info_get_field()
- * or g_object_info_get_value().
+ * or g_object_info_get_field().
  * A field has a size, type and a struct offset asssociated and a set of flags,
  * which is currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
  *
@@ -167,7 +167,7 @@ g_field_info_get_type (GIFieldInfo *info)
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument into which to store the value retrieved
  *
- * Reads a field identified by a #GFieldInfo from a C structure or
+ * Reads a field identified by a #GIFieldInfo from a C structure or
  * union.  This only handles fields of simple C types. It will fail
  * for a field of a composite type like a nested structure or union
  * even if that is actually readable.
@@ -355,7 +355,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument holding the value to store
  *
- * Writes a field identified by a #GFieldInfo to a C structure or
+ * Writes a field identified by a #GIFieldInfo to a C structure or
  * union.  This only handles fields of simple C types. It will fail
  * for a field of a composite type like a nested structure or union
  * even if that is actually writable. Note also that that it will refuse

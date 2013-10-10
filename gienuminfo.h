@@ -31,10 +31,22 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_ENUM_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GIEnumInfo.
+ */
 #define GI_IS_ENUM_INFO(info) \
     ((g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM) || \
      (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FLAGS))
 
+/**
+ * GI_IS_VALUE_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GIValueInfo.
+ */
 #define GI_IS_VALUE_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VALUE)
 

@@ -31,6 +31,12 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_CALLABLE_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GICallableInfo or derived from it.
+ */
 #define GI_IS_CALLABLE_INFO(info)					\
     ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \

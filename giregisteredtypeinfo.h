@@ -32,6 +32,12 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_REGISTERED_TYPE_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GIRegisteredTypeInfo or derived from it.
+ */
 #define GI_IS_REGISTERED_TYPE_INFO(info) \
     ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \

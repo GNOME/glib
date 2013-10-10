@@ -28,8 +28,8 @@
 
 /**
  * SECTION:gipropertyinfo
- * @Short_description: Struct representing a property
- * @Title: GIPropertyInfo
+ * @title: GIPropertyInfo
+ * @short_description: Struct representing a property
  *
  * GIPropertyInfo represents a property. A property belongs to
  * either a #GIObjectInfo or a #GIInterfaceInfo.
@@ -47,7 +47,7 @@
  * g_property_info_get_flags:
  * @info: a #GIPropertyInfo
  *
- * Obtain the flags for this property info. See #GParamFags for
+ * Obtain the flags for this property info. See #GParamFlags for
  * more information about possible flag values.
  *
  * Returns: the flags

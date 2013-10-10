@@ -31,6 +31,12 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_FUNCTION_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GIFunctionInfo.
+ */
 #define GI_IS_FUNCTION_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FUNCTION)
 
@@ -39,6 +45,11 @@ GIFunctionInfoFlags     g_function_info_get_flags      (GIFunctionInfo *info);
 GIPropertyInfo *        g_function_info_get_property   (GIFunctionInfo *info);
 GIVFuncInfo *           g_function_info_get_vfunc      (GIFunctionInfo *info);
 
+/**
+ * G_INVOKE_ERROR:
+ *
+ * TODO
+ */
 #define G_INVOKE_ERROR (g_invoke_error_quark ())
 GQuark g_invoke_error_quark (void);
 

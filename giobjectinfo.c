@@ -28,8 +28,8 @@
 
 /**
  * SECTION:giobjectinfo
- * @Short_description: Struct representing a GObject
- * @Title: GIObjectInfo
+ * @title: GIObjectInfo
+ * @short_description: Struct representing a GObject
  *
  * GIObjectInfo represents a #GObject. This doesn't represent a specific
  * instance of a GObject, instead this represent the object type (eg class).
@@ -533,6 +533,8 @@ g_object_info_get_signal (GIObjectInfo *info,
  * g_object_info_find_signal:
  * @info: a #GIObjectInfo
  * @name: Name of signal
+ *
+ * TODO
  *
  * Returns: Info for the signal with name @name in @info, or %NULL on failure.
  */

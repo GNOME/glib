@@ -31,6 +31,19 @@
 
 G_BEGIN_DECLS
 
+/**
+ * SECTION:gitypelib
+ * @title: gitypelib
+ * @short_description: TODO
+ *
+ * TODO
+ */
+
+/**
+ * GITypelib:
+ *
+ * TODO
+ */
 typedef struct _GITypelib GITypelib;
 
 GITypelib *    g_typelib_new_from_memory       (guint8        *memory,

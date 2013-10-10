@@ -28,8 +28,8 @@
 
 /**
  * SECTION:gisignalinfo
- * @Short_description: Struct representing a signal
- * @Title: GISignalInfo
+ * @title: GISignalInfo
+ * @short_description: Struct representing a signal
  *
  * GISignalInfo represents a signal. It's a sub-struct of #GICallableInfo
  * and contains a set of flags and a class closure.

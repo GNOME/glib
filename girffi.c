@@ -33,6 +33,14 @@
 #include "girepository.h"
 #include "girepository-private.h"
 
+/**
+ * SECTION:girffi
+ * @short_description: TODO
+ * @title: girffi
+ *
+ * TODO
+ */
+
 static ffi_type *
 gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
                                    gboolean    is_pointer,
@@ -103,21 +111,25 @@ gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
 
 /**
  * gi_type_tag_get_ffi_type:
- * @tag: A #GITypeTag
+ * @type_tag: A #GITypeTag
  * @is_pointer: Whether or not this is a pointer type
+ *
+ * TODO
  *
  * Returns: A #ffi_type corresponding to the platform default C ABI for @tag and @is_pointer.
  */
 ffi_type *
-gi_type_tag_get_ffi_type (GITypeTag   tag,
+gi_type_tag_get_ffi_type (GITypeTag   type_tag,
 			  gboolean    is_pointer)
 {
-  return gi_type_tag_get_ffi_type_internal (tag, is_pointer, FALSE);
+  return gi_type_tag_get_ffi_type_internal (type_tag, is_pointer, FALSE);
 }
 
 /**
  * g_type_info_get_ffi_type:
  * @info: A #GITypeInfo
+ *
+ * TODO
  *
  * Returns: A #ffi_type corresponding to the platform default C ABI for @info.
  */
@@ -150,7 +162,9 @@ g_type_info_get_ffi_type (GITypeInfo *info)
  * @callable_info: a callable info from a typelib
  * @n_args_p: (out): The number of arguments
  *
- * Return value: an array of ffi_type*. The array itself
+ * TODO
+ *
+ * Returns: an array of ffi_type*. The array itself
  * should be freed using g_free() after use.
  */
 static ffi_type **
@@ -217,7 +231,8 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info,
  *
  * Fetches the ffi_type for a corresponding return value of
  * a #GICallableInfo
- * Return value: the ffi_type for the return value
+ *
+ * Returns: the ffi_type for the return value
  */
 static ffi_type *
 g_callable_info_get_ffi_return_type (GICallableInfo *callable_info)
@@ -316,7 +331,7 @@ g_function_invoker_new_for_address (gpointer           addr,
 }
 
 /**
- * g_function_info_invoker_destroy:
+ * g_function_invoker_destroy:
  * @invoker: A #GIFunctionInvoker
  *
  * Release all resources allocated for the internals of @invoker; callers
@@ -343,8 +358,8 @@ typedef struct {
  *
  * Prepares a callback for ffi invocation.
  *
- * Return value: the ffi_closure or NULL on error.
- * The return value should be freed by calling g_callable_info_free_closure().
+ * Returns: the ffi_closure or NULL on error. The return value
+ *     should be freed by calling g_callable_info_free_closure().
  */
 ffi_closure *
 g_callable_info_prepare_closure (GICallableInfo       *callable_info,

@@ -46,7 +46,6 @@ typedef void * (*GIObjectInfoRefFunction) (void *object);
  * @object: object instance pointer
  *
  * Decreases the reference count of an object instance.
- *
  */
 typedef void   (*GIObjectInfoUnrefFunction) (void *object);
 
@@ -56,7 +55,6 @@ typedef void   (*GIObjectInfoUnrefFunction) (void *object);
  * @object: object instance pointer
  *
  * Update @value and attach the object instance pointer @object to it.
- *
  */
 typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
 
@@ -70,6 +68,12 @@ typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
  */
 typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 
+/**
+ * GI_IS_OBJECT_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a #GIObjectInfo.
+ */
 #define GI_IS_OBJECT_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
 

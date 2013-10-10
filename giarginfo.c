@@ -26,12 +26,12 @@
 #include "girepository-private.h"
 
 
-/* GIArgInfo function */
+/* GIArgInfo functions */
 
 /**
  * SECTION:giarginfo
- * @Short_description: Struct representing an argument
- * @Title: GIArgInfo
+ * @title: GIArgInfo
+ * @short_description: Struct representing an argument
  *
  * GIArgInfo represents an argument. An argument is always
  * part of a #GICallableInfo.
@@ -293,8 +293,9 @@ g_arg_info_get_destroy (GIArgInfo *info)
  *
  * Obtain the type information for @info.
  *
- * Returns: (transfer full): the #GIArgInfo, free it with
- * g_base_info_unref() when done.
+ * Returns: (transfer full): the #GITypeInfo holding the type
+ *   information for @info, free it with g_base_info_unref()
+ *   when done.
  */
 GITypeInfo *
 g_arg_info_get_type (GIArgInfo *info)

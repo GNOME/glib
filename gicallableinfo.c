@@ -33,8 +33,8 @@
 
 /**
  * SECTION:gicallableinfo
- * @Short_description: Struct representing a callable
- * @Title: GICallableInfo
+ * @title: GICallableInfo
+ * @short_description: Struct representing a callable
  *
  * GICallableInfo represents an entity which is callable.
  * Currently a function (#GIFunctionInfo), virtual function,
@@ -85,9 +85,10 @@ signature_offset (GICallableInfo *info)
  * g_callable_info_can_throw_gerror:
  * @info: a #GICallableInfo
  *
- * Returns: %TRUE if this #GICallableInfo can throw a #GError
+ * TODO
  *
  * Since: 1.34
+ * Returns: %TRUE if this #GICallableInfo can throw a #GError
  */
 gboolean
 g_callable_info_can_throw_gerror (GICallableInfo *info)
@@ -128,6 +129,7 @@ g_callable_info_can_throw_gerror (GICallableInfo *info)
  * is one more C argument than is exposed by introspection: the "self"
  * or "this" object.
  *
+ * Returns: %TRUE if @info is a method, %FALSE otherwise
  * Since: 1.34
  */
 gboolean
@@ -430,11 +432,17 @@ g_callable_info_iterate_return_attributes (GICallableInfo  *info,
   return TRUE;
 }
 
-/* Extract the correct bits from an ffi_arg return value into
+/**
+ * gi_type_info_extract_ffi_return_value:
+ * @return_info: TODO
+ * @ffi_value: TODO
+ * @arg: (out caller-allocates): TODO
+ *
+ * Extract the correct bits from an ffi_arg return value into
  * GIArgument: https://bugzilla.gnome.org/show_bug.cgi?id=665152
  *
- * Also see the ffi_call man page - the storage requirements for return
- * values are "special".
+ * Also see <citerefentry><refentrytitle>ffi_call</refentrytitle><manvolnum>3</manvolnum></citerefentry>
+ *  - the storage requirements for return values are "special".
  */
 void
 gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
@@ -501,6 +509,21 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
     }
 }
 
+/**
+ * g_callable_info_invoke:
+ * @info: TODO
+ * @function: TODO
+ * @in_args: TODO
+ * @n_in_args: TODO
+ * @out_args: TODO
+ * @n_out_args: TODO
+ * @return_value: TODO
+ * @is_method: TODO
+ * @throws: TODO
+ * @error: TODO
+ *
+ * TODO
+ */
 gboolean
 g_callable_info_invoke (GIFunctionInfo *info,
                         gpointer          function,

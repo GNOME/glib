@@ -28,8 +28,8 @@
 
 /**
  * SECTION:gistructinfo
- * @Short_description: Struct representing a C structure
- * @Title: GIStructInfo
+ * @title: GIStructInfo
+ * @short_description: Struct representing a C structure
  *
  * GIStructInfo represents a generic C structure type.
  *
@@ -212,6 +212,14 @@ g_struct_info_get_alignment (GIStructInfo *info)
   return blob->alignment;
 }
 
+/**
+ * g_struct_info_is_foreign:
+ * @info: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 gboolean
 g_struct_info_is_foreign (GIStructInfo *info)
 {

@@ -130,6 +130,15 @@ get_type_blob (GITypelib *typelib,
   return (InterfaceTypeBlob*) get_blob (typelib, simple->offset, error);
 }
 
+/**
+ * g_typelib_get_dir_entry:
+ * @typelib: TODO
+ * @index: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 DirEntry *
 g_typelib_get_dir_entry (GITypelib *typelib,
 			  guint16    index)
@@ -159,6 +168,15 @@ get_section_by_id (GITypelib   *typelib,
   return NULL;
 }
 
+/**
+ * g_typelib_get_dir_entry_by_name:
+ * @typelib: TODO
+ * @name: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 DirEntry *
 g_typelib_get_dir_entry_by_name (GITypelib *typelib,
 				 const char *name)
@@ -196,6 +214,15 @@ g_typelib_get_dir_entry_by_name (GITypelib *typelib,
     }
 }
 
+/**
+ * g_typelib_get_dir_entry_by_gtype_name:
+ * @typelib: TODO
+ * @gtype_name: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 DirEntry *
 g_typelib_get_dir_entry_by_gtype_name (GITypelib *typelib,
 				       const gchar *gtype_name)
@@ -281,6 +308,15 @@ strsplit_iter_clear (StrSplitIter  *iter)
   g_free (iter->buf.str);
 }
 
+/**
+ * g_typelib_matches_gtype_name_prefix:
+ * @typelib: TODO
+ * @gtype_name: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 gboolean
 g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
 				     const gchar *gtype_name)
@@ -326,6 +362,15 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
   return ret;
 }
 
+/**
+ * g_typelib_get_dir_entry_by_error_domain:
+ * @typelib: TODO
+ * @error_domain: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 DirEntry *
 g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 					 GQuark     error_domain)
@@ -356,6 +401,11 @@ g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
   return NULL;
 }
 
+/**
+ * g_typelib_check_sanity:
+ *
+ * TODO
+ */
 void
 g_typelib_check_sanity (void)
 {
@@ -2089,6 +2139,15 @@ prefix_with_context (GError **error,
   g_free (buf);
 }
 
+/**
+ * g_typelib_validate:
+ * @typelib: TODO
+ * @error: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 gboolean
 g_typelib_validate (GITypelib     *typelib,
 		     GError       **error)
@@ -2118,6 +2177,13 @@ g_typelib_validate (GITypelib     *typelib,
   return TRUE;
 }
 
+/**
+ * g_typelib_error_quark:
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 GQuark
 g_typelib_error_quark (void)
 {
@@ -2271,8 +2337,8 @@ _g_typelib_ensure_open (GITypelib *typelib)
  * pointed to by @typelib will be automatically g_free()d when the
  * repository is destroyed.
  *
- * Return value: the new #GITypelib
- **/
+ * Returns: the new #GITypelib
+ */
 GITypelib *
 g_typelib_new_from_memory (guint8  *memory, 
 			   gsize    len,
@@ -2300,8 +2366,8 @@ g_typelib_new_from_memory (guint8  *memory,
  *
  * Creates a new #GITypelib from a memory location.
  *
- * Return value: the new #GITypelib
- **/
+ * Returns: the new #GITypelib
+ */
 GITypelib *
 g_typelib_new_from_const_memory (const guchar *memory, 
 				 gsize         len,
@@ -2328,8 +2394,8 @@ g_typelib_new_from_const_memory (const guchar *memory,
  *
  * Creates a new #GITypelib from a #GMappedFile.
  *
- * Return value: the new #GITypelib
- **/
+ * Returns: the new #GITypelib
+ */
 GITypelib *
 g_typelib_new_from_mapped_file (GMappedFile  *mfile,
 				GError      **error)
@@ -2355,7 +2421,7 @@ g_typelib_new_from_mapped_file (GMappedFile  *mfile,
  * @typelib: a #GITypelib
  *
  * Free a #GITypelib.
- **/
+ */
 void
 g_typelib_free (GITypelib *typelib)
 {
@@ -2372,6 +2438,14 @@ g_typelib_free (GITypelib *typelib)
   g_slice_free (GITypelib, typelib);
 }
 
+/**
+ * g_typelib_get_namespace:
+ * @typelib: TODO
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 const gchar *
 g_typelib_get_namespace (GITypelib *typelib)
 {
@@ -2386,8 +2460,8 @@ g_typelib_get_namespace (GITypelib *typelib)
  *
  * Loads a symbol from #GITypelib.
  *
- * Return value: #TRUE on success
- **/
+ * Returns: #TRUE on success
+ */
 gboolean
 g_typelib_symbol (GITypelib *typelib, const char *symbol_name, gpointer *symbol)
 {

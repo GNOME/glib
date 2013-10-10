@@ -28,8 +28,8 @@
 
 /**
  * SECTION:giinterfaceinfo
- * @Short_description: Struct representing a GInterface
- * @Title: GIInterfaceInfo
+ * @title: GIInterfaceInfo
+ * @short_description: Struct representing a GInterface
  *
  * GIInterfaceInfo represents a #GInterface type.
  *
@@ -297,9 +297,10 @@ g_interface_info_get_signal (GIInterfaceInfo *info,
  * @info: a #GIInterfaceInfo
  * @name: Name of signal
  *
+ * TODO
+ *
  * Returns: (transfer full): Info for the signal with name @name in @info, or
  * %NULL on failure.
- *
  * Since: 1.34
  */
 GISignalInfo *

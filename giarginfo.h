@@ -31,6 +31,12 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GI_IS_ARG_INFO
+ * @info: an info structure
+ *
+ * Checks if @info is a GIArgInfo.
+ */
 #define GI_IS_ARG_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ARG)
 

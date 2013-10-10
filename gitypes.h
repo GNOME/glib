@@ -29,7 +29,9 @@
 
 G_BEGIN_DECLS
 
+#ifndef __GTK_DOC_IGNORE__
 typedef struct _GIBaseInfoStub GIBaseInfo;
+#endif
 
 /**
  * GICallableInfo:
@@ -45,6 +47,25 @@ typedef GIBaseInfo GICallableInfo;
  * Represents a function, eg arguments and return value.
  */
 typedef GIBaseInfo GIFunctionInfo;
+
+/**
+ * SECTION:gicallbackinfo
+ * @title: GICallbackInfo
+ * @short_description: Struct representing a callback
+ *
+ * GICallbackInfo represents a callback.
+ *
+ * <refsect1 id="gi-gicallbackinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
+ *          +----GIFunctionInfo
+ *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
+ *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
+ * </synopsis>
+ * </refsect1>
+ */
 
 /**
  * GICallbackInfo:
@@ -103,6 +124,22 @@ typedef GIBaseInfo GIInterfaceInfo;
 typedef GIBaseInfo GIConstantInfo;
 
 /**
+ * SECTION:givalueinfo
+ * @title: GIValueInfo
+ * @short_description: Struct representing a value
+ *
+ * GIValueInfo represents a value.
+ *
+ * <refsect1 id="gi-givalueinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GIValueInfo
+ * </synopsis>
+ * </refsect1>
+ */
+
+/**
  * GIValueInfo:
  *
  * Represents a enum value of a #GIEnumInfo.
@@ -158,12 +195,7 @@ typedef GIBaseInfo GITypeInfo;
  */
 typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
 
-/**
- * GIArgument:
- *
- * Stores an argument of varying type
- */
-typedef union
+union _GIArgument
 {
   gboolean v_boolean;
   gint8    v_int8;
@@ -186,7 +218,35 @@ typedef union
   gsize    v_size;
   gchar *  v_string;
   gpointer v_pointer;
-} GIArgument;
+};
+
+/**
+ * GIArgument:
+ * @v_boolean: TODO
+ * @v_int8: TODO
+ * @v_uint8: TODO
+ * @v_int16: TODO
+ * @v_uint16: TODO
+ * @v_int32: TODO
+ * @v_uint32: TODO
+ * @v_int64: TODO
+ * @v_uint64: TODO
+ * @v_float: TODO
+ * @v_double: TODO
+ * @v_short: TODO
+ * @v_ushort: TODO
+ * @v_int: TODO
+ * @v_uint: TODO
+ * @v_long: TODO
+ * @v_ulong: TODO
+ * @v_ssize: TODO
+ * @v_size: TODO
+ * @v_string: TODO
+ * @v_pointer: TODO
+ *
+ * Stores an argument of varying type
+ */
+typedef union _GIArgument GIArgument;
 
 /**
  * GIInfoType:
@@ -200,6 +260,7 @@ typedef union
  * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo
  * @GI_INFO_TYPE_INTERFACE: interface, see #GIInterfaceInfo
  * @GI_INFO_TYPE_CONSTANT: contant, see #GIConstantInfo
+ * @GI_INFO_TYPE_INVALID_0: deleted, used to be GI_INFO_TYPE_ERROR_DOMAIN.
  * @GI_INFO_TYPE_UNION: union, see #GIUnionInfo
  * @GI_INFO_TYPE_VALUE: enum value, see #GIValueInfo
  * @GI_INFO_TYPE_SIGNAL: signal, see #GISignalInfo
@@ -209,7 +270,7 @@ typedef union
  * @GI_INFO_TYPE_ARG: argument of a function or callback, see #GIArgInfo
  * @GI_INFO_TYPE_TYPE: type information, see #GITypeInfo
  * @GI_INFO_TYPE_UNRESOLVED: unresolved type, a type which is not present in
- * the typelib, or any of its dependencies.
+ *   the typelib, or any of its dependencies.
  *
  * The type of a GIBaseInfo struct.
  */
@@ -225,7 +286,7 @@ typedef enum
   GI_INFO_TYPE_OBJECT,
   GI_INFO_TYPE_INTERFACE,
   GI_INFO_TYPE_CONSTANT,
-  GI_INFO_TYPE_INVALID_0,    /* 10 */  /* DELETED - used to be ERROR_DOMAIN */
+  GI_INFO_TYPE_INVALID_0,    /* 10 */
   GI_INFO_TYPE_UNION,
   GI_INFO_TYPE_VALUE,
   GI_INFO_TYPE_SIGNAL,
@@ -319,17 +380,17 @@ typedef enum {
  * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
  * @GI_TYPE_TAG_FLOAT: float
  * @GI_TYPE_TAG_DOUBLE: double floating point
- * @GI_TYPE_TAG_UNICHAR: Unicode character
  * @GI_TYPE_TAG_GTYPE: a #GType
  * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
  * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
- * as the native filesystem is using.
+ *   as the native filesystem is using.
  * @GI_TYPE_TAG_ARRAY: an array
  * @GI_TYPE_TAG_INTERFACE: an extended interface object
  * @GI_TYPE_TAG_GLIST: a #GList
  * @GI_TYPE_TAG_GSLIST: a #GSList
  * @GI_TYPE_TAG_GHASH: a #GHashTable
  * @GI_TYPE_TAG_ERROR: a #GError
+ * @GI_TYPE_TAG_UNICHAR: Unicode character
  *
  * The type tag of a #GITypeInfo.
  */
@@ -359,12 +420,17 @@ typedef enum {
   GI_TYPE_TAG_ERROR     = 20,
   /* Another basic type */
   GI_TYPE_TAG_UNICHAR   = 21
-  /* Note - there is only room currently for 32 tags.
-   * See docs/typelib-format.txt SimpleTypeBlob definition */
+  /* Note - there is currently only room for 32 tags */
 } GITypeTag;
 
+/**
+ * GI_TYPE_TAG_N_TYPES:
+ *
+ * TODO
+ */
 #define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_UNICHAR+1)
 
+#ifndef __GTK_DOC_IGNORE__
 /* These were removed and no longer appear in the typelib;
  * instead, the machine-specific versions like INT32 are
  * always used.
@@ -372,6 +438,7 @@ typedef enum {
 #define GI_TYPE_TAG_SHORT GI_TYPE_TAG_SHORT_WAS_REMOVED
 #define GI_TYPE_TAG_INT   GI_TYPE_TAG_INT_WAS_REMOVED
 #define GI_TYPE_TAG_LONG  GI_TYPE_TAG_LONG_WAS_REMOVED
+#endif
 
 /**
  * GIArrayType:
@@ -442,9 +509,11 @@ typedef enum
 } GIFunctionInfoFlags;
 
 #ifndef __GI_SCANNER__
+#ifndef __GTK_DOC_IGNORE__
 /* backwards compatibility */
 typedef GIArgument GArgument;
 typedef struct _GITypelib GTypelib;
+#endif
 #endif
 
 G_END_DECLS

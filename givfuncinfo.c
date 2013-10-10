@@ -30,8 +30,8 @@
 
 /**
  * SECTION:givfuncinfo
- * @Short_description: Struct representing a virtual function
- * @Title: GIVFuncInfo
+ * @title: GIVFuncInfo
+ * @short_description: Struct representing a virtual function
  *
  * GIVfuncInfo represents a virtual function. A property belongs to
  * either a #GIObjectInfo or a #GIInterfaceInfo.

@@ -33,6 +33,11 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GIBaseInfoStub:
+ *
+ * TODO
+ */
 struct _GIBaseInfoStub {
   /* <private> */
   gint32 dummy1;

@@ -497,7 +497,7 @@ check_needs_computation (GIrTypelibBuild *build,
   return alignment == 0;
 }
 
-/**
+/*
  * _g_ir_node_compute_offsets:
  * @build: Current typelib build
  * @node: a #GIrNode

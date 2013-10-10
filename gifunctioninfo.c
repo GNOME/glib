@@ -30,8 +30,8 @@
 
 /**
  * SECTION:gifunctioninfo
- * @Short_description: Struct representing a function
- * @Title: GIFunctionInfo
+ * @title: GIFunctionInfo
+ * @short_description: Struct representing a function
  *
  * GIFunctionInfo represents a function, method or constructor.
  * To find out what kind of entity a #GIFunctionInfo represents, call
@@ -205,6 +205,13 @@ g_function_info_get_vfunc (GIFunctionInfo *info)
   return g_interface_info_get_vfunc (container, blob->index);
 }
 
+/**
+ * g_invoke_error_quark:
+ *
+ * TODO
+ *
+ * Returns: TODO
+ */
 GQuark
 g_invoke_error_quark (void)
 {
