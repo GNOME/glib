@@ -247,6 +247,43 @@ uninstalled_test_programs += \
 	desktop-app-info			\
 	$(NULL)
 
+home_desktop_files = \
+	epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop	\
+	eog.desktop
+
+usr_desktop_files = \
+	baobab.desktop				\
+	cheese.desktop				\
+	dconf-editor.desktop			\
+	eog.desktop				\
+	evince-previewer.desktop		\
+	evince.desktop				\
+	file-roller.desktop			\
+	gcr-prompter.desktop			\
+	gcr-viewer.desktop			\
+	gedit.desktop				\
+	glade.desktop				\
+	gnome-clocks.desktop			\
+	gnome-contacts.desktop			\
+	gnome-font-viewer.desktop		\
+	gnome-music.desktop			\
+	gnome-terminal.desktop			\
+	gucharmap.desktop			\
+	kde4/dolphin.desktop			\
+	kde4/kate.desktop			\
+	kde4/konqbrowser.desktop		\
+	kde4/okular.desktop			\
+	nautilus-autorun-software.desktop	\
+	nautilus-classic.desktop		\
+	nautilus-connect-server.desktop		\
+	nautilus.desktop			\
+	totem.desktop				\
+	yelp.desktop
+
+dist_test_data += \
+	$(addprefix desktop-files/usr/applications/,$(usr_desktop_files))	\
+	$(addprefix desktop-files/home/applications/,$(home_desktop_files))
+
 dist_test_data += \
 	appinfo-test-actions.desktop		\
 	appinfo-test-gnome.desktop		\
@@ -259,6 +296,7 @@ dist_test_data += \
 
 test_extra_programs += \
 	appinfo-test				\
+	apps					\
 	$(NULL)
 
 uninstalled_test_extra_programs += \

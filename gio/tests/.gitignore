@@ -1,6 +1,7 @@
 actions
 appinfo
 appinfo-test
+apps
 async-close-output-stream
 async-splice-output-stream
 basic-application
