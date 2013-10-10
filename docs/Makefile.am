@@ -9,4 +9,3 @@ files:
 	  echo $$p; \
 	done
 
-.PHONY: test test-report perf-report full-report
