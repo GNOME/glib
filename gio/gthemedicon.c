@@ -511,17 +511,7 @@ g_themed_icon_from_tokens (gchar  **tokens,
   gchar **names;
   int n;
 
-  icon = NULL;
-
-  if (version != 0)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Can't handle version %d of GThemedIcon encoding"),
-                   version);
-      goto out;
-    }
+  g_return_val_if_fail (version == 0, NULL);
   
   names = g_new0 (gchar *, num_tokens + 1);
   for (n = 0; n < num_tokens; n++)
@@ -531,7 +521,6 @@ g_themed_icon_from_tokens (gchar  **tokens,
   icon = g_themed_icon_new_from_names (names, num_tokens);
   g_free (names);
 
- out:
   return icon;
 }
 
