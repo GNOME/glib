@@ -81,7 +81,8 @@ IGNORE_HFILES = \
 	gwin32appinfo.h			\
 	gwin32mount.h			\
 	gwin32resolver.h		\
-	gwin32volumemonitor.h
+	gwin32volumemonitor.h		\
+	thumbnail-verify.h
 
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed

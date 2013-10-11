@@ -98,8 +98,9 @@
  * some backend specific data such as a unix UID.</entry></row>
  * <row><entry>"thumbnail"</entry><entry>The "Thumbnail" namespace. Includes
  * information about file thumbnails and their location within the file system. Examples of
- * keys in this namespace include "path" to get the location of a thumbnail, and "failed"
- * to check if thumbnailing of the file failed.</entry></row>
+ * keys in this namespace include "path" to get the location of a thumbnail, "failed"
+ * to check if thumbnailing of the file failed, and "is-valid" to check if the thumbnail is
+ * outdated.</entry></row>
  * <row><entry>"filesystem"</entry><entry>The "Filesystem" namespace. Gets information
  * about the file system where a file is located, such as its type, how much
  * space is left available, and the overall size of the file system.</entry></row>
@@ -191,6 +192,7 @@
  * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner::group</entry><entry>string</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail::path</entry><entry>bytestring</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail::failed</entry><entry>boolean</entry></row>
+ * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID</entry><entry>thumbnail::is-valid</entry><entry>boolean</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_PREVIEW_ICON</entry><entry>preview::icon</entry><entry>object (#GIcon)</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_SIZE</entry><entry>filesystem::size</entry><entry>uint64</entry></row>
  * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_FREE</entry><entry>filesystem::free</entry><entry>uint64</entry></row>

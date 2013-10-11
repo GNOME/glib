@@ -68,6 +68,8 @@
 #endif
 #include "glibintl.h"
 
+#include "thumbnail-verify.h"
+
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <io.h>
@@ -1278,9 +1280,11 @@ get_content_type (const char          *basename,
   
 }
 
+/* @stat_buf is the pre-calculated result of stat(path), or %NULL if that failed. */
 static void
-get_thumbnail_attributes (const char *path,
-                          GFileInfo  *info)
+get_thumbnail_attributes (const char     *path,
+                          GFileInfo      *info,
+                          const GStatBuf *stat_buf)
 {
   GChecksum *checksum;
   char *uri;
@@ -1291,8 +1295,6 @@ get_thumbnail_attributes (const char *path,
 
   checksum = g_checksum_new (G_CHECKSUM_MD5);
   g_checksum_update (checksum, (const guchar *) uri, strlen (uri));
-  
-  g_free (uri);
 
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
   g_checksum_free (checksum);
@@ -1302,7 +1304,11 @@ get_thumbnail_attributes (const char *path,
                                NULL);
 
   if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-    _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
+    {
+      _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
+      _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
+                                                thumbnail_verify (filename, uri, stat_buf));
+    }
   else
     {
       g_free (filename);
@@ -1311,7 +1317,11 @@ get_thumbnail_attributes (const char *path,
                                    NULL);
 
       if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-        _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
+        {
+          _g_file_info_set_attribute_byte_string_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH, filename);
+          _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
+                                                    thumbnail_verify (filename, uri, stat_buf));
+        }
       else
         {
           g_free (filename);
@@ -1322,11 +1332,16 @@ get_thumbnail_attributes (const char *path,
                                        NULL);
 
           if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-            _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED, TRUE);
+            {
+              _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED, TRUE);
+              _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID,
+                                                        thumbnail_verify (filename, uri, stat_buf));
+            }
         }
     }
   g_free (basename);
   g_free (filename);
+  g_free (uri);
 }
 
 #ifdef G_OS_WIN32
@@ -1935,7 +1950,12 @@ _g_local_file_info_get (const char             *basename,
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH))
-    get_thumbnail_attributes (path, info);
+    {
+      if (stat_ok)
+          get_thumbnail_attributes (path, info, &statbuf);
+      else
+          get_thumbnail_attributes (path, info, NULL);
+    }
 
   vfs = g_vfs_get_default ();
   class = G_VFS_GET_CLASS (vfs);

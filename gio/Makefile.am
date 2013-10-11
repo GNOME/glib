@@ -207,6 +207,8 @@ local_sources = \
 	gsocks4aproxy.h			\
 	gsocks5proxy.c			\
 	gsocks5proxy.h			\
+	thumbnail-verify.h		\
+	thumbnail-verify.c		\
 	$(NULL)
 
 platform_libadd =
