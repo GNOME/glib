@@ -280,12 +280,6 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
       To do so, use the <filename>gio-unix-2.0.pc</filename> file
       instead of <filename>gio-2.0.pc</filename>
     </para>
-
-    <para>
-      Since GIO is based on GObject, you need to call g_type_init()
-      before you can use any GIO functions. If your application uses
-      GTK+, this is already taken care of by gtk_init().
-    </para>
   </chapter>
 
   <chapter id="running-gio-apps">
