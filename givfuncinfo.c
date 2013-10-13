@@ -216,15 +216,28 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
                           GType             implementor_gtype,
                           GError          **error)
 {
+  GIBaseInfo *container_info;
+  GIInterfaceInfo *interface_info;
   GIObjectInfo *object_info;
   GIStructInfo *struct_info;
   GIFieldInfo *field_info = NULL;
   int length, i, offset;
-  gpointer implementor_vtable;
+  gpointer implementor_class, implementor_vtable;
   gpointer func = NULL;
 
-  object_info = (GIObjectInfo *) g_base_info_get_container (vfunc_info);
-  struct_info = g_object_info_get_class_struct (object_info);
+  container_info = g_base_info_get_container (vfunc_info);
+  if (g_base_info_get_type (container_info) == GI_INFO_TYPE_OBJECT)
+    {
+      object_info = (GIObjectInfo*) container_info;
+      interface_info = NULL;
+      struct_info = g_object_info_get_class_struct (object_info);
+    }
+  else
+    {
+      interface_info = (GIInterfaceInfo*) container_info;
+      object_info = NULL;
+      struct_info = g_interface_info_get_iface_struct (interface_info);
+    }
 
   length = g_struct_info_get_n_fields (struct_info);
   for (i = 0; i < length; i++)
@@ -250,10 +263,23 @@ g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
       goto out;
     }
 
-  implementor_vtable = g_type_class_ref (implementor_gtype);
+  implementor_class = g_type_class_ref (implementor_gtype);
+
+  if (object_info)
+    {
+      implementor_vtable = implementor_class;
+    }
+  else
+    {
+      GType interface_type;
+
+      interface_type = g_registered_type_info_get_g_type ((GIRegisteredTypeInfo*) interface_info);
+      implementor_vtable = g_type_interface_peek (implementor_class, interface_type);
+    }
+
   offset = g_field_info_get_offset (field_info);
   func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
-  g_type_class_unref (implementor_vtable);
+  g_type_class_unref (implementor_class);
   g_base_info_unref (field_info);
 
   if (func == NULL)
