@@ -1083,6 +1083,7 @@ assign_source_id_unlocked (GMainContext   *context,
                             GUINT_TO_POINTER (source->source_id));
         }
       id = G_MAXUINT;
+      g_hash_table_add (context->overflow_used_source_ids, GUINT_TO_POINTER (id));
     }
   else if (context->overflow_used_source_ids == NULL)
     {
