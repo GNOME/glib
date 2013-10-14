@@ -851,6 +851,11 @@ on_handle_hello_world (MyAppFrobber           *interface,
     While the generated Docbook for D-Bus interfaces isn't expected to
     change, no guarantees are given at this point.
   </para>
+  <para>
+    It is important to note that the generated code should not be
+    checked into revision control systems, nor it should be included
+    in distributed source archives.
+  </para>
 </refsect1>
 
 <refsect1>
