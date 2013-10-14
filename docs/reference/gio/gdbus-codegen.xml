@@ -825,7 +825,8 @@ on_handle_hello_world (MyAppFrobber           *interface,
     The generated C functions are guaranteed to not change their ABI
     that is, if a method, signal or property does not change its
     signature in the introspection XML, the generated C functions will
-    not change its C ABI either.
+    not change its C ABI either. The ABI of the generated instance and
+    class structures will be preserved as well.
   </para>
   <para>
     The ABI of the generated #GType<!-- -->s will be preserved only if
