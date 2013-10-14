@@ -1302,6 +1302,7 @@ g_vasprintf
 g_printf_string_upper_bound
 
 <SUBSECTION>
+g_str_is_ascii
 g_ascii_isalnum
 g_ascii_isalpha
 g_ascii_iscntrl

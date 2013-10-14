@@ -1528,6 +1528,29 @@ g_ascii_strup (const gchar *str,
 }
 
 /**
+ * g_str_is_ascii:
+ * @string: a string.
+ *
+ * Determines if a string is pure ASCII.  A string is pure ASCII if it
+ * contains no bytes with the high bit set.
+ *
+ * Returns: %TRUE if @string is ascii
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_str_is_ascii (const gchar *string)
+{
+  gint i;
+
+  for (i = 0; string[i]; i++)
+    if (string[i] & 0x80)
+      return FALSE;
+
+  return TRUE;
+}
+
+/**
  * g_strdown:
  * @string: the string to convert.
  *

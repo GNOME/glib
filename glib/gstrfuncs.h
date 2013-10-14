@@ -195,6 +195,8 @@ GLIB_AVAILABLE_IN_ALL
 gchar*                g_ascii_strup       (const gchar *str,
 					   gssize       len) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_2_40
+gboolean              g_str_is_ascii      (const gchar *str);
 
 GLIB_DEPRECATED
 gint                  g_strcasecmp     (const gchar *s1,
