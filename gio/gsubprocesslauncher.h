@@ -101,7 +101,7 @@ void                    g_subprocess_launcher_take_stderr_fd            (GSubpro
                                                                          gint                   fd);
 
 GLIB_AVAILABLE_IN_2_40
-void                    g_subprocess_launcher_pass_fd                   (GSubprocessLauncher   *self,
+void                    g_subprocess_launcher_take_fd                   (GSubprocessLauncher   *self,
                                                                          gint                   source_fd,
                                                                          gint                   target_fd);
 

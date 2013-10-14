@@ -124,18 +124,14 @@ gint             g_subprocess_get_term_sig              (GSubprocess          *s
 
 GLIB_AVAILABLE_IN_2_40
 gboolean         g_subprocess_communicate               (GSubprocess          *subprocess,
-                                                         const gchar          *stdin_data,
-                                                         gssize                stdin_length,
+                                                         GBytes               *stdin_buf,
                                                          GCancellable         *cancellable,
-                                                         gchar               **stdout_data,
-                                                         gsize                *stdout_length,
-                                                         gchar               **stderr_data,
-                                                         gsize                *stderr_length,
+                                                         GBytes              **stdout_buf,
+                                                         GBytes              **stderr_buf,
                                                          GError              **error);
 GLIB_AVAILABLE_IN_2_40
 void            g_subprocess_communicate_async          (GSubprocess          *subprocess,
-                                                         const gchar          *stdin_data,
-                                                         gssize                stdin_length,
+                                                         GBytes               *stdin_buf,
                                                          GCancellable         *cancellable,
                                                          GAsyncReadyCallback   callback,
                                                          gpointer              user_data);
@@ -143,30 +139,8 @@ void            g_subprocess_communicate_async          (GSubprocess          *s
 GLIB_AVAILABLE_IN_2_40
 gboolean        g_subprocess_communicate_finish         (GSubprocess          *subprocess,
                                                          GAsyncResult         *result,
-                                                         gchar               **stdout_data,
-                                                         gsize                *stdout_length,
-                                                         gchar               **stderr_data,
-                                                         gsize                *stderr_length,
-                                                         GError              **error);
-
-GLIB_AVAILABLE_IN_2_40
-gboolean        g_subprocess_communicate_bytes          (GSubprocess          *subprocess,
-                                                         GBytes               *stdin_bytes,
-                                                         GCancellable         *cancellable,
-                                                         GBytes              **stdout_bytes,
-                                                         GBytes              **stderr_bytes,
-                                                         GError              **error);
-GLIB_AVAILABLE_IN_2_40
-void            g_subprocess_communicate_bytes_async    (GSubprocess          *subprocess,
-                                                         GBytes               *stdin_bytes,
-                                                         GCancellable         *cancellable,
-                                                         GAsyncReadyCallback   callback,
-                                                         gpointer              user_data);
-GLIB_AVAILABLE_IN_2_40
-gboolean        g_subprocess_communicate_bytes_finish   (GSubprocess          *subprocess,
-                                                         GAsyncResult         *result,
-                                                         GBytes              **stdout_bytes,
-                                                         GBytes              **stderr_bytes,
+                                                         GBytes              **stdout_buf,
+                                                         GBytes              **stderr_buf,
                                                          GError              **error);
 
 G_END_DECLS

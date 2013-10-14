@@ -545,6 +545,69 @@ test_multi_1 (void)
   g_object_unref (third);
 }
 
+typedef struct {
+  gboolean running;
+  GError *error;
+} TestAsyncCommunicateData;
+
+static void
+on_communicate_complete (GObject               *proc,
+                         GAsyncResult          *result,
+                         gpointer               user_data)
+{
+  TestAsyncCommunicateData *data = user_data;
+  GBytes *stdout;
+  const guint8 *stdout_data;
+  gsize stdout_len;
+
+  data->running = FALSE;
+  (void) g_subprocess_communicate_finish ((GSubprocess*)proc, result,
+                                          &stdout, NULL, &data->error);
+
+  g_assert_no_error (data->error);
+
+  stdout_data = g_bytes_get_data (stdout, &stdout_len);
+
+  g_assert_cmpint (stdout_len, ==, 11);
+  g_assert (memcmp (stdout_data, "hello world", 11) == 0);
+  g_bytes_unref (stdout);
+}
+
+static void
+test_communicate (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GPtrArray *args;
+  TestAsyncCommunicateData data = { 0, };
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  GBytes *input;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+                            error);
+  g_assert_no_error (local_error);
+  g_ptr_array_free (args, TRUE);
+
+  input = g_bytes_new_static ("hello world", strlen ("hello world"));
+
+  data.error = local_error;
+  g_subprocess_communicate_async (proc, input,
+                                  cancellable,
+                                  on_communicate_complete, 
+                                  &data);
+  
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (local_error);
+
+  g_object_unref (proc);
+}
+
 static gboolean
 send_terminate (gpointer   user_data)
 {
@@ -788,14 +851,12 @@ test_pass_fd (void)
 
   args = get_test_subprocess_args ("write-to-fds", basic_fd_str, needdup_fd_str, NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
-  g_subprocess_launcher_pass_fd (launcher, basic_pipefds[1], basic_pipefds[1]);
-  g_subprocess_launcher_pass_fd (launcher, needdup_pipefds[1], needdup_pipefds[1] + 1);
+  g_subprocess_launcher_take_fd (launcher, basic_pipefds[1], basic_pipefds[1]);
+  g_subprocess_launcher_take_fd (launcher, needdup_pipefds[1], needdup_pipefds[1] + 1);
   proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  (void) close (basic_pipefds[1]);
-  (void) close (needdup_pipefds[1]);
   g_free (basic_fd_str);
   g_free (needdup_fd_str);
 
@@ -843,6 +904,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/cat-utf8", test_cat_utf8);
   g_test_add_func ("/gsubprocess/cat-eof", test_cat_eof);
   g_test_add_func ("/gsubprocess/multi1", test_multi_1);
+  g_test_add_func ("/gsubprocess/communicate", test_communicate);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
