@@ -290,6 +290,16 @@ GLIB_AVAILABLE_IN_ALL
 gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 
+GLIB_AVAILABLE_IN_2_40
+gchar **                g_str_tokenize_and_fold                         (const gchar   *string,
+                                                                         const gchar   *translit_locale,
+                                                                         gchar       ***ascii_alternates);
+
+GLIB_AVAILABLE_IN_2_40
+gboolean                g_str_match_string                              (const gchar   *search_term,
+                                                                         const gchar   *potential_hit,
+                                                                         gboolean       accept_alternates);
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */

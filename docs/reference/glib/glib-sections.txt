@@ -1282,6 +1282,8 @@ g_strrstr_len
 g_str_has_prefix
 g_str_has_suffix
 g_strcmp0
+g_str_tokenize_and_fold
+g_str_match_string
 
 <SUBSECTION>
 g_strlcpy

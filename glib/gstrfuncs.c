@@ -2853,3 +2853,242 @@ g_strv_length (gchar **str_array)
 
   return i;
 }
+
+static void
+index_add_folded (GPtrArray   *array,
+                  const gchar *start,
+                  const gchar *end)
+{
+  gchar *normal;
+
+  normal = g_utf8_normalize (start, end - start, G_NORMALIZE_ALL_COMPOSE);
+
+  /* TODO: Invent time machine.  Converse with Mustafa Ataturk... */
+  if (strstr (normal, "ı") || strstr (normal, "İ"))
+    {
+      gchar *s = normal;
+      GString *tmp;
+
+      tmp = g_string_new (NULL);
+
+      while (*s)
+        {
+          gchar *i, *I, *e;
+
+          i = strstr (s, "ı");
+          I = strstr (s, "İ");
+
+          if (!i && !I)
+            break;
+          else if (i && !I)
+            e = i;
+          else if (I && !i)
+            e = I;
+          else if (i < I)
+            e = i;
+          else
+            e = I;
+
+          g_string_append_len (tmp, s, e - s);
+          g_string_append_c (tmp, 'i');
+          s = g_utf8_next_char (e);
+        }
+
+      g_string_append (tmp, s);
+      g_free (normal);
+      normal = g_string_free (tmp, FALSE);
+    }
+
+  g_ptr_array_add (array, g_utf8_casefold (normal, -1));
+  g_free (normal);
+}
+
+static gchar **
+split_words (const gchar *value)
+{
+  const gchar *start = NULL;
+  GPtrArray *result;
+  const gchar *s;
+
+  result = g_ptr_array_new ();
+
+  for (s = value; *s; s = g_utf8_next_char (s))
+    {
+      gunichar c = g_utf8_get_char (s);
+
+      if (start == NULL)
+        {
+          if (g_unichar_isalnum (c) || g_unichar_ismark (c))
+            start = s;
+        }
+      else
+        {
+          if (!g_unichar_isalnum (c) && !g_unichar_ismark (c))
+            {
+              index_add_folded (result, start, s);
+              start = NULL;
+            }
+        }
+    }
+
+  if (start)
+    index_add_folded (result, start, s);
+
+  g_ptr_array_add (result, NULL);
+
+  return (gchar **) g_ptr_array_free (result, FALSE);
+}
+
+/**
+ * g_str_tokenize_and_fold:
+ * @string: a string
+ * @translit_locale: (allow-none): the language code (like 'de' or
+ *   'en_GB') from which @string originates
+ * @ascii_alternates: (out) (transfer full) (array zero-terminated=1): a
+ *   return location for ASCII alternates
+ *
+ * Tokenises @string and performs folding on each token.
+ *
+ * A token is a non-empty sequence of alphanumeric characters in the
+ * source string, separated by non-alphanumeric characters.  An
+ * "alphanumeric" character for this purpose is one that matches
+ * g_unichar_isalnum() or g_unichar_ismark().
+ *
+ * Each token is then (Unicode) normalised and case-folded.  If
+ * @ascii_alternates is non-%NULL and some of the returned tokens
+ * contain non-ASCII characters, ASCII alternatives will be generated.
+ *
+ * The number of ASCII alternatives that are generated and the method
+ * for doing so is unspecified, but @translit_locale (if specified) may
+ * improve the transliteration if the language of the source string is
+ * known.
+ *
+ * Returns: the folded tokens
+ *
+ * Since: 2.40
+ **/
+gchar **
+g_str_tokenize_and_fold (const gchar   *string,
+                         const gchar   *translit_locale,
+                         gchar       ***ascii_alternates)
+{
+  gchar **result;
+
+  if (ascii_alternates && g_str_is_ascii (string))
+    {
+      *ascii_alternates = g_new0 (gchar *, 0 + 1);
+      ascii_alternates = NULL;
+    }
+
+  result = split_words (string);
+
+  /* TODO: proper iconv transliteration (locale-dependent) */
+  if (ascii_alternates)
+    {
+      gint i, j, n;
+
+      n = g_strv_length (result);
+      *ascii_alternates = g_new (gchar *, n + 1);
+      j = 0;
+
+      for (i = 0; i < n; i++)
+        {
+          if (!g_str_is_ascii (result[i]))
+            {
+              gchar *decomposed;
+              gchar *ascii;
+              gint k = 0;
+              gint l = 0;
+
+              decomposed = g_utf8_normalize (result[i], -1, G_NORMALIZE_ALL);
+              ascii = g_malloc (strlen (decomposed) + 1);
+
+              for (k = 0; decomposed[k]; k++)
+                if (~decomposed[k] & 0x80)
+                  ascii[l++] = decomposed[k];
+              ascii[l] = '\0';
+
+              (*ascii_alternates)[j++] = ascii;
+              g_free (decomposed);
+            }
+        }
+
+      (*ascii_alternates)[j] = NULL;
+    }
+
+  return result;
+}
+
+/**
+ * g_search_match_string:
+ * @search_term: the search term from the user
+ * @potential_hit: the text that may be a hit
+ * @accept_alternates: %TRUE to accept ASCII alternates
+ *
+ * Checks if a search conducted for @search_term should match
+ * @potential_hit.
+ *
+ * This function calls g_search_tokenize_and_fold_string() on both
+ * @search_term and @potential_hit.  ASCII alternates are never taken
+ * for @search_term but will be taken for @potential_hit according to
+ * the value of @accept_alternates.
+ *
+ * A hit occurs when each folded token in @search_term is a prefix of a
+ * folded token from @potential_hit.
+ *
+ * Depending on how you're performing the search, it will typically be
+ * faster to call g_search_tokenize_and_fold_string() on each string in
+ * your corpus and build an index on the returned folded tokens, then
+ * call g_search_tokenize_and_fold_string() on the search term and
+ * perform lookups into that index.
+ *
+ * As some examples, searching for "fred" would match the potential hit
+ * "Smith, Fred" and also "Frédéric".  Searching for "Fréd" would match
+ * "Frédéric" but not "Frederic" (due to the one-directional nature of
+ * accent matching).  Searching "fo" would match "Foo" and "Bar Foo
+ * Baz", but not "SFO" (because no word as "fo" as a prefix).
+ *
+ * Returns: %TRUE if @potential_hit is a hit
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_str_match_string (const gchar *search_term,
+                    const gchar *potential_hit,
+                    gboolean     accept_alternates)
+{
+  gchar **alternates = NULL;
+  gchar **term_tokens;
+  gchar **hit_tokens;
+  gboolean matched;
+  gint i, j;
+
+  term_tokens = g_str_tokenize_and_fold (search_term, NULL, NULL);
+  hit_tokens = g_str_tokenize_and_fold (potential_hit, NULL, accept_alternates ? &alternates : NULL);
+
+  matched = TRUE;
+
+  for (i = 0; term_tokens[i]; i++)
+    {
+      for (j = 0; hit_tokens[j]; j++)
+        if (g_str_has_prefix (hit_tokens[j], term_tokens[i]))
+          goto one_matched;
+
+      if (accept_alternates)
+        for (j = 0; alternates[j]; j++)
+          if (g_str_has_prefix (alternates[j], term_tokens[i]))
+            goto one_matched;
+
+      matched = FALSE;
+      break;
+
+one_matched:
+      continue;
+    }
+
+  g_strfreev (term_tokens);
+  g_strfreev (hit_tokens);
+  g_strfreev (alternates);
+
+  return matched;
+}
