@@ -67,6 +67,7 @@ gdbus-proxy-well-known-name
 gdbus-serialization
 gdbus-test-codegen
 gdbus-test-codegen-generated*
+gdbus-test-codegen-old
 gdbus-test-fixture
 gdbus-testserver
 gdbus-threading

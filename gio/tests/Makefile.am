@@ -350,6 +350,7 @@ test_programs += \
 	gdbus-proxy-threads			\
 	gdbus-proxy-well-known-name		\
 	gdbus-test-codegen			\
+	gdbus-test-codegen-old			\
 	gdbus-threading				\
 	gmenumodel				\
 	$(NULL)
@@ -373,9 +374,12 @@ gdbus_proxy_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-pro
 gdbus_proxy_threads_SOURCES              = $(gdbus_sessionbus_sources) gdbus-proxy-threads.c
 gdbus_proxy_well_known_name_SOURCES      = $(gdbus_sessionbus_sources) gdbus-proxy-well-known-name.c
 gdbus_test_codegen_SOURCES               = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
+nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+gdbus_test_codegen_old_SOURCES           = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
+nodist_gdbus_test_codegen_old_SOURCES    = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+gdbus_test_codegen_old_CPPFLAGS          = $(AM_CPPFLAGS) -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36
 gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
 gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
-nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 
 gdbus-test-codegen.o: gdbus-test-codegen-generated.h
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
