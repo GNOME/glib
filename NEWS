@@ -1,3 +1,29 @@
+Overview of changes from GLib 2.38.0 to 2.38.1
+===============================================
+
+ * Fix error code checks when SOCK_CLOEXEC is defined but not supported
+   (fix support for GNU/Hurd)
+
+ * g_settings_list_children: only list viable schemas
+   (fix gsettings list-recursively crashes with invalid schemas installed)
+
+ * GDBusObjectManagerClient: Fix typo in the /org/freedesktop/DBus path
+   when adding match rules
+
+ * Various -Werror=format-nonliteral fixes
+
+ * gmessages: fix clang annotations to work with older versions
+
+ * gio: don't dist (generated file) gnetworking.h
+
+ * Restore gl_GLIBC21 to configure; needed for libcharset
+
+Translations:
+ Catalan (Valencian)
+ Norwegian bokmål
+ Russian
+ Serbian
+
 What's new in Glib 2.38
 ========================
 
