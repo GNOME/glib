@@ -3020,7 +3020,7 @@ g_str_tokenize_and_fold (const gchar   *string,
 }
 
 /**
- * g_search_match_string:
+ * g_str_match_string:
  * @search_term: the search term from the user
  * @potential_hit: the text that may be a hit
  * @accept_alternates: %TRUE to accept ASCII alternates
@@ -3028,7 +3028,7 @@ g_str_tokenize_and_fold (const gchar   *string,
  * Checks if a search conducted for @search_term should match
  * @potential_hit.
  *
- * This function calls g_search_tokenize_and_fold_string() on both
+ * This function calls g_str_tokenize_and_fold() on both
  * @search_term and @potential_hit.  ASCII alternates are never taken
  * for @search_term but will be taken for @potential_hit according to
  * the value of @accept_alternates.
@@ -3037,9 +3037,9 @@ g_str_tokenize_and_fold (const gchar   *string,
  * folded token from @potential_hit.
  *
  * Depending on how you're performing the search, it will typically be
- * faster to call g_search_tokenize_and_fold_string() on each string in
+ * faster to call g_str_tokenize_and_fold() on each string in
  * your corpus and build an index on the returned folded tokens, then
- * call g_search_tokenize_and_fold_string() on the search term and
+ * call g_str_tokenize_and_fold() on the search term and
  * perform lookups into that index.
  *
  * As some examples, searching for "fred" would match the potential hit
