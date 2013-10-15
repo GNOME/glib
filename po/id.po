@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-11 19:37+0000\n"
-"PO-Revision-Date: 2013-09-14 15:40+0700\n"
+"POT-Creation-Date: 2013-10-08 16:22+0000\n"
+"PO-Revision-Date: 2013-10-15 11:54+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -22,9 +22,9 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 
 #: ../gio/gbufferedinputstream.c:424 ../gio/gbufferedinputstream.c:503
-#: ../gio/ginputstream.c:174 ../gio/ginputstream.c:366
-#: ../gio/ginputstream.c:604 ../gio/ginputstream.c:822
-#: ../gio/goutputstream.c:192 ../gio/goutputstream.c:721
+#: ../gio/ginputstream.c:175 ../gio/ginputstream.c:367
+#: ../gio/ginputstream.c:605 ../gio/ginputstream.c:823
+#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:722
 #: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
 #, c-format
 msgid "Too large count value passed to %s"
@@ -39,8 +39,8 @@ msgstr "Seek tak didukung pada stream basis"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Tak bisa memenggal GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:987 ../gio/ginputstream.c:1012
-#: ../gio/giostream.c:280 ../gio/goutputstream.c:1323
+#: ../gio/gbufferedinputstream.c:987 ../gio/ginputstream.c:1013
+#: ../gio/giostream.c:280 ../gio/goutputstream.c:1364
 msgid "Stream is already closed"
 msgstr "Stream telah ditutup"
 
@@ -50,7 +50,7 @@ msgstr "Pemenggalan tak didukung pada stream basis"
 
 #: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2178 ../gio/gsimpleasyncresult.c:843
+#: ../gio/glocalfile.c:2183 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -81,7 +81,7 @@ msgstr "Rangkaian bita dalam input konversi tidak benar"
 msgid "Error during conversion: %s"
 msgstr "Galat ketika konversi: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:993
+#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:994
 msgid "Cancellable initialization not supported"
 msgstr "Inisialisasi yang dapat dibatalkan tak didukung"
 
@@ -110,17 +110,21 @@ msgstr "Tipe tak dikenal"
 msgid "%s filetype"
 msgstr "tipe berkas %s"
 
-#: ../gio/gcredentials.c:264 ../gio/gcredentials.c:528
+#: ../gio/gcredentials.c:295 ../gio/gcredentials.c:546
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials tak diimplementasikan di OS ini"
 
-#: ../gio/gcredentials.c:438
+#: ../gio/gcredentials.c:447
 msgid "There is no GCredentials support for your platform"
 msgstr "Tidak ada dukungan GCredentials bagi platform Anda"
 
-#: ../gio/gcredentials.c:480
+#: ../gio/gcredentials.c:491
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials tak memuat suatu ID proses di OS ini"
+
+#: ../gio/gcredentials.c:540
+msgid "Credentials spoofing is not possible on this OS"
+msgstr "Pemalsuan kredensial tak diimplementasikan di OS ini"
 
 #: ../gio/gdatainputstream.c:306
 msgid "Unexpected early end-of-stream"
@@ -666,7 +670,7 @@ msgstr "Galat sewaktu memanggil StartServiceByName untuk %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Balasan tak diharapkan %d dari metode StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2761 ../gio/gdbusproxy.c:2898
+#: ../gio/gdbusproxy.c:2762 ../gio/gdbusproxy.c:2899
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -929,40 +933,40 @@ msgstr "Lokasi objek untuk dipantau"
 msgid "Monitor a remote object."
 msgstr "Memantau suatu objek jauh."
 
-#: ../gio/gdesktopappinfo.c:660 ../gio/gdesktopappinfo.c:3793
+#: ../gio/gdesktopappinfo.c:698 ../gio/gdesktopappinfo.c:3813
 #: ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Tanpa nama"
 
-#: ../gio/gdesktopappinfo.c:1074
+#: ../gio/gdesktopappinfo.c:1117
 msgid "Desktop file didn't specify Exec field"
 msgstr "Berkas desktop tak menyatakan ruas Exec"
 
-#: ../gio/gdesktopappinfo.c:1359
+#: ../gio/gdesktopappinfo.c:1402
 msgid "Unable to find terminal required for application"
 msgstr "Tak bisa temukan terminal yang diperlukan bagi aplikasi"
 
-#: ../gio/gdesktopappinfo.c:1772
+#: ../gio/gdesktopappinfo.c:1819
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Tak bisa membuat folder %s untuk konfigurasi aplikasi bagi pengguna: %s"
 
-#: ../gio/gdesktopappinfo.c:1776
+#: ../gio/gdesktopappinfo.c:1823
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Tak bisa membuat folder %s untuk konfigurasi MIME bagi pengguna: %s"
 
-#: ../gio/gdesktopappinfo.c:2016 ../gio/gdesktopappinfo.c:2040
+#: ../gio/gdesktopappinfo.c:2063 ../gio/gdesktopappinfo.c:2087
 msgid "Application information lacks an identifier"
 msgstr "Informasi aplikasi tak punya identifier"
 
-#: ../gio/gdesktopappinfo.c:2272
+#: ../gio/gdesktopappinfo.c:2320
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Tak bisa membuat berkas desktop pengguna %s"
 
-#: ../gio/gdesktopappinfo.c:2396
+#: ../gio/gdesktopappinfo.c:2445
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definisi gubahan bagi %s"
@@ -1026,7 +1030,7 @@ msgstr "Berharap suatu GEmblem bagi GEmblemedIcon"
 #: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4357
 #: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
 #: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
-#: ../gio/gfile.c:7682 ../gio/gfile.c:7772 ../gio/gfile.c:7856
+#: ../gio/gfile.c:7688 ../gio/gfile.c:7778 ../gio/gfile.c:7862
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operasi tak didukung"
@@ -1041,12 +1045,12 @@ msgstr "Operasi tak didukung"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1102 ../gio/glocalfile.c:1113
-#: ../gio/glocalfile.c:1126
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1107 ../gio/glocalfile.c:1118
+#: ../gio/glocalfile.c:1131
 msgid "Containing mount does not exist"
 msgstr "Kait yang memuat tak ada"
 
-#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2334
+#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2339
 msgid "Can't copy over directory"
 msgstr "Tak bisa menyalin atas direktori"
 
@@ -1054,7 +1058,7 @@ msgstr "Tak bisa menyalin atas direktori"
 msgid "Can't copy directory over directory"
 msgstr "Tak bisa menyalin direktori atas direktori"
 
-#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2343
+#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2348
 msgid "Target file exists"
 msgstr "Berkas tujuan telah ada"
 
@@ -1210,7 +1214,7 @@ msgstr "Tak cukup ruang bagi alamat soket"
 msgid "Unsupported socket address"
 msgstr "Alamat soket tak didukung"
 
-#: ../gio/ginputstream.c:183
+#: ../gio/ginputstream.c:184
 msgid "Input stream doesn't implement read"
 msgstr "Stream masukan tak mengimplementasi pembacaan"
 
@@ -1220,8 +1224,8 @@ msgstr "Stream masukan tak mengimplementasi pembacaan"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1022 ../gio/giostream.c:290
-#: ../gio/goutputstream.c:1333
+#: ../gio/ginputstream.c:1023 ../gio/giostream.c:290
+#: ../gio/goutputstream.c:1374
 msgid "Stream has outstanding operation"
 msgstr "Stream memiliki operasi tertunda"
 
@@ -1624,125 +1628,125 @@ msgstr "tak melakukan apapun.\n"
 msgid "removed existing output file.\n"
 msgstr "menghapus berkas keluaran yang telah ada.\n"
 
-#: ../gio/glocaldirectorymonitor.c:252
+#: ../gio/glocaldirectorymonitor.c:226
 msgid "Unable to find default local directory monitor type"
 msgstr "Tak bisa temukan tipe pemantau direktori lokal baku"
 
-#: ../gio/glocalfile.c:603 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:608 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nama berkas tak valid: %s"
 
-#: ../gio/glocalfile.c:980
+#: ../gio/glocalfile.c:985
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Galat saat mengambil info sistem berkas: %s"
 
-#: ../gio/glocalfile.c:1148
+#: ../gio/glocalfile.c:1153
 msgid "Can't rename root directory"
 msgstr "Tak bisa mengubah nama direktori root"
 
-#: ../gio/glocalfile.c:1168 ../gio/glocalfile.c:1194
+#: ../gio/glocalfile.c:1173 ../gio/glocalfile.c:1199
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Galat saat mengubah nama berkas: %s"
 
-#: ../gio/glocalfile.c:1177
+#: ../gio/glocalfile.c:1182
 msgid "Can't rename file, filename already exists"
 msgstr "Tak bisa mengubah nama berkas, nama telah dipakai"
 
-#: ../gio/glocalfile.c:1190 ../gio/glocalfile.c:2207 ../gio/glocalfile.c:2236
-#: ../gio/glocalfile.c:2396 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1195 ../gio/glocalfile.c:2212 ../gio/glocalfile.c:2241
+#: ../gio/glocalfile.c:2401 ../gio/glocalfileoutputstream.c:553
 msgid "Invalid filename"
 msgstr "Nama berkas tak valid"
 
-#: ../gio/glocalfile.c:1357 ../gio/glocalfile.c:1381
+#: ../gio/glocalfile.c:1362 ../gio/glocalfile.c:1386
 msgid "Can't open directory"
 msgstr "Tak bisa membuka direktori"
 
-#: ../gio/glocalfile.c:1365
+#: ../gio/glocalfile.c:1370
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Galat saat membuka berkas: %s"
 
-#: ../gio/glocalfile.c:1506
+#: ../gio/glocalfile.c:1511
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Galat saat menghapus berkas: %s"
 
-#: ../gio/glocalfile.c:1886
+#: ../gio/glocalfile.c:1891
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Galat saat membuang berkas ke tong sampah: %s"
 
-#: ../gio/glocalfile.c:1909
+#: ../gio/glocalfile.c:1914
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Tak bisa membuat direktori tong sampah %s: %s"
 
-#: ../gio/glocalfile.c:1930
+#: ../gio/glocalfile.c:1935
 msgid "Unable to find toplevel directory for trash"
 msgstr "Tak bisa temukan direktori puncak bagi tong sampah"
 
-#: ../gio/glocalfile.c:2009 ../gio/glocalfile.c:2029
+#: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2034
 msgid "Unable to find or create trash directory"
 msgstr "Tak bisa temukan atau buat direktori tong sampah"
 
-#: ../gio/glocalfile.c:2063
+#: ../gio/glocalfile.c:2068
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Tak bis membuat berkas informasi pembuangan ke tong sampah: %s"
 
-#: ../gio/glocalfile.c:2092 ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2177
-#: ../gio/glocalfile.c:2184
+#: ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2102 ../gio/glocalfile.c:2182
+#: ../gio/glocalfile.c:2189
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Tak bisa membuang berkas ke tong sampah: %s"
 
-#: ../gio/glocalfile.c:2185 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2190 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "kesalahan internal"
 
-#: ../gio/glocalfile.c:2211
+#: ../gio/glocalfile.c:2216
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Galat saat membuat direktori: %s"
 
-#: ../gio/glocalfile.c:2240
+#: ../gio/glocalfile.c:2245
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Sistem berkas tak mendukung taut simbolik"
 
-#: ../gio/glocalfile.c:2244
+#: ../gio/glocalfile.c:2249
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Galat saat membuat taut simbolis: %s"
 
-#: ../gio/glocalfile.c:2306 ../gio/glocalfile.c:2400
+#: ../gio/glocalfile.c:2311 ../gio/glocalfile.c:2405
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Galat saat memindah berkas: %s"
 
-#: ../gio/glocalfile.c:2329
+#: ../gio/glocalfile.c:2334
 msgid "Can't move directory over directory"
 msgstr "Tak bisa memindah direktori atas direktori"
 
-#: ../gio/glocalfile.c:2356 ../gio/glocalfileoutputstream.c:929
+#: ../gio/glocalfile.c:2361 ../gio/glocalfileoutputstream.c:929
 #: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
 #: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
 msgid "Backup file creation failed"
 msgstr "Pembuatan berkas cadangan gagal"
 
-#: ../gio/glocalfile.c:2375
+#: ../gio/glocalfile.c:2380
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Galat saat menghapus berkas tujuan: %s"
 
-#: ../gio/glocalfile.c:2389
+#: ../gio/glocalfile.c:2394
 msgid "Move between mounts not supported"
 msgstr "Perpindahan antar kait tak didukung"
 
-#: ../gio/glocalfile.c:2572
+#: ../gio/glocalfile.c:2605
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Tak bisa menentukan penggunaan diska dari %s: %s"
@@ -1859,7 +1863,7 @@ msgstr "Galat saat men-seek di berkas: %s"
 msgid "Error closing file: %s"
 msgstr "Galat saat menutup berkas: %s"
 
-#: ../gio/glocalfilemonitor.c:176
+#: ../gio/glocalfilemonitor.c:147
 msgid "Unable to find default local file monitor type"
 msgstr "Tak bisa temukan tipe pemantauan berkas lokal baku"
 
@@ -2010,25 +2014,25 @@ msgstr "Jaringan tak dapat dijangkau"
 msgid "Host unreachable"
 msgstr "Host tak dapat dihubungi"
 
-#: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
-#: ../gio/gnetworkmonitornetlink.c:128
+#: ../gio/gnetworkmonitornetlink.c:98 ../gio/gnetworkmonitornetlink.c:110
+#: ../gio/gnetworkmonitornetlink.c:129
 #, c-format
 msgid "Could not create network monitor: %s"
 msgstr "Tak bisa membuat pemantau jaringan: %s"
 
-#: ../gio/gnetworkmonitornetlink.c:118
+#: ../gio/gnetworkmonitornetlink.c:119
 msgid "Could not create network monitor: "
 msgstr "Tak bisa membuat pemantau jaringan: "
 
-#: ../gio/gnetworkmonitornetlink.c:176
+#: ../gio/gnetworkmonitornetlink.c:177
 msgid "Could not get network status: "
 msgstr "Tak bisa mendapat status jaringan: "
 
-#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:453
+#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:454
 msgid "Output stream doesn't implement write"
 msgstr "Stream keluaran tak mengimplementasi penulisan"
 
-#: ../gio/goutputstream.c:414 ../gio/goutputstream.c:939
+#: ../gio/goutputstream.c:415 ../gio/goutputstream.c:928
 msgid "Source stream is already closed"
 msgstr "Stream sumber telah ditutup"
 
@@ -2424,133 +2428,133 @@ msgstr "Tidak dapat memuat skema dari %s: %s\n"
 msgid "Empty schema name given\n"
 msgstr "Nama skema yang diberikan kosong\n"
 
-#: ../gio/gsocket.c:313
+#: ../gio/gsocket.c:314
 msgid "Invalid socket, not initialized"
 msgstr "Soket tak valid, tak diinisialisasi"
 
-#: ../gio/gsocket.c:320
+#: ../gio/gsocket.c:321
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Soket tak valid, inisialisasi gagal karena: %s"
 
-#: ../gio/gsocket.c:328
+#: ../gio/gsocket.c:329
 msgid "Socket is already closed"
 msgstr "Soket telah ditutup"
 
-#: ../gio/gsocket.c:336 ../gio/gsocket.c:3623 ../gio/gsocket.c:3678
+#: ../gio/gsocket.c:337 ../gio/gsocket.c:3624 ../gio/gsocket.c:3679
 msgid "Socket I/O timed out"
 msgstr "I/O soket kehabisan waktu"
 
-#: ../gio/gsocket.c:483
+#: ../gio/gsocket.c:484
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "membuat GSocket dari fd: %s"
 
-#: ../gio/gsocket.c:511 ../gio/gsocket.c:565 ../gio/gsocket.c:572
+#: ../gio/gsocket.c:512 ../gio/gsocket.c:566 ../gio/gsocket.c:573
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Tak bisa membuat soket: %s"
 
-#: ../gio/gsocket.c:565
+#: ../gio/gsocket.c:566
 msgid "Unknown family was specified"
 msgstr "Famili tak dikenal dinyatakan"
 
-#: ../gio/gsocket.c:572
+#: ../gio/gsocket.c:573
 msgid "Unknown protocol was specified"
 msgstr "Protokol tak dikenal dinyatakan"
 
-#: ../gio/gsocket.c:1730
+#: ../gio/gsocket.c:1731
 #, c-format
 msgid "could not get local address: %s"
 msgstr "tak bisa mendapat alamat lokal: %s"
 
-#: ../gio/gsocket.c:1773
+#: ../gio/gsocket.c:1774
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "tak bisa mendapat alamat jauh: %s"
 
-#: ../gio/gsocket.c:1834
+#: ../gio/gsocket.c:1835
 #, c-format
 msgid "could not listen: %s"
 msgstr "tak bisa mendengarkan: %s"
 
-#: ../gio/gsocket.c:1933
+#: ../gio/gsocket.c:1934
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Galat saat mengikat ke alamat: %s"
 
-#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Galat saat bergabung dengan grup multicast: %s"
 
-#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
+#: ../gio/gsocket.c:2047 ../gio/gsocket.c:2084
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Galat saat meninggalkan grup multicast: %s"
 
-#: ../gio/gsocket.c:2047
+#: ../gio/gsocket.c:2048
 msgid "No support for source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber"
 
-#: ../gio/gsocket.c:2266
+#: ../gio/gsocket.c:2267
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Galat saat menerima sambungan: %s"
 
-#: ../gio/gsocket.c:2387
+#: ../gio/gsocket.c:2388
 msgid "Connection in progress"
 msgstr "Penyambungan tengah berlangsung"
 
-#: ../gio/gsocket.c:2434
+#: ../gio/gsocket.c:2435
 msgid "Unable to get pending error: "
 msgstr "Tak bisa mendapat kesalahan yang tertunda:"
 
-#: ../gio/gsocket.c:2620
+#: ../gio/gsocket.c:2621
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Galat saat menerima data: %s"
 
-#: ../gio/gsocket.c:2798
+#: ../gio/gsocket.c:2799
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Galat saat mengirim data: %s"
 
-#: ../gio/gsocket.c:2912
+#: ../gio/gsocket.c:2913
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Tak bisa mematikan soket: %s"
 
-#: ../gio/gsocket.c:2991
+#: ../gio/gsocket.c:2992
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Galat saat menutup soket: %s"
 
-#: ../gio/gsocket.c:3616
+#: ../gio/gsocket.c:3617
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Menunggu kondisi soket: %s"
 
-#: ../gio/gsocket.c:3894 ../gio/gsocket.c:3975
+#: ../gio/gsocket.c:3895 ../gio/gsocket.c:3976
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: ../gio/gsocket.c:3919
+#: ../gio/gsocket.c:3920
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage tak didukung pada Windows"
 
-#: ../gio/gsocket.c:4253 ../gio/gsocket.c:4388
+#: ../gio/gsocket.c:4254 ../gio/gsocket.c:4389
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: ../gio/gsocket.c:4470
+#: ../gio/gsocket.c:4494
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Tak bisa membaca kredensial soket: %s"
 
-#: ../gio/gsocket.c:4489
+#: ../gio/gsocket.c:4503
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials tidak diimplementasikan untuk OS ini"
 
@@ -2690,18 +2694,18 @@ msgstr "Galat saat menguraikan '%s': %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Galat saat mengurai balik '%s': %s"
 
-#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:614
-#: ../gio/gthreadedresolver.c:715 ../gio/gthreadedresolver.c:766
+#: ../gio/gthreadedresolver.c:536 ../gio/gthreadedresolver.c:617
+#: ../gio/gthreadedresolver.c:720 ../gio/gthreadedresolver.c:771
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Tak ada record DNS dengan tipe yang diminta bagi '%s'"
 
-#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:720
+#: ../gio/gthreadedresolver.c:541 ../gio/gthreadedresolver.c:725
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Sementara tidak dapat menguraikan '%s'"
 
-#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:725
+#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:730
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Galat saat menguraikan '%s'"
@@ -3249,7 +3253,7 @@ msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
 
-#: ../glib/gdir.c:120 ../glib/gdir.c:143
+#: ../glib/gdir.c:157
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Galat ketika membuka direktori '%s': %s"
@@ -3296,42 +3300,42 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Gagal untuk mengubah nama berkas '%s' menjadi '%s': g_rename() gagal: %s"
 
-#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1554
+#: ../glib/gfileutils.c:1069 ../glib/gfileutils.c:1576
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Gagal membuat berkas '%s': %s"
 
-#: ../glib/gfileutils.c:1071
+#: ../glib/gfileutils.c:1093
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "Gagal menulis berkas '%s': write() gagal: %s"
 
-#: ../glib/gfileutils.c:1111
+#: ../glib/gfileutils.c:1133
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Gagal untuk menulis berkas '%s': fsync() gagal: %s"
 
-#: ../glib/gfileutils.c:1243
+#: ../glib/gfileutils.c:1265
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Berkas '%s' tidak dapat dibuang: g_unlink() gagal: %s"
 
-#: ../glib/gfileutils.c:1517
+#: ../glib/gfileutils.c:1539
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Palet '%s' tidak sah, seharusnya tidak mengandung '%s'"
 
-#: ../glib/gfileutils.c:1530
+#: ../glib/gfileutils.c:1552
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Palet '%s' tidak memuat XXXXXX"
 
-#: ../glib/gfileutils.c:2058
+#: ../glib/gfileutils.c:2080
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Gagal saat membaca taut simbolik '%s': %s"
 
-#: ../glib/gfileutils.c:2079
+#: ../glib/gfileutils.c:2101
 msgid "Symbolic links not supported"
 msgstr "Taut simbolik tidak didukung"
 
@@ -4281,74 +4285,74 @@ msgstr "Rangkaian input konversi salah"
 msgid "Character out of range for UTF-16"
 msgstr "Karakter di luar jangkauan UTF-16"
 
-#: ../glib/gutils.c:2179 ../glib/gutils.c:2206 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2182 ../glib/gutils.c:2209 ../glib/gutils.c:2315
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u bita"
 
-#: ../glib/gutils.c:2185
+#: ../glib/gutils.c:2188
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2187
+#: ../glib/gutils.c:2190
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2190
+#: ../glib/gutils.c:2193
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2193
+#: ../glib/gutils.c:2196
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2196
+#: ../glib/gutils.c:2199
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2199
+#: ../glib/gutils.c:2202
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2212
+#: ../glib/gutils.c:2215
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2215 ../glib/gutils.c:2328
+#: ../glib/gutils.c:2218 ../glib/gutils.c:2333
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2218 ../glib/gutils.c:2333
+#: ../glib/gutils.c:2221 ../glib/gutils.c:2338
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2220 ../glib/gutils.c:2338
+#: ../glib/gutils.c:2223 ../glib/gutils.c:2343
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2223 ../glib/gutils.c:2343
+#: ../glib/gutils.c:2226 ../glib/gutils.c:2348
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2226 ../glib/gutils.c:2348
+#: ../glib/gutils.c:2229 ../glib/gutils.c:2353
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2263
+#: ../glib/gutils.c:2266
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4359,7 +4363,7 @@ msgstr[0] "%s bita"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2323
+#: ../glib/gutils.c:2328
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
