@@ -97,10 +97,16 @@ g_notification_backend_activate_action (GNotificationBackend *backend,
                                         GVariant             *parameter)
 {
   g_return_if_fail (G_IS_NOTIFICATION_BACKEND (backend));
-  g_return_if_fail (name != NULL);
 
-  if (g_str_has_prefix (name, "app."))
-    g_action_group_activate_action (G_ACTION_GROUP (backend->application), name + 4, parameter);
+  if (name)
+    {
+      if (g_str_has_prefix (name, "app."))
+        g_action_group_activate_action (G_ACTION_GROUP (backend->application), name + 4, parameter);
+    }
+  else
+    {
+      g_application_activate (backend->application);
+    }
 }
 
 GDBusConnection *

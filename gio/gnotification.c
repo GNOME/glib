@@ -34,7 +34,7 @@ struct _GNotification
 
   gchar *title;
   gchar *body;
-  GIcon *image;
+  GIcon *icon;
   gboolean urgent;
   GPtrArray *buttons;
   gchar *default_action;
@@ -68,7 +68,7 @@ g_notification_dispose (GObject *object)
 {
   GNotification *notification = G_NOTIFICATION (object);
 
-  g_clear_object (&notification->image);
+  g_clear_object (&notification->icon);
 
   G_OBJECT_CLASS (g_notification_parent_class)->dispose (object);
 }
@@ -210,42 +210,42 @@ g_notification_set_body (GNotification *notification,
 }
 
 /**
- * g_notification_get_image:
+ * g_notification_get_icon:
  * @notification: a #GNotification
  *
- * Gets the image currently set on @notification.
+ * Gets the icon currently set on @notification.
  *
- * Returns: (transfer none): the image associated with @notification
+ * Returns: (transfer none): the icon associated with @notification
  *
  * Since: 2.40
  */
 GIcon *
-g_notification_get_image (GNotification *notification)
+g_notification_get_icon (GNotification *notification)
 {
   g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
 
-  return notification->image;
+  return notification->icon;
 }
 
 /**
- * g_notification_set_image:
+ * g_notification_set_icon:
  * @notification: a #GNotification
- * @image: the image to be shown in @notification, as a #GIcon
+ * @icon: the icon to be shown in @notification, as a #GIcon
  *
- * Sets the image of @notification to @image.
+ * Sets the icon of @notification to @icon.
  *
  * Since: 2.40
  */
 void
-g_notification_set_image (GNotification *notification,
-                          GIcon         *image)
+g_notification_set_icon (GNotification *notification,
+                         GIcon         *icon)
 {
   g_return_if_fail (G_IS_NOTIFICATION (notification));
 
-  if (notification->image)
-    g_object_unref (notification->image);
+  if (notification->icon)
+    g_object_unref (notification->icon);
 
-  notification->image = g_object_ref (image);
+  notification->icon = g_object_ref (icon);
 }
 
 /**
@@ -636,4 +636,82 @@ g_notification_set_default_action_and_target_value (GNotification *notification,
 
   if (target)
     notification->default_action_target = g_variant_ref_sink (target);
+}
+
+static GVariant *
+g_notification_serialize_button (Button *button)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+  g_variant_builder_add (&builder, "{sv}", "label", g_variant_new_string (button->label));
+  g_variant_builder_add (&builder, "{sv}", "action", g_variant_new_string (button->action_name));
+
+  if (button->target)
+    g_variant_builder_add (&builder, "{sv}", "target", button->target);
+
+  return g_variant_builder_end (&builder);
+}
+
+/*< private >
+ * g_notification_serialize:
+ *
+ * Serializes @notification into an floating variant of type a{sv}.
+ *
+ * Returns: the serialized @notification as a floating variant.
+ */
+GVariant *
+g_notification_serialize (GNotification *notification)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+  if (notification->title)
+    g_variant_builder_add (&builder, "{sv}", "title", g_variant_new_string (notification->title));
+
+  if (notification->body)
+    g_variant_builder_add (&builder, "{sv}", "body", g_variant_new_string (notification->body));
+
+  if (notification->icon)
+    {
+      GVariant *serialized_icon;
+
+      if ((serialized_icon = g_icon_serialize (notification->icon)))
+        {
+          g_variant_builder_add (&builder, "{sv}", "icon", serialized_icon);
+          g_variant_unref (serialized_icon);
+        }
+    }
+
+  g_variant_builder_add (&builder, "{sv}", "urgent", g_variant_new_boolean (notification->urgent));
+
+  if (notification->default_action)
+    {
+      g_variant_builder_add (&builder, "{sv}", "default-action",
+                                               g_variant_new_string (notification->default_action));
+
+      if (notification->default_action_target)
+        g_variant_builder_add (&builder, "{sv}", "default-action-target",
+                                                  notification->default_action_target);
+    }
+
+  if (notification->buttons->len > 0)
+    {
+      GVariantBuilder actions_builder;
+      guint i;
+
+      g_variant_builder_init (&actions_builder, G_VARIANT_TYPE ("aa{sv}"));
+
+      for (i = 0; i < notification->buttons->len; i++)
+        {
+          Button *button = g_ptr_array_index (notification->buttons, i);
+          g_variant_builder_add (&actions_builder, "@a{sv}", g_notification_serialize_button (button));
+        }
+
+      g_variant_builder_add (&builder, "{sv}", "buttons", g_variant_builder_end (&actions_builder));
+    }
+
+  return g_variant_builder_end (&builder);
 }

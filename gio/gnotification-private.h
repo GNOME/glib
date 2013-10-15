@@ -30,7 +30,7 @@ const gchar *           g_notification_get_title                        (GNotifi
 
 const gchar *           g_notification_get_body                         (GNotification *notification);
 
-GIcon *                 g_notification_get_image                        (GNotification *notification);
+GIcon *                 g_notification_get_icon                         (GNotification *notification);
 
 gboolean                g_notification_get_urgent                       (GNotification *notification);
 
@@ -50,5 +50,7 @@ gboolean                g_notification_get_default_action               (GNotifi
                                                                          GVariant      **target);
 
 GVariant *              g_notification_serialize                        (GNotification *notification);
+
+GVariant *      g_notification_serialize                (GNotification *notification);
 
 #endif
