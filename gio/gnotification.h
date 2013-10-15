@@ -49,8 +49,8 @@ void                    g_notification_set_body                         (GNotifi
                                                                          const gchar   *body);
 
 GLIB_AVAILABLE_IN_2_40
-void                    g_notification_set_image                        (GNotification *notification,
-                                                                         GIcon         *image);
+void                    g_notification_set_icon                         (GNotification *notification,
+                                                                         GIcon         *icon);
 
 GLIB_AVAILABLE_IN_2_40
 void                    g_notification_set_urgent                       (GNotification *notification,

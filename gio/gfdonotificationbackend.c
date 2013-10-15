@@ -176,7 +176,7 @@ call_notify (GDBusConnection     *con,
   guint n_buttons;
   guint i;
   GVariantBuilder hints_builder;
-  GIcon *image;
+  GIcon *icon;
   GVariant *parameters;
   const gchar *body;
 
@@ -222,12 +222,12 @@ call_notify (GDBusConnection     *con,
                          g_variant_new_string (g_application_get_application_id (app)));
   if (g_notification_get_urgent (notification))
     g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (2));
-  image = g_notification_get_image (notification);
-  if (image != NULL && G_IS_FILE_ICON (image))
+  icon = g_notification_get_icon (notification);
+  if (icon != NULL && G_IS_FILE_ICON (icon))
     {
       GFile *file;
 
-      file = g_file_icon_get_file (G_FILE_ICON (image));
+      file = g_file_icon_get_file (G_FILE_ICON (icon));
       g_variant_builder_add (&hints_builder, "{sv}", "image-path",
                              g_variant_new_take_string (g_file_get_uri (file)));
     }

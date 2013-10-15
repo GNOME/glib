@@ -267,6 +267,7 @@ unix_sources = \
 	gcontenttype.c 		\
 	gcontenttypeprivate.h 	\
 	gfdonotificationbackend.c \
+	ggtknotificationbackend.c \
 	$(NULL)
 
 
