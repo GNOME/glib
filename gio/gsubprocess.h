@@ -143,6 +143,27 @@ gboolean        g_subprocess_communicate_finish         (GSubprocess          *s
                                                          GBytes              **stderr_buf,
                                                          GError              **error);
 
+GLIB_AVAILABLE_IN_2_40
+gboolean         g_subprocess_communicate_utf8          (GSubprocess          *subprocess,
+                                                         const char           *stdin_buf,
+                                                         GCancellable         *cancellable,
+                                                         char                **stdout_buf,
+                                                         char                **stderr_buf,
+                                                         GError              **error);
+GLIB_AVAILABLE_IN_2_40
+void            g_subprocess_communicate_utf8_async     (GSubprocess          *subprocess,
+                                                         const char           *stdin_buf,
+                                                         GCancellable         *cancellable,
+                                                         GAsyncReadyCallback   callback,
+                                                         gpointer              user_data);
+
+GLIB_AVAILABLE_IN_2_40
+gboolean        g_subprocess_communicate_utf8_finish    (GSubprocess          *subprocess,
+                                                         GAsyncResult         *result,
+                                                         char                **stdout_buf,
+                                                         char                **stderr_buf,
+                                                         GError              **error);
+
 G_END_DECLS
 
 #endif /* __G_SUBPROCESS_H__ */

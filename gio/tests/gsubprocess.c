@@ -546,6 +546,8 @@ test_multi_1 (void)
 }
 
 typedef struct {
+  gboolean is_utf8;
+  gboolean is_invalid_utf8;
   gboolean running;
   GError *error;
 } TestAsyncCommunicateData;
@@ -556,21 +558,41 @@ on_communicate_complete (GObject               *proc,
                          gpointer               user_data)
 {
   TestAsyncCommunicateData *data = user_data;
-  GBytes *stdout;
+  GBytes *stdout = NULL;
+  char *stdout_str = NULL;
   const guint8 *stdout_data;
   gsize stdout_len;
 
   data->running = FALSE;
-  (void) g_subprocess_communicate_finish ((GSubprocess*)proc, result,
-                                          &stdout, NULL, &data->error);
+  if (data->is_utf8)
+    (void) g_subprocess_communicate_utf8_finish ((GSubprocess*)proc, result,
+                                                 &stdout_str, NULL, &data->error);
+  else
+    (void) g_subprocess_communicate_finish ((GSubprocess*)proc, result,
+                                            &stdout, NULL, &data->error);
+  if (data->is_invalid_utf8)
+    {
+      g_assert_error (data->error, G_IO_ERROR, G_IO_ERROR_FAILED);
+      return;
+    }
 
   g_assert_no_error (data->error);
 
-  stdout_data = g_bytes_get_data (stdout, &stdout_len);
+  if (!data->is_utf8)
+    {
+      stdout_data = g_bytes_get_data (stdout, &stdout_len);
+    }
+  else
+    {
+      stdout_data = (guint8*)stdout_str;
+      stdout_len = strlen (stdout_str);
+    }
 
   g_assert_cmpint (stdout_len, ==, 11);
   g_assert (memcmp (stdout_data, "hello world", 11) == 0);
-  g_bytes_unref (stdout);
+  if (stdout)
+    g_bytes_unref (stdout);
+  g_free (stdout_str);
 }
 
 static void
@@ -583,6 +605,7 @@ test_communicate (void)
   GSubprocess *proc;
   GCancellable *cancellable = NULL;
   GBytes *input;
+  const char *hellostring;
 
   args = get_test_subprocess_args ("cat", NULL);
   proc = g_subprocess_newv ((const gchar* const*)args->pdata,
@@ -591,13 +614,81 @@ test_communicate (void)
   g_assert_no_error (local_error);
   g_ptr_array_free (args, TRUE);
 
-  input = g_bytes_new_static ("hello world", strlen ("hello world"));
+  hellostring = "hello world";
+  input = g_bytes_new_static (hellostring, strlen (hellostring));
 
   data.error = local_error;
   g_subprocess_communicate_async (proc, input,
                                   cancellable,
                                   on_communicate_complete, 
                                   &data);
+  
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (local_error);
+
+  g_object_unref (proc);
+}
+
+static void
+test_communicate_utf8 (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GPtrArray *args;
+  TestAsyncCommunicateData data = { 0, };
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+                            error);
+  g_assert_no_error (local_error);
+  g_ptr_array_free (args, TRUE);
+
+  data.error = local_error;
+  data.is_utf8 = TRUE;
+  g_subprocess_communicate_utf8_async (proc, "hello world",
+                                       cancellable,
+                                       on_communicate_complete, 
+                                       &data);
+  
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (local_error);
+
+  g_object_unref (proc);
+}
+
+static void
+test_communicate_utf8_invalid (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GPtrArray *args;
+  TestAsyncCommunicateData data = { 0, };
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+                            error);
+  g_assert_no_error (local_error);
+  g_ptr_array_free (args, TRUE);
+
+  data.error = local_error;
+  data.is_utf8 = TRUE;
+  data.is_invalid_utf8 = TRUE;
+  g_subprocess_communicate_utf8_async (proc, "\xFF\xFF",
+                                       cancellable,
+                                       on_communicate_complete, 
+                                       &data);
   
   data.running = TRUE;
   while (data.running)
@@ -905,6 +996,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/cat-eof", test_cat_eof);
   g_test_add_func ("/gsubprocess/multi1", test_multi_1);
   g_test_add_func ("/gsubprocess/communicate", test_communicate);
+  g_test_add_func ("/gsubprocess/communicate-utf8", test_communicate_utf8);
+  g_test_add_func ("/gsubprocess/communicate-utf8-invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);

@@ -1189,6 +1189,8 @@ typedef struct
   gsize stdin_length;
   gsize stdin_offset;
 
+  gboolean add_nul;
+
   GInputStream *stdin_buf;
   GMemoryOutputStream *stdout_buf;
   GMemoryOutputStream *stderr_buf;
@@ -1224,7 +1226,25 @@ g_subprocess_communicate_made_progress (GObject      *source_object,
       source == state->stdout_buf ||
       source == state->stderr_buf)
     {
-      (void) g_output_stream_splice_finish ((GOutputStream*)source, result, &error);
+      if (!g_output_stream_splice_finish ((GOutputStream*)source, result, &error))
+        goto out;
+
+      if (source == state->stdout_buf ||
+          source == state->stderr_buf)
+        {
+          /* This is a memory stream, so it can't be cancelled or return
+           * an error really.
+           */
+          if (state->add_nul)
+            {
+              gsize bytes_written;
+              if (!g_output_stream_write_all (source, "\0", 1, &bytes_written,
+                                              NULL, &error))
+                goto out;
+            }
+          if (!g_output_stream_close (source, NULL, &error))
+            goto out;
+        }
     }
   else if (source == subprocess)
     {
@@ -1233,6 +1253,7 @@ g_subprocess_communicate_made_progress (GObject      *source_object,
   else
     g_assert_not_reached ();
 
+ out:
   if (error)
     {
       /* Only report the first error we see.
@@ -1286,6 +1307,7 @@ g_subprocess_communicate_state_free (gpointer data)
 
 static CommunicateState *
 g_subprocess_communicate_internal (GSubprocess         *subprocess,
+                                   gboolean             add_nul,
                                    GBytes              *stdin_buf,
                                    GCancellable        *cancellable,
                                    GAsyncReadyCallback  callback,
@@ -1299,6 +1321,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
   g_task_set_task_data (task, state, g_subprocess_communicate_state_free);
 
   state->cancellable = g_cancellable_new ();
+  state->add_nul = add_nul;
 
   if (cancellable)
     {
@@ -1323,7 +1346,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
     {
       state->stdout_buf = (GMemoryOutputStream*)g_memory_output_stream_new_resizable ();
       g_output_stream_splice_async ((GOutputStream*)state->stdout_buf, subprocess->stdout_pipe,
-                                    G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+                                    G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE,
                                     G_PRIORITY_DEFAULT, state->cancellable,
                                     g_subprocess_communicate_made_progress, g_object_ref (task));
       state->outstanding_ops++;
@@ -1333,7 +1356,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
     {
       state->stderr_buf = (GMemoryOutputStream*)g_memory_output_stream_new_resizable ();
       g_output_stream_splice_async ((GOutputStream*)state->stderr_buf, subprocess->stderr_pipe,
-                                    G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
+                                    G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE,
                                     G_PRIORITY_DEFAULT, state->cancellable,
                                     g_subprocess_communicate_made_progress, g_object_ref (task));
       state->outstanding_ops++;
@@ -1418,7 +1441,8 @@ g_subprocess_communicate (GSubprocess   *subprocess,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   g_subprocess_sync_setup ();
-  g_subprocess_communicate_internal (subprocess, stdin_buf, cancellable, g_subprocess_sync_done, &result);
+  g_subprocess_communicate_internal (subprocess, FALSE, stdin_buf, cancellable,
+                                     g_subprocess_sync_done, &result);
   g_subprocess_sync_complete (&result);
   success = g_subprocess_communicate_finish (subprocess, result, stdout_buf, stderr_buf, error);
   g_object_unref (result);
@@ -1448,7 +1472,7 @@ g_subprocess_communicate_async (GSubprocess         *subprocess,
   g_return_if_fail (stdin_buf == NULL || (subprocess->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE));
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
-  g_subprocess_communicate_internal (subprocess, stdin_buf, cancellable, callback, user_data);
+  g_subprocess_communicate_internal (subprocess, FALSE, stdin_buf, cancellable, callback, user_data);
 }
 
 /**
@@ -1490,4 +1514,151 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
 
   g_object_unref (result);
   return success;
+}
+
+/**
+ * g_subprocess_communicate_utf8:
+ * @self: a #GSubprocess
+ * @stdin_buf: data to send to the stdin of the subprocess, or %NULL
+ * @cancellable: a #GCancellable
+ * @stdout_buf: (out): data read from the subprocess stdout
+ * @stderr_buf: (out): data read from the subprocess stderr
+ * @error: a pointer to a %NULL #GError pointer, or %NULL
+ *
+ * Like g_subprocess_communicate(), but validates the output of the
+ * process as UTF-8, and returns it as a regular NUL terminated string.
+ */
+gboolean
+g_subprocess_communicate_utf8 (GSubprocess          *subprocess,
+                               const char           *stdin_buf,
+                               GCancellable         *cancellable,
+                               char                **stdout_buf,
+                               char                **stderr_buf,
+                               GError              **error)
+{
+  GAsyncResult *result = NULL;
+  gboolean success;
+  GBytes *stdin_bytes;
+
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (stdin_buf == NULL || (subprocess->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE), FALSE);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  stdin_bytes = g_bytes_new (stdin_buf, strlen (stdin_buf));
+
+  g_subprocess_sync_setup ();
+  g_subprocess_communicate_internal (subprocess, TRUE, stdin_bytes, cancellable,
+                                     g_subprocess_sync_done, &result);
+  g_subprocess_sync_complete (&result);
+  success = g_subprocess_communicate_utf8_finish (subprocess, result, stdout_buf, stderr_buf, error);
+  g_object_unref (result);
+
+  g_bytes_unref (stdin_bytes);
+  return success;
+}
+
+/**
+ * g_subprocess_communicate_utf8_async:
+ * @subprocess: Self
+ * @stdin_buf: Input data
+ * @cancellable: Cancellable
+ * @callback: Callback
+ * @user_data: User data
+ *
+ * Asynchronous version of g_subprocess_communicate_utf().  Complete
+ * invocation with g_subprocess_communicate_utf8_finish().
+ */
+void
+g_subprocess_communicate_utf8_async (GSubprocess          *subprocess,
+                                     const char           *stdin_buf,
+                                     GCancellable         *cancellable,
+                                     GAsyncReadyCallback   callback,
+                                     gpointer              user_data)
+{
+  GBytes *stdin_bytes;
+
+  g_return_if_fail (G_IS_SUBPROCESS (subprocess));
+  g_return_if_fail (stdin_buf == NULL || (subprocess->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  stdin_bytes = g_bytes_new (stdin_buf, strlen (stdin_buf));
+  g_subprocess_communicate_internal (subprocess, TRUE, stdin_bytes, cancellable, callback, user_data);
+  g_bytes_unref (stdin_bytes);
+}
+
+static gboolean
+communicate_result_validate_utf8 (const char            *stream_name,
+                                  char                 **return_location,
+                                  GMemoryOutputStream   *buffer,
+                                  GError               **error)
+{
+  if (return_location == NULL)
+    return TRUE;
+
+  if (buffer)
+    {
+      const char *end;
+      *return_location = g_memory_output_stream_steal_data (buffer);
+      if (!g_utf8_validate (*return_location, -1, &end))
+        {
+          g_free (*return_location);
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Invalid UTF-8 in child %s at offset %lu",
+                       stream_name,
+                       (unsigned long) (end - *return_location));
+          return FALSE;
+        }
+    }
+  else
+    *return_location = NULL;
+
+  return TRUE;
+}
+
+/**
+ * g_subprocess_communicate_utf8_finish:
+ * @subprocess: Self
+ * @result: Result
+ * @stdout_buf: (out): Return location for stdout data
+ * @stderr_buf: (out): Return location for stderr data
+ * @error: Error
+ *
+ * Complete an invocation of g_subprocess_communicate_utf8_async().
+ */
+gboolean
+g_subprocess_communicate_utf8_finish (GSubprocess          *subprocess,
+                                      GAsyncResult         *result,
+                                      char                **stdout_buf,
+                                      char                **stderr_buf,
+                                      GError              **error)
+{
+  gboolean ret = FALSE;
+  CommunicateState *state;
+
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (g_task_is_valid (result, subprocess), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  g_object_ref (result);
+
+  state = g_task_get_task_data ((GTask*)result);
+  if (!g_task_propagate_boolean ((GTask*)result, error))
+    goto out;
+
+  /* TODO - validate UTF-8 while streaming, rather than all at once.
+   */
+  if (!communicate_result_validate_utf8 ("stdout", stdout_buf,
+                                         state->stdout_buf,
+                                         error))
+    goto out;
+  if (!communicate_result_validate_utf8 ("stderr", stderr_buf,
+                                         state->stderr_buf,
+                                         error))
+    goto out;
+
+  ret = TRUE;
+ out:
+  g_object_unref (result);
+  return ret;
 }
