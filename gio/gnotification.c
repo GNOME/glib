@@ -1,0 +1,639 @@
+/*
+ * Copyright © 2013 Lars Uebernickel
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Authors: Lars Uebernickel <lars@uebernic.de>
+ */
+
+#include "config.h"
+
+#include "gnotification-private.h"
+#include "gdbusutils.h"
+#include "gicon.h"
+#include "gaction.h"
+
+typedef GObjectClass GNotificationClass;
+
+struct _GNotification
+{
+  GObject parent;
+
+  gchar *title;
+  gchar *body;
+  GIcon *image;
+  gboolean urgent;
+  GPtrArray *buttons;
+  gchar *default_action;
+  GVariant *default_action_target;
+};
+
+typedef struct
+{
+  gchar *label;
+  gchar *action_name;
+  GVariant *target;
+} Button;
+
+G_DEFINE_TYPE (GNotification, g_notification, G_TYPE_OBJECT);
+
+static void
+button_free (gpointer data)
+{
+  Button *button = data;
+
+  g_free (button->label);
+  g_free (button->action_name);
+  if (button->target)
+    g_variant_unref (button->target);
+
+  g_slice_free (Button, button);
+}
+
+static void
+g_notification_dispose (GObject *object)
+{
+  GNotification *notification = G_NOTIFICATION (object);
+
+  g_clear_object (&notification->image);
+
+  G_OBJECT_CLASS (g_notification_parent_class)->dispose (object);
+}
+
+static void
+g_notification_finalize (GObject *object)
+{
+  GNotification *notification = G_NOTIFICATION (object);
+
+  g_free (notification->title);
+  g_free (notification->body);
+  g_free (notification->default_action);
+  if (notification->default_action_target)
+    g_variant_unref (notification->default_action_target);
+  g_ptr_array_free (notification->buttons, TRUE);
+
+  G_OBJECT_CLASS (g_notification_parent_class)->finalize (object);
+}
+
+static void
+g_notification_class_init (GNotificationClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = g_notification_dispose;
+  object_class->finalize = g_notification_finalize;
+}
+
+static void
+g_notification_init (GNotification *notification)
+{
+  notification->buttons = g_ptr_array_new_full (2, button_free);
+}
+
+/**
+ * g_notification_new:
+ * @title: the title of the notification
+ *
+ * Creates a new #GNotification with @title as its title.
+ *
+ * After populating @notification with more details, it can be sent to
+ * the desktop shell with g_application_send_notification(). Changing
+ * any properties after this call will not have any effect until
+ * resending @notification.
+ *
+ * Returns: a new #GNotification instance
+ *
+ * Since: 2.40
+ */
+GNotification *
+g_notification_new (const gchar *title)
+{
+  GNotification *notification;
+
+  g_return_val_if_fail (title != NULL, NULL);
+
+  notification = g_object_new (G_TYPE_NOTIFICATION, NULL);
+  notification->title = g_strdup (title);
+
+  return notification;
+}
+
+/**
+ * g_notification_get_title:
+ * @notification: a #GNotification
+ *
+ * Gets the title of @notification.
+ *
+ * Returns: the title of @notification
+ *
+ * Since: 2.40
+ */
+const gchar *
+g_notification_get_title (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->title;
+}
+
+/**
+ * g_notification_set_title:
+ * @notification: a #GNotification
+ * title: the new title for @notification
+ *
+ * Sets the title of @notification to @title.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_title (GNotification *notification,
+                          const gchar   *title)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (title != NULL);
+
+  g_free (notification->title);
+
+  notification->title = g_strdup (title);
+}
+
+/**
+ * g_notification_get_body:
+ * @notification: a #GNotification
+ *
+ * Gets the current body of @notification.
+ *
+ * Returns: (allow-none): the body of @notification
+ *
+ * Since: 2.40
+ */
+const gchar *
+g_notification_get_body (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->body;
+}
+
+/**
+ * g_notification_set_body:
+ * @notification: a #GNotification
+ * @body: (allow-none): the new body for @notification, or %NULL
+ *
+ * Sets the body of @notification to @body.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_body (GNotification *notification,
+                         const gchar   *body)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (body != NULL);
+
+  g_free (notification->body);
+
+  notification->body = g_strdup (body);
+}
+
+/**
+ * g_notification_get_image:
+ * @notification: a #GNotification
+ *
+ * Gets the image currently set on @notification.
+ *
+ * Returns: (transfer none): the image associated with @notification
+ *
+ * Since: 2.40
+ */
+GIcon *
+g_notification_get_image (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->image;
+}
+
+/**
+ * g_notification_set_image:
+ * @notification: a #GNotification
+ * @image: the image to be shown in @notification, as a #GIcon
+ *
+ * Sets the image of @notification to @image.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_image (GNotification *notification,
+                          GIcon         *image)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  if (notification->image)
+    g_object_unref (notification->image);
+
+  notification->image = g_object_ref (image);
+}
+
+/**
+ * g_notification_get_urgent:
+ * @notification: a #GNotification
+ *
+ * Returns %TRUE if @notification is marked as urgent.
+ *
+ * Since: 2.40
+ */
+gboolean
+g_notification_get_urgent (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), FALSE);
+
+  return notification->urgent;
+}
+
+/**
+ * g_notification_set_urgent:
+ * @notification: a #GNotification
+ * @urgent: %TRUE if @notification is urgent
+ *
+ * Sets or unsets whether @notification is marked as urgent.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_urgent (GNotification *notification,
+                           gboolean       urgent)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  notification->urgent = urgent;
+}
+
+/**
+ * g_notification_add_button:
+ * @notification: a #GNotification
+ * @label: label of the button
+ * @detailed_action: a detailed action name
+ *
+ * Adds a button to @notification that activates the action in
+ * @detailed_action when clicked. That action must be an
+ * application-wide action (starting with "app."). If @detailed_action
+ * contains a target, the action will be activated with that target as
+ * its parameter.
+ *
+ * See g_action_parse_detailed_name() for a description of the format
+ * for @detailed_action.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_add_button (GNotification *notification,
+                           const gchar   *label,
+                           const gchar   *detailed_action)
+{
+  gchar *action;
+  GVariant *target;
+  GError *error = NULL;
+
+  g_return_if_fail (detailed_action != NULL);
+
+  if (!g_action_parse_detailed_name (detailed_action, &action, &target, &error))
+    {
+      g_warning ("%s: %s", G_STRFUNC, error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_notification_add_button_with_target_value (notification, label, action, target);
+
+  g_free (action);
+  if (target)
+    g_variant_unref (target);
+}
+
+/**
+ * g_notification_add_button_with_target: (skip)
+ * @notification: a #GNotification
+ * @label: label of the button
+ * @action: an action name
+ * @target_format: (allow-none): a GVariant format string, or %NULL
+ * @...: positional parameters, as determined by @format_string
+ *
+ * Adds a button to @notification that activates @action when clicked.
+ * @action must be an application-wide action (it must start with "app.").
+ *
+ * If @target_format is given, it is used to collect remaining
+ * positional parameters into a GVariant instance, similar to
+ * g_variant_new(). @action will be activated with that GVariant as its
+ * parameter.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_add_button_with_target (GNotification *notification,
+                                       const gchar   *label,
+                                       const gchar   *action,
+                                       const gchar   *target_format,
+                                       ...)
+{
+  va_list args;
+  GVariant *target = NULL;
+
+  if (target_format)
+    {
+      va_start (args, target_format);
+      target = g_variant_new_va (target_format, NULL, &args);
+      va_end (args);
+    }
+
+  g_notification_add_button_with_target_value (notification, label, action, target);
+}
+
+/**
+ * g_notification_add_button_with_target_value: (rename-to g_notification_add_button_with_target)
+ * @notification: a #GNotification
+ * @label: label of the button
+ * @action: an action name
+ * @target: (allow-none): a GVariant to use as @action's parameter, or %NULL
+ *
+ * Adds a button to @notification that activates @action when clicked.
+ * @action must be an application-wide action (it must start with "app.").
+ *
+ * If @target is non-%NULL, @action will be activated with @target as
+ * its parameter.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_add_button_with_target_value (GNotification *notification,
+                                             const gchar   *label,
+                                             const gchar   *action,
+                                             GVariant      *target)
+{
+  Button *button;
+
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (label != NULL);
+  g_return_if_fail (action != NULL && g_action_name_is_valid (action));
+
+  if (!g_str_has_prefix (action, "app."))
+    {
+      g_warning ("%s: action '%s' does not start with 'app.'."
+                 "This is unlikely to work properly.", G_STRFUNC, action);
+    }
+
+  button =  g_slice_new0 (Button);
+  button->label = g_strdup (label);
+  button->action_name = g_strdup (action);
+
+  if (target)
+    button->target = g_variant_ref_sink (target);
+
+  g_ptr_array_add (notification->buttons, button);
+}
+
+/*< private >
+ * g_notification_get_n_buttons:
+ * @notification: a #GNotification
+ *
+ * Returns: the amount of buttons added to @notification.
+ */
+guint
+g_notification_get_n_buttons (GNotification *notification)
+{
+  return notification->buttons->len;
+}
+
+/*< private >
+ * g_notification_get_button:
+ * @notification: a #GNotification
+ * @index: index of the button
+ * @label: (): return location for the button's label
+ * @action: (): return location for the button's associated action
+ * @target: (): return location for the target @action should be
+ * activated with
+ *
+ * Returns a description of a button that was added to @notification
+ * with g_notification_add_button().
+ *
+ * @index must be smaller than the value returned by
+ * g_notification_get_n_buttons().
+ */
+void
+g_notification_get_button (GNotification  *notification,
+                           gint            index,
+                           gchar         **label,
+                           gchar         **action,
+                           GVariant      **target)
+{
+  Button *button;
+
+  button = g_ptr_array_index (notification->buttons, index);
+
+  if (label)
+    *label = g_strdup (button->label);
+
+  if (action)
+    *action = g_strdup (button->action_name);
+
+  if (target)
+    *target = button->target ? g_variant_ref (button->target) : NULL;
+}
+
+/*< private >
+ * g_notification_get_button_with_action:
+ * @notification: a #GNotification
+ * @action: an action name
+ *
+ * Returns the index of the button in @notification that is associated
+ * with @action, or -1 if no such button exists.
+ */
+gint
+g_notification_get_button_with_action (GNotification *notification,
+                                       const gchar   *action)
+{
+  guint i;
+
+  for (i = 0; i < notification->buttons->len; i++)
+    {
+      Button *button;
+
+      button = g_ptr_array_index (notification->buttons, i);
+      if (g_str_equal (action, button->action_name))
+        return i;
+    }
+
+  return -1;
+}
+
+
+/*< private >
+ * g_notification_get_default_action:
+ * @notification: a #GNotification
+ * @action: (allow-none): return location for the default action
+ * @target: (allow-none): return location for the target of the default action
+ *
+ * Gets the action and target for the default action of @notification.
+ *
+ * Returns: %TRUE if @notification has a default action
+ */
+gboolean
+g_notification_get_default_action (GNotification  *notification,
+                                   gchar         **action,
+                                   GVariant      **target)
+{
+  if (notification->default_action == NULL)
+    return FALSE;
+
+  if (action)
+    *action = g_strdup (notification->default_action);
+
+  if (target)
+    {
+      if (notification->default_action_target)
+        *target = g_variant_ref (notification->default_action_target);
+      else
+        *target = NULL;
+    }
+
+  return TRUE;
+}
+
+/**
+ * g_notification_set_default_action:
+ * @notification: a #GNotification
+ * @detailed_action: a detailed action name
+ *
+ * Sets the default action of @notification to @detailed_action. This
+ * action is activated when the notification is clicked on.
+ *
+ * The action in @detailed_action must be an application-wide action (it
+ * must start with "app."). If @detailed_action contains a target, the
+ * given action will be activated with that target as its parameter.
+ * See g_action_parse_detailed_name() for a description of the format
+ * for @detailed_action.
+ *
+ * When no default action is set, the application that the notification
+ * was sent on is activated.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_default_action (GNotification *notification,
+                                   const gchar   *detailed_action)
+{
+  gchar *action;
+  GVariant *target;
+  GError *error = NULL;
+
+  if (!g_action_parse_detailed_name (detailed_action, &action, &target, &error))
+    {
+      g_warning ("%s: %s", G_STRFUNC, error->message);
+      g_error_free (error);
+      return;
+    }
+
+  g_notification_set_default_action_and_target_value (notification, action, target);
+
+  g_free (action);
+  if (target)
+    g_variant_unref (target);
+}
+
+/**
+ * g_notification_set_default_action_and_target: (skip)
+ * @notification: a #GNotification
+ * @action: an action name
+ * @target_format: (allow-none): a GVariant format string, or %NULL
+ * @...: positional parameters, as determined by @format_string
+ *
+ * Sets the default action of @notification to @action. This action is
+ * activated when the notification is clicked on. It must be an
+ * application-wide action (it must start with "app.").
+ *
+ * If @target_format is given, it is used to collect remaining
+ * positional parameters into a GVariant instance, similar to
+ * g_variant_new(). @action will be activated with that GVariant as its
+ * parameter.
+ *
+ * When no default action is set, the application that the notification
+ * was sent on is activated.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_default_action_and_target (GNotification *notification,
+                                              const gchar   *action,
+                                              const gchar   *target_format,
+                                              ...)
+{
+  va_list args;
+  GVariant *target = NULL;
+
+  if (target_format)
+    {
+      va_start (args, target_format);
+      target = g_variant_new_va (target_format, NULL, &args);
+      va_end (args);
+    }
+
+  g_notification_set_default_action_and_target_value (notification, action, target);
+}
+
+/**
+ * g_notification_set_default_action_and_target_value: (rename-to g_notification_set_default_action_and_target)
+ * @notification: a #GNotification
+ * @action: an action name
+ * @target: (allow-none): a GVariant to use as @action's parameter, or %NULL
+ *
+ * Sets the default action of @notification to @action. This action is
+ * activated when the notification is clicked on. It must be an
+ * application-wide action (start with "app.").
+ *
+ * If @target_format is given, it is used to collect remaining
+ * positional parameters into a GVariant instance, similar to
+ * g_variant_new().
+ *
+ * If @target is non-%NULL, @action will be activated with @target as
+ * its parameter.
+ *
+ * When no default action is set, the application that the notification
+ * was sent on is activated.
+ *
+ * Since: 2.40
+ */
+void
+g_notification_set_default_action_and_target_value (GNotification *notification,
+                                                    const gchar   *action,
+                                                    GVariant      *target)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (action != NULL && g_action_name_is_valid (action));
+
+  if (!g_str_has_prefix (action, "app."))
+    {
+      g_warning ("%s: action '%s' does not start with 'app.'."
+                 "This is unlikely to work properly.", G_STRFUNC, action);
+    }
+
+  g_free (notification->default_action);
+  g_clear_pointer (&notification->default_action_target, g_variant_unref);
+
+  notification->default_action = g_strdup (action);
+
+  if (target)
+    notification->default_action_target = g_variant_ref_sink (target);
+}

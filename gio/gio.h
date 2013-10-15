@@ -161,6 +161,7 @@
 #include <gio/gmenu.h>
 #include <gio/gmenuexporter.h>
 #include <gio/gdbusmenumodel.h>
+#include <gio/gnotification.h>
 
 #undef __GIO_GIO_H_INSIDE__
 
