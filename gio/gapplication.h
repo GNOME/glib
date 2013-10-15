@@ -201,6 +201,14 @@ void                    g_application_mark_busy                         (GApplic
 GLIB_AVAILABLE_IN_2_38
 void                    g_application_unmark_busy                       (GApplication             *application);
 
+GLIB_AVAILABLE_IN_2_40
+void                    g_application_send_notification                 (GApplication             *application,
+                                                                         const gchar              *id,
+                                                                         GNotification            *notification);
+GLIB_AVAILABLE_IN_2_40
+void                    g_application_withdraw_notification             (GApplication             *application,
+                                                                         const gchar              *id);
+
 G_END_DECLS
 
 #endif /* __G_APPLICATION_H__ */

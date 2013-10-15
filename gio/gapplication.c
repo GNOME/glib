@@ -32,6 +32,9 @@
 #include "gactionmap.h"
 #include "gmenumodel.h"
 #include "gsettings.h"
+#include "gnotification-private.h"
+#include "gnotificationbackend.h"
+#include "gdbusutils.h"
 
 #include "gioenumtypes.h"
 #include "gioenums.h"
@@ -249,6 +252,8 @@ struct _GApplicationPrivate
 
   GRemoteActionGroup *remote_actions;
   GApplicationImpl   *impl;
+
+  GNotificationBackend *notifications;
 };
 
 enum
@@ -685,6 +690,9 @@ g_application_finalize (GObject *object)
 
   if (application->priv->actions)
     g_object_unref (application->priv->actions);
+
+  if (application->priv->notifications)
+    g_object_unref (application->priv->notifications);
 
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
@@ -1917,6 +1925,97 @@ g_application_unmark_busy (GApplication *application)
 
   if (application->priv->busy_count == 0)
     g_application_impl_set_busy_state (application->priv->impl, FALSE);
+}
+
+/* Notifications {{{1 */
+
+/**
+ * g_application_send_notification:
+ * @application: a #GApplication
+ * @id: (allow-none): id of the notification, or %NULL
+ * @notification: the #GNotification to send
+ *
+ * Sends a notification on behalf of @application to the desktop shell.
+ * There is no guarantee that the notification is displayed immediately,
+ * or even at all.
+ *
+ * Notifications may persist after the application exits. It will be
+ * D-Bus-activated when the notification or one of its actions is
+ * activated.
+ *
+ * Modifying @notification after this call has no effect. However, the
+ * object can be reused for a later call to this function.
+ *
+ * @id may be any string that uniquely identifies the event for the
+ * application. It does not need to be in any special format. For
+ * example, "new-message" might be appropriate for a notification about
+ * new messages.
+ *
+ * If a previous notification was sent with the same @id, it will be
+ * replaced with @notification and shown again as if it was a new
+ * notification. This works even for notifications sent from a previous
+ * execution of the application, as long as @id is the same string.
+ *
+ * @id may be %NULL, but it is impossible to replace or withdraw
+ * notifications without an id.
+ *
+ * If @notification is no longer relevant, it can be withdrawn with
+ * g_application_withdraw_notification().
+ *
+ * Since: 2.40
+ */
+void
+g_application_send_notification (GApplication  *application,
+                                 const gchar   *id,
+                                 GNotification *notification)
+{
+  gchar *generated_id = NULL;
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (g_application_get_is_registered (application));
+  g_return_if_fail (!g_application_get_is_remote (application));
+
+  if (application->priv->notifications == NULL)
+    application->priv->notifications = g_notification_backend_new_default (application);
+
+  if (id == NULL)
+    {
+      generated_id = g_dbus_generate_guid ();
+      id = generated_id;
+    }
+
+  g_notification_backend_send_notification (application->priv->notifications, id, notification);
+
+  g_free (generated_id);
+}
+
+/**
+ * g_application_withdraw_notification:
+ * @application: a #GApplication
+ * @id: id of a previously sent notification
+ *
+ * Withdraws a notification that was sent with
+ * g_application_send_notification().
+ *
+ * This call does nothing if a notification with @id doesn't exist or
+ * the notification was never sent.
+ *
+ * This function works even for notifications sent in previous
+ * executions of this application, as long @id is the same as it was for
+ * the sent notification.
+ *
+ * Since: 2.40
+ */
+void
+g_application_withdraw_notification (GApplication *application,
+                                     const gchar  *id)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (id != NULL);
+
+  if (application->priv->notifications)
+    g_notification_backend_withdraw_notification (application->priv->notifications, id);
 }
 
 /* Epilogue {{{1 */

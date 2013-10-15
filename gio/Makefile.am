@@ -152,6 +152,9 @@ application_headers = \
 	gmenu.h				\
 	gmenuexporter.h			\
 	gdbusmenumodel.h		\
+	gnotification.h			\
+	gnotification-private.h		\
+	gnotificationbackend.h		\
 	$(NULL)
 
 application_sources = \
@@ -175,6 +178,8 @@ application_sources = \
 	gmenu.c					\
 	gmenuexporter.c				\
 	gdbusmenumodel.c			\
+	gnotification.c				\
+	gnotificationbackend.c			\
 	$(NULL)
 
 local_sources = \
@@ -261,6 +266,7 @@ unix_sources = \
 	gunixoutputstream.c 	\
 	gcontenttype.c 		\
 	gcontenttypeprivate.h 	\
+	gfdonotificationbackend.c \
 	$(NULL)
 
 
