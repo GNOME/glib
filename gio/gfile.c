@@ -3112,6 +3112,8 @@ file_copy_fallback (GFile                  *source,
 
   if (attrs_to_read != NULL)
     {
+      GError *tmp_error = NULL;
+
       /* Ok, ditch the previous lightweight info (on Unix we just
        * called lstat()); at this point we gather all the information
        * we need about the source from the opened file descriptor.
@@ -3119,7 +3121,26 @@ file_copy_fallback (GFile                  *source,
       g_object_unref (info);
 
       info = g_file_input_stream_query_info (file_in, attrs_to_read,
-                                             cancellable, error);
+                                             cancellable, &tmp_error);
+      if (!info)
+        {
+          /* Not all gvfs backends implement query_info_on_read(), we
+           * can just fall back to the pathname again.
+           * https://bugzilla.gnome.org/706254
+           */
+          if (g_error_matches (tmp_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+            {
+              g_clear_error (&tmp_error);
+              info = g_file_query_info (source, attrs_to_read, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                        cancellable, error);
+            }
+          else
+            {
+              g_free (attrs_to_read);
+              g_propagate_error (error, tmp_error);
+              goto out;
+            }
+        }
       g_free (attrs_to_read);
       if (!info)
         goto out;
