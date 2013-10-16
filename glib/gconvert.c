@@ -224,9 +224,6 @@ try_to_aliases (const char **to_aliases,
   return FALSE;
 }
 
-extern const char **
-_g_charset_get_aliases (const char *canonical_name);
-
 /**
  * g_iconv_open:
  * @to_codeset: destination codeset
