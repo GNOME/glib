@@ -195,7 +195,7 @@ typedef struct _GParamSpecClass GParamSpecClass;
 typedef struct _GParameter	GParameter;
 typedef struct _GParamSpecPool  GParamSpecPool;
 /**
- * GParamSpec:
+ * GParamSpec: (ref-func g_param_spec_ref_sink) (unref-func g_param_spec_uref) (set-value-func g_value_set_param) (get-value-func g_value_get_param)
  * @g_type_instance: private #GTypeInstance portion
  * @name: name of this parameter: always an interned string
  * @flags: #GParamFlags flags for this parameter
