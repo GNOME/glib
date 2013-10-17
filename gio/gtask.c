@@ -91,7 +91,7 @@
  *           return;
  *         }
  *
- *       g_task_return_pointer (result, cake, g_object_unref);
+ *       g_task_return_pointer (task, cake, g_object_unref);
  *       g_object_unref (task);
  *     }
  *
