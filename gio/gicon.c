@@ -284,9 +284,20 @@ g_icon_new_from_tokens (char   **tokens,
   int num_tokens;
   int i;
 
+  icon = NULL;
+  klass = NULL;
+
   num_tokens = g_strv_length (tokens);
 
-  g_return_val_if_fail (num_tokens >= 1, NULL);
+  if (num_tokens < 1)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Wrong number of tokens (%d)"),
+                   num_tokens);
+      goto out;
+    }
   
   typename = tokens[0];
   version_str = strchr (typename, '.');
@@ -298,23 +309,64 @@ g_icon_new_from_tokens (char   **tokens,
   
   
   type = g_type_from_name (tokens[0]);
-  g_return_val_if_fail (type != 0, NULL);
-  g_return_val_if_fail (g_type_is_a (type, G_TYPE_ICON), NULL);
+  if (type == 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("No type for class name %s"),
+                   tokens[0]);
+      goto out;
+    }
+
+  if (!g_type_is_a (type, G_TYPE_ICON))
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Type %s does not implement the GIcon interface"),
+                   tokens[0]);
+      goto out;
+    }
 
   klass = g_type_class_ref (type);
-  g_return_val_if_fail (klass, NULL);
+  if (klass == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Type %s is not classed"),
+                   tokens[0]);
+      goto out;
+    }
 
   version = 0;
   if (version_str)
     {
       version = strtol (version_str, &endp, 10);
-      g_return_val_if_fail (endp && *endp, NULL);
+      if (endp == NULL || *endp != '\0')
+	{
+	  g_set_error (error,
+		       G_IO_ERROR,
+		       G_IO_ERROR_INVALID_ARGUMENT,
+		       _("Malformed version number: %s"),
+		       version_str);
+	  goto out;
+	}
     }
 
   icon_iface = g_type_interface_peek (klass, G_TYPE_ICON);
   g_assert (icon_iface != NULL);
 
-  g_return_val_if_fail (icon_iface->from_tokens, NULL);
+  if (icon_iface->from_tokens == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Type %s does not implement from_tokens() on the GIcon interface"),
+                   tokens[0]);
+      goto out;
+    }
 
   for (i = 1;  i < num_tokens; i++)
     {
@@ -327,7 +379,9 @@ g_icon_new_from_tokens (char   **tokens,
   
   icon = icon_iface->from_tokens (tokens + 1, num_tokens - 1, version, error);
 
-  g_type_class_unref (klass);
+ out:
+  if (klass != NULL)
+    g_type_class_unref (klass);
   return icon;
 }
 
@@ -411,7 +465,7 @@ g_icon_new_for_string (const gchar   *str,
     g_set_error_literal (error,
                          G_IO_ERROR,
                          G_IO_ERROR_INVALID_ARGUMENT,
-                         "Can't handle the supplied version of the icon encoding");
+                         _("Can't handle the supplied version of the icon encoding"));
 
   return icon;
 }
