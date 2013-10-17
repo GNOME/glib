@@ -129,8 +129,6 @@ static gboolean g_buffered_input_stream_truncate            (GSeekable       *se
 							     GCancellable    *cancellable,
 							     GError         **error);
 
-static void     g_buffered_input_stream_finalize            (GObject         *object);
-
 static void compact_buffer (GBufferedInputStream *stream);
 
 G_DEFINE_TYPE_WITH_CODE (GBufferedInputStream,
