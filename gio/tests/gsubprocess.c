@@ -17,15 +17,12 @@ get_test_subprocess_args (const char *mode,
                           ...)
 {
   GPtrArray *ret;
-  char *cwd;
-  char *cwd_path;
+  char *path;
   const char *binname;
   va_list args;
   gpointer arg;
 
   ret = g_ptr_array_new_with_free_func (g_free);
-
-  cwd = g_get_current_dir ();
 
 #ifdef G_OS_WIN32
   binname = "gsubprocess-testprog.exe";
@@ -33,9 +30,8 @@ get_test_subprocess_args (const char *mode,
   binname = "gsubprocess-testprog";
 #endif
 
-  cwd_path = g_build_filename (cwd, binname, NULL);
-  g_free (cwd);
-  g_ptr_array_add (ret, cwd_path);
+  path = g_test_build_filename (G_TEST_BUILT, binname, NULL);
+  g_ptr_array_add (ret, path);
   g_ptr_array_add (ret, g_strdup (mode));
 
   va_start (args, mode);
