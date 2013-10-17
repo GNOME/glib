@@ -129,9 +129,6 @@ struct _GApplicationImpl
 static GApplicationCommandLine *
 g_dbus_command_line_new (GDBusMethodInvocation *invocation);
 
-static void
-g_dbus_command_line_return (GApplicationCommandLine *cmdline);
-
 static GVariant *
 g_application_impl_get_property (GDBusConnection *connection,
                                  const gchar  *sender,
@@ -262,8 +259,6 @@ g_application_impl_method_call (GDBusConnection       *connection,
       g_application_command_line_set_exit_status (cmdline, status);
       class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
-
-      g_dbus_command_line_return (cmdline);
       g_object_unref (cmdline);
     }
   else if (g_str_equal (method_name, "ActivateAction"))
@@ -792,8 +787,6 @@ typedef struct
   GDBusConnection *connection;
   const gchar     *bus_name;
   const gchar     *object_path;
-
-  gboolean returned;
 } GDBusCommandLine;
 
 
@@ -859,29 +852,16 @@ g_dbus_command_line_get_stdin (GApplicationCommandLine *cmdline)
 }
 
 static void
-g_dbus_command_line_return (GApplicationCommandLine *cmdline)
+g_dbus_command_line_finalize (GObject *object)
 {
-  GDBusCommandLine *gdbcl = (GDBusCommandLine *) cmdline;
+  GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
+  GDBusCommandLine *gdbcl = (GDBusCommandLine *) object;
   gint status;
-
-  if (gdbcl->returned)
-    return;
-
-  gdbcl->returned = TRUE;
 
   status = g_application_command_line_get_exit_status (cmdline);
 
   g_dbus_method_invocation_return_value (gdbcl->invocation,
                                          g_variant_new ("(i)", status));
-}
-
-static void
-g_dbus_command_line_finalize (GObject *object)
-{
-  GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
-  GDBusCommandLine *gdbcl = (GDBusCommandLine *) object;
-
-  g_dbus_command_line_return (cmdline);
   g_object_unref (gdbcl->invocation);
 
   G_OBJECT_CLASS (g_dbus_command_line_parent_class)
