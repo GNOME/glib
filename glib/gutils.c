@@ -1537,7 +1537,6 @@ load_user_special_dirs (void)
 }
 #endif /* G_OS_WIN32 */
 
-static void g_init_user_config_dir (void);
 
 #if defined(G_OS_UNIX) && !defined(HAVE_CARBON)
 
