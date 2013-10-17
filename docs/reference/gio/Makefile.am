@@ -69,6 +69,7 @@ IGNORE_HFILES = \
 	gsocks4aproxy.h			\
 	gsocks4proxy.h			\
 	gsocks5proxy.h			\
+	gsubprocesslauncher-private.h	\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixmount.h			\

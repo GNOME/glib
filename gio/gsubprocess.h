@@ -51,76 +51,76 @@ GSubprocess *    g_subprocess_newv                      (const gchar * const  *a
                                                          GError              **error);
 
 GLIB_AVAILABLE_IN_2_40
-GOutputStream *  g_subprocess_get_stdin_pipe            (GSubprocess          *self);
+GOutputStream *  g_subprocess_get_stdin_pipe            (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-GInputStream *   g_subprocess_get_stdout_pipe           (GSubprocess          *self);
+GInputStream *   g_subprocess_get_stdout_pipe           (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-GInputStream *   g_subprocess_get_stderr_pipe           (GSubprocess          *self);
+GInputStream *   g_subprocess_get_stderr_pipe           (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-const gchar *    g_subprocess_get_identifier            (GSubprocess          *self);
+const gchar *    g_subprocess_get_identifier            (GSubprocess          *subprocess);
 
 #ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_2_40
-void             g_subprocess_send_signal               (GSubprocess          *self,
+void             g_subprocess_send_signal               (GSubprocess          *subprocess,
                                                          gint                  signal_num);
 #endif
 
 GLIB_AVAILABLE_IN_2_40
-void             g_subprocess_force_exit                (GSubprocess          *self);
+void             g_subprocess_force_exit                (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_wait                      (GSubprocess          *self,
+gboolean         g_subprocess_wait                      (GSubprocess          *subprocess,
                                                          GCancellable         *cancellable,
                                                          GError              **error);
 
 GLIB_AVAILABLE_IN_2_40
-void             g_subprocess_wait_async                (GSubprocess          *self,
-                                                         GCancellable         *cancellable,
-                                                         GAsyncReadyCallback   callback,
-                                                         gpointer              user_data);
-
-GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_wait_finish               (GSubprocess          *self,
-                                                         GAsyncResult         *result,
-                                                         GError              **error);
-
-GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_wait_check                (GSubprocess          *self,
-                                                         GCancellable         *cancellable,
-                                                         GError              **error);
-
-GLIB_AVAILABLE_IN_2_40
-void             g_subprocess_wait_check_async          (GSubprocess          *self,
+void             g_subprocess_wait_async                (GSubprocess          *subprocess,
                                                          GCancellable         *cancellable,
                                                          GAsyncReadyCallback   callback,
                                                          gpointer              user_data);
 
 GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_wait_check_finish         (GSubprocess          *self,
+gboolean         g_subprocess_wait_finish               (GSubprocess          *subprocess,
+                                                         GAsyncResult         *result,
+                                                         GError              **error);
+
+GLIB_AVAILABLE_IN_2_40
+gboolean         g_subprocess_wait_check                (GSubprocess          *subprocess,
+                                                         GCancellable         *cancellable,
+                                                         GError              **error);
+
+GLIB_AVAILABLE_IN_2_40
+void             g_subprocess_wait_check_async          (GSubprocess          *subprocess,
+                                                         GCancellable         *cancellable,
+                                                         GAsyncReadyCallback   callback,
+                                                         gpointer              user_data);
+
+GLIB_AVAILABLE_IN_2_40
+gboolean         g_subprocess_wait_check_finish         (GSubprocess          *subprocess,
                                                          GAsyncResult         *result,
                                                          GError              **error);
 
 
 GLIB_AVAILABLE_IN_2_40
-gint             g_subprocess_get_status                (GSubprocess          *self);
+gint             g_subprocess_get_status                (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_get_successful            (GSubprocess          *self);
+gboolean         g_subprocess_get_successful            (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_get_if_exited             (GSubprocess          *self);
+gboolean         g_subprocess_get_if_exited             (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gint             g_subprocess_get_exit_status           (GSubprocess          *self);
+gint             g_subprocess_get_exit_status           (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gboolean         g_subprocess_get_if_signaled           (GSubprocess          *self);
+gboolean         g_subprocess_get_if_signaled           (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
-gint             g_subprocess_get_term_sig              (GSubprocess          *self);
+gint             g_subprocess_get_term_sig              (GSubprocess          *subprocess);
 
 GLIB_AVAILABLE_IN_2_40
 gboolean         g_subprocess_communicate               (GSubprocess          *subprocess,

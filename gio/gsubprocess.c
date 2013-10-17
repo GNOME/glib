@@ -1,7 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
- * Copyright © 2012 Red Hat, Inc.
- * Copyright © 2012-2013 Canonical Limited
+ * Copyright © 2012, 2013 Red Hat, Inc.
+ * Copyright © 2012, 2013 Canonical Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -76,7 +76,7 @@
  * checked using functions such as g_subprocess_get_if_exited() (which
  * are similar to the familiar WIFEXITED-style POSIX macros).
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 
 #include "config.h"
@@ -602,7 +602,7 @@ g_subprocess_class_init (GSubprocessClass *class)
  * Returns: A newly created #GSubprocess, or %NULL on error (and @error
  *   will be set)
  *
- * Since: 2.36
+ * Since: 2.40
  */
 GSubprocess *
 g_subprocess_new (GSubprocessFlags   flags,
@@ -643,7 +643,7 @@ g_subprocess_new (GSubprocessFlags   flags,
  * Returns: A newly created #GSubprocess, or %NULL on error (and @error
  *   will be set)
  *
- * Since: 2.36
+ * Since: 2.40
  * Rename to: g_subprocess_new
  */
 GSubprocess *
@@ -660,41 +660,83 @@ g_subprocess_newv (const gchar * const  *argv,
 }
 
 const gchar *
-g_subprocess_get_identifier (GSubprocess *self)
+g_subprocess_get_identifier (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), NULL);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
 
-  if (self->pid)
-    return self->identifier;
+  if (subprocess->pid)
+    return subprocess->identifier;
   else
     return NULL;
 }
 
+/**
+ * g_subprocess_get_stdin_pipe:
+ * @subprocess: a #GSubprocess
+ *
+ * Gets the #GOutputStream that you can write to in order to give data
+ * to the stdin of @subprocess.
+ *
+ * The process must have been created with
+ * %G_SUBPROCESS_FLAGS_STDIN_PIPE.
+ *
+ * Returns: the stdout pipe
+ *
+ * Since: 2.40
+ **/
 GOutputStream *
-g_subprocess_get_stdin_pipe (GSubprocess       *self)
+g_subprocess_get_stdin_pipe (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), NULL);
-  g_return_val_if_fail (self->stdin_pipe, NULL);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
+  g_return_val_if_fail (subprocess->stdin_pipe, NULL);
 
-  return self->stdin_pipe;
+  return subprocess->stdin_pipe;
 }
 
+/**
+ * g_subprocess_get_stdout_pipe:
+ * @subprocess: a #GSubprocess
+ *
+ * Gets the #GInputStream from which to read the stdout output of
+ * @subprocess.
+ *
+ * The process must have been created with
+ * %G_SUBPROCESS_FLAGS_STDOUT_PIPE.
+ *
+ * Returns: the stdout pipe
+ *
+ * Since: 2.40
+ **/
 GInputStream *
-g_subprocess_get_stdout_pipe (GSubprocess      *self)
+g_subprocess_get_stdout_pipe (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), NULL);
-  g_return_val_if_fail (self->stdout_pipe, NULL);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
+  g_return_val_if_fail (subprocess->stdout_pipe, NULL);
 
-  return self->stdout_pipe;
+  return subprocess->stdout_pipe;
 }
 
+/**
+ * g_subprocess_get_stderr_pipe:
+ * @subprocess: a #GSubprocess
+ *
+ * Gets the #GInputStream from which to read the stderr output of
+ * @subprocess.
+ *
+ * The process must have been created with
+ * %G_SUBPROCESS_FLAGS_STDERR_PIPE.
+ *
+ * Returns: the stderr pipe
+ *
+ * Since: 2.40
+ **/
 GInputStream *
-g_subprocess_get_stderr_pipe (GSubprocess      *self)
+g_subprocess_get_stderr_pipe (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), NULL);
-  g_return_val_if_fail (self->stderr_pipe, NULL);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
+  g_return_val_if_fail (subprocess->stderr_pipe, NULL);
 
-  return self->stderr_pipe;
+  return subprocess->stderr_pipe;
 }
 
 static void
@@ -714,18 +756,31 @@ g_subprocess_wait_cancelled (GCancellable *cancellable,
   g_object_unref (task);
 }
 
+/**
+ * g_subprocess_wait_async:
+ * @subprocess: a #GSubprocess
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: a #GAsyncReadyCallback to call when the operation is complete
+ * @user_data: user_data for @callback
+ *
+ * Wait for the subprocess to terminate.
+ *
+ * This is the asynchronous version of g_subprocess_wait().
+ *
+ * Since: 2.40
+ */
 void
-g_subprocess_wait_async (GSubprocess         *self,
+g_subprocess_wait_async (GSubprocess         *subprocess,
                          GCancellable        *cancellable,
                          GAsyncReadyCallback  callback,
                          gpointer             user_data)
 {
   GTask *task;
 
-  task = g_task_new (self, cancellable, callback, user_data);
+  task = g_task_new (subprocess, cancellable, callback, user_data);
 
-  g_mutex_lock (&self->pending_waits_lock);
-  if (self->pid)
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  if (subprocess->pid)
     {
       /* Only bother with cancellable if we're putting it in the list.
        * If not, it's going to dispatch immediately anyway and we will
@@ -734,10 +789,10 @@ g_subprocess_wait_async (GSubprocess         *self,
       if (cancellable)
         g_signal_connect_object (cancellable, "cancelled", G_CALLBACK (g_subprocess_wait_cancelled), task, 0);
 
-      self->pending_waits = g_slist_prepend (self->pending_waits, task);
+      subprocess->pending_waits = g_slist_prepend (subprocess->pending_waits, task);
       task = NULL;
     }
-  g_mutex_unlock (&self->pending_waits_lock);
+  g_mutex_unlock (&subprocess->pending_waits_lock);
 
   /* If we still have task then it's because did_exit is already TRUE */
   if (task != NULL)
@@ -747,8 +802,21 @@ g_subprocess_wait_async (GSubprocess         *self,
     }
 }
 
+/**
+ * g_subprocess_wait_finish:
+ * @subprocess: a #GSubprocess
+ * @result: the #GAsyncResult passed to your #GAsyncReadyCallback
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Collects the result of a previous call to
+ * g_subprocess_wait_async().
+ *
+ * Returns: %TRUE if successful, or %FALSE with @error set
+ *
+ * Since: 2.40
+ */
 gboolean
-g_subprocess_wait_finish (GSubprocess   *self,
+g_subprocess_wait_finish (GSubprocess   *subprocess,
                           GAsyncResult  *result,
                           GError       **error)
 {
@@ -788,28 +856,32 @@ g_subprocess_sync_complete (GAsyncResult **result)
 
 /**
  * g_subprocess_wait:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  * @cancellable: a #GCancellable
  * @error: a #GError
  *
- * Synchronously wait for the subprocess to terminate, returning the
- * status code in @out_exit_status.  See the documentation of
- * g_spawn_check_exit_status() for how to interpret it.  Note that if
- * @error is set, then @out_exit_status will be left uninitialized.
+ * Synchronously wait for the subprocess to terminate.
+ *
+ * After the process terminates you can query its exit status with
+ * functions such as g_subprocess_get_if_exited() and
+ * g_subprocess_get_exit_status().
+ *
+ * This function does not fail in the case of the subprocess having
+ * abnormal termination.  See g_subprocess_wait_check() for that.
  *
  * Returns: %TRUE on success, %FALSE if @cancellable was cancelled
  *
- * Since: 2.36
+ * Since: 2.40
  */
 gboolean
-g_subprocess_wait (GSubprocess   *self,
+g_subprocess_wait (GSubprocess   *subprocess,
                    GCancellable  *cancellable,
                    GError       **error)
 {
   GAsyncResult *result = NULL;
   gboolean success;
 
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), FALSE);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
 
   /* Synchronous waits are actually the 'more difficult' case because we
    * need to deal with the possibility of cancellation.  That more or
@@ -825,56 +897,83 @@ g_subprocess_wait (GSubprocess   *self,
   /* We can shortcut in the case that the process already quit (but only
    * after we checked the cancellable).
    */
-  if (self->pid == 0)
+  if (subprocess->pid == 0)
     return TRUE;
 
   /* Otherwise, we need to do this the long way... */
   g_subprocess_sync_setup ();
-  g_subprocess_wait_async (self, cancellable, g_subprocess_sync_done, &result);
+  g_subprocess_wait_async (subprocess, cancellable, g_subprocess_sync_done, &result);
   g_subprocess_sync_complete (&result);
-  success = g_subprocess_wait_finish (self, result, error);
+  success = g_subprocess_wait_finish (subprocess, result, error);
   g_object_unref (result);
 
   return success;
 }
 
 /**
- * g_subprocess_wait_sync_check:
- * @self: a #GSubprocess
+ * g_subprocess_wait_check:
+ * @subprocess: a #GSubprocess
  * @cancellable: a #GCancellable
  * @error: a #GError
  *
- * Combines g_subprocess_wait_sync() with g_spawn_check_exit_status().
+ * Combines g_subprocess_wait() with g_spawn_check_exit_status().
  *
- * Returns: %TRUE on success, %FALSE if process exited abnormally, or @cancellable was cancelled
+ * Returns: %TRUE on success, %FALSE if process exited abnormally, or
+ * @cancellable was cancelled
  *
- * Since: 2.36
+ * Since: 2.40
  */
 gboolean
-g_subprocess_wait_check (GSubprocess   *self,
+g_subprocess_wait_check (GSubprocess   *subprocess,
                          GCancellable  *cancellable,
                          GError       **error)
 {
-  return g_subprocess_wait (self, cancellable, error) &&
-         g_spawn_check_exit_status (self->status, error);
+  return g_subprocess_wait (subprocess, cancellable, error) &&
+         g_spawn_check_exit_status (subprocess->status, error);
 }
 
+/**
+ * g_subprocess_wait_check_async:
+ * @subprocess: a #GSubprocess
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: a #GAsyncReadyCallback to call when the operation is complete
+ * @user_data: user_data for @callback
+ *
+ * Combines g_subprocess_wait_async() with g_spawn_check_exit_status().
+ *
+ * This is the asynchronous version of g_subprocess_wait_check().
+ *
+ * Since: 2.40
+ */
 void
-g_subprocess_wait_check_async (GSubprocess         *self,
+g_subprocess_wait_check_async (GSubprocess         *subprocess,
                                GCancellable        *cancellable,
                                GAsyncReadyCallback  callback,
                                gpointer             user_data)
 {
-  g_subprocess_wait_async (self, cancellable, callback, user_data);
+  g_subprocess_wait_async (subprocess, cancellable, callback, user_data);
 }
 
+/**
+ * g_subprocess_wait_check_finish:
+ * @subprocess: a #GSubprocess
+ * @result: the #GAsyncResult passed to your #GAsyncReadyCallback
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Collects the result of a previous call to
+ * g_subprocess_wait_check_async().
+ *
+ * Returns: %TRUE if successful, or %FALSE with @error set
+ *
+ * Since: 2.40
+ */
 gboolean
-g_subprocess_wait_check_finish (GSubprocess   *self,
+g_subprocess_wait_check_finish (GSubprocess   *subprocess,
                                 GAsyncResult  *result,
                                 GError       **error)
 {
-  return g_subprocess_wait_finish (self, result, error) &&
-         g_spawn_check_exit_status (self->status, error);
+  return g_subprocess_wait_finish (subprocess, result, error) &&
+         g_spawn_check_exit_status (subprocess->status, error);
 }
 
 #ifdef G_OS_UNIX
@@ -903,12 +1002,12 @@ g_subprocess_actually_send_signal (gpointer user_data)
 }
 
 static void
-g_subprocess_dispatch_signal (GSubprocess *self,
+g_subprocess_dispatch_signal (GSubprocess *subprocess,
                               gint         signalnum)
 {
-  SignalRecord signal_record = { g_object_ref (self), signalnum };
+  SignalRecord signal_record = { g_object_ref (subprocess), signalnum };
 
-  g_return_if_fail (G_IS_SUBPROCESS (self));
+  g_return_if_fail (G_IS_SUBPROCESS (subprocess));
 
   /* This MUST be a lower priority than the priority that the child
    * watch source uses in initable_init().
@@ -930,7 +1029,7 @@ g_subprocess_dispatch_signal (GSubprocess *self,
 
 /**
  * g_subprocess_send_signal:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  * @signal_num: the signal number to send
  *
  * Sends the UNIX signal @signal_num to the subprocess, if it is still
@@ -941,21 +1040,21 @@ g_subprocess_dispatch_signal (GSubprocess *self,
  *
  * This API is not available on Windows.
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 void
-g_subprocess_send_signal (GSubprocess *self,
+g_subprocess_send_signal (GSubprocess *subprocess,
                           gint         signal_num)
 {
-  g_return_if_fail (G_IS_SUBPROCESS (self));
+  g_return_if_fail (G_IS_SUBPROCESS (subprocess));
 
-  g_subprocess_dispatch_signal (self, signal_num);
+  g_subprocess_dispatch_signal (subprocess, signal_num);
 }
 #endif
 
 /**
  * g_subprocess_force_exit:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Use an operating-system specific method to attempt an immediate,
  * forceful termination of the process.  There is no mechanism to
@@ -965,23 +1064,23 @@ g_subprocess_send_signal (GSubprocess *self,
  *
  * On Unix, this function sends %SIGKILL.
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 void
-g_subprocess_force_exit (GSubprocess *self)
+g_subprocess_force_exit (GSubprocess *subprocess)
 {
-  g_return_if_fail (G_IS_SUBPROCESS (self));
+  g_return_if_fail (G_IS_SUBPROCESS (subprocess));
 
 #ifdef G_OS_UNIX
-  g_subprocess_dispatch_signal (self, SIGKILL);
+  g_subprocess_dispatch_signal (subprocess, SIGKILL);
 #else
-  TerminateProcess (self->pid, 1);
+  TerminateProcess (subprocess->pid, 1);
 #endif
 }
 
 /**
  * g_subprocess_get_status:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Gets the raw status code of the process, as from waitpid().
  *
@@ -997,20 +1096,20 @@ g_subprocess_force_exit (GSubprocess *self)
  *
  * Returns: the (meaningless) waitpid() exit status from the kernel
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gint
-g_subprocess_get_status (GSubprocess *self)
+g_subprocess_get_status (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), FALSE);
-  g_return_val_if_fail (self->pid == 0, FALSE);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
-  return self->status;
+  return subprocess->status;
 }
 
 /**
  * g_subprocess_get_successful:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Checks if the process was "successful".  A process is considered
  * successful if it exited cleanly with an exit status of 0, either by
@@ -1021,20 +1120,20 @@ g_subprocess_get_status (GSubprocess *self)
  *
  * Returns: %TRUE if the process exited cleanly with a exit status of 0
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gboolean
-g_subprocess_get_successful (GSubprocess *self)
+g_subprocess_get_successful (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), FALSE);
-  g_return_val_if_fail (self->pid == 0, FALSE);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
-  return WIFEXITED (self->status) && WEXITSTATUS (self->status) == 0;
+  return WIFEXITED (subprocess->status) && WEXITSTATUS (subprocess->status) == 0;
 }
 
 /**
  * g_subprocess_get_if_exited:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Check if the given subprocess exited normally (ie: by way of exit()
  * or return from main()).
@@ -1046,20 +1145,20 @@ g_subprocess_get_successful (GSubprocess *self)
  *
  * Returns: %TRUE if the case of a normal exit
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gboolean
-g_subprocess_get_if_exited (GSubprocess *self)
+g_subprocess_get_if_exited (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), FALSE);
-  g_return_val_if_fail (self->pid == 0, FALSE);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
-  return WIFEXITED (self->status);
+  return WIFEXITED (subprocess->status);
 }
 
 /**
  * g_subprocess_get_exit_status:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Check the exit status of the subprocess, given that it exited
  * normally.  This is the value passed to the exit() system call or the
@@ -1072,21 +1171,21 @@ g_subprocess_get_if_exited (GSubprocess *self)
  *
  * Returns: the exit status
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gint
-g_subprocess_get_exit_status (GSubprocess *self)
+g_subprocess_get_exit_status (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), 1);
-  g_return_val_if_fail (self->pid == 0, 1);
-  g_return_val_if_fail (WIFEXITED (self->status), 1);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 1);
+  g_return_val_if_fail (subprocess->pid == 0, 1);
+  g_return_val_if_fail (WIFEXITED (subprocess->status), 1);
 
-  return WEXITSTATUS (self->status);
+  return WEXITSTATUS (subprocess->status);
 }
 
 /**
  * g_subprocess_get_if_signaled:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Check if the given subprocess terminated in response to a signal.
  *
@@ -1097,20 +1196,20 @@ g_subprocess_get_exit_status (GSubprocess *self)
  *
  * Returns: %TRUE if the case of termination due to a signal
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gboolean
-g_subprocess_get_if_signaled (GSubprocess *self)
+g_subprocess_get_if_signaled (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), FALSE);
-  g_return_val_if_fail (self->pid == 0, FALSE);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+  g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
-  return WIFSIGNALED (self->status);
+  return WIFSIGNALED (subprocess->status);
 }
 
 /**
  * g_subprocess_get_term_sig:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  *
  * Get the signal number that caused the subprocess to terminate, given
  * that it terminated due to a signal.
@@ -1122,16 +1221,16 @@ g_subprocess_get_if_signaled (GSubprocess *self)
  *
  * Returns: the signal causing termination
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 gint
-g_subprocess_get_term_sig (GSubprocess *self)
+g_subprocess_get_term_sig (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (self), 0);
-  g_return_val_if_fail (self->pid == 0, 0);
-  g_return_val_if_fail (WIFSIGNALED (self->status), 0);
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 0);
+  g_return_val_if_fail (subprocess->pid == 0, 0);
+  g_return_val_if_fail (WIFSIGNALED (subprocess->status), 0);
 
-  return WTERMSIG (self->status);
+  return WTERMSIG (subprocess->status);
 }
 
 /*< private >*/
@@ -1371,7 +1470,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
 
 /**
  * g_subprocess_communicate:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  * @stdin_buf: data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
@@ -1518,7 +1617,7 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
 
 /**
  * g_subprocess_communicate_utf8:
- * @self: a #GSubprocess
+ * @subprocess: a #GSubprocess
  * @stdin_buf: data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
@@ -1529,12 +1628,12 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
  * process as UTF-8, and returns it as a regular NUL terminated string.
  */
 gboolean
-g_subprocess_communicate_utf8 (GSubprocess          *subprocess,
-                               const char           *stdin_buf,
-                               GCancellable         *cancellable,
-                               char                **stdout_buf,
-                               char                **stderr_buf,
-                               GError              **error)
+g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
+                               const char    *stdin_buf,
+                               GCancellable  *cancellable,
+                               char         **stdout_buf,
+                               char         **stderr_buf,
+                               GError       **error)
 {
   GAsyncResult *result = NULL;
   gboolean success;
@@ -1570,11 +1669,11 @@ g_subprocess_communicate_utf8 (GSubprocess          *subprocess,
  * invocation with g_subprocess_communicate_utf8_finish().
  */
 void
-g_subprocess_communicate_utf8_async (GSubprocess          *subprocess,
-                                     const char           *stdin_buf,
-                                     GCancellable         *cancellable,
-                                     GAsyncReadyCallback   callback,
-                                     gpointer              user_data)
+g_subprocess_communicate_utf8_async (GSubprocess         *subprocess,
+                                     const char          *stdin_buf,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             user_data)
 {
   GBytes *stdin_bytes;
 
@@ -1627,11 +1726,11 @@ communicate_result_validate_utf8 (const char            *stream_name,
  * Complete an invocation of g_subprocess_communicate_utf8_async().
  */
 gboolean
-g_subprocess_communicate_utf8_finish (GSubprocess          *subprocess,
-                                      GAsyncResult         *result,
-                                      char                **stdout_buf,
-                                      char                **stderr_buf,
-                                      GError              **error)
+g_subprocess_communicate_utf8_finish (GSubprocess   *subprocess,
+                                      GAsyncResult  *result,
+                                      char         **stdout_buf,
+                                      char         **stderr_buf,
+                                      GError       **error)
 {
   gboolean ret = FALSE;
   CommunicateState *state;

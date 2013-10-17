@@ -199,6 +199,7 @@ g_subprocess_launcher_class_init (GSubprocessLauncherClass *class)
 
 /**
  * g_subprocess_launcher_new:
+ * @flags: #GSubprocessFlags
  *
  * Creates a new #GSubprocessLauncher.
  *
@@ -275,7 +276,7 @@ g_subprocess_launcher_setenv (GSubprocessLauncher *self,
 }
 
 /**
- * g_subprocess_launcher_unsetsenv:
+ * g_subprocess_launcher_unsetenv:
  * @self: a #GSubprocess
  * @variable: the environment variable to unset, must not contain '='
  *
