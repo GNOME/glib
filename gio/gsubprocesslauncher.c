@@ -15,7 +15,7 @@
  */
 
 /**
- * SECTION:gsubprocess
+ * SECTION:gsubprocesslauncher
  * @title: GSubprocess Launcher
  * @short_description: Environment options for launching a child process
  *

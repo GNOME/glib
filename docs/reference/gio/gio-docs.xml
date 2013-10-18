@@ -111,6 +111,7 @@
     <chapter id="subprocesses">
       <title>Subprocesses</title>
       <xi:include href="xml/gsubprocess.xml"/>
+      <xi:include href="xml/gsubprocesslauncher.xml"/>
     </chapter>
     <chapter id="networking">
       <title>Low-level network support</title>

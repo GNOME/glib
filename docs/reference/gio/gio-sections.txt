@@ -4115,7 +4115,18 @@ g_subprocess_communicate_finish
 g_subprocess_communicate_utf8
 g_subprocess_communicate_utf8_async
 g_subprocess_communicate_utf8_finish
-<SUBSECTION Launcher>
+<SUBSECTION Standard>
+G_IS_SUBPROCESS
+G_TYPE_SUBPROCESS
+G_SUBPROCESS
+G_TYPE_SUBPROCESS_FLAGS
+g_subprocess_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gsubprocesslauncher</FILE>
+<TITLE>GSubprocessLauncher</TITLE>
+GSubprocessLauncher
 g_subprocess_launcher_getenv
 g_subprocess_launcher_new
 g_subprocess_launcher_set_child_setup
@@ -4134,14 +4145,8 @@ g_subprocess_launcher_take_stdin_fd
 g_subprocess_launcher_take_stdout_fd
 g_subprocess_launcher_unsetenv
 <SUBSECTION Standard>
-GSubprocessLauncher
-G_IS_SUBPROCESS
-G_TYPE_SUBPROCESS
-G_SUBPROCESS
-g_subprocess_get_type
 G_IS_SUBPROCESS_LAUNCHER
 G_SUBPROCESS_LAUNCHER
-G_TYPE_SUBPROCESS_FLAGS
 G_TYPE_SUBPROCESS_LAUNCHER
 g_subprocess_launcher_get_type
 </SECTION>
