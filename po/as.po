@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-04 13:57+0000\n"
-"PO-Revision-Date: 2013-10-07 12:56+0530\n"
+"POT-Creation-Date: 2013-10-17 19:57+0000\n"
+"PO-Revision-Date: 2013-10-18 19:14+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as\n"
@@ -20,6 +20,238 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1)\n"
+
+#: ../gio/gapplication-tool.c:47 ../gio/gapplication-tool.c:48
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:542
+msgid "Print help"
+msgstr "প্ৰিন্ট সহায়"
+
+#: ../gio/gapplication-tool.c:49 ../gio/gresource-tool.c:476
+#: ../gio/gresource-tool.c:544
+msgid "[COMMAND]"
+msgstr "[COMMAND]"
+
+#: ../gio/gapplication-tool.c:51
+#| msgid "Print address"
+msgid "Print version"
+msgstr "প্ৰিন্ট সংস্কৰণ"
+
+#: ../gio/gapplication-tool.c:52 ../gio/gsettings-tool.c:548
+msgid "Print version information and exit"
+msgstr "সংস্কৰণ তথ্য প্ৰিন্ট কৰক আৰু প্ৰস্থান কৰক"
+
+#: ../gio/gapplication-tool.c:54
+#| msgid "Can't find application"
+msgid "List applications"
+msgstr "এপ্লিকেচনসমূহ তালিকাভুক্ত কৰক"
+
+#: ../gio/gapplication-tool.c:55
+msgid "List the installed D-Bus activatable applications (by .desktop files)"
+msgstr ""
+"ইনস্টল্ড D-Bus সক্ৰিয়যোগ্য এপ্লিকেচনসমূহ তালিকাভুক্ত কৰক (.desktop ফাইলসমূহৰে)"
+
+#: ../gio/gapplication-tool.c:57
+#| msgid "Can't find application"
+msgid "Launch an application"
+msgstr "এটা এপ্লিকেচন আৰম্ভ কৰক"
+
+#: ../gio/gapplication-tool.c:58
+msgid "Launch the application (with optional files to open)"
+msgstr "এপ্লিকেচন আৰম্ভ কৰক (খোলিবলৈ বৈকল্পিক ফাইলসমূহৰ সৈতে)"
+
+#: ../gio/gapplication-tool.c:59
+msgid "APPID [FILE...]"
+msgstr "APPID [FILE...]"
+
+#: ../gio/gapplication-tool.c:61
+msgid "Activate an action"
+msgstr "এটা কাৰ্য্য সক্ৰিয় কৰক"
+
+#: ../gio/gapplication-tool.c:62
+msgid "Invoke an action on the application"
+msgstr "এপ্লিকেচনত এটা কাৰ্য্য আৱাহন কৰক"
+
+#: ../gio/gapplication-tool.c:63
+msgid "APPID ACTION [PARAMETER]"
+msgstr "APPID ACTION [PARAMETER]"
+
+#: ../gio/gapplication-tool.c:65
+msgid "List available actions"
+msgstr "উপলব্ধ কাৰ্য্যসমূহ তালিকাভুক্ত কৰক"
+
+#: ../gio/gapplication-tool.c:66
+msgid "List static actions for an application (from .desktop file)"
+msgstr ""
+"এটা এপ্লিকেচনৰ বাবে স্থিৰ কাৰ্য্যসমূহ তালিকাভুক্ত কৰক (.desktop ফাইলৰ পৰা)"
+
+#: ../gio/gapplication-tool.c:67 ../gio/gapplication-tool.c:73
+msgid "APPID"
+msgstr "APPID"
+
+#: ../gio/gapplication-tool.c:72 ../gio/gapplication-tool.c:135
+#: ../gio/gdbus-tool.c:92
+msgid "COMMAND"
+msgstr "COMMAND"
+
+#: ../gio/gapplication-tool.c:72
+msgid "The command to print detailed help for"
+msgstr "কমান্ড যাৰ বাবে বিৱৰিত সহায় প্ৰিন্ট কৰা হব"
+
+#: ../gio/gapplication-tool.c:73
+msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
+msgstr "D-Bus বিন্যাসত এপ্লিকেচন পৰিচয়ক (উদাহৰণ: org.example.viewer)"
+
+#: ../gio/gapplication-tool.c:74 ../gio/glib-compile-resources.c:592
+#: ../gio/glib-compile-resources.c:623 ../gio/gresource-tool.c:482
+#: ../gio/gresource-tool.c:548
+msgid "FILE"
+msgstr "FILE"
+
+#: ../gio/gapplication-tool.c:74
+msgid "Optional relative or relative filenames, or URIs to open"
+msgstr "বৈকল্পিক প্ৰাসংগিক অথবা প্ৰাসংগিক ফাইলনামসমূহ, অথবা খোলিবলৈ URls"
+
+#: ../gio/gapplication-tool.c:75
+#| msgid "SECTION"
+msgid "ACTION"
+msgstr "কাৰ্য্য"
+
+#: ../gio/gapplication-tool.c:75
+#| msgid "Destination name to introspect"
+msgid "The action name to invoke"
+msgstr "আৱাহন কৰিবলৈ কাৰ্য্যৰ নাম"
+
+#: ../gio/gapplication-tool.c:76
+msgid "PARAMETER"
+msgstr "প্ৰাচল"
+
+#: ../gio/gapplication-tool.c:76
+msgid "Optional parameter to the action invocation, in GVariant format"
+msgstr "কাৰ্য্য আৱাহনৰ বাবে বৈকল্পিক প্ৰাচল, GVariant বিন্যাসত"
+
+#: ../gio/gapplication-tool.c:98 ../gio/gresource-tool.c:513
+#: ../gio/gsettings-tool.c:628
+#, c-format
+msgid ""
+"Unknown command %s\n"
+"\n"
+msgstr ""
+"অজ্ঞাত কমান্ড %s\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:103
+#| msgid "Usage:"
+msgid "Usage:\n"
+msgstr "ব্যৱহাৰ:\n"
+
+#: ../gio/gapplication-tool.c:116 ../gio/gresource-tool.c:538
+#: ../gio/gsettings-tool.c:661
+msgid "Arguments:\n"
+msgstr "তৰ্কসমূহ:\n"
+
+#: ../gio/gapplication-tool.c:135
+msgid "[ARGS...]"
+msgstr "[ARGS...]"
+
+#: ../gio/gapplication-tool.c:136
+#, c-format
+msgid "Commands:\n"
+msgstr "কমান্ডসমূহ:\n"
+
+#. Translators: do not translate 'help', but please translate 'COMMAND'.
+#: ../gio/gapplication-tool.c:148
+#, c-format
+msgid ""
+"Use '%s help COMMAND' to get detailed help.\n"
+"\n"
+msgstr ""
+"বিৱৰিত সহায়ৰ বাবে '%s help COMMAND' ব্যৱহাৰ কৰক।\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:167
+#, c-format
+msgid ""
+"%s command requires an application id to directly follow\n"
+"\n"
+msgstr ""
+"%s কমান্ডৰ প্ৰত্যক্ষভাৱে অনুকৰণ কৰিবলৈ এটা এপ্লিকেচন আইডিৰ প্ৰয়োজন\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:173
+#, c-format
+#| msgid "invalid GVariant type string '%s'"
+msgid "invalid application id: '%s'\n"
+msgstr "অবৈধ এপ্লিকেচন আইডি: '%s'\n"
+
+#. Translators: %s is replaced with a command name like 'list-actions'
+#: ../gio/gapplication-tool.c:184
+#, c-format
+msgid ""
+"'%s' takes no arguments\n"
+"\n"
+msgstr ""
+"'%s' এ কোনো তৰ্ক নলয়\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:264
+#, c-format
+#| msgid "Could not connect to %s: "
+msgid "unable to connect to D-Bus: %s\n"
+msgstr "D-Bus লৈ সংযোগ কৰিব নোৱাৰি: %s\n"
+
+#: ../gio/gapplication-tool.c:284
+#, c-format
+#| msgid "Error sending message: %s"
+msgid "error sending %s message to application: %s\n"
+msgstr "এপ্লিকেচনলৈ %s বাৰ্তা পঠাওতে ত্ৰুটি: %s\n"
+
+#: ../gio/gapplication-tool.c:315
+#, c-format
+msgid "action name must be given after application id\n"
+msgstr "কাৰ্য্যৰ নাম এপ্লিকেচন আইডিৰ পিছত দিব লাগিব\n"
+
+#: ../gio/gapplication-tool.c:323
+#, c-format
+msgid ""
+"invalid action name: '%s'\n"
+"action names must consist of only alphanumerics, '-' and '.'\n"
+msgstr ""
+"অবৈধ কাৰ্য্য নাম: '%s'\n"
+"কাৰ্য্যৰ নামত কেৱল আল্ফানিউমাৰিক, '-' আৰু '.' থাকিব লাগিব\n"
+
+#: ../gio/gapplication-tool.c:339
+#, c-format
+#| msgid "Error parsing parameter %d: %s\n"
+msgid "error parsing action parameter: %s\n"
+msgstr "কাৰ্য্যৰ প্ৰাচল বিশ্লেষণ কৰোতে ত্ৰুটি: %s\n"
+
+#: ../gio/gapplication-tool.c:350
+#, c-format
+msgid "actions accept a maximum of one parameter\n"
+msgstr "কাৰ্য্যসমূহে সৰ্বাধিক এটা প্ৰাচল গ্ৰহণ কৰে\n"
+
+#: ../gio/gapplication-tool.c:405
+#, c-format
+msgid "list-actions command takes only the application id"
+msgstr "list-actions কমান্ডে কেৱল এপ্লিকেচন আইডি লয়"
+
+#: ../gio/gapplication-tool.c:415
+#, c-format
+#| msgid "Unable to find terminal required for application"
+msgid "unable to find desktop file for application %s\n"
+msgstr "এপ্লিকেচন %s ৰ বাবে ডেস্কটপ ফাইল সন্ধান কৰিবলৈ অক্ষম\n"
+
+#: ../gio/gapplication-tool.c:460
+#, c-format
+#| msgid ""
+#| "Unknown command %s\n"
+#| "\n"
+msgid ""
+"unrecognised command: %s\n"
+"\n"
+msgstr ""
+"অজ্ঞাত কমান্ড: %s\n"
+"\n"
 
 #: ../gio/gbufferedinputstream.c:424 ../gio/gbufferedinputstream.c:503
 #: ../gio/ginputstream.c:175 ../gio/ginputstream.c:367
@@ -123,7 +355,6 @@ msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials ৰ এই OS ত এটা প্ৰক্ৰিয়া ID নাই"
 
 #: ../gio/gcredentials.c:540
-#| msgid "GCredentials is not implemented on this OS"
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "এই OS ত তথ্য স্পুফিং সম্ভব নহয়"
 
@@ -690,10 +921,6 @@ msgstr "স্ট্ৰিং '%s' এটা বৈধ D-Bus GUID নহয়"
 msgid "Cannot listen on unsupported transport '%s'"
 msgstr "অসমৰ্থিত পৰিৱহন '%s' ত শুনিব নোৱাৰি"
 
-#: ../gio/gdbus-tool.c:92
-msgid "COMMAND"
-msgstr "COMMAND"
-
 #: ../gio/gdbus-tool.c:97
 #, c-format
 msgid ""
@@ -921,39 +1148,39 @@ msgstr "মনিটৰলে অবজেক্ট পথ"
 msgid "Monitor a remote object."
 msgstr "এটা দূৰৱৰ্তী অবজেক্ট মনিটৰ কৰক।"
 
-#: ../gio/gdesktopappinfo.c:695 ../gio/gdesktopappinfo.c:3810
+#: ../gio/gdesktopappinfo.c:698 ../gio/gdesktopappinfo.c:3813
 #: ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "নামবিহীন"
 
-#: ../gio/gdesktopappinfo.c:1114
+#: ../gio/gdesktopappinfo.c:1117
 msgid "Desktop file didn't specify Exec field"
 msgstr "ডেস্কটপ ফাইলত Exec ক্ষেত্ৰ নিৰ্ধাৰিত নহয়"
 
-#: ../gio/gdesktopappinfo.c:1399
+#: ../gio/gdesktopappinfo.c:1402
 msgid "Unable to find terminal required for application"
 msgstr "এপ্লিকেচনৰ বাবে আৱশ্যক টাৰ্মিনেল পোৱা নাযায়"
 
-#: ../gio/gdesktopappinfo.c:1816
+#: ../gio/gdesktopappinfo.c:1819
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ব্যৱহাৰকাৰী এপ্লিকেচনৰ বিন্যাস ফোল্ডাৰ %s সৃষ্টি কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../gio/gdesktopappinfo.c:1820
+#: ../gio/gdesktopappinfo.c:1823
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ব্যৱহাৰকাৰী MIME বিন্যাস ফোল্ডাৰ %s সৃষ্টি কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../gio/gdesktopappinfo.c:2060 ../gio/gdesktopappinfo.c:2084
+#: ../gio/gdesktopappinfo.c:2063 ../gio/gdesktopappinfo.c:2087
 msgid "Application information lacks an identifier"
 msgstr "এপ্লিকেচন তথ্যৰ এটা পৰিচয়কৰ প্ৰয়োজন"
 
-#: ../gio/gdesktopappinfo.c:2317
+#: ../gio/gdesktopappinfo.c:2320
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ব্যৱহাৰকাৰী ডেস্কটপ ফাইল %s সৃষ্টি কৰিবলৈ ব্যৰ্থ"
 
-#: ../gio/gdesktopappinfo.c:2442
+#: ../gio/gdesktopappinfo.c:2445
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ৰ বাবে স্বনিৰ্ধাৰত ব্যাখ্যা"
@@ -1013,11 +1240,11 @@ msgstr "GEmblemedIcon ৰ কাৰণে এটা GEmblem প্ৰত্য�
 #: ../gio/gfile.c:965 ../gio/gfile.c:1204 ../gio/gfile.c:1343
 #: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
 #: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
-#: ../gio/gfile.c:1956 ../gio/gfile.c:3586 ../gio/gfile.c:3641
-#: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4357
-#: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
-#: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
-#: ../gio/gfile.c:7688 ../gio/gfile.c:7778 ../gio/gfile.c:7862
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3607 ../gio/gfile.c:3662
+#: ../gio/gfile.c:3870 ../gio/gfile.c:3912 ../gio/gfile.c:4378
+#: ../gio/gfile.c:4790 ../gio/gfile.c:4875 ../gio/gfile.c:4965
+#: ../gio/gfile.c:5062 ../gio/gfile.c:5149 ../gio/gfile.c:5250
+#: ../gio/gfile.c:7709 ../gio/gfile.c:7799 ../gio/gfile.c:7883
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "কাৰ্য্য সমৰ্থিত নহয়"
@@ -1078,24 +1305,24 @@ msgstr "কপি (ৰিফ্লিৃঙ্ক/ক্লৌন) সমৰ্�
 msgid "Can't copy special file"
 msgstr "বিশেষ ফাইল কপি কৰিব নোৱাৰি"
 
-#: ../gio/gfile.c:3839
+#: ../gio/gfile.c:3860
 msgid "Invalid symlink value given"
 msgstr "অৱৈধ চিমসংযোগ মান উপলব্ধ কৰা হৈছে"
 
-#: ../gio/gfile.c:4001
+#: ../gio/gfile.c:4022
 msgid "Trash not supported"
 msgstr "আবৰ্জনা সমৰ্থিত নহয়"
 
-#: ../gio/gfile.c:4114
+#: ../gio/gfile.c:4135
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ফাইলৰ নামত '%c' ব্যৱহাৰ কৰা নাযাব"
 
-#: ../gio/gfile.c:6531 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6552 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "ভলিউম দ্বাৰা mount প্ৰয়োগ কৰা নহয়"
 
-#: ../gio/gfile.c:6640
+#: ../gio/gfile.c:6661
 msgid "No application is registered as handling this file"
 msgstr "চিহ্নিত ফাইল ব্যৱস্থাপনাৰ উদ্দেশ্যে কোনো এপ্লিকেচন নিবন্ধিত নহয়"
 
@@ -1139,40 +1366,6 @@ msgstr "ইনপুট স্ৰোতত Truncate ৰ অনুমতি ন�
 #: ../gio/gfileiostream.c:458 ../gio/gfileoutputstream.c:450
 msgid "Truncate not supported on stream"
 msgstr "স্ৰোতত Truncate ৰ সমৰ্থন নাই"
-
-#: ../gio/gicon.c:297
-#, c-format
-msgid "Wrong number of tokens (%d)"
-msgstr "ট'কেনৰ ত্ৰুটি সংখ্যা (%d)"
-
-#: ../gio/gicon.c:317
-#, c-format
-msgid "No type for class name %s"
-msgstr "শ্ৰেণীৰ নাম %s ৰ ধৰণ নাই"
-
-#: ../gio/gicon.c:327
-#, c-format
-msgid "Type %s does not implement the GIcon interface"
-msgstr "%s ধৰনে GIcon আন্তঃপৃষ্ঠ প্ৰণয়ন নকৰে"
-
-#: ../gio/gicon.c:338
-#, c-format
-msgid "Type %s is not classed"
-msgstr "%s ধৰণক class কৰা হোৱা নাই"
-
-#: ../gio/gicon.c:352
-#, c-format
-msgid "Malformed version number: %s"
-msgstr "ত্ৰুটি সংস্কৰণ সংখ্যা: %s"
-
-#: ../gio/gicon.c:366
-#, c-format
-msgid "Type %s does not implement from_tokens() on the GIcon interface"
-msgstr "%s ধৰণে from_tokens() প্ৰণয়ন নকৰে GIcon আন্তঃপৃষ্ঠত"
-
-#: ../gio/gicon.c:468
-msgid "Can't handle the supplied version of the icon encoding"
-msgstr "আইকন এনক'ডিংৰ প্ৰদান কৰা সংস্কৰণ পৰিচালন কৰিব নোৱাৰি"
 
 #: ../gio/ginetaddressmask.c:183
 msgid "No address specified"
@@ -1246,94 +1439,71 @@ msgstr "বৰ্তমান ডাইৰেকটৰিত '%s' অৱস্�
 msgid "Unknown processing option \"%s\""
 msgstr "অজ্ঞাত প্ৰক্ৰিয়াকৰণ বিকল্প \"%s\""
 
-#: ../gio/glib-compile-resources.c:310 ../gio/glib-compile-resources.c:370
+#: ../gio/glib-compile-resources.c:309 ../gio/glib-compile-resources.c:355
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "অস্থায়ী ফাইল সৃষ্টি কৰোতে ব্যৰ্থ: %s"
 
-#: ../gio/glib-compile-resources.c:340
-#, c-format
-msgid ""
-"Error processing input file with xmllint:\n"
-"%s"
-msgstr ""
-"ইনপুট ফাইলক xmllint ৰ সৈতে প্ৰক্ৰিয়াকৰণ কৰোতে ত্ৰুটি:\n"
-"%s"
-
-#: ../gio/glib-compile-resources.c:396
-#, c-format
-msgid ""
-"Error processing input file with to-pixdata:\n"
-"%s"
-msgstr ""
-"to-pixdata ৰ সৈতে ইনপুট ফাইল প্ৰক্ৰিয়াকৰণ কৰোতে ত্ৰুটি:\n"
-"%s"
-
-#: ../gio/glib-compile-resources.c:410
+#: ../gio/glib-compile-resources.c:383
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "ফাইল %s পঢ়োতে ত্ৰুটি: %s"
 
-#: ../gio/glib-compile-resources.c:430
+#: ../gio/glib-compile-resources.c:403
 #, c-format
 msgid "Error compressing file %s"
 msgstr "ফাইল %s সংকোচন কৰোতে ত্ৰুটি"
 
-#: ../gio/glib-compile-resources.c:494 ../gio/glib-compile-schemas.c:1571
+#: ../gio/glib-compile-resources.c:467 ../gio/glib-compile-schemas.c:1571
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "লিখনী <%s> ৰ ভিতৰত নাহিবও পাৰে"
 
-#: ../gio/glib-compile-resources.c:619
+#: ../gio/glib-compile-resources.c:592
 msgid "name of the output file"
 msgstr "আউটপুট ফাইলৰ নাম"
 
-#: ../gio/glib-compile-resources.c:619 ../gio/glib-compile-resources.c:650
-#: ../gio/gresource-tool.c:482 ../gio/gresource-tool.c:548
-msgid "FILE"
-msgstr "FILE"
-
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:593
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "ডাইৰেকটৰিসমূহ যৰ পৰা ফাইলসমূহ পঢ়া হব (বৰ্তমান ডাইৰেকটৰিলে অবিকল্পিত) "
 
-#: ../gio/glib-compile-resources.c:620 ../gio/glib-compile-schemas.c:1999
+#: ../gio/glib-compile-resources.c:593 ../gio/glib-compile-schemas.c:1999
 #: ../gio/glib-compile-schemas.c:2028
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:594
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "লক্ষ্য ফাইল সম্প্ৰসাৰন দ্বাৰা নিৰ্বাচিত বিন্যাসত আউটপুট সৃজন কৰক"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:595
 msgid "Generate source header"
 msgstr "উৎস হেডাৰ সৃজন কৰক"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:596
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "আপোনাৰ ক'ডত সম্পদ ফাইলৰ সৈতে সংযোগ কৰিবলে ব্যৱহৃত উৎসক'ড সৃজন কৰক"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:597
 msgid "Generate dependency list"
 msgstr "নিৰ্ভৰতা তালিকা সৃজন কৰক"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:598
 msgid "Don't automatically create and register resource"
 msgstr "সম্পদক স্বচালিতভাৱে সৃষ্টি আৰু ৰেজিস্টাৰ নকৰিব"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:599
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "ফলনসমূহ এক্সপোৰ্ট নকৰিব; সিহতক G_GNUC_INTERNAL ঘোষণা কৰক"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:600
 msgid "C identifier name used for the generated source code"
 msgstr "সৃজন কৰা উৎস ক'ডৰ বাবে C identifier নাম ব্যৱহাৰ কৰা হৈছে"
 
-#: ../gio/glib-compile-resources.c:653
+#: ../gio/glib-compile-resources.c:626
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1343,7 +1513,7 @@ msgstr ""
 "সম্পদ ধাৰ্য্যকৰণ ফাইলসমূহৰ প্ৰসাৰণ .gresource.xml থাকে,\n"
 "আৰু সম্পদ ফাইলৰ প্ৰসাৰণ .gresource থাকে।"
 
-#: ../gio/glib-compile-resources.c:669
+#: ../gio/glib-compile-resources.c:642
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "আপুনি এটা ফাইল নাম দিব লাগিব\n"
@@ -1876,7 +2046,7 @@ msgid "Error truncating file: %s"
 msgstr "ফাইল সৰু কৰিবলৈ ত্ৰুটি: %s"
 
 #: ../gio/glocalfileoutputstream.c:559 ../gio/glocalfileoutputstream.c:789
-#: ../gio/glocalfileoutputstream.c:1038
+#: ../gio/glocalfileoutputstream.c:1038 ../gio/gsubprocess.c:326
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "ফাইল '%s' খোলিবলৈ সমস্যা: %s"
@@ -2039,14 +2209,6 @@ msgstr "'%s' ৰ সম্পদ এটা ডাইৰেকটৰি নহয়
 msgid "Input stream doesn't implement seek"
 msgstr "ইনপুট স্ট্ৰিমে সন্ধান প্ৰণয়ন নকৰে"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:542
-msgid "Print help"
-msgstr "প্ৰিন্ট সহায়"
-
-#: ../gio/gresource-tool.c:476 ../gio/gresource-tool.c:544
-msgid "[COMMAND]"
-msgstr "[COMMAND]"
-
 #: ../gio/gresource-tool.c:481
 msgid "List sections containing resources in an elf FILE"
 msgstr "এটা elf ফাইলত সম্পদসমূহ অন্তৰ্ভুক্ত কৰা অংশসমূহ তালিকাভুক্ত কৰে"
@@ -2090,15 +2252,6 @@ msgstr "stdout লে এটা সম্পদ ফাইল নিষ্কা�
 msgid "FILE PATH"
 msgstr "FILE PATH"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:628
-#, c-format
-msgid ""
-"Unknown command %s\n"
-"\n"
-msgstr ""
-"অজ্ঞাত কমান্ড %s\n"
-"\n"
-
 #: ../gio/gresource-tool.c:521
 msgid ""
 "Usage:\n"
@@ -2141,10 +2294,6 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:661
-msgid "Arguments:\n"
-msgstr "তৰ্কসমূহ:\n"
 
 #: ../gio/gresource-tool.c:542
 msgid "  SECTION   An (optional) elf section name\n"
@@ -2231,10 +2380,6 @@ msgstr "প্ৰদান কৰা মান বৈধ বিস্তাৰ�
 #, c-format
 msgid "The key is not writable\n"
 msgstr "কি' লিখিব পৰা নহয়\n"
-
-#: ../gio/gsettings-tool.c:548
-msgid "Print version information and exit"
-msgstr "সংস্কৰণ তথ্য প্ৰিন্ট কৰক আৰু প্ৰস্থান কৰক"
 
 #: ../gio/gsettings-tool.c:554
 msgid "List the installed (non-relocatable) schemas"
@@ -2663,11 +2808,6 @@ msgstr "SOCKSv5 প্ৰক্সিয়ে প্ৰদান কৰা ঠি�
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "অজ্ঞাত SOCKSv5 প্ৰক্সি ত্ৰুটি।"
 
-#: ../gio/gthemedicon.c:521
-#, c-format
-msgid "Can't handle version %d of GThemedIcon encoding"
-msgstr "GThemedIcon encoding ৰ %d সংস্কৰণ পৰিচালন কৰিব নোৱাৰি"
-
 #: ../gio/gthreadedresolver.c:110
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -2842,17 +2982,17 @@ msgstr "win32 ত এপ্লিকেচনৰ সম্বন্ধৰ সল
 msgid "Association creation not supported on win32"
 msgstr "win32 ত এপ্লিকেচনৰ সম্বন্ধৰ সৃষ্টি সমৰ্থিত নহয়"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:345
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "হাতলৰ পৰা পঢ়োতে ত্ৰুটি: %s"
 
-#: ../gio/gwin32inputstream.c:375 ../gio/gwin32outputstream.c:362
+#: ../gio/gwin32inputstream.c:389 ../gio/gwin32outputstream.c:376
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "হাতল বন্ধ কৰোতে ত্ৰুটি: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:332
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "হাতললে লিখোতে ত্ৰুটি: %s"
@@ -4126,7 +4266,7 @@ msgstr "%c ৰ ক্ষেত্ৰত সুসংগত উদ্ধৃতি
 msgid "Text was empty (or contained only whitespace)"
 msgstr "লিখনী ৰিক্ত (বা অকল শূণ্যস্থানসহ)"
 
-#: ../glib/gspawn.c:202
+#: ../glib/gspawn.c:201
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ পৰা তথ্য পঢ়িবলৈ ব্যৰ্থ (%s)"
@@ -4141,74 +4281,74 @@ msgstr "চাইল্ড প্ৰক্ৰিয়াৰ পৰা তথ্য
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() ত অপ্ৰত্যাশিত ত্ৰুটি (%s)"
 
-#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:850 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "চাইল্ড প্ৰক্ৰিয়া ক'ড %ld ৰ সৈতে প্ৰস্থান কৰিলে"
 
-#: ../glib/gspawn.c:857
+#: ../glib/gspawn.c:858
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "চাইল্ড প্ৰক্ৰিয়া সংকেত %ld দ্বাৰা kill কৰা হৈছে"
 
-#: ../glib/gspawn.c:864
+#: ../glib/gspawn.c:865
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "চাইল্ড প্ৰক্ৰিয়া সংকেত %ld দ্বাৰা বন্ধ কৰা হৈছে"
 
-#: ../glib/gspawn.c:871
+#: ../glib/gspawn.c:872
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "চাইল্ড প্ৰক্ৰিয়া অস্বাভাৱিকভাৱে প্ৰস্থান কৰিলে"
 
-#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1277 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "চাইল্ড পাইপৰ পৰা পঢ়িবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1344
+#: ../glib/gspawn.c:1347
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1493 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1496 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' ডাইৰেকটৰিলৈ পৰিবৰ্তন কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1503
+#: ../glib/gspawn.c:1506
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়া \"%s\" চলাওঁতে ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1513
+#: ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ আউটপুট বা ইনপুট পুনৰনিৰ্দেশ কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1522
+#: ../glib/gspawn.c:1525
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "চাইল্ড প্ৰক্ৰিয়া fork কৰিবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1530
+#: ../glib/gspawn.c:1533
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "চাইল্ড প্ৰক্ৰিয়া \"%s\" প্ৰণয়ন কৰিবলৈ অজ্ঞাত ত্ৰুটি"
 
-#: ../glib/gspawn.c:1554
+#: ../glib/gspawn.c:1557
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "চাইল্ড pid পাইপৰ পৰা পৰ্যাপ্ত তথ্য পঢ়িবলৈ ব্যৰ্থ (%s)"
 
-#: ../glib/gspawn.c:1627 ../glib/gspawn-win32.c:300
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "চাইল্ড প্ৰক্ৰিয়াৰ সৈতে যোগাযোগৰ উদ্দেশ্যে পাইপ সৃষ্টিত ব্যৰ্থ (%s)"
-
 #: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "চাইল্ড প্ৰক্ৰিয়াৰ পৰা তথ্য পঢ়িবলৈ ব্যৰ্থ"
+
+#: ../glib/gspawn-win32.c:300
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "চাইল্ড প্ৰক্ৰিয়াৰ সৈতে যোগাযোগৰ উদ্দেশ্যে পাইপ সৃষ্টিত ব্যৰ্থ (%s)"
 
 #: ../glib/gspawn-win32.c:376 ../glib/gspawn-win32.c:495
 #, c-format
@@ -4347,6 +4487,44 @@ msgstr[1] "%s বাইটসমূহ"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Wrong number of tokens (%d)"
+#~ msgstr "ট'কেনৰ ত্ৰুটি সংখ্যা (%d)"
+
+#~ msgid "No type for class name %s"
+#~ msgstr "শ্ৰেণীৰ নাম %s ৰ ধৰণ নাই"
+
+#~ msgid "Type %s does not implement the GIcon interface"
+#~ msgstr "%s ধৰনে GIcon আন্তঃপৃষ্ঠ প্ৰণয়ন নকৰে"
+
+#~ msgid "Type %s is not classed"
+#~ msgstr "%s ধৰণক class কৰা হোৱা নাই"
+
+#~ msgid "Malformed version number: %s"
+#~ msgstr "ত্ৰুটি সংস্কৰণ সংখ্যা: %s"
+
+#~ msgid "Type %s does not implement from_tokens() on the GIcon interface"
+#~ msgstr "%s ধৰণে from_tokens() প্ৰণয়ন নকৰে GIcon আন্তঃপৃষ্ঠত"
+
+#~ msgid "Can't handle the supplied version of the icon encoding"
+#~ msgstr "আইকন এনক'ডিংৰ প্ৰদান কৰা সংস্কৰণ পৰিচালন কৰিব নোৱাৰি"
+
+#~ msgid ""
+#~ "Error processing input file with xmllint:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "ইনপুট ফাইলক xmllint ৰ সৈতে প্ৰক্ৰিয়াকৰণ কৰোতে ত্ৰুটি:\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Error processing input file with to-pixdata:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "to-pixdata ৰ সৈতে ইনপুট ফাইল প্ৰক্ৰিয়াকৰণ কৰোতে ত্ৰুটি:\n"
+#~ "%s"
+
+#~ msgid "Can't handle version %d of GThemedIcon encoding"
+#~ msgstr "GThemedIcon encoding ৰ %d সংস্কৰণ পৰিচালন কৰিব নোৱাৰি"
 
 #~ msgid "Unable to get pending error: %s"
 #~ msgstr "পেন্ডিং ত্ৰুটি পাবলৈ ব্যৰ্থ: %s"
