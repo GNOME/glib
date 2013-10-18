@@ -239,6 +239,7 @@
         <xi:include href="gdbus.xml"/>
         <xi:include href="xml/gdbus-codegen.xml"/>
         <xi:include href="gresource.xml"/>
+        <xi:include href="gapplication.xml"/>
     </chapter>
     <chapter id="testing">
         <title>GIO Testing</title>
