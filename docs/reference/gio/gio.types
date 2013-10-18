@@ -65,6 +65,7 @@ g_proxy_address_enumerator_get_type
 g_proxy_address_get_type
 g_proxy_get_type
 g_proxy_resolver_get_type
+g_simple_proxy_resolver_get_type
 g_resolver_get_type
 g_seekable_get_type
 g_settings_get_type
