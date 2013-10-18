@@ -484,150 +484,125 @@ g_file_error_from_errno (gint err_no)
 #ifdef EEXIST
     case EEXIST:
       return G_FILE_ERROR_EXIST;
-      break;
 #endif
 
 #ifdef EISDIR
     case EISDIR:
       return G_FILE_ERROR_ISDIR;
-      break;
 #endif
 
 #ifdef EACCES
     case EACCES:
       return G_FILE_ERROR_ACCES;
-      break;
 #endif
 
 #ifdef ENAMETOOLONG
     case ENAMETOOLONG:
       return G_FILE_ERROR_NAMETOOLONG;
-      break;
 #endif
 
 #ifdef ENOENT
     case ENOENT:
       return G_FILE_ERROR_NOENT;
-      break;
 #endif
 
 #ifdef ENOTDIR
     case ENOTDIR:
       return G_FILE_ERROR_NOTDIR;
-      break;
 #endif
 
 #ifdef ENXIO
     case ENXIO:
       return G_FILE_ERROR_NXIO;
-      break;
 #endif
 
 #ifdef ENODEV
     case ENODEV:
       return G_FILE_ERROR_NODEV;
-      break;
 #endif
 
 #ifdef EROFS
     case EROFS:
       return G_FILE_ERROR_ROFS;
-      break;
 #endif
 
 #ifdef ETXTBSY
     case ETXTBSY:
       return G_FILE_ERROR_TXTBSY;
-      break;
 #endif
 
 #ifdef EFAULT
     case EFAULT:
       return G_FILE_ERROR_FAULT;
-      break;
 #endif
 
 #ifdef ELOOP
     case ELOOP:
       return G_FILE_ERROR_LOOP;
-      break;
 #endif
 
 #ifdef ENOSPC
     case ENOSPC:
       return G_FILE_ERROR_NOSPC;
-      break;
 #endif
 
 #ifdef ENOMEM
     case ENOMEM:
       return G_FILE_ERROR_NOMEM;
-      break;
 #endif
 
 #ifdef EMFILE
     case EMFILE:
       return G_FILE_ERROR_MFILE;
-      break;
 #endif
 
 #ifdef ENFILE
     case ENFILE:
       return G_FILE_ERROR_NFILE;
-      break;
 #endif
 
 #ifdef EBADF
     case EBADF:
       return G_FILE_ERROR_BADF;
-      break;
 #endif
 
 #ifdef EINVAL
     case EINVAL:
       return G_FILE_ERROR_INVAL;
-      break;
 #endif
 
 #ifdef EPIPE
     case EPIPE:
       return G_FILE_ERROR_PIPE;
-      break;
 #endif
 
 #ifdef EAGAIN
     case EAGAIN:
       return G_FILE_ERROR_AGAIN;
-      break;
 #endif
 
 #ifdef EINTR
     case EINTR:
       return G_FILE_ERROR_INTR;
-      break;
 #endif
 
 #ifdef EIO
     case EIO:
       return G_FILE_ERROR_IO;
-      break;
 #endif
 
 #ifdef EPERM
     case EPERM:
       return G_FILE_ERROR_PERM;
-      break;
 #endif
 
 #ifdef ENOSYS
     case ENOSYS:
       return G_FILE_ERROR_NOSYS;
-      break;
 #endif
 
     default:
       return G_FILE_ERROR_FAILED;
-      break;
     }
 }
 
