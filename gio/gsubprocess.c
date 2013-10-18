@@ -594,6 +594,10 @@ g_subprocess_class_init (GSubprocessClass *class)
 
 /**
  * g_subprocess_new: (skip)
+ * @flags: flags that define the behaviour of the subprocess
+ * @error: (allow-none): return location for an error, or %NULL
+ * @argv0: first commandline argument to pass to the subprocess,
+ *     followed by more arguments, followed by %NULL
  *
  * Create a new process with the given flags and varargs argument list.
  *
@@ -635,6 +639,9 @@ g_subprocess_new (GSubprocessFlags   flags,
 
 /**
  * g_subprocess_newv:
+ * @argv: commandline arguments for the subprocess
+ * @flags: flags that define the behaviour of the subprocess
+ * @error: (allow-none): return location for an error, or %NULL
  *
  * Create a new process with the given flags and argument list.
  *
