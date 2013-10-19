@@ -26,9 +26,7 @@
 #include <gio/gfileinfo.h>
 #include <gio/gfile.h>
 #include <sys/stat.h>
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 G_BEGIN_DECLS
 

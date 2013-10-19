@@ -48,7 +48,7 @@
 # include <sys/filio.h>
 #endif
 
-#ifdef HAVE_SYS_UIO_H
+#ifdef G_OS_UNIX
 #include <sys/uio.h>
 #endif
 

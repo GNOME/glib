@@ -40,24 +40,19 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
-#ifdef HAVE_SYS_TIMES_H
-#include <sys/times.h>
-#endif
 #include <sys/types.h>
-#ifdef HAVE_SYS_WAIT_H
-#include <sys/wait.h>
-#endif
 
 #include <time.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#include <sys/wait.h>
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+#endif
 
-#include <string.h> /* for bzero on BSD systems */
+#include <string.h>
 
 #ifdef G_OS_WIN32
 #  define STRICT                /* Strict typing, please */

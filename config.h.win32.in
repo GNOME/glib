@@ -109,9 +109,6 @@
 /* define to 1 if Carbon is available */
 /* #undef HAVE_CARBON */
 
-/* Define to 1 if you have the `chown' function. */
-/* #undef HAVE_CHOWN */
-
 /* Define to 1 if you have the `clock_gettime' function. */
 /* #undef HAVE_CLOCK_GETTIME */
 
@@ -189,26 +186,17 @@
 /* we have the futex(2) system call */
 /* #undef HAVE_FUTEX */
 
-/* Define to 1 if you have the `getcwd' function. */
-#define HAVE_GETCWD 1
-
 /* Define to 1 if you have the `getc_unlocked' function. */
 /* #undef HAVE_GETC_UNLOCKED */
 
 /* Define to 1 if you have the `getfsstat' function. */
 /* #undef HAVE_GETFSSTAT */
 
-/* Define to 1 if you have the `getgrgid' function. */
-/* #undef HAVE_GETGRGID */
-
 /* Define to 1 if you have the `getmntent_r' function. */
 /* #undef HAVE_GETMNTENT_R */
 
 /* Define to 1 if you have the `getprotobyname_r' function. */
 /* #undef HAVE_GETPROTOBYNAME_R */
-
-/* Define to 1 if you have the `getpwuid' function. */
-/* #undef HAVE_GETPWUID */
 
 /* Define to 1 if you have the `getresuid' function. */
 /* #undef HAVE_GETRESUID */
@@ -224,9 +212,6 @@
 
 /* define to use system printf */
 /* #undef HAVE_GOOD_PRINTF */
-
-/* Define to 1 if you have the <grp.h> header file. */
-/* #undef HAVE_GRP_H */
 
 /* Define to 1 if you have the `hasmntopt' function. */
 /* #undef HAVE_HASMNTOPT */
@@ -310,9 +295,6 @@
 
 /* Define if libelf is available */
 /* #undef HAVE_LIBELF */
-
-/* Define to 1 if you have the `link' function. */
-/* #undef HAVE_LINK */
 
 /* Define to 1 if you have the <linux/magic.h> header file. */
 /* #undef HAVE_LINUX_MAGIC_H */
@@ -404,9 +386,6 @@
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #define HAVE_PTRDIFF_T 1
-
-/* Define to 1 if you have the <pwd.h> header file. */
-/* #undef HAVE_PWD_H */
 
 /* Define to 1 if you have the `readlink' function. */
 /* #undef HAVE_READLINK */
@@ -629,21 +608,12 @@
 /* Define to 1 if you have the <sys/sysctl.h> header file. */
 /* #undef HAVE_SYS_SYSCTL_H */
 
-/* Define to 1 if you have the <sys/times.h> header file. */
-/* #undef HAVE_SYS_TIMES_H */
-
 /* Define to 1 if you have the <sys/time.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_SYS_TIME_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_SYS_TIME_H */
 #endif /* _MSC_VER */
-
-/* Define to 1 if you have the <sys/types.h> header file. */
-#define HAVE_SYS_TYPES_H 1
-
-/* Define to 1 if you have the <sys/uio.h> header file. */
-/* #undef HAVE_SYS_UIO_H */
 
 /* Define to 1 if you have the <sys/vfstab.h> header file. */
 /* #undef HAVE_SYS_VFSTAB_H */
@@ -653,9 +623,6 @@
 
 /* Define to 1 if you have the <sys/vmount.h> header file. */
 /* #undef HAVE_SYS_VMOUNT_H */
-
-/* Define to 1 if you have the <sys/wait.h> header file. */
-/* #undef HAVE_SYS_WAIT_H */
 
 /* Define to 1 if you have the <sys/xattr.h> header file. */
 /* #undef HAVE_SYS_XATTR_H */

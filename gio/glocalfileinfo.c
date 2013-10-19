@@ -24,6 +24,8 @@
 
 #include "config.h"
 
+#include <glib.h>
+
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
@@ -35,10 +37,8 @@
 #endif
 #include <fcntl.h>
 #include <errno.h>
-#ifdef HAVE_GRP_H
+#ifdef G_OS_UNIX
 #include <grp.h>
-#endif
-#ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
 #ifdef HAVE_SELINUX
@@ -2158,7 +2158,7 @@ set_unix_mode (char                       *filename,
   return TRUE;
 }
 
-#ifdef HAVE_CHOWN
+#ifdef G_OS_UNIX
 static gboolean
 set_unix_uid_gid (char                       *filename,
 		  const GFileAttributeValue  *uid_value,
@@ -2442,7 +2442,7 @@ _g_local_file_info_set_attribute (char                 *filename,
   if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_MODE) == 0)
     return set_unix_mode (filename, flags, &value, error);
   
-#ifdef HAVE_CHOWN
+#ifdef G_OS_UNIX
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_UID) == 0)
     return set_unix_uid_gid (filename, &value, NULL, flags, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_UNIX_GID) == 0)
@@ -2519,13 +2519,11 @@ _g_local_file_info_set_attributes  (char                 *filename,
 				    GError              **error)
 {
   GFileAttributeValue *value;
-#ifdef HAVE_CHOWN
+#ifdef G_OS_UNIX
   GFileAttributeValue *uid, *gid;
-#endif
 #ifdef HAVE_UTIMES
   GFileAttributeValue *mtime, *mtime_usec, *atime, *atime_usec;
 #endif
-#if defined (HAVE_CHOWN) || defined (HAVE_UTIMES)
   GFileAttributeStatus status;
 #endif
   gboolean res;
@@ -2555,7 +2553,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
     }
 #endif
 
-#ifdef HAVE_CHOWN
+#ifdef G_OS_UNIX
   /* Group uid and gid setting into one call
    * Change ownership before permissions, since ownership changes can
      change permissions (e.g. setuid)

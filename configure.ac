@@ -772,14 +772,14 @@ fi
 
 
 # check for header files
-AC_CHECK_HEADERS([dirent.h pwd.h grp.h sys/param.h sys/poll.h sys/resource.h])
-AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h])
-AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h inttypes.h sched.h malloc.h])
+AC_CHECK_HEADERS([sys/param.h sys/poll.h sys/resource.h])
+AC_CHECK_HEADERS([sys/select.h stdint.h inttypes.h sched.h malloc.h])
 AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
-AC_CHECK_HEADERS([sys/uio.h])
-AC_CHECK_HEADERS([linux/magic.h])
-AC_CHECK_HEADERS([sys/prctl.h])
+AC_CHECK_HEADERS([linux/magic.h sys/prctl.h])
+
+# Some versions of MSC lack these
+AC_CHECK_HEADERS([dirent.h sys/time.h unistd.h])
 
 # We don't care about this, but we need to keep including it in
 # glibconfig.h for backward compatibility
@@ -925,9 +925,7 @@ AS_IF([test $ac_cv_sizeof_ssize_t = $ac_cv_sizeof_int &&
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
+#include <sys/types.h>
 int main ()
 {
   ssize_t s = 1;
@@ -949,9 +947,7 @@ int main ()
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
+#include <sys/types.h>
 int main ()
 {
    ssize_t s = 1;
@@ -964,10 +960,9 @@ int main ()
 AC_MSG_RESULT($glib_ssize_type)
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
-AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid getresuid)
+AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
+AC_CHECK_FUNCS(lchmod lchown fchmod fchown utimes getresuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat fallocate)
-# Check for high-resolution sleep functions
 case $host_os in aix*) ac_cv_func_splice=no ;; esac # AIX splice() is something else
 AC_CHECK_FUNCS(splice)
 AC_CHECK_FUNCS(prlimit)
@@ -1004,9 +999,6 @@ AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
 
 AC_CHECK_FUNCS(newlocale uselocale strtod_l strtoll_l strtoull_l)
-
-AC_FUNC_VSNPRINTF_C99
-AC_FUNC_PRINTF_UNIX98
 
 # Internet address families
 if test $glib_native_win32 = yes; then
@@ -1181,6 +1173,8 @@ AC_TRY_COMPILE([#include <fcntl.h>
 #
 # Check whether to use an included printf
 #
+AC_FUNC_VSNPRINTF_C99
+AC_FUNC_PRINTF_UNIX98
 
 AC_ARG_ENABLE(included-printf,
               [AS_HELP_STRING([--enable-included-printf],
@@ -2145,7 +2139,7 @@ glib_save_LIBS="$LIBS"
 # to always be linked with the thread libs on some platforms. 
 # LIBS="$LIBS $G_THREAD_LIBS"
 AC_CHECK_FUNCS(localtime_r gmtime_r)
-AS_IF([ test "$ac_cv_header_pwd_h" = "yes"], [
+AS_IF([ test "$glib_native_win32" != "yes"], [
  	AC_CACHE_CHECK([for posix getpwuid_r],
 		ac_cv_func_posix_getpwuid_r,
 		[AC_TRY_RUN([
@@ -2184,7 +2178,7 @@ int main () {
 		fi
 	fi
 ])
-AS_IF([ test "$ac_cv_header_grp_h" = "yes"], [
+AS_IF([ test "$glib_native_win32" != "yes"], [
    	AC_CACHE_CHECK([for posix getgrgid_r],
 		ac_cv_func_posix_getgrgid_r,
 		[AC_TRY_RUN([

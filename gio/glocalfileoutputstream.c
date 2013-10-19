@@ -265,7 +265,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	  if (g_cancellable_set_error_if_cancelled (cancellable, error))
 	    goto err_out;
 	  
-#ifdef HAVE_LINK
+#ifdef G_OS_UNIX
 	  /* create original -> backup link, the original is then renamed over */
 	  if (g_unlink (file->priv->backup_filename) != 0 &&
 	      errno != ENOENT)

@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -42,7 +43,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef HAVE_PWD_H
+#ifdef G_OS_UNIX
 #include <pwd.h>
 #endif
 #include <sys/types.h>
@@ -603,7 +604,7 @@ g_get_user_database_entry (void)
     {
       static UserDatabaseEntry e;
 
-#ifdef HAVE_PWD_H
+#ifdef G_OS_UNIX
       {
         struct passwd *pw = NULL;
         gpointer buffer = NULL;
@@ -718,7 +719,7 @@ g_get_user_database_entry (void)
         g_free (buffer);
       }
 
-#else /* !HAVE_PWD_H */
+#endif /* G_OS_UNIX */
 
 #ifdef G_OS_WIN32
       {
@@ -732,8 +733,6 @@ g_get_user_database_entry (void)
           }
       }
 #endif /* G_OS_WIN32 */
-
-#endif /* !HAVE_PWD_H */
 
       if (!e.user_name)
         e.user_name = g_strdup ("somebody");

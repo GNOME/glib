@@ -28,7 +28,7 @@
 #include "gvfs.h"
 #include <gio/gdummyfile.h>
 #include <sys/types.h>
-#ifdef HAVE_PWD_H
+#ifdef G_OS_UNIX
 #include <pwd.h>
 #endif
 #include <string.h>
@@ -155,7 +155,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
 	    user_prefix = g_strdup (g_get_home_dir ());
 	  else
 	    {
-#ifdef HAVE_PWD_H
+#ifdef G_OS_UNIX
               struct passwd *passwd_file_entry;
               char *user_name;
 

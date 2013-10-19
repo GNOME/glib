@@ -2477,11 +2477,6 @@ g_get_current_dir (void)
   if (max_len == 0)
     max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
 
-#if !defined(HAVE_GETCWD)
-  buffer = g_new (gchar, max_len + 1);
-  *buffer = 0;
-  dir = getwd (buffer);
-#else
   while (max_len < G_MAXULONG / 2)
     {
       g_free (buffer);
@@ -2494,7 +2489,6 @@ g_get_current_dir (void)
 
       max_len *= 2;
     }
-#endif  /* !sun || !HAVE_GETCWD */
 
   if (!dir || !*buffer)
     {

@@ -143,7 +143,7 @@ g_local_file_class_init (GLocalFileClass *klass)
 				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
 				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   
-#ifdef HAVE_CHOWN
+#ifdef G_OS_UNIX
   g_file_attribute_info_list_add (list,
 				  G_FILE_ATTRIBUTE_UNIX_UID,
 				  G_FILE_ATTRIBUTE_TYPE_UINT32,
