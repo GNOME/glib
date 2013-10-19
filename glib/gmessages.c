@@ -1159,6 +1159,7 @@ g_test_expect_message (const gchar    *log_domain,
 
   g_return_if_fail (log_level != 0);
   g_return_if_fail (pattern != NULL);
+  g_return_if_fail (~log_level & G_LOG_LEVEL_ERROR);
 
   expected = g_new (GTestExpectedMessage, 1);
   expected->log_domain = g_strdup (log_domain);

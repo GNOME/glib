@@ -381,6 +381,15 @@ test_expected_messages_null_domain (void)
 }
 
 static void
+test_expected_messages_expect_error (void)
+{
+  /* make sure we can't try to expect a g_error() */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*G_LOG_LEVEL_ERROR*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, "this won't work");
+  g_test_assert_expected_messages ();
+}
+
+static void
 test_expected_messages_extra_warning (void)
 {
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
@@ -590,6 +599,7 @@ main (int   argc,
   g_test_add_func ("/misc/expected-messages/subprocess/null-domain", test_expected_messages_null_domain);
   g_test_add_func ("/misc/expected-messages/subprocess/extra-warning", test_expected_messages_extra_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
+  g_test_add_func ("/misc/expected-messages/expect-error", test_expected_messages_expect_error);
 
   g_test_add_func ("/misc/dash-p", test_dash_p);
   g_test_add_func ("/misc/dash-p/child", test_dash_p_child);
