@@ -81,13 +81,6 @@ g_environ_find (gchar       **envp,
  * Returns the value of the environment variable @variable in the
  * provided list @envp.
  *
- * The name and value are in the GLib file name encoding.
- * On UNIX, this means the actual bytes which might or might not
- * be in some consistent character set and encoding. On Windows,
- * it is in UTF-8. On Windows, in case the environment variable's
- * value contains references to other environment variables, they
- * are expanded.
- *
  * Return value: the value of the environment variable, or %NULL if
  *     the environment variable is not set in @envp. The returned
  *     string is owned by @envp, and will be freed if @variable is
@@ -112,19 +105,16 @@ g_environ_getenv (gchar       **envp,
 
 /**
  * g_environ_setenv:
- * @envp: (allow-none) (array zero-terminated=1) (transfer full): an environment
- *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ()), or %NULL
- *     for an empty environment list
+ * @envp: (allow-none) (array zero-terminated=1) (transfer full): an
+ *     environment list that can be freed using g_strfreev() (e.g., as
+ *     returned from g_get_environ()), or %NULL for an empty
+ *     environment list
  * @variable: the environment variable to set, must not contain '='
  * @value: the value for to set the variable to
  * @overwrite: whether to change the variable if it already exists
  *
  * Sets the environment variable @variable in the provided list
  * @envp to @value.
- *
- * Both the variable's name and value should be in the GLib
- * file name encoding. On UNIX, this means that they can be
- * arbitrary byte strings. On Windows, they should be in UTF-8.
  *
  * Return value: (array zero-terminated=1) (transfer full): the
  *     updated environment list. Free it using g_strfreev().
@@ -141,6 +131,7 @@ g_environ_setenv (gchar       **envp,
 
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (strchr (variable, '=') == NULL, NULL);
+  g_return_val_if_fail (value != NULL, NULL);
 
   index = g_environ_find (envp, variable);
   if (index != -1)
@@ -301,6 +292,7 @@ g_setenv (const gchar *variable,
 
   g_return_val_if_fail (variable != NULL, FALSE);
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
 
 #ifdef HAVE_SETENV
   result = setenv (variable, value, overwrite);
@@ -356,15 +348,12 @@ extern char **environ;
 void
 g_unsetenv (const gchar *variable)
 {
-#ifdef HAVE_UNSETENV
   g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
 
+#ifdef HAVE_UNSETENV
   unsetenv (variable);
 #else /* !HAVE_UNSETENV */
-  g_return_if_fail (variable != NULL);
-  g_return_if_fail (strchr (variable, '=') == NULL);
-
   /* Mess directly with the environ array.
    * This seems to be the only portable way to do this.
    */
@@ -527,6 +516,7 @@ g_setenv (const gchar *variable,
 
   g_return_val_if_fail (variable != NULL, FALSE);
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
   g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), FALSE);
   g_return_val_if_fail (g_utf8_validate (value, -1, NULL), FALSE);
 
