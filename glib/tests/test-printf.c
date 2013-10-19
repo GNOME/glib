@@ -548,11 +548,9 @@ test_s (void)
   g_assert_cmpint (res, ==, 5);
   g_assert_cmpstr (buf, ==, "  abc");
 
-#if 0 /* HP-UX doesn't get this right */
   res = g_snprintf (buf, 128, "%*s", -5, "abc");
   g_assert_cmpint (res, ==, 5);
   g_assert_cmpstr (buf, ==, "abc  ");
-#endif
 
   res = g_snprintf (buf, 128, "%*.*s", 5, 2, "abc");
   g_assert_cmpint (res, ==, 5);

@@ -639,7 +639,7 @@ compact_buffer (GBufferedInputStream *stream)
 
   current_size = priv->end - priv->pos;
 
-  g_memmove (priv->buffer, priv->buffer + priv->pos, current_size);
+  memmove (priv->buffer, priv->buffer + priv->pos, current_size);
 
   priv->pos = 0;
   priv->end = current_size;

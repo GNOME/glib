@@ -1265,10 +1265,7 @@ allocator_add_slab (Allocator *allocator,
   guint i;
   if (!mem)
     {
-      const gchar *syserr = "unknown error";
-#if HAVE_STRERROR
-      syserr = strerror (errno);
-#endif
+      const gchar *syserr = strerror (errno);
       mem_error ("failed to allocate %u bytes (alignment: %u): %s\n",
                  (guint) (page_size - NATIVE_MALLOC_PADDING), (guint) page_size, syserr);
     }
@@ -1534,10 +1531,7 @@ static SmcBranch     **smc_tree_root = NULL;
 static void
 smc_tree_abort (int errval)
 {
-  const char *syserr = "unknown error";
-#if HAVE_STRERROR
-  syserr = strerror (errval);
-#endif
+  const char *syserr = strerror (errval);
   mem_error ("MemChecker: failure in debugging tree: %s", syserr);
 }
 
@@ -1553,7 +1547,7 @@ smc_tree_branch_grow_L (SmcBranch   *branch,
   if (!branch->entries)
     smc_tree_abort (errno);
   entry = branch->entries + index;
-  g_memmove (entry + 1, entry, (branch->n_entries - index) * sizeof (entry[0]));
+  memmove (entry + 1, entry, (branch->n_entries - index) * sizeof (entry[0]));
   branch->n_entries += 1;
   return entry;
 }
@@ -1652,7 +1646,7 @@ smc_tree_remove (SmcKType key)
         {
           unsigned int i = entry - smc_tree_root[ix0][ix1].entries;
           smc_tree_root[ix0][ix1].n_entries -= 1;
-          g_memmove (entry, entry + 1, (smc_tree_root[ix0][ix1].n_entries - i) * sizeof (entry[0]));
+          memmove (entry, entry + 1, (smc_tree_root[ix0][ix1].n_entries - i) * sizeof (entry[0]));
           if (!smc_tree_root[ix0][ix1].n_entries)
             {
               /* avoid useless pressure on the memory system */

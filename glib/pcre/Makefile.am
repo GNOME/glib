@@ -5,6 +5,7 @@ noinst_LTLIBRARIES += libpcre.la
 libpcre_la_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GRegex\" \
 	-DHAVE_CONFIG_H \
+	-DHAVE_MEMMOVE \
 	-DSUPPORT_UCP \
 	-DSUPPORT_UTF \
 	-DSUPPORT_UTF8 \

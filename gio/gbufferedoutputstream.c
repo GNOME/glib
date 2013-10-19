@@ -431,7 +431,7 @@ flush_buffer (GBufferedOutputStream  *stream,
   count = priv->pos - bytes_written;
 
   if (count > 0)
-    g_memmove (priv->buffer, priv->buffer + bytes_written, count);
+    memmove (priv->buffer, priv->buffer + bytes_written, count);
   
   priv->pos -= bytes_written;
 

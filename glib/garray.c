@@ -476,8 +476,8 @@ g_array_prepend_vals (GArray        *farray,
 
   g_array_maybe_expand (array, len);
 
-  g_memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0), 
-	     g_array_elt_len (array, array->len));
+  memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0),
+           g_array_elt_len (array, array->len));
 
   memcpy (g_array_elt_pos (array, 0), data, g_array_elt_len (array, len));
 
@@ -525,9 +525,9 @@ g_array_insert_vals (GArray        *farray,
 
   g_array_maybe_expand (array, len);
 
-  g_memmove (g_array_elt_pos (array, len + index_), 
-	     g_array_elt_pos (array, index_), 
-	     g_array_elt_len (array, array->len - index_));
+  memmove (g_array_elt_pos (array, len + index_),
+           g_array_elt_pos (array, index_),
+           g_array_elt_len (array, array->len - index_));
 
   memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
 
@@ -597,9 +597,9 @@ g_array_remove_index (GArray *farray,
     array->clear_func (g_array_elt_pos (array, index_));
 
   if (index_ != array->len - 1)
-    g_memmove (g_array_elt_pos (array, index_),
-               g_array_elt_pos (array, index_ + 1),
-               g_array_elt_len (array, array->len - index_ - 1));
+    memmove (g_array_elt_pos (array, index_),
+             g_array_elt_pos (array, index_ + 1),
+             g_array_elt_len (array, array->len - index_ - 1));
 
   array->len -= 1;
 
@@ -684,9 +684,9 @@ g_array_remove_range (GArray *farray,
     }
 
   if (index_ + length != array->len)
-    g_memmove (g_array_elt_pos (array, index_),
-               g_array_elt_pos (array, index_ + length),
-               (array->len - (index_ + length)) * array->elt_size);
+    memmove (g_array_elt_pos (array, index_),
+             g_array_elt_pos (array, index_ + length),
+             (array->len - (index_ + length)) * array->elt_size);
 
   array->len -= length;
   if (G_UNLIKELY (g_mem_gc_friendly))
@@ -1185,8 +1185,8 @@ g_ptr_array_remove_index (GPtrArray *farray,
     array->element_free_func (array->pdata[index_]);
 
   if (index_ != array->len - 1)
-    g_memmove (array->pdata + index_, array->pdata + index_ + 1, 
-               sizeof (gpointer) * (array->len - index_ - 1));
+    memmove (array->pdata + index_, array->pdata + index_ + 1,
+             sizeof (gpointer) * (array->len - index_ - 1));
   
   array->len -= 1;
 
@@ -1269,9 +1269,9 @@ g_ptr_array_remove_range (GPtrArray *farray,
 
   if (index_ + length != array->len)
     {
-      g_memmove (&array->pdata[index_],
-                 &array->pdata[index_ + length], 
-                 (array->len - (index_ + length)) * sizeof (gpointer));
+      memmove (&array->pdata[index_],
+               &array->pdata[index_ + length],
+               (array->len - (index_ + length)) * sizeof (gpointer));
     }
 
   array->len -= length;

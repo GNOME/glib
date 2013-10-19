@@ -460,7 +460,7 @@ g_string_insert_len (GString     *string,
 
       /* Open up space where we are going to insert.  */
       if (pos < string->len)
-        g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+        memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* Move the source part before the gap, if any.  */
       if (offset < pos)
@@ -483,7 +483,7 @@ g_string_insert_len (GString     *string,
        * of the old string to the end, opening up space
        */
       if (pos < string->len)
-        g_memmove (string->str + pos + len, string->str + pos, string->len - pos);
+        memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* insert the new string */
       if (len == 1)
@@ -805,7 +805,7 @@ g_string_insert_c (GString *string,
 
   /* If not just an append, move the old stuff */
   if (pos < string->len)
-    g_memmove (string->str + pos + 1, string->str + pos, string->len - pos);
+    memmove (string->str + pos + 1, string->str + pos, string->len - pos);
 
   string->str[pos] = c;
 
@@ -880,7 +880,7 @@ g_string_insert_unichar (GString  *string,
 
   /* If not just an append, move the old stuff */
   if (pos < string->len)
-    g_memmove (string->str + pos + charlen, string->str + pos, string->len - pos);
+    memmove (string->str + pos + charlen, string->str + pos, string->len - pos);
 
   dest = string->str + pos;
   /* Code copied from g_unichar_to_utf() */
@@ -997,7 +997,7 @@ g_string_erase (GString *string,
       g_return_val_if_fail (pos + len <= string->len, string);
 
       if (pos + len < string->len)
-        g_memmove (string->str + pos, string->str + pos + len, string->len - (pos + len));
+        memmove (string->str + pos, string->str + pos + len, string->len - (pos + len));
     }
 
   string->len -= len;

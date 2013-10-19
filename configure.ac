@@ -508,10 +508,9 @@ AS_IF([test "$glib_native_win32" = "yes"], [
 AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a x$glib_win32_static_compilation != xyes])
 
 # Checks for library functions.
-AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
-AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
+AC_CHECK_FUNCS(timegm gmtime_r)
 
 AC_CACHE_CHECK([for __libc_enable_secure], glib_cv_have_libc_enable_secure,
   [AC_TRY_LINK([#include <unistd.h>
@@ -679,21 +678,6 @@ main (void) {
 }]])],[g_can_inline=yes],[g_can_inline=no])
 AC_MSG_RESULT($g_can_inline)
 
-dnl *** check for working do while(0) macros ***
-AC_CACHE_CHECK([for working do while(0) macros], g_cv_support_dowhile_macros, [
-	AC_TRY_COMPILE([],[
-	#define STMT_START do
-	#define STMT_END while(0)
-	#define STMT_TEST STMT_START { i = 0; } STMT_END
-	int main(void) { int i = 1; STMT_TEST; return i; }],
-	[g_cv_support_dowhile_macros=yes],
-	[g_cv_support_dowhile_macros=no],
-	[g_cv_support_dowhile_macros=yes])
-])
-if test x$g_cv_support_dowhile_macros = xyes; then
-  AC_DEFINE(HAVE_DOWHILE_MACROS, 1, [define for working do while(0) macros])
-fi
-
 # check for flavours of varargs macros
 AC_MSG_CHECKING(for ISO C99 varargs macros in C)
 AC_TRY_COMPILE([],[
@@ -788,14 +772,18 @@ fi
 
 
 # check for header files
-AC_CHECK_HEADERS([dirent.h float.h limits.h pwd.h grp.h sys/param.h sys/poll.h sys/resource.h])
-AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h])
+AC_CHECK_HEADERS([dirent.h pwd.h grp.h sys/param.h sys/poll.h sys/resource.h])
+AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h])
 AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h inttypes.h sched.h malloc.h])
 AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([sys/uio.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([sys/prctl.h])
+
+# We don't care about this, but we need to keep including it in
+# glibconfig.h for backward compatibility
+AC_CHECK_HEADERS([values.h])
 
 AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
 [#if HAVE_SYS_PARAM_H
@@ -830,8 +818,6 @@ AC_STRUCT_DIRENT_D_TYPE
 
 # Checks for libcharset
 AM_LANGINFO_CODESET
-AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
-AC_CHECK_FUNCS(setlocale)
 gl_GLIBC21
 
 # check additional type sizes
@@ -978,7 +964,7 @@ int main ()
 AC_MSG_RESULT($glib_ssize_type)
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
+AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
 AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid getresuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat fallocate)
 # Check for high-resolution sleep functions
@@ -1246,33 +1232,6 @@ AC_CHECK_TYPES(ptrdiff_t)
 jm_AC_TYPE_INTMAX_T
 AC_CHECK_FUNCS([snprintf wcslen])
 AC_FUNC_SNPRINTF_C99
-
-# Check if bcopy can be used for overlapping copies, if memmove isn't found.
-# The check is borrowed from the PERL Configure script.
-AS_IF([test "$ac_cv_func_memmove" != "yes"], [
-  AC_CACHE_CHECK(whether bcopy can handle overlapping copies,
-    glib_cv_working_bcopy,[AC_TRY_RUN([
-      int main() {
-        char buf[128], abc[128], *b;
-        int len, off, align;
-        bcopy("abcdefghijklmnopqrstuvwxyz0123456789", abc, 36);
-        for (align = 7; align >= 0; align--) {
-          for (len = 36; len; len--) {
-            b = buf+align; bcopy(abc, b, len);
-            for (off = 1; off <= len; off++) {
-              bcopy(b, b+off, len); bcopy(b+off, b, len);
-                if (bcmp(b, abc, len)) return(1);
-            }
-          }
-        }
-        return(0);
-      }],glib_cv_working_bcopy=yes,glib_cv_working_bcopy=no)])
-
-  GLIB_ASSERT_SET(glib_cv_working_bcopy)
-  if test "$glib_cv_working_bcopy" = "yes"; then
-    AC_DEFINE(HAVE_WORKING_BCOPY,1,[Have a working bcopy])
-  fi
-])
 
 # Check if <sys/select.h> needs to be included for fd_set
 AC_MSG_CHECKING([for fd_set])
@@ -2847,12 +2806,8 @@ AC_CONFIG_COMMANDS([glib/glibconfig.h],
 
 _______EOF
 
-	if test x$glib_limits_h = xyes; then
-	  echo '#include <limits.h>' >> $outfile
-	fi
-	if test x$glib_float_h = xyes; then
-	  echo '#include <float.h>' >> $outfile
-	fi
+	echo '#include <limits.h>' >> $outfile
+	echo '#include <float.h>' >> $outfile
 	if test x$glib_values_h = xyes; then
 	  echo '#include <values.h>' >> $outfile
 	fi
@@ -2875,19 +2830,19 @@ _______EOF
 
 G_BEGIN_DECLS
 
-#define G_MINFLOAT	$glib_mf
-#define G_MAXFLOAT	$glib_Mf
-#define G_MINDOUBLE	$glib_md
-#define G_MAXDOUBLE	$glib_Md
-#define G_MINSHORT	$glib_ms
-#define G_MAXSHORT	$glib_Ms
-#define G_MAXUSHORT	$glib_Mus
-#define G_MININT	$glib_mi
-#define G_MAXINT	$glib_Mi
-#define G_MAXUINT	$glib_Mui
-#define G_MINLONG	$glib_ml
-#define G_MAXLONG	$glib_Ml
-#define G_MAXULONG	$glib_Mul
+#define G_MINFLOAT	FLT_MIN
+#define G_MAXFLOAT	FLT_MAX
+#define G_MINDOUBLE	DBL_MIN
+#define G_MAXDOUBLE	DBL_MAX
+#define G_MINSHORT	SHRT_MIN
+#define G_MAXSHORT	SHRT_MAX
+#define G_MAXUSHORT	USHRT_MAX
+#define G_MININT	INT_MIN
+#define G_MAXINT	INT_MAX
+#define G_MAXUINT	UINT_MAX
+#define G_MINLONG	LONG_MIN
+#define G_MAXLONG	LONG_MAX
+#define G_MAXULONG	ULONG_MAX
 
 _______EOF
 
@@ -2998,8 +2953,10 @@ _______EOF
 
 
 	cat >>$outfile <<_______EOF
-$glib_atexit
-$glib_memmove
+#ifndef G_DISABLE_DEPRECATED
+#define g_ATEXIT(proc)	(atexit (proc))
+#define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END
+#endif
 $glib_defines
 $glib_os
 $glib_static_compilation
@@ -3177,34 +3134,6 @@ if test "x${ac_cv_working_alloca_h+set}" = xset ; then
 else
   glib_header_alloca_h="$ac_cv_header_alloca_h"
 fi
-
-case xyes in
-x$ac_cv_header_float_h)
-  glib_float_h=yes
-  glib_mf=FLT_MIN glib_Mf=FLT_MAX
-  glib_md=DBL_MIN glib_Md=DBL_MAX
-  ;;
-x$ac_cv_header_values_h)
-  glib_values_h=yes
-  glib_mf=MINFLOAT  glib_Mf=MAXFLOAT
-  glib_md=MINDOUBLE glib_Md=MAXDOUBLE
-  ;;
-esac
-
-case xyes in
-x$ac_cv_header_limits_h)
-  glib_limits_h=yes
-  glib_ms=SHRT_MIN glib_Ms=SHRT_MAX glib_Mus=USHRT_MAX
-  glib_mi=INT_MIN  glib_Mi=INT_MAX  glib_Mui=UINT_MAX
-  glib_ml=LONG_MIN glib_Ml=LONG_MAX glib_Mul=ULONG_MAX
-  ;;
-x$ac_cv_header_values_h)
-  glib_values_h=yes
-  glib_ms=MINSHORT glib_Ms=MAXSHORT glib_Mus="(((gushort)G_MAXSHORT)*2+1)"
-  glib_mi=MININT   glib_Mi=MAXINT   glib_Mui="(((guint)G_MAXINT)*2+1)"
-  glib_ml=MINLONG  glib_Ml=MAXLONG  glib_Mul="(((gulong)G_MAXLONG)*2+1)"
-  ;;
-esac
 
 if test x$ac_cv_header_sys_poll_h = xyes ; then
   glib_sys_poll_h=yes
@@ -3386,35 +3315,6 @@ $ac_cv_sizeof___int64)
   ;;
 esac
 
-
-case xyes in
-x$ac_cv_func_atexit)
-  glib_atexit="
-#define g_ATEXIT(proc)	(atexit (proc))"
-  ;;
-x$ac_cv_func_on_exit)
-  glib_atexit="
-#define g_ATEXIT(proc)	(on_exit ((void (*)(int, void*))(proc), NULL))"
-  ;;
-esac
-
-case xyes in
-x$ac_cv_func_memmove)
-  glib_memmove='
-#define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END'
-  ;;
-x$glib_cv_working_bcopy)
-  glib_memmove="
-/* memmove isn't available, but bcopy can copy overlapping memory regions */
-#define g_memmove(d,s,n) G_STMT_START { bcopy ((s), (d), (n)); } G_STMT_END"
-  ;;
-*)  
-  glib_memmove="
-/* memmove isn't found and bcopy can't copy overlapping memory regions, 
- * so we have to roll our own copy routine. */
-void g_memmove (void* dest, const void * src, unsigned long len);"
-  ;;
-esac
 
 glib_defines="
 #define GLIB_MAJOR_VERSION $GLIB_MAJOR_VERSION

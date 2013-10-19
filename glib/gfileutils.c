@@ -2419,7 +2419,7 @@ g_path_get_dirname (const gchar *file_name)
 
   len = (guint) 1 + base - file_name;
   base = g_new (gchar, len + 1);
-  g_memmove (base, file_name, len);
+  memmove (base, file_name, len);
   base[len] = 0;
 
   return base;

@@ -282,8 +282,8 @@ g_value_array_insert (GValueArray  *value_array,
   i = value_array->n_values;
   value_array_grow (value_array, value_array->n_values + 1, FALSE);
   if (index + 1 < value_array->n_values)
-    g_memmove (value_array->values + index + 1, value_array->values + index,
-	       (i - index) * sizeof (value_array->values[0]));
+    memmove (value_array->values + index + 1, value_array->values + index,
+             (i - index) * sizeof (value_array->values[0]));
   memset (value_array->values + index, 0, sizeof (value_array->values[0]));
   if (value)
     {
@@ -317,8 +317,8 @@ g_value_array_remove (GValueArray *value_array,
     g_value_unset (value_array->values + index);
   value_array->n_values--;
   if (index < value_array->n_values)
-    g_memmove (value_array->values + index, value_array->values + index + 1,
-	       (value_array->n_values - index) * sizeof (value_array->values[0]));
+    memmove (value_array->values + index, value_array->values + index + 1,
+             (value_array->n_values - index) * sizeof (value_array->values[0]));
   value_array_shrink (value_array);
   if (value_array->n_prealloced > value_array->n_values)
     memset (value_array->values + value_array->n_values, 0, sizeof (value_array->values[0]));

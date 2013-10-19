@@ -43,7 +43,7 @@ G_BEGIN_DECLS
 #  if defined (__GNUC__) && defined (__PPC__) && (defined (_CALL_SYSV) || defined (_WIN32))
 #    define G_VA_COPY(ap1, ap2)	  (*(ap1) = *(ap2))
 #  elif defined (G_VA_COPY_AS_ARRAY)
-#    define G_VA_COPY(ap1, ap2)	  g_memmove ((ap1), (ap2), sizeof (va_list))
+#    define G_VA_COPY(ap1, ap2)	  memmove ((ap1), (ap2), sizeof (va_list))
 #  else /* va_list is a pointer */
 #    define G_VA_COPY(ap1, ap2)	  ((ap1) = (ap2))
 #  endif /* va_list is a pointer */
@@ -239,16 +239,7 @@ gchar *g_format_size_for_display (goffset size);
  * function passed to g_atexit().
  */
 typedef void (*GVoidFunc) (void);
-#ifndef ATEXIT
-# define ATEXIT(proc) g_ATEXIT(proc)
-#else
-# define G_NATIVE_ATEXIT
-#endif /* ATEXIT */
-/* we use a GLib function as a replacement for ATEXIT, so
- * the programmer is not required to check the return value
- * (if there is any in the implementation) and doesn't encounter
- * missing include files.
- */
+#define ATEXIT(proc) g_ATEXIT(proc)
 GLIB_DEPRECATED
 void	g_atexit		(GVoidFunc    func);
 

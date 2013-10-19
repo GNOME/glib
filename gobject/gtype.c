@@ -1525,8 +1525,8 @@ type_iface_add_prerequisite_W (TypeNode *iface,
 					      IFACE_NODE_PREREQUISITES (iface),
 					      IFACE_NODE_N_PREREQUISITES (iface));
   prerequisites = IFACE_NODE_PREREQUISITES (iface);
-  g_memmove (prerequisites + i + 1, prerequisites + i,
-	     sizeof (prerequisites[0]) * (IFACE_NODE_N_PREREQUISITES (iface) - i - 1));
+  memmove (prerequisites + i + 1, prerequisites + i,
+           sizeof (prerequisites[0]) * (IFACE_NODE_N_PREREQUISITES (iface) - i - 1));
   prerequisites[i] = prerequisite_type;
   
   /* we want to get notified when prerequisites get added to prerequisite_node */
@@ -2495,9 +2495,9 @@ g_type_remove_class_cache_func (gpointer            cache_data,
 	static_class_cache_funcs[i].cache_func == cache_func)
       {
 	static_n_class_cache_funcs--;
-	g_memmove (static_class_cache_funcs + i,
-		   static_class_cache_funcs + i + 1,
-		   sizeof (static_class_cache_funcs[0]) * (static_n_class_cache_funcs - i));
+	memmove (static_class_cache_funcs + i,
+                 static_class_cache_funcs + i + 1,
+                 sizeof (static_class_cache_funcs[0]) * (static_n_class_cache_funcs - i));
 	static_class_cache_funcs = g_renew (ClassCacheFunc, static_class_cache_funcs, static_n_class_cache_funcs);
 	found_it = TRUE;
 	break;
@@ -2569,9 +2569,9 @@ g_type_remove_interface_check (gpointer                check_data,
 	static_iface_check_funcs[i].check_func == check_func)
       {
 	static_n_iface_check_funcs--;
-	g_memmove (static_iface_check_funcs + i,
-		   static_iface_check_funcs + i + 1,
-		   sizeof (static_iface_check_funcs[0]) * (static_n_iface_check_funcs - i));
+	memmove (static_iface_check_funcs + i,
+                 static_iface_check_funcs + i + 1,
+                 sizeof (static_iface_check_funcs[0]) * (static_n_iface_check_funcs - i));
 	static_iface_check_funcs = g_renew (IFaceCheckFunc, static_iface_check_funcs, static_n_iface_check_funcs);
 	found_it = TRUE;
 	break;
@@ -3724,7 +3724,7 @@ type_set_qdata_W (TypeNode *node,
   for (i = 0; i < gdata->n_qdatas - 1; i++)
     if (qdata[i].quark > quark)
       break;
-  g_memmove (qdata + i + 1, qdata + i, sizeof (qdata[0]) * (gdata->n_qdatas - i - 1));
+  memmove (qdata + i + 1, qdata + i, sizeof (qdata[0]) * (gdata->n_qdatas - i - 1));
   qdata[i].quark = quark;
   qdata[i].data = data;
 }

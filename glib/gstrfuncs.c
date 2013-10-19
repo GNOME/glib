@@ -1250,25 +1250,14 @@ g_ascii_strtoll (const gchar *nptr,
 const gchar *
 g_strerror (gint errnum)
 {
-  gchar buf[64];
   gchar *msg;
-  gchar *tofree;
+  gchar *tofree = NULL;
   const gchar *ret;
   gint saved_errno = errno;
 
-  msg = tofree = NULL;
-
-#ifdef HAVE_STRERROR
   msg = strerror (errnum);
   if (!g_get_charset (NULL))
     msg = tofree = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
-#endif
-
-  if (!msg)
-    {
-      msg = buf;
-      _g_sprintf (msg, "unknown error (%d)", errnum);
-    }
 
   ret = g_intern_string (msg);
   g_free (tofree);
@@ -2220,7 +2209,7 @@ g_strchug (gchar *string)
   for (start = (guchar*) string; *start && g_ascii_isspace (*start); start++)
     ;
 
-  g_memmove (string, start, strlen ((gchar *) start) + 1);
+  memmove (string, start, strlen ((gchar *) start) + 1);
 
   return string;
 }
