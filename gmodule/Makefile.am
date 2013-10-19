@@ -13,7 +13,6 @@ EXTRA_DIST +=				\
 		makefile.msc.in 	\
 		gmoduleconf.h.in 	\
 		gmodule-dl.c		\
-		gmodule-dld.c		\
 		gmodule-dyld.c		\
 		gmodule-win32.c		\
 		gmodule-ar.c		\

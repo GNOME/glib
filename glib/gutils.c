@@ -268,15 +268,9 @@ g_atexit (GVoidFunc func)
   if (result)
     error = g_strerror (errno);
 #elif defined (HAVE_ATEXIT)
-#  ifdef NeXT /* @#%@! NeXTStep */
-  result = !atexit ((void (*)(void)) func);
-  if (result)
-    error = g_strerror (errno);
-#  else
   result = atexit ((void (*)(void)) func);
   if (result)
     error = g_strerror (errno);
-#  endif /* NeXT */
 #elif defined (HAVE_ON_EXIT)
   result = on_exit ((void (*)(int, void *)) func, NULL);
   if (result)
@@ -697,8 +691,7 @@ g_get_user_database_entry (void)
             }
             error = error < 0 ? errno : error;
 #    else /* HAVE_NONPOSIX_GETPWUID_R */
-       /* HPUX 11 falls into the HAVE_POSIX_GETPWUID_R case */
-#      if defined(_AIX) || defined(__hpux)
+#      if defined(_AIX)
             error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
             pw = error == 0 ? &pwd : NULL;
 #      else /* !_AIX */

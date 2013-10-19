@@ -507,42 +507,6 @@ AS_IF([test "$glib_native_win32" = "yes"], [
 ])
 AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a x$glib_win32_static_compilation != xyes])
 
-dnl
-dnl DU4 native cc currently needs -std1 for ANSI mode (instead of K&R)
-dnl
-AS_IF([test $cross_compiling != yes], [
-    AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
-    glib_save_LIBS=$LIBS
-    LIBS="$LIBS -lm"
-    AC_TRY_RUN([#include <math.h>
-		 int main (void) { return (log(1) != log(1.)); }],
-	 AC_MSG_RESULT(none needed),
-	 glib_save_CFLAGS=$CFLAGS
-	 CFLAGS="$CFLAGS -std1"
-	 AC_TRY_RUN([#include <math.h>
-		     int main (void) { return (log(1) != log(1.)); }],
-	     AC_MSG_RESULT(-std1),
-	     AC_MSG_RESULT()
-	     CFLAGS=$glib_save_CFLAGS
-	     AC_MSG_WARN(
-		    [No ANSI prototypes found in library. (-std1 didn't work.)])
-	 )
-    )
-    LIBS=$glib_save_LIBS
-])
-
-dnl NeXTStep cc seems to need this
-AC_MSG_CHECKING([for extra flags for POSIX compliance])
-AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
-  AC_MSG_RESULT(none needed),
-  glib_save_CFLAGS=$CFLAGS
-  CFLAGS="$CFLAGS -posix"
-  AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
-    AC_MSG_RESULT(-posix),
-    AC_MSG_RESULT()
-    CFLAGS=$glib_save_CFLAGS
-    AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
-
 # Checks for library functions.
 AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
@@ -1573,13 +1537,6 @@ AS_IF([ test -z "$G_MODULE_IMPL"], [
 		                   G_MODULE_IMPL=G_MODULE_IMPL_DL],[])],
 		     [])
 ])
-dnl *** shl_load() in libdld (HP-UX)
-AS_IF([ test -z "$G_MODULE_IMPL"], [
-	AC_CHECK_LIB(dld, shl_load,
-		[G_MODULE_LIBS=-ldld
-		G_MODULE_IMPL=G_MODULE_IMPL_DLD],
-		[])
-])
 dnl *** additional checks for G_MODULE_IMPL_DL
 AS_IF([ test "$G_MODULE_IMPL" = "G_MODULE_IMPL_DL" ], [
 	LIBS_orig="$LIBS"
@@ -1993,24 +1950,20 @@ AC_MSG_CHECKING(for thread implementation)
 
 have_threads=no
 AS_IF([ test "x$with_threads" = xyes || test "x$with_threads" = xposix], [
-	# -D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE is for DG/UX
-	# -U_OSF_SOURCE is for Digital UNIX 4.0d
-	GTHREAD_COMPILE_IMPL_DEFINES="-D_POSIX4_DRAFT_SOURCE -D_POSIX4A_DRAFT10_SOURCE -U_OSF_SOURCE"
-	glib_save_CPPFLAGS="$CPPFLAGS"
-	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
         AS_IF([ test "x$have_threads" = xno], [
                 AC_TRY_COMPILE([#include <pthread.h>],
 			[pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;],
 			have_threads=posix)
 	])
 	# Tru64Unix requires -pthread to find pthread.h. See #103020
-	CPPFLAGS="$CPPFLAGS -pthread"
 	if test "x$have_threads" = xno; then
-	AC_TRY_COMPILE([#include <pthread.h>],
+		glib_save_CPPFLAGS="$CPPFLAGS"
+		CPPFLAGS="$CPPFLAGS -pthread"
+		AC_TRY_COMPILE([#include <pthread.h>],
 		       [pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;],
 		       have_threads=posix)
+		CPPFLAGS="$glib_save_CPPFLAGS"
         fi
-	CPPFLAGS="$glib_save_CPPFLAGS"
 ])
 if test "x$with_threads" = xyes || test "x$with_threads" = xwin32; then
         case $host in
@@ -2109,9 +2062,6 @@ AS_IF([ test x"$G_THREAD_CFLAGS" = x], [
 			# Guide".
 			G_THREAD_CFLAGS="-D_THREAD_SAFE"
 		fi
-		;;
-	*-dg-dgux*)  # DG/UX
-		G_THREAD_CFLAGS="-D_REENTRANT -D_POSIX4A_DRAFT10_SOURCE"
 		;;
 	*-sysv5uw7*) # UnixWare 7 
 		# We are not using gcc with -pthread. Catched above.
@@ -3117,7 +3067,7 @@ _______EOF
 	if test x$g_have_eilseq = xno; then
 		cat >>$outfile <<_______EOF
 #ifndef EILSEQ
-/* On some systems, like SunOS and NetBSD, EILSEQ is not defined.
+/* On some pre-C99 systems, EILSEQ is not defined.
  * The correspondence between this and the corresponding definition
  * in libiconv is essential.
  */
@@ -3440,11 +3390,7 @@ esac
 case xyes in
 x$ac_cv_func_atexit)
   glib_atexit="
-#ifdef NeXT /* @#%@! NeXTStep */
-# define g_ATEXIT(proc)	(!atexit (proc))
-#else
-# define g_ATEXIT(proc)	(atexit (proc))
-#endif"
+#define g_ATEXIT(proc)	(atexit (proc))"
   ;;
 x$ac_cv_func_on_exit)
   glib_atexit="

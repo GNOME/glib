@@ -148,11 +148,7 @@ typedef unsigned __int64 guintptr;
 
 #endif
 
-#ifdef NeXT /* @#%@! NeXTStep */
-# define g_ATEXIT(proc)	(!atexit (proc))
-#else
-# define g_ATEXIT(proc)	(atexit (proc))
-#endif
+#define g_ATEXIT(proc)	(atexit (proc))
 
 #define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END
 

@@ -2477,10 +2477,7 @@ g_get_current_dir (void)
   if (max_len == 0)
     max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
 
-  /* We don't use getcwd(3) on SUNOS, because, it does a popen("pwd")
-   * and, if that wasn't bad enough, hangs in doing so.
-   */
-#if (defined (sun) && !defined (__SVR4)) || !defined(HAVE_GETCWD)
+#if !defined(HAVE_GETCWD)
   buffer = g_new (gchar, max_len + 1);
   *buffer = 0;
   dir = getwd (buffer);

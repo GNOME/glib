@@ -93,13 +93,10 @@ int
 main ()
 {
   unsigned int major, minor, micro;
-  char *tmp_version;
 
   fclose (fopen ("conf.glibtest", "w"));
 
-  /* HP/UX 9 (%@#!) writes to sscanf strings */
-  tmp_version = g_strdup("$min_glib_version");
-  if (sscanf(tmp_version, "%u.%u.%u", &major, &minor, &micro) != 3) {
+  if (sscanf("$min_glib_version", "%u.%u.%u", &major, &minor, &micro) != 3) {
      printf("%s, bad version string\n", "$min_glib_version");
      exit(1);
    }
