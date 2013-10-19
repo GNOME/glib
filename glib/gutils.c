@@ -788,10 +788,6 @@ g_get_user_database_entry (void)
 
 #endif /* !HAVE_PWD_H */
 
-#ifdef __EMX__
-      /* change '\\' in %HOME% to '/' */
-      g_strdelimit (e.home_dir, "\\",'/');
-#endif
       if (!e.user_name)
         e.user_name = g_strdup ("somebody");
       if (!e.real_name)
