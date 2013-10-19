@@ -33,9 +33,9 @@
 
 #include <stdlib.h>
 
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
+#endif /* G_OS_UNIX */
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

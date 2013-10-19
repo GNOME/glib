@@ -66,9 +66,9 @@
 #endif
 
 #endif /* GLIB_HAVE_SYS_POLL_H */
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
+#endif /* G_OS_UNIX */
 #include <errno.h>
 
 #ifdef G_OS_WIN32

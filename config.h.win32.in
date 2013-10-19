@@ -630,13 +630,6 @@
 /* Define to 1 if you have the `timegm' function. */
 /* #undef HAVE_TIMEGM */
 
-/* Define to 1 if you have the <unistd.h> header file. */
-#ifndef _MSC_VER
-#define HAVE_UNISTD_H 1
-#else /* _MSC_VER */
-/* #undef HAVE_UNISTD_H */
-#endif /* _MSC_VER */
-
 /* Define if your printf function family supports positional parameters as
    specified by Unix98. */
 /* #undef HAVE_UNIX98_PRINTF */

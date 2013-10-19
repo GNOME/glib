@@ -23,10 +23,6 @@
 #include "config.h"
 
 #include <string.h>
-#include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include "gdbusauthmechanismexternal.h"
 #include "gcredentials.h"

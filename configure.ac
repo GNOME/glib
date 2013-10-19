@@ -779,7 +779,7 @@ AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([linux/magic.h sys/prctl.h])
 
 # Some versions of MSC lack these
-AC_CHECK_HEADERS([dirent.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([dirent.h sys/time.h])
 
 # We don't care about this, but we need to keep including it in
 # glibconfig.h for backward compatibility
@@ -799,7 +799,9 @@ AC_CHECK_HEADERS([xlocale.h])
 AC_CHECK_MEMBERS([struct stat.st_mtimensec, struct stat.st_mtim.tv_nsec, struct stat.st_atimensec, struct stat.st_atim.tv_nsec, struct stat.st_ctimensec, struct stat.st_ctim.tv_nsec])
 AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f_fstypename, struct statfs.f_bavail],,, [#include <sys/types.h>
 #include <sys/stat.h>
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 #ifdef HAVE_SYS_STATFS_H
 #include <sys/statfs.h>
 #endif
@@ -922,9 +924,6 @@ AS_IF([test $ac_cv_sizeof_ssize_t = $ac_cv_sizeof_int &&
 #ifdef HAVE_STDINT_H
 # include <stdint.h>
 #endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
 #include <sys/types.h>
 int main ()
 {
@@ -943,9 +942,6 @@ int main ()
 #endif
 #ifdef HAVE_STDINT_H
 # include <stdint.h>
-#endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
 #endif
 #include <sys/types.h>
 int main ()

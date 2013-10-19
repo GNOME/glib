@@ -30,6 +30,9 @@
 #include <stdio.h>
 #include <locale.h>
 #include <errno.h>
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 #ifdef G_OS_WIN32
 #include <io.h>
 #endif
@@ -37,10 +40,6 @@
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gzlibcompressor.h>
 #include <gio/gconverteroutputstream.h>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include <glib.h>
 #include "gvdb/gvdb-builder.h"

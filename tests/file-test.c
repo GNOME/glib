@@ -37,12 +37,11 @@
 
 #include <gstdio.h>
 
+#include <fcntl.h>		/* For open() */
+
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
-
-#include <fcntl.h>		/* For open() */
-
 #ifdef G_OS_WIN32
 #include <io.h>			/* For read(), write() etc */
 #endif

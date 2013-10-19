@@ -26,10 +26,10 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
-#ifdef _WIN32
+#ifdef G_OS_WIN32
 #include <io.h>
 #endif
 

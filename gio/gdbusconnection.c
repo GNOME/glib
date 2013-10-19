@@ -105,10 +105,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include "gdbusauth.h"
 #include "gdbusutils.h"

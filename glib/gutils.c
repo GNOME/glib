@@ -31,9 +31,6 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -45,6 +42,7 @@
 #include <sys/stat.h>
 #ifdef G_OS_UNIX
 #include <pwd.h>
+#include <unistd.h>
 #endif
 #include <sys/types.h>
 #ifdef HAVE_SYS_PARAM_H

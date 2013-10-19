@@ -40,10 +40,10 @@
   #define STRICT
   #include <windows.h>
   #define pipe(fds) _pipe(fds, 4096, _O_BINARY)
-#else
-  #ifdef HAVE_UNISTD_H
-    #include <unistd.h>
-  #endif
+#endif
+
+#ifdef G_OS_UNIX
+  #include <unistd.h>
 #endif
 
 static int nrunning;

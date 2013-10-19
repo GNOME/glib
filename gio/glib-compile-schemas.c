@@ -29,10 +29,6 @@
 #include <stdio.h>
 #include <locale.h>
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
 #include "gvdb/gvdb-builder.h"
 #include "strinfo.c"
 

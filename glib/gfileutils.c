@@ -22,9 +22,6 @@
 #include "glibconfig.h"
 
 #include <sys/stat.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -35,6 +32,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <io.h>

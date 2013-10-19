@@ -32,9 +32,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <fcntl.h>
 #include <errno.h>
 #ifdef G_OS_UNIX
@@ -62,11 +59,11 @@
 #include <gfileinfo-priv.h>
 #include <gvfs.h>
 
-#ifndef G_OS_WIN32
+#ifdef G_OS_UNIX
+#include <unistd.h>
 #include "glib-unix.h"
 #include "glib-private.h"
 #endif
-#include "glibintl.h"
 
 #include "thumbnail-verify.h"
 
@@ -97,6 +94,7 @@
 #include "gioerror.h"
 #include "gthemedicon.h"
 #include "gcontenttypeprivate.h"
+#include "glibintl.h"
 
 
 struct ThumbMD5Context {

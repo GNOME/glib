@@ -38,9 +38,6 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include "gscanner.h"
 
@@ -49,8 +46,11 @@
 #include "gstring.h"
 #include "gtestutils.h"
 
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 #ifdef G_OS_WIN32
-#include <io.h> /* For _read() */
+#include <io.h>
 #endif
 
 

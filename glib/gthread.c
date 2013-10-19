@@ -45,7 +45,7 @@
 
 #include <string.h>
 
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 
@@ -1039,7 +1039,7 @@ g_get_num_processors (void)
       if (count > 0)
         return count;
     }
-#elif defined(HAVE_UNISTD_H) && defined(_SC_NPROCESSORS_ONLN)
+#elif defined(_SC_NPROCESSORS_ONLN)
   {
     int count;
 

@@ -30,9 +30,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>

@@ -33,10 +33,6 @@
 
 #include "glib.h"
 
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
-
 #define C2P(c)          ((gpointer) ((long) (c)))
 #define P2C(p)          ((gchar) ((long) (p)))
 

@@ -37,10 +37,6 @@
 
 #include <glib.h>
 
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
-
 int 
 main (int argc, char *argv[])
 {

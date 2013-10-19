@@ -44,10 +44,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
 #include "grand.h"
 
 #include "genviron.h"
@@ -55,6 +51,10 @@
 #include "gmem.h"
 #include "gtestutils.h"
 #include "gthread.h"
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 #ifdef G_OS_WIN32
 #include <stdlib.h>

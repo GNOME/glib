@@ -32,7 +32,7 @@
 #include <string.h>
 #include <errno.h>
 
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>             /* sysconf() */
 #endif
 #ifdef G_OS_WIN32

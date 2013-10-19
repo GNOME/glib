@@ -29,8 +29,6 @@
 #include <fcntl.h>
 #if G_OS_UNIX
 #include <dirent.h>
-#endif
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 

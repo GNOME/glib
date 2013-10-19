@@ -32,7 +32,7 @@
 
 #include <glib.h>
 
-#ifndef G_OS_WIN32
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #include <sys/resource.h>
 #endif

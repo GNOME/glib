@@ -2,13 +2,17 @@
 
 #include <glib.h>
 #include <string.h>
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
 #include <glib/gstdio.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
 static void
 test_basic (void)

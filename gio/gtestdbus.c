@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <gstdio.h>
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 #ifdef G_OS_WIN32

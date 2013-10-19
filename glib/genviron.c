@@ -30,9 +30,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifdef HAVE_CRT_EXTERNS_H
 #include <crt_externs.h> /* for _NSGetEnviron */
 #endif

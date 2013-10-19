@@ -27,9 +27,6 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <stdlib.h>
 
 #include "gdummyfile.h"

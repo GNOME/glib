@@ -1,8 +1,5 @@
 #include <glib.h>
 #include <string.h>
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
 #include <stdlib.h>
 
 /* Test GChecksum by computing the checksums of every initial

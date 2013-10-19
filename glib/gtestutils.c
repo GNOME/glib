@@ -29,14 +29,12 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include <glib/gstdio.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif

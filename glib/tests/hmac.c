@@ -1,8 +1,5 @@
 #include <glib.h>
 #include <string.h>
-#ifdef G_OS_UNIX
-#include <unistd.h>
-#endif
 #include <stdlib.h>
 
 /* HMAC-MD5 test vectors as per RFC 2202 */

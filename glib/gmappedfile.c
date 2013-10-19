@@ -25,14 +25,15 @@
 #include <sys/types.h> 
 #include <sys/stat.h> 
 #include <fcntl.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifdef HAVE_MMAP
 #include <sys/mman.h>
 #endif
 
 #include "glibconfig.h"
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 #ifdef G_OS_WIN32
 #include <windows.h>
