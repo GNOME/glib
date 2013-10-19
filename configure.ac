@@ -117,17 +117,6 @@ AM_CONDITIONAL(HAVE_GCC, [test "$GCC" = "yes"])
 
 AC_CANONICAL_HOST
 
-AC_MSG_CHECKING([for the BeOS])
-case $host in
-  *-*-beos*)
-    glib_native_beos="yes"
-    ;;
-  *)
-    glib_native_beos="no"
-    ;;
-esac
-AC_MSG_RESULT([$glib_native_beos])
-
 dnl
 
 AC_MSG_CHECKING([for Win32])
@@ -1569,15 +1558,6 @@ AS_IF([ test -z "$G_MODULE_IMPL"], [
 			             [G_MODULE_IMPL=G_MODULE_IMPL_DL],[])],
 		      [])
 ])
-dnl *** load_image (BeOS)
-AS_IF([test -z "$G_MODULE_IMPL" && test "x$glib_native_beos" = "xyes"], [
-  AC_CHECK_LIB(root, load_image,
-      [G_MODULE_LIBS="-lbe -lroot -lglib-2.0 "
-      G_MODULE_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
-      G_MODULE_PLUGIN_LIBS="-L\$(top_builddir_full)/gmodule/.libs -lgmodule"
-      G_MODULE_IMPL=G_MODULE_IMPL_BEOS],
-      [])
-])
 dnl *** NSLinkModule (dyld) in system libraries (Darwin)
 AS_IF([ test -z "$G_MODULE_IMPL" ], [
  	AC_CHECK_FUNC(NSLinkModule,
@@ -2244,15 +2224,6 @@ AM_CONDITIONAL(THREADS_NONE, [test "$g_threads_impl" = "NONE"])
 if test "x$G_THREAD_LIBS" = xerror; then
         AC_MSG_ERROR($LIBS_NOT_FOUND_1$have_threads$LIBS_NOT_FOUND_2)
 fi
-
-case $host in
-  *-*-beos*)
-    G_THREAD_LIBS="-lbe -lroot -lglib-2.0 "
-    G_THREAD_LIBS_EXTRA="-L\$(top_builddir_full)/.libs"
-    ;;
-  *)
-    ;;
-esac
 
 AC_MSG_CHECKING(thread related libraries)
 AC_MSG_RESULT($G_THREAD_LIBS)
@@ -3585,9 +3556,6 @@ g_module_suffix="$glib_gmodule_suffix"
 
 g_pid_type="$glib_pid_type"
 case $host in
-  *-*-beos*)
-    glib_os="#define G_OS_BEOS"
-    ;;
   *-*-cygwin*)
     glib_os="#define G_OS_UNIX
 #define G_PLATFORM_WIN32

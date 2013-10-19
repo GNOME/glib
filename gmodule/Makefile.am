@@ -16,7 +16,6 @@ EXTRA_DIST +=				\
 		gmodule-dld.c		\
 		gmodule-dyld.c		\
 		gmodule-win32.c		\
-		gmodule-beos.c		\
 		gmodule-ar.c		\
 		gmoduleconf.h.win32 	\
 		gmodule.rc.in

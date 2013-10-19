@@ -1540,13 +1540,6 @@
  */
 
 /**
- * G_OS_BEOS:
- *
- * This macro is defined only on BeOS. So you can bracket
- * BeOS-specific code in "&num;ifdef G_OS_BEOS".
- */
-
-/**
  * G_OS_UNIX:
  *
  * This macro is defined only on UNIX. So you can bracket

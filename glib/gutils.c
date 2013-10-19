@@ -421,7 +421,7 @@ g_find_program_in_path (const gchar *program)
     }
   
   path = g_getenv ("PATH");
-#if defined(G_OS_UNIX) || defined(G_OS_BEOS)
+#if defined(G_OS_UNIX)
   if (path == NULL)
     {
       /* There is no 'PATH' in the environment.  The default

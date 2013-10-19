@@ -73,11 +73,6 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
-#ifdef G_OS_BEOS
-#include <sys/socket.h>
-#include <sys/wait.h>
-#endif /* G_OS_BEOS */
-
 #include "gmain.h"
 
 #include "garray.h"

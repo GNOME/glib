@@ -359,10 +359,6 @@ g_poll (GPollFD *fds,
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
-#ifdef G_OS_BEOS
-#undef NO_FD_SET
-#endif /* G_OS_BEOS */
-
 #ifndef NO_FD_SET
 #  define SELECT_MASK fd_set
 #else /* !NO_FD_SET */
