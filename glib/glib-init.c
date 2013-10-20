@@ -25,6 +25,7 @@
 
 #include "gutils.h"     /* for GDebugKey */
 #include "gconstructor.h"
+#include "gmem.h"       /* for g_mem_gc_friendly */
 
 #include <string.h>
 #include <stdlib.h>
