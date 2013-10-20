@@ -197,11 +197,10 @@ static GQuark	            quark_closure_array = 0;
 static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
+static GQuark               quark_in_construction;
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
-G_LOCK_DEFINE_STATIC (construction_mutex);
-static GSList *construction_objects = NULL;
 /* qdata pointing to GSList<GWeakRef *>, protected by weak_locations_lock */
 static GQuark	            quark_weak_locations = 0;
 static GRWLock              weak_locations_lock;
@@ -451,6 +450,7 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
+  quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
   pspec_pool = g_param_spec_pool_new (TRUE);
 
   class->constructor = g_object_constructor;
@@ -951,13 +951,9 @@ g_object_interface_list_properties (gpointer      g_iface,
 }
 
 static inline gboolean
-object_in_construction_list (GObject *object)
+object_in_construction (GObject *object)
 {
-  gboolean in_construction;
-  G_LOCK (construction_mutex);
-  in_construction = g_slist_find (construction_objects, object) != NULL;
-  G_UNLOCK (construction_mutex);
-  return in_construction;
+  return g_datalist_id_get_data (&object->qdata, quark_in_construction) != NULL;
 }
 
 static void
@@ -975,10 +971,8 @@ g_object_init (GObject		*object,
 
   if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
     {
-      /* enter construction list for notify_queue_thaw() and to allow construct-only properties */
-      G_LOCK (construction_mutex);
-      construction_objects = g_slist_prepend (construction_objects, object);
-      G_UNLOCK (construction_mutex);
+      /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
+      g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
     }
 
 #ifdef	G_ENABLE_DEBUG
@@ -1031,7 +1025,7 @@ g_object_real_dispose (GObject *object)
 static void
 g_object_finalize (GObject *object)
 {
-  if (object_in_construction_list (object))
+  if (object_in_construction (object))
     {
       g_error ("object %s %p finalized while still in-construction",
                G_OBJECT_TYPE_NAME (object), object);
@@ -1578,28 +1572,6 @@ g_object_new (GType	   object_type,
   return object;
 }
 
-static gboolean
-slist_maybe_remove (GSList       **slist,
-                    gconstpointer  data)
-{
-  GSList *last = NULL, *node = *slist;
-  while (node)
-    {
-      if (node->data == data)
-        {
-          if (last)
-            last->next = node->next;
-          else
-            *slist = node->next;
-          g_slist_free_1 (node);
-          return TRUE;
-        }
-      last = node;
-      node = last->next;
-    }
-  return FALSE;
-}
-
 static gpointer
 g_object_new_with_custom_constructor (GObjectClass          *class,
                                       GObjectConstructParam *params,
@@ -1676,25 +1648,23 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   g_free (cvalues);
 
   /* There is code in the wild that relies on being able to return NULL
-   * from its custom constructor.  This was never a supported operation
-   * and will leak memory, but since the code is already out there...
+   * from its custom constructor.  This was never a supported operation,
+   * but since the code is already out there...
    */
   if (object == NULL)
     {
-      g_critical ("Custom constructor for class %s returned NULL (which is invalid).  Unable to remove object "
-                  "from construction_objects list, so memory was probably just leaked.  Please use GInitable "
-                  "instead.", G_OBJECT_CLASS_NAME (class));
+      g_critical ("Custom constructor for class %s returned NULL (which is invalid). "
+                  "Please use GInitable instead.", G_OBJECT_CLASS_NAME (class));
       return NULL;
     }
 
-  /* g_object_init() will have added us to the construction_objects
-   * list.  Check if we're in it (and remove us) in order to find
-   * out if we were newly-constructed or this is an already-existing
-   * singleton (in which case we should not do 'constructed').
+  /* g_object_init() will have marked the object as being in-construction.
+   * Check if the returned object still is so marked, or if this is an
+   * already-existing singleton (in which case we should not do 'constructed').
    */
-  G_LOCK (construction_mutex);
-  newly_constructed = slist_maybe_remove (&construction_objects, object);
-  G_UNLOCK (construction_mutex);
+  newly_constructed = object_in_construction (object);
+  if (newly_constructed)
+    g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
 
   if (CLASS_HAS_PROPS (class))
     {
@@ -2112,7 +2082,7 @@ g_object_set_valist (GObject	 *object,
 		     G_OBJECT_TYPE_NAME (object));
 	  break;
 	}
-      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
+      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
         {
           g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                      G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
@@ -2327,7 +2297,7 @@ g_object_set_property (GObject	    *object,
                G_STRFUNC,
                pspec->name,
                G_OBJECT_TYPE_NAME (object));
-  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction_list (object))
+  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
     g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
