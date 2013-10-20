@@ -36,8 +36,6 @@
 #include <string.h>
 #include <signal.h>
 
-#include "glib-init.h"
-
 #include "gslice.h"
 #include "gbacktrace.h"
 #include "gtestutils.h"
