@@ -153,8 +153,6 @@ application_headers = \
 	gmenuexporter.h			\
 	gdbusmenumodel.h		\
 	gnotification.h			\
-	gnotification-private.h		\
-	gnotificationbackend.h		\
 	$(NULL)
 
 application_sources = \
@@ -178,6 +176,8 @@ application_sources = \
 	gmenu.c					\
 	gmenuexporter.c				\
 	gdbusmenumodel.c			\
+	gnotification-private.h			\
+	gnotificationbackend.h			\
 	gnotification.c				\
 	gnotificationbackend.c			\
 	$(NULL)

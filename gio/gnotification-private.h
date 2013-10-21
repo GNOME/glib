@@ -51,6 +51,4 @@ gboolean                g_notification_get_default_action               (GNotifi
 
 GVariant *              g_notification_serialize                        (GNotification *notification);
 
-GVariant *      g_notification_serialize                (GNotification *notification);
-
 #endif
