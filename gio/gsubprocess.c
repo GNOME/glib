@@ -99,8 +99,8 @@
 #include <fcntl.h>
 #endif
 #ifdef G_OS_WIN32
-#define _WIN32_WINNT 0x0500
 #include <windows.h>
+#include <io.h>
 #include "giowin32-priv.h"
 #endif
 
@@ -173,6 +173,7 @@ enum
   N_PROPS
 };
 
+#ifdef G_OS_UNIX
 typedef struct
 {
   gint                 fds[3];
@@ -278,6 +279,7 @@ child_setup (gpointer user_data)
   if (child_data->child_setup_func)
     child_data->child_setup_func (child_data->child_setup_data);
 }
+#endif
 
 static GInputStream *
 platform_input_stream_from_spawn_fd (gint fd)
@@ -391,7 +393,9 @@ initable_init (GInitable     *initable,
                GError       **error)
 {
   GSubprocess *self = G_SUBPROCESS (initable);
+#ifdef G_OS_UNIX
   ChildData child_data = { { -1, -1, -1 }, 0 };
+#endif
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
   gint close_fds[3] = { -1, -1, -1 };
@@ -453,10 +457,10 @@ initable_init (GInitable     *initable,
     spawn_flags |= G_SPAWN_STDERR_TO_DEV_NULL;
   else if (self->flags & G_SUBPROCESS_FLAGS_STDERR_PIPE)
     pipe_ptrs[2] = &pipe_fds[2];
+#ifdef G_OS_UNIX
   else if (self->flags & G_SUBPROCESS_FLAGS_STDERR_MERGE)
     /* This will work because stderr gets setup after stdout. */
     child_data.fds[2] = 1;
-#ifdef G_OS_UNIX
   else if (self->launcher)
     {
       if (self->launcher->stderr_fd != -1)
@@ -493,13 +497,20 @@ initable_init (GInitable     *initable,
   spawn_flags |= G_SPAWN_DO_NOT_REAP_CHILD;
   spawn_flags |= G_SPAWN_CLOEXEC_PIPES;
 
+#ifdef G_OS_UNIX
   child_data.child_setup_func = self->launcher ? self->launcher->child_setup_func : NULL;
   child_data.child_setup_data = self->launcher ? self->launcher->child_setup_user_data : NULL;
+#endif
+
   success = g_spawn_async_with_pipes (self->launcher ? self->launcher->cwd : NULL,
                                       self->argv,
                                       self->launcher ? self->launcher->envp : NULL,
                                       spawn_flags,
+#ifdef G_OS_UNIX
                                       child_setup, &child_data,
+#else
+                                      NULL, NULL,
+#endif
                                       &self->pid,
                                       pipe_ptrs[0], pipe_ptrs[1], pipe_ptrs[2],
                                       error);
@@ -532,7 +543,9 @@ initable_init (GInitable     *initable,
       g_source_unref (source);
     }
 
+#ifdef G_OS_UNIX
 out:
+#endif
   /* we don't need this past init... */
   self->launcher = NULL;
 
@@ -1135,7 +1148,11 @@ g_subprocess_get_successful (GSubprocess *subprocess)
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
   g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
+#ifdef G_OS_UNIX
   return WIFEXITED (subprocess->status) && WEXITSTATUS (subprocess->status) == 0;
+#else
+  return subprocess->status == 0;
+#endif
 }
 
 /**
@@ -1160,7 +1177,11 @@ g_subprocess_get_if_exited (GSubprocess *subprocess)
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
   g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
+#ifdef G_OS_UNIX
   return WIFEXITED (subprocess->status);
+#else
+  return TRUE;
+#endif
 }
 
 /**
@@ -1185,9 +1206,14 @@ g_subprocess_get_exit_status (GSubprocess *subprocess)
 {
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 1);
   g_return_val_if_fail (subprocess->pid == 0, 1);
+
+#ifdef G_OS_UNIX
   g_return_val_if_fail (WIFEXITED (subprocess->status), 1);
 
   return WEXITSTATUS (subprocess->status);
+#else
+  return subprocess->status;
+#endif
 }
 
 /**
@@ -1211,7 +1237,11 @@ g_subprocess_get_if_signaled (GSubprocess *subprocess)
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
   g_return_val_if_fail (subprocess->pid == 0, FALSE);
 
+#ifdef G_OS_UNIX
   return WIFSIGNALED (subprocess->status);
+#else
+  return FALSE;
+#endif
 }
 
 /**
@@ -1235,9 +1265,16 @@ g_subprocess_get_term_sig (GSubprocess *subprocess)
 {
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 0);
   g_return_val_if_fail (subprocess->pid == 0, 0);
+
+#ifdef G_OS_UNIX
   g_return_val_if_fail (WIFSIGNALED (subprocess->status), 0);
 
   return WTERMSIG (subprocess->status);
+#else
+  g_critical ("g_subprocess_get_term_sig() called on Windows, where "
+              "g_subprocess_get_if_signaled() always returns FALSE...");
+  return 0;
+#endif
 }
 
 /*< private >*/

@@ -31,6 +31,7 @@
 #include <glib/gstdio.h>
 #include "gioerror.h"
 #include "gwin32outputstream.h"
+#include "giowin32-priv.h"
 #include "gcancellable.h"
 #include "gsimpleasyncresult.h"
 #include "gasynchelper.h"

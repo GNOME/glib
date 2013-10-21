@@ -130,12 +130,10 @@ static void
 g_subprocess_launcher_finalize (GObject *object)
 {
   GSubprocessLauncher *self = G_SUBPROCESS_LAUNCHER (object);
-  guint i;
-
-  g_strfreev (self->envp);
-  g_free (self->cwd);
 
 #ifdef G_OS_UNIX
+  guint i;
+
   g_free (self->stdin_path);
   g_free (self->stdout_path);
   g_free (self->stderr_path);
@@ -161,10 +159,13 @@ g_subprocess_launcher_finalize (GObject *object)
         (void) close (g_array_index (self->needdup_fd_assignments, int, i));
       g_array_unref (self->needdup_fd_assignments);
     }
-#endif
 
   if (self->child_setup_destroy_notify)
     (* self->child_setup_destroy_notify) (self->child_setup_user_data);
+#endif
+
+  g_strfreev (self->envp);
+  g_free (self->cwd);
 
   G_OBJECT_CLASS (g_subprocess_launcher_parent_class)->finalize (object);
 }
@@ -174,10 +175,10 @@ g_subprocess_launcher_init (GSubprocessLauncher  *self)
 {
   self->envp = g_listenv ();
 
+#ifdef G_OS_UNIX
   self->stdin_fd = -1;
   self->stdout_fd = -1;
   self->stderr_fd = -1;
-#ifdef G_OS_UNIX
   self->basic_fd_assignments = g_array_new (FALSE, 0, sizeof (int));
   self->needdup_fd_assignments = g_array_new (FALSE, 0, sizeof (int));
 #endif
@@ -364,9 +365,21 @@ void
 g_subprocess_launcher_set_flags (GSubprocessLauncher *self,
                                  GSubprocessFlags     flags)
 {
-  if (verify_disposition ("stdin", flags & ALL_STDIN_FLAGS, self->stdin_fd, self->stdin_path) &&
-      verify_disposition ("stdout", flags & ALL_STDOUT_FLAGS, self->stdout_fd, self->stdout_path) &&
-      verify_disposition ("stderr", flags & ALL_STDERR_FLAGS, self->stderr_fd, self->stderr_path))
+  const gchar *stdin_path = NULL, *stdout_path = NULL, *stderr_path = NULL;
+  gint stdin_fd = -1, stdout_fd = -1, stderr_fd = -1;
+
+#ifdef G_OS_UNIX
+  stdin_fd = self->stdin_fd;
+  stdout_fd = self->stdout_fd;
+  stderr_fd = self->stderr_fd;
+  stdin_path = self->stdin_path;
+  stdout_path = self->stdout_path;
+  stderr_path = self->stderr_path;
+#endif
+
+  if (verify_disposition ("stdin", flags & ALL_STDIN_FLAGS, stdin_fd, stdin_path) &&
+      verify_disposition ("stdout", flags & ALL_STDOUT_FLAGS, stdout_fd, stdout_path) &&
+      verify_disposition ("stderr", flags & ALL_STDERR_FLAGS, stderr_fd, stderr_path))
     self->flags = flags;
 }
 

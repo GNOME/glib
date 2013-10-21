@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <unistd.h>
 #ifdef G_OS_UNIX
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
