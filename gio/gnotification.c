@@ -26,6 +26,44 @@
 #include "gicon.h"
 #include "gaction.h"
 
+/**
+ * SECTION:gnotification
+ * @short_description: User Notifications (pop up messages)
+ *
+ * #GNotification is a mechanism for creating a notification to be shown
+ * to the user -- typically as a pop-up notification presented by the
+ * desktop environment shell.
+ *
+ * The key difference between #GNotification and other similar APIs is
+ * that, if supported by the desktop environment, notifications sent
+ * with #GNotification will persist after the application has exited,
+ * and even across system reboots.
+ *
+ * Since the user may click on a notification while the application is
+ * not running, applications using #GNotification should be able to be
+ * started as a D-Bus service, using #GApplication.
+ *
+ * User interaction with a notification (either the default action, or
+ * buttons) must be associated with actions on the application (ie:
+ * "app." actions).  It is not possible to route user interaction
+ * through the notification itself, because the object will not exist if
+ * the application is autostarted as a result of a notification being
+ * clicked.
+ *
+ * A notification can be sent with g_application_send_notification().
+ *
+ * Since: 2.40
+ **/
+
+/**
+ * GNotification:
+ *
+ * This structure type is private and should only be accessed using the
+ * public APIs.
+ *
+ * Since: 2.40
+ **/
+
 typedef GObjectClass GNotificationClass;
 
 struct _GNotification
@@ -131,7 +169,7 @@ g_notification_new (const gchar *title)
   return notification;
 }
 
-/**
+/*< private >
  * g_notification_get_title:
  * @notification: a #GNotification
  *
@@ -152,7 +190,7 @@ g_notification_get_title (GNotification *notification)
 /**
  * g_notification_set_title:
  * @notification: a #GNotification
- * title: the new title for @notification
+ * @title: the new title for @notification
  *
  * Sets the title of @notification to @title.
  *
@@ -170,7 +208,7 @@ g_notification_set_title (GNotification *notification,
   notification->title = g_strdup (title);
 }
 
-/**
+/*< private >
  * g_notification_get_body:
  * @notification: a #GNotification
  *
@@ -209,7 +247,7 @@ g_notification_set_body (GNotification *notification,
   notification->body = g_strdup (body);
 }
 
-/**
+/*< private >
  * g_notification_get_icon:
  * @notification: a #GNotification
  *
@@ -248,7 +286,7 @@ g_notification_set_icon (GNotification *notification,
   notification->icon = g_object_ref (icon);
 }
 
-/**
+/*< private >
  * g_notification_get_urgent:
  * @notification: a #GNotification
  *

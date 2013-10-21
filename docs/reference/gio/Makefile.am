@@ -59,6 +59,8 @@ IGNORE_HFILES = \
 	gnetworkingprivate.h		\
 	gnetworkmonitorbase.h		\
 	gnetworkmonitornetlink.h	\
+	gnotificationbackend.h		\
+	gnotification-private.h		\
 	gpollfilemonitor.h		\
 	gregistrysettingsbackend.h	\
 	gsettingsbackendinternal.h	\
