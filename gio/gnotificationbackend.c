@@ -82,37 +82,3 @@ g_notification_backend_withdraw_notification (GNotificationBackend *backend,
 
   G_NOTIFICATION_BACKEND_GET_CLASS (backend)->withdraw_notification (backend, id);
 }
-
-GApplication *
-g_notification_backend_get_application (GNotificationBackend *backend)
-{
-  g_return_val_if_fail (G_IS_NOTIFICATION_BACKEND (backend), NULL);
-
-  return backend->application;
-}
-
-void
-g_notification_backend_activate_action (GNotificationBackend *backend,
-                                        const gchar          *name,
-                                        GVariant             *parameter)
-{
-  g_return_if_fail (G_IS_NOTIFICATION_BACKEND (backend));
-
-  if (name)
-    {
-      if (g_str_has_prefix (name, "app."))
-        g_action_group_activate_action (G_ACTION_GROUP (backend->application), name + 4, parameter);
-    }
-  else
-    {
-      g_application_activate (backend->application);
-    }
-}
-
-GDBusConnection *
-g_notification_backend_get_dbus_connection (GNotificationBackend *backend)
-{
-  g_return_val_if_fail (G_IS_NOTIFICATION_BACKEND (backend), NULL);
-
-  return backend->dbus_connection;
-}

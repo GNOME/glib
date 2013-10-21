@@ -25,6 +25,7 @@
 #include "giomodule-priv.h"
 #include "gnotification-private.h"
 #include "gdbusconnection.h"
+#include "gactiongroup.h"
 #include "gaction.h"
 #include "gfileicon.h"
 #include "gfile.h"
@@ -107,6 +108,24 @@ g_fdo_notification_backend_find_notification_by_notify_id (GFdoNotificationBacke
 }
 
 static void
+activate_action (GFdoNotificationBackend *backend,
+                 const gchar             *name,
+                 GVariant                *parameter)
+{
+  GNotificationBackend *g_backend = G_NOTIFICATION_BACKEND (backend);
+
+  if (name)
+    {
+      if (g_str_has_prefix (name, "app."))
+        g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), name + 4, parameter);
+    }
+  else
+    {
+      g_application_activate (g_backend->application);
+    }
+}
+
+static void
 notify_signal (GDBusConnection *connection,
                const gchar     *sender_name,
                const gchar     *object_path,
@@ -141,9 +160,7 @@ notify_signal (GDBusConnection *connection,
     {
       if (g_str_equal (action, "default"))
         {
-          g_notification_backend_activate_action (G_NOTIFICATION_BACKEND (backend),
-                                                  n->default_action,
-                                                  n->default_action_target);
+          activate_action (backend, n->default_action, n->default_action_target);
         }
       else
         {
@@ -152,7 +169,7 @@ notify_signal (GDBusConnection *connection,
 
           if (g_action_parse_detailed_name (action, &name, &target, NULL))
             {
-              g_notification_backend_activate_action (G_NOTIFICATION_BACKEND (backend), name, target);
+              activate_action (backend, name, target);
               g_free (name);
               if (target)
                 g_variant_unref (target);
@@ -292,7 +309,7 @@ g_fdo_notification_backend_dispose (GObject *object)
     {
       GDBusConnection *session_bus;
 
-      session_bus = g_notification_backend_get_dbus_connection (G_NOTIFICATION_BACKEND (backend));
+      session_bus = G_NOTIFICATION_BACKEND (backend)->dbus_connection;
       g_dbus_connection_signal_unsubscribe (session_bus, backend->notify_subscription);
       backend->notify_subscription = 0;
     }
@@ -328,7 +345,7 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
   if (self->notify_subscription == 0)
     {
       self->notify_subscription =
-        g_dbus_connection_signal_subscribe (g_notification_backend_get_dbus_connection (backend),
+        g_dbus_connection_signal_subscribe (backend->dbus_connection,
                                             "org.freedesktop.Notifications",
                                             "org.freedesktop.Notifications", NULL,
                                             "/org/freedesktop/Notifications", NULL,
@@ -355,9 +372,7 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
 
   g_notification_get_default_action (notification, &n->default_action, &n->default_action_target);
 
-  call_notify (g_notification_backend_get_dbus_connection (backend),
-               g_notification_backend_get_application (backend),
-               n->notify_id, notification, notification_sent, n);
+  call_notify (backend->dbus_connection, backend->application, n->notify_id, notification, notification_sent, n);
 }
 
 static void
@@ -372,7 +387,7 @@ g_fdo_notification_backend_withdraw_notification (GNotificationBackend *backend,
     {
       if (n->notify_id > 0)
         {
-          g_dbus_connection_call (g_notification_backend_get_dbus_connection (backend),
+          g_dbus_connection_call (backend->dbus_connection,
                                   "org.freedesktop.Notifications",
                                   "/org/freedesktop/Notifications",
                                   "org.freedesktop.Notifications", "CloseNotification",

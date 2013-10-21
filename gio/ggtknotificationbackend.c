@@ -91,16 +91,13 @@ g_gtk_notification_backend_send_notification (GNotificationBackend *backend,
                                               const gchar          *id,
                                               GNotification        *notification)
 {
-  GApplication *application;
   GVariant *params;
 
-  application = g_notification_backend_get_application (backend);
-
-  params = g_variant_new ("(ss@a{sv})", g_application_get_application_id (application),
+  params = g_variant_new ("(ss@a{sv})", g_application_get_application_id (backend->application),
                                         id,
                                         g_notification_serialize (notification));
 
-  g_dbus_connection_call (g_notification_backend_get_dbus_connection (backend),
+  g_dbus_connection_call (backend->dbus_connection,
                           "org.gtk.Notifications", "/org/gtk/Notifications",
                           "org.gtk.Notifications", "AddNotification", params,
                           G_VARIANT_TYPE_UNIT,
@@ -112,12 +109,9 @@ g_gtk_notification_backend_withdraw_notification (GNotificationBackend *backend,
                                                   const gchar          *id)
 {
   GGtkNotificationBackend *self = G_GTK_NOTIFICATION_BACKEND (backend);
-  GApplication *application;
   GVariant *params;
 
-  application = g_notification_backend_get_application (backend);
-
-  params = g_variant_new ("(ss)", g_application_get_application_id (application), id);
+  params = g_variant_new ("(ss)", g_application_get_application_id (backend->application), id);
 
   g_dbus_connection_call (self->session_bus, "org.gtk.Notifications",
                           "/org/gtk/Notifications", "org.gtk.Notifications",

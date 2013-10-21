@@ -70,14 +70,6 @@ void                    g_notification_backend_send_notification        (GNotifi
 void                    g_notification_backend_withdraw_notification    (GNotificationBackend *backend,
                                                                          const gchar          *id);
 
-GApplication *          g_notification_backend_get_application          (GNotificationBackend *backend);
-
-void                    g_notification_backend_activate_action          (GNotificationBackend *backend,
-                                                                         const gchar          *name,
-                                                                         GVariant             *parameter);
-
-GDBusConnection *       g_notification_backend_get_dbus_connection      (GNotificationBackend *backend);
-
 G_END_DECLS
 
 #endif
