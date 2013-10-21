@@ -36,6 +36,10 @@
  * An implementation of the standard printf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
+ * As with the standard printf(), this does not automatically append a trailing
+ * new-line character to the message, so typically @format should end with its
+ * own new-line character.
+ *
  * Returns: the number of bytes printed.
  *
  * Since: 2.2
