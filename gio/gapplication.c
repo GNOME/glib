@@ -2005,6 +2005,10 @@ g_application_send_notification (GApplication  *application,
  * executions of this application, as long @id is the same as it was for
  * the sent notification.
  *
+ * Note that notifications are dismissed when the user clicks on one
+ * of the buttons in a notification or triggers its default action, so
+ * there is no need to explicitly withdraw the notification in that case.
+ *
  * Since: 2.40
  */
 void
