@@ -339,7 +339,7 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
   n = g_fdo_notification_backend_find_notification (self, id);
   if (n == NULL)
     {
-      n = g_slice_new (FreedesktopNotification);
+      n = g_slice_new0 (FreedesktopNotification);
       n->backend = self;
       n->id = g_strdup (id);
       n->notify_id = 0;
@@ -349,9 +349,8 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
   else
     {
       /* Only clear default action. All other fields are still valid */
-      g_free (n->default_action);
-      if (n->default_action_target)
-        g_variant_unref (n->default_action_target);
+      g_clear_pointer (&n->default_action, g_free);
+      g_clear_pointer (&n->default_action_target, g_variant_unref);
     }
 
   g_notification_get_default_action (notification, &n->default_action, &n->default_action_target);
