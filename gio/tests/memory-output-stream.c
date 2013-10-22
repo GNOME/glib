@@ -55,7 +55,7 @@ test_truncate (void)
 }
 
 static void
-test_seek (void)
+test_seek_fixed (void)
 {
   GOutputStream *mo;
   GError *error;
@@ -64,17 +64,107 @@ test_seek (void)
 
   g_assert (G_IS_SEEKABLE (mo));
   g_assert (g_seekable_can_seek (G_SEEKABLE (mo)));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 0);
 
   error = NULL;
+  g_assert (!g_seekable_seek (G_SEEKABLE (mo), 222, G_SEEK_CUR, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 0);
+
   g_assert (g_seekable_seek (G_SEEKABLE (mo), 26, G_SEEK_SET, NULL, &error));
   g_assert_no_error (error);
   g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 26);
 
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 20, G_SEEK_CUR, NULL, &error));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 46);
+  g_assert_no_error (error);
+
   g_assert (!g_seekable_seek (G_SEEKABLE (mo), 200, G_SEEK_CUR, NULL, &error));
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
-  g_error_free (error);
+  g_clear_error (&error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 46);
+
+  g_assert (!g_seekable_seek (G_SEEKABLE (mo), 1, G_SEEK_END, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 46);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 0, G_SEEK_END, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 100);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), -1, G_SEEK_END, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 99);
 
   g_object_unref (mo);
+}
+
+static void
+test_seek_resizable_stream (GOutputStream *mo)
+{
+  GError *error;
+
+  g_assert (G_IS_SEEKABLE (mo));
+  g_assert (g_seekable_can_seek (G_SEEKABLE (mo)));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 0);
+
+  error = NULL;
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 222, G_SEEK_CUR, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 222);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 26, G_SEEK_SET, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 26);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 20, G_SEEK_CUR, NULL, &error));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 46);
+  g_assert_no_error (error);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 200, G_SEEK_CUR, NULL, &error));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 246);
+  g_assert_no_error (error);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 1, G_SEEK_END, NULL, &error));
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 1);
+  g_assert_no_error (error);
+
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 0, G_SEEK_END, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 0);
+
+  /* The 'end' is still zero, so this should fail */
+  g_assert (!g_seekable_seek (G_SEEKABLE (mo), -1, G_SEEK_END, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 0);
+}
+
+static void
+test_seek_resizable (void)
+{
+  GOutputStream *mo;
+  gint i;
+
+  /* For resizable streams, the initially allocated size is purely an
+   * implementation detail.  We should not be able to tell the
+   * difference based on the seek API, so make a bunch of streams with
+   * different sizes and subject them to the same test.
+   */
+  for (i = 0; i < 1024; i++)
+    {
+      mo = g_memory_output_stream_new (g_malloc (i), i, g_realloc, g_free);
+
+      test_seek_resizable_stream (mo);
+
+      g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 0);
+      /* No writes = no resizes */
+      g_assert_cmpint (g_memory_output_stream_get_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, i);
+
+      g_object_unref (mo);
+    }
 }
 
 static void
@@ -230,7 +320,8 @@ main (int   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/memory-output-stream/truncate", test_truncate);
-  g_test_add_func ("/memory-output-stream/seek", test_seek);
+  g_test_add_func ("/memory-output-stream/seek/fixed", test_seek_fixed);
+  g_test_add_func ("/memory-output-stream/seek/resizable", test_seek_resizable);
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
   g_test_add_func ("/memory-output-stream/write-bytes", test_write_bytes);
