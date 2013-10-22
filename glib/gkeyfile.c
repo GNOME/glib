@@ -2614,6 +2614,7 @@ g_key_file_get_int64 (GKeyFile     *key_file,
                    _("Key '%s' in group '%s' has value '%s' "
                      "where %s was expected"),
                    key, group_name, s, "int64");
+      g_free (s);
       return 0;
     }
 
@@ -2690,6 +2691,7 @@ g_key_file_get_uint64 (GKeyFile     *key_file,
                    _("Key '%s' in group '%s' has value '%s' "
                      "where %s was expected"),
                    key, group_name, s, "uint64");
+      g_free (s);
       return 0;
     }
 
