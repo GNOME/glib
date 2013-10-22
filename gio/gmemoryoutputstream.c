@@ -42,8 +42,8 @@
  * #GMemoryOutputStream is a class for using arbitrary
  * memory chunks as output for GIO streaming output operations.
  *
- * As of GLib 2.34, #GMemoryOutputStream implements
- * #GPollableOutputStream.
+ * As of GLib 2.34, #GMemoryOutputStream trivially implements
+ * #GPollableOutputStream: it always polls as ready.
  */
 
 #define MIN_ARRAY_SIZE  16
@@ -57,8 +57,8 @@ enum {
   PROP_DESTROY_FUNCTION
 };
 
-struct _GMemoryOutputStreamPrivate {
-  
+struct _GMemoryOutputStreamPrivate
+{
   gpointer       data; /* Write buffer */
   gsize          len; /* Current length of the data buffer. Can change with resizing. */
   gsize          valid_len; /* The part of data that has been written to */
@@ -114,7 +114,7 @@ static gboolean g_memory_output_stream_truncate            (GSeekable       *see
 
 static gboolean g_memory_output_stream_is_writable       (GPollableOutputStream *stream);
 static GSource *g_memory_output_stream_create_source     (GPollableOutputStream *stream,
-							  GCancellable          *cancellable);
+                                                          GCancellable          *cancellable);
 
 static void g_memory_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
 
@@ -341,10 +341,33 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  *
  * Creates a new #GMemoryOutputStream.
  *
- * If @data is non-%NULL, the stream  will use that for its internal storage.
+ * In most cases this is not the function you want.  See
+ * g_memory_output_stream_new_resizable() instead.
+ *
+ * If @data is non-%NULL, the stream will use that for its internal storage.
+ *
  * If @realloc_fn is non-%NULL, it will be used for resizing the internal
- * storage when necessary. To construct a fixed-size output stream,
- * pass %NULL as @realloc_fn.
+ * storage when necessary and the stream will be considered resizable.
+ * In that case, the stream will start out being (conceptually) empty.
+ * @size is used only as a hint for how big @data is.  Specifically,
+ * seeking to the end of a newly-created stream will seek to zero, not
+ * @size.  Seeking past the end of the stream and then writing will
+ * introduce a zero-filled gap.
+ *
+ * If @realloc_fn is %NULL then the stream is fixed-sized.  Seeking to
+ * the end will seek to @size exactly.  Writing past the end will give
+ * an 'out of space' error.  Attempting to seek past the end will fail.
+ * Unlike the resizable case, seeking to an offset within the stream and
+ * writing will preserve the bytes passed in as @data before that point
+ * and will return them as part of g_memory_output_stream_steal_data().
+ * If you intend to seek you should probably therefore ensure that @data
+ * is properly initialised.
+ *
+ * It is probably only meaningful to provide @data and @size in the case
+ * that you want a fixed-sized stream.  Put another way: if @realloc_fn
+ * is non-%NULL then it makes most sense to give @data as %NULL and
+ * @size as 0 (allowing #GMemoryOutputStream to do the initial
+ * allocation for itself).
  *
  * |[
  * /&ast; a stream that can grow &ast;/
@@ -416,16 +439,20 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  * @ostream: a #GMemoryOutputStream
  *
  * Gets the size of the currently allocated data area (available from
- * g_memory_output_stream_get_data()). If the stream isn't
- * growable (no realloc was passed to g_memory_output_stream_new()) then
- * this is the maximum size of the stream and further writes
- * will return %G_IO_ERROR_NO_SPACE.
+ * g_memory_output_stream_get_data()).
  *
- * Note that for growable streams the returned size may become invalid on
- * the next write or truncate operation on the stream.
+ * You probably don't want to use this function on resizable streams.
+ * See g_memory_output_stream_get_data_size() instead.  For resizable
+ * streams the size returned by this function is an implementation
+ * detail and may be change at any time in response to operations on the
+ * stream.
  *
- * If you want the number of bytes currently written to the stream, use
- * g_memory_output_stream_get_data_size().
+ * If the stream is fixed-sized (ie: no realloc was passed to
+ * g_memory_output_stream_new()) then this is the maximum size of the
+ * stream and further writes will return %G_IO_ERROR_NO_SPACE.
+ *
+ * In any case, if you want the number of bytes currently written to the
+ * stream, use g_memory_output_stream_get_data_size().
  *
  * Returns: the number of bytes allocated for the data buffer
  */
@@ -441,9 +468,8 @@ g_memory_output_stream_get_size (GMemoryOutputStream *ostream)
  * g_memory_output_stream_get_data_size:
  * @ostream: a #GMemoryOutputStream
  *
- * Returns the number of bytes from the start up
- * to including the last byte written in the stream
- * that has not been truncated away.
+ * Returns the number of bytes from the start up to including the last
+ * byte written in the stream that has not been truncated away.
  *
  * Returns: the number of bytes written to the stream
  *
@@ -506,11 +532,11 @@ g_memory_output_stream_steal_as_bytes (GMemoryOutputStream *ostream)
   g_return_val_if_fail (g_output_stream_is_closed (G_OUTPUT_STREAM (ostream)), NULL);
 
   result = g_bytes_new_with_free_func (ostream->priv->data,
-				       ostream->priv->valid_len,
-				       ostream->priv->destroy,
-				       ostream->priv->data);
+                                       ostream->priv->valid_len,
+                                       ostream->priv->destroy,
+                                       ostream->priv->data);
   ostream->priv->data = NULL;
-			     
+
   return result;
 }
 
@@ -606,10 +632,14 @@ g_memory_output_stream_write (GOutputStream  *stream,
 
   if (priv->pos + count > priv->len)
     {
-      /* At least enought to fit the write, rounded up
-	     for greater than linear growth.
-         TODO: This wastes a lot of memory at large stream sizes.
-               Figure out a more rational allocation strategy. */
+      /* At least enough to fit the write, rounded up for greater than
+       * linear growth.
+       *
+       * Assuming that we're using something like realloc(), the kernel
+       * will overcommit memory to us, so doubling the size each time
+       * will keep the number of realloc calls low without wasting too
+       * much memory.
+       */
       new_size = g_nearest_pow (priv->pos + count);
       /* Check for overflow again. We have only checked if
          pos + count > G_MAXSIZE, but it only catches the case of writing
@@ -703,10 +733,10 @@ g_memory_output_stream_can_seek (GSeekable *seekable)
 
 static gboolean
 g_memory_output_stream_seek (GSeekable    *seekable,
-                            goffset        offset,
-                            GSeekType      type,
-                            GCancellable  *cancellable,
-                            GError       **error)
+                             goffset        offset,
+                             GSeekType      type,
+                             GCancellable  *cancellable,
+                             GError       **error)
 {
   GMemoryOutputStream        *stream;
   GMemoryOutputStreamPrivate *priv;
@@ -783,6 +813,7 @@ g_memory_output_stream_can_truncate (GSeekable *seekable)
   ostream = G_MEMORY_OUTPUT_STREAM (seekable);
   priv = ostream->priv;
 
+  /* We do not allow truncation of fixed-sized streams */
   return priv->realloc_fn != NULL;
 }
 
@@ -808,13 +839,12 @@ g_memory_output_stream_is_writable (GPollableOutputStream *stream)
 
 static GSource *
 g_memory_output_stream_create_source (GPollableOutputStream *stream,
-				      GCancellable          *cancellable)
+                                      GCancellable          *cancellable)
 {
   GSource *base_source, *pollable_source;
 
   base_source = g_timeout_source_new (0);
-  pollable_source = g_pollable_source_new_full (stream, base_source,
-						cancellable);
+  pollable_source = g_pollable_source_new_full (stream, base_source, cancellable);
   g_source_unref (base_source);
 
   return pollable_source;
