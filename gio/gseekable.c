@@ -30,10 +30,21 @@
  * @short_description: Stream seeking interface
  * @include: gio/gio.h
  * @see_also: #GInputStream, #GOutputStream
- * 
- * #GSeekable is implemented by streams (implementations of 
+ *
+ * #GSeekable is implemented by streams (implementations of
  * #GInputStream or #GOutputStream) that support seeking.
- * 
+ *
+ * Seekable streams largely fall into two categories: resizable and
+ * fixed-size.
+ *
+ * #GSeekable on fixed-sized streams is approximately the same as POSIX
+ * lseek() on a block device (for example: attmepting to seek past the
+ * end of the device is an error).  Fixed streams typically cannot be
+ * truncated.
+ *
+ * #GSeekable on resizable streams is approximately the same as POSIX
+ * lseek() on a normal file.  Seeking past the end and writing data will
+ * usually cause the stream to resize by introducing zero bytes.
  **/
 
 typedef GSeekableIface GSeekableInterface;
@@ -89,11 +100,20 @@ g_seekable_can_seek (GSeekable *seekable)
  * @seekable: a #GSeekable.
  * @offset: a #goffset.
  * @type: a #GSeekType.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occurring, or %NULL to 
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
- * 
+ *
  * Seeks in the stream by the given @offset, modified by @type.
+ *
+ * Attempting to seek past the end of the stream will have different
+ * results depending on if the stream is fixed-sized or resizable.  If
+ * the stream is resizable then seeking past the end and then writing
+ * will result in zeros filling the empty space.  Seeking past the end
+ * of a resizable stream and reading will result in EOF.  Seeking past
+ * the end of a fixed-sized stream will fail.
+ *
+ * Any operation that would result in a negative offset will fail.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
