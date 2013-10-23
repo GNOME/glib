@@ -1105,12 +1105,24 @@ subscribe_signals (GDBusObjectManagerClient *manager,
 
   if (name_owner != NULL)
     {
-      /* the bus daemon may not implement path_prefix so gracefully
-       * handle this by using a fallback
-       */
-      manager->priv->match_rule = g_strdup_printf ("type='signal',sender='%s',path_namespace='%s'",
-                                                   name_owner, manager->priv->object_path);
+      /* Only add path_namespace if it's non-'/'. This removes a no-op key from
+       * the match rule, and also works around a D-Bus bug where
+       * path_namespace='/' matches nothing in D-Bus versions < 1.6.18.
+       *
+       * See: https://bugs.freedesktop.org/show_bug.cgi?id=70799 */
+      if (g_str_equal (manager->priv->object_path, "/"))
+        {
+          manager->priv->match_rule = g_strdup_printf ("type='signal',sender='%s'",
+                                                       name_owner);
+        }
+      else
+        {
+          manager->priv->match_rule = g_strdup_printf ("type='signal',sender='%s',path_namespace='%s'",
+                                                       name_owner, manager->priv->object_path);
+        }
 
+      /* The bus daemon may not implement path_namespace so gracefully
+       * handle this by using a fallback triggered if @error is set. */
       ret = g_dbus_connection_call_sync (manager->priv->connection,
                                          "org.freedesktop.DBus",
                                          "/org/freedesktop/DBus",
