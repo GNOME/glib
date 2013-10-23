@@ -2179,29 +2179,34 @@ g_main_context_find_source_by_user_data (GMainContext *context,
 /**
  * g_source_remove:
  * @tag: the ID of the source to remove.
- * 
- * Removes the source with the given id from the default main context. 
- * The id of
- * a #GSource is given by g_source_get_id(), or will be returned by the
- * functions g_source_attach(), g_idle_add(), g_idle_add_full(),
- * g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
- * g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().
+ *
+ * Removes the source with the given id from the default main context.
+ *
+ * The id of a #GSource is given by g_source_get_id(), or will be
+ * returned by the functions g_source_attach(), g_idle_add(),
+ * g_idle_add_full(), g_timeout_add(), g_timeout_add_full(),
+ * g_child_watch_add(), g_child_watch_add_full(), g_io_add_watch(), and
+ * g_io_add_watch_full().
  *
  * See also g_source_destroy(). You must use g_source_destroy() for sources
  * added to a non-default main context.
  *
- * Return value: %TRUE if the source was found and removed.
+ * It is a programmer error to attempt to remove a non-existent source.
+ *
+ * Return value: For historical reasons, this function always returns %TRUE
  **/
 gboolean
 g_source_remove (guint tag)
 {
   GSource *source;
-  
+
   g_return_val_if_fail (tag > 0, FALSE);
 
   source = g_main_context_find_source_by_id (NULL, tag);
   if (source)
     g_source_destroy (source);
+  else
+    g_critical ("Source ID %u was not found when attempting to remove it", tag);
 
   return source != NULL;
 }
