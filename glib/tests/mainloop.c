@@ -1026,6 +1026,14 @@ test_wakeup(void)
   g_main_context_unref (ctx);
 }
 
+static void
+test_remove_invalid (void)
+{
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "Source ID 3000000000 was not found*");
+  g_source_remove (3000000000u);
+  g_test_assert_expected_messages ();
+}
+
 #ifdef G_OS_UNIX
 
 #include <glib-unix.h>
@@ -1416,6 +1424,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
   g_test_add_func ("/mainloop/wakeup", test_wakeup);
+  g_test_add_func ("/mainloop/remove-invalid", test_remove_invalid);
 #ifdef G_OS_UNIX
   g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
   g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);
