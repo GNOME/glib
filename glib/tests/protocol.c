@@ -181,7 +181,9 @@ test_message (void)
 
   test_message_cb1 (channel, G_IO_IN, tlb);
 
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "Source ID*");
   g_assert (!g_source_remove (child_source));
+  g_test_assert_expected_messages ();
   g_assert (g_source_remove (io_source));
   g_io_channel_unref (channel);
 
@@ -292,7 +294,9 @@ test_error (void)
 
       test_message_cb1 (channel, G_IO_IN, tlb);
 
+      g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "Source ID*");
       g_assert (!g_source_remove (child_source));
+      g_test_assert_expected_messages ();
       g_assert (g_source_remove (io_source));
       g_io_channel_unref (channel);
 
