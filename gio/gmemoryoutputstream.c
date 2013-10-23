@@ -726,7 +726,14 @@ g_memory_output_stream_seek (GSeekable    *seekable,
       break;
 
     case G_SEEK_END:
-      absolute = priv->len + offset;
+      /* For resizable streams, we consider the end to be the data
+       * length.  For fixed-sized streams, we consider the end to be the
+       * size of the buffer.
+       */
+      if (priv->realloc_fn)
+        absolute = priv->valid_len + offset;
+      else
+        absolute = priv->len + offset;
       break;
 
     default:
@@ -747,7 +754,13 @@ g_memory_output_stream_seek (GSeekable    *seekable,
       return FALSE;
     }
 
-  if (absolute > priv->len)
+  /* Can't seek past the end of a fixed-size stream.
+   *
+   * Note: seeking to the non-existent byte at the end of a fixed-sized
+   * stream is valid (eg: a 1-byte fixed sized stream can have position
+   * 0 or 1).  Therefore '>' is what we want.
+   * */
+  if (priv->realloc_fn == NULL && absolute > priv->len)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,

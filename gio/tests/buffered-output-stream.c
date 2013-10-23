@@ -8,7 +8,7 @@ test_write (void)
   GError *error;
   const gchar buffer[] = "abcdefghijklmnopqrstuvwxyz";
 
-  base = g_memory_output_stream_new (g_malloc0 (20), 20, g_realloc, g_free);
+  base = g_memory_output_stream_new (g_malloc0 (20), 20, NULL, g_free);
   out = g_buffered_output_stream_new (base);
 
   g_assert_cmpint (g_buffered_output_stream_get_buffer_size (G_BUFFERED_OUTPUT_STREAM (out)), ==, 4096);
@@ -128,7 +128,7 @@ test_seek (void)
   gboolean ret;
   const gchar buffer[] = "abcdefghijklmnopqrstuvwxyz";
 
-  base = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new (g_malloc0 (30), 30, g_realloc, g_free));
+  base = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new (g_malloc0 (30), 30, NULL, g_free));
   out = g_buffered_output_stream_new_sized (G_OUTPUT_STREAM (base), 8);
   seekable = G_SEEKABLE (out);
   error = NULL;

@@ -60,7 +60,7 @@ test_seek (void)
   GOutputStream *mo;
   GError *error;
 
-  mo = g_memory_output_stream_new (g_new (gchar, 100), 100, g_realloc, g_free);
+  mo = g_memory_output_stream_new (g_new (gchar, 100), 100, NULL, g_free);
 
   g_assert (G_IS_SEEKABLE (mo));
   g_assert (g_seekable_can_seek (G_SEEKABLE (mo)));
