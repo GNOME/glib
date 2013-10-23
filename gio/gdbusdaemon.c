@@ -596,9 +596,18 @@ match_matches (GDBusDaemon *daemon,
 	  break;
 	case CHECK_TYPE_PATH_PREFIX:
 	  len = strlen (element->value);
-	  if (!(g_str_has_prefix (value, element->value) &&
-		(value[len] == 0 || value[len] == '/')))
+
+	  /* Make sure to handle the case of element->value == '/'. */
+	  if (len == 1)
+	    break;
+
+	  /* Fail if there's no prefix match, or if the prefix match doesn't
+	   * finish at the end of or at a separator in the @value. */
+	  if (!g_str_has_prefix (value, element->value))
 	    return FALSE;
+	  if (value[len] != 0 && value[len] != '/')
+	    return FALSE;
+
 	  break;
 	case CHECK_TYPE_PATH_RELATED:
 	  len = strlen (element->value);
