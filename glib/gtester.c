@@ -421,7 +421,9 @@ launch_test_binary (const char *binary,
       loop_pending = g_main_context_pending (NULL);
     }
 
-  g_source_remove (child_report_cb_id);
+  if (subtest_io_pending)
+    g_source_remove (child_report_cb_id);
+
   close (report_pipe[0]);
   g_test_log_buffer_free (tlb);
 
