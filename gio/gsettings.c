@@ -866,6 +866,21 @@ g_settings_new (const gchar *schema_id)
                        NULL);
 }
 
+static gboolean
+path_is_valid (const gchar *path)
+{
+  if (!path)
+    return FALSE;
+
+  if (path[0] != '/')
+    return FALSE;
+
+  if (!g_str_has_suffix (path, "/"))
+    return FALSE;
+
+  return strstr (path, "//") == NULL;
+}
+
 /**
  * g_settings_new_with_path:
  * @schema_id: the id of the schema
@@ -881,6 +896,10 @@ g_settings_new (const gchar *schema_id)
  * It is a programmer error to call this function for a schema that
  * has an explicitly specified path.
  *
+ * It is a programmer error if @path is not a valid path.  A valid path
+ * begins and ends with '/' and does not contain two consecutive '/'
+ * characters.
+ *
  * Returns: a new #GSettings object
  *
  * Since: 2.26
@@ -890,7 +909,7 @@ g_settings_new_with_path (const gchar *schema_id,
                           const gchar *path)
 {
   g_return_val_if_fail (schema_id != NULL, NULL);
-  g_return_val_if_fail (path != NULL, NULL);
+  g_return_val_if_fail (path_is_valid (path), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
                        "schema-id", schema_id,
@@ -952,7 +971,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
 {
   g_return_val_if_fail (schema_id != NULL, NULL);
   g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
-  g_return_val_if_fail (path != NULL, NULL);
+  g_return_val_if_fail (path_is_valid (path), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
                        "schema-id", schema_id,
@@ -1000,6 +1019,10 @@ g_settings_new_full (GSettingsSchema  *schema,
                      GSettingsBackend *backend,
                      const gchar      *path)
 {
+  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (backend == NULL || G_IS_SETTINGS_BACKEND (backend), NULL);
+  g_return_val_if_fail (path == NULL || path_is_valid (path), NULL);
+
   return g_object_new (G_TYPE_SETTINGS,
                        "settings-schema", schema,
                        "backend", backend,
