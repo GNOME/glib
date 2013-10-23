@@ -65,10 +65,22 @@
  * @short_description: pseudo-random number generator
  *
  * The following functions allow you to use a portable, fast and good
- * pseudo-random number generator (PRNG). It uses the Mersenne Twister
- * PRNG, which was originally developed by Makoto Matsumoto and Takuji
- * Nishimura. Further information can be found at
- * <ulink url="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
+ * pseudo-random number generator (PRNG).
+ * 
+ * <warning><para>Do not use this API for cryptographic purposes such as key
+ * generation, nonces, salts or one-time pads.</para></warning>
+ *
+ * This PRNG is suitable for non-cryptographic use such as in games
+ * (shuffling a card deck, generating levels), generating data for a
+ * test suite, etc. If you need random data for cryptographic
+ * purposes, it is recommended to use platform-specific APIs such as
+ * <literal>/dev/random</literal> on Unix, or CryptGenRandom() on
+ * Windows.
+ *
+ * GRand uses the Mersenne Twister PRNG, which was originally
+ * developed by Makoto Matsumoto and Takuji Nishimura. Further
+ * information can be found at <ulink
+ * url="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
  * http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</ulink>.
  *
  * If you just need a random number, you simply call the
